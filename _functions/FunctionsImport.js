@@ -25,7 +25,6 @@ function StartDirectImport() {
 
 // call this to add the folder level javascript if it is missing
 function AddFolderJavaScript(justConsole) {
-	var thisDoc = this;
 	var isWindows = app.platform === "WIN";
 	var isType = app.viewerType === "Exchange-Pro" ? "Pro" : (app.viewerType === "Exchange" ? "Standard" : "Reader");
 	var isContin = app.viewerVersion.substring(6, 8) != 30;
@@ -41,8 +40,8 @@ function AddFolderJavaScript(justConsole) {
 		Text0 : startTxt,
 		TextLoc : textLoc,
 		LocJS : isWindows ? locWin : locMac,
-		Text1 : "Do the following steps:\n   1)  Click the button below to save the file where you can find it.\n   2)  Change the extension of this file to \".js\" (can't be done while saving).\n   3)  Move the file to the right location mentioned above.\n   4)  Restart Adobe Acrobat and try the 'Direct Import' function again.",
-		Text2 : "The directory where you have to put this file depends on your version of Adobe Acrobat and your operating system. The path shown here is an estimated guess for your installation. It is possible that this folder doesn't exist yet, or that it is hidden.",
+		Text1 : "Do the following steps:\n   1)  Use the button below to save the file somewhere (don't change the filename).\n   2)  Rename the file so that its extension is \".js\" (can't be done while saving).\n   3)  Move the file to the right location mentioned below (can't be saved there directly).\n   4)  Restart Adobe Acrobat and try the 'Direct Import' function again.",
+		Text2 : "The directory where you have to put this file depends on your version of Adobe Acrobat and your operating system. The path shown here is an estimated guess for your installation. It is possible that this folder doesn't exist yet, or that it is hidden.\n" + toUni("Note that you can't save the file directly to this location!"),
 		Text3 : "Open the console (a.k.a. \"JavaScript Debugger\") and run the code that is printed there. Running the code is done by selecting the line it is on and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + " (or the numpad Enter).",
 
 		initialize : function(dialog) {
@@ -56,7 +55,7 @@ function AddFolderJavaScript(justConsole) {
 			});
 		},
 		bADD : function(dialog) {
-			thisDoc.exportDataObject({ cName: "MPMB-IF Remove '.txt' from the end.js.txt", nLaunch: 0});
+			tDoc.exportDataObject({ cName: "MPMB-IF Remove '.txt' from the end.js.txt", nLaunch: 0});
 		},
 		bCON : function(dialog) {
 			dialog.end("cons");
@@ -138,7 +137,7 @@ function AddFolderJavaScript(justConsole) {
 										item_id : "txt2",
 										alignment : "align_fill",
 										font : "dialog",
-										char_height : 5,
+										char_height : 7,
 										width : 470,
 									}, ]
 								}, ]
@@ -201,7 +200,6 @@ function AddFolderJavaScript(justConsole) {
 
 //the dialogue for the DirectImport function that ask for the path to a file to import from
 function DirectImport_Dialogue() {
-	var thisDoc = this;
 	var DirectImport_dialog = {
 		Text0 : "This 'Direct Import' function opens another MPMB's Character Record Sheet and goes through every field and layout setting in it to make this sheet similar to the other. This can take a long time and will not copy everything literally as this sheet will run through its automation to benefit from any updates to its code compared to the other sheet.\n\nIn order to do this, you will need to give the full path to a local file you want to import from.\nYou can use the 'Lookup' button to get the path.\n\nAlternatively, place the sheet you want to import from in the same folder as this sheet, give the file name of the sheet you want to import from (including file extension), and check the box to use a relative path.",
 		Text1 : "If you continue with importing, all data in the current sheet will be removed without notice!",
@@ -226,7 +224,7 @@ function DirectImport_Dialogue() {
 			});
 		},
 		bFND : function(dialog) {
-			thisDoc.getField("SelectFile").browseForFileToSubmit();
+			tDoc.getField("SelectFile").browseForFileToSubmit();
 			this.fileLoc = What("SelectFile");
 			dialog.load({
 				"fLoc": this.fileLoc
