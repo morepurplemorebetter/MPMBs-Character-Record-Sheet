@@ -1,0 +1,235 @@
+/*	-WHAT IS THIS?-
+	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://bit.ly/MPMBCharTools
+	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+	
+	-KEEP IN MIND-
+	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+	It is recommended to enter the code in a fresh sheet before adding any other information.
+*/
+
+/*	-INFORMATION-
+	Subject:	Subclass
+	Effect:		This script adds a subclass for the Fighter, called "Amazon" v1.4
+				This is taken from the DMs Guild website (http://www.dmsguild.com/product/171865/)
+				This subclass is made by Caio Sandy
+	Code by:	Galim & MorePurpleMoreBetter
+	Date:		2016-11-21 (sheet v12.59)
+	
+	Please support the creator of this content (Caio Sandy) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Caio%20Sandy
+*/
+
+ClassSubList["amazon"] = {
+    regExpSearch : /amazon/i,
+    subname : "Amazon",
+    fullname : "Amazon",
+    features : {
+        "subclassfeature3" : {
+            name : "Combat Superiority",
+			source : ["DMguild", 0],
+			minlevel : 3,
+			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special maneuvers" + "\n   " + "I regain all superiority dice after a short rest" + "\n   " + "I can use the following maneuvers after the roll, but before I know the result of the roll:" + "\n    - " + "Inner Sight: Add half die (round up) to Acrobatics, Athletics, Perception, or Stealth" + "\n    - " + "Penetrate: Add superiority die score to attack roll of bow, spear, javelin, or glaive" + "\n    - " + "Power Strike: Add superiority die score to damage of bow, spear, javelin, or glaive",
+			additional : ["", "", "d8", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10"],
+			usages : [0, 0, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6],
+			recovery : "short rest"
+        },
+        "subclassfeature7" : {
+            name : "Amazon Skills",
+            source : ["DMguild", 0],
+            minlevel : 7,
+            description : "\n   " + "Choose an Amazon Skill using the \"Choose Feature\" button above",
+			choices : ["Fighting Style: Archery", "Fighting Style: Defense", "Fighting Style: Dueling", "Fighting Style: Great Weapon Fighting", "Fighting Style: Protection", "Fighting Style: Two-Weapon Fighting", "Fighting Style: Mariner", "Fighting Style: Close Quarters Shooting", "Fighting Style: Tunnel Fighter", "Elemental Arrow", "Escape the Horde", "Fend", "Strafe", "Uncanny Dodge"],
+			"fighting style: archery" : {
+				name : "Amazon Skill: Archery",
+				description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
+				eval : "this.getField(\"Attack To Hit Bonus Global\").value += 2",
+				removeeval : "this.getField(\"Attack To Hit Bonus Global\").value -= 2",
+			},
+			"fighting style: defense" : {
+				name : "Amazon Skill: Defense",
+				source : ["P", 72],
+				description : "\n   " + "+1 bonus to AC when I'm wearing armor",
+				eval : "AddACMisc(1, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\")",
+				removeeval : "AddACMisc(0, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\")",
+			},
+			"fighting style: dueling" : {
+				name : "Amazon Skill: Dueling",
+				source : ["P", 72],
+				description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
+				eval : "this.getField(\"Attack Damage Bonus Global\").value += 2",
+				removeeval : "this.getField(\"Attack Damage Bonus Global\").value -= 2",
+			},
+			"fighting style: great weapon fighting" : {
+				name : "Amazon Skill: Great Weapon Fighting",
+				source : ["P", 72],
+				description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
+			},
+			"fighting style: protection" : {
+				name : "Amazon Skill: Protection",
+				source : ["P", 72],
+				description : "\n   " + "As a reaction, I can give disadv. on an attack made vs. someone within 5 ft of me" + "\n   " + "I need to be wielding a shield and be able to see the attacker to do this",
+				action : ["reaction", ""],
+			},
+			"fighting style: two-weapon fighting" : {
+				name : "Amazon Skill: Two-Weapon Fighting",
+				source : ["P", 72],
+				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+			},
+			"fighting style: mariner" : {
+				name : "Amazon Skill: Mariner",
+				source : ["UA:WA", 3],
+				description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds equal my current walking speed",
+				eval : "AddACMisc(1, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")",
+				removeeval : "AddACMisc(0, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")",
+			},
+			"fighting style: close quarters shooting" : {
+				name : "Amazon Skill: Close Quarters Shooting",
+				source : ["UA:LDU", 1],
+				description : "\n   " + "+1 bonus to attack rolls I make with ranged attacks" + "\n   " + "I don't have disadvantage when making a ranged attack while within 5 ft of a hostile" + "\n   " + "My ranged attacks ignore half and three-quarters cover against targets within 30 ft",
+				eval : "this.getField(\"Attack To Hit Bonus Global\").value += 1",
+				removeeval : "this.getField(\"Attack To Hit Bonus Global\").value -= 1",
+			},
+			"fighting style: tunnel fighter" : {
+				name : "Amazon Skill: Tunnel Fighter",
+				source : ["UA:LDU", 1],
+				description : "\n   " + "As a bonus action, I enter a defensive stance that lasts until the start of my next turn" + "\n   " + "While in the stance, I can make opportunity attacks without using my reaction" + "\n   " + "While I'm in this defensive stance I gain the following two benefits:" + "\n    - " + "I can make opportunity attacks without using my reaction" + "\n    - " + "I can make a melee attack as a reaction if a hostile moves >5 ft while in my reach",
+				action : ["bonus action", ""],
+			},
+			"elemental arrow" : {
+				name : "Amazon Skill: Elemental Arrow",
+				source : ["DMguild", 0],
+				description : "\n   " + "When I attack with a bow, I can expend one superiority die and add it to the damage" + "\n   " + "I can then replace the damage type for this attack with either cold, fire or lightning",
+			},
+			"escape the horde" : {
+				name : "Amazon Skill: Escape the Horde",
+				source : ["DMguild", 0],
+				description : "\n   " + "Opportunity attacks made against me are made with disadvantage",
+			},
+			"fend" : {
+				name : "Amazon Skill: Fend",
+				source : ["DMguild", 0],
+				description : "\n   " + "As an action, I can make an attack with my spear or glaive vs. all within my reach",
+				action : ["action", ""],
+			},
+			"strafe" : {
+				name : "Amazon Skill: Strafe",
+				source : ["DMguild", 0],
+				description : "\n   " + "As an action, I can make a ranged attack vs. all within range of my bow/javelin/spear" + "\n   " + "I can only do this while wearing no, light, or medium armor, and have the ammunition",
+				action : ["action", ""],
+			},
+			"uncanny dodge" : {
+				name : "Amazon Skill: Uncanny Dodge",
+				source : ["DMguild", 0],
+				description : "\n   " + "As a reaction when hit by an attacker that I can see, I can halve the attack's damage",
+				action : ["reaction", ""],
+			},
+        },
+        "subclassfeature15" : {
+            name : "Additional Amazon Skills",
+            source : ["DMguild", 0],
+            minlevel : 15,
+            description : "\n   " + "Choose an Additional Amazon Skill using the \"Choose Feature\" button above" + "\n   " + "This can only be a fighting style if the one selected at level 7 was not a fighting style",
+			choices : ["Fighting Style: Archery", "Fighting Style: Defense", "Fighting Style: Dueling", "Fighting Style: Great Weapon Fighting", "Fighting Style: Protection", "Fighting Style: Two-Weapon Fighting", "Fighting Style: Mariner", "Fighting Style: Close Quarters Shooting", "Fighting Style: Tunnel Fighter", "Elemental Arrow", "Escape the Horde", "Fend", "Strafe", "Uncanny Dodge"],
+			"fighting style: archery" : {
+				name : "Additional Amazon Skill: Archery",
+				description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
+				eval : "this.getField(\"Attack To Hit Bonus Global\").value += 2",
+				removeeval : "this.getField(\"Attack To Hit Bonus Global\").value -= 2",
+			},
+			"fighting style: defense" : {
+				name : "Additional Amazon Skill: Defense",
+				source : ["P", 72],
+				description : "\n   " + "+1 bonus to AC when I'm wearing armor",
+				eval : "AddACMisc(1, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\")",
+				removeeval : "AddACMisc(0, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\")",
+			},
+			"fighting style: dueling" : {
+				name : "Additional Amazon Skill: Dueling",
+				source : ["P", 72],
+				description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
+				eval : "this.getField(\"Attack Damage Bonus Global\").value += 2",
+				removeeval : "this.getField(\"Attack Damage Bonus Global\").value -= 2",
+			},
+			"fighting style: great weapon fighting" : {
+				name : "Additional Amazon Skill: Great Weapon Fighting",
+				source : ["P", 72],
+				description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
+			},
+			"fighting style: protection" : {
+				name : "Additional Amazon Skill: Protection",
+				source : ["P", 72],
+				description : "\n   " + "As a reaction, I can give disadv. on an attack made vs. someone within 5 ft of me" + "\n   " + "I need to be wielding a shield and be able to see the attacker to do this",
+				action : ["reaction", ""],
+			},
+			"fighting style: two-weapon fighting" : {
+				name : "Additional Amazon Skill: Two-Weapon Fighting",
+				source : ["P", 72],
+				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+			},
+			"fighting style: mariner" : {
+				name : "Additional Amazon Skill: Mariner",
+				source : ["UA:WA", 3],
+				description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds equal my current walking speed",
+				eval : "AddACMisc(1, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")",
+				removeeval : "AddACMisc(0, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")",
+			},
+			"fighting style: close quarters shooting" : {
+				name : "Additional Amazon Skill: Close Quarters Shooting",
+				source : ["UA:LDU", 1],
+				description : "\n   " + "+1 bonus to attack rolls I make with ranged attacks" + "\n   " + "I don't have disadvantage when making a ranged attack while within 5 ft of a hostile" + "\n   " + "My ranged attacks ignore half and three-quarters cover against targets within 30 ft",
+				eval : "this.getField(\"Attack To Hit Bonus Global\").value += 1",
+				removeeval : "this.getField(\"Attack To Hit Bonus Global\").value -= 1",
+			},
+			"fighting style: tunnel fighter" : {
+				name : "Additional Amazon Skill: Tunnel Fighter",
+				source : ["UA:LDU", 1],
+				description : "\n   " + "As a bonus action, I enter a defensive stance that lasts until the start of my next turn" + "\n   " + "While in the stance, I can make opportunity attacks without using my reaction" + "\n   " + "While I'm in this defensive stance I gain the following two benefits:" + "\n    - " + "I can make opportunity attacks without using my reaction" + "\n    - " + "I can make a melee attack as a reaction if a hostile moves >5 ft while in my reach",
+				action : ["bonus action", ""],
+			},
+			"elemental arrow" : {
+				name : "Additional Amazon Skill: Elemental Arrow",
+				source : ["DMguild", 0],
+				description : "\n   " + "When I attack with a bow, I can expend one superiority die and add it to the damage" + "\n   " + "I can then replace the damage type for this attack with either cold, fire or lightning",
+			},
+			"escape the horde" : {
+				name : "Additional Amazon Skill: Escape the Horde",
+				source : ["DMguild", 0],
+				description : "\n   " + "Opportunity attacks made against me are made with disadvantage",
+			},
+			"fend" : {
+				name : "Additional Amazon Skill: Fend",
+				source : ["DMguild", 0],
+				description : "\n   " + "As an action, I can make an attack with my spear or glaive vs. all within my reach",
+				action : ["action", ""],
+			},
+			"strafe" : {
+				name : "Additional Amazon Skill: Strafe",
+				source : ["DMguild", 0],
+				description : "\n   " + "As an action, I can make a ranged attack vs. all within range of my bow/javelin/spear" + "\n   " + "I can only do this while wearing no, light, or medium armor, and have the ammunition",
+				action : ["action", ""],
+			},
+			"uncanny dodge" : {
+				name : "Additional Amazon Skill: Uncanny Dodge",
+				source : ["DMguild", 0],
+				description : "\n   " + "As a reaction when hit by an attacker that I can see, I can halve the attack's damage",
+				action : ["reaction", ""],
+			},
+        },
+        "subclassfeature15.1" : {
+            name : "Relentless",
+            source : ["DMguild", 0],
+            minlevel : 15,
+            description : "\n   " + "I regain one superiority die if I have no more remaining when I roll initiative", //changed to be the same as the battle master
+        },
+        "subclassfeature18" : {
+            name : "Improved Critical",
+            source : ["DMguild", 0],
+            minlevel : 18,
+            description : "\n   " + "I score a critical hit with my weapon attacks on a roll of 19 and 20",
+        },
+    },
+}
+ 
+ClassList["fighter"].subclasses[1].push("amazon");
+
+SourceList["UA:LDU"] = {name : "Unearthed Arcana: Light, Dark, Underdark!", abbreviation : "UA:LDU"};
+SourceList["UA:WA"] = {name : "Unearthed Arcana: Waterborne Adventures", abbreviation : "UA:WA"};
