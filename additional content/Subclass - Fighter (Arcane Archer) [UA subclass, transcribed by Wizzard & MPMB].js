@@ -10,7 +10,7 @@
 /*  -INFORMATION-
     Subject:    Subclass
     Effect:     This script adds a subclass for the Fighter, called "Arcane Archer"
-                This is taken from the Unearthed Arcana: Fighter Martial Archetypes (http://dnd.wizards.com/articles/unearthed-arcana/fighter)
+                This is taken from the Unearthed Arcana: Fighter Martial Archetypes (http://media.wizards.com/2016/dnd/downloads/2016_Fighter_UA_1205_1.pdf)
     Code by:    Wizzard & MorePurpleMoreBetter
     Date:       2016-12-08 (sheet v12.64)
 */
@@ -36,7 +36,7 @@ ClassSubList["arcane archer"] = {
             source : ["UA:FMA", 1],
             minlevel : 3,
             description : "\n   " + "Use the \"Choose Features\" button above to add Arcane Shots to the third page",
-            additional : ["", "", "2 arcane shots known", "2 arcane shots known", "2 arcane shots known", "2 arcane shots known", "3 arcane shots known", "3 arcane shots known", "3 arcane shots known", "4 arcane shots known", "4 arcane shots known", "4 arcane shots known", "4 arcane shots known", "4 arcane shots known", "5 arcane shots known", "5 arcane shots known", "5 arcane shots known", "6 arcane shots known", "6 arcane shots known", "6 arcane shots known"],
+            additional : ["", "", "2 known", "2 known", "2 known", "2 known", "3 known", "3 known", "3 known", "4 known", "4 known", "4 known", "4 known", "4 known", "5 known", "5 known", "5 known", "6 known", "6 known", "6 known"],
             extraname : "Arcane Shot",
             extrachoices : ["Beguiling Arrow", "Brute Bane Arrow", "Bursting Arrow", "Defending Arrow", "Grasping Arrow", "Piercing Arrow", "Seeking Arrow", "Shadow Arrow"],
             "beguiling arrow" : {
