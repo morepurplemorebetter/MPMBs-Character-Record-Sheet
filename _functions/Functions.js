@@ -2777,8 +2777,8 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 	if (classes.primary) {
 		var save1 = CurrentClasses[classes.primary].saves[0];
 		var save2 = CurrentClasses[classes.primary].saves[1];
-		var save1txt = "Proficiency with " + AbilityScores.names[AbilityScores.abbreviations.indexOf(save1)] + " saving throw was gained from " + CurrentClasses[classes.primary].name;
-		var save2txt = "Proficiency with " + AbilityScores.names[AbilityScores.abbreviations.indexOf(save2)] + " saving throw was gained from " + CurrentClasses[classes.primary].name;
+		var save1txt = "Proficiency with " + AbilityScores.names[AbilityScores.abbreviations.indexOf(save1)] + " saving throws was gained from " + CurrentClasses[classes.primary].name;
+		var save2txt = "Proficiency with " + AbilityScores.names[AbilityScores.abbreviations.indexOf(save2)] + " saving throws was gained from " + CurrentClasses[classes.primary].name;
 		Checkbox(save1 + " ST Prof", true, save1txt);
 		Checkbox(save2 + " ST Prof", true, save2txt);
 		
@@ -5315,6 +5315,7 @@ function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, Update
 	var calculation = Calc ? Calc : "";
 	var SslotsVisible = !typePF && eval(What("SpellSlotsRemember"))[0];
 	var recovery = recovery === "long rest" || recovery === "short rest" || recovery === "dawn" ? recovery : recovery.capitalize();
+	if (usages.match(/ ?\bper\b ?/)) usages = usages.replace(/ ?\bper\b ?/, "");
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 1; i <= FieldNumbers.limfea; i++) {
 			var featureFld = tDoc.getField("Limited Feature " + i);

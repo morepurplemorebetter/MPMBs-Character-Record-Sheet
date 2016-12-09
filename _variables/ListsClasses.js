@@ -639,8 +639,8 @@ var ClassList = {
 				minlevel : 14,
 				description : "\n   " + "I am proficient with all saves; I can reroll a failed save once by spending 1 ki point",
 				additional : "1 ki point to reroll failed saving throw",
-				eval : "for (var Sc = 0; Sc < AbilityScores.abbreviations.length; Sc++) {var saveProf = AbilityScores.abbreviations[Sc] + \" ST Prof\"; var saveTxt = \"Proficiency with \" + AbilityScores.names[Sc] + \" saving throw was gained from Monk (Diamond Soul)\"; if (tDoc.getField(saveProf).userName === \"\") {Checkbox(saveProf, true, saveTxt)}}",
-				removeeval : "for (var Sc = 0; Sc < AbilityScores.abbreviations.length; Sc++) {var saveProf = AbilityScores.abbreviations[Sc] + \" ST Prof\"; var saveTxt = \"Proficiency with \" + AbilityScores.names[Sc] + \" saving throw was gained from Monk (Diamond Soul)\"; if (tDoc.getField(saveProf).userName === saveTxt) {Checkbox(saveProf, false, \"\")}}"
+				eval : "for (var Sc = 0; Sc < AbilityScores.abbreviations.length; Sc++) {var saveProf = AbilityScores.abbreviations[Sc] + \" ST Prof\"; var saveTxt = \"Proficiency with \" + AbilityScores.names[Sc] + \" saving throws was gained from Monk (Diamond Soul)\"; if (tDoc.getField(saveProf).userName === \"\") {Checkbox(saveProf, true, saveTxt)}}",
+				removeeval : "for (var Sc = 0; Sc < AbilityScores.abbreviations.length; Sc++) {var saveProf = AbilityScores.abbreviations[Sc] + \" ST Prof\"; var saveTxt = \"Proficiency with \" + AbilityScores.names[Sc] + \" saving throws was gained from Monk (Diamond Soul)\"; if (tDoc.getField(saveProf).userName === saveTxt) {Checkbox(saveProf, false, \"\")}}"
 			},
 			"timeless body" : {
 				name : "Timeless Body",
@@ -1146,7 +1146,7 @@ var ClassList = {
 				source : ["P", 96],
 				minlevel : 15,
 				description : "\n   " + "I am proficient with Wisdom saving throws",
-				eval : "Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throw was gained from Rogue (Slippery Mind)\");",
+				eval : "Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throws was gained from Rogue (Slippery Mind)\");",
 				removeeval : "Checkbox(\"Wis ST Prof\", false, \"\");"
 			},
 			"elusive" : {
