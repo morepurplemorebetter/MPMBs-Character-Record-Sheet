@@ -370,7 +370,7 @@ ClassSubList["deep stalker"] = {
 			source : ["UA:RR", 8],
 			minlevel : 7,
 			description : "\n   " + "I am proficient with Wisdom saving throws",
-			eval : "Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throw was gained from Deep Stalker (Iron Mind)\");",
+			eval : "Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throws was gained from Deep Stalker (Iron Mind)\");",
 			removeeval : "Checkbox(\"Wis ST Prof\", false, \"\");",
 		},
 		"subclassfeature11" : {
