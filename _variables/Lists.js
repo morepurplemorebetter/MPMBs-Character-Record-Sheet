@@ -211,42 +211,63 @@ var IsNotWeaponMenu = true;
 var FieldsRemember = [];
 
 var SourceList = {
-	"CoS" : {
-		name : "Curse of Strahd",
-		abbreviation : "CoS"
-	},
-	"CoS:OB" : {
-		name : "Curse of Strahd: Optional Backgrounds",
-		abbreviation : "CoS:OB"
+	//basic sources
+	"P" : {
+		name : "Player's Handbook",
+		abbreviation : "PHB",
+		group : "Official Sources"
 	},
 	"D" : {
 		name : "Dungeon Master's Guide",
-		abbreviation : "DMG"
-	},
-	"DMguild" : {
-		name : "Dungeon Masters Guild (online)",
-		abbreviation : "DMguild"
+		abbreviation : "DMG",
+		group : "Official Sources"
 	},
 	"E" : {
 		name : "Elemental Evil Player's Companion",
-		abbreviation : "EEPC"
-	},
-	"HB" : {
-		name : "Homebrew",
-		abbreviation : "Homebrew"
-	},
-	"P" : {
-		name : "Player's Handbook",
-		abbreviation : "PHB"
+		abbreviation : "EEPC",
+		group : "Official Sources"
 	},
 	"S" : {
 		name : "Sword Coast Adventure Guide",
-		abbreviation : "SCAG"
+		abbreviation : "SCAG",
+		group : "Official Sources"
 	},
 	"V" : {
 		name : "Volo's Guide to Monsters",
-		abbreviation : "VGtM"
+		abbreviation : "VGtM",
+		group : "Official Sources"
 	},
+	
+	//small sources
+	"CoS" : {
+		name : "Curse of Strahd",
+		abbreviation : "CoS",
+		group : "Official Sources (small)"
+	},
+	"CoS:OB" : {
+		name : "Curse of Strahd: Optional Backgrounds",
+		abbreviation : "CoS:OB",
+		group : "Official Sources (small)"
+	},
+	"SKT" : {
+		name : "Storm King's Thunder",
+		abbreviation : "SKT",
+		group : "Official Sources (small)"
+	},
+	
+	//sources for custom scripts
+	"DMguild" : {
+		name : "Dungeon Masters Guild (online)",
+		abbreviation : "DMguild",
+		group : "default"
+	},
+	"HB" : {
+		name : "Homebrew",
+		abbreviation : "Homebrew",
+		group : "default"
+	},
+	
+	//Unearthed Arcana
 };
 
 var FieldNumbers = {
@@ -272,6 +293,7 @@ var CurrentCompRace = {};
 
 var CurrentSpells = {};
 var CurrentCasters = {};
+var CurrentResources = {};
 var UpdateSpellSheets = {};
 
 var ExperiencePointsList = ["", 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000, 1000000000];

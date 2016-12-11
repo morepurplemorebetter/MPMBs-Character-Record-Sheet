@@ -34,7 +34,7 @@ var SpellsList = {
 	},
 	"absorb elements" : {
 		name : "Absorb Elements",
-		classes : ["druid", "ranger", "sorcerer", "wizard"],
+		classes : ["druid", "ranger", "wizard"],
 		source : ["E", 15],
 		ritual : false,
 		level : 1,

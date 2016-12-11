@@ -44,7 +44,6 @@ ClassSubList["cavalier"] = {
 			usages : [0, 0, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6],
 			recovery : "short rest",
 			action : ["reaction", " (if hit/mount hit)"],
-			
 		},
 		"subclassfeature7" : {
 			name : "Ferocious Charger",

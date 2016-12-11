@@ -34,7 +34,7 @@ function AddFolderJavaScript(justConsole) {
 	var locWin = "C:\\Program Files (x86)\\Adobe\\Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + "\\" + (isType === "Reader" ? "Reader" : "Acrobat") + "\\Javascripts\\";
 	var locMac = "/Applications/Adobe Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + ".app/Contents/Resources/JavaScripts/";
 
-	var startTxt = justConsole ? "In order to import user-defined icons, you will have to manually add a JavaScript file to your Adobe Acrobat installation. This is necessary, because of Adobe Acrobat's security protocol. You will have to do this only once to get this function working." : "In order to use the 'Direct Import' functionality, you have two options:";
+	var startTxt = justConsole ? "In order to import user-defined icons, you will have to manually add a JavaScript file to your Adobe Acrobat installation. This is necessary, because of Adobe Acrobat's security protocol. You will have to do this only once to get this function working." : "In order to use the 'Direct Import' functionality, you will need to do something to appease Adobe Acrobat's security settings. You have two options:\nOption 1 is that you add a JavaScript file to your installation. After you've done this, you will never see this dialogue again.\nOption 2 is that you run the code from console, but you will have to do this every time if you want to use this function.";
 
 	var AddJS_dialog = {
 		Text0 : startTxt,
@@ -82,7 +82,7 @@ function AddFolderJavaScript(justConsole) {
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
-						char_height : justConsole ? 5 : 2,
+						char_height : justConsole ? 5 : 7,
 						width : 530,
 					}, {
 						type : "view",
@@ -366,7 +366,7 @@ function DirectImport(consoleTrigger) {
 		} else {
 			MPMBOpenFile(this, importFromPath[0], importFromPath[1]);
 		}
-		closeAlert = global.docFrom && global.docFrom.info.title.search(/.*?morepurplemorebetter.*?character( record?) sheet.*?/i) !== -1 ? false : ["File is not one of MPMB's Character Record Sheets", "The opened document is not recognized as being one of MPMB's Character Record Sheets.\nIt will now be closed and no changes will be made to either documents."];
+		closeAlert = global.docFrom && global.docFrom.info.title.search(/^(?=.*morepurplemorebetter)(?=.*character)(?=.*sheet).*$/i) !== -1 ? false : ["File is not one of MPMB's Character Record Sheets", "The opened document is not recognized as being one of MPMB's Character Record Sheets.\nIt will now be closed and no changes will be made to either documents."];
 	} catch (errorCode) {
 		closeAlert = ["File not found", "Invalid file location or file type \"" + (importFromPath[1] ? tDoc.path.replace(tDoc.documentFileName, "") : "") + importFromPath[0] + "\".\n\nPlease try again and don't forget that the path must include the file extension (.pdf)."];
 	};

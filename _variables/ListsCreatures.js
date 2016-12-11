@@ -3932,6 +3932,7 @@ var CreatureList = {
 	},
 	"tressym" : {
 		name : "Tressym",
+		source : ["SKT", 245],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -4443,6 +4444,7 @@ var CreatureList = {
 	},
 	"aurochs" : {
 		name : "Aurochs",
+		source : ["V", 207],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -4475,6 +4477,7 @@ var CreatureList = {
 	},
 	"cow" : {
 		name : "Cow",
+		source : ["V", 207],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -4507,6 +4510,7 @@ var CreatureList = {
 	},
 	"ox" : {
 		name : "Ox",
+		source : ["V", 208],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -4542,6 +4546,7 @@ var CreatureList = {
 	},
 	"deep rothe" : {
 		name : "Deep Roth\xE9",
+		source : ["V", 208],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -4577,6 +4582,7 @@ var CreatureList = {
 	},
 	"rothe" : {
 		name : "Roth\xE9",
+		source : ["V", 208],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -4609,6 +4615,7 @@ var CreatureList = {
 	},
 	"stench kow" : {
 		name : "Stench Kow",
+		source : ["V", 208],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -4646,6 +4653,7 @@ var CreatureList = {
 	},
 	"dolphin" : {
 		name : "Dolphin",
+		source : ["V", 208],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -4684,6 +4692,7 @@ var CreatureList = {
 	},
 	"cranium rat" : {
 		name : "Cranium Rat",
+		source : ["V", 133],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -4720,6 +4729,7 @@ var CreatureList = {
 	},
 	"brontosaurus" : {
 		name : "Brontosaurus",
+		source : ["V", 139],
 		size : 0, //Gargantuan
 		type : "Beast",
 		subtype : "",
@@ -4753,6 +4763,7 @@ var CreatureList = {
 	},
 	"deinonychus" : {
 		name : "Deinonychus",
+		source : ["V", 139],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -4797,6 +4808,7 @@ var CreatureList = {
 	},
 	"dimetrodon" : {
 		name : "Dimetrodon",
+		source : ["V", 139],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -4827,6 +4839,7 @@ var CreatureList = {
 	},
 	"hadrosaurus" : {
 		name : "Hadrosaurus",
+		source : ["V", 140],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -4857,6 +4870,7 @@ var CreatureList = {
 	},
 	"quetzalcoatlus" : {
 		name : "Quetzalcoatlus",
+		source : ["V", 140],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -4895,6 +4909,7 @@ var CreatureList = {
 	},
 	"stegosaurus" : {
 		name : "Stegosaurus",
+		source : ["V", 140],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -4922,6 +4937,7 @@ var CreatureList = {
 	},
 	"velociraptor" : {
 		name : "Velociraptor",
+		source : ["V", 140],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
