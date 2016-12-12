@@ -7,7 +7,7 @@ ClassSubList["specialme"] = { //Note the use of only lower case! Also note the a
 	// after defining the above two, you don't need to define anything more, but you can. Defining more stuff will overwrite the entries as they are given in the ClassList. So if you do not need something to be different than the basics of the class (for example, you subclass uses the same spellcasting ability), then you don't need to define it again.
 	// For the syntax of how to define more stuff, look at the ClassList (see "Homebrew Syntax - ClassList.js"). You can define all the same stuff in the same way. The below are a couple of examples:
 	
-	fullname : "SpecialMe of MyClass", //if no fullname is defined it will be automatically generated as "Class Name (Subclass name)". In this example that would be: "MyClass (SpecialMe)"
+	fullname : "SpecialMe of MyClass", //if no fullname is defined it will be automatically generated as "Class Name (Subclass name)". In this example that would be: "MyClass (Path of SpecialMe)"
 	
 	abilitySave : 6, //overwrites the abilitySave that was defined in the ClassList
 	spellcastingFactor : 2, //overwrites the spellcastingFactor that was defined in the ClassList
