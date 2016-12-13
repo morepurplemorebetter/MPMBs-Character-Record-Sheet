@@ -17,6 +17,7 @@
 ClassSubList["college of mourning"] = {
 	regExpSearch : /^(?=.*college)(?=.*mourning).*$/i,
 	subname : "College of Mourning",
+	source : ["HB", 0],
 	features : {
 		"subclassfeature3" : {
 			name : "Bonus Proficiency",
@@ -50,8 +51,7 @@ ClassSubList["college of mourning"] = {
 			minlevel : 14,
 			description : "\n   " + "My talent is so great the dead stop to acknowledge my skill. When I use Countercharm, hostile undead within range have disadvantage on attacks and saves.",
 			action : ["action", "(countercharm)"],
-		},
+		}
 	}
-}
-
-ClassList["bard"].subclasses[1].push("college of mourning");
+};
+ClassList.bard.subclasses[1].push("college of mourning");

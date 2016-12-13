@@ -394,7 +394,7 @@ var ClassList = {
 	},
 
 	"fighter" : {
-		regExpSearch : /^(?!.*(dark|green|fey|horned|totem|spiritual|exalted|sacred|holy|divine|nature|odin|thor|nature|natural))(?=.*(knight|fighter|warrior|militant|warlord|phalanx|gladiator|trooper)).*$/i,
+		regExpSearch : /^(?!.*(dark|green|fey|horned|totem|spiritual|exalted|sacred|holy|divine|nature|odin|thor|nature|natural))(?=.*(fighter|warrior|militant|warlord|phalanx|gladiator|trooper)).*$/i,
 		name : "Fighter",
 		source : ["P", 70],
 		primaryAbility : "\n \u2022 Fighter: Strength or Dexterity;",
@@ -564,11 +564,11 @@ var ClassList = {
 				"stunning strike" : {
 					name : "Stunning Strike",
 					source : ["P", 79],
-					description : " [1 ki point]" + "\n   " + "Creature hit by my melee attack Con saves or it is stunned until the end of my next turn",
+					description : " [1 ki point]" + "\n   " + "Creature hit by my melee attack Con saves or it is stunned until the end of my next turn"
 				},
 				eval : "ClassFeatureOptions([\"monk\", \"ki\", \"flurry of blows\", \"extra\"]); ClassFeatureOptions([\"monk\", \"ki\", \"patient defense\", \"extra\"]); ClassFeatureOptions([\"monk\", \"ki\", \"step of the wind\", \"extra\"]);",
 				removeeval : "ClassFeatureOptions([\"monk\", \"ki\", \"flurry of blows\", \"extra\"], \"remove\"); ClassFeatureOptions([\"monk\", \"ki\", \"patient defense\", \"extra\"], \"remove\"); ClassFeatureOptions([\"monk\", \"ki\", \"step of the wind\", \"extra\"], \"remove\");",
-				changeeval : "if (newClassLvl.monk >= 5 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"stunning strike\") === -1) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"])} else if (newClassLvl.monk <= 5 && oldClassLvl.monk >= 5) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"], \"remove\")}"
+				changeeval : "if (newClassLvl.monk >= 5 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"stunning strike\") === -1) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"])} else if (newClassLvl.monk < 5 && oldClassLvl.monk >= 5) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"], \"remove\")}"
 			},
 			"unarmored movement" : {
 				name : "Unarmored Movement",
@@ -1294,7 +1294,7 @@ var ClassList = {
 			[true, false]
 		],
 		equipment : "Warlock starting equipment:\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;\n \u2022 A component pouch -or- an arcane focus;\n \u2022 A scholar's pack -or- a dungeoneer's pack\n \u2022 Leather armor, any simple weapon, and two daggers.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
-		subclasses : ["Otherworldly Patron", ["archfey", "fiend", "great old one", "undying"]],
+		subclasses : ["Otherworldly Patron", ["the archfey", "the fiend", "the great old one", "the undying"]],
 		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : "warlock1",
 		spellcastingKnown : {
@@ -3218,7 +3218,7 @@ var ClassSubList = {
 				additional : "1 ki point",
 				description : "\n   " + "When I'm reduced to 0 HP, I can expend 1 ki point to have 1 HP instead",
 				extraname : "Way of the Long Death 17",
-				changeeval : "if (newClassLvl.monk >= 17 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"touch of the long death\") === -1) {ClassFeatureOptions([\"monk\", \"subclassfeature11\", \"touch of the long death\", \"extra\"])} else if (newClassLvl.monk <= 17 && oldClassLvl.monk >= 17) {ClassFeatureOptions([\"monk\", \"subclassfeature11\", \"touch of the long death\", \"extra\"], \"remove\")};",
+				changeeval : "if (newClassLvl.monk >= 17 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"touch of the long death\") === -1) {ClassFeatureOptions([\"monk\", \"subclassfeature11\", \"touch of the long death\", \"extra\"])} else if (newClassLvl.monk < 17 && oldClassLvl.monk >= 17) {ClassFeatureOptions([\"monk\", \"subclassfeature11\", \"touch of the long death\", \"extra\"], \"remove\")};",
 				"touch of the long death" : {
 					name : "Touch of the Long Death",
 					source : ["S", 131],
@@ -3255,7 +3255,7 @@ var ClassSubList = {
 				minlevel : 11,
 				description : "\n   " + "After a long rest, I gain the effect of a Sanctuary spell until a next long rest (PHB 272)",
 				extraname : "Way of the Open Hand 17",
-				changeeval : "if (newClassLvl.monk >= 17 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"quivering palm\") === -1) {ClassFeatureOptions([\"monk\", \"subclassfeature11\", \"quivering palm\", \"extra\"])} else if (newClassLvl.monk <= 17 && oldClassLvl.monk >= 17) {ClassFeatureOptions([\"monk\", \"subclassfeature11\", \"quivering palm\", \"extra\"], \"remove\")};",
+				changeeval : "if (newClassLvl.monk >= 17 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"quivering palm\") === -1) {ClassFeatureOptions([\"monk\", \"subclassfeature11\", \"quivering palm\", \"extra\"])} else if (newClassLvl.monk < 17 && oldClassLvl.monk >= 17) {ClassFeatureOptions([\"monk\", \"subclassfeature11\", \"quivering palm\", \"extra\"], \"remove\")};",
 				"quivering palm" : {
 					name : "Quivering Palm",
 					source : ["P", 80],
@@ -3368,7 +3368,7 @@ var ClassSubList = {
 				eval : "AddWeapon(\"Radiant Sun Bolt\");",
 				removeeval : "RemoveWeapon(\"Radiant Sun Bolt\");",
 				extraname : "Way of the Sun Soul 6",
-				changeeval : "if (newClassLvl.monk >= 6 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"searing arc strike\") === -1) {ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"searing arc strike\", \"extra\"])} else if (newClassLvl.monk <= 6 && oldClassLvl.monk >= 6) {ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"searing arc strike\", \"extra\"], \"remove\")};",
+				changeeval : "if (newClassLvl.monk >= 6 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"searing arc strike\") === -1) {ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"searing arc strike\", \"extra\"])} else if (newClassLvl.monk < 6 && oldClassLvl.monk >= 6) {ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"searing arc strike\", \"extra\"], \"remove\")};",
 				"searing arc strike" : {
 					name : "Searing Arc Strike",
 					source : ["S", 131],
@@ -3660,7 +3660,7 @@ var ClassSubList = {
 		}
 	},
 	"hunter" : {
-		regExpSearch : /^(?!.*(barbarian|bard|cleric|druid|fighter|monk|paladin|rogue|sorcerer|warlock|wizard))(?=.*(hunter|huntress)).*$/i,
+		regExpSearch : /^(?!.*(monster|barbarian|bard|cleric|druid|fighter|monk|paladin|rogue|sorcerer|warlock|wizard))(?=.*(hunter|huntress|hunts(wo)?m(e|a)n)).*$/i,
 		subname : "Hunter",
 		fullname : "Hunter",
 		source : ["P", 93],
@@ -4206,7 +4206,7 @@ var ClassSubList = {
 			}
 		}
 	},
-	"archfey" : {
+	"the archfey" : {
 		regExpSearch : /^(?=.*fey)(?=.*warlock).*$/i,
 		subname : "the Archfey",
 		source : ["P", 109],
@@ -4249,7 +4249,7 @@ var ClassSubList = {
 			}
 		}
 	},
-	"fiend" : {
+	"the fiend" : {
 		regExpSearch : /^(?=.*(fiend|devil|demon|daemon|hell|abyss))(?=.*warlock).*$/i,
 		subname : "the Fiend",
 		source : ["P", 109],
@@ -4285,7 +4285,7 @@ var ClassSubList = {
 			}
 		}
 	},
-	"great old one" : {
+	"the great old one" : {
 		regExpSearch : /^(((?=.*(tharizdun|cthulhu))(?=.*warlock))|((?=.*(great|dread))(?=.*(ancient|old))(?=.*\b(one|entity)\b))).*$/i,
 		subname : "the Great Old One",
 		source : ["P", 110],
@@ -4322,8 +4322,8 @@ var ClassSubList = {
 			}
 		}
 	},
-	"undying" : {
-		regExpSearch : /^(?=.*warlock)(?=.*(immortal|undying|neverending|unending)).*$/i,
+	"the undying" : {
+		regExpSearch : /^(?!.*light)(?=.*warlock)(?=.*(immortal|undying|neverending|unending)).*$/i,
 		subname : "the Undying",
 		source : ["S", 139],
 		spellcastingExtra : ["false life", "ray of sickness", "blindness/deafness", "silence", "feign death", "speak with dead", "aura of life", "death ward", "contagion", "legend lore"],

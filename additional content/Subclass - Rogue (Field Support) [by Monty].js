@@ -18,6 +18,7 @@
 ClassSubList["field support"] = {
 	regExpSearch : /^(?=.*(rogue|miscreant))(?=.*support).*$/i,
 	subname : "Field Support",
+	source : ["HB", 0],
 	features : {
 		"subclassfeature3" : {
 			name : "On your side",
@@ -55,8 +56,7 @@ ClassSubList["field support"] = {
 			recovery : "short rest",
 			description : "\n   " + "As an action, I can stop the flow of time and take 3 turns, as Time Stop (PHB 283)" + "\n   " + "Unlike the spell, this ends when I am more than 3 times my speed away from an ally" + "\n   " + "Also unlike the spell, I can effect other creatures during and this does not end the spell" + "\n   " + "Using this ability gives me a level of exhaustion",
 			action : ["action", ""]
-		},
+		}
 	}
-}
-
+};
 ClassList.rogue.subclasses[1].push("field support");

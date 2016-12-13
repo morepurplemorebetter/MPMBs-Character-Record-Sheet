@@ -89,11 +89,13 @@ ClassSubList["gunslinger"] = {
 		},
 		"subclassfeature18" : {
 			name : "Vicious Intent",
+			source : ["MM:GMA", 2],
 			minlevel : 18,
 			description : "\n   " + "My firearm attacks score a critical hit on a roll of both 19 and 20",
 		},
 		"subclassfeature18.1" : {
 			name : "Hemorrhaging Critical",
+			source : ["MM:GMA", 2],
 			minlevel : 18,
 			description : "\n   " + "When I score a critical hit with a firearm, the target takes additional damage" + "\n   " + "At the end of its next turn, it again suffers half of the damage from the attack",
 		},
@@ -102,7 +104,12 @@ ClassSubList["gunslinger"] = {
 
 ClassList["fighter"].subclasses[1].push("gunslinger");
 
-SourceList["MM:GMA"] = {name : "Matthew Mercer: Gunslinger Martial Archetype for Fighters", abbreviation : "MM:GMA"};
+SourceList["MM:GMA"] = {
+	name : "Matthew Mercer: Gunslinger Martial Archetype",
+	abbreviation : "MM:GMA",
+	group : "Dungeon Masters Guild",
+	url : "http://www.dmsguild.com/product/170778/"
+};
 
 WeaponsList["pistol"] = {
 	regExpSearch : /^(?=.*pistol)(?!.*automatic).*$/i,

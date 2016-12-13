@@ -7,6 +7,7 @@ function InitializeEverything(noButtons) {
 	
 	if (!minVer) {
 		setListsUnitSystem(false, true);
+		UAstartupCode();
 		FindClasses();
 		FindRace();
 		FindCompRace();
@@ -23,8 +24,6 @@ function InitializeEverything(noButtons) {
 	}
 	
 	SetHighlighting();
-	tDoc.calculate = true;
-	tDoc.delay = false;
 	if (!noButtons) MakeButtons();
 	tDoc.dirty = false; //reset the dirty status, so the user is not asked to save without there having been any changes made
 }

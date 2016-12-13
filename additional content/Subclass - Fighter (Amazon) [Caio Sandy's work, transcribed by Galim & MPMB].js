@@ -14,18 +14,19 @@
 				This subclass is made by Caio Sandy
 	Code by:	Galim & MorePurpleMoreBetter
 	Date:		2016-11-21 (sheet v12.59)
-	
+
 	Please support the creator of this content (Caio Sandy) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Caio%20Sandy
 */
 
 ClassSubList["amazon"] = {
     regExpSearch : /amazon/i,
     subname : "Amazon",
+	["CS:A", 1],
     fullname : "Amazon",
     features : {
         "subclassfeature3" : {
             name : "Combat Superiority",
-			source : ["DMguild", 0],
+			source : ["CS:A", 1],
 			minlevel : 3,
 			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special maneuvers" + "\n   " + "I regain all superiority dice after a short rest" + "\n   " + "I can use the following maneuvers after the roll, but before I know the result of the roll:" + "\n    - " + "Inner Sight: Add half die (round up) to Acrobatics, Athletics, Perception, or Stealth" + "\n    - " + "Penetrate: Add superiority die score to attack roll of bow, spear, javelin, or glaive" + "\n    - " + "Power Strike: Add superiority die score to damage of bow, spear, javelin, or glaive",
 			additional : ["", "", "d8", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10"],
@@ -34,7 +35,7 @@ ClassSubList["amazon"] = {
         },
         "subclassfeature7" : {
             name : "Amazon Skills",
-            source : ["DMguild", 0],
+            source : ["CS:A", 1],
             minlevel : 7,
             description : "\n   " + "Choose an Amazon Skill using the \"Choose Feature\" button above",
 			choices : ["Fighting Style: Archery", "Fighting Style: Defense", "Fighting Style: Dueling", "Fighting Style: Great Weapon Fighting", "Fighting Style: Protection", "Fighting Style: Two-Weapon Fighting", "Fighting Style: Mariner", "Fighting Style: Close Quarters Shooting", "Fighting Style: Tunnel Fighter", "Elemental Arrow", "Escape the Horde", "Fend", "Strafe", "Uncanny Dodge"],
@@ -96,36 +97,36 @@ ClassSubList["amazon"] = {
 			},
 			"elemental arrow" : {
 				name : "Amazon Skill: Elemental Arrow",
-				source : ["DMguild", 0],
+				source : ["CS:A", 1],
 				description : "\n   " + "When I attack with a bow, I can expend one superiority die and add it to the damage" + "\n   " + "I can then replace the damage type for this attack with either cold, fire or lightning",
 			},
 			"escape the horde" : {
 				name : "Amazon Skill: Escape the Horde",
-				source : ["DMguild", 0],
+				source : ["CS:A", 1],
 				description : "\n   " + "Opportunity attacks made against me are made with disadvantage",
 			},
 			"fend" : {
 				name : "Amazon Skill: Fend",
-				source : ["DMguild", 0],
+				source : ["CS:A", 1],
 				description : "\n   " + "As an action, I can make an attack with my spear or glaive vs. all within my reach",
 				action : ["action", ""],
 			},
 			"strafe" : {
 				name : "Amazon Skill: Strafe",
-				source : ["DMguild", 0],
+				source : ["CS:A", 1],
 				description : "\n   " + "As an action, I can make a ranged attack vs. all within range of my bow/javelin/spear" + "\n   " + "I can only do this while wearing no, light, or medium armor, and have the ammunition",
 				action : ["action", ""],
 			},
 			"uncanny dodge" : {
 				name : "Amazon Skill: Uncanny Dodge",
-				source : ["DMguild", 0],
+				source : ["CS:A", 1],
 				description : "\n   " + "As a reaction when hit by an attacker that I can see, I can halve the attack's damage",
 				action : ["reaction", ""],
 			},
         },
         "subclassfeature15" : {
             name : "Additional Amazon Skills",
-            source : ["DMguild", 0],
+            source : ["CS:A", 1],
             minlevel : 15,
             description : "\n   " + "Choose an Additional Amazon Skill using the \"Choose Feature\" button above" + "\n   " + "This can only be a fighting style if the one selected at level 7 was not a fighting style",
 			choices : ["Fighting Style: Archery", "Fighting Style: Defense", "Fighting Style: Dueling", "Fighting Style: Great Weapon Fighting", "Fighting Style: Protection", "Fighting Style: Two-Weapon Fighting", "Fighting Style: Mariner", "Fighting Style: Close Quarters Shooting", "Fighting Style: Tunnel Fighter", "Elemental Arrow", "Escape the Horde", "Fend", "Strafe", "Uncanny Dodge"],
@@ -187,49 +188,64 @@ ClassSubList["amazon"] = {
 			},
 			"elemental arrow" : {
 				name : "Additional Amazon Skill: Elemental Arrow",
-				source : ["DMguild", 0],
+				source : ["CS:A", 1],
 				description : "\n   " + "When I attack with a bow, I can expend one superiority die and add it to the damage" + "\n   " + "I can then replace the damage type for this attack with either cold, fire or lightning",
 			},
 			"escape the horde" : {
 				name : "Additional Amazon Skill: Escape the Horde",
-				source : ["DMguild", 0],
+				source : ["CS:A", 1],
 				description : "\n   " + "Opportunity attacks made against me are made with disadvantage",
 			},
 			"fend" : {
 				name : "Additional Amazon Skill: Fend",
-				source : ["DMguild", 0],
+				source : ["CS:A", 1],
 				description : "\n   " + "As an action, I can make an attack with my spear or glaive vs. all within my reach",
 				action : ["action", ""],
 			},
 			"strafe" : {
 				name : "Additional Amazon Skill: Strafe",
-				source : ["DMguild", 0],
+				source : ["CS:A", 1],
 				description : "\n   " + "As an action, I can make a ranged attack vs. all within range of my bow/javelin/spear" + "\n   " + "I can only do this while wearing no, light, or medium armor, and have the ammunition",
 				action : ["action", ""],
 			},
 			"uncanny dodge" : {
 				name : "Additional Amazon Skill: Uncanny Dodge",
-				source : ["DMguild", 0],
+				source : ["CS:A", 1],
 				description : "\n   " + "As a reaction when hit by an attacker that I can see, I can halve the attack's damage",
 				action : ["reaction", ""],
 			},
         },
         "subclassfeature15.1" : {
             name : "Relentless",
-            source : ["DMguild", 0],
+            source : ["CS:A", 1],
             minlevel : 15,
             description : "\n   " + "I regain one superiority die if I have no more remaining when I roll initiative", //changed to be the same as the battle master
         },
         "subclassfeature18" : {
             name : "Improved Critical",
-            source : ["DMguild", 0],
+            source : ["CS:A", 1],
             minlevel : 18,
             description : "\n   " + "I score a critical hit with my weapon attacks on a roll of 19 and 20",
         },
     },
-}
- 
-ClassList["fighter"].subclasses[1].push("amazon");
+};
+ClassList.fighter.subclasses[1].push("amazon");
 
-SourceList["UA:LDU"] = {name : "Unearthed Arcana: Light, Dark, Underdark!", abbreviation : "UA:LDU"};
-SourceList["UA:WA"] = {name : "Unearthed Arcana: Waterborne Adventures", abbreviation : "UA:WA"};
+SourceList["CS:A"] = {
+	name : "Caio Sandy: Fighter archetype: Amazon",
+	abbreviation : "CS:A",
+	group : "Dungeon Masters Guild",
+	url : "http://www.dmsguild.com/product/171865/"
+};
+SourceList["UA:WA"] = {
+	name : "Unearthed Arcana: Waterborne Adventures", //2015-05-04
+	abbreviation : "UA:WA",
+	group : "Unearthed Arcana",
+	url : "https://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf"
+};
+SourceList["UA:LDU"] = {
+	name : "Unearthed Arcana: Light, Dark, Underdark!", //2015-11-02
+	abbreviation : "UA:LDU",
+	group : "Unearthed Arcana",
+	url : "https://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf"
+};

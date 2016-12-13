@@ -210,66 +210,6 @@ var IsNotWeaponMenu = true;
 
 var FieldsRemember = [];
 
-var SourceList = {
-	//basic sources
-	"P" : {
-		name : "Player's Handbook",
-		abbreviation : "PHB",
-		group : "Official Sources"
-	},
-	"D" : {
-		name : "Dungeon Master's Guide",
-		abbreviation : "DMG",
-		group : "Official Sources"
-	},
-	"E" : {
-		name : "Elemental Evil Player's Companion",
-		abbreviation : "EEPC",
-		group : "Official Sources"
-	},
-	"S" : {
-		name : "Sword Coast Adventure Guide",
-		abbreviation : "SCAG",
-		group : "Official Sources"
-	},
-	"V" : {
-		name : "Volo's Guide to Monsters",
-		abbreviation : "VGtM",
-		group : "Official Sources"
-	},
-	
-	//small sources
-	"CoS" : {
-		name : "Curse of Strahd [adventure]",
-		abbreviation : "CoS",
-		group : "Official Sources (small)"
-	},
-	"CoS:OB" : {
-		name : "Curse of Strahd: Optional Backgrounds",
-		abbreviation : "CoS:OB",
-		group : "Official Sources (small)"
-	},
-	"SKT" : {
-		name : "Storm King's Thunder [adventure]",
-		abbreviation : "SKT",
-		group : "Official Sources (small)"
-	},
-	
-	//sources for custom scripts
-	"DMguild" : {
-		name : "Dungeon Masters Guild (online)",
-		abbreviation : "DMguild",
-		group : "default"
-	},
-	"HB" : {
-		name : "Homebrew",
-		abbreviation : "Homebrew",
-		group : "default"
-	},
-	
-	//Unearthed Arcana
-};
-
 var FieldNumbers = {
 	actions : typeA4 ? 12 : 11,
 	trueactions : typePF ? 12 : (typeA4 ? 22 : 20),

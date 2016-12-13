@@ -4853,25 +4853,29 @@ function CreateBkmrksCompleteSpellSheet() {
 	tDoc.bookmarkRoot.createChild({cName: "Functions", cExpr: "MakeButtons();", nIndex: 0});
 	tDoc.bookmarkRoot.children[0].style = 2;
 
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Spells Options", cExpr: "MakeSpellMenu_SpellOptions();", nIndex: 0});
+	tDoc.bookmarkRoot.children[0].createChild({cName: "Spell Sources", cExpr: "resourceDecisionDialog();", nIndex: 0});
 	tDoc.bookmarkRoot.children[0].children[0].style = 2;
-	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.2509765625, 0.5176544189453125, 0.67059326171875];
+	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.93, 0.49, 0.098];
 
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady(What(\"MakeMobileReady Remember\") === \"\");", nIndex: 1});
+	tDoc.bookmarkRoot.children[0].createChild({cName: "Spells Options", cExpr: "MakeSpellMenu_SpellOptions();", nIndex: 1});
 	tDoc.bookmarkRoot.children[0].children[1].style = 2;
-	tDoc.bookmarkRoot.children[0].children[1].color = ["RGB", 0.2823486328125, 0.1921539306640625, 0.478424072265625];
-	
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Unit System", cExpr: "SetUnitDecimals_Button();", nIndex: 2});
+	tDoc.bookmarkRoot.children[0].children[1].color = ["RGB", 0.2509765625, 0.5176544189453125, 0.67059326171875];
+
+	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady(What(\"MakeMobileReady Remember\") === \"\");", nIndex: 2});
 	tDoc.bookmarkRoot.children[0].children[2].style = 2;
-	tDoc.bookmarkRoot.children[0].children[2].color = ["RGB",0.463,0.192,0.467];
+	tDoc.bookmarkRoot.children[0].children[2].color = ["RGB", 0.2823486328125, 0.1921539306640625, 0.478424072265625];
+	
+	tDoc.bookmarkRoot.children[0].createChild({cName: "Unit System", cExpr: "SetUnitDecimals_Button();", nIndex: 3});
+	tDoc.bookmarkRoot.children[0].children[3].style = 2;
+	tDoc.bookmarkRoot.children[0].children[3].color = ["RGB",0.463,0.192,0.467];
 	
 	var NameBm = typePF ? "Set Highlight Color" : "Set Color Theme";
-	tDoc.bookmarkRoot.children[0].createChild({cName: NameBm, cExpr: "MakeColorMenu(); ColoryOptions();", nIndex: 3});
-	tDoc.bookmarkRoot.children[0].children[3].style = 2;
-	tDoc.bookmarkRoot.children[0].children[3].color = ["RGB", 0.5, 0.5, 0.5];
-	
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Add Custom Script", cExpr: "AddUserScript();", nIndex: 4});
+	tDoc.bookmarkRoot.children[0].createChild({cName: NameBm, cExpr: "MakeColorMenu(); ColoryOptions();", nIndex: 4});
 	tDoc.bookmarkRoot.children[0].children[4].style = 2;
+	tDoc.bookmarkRoot.children[0].children[4].color = ["RGB", 0.5, 0.5, 0.5];
+	
+	tDoc.bookmarkRoot.children[0].createChild({cName: "Add Custom Script", cExpr: "AddUserScript();", nIndex: 5});
+	tDoc.bookmarkRoot.children[0].children[5].style = 2;
 
 	//make links bookmark section	
 	tDoc.bookmarkRoot.createChild({cName: "Links", cExpr: "", nIndex: 1});

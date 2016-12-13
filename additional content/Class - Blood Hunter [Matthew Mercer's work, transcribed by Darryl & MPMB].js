@@ -212,6 +212,7 @@ ClassList["blood hunter"] = {
 ClassSubList["order of the ghostslayer"] = {
 	regExpSearch : /^(?=.*ghost)(?=.*slayer).*$/i,
 	subname : "Order of the Ghostslayer",
+	source : ["MM:BH", 5],
 	fullname : "Ghostslayer",
 	features : {
 		"subclassfeature3" : {
@@ -264,6 +265,7 @@ ClassSubList["order of the ghostslayer"] = {
 ClassSubList["order of the profane soul"] = {
 	regExpSearch : /^(?=.*profane)(?=.*soul).*$/i,
 	subname : "Order of the Profane Soul",
+	source : ["MM:BH", 6],
 	abilitySave : 5,
 	spellcastingFactor : "warlock3",
 	spellcastingTable : [
@@ -464,6 +466,7 @@ ClassSubList["order of the profane soul"] = {
 ClassSubList["order of the mutant"] = {
 	regExpSearch : /mutant/i,
 	subname : "Order of the Mutant",
+	source : ["MM:BH", 7],
 	features : {
 		"subclassfeature3" : {
 			name : "Formulas",
@@ -585,6 +588,12 @@ ClassSubList["order of the mutant"] = {
 	},
 };
 
-SourceList["MM:BH"] = {name : "Matthew Mercer: Blood Hunter Class", abbreviation : "MM:BH"};
+SourceList["MM:BH"] = {
+	name : "Matthew Mercer: Blood Hunter Class",
+	abbreviation : "MM:BH",
+	group : "Dungeon Masters Guild",
+	url : "http://www.dmsguild.com/product/170777/"
+};
 
-ClassSubList["hunter"].regExpSearch = /^(?!.*(blood|barbarian|bard|cleric|druid|fighter|monk|paladin|rogue|sorcerer|warlock|wizard))(?=.*(hunter|huntress)).*$/i;
+if (ClassSubList.hunter) ClassSubList.hunter.regExpSearch = /^(?!.*(blood|barbarian|bard|cleric|druid|fighter|monk|paladin|rogue|sorcerer|warlock|wizard))(?=.*(hunter|huntress)).*$/i;
+if (ClassSubList["hunter conclave"]) ClassSubList["hunter conclave"].regExpSearch = /^(?!.*(blood|barbarian|bard|cleric|druid|fighter|monk|paladin|rogue|sorcerer|warlock|wizard))(?=.*(hunter|huntress)).*$/i;

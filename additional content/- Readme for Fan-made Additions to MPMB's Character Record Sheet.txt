@@ -1,6 +1,7 @@
 --- Readme for the 'Fan-made Additions' folder ----
 
 This folder contains a number of scripts that can be used to add extra content to MPMB's Character Record Sheet.
+Note that eveything in the "Unearthed Arcana" subfolder is part of the sheet from v12.7 onwards. You can add these materials by using the "Sources" button.
 
 You can do this by following these steps:
 1) Open a fresh instance of the latest version of MPMB's Character Record Sheet (found here: http://bit.ly/MPMBdndtools).

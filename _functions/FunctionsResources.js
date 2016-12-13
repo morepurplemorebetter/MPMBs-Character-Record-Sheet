@@ -205,22 +205,34 @@ function ObjectToArray(obj, type, testObj) {
 //inclA must be the same length as inclA_Names, and exclA must be the same length as exclA_Names
 function resourceDecisionDialog() {
 	var isFirstTime = CurrentSources.firstTime;
+	if (this.info.SpellsOnly) { //if this is a spell sheet, only use sources that have spells associated with them
+		var spellSources = [];
+		for (var u in SpellsList) {
+			var sSource = SpellsList[u].source;
+			aSource = isArray(sSource) ? sSource[0] : sSource;
+			if (aSource && spellSources.indexOf(aSource) === -1) spellSources.push(aSource);
+		}
+	}
+	
+	var exclObj = {}, inclObj = {};
 	if (isFirstTime) {
 		CurrentSources = {
 			firstTime : false,
 			globalExcl : []
 		};
 		for (var src in SourceList) {
+			if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
 			if (SourceList[src].group === "Unearthed Arcana") {
 				CurrentSources.globalExcl.push(src);
 			}
 		};
 	};
 	var remCS = CurrentSources.toSource();
-	var exclObj = {}, inclObj = {};
+	
 	for (var src in SourceList) {
+		if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
 		var srcGroup = SourceList[src].group;
-		var srcName = SourceList[src].name + " (" + SourceList[src].abbreviation + ")";
+		var srcName = SourceList[src].name.replace(/unearthed arcana: /i, "") + " (" + SourceList[src].abbreviation + ")";
 		if (!srcGroup || srcGroup === "default") continue;
 		if (!exclObj[srcGroup]) exclObj[srcGroup] = {};
 		if (!inclObj[srcGroup]) inclObj[srcGroup] = {};
@@ -230,22 +242,44 @@ function resourceDecisionDialog() {
 			inclObj[srcGroup][srcName] = -1;
 		}
 	};
+	
 	exclObj = CleanObject(exclObj); inclObj = CleanObject(inclObj);
+	
 	var selectionDialogue = {
 		exclActive : true,
 		inclActive : false,
 		exclObject : exclObj,
 		inclObject : inclObj,
+		sourceLink : "",
 		initialize : function (dialog) {
 			dialog.load({
 				"ExcL" : this.exclObject,
 				"IncL" : this.inclObject,
 				"txt0" : (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon) and change it.\n\n" : "") + "First you can set the sourcebooks the sheet is allowed to use for its automation.\nBelow that, you can open dialogues to include or exclude different parts of the sourcebooks set to be included.\n\nNote that you can always add more resources using the \"Add Custom Script\" bookmark.",
 				"txt1" : "By pressing one of the buttons below, you open another dialogue where you can exclude and include parts of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up in the dialogue created when you press the buttons below, as all of its content will be ignored by the sheet's automation.",
-				"txt2" : toUni("Warning:") + " If you change anything that affects any drop-down boxes on the sheet, those will be updated." + (isFirstTime ? " If a lot of drop-down boxes are affected, this can take several minutes." : "\nPlease be aware, that this will reset those drop-down boxes to their default value. After that, the sheet will re-enter the values, which in turn will trigger the automation. This automation will then be run using the resources selected above. This can take several minutes.")
+				"txt2" : toUni("Warning:") + " If you change anything that affects any drop-down boxes on the sheet, those will be updated." + (isFirstTime ? " If a lot of drop-down boxes are affected, this can take several minutes." : "\nPlease be aware, that this will reset those drop-down boxes to their default value. After that, the sheet will re-enter the values, which in turn will trigger the automation. This automation will then be run using the resources selected above. This can take several minutes."),
+				"bLin" : "This button links to the web page of the selected sourcebook"
 			});
 		},
-		commit : function (dialog) {
+		commit : function (dialog) {},
+		updateLink : function (dialog, ExcInc) {
+			//get the positive element
+			var exclNow = dialog.store()[ExcInc];
+			var sourceNm = GetPositiveElement(exclNow);
+			//run through the sourcelist and get the name of the source
+			var theSrc = false;
+			for (var src in SourceList) {
+				if (sourceNm === (SourceList[src].name.replace(/unearthed arcana: /i, "") + " (" + SourceList[src].abbreviation + ")")) {
+					theSrc = src;
+					break;
+				}
+			};
+			if (theSrc && SourceList[theSrc].url) {
+				this.sourceLink = SourceList[theSrc].url;
+				dialog.load({
+					"bLin" : "Click here to visit the \"" + SourceList[theSrc].name + "\" web page"
+				})
+			}
 		},
 		updateCS : function (oResultExcL) {
 			//put the excluded element into an array
@@ -253,15 +287,17 @@ function resourceDecisionDialog() {
 			//set the CurrentSources variable
 			CurrentSources.globalExcl = [];
 			for (var src in SourceList) {
-				var srcName = SourceList[src].name + " (" + SourceList[src].abbreviation + ")";
+				var srcName = SourceList[src].name.replace(/unearthed arcana: /i, "") + " (" + SourceList[src].abbreviation + ")";
 				if (exclArr.indexOf(srcName) !== -1) CurrentSources.globalExcl.push(src);
 			};
 		},
 		ExcL : function (dialog) {
 			this.exclActive = true;
+			this.updateLink(dialog, "ExcL");
 		},
 		IncL : function (dialog) {
 			this.inclActive = true;
+			this.updateLink(dialog, "IncL");
 		},
 		BTRA : function (dialog) {
 			// move all (remaining) items from ExcL to IncL
@@ -335,6 +371,7 @@ function resourceDecisionDialog() {
 		bBac : function (dialog) {resourceSelectionDialog("background");},
 		bBaF : function (dialog) {resourceSelectionDialog("background feature");},
 		bCre : function (dialog) {resourceSelectionDialog("creature");},
+		bLin : function (dialog) {if (this.sourceLink) app.launchURL(this.sourceLink, true)},
 		description : {
 			name : "Pick which resources are excluded and included",
 			elements : [{
@@ -408,6 +445,14 @@ function resourceDecisionDialog() {
 								item_id : "IncL",
 							}]
 						}]
+					}, {
+						type : "button",
+						font : "dialog",
+						bold : true,
+						item_id : "bLin",
+						alignment : "align_center",
+						width : 700,
+						name : "This button links to the web page of the selected sourcebook"
 					}]
 				}, {
 					type : "cluster",
@@ -540,7 +585,7 @@ function resourceSelectionDialog(type) {
 		break;
 	 case "race" :
 		var theName = "Player Races";
-		theExtra = ["\nRaces with variants will have all variants listed. The 'basic' version of the race is only listed so that you can exclude all variants except the basic version. Excluding the 'basic' version will have no effect.", 3];
+		theExtra = ["\nRaces with variants will have all variants listed. The 'basic' version of the race is only listed so that you can exclude all variants except the basic version. Excluding the 'basic' version while still including any variant will have no effect.", 3];
 		inclInArr = "all";
 		var CSatt = "racesExcl";
 		for (var u in RaceList) {
@@ -868,6 +913,6 @@ function testSource(key, obj, CSatt, concise) {
 		theRe = SourceList[theSource] && CurrentSources.globalExcl.indexOf(theSource) !== -1;
 		if (theRe && concise) theRe = "source";
 	}
-	if (!theRe && CurrentSources[CSatt] && CurrentSources[CSatt].indexOf(key) !== -1) theRe = true;
+	if (!theRe && CSatt && CurrentSources[CSatt] && CurrentSources[CSatt].indexOf(key) !== -1) theRe = true;
 	return theRe;
 };

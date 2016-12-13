@@ -371,7 +371,7 @@ function MakeButtons() {
 			};
 			app.addToolButton({
 				cName : "ResetButton",
-				cExec : "ResetAll()",
+				cExec : "ResetAll();",
 				oIcon : oIcon,
 				cTooltext : toUni("Reset") + "\nReset the entire sheet and all form fields to their initial value.",
 				nPos : 1,
@@ -389,11 +389,27 @@ function MakeButtons() {
 			};
 			app.addToolButton({
 				cName : "ImportExportButton",
-				cExec : "ImportExport_Button()",
+				cExec : "ImportExport_Button();",
 				oIcon : oIcon,
-				cTooltext : toUni("Import/Export") + "\nReset \u2022  Import all the information from an old sheet directly;\n \u2022  Add custom script, see FAQ;\n \u2022  Alternatively, you can import or export data with the .xfdf file format. This method is depreciated, but might still be interesting if you only want to import equipment or the description sections (top of first page, background page, notes, and companion description).",
+				cTooltext : toUni("Import / Export") + "\n \u2022  Import all the information from an old sheet directly;\n \u2022  Add custom script, see FAQ;\n \u2022  Alternatively, you can import or export data with the .xfdf file format. This method is depreciated, but might still be interesting if you only want to import equipment or the description sections (top of first page, background page, notes, and companion description).",
 				nPos : 2,
 				cLabel : "Import"
+			});
+			oIcon = {
+				count : 0,
+				width : 20,
+				height : 20,
+				read : function (nBytes) {
+					return ButtonIcons.sources.slice(this.count, this.count += nBytes);
+				}
+			};
+			app.addToolButton({
+				cName : "SourcesButton",
+				cExec : "resourceDecisionDialog();",
+				oIcon : oIcon,
+				cTooltext : toUni("Select Sources") + "\nOpen a dialogue where you can select which sourcebooks and materials the sheet is allowed to use and which it has to excluded from the automation." + (this.info.SpellsOnly ? "\n\nHere you can select which sources are used for the spells or even exclude certain spells or spell schools. After you have set this, you will have to manually re-generate the spell sheet using the 'Spells' button/bookmark." : "\n\nHere you can make the sheet include all Unearthed Arcana material or even have the sheet exclude certain classes, races, spells, etc. etc.\n\nYou are advised to set the sources before filling out the sheet as it may cause certain fields to be reset."),
+				nPos : 3,
+				cLabel : "Sources"
 			});
 		}
 
@@ -411,7 +427,7 @@ function MakeButtons() {
 				cExec : "MakeTextMenu_TextOptions();",
 				oIcon : oIcon,
 				cTooltext : toUni("Text Options") + "\nResetGives a dialog where you can:\n   \u2022  Set the font of all fillable fields" + "\n   \u2022  Set the font size of fields with multiple lines;\n   \u2022  Hide\/show the text lines on all pages" + (!typePF ? "" : ";\n   \u2022  Switch between boxes or lines for single-line fields."),
-				nPos : 3,
+				nPos : 4,
 				cLabel : "Text"
 			});
 		}
@@ -429,8 +445,8 @@ function MakeButtons() {
 				cName : "SetToManualButton",
 				cExec : "SetToManual_Button();",
 				oIcon : oIcon,
-				cTooltext : toUni("Auto/Manual") + "\nResetSwitch between manual or automatic calculation\/implementation of:\n   \u2022  Attacks;\n   \u2022  Background;\n   \u2022  Class;\n   \u2022  Feats;\n   \u2022  Race.",
-				nPos : 4,
+				cTooltext : toUni("Auto / Manual") + "\nResetSwitch between manual or automatic calculation\/implementation of:\n   \u2022  Attacks;\n   \u2022  Background;\n   \u2022  Class;\n   \u2022  Feats;\n   \u2022  Race.",
+				nPos : 5,
 				cLabel : "Manual"
 			});
 
@@ -447,7 +463,7 @@ function MakeButtons() {
 				cExec : "WeightToCalc_Button();",
 				oIcon : oIcon,
 				cTooltext : toUni("Weight Calculation") + "\nResetOpen the Total Weight dialogue where you can choose what is and what is not counted towards the Total Weight on the second page.\n\nIn the dialogue you can also select which encumbrance rules to use.",
-				nPos : 5,
+				nPos : 6,
 				cLabel : "Weight"
 			});
 
@@ -464,7 +480,7 @@ function MakeButtons() {
 				cExec : "AbilityScores_Button();",
 				oIcon : oIcon,
 				cTooltext : toUni("Ability Scores") + "\nResetOpen the Ability Scores dialog where you can set them using their separate parts, see the Point Buy value, and apply a magic item that overrides.\n\nThis dialog also gives the option to add Honor/Sanity.",
-				nPos : 6,
+				nPos : 7,
 				cLabel : "Scores"
 			});
 			oIcon = {
@@ -477,11 +493,11 @@ function MakeButtons() {
 			};
 			app.addToolButton({
 				cName : "BlueTextButton",
-				cExec : "ToggleBlueText(What(\"BlueTextRemember\"))",
+				cExec : "ToggleBlueText(What(\"BlueTextRemember\"));",
 				oIcon : oIcon,
 				cTooltext : toUni("Modifier Fields") + "\nResetHide\/show fields where you can manually add modifiers for:\n   \u2022  Ability save DC;\n   \u2022  Attacks to hit and damage bonusses;\n   \u2022  Attacks damage die;\n   \u2022  Proficiency bonus, or the use of proficiency dice;\n   \u2022  Saves;\n   \u2022  Skills, with Jack of All Trades and Remarkable Athlete;\n   \u2022  Number of spell slots;\n   \u2022  Initiative;\n   \u2022  Carrying capacity multiplier;\n   \u2022  Weights of armor, shield, weapons, and ammunition.\n\nThese are the so-called \"blue text fields\" and they won't print, even when they are visible.",
 				cMarked : "event.rc = What(\"BlueTextRemember\") === \"Yes\";",
-				nPos : 7,
+				nPos : 8,
 				cLabel : "Mods"
 			});
 		}
@@ -500,7 +516,7 @@ function MakeButtons() {
 				cExec : "MakeSpellMenu_SpellOptions();",
 				oIcon : oIcon,
 				cTooltext : toUni("Spells Options") + "\nResetGet a menu with the options to:\n   \u2022  Create a Spell Sheet;\n   \u2022  Select the sources for that Spell Sheet;\n   \u2022  Delete an existing Spell Sheet;" + (!typePF ? "\n   \u2022  Set the visibility of the Spell Slot check boxes to the Spell Sheet, the Limited Feature section, or both;" : "") + "\n   \u2022  Set the sheet to use Spell Points instead of Spell Slots.\n\nGenerating a Spell Sheet will involve filling out a dialog for each spellcasting class/race/feat. After that you can select which is included in the Spell Sheet and in what order.", //\n\nAlternatively you can create an empty Spell Sheet which you can fill out manually.",
-				nPos : 8,
+				nPos : 9,
 				cLabel : "Spells"
 			});
 		}
@@ -516,11 +532,11 @@ function MakeButtons() {
 			};
 			app.addToolButton({
 				cName : "AdventureLeagueButton",
-				cExec : "ToggleAdventureLeague(What(\"League Remember\"))",
+				cExec : "ToggleAdventureLeague(What(\"League Remember\"));",
 				oIcon : oIcon,
 				cTooltext : toUni("Adventurers League") + "\nResetHide\/show fields for Adventurer's League play:\n   \u2022  'DCI' on the 1st page;\n   \u2022  'Faction' and 'Renown' on the 4th page;\n   \u2022  Fixed hp value on the 1st page;\n   \u2022  The action options from the DMG on the 1st page;\n   \u2022  Notes for action options from the DMG on the 3rd page.\n\nThis button also makes the \"Adventurers Logsheet\" visible if it isn't already.\n\nNote that this Character Generator\/Sheet offers some options that are not legal in Adventurer's League play regardless of enabling this button or not.",
 				cMarked : "event.rc = What(\"League Remember\") === \"On\";",
-				nPos : 9,
+				nPos : 10,
 				cLabel : "League",
 			});
 
@@ -537,7 +553,7 @@ function MakeButtons() {
 				cExec : "PrintButton();",
 				oIcon : oIcon,
 				cTooltext : toUni("Print") + "\nSelect what pages you want to print and open the print dialog.\n\nThe pages you select will be remembered for the next time you press this button.\n\nYou also get an option to hide all fields on the sheet before printing.",
-				nPos : 10,
+				nPos : 11,
 				cLabel : "Print"
 			});
 		}
@@ -556,7 +572,7 @@ function MakeButtons() {
 			oIcon : oIcon,
 			cTooltext : toUni("Flatten") + "\nSwitch to or from a version of the sheet that is compatible with Acrobat Reader for mobile devices.\nThis flattens all form fields and hides non-printable ones to make the sheet more usable on a phone or tablet.\n\nThe fields used during normal play will stay editable:\n   \u2022  1st page: health, attacks, actions, adv./disadv., etc.;\n   \u2022  2nd page: equipment and proficiencies;\n   \u2022  3rd-6th page: all except buttons and portrait\/symbol.",
 			cMarked : "event.rc = What(\"MakeMobileReady Remember\") !== \"\";",
-			nPos : 11,
+			nPos : 12,
 			cLabel : "Flatten"
 		});
 		oIcon = {
@@ -572,7 +588,7 @@ function MakeButtons() {
 			cExec : "SetUnitDecimals_Button();",
 			oIcon : oIcon,
 			cTooltext : toUni("Unit System") + "\nOpen a dialog where you can select the following:\n   \u2022  Unit system: metric or imperial\n   \u2022  Decimal separator: dot or comma.",
-			nPos : 12,
+			nPos : 13,
 			cLabel : "Units"
 		});
 
@@ -589,7 +605,7 @@ function MakeButtons() {
 			cExec : "MakeColorMenu(); ColoryOptions();",
 			oIcon : oIcon,
 			cTooltext : !typePF ? toUni("Set Color Theme") + "\nControl the color theme of the sheet in the following ways:\n   \u2022  Color of the Headers;\n   \u2022  Color of the Dragon Heads;\n   \u2022  Color of the HP Dragons \[requires bonus version\];\n   \u2022  Color of the Ability Save DCs \[requires bonus version\];\n   \u2022  Color of the form field highlighting.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet.\n\nIf you have donated, you get the bonus version that gives you the option to choose the colors Pink and Gray, to set the color of the HP Dragons and the Ability Save DCs." : toUni("Set Highlighting Color") + "\nSet the color of the form field highlighting.\n\nYou can select several colors, the adobe default color, or turn form field highlighting off.",
-			nPos : 13,
+			nPos : 14,
 			cLabel : "Color"
 		});
 
@@ -606,7 +622,7 @@ function MakeButtons() {
 			cExec : "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });",
 			oIcon : oIcon,
 			cTooltext : toUni("FAQ") + "\nOpen the Frequently Asked Questions pdf.\n\nIn this document you can find information on how to add custom code to the sheet (like homebrew races/weapons/feats/etc.).",
-			nPos : 14,
+			nPos : 15,
 			cLabel : "FAQ"
 		});
 	} catch (err) {
@@ -653,6 +669,9 @@ function OpeningStatement() {
 		};
 		if (!minVer && CurrentSources.firstTime) resourceDecisionDialog();
 	};
+	tDoc.calculate = true;
+	tDoc.delay = false;
+	tDoc.calculateNow();
 };
 
 function clean(input, remove) {
@@ -2333,7 +2352,7 @@ function ParseClass(tempString) {
 			};
 		
 			//a special test for the Unearthed Arcana Revised Ranger
-			if (tempFound && obj === "ranger" && CurrentSources.globalExcl.indexOf("UA:RR") === -1 && (!CurrentSources.classExcl || CurrentSources.classExcl.indexOf("ranger-ua") === -1)) {
+			if (tempFound && obj === "ranger" && CurrentSources.globalExcl.indexOf("UA:RR") === -1 && (!CurrentSources.classExcl || CurrentSources.classExcl.indexOf("rangerua") === -1)) {
 				found = false;
 				tempFound = false;
 			}
@@ -3552,7 +3571,7 @@ function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
 
 			//first check if character has monk levels
 			var monkDmgDie = 0;
-			if (WeaponL.monkweapon && classes.known.hasOwnProperty("monk")) {
+			if (classes.known.hasOwnProperty("monk") && (WeaponL.monkweapon || (WeaponType === "Martial" && classes.known.monk.subclass === "way of the kensei" && classes.known.monk.level >= 3))) {
 				monkDmgDie = Number(CurrentClasses.monk.features["martial arts"].additional[classes.known["monk"].level - 1].substring(2));
 				if (weaponDmgDie < monkDmgDie) {
 					weaponDmgDie = monkDmgDie;
@@ -6276,9 +6295,10 @@ function MakeClassMenu() {
 		}
 	};
 
-	var menuLVL3 = function (menu, name, array, classNm, featureNm, extrareturn) {
+	var menuLVL3 = function (menu, name, array, classNm, featureNm, extrareturn, feaObj) {
 		var temp = [];
 		for (var i = 0; i < array.length; i++) {
+			if (testSource("", feaObj[array[i].toLowerCase()])) continue;
 			var testWith = extrareturn === "extra" ? CurrentClasses[classNm].features[featureNm][array[i].toLowerCase()].name : array[i].toLowerCase();
 			var theTest = toTest.indexOf(testWith) !== -1;
 			var removeStop = extrareturn === "extra" ? (theTest ? "remove" : false) : (theTest ? "stop" : false);
@@ -6309,11 +6329,11 @@ function MakeClassMenu() {
 			var propFea = Temps.features[prop];
 			if (propFea.choices && !propFea.choicesNotInMenu && propFea.minlevel <= classlevel) {
 				toTest = GetClassFeatureChoice(classname, prop);
-				menuLVL3(tempItem, propFea.name, propFea.choices, classname, prop, "");
+				menuLVL3(tempItem, propFea.name, propFea.choices, classname, prop, "", propFea);
 			}
 			toTest = What("Extra.Notes") + What("Class Features");
 			if (propFea.extrachoices && propFea.minlevel <= classlevel) {
-				menuLVL3(tempItem, propFea.extraname, propFea.extrachoices, classname, prop, "extra");
+				menuLVL3(tempItem, propFea.extraname, propFea.extrachoices, classname, prop, "extra", propFea);
 			}
 		}
 		if (tempItem.oSubMenu.length > 0) {
@@ -6344,7 +6364,6 @@ function ClassFeatureOptions(Input, AddOrRemove) {
 		classlevel = classes.known[MenuSelection[0]].level;
 
 		if (MenuSelection[3] === "extra") {
-			
 			//get a string for the feature
 			var theFeaExtra = theFea[MenuSelection[2]];
 			var FeaSource = theFeaExtra.source && SourceList[theFeaExtra.source[0]] ? ", " + SourceList[theFeaExtra.source[0]].abbreviation + (theFeaExtra.source[1] ? " " + theFeaExtra.source[1] : "") : "";

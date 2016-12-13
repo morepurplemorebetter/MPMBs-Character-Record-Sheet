@@ -1542,7 +1542,7 @@ function SetCompDropdown() {
 //Make menu for the button on the companion page and parse it to Menus.companion
 function MakeCompMenu() {
 	var prefix = event.target.name.substring(0, event.target.name.indexOf("Companion"));
-	var usingRevisedRanger = ClassList.ranger.source[0] !== "P";
+	var usingRevisedRanger = classes.known.rangerua ? true : false;
 	var menuLVL2 = function (menu, name, array) {
 		var temp = {};
 		var enabled = name[1] === "change" ? What(prefix + "Comp.Race") : true;
@@ -3719,8 +3719,7 @@ function setLifeStyle(input) {
 
 // update all the level-dependent features for the ranger companions on the companion pages
 function UpdateRangerCompanions(deleteIt) {
-	var usingRevisedRanger = ClassList.ranger.source[0] !== "P";
-	if (usingRevisedRanger) {
+	if (classes.known.rangerua) {
 		UpdateRevisedRangerCompanions(deleteIt);
 		return;
 	}
@@ -4750,7 +4749,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 	
 	var newLvl = deleteIt ? 0 : Number(What("Character Level"));
 	var newLvlProfB = theProfB(newLvl);
-	var RangerLvl = deleteIt || !classes.known.ranger ? newLvl : classes.known.ranger.level;
+	var RangerLvl = deleteIt || !classes.known.rangerua ? newLvl : classes.known.rangerua.level;
 	var newLvlText = theText(RangerLvl);
 	var newLvlFea = theFeature(RangerLvl);
 	var AScompA = What("Template.extras.AScomp").split(",");

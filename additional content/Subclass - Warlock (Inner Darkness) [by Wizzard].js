@@ -1,12 +1,12 @@
 /*  -WHAT IS THIS?-
 	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://bit.ly/MPMBCharTools
 	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	 
+
 	-KEEP IN MIND-
 	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
 	It is recommended to enter the code in a fresh sheet before adding any other information.
 */
- 
+
 /*  -INFORMATION-
 	Subject:	Subclass
 	Effect:	 	This script adds a subclass for the Warlock, called "Inner Darkness"
@@ -18,6 +18,7 @@
 ClassSubList["inner darkness"] = {
 	regExpSearch : /^(?=.*warlock)((?=.*slasher)|(?=.*inner)(?=.*darkness)).*$/i,
 	subname : "Inner Darkness",
+	source : ["HB", 0],
 	spellcastingExtra : ["dissonant whispers", "find familiar", "spike growth", "call lightning", "phantom steed", "faithful hound", "raise dead"],
 	features : {
 		"subclassfeature1" : {
@@ -25,7 +26,7 @@ ClassSubList["inner darkness"] = {
 			source : ["HB", 0],
 			minlevel : 1,
 			description : "\n   " + "I can cast Hunter's Mark on a creature that I have dealt damage to in the past day" + "\n   " + "The spell is cast as if using my highest level warlock spell slot, but does not expend any" + "\n   " + "I can do this a number of times equal to my Charisma modifier (min 1) per long rest",
- 			usages : "Cha mod per ",
+			usages : "Cha mod per ",
 			additional : ["as 1st-level spell", "as 1st-level spell", "as 2nd-level spell", "as 2nd-level spell", "as 3rd-level spell", "as 3rd-level spell", "as 4th-level spell", "as 4th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell"],
 			usagescalc : "event.value = Math.max(1, this.getField(\"Cha Mod\").value);",
 			recovery : "long rest",
@@ -69,6 +70,5 @@ ClassSubList["inner darkness"] = {
 			action : ["bonus action", ""]
 		}
 	}
-}
- 
+};
 ClassList.warlock.subclasses[1].push("inner darkness");
