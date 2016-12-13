@@ -32,11 +32,11 @@ function Value(field, FldValue, tooltip) {
 };
 
 function What(field) {
-	return tDoc.getField(field) ? tDoc.getField(field).value : undefined;
+	return tDoc.getField(field) ? tDoc.getField(field).value : "";
 }
 
 function Who(field) {
-	return tDoc.getField(field) ? tDoc.getField(field).userName : undefined;
+	return tDoc.getField(field) ? tDoc.getField(field).userName : "";
 }
 
 function Clear(field) {
@@ -2438,7 +2438,7 @@ function FindClasses(Event) {
 	for (i = 0; i < classes.parsed.length; i++) {
 		tempString = classes.parsed[i][0];
 		tempLevel = classes.parsed[i][1];
-		tempFound = parseClass(tempString);
+		tempFound = ParseClass(tempString);
 		
 		if (tempFound) { //class detected
 			tempClass = tempFound[0];
@@ -3093,11 +3093,12 @@ function FindRace(inputracetxt) {
 		}
 	}
 	
-	//show the option button if the race has variants
-	if (CurrentRace.variants) {
-		DontPrint("Race Features Menu");
-	} else {
+	//show the option button if the race has selectable variants
+	MakeRaceMenu();
+	if (Menus.raceoptions[0].cName === "No race options that require a choice") {
 		Hide("Race Features Menu");
+	} else {
+		DontPrint("Race Features Menu");
 	}
 
 	if (CurrentRace.known && What("Manual Race Remember") !== "Yes") {
@@ -3132,6 +3133,8 @@ function FindRace(inputracetxt) {
 
 //apply the effect of the player's race
 function ApplyRace(inputracetxt) {
+	if (event.target && event.target.name === "Race" && inputracetxt.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+	
 	tDoc.delay = true;
 	tDoc.calculate = false;
 
@@ -4243,6 +4246,8 @@ function FindBackground(Event) {
 
 //apply the various attributes of the background
 function ApplyBackground(input) {
+	if (event.target && event.target.name === "Background" && input.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+	
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	
@@ -5473,6 +5478,8 @@ function FindFeats(ArrayNmbr) {
 
 //add the text and features of a Feat
 function ApplyFeat(InputFeat, FldNmbr) {
+	if (event.target && event.target.name === "Feat Name " + FldNmbr && InputFeat.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+	
 	tDoc.delay = true;
 	tDoc.calculate = false;
 		
@@ -9289,6 +9296,8 @@ function ColoryOptions() {
 
 //Add the text of the feature selected
 function ApplyBackgroundFeature(input) {
+	if (event.target && event.target.name === "Background Feature" && input.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+	
 	var TheInput = input.toLowerCase();
 	var TempFound = false;
 	var tempString = CurrentBackground.name && CurrentBackground.source && SourceList[CurrentBackground.source[0]] ? "The background '" + CurrentBackground.name + "' is found in the " + SourceList[CurrentBackground.source[0]].name + (CurrentBackground.source[1] ? ", page " + CurrentBackground.source[1] : "") + "\n" : "";
@@ -9314,7 +9323,7 @@ function ApplyBackgroundFeature(input) {
 //set the dropdown box options for the background features
 function SetBackgroundFeaturesdropdown() {
 	var tempArray = [""];
-	var string = "Select or type in the background feature you want to use and its text will be filled out below automatically.\n\nBackground selection\nThe relevant background feature is automatically selected upon selecting a background on the first page. Doing that will always override whatever you wrote here. So, please first fill out a background before you select a alternative feature here.";
+	var string = "Select or type in the background feature you want to use and its text will be filled out below automatically.\n\n" + toUni("Background selection") + "\nThe relevant background feature is automatically selected upon selecting a background on the first page. Doing that will always override whatever you wrote here. So, please first fill out a background before you select a alternative feature here.";
 	
 	for (var feature in BackgroundFeatureList) {
 		if (testSource(feature, BackgroundFeatureList[feature], "backFeaExcl")) continue;
@@ -9326,7 +9335,7 @@ function SetBackgroundFeaturesdropdown() {
 	tDoc.getField("Background Feature").submitName = tempArray.toSource();
 	
 	var theFldVal = What("Background Feature");
-	tDoc.getField("Background Feature").setItems(ArrayDing);
+	tDoc.getField("Background Feature").setItems(tempArray);
 	Value("Background Feature", theFldVal, string);
 }
 
@@ -9334,22 +9343,11 @@ function SetBackgroundFeaturesdropdown() {
 function MakeRaceMenu() {
 	//make an array of the variants that are not excluded by the resource settings
 	var racialVarArr = ["basic"];
-	if (CurrentRace.variants) {
+	if (CurrentRace.known && CurrentRace.variants) {
 		for (var r = 0; r < CurrentRace.variants.length; r++) {
-			var theR = key + "-" + CurrentRace.variants[r];
+			var theR = CurrentRace.known + "-" + CurrentRace.variants[r];
 			if (testSource(theR, RaceSubList[theR], "racesExcl")) continue; // test if the racial variant or its source isn't excluded
 			racialVarArr.push(theR);
-		}
-	}
-	
-	
-	var menuLVL1 = function (item, array, thereturn) {
-		for (var i = 0; i < array.length; i++) {
-			item.push({
-				cName : array[i],
-				cReturn : thereturn + "#" + array[i],
-				bEnabled : array[i] !== "No race options that require a choice",
-			});
 		}
 	};
 	
@@ -9364,10 +9362,14 @@ function MakeRaceMenu() {
 		}
 	};
 
-	var RaceMenu = [];	
+	var RaceMenu = [];
 	
-	if (!CurrentRace.known || racialVarArr.length === 1) {
-		menuLVL1(RaceMenu, ["No race options that require a choice"], "nothing");
+	if (racialVarArr.length === 1) {
+		RaceMenu = [{
+			cName : "No race options that require a choice",
+			cReturn : "nothing",
+			bEnabled : false,
+		}];
 	} else {
 		menuLVL1R(RaceMenu, racialVarArr);
 	}

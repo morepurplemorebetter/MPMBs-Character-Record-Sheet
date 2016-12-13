@@ -240,7 +240,7 @@ var SourceList = {
 	
 	//small sources
 	"CoS" : {
-		name : "Curse of Strahd",
+		name : "Curse of Strahd [adventure]",
 		abbreviation : "CoS",
 		group : "Official Sources (small)"
 	},

@@ -116,6 +116,8 @@ function resetCompTypes(prefix) {
 
 //add a creature to the companion page
 function ApplyCompRace(newRace) {
+	if (event.target && event.target.name.indexOf("Comp.Race") !== -1 && newRace.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+	
 	thermoM("start"); //start a progress dialog
 	thermoM("Applying companion race..."); //change the progress 
 	tDoc.delay = true;
@@ -712,14 +714,16 @@ function ApplyCompWeapons(inputweapontxt) {
 
 //add a wildshape based on the selection and calculation settings
 function ApplyWildshape() {
+	if (event.target && event.value.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+	
 	thermoM("start"); //start a progress dialog
 	thermoM("Applying wild shape..."); //change the progress 
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	
 	var prefix = event.target.name.substring(0, event.target.name.indexOf("Wildshape"));
-	var newForm = event.value.toLowerCase();
 	var Fld = event.target.name.slice(-1);
+	var newForm = event.value.toLowerCase();
 	var resetFlds = [
 		prefix + "Wildshape." + Fld,
 		prefix + "Text.Wildshape." + Fld,
@@ -4466,10 +4470,10 @@ function UpdateDropdown(type, weapon) {
 	 case "resources" : 
 		var notAll = true;
 	 case "all" : 
-		SetFeatsdropdown();
+		SetRacesdropdown();
 		SetBackgrounddropdown();
 		SetBackgroundFeaturesdropdown();
-		SetRacesdropdown();
+		SetFeatsdropdown();
 		SetCompDropdown();
 		SetWildshapeDropdown();
 		if (notAll) break;

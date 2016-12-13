@@ -242,7 +242,7 @@ function resourceDecisionDialog() {
 				"IncL" : this.inclObject,
 				"txt0" : (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon) and change it.\n\n" : "") + "First you can set the sourcebooks the sheet is allowed to use for its automation.\nBelow that, you can open dialogues to include or exclude different parts of the sourcebooks set to be included.\n\nNote that you can always add more resources using the \"Add Custom Script\" bookmark.",
 				"txt1" : "By pressing one of the buttons below, you open another dialogue where you can exclude and include parts of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up in the dialogue created when you press the buttons below, as all of its content will be ignored by the sheet's automation.",
-				"txt2" : isFirstTime ? "" : toUni("Warning:") + " If you changed anything that affects any drop-down boxes on the sheet, those will be updated. Please be aware, that this will reset those drop-down boxes to their default value. After that, the sheet will re-enter the values, which in turn will trigger the automation. This automation will then be run using the resources selected above."
+				"txt2" : toUni("Warning:") + " If you change anything that affects any drop-down boxes on the sheet, those will be updated." + (isFirstTime ? " If a lot of drop-down boxes are affected, this can take several minutes." : "\nPlease be aware, that this will reset those drop-down boxes to their default value. After that, the sheet will re-enter the values, which in turn will trigger the automation. This automation will then be run using the resources selected above. This can take several minutes.")
 			});
 		},
 		commit : function (dialog) {
@@ -475,11 +475,11 @@ function resourceDecisionDialog() {
 				}, {
 					type : "static_text",
 					item_id : "txt2",
-					char_height : isFirstTime ? 0 : 5,
+					char_height : isFirstTime ? 3 : 5,
 					width : 720,
 				}, {
 					type : "ok_cancel",
-					ok_name : "Apply",
+					ok_name : "Apply (can take a long time)",
 				}]
 			}]
 		}
@@ -497,8 +497,8 @@ function resourceDecisionDialog() {
 	};
 	
 	if (app.execDialog(selectionDialogue) === "ok") {
-		//UpdateDropdown("resources");
-		//SetStringifieds();
+		UpdateDropdown("resources");
+		SetStringifieds();
 		
 		//if something changed for the spells make the spell menu again
 		var oldCS = eval(remCS);
