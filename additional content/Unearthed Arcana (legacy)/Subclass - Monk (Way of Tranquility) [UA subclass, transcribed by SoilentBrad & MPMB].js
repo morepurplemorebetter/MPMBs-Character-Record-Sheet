@@ -48,7 +48,7 @@ ClassSubList["way of tranquility"] = {
 			source : ["UA:MMT", 2],
 			minlevel : 6,
 			description : " [Performance or Persuasion prof]" + "\n   " + "I get adv. on Cha checks to calm or counsel peace; not with Deception or Intimidation",
-			skillstxt : "\n\n" + toUni("Way of Tranquility") + ": Performance or Persuasion (choose one).",
+			skillstxt : "\n\n" + toUni("Way of Tranquility") + ": Choose one from Performance or Persuasion.",
 			extraname : "Way of Tranquility 11",
 			"douse the flames of war" : {
 				name : "Douse the Flames of War",

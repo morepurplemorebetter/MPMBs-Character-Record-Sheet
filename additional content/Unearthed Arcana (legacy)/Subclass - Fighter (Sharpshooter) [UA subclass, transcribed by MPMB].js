@@ -35,7 +35,7 @@ ClassSubList["sharpshooter"] = {
 			name : "Careful Eyes",
 			source : ["UA:FMA", 4],
 			minlevel : 7,
-			description : "\n   " + "As a bonus action, I can take the Search action" + "\n   " + "I gain proficiency with the Perception, Investigation, or Survival skill",
+			description : "\n   " + "As a bonus action, I can take the Search action" + "\n   " + "I gain proficiency with one skill, Perception, Investigation, or Survival",
 			skillstxt : "\n\n" + toUni("Sharpshooter") + ": Perception, Investigation, or Survival.",
 			action : ["bonus action", ""]
 		},
