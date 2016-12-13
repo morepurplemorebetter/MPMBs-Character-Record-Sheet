@@ -669,9 +669,6 @@ function OpeningStatement() {
 		};
 		if (!minVer && CurrentSources.firstTime) resourceDecisionDialog();
 	};
-	tDoc.calculate = true;
-	tDoc.delay = false;
-	tDoc.calculateNow();
 };
 
 function clean(input, remove) {

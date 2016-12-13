@@ -553,6 +553,9 @@ function resourceDecisionDialog() {
 	} else {
 		CurrentSources = eval(remCS);
 	};
+	
+	tDoc.calculate = IsNotReset;
+	tDoc.delay = !IsNotReset;
 };
 
 //the buttons on the main resourceDecisionDialog point here, which can handle classes (type === "class"), races (type === "race"), feats (type === "feat"), spells (type === "spell"), backgrounds (type === "background"), background features (type === "background feature"), creatures (type === "creature")
