@@ -399,6 +399,10 @@ function DirectImport(consoleTrigger) {
 		
 		//copy any custom script and run it
 		if (ImportField("User Script")) RunUserScript();
+		if (ImportField("CurrentSources.Stringified")) {
+			GetStringifieds();
+			UpdateDropdown("resources");
+		};
 		
 		//reset conditions
 		if (!fromSheetTypePF && global.docFrom.ConditionSet) {
@@ -543,10 +547,10 @@ function DirectImport(consoleTrigger) {
 		ImportField("Character Level", {notTooltip: true}); ImportField("Total Experience", {notTooltip: true}); ImportField("Add Experience", {notTooltip: true});
 		
 		//set the race
-		ImportField("Race Remember"); ImportField("Race", {notTooltip: true});
+		ImportField("Race Remember"); ImportField("Race", {notTooltip: true, notSubmitName: true});
 		
 		//set the background
-		ImportField("Background", {notTooltip: true}); ImportField("Background Extra", {notTooltip: true});
+		ImportField("Background", {notTooltip: true, notSubmitName: true}); ImportField("Background Extra", {notTooltip: true});
 		
 		//set the class
 		ImportField("Class Features Remember"); ImportField("Extra Class Features Remember"); ImportField("Class and Levels", {notTooltip: true});
@@ -682,8 +686,8 @@ function DirectImport(consoleTrigger) {
 		
 		//do the second page
 		ImportField("Personality Trait"); ImportField("Ideal"); ImportField("Bond"); ImportField("Flaw");
-		ImportField("Background Feature", {notTooltip: true}); ImportField("Background Feature Description", {notTooltip: true, compareNoSpaces : true});
-		ImportField("Racial Traits", {notTooltip: true, compareNoSpaces : true});
+		ImportField("Background Feature", {notTooltip: true, notSubmitName: true}); ImportField("Background Feature Description", {notTooltip: true, compareNoSpaces: true});
+		ImportField("Racial Traits", {notTooltip: true, compareNoSpaces: true});
 		
 		//do the adventure gear sections
 		ImportField("Platinum Pieces"); ImportField("Gold Pieces"); ImportField("Electrum Pieces"); ImportField("Silver Pieces"); ImportField("Copper Pieces");
@@ -744,7 +748,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("Lifestyle", {cleanValue: true});
 		
 		//some hidden fields that we should do now
-		ImportField("Attack To Hit Bonus Global"); ImportField("Attack Damage Bonus Global"); ImportField("SpellSources.Remember"); ImportField("SpellSheetUpdate.Remember"); ImportField("Print Remember"); ImportField("SubClass Remember"); ImportField("Wildshapes.Remember");
+		ImportField("Attack To Hit Bonus Global"); ImportField("Attack Damage Bonus Global"); ImportField("SpellSheetUpdate.Remember"); ImportField("Print Remember"); ImportField("SubClass Remember"); ImportField("Wildshapes.Remember");
 		
 		
 	//>> make a function to do all children of a parent field

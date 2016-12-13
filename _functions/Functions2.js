@@ -8,6 +8,7 @@ function ParseCreature(Inputs) {
 
 		for (var key in CreatureList) { //scan string for all creatures
 			if (key.length > foundLen && tempString.indexOf(key) !== -1) {
+				if (testSource(key, CreatureList[key], "creaExcl")) continue; // test if the creature or its source isn't excluded
 				result = key;
 				foundLen = key.length;
 			}
@@ -115,6 +116,8 @@ function resetCompTypes(prefix) {
 
 //add a creature to the companion page
 function ApplyCompRace(newRace) {
+	if (event.target && event.target.name.indexOf("Comp.Race") !== -1 && newRace.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+	
 	thermoM("start"); //start a progress dialog
 	thermoM("Applying companion race..."); //change the progress 
 	tDoc.delay = true;
@@ -711,14 +714,16 @@ function ApplyCompWeapons(inputweapontxt) {
 
 //add a wildshape based on the selection and calculation settings
 function ApplyWildshape() {
+	if (event.target && event.value.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+	
 	thermoM("start"); //start a progress dialog
 	thermoM("Applying wild shape..."); //change the progress 
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	
 	var prefix = event.target.name.substring(0, event.target.name.indexOf("Wildshape"));
-	var newForm = event.value.toLowerCase();
 	var Fld = event.target.name.slice(-1);
+	var newForm = event.value.toLowerCase();
 	var resetFlds = [
 		prefix + "Wildshape." + Fld,
 		prefix + "Text.Wildshape." + Fld,
@@ -1260,8 +1265,8 @@ function MakeWildshapeMenu() {
 	//make a list of all the creatures
 	for (var aCrea in CreatureList) {
 		var theCrea = CreatureList[aCrea];
-		if (theCrea.type !== "Beast") {
-			continue; //go on to the next creature
+		if (theCrea.type !== "Beast" || testSource(aCrea, theCrea, "creaExcl")) {
+			continue; //go on to the next creature if the creature is not a beast or its source isn't excluded
 		}
 		
 		//see if the creature has a fly and/or swim speed
@@ -1465,15 +1470,19 @@ function SetWildshapeDropdown() {
 	var theList = [];
 
 	for (var key in CreatureList) {
-		if (CreatureList[key].type === "Beast" || key === "air elemental" || key === "earth elemental" ||  key === "fire elemental" || key === "water elemental") {
+		if ((CreatureList[key].type === "Beast" && eval(CreatureList[key].challengeRating) <= 6) || key === "air elemental" || key === "earth elemental" ||  key === "fire elemental" || key === "water elemental") {
+			if (testSource(key, CreatureList[key], "creaExcl")) continue;
 			theList.push(CreatureList[key].name);
 		}
 	}
 	theList.sort();
 	
-	theList.unshift("")
-	if (!typePF) theList.unshift("Make a Selection")
-	
+	theList.unshift("");
+	if (!typePF) theList.unshift("Make a Selection");
+
+	if (tDoc.getField("Wildshapes.Settings").submitName === theList.toSource()) return; //no changes, so no reason to do this
+	tDoc.getField("Wildshapes.Settings").submitName = theList.toSource();
+
 	var theString = "Type (or select) the name of the creature you want to calculate a Wild Shape for.";
 	theString += "\n\n" + toUni("Not auto-updated") + "\nThe generated stats will not auto-update once you change something on the first page! They will only update when your druid level changes. You can have them re-calculated using the \"Wild Shape Options\" button at the top of this page.";
 	theString += "\n\n" + toUni("First create the character") + "\nNote that nothing will happen if no character is defined on the 1st page.";
@@ -1495,6 +1504,7 @@ function SetCompDropdown() {
 	var theList = [""];
 	
 	for (var key in RaceList) {
+		if (testSource(key, RaceList[key], "racesExcl")) continue;
 		if (RaceList[key].sortname) {
 			theList.push(RaceList[key].sortname);
 		} else {
@@ -1505,11 +1515,15 @@ function SetCompDropdown() {
 	
 	var theListC = [""];
 	for (var key in CreatureList) {
+		if (testSource(key, CreatureList[key], "creaExcl")) continue;
 		theListC.push(CreatureList[key].name);
 	}
 	theListC.sort();
 	
 	theList = theList.concat(theListC);
+
+	if (tDoc.getField("Companion.Remember").submitName === theList.toSource()) return; //no changes, so no reason to do this
+	tDoc.getField("Companion.Remember").submitName = theList.toSource();
 	
 	var theString = "Type (or select) the name of the race you want to have on this page. Note that first a list of player races is given, followed by an alphabetical list of creatures. You are not limited by the names in the list. Just typing \"Drow\" will also be recognized, for example.";
 	theString += "\n\n" + toUni("Selecting a creature") + "\nAll information of the creature will automatically be added. This includes ability scores, proficiencies, senses, weapons, etc. You can change the things afterwards.\nBecause not all creatures need the same amount of space for all their feature text,some fields may overflow. You can manually edit these fields so that everything is visible when printed (e.g. move things to the \"Noted\" below).";
@@ -1587,6 +1601,7 @@ function MakeCompMenu() {
 	//make a list of all the creatures
 	for (var aCrea in CreatureList) {
 		var theCrea = CreatureList[aCrea];
+		if (testSource(aCrea, theCrea, "creaExcl")) continue; // test if the creature or its source isn't excluded
 		if (theCrea.type === "Beast" && theCrea.size >= 3 && eval(theCrea.challengeRating) <= 1/4) {
 			companions.push([theCrea.name, aCrea]);
 		}
@@ -3574,6 +3589,7 @@ function GetStringifieds() {
 	if (forSpells[1][0] !== "(") forSpells[1] = "(" + forSpells[1] + ")";
 	CurrentSpells = eval(forSpells[0]);
 	CurrentCasters = eval(forSpells[1]);
+	CurrentSources = eval(What("CurrentSources.Stringified"));
 }
 
 //set all stringified variables into their fields
@@ -3581,6 +3597,7 @@ function SetStringifieds() {
 	var cSpells = CurrentSpells.toSource();
 	var cCasters = CurrentCasters.toSource();
 	Value("CurrentSpells.Stringified", cSpells + "##########" + cCasters);
+	Value("CurrentSources.Stringified", CurrentSources.toSource());
 }
 
 //remove the empty values from an array (removes all things that are considered false, such as 0, "", undefined, false)
@@ -4450,13 +4467,18 @@ function ShowHideStealthDisadv() {
 function UpdateDropdown(type, weapon) {
 	type = type ? type.toLowerCase() : "all";
 	switch (type) {
+	 case "resources" : 
+		var notAll = true;
 	 case "all" : 
-		SetArmordropdown();
-		SetBackgrounddropdown();
 		SetRacesdropdown();
-		SetFeatsdropdown();
-		SetAmmosdropdown();
+		SetBackgrounddropdown();
 		SetBackgroundFeaturesdropdown();
+		SetFeatsdropdown();
+		SetCompDropdown();
+		SetWildshapeDropdown();
+		if (notAll) break;
+		SetAmmosdropdown();
+		SetArmordropdown();
 	 case "attack" :
 	 case "attacks" :
 	 case "weapon" :

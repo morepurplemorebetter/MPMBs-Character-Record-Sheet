@@ -2,6 +2,8 @@ CreatureList["big cat"] = { //Note the use of only lower case! Also note the abs
 	
 	name : "Big Cat", // Required; the name to use for the race
 	
+	source : ["HB", 0], // Optional; the source and the page number. Adding this makes it possible to exclude the creature with the "Sources" function. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js"
+	
 	size : 2, // Required; the size of the race (Gargantuan = 0, Huge = 1, Large = 2, Medium = 3, Small = 4, Tiny = 5)
 	
 	type : "Fiend", // Required; the type of the creature. Always put something here!

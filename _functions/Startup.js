@@ -3,7 +3,6 @@ function InitializeEverything(noButtons) {
 	if (!minVer) Hide("d20warning");
 	tDoc.delay = true;
 	tDoc.calculate = false;
-	GetStringifieds();
 	RunUserScript();
 	
 	if (!minVer) {
