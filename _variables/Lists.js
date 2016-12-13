@@ -250,7 +250,7 @@ var SourceList = {
 		group : "Official Sources (small)"
 	},
 	"SKT" : {
-		name : "Storm King's Thunder",
+		name : "Storm King's Thunder [adventure]",
 		abbreviation : "SKT",
 		group : "Official Sources (small)"
 	},
@@ -294,6 +294,8 @@ var CurrentCompRace = {};
 var CurrentSpells = {};
 var CurrentCasters = {};
 var CurrentSources = {};
+GetStringifieds(); //populate the above objects on startup
+
 var UpdateSpellSheets = {};
 
 var ExperiencePointsList = ["", 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000, 1000000000];

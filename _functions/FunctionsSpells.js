@@ -715,13 +715,12 @@ function CreateSpellList(inputObject, display, extraArray, returnOrdered) {
 	//define some arrays
 	var returnArray = [];
 	var spByLvl = {sp0 : [], sp1 : [], sp2 : [], sp3 : [], sp4 : [], sp5 : [], sp6 : [], sp7 : [], sp8 : [], sp9 : []};
-	var theSources = eval(What("SpellSources.Remember"));
 	
 	//now go through all the spells in the list and see if they agree with the criteria
 	for (var key in SpellsList) {
 		var aSpell = SpellsList[key];
-		//first test if the spell is on the list of sources to use
-		var addSp = theSources.indexOf(aSpell.source[0]) !== -1;
+		//first test if the spell's source is on the list of sources to use
+		var addSp = !testSource(key, aSpell, "spellsExcl");
 		//now test if the spell meets all the criteria set in the inputObject
 		if (addSp && inputObject.spells) {
 			addSp = inputObject.spells.indexOf(key) !== -1;
@@ -1679,7 +1678,6 @@ var SpellSheetSelect_Dialog = {
 	}
 }
 
-
 var SpellSheetOrder_Dialog = {
 	
 	bExcL : [],
@@ -1695,7 +1693,7 @@ var SpellSheetOrder_Dialog = {
 		dialog.load({
 			"ExcL" : ExcObj,
 			"IncL" : {},
-			"txt0" : "Please select which of your spellcasting sources you want to include in the Spell Sheet and in which order they should appear.\n\nNote that generating a new Spell Sheet deletes any current Spell Sheet(s) in this pdf.\n\nPlease be patient, generating a Spell Sheet can take a long time, often more than ten minutes (yes, even on your new gaming rig). During this time Adobe Acrobat will appear unresponsive (but will still be working).",
+			"txt0" : "Please select which of your spellcasting sources you want to include in the Spell Sheet and in which order they should appear.\n\nNote that generating a new Spell Sheet deletes any current Spell Sheet(s) in this pdf.\n\nPlease be patient, generating a Spell Sheet can take a long time, often more than ten minutes, and sometimes up to an hour (yes, even on your new gaming rig). During this time Adobe Acrobat will appear unresponsive (but will still be working).",
 			"Glos" : this.glossary,
 		});
 		
@@ -1897,6 +1895,15 @@ var SpellSheetOrder_Dialog = {
 			type : "view",
 			align_children : "align_left",
 			elements : [{
+				type : "static_text",
+				item_id : "head",
+				alignment : "align_fill",
+				font : "heading",
+				bold : true,
+				height : 21,
+				width : 700,
+				name : "Select what to include in the Spell Sheet"
+			}, {
 				type : "static_text",
 				item_id : "txt0",
 				char_height : 10,
@@ -3438,7 +3445,6 @@ function MakeSpellMenu_SpellOptions() {
 			SpellSourcesArray.push([SourceList[aSpellSource].name, aSpellSource]);
 		}
 	}
-	var RememberSources = eval(What("SpellSources.Remember"));
 	
 	//make a list of all spellcasting classes
 	var CasterClasses = [];
@@ -3473,9 +3479,6 @@ function MakeSpellMenu_SpellOptions() {
 		var isMarked = false;
 		for (var i = 0; i < array.length; i++) {
 			switch (name[1]) {
-			 case "source" :
-				isMarked = RememberSources.indexOf(array[i][1]) !== -1;
-				break;
 			 case "slots" :
 				isMarked = array[i][1] === RememberSlots;
 				break;
@@ -3549,11 +3552,12 @@ function MakeSpellMenu_SpellOptions() {
 		bEnabled : !tDoc.info.SpellsOnly ? SSvisible : SSmultiple,
 	}, {
 		cName : "-"
+	}, {
+		cName : "Spell sources to use (set before generating)",
+		cReturn : "source",
+	}, {
+		cName : "-"
 	}]);
-	
-	menuLVL2(spellsMenu, ["Spell sources to use (set before generating)", "source"], SpellSourcesArray);
-	
-	spellsMenu.push({cName : "-"}); //add a divider
 	
 	//get the current state of where to show the Spell Slots
 	var RememberSlots = What("SpellSlotsRemember");
@@ -3629,16 +3633,7 @@ function MakeSpellMenu_SpellOptions() {
 			DoTemplate("SSmore", "Remove");
 			break;
 		 case "source" :
-			var theSource = MenuSelection[1].toUpperCase();
-			if (MenuSelection[2] === "true") { //it was marked, so it has to be removed from the array
-				RememberSources.splice(RememberSources.indexOf(theSource), 1);
-			} else { //it wasn't marked, so it has to be added to the array
-				RememberSources.push(theSource);
-			}
-			//change the value of the remember field
-			Value("SpellSources.Remember", RememberSources.toSource());
-			//re-make the spell menu item so that it excludes/includes the right sources
-			AddSpellsMenu = ParseSpellMenu();
+			resourceDecisionDialog();
 			break;
 		 case "slots" :
 			if (MenuSelection[2] !== "true") { //it wasn't marked, so something is about the change
@@ -4410,7 +4405,6 @@ function insertSpellRow(prefix, lineNmbr, toMove) {
 		}
 	}
 }
-
 
 //hide the class header or spell level divider if their value is made completely empty before an On Blur action
 function HideSpellSheetElement(theTarget) {

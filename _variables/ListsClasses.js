@@ -1765,6 +1765,7 @@ var ClassSubList = {
 		regExpSearch : /(battlerager|kuldjargh)/i,
 		subname : "Path of the Battlerager",
 		fullname : "Battlerager",
+		source : ["S", 121],
 		abilitySave : 6,
 		features : {
 			"subclassfeature3" : {
@@ -1802,6 +1803,7 @@ var ClassSubList = {
 		regExpSearch : /^((?=.*\b(berserker|berserks?|berserkr|ulfheoinn|ulfheonar)\b)|((?=.*(warrior|fighter))(?=.*(odin|thor)))).*$/i,
 		subname : "Path of the Berserker",
 		fullname : "Berserker",
+		source : ["P", 49],
 		abilitySave : 6,
 		features : {
 			"subclassfeature3" : {
@@ -1838,6 +1840,7 @@ var ClassSubList = {
 		regExpSearch : /^(?=.*totem)(?=.*(warrior|fighter|marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n)).*$/i,
 		subname : "Path of the Totem Warrior",
 		fullname : "Totem Warrior",
+		source : ["P", 50],
 		features : {
 			"subclassfeature3" : {
 				name : "Spirit Seeker",
@@ -1966,6 +1969,7 @@ var ClassSubList = {
 	"college of lore" : {
 		regExpSearch : /^(?=.*(college|bard|minstrel|troubadour|jongleur))(?=.*lore).*$/i,
 		subname : "College of Lore",
+		source : ["P", 54],
 		features : {
 			"subclassfeature3" : {
 				name : "Bonus Proficiencies",
@@ -2003,6 +2007,7 @@ var ClassSubList = {
 	"college of valor" : {
 		regExpSearch : /^(?=.*(college|bard|minstrel|troubadour|jongleur))(?=.*valor).*$/i,
 		subname : "College of Valor",
+		source : ["P", 55],
 		attacks : [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		features : {
 			"subclassfeature3" : {
@@ -2031,6 +2036,7 @@ var ClassSubList = {
 	"arcana domain" : {
 		regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*(arcana|magic|wizardry)).*$/i,
 		subname : "Arcana Domain",
+		source : ["S", 125],
 		spellcastingExtra : ["detect magic", "magic missile", "magic weapon", "nystul's magic aura", "dispel magic", "magic circle", "arcane eye", "leomund's secret chest", "planar binding", "teleportation circle"],
 		features : {
 			"subclassfeature1" : {
@@ -2100,6 +2106,7 @@ var ClassSubList = {
 	"death domain" : {
 		regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*(death|dead|dying)).*$/i,
 		subname : "Death Domain",
+		source : ["D", 96],
 		spellcastingExtra : ["false life", "ray of sickness", "blindness/deafness", "ray of enfeeblement", "animate dead", "vampiric touch", "blight", "death ward", "antilife shell", "cloudkill"],
 		features : {
 			"subclassfeature1" : {
@@ -2152,6 +2159,7 @@ var ClassSubList = {
 	"knowledge domain" : {
 		regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*(knowledge|wisdom|learning)).*$/i,
 		subname : "Knowledge Domain",
+		source : ["P", 59],
 		spellcastingExtra : ["command", "identify", "augury", "suggestion", "nondetection", "speak with dead", "arcane eye", "confusion", "legend lore", "scrying"],
 		features : {
 			"subclassfeature1" : {
@@ -2197,6 +2205,7 @@ var ClassSubList = {
 	"life domain" : {
 		regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*\b(life|living|healing)\b).*$/i,
 		subname : "Life Domain",
+		source : ["P", 60],
 		spellcastingExtra : ["bless", "cure wounds", "lesser restoration", "spiritual weapon", "beacon of hope", "revivify", "death ward", "guardian of faith", "mass cure wounds", "raise dead"],
 		features : {
 			"subclassfeature1" : {
@@ -2244,6 +2253,7 @@ var ClassSubList = {
 	"light domain" : {
 		regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*\b(light|sun|shining)\b).*$/i,
 		subname : "Light Domain",
+		source : ["P", 61],
 		spellcastingExtra : ["burning hands", "faerie fire", "flaming sphere", "scorching ray", "daylight", "fireball", "guardian of faith", "wall of fire", "flame strike", "scrying"],
 		features : {
 			"subclassfeature1" : {
@@ -2300,6 +2310,7 @@ var ClassSubList = {
 	"nature domain" : {
 		regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*\b(nature|natural|animal|element(s|al)?)\b).*$/i,
 		subname : "Nature Domain",
+		source : ["P", 62],
 		spellcastingExtra : ["animal friendship", "speak with animals", "barkskin", "spike growth", "plant growth", "wind wall", "dominate beast", "grasping vine", "insect plague", "tree stride"],
 		features : {
 			"subclassfeature1" : {
@@ -2354,6 +2365,7 @@ var ClassSubList = {
 	"tempest domain" : {
 		regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*\b(tempest|destruction|storm)\b).*$/i,
 		subname : "Tempest Domain",
+		source : ["P", 62],
 		spellcastingExtra : ["fog cloud", "thunderwave", "gust of wind", "shatter", "call lightning", "sleet storm", "control water", "ice storm", "destructive wave", "insect plague"],
 		features : {
 			"subclassfeature1" : {
@@ -2404,6 +2416,7 @@ var ClassSubList = {
 	"trickery domain" : {
 		regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*(trickery|trickster|illusion)).*$/i,
 		subname : "Trickery Domain",
+		source : ["P", 63],
 		spellcastingExtra : ["charm person", "disguise self", "mirror image", "pass without trace", "blink", "dispel magic", "dimension door", "polymorph", "dominate person", "modify memory"],
 		features : {
 			"subclassfeature1" : {
@@ -2448,6 +2461,7 @@ var ClassSubList = {
 	"war domain" : {
 		regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*\b(war|fighting|conflict)\b).*$/i,
 		subname : "War Domain",
+		source : ["P", 63],
 		spellcastingExtra : ["divine favor", "shield of faith", "magic weapon", "spiritual weapon", "crusader's mantle", "spirit guardians", "freedom of movement", "stoneskin", "flame strike", "hold monster"],
 		features : {
 			"subclassfeature1" : {
@@ -2501,6 +2515,7 @@ var ClassSubList = {
 	"circle of the land" : {
 		regExpSearch : /^(?=.*(druid|shaman))(?=.*\b(land|arctic|coast|deserts?|forests?|grasslands?|savannah|steppes?|mountains?|swamps?|underdark)\b).*$/i,
 		subname : "Circle of the Land",
+		source : ["P", 68],
 		features : {
 			"subclassfeature2" : {
 				name : "Bonus Cantrip",
@@ -2602,6 +2617,7 @@ var ClassSubList = {
 	"circle of the moon" : {
 		regExpSearch : /^(?=.*(druid|shaman))((?=.*\bmoon\b)|((?=.*\bmany\b)(?=.*\bforms?\b))).*$/i,
 		subname : "Circle of the Moon",
+		source : ["P", 69],
 		features : {
 			"subclassfeature2" : {
 				name : "Circle Forms",
@@ -2654,6 +2670,7 @@ var ClassSubList = {
 		regExpSearch : /champion/i,
 		subname : "Champion",
 		fullname : "Champion",
+		source : ["P", 72],
 		features : {
 			"subclassfeature3" : {
 				name : "Improved Critical",
@@ -2725,6 +2742,7 @@ var ClassSubList = {
 		regExpSearch : /^(?=.*(war|fighter|battle|martial))(?=.*master).*$/i,
 		subname : "Battle Master",
 		fullname : "Battle Master",
+		source : ["P", 73],
 		abilitySave : 1,
 		features : {
 			"subclassfeature3" : {
@@ -2863,6 +2881,7 @@ var ClassSubList = {
 		regExpSearch : /^(?=.*(knight|fighter|warrior|militant|warlord|phalanx|gladiator|trooper))(?=.*\b(eldritch|arcane|magic|mage|witch)\b).*$/i,
 		subname : "Eldritch Knight",
 		fullname : "Eldritch Knight",
+		source : ["P", 75],
 		abilitySave : 4,
 		spellcastingFactor : 3,
 		spellcastingList : {
@@ -2936,6 +2955,7 @@ var ClassSubList = {
 		regExpSearch : /^(((?=.*purple)(?=.*dragon)(?=.*knight))|(?=.*banneret)).*$/i,
 		subname : "Purple Dragon Knight",
 		fullname : "Purple Dragon Knight",
+		source : ["S", 128],
 		features : {
 			"subclassfeature3" : {
 				name : "Rallying Cry",
@@ -2973,6 +2993,7 @@ var ClassSubList = {
 	"way of the four elements" : {
 		regExpSearch : /^(?=.*\b(four|4)\b)((?=.*elements?)|((?=.*earth)|(?=.*(wind|air))|(?=.*fire)|(?=.*water)))((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
 		subname : "Way of the Four Elements",
+		source : ["P", 80],
 		features : {
 			"subclassfeature3" : {
 				name : "Disciple of the Elements",
@@ -3175,6 +3196,7 @@ var ClassSubList = {
 	"way of the long death" : {
 		regExpSearch : /^(?=.*\blong)(?=.*\b(death|dead))((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
 		subname : "Way of the Long Death",
+		source : ["S", 130],
 		features : {
 			"subclassfeature3" : {
 				name : "Touch of Death",
@@ -3209,6 +3231,7 @@ var ClassSubList = {
 	"way of the open hand" : {
 		regExpSearch : /^(?=.*\bopen\b)(?=.*\bhand\b)((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
 		subname : "Way of the Open Hand",
+		source : ["P", 79],
 		features : {
 			"subclassfeature3" : {
 				name : "Hand Technique",
@@ -3244,6 +3267,7 @@ var ClassSubList = {
 	"way of shadow" : {
 		regExpSearch : /^(?=.*shadow)((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
 		subname : "Way of Shadow",
+		source : ["P", 80],
 		features : {
 			"subclassfeature3" : {
 				name : "Shadow Arts",
@@ -3332,6 +3356,7 @@ var ClassSubList = {
 	"way of the sun soul" : {
 		regExpSearch : /^(?=.*\bsun)(?=.*\b(soul|spirit))((?=.*(warrior|monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
 		subname : "Way of the Sun Soul",
+		source : ["S", 131],
 		features : {
 			"subclassfeature3" : {
 				name : "Radiant Sun Bolt",
@@ -3374,6 +3399,7 @@ var ClassSubList = {
 	"oath of the ancients" : {
 		regExpSearch : /^(((?=.*(ancient|nature|natural))((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper)))))|((?=.*(green|fey|horned))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
 		subname : "Oath of the Ancients",
+		source : ["P", 87],
 		spellcastingExtra : ["ensnaring strike", "speak with animals", "moonbeam", "misty step", "plant growth", "protection from energy", "ice storm", "stoneskin", "commune with nature", "tree stride"],
 		features : {
 			"subclassfeature3" : {
@@ -3421,6 +3447,7 @@ var ClassSubList = {
 	"oath of the crown" : {
 		regExpSearch : /^(?=.*(crown|king|country))(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
 		subname : "Oath of the Crown",
+		source : ["S", 133],
 		spellcastingExtra : ["command", "compelled duel", "warding bond", "zone of truth", "aura of vitality", "spirit guardians", "banishment", "guardian of faith", "circle of power", "geas"],
 		features : {
 			"subclassfeature3" : {
@@ -3465,6 +3492,7 @@ var ClassSubList = {
 	"oath of devotion" : {
 		regExpSearch : /^(?=.*(devotion|obedience))(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
 		subname : "Oath of Devotion",
+		source : ["P", 86],
 		spellcastingExtra : ["protection from evil and good", "sanctuary", "lesser restoration", "zone of truth", "beacon of hope", "dispel magic", "freedom of movement", "guardian of faith", "commune", "flame strike"],
 		features : {
 			"subclassfeature3" : {
@@ -3509,6 +3537,7 @@ var ClassSubList = {
 	"oathbreaker" : {
 		regExpSearch : /^((?=.*blackguard)|((?=.*(oath.*breaker|breaker.*oath))((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper)))))).*$/i,
 		subname : "Oathbreaker",
+		source : ["D", 97],
 		spellcastingExtra : ["hellish rebuke", "inflict wounds", "crown of madness", "darkness", "animate dead", "bestow curse", "blight", "confusion", "contagion", "dominate person"],
 		features : {
 			"subclassfeature3" : {
@@ -3554,6 +3583,7 @@ var ClassSubList = {
 	"oath of vengeance" : {
 		regExpSearch : /^(((?=.*(vengeance|wrath|justice))((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper)))))|((?=.*dark)(?=.*knight))|(?=.*avenger)).*$/i,
 		subname : "Oath of Vengeance",
+		source : ["P", 88],
 		spellcastingExtra : ["bane", "hunter's mark", "hold person", "misty step", "haste", "protection from energy", "banishment", "dimension door", "hold monster", "scrying"],
 		features : {
 			"subclassfeature3" : {
@@ -3598,6 +3628,7 @@ var ClassSubList = {
 		regExpSearch : /^(?=.*(animal|beast))((?=.*(master|ranger|strider))|((?=.*(nature|natural))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
 		subname : "Beast Master",
 		fullname : "Beast Master",
+		source : ["P", 93],
 		features : {
 			"subclassfeature3" : {
 				name : "Ranger's Companion",
@@ -3632,6 +3663,7 @@ var ClassSubList = {
 		regExpSearch : /^(?!.*(barbarian|bard|cleric|druid|fighter|monk|paladin|rogue|sorcerer|warlock|wizard))(?=.*(hunter|huntress)).*$/i,
 		subname : "Hunter",
 		fullname : "Hunter",
+		source : ["P", 93],
 		features : {
 			"subclassfeature3" : {
 				name : "Hunter's Prey",
@@ -3718,6 +3750,7 @@ var ClassSubList = {
 		regExpSearch : /^(?=.*(trickster|rogue|miscreant))(?=.*\b(eldritch|arcane|magic|mage|witch)\b).*$/i,
 		subname : "Arcane Trickster",
 		fullname : "Arcane Trickster",
+		source : ["P", 98],
 		abilitySave : 4,
 		spellcastingFactor : 3,
 		spellcastingList : {
@@ -3782,6 +3815,7 @@ var ClassSubList = {
 		regExpSearch : /^(?!.*(barbarian|bard|cleric|druid|fighter|monk|paladin|ranger|sorcerer|warlock|wizard))(?=.*assassin).*$/i,
 		subname : "Assassin",
 		fullname : "Assassin",
+		source : ["P", 97],
 		abilitySave : 2,
 		features : {
 			"subclassfeature3" : {
@@ -3823,6 +3857,7 @@ var ClassSubList = {
 		regExpSearch : /^(?!.*(barbarian|bard|cleric|druid|fighter|monk|paladin|ranger|sorcerer|warlock|wizard))(?=.*(mastermind|strategist)).*$/i,
 		subname : "Mastermind",
 		fullname : "Mastermind",
+		source : ["S", 135],
 		features : {
 			"subclassfeature3" : {
 				name : "Master of Intrigue",
@@ -3865,6 +3900,7 @@ var ClassSubList = {
 		regExpSearch : /^(?!.*(barbarian|bard|cleric|druid|fighter|monk|paladin|ranger|sorcerer|warlock|wizard))(?=.*swashbuckl).*$/i,
 		subname : "Swashbuckler",
 		fullname : "Swashbuckler",
+		source : ["S", 135],
 		features : {
 			"subclassfeature3" : {
 				name : "Fancy Footwork",
@@ -3908,6 +3944,7 @@ var ClassSubList = {
 		regExpSearch : /^(?!.*(barbarian|bard|cleric|druid|fighter|monk|paladin|ranger|sorcerer|warlock|wizard))(?=.*(thief|burglar)).*$/i,
 		subname : "Thief",
 		fullname : "Thief",
+		source : ["P", 97],
 		features : {
 			"subclassfeature3" : {
 				name : "Fast Hands",
@@ -3945,6 +3982,7 @@ var ClassSubList = {
 	"draconic bloodline" : {
 		regExpSearch : /^(?=.*(sorcerer|witch))(?=.*(draconic|dragon)).*$/i,
 		subname : "Draconic Bloodline",
+		source : ["P", 102],
 		features : {
 			"subclassfeature1" : {
 				name : "Dragon Ancestor",
@@ -4071,6 +4109,7 @@ var ClassSubList = {
 		regExpSearch : /^(?=.*(mage|magus|sorcerer|witch))((?=.*(storm|tempest|hurricane))|((?=.*air)(?=.*element))).*$/i,
 		subname : "Storm Sorcery",
 		fullname : "Storm Sorcerer",
+		source : ["S", 137],
 		features : {
 			"subclassfeature1" : {
 				name : "Wind Speaker",
@@ -4129,6 +4168,7 @@ var ClassSubList = {
 		regExpSearch : /^(?=.*(mage|magus|sorcerer|witch))(?=.*(wild|chaos|chaotic|limbo)).*$/i,
 		subname : "Wild Magic",
 		fullname : "Wild Mage",
+		source : ["P", 103],
 		features : {
 			"subclassfeature1" : {
 				name : "Wild Magic Surge",
@@ -4169,6 +4209,7 @@ var ClassSubList = {
 	"archfey" : {
 		regExpSearch : /^(?=.*fey)(?=.*warlock).*$/i,
 		subname : "the Archfey",
+		source : ["P", 109],
 		spellcastingExtra : ["faerie fire", "sleep", "calm emotions", "phantasmal force", "blink", "plant growth", "dominate beast", "greater invisibility", "dominate person", "seeming"],
 		features : {
 			"subclassfeature1" : {
@@ -4211,6 +4252,7 @@ var ClassSubList = {
 	"fiend" : {
 		regExpSearch : /^(?=.*(fiend|devil|demon|daemon|hell|abyss))(?=.*warlock).*$/i,
 		subname : "the Fiend",
+		source : ["P", 109],
 		spellcastingExtra : ["burning hands", "command", "blindness/deafness", "scorching ray", "fireball", "stinking cloud", "fire shield", "wall of fire", "flame strike", "hallow"],
 		features : {
 			"subclassfeature1" : {
@@ -4246,6 +4288,7 @@ var ClassSubList = {
 	"great old one" : {
 		regExpSearch : /^(((?=.*(tharizdun|cthulhu))(?=.*warlock))|((?=.*(great|dread))(?=.*(ancient|old))(?=.*\b(one|entity)\b))).*$/i,
 		subname : "the Great Old One",
+		source : ["P", 110],
 		spellcastingExtra : ["dissonant whispers", "tasha's hideous laughter", "detect thoughts", "phantasmal force", "clairvoyance", "sending", "dominate beast", "evard's black tentacles", "dominate person", "telekinesis"],
 		features : {
 			"subclassfeature1" : {
@@ -4282,6 +4325,7 @@ var ClassSubList = {
 	"undying" : {
 		regExpSearch : /^(?=.*warlock)(?=.*(immortal|undying|neverending|unending)).*$/i,
 		subname : "the Undying",
+		source : ["S", 139],
 		spellcastingExtra : ["false life", "ray of sickness", "blindness/deafness", "silence", "feign death", "speak with dead", "aura of life", "death ward", "contagion", "legend lore"],
 		features : {
 			"subclassfeature1" : {
@@ -4326,6 +4370,7 @@ var ClassSubList = {
 		regExpSearch : /(abjuration|abjurer)/i,
 		subname : "School of Abjuration",
 		fullname : "Abjurer",
+		source : ["P", 115],
 		features : {
 			"subclassfeature2" : {
 				name : "Abjuration Savant",
@@ -4370,6 +4415,7 @@ var ClassSubList = {
 		regExpSearch : /(conjuration|conjurer)/i,
 		subname : "School of Conjuration",
 		fullname : "Conjurer",
+		source : ["P", 116],
 		features : {
 			"subclassfeature2" : {
 				name : "Conjuration Savant",
@@ -4411,6 +4457,7 @@ var ClassSubList = {
 		regExpSearch : /(divination|diviner|divinator)/i,
 		subname : "School of Divination",
 		fullname : "Diviner",
+		source : ["P", 116],
 		features : {
 			"subclassfeature2" : {
 				name : "Divination Savant",
@@ -4453,6 +4500,7 @@ var ClassSubList = {
 		regExpSearch : /(enchantment|enchanter)/i,
 		subname : "School of Enchantment",
 		fullname : "Enchanter",
+		source : ["P", 117],
 		features : {
 			"subclassfeature2" : {
 				name : "Enchantment Savant",
@@ -4494,6 +4542,7 @@ var ClassSubList = {
 		regExpSearch : /(evocation|evocer|evoker)/i,
 		subname : "School of Evocation",
 		fullname : "Evoker",
+		source : ["P", 117],
 		features : {
 			"subclassfeature2" : {
 				name : "Evocation Savant",
@@ -4533,6 +4582,7 @@ var ClassSubList = {
 		regExpSearch : /(illusion|illusionist|illusionary)/i,
 		subname : "School of Illusion",
 		fullname : "Illusionist",
+		source : ["P", 118],
 		features : {
 			"subclassfeature2" : {
 				name : "Illusion Savant",
@@ -4580,6 +4630,7 @@ var ClassSubList = {
 		regExpSearch : /(necromancy|necromancer|necromantic)/i,
 		subname : "School of Necromancy",
 		fullname : "Necromancer",
+		source : ["P", 118],
 		features : {
 			"subclassfeature2" : {
 				name : "Necromancy Savant",
@@ -4621,6 +4672,7 @@ var ClassSubList = {
 		regExpSearch : /(transmutation|transmuter|alchemist)/i,
 		subname : "School of Transmutation",
 		fullname : "Transmuter",
+		source : ["P", 119],
 		features : {
 			"subclassfeature2" : {
 				name : "Transmutation Savant",
@@ -4662,6 +4714,7 @@ var ClassSubList = {
 		subname : "Arcane Tradition of Bladesinging",
 		fullname : "Bladesinger",
 		attacks : [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+		source : ["S", 142],
 		features : {
 			"subclassfeature2" : {
 				name : "Training in War and Song",

@@ -355,7 +355,7 @@ function MakeButtons() {
 				cName : "LayoutButton",
 				cExec : minVer ? "MakeAdvLogMenu_AdvLogOptions(true);" : "MakePagesMenu(); PagesOptions();",
 				oIcon : oIcon,
-				cTooltext : "Select which pages are visible in the sheet.\n\nYou can also add more instances of the following pages:\n   \u2022  Companion page;\n   \u2022  Notes page;\n   \u2022  Wild Shapes page.\n\nNote that if you add more pages or you hide/show the pages many times, the file size might increase.",
+				cTooltext : toUni("Set Pages Layout") + "\nSelect which pages are visible in the sheet.\n\nYou can also add more instances of the following pages:\n   \u2022  Companion page;\n   \u2022  Notes page;\n   \u2022  Wild Shapes page.\n\nNote that if you add more pages or you hide/show the pages many times, the file size might increase.",
 				nPos : 0,
 				cLabel : "Layout"
 			});
@@ -373,7 +373,7 @@ function MakeButtons() {
 				cName : "ResetButton",
 				cExec : "ResetAll()",
 				oIcon : oIcon,
-				cTooltext : "Reset the entire sheet and all form fields to their initial value.",
+				cTooltext : toUni("Reset") + "\nReset the entire sheet and all form fields to their initial value.",
 				nPos : 1,
 				cLabel : "Reset"
 			});
@@ -391,7 +391,7 @@ function MakeButtons() {
 				cName : "ImportExportButton",
 				cExec : "ImportExport_Button()",
 				oIcon : oIcon,
-				cTooltext : " \u2022  Import all the information from an old sheet directly;\n \u2022  Add custom script, see FAQ;\n \u2022  Alternatively, you can import or export data with the .xfdf file format. This method is depreciated, but might still be interesting if you only want to import equipment or the description sections (top of first page, background page, notes, and companion description).",
+				cTooltext : toUni("Import/Export") + "\nReset \u2022  Import all the information from an old sheet directly;\n \u2022  Add custom script, see FAQ;\n \u2022  Alternatively, you can import or export data with the .xfdf file format. This method is depreciated, but might still be interesting if you only want to import equipment or the description sections (top of first page, background page, notes, and companion description).",
 				nPos : 2,
 				cLabel : "Import"
 			});
@@ -410,7 +410,7 @@ function MakeButtons() {
 				cName : "SetTextOptionsButton",
 				cExec : "MakeTextMenu_TextOptions();",
 				oIcon : oIcon,
-				cTooltext : "Gives a dialog where you can:\n   \u2022  Set the font of all fillable fields" + "\n   \u2022  Set the font size of fields with multiple lines;\n   \u2022  Hide\/show the text lines on all pages" + (!typePF ? "" : ";\n   \u2022  Switch between boxes or lines for single-line fields."),
+				cTooltext : toUni("Text Options") + "\nResetGives a dialog where you can:\n   \u2022  Set the font of all fillable fields" + "\n   \u2022  Set the font size of fields with multiple lines;\n   \u2022  Hide\/show the text lines on all pages" + (!typePF ? "" : ";\n   \u2022  Switch between boxes or lines for single-line fields."),
 				nPos : 3,
 				cLabel : "Text"
 			});
@@ -429,7 +429,7 @@ function MakeButtons() {
 				cName : "SetToManualButton",
 				cExec : "SetToManual_Button();",
 				oIcon : oIcon,
-				cTooltext : "Switch between manual or automatic calculation\/implementation of:\n   \u2022  Attacks;\n   \u2022  Background;\n   \u2022  Class;\n   \u2022  Feats;\n   \u2022  Race.",
+				cTooltext : toUni("Auto/Manual") + "\nResetSwitch between manual or automatic calculation\/implementation of:\n   \u2022  Attacks;\n   \u2022  Background;\n   \u2022  Class;\n   \u2022  Feats;\n   \u2022  Race.",
 				nPos : 4,
 				cLabel : "Manual"
 			});
@@ -446,7 +446,7 @@ function MakeButtons() {
 				cName : "WeightToCalcButton",
 				cExec : "WeightToCalc_Button();",
 				oIcon : oIcon,
-				cTooltext : "Open the Total Weight dialogue where you can choose what is and what is not counted towards the Total Weight on the second page.\n\nIn the dialogue you can also select which encumbrance rules to use.",
+				cTooltext : toUni("Weight Calculation") + "\nResetOpen the Total Weight dialogue where you can choose what is and what is not counted towards the Total Weight on the second page.\n\nIn the dialogue you can also select which encumbrance rules to use.",
 				nPos : 5,
 				cLabel : "Weight"
 			});
@@ -463,7 +463,7 @@ function MakeButtons() {
 				cName : "AbilityScoresButton",
 				cExec : "AbilityScores_Button();",
 				oIcon : oIcon,
-				cTooltext : "Open the Ability Scores dialog where you can set them using their separate parts, see the Point Buy value, and apply a magic item that overrides.\n\nThis dialog also gives the option to add Honor/Sanity.",
+				cTooltext : toUni("Ability Scores") + "\nResetOpen the Ability Scores dialog where you can set them using their separate parts, see the Point Buy value, and apply a magic item that overrides.\n\nThis dialog also gives the option to add Honor/Sanity.",
 				nPos : 6,
 				cLabel : "Scores"
 			});
@@ -479,7 +479,7 @@ function MakeButtons() {
 				cName : "BlueTextButton",
 				cExec : "ToggleBlueText(What(\"BlueTextRemember\"))",
 				oIcon : oIcon,
-				cTooltext : "Hide\/show fields where you can manually add modifiers for:\n   \u2022  Ability save DC;\n   \u2022  Attacks to hit and damage bonusses;\n   \u2022  Attacks damage die;\n   \u2022  Proficiency bonus, or the use of proficiency dice;\n   \u2022  Saves;\n   \u2022  Skills, with Jack of All Trades and Remarkable Athlete;\n   \u2022  Number of spell slots;\n   \u2022  Initiative;\n   \u2022  Carrying capacity multiplier;\n   \u2022  Weights of armor, shield, weapons, and ammunition.\n\nThese are the so-called \"blue text fields\" and they won't print, even when they are visible.",
+				cTooltext : toUni("Modifier Fields") + "\nResetHide\/show fields where you can manually add modifiers for:\n   \u2022  Ability save DC;\n   \u2022  Attacks to hit and damage bonusses;\n   \u2022  Attacks damage die;\n   \u2022  Proficiency bonus, or the use of proficiency dice;\n   \u2022  Saves;\n   \u2022  Skills, with Jack of All Trades and Remarkable Athlete;\n   \u2022  Number of spell slots;\n   \u2022  Initiative;\n   \u2022  Carrying capacity multiplier;\n   \u2022  Weights of armor, shield, weapons, and ammunition.\n\nThese are the so-called \"blue text fields\" and they won't print, even when they are visible.",
 				cMarked : "event.rc = What(\"BlueTextRemember\") === \"Yes\";",
 				nPos : 7,
 				cLabel : "Mods"
@@ -499,7 +499,7 @@ function MakeButtons() {
 				cName : "SpellsButton",
 				cExec : "MakeSpellMenu_SpellOptions();",
 				oIcon : oIcon,
-				cTooltext : "Get a menu with the options to:\n   \u2022  Create a Spell Sheet;\n   \u2022  Select the sources for that Spell Sheet;\n   \u2022  Delete an existing Spell Sheet;" + (!typePF ? "\n   \u2022  Set the visibility of the Spell Slot check boxes to the Spell Sheet, the Limited Feature section, or both;" : "") + "\n   \u2022  Set the sheet to use Spell Points instead of Spell Slots.\n\nGenerating a Spell Sheet will involve filling out a dialog for each spellcasting class/race/feat. After that you can select which is included in the Spell Sheet and in what order.", //\n\nAlternatively you can create an empty Spell Sheet which you can fill out manually.",
+				cTooltext : toUni("Spells Options") + "\nResetGet a menu with the options to:\n   \u2022  Create a Spell Sheet;\n   \u2022  Select the sources for that Spell Sheet;\n   \u2022  Delete an existing Spell Sheet;" + (!typePF ? "\n   \u2022  Set the visibility of the Spell Slot check boxes to the Spell Sheet, the Limited Feature section, or both;" : "") + "\n   \u2022  Set the sheet to use Spell Points instead of Spell Slots.\n\nGenerating a Spell Sheet will involve filling out a dialog for each spellcasting class/race/feat. After that you can select which is included in the Spell Sheet and in what order.", //\n\nAlternatively you can create an empty Spell Sheet which you can fill out manually.",
 				nPos : 8,
 				cLabel : "Spells"
 			});
@@ -518,7 +518,7 @@ function MakeButtons() {
 				cName : "AdventureLeagueButton",
 				cExec : "ToggleAdventureLeague(What(\"League Remember\"))",
 				oIcon : oIcon,
-				cTooltext : "Hide\/show fields for Adventurer's League play:\n   \u2022  'DCI' on the 1st page;\n   \u2022  'Faction' and 'Renown' on the 4th page;\n   \u2022  Fixed hp value on the 1st page;\n   \u2022  The action options from the DMG on the 1st page;\n   \u2022  Notes for action options from the DMG on the 3rd page.\n\nThis button also makes the \"Adventurers Logsheet\" visible if it isn't already.\n\nNote that this Character Generator\/Sheet offers some options that are not legal in Adventurer's League play regardless of enabling this button or not.",
+				cTooltext : toUni("Adventurers League") + "\nResetHide\/show fields for Adventurer's League play:\n   \u2022  'DCI' on the 1st page;\n   \u2022  'Faction' and 'Renown' on the 4th page;\n   \u2022  Fixed hp value on the 1st page;\n   \u2022  The action options from the DMG on the 1st page;\n   \u2022  Notes for action options from the DMG on the 3rd page.\n\nThis button also makes the \"Adventurers Logsheet\" visible if it isn't already.\n\nNote that this Character Generator\/Sheet offers some options that are not legal in Adventurer's League play regardless of enabling this button or not.",
 				cMarked : "event.rc = What(\"League Remember\") === \"On\";",
 				nPos : 9,
 				cLabel : "League",
@@ -536,7 +536,7 @@ function MakeButtons() {
 				cName : "PrintButton",
 				cExec : "PrintButton();",
 				oIcon : oIcon,
-				cTooltext : "Select what pages you want to print and open the print dialog.\n\nThe pages you select will be remembered for the next time you press this button.\n\nYou also get an option to hide all fields on the sheet before printing.",
+				cTooltext : toUni("Print") + "\nSelect what pages you want to print and open the print dialog.\n\nThe pages you select will be remembered for the next time you press this button.\n\nYou also get an option to hide all fields on the sheet before printing.",
 				nPos : 10,
 				cLabel : "Print"
 			});
@@ -554,7 +554,7 @@ function MakeButtons() {
 			cName : "MakeMobileReadyButton",
 			cExec : "MakeMobileReady(What(\"MakeMobileReady Remember\") === \"\");",
 			oIcon : oIcon,
-			cTooltext : "Switch to or from a version of the sheet that is compatible with Acrobat Reader for mobile devices.\nThis flattens all form fields and hides non-printable ones to make the sheet more usable on a phone or tablet.\n\nThe fields used during normal play will stay editable:\n   \u2022  1st page: health, attacks, actions, adv./disadv., etc.;\n   \u2022  2nd page: equipment and proficiencies;\n   \u2022  3rd-6th page: all except buttons and portrait\/symbol.",
+			cTooltext : toUni("Flatten") + "\nSwitch to or from a version of the sheet that is compatible with Acrobat Reader for mobile devices.\nThis flattens all form fields and hides non-printable ones to make the sheet more usable on a phone or tablet.\n\nThe fields used during normal play will stay editable:\n   \u2022  1st page: health, attacks, actions, adv./disadv., etc.;\n   \u2022  2nd page: equipment and proficiencies;\n   \u2022  3rd-6th page: all except buttons and portrait\/symbol.",
 			cMarked : "event.rc = What(\"MakeMobileReady Remember\") !== \"\";",
 			nPos : 11,
 			cLabel : "Flatten"
@@ -571,7 +571,7 @@ function MakeButtons() {
 			cName : "SetUnitDecimalsButton",
 			cExec : "SetUnitDecimals_Button();",
 			oIcon : oIcon,
-			cTooltext : "Open a dialog where you can select the following:\n   \u2022  Unit system: metric or imperial\n   \u2022  Decimal separator: dot or comma.",
+			cTooltext : toUni("Unit System") + "\nOpen a dialog where you can select the following:\n   \u2022  Unit system: metric or imperial\n   \u2022  Decimal separator: dot or comma.",
 			nPos : 12,
 			cLabel : "Units"
 		});
@@ -588,7 +588,7 @@ function MakeButtons() {
 			cName : "ColorButton",
 			cExec : "MakeColorMenu(); ColoryOptions();",
 			oIcon : oIcon,
-			cTooltext : !typePF ? "Control the color theme of the sheet in the following ways:\n   \u2022  Color of the Headers;\n   \u2022  Color of the Dragon Heads;\n   \u2022  Color of the HP Dragons \[requires bonus version\];\n   \u2022  Color of the Ability Save DCs \[requires bonus version\];\n   \u2022  Color of the form field highlighting.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet.\n\nIf you have donated, you get the bonus version that gives you the option to choose the colors Pink and Gray, to set the color of the HP Dragons and the Ability Save DCs." : "Set the color of the form field highlighting.\n\nYou can select several colors, the adobe default color, or turn form field highlighting off.",
+			cTooltext : !typePF ? toUni("Set Color Theme") + "\nControl the color theme of the sheet in the following ways:\n   \u2022  Color of the Headers;\n   \u2022  Color of the Dragon Heads;\n   \u2022  Color of the HP Dragons \[requires bonus version\];\n   \u2022  Color of the Ability Save DCs \[requires bonus version\];\n   \u2022  Color of the form field highlighting.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet.\n\nIf you have donated, you get the bonus version that gives you the option to choose the colors Pink and Gray, to set the color of the HP Dragons and the Ability Save DCs." : toUni("Set Highlighting Color") + "\nSet the color of the form field highlighting.\n\nYou can select several colors, the adobe default color, or turn form field highlighting off.",
 			nPos : 13,
 			cLabel : "Color"
 		});
@@ -605,7 +605,7 @@ function MakeButtons() {
 			cName : "FAQButton",
 			cExec : "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });",
 			oIcon : oIcon,
-			cTooltext : "Open the Frequently Asked Questions pdf.\n\nIn this document you can find information on how to add custom code to the sheet (like homebrew races/weapons/feats/etc.).",
+			cTooltext : toUni("FAQ") + "\nOpen the Frequently Asked Questions pdf.\n\nIn this document you can find information on how to add custom code to the sheet (like homebrew races/weapons/feats/etc.).",
 			nPos : 14,
 			cLabel : "FAQ"
 		});
@@ -651,6 +651,7 @@ function OpeningStatement() {
 		if (oCk.bAfterValue) {
 			Value("Opening Remember", "Yes");
 		};
+		if (!minVer && CurrentSources.firstTime) resourceDecisionDialog();
 	};
 };
 
@@ -1280,7 +1281,7 @@ function ToggleWhiteout(Toggle) {
 function ResetAll(GoOn) {
 	var ResetDialog = {
 		cTitle : "Reset the whole sheet",
-		cMsg : "Are you sure you want to reset all fields and functions to their initial value?\nThis will undue any changes you have made, including Custom Scripts, page layout, and imported images.\n\nThis cannot be undone!",
+		cMsg : "Are you sure you want to reset all fields and functions to their initial value?\nThis will undue any changes you have made, including Custom Scripts, page layout, source selection, and imported images.\n\nThis cannot be undone!",
 		nIcon : 1, //Warning
 		nType : 2, //Yes, No
 	}
@@ -1367,7 +1368,7 @@ function ResetAll(GoOn) {
 		CurrentRace = {};
 		CurrentBackground = {};
 		CurrentCompRace = {};
-		CurrentSpells = {};
+		GetStringifieds();
 
 		//call upon some functions to reset other stuff than field values
 		ShowCalcBoxesLines();
@@ -2308,6 +2309,37 @@ function ConditionSet() {
 	thermoM("stop"); //stop the top progress dialog
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
+};
+
+//search the string for possible class and subclass
+function ParseClass(tempString) {
+	var found = false, tempFound = false;
+	for (var obj in ClassList) { //scan string for all classes, choosing subclasses over classes
+		if (!tempFound) {
+			if (testSource(obj, ClassList[obj], "classExcl")) continue; //only testing if the source of the class isn't excluded
+			for (var z = 0; z < ClassList[obj].subclasses[1].length; z++) {
+				var theSub = ClassList[obj].subclasses[1][z];
+				if (testSource(theSub, ClassSubList[theSub], "classExcl")) continue; // test if the subclass or its source isn't excluded
+				var scSearch = ClassSubList[theSub].regExpSearch;
+				if (tempString.search(scSearch) !== -1) {
+					found = [obj, theSub];
+					tempFound = true;
+				}
+			};
+			var cSearch = ClassList[obj].regExpSearch;
+			if (!tempFound && tempString.search(cSearch) !== -1) {
+				found = [obj, ""];
+				tempFound = true;
+			};
+		
+			//a special test for the Unearthed Arcana Revised Ranger
+			if (tempFound && obj === "ranger" && CurrentSources.globalExcl.indexOf("UA:RR") === -1 && (!CurrentSources.classExcl || CurrentSources.classExcl.indexOf("ranger-ua") === -1)) {
+				found = false;
+				tempFound = false;
+			}
+		}
+	};
+	return found;
 }
 
 //detects classes entered and parses information to global classes variable
@@ -2406,29 +2438,11 @@ function FindClasses(Event) {
 	for (i = 0; i < classes.parsed.length; i++) {
 		tempString = classes.parsed[i][0];
 		tempLevel = classes.parsed[i][1];
-		tempFound = false;
-
-		for (var obj in ClassList) { //scan string for all classes, choosing subclasses over classes
-			if (!tempFound) {
-				for (var z = 0; z < ClassList[obj].subclasses[1].length; z++) {
-					var theSub = ClassList[obj].subclasses[1][z];
-					var scSearch = ClassSubList[theSub].regExpSearch;
-					if (tempString.search(scSearch) !== -1) {
-						tempClass = obj;
-						tempSubClass = theSub;
-						tempFound = true;
-					}
-				};
-				var cSearch = ClassList[obj].regExpSearch;
-				if (!tempFound && tempString.search(cSearch) !== -1) {
-					tempClass = obj;
-					tempSubClass = "";
-					tempFound = true;
-				}
-			}
-		};
+		tempFound = parseClass(tempString);
 		
 		if (tempFound) { //class detected
+			tempClass = tempFound[0];
+			tempSubClass = tempFound[1];
 			tempDie = ClassList[tempClass].die;
 
 			if (i === 0) {
@@ -3006,12 +3020,15 @@ function ParseRace(Inputs) {
 		for (var key in RaceList) { //scan string for all races
 			var rSearch = RaceList[key].regExpSearch; //use the defined regular expression of the race
 			if (!tempFound && tempString.search(rSearch) !== -1) {
+				if (testSource(key, RaceList[key], "racesExcl")) continue; // test if the race or its source isn't excluded
 				resultArray[0] = key;
 				tempFound = true;
 				if (RaceList[key].variants) {
 					var RaceOpt = RaceList[key].variants;
 					for (var sub = 0; sub < RaceOpt.length; sub++) { //scan string for all variants of the race
-						var rVars = RaceSubList[key + "-" + RaceOpt[sub]];
+						var theR = key + "-" + RaceOpt[sub];
+						var rVars = RaceSubList[theR];
+						if (testSource(theR, rVars, "racesExcl")) continue; // test if the racial variant or its source isn't excluded
 						var rvSearch = rVars.regExpSearch; //use the defined regular expression of the racial variant
 						if (!tempFound2 && tempString.search(rvSearch) !== -1) {
 							resultArray[1] = RaceOpt[sub];
@@ -3875,15 +3892,21 @@ function SetBackgrounddropdown() {
 	tDoc.calculate = false;
 	var ArrayDing = [""];
 	var tempString = "";
-	tempString += toUni("Background") + "\nType in the name of the background (or select it from the drop-down menu) and its features and proficiencies will be filled out automatically, provided that its a recognized background."
+	tempString += toUni("Background") + "\nType in the name of the background (or select it from the drop-down menu) and its features and proficiencies will be filled out automatically, provided that its a recognized background.";
 	tempString += "\n\n" + toUni("Changing background") + "\nIf you change the background, all the features of the previous background will be removed and the features of the new background will be applied.";
+	
 	for (var key in BackgroundList) {
+		if (testSource(key, BackgroundList[key], "backgrExcl")) continue;
 		ArrayDing.push(BackgroundList[key].name);
-	}
-	for (var key in BackgroundSubList) {
-		ArrayDing.push(BackgroundSubList[key].name);
-	}
+		for (var i = 0; i < BackgroundList[key].variant.length; i++) {
+			var varKey = BackgroundList[key].variant[i];
+			if (testSource(varKey, BackgroundSubList[varKey], "backgrExcl")) continue;
+			ArrayDing.push(BackgroundSubList[varKey].name);
+		}
+	};
 	ArrayDing.sort();
+	if (tDoc.getField("Background").submitName === ArrayDing.toSource()) return; //no changes, so no reason to do this
+	tDoc.getField("Background").submitName = ArrayDing.toSource();
 	var theFldVal = What("Background");
 	tDoc.getField("Background").setItems(ArrayDing);
 	Value("Background", theFldVal, tempString);
@@ -3899,7 +3922,9 @@ function SetRacesdropdown() {
 	tempString += toUni("Race") + "\nType in the name of the race (or select it from the drop-down menu) and its traits and features will be filled out automatically, provided that its a recognized race. You are not limited by the names in the list. Just typing \"Drow\" will also be recognized, for example.";
 	tempString += "\n\n" + toUni("Alternative spelling") + "\nDifferent, setting-dependent race names are recognized as well. For example, typing \"Moon Elf\" will result in all the traits and features of the \"High Elf\" from the Player's Handbook.";
 	tempString += "\n\n" + toUni("Changing race") + "\nIf you change the race, all the features of the previous race will be removed and the features of the new race will be applied.";
+	
 	for (var key in RaceList) {
+		if (testSource(key, RaceList[key], "racesExcl")) continue;
 		if (RaceList[key].sortname) {
 			ArrayDing.push(RaceList[key].sortname);
 		} else {
@@ -3907,6 +3932,8 @@ function SetRacesdropdown() {
 		}
 	}
 	ArrayDing.sort();
+	if (tDoc.getField("Race").submitName === ArrayDing.toSource()) return; //no changes, so no reason to do this
+	tDoc.getField("Race").submitName = ArrayDing.toSource();
 	var theFldVal = What("Race");
 	tDoc.getField("Race").setItems(ArrayDing);
 	Value("Race", theFldVal, tempString);
@@ -4153,10 +4180,11 @@ function ParseBackground(Input) {
 		var tempFound = false;
 
 		for (var key in BackgroundList) { //scan string for all backgrounds
-			if (!tempFound && BackgroundList[key].variant[0]) {
+			if (!tempFound && BackgroundList[key].variant) {
 				var BackOpt = BackgroundList[key].variant;
 				for (var sub = 0; sub < BackOpt.length; sub++) { //scan string for all variants of the background
 					var bVars = BackgroundSubList[BackOpt[sub]];
+					if (testSource(BackOpt[sub], bVars, "backgrExcl")) continue; // test if the background variant or its source isn't excluded
 					var bvSearch = bVars.regExpSearch; //use the defined regular expression of the background variant
 					if (tempString.search(bvSearch) !== -1) {
 						resultArray[0] = key;
@@ -4165,6 +4193,7 @@ function ParseBackground(Input) {
 					}
 				}
 			}
+			if (testSource(key, BackgroundList[key], "backgrExcl")) continue; // test if the background or its source isn't excluded
 			var bSearch = BackgroundList[key].regExpSearch; //use the defined regular expression of the background
 			if (!tempFound && tempString.search(bSearch) !== -1) {
 				resultArray[0] = key;
@@ -5405,6 +5434,7 @@ function ParseFeat(Inputtxt) {
 	var temp = "";
 	for (var key in FeatsList) {
 		if (!tempFound && Inputtxt.toLowerCase().indexOf(key) !== -1) {
+			if (testSource(key, FeatsList[key], "featsExcl")) continue; // test if the feat or its source isn't excluded
 			temp = key;
 			tempFound = true;
 		}
@@ -5541,9 +5571,14 @@ function SetFeatsdropdown() {
 	tDoc.calculate = false;
 	var ArrayDing = [""];
 	for (var key in FeatsList) {
+		if (testSource(key, FeatsList[key], "featsExcl")) continue;
 		ArrayDing.push(FeatsList[key].name);
 	}
 	ArrayDing.sort();
+	
+	if (tDoc.getField("Feat Name 1").submitName === ArrayDing.toSource()) return; //no changes, so no reason to do this
+	tDoc.getField("Feat Name 1").submitName = ArrayDing.toSource();
+	
 	for (var i = 1; i <= FieldNumbers.feats; i++) {
 		tDoc.getField("Feat Name " + i).setItems(ArrayDing);
 		AddTooltip("Feat Name " + i, "Type in the name of the feat (or select it from the drop-down menu) and its text and features will be filled out automatically, provided it is a recognized feat. Ability scores will not be altered other than their tool tips (mouseover texts).\n\nUpon changing to another feat, all features of the previous feat will be undone.");
@@ -6653,8 +6688,16 @@ function PleaseSubclass(theclass) {
 	var returnTrue = false;
 	if (IsNotImport && !classes.known[theclass].subclass && What("SubClass Remember").indexOf(theclass) === -1) {
 		var aclass = ClassList[theclass];
+		var aclassArray = [];
+		for (var i = 0; i < aclass.subclasses[1].length; i++) {
+			var aSub = aclass.subclasses[1][i];
+			if (testSource(aSub, ClassSubList[aSub], "classExcl")) continue;
+			aclassArray.push(aSub);
+		};
+		if (aclassArray.length === 0) return false; //no subclasses got through the test
+		aclassArray.sort();
 		
-		var testSubClass = aclass.subclasses[1][1] ? aclass.subclasses[1][1] : aclass.subclasses[1][0];
+		var testSubClass = aclassArray[1] ? aclassArray[1] : aclassArray[0];
 
 		var SubName1 = ClassSubList[testSubClass].subname;
 		var SubName2 = ClassSubList[testSubClass].fullname ? ClassSubList[testSubClass].fullname : ClassSubList[testSubClass].subname;
@@ -6665,8 +6708,9 @@ function PleaseSubclass(theclass) {
 
 		var SubclassArrayLeft = [];
 		var SubclassArrayRight = [];
-		for (var i = 0; i < aclass.subclasses[1].length; i++) {
-			var theSub = ClassSubList[aclass.subclasses[1][i]];
+		for (var i = 0; i < aclassArray.length; i++) {
+			var theSub = ClassSubList[aclassArray[i]];
+			
 			if (theSub.fullname && theSub.fullname !== theSub.subname) {
 				var theName = theSub.subname + " (" + theSub.fullname + ")";
 			} else {
@@ -6679,7 +6723,7 @@ function PleaseSubclass(theclass) {
 				item_id : "Sub" + i,
 				name : theName
 			}
-			if (i < 4 || (i + 1) <= Math.ceil((aclass.subclasses[1].length) / 2)) {
+			if (i < 4 || (i + 1) <= Math.ceil((aclassArray.length) / 2)) {
 				SubclassArrayLeft.push(temp);
 			} else {
 				SubclassArrayRight.push(temp);
@@ -6700,10 +6744,10 @@ function PleaseSubclass(theclass) {
 			//when pressing the ok button
 			commit : function (dialog) {
 				var oResult = dialog.store();
-				for (var i = 0; i < aclass.subclasses[1].length; i++) {
+				for (var i = 0; i < aclassArray.length; i++) {
 					if (oResult["Sub" + i]) {
 						this.result = i;
-						i = aclass.subclasses[1].length;
+						i = aclassArray.length;
 					}
 				}
 			},
@@ -6775,7 +6819,7 @@ function PleaseSubclass(theclass) {
 
 		var theDialog = app.execDialog(SubclassSelect_Dialog);
 		if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
-			var selection = aclass.subclasses[1][SubclassSelect_Dialog.result];
+			var selection = aclassArray[SubclassSelect_Dialog.result];
 			var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : aclass.name + " (" + ClassSubList[selection].subname + ")";
 			IsSubclassException[theclass] = true;
 			returnTrue = true;
@@ -7156,7 +7200,7 @@ function InvInsert(type, slot, extraPre) {
 		}
 	}
 
-	//only continu if an empty slot was found in the fields
+	//only continue if an empty slot was found in the fields
 	if (endslot) {
 		var extraPre = extraPre ? extraPre : "";
 		//cycle to the slots starting with the empty one and add the values of the one above
@@ -7218,7 +7262,7 @@ function AddEquipment(GearTool, Input, Column) {
 		break;
 	}
 
-	//continu if not a placeholder was selected
+	//continue if not a placeholder was selected
 	if (theStuff && theStuff.name !== "-") {
 		var AddInvLRM = Column === "left" ? "AddInvL" : (Column === "right" ? "AddInvR" : "AddInvM");
 		tDoc[AddInvLRM](theStuff.name, theStuff.amount, RoundTo(theStuff.weight * massMod, 0.001, true));
@@ -7835,7 +7879,7 @@ function MagicItemInsert(itemNmbr) {
 		}
 	}
 
-	//only continu if an empty slot was found in the fields
+	//only continue if an empty slot was found in the fields
 	if (endslot) {
 		//cycle to the slots starting with the empty one and add the values of the one above
 		for (var i = endslot; i > itemNmbr; i--) {
@@ -9254,6 +9298,7 @@ function ApplyBackgroundFeature(input) {
 	} else {
 		for (var feature in BackgroundFeatureList) {
 			if (!TempFound && TheInput.indexOf(feature) !== -1) {
+				if (testSource(feature, BackgroundFeatureList[feature], "backFeaExcl")) continue; // test if the background feature or its source isn't excluded
 				var FeaName = feature.capitalize();
 				tempString += BackgroundFeatureList[feature].source && SourceList[BackgroundFeatureList[feature].source[0]] ? "The feature '" + FeaName + "' is found in the " + SourceList[BackgroundFeatureList[feature].source[0]].name + (BackgroundFeatureList[feature].source[1] ? ", page " + BackgroundFeatureList[feature].source[1] : "") : "";
 				
@@ -9272,10 +9317,13 @@ function SetBackgroundFeaturesdropdown() {
 	var string = "Select or type in the background feature you want to use and its text will be filled out below automatically.\n\nBackground selection\nThe relevant background feature is automatically selected upon selecting a background on the first page. Doing that will always override whatever you wrote here. So, please first fill out a background before you select a alternative feature here.";
 	
 	for (var feature in BackgroundFeatureList) {
+		if (testSource(feature, BackgroundFeatureList[feature], "backFeaExcl")) continue;
 		tempArray.push(feature.capitalize());
-	}
-	
+	};
 	tempArray.sort();
+
+	if (tDoc.getField("Background Feature").submitName === tempArray.toSource()) return; //no changes, so no reason to do this
+	tDoc.getField("Background Feature").submitName = tempArray.toSource();
 	
 	var theFldVal = What("Background Feature");
 	tDoc.getField("Background Feature").setItems(ArrayDing);
@@ -9284,6 +9332,17 @@ function SetBackgroundFeaturesdropdown() {
 
 //Make menu for 'choose race feature' button and parse it to Menus.raceoptions
 function MakeRaceMenu() {
+	//make an array of the variants that are not excluded by the resource settings
+	var racialVarArr = ["basic"];
+	if (CurrentRace.variants) {
+		for (var r = 0; r < CurrentRace.variants.length; r++) {
+			var theR = key + "-" + CurrentRace.variants[r];
+			if (testSource(theR, RaceSubList[theR], "racesExcl")) continue; // test if the racial variant or its source isn't excluded
+			racialVarArr.push(theR);
+		}
+	}
+	
+	
 	var menuLVL1 = function (item, array, thereturn) {
 		for (var i = 0; i < array.length; i++) {
 			item.push({
@@ -9305,18 +9364,12 @@ function MakeRaceMenu() {
 		}
 	};
 
-	var RaceMenu = [];
-	var ListLength = CurrentRace.variants.length;
-	var RaceOptions = ["basic"];
+	var RaceMenu = [];	
 	
-	
-	if (!CurrentRace.known || ListLength === 0) {
+	if (!CurrentRace.known || racialVarArr.length === 1) {
 		menuLVL1(RaceMenu, ["No race options that require a choice"], "nothing");
 	} else {
-		for (var r = 0; r < ListLength; r++) {
-			RaceOptions.push(CurrentRace.variants[r]);
-		}
-		menuLVL1R(RaceMenu, RaceOptions);
+		menuLVL1R(RaceMenu, racialVarArr);
 	}
 
 	Menus.raceoptions = RaceMenu;
@@ -9977,7 +10030,7 @@ function FeatInsert(itemNmbr) {
 		Fields.push(FieldNames[F] + itemNmbr);
 	}
 
-	//only continu if an empty slot was found in the fields
+	//only continue if an empty slot was found in the fields
 	if (endslot) {
 		//cycle to the slots starting with the empty one and add the values of the one above
 		IsNotFeatMenu = false;
@@ -10252,7 +10305,7 @@ function WeaponInsert(itemNmbr) {
 		Fields.push(prefix + FieldNames[F][0] + Q + "Attack." + itemNmbr + FieldNames[F][1]);
 	}
 
-	//only continu if an empty slot was found in the fields
+	//only continue if an empty slot was found in the fields
 	if (endslot) {
 		//cycle to the slots starting with the empty one and add the values of the one above
 		IsNotWeaponMenu = false;
