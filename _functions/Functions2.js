@@ -3583,13 +3583,13 @@ function SetAdvLogCalcOrder(prefix) {
 }
 
 //get all stringified variable and put them into their document level variable
-function GetStringifieds() {
+function GetStringifieds(notSources) {
 	var forSpells = What("CurrentSpells.Stringified").split("##########");
 	if (forSpells[0][0] !== "(") forSpells[0] = "(" + forSpells[0] + ")";
 	if (forSpells[1][0] !== "(") forSpells[1] = "(" + forSpells[1] + ")";
 	CurrentSpells = eval(forSpells[0]);
 	CurrentCasters = eval(forSpells[1]);
-	CurrentSources = eval(What("CurrentSources.Stringified"));
+	if (!notSources) CurrentSources = eval(What("CurrentSources.Stringified"));
 }
 
 //set all stringified variables into their fields
@@ -3615,7 +3615,7 @@ function Publish(version) {
 		tDoc.info.SheetVersion = version;
 		tDoc.info.Title = MakeDocName();
 	};
-	Value("Opening Remember", "No");
+	tDoc.resetForm(["Opening Remember", "CurrentSources.Stringified"]);
 	if (!minVer) DontPrint("d20warning");
 	DnDlogo();
 	tDoc.calculateNow();

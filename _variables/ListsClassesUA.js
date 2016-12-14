@@ -97,7 +97,7 @@ ClassList.sorcerer.subclasses[1].push("favored soul");
 
 /*
 	the Light, Dark, Underdark! Unearthed Arcana of 2015-11-02
-	(https://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf)
+	(http://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf)
 */
 //adds three subclasses: a subclass for the Ranger, called "Deep Stalker"
 ClassSubList["deep stalker"] = {
@@ -176,7 +176,7 @@ ClassSubList["shadow"] = {
 			source : ["UA:LDU", 2],
 			minlevel : 6,
 			additional : "3 sorcery points",
-			description : "\n   " + "As a bonus action, I target a creature I can see and summon a hound within 30 ft of it" + "\n   " + "The hound has all the stats of a medium sized dire wolf with the following exceptions:" + "\n	- " + "At the start of its turn, it automatically knows where the target is" + "\n	- " + "It can only move towards and make (opportunity) attack against the target" + "\n	- " + "It can move through other creatures and objects as if they were difficult terrain" + "\n	- " + "It take 5 force damage if it ends its turn inside an object" + "\n   " + "The target has disadvantage on saves vs. my spells while the hound is within 5 ft of it",
+			description : "\n   " + "As a bonus action, I target a creature I can see and summon a hound within 30 ft of it" + "\n   " + "The hound has all the stats of a medium sized dire wolf with the following exceptions:" + "\n    - " + "At the start of its turn, it automatically knows where the target is" + "\n    - " + "It can only move towards and make (opportunity) attack against the target" + "\n    - " + "It can move through other creatures and objects as if they were difficult terrain" + "\n    - " + "It take 5 force damage if it ends its turn inside an object" + "\n   " + "The target has disadvantage on saves vs. my spells while the hound is within 5 ft of it",
 			action : ["bonus action", " (3 sorcery points)"]
 		},
 		"subclassfeature14" : {
@@ -279,7 +279,7 @@ ClassSubList["college of swords"] = {
 			name : "Blade Flourish",
 			source : ["UA:KoO", 1],
 			minlevel : 3,
-			description : "\n   " + "When I take the Attack action on my turn, I can do one of the following flourishes:" + "\n   " + "I have to use a dagger, longsword, rapier, scimitar, or shortsword while doing this" + "\n	- " + "Defensive Flourish [one Bardic Inspiration die]" + "\n	   " + "As a bonus action, I add the die to my AC until the start of my next turn" + "\n	- " + "Trick Shooter's Flourish [one Bardic Inspiration die]" + "\n	   " + "As a bonus action with a dagger ranged attack, I add the die to the attack roll" + "\n	   " + "If the target is an unattended, inanimate object, the result of the die is doubled" + "\n	- " + "Unnerving Flourish [one Bardic Inspiration die]" + "\n	   " + "As a bonus action when reducing a foe to 0 HP with a melee attack, I leave it alive" + "\n	   " + "The target stays at 1 HP and is frightened of me for my Cha modifier in minutes" + "\n	   " + "It must also make a Cha save at a DC of my spell save + the bardic inspiration die" + "\n	   " + "If failed, it answers truthfully any questions I ask and obeys me while frightened",
+			description : "\n   " + "When I take the Attack action on my turn, I can do one of the following flourishes:" + "\n   " + "I have to use a dagger, longsword, rapier, scimitar, or shortsword while doing this" + "\n    - " + "Defensive Flourish [one Bardic Inspiration die]" + "\n	   " + "As a bonus action, I add the die to my AC until the start of my next turn" + "\n    - " + "Trick Shooter's Flourish [one Bardic Inspiration die]" + "\n	   " + "As a bonus action with a dagger ranged attack, I add the die to the attack roll" + "\n	   " + "If the target is an unattended, inanimate object, the result of the die is doubled" + "\n    - " + "Unnerving Flourish [one Bardic Inspiration die]" + "\n	   " + "As a bonus action when reducing a foe to 0 HP with a melee attack, I leave it alive" + "\n	   " + "The target stays at 1 HP and is frightened of me for my Cha modifier in minutes" + "\n	   " + "It must also make a Cha save at a DC of my spell save + the bardic inspiration die" + "\n	   " + "If failed, it answers truthfully any questions I ask and obeys me while frightened",
 			action : ["bonus action", " (one inspiration die)"]
 		},
 		"subclassfeature14" : {
@@ -365,7 +365,7 @@ ClassSubList["cavalier"] = {
 			name : "Combat Superiority",
 			source : ["UA:KoO", 3],
 			minlevel : 3,
-			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special maneuvers (see below)" + "\n   " + "I can use only one maneuver per attack; I regain all superiority dice after a short rest" + "\n	- " + "Use after rolling to influence/control an animal; I add the superiority die to the roll" + "\n	- " + "Use after rolling to hit; I add the superiority die to my attack roll" + "\n	- " + "Use on a mount, before rolling to hit with a lance; I add the die to the damage roll" + "\n	   " + "Also, the target must make a Str save (DC 8 + Prof + Str mod) or be knocked prone" + "\n	- " + "As a reaction when I'm hit or my mount is hit, I add the superiority die to AC" + "\n	   " + "If the attack still hits, I or my mount only take half damage from it",
+			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special maneuvers (see below)" + "\n   " + "I can use only one maneuver per attack; I regain all superiority dice after a short rest" + "\n    - " + "Use after rolling to influence/control an animal; I add the superiority die to the roll" + "\n    - " + "Use after rolling to hit; I add the superiority die to my attack roll" + "\n    - " + "Use on a mount, before rolling to hit with a lance; I add the die to the damage roll" + "\n	   " + "Also, the target must make a Str save (DC 8 + Prof + Str mod) or be knocked prone" + "\n    - " + "As a reaction when I'm hit or my mount is hit, I add the superiority die to AC" + "\n	   " + "If the attack still hits, I or my mount only take half damage from it",
 			additional : ["", "", "d8", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12"],
 			usages : [0, 0, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6],
 			recovery : "short rest",
@@ -415,7 +415,7 @@ ClassSubList["scout"] = {
 			name : "Combat Superiority",
 			source : ["UA:KoO", 4],
 			minlevel : 3,
-			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special maneuvers (see below)" + "\n   " + "I can use only one maneuver per attack; I regain all superiority dice after a short rest" + "\n	- " + "Use after rolling a Athletics, Nature, Perception, Stealth, or Survival check" + "\n	   " + "I add half the superiority die to the roll (rounding up)" + "\n	- " + "Use after rolling to hit; I add the superiority die to my attack roll" + "\n	- " + "As a reaction when I'm hit while wearing light/medium armor, I add the die to AC" + "\n	   " + "If the attack still hits, I only take half damage from it",
+			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special maneuvers (see below)" + "\n   " + "I can use only one maneuver per attack; I regain all superiority dice after a short rest" + "\n    - " + "Use after rolling a Athletics, Nature, Perception, Stealth, or Survival check" + "\n	   " + "I add half the superiority die to the roll (rounding up)" + "\n    - " + "Use after rolling to hit; I add the superiority die to my attack roll" + "\n    - " + "As a reaction when I'm hit while wearing light/medium armor, I add the die to AC" + "\n	   " + "If the attack still hits, I only take half damage from it",
 			additional : ["", "", "d8", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12"],
 			usages : [0, 0, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6],
 			recovery : "short rest",
@@ -432,42 +432,42 @@ ClassSubList["scout"] = {
 			"arctic" : {
 				name : "Arctic",
 				source : ["P", 91],
-				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning arctic terrain" + "\n   " + "While traveling for an hour or more in arctic terrain I gain the following benefits:" + "\n	- " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n	- " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n	- " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n	- " + "When tracking, I also learn the exact number, size, and time since passing",
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning arctic terrain" + "\n   " + "While traveling for an hour or more in arctic terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
 			},
 			"coast" : {
 				name : "Coast",
 				source : ["P", 91],
-				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning coast terrain" + "\n   " + "While traveling for an hour or more in coast terrain I gain the following benefits:" + "\n	- " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n	- " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n	- " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n	- " + "When tracking, I also learn the exact number, size, and time since passing",
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning coast terrain" + "\n   " + "While traveling for an hour or more in coast terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
 			},
 			"desert" : {
 				name : "Desert",
 				source : ["P", 91],
-				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning desert terrain" + "\n   " + "While traveling for an hour or more in desert terrain I gain the following benefits:" + "\n	- " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n	- " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n	- " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n	- " + "When tracking, I also learn the exact number, size, and time since passing",
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning desert terrain" + "\n   " + "While traveling for an hour or more in desert terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
 			},
 			"forest" : {
 				name : "Forest",
 				source : ["P", 91],
-				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning forest terrain" + "\n   " + "While traveling for an hour or more in forest terrain I gain the following benefits:" + "\n	- " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n	- " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n	- " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n	- " + "When tracking, I also learn the exact number, size, and time since passing",
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning forest terrain" + "\n   " + "While traveling for an hour or more in forest terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
 			},
 			"grassland" : {
 				name : "Grassland",
 				source : ["P", 91],
-				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning grassland terrain" + "\n   " + "While traveling for an hour or more in grassland terrain I gain the following benefits:" + "\n	- " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n	- " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n	- " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n	- " + "When tracking, I also learn the exact number, size, and time since passing",
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning grassland terrain" + "\n   " + "While traveling for an hour or more in grassland terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
 			},
 			"mountain" : {
 				name : "Mountain",
 				source : ["P", 91],
-				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning mountain terrain" + "\n   " + "While traveling for an hour or more in mountain terrain I gain the following benefits:" + "\n	- " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n	- " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n	- " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n	- " + "When tracking, I also learn the exact number, size, and time since passing",
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning mountain terrain" + "\n   " + "While traveling for an hour or more in mountain terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
 			},
 			"swamp" : {
 				name : "Swamp",
 				source : ["P", 91],
-				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning swamp terrain" + "\n   " + "While traveling for an hour or more in swamp terrain I gain the following benefits:" + "\n	- " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n	- " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n	- " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n	- " + "When tracking, I also learn the exact number, size, and time since passing",
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning swamp terrain" + "\n   " + "While traveling for an hour or more in swamp terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
 			},
 			"underdark" : {
 				name : "Underdark",
 				source : ["P", 91],
-				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning underdark terrain" + "\n   " + "While traveling for an hour or more in underdark terrain I gain the following benefits:" + "\n	- " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n	- " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n	- " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n	- " + "When tracking, I also learn the exact number, size, and time since passing",
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning underdark terrain" + "\n   " + "While traveling for an hour or more in underdark terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
 			},
 		},
 		"subclassfeature10" : {
@@ -488,7 +488,7 @@ ClassList.fighter.subclasses[1].push("scout");
 
 /*
 	the Gothic Heroes Unearthed Arcana of 2016-04-04
-	(https://dnd.wizards.com/sites/default/files/media/upload/articles/UA%20Gothic%20Characters.pdf)
+	(http://dnd.wizards.com/sites/default/files/media/upload/articles/UA%20Gothic%20Characters.pdf)
 */
 //adds two subclasses: a subclass for the Fighter, called "Monster Hunter"
 ClassSubList["monster hunter"] = {
@@ -508,7 +508,7 @@ ClassSubList["monster hunter"] = {
 			name : "Combat Superiority",
 			source : ["UA:GH", 2],
 			minlevel : 3,
-			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special maneuvers (see below)" + "\n   " + "I can use only one maneuver per attack; I regain all superiority dice after a short rest" + "\n	- " + "Use after rolling to hit; I add the superiority die to my attack roll" + "\n	- " + "Use after damaging a creature; I add the superiority die to the damage roll" + "\n	   " + "Also, the attack imposes disadvantage on any concentration save resulting from it" + "\n	- " + "Use after Int/Wis/Cha save, before knowing success/fail; add the die to the save total" + "\n	- " + "Use with Wis (Perception) to detect hidden or Wis (Insight) to see if lying to me" + "\n	   " + "After rolling but before knowing if success/fail; I add the superiority die to the check",
+			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special maneuvers (see below)" + "\n   " + "I can use only one maneuver per attack; I regain all superiority dice after a short rest" + "\n    - " + "Use after rolling to hit; I add the superiority die to my attack roll" + "\n    - " + "Use after damaging a creature; I add the superiority die to the damage roll" + "\n	   " + "Also, the attack imposes disadvantage on any concentration save resulting from it" + "\n    - " + "Use after Int/Wis/Cha save, before knowing success/fail; add the die to the save total" + "\n    - " + "Use with Wis (Perception) to detect hidden or Wis (Insight) to see if lying to me" + "\n	   " + "After rolling but before knowing if success/fail; I add the superiority die to the check",
 			additional : ["", "", "d8", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12"],
 			usages : [0, 0, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6],
 			recovery : "short rest"
@@ -565,7 +565,7 @@ ClassSubList["inquisitive"] = {
 			name : "Eye for Detail",
 			source : ["UA:GH", 3],
 			minlevel : 3,
-			description : "\n   " + "I can use the bonus action granted by Cunning Action for the following as well:" + "\n	- " + "To make a Wisdom (Perception) check to spot a hidden creature or object" + "\n	- " + "To make an Intelligence (Investigation) check to uncover and decipher clues" + "\n	- " + "To use Insightful Fighting (see below)" ,
+			description : "\n   " + "I can use the bonus action granted by Cunning Action for the following as well:" + "\n    - " + "To make a Wisdom (Perception) check to spot a hidden creature or object" + "\n    - " + "To make an Intelligence (Investigation) check to uncover and decipher clues" + "\n    - " + "To use Insightful Fighting (see below)" ,
 		},
 		"subclassfeature3.2" : {
 			name : "Insightful Fighting",
@@ -600,7 +600,7 @@ ClassList.rogue.subclasses[1].push("inquisitive");
 
 /*
 	The Faithful Unearthed Arcana of 2016-08-01
-	(https://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf)
+	(http://media.wizards.com/2016/dnd/downloads/UA%20Non-Divine%20Faithful%20SFG.pdf)
 */
 //adds two subclasses: a subclass for the Warlock, called "The Seeker"
 ClassSubList["the seeker"] = {
@@ -648,7 +648,7 @@ ClassList.warlock.subclasses[1].push("the seeker");
 
 /*
 	The Ranger, Revised Unearthed Arcana of 2016-09-12
-	(https://media.wizards.com/2016/dnd/downloads/UA_RevisedRanger.pdf)
+	(http://media.wizards.com/2016/dnd/downloads/UA_RevisedRanger.pdf)
 */
 //adds an alternative ranger class, including three subclasses
 ClassList["rangerua"] = {
@@ -674,6 +674,9 @@ ClassList["rangerua"] = {
 	subclasses : ["Ranger Conclaves", ["beast master conclave", "deep stalker conclave", "hunter conclave"]],
 	attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 	spellcastingFactor : 2,
+	spellcastingList : {
+		class : "ranger"
+	},
 	spellcastingKnown : {
 		spells : [0, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11],
 	},
@@ -717,10 +720,10 @@ ClassList["rangerua"] = {
 			"travel benefit" : {
 				name : "Travel Benefits",
 				source : ["UA:RR", 3],
-				description: "\n   " + "After one hour of traveling in the wilderness I gain the following benefits:" + "\n	- " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n	- " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n	- " + "If alone (or alone with animal companion), I can move stealthily at my normal pace" + "\n	- " + "When tracking others, I also learn their exact number, size, and time since passing",
+				description: "\n   " + "After one hour of traveling in the wilderness I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with animal companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking others, I also learn their exact number, size, and time since passing",
 			},
-			eval : "Checkbox(\"Init Adv\", true, \"Advantage to Initiative checks was gained from Ranger (Natural Explorer)\"); ClassFeatureOptions([\"ranger\", \"natural explorer\", \"travel benefit\", \"extra\"]);",
-			removeeval : "Checkbox(\"Init Adv\", false, \"\"); ClassFeatureOptions([\"ranger\", \"natural explorer\", \"travel benefit\", \"extra\"], \"remove\");"
+			eval : "Checkbox(\"Init Adv\", true, \"Advantage to Initiative checks was gained from Ranger (Natural Explorer)\"); ClassFeatureOptions([\"rangerua\", \"natural explorer\", \"travel benefit\", \"extra\"]);",
+			removeeval : "Checkbox(\"Init Adv\", false, \"\"); ClassFeatureOptions([\"rangerua\", \"natural explorer\", \"travel benefit\", \"extra\"], \"remove\");"
 		},
 		"fighting style" : {
 			name : "Fighting Style",
@@ -1520,7 +1523,7 @@ ClassList.cleric.subclasses[1].push("protection domain");
 
 /*
 	the Druid Circles Unearthed Arcana of 2016-11-28
-	(https://media.wizards.com/2016/dnd/downloads/UA_Druid11272016_CAWS.pdf)
+	(http://media.wizards.com/2016/dnd/downloads/UA_Druid11272016_CAWS.pdf)
 */
 //adds three subclasses: a subclass for the Druid, called "Circle of Dreams"
 ClassSubList["circle of dreams"] = {
@@ -1579,7 +1582,7 @@ ClassSubList["circle of the shepherd"] = {
 			name : "Spirit Bond",
 			source : ["UA:DC", 2],
 			minlevel : 2,
-			description : "\n   " + "As a bonus action, I can summon a spirit to an empty space within 60 ft that I can see" + "\n   " + "The Bear, Hawk, or Wolf spirit, creates a 30-ft radius aura and persist for 1 minute" + "\n   " + "It doesn’t occupy space, is immobile, and counts as neither a creature nor an object" + "\n	- " + "Bear: my allies in the area and I instantly gain 5 + my druid level in temp HP" + "\n	   " + "While in the aura, my allies and I gain advantage on Strength checks and saves" + "\n	- " + "Hawk: my allies and I gain advantage on attacks against targets in the aura" + "\n	- " + "Wolf: my allies and I gain advantage on ability checks to detect targets in the aura" + "\n		 " + "If I cast a healing spell with a spell slot, allies in the aura heal my druid level in HP",
+			description : "\n   " + "As a bonus action, I can summon a spirit to an empty space within 60 ft that I can see" + "\n   " + "The Bear, Hawk, or Wolf spirit, creates a 30-ft radius aura and persist for 1 minute" + "\n   " + "It doesn’t occupy space, is immobile, and counts as neither a creature nor an object" + "\n    - " + "Bear: my allies in the area and I instantly gain 5 + my druid level in temp HP" + "\n	   " + "While in the aura, my allies and I gain advantage on Strength checks and saves" + "\n    - " + "Hawk: my allies and I gain advantage on attacks against targets in the aura" + "\n    - " + "Wolf: my allies and I gain advantage on ability checks to detect targets in the aura" + "\n		 " + "If I cast a healing spell with a spell slot, allies in the aura heal my druid level in HP",
 			usages : 1,
 			recovery : "short rest",
 			action : ["bonus action", ""]
@@ -1776,7 +1779,7 @@ ClassSubList["knight"] = {
 			name : "Implacable Mark",
 			source : ["UA:FMA", 2],
 			minlevel : 3,
-			description : "\n   " + "If I hit a creature with a melee weapon attack, I mark it until the end of my next turn" + "\n   " + "A marked target has disadv. on any attacks vs. those that didn't mark it" + "\n   " + "I can attack the target I marked if it is within 5 ft of me and does one of the following:" + "\n	- " + "It moves at least 1 foot on its turn" + "\n	- " + "It makes an attack that it suffers disadv. on from being marked" + "\n   " + "This attack uses my reaction, has adv., and adds my fighter level as extra damage" + "\n   " + "I can still do this if I already used my reaction this round, but not this turn",
+			description : "\n   " + "If I hit a creature with a melee weapon attack, I mark it until the end of my next turn" + "\n   " + "A marked target has disadv. on any attacks vs. those that didn't mark it" + "\n   " + "I can attack the target I marked if it is within 5 ft of me and does one of the following:" + "\n    - " + "It moves at least 1 foot on its turn" + "\n    - " + "It makes an attack that it suffers disadv. on from being marked" + "\n   " + "This attack uses my reaction, has adv., and adds my fighter level as extra damage" + "\n   " + "I can still do this if I already used my reaction this round, but not this turn",
 			recovery : "short rest",
 			usages : 3,
 			additional : ["", "", "+3 damage", "+4 damage", "+5 damage", "+6 damage", "+7 damage", "+8 damage", "+9 damage", "+10 damage", "+11 damage", "+12 damage", "+13 damage", "+14 damage", "+15 damage", "+16 damage", "+17 damage", "+18 damage", "+19 damage", "+20 damage"],

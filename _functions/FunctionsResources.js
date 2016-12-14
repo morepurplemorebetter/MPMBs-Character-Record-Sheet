@@ -277,7 +277,7 @@ function resourceDecisionDialog() {
 			if (theSrc && SourceList[theSrc].url) {
 				this.sourceLink = SourceList[theSrc].url;
 				dialog.load({
-					"bLin" : "Click here to visit the \"" + SourceList[theSrc].name + "\" web page"
+					"bLin" : "Click here to look up the \"" + SourceList[theSrc].name + "\" resource"
 				})
 			}
 		},

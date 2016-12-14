@@ -111,7 +111,7 @@ var SourceList = {
 		name : "Unearthed Arcana: The Faithful", //2016-08-01
 		abbreviation : "UA:TF",
 		group : "Unearthed Arcana",
-		url : "http://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf"
+		url : "http://media.wizards.com/2016/dnd/downloads/UA%20Non-Divine%20Faithful%20SFG.pdf"
 	},
 	"UA:RR" : {
 		name : "Unearthed Arcana: The Ranger, Revised", //2016-09-12

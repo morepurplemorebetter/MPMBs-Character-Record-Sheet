@@ -3914,7 +3914,7 @@ var ClassSubList = {
 				minlevel : 3,
 				description : "\n   " + "I don't need advantage to sneak attack if my target is the only one within 5 ft of me" + "\n   " + "I can add my Charisma modifier to initiative rolls",
 				eval : "if (!What(\"Init Bonus\")) {Value(\"Init Bonus\", \"Cha\")}",
-				removeeval : "if (What(\"Init Bonus\") === \"Cha\") {Value(\"Init Bonus\", \"\")}",
+				removeeval : "if (What(\"Init Bonus\") === \"Cha\") {Value(\"Init Bonus\", \"\")}"
 			},
 			"subclassfeature9" : {
 				name : "Panache",
@@ -4469,7 +4469,7 @@ var ClassSubList = {
 				name : "Portent",
 				source : ["P", 116],
 				minlevel : 2,
-				description : "\n   " + "After a long rest, I roll d20s and record the results to be used before my next long rest" + "\n   " + "A result can replace an attack/save/ability check made by me or a creature I can see" + "\n   " + "I choose to switch them before the replaced dice are rolled and only once per turn",
+				description : "\n   " + "After a short or long rest, I roll dice and keep results to be used before my next rest" + "\n   " + "A result can replace an attack/save/ability check made by me or a creature I can see" + "\n   " + "I choose to switch them before the dice to be replaced are rolled; Max once per turn",
 				additional : ["", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest"]
 			},
 			"subclassfeature6" : {

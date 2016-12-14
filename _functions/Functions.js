@@ -1384,7 +1384,7 @@ function ResetAll(GoOn) {
 		CurrentRace = {};
 		CurrentBackground = {};
 		CurrentCompRace = {};
-		GetStringifieds();
+		GetStringifieds(GoOn);
 
 		//call upon some functions to reset other stuff than field values
 		ShowCalcBoxesLines();
@@ -5902,37 +5902,33 @@ function UpdateLevelFeatures(Typeswitch) {
 			for (var key in CurrentRace.features) {
 				// now we know whether to add or remove features
 				var keyFea = CurrentRace.features[key];
-				var GoAnyway = false;
+				var GoAnyway = keyFea.minlevel <= newRaceLvl;
 				thermoM("Updating " + CurrentRace.name + "'s " + keyFea.name + "..."); //change the progress dialog text
 
 				var FeaUse = keyFea.usages;
-				if (isArray(keyFea.usages)) {
-					FeaUse = keyFea.usages[newRaceLvl - 1];
-					var FeaUseOld = keyFea.usages[oldRaceLvl - 1];
-					GoAnyway = FeaUse !== FeaUseOld;
+				if (FeaUse && isArray(FeaUse)) {
+					FeaUse = FeaUse[newRaceLvl - 1];
+					var FeaUseOld = FeaUse[oldRaceLvl - 1];
+					GoAnyway = GoAnyway && FeaUse !== FeaUseOld;
 				}
 
 				var FeaAdd = keyFea.additional ? " (" + keyFea.additional + ")" : "";
 				if (FeaAdd && isArray(keyFea.additional)) {
 					FeaAdd = " (" + keyFea.additional[newRaceLvl - 1] + ")";
-					GoAnyway = GoAnyway || keyFea.additional[newRaceLvl - 1] !== keyFea.additional[oldRaceLvl - 1] ? true : false;
+					GoAnyway = GoAnyway || (keyFea.minlevel <= newRaceLvl && keyFea.additional[newRaceLvl - 1] !== keyFea.additional[oldRaceLvl - 1]);
 				}
 				
-				var AddRemove = FeaUse && RaceLevelUp[0] && FeaUse.search(/unlimited|\u221E/i) === -1 ? "Add" : "Remove";
-				//if a feature has an array for additional text or for number of usages, and the level requirement is met, the feature should be updated to that level
-				if (GoAnyway && keyFea.minlevel <= newRaceLvl) {
-					AddRemove = "Add";
-				} else {
-					GoAnyway = false;
-				}
+				//see if we are going to add or remove a feature
+				var AddRemove = keyFea.minlevel <= newRaceLvl ? "Add" : "Remove"
 				
 				//make a check to see if level-dependent features should be dealt with
 				var checkLVL = keyFea.minlevel <= RaceLevelUp[2] && keyFea.minlevel > RaceLevelUp[1];
 				
 				//add, remove, or update the feature
-				if (GoAnyway || checkLVL) {
+				if (keyFea.usages && (GoAnyway || checkLVL)) {
 					var FeaTooltip = CurrentRace.name + keyFea.tooltip;
-					tDoc[AddRemove + "Feature"](keyFea.name, AddRemove === "Remove" ? FeaUseOld : FeaUse, FeaAdd, keyFea.recovery, FeaTooltip, FeaUseOld);
+					var AddRemoveFea = AddRemove === "Add" && FeaUse && RaceLevelUp[0] && FeaUse.search(/unlimited|\u221E/i) === -1 ? "Add" : "Remove";
+					tDoc[AddRemoveFea + "Feature"](keyFea.name, AddRemoveFea === "Remove" ? FeaUseOld : FeaUse, FeaAdd, keyFea.recovery, FeaTooltip, FeaUseOld);
 				}
 				
 				thermoM(1/2); //increment the progress dialog's progress
@@ -9363,7 +9359,7 @@ function MakeRaceMenu() {
 		for (var r = 0; r < CurrentRace.variants.length; r++) {
 			var theR = CurrentRace.known + "-" + CurrentRace.variants[r];
 			if (testSource(theR, RaceSubList[theR], "racesExcl")) continue; // test if the racial variant or its source isn't excluded
-			racialVarArr.push(theR);
+			racialVarArr.push(CurrentRace.variants[r]);
 		}
 	};
 	
