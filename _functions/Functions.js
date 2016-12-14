@@ -391,7 +391,7 @@ function MakeButtons() {
 				cName : "ImportExportButton",
 				cExec : "ImportExport_Button();",
 				oIcon : oIcon,
-				cTooltext : toUni("Import / Export") + "\n \u2022  Import all the information from an old sheet directly;\n \u2022  Add custom script, see FAQ;\n \u2022  Alternatively, you can import or export data with the .xfdf file format. This method is depreciated, but might still be interesting if you only want to import equipment or the description sections (top of first page, background page, notes, and companion description).",
+				cTooltext : toUni("Import / Export") + "\n \u2022  Import all the information from an old sheet directly;\n \u2022  Add custom script, see FAQ;\n \u2022  Alternatively, you can import or export data with the .xfdf file format. This method is depreciated, but might still be interesting if you only want to import the equipment sections or only the description sections.\n\nThe description sections include the top of first page, background page, notes, and companion description.",
 				nPos : 2,
 				cLabel : "Import"
 			});
@@ -426,7 +426,7 @@ function MakeButtons() {
 				cName : "SetTextOptionsButton",
 				cExec : "MakeTextMenu_TextOptions();",
 				oIcon : oIcon,
-				cTooltext : toUni("Text Options") + "\nResetGives a dialog where you can:\n   \u2022  Set the font of all fillable fields" + "\n   \u2022  Set the font size of fields with multiple lines;\n   \u2022  Hide\/show the text lines on all pages" + (!typePF ? "" : ";\n   \u2022  Switch between boxes or lines for single-line fields."),
+				cTooltext : toUni("Text Options") + "\nGives a dialog where you can:\n   \u2022  Set the font of all fillable fields" + "\n   \u2022  Set the font size of fields with multiple lines;\n   \u2022  Hide\/show the text lines on all pages" + (!typePF ? "" : ";\n   \u2022  Switch between boxes or lines for single-line fields."),
 				nPos : 4,
 				cLabel : "Text"
 			});
@@ -445,7 +445,7 @@ function MakeButtons() {
 				cName : "SetToManualButton",
 				cExec : "SetToManual_Button();",
 				oIcon : oIcon,
-				cTooltext : toUni("Auto / Manual") + "\nResetSwitch between manual or automatic calculation\/implementation of:\n   \u2022  Attacks;\n   \u2022  Background;\n   \u2022  Class;\n   \u2022  Feats;\n   \u2022  Race.",
+				cTooltext : toUni("Auto / Manual") + "\nSwitch between manual or automatic calculation\/implementation of:\n   \u2022  Attacks;\n   \u2022  Background;\n   \u2022  Class;\n   \u2022  Feats;\n   \u2022  Race.",
 				nPos : 5,
 				cLabel : "Manual"
 			});
@@ -462,7 +462,7 @@ function MakeButtons() {
 				cName : "WeightToCalcButton",
 				cExec : "WeightToCalc_Button();",
 				oIcon : oIcon,
-				cTooltext : toUni("Weight Calculation") + "\nResetOpen the Total Weight dialogue where you can choose what is and what is not counted towards the Total Weight on the second page.\n\nIn the dialogue you can also select which encumbrance rules to use.",
+				cTooltext : toUni("Weight Calculation") + "\nOpen the Total Weight dialogue where you can choose what is and what is not counted towards the Total Weight on the second page.\n\nIn the dialogue you can also select which encumbrance rules to use.",
 				nPos : 6,
 				cLabel : "Weight"
 			});
@@ -479,7 +479,7 @@ function MakeButtons() {
 				cName : "AbilityScoresButton",
 				cExec : "AbilityScores_Button();",
 				oIcon : oIcon,
-				cTooltext : toUni("Ability Scores") + "\nResetOpen the Ability Scores dialog where you can set them using their separate parts, see the Point Buy value, and apply a magic item that overrides.\n\nThis dialog also gives the option to add Honor/Sanity.",
+				cTooltext : toUni("Ability Scores") + "\nOpen the Ability Scores dialog where you can set them using their separate parts, see the Point Buy value, and apply a magic item that overrides.\n\nThis dialog also gives the option to add Honor/Sanity.",
 				nPos : 7,
 				cLabel : "Scores"
 			});
@@ -495,7 +495,7 @@ function MakeButtons() {
 				cName : "BlueTextButton",
 				cExec : "ToggleBlueText(What(\"BlueTextRemember\"));",
 				oIcon : oIcon,
-				cTooltext : toUni("Modifier Fields") + "\nResetHide\/show fields where you can manually add modifiers for:\n   \u2022  Ability save DC;\n   \u2022  Attacks to hit and damage bonusses;\n   \u2022  Attacks damage die;\n   \u2022  Proficiency bonus, or the use of proficiency dice;\n   \u2022  Saves;\n   \u2022  Skills, with Jack of All Trades and Remarkable Athlete;\n   \u2022  Number of spell slots;\n   \u2022  Initiative;\n   \u2022  Carrying capacity multiplier;\n   \u2022  Weights of armor, shield, weapons, and ammunition.\n\nThese are the so-called \"blue text fields\" and they won't print, even when they are visible.",
+				cTooltext : toUni("Modifier Fields") + "\nHide\/show fields where you can manually add modifiers for:\n   \u2022  Ability save DC;\n   \u2022  Attacks to hit and damage bonusses;\n   \u2022  Attacks damage die;\n   \u2022  Proficiency bonus, or the use of proficiency dice;\n   \u2022  Saves;\n   \u2022  Skills, with Jack of All Trades and Remarkable Athlete;\n   \u2022  Number of spell slots;\n   \u2022  Initiative;\n   \u2022  Carrying capacity multiplier;\n   \u2022  Weights of armor, shield, weapons, and ammunition.\n\nThese are the so-called \"blue text fields\" and they won't print, even when they are visible.",
 				cMarked : "event.rc = What(\"BlueTextRemember\") === \"Yes\";",
 				nPos : 8,
 				cLabel : "Mods"
@@ -515,7 +515,7 @@ function MakeButtons() {
 				cName : "SpellsButton",
 				cExec : "MakeSpellMenu_SpellOptions();",
 				oIcon : oIcon,
-				cTooltext : toUni("Spells Options") + "\nResetGet a menu with the options to:\n   \u2022  Create a Spell Sheet;\n   \u2022  Select the sources for that Spell Sheet;\n   \u2022  Delete an existing Spell Sheet;" + (!typePF ? "\n   \u2022  Set the visibility of the Spell Slot check boxes to the Spell Sheet, the Limited Feature section, or both;" : "") + "\n   \u2022  Set the sheet to use Spell Points instead of Spell Slots.\n\nGenerating a Spell Sheet will involve filling out a dialog for each spellcasting class/race/feat. After that you can select which is included in the Spell Sheet and in what order.", //\n\nAlternatively you can create an empty Spell Sheet which you can fill out manually.",
+				cTooltext : toUni("Spells Options") + "\nGet a menu with the options to:\n   \u2022  Create a Spell Sheet;\n   \u2022  Select the sources for that Spell Sheet;\n   \u2022  Delete an existing Spell Sheet;" + (!typePF ? "\n   \u2022  Set the visibility of the Spell Slot check boxes to the Spell Sheet, the Limited Feature section, or both;" : "") + "\n   \u2022  Set the sheet to use Spell Points instead of Spell Slots.\n\nGenerating a Spell Sheet will involve filling out a dialog for each spellcasting class/race/feat. After that you can select which is included in the Spell Sheet and in what order.", //\n\nAlternatively you can create an empty Spell Sheet which you can fill out manually.",
 				nPos : 9,
 				cLabel : "Spells"
 			});
@@ -534,7 +534,7 @@ function MakeButtons() {
 				cName : "AdventureLeagueButton",
 				cExec : "ToggleAdventureLeague(What(\"League Remember\"));",
 				oIcon : oIcon,
-				cTooltext : toUni("Adventurers League") + "\nResetHide\/show fields for Adventurer's League play:\n   \u2022  'DCI' on the 1st page;\n   \u2022  'Faction' and 'Renown' on the 4th page;\n   \u2022  Fixed hp value on the 1st page;\n   \u2022  The action options from the DMG on the 1st page;\n   \u2022  Notes for action options from the DMG on the 3rd page.\n\nThis button also makes the \"Adventurers Logsheet\" visible if it isn't already.\n\nNote that this Character Generator\/Sheet offers some options that are not legal in Adventurer's League play regardless of enabling this button or not.",
+				cTooltext : toUni("Adventurers League") + "\nHide\/show fields for Adventurer's League play:\n   \u2022  'DCI' on the 1st page;\n   \u2022  'Faction' and 'Renown' on the 4th page;\n   \u2022  Fixed hp value on the 1st page;\n   \u2022  The action options from the DMG on the 1st page;\n   \u2022  Notes for action options from the DMG on the 3rd page.\n\nThis button also makes the \"Adventurers Logsheet\" visible if it isn't already.\n\nNote that this Character Generator\/Sheet offers some options that are not legal in Adventurer's League play regardless of enabling this button or not.",
 				cMarked : "event.rc = What(\"League Remember\") === \"On\";",
 				nPos : 10,
 				cLabel : "League",
@@ -621,7 +621,7 @@ function MakeButtons() {
 			cName : "FAQButton",
 			cExec : "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });",
 			oIcon : oIcon,
-			cTooltext : toUni("FAQ") + "\nOpen the Frequently Asked Questions pdf.\n\nIn this document you can find information on how to add custom code to the sheet (like homebrew races/weapons/feats/etc.).",
+			cTooltext : toUni("FAQ") + "\nOpen the frequently asked questions pdf.\n\nThere you can find information on how to add custom code to the sheet, like homebrew races/weapons/feats/etc.",
 			nPos : 15,
 			cLabel : "FAQ"
 		});
