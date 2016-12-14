@@ -1786,10 +1786,10 @@ ClassSubList["knight"] = {
 			name : "Noble Cavalry",
 			source : ["UA:FMA", 2],
 			minlevel : 7,
-			description : "\n   " + "I gain proficiency with two skills and one language" + "\n   " + "I can choose the skills from: Animal Handling, History, Insight, Persuasion, and Religion",
-			skillstxt : "\n\n" + toUni("Knight") + ": Choose two from Animal Handling, History, Insight, Persuasion, and Religion.",
-			eval : "AddLanguage(\"+1 from Noble Cavalry\", \"being a Knight (Noble Cavalry)\");",
-			removeeval : "RemoveLanguage(\"+1 from Noble Cavalry\", \"being a Knight (Noble Cavalry)\");",
+			description : "\n   " + "I gain proficiency with two skills or one language" + "\n   " + "I can choose the skills from: Animal Handling, History, Insight, Persuasion, and Religion",
+			skillstxt : "\n\n" + toUni("Knight") + ": Choose two from Animal Handling, History, Insight, Persuasion, and Religion. Alternatively, I learn one language.",
+			eval : "AddLanguage(\"+1 from Noble Cavalry\", \"being a Knight (Noble Cavalry) and not opting to learn two skill proficiencies.\");",
+			removeeval : "RemoveLanguage(\"+1 from Noble Cavalry\", \"being a Knight (Noble Cavalry) and not opting to learn two skill proficiencies.\");"
 		},
 		"subclassfeature10" : {
 			name : "Hold the Line",
