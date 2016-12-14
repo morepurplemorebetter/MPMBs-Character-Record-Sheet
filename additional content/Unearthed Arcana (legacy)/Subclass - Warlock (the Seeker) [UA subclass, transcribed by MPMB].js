@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Warlock, called "The Seeker"
-				This is taken from The Faithful Unearthed Arcana (https://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf)
+				This is taken from The Faithful Unearthed Arcana (http://media.wizards.com/2016/dnd/downloads/UA Non-Divine Faithful SFG.pdf)
 	Code by:	MorePurpleMoreBetter
 	Date:		2016-08-31 (sheet v12.07)
 */
