@@ -561,20 +561,36 @@ function resourceDecisionDialog() {
 //the buttons on the main resourceDecisionDialog point here, which can handle classes (type === "class"), races (type === "race"), feats (type === "feat"), spells (type === "spell"), backgrounds (type === "background"), background features (type === "background feature"), creatures (type === "creature")
 function resourceSelectionDialog(type) {
 	var exclObj = {}, inclObj = {}, inclInArr = "elements", refObj = {}, theExtra = ["", 0];
+
+	for (var aSrc in SourceList) {
+		if (SourceList[aSrc].uniS) continue;
+		SourceList[aSrc].uniS = toSup(SourceList[aSrc].abbreviation);
+	}
+	
+	//a way to add the source abbreviation to the string
+	var amendSource = function(uString, uObj, altObj) {
+		var theSrc = uObj.source ? uObj.source : (altObj && altObj.source ? altObj.source : false);
+		if (theSrc) {
+			theSrc = isArray(theSrc) ? theSrc[0] : theSrc;
+			var theAbb = SourceList[theSrc] ? " " + SourceList[theSrc].uniS : "";
+			uString += theAbb;
+		}
+		return uString;
+	}
 	
 	switch (type) {
 	 case "class" :
 		var theName = "Classes or Archetypes";
 		var CSatt = "classExcl";
 		for (var u in ClassList) {
-			var uGroup = ClassList[u].name;
+			var uGroup = amendSource(ClassList[u].name, ClassList[u]);
 			refObj[uGroup] = u;
 			if (!exclObj[uGroup]) exclObj[uGroup] = {};
 			if (!inclObj[uGroup]) inclObj[uGroup] = {};
 			var uTest = testSource(u, ClassList[u], CSatt, true);
 			for (var z = 0; z < ClassList[u].subclasses[1].length; z++) {
 				var uSub = ClassList[u].subclasses[1][z];
-				var uName = ClassSubList[uSub].subname;
+				var uName = amendSource(ClassSubList[uSub].subname, ClassSubList[uSub], ClassList[u]);
 				refObj[uName] = uSub;
 				uSubTest = testSource(uSub, ClassSubList[uSub], CSatt, true);
 				if (uTest === "source" || uSubTest === "source") continue;
@@ -592,8 +608,8 @@ function resourceSelectionDialog(type) {
 		inclInArr = "all";
 		var CSatt = "racesExcl";
 		for (var u in RaceList) {
-			var uGroup = RaceList[u].name;
-			refObj[uGroup] = u;
+			var useName = RaceList[u].sortname ? RaceList[u].sortname : RaceList[u].name;
+			var uGroup = amendSource(useName, RaceList[u]);
 			var uTest = testSource(u, RaceList[u], CSatt, true);
 			if (uTest === "source") continue;
 			var doAny = false;
@@ -608,7 +624,8 @@ function resourceSelectionDialog(type) {
 					if (uSubTest === "source") continue;
 					doAny = z !== rLen ? true : doAny;
 					if (z === rLen && !doAny) continue;
-					var uName = z === rLen ? " basic " + uGroup : (uRaceVar && uRaceVar.name ? uRaceVar.name : RaceList[u].variants[z].capitalize() + " " + uGroup);
+					var uName = z === rLen ? " basic " + useName : (uRaceVar && uRaceVar.name ? uRaceVar.name : RaceList[u].variants[z].capitalize() + " " + useName);
+					uName = amendSource(uName, uRaceVar, RaceList[u]);
 					refObj[uName] = uSub;
 					if (uSubTest) {
 						exclObj[uGroup][uName] = -1;
@@ -624,26 +641,20 @@ function resourceSelectionDialog(type) {
 					inclObj[uGroup] = -1;
 				}
 			}
+			refObj[uGroup] = u;
 		};
 		break;
 	 case "feat" :
 		var theName = "Feats";
 		var CSatt = "featsExcl";
-		//first make an array of the feat 'groups'
-		var feaGroups = [];
 		for (var u in FeatsList) {
-			if (u.match(/\[.+\]/)) {
-				var posGroup = u.replace(/( ?\[.+\])/, "").capitalize();
-				if (feaGroups.indexOf(posGroup) === -1) feaGroups.push(posGroup);
-			}
-		};
-		for (var u in FeatsList) {
-			var uName = FeatsList[u].name;
+			var uName = amendSource(FeatsList[u].name, FeatsList[u]);
 			var uTest = testSource(u, FeatsList[u], CSatt, true);
 			if (uTest === "source") continue;
 			var uGroup = u.match(/\[.+\]/) ? u.replace(/( ?\[.+\])/, "").capitalize() : false;
 			refObj[uName] = u;
 			if (uGroup) {
+				uGroup = amendSource(uGroup, FeatsList[u]);
 				if (!exclObj[uGroup]) exclObj[uGroup] = {};
 				if (!inclObj[uGroup]) inclObj[uGroup] = {};
 				if (uTest) {
@@ -664,7 +675,7 @@ function resourceSelectionDialog(type) {
 		var theName = "Spells";
 		var CSatt = "spellsExcl";
 		for (var u in SpellsList) {
-			var uName = SpellsList[u].name;
+			var uName = amendSource(SpellsList[u].name, SpellsList[u]);
 			var uTest = testSource(u, SpellsList[u], CSatt, true);
 			if (uTest === "source") continue;
 			var uGroup = spellSchoolList[SpellsList[u].school].capitalize();
@@ -682,14 +693,14 @@ function resourceSelectionDialog(type) {
 		var theName = "Backgrounds";
 		var CSatt = "backgrExcl";
 		for (var u in BackgroundList) {
-			var uName = BackgroundList[u].name;
+			var uName = amendSource(BackgroundList[u].name, BackgroundList[u]);
 			refObj[uName] = u;
 			if (BackgroundList[u].variant) {
 				for (var z = 0; z < BackgroundList[u].variant.length; z++) {
 					var uSub = BackgroundList[u].variant[z];
 					var uSubTest = testSource(uSub, BackgroundSubList[uSub], CSatt, true);
 					if (uSubTest === "source") continue;
-					var uSubName = BackgroundSubList[uSub].name;
+					var uSubName = amendSource(BackgroundSubList[uSub].name, BackgroundSubList[uSub], BackgroundList[u]);
 					refObj[uSubName] = uSub;
 					if (uSubTest) {
 						exclObj[uSubName] = -1;
@@ -711,7 +722,7 @@ function resourceSelectionDialog(type) {
 		var theName = "Background Features";
 		var CSatt = "backFeaExcl";
 		for (var u in BackgroundFeatureList) {
-			var uName = u.capitalize();
+			var uName = amendSource(u.capitalize(), BackgroundFeatureList[u]);
 			var uTest = testSource(u, BackgroundFeatureList[u], CSatt, true);
 			if (uTest === "source") continue;
 			refObj[uName] = u;
@@ -726,7 +737,7 @@ function resourceSelectionDialog(type) {
 		var theName = "Creatures";
 		var CSatt = "creaExcl";
 		for (var u in CreatureList) {
-			var uName = CreatureList[u].name;
+			var uName = amendSource(CreatureList[u].name, CreatureList[u]);
 			var uTest = testSource(u, CreatureList[u], CSatt, true);
 			if (uTest === "source") continue;
 			var uGroup = CreatureList[u].type;
@@ -918,4 +929,89 @@ function testSource(key, obj, CSatt, concise) {
 	}
 	if (!theRe && CSatt && CurrentSources[CSatt] && CurrentSources[CSatt].indexOf(key) !== -1) theRe = true;
 	return theRe;
+};
+
+function toSup(inString) {
+	var doChar = function(aChar) {
+		switch(aChar) {
+			case "1" : return "\xB9";
+			case "2" : return "\xB2";
+			case "3" : return "\xB3";
+			case "4" : return "\u2074";
+			case "5" : return "\u2075";
+			case "6" : return "\u2076";
+			case "7" : return "\u2077";
+			case "8" : return "\u2078";
+			case "9" : return "\u2079";
+			case "+" : return "\u207A";
+			case "-" : return "\u207B";
+			case "=" : return "\u207C";
+			case "(" : return "\u207D";
+			case ")" : return "\u207E";
+			case "A" : if (useCaps) return "\u1D2C";
+			case "a" : return "\u1D43";
+			case "B" : if (useCaps) return "\u1D2E";
+			case "b" : return "\u1D47";
+			case "C" :
+			case "c" : return "\u1D9C";
+			case "D" : if (useCaps) return "\u1D30";
+			case "d" : return "\u1D48";
+			case "E" : if (useCaps) return "\u1D31";
+			case "e" : return "\u1D49";
+			case "F" :
+			case "f" : return "\u1DA0";
+			case "G" : if (useCaps) return "\u1D33";
+			case "g" : return "\u1D4D";
+			case "H" : if (useCaps) return "\u1D34";
+			case "h" : return "\u02B0";
+			case "I" : if (useCaps) return "\u1D35";
+			case "i" : return "\u2071";
+			case "J" : if (useCaps) return "\u1D36";
+			case "j" : return "\u02B2";
+			case "K" : if (useCaps) return "\u1D37";
+			case "k" : return "\u1D4F";
+			case "L" : if (useCaps) return "\u1D38";
+			case "l" : return "\u02E1";
+			case "M" : if (useCaps) return "\u1D39";
+			case "m" : return "\u1D50";
+			case "N" : if (useCaps) return "\u1D3A";
+			case "n" : return "\u207F";
+			case "O" : if (useCaps) return "\u1D3C";
+			case "o" : return "\u1D52";
+			case "Q" :
+			case "P" : if (useCaps) return "\u1D3E";
+			case "q" :
+			case "p" : return "\u1D56";
+			case "R" : if (useCaps) return "\u1D3F";
+			case "r" : return "\u02B3";
+			case "S" :
+			case "s" : return "\u02E2";
+			case "T" : if (useCaps) return "\u1D40";
+			case "t" : return "\u1D57";
+			case "U" : if (useCaps) return "\u1D41";
+			case "u" : return "\u1D58";
+			case "V" : if (useCaps) return "\u2C7D";
+			case "v" : return "\u1D5B";
+			case "W" : if (useCaps) return "\u1D42";
+			case "w" : return "\u02B7";
+			case "X" :
+			case "x" : return "\u02E3";
+			case "Y" :
+			case "y" : return "\u02B8";
+			case "Z" :
+			case "z" : return "\u1DBB";
+		}
+		return aChar;
+	};
+	var input = inString.split(/\:|\ |\.|\,|\_/);
+	var output = [];
+	var useCaps = true;
+	for (i = 0; i < input.length; i++) {
+		useCaps = !useCaps || input[i].match(/c|f|s|x|y|z/i) ? false : true;
+		output[i] = "";
+		for (c = 0; c < input[i].length; c++) {
+			output[i] += doChar(input[i].charAt(c));
+		}
+	}
+	return output.join("-");
 };

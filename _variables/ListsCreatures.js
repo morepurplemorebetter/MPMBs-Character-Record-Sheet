@@ -1,6 +1,7 @@
 var CreatureList = {
 	"air elemental" : {
 		name : "Air Elemental",
+		source : ["M", 124],
 		size : 2, //Large
 		type : "Elemental",
 		subtype : "",
@@ -50,6 +51,7 @@ var CreatureList = {
 	},
 	"allosaurus" : {
 		name : "Allosaurus",
+		source : ["M", 79],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -91,6 +93,7 @@ var CreatureList = {
 	},
 	"ankylosaurus" : {
 		name : "Ankylosaurus",
+		source : ["M", 79],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -119,6 +122,7 @@ var CreatureList = {
 	},
 	"ape" : {
 		name : "Ape",
+		source : ["M", 317],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -157,6 +161,7 @@ var CreatureList = {
 	},
 	"axe beak" : {
 		name : "Axe Beak",
+		source : ["M", 317],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -184,6 +189,7 @@ var CreatureList = {
 	},
 	"baboon" : {
 		name : "Baboon",
+		source : ["M", 318],
 		size : 4, //Small
 		type : "Beast",
 		subtype : "",
@@ -216,6 +222,7 @@ var CreatureList = {
 	},
 	"badger" : {
 		name : "Badger",
+		source : ["M", 318],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -248,6 +255,7 @@ var CreatureList = {
 	},
 	"bat" : {
 		name : "Bat",
+		source : ["M", 318],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -285,6 +293,7 @@ var CreatureList = {
 	},
 	"black bear" : {
 		name : "Black Bear",
+		source : ["M", 318],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -329,6 +338,7 @@ var CreatureList = {
 	},
 	"blink dog" : {
 		name : "Blink Dog",
+		source : ["M", 318],
 		size : 3, //Medium
 		type : "Fey",
 		subtype : "",
@@ -370,6 +380,7 @@ var CreatureList = {
 	},
 	"blood hawk" : {
 		name : "Blood Hawk",
+		source : ["M", 319],
 		size : 4, //Small
 		type : "Beast",
 		subtype : "",
@@ -408,6 +419,7 @@ var CreatureList = {
 	},
 	"boar" : {
 		name : "Boar",
+		source : ["M", 319],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -444,6 +456,7 @@ var CreatureList = {
 	},
 	"brown bear" : {
 		name : "Brown Bear",
+		source : ["M", 319],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -487,6 +500,7 @@ var CreatureList = {
 	},
 	"camel" : {
 		name : "Camel",
+		source : ["M", 320],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -516,6 +530,7 @@ var CreatureList = {
 	},
 	"cat" : {
 		name : "Cat",
+		source : ["M", 320],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -554,6 +569,7 @@ var CreatureList = {
 	},
 	"cave bear" : {
 		name : "Cave Bear",
+		source : ["M", 334],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -595,6 +611,7 @@ var CreatureList = {
 	},
 	"constrictor snake" : {
 		name : "Constrictor Snake",
+		source : ["M", 320],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -628,6 +645,7 @@ var CreatureList = {
 	},
 	"crab" : {
 		name : "Crab",
+		source : ["M", 320],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -665,6 +683,7 @@ var CreatureList = {
 	},
 	"crawling claw" : {
 		name : "Crawling Claw",
+		source : ["M", 44],
 		size : 5, //Tiny
 		type : "Undead",
 		subtype : "",
@@ -699,6 +718,7 @@ var CreatureList = {
 	},
 	"crocodile" : {
 		name : "Crocodile",
+		source : ["M", 320],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -734,6 +754,7 @@ var CreatureList = {
 	},
 	"deer" : {
 		name : "Deer",
+		source : ["M", 321],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -761,6 +782,7 @@ var CreatureList = {
 	},
 	"dire wolf" : {
 		name : "Dire Wolf",
+		source : ["M", 321],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -800,6 +822,7 @@ var CreatureList = {
 	},
 	"draft horse" : {
 		name : "Draft Horse",
+		source : ["M", 321],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -827,6 +850,7 @@ var CreatureList = {
 	},
 	"eagle" : {
 		name : "Eagle",
+		source : ["M", 322],
 		size : 4, //Small
 		type : "Beast",
 		subtype : "",
@@ -862,6 +886,7 @@ var CreatureList = {
 	},
 	"earth elemental" : {
 		name : "Earth Elemental",
+		source : ["M", 124],
 		size : 2, //Large
 		type : "Elemental",
 		subtype : "",
@@ -902,6 +927,7 @@ var CreatureList = {
 	},
 	"elephant" : {
 		name : "Elephant",
+		source : ["M", 322],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -940,6 +966,7 @@ var CreatureList = {
 	},
 	"elk" : {
 		name : "Elk",
+		source : ["M", 322],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -979,6 +1006,7 @@ var CreatureList = {
 	},
 	"fire elemental" : {
 		name : "Fire Elemental",
+		source : ["M", 124],
 		size : 2, //Large
 		type : "Elemental",
 		subtype : "",
@@ -1021,6 +1049,7 @@ var CreatureList = {
 	},
 	"flying snake" : {
 		name : "Flying Snake",
+		source : ["M", 322],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -1054,6 +1083,7 @@ var CreatureList = {
 	},
 	"frog" : {
 		name : "Frog",
+		source : ["M", 322],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -1087,6 +1117,7 @@ var CreatureList = {
 	},
 	"ghast" : {
 		name : "Ghast",
+		source : ["M", 148],
 		size : 3, //Medium
 		type : "Undead",
 		subtype : "",
@@ -1133,6 +1164,7 @@ var CreatureList = {
 	},
 	"ghoul" : {
 		name : "Ghoul",
+		source : ["M", 148],
 		size : 3, //Medium
 		type : "Undead",
 		subtype : "",
@@ -1170,6 +1202,7 @@ var CreatureList = {
 	},
 	"giant ape" : {
 		name : "Giant Ape",
+		source : ["M", 323],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -1207,6 +1240,7 @@ var CreatureList = {
 	},
 	"giant badger" : {
 		name : "Giant Badger",
+		source : ["M", 323],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -1246,6 +1280,7 @@ var CreatureList = {
 	},
 	"giant bat" : {
 		name : "Giant Bat",
+		source : ["M", 323],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -1281,6 +1316,7 @@ var CreatureList = {
 	},
 	"giant boar" : {
 		name : "Giant Boar",
+		source : ["M", 323],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -1316,6 +1352,7 @@ var CreatureList = {
 	},
 	"giant centipede" : {
 		name : "Giant Centipede",
+		source : ["M", 323],
 		size : 4, //Small
 		type : "Beast",
 		subtype : "",
@@ -1348,6 +1385,7 @@ var CreatureList = {
 	},
 	"giant constrictor snake" : {
 		name : "Giant Constrictor Snake",
+		source : ["M", 324],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -1384,6 +1422,7 @@ var CreatureList = {
 	},
 	"giant crab" : {
 		name : "Giant Crab",
+		source : ["M", 324],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -1419,6 +1458,7 @@ var CreatureList = {
 	},
 	"giant crocodile" : {
 		name : "Giant Crocodile",
+		source : ["M", 324],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -1463,6 +1503,7 @@ var CreatureList = {
 	},
 	"giant eagle" : {
 		name : "Giant Eagle",
+		source : ["M", 324],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -1504,6 +1545,7 @@ var CreatureList = {
 	},
 	"giant elk" : {
 		name : "Giant Elk",
+		source : ["M", 325],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -1545,6 +1587,7 @@ var CreatureList = {
 	},
 	"giant fire beetle" : {
 		name : "Giant Fire Beetle",
+		source : ["M", 325],
 		size : 4, //Small
 		type : "Beast",
 		subtype : "",
@@ -1577,6 +1620,7 @@ var CreatureList = {
 	},
 	"giant frog" : {
 		name : "Giant Frog",
+		source : ["M", 325],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -1620,6 +1664,7 @@ var CreatureList = {
 	},
 	"giant goat" : {
 		name : "Giant Goat",
+		source : ["M", 326],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -1655,6 +1700,7 @@ var CreatureList = {
 	},
 	"giant hyena" : {
 		name : "Giant Hyena",
+		source : ["M", 326],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -1690,6 +1736,7 @@ var CreatureList = {
 	},
 	"giant lizard" : {
 		name : "Giant Lizard",
+		source : ["M", 326],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -1725,6 +1772,7 @@ var CreatureList = {
 	},
 	"giant octopus" : {
 		name : "Giant Octopus",
+		source : ["M", 326],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -1773,6 +1821,7 @@ var CreatureList = {
 	},
 	"giant owl" : {
 		name : "Giant Owl",
+		source : ["M", 327],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -1812,6 +1861,7 @@ var CreatureList = {
 	},
 	"giant poisonous snake" : {
 		name : "Giant Poisonous Snake",
+		source : ["M", 327],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -1842,6 +1892,7 @@ var CreatureList = {
 	},
 	"giant rat" : {
 		name : "Giant Rat",
+		source : ["M", 327],
 		size : 4, //Small
 		type : "Beast",
 		subtype : "",
@@ -1877,6 +1928,7 @@ var CreatureList = {
 	},
 	"giant rat (diseased)" : {
 		name : "Giant Rat (Diseased)",
+		source : ["M", 327],
 		size : 4, //Small
 		type : "Beast",
 		subtype : "",
@@ -1909,6 +1961,7 @@ var CreatureList = {
 	},
 	"giant scorpion" : {
 		name : "Giant Scorpion",
+		source : ["M", 327],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -1947,6 +2000,7 @@ var CreatureList = {
 	},
 	"giant sea horse" : {
 		name : "Giant Sea Horse",
+		source : ["M", 328],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -1982,6 +2036,7 @@ var CreatureList = {
 	},
 	"giant shark" : {
 		name : "Giant Shark",
+		source : ["M", 328],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -2020,6 +2075,7 @@ var CreatureList = {
 	},
 	"giant spider" : {
 		name : "Giant Spider",
+		source : ["M", 328],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -2078,6 +2134,7 @@ var CreatureList = {
 	},
 	"giant toad" : {
 		name : "Giant Toad",
+		source : ["M", 329],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -2117,6 +2174,7 @@ var CreatureList = {
 	},
 	"giant vulture" : {
 		name : "Giant Vulture",
+		source : ["M", 329],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -2163,6 +2221,7 @@ var CreatureList = {
 	},
 	"giant wasp" : {
 		name : "Giant Wasp",
+		source : ["M", 329],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -2195,6 +2254,7 @@ var CreatureList = {
 	},
 	"giant weasel" : {
 		name : "Giant Weasel",
+		source : ["M", 329],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -2232,6 +2292,7 @@ var CreatureList = {
 	},
 	"giant wolf spider" : {
 		name : "Giant Wolf Spider",
+		source : ["M", 330],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -2278,6 +2339,7 @@ var CreatureList = {
 	},
 	"goat" : {
 		name : "Goat",
+		source : ["M", 330],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -2313,6 +2375,7 @@ var CreatureList = {
 	},
 	"griffon" : {
 		name : "Griffon",
+		source : ["M", 174],
 		size : 2, //Large
 		type : "Monstrosity",
 		subtype : "",
@@ -2354,6 +2417,7 @@ var CreatureList = {
 	},
 	"hawk" : {
 		name : "Hawk",
+		source : ["M", 330],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -2391,6 +2455,7 @@ var CreatureList = {
 	},
 	"hippogriff" : {
 		name : "Hippogriff",
+		source : ["M", 184],
 		size : 2, //Large
 		type : "Monstrosity",
 		subtype : "",
@@ -2432,6 +2497,7 @@ var CreatureList = {
 	},
 	"hunter shark" : {
 		name : "Hunter Shark",
+		source : ["M", 330],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -2470,6 +2536,7 @@ var CreatureList = {
 	},
 	"hyena" : {
 		name : "Hyena",
+		source : ["M", 331],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -2505,6 +2572,7 @@ var CreatureList = {
 	},
 	"imp" : {
 		name : "Imp",
+		source : ["M", 76],
 		size : 5, //Tiny
 		type : "Fiend",
 		subtype : "devil",
@@ -2560,6 +2628,7 @@ var CreatureList = {
 	},
 	"jackal" : {
 		name : "Jackal",
+		source : ["M", 331],
 		size : 4, //Small
 		type : "Beast",
 		subtype : "",
@@ -2598,6 +2667,7 @@ var CreatureList = {
 	},
 	"killer whale" : {
 		name : "Killer Whale",
+		source : ["M", 331],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -2639,6 +2709,7 @@ var CreatureList = {
 	},
 	"lion" : {
 		name : "Lion",
+		source : ["M", 331],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -2691,6 +2762,7 @@ var CreatureList = {
 	},
 	"lizard" : {
 		name : "Lizard",
+		source : ["M", 332],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -2720,6 +2792,7 @@ var CreatureList = {
 	},
 	"nightmare" : {
 		name : "Nightmare",
+		source : ["M", 235],
 		size : 2, //Large
 		type : "Fiend",
 		subtype : "",
@@ -2761,6 +2834,7 @@ var CreatureList = {
 	},
 	"mammoth" : {
 		name : "Mammoth",
+		source : ["M", 332],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -2799,6 +2873,7 @@ var CreatureList = {
 	},
 	"mastiff" : {
 		name : "Mastiff",
+		source : ["M", 332],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -2835,6 +2910,7 @@ var CreatureList = {
 	},
 	"mule" : {
 		name : "Mule",
+		source : ["M", 333],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -2871,6 +2947,7 @@ var CreatureList = {
 	},
 	"mummy" : {
 		name : "Mummy",
+		source : ["M", 228],
 		size : 3, //Medium
 		type : "Undead",
 		subtype : "",
@@ -2923,6 +3000,7 @@ var CreatureList = {
 	},
 	"octopus" : {
 		name : "Octopus",
+		source : ["M", 333],
 		size : 4, //Small
 		type : "Beast",
 		subtype : "",
@@ -2968,6 +3046,7 @@ var CreatureList = {
 	},
 	"owl" : {
 		name : "Owl",
+		source : ["M", 333],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -3009,6 +3088,7 @@ var CreatureList = {
 	},
 	"panther" : {
 		name : "Panther",
+		source : ["M", 333],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -3055,6 +3135,7 @@ var CreatureList = {
 	},
 	"pegasus" : {
 		name : "Pegasus",
+		source : ["M", 250],
 		size : 2, //Large
 		type : "Celestial",
 		subtype : "",
@@ -3085,6 +3166,7 @@ var CreatureList = {
 	},
 	"plesiosaurus" : {
 		name : "Plesiosaurus",
+		source : ["M", 79],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -3121,6 +3203,7 @@ var CreatureList = {
 	},
 	"poisonous snake" : {
 		name : "Poisonous Snake",
+		source : ["M", 334],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -3150,6 +3233,7 @@ var CreatureList = {
 	},
 	"polar bear" : {
 		name : "Polar Bear",
+		source : ["M", 334],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -3191,6 +3275,7 @@ var CreatureList = {
 	},
 	"pony" : {
 		name : "Pony",
+		source : ["M", 335],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -3219,6 +3304,7 @@ var CreatureList = {
 	},
 	"pseudodragon" : {
 		name : "Pseudodragon",
+		source : ["M", 254],
 		size : 5, //Tiny
 		type : "Dragon",
 		subtype : "",
@@ -3274,6 +3360,7 @@ var CreatureList = {
 	},
 	"pteranodon" : {
 		name : "Pteranodon",
+		source : ["M", 79],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -3309,6 +3396,7 @@ var CreatureList = {
 	},
 	"quasit" : {
 		name : "Quasit",
+		source : ["M", 63],
 		size : 5, //Tiny
 		type : "Fiend",
 		subtype : "demon",
@@ -3370,6 +3458,7 @@ var CreatureList = {
 	},
 	"quipper" : {
 		name : "Quipper",
+		source : ["M", 335],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -3407,6 +3496,7 @@ var CreatureList = {
 	},
 	"rat" : {
 		name : "Rat",
+		source : ["M", 335],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -3441,6 +3531,7 @@ var CreatureList = {
 	},
 	"raven" : {
 		name : "Raven",
+		source : ["M", 335],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -3478,6 +3569,7 @@ var CreatureList = {
 	},
 	"reef shark" : {
 		name : "Reef Shark",
+		source : ["M", 336],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -3516,6 +3608,7 @@ var CreatureList = {
 	},
 	"rhinoceros" : {
 		name : "Rhinoceros",
+		source : ["M", 336],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -3548,6 +3641,7 @@ var CreatureList = {
 	},
 	"riding horse" : {
 		name : "Riding Horse",
+		source : ["M", 336],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -3575,6 +3669,7 @@ var CreatureList = {
 	},
 	"saber-toothed tiger" : {
 		name : "Saber-Toothed Tiger",
+		source : ["M", 336],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -3622,6 +3717,7 @@ var CreatureList = {
 	},
 	"scorpion" : {
 		name : "Scorpion",
+		source : ["M", 337],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -3649,6 +3745,7 @@ var CreatureList = {
 	},
 	"sea horse" : {
 		name : "Sea Horse",
+		source : ["M", 337],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -3675,6 +3772,7 @@ var CreatureList = {
 	},
 	"shield guardian" : {
 		name : "Shield Guardian",
+		source : ["M", 271],
 		size : 2, //Large
 		type : "Construct",
 		subtype : "",
@@ -3720,6 +3818,7 @@ var CreatureList = {
 	},
 	"skeleton (humanoid)" : {
 		name : "Skeleton (humanoid)",
+		source : ["M", 272],
 		size : 3, //Medium
 		type : "Undead",
 		subtype : "",
@@ -3756,6 +3855,7 @@ var CreatureList = {
 	},
 	"spider" : {
 		name : "Spider",
+		source : ["M", 337],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -3800,6 +3900,7 @@ var CreatureList = {
 	},
 	"sprite" : {
 		name : "Sprite",
+		source : ["M", 283],
 		size : 5, //Tiny
 		type : "Fey",
 		subtype : "",
@@ -3855,6 +3956,7 @@ var CreatureList = {
 	},
 	"stirge" : {
 		name : "Stirge",
+		source : ["M", 284],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -3887,6 +3989,7 @@ var CreatureList = {
 	},
 	"tiger" : {
 		name : "Tiger",
+		source : ["M", 339],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -3979,6 +4082,7 @@ var CreatureList = {
 	},
 	"triceratops" : {
 		name : "Triceratops",
+		source : ["M", 79],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -4017,6 +4121,7 @@ var CreatureList = {
 	},
 	"tyrannosaurus rex" : {
 		name : "Tyrannosaurus Rex",
+		source : ["M", 79],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -4058,6 +4163,7 @@ var CreatureList = {
 	},
 	"vulture" : {
 		name : "Vulture",
+		source : ["M", 339],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -4096,6 +4202,7 @@ var CreatureList = {
 	},
 	"warhorse" : {
 		name : "Warhorse",
+		source : ["M", 340],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -4129,6 +4236,7 @@ var CreatureList = {
 	},
 	"warhorse skeleton" : {
 		name : "Warhorse Skeleton",
+		source : ["M", 273],
 		size : 2, //Large
 		type : "Undead",
 		subtype : "",
@@ -4159,6 +4267,7 @@ var CreatureList = {
 	},
 	"water elemental" : {
 		name : "Water Elemental",
+		source : ["M", 124],
 		size : 2, //Large
 		type : "Elemental",
 		subtype : "",
@@ -4211,6 +4320,7 @@ var CreatureList = {
 	},
 	"weasel" : {
 		name : "Weasel",
+		source : ["M", 340],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -4249,6 +4359,7 @@ var CreatureList = {
 	},
 	"wight" : {
 		name : "Wight",
+		source : ["M", 300],
 		size : 3, //Medium
 		type : "Undead",
 		subtype : "",
@@ -4301,6 +4412,7 @@ var CreatureList = {
 	},
 	"wolf" : {
 		name : "Wolf",
+		source : ["M", 341],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -4341,6 +4453,7 @@ var CreatureList = {
 	},
 	"worg" : {
 		name : "Worg",
+		source : ["M", 341],
 		size : 2, //Large
 		type : "Monstrosity",
 		subtype : "",
@@ -4376,6 +4489,7 @@ var CreatureList = {
 	},
 	"zombie" : {
 		name : "Zombie",
+		source : ["M", 316],
 		size : 3, //Medium
 		type : "Undead",
 		subtype : "",
@@ -4410,6 +4524,7 @@ var CreatureList = {
 	},
 	"ogre zombie" : {
 		name : "Ogre Zombie",
+		source : ["M", 316],
 		size : 2, //Large
 		type : "Undead",
 		subtype : "",

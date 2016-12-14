@@ -4,13 +4,19 @@ var SourceList = {
 		name : "Dungeon Master's Guide",
 		abbreviation : "DMG",
 		group : "Official Sources",
-		url : "https://dnd.wizards.com/products/tabletop-games/rpg-products/dungeon-masters-guide"
+		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/dungeon-masters-guide"
 	},
 	"P" : {
 		name : "Player's Handbook",
 		abbreviation : "PHB",
 		group : "Official Sources",
-		url : "https://dnd.wizards.com/products/tabletop-games/rpg-products/rpg_playershandbook"
+		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/rpg_playershandbook"
+	},
+	"M" : {
+		name : "Monster Manual",
+		abbreviation : "MM",
+		group : "Official Sources",
+		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/monster-manual"
 	},
 	"S" : {
 		name : "Sword Coast Adventure Guide",
@@ -26,9 +32,9 @@ var SourceList = {
 	},
 	"E" : {
 		name : "Elemental Evil Player's Companion",
-		abbreviation : "EEPC",
+		abbreviation : "EE",
 		group : "Official Sources",
-		url : "https://media.wizards.com/2015/downloads/dnd/EE_PlayersCompanion.pdf"
+		url : "http://media.wizards.com/2015/downloads/dnd/EE_PlayersCompanion.pdf"
 	},
 
 	//small sources
@@ -36,7 +42,7 @@ var SourceList = {
 		name : "Curse of Strahd [background]",
 		abbreviation : "CoS",
 		group : "Official Sources (small)",
-		url : "https://media.wizards.com/2016/downloads/DND/CharacterBackground_HauntedOne.pdf"
+		url : "http://media.wizards.com/2016/downloads/DND/CharacterBackground_HauntedOne.pdf"
 	},
 	"CoS:OB" : {
 		name : "Curse of Strahd: Optional Backgrounds",
@@ -56,7 +62,7 @@ var SourceList = {
 		name : "Dungeon Masters Guild (online)",
 		abbreviation : "DMguild",
 		group : "default",
-		url : "https://www.dmsguild.com/"
+		url : "http://www.dmsguild.com/"
 	},
 	"HB" : {
 		name : "Homebrew",
@@ -81,13 +87,13 @@ var SourceList = {
 		name : "Unearthed Arcana: Waterborne Adventures", //2015-05-04
 		abbreviation : "UA:WA",
 		group : "Unearthed Arcana",
-		url : "https://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf"
+		url : "http://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf"
 	},
 	"UA:LDU" : {
 		name : "Unearthed Arcana: Light, Dark, Underdark!", //2015-11-02
 		abbreviation : "UA:LDU",
 		group : "Unearthed Arcana",
-		url : "https://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf"
+		url : "http://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf"
 	},
 	"UA:KoO" : {
 		name : "Unearthed Arcana: Kits of Old", //2016-01-04
@@ -99,19 +105,19 @@ var SourceList = {
 		name : "Unearthed Arcana: Gothic Heroes", //2016-04-04
 		abbreviation : "UA:GH",
 		group : "Unearthed Arcana",
-		url : "https://dnd.wizards.com/sites/default/files/media/upload/articles/UA%20Gothic%20Characters.pdf"
+		url : "http://dnd.wizards.com/sites/default/files/media/upload/articles/UA%20Gothic%20Characters.pdf"
 	},
 	"UA:TF" : {
 		name : "Unearthed Arcana: The Faithful", //2016-08-01
 		abbreviation : "UA:TF",
 		group : "Unearthed Arcana",
-		url : "https://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf"
+		url : "http://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf"
 	},
 	"UA:RR" : {
 		name : "Unearthed Arcana: The Ranger, Revised", //2016-09-12
 		abbreviation : "UA:RR",
 		group : "Unearthed Arcana",
-		url : "https://media.wizards.com/2016/dnd/downloads/UA_RevisedRanger.pdf"
+		url : "http://media.wizards.com/2016/dnd/downloads/UA_RevisedRanger.pdf"
 	},
 	"UA:BPP" : {
 		name : "Unearthed Arcana: Barbarian Primal Paths", //2016-11-07
@@ -135,7 +141,7 @@ var SourceList = {
 		name : "Unearthed Arcana: Druid Circles", //2016-11-28
 		abbreviation : "UA:DC",
 		group : "Unearthed Arcana",
-		url : "https://media.wizards.com/2016/dnd/downloads/UA_Druid11272016_CAWS.pdf"
+		url : "http://media.wizards.com/2016/dnd/downloads/UA_Druid11272016_CAWS.pdf"
 	},
 	"UA:FMA" : {
 		name : "Unearthed Arcana: Fighter Martial Archetypes", //2016-12-05
