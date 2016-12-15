@@ -4661,9 +4661,6 @@ function CreateBkmrksCompleteAdvLogSheet() {
 
 // update all the level-dependent features for the UA's revised ranger companions on the companion pages
 function UpdateRevisedRangerCompanions(deleteIt) {
-	if (ClassList.ranger.source[0] === "P") {
-		return;
-	}
 	thermoM("start"); //start a progress dialog
 	thermoM("Updating Ranger's Companion..."); //change the progress dialog text
 	
@@ -4909,7 +4906,7 @@ function CountASIs() {
 	}
 	if (newASI !== oldASI) {		
 		var pTxt = "The change in level has granted your character " + toUni(newASI - oldASI) + " additional " + toUni("Ability Score Improvement") + "(s)!\n\nThe current total of Ability Score Improvements is:" + AbilityScores.improvements.classlvl + "\n\nYou can use these in one of two ways:\n    1. Divide 2 points over ability scores (to max 20);\n        (See the Ability Scores dialogue, i.e. \"Scores\" button.)\n    2. Take 1 feat.\n        (See the Feats section on the sheet.)";
-		if (CurrentClasses.ranger && CurrentClasses.ranger.fullname === "Ranger (Beast Conclave)") {
+		if (CurrentClasses.rangerua && CurrentClasses.rangerua.fullname === "Ranger (Beast Conclave)") {
 			pTxt += "\n\nDon't forget that the Ranger's Animal Companion also benefits from Ability Score Improvements (but not feats).";
 		}
 		app.alert({

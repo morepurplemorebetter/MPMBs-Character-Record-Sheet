@@ -245,6 +245,19 @@ function resourceDecisionDialog() {
 	
 	exclObj = CleanObject(exclObj); inclObj = CleanObject(inclObj);
 	
+	var tries = 0;
+	var selBoxHeight = 250;
+	do {
+		try {
+			var mons = app.monitors.primary();
+			var resHigh = mons && mons[0] && mons[0].rect ? mons[0].rect[3] : false;
+			if (resHigh && resHigh < 800) selBoxHeight = 250 - Math.min(100, 850 - resHigh);
+			tries = 100;
+		} catch (e) {
+			tries += 1;
+		}
+	} while (tries < 5);
+	
 	var selectionDialogue = {
 		exclActive : true,
 		inclActive : false,
@@ -255,7 +268,7 @@ function resourceDecisionDialog() {
 			dialog.load({
 				"ExcL" : this.exclObject,
 				"IncL" : this.inclObject,
-				"txt0" : (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon) and change it.\n\n" : "") + "First you can set the sourcebooks the sheet is allowed to use for its automation.\nBelow that, you can open dialogues to include or exclude different parts of the sourcebooks set to be included.\n\nNote that you can always add more resources using the \"Add Custom Script\" bookmark.",
+				"txt0" : (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon) and change it.\n" : "") + "First you can set the sourcebooks the sheet is allowed to use for its automation.\nBelow that, you can open dialogues to include or exclude different parts of the sourcebooks set to be included.\nNote that you can always add more resources using the \"Add Custom Script\" bookmark.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.",
 				"txt1" : "By pressing one of the buttons below, you open another dialogue where you can exclude and include parts of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up in the dialogue created when you press the buttons below, as all of its content will be ignored by the sheet's automation.",
 				"txt2" : toUni("Warning:") + " If you change anything that affects any drop-down boxes on the sheet, those will be updated." + (isFirstTime ? " If a lot of drop-down boxes are affected, this can take several minutes." : "\nPlease be aware, that this will reset those drop-down boxes to their default value. After that, the sheet will re-enter the values, which in turn will trigger the automation. This automation will then be run using the resources selected above. This can take several minutes."),
 				"bLin" : "This button links to the web page of the selected sourcebook"
@@ -389,7 +402,7 @@ function resourceDecisionDialog() {
 				}, {
 					type : "static_text",
 					item_id : "txt0",
-					char_height : isFirstTime ? 12 : 6,
+					char_height : isFirstTime ? 11 : 6,
 					width : 720,
 				}, {
 					type : "cluster",
@@ -411,7 +424,7 @@ function resourceDecisionDialog() {
 							font : "heading",
 							elements : [{
 								width : 250,
-								height : 250,
+								height : selBoxHeight,
 								type : "hier_list_box",
 								item_id : "ExcL"
 							}]
@@ -440,7 +453,7 @@ function resourceDecisionDialog() {
 							font : "heading",
 							elements : [{
 								width : 250,
-								height : 250,
+								height : selBoxHeight,
 								type : "hier_list_box",
 								item_id : "IncL",
 							}]

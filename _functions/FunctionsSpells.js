@@ -833,7 +833,7 @@ var SpellSheetSelect_Dialog = {
 	showAd : true,
 	showSp : true,
 	showSpRadio : true,
-	txt : "Please set the spells/cantrips you want to have on the Spell Sheet.\nNote that some things might not be available in this dialog, because what you are editing has no access to it.\nYou can press ENTER to close this dialog if you can't see the buttons.", //You will be prompted like this for each thing that grants you spellcasting. After that, you will be prompted to choose which to include/exclude and in which order you want them on the Spell Sheet.
+	txt : "Please set the spells/cantrips you want to have on the Spell Sheet.\nNote that some things might not be available in this dialog, because what you are editing has no access to it.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.", //You will be prompted like this for each thing that grants you spellcasting. After that, you will be prompted to choose which to include/exclude and in which order you want them on the Spell Sheet.
 	header : "",
 	fullname : "",
 	SpBook : false,
