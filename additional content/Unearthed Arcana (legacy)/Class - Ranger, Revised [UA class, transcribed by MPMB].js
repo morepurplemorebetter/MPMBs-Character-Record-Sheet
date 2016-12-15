@@ -390,7 +390,7 @@ ClassSubList["deep stalker conclave"] = {
 		},
 	}
 };
-ClassSubList["deep stalker-ua"].features["subclassfeature3.1"].spellcastingExtra[100] = "AddToKnown";
+ClassSubList["deep stalker conclave"].features["subclassfeature3.1"].spellcastingExtra[100] = "AddToKnown";
 
 SourceList["UA:RR"] = {
 	name : "Unearthed Arcana: The Ranger, Revised", //2016-09-12
