@@ -307,7 +307,7 @@ var WeaponsList = {
 		abilitytodamage : true,
 	},
 	"club" : {
-		regExpSearch : /^(?!.*(great|heavy|big))(?=.*club).*$/i,
+		regExpSearch : /^(?!.*(great|heavy|big))(?=.*\bclub\b).*$/i,
 		name : "Club",
 		ability : 1,
 		type : "Simple",
@@ -437,7 +437,7 @@ var WeaponsList = {
 		abilitytodamage : true,
 	},
 	"light crossbow" : {
-		regExpSearch : /^(((?=.*light)(?=.*crossbow))|((?!.*(hand|short|great|heavy))(?=.*crossbow))).*$/i,
+		regExpSearch : /^(((?=.*light)(?=.*crossbow))|((?!.*(hand|short|great|heavy))(?=.*\bcrossbow\b))).*$/i,
 		name : "Light crossbow",
 		ability : 2,
 		type : "Simple",
@@ -460,7 +460,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"shortbow" : {
-		regExpSearch : /^(?!.*crossbow)(((?=.*short)(?=.*bow))|((?!.*long)(?=.*bow))).*$/i,
+		regExpSearch : /^(?!.*crossbow)(((?=.*short)(?=.*bow))|((?!.*long)(?=.*\bbow\b))).*$/i,
 		name : "Shortbow",
 		ability : 2,
 		type : "Simple",
@@ -484,7 +484,7 @@ var WeaponsList = {
 		ammo : "bullet"
 	},
 	"battleaxe" : {
-		regExpSearch : /^(((?=.*battle)(?=.*axe))|((?!.*(light|hand|short|small|great|heavy|throw))(?=.*axe))).*$/i,
+		regExpSearch : /^(((?=.*battle)(?=.*axe))|((?!.*(light|hand|short|small|great|heavy|throw))(?=.*\baxe\b))).*$/i,
 		name : "Battleaxe",
 		ability : 1,
 		type : "Martial",
@@ -561,7 +561,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"longsword" : {
-		regExpSearch : /^((?=.*katana)|((?=.*long)(?=.*sword))|((?!.*(burst|light|hand|short|small|great|heavy))(?=.*sword))).*$/i,
+		regExpSearch : /^((?=.*katana)|((?=.*long)(?=.*sword))|((?!.*(burst|light|hand|short|small|great|heavy))(?=.*\bsword\b))).*$/i,
 		name : "Longsword",
 		ability : 1,
 		type : "Martial",
@@ -650,7 +650,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"war pick" : {
-		regExpSearch : /^(((?=.*pick)(?=.*war))|((?!.*(heavy|great|light))(?=.*pick))).*$/i,
+		regExpSearch : /^(((?=.*pick)(?=.*war))|((?!.*(heavy|great|light))(?=.*\bpick\b))).*$/i,
 		name : "War pick",
 		ability : 1,
 		type : "Martial",
@@ -661,7 +661,7 @@ var WeaponsList = {
 		abilitytodamage : true,
 	},
 	"warhammer" : {
-		regExpSearch : /^(((?=.*hammer)(?=.*war))|((?!.*(light|hand|short|small|great|heavy|throw|maul))(?=.*hammer))).*$/i,
+		regExpSearch : /^(((?=.*hammer)(?=.*war))|((?!.*(light|hand|short|small|great|heavy|throw|maul))(?=.*\bhammer\b))).*$/i,
 		name : "Warhammer",
 		ability : 1,
 		type : "Martial",

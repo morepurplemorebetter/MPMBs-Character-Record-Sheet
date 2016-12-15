@@ -226,6 +226,7 @@ function resourceDecisionDialog() {
 				CurrentSources.globalExcl.push(src);
 			}
 		};
+		Value("CurrentSources.Stringified", CurrentSources.toSource());
 	};
 	var remCS = CurrentSources.toSource();
 	
