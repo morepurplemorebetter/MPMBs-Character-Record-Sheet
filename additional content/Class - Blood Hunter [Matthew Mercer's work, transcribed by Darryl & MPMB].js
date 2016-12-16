@@ -17,6 +17,7 @@
 				The script now (2016-12-16) also includes the "Order of the Lycan" (v1.4), which is taken from http://www.dmsguild.com/product/175606/
 				
 	Code by:	Darryl Cook & MorePurpleMoreBetter
+				Order of the Lycan code by MorePurpleMoreBetter
 	Date:		2016-12-16 (sheet v12.74)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
