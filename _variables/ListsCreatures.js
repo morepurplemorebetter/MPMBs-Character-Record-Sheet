@@ -5136,7 +5136,7 @@ var CreatureList = {
 				description : "As a bonus action, the gazer moves its speed toward an enemy that it can see.",
 			}, {
 				name : "Mimicry",
-				description : "The gazer can mimic simple speech it has heard, in any language. Any who hear this can tell they are imitations with a successful DC 10 Wis (Insight) check.",
+				description : "The gazer can mimic simple speech it has heard, in any language. Any who hear this can tell it is an imitation with a successful DC 10 Wis (Insight) check.",
 			}
 		],
 		actions : [{
