@@ -6721,19 +6721,23 @@ function PleaseSubclass(theclass) {
 		var SubName1 = ClassSubList[testSubClass].subname;
 		var SubName2 = ClassSubList[testSubClass].fullname ? ClassSubList[testSubClass].fullname : ClassSubList[testSubClass].subname;
 
-		var theString = "The " + aclass.name + " class you entered into the \"Class\" field on the first page has a high enough level to add a subclass. However, no " + aclass.subclasses[0] + " has been detected."
-			theString += "\n\nYou can choose one of the following " + aclass.subclasses[0] + "s:";
-		var moreString = "Alternatively, you can add a subclass by typing it into the \"Class\" field on the first page. Just put your chosen " + aclass.subclasses[0] + " next to, or in place of, the word \"" + aclass.name + "\".\n\nFor example: \"" + aclass.name + " (" + SubName1 + ")\", or just \"" + SubName2 + "\".";
+		var classString = classes.known[theclass].string ? classes.known[theclass].string.capitalize() : aclass.name;
+		var theString = "The " + aclass.name + " class you entered into the Class field on the first page has a high enough level to add a subclass. However, no " + aclass.subclasses[0] + " has been detected."
+		var clusterString = "Select the " + aclass.subclasses[0];
+		var moreString = "Alternatively, you can add a subclass manually by typing it into the Class field on the first page. Just put your chosen " + aclass.subclasses[0] + " next to, or in place of, \"" + classString + "\".\n\nFor example: \"" + classString + " (" + SubName1 + ")\", or just \"" + SubName2 + "\".";
 
 		var SubclassArrayLeft = [];
 		var SubclassArrayRight = [];
+		var isAsterisk = false;
 		for (var i = 0; i < aclassArray.length; i++) {
 			var theSub = ClassSubList[aclassArray[i]];
 			
+			if (!isAsterisk && theSub.fullname) isAsterisk = true;
+			
 			if (theSub.fullname && theSub.fullname !== theSub.subname) {
-				var theName = theSub.subname + " (" + theSub.fullname + ")";
+				var theName = theSub.subname + " (" + theSub.fullname + "*)";
 			} else {
-				var theName = theSub.subname;
+				var theName = theSub.subname + (theSub.fullname ? "*" : "");
 			}
 
 			var temp = {
@@ -6748,7 +6752,9 @@ function PleaseSubclass(theclass) {
 				SubclassArrayRight.push(temp);
 			}
 		}
-
+		
+		var asteriskString = isAsterisk ? "* This name will replace \"" + classString + "\" in the Class field instead of amending to it." : "";
+		
 		var SubclassSelect_Dialog = {
 			result : -1,
 
@@ -6756,7 +6762,9 @@ function PleaseSubclass(theclass) {
 			initialize : function (dialog) {
 				dialog.load({
 					"tex0" : theString,
-					"tex1" : moreString,
+					"tex1" : asteriskString,
+					"tex2" : moreString,
+					"clu1" : clusterString
 				});
 			},
 
@@ -6780,66 +6788,72 @@ function PleaseSubclass(theclass) {
 			description : {
 				name : aclass.name + " has no detectable " + aclass.subclasses[0],
 				elements : [{
+					type : "view",
+					elements : [{
 						type : "view",
 						elements : [{
+							type : "static_text",
+							name : aclass.name + " has no detectable " + aclass.subclasses[0],
+							item_id : "head",
+							alignment : "align_top",
+							font : "heading",
+							bold : true,
+							height : 21,
+							width : 500,
+						}, {
+							type : "static_text",
+							item_id : "tex0",
+							alignment : "align_fill",
+							font : "dialog",
+							height : 45,
+							width : 500,
+						}, {
+							type : "cluster",
+							item_id : "clu1",
+							font : "dialog",
+							bold : true,
+							elements : [{
 								type : "view",
+								align_children : "align_top",
 								elements : [{
-										type : "static_text",
-										name : aclass.name + " has no detectable " + aclass.subclasses[0],
-										item_id : "head",
-										alignment : "align_top",
-										font : "heading",
-										bold : true,
-										height : 21,
-										char_width : 45,
+										type : "view",
+										elements : SubclassArrayLeft,
 									}, {
-										type : "static_text",
-										item_id : "tex0",
-										alignment : "align_fill",
-										font : "dialog",
-										height : 65,
-										char_width : 45,
+										type : "gap",
+										width : 5,
 									}, {
 										type : "view",
-										align_children : "align_top",
-										elements : [{
-												type : "gap",
-												width : 5,
-											}, {
-												type : "view",
-												elements : SubclassArrayLeft,
-											}, {
-												type : "gap",
-												width : 5,
-											}, {
-												type : "view",
-												elements : SubclassArrayRight,
-											},
-										]
-									}, {
-										type : "static_text",
-										item_id : "tex1",
-										alignment : "align_fill",
-										font : "dialog",
-										height : 75,
-										char_width : 45,
-									},
-								]
+										elements : SubclassArrayRight,
+									}]
 							}, {
-								type : "ok_cancel_other",
-								ok_name : "Add " + aclass.subclasses[0],
-								other_name : "I get it, don't show me this again"
-							},
-						]
-					},
-				]
+								type : "static_text",
+								item_id : "tex1",
+								alignment : "align_fill",
+								font : "dialog",
+								height : !isAsterisk ? 0 : 18 * Math.ceil(asteriskString.length / 80),
+								//width : 450,
+							}]
+						}, {
+							type : "static_text",
+							item_id : "tex2",
+							alignment : "align_fill",
+							font : "dialog",
+							height : 18 + (18 * Math.ceil(moreString.length / 80)),
+							width : 500,
+						}]
+					}, {
+						type : "ok_cancel_other",
+						ok_name : "Add " + aclass.subclasses[0],
+						other_name : "I get it, don't show me this again"
+					}]
+				}]
 			}
 		};
 
 		var theDialog = app.execDialog(SubclassSelect_Dialog);
 		if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
 			var selection = aclassArray[SubclassSelect_Dialog.result];
-			var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : aclass.name + " (" + ClassSubList[selection].subname + ")";
+			var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : classString + " (" + ClassSubList[selection].subname + ")";
 			IsSubclassException[theclass] = true;
 			returnTrue = true;
 			var oldName = classes.known[theclass].string;

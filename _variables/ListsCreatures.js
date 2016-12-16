@@ -5092,6 +5092,59 @@ var CreatureList = {
 			},
 		],
 	},
+	"gazer" : {
+		name : "Gazer",
+		source : ["V", 126],
+		size : 5, //Tiny
+		type : "Aberration",
+		subtype : "",
+		alignment : "Neutral Evil",
+		ac : 13,
+		hp : 13,
+		hd : [3, 4], //[#, die]
+		speed : "0 ft, fly 30 ft",
+		scores : [3, 17, 14, 3, 10, 7], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", 2, ""], //[Str, Dex, Con, Int, Wis, Cha]
+		skills : {
+			"perception" : 4,
+			"stealth" : 5,
+		},
+		senses : "Darkvision 60 ft",
+		passivePerception : 14,
+		languages : "",
+		challengeRating : "1/2",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Bite",
+				ability : 2,
+				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "",
+			}, {
+				name : "Eye Rays",
+				ability : 3,
+				damage : ["Special", "", ""], //[#, die, type] "" for die is allowed
+				range : "60 ft",
+				description : "Shoot two randomly determined different rays as one action; Each ray has its own target; See traits",
+				dc : true,
+				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+			},
+		],
+		traits : [{
+				name : "Aggressive",
+				description : "As a bonus action, the gazer moves its speed toward an enemy that it can see.",
+			}, {
+				name : "Mimicry",
+				description : "The gazer can mimic simple speech it has heard, in any language. Any who hear this can tell they are imitations with a successful DC 10 Wis (Insight) check.",
+			}
+		],
+		actions : [{
+				name : "Eye Rays",
+				description : "1. Dazing Ray: Wisdom saving throw or charmed until the start of the gazer's next turn. While charmed, half speed and disadv. on attacks.\n2. Fear Ray: Wisdom saving throw or frightened until the start of the gazer's next turn.\n3. Frost Ray: Target must make a Dexterity saving throw or 10 (3d6) cold damage.\n4. Telekinetic Ray: Medium or smaller creature, Strength saving throw or be moved up to 30 ft away from the gazer. If it is an up to 10 lb unattended object, the gazer moves it up to 30 ft in any direction. It can exert fine control on objects this way.",
+			},
+		],
+	},
 };
 var license = [
       "OPEN GAME LICENSE Version 1.0a",
