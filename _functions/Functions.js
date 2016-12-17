@@ -3564,19 +3564,23 @@ function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
 
 			//add damage die
 			var weaponDmgDie = Number(WeaponL.damage[1]);
+			if (isNaN(weaponDmgDie)) weaponDmgDie = 0;
+			var weaponDieString = weaponDmgDie === 0 ? WeaponL.damage[0] : WeaponL.damage[0] + "d" + weaponDmgDie;
 			
 			thermoM(4/10); //increment the progress dialog's progress
 
 			//first check if character has monk levels
 			var monkDmgDie = 0;
 			if (classes.known.hasOwnProperty("monk") && (WeaponL.monkweapon || (WeaponType === "Martial" && classes.known.monk.subclass === "way of the kensei" && classes.known.monk.level >= 3))) {
-				monkDmgDie = Number(CurrentClasses.monk.features["martial arts"].additional[classes.known["monk"].level - 1].substring(2));
-				if (weaponDmgDie < monkDmgDie) {
-					weaponDmgDie = monkDmgDie;
+				monkDmgDie = CurrentClasses.monk.features["martial arts"].additional[classes.known["monk"].level - 1];
+				monkDmgDie = monkDmgDie.match(/.*(\d+d\d+).*/) ? monkDmgDie.replace(/.*(\d+d\d+).*/, "$1") : 0;
+				var monkDmgDieCalc = monkDmgDie ? eval(monkDmgDie.replace("d", "*")) : 0;
+				if (!isNaN(WeaponL.damage[0])) weaponDmgDie = weaponDmgDie * WeaponL.damage[0];
+				if (weaponDmgDie < monkDmgDieCalc) {
+					weaponDieString = monkDmgDie;
 				}
 			}
 			if (IsNotWeaponMenu) {
-				var weaponDieString = weaponDmgDie === 0 ? WeaponL.damage[0] : WeaponL.damage[0] + "d" + weaponDmgDie;
 				weaponDieString += WeaponL.damage[3] ? WeaponL.damage[3] : "";
 				Value(WeaponFlds[11], weaponDieString);
 			}

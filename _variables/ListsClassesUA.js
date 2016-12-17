@@ -149,7 +149,7 @@ ClassSubList["deep stalker"].features["subclassfeature3.1"].spellcastingExtra[10
 ClassList.ranger.subclasses[1].push("deep stalker");
 
 //a subclass for the Sorcerer, called "Shadow"
-ClassSubList["shadow"] = {
+ClassSubList["shadow sorcerer"] = {
 	regExpSearch : /^(?=.*(sorcerer|witch))(?=.*shadow).*$/i,
 	subname : "Shadow",
 	source : ["UA:LDU", 2],
@@ -196,7 +196,7 @@ ClassSubList["shadow"] = {
 		}
 	}
 };
-ClassList.sorcerer.subclasses[1].push("shadow");
+ClassList.sorcerer.subclasses[1].push("shadow sorcerer");
 
 //a subclass for the Warlock, called "The Undying Light"
 ClassSubList["the undying light"] = {
