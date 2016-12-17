@@ -2336,8 +2336,9 @@ function ParseClass(tempString) {
 			for (var z = 0; z < ClassList[obj].subclasses[1].length; z++) {
 				var theSub = ClassList[obj].subclasses[1][z];
 				if (testSource(theSub, ClassSubList[theSub], "classExcl")) continue; // test if the subclass or its source isn't excluded
-				var scSearch = ClassSubList[theSub].regExpSearch;
-				if (tempString.search(scSearch) !== -1) {
+				var theSubIL = ClassSubList[theSub];
+				var oldSub = found && found[1] && ClassSubList[found[1]] ? ClassSubList[found[1]] : false;
+				if (tempString.search(theSubIL.regExpSearch) !== -1 && (!oldSub || theSubIL.subname.length > oldSub.subname.length)) {
 					found = [obj, theSub];
 					tempFound = true;
 				}

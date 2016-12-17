@@ -1763,7 +1763,7 @@ ClassList.fighter.subclasses[1].push("arcane archer");
 
 //a subclass for the Fighter, called "Knight"
 ClassSubList["knight"] = {
-	regExpSearch : /knight/i,
+	regExpSearch : /^(?!.*(exalted|sacred|holy|divine|nature|natural|purple.*dragon|green|fey|horned))(?=.*knight).*$/i,
 	subname : "Knight",
 	source : ["UA:FMA", 2],
 	fullname : "Knight",

@@ -394,7 +394,7 @@ var ClassList = {
 	},
 
 	"fighter" : {
-		regExpSearch : /^(?!.*(dark|green|fey|horned|totem|spiritual|exalted|sacred|holy|divine|nature|odin|thor|nature|natural))(?=.*(fighter|warrior|militant|warlord|phalanx|gladiator|trooper)).*$/i,
+		regExpSearch : /^(?!.*(dark|green|fey|horned|totem|spiritual|exalted|sacred|holy|divine|nature|odin|thor|nature|natural|green))(?=.*(fighter|warrior|militant|warlord|phalanx|gladiator|trooper)).*$/i,
 		name : "Fighter",
 		source : ["P", 70],
 		primaryAbility : "\n \u2022 Fighter: Strength or Dexterity;",
@@ -2878,7 +2878,7 @@ var ClassSubList = {
 		}
 	},
 	"eldritch knight" : {
-		regExpSearch : /^(?=.*(knight|fighter|warrior|militant|warlord|phalanx|gladiator|trooper))(?=.*\b(eldritch|arcane|magic|mage|witch)\b).*$/i,
+		regExpSearch : /^(?!.*(exalted|sacred|holy|divine|nature|natural|purple.*dragon|green))(?=.*(knight|fighter|warrior|militant|warlord|phalanx|gladiator|trooper))(?=.*\b(eldritch|arcane|magic|mage|witch)\b).*$/i,
 		subname : "Eldritch Knight",
 		fullname : "Eldritch Knight",
 		source : ["P", 75],
@@ -3397,7 +3397,7 @@ var ClassSubList = {
 		}
 	},
 	"oath of the ancients" : {
-		regExpSearch : /^(((?=.*(ancient|nature|natural))((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper)))))|((?=.*(green|fey|horned))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
+		regExpSearch : /^(((?=.*(ancient|nature|natural|green|fey|horned))((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper)))))|((?=.*(green|fey|horned))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
 		subname : "Oath of the Ancients",
 		source : ["P", 87],
 		spellcastingExtra : ["ensnaring strike", "speak with animals", "moonbeam", "misty step", "plant growth", "protection from energy", "ice storm", "stoneskin", "commune with nature", "tree stride"],
@@ -3625,7 +3625,7 @@ var ClassSubList = {
 		}
 	},
 	"beast master" : {
-		regExpSearch : /^(?=.*(animal|beast))((?=.*(master|ranger|strider))|((?=.*(nature|natural))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
+		regExpSearch : /^(?=.*(animal|beast))((?=.*(master|ranger|strider))|((?=.*(nature|natural|green))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
 		subname : "Beast Master",
 		fullname : "Beast Master",
 		source : ["P", 93],
