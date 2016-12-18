@@ -2861,7 +2861,7 @@ function AskUserSpellSheet() {
 			//now also do this for the spells
 			dia.nmbrSp = spCast.known.spells === undefined ? "" : isArray(spCast.known.spells) ? spCast.known.spells[spCast.level - 1] : spCast.known.spells; //set the amount of spells
 			dia.typeSp = dia.nmbrSp === "" ? "" : isNaN(dia.nmbrSp) ? dia.nmbrSp : "known"; //set the type of spells (book, list, known)
-			dia.nmbrSp = !isNaN(dia.nmbrSp) ? dia.nmbrSp : 22; //if spells known is not a number, set the dialog to the max of 22
+			dia.nmbrSp = !isNaN(dia.nmbrSp) ? dia.nmbrSp : 18; //if spells known is not a number, set the dialog to the max of 18
 			dia.showSpRadio = spCast.level && (dia.typeSp === "list" || dia.typeSp === "book"); //show the spell radio buttons if concerning a list (druid/cleric/paladin)
 			dia.showSp = dia.typeSp !== "list" && dia.typeSp !== ""; //show the spells section
 			dia.selectSpRadio = spCast.typeList ? spCast.typeList : 1;
@@ -3039,9 +3039,9 @@ function AskUserSpellSheet() {
 					return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 				} else {
 					var totalSelectSp = OrderSpells(spCast.selectSp.concat(diaSB.selectSp), "single");
-					spCast.selectSp = totalSelectSp.slice(0, 22); //the first 22 of the array
-					if (totalSelectSp.length > 22) {
-						spCast.selectSpSB = totalSelectSp.slice(22); //the rest of the array after the 22nd
+					spCast.selectSp = totalSelectSp.slice(0, 18); //the first 18 of the array
+					if (totalSelectSp.length > 18) {
+						spCast.selectSpSB = totalSelectSp.slice(18); //the rest of the array after the 22nd
 					} else {
 						delete spCast.selectSpSB;
 					}
