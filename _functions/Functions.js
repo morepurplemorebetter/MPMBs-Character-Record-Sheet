@@ -652,7 +652,7 @@ function OpeningStatement() {
 		Text += tDoc.info.SpellsOnly ? "" : "\n\n" + toUni("Layout") + ": With the \"Layout\" button you can hide, add, and remove certain pages.";
 		Text += tDoc.info.AdvLogOnly ? "" : "\n\n" + toUni("Spells") + ": With the \"Spells\" button you can have the sheet generate a spell sheet based on your character, or manually create one.";
 		Text += !typePF ? "\n\n" + toUni("Color Options") + ": With the \"Color\" button or the top right logo on the first page, you can change the graphical elements of this sheet to 11 different colors." : "";
-		Text += tDoc.info.SpellsOnly ? "" : "\n\n" + toUni("Additional Content") + ": With the \"Get Additional Content\" bookmark you can get more options for this sheet, including the Unearthed Arcana material (e.g. the Revised Ranger), the Gunslinger, Blood Hunter, and College of the Maestro by Matthew Mercer, and more...";
+		Text += tDoc.info.SpellsOnly ? "" : "\n\n" + toUni("Sources") + ": With the \"Sources\" button you can set which resources you want the sheet to use, including the Unearthed Arcana material (e.g. the Revised Ranger). You can also get more using the \"Get Additional Content\" bookmark, like the Gunslinger, Blood Hunter, and College of the Maestro by Matthew Mercer, and many others...";
 		Text += "\n\nHave fun with the sheet and the adventures you take with it!\n - MorePurpleMoreBetter - ";
 		var oCk = {
 			bInitialValue : true,

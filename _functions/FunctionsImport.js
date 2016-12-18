@@ -1035,6 +1035,9 @@ function DirectImport(consoleTrigger) {
 			cTitle : "Some things to consider about the new sheet",
 		});
 	}
+	
+	tDoc.calculate = IsNotReset;
+	tDoc.delay = !IsNotReset;
 }
 
 //a function to import a field from the global.docFrom
