@@ -669,6 +669,8 @@ function OpeningStatement() {
 		};
 		if (!minVer && CurrentSources.firstTime) resourceDecisionDialog();
 	};
+	tDoc.calculate = true;
+	tDoc.delay = false;
 };
 
 function clean(input, remove) {
@@ -2162,9 +2164,9 @@ function ConditionSet() {
 	var ArmDis = tDoc.getField("AC Stealth Disadvantage");
 	
 	//check if by (un)checking this field, another field needs to be (un)checked as well
-	var theField = (event.target && event.target.name && event.target.name.indexOf("AC") === -1 && event.target.name.toLowerCase().indexOf("reset") === -1) ? event.target.name : "reset";
+	var theField = (event.target && event.target.name && event.target.name.search(/ac|reset|import/i) === -1) ? event.target.name : "reset";
 	var FieldNmbr = Number(theField.slice(-2));
-	var FieldChecked = theField !== "reset" ? event.target.isBoxChecked(0) : "reset";
+	var FieldChecked = theField !== "reset" && event.target.type === "checkbox" ? event.target.isBoxChecked(0) : "reset";
 	var CheckItAlso = FieldChecked === 1;
 	
 	//Do something with other fields dependent on the selection
@@ -3453,9 +3455,9 @@ function ReCalcWeapons() {
 	}
 	
 	IsNotReset = true;
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
+	tDoc.calculate = true;
+	tDoc.delay = false;
+	tDoc.calculateNow();
 }
 
 //apply the effect of a weapon

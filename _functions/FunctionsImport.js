@@ -82,7 +82,7 @@ function AddFolderJavaScript(justConsole) {
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
-						char_height : justConsole ? 5 : 7,
+						char_height : justConsole ? 5 : 9,
 						width : 530,
 					}, {
 						type : "view",
@@ -874,100 +874,101 @@ function DirectImport(consoleTrigger) {
 		
 	//do the spell sheet pages
 		//first update the CurrentSpells variable
-		var classesArray = [];
-		for (var aCast in CurrentSpells) {
-			classesArray.push(aCast);
-			if (!global.docFrom.CurrentSpells[aCast]) continue; //doesn't exist in the sheet importing from
-			var spCastTo = CurrentSpells[aCast];
-			var spCastFrom = global.docFrom.CurrentSpells[aCast];
-			if (spCastFrom.selectCa) spCastTo.selectCa = spCastFrom.selectCa;
-			if (spCastFrom.offsetCa) spCastTo.offsetCa = spCastFrom.offsetCa;
-			if (spCastFrom.selectBo) spCastTo.selectBo = spCastFrom.selectBo;
-			if (spCastFrom.offsetBo) spCastTo.offsetBo = spCastFrom.offsetBo;
-			if (spCastFrom.extraBo) spCastTo.extraBo = spCastFrom.extraBo;
-			if (spCastFrom.selectSp) spCastTo.selectSp = spCastFrom.selectSp;
-			if (spCastFrom.offsetSp) spCastTo.offsetSp = spCastFrom.offsetSp;
-			if (spCastFrom.selectSpSB) spCastTo.selectSpSB = spCastFrom.selectSpSB;
-			if (spCastFrom.selectPrep) spCastTo.selectPrep = spCastFrom.selectPrep;
-			if (spCastFrom.blueTxt) spCastTo.blueTxt = eval(spCastFrom.blueTxt.toSource());
-			if (spCastTo.bonus) {
-				for (var bKey in spCastTo.bonus) {
-					if (!spCastFrom.bonus[bKey]) continue; //doesn't exist in the sheet importing from
-					var spBonusFrom = spCastFrom.bonus[bKey];
-					var spBonusTo = spCastTo.bonus[bKey];
-					var spIsArrayFrom = isArray(spBonusFrom);
-					var spIsArrayTo = isArray(spBonusTo);
-					if (spIsArrayTo !== spIsArrayFrom) continue; //types don't match
-					var loop = spIsArrayTo && spIsArrayFrom;
-					var loopEnd = loop ? spBonusTo.length : 1;
-					for (var i = 0; i < loopEnd; i++) {
-						var spBonusiFrom = loop ? spBonusFrom[i] : spBonusFrom;
-						var spBonusiTo = loop ? spBonusTo[i] : spBonusTo;
-						if (spBonusiFrom.selection && !spBonusiTo.selection) spBonusiTo.selection = spBonusiFrom.selection;
+		if (global.docFrom.CurrentSpells) {
+			var classesArray = [];
+			for (var aCast in CurrentSpells) {
+				classesArray.push(aCast);
+				if (!global.docFrom.CurrentSpells[aCast]) continue; //doesn't exist in the sheet importing from
+				var spCastTo = CurrentSpells[aCast];
+				var spCastFrom = global.docFrom.CurrentSpells[aCast];
+				if (spCastFrom.selectCa) spCastTo.selectCa = spCastFrom.selectCa;
+				if (spCastFrom.offsetCa) spCastTo.offsetCa = spCastFrom.offsetCa;
+				if (spCastFrom.selectBo) spCastTo.selectBo = spCastFrom.selectBo;
+				if (spCastFrom.offsetBo) spCastTo.offsetBo = spCastFrom.offsetBo;
+				if (spCastFrom.extraBo) spCastTo.extraBo = spCastFrom.extraBo;
+				if (spCastFrom.selectSp) spCastTo.selectSp = spCastFrom.selectSp;
+				if (spCastFrom.offsetSp) spCastTo.offsetSp = spCastFrom.offsetSp;
+				if (spCastFrom.selectSpSB) spCastTo.selectSpSB = spCastFrom.selectSpSB;
+				if (spCastFrom.selectPrep) spCastTo.selectPrep = spCastFrom.selectPrep;
+				if (spCastFrom.blueTxt) spCastTo.blueTxt = eval(spCastFrom.blueTxt.toSource());
+				if (spCastTo.bonus) {
+					for (var bKey in spCastTo.bonus) {
+						if (!spCastFrom.bonus[bKey]) continue; //doesn't exist in the sheet importing from
+						var spBonusFrom = spCastFrom.bonus[bKey];
+						var spBonusTo = spCastTo.bonus[bKey];
+						var spIsArrayFrom = isArray(spBonusFrom);
+						var spIsArrayTo = isArray(spBonusTo);
+						if (spIsArrayTo !== spIsArrayFrom) continue; //types don't match
+						var loop = spIsArrayTo && spIsArrayFrom;
+						var loopEnd = loop ? spBonusTo.length : 1;
+						for (var i = 0; i < loopEnd; i++) {
+							var spBonusiFrom = loop ? spBonusFrom[i] : spBonusFrom;
+							var spBonusiTo = loop ? spBonusTo[i] : spBonusTo;
+							if (spBonusiFrom.selection && !spBonusiTo.selection) spBonusiTo.selection = spBonusiFrom.selection;
+						}
 					}
+				};
+			};
+			if (global.docFrom.CurrentCasters.incl || global.docFrom.CurrentCasters.excl) {
+				CurrentCasters = eval(global.docFrom.CurrentCasters.toSource());
+				for (var aCast in CurrentCasters) {
+					for (var i = 0; i < CurrentCasters.incl.length; i++) {
+						if (classesArray.indexOf(CurrentCasters.incl[i]) === -1) {
+							CurrentCasters.incl.splice(i, 1);
+							i -= 1;
+						}
+					}
+					for (var i = 0; i < CurrentCasters.excl.length; i++) {
+						if (classesArray.indexOf(CurrentCasters.excl[i]) === -1) {
+							CurrentCasters.excl.splice(i, 1);
+							i -= 1;
+						}
+					}
+				}
+			}
+			SetStringifieds();
+			
+			//now do the spell rows, but only if the sheet type is the same or only the first page was visible
+			if (pagesLayout && pagesLayout.SSfrontExtras && (sameType || !pagesLayout.SSmoreExtras)) {
+				prefixA = [[pagesLayout.SSfrontExtraNmFrom[1]], [pagesLayout.SSfrontExtraNmTo[1]]];
+				if (pagesLayout.SSmoreExtras) {
+					prefixA[0] = prefixA[0].concat(pagesLayout.SSmoreExtraNmFrom.slice(1));
+					prefixA[1] = prefixA[1].concat(pagesLayout.SSmoreExtraNmTo.slice(1));
+				}
+				for (var i = 0; i < prefixA[0].length; i++) {
+					var prefixFrom = prefixA[0][i];
+					var prefixTo = prefixA[1][i];
+					nmbrFlds = global.docFrom.FieldNumbers.spells ? global.docFrom.FieldNumbers.spells : FieldNumbers.spells;
+					nmbrFlds = nmbrFlds[i < 1 ? 0 : 1];
+					if (i === 0) { //set the first class header on SSfront
+						var tClassFld = global.docFrom.getField(prefixFrom + "spellshead.class.0");
+						if (tClassFld && tClassFld.value) SetSpellSheetElement(prefixTo + "spells.remember.0", "header", 0, tClassFld.value);
+						//hide the prepared section if not visible
+						var tPrepFldFrom = global.docFrom.getField(prefixFrom + "spellshead." + (fromSheetTypePF ? "Image" : "Text") + ".prepare.0");
+						var tPrepFldToNm = prefixTo + "spellshead." + (typePF ? "Image" : "Text") + ".prepare.0";
+						if (tPrepFldFrom && tPrepFldFrom.display === display.hidden) {
+							MakePreparedMenu_PreparedOptions(tPrepFldToNm);
+						};
+					}
+					//set the spell remember fields
+					for (var a = 0; a < nmbrFlds; a++) {
+						ImportField(prefixTo + "spells.remember." + a, {notTooltip: true, notSubmitName: true}, prefixFrom + "spells.remember." + a);
+					}
+					//set the headers and spell dividers
+					for (var a = 0; a < 9; a++) {
+						if (a < 4) {
+							ImportField(prefixTo + "spellshead.Text.header." + a, {notTooltip: true, notSubmitName: true, cleanValue: true}, prefixFrom + "spellshead.Text.header." + a);
+							ImportField(prefixTo + "spellshead.ability." + a, {notTooltip: true, notSubmitName: true, cleanValue: true}, prefixFrom + "spellshead.ability." + a);
+						}
+						ImportField(prefixTo + "spellsdiv.Text." + a, {notTooltip: true, notSubmitName: true, cleanValue: true}, prefixFrom + "spellsdiv.Text." + a);
+					};
+					//set the headers spellcasting abilities
+					doChildren("spellshead.ability", prefixFrom, prefixTo);
+					//set the headers bluetext values
+					doChildren("BlueText.spellshead", prefixFrom, prefixTo);
 				}
 			};
 		};
-		if (global.docFrom.CurrentCasters.incl || global.docFrom.CurrentCasters.excl) {
-			CurrentCasters = eval(global.docFrom.CurrentCasters.toSource());
-			for (var aCast in CurrentCasters) {
-				for (var i = 0; i < CurrentCasters.incl.length; i++) {
-					if (classesArray.indexOf(CurrentCasters.incl[i]) === -1) {
-						CurrentCasters.incl.splice(i, 1);
-						i -= 1;
-					}
-				}
-				for (var i = 0; i < CurrentCasters.excl.length; i++) {
-					if (classesArray.indexOf(CurrentCasters.excl[i]) === -1) {
-						CurrentCasters.excl.splice(i, 1);
-						i -= 1;
-					}
-				}
-			}
-		}
-		SetStringifieds();
-		
-		//now do the spell rows, but only if the sheet type is the same or only the first page was visible
-		if (pagesLayout && pagesLayout.SSfrontExtras && (sameType || !pagesLayout.SSmoreExtras)) {
-			prefixA = [[pagesLayout.SSfrontExtraNmFrom[1]], [pagesLayout.SSfrontExtraNmTo[1]]];
-			if (pagesLayout.SSmoreExtras) {
-				prefixA[0] = prefixA[0].concat(pagesLayout.SSmoreExtraNmFrom.slice(1));
-				prefixA[1] = prefixA[1].concat(pagesLayout.SSmoreExtraNmTo.slice(1));
-			}
-			for (var i = 0; i < prefixA[0].length; i++) {
-				var prefixFrom = prefixA[0][i];
-				var prefixTo = prefixA[1][i];
-				nmbrFlds = global.docFrom.FieldNumbers.spells ? global.docFrom.FieldNumbers.spells : FieldNumbers.spells;
-				nmbrFlds = nmbrFlds[i < 1 ? 0 : 1];
-				if (i === 0) { //set the first class header on SSfront
-					var tClassFld = global.docFrom.getField(prefixFrom + "spellshead.class.0");
-					if (tClassFld && tClassFld.value) SetSpellSheetElement(prefixTo + "spells.remember.0", "header", 0, tClassFld.value);
-					//hide the prepared section if not visible
-					var tPrepFldFrom = global.docFrom.getField(prefixFrom + "spellshead." + (fromSheetTypePF ? "Image" : "Text") + ".prepare.0");
-					var tPrepFldToNm = prefixTo + "spellshead." + (typePF ? "Image" : "Text") + ".prepare.0";
-					if (tPrepFldFrom && tPrepFldFrom.display === display.hidden) {
-						MakePreparedMenu_PreparedOptions(tPrepFldToNm);
-					};
-				}
-				//set the spell remember fields
-				for (var a = 0; a < nmbrFlds; a++) {
-					ImportField(prefixTo + "spells.remember." + a, {notTooltip: true, notSubmitName: true}, prefixFrom + "spells.remember." + a);
-				}
-				//set the headers and spell dividers
-				for (var a = 0; a < 9; a++) {
-					if (a < 4) {
-						ImportField(prefixTo + "spellshead.Text.header." + a, {notTooltip: true, notSubmitName: true, cleanValue: true}, prefixFrom + "spellshead.Text.header." + a);
-						ImportField(prefixTo + "spellshead.ability." + a, {notTooltip: true, notSubmitName: true, cleanValue: true}, prefixFrom + "spellshead.ability." + a);
-					}
-					ImportField(prefixTo + "spellsdiv.Text." + a, {notTooltip: true, notSubmitName: true, cleanValue: true}, prefixFrom + "spellsdiv.Text." + a);
-				};
-				//set the headers spellcasting abilities
-				doChildren("spellshead.ability", prefixFrom, prefixTo);
-				//set the headers bluetext values
-				doChildren("BlueText.spellshead", prefixFrom, prefixTo);
-			}
-		};
-		
 	//Some settings for the overall sheet
 		//set the bluetextfields
 		if (ImportField("BlueTextRemember")) ToggleBlueText(What("BlueTextRemember") === "Yes" ? "No" : "Yes");

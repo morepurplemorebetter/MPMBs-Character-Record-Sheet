@@ -26,6 +26,8 @@ function InitializeEverything(noButtons) {
 	SetHighlighting();
 	if (!noButtons) MakeButtons();
 	tDoc.dirty = false; //reset the dirty status, so the user is not asked to save without there having been any changes made
+	tDoc.calculate = true;
+	tDoc.delay = false;
 }
 
 var OpeningStatementVar = app.setTimeOut("OpeningStatement();", 3000);
