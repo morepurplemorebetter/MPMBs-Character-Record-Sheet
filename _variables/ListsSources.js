@@ -155,4 +155,10 @@ var SourceList = {
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2016/dnd/downloads/M_2016_UAMonk1_12_12WKWT.pdf"
 	},
+	"UA:PSO" : {
+		name : "Unearthed Arcana: Paladin Sacred Oaths", //2016-12-19
+		abbreviation : "UA:PSO",	
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2016/dnd/downloads/UAPaladin_SO_20161219_1.pdf"
+	},
 };
