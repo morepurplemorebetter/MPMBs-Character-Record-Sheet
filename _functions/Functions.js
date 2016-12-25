@@ -2831,9 +2831,9 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 		if (classes.oldspellcastlvl.otherTables) SpellSlotsTotal -= classes.oldspellcastlvl.otherTables[ss]; //remove the old slots
 		for (var casterType in classes.spellcastlvl) {
 			if (casterType !== "otherTables") {
-				SpellSlotsTotal += tDoc[casterType + "SpellTable"][classes.spellcastlvl[casterType]][ss]; //add the new slots
+				SpellSlotsTotal += tDoc[casterType + "SpellTable"][Math.min(20, classes.spellcastlvl[casterType])][ss]; //add the new slots
 				if (classes.oldspellcastlvl[casterType]) {
-					SpellSlotsTotal -= tDoc[casterType + "SpellTable"][classes.oldspellcastlvl[casterType]][ss]; //remove the old slots
+					SpellSlotsTotal -= tDoc[casterType + "SpellTable"][Math.min(20, classes.oldspellcastlvl[casterType])][ss]; //remove the old slots
 				}
 			}
 		}
@@ -5117,7 +5117,7 @@ function CalcSave() {
 	//get the proficiency bonus if applicable
 	var Sprof = tDoc.getField(Save.replace("Mod", "Prof")).isBoxChecked(0) === 1;
 	var useDice = QI ? tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1 : tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
-	var ProfBonus = useDice || !Sprof ? 0 : What(Q + "Proficiency Bonus");
+	var ProfBonus = useDice || !Sprof ? 0 : What(prefix + Q + "Proficiency Bonus");
 		
 	//get the variable entered into the bonus field
 	var ExtraBonus = What(Save.replace("Comp.", "BlueText.Comp.").replace("Mod", "Bonus"));

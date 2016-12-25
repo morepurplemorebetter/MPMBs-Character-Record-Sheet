@@ -923,7 +923,7 @@ var CreatureList = {
 				description : "The elemental deals double damage to objects and structures.",
 			},
 		],
-		wildshapeString : "Darkvision 60 ft; Tremorsense 60 ft| Knows Terran| Vulnerable to: thunder| Resistant to: bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious| Earth Glide: can burrow through nonmagical, unworked earth and stone without disturbing the material| Siege Monster: does double damage to objects and structures",
+		wildshapeString : "Darkvision 60 ft; Tremorsense 60 ft| Knows Terran| Vulnerable to: thunder| Resistant to: bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, paralyzed, petrified, poisoned, unconscious| Earth Glide: can burrow through nonmagical, unworked earth and stone without disturbing the material| Siege Monster: does double damage to objects and structures",
 	},
 	"elephant" : {
 		name : "Elephant",
@@ -4316,7 +4316,7 @@ var CreatureList = {
 				description : "See attack. Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 feet of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength and succeeding.",
 			},
 		],
-		wildshapeString : "Darkvision 60 ft| Knows Aquan| Resistant to: acid, and bludg./piercing/slashing from nonmagical weapons| Immune to: fire/poison/exhaustion/grappled/paralyzed/ petrified/poisoned/prone/restrained/unconscious|  Water Form: pass through 1\" space without squeezing; move through and stop in another's space| Freeze: if taken cold damage, speed reduced to 20 ft until end of next turn| Whelm: see Monster Manual page 125",
+		wildshapeString : "Darkvision 60 ft| Knows Aquan| Resistant to: acid, and bludg./piercing/slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious|  Water Form: pass through 1\" space without squeezing; move through and stop in another's space| Freeze: if taken cold damage, speed reduced to 20 ft until end of next turn| Whelm: see Monster Manual page 125",
 	},
 	"weasel" : {
 		name : "Weasel",
