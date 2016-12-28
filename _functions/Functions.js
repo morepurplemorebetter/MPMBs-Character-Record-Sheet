@@ -10851,9 +10851,23 @@ function AddUserScript() {
 	var theUserScripts = What("User Script").match(/(.|\r){1,65500}/g);
 	if (!theUserScripts) theUserScripts = [];
 	var defaultTxt = toUni("The JavaScript") + " you put into the field below will be run immediately and whenever the sheet is opened, using eval().\nIf the script results in an error you will be informed immediately and the script will not be added to the sheet.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet. What you submit now (all dialogues put together) does not get added to anything you entered before, but will replace it.\n" + toUni("Reset the sheet") + " before you enter code into it (or use a fresh one).\n\n" + toUni("Be warned") + ", things you do here can break the sheet! If you are unsure how to write JavaScript to do what you want, please " + toUni("contact MorePurpleMoreBetter") + " on enworld.org, reddit, or via flapkan@gmail.com.\n\n";
-	var extraTxt = toUni("A character limit of 65642") + " applies to the area below. You can add longer scripts by using the \"Open Another Dialogue\" button. That way you get more dialogues like this one. When you press \"Add Script to Sheet\", the code of all dialogues will be joined together (with not characters put inbetween!), is then run/tested and added to the sheet as a whole.\n" + toUni("An error will result in all content being lost") + ", s	o please save it somewhere else as well!";
+	var extraTxt = toUni("A character limit of 65642") + " applies to the area below. You can add longer scripts by using the \"Open Another Dialogue\" button. That way you get more dialogues like this one. When you press \"Add Script to Sheet\", the code of all dialogues will be joined together (with not characters put inbetween!), is then run/tested and added to the sheet as a whole.\n" + toUni("An error will result in all content being lost") + ", so please save it somewhere else as well!";
 	var getTxt = toUni("Using the proper syntax") + ", you can add homebrew materials for classes, races, weapons, feats, spells, backgrounds, etc. Section 3 of the " + toUni("FAQ") + " has more information and links to the syntax.\n\n" + toUni("Pre-Written Scripts ") + " can be obtained using the \"Additional Content\" button to the left. These include some more Unearthed Arcana materials, as well as the materials by Matthew Mercer (Blood Hunter, Gunslinger, College of the Maestro), and more...";
 	var diaIteration = 1;
+	
+	var tries = 0;
+	var selBoxHeight = 350;
+	do {
+		try {
+			var mons = app.monitors.primary();
+			var resHigh = mons && mons[0] && mons[0].rect ? mons[0].rect[3] : false;
+			if (resHigh && resHigh < 800) selBoxHeight = Math.max(100, 350 - (850 - resHigh));
+			tries = 100;
+		} catch (e) {
+			tries += 1;
+		}
+	} while (tries < 5);
+	
 	var getDialog = function() {
 		var diaMax = Math.max(theUserScripts.length, diaIteration);
 		var moreDialogues = diaMax > diaIteration;
@@ -10959,7 +10973,7 @@ function AddUserScript() {
 							item_id : "jscr",
 							alignment : "align_fill",
 							multiline: true,
-							char_height : 37,
+							height : selBoxHeight,
 							width : 640,
 						}, {
 							type : "gap",
