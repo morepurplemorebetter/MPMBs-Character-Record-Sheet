@@ -10856,12 +10856,12 @@ function AddUserScript() {
 	var diaIteration = 1;
 	
 	var tries = 0;
-	var selBoxHeight = 350;
+	var selBoxHeight = 340;
 	do {
 		try {
 			var mons = app.monitors.primary();
 			var resHigh = mons && mons[0] && mons[0].rect ? mons[0].rect[3] : false;
-			if (resHigh && resHigh < 800) selBoxHeight = Math.max(100, 350 - (850 - resHigh));
+			if (resHigh && resHigh < 900) selBoxHeight = Math.max(100, 340 - (900 - resHigh));
 			tries = 100;
 		} catch (e) {
 			tries += 1;
