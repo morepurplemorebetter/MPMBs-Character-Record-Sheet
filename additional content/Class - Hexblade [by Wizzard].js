@@ -20,7 +20,7 @@ ClassList["hexblade"] = {
 	source : ["HB", 0],
 	primaryAbility : "\n \u2022 Hexblade: Strength and Charisma;",
 	abilitySave : 6,
-	prereqs : "\n \u2022 Hexblade: Strength 13 and Charisma 13;"
+	prereqs : "\n \u2022 Hexblade: Strength 13 and Charisma 13;",
 	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 	die : 10,
 	saves : ["Str", "Cha"],
