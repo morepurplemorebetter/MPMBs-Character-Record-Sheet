@@ -1447,7 +1447,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [1, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 11); can't use a claw again until grapple ends",
+				description : "Target is grappled (escape DC 11); can't use a claw again until grapple ends",
 			},
 		],
 		traits : [{
@@ -1983,7 +1983,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [1, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 12); can't use a claw again until grapple ends",
+				description : "Target is grappled (escape DC 12); can't use a claw again until grapple ends",
 			}, {
 				name : "Sting",
 				ability : 1,
@@ -3027,7 +3027,7 @@ var CreatureList = {
 				ability : 2,
 				damage : [1, "", "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 10); can't use tentacles again until grapple ends",
+				description : "Target is grappled (escape DC 10); can't use tentacles again until grapple ends",
 				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
 			},
 		],
