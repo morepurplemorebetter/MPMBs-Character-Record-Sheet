@@ -11,8 +11,9 @@
 	Subject:	Background
 	Effect:		This script adds a background, including its seven options, called "Half-Vistani"
 				This is taken from the Sterling Vermin Adventuring Co. website (https://sterlingvermin.files.wordpress.com/2016/03/the-half-vistani.pdf)
+				This background is made by /u/coolgamertagbro
 	Code by:	Marshall
-	Date:		2017-01-05 (sheet v12.79)
+	Date:		2017-01-05 (sheet v12.8)
 	
 	Please support the creator of this content (Sterling Vermin Adventuring Co.) and download this and other material from there: https://sterlingvermin.com/
 */
