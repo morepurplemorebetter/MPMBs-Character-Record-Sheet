@@ -2153,7 +2153,7 @@ function UAstartupCode() {
 		var aDomain = ClassList.cleric.subclasses[1][i];
 		if (ClassSubList[aDomain] && ClassSubList[aDomain].spellcastingExtra) {
 			var cDomain = ClassSubList[aDomain];
-			var eSpells = cDomain.spellcastingExtra;
+			var eSpells = eval(cDomain.spellcastingExtra.toSource());
 			eSpells[100] = "AddToKnown";
 			FSfeat.choices.push(cDomain.subname);
 			FSfeat[cDomain.subname.toLowerCase()] = {

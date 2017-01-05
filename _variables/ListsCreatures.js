@@ -772,7 +772,7 @@ var CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Fist",
+				name : "Bite",
 				ability : 1,
 				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
@@ -995,7 +995,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [2, 4, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "",
+				description : "Can only be used on prone creatures",
 			},
 		],
 		traits : [{
@@ -1576,7 +1576,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [4, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "",
+				description : "Can only be used on prone creatures",
 			},
 		],
 		traits : [{

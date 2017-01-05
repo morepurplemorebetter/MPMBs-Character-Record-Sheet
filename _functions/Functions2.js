@@ -5212,3 +5212,46 @@ function setListsUnitSystem(isMetric, onStart) {
 		if (compString[cType].string) compString[cType].string = tDoc[conStr](compString[cType].string, 0.5);
 	};
 }
+
+// automatically add a new entry on the Adventurers Logsheet with the sheets current values
+function addALlogEnrry() {
+	//first find the next empty logsheet entry
+	var theTypesA = [
+		".xp",
+		".gold",
+		".downtime",
+		".renown",
+		".magicItems",
+	];
+	var ALlogA = What("Template.extras.ALlog").split(",");
+	var emptyLog = [];
+	var emptyFound = false;
+	for (var tA = 0; tA < ALlogA.length; tA++) {
+		for (var i = 1; i <= FieldNumbers.logs; i++) {
+			var emptyFlds = 0;
+			for (var A = 0; A < theTypesA.length; A++) {
+				emptyFlds += What(ALlogA[tA] + "AdvLog." + i + theTypesA[A] + ".gain") === "" ? 1 : 0;
+			}
+			if (emptyFlds === 5) {
+				emptyFound = true;
+				emptyLog[1] = i;
+				break;
+			}
+		}
+		if (emptyFound) {
+			emptyLog[0] = ALlogA[tA];
+			break;
+		}
+	};
+	//now if no empty log was found, add another logsheet page
+	if (emptyLog.length === 0) {
+		emptyLog[0] = DoTemplate("ALlog", "Add");
+		emptyLog[0] = 1;
+	};
+	
+	//now enter the values
+	//
+	//FieldNumbers.logs
+};
+
+//menu for logsheet entries, move up, move down, insert, delete, clear
