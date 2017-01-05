@@ -3741,7 +3741,7 @@ function CalcAttackDamage() {
 	var DamageBonus3 = (thisWeapon && thisWeapon[1]) ? thisWeapon[1] : 0; //damage from magical bonus
 
 	var DamageBonus4 = 0;
-	if (QI && What(WeaponFlds[3]).search(/melee/i) !== -1 && What(WeaponFlds[12]).search(/two-handed/i) === -1 && thisWeapon && thisWeapon[0] && WeaponsList[thisWeapon[0]].type !== "Cantrip") {
+	if (QI && What(WeaponFlds[13]).search(/melee/i) !== -1 && What(WeaponFlds[12]).search(/two-handed/i) === -1 && thisWeapon && thisWeapon[0] && WeaponsList[thisWeapon[0]].type !== "Cantrip") {
 		DamageBonus4 = What("Attack Damage Bonus Global"); //damage from dueling fighting style if weapon is melee and not two-handed or a cantrip
 	}
 
