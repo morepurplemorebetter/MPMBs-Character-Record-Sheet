@@ -4392,7 +4392,11 @@ function RemoveBackground() {
 		};
 		if (CurrentBackground.languages) {
 			for (var L = 0; L < CurrentBackground.languages.length; L++) {
-				RemoveLanguage(CurrentBackground.languages[L] + CurrentBackground.name, "being a " + CurrentBackground.name);
+				var theLang = CurrentBackground.languages[L];
+				if (theLang.substring(0, 1) === "+") {
+					theLang += CurrentBackground.name;
+				}
+				RemoveLanguage(theLang, "being a " + CurrentBackground.name);
 			}
 		}
 		//remove the lifestyle, if defined
