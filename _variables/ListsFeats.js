@@ -44,7 +44,7 @@ var FeatsList = {
 		name : "Dual Wielder",
 		source : ["P", 165],
 		description : "I can use two-weapon fighting even when the one-handed melee weapons I'm wielding aren't light. I can draw or stow two one-handed weapons when I would normally be able to draw or stow only one. +1 AC while wielding separate melee weapons in each hand.",
-		eval : "AddACMisc(1, \"Dual Wielder (if 2 weapons)\", \"When wielding a melee weapon in each hand, the Dual Wielder feat gives a +1 bonus to AC\")",
+		eval : "AddACMisc(1, \"Dual Wielder (if 2 weapons)\", \"When wielding a melee weapon in each hand, the Dual Wielder feat gives a +1 bonus to AC\", \"ACshield\")",
 		removeeval : "AddACMisc(0, \"Dual Wielder (if 2 weapons)\", \"When wielding a melee weapon in each hand, the Dual Wielder feat gives a +1 bonus to AC\")"
 	},
 	"dungeon delver" : {

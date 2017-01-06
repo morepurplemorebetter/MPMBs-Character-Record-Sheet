@@ -645,15 +645,15 @@ function OpeningStatement() {
 		var Text = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
 		Text += "Welcome to " + toUni(sheetTitle);
 		Text += " (get the latest version using the bookmark).";
-		Text += "\n\n" + toUni("Software") + ": This sheet is only supported to work with " + toUni("Adobe Acrobat DC") + ".";
+		Text += "\n\n" + toUni("Software") + ": Please use " + toUni("Adobe Acrobat DC") + " with this sheet, as only Adobe Acrobat DC (Reader, Standard, or Pro) is supported.";
 		Text += "\n\n" + toUni("Tooltips") + ": This sheet makes extensive use of tooltips (mouseover texts). Hoover your cursor over a field to find how you can enter things into the field, reference to the source, explanatory text, or even a list of options your selection offers you.";
 		Text += "\n\n" + toUni("Functions") + ": Check out the buttons in the \'JavaScript Window\' (and bookmarks). Hoover your cursor over a button in the \'JavaScript Window\' to see what it does.";
-		Text += tDoc.info.SpellsOnly ? "" : "\n\n" + toUni("Modifiers") + ": With the \"Mods\" button you can add modifiers to the calculated values.";
+		Text += minVer ? "" : "\n\n" + toUni("Modifiers") + ": With the \"Mods\" button you can add modifiers to the calculated values.";
 		Text += tDoc.info.SpellsOnly ? "" : "\n\n" + toUni("Layout") + ": With the \"Layout\" button you can hide, add, and remove certain pages.";
 		Text += tDoc.info.AdvLogOnly ? "" : "\n\n" + toUni("Spells") + ": With the \"Spells\" button you can have the sheet generate a spell sheet based on your character, or manually create one.";
 		Text += !typePF ? "\n\n" + toUni("Color Options") + ": With the \"Color\" button or the top right logo on the first page, you can change the graphical elements of this sheet to 11 different colors." : "";
-		Text += tDoc.info.SpellsOnly ? "" : "\n\n" + toUni("Sources") + ": With the \"Sources\" button you can set which resources you want the sheet to use, including the Unearthed Arcana material (e.g. the Revised Ranger). You can also get more using the \"Get Additional Content\" bookmark, like the Gunslinger, Blood Hunter, and College of the Maestro by Matthew Mercer, and many others...";
-		Text += "\n\nHave fun with the sheet and the adventures you take with it!\n - MorePurpleMoreBetter - ";
+		Text += tDoc.info.AdvLogOnly ? "" : "\n\n" + toUni("Sources") + ": With the \"Sources\" button you can set which resources you want the sheet to use, including most Unearthed Arcana material (e.g. the Revised Ranger). You can also get more using the \"Get Additional Content\" bookmark, like the Gunslinger, Blood Hunter, College of the Maestro by Matthew Mercer, and many others...";
+		Text += "\n\nHave fun with the sheet and the adventures you embark on with its help!\n - MorePurpleMoreBetter - ";
 		var oCk = {
 			bInitialValue : true,
 			bAfterValue : false
@@ -1368,6 +1368,8 @@ function ResetAll(GoOn) {
 			tDoc.getField("Limited Feature Max Usages " + i).setAction("Calculate", "");
 			tDoc.getField("Limited Feature Max Usages " + i).submitName = "";
 		}
+		tDoc.getField("AC Misc Mod 1 Description").submitName = "";
+		tDoc.getField("AC Misc Mod 2 Description").submitName = "";
 		tDoc.resetForm();
 		thermoM(4/9); //increment the progress dialog's progress
 		
@@ -6575,7 +6577,7 @@ function ClassFeatureOptions(Input, AddOrRemove) {
 }
 
 //add a miscellaneous AC bonus. Filling in a 0 for ACbonus will remove the ability
-function AddACMisc(ACbonus, Name, Tooltip) {
+function AddACMisc(ACbonus, Name, Tooltip, submitNm) {
 	ACMiscFlds = ["AC Misc Mod 1", "AC Misc Mod 2", "AC Misc Mod 1 Description", "AC Misc Mod 2 Description"];
 	for (var i = 0; i <= 1; i++) {
 		var Mod = tDoc.getField(ACMiscFlds[i]);
@@ -6587,6 +6589,7 @@ function AddACMisc(ACbonus, Name, Tooltip) {
 				Mod.value = ACbonus;
 				Desc.value = Name;
 				Desc.userName = Tooltip;
+				Desc.submitName = submitNm ? submitNm : "";
 				i = 2
 			}
 		} else { //if removing something
@@ -6594,6 +6597,7 @@ function AddACMisc(ACbonus, Name, Tooltip) {
 				Mod.value = "";
 				Desc.value = "";
 				Desc.userName = "";
+				Desc.submitName = "";
 				i = 2
 			}
 		}
@@ -6950,21 +6954,14 @@ function CalcAC() {
 	if (isNaN(ACmisc1)) {
 		ACmisc1 = Number(What(ACmisc1 + " Mod"));
 	}
+	if (ACmisc1 && tDoc.getField("AC Misc Mod 1 Description").submitName && eval(tDoc.getField("AC Misc Mod 1 Description").submitName)) ACmisc1 = 0;
 	
 	var ACmisc2 = What("AC Misc Mod 2");
 	var ACmisc2Desc = What("AC Misc Mod 2 Description");
 	if (isNaN(ACmisc2)) {
 		ACmisc2 = Number(What(ACmisc2 + " Mod"));
 	}
-	
-	if ((CurrentArmour.known && ArmourList[CurrentArmour.known].type === "") || CurrentArmour.field === "") {
-		if (ACmisc1Desc.search(/Defense Fighting Style/i) !== -1) {
-			ACmisc1 = 0;
-		}
-		if (ACmisc2Desc.search(/Defense Fighting Style/i) !== -1) {
-			ACmisc2 = 0;
-		}
-	}
+	if (ACmisc2 && tDoc.getField("AC Misc Mod 2 Description").submitName && eval(tDoc.getField("AC Misc Mod 2 Description").submitName)) ACmisc2 = 0;
 	
 	if (ACbase === "") {
 		event.value = "";

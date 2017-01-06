@@ -3274,18 +3274,20 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 
 	menuLVL1(AdvLogMenu, alMenuItems);
 	
+	if (!minVer) menuLVL1(AdvLogMenu, [["Generate next Logsheet Entry", "generate"]]);
+	
 	var dateTypesMenu = [];
 	
 	menuLVL2(dateTypesMenu, ["Date format", "dateformat"], 
-		[["24 Dec 2014", "d mmm yyyy"],
-		["24-12-2014", "d-m-yyyy"],
-		["24/12/2014", "d/m/yyyy"],
-		["Dec 24, 2014", "mmm d, yyyy"],
-		["12-24-2014", "m-d-yyyy"],
-		["12/24/2014", "m/d/yyyy"],
-		["2014 Dec 24", "yyyy mmm d"],
-		["2014-12-24", "yyyy-m-d"],
-		["2014/12/24", "yyyy/m/d"],]
+		[	["24 Dec 2014", "d mmm yyyy"],
+			["24-12-2014", "d-m-yyyy"],
+			["24/12/2014", "d/m/yyyy"],
+			["Dec 24, 2014", "mmm d, yyyy"],
+			["12-24-2014", "m-d-yyyy"],
+			["12/24/2014", "m/d/yyyy"],
+			["2014 Dec 24", "yyyy mmm d"],
+			["2014-12-24", "yyyy-m-d"],
+			["2014/12/24", "yyyy/m/d"]	]
 	);
 	
 	AdvLogMenu.push(dateTypesMenu);
@@ -3332,6 +3334,9 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 			break;
 		 case "dateformat" :
 			UpdateALdateFormat(MenuSelection[1]);
+			break;
+		 case "generate" :
+			addALlogEnrry();
 			break;
 		}
 	}
@@ -4392,7 +4397,7 @@ function UpdateALdateFormat(dateForm) {
 			if (dateFldValue && util.scand(dateInputForm, dateFldValue)) {
 				Value(dateFld, dateFldValue);
 			}
-			AddTooltip(dateFld, "Write the date of the session or event here, using the format \"" + dateInputFormLong + "\".");
+			AddTooltip(dateFld, "Write the date of the session or event here, using the format \"" + dateInputFormLong + "\".\n\nYou can change this format using the \"Logsheet Options\" button above.");
 		}
 	}
 }
@@ -5234,24 +5239,210 @@ function addALlogEnrry() {
 			}
 			if (emptyFlds === 5) {
 				emptyFound = true;
+				emptyLog[0] = ALlogA[tA];
 				emptyLog[1] = i;
+				emptyLog[2] = i !== 1 ? ALlogA[tA] : (tA !== 0 ? ALlogA[tA - 1] : "stop");
 				break;
 			}
 		}
-		if (emptyFound) {
-			emptyLog[0] = ALlogA[tA];
-			break;
-		}
+		if (emptyFound) break;
 	};
 	//now if no empty log was found, add another logsheet page
 	if (emptyLog.length === 0) {
 		emptyLog[0] = DoTemplate("ALlog", "Add");
-		emptyLog[0] = 1;
+		emptyLog[1] = 1;
+		emptyLog[2] = ALlogA[ALlogA.length - 1];
+		tDoc.calculate = true;
+		tDoc.calculateNow();
+		tDoc.calculate = false;
 	};
 	
-	//now enter the values
-	//
-	//FieldNumbers.logs
+	var baseFld = emptyLog[0] + "AdvLog." + emptyLog[1] + ".";
+	// experience
+	var start = baseFld === "AdvLog.1." ? 0 : What(baseFld + "xp.start");
+	var total = What("Total Experience") - start;
+	Value(baseFld + "xp.gain", (total >= 0 ? "+" : "") + total);
+	// gold
+	start = baseFld === "AdvLog.1." ? 0 : What(baseFld + "gold.start");
+	total = Math.round(((Number(What("Platinum Pieces").replace(",", ".")) * 10) + Number(What("Gold Pieces").replace(",", ".")) + (Number(What("Electrum Pieces").replace(",", ".")) / 2) + (Number(What("Silver Pieces").replace(",", ".")) / 10) + (Number(What("Copper Pieces").replace(",", ".")) / 100)) * 100) / 100 - start;
+	Value(baseFld + "gold.gain", (total >= 0 ? "+" : "") + total);
+	// downtime (can't really be calculated, so just add a zero)
+	Value(baseFld + "downtime.gain", "+0");
+	// renown
+	start = baseFld === "AdvLog.1." ? 0 : What(baseFld + "renown.start");
+	total = What("Background_Renown.Text") - start;
+	Value(baseFld + "renown.gain", (total >= 0 ? "+" : "") + total);
+	// magicItems
+	start = baseFld === "AdvLog.1." ? 0 : What(baseFld + "magicItems.start");
+	var MInr = [];
+	for (var mi = 1; mi <= FieldNumbers.magicitems; mi++) {
+		var thisMI = What("Extra.Magic Item " + mi).toLowerCase();
+		if (thisMI) MInr.push(thisMI);
+	};
+	if (What("Adventuring Gear Remember") === false) {
+		for (var gmi = FieldNumbers.gearMIrow + 1; gmi <= FieldNumbers.gear; gmi++) {
+			var thisMI = What("Adventuring Gear Row " + mi).toLowerCase();
+			if (thisMI && MInr.index(thisMI) === -1) MInr.push(thisMI);
+		}
+	};
+	total = MInr.length - start;
+	Value(baseFld + "magicItems.gain", (total >= 0 ? "+" : "") + total);
+	
+	// set today's date
+	var dateInputForm = returnInputForm(What("DateFormat_Remember"));
+	Value(baseFld + "date", util.printd(dateInputForm, new Date()));
+	
+	// set the other fields, if a previous entry was detected
+	if (emptyLog[2] !== "stop") {
+		var preBase = emptyLog[2] + "AdvLog." + (emptyLog[1] === 1 ? FieldNumbers.logs : emptyLog[1] - 1) + ".";
+		Value(baseFld + "adventure", What(preBase + "adventure"));
+		Value(baseFld + "dm", What(preBase + "dm"));
+		var oldSesh = Number(What(preBase + "session").replace(/[^\d+]*(\d+)?.*/, "$1"));
+		Value(baseFld + "session", What(preBase + "session").replace(oldSesh, oldSesh + 1));
+	};
+	
+	tDoc.getField(baseFld + "notes" + (emptyLog[0] === "" ? ".1" : "")).setFocus();
+	
+	//alert the user of what happened
+	app.alert({
+		cMsg : "The sheet automatically filled '" + toUni(What(emptyLog[0] + "Text.AdvLog." + emptyLog[1]).capitalize()) + "' with the date of today.\n\nThe numerical 'gain' fields are calculated using the information from the rest of the sheet compared to the last entry.\nThe Adventure Name, Session number, and DMs Name have been taken from the previous entry.\n\nNote that the Downtime gain is set to zero as the sheet doesn't track those.",
+		cTitle : "A new Logsheet Entry has been added",
+		nType : 0,
+		nIcon : 3,
+	});
 };
 
-//menu for logsheet entries, move up, move down, insert, delete, clear
+//menu for logsheet entries to move up, move down, insert, delete, or clear
+function MakeAdvLogLineMenu_AdvLogLineOptions() {
+	var prefix = event.target.name.substring(0, event.target.name.indexOf("Button.AdvLog."));
+	var lineNmbr = Number(event.target.name.slice(-1));
+	var theArray = [
+		["Move up", "up"],
+		["Move down", "down"],
+		["-", "-"],
+		["Insert empty Logsheet Entry", "insert"],
+		["Delete Logsheet Entry", "delete"],
+		["Clear Logsheet Entry", "clear"],
+	];
+	var menuLVL1 = function (item, array) {
+		for (var i = 0; i < array.length; i++) {
+			var isEnabled = true;
+			if (array[i][1] === "up" && prefix === "" && lineNmbr === 1) {
+				isEnabled = false;
+			}
+			item.push({
+				cName : array[i][0],
+				cReturn : array[i][1],
+				bEnabled : isEnabled
+			});
+		}
+	}
+	var AdvLogLineMenu = [];
+	menuLVL1(AdvLogLineMenu, theArray);
+	Menus.advlogline = AdvLogLineMenu;
+	
+	var MenuSelection = getMenu("advlogline");
+	
+	if (MenuSelection !== undefined) doAdvLogLine(MenuSelection[0], lineNmbr, prefix);
+}
+
+//do with logsheet entry, move up, move down, insert, delete, clear
+function doAdvLogLine(action, lineNmbr, prefix) {
+	tDoc.delay = true;
+	tDoc.calculate = false;
+	var ALlogA = What("Template.extras.ALlog").split(",");
+	var preNm = prefix + "AdvLog.";
+	var FieldNames = [
+		".xp.gain",
+		".gold.gain",
+		".downtime.gain",
+		".renown.gain",
+		".magicItems.gain",
+		".date",
+		".adventure",
+		".session",
+		".dm",
+		".notes",
+	];
+	switch (action) {
+	 case "up" :
+	 case "down" :
+		var Fields = [], FieldsValue = [], FieldsUp = [], FieldsUpValue = [], FieldsDown = [], FieldsDownValue = [];
+		for (var F = 0; F < FieldNames.length; F++) {
+			Fields[F] = preNm + lineNmbr + FieldNames[F];
+			FieldsValue[F] = What(Fields[F]);
+			if (action === "up" && !(prefix === "AdvLog." && lineNmbr === 1)) {
+				FieldsUp[F] = preNm + (lineNmbr - 1) + FieldNames[F];
+				FieldsUpValue[F] = What(FieldsUp[F]);
+			}
+			if (action === "down") {
+				if (lineNmbr !== FieldNumbers.logs) {
+					FieldsDown[F] = preNm + (lineNmbr + 1) + FieldNames[F];
+					FieldsDownValue[F] = What(FieldsDown[F]);
+				} else if (ALlogA.indexOf(prefix) !== ALlogA.length - 1) {
+					FieldsDown[F] = ALlogA[ALlogA.indexOf(prefix) + 1] + "AdvLog.1" + FieldNames[F];
+					FieldsDownValue[F] = "";
+				} else {
+					var newPre = DoTemplate("ALlog", "Add");
+					FieldsDown[F] = newPre + "AdvLog.1" + FieldNames[F];
+					FieldsDownValue[F] = "";
+				}
+			}
+		};
+		var useArr = action === "up" ? [FieldsUp, FieldsUpValue] : [FieldsDown, FieldsDownValue];
+		for (var F = 0; F < FieldNames.length; F++) {
+			Value(useArr[0][F], FieldsValue[F]);
+			Value(Fields[F], useArr[1][F]);
+		}
+		break;
+	 case "delete" :
+		for (var tA = ALlogA.indexOf(prefix); tA < ALlogA.length; tA++) {
+			var startI = ALlogA[tA] === prefix ? lineNmbr : 1;
+			for (var i = startI; i <= FieldNumbers.logs; i++) {
+				if (tA === (ALlogA.length - 1) && i === FieldNumbers.logs) {
+					tDoc.resetForm([ALlogA[tA] + "AdvLog." + i]);
+				} else {
+					for (var F = 0; F < FieldNames.length; F++) {
+						if (i === FieldNumbers.logs) {
+							Value(ALlogA[tA] + "AdvLog." + i + FieldNames[F], What(ALlogA[tA + 1] + "AdvLog." + 1 + FieldNames[F]));
+						} else {
+							Value(ALlogA[tA] + "AdvLog." + i + FieldNames[F], What(ALlogA[tA] + "AdvLog." + (i + 1) + FieldNames[F]));
+						}
+					}
+				}
+			}
+		};
+		break;
+	 case "insert" :
+		for (var tA = (ALlogA.length - 1); tA >= ALlogA.indexOf(prefix); tA--) {
+			var endI = ALlogA[tA] === prefix ? lineNmbr : 0;
+			for (var i = FieldNumbers.logs; i > endI; i--) {
+				if (tA === (ALlogA.length - 1) && i === FieldNumbers.logs) {
+					var extraPage = false;
+					for (var F = 0; F < FieldNames.length; F++) {
+						var fieldVal = What(ALlogA[tA] + "AdvLog." + i + FieldNames[F]);
+						if (fieldVal && !extraPage) extraPage = DoTemplate("ALlog", "Add");
+						Value(extraPage + "AdvLog.1" + FieldNames[F], fieldVal);
+						Value(ALlogA[tA] + "AdvLog." + i + FieldNames[F], What(ALlogA[tA] + "AdvLog." + (i - 1) + FieldNames[F]));
+					}
+					if (extraPage) event.target.setFocus();
+				} else {
+					for (var F = 0; F < FieldNames.length; F++) {
+						if (i === 1) {
+							Value(ALlogA[tA] + "AdvLog." + i + FieldNames[F], What(ALlogA[tA - 1] + "AdvLog." + FieldNumbers.logs + FieldNames[F]));
+						} else {
+							Value(ALlogA[tA] + "AdvLog." + i + FieldNames[F], What(ALlogA[tA] + "AdvLog." + (i - 1) + FieldNames[F]));
+						}
+					}
+				}
+			}
+		};
+	 case "clear" :
+		tDoc.resetForm([preNm + lineNmbr]);
+		break;
+	};
+
+	tDoc.calculate = IsNotReset;
+	tDoc.delay = !IsNotReset;
+	if (IsNotReset) tDoc.calculateNow();
+}
