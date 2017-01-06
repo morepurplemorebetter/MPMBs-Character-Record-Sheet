@@ -263,14 +263,6 @@ var ClassList = {
 				minlevel : 1,
 				description : "\n   " + "Choose a Domain related to your deity and put it in the \"Class\" field on the first page" + "\n   " + "Choose either Arcana, Death, Life, Light, Nature, Tempest, Trickery, or War Domain",
 			},
-			"subclassfeature1.1" : {
-				name : "",
-				minlevel : 1,
-			},
-			"subclassfeature1.2" : {
-				name : "",
-				minlevel : 1,
-			},
 			"channel divinity" : {
 				name : "Channel Divinity",
 				source : ["P", 58],
@@ -302,10 +294,6 @@ var ClassList = {
 				recovery : "long rest",
 				description : "\n   " + "As an action, I can implore my deity for help; the DM determines the form of help" + "\n   " + "Without intervention, I can retry after a long rest; otherwise, I have to wait a week",
 				action : ["action", ""]
-			},
-			"subclassfeature17" : {
-				name : "",
-				minlevel : 17
 			}
 		}
 	},
@@ -477,14 +465,6 @@ var ClassList = {
 				minlevel : 3,
 				description : "\n   " + "Choose a Martial Archetype you strive to emulate and put it in the \"Class\" field" + "\n   " + "Choose either Champion, Battle Master, Eldritch Knight, or Purple Dragon Knight",
 			},
-			"subclassfeature3.1" : {
-				name : "",
-				minlevel : 3,
-			},
-			"subclassfeature3.2" : {
-				name : "",
-				minlevel : 3,
-			},
 			"indomitable" : {
 				name : "Indomitable",
 				source : ["P", 72],
@@ -492,7 +472,7 @@ var ClassList = {
 				description : "\n   " + "I can reroll a failed saving throw, but must keep the new result",
 				usages : [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3],
 				recovery : "long rest"
-			},
+			}
 		}
 	},
 
@@ -807,10 +787,6 @@ var ClassList = {
 				usagescalc : "event.value = Math.max(1, tDoc.getField(\"Cha Mod\").value);",
 				recovery : "long rest",
 				action : ["action", ""]
-			},
-			"subclassfeature20" : {
-				name : "",
-				minlevel : 20
 			}
 		}
 	},
@@ -1656,14 +1632,6 @@ var ClassList = {
 					},
 				}
 			},
-			"subclassfeature6" : {
-				name : "",
-				minlevel : 6,
-			},
-			"subclassfeature10" : {
-				name : "",
-				minlevel : 10,
-			},
 			"mystic arcanum" : {
 				name : "Mystic Arcanum",
 				source : ["P", 108],
@@ -1677,10 +1645,6 @@ var ClassList = {
 					oncelr : true,
 				},
 				changeeval : "if (classes.known.warlock.level < 13) {delete CurrentSpells.warlock.bonus[\"mystic arcanum (7)\"]} else {if (!CurrentSpells.warlock.bonus[\"mystic arcanum (7)\"]) {CurrentSpells.warlock.bonus[\"mystic arcanum (7)\"] = {name : \"Mystic Arcanum (7)\", class : \"warlock\", level : [7, 7], oncelr : true}}}; if (classes.known.warlock.level < 15) {delete CurrentSpells.warlock.bonus[\"mystic arcanum (8)\"]} else {if (!CurrentSpells.warlock.bonus[\"mystic arcanum (8)\"]) {CurrentSpells.warlock.bonus[\"mystic arcanum (8)\"] = {name : \"Mystic Arcanum (8)\", class : \"warlock\", level : [8, 8], oncelr : true}}}; if (classes.known.warlock.level < 17) {delete CurrentSpells.warlock.bonus[\"mystic arcanum (9)\"]} else {if (!CurrentSpells.warlock.bonus[\"mystic arcanum (9)\"]) {CurrentSpells.warlock.bonus[\"mystic arcanum (9)\"] = {name : \"Mystic Arcanum (9)\", class : \"warlock\", level : [9, 9], oncelr : true}}}",
-			},
-			"subclassfeature14" : {
-				name : "",
-				minlevel : 14,
 			},
 			"eldritch master" : {
 				name : "Eldritch Master",
@@ -2057,7 +2021,7 @@ var ClassSubList = {
 				name : "Channel Divinity: Arcane Abjuration",
 				source : ["S", 125],
 				minlevel : 2,
-				description : "\n   " + "As an action, one celestial, elemental, fey, or fiend within 30 ft must make a Wis save" + "\n   " + "If it fails and is be able to see/hear me, it is turned for 1 min or until it takes damage" + "\n   " + "Turned: move away, never within 30 ft of me, no reactions or actions other than Dash" + "\n   " + "Turned: may Dodge instead of Dash when nowhere to move and unable to escape bonds" + "\n   " + "If its CR is low enough and it is not on its home plane, it is banished for 1 min instead" + "\n   " + "Banished: sent to home plane, reappearing where it was if the effect ends before 1 min",
+				description : "\n   " + "As an action, one celestial, elemental, fey, or fiend within 30 ft must make a Wis save" + "\n   " + "If it fails and is able to see/hear me, it is turned for 1 min or until it takes damage" + "\n   " + "Turned: move away, never within 30 ft of me, no reactions or actions other than Dash" + "\n   " + "Turned: may Dodge instead of Dash when nowhere to move and unable to escape bonds" + "\n   " + "If its CR is low enough and it is not on its home plane, it is banished for 1 min instead" + "\n   " + "Banished: sent to home plane, reappearing where it was if the effect ends before 1 min",
 				additional : ["", "", "", "", "CR 1/2 or lower", "CR 1/2 or lower", "CR 1/2 or lower", "CR 1 or lower", "CR 1 or lower", "CR 1 or lower", "CR 2 or lower", "CR 2 or lower", "CR 2 or lower", "CR 3 or lower", "CR 3 or lower", "CR 3 or lower", "CR 4 or lower", "CR 4 or lower", "CR 4 or lower", "CR 4 or lower"],
 				action : ["action", ""]
 			},
@@ -2314,6 +2278,13 @@ var ClassSubList = {
 		spellcastingExtra : ["animal friendship", "speak with animals", "barkskin", "spike growth", "plant growth", "wind wall", "dominate beast", "grasping vine", "insect plague", "tree stride"],
 		features : {
 			"subclassfeature1" : {
+				name : "Bonus Proficiency",
+				source : ["P", 62],
+				minlevel : 1,
+				description : "\n   " + "I gain proficiency with heavy armor",
+				armor : [false, false, true, false],
+			},
+			"subclassfeature1.1" : {
 				name : "Acolyte of Nature",
 				source : ["P", 62],
 				minlevel : 1,
@@ -2324,13 +2295,6 @@ var ClassSubList = {
 					class : "druid",
 					level : [0, 0],
 				},
-			},
-			"subclassfeature1.1" : {
-				name : "Bonus Proficiency",
-				source : ["P", 62],
-				minlevel : 1,
-				description : "\n   " + "I gain proficiency with heavy armor",
-				armor : [false, false, true, false],
 			},
 			"subclassfeature2" : {
 				name : "Channel Divinity: Charm Animals and Plants",

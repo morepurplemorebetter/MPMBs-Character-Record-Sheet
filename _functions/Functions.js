@@ -6062,7 +6062,7 @@ function UpdateLevelFeatures(Typeswitch) {
 				
 				//find if there is a choice that has been made for this class feature
 				var FeaChoice = GetClassFeatureChoice(aClass, prop);
-				var FeaOldChoice = FeaChoice; // just here so it can be set by the eval property if needed
+				var FeaOldChoice = FeaChoice; // just here so the FeaChoice can be set by the eval property if needed
 				
 				if (propFea.minlevel <= newClassLvl[aClass]) {
 					if (propFea.armor) {
@@ -6136,7 +6136,13 @@ function UpdateLevelFeatures(Typeswitch) {
 						var thePropFeaChoiceeval = What("Unit System") === "metric" && propFea[FeaChoice][evalAddRemove].indexOf("String") !== -1 ? ConvertToMetric(propFea[FeaChoice][evalAddRemove], 0.5) : propFea[FeaChoice][evalAddRemove];
 						eval(thePropFeaChoiceeval);
 					}
-
+					
+					//if the eval changed the choice, do some things with this new choice
+					if (FeaChoice !== FeaOldChoice) {
+						Fea = ReturnClassFeatures(aClass, prop, newClassLvl[aClass], FeaChoice, oldClassLvl[aClass], FeaOldChoice, ForceAll);
+						if (propFea[FeaChoice].skillstxt) classes.extraskills.push(propFea[FeaChoice].skillstxt);
+					}
+					
 					// --- add or remove bonus spells in the CurrentSpells variable, if defined
 					var spellBonus = !CheckFea ? false : (propFea.spellcastingBonus ? propFea.spellcastingBonus : (FeaChoice && propFea[FeaChoice].spellcastingBonus ? propFea[FeaChoice].spellcastingBonus : false));
 					if (spellBonus && propFea.minlevel <= newClassLvl[aClass]) {//if gaining the level
@@ -6235,8 +6241,8 @@ function UpdateLevelFeatures(Typeswitch) {
 						RemoveFeature(Fea.UseNameOld ? Fea.UseNameOld : Fea.UseName, newClassLvl[aClass] === 0 ? "" : Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
 						Fea.UseOld = 0;
 					}
-					// now add or remove the limited feature depending on the changes of the level or changes of something else or if it is being forced, as long as the usages have been defined
-					if ((Fea.UseCalc || Fea.Use) && Fea.Use.search(/unlimited|\u221E/i) === -1 && (GoAnyway || propFea.minlevel <= newClassLvl[aClass])) {
+					// now add the limited feature depending on the changes of the level or changes of something else or if it is being forced, as long as the usages have been defined
+					if ((Fea.UseCalc || Fea.Use) && Fea.Use.search(/unlimited|\u221E/i) === -1 && (GoAnyway || (propFea.minlevel <= newClassLvl[aClass] && propFea.minlevel > oldClassLvl[aClass]))) {
 						AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, temp.fullname, Fea.UseOld, Fea.UseCalc);
 					}
 					
@@ -6722,16 +6728,18 @@ function PleaseSubclass(theclass) {
 	var returnTrue = false;
 	if (IsNotImport && !classes.known[theclass].subclass && What("SubClass Remember").indexOf(theclass) === -1) {
 		var aclass = ClassList[theclass];
+		var aclassObj = {};
 		var aclassArray = [];
 		for (var i = 0; i < aclass.subclasses[1].length; i++) {
 			var aSub = aclass.subclasses[1][i];
 			if (testSource(aSub, ClassSubList[aSub], "classExcl")) continue;
-			aclassArray.push(aSub);
+			aclassObj[ClassSubList[aSub].subname] = aSub;
+			aclassArray.push(ClassSubList[aSub].subname);
 		};
 		if (aclassArray.length === 0) return false; //no subclasses got through the test
 		aclassArray.sort();
 		
-		var testSubClass = aclassArray[1] ? aclassArray[1] : aclassArray[0];
+		var testSubClass = aclassObj[aclassArray[Math.round(aclassArray.length / 2) - 1]];
 
 		var SubName1 = ClassSubList[testSubClass].subname;
 		var SubName2 = ClassSubList[testSubClass].fullname ? ClassSubList[testSubClass].fullname : ClassSubList[testSubClass].subname;
@@ -6745,7 +6753,7 @@ function PleaseSubclass(theclass) {
 		var SubclassArrayRight = [];
 		var isAsterisk = false;
 		for (var i = 0; i < aclassArray.length; i++) {
-			var theSub = ClassSubList[aclassArray[i]];
+			var theSub = ClassSubList[aclassObj[aclassArray[i]]];
 			
 			if (!isAsterisk && theSub.fullname) isAsterisk = true;
 			
@@ -6867,7 +6875,7 @@ function PleaseSubclass(theclass) {
 
 		var theDialog = app.execDialog(SubclassSelect_Dialog);
 		if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
-			var selection = aclassArray[SubclassSelect_Dialog.result];
+			var selection = aclassObj[aclassArray[SubclassSelect_Dialog.result]];
 			var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : classString + " (" + ClassSubList[selection].subname + ")";
 			IsSubclassException[theclass] = true;
 			returnTrue = true;

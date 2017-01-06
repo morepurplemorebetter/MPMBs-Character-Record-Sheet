@@ -233,7 +233,7 @@ function resourceDecisionDialog() {
 	for (var src in SourceList) {
 		if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
 		var srcGroup = SourceList[src].group;
-		var srcName = SourceList[src].name.replace(/unearthed arcana: /i, "") + " (" + SourceList[src].abbreviation + ")";
+		var srcName = SourceList[src].name.replace(RegExp(srcGroup + " ?:? ?", "i"), "") + " (" + SourceList[src].abbreviation + ")";
 		if (!srcGroup || srcGroup === "default") continue;
 		if (!exclObj[srcGroup]) exclObj[srcGroup] = {};
 		if (!inclObj[srcGroup]) inclObj[srcGroup] = {};

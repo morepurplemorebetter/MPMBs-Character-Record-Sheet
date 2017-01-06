@@ -306,7 +306,7 @@ ClassSubList["college of satire"] = {
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with thieves' tools, sleight of hand, and one other skill of my choice",
 			skills : ["Sleight of Hand"],
-			skillstxt : "\n\nBard (College of Satire): Thieves' Tools, Sleight of Hand, and any one other skill.",
+			skillstxt : "\n\n" + toUni("College of Satire") + ": Thieves' Tools, Sleight of Hand, and any one other skill.",
 			eval : "AddTool(\"Thieves' Tools\", \"Bard (College of Satire)\")",
 			removeeval : "RemoveTool(\"Thieves' Tools\", \"Bard (College of Satire)\")",
 		},
@@ -352,7 +352,7 @@ ClassSubList["cavalier"] = {
 			source : ["UA:KoO", 3],
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with two skills or one skill and any one tool" + "\n   " + "For skills I can choose from Animal Handling, Insight, Performance, or Persuasion",
-			skillstxt : "\n\nCavalier: Choose two skills from: Animal Handling, Insight, Performance, or Persuasion. - or - Choose one of those skills and any one tool.",
+			skillstxt : "\n\n" + toUni("Cavalier") + ": Choose two skills from: Animal Handling, Insight, Performance, or Persuasion. - or - Choose one of those skills and any one tool.",
 		},
 		"subclassfeature3.1" : {
 			name : "Born in the Saddle",
@@ -409,7 +409,7 @@ ClassSubList["scout"] = {
 			source : ["UA:KoO", 4],
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with two skills or one skill and Thieves' Tools; For skills choose from:" + "\n   " + "Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival",
-			skillstxt : "\n\nScout: Choose two skills from: Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival. - or - Choose one of those skills and Thieves' Tools.",
+			skillstxt : "\n\n" + toUni("Scout") + ": Choose two skills from: Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival. - or - Choose one of those skills and Thieves' Tools.",
 		},
 		"subclassfeature3.1" : {
 			name : "Combat Superiority",
@@ -502,7 +502,7 @@ ClassSubList["monster hunter"] = {
 			source : ["UA:GH", 2],
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with two skills or one skill and any one tool" + "\n   " + "For skills I can choose Arcana, History, Insight, Investigation, Nature, or Perception",
-			skillstxt : "\n\nMonster Hunter: Choose two skills from: Arcana, History, Insight, Investigation, Nature, or Perception. - or - Choose one of those skills and any one tool.",
+			skillstxt : "\n\n" + toUni("Monster Hunter") + ": Choose two skills from: Arcana, History, Insight, Investigation, Nature, or Perception. - or - Choose one of those skills and any one tool.",
 		},
 		"subclassfeature3.1" : {
 			name : "Combat Superiority",
@@ -645,6 +645,75 @@ ClassSubList["the seeker"] = {
 	}
 };
 ClassList.warlock.subclasses[1].push("the seeker");
+
+//a subclass for the Wizard, called "Theurgy"
+ClassSubList["theurgy"] = {
+	regExpSearch : /^((?=.*mystic)(?=.*theurge))|(?=.*(theurgy|theurgist)).*$/i,
+	subname : "Theurgy",
+	source : ["UA:TF", 1],
+	fullname : "Theurgist",
+	features : {
+		"subclassfeature2" : {
+			name : "Arcane Initiate",
+			source : ["UA:TF", 2],
+			minlevel : 2,
+			description : "\n   " + "Choose a Cleric Domain using the \"Choose Feature\" button above" + "\n   " + "When I gain a wizard level I can replace one of the spells I would add to my spellbook" + "\n   " + "I can replace it with one of the chosen domain spells, if it is of a level I can cast" + "\n   " + "If my spellbook has all the domain spells, I can select any cleric spell of a level I can cast" + "\n   " + "Other wizards cannot copy cleric spells from my spellbook into their own spellbooks",
+			choices : [],
+		},
+		"subclassfeature2.1" : {
+			name : "Channel Arcana",
+			source : ["UA:TF", 2],
+			minlevel : 2,
+			description : "\n   " + "I can channel arcane energy from my deity; the save for this is my wizard spell DC",
+			usages : [0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3],
+			recovery : "short rest"
+		},
+		"subclassfeature2.2" : {
+			name : "Channel Arcana: Divine Arcana",
+			source : ["UA:TF", 3],
+			minlevel : 2,
+			description : "\n   " + "As a bonus action, I speak a prayer to control the flow of magic around me" + "\n   " + "The next spell I cast gains a +2 bonus to its attack roll or saving throw DC",
+			action : ["bonus action", ""]
+		},
+		"subclassfeature2.3" : {
+			name : "Channel Arcana: Domain",
+			source : ["UA:TF", 2],
+			minlevel : 2,
+			description : "\n   " + "Use the \"Choose Features\" button above to select the domain",
+			choices : [],
+			choicesNotInMenu : true,
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*domain).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature2.2,\" + FeaChoice, false);};};"
+		},
+		"subclassfeature6" : {
+			name : "Arcane Acolyte",
+			source : ["UA:TF", 3],
+			minlevel : 6,
+			description : "\n   " + "Use the \"Choose Features\" button above to select the domain",
+			choices : [],
+			choicesNotInMenu : true,
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*?domain).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature6,\" + FeaChoice, false);};};"
+		},
+		"subclassfeature10" : {
+			name : "Arcane Priest",
+			source : ["UA:TF", 3],
+			minlevel : 10,
+			description : "\n   " + "Use the \"Choose Features\" button above to select the domain",
+			choices : [],
+			choicesNotInMenu : true,
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*?domain).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature10,\" + FeaChoice, false);};};"
+		},
+		"subclassfeature14" : {
+			name : "Arcane High Priest",
+			source : ["UA:TF", 3],
+			minlevel : 14,
+			description : "\n   " + "Use the \"Choose Features\" button above to select the domain",
+			choices : [],
+			choicesNotInMenu : true,
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*?domain).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature14,\" + FeaChoice, false);};};"
+		}
+	}
+};
+ClassList.wizard.subclasses[1].push("theurgy");
 
 /*
 	The Ranger, Revised Unearthed Arcana of 2016-09-12
@@ -1091,7 +1160,7 @@ ClassSubList["storm herald"] = {
 				name : "Storm of Fury: Desert",
 				description : "\n   " + "While raging, I emanate a 10-ft radius aura that shapes the environment around me" + "\n   " + "Any enemy that ends its turn in my aura takes fire damage",
 				additional : ["", "", "2 fire damage", "3 fire damage", "3 fire damage", "3 fire damage", "3 fire damage", "4 fire damage", "4 fire damage", "4 fire damage", "4 fire damage", "5 fire damage", "5 fire damage", "5 fire damage", "5 fire damage", "6 fire damage", "6 fire damage", "6 fire damage", "6 fire damage", "7 fire damage"],
-				eval : "var ToAdd = [\"barbarian\", \"subclassfeature6\", \"desert\"]; if (classes.known.barbarian.level >= 6 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)}; ToAdd[1] = \"subclassfeature14\"; if (classes.known.barbarian.level >= 14 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+				eval : "var ToAdd = [\"barbarian\", \"subclassfeature6\", \"desert\"]; if (classes.known.barbarian.level >= 6 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)}; ToAdd[1] = \"subclassfeature14\"; if (classes.known.barbarian.level >= 14 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"sea" : {
 				name : "Storm of Fury: Sea",
@@ -1099,14 +1168,14 @@ ClassSubList["storm herald"] = {
 				additional : ["", "", "2d6", "2d6", "2d6", "2d6", "2d6", "2d6", "2d6", "3d6", "3d6", "3d6", "3d6", "3d6", "4d6", "4d6", "4d6", "4d6", "4d6", "4d6"],
 				usages : 1,
 				recovery : "turn",
-				eval : "var ToAdd = [\"barbarian\", \"subclassfeature6\", \"sea\"]; if (classes.known.barbarian.level >= 6 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)}; ToAdd[1] = \"subclassfeature14\"; if (classes.known.barbarian.level >= 14 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+				eval : "var ToAdd = [\"barbarian\", \"subclassfeature6\", \"sea\"]; if (classes.known.barbarian.level >= 6 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)}; ToAdd[1] = \"subclassfeature14\"; if (classes.known.barbarian.level >= 14 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"tundra" : {
 				name : "Storm of Fury: Tundra",
 				description : "\n   " + "While raging, I emanate a 10-ft radius aura that shapes the environment around me" + "\n   " + "Any enemy that ends its turn in my aura takes cold damage",
 				additional : ["", "", "2 cold damage", "3 cold damage", "3 cold damage", "3 cold damage", "3 cold damage", "4 cold damage", "4 cold damage", "4 cold damage", "4 cold damage", "5 cold damage", "5 cold damage", "5 cold damage", "5 cold damage", "6 cold damage", "6 cold damage", "6 cold damage", "6 cold damage", "7 cold damage"],
-				eval : "var ToAdd = [\"barbarian\", \"subclassfeature6\", \"tundra\"]; if (classes.known.barbarian.level >= 6 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)}; ToAdd[1] = \"subclassfeature14\"; if (classes.known.barbarian.level >= 14 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
-			},
+				eval : "var ToAdd = [\"barbarian\", \"subclassfeature6\", \"tundra\"]; if (classes.known.barbarian.level >= 6 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)}; ToAdd[1] = \"subclassfeature14\"; if (classes.known.barbarian.level >= 14 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
+			}
 		},
 		"subclassfeature6" : {
 			name : "Storm Soul",
@@ -1120,28 +1189,28 @@ ClassSubList["storm herald"] = {
 				description : "\n   " + "I have resistance to fire damage and don't suffer the effects of extreme heat",
 				eval : "AddResistance(\"Fire\");",
 				removeeval : "RemoveResistance(\"Fire\");",
-				save : "Immune to effects of extreme heat",
+				save : "Immune to effects of extreme heat"
 			},
 			"sea" : {
 				name : "Storm Soul: Sea",
 				description : "\n   " + "I have resistance to lightning damage and can breathe underwater",
 				eval : "AddResistance(\"Lightning\");",
-				removeeval : "RemoveResistance(\"Lightning\");",
-				},
+				removeeval : "RemoveResistance(\"Lightning\");"
+			},
 			"tundra" : {
 				name : "Storm Soul: Tundra",
 				description : "\n   " + "I have resistance to cold damage and don't suffer the effects of extreme cold",
 				eval : "AddResistance(\"Cold\");",
 				removeeval : "RemoveResistance(\"Cold\");",
-				save : "Immune to effects of extreme cold",
+				save : "Immune to effects of extreme cold"
 			},
-			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?barbarian,subclassfeature3,(desert|sea|tundra).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"barbarian,subclassfeature6,\" + FeaChoice, false);};};",
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?barbarian,subclassfeature3,(desert|sea|tundra).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"barbarian,subclassfeature6,\" + FeaChoice, false);};};"
 		},
 		"subclassfeature10" : {
 			name : "Shield of the Storm",
 			source : ["UA:BPP", 2],
 			minlevel : 10,
-			description : "\n   " + "While I'm raging, allies within my aura gain the benefits of my Storm Soul feature",
+			description : "\n   " + "While I'm raging, allies within my aura gain the benefits of my Storm Soul feature"
 		},
 		"subclassfeature14" : {
 			name : "Raging Storm",
@@ -1152,19 +1221,19 @@ ClassSubList["storm herald"] = {
 			choicesNotInMenu : true,
 			"desert" : {
 				name : "Raging Storm: Desert",
-				description : "\n   " + "Enemy in my aura move more than 5 ft on the ground must make a Strength save" + "\n   " + "On a fail, it moves only 5 ft and its speed drops to 0 until the start of its next turn" + "\n   " + "The DC for this save is 8 + my proficiency bonus + my Constitution modifier",
+				description : "\n   " + "Enemy in my aura move more than 5 ft on the ground must make a Strength save" + "\n   " + "On a fail, it moves only 5 ft and its speed drops to 0 until the start of its next turn" + "\n   " + "The DC for this save is 8 + my proficiency bonus + my Constitution modifier"
 			},
 			"sea" : {
 				name : "Raging Storm: Sea",
-				description : "\n   " + "Creatures in my aura hit by my attack must make a Str save or be knocked prone" + "\n   " + "The DC for this save is 8 + my proficiency bonus + my Strength modifier",
+				description : "\n   " + "Creatures in my aura hit by my attack must make a Str save or be knocked prone" + "\n   " + "The DC for this save is 8 + my proficiency bonus + my Strength modifier"
 			},
 			"tundra" : {
 				name : "Raging Storm: Tundra",
-				description : "\n   " + "The area within my aura is difficult terrain for my enemies",
+				description : "\n   " + "The area within my aura is difficult terrain for my enemies"
 			},
-			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?barbarian,subclassfeature3,(desert|sea|tundra).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"barbarian,subclassfeature14,\" + FeaChoice, false);};};",
-		},
-	},
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?barbarian,subclassfeature3,(desert|sea|tundra).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"barbarian,subclassfeature14,\" + FeaChoice, false);};};"
+		}
+	}
 };
 ClassList.barbarian.subclasses[1].push("storm herald");
 
@@ -2158,10 +2227,10 @@ function UAstartupCode() {
 			FSfeat.choices.push(cDomain.subname);
 			FSfeat[cDomain.subname.toLowerCase()] = {
 				name : "Chosen of the Gods: " + cDomain.subname,
-				source : cDomain.features["subclassfeature1"].source,
+				source : cDomain.source ? cDomain.source : cDomain.features["subclassfeature1"].source,
 				spellcastingExtra : eSpells,
 				description : "\n   " + "I add the " + cDomain.subname.toLowerCase() + " spells to my known spells, if they are of a level I can cast" + "\n   " + "These count as sorcerer spells, but do not count against the number of spells I can know",
-			}
+			};
 		}
 	};
 	
@@ -2222,4 +2291,71 @@ function UAstartupCode() {
 		}
 		FSfeat.choices.sort();
 	};
-}
+	
+	//Wizard (Theurgy) add all cleric domain options to the various class features
+	var MTfeat = ClassSubList["theurgy"].features;
+	for (var i = 0; i < ClassList.cleric.subclasses[1].length; i++) {
+		var aDomain = ClassSubList[ClassList.cleric.subclasses[1][i]];
+		if (!aDomain) continue;
+		MTfeat["subclassfeature2"].choices.push(aDomain.subname);
+		MTfeat["subclassfeature2"][aDomain.subname.toLowerCase()] = {
+			name : "Arcane Initiate: " + aDomain.subname,
+			source : aDomain.source ? aDomain.source : aDomain.features["subclassfeature1"].source,
+			spellcastingExtra : aDomain.spellcastingExtra,
+			description : "\n   " + "When I gain a wizard level I can replace one of the spells I would add to my spellbook" + "\n   " + "I can replace it with one of the " + aDomain.subname.toLowerCase() + " spells, if it is of a level I can cast" + "\n   " + "If my spellbook has all the domain spells, I can select any cleric spell of a level I can cast" + "\n   " + "Other wizards cannot copy cleric spells from my spellbook into their own spellbooks",
+			eval : ""
+		};
+		var AIdomain = MTfeat["subclassfeature2"][aDomain.subname.toLowerCase()];
+		for (var aFea in aDomain.features) {
+			var dFea = aDomain.features[aFea];
+			if (dFea.minlevel === 2 && dFea.name.match(/channel divinity/i)) {
+				MTfeat["subclassfeature2.3"].choices.push(aDomain.subname);
+				MTfeat["subclassfeature2.3"][aDomain.subname.toLowerCase()] = eval(dFea.toSource());
+				MTfeat["subclassfeature2.3"][aDomain.subname.toLowerCase()].name = MTfeat["subclassfeature2.3"][aDomain.subname.toLowerCase()].name.replace(/channel divinity/i, "Channel Arcana");
+				AIdomain.eval += "var ToAdd = [\"wizard\", \"subclassfeature2.3\", \"" + aDomain.subname.toLowerCase() + "\"]; if (classes.known.wizard.level >= 2 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)}; ";
+			};
+			if (dFea.minlevel === 1 && !dFea.armor && !dFea.weapons) {
+				if (MTfeat["subclassfeature6"].choices.indexOf(aDomain.subname) === -1) { //if the entry does not exist yet
+					MTfeat["subclassfeature6"].choices.push(aDomain.subname);
+					MTfeat["subclassfeature6"][aDomain.subname.toLowerCase()] = eval(dFea.toSource());
+					AIdomain.eval += "var ToAdd = [\"wizard\", \"subclassfeature6\", \"" + aDomain.subname.toLowerCase() + "\"]; if (classes.known.wizard.level >= 6 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)}; ";
+				} else { //add to the existing entry
+					var theFea = MTfeat["subclassfeature6"][aDomain.subname.toLowerCase()];
+					theFea.name += " \u0026 " + dFea.name;
+					theFea.description += dFea.description;
+					for (var subFea in dFea) {
+						if (theFea[subFea] === undefined) theFea[subFea] = dFea[subFea];
+					};
+				};
+			};
+			if (dFea.minlevel === 6 && !dFea.armor && !dFea.weapons) {
+				if (MTfeat["subclassfeature10"].choices.indexOf(aDomain.subname) === -1) { //if the entry does not exist yet
+					MTfeat["subclassfeature10"].choices.push(aDomain.subname);
+					MTfeat["subclassfeature10"][aDomain.subname.toLowerCase()] = eval(dFea.toSource());
+					AIdomain.eval += "var ToAdd = [\"wizard\", \"subclassfeature10\", \"" + aDomain.subname.toLowerCase() + "\"]; if (classes.known.wizard.level >= 10 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)}; ";
+				} else { //add to the existing entry
+					var theFea = MTfeat["subclassfeature10"][aDomain.subname.toLowerCase()];
+					theFea.name += " \u0026 " + dFea.name;
+					theFea.description += dFea.description;
+					for (var subFea in dFea) {
+						if (theFea[subFea] === undefined) theFea[subFea] = dFea[subFea];
+					};
+				};
+			};
+			if (dFea.minlevel === 17 && !dFea.armor && !dFea.weapons) {
+				if (MTfeat["subclassfeature14"].choices.indexOf(aDomain.subname) === -1) { //if the entry does not exist yet
+					MTfeat["subclassfeature14"].choices.push(aDomain.subname);
+					MTfeat["subclassfeature14"][aDomain.subname.toLowerCase()] = eval(dFea.toSource());
+					AIdomain.eval += "var ToAdd = [\"wizard\", \"subclassfeature14\", \"" + aDomain.subname.toLowerCase() + "\"]; if (classes.known.wizard.level >= 14 && this.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)}; ";
+				} else { //add to the existing entry
+					var theFea = MTfeat["subclassfeature14"][aDomain.subname.toLowerCase()];
+					theFea.name += " \u0026 " + dFea.name;
+					theFea.description += dFea.description;
+					for (var subFea in dFea) {
+						if (theFea[subFea] === undefined) theFea[subFea] = dFea[subFea];
+					};
+				};
+			};
+		};
+	};
+};
