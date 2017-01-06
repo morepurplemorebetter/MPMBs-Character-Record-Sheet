@@ -2849,7 +2849,7 @@ function MakePagesMenu() {
 		["Show, but don't print the D&&D logos", "noprint#2"],
 		["Hide and don't print the D&&D logos", "hide#1"],
 		["Hide, but print the D&&D logos", "onlyprint#3"]
-	]
+	];
 	
 	var cLogoDisplay = tDoc.getField("Image.DnDLogo.long").display;
 	
@@ -3238,6 +3238,7 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 	tDoc.calculate = false;
 	var prefix = Button ? "" : event.target.name.substring(0, event.target.name.indexOf("AdvLog."));
 	var ALlogF = What("Template.extras.ALlog");
+	var cLogoDisplay = minVer && typePF ? tDoc.getField("Image.DnDLogo.AL").display : false;
 	
 	var menuLVL1 = function (item, array) {
 		for (var i = 0; i < array.length; i++) {
@@ -3252,12 +3253,18 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 		menu.cName = name[0];
 		menu.oSubMenu = [];
 		for (i = 0; i < array.length; i++) {
+			var isMarked = false;
+			if (name[1] === "dateformat") {
+				isMarked = What("DateFormat_Remember") === array[i][1];
+			} else if (name[1] === "dndlogo") {
+				isMarked = array[i][1].split("#")[1] == cLogoDisplay;
+			};
 			menu.oSubMenu.push({
 				cName : array[i][0],
 				cReturn : name[1] + "#" + array[i][1],
-				bMarked : What("DateFormat_Remember") === array[i][1],
-			})
-		}
+				bMarked : isMarked
+			});
+		};
 	};
 
 	var AdvLogMenu = [];
@@ -3268,18 +3275,30 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 		["-", "-"],
 		["Reset this page", "reset"],
 		["-", "-"]
-	]
+	];
 
 	if (Button || (tDoc.info.AdvLogOnly && !prefix)) alMenuItems.splice(1, 1);
+	if (Button) alMenuItems.splice(2, 2);
 
 	menuLVL1(AdvLogMenu, alMenuItems);
 	
-	if (!minVer) menuLVL1(AdvLogMenu, [["Generate next Logsheet Entry", "generate"]]);
+	if (!minVer) {
+		menuLVL1(AdvLogMenu, [["Generate next Logsheet Entry", "generate"]]);
+	} else if (typePF) {
+		var dndLogoMenu = [];
+		menuLVL2(dndLogoMenu, ["Visible D&&D logos", "dndlogo"], [
+			["Show the D&&D logos", "show#0"],
+			["Show, but don't print the D&&D logos", "noprint#2"],
+			["Hide and don't print the D&&D logos", "hide#1"],
+			["Hide, but print the D&&D logos", "onlyprint#3"]
+		]);
+		AdvLogMenu.push(dndLogoMenu);
+	}
 	
 	var dateTypesMenu = [];
 	
-	menuLVL2(dateTypesMenu, ["Date format", "dateformat"], 
-		[	["24 Dec 2014", "d mmm yyyy"],
+	menuLVL2(dateTypesMenu, ["Date format", "dateformat"], [
+			["24 Dec 2014", "d mmm yyyy"],
 			["24-12-2014", "d-m-yyyy"],
 			["24/12/2014", "d/m/yyyy"],
 			["Dec 24, 2014", "mmm d, yyyy"],
@@ -3287,8 +3306,8 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 			["12/24/2014", "m/d/yyyy"],
 			["2014 Dec 24", "yyyy mmm d"],
 			["2014-12-24", "yyyy-m-d"],
-			["2014/12/24", "yyyy/m/d"]	]
-	);
+			["2014/12/24", "yyyy/m/d"]
+	]);
 	
 	AdvLogMenu.push(dateTypesMenu);
 	
@@ -3337,6 +3356,9 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 			break;
 		 case "generate" :
 			addALlogEnrry();
+			break;
+		 case "dndlogo" :
+			DnDlogo(MenuSelection[2]);
 			break;
 		}
 	}
@@ -4589,7 +4611,8 @@ function ChangeToCompleteAdvLogSheet() {
 	
 	//move the pages that we want to extract to a new instance, by running code from a console
 	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 2});\n\n";
-	forConsole += " this.info.AdvLogOnly = true;";
+	forConsole += "this.info.AdvLogOnly = true;";
+	forConsole += " var toDelScripts = ['ListsBackgrounds', 'ListsClasses', 'ListsClassesUA', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsRaces', 'ListsRacesUA', 'ListsSpells', 'ListsSources']; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
 	forConsole += " this.createTemplate({cName:\"ALlog\", nPage:0 });";
 	forConsole += " this.createTemplate({cName:\"remember\", nPage:1 });";
 	forConsole += " this.createTemplate({cName:\"blank\", nPage:2 });";
@@ -4600,6 +4623,7 @@ function ChangeToCompleteAdvLogSheet() {
 	forConsole += " this.info.SheetVersion = \"" + tDoc.info.SheetVersion + "\";";
 	forConsole += " this.info.SheetType = \"" + tDoc.info.SheetType + "\";";
 	forConsole += " this.info.Keywords = \"" + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + "\";";
+	forConsole += " this.info.Subject = \"D&D 5e; Character Sheet; Adventurers League; Adventure Logsheet\";";
 	forConsole += " this.info.Title = MakeDocName();";
 	forConsole += " typePF = this.info.SheetType.search(/printer friendly/i) !== -1;";
 	forConsole += " typeA4 = this.info.SheetType.search(/a4/i) !== -1;";
@@ -5364,6 +5388,7 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 		".dm",
 		".notes",
 	];
+	var extraPage = false;
 	switch (action) {
 	 case "up" :
 	 case "down" :
@@ -5371,10 +5396,15 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 		for (var F = 0; F < FieldNames.length; F++) {
 			Fields[F] = preNm + lineNmbr + FieldNames[F];
 			FieldsValue[F] = What(Fields[F]);
-			if (action === "up" && !(prefix === "AdvLog." && lineNmbr === 1)) {
-				FieldsUp[F] = preNm + (lineNmbr - 1) + FieldNames[F];
-				FieldsUpValue[F] = What(FieldsUp[F]);
-			}
+			if (action === "up" && (prefix !== "" || lineNmbr !== 1)) {
+				if (lineNmbr !== 1) {
+					FieldsUp[F] = preNm + (lineNmbr - 1) + FieldNames[F];
+					FieldsUpValue[F] = What(FieldsUp[F]);
+				} else {
+					FieldsUp[F] = ALlogA[ALlogA.indexOf(prefix) - 1] + "AdvLog." + FieldNumbers.logs + FieldNames[F];
+					FieldsUpValue[F] = What(FieldsUp[F]);
+				}
+			};
 			if (action === "down") {
 				if (lineNmbr !== FieldNumbers.logs) {
 					FieldsDown[F] = preNm + (lineNmbr + 1) + FieldNames[F];
@@ -5383,11 +5413,11 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 					FieldsDown[F] = ALlogA[ALlogA.indexOf(prefix) + 1] + "AdvLog.1" + FieldNames[F];
 					FieldsDownValue[F] = "";
 				} else {
-					var newPre = DoTemplate("ALlog", "Add");
-					FieldsDown[F] = newPre + "AdvLog.1" + FieldNames[F];
+					if (!extraPage) extraPage = DoTemplate("ALlog", "Add");
+					FieldsDown[F] = extraPage + "AdvLog.1" + FieldNames[F];
 					FieldsDownValue[F] = "";
 				}
-			}
+			};
 		};
 		var useArr = action === "up" ? [FieldsUp, FieldsUpValue] : [FieldsDown, FieldsDownValue];
 		for (var F = 0; F < FieldNames.length; F++) {
@@ -5418,7 +5448,6 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 			var endI = ALlogA[tA] === prefix ? lineNmbr : 0;
 			for (var i = FieldNumbers.logs; i > endI; i--) {
 				if (tA === (ALlogA.length - 1) && i === FieldNumbers.logs) {
-					var extraPage = false;
 					for (var F = 0; F < FieldNames.length; F++) {
 						var fieldVal = What(ALlogA[tA] + "AdvLog." + i + FieldNames[F]);
 						if (fieldVal && !extraPage) extraPage = DoTemplate("ALlog", "Add");

@@ -207,6 +207,7 @@ var IsNotReset = true;
 var IsNotImport = true;
 var IsNotFeatMenu = true;
 var IsNotWeaponMenu = true;
+var IsNotSpellSheetGenerating = true;
 
 var FieldsRemember = [];
 

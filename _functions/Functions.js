@@ -8744,6 +8744,7 @@ function ApplyColorScheme(aColour) {
 		var theIconD = tDoc.getField("SaveIMG.Divider." + colour).buttonGetIcon();
 		for (tA = 0; tA < ALlogA.length; tA++) {
 			tDoc.getField(ALlogA[tA] + "Line").fillColor = ColorList[colour].CMYK;
+			tDoc.getField(ALlogA[tA] + "Button").strokeColor = ColorList[colour].CMYK;
 			tDoc.getField(ALlogA[tA] + "Image.Header.Left").buttonSetIcon(theIconH);
 			tDoc.getField(ALlogA[tA] + "Image.Divider").buttonSetIcon(theIconD);
 		}

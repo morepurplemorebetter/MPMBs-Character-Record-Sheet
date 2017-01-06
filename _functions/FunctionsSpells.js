@@ -4821,7 +4821,8 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	
 	//move the pages that we want to extract to a new instance, by running code from a console
 	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 4});\n\n";
-	forConsole += " this.info.SpellsOnly = \"" + thisClass + "\";";
+	forConsole += "this.info.SpellsOnly = \"" + thisClass + "\";";
+	forConsole += " var toDelScripts = ['ListsBackgrounds', 'ListsClassesUA', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsRaces', 'ListsRacesUA']; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
 	forConsole += " this.createTemplate({cName:\"SSfront\", nPage:1 });";
 	forConsole += " this.createTemplate({cName:\"SSmore\", nPage:2 });";
 	forConsole += " this.createTemplate({cName:\"remember\", nPage:3 });";
@@ -4833,6 +4834,7 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	forConsole += " this.info.SheetVersion = \"" + tDoc.info.SheetVersion + "\";";
 	forConsole += " this.info.SheetType = \"" + tDoc.info.SheetType + "\";";
 	forConsole += " this.info.Keywords = \"" + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + "\";";
+	forConsole += " this.info.Subject = \"D&D 5e; Character Sheet; Spell Sheet; Spell Sheet Generator\";";
 	forConsole += " this.info.Title = MakeDocName();";
 	forConsole += " typePF = this.info.SheetType.search(/printer friendly/i) !== -1;";
 	forConsole += " typeA4 = this.info.SheetType.search(/a4/i) !== -1;";
