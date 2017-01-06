@@ -389,9 +389,9 @@ function MakeButtons() {
 			};
 			app.addToolButton({
 				cName : "ImportExportButton",
-				cExec : "ImportExport_Button();",
+				cExec : minVer ? "AddUserScript();" : "ImportExport_Button();",
 				oIcon : oIcon,
-				cTooltext : toUni("Import / Export") + "\n \u2022  Import all the information from an old sheet directly;\n \u2022  Add custom script, see FAQ;\n \u2022  Alternatively, you can import or export data with the .xfdf file format. This method is depreciated, but might still be interesting if you only want to import the equipment sections or only the description sections.\n\nThe description sections include the top of first page, background page, notes, and companion description.",
+				cTooltext :  minVer ? toUni("Add Custom Script") + "\nAdd a script to add new spells, modify spells and more, see FAQ." : toUni("Import / Export") + "\n \u2022  Import all the information from an old sheet directly;\n \u2022  Add custom script, see FAQ;\n \u2022  Alternatively, you can import or export data with the .xfdf file format. This method is depreciated, but might still be interesting if you only want to import the equipment sections or only the description sections.\n\nThe description sections include the top of first page, background page, notes, and companion description.",
 				nPos : 2,
 				cLabel : "Import"
 			});
@@ -604,7 +604,7 @@ function MakeButtons() {
 			cName : "ColorButton",
 			cExec : "MakeColorMenu(); ColoryOptions();",
 			oIcon : oIcon,
-			cTooltext : !typePF ? toUni("Set Color Theme") + "\nControl the color theme of the sheet in the following ways:\n   \u2022  Color of the Headers;\n   \u2022  Color of the Dragon Heads;\n   \u2022  Color of the HP Dragons \[requires bonus version\];\n   \u2022  Color of the Ability Save DCs \[requires bonus version\];\n   \u2022  Color of the form field highlighting.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet.\n\nIf you have donated, you get the bonus version that gives you the option to choose the colors Pink and Gray, to set the color of the HP Dragons and the Ability Save DCs." : toUni("Set Highlighting Color") + "\nSet the color of the form field highlighting.\n\nYou can select several colors, the adobe default color, or turn form field highlighting off.",
+			cTooltext : !typePF ? toUni("Set Color Theme") + "\nControl the color theme of the sheet in the following ways:\n   \u2022  Color of the Headers;\n   \u2022  Color of the Dragon Heads;" + (MinVer ? "" : "\n   \u2022  Color of the HP Dragons;\n   \u2022  Color of the Ability Save DCs;") + "\n   \u2022  Color of the form field highlighting.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet." : toUni("Set Highlighting Color") + "\nSet the color of the form field highlighting.\n\nYou can select several colors, the adobe default color, or turn form field highlighting off.",
 			nPos : 14,
 			cLabel : "Color"
 		});

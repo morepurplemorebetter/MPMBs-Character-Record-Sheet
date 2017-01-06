@@ -4491,6 +4491,7 @@ function ShowHideStealthDisadv() {
 
 //(re)set the dropdowns
 function UpdateDropdown(type, weapon) {
+	if (minVer) return;
 	type = type ? type.toLowerCase() : "all";
 	switch (type) {
 	 case "resources" : 

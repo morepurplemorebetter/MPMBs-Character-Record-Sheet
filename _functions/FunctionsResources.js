@@ -553,6 +553,7 @@ function resourceDecisionDialog() {
 			name : "Spells",
 			alignment : "align_center",
 		}
+		selectionDialogue.description.elements[0].elements[3].elements[2] = {};
 	};
 	
 	if (app.execDialog(selectionDialogue) === "ok") {

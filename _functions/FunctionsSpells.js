@@ -4793,6 +4793,15 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	tDoc.removeField("SaveIMG.Faction");
 	tDoc.removeField("SaveIMG.ClassIcon");
 	tDoc.removeField("SaveIMG.ALicon");
+	
+	for (var i = 0; i <= 3; i++) {
+		this.getField("spellshead.prepare." + i).readonly = false;
+		this.getField("spellshead.attack." + i).readonly = false;
+		this.getField("spellshead.dc." + i).readonly = false;
+		this.getField("P0.SSfront.spellshead.prepare." + i).readonly = false;
+		this.getField("P0.SSfront.spellshead.attack." + i).readonly = false;
+		this.getField("P0.SSfront.spellshead.dc." + i).readonly = false;
+	};
 
 	if (typePF) { //if the Printer Friendly version, update the copyright
 		tDoc.getField("CopyrightInformation").defaultValue = "Inspired by Wizards of the Coast character sheet; made by Joost Wijnen - Flapkan@gmail.com";
