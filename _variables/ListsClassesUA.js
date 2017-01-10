@@ -298,7 +298,6 @@ ClassSubList["college of satire"] = {
 	regExpSearch : /^(?=.*(college|bard|minstrel|troubadour|jongleur))(?=.*satire).*$/i,
 	subname : "College of Satire",
 	source : ["UA:KoO", 2],
-	attacks : [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 	features : {
 		"subclassfeature3" : {
 			name : "Bonus Proficiencies",

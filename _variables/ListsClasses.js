@@ -2344,7 +2344,7 @@ var ClassSubList = {
 				name : "Wrath of the Storm",
 				source : ["P", 62],
 				minlevel : 1,
-				description : "\n   " + "When a creature within 5 ft attacks me and I can see it, I can thunderously rebuke" + "\n   " + "As a reaction, it takes 2d8 lightning or thunder damage that a Dex save can halve",
+				description : "\n   " + "As a reaction, when a creature I can see within 5 ft hits me, I can thunderously rebuke" + "\n   " + "It takes 2d8 lightning or thunder damage (my choice) that a Dex save can halve",
 				usages : "Wisdom modifier per ",
 				usagescalc : "event.value = Math.max(1, tDoc.getField(\"Wis Mod\").value);",
 				recovery : "long rest",
