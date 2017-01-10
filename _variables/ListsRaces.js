@@ -1105,7 +1105,7 @@ var RaceList = {
 	},
 
 	"lizardfolk" : {
-		regExpSearch : /lizardfolk/i,
+		regExpSearch : /lizard(folk|man|men)/i,
 		name : "Lizardfolk",
 		source : ["V", 111],
 		plural : "Lizardfolk",
@@ -1142,7 +1142,7 @@ var RaceList = {
 	},
 
 	"orc" : {
-		regExpSearch : /^(?!.*half)(?=.*orc).*$/i,
+		regExpSearch : /^(?!.*half)(?=.*\bor(c|k)s?\b).*$/i,
 		name : "Orc",
 		source : ["V", 120],
 		plural : "Orcs",
