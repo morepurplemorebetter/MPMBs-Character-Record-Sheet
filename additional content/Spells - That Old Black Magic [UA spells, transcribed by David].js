@@ -1,5 +1,5 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://bit.ly/MPMBCharTools
+	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://bit.ly/MPMBdndtools
 	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 	
 	-KEEP IN MIND-
@@ -8,9 +8,9 @@
 */
 
 /*	-INFORMATION-
-	Subject:	Race
-	Effect:		This script adds a player race, called "Kitsune"
-				This is taken from the That Old Black Magic Unearthed Arcana (http://media.wizards.com/2015/downloads/dnd/07_UA_That_Old_Black_Magic.pdf)
+	Subject:	Spells
+	Effect:		This script adds 5 spells, called "Conjure Lesser Demon", "Conjure Barlgura", "Conjure Hezrou", "Conjure Shadow Demon", and "Conjure Vrock"
+			These are taken from the That Old Black Magic Unearthed Arcana (http://media.wizards.com/2015/downloads/dnd/07_UA_That_Old_Black_Magic.pdf)
 	Code by:	David (with amendments by MorePurpleMoreBetter)
 	Date:		2016-12-14 (sheet v12.72)
 */
