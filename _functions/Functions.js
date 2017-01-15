@@ -1362,7 +1362,7 @@ function ResetAll(GoOn) {
 		
 		//reset of all the form field values
 		tDoc.resetForm(["Wildshape.Race", "Race", "Class and Levels", "Background", "Comp.Race"]);
-///		ClassList.bard.features["bardic inspiration"].recovery = "long rest";
+		ClassList.bard.features["bardic inspiration"].recovery = "long rest";
 		thermoM(3/9); //increment the progress dialog's progress
 		for (var i = 1; i <= FieldNumbers.limfea; i++) {
 			tDoc.getField("Limited Feature Max Usages " + i).setAction("Calculate", "");
@@ -6766,7 +6766,7 @@ function PleaseSubclass(theclass) {
 			var temp = {
 				type : "radio",
 				group_id : "Subs",
-				item_id : "Su" + ("0" + i).slice(-2),
+				item_id : "Sub" + i,
 				name : theName
 			}
 			if (i < 4 || (i + 1) <= Math.ceil((aclassArray.length) / 2)) {
@@ -6795,7 +6795,7 @@ function PleaseSubclass(theclass) {
 			commit : function (dialog) {
 				var oResult = dialog.store();
 				for (var i = 0; i < aclassArray.length; i++) {
-					if (oResult["Su" + ("0" + i).slice(-2)]) {
+					if (oResult["Sub" + i]) {
 						this.result = i;
 						i = aclassArray.length;
 					}
@@ -6876,7 +6876,7 @@ function PleaseSubclass(theclass) {
 		var theDialog = app.execDialog(SubclassSelect_Dialog);
 		if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
 			var selection = aclassObj[aclassArray[SubclassSelect_Dialog.result]];
-			var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : aclass.name + " (" + ClassSubList[selection].subname + ")";
+			var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : classString + " (" + ClassSubList[selection].subname + ")";
 			IsSubclassException[theclass] = true;
 			returnTrue = true;
 			var oldName = classes.known[theclass].string;
