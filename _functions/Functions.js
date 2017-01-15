@@ -1362,7 +1362,6 @@ function ResetAll(GoOn) {
 		
 		//reset of all the form field values
 		tDoc.resetForm(["Wildshape.Race", "Race", "Class and Levels", "Background", "Comp.Race"]);
-		ClassList.bard.features["bardic inspiration"].recovery = "long rest";
 		thermoM(3/9); //increment the progress dialog's progress
 		for (var i = 1; i <= FieldNumbers.limfea; i++) {
 			tDoc.getField("Limited Feature Max Usages " + i).setAction("Calculate", "");
@@ -6237,7 +6236,7 @@ function UpdateLevelFeatures(Typeswitch) {
 					GoAnyway = ForceAll || (newClassLvl[aClass] > 0 && propFea.minlevel <= oldClassLvl[aClass] && (Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld || Fea.UseName !== Fea.UseNameOld));
 					
 					//remove the limited feature if it should be removed because of downgrading the level --or-- the old feature was defined, but the new isn't --or-- if the old has a different name than the new --or-- if the new amount of usages is unlimited
-					if (((Fea.UseOld || Fea.UseCalcOld) && propFea.minlevel > newClassLvl[aClass] && propFea.minlevel <= oldClassLvl[aClass]) || ((Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc)) && (Fea.UseOld || Fea.UseCalcOld)) || Fea.Use.search(/unlimited|\u221E/i) !== -1) {
+					if (((Fea.UseOld || Fea.UseCalcOld) && propFea.minlevel > newClassLvl[aClass] && propFea.minlevel <= oldClassLvl[aClass]) || ((Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc) || (Fea.Recov !== Fea.RecovOld)) && (Fea.UseOld || Fea.UseCalcOld)) || Fea.Use.search(/unlimited|\u221E/i) !== -1) {
 						RemoveFeature(Fea.UseNameOld ? Fea.UseNameOld : Fea.UseName, newClassLvl[aClass] === 0 ? "" : Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
 						Fea.UseOld = 0;
 					}
@@ -6766,7 +6765,7 @@ function PleaseSubclass(theclass) {
 			var temp = {
 				type : "radio",
 				group_id : "Subs",
-				item_id : "Sub" + i,
+				item_id : "Su" + ("0" + i).slice(-2),
 				name : theName
 			}
 			if (i < 4 || (i + 1) <= Math.ceil((aclassArray.length) / 2)) {
@@ -6795,7 +6794,7 @@ function PleaseSubclass(theclass) {
 			commit : function (dialog) {
 				var oResult = dialog.store();
 				for (var i = 0; i < aclassArray.length; i++) {
-					if (oResult["Sub" + i]) {
+					if (oResult["Su" + ("0" + i).slice(-2)]) {
 						this.result = i;
 						i = aclassArray.length;
 					}
@@ -6876,7 +6875,7 @@ function PleaseSubclass(theclass) {
 		var theDialog = app.execDialog(SubclassSelect_Dialog);
 		if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
 			var selection = aclassObj[aclassArray[SubclassSelect_Dialog.result]];
-			var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : classString + " (" + ClassSubList[selection].subname + ")";
+			var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : aclass.name + " (" + ClassSubList[selection].subname + ")";
 			IsSubclassException[theclass] = true;
 			returnTrue = true;
 			var oldName = classes.known[theclass].string;

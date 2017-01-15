@@ -155,9 +155,8 @@ var ClassList = {
 				additional : ["d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12", "d12", "d12"],
 				usages : "Charisma modifier per ",
 				usagescalc : "event.value = Math.max(1, tDoc.getField(\"Cha Mod\").value);",
-				recovery : "long rest",
-				action : ["bonus action", ""],
-				changeeval : "if(ClassLevelUp.bard[1]<5&&ClassLevelUp.bard[2]>=5){RemoveFeature(\"bardic inspiration\");var oldBIrest=newClassLvl.bard>=5?\"long\":\"short\";var newBIrest=newClassLvl.bard>=5?\"short\":\"long\";CurrentClasses.bard.features[\"bardic inspiration\"].recovery=newBIrest+\" rest\";var oldBIStr=\"Bardic Inspiration (Bard 1, PHB 53) [\"+propFea.additional[oldClassLvl.bard-1]+\", Charisma modifier per \"+oldBIrest+\" rest]\";if(oldClassLvl.bard!==0&&What(\"Class Features\").indexOf(oldBIStr)!==-1){ReplaceString(\"Class Features\",oldBIStr.replace(oldBIrest,newBIrest),false,oldBIStr);}}"
+				recovery : ["long rest", "long rest", "long rest", "long rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest"],
+				action : ["bonus action", ""]
 			},
 			"jack of all trades" : {
 				name : "Jack of All Trades",
