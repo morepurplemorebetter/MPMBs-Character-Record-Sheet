@@ -980,7 +980,7 @@ var RaceList = {
 	},
 
 	"half-orc" : {
-		regExpSearch : /^(?=.*half)(?=.*orc).*$/i,
+		regExpSearch : /^(?=.*half)(?=.*\bor(c|k)).*$/i,
 		name : "Half-orc",
 		source : ["P", 41],
 		plural : "Half-orcs",
@@ -1142,7 +1142,7 @@ var RaceList = {
 	},
 
 	"orc" : {
-		regExpSearch : /^(?!.*half)(?=.*\bor(c|k)s?\b).*$/i,
+		regExpSearch : /^(?!.*half)(?=.*\bor(c|k)).*$/i,
 		name : "Orc",
 		source : ["V", 120],
 		plural : "Orcs",

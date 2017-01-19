@@ -570,7 +570,7 @@ function MakeButtons() {
 			cName : "MakeMobileReadyButton",
 			cExec : "MakeMobileReady(What(\"MakeMobileReady Remember\") === \"\");",
 			oIcon : oIcon,
-			cTooltext : toUni("Flatten") + "\nSwitch to or from a version of the sheet that is compatible with Acrobat Reader for mobile devices.\nThis flattens all form fields and hides non-printable ones to make the sheet more usable on a phone or tablet.\n\nThe fields used during normal play will stay editable:\n   \u2022  1st page: health, attacks, actions, adv./disadv., etc.;\n   \u2022  2nd page: equipment and proficiencies;\n   \u2022  3rd-6th page: all except buttons and portrait\/symbol.",
+			cTooltext : toUni("Flatten") + "\nSwitch to or from a version of the sheet that is compatible with Acrobat Reader for mobile devices.\nThis flattens all form fields and hides non-printable ones to make the sheet more usable on a phone or tablet.\n\nThe fields used during normal play will stay editable:\n   \u2022  1st page: health, attacks, actions, adv.\/disadv., etc.;\n   \u2022  2nd page: equipment and proficiencies;\n   \u2022  3rd-6th page: all except buttons and portrait\/symbol.",
 			cMarked : "event.rc = What(\"MakeMobileReady Remember\") !== \"\";",
 			nPos : 12,
 			cLabel : "Flatten"
@@ -604,7 +604,7 @@ function MakeButtons() {
 			cName : "ColorButton",
 			cExec : "MakeColorMenu(); ColoryOptions();",
 			oIcon : oIcon,
-			cTooltext : !typePF ? toUni("Set Color Theme") + "\nControl the color theme of the sheet in the following ways:\n   \u2022  Color of the Headers;\n   \u2022  Color of the Dragon Heads;" + (MinVer ? "" : "\n   \u2022  Color of the HP Dragons;\n   \u2022  Color of the Ability Save DCs;") + "\n   \u2022  Color of the form field highlighting.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet." : toUni("Set Highlighting Color") + "\nSet the color of the form field highlighting.\n\nYou can select several colors, the adobe default color, or turn form field highlighting off.",
+			cTooltext : !typePF ? toUni("Set Color Theme") + "\nControl the color theme of the sheet in the following ways:\n   \u2022  Color of the Headers;\n   \u2022  Color of the Dragon Heads;" + (minVer ? "" : "\n   \u2022  Color of the HP Dragons;\n   \u2022  Color of the Ability Save DCs;") + "\n   \u2022  Color of the form field highlighting.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet." : toUni("Set Highlighting Color") + "\nSet the color of the form field highlighting.\n\nYou can select several colors, the adobe default color, or turn form field highlighting off.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet.",
 			nPos : 14,
 			cLabel : "Color"
 		});
@@ -621,7 +621,7 @@ function MakeButtons() {
 			cName : "FAQButton",
 			cExec : "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });",
 			oIcon : oIcon,
-			cTooltext : toUni("FAQ") + "\nOpen the frequently asked questions pdf.\n\nThere you can find information on how to add custom code to the sheet, like homebrew races/weapons/feats/etc.",
+			cTooltext : toUni("FAQ") + "\nOpen the frequently asked questions pdf.\n\nThere you can find information on how to add custom code to the sheet, like homebrew races\/weapons\/feats\/etc.",
 			nPos : 15,
 			cLabel : "FAQ"
 		});
@@ -671,6 +671,9 @@ function OpeningStatement() {
 	};
 	tDoc.calculate = true;
 	tDoc.delay = false;
+	if (tDoc.getField("SaveIMG.Patreon").submitName !== "") {
+		OpeningStatementVar = app.setTimeOut("PatreonStatement();", 66000);
+	};
 };
 
 function clean(input, remove) {
@@ -2970,31 +2973,29 @@ function CalcExperienceLevel(AlsoClass) {
 		description : {
 			name : "Level and Experience Points do not match!",
 			elements : [{
-					type : "view",
-					elements : [{
-							type : "static_text",
-							name : "Level and Experience Points do not match!",
-							item_id : "head",
-							alignment : "align_top",
-							font : "heading",
-							bold : true,
-							height : 21,
-							char_width : 45,
-						}, {
-							type : "static_text",
-							item_id : "text",
-							alignment : "align_fill",
-							font : "dialog",
-							height : 165,
-							char_width : 45,
-						}, {
-							type : "ok_cancel_other",
-							ok_name : okButton,
-							other_name : otherButton
-						},
-					]
-				},
-			]
+				type : "view",
+				elements : [{
+					type : "static_text",
+					name : "Level and Experience Points do not match!",
+					item_id : "head",
+					alignment : "align_top",
+					font : "heading",
+					bold : true,
+					height : 21,
+					char_width : 45,
+				}, {
+					type : "static_text",
+					item_id : "text",
+					alignment : "align_fill",
+					font : "dialog",
+					height : 165,
+					char_width : 45,
+				}, {
+					type : "ok_cancel_other",
+					ok_name : okButton,
+					other_name : otherButton
+				}]
+			}]
 		}
 	};
 

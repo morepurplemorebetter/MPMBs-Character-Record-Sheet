@@ -4643,50 +4643,60 @@ function ChangeToCompleteAdvLogSheet() {
 function CreateBkmrksCompleteAdvLogSheet() {
 	//make the functions bookmark section
 	tDoc.bookmarkRoot.createChild({cName: "Functions", cExpr: "MakeButtons();", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].style = 2;
 	
 	var NameBm = typePF ? "Set Highlight Color" : "Set Color Theme";
 	tDoc.bookmarkRoot.children[0].createChild({cName: NameBm, cExpr: "MakeColorMenu(); ColoryOptions();", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].children[0].style = 2;
 	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.5, 0.5, 0.5];
 	
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Unit System", cExpr: "SetUnitDecimals_Button();", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].children[0].style = 2;
 	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB",0.463,0.192,0.467];
 	
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady(What(\"MakeMobileReady Remember\") === \"\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].children[0].style = 2;
 	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.2823486328125, 0.1921539306640625, 0.478424072265625];
 	
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Text Options", cExpr: "MakeTextMenu_TextOptions();", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].children[0].style = 2;
 	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.8000030517578125, 0.6666717529296875, 0.1137237548828125];
 	
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Set Pages Layout", cExpr: "MakeAdvLogMenu_AdvLogOptions(true);", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].children[0].style = 2;
 	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.9098052978515625, 0.196075439453125, 0.48626708984375];
 	
 	//make links bookmark section
 	tDoc.bookmarkRoot.createChild({cName: "Links", cExpr: "", nIndex: 1});
-	tDoc.bookmarkRoot.children[1].style = 2;
 	
 	var aLink = typePF ? "http://www.dmsguild.com/product/186823/" : "http://www.dmsguild.com/product/193053/";
 	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 0});
-	tDoc.bookmarkRoot.children[1].children[0].style = 2;
 	
 	aLink = typePF ? "http://www.dmsguild.com/product/194068/" : "http://www.dmsguild.com/product/194069/";
 	var NameLink = tDoc.info.SheetType === "Printer Friendly" ? "Get the Printer Friendly Redesign" : "Get the Latest Version";
 	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 1});
-	tDoc.bookmarkRoot.children[1].children[1].style = 2;
 	
 	aLink = typePF ? "http://www.dmsguild.com/product/194069/" : "http://www.dmsguild.com/product/194068/";
 	NameLink = typePF ? "Get the Colorful Design" : "Get the Printer Friendly Design";
 	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 2});
-	tDoc.bookmarkRoot.children[1].children[2].style = 2;
 	
 	//make FAQ bookmark section
 	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });", nIndex: 2});
-	tDoc.bookmarkRoot.children[2].style = 2;
+	
+	//make the contact bookmark section
+	tDoc.bookmarkRoot.createChild({cName: "Contact MPMB", cExpr: "contactMPMB(\"patreon\");", nIndex: 3});
+	tDoc.bookmarkRoot.children[3].style = 2;
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on DMs Guild", cExpr: "contactMPMB(\"dmsguild\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on EN world", cExpr: "contactMPMB(\"enworld\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "via Email", cExpr: "contactMPMB(\"email\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on GitHub", cExpr: "contactMPMB(\"github\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Reddit", cExpr: "contactMPMB(\"reddit\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Twitter", cExpr: "contactMPMB(\"twitter\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Patreon", cExpr: "contactMPMB(\"patreon\");", nIndex: 0});
+	
+	//make all bookmarks bold
+	for (var p = 0; p < tDoc.bookmarkRoot.children.length; p++) {
+		tDoc.bookmarkRoot.children[p].style = 2;
+		if (tDoc.bookmarkRoot.children[p].children) {
+			for (var c = 0; c < tDoc.bookmarkRoot.children[p].children.length; c++) {
+				tDoc.bookmarkRoot.children[p].children[c].style = 2;
+			}
+		}
+	}
 }
 
 // update all the level-dependent features for the UA's revised ranger companions on the companion pages
@@ -5475,4 +5485,110 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
 	if (IsNotReset) tDoc.calculateNow();
+}
+
+//a way to contact morepurplemorebetter
+function contactMPMB(medium) {
+	switch (medium.toLowerCase()) {
+	 case "email" :
+		app.launchURL(("mailto:flapkan@gmail.com?subject=MPMBs Character Tools&body=%0D%0A%0D%0A%0D%0ASheet version: MPMB\'s " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + tDoc.info.SheetVersion.toString() + " (" + tDoc.info.SheetType + ")" + "%0D%0APDF viewer: " + app.viewerType + ", v" + app.viewerVersion + "; Language: " + app.language + "; OS: " + app.platform).replace(/ /g, "%20"));
+		break;
+	 case "twitter" :
+		app.launchURL("https://twitter.com/BetterOfPurple");
+		break;
+	 case "reddit" :
+		app.launchURL("https://www.reddit.com/u/morepurplemorebetter/");
+		break;
+	 case "patreon" :
+		app.launchURL("https://www.patreon.com/morepurplemorebetter");
+		break;
+	 case "github" :
+		app.launchURL("https://github.com/morepurplemorebetter/");
+		break;
+	 case "dmsguild" :
+		app.launchURL("http://www.dmsguild.com/browse.php?author=morepurplemorebetter");
+		break;
+	 case "enworld" :
+		app.launchURL("http://www.enworld.org/forum/rpgdownloads.php?do=download&downloadid=1180");
+		break;
+	}
+};
+
+//open a dialogue for the Patreon
+function PatreonStatement() {
+	try {
+		var iNow = new Date();
+		var timeDiff = iNow.getTime() - eval(tDoc.getField("SaveIMG.Patreon").submitName).getTime();
+		if (Math.floor(timeDiff / (1000 * 3600 * 24)) >= 28) {
+			var oButIcon = this.getField("SaveIMG.Patreon").buttonGetIcon();
+			var oMyIcon = util.iconStreamFromIcon(oButIcon);	
+			
+			var PatreonDialog = {
+				initialize : function (dialog) {
+					dialog.load({
+						"img1" : oMyIcon,
+						"txt1" : "If you like this sheet, please consider becoming a patron at the Patreon for MPMB’s Character Record Sheet.\n\nWith your contribution on Patreon:\n   \u2022 I can add all Unearthed Arcana material right after it has been released.\n   \u2022 You get to choose which new features get added.\n   \u2022 Your favourite third-party material gets added.\n   \u2022 You get instant access and alerts when new versions are released.",
+						"txt2" : "Don’t worry, the sheet will stay as ‘Pay What You Want’ on DMs Guild.\nHowever, if you feel like contributing more, it will all flow back into expanding the sheets’ features and content.\n\nYou can always visit the Patreon webpage using the bottom \“Contact MPMB\” bookmarks."
+					});
+				},
+				bPat : function (dialog) {contactMPMB("patreon");},
+				description : {
+					name : "Become a patron",
+					elements : [{
+						type : "view",
+						elements : [{
+							type : "view",
+							align_children : "align_distribute",
+							elements : [{
+								type : "image",
+								item_id : "img1",
+								alignment : "align_top",
+								width : 63,
+								height : 63
+							}, {
+								type : "view",
+								elements : [{
+									type : "static_text",
+									name : "Become a patron on Patreon",
+									item_id : "head",
+									alignment : "align_top",
+									font : "title",
+									bold : true,
+									height : 24,
+									char_width : 40,
+								}, {
+									type : "static_text",
+									item_id : "txt1",
+									alignment : "align_fill",
+									font : "dialog",
+									char_height : 13,
+									char_width : 40,
+								}, {
+									type : "button",
+									font : "heading",
+									bold : true,
+									item_id : "bPat",
+									name : "Go to the Patreon webpage",
+									alignment : "align_center"
+								}, {
+									type : "static_text",
+									item_id : "txt2",
+									alignment : "align_fill",
+									font : "dialog",
+									char_height : 10,
+									char_width : 40,
+								}]
+							}]
+						}, {
+							type : "ok"
+						}]
+					}]
+				}
+			};
+			
+			app.execDialog(PatreonDialog);
+			//reset the counter
+			tDoc.getField("SaveIMG.Patreon").submitName = new Date().toSource();
+		};
+	} catch (e) {};
 }

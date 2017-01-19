@@ -4862,56 +4862,67 @@ function ChangeToCompleteSpellSheet(thisClass) {
 function CreateBkmrksCompleteSpellSheet() {
 	//make the functions bookmark section
 	tDoc.bookmarkRoot.createChild({cName: "Functions", cExpr: "MakeButtons();", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].style = 2;
 
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Spell Sources", cExpr: "resourceDecisionDialog();", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].children[0].style = 2;
 	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.93, 0.49, 0.098];
 
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Spells Options", cExpr: "MakeSpellMenu_SpellOptions();", nIndex: 1});
-	tDoc.bookmarkRoot.children[0].children[1].style = 2;
 	tDoc.bookmarkRoot.children[0].children[1].color = ["RGB", 0.2509765625, 0.5176544189453125, 0.67059326171875];
 
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady(What(\"MakeMobileReady Remember\") === \"\");", nIndex: 2});
-	tDoc.bookmarkRoot.children[0].children[2].style = 2;
 	tDoc.bookmarkRoot.children[0].children[2].color = ["RGB", 0.2823486328125, 0.1921539306640625, 0.478424072265625];
 	
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Unit System", cExpr: "SetUnitDecimals_Button();", nIndex: 3});
-	tDoc.bookmarkRoot.children[0].children[3].style = 2;
 	tDoc.bookmarkRoot.children[0].children[3].color = ["RGB",0.463,0.192,0.467];
 	
 	var NameBm = typePF ? "Set Highlight Color" : "Set Color Theme";
 	tDoc.bookmarkRoot.children[0].createChild({cName: NameBm, cExpr: "MakeColorMenu(); ColoryOptions();", nIndex: 4});
-	tDoc.bookmarkRoot.children[0].children[4].style = 2;
 	tDoc.bookmarkRoot.children[0].children[4].color = ["RGB", 0.5, 0.5, 0.5];
 	
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Add Custom Script", cExpr: "AddUserScript();", nIndex: 5});
-	tDoc.bookmarkRoot.children[0].children[5].style = 2;
 
 	//make links bookmark section	
 	tDoc.bookmarkRoot.createChild({cName: "Links", cExpr: "", nIndex: 1});
 	tDoc.bookmarkRoot.children[1].style = 2;
 	
 	tDoc.bookmarkRoot.children[1].createChild({cName: "Get Additional Content (Custom Scripts)", cExpr: "app.launchURL(\"http://bit.ly/MPMBcoding_fanmade\", true);", nIndex: 0});
-	tDoc.bookmarkRoot.children[1].children[0].style = 2;
 	
 	var aLink = typePF ? "http://www.dmsguild.com/product/186823/" : "http://www.dmsguild.com/product/193053/";
 	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 1});
-	tDoc.bookmarkRoot.children[1].children[1].style = 2;
 	
 	aLink = typePF ? "http://www.dmsguild.com/product/187619/" : "http://www.dmsguild.com/product/193298/";
 	var NameLink = tDoc.info.SheetType === "Printer Friendly" ? "Get the Printer Friendly Redesign" : "Get the Latest Version";
 	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 2});
-	tDoc.bookmarkRoot.children[1].children[2].style = 2;
 	
 	NameLink = typePF ? "Get the Colorful Design" : "Get the Printer Friendly Design";
 	aLink = typePF ? "http://www.dmsguild.com/product/193053/" : "http://www.dmsguild.com/product/186823/";
 	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 3});
-	tDoc.bookmarkRoot.children[1].children[3].style = 2;
+	for (var c = 0; c < tDoc.bookmarkRoot.children[1].children.length; c++) tDoc.bookmarkRoot.children[1].children[c].style = 2;
 
 	//make FAQ bookmark section
 	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });", nIndex: 2});
 	tDoc.bookmarkRoot.children[2].style = 2;
+	
+	//make the contact bookmark section
+	tDoc.bookmarkRoot.createChild({cName: "Contact MPMB", cExpr: "contactMPMB(\"patreon\");", nIndex: 3});
+	tDoc.bookmarkRoot.children[3].style = 2;
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on DMs Guild", cExpr: "contactMPMB(\"dmsguild\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on EN world", cExpr: "contactMPMB(\"enworld\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "via Email", cExpr: "contactMPMB(\"email\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on GitHub", cExpr: "contactMPMB(\"github\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Reddit", cExpr: "contactMPMB(\"reddit\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Twitter", cExpr: "contactMPMB(\"twitter\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Patreon", cExpr: "contactMPMB(\"patreon\");", nIndex: 0});
+	
+	//make all bookmarks bold
+	for (var p = 0; p < tDoc.bookmarkRoot.children.length; p++) {
+		tDoc.bookmarkRoot.children[p].style = 2;
+		if (tDoc.bookmarkRoot.children[p].children) {
+			for (var c = 0; c < tDoc.bookmarkRoot.children[p].children.length; c++) {
+				tDoc.bookmarkRoot.children[p].children[c].style = 2;
+			}
+		}
+	}
 }
 
 // a function to enforce the Spell Points of the printer friendly sheets
