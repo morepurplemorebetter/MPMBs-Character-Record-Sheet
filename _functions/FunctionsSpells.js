@@ -4885,18 +4885,15 @@ function CreateBkmrksCompleteSpellSheet() {
 	tDoc.bookmarkRoot.createChild({cName: "Links", cExpr: "", nIndex: 1});
 	tDoc.bookmarkRoot.children[1].style = 2;
 	
-	tDoc.bookmarkRoot.children[1].createChild({cName: "Get Additional Content (Custom Scripts)", cExpr: "app.launchURL(\"http://bit.ly/MPMBcoding_fanmade\", true);", nIndex: 0});
+	tDoc.bookmarkRoot.children[1].createChild({cName: "Get Additional Content (Custom Scripts)", cExpr: "contactMPMB(\"additions\");", nIndex: 0});
 	
-	var aLink = typePF ? "http://www.dmsguild.com/product/186823/" : "http://www.dmsguild.com/product/193053/";
-	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 1});
+	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "contactMPMB(\"fullversion\");", nIndex: 1});
 	
-	aLink = typePF ? "http://www.dmsguild.com/product/187619/" : "http://www.dmsguild.com/product/193298/";
 	var NameLink = tDoc.info.SheetType === "Printer Friendly" ? "Get the Printer Friendly Redesign" : "Get the Latest Version";
-	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 2});
+	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB(\"latestversion\");", nIndex: 2});
 	
 	NameLink = typePF ? "Get the Colorful Design" : "Get the Printer Friendly Design";
-	aLink = typePF ? "http://www.dmsguild.com/product/193053/" : "http://www.dmsguild.com/product/186823/";
-	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 3});
+	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB(\"otherdesign\");", nIndex: 3});
 	for (var c = 0; c < tDoc.bookmarkRoot.children[1].children.length; c++) tDoc.bookmarkRoot.children[1].children[c].style = 2;
 
 	//make FAQ bookmark section

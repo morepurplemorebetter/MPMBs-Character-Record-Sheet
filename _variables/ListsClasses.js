@@ -4632,7 +4632,7 @@ var ClassSubList = {
 		}
 	},
 	"transmutation" : {
-		regExpSearch : /(transmutation|transmuter|alchemist)/i,
+		regExpSearch : /(transmutation|transmuter)/i,
 		subname : "School of Transmutation",
 		fullname : "Transmuter",
 		source : ["P", 119],

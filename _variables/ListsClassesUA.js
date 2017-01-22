@@ -7,10 +7,10 @@
 //adds a subclass for the Wizard, called "Tradition of the Artificer"
 //this code was contributed by Pengsloth
 ClassSubList["artificer"] = {
-	regExpSearch : /(artificer|infuser)/i,
+	regExpSearch : /^((?=.*(wizard|mage|magus))(?=.*artificer))|(?=.*infuser).*$/i,
 	subname : "Tradition of the Artificer",
 	source : ["UA:E", 3],
-	fullname : "Artificer",
+	fullname : "Wizard (Artificer)",
 	features : {
 		"subclassfeature2" : {
 			name : "Infuse Potions",

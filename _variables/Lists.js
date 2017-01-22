@@ -2000,3 +2000,18 @@ var factionRanks = {
 		"Dread Lord (rank 5)",
 		],
 }
+
+var LinkDMsGuild : {
+	character : {
+		PF : "186823",
+		CF : "193053"
+	},
+	spell : {
+		PF : "187619",
+		CF : "193298"
+	},
+	advlog : {
+		PF : "194068",
+		CF : "194069"
+	},
+}

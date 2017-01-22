@@ -10921,7 +10921,7 @@ function AddUserScript() {
 				dialog.end("bpre");
 			},
 			bADD: function(dialog) {
-				app.launchURL("http://bit.ly/MPMBcoding_fanmade", true);
+				contactMPMB("additions");
 			},
 			description : {
 				name : "Add your custom JavaScript that has to run on startup",

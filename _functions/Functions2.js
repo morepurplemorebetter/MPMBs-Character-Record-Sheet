@@ -4664,15 +4664,13 @@ function CreateBkmrksCompleteAdvLogSheet() {
 	tDoc.bookmarkRoot.createChild({cName: "Links", cExpr: "", nIndex: 1});
 	
 	var aLink = typePF ? "http://www.dmsguild.com/product/186823/" : "http://www.dmsguild.com/product/193053/";
-	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 0});
+	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "contactMPMB(\"fullversion\");", nIndex: 0});
 	
-	aLink = typePF ? "http://www.dmsguild.com/product/194068/" : "http://www.dmsguild.com/product/194069/";
 	var NameLink = tDoc.info.SheetType === "Printer Friendly" ? "Get the Printer Friendly Redesign" : "Get the Latest Version";
-	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 1});
+	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB(\"latestversion\");", nIndex: 1});
 	
-	aLink = typePF ? "http://www.dmsguild.com/product/194069/" : "http://www.dmsguild.com/product/194068/";
 	NameLink = typePF ? "Get the Colorful Design" : "Get the Printer Friendly Design";
-	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "app.launchURL(\"" + aLink + "\", true);", nIndex: 2});
+	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB(\"otherdesign\");", nIndex: 2});
 	
 	//make FAQ bookmark section
 	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });", nIndex: 2});
@@ -5491,25 +5489,40 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 function contactMPMB(medium) {
 	switch (medium.toLowerCase()) {
 	 case "email" :
-		app.launchURL(("mailto:flapkan@gmail.com?subject=MPMBs Character Tools&body=%0D%0A%0D%0A%0D%0ASheet version: MPMB\'s " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + tDoc.info.SheetVersion.toString() + " (" + tDoc.info.SheetType + ")" + "%0D%0APDF viewer: " + app.viewerType + ", v" + app.viewerVersion + "; Language: " + app.language + "; OS: " + app.platform).replace(/ /g, "%20"));
+		app.launchURL(("mailto:flapkan@gmail.com?subject=MPMBs Character Tools&body=%0D%0A%0D%0A%0D%0ASheet version: MPMB\'s " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + tDoc.info.SheetVersion.toString() + " (" + tDoc.info.SheetType + ")" + "%0D%0APDF viewer: " + app.viewerType + ", v" + app.viewerVersion + "; Language: " + app.language + "; OS: " + app.platform).replace(/ /g, "%20"), true);
 		break;
 	 case "twitter" :
-		app.launchURL("https://twitter.com/BetterOfPurple");
+		app.launchURL("https://twitter.com/BetterOfPurple", true);
 		break;
 	 case "reddit" :
-		app.launchURL("https://www.reddit.com/u/morepurplemorebetter/");
+		app.launchURL("https://www.reddit.com/u/morepurplemorebetter/", true);
 		break;
 	 case "patreon" :
-		app.launchURL("https://www.patreon.com/morepurplemorebetter");
+		app.launchURL("https://www.patreon.com/morepurplemorebetter", true);
 		break;
 	 case "github" :
-		app.launchURL("https://github.com/morepurplemorebetter/");
+		app.launchURL("https://github.com/morepurplemorebetter/", true);
 		break;
 	 case "dmsguild" :
-		app.launchURL("http://www.dmsguild.com/browse.php?author=morepurplemorebetter");
+		app.launchURL("http://www.dmsguild.com/browse.php?author=morepurplemorebetter", true);
 		break;
 	 case "enworld" :
-		app.launchURL("http://www.enworld.org/forum/rpgdownloads.php?do=download&downloadid=1180");
+		app.launchURL("http://www.enworld.org/forum/rpgdownloads.php?do=download&downloadid=1180", true);
+		break;
+	 case "syntax" :
+		app.launchURL("http://www.flapkan.com/mpmb/syntax", true);
+		break;
+	 case "additions" :
+		app.launchURL("http://www.flapkan.com/mpmb/additions", true);
+		break;
+	 case "latestversion" :
+		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild[minVer ? (tDoc.info.SpellsOnly ? "spell", "advlog") : "character"][typePF ? "PF" : "CF"]), true);
+		break;
+	 case "otherdesign" :
+		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild[minVer ? (tDoc.info.SpellsOnly ? "spell", "advlog") : "character"][typePF ? "CF" : "PF"]), true);
+		break;
+	 case "fullversion" :
+		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild.character[typePF ? "CF" : "PF"]), true);
 		break;
 	}
 };
