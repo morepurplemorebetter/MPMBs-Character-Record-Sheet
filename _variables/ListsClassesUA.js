@@ -400,7 +400,6 @@ ClassSubList["scout"] = {
 	regExpSearch : /scout/i,
 	subname : "Scout",
 	source : ["UA:KoO", 4],
-	fullname : "Scout",
 	abilitySave : 1,
 	features : {
 		"subclassfeature3" : {
@@ -1644,7 +1643,7 @@ ClassSubList["circle of the shepherd"] = {
 			name : "Beast Speech",
 			source : ["UA:DC", 2],
 			minlevel : 2,
-			description : "\n   " + "I can talk with beasts, they understand me and I them, to the limit of their intelligence" + "\n   " + "This doesn't automatically make me friends with all beasts",
+			description : "\n   " + "I can talk with beasts, they understand me and I them, to the limit of their intelligence" + "\n   " + "This doesn't automatically make me friends with all beasts"
 		},
 		"subclassfeature2.1" : {
 			name : "Spirit Bond",
@@ -1659,13 +1658,13 @@ ClassSubList["circle of the shepherd"] = {
 			name : "Mighty Summoner",
 			source : ["UA:DC", 2],
 			minlevel : 6,
-			description : "\n   " + "Beast I summon with my spells have +2 HP per HD and their attacks count as magical",
+			description : "\n   " + "Beast I summon with my spells have +2 HP per HD and their attacks count as magical"
 		},
 		"subclassfeature10" : {
 			name : "Guardian Spirit",
 			source : ["UA:DC", 2],
 			minlevel : 10,
-			description : "\n   " + "Whenever I finish a long rest, I gain the benefits of a Death Ward spell for 24 hours",
+			description : "\n   " + "Whenever I finish a long rest, I gain the benefits of a Death Ward spell for 24 hours"
 		},
 		"subclassfeature14" : {
 			name : "Faithful Summons",
@@ -1673,8 +1672,8 @@ ClassSubList["circle of the shepherd"] = {
 			minlevel : 14,
 			description : "\n   " + "When I am reduced to 0 HP or incapacitated against my will, I can summon protectors" + "\n   " + "I gain the benefits of a Conjure Animals spell as if cast with a 9th-level spell slot" + "\n   " + "It summons 4 beast of my choice with CR 2 or lower within 20 ft of me for 1 hour" + "\n   " + "If they receive no commands from me, they protect me from harm and attack foes",
 			usages : 1,
-			recovery : "long rest",
-		},
+			recovery : "long rest"
+		}
 	}
 };
 ClassList.druid.subclasses[1].push("circle of the shepherd");
@@ -2213,6 +2212,132 @@ ClassSubList["oath of treachery"] = {
 };
 ClassList.paladin.subclasses[1].push("oath of treachery");
 
+/*
+	the Ranger and Rogue Unearthed Arcana of 2017-01-16
+	(http://media.wizards.com/2016/dnd/downloads/2017_01_UA_RangerRogue_0117JCMM.pdf)
+*/
+//adds three subclasses: a subclass for the Ranger, called "Horizon Walker"
+ClassSubList["horizon conclave"] = {
+	regExpSearch : /^(?=.*horizon)(?=.*(walker|conclave)).*$/i,
+	subname : "Horizon Conclave",
+	source : ["UA:RnR", 1],
+	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+	features : {
+		"subclassfeature3" : {
+			name : "Planar magic",
+			source : ["UA:RnR", 1],
+			minlevel : 3,
+			description : "\n   " + "I add a spell to my known spells at level 3, 5, 9, 13, and 15" + "\n   " + "These count as ranger spells, but do not count against the number of spells I can know",
+			spellcastingExtra : ["protection from evil and good", "alter self", "protection from energy", "banishment", "teleportation circle"]
+		},
+		"subclassfeature3.1" : {
+			name : "Planar Walker",
+			source : ["UA:RnR", 1],
+			minlevel : 3,
+			description : "\n   " + "As a bonus action, I choose an enemy within 30 ft of me that I can see" + "\n   " + "Until the end of this turn, my attack against that enemy ignore damage resistances" + "\n   " + "In addition, the first time I hit it this turn, it takes an extra 1d6 force damage",
+			action : ["bonus action", ""]
+		},
+		"subclassfeature3.2" : {
+			name : "Portal Lore",
+			source : ["UA:RnR", 1],
+			minlevel : 3,
+			description : "\n   " + "As an action, I sense the distance and direction to any planar portals within 1000 ft" + "\n   " + "I also sense to which plane the portal leads to; I can't sense details if obscured by magic" + "\n   " + "I can use this feature additional times by expending spell slots of 2nd level or higher",
+			usages : 1,
+			recovery : "short rest",
+			action : ["action", ""]
+		},
+		"subclassfeature7" : {
+			name : "Ethereal Step",
+			source : ["UA:RnR", 1],
+			minlevel : 7,
+			description : "\n   " + "As a bonus action, I cast the Etherealness spell, which lasts until the end of the turn",
+			usages : 1,
+			recovery : "short rest",
+			action : ["bonus action", ""]
+		},
+		"subclassfeature11" : {
+			name : "Distant Strike",
+			source : ["UA:RnR", 1],
+			minlevel : 11,
+			description : "\n   " + "With the Attack action, I can teleport 10 ft before each attack, to a spot I can see" + "\n   " + "If I attack two or more creatures with this action, I get an extra attack against a third",
+		},
+		"subclassfeature15" : {
+			name : "Spectral Defense",
+			source : ["UA:RnR", 1],
+			minlevel : 15,
+			description : "\n   " + "As a reaction when I take damage, I can halve that damage against me",
+			action : ["reaction", ""]
+		},
+	}
+};
+ClassSubList["horizon conclave"].features["subclassfeature3"].spellcastingExtra[100] = "AddToKnown";
+ClassList.rangerua.subclasses[1].push("horizon conclave");
+ClassSubList["horizon walker"] = eval(ClassSubList["horizon conclave"].toSource());
+delete ClassSubList["horizon walker"].attacks;
+ClassSubList["horizon walker"].subname = "Horizon Walker";
+ClassSubList["horizon walker"].fullname = "Horizon Walker";
+ClassList.ranger.subclasses[1].push("horizon walker");
+
+//a subclass for the Ranger, called "Primeval Guardian"
+ClassSubList["primeval guardian conclave"] = {
+	regExpSearch : /^(?=.*primeval)(?=.*guardian).*$/i,
+	subname : "Primeval Guardian Conclave",
+	source : ["UA:RnR", 2],
+	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+	features : {
+		"subclassfeature3" : {
+			name : "Guardian magic",
+			source : ["UA:RnR", 2],
+			minlevel : 3,
+			description : "\n   " + "I add a spell to my known spells at level 3, 5, 9, 13, and 15" + "\n   " + "These count as ranger spells, but do not count against the number of spells I can know",
+			spellcastingExtra : ["entangle", "enhance ability", "conjure animals", "giant insect", "insect plague"]
+		},
+		"subclassfeature3.1" : {
+			name : "Guardian Soul",
+			source : ["UA:RnR", 2],
+			minlevel : 3,
+			description : "\n   " + "As a bonus action, I assume the form of a treelike guardian" + "\n   " + "This lasts until I end it as a bonus action or until I am incapacitated" + "\n   " + "I undergo the following changes while in my guardian form:" + "\n    - " + "My size becomes Large (unless I was already larger)" + "\n    - " + "My speed becomes 5 ft, for all modes (unless it was already slower)" + "\n    - " + "My reach increases by 5 ft" + "\n    - " + "I gain half my ranger level in temporary HP at the start of each of my turns" + "\n   " + "I lose all temporary HP I gain like this when I transform back to my normal form",
+			additional : ["", "", "1 temp HP per round", "2 temp HP per round", "2 temp HP per round", "3 temp HP per round", "3 temp HP per round", "4 temp HP per round", "4 temp HP per round", "5 temp HP per round", "5 temp HP per round", "6 temp HP per round", "6 temp HP per round", "7 temp HP per round", "7 temp HP per round", "8 temp HP per round", "8 temp HP per round", "9 temp HP per round", "9 temp HP per round", "10 temp HP per round"],
+			action : ["bonus action", " (start/end)"]
+		},
+		"subclassfeature3.2" : {
+			name : "Piercing Thorns",
+			source : ["UA:RnR", 2],
+			minlevel : 3,
+			description : "\n   " + "Once each turn, a hit from my weapon attack can deal 1d6 extra piercing damage"
+		},
+		"subclassfeature7" : {
+			name : "Ancient Fortitude",
+			source : ["UA:RnR", 2],
+			minlevel : 7,
+			description : "\n   " + "When I assume my guardian form, my HP \u0026 max HP increase by twice my ranger level" + "\n   " + "When I leave the form, my max HP reverts back, and any excess HP I have is lost",
+			additional : ["", "", "", "", "", "", "", "+16 max HP", "+18 max HP", "+20 max HP", "+22 max HP", "+24 max HP", "+26 max HP", "+28 max HP", "+30 max HP", "+32 max HP", "+34 max HP", "+36 max HP", "+38 max HP", "+40 max HP"]
+		},
+		"subclassfeature11" : {
+			name : "Rooted Defense",
+			source : ["UA:RnR", 2],
+			minlevel : 11,
+			description : "\n   " + "While in guardian form, the ground within 30 ft of me is difficult terrain for hostiles",
+		},
+		"subclassfeature15" : {
+			name : "Guardian Aura",
+			source : ["UA:RnR", 2],
+			minlevel : 15,
+			description : "\n   " + "While I'm in my guardian form, I heal allies that start their turn within 30 ft of me" + "\n   " + "They heal half my ranger level if they are below half HP and not undead or constructs",
+			additional : ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "Heals 7 HP", "Heals 8 HP", "Heals 8 HP", "Heals 9 HP", "Heals 9 HP", "Heals 10 HP"]
+		}
+	}
+};
+ClassSubList["primeval guardian conclave"].features["subclassfeature3"].spellcastingExtra[100] = "AddToKnown";
+ClassList.rangerua.subclasses[1].push("primeval guardian conclave");
+ClassSubList["primeval guardian"] = eval(ClassSubList["primeval guardian conclave"].toSource());
+delete ClassSubList["primeval guardian"].attacks;
+ClassSubList["primeval guardian"].subname = "Primeval Guardian";
+ClassSubList["primeval guardian"].fullname = "Primeval Guardian";
+ClassList.ranger.subclasses[1].push("primeval guardian");
+
+//a subclass for the Rogue, called "Scout"
+
 //a function to run at startup of the sheet to ensure that all of the UA additions work as they should
 function UAstartupCode() {
 	//Sorcerer (Favored Soul): add all cleric domain spells to the options of the first level ability "Chosen of the Gods"
@@ -2230,7 +2355,7 @@ function UAstartupCode() {
 				spellcastingExtra : eSpells,
 				description : "\n   " + "I add the " + cDomain.subname.toLowerCase() + " spells to my known spells, if they are of a level I can cast" + "\n   " + "These count as sorcerer spells, but do not count against the number of spells I can know",
 			};
-		}
+		};
 	};
 	
 	//Warlock (the Seeker): add the "Pact Boon" feature from the Warlock class, with one addition, to the subclass
@@ -2248,8 +2373,8 @@ function UAstartupCode() {
 			name : "Pact of the Star Chain",
 			spells : ["augury"],
 			selection : ["augury"],
-			firstCol : "R",
-		},
+			firstCol : "R"
+		}
 	};
 	
 	//Add fighting styles to the options of fighter, paladin, and ranger

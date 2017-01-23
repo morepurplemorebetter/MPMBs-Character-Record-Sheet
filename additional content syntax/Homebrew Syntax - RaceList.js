@@ -24,6 +24,8 @@ RaceList["something catlike"] = { //Note the use of only lower case! Also note t
 	
 	weaponprofs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]], //optoinal; Weapon proficiencies the race has. This line can be deleted if you don't have anything to put here //the 3 entries are for: ["simple", "martial", "other"]
 	
+	tools : ["Three musical instruments", "Tinker's tools"], //optional; Tool proficiencies the race has. This line can be deleted if you don't have anything to put here. Each string in the array will be put into a different tools field
+	
 	skills : ["Perception", "Deception"], //optional; Skill proficiencies the race has. This line can be deleted if you don't have anything to put here. If the race doesn't give fixed proficiencies, but instead gives a choice, delete this line and use the line below, "skillstxt"
 	
 	skillstxt : "Choose any two skills",  //optional; Skill proficiencies the race has. This line can be deleted if you don't have anything to put here. If the race only gives fixed skill proficiencies (no choices), then delete this line and only use "skills" above

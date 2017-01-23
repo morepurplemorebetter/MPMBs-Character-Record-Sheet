@@ -2336,34 +2336,36 @@ function ConditionSet() {
 //search the string for possible class and subclass
 function ParseClass(tempString) {
 	var found = false, tempFound = false;
-	for (var obj in ClassList) { //scan string for all classes, choosing subclasses over classes
-		if (!tempFound) {
+	for (var i = 1; i <= 2; i++) { //first time around just look if the class matches and then look for its subclasses. If that doesn't yield anything, look if any of the subclasses match
+		for (var obj in ClassList) { //scan string for all classes, choosing subclasses over classes
 			if (testSource(obj, ClassList[obj], "classExcl")) continue; //only testing if the source of the class isn't excluded
-			for (var z = 0; z < ClassList[obj].subclasses[1].length; z++) {
-				var theSub = ClassList[obj].subclasses[1][z];
-				if (testSource(theSub, ClassSubList[theSub], "classExcl")) continue; // test if the subclass or its source isn't excluded
-				var theSubIL = ClassSubList[theSub];
-				var oldSub = found && found[1] && ClassSubList[found[1]] ? ClassSubList[found[1]] : false;
-				if (tempString.search(theSubIL.regExpSearch) !== -1 && (!oldSub || theSubIL.subname.length > oldSub.subname.length)) {
-					found = [obj, theSub];
-					tempFound = true;
-				}
-			};
+			if (obj === "ranger" && CurrentSources.globalExcl.indexOf("UA:RR") === -1 && (!CurrentSources.classExcl || CurrentSources.classExcl.indexOf("rangerua") === -1)) continue; //a special test for the Unearthed Arcana Revised Ranger
 			var cSearch = ClassList[obj].regExpSearch;
-			if (!tempFound && tempString.search(cSearch) !== -1) {
-				found = [obj, ""];
-				tempFound = true;
+			if (!tempFound && (i === 2 || tempString.search(cSearch) !== -1)) {
+				for (var z = 0; z < ClassList[obj].subclasses[1].length; z++) {
+					var theSub = ClassList[obj].subclasses[1][z];
+					if (testSource(theSub, ClassSubList[theSub], "classExcl")) continue; // test if the subclass or its source isn't excluded
+					var theSubIL = ClassSubList[theSub];
+					var oldSub = found && found[1] && ClassSubList[found[1]] ? ClassSubList[found[1]] : false;
+					if (tempString.search(theSubIL.regExpSearch) !== -1 && (!oldSub || theSubIL.subname.length > oldSub.subname.length)) {
+						found = [obj, theSub];
+						tempFound = true;
+						i = 3;
+					};
+				};
+				if (!tempFound && i === 1) {
+					found = [obj, ""];
+					tempFound = true;
+					i = 3;
+					break;
+				} else if (tempFound) {
+					break;
+				};
 			};
-		
-			//a special test for the Unearthed Arcana Revised Ranger
-			if (tempFound && obj === "ranger" && CurrentSources.globalExcl.indexOf("UA:RR") === -1 && (!CurrentSources.classExcl || CurrentSources.classExcl.indexOf("rangerua") === -1)) {
-				found = false;
-				tempFound = false;
-			}
-		}
+		};
 	};
 	return found;
-}
+};
 
 //detects classes entered and parses information to global classes variable
 function FindClasses(Event) {
@@ -5023,7 +5025,7 @@ function RemoveRace() {
 		};
 		if (CurrentRace.features) {
 			for (var key in CurrentRace.features) {
-				var FeaUse = isArray(CurrentRace.features[key].usages) ? CurrentRace.features[key].usages[CurrentRace.level] : CurrentRace.features[key].usages;
+				var FeaUse = isArray(CurrentRace.features[key].usages) ? CurrentRace.features[key].usages[CurrentRace.level - 1] : CurrentRace.features[key].usages;
 				RemoveFeature(CurrentRace.features[key].name, FeaUse);
 				if (CurrentRace.features[key].action) {
 					RemoveAction(CurrentRace.features[key].action[0], CurrentRace.features[key].name + CurrentRace.features[key].action[1]);
@@ -5919,9 +5921,9 @@ function UpdateLevelFeatures(Typeswitch) {
 				thermoM("Updating " + CurrentRace.name + "'s " + keyFea.name + "..."); //change the progress dialog text
 
 				var FeaUse = keyFea.usages;
-				if (FeaUse && isArray(FeaUse)) {
+				if (FeaUse && isArray(FeaUse) && newRaceLvl > 0) {
 					FeaUse = FeaUse[newRaceLvl - 1];
-					var FeaUseOld = FeaUse[oldRaceLvl - 1];
+					var FeaUseOld = oldRaceLvl > 0 ? FeaUse[oldRaceLvl - 1] : 0;
 					GoAnyway = GoAnyway && FeaUse !== FeaUseOld;
 				}
 
