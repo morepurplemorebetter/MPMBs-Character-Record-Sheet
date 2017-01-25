@@ -1,5 +1,5 @@
 /*  -WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://bit.ly/MPMBCharTools
+	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
 	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 	 
 	-KEEP IN MIND-
