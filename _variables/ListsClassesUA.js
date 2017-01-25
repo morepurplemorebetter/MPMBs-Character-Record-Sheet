@@ -563,7 +563,7 @@ ClassSubList["inquisitive"] = {
 			name : "Eye for Detail",
 			source : ["UA:GH", 3],
 			minlevel : 3,
-			description : "\n   " + "I can use the bonus action granted by Cunning Action for the following as well:" + "\n    - " + "To make a Wisdom (Perception) check to spot a hidden creature or object" + "\n    - " + "To make an Intelligence (Investigation) check to uncover and decipher clues" + "\n    - " + "To use Insightful Fighting (see below)" ,
+			description : "\n   " + "I can use the bonus action granted by Cunning Action for the following as well:" + "\n    - " + "To make a Wisdom (Perception) check to spot a hidden creature or object" + "\n    - " + "To make an Intelligence (Investigation) check to uncover and decipher clues" + "\n    - " + "To use Insightful Fighting (see below)",
 		},
 		"subclassfeature3.2" : {
 			name : "Insightful Fighting",
@@ -573,7 +573,7 @@ ClassSubList["inquisitive"] = {
 			action : ["action", ""]
 		},
 		"subclassfeature9" : {
-			name : "Steady Eye ",
+			name : "Steady Eye",
 			source : ["UA:GH", 3],
 			minlevel : 9,
 			usages : 1,
@@ -1752,7 +1752,7 @@ ClassSubList["arcane archer"] = {
 			usages : 2,
 			recovery : "short rest",
 			eval : "AddAction(\"bonus action\", \"Create Magical Arrow\", \"Arcane Archer (Arcane Arrow)\");",
-			removeeval : "RemoveAction(\"bonus action\", \"Create Magical Arrow\")",
+			removeeval : "RemoveAction(\"bonus action\", \"Create Magical Arrow\")"
 		},
 		"subclassfeature3.1" : {
 			name : "Arcane Shot",
@@ -1765,12 +1765,12 @@ ClassSubList["arcane archer"] = {
 			"beguiling arrow" : {
 				name : "Beguiling Arrow",
 				source : ["UA:FMA", 1],
-				description : " [Enchantment]" + "\n   " + "If the arrow hits, I choose an ally withing 30 feet of the target" + "\n   " + "The target can't attack the chosen ally or include the ally in any harmful area of effects" + "\n   " + "This effect stops if the target is immune to charm effects or the ally damages the target",
+				description : " [Enchantment]" + "\n   " + "If the arrow hits, I choose an ally withing 30 feet of the target" + "\n   " + "The target can't attack the chosen ally or include the ally in any harmful area of effects" + "\n   " + "This effect stops if the target is immune to charm effects or the ally damages the target"
 			},
 			"brute bane arrow" : {
 				name : "Brute Bane Arrow",
 				source : ["UA:FMA", 1],
-				description : " [Necromancy]" + "\n   " + "If the arrow hits, the target's attacks deal half damage until the end of my next turn" + "\n   " + "Only attacks that deal bludgeoning, piercing or slashing damage are halved",
+				description : " [Necromancy]" + "\n   " + "If the arrow hits, the target's attacks deal half damage until the end of my next turn" + "\n   " + "Only attacks that deal bludgeoning, piercing or slashing damage are halved"
 			},
 			"bursting arrow" : {
 				name : "Bursting Arrow",
@@ -1780,17 +1780,17 @@ ClassSubList["arcane archer"] = {
 			"defending arrow" : {
 				name : "Defending Arrow",
 				source : ["UA:FMA", 2],
-				description : " [Abjuration]" + "\n   " + "If the arrow hits, the target has disadv. on its next attack before the end of my next turn",
+				description : " [Abjuration]" + "\n   " + "If the arrow hits, the target has disadv. on its next attack before the end of my next turn"
 			},
 			"grasping arrow" : {
 				name : "Grasping Arrow",
 				source : ["UA:FMA", 2],
-				description : "[Conjuration Magic]" + "\n   " + "If the arrow hits, the target is wrapped with grasping, thorny brambles for 1 minute" + "\n   " + "The target has -10 ft speed; It takes 2d6 slashing damage when moving more than 1 ft" + "\n   " + "As an action, the target or a creature can remove the brambles with a DC 10 Str check",
+				description : "[Conjuration Magic]" + "\n   " + "If the arrow hits, the target is wrapped with grasping, thorny brambles for 1 minute" + "\n   " + "The target has -10 ft speed; It takes 2d6 slashing damage when moving more than 1 ft" + "\n   " + "As an action, the target or a creature can remove the brambles with a DC 10 Str check"
 			},
 			"piercing arrow" : {
 				name : "Piercing Arrow",
 				source : ["UA:FMA", 2],
-				description : " [Transmutation]" + "\n   " + "The arrow transform into an ethereal dart that creates a line of 1 ft wide and 30 ft long" + "\n   " + "I then make a separate attack using my Arcane Arrow against each creature in that line",
+				description : " [Transmutation]" + "\n   " + "The arrow transform into an ethereal dart that creates a line of 1 ft wide and 30 ft long" + "\n   " + "I then make a separate attack using my Arcane Arrow against each creature in that line"
 			},
 			"seeking arrow" : {
 				name : "Seeking Arrow",
@@ -1801,29 +1801,29 @@ ClassSubList["arcane archer"] = {
 			"shadow arrow" : {
 				name : "Shadow Arrow",
 				source : ["UA:FMA", 2],
-				description : " [Illusion]" + "\n   " + "If the arrow hits, the target can't see beyond 30 ft until the end of my next turn",
-			},
+				description : " [Illusion]" + "\n   " + "If the arrow hits, the target can't see beyond 30 ft until the end of my next turn"
+			}
 		},
 		"subclassfeature3.2" : {
 			name : "Archer's Lore",
 			source : ["UA:FMA", 1],
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with two skills" + "\n   " + "I can choose from: Arcana, Athletics, Nature, Perception, Stealth, or Survival",
-			skillstxt : "\n\n" + toUni("Arcane Archer") + ": Choose two from Arcana, Athletics, Nature, Perception, Stealth, and Survival.",
+			skillstxt : "\n\n" + toUni("Arcane Archer") + ": Choose two from Arcana, Athletics, Nature, Perception, Stealth, and Survival."
 		},
 		"subclassfeature7" : {
 			name : "Conjure Arrows",
 			source : ["UA:FMA", 1],
 			minlevel : 7,
 			description : "\n   " + "As an action, I can create up to 20 nonmagical arrows that remain for 10 minutes" + "\n   " + "The arrows vanish if I use this feature again with 10 minutes",
-			action : ["action", ""],
+			action : ["action", ""]
 		},
 		"subclassfeature15" : {
 			name : "Ever-Ready Arrow",
 			source : ["UA:FMA", 1],
 			minlevel : 15,
 			description : "\n   " + "I regain one use of Arcane Arrow one minute after I expend my last remaining use of it"
-		},
+		}
 	}
 };
 ClassList.fighter.subclasses[1].push("arcane archer");
@@ -2227,7 +2227,7 @@ ClassSubList["horizon conclave"] = {
 			name : "Planar magic",
 			source : ["UA:RnR", 1],
 			minlevel : 3,
-			description : "\n   " + "I add a spell to my known spells at level 3, 5, 9, 13, and 15" + "\n   " + "These count as ranger spells, but do not count against the number of spells I can know",
+			description : "\n   " + "I get bonus spells known, which do not count against the number of spells I can know",
 			spellcastingExtra : ["protection from evil and good", "alter self", "protection from energy", "banishment", "teleportation circle"]
 		},
 		"subclassfeature3.1" : {
@@ -2289,14 +2289,14 @@ ClassSubList["primeval guardian conclave"] = {
 			name : "Guardian magic",
 			source : ["UA:RnR", 2],
 			minlevel : 3,
-			description : "\n   " + "I add a spell to my known spells at level 3, 5, 9, 13, and 15" + "\n   " + "These count as ranger spells, but do not count against the number of spells I can know",
+			description : "\n   " + "I get bonus spells known, which do not count against the number of spells I can know",
 			spellcastingExtra : ["entangle", "enhance ability", "conjure animals", "giant insect", "insect plague"]
 		},
 		"subclassfeature3.1" : {
 			name : "Guardian Soul",
 			source : ["UA:RnR", 2],
 			minlevel : 3,
-			description : "\n   " + "As a bonus action, I assume the form of a treelike guardian" + "\n   " + "This lasts until I end it as a bonus action or until I am incapacitated" + "\n   " + "I undergo the following changes while in my guardian form:" + "\n    - " + "My size becomes Large (unless I was already larger)" + "\n    - " + "My speed becomes 5 ft, for all modes (unless it was already slower)" + "\n    - " + "My reach increases by 5 ft" + "\n    - " + "I gain half my ranger level in temporary HP at the start of each of my turns" + "\n   " + "I lose all temporary HP I gain like this when I transform back to my normal form",
+			description : "\n   " + "As a bonus action, I transform to or from a guardian form, changing me as follows:" + "\n    - " + "I grow to Large size, all my movement is reduced to 5 ft, and I get +5 ft reach" + "\n    - " + "I gain half my ranger level in temporary HP at the start of each of my turns" + "\n   " + "This ends when I'm incapacitated; When it ends, I lose all temporary HP I got from it",
 			additional : ["", "", "1 temp HP per round", "2 temp HP per round", "2 temp HP per round", "3 temp HP per round", "3 temp HP per round", "4 temp HP per round", "4 temp HP per round", "5 temp HP per round", "5 temp HP per round", "6 temp HP per round", "6 temp HP per round", "7 temp HP per round", "7 temp HP per round", "8 temp HP per round", "8 temp HP per round", "9 temp HP per round", "9 temp HP per round", "10 temp HP per round"],
 			action : ["bonus action", " (start/end)"]
 		},
@@ -2337,6 +2337,52 @@ ClassSubList["primeval guardian"].fullname = "Primeval Guardian";
 ClassList.ranger.subclasses[1].push("primeval guardian");
 
 //a subclass for the Rogue, called "Scout"
+ClassSubList["rogue_scout"] = {
+	regExpSearch : /scout/i,
+	subname : "Scout",
+	source : ["UA:RnR", 2],
+	features : {
+		"subclassfeature3" : {
+			name : "Skirmisher",
+			source : ["UA:RnR", 3],
+			minlevel : 3,
+			description : "\n   " + "As a reaction when a hostile ends its turn within 5 ft of me, I can move half my speed",
+			action : ["reaction", ""]
+		},
+		"subclassfeature3.1" : {
+			name : "Survivalist",
+			source : ["UA:RnR", 3],
+			minlevel : 3,
+			description : "\n   " + "I gain proficiency and expertise with the Nature and Survival skills",
+			skillstxt : "\n\n" + toUni("Scout") + ": proficiency and expertise with Nature and Survival.",
+			eval : "AddSkillProf(\"Nature\", true, true); AddSkillProf(\"Survival\", true, true);",
+			removeeval : "AddSkillProf(\"Nature\", false, true); AddSkillProf(\"Survival\", false, true);"
+		},
+		"subclassfeature9" : {
+			name : "Superior Mobility",
+			source : ["UA:RnR", 3],
+			minlevel : 9,
+			description : "\n   " + "I gain +10 ft to my walking speed (and swimming/climbing speed, if applicable)",
+			eval : "ChangeSpeed(10);",
+			removeeval : "ChangeSpeed(-10);"
+		},
+		"subclassfeature13" : {
+			name : "Ambush Master",
+			source : ["UA:RnR", 3],
+			minlevel : 13,
+			description : "\n   " + "As a bonus action in the first combat round with a surprised foe, I can lead the ambush" + "\n   " + "If I do so, allies who can see me gets +5 to their initiative roll, up to my initiative value" + "\n   " + "Also, each ally gains +10 ft to its speed that lasts until the end their next turn",
+			action : ["bonus action", " (first round)"]
+		},
+		"subclassfeature17" : {
+			name : "Sudden Strike",
+			source : ["UA:RnR", 3],
+			minlevel : 17,
+			description : "\n   " + "With the Attack action, I can make one additional attack as a bonus action" + "\n   " + "This attack can benefit from my Sneak Attack even if I already used it this turn" + "\n   " + "However, I still can't use Sneak Attack on a single target more than once per turn",
+			action : ["bonus action", " (with Attack action)"]
+		},
+	}
+};
+ClassList.rogue.subclasses[1].push("rogue_scout");
 
 //a function to run at startup of the sheet to ensure that all of the UA additions work as they should
 function UAstartupCode() {

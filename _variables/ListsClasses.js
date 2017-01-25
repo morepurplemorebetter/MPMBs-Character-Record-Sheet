@@ -63,7 +63,7 @@ var ClassList = {
 				name : "Fast Movement",
 				source : ["P", 49],
 				minlevel : 5,
-				description : "\n   " + "+10 ft speed when I'm not wearing heavy armor",
+				description : "\n   " + "I gain +10 ft speed when I'm not wearing heavy armor",
 				eval : "ChangeSpeed(10);",
 				removeeval : "ChangeSpeed(-10);"
 			},

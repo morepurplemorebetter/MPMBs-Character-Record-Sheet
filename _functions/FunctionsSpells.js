@@ -3449,6 +3449,7 @@ function MakeSpellMenu_SpellOptions() {
 	//make a list of all spellcasting classes
 	var CasterClasses = [];
 	for (var aClass in ClassList) {
+		if (aClass === "rangerua") continue;
 		if (ClassList[aClass].spellcastingFactor) {
 			CasterClasses.push(["with all " + aClass.capitalize() + " spells", aClass]);
 		} else {
@@ -3510,14 +3511,14 @@ function MakeSpellMenu_SpellOptions() {
 		spellsMenu.push({
 			cName : SSvisible ? "Replace Spell Sheets with empty one (to fill manually)" : "Add an empty Spell Sheet (to fill manually)",
 			oSubMenu : [{
-					cName : "Without text lines",
-					cReturn : "makeempty",
+				cName : "Without text lines",
+				cReturn : "makeempty",
 			}, {
-					cName : "With text lines",
-					cReturn : "makeempty#lines",
+				cName : "With text lines",
+				cReturn : "makeempty#lines",
 			}, {
-					cName : "With text lines and checkboxes",
-					cReturn : "addempty#lines#boxes",
+				cName : "With text lines and checkboxes",
+				cReturn : "addempty#lines#boxes",
 			}],
 		});
 	}
@@ -3527,14 +3528,14 @@ function MakeSpellMenu_SpellOptions() {
 		spellsMenu.push({
 			cName : "Add an empty Spell Sheet page (to fill manually)",
 			oSubMenu : [{
-					cName : "Without text lines",
-					cReturn : "addempty",
+				cName : "Without text lines",
+				cReturn : "addempty",
 			}, {
-					cName : "With text lines",
-					cReturn : "addempty#lines",
+				cName : "With text lines",
+				cReturn : "addempty#lines",
 			}, {
-					cName : "With text lines and checkboxes",
-					cReturn : "addempty#lines#boxes",
+				cName : "With text lines and checkboxes",
+				cReturn : "addempty#lines#boxes",
 			}],
 		});
 	}
@@ -4843,6 +4844,7 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	forConsole += " this.info.SheetVersion = \"" + tDoc.info.SheetVersion + "\";";
 	forConsole += " this.info.SheetType = \"" + tDoc.info.SheetType + "\";";
 	forConsole += " this.info.Keywords = \"" + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + "\";";
+	forConsole += " this.info.ContactEmail = \"Flapkan@gmail.com\";";
 	forConsole += " this.info.Subject = \"D&D 5e; Character Sheet; Spell Sheet; Spell Sheet Generator\";";
 	forConsole += " this.info.Title = MakeDocName();";
 	forConsole += " typePF = this.info.SheetType.search(/printer friendly/i) !== -1;";

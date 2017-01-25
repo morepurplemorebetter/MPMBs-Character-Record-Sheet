@@ -4625,6 +4625,7 @@ function ChangeToCompleteAdvLogSheet() {
 	forConsole += " this.info.SheetType = \"" + tDoc.info.SheetType + "\";";
 	forConsole += " this.info.Keywords = \"" + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + "\";";
 	forConsole += " this.info.Subject = \"D&D 5e; Character Sheet; Adventurers League; Adventure Logsheet\";";
+	forConsole += " this.info.ContactEmail = \"Flapkan@gmail.com\";";
 	forConsole += " this.info.Title = MakeDocName();";
 	forConsole += " typePF = this.info.SheetType.search(/printer friendly/i) !== -1;";
 	forConsole += " typeA4 = this.info.SheetType.search(/a4/i) !== -1;";
@@ -5516,10 +5517,10 @@ function contactMPMB(medium) {
 		app.launchURL("http://www.flapkan.com/mpmb/additions", true);
 		break;
 	 case "latestversion" :
-		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild[minVer ? (tDoc.info.SpellsOnly ? "spell", "advlog") : "character"][typePF ? "PF" : "CF"]), true);
+		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild[minVer ? (tDoc.info.SpellsOnly ? "spell" : "advlog") : "character"][typePF ? "PF" : "CF"]), true);
 		break;
 	 case "otherdesign" :
-		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild[minVer ? (tDoc.info.SpellsOnly ? "spell", "advlog") : "character"][typePF ? "CF" : "PF"]), true);
+		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild[minVer ? (tDoc.info.SpellsOnly ? "spell" : "advlog") : "character"][typePF ? "CF" : "PF"]), true);
 		break;
 	 case "fullversion" :
 		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild.character[typePF ? "CF" : "PF"]), true);

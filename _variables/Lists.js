@@ -1965,7 +1965,7 @@ var factionRanks = {
 		"Summerstrider (rank 2)",
 		"Autumnreaver (rank 3)",
 		"Winterstalker (rank 4)",
-		"Master of the Wild (rank 5)",
+		"Master of the Wild (rank 5)"
 		],
 	"harpers" : [
 		"",
@@ -1973,7 +1973,7 @@ var factionRanks = {
 		"Harpshadow (rank 2)",
 		"Brightcandle (rank 3)",
 		"Wise Owl (rank 4)",
-		"High Harper (rank 5)",
+		"High Harper (rank 5)"
 		],
 	"lordsalliance" : [
 		"",
@@ -1981,7 +1981,7 @@ var factionRanks = {
 		"Redknife (rank 2)",
 		"Stingblade (rank 3)",
 		"Warduke (rank 4)",
-		"Lioncrown (rank 5)",
+		"Lioncrown (rank 5)"
 		],
 	"ordergauntlet" : [
 		"",
@@ -1989,7 +1989,7 @@ var factionRanks = {
 		"Marcheon (rank 2)",
 		"Whitehawk (rank 3)",
 		"Vindicator (rank 4)",
-		"Righteous Hand (rank 5)",
+		"Righteous Hand (rank 5)"
 		],
 	"zhentarim" : [
 		"",
@@ -1997,11 +1997,11 @@ var factionRanks = {
 		"Wolf (rank 2)",
 		"Viper (rank 3)",
 		"Ardragon (rank 4)",
-		"Dread Lord (rank 5)",
-		],
+		"Dread Lord (rank 5)"
+		]
 }
 
-var LinkDMsGuild : {
+var LinkDMsGuild = {
 	character : {
 		PF : "186823",
 		CF : "193053"
@@ -2013,5 +2013,5 @@ var LinkDMsGuild : {
 	advlog : {
 		PF : "194068",
 		CF : "194069"
-	},
-}
+	}
+};

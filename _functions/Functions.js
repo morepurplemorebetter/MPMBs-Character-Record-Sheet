@@ -1888,7 +1888,7 @@ function ToggleBlueText(Toggle) {
 	};
 	if (typePF) {
 		tDoc[HiddenNoPrint]("Extra.Magic Item Weight Title");
-	}
+	};
 	
 	//now go through all the spell sheets and show the correct blueText fields
 	SSarray = SSarray.concat(What("Template.extras.SSmore").split(","));
@@ -2714,7 +2714,7 @@ function FindClasses(Event) {
 		}
 
 		//add number of attacks to temp array
-		temp.push(CurrentClasses[aClass].attacks[classes.known[aClass].level - 1]);		
+		temp.push(CurrentClasses[aClass].attacks[Math.floor(classes.known[aClass].level - 1, 20)]);		
 	}
 	//pick highest number of attacks in temp array and put that into global classes variable
 	classes.attacks = Math.max.apply(Math, temp);
