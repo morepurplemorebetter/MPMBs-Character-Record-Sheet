@@ -2,7 +2,9 @@
 
 This Git contains all document-level JavaScript that is used in the AcroForm PDFs called **MPMB's Character Record Sheet**.
 
-### [MPMB's Character Record Sheets can be found here](http://bit.ly/MPMBdndtools)
+### [MPMB's Character Record Sheets can be found here](http://flapkan.com/mpmb/dmsguild)
+
+### [Please consider supporting this project on Patreon](http://patreon.com/morepurplemorebetter)
 
 ## Functions
 The **\_functions** folder contain the document-level functions that the AcroForm utilizes.
