@@ -1657,7 +1657,7 @@ var ClassList = {
 	},
 
 	"wizard" : {
-		regExpSearch : /(wizard|mage|magus)/i,
+		regExpSearch : /^(?=.*(wizard|mage|magus))(?!.*wild mage).*$/i,
 		name : "Wizard",
 		source : ["P", 112],
 		primaryAbility : "\n \u2022 Wizard: Intelligence;",
@@ -4069,7 +4069,7 @@ var ClassSubList = {
 		}
 	},
 	"storm sorcery" : {
-		regExpSearch : /^(?=.*(mage|magus|sorcerer|witch))((?=.*(storm|tempest|hurricane))|((?=.*air)(?=.*element))).*$/i,
+		regExpSearch : /^(?=.*(sorcerer|witch))((?=.*(storm|tempest|hurricane))|((?=.*air)(?=.*element))).*$/i,
 		subname : "Storm Sorcery",
 		fullname : "Storm Sorcerer",
 		source : ["S", 137],
