@@ -4717,7 +4717,7 @@ function AddTool(tool, toolstooltip, replaceThis) {
 				}
 			}
 		}
-		if (tool.toLowerCase() === "thieves' tools" && What("Too Text").toLowerCase().indexOf("thieves' tools") === -1 && What("Too") === "") {
+		if (tool.toLowerCase().indexOf("thieves' tools") !== -1 && What("Too Text").toLowerCase().indexOf("thieves' tools") === -1 && What("Too") === "") {
 			Value("Too Text", "Thieves' Tools (Dex)")
 			Checkbox("Too Prof", true);
 		}

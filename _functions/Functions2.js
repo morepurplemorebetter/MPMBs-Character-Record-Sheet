@@ -5208,6 +5208,8 @@ function RemoveClassFeatureChoice(aClass, feature) {
 
 // returns an object of the different elements to populate the class features or limited features section if olchoice is provided, oldlevel has to be provided as well
 function ReturnClassFeatures(aClass, feature, level, choice, oldlevel, oldchoice, ForceClassList, ForceChoice) {
+	level = Math.min(level, 20);
+	oldlevel = Math.min(oldlevel, 20);
 	var tRe = {};
 	var aFea = ForceClassList && !oldchoice ? ClassList[aClass].features[feature] : CurrentClasses[aClass].features[feature];
 	

@@ -205,7 +205,7 @@ function ApplySpell(FldValue, rememberFldName) {
 		var currentCheck = What(theCheck).toLowerCase();
 		var input1 = input[1] ? input[1].toLowerCase() : false;
 		if (!input1 || okChecks.indexOf(input1) === -1) {
-			Value(theCheck, input1 ? input1.toUpperCase().substring(0,2) : "");
+			Value(theCheck, input1 ? input1.toUpperCase().substring(0, input1.match(/\(.\)/) ? input1.length : 2) : "");
 		} else if (input1 !== currentCheck && okChecks.indexOf(input1) !== -1 && (input1.substring(0, 4) !== currentCheck.substring(0, 4) || okChecks.indexOf(input1) > 1)) {
 			Value(theCheck, input[1].toLowerCase());
 		}
