@@ -1785,15 +1785,15 @@ var compString = {
 	mechanicalserv : {
 		featurestring : "",
 		string : "Artificer's Mechanical Servant (UA:A 4):" +
-			"\n\u2022 " + "The mechanical servant has the statistics of a chosen beast with challenge rating of 2 or lower" +
-			"\n\u2022 " + "It has the Construct type, understands any language that I know, and has 60 ft Darkvision" +
-			"\n\u2022 " + "In addition, it is immune to poison, poisoned damage, and being charmed" +
+			"\n\u2022 " + "The mechanical servant has the statistics of a chosen large beast of challenge rating 2 or lower" +
+			"\n  " + "It has the Construct type, understands any language that I know, and has 60 ft Darkvision" +
+			"\n  " + "In addition, it is immune to poison damage, being poisoned, and being charmed" +
 			"\n\u2022 " + "I can have one servant at a time; If it dies, I can repair it or create a new one" +
-			"\n\u2022 " + "Repairing the servant is done by me over the course of a long rest and restores it to 1 HP" +
-			"\n\u2022 " + "Building a new servant is done by spending 8 hours a day for 7 days and 1000 gp of materials" +
-			"\n\u2022 " + "My mechanical servant rolls for initiative and takes actions as normal" +
-			"\n\u2022 " + "My mechanical servant obeys my commands to the best of its abilities" +
-			"\n\u2022 " + "As a reaction when I am attacked in melee and my mechanical servant is within 5 ft of me,\n  I can command the servant to use its reaction to make a melee attack against the attacker",
+			"\n  " + "I can repair the servant over the course of a long rest, which restores it to 1 HP" +
+			"\n  " + "I can build a new servant by spending 8 hours a day for 7 days and 1000 gp of materials" +
+			"\n\u2022 " + "The servant rolls initiative and takes actions as normal, obeying my commands as best it can" +
+			"\n\u2022 " + "As a reaction when I am attacked in melee and my mechanical servant is within 5 ft of me," +
+			"\n  I can command the servant to use its reaction to make a melee attack against the attacker",
 		actions : [["reaction", "Mechanical Servant (if attacked)"]],
 	},
 };

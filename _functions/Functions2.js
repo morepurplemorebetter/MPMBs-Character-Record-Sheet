@@ -1783,7 +1783,7 @@ function changeCompType(inputType, prefix) {
 		if (What(IntFld) < 6) Value(IntFld, 6);
 		break;
 	 case "mechanicalserv" :
-		Value(prefix + "Comp.Type", "Mechanical Servant");
+		Value(prefix + "Comp.Type", "Servant");
 		Value(prefix + "Comp.Desc.MonsterType", "Construct");
 		
 		//add the new language options
@@ -1832,7 +1832,7 @@ function changeCompType(inputType, prefix) {
 		return; //don't do the rest of this function if inputType doesn't match one of the above
 	}
 	
-	if (inputType !== "companion" && inputType !== "companionrr" && CurrentCompRace[prefix].type === "Beast") changeCompDialog(prefix); //change the type if just a beast
+	if (inputType.match(/familiar|pact_of_the_chain|mount/) && CurrentCompRace[prefix].type === "Beast") changeCompDialog(prefix); //change the type if just a beast
 	
 	//add a string in the creature's feature section
 	AddString(prefix + "Comp.Use.Features", compString[inputType].featurestring, true);
