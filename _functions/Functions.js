@@ -59,6 +59,10 @@ function Checkbox(field, FldValue, tooltip) {
 	}
 };
 
+function desc(arr) {
+	return "\n   " + arr.join("\n   ");
+};
+
 //adding a way of capitalizing every first letter of every word in a string
 String.prototype.capitalize = function () {
 	var string = this.toLowerCase().replace(/([^']|^)\b\w/g, function (m) {
@@ -7847,18 +7851,19 @@ function MagicItemOptions() {
 	if (IsNotReset) tDoc.calculateNow();
 }
 
-//add a magic item to the third page
-function AddMagicItem(item, attuned, itemDescr, itemWeight) {
+//add a magic item to the third page or overflow page
+function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow) {
 	var RegExItem = item.substring(0, 2) === "- " ? "\\b" + item.substring(2).RegEscape() + "\\b" : "\\b" + item.RegEscape() + "\\b";
 	var tempFound = false;
 	var attunement = attuned ? true : false;
+	var startFld = overflow ? FieldNumbers.magicitemsD + 1 : 1;
 	for (var n = 1; n <= 2; n++) {
-		for (var i = 1; i <= FieldNumbers.magicitems; i++) {
+		for (var i = startFld; i <= FieldNumbers.magicitems; i++) {
 			var Name = tDoc.getField("Extra.Magic Item " + i);
 			var Attune = "Extra.Magic Item Attuned " + i;
 			var Description = tDoc.getField("Extra.Magic Item Description " + i);
 			var Weight = tDoc.getField("Extra.Magic Item Weight " + i);
-			if (n === 1 && ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value === item)) {
+			if (n === 1 && ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value.toLowerCase() === item.toLowerCase())) {
 				i = FieldNumbers.magicitems + 1;
 				n = 3;
 				tempFound = true;
@@ -7868,7 +7873,25 @@ function AddMagicItem(item, attuned, itemDescr, itemWeight) {
 				Description.value = itemDescr;
 				Weight.value = itemWeight;
 				i = FieldNumbers.magicitems + 1;
+				if (overflow && !tDoc.getField(BookMarkList["Overflow sheet"])) DoTemplate("ASoverflow");
 			}
+		}
+	}
+}
+
+//remove a magic item from the third page or overflow page
+function RemoveMagicItem(item) {
+	var RegExItem = item.substring(0, 2) === "- " ? "\\b" + item.substring(2).RegEscape() + "\\b" : "\\b" + item.RegEscape() + "\\b";
+	for (var i = 1; i <= FieldNumbers.magicitems; i++) {
+		var Name = What("Extra.Magic Item " + i);
+		if ((Name.search(RegExp(RegExItem, "i")) !== -1 && Name.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.toLowerCase() === item.toLowerCase()) {
+			tDoc.resetForm([
+				"Extra.Magic Item " + i,
+				"Extra.Magic Item Attuned " + i,
+				"Extra.Magic Item Description " + i,
+				"Extra.Magic Item Weight " + i
+			]);
+			break;
 		}
 	}
 }

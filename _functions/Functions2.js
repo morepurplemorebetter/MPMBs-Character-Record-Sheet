@@ -73,15 +73,11 @@ function resetCompTypes(prefix) {
 		for (var i = 0; i < compString[theType].actions.length; i++) {
 			RemoveAction(compString[theType].actions[i][0], compString[theType].actions[i][1]);
 		}
-		if (theType === "mount" && CurrentCompRace[prefix] && CurrentCompRace[prefix].known) {
-			//reset the intelligence if the original creature had less than 6
-			if (CurrentCompRace[prefix].typeFound === "creature" && CurrentCompRace[prefix].scores[3] < 6) {
-				Value(prefix + "Comp.Use.Ability.Int.Score", CurrentCompRace[prefix].scores[3])
-			}
-			
+		
+		if (theType === "mount" || theType === "mechanicalserv") {
 			//reset the languages
 			var removeLangs = What(prefix + "Comp.Use.Features").match(/\u25C6 languages:.*/i);
-			if (removeLangs && CurrentCompRace[prefix].languages) {
+			if (CurrentCompRace[prefix] && CurrentCompRace[prefix].known && removeLangs && CurrentCompRace[prefix].languages) {
 				removeLangs = removeLangs[0];
 				if (CurrentCompRace[prefix].typeFound === "race") {
 					//make a string of the languages known to the features
@@ -99,6 +95,13 @@ function resetCompTypes(prefix) {
 			} else if (removeLangs) {
 				RemoveString(prefix + "Comp.Use.Features", removeLangs[0]);
 			}
+		}
+		
+		if (CurrentCompRace[prefix] && CurrentCompRace[prefix].known && theType === "mount") {
+			//reset the intelligence if the original creature had less than 6
+			if (CurrentCompRace[prefix].typeFound === "creature" && CurrentCompRace[prefix].scores[3] < 6) {
+				Value(prefix + "Comp.Use.Ability.Int.Score", CurrentCompRace[prefix].scores[3])
+			}
 		} else if (theType === "familiar" && CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound === "creature" && CurrentCompRace[prefix].attacks) {
 			Value(prefix + "Comp.Use.Attack.perAction", CurrentCompRace[prefix].attacksAction); //set attacks per action
 			//add any weapons the creature possesses
@@ -109,6 +112,33 @@ function resetCompTypes(prefix) {
 			UpdateRangerCompanions("delete");
 		} else if (theType === "companionrr") {
 			UpdateRevisedRangerCompanions("delete");
+		} else if (theType === "mechanicalserv") {
+			if (CurrentCompRace[prefix] && CurrentCompRace[prefix].known) {
+				Value(prefix + "Comp.Desc.MonsterType", CurrentCompRace[prefix].type);
+			};
+			
+			var removeDamI = What(prefix + "Comp.Use.Features").match(/\u25C6 damage immunities:.*/i);
+			if (removeDamI && CurrentCompRace[prefix] && CurrentCompRace[prefix].known && CurrentCompRace[prefix].damage_immunities) {
+				ReplaceString(prefix + "Comp.Use.Features", "\u25C6 Damage Immunities: " + CurrentCompRace[prefix].damage_immunities + ".", true, removeDamI[0], true);
+			} else if (removeDamI) {
+				RemoveString(prefix + "Comp.Use.Features", removeDamI[0]);
+			};
+			
+			var removeConI = What(prefix + "Comp.Use.Features").match(/\u25C6 condition immunities:.*/i);
+			if (removeConI && CurrentCompRace[prefix] && CurrentCompRace[prefix].known && CurrentCompRace[prefix].condition_immunities) {
+				ReplaceString(prefix + "Comp.Use.Features", "\u25C6 Damage Immunities: " + CurrentCompRace[prefix].condition_immunities + ".", true, removeConI[0], true);
+			} else if (removeConI) {
+				RemoveString(prefix + "Comp.Use.Features", removeConI[0]);
+			};
+			
+			var removeDarkv = What(prefix + "Comp.Use.Senses").match(/darkvision \d+.?\d*.?(ft|m)/i);
+			if (removeDarkv && CurrentCompRace[prefix] && CurrentCompRace[prefix].known && (CurrentCompRace[prefix].vision + CurrentCompRace[prefix].senses).match(/darkvision \d+.?\d*.?ft/i)) {
+				var creaDarkv = (CurrentCompRace[prefix].vision + CurrentCompRace[prefix].senses).match(/darkvision \d+.?\d*.?ft/i)[0];
+				if (What("Unit System") === "metric") creaDarkv = ConvertToMetric(creaDarkv, 0.5);
+				ReplaceString(prefix + "Comp.Use.Senses", creaDarkv, ";", removeDarkv[0], true);
+			} else if (removeDarkv) {
+				RemoveString(prefix + "Comp.Use.Senses", removeDarkv[0], ";");
+			};
 		}
 		Value(prefix + "Companion.Remember", "", "");
 	}
@@ -1585,6 +1615,7 @@ function MakeCompMenu() {
 	var mounts = [];
 	var companions = [];
 	var companionRR = [];
+	var mechanicalServs = [];
 	var change = [
 		["Into a familiar (Find Familiar spell)", "familiar"],
 		["Into a Pact of the Chain familiar", "pact_of_the_chain"],
@@ -1593,6 +1624,7 @@ function MakeCompMenu() {
 		["-", "-"],
 		["Reset to normal", "reset"]
 	];
+	
 	var visOptions = [
 		["Show box for Companion's Appearance", "comp.img"],
 		["Show Equipment section", "comp.eqp"],
@@ -1604,6 +1636,8 @@ function MakeCompMenu() {
 		if (testSource(aCrea, theCrea, "creaExcl")) continue; // test if the creature or its source isn't excluded
 		if (theCrea.type === "Beast" && theCrea.size >= 3 && eval(theCrea.challengeRating) <= 1/4) {
 			companions.push([theCrea.name, aCrea]);
+		} else if (theCrea.type === "Beast" && theCrea.size === 2 && eval(theCrea.challengeRating) <= 2) {
+			mechanicalServs.push([theCrea.name, aCrea]);
 		}
 		if (!theCrea.companion) {
 			continue; //if no companion object is defined, move on to the next
@@ -1623,11 +1657,18 @@ function MakeCompMenu() {
 	mounts.sort();
 	companions.sort();
 	companionRR.sort();
+	mechanicalServs.sort();
 	
 	menuLVL2(CompMenu, ["Create familiar (Find Familiar spell)", "familiar"], familiars);
 	menuLVL2(CompMenu, ["Create familiar (Pact of the Chain)", "pact_of_the_chain"], chainPact);
 	menuLVL2(CompMenu, ["Create mount (Find Steed spell)", "mount"], mounts);
 	menuLVL2(CompMenu, ["Create Ranger's Companion", usingRevisedRanger ? "companionrr" : "companion"], usingRevisedRanger ? companionRR : companions);
+	
+	if (CurrentSources.globalExcl.indexOf("UA:A") !== -1) { // if the artificer source is included
+		menuLVL2(CompMenu, ["Create Mechanical Servant", "mechanicalserv"], mechanicalServs);
+		change.splice(4, 0, ["Into a Mechanical Servant", "mechanicalserv"]);
+	};
+	
 	CompMenu.push({cName : "-"}); //add a divider
 	menuLVL2(CompMenu, ["Change current creature", "change"], change);
 	CompMenu.push({cName : "-"}); //add a divider
@@ -1696,6 +1737,31 @@ function changeCompType(inputType, prefix) {
 	var oldType = What(prefix + "Companion.Remember");
 	if (oldType) resetCompTypes(prefix);
 	Value(prefix + "Companion.Remember", inputType); //set this so it can be called upon later
+	
+	// a function to add the languages
+	var addCharLangArr = function() {
+		var creaLangs = What(prefix + "Comp.Use.Features").match(/\u25C6 languages:.*/i);
+		if (creaLangs) creaLangs = creaLangs[0].replace(/\.$/, "");
+		var charLanguages = [];
+		for (var i = 1; i <= FieldNumbers.langstools; i++) {
+			var charFld = What("Language " + i);
+			if (charFld && (!creaLangs || creaLangs.toLowerCase().indexOf(charFld.toLowerCase()) === -1)) {
+				charLanguages.push(charFld);
+			} 
+		};
+		var charLangs = charLanguages.length === 0 ? "" : (creaLangs ? "; and understands, but doesn't speak," : "\u25C6 Languages: Understands, but doesn't speak,");
+		for (var i = 0; i < charLanguages.length; i++) {
+			charLangs += i !== 0 && charLanguages.length > 2 ? ", " : " ";
+			charLangs += i !== 0 && i === charLanguages.length - 1 ? (inputType === "mount" ? "or " : "and ") : "";
+			charLangs += charLanguages[i];
+		};
+		if (creaLangs && charLangs) {
+			ReplaceString(prefix + "Comp.Use.Features", creaLangs + charLangs, true, creaLangs, true);
+		} else if (charLangs) {
+			AddString(prefix + "Comp.Use.Features", charLangs + ".", true);
+		};
+	};
+	
 	switch (inputType) {
 	 case "familiar" :
 		tDoc.resetForm([prefix + "Comp.Use.Attack"]); // familiars can't make attacks
@@ -1710,30 +1776,57 @@ function changeCompType(inputType, prefix) {
 		Value(prefix + "Comp.Type", "Mount");
 		
 		//add the new language options to the mount's features
-		var creaLangs = What(prefix + "Comp.Use.Features").match(/\u25C6 languages:.*/i);
-		if (creaLangs) creaLangs = creaLangs[0].replace(/\.$/, "");
-		var charLanguages = [];
-		for (var i = 1; i <= FieldNumbers.langstools; i++) {
-			var charFld = What("Language " + i);
-			if (charFld && (!creaLangs || creaLangs.toLowerCase().indexOf(charFld.toLowerCase()) === -1)) {
-				charLanguages.push(charFld);
-			} 
-		}
-		var charLangs = charLanguages.length === 0 ? "" : (creaLangs ? "; and" : "\u25C6 Languages:");
-		for (var i = 0; i < charLanguages.length; i++) {
-			charLangs += i !== 0 && charLanguages.length > 2 ? ", " : " ";
-			charLangs += i !== 0 && i === charLanguages.length - 1 ? "or " : "";
-			charLangs += charLanguages[i];
-		}
-		if (creaLangs && charLangs) {
-			ReplaceString(prefix + "Comp.Use.Features", creaLangs + charLangs, true, creaLangs, true);
-		} else if (charLangs) {
-			AddString(prefix + "Comp.Use.Features", charLangs + ".", true);
-		}
+		addCharLangArr();
 		
 		//set the Intelligence to 6 if less than 6
 		var IntFld = prefix + "Comp.Use.Ability.Int.Score";
 		if (What(IntFld) < 6) Value(IntFld, 6);
+		break;
+	 case "mechanicalserv" :
+		Value(prefix + "Comp.Type", "Mechanical Servant");
+		Value(prefix + "Comp.Desc.MonsterType", "Construct");
+		
+		//add the new language options
+		addCharLangArr();
+		
+		//add the new poison damage immunity
+		var creaDamI = What(prefix + "Comp.Use.Features").match(/\u25C6 damage immunities:.*/i);
+		if (!creaDamI || !creaDamI.match(/poison/i)) {
+			var newDamI = (creaDamI ? creaDamI[0].replace(/\.$/, ", ") : "\u25C6 Damage Immunities: ") + "poison.";
+			if (creaDamI) {
+				ReplaceString(prefix + "Comp.Use.Features", newDamI, true, creaDamI[0], true);
+			} else {
+				AddString(prefix + "Comp.Use.Features", newDamI, true);
+			};
+		};
+		
+		//add the new poisoned and charmed condition immunity
+		var creaConI = What(prefix + "Comp.Use.Features").match(/\u25C6 condition immunities:.*/i);
+		if (!creaConI) {
+			var newConI = "\u25C6 Condition Immunities: charmed, poisoned.";
+			AddString(prefix + "Comp.Use.Features", newConI, true);
+		} else if (!creaConI.match(/poisoned/i) || !creaConI.match(/charmed/i)) {
+			newConI = creaConI[0].replace(/\.$/, ", ");
+			if (!creaConI.match(/charmed/i)) {
+				newConI += "charmed";
+				var goCo = true;
+			}
+			if (!creaConI.match(/poisoned/i)) newConI += (goCo ? ", " : "") + "poisoned";
+			newConI += ".";
+			ReplaceString(prefix + "Comp.Use.Features", newConI, true, creaConI[0], true);
+		};
+		
+		//add the 60 ft darkvision, if not already there, or upgrade it to 60 ft
+		var creaSens = What(prefix + "Comp.Use.Senses");
+		var newDarkv = What("Unit System") === "metric" ? "Darkvision 18 m" : "Darkvision 60 ft";
+		if (!creaSens.match(/darkvision \d+.?\d*.?(ft|m)/i)) {
+			AddString(prefix + "Comp.Use.Senses", newDarkv, ";");
+		} else if (!creaSens.match(/darkvision (60.?ft|18.?m)/i)) {
+			var darkvis = creaSens.match(/darkvision \d+.?\d*.?(ft|m)/i)[0];
+			if (parseFloat(darkvis.match(/\d+/)[0]) < (What("Unit System") === "metric" ? 18 : 60)) {
+				ReplaceString(prefix + "Comp.Use.Senses", newDarkv, true, darkvis, true);
+			}
+		};
 		break;
 	 default : 
 		return; //don't do the rest of this function if inputType doesn't match one of the above
@@ -1747,7 +1840,7 @@ function changeCompType(inputType, prefix) {
 	//make the string for the Find Steed spell explanation
 	AddString(prefix + "Cnote.Left", compString[inputType].string, true);
 	
-	//add any actions this spell gives the character
+	//add any actions this spell/companion gives the character
 	for (var i = 0; i < compString[inputType].actions.length; i++) {
 		AddAction(compString[inputType].actions[i][0], compString[inputType].actions[i][1], compString[inputType].actionTooltip);
 	}
