@@ -4,7 +4,7 @@
 	
 	WARNING: there are no official multiclassing rules for Artificer; the ones provided here are extrapolated based on other classes.
 */
-//adds a class with two subclasses, the Artificer
+//adds a class, the Artificer, with two subclasses, Alchemist and Gunsmith
 //this code was contributed by RCanine on ENworld
 
 ClassList.artificer = {
@@ -64,6 +64,7 @@ ClassList.artificer = {
 			source : ["UA:A", 3],
 			minlevel : 2,
 			description : desc(["I have expertise with any tool proficiencies I gain from the Artificer class"]),
+			skillstxt : "\n\n" + toUni("Artificer") + ": expertise with with any tool proficiencies gained from the Artificer class.",
 			eval : "if (What(\"Too Text\").match(/thieves' tools/i)) { Checkbox(\"Too Exp\", true); };",
 			removeeval : "if (What(\"Too Text\").match(/thieves' tools/i)) { Checkbox(\"Too Exp\", false); };"
 		},
@@ -73,20 +74,15 @@ ClassList.artificer = {
 			minlevel : 2,
 			description : desc(["I gain a magic item that I have crafted; Use the \"Choose Features\" button above"]),
 			additional : levels.map(function (n) {
-				if (n < 2)
-					return "";
-				if (n < 5)
-					return "1 item";
-				if (n < 10)
-					return "2 items";
-				if (n < 15)
-					return "3 items";
-				if (n < 20)
-					return "4 items";
+				if (n < 2) return "";
+				if (n < 5) return "1 item";
+				if (n < 10) return "2 items";
+				if (n < 15) return "3 items";
+				if (n < 20) return "4 items";
 				return "5 items";
 			}),
 			extraname : "Wondrous Invention",
-			extrachoices : ["Bag of Holding (prereq: level 2 artificer)"] //come back to this with the function at the bottom
+			extrachoices : ["Boots of Striding and Springing (prereq: level 15 artificer)"] //come back to this with the function at the bottom  "Bag of Holding (prereq: level 2 artificer)"
 		},
 		"spellcasting" : {
 			name : "Spellcasting",
@@ -114,7 +110,7 @@ ClassList.artificer = {
 			source : ["UA:A", 4],
 			minlevel : 6,
 			description : desc([
-				"I create a construct that obeys my orders and attacks my attackers",
+				"I create a construct that obeys my orders; It acts on its own initiative",
 				"I can repair it to 1 HP during a long rest, or build a new one in a week with 1000 gp",
 				"As a reaction when I'm attacked in melee, I can have it make a melee attack back"
 			])
@@ -123,15 +119,12 @@ ClassList.artificer = {
 			name : "Superior Attunement",
 			source : ["UA:A", 4],
 			minlevel : 5,
-			description : desc(["I can attune to more magic items"]),
+			description : "",
 			additional : levels.map(function (n) {
-				if (n < 5)
-					return "";
-				if (n < 15)
-					return "4 items";
-				if (n < 20)
-					return "5 items";
-				return "6 items";
+				if (n < 5) return "";
+				if (n < 15) return "attune to 4 magic items instead of 3";
+				if (n < 20) return "attune to 5 magic items instead of 3";
+				return "attune to 6 magic items instead of 3";
 			})
 		},
 		"soul of artifice" : {
@@ -139,414 +132,255 @@ ClassList.artificer = {
 			source : ["UA:A", 4],
 			minlevel : 20,
 			description : desc(["I gain a +1 bonus to all saving throws per magic item I am currently attuned to"]),
-			save : "+1 to saves per attuned magic item"
+			save : "+1 to all saves per attuned magic item"
 		}
 	}
 };
 
+//the Alchemist subclass for the Artificer
 ClassSubList["artificer-alchemist"] = {
-	regExpSearch : /(alchemist)/i,
+	regExpSearch : /^(?=.*artificer)(?=.*alchemist)(?!.*wizard).*$/i,
 	subname : "Alchemist",
 	source : ["UA:A", 5],
 	features : {
-		"subclassfeature1.1" : {
-			name : "Alchemist's  Satchel",
+		"subclassfeature1" : {
+			name : "Alchemist's Satchel",
 			source : ["UA:A", 5],
+			minlevel : 1,
 			description : desc([
-					"I hav an Alchemist's Satchel, which I use to create concoctions",
-					"The bag is magical and allows me to pull out my Alchemical Formulae",
-					"The bag's magic reclaims the used materials; they are unlimited",
-					"If lost I can create a new one over three days with 100gp worth of raw materials."
+				"I craft an Alchemist's Satchel, a magic item with which I can create concoctions",
+				"Whenever I reach in, it holds the material for the Alchemical Formula I want to use",
+				"If lost, I craft another by spending 8 hours a day for 3 days and 100 gp of materials"
+			])
+		},
+		"subclassfeature1.1" : {
+			name : "Alchemy Formulae",
+			source : ["UA:A", 5],
+			minlevel : 1,
+			description : desc([
+				"I learn Alchemical Formulae that I can use if I have my Alchemist's Satchel within reach",
+				"I learn the Alchemical Acid and Fire formulae, and additional depending on my level",
+				"Use the \"Choose Features\" button above to select additional Alchemical Formulae"
+			]),
+			additional : levels.map(function (n) {
+				if (n < 3) return "1 additional formula";
+				if (n < 9) return "2 additional formula";
+				if (n < 14) return "3 additional formula";
+				if (n < 17) return "4 additional formula";
+				return "5 additional formula";
+			}),
+			extraname : "Alchemical Formula",
+			extrachoices : ["Healing Draught", "Smoke Stick", "Swift Step Draught", "Tanglefoot Bag", "Thunderstone"],
+			"healing draught" : {
+				name : "Healing Draught",
+				source : ["UA:A", 5],
+				description : desc([
+					"As an action, I can take a vial of healing liquid from my satchel, which lasts for 1 hour",
+					"Anyone can drink this as an action, healing in doing so, after which the vial disappears",
+					"One vial heals a number of d8 equal to half my artificer level (rounded up) in HP",
+					"After being healed this way, a creature can't do so again until it finishes a long rest",
+					"While a Healing Draught exists, I can't use this formula to create another one"
 				]),
-			minlevel : 1
+				action : ["action", ""]
+			},
+			"smoke stick" : {
+				name : "Smoke Stick",
+				source : ["UA:A", 5],
+				description : desc([
+					"As an action, I can take a smoke stick from my satchel and throw it up to 30 ft away",
+					"The stick produces smoke in a 10-ft radius around it, blocking vision, incl. darkvision",
+					"It disappears after 1 minute; After creating one, I can't create a new one for 1 minute"
+				]),
+				action : ["action", ""]
+			},
+			"swift step draught" : {
+				name : "Swift Step Draught",
+				source : ["UA:A", 5],
+				description : desc([
+					"As a bonus action, I take a vial of brown liquid from my satchel, which lasts for 1 minute",
+					"Any creature can drink this vial as an action, gaining +20 ft speed for 1 minute",
+					"After use, the vial disappears; After creating one, I can't create a new one for 1 minute"
+				]),
+				action : ["bonus action", ""]
+			},
+			"tanglefoot bag" : {
+				name : "Tanglefoot Bag",
+				source : ["UA:A", 6],
+				description : desc([
+					"As an action, I can hurl a bag of black tar to a point on the ground within 30 ft",
+					"It bursts and covers the ground with sticky goo in a 5-ft radius, which lasts for 1 min",
+					"It is difficult terrain and anyone starting its turn in it has its speed halved for that turn",
+					"After creating one, I can't create a new one for 1 minute"
+				]),
+				action : ["action", ""]
+			},
+			"thunderstone" : {
+				name : "Thunderstone",
+				source : ["UA:A", 6],
+				description : desc([
+					"As an action, I can hurl a crystalline shard at a creature/object/surface within 30 ft",
+					"It shatters on impact and any creature within 10 ft must make a Constitution save",
+					"If failed, a creature is knocked prone and pushed 10 ft away from the point of impact"
+				]),
+				action : ["action", ""]
+			}
 		},
 		"subclassfeature1.2" : {
-			name : "Alchemical Formula",
+			name : "Formula: Alchemical Acid",
 			source : ["UA:A", 5],
+			minlevel : 1,
 			description : desc([
-					"I learn Alchemical Formula options: Alchemical Fire, Alchemical Acid",
-					"I learn additional options based on my level",
-					"I must have my Alchemist's Satchel to use them",
-					"If a formula requires a saving throw, it uses my spellcasting save"
-				]),
-			additional : levels.map(function (level) {
-				return level < 3 ? "one additional formula" :
-				level < 9 ? "two additional formulas" :
-				level < 14 ? "three additional formulas" :
-				"four additional formulas";
+				"As an action, I can hurl a vial of acid at a creature or object within 30 ft",
+				"It shatters on impact and the target must succeed on a Dex save or take acid damage",
+				"An object automatically fails its saving throw and takes maximum damage"
+			]),
+			additional : levels.map(function (n) {
+				if (n < 3) return "1d6 acid damage";
+				if (n < 5) return "2d6 acid damage";
+				if (n < 7) return "3d6 acid damage";
+				if (n < 9) return "4d6 acid damage";
+				if (n < 11) return "5d6 acid damage";
+				if (n < 13) return "6d6 acid damage";
+				if (n < 15) return "7d6 acid damage";
+				if (n < 17) return "8d6 acid damage";
+				if (n < 19) return "9d6 acid damage";
+				return "10d6 acid damage";
 			}),
-			extraname : "Formula",
-			extrachoices : [],
-			minlevel : 1
+			action : ["action", ""]
+		},
+		"subclassfeature1.3" : {
+			name : "Formula: Alchemical Fire",
+			source : ["UA:A", 5],
+			minlevel : 1,
+			description : desc([
+				"As an action, I can hurl a vial of volatile liquid at a creature/object/surface within 30 ft",
+				"It explodes and all within a 5-ft radius must succeed on a Dex save or take fire damage"
+			]),
+			additional : levels.map(function (n) {
+				if (n < 4) return "1d6 fire damage";
+				if (n < 7) return "2d6 fire damage";
+				if (n < 10) return "3d6 fire damage";
+				if (n < 13) return "4d6 fire damage";
+				if (n < 16) return "5d6 fire damage";
+				if (n < 19) return "6d6 fire damage";
+				return "7d6 fire damage";
+			}),
+			action : ["action", ""]
 		}
 	}
 };
-var alchemistFeatures = ClassSubList.alchemist.features["subclassfeature1.2"];
-var alchemistExtraChoices = alchemistFeatures.extrachoices;
-// alchemical formulae
-[{
-		name : "Alchemical Fire",
-		source : ["UA:A", 5],
-		description : desc([
-				"You can hurl a vial of volatile liquid at a creature, object, or surface within 30 ft",
-				"The vial detonates in a 5-foot radius. Creatures in the area must succeed on a Dexterity save",
-				"If they fail, they take damage fire damage based on my artificer level"
-			]),
-		additional : levels.map(function (level) {
-			return level < 4 ? "1d6" :
-			level < 7 ? "2d6" :
-			level < 10 ? "3d6" :
-			level < 13 ? "4d6" :
-			level < 16 ? "5d6" :
-			level < 19 ? "6d6" :
-			"7d6";
-		}),
-		action : ["action", ""]
-	}, {
-		name : "Alchemical Acid",
-		source : ["UA:A", 5],
-		description : desc([
-				"You can curl a vial of acid at a creature or object within 30 ft",
-				"A creature muast succeed on a Dexterity saving throw or take acid damage",
-				"An  object automatically takes acid damage, and the damage is maximized.",
-				"The damage is based on my artificer level."
-			]),
-		additional : levels.map(function (level) {
-			return Math.ceil(level / 2) + "d6";
-		}),
-		action : ["action", ""]
-	}, {
-		name : "Healing Draught",
-		source : ["UA:A", 5],
-		description : desc([
-				"You can create a vial of healing liquid.",
-				"A creature can drink the vial as an action to regain hit points based on my artificer level",
-				"A creature must finish a long rest before it can drink a second healing draught",
-				"The healing draught disappears after 1 hour.",
-				"While a healing draught exists, you can’t use this formula."
-			]),
-		additional : levels.map(function (level) {
-			return Math.ceil(level / 2) + "d8";
-		}),
-		action : ["action", ""]
-	}, {
-		name : "Smoke Stick",
-		source : ["UA:A", 5],
-		description : desc([
-				"I can create a stick that produces a thick plume of smoke.",
-				"You can hold on to the stick or throw it to a point up to 30 ft away as part of the action",
-				"A 10-foot radius around the stick is filled with thick smoke that blocks vision, including darkvision",
-				"The stick and smoke persist for 1 minute and then disappear",
-				"After using this formula, you can't do so again for 1 minute"
-			]),
-		action : ["action", ""]
-	}, {
-		name : "Swift Step Draught",
-		source : ["UA:A", 5],
-		description : desc([
-				"You can create a vial that a creature cand drink as an action",
-				"Drinking the draught increases the creature's speed by 20 ft for 1 minute",
-				"If not used, the vial and its contents disappear after 1 minute.",
-				"After using this formula, you can't do so again for 1 minute."
-			]),
-		action : ["bonus action", ""]
-	}, {
-		name : "Tanglefoot Bag",
-		source : ["UA:A", 6],
-		description : desc([
-				"You can create a bag filled tar and hurl it at a point on the ground within 30 ft of you",
-				"The bag disappears if you don't hurl the bag by the end of the current turn",
-				"The target area become difficult terrain for 1 minute",
-				"Any creature that starts its turn on the ground in that area has its speed halved for that turn.",
-				"After using this formula, you can’t do so again for 1 minute."
-			]),
-		action : ["action", ""]
-	}, {
-		name : "Thunderstone",
-		source : ["UA:A", 6],
-		description : desc([
-				"You can create a crystalline shard and hurl it at a creature, object, or surface within 30 ft",
-				"The shard disappears if you don’t hurl it by the end of the current turn",
-				"Each creature within 10 feet of the point of impact must make a Constitution saving throw",
-				"Creatures that fail are knocked prone and pushed 10 ft away from that point"
-			]),
-		action : ["action", ""]
-	}
-].forEach(function (formula) {
-	var name = formula.name;
-	alchemistExtraChoices.push(name);
-	alchemistFeatures[name.toLowerCase()] = formula;
-});
 
-var thunderCannon = "Thunder Cannon";
-
+//the Gunsmith subclass for the Artificer
 ClassSubList["artificer-gunsmith"] = {
-	regExpSearch : /(gunsmith)/i,
+	regExpSearch : /^(?=.*artificer)(?=.*gunsmith)(?!.*wizard).*$/i,
 	subname : "Gunsmith",
 	source : ["UA:A", 6],
-	fn : {
-		AddMasterSmith : function () {
-			AddTool("Smith's tools", "Gunsmith (Master Smith)");
-		},
-		RemoveMasterSmith : function () {
-			RemoveTool("Smith's tools", "Gunsmith (Master Smith)");
-		},
-		AddThunderCannon : function () {
-			RemoveWeapon(thunderCannon);
-			AddWeapon(thunderCannon);
-		},
-		RemoveThunderCannon : function () {
-			RemoveWeapon(thunderCannon);
-		}
-	},
 	features : {
 		"subclassfeature1.1" : {
 			name : "Master Smith",
 			source : ["UA:A", 6],
-			description : "I gain proficiency with smith's tools, and you learn the mending cantrip",
 			minlevel : 1,
+			description : desc(["I gain proficiency with smith's tools and I learn the mending cantrip"]),
 			spellcastingBonus : {
 				name : "Master Smith",
 				spells : ["mending"],
 				selection : ["mending"]
 			},
-			eval : "ClassSubList.gunsmith.fn.AddMasterSmith();",
-			removeeval : "ClassSubList.gunsmith.fn.RemoveMasterSmith();"
+			eval : "AddTool(\"Smith's tools\", \"Gunsmith (Master Smith)\");",
+			removeeval : "RemoveTool(\"Smith's tools\", \"Gunsmith (Master Smith)\");"
 		},
 		"subclassfeature1.2" : {
 			name : "Thunder Cannon",
 			source : ["UA:A", 6],
+			minlevel : 1,
 			description : desc([
-					"I have crafted a firearm, my Thunder Cannon, with which I am proficient",
-					"My Thunder Cannon requires a bonus action to reload",
-					"If lost, I can replace it over three days with 100gp of metal and other raw materals"
-				]),
+				"I craft a magical firearm, my thunder cannon, with which I am proficient",
+				"If lost, I craft another by spending 8 hours a day for 3 days and 100 gp of materials"
+			]),
 			weapons : [false, false, ["thunder cannon"]],
-			eval : "ClassSubList.gunsmith.fn.AddThunderCannon();",
-			removeeval : "ClassSubList.gunsmith.fn.RemoveThunderCannon();",
 			action : ["bonus action", " (reload)"],
-			minlevel : 1
+			eval : "AddWeapon(\"Thunder Cannon\");",
+			removeeval : "RemoveWeapon(\"Thunder Cannon\");"
 		},
 		"subclassfeature1.3" : {
 			name : "Arcane Magazine",
 			source : ["UA:A", 6],
+			minlevel : 1,
 			description : desc([
-					"I have crafted a leather bag, which I can use to craft ammunition for my Thunder Cannon",
-					"I can produce 40 rounds after a long rest and 10 rounds after a short rest",
-					"If lost, I can replace it during a long rest with 25gp of leather and other raw materials"
-				]),
-			minlevel : 1
+				"I craft a leather bag that holds my tools, ammunition, and materials for the weapon",
+				"I can use it to produce 40 rounds of ammo after a long rest or 10 after a short rest",
+				"If lost, I can create a new one as part of a long rest with 25 gp of materials"
+			])
 		},
 		"subclassfeature3" : {
 			name : "Thunder Monger",
 			source : ["UA:A", 6],
-			description : desc(["As an action I can attack with my Thunder Cannon and do additional thunder damage"]),
+			minlevel : 3,
+			description : desc(["As an action, I can make an attack with my thunder cannon that does extra damage"]),
 			additional : levels.map(function (level) {
-				if (level < 3) {
-					return ""
-				}
-				return Math.floor((level - 1) / 2) + "d6";
+				if (level < 3) return "";
+				return "+" + Math.floor((level - 1) / 2) + "d6 thunder damage";
 			}),
-			action : ["action", ""],
-			minlevel : 3
+			action : ["action", ""]
 		},
 		"subclassfeature9" : {
 			name : "Blast Wave",
 			source : ["UA:A", 6],
+			minlevel : 9,
 			description : desc([
-					"As an action I can use my Thunder Cannon to fire in a 15ft cone",
-					"Affected creatures must make a Strength saving throw against my Spellcasting DC",
-					"Creatures that fail take force damage and are pushed 10ft away from me"
-				]),
+				"As an action, I can make a special attack with my thunder cannon in a 15-ft cone",
+				"Creatures in the area must make a Str save or take damage and pushed back 10 ft"
+			]),
 			additional : levels.map(function (level) {
 				return level < 9 ? "" :
-				level < 13 ? "2d6" :
-				level < 17 ? "3d6" :
-				"4d6";
+				level < 13 ? "2d6 force damage" :
+				level < 17 ? "3d6 force damage" :
+				"4d6 force damage";
 			}),
-			action : ["action", ""],
-			minlevel : 9
+			action : ["action", ""]
 		},
 		"subclassfeature14" : {
 			name : "Piercing Round",
 			source : ["UA:A", 6],
+			minlevel : 14,
 			description : desc([
-					"As an action use my Thunder Cannon to fire in a 5'x30' line",
-					"Affected creatures must make a Dexterity saving throw against my Spellcasting DC",
-					"Creatures that fail take lightning damage"
-				]),
+				"As an action, I can make a special attack with my thunder cannon in a 30-ft line",
+				"Creatures in the 5-ft wide line must make a Dex save or take damage"
+			]),
 			additional : levels.map(function (level) {
 				return level < 14 ? "" :
-				level < 19 ? "4d6" :
-				"6d6";
+				level < 19 ? "4d6 lightning damage" :
+				"6d6 lightning damage";
 			}),
-			action : ["action", ""],
-			minlevel : 14
+			action : ["action", ""]
 		},
 		"subclassfeature17" : {
 			name : "Explosive Round",
 			source : ["UA:A", 7],
+			minlevel : 17,
 			description : desc([
-					"As an action use my Thunder Cannon to fire in a 30' radius sphere within range",
-					"Affected creatures must make a Dexterity saving throw against my Spellcasting DC",
-					"Creatures that fail take lightning damage"
-				]),
-			additional : levels.map(function (level) {
-				return level < 17 ? "" : "4d8";
-			}),
-			action : ["action", ""],
-			minlevel : 17
+				"As an action, I can make a special exploding attack with my thunder cannon",
+				"A 30-ft radius sphere somewhere within range of the thunder cannon is affected",
+				"Creatures in the area must make a Dexterity saving throw or take 4d8 fire damage"
+			]),
+			additional : "4d8 fire damage",
+			action : ["action", ""]
 		}
 	}
 };
 
-// New Ammo: Arcane Magazine
-AmmoList["arcane magazine"] = {
-	name : "Arcane Magazine",
-	weight : 0.075,
-	icon : "Bullets",
-	checks : [".Bullet"],
-	display : 50,
-	invName : "Arcane Magazine"
-};
+/// NOG TE DOEN!!!
 
-// New weapon: Thunder Cannon
-WeaponsList["thunder cannon"] = {
-	regExpSearch : /(^|\b)thunder cannon.*$/i,
-	name : "Thunder Cannon",
-	ability : 2,
-	type : "Martial", // Actually exotic, but that's not an option
-	damage : [2, 6, "piercing"],
-	range : "150/500 ft",
-	weight : 12, // I made this up based on the weight of real rifles
-	description : "Ammunition, loading, two-handed",
-	abilitytodamage : true,
-	monkweapon : false,
-	ammo : "bullet", //the type of ammunition the weapon uses. If the weapon uses no ammunition, remove this line. The options are: "arrow", "bolt", "bullet", "dagger", "dart", "flask", "axe", "javelin", "hammer", "needle", "spear", "trident", and "vial" [note the use of only lower case!]  Any ammunition you add yourself can of course be added here as well
-	dc : false,
-	modifiers : ["", ""]// bonuses to: [to hit, to damage]; "" means ignore. // You can also enter the three-letter abbreviation of an ability score (Str, Dex, Con, Int, Wis, or Cha), to have that ability's modifier added to it.
-};
-
-// Artificer spells
-[	// level 1
-	"alarm",
-	"cure wounds",
-	"disguise self",
-	"expeditious retreat",
-	"false life",
-	"jump",
-	"longstrider",
-	"sanctuary",
-	"shield of faith",
-	// level 2
-	"aid",
-	"alter self",
-	"arcane lock",
-	"blur",
-	"continual flame",
-	"darkvision",
-	"enhance ability",
-	"enlarge/reduce",
-	"invisibility",
-	"lesser restoration",
-	"levitate",
-	"magic weapon",
-	"protection from poison",
-	"rope trick",
-	"see invisibility",
-	"spider climb",
-	// level 3
-	"blink",
-	"fly",
-	"gaseous form",
-	"glyph of warding",
-	"haste",
-	"protection from energy",
-	"revivify",
-	"water breathing",
-	"water walk",
-	// level 4
-	"arcane eye",
-	"death ward",
-	"fabricate",
-	"freedom of movement",
-	"leomund's secret chest",
-	"mordenkainen's faithful hound",
-	"mordenkainen's private sanctum",
-	"otiluke's resilient sphere",
-	"stone shape",
-	"stoneskin"
-].forEach(function (spell) {
-	try {
-		SpellsList[spell].classes.push("artificer");
-	} catch (e) {
-		// console.println('Could not add "' + spell + '" to Artificer class list');
+//Magic Item additions 
+var MagicItemsList = {
+	"boots of striding and springing" : {
+		name : "Boots of Striding and Springing",
+		source : ["D", 156],
+		description : "While wearing these boots, my walking speed increases to 30 ft, and it isn't reduced if I'm encumbered or wearing heavy armor. In addition, I can jump three times the normal distance, though I can't jump farther my your remaining movement would allow.",
+		descriptionLong : false,
+		category : "woundrous item",
+		rarity : "uncommon",
+		weight : 1,
+		descriptionFull : "While you wear these boots, your walking speed becomes 30 feet, unless your walking speed is higher, and your speed isn't reduced if you are encumbered or wearing heavy armor. In addition, you can jump three times the normal distance, though you can't jump farther than your remaining movement would allow."
 	}
-});
-
-// Add mechanical servants to the creature list
-// isn't working; unsure why :(
-function addCreatureValue(toAdd, value) {
-	if (new RegExp("(^|\\b)" + toAdd + "(\\b|$)", "i").test(value)) {
-		return value;
-	}
-	if (value) {
-		return toAdd + "; " + value;
-	}
-	return toAdd;
-}
-function createMechanicalServant(name, stats) {
-	// copy all stats
-	var creature = {},
-	i;
-	for (i in stats) {
-		if (stats.hasOwnProperty(i)) {
-			creature[i] = stats[i];
-		}
-	}
-	creature.name = "Mechanical Servant (" + creature.name + ")";
-	creature.type = "Construct";
-	creature.source = ["UA:A", 6];
-	creature.damage_immunities = addCreatureValue("poison", creature.damage_immunities);
-	creature.condition_immunities = addCreatureValue("poisoned", creature.condition_immunities);
-	creature.condition_immunities = addCreatureValue("charmed", creature.condition_immunities);
-	var m = (creature.senses || "").match(/darkvision (\d+)/i);
-	if (!m) {
-		creature.senses = addCreatureValue("Darkvision 60 ft", creature.senses);
-	} else if (parseInt(m[2]) < 60) {
-		creature.senses = creature.senses.replace(/(darkvision) \d+/i, "$1 60");
-	}
-	creature.languages = addCreatureValue("understands all languages you speak", creature.languages);
-	creature.wildshapeString = "";
-	CreatureList["mechnical servant " + name] = creature;
-}
-
-Object.keys(CreatureList).forEach(function (name) {
-	var creature = CreatureList[name];
-	// parseInt will treat 1/8, 1/4, 1/2 as 1
-	if (creature.type === "Beast" && creature.size === 2 && parseInt(creature.challengeRating) <= 2) {
-		createMechanicalServant(name, creature);
-	}
-});
-
-UpdateDropdown("ammo", ["arcane magazine"]);
-UpdateDropdown("weapon", ["thunder cannon"]);
-UpdateDropdown("creature");
-
-
-
-//Magic Item additions /// NOG TE DOEN!!!
-
-//create the magic items for the wondrous items class feature
-ClassList.artificer.features["wondrous invention"].extrachoices.forEach(function (theI)) {
-	var theItem = theI.replace(/ \(.*\)/, "");
-	if (MagicItemsList[theItem.toLowerCase()]) {
-		ClassList.artificer.features["wondrous invention"][theI.toLowerCase()] = {
-			name : theItem,
-			description : "",
-			source : ["UA:A", 3],
-			eval : "var maI = MagicItemsList[\"" + theItem.toLowerCase() + "\"]; AddMagicItem(maI.name, maI.attunement, maI.description, maI.weight, maI.descriptionLong);",
-			removeeval : "RemoveMagicItem(\"" + theItem.toLowerCase() + "\");"
-		};
-	};
 };

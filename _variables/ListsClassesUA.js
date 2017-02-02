@@ -2425,7 +2425,7 @@ function UAstartupCode() {
 	
 	//Add fighting styles to the options of fighter, paladin, and ranger
 	var FSclasses = ["fighter", "ranger", "paladin"];
-	var fightingStyles = [{
+	[{
 		choice : "Mariner",
 		feature : {
 			name : "Mariner Fighting Style",
@@ -2451,16 +2451,14 @@ function UAstartupCode() {
 			description : "\n   " + "As a bonus action, I enter a defensive stance that lasts until the start of my next turn" + "\n   " + "While in the stance, I can make opportunity attacks without using my reaction" + "\n   " + "While I'm in this defensive stance I gain the following two benefits:" + "\n    - " + "I can make opportunity attacks without using my reaction" + "\n    - " + "I can make a melee attack as a reaction if a hostile moves >5 ft while in my reach",
 			action : ["bonus action", ""]
 		}
-	}];
-	for (var cla = 0; cla < FSclasses.length; cla++) {
-		var FSfeat = ClassList[FSclasses[cla]].features["fighting style"];
-		for (var fs = 0; fs < fightingStyles.length; fs++) {
-			var FStyle = fightingStyles[fs];
+	}].forEach(function (FStyle, indx, arr) {
+		for (var cla = 0; cla <= FSclasses.length; cla++) {
+			var FSfeat = cla !== FSclasses.length ? ClassList[FSclasses[cla]].features["fighting style"] : ClassSubList.champion.features.subclassfeature10;
 			FSfeat.choices.push(FStyle.choice);
 			FSfeat[FStyle.choice.toLowerCase()] = FStyle.feature;
-		}
-		FSfeat.choices.sort();
-	};
+			if (indx === arr.length - 1) FSfeat.choices.sort();
+		};		
+	});
 	
 	//Wizard (Theurgy) add all cleric domain options to the various class features
 	var MTfeat = ClassSubList["theurgy"].features;
@@ -2528,4 +2526,71 @@ function UAstartupCode() {
 			};
 		};
 	};
+
+	// Artificer spells
+	[	// level 1
+		"alarm",
+		"cure wounds",
+		"disguise self",
+		"expeditious retreat",
+		"false life",
+		"jump",
+		"longstrider",
+		"sanctuary",
+		"shield of faith",
+		// level 2
+		"aid",
+		"alter self",
+		"arcane lock",
+		"blur",
+		"continual flame",
+		"darkvision",
+		"enhance ability",
+		"enlarge/reduce",
+		"invisibility",
+		"lesser restoration",
+		"levitate",
+		"magic weapon",
+		"protection from poison",
+		"rope trick",
+		"see invisibility",
+		"spider climb",
+		// level 3
+		"blink",
+		"fly",
+		"gaseous form",
+		"glyph of warding",
+		"haste",
+		"protection from energy",
+		"revivify",
+		"water breathing",
+		"water walk",
+		// level 4
+		"arcane eye",
+		"death ward",
+		"fabricate",
+		"freedom of movement",
+		"leomund's secret chest",
+		"mordenkainen's faithful hound",
+		"mordenkainen's private sanctum",
+		"otiluke's resilient sphere",
+		"stone shape",
+		"stoneskin"
+	].forEach(function (spell) {
+		if (SpellsList[spell]) SpellsList[spell].classes.push("artificer");
+	});
+	
+	//create the magic items for the wondrous items class feature of the artificer
+	ClassList.artificer.features["wondrous invention"].extrachoices.forEach(function (theI) {
+		var theItem = theI.replace(/ \(.*\)/, "");
+		if (MagicItemsList[theItem.toLowerCase()]) {
+			ClassList.artificer.features["wondrous invention"][theI.toLowerCase()] = {
+				name : theItem,
+				description : "",
+				source : ["UA:A", 3],
+				eval : "var maI = MagicItemsList[\"" + theItem.toLowerCase() + "\"]; AddMagicItem(maI.name, maI.attunement, maI.description, maI.weight, maI.descriptionLong);",
+				removeeval : "RemoveMagicItem(\"" + theItem.toLowerCase() + "\");"
+			};
+		};
+	});
 };

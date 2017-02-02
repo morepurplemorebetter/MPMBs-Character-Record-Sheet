@@ -122,7 +122,7 @@ function ApplySpell(FldValue, rememberFldName) {
 	
 	//make this a header line if the input is "setcaptions"
 	if (input[0].toLowerCase() === "setcaptions") {
-		HeaderList[0][0] = input[1] ? input[1].substring(0,2).toUpperCase() : "";
+		HeaderList[0][0] = input[1] ? input[1].substring(0, input[1].match(/\(.\)/) ? 3 : 2).toUpperCase() : "";
 		
 		//have a function to create rich text span
 		var createSpan = function(input) {
@@ -205,7 +205,7 @@ function ApplySpell(FldValue, rememberFldName) {
 		var currentCheck = What(theCheck).toLowerCase();
 		var input1 = input[1] ? input[1].toLowerCase() : false;
 		if (!input1 || okChecks.indexOf(input1) === -1) {
-			Value(theCheck, input1 ? input1.toUpperCase().substring(0, input1.match(/\(.\)/) ? input1.length : 2) : "");
+			Value(theCheck, input1 ? input1.toUpperCase().substring(0, input1.match(/\(.\)/) ? 3 : 2) : "");
 		} else if (input1 !== currentCheck && okChecks.indexOf(input1) !== -1 && (input1.substring(0, 4) !== currentCheck.substring(0, 4) || okChecks.indexOf(input1) > 1)) {
 			Value(theCheck, input[1].toLowerCase());
 		}
@@ -3006,7 +3006,7 @@ function AskUserSpellSheet() {
 						if (BonusSpecialActions.atwill[boNmr]) spCast.special.atwill.push(dia.selectBo[boNmr]); //those that are autoprepared for referencing it later
 						if (BonusSpecialActions.oncelr[boNmr]) spCast.special.oncelr.push(dia.selectBo[boNmr]); //those that are autoprepared for referencing it later
 						if (BonusSpecialActions.oncesr[boNmr]) spCast.special.oncesr.push(dia.selectBo[boNmr]); //those that are autoprepared for referencing it later
-						if (BonusSpecialActions.other[boNmr]) spCast.special.other[dia.selectBo[boNmr]] = BonusSpecialActions.other[boNmr].substring(0, 2); //those that have a special first column, up to two characters
+						if (BonusSpecialActions.other[boNmr]) spCast.special.other[dia.selectBo[boNmr]] = BonusSpecialActions.other[boNmr].substring(0, BonusSpecialActions.other[boNmr].match(/\(.\)/) ? 3 : 2); //those that have a special first column, up to two characters
 						spBonusi.selection.push(dia.selectBo[boNmr]); //set the selection(s)
 						boNmr += 1; //count the number of bonus things
 					}

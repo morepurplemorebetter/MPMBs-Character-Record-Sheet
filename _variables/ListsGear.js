@@ -972,6 +972,18 @@ var WeaponsList = {
 		description : "",
 		abilitytodamage : false
 	},
+	"improvised weapon" : {
+		regExpSearch : /^(?=.*improvised).*$/i,
+		name : "Improvised weapon",
+		ability : 1,
+		type : (CurrentFeats.known.indexOf("tavern brawler") !== -1 ? "Natural" : "Other"),
+		damage : [1, 4, "bludgeoning"],
+		range : "Melee, 20/60 ft",
+		description : "Damage die, type, range, etc. are at the DM's discretion",
+		abilitytodamage : true
+	},
+	
+	// VGtM Lizardfolk weapon
 	"bite" : {
 		regExpSearch : /\bbite\b/i,
 		name : "Bite",
@@ -982,6 +994,8 @@ var WeaponsList = {
 		description : "",
 		abilitytodamage : true
 	},
+	
+	// VGtM Tabaxi weapon
 	"cat's claws" : {
 		regExpSearch : /\bclaws?\b/i,
 		name : "Cat's Claws",
@@ -992,6 +1006,8 @@ var WeaponsList = {
 		description : "",
 		abilitytodamage : true
 	},
+	
+	// UA Minotaur weapon
 	"horns" : {
 		regExpSearch : /\bhorns?\b/i,
 		name : "Horns",
@@ -1002,6 +1018,8 @@ var WeaponsList = {
 		description : "Advantage on all checks made to shove a creature, but not to avoid being shoved myself",
 		abilitytodamage : true
 	},
+	
+	// UA Shifter weapons
 	"longtooth" : {
 		regExpSearch : /\blongtooth\b/i,
 		name : "Longtooth",
@@ -1023,6 +1041,8 @@ var WeaponsList = {
 		monkweapon : true,
 		abilitytodamage : true
 	},
+	
+	// EE Aarakocra weapon
 	"talons" : {
 		regExpSearch : /\btalons?\b/i,
 		name : "Talons",
@@ -1034,16 +1054,8 @@ var WeaponsList = {
 		monkweapon : true,
 		abilitytodamage : true
 	},
-	"improvised weapon" : {
-		regExpSearch : /^(?=.*improvised).*$/i,
-		name : "Improvised weapon",
-		ability : 1,
-		type : (CurrentFeats.known.indexOf("tavern brawler") !== -1 ? "Natural" : "Other"),
-		damage : [1, 4, "bludgeoning"],
-		range : "Melee, 20/60 ft",
-		description : "Damage die, type, range, etc. are at the DM's discretion",
-		abilitytodamage : true
-	},
+	
+	// SCAG Monk addition
 	"radiant sun bolt" : {
 		regExpSearch : /^(?=.*radiant)(?=.*(sun|light))(?=.*bolt).*$/i,
 		name : "Radiant Sun Bolt",
@@ -1055,6 +1067,20 @@ var WeaponsList = {
 		monkweapon : true,
 		abilitytodamage : true
 	},
+	
+	// UA Artificer weapon
+	"thunder cannon" : {
+		regExpSearch : /^(?=.*\bthunder)(?=.*cannon\b).*$/i,
+		name : "Thunder Cannon",
+		ability : 2,
+		type : "Exotic",
+		damage : [2, 6, "piercing"],
+		range : "150/500 ft",
+		weight : 12, // made up, based on the weight of real rifles
+		description : "Ammunition, loading, two-handed, bonus action to reload",
+		abilitytodamage : true,
+		ammo : "arcane magazine"
+	}
 };
 
 //A list of all types of 'ammo' for the ammunition section on the first page
@@ -1153,6 +1179,16 @@ var AmmoList = {
 		checks : [".Top", ".Base"],
 		display : 20,
 	},
+	
+	// UA Artificer ammo
+	"arcane magazine" : {
+		name : "Arcane Magazine",
+		weight : 0.2, // based on the weight of renaissance bullets from the DMG
+		icon : "Bullets",
+		checks : [".Bullet"],
+		display : 50,
+		invName : "Thunder Cannon Rounds"
+	}
 }
 
 var PacksList = {
