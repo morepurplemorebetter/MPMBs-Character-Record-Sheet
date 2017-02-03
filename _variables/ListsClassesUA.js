@@ -6,7 +6,7 @@
 */
 //adds a subclass for the Wizard, called "Tradition of the Artificer"
 //this code was contributed by Pengsloth
-ClassSubList["artificer"] = {
+ClassSubList["wizard-artificer"] = {
 	regExpSearch : /^((?=.*(wizard|mage|magus))(?=.*artificer))|(?=.*infuser).*$/i,
 	subname : "Tradition of the Artificer",
 	source : ["UA:E", 3],
@@ -49,7 +49,7 @@ ClassSubList["artificer"] = {
 		}
 	}
 };
-ClassList.wizard.subclasses[1].push("artificer");
+ClassList.wizard.subclasses[1].push("wizard-artificer");
 
 /*
 	the Modifying Classes Unearthed Arcana of 2015-04-06
@@ -2582,7 +2582,7 @@ function UAstartupCode() {
 	
 	//create the magic items for the wondrous items class feature of the artificer
 	ClassList.artificer.features["wondrous invention"].extrachoices.forEach(function (theI) {
-		var theItem = theI.replace(/ \(.*\)/, "");
+		var theItem = theI.replace(/ *\(.*\)/, "");
 		if (MagicItemsList[theItem.toLowerCase()]) {
 			ClassList.artificer.features["wondrous invention"][theI.toLowerCase()] = {
 				name : theItem,

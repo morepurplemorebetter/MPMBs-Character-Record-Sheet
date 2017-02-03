@@ -7901,7 +7901,7 @@ function AddInvMagic(item, amount, weight, location) {
 	location = location === undefined ? "" : location;
 	var RegExItem = item.substring(0, 2) === "- " ? "\\b" + item.substring(2).RegEscape() + "\\b" : "\\b" + item.RegEscape() + "\\b";
 	var tempFound = false;
-	for (var i = (FieldNumbers.gear - 3); i <= FieldNumbers.gear; i++) {
+	for (var i = 1; i <= FieldNumbers.gear; i++) {
 		var Name = tDoc.getField("Adventuring Gear Row " + i);
 		var Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
 		var Wht = tDoc.getField("Adventuring Gear Weight " + i);
@@ -7921,7 +7921,7 @@ function AddInvMagic(item, amount, weight, location) {
 		}
 	}
 	if (!tempFound) {
-		for (var i = (FieldNumbers.gear - 3); i <= FieldNumbers.gear; i++) {
+		for (var i = (FieldNumbers.gearMIrow + 1); i <= FieldNumbers.gear; i++) {
 			Name = tDoc.getField("Adventuring Gear Row " + i);
 			Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
 			Wht = tDoc.getField("Adventuring Gear Weight " + i);

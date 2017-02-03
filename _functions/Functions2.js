@@ -5072,119 +5072,132 @@ function MakeSkillsMenu_SkillsOptions(input) {
 		cName : "Sort skills by ability score",
 		cReturn : "go#abilities",
 		bMarked : sWho === "abilities"
+	}, {
+		cName : "-"
+	}, {
+		cName : "Show a dialogue with my skill options",
+		cReturn : "show#dialog"
 	}];
 	
 	var MenuSelection = input ? input : getMenu("skills");
 	
-	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing" && MenuSelection[1] !== sWho) {
-		tDoc.delay = true;
-		tDoc.calculate = false;
-		
-		//make a list of all the currently selected skills
-		var oSkillProf = [];
-		var oSkillExp = [];
-		var oSkillAdv = [];
-		var oSkillDis = [];
-		var oSkillBon = [];
-		var currentList = sWho === "alphabeta" ? SkillsList.abbreviations : SkillsList.abbreviationsByAS;
-		for (var S = 0; S < (SkillsList.abbreviations.length -2); S++) {
-			var sNm = currentList[S];
-			var sFld = SkillsList.abbreviations[S];
-			if (tDoc.getField(sFld + " Prof").isBoxChecked(0)) {
-				oSkillProf.push(sNm);
-				Checkbox(sFld + " Prof", false);
-			}
-			if (tDoc.getField(sFld + " Exp").isBoxChecked(0)) {
-				oSkillExp.push(sNm);
-				Checkbox(sFld + " Exp", false);
-			}
-			oSkillBon.push([sNm, What(sFld + " Bonus")]);
-			if (!typePF) {
-				if (tDoc.getField(sFld + " Adv").isBoxChecked(0)) {
-					oSkillAdv.push(sNm);
-					Checkbox(sFld + " Adv", false);
-					Editable(sFld + " Dis");
-				}
-				if (tDoc.getField(sFld + " Dis").isBoxChecked(0)) {
-					oSkillDis.push(sNm);
-					Checkbox(sFld + " Dis", false);
-					Editable(sFld + " Adv");
-				}
-			}
-		}
-		
-		//now use those lists to check the correct boxes in the new order of skills
-		var newList = MenuSelection[1] === "alphabeta" ? SkillsList.abbreviations : SkillsList.abbreviationsByAS;
-		var allArrays = [[oSkillProf, " Prof"], [oSkillExp, " Exp"], [oSkillAdv, " Adv", " Dis"], [oSkillDis, " Dis", " Adv"]];
-		for (var A = 0; A < allArrays.length; A++) {
-			var thisArray = allArrays[A][0];
-			for (var i = 0; i < thisArray.length; i++) {
-				var newFld = SkillsList.abbreviations[newList.indexOf(thisArray[i])];
-				Checkbox(newFld + allArrays[A][1], true);
-				if (A > 1) Uneditable(newFld + allArrays[A][2]);
-			}
-		}
-		for (var B = 0; B < oSkillBon.length; B++) {
-			newFld = SkillsList.abbreviations[newList.indexOf(oSkillBon[B][0])];
-			var newSkill = SkillsList.names[SkillsList.abbreviations.indexOf(oSkillBon[B][0])];
-			Value(newFld + " Bonus", oSkillBon[B][1], newSkill + modString + modStringE);
-		}
-		
-		//show the stealth disadvantage field, for Printer Friendly, if checked
-		if (typePF) {
-			Hide("Stealth Disadv");
-			var showIt = tDoc.getField("AC Stealth Disadvantage").isBoxChecked(0);
-			if (showIt) Show("Stealth Disadv." + MenuSelection[1]);
+	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
+		if (MenuSelection[0] === "show") {
+			app.alert({
+				cTitle : "Skill selection options",
+				cMsg : Who("SkillsClick").replace(/.*\n\n/, ""),
+				nIcon : 3,
+			});
+		} else if (MenuSelection[1] !== sWho) {
+			tDoc.delay = true;
+			tDoc.calculate = false;
 			
-			//now if this is a printer friendly sheet, also rearrange the skills of the companion page(s)
-			var AScompA = What("Template.extras.AScomp").split(",");
-			for (var AS = 0; AS < AScompA.length; AS++) {
-				var prefix = AScompA[AS];
-				var aField = prefix + "Comp.Use.Skills.";
-				var bField = prefix + "BlueText.Comp.Use.Skills.";
-				//make a list of all the currently selected skills
-				var oSkillProf = [];
-				var oSkillExp = [];
-				var oSkillBon = [];
-				for (var S = 0; S < (SkillsList.abbreviations.length -2); S++) {
-					var sNm = currentList[S];
-					var sFld = SkillsList.abbreviations[S];
-					if (tDoc.getField(aField + sFld + ".Prof").isBoxChecked(0)) {
-						oSkillProf.push(sNm);
-						Checkbox(aField + sFld + ".Prof", false);
-					}
-					if (tDoc.getField(aField + sFld + ".Exp").isBoxChecked(0)) {
-						oSkillExp.push(sNm);
-						Checkbox(aField + sFld + ".Exp", false);
-					}
-					oSkillBon.push([sNm, What(bField + sFld + ".Bonus")]);
+			//make a list of all the currently selected skills
+			var oSkillProf = [];
+			var oSkillExp = [];
+			var oSkillAdv = [];
+			var oSkillDis = [];
+			var oSkillBon = [];
+			var currentList = sWho === "alphabeta" ? SkillsList.abbreviations : SkillsList.abbreviationsByAS;
+			for (var S = 0; S < (SkillsList.abbreviations.length -2); S++) {
+				var sNm = currentList[S];
+				var sFld = SkillsList.abbreviations[S];
+				if (tDoc.getField(sFld + " Prof").isBoxChecked(0)) {
+					oSkillProf.push(sNm);
+					Checkbox(sFld + " Prof", false);
 				}
-				
-				var allArrays = [[oSkillProf, ".Prof"], [oSkillExp, ".Exp"]];
-				for (var A = 0; A < allArrays.length; A++) {
-					var thisArray = allArrays[A][0];
-					for (var i = 0; i < thisArray.length; i++) {
-						var newFld = SkillsList.abbreviations[newList.indexOf(thisArray[i])];
-						Checkbox(aField + newFld + allArrays[A][1], true);
-					}
+				if (tDoc.getField(sFld + " Exp").isBoxChecked(0)) {
+					oSkillExp.push(sNm);
+					Checkbox(sFld + " Exp", false);
 				}
-				for (var B = 0; B < oSkillBon.length; B++) {
-					newFld = SkillsList.abbreviations[newList.indexOf(oSkillBon[B][0])];
-					var newSkill = SkillsList.names[SkillsList.abbreviations.indexOf(oSkillBon[B][0])];
-					Value(bField + newFld + ".Bonus", oSkillBon[B][1], newSkill + modString);
+				oSkillBon.push([sNm, What(sFld + " Bonus")]);
+				if (!typePF) {
+					if (tDoc.getField(sFld + " Adv").isBoxChecked(0)) {
+						oSkillAdv.push(sNm);
+						Checkbox(sFld + " Adv", false);
+						Editable(sFld + " Dis");
+					}
+					if (tDoc.getField(sFld + " Dis").isBoxChecked(0)) {
+						oSkillDis.push(sNm);
+						Checkbox(sFld + " Dis", false);
+						Editable(sFld + " Adv");
+					}
 				}
 			}
+			
+			//now use those lists to check the correct boxes in the new order of skills
+			var newList = MenuSelection[1] === "alphabeta" ? SkillsList.abbreviations : SkillsList.abbreviationsByAS;
+			var allArrays = [[oSkillProf, " Prof"], [oSkillExp, " Exp"], [oSkillAdv, " Adv", " Dis"], [oSkillDis, " Dis", " Adv"]];
+			for (var A = 0; A < allArrays.length; A++) {
+				var thisArray = allArrays[A][0];
+				for (var i = 0; i < thisArray.length; i++) {
+					var newFld = SkillsList.abbreviations[newList.indexOf(thisArray[i])];
+					Checkbox(newFld + allArrays[A][1], true);
+					if (A > 1) Uneditable(newFld + allArrays[A][2]);
+				}
+			}
+			for (var B = 0; B < oSkillBon.length; B++) {
+				newFld = SkillsList.abbreviations[newList.indexOf(oSkillBon[B][0])];
+				var newSkill = SkillsList.names[SkillsList.abbreviations.indexOf(oSkillBon[B][0])];
+				Value(newFld + " Bonus", oSkillBon[B][1], newSkill + modString + modStringE);
+			}
+			
+			//show the stealth disadvantage field, for Printer Friendly, if checked
+			if (typePF) {
+				Hide("Stealth Disadv");
+				var showIt = tDoc.getField("AC Stealth Disadvantage").isBoxChecked(0);
+				if (showIt) Show("Stealth Disadv." + MenuSelection[1]);
+				
+				//now if this is a printer friendly sheet, also rearrange the skills of the companion page(s)
+				var AScompA = What("Template.extras.AScomp").split(",");
+				for (var AS = 0; AS < AScompA.length; AS++) {
+					var prefix = AScompA[AS];
+					var aField = prefix + "Comp.Use.Skills.";
+					var bField = prefix + "BlueText.Comp.Use.Skills.";
+					//make a list of all the currently selected skills
+					var oSkillProf = [];
+					var oSkillExp = [];
+					var oSkillBon = [];
+					for (var S = 0; S < (SkillsList.abbreviations.length -2); S++) {
+						var sNm = currentList[S];
+						var sFld = SkillsList.abbreviations[S];
+						if (tDoc.getField(aField + sFld + ".Prof").isBoxChecked(0)) {
+							oSkillProf.push(sNm);
+							Checkbox(aField + sFld + ".Prof", false);
+						}
+						if (tDoc.getField(aField + sFld + ".Exp").isBoxChecked(0)) {
+							oSkillExp.push(sNm);
+							Checkbox(aField + sFld + ".Exp", false);
+						}
+						oSkillBon.push([sNm, What(bField + sFld + ".Bonus")]);
+					}
+					
+					var allArrays = [[oSkillProf, ".Prof"], [oSkillExp, ".Exp"]];
+					for (var A = 0; A < allArrays.length; A++) {
+						var thisArray = allArrays[A][0];
+						for (var i = 0; i < thisArray.length; i++) {
+							var newFld = SkillsList.abbreviations[newList.indexOf(thisArray[i])];
+							Checkbox(aField + newFld + allArrays[A][1], true);
+						}
+					}
+					for (var B = 0; B < oSkillBon.length; B++) {
+						newFld = SkillsList.abbreviations[newList.indexOf(oSkillBon[B][0])];
+						var newSkill = SkillsList.names[SkillsList.abbreviations.indexOf(oSkillBon[B][0])];
+						Value(bField + newFld + ".Bonus", oSkillBon[B][1], newSkill + modString);
+					}
+				}
+			}
+			
+			//set the correct tooltip for remembering
+			AddTooltip("Text.SkillsNames", MenuSelection[1]);
+			
+			//set the rich text for the skill names
+			SetRichTextFields(false, true);
+			
+			tDoc.calculate = IsNotReset;
+			tDoc.delay = !IsNotReset;
+			if (IsNotReset) tDoc.calculateNow();
 		}
-		
-		//set the correct tooltip for remembering
-		AddTooltip("Text.SkillsNames", MenuSelection[1]);
-		
-		//set the rich text for the skill names
-		SetRichTextFields(false, true);
-		
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) tDoc.calculateNow();
 	}
 }
 

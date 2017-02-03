@@ -593,6 +593,7 @@ function resourceSelectionDialog(type) {
 	switch (type) {
 	 case "class" :
 		var theName = "Classes or Archetypes";
+		inclInArr = "all";
 		var CSatt = "classExcl";
 		for (var u in ClassList) {
 			var uGroup = amendSource(ClassList[u].name, ClassList[u]);
@@ -606,7 +607,7 @@ function resourceSelectionDialog(type) {
 				refObj[uName] = uSub;
 				uSubTest = testSource(uSub, ClassSubList[uSub], CSatt, true);
 				if (uTest === "source" || uSubTest === "source") continue;
-				if (uSubTest) {
+				if (uTest || uSubTest) {
 					exclObj[uGroup][uName] = -1;
 				} else {
 					inclObj[uGroup][uName] = -1;
