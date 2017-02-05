@@ -21,7 +21,7 @@
 ClassSubList["amazon"] = {
     regExpSearch : /amazon/i,
     subname : "Amazon",
-	["CS:A", 1],
+	source : ["CS:A", 1],
     fullname : "Amazon",
     features : {
         "subclassfeature3" : {
