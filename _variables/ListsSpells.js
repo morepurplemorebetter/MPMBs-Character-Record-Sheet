@@ -2068,7 +2068,7 @@ var SpellsList = {
 		range : "Self",
 		components : "V,S",
 		duration : "Conc, 10 min",
-		description : "You can take Dash actions as a bonus action for the duration",
+		description : "You can take Dash action now, and as a bonus action for the duration",
 		descriptionFull : "This spell allows you to move at an incredible pace. When you cast this spell, and then as a bonus action on each of your turns until the spell ends, you can take the Dash action.",
 	},
 	"eyebite" : {

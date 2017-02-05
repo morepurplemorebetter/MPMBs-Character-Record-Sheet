@@ -495,7 +495,7 @@ var MagicItemsList = {
 	"eyes of minute seeing" : {
 		name : "Eyes of Minute Seeing",
 		source : ["D", 168],
-		description : "'Geyser' produces 30 gallons of water that gushes forth in 30 ft long and 1 ft wide line. As a bonus action while holding the decanter, I can aim the geyser at a creature within 30 ft. The target must make a DC 13 Stre save or take 1d4 bludgeoning damage and fall prone. ",
+		description : "These crystal lenses fit over the eyes. While wearing them, I can see much better than normal out to a range of 1 ft. I have advantage on Int (Investigation) checks that rely on sight while searching an area or studying an object within that range.",
 		descriptionLong : false,
 		category : "wondrous item",
 		rarity : "uncommon",

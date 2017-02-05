@@ -1664,7 +1664,7 @@ function MakeCompMenu() {
 	menuLVL2(CompMenu, ["Create mount (Find Steed spell)", "mount"], mounts);
 	menuLVL2(CompMenu, ["Create Ranger's Companion", usingRevisedRanger ? "companionrr" : "companion"], usingRevisedRanger ? companionRR : companions);
 	
-	if (CurrentSources.globalExcl.indexOf("UA:A") !== -1) { // if the artificer source is included
+	if (CurrentSources.globalExcl.indexOf("UA:A") === -1) { // if the artificer source is not excluded
 		menuLVL2(CompMenu, ["Create Mechanical Servant", "mechanicalserv"], mechanicalServs);
 		change.splice(4, 0, ["Into a Mechanical Servant", "mechanicalserv"]);
 	};
@@ -4206,17 +4206,14 @@ function FormatHD() {
 function AddAttacksPerAction() {
 	if (typePF) {
 		var theString = ["Attack (", " attacks per action)"];
-		switch (Number(classes.attacks)) {
-		 case 0 :
-		 case 1 :
-			RemoveAction("action", theString[0]);
-			break;
-		 default :
+		if (Number(classes.attacks) < 2) {
+			RemoveAction("action", RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i"), true);
+		} else {
 			var action1 = What("Action 1");
-			if (action1 !== "" && action1.indexOf(theString[0]) === -1) {
+			if (action1 !== "" && !action1.match(RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i"))) {
 				ActionInsert("action", 1);
 			}
-			if (What("Action 1") === "") {
+			if (What("Action 1") === "" || action1.match(RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i"))) {
 				Value("Action 1", theString[0] + classes.attacks + theString[1]);
 			}
 		}

@@ -1019,7 +1019,7 @@ function AddAction(actiontype, action, actiontooltip, replaceThis) {
 	}
 }
 
-function RemoveAction(actiontype, action) {
+function RemoveAction(actiontype, action, isRegex) {
 	var TheAction = actiontype.toLowerCase();
 	if (TheAction.indexOf("bonus") !== -1) {
 		var field = "Bonus Action ";
@@ -1028,10 +1028,11 @@ function RemoveAction(actiontype, action) {
 	} else if (TheAction.indexOf("action") !== -1) {
 		var field = "Action ";
 	}
+	action = isRegex ? action : action.toLowerCase();
 	var numberOfFields = field === "Action " ? FieldNumbers.trueactions : FieldNumbers.actions;
 	for (var i = 1; i <= numberOfFields; i++) {
 		var next = tDoc.getField(field + i);
-		if (next.value.toLowerCase().indexOf(action.toLowerCase()) !== -1) {
+		if (next.value.toLowerCase().search(action) !== -1) {
 			DeleteItemType(field, i, numberOfFields);
 			i = numberOfFields + 1;
 		}

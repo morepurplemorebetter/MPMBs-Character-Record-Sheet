@@ -2424,7 +2424,7 @@ function UAstartupCode() {
 	};
 	
 	//Add fighting styles to the options of fighter, paladin, and ranger
-	var FSclasses = ["fighter", "ranger", "paladin"];
+	var FSclasses = ["fighter", "ranger", "paladin", "rangerua"];
 	[{
 		choice : "Mariner",
 		feature : {
