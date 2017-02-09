@@ -445,7 +445,7 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "My hit point maximum increases by an amount equal to twice my character level.",
 		calcChanges : {
-			hp : "extrahp += totalhd * 2; extrastring += \"\n + \" + totalhd + \" \u00D7 2 from the Tough feat (\" + totalhd * 2 + \")\";"
+			hp : "extrahp += totalhd * 2; extrastring += \"\\n + \" + totalhd + \" \\u00D7 2 from the Tough feat (\" + totalhd * 2 + \")\";"
 		},
 		eval : "SetHPTooltip();",
 		removeeval : "SetHPTooltip();"

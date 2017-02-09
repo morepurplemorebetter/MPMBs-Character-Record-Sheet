@@ -5729,7 +5729,7 @@ function addEvals(evalObj, NameEntity, Add) {
 	var atkStr = "";
 	var remAtkAdd = CurrentEvals.atkAdd ? CurrentEvals.atkAdd : "";
 	var atkTypes = ["atkAdd", "atkHit", "atkDmg"];
-	var nameHeader = isArray(NameEntity) ? "\n\n" + toUni(NameEntity[0]) + " [" NameEntity[1] + "]:" : "\n\n" + toUni(NameEntity) + ":";
+	var nameHeader = isArray(NameEntity) ? "\n\n" + toUni(NameEntity[0]) + " [" + NameEntity[1] + "]:" : "\n\n" + toUni(NameEntity) + ":";
 	for (var i = 0; i < atkTypes.length; i++) {
 		var atkT = atkTypes[i];
 		if (!evalObj[atkT]) continue;

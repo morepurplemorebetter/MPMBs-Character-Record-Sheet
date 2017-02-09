@@ -3,6 +3,8 @@ function InitializeEverything(noButtons) {
 	if (!minVer) Hide("d20warning");
 	tDoc.delay = true;
 	tDoc.calculate = false;
+	GetStringifieds(); //populate some variables stored in fields
+	
 	RunUserScript();
 	
 	//define some variables after running the user scripts

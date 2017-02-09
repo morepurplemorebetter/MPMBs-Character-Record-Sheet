@@ -236,7 +236,6 @@ var CurrentSpells = {};
 var CurrentCasters = {};
 var CurrentSources = {};
 var CurrentEvals = {};
-GetStringifieds(); //populate the above objects on startup
 
 var UpdateSpellSheets = {};
 
