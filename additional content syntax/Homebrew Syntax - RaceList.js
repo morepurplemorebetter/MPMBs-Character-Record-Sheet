@@ -16,6 +16,8 @@ RaceList["something catlike"] = { //Note the use of only lower case! Also note t
 	
 	languages : ["Common", "Celestial"], //optional; the language(s) known by any of the race
 	
+	weapons : ["talons"], //optional; an array of weapons that are added to the attacks section; These weapons need to be defined in the WeaponsList
+	
 	vision : "Darkvision 60 ft", //optional;  vision granted by the race. This text will be put in the "Senses" section on the sheet. This line can be deleted if you don't have anything to put here
 	
 	dmgres : ["necrotic", "radiant"], //optional; damage resistance(s) the race has. This line can be deleted if you don't have anything to put here
@@ -99,6 +101,17 @@ RaceList["something catlike"] = { //Note the use of only lower case! Also note t
 				spells : ["lesser restoration"],
 				selection : ["lesser restoration"],
 				oncelr : true,
+			},
+			
+			calcChanges : { //optional; adds stuff to the calculation of attacks and/or HP
+			
+				atkDmg : ["eval string", "explanation string"], //optional; change something in the calculation of the damage of attacks; The first value in the array is stringified code that is run using eval(), the second entry is an explanation of what is being altered so that it can be displayed in a dialogue. This second entry can be left empty, like ""
+				
+				atkHit : ["eval string", "explanation string"], //optional; works just like atkDmg, but affects the To Hit calculation
+				
+				atkAdd : ["eval string", "explanation string"], //optional; works just like atkDmg, but affects the weapon attributes when they are applied to the sheet. With this you can change the weapon's description, range, damage die, attribute, etc. etc.
+				
+				hp : "extrahp += totalhd; extrastring += \"\n + \" + totalhd + \" from Dwarven Toughness\";", //optional; string to be run using eval() when calculating the number of HP in the HP tooltip and automation
 			},
 		},
 		

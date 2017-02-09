@@ -2085,7 +2085,7 @@ function ApplyArmor(input) {
 		} else {
 			var ArmorStealth = ArmourList[CurrentArmour.known].stealthdis;
 		}
-		Checkbox(ArmorFields[3], ArmorStealth);
+		Checkbox(ArmorFields[3], CurrentArmour.field.match(/mithral/i) ? false : ArmorStealth);
 		ConditionSet();
 		Checkbox(ArmorFields[1], ArmourList[CurrentArmour.known].type === "medium");
 		Checkbox(ArmorFields[2], ArmourList[CurrentArmour.known].type === "heavy");
@@ -2901,7 +2901,7 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 	}
 	
 	thermoM("stop"); //stop the top progress dialog
-	SetStringifieds(); //set the CurrentSpells variable to the field for future reference
+	SetStringifieds(); //set the global variables to their fields for future reference
 	if (IsSubclassException.toSource() === "({})") CheckForSpellUpdate(); //see if there is a reason to update the spells sheets
 
 	tDoc.calculate = IsNotReset;
@@ -3295,7 +3295,7 @@ function ApplyRace(inputracetxt) {
 	thermoM("Finalizing the changes of the race..."); //change the progress dialog text
 	ApplyProficiencies(true); //call to update armor, shield and weapon proficiencies
 	UpdateTooltips(); //skills tooltip, ability score tooltip
-	SetStringifieds(); //set the CurrentSpells variable to the field for future reference
+	SetStringifieds(); //set the global variables to their fields for future reference
 	
 	thermoM("stop"); //stop the top progress dialog
 	tDoc.calculate = IsNotReset;
@@ -5555,6 +5555,11 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			var TheRemoveEval = What("Unit System") === "metric" && theFeat.removeeval.indexOf("String") !== -1 ? ConvertToMetric(theFeat.removeeval, 0.5) : theFeat.removeeval;
 			eval(TheRemoveEval);
 		}
+		
+		if (IsNotFeatMenu && theFeat.calcChanges) {
+			addEvals(theFeat.calcChanges, [theFeat.name, "feat"], false);
+		}
+		
 		tDoc.getField(FeatFlds[2]).setAction("Calculate", "");
 		tDoc.resetForm([FeatFlds[2]]);
 		AddTooltip(FeatFlds[2], "");
@@ -5598,6 +5603,9 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		if (IsNotFeatMenu && theFeat.eval) {
 			var TheEval = What("Unit System") === "metric" && theFeat.eval.indexOf("String") !== -1 ? ConvertToMetric(theFeat.eval, 0.5) : theFeat.eval;
 			eval(TheEval);
+		}
+		if (IsNotFeatMenu && theFeat.calcChanges) {
+			addEvals(theFeat.calcChanges, [theFeat.name, "feat"], true);
 		}
 	}
 	thermoM("Finalizing the changes of the feat..."); //change the progress dialog text
@@ -5993,6 +6001,11 @@ function UpdateLevelFeatures(Typeswitch) {
 					}
 					UpdateSpellSheets.race = true;
 				}
+				
+				//add or remove custom calculations to the CurrentEvals variable
+				if (checkLVL && keyFea.calcChanges) {
+					addEvals(keyFea.calcChanges, [keyFea.name, CurrentRace.name], keyFea.minlevel <= newRaceLvl);
+				}
 			}
 		}
 		//update the racial level
@@ -6182,6 +6195,14 @@ function UpdateLevelFeatures(Typeswitch) {
 						UpdateSpellSheets.class = true;
 					}
 					
+					// --- add or remove custom calculations to the CurrentEvals variable
+					if (CheckFea && propFea.calcChanges) {
+						addEvals(propFea.calcChanges, [propFea.name, aClass], propFea.minlevel <= newClassLvl[aClass]);
+					}
+					if (CheckFea && FeaChoice && propFea[FeaChoice].calcChanges) {
+						addEvals(propFea[FeaChoice].calcChanges, [propFea[FeaChoice].name, aClass], propFea.minlevel <= newClassLvl[aClass]);
+					}
+					
 					// --- if a change was detected, do something via custom script, if defined
 					if (propFea.changeeval) {
 						var theChangeeval = What("Unit System") === "metric" && propFea.changeeval.indexOf("String") !== -1 ? ConvertToMetric(propFea.changeeval, 0.5) : propFea.changeeval;
@@ -6287,7 +6308,7 @@ function UpdateLevelFeatures(Typeswitch) {
 		}
 	}
 	thermoM("Finalizing updating level features..."); //change the progress dialog text
-	if (Typeswitch !== "proficiencies") SetStringifieds(); //set the CurrentSpells variable to the field for future reference
+	if (Typeswitch !== "proficiencies") SetStringifieds(); //set the global variables to their fields for future reference
 	thermoM("stop"); //stop the top progress dialog
 };
 
@@ -6500,6 +6521,14 @@ function ClassFeatureOptions(Input, AddOrRemove) {
 			eval(theEval);
 		}
 		
+		//add or remove custom calculations to the CurrentEvals variable, and undo any of a previous choice, if changed
+		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.calcChanges) {
+			addEvals(theOldSubFea.calcChanges, [theOldSubFea.name, MenuSelection[0]], false);
+		}
+		if (theSubFea.eval && AddOrRemove !== "remove") {
+			addEvals(theSubFea.calcChanges, [theSubFea.name, MenuSelection[0]], true);
+		}
+		
 		thermoM(3/6); //increment the progress dialog's progress
 
 		//add, if defined, skill proficiencies of the feature, and undo, if defined skill proficiencies of previous if changed
@@ -6581,7 +6610,7 @@ function ClassFeatureOptions(Input, AddOrRemove) {
 		}
 		
 		thermoM("stop"); //stop the top progress dialog
-		SetStringifieds(); //set the CurrentSpells variable to the field for future reference
+		SetStringifieds(); //set the global variables to their fields for future reference
 	}
 	
 	tDoc.calculate = IsNotReset;
@@ -10216,6 +10245,10 @@ function MakeWeaponMenu() {
 		attackMenu.push(ColorMenu);
 	}
 	
+	if (QI && CurrentEvals.atkStr) {
+		menuLVL1(attackMenu, ["-", "Show what things are affecting the attack calculations"]);
+	}
+	
 	//set the complete menu as the global variable
 	Menus.attacks = attackMenu;
 };
@@ -10323,6 +10356,15 @@ function WeaponOptions() {
 		 case "outline color":
 			thermoM("Changing the attack outline color..."); //change the progress dialog text
 			ApplyAttackColor(itemNmbr, MenuSelection[1]);
+			break;
+		 case "show what things are affecting the attack calculations":
+			if (CurrentEvals.atkStr) {
+				app.alert({
+					cTitle : "Things Affecting the Attack Calculations",
+					cMsg : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]" + CurrentEvals.atkStr,
+					nIcon : 3
+				});
+			}
 			break;
 		}
 		thermoM("stop"); //stop the top progress dialog

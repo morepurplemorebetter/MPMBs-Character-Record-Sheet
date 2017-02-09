@@ -3710,14 +3710,18 @@ function GetStringifieds(notSources) {
 	CurrentSpells = eval(forSpells[0]);
 	CurrentCasters = eval(forSpells[1]);
 	if (!notSources) CurrentSources = eval(What("CurrentSources.Stringified"));
+	CurrentEvals = eval(What("CurrentEvals.Stringified"));
 }
 
 //set all stringified variables into their fields
-function SetStringifieds() {
-	var cSpells = CurrentSpells.toSource();
-	var cCasters = CurrentCasters.toSource();
-	Value("CurrentSpells.Stringified", cSpells + "##########" + cCasters);
-	Value("CurrentSources.Stringified", CurrentSources.toSource());
+function SetStringifieds(type) {
+	if (!type || type === "spells") {
+		var cSpells = CurrentSpells.toSource();
+		var cCasters = CurrentCasters.toSource();
+		Value("CurrentSpells.Stringified", cSpells + "##########" + cCasters);
+	}
+	if (!type || type === "sources") Value("CurrentSources.Stringified", CurrentSources.toSource());
+	if (!type || type === "evals") Value("CurrentEvals.Stringified", CurrentEvals.toSource());
 }
 
 //remove the empty values from an array (removes all things that are considered false, such as 0, "", undefined, false)
@@ -3995,7 +3999,7 @@ function SetHPTooltip(resetHP) {
 	var hdaverage = 0;
 	var conhp = 0;
 	var totalhd = 0;
-	var toughstring = "";
+	var extrastring = "";
 	var hdadvleague = 0;
 	var hdmax = 0;
 	var extrahp = 0;
@@ -4024,28 +4028,32 @@ function SetHPTooltip(resetHP) {
 			conhp += HDLVL[i] * ConMod;
 		};
 	};
+	
+	if (CurrentEvals.hp) eval(CurrentEvals.hp);
+
+/*	No Longer needed as the CurrentEvals.hp replaces these
 
 	if (CurrentFeats.known.indexOf("tough") !== -1) {
 		extrahp += totalhd * 2;
-		toughstring += "\n + " + totalhd + " \u00D7 2 from the Tough feat (" + totalhd * 2 + ")";
+		extrastring += "\n + " + totalhd + " \u00D7 2 from the Tough feat (" + totalhd * 2 + ")";
 	}
 	
 	if (CurrentRace.known === "hill dwarf") {
 		extrahp += totalhd;
-		toughstring += "\n + " + totalhd + " from Dwarven Toughness";
+		extrastring += "\n + " + totalhd + " from Dwarven Toughness";
 	}
 	
 	if (What("Class Features").toLowerCase().indexOf("draconic resilience") !== -1) {
 		var sorcLvl = classes.known.sorcerer ? classes.known.sorcerer.level : 0;
 		extrahp += sorcLvl;
-		toughstring += "\n + " + sorcLvl + " from Draconic Resilience";
+		extrastring += "\n + " + sorcLvl + " from Draconic Resilience";
 	}
-
+*/
 	hdplaceholder = totalhd === 0 ? "level \u00D7 hit dice (0)" : "";
 	totalhd = totalhd === 0 ? "level" : totalhd;
 	conhp = conhp === 0 ? ConMod : conhp;
 	hdstring += hdplaceholder + "\n + " + totalhd + " \u00D7 " + ConMod + " from Constitution (" + conhp + ")";
-	hdstring += toughstring;
+	hdstring += extrastring;
 	hdstring += "\n\n \u2022 " + toUni(hdaverage + conhp + extrahp) + " is the total average HP";
 	hdstring += "\n \u2022 " + toUni(hdadvleague + conhp + extrahp) + " is the total HP when using fixed values";
 	hdstring += "\n \u2022 " + toUni(hdmax + conhp + extrahp) + " is the total maximum HP";
@@ -5710,4 +5718,50 @@ function PatreonStatement() {
 			tDoc.getField("SaveIMG.Patreon").submitName = new Date().toSource();
 		};
 	} catch (e) {};
+}
+
+//a way to change the calculations of the sheet; The input is an object with the "atkDmg", "atkHit", "atkAdd", and/or "hp" attributes;
+// Add === true to add something, or Add === false to remove something;
+function addEvals(evalObj, NameEntity, Add) {
+	if (!evalObj) return;
+	
+	//do the stuff for the attack calculations
+	var atkStr = "";
+	var remAtkAdd = CurrentEvals.atkAdd ? CurrentEvals.atkAdd : "";
+	var atkTypes = ["atkAdd", "atkHit", "atkDmg"];
+	var nameHeader = isArray(NameEntity) ? "\n\n" + toUni(NameEntity[0]) + " [" NameEntity[1] + "]:" : "\n\n" + toUni(NameEntity) + ":";
+	for (var i = 0; i < atkTypes.length; i++) {
+		var atkT = atkTypes[i];
+		if (!evalObj[atkT]) continue;
+		if (!atkStr) atkStr = nameHeader;
+		if (evalObj[atkT][1]) atkStr += "\n - " + evalObj[atkT][1];
+		if (Add) {
+			if (!CurrentEvals[atkT]) CurrentEvals[atkT] = "";
+			CurrentEvals[atkT] += evalObj[atkT][0];
+		} else if (CurrentEvals[atkT]) {
+			CurrentEvals[atkT] = CurrentEvals[atkT].replace(evalObj[atkT][0], "");
+		}
+	};
+	if (atkStr && Add) {
+		if (Add) {
+			if (!CurrentEvals.atkStr) CurrentEvals.atkStr = "";
+			CurrentEvals.atkStr += atkStr;
+		} else if (atkStr && CurrentEvals.atkStr) {
+			CurrentEvals.atkStr = CurrentEvals.atkStr.replace(atkStr, "");
+		}
+	};
+	//recalc the weapons if the eval for applying weapons has changed
+	if (remAtkAdd !== CurrentEvals.atkAdd) ReCalcWeapons();
+	
+	//do the stuff for the hp calculations
+	if (evalObj.hp) {
+		if (Add) {
+			if (!CurrentEvals.hp) CurrentEvals.hp = "";
+			CurrentEvals.hp += evalObj.hp;
+		} else if (CurrentEvals.hp) {
+			CurrentEvals.hp = CurrentEvals.hp.replace(evalObj.hp, "");
+		}
+	};
+	
+	SetStringifieds("evals"); //now set this global variable to its field for safekeeping
 }

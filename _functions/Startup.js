@@ -5,6 +5,11 @@ function InitializeEverything(noButtons) {
 	tDoc.calculate = false;
 	RunUserScript();
 	
+	//define some variables after running the user scripts
+	AllSpellsArray = CreateSpellList({class : "any"}, true);
+	AllSpellsObject = CreateSpellObject(AllSpellsArray);
+	AddSpellsMenu = ParseSpellMenu();
+	
 	if (!minVer) {
 		setListsUnitSystem(false, true);
 		UAstartupCode();

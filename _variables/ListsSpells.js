@@ -682,7 +682,7 @@ var SpellsList = {
 		compMaterial : "A weapon",
 		duration : "Instantaneous",
 		description : "Melee wea atk with cast; if hit, it 0d8, if it moves next rnd it 1d8 Thunder dmg; +1d8 at CL5, 11, \u0026 17",
-		descriptionFull : "As part of the action used to cast this spell, you must make a melee attack with a weapon against one creature within the spell's range, otherwise the spell fails. On a hit, the target suffers the attack's normal effects, and it becomes sheathed in booming energy until the start of your next turn. If the target willingly moves before then, it immediately takes 1d8 thunder damage, and the spell ends." + "\n   " + "This spell's damage increases when you reach higher levels. At 5th level, the melee attack deals an extra 1d8 thunder damage to the target, and the damage the target takes for moving increases to 2d8. Both damage rolls increase by 1d8 at 11th level and 17th level.",
+		descriptionFull : "As part of the action used to cast this spell, you must make a melee attack with a weapon against one creature within the spell's range, otherwise the spell fails. On a hit, the target suffers the attack's normal effects, and it becomes sheathed in booming energy until the start of your next turn. If the target willingly moves before then, it immediately takes 1d8 thunder damage, and the spell ends." + "\n   " + AtHigherLevels + "This spell's damage increases when you reach higher levels. At 5th level, the melee attack deals an extra 1d8 thunder damage to the target, and the damage the target takes for moving increases to 2d8. Both damage rolls increase by 1d8 at 11th level and 17th level.",
 	},
 	"branding smite" : {
 		name : "Branding Smite",
@@ -6142,6 +6142,4 @@ var SpellsList = {
 	},
 };
 
-var AllSpellsArray = CreateSpellList({class : "any"}, true);
-var AllSpellsObject = CreateSpellObject(AllSpellsArray);
-var AddSpellsMenu = ParseSpellMenu();
+var AllSpellsArray, AllSpellsObject, AddSpellsMenu, AllCasterClasses;

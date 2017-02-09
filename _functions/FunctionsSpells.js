@@ -2963,7 +2963,7 @@ function AskUserSpellSheet() {
 		
 		//now call the dialog and do something with the results if OK was pressed
 		if (app.execDialog(dia) !== "ok") {
-			SetStringifieds();
+			SetStringifieds("spells");
 			thermoM("stop"); //stop the top progress dialog
 			return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 		} else {
@@ -3034,7 +3034,7 @@ function AskUserSpellSheet() {
 				if (spCast.selectSpSB) diaSB.selectSp = spCast.selectSpSB;
 				
 				if (app.execDialog(diaSB) !== "ok") {
-					SetStringifieds();
+					SetStringifieds("spells");
 					thermoM("stop"); //stop the top progress dialog
 					return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 				} else {
@@ -3080,7 +3080,7 @@ function AskUserSpellSheet() {
 				
 				//call the dialog and do something with the results
 				if (app.execDialog(diaPrep) !== "ok") {
-					SetStringifieds();
+					SetStringifieds("spells");
 					thermoM("stop"); //stop the top progress dialog
 					return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 				} else {
@@ -3141,7 +3141,7 @@ function AskUserSpellSheet() {
 		SpellSheetOrder_Dialog.bIncL = inclNames;
 		SpellSheetOrder_Dialog.glossary = CurrentCasters.glossary;
 		if (app.execDialog(SpellSheetOrder_Dialog) !== "ok") {
-			SetStringifieds();
+			SetStringifieds("spells");
 			return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 		} else {
 			var exclList = SpellSheetOrder_Dialog.bExcL;
@@ -3167,7 +3167,7 @@ function AskUserSpellSheet() {
 	}
 	
 	//now save the updated CurrentSpells and CurrentCasters variables to the field
-	SetStringifieds();
+	SetStringifieds("spells");
 	
 	//now return true if dialogs were presented, and false if they weren't
 	return classesArray.length > 0;
@@ -3446,20 +3446,12 @@ function MakeSpellMenu_SpellOptions() {
 		}
 	}
 	
-	//make a list of all spellcasting classes
+	//use the global variable of all spellcasting classes
 	var CasterClasses = [];
-	for (var aClass in ClassList) {
-		if (aClass === "rangerua") continue;
-		if (ClassList[aClass].spellcastingFactor) {
-			CasterClasses.push(["with all " + aClass.capitalize() + " spells", aClass]);
-		} else {
-			var subClasses = ClassList[aClass].subclasses[1];
-			for (var SC = 0; SC < subClasses.length; SC++) {
-				if (ClassSubList[subClasses[SC]].spellcastingFactor) {
-					CasterClasses.push(["with all " + subClasses[SC].capitalize() + " spells", subClasses[SC]]);
-				}
-			}
-		}
+	for (var i = 2; i < AllCasterClasses.length; i++) {
+		var sClass = AllCasterClasses[i];
+		if (sClass === "any") continue;
+		CasterClasses.push([sClass === "-" ? sClass : "with all " + sClass.capitalize() + " spells", sClass]);
 	}
 	
 	//see if their are any number of spellcasting things
@@ -3758,10 +3750,13 @@ function ParseSpellMenu() {
 	}
 	
 	var amendMenu = function(theMenu, nameChange, extraReturn) {
-		theMenu.cName = nameChange
+		theMenu.cName = nameChange;
 		for (var a = 0; a < theMenu.oSubMenu.length; a++) {
+			if (theMenu.oSubMenu[a].cName === "-") continue;
 			for (var b = 0; b < theMenu.oSubMenu[a].oSubMenu.length; b++) {
+				if (theMenu.oSubMenu[a].oSubMenu[b].cName === "-") continue;
 				for (var c = 0; c < theMenu.oSubMenu[a].oSubMenu[b].oSubMenu.length; c++) {
+					if (theMenu.oSubMenu[a].oSubMenu[b].oSubMenu[c].cName === "-") continue;
 					theMenu.oSubMenu[a].oSubMenu[b].oSubMenu[c].cReturn += extraReturn;
 				}
 			}
@@ -3770,6 +3765,7 @@ function ParseSpellMenu() {
 	
 	var allSpellCasters = [
 		"any",
+		"-",
 		"bard",
 		"cleric",
 		"druid",
@@ -3777,16 +3773,47 @@ function ParseSpellMenu() {
 		"ranger",
 		"sorcerer",
 		"warlock",
-		"wizard"
-	]
+		"wizard",
+		"-"
+	];
+	
+	var moreSpellCasters = [];
+	for (var aClass in ClassList) {
+		if (aClass === "rangerua") continue;
+		if (ClassList[aClass].spellcastingFactor) {
+			if (allSpellCasters.indexOf(aClass) === -1 && moreSpellCasters.indexOf(aClass) === -1 && !testSource(aClass, ClassList[aClass], "classExcl")) moreSpellCasters.push(aClass);
+		} else {
+			var subClasses = ClassList[aClass].subclasses[1];
+			for (var SC = 0; SC < subClasses.length; SC++) {
+				var aSubClass = subClasses[SC];
+				if (ClassSubList[aSubClass].spellcastingFactor && allSpellCasters.indexOf(aSubClass) === -1 && moreSpellCasters.indexOf(aSubClass) === -1 && !testSource(aSubClass, ClassSubList[aSubClass], "classExcl")) moreSpellCasters.push(aSubClass);
+			}
+		}
+	};
+	
+	moreSpellCasters.sort();
+	allSpellCasters = allSpellCasters.concat(moreSpellCasters);
+	
+	//now see if this newly created list matches the 
+	if (AllCasterClasses && AllCasterClasses === allSpellCasters) {
+		return AddSpellsMenu;
+	} else {
+		AllCasterClasses = allSpellCasters;
+	};
 	
 	var AllSpellsMenu = {cName : "without first column", oSubMenu : []};
 	for (var s = 0; s < allSpellCasters.length; s++) {
 		var aCast = allSpellCasters[s];
+		var aObj = ClassList[aCast] ? ClassList[aCast] : (ClassSubList[aCast] ? ClassSubList[aCast] : false);
+		if (aCast === "-") {
+			AllSpellsMenu.oSubMenu.push({cName : "-"});
+			continue;
+		}
+		var aCastClass = aObj && aObj.spellcastingList ? aObj.spellcastingList : {class : aCast};
 		var aCastName = aCast === "any" ? "All spells" : aCast.capitalize() + " spells";
 		
 		//get a list of all the spells in the class' spell list and sort it
-		var allSpells = CreateSpellList({class : aCast}, false);
+		var allSpells = CreateSpellList(aCastClass, false);
 		allSpells.sort();
 		
 		//now make an array with one array for each spell level
@@ -3795,8 +3822,8 @@ function ParseSpellMenu() {
 		spellsByLvl.unshift(allSpells);
 		
 		//now create amenu for this class and add it to the submenu array of AllSpellsMenu
-		createMenu(AllSpellsMenu, aCastName, spellsByLvl)
-	}
+		createMenu(AllSpellsMenu, aCastName, spellsByLvl);
+	};
 	
 	//start an array of the different menus
 	var spellsMenuArray = [AllSpellsMenu];

@@ -558,7 +558,7 @@ function resourceDecisionDialog() {
 	
 	if (app.execDialog(selectionDialogue) === "ok") {
 		UpdateDropdown("resources");
-		SetStringifieds();
+		SetStringifieds("sources");
 		
 		//if something changed for the spells make the spell menu again
 		var oldCS = eval(remCS);
