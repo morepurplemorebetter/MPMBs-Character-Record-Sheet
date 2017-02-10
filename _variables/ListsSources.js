@@ -165,12 +165,6 @@ var SourceList = {
 		name : "Unearthed Arcana: Artificer", //2017-01-09
 		abbreviation : "UA:A",	
 		group : "Unearthed Arcana",
-		url : "http://media.wizards.com/2016/dnd/downloads/UAPaladin_SO_20161219_1.pdf"
-	},
-	"UA:A" : {
-		name : "Unearthed Arcana: Artificer", //2017-01-09
-		abbreviation : "UA:A",	
-		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2016/dnd/downloads/1_UA_Artificer_20170109.pdf"
 	},
 	"UA:RnR" : {
