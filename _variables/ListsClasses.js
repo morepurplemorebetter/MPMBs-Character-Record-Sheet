@@ -509,7 +509,12 @@ var ClassList = {
 				source : ["P", 78],
 				minlevel : 1,
 				description : "\n   " + "Monk weapons: shortsword, simple weapon (not two-handed/heavy), unarmed strike" + "\n   " + "With these, I can use Dex instead of Str and use the Martial Arts damage die" + "\n   " + "When taking an Attack action with these, I get one unarmed strike as a bonus action",
-				additional : ["1d4", "1d4", "1d4", "1d4", "1d6", "1d6", "1d6", "1d6", "1d6", "1d6", "1d8", "1d8", "1d8", "1d8", "1d8", "1d8", "1d10", "1d10", "1d10", "1d10"],
+				additional : levels.map(function (n) {
+					if (n < 5) return "1d4";
+					if (n < 11) return "1d6";
+					if (n < 17) return "1d8";
+					return "1d10";
+				}),
 				action : ["bonus action", " (with Attack action)"],
 				eval : "AddString(\"Extra.Notes\", \"Monk features:\\n\\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor\/shields\", true);",
 				removeeval : "RemoveString(\"Extra.Notes\", \"Monk features:\\n\\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor\/shields\", true);"

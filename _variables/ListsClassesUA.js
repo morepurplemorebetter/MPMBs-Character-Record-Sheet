@@ -2046,7 +2046,7 @@ ClassList.monk.subclasses[1].push("way of the kensei");
 ClassSubList["way of tranquility"] = {
 	regExpSearch : /^(?=.*tranquility|tranquil|calm|diplomatic|diplomat)((?=.*(monk|monastic))|((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior))).*$/i,
 	subname : "Way of Tranquility",
-	ource : ["UA:MMT", 2],
+	source : ["UA:MMT", 2],
 	features : {
 		"subclassfeature3" : {
 			name : "Path of Tranquility",

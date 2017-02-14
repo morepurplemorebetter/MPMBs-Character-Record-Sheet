@@ -5728,7 +5728,7 @@ function addEvals(evalObj, NameEntity, Add) {
 	//do the stuff for the attack calculations
 	var atkStr = "";
 	var remAtkAdd = CurrentEvals.atkAdd ? CurrentEvals.atkAdd : "";
-	var atkTypes = ["atkAdd", "atkHit", "atkDmg"];
+	var atkTypes = ["atkAdd", "atkCalc"];
 	var nameHeader = isArray(NameEntity) ? "\n\n" + toUni(NameEntity[0]) + " [" + NameEntity[1] + "]:" : "\n\n" + toUni(NameEntity) + ":";
 	for (var i = 0; i < atkTypes.length; i++) {
 		var atkT = atkTypes[i];
@@ -5742,7 +5742,7 @@ function addEvals(evalObj, NameEntity, Add) {
 			CurrentEvals[atkT] = CurrentEvals[atkT].replace(evalObj[atkT][0], "");
 		}
 	};
-	if (atkStr && Add) {
+	if (atkStr) {
 		if (Add) {
 			if (!CurrentEvals.atkStr) CurrentEvals.atkStr = "";
 			CurrentEvals.atkStr += atkStr;
@@ -5760,8 +5760,329 @@ function addEvals(evalObj, NameEntity, Add) {
 			CurrentEvals.hp += evalObj.hp;
 		} else if (CurrentEvals.hp) {
 			CurrentEvals.hp = CurrentEvals.hp.replace(evalObj.hp, "");
-		}
+		};
+		SetHPTooltip();
 	};
 	
 	SetStringifieds("evals"); //now set this global variable to its field for safekeeping
-}
+};
+
+//apply the effect of a weapon with inputText the literal string in the Weapon Selection field and fldName the name of the field (any one of them); If fldName is left blank, use the event.target.name
+function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
+	fldName = fldName ? fldName : event.target.name;
+	var QI = fldName.indexOf("Comp.") === -1;
+	var Q = QI ? "" : "Comp.Use.";
+	var prefix = QI ? "" : fldName.substring(0, fldName.indexOf("Comp."));
+	var fldNmbr = fldName.replace(/.*Attack\.(\d+?)\..+/, "$1");
+	var ArrayNmbr = Number(fldNmbr) - 1;
+	var fldBase = prefix + Q + "Attack." + fldNmbr + ".";
+	var fldBaseBT = prefix + "BlueText." + Q + "Attack." + fldNmbr + ".";
+	var WeaponText = 
+	
+	//set the input as the submitName for reference and set the non-automated field with the same value as well
+	tDoc.getField(fldBase + "Weapon Selection").submitName = inputText;
+	if (!IsNotWeaponMenu || What("Manual Attack Remember") === "Yes") return; //don't do the rest of this function if only moving weapons around or weapons are set to manual or the compfield didn't change
+	
+	if (What(fldBase + "Weapon") !== inputText) Value(fldBase + "Weapon", inputText);
+	
+	//remember what the old weapon was
+	var oldWea = QI ? CurrentWeapons.known[ArrayNmbr][0] : CurrentWeapons.compKnown[prefix][ArrayNmbr][0];
+	
+	//now find the new weapon and put it in the document level variable CurrentWeapons
+	if (QI) {
+		CurrentWeapons.field[ArrayNmbr] = inputText;
+		FindWeapons(ArrayNmbr);
+	} else {
+		CurrentWeapons.compField[prefix][ArrayNmbr] = inputText;
+		FindCompWeapons(ArrayNmbr, prefix);
+	};
+	
+	//a variable with all different fields of the one weapon
+	var fields = {
+		Proficiency : false,
+		Mod : "",
+		Range : "",
+		Damage_Type : "",
+		Description : "",
+		To_Hit_Bonus : 0,
+		Damage_Bonus : 0,
+		Damage_Die : "",
+		Weight : ""
+	};
+	var BTflds = ["To_Hit_Bonus", "Damage_Bonus", "Damage_Die", "Weight"];
+	
+	thermoM("start"); //start a progress dialog
+	thermoM("Filling out the weapon's details..."); //change the progress dialog text
+	tDoc.delay = true;
+	tDoc.calculate = false;
+	
+	//set a variable to refer to the new weapon
+	var WeaponName = QI ? CurrentWeapons.known[ArrayNmbr][0] : CurrentWeapons.compKnown[prefix][ArrayNmbr][0];
+	var theWea = WeaponsList[WeaponName];
+	
+	//if there is a new weapon entered and the old weapon had ammo that is not used by any of the current weapons, remove that ammo from the ammo section.
+	if (QI && oldWea && WeaponsList[oldWea].ammo) {
+		var theOldAmmo = WeaponsList[oldWea].ammo;
+		var tempFound = false;
+		for (var j = 0; j < CurrentWeapons.known.length; j++) {
+			jWeapon = WeaponsList[CurrentWeapons.known[j][0]];
+			if (jWeapon && jWeapon.ammo && jWeapon.ammo === theOldAmmo) {
+				tempFound = true;
+				break;
+			};
+		};
+		if (!tempFound) RemoveAmmo(theOldAmmo);
+	};
+	
+	// if a weapon was found, set the variables
+	if (theWea) {
+		thermoM("Applying the weapon's features..."); //change the progress dialog text
+		fields.Description = theWea.description; //add description
+		fields.Range = theWea.range; //add range
+		fields.Damage_Type = theWea.damage[2]; //add Damage Type
+		
+		//add Weight
+		fields.Weight = theWea.weight ? theWea.weight :
+			isReCalc ? What(fldBaseBT + "Weight") : ""; 
+		
+		//add Damage Die
+		fields.Damage_Die = theWea.damage[0] + (parseFloat(theWea.damage[1]) ? "d" + theWea.damage[1] : "");
+		
+		//add To Hit Bonus
+		fields.To_Hit_Bonus = theWea.dc ? "dc" : 
+			theWea.modifiers && theWea.modifiers[0] ? theWea.modifiers[0] : 
+			isReCalc ? What(fldBaseBT + "To Hit Bonus") : 0;
+		
+		//add Damage Bonus
+		fields.Damage_Bonus = theWea.modifiers && theWea.modifiers[1] ? theWea.modifiers[1] : 
+			isReCalc ? What(fldBaseBT + "Damage Bonus") : 0;
+		
+		//add proficiency checkmark
+		fields.Proficiency = !QI ? true : 
+			QI && theWea.type.match(/natural|spell|cantrip/i) ? true : 
+			theWea.type.match(/simple|martial/i) ? tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) : 
+			CurrentWeapons.extraproficiencies.indexOf(WeaponName) !== -1 || CurrentWeapons.extraproficiencies.indexOf(theWea.type.toLowerCase()) !== -1 ? true : false;
+		
+		//add mod
+		var StrDex = What("Str Mod") < What("Dex Mod") ? 2 : 1;
+		fields.Mod = theWea.description.match(/finesse/i) ? StrDex : theWea.ability;
+		//change mod if this is concerning a spell/cantrip
+		var isSpell = theWea.SpellsList ? theWea.SpellsList : WeaponName;
+		if (QI && theWea.type.match(/spell|cantrip/i) && SpellsList[isSpell]) {
+			var abiArr = [], abiModArr = [], castArr = [];
+			for (var aClass in CurrentSpells) {
+				var sClass = CurrentSpells[aClass];
+				if (!sClass.ability) continue;
+				var checkArr = ["selectCa", "selectBo", "selectSp", "extra"];
+				for (var i = 0; i < checkArr.length; i++) {
+					if (sClass[checkArr[i]] && sClass[checkArr[i]].indexOf(isSpell) !== -1) {
+						if (abiArr.indexOf(sClass.ability) === -1) abiArr.push(sClass.ability);
+						castArr.push(sClass);
+						break;
+					};
+				};
+				if (castArr.indexOf(sClass) === -1 && theWea.type.match(/spell/i) && sClass.typeSp.match(/list|spellbook/i)) {
+					var spObj = eval(sClass.list.toSource());
+					spObj.level = [1, 9];
+					var theSpList = CreateSpellList(spObj);
+					if (theSpList.indexOf(isSpell) !== -1) {
+						if (abiArr.indexOf(sClass.ability) === -1) abiArr.push(sClass.ability);
+						castArr.push(sClass);
+					}
+				}
+			};
+			//now get the highest of the found mods, if any
+			if (abiArr.length) {
+				abiArr.forEach(function (abiNmbr) {
+					var thisMod = What(tDoc.getField(fldBase + "Mod").getItemAt(abiNmbr));
+					if (thisMod > Math.max.apply(Math, abiModArr)) fields.Mod = abiNmbr;
+					abiModArr.push(thisMod);
+				});
+			};
+		};
+		
+		if (theWea.ammo) fields.Ammo = theWea.ammo; //add ammo
+		
+		//now run the code that was added by class/race/feat
+		if (QI && CurrentEvals.atkAdd) {
+			try {
+				eval(CurrentEvals.atkAdd);
+			} catch (err) {console.println("Custom ApplyWeapon/atkAdd script not working: " + err)};
+		};
+	};
+
+	// apply the values to the fields only if we need to either reset the fields or a weapon was found
+	if (onlyProf) {
+		Checkbox(fldBase + "Proficiency", fields.Proficiency);
+	} else if (theWea || !inputText) {
+		for (var weaKey in fields) {
+			var keyFld = (BTflds.indexOf(weaKey) !== -1 ? fldBaseBT : fldBase) + weaKey.replace("_", " ");
+			if (!fields[weaKey]) {
+				tDoc.resetForm([keyFld]);
+				continue;
+			};
+			switch (weaKey) {
+			 case "Proficiency" :
+				Checkbox(keyFld, fields[weaKey]);
+				break;
+			 case "Mod" :
+				PickDropdown(keyFld, fields[weaKey]);
+				break;
+			 case "Damage Type" :
+				AddDmgType(keyFld, fields[weaKey]);
+				break;
+			 case "Weight" :
+				var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
+				Value(keyFld, RoundTo(fields[weaKey] * massMod, 0.001, true));
+				break;
+			 case "Description" :
+			 case "Range" :
+				Value(keyFld, What("Unit System") === "imperial" ? fields[weaKey] : ConvertToMetric(fields[weaKey], 0.5));
+				break;
+			 case "Ammo" :
+				if (fields[weaKey]) AddAmmo(fields[weaKey]);
+				break;
+			 default :
+				Value(keyFld, fields[weaKey]);				
+			};
+		};
+	} else { //if not a known weapon or an empty field, still check if we need to set the checkmark for proficiency
+		for (var i = 0; i < CurrentWeapons.manualproficiencies.length; i++) {
+			if (CurrentWeapons.field[ArrayNmbr].toLowercase().indexOf(CurrentWeapons.manualproficiencies[i].toLowercase()) !== -1) {
+				Checkbox(fldBase + "Proficiency", true);
+				break;
+			};
+		};
+	};
+	
+	thermoM("stop"); //stop the top progress dialog
+	tDoc.calculate = IsNotReset;
+	tDoc.delay = !IsNotReset;
+	if (IsNotReset) tDoc.calculateNow();
+};
+
+//calculate the attack damage and to hit, can be called from any of the attack fields (sets the fields)
+function CalcAttackDmgHit(fldName) {
+	if (What("Manual Attack Remember") === "Yes") return; //if the attack calculation is set to manual, don't do anything
+	
+	fldName = fldName ? fldName : event.target.name;
+	var QI = fldName.indexOf("Comp.") === -1;
+	var Q = QI ? "" : "Comp.Use.";
+	var prefix = QI ? "" : fldName.substring(0, fldName.indexOf("Comp."));
+	var fldNmbr = fldName.replace(/.*Attack\.(\d+?)\..+/, "$1");
+	var ArrayNmbr = Number(fldNmbr) - 1;
+	var fldBase = prefix + Q + "Attack." + fldNmbr + ".";
+	var fldBaseBT = prefix + "BlueText." + Q + "Attack." + fldNmbr + ".";
+	var fields = {
+		Proficiency : tDoc.getField(fldBase + "Proficiency").isBoxChecked(0),
+		Mod : What(fldBase + "Mod"),
+		Range : What(fldBase + "Range"),
+		Damage_Type : What(fldBase + "Damage Type"),
+		Description : What(fldBase + "Description"),
+		To_Hit_Bonus : What(fldBaseBT + "To Hit Bonus"),
+		Damage_Bonus : What(fldBaseBT + "Damage Bonus"),
+		Damage_Die : What(fldBaseBT + "Damage Die")
+	};
+	
+	if (fields.Mod.match(/^(| |empty)$/)) {
+		Value(fldBase + "Damage", "");
+		Value(fldBase + "To Hit", "");
+		return;
+	};
+	
+	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
+	var WeaponName = thisWeapon[0];
+	var theWea = WeaponsList[WeaponName];
+	var WeaponText = (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]) + fields.Description;
+	
+	// get the damage bonuses from the selected modifier, magic, and the blueText field
+	var output = {
+		prof : !fields.Proficiency ? 0 : (QI ? (tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) ? 0 : What("Proficiency Bonus")) : (tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) ? 0 : What(prefix + "Comp.Use.Proficiency Bonus"))),
+		die : fields.Damage_Die,
+		modToDmg : thisWeapon[2],
+		mod : !fields.Mod || fields.Mod === "empty" ? 0 : What(prefix + fields.Mod),
+		magic : thisWeapon[1],
+		bHit : fields.To_Hit_Bonus,
+		bDmg : fields.Damage_Bonus,
+		extraDmg : 0,
+		extraHit : 0
+	};
+
+	// see if this is a off-hand attack and the modToDmg shouldn't be use
+	var isOffHand = WeaponText.match(/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary))().*$/i) ? true : false;
+	if (isOffHand) {
+		AddAction("bonus action", "Off-hand Attack");
+		output.modToDmg = false;
+	}
+	var isDC = fields.To_Hit_Bonus.toLowerCase() === "dc";
+	
+	// now run the code that was added by class/race/feat
+	if (QI && CurrentEvals.atkCalc) {
+		try {
+			eval(CurrentEvals.atkCalc);
+		} catch (err) {console.println("Custom CalcAttackDmgHit/atkCalc script not working: " + err)};
+	};
+	
+	var dmgDie = "";
+	var dmgNum = 0;
+	var hitNum = 0;
+	var addNum = function(inP, DmgHit) {
+		if (isNaN(inP)) inP = isNaN(Number(inP)) ? 0 : Number(inP);
+		if (!DmgHit || DmgHit.match(/dmg/i)) dmgNum += Number(inP);
+		if (!DmgHit || DmgHit.match(/hit/i)) hitNum += Number(inP);
+	};
+	
+	for (var out in output) {
+		switch (out) {
+		 case "modToDmg" :
+			break;
+		 case "prof" :
+			addNum(output[out], "hit");
+			break;
+		 case "extraHit" :
+			addNum(output[out], "hit");
+			break;
+		 case "extraDmg" :
+			addNum(output[out], "dmg");
+			break;
+		 case "die" :
+			if (output[out].match(/(B|C)/)) { //if this involves a cantrip calculation
+				var cLvl = Number(QI ? What("Character Level") : What(prefix + "Comp.Use.HD.Level"));
+				var cDie = cantripDie[Math.min(Math.max(cLvl - 1, 1), 19)];
+				output[out] = output[out].replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/0.?d\d+/g, 0);
+			};
+			dmgDie = output[out];
+			break;
+		 case "mod" :
+			if (output.modToDmg) addNum(output[out], "dmg");
+			addNum(output[out], "hit");
+			break;
+		 case "bHit" :
+			if (output[out].toLowerCase() === "dc") {
+				addNum(8, "hit");
+				break;
+			}
+		 case "bDmg" :
+		 // if the blueText field is not a number, find the ability modifier
+			if (isNaN(output[out])) {
+				output[out] = QI ? What(output[out] + " Mod") : What(prefix + "Comp.Use.Ability." + output[out] + ".Mod");
+			};
+			addNum(output[out], out);
+			break;
+		 default :
+			addNum(output[out]);
+			break;
+		};
+	};
+	if (!isNaN(Number(dmgDie))) dmgDie = Number(dmgDie);
+	if (dmgDie && isNaN(dmgDie) && Number(dmgNum) > 0) dmgNum = "+" + dmgNum;
+	var dmgTot = dmgDie + (dmgNum === 0 ? "" : dmgNum);
+	var hitTot = (isDC ? "DC " : (hitNum >= 0 ? "+" : "")) + hitNum;
+	
+	Value(fldBase + "Damage", dmgTot);
+	if (event.target.name && event.target.name.match(/.*Attack.*To Hit/)) {
+		event.value = hitTot;
+	} else {
+		Value(fldBase + "To Hit", hitTot);
+	};
+};

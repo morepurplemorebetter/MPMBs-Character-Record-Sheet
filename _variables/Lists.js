@@ -2030,3 +2030,10 @@ var LinkDMsGuild = {
 		CF : "194069"
 	}
 };
+
+var cantripDie = levels.map(function (n) {
+	if (n < 5) return 1;
+	if (n < 11) return 2;
+	if (n < 17) return 3;
+	return 4;
+});

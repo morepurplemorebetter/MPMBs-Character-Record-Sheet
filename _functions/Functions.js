@@ -47,6 +47,13 @@ function AddTooltip(field, tooltip) {
 	tDoc.getField(field).userName = tooltip;
 };
 
+function SwapTooltip(field1, field2) {
+	tt1 = Who(field1);
+	tt2 = Who(field2);
+	AddTooltip(field1, tt2);
+	AddTooltip(field2, tt1);
+};
+
 function Checkbox(field, FldValue, tooltip) {
 	if (!tDoc.getField(field)) return false;
 	var Checkit = (FldValue === undefined) ? true : FldValue;
@@ -1096,17 +1103,7 @@ function RemoveResistance(Input) {
 };
 
 function AddDmgType(Field, Input) {
-	var useful = Input ? Input : 0;
-	var temp = false;
-	if (isNaN(Input)) {
-		useful = Input.toLowerCase();
-		for (var key in DamageTypes) {
-			if (!temp && useful.indexOf(key) !== -1) {
-				useful = DamageTypes[key].index;
-				temp = true;
-			}
-		}
-	};
+	var useful = !Input ? 0 : (DamageTypes[Input.toLowerCase()] ? DamageTypes[Input.toLowerCase()].index : Input);
 	PickDropdown(Field, useful);
 };
 
@@ -1702,18 +1699,17 @@ function ToggleAttacks(Toggle) {
 	var VisibleHidden = Toggle === "Yes" ? "Show" : "Hide";
 	var HiddenVisible = Toggle === "Yes" ? "Hide" : "Show";
 	var NoPrintHidden = Toggle === "Yes" ? "DontPrint" : "Hide";
+	var ReadOnly = Toggle === "Yes" ? "Uneditable" : "Editable";
 	var compTemps = What("Template.extras.AScomp").split(",");
 	var incr = compTemps.length * 4 + FieldNumbers.attacks * 2;
 
 	for (var i = 1; i <= FieldNumbers.attacks; i++) {
 		tDoc[HiddenVisible]("Attack." + i + ".Weapon");
-		tDoc[HiddenVisible]("Attack." + i + ".To Hit");
-		tDoc[HiddenVisible]("Attack." + i + ".Damage");
+		tDoc[ReadOnly]("Attack." + i + ".To Hit");
+		tDoc[ReadOnly]("Attack." + i + ".Damage");
 		tDoc[VisibleHidden]("Attack." + i + ".Weapon Selection");
 		tDoc[VisibleHidden]("Attack." + i + ".Proficiency");
 		tDoc[VisibleHidden]("Attack." + i + ".Mod");
-		tDoc[VisibleHidden]("Attack." + i + ".To Hit Calculated");
-		tDoc[VisibleHidden]("Attack." + i + ".Damage Calculated");
 		thermoM(i/incr); //increment the progress dialog's progress
 	}
 	
@@ -1721,13 +1717,11 @@ function ToggleAttacks(Toggle) {
 		for (var i = 1; i <= 3; i++) {
 			var prefix = compTemps[T];
 			tDoc[HiddenVisible](prefix + "Comp.Use.Attack." + i + ".Weapon");
-			tDoc[HiddenVisible](prefix + "Comp.Use.Attack." + i + ".To Hit");
-			tDoc[HiddenVisible](prefix + "Comp.Use.Attack." + i + ".Damage");
+			tDoc[ReadOnly](prefix + "Comp.Use.Attack." + i + ".To Hit");
+			tDoc[ReadOnly](prefix + "Comp.Use.Attack." + i + ".Damage");
 			tDoc[VisibleHidden](prefix + "Comp.Use.Attack." + i + ".Weapon Selection");
 			tDoc[VisibleHidden](prefix + "Comp.Use.Attack." + i + ".Proficiency");
 			tDoc[VisibleHidden](prefix + "Comp.Use.Attack." + i + ".Mod");
-			tDoc[VisibleHidden](prefix + "Comp.Use.Attack." + i + ".To Hit Calculated");
-			tDoc[VisibleHidden](prefix + "Comp.Use.Attack." + i + ".Damage Calculated");
 			thermoM((i * (T + 1) + FieldNumbers.attacks)/incr); //increment the progress dialog's progress
 		}
 		tDoc[VisibleHidden](prefix + "Attack.Titles");
@@ -3398,17 +3392,15 @@ function ParseWeapon(input) {
 	if (!input) {
 		return "";
 	}
-	var tempString = input.toLowerCase();
 	var output = "";
-	var tempFound = false;
 	
 	//scan string for all weapons, including the alternative spellings using regular expression
 	for (var key in WeaponsList) {
 		if (WeaponsList[key].regExpSearch) {
 			var wSearch = WeaponsList[key].regExpSearch; //use the defined regular expression of the weapon
-			if (!tempFound && tempString.search(wSearch) !== -1) {
+			if (input.search(wSearch) !== -1) {
 				output = key;
-				tempFound = true;
+				break;
 			}
 		}
 	}
@@ -3418,8 +3410,6 @@ function ParseWeapon(input) {
 
 //detects weapons entered and put information to global CurrentWeapons variable
 function FindWeapons(ArrayNmbr) {
-	var tempString = "";
-	var tempFound = false;
 	var tempArray = [];
 	var startArray = ArrayNmbr;
 	var endArray = ArrayNmbr + 1;
@@ -3435,7 +3425,7 @@ function FindWeapons(ArrayNmbr) {
 
 	//parse the weapons into tempArray
 	for (var j = startArray; j < endArray; j++) {
-		tempString = CurrentWeapons.field[j];
+		var tempString = CurrentWeapons.field[j];
 		tempArray[j] = [];
 		
 		//see if the field contains a known weapon
@@ -3455,11 +3445,12 @@ function FindWeapons(ArrayNmbr) {
 };
 
 //update the weapons to apply the change in proficiencies
-function ReCalcWeapons() {
+function ReCalcWeapons(justProfs) {
 	IsNotReset = false;
 	for (var xy = 0; xy < CurrentWeapons.known.length; xy++) {
 		if (CurrentWeapons.field[xy]) {
-			ApplyWeapons(What("Attack." + (xy + 1) + ".Weapon Selection"), xy + 1, true);
+			//ApplyWeapons(What("Attack." + (xy + 1) + ".Weapon Selection"), xy + 1, true);
+			ApplyWeapon(CurrentWeapons.field[xy], "Attack." + (xy + 1) + ".Weapon Selection", true, justProfs);
 		}
 	}
 	
@@ -3532,26 +3523,31 @@ function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
 		//add weapon statistics
 		if (CurrentWeapons.known[ArrayNmbr][0]) {
 			var WeaponName = CurrentWeapons.known[ArrayNmbr][0];
-			var WeaponL = WeaponsList[WeaponName];
-			var WeaponType = WeaponL.type;
+			var theAtk = WeaponsList[WeaponName];
 
 			//check if proficient
-			var TypeProf = (WeaponType === "Simple" || WeaponType === "Martial") ? tDoc.getField("Proficiency Weapon " + WeaponType).isBoxChecked(0) : 0;
+			var TypeProf = (theAtk.type === "Simple" || theAtk.type === "Martial") ? tDoc.getField("Proficiency Weapon " + theAtk.type).isBoxChecked(0) : 0;
+			if (!TypeProf)
 			for (var i = 0; i < CurrentWeapons.extraproficiencies.length; i++) {
-				if (CurrentWeapons.extraproficiencies[i] === WeaponName || CurrentWeapons.extraproficiencies[i] === WeaponType.toLowerCase()) {
+				if (CurrentWeapons.extraproficiencies[i] === WeaponName || CurrentWeapons.extraproficiencies[i] === theAtk.type.toLowerCase()) {
 					TypeProf = 1;
 					i = CurrentWeapons.extraproficiencies.length
 				};
 			};
-			if (IsNotWeaponMenu && WeaponType === "Natural" || WeaponType === "Cantrip" || WeaponType === "Spell" || TypeProf === 1) {
-				Checkbox(WeaponFlds[4], true);
+			if (IsNotWeaponMenu && theAtk.type === "Natural" || theAtk.type === "Cantrip" || theAtk.type === "Spell" || TypeProf === 1) {
+				
 			} else if (IsNotWeaponMenu) {
 				Checkbox(WeaponFlds[4], false);
 			}
 			
+			//change the actual fields, if this is not a movement induced by the weapon menu
+			
+			//Set the proficiency checkbox
+			Checkbox(WeaponFlds[4], TypeProf);
+			
 			thermoM(1/10); //increment the progress dialog's progress
 
-			var WeaponDescription = WeaponL.description;
+			var WeaponDescription = theAtk.description;
 			//add description
 			if (IsNotWeaponMenu && !isRecalc) {
 				Value(WeaponFlds[12], WeaponDescription);
@@ -3560,7 +3556,7 @@ function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
 			thermoM(2/10); //increment the progress dialog's progress
 
 			//add dc, if applicable
-			if (IsNotWeaponMenu && !isRecalc && WeaponL.dc) {
+			if (IsNotWeaponMenu && !isRecalc && theAtk.dc) {
 				Value(WeaponFlds[9], "dc");
 			} else if (What(WeaponFlds[9]).toLowerCase() === "dc") {
 				Value(WeaponFlds[9], 0);
@@ -3570,29 +3566,29 @@ function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
 			
 			//add damage type
 			if (IsNotWeaponMenu && !isRecalc) {
-				AddDmgType(WeaponFlds[8], WeaponL.damage[2]);
+				AddDmgType(WeaponFlds[8], theAtk.damage[2]);
 			};
 
 			//add damage die
-			var weaponDmgDie = Number(WeaponL.damage[1]);
+			var weaponDmgDie = Number(theAtk.damage[1]);
 			if (isNaN(weaponDmgDie)) weaponDmgDie = 0;
-			var weaponDieString = weaponDmgDie === 0 ? WeaponL.damage[0] : WeaponL.damage[0] + "d" + weaponDmgDie;
+			var weaponDieString = weaponDmgDie === 0 ? theAtk.damage[0] : theAtk.damage[0] + "d" + weaponDmgDie;
 			
 			thermoM(4/10); //increment the progress dialog's progress
 
 			//first check if character has monk levels
 			var monkDmgDie = 0;
-			if (classes.known.hasOwnProperty("monk") && (WeaponL.monkweapon || (WeaponType === "Martial" && classes.known.monk.subclass === "way of the kensei" && classes.known.monk.level >= 3))) {
+			if (classes.known.hasOwnProperty("monk") && (theAtk.monkweapon || (theAtk.type === "Martial" && classes.known.monk.subclass === "way of the kensei" && classes.known.monk.level >= 3))) {
 				monkDmgDie = CurrentClasses.monk.features["martial arts"].additional[classes.known["monk"].level - 1];
 				monkDmgDie = monkDmgDie.match(/.*(\d+d\d+).*/) ? monkDmgDie.replace(/.*(\d+d\d+).*/, "$1") : 0;
 				var monkDmgDieCalc = monkDmgDie ? eval(monkDmgDie.replace("d", "*")) : 0;
-				if (!isNaN(WeaponL.damage[0])) weaponDmgDie = weaponDmgDie * WeaponL.damage[0];
+				if (!isNaN(theAtk.damage[0])) weaponDmgDie = weaponDmgDie * theAtk.damage[0];
 				if (weaponDmgDie < monkDmgDieCalc) {
 					weaponDieString = monkDmgDie;
 				}
 			}
 			if (IsNotWeaponMenu) {
-				weaponDieString += WeaponL.damage[3] ? WeaponL.damage[3] : "";
+				weaponDieString += theAtk.damage[3] ? theAtk.damage[3] : "";
 				Value(WeaponFlds[11], weaponDieString);
 			}
 			
@@ -3600,7 +3596,7 @@ function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
 
 			//add range
 			if (IsNotWeaponMenu && !isRecalc) {
-				var theRange = What("Unit System") === "imperial" || WeaponL.range === "Melee" ? WeaponL.range : ConvertToMetric(WeaponL.range, 0.5);
+				var theRange = What("Unit System") === "imperial" || theAtk.range === "Melee" ? theAtk.range : ConvertToMetric(theAtk.range, 0.5);
 				Value(WeaponFlds[13], theRange);
 			};
 			
@@ -3608,15 +3604,15 @@ function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
 
 			//add ability modifier, prefer Dex over Str for finesse and monk weapons if Dex is more
 			if (IsNotWeaponMenu) {
-				var WeaponAbility = WeaponL.ability;
+				var WeaponAbility = theAtk.ability;
 				if ((monkDmgDie || WeaponDescription.toLowerCase().indexOf("finesse") !== -1) && What("Str") <= What("Dex")) {
 					WeaponAbility = 2;
-				} else if (WeaponL.type === "Cantrip" || WeaponL.type === "Spell") {
+				} else if (theAtk.type === "Cantrip" || theAtk.type === "Spell") {
 					//see on which of the spell lists of the known classes the spell/cantrip appears
 					var theDCMod1 = tDoc.getField("Spell DC 1 Mod").currentValueIndices;
 					var theDCMod2 = tDoc.getField("Spell DC 2 Mod").currentValueIndices;
 					WeaponAbility = theDCMod1 !== 0 ? theDCMod1 : (theDCMod2 !== 0 ? theDCMod2 : WeaponAbility);
-					var isSpell = WeaponL.SpellsList ? WeaponL.SpellsList : WeaponName;
+					var isSpell = theAtk.SpellsList ? theAtk.SpellsList : WeaponName;
 					var theSpell = SpellsList[isSpell];
 					var foundClass = false;
 					if (theSpell) {
@@ -3641,7 +3637,7 @@ function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
 			thermoM(7/10); //increment the progress dialog's progress
 			
 			//add Wis modifier to 'bluetext' damage bonus if the character has the "Potent Spellcasting" class feature and the weapon is a cantrip
-			if (IsNotWeaponMenu && WeaponType === "Cantrip" && What("Class Features").toLowerCase().indexOf("potent spellcasting") !== -1) {
+			if (IsNotWeaponMenu && theAtk.type === "Cantrip" && What("Class Features").toLowerCase().indexOf("potent spellcasting") !== -1) {
 				Value(WeaponFlds[10], "Wis");
 			} else if (IsNotWeaponMenu) {
 				Value(WeaponFlds[10], 0);
@@ -3651,8 +3647,8 @@ function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
 			
 			//add weight of the weapon
 			var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
-			if (IsNotWeaponMenu && WeaponL.weight) {
-				Value(WeaponFlds[14], RoundTo(WeaponL.weight * massMod, 0.001, true));
+			if (IsNotWeaponMenu && theAtk.weight) {
+				Value(WeaponFlds[14], RoundTo(theAtk.weight * massMod, 0.001, true));
 			} else if (IsNotWeaponMenu) {
 				Value(WeaponFlds[14], 0);
 			}
@@ -3660,13 +3656,13 @@ function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
 			thermoM(9/10); //increment the progress dialog's progress
 			
 			//add ammo, if defined
-			if (IsNotWeaponMenu && WeaponL.ammo) {
-				AddAmmo(WeaponL.ammo);
+			if (IsNotWeaponMenu && theAtk.ammo) {
+				AddAmmo(theAtk.ammo);
 			}
 			
-			if (WeaponL.modifiers) { //add to hit and damage modifiers, if defined
-				if (WeaponL.modifiers[0] && !WeaponL.dc) Value(WeaponFlds[9], WeaponL.modifiers[0])
-				if (WeaponL.modifiers[1]) Value(WeaponFlds[10], WeaponL.modifiers[1])
+			if (theAtk.modifiers) { //add to hit and damage modifiers, if defined
+				if (theAtk.modifiers[0] && !theAtk.dc) Value(WeaponFlds[9], theAtk.modifiers[0])
+				if (theAtk.modifiers[1]) Value(WeaponFlds[10], theAtk.modifiers[1])
 			}
 		} else if (IsNotWeaponMenu && CurrentWeapons.manualproficiencies.length > 0) { //if not a known weapon, but there are unknown weapons to check it against
 			for (var i = 0; i < CurrentWeapons.manualproficiencies.length; i++) {
@@ -3682,6 +3678,7 @@ function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
 	if (IsNotReset) tDoc.calculateNow();
 };
 
+/* 
 //calculate the attack damage (field calculation)
 function CalcAttackDamage() {
 	var FldNmbr = event.target.name.replace(/.*Attack\.(\d+?)\..+/, "$1");
@@ -3760,7 +3757,7 @@ function CalcAttackDamage() {
 	}
 	
 	//now replace the "C" in the damage die field with the cantrip multiplier
-	//and the "B" with the cantrip multiplier minus 1 (or remove the dsomething with a 0)
+	//and the "B" with the cantrip multiplier minus 1 (or remove the d-something with a 0)
 	var Lvl = Number(QI ? What("Character Level") : What(prefix + "Comp.Use.HD.Level"));
 	if (Lvl < 5) {
 		var LvlB = 1;
@@ -3864,6 +3861,7 @@ function CalcAttackTohit() {
 	
 	event.value = theEndvalue;
 };
+*/
 
 function SetWeaponsdropdown() {
 	tDoc.delay = true;
@@ -3871,10 +3869,10 @@ function SetWeaponsdropdown() {
 	var string = "Type in the name of the attack (or select it from the drop-down menu) and all its attributes will be filled out automatically, provided that its a recognized attack.";
 	string += "\n\n" + toUni("Magic bonus") + "\nAny magical bonus you type in this field is added to both the to hit and damage (e.g. type \"Longsword +2\").";
 	string += "\n\n" + toUni("Off-hand weapons") + "\nIf the name or description fields include the word \"off-hand\", \"secondary\", \"spell\", or \"cantrip\", the ability modifier will only be added to the to hit bonus, and not to the damage.";
-	string += "\n\n" + toUni("Sharpshooter & Great Weapon Master feats") + "\nIf the name or description fields include one of the following: \"sharpshooter\", \"great weapon master\", or \"power attack\", the to hit and damage calculation will automatically be amended to include -5 to hit and +10 damage.";
-	string += "\n\n" + toUni("To hit calculation") + "\nAs follows: proficiency bonus + selected ability modifier + magical bonus + any value you have added in the \"override section\" (a.k.a. the \"blue text fields\").";
-	string += "\n\n" + toUni("Damage calculation") + "\nAs follows: damage die of the selected weapon (editable in the \"blue text fields\") + selected ability modifier + magical bonus + any value you have added in the \"override section\" (a.k.a. the \"blue text fields\").";
-	string += "\n\n" + toUni("Blue text fields") + "\nIn order to see these you first need to push the \"Mods\" button in the \"JavaScript Window\".";
+	string += "\n\n" + toUni("Damage Die") + "\nThis is determined by the value in the \"modifier\" field, see below.";
+	string += "\n\n" + toUni("To Hit and Damage calculations") + "\nThese are calculated using the proficiency bonus, the selected ability modifier and any bonus added in the \"modifier\" fields, see below.";
+	string += "\n\n" + toUni("Context-aware calculations") + "\nSome class features, racial features, and feats can affect the attack to hit and damage calculations. You can read what these are by clicking the button in this line.";
+	string += "\n\n" + toUni("Modifier or blue text fields") + "\nThese are hidden by default. You can toggle their visibility with the \"Mods\" button in the \'JavaScript Window\' or the \"Modifiers\" bookmark.";
 
 	for (var i = 1; i <= FieldNumbers.attacks; i++) {
 		var theFld = "Attack." + i + ".Weapon Selection";
@@ -5373,7 +5371,7 @@ function ApplyProficiencies(updatefields) {
 		Value("Proficiency Weapon Other Description", WeaponOtherString, WeaponOtherTip);
 
 		//update the weapons to reflect the new proficiencies
-		ReCalcWeapons();
+		ReCalcWeapons(true);
 	}
 };
 
@@ -5502,6 +5500,9 @@ function FindFeats(ArrayNmbr) {
 			if (theFeat.armor && What("Manual Feat Remember") !== "Yes") {
 				CurrentArmour.proficiencies[theFeat.name + " feat"] = theFeat.armor;
 			}
+			if (theFeat.weapons && What("Manual Feat Remember") !== "Yes") {
+				CurrentWeapons.proficiencies[theFeat.name + " feat"] = theFeat.weapons;
+			}
 			if (theFeat.improvements) {
 				CurrentFeats.improvements.push(theFeat.improvements);
 			}
@@ -5545,6 +5546,9 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		var theFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
 		if (IsNotFeatMenu && theFeat.armor) {
 			delete CurrentArmour.proficiencies[theFeat.name + " feat"];
+		}
+		if (IsNotFeatMenu && theFeat.weapons) {
+			delete CurrentWeapons.proficiencies[theFeat.name + " feat"];
 		}
 		if (IsNotFeatMenu && theFeat.source && SourceList[theFeat.source[0]]) {
 			var sourceStringOld = "(" + SourceList[theFeat.source[0]].abbreviation + (theFeat.source[1] ? ", page " + theFeat.source[1] + ")" : "");
@@ -8045,15 +8049,13 @@ function FindManualOtherWeapons(startup) {
 					extraArray.push(OWarray[ow].toLowerCase().replace(/^\s+|\s+$/g, "")); //add it, but only after removing leading and trailing white spaces, or otherwise it will look ugly
 				}
 			}
-			
-			//put the arrays into the global variables
-			CurrentWeapons.proficiencies["Manually added"] = [false, false, tempArray.sort()];
-			if (extraArray.length > 0) {
-				CurrentWeapons.manualproficiencies = extraArray.sort();
-			}
-			//put the arrays in the remember field
-			Value("Other Weapon Proficiencies Remember", tempArray.sort() +  "!#TheListSeparator#!" + extraArray.sort());
 		}
+			
+		//put the arrays into the global variables
+		CurrentWeapons.proficiencies["Manually added"] = [false, false, tempArray.sort()];
+		CurrentWeapons.manualproficiencies = extraArray.sort();
+		//put the arrays in the remember field
+		Value("Other Weapon Proficiencies Remember", tempArray.sort() +  "!#TheListSeparator#!" + extraArray.sort());
 	} else {
 		//get the arrays from the remember field
 		var tempArray = What("Other Weapon Proficiencies Remember").split("!#TheListSeparator#!");
@@ -10139,10 +10141,10 @@ function FeatInsert(itemNmbr) {
 				Value(FieldNames[H] + i, What(FieldNames[H] + (i - 1)));
 			}
 		}
+		IsNotFeatMenu = true;
 		
 		//empty the selected slot
 		tDoc.resetForm(Fields);
-		IsNotFeatMenu = true;
 	}
 }
 
@@ -10172,10 +10174,10 @@ function FeatDelete(itemNmbr) {
 			Value(FieldNames[H] + i, What(FieldNames[H] + (i + 1)));
 		};
 	}
+	IsNotFeatMenu = true;
 	
 	//delete the contents of the final line
 	tDoc.resetForm(EndFields);
-	IsNotFeatMenu = true;
 }
 
 //Make menu for the button on each Attack line and parse it to Menus.attacks
@@ -10300,6 +10302,7 @@ function WeaponOptions() {
 		thermoM("start"); //start a progress dialog
 		thermoM("Weapon menu option..."); //change the progress
 		var IconFld = !typePF ? tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonGetIcon() : "";
+		var findWeaps = false;
 		switch (MenuSelection[0]) {
 		 case "move up":
 			thermoM("Moving the attack up..."); //change the progress dialog text
@@ -10307,6 +10310,7 @@ function WeaponOptions() {
 			for (var H = 0; H < FieldNames.length; H++) {
 				Value(FieldsUp[H], FieldsValue[H]);
 				Value(Fields[H], FieldsUpValue[H]);
+				if (!QI && Fields[H].match(/description/i)) SwapTooltip(FieldsUp[H], Fields[H])
 				thermoM(H/FieldNames.length); //increment the progress dialog's progress
 			};
 			if (!typePF) {
@@ -10315,6 +10319,7 @@ function WeaponOptions() {
 				tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonSetIcon(IconUp);
 			}
 			IsNotWeaponMenu = true;
+			findWeaps = true;
 			break;
 		 case "move down":
 			thermoM("Moving the attack down..."); //change the progress dialog text
@@ -10322,6 +10327,7 @@ function WeaponOptions() {
 			for (var H = 0; H < FieldNames.length; H++) {
 				Value(FieldsDown[H], FieldsValue[H]);
 				Value(Fields[H], FieldsDownValue[H]);
+				if (!QI && Fields[H].match(/description/i)) SwapTooltip(FieldsDown[H], Fields[H])
 				thermoM(H/FieldNames.length); //increment the progress dialog's progress
 			};
 			if (!typePF) {
@@ -10330,6 +10336,7 @@ function WeaponOptions() {
 				tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonSetIcon(IconDown);
 			}
 			IsNotWeaponMenu = true;
+			findWeaps = true;
 			break;
 		 case "copy to adventuring gear (page 2)":
 			thermoM("Copying the attack to the equipment on page 2..."); //change the progress dialog text
@@ -10350,8 +10357,10 @@ function WeaponOptions() {
 		 case "clear attack":
 			thermoM("Clearing attack..."); //change the progress dialog text
 			tDoc.resetForm(Fields);
+			if (!QI) AddTooltip(Fields[12], "Description and notes");
 			//reset the color outline
 			ApplyAttackColor(itemNmbr);
+			findWeaps = true;
 			break;
 		 case "outline color":
 			thermoM("Changing the attack outline color..."); //change the progress dialog text
@@ -10367,9 +10376,17 @@ function WeaponOptions() {
 			}
 			break;
 		}
+		
+		//re-popuplate the CurrentWeapons variable for the thing that just changed
+		if (findWeaps && QI) {
+			FindWeapons(ArrayNmbr);
+		} else if (findWeaps) {
+			FindCompWeapons(undefined, prefix);
+		}
+		
 		thermoM("stop"); //stop the top progress dialog
-	}
-
+	};
+	
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
 	if (IsNotReset) tDoc.calculateNow();
@@ -10425,7 +10442,8 @@ function WeaponInsert(itemNmbr) {
 		for (var i = endslot; i > itemNmbr; i--) {
 			//move the values
 			for (var H = 0; H < FieldNames.length; H++) {
-				Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(prefix + FieldNames[H][0] + Q + "Attack." + (i - 1) + FieldNames[H][1]));
+				var fromFld = prefix + FieldNames[H][0] + Q + "Attack." + (i - 1) + FieldNames[H][1];
+				Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(fromFld), !QI && FieldNames[H][1].match(/description/i) ? Who(fromFld) : undefined);
 			}
 			if (!typePF) {
 				var theIcon = tDoc.getField(prefix + "Image." + Q + "Attack." + (i - 1)).buttonGetIcon();
@@ -10435,7 +10453,15 @@ function WeaponInsert(itemNmbr) {
 		
 		//empty the selected slot
 		tDoc.resetForm(Fields);
+		if (!QI) AddTooltip(Fields[12], "Description and notes");
 		IsNotWeaponMenu = true;
+		
+		//re-popuplate the CurrentWeapons variable for the thing that just changed
+		if (findWeaps && QI) {
+			FindWeapons(ArrayNmbr);
+		} else if (findWeaps) {
+			FindCompWeapons(undefined, prefix);
+		}
 	}
 }
 
@@ -10485,17 +10511,26 @@ function WeaponDelete(itemNmbr) {
 		}
 		
 		//move the values
-		for (var H = 0; H < FieldNames.length; H++) {
-			Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(prefix + FieldNames[H][0] + Q + "Attack." + (i + 1) + FieldNames[H][1]));
+		for (var H = 0; H < FieldNames.length; H++) {			
+			var fromFld = prefix + FieldNames[H][0] + Q + "Attack." + (i + 1) + FieldNames[H][1];
+			Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(fromFld), !QI && FieldNames[H][1].match(/description/i) ? Who(fromFld) : undefined);
 		};
 	}
 	
 	//delete the contents of the final line
 	tDoc.resetForm(EndFields);
+	if (!QI) AddTooltip(EndFields[12], "Description and notes");
 	
 	//reset the final line's image to the default
 	ApplyAttackColor(maxItems, "");
 	IsNotWeaponMenu = true;
+		
+	//re-popuplate the CurrentWeapons variable for the thing that just changed
+	if (findWeaps && QI) {
+		FindWeapons(ArrayNmbr);
+	} else if (findWeaps) {
+		FindCompWeapons(undefined, prefix);
+	}
 }
 
 //show (true) or hide (false) the subsection of "attuned magical items" in the adventure gear table
