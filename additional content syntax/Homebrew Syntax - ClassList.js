@@ -1,4 +1,20 @@
-ClassList["myclass"] = { //Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
+/*	-WHAT IS THIS?-
+	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+	You can add custom content to the Character Sheet's functionality by adding a script written with the syntax shown below in the "Add Custom Script" dialogue.
+	
+	-KEEP IN MIND-
+	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+	It is recommended to enter the code in a fresh sheet before adding any other information.
+*/
+
+/*	-INFORMATION-
+	Subject:	Class
+	Effect:		This is the syntax for adding a new class to the sheet
+				Note that you will need the syntax for adding a subclass as well if you want the class to have any choices for subclasses
+	Sheet:		v12.83 (2017-02-15)
+*/
+
+ClassList["myclass"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
 
 	regExpSearch : /^(?=.*my)(?=.*class).*$/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has both the words "my" and "class" in it, disregarding capitalization). If this looks to complicated, just write: /myclass/i
 	
@@ -32,11 +48,13 @@ ClassList["myclass"] = { //Note the use of only lower case! Also note the absenc
 	
 	equipment : "MyClass starting equipment:\n \u2022 Chain mail -or- leather armor, a longbow, and 20 arrows;\n \u2022 A martial weapon and a shield -or- two martial weapons;\n \u2022 A light crossbow and 20 bolts -or- two handaxes;\n \u2022 A dungeoneer's pack -or- an explorer's pack.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.", //required; the text to display when citing the starting equipment
 	
-	subclasses : ["Martial Archetype", ["champion", "battle master", "eldritch knight", "purple dragon knight"]], //required; the names of the subclasses. The first entry is the overal name that is given to the subclasses, the second entry is a list of the subclass, using the exact names of the entry of the subclasses in the ClassSubList
+	subclasses : ["Martial Archetype", ["champion", "battle master", "eldritch knight", "purple dragon knight"]], //required; the names of the subclasses. The first entry is the overal name that is given to the subclasses, the second entry is a list of the subclass, using the exact names of the entry of the subclasses in the ClassSubList. //Note that if one of the entries in the array of subclasses doesn't exist in the ClassSubList, the sheet will throw an error as soon as you make a character with levels in this class
 	
 	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3], //required; the amount of attacks at each level. Note that there are 20 entries, one for each level.
 	
 	abilitySave : 4, //optional, but required for a spellcaster; the ability score to use for the Ability Saving Throws. Remove this line if your class has no Ability that requires Saving Throws. (Str=1, Dex=2, Con=3, Int=4, Wis=5, Cha=6)
+	
+	abilitySaveAlt : 2,//optional; if the class offers a choice between two ability scores to be used to determine the DC, you can put that secondary one here (Str=1, Dex=2, Con=3, Int=4, Wis=5, Cha=6)
 	
 	spellcastingFactor : 3, //required for a spellcaster; the speed with which spell progression works type 1 for full spellcasting (Cleric), 2 for half spellcasting (Paladin), and 3 for one-third spellcasting (Arcane Trickster). This can be any positive number other than 0. Remove this line if your class has no spellcasting. If your character uses the Warlock way of spellcasting, write "warlock1" here. The 1 indicates the spell progression factor. You can change it to a 2 or 3 to have half or one-third spell progression (or to any other factor you like).
 		// You can also have this refer to a Spell Slot progression you define yourself, as a separate variable (see "Homebrew Syntax - SpellTable.js"). In order to do this the name of that variable and the spellcastingFactor must match. Using the name "purplemancer" for example would mean that here you put [spellcastingFactor : "purplemancer1"] (the 1 is the factor, this can be any positive number other than 0) while for the variable containing the table you use "purplemancerSpellTable". Note that the name is all lower case!
@@ -114,7 +132,41 @@ ClassList["myclass"] = { //Note the use of only lower case! Also note the absenc
 			
 			"two-weapon fighting" : { //has to be exactly the same as how it is written in the "choices" entry. Note the use of lower case!
 				name : "Two-Weapon Fighting Style",
-				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks"
+				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+			
+				calcChanges : { //optional; adds stuff to the calculation of attacks and/or HP
+				
+					atkDmg : ["eval string", "explanation string"], //optional; change something in the calculation of the damage of attacks; The first value in the array is stringified code that is run using eval(), the second entry is an explanation of what is being altered so that it can be displayed in a dialogue. This second entry can be left empty, like ""
+					
+					atkHit : ["eval string", "explanation string"], //optional; works just like atkDmg, but affects the To Hit calculation
+					
+					atkAdd : ["eval string", "explanation string"], //optional; works just like atkDmg, but affects the weapon attributes when they are applied to the sheet. With this you can change the weapon's description, range, damage die, attribute, etc. etc.
+					
+					hp : "extrahp += totalhd; extrastring += \"\n + \" + totalhd + \" from Dwarven Toughness\";", //optional; string to be run using eval() when calculating the number of HP in the HP tooltip and automation
+				},
+				
+				calcChanges : { //optional; adds stuff to the calculation of attacks and/or HP
+					
+					hp : "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += \"\\n + \" + classes.known.sorcerer.level + \" from Draconic Resilience (Sorcerer)\";};", //optional; string to be run using eval() when calculating the number of HP in the HP tooltip and automation
+					
+					atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."], //optional; change something in the calculation of the Damage and To Hit of attacks; The first value in the array is stringified code that is run using eval(), the second entry is an explanation of what is being altered so that it can be displayed in a dialogue. This second entry can be left empty, as ""
+					
+					atkAdd : ["if (WeaponName.match(/unarmed strike/i)) {fields.Description += 'Counts as magical';}; ", "My unarmed strikes count as magical for overcoming resistances and immunities."], //optional; works just like atkDmg, but affects the weapon attributes when they are applied to the sheet. With this you can change the weapon's description, range, damage die, attribute, etc. etc.
+					
+						// For the eval strings for the attack calculations ('atkCalc' or 'atkAdd') there are some variables that you can use to test against:
+							
+							// The variable WeaponName contains the recognized weapon object name as it is used in the WeaponsList object (or "" if the weapon is not a recognized weapon);
+						
+							// The object "theWea" is the WeaponsList[WeaponName] object for the recognized weapon (or 'undefined' if the weapon is not a recognized weapon);
+						
+							// The object "fields" has all the values of the different fields of the attack (fields.Proficiency, fields.Mod, fields.Range, fields.Damage_Type, fields.Description, fields.To_Hit_Bonus, fields.Damage_Bonus, fields.Damage_Die, fields.Weight);
+						
+							// You can change the attributes of the "fields" object with the eval-string of atkAdd to affect what is put into the fields.
+						
+							// You can use the attributes of the "fields" object with the eval-string of atkCalc to check for things.
+						
+							// With the atkCalc you have to change the "output" object in order to affect the outcome of the calculations. This object has the following attributes: output.prof (wether or not to add the proficiency bonus to the To Hit), output.die (Damage Die to use), output.mod (ability modifier), output.modToDmg (wether or not to add the ability modifier to Damage), output.magic (any magic bonus that's to be added to both To Hit and Damage), output.bHit (the To Hit bonus from the Blue Text/Modifier field), output.bDmg (the Damage bonus from the Blue Text/Modifier field), output.extraHit (a number added to the To Hit that is reserved for this eval), output.extraDmg (a number added to the damage that is reserved for this eval)
+				}
 			},
 		},
 					

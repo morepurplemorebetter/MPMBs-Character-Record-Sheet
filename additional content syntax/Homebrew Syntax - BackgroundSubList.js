@@ -1,4 +1,19 @@
-BackgroundSubList["what i was doing"] = { //Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
+/*	-WHAT IS THIS?-
+	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+	You can add custom content to the Character Sheet's functionality by adding a script written with the syntax shown below in the "Add Custom Script" dialogue.
+	
+	-KEEP IN MIND-
+	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+	It is recommended to enter the code in a fresh sheet before adding any other information.
+*/
+
+/*	-INFORMATION-
+	Subject:	Background variant
+	Effect:		This is the syntax for adding a new variant on an existing background (or one that you made yourself)
+	Sheet:		v12.83 (2017-02-15)
+*/
+
+BackgroundSubList["what i was doing"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
 
 	regExpSearch : /\bwhat\b.*\bi\b.*\bwas\b.*\bdoing\b/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has the consecutive words "what", "i", "was", and "doing" in it, disregarding capitalization or words in between). If this looks to complicated, just write: /what i was doing/i
 	
@@ -26,4 +41,4 @@ BackgroundSubList["what i was doing"] = { //Note the use of only lower case! Als
 	languages : ["+2 from "], //even if the original background didn't have any languages defined, the variant can have them. This goes for any of the optional features (extra, tools, languages, equipleft, equipright)
 }
 
-BackgroundList["where i am from"].variant.push("city watch"); //Don't forget to copy this part, as it is essential to do, because it adds the variant "city watch" to the class "MyClass". Note the use of only lower case!
+BackgroundList["where i am from"].variant.push("city watch"); //Don't forget to copy this part, as it is essential to do, because it adds the variant "city watch" to the background "where i am from". Note the use of only lower case!

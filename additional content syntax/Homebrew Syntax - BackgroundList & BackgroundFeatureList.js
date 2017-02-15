@@ -1,4 +1,19 @@
-BackgroundList["where i am from"] = { //Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
+/*	-WHAT IS THIS?-
+	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+	You can add custom content to the Character Sheet's functionality by adding a script written with the syntax shown below in the "Add Custom Script" dialogue.
+	
+	-KEEP IN MIND-
+	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+	It is recommended to enter the code in a fresh sheet before adding any other information.
+*/
+
+/*	-INFORMATION-
+	Subject:	Background and Background Feature
+	Effect:		This is the syntax for adding a new background and the syntax for adding a new background feature below it
+	Sheet:		v12.83 (2017-02-15)
+*/
+
+BackgroundList["where i am from"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
 	regExpSearch : /\bwhere\b.*\bi\b.*\bam\b.*\bfrom\b/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has the consecutive words "where", "i", "am", and "from" in it, disregarding capitalization or words in between). If this looks to complicated, just write: /where i am from/i
 	
 	name : "Where I am From", //required; the name as used
@@ -96,7 +111,7 @@ BackgroundList["where i am from"] = { //Note the use of only lower case! Also no
 	lifestyle : "comfortable", //optional; sets the lifestyle of the sheet. Options are: "wretched", "squalid", "poor", "modest", "comfortable", "wealthy", or "aristocratic"
 };
 
-UpdateDropdown("background"); //Optional; This updates and resets the background dropdown field
+UpdateDropdown("background"); //Optional; This updates the background dropdown field
 
 BackgroundFeatureList["exceptional quality"] = {  //Note the use of only lower case!
 	description : "My accent, mannerisms, figures of speech all mark me as foreign. Curious glances are directed my way wherever I go. A nuisance, but I also gain the friendly interest of the curious. I can parley this attention into access I might not otherwise have, for me and my companions. Nobles, scholars, merchants, and guilds, might be among the interested.", //required; the description of the feature as it will be put on the sheet. Make sure that this fits into the field or it won't look so pretty.
@@ -104,4 +119,4 @@ BackgroundFeatureList["exceptional quality"] = {  //Note the use of only lower c
 	source : ["S", 149], //required; the source and the page number of the feature
 };
 
-UpdateDropdown("backgroundfeature"); //Optional; This updates and resets the background feature dropdown field
+UpdateDropdown("backgroundfeature"); //Optional; This updates the background feature dropdown field

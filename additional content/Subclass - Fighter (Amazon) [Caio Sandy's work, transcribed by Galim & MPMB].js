@@ -13,7 +13,7 @@
 				This is taken from the DMs Guild website (http://www.dmsguild.com/product/171865/)
 				This subclass is made by Caio Sandy
 	Code by:	Galim & MorePurpleMoreBetter
-	Date:		2016-11-21 (sheet v12.59)
+	Date:		2017-02-15 (sheet v12.83)
 
 	Please support the creator of this content (Caio Sandy) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Caio%20Sandy
 */
@@ -42,58 +42,67 @@ ClassSubList["amazon"] = {
 			"fighting style: archery" : {
 				name : "Amazon Skill: Archery",
 				description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
-				eval : "this.getField(\"Attack To Hit Bonus Global\").value += 2",
-				removeeval : "this.getField(\"Attack To Hit Bonus Global\").value -= 2",
+				calcChanges : {
+					atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 2; }; ", "My ranged weapons get a +2 bonus on the To Hit."]
+				}
 			},
 			"fighting style: defense" : {
 				name : "Amazon Skill: Defense",
 				source : ["P", 72],
 				description : "\n   " + "+1 bonus to AC when I'm wearing armor",
 				eval : "AddACMisc(1, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\", \"CurrentArmour.known && !ArmourList[CurrentArmour.known].type\")",
-				removeeval : "AddACMisc(0, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\")",
+				removeeval : "AddACMisc(0, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\")"
 			},
 			"fighting style: dueling" : {
 				name : "Amazon Skill: Dueling",
 				source : ["P", 72],
 				description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
-				eval : "this.getField(\"Attack Damage Bonus Global\").value += 2",
-				removeeval : "this.getField(\"Attack Damage Bonus Global\").value -= 2",
+				calcChanges : {
+					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && fields.Range.match(/melee/i) && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+				}
 			},
 			"fighting style: great weapon fighting" : {
 				name : "Amazon Skill: Great Weapon Fighting",
 				source : ["P", 72],
 				description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
+				calcChanges : {
+					atkAdd : ["if (fields.Range.match(/melee/i) && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += '; Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+				}
 			},
 			"fighting style: protection" : {
 				name : "Amazon Skill: Protection",
 				source : ["P", 72],
 				description : "\n   " + "As a reaction, I can give disadv. on an attack made vs. someone within 5 ft of me" + "\n   " + "I need to be wielding a shield and be able to see the attacker to do this",
-				action : ["reaction", ""],
+				action : ["reaction", ""]
 			},
 			"fighting style: two-weapon fighting" : {
 				name : "Amazon Skill: Two-Weapon Fighting",
 				source : ["P", 72],
 				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+				calcChanges : {
+					atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."]
+				}
 			},
 			"fighting style: mariner" : {
 				name : "Amazon Skill: Mariner",
 				source : ["UA:WA", 3],
 				description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds equal my current walking speed",
 				eval : "AddACMisc(1, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\", \"ACshield || tDoc.getField('Heavy Armor').isBoxChecked(0)\")",
-				removeeval : "AddACMisc(0, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")",
+				removeeval : "AddACMisc(0, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")"
 			},
 			"fighting style: close quarters shooting" : {
 				name : "Amazon Skill: Close Quarters Shooting",
 				source : ["UA:LDU", 1],
 				description : "\n   " + "+1 bonus to attack rolls I make with ranged attacks" + "\n   " + "I don't have disadvantage when making a ranged attack while within 5 ft of a hostile" + "\n   " + "My ranged attacks ignore half and three-quarters cover against targets within 30 ft",
-				eval : "this.getField(\"Attack To Hit Bonus Global\").value += 1",
-				removeeval : "this.getField(\"Attack To Hit Bonus Global\").value -= 1",
+				calcChanges : {
+					atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 1; }; ", "My ranged weapons get a +1 bonus on the To Hit."]
+				}
 			},
 			"fighting style: tunnel fighter" : {
 				name : "Amazon Skill: Tunnel Fighter",
 				source : ["UA:LDU", 1],
 				description : "\n   " + "As a bonus action, I enter a defensive stance that lasts until the start of my next turn" + "\n   " + "While in the stance, I can make opportunity attacks without using my reaction" + "\n   " + "While I'm in this defensive stance I gain the following two benefits:" + "\n    - " + "I can make opportunity attacks without using my reaction" + "\n    - " + "I can make a melee attack as a reaction if a hostile moves >5 ft while in my reach",
-				action : ["bonus action", ""],
+				action : ["bonus action", ""]
 			},
 			"elemental arrow" : {
 				name : "Amazon Skill: Elemental Arrow",
@@ -133,58 +142,67 @@ ClassSubList["amazon"] = {
 			"fighting style: archery" : {
 				name : "Additional Amazon Skill: Archery",
 				description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
-				eval : "this.getField(\"Attack To Hit Bonus Global\").value += 2",
-				removeeval : "this.getField(\"Attack To Hit Bonus Global\").value -= 2",
+				calcChanges : {
+					atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 2; }; ", "My ranged weapons get a +2 bonus on the To Hit."]
+				}
 			},
 			"fighting style: defense" : {
 				name : "Additional Amazon Skill: Defense",
 				source : ["P", 72],
 				description : "\n   " + "+1 bonus to AC when I'm wearing armor",
 				eval : "AddACMisc(1, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\", \"CurrentArmour.known && !ArmourList[CurrentArmour.known].type\")",
-				removeeval : "AddACMisc(0, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\")",
+				removeeval : "AddACMisc(0, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\")"
 			},
 			"fighting style: dueling" : {
 				name : "Additional Amazon Skill: Dueling",
 				source : ["P", 72],
 				description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
-				eval : "this.getField(\"Attack Damage Bonus Global\").value += 2",
-				removeeval : "this.getField(\"Attack Damage Bonus Global\").value -= 2",
+				calcChanges : {
+					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && fields.Range.match(/melee/i) && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+				}
 			},
 			"fighting style: great weapon fighting" : {
 				name : "Additional Amazon Skill: Great Weapon Fighting",
 				source : ["P", 72],
 				description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
+				calcChanges : {
+					atkAdd : ["if (fields.Range.match(/melee/i) && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += '; Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+				}
 			},
 			"fighting style: protection" : {
 				name : "Additional Amazon Skill: Protection",
 				source : ["P", 72],
 				description : "\n   " + "As a reaction, I can give disadv. on an attack made vs. someone within 5 ft of me" + "\n   " + "I need to be wielding a shield and be able to see the attacker to do this",
-				action : ["reaction", ""],
+				action : ["reaction", ""]
 			},
 			"fighting style: two-weapon fighting" : {
 				name : "Additional Amazon Skill: Two-Weapon Fighting",
 				source : ["P", 72],
 				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+				calcChanges : {
+					atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."]
+				}
 			},
 			"fighting style: mariner" : {
 				name : "Additional Amazon Skill: Mariner",
 				source : ["UA:WA", 3],
 				description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds equal my current walking speed",
 				eval : "AddACMisc(1, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\", \"ACshield || tDoc.getField('Heavy Armor').isBoxChecked(0)\")",
-				removeeval : "AddACMisc(0, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")",
+				removeeval : "AddACMisc(0, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")"
 			},
 			"fighting style: close quarters shooting" : {
 				name : "Additional Amazon Skill: Close Quarters Shooting",
 				source : ["UA:LDU", 1],
 				description : "\n   " + "+1 bonus to attack rolls I make with ranged attacks" + "\n   " + "I don't have disadvantage when making a ranged attack while within 5 ft of a hostile" + "\n   " + "My ranged attacks ignore half and three-quarters cover against targets within 30 ft",
-				eval : "this.getField(\"Attack To Hit Bonus Global\").value += 1",
-				removeeval : "this.getField(\"Attack To Hit Bonus Global\").value -= 1",
+				calcChanges : {
+					atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 1; }; ", "My ranged weapons get a +1 bonus on the To Hit."]
+				}
 			},
 			"fighting style: tunnel fighter" : {
 				name : "Additional Amazon Skill: Tunnel Fighter",
 				source : ["UA:LDU", 1],
 				description : "\n   " + "As a bonus action, I enter a defensive stance that lasts until the start of my next turn" + "\n   " + "While in the stance, I can make opportunity attacks without using my reaction" + "\n   " + "While I'm in this defensive stance I gain the following two benefits:" + "\n    - " + "I can make opportunity attacks without using my reaction" + "\n    - " + "I can make a melee attack as a reaction if a hostile moves >5 ft while in my reach",
-				action : ["bonus action", ""],
+				action : ["bonus action", ""]
 			},
 			"elemental arrow" : {
 				name : "Additional Amazon Skill: Elemental Arrow",

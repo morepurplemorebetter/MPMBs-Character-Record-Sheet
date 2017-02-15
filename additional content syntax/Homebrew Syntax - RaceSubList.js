@@ -1,4 +1,21 @@
-RaceSubList["something catlike-something great catlike"] = { // The name of the object must be the name of the parent ClassList entry ("something catlike" in this example), followed by a dash ("-"), followed by the name of the variant ("something great catlike" in this example), as defined in the 'variants' array in the ClassList entry (see bottom line). Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
+/*	-WHAT IS THIS?-
+	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+	You can add custom content to the Character Sheet's functionality by adding a script written with the syntax shown below in the "Add Custom Script" dialogue.
+	
+	-KEEP IN MIND-
+	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+	It is recommended to enter the code in a fresh sheet before adding any other information.
+*/
+
+/*	-INFORMATION-
+	Subject:	Class
+	Effect:		This is the syntax for adding a new racial variant to the sheet
+				If you want to define several subraces, please do so by defining multiple entries of the RaceList (i.e. there is a separate entry for High Elf, Wood Elf, and Dark Elf in the RaceList)
+				For races that have variants, like the human, you can define a variant using the RaceSubList. Any variant defined like this will only be selectable through the "Racial Options" button
+	Sheet:		v12.83 (2017-02-15)
+*/
+
+RaceSubList["something catlike-something great catlike"] = { //Object name;  The name of the object must be the name of the parent ClassList entry ("something catlike" in this example), followed by a dash ("-"), followed by the name of the variant ("something great catlike" in this example), as defined in the 'variants' array in the ClassList entry (see bottom line). Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
 
 	regExpSearch : /^(?=.*something)(?=.*great)(?=.*catlike).*$/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has both the words "something", "great" and "catlike" in it, disregarding capitalization). If this looks to complicated, just write: /something great catlike/i This lookup is in addition to the one from the parent in the RaceList. So if the name of this subrace does not include the name of the parent race, it will never be recognized!
 	

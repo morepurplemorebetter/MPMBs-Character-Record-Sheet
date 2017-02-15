@@ -1,4 +1,19 @@
-ClassSubList["specialme"] = { //Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
+/*	-WHAT IS THIS?-
+	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+	You can add custom content to the Character Sheet's functionality by adding a script written with the syntax shown below in the "Add Custom Script" dialogue.
+	
+	-KEEP IN MIND-
+	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+	It is recommended to enter the code in a fresh sheet before adding any other information.
+*/
+
+/*	-INFORMATION-
+	Subject:	Subclass (a.k.a. Archetype)
+	Effect:		This is the syntax for adding a new subclass/archetype to a class that is defined in the sheet, or to a class you made yourself
+	Sheet:		v12.83 (2017-02-15)
+*/
+
+ClassSubList["specialme"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
 
 	regExpSearch : /^(?=.*special)(?=.*me).*$/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has both the words "special" and "me" in it, disregarding capitalization). If this looks to complicated, just write: /specialme/i
 	
@@ -12,6 +27,7 @@ ClassSubList["specialme"] = { //Note the use of only lower case! Also note the a
 	fullname : "SpecialMe of MyClass", //if no fullname is defined it will be automatically generated as "Class Name (Subclass name)". In this example that would be: "MyClass (Path of SpecialMe)"
 	
 	abilitySave : 6, //overwrites the abilitySave that was defined in the ClassList
+	abilitySaveAlt : 2,//overwrites the abilitySaveAlt that was defined in the ClassList
 	spellcastingFactor : 2, //overwrites the spellcastingFactor that was defined in the ClassList
 	
 	features : { //unlike the other entries, "features" will not delete all the features from the ClassList, but will add to the features in the ClassList. For this to work properly, the feature object has to be named "subclassfeatureX" and not something appropriate for the feature. The below are the features of the purple Dragon Knight

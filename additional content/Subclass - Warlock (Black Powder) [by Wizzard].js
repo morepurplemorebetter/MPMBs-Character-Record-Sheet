@@ -12,7 +12,7 @@
 	Effect:     This script adds a subclass for the Warlock, called "Black Powder"
 				This subclass is made by Wizzard
 	Code by:    Wizzard
-	Date:       2016-12-01 (sheet v12.62)
+	Date:       2017-02-15 (sheet v12.83)
 */
 
 ClassSubList["black powder"] = {
@@ -31,27 +31,33 @@ ClassSubList["black powder"] = {
 				name : "Archery Fighting Style",
 				source : ["P", 72],
 				description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
-				eval : "tDoc.getField(\"Attack To Hit Bonus Global\").value += 2",
-				removeeval : "tDoc.getField(\"Attack To Hit Bonus Global\").value -= 2"
+				calcChanges : {
+					atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 2; }; ", "My ranged weapons get a +2 bonus on the To Hit."]
+				}
 			},
 			"close quarters shooting" : {
 				name : "Close Quarters Shooting Fighting Style",
 				source : ["UA:LDU", 1],
 				description : "\n   " + "+1 bonus to attack rolls I make with ranged attacks" + "\n   " + "I don't have disadvantage when making a ranged attack while within 5 ft of a hostile" + "\n   " + "My ranged attacks ignore half and three-quarters cover against targets within 30 ft",
-				eval : "tDoc.getField(\"Attack To Hit Bonus Global\").value += 1",
-				removeeval : "tDoc.getField(\"Attack To Hit Bonus Global\").value -= 1"
+				calcChanges : {
+					atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 1; }; ", "My ranged weapons get a +1 bonus on the To Hit."]
+				}
 			},
 			"dueling" : {
 				name : "Dueling Fighting Style",
 				source : ["P", 72],
 				description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
-				eval : "tDoc.getField(\"Attack Damage Bonus Global\").value += 2",
-				removeeval : "tDoc.getField(\"Attack Damage Bonus Global\").value -= 2"
+				calcChanges : {
+					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && fields.Range.match(/melee/i) && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+				}
 			},
 			"great weapon fighting" : {
 				name : "Great Weapon Fighting Style",
 				source : ["P", 72],
-				description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands"
+				description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
+				calcChanges : {
+					atkAdd : ["if (fields.Range.match(/melee/i) && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += '; Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+				}
 			},
 			"mariner" : {
 				name : "Mariner Fighting Style",
@@ -65,7 +71,10 @@ ClassSubList["black powder"] = {
 			name : "Powder and Blade",
 			source : ["HB", 0],
 			minlevel : 1,
-			description : "\n   " + "I gain proficiency with a martial weapon/firearm of my choice, my signature weapon" + "\n   " + "While wielding this weapon and nothing else, I may use Cha for to hit and damage rolls" + "\n   " + "My signature weapon may be used with the Blade of the Pact class feature" + "\n   " + "My signature weapon counts as magical for the purpose of overcoming resistances" + "\n   " + "I may use my signature weapon as a spellcasting focus"
+			description : "\n   " + "I gain proficiency with a martial weapon/firearm of my choice, my signature weapon" + "\n   " + "While wielding this weapon and nothing else, I may use Cha for to hit and damage rolls" + "\n   " + "My signature weapon may be used with the Blade of the Pact class feature" + "\n   " + "My signature weapon counts as magical for the purpose of overcoming resistances" + "\n   " + "I may use my signature weapon as a spellcasting focus",
+			calcChanges : {
+				atkAdd : ["if (WeaponText.match(/signature/i) && What(AbilityScores.abbreviations[fields.Mod - 1] + ' Mod') < What('Cha Mod')) {fields.Mod = 6; }; ", "If a weapon has the word 'signature' in its name or description field, it will use the Charisma modifier for to hit and damage if better than its normal ability modifier."]
+			}
 		},
 		"subclassfeature6" : {
 			name : "Natural Explorer",

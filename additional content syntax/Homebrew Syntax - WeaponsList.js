@@ -1,4 +1,19 @@
-WeaponsList["leattack"] = { //Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
+/*	-WHAT IS THIS?-
+	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+	You can add custom content to the Character Sheet's functionality by adding a script written with the syntax shown below in the "Add Custom Script" dialogue.
+	
+	-KEEP IN MIND-
+	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+	It is recommended to enter the code in a fresh sheet before adding any other information.
+*/
+
+/*	-INFORMATION-
+	Subject:	Weapon / Attack
+	Effect:		This is the syntax for adding a new type of weapon, cantrip, or anything else you want to add to the attack section's automation
+	Sheet:		v12.83 (2017-02-15)
+*/
+
+WeaponsList["leattack"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
 	
 	regExpSearch : /^le(?=.*attack).*$/i, // Required; regular expression of what to look for (i.e. now it looks for any entry that has the word "le" followed by the word "attack" in it, disregarding capitalization). If this looks to complicated, just write: /leattack/i
 	
@@ -6,7 +21,7 @@ WeaponsList["leattack"] = { //Note the use of only lower case! Also note the abs
 	
 	ability : 1, // Required; the ability score used to calculate the to hit modifier (and the damage if applicable, see below). [Str=1, Dex=2, Con=3, Int=4, Wis=5, Cha=6]
 	
-	type : "Simple", // Required; the type of the weapon. Alternatives are "Cantrip", "Martial", "Natural"
+	type : "Simple", // Required; the type of the weapon. Alternatives are "Cantrip", "Martial", "Natural" (= always proficient), "Other", or "Spell" // Alternatively, you can define a type yourself. If this type matches a word in the 'Other Weapon Proficiencies' field, the character will be considered proficient with the weapon
 	
 	damage : [2, 4, "piercing"], // Required; the damage it does. First entry is the amount of dice, second is the type of dice, and third is the damage type. This example is 2d4 worth of piercing damage. //if you want the amount of dice to be an amount determined by the Character Level, then put "C" as the first value. Alternatively, you can use "B" for the value minus 1 (such as with Green-Flame Blade)
 	
@@ -16,7 +31,7 @@ WeaponsList["leattack"] = { //Note the use of only lower case! Also note the abs
 	
 	abilitytodamage : true, // Required; whether or not the ability score modifier is added to the damage (true or false)
 	
-	weight : 2, // Optional; the weight in LB. If the attack has no weight, just remove this line. If this line is not present, the item will be ignored when adding weapons to the inventory.
+	weight : 2, // Optional; the weight in lb. If the attack has no weight, just remove this line. If this line is not present, the item will be ignored when adding weapons to the inventory.
 	
 	monkweapon : true, // Optional; whether or not the items counts as a monk weapon (true or false)
 	
@@ -24,10 +39,10 @@ WeaponsList["leattack"] = { //Note the use of only lower case! Also note the abs
 	
 	dc : true, // optional, will make the To Hit field display a DC instead. This will overwrite the first value you put in Modifiers (only from v10 onwards)
 	
-	modifiers : [1, ""], // Optional; bonuses to: [to hit, to damage]; "" means ignore. // You can also enter the three-letter abbreviation of an ability score (Str, Dex, Con, Int, Wis, or Cha), to have that ability's modifier added to it.
+	modifiers : [1, ""], // Optional; bonuses to: [to hit, to damage]; "" means ignore. These values are added to the corresponding Modifier/Blue-Text fields. // You can also enter the three-letter abbreviation of an ability score (Str, Dex, Con, Int, Wis, or Cha), to have that ability's modifier added to it.
 	
 	SpellsList : "eldritch blast", // Optional; if the attack you are making is a spell/cantrip that is listed in the SpellsList variable under another name that you are using for this weapon (in this example it would be "leattack"), write the name used in the SpellsList variable here
 }
 
-UpdateDropdown("weapon", ["leattack"]); // Optional; This updates and resets all attack dropdown fields; Note that you have to provide the name of your attack exactly the same as it is in the first line above.
-// If you are planning on adding multiple weapons to the sheet, please only use the UpdateDropdown once. You can make an array of the names of the attacks you want to have added to the lists.
+UpdateDropdown("weapon", ["leattack"]); // Optional; This updates all attack dropdown fields; Note that you have to provide the name of your attack exactly the same as it is in the first line above, the object name.
+// If you are planning on adding multiple weapons to the sheet, only use the UpdateDropdown once or else you will get duplicates. You can make an array of the names of the attacks you want to have added to the lists.

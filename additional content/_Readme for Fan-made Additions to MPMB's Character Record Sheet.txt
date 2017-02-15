@@ -18,7 +18,7 @@ You can do this by following these steps:
 
 You can create your own custom JavaScript to add stuff to MPMB's Character Record Sheet by following the syntax found here: http://flapkan.com/mpmb/syntax
 
-If you decide to make extra content for the sheet, please consider sending me a copy (flapkan@gmail.com) so that I can put it on the "Fan-made Additions" Dropbox. Please send your code in a .txt file as gmail has a tendency to remove .js attachments.
+If you decide to make extra content for the sheet, please consider sending me a copy (flapkan@gmail.com) so that I can put it on the "Fan-made Additions" Dropbox/GitHub. Please send your code in a .txt file as gmail has a tendency to remove .js attachments.
 
 Good luck with adding extra content and have fun with the sheets!
 

@@ -1,4 +1,19 @@
-CreatureList["big cat"] = { //Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [] //the name entered here is used to identify the input, so it has to be the same as the "name : " below, but in lower case
+/*	-WHAT IS THIS?-
+	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+	You can add custom content to the Character Sheet's functionality by adding a script written with the syntax shown below in the "Add Custom Script" dialogue.
+	
+	-KEEP IN MIND-
+	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+	It is recommended to enter the code in a fresh sheet before adding any other information.
+*/
+
+/*	-INFORMATION-
+	Subject:	Creature
+	Effect:		This is the syntax for adding a creature that can be used on the Companion and Wild Shape pages
+	Sheet:		v12.83 (2017-02-15)
+*/
+
+CreatureList["big cat"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [] //the name entered here is used to identify the input, so it has to be the same as the "name : " below, but in lower case
 	
 	name : "Big Cat", // Required; the name to use for the race
 	
@@ -75,4 +90,4 @@ CreatureList["big cat"] = { //Note the use of only lower case! Also note the abs
 	wildshapeString : "Darkvision 60 ft| Knows Auran| Resistant to: lightning, thunder, and bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious| Air Form: can move through 1 inch wide space without squeezing and can move through and stop in space of hostiles| Whirlwind: see Monster Manual page 124", // Optional; a string to put in the Wild Shape Traits & Features field. If you define this, no trait or action will be added to the Wild Shape Traits & Features field. This is here so you can make all the traits and features fit into the limited space on the Wild Shape page //This line can be deleted if you don't have anything to put here
 };
 
-UpdateDropdown("creature"); //Optional; This updates and resets all dropdown fields that have lists of creatures
+UpdateDropdown("creature"); //Optional; This updates all dropdown fields that have lists of creatures

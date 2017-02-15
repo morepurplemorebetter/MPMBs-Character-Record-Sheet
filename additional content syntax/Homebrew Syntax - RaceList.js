@@ -1,4 +1,21 @@
-RaceList["something catlike"] = { //Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
+/*	-WHAT IS THIS?-
+	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+	You can add custom content to the Character Sheet's functionality by adding a script written with the syntax shown below in the "Add Custom Script" dialogue.
+	
+	-KEEP IN MIND-
+	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+	It is recommended to enter the code in a fresh sheet before adding any other information.
+*/
+
+/*	-INFORMATION-
+	Subject:	Class
+	Effect:		This is the syntax for adding a new race to the sheet
+				Note that you will need to define the race once for every sub-race (i.e. there is a separate entry for High Elf, Wood Elf, and Dark Elf)
+				For races that have variants, like the human, you can define a variant using the RaceSubList. Any variant defined like that will only be selectable through the "Racial Options" button
+	Sheet:		v12.83 (2017-02-15)
+*/
+
+RaceList["something catlike"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
 
 	regExpSearch : /^(?=.*something)(?=.*catlike).*$/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has both the words "something" and "catlike" in it, disregarding capitalization). If this looks to complicated, just write: /something catlike/i
 	
@@ -102,17 +119,29 @@ RaceList["something catlike"] = { //Note the use of only lower case! Also note t
 				selection : ["lesser restoration"],
 				oncelr : true,
 			},
-			
+				
 			calcChanges : { //optional; adds stuff to the calculation of attacks and/or HP
-			
-				atkDmg : ["eval string", "explanation string"], //optional; change something in the calculation of the damage of attacks; The first value in the array is stringified code that is run using eval(), the second entry is an explanation of what is being altered so that it can be displayed in a dialogue. This second entry can be left empty, like ""
 				
-				atkHit : ["eval string", "explanation string"], //optional; works just like atkDmg, but affects the To Hit calculation
+				hp : "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += \"\\n + \" + classes.known.sorcerer.level + \" from Draconic Resilience (Sorcerer)\";};", //optional; string to be run using eval() when calculating the number of HP in the HP tooltip and automation
 				
-				atkAdd : ["eval string", "explanation string"], //optional; works just like atkDmg, but affects the weapon attributes when they are applied to the sheet. With this you can change the weapon's description, range, damage die, attribute, etc. etc.
+				atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."], //optional; change something in the calculation of the Damage and To Hit of attacks; The first value in the array is stringified code that is run using eval(), the second entry is an explanation of what is being altered so that it can be displayed in a dialogue. This second entry can be left empty, as ""
 				
-				hp : "extrahp += totalhd; extrastring += \"\n + \" + totalhd + \" from Dwarven Toughness\";", //optional; string to be run using eval() when calculating the number of HP in the HP tooltip and automation
-			},
+				atkAdd : ["if (WeaponName.match(/unarmed strike/i)) {fields.Description += 'Counts as magical';}; ", "My unarmed strikes count as magical for overcoming resistances and immunities."], //optional; works just like atkDmg, but affects the weapon attributes when they are applied to the sheet. With this you can change the weapon's description, range, damage die, attribute, etc. etc.
+				
+					// For the eval strings for the attack calculations ('atkCalc' or 'atkAdd') there are some variables that you can use to test against:
+						
+						// The variable WeaponName contains the recognized weapon object name as it is used in the WeaponsList object (or "" if the weapon is not a recognized weapon);
+					
+						// The object "theWea" is the WeaponsList[WeaponName] object for the recognized weapon (or 'undefined' if the weapon is not a recognized weapon);
+					
+						// The object "fields" has all the values of the different fields of the attack (fields.Proficiency, fields.Mod, fields.Range, fields.Damage_Type, fields.Description, fields.To_Hit_Bonus, fields.Damage_Bonus, fields.Damage_Die, fields.Weight);
+					
+						// You can change the attributes of the "fields" object with the eval-string of atkAdd to affect what is put into the fields.
+					
+						// You can use the attributes of the "fields" object with the eval-string of atkCalc to check for things.
+					
+						// With the atkCalc you have to change the "output" object in order to affect the outcome of the calculations. This object has the following attributes: output.prof (wether or not to add the proficiency bonus to the To Hit), output.die (Damage Die to use), output.mod (ability modifier), output.modToDmg (wether or not to add the ability modifier to Damage), output.magic (any magic bonus that's to be added to both To Hit and Damage), output.bHit (the To Hit bonus from the Blue Text/Modifier field), output.bDmg (the Damage bonus from the Blue Text/Modifier field), output.extraHit (a number added to the To Hit that is reserved for this eval), output.extraDmg (a number added to the damage that is reserved for this eval)
+			}
 		},
 		
 		"breath weapon" : {
