@@ -1012,6 +1012,13 @@ var RaceList = {
 				usages : 1,
 				recovery : "long rest",
 				tooltip : ""
+			},
+			"savage attacks" : {
+				name : "Savage Attacks",
+				minlevel : 1,
+				calcChanges : {
+					atkAdd : ["if (fields.Range.match(/melee/i)) {var pExtraCritM = extraCritM ? extraCritM : 0; var extraCritM = pExtraCritM + 1; if (pExtraCritM) {fields.Description.replace('+' + pExtraCritM + ' extra di', '+' + extraCritM + ' extra di'); } else {fields.Description += (fields.Description ? '; +' : '+') + extraCritM + ' extra die on a crit in melee'; }; fields.Description = extraCritM > 1 ? fields.Description.replace('extra die on a crit', 'extra dice on a crit') : fields.Description; };", "My melee attacks roll 1 additional dice on a critical hit."]
+				}
 			}
 		},
 		trait : "Half-Orc (+2 Strength, +1 Constitution)" + (typePF ? "\n" : " ") + "\nRelentless Endurance: When I am reduced to 0 hit points but not killed outright, I can drop to 1 hit point instead. I can't use this feature again until I finish a long rest.\n\nSavage Attacks: When I score a critical hit with a melee weapon attack, I can roll one of the weapon's damage dice one additional time and add it to the extra damage of the critical hit."

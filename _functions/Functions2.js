@@ -4283,7 +4283,7 @@ function ParseGear(input) {
 
 		for (var key in ArmourList) { //scan string for all armours
 			var aList = ArmourList[key];
-			if (aList.inventory && key.length > foundLen && tempString.indexOf(aList.name.toLowerCase()) !== -1) {
+			if (aList.weight && key.length > foundLen && tempString.indexOf(aList.name.toLowerCase()) !== -1) {
 				result = ["ArmourList", key];
 				foundLen = key.length;
 			}
@@ -5750,8 +5750,7 @@ function addEvals(evalObj, NameEntity, Add) {
 			CurrentEvals.atkStr = CurrentEvals.atkStr.replace(atkStr, "");
 		}
 	};
-	//recalc the weapons if the eval for applying weapons has changed
-	if (remAtkAdd !== CurrentEvals.atkAdd) ReCalcWeapons();
+	if (remAtkAdd !== CurrentEvals.atkAdd) forceReCalcWeapons = true;
 	
 	//do the stuff for the hp calculations
 	if (evalObj.hp) {
@@ -5777,7 +5776,6 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	var ArrayNmbr = Number(fldNmbr) - 1;
 	var fldBase = prefix + Q + "Attack." + fldNmbr + ".";
 	var fldBaseBT = prefix + "BlueText." + Q + "Attack." + fldNmbr + ".";
-	var WeaponText = 
 	
 	//set the input as the submitName for reference and set the non-automated field with the same value as well
 	tDoc.getField(fldBase + "Weapon Selection").submitName = inputText;
@@ -5838,6 +5836,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	if (theWea) {
 		thermoM("Applying the weapon's features..."); //change the progress dialog text
 		fields.Description = theWea.description; //add description
+		var WeaponText = inputText + fields.Description;
 		fields.Range = theWea.range; //add range
 		fields.Damage_Type = theWea.damage[2]; //add Damage Type
 		
@@ -5860,8 +5859,8 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		//add proficiency checkmark
 		fields.Proficiency = !QI ? true : 
 			QI && theWea.type.match(/natural|spell|cantrip/i) ? true : 
-			theWea.type.match(/simple|martial/i) ? tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) : 
-			CurrentWeapons.extraproficiencies.indexOf(WeaponName) !== -1 || CurrentWeapons.extraproficiencies.indexOf(theWea.type.toLowerCase()) !== -1 ? true : false;
+			CurrentWeapons.extraproficiencies.indexOf(WeaponName) !== -1 || CurrentWeapons.extraproficiencies.indexOf(theWea.type.toLowerCase()) !== -1 ? true : 
+			theWea.type.match(/simple|martial/i) ? tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) : false;
 		
 		//add mod
 		var StrDex = What("Str Mod") < What("Dex Mod") ? 2 : 1;
@@ -6061,7 +6060,7 @@ function CalcAttackDmgHit(fldName) {
 			if (output[out].toLowerCase() === "dc") {
 				addNum(8, "hit");
 				break;
-			}
+			};
 		 case "bDmg" :
 		 // if the blueText field is not a number, find the ability modifier
 			if (isNaN(output[out])) {
@@ -6085,4 +6084,61 @@ function CalcAttackDmgHit(fldName) {
 	} else {
 		Value(fldBase + "To Hit", hitTot);
 	};
+};
+
+//a way to show a very long piece of text without the dialogue overflowing the screen
+function ShowDialog(hdr, strng) {
+	var ShowString_dialog = {
+		header : hdr,
+		string : strng,
+
+		initialize : function(dialog) {
+			dialog.load({
+				"txt0" : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]",
+				"head" : this.header,
+				"Eval" : this.string.replace(/^\n/, "").replace(/^\n/, "")
+			});
+		},
+		
+		description : {
+			name : hdr,
+			elements : [{
+				type : "view",
+				align_children : "align_left",
+				elements : [{
+					type : "view",
+					elements : [{
+						type : "static_text",
+						item_id : "txt0",
+						alignment : "align_fill",
+						font : "dialog",
+						height : 20,
+						width : 450,
+					}, {
+						type : "static_text",
+						item_id : "head",
+						alignment : "align_fill",
+						font : "heading",
+						bold : true,
+						height : 21,
+						width : 450
+					}, {
+						type : "edit_text",
+						item_id : "Eval",
+						alignment : "align_fill",
+						readonly : true,
+						multiline: true,
+						height : 500,
+						width : 450,
+					}, {
+						type : "gap",
+						height : 5,
+					} ]
+				}, {
+					type : "ok"
+				} ]
+			} ]
+		}
+	};
+	app.execDialog(ShowString_dialog);
 };

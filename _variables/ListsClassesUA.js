@@ -274,6 +274,9 @@ ClassSubList["college of swords"] = {
 			source : ["UA:KoO", 1],
 			minlevel : 3,
 			description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+			calcChanges : {
+				atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."]
+			}
 		},
 		"subclassfeature3.2" : {
 			name : "Blade Flourish",
@@ -400,7 +403,6 @@ ClassSubList["scout"] = {
 	regExpSearch : /scout/i,
 	subname : "Scout",
 	source : ["UA:KoO", 4],
-	abilitySave : 1,
 	features : {
 		"subclassfeature3" : {
 			name : "Bonus Proficiencies",
@@ -801,8 +803,9 @@ ClassList["rangerua"] = {
 			"archery" : {
 				name : "Archery Fighting Style",
 				description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
-				eval : "this.getField(\"Attack To Hit Bonus Global\").value += 2",
-				removeeval : "this.getField(\"Attack To Hit Bonus Global\").value -= 2"
+				calcChanges : {
+					atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 2; }; ", "My ranged weapons get a +2 bonus on the To Hit."]
+				}
 			},
 			"defense" : {
 				name : "Defense Fighting Style",
@@ -813,12 +816,16 @@ ClassList["rangerua"] = {
 			"dueling" : {
 				name : "Dueling Fighting Style",
 				description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
-				eval : "this.getField(\"Attack Damage Bonus Global\").value += 2",
-				removeeval : "this.getField(\"Attack Damage Bonus Global\").value -= 2"
+				calcChanges : {
+					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && fields.Range.match(/melee/i) && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+				}
 			},
 			"two-weapon fighting" : {
 				name : "Two-Weapon Fighting Style",
-				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks"
+				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+				calcChanges : {
+					atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."]
+				}
 			}
 		},
 		"spellcasting" : {
@@ -2424,7 +2431,7 @@ function UAstartupCode() {
 	};
 	
 	//Add fighting styles to the options of fighter, paladin, and ranger
-	var FSclasses = ["fighter", "ranger", "paladin", "rangerua"];
+	var FSclasses = ["fighter", "ranger", "paladin", "rangerua", "champion"];
 	[{
 		choice : "Mariner",
 		feature : {
@@ -2440,20 +2447,21 @@ function UAstartupCode() {
 			name : "Close Quarters Shooting Fighting Style",
 			source : ["UA:LDU", 1],
 			description : "\n   " + "+1 bonus to attack rolls I make with ranged attacks" + "\n   " + "I don't have disadvantage when making a ranged attack while within 5 ft of a hostile" + "\n   " + "My ranged attacks ignore half and three-quarters cover against targets within 30 ft",
-			eval : "this.getField(\"Attack To Hit Bonus Global\").value += 1",
-			removeeval : "this.getField(\"Attack To Hit Bonus Global\").value -= 1"
+			calcChanges : {
+				atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 1; }; ", "My ranged weapons get a +1 bonus on the To Hit."]
+			}
 		}
 	}, {
 		choice : "Tunnel Fighter",
 		feature : {
 			name : "Tunnel Fighting Style",
 			source : ["UA:LDU", 1],
-			description : "\n   " + "As a bonus action, I enter a defensive stance that lasts until the start of my next turn" + "\n   " + "While in the stance, I can make opportunity attacks without using my reaction" + "\n   " + "While I'm in this defensive stance I gain the following two benefits:" + "\n    - " + "I can make opportunity attacks without using my reaction" + "\n    - " + "I can make a melee attack as a reaction if a hostile moves >5 ft while in my reach",
+			description : "\n   " + "As a bonus action, I enter a defensive stance that lasts until the start of my next turn" + "\n   " + "While I'm in this defensive stance I gain the following two benefits:" + "\n    - " + "I can make opportunity attacks without using my reaction" + "\n    - " + "I can make a melee attack as a reaction if a hostile moves >5 ft while in my reach",
 			action : ["bonus action", ""]
 		}
 	}].forEach(function (FStyle, indx, arr) {
-		for (var cla = 0; cla <= FSclasses.length; cla++) {
-			var FSfeat = cla !== FSclasses.length ? ClassList[FSclasses[cla]].features["fighting style"] : ClassSubList.champion.features.subclassfeature10;
+		for (var cla = 0; cla < FSclasses.length; cla++) {
+			var FSfeat = cla < 4 ? ClassList[FSclasses[cla]].features["fighting style"] : ClassSubList.champion.features.subclassfeature10;
 			FSfeat.choices.push(FStyle.choice);
 			FSfeat[FStyle.choice.toLowerCase()] = FStyle.feature;
 			if (indx === arr.length - 1) FSfeat.choices.sort();

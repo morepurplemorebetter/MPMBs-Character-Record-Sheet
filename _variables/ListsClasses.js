@@ -26,13 +26,20 @@ var ClassList = {
 				source : ["P", 48],
 				minlevel : 1,
 				description : "\n   " + "Start/end as bonus action; add damage to melee weapons that use Str; lasts 1 min" + "\n   " + "Adv. on Strength checks/saves (not attacks); resistance to bludgeoning/piercing/slashing" + "\n   " + "Stops if I end turn without attacking or taking damage since last turn, or unconscious",
-				additional : ["+2 melee damage", "+2 melee damage", "+2 melee damage", "+2 melee damage", "+2 melee damage", "+2 melee damage", "+2 melee damage", "+2 melee damage", "+3 melee damage", "+3 melee damage", "+3 melee damage", "+3 melee damage", "+3 melee damage", "+3 melee damage", "+3 melee damage", "+4 melee damage", "+4 melee damage", "+4 melee damage", "+4 melee damage", "+4 melee damage"],
+				additional : levels.map(function (n) {
+					if (n < 9) return "+2 melee damage";
+					if (n < 16) return "+3 melee damage";
+					return "+4 melee damage";
+				}),
 				usages : [2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, "\u221E\u00D7 per "],
 				recovery : "long rest",
 				action : ["bonus action", " (start/stop)"],
 				eval : "AddResistance(\"Bludgeon. (in rage)\", \"Barbarian (Rage)\"); AddResistance(\"Piercing (in rage)\", \"Barbarian (Rage)\"); AddResistance(\"Slashing (in rage)\", \"Barbarian (Rage)\");",
 				removeeval : "RemoveResistance(\"Bludgeon. (in rage)\"); RemoveResistance(\"Piercing (in rage)\"); RemoveResistance(\"Slashing (in rage)\");",
-				save : "Adv. on Strength saves in rage"
+				save : "Adv. on Strength saves in rage",
+				calcChanges : {
+					atkCalc : ["if (fields.Range.match(/melee/i) && classes.known.barbarian && classes.known.barbarian.level && WeaponText.match(/\\brage\\b/i)) {output.extraDmg += function(n){return n < 9 ? 2 : n < 16 ? 3 : 4;}(classes.known.barbarian.level); }; ", "If I include the word 'Rage' in a melee weapon's name or description, the calculation will add my Rage's bonus damage to it."]
+				}
 			},
 			"unarmored defense" : {
 				name : "Unarmored Defense",
@@ -80,7 +87,15 @@ var ClassList = {
 				source : ["P", 49],
 				minlevel : 9,
 				description : "\n   " + "I can roll additional dice for the extra damage on a critical hit with a melee attack",
-				additional : ["", "", "", "", "", "", "", "", "1 additional die", "1 additional die", "1 additional die", "1 additional die", "2 additional dice", "2 additional dice", "2 additional dice", "2 additional dice", "3 additional dice", "3 additional dice", "3 additional dice", "3 additional dice"]
+				additional : levels.map(function (n) {
+					if (n < 9) return "";
+					if (n < 13) return "1 additional die";
+					if (n < 17) return "2 additional die";
+					return "3 additional dice";
+				}),
+				calcChanges : {
+					atkAdd : ["if (fields.Range.match(/melee/i) && classes.known.barbarian && classes.known.barbarian.level && classes.known.barbarian.level > 8) {var pExtraCritM = extraCritM ? extraCritM : 0; var extraCritM = pExtraCritM + function(n){return n < 9 ? 2 : n < 16 ? 3 : 4;}(classes.known.barbarian.level); if (pExtraCritM) {fields.Description.replace('+' + pExtraCritM + ' extra di', '+' + extraCritM + ' extra di'); } else {fields.Description += (fields.Description ? '; +' : '+') + extraCritM + ' extra die on a crit in melee'; }; fields.Description = extraCritM > 1 ? fields.Description.replace('extra die on a crit', 'extra dice on a crit') : fields.Description; }; ", "My melee attacks roll additional dice on a critical hit."]
+				}
 			},
 			"relentless rage" : {
 				name : "Relentless Rage",
@@ -411,8 +426,9 @@ var ClassList = {
 				"archery" : {
 					name : "Archery Fighting Style",
 					description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
-					eval : "tDoc.getField(\"Attack To Hit Bonus Global\").value += 2",
-					removeeval : "tDoc.getField(\"Attack To Hit Bonus Global\").value -= 2"
+					calcChanges : {
+						atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 2; }; ", "My ranged weapons get a +2 bonus on the To Hit."]
+					}
 				},
 				"defense" : {
 					name : "Defense Fighting Style",
@@ -423,12 +439,16 @@ var ClassList = {
 				"dueling" : {
 					name : "Dueling Fighting Style",
 					description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
-					eval : "tDoc.getField(\"Attack Damage Bonus Global\").value += 2",
-					removeeval : "tDoc.getField(\"Attack Damage Bonus Global\").value -= 2"
+					calcChanges : {
+						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && fields.Range.match(/melee/i) && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+					}
 				},
 				"great weapon fighting" : {
 					name : "Great Weapon Fighting Style",
-					description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands"
+					description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
+					calcChanges : {
+						atkAdd : ["if (fields.Range.match(/melee/i) && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += '; Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+					}
 				},
 				"protection" : {
 					name : "Protection Fighting Style",
@@ -437,7 +457,10 @@ var ClassList = {
 				},
 				"two-weapon fighting" : {
 					name : "Two-Weapon Fighting Style",
-					description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks"
+					description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+					calcChanges : {
+						atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."]
+					}
 				}
 			},
 			"second wind" : {
@@ -517,7 +540,10 @@ var ClassList = {
 				}),
 				action : ["bonus action", " (with Attack action)"],
 				eval : "AddString(\"Extra.Notes\", \"Monk features:\\n\\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor\/shields\", true);",
-				removeeval : "RemoveString(\"Extra.Notes\", \"Monk features:\\n\\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor\/shields\", true);"
+				removeeval : "RemoveString(\"Extra.Notes\", \"Monk features:\\n\\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor\/shields\", true);",
+				calcChanges : {
+					atkAdd : ["var monkDie = function(n) {return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10;}; if (classes.known.monk && classes.known.monk.level && theWea && (theWea.monkweapon || theWea.name.match(/shortsword/i) || (theWea.type.match(/simple/i) && theWea.range.match(/melee/i) && !theWea.description.match(/\\b(heavy|(2|two).?hand(ed)?s?)\\b/i)))) {var aMonkDie = monkDie(classes.known.monk.level); var curDie = eval(fields.Damage_Die.replace('d', '*')); if (!isNaN(curDie) || curDie < aMonkDie) {fields.Damage_Die = '1d' + aMonkDie;}; fields.Mod = StrDex;}; ", "I can use either Strength or Dexterity and my Martial Arts damage die in place of the normal damage die for any 'Monk Weapons', which include unarmed strike, shortsword, and any simple melee weapon that is not two-handed or heavy."]
+				}
 			},
 			"ki" : {
 				name : "Ki",
@@ -548,19 +574,27 @@ var ClassList = {
 				"stunning strike" : {
 					name : "Stunning Strike",
 					source : ["P", 79],
-					description : " [1 ki point]" + "\n   " + "Creature hit by my melee attack Con saves or it is stunned until the end of my next turn"
+					description : " [1 ki point]" + "\n   " + "After I hit a creature wit a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
 				},
 				eval : "ClassFeatureOptions([\"monk\", \"ki\", \"flurry of blows\", \"extra\"]); ClassFeatureOptions([\"monk\", \"ki\", \"patient defense\", \"extra\"]); ClassFeatureOptions([\"monk\", \"ki\", \"step of the wind\", \"extra\"]);",
 				removeeval : "ClassFeatureOptions([\"monk\", \"ki\", \"flurry of blows\", \"extra\"], \"remove\"); ClassFeatureOptions([\"monk\", \"ki\", \"patient defense\", \"extra\"], \"remove\"); ClassFeatureOptions([\"monk\", \"ki\", \"step of the wind\", \"extra\"], \"remove\");",
-				changeeval : "if (newClassLvl.monk >= 5 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"stunning strike\") === -1) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"])} else if (newClassLvl.monk < 5 && oldClassLvl.monk >= 5) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"], \"remove\")};"
+				changeeval : "if (newClassLvl.monk >= 5 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"stunning strike\") === -1) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"])} else if (newClassLvl.monk < 5 && oldClassLvl.monk >= 5) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"], \"remove\");};"
 			},
 			"unarmored movement" : {
 				name : "Unarmored Movement",
 				source : ["P", 78],
 				minlevel : 2,
 				description : "\n   " + "Speed increases and eventually lets me traverse some surfaces without falling as I move",
-				additional : ["", "+10 ft", "+10 ft", "+10 ft", "+10 ft", "+15 ft", "+15 ft", "+15 ft", "+15 ft; Vertical surfaces and liquids", "+20 ft; Vertical surfaces and liquids", "+20 ft; Vertical surfaces and liquids", "+20 ft; Vertical surfaces and liquids", "+20 ft; Vertical surfaces and liquids", "+25 ft; Vertical surfaces and liquids", "+25 ft; Vertical surfaces and liquids", "+25 ft; Vertical surfaces and liquids", "+25 ft; Vertical surfaces and liquids", "+30 ft; Vertical surfaces and liquids", "+30 ft; Vertical surfaces and liquids", "+30 ft; Vertical surfaces and liquids"],
-				changeeval : "if(oldClassLvl.monk) {ChangeSpeed(-1 * Number(CurrentClasses.monk.features[\"unarmored movement\"].additional[oldClassLvl.monk - 1].substring(1,3)))}; try {ChangeSpeed(CurrentClasses.monk.features[\"unarmored movement\"].additional[newClassLvl.monk - 1].substring(1,3));} catch (err) {};"
+				additional : levels.map(function (n) {
+					if (n < 2) return "";
+					if (n < 6) return "+10 ft";
+					if (n < 9) return "+15 ft";
+					if (n < 10) return "+15 ft; Vertical surfaces and liquids";
+					if (n < 14) return "+20 ft; Vertical surfaces and liquids";
+					if (n < 18) return "+25 ft; Vertical surfaces and liquids";
+					return "+30 ft; Vertical surfaces and liquids";
+				}),
+				changeeval : "var monkSpd = function(n) {return n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30;}; var oldSpdM = monkSpd(oldClassLvl.monk); var newSpdM = monkSpd(newClassLvl.monk); if (oldSpdM !== newSpdM) {ChangeSpeed(newSpdM - oldSpdM)};"
 			},
 			"subclassfeature3" : {
 				name : "Monastic Tradition",
@@ -588,7 +622,10 @@ var ClassList = {
 				name : "Ki-Empowered Strikes",
 				source : ["P", 79],
 				minlevel : 6,
-				description : "\n   " + "My unarmed strikes count as magical for overcoming resistances and immunities"
+				description : "\n   " + "My unarmed strikes count as magical for overcoming resistances and immunities",
+				calcChanges : {
+					atkAdd : ["if (WeaponName.match(/unarmed strike/i)) {fields.Description += 'Counts as magical';}; ", "My unarmed strikes count as magical for overcoming resistances and immunities."]
+				}
 			},
 			"evasion" : {
 				name : "Evasion",
@@ -713,12 +750,16 @@ var ClassList = {
 				"dueling" : {
 					name : "Dueling Fighting Style",
 					description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
-					eval : "tDoc.getField(\"Attack Damage Bonus Global\").value += 2",
-					removeeval : "tDoc.getField(\"Attack Damage Bonus Global\").value -= 2"
+					calcChanges : {
+						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && fields.Range.match(/melee/i) && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+					}
 				},
 				"great weapon fighting" : {
 					name : "Great Weapon Fighting Style",
-					description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands"
+					description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
+					calcChanges : {
+						atkAdd : ["if (fields.Range.match(/melee/i) && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += '; Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+					}
 				},
 				"protection" : {
 					name : "Protection Fighting Style",
@@ -780,7 +821,10 @@ var ClassList = {
 				name : "Improved Divine Smite",
 				source : ["P", 85],
 				minlevel : 11,
-				description : "\n   " + "Whenever I hit a creature with a melee weapon, I do an extra 1d8 radiant damage"
+				description : "\n   " + "Whenever I hit a creature with a melee weapon, I do an extra 1d8 radiant damage",
+				calcChanges : {
+					atkAdd : ["if (fields.Range.match(/melee/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {fields.Description += (fields.Description ? '; ' : '') + '+1d8 Radiant damage'; }; ", "With my melee weapon attacks I deal an extra 1d8 radiant damage."]
+				}
 			},
 			"cleansing touch" : {
 				name : "Cleansing Touch",
@@ -959,8 +1003,9 @@ var ClassList = {
 				"archery" : {
 					name : "Archery Fighting Style",
 					description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
-					eval : "tDoc.getField(\"Attack To Hit Bonus Global\").value += 2",
-					removeeval : "tDoc.getField(\"Attack To Hit Bonus Global\").value -= 2"
+					calcChanges : {
+						atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 2; }; ", "My ranged weapons get a +2 bonus on the To Hit."]
+					}
 				},
 				"defense" : {
 					name : "Defense Fighting Style",
@@ -971,12 +1016,16 @@ var ClassList = {
 				"dueling" : {
 					name : "Dueling Fighting Style",
 					description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
-					eval : "tDoc.getField(\"Attack Damage Bonus Global\").value += 2",
-					removeeval : "tDoc.getField(\"Attack Damage Bonus Global\").value -= 2"
+					calcChanges : {
+						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && fields.Range.match(/melee/i) && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+					}
 				},
 				"two-weapon fighting" : {
 					name : "Two-Weapon Fighting Style",
-					description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks"
+					description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+					calcChanges : {
+						atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."]
+					}
 				}
 			},
 			"spellcasting" : {
@@ -2663,8 +2712,9 @@ var ClassSubList = {
 				"archery" : {
 					name : "Archery Fighting Style",
 					description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
-					eval : "tDoc.getField(\"Attack To Hit Bonus Global\").value += 2",
-					removeeval : "tDoc.getField(\"Attack To Hit Bonus Global\").value -= 2"
+					calcChanges : {
+						atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 2; }; ", "My ranged weapons get a +2 bonus on the To Hit."]
+					}
 				},
 				"defense" : {
 					name : "Defense Fighting Style",
@@ -2675,12 +2725,16 @@ var ClassSubList = {
 				"dueling" : {
 					name : "Dueling Fighting Style",
 					description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
-					eval : "tDoc.getField(\"Attack Damage Bonus Global\").value += 2",
-					removeeval : "tDoc.getField(\"Attack Damage Bonus Global\").value -= 2"
+					calcChanges : {
+						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && fields.Range.match(/melee/i) && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+					}
 				},
 				"great weapon fighting" : {
 					name : "Great Weapon Fighting Style",
-					description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands"
+					description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
+					calcChanges : {
+						atkAdd : ["if (fields.Range.match(/melee/i) && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += '; Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+					}
 				},
 				"protection" : {
 					name : "Protection Fighting Style",
@@ -2689,7 +2743,10 @@ var ClassSubList = {
 				},
 				"two-weapon fighting" : {
 					name : "Two-Weapon Fighting Style",
-					description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks"
+					description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+					calcChanges : {
+						atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."]
+					}
 				}
 			},
 			"subclassfeature15" : {
@@ -2712,6 +2769,7 @@ var ClassSubList = {
 		fullname : "Battle Master",
 		source : ["P", 73],
 		abilitySave : 1,
+		abilitySaveAlt : 2,
 		features : {
 			"subclassfeature3" : {
 				name : "Combat Superiority",

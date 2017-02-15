@@ -2013,9 +2013,7 @@ function ToggleAdventureLeague(Toggle, skipLogSheet) {
 	
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
-	if (IsNotReset) {
-		tDoc.calculateNow();
-	};
+	if (IsNotReset) tDoc.calculateNow();
 };
 
 //Find if the armor is a known armor
@@ -2028,11 +2026,13 @@ function FindArmor(input) {
 	var tempFound = false;
 	CurrentArmour.known = "";
 	CurrentArmour.mod = "";
+	delete CurrentArmour.dex;
 
 	for (var key in ArmourList) { //scan string for all armors, including the alternative spellings
 		var aSearch = ArmourList[key].regExpSearch; //use the defined regular expression of the race
 		if (!tempFound && tempString.search(aSearch) !== -1) {
 			CurrentArmour.known = key;
+			if (ArmourList[key].dex !== undefined) CurrentArmour.dex = ArmourList[key].dex;
 			tempFound = true;
 		}
 	}
@@ -2065,21 +2065,19 @@ function ApplyArmor(input) {
 		"Heavy Armor", //2
 		"AC Stealth Disadvantage", //3
 		"AC Armor Weight", //4
+		"AC Dexterity Modifier" //5
 	];
 
 	thermoM("Testing if it is a known armor..."); //change the progress dialog text
 	FindArmor(input);
 
 	tDoc.getField(ArmorFields[0]).setAction("Calculate", "var placeholder = \"just to keep the calculation from being done too late\";");
+	tDoc.getField(ArmorFields[5]).submitName = "";
 
 	if (CurrentArmour.known !== undefined && ArmourList[CurrentArmour.known] !== undefined) {
 		thermoM("Applying the recognized armor..."); //change the progress dialog text
-		if (ArmourList[CurrentArmour.known].type === "medium" && What("Medium Armor Max Mod") === 3) {
-			var ArmorStealth = false;
-		} else {
-			var ArmorStealth = ArmourList[CurrentArmour.known].stealthdis;
-		}
-		Checkbox(ArmorFields[3], CurrentArmour.field.match(/mithral/i) ? false : ArmorStealth);
+		var ArmorStealth = (ArmourList[CurrentArmour.known].type === "medium" && What("Medium Armor Max Mod") === 3) || CurrentArmour.field.match(/mithral/i) ? false : ArmourList[CurrentArmour.known].stealthdis;
+		Checkbox(ArmorFields[3], ArmorStealth);
 		ConditionSet();
 		Checkbox(ArmorFields[1], ArmourList[CurrentArmour.known].type === "medium");
 		Checkbox(ArmorFields[2], ArmourList[CurrentArmour.known].type === "heavy");
@@ -2100,6 +2098,12 @@ function ApplyArmor(input) {
 		} else {
 			Value(ArmorFields[4], 0);
 		}
+		
+		//set the max dex mod of the armour
+		if (CurrentArmour.dex !== undefined) {
+			tDoc.getField(ArmorFields[5]).submitName = CurrentArmour.dex;
+		}
+		
 		thermoM("stop"); //stop the top progress dialog
 	} else {
 		thermoM("Resetting the armor fields..."); //change the progress dialog text
@@ -2109,6 +2113,22 @@ function ApplyArmor(input) {
 	ShowHideStealthDisadv();
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
+};
+
+//a function to calculate the value of the Dex field in the Armour section (returns a value)
+function calcMaxDexToAC() {
+	var dexMod = What("Dex Mod");
+	if (dexMod === "") {
+		
+	} else if (event.target.submitName !== "") {
+		dexMod = Math.min(dexMod, event.target.submitName);
+	} else if (tDoc.getField("Heavy Armor").isBoxChecked(0)) {
+		dexMod = 0;
+	} else if (tDoc.getField("Medium Armor").isBoxChecked(0)) {
+		dexMod = Math.min(dexMod, Number(What("Medium Armor Max Mod")));
+	};
+
+	return dexMod;
 };
 
 // find the magic bonus in the shield description
@@ -2591,6 +2611,7 @@ function FindClasses(Event) {
 			source : [],
 			primaryAbility : "",
 			abilitySave : 0,
+			abilitySaveAlt : 0,
 			prereqs : "",
 			improvements : [],
 			saves : [],
@@ -2621,6 +2642,13 @@ function FindClasses(Event) {
 					Temps[prop] = ClassList[aClass][prop];
 				}
 			}
+		}
+		
+		//special something for classes that have alternative ability scores that can be used for the DC
+		if (Temps.abilitySave && Temps.abilitySaveAlt) {
+			var as1 = Number(What(AbilityScores.abbreviations[Temps.abilitySave - 1] + " Mod"));
+			var as2 = Number(What(AbilityScores.abbreviations[Temps.abilitySaveAlt - 1] + " Mod"));
+			if (as1 < as2) Temps.abilitySave = Temps.abilitySaveAlt;
 		}
 
 		var fAB = [];
@@ -2882,24 +2910,27 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 	//put hit dice on sheet
 	
 	UpdateLevelFeatures("class");
-	AddAttacksPerAction(); //update number of attacks
-	ApplyProficiencies(true); //call to update armor, shield and weapon proficiencies
-	UpdateTooltips(); //skills tooltip, ability score tooltip
-	
-	//show the option button if the class has features that offers a choice
-	MakeClassMenu();
-	if (Menus.classfeatures[0].cName !== "No class features detected that require a choice") {
-		DontPrint("Class Features Menu");
-	} else {
-		Hide("Class Features Menu");
+	if (IsSubclassException.toSource() === "({})") {
+		AddAttacksPerAction(); //update number of attacks
+		ApplyProficiencies(true); //call to update armor, shield and weapon proficiencies
+		UpdateTooltips(); //skills tooltip, ability score tooltip
+		
+		//show the option button if the class has features that offers a choice
+		MakeClassMenu();
+		if (Menus.classfeatures[0].cName !== "No class features detected that require a choice") {
+			DontPrint("Class Features Menu");
+		} else {
+			Hide("Class Features Menu");
+		}
+		
+		SetStringifieds(); //set the global variables to their fields for future reference
+		CheckForSpellUpdate(); //see if there is a reason to update the spells sheets
 	}
-	
 	thermoM("stop"); //stop the top progress dialog
-	SetStringifieds(); //set the global variables to their fields for future reference
-	if (IsSubclassException.toSource() === "({})") CheckForSpellUpdate(); //see if there is a reason to update the spells sheets
 
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
+	if (IsNotReset) tDoc.calculateNow();
 };
 
 //Check if the level or XP entered matches the XP or level
@@ -3294,6 +3325,7 @@ function ApplyRace(inputracetxt) {
 	thermoM("stop"); //stop the top progress dialog
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
+	if (IsNotReset) tDoc.calculateNow();
 };
 
 //add the tooltips to the skills tooltips, and ability score tooltips
@@ -3445,423 +3477,20 @@ function FindWeapons(ArrayNmbr) {
 };
 
 //update the weapons to apply the change in proficiencies
+var forceReCalcWeapons = false;
 function ReCalcWeapons(justProfs) {
 	IsNotReset = false;
+	justProfs = justProfs && !forceReCalcWeapons && (!CurrentEvals.atkAdd || !CurrentEvals.atkAdd.match(/level/i)) ? true : false;
 	for (var xy = 0; xy < CurrentWeapons.known.length; xy++) {
 		if (CurrentWeapons.field[xy]) {
-			//ApplyWeapons(What("Attack." + (xy + 1) + ".Weapon Selection"), xy + 1, true);
 			ApplyWeapon(CurrentWeapons.field[xy], "Attack." + (xy + 1) + ".Weapon Selection", true, justProfs);
 		}
 	}
-	
 	IsNotReset = true;
-	tDoc.calculate = true;
-	tDoc.delay = false;
-	tDoc.calculateNow();
-}
-
-//apply the effect of a weapon
-function ApplyWeapons(inputweapontxt, Fld, isRecalc) {
-	thermoM("start"); //start a progress dialog
-	thermoM("Filling out the weapon's details..."); //change the progress dialog text
-	tDoc.delay = true;
-	tDoc.calculate = false;
-	var ArrayNmbr = Fld - 1;
-	var WeaponFlds = [
-		"Attack." + Fld + ".Weapon", //0
-		"Attack." + Fld + ".To Hit", //1
-		"Attack." + Fld + ".Damage", //2
-		"Attack." + Fld + ".Weapon Selection", //3
-		"Attack." + Fld + ".Proficiency", //4
-		"Attack." + Fld + ".Mod", //5
-		"Attack." + Fld + ".To Hit Calculated", //6
-		"Attack." + Fld + ".Damage Calculated", //7
-		"Attack." + Fld + ".Damage Type", //8
-		"BlueText.Attack." + Fld + ".To Hit Bonus", //9
-		"BlueText.Attack." + Fld + ".Damage Bonus", //10
-		"BlueText.Attack." + Fld + ".Damage Die", //11
-		"Attack." + Fld + ".Description", //12
-		"Attack." + Fld + ".Range", //13
-		"BlueText.Attack." + Fld + ".Weight", //14
-		"BlueText.Attack." + Fld + ".Weight Title", //15
-	];
-	var TheInput = ParseWeapon(inputweapontxt);
-	
-	if (IsNotWeaponMenu) {
-		Value(WeaponFlds[0], inputweapontxt); //set the weapon's name in the manual field as well
-	}
-		
-	//if there is a new weapon entered and the old weapon had ammo that is not used by any of the current weapons, remove that ammo from the ammo section.
-	if (IsNotWeaponMenu && CurrentWeapons.known[ArrayNmbr][0] && CurrentWeapons.known[ArrayNmbr][0] !== TheInput && WeaponsList[CurrentWeapons.known[ArrayNmbr][0]].ammo && (!TheInput || WeaponsList[CurrentWeapons.known[ArrayNmbr][0]].ammo !== WeaponsList[TheInput].ammo)) {
-		var theOldAmmo = WeaponsList[CurrentWeapons.known[ArrayNmbr][0]].ammo;
-		for (var j = 0; j < CurrentWeapons.known.length; j++) {
-			var tempFound = false;
-			if (j !== ArrayNmbr && CurrentWeapons.known[j][0] && WeaponsList[CurrentWeapons.known[j][0]].ammo && WeaponsList[CurrentWeapons.known[j][0]].ammo === theOldAmmo) {
-				tempFound = true;
-				j = CurrentWeapons.known.length;
-			}
-		}
-		if (!tempFound) {
-			RemoveAmmo(theOldAmmo);
-		}
-	}
-	
-	//update the field value
-	CurrentWeapons.field[ArrayNmbr] = inputweapontxt.toLowerCase();
-	//if field is empty, reset all fields, otherwise continue
-	if (inputweapontxt === "") {
-		thermoM("Resetting the weapon features..."); //change the progress dialog text
-		tDoc.resetForm(WeaponFlds.slice(1, 3));
-		thermoM(1/2); //increment the progress dialog's progress
-		tDoc.resetForm(WeaponFlds.slice(4));
-		CurrentWeapons.known[ArrayNmbr] = [];
-	} else {
-		thermoM("Applying the weapon's features..."); //change the progress dialog text
-		//see if weapon entered is a known weapon
-		FindWeapons(ArrayNmbr);
-
-		//add weapon statistics
-		if (CurrentWeapons.known[ArrayNmbr][0]) {
-			var WeaponName = CurrentWeapons.known[ArrayNmbr][0];
-			var theAtk = WeaponsList[WeaponName];
-
-			//check if proficient
-			var TypeProf = (theAtk.type === "Simple" || theAtk.type === "Martial") ? tDoc.getField("Proficiency Weapon " + theAtk.type).isBoxChecked(0) : 0;
-			if (!TypeProf)
-			for (var i = 0; i < CurrentWeapons.extraproficiencies.length; i++) {
-				if (CurrentWeapons.extraproficiencies[i] === WeaponName || CurrentWeapons.extraproficiencies[i] === theAtk.type.toLowerCase()) {
-					TypeProf = 1;
-					i = CurrentWeapons.extraproficiencies.length
-				};
-			};
-			if (IsNotWeaponMenu && theAtk.type === "Natural" || theAtk.type === "Cantrip" || theAtk.type === "Spell" || TypeProf === 1) {
-				
-			} else if (IsNotWeaponMenu) {
-				Checkbox(WeaponFlds[4], false);
-			}
-			
-			//change the actual fields, if this is not a movement induced by the weapon menu
-			
-			//Set the proficiency checkbox
-			Checkbox(WeaponFlds[4], TypeProf);
-			
-			thermoM(1/10); //increment the progress dialog's progress
-
-			var WeaponDescription = theAtk.description;
-			//add description
-			if (IsNotWeaponMenu && !isRecalc) {
-				Value(WeaponFlds[12], WeaponDescription);
-			};
-			
-			thermoM(2/10); //increment the progress dialog's progress
-
-			//add dc, if applicable
-			if (IsNotWeaponMenu && !isRecalc && theAtk.dc) {
-				Value(WeaponFlds[9], "dc");
-			} else if (What(WeaponFlds[9]).toLowerCase() === "dc") {
-				Value(WeaponFlds[9], 0);
-			};
-			
-			thermoM(3/10); //increment the progress dialog's progress
-			
-			//add damage type
-			if (IsNotWeaponMenu && !isRecalc) {
-				AddDmgType(WeaponFlds[8], theAtk.damage[2]);
-			};
-
-			//add damage die
-			var weaponDmgDie = Number(theAtk.damage[1]);
-			if (isNaN(weaponDmgDie)) weaponDmgDie = 0;
-			var weaponDieString = weaponDmgDie === 0 ? theAtk.damage[0] : theAtk.damage[0] + "d" + weaponDmgDie;
-			
-			thermoM(4/10); //increment the progress dialog's progress
-
-			//first check if character has monk levels
-			var monkDmgDie = 0;
-			if (classes.known.hasOwnProperty("monk") && (theAtk.monkweapon || (theAtk.type === "Martial" && classes.known.monk.subclass === "way of the kensei" && classes.known.monk.level >= 3))) {
-				monkDmgDie = CurrentClasses.monk.features["martial arts"].additional[classes.known["monk"].level - 1];
-				monkDmgDie = monkDmgDie.match(/.*(\d+d\d+).*/) ? monkDmgDie.replace(/.*(\d+d\d+).*/, "$1") : 0;
-				var monkDmgDieCalc = monkDmgDie ? eval(monkDmgDie.replace("d", "*")) : 0;
-				if (!isNaN(theAtk.damage[0])) weaponDmgDie = weaponDmgDie * theAtk.damage[0];
-				if (weaponDmgDie < monkDmgDieCalc) {
-					weaponDieString = monkDmgDie;
-				}
-			}
-			if (IsNotWeaponMenu) {
-				weaponDieString += theAtk.damage[3] ? theAtk.damage[3] : "";
-				Value(WeaponFlds[11], weaponDieString);
-			}
-			
-			thermoM(5/10); //increment the progress dialog's progress
-
-			//add range
-			if (IsNotWeaponMenu && !isRecalc) {
-				var theRange = What("Unit System") === "imperial" || theAtk.range === "Melee" ? theAtk.range : ConvertToMetric(theAtk.range, 0.5);
-				Value(WeaponFlds[13], theRange);
-			};
-			
-			thermoM(6/10); //increment the progress dialog's progress
-
-			//add ability modifier, prefer Dex over Str for finesse and monk weapons if Dex is more
-			if (IsNotWeaponMenu) {
-				var WeaponAbility = theAtk.ability;
-				if ((monkDmgDie || WeaponDescription.toLowerCase().indexOf("finesse") !== -1) && What("Str") <= What("Dex")) {
-					WeaponAbility = 2;
-				} else if (theAtk.type === "Cantrip" || theAtk.type === "Spell") {
-					//see on which of the spell lists of the known classes the spell/cantrip appears
-					var theDCMod1 = tDoc.getField("Spell DC 1 Mod").currentValueIndices;
-					var theDCMod2 = tDoc.getField("Spell DC 2 Mod").currentValueIndices;
-					WeaponAbility = theDCMod1 !== 0 ? theDCMod1 : (theDCMod2 !== 0 ? theDCMod2 : WeaponAbility);
-					var isSpell = theAtk.SpellsList ? theAtk.SpellsList : WeaponName;
-					var theSpell = SpellsList[isSpell];
-					var foundClass = false;
-					if (theSpell) {
-						for (var aClass in classes.known) {
-							if (!foundClass && CurrentSpells[aClass] && CurrentSpells[aClass].selectBo && CurrentSpells[aClass].selectBo.indexOf(isSpell) !== -1) {
-								foundClass = true;
-								WeaponAbility = CurrentClasses[aClass].abilitySave;
-							} else if (!foundClass && theSpell.classes.indexOf(aClass) !== -1) {
-								if (CurrentSpells[aClass] && CurrentSpells[aClass].selectCa && CurrentSpells[aClass].selectCa.indexOf(isSpell) !== -1) {
-									foundClass = true;
-									WeaponAbility = CurrentClasses[aClass].abilitySave;
-								} else {
-									WeaponAbility = CurrentClasses[aClass].abilitySave;
-								}
-							}
-						}
-					}
-				}
-				PickDropdown(WeaponFlds[5], WeaponAbility);
-			}
-			
-			thermoM(7/10); //increment the progress dialog's progress
-			
-			//add Wis modifier to 'bluetext' damage bonus if the character has the "Potent Spellcasting" class feature and the weapon is a cantrip
-			if (IsNotWeaponMenu && theAtk.type === "Cantrip" && What("Class Features").toLowerCase().indexOf("potent spellcasting") !== -1) {
-				Value(WeaponFlds[10], "Wis");
-			} else if (IsNotWeaponMenu) {
-				Value(WeaponFlds[10], 0);
-			}
-			
-			thermoM(8/10); //increment the progress dialog's progress
-			
-			//add weight of the weapon
-			var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
-			if (IsNotWeaponMenu && theAtk.weight) {
-				Value(WeaponFlds[14], RoundTo(theAtk.weight * massMod, 0.001, true));
-			} else if (IsNotWeaponMenu) {
-				Value(WeaponFlds[14], 0);
-			}
-			
-			thermoM(9/10); //increment the progress dialog's progress
-			
-			//add ammo, if defined
-			if (IsNotWeaponMenu && theAtk.ammo) {
-				AddAmmo(theAtk.ammo);
-			}
-			
-			if (theAtk.modifiers) { //add to hit and damage modifiers, if defined
-				if (theAtk.modifiers[0] && !theAtk.dc) Value(WeaponFlds[9], theAtk.modifiers[0])
-				if (theAtk.modifiers[1]) Value(WeaponFlds[10], theAtk.modifiers[1])
-			}
-		} else if (IsNotWeaponMenu && CurrentWeapons.manualproficiencies.length > 0) { //if not a known weapon, but there are unknown weapons to check it against
-			for (var i = 0; i < CurrentWeapons.manualproficiencies.length; i++) {
-				if (CurrentWeapons.field[ArrayNmbr].indexOf(CurrentWeapons.manualproficiencies[i]) !== -1) {
-					Checkbox(WeaponFlds[4], true);
-				}
-			}
-		}
-	}
-	thermoM("stop"); //stop the top progress dialog
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
+	forceReCalcWeapon = false;
 };
-
-/* 
-//calculate the attack damage (field calculation)
-function CalcAttackDamage() {
-	var FldNmbr = event.target.name.replace(/.*Attack\.(\d+?)\..+/, "$1");
-	
-	//if the field is currently not visible, stop the calculation
-	if (event.target.display === display.hidden) {
-		return;
-	}
-	
-	var QI = event.target.name.indexOf("Comp.") === -1;
-	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
-	var maxItems = QI ? FieldNumbers.attacks : 3;
-	var ArrayNmbr = FldNmbr - 1;
-	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
-	var thisText = QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr];
-	var tempString = "";
-	var WeaponFlds = [
-		prefix + Q + "Attack." + FldNmbr + ".Weapon", //0
-		prefix + Q + "Attack." + FldNmbr + ".To Hit", //1
-		prefix + Q + "Attack." + FldNmbr + ".Damage", //2
-		prefix + Q + "Attack." + FldNmbr + ".Weapon Selection", //3
-		prefix + Q + "Attack." + FldNmbr + ".Proficiency", //4
-		prefix + Q + "Attack." + FldNmbr + ".Mod", //5
-		prefix + Q + "Attack." + FldNmbr + ".To Hit Calculated", //6
-		prefix + Q + "Attack." + FldNmbr + ".Damage Calculated", //7
-		prefix + Q + "Attack." + FldNmbr + ".Damage Type", //8
-		prefix + "BlueText." + Q + "Attack." + FldNmbr + ".To Hit Bonus", //9
-		prefix + "BlueText." + Q + "Attack." + FldNmbr + ".Damage Bonus", //10
-		prefix + "BlueText." + Q + "Attack." + FldNmbr + ".Damage Die", //11
-		prefix + Q + "Attack." + FldNmbr + ".Description", //12
-		prefix + Q + "Attack." + FldNmbr + ".Range", //13
-	];
-	var AbilityToDmg = true;
-	var WeaponString = What(WeaponFlds[3]).toLowerCase() + What(WeaponFlds[12]).toLowerCase();
-	var isDC = What(WeaponFlds[9]).toLowerCase() === "dc";
-	var DamageBonus1Field = What(WeaponFlds[5]);
-	var theDamageBonus = 0;
-	if (DamageBonus1Field !== "empty" && DamageBonus1Field !== "") {
-		theDamageBonus = What(prefix + DamageBonus1Field); //damage from ability score
-		if (WeaponString.indexOf("cantrip") !== -1 || WeaponString.indexOf("spell") !== -1) {
-			AbilityToDmg = false;
-		} else if (theDamageBonus < 0) {
-			AbilityToDmg = true;
-		} else if (WeaponString.search(/off.{0,3}hand/i) !== -1 || WeaponString.indexOf("secondary") !== -1) {
-			if (QI) {
-				AddAction("bonus action", "Off-hand Attack");
-				if (What("Class Features").search(/two\-weapon fighting style/i) === -1) {
-					AbilityToDmg = false;
-				}
-			} else {
-				AbilityToDmg = false;
-			}
-		} else if (thisWeapon !== undefined && thisWeapon[2] !== undefined) {
-			AbilityToDmg = thisWeapon[2];
-		}
-	};
-	var DamageBonus1 = AbilityToDmg ? theDamageBonus : 0;
-
-	//damage added manually in the bluetext field
-	var DamageBonus2 = What(WeaponFlds[10]);
-	if (isNaN(DamageBonus2)) {
-		DamageBonus2 = QI ? What(DamageBonus2 + " Mod") : What(prefix + "Comp.Use.Ability." + DamageBonus2 + ".Mod");
-	}
-
-	var DamageBonus3 = (thisWeapon && thisWeapon[1]) ? thisWeapon[1] : 0; //damage from magical bonus
-
-	var DamageBonus4 = 0;
-	if (QI && What(WeaponFlds[13]).search(/melee/i) !== -1 && What(WeaponFlds[12]).search(/two-handed/i) === -1 && thisWeapon && thisWeapon[0] && WeaponsList[thisWeapon[0]].type !== "Cantrip") {
-		DamageBonus4 = What("Attack Damage Bonus Global"); //damage from dueling fighting style if weapon is melee and not two-handed or a cantrip
-	}
-
-	var DamageBonus5 = 0;
-	if (!isDC && WeaponString.search(/sharpshoo?t|power.{0,3}attack|great.{0,3}weapon.{0,3}master/i) !== -1) {
-		DamageBonus5 = +10; //damage from using the sharpshooter or great weapon master feat
-	}
-	
-	//now replace the "C" in the damage die field with the cantrip multiplier
-	//and the "B" with the cantrip multiplier minus 1 (or remove the d-something with a 0)
-	var Lvl = Number(QI ? What("Character Level") : What(prefix + "Comp.Use.HD.Level"));
-	if (Lvl < 5) {
-		var LvlB = 1;
-	} else if (Lvl < 11) {
-		var LvlB = 2;
-	} else if (Lvl < 17) {
-		var LvlB = 3;
-	} else {
-		var LvlB = 4;
-	};
-	var DmgDie = What(WeaponFlds[11]).replace(/C(.{0,3})d/g, LvlB + "$1" + "d");
-	if ((/B(.?)d/).exec(DmgDie)) {
-		if (LvlB === 1) {
-			DmgDie = DmgDie.replace(/B(.{0,3})d(\d+)?/g, "0");
-		} else {
-			DmgDie = DmgDie.replace(/B(.{0,3})d/g, (LvlB - 1) + "$1" + "d");
-		}
-	}
-	
-	//now create the total damage string
-	var DamageBonuses = Number(DamageBonus1) + Number(DamageBonus2) + Number(DamageBonus3) + Number(DamageBonus4) + Number(DamageBonus5);
-	DmgDie += DamageBonuses > 0 ? "+" : "";
-	DmgDie = DmgDie.replace(/(\W|^)0\+/, "$1"); //if the damage die resulted in just a zero, replace it with nothing
-	tempString += DmgDie;
-	tempString += DamageBonuses !== 0 ? DamageBonuses : "";
-	var theEndvalue = DmgDie !== "" ? tempString : "";
-	
-	//set the event value to the manual field as well
-	Value(event.target.name.replace(" Calculated", ""), theEndvalue);
-	
-	event.value = theEndvalue;
-};
-
-//calculate the attack to hit modifier (field calculation)
-function CalcAttackTohit() {
-	var FldNmbr = event.target.name.replace(/.*Attack\.(\d+?)\..+/, "$1");
-	//if the field is currently not visible, stop the calculation
-	if (event.target.display === display.hidden) {
-		return;
-	}
-	
-	var QI = event.target.name.indexOf("Comp.") === -1;
-	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
-	var maxItems = QI ? FieldNumbers.attacks : 3;
-	var ArrayNmbr = FldNmbr - 1;
-	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
-	var WeaponFlds = [
-		prefix + Q + "Attack." + FldNmbr + ".Weapon", //0
-		prefix + Q + "Attack." + FldNmbr + ".To Hit", //1
-		prefix + Q + "Attack." + FldNmbr + ".Damage", //2
-		prefix + Q + "Attack." + FldNmbr + ".Weapon Selection", //3
-		prefix + Q + "Attack." + FldNmbr + ".Proficiency", //4
-		prefix + Q + "Attack." + FldNmbr + ".Mod", //5
-		prefix + Q + "Attack." + FldNmbr + ".To Hit Calculated", //6
-		prefix + Q + "Attack." + FldNmbr + ".Damage Calculated", //7
-		prefix + Q + "Attack." + FldNmbr + ".Damage Type", //8
-		prefix + "BlueText." + Q + "Attack." + FldNmbr + ".To Hit Bonus", //9
-		prefix + "BlueText." + Q + "Attack." + FldNmbr + ".Damage Bonus", //10
-		prefix + "BlueText." + Q + "Attack." + FldNmbr + ".Damage Die", //11
-		prefix + Q + "Attack." + FldNmbr + ".Description", //12
-		prefix + Q + "Attack." + FldNmbr + ".Range" //13
-	];
-	var WeaponString = What(WeaponFlds[3]).toLowerCase() + What(WeaponFlds[12]).toLowerCase();
-	var useDice = QI ? tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1 : tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
-	var ProfB = tDoc.getField(WeaponFlds[4]).isBoxChecked(0) === 0 || useDice ? 0 : QI ? What("Proficiency Bonus") : What(prefix + "Comp.Use.Proficiency Bonus");
-
-	var AttackBonus1 = What(WeaponFlds[5]) !== "empty" ? What(prefix + What(WeaponFlds[5])) : false; //to hit from ability score
-
-	//to hit added manually in the bluetext field
-	var AttackBonus2 = What(WeaponFlds[9]);
-	var isDC = AttackBonus2.toLowerCase() === "dc";
-	if (isNaN(AttackBonus2) && !isDC) {
-		AttackBonus2 = QI ? What(AttackBonus2 + " Mod") : What(prefix + "Comp.Use.Ability." + AttackBonus2 + ".Mod");
-	}
-
-	var AttackBonus3 = (thisWeapon && thisWeapon[1]) ? thisWeapon[1] : 0; //to hit from magical bonus
-
-	var AttackBonus4 = 0;
-	if (QI && What(WeaponFlds[13]).search(/melee/i) === -1 && thisWeapon && WeaponsList[thisWeapon[0]] && WeaponsList[thisWeapon[0]].type !== "Cantrip") {
-		AttackBonus4 = What("Attack To Hit Bonus Global"); //to hit bonus from archery fighting style if weapon is not melee and not a cantrip
-	}
-
-	var AttackBonus5 = 0;
-	if (WeaponString.search(/sharpshoo?t|power.{0,3}attack|great.{0,3}weapon.{0,3}master/i) !== -1) {
-		AttackBonus5 = -5; //to hit bonus from using the sharpshooter or great weapon master feat
-	}
-	
-	var withMeleeAttack = What(WeaponFlds[13]).search(/with melee wea/i) !== -1;
-
-	if (AttackBonus1 !== false && !isDC && !withMeleeAttack) {
-		var theEndvalue = Number(ProfB) + Number(AttackBonus1) + Number(AttackBonus2) + Number(AttackBonus3) + Number(AttackBonus4) + Number(AttackBonus5);
-	} else if (AttackBonus1 !== false && isDC) {
-		var theEndvalue = "DC " + (8 + Number(ProfB) + Number(AttackBonus1) + Number(AttackBonus3));
-	} else {
-		var theEndvalue = "";
-	}
-	
-	//set the event value to the manual field as well
-	Value(event.target.name.replace(" Calculated", ""), theEndvalue > 0 ? "+" + theEndvalue : theEndvalue);
-	
-	event.value = theEndvalue;
-};
-*/
 
 function SetWeaponsdropdown() {
 	tDoc.delay = true;
@@ -4503,7 +4132,7 @@ function BackgroundOptions() {
 function AddInvArmorShield() {
 	var tempMagicSign = CurrentArmour.magic > 0 ? " \+" : CurrentArmour.magic < 0 ? " " : "";
 	var tempArmorString = CurrentArmour.magic ? tempMagicSign + CurrentArmour.magic : "";
-	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].inventory) {
+	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].weight) {
 		AddInvR(ArmourList[CurrentArmour.known].name + tempArmorString, "", What("AC Armor Weight"));
 	}
 	var temp = What("AC Shield Bonus Description");
@@ -4517,7 +4146,7 @@ function AddInvArmorShield() {
 function AddInvNewArmorShield() {
 	var tempMagicSign = CurrentArmour.magic >= 0 ? " +" : " ";
 	var tempArmorString = CurrentArmour.magic ? tempMagicSign + CurrentArmour.magic : "";
-	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].inventory) {
+	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].weight) {
 		var tempArmor = ArmourList[CurrentArmour.known].name + tempArmorString;
 		var tempArmorRegEx = tempArmor.RegEscape();
 		var isFound = false;
@@ -5046,9 +4675,8 @@ function RemoveRace() {
 		delete CurrentSpells[CurrentRace.known];
 
 		CurrentRace.level = 0;
-
-	ApplyProficiencies(true); //call to update the armor, shield and weapon proficiencies
-	UpdateTooltips(); //skills tooltip, ability score tooltip
+		ApplyProficiencies(true); //call to update the armor, shield and weapon proficiencies
+		UpdateTooltips(); //skills tooltip, ability score tooltip
 	};
 };
 
@@ -5613,12 +5241,12 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		}
 	}
 	thermoM("Finalizing the changes of the feat..."); //change the progress dialog text
-
 	ApplyProficiencies(true); //call to update armor, shield and weapon proficiencies
 	UpdateTooltips(); //skills tooltip, ability score tooltip
 	thermoM("stop"); //stop the top progress dialog
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
+	if (IsNotReset) tDoc.calculateNow();
 };
 
 function SetFeatsdropdown() {
@@ -6529,7 +6157,7 @@ function ClassFeatureOptions(Input, AddOrRemove) {
 		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.calcChanges) {
 			addEvals(theOldSubFea.calcChanges, [theOldSubFea.name, MenuSelection[0]], false);
 		}
-		if (theSubFea.eval && AddOrRemove !== "remove") {
+		if (theSubFea.calcChanges && AddOrRemove !== "remove") {
 			addEvals(theSubFea.calcChanges, [theSubFea.name, MenuSelection[0]], true);
 		}
 		
@@ -6623,6 +6251,7 @@ function ClassFeatureOptions(Input, AddOrRemove) {
 }
 
 //add a miscellaneous AC bonus. Filling in a 0 for ACbonus will remove the ability
+//submitNm is a string that can be run as eval in an if statement. If this returns True, the armor bonus is not added to the total
 function AddACMisc(ACbonus, Name, Tooltip, submitNm) {
 	ACMiscFlds = ["AC Misc Mod 1", "AC Misc Mod 2", "AC Misc Mod 1 Description", "AC Misc Mod 2 Description"];
 	for (var i = 0; i <= 1; i++) {
@@ -10368,11 +9997,7 @@ function WeaponOptions() {
 			break;
 		 case "show what things are affecting the attack calculations":
 			if (CurrentEvals.atkStr) {
-				app.alert({
-					cTitle : "Things Affecting the Attack Calculations",
-					cMsg : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]" + CurrentEvals.atkStr,
-					nIcon : 3
-				});
+				ShowDialog("Things Affecting the Attack Calculations", CurrentEvals.atkStr);
 			}
 			break;
 		}

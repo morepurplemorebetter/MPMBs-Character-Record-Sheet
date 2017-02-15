@@ -6,7 +6,7 @@ function InitializeEverything(noButtons) {
 	GetStringifieds(); //populate some variables stored in fields
 	
 	RunUserScript();
-	
+	//blabal
 	//define some variables after running the user scripts
 	AllSpellsArray = CreateSpellList({class : "any"}, true);
 	AllSpellsObject = CreateSpellObject(AllSpellsArray);

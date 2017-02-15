@@ -748,7 +748,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("Lifestyle", {cleanValue: true});
 		
 		//some hidden fields that we should do now
-		ImportField("Attack To Hit Bonus Global"); ImportField("Attack Damage Bonus Global"); ImportField("SpellSheetUpdate.Remember"); ImportField("Print Remember"); ImportField("SubClass Remember"); ImportField("Wildshapes.Remember");
+		ImportField("SpellSheetUpdate.Remember"); ImportField("Print Remember"); ImportField("SubClass Remember"); ImportField("Wildshapes.Remember");
 		
 		
 	//>> make a function to do all children of a parent field
@@ -1039,6 +1039,7 @@ function DirectImport(consoleTrigger) {
 	
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
+	if (IsNotReset) tDoc.calculateNow();
 }
 
 //a function to import a field from the global.docFrom

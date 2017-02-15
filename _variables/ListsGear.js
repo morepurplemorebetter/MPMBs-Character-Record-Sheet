@@ -4,11 +4,8 @@ var ArmourList = {
 		name : "Unarmored",
 		type : "",
 		ac : 10,
-		dex : 2000,
 		stealthdis : false,
-		weight : 0,
-		inventory : false,
-		strReq : 0,
+		strReq : 0
 	},
 
 	"draconic resilience" : {
@@ -16,11 +13,8 @@ var ArmourList = {
 		name : "Draconic resilience",
 		type : "",
 		ac : 13,
-		dex : 2000,
 		stealthdis : false,
-		weight : 0,
-		inventory : false,
-		strReq : 0,
+		strReq : 0
 	},
 
 	"natural armor" : {
@@ -28,11 +22,8 @@ var ArmourList = {
 		name : "Natural Armor",
 		type : "",
 		ac : 13,
-		dex : 2000,
 		stealthdis : false,
-		weight : 0,
-		inventory : false,
-		strReq : 0,
+		strReq : 0
 	},
 
 	"mage armor" : {
@@ -40,10 +31,7 @@ var ArmourList = {
 		name : "Mage armor",
 		type : "",
 		ac : 13,
-		dex : 2000,
 		stealthdis : false,
-		weight : 0,
-		inventory : false,
 		strReq : 0
 	},
 
@@ -52,10 +40,8 @@ var ArmourList = {
 		name : "Padded armor",
 		type : "light",
 		ac : 11,
-		dex : 2000,
 		stealthdis : true,
 		weight : 8,
-		inventory : true,
 		strReq : 0
 	},
 
@@ -64,10 +50,8 @@ var ArmourList = {
 		name : "Leather armor",
 		type : "light",
 		ac : 11,
-		dex : 2000,
 		stealthdis : false,
 		weight : 10,
-		inventory : true,
 		strReq : 0
 	},
 
@@ -76,10 +60,8 @@ var ArmourList = {
 		name : "Studded leather armor",
 		type : "light",
 		ac : 12,
-		dex : 2000,
 		stealthdis : false,
 		weight : 13,
-		inventory : true,
 		strReq : 0
 	},
 
@@ -88,10 +70,8 @@ var ArmourList = {
 		name : "Hide armor",
 		type : "medium",
 		ac : 12,
-		dex : 2,
 		stealthdis : false,
 		weight : 12,
-		inventory : true,
 		strReq : 0
 	},
 
@@ -100,10 +80,8 @@ var ArmourList = {
 		name : "Chain shirt",
 		type : "medium",
 		ac : 13,
-		dex : 2,
 		stealthdis : false,
 		weight : 20,
-		inventory : true,
 		strReq : 0,
 	},
 
@@ -112,10 +90,8 @@ var ArmourList = {
 		name : "Scale mail",
 		type : "medium",
 		ac : 14,
-		dex : 2,
 		stealthdis : true,
 		weight : 45,
-		inventory : true,
 		strReq : 0,
 	},
 
@@ -124,10 +100,8 @@ var ArmourList = {
 		name : "Breastplate",
 		type : "medium",
 		ac : 14,
-		dex : 2,
 		stealthdis : false,
 		weight : 20,
-		inventory : true,
 		strReq : 0,
 	},
 
@@ -136,10 +110,8 @@ var ArmourList = {
 		name : "Half plate",
 		type : "medium",
 		ac : 15,
-		dex : 2,
 		stealthdis : true,
 		weight : 40,
-		inventory : true,
 		strReq : 0,
 	},
 
@@ -148,10 +120,8 @@ var ArmourList = {
 		name : "Ring mail",
 		type : "heavy",
 		ac : 14,
-		dex : 0,
 		stealthdis : true,
 		weight : 40,
-		inventory : true,
 		strReq : 0,
 	},
 
@@ -160,10 +130,8 @@ var ArmourList = {
 		name : "Chain mail",
 		type : "heavy",
 		ac : 16,
-		dex : 0,
 		stealthdis : true,
 		weight : 55,
-		inventory : true,
 		strReq : 13,
 	},
 
@@ -172,10 +140,8 @@ var ArmourList = {
 		name : "Splint armor",
 		type : "heavy",
 		ac : 17,
-		dex : 0,
 		stealthdis : true,
 		weight : 60,
-		inventory : true,
 		strReq : 15
 	},
 
@@ -184,10 +150,8 @@ var ArmourList = {
 		name : "Plate armor",
 		type : "heavy",
 		ac : 18,
-		dex : 0,
 		stealthdis : true,
 		weight : 65,
-		inventory : true,
 		strReq : 15
 	},
 
@@ -196,10 +160,8 @@ var ArmourList = {
 		name : "Spiked armor",
 		type : "medium",
 		ac : 14,
-		dex : 2,
 		stealthdis : true,
 		weight : 45,
-		inventory : true,
 		strReq : 0
 	}
 }
@@ -1060,7 +1022,7 @@ var WeaponsList = {
 		regExpSearch : /^(?=.*radiant)(?=.*(sun|light))(?=.*bolt).*$/i,
 		name : "Radiant Sun Bolt",
 		ability : 2,
-		type : "Natural",
+		type : "Spell",
 		damage : [1, 4, "radiant"],
 		range : "30 ft",
 		description : "If used in an Attack action, spend 1 ki point to use it twice as a bonus action",
@@ -1073,7 +1035,7 @@ var WeaponsList = {
 		regExpSearch : /^(?=.*\bthunder)(?=.*cannon\b).*$/i,
 		name : "Thunder Cannon",
 		ability : 2,
-		type : "Exotic",
+		type : "Artificer",
 		damage : [2, 6, "piercing"],
 		range : "150/500 ft",
 		weight : 12, // made up, based on the weight of real rifles
