@@ -209,7 +209,7 @@ ClassSubList["the undying light"] = {
 			name : "Radiant Soul",
 			source : ["UA:LDU", 3],
 			minlevel : 1,
-			description : "\n   " + "I add my Cha modifier to Spells/cantrips I cast that deal fire or radiant damage" + "\n   " + "I have resistance to radiant damage and know the Light and Sacred Flame cantrips",
+			description : "\n   " + "I add my Cha modifier to cantrips/spells I cast that deal fire or radiant damage" + "\n   " + "I have resistance to radiant damage and know the Light and Sacred Flame cantrips",
 			spellcastingBonus : [{
 				name : "Radiant Soul",
 				spells : ["light"],
@@ -221,6 +221,9 @@ ClassSubList["the undying light"] = {
 			}],
 			eval : "AddResistance(\"Radiant\", \"Warlock (the Undying Light)\");",
 			removeeval : "RemoveResistance(\"Radiant\");",
+			calcChanges : {
+				atkCalc : ["if (isSpell && fields.Damage_Type.match(/fire|radiant/i)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spells that deal fire or radiant damage get my Charisma modifier added to the damage."]
+			}
 		},
 		"subclassfeature6" : {
 			name : "Searing Vengeance",
@@ -755,7 +758,9 @@ ClassList["rangerua"] = {
 			source : ["UA:RR", 2],
 			minlevel : 1,
 			description : "\n   " + "Use the \"Choose Features\" button above to select a favored enemy" + "\n   " + "Choose from beasts, fey, humanoids, monstrosities, or undead" + "\n   " + "I get a bonus to damage rolls with weapon attacks against the chosen favored enemy" + "\n   " + "I have adv. on Wis (Survival) to track and Int checks to recall info about them" + "\n   " + "I also learn one language of my choice, typically one associated with the favored enemy",
-			additional : ["+2 weapon attack damage", "+2 weapon attack damage", "+2 weapon attack damage", "+2 weapon attack damage", "+2 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage", "+4 weapon attack damage"],
+			additional : levels.map(function (n) {
+				return (n < 6 ? "+2" : "+4") + " weapon attack damage";
+			}),
 			choices : ["Beasts", "Fey", "Humanoids", "Monstrosities", "Undead"],
 			"beasts" : {
 				name : "Favored Enemy: Beasts",
@@ -778,7 +783,10 @@ ClassList["rangerua"] = {
 				description : "\n   " + "I get a bonus to damage rolls with weapon attacks against undead" + "\n   " + "I have adv. on Wis (Survival) to track and Int checks to recall info about undead" + "\n   " + "I learn a language, typically one spoken by or associated with undead"
 			},
 			eval : "AddLanguage(\"+1 from Favored Enemy\", \"Ranger (Favored Enemy)\");",
-			removeeval : "RemoveLanguage(\"+1 from Favored Enemy\", \"Ranger (Favored Enemy)\");"
+			removeeval : "RemoveLanguage(\"+1 from Favored Enemy\", \"Ranger (Favored Enemy)\");",
+			calcChanges : {
+				atkCalc : ["if (!isSpell && classes.known.rangerua && classes.known.rangerua.level && WeaponText.match(/favou?red.{1,2}enemy/i)) { output.extraDmg += classes.known.rangerua.level < 6 ? 2 : 4; }; ", "If I include the words 'Favored Enemy' in the name or description of a weapon, it gets bonus damage, depending on my Ranger level."]
+			}
 		},
 		"natural explorer" : {
 			name : "Natural Explorer",
@@ -804,7 +812,7 @@ ClassList["rangerua"] = {
 				name : "Archery Fighting Style",
 				description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
 				calcChanges : {
-					atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 2; }; ", "My ranged weapons get a +2 bonus on the To Hit."]
+					atkCalc : ["if (isRangedWeapon) {output.extraHit += 2; }; ", "My ranged weapons get a +2 bonus on the To Hit."]
 				}
 			},
 			"defense" : {
@@ -817,7 +825,7 @@ ClassList["rangerua"] = {
 				name : "Dueling Fighting Style",
 				description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
 				calcChanges : {
-					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && fields.Range.match(/melee/i) && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
 				}
 			},
 			"two-weapon fighting" : {
@@ -1230,7 +1238,10 @@ ClassSubList["storm herald"] = {
 			},
 			"sea" : {
 				name : "Raging Storm: Sea",
-				description : "\n   " + "Creatures in my aura hit by my attack must make a Str save or be knocked prone" + "\n   " + "The DC for this save is 8 + my proficiency bonus + my Strength modifier"
+				description : "\n   " + "Creatures in my aura hit by my attack must make a Str save or be knocked prone" + "\n   " + "The DC for this save is 8 + my proficiency bonus + my Strength modifier",
+				calcChanges : {
+					atkAdd : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level > 13 && inputText.match(/\\brage\\b/i)) {fields.Description += (fields.Description ? '; ' : '') + 'Str save or knocked prone'; }; ", "If I include the word 'Rage' in a melee weapon's name, it will show in its description that it forces targets that are hit to make a Strength saving throw or be knocked prone."]
+				}
 			},
 			"tundra" : {
 				name : "Raging Storm: Tundra",
@@ -1460,7 +1471,13 @@ ClassSubList["forge domain"] = {
 			source : ["UA:CDD", 1],
 			minlevel : 8,
 			description : "\n   " + "Once per turn, when I hit a creature with a weapon attack, I can do extra damage",
-			additional : ["", "", "", "", "", "", "", "+1d8 fire damage", "+1d8 fire damage", "+1d8 fire damage", "+1d8 fire damage", "+1d8 fire damage", "+1d8 fire damage", "+2d8 fire damage", "+2d8 fire damage", "+2d8 fire damage", "+2d8 fire damage", "+2d8 fire damage", "+2d8 fire damage", "+2d8 fire damage"],
+			additional : levels.map(function (n) {
+				if (n < 8) return "";
+				return "+" + (n < 14 ? 1 : 2) + "d8 fire damage";
+			}),
+			calcChanges : {
+				atkAdd : ["if (classes.known.cleric && classes.known.cleric.level > 7 && !isSpell) {fields.Description += (fields.Description ? '; ' : '') + 'Once per turn +' + (classes.known.cleric.level < 14 ? 1 : 2) + 'd8 fire damage'; }; ", "Once per turn, I can have one of my weapon attacks that hit do extra fire damage."]
+			}
 		},
 		"subclassfeature17" : {
 			name : "Saint of Forge and Fire",
@@ -1526,7 +1543,13 @@ ClassSubList["grave domain"] = {
 			source : ["UA:CDD", 2],
 			minlevel : 8,
 			description : "\n   " + "Once per turn, when I hit a creature with a weapon attack, I can do extra damage",
-			additional : ["", "", "", "", "", "", "", "+1d8 necrotic damage", "+1d8 necrotic damage", "+1d8 necrotic damage", "+1d8 necrotic damage", "+1d8 necrotic damage", "+1d8 necrotic damage", "+2d8 necrotic damage", "+2d8 necrotic damage", "+2d8 necrotic damage", "+2d8 necrotic damage", "+2d8 necrotic damage", "+2d8 necrotic damage", "+2d8 necrotic damage"],
+			additional : levels.map(function (n) {
+				if (n < 8) return "";
+				return "+" + (n < 14 ? 1 : 2) + "d8 necrotic damage";
+			}),
+			calcChanges : {
+				atkAdd : ["if (classes.known.cleric && classes.known.cleric.level > 7 && !isSpell) {fields.Description += (fields.Description ? '; ' : '') + 'Once per turn +' + (classes.known.cleric.level < 14 ? 1 : 2) + 'd8 necrotic damage'; }; ", "Once per turn, I can have one of my weapon attacks that hit do extra necrotic damage."]
+			}
 		},
 		"subclassfeature17" : {
 			name : "Keeper of Souls",
@@ -1578,7 +1601,13 @@ ClassSubList["protection domain"] = {
 			source : ["UA:CDD", 3],
 			minlevel : 8,
 			description : "\n   " + "Once per turn, when I hit a creature with a weapon attack, I can do extra damage",
-			additional : ["", "", "", "", "", "", "", "+1d8 radiant damage", "+1d8 radiant damage", "+1d8 radiant damage", "+1d8 radiant damage", "+1d8 radiant damage", "+1d8 radiant damage", "+2d8 radiant damage", "+2d8 radiant damage", "+2d8 radiant damage", "+2d8 radiant damage", "+2d8 radiant damage", "+2d8 radiant damage", "+2d8 radiant damage"],
+			additional : levels.map(function (n) {
+				if (n < 8) return "";
+				return "+" + (n < 14 ? 1 : 2) + "d8 radiant damage";
+			}),
+			calcChanges : {
+				atkAdd : ["if (classes.known.cleric && classes.known.cleric.level > 7 && !isSpell) {fields.Description += (fields.Description ? '; ' : '') + 'Once per turn +' + (classes.known.cleric.level < 14 ? 1 : 2) + 'd8 radiant damage'; }; ", "Once per turn, I can have one of my weapon attacks that hit do extra radiant damage."]
+			}
 		},
 		"subclassfeature17" : {
 			name : "Indomitable Defense",
@@ -1755,11 +1784,18 @@ ClassSubList["arcane archer"] = {
 			source : ["UA:FMA", 1],
 			minlevel : 3,
 			description : "\n   " + "As a bonus action, I can create one magical arrow that I can fire with a bow" + "\n   " + "A shot with the arrow counts as magical and does additional force damage on a hit" + "\n   " + "When I create the arrow, I can apply one of my known Arcane Shots on it" + "\n   " + "This arrow lasts until the end of my turn or until I hit or miss a target with it",
+			additional : levels.map(function (n) {
+				return n < 3 ? "" :
+					(n < 18 ? "+2" : "+4") + "d6 force damage";
+			}),
 			additional : ["", "", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+2d6 force damage", "+4d6 force damage", "+4d6 force damage", "+4d6 force damage"],
 			usages : 2,
 			recovery : "short rest",
 			eval : "AddAction(\"bonus action\", \"Create Magical Arrow\", \"Arcane Archer (Arcane Arrow)\");",
-			removeeval : "RemoveAction(\"bonus action\", \"Create Magical Arrow\")"
+			removeeval : "RemoveAction(\"bonus action\", \"Create Magical Arrow\")",
+			calcChanges : {
+				atkAdd : ["if (WeaponName.match(/longbow|shortbow/i) && inputText.match(/^(?=.*arcane)(?=.*arrow).*$/i) && classes.known.fighter && classes.known.fighter.level) {fields.Description += (fields.Description ? '; +' : '+') + (classes.known.fighter.level < 18 ? 2 : 4) + 'd6 force damage' + (thisWeapon[1] ? '' : '; Counts as magical'); }; ", "If I include the words 'Arcane Arrow' in a longbow or shortbow's name, it gets an added description of the damage this Arcane Arrow adds."]
+			}
 		},
 		"subclassfeature3.1" : {
 			name : "Arcane Shot",
@@ -1856,8 +1892,13 @@ ClassSubList["knight"] = {
 			description : "\n   " + "If I hit a creature with a melee weapon attack, I mark it until the end of my next turn" + "\n   " + "A marked target has disadv. on any attacks vs. those that didn't mark it" + "\n   " + "I can attack the target I marked if it is within 5 ft of me and does one of the following:" + "\n    - " + "It moves at least 1 foot on its turn" + "\n    - " + "It makes an attack that it suffers disadv. on from being marked" + "\n   " + "This attack uses my reaction, has adv., and adds my fighter level as extra damage" + "\n   " + "I can still do this if I already used my reaction this round, but not this turn",
 			recovery : "short rest",
 			usages : 3,
-			additional : ["", "", "+3 damage", "+4 damage", "+5 damage", "+6 damage", "+7 damage", "+8 damage", "+9 damage", "+10 damage", "+11 damage", "+12 damage", "+13 damage", "+14 damage", "+15 damage", "+16 damage", "+17 damage", "+18 damage", "+19 damage", "+20 damage"],
-			action : ["reaction", ""]
+			additional : levels.map(function (n) {
+				return n < 3 ? "" : "+" + n + " damage";
+			}),
+			action : ["reaction", ""],
+			calcChanges : {
+				atkCalc : ["if (isMeleeWeapon && classes.known.fighter && classes.known.fighter.level > 2 && WeaponText.match(/\\b(implacable.?mark|marked)\\b/i)) { output.extraDmg += classes.known.fighter.level; }; ", "If I include the words 'Implacable Mark' or 'Marked' in the name or description of a melee weapon, it gets my fighter level added to its Damage."]
+			}
 		},
 		"subclassfeature7" : {
 			name : "Noble Cavalry",
@@ -1873,8 +1914,13 @@ ClassSubList["knight"] = {
 			source : ["UA:FMA", 2],
 			minlevel : 10,
 			description : "\n   " + "As a reaction when a creature within 5 ft of me moves at least 1 ft, I can attack it" + "\n   " + "This attack is made with a melee weapon attack and deals extra damage on a hit" + "\n   " + "If this hits, the attack reduces the target's speed to 0 until the end of this turn",
-			additional : ["", "", "", "", "", "", "", "", "", "+5 damage", "+5 damage", "+6 damage", "+6 damage", "+7 damage", "+7 damage", "+8 damage", "+8 damage", "+9 damage", "+9 damage", "+10 damage"],
-			action : ["reaction", ""]
+			additional : levels.map(function (n) {
+				return n < 10 ? "" : "+" + Math.floor(n / 2) + " damage";
+			}),
+			action : ["reaction", ""],
+			calcChanges : {
+				atkCalc : ["if (isMeleeWeapon && classes.known.fighter && classes.known.fighter.level > 9 && WeaponText.match(/holds?.the.line/i)) { output.extraDmg += Math.floor(classes.known.fighter.level / 2); }; ", "If I include the words 'Hold the Line' in the name or description of a melee weapon, it gets half my fighter level added to its Damage."]
+			}
 		},
 		"subclassfeature15" : {
 			name : "Rapid Strike",
@@ -1959,11 +2005,17 @@ ClassSubList["sharpshooter"] = {
 			name : "Steady Aim",
 			source : ["UA:FMA", 3],
 			minlevel : 3,
-			description : "\n   " + "As a bonus action, I can carefully aim my ranged weapon on a target I can see in range" + "\n   " + "Until the end of my turn, my attacks with this weapon on the target benefit from:" + "\n   " + "Ignoring half and three-quarter cover; Dealing 2 + fighter level extra damage per hit",
+			description : "\n   " + "As a bonus action, I can carefully aim my ranged weapon on a target I can see in range" + "\n   " + "Until the end of my turn, my attacks with this weapon on that target get to:" + "\n   " + "Ignore half and three-quarter cover; Add 2 + half fighter level damage per hit",
 			recovery : "short rest",
 			usages : 3,
-			additional : ["", "", "+3 damage", "+4 damage", "+4 damage", "+5 damage", "+5 damage", "+6 damage", "+6 damage", "+7 damage", "+7 damage", "+8 damage", "+8 damage", "+9 damage", "+9 damage", "+10 damage", "+10 damage", "+11 damage", "+11 damage", "+12 damage"],
-			action : ["bonus action", ""]
+			additional : levels.map(function (n) {
+				return n < 3 ? "" : "+" + (2 + Math.floor(n / 2)) + " damage";
+			}),
+			action : ["bonus action", ""],
+			calcChanges : {
+				atkAdd : ["if (isRangedWeapon && classes.known.fighter && classes.known.fighter.level > 2 && inputText.match(/steady.{0,3}aim/i)) { fields.Description += (fields.Description ? '; ' : '') + 'Ignores 1/2 and 3/4 cover'; }; ", "If I include the words 'Steady Aim' in the name of a ranged weapon, it gets 2 + half my fighter level added to its Damage, and the fact that it ignores half and three-quarter cover added to its description."],
+				atkCalc : ["if (isRangedWeapon && classes.known.fighter && classes.known.fighter.level > 2 && WeaponText.match(/steady.{0,3}aim/i)) { output.extraDmg += 2 + Math.floor(classes.known.fighter.level / 2); }; ", ""]
+			}
 		},
 		"subclassfeature7" : {
 			name : "Careful Eyes",
@@ -2019,17 +2071,31 @@ ClassSubList["way of the kensei"] = {
 				description : "\n   " + "If I make an unarmed strike with an Attack action, I can use my kensei weapon to defend" + "\n   " + "Until the start of my next turn, if I'm not incapacitated, I gain +2 AC while holding it"
 			},
 			eval : "ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"kensei defense\", \"extra\"]);",
-			removeeval : "ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"kensei defense\", \"extra\"], \"remove\");"
+			removeeval : "ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"kensei defense\", \"extra\"], \"remove\");",
+			calcChanges : {
+				atkAdd : ["var monkDie = function(n) {return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10;}; if (classes.known.monk && classes.known.monk.level > 2 && fields.Proficiency && theWea && !isSpell && !theWea.name.match(/shortsword/i) && theWea.type.match(/martial/i)) {var aMonkDie = aMonkDie ? aMonkDie : monkDie(classes.known.monk.level); try {var curDie = eval(fields.Damage_Die.replace('d', '*'));} catch (e) {var curDie = 'x';}; if (isNaN(curDie) || curDie < aMonkDie) {fields.Damage_Die = '1d' + aMonkDie; }; fields.Mod = StrDex; fields.Description += (fields.Description ? '; ' : '') + 'As bonus action with Attack action, +1d4 bludg. damage'; }; ", "I can use either Strength or Dexterity and my Martial Arts damage die in place of the normal damage die for any martial weapons I am proficient with (Kensei Weapons).\n - If I score a hit with one of these kensei weapons as part of an Attack action, I can take a bonus action to have that hit, and any other hit after that as part of the same action, do +1d4 bludgeoning damage."]
+			}
 		},
 		"ki-empowered strikes" : {
 			name : "One with the Blade",
 			source : ["UA:MMT", 1],
 			minlevel : 6,
-			description : "\n   " + "My unarmed strikes and kensei weapon attacks count as magical" + "\n   " + "As a bonus action, once per short rest, I can mark one creature I can see within 30 ft" + "\n   " + "This turn, I double my proficiency bonus on my next weapon attack against the mark",
+			description : "\n   " + "My unarmed strikes and kensei weapon attacks count as magical",
+			calcChanges : {
+				atkAdd : ["if ((WeaponName.match(/unarmed strike/i) || (theWea && !isSpell && theWea.type.match(/martial/i))) && fields.Description.indexOf('Counts as magical') === -1 && !thisWeapon[1]) {fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';}; ", "My unarmed strikes and Kensei Weapons count as magical for overcoming resistances and immunities."]
+			}
+		},
+		"subclassfeature6" : {
+			name : "Precise Strike",
+			source : ["UA:MMT", 1],
+			minlevel : 6,
+			description : "As a bonus action, I can focus my attention on one creature I can see within 30 ft" + "\n   " + "This turn, I double my proficiency bonus on my next weapon attack against that mark",
 			usages : 1,
 			recovery : "short rest",
-			additional : "Mark",
-			action : ["bonus action", " (mark)"]
+			action : ["bonus action", ""],
+			calcChanges : {
+				atkCalc : ["if (!isSpell && !isDC && WeaponText.match(/precise.{0,3}strike/i)) {output.prof *= 2; }; ", "If I include the words 'Precise Strike' in a weapon's name, or description it gets twice my proficiency bonus added to its To Hit instead of only once."]
+			}
 		},
 		"subclassfeature17" : {
 			name : "Unerring Accuracy",
@@ -2179,7 +2245,12 @@ ClassSubList["oath of treachery"] = {
 			minlevel : 3,
 			description : "\n   " + "As a bonus action, I imbue one weapon or piece of ammunition with poison upon touch" + "\n   " + "This poison lasts for 1 minute and will affect the next time I hit a target with it" + "\n   " + "The target takes 2d10 + my paladin level poison damage immediately after the hit" + "\n   " + "You automatically roll 20 on the 2d10 if you had advantage on the attack roll",
 			action : ["bonus action", ""],
-			additional : ["", "", "2d10+3 damage", "2d10+4 damage", "2d10+5 damage", "2d10+6 damage", "2d10+7 damage", "2d10+8 damage", "2d10+9 damage", "2d10+10 damage", "2d10+11 damage", "2d10+12 damage", "2d10+13 damage", "2d10+14 damage", "2d10+15 damage", "2d10+16 damage", "2d10+17 damage", "2d10+18 damage", "2d10+19 damage", "2d10+20 damage"]
+			additional : levels.map(function (n) {
+				return n < 3 ? "" : "2d10+" + n + " damage";
+			}),
+			calcChanges : {
+				atkAdd : ["if (!isSpell && inputText.match(/^(?=.*poison)(?=.*strike).*$/i)) {fields.Description += (fields.Description ? '; +' : '+') + '2d10+' + classes.known.paladin.level + ' poison damage (or ' + (classes.known.paladin.level + 20) + ' if adv.)'; }; ", "If I include the words 'Poison Strike' in a weapon's name, it gets an added description of the extra 2d10 + paladin level of poison damage it would do. If I have advantage on the attack, I can treat the 2d10 as rolling 20 in total."]
+			}
 		},
 		"subclassfeature7" : {
 			name : "Cull the Herd",
@@ -2311,7 +2382,10 @@ ClassSubList["primeval guardian conclave"] = {
 			name : "Piercing Thorns",
 			source : ["UA:RnR", 2],
 			minlevel : 3,
-			description : "\n   " + "Once each turn, a hit from my weapon attack can deal 1d6 extra piercing damage"
+			description : "\n   " + "Once each turn, a hit from my weapon attack can deal 1d6 extra piercing damage",
+			calcChanges : {
+				atkAdd : ["if (!isSpell) {fields.Description += (fields.Description ? '; ' : '') + 'Once per turn, +1d6 piercing damage'; }; ", "My weapon attacks can deal 1d6 extra piercing damage once per turn."]
+			}
 		},
 		"subclassfeature7" : {
 			name : "Ancient Fortitude",
@@ -2448,7 +2522,7 @@ function UAstartupCode() {
 			source : ["UA:LDU", 1],
 			description : "\n   " + "+1 bonus to attack rolls I make with ranged attacks" + "\n   " + "I don't have disadvantage when making a ranged attack while within 5 ft of a hostile" + "\n   " + "My ranged attacks ignore half and three-quarters cover against targets within 30 ft",
 			calcChanges : {
-				atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 1; }; ", "My ranged weapons get a +1 bonus on the To Hit."]
+				atkCalc : ["if (isRangedWeapon) {output.extraHit += 1; }; ", "My ranged weapons get a +1 bonus on the To Hit."]
 			}
 		}
 	}, {

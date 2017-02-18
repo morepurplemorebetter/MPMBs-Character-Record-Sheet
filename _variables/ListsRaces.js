@@ -15,7 +15,16 @@ var RaceList = {
 		weightMetric : " weigh between 36 and 45 kg",
 		improvements : "Aarakocra: +2 Dexterity, +1 Wisdom;",
 		scores : [0, 2, 0, 0, 1, 0],
-		trait : "Aarakocra (+2 Dexterity, +1 Wisdom)\n\nFlight: I have a flying speed of 50 feet. To use this speed, I can't be wearing medium or heavy armor.\n\nTalons: My unarmed strikes deal 1d4 slashing damage on a hit."
+		trait : "Aarakocra (+2 Dexterity, +1 Wisdom)\n\nFlight: I have a flying speed of 50 feet. To use this speed, I can't be wearing medium or heavy armor.\n\nTalons: My unarmed strikes deal 1d4 slashing damage on a hit.",
+		features : {
+			"talons" : {
+				name : "Talons",
+				minlevel : 1,
+				calcChanges : {
+					atkAdd : ["if (WeaponName.match(/unarmed strike/i)) { fields.Damage_Type = 'slashing'; if (fields.Damage_Die == 1) {fields.Damage_Die = '1d4'; }; }; ", "I have talons, which cause my unarmed strikes to deal 1d4 slashing damage."]
+				}
+			}
+		},
 	},
 
 	"aasimar" : {
@@ -1017,7 +1026,7 @@ var RaceList = {
 				name : "Savage Attacks",
 				minlevel : 1,
 				calcChanges : {
-					atkAdd : ["if (fields.Range.match(/melee/i)) {var pExtraCritM = extraCritM ? extraCritM : 0; var extraCritM = pExtraCritM + 1; if (pExtraCritM) {fields.Description.replace('+' + pExtraCritM + ' extra di', '+' + extraCritM + ' extra di'); } else {fields.Description += (fields.Description ? '; +' : '+') + extraCritM + ' extra die on a crit in melee'; }; fields.Description = extraCritM > 1 ? fields.Description.replace('extra die on a crit', 'extra dice on a crit') : fields.Description; };", "My melee attacks roll 1 additional dice on a critical hit."]
+					atkAdd : ["if (isMeleeWeapon && fields.Damage_Die.match(/d\\d+/)) {var pExtraCritM = extraCritM ? extraCritM : 0; var extraCritM = pExtraCritM + 1; if (pExtraCritM) {fields.Description = fields.Description.replace(pExtraCritM + 'd', extraCritM + 'd'); } else {fields.Description += (fields.Description ? '; ' : '') + extraCritM + fields.Damage_Die.replace(/.*(d\\d+).*/, '$1') + ' extra on a crit in melee'; }; }; ", "My melee attacks roll 1 additional dice on a critical hit."]
 				}
 			}
 		},
@@ -1189,7 +1198,7 @@ var RaceList = {
 	"tabaxi" : {
 		regExpSearch : /tabaxi/i,
 		name : "Tabaxi",
-		source : ["V", 111],
+		source : ["V", 113],
 		plural : "Tabaxi",
 		size : 3,
 		speed : ["30 ft\n20 ft climb", "20 ft\n10 ft climb"],

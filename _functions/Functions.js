@@ -657,8 +657,8 @@ function OpeningStatement() {
 		Text += "Welcome to " + toUni(sheetTitle);
 		Text += " (get the latest version using the bookmark).";
 		Text += "\n\n" + toUni("Software") + ": Please use " + toUni("Adobe Acrobat DC") + " with this sheet, as only Adobe Acrobat DC (Reader, Standard, or Pro) is supported.";
-		Text += "\n\n" + toUni("Tooltips") + ": This sheet makes extensive use of tooltips (mouseover texts). Hoover your cursor over a field to find how you can enter things into the field, reference to the source, explanatory text, or even a list of options your selection offers you.";
-		Text += "\n\n" + toUni("Functions") + ": Check out the buttons in the \'JavaScript Window\' (and bookmarks). Hoover your cursor over a button in the \'JavaScript Window\' to see what it does.";
+		Text += "\n\n" + toUni("Tooltips") + ": This sheet makes extensive use of tooltips (mouseover texts). Hover your cursor over a field to find how you can enter things into the field, reference to the source, explanatory text, or even a list of options your selection offers you.";
+		Text += "\n\n" + toUni("Functions") + ": Check out the buttons in the \'JavaScript Window\' (and bookmarks). Hover your cursor over a button in the \'JavaScript Window\' to see what it does.";
 		Text += minVer ? "" : "\n\n" + toUni("Modifiers") + ": With the \"Mods\" button you can add modifiers to the calculated values.";
 		Text += tDoc.info.SpellsOnly ? "" : "\n\n" + toUni("Layout") + ": With the \"Layout\" button you can hide, add, and remove certain pages.";
 		Text += tDoc.info.AdvLogOnly ? "" : "\n\n" + toUni("Spells") + ": With the \"Spells\" button you can have the sheet generate a spell sheet based on your character, or manually create one.";
@@ -1994,7 +1994,8 @@ function ToggleAdventureLeague(Toggle, skipLogSheet) {
 			"Background_Renown.Title",
 			"Background_Renown.Text",
 			"DCI.Text",
-			"DCI.Title"
+			"DCI.Title",
+			"Text.PRsheet.AL"
 		];
 		
 		tDoc[HiddenVisible]("Background_Organisation.Right");
@@ -3454,23 +3455,53 @@ function FindWeapons(ArrayNmbr) {
 		var startArray = 0;
 		var endArray = CurrentWeapons.field.length;
 	}
-
+	
 	//parse the weapons into tempArray
 	for (var j = startArray; j < endArray; j++) {
 		var tempString = CurrentWeapons.field[j];
-		tempArray[j] = [];
+		tempArray[j] = [
+			ParseWeapon(tempString), //see if the field contains a known weapon
+			0, // the magical bonus
+			true, // whether to add the ability modifier to damage or not
+			"", // the spell/cantrip this attack refers to
+			[] // if a spell/cantrip, this will be an array of the classes on which spell list this attack is
+		];
 		
-		//see if the field contains a known weapon
-		tempArray[j][0] = ParseWeapon(tempString);
-
 		//add magical bonus, denoted by a "+" or "-"
 		var magicBonus = parseFloat(tempString.match(/(^|\s)[\+|-]\d+/i));
 		tempArray[j][1] = !isNaN(magicBonus) ? magicBonus : 0;
-		
+	
 		//add the true/false switch for adding ability score to damage or not
-		if (tempArray[j][0]) {
-			tempArray[j][2] = WeaponsList[tempArray[j][0]].abilitytodamage;
-		}
+		tempArray[j][2] = tempArray[j][0] ? WeaponsList[tempArray[j][0]].abilitytodamage : true;
+	
+		//if this is a spell or a cantrip, see if we can link it to an object in the CurrentCasters variable
+		var isSpell = tempArray[j][0] ? (WeaponsList[tempArray[j][0]].SpellsList ? WeaponsList[tempArray[j][0]].SpellsList : tempArray[j][0]) : ParseSpell(tempString);
+		if ((!tempArray[j][0] || WeaponsList[tempArray[j][0]].type.match(/spell|cantrip/i)) && SpellsList[isSpell]) {
+			tempArray[j][3] = isSpell;
+			if (!tempArray[j][0]) tempArray[j][2] = false;
+			
+			var abiArr = [], abiModArr = [], castArr = [];
+			for (var aClass in CurrentSpells) {
+				var sClass = CurrentSpells[aClass];
+				if (!sClass.ability) continue;
+				var checkArr = ["selectCa", "selectBo", "selectSp", "extra"];
+				for (var i = 0; i < checkArr.length; i++) {
+					if (sClass[checkArr[i]] && sClass[checkArr[i]].indexOf(isSpell) !== -1) {
+						tempArray[j][4].push(aClass);
+						break;
+					};
+				};
+				if (tempArray[j][4].indexOf(sClass) === -1 && SpellsList[isSpell].level && sClass.typeSp.match(/list|spellbook/i)) {
+					var spObj = eval(sClass.list.toSource());
+					spObj.level = [1, 9];
+					var theSpList = CreateSpellList(spObj);
+					if (theSpList.indexOf(isSpell) !== -1) {
+						tempArray[j][4].push(aClass);
+					};
+				};
+			};
+		};
+		
 		//put tempArray in known
 		CurrentWeapons.known[j] = tempArray[j];
 	}
@@ -8222,7 +8253,7 @@ function AddAmmo(inputtxt) {
 				i = AmmoFlds.length;
 				n = 3;
 			} else if (n === 2 && next.value === "") {
-				next.value = AmmoList[inputtxt].name;
+				next.value = AmmoList[inputtxt] ? AmmoList[inputtxt].name : inputtxt;
 				i = AmmoFlds.length;
 				n = 3;
 			}
@@ -10004,7 +10035,7 @@ function WeaponOptions() {
 		
 		//re-popuplate the CurrentWeapons variable for the thing that just changed
 		if (findWeaps && QI) {
-			FindWeapons(ArrayNmbr);
+			FindWeapons();
 		} else if (findWeaps) {
 			FindCompWeapons(undefined, prefix);
 		}
@@ -10083,7 +10114,7 @@ function WeaponInsert(itemNmbr) {
 		
 		//re-popuplate the CurrentWeapons variable for the thing that just changed
 		if (findWeaps && QI) {
-			FindWeapons(ArrayNmbr);
+			FindWeapons();
 		} else if (findWeaps) {
 			FindCompWeapons(undefined, prefix);
 		}
@@ -10152,7 +10183,7 @@ function WeaponDelete(itemNmbr) {
 		
 	//re-popuplate the CurrentWeapons variable for the thing that just changed
 	if (findWeaps && QI) {
-		FindWeapons(ArrayNmbr);
+		FindWeapons();
 	} else if (findWeaps) {
 		FindCompWeapons(undefined, prefix);
 	}

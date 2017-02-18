@@ -2,6 +2,7 @@ var ArmourList = {
 	"unarmored" : {
 		regExpSearch : /(unarmou?red|naked|nothing|bare|no.?armou?r)/i,
 		name : "Unarmored",
+		source : ["P", 14],
 		type : "",
 		ac : 10,
 		stealthdis : false,
@@ -11,6 +12,7 @@ var ArmourList = {
 	"draconic resilience" : {
 		regExpSearch : /^(?=.*(dragon|draconic|scaly))(?=.*(hide|skin|scales|resilience)).*$/i,
 		name : "Draconic resilience",
+		source : ["P", 102],
 		type : "",
 		ac : 13,
 		stealthdis : false,
@@ -20,6 +22,7 @@ var ArmourList = {
 	"natural armor" : {
 		regExpSearch : /^(?=.*natural)(?=.*armor).*$/i,
 		name : "Natural Armor",
+		source : ["V", 112],
 		type : "",
 		ac : 13,
 		stealthdis : false,
@@ -29,6 +32,7 @@ var ArmourList = {
 	"mage armor" : {
 		regExpSearch : /^(?=.*(mage|magic))(?=.*armou?r).*$/i,
 		name : "Mage armor",
+		source : ["P", 256],
 		type : "",
 		ac : 13,
 		stealthdis : false,
@@ -38,6 +42,7 @@ var ArmourList = {
 	"padded" : {
 		regExpSearch : /^(?!.*(plate|hide))(?=.*(padding|padded)).*$/i,
 		name : "Padded armor",
+		source : ["P", 145],
 		type : "light",
 		ac : 11,
 		stealthdis : true,
@@ -48,6 +53,7 @@ var ArmourList = {
 	"leather" : {
 		regExpSearch : /^(?!.*(padding|padded|studded|studs))(?=.*leather).*$/i,
 		name : "Leather armor",
+		source : ["P", 145],
 		type : "light",
 		ac : 11,
 		stealthdis : false,
@@ -58,6 +64,7 @@ var ArmourList = {
 	"studded leather" : {
 		regExpSearch : /^(?=.*(studded|studs))(?=.*leather).*$/i,
 		name : "Studded leather armor",
+		source : ["P", 145],
 		type : "light",
 		ac : 12,
 		stealthdis : false,
@@ -68,6 +75,7 @@ var ArmourList = {
 	"hide" : {
 		regExpSearch : /^(?!.*(dragon|draconic))(?=.*(hide|skin)).*$/i,
 		name : "Hide armor",
+		source : ["P", 145],
 		type : "medium",
 		ac : 12,
 		stealthdis : false,
@@ -78,6 +86,7 @@ var ArmourList = {
 	"chain shirt" : {
 		regExpSearch : /^(?=.*(chain|mail))(?=.*shirt).*$/i,
 		name : "Chain shirt",
+		source : ["P", 145],
 		type : "medium",
 		ac : 13,
 		stealthdis : false,
@@ -88,6 +97,7 @@ var ArmourList = {
 	"scale mail" : {
 		regExpSearch : /^(?=.*scale)(?=.*mail).*$/i,
 		name : "Scale mail",
+		source : ["P", 145],
 		type : "medium",
 		ac : 14,
 		stealthdis : true,
@@ -98,6 +108,7 @@ var ArmourList = {
 	"breastplate" : {
 		regExpSearch : /^(?=.*breast)(?=.*plate).*$/i,
 		name : "Breastplate",
+		source : ["P", 145],
 		type : "medium",
 		ac : 14,
 		stealthdis : false,
@@ -108,6 +119,7 @@ var ArmourList = {
 	"half plate" : {
 		regExpSearch : /^(?=.*half)(?=.*plate).*$/i,
 		name : "Half plate",
+		source : ["P", 145],
 		type : "medium",
 		ac : 15,
 		stealthdis : true,
@@ -118,6 +130,7 @@ var ArmourList = {
 	"ring mail" : {
 		regExpSearch : /^(?=.*ring)(?=.*mail).*$/i,
 		name : "Ring mail",
+		source : ["P", 145],
 		type : "heavy",
 		ac : 14,
 		stealthdis : true,
@@ -128,6 +141,7 @@ var ArmourList = {
 	"chain mail" : {
 		regExpSearch : /^(?!.*(scale|plate|ring|shirt))(?=.*(chain|mail)).*$/i,
 		name : "Chain mail",
+		source : ["P", 145],
 		type : "heavy",
 		ac : 16,
 		stealthdis : true,
@@ -138,6 +152,7 @@ var ArmourList = {
 	"splint" : {
 		regExpSearch : /splint/i,
 		name : "Splint armor",
+		source : ["P", 145],
 		type : "heavy",
 		ac : 17,
 		stealthdis : true,
@@ -148,6 +163,7 @@ var ArmourList = {
 	"plate" : {
 		regExpSearch : /^(?!.*(half|breast))(?=.*plate).*$/i,
 		name : "Plate armor",
+		source : ["P", 145],
 		type : "heavy",
 		ac : 18,
 		stealthdis : true,
@@ -158,6 +174,7 @@ var ArmourList = {
 	"spiked armor" : {
 		regExpSearch : /^(?!.*(dragon|draconic|beast))(?=.*spike(d|s)).*$/i,
 		name : "Spiked armor",
+		source : ["S", 121],
 		type : "medium",
 		ac : 14,
 		stealthdis : true,
@@ -209,6 +226,9 @@ var WeaponsList = {
 		"Warhammer",
 		"Whip",
 		"",
+		"Alchemist's Fire",
+		"Vial of Acid",
+		"",
 		"Spell Attack",
 		"Acid Splash",
 		"Booming Blade",
@@ -251,6 +271,7 @@ var WeaponsList = {
 	"polearm butt end" : {
 		regExpSearch : /^(?=.*(polearm|glaive|halberd|staff))(?=.*butt)(?=.*end).*$/i,
 		name : "Polearm butt end",
+		source : ["P", 168],
 		ability : 1,
 		type : "Other",
 		damage : [1, 4, "bludgeoning"],
@@ -261,6 +282,7 @@ var WeaponsList = {
 	"armor spikes" : {
 		regExpSearch : /^(?=.*armou?r)(?=.*spike).*$/i,
 		name : "Armor spikes",
+		source : ["S", 121],
 		ability : 1,
 		type : "Other",
 		damage : [1, 4, "piercing"],
@@ -271,6 +293,7 @@ var WeaponsList = {
 	"club" : {
 		regExpSearch : /^(?!.*(great|heavy|big))(?=.*\bclub\b).*$/i,
 		name : "Club",
+		source : ["P", 149],
 		ability : 1,
 		type : "Simple",
 		damage : [1, 4, "bludgeoning"],
@@ -283,6 +306,7 @@ var WeaponsList = {
 	"dagger" : {
 		regExpSearch : /dagger/i,
 		name : "Dagger",
+		source : ["P", 149],
 		ability : 1,
 		type : "Simple",
 		damage : [1, 4, "piercing"],
@@ -295,6 +319,7 @@ var WeaponsList = {
 	"greatclub" : {
 		regExpSearch : /^(?=.*(great|heavy|big))(?=.*club).*$/i,
 		name : "Greatclub",
+		source : ["P", 149],
 		ability : 1,
 		type : "Simple",
 		damage : [1, 8, "bludgeoning"],
@@ -306,6 +331,7 @@ var WeaponsList = {
 	"handaxe" : {
 		regExpSearch : /^(?=.*(light|hand|short|small|throw))(?=.*axe).*$/i,
 		name : "Handaxe",
+		source : ["P", 149],
 		ability : 1,
 		type : "Simple",
 		damage : [1, 6, "slashing"],
@@ -318,6 +344,7 @@ var WeaponsList = {
 	"javelin" : {
 		regExpSearch : /javelin/i,
 		name : "Javelin",
+		source : ["P", 149],
 		ability : 1,
 		type : "Simple",
 		damage : [1, 6, "piercing"],
@@ -330,6 +357,7 @@ var WeaponsList = {
 	"light hammer" : {
 		regExpSearch : /^(?=.*(light|hand|short|small|throw))(?=.*hammer).*$/i,
 		name : "Light hammer",
+		source : ["P", 149],
 		ability : 1,
 		type : "Simple",
 		damage : [1, 4, "bludgeoning"],
@@ -342,6 +370,7 @@ var WeaponsList = {
 	"mace" : {
 		regExpSearch : /mace/i,
 		name : "Mace",
+		source : ["P", 149],
 		ability : 1,
 		type : "Simple",
 		damage : [1, 6, "bludgeoning"],
@@ -354,6 +383,7 @@ var WeaponsList = {
 	"quarterstaff" : {
 		regExpSearch : /staff/i,
 		name : "Quarterstaff",
+		source : ["P", 149],
 		ability : 1,
 		type : "Simple",
 		damage : [1, 6, "bludgeoning"],
@@ -366,6 +396,7 @@ var WeaponsList = {
 	"sickle" : {
 		regExpSearch : /sickle/i,
 		name : "Sickle",
+		source : ["P", 149],
 		ability : 1,
 		type : "Simple",
 		damage : [1, 4, "slashing"],
@@ -378,6 +409,7 @@ var WeaponsList = {
 	"spear" : {
 		regExpSearch : /^(?!.*agonizing)(?!.*eldritch)(?=.*spear).*$/i,
 		name : "Spear",
+		source : ["P", 149],
 		ability : 1,
 		type : "Simple",
 		damage : [1, 6, "piercing"],
@@ -388,8 +420,9 @@ var WeaponsList = {
 		abilitytodamage : true,
 	},
 	"unarmed strike" : {
-		regExpSearch : /^((?=.*\b(unarmed|fist|arm|leg|foot|feet)\b)|((?=.*martial)(?=.*arts))|((?=.*tavern)(?=.*brawler))).*$/i,
+		regExpSearch : /^((?=.*\b(unarmed|fist|arm|leg|foot|feet|razorclaw|talons)\b)|((?=.*martial)(?=.*arts))|((?=.*tavern)(?=.*brawler))).*$/i,
 		name : "Unarmed strike",
+		source : ["P", 149],
 		ability : 1,
 		type : "Natural",
 		damage : [1, "", "bludgeoning"],
@@ -401,6 +434,7 @@ var WeaponsList = {
 	"light crossbow" : {
 		regExpSearch : /^(((?=.*light)(?=.*crossbow))|((?!.*(hand|short|great|heavy))(?=.*\bcrossbow\b))).*$/i,
 		name : "Light crossbow",
+		source : ["P", 149],
 		ability : 2,
 		type : "Simple",
 		damage : [1, 8, "piercing"],
@@ -413,6 +447,7 @@ var WeaponsList = {
 	"dart" : {
 		regExpSearch : /dart/i,
 		name : "Dart",
+		source : ["P", 149],
 		ability : 2,
 		type : "Simple",
 		damage : [1, 4, "piercing"],
@@ -424,6 +459,7 @@ var WeaponsList = {
 	"shortbow" : {
 		regExpSearch : /^(?!.*crossbow)(((?=.*short)(?=.*bow))|((?!.*long)(?=.*\bbow\b))).*$/i,
 		name : "Shortbow",
+		source : ["P", 149],
 		ability : 2,
 		type : "Simple",
 		damage : [1, 6, "piercing"],
@@ -436,6 +472,7 @@ var WeaponsList = {
 	"sling" : {
 		regExpSearch : /sling/i,
 		name : "Sling",
+		source : ["P", 149],
 		ability : 2,
 		type : "Simple",
 		damage : [1, 4, "bludgeoning"],
@@ -448,6 +485,7 @@ var WeaponsList = {
 	"battleaxe" : {
 		regExpSearch : /^(((?=.*battle)(?=.*axe))|((?!.*(light|hand|short|small|great|heavy|throw))(?=.*\baxe\b))).*$/i,
 		name : "Battleaxe",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 8, "slashing"],
@@ -459,6 +497,7 @@ var WeaponsList = {
 	"flail" : {
 		regExpSearch : /flail/i,
 		name : "Flail",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 8, "bludgeoning"],
@@ -470,6 +509,7 @@ var WeaponsList = {
 	"glaive" : {
 		regExpSearch : /glaive/i,
 		name : "Glaive",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 10, "slashing"],
@@ -481,6 +521,7 @@ var WeaponsList = {
 	"greataxe" : {
 		regExpSearch : /^(?=.*(great|heavy))(?=.*axe).*$/i,
 		name : "Greataxe",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 12, "slashing"],
@@ -492,6 +533,7 @@ var WeaponsList = {
 	"greatsword" : {
 		regExpSearch : /^(?=.*(great|heavy))(?=.*sword).*$/i,
 		name : "Greatsword",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [2, 6, "slashing"],
@@ -503,6 +545,7 @@ var WeaponsList = {
 	"halberd" : {
 		regExpSearch : /halberd/i,
 		name : "Halberd",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 10, "slashing"],
@@ -514,6 +557,7 @@ var WeaponsList = {
 	"lance" : {
 		regExpSearch : /lance/i,
 		name : "Lance",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 12, "piercing"],
@@ -525,6 +569,7 @@ var WeaponsList = {
 	"longsword" : {
 		regExpSearch : /^((?=.*katana)|((?=.*long)(?=.*sword))|((?!.*(burst|light|hand|short|small|great|heavy))(?=.*\bsword\b))).*$/i,
 		name : "Longsword",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 8, "slashing"],
@@ -536,6 +581,7 @@ var WeaponsList = {
 	"maul" : {
 		regExpSearch : /^((?=.*maul)|((?=.*(great|heavy))(?=.*hammer))).*$/i,
 		name : "Maul",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [2, 6, "bludgeoning"],
@@ -547,6 +593,7 @@ var WeaponsList = {
 	"morningstar" : {
 		regExpSearch : /morningstar/i,
 		name : "Morningstar",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 8, "piercing"],
@@ -558,6 +605,7 @@ var WeaponsList = {
 	"pike" : {
 		regExpSearch : /^(?!.*armou?r)(?!.*\bspike)(?=.*pike).*$/i,
 		name : "Pike",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 10, "piercing"],
@@ -569,6 +617,7 @@ var WeaponsList = {
 	"rapier" : {
 		regExpSearch : /rapier/i,
 		name : "Rapier",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 8, "piercing"],
@@ -580,6 +629,7 @@ var WeaponsList = {
 	"scimitar" : {
 		regExpSearch : /scimitar/i,
 		name : "Scimitar",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 6, "slashing"],
@@ -591,6 +641,7 @@ var WeaponsList = {
 	"shortsword" : {
 		regExpSearch : /^(?=.*short)(?=.*sword).*$/i,
 		name : "Shortsword",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 6, "piercing"],
@@ -603,6 +654,7 @@ var WeaponsList = {
 	"trident" : {
 		regExpSearch : /trident/i,
 		name : "Trident",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 6, "piercing"],
@@ -614,6 +666,7 @@ var WeaponsList = {
 	"war pick" : {
 		regExpSearch : /^(((?=.*pick)(?=.*war))|((?!.*(heavy|great|light))(?=.*\bpick\b))).*$/i,
 		name : "War pick",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 8, "piercing"],
@@ -625,6 +678,7 @@ var WeaponsList = {
 	"warhammer" : {
 		regExpSearch : /^(((?=.*hammer)(?=.*war))|((?!.*(light|hand|short|small|great|heavy|throw|maul))(?=.*\bhammer\b))).*$/i,
 		name : "Warhammer",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 8, "bludgeoning"],
@@ -636,6 +690,7 @@ var WeaponsList = {
 	"whip" : {
 		regExpSearch : /^(?!.*thorn)(?=.*whip).*$/i,
 		name : "Whip",
+		source : ["P", 149],
 		ability : 1,
 		type : "Martial",
 		damage : [1, 4, "slashing"],
@@ -647,6 +702,7 @@ var WeaponsList = {
 	"blowgun" : {
 		regExpSearch : /blowgun/i,
 		name : "Blowgun",
+		source : ["P", 149],
 		ability : 2,
 		type : "Martial",
 		damage : [1, "", "piercing"],
@@ -659,6 +715,7 @@ var WeaponsList = {
 	"hand crossbow" : {
 		regExpSearch : /^(?=.*hand)(?=.*crossbow).*$/i,
 		name : "Hand crossbow",
+		source : ["P", 149],
 		ability : 2,
 		type : "Martial",
 		damage : [1, 6, "piercing"],
@@ -671,6 +728,7 @@ var WeaponsList = {
 	"heavy crossbow" : {
 		regExpSearch : /^(?=.*(great|heavy))(?=.*crossbow).*$/i,
 		name : "Heavy crossbow",
+		source : ["P", 149],
 		ability : 2,
 		type : "Martial",
 		damage : [1, 10, "piercing"],
@@ -683,6 +741,7 @@ var WeaponsList = {
 	"longbow" : {
 		regExpSearch : /^(?!.*crossbow)(?=.*long)(?=.*bow).*$/i,
 		name : "Longbow",
+		source : ["P", 149],
 		ability : 2,
 		type : "Martial",
 		damage : [1, 8, "piercing"],
@@ -695,17 +754,45 @@ var WeaponsList = {
 	"net" : {
 		regExpSearch : /\bnet(ting)?\b/i,
 		name : "Net",
+		source : ["P", 149],
 		ability : 2,
 		type : "Martial",
 		damage : ["\u2015", "", 0],
-		range : " 5/15 ft",
+		range : "5/15 ft",
 		weight : 3,
 		description : "Thrown, only 1 attack, up to large creature hit is restrained (PHB 148)",
 		abilitytodamage : false
 	},
+	"alchemist's fire" : {
+		regExpSearch : /^(?=.*alchemist)(?=.*fire).*$/i,
+		name : "Alchemist's Fire",
+		source : ["P", 148],
+		ability : 2,
+		type : "Improvised Weapons",
+		damage : [1, 4, "fire"],
+		range : "20 ft",
+		weight : 1,
+		description : "Target +1d4 damage at the start of each of its turn; Can end it as an action with a DC 10 Dex check",
+		abilitytodamage : false,
+		ammo : "Flasks of Alchemist Fire"
+	},
+	"vial of acid" : {
+		regExpSearch : /^(?=.*vial)(?=.*acid).*$/i,
+		name : "Vial of Acid",
+		source : ["P", 148],
+		ability : 2,
+		type : "Improvised Weapons",
+		damage : [2, 6, "acid"],
+		range : "20 ft",
+		weight : 1,
+		description : "",
+		abilitytodamage : false,
+		ammo : "Vials of Acid"
+	},
 	"acid splash" : {
 		regExpSearch : /^(?=.*acid)(?=.*splash).*$/i,
 		name : "Acid Splash",
+		source : ["P", 211],
 		ability : 4,
 		type : "Cantrip",
 		damage : ["C", 6, "acid"],
@@ -717,6 +804,7 @@ var WeaponsList = {
 	"booming blade" : {
 		regExpSearch : /^(?=.*booming)(?=.*blade).*$/i,
 		name : "Booming Blade",
+		source : ["S", 142],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["Bd8/Cd8", "", "thunder"],
@@ -727,6 +815,7 @@ var WeaponsList = {
 	"chill touch" : {
 		regExpSearch : /^(?=.*chill)(?=.*touch).*$/i,
 		name : "Chill Touch",
+		source : ["P", 221],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 8, "necrotic"],
@@ -737,6 +826,7 @@ var WeaponsList = {
 	"agonizing blast" : {
 		regExpSearch : /^(?!.*spear)(?=.*agonizing)(?=.*blast).*$/i,
 		name : "Eldritch Blast (Agonizing Blast)",
+		source : ["P", 237],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C\u00D7" + 1, 10, "force"],
@@ -748,6 +838,7 @@ var WeaponsList = {
 	"agonizing spear" : {
 		regExpSearch : /^(?=.*agonizing)(?=.*spear).*$/i,
 		name : "Eldritch Blast (Agonizing Blast & Eldritch Spear)",
+		source : ["P", 237],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C\u00D7" + 1, 10, "force"],
@@ -759,6 +850,7 @@ var WeaponsList = {
 	"eldritch blast" : {
 		regExpSearch : /^(?!.*agonizing)(?!.*spear)(?=.*eldritch)(?=.*blast).*$/i,
 		name : "Eldritch Blast",
+		source : ["P", 237],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C\u00D7" + 1, 10, "force"],
@@ -769,6 +861,7 @@ var WeaponsList = {
 	"eldritch spear" : {
 		regExpSearch : /^(?!.*agonizing)(?=.*eldritch)(?=.*spear).*$/i,
 		name : "Eldritch Blast (Eldritch Spear)",
+		source : ["P", 237],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C\u00D7" + 1, 10, "force"],
@@ -780,6 +873,7 @@ var WeaponsList = {
 	"fire bolt" : {
 		regExpSearch : /^(?=.*fire)(?=.*bolt).*$/i,
 		name : "Fire Bolt",
+		source : ["P", 241],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 10, "fire"],
@@ -790,6 +884,7 @@ var WeaponsList = {
 	"frostbite" : {
 		regExpSearch : /frostbite/i,
 		name : "Frostbite",
+		source : ["E", 18],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 6, "cold"],
@@ -801,6 +896,7 @@ var WeaponsList = {
 	"green-flame blade" : {
 		regExpSearch : /^(?=.*green)(?=.*flame)(?=.*blade).*$/i,
 		name : "Green-Flame Blade",
+		source : ["S", 143],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["Bd8/Bd8", "", "fire"],
@@ -811,6 +907,7 @@ var WeaponsList = {
 	"lightning lure" : {
 		regExpSearch : /^(?=.*lightning)(?=.*lure).*$/i,
 		name : "Lightning Lure",
+		source : ["S", 143],
 		ability : 5,
 		type : "Cantrip",
 		damage : ["C", 8, "lightning"],
@@ -822,6 +919,7 @@ var WeaponsList = {
 	"poison spray" : {
 		regExpSearch : /^(?=.*poison)(?=.*spray).*$/i,
 		name : "Poison Spray",
+		source : ["P", 266],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 12, "poison"],
@@ -833,16 +931,18 @@ var WeaponsList = {
 	"produce flame" : {
 		regExpSearch : /^(?=.*produce)(?=.*flame).*$/i,
 		name : "Produce Flame",
+		source : ["P", 269],
 		ability : 5,
 		type : "Cantrip",
 		damage : ["C", 8, "fire"],
 		range : "30 ft",
-		description : "10-ft radius bright light and 10-ft radius dim light until thrown (PHB269)",
+		description : "10-ft radius bright light and 10-ft radius dim light until thrown (PHB 269)",
 		abilitytodamage : false
 	},
 	"ray of frost" : {
 		regExpSearch : /^(?=.*ray)(?=.*frost).*$/i,
 		name : "Ray of Frost",
+		source : ["P", 271],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 8, "cold"],
@@ -853,6 +953,7 @@ var WeaponsList = {
 	"sacred flame" : {
 		regExpSearch : /^(?=.*sacred)(?=.*flame).*$/i,
 		name : "Sacred Flame",
+		source : ["P", 272],
 		ability : 5,
 		type : "Cantrip",
 		damage : ["C", 8, "radiant"],
@@ -864,8 +965,9 @@ var WeaponsList = {
 	"shillelagh" : {
 		regExpSearch : /shillelagh/i,
 		name : "Shillelagh",
+		source : ["P", 275],
 		ability : 5,
-		type : "Spell",
+		type : "Cantrip",
 		damage : [1, 8, "bludgeoning"],
 		range : "Melee",
 		description : "Imbued club or quarterstaff; Counts as a magical weapon (PHB 275)",
@@ -874,6 +976,7 @@ var WeaponsList = {
 	"shocking grasp" : {
 		regExpSearch : /^(?=.*shocking)(?=.*grasp).*$/i,
 		name : "Shocking Grasp",
+		source : ["P", 275],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 8, "lightning"],
@@ -884,6 +987,7 @@ var WeaponsList = {
 	"sword burst" : {
 		regExpSearch : /^(?=.*sword)(?=.*burst).*$/i,
 		name : "Sword Burst",
+		source : ["S", 143],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 6, "force"],
@@ -895,6 +999,7 @@ var WeaponsList = {
 	"thorn whip" : {
 		regExpSearch : /^(?=.*thorn)(?=.*whip).*$/i,
 		name : "Thorn Whip",
+		source : ["P", 282],
 		ability : 5,
 		type : "Cantrip",
 		damage : ["C", 6, "piercing"],
@@ -905,6 +1010,7 @@ var WeaponsList = {
 	"thunderclap" : {
 		regExpSearch : /thunderclap/i,
 		name : "Thunderclap",
+		source : ["E", 22],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 6, "thunder"],
@@ -916,6 +1022,7 @@ var WeaponsList = {
 	"vicious mockery" : {
 		regExpSearch : /^(?=.*vicious)(?=.*mockery).*$/i,
 		name : "Vicious Mockery",
+		source : ["P", 285],
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 4, "psychic"],
@@ -927,7 +1034,8 @@ var WeaponsList = {
 	"spell attack" : {
 		regExpSearch : /^(?=.*spell)(?=.*attack).*$/i,
 		name : "Spell Attack",
-		ability : 6,
+		source : ["P", 203],
+		ability : 0,
 		type : "Spell",
 		damage : ["", "", ""],
 		range : "",
@@ -935,10 +1043,11 @@ var WeaponsList = {
 		abilitytodamage : false
 	},
 	"improvised weapon" : {
-		regExpSearch : /^(?=.*improvised).*$/i,
+		regExpSearch : /improvised/i,
 		name : "Improvised weapon",
+		source : ["P", 147],
 		ability : 1,
-		type : "Other",
+		type : "Improvised Weapons",
 		damage : [1, 4, "bludgeoning"],
 		range : "Melee, 20/60 ft",
 		description : "Damage die, type, range, etc. are at the DM's discretion",
@@ -949,30 +1058,35 @@ var WeaponsList = {
 	"bite" : {
 		regExpSearch : /\bbite\b/i,
 		name : "Bite",
+		source : ["V", 112],
 		ability : 1,
 		type : "Natural",
 		damage : [1, 6, "piercing"],
 		range : "Melee",
 		description : "",
-		abilitytodamage : true
+		abilitytodamage : true,
+		monkweapon : true
 	},
 	
 	// VGtM Tabaxi weapon
 	"cat's claws" : {
-		regExpSearch : /\bclaws?\b/i,
+		regExpSearch : /^(?=.*\bcat)(?=.*\bclaws?\b).*$/i,
 		name : "Cat's Claws",
+		source : ["V", 115],
 		ability : 1,
 		type : "Natural",
 		damage : [1, 4, "slashing"],
 		range : "Melee",
 		description : "",
-		abilitytodamage : true
+		abilitytodamage : true,
+		monkweapon : true
 	},
 	
 	// UA Minotaur weapon
 	"horns" : {
 		regExpSearch : /\bhorns?\b/i,
 		name : "Horns",
+		source : ["UA:WA", 1],
 		ability : 1,
 		type : "Natural",
 		damage : [1, 10, "piercing"],
@@ -985,34 +1099,23 @@ var WeaponsList = {
 	"longtooth" : {
 		regExpSearch : /\blongtooth\b/i,
 		name : "Longtooth",
+		source : ["UA:E", 2],
 		ability : 1,
 		type : "Natural",
 		damage : [1, 6, "piercing"],
 		range : "Melee",
-		description : "While shifted, target up to my size is grappled",
+		description : "Only while shifted; Target up to my size is grappled",
 		abilitytodamage : true
 	},
 	"razorclaw" : {
 		regExpSearch : /\brazorclaw\b/i,
 		name : "Razorclaw",
+		source : ["UA:E", 2],
 		ability : 1,
 		type : "Natural",
-		damage : [1, (CurrentFeats.known.indexOf("tavern brawler") !== -1 ? 4 : ""), "slashing"],
+		damage : [1, "", "slashing"],
 		range : "Melee",
-		description : "While shifted, bonus action, can use Dex for attack roll and damage",
-		monkweapon : true,
-		abilitytodamage : true
-	},
-	
-	// EE Aarakocra weapon
-	"talons" : {
-		regExpSearch : /\btalons?\b/i,
-		name : "Talons",
-		ability : 1,
-		type : "Natural",
-		damage : [1, 4, "slashing"],
-		range : "Melee",
-		description : "",
+		description : "Only while shifted, use instead of unarmed strike: Can use as bonus action; Finesse",
 		monkweapon : true,
 		abilitytodamage : true
 	},
@@ -1021,6 +1124,7 @@ var WeaponsList = {
 	"radiant sun bolt" : {
 		regExpSearch : /^(?=.*radiant)(?=.*(sun|light))(?=.*bolt).*$/i,
 		name : "Radiant Sun Bolt",
+		source : ["S", 131],
 		ability : 2,
 		type : "Spell",
 		damage : [1, 4, "radiant"],
@@ -1031,18 +1135,100 @@ var WeaponsList = {
 	},
 	
 	// UA Artificer weapon
-	"thunder cannon" : {
-		regExpSearch : /^(?=.*\bthunder)(?=.*cannon\b).*$/i,
-		name : "Thunder Cannon",
-		ability : 2,
+	"alchemical acid" : {
+		regExpSearch : /^(?=.*alchemical)(?=.*acid).*$/i,
+		name : "Alchemical Acid",
+		source : ["UA:A", 5],
+		ability : 4,
 		type : "Artificer",
+		damage : [1, 6, "acid"],
+		range : "30 ft",
+		weight : 0,
+		description : "Dex save, success - no damage; Objects automatically take maximum damage",
+		abilitytodamage : false,
+		dc : true
+	},
+	"alchemical fire" : {
+		regExpSearch : /^(?=.*alchemical)(?=.*fire).*$/i,
+		name : "Alchemical Fire",
+		source : ["UA:A", 5],
+		ability : 4,
+		type : "Artificer",
+		damage : [1, 6, "fire"],
+		range : "30 ft",
+		weight : 0,
+		description : "Dex save, success - no damage; All creatures within 5-ft of the point of impact have to save",
+		abilitytodamage : false,
+		dc : true
+	},
+	"thunder cannon" : {
+		regExpSearch : /^(?!.*(blast|monger|piercing|explosive))(?=.*\bthunder)(?=.*cannon\b).*$/i,
+		name : "Thunder Cannon",
+		source : ["UA:A", 6],
+		ability : 2,
+		type : "Thunder Cannon",
 		damage : [2, 6, "piercing"],
 		range : "150/500 ft",
 		weight : 12, // made up, based on the weight of real rifles
 		description : "Ammunition, loading, two-handed, bonus action to reload",
 		abilitytodamage : true,
 		ammo : "arcane magazine"
-	}
+	},
+	"thunder cannon-thunder monger" : {
+		regExpSearch : /^(?=.*\bthunder)(?=.*monger\b).*$/i,
+		name : "Thunder Cannon (Monger)",
+		source : ["UA:A", 6],
+		ability : 2,
+		type : "Thunder Cannon",
+		damage : [2, 6, "piercing"],
+		range : "150/500 ft",
+		weight : 0,
+		description : "Ammunition, loading, two-handed, bonus action to reload",
+		abilitytodamage : true,
+		ammo : "arcane magazine"
+	},
+	"thunder cannon-blast wave" : {
+		regExpSearch : /^(?=.*\bthunder)(?=.*cannon\b)(?=.*\bblast)(?=.*wave\b).*$/i,
+		name : "Thunder Cannon (Blast Wave)",
+		source : ["UA:A", 6],
+		ability : 4,
+		type : "Thunder Cannon",
+		damage : [2, 6, "force"],
+		range : "15-ft cone",
+		weight : 0,
+		description : "Ammunition, loading, two-handed, bonus action to reload; Str save or damage and pushed back 10 ft",
+		dc : true,
+		abilitytodamage : false,
+		ammo : "arcane magazine"
+	},
+	"thunder cannon-piercing round" : {
+		regExpSearch : /^(?=.*\bthunder)(?=.*cannon\b)(?=.*\bpiercing)(?=.*round\b).*$/i,
+		name : "Thunder Cannon (Piercing Round)",
+		source : ["UA:A", 6],
+		ability : 4,
+		type : "Thunder Cannon",
+		damage : [4, 6, "lightning"],
+		range : "30-ft line",
+		weight : 0,
+		description : "Ammunition, loading, two-handed, bonus action to reload; 5 ft wide line; Dex save or damage",
+		dc : true,
+		abilitytodamage : false,
+		ammo : "arcane magazine"
+	},
+	"thunder cannon-explosive round" : {
+		regExpSearch : /^(?=.*\bthunder)(?=.*cannon\b)(?=.*\bexplosive)(?=.*round\b).*$/i,
+		name : "Thunder Cannon (Explosive Round)",
+		source : ["UA:A", 7],
+		ability : 4,
+		type : "Thunder Cannon",
+		damage : [4, 8, "fire"],
+		range : "500 ft",
+		weight : 0,
+		description : "Ammunition, loading, two-handed, bonus action to reload; 30-ft radius sphere; Dex save or damage",
+		dc : true,
+		abilitytodamage : false,
+		ammo : "arcane magazine"
+	},
 };
 
 //A list of all types of 'ammo' for the ammunition section on the first page

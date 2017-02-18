@@ -3719,6 +3719,9 @@ function SetStringifieds(type) {
 		var cSpells = CurrentSpells.toSource();
 		var cCasters = CurrentCasters.toSource();
 		Value("CurrentSpells.Stringified", cSpells + "##########" + cCasters);
+		
+		//any time the CurrentSpells variable is changed, we need to update the CurrentWeapons variable as well
+		FindWeapons();
 	}
 	if (!type || type === "sources") Value("CurrentSources.Stringified", CurrentSources.toSource());
 	if (!type || type === "evals") Value("CurrentEvals.Stringified", CurrentEvals.toSource());
@@ -5624,10 +5627,10 @@ function contactMPMB(medium) {
 		app.launchURL("http://www.enworld.org/forum/rpgdownloads.php?do=download&downloadid=1180", true);
 		break;
 	 case "syntax" :
-		app.launchURL("http://www.flapkan.com/mpmb/syntax", true);
+		app.launchURL("http://flapkan.com/mpmb/syntax", true);
 		break;
 	 case "additions" :
-		app.launchURL("http://www.flapkan.com/mpmb/additions", true);
+		app.launchURL("http://flapkan.com/mpmb/additions", true);
 		break;
 	 case "latestversion" :
 		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild[minVer ? (tDoc.info.SpellsOnly ? "spell" : "advlog") : "character"][typePF ? "PF" : "CF"]), true);
@@ -5815,7 +5818,8 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	tDoc.calculate = false;
 	
 	//set a variable to refer to the new weapon
-	var WeaponName = QI ? CurrentWeapons.known[ArrayNmbr][0] : CurrentWeapons.compKnown[prefix][ArrayNmbr][0];
+	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
+	var WeaponName = thisWeapon[0];
 	var theWea = WeaponsList[WeaponName];
 	
 	//if there is a new weapon entered and the old weapon had ammo that is not used by any of the current weapons, remove that ammo from the ammo section.
@@ -5836,7 +5840,6 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	if (theWea) {
 		thermoM("Applying the weapon's features..."); //change the progress dialog text
 		fields.Description = theWea.description; //add description
-		var WeaponText = inputText + fields.Description;
 		fields.Range = theWea.range; //add range
 		fields.Damage_Type = theWea.damage[2]; //add Damage Type
 		
@@ -5864,46 +5867,34 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		
 		//add mod
 		var StrDex = What("Str Mod") < What("Dex Mod") ? 2 : 1;
-		fields.Mod = theWea.description.match(/finesse/i) ? StrDex : theWea.ability;
+		fields.Mod = isReCalc && !theWea.ability ? What(fldBase + "Mod") :
+			theWea.description.match(/finesse/i) ? StrDex : theWea.ability;
+		
 		//change mod if this is concerning a spell/cantrip
-		var isSpell = theWea.SpellsList ? theWea.SpellsList : WeaponName;
-		if (QI && theWea.type.match(/spell|cantrip/i) && SpellsList[isSpell]) {
-			var abiArr = [], abiModArr = [], castArr = [];
-			for (var aClass in CurrentSpells) {
-				var sClass = CurrentSpells[aClass];
-				if (!sClass.ability) continue;
-				var checkArr = ["selectCa", "selectBo", "selectSp", "extra"];
-				for (var i = 0; i < checkArr.length; i++) {
-					if (sClass[checkArr[i]] && sClass[checkArr[i]].indexOf(isSpell) !== -1) {
-						if (abiArr.indexOf(sClass.ability) === -1) abiArr.push(sClass.ability);
-						castArr.push(sClass);
-						break;
-					};
-				};
-				if (castArr.indexOf(sClass) === -1 && theWea.type.match(/spell/i) && sClass.typeSp.match(/list|spellbook/i)) {
-					var spObj = eval(sClass.list.toSource());
-					spObj.level = [1, 9];
-					var theSpList = CreateSpellList(spObj);
-					if (theSpList.indexOf(isSpell) !== -1) {
-						if (abiArr.indexOf(sClass.ability) === -1) abiArr.push(sClass.ability);
-						castArr.push(sClass);
-					}
-				}
-			};
-			//now get the highest of the found mods, if any
-			if (abiArr.length) {
-				abiArr.forEach(function (abiNmbr) {
-					var thisMod = What(tDoc.getField(fldBase + "Mod").getItemAt(abiNmbr));
-					if (thisMod > Math.max.apply(Math, abiModArr)) fields.Mod = abiNmbr;
-					abiModArr.push(thisMod);
-				});
-			};
+		if (thisWeapon[3]) {
+			var abiArr = thisWeapon[4].map(function(sClass) {
+				return CurrentSpells[sClass] ? CurrentSpells[sClass].ability : 0;
+			});
+			var abiModArr = [];
+			abiArr.forEach(function (abiNmbr) {
+				var thisMod = What(AbilityScores.abbreviations[abiNmbr - 1] + " Mod");
+				if (thisMod > Math.max.apply(Math, abiModArr)) fields.Mod = abiNmbr;
+				abiModArr.push(thisMod);
+			});
 		};
 		
 		if (theWea.ammo) fields.Ammo = theWea.ammo; //add ammo
 		
 		//now run the code that was added by class/race/feat
 		if (QI && CurrentEvals.atkAdd) {
+			
+			// define some variables that we can check against later or with the CurrentEvals
+			var WeaponText = inputText + fields.Description;
+			var isDC = fields.To_Hit_Bonus.toLowerCase() === "dc";
+			var isSpell = thisWeapon[3] || theWea.type.match(/cantrip|spell/i) || WeaponText.match(/\b(cantrip|spell)\b/i);
+			var isMeleeWeapon = !isSpell && fields.Range.match(/melee/i);
+			var isRangedWeapon = !isSpell && fields.Range.match(/^(?!.*melee).*\d+.*$/i);
+			
 			try {
 				eval(CurrentEvals.atkAdd);
 			} catch (err) {console.println("Custom ApplyWeapon/atkAdd script not working: " + err)};
@@ -5914,10 +5905,11 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	if (onlyProf) {
 		Checkbox(fldBase + "Proficiency", fields.Proficiency);
 	} else if (theWea || !inputText) {
+		var resetFlds = [];
 		for (var weaKey in fields) {
-			var keyFld = (BTflds.indexOf(weaKey) !== -1 ? fldBaseBT : fldBase) + weaKey.replace("_", " ");
+			var keyFld = (BTflds.indexOf(weaKey) !== -1 ? fldBaseBT : fldBase) + weaKey.replace(/_/g, " ");
 			if (!fields[weaKey]) {
-				tDoc.resetForm([keyFld]);
+				resetFlds.push(keyFld);
 				continue;
 			};
 			switch (weaKey) {
@@ -5945,6 +5937,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 				Value(keyFld, fields[weaKey]);				
 			};
 		};
+		if (resetFlds.length) tDoc.resetForm(resetFlds);
 	} else { //if not a known weapon or an empty field, still check if we need to set the checkmark for proficiency
 		for (var i = 0; i < CurrentWeapons.manualproficiencies.length; i++) {
 			if (CurrentWeapons.field[ArrayNmbr].toLowercase().indexOf(CurrentWeapons.manualproficiencies[i].toLowercase()) !== -1) {
@@ -6006,14 +5999,19 @@ function CalcAttackDmgHit(fldName) {
 		extraDmg : 0,
 		extraHit : 0
 	};
+	
+	// define some variables that we can check against later or with the CurrentEvals
+	var isDC = fields.To_Hit_Bonus.toLowerCase() === "dc";
+	var isSpell = thisWeapon[3] || (WeaponName && theWea.type.match(/cantrip|spell/i)) || WeaponText.match(/\b(cantrip|spell)\b/i);
+	var isMeleeWeapon = !isSpell && fields.Range.match(/melee/i);
+	var isRangedWeapon = !isSpell && fields.Range.match(/^(?!.*melee).*\d+.*$/i);
 
 	// see if this is a off-hand attack and the modToDmg shouldn't be use
-	var isOffHand = WeaponText.match(/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary))().*$/i) ? true : false;
+	var isOffHand = isMeleeWeapon && WeaponText.match(/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary))().*$/i) ? true : false;
 	if (isOffHand) {
 		AddAction("bonus action", "Off-hand Attack");
 		output.modToDmg = false;
 	}
-	var isDC = fields.To_Hit_Bonus.toLowerCase() === "dc";
 	
 	// now run the code that was added by class/race/feat
 	if (QI && CurrentEvals.atkCalc) {

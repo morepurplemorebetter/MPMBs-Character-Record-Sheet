@@ -32,7 +32,7 @@ var FeatsList = {
 		eval : "AddAction(\"bonus action\", \"Hand crossbow (when taking attack action)\", \"the Crossbow Expert feat\");",
 		removeeval : "AddAction(\"bonus action\", \"Hand crossbow (when taking attack action)\");",
 		calcChanges : {
-			atkAdd : ["if (WeaponName.match(/crossbow/i) && output.Proficiency) {output.Description.replace(/loading,? ?/i, '');};", "I ignore the loading quality of crossbows I'm proficient with."]
+			atkAdd : ["if (WeaponName.match(/crossbow/i) && fields.Proficiency) {fields.Description = fields.Description.replace(/(,? ?loading|loading,? ?)/i, '');};", "I ignore the loading quality of crossbows I'm proficient with."]
 		}
 	},
 	"defensive duelist" : {
@@ -84,7 +84,7 @@ var FeatsList = {
 		eval : "AddAction(\"bonus action\", \"Melee weapon attack (after crit or take-down)\", \"the Great Weapon Master feat\");",
 		removeeval : "RemoveAction(\"bonus action\", \"Melee weapon attack (after crit or take-down)\");",
 		calcChanges : {
-			atkCalc : ["if ((!theWea || !theWea.type.match(/cantrip|spell/i)) && fields.Range.match(/melee/i) && fields.Description.match(/heavy/i) && WeaponText.match(/power.{0,3}attack|great.{0,3}weapon.{0,3}master/i)) {output.extraDmg += 10; output.extraHit -= 5;};", "If I include the words 'Power Attack' or 'Great Weapon Master' in a heavy melee weapon's name or description, the calculation will put a -5 penalty on the attack's To Hit and +10 on its Damage."]
+			atkCalc : ["if (isMeleeWeapon && fields.Description.match(/heavy/i) && WeaponText.match(/power.{0,3}attack|great.{0,3}weapon.{0,3}master/i)) {output.extraDmg += 10; output.extraHit -= 5;};", "If I include the words 'Power Attack' or 'Great Weapon Master' in a heavy melee weapon's name or description, the calculation will put a -5 penalty on the attack's To Hit and +10 on its Damage."]
 		}
 	},
 	"healer" : {
@@ -362,7 +362,7 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "My ranged weapon attacks don't have disadvantage on long range and ignore half cover and three-quarters cover. With a ranged weapon that I am proficient with, I can choose to take a -5 penalty on the attack roll for +10 on the attack's damage.",
 		calcChanges : {
-			atkCalc : ["if ((!theWea || !theWea.type.match(/cantrip|spell/i)) && !fields.Range.match(/melee/i) && WeaponText.match(/power.{0,3}attack|sharp.{0,3}shoo?t/i)) {output.extraDmg += 10; output.extraHit -= 5;};", "If I include the words 'Power Attack', 'Sharpshooter', or 'Sharpshot' in a ranged weapon's name or description, the calculation will put a -5 penalty on the attack's To Hit and +10 on its Damage."]
+			atkCalc : ["if (isRangedWeapon && WeaponText.match(/power.{0,3}attack|sharp.{0,3}shoo?t/i)) {output.extraDmg += 10; output.extraHit -= 5;};", "If I include the words 'Power Attack', 'Sharpshooter', or 'Sharpshot' in a ranged weapon's name or description, the calculation will put a -5 penalty on the attack's To Hit and +10 on its Damage."]
 		}
 	},
 	"shield master" : {
@@ -394,7 +394,7 @@ var FeatsList = {
 		eval : "CurrentSpells[\"spell sniper bard\"] = {name : \"Spell Sniper [Bard]\", ability : 6, list : {class : \"bard\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper bard\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
-			atkAdd : ["if (!spellSniper && !fields.To_Hit_Bonus.match(/dc/i) && ((theWea && theWea.type.match(/cantrip|spell/i)) || (inputText + fields.Description).match(/spell|cantrip/i)) && fields.Range.match(//^(?!.*melee)(?=.*\d+.?(f.{0,2}t|m)).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);};);};", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
+			atkAdd : ["if (!spellSniper && !isDC && isSpell && fields.Range.match(/^(?!.*melee).*\\d+ ?(f.{0,2}t|m).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);});}; ", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
 		}
 	},
 	"spell sniper [cleric]" : {
@@ -405,7 +405,7 @@ var FeatsList = {
 		eval : "CurrentSpells[\"spell sniper cleric\"] = {name : \"Spell Sniper [Cleric]\", ability : 5, list : {class : \"cleric\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper cleric\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
-			atkAdd : ["if (!spellSniper && !fields.To_Hit_Bonus.match(/dc/i) && ((theWea && theWea.type.match(/cantrip|spell/i)) || (inputText + fields.Description).match(/spell|cantrip/i)) && fields.Range.match(//^(?!.*melee)(?=.*\d+.?(f.{0,2}t|m)).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);};);};", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
+			atkAdd : ["if (!spellSniper && !isDC && isSpell && fields.Range.match(/^(?!.*melee).*\\d+ ?(f.{0,2}t|m).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);});}; ", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
 		}
 	},
 	"spell sniper [druid]" : {
@@ -416,7 +416,7 @@ var FeatsList = {
 		eval : "CurrentSpells[\"spell sniper druid\"] = {name : \"Spell Sniper [Druid]\", ability : 5, list : {class : \"druid\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper druid\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
-			atkAdd : ["if (!spellSniper && !fields.To_Hit_Bonus.match(/dc/i) && ((theWea && theWea.type.match(/cantrip|spell/i)) || (inputText + fields.Description).match(/spell|cantrip/i)) && fields.Range.match(//^(?!.*melee)(?=.*\d+.?(f.{0,2}t|m)).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);};);};", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
+			atkAdd : ["if (!spellSniper && !isDC && isSpell && fields.Range.match(/^(?!.*melee).*\\d+ ?(f.{0,2}t|m).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);});}; ", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
 		}
 	},
 	"spell sniper [sorcerer]" : {
@@ -427,7 +427,7 @@ var FeatsList = {
 		eval : "CurrentSpells[\"spell sniper sorcerer\"] = {name : \"Spell Sniper [Sorcerer]\", ability : 6, list : {class : \"sorcerer\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper sorcerer\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
-			atkAdd : ["if (!spellSniper && !fields.To_Hit_Bonus.match(/dc/i) && ((theWea && theWea.type.match(/cantrip|spell/i)) || (inputText + fields.Description).match(/spell|cantrip/i)) && fields.Range.match(//^(?!.*melee)(?=.*\d+.?(f.{0,2}t|m)).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);};);};", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
+			atkAdd : ["if (!spellSniper && !isDC && isSpell && fields.Range.match(/^(?!.*melee).*\\d+ ?(f.{0,2}t|m).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);});}; ", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
 		}
 	},
 	"spell sniper [warlock]" : {
@@ -438,7 +438,7 @@ var FeatsList = {
 		eval : "CurrentSpells[\"spell sniper warlock\"] = {name : \"Spell Sniper [Warlock]\", ability : 6, list : {class : \"warlock\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper warlock\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
-			atkAdd : ["if (!spellSniper && !fields.To_Hit_Bonus.match(/dc/i) && ((theWea && theWea.type.match(/cantrip|spell/i)) || (inputText + fields.Description).match(/spell|cantrip/i)) && fields.Range.match(//^(?!.*melee)(?=.*\d+.?(f.{0,2}t|m)).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);};);};", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
+			atkAdd : ["if (!spellSniper && !isDC && isSpell && fields.Range.match(/^(?!.*melee).*\\d+ ?(f.{0,2}t|m).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);});}; ", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
 		}
 	},
 	"spell sniper [wizard]" : {
@@ -449,7 +449,7 @@ var FeatsList = {
 		eval : "CurrentSpells[\"spell sniper wizard\"] = {name : \"Spell Sniper [Wizard]\", ability : 4, list : {class : \"wizard\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper wizard\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
-			atkAdd : ["if (!spellSniper && !fields.To_Hit_Bonus.match(/dc/i) && ((theWea && theWea.type.match(/cantrip|spell/i)) || (inputText + fields.Description).match(/spell|cantrip/i)) && fields.Range.match(//^(?!.*melee)(?=.*\d+.?(f.{0,2}t|m)).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);};);};", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
+			atkAdd : ["if (!spellSniper && !isDC && isSpell && fields.Range.match(/^(?!.*melee).*\\d+ ?(f.{0,2}t|m).*$/i)) {var spellSniper = true; var rangeNmbr = fields.Range.match(/\\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);});}; ", "My spells and cantrips that require a ranged attack roll, have their range doubled."]
 		}
 	},
 	"svirfneblin magic" : {
@@ -467,9 +467,9 @@ var FeatsList = {
 		improvements : "Tavern Brawler (feat): +1 Strength or Constitution;",
 		eval : "AddAction(\"bonus action\", \"Grapple (if hit with unarmed/improv.)\", \"the Tavern Brawler feat\");",
 		removeeval : "RemoveAction(\"bonus action\", \"Grapple (if hit with unarmed/improv.)\");",
-		weapons : [false, false, ["improvised weapon"]],
+		weapons : [false, false, ["improvised weapons"]],
 		calcChanges : {
-			atkAdd : ["if (WeaponName.match(/improvised weapon/i)) {fields.Description += '; Can attempt to grapple after hitting'} else if (WeaponName.match(/unarmed strike/i) && fields.Damage_Die == 1) {fields.Damage_Die = '1d4'; fields.Description += 'Can attempt to grapple after hitting'};", "My unarmed strikes do 1d4 damage instead of 1;\n - I can attempt to start a grapple after hitting a creature with an unarmed strike or improvised weapon."]
+			atkAdd : ["if (isMeleeWeapon && (WeaponName.match(/unarmed strike/i) || WeaponName.match(/improvised/i) || theWea.type.match(/improvised weapon/i))) {fields.Description += (fields.Description ? '; ' : '') + 'After hitting, can attempt to grapple as a bonus action'; fields.Proficiency = true; }; if (WeaponName.match(/unarmed strike/i) && fields.Damage_Die == 1) {fields.Damage_Die = '1d4'; }; ", "My unarmed strikes do 1d4 damage instead of 1;\n - After hitting a creature with an unarmed strike or improvised weapon in melee, I can attempt to start a grapple as a bonus action."]
 		}
 	},
 	"tough" : {
@@ -477,7 +477,7 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "My hit point maximum increases by an amount equal to twice my character level.",
 		calcChanges : {
-			hp : "extrahp += totalhd * 2; extrastring += \"\\n + \" + totalhd + \" \\u00D7 2 from the Tough feat (\" + totalhd * 2 + \")\";"
+			hp : "extrahp += totalhd * 2; extrastring += '\\n + ' + totalhd + ' \\u00D7 2 from the Tough feat (' + (totalhd * 2) + ')';"
 		}
 	},
 	"war caster" : {

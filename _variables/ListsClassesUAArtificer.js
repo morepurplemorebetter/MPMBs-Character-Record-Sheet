@@ -235,18 +235,14 @@ ClassSubList["artificer-alchemist"] = {
 				"An object automatically fails its saving throw and takes maximum damage"
 			]),
 			additional : levels.map(function (n) {
-				if (n < 3) return "1d6 acid damage";
-				if (n < 5) return "2d6 acid damage";
-				if (n < 7) return "3d6 acid damage";
-				if (n < 9) return "4d6 acid damage";
-				if (n < 11) return "5d6 acid damage";
-				if (n < 13) return "6d6 acid damage";
-				if (n < 15) return "7d6 acid damage";
-				if (n < 17) return "8d6 acid damage";
-				if (n < 19) return "9d6 acid damage";
-				return "10d6 acid damage";
+				return Math.ceil(n / 2) + "d6 acid damage";
 			}),
-			action : ["action", ""]
+			action : ["action", ""],
+			eval : "AddWeapon('Alchemical Acid');",
+			removeeval : "RemoveWeapon('Alchemical Acid');",
+			calcChanges : {
+				atkAdd : ["if (WeaponName === 'alchemical acid' && classes.known.artificer && classes.known.artificer.level) {fields.Proficiency = true; fields.Damage_Die = function(n){return Math.ceil(n / 2) + 'd6';}(classes.known.artificer.level); }; ", ""]
+			}
 		},
 		"subclassfeature1.3" : {
 			name : "Formula: Alchemical Fire",
@@ -257,15 +253,14 @@ ClassSubList["artificer-alchemist"] = {
 				"It explodes and all within a 5-ft radius must succeed on a Dex save or take fire damage"
 			]),
 			additional : levels.map(function (n) {
-				if (n < 4) return "1d6 fire damage";
-				if (n < 7) return "2d6 fire damage";
-				if (n < 10) return "3d6 fire damage";
-				if (n < 13) return "4d6 fire damage";
-				if (n < 16) return "5d6 fire damage";
-				if (n < 19) return "6d6 fire damage";
-				return "7d6 fire damage";
+				return Math.ceil(n / 3) + "d6 fire damage";
 			}),
-			action : ["action", ""]
+			action : ["action", ""],
+			eval : "AddWeapon('Alchemical Fire');",
+			removeeval : "RemoveWeapon('Alchemical Fire');",
+			calcChanges : {
+				atkAdd : ["if (WeaponName === 'alchemical fire' && classes.known.artificer && classes.known.artificer.level) {fields.Proficiency = true; fields.Damage_Die = function(n){return Math.ceil(n / 3) + 'd6';}(classes.known.artificer.level); }; ", ""]
+			}
 		}
 	}
 };
@@ -299,8 +294,8 @@ ClassSubList["artificer-gunsmith"] = {
 			]),
 			weapons : [false, false, ["thunder cannon"]],
 			action : ["bonus action", " (reload)"],
-			eval : "AddWeapon(\"Thunder Cannon\");",
-			removeeval : "RemoveWeapon(\"Thunder Cannon\");"
+			eval : "AddWeapon('Thunder Cannon');",
+			removeeval : "RemoveWeapon('Thunder Cannon');"
 		},
 		"subclassfeature1.3" : {
 			name : "Arcane Magazine",
@@ -317,11 +312,16 @@ ClassSubList["artificer-gunsmith"] = {
 			source : ["UA:A", 6],
 			minlevel : 3,
 			description : desc(["As an action, I can make an attack with my thunder cannon that does extra damage"]),
-			additional : levels.map(function (level) {
-				if (level < 3) return "";
-				return "+" + Math.floor((level - 1) / 2) + "d6 thunder damage";
+			additional : levels.map(function (n) {
+				if (n < 3) return "";
+				return "+" + Math.floor((n - 1) / 2) + "d6 thunder damage";
 			}),
-			action : ["action", ""]
+			action : ["action", ""],
+			eval : "AddWeapon('Thunder Cannon (Monger)');",
+			removeeval : "RemoveWeapon('Thunder Cannon (Monger)');",
+			calcChanges : {
+				atkAdd : ["if (WeaponName === 'thunder cannon-thunder monger' && classes.known.artificer && classes.known.artificer.level > 2) {fields.Description += '; +' + function(n){return Math.floor((n - 1) / 2) + 'd6 thunder damage';}(classes.known.artificer.level); }; ", ""]
+			}
 		},
 		"subclassfeature9" : {
 			name : "Blast Wave",
@@ -331,13 +331,18 @@ ClassSubList["artificer-gunsmith"] = {
 				"As an action, I can make a special attack with my thunder cannon in a 15-ft cone",
 				"Creatures in the area must make a Str save or take damage and pushed back 10 ft"
 			]),
-			additional : levels.map(function (level) {
-				return level < 9 ? "" :
-				level < 13 ? "2d6 force damage" :
-				level < 17 ? "3d6 force damage" :
+			additional : levels.map(function (n) {
+				return n < 9 ? "" :
+				n < 13 ? "2d6 force damage" :
+				n < 17 ? "3d6 force damage" :
 				"4d6 force damage";
 			}),
-			action : ["action", ""]
+			action : ["action", ""],
+			eval : "AddWeapon('Thunder Cannon (Blast Wave)');",
+			removeeval : "RemoveWeapon('Thunder Cannon (Blast Wave)');",
+			calcChanges : {
+				atkAdd : ["if (WeaponName === 'thunder cannon-blast wave' && classes.known.artificer && classes.known.artificer.level >= 13) {fields.Damage_Die = function(n){return (n < 17 ? 3 : 4) + 'd6';}(classes.known.artificer.level); }; ", ""]
+			}
 		},
 		"subclassfeature14" : {
 			name : "Piercing Round",
@@ -347,12 +352,17 @@ ClassSubList["artificer-gunsmith"] = {
 				"As an action, I can make a special attack with my thunder cannon in a 30-ft line",
 				"Creatures in the 5-ft wide line must make a Dex save or take damage"
 			]),
-			additional : levels.map(function (level) {
-				return level < 14 ? "" :
-				level < 19 ? "4d6 lightning damage" :
+			additional : levels.map(function (n) {
+				return n < 14 ? "" :
+				n < 19 ? "4d6 lightning damage" :
 				"6d6 lightning damage";
 			}),
-			action : ["action", ""]
+			action : ["action", ""],
+			eval : "AddWeapon('Thunder Cannon (Piercing Round)');",
+			removeeval : "RemoveWeapon('Thunder Cannon (Piercing Round)');",
+			calcChanges : {
+				atkAdd : ["if (WeaponName === 'thunder cannon-piercing round' && classes.known.artificer && classes.known.artificer.level >= 19) {fields.Damage_Die = '6d6'; }; ", ""]
+			}
 		},
 		"subclassfeature17" : {
 			name : "Explosive Round",
@@ -364,7 +374,9 @@ ClassSubList["artificer-gunsmith"] = {
 				"Creatures in the area must make a Dexterity saving throw or take 4d8 fire damage"
 			]),
 			additional : "4d8 fire damage",
-			action : ["action", ""]
+			action : ["action", ""],
+			eval : "AddWeapon('Thunder Cannon (Explosive Round)');",
+			removeeval : "RemoveWeapon('Thunder Cannon (Explosive Round)');"
 		}
 	}
 };
