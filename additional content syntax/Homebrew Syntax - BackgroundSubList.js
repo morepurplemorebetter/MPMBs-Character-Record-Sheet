@@ -22,7 +22,7 @@ BackgroundSubList["what i was doing"] = { //Object name; Note the use of only lo
 	// after defining the above two, you don't need to define anything more, but you can. Defining more stuff will overwrite the entries as they are given in the BackgroundList. So if you do not need something to be different than the basics of the class (for example, you variant uses the same ideals and bonds), then you don't need to define it again.
 	// For the syntax of how to define more stuff, look at the BackgroundList (see "Homebrew Syntax - BackgroundList & BackgroundFeatureList.js"). You can define all the same stuff in the same way. The below are a couple of examples:
 	
-	source : ["HB", 0],
+	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js"
 	
 	equipleft : "", //the background has items defined that are to be added to the left equipment column. This variant now erases those entries by overwriting them with nothing
 	

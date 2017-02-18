@@ -18,7 +18,7 @@ BackgroundList["where i am from"] = { //Object name; Note the use of only lower 
 	
 	name : "Where I am From", //required; the name as used
 	
-	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew.
+	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js"
 	
 	skills : ["Deception", "Stealth"], //optional; skill proficiencies gained from having the background. If the background doesn't give fixed proficiencies, but instead gives a choice, delete this line and use the line below, "skillstxt"
 	

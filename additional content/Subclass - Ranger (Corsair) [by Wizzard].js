@@ -12,7 +12,7 @@
 	Effect:     This script adds a subclass for the Ranger, called "Corsair"
 				This is a homebrew class designed by Wizzard
 	Code by:    Wizzard
-	Date:       2017-02-15 (sheet v12.83)
+	Date:       2017-02-18 (sheet v12.83)
  */
 
 ClassSubList["corsair"] = {
@@ -39,7 +39,7 @@ ClassSubList["corsair"] = {
 				source : ["UA:LDU", 1],
 				description : "\n   " + "+1 bonus to attack rolls I make with ranged attacks" + "\n   " + "I don't have disadvantage when making a ranged attack while within 5 ft of a hostile" + "\n   " + "My ranged attacks ignore half and three-quarters cover against targets within 30 ft",
 				calcChanges : {
-					atkCalc : ["if (!fields.Range.match(/melee/i) && !WeaponText.match(/spell|cantrip/i) && (!theWea || !theWea.type.match(/cantrip|spell/i))) {output.extraHit += 1; }; ", "My ranged weapons get a +1 bonus on the To Hit."]
+					atkCalc : ["if (isRangedWeapon) {output.extraHit += 1; }; ", "My ranged weapons get a +1 bonus on the To Hit."]
 				}
 			},
 			"mariner" : {

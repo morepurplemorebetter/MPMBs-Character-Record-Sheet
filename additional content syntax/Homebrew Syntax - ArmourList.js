@@ -17,7 +17,9 @@ ArmourList["protectme"] = { //Object name; Note the use of only lower case! Also
 	
 	regExpSearch : /^protect(?=.*me).*$/i, //Required; regular expression of what to look for (i.e. now it looks for any entry that has the word "protect" followed by the word "me" in it, disregarding capitalization). If this looks to complicated, just write: /protectme/i
 	
-	name : "ProtectMe", //Required; 
+	name : "ProtectMe", //Required;
+	
+	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js"
 	
 	type : "medium", //Required; the type of the weapon. Options are "medium", "light", "heavy", and ""
 	
