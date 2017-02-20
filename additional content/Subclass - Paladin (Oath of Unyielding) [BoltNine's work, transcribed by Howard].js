@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Paladin, called "Oath of the Unyielding"
-				This is made by IrishBandit / BoltNine Homebrew (http://dnd-5e-homebrew.tumblr.com/post/143911497503/oath-of-the-unyielding-by-irishbandit-boltnine)
+				This is made by BoltNine Homebrew (https://drive.google.com/drive/folders/0B2UyuHLUuCjxRmlXWExXTGR1eTA)
 	Code by:	Howard
 	Date:		2017-01-06 (sheet v12.8)
 */
@@ -64,8 +64,8 @@ ClassSubList["unyielding"] = {
 ClassList["paladin"].subclasses[1].push("unyielding");
 
 SourceList["IB:OotU"] = {
-	name : "IrishBandit / BoltNine Homebrew: Oath of the Unyielding",
-	abbreviation : "IB:OotU",
-	group : "IrishBandit / BoltNine Homebrew",
-	url : "http://dnd-5e-homebrew.tumblr.com/post/143911497503/oath-of-the-unyielding-by-irishbandit-boltnine"
+	name : "BoltNine Homebrew: Oath of the Unyielding",
+	abbreviation : "BN:OotU",
+	group : "BoltNine",
+	url : "https://drive.google.com/drive/folders/0B2UyuHLUuCjxRmlXWExXTGR1eTA"
 };
