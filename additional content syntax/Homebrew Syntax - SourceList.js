@@ -11,7 +11,7 @@
 	Subject:	Source
 	Effect:		This is the syntax for adding a new source that can be referenced by other JavaScript Syntax
 				Note that the sheet will ignore any reference to a source that is not defined
-	Sheet:		v12.83 (2017-02-15)
+	Sheet:		v12.83 (2017-02-18)
 */
 
 SourceList["UA:LDU"] = { //Object name; This is the way the source is called upon, so the way you would enter it as the "Source" in any other of the JavaScript Syntax. Note that this is case sensitive! //Also note that this has to be an unique value. Look at the default sources in the "Complete SourceList.js" file

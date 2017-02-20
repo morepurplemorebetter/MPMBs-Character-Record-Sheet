@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Subclass (a.k.a. Archetype)
 	Effect:		This is the syntax for adding a new subclass/archetype to a class that is defined in the sheet, or to a class you made yourself
-	Sheet:		v12.83 (2017-02-15)
+	Sheet:		v12.83 (2017-02-18)
 */
 
 ClassSubList["specialme"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []

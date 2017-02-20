@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Spell
 	Effect:		This is the syntax for adding a new spell
-	Sheet:		v12.83 (2017-02-15)
+	Sheet:		v12.83 (2017-02-18)
 	
 	Please note that there is no code here to update drop-down boxes because the rop-down boxes in the spell selection dialogues are generated automatically and will include any spells you add correctly
 	

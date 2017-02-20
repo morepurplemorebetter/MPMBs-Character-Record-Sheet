@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Background and Background Feature
 	Effect:		This is the syntax for adding a new background and the syntax for adding a new background feature below it
-	Sheet:		v12.83 (2017-02-15)
+	Sheet:		v12.83 (2017-02-18)
 */
 
 BackgroundList["where i am from"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []

@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Tool (for the equipment menu)
 	Effect:		This is the syntax for adding a new tool
-	Sheet:		v12.83 (2017-02-15)
+	Sheet:		v12.83 (2017-02-18)
 
 	NOTE that any items added like this will appear at the end of the list of gear visible in the equipment menu.
 	They will appear in the order you add them.

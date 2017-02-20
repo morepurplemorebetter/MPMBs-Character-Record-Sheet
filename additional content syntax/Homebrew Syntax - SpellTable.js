@@ -11,7 +11,7 @@
 	Subject:	SpellTable
 	Effect:		This is an example of a table that is used for a (sub)class that has the 'spellcastingFactor' defined as "purplemancer1" (where "1" is the factor and the rest is the name)
 				Alternatively, you can just add this to the code for your class or subclass (see Homebrew Syntax ClassList and ClassSubList)
-	Sheet:		v12.83 (2017-02-15)
+	Sheet:		v12.83 (2017-02-18)
 	
 	Note that the table needs to have these exact dimensions, of level 0-20 and at least 9 entries per row
 */

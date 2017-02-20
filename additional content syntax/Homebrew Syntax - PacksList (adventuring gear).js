@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Pack (for the equipment menu
 	Effect:		This is the syntax for adding a new Pack of equipment
-	Sheet:		v12.83 (2017-02-15)
+	Sheet:		v12.83 (2017-02-18)
 */
 
 PacksList["burglar's pack (16 gp)"] = [ //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []. The spelling here is used to identify the pack with and is how the pack will appear in the equipment menu (although in the menu the first letter will be capitalized automatically).
