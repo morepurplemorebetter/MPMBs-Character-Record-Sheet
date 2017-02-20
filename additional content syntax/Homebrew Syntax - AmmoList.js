@@ -11,7 +11,7 @@
 	Subject:	Ammunition
 	Effect:		This is the syntax for adding a new type of ammunition to the sheet
 				Note that if you want this ammunition to be added automatically when selecting a certain weapon, you need to include its object-name as the 'ammo' attribute. Even if you don't do this, the ammo you define will be filled when typed into an ammo box
-	Sheet:		v12.83 (2017-02-15)
+	Sheet:		v12.83 (2017-02-18)
 */
 
 AmmoList["distantsting"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []. The spelling here is used to identify the ammo with.
@@ -27,6 +27,8 @@ AmmoList["distantsting"] = { //Object name; Note the use of only lower case! Als
 	display : 20, //Required; the amount of checkboxes to display
 	
 	invName : "Stings, Distant", //Optional; the name as it will be added to the equipment section if selected to do so in the equipment menu. If you omit this, the sheet will use the above defined 'name' when adding this to the equipment section
+	
+	alternatives : ["distant sting", "stingdistant", "sting distant"], //Optional; an arry of alternative names that the code can recognize for this same ammo entry. These need to be all lower case!
 }
 
 UpdateDropdown("ammo"); //Optional; This updates all dropdown fields that have lists of ammunition
