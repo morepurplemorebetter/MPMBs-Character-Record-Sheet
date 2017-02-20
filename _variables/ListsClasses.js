@@ -624,7 +624,7 @@ var ClassList = {
 				minlevel : 6,
 				description : "\n   " + "My unarmed strikes count as magical for overcoming resistances and immunities",
 				calcChanges : {
-					atkAdd : ["if (WeaponName.match(/unarmed strike/i)) {fields.Description += 'Counts as magical';}; ", "My unarmed strikes count as magical for overcoming resistances and immunities."]
+					atkAdd : ["if (WeaponName.match(/unarmed strike/i)) {fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';}; ", "My unarmed strikes count as magical for overcoming resistances and immunities."]
 				}
 			},
 			"evasion" : {
@@ -3092,7 +3092,7 @@ var ClassSubList = {
 				name : "Disciple of the Elements",
 				source : ["P", 80],
 				minlevel : 3,
-				description : "\n   " + "I know Elemental Attunement and additional Elemental Disciplines, depending on level" + "\n   " + "From 5th level onward, I can use additional ki points to increase the spell slot level" + "\n   " + "I can trade known Elemental Disciplines for others when I gain new ones" + "\n   " + "Use the \"Choose Features\" button above to add Elemental Disciplines to the third page",
+				description : "\n   " + "I know Elemental Attunement and additional Elemental Disciplines, depending on level" + "\n   " + "Use the \"Choose Features\" button above to add Elemental Disciplines to the third page" + "\n   " + "From 5th level onward, I can use additional ki points to increase their spell slot level" + "\n   " + "I can trade known Elemental Disciplines for others when I gain new ones",
 				additional : ["", "", "2 known", "2 known", "2 known; 3 max ki", "3 known; 3 max ki", "3 known; 3 max ki", "3 known; 3 max ki", "3 known; 4 max ki", "3 known; 4 max ki", "4 known; 4 max ki", "4 known; 4 max ki", "4 known; 5 max ki", "4 known; 5 max ki", "4 known; 5 max ki", "4 known; 5 max ki", "5 known; 6 max ki", "5 known; 6 max ki", "5 known; 6 max ki", "5 known; 6 max ki"],
 				extraname : "Elemental Discipline",
 				extrachoices : ["Breath of Winter (prereq: level 17 monk)", "Clench of the North Wind (prereq: level 6 monk)", "Eternal Mountain Defense (prereq: level 11 monk)", "Fangs of the Fire Snake", "Fist of Four Thunders", "Fist of Unbroken Air", "Flames of the Phoenix (prereq: level 11 monk)", "Gong of the Summit (prereq: level 6 monk)", "Mist Stance (prereq: level 11 monk)", "Ride the Wind (prereq: level 11 monk)", "Rive of Hungry Flame (prereq: level 17 monk)", "Rush of the Gale Spirits", "Shape the Flowing River", "Sweeping Cinder Strike", "Water Whip", "Wave of Rolling Earth (prereq: level 17 monk)"],
@@ -3147,6 +3147,9 @@ var ClassSubList = {
 					name : "Fangs of the Fire Snake",
 					source : ["P", 81],
 					description : " [1 ki point]" + "\n   " + "With Attack action, my unarmed strikes +10 ft reach and deal fire damage this turn" + "\n   " + "Also, I can spent an additional 1 ki point to cause an attack to deal +1d10 fire damage",
+					calcChanges : {
+						atkAdd : ["if (WeaponName.match(/unarmed strike/i) && inputText.match(/^(?=.*fire)(?=.*snake).*$/i)) {fields.Description += (fields.Description ? '; ' : '') + 'After hit, spend 1 ki point for +1d10 fire damage'; fields.Range = 'Melee (15 ft reach)'; fields.Damage_Type = 'fire'; }; ", "If I include the words 'Fire Snake' in the name of an unarmed strike, it gets +10 ft reach, does fire damage, and gains the option to deal +1d10 fire damage by spending 1 additional ki point."]
+					}
 				},
 				"fist of four thunders" : {
 					name : "Fist of Four Thunders",

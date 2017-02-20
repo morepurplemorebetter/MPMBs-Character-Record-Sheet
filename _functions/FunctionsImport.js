@@ -552,8 +552,8 @@ function DirectImport(consoleTrigger) {
 		//set the background
 		ImportField("Background", {notTooltip: true, notSubmitName: true}); ImportField("Background Extra", {notTooltip: true});
 		
-		//set the class
-		ImportField("Class Features Remember"); ImportField("Extra Class Features Remember"); ImportField("Class and Levels", {notTooltip: true});
+		//set the class and class features
+		ImportField("Class Features Remember"); ImportField("Class and Levels", {notTooltip: true}); ImportExtraChoices();
 		
 		//set the feats
 		var feaNrFrom = global.docFrom.FieldNumbers.feats ? global.docFrom.FieldNumbers.feats : FieldNumbers.feats;
@@ -575,7 +575,7 @@ function DirectImport(consoleTrigger) {
 		
 		//set the ability scores and associated fields
 		for (var abiS in AbilityScores.current) {
-			ImportField(abiS); ImportField(abiS + "Remember"); ImportField(abiS + "ST Prof", {notTooltip: true}); ImportField(abiS + "ST Bonus", {notTooltip: true}); ImportField(abiS + "ST Adv", {doReadOnly: true}); ImportField(abiS + "ST Dis", {doReadOnly: true});
+			ImportField(abiS); ImportField(abiS + " Remember"); ImportField(abiS + " ST Prof", {notTooltip: true}); ImportField(abiS + " ST Bonus", {notTooltip: true}); ImportField(abiS + " ST Adv", {doReadOnly: true}); ImportField(abiS + " ST Dis", {doReadOnly: true});
 		};
 		ImportField("All ST Bonus", {notTooltip: true});
 		
@@ -705,7 +705,7 @@ function DirectImport(consoleTrigger) {
 		}
 		
 	//the third page
-		ImportField("Extra.Notes"); ImportField("Extra.Other Holdings");
+		ImportField("Extra.Other Holdings");
 		
 		//magic items
 		nmbrFlds = global.docFrom.FieldNumbers.magicitems ? global.docFrom.FieldNumbers.magicitems : FieldNumbers.magicitems;
@@ -1026,7 +1026,8 @@ function DirectImport(consoleTrigger) {
 		aText += "\n\n" + toUni("The following things should be considered:");
 		aText += "\n  > Things you added to drop-down menus with Custom Scripts are no longer there;";
 		aText += "\n  > The 'Class Features' text is now solely what the automation added;";
-		aText += "\n  > Attack attributes are now solely what the automation set;";
+		aText += "\n  > The 'Notes' section on the 3rd page is now solely what the automation added;";
+		aText += "\n  > Attack and Ammunition attributes are now solely what the automation set;";
 		aText += "\n  > Companion pages have been copied exactly, not using any changes in automation;";
 		aText += "\n  > Wild Shapes have been re-calculated, manual changes have been ignored;";
 		aText += sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "\n  > Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "\n  > No spell sheets have been generated.";
@@ -1270,4 +1271,27 @@ function ImportIcons(pagesLayout, viaSaving) {
 	} else if (viaSaving && !MPMBImportFunctionsInstalled) {goodImport = "JavaScript file not installed";};
 	
 	return goodImport;
+};
+
+// import the class features that were manually selected from the extrachoices arrays
+function ImportExtraChoices() {
+	if (!global.docFrom.getField("Extra.Notes")) return; //nothing to do
+	//use the content of the sheet we are importing from as a means to test what extrachoices things have been selected
+	var toTestE = global.docFrom.getField("Extra.Notes").value + global.docFrom.getField("Class Features").value;
+	for (var aClass in global.docTo.classes.known) {
+		var classlevel = global.docTo.classes.known[aClass].level;
+		var Temps = global.docTo.CurrentClasses[aClass];
+		if (!Temps) continue;
+		for (var prop in Temps.features) {
+			var propFea = Temps.features[prop];
+			if (propFea.extrachoices && propFea.minlevel <= classlevel && propFea.extraname) {
+				propFea.extrachoices.forEach( function(opt) {
+					var propOpt = propFea[opt.toLowerCase()];
+					if (toTestE.indexOf(propOpt.name + " (" + propFea.extraname) !== -1) {
+						global.docTo.ClassFeatureOptions([aClass, prop, opt.toLowerCase(), "extra", false]);
+					};
+				});
+			}
+		}
+	}
 }

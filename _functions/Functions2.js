@@ -610,9 +610,7 @@ function FindCompWeapons(ArrayNmbr, aPrefix) {
 				tempArray[j][2] = WeaponsList[tempArray[j][0]].abilitytodamage;
 			} else if (compAttackFound) {
 				var compMod = CurrentCompRace[prefix].attacks[tempArray[j][0]].modifiers;
-				if (compMod && compMod[2] !== "") {
-					tempArray[j][2] = compMod[2];
-				}
+				tempArray[j][2] = compMod && compMod[2] !== "" ? compMod[2] : true;
 			}
 			//put tempArray in known
 			CurrentWeapons.compKnown[prefix][j] = tempArray[j];
@@ -1820,7 +1818,7 @@ function changeCompType(inputType, prefix) {
 		var creaSens = What(prefix + "Comp.Use.Senses");
 		var newDarkv = What("Unit System") === "metric" ? "Darkvision 18 m" : "Darkvision 60 ft";
 		if (!creaSens.match(/darkvision \d+.?\d*.?(ft|m)/i)) {
-			AddString(prefix + "Comp.Use.Senses", newDarkv, ";");
+			AddString(prefix + "Comp.Use.Senses", newDarkv, "; ");
 		} else if (!creaSens.match(/darkvision (60.?ft|18.?m)/i)) {
 			var darkvis = creaSens.match(/darkvision \d+.?\d*.?(ft|m)/i)[0];
 			if (parseFloat(darkvis.match(/\d+/)[0]) < (What("Unit System") === "metric" ? 18 : 60)) {
@@ -5805,6 +5803,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		Range : "",
 		Damage_Type : "",
 		Description : "",
+		Description_Tooltip : "",
 		To_Hit_Bonus : 0,
 		Damage_Bonus : 0,
 		Damage_Die : "",
@@ -5820,7 +5819,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	//set a variable to refer to the new weapon
 	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
 	var WeaponName = thisWeapon[0];
-	var theWea = WeaponsList[WeaponName];
+	var theWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] ? CurrentCompRace[prefix].attacks[WeaponName] : false;
 	
 	//if there is a new weapon entered and the old weapon had ammo that is not used by any of the current weapons, remove that ammo from the ammo section.
 	if (QI && oldWea && WeaponsList[oldWea].ammo) {
@@ -5840,6 +5839,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	if (theWea) {
 		thermoM("Applying the weapon's features..."); //change the progress dialog text
 		fields.Description = theWea.description; //add description
+		fields.Description_Tooltip = theWea.tooltip ? theWea.tooltip : ""; //add the tooltip for the description
 		fields.Range = theWea.range; //add range
 		fields.Damage_Type = theWea.damage[2]; //add Damage Type
 		
@@ -5909,17 +5909,19 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		for (var weaKey in fields) {
 			var keyFld = (BTflds.indexOf(weaKey) !== -1 ? fldBaseBT : fldBase) + weaKey.replace(/_/g, " ");
 			if (!fields[weaKey]) {
-				resetFlds.push(keyFld);
+				if (tDoc.getField(keyFld)) resetFlds.push(keyFld);
 				continue;
 			};
 			switch (weaKey) {
+			 case "Description_Tooltip" : 
+				break;
 			 case "Proficiency" :
 				Checkbox(keyFld, fields[weaKey]);
 				break;
 			 case "Mod" :
 				PickDropdown(keyFld, fields[weaKey]);
 				break;
-			 case "Damage Type" :
+			 case "Damage_Type" :
 				AddDmgType(keyFld, fields[weaKey]);
 				break;
 			 case "Weight" :
@@ -5934,7 +5936,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 				if (fields[weaKey]) AddAmmo(fields[weaKey]);
 				break;
 			 default :
-				Value(keyFld, fields[weaKey]);				
+				Value(keyFld, fields[weaKey], weaKey !== "Description" ? "" : fields.Description_Tooltip);				
 			};
 		};
 		if (resetFlds.length) tDoc.resetForm(resetFlds);
@@ -6002,22 +6004,24 @@ function CalcAttackDmgHit(fldName) {
 	
 	// define some variables that we can check against later or with the CurrentEvals
 	var isDC = fields.To_Hit_Bonus.toLowerCase() === "dc";
-	var isSpell = thisWeapon[3] || (WeaponName && theWea.type.match(/cantrip|spell/i)) || WeaponText.match(/\b(cantrip|spell)\b/i);
-	var isMeleeWeapon = !isSpell && fields.Range.match(/melee/i);
-	var isRangedWeapon = !isSpell && fields.Range.match(/^(?!.*melee).*\d+.*$/i);
+	if (QI) {
+		var isSpell = thisWeapon[3] || (theWea && theWea.type.match(/cantrip|spell/i)) || WeaponText.match(/\b(cantrip|spell)\b/i);
+		var isMeleeWeapon = !isSpell && fields.Range.match(/melee/i);
+		var isRangedWeapon = !isSpell && fields.Range.match(/^(?!.*melee).*\d+.*$/i);
 
-	// see if this is a off-hand attack and the modToDmg shouldn't be use
-	var isOffHand = isMeleeWeapon && WeaponText.match(/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary))().*$/i) ? true : false;
-	if (isOffHand) {
-		AddAction("bonus action", "Off-hand Attack");
-		output.modToDmg = false;
-	}
+		// see if this is a off-hand attack and the modToDmg shouldn't be use
+		var isOffHand = isMeleeWeapon && WeaponText.match(/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i) ? true : false;
+		if (isOffHand) {
+			AddAction("bonus action", "Off-hand Attack");
+			output.modToDmg = false;
+		};
 	
-	// now run the code that was added by class/race/feat
-	if (QI && CurrentEvals.atkCalc) {
-		try {
-			eval(CurrentEvals.atkCalc);
-		} catch (err) {console.println("Custom CalcAttackDmgHit/atkCalc script not working: " + err)};
+		// now run the code that was added by class/race/feat
+		if (CurrentEvals.atkCalc) {
+			try {
+				eval(CurrentEvals.atkCalc);
+			} catch (err) {console.println("Custom CalcAttackDmgHit/atkCalc script not working: " + err)};
+		};
 	};
 	
 	var dmgDie = "";
@@ -6076,7 +6080,7 @@ function CalcAttackDmgHit(fldName) {
 	var dmgTot = dmgDie + (dmgNum === 0 ? "" : dmgNum);
 	var hitTot = (isDC ? "DC " : (hitNum >= 0 ? "+" : "")) + hitNum;
 	
-	Value(fldBase + "Damage", dmgTot);
+	Value(fldBase + "Damage", dmgTot == 0 ? "" : dmgTot);
 	if (event.target.name && event.target.name.match(/.*Attack.*To Hit/)) {
 		event.value = hitTot;
 	} else {

@@ -774,7 +774,7 @@ var WeaponsList = {
 		weight : 1,
 		description : "Target +1d4 damage at the start of each of its turn; Can end it as an action with a DC 10 Dex check",
 		abilitytodamage : false,
-		ammo : "Flasks of Alchemist Fire"
+		ammo : "alchemist fire"
 	},
 	"vial of acid" : {
 		regExpSearch : /^(?=.*vial)(?=.*acid).*$/i,
@@ -787,7 +787,7 @@ var WeaponsList = {
 		weight : 1,
 		description : "",
 		abilitytodamage : false,
-		ammo : "Vials of Acid"
+		ammo : "vials of acid"
 	},
 	"acid splash" : {
 		regExpSearch : /^(?=.*acid)(?=.*splash).*$/i,
@@ -1238,7 +1238,7 @@ var AmmoList = {
 		weight : 0.05,
 		icon : "Arrows",
 		checks : [".Top", ".Base"],
-		display : 20,
+		display : 20
 	},
 	"bolt" : {
 		name : "Bolts",
@@ -1261,42 +1261,42 @@ var AmmoList = {
 		weight : 1,
 		icon : "Daggers",
 		checks : [".Top"],
-		display : 10,
+		display : 10
 	},
 	"dart" : {
 		name : "Darts",
 		weight : 0.25,
 		icon : "Arrows",
 		checks : [".Top", ".Base"],
-		display : 20,
+		display : 20
 	},
 	"flask" : {
 		name : "Flasks (1 pint)",
 		weight : 1,
 		icon : "Flasks",
 		checks : [".Top", ".Base"],
-		display : 20,
+		display : 20
 	},
 	"axe" : {
 		name : "Handaxes",
 		weight : 2,
 		icon : "Axes",
 		checks : [".Top.Axe", ".Base.Axe"],
-		display : 8,
+		display : 8
 	},
 	"javelin" : {
 		name : "Javelins",
 		weight : 2,
 		icon : "Spears",
 		checks : [".Base"],
-		display : 10,
+		display : 10
 	},
 	"hammer" : {
 		name : "Light Hammers",
 		weight : 2,
 		icon : "Hammers",
 		checks : [".Top.Axe", ".Base.Axe"],
-		display : 8,
+		display : 8
 	},
 	"needle" : {
 		name : "Needles",
@@ -1311,21 +1311,39 @@ var AmmoList = {
 		weight : 3,
 		icon : "Spears",
 		checks : [".Base"],
-		display : 10,
+		display : 10
 	},
 	"trident" : {
 		name : "Tridents",
 		weight : 4,
 		icon : "Spears",
 		checks : [".Base"],
-		display : 10,
+		display : 10
 	},
 	"vial" : {
 		name : "Vials (4 ounces)",
 		weight : 0.25,
 		icon : "Vials",
 		checks : [".Top", ".Base"],
+		display : 20
+	},
+	"vials of acid" : {
+		name : "Vials of Acid",
+		weight : 1,
+		icon : "Vials",
+		checks : [".Top", ".Base"],
 		display : 20,
+		invName : "Acid, vials of",
+		alternatives : ["vial of acid", "acid vial"]
+	},
+	"alchemist fire" : {
+		name : "Alchemist's Fire, flasks",
+		weight : 1,
+		icon : "Flasks",
+		checks : [".Top", ".Base"],
+		display : 20,
+		invName : "Alchemist's fire, flasks of",
+		alternatives : ["alchemist's fire"]
 	},
 	
 	// UA Artificer ammo
@@ -1435,9 +1453,9 @@ var GearList = {
 		amount : "",
 		weight : 1
 	},
-	"alchemists fire (flask) [50 gp]" : {
-		infoname : "Alchemists fire (flask) [50 gp]",
-		name : "Alchemists fire, flasks of",
+	"alchemist's fire (flask) [50 gp]" : {
+		infoname : "Alchemist's fire (flask) [50 gp]",
+		name : "Alchemist's fire, flasks of",
 		amount : "",
 		weight : 1
 	},

@@ -7,10 +7,12 @@ function InitializeEverything(noButtons) {
 	
 	RunUserScript();
 	
-	//define some variables after running the user scripts
-	AllSpellsArray = CreateSpellList({class : "any"}, true);
-	AllSpellsObject = CreateSpellObject(AllSpellsArray);
-	AddSpellsMenu = ParseSpellMenu();
+	//define some document level variables after running the user scripts
+	if (!tDoc.info.AdvLogOnly) {
+		AllSpellsArray = CreateSpellList({class : "any"}, true);
+		AllSpellsObject = CreateSpellObject(AllSpellsArray);
+		AddSpellsMenu = ParseSpellMenu();
+	};
 	
 	if (!minVer) {
 		setListsUnitSystem(false, true);
@@ -28,7 +30,9 @@ function InitializeEverything(noButtons) {
 		ApplyProficiencies(false);
 		UpdateTooltips();
 		SetRichTextFields();
-	}
+	} else if (tDoc.info.SpellsOnly) {
+		AmendSpellsList();
+	};
 	
 	SetHighlighting();
 	if (!noButtons) MakeButtons();

@@ -212,7 +212,13 @@ function ClearIcons(field, clickMe) {
 };
 
 function PickDropdown(field, FldValue) {
-	tDoc.getField(field).currentValueIndices = FldValue;
+	var thisFld = tDoc.getField(field);
+	if (!thisFld) return;
+	if (!isNaN(FldValue) && thisFld.type === "combobox") {
+		tDoc.getField(field).currentValueIndices = Number(FldValue);
+	} else {
+		Value(field, FldValue);
+	}
 };
 
 function isArray(input) {
@@ -2355,31 +2361,28 @@ function ConditionSet() {
 
 //search the string for possible class and subclass
 function ParseClass(tempString) {
-	var found = false, tempFound = false;
+	var found = false, tempFound = false, tempFoundL = 0;
 	for (var i = 1; i <= 2; i++) { //first time around just look if the class matches and then look for its subclasses. If that doesn't yield anything, look if any of the subclasses match
 		for (var obj in ClassList) { //scan string for all classes, choosing subclasses over classes
 			if (testSource(obj, ClassList[obj], "classExcl")) continue; //only testing if the source of the class isn't excluded
-			if (obj === "ranger" && CurrentSources.globalExcl.indexOf("UA:RR") === -1 && (!CurrentSources.classExcl || CurrentSources.classExcl.indexOf("rangerua") === -1)) continue; //a special test for the Unearthed Arcana Revised Ranger
 			var cSearch = ClassList[obj].regExpSearch;
-			if (!tempFound && (i === 2 || tempString.search(cSearch) !== -1)) {
+			if ((i === 2 && !tempFound) || (tempFoundL < obj.length && tempString.search(cSearch) !== -1)) {
+				found = i === 2 ? false : [obj, ""];
+				tempFoundL = obj.length;
 				for (var z = 0; z < ClassList[obj].subclasses[1].length; z++) {
 					var theSub = ClassList[obj].subclasses[1][z];
-					if (testSource(theSub, ClassSubList[theSub], "classExcl")) continue; // test if the subclass or its source isn't excluded
 					var theSubIL = ClassSubList[theSub];
+					if (!theSubIL || testSource(theSub, theSubIL, "classExcl")) continue; // test if the subclass exists or if it or its source isn't excluded
 					var oldSub = found && found[1] && ClassSubList[found[1]] ? ClassSubList[found[1]] : false;
 					if (tempString.search(theSubIL.regExpSearch) !== -1 && (!oldSub || theSubIL.subname.length > oldSub.subname.length)) {
 						found = [obj, theSub];
 						tempFound = true;
-						i = 3;
+						i = 8;
 					};
 				};
 				if (!tempFound && i === 1) {
-					found = [obj, ""];
 					tempFound = true;
 					i = 3;
-					break;
-				} else if (tempFound) {
-					break;
 				};
 			};
 		};
@@ -3067,16 +3070,15 @@ function ParseRace(Inputs) {
 	var resultArray = ["", ""];
 	
 	if (Inputs) {
-		var tempString = Inputs.toLowerCase();
-		var tempFound = false;
-		var tempFound2 = false;
+		var tempFound = 0;
 
 		for (var key in RaceList) { //scan string for all races
 			var rSearch = RaceList[key].regExpSearch; //use the defined regular expression of the race
-			if (!tempFound && tempString.search(rSearch) !== -1) {
+			if (tempFound < RaceList[key].name.length && Inputs.search(rSearch) !== -1) {
 				if (testSource(key, RaceList[key], "racesExcl")) continue; // test if the race or its source isn't excluded
-				resultArray[0] = key;
-				tempFound = true;
+				resultArray = [key, ""];
+				tempFound = RaceList[key].name.length;
+				var tempFound2 = 0;
 				if (RaceList[key].variants) {
 					var RaceOpt = RaceList[key].variants;
 					for (var sub = 0; sub < RaceOpt.length; sub++) { //scan string for all variants of the race
@@ -3084,9 +3086,9 @@ function ParseRace(Inputs) {
 						var rVars = RaceSubList[theR];
 						if (testSource(theR, rVars, "racesExcl")) continue; // test if the racial variant or its source isn't excluded
 						var rvSearch = rVars.regExpSearch; //use the defined regular expression of the racial variant
-						if (!tempFound2 && tempString.search(rvSearch) !== -1) {
+						if (tempFound2 < theR.length && Inputs.search(rvSearch) !== -1) {
 							resultArray[1] = RaceOpt[sub];
-							tempFound2 = true;
+							tempFound2 = theR.length;
 						}
 					}
 				}
@@ -3422,18 +3424,18 @@ function UpdateTooltips() {
 
 //see if a known weapon is in a string, and return the weapon
 function ParseWeapon(input) {
-	if (!input) {
-		return "";
-	}
+	if (!input) return "";
+	var outputL = 0;
 	var output = "";
+	var inputS = input.replace(/off.{0,3}hand/i, "");
 	
 	//scan string for all weapons, including the alternative spellings using regular expression
 	for (var key in WeaponsList) {
 		if (WeaponsList[key].regExpSearch) {
 			var wSearch = WeaponsList[key].regExpSearch; //use the defined regular expression of the weapon
-			if (input.search(wSearch) !== -1) {
+			if (inputS.search(wSearch) !== -1 && outputL < WeaponsList[key].name.length) {
+				outputL = WeaponsList[key].name.length;
 				output = key;
-				break;
 			}
 		}
 	}
@@ -3869,28 +3871,27 @@ function ParseBackground(Input) {
 	var resultArray = ["", ""];
 
 	if (Input) {
-		var tempString = Input.toLowerCase();
-		var tempFound = false;
+		var tempFound = 0;
 
 		for (var key in BackgroundList) { //scan string for all backgrounds
-			if (!tempFound && BackgroundList[key].variant) {
+			if (BackgroundList[key].variant) {
 				var BackOpt = BackgroundList[key].variant;
 				for (var sub = 0; sub < BackOpt.length; sub++) { //scan string for all variants of the background
 					var bVars = BackgroundSubList[BackOpt[sub]];
 					if (testSource(BackOpt[sub], bVars, "backgrExcl")) continue; // test if the background variant or its source isn't excluded
 					var bvSearch = bVars.regExpSearch; //use the defined regular expression of the background variant
-					if (tempString.search(bvSearch) !== -1) {
+					if (tempFound < bVars.name.length && Input.search(bvSearch) !== -1) {
 						resultArray[0] = key;
 						resultArray[1] = BackOpt[sub];
-						tempFound = true;
+						tempFound = bVars.name.length;
 					}
 				}
 			}
 			if (testSource(key, BackgroundList[key], "backgrExcl")) continue; // test if the background or its source isn't excluded
 			var bSearch = BackgroundList[key].regExpSearch; //use the defined regular expression of the background
-			if (!tempFound && tempString.search(bSearch) !== -1) {
+			if (tempFound < BackgroundList[key].name.length && Input.search(bSearch) !== -1) {
 				resultArray[0] = key;
-				tempFound = true;
+				tempFound = BackgroundList[key].name.length;
 			}
 		}
 	}
@@ -5125,16 +5126,14 @@ function LoadLevelsonStartup() {
 
 //lookup the name of a Feat and if it exists in the FeatsList
 function ParseFeat(Inputtxt) {
-	if (!Inputtxt) {
-		return "";
-	}
-	var tempFound = false;
+	if (!Inputtxt) return "";
+	var tempFound = 0;
 	var temp = "";
 	for (var key in FeatsList) {
-		if (!tempFound && Inputtxt.toLowerCase().indexOf(key) !== -1) {
-			if (testSource(key, FeatsList[key], "featsExcl")) continue; // test if the feat or its source isn't excluded
+		if (testSource(key, FeatsList[key], "featsExcl")) continue; // test if the feat or its source isn't excluded
+		if (tempFound < key.length && Inputtxt.toLowerCase().indexOf(key) !== -1) {
 			temp = key;
-			tempFound = true;
+			tempFound = key.length;
 		}
 	}
 	return temp;
@@ -5253,9 +5252,9 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		
 		if (theFeat.source && SourceList[theFeat.source[0]]) {
 			tempString = "The " + theFeat.name + " feat is taken from the " + SourceList[theFeat.source[0]].name + (theFeat.source[1] ? ", page " + theFeat.source[1] : "");
-			var sourceString = " (" + SourceList[theFeat.source[0]].abbreviation + (theFeat.source[1] ? ", page " + theFeat.source[1] : "") + ")";
+			var sourceString = "(" + SourceList[theFeat.source[0]].abbreviation + (theFeat.source[1] ? ", page " + theFeat.source[1] : "") + ")";
 			if (IsNotFeatMenu) {
-				AddString(FeatFlds[1], sourceString, ";");
+				AddString(FeatFlds[1], sourceString, "; ");
 			}
 		}
 		if (theFeat.prerequisite) {
@@ -6001,9 +6000,15 @@ function MakeClassMenu() {
 	var menuLVL3 = function (menu, name, array, classNm, featureNm, extrareturn, feaObj) {
 		var temp = [];
 		for (var i = 0; i < array.length; i++) {
-			if (testSource("", feaObj[array[i].toLowerCase()])) continue;
-			var testWith = extrareturn === "extra" ? CurrentClasses[classNm].features[featureNm][array[i].toLowerCase()].name : array[i].toLowerCase();
-			var theTest = toTest.indexOf(testWith) !== -1;
+			var feaObjA = feaObj[array[i].toLowerCase()];
+			if (!feaObjA) {
+				console.println("The object corresponding to '" + array[i] + "' doesn't exist in the '" + featureNm + "' feature. This is a discrepency between the '" + extrareturn + "choices' array and the names of the objects. Note that the object name needs to be exactly '" +array[i].toLowerCase() + "' (identical but all lower case).");
+				console.show();
+				continue;
+			};
+			if (testSource("", feaObjA)) continue;
+			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name : array[i].toLowerCase();
+			var theTest = (extrareturn === "extra" ? toTestE : toTest).indexOf(testWith) !== -1;
 			var removeStop = extrareturn === "extra" ? (theTest ? "remove" : false) : (theTest ? "stop" : false);
 			temp.push({
 				cName : array[i],
@@ -6017,8 +6022,8 @@ function MakeClassMenu() {
 		});
 	};
 
-	var ClassMenu = [];
-	var toTest = "";
+	var ClassMenu = [], toTest = "";
+	var toTestE = What("Extra.Notes") + What("Class Features");
 
 	for (var aClass in classes.known) {
 		var classname = aClass;
@@ -6034,7 +6039,6 @@ function MakeClassMenu() {
 				toTest = GetClassFeatureChoice(classname, prop);
 				menuLVL3(tempItem, propFea.name, propFea.choices, classname, prop, "", propFea);
 			}
-			toTest = What("Extra.Notes") + What("Class Features");
 			if (propFea.extrachoices && propFea.minlevel <= classlevel) {
 				menuLVL3(tempItem, propFea.extraname, propFea.extrachoices, classname, prop, "extra", propFea);
 			}
@@ -6432,6 +6436,11 @@ function PleaseSubclass(theclass) {
 		var aclassArray = [];
 		for (var i = 0; i < aclass.subclasses[1].length; i++) {
 			var aSub = aclass.subclasses[1][i];
+			if (!ClassSubList[aSub]) {
+				console.println("The subclass '" + aSub + "' of the '" + theclass + "' class doesn't exist in the ClassSubList. It has been ignored for now, but it might cause errors with other things in the sheet. So please make sure to remedy this before proceeding!");
+				console.show();
+				continue;
+			};
 			if (testSource(aSub, ClassSubList[aSub], "classExcl")) continue;
 			aclassObj[ClassSubList[aSub].subname] = aSub;
 			aclassArray.push(ClassSubList[aSub].subname);
@@ -8173,23 +8182,24 @@ function WeightToCalc_Button() {
 
 //see if a known ammunition is in a string, and return the ammo name
 function ParseAmmo(input) {
+	if (!input) return "";
 	var tempString = input.toLowerCase();
 	var output = "";
-	var tempFound = false;
+	var tempFound = 0;
 	
 	//scan string for all weapons, including the alternative spellings
 	for (var key in AmmoList) {
 		if (AmmoList[key].alternatives) {
 			for (var z = 0; z < AmmoList[key].alternatives.length; z++) {
-				if (!tempFound && tempString.indexOf(AmmoList[key].alternatives[z]) !== -1) {
+				if (tempFound < AmmoList[key].alternatives[z].length && tempString.indexOf(AmmoList[key].alternatives[z]) !== -1) {
 					output = key;
-					tempFound = true;
+					tempFound = AmmoList[key].alternatives[z].length;
 				}
 			}
 		};
-		if (!tempFound && tempString.indexOf(key) !== -1) {
+		if (tempFound < key.length && tempString.indexOf(key) !== -1) {
 			output = key;
-			tempFound = true;
+			tempFound = key.length;
 		};
 	}
 	
@@ -10322,14 +10332,14 @@ function SetTheAbilitySaveDCs() {
 	//check all the classes
 	for (var aClass in classes.known) {
 		var CurrentAbilitySave = CurrentClasses[aClass].abilitySave;
-		if (CurrentAbilitySave !== 0 && AbilitySaveArray.indexOf(CurrentAbilitySave) === -1) {
+		if (CurrentAbilitySave && AbilitySaveArray.indexOf(CurrentAbilitySave) === -1) {
 			AbilitySaveArray.push(CurrentAbilitySave);
 		}
 	}
 	
 	//check the race
 	var CurrentAbilitySave = CurrentRace.abilitySave;
-	if (CurrentAbilitySave !== 0 && AbilitySaveArray.indexOf(CurrentAbilitySave) === -1) {
+	if (CurrentAbilitySave && AbilitySaveArray.indexOf(CurrentAbilitySave) === -1) {
 		AbilitySaveArray.push(CurrentAbilitySave);
 	}
 	

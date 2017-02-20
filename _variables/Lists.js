@@ -212,7 +212,7 @@ var IsNotSpellSheetGenerating = true;
 var FieldsRemember = [];
 
 var FieldNumbers = {
-	actions : typeA4 ? 12 : 11,
+	actions : typeLR ? 11 : 12,
 	trueactions : typePF ? 12 : (typeA4 ? 22 : 20),
 	attacks : typeA4 ? 6 : 5,
 	feats : typeA4 ? 9 : 8,
