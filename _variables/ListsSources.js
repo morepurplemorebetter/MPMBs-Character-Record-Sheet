@@ -173,4 +173,17 @@ var SourceList = {
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2016/dnd/downloads/2017_01_UA_RangerRogue_0117JCMM.pdf"
 	},
+/*	"UA:SO" : {
+		name : "Unearthed Arcana: Sorcerous Origins", //2017-02-06
+		abbreviation : "UA:SO",	
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2017/dnd/downloads/26_UASorcererUA020617s.pdf"
+	},
+	"UA:WnW" : {
+		name : "Unearthed Arcana: Warlock and Wizard", //2017-02-13
+		abbreviation : "UA:WnW",	
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2017/dnd/downloads/20170213_Wizrd_Wrlck_UAv2_i48nf.pdf"
+	},
+*/
 };
