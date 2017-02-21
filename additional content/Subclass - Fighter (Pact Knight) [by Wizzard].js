@@ -12,7 +12,7 @@
 	Effect:     This script adds a subclass for the fighter, called "Pact Knight"
 				This is a homebrewed class bringing warlock spellcasting to the fighter
 	Code by:    Wizzard (and a tiny bit MPMB)
-	Date:       2017-02-20 (sheet v12.84)
+	Date:       2017-02-21 (sheet v12.84)
 */
 
 ClassSubList["fighter-pact knight"] = {
@@ -47,7 +47,7 @@ ClassSubList["fighter-pact knight"] = {
 			description : "\n   " + "Use the \"Choose Features\" button above to add Hexbladeic Invocations to the third page",
 			additional : ["", "", "2 invocations known", "2 invocations known", "2 invocations known", "3 invocations known", "3 invocations known", "3 invocations known", "3 invocations known", "4 invocations known", "4 invocations known", "4 invocations known", "4 invocations known", "4 invocations known", "5 invocations known", "5 invocations known", "5 invocations known", "5 invocations known", "5 invocations known", "5 invocations known"],
 			extraname : "Hexbladeic Invocation",
-			extrachoices : ["Agonizing Blast (prereq: Eldritch Blast cantrip)", "Armor of Shadows", "Ascendant Step (prereq: level 9 pact knight)", "Beast Speech", "Beguiling Influence", "Bewitching Whispers (prereq: level 7 pact knight)", "Devil's Sight", "Dreadful Word (prereq: level 7 pact knight)", "Eldritch Sight", "Eldritch Spear (prereq: Eldritch Blast cantrip)", "Eyes of the Rune Keeper", "Fiendish Vigor", "Gaze of Two Minds", "Lifedrinker (prereq: level 12 pact knight)", "Mask of Many Faces", "Master of Myriad Forms (prereq: level 15 pact knight)", "Minions of Chaos (prereq: level 9 pact knight)", "Mire the Mind (prereq: level 5 pact knight)", "Misty Visions", "One with Shadows (prereq: level 5 pact knight)", "Otherworldly Leap (prereq: level 9 pact knight)", "Repelling Blast (prereq: Eldritch Blast cantrip)", "Sculptor of Flesh (prereq: level 7 pact knight)", "Sign of Ill Omen (prereq: level 5 pact knight)", "Thief of Five Fates", "Visions of Distant Realms (prereq: level 15 pact knight)", "Whispers of the Grave (prereq: level 9 pact knight)", "Witch Sight (prereq: level 15 pact knight)"],
+			extrachoices : ["Agonizing Blast (prereq: Eldritch Blast cantrip)", "Armor of Shadows", "Ascendant Step (prereq: level 9 pact knight)", "Beast Speech", "Beguiling Influence", "Devil's Sight", "Eldritch Sight", "Eldritch Spear (prereq: Eldritch Blast cantrip)", "Eyes of the Rune Keeper", "Fiendish Vigor", "Gaze of Two Minds", "Lifedrinker (prereq: level 12 pact knight)", "Mask of Many Faces", "Master of Myriad Forms (prereq: level 15 pact knight)", "Misty Visions", "One with Shadows (prereq: level 5 pact knight)", "Otherworldly Leap (prereq: level 9 pact knight)", "Repelling Blast (prereq: Eldritch Blast cantrip)", "Visions of Distant Realms (prereq: level 15 pact knight)", "Whispers of the Grave (prereq: level 9 pact knight)", "Witch Sight (prereq: level 15 pact knight)"],
 			"agonizing blast (prereq: eldritch blast cantrip)" : {
 				name : "Agonizing Blast",
 				description : "\n   " + "I can add my Charisma modifier to the damage of my Eldritch Blast cantrip",
