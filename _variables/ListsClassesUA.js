@@ -2620,7 +2620,7 @@ ClassSubList["phoenix sorcery"] = {
 				"While my Mantle of Flame is active, I gain the following additional benefits:",
 				"- I have a flying speed of 40 ft and can hover",
 				"- I have resistance to all damage",
-				"- If I use my Phoenix Spark, tit deals an extra 20 fire damage to each creature"
+				"- If I use my Phoenix Spark, it deals an extra 20 fire damage to each creature"
 			]),
 			eval : "AddResistance(\"All (Mantle of Flame)\", \"Form of the Phoenix\");",
 			removeeval : "RemoveResistance(\"All (Mantle of Flame)\");"

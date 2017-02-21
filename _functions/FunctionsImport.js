@@ -579,6 +579,9 @@ function DirectImport(consoleTrigger) {
 		};
 		ImportField("All ST Bonus", {notTooltip: true});
 		
+		//now recalculate all the weapons, forcing them to re-do all attributes
+		forceReCalcWeapons = true; ReCalcWeapons();
+		
 		//set the ability save DC
 		ImportField("Spell DC 1 Mod", {notTooltip: true}); ImportField("Spell DC 1 Bonus", {notTooltip: true});
 		ImportField("Spell DC 2 Bonus", {notTooltip: true});
