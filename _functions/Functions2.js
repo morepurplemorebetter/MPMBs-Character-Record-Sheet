@@ -4602,9 +4602,9 @@ function UpdateDropdown(type, weapon) {
 		SetFeatsdropdown();
 		SetCompDropdown();
 		SetWildshapeDropdown();
+		SetArmordropdown();
 		if (notAll) break;
 		SetAmmosdropdown();
-		SetArmordropdown();
 	 case "attack" :
 	 case "attacks" :
 	 case "weapon" :

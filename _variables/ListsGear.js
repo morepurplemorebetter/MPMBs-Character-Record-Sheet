@@ -6,7 +6,22 @@ var ArmourList = {
 		type : "",
 		ac : 10,
 		stealthdis : false,
-		strReq : 0
+		strReq : 0,
+		addMod : true
+	},
+
+	// UA Stone Sorcerer armour
+	"stone's durability" : {
+		regExpSearch : /^(?=.*stone)(?=.*durability).*$/i,
+		name : "Stone's Durability (Con)",
+		source : ["UA:SO", 4],
+		type : "",
+		ac : 13,
+		stealthdis : false,
+		weight : 0,
+		strReq : 0,
+		dex : -10,
+		addMod : true
 	},
 
 	"draconic resilience" : {
@@ -41,46 +56,50 @@ var ArmourList = {
 
 	"padded" : {
 		regExpSearch : /^(?!.*(plate|hide))(?=.*(padding|padded)).*$/i,
-		name : "Padded armor",
+		name : "Padded",
 		source : ["P", 145],
 		type : "light",
 		ac : 11,
 		stealthdis : true,
 		weight : 8,
-		strReq : 0
+		strReq : 0,
+		invName : "Padded armor"
 	},
 
 	"leather" : {
 		regExpSearch : /^(?!.*(padding|padded|studded|studs))(?=.*leather).*$/i,
-		name : "Leather armor",
+		name : "Leather",
 		source : ["P", 145],
 		type : "light",
 		ac : 11,
 		stealthdis : false,
 		weight : 10,
-		strReq : 0
+		strReq : 0,
+		invName : "Leather armor"
 	},
 
 	"studded leather" : {
 		regExpSearch : /^(?=.*(studded|studs))(?=.*leather).*$/i,
-		name : "Studded leather armor",
+		name : "Studded Leather",
 		source : ["P", 145],
 		type : "light",
 		ac : 12,
 		stealthdis : false,
 		weight : 13,
-		strReq : 0
+		strReq : 0,
+		invName : "Studded leather armor"
 	},
 
 	"hide" : {
 		regExpSearch : /^(?!.*(dragon|draconic))(?=.*(hide|skin)).*$/i,
-		name : "Hide armor",
+		name : "Hide",
 		source : ["P", 145],
 		type : "medium",
 		ac : 12,
 		stealthdis : false,
 		weight : 12,
-		strReq : 0
+		strReq : 0,
+		invName : "Hide armor"
 	},
 
 	"chain shirt" : {
@@ -91,7 +110,7 @@ var ArmourList = {
 		ac : 13,
 		stealthdis : false,
 		weight : 20,
-		strReq : 0,
+		strReq : 0
 	},
 
 	"scale mail" : {
@@ -102,7 +121,7 @@ var ArmourList = {
 		ac : 14,
 		stealthdis : true,
 		weight : 45,
-		strReq : 0,
+		strReq : 0
 	},
 
 	"breastplate" : {
@@ -113,7 +132,7 @@ var ArmourList = {
 		ac : 14,
 		stealthdis : false,
 		weight : 20,
-		strReq : 0,
+		strReq : 0
 	},
 
 	"half plate" : {
@@ -124,7 +143,7 @@ var ArmourList = {
 		ac : 15,
 		stealthdis : true,
 		weight : 40,
-		strReq : 0,
+		strReq : 0
 	},
 
 	"ring mail" : {
@@ -135,7 +154,7 @@ var ArmourList = {
 		ac : 14,
 		stealthdis : true,
 		weight : 40,
-		strReq : 0,
+		strReq : 0
 	},
 
 	"chain mail" : {
@@ -146,31 +165,34 @@ var ArmourList = {
 		ac : 16,
 		stealthdis : true,
 		weight : 55,
-		strReq : 13,
+		strReq : 13
 	},
 
 	"splint" : {
 		regExpSearch : /splint/i,
-		name : "Splint armor",
+		name : "Splint",
 		source : ["P", 145],
 		type : "heavy",
 		ac : 17,
 		stealthdis : true,
 		weight : 60,
-		strReq : 15
+		strReq : 15,
+		invName : "Splint armor"
 	},
 
 	"plate" : {
 		regExpSearch : /^(?!.*(half|breast))(?=.*plate).*$/i,
-		name : "Plate armor",
+		name : "Plate",
 		source : ["P", 145],
 		type : "heavy",
 		ac : 18,
 		stealthdis : true,
 		weight : 65,
-		strReq : 15
+		strReq : 15,
+		invName : "Plate armor"
 	},
-
+	
+	// SCAG battlerager armour
 	"spiked armor" : {
 		regExpSearch : /^(?!.*(dragon|draconic|beast))(?=.*spike(d|s)).*$/i,
 		name : "Spiked armor",

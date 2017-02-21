@@ -764,6 +764,14 @@ function resourceSelectionDialog(type) {
 			}
 		};
 		break;
+	 case "weapon" :
+		var theName = "Attacks";
+		var CSatt = "weapExcl";
+		break;
+	 case "armor" :
+		var theName = "Armors";
+		var CSatt = "armorExcl";
+		break;
 	};
 	
 	exclObj = CleanObject(exclObj); inclObj = CleanObject(inclObj);

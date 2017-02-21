@@ -1811,8 +1811,8 @@ var ClassSubList = {
 				description : "\n   " + "I gain proficiency with spiked armor as a weapon" + "\n   " + "As a bonus action while raging, I can attack once with my armor spikes",
 				action : ["bonus action", " attack (in rage)"],
 				weapons : [false, false, ["armor spikes"]],
-				eval : "var theArmor = What(\"AC Armor Description\"); SetArmordropdown(true); Value(\"AC Armor Description\", theArmor); AddString(\"Proficiency Armor Other Description\", \"Spiked Armor\", \", \"); AddWeapon(\"Armor Spikes\");",
-				removeeval : "var theArmor = What(\"AC Armor Description\"); SetArmordropdown(false); Value(\"AC Armor Description\", theArmor); RemoveWeapon(\"Armor Spikes\"); RemoveString(\"Proficiency Armor Other Description\", \"Spiked Armor\");"
+				eval : "AddString(\"Proficiency Armor Other Description\", \"Spiked Armor\", \", \"); AddWeapon(\"Armor Spikes\");",
+				removeeval : "RemoveWeapon(\"Armor Spikes\"); RemoveString(\"Proficiency Armor Other Description\", \"Spiked Armor\");"
 			},
 			"subclassfeature6" : {
 				name : "Reckless Abandon",

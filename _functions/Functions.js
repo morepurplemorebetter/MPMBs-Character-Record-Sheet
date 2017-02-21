@@ -2023,32 +2023,48 @@ function ToggleAdventureLeague(Toggle, skipLogSheet) {
 	if (IsNotReset) tDoc.calculateNow();
 };
 
+//search the string for possible armour
+function ParseArmor(input) {
+	if (!input) return "";
+	var outputL = 0;
+	var output = "";
+	
+	//scan string for all weapons, including the alternative spellings using regular expression
+	for (var key in ArmourList) {
+		if (ArmourList[key].regExpSearch) {
+			if (testSource(key, ArmourList[key], "armorExcl")) continue; // test if the armour or its source isn't excluded
+			var wSearch = ArmourList[key].regExpSearch; //use the defined regular expression of the weapon
+			if (input.search(wSearch) !== -1 && outputL < key.length) {
+				outputL = key.length;
+				output = key;
+			}
+		}
+	}
+	
+	return output;
+};
+
 //Find if the armor is a known armor
 function FindArmor(input) {
 	if (input === undefined) {
 		CurrentArmour.field = What("AC Armor Description").toLowerCase();
-	}
+	};
 	var tempString = CurrentArmour.field;
 	var temp = "";
 	var tempFound = false;
-	CurrentArmour.known = "";
-	CurrentArmour.mod = "";
-	delete CurrentArmour.dex;
-
-	for (var key in ArmourList) { //scan string for all armors, including the alternative spellings
-		var aSearch = ArmourList[key].regExpSearch; //use the defined regular expression of the race
-		if (!tempFound && tempString.search(aSearch) !== -1) {
-			CurrentArmour.known = key;
-			if (ArmourList[key].dex !== undefined) CurrentArmour.dex = ArmourList[key].dex;
-			tempFound = true;
-		}
+	CurrentArmour.known = ParseArmor(tempString);
+	
+	CurrentArmour.dex = "";
+	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].dex !== undefined && !isNaN(ArmourList[CurrentArmour.known].dex)) {
+		CurrentArmour.dex = ArmourList[CurrentArmour.known].dex;
 	}
 
 	//add magical bonus, denoted by a "+"
 	var magicBonus = parseFloat(tempString.match(/(^|\s)[\+|-]\d+/i));
 	CurrentArmour.magic = !isNaN(magicBonus) ? Number(magicBonus) : 0;
-
-	if (tempFound && CurrentArmour.known === "unarmored") {
+	
+	CurrentArmour.mod = "";
+	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].addMod) {
 		for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
 			temp = AbilityScores.abbreviations[i];
 			if (tempString.indexOf(temp.toLowerCase()) !== -1) {
@@ -2079,7 +2095,6 @@ function ApplyArmor(input) {
 	FindArmor(input);
 
 	tDoc.getField(ArmorFields[0]).setAction("Calculate", "var placeholder = \"just to keep the calculation from being done too late\";");
-	tDoc.getField(ArmorFields[5]).submitName = "";
 
 	if (CurrentArmour.known !== undefined && ArmourList[CurrentArmour.known] !== undefined) {
 		thermoM("Applying the recognized armor..."); //change the progress dialog text
@@ -2090,7 +2105,7 @@ function ApplyArmor(input) {
 		Checkbox(ArmorFields[2], ArmourList[CurrentArmour.known].type === "heavy");
 		thermoM(1/3); //increment the progress dialog's progress
 		
-		if (CurrentArmour.known === "unarmored" && CurrentArmour.mod) {
+		if (CurrentArmour.mod) {
 			var theCalc = "event.value = " + ArmourList[CurrentArmour.known].ac + " + Number(What(\"" + CurrentArmour.mod + "\")) + " + CurrentArmour.magic;
 			tDoc.getField(ArmorFields[0]).setAction("Calculate", theCalc);
 		} else {
@@ -2104,11 +2119,6 @@ function ApplyArmor(input) {
 			Value(ArmorFields[4], RoundTo(ArmourList[CurrentArmour.known].weight * massMod, 0.001, true));
 		} else {
 			Value(ArmorFields[4], 0);
-		}
-		
-		//set the max dex mod of the armour
-		if (CurrentArmour.dex !== undefined) {
-			tDoc.getField(ArmorFields[5]).submitName = CurrentArmour.dex;
 		}
 		
 		thermoM("stop"); //stop the top progress dialog
@@ -2127,8 +2137,8 @@ function calcMaxDexToAC() {
 	var dexMod = What("Dex Mod");
 	if (dexMod === "") {
 		
-	} else if (event.target.submitName !== "") {
-		dexMod = Math.min(dexMod, event.target.submitName);
+	} else if (CurrentArmour.dex !== "") {
+		dexMod = CurrentArmour.dex == -10 ? 0 : Math.min(dexMod, CurrentArmour.dex);
 	} else if (tDoc.getField("Heavy Armor").isBoxChecked(0)) {
 		dexMod = 0;
 	} else if (tDoc.getField("Medium Armor").isBoxChecked(0)) {
@@ -3432,13 +3442,14 @@ function ParseWeapon(input) {
 	//scan string for all weapons, including the alternative spellings using regular expression
 	for (var key in WeaponsList) {
 		if (WeaponsList[key].regExpSearch) {
+			if (testSource(key, WeaponsList[key], "weapExcl")) continue; // test if the weapon or its source isn't excluded
 			var wSearch = WeaponsList[key].regExpSearch; //use the defined regular expression of the weapon
 			if (inputS.search(wSearch) !== -1 && outputL < WeaponsList[key].name.length) {
 				outputL = WeaponsList[key].name.length;
 				output = key;
 			}
 		}
-	}
+	};
 	
 	return output;
 }
@@ -3552,7 +3563,7 @@ function SetWeaponsdropdown() {
 	tDoc.delay = !IsNotReset;
 };
 
-function SetArmordropdown(spikedArmor) {
+function SetArmordropdown() {
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	var string = toUni("Armor AC") + "\nType the name of the armor (or select it from the drop-down menu) and its AC and features will be filled out automatically, provided that its a recognized armor.";
@@ -3565,15 +3576,17 @@ function SetArmordropdown(spikedArmor) {
 		"Unarmored",
 		"Unarmored Defense (Con)",
 		"Unarmored Defense (Wis)"
-	]
-	
-	var checkSpikes = !spikedArmor ? "spiked armor" : "";
+	];
 	
 	for (var key in ArmourList) {
-		if (key !== "unarmored" && key !== checkSpikes) {
-			TheList.push(key.capitalize());
-		}
-	}
+		if (key === "unarmored" || testSource(key, ArmourList[key], "armorExcl")) continue; // test if the armour or its source isn't excluded
+		TheList.push(ArmourList[key].name.capitalize());
+	};
+	if (TheList.indexOf("Plate") !== TheList.length - 1) TheList.splice(TheList.indexOf("Plate") + 1, 0, "")
+	
+	if (tDoc.getField("AC Armor Description").submitName === TheList.toSource()) return; //no changes, so no reason to do this
+	tDoc.getField("AC Armor Description").submitName = TheList.toSource();
+
 	var theFldVal = What("AC Armor Description");
 	tDoc.getField("AC Armor Description").setItems(TheList);
 	Value("AC Armor Description", theFldVal, string);
@@ -4165,7 +4178,8 @@ function AddInvArmorShield() {
 	var tempMagicSign = CurrentArmour.magic > 0 ? " \+" : CurrentArmour.magic < 0 ? " " : "";
 	var tempArmorString = CurrentArmour.magic ? tempMagicSign + CurrentArmour.magic : "";
 	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].weight) {
-		AddInvR(ArmourList[CurrentArmour.known].name + tempArmorString, "", What("AC Armor Weight"));
+		var armName = ArmourList[CurrentArmour.known].invName ? ArmourList[CurrentArmour.known].invName : ArmourList[CurrentArmour.known].name;
+		AddInvR(armName + tempArmorString, "", What("AC Armor Weight"));
 	}
 	var temp = What("AC Shield Bonus Description");
 	if (temp !== "") {
@@ -4179,7 +4193,8 @@ function AddInvNewArmorShield() {
 	var tempMagicSign = CurrentArmour.magic >= 0 ? " +" : " ";
 	var tempArmorString = CurrentArmour.magic ? tempMagicSign + CurrentArmour.magic : "";
 	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].weight) {
-		var tempArmor = ArmourList[CurrentArmour.known].name + tempArmorString;
+		var armName = ArmourList[CurrentArmour.known].invName ? ArmourList[CurrentArmour.known].invName : ArmourList[CurrentArmour.known].name;
+		var tempArmor = armName + tempArmorString;
 		var tempArmorRegEx = tempArmor.RegEscape();
 		var isFound = false;
 		for (var E = 1; E <= FieldNumbers.gear; E++) {
@@ -4507,7 +4522,7 @@ function RemoveString(field, toremove, newline) {
 			i = stringsArray.length;
 		}
 	}
-}
+};
 
 function ReplaceString(field, inputstring, newline, theoldstring, alreadyRegExp) {
 	var thefield = tDoc.getField(field);
@@ -4522,7 +4537,7 @@ function ReplaceString(field, inputstring, newline, theoldstring, alreadyRegExp)
 	} else {
 		AddString(field, inputstring, multilines);
 	}
-}
+};
 
 function SpliceString(field, inputstring, newline, theoldstring) {
 	var thefield = tDoc.getField(field);
@@ -4540,8 +4555,9 @@ function SpliceString(field, inputstring, newline, theoldstring) {
 	} else {
 		AddString(field, inputstring, multilines);
 	}
-}
+};
 
+// add (change === true) or remove (change === false) a skill proficiency with or without expertise; If expertise === "only" and change === undefined, only add the expertise if the skill already has proficiency
 function AddSkillProf(SkillName, change, expertise) {
 	var QI = event.target.name.indexOf("Comp.") === -1;
 	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
@@ -4557,18 +4573,18 @@ function AddSkillProf(SkillName, change, expertise) {
 	if ((QI || typePF) && !alphaB) tempString = SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(tempString)];
 	if (QI) {
 		change = change !== undefined ? change : true;
-		Checkbox(tempString + " Prof", change);
-		if (expertise === true) {
+		if (expertise !== "only") Checkbox(tempString + " Prof", change);
+		if (expertise === "only" ? tDoc.getField(tempString + " Prof").isBoxChecked(0) : expertise) {
 			Checkbox(tempString + " Exp", change);
 		}
 	} else if (typePF) {
 		change = change !== undefined ? change : true;
-		Checkbox(prefix + ".Comp.Use.Skills." + tempString + ".Prof", change);
-		if (expertise === true) {
+		if (expertise !== "only") Checkbox(prefix + ".Comp.Use.Skills." + tempString + ".Prof", change);
+		if (expertise === "only" ? tDoc.getField(prefix + ".Comp.Use.Skills." + tempString + ".Prof").isBoxChecked(0) : expertise) {
 			Checkbox(prefix + ".Comp.Use.Skills." + tempString + ".Exp", change);
 		}
 	} else {
-		change = change === false ? "nothing" : expertise ? "expertise" : "proficient";
+		change = change === false ? "nothing" : expertise && (change || expertise !== "only") ? "expertise" : "proficient";
 		Value(prefix + "Text.Comp.Use.Skills." + tempString + ".Prof", change);
 	}
 };

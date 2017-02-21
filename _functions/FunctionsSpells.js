@@ -725,6 +725,9 @@ function CreateSpellList(inputObject, display, extraArray, returnOrdered) {
 		if (addSp && inputObject.spells) {
 			addSp = inputObject.spells.indexOf(key) !== -1;
 		}
+		if (addSp && inputObject.notspells) {
+			addSp = inputObject.notspells.indexOf(key) === -1;
+		}
 		if (addSp && inputObject.class) {
 			if (isArray(inputObject.class)) {
 				var testClass = false;
@@ -784,7 +787,7 @@ function CreateSpellList(inputObject, display, extraArray, returnOrdered) {
 	}
 	
 	return returnArray;
-}
+};
 
 //generate a number of zero-width characterSet
 function GetZeroWidths(number) {
