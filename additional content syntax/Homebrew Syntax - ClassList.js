@@ -11,7 +11,7 @@
 	Subject:	Class
 	Effect:		This is the syntax for adding a new class to the sheet
 				Note that you will need the syntax for adding a subclass as well if you want the class to have any choices for subclasses
-	Sheet:		v12.83 (2017-02-18)
+	Sheet:		v12.84 (2017-02-21)
 */
 
 ClassList["myclass"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
@@ -105,6 +105,8 @@ ClassList["myclass"] = { //Object name; Note the use of only lower case! Also no
 		ritual : false, //Optional; Denotes if only ritual (true) or only non-ritual (false) spells should be included in the list
 		
 		spells : ["light", "mending"], //Optional; If a "spells" array is present, all other objects will be ignored and only this list of spells will populate the list of available spells. each entry has to match the name of the spell in the SpellsList
+		
+		notspells : ["antipathy/sympathy", "tsunami"], //Optional; Any spells listed in this array will be excluded from the list
 	},
 	
 	spellcastingExtra : ["detect magic", "magic missile", "magic weapon", "nystul's magic aura", "dispel magic", "magic circle", "arcane eye", "leomund's secret chest", "planar binding", "teleportation circle"], //Optional; An array of spells that are added to the spell list from which the class can choose. If the class prepares spells, than this list of spells are always considered prepared. Each entry has to match the name of the entry of the spell in the SpellsList exactly
@@ -197,6 +199,8 @@ ClassList["myclass"] = { //Object name; Note the use of only lower case! Also no
 				school : ["Necro"], //optional; see "spellcastingList" object
 				
 				spells : ["light"], //optional; see "spellcastingList" object
+				
+				notspells : ["mending"], //optional; see "spellcastingList" object
 				
 				selection : ["light"], //optional if "spells" is defined; this is the default selection for the array specified in "spells"
 				
