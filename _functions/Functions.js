@@ -4634,7 +4634,9 @@ function RemoveRace() {
 		if (CurrentRace.removeeval) {
 			var theRemoveeval = What("Unit System") === "metric" && CurrentRace.removeeval.indexOf("String") !== -1 ? ConvertToMetric(CurrentRace.removeeval, 0.5) : CurrentRace.removeeval;
 			eval(theRemoveeval);
-		}
+		};
+		CurrentRace.level = 0;
+		UpdateLevelFeatures("race");
 		return;
 	} else if (CurrentRace.known) {
 		//remove necessary race information such as height, weight, age, traits, languages
@@ -4723,6 +4725,7 @@ function RemoveRace() {
 		delete CurrentSpells[CurrentRace.known];
 
 		CurrentRace.level = 0;
+		UpdateLevelFeatures("race");
 		ApplyProficiencies(true); //call to update the armor, shield and weapon proficiencies
 		UpdateTooltips(); //skills tooltip, ability score tooltip
 	};
@@ -5555,7 +5558,7 @@ function CalcEncumbrance() {
 function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice) {
 	var FeaKey = ForceOld ? ClassList[theClass].features[theFeature] : CurrentClasses[theClass].features[theFeature];
 	if (!FeaKey) return "";
-	var FeaClass = ForceOld !== true && theFeature.indexOf("subclassfeature") !== -1 && CurrentClasses[theClass].subname ? CurrentClasses[theClass].subname : CurrentClasses[theClass].name;
+	var FeaClass = !ForceOld && theFeature.indexOf("subclassfeature") !== -1 && CurrentClasses[theClass].subname ? CurrentClasses[theClass].subname : CurrentClasses[theClass].name;
 	var FeaName = SubChoice ? FeaKey[SubChoice].name : FeaKey.name;
 	var theReturn = ""
 	if (FeaName) {
@@ -5822,7 +5825,7 @@ function UpdateLevelFeatures(Typeswitch) {
 					var CheckFea = ForceAll || CheckLVL;
 					
 					// get all the attributes of this feature
-					var Fea = ReturnClassFeatures(aClass, prop, newClassLvl[aClass], FeaChoice, oldClassLvl[aClass], FeaOldChoice, ForceAll);
+					var Fea = ReturnClassFeatures(aClass, prop, newClassLvl[aClass], FeaChoice, oldClassLvl[aClass], FeaOldChoice);
 
 					// --- add or remove something via custom script, if defined
 					var evalAddRemove = CheckFea && propFea.minlevel <= newClassLvl[aClass] ? "eval" : "removeeval";
@@ -5837,7 +5840,7 @@ function UpdateLevelFeatures(Typeswitch) {
 					
 					//if the eval changed the choice, do some things with this new choice
 					if (FeaChoice !== FeaOldChoice) {
-						Fea = ReturnClassFeatures(aClass, prop, newClassLvl[aClass], FeaChoice, oldClassLvl[aClass], FeaOldChoice, ForceAll);
+						Fea = ReturnClassFeatures(aClass, prop, newClassLvl[aClass], FeaChoice, oldClassLvl[aClass], FeaOldChoice);
 						if (propFea[FeaChoice].skillstxt) classes.extraskills.push(propFea[FeaChoice].skillstxt);
 					}
 					
@@ -9163,7 +9166,7 @@ function MakeRaceMenu() {
 	Menus.raceoptions = RaceMenu;
 }
 
-//call the Class Features menu and do something with the results
+//call the Race Features menu and do something with the results
 function RaceFeatureOptions() {
 	tDoc.delay = true;
 	tDoc.calculate = false;

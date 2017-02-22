@@ -5323,7 +5323,12 @@ function ReturnClassFeatures(aClass, feature, level, choice, oldlevel, oldchoice
 	level = Math.min(level, 20);
 	oldlevel = Math.min(oldlevel, 20);
 	var tRe = {};
-	var aFea = ForceClassList && !oldchoice ? ClassList[aClass].features[feature] : CurrentClasses[aClass].features[feature];
+	var aFea = ForceClassList && !oldchoice && ClassList[aClass].features[feature] && ClassList[aClass].features[feature].name ? ClassList[aClass].features[feature] : CurrentClasses[aClass].features[feature];
+	
+	if (!aFea) {
+		console.println("Class Feature '" + feature + "' could not be found in the ReturnClassFeatures function.");
+		console.show();
+	};
 	
 	tRe.Add = choice && aFea[choice].additional ? aFea[choice].additional : (aFea.additional && !ForceChoice ? aFea.additional : "");
 	tRe.AddOld = oldchoice && aFea[oldchoice].additional ? aFea[oldchoice].additional : (aFea.additional && !ForceChoice ? aFea.additional : "");
