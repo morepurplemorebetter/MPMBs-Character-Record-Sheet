@@ -4500,7 +4500,10 @@ var ClassSubList = {
 				source : ["P", 115],
 				minlevel : 2,
 				description : "\n   " + "Whenever I cast an 1st-level or higher abjuration spell, I make/heal a ward" + "\n   " + "I make it at max HP; When I cast again, it heals two HP per spell level" + "\n   " + "It stays active at 0 HP and doesn't go away until my next long rest" + "\n   " + "If I take damage, the ward takes the damage instead, but excess damage carries over",
-				additional : ["", "Ward max HP = 4 + Int mod", "Ward max HP = 6 + Int mod", "Ward max HP = 8 + Int mod", "Ward max HP = 10 + Int mod", "Ward max HP = 12 + Int mod", "Ward max HP = 14 + Int mod", "Ward max HP = 16 + Int mod", "Ward max HP = 18 + Int mod", "Ward max HP = 20 + Int mod", "Ward max HP = 22 + Int mod", "Ward max HP = 24 + Int mod", "Ward max HP = 26 + Int mod", "Ward max HP = 28 + Int mod", "Ward max HP = 30 + Int mod", "Ward max HP = 32 + Int mod", "Ward max HP = 34 + Int mod", "Ward max HP = 36 + Int mod", "Ward max HP = 38 + Int mod", "Ward max HP = 40 + Int mod"],
+				additional : levels.map( function(n) {
+					if (n < 2) return "";
+					return "Ward max HP: " + (n * 2) + "+Int mod";
+				}),
 				usages : 1,
 				recovery : "long rest"
 			},
