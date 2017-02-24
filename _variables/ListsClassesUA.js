@@ -2478,8 +2478,7 @@ ClassSubList["sorcerer-favoured soul"] = {
 	fullname : "Favored Soul",
 	spellcastingList : {
 		class : ["cleric", "sorcerer"],
-		level : [0, 9],
-		notspells : []
+		level : [0, 9]
 	},
 	features : {
 		"subclassfeature1" : {
@@ -2810,12 +2809,6 @@ function UAstartupCode() {
 			};
 		};
 	};
-	
-	//Sorcerer (Favoured Soul): exclude all cleric cantrips from being seletable
-	for (var cSpells in SpellsList) {
-		if (SpellsList[cSpells].level === 0 && SpellsList[cSpells].classes.indexOf("cleric") !== -1)
-			ClassSubList["sorcerer-favoured soul"].spellcastingList.notspells.push(cSpells);
-	}
 	
 	//Warlock (the Seeker): add the "Pact Boon" feature from the Warlock class, with one addition, to the subclass
 	var PBfeat = ClassList.warlock.features["pact boon"].toSource();

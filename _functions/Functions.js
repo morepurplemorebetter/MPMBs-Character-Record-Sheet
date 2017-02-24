@@ -710,7 +710,7 @@ function AddInvL(item, amount, weight, location) {
 	var RegExItem = ("\\b" + item.RegEscape() + "\\b").replace("s\\b", "s?\\b");
 	var tempFound = false;
 	var totalslots = FieldNumbers.gear - (What("Adventuring Gear Remember") === true ? 0 : 4);
-	var endSearch = event.target.name === "Equipment.menu" ? FieldNumbers.gear : Math.round(FieldNumbers.gear / (!typePF ? 2 : 3));
+	var endSearch = event.target && event.target.name === "Equipment.menu" ? FieldNumbers.gear : Math.round(FieldNumbers.gear / (!typePF ? 2 : 3));
 	for (var i = 1; i <= endSearch; i++) {
 		if (What("Adventuring Gear Remember") === false && i === FieldNumbers.gearMIrow) { continue; }
 		var Name = tDoc.getField("Adventuring Gear Row " + i);
@@ -758,8 +758,8 @@ function AddInvM(item, amount, weight, location) {
 	var tempFound = false;
 	var totalslots = FieldNumbers.gear - (What("Adventuring Gear Remember") === true ? 0 : 4);
 	var mColumn = Math.round(FieldNumbers.gear / 3 + 1);
-	var startSearch = event.target.name === "Equipment.menu" ? 1 : mColumn;
-	var endSearch = event.target.name === "Equipment.menu" ? FieldNumbers.gear : Math.round(FieldNumbers.gear / 1.5);
+	var startSearch = event.target && event.target.name === "Equipment.menu" ? 1 : mColumn;
+	var endSearch = event.target && event.target.name === "Equipment.menu" ? FieldNumbers.gear : Math.round(FieldNumbers.gear / 1.5);
 	for (var i = startSearch; i <= endSearch; i++) {
 		if (What("Adventuring Gear Remember") === false && i === FieldNumbers.gearMIrow) { continue; }
 		var Name = tDoc.getField("Adventuring Gear Row " + i);
@@ -806,7 +806,7 @@ function AddInvR(item, amount, weight, location) {
 	var tempFound = false;
 	var totalslots = FieldNumbers.gear - (What("Adventuring Gear Remember") === true ? 0 : 4);
 	var rColumn = Math.round(FieldNumbers.gear / (typePF ? 1.5 : 2) + 1);
-	var startSearch = event.target.name === "Equipment.menu" ? 1 : rColumn;
+	var startSearch = event.target && event.target.name === "Equipment.menu" ? 1 : rColumn;
 	for (var i = startSearch; i <= totalslots; i++) {
 		if (What("Adventuring Gear Remember") === false && i === FieldNumbers.gearMIrow) { continue; }
 		var Name = tDoc.getField("Adventuring Gear Row " + i);
@@ -870,7 +870,7 @@ function AddInvLExtra(inputitem, amount, weight, location) {
 	location = location === undefined ? "" : location;
 	var RegExItem = ("\\b" + item.RegEscape() + "\\b").replace("s\\b", "s?\\b");
 	var tempFound = false;
-	var endSearch = event.target.name === "Equipment.menu" ? FieldNumbers.extragear : Math.round(FieldNumbers.extragear / 2);
+	var endSearch = event.target && event.target.name === "Equipment.menu" ? FieldNumbers.extragear : Math.round(FieldNumbers.extragear / 2);
 	for (var i = 1; i <= endSearch; i++) {
 		var Name = tDoc.getField("Extra.Gear Row " + i);
 		var Nmbr = tDoc.getField("Extra.Gear Amount " + i);
@@ -914,7 +914,7 @@ function AddInvRExtra(inputitem, amount, weight, location) {
 	var RegExItem = ("\\b" + item.RegEscape() + "\\b").replace("s\\b", "s?\\b");
 	var tempFound = false;
 	var rColumn = Math.round(FieldNumbers.extragear / 2 + 1);
-	var startSearch = event.target.name === "Equipment.menu" ? 1 : rColumn;
+	var startSearch = event.target && event.target.name === "Equipment.menu" ? 1 : rColumn;
 	for (var i = startSearch; i <= FieldNumbers.extragear; i++) {
 		var Name = tDoc.getField("Extra.Gear Row " + i);
 		var Nmbr = tDoc.getField("Extra.Gear Amount " + i);
@@ -4425,7 +4425,7 @@ function RemoveTool(tool, toolstooltip) {
 };
 
 function AddWeapon(weapon, partialReplace) {
-	var QI = event.target.name.indexOf("Comp") === -1;
+	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
 	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
 	var maxItems = QI ? FieldNumbers.attacks : 3;
@@ -4447,7 +4447,8 @@ function AddWeapon(weapon, partialReplace) {
 };
 
 function RemoveWeapon(weapon) {
-	var QI = event.target.name.indexOf("Comp.") === -1;
+	if (!IsNotImport) return;
+	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
 	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
 	var maxItems = QI ? FieldNumbers.attacks : 3;
@@ -4559,7 +4560,7 @@ function SpliceString(field, inputstring, newline, theoldstring) {
 
 // add (change === true) or remove (change === false) a skill proficiency with or without expertise; If expertise === "only" and change === undefined, only add the expertise if the skill already has proficiency
 function AddSkillProf(SkillName, change, expertise) {
-	var QI = event.target.name.indexOf("Comp.") === -1;
+	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
 	var tempString = SkillName;
 	if (SkillName.length > 4) {
@@ -5425,7 +5426,7 @@ function ResetFeaDawn() {
 function HealItNow() {
 	tDoc.delay = true;
 	tDoc.calculate = false;
-	var QI = event.target.name.indexOf("Comp.") === -1;
+	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
 	
 	var fields = [
@@ -8240,10 +8241,9 @@ function ApplyAmmo(inputtxt, Fld) {
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	
-	var LeftRight = event.target.name.substring(0, 8) === "AmmoLeft" ? "AmmoLeft" : event.target.name.substring(0, 9) === "AmmoRight" ? "AmmoRight" : "Ammo" + Fld;
+	var LeftRight = !event.target || !event.target.name || event.target.name.substring(0, 8) === "AmmoLeft" ? "AmmoLeft" : event.target.name.substring(0, 9) === "AmmoRight" ? "AmmoRight" : "Ammo" + Fld;
 	var theAmmo = ParseAmmo(inputtxt);
 	
-
 	if (theAmmo) {
 		var aList = AmmoList[theAmmo];
 		Hide(LeftRight);
@@ -10062,7 +10062,7 @@ function WeaponOptions() {
 			break;
 		}
 		
-		//re-popuplate the CurrentWeapons variable for the thing that just changed
+		//re-populate the CurrentWeapons variable because of the thing that just changed
 		if (findWeaps && QI) {
 			FindWeapons();
 		} else if (findWeaps) {
@@ -10079,7 +10079,7 @@ function WeaponOptions() {
 
 //insert a weapon at the position wanted
 function WeaponInsert(itemNmbr) {
-	var QI = event.target.name.indexOf("Comp.") === -1;
+	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
 	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
 	var maxItems = QI ? FieldNumbers.attacks : 3;
@@ -10141,10 +10141,10 @@ function WeaponInsert(itemNmbr) {
 		if (!QI) AddTooltip(Fields[12], "Description and notes");
 		IsNotWeaponMenu = true;
 		
-		//re-popuplate the CurrentWeapons variable for the thing that just changed
-		if (findWeaps && QI) {
+		//re-populate the CurrentWeapons variable because of the thing that just changed
+		if (QI) {
 			FindWeapons();
-		} else if (findWeaps) {
+		} else {
 			FindCompWeapons(undefined, prefix);
 		}
 	}
@@ -10152,7 +10152,7 @@ function WeaponInsert(itemNmbr) {
 
 //delete a weapon at the position wanted and move the rest up
 function WeaponDelete(itemNmbr) {
-	var QI = event.target.name.indexOf("Comp.") === -1;
+	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
 	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
 	var maxItems = QI ? FieldNumbers.attacks : 3;
@@ -10210,10 +10210,10 @@ function WeaponDelete(itemNmbr) {
 	ApplyAttackColor(maxItems, "");
 	IsNotWeaponMenu = true;
 		
-	//re-popuplate the CurrentWeapons variable for the thing that just changed
-	if (findWeaps && QI) {
+	//re-populate the CurrentWeapons variable because of the thing that just changed
+	if (QI) {
 		FindWeapons();
-	} else if (findWeaps) {
+	} else {
 		FindCompWeapons(undefined, prefix);
 	}
 }
@@ -10412,7 +10412,7 @@ function SetSpellSlotsCheckboxes(SpellLVL, theSlots, onlyDisplay) {
 	
 	//now set the fields of the prefix type, or non-prefix type, depending on which one was just set
 	if (!onlyDisplay && tempNr > 1) {
-		var otherPrefix = event.target.name.indexOf("SpellSlots") !== 0 ? "" : What("Template.extras.SSfront").split(",")[1];
+		var otherPrefix = event.target && event.target.name.indexOf("SpellSlots") !== 0 ? "" : What("Template.extras.SSfront").split(",")[1];
 		ignoreSetSpellSlotsCheckboxes = true;
 		Value(otherPrefix + "SpellSlots.CheckboxesSet.lvl" + SpellLVL, theSlots);
 		ignoreSetSpellSlotsCheckboxes = false;
@@ -10860,11 +10860,7 @@ function RunUserScript() {
 //make the appropriate attack field a different color, depending on the menu entry
 function ApplyAttackColor(attackNmbr, aColour, type, prefix) {
 	if (typePF) return; //don't do this function in the Printer-Friendly version
-	if (type) {
-		var QI = type !== "Comp.";
-	} else {
-		var QI = event.target && event.target.name ? event.target.name.indexOf("Comp.") === -1 : true;
-	}
+	var QI = type ? type !== "Comp." : !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var prefixA = [""];
 	if (!QI && event.target && event.target.name && !prefix) {
 		prefixA = [event.target.name.substring(0, event.target.name.indexOf("Comp."))];

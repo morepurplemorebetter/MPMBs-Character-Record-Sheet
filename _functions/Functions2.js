@@ -618,128 +618,6 @@ function FindCompWeapons(ArrayNmbr, aPrefix) {
 	}
 };
 
-//apply the effect of a weapon
-function ApplyCompWeapons(inputweapontxt) {
-	tDoc.delay = true;
-	tDoc.calculate = false;
-	thermoM("start"); //start a progress dialog
-	thermoM("Applying weapon..."); //change the progress dialog text
-	var Fld = event.target.name.replace(/.*Attack\.(\d+?)\..+/, "$1");
-	
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("Comp."));
-	var ArrayNmbr = Fld - 1;
-	var WeaponFlds = [
-		prefix + "Comp.Use.Attack." + Fld + ".Weapon", //0
-		prefix + "Comp.Use.Attack." + Fld + ".To Hit", //1
-		prefix + "Comp.Use.Attack." + Fld + ".Damage", //2
-		prefix + "Comp.Use.Attack." + Fld + ".Weapon Selection", //3
-		prefix + "Comp.Use.Attack." + Fld + ".Proficiency", //4
-		prefix + "Comp.Use.Attack." + Fld + ".Mod", //5
-		prefix + "Comp.Use.Attack." + Fld + ".To Hit Calculated", //6
-		prefix + "Comp.Use.Attack." + Fld + ".Damage Calculated", //7
-		prefix + "Comp.Use.Attack." + Fld + ".Damage Type", //8
-		prefix + "BlueText.Comp.Use.Attack." + Fld + ".To Hit Bonus", //9
-		prefix + "BlueText.Comp.Use.Attack." + Fld + ".Damage Bonus", //10
-		prefix + "BlueText.Comp.Use.Attack." + Fld + ".Damage Die", //11
-		prefix + "Comp.Use.Attack." + Fld + ".Description", //12
-		prefix + "Comp.Use.Attack." + Fld + ".Range", //13
-		prefix + "BlueText.Comp.Use.Attack." + Fld + ".Weight", //14
-		prefix + "BlueText.Comp.Use.Attack." + Fld + ".Weight Title", //15
-	];
-	
-	if (IsNotWeaponMenu) {
-		Value(WeaponFlds[0], inputweapontxt); //set the weapon's name in the manual field as well
-	}
-	
-	//update the field value
-	CurrentWeapons.compField[prefix][ArrayNmbr] = inputweapontxt.toLowerCase();
-	
-	//if field is empty, reset all fields, otherwise continue
-	if (inputweapontxt === "") {
-		thermoM("Resetting the weapon's features..."); //change the progress dialog text
-		tDoc.resetForm(WeaponFlds.slice(1, 3));
-		thermoM(1/2); //increment the progress dialog's progress
-		tDoc.resetForm(WeaponFlds.slice(4));
-		AddTooltip(WeaponFlds[12], "Description and notes"); //set the description field tooltip
-		CurrentWeapons.compKnown[prefix][ArrayNmbr] = [];
-	} else {
-		thermoM("Applying weapon's features..."); //change the progress dialog text
-		//see if the previous weapon was known to the creature race
-		var theOldCreaAtk = parseCompWeapon(What(WeaponFlds[3]), prefix);
-		
-		//see if weapon entered is a known weapon
-		FindCompWeapons(ArrayNmbr, prefix);
-		
-		//if the old weapon was a racial one, and the new is a different one, reset the BlueText fields for bonusses to hit and damage
-		if (theOldCreaAtk && CurrentWeapons.compKnown[prefix][ArrayNmbr][0] !== "" && CurrentWeapons.compKnown[prefix][ArrayNmbr][0] !== theOldCreaAtk) {
-			tDoc.resetForm(WeaponFlds.slice(9, 11));
-		}
-		//check off proficiency (this is done for any weapon entered as there is no proficiency to check against)
-		if (IsNotWeaponMenu) {
-			Checkbox(WeaponFlds[4], true);
-			
-			Value(WeaponFlds[0], inputweapontxt); //set the weapon's name in the manual field as well
-		}
-		
-		//add weapon statistics //only do these things if not a simple moving of the information
-		if (IsNotWeaponMenu && CurrentWeapons.compKnown[prefix][ArrayNmbr][0] !== "") {
-			var WeaponName = CurrentWeapons.compKnown[prefix][ArrayNmbr][0];
-			var isWeapon = isNaN(parseFloat(WeaponName)); //check if the WeaponName is a string (on the weaponlist), or a number (an attack from the companion creature's race)
-			var WeaponL = isWeapon ? WeaponsList[WeaponName] : CurrentCompRace[prefix].attacks[WeaponName];
-		
-			//add description
-			var WeaponDescription = WeaponL.description;
-			Value(WeaponFlds[12], WeaponDescription, WeaponL.tooltip ? WeaponL.tooltip : "Description and notes");
-			
-			thermoM(1/7); //increment the progress dialog's progress
-			
-			//add dc, if applicable
-			if (WeaponL.dc) {
-				Value(WeaponFlds[9], "dc");
-			} else if (What(WeaponFlds[9]).toLowerCase() === "dc") {
-				Value(WeaponFlds[9], 0);
-			};
-			
-			thermoM(2/7); //increment the progress dialog's progress
-
-			//add damage type
-			AddDmgType(WeaponFlds[8], WeaponL.damage[2]);
-			
-			thermoM(3/7); //increment the progress dialog's progress
-
-			//add damage die
-			var weaponDmgDie = Number(WeaponL.damage[1]);
-			Value(WeaponFlds[11], weaponDmgDie === 0 ? WeaponL.damage[0] : WeaponL.damage[0] + "d" + weaponDmgDie);
-			
-			thermoM(4/7); //increment the progress dialog's progress
-
-			//add range
-			var theRange = What("Unit System") === "imperial" || WeaponL.range === "Melee" ? WeaponL.range : ConvertToMetric(WeaponL.range, 0.5);
-			Value(WeaponFlds[13], theRange);
-			
-			thermoM(5/7); //increment the progress dialog's progress
-
-			//add ability modifier, prefer Dex over Str for finesse and monk weapons if Dex is more
-			var WeaponAbility = WeaponL.ability;
-			if (WeaponDescription.toLowerCase().indexOf("finesse") !== -1 && What(prefix + "Comp.Use.Ability.Str.Score") <= What(prefix + "Comp.Use.Ability.Dex.Score")) {
-				WeaponAbility = 2;
-			}
-			PickDropdown(WeaponFlds[5], WeaponAbility);
-			
-			thermoM(6/7); //increment the progress dialog's progress
-			
-			if (WeaponL.modifiers) { //add to hit and damage modifiers, if defined
-				if (WeaponL.modifiers[0] && !WeaponL.dc) Value(WeaponFlds[9], WeaponL.modifiers[0])
-				if (WeaponL.modifiers[1]) Value(WeaponFlds[10], WeaponL.modifiers[1])
-			}
-		}
-	}
-	thermoM("stop"); //stop the top progress dialog
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
-};
-
 //add a wildshape based on the selection and calculation settings
 function ApplyWildshape() {
 	if (event.target && event.value.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
@@ -3282,7 +3160,7 @@ function CalcLogsheetPrevious(prefix) {
 	return prefix ? ALlogA[ALlogA.indexOf(prefix) - 1] : "false";
 }
 
-//calculate the total or starting value of an entry in the advanturers log sheet
+//calculate the total or starting value of an entry in the advanturers log sheet (field calculation)
 function CalcLogsheetValue() {
 	var fNm = event.target.name;
 	var StrTot = fNm.indexOf("start") !== -1 ? "start" : "total";
@@ -5739,11 +5617,11 @@ function addEvals(evalObj, NameEntity, Add) {
 	for (var i = 0; i < atkTypes.length; i++) {
 		var atkT = atkTypes[i];
 		if (!evalObj[atkT]) continue;
-		if (!atkStr) atkStr = nameHeader;
+		if (!atkStr && evalObj[atkT][1]) atkStr = nameHeader;
 		if (evalObj[atkT][1]) atkStr += "\n - " + evalObj[atkT][1];
 		if (Add) {
 			if (!CurrentEvals[atkT]) CurrentEvals[atkT] = "";
-			CurrentEvals[atkT] += evalObj[atkT][0];
+			if (!CurrentEvals[atkT].match(evalObj[atkT][0])) CurrentEvals[atkT] += evalObj[atkT][0];
 		} else if (CurrentEvals[atkT]) {
 			CurrentEvals[atkT] = CurrentEvals[atkT].replace(evalObj[atkT][0], "");
 		}
@@ -5751,7 +5629,7 @@ function addEvals(evalObj, NameEntity, Add) {
 	if (atkStr) {
 		if (Add) {
 			if (!CurrentEvals.atkStr) CurrentEvals.atkStr = "";
-			CurrentEvals.atkStr += atkStr;
+			if (!CurrentEvals.atkStr.match(atkStr)) CurrentEvals.atkStr += atkStr;
 		} else if (atkStr && CurrentEvals.atkStr) {
 			CurrentEvals.atkStr = CurrentEvals.atkStr.replace(atkStr, "");
 		}
@@ -5762,7 +5640,7 @@ function addEvals(evalObj, NameEntity, Add) {
 	if (evalObj.hp) {
 		if (Add) {
 			if (!CurrentEvals.hp) CurrentEvals.hp = "";
-			CurrentEvals.hp += evalObj.hp;
+			if (!CurrentEvals.hp.match(evalObj.hp)) CurrentEvals.hp += evalObj.hp;
 		} else if (CurrentEvals.hp) {
 			CurrentEvals.hp = CurrentEvals.hp.replace(evalObj.hp, "");
 		};
@@ -5983,16 +5861,16 @@ function CalcAttackDmgHit(fldName) {
 		Damage_Die : What(fldBaseBT + "Damage Die")
 	};
 	
-	if (fields.Mod.match(/^(| |empty)$/)) {
-		Value(fldBase + "Damage", "");
-		Value(fldBase + "To Hit", "");
-		return;
-	};
-	
 	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
 	var WeaponName = thisWeapon[0];
 	var theWea = WeaponsList[WeaponName];
 	var WeaponText = (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]) + fields.Description;
+	
+	if (!WeaponText || fields.Mod.match(/^(| |empty)$/)) {
+		Value(fldBase + "Damage", "");
+		Value(fldBase + "To Hit", "");
+		return;
+	};
 	
 	// get the damage bonuses from the selected modifier, magic, and the blueText field
 	var output = {
@@ -6086,7 +5964,7 @@ function CalcAttackDmgHit(fldName) {
 	var hitTot = (isDC ? "DC " : (hitNum >= 0 ? "+" : "")) + hitNum;
 	
 	Value(fldBase + "Damage", dmgTot == 0 ? "" : dmgTot);
-	if (event.target.name && event.target.name.match(/.*Attack.*To Hit/)) {
+	if (event.target && event.target.name && event.target.name.match(/.*Attack.*To Hit/)) {
 		event.value = hitTot;
 	} else {
 		Value(fldBase + "To Hit", hitTot);

@@ -3370,6 +3370,12 @@ var ClassSubList = {
 				source : ["P", 80],
 				minlevel : 3,
 				description : "\n   " + "I know the Minor Illusion cantrip and can cast certain spells by using ki (see page 3)",
+				spellcastingBonus : {
+					name : "Shadow Arts",
+					spells : ["minor illusion"],
+					selection : ["minor illusion"],
+					atwill : true
+				},
 				extraname : "Shadow Art",
 				eval : "ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"darkness\", \"extra\"]); ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"darkvision\", \"extra\"]); ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"pass without trace\", \"extra\"]); ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"silence\", \"extra\"]);",
 				removeeval : "ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"darkness\", \"extra\"], \"remove\"); ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"darkvision\", \"extra\"], \"remove\"); ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"pass without trace\", \"extra\"], \"remove\"); ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"silence\", \"extra\"], \"remove\");",
@@ -3382,7 +3388,7 @@ var ClassSubList = {
 						name : "Darkness",
 						spells : ["darkness"],
 						selection : ["darkness"],
-						firstCol : 2,
+						firstCol : 2
 					},
 					spellFirstColTitle : "Ki",
 				},
@@ -3395,7 +3401,7 @@ var ClassSubList = {
 						name : "Darkvision",
 						spells : ["darkvision"],
 						selection : ["darkvision"],
-						firstCol : 2,
+						firstCol : 2
 					},
 					spellFirstColTitle : "Ki",
 				},
@@ -3408,7 +3414,7 @@ var ClassSubList = {
 						name : "Pass Without Trace",
 						spells : ["pass without trace"],
 						selection : ["pass without trace"],
-						firstCol : 2,
+						firstCol : 2
 					},
 					spellFirstColTitle : "Ki",
 				},
@@ -3421,7 +3427,7 @@ var ClassSubList = {
 						name : "Silence",
 						spells : ["silence"],
 						selection : ["silence"],
-						firstCol : 2,
+						firstCol : 2
 					},
 					spellFirstColTitle : "Ki",
 				},

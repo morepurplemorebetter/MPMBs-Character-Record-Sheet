@@ -814,9 +814,9 @@ function CreateSpellObject(inputArray) {
 //a dialog for user input on spells
 var SpellSheetSelect_Dialog = {
 	
-	listBo : [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}], //array of lists
-	namesBo : [], //always 10 long!
-	keysBo : [], //always 10 long!
+	listBo : [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}], //array of lists
+	namesBo : [], //always 15 long!
+	keysBo : [], //always 15 long!
 	listCa : {},
 	listSp : {},
 	selectBo : [], //always 15 long!
@@ -2944,7 +2944,7 @@ function AskUserSpellSheet() {
 			}
 		}}
 		//fill the rest of the bonus items that are essential
-		for (var i = dia.nmbrBo; i <= 9; i++) {
+		for (var i = dia.nmbrBo; i <= 14; i++) {
 			dia.listBo.push(AllSpellsObject);
 			dia.namesBo.push("");
 			if (spCast.extraBo) dia.selectBo[i] = spCast.extraBo[i - dia.nmbrBo];
@@ -3889,7 +3889,6 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	
 	var menuLVL1 = function (menu, array) {
 		for (i = 0; i < array.length; i++) {
-			var isMarked = false;
 			var isEnabled = true;
 			var extraName = "";
 			switch (array[i][1]) {
@@ -3911,7 +3910,6 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			menu.push({
 				cName : array[i][0] + extraName,
 				cReturn : array[i][1],
-				bMarked : isMarked,
 				bEnabled : isEnabled,
 			});
 		}
@@ -3968,6 +3966,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		["to 'At Will'", "atwill"],
 		["to '1\u00D7 Long Rest'", "oncelr"],
 		["to '1\u00D7 Short Rest'", "oncesr"],
+		["Ask me", "askuserinput"]
 	];
 	
 	//now make the menu
@@ -4051,7 +4050,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			break;
 		 case "setcaptions" :
 			if (MenuSelection[1] === "askuserinput") {
-				MenuSelection[1] = AskUserTwoLetters();
+				MenuSelection[1] = AskUserTwoLetters(true);
 			}
 		 case "___" :
 		 case "setheader" :
@@ -4068,13 +4067,16 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			break;
 		 case "insert" :
 			if (MenuSelection[1] === "askuserinput") {
-				MenuSelection[1] = AskUserTwoLetters();
+				MenuSelection[1] = AskUserNumber();
 			}
 			if (MenuSelection[1] > 0) {
 				insertSpellRow(prefix, lineNmbr, MenuSelection[1]);
 			}
 			break;
 		 case "firstcolumn" :
+			if (MenuSelection[1] === "askuserinput") {
+				MenuSelection[1] = AskUserTwoLetters(false);
+			}
 			var RemLineValue = What(RemLine).split("##");
 			RemLineValue[1] = MenuSelection[1];
 			Value(RemLine, RemLineValue.join("##"));
@@ -4087,12 +4089,12 @@ function MakeSpellLineMenu_SpellLineOptions() {
 }
 
 //aks the user for 2 characters that are used for the caption of the first column of the spell table
-function AskUserTwoLetters() {
+function AskUserTwoLetters(caption) {
 	var theDialog = {
 		theTXT : "",
 		initialize : function (dialog) {
 			dialog.load({
-				"txt0" : "Please type the two letters you want to have as the caption for the first column.",
+				"txt0" : "Please type the two letters you want to have as the " + (caption ? "caption for the " : "") + "first column.",
 			});
 		},
 		destroy : function (dialog) {
@@ -4100,7 +4102,7 @@ function AskUserTwoLetters() {
 			this.theTXT = oResult["user"];
 		},
 		description : {
-			name : "Set the first column caption",
+			name : "Set the first column " + (caption ? "caption" : ""),
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -4112,7 +4114,7 @@ function AskUserTwoLetters() {
 					bold : true,
 					height : 21,
 					char_width : 30,
-					name : "Set the first column caption"
+					name : "Set the first column " + (caption ? "caption" : "")
 				}, {
 					type : "static_text",
 					alignment : "align_fill",
