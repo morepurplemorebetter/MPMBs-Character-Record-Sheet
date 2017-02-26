@@ -179,11 +179,10 @@ var SourceList = {
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2017/dnd/downloads/26_UASorcererUA020617s.pdf"
 	},
-/*	"UA:WnW" : {
+	"UA:WnW" : {
 		name : "Unearthed Arcana: Warlock and Wizard", //2017-02-13
 		abbreviation : "UA:WnW",	
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2017/dnd/downloads/20170213_Wizrd_Wrlck_UAv2_i48nf.pdf"
 	},
-*/
 };

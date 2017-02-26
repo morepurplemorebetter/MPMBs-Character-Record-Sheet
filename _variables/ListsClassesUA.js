@@ -131,13 +131,13 @@ ClassSubList["deep stalker"] = {
 			removeeval : "Checkbox(\"Wis ST Prof\", false, \"\");",
 		},
 		"subclassfeature11" : {
-			name : "Stalker’s Flurry",
+			name : "Stalker's Flurry",
 			source : ["UA:LDU", 2],
 			minlevel : 11,
 			description : "\n   " + "Once during my turn when I miss an attack, I can immediately make an extra attack",
 		},
 		"subclassfeature15" : {
-			name : "Stalker’s Dodge",
+			name : "Stalker's Dodge",
 			source : ["UA:LDU", 2],
 			minlevel : 15,
 			description : "\n   " + "As a reaction when I'm attacked without adv., I can impose disadv. on the attack roll",
@@ -1095,13 +1095,13 @@ ClassSubList["deep stalker conclave"] = {
 			removeeval : "Checkbox(\"Wis ST Prof\", false, \"\");",
 		},
 		"subclassfeature11" : {
-			name : "Stalker’s Flurry",
+			name : "Stalker's Flurry",
 			source : ["UA:RR", 8],
 			minlevel : 11,
 			description : "\n   " + "Once during my turn when I miss an attack, I can immediately make an extra attack",
 		},
 		"subclassfeature15" : {
-			name : "Stalker’s Dodge",
+			name : "Stalker's Dodge",
 			source : ["UA:RR", 8],
 			minlevel : 15,
 			description : "\n   " + "As a reaction when I'm attacked without adv., I can impose disadv. on the attack roll",
@@ -1288,7 +1288,7 @@ ClassSubList["zealot"] = {
 			name : "Zealous Focus",
 			source : ["UA:BPP", 3],
 			minlevel : 6,
-			description : "\n   " + "As a reaction when I fail a saving throw while raging, I can instead succeed on it" + "\n   " + "Doing so immediately ends my rage and I can’t rage again until I finish a short rest",
+			description : "\n   " + "As a reaction when I fail a saving throw while raging, I can instead succeed on it" + "\n   " + "Doing so immediately ends my rage and I can't rage again until I finish a short rest",
 			usages : 1,
 			recovery : "short rest",
 			action : ["reaction", " (in Rage)"],
@@ -1306,7 +1306,7 @@ ClassSubList["zealot"] = {
 			name : "Rage Beyond Death",
 			source : ["UA:BPP", 3],
 			minlevel : 14,
-			description : "\n   " + "While raging, having 0 hit points doesn’t knock me unconscious" + "\n   " + "I still must make death saves, and I suffer the normal effects of taking damage" + "\n   " + "However, if I would die due to failing death saves, I don’t die until my rage ends",
+			description : "\n   " + "While raging, having 0 hit points doesn't knock me unconscious" + "\n   " + "I still must make death saves, and I suffer the normal effects of taking damage" + "\n   " + "However, if I would die due to failing death saves, I don't die until my rage ends",
 		},
 	}
 };
@@ -1555,7 +1555,7 @@ ClassSubList["grave domain"] = {
 			name : "Keeper of Souls",
 			source : ["UA:CDD", 2],
 			minlevel : 17,
-			description : "\n   " + "Once per round, if I'm not incapacitated, I can manipulate the energy of the dying" + "\n   " + "When an enemy I can see dies within 30 ft of me, I or an ally within 30 ft regain HP" + "\n   " + "The HP regained is equal to the enemy’s number of Hit Dice",
+			description : "\n   " + "Once per round, if I'm not incapacitated, I can manipulate the energy of the dying" + "\n   " + "When an enemy I can see dies within 30 ft of me, I or an ally within 30 ft regain HP" + "\n   " + "The HP regained is equal to the enemy's number of Hit Dice",
 		},
 	},
 };
@@ -1594,7 +1594,7 @@ ClassSubList["protection domain"] = {
 			name : "Blessed Healer",
 			source : ["UA:CDD", 3],
 			minlevel : 6,
-			description : "\n   " + "When I cast a spell to heal another using a spell slot, I heal 2 + the spell’s level as well",
+			description : "\n   " + "When I cast a spell to heal another using a spell slot, I heal 2 + the spell's level as well",
 		},
 		"subclassfeature8" : {
 			name : "Divine Strike",
@@ -1685,7 +1685,7 @@ ClassSubList["circle of the shepherd"] = {
 			name : "Spirit Bond",
 			source : ["UA:DC", 2],
 			minlevel : 2,
-			description : "\n   " + "As a bonus action, I can summon a spirit to an empty space within 60 ft that I can see" + "\n   " + "The Bear, Hawk, or Wolf spirit, creates a 30-ft radius aura and persist for 1 minute" + "\n   " + "It doesn’t occupy space, is immobile, and counts as neither a creature nor an object" + "\n    - " + "Bear: my allies in the area and I instantly gain 5 + my druid level in temp HP" + "\n       " + "While in the aura, my allies and I gain advantage on Strength checks and saves" + "\n    - " + "Hawk: my allies and I gain advantage on attacks against targets in the aura" + "\n    - " + "Wolf: my allies and I gain advantage on ability checks to detect targets in the aura" + "\n       " + "If I cast a healing spell with a spell slot, allies in the aura heal my druid level in HP",
+			description : "\n   " + "As a bonus action, I can summon a spirit to an empty space within 60 ft that I can see" + "\n   " + "The Bear, Hawk, or Wolf spirit, creates a 30-ft radius aura and persist for 1 minute" + "\n   " + "It doesn't occupy space, is immobile, and counts as neither a creature nor an object" + "\n    - " + "Bear: my allies in the area and I instantly gain 5 + my druid level in temp HP" + "\n       " + "While in the aura, my allies and I gain advantage on Strength checks and saves" + "\n    - " + "Hawk: my allies and I gain advantage on attacks against targets in the aura" + "\n    - " + "Wolf: my allies and I gain advantage on ability checks to detect targets in the aura" + "\n       " + "If I cast a healing spell with a spell slot, allies in the aura heal my druid level in HP",
 			usages : 1,
 			recovery : "short rest",
 			action : ["bonus action", ""]
@@ -2029,7 +2029,7 @@ ClassSubList["sharpshooter"] = {
 			name : "Close-Quarters Shooting",
 			source : ["UA:FMA", 4],
 			minlevel : 10,
-			description : "\n   " + "I don't have disadvantage when making a ranged attack while within 5 ft of a hostile" + "\n   " + "A hostile within 5 ft that I hit with a ranged attack on my turn, can’t take reactions" + "\n   " + "This lasts until the end of my turn",
+			description : "\n   " + "I don't have disadvantage when making a ranged attack while within 5 ft of a hostile" + "\n   " + "A hostile within 5 ft that I hit with a ranged attack on my turn, can't take reactions" + "\n   " + "This lasts until the end of my turn",
 		},
 		"subclassfeature15" : {
 			name : "Rapid Strike",
@@ -2788,6 +2788,151 @@ ClassSubList["stone sorcery"] = {
 	},
 };
 ClassList.sorcerer.subclasses[1].push("stone sorcery");
+
+/*
+	Warlock and Wizard Unearthed Arcana of 2017-02-13
+	(http://media.wizards.com/2017/dnd/downloads/20170213_Wizrd_Wrlck_UAv2_i48nf.pdf)
+*/
+//adds numerous warlock invocations (see UAstartupCode), and three subclasses:
+//a subclass for the Warlock, called "The Hexblade"
+//this code includes contributions by Greg N.
+ClassSubList["warlock-hexblade"] = {
+	regExpSearch : /^(?=.*hexblade)(?=.*warlock).*$/i,
+	subname : "the Hexblade",
+	source : ["UA:WnW", 1],
+	spellcastingExtra : ["shield", "wrathful smite", "branding smite", "magic weapon", "blink", "elemental weapon", "phantasmal killer", "staggering smite", "cone of cold", "destructive wave"],
+	features : {
+		"subclassfeature1" : {
+			name : "Hex Warrior",
+			source : ["UA:WnW", 1],
+			minlevel : 1,
+			description : desc([
+				"I gain proficiency with medium armor, shields, and martial weapons",
+				"With one-handed melee weapons I can use Charisma instead of Strength or Dexterity"
+			]),
+			armor : [false, true, false, true],
+			weapons : [false, true],
+			calcChanges : {
+				atkAdd : ["if (isMeleeWeapon && !WeaponText.match(/\\b(2|two).?hand(ed)?s?\\b/i)) { fields.Mod = What('Cha Mod') > What(AbilityScores.abbreviations[fields.Mod - 1] + ' Mod') ? 6 : fields.Mod; }; ", "For melee weapons that lack the two-handed property, I can use my Charisma instead of Strength or Dexterity."]
+			}
+		},
+		"subclassfeature1.1" : {
+			name : "Hexblade's Curse",
+			source : ["UA:WnW", 1],
+			minlevel : 1,
+			description : desc([
+				"As a bonus action, I can curse a creature I can see within 30 ft of me for 1 minute",
+				" - I add my proficiency bonus to damage rolls against the cursed target",
+				" - My attack rolls against the curse target score a critical hit on a roll of 19 and 20",
+				" - If the target dies while cursed, I regain HP equal to my warlock level + Cha mod"
+			]),
+			recovery : "short rest",
+			usages : levels.map( function(n) { return n < 14 ? 1 : ""; }),
+			action : ["bonus action", ""],
+			calcChanges : {
+				atkAdd : ["if (!isDC && WeaponText.match(/hexblade/i) && !CritChance) {var CritChance = 19; fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20'; }; ", "If I include the word 'Hexblade' in the name of a weapon, the automation will treat the attack as being against a target of the Hexblade's Curse: adding my proficiency bonus to the damage and adding the increased chance of a critical hit to the description."],
+				atkCalc : ["if (WeaponText.match(/hexblade/i)) {output.extraDmg += output.prof; }; ", ""]
+			}
+		},
+		"subclassfeature6" : {
+			name : "Shadow Hound",
+			source : ["UA:WnW", 1],
+			minlevel : 6,
+			description : desc([
+				"My shadow becomes a hound of pure darkness; Truesight reveals its nature",
+				"As a bonus action, I can have it slip into the shadow of another I can see within 60 ft",
+				"I know the distance/direction to the target; I ignore 1/2, 3/4 cover of the target",
+				"My shadow returns to me if I use a bonus action to do so, I become incapacitated, ",
+				"a spell is used to stop it, or if one of us moves to another plane of existence"
+			])
+		},
+		"subclassfeature10" : {
+			name : "Armor of Hexes",
+			source : ["UA:WnW", 2],
+			minlevel : 10,
+			description : "\n   " + "Targets affected by my hexblade's curse have a 50% of missing me with any attack roll"
+		},
+		"subclassfeature14" : {
+			name : "Master of Hexes",
+			source : ["UA:WnW", 2],
+			minlevel : 14,
+			description : desc([
+				"I no longer need to rest to be able to use my Hexblade's Curse again",
+				"However, when I curse a new target, the curse immediately ends on the previous target"
+			])
+		}
+	}
+};
+ClassList.warlock.subclasses[1].push("warlock-hexblade");
+
+//a subclass for the Warlock, called "The Raven Queen"
+//this code includes contributions by Ben Y. and Wizzard
+ClassSubList["warlock-raven queen"] = {
+	regExpSearch : /^(?=.*\braven)(?=.*queen\b).*$/i,
+	subname : "the Raven Queen",
+	source : ["UA:WnW", 2],
+	spellcastingExtra : ["false life", "sanctuary", "silence", "spiritual weapon", "feign death", "speak with dead", "ice storm", "locate creature", "commune", "cone of cold"],
+	features : {
+		"subclassfeature1" : {
+			name : "Sentinal Raven",
+			source : ["UA:WnW", 2],
+			minlevel : 1,
+			description : desc([
+				"I gain the services of a spirit in the form of a raven (using the stats of a raven)",
+				"It always obeys my commands, rolls its own initiative, and can be slain",
+				"While it's within 100 ft, I can telepathically speak with it and see/hear what it does",
+				"While it's on my shoulder, I gain Darkvision 30 ft and add my Cha mod to Perception",
+				"While it's on my shoulder, it can't be targeted, take damage, or take actions",
+				"It vanishes if it is more than 5 miles away from me, it dies, or if I die",
+				"If it dies, I gain advantage on all attack rolls against its killer for 24 hours",
+				"After a short rest, I can recall it to me regardless of its location or if it died"
+			]),
+			eval : "if (!What('Vision').match(/darkvision/i)) {AddString('Vision', 'Darkvision 30 ft', '; '); }; AddString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]', '; '); Value('Passive Perception Bonus', 'Cha'); Value((Who('Text.SkillsNames') === 'alphabeta' ? 'Perc' : 'Perf') + ' Bonus', 'Cha');",
+			removeeval : "RemoveString('Vision', 'Darkvision 30 ft'); RemoveString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]'); if (What('Passive Perception Bonus') === 'Cha') {Value('Passive Perception Bonus', 0); }; var perFC = (Who('Text.SkillsNames') === 'alphabeta' ? 'Perc' : 'Perf') + ' Bonus'; if (What(perFC) === 'Cha') {Value(perFC, 0); };"
+		},
+		"subclassfeature6" : {
+			name : "Soul of the Raven",
+			source : ["UA:WnW", 2],
+			minlevel : 6,
+			description : desc([
+				"As a bonus action, when my raven is perched on my shoulder, I can merge our bodies",
+				"I become tiny and replace my speed with the raven's (10 ft, fly 50 ft)",
+				"I can then use my action only to Dash, Disengage, Dodge, Help, Hide, or Search",
+				"While merged, I still get all the benefits of my raven being perched on my shoulder",
+				"I can end this as an action"
+			]),
+			action : ["bonus action", " (start)"],
+			eval : "AddAction('action', 'Soul of the Raven (end)', 'Warlock (the Raven Queen)')",
+			removeeval : "RemoveAction('action', 'Soul of the Raven (end)')"
+		},
+		"subclassfeature10" : {
+			name : "Raven's Shield",
+			source : ["UA:WnW", 3],
+			minlevel : 10,
+			description : "\n   " + "I can't be frightened, have advantage on death saves, and resistance to necrotic damage",
+			save : "Immune to being frightened; Adv. on death saves",
+			eval : "AddResistance('necrotic', 'Warlock (the Raven Queen)');",
+			removeeval : "RemoveResistance('necrotic', 'Warlock (the Raven Queen)');"
+		},
+		"subclassfeature14" : {
+			name : "Queen's Right Hand",
+			source : ["UA:WnW", 3],
+			minlevel : 14,
+			description : "\n   " + "I can cast Finger of Death once per long rest",
+			usages : 1,
+			recovery : "long rest",
+			spellcastingBonus : {
+				name : "Queen's Right Hand",
+				spells : ["finger of death"],
+				selection : ["finger of death"],
+				oncelr : true
+			}
+		}
+	}
+};
+ClassList.warlock.subclasses[1].push("warlock-raven queen");
+
+//a subclass for the Wizard, called "Lore Mastery"
 
 
 //a function to run at startup of the sheet to ensure that all of the UA additions work as they should

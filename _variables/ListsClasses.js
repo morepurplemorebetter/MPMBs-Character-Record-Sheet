@@ -1175,7 +1175,7 @@ var ClassList = {
 				source : ["P", 96],
 				minlevel : 14,
 				description : "\n   " + "With my hearing, I can locate hidden or invisible creatures that are within 10 ft of me",
-				eval : "AddString(\"Vision\",\"Blindsense 10 ft\", \"; \");",
+				eval : "AddString(\"Vision\", \"Blindsense 10 ft\", \"; \");",
 				removeeval : "RemoveString(\"Vision\", \"Blindsense 10 ft\");"
 			},
 			"slippery mind" : {
@@ -2756,7 +2756,7 @@ var ClassSubList = {
 				minlevel : 3,
 				description : "\n   " + "I score a critical hit with my weapon attacks on a roll of 19 and 20",
 				calcChanges : {
-					atkAdd : ["if (!isSpell && classes.known.fighter && classes.known.fighter.level > 2 && classes.known.fighter.level < 15) {fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20'; }; ", "My weapon attacks score a critical on a to hit roll of both 19 and 20."]
+					atkAdd : ["if (!isSpell && classes.known.fighter && classes.known.fighter.level > 2 && classes.known.fighter.level < 15 && !CritChance) {var CritChance = 19; fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20'; }; ", "My weapon attacks score a critical on a to hit roll of both 19 and 20."]
 				}
 			},
 			"subclassfeature7" : {
@@ -2819,7 +2819,7 @@ var ClassSubList = {
 				minlevel : 15,
 				description : "\n   " + "I score a critical hit with my weapon attacks on a roll of 18, 19, and 20",
 				calcChanges : {
-					atkAdd : ["if (!isSpell && classes.known.fighter && classes.known.fighter.level > 14) {fields.Description += (fields.Description ? '; ' : '') + 'Crit on 18-20'; }; ", "My weapon attacks also score a critical on a to hit roll of 18."]
+					atkAdd : ["if (!isSpell && classes.known.fighter && classes.known.fighter.level > 14) {if (CritChance) {fields.Description = CritChance <= 18 ? fields.Description : fields.Description.replace('Crit on ' + CritChance + '-20', 'Crit on 18-20'); } else {fields.Description += (fields.Description ? '; ' : '') + 'Crit on 18-20'; }; var CritChance = 18; }; ", "My weapon attacks also score a critical on a to hit roll of 18."]
 				}
 			},
 			"subclassfeature18" : {
@@ -3270,8 +3270,8 @@ var ClassSubList = {
 				"water whip" : {
 					name : "Water Whip",
 					source : ["P", 81],
-					description : " [2 ki points; +1d10/extra ki point]" + "\n   " + "As an action, target within 30 ft takes 3d10 bludgeoning damage (spend ki for more)" + "\n   " + "It is also knocked prone or pulled up to 25 ft closer to me (my choice)" + "\n   " + "It can make a Dexterity save to halve damage and avoid being pulled or knocked prone",
-					action : ["action", ""]
+					description : " [2 ki points; +1d10/extra ki point]" + "\n   " + "As a bonus action, a creature within 30 ft takes 3d10 bludg. damage (spend ki for more)" + "\n   " + "It is also knocked prone or pulled up to 25 ft closer to me (my choice)" + "\n   " + "It can make a Dexterity save to halve damage and avoid being pulled or knocked prone",
+					action : ["bonus action", ""]
 				},
 				"wave of rolling earth (prereq: level 17 monk)" : {
 					name : "Wave of Rolling Earth",

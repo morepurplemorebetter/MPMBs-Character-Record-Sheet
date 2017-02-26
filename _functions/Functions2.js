@@ -790,7 +790,7 @@ function ApplyWildshape() {
 	Value(prefix + "Wildshape." + Fld + ".Initiative Bonus", mods[1] + Number(initBonus));
 	
 	thermoM(4/10); //increment the progress dialog's progress
-			
+	
 	//set the skill proficiencies
 	for (var s = 0; s < (SkillsList.abbreviations.length - 2); s++) {
 		//get the particulars of the skill
