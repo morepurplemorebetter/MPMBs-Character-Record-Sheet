@@ -3840,6 +3840,7 @@ function ParseSpellMenu() {
 		["with 'At Will'", "atwill"],
 		["with '1\u00D7 Long Rest'", "oncelr"],
 		["with '1\u00D7 Short Rest'", "oncesr"],
+		["Ask me for the first column", "askuserinput"],
 	]
 	//add a menu with a changed name 
 	for (var e = 0; e < menuExtraTypes.length; e++) {
@@ -4046,6 +4047,9 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			Value(RemLine, downValue);
 			break;
 		 case "spell" :
+			if (MenuSelection[2] === "askuserinput") {
+				MenuSelection[2] = AskUserTwoLetters(false);
+			}
 			Value(RemLine, MenuSelection[1] + "##" + MenuSelection[2]);
 			break;
 		 case "setcaptions" :
@@ -4094,7 +4098,7 @@ function AskUserTwoLetters(caption) {
 		theTXT : "",
 		initialize : function (dialog) {
 			dialog.load({
-				"txt0" : "Please type the two letters you want to have as the " + (caption ? "caption for the " : "") + "first column.",
+				"txt0" : "Please type the two characters you want to have as the " + (caption ? "caption for the " : "") + "first column.\n\nAlternatively, you can type a single character between brackets, e.g. '(R)'.",
 			});
 		},
 		destroy : function (dialog) {
@@ -4119,7 +4123,7 @@ function AskUserTwoLetters(caption) {
 					type : "static_text",
 					alignment : "align_fill",
 					item_id : "txt0",
-					char_height : 4,
+					char_height : 8,
 					char_width : 30,
 				}, {
 					type : "edit_text",

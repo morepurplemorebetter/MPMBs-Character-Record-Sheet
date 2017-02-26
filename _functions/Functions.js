@@ -2669,7 +2669,8 @@ function FindClasses(Event) {
 		var fTrans = {};
 		//add features of the class
 		for (prop in ClassList[aClass].features) {
-			var fNm = ("0" + ClassList[aClass].features[prop].minlevel).slice(-2) + ClassList[aClass].features[prop].name;
+			var cPropAtt = ClassList[aClass].features[prop];
+			var fNm = ("0" + cPropAtt.minlevel).slice(-2) + (prop.match(/subclassfeature/i) ? "" : "()") + cPropAtt.name;
 			if (fNm.toString().length > 2) {
 				fAB.push(fNm);
 				fTrans[fNm] = {name: prop, list: "ClassList", item: aClass};
@@ -2681,12 +2682,12 @@ function FindClasses(Event) {
 		if (classes.known[aClass].subclass && ClassSubList[classes.known[aClass].subclass].features !== undefined) {
 			hasSub = true;
 			for (prop in ClassSubList[classes.known[aClass].subclass].features) {
-				var fNm = ("0" + ClassSubList[classes.known[aClass].subclass].features[prop].minlevel).slice(-2) + ClassSubList[classes.known[aClass].subclass].features[prop].name;
+				var csPropAtt = ClassSubList[classes.known[aClass].subclass].features[prop];
+				var fNm = ("0" + csPropAtt.minlevel).slice(-2) + csPropAtt.name;
 				if (fNm.toString().length > 2) {
 					fAB.push(fNm);
 					fTrans[fNm] = {name: prop, list: "ClassSubList", item: classes.known[aClass].subclass};
 				}
-				
 			}
 		}
 		
@@ -2694,7 +2695,7 @@ function FindClasses(Event) {
 		
 		for (var f = 0; f < fAB.length; f++) {
 			var propAtt = fTrans[fAB[f]];
-			if (hasSub && propAtt.list === "ClassList" && propAtt.name.indexOf("subclassfeature") !== -1) continue; // skip any "subclassfeature" from the class if a subclass is known
+			if (hasSub && propAtt.list === "ClassList" && propAtt.name.match(/subclassfeature/i)) continue; // skip any "subclassfeature" from the class if a subclass is known
 			Temps.features[propAtt.name] = tDoc[propAtt.list][propAtt.item].features[propAtt.name];
 		}
 

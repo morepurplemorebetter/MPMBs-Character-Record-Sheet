@@ -1012,7 +1012,7 @@ var BackgroundList = {
 			"So long as I have this token from my homeland, I can face any adversity in this strange land.",
 			"The gods of my people are a comfort to me so far from home.",
 			"I hold no greater cause than my service to my people.",
-			"My freedom is my most precious possession. I ' l l never let anyone take it from me again.",
+			"My freedom is my most precious possession. I'll never let anyone take it from me again.",
 			"I'm fascinated by the beauty and wonder of this new land.",
 			"Though I had no choice, I lament having to leave my loved one(s) behind. I hope to see them again one day.",
 		],
