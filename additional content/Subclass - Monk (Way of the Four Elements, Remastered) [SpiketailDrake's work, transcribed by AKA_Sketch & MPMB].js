@@ -194,7 +194,8 @@ ClassSubList["way of the four elements"].features = {
 				"Per 5 ft I fall, I can also move horizontally 5 ft in any direction"
 			]),
 			eval : "RemoveAction('reaction', 'Slow Fall');",
-			removeeval : "AddAction('reaction', 'Slow Fall', 'Monk (Way of the Four Elements)');"
+			removeeval : "AddAction('reaction', 'Slow Fall', 'Monk (Way of the Four Elements)');",
+			prereqeval : "classes.known.monk.level >= 6"
 		},
 		"burning ember flourish (prereq: level 6 monk)" : {
 			name : "Burning Ember Flourish",
@@ -206,7 +207,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["pyrotechnics"],
 				firstCol : 2
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 6"
 		},
 		"crushing hand of the mountain (prereq: level 6 monk)" : {
 			name : "Crushing Hand of the Mountain",
@@ -218,7 +220,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["maximilian's earthen grasp"],
 				firstCol : 2
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 6"
 		},
 		"curtain of unyielding wind (prereq: level 6 monk)" : {
 			name : "Curtain of Unyielding Wind",
@@ -230,7 +233,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["warding wind"],
 				firstCol : 2
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 6"
 		},
 		"gong of the summit (prereq: level 6 monk)" : {
 			name : "Gong of the Summit",
@@ -242,7 +246,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["shatter"],
 				firstCol : 2
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 6"
 		},
 		"hatchling's flame (prereq: level 6 monk)" : {
 			name : "Hatchling's Flame",
@@ -266,7 +271,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["flaming sphere"],
 				firstCol : 2
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 6"
 		},
 		"patient badger listens (prereq: level 6 monk)" : {
 			name : "Patient Badger Listens",
@@ -274,7 +280,8 @@ ClassSubList["way of the four elements"].features = {
 			description : " [2 ki points]" + desc([
 				"For 1 min, I gain tremorsense 30 ft and a burrow speed equal to half my walking speed",
 				"Burrowing like this leaves behind a tunnel that lasts for the duration"
-			])
+			]),
+			prereqeval : "classes.known.monk.level >= 6"
 		},
 		"red dragon's claws (prereq: level 6 monk)" : {
 			name : "Red Dragon's Claws",
@@ -298,7 +305,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["snilloc's snowball swarm"],
 				firstCol : 2
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 6"
 		},
 		"dance of three ways (prereq: level 11 monk)" : {
 			name : "Dance of Three Ways",
@@ -310,7 +318,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["melf's minute meteors"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"earth reaches for sky (prereq: level 11 monk)" : {
 			name : "Earth Reaches for Sky",
@@ -322,7 +331,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["erupting earth"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"eternal mountain defense (prereq: level 11 monk)" : {
 			name : "Eternal Mountain Defense",
@@ -334,7 +344,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["stoneskin"],
 				firstCol : 4
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"flames of the phoenix (prereq: level 11 monk)" : {
 			name : "Flames of the Phoenix",
@@ -346,7 +357,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["fireball"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"fist of the elements (prereq: level 11 monk)" : {
 			name : "Fist of the Elements",
@@ -358,7 +370,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["elemental weapon"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"hua's water prison (prereq: level 11 monk)" : {
 			name : "Hua's Water Prison",
@@ -370,7 +383,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["watery sphere"],
 				firstCol : 4
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"mist stance (prereq: level 11 monk)" : {
 			name : "Mist Stance",
@@ -382,7 +396,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["gaseous form"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"one with the tides (prereq: level 11 monk)" : {
 			name : "One with the Tides",
@@ -390,7 +405,8 @@ ClassSubList["way of the four elements"].features = {
 			description : " [2 ki points]" + desc([
 				"As an action, I gain underwater adaptations that last for 8 hours: Breathe underwater",
 				"Swim speed equal to my walking speed, and Blindsight 60 ft while underwater"
-			])
+			]),
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"rain of the frigid glacier (prereq: level 11 monk)" : {
 			name : "Rain of the Frigid Glacier",
@@ -402,7 +418,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["sleet storm"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"raise the troubled earth (prereq: level 11 monk)" : {
 			name : "Raise the Troubled Earth",
@@ -414,7 +431,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["wall of sand"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"raise the still waters (prereq: level 11 monk)" : {
 			name : "Raise the Still Waters",
@@ -426,7 +444,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["wall of water"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"ride the wind (prereq: level 11 monk)" : {
 			name : "Ride the Wind",
@@ -438,7 +457,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["fly"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"river of hungry flame (prereq: level 11 monk)" : {
 			name : "River of Hungry Flame",
@@ -450,7 +470,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["wall of fire"],
 				firstCol : 4
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"sweeping crosswind (prereq: level 11 monk)" : {
 			name : "Sweeping Crosswind",
@@ -462,7 +483,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["wind wall"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"tears of the north wind (prereq: level 11 monk)" : {
 			name : "Tears of the North Wind",
@@ -474,7 +496,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["ice storm"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"tsunami (prereq: level 11 monk)" : {
 			name : "Tsunami",
@@ -486,7 +509,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["tidal wave"],
 				firstCol : 3
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 11"
 		},
 		"avatar of flame (prereq: level 17 monk)" : {
 			name : "Avatar of Flame",
@@ -498,7 +522,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["investiture of flame"],
 				firstCol : 6
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 17"
 		},
 		"avatar of ice (prereq: level 17 monk)" : {
 			name : "Avatar of Ice",
@@ -510,7 +535,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["investiture of ice"],
 				firstCol : 6
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 17"
 		},
 		"avatar of stone (prereq: level 17 monk)" : {
 			name : "Avatar of Stone",
@@ -522,7 +548,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["investiture of stone"],
 				firstCol : 6
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 17"
 		},
 		"avatar of wind (prereq: level 17 monk)" : {
 			name : "Avatar of Wind",
@@ -534,7 +561,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["investiture of wind"],
 				firstCol : 6
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 17"
 		},
 		"avatar of the elements (prereq: level 17 monk; another avatar option)" : {
 			name : "Avatar of the Elements",
@@ -561,7 +589,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["investiture of wind"],
 				firstCol : 6
 			}],
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 17"
 		},
 		"breath of winter (prereq: level 17 monk)" : {
 			name : "Breath of Winter",
@@ -573,7 +602,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["cone of cold"],
 				firstCol : 5
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 17"
 		},
 		"eye of the hurricane (prereq: level 17 monk)" : {
 			name : "Eye of the Hurricane",
@@ -585,7 +615,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["control winds"],
 				firstCol : 5
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 17"
 		},
 		"mold the mountain (prereq: level 17 monk)" : {
 			name : "Mold the Mountain",
@@ -597,7 +628,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["transmute rock"],
 				firstCol : 5
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 17"
 		},
 		"moth's demise (prereq: level 17 monk)" : {
 			name : "Moth's Demise",
@@ -609,7 +641,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["immolation"],
 				firstCol : 5
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 17"
 		},
 		"swirling crab's revenge (prereq: level 17 monk)" : {
 			name : "Swirling Crab's Revenge",
@@ -621,7 +654,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["maelstrom"],
 				firstCol : 5
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 17"
 		},
 		"wave of rolling earth (prereq: level 17 monk)" : {
 			name : "Wave of Rolling Earth",
@@ -633,7 +667,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["wall of stone"],
 				firstCol : 5
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 17"
 		}
 	},
 	"subclassfeature6" : {

@@ -1251,6 +1251,55 @@ var WeaponsList = {
 		abilitytodamage : false,
 		ammo : "arcane magazine"
 	},
+	"claw of acamar" : {
+		regExpSearch : /^(?=.*\bclaw\b)(?=.*\bacamar\b).*$/i,
+		name : "Claw of Acamar",
+		source : ["UA:WnW", 3],
+		ability : 1,
+		type : "Martial",
+		damage : [1, 8, "bludgeoning"],
+		range : "Melee",
+		weight : 2,
+		description : "Pact weapon, reach; On hit: Reduces speed to 0, Expend spell slot for +2d8 necrotic damage per slot level",
+		abilitytodamage : true
+	},
+	"curse bringer" : {
+		regExpSearch : /^(?=.*\bcurse)(?=.*bringer\b).*$/i,
+		name : "Curse Bringer",
+		source : ["UA:WnW", 4],
+		ability : 1,
+		type : "Martial",
+		damage : [2, 6, "slashing"],
+		range : "Melee",
+		weight : 6,
+		description : "Pact weapon, heavy, two-handed; On hit: Reduces speed to 0, Expend spell slot for +2d8 slashing damage per slot level",
+		abilitytodamage : true,
+	},
+	"mace of dispater" : {
+		regExpSearch : /^(?=.*\bmace\b)(?=.*\bdispater\b).*$/i,
+		name : "Mace of Dispater",
+		source : ["UA:WnW", 4],
+		ability : 1,
+		type : "Simple",
+		damage : [1, 6, "bludgeoning"],
+		range : "Melee",
+		weight : 4,
+		description : "Pact weapon; On hit: knock Huge or smaller prone, Expend spell slot for +2d8 force damage per slot level",
+		monkweapon : true,
+		abilitytodamage : true
+	},
+	"moon bow" : {
+		regExpSearch : /^(?=.*\bmoon)(?=.*bow\b).*$/i,
+		name : "Moon Bow",
+		source : ["UA:WnW", 4],
+		ability : 2,
+		type : "Martial",
+		damage : [1, 8, "piercing"],
+		range : "150/600 ft",
+		weight : 2,
+		description : "Pact weapon, heavy, two-handed; Adv. vs. lycanthropes; On hit, expend spell slot for +2d8 radiant damage per slot level",
+		abilitytodamage : true
+	},
 };
 
 //A list of all types of 'ammo' for the ammunition section on the first page

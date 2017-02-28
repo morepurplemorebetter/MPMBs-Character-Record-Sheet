@@ -18,7 +18,7 @@
 				
 	Code by:	Darryl Cook & MorePurpleMoreBetter
 				Order of the Lycan code by MorePurpleMoreBetter
-	Date:		2017-02-18 (sheet v12.83)
+	Date:		2017-02-28 (sheet v12.83)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 	
@@ -52,7 +52,7 @@ ClassList["blood hunter"] = {
 			name : "Hunter's Bane",
 			source : ["MM:BH", 3],
 			minlevel : 1,
-			description : "\n   " + "When tracking a Fey, Fiends, or Undead, I can't be surprised by a creature of that type" + "\n   " + "I have adv. on Wis (Survival) checks to track and Int checks to recall info about them" + "\n   " + "From 11th level, I can take rite damage for adv. on Wis (Insight) or Cha (Intimidation)",
+			description : "\n   " + "When tracking a Fey, Fiends, or Undead, I can't be surprised by a creature of that type" + "\n   " + "I have adv. on Wis (Survival) checks to track and Int checks to recall info about them" + "\n   " + "From 11th level, I can take rite damage for adv. on Wis (Insight) or Cha (Intimidation)"
 		},
 		"crimson rite" : {
 			name : "Crimson Rite",
@@ -81,17 +81,20 @@ ClassList["blood hunter"] = {
 			"roar (esoteric rite)" : {
 				source : ["MM:BH", 3],
 				name : "Rite of the Roar",
-				description : "\n   " + "I can select thunder as the damage type for my crimson rite damage die"
+				description : "\n   " + "I can select thunder as the damage type for my crimson rite damage die",
+				prereqeval : "classes.known['blood hunter'].level >= 14"
 			},
 			"oracle (esoteric rite)" : {
 				source : ["MM:BH", 3],
 				name : "Rite of the Oracle",
-				description : "\n   " + "I can select psychic as the damage type for my crimson rite damage die"
+				description : "\n   " + "I can select psychic as the damage type for my crimson rite damage die",
+				prereqeval : "classes.known['blood hunter'].level >= 14"
 			},
 			"dead (esoteric rite)" : {
 				source : ["MM:BH", 3],
 				name : "Rite of the Dead",
-				description : "\n   " + "I can select necrotic as the damage type for my crimson rite damage die"
+				description : "\n   " + "I can select necrotic as the damage type for my crimson rite damage die",
+				prereqeval : "classes.known['blood hunter'].level >= 14"
 			},
 		},
 		"fighting style" : {
@@ -493,37 +496,39 @@ ClassSubList["order of the mutant"] = {
 				name : "Aether",
 				source : ["MM:BH", 7],
 				description : "\n   " + "I gain 20 ft flying speed" + "\n    - " + "Side effect: I have disadvantage on Strength and Dexterity ability checks",
+				prereqeval : "classes.known['blood hunter'].level >= 11"
 			},
 			"celerity" : {
 				name : "Celerity",
 				source : ["MM:BH", 7],
-				description : "\n   " + "My Dexterity score increases by an amount equal to my mutation score" + "\n    - " + "Side effect: My Wisdom score decreases by an amount equal to my mutation score",
+				description : "\n   " + "My Dexterity score increases by an amount equal to my mutation score" + "\n    - " + "Side effect: My Wisdom score decreases by an amount equal to my mutation score"
 			},
 			"conversant" : {
 				name : "Conversant",
 				source : ["MM:BH", 7],
-				description : "\n   " + "I gain advantage on Intelligence ability checks" + "\n    - " + "Side effect: I have disadvantage on Charisma ability checks",
+				description : "\n   " + "I gain advantage on Intelligence ability checks" + "\n    - " + "Side effect: I have disadvantage on Charisma ability checks"
 			},
 			"cruelty (prereq: level 11 blood hunter)" : {
 				name : "Cruelty",
 				source : ["MM:BH", 7],
 				description : "\n   " + "I can make a single weapon attack as a bonus action" + "\n    - " + "Side effect: I have disadvantage on all saving throws",
-				action : ["bonus action", ""]
+				action : ["bonus action", ""],
+				prereqeval : "classes.known['blood hunter'].level >= 11"
 			},
 			"impermeable" : {
 				name : "Impermeable",
 				source : ["MM:BH", 7],
-				description : "\n   " + "I gain resistance to piercing damage" + "\n    - " + "Side effect: I gain vulnerability to slashing damage",
+				description : "\n   " + "I gain resistance to piercing damage" + "\n    - " + "Side effect: I gain vulnerability to slashing damage"
 			},
 			"mobility" : {
 				name : "mobility",
 				source : ["MM:BH", 7],
-				description : "\n   " + "I gain immunity to the grappled and restrained conditions; At 11th level also paralyzed" + "\n    - " + "Side effect: I gain a penalty to initiative rolls equal to 2 times my mutation score",
+				description : "\n   " + "I gain immunity to the grappled and restrained conditions; At 11th level also paralyzed" + "\n    - " + "Side effect: I gain a penalty to initiative rolls equal to 2 times my mutation score"
 			},
 			"nighteye" : {
 				name : "Nighteye",
 				source : ["MM:BH", 7],
-				description : "\n   " + "I gain darkvision up to 60 ft, or add an extra 60 ft to it if I already have darkvision" + "\n    - " + "Side effect: I gain sunlight sensitivity",
+				description : "\n   " + "I gain darkvision up to 60 ft, or add an extra 60 ft to it if I already have darkvision" + "\n    - " + "Side effect: I gain sunlight sensitivity"
 			},
 			"potency" : {
 				name : "Potency",
@@ -534,16 +539,18 @@ ClassSubList["order of the mutant"] = {
 				name : "Precision",
 				source : ["MM:BH", 7],
 				description : "\n   " + "My weapon attacks score critical hits on attack rolls of 19 and 20" + "\n    - " + "Side effect: All healing that I recieve is halved",
+				prereqeval : "classes.known['blood hunter'].level >= 11"
 			},
 			"rapidity" : {
 				name : "Rapidity",
 				source : ["MM:BH", 8],
-				description : "\n   " + "My speed increases with 10 ft (15 ft at 15th level)" + "\n    - " + "Side effect: I have disadvantage on Dexterity ability checks.",
+				description : "\n   " + "My speed increases with 10 ft (15 ft at 15th level)" + "\n    - " + "Side effect: I have disadvantage on Dexterity ability checks."
 			},
 			"reconstruction (prereq: level 7 blood hunter)" : {
 				name : "Reconstruction",
 				source : ["MM:BH", 8],
 				description : "\n   " + "At the start of my turn in combat when I'm conscious and above 0 HP, I regenerate HP" + "\n   " + "The amount of HP I regenerate is equal to 2 times my mutagen score" + "\n    - " + "Side effect: My speed decreases by 10 ft",
+				prereqeval : "classes.known['blood hunter'].level >= 7"
 			},
 			"sagacity" : {
 				name : "Sagacity",
@@ -553,17 +560,17 @@ ClassSubList["order of the mutant"] = {
 			"shielded" : {
 				name : "Shielded",
 				source : ["MM:BH", 8],
-				description : "\n   " + "I gain resistance to slashing damage" + "\n    - " + "Side effect: I gain vulnerability to bludgeoning damage",
+				description : "\n   " + "I gain resistance to slashing damage" + "\n    - " + "Side effect: I gain vulnerability to bludgeoning damage"
 			},
 			"unbreakable" : {
 				name : "Unbreakable",
 				source : ["MM:BH", 8],
-				description : "\n   " + "I gain resistance to bludgeoning damage" + "\n    - " + "Side effect: I gain vulnerability to piercing damage",
+				description : "\n   " + "I gain resistance to bludgeoning damage" + "\n    - " + "Side effect: I gain vulnerability to piercing damage"
 			},
 			"wariness" : {
 				name : "Wariness",
 				source : ["MM:BH", 8],
-				description : "\n   " + "I gain a bonus to my initiative rolls equal to 2 times my mutation score" + "\n    - " + "Side effect: I gain disadvantage on Wisdom (Perception) checks",
+				description : "\n   " + "I gain a bonus to my initiative rolls equal to 2 times my mutation score" + "\n    - " + "Side effect: I gain disadvantage on Wisdom (Perception) checks"
 			},
 		},
 		"subclassfeature3.1" : {

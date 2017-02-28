@@ -3493,27 +3493,7 @@ function FindWeapons(ArrayNmbr) {
 		if ((!tempArray[j][0] || WeaponsList[tempArray[j][0]].type.match(/spell|cantrip/i)) && SpellsList[isSpell]) {
 			tempArray[j][3] = isSpell;
 			if (!tempArray[j][0]) tempArray[j][2] = false;
-			
-			var abiArr = [], abiModArr = [], castArr = [];
-			for (var aClass in CurrentSpells) {
-				var sClass = CurrentSpells[aClass];
-				if (!sClass.ability) continue;
-				var checkArr = ["selectCa", "selectBo", "selectSp", "extra"];
-				for (var i = 0; i < checkArr.length; i++) {
-					if (sClass[checkArr[i]] && sClass[checkArr[i]].indexOf(isSpell) !== -1) {
-						tempArray[j][4].push(aClass);
-						break;
-					};
-				};
-				if (tempArray[j][4].indexOf(sClass) === -1 && SpellsList[isSpell].level && sClass.typeSp.match(/list|spellbook/i)) {
-					var spObj = eval(sClass.list.toSource());
-					spObj.level = [1, 9];
-					var theSpList = CreateSpellList(spObj);
-					if (theSpList.indexOf(isSpell) !== -1) {
-						tempArray[j][4].push(aClass);
-					};
-				};
-			};
+			tempArray[j][4] = isSpellUsed(isSpell);
 		};
 		
 		//put tempArray in known
@@ -5996,6 +5976,7 @@ function UpdateLevelFeatures(Typeswitch) {
 };
 
 //Make menu for 'choose class feature' button and parse it to Menus.classfeatures
+var ignorePrereqs = false;
 function MakeClassMenu() {
 	var menuLVL1 = function (item, array, thereturn) {
 		for (var i = 0; i < array.length; i++) {
@@ -6031,10 +6012,12 @@ function MakeClassMenu() {
 			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name : array[i].toLowerCase();
 			var theTest = (extrareturn === "extra" ? toTestE : toTest).indexOf(testWith) !== -1;
 			var removeStop = extrareturn === "extra" ? (theTest ? "remove" : false) : (theTest ? "stop" : false);
+			var isEnabled = ignorePrereqs || theTest || !feaObjA.prereqeval ? true : eval(feaObjA.prereqeval);
 			temp.push({
 				cName : array[i],
 				cReturn : classNm + "#" + featureNm + "#" + array[i] + "#" + extrareturn + "#" + removeStop,
 				bMarked : theTest,
+				bEnabled : isEnabled
 			})
 		}
 		menu.oSubMenu.push({
@@ -6045,7 +6028,8 @@ function MakeClassMenu() {
 
 	var ClassMenu = [], toTest = "";
 	var toTestE = What("Extra.Notes") + What("Class Features");
-
+	var hasEldritchBlast = isSpellUsed("eldritch blast") ? true : false;
+	
 	for (var aClass in classes.known) {
 		var classname = aClass;
 		var classlevel = classes.known[aClass].level;

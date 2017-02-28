@@ -3496,7 +3496,7 @@ function MakeIconMenu_IconOptions() {
 			DoAdvLog = true;
 			break;
 		 case "convertor" :
-			app.launchURL("http://convertonlinefree.com/ImageToPDFEN.aspx", true);
+			app.launchURL("http://imagetopdf.com/", true);
 			break;
 		};
 		if (MenuSelection[0] !== "convertor" && MenuSelection[0] !== "reset") {
@@ -5755,8 +5755,8 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		
 		//change mod if this is concerning a spell/cantrip
 		if (thisWeapon[3]) {
-			var abiArr = thisWeapon[4].map(function(sClass) {
-				return CurrentSpells[sClass] ? CurrentSpells[sClass].ability : 0;
+			var abiArr = thisWeapon[4].map( function(sClass) {
+				return CurrentSpells[sClass] && CurrentSpells[sClass].ability ? CurrentSpells[sClass].ability : 0;
 			});
 			var abiModArr = [];
 			abiArr.forEach(function (abiNmbr) {
@@ -5976,7 +5976,6 @@ function ShowDialog(hdr, strng) {
 	var ShowString_dialog = {
 		header : hdr,
 		string : strng,
-
 		initialize : function(dialog) {
 			dialog.load({
 				"txt0" : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]",
@@ -5984,7 +5983,6 @@ function ShowDialog(hdr, strng) {
 				"Eval" : this.string.replace(/^\n/, "").replace(/^\n/, "")
 			});
 		},
-		
 		description : {
 			name : hdr,
 			elements : [{
@@ -6026,4 +6024,11 @@ function ShowDialog(hdr, strng) {
 		}
 	};
 	app.execDialog(ShowString_dialog);
+};
+
+//calculate the mod for the Dex field in the initiative section (field calculation)
+function CalcInitDexMod() {
+	var QI = event.target.name.indexOf("Comp.") === -1;
+	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	event.value = QI ? What(SkillsList.abilityScores[SkillsList.abbreviations.indexOf("Init")] + " Mod") : What(prefix + "Comp.Use.Ability.Dex.Mod");
 };

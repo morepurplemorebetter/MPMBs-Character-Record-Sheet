@@ -3034,7 +3034,7 @@ function AskUserSpellSheet() {
 				var diaSB = SpellBookSelect_Dialog;
 				diaSB.listSp = dia.listSp;
 				diaSB.fullname = dia.fullname;
-				if (spCast.selectSpSB) diaSB.selectSp = spCast.selectSpSB;
+				diaSB.selectSp = spCast.selectSpSB ? spCast.selectSpSB : [];
 				
 				if (app.execDialog(diaSB) !== "ok") {
 					SetStringifieds("spells");
@@ -5026,3 +5026,27 @@ function ShowSpellPointInfo() {
 		cTitle : "Spell Points and Warlocks don't mix!",
 	})
 }
+
+// a way to test is a certain spell is set as known/on a list in the CurrentCasters variable, returning an array of CurrentCaster object names in which it exists
+function isSpellUsed(spll) {
+	var rtrnA = [];
+	if (SpellsList[spll]) {
+		for (var aClass in CurrentSpells) {
+			var sClass = CurrentSpells[aClass];
+			var csAttr = ["selectCa", "selectBo", "selectSp", "selectSpSB", "extra"];
+			for (var i = 0; i < csAttr.length; i++) {
+				if (sClass[csAttr[i]] && sClass[csAttr[i]].indexOf(spll) !== -1) {
+					rtrnA.push(aClass);
+					break;
+				};
+			};
+			if (rtrnA.indexOf(aClass) === -1 && SpellsList[spll].level && sClass.typeSp.match(/list/i)) {
+				var spObj = eval(sClass.list.toSource());
+				spObj.level = [1, 9];
+				var theSpList = CreateSpellList(spObj);
+				if (theSpList.indexOf(spll) !== -1) rtrnA.push(aClass);
+			}
+		}
+	};
+	return rtrnA.length ? rtrnA : false;
+};

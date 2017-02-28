@@ -1360,7 +1360,7 @@ var ClassList = {
 				name : "Eldritch Invocations",
 				source : ["P", 107],
 				minlevel : 2,
-				description : "\n   " + "Use the \"Choose Features\" button above to add Eldritch Invocations to the third page",
+				description : "\n   " + "Use the \"Choose Features\" button above to add Eldritch Invocations to the third page" + "\n   " + "Whenever I gain a warlock level, I can replace an invocation I know with another",
 				additional : ["", "2 invocations known", "2 invocations known", "2 invocations known", "3 invocations known", "3 invocations known", "4 invocations known", "4 invocations known", "5 invocations known", "5 invocations known", "5 invocations known", "6 invocations known", "6 invocations known", "6 invocations known", "7 invocations known", "7 invocations known", "7 invocations known", "8 invocations known", "8 invocations known", "8 invocations known"],
 				extraname : "Eldritch Invocation",
 				extrachoices : ["Agonizing Blast (prereq: Eldritch Blast cantrip)", "Armor of Shadows", "Ascendant Step (prereq: level 9 warlock)", "Beast Speech", "Beguiling Influence", "Bewitching Whispers (prereq: level 7 warlock)", "Book of Ancient Secrets (prereq: Pact of the Tome)", "Chains of Carceri (prereq: level 15 warlock, Pact of the Chain)", "Devil's Sight", "Dreadful Word (prereq: level 7 warlock)", "Eldritch Sight", "Eldritch Spear (prereq: Eldritch Blast cantrip)", "Eyes of the Rune Keeper", "Fiendish Vigor", "Gaze of Two Minds", "Lifedrinker (prereq: level 12 warlock, Pact of the Blade)", "Mask of Many Faces", "Master of Myriad Forms (prereq: level 15 warlock)", "Minions of Chaos (prereq: level 9 warlock)", "Mire the Mind (prereq: level 5 warlock)", "Misty Visions", "One with Shadows (prereq: level 5 warlock)", "Otherworldly Leap (prereq: level 9 warlock)", "Repelling Blast (prereq: Eldritch Blast cantrip)", "Sculptor of Flesh (prereq: level 7 warlock)", "Sign of Ill Omen (prereq: level 5 warlock)", "Thief of Five Fates", "Thirsting Blade (prereq: level 5 warlock, Pact of the Blade)", "Visions of Distant Realms (prereq: level 15 warlock)", "Voice of the Chain Master (prereq: Pact of the Chain)", "Whispers of the Grave (prereq: level 9 warlock)", "Witch Sight (prereq: level 15 warlock)"],
@@ -1370,6 +1370,7 @@ var ClassList = {
 					source : ["P", 110],
 					eval : "var ES = (What(\"Extra.Notes\").search(/eldritch spear/i) !== -1); RemoveWeapon(\"eldritch blast\"); RemoveWeapon(\"eldritch spear\"); RemoveWeapon(\"agonizing blast\"); if (ES) {AddWeapon(\"Agonizing Spear\")} else {AddWeapon(\"Agonizing Blast\")}",
 					removeeval : "RemoveWeapon(\"agonizing blast\"); RemoveWeapon(\"agonizing spear\"); var ES = (What(\"Extra.Notes\").search(/eldritch spear/i) !== -1); if (ES) {AddWeapon(\"Eldritch Spear\")} else {AddWeapon(\"Eldritch Blast\")}",
+					prereqeval : "hasEldritchBlast"
 				},
 				"armor of shadows" : {
 					name : "Armor of Shadows",
@@ -1380,7 +1381,7 @@ var ClassList = {
 						spells : ["mage armor"],
 						selection : ["mage armor"],
 						atwill : true,
-					},
+					}
 				},
 				"ascendant step (prereq: level 9 warlock)" : {
 					name : "Ascendant Step",
@@ -1392,6 +1393,7 @@ var ClassList = {
 						selection : ["levitate"],
 						atwill : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 9"
 				},
 				"beast speech" : {
 					name : "Beast Speech",
@@ -1402,14 +1404,14 @@ var ClassList = {
 						spells : ["speak with animals"],
 						selection : ["speak with animals"],
 						atwill : true,
-					},
+					}
 				},
 				"beguiling influence" : {
 					name : "Beguiling Influence",
 					description : "\n   " + "I gain proficiencies with the Deception and Persuasion skills",
 					source : ["P", 110],
 					skills : ["Deception", "Persuasion"],
-					skillstxt : "\n\n" + toUni("Warlock (Beguiling Influence)") + ": Deception and Persuasion.",
+					skillstxt : "\n\n" + toUni("Warlock (Beguiling Influence)") + ": Deception and Persuasion."
 				},
 				"bewitching whispers (prereq: level 7 warlock)" : {
 					name : "Bewitching Whispers",
@@ -1423,6 +1425,7 @@ var ClassList = {
 						selection : ["compulsion"],
 						oncelr : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 7"
 				},
 				"book of ancient secrets (prereq: pact of the tome)" : {
 					name : "Book of Ancient Secrets",
@@ -1430,6 +1433,7 @@ var ClassList = {
 					source : ["P", 110],
 					eval : "CurrentSpells[\"book of ancient secrets\"] = {name : \"Book of Ancient Secrets\", ability : 6, list : {class : \"any\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds();",
 					removeeval : "delete CurrentSpells[\"book of ancient secrets\"]; SetStringifieds();",
+					prereqeval : "classes.known.warlock.level >= 3 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the tome') !== -1"
 				},
 				"chains of carceri (prereq: level 15 warlock, pact of the chain)" : {
 					name : "Chains of Carceri",
@@ -1441,6 +1445,7 @@ var ClassList = {
 						selection : ["hold monster"],
 						oncelr : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 15 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the chain') !== -1"
 				},
 				"devil's sight" : {
 					name : "Devil's Sight",
@@ -1461,6 +1466,7 @@ var ClassList = {
 						selection : ["confusion"],
 						oncelr : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 7"
 				},
 				"eldritch sight" : {
 					name : "Eldritch Sight",
@@ -1471,7 +1477,7 @@ var ClassList = {
 						spells : ["detect magic"],
 						selection : ["detect magic"],
 						atwill : true,
-					},
+					}
 				},
 				"eldritch spear (prereq: eldritch blast cantrip)" : {
 					name : "Eldritch Spear",
@@ -1479,11 +1485,12 @@ var ClassList = {
 					source : ["P", 111],
 					eval : "var AB = (What(\"Extra.Notes\").search(/agonizing blast/i) !== -1); RemoveWeapon(\"eldritch blast\"); RemoveWeapon(\"eldritch spear\"); RemoveWeapon(\"agonizing blast\"); if (AB) {AddWeapon(\"Agonizing Spear\")} else {AddWeapon(\"Eldritch Spear\")}",
 					removeeval : "RemoveWeapon(\"eldritch spear\"); RemoveWeapon(\"agonizing spear\"); var AB = (What(\"Extra.Notes\").search(/agonizing blast/i) !== -1); if (AB) {AddWeapon(\"Agonizing Blast\")} else {AddWeapon(\"Eldritch Blast\")}",
+					prereqeval : "hasEldritchBlast"
 				},
 				"eyes of the rune keeper" : {
 					name : "Eyes of the Rune Keeper",
 					description : "\n   " + "I can read all writing",
-					source : ["P", 111],
+					source : ["P", 111]
 				},
 				"fiendish vigor" : {
 					name : "Fiendish Vigor",
@@ -1494,12 +1501,12 @@ var ClassList = {
 						spells : ["false life"],
 						selection : ["false life"],
 						atwill : true,
-					},
+					}
 				},
 				"gaze of two minds" : {
 					name : "Gaze of Two Minds",
 					description : "\n   " + "As an action, I can touch a willing creature and perceive through its senses (not my own)" + "\n   " + "This lasts until the end of my next turn, but I can use an action to extend the duration",
-					source : ["P", 111],
+					source : ["P", 111]
 				},
 				"lifedrinker (prereq: level 12 warlock, pact of the blade)" : {
 					name : "Lifedrinker",
@@ -1507,7 +1514,8 @@ var ClassList = {
 					source : ["P", 111],
 					calcChanges : {
 						atkCalc : ["if (isMeleeWeapon && WeaponText.match(/\\bpact\\b/i)) { output.extraDmg += What('Cha Mod'); }; ", "If I include the word 'Pact' in a melee weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."]
-					}
+					},
+					prereqeval : "classes.known.warlock.level >= 12 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the blade') !== -1"
 				},
 				"mask of many faces" : {
 					name : "Mask of Many Faces",
@@ -1518,7 +1526,7 @@ var ClassList = {
 						spells : ["disguise self"],
 						selection : ["disguise self"],
 						atwill : true,
-					},
+					}
 				},
 				"master of myriad forms (prereq: level 15 warlock)" : {
 					name : "Master of Myriad Forms",
@@ -1530,6 +1538,7 @@ var ClassList = {
 						selection : ["alter self"],
 						atwill : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 15"
 				},
 				"minions of chaos (prereq: level 9 warlock)" : {
 					name : "Minions of Chaos",
@@ -1543,6 +1552,7 @@ var ClassList = {
 						selection : ["conjure elemental"],
 						oncelr : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 9"
 				},
 				"mire the mind (prereq: level 5 warlock)" : {
 					name : "Mire the Mind",
@@ -1556,6 +1566,7 @@ var ClassList = {
 						selection : ["slow"],
 						oncelr : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 5"
 				},
 				"misty visions" : {
 					name : "Misty Visions",
@@ -1566,13 +1577,14 @@ var ClassList = {
 						spells : ["silent image"],
 						selection : ["silent image"],
 						atwill : true,
-					},
+					}
 				},
 				"one with shadows (prereq: level 5 warlock)" : {
 					name : "One with Shadows",
 					description : "\n   " + "As an action, when I'm in an area of dim light or darkness, I can become invisible" + "\n   " + "I become visible again when I move or take an action or reaction",
 					source : ["P", 111],
-					action : ["action", ""]
+					action : ["action", ""],
+					prereqeval : "classes.known.warlock.level >= 5"
 				},
 				"otherworldly leap (prereq: level 9 warlock)" : {
 					name : "Otherworldly Leap",
@@ -1584,6 +1596,7 @@ var ClassList = {
 						selection : ["jump"],
 						atwill : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 9"
 				},
 				"repelling blast (prereq: eldritch blast cantrip)" : {
 					name : "Repelling Blast",
@@ -1591,7 +1604,8 @@ var ClassList = {
 					source : ["P", 111],
 					calcChanges : {
 						atkAdd : ["if (theWea && theWea.name.match(/eldritch blast/i)) {fields.Description += '; Target pushed back 10 ft'; }; ", "When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."]
-					}
+					},
+					prereqeval : "hasEldritchBlast"
 				},
 				"sculptor of flesh (prereq: level 7 warlock)" : {
 					name : "Sculptor of Flesh",
@@ -1605,6 +1619,7 @@ var ClassList = {
 						selection : ["polymorph"],
 						oncelr : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 7"
 				},
 				"sign of ill omen (prereq: level 5 warlock)" : {
 					name : "Sign of Ill Omen",
@@ -1618,6 +1633,7 @@ var ClassList = {
 						selection : ["bestow curse"],
 						oncelr : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 5"
 				},
 				"thief of five fates" : {
 					name : "Thief of Five Fates",
@@ -1630,14 +1646,15 @@ var ClassList = {
 						spells : ["bane"],
 						selection : ["bane"],
 						oncelr : true,
-					},
+					}
 				},
 				"thirsting blade (prereq: level 5 warlock, pact of the blade)" : {
 					name : "Thirsting Blade",
 					description : "\n   " + "When taking the attack action, I can attack twice with my pact weapon",
 					source : ["P", 111],
 					eval : "AddAction(\"action\", \"Pact Weapon (2 attacks per action)\", \"Thirsting Blade (warlock invocation)\");",
-					removeeval : "RemoveAction(\"action\", \"Pact Weapon (2 attacks per action)\");"
+					removeeval : "RemoveAction(\"action\", \"Pact Weapon (2 attacks per action)\");",
+					prereqeval : "classes.known.warlock.level >= 5 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the blade') !== -1"
 				},
 				"visions of distant realms (prereq: level 15 warlock)" : {
 					name : "Visions of Distant Realms",
@@ -1649,11 +1666,13 @@ var ClassList = {
 						selection : ["arcane eye"],
 						atwill : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 15"
 				},
 				"voice of the chain master (prereq: pact of the chain)" : {
 					name : "Voice of the Chain Master",
 					description : "\n   " + "While on the same plane as my familiar, I can communicate telepathically with it" + "\n   " + "Also, I can perceive through its senses and have it speak with my voice while doing so",
 					source : ["P", 111],
+					prereqeval : "classes.known.warlock.level >= 3 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the chain') !== -1"
 				},
 				"whispers of the grave (prereq: level 9 warlock)" : {
 					name : "Whispers of the Grave",
@@ -1665,6 +1684,7 @@ var ClassList = {
 						selection : ["speak with dead"],
 						atwill : true,
 					},
+					prereqeval : "classes.known.warlock.level >= 9"
 				},
 				"witch sight (prereq: level 15 warlock)" : {
 					name : "Witch Sight",
@@ -1672,6 +1692,7 @@ var ClassList = {
 					source : ["P", 111],
 					eval : "AddString(\"Vision\", \"Witch Sight 30 ft\", \"; \");",
 					removeeval : "RemoveString(\"Vision\", \"Witch Sight 30 ft\", \"; \");",
+					prereqeval : "classes.known.warlock.level >= 15"
 				},
 			},
 			"pact boon" : {
@@ -1811,8 +1832,8 @@ var ClassSubList = {
 				description : "\n   " + "I gain proficiency with spiked armor as a weapon" + "\n   " + "As a bonus action while raging, I can attack once with my armor spikes",
 				action : ["bonus action", " attack (in rage)"],
 				weapons : [false, false, ["armor spikes"]],
-				eval : "AddString(\"Proficiency Armor Other Description\", \"Spiked Armor\", \", \"); AddWeapon(\"Armor Spikes\");",
-				removeeval : "RemoveWeapon(\"Armor Spikes\"); RemoveString(\"Proficiency Armor Other Description\", \"Spiked Armor\");"
+				eval : "AddString('Proficiency Armor Other Description', 'Spiked Armor', ', '); AddWeapon('Armor Spikes');",
+				removeeval : "RemoveWeapon('Armor Spikes'); RemoveString('Proficiency Armor Other Description', 'Spiked Armor');"
 			},
 			"subclassfeature6" : {
 				name : "Reckless Abandon",
@@ -3116,6 +3137,7 @@ var ClassSubList = {
 						firstCol : 6,
 					},
 					spellFirstColTitle : "Ki",
+					prereqeval : "classes.known.monk.level >= 17"
 				},
 				"clench of the north wind (prereq: level 6 monk)" : {
 					name : "Clench of the North Wind",
@@ -3129,6 +3151,7 @@ var ClassSubList = {
 						firstCol : 3,
 					},
 					spellFirstColTitle : "Ki",
+					prereqeval : "classes.known.monk.level >= 6"
 				},
 				"eternal mountain defense (prereq: level 11 monk)" : {
 					name : "Eternal Mountain Defense",
@@ -3142,6 +3165,7 @@ var ClassSubList = {
 						firstCol : 5,
 					},
 					spellFirstColTitle : "Ki",
+					prereqeval : "classes.known.monk.level >= 11"
 				},
 				"fangs of the fire snake" : {
 					name : "Fangs of the Fire Snake",
@@ -3162,7 +3186,7 @@ var ClassSubList = {
 						selection : ["thunderwave"],
 						firstCol : 2,
 					},
-					spellFirstColTitle : "Ki",
+					spellFirstColTitle : "Ki"
 				},
 				"fist of unbroken air" : {
 					name : "Fist of Unbroken Air",
@@ -3182,6 +3206,7 @@ var ClassSubList = {
 						firstCol : 4,
 					},
 					spellFirstColTitle : "Ki",
+					prereqeval : "classes.known.monk.level >= 11"
 				},
 				"gong of the summit (prereq: level 6 monk)" : {
 					name : "Gong of the Summit",
@@ -3195,6 +3220,7 @@ var ClassSubList = {
 						firstCol : 3,
 					},
 					spellFirstColTitle : "Ki",
+					prereqeval : "classes.known.monk.level >= 6"
 				},
 				"mist stance (prereq: level 11 monk)" : {
 					name : "Mist Stance",
@@ -3208,6 +3234,7 @@ var ClassSubList = {
 						firstCol : 4,
 					},
 					spellFirstColTitle : "Ki",
+					prereqeval : "classes.known.monk.level >= 11"
 				},
 				"ride the wind (prereq: level 11 monk)" : {
 					name : "Ride the Wind",
@@ -3221,6 +3248,7 @@ var ClassSubList = {
 						firstCol : 4,
 					},
 					spellFirstColTitle : "Ki",
+					prereqeval : "classes.known.monk.level >= 11"
 				},
 				"rive of hungry flame (prereq: level 17 monk)" : {
 					name : "Rive of Hungry Flame",
@@ -3234,6 +3262,7 @@ var ClassSubList = {
 						firstCol : 5,
 					},
 					spellFirstColTitle : "Ki",
+					prereqeval : "classes.known.monk.level >= 17"
 				},
 				"rush of the gale spirits" : {
 					name : "Rush of the Gale Spirits",
@@ -3246,7 +3275,7 @@ var ClassSubList = {
 						selection : ["gust of wind"],
 						firstCol : 2,
 					},
-					spellFirstColTitle : "Ki",
+					spellFirstColTitle : "Ki"
 				},
 				"shape the flowing river" : {
 					name : "Shape the Flowing River",
@@ -3265,7 +3294,7 @@ var ClassSubList = {
 						selection : ["burning hands"],
 						firstCol : 2,
 					},
-					spellFirstColTitle : "Ki",
+					spellFirstColTitle : "Ki"
 				},
 				"water whip" : {
 					name : "Water Whip",
@@ -3285,6 +3314,7 @@ var ClassSubList = {
 						firstCol : 6,
 					},
 					spellFirstColTitle : "Ki",
+					prereqeval : "classes.known.monk.level >= 17"
 				},
 			}
 		}
