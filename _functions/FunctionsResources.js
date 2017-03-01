@@ -209,7 +209,13 @@ function resourceDecisionDialog() {
 		var spellSources = [];
 		for (var u in SpellsList) {
 			var sSource = SpellsList[u].source;
-			aSource = isArray(sSource) ? sSource[0] : sSource;
+			var aSource = isArray(sSource) ? sSource[0] : sSource;
+			if (aSource && spellSources.indexOf(aSource) === -1) spellSources.push(aSource);
+		}
+		for (var aClass in ClassList) {
+			var cSource = ClassList[aClass].source;
+			if (!cSource || !ClassList[aClass].spellcastingFactor || aClass === "rangerua") continue;
+			aSource = isArray(cSource) ? cSource[0] : cSource;
 			if (aSource && spellSources.indexOf(aSource) === -1) spellSources.push(aSource);
 		}
 	}
@@ -252,7 +258,7 @@ function resourceDecisionDialog() {
 		try {
 			var mons = app.monitors.primary();
 			var resHigh = mons && mons[0] && mons[0].rect ? mons[0].rect[3] : false;
-			if (resHigh && resHigh < 800) selBoxHeight = 250 - Math.min(100, 850 - resHigh);
+			if (resHigh && resHigh < 800) selBoxHeight = 250 - Math.min(100, 825 - resHigh);
 			tries = 100;
 		} catch (e) {
 			tries += 1;

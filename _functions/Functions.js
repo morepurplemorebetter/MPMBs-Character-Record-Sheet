@@ -1254,7 +1254,7 @@ function Import(type) {
 	thermoM(); //stop any and all progress dialogs
 	
 	//re-apply stuff just as when starting the sheet
-	InitializeEverything();
+	InitializeEverything(false, true);
 	
 	tDoc.dirty = true;
 };

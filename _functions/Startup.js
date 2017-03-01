@@ -1,5 +1,5 @@
 //functions to call at startup (in the right order)
-function InitializeEverything(noButtons) {
+function InitializeEverything(noButtons, noVars) {
 	if (!minVer) Hide("d20warning");
 	tDoc.delay = true;
 	tDoc.calculate = false;
@@ -16,7 +16,7 @@ function InitializeEverything(noButtons) {
 	
 	if (!minVer) {
 		setListsUnitSystem(false, true);
-		UAstartupCode();
+		if (!noVars) UAstartupCode();
 		FindClasses();
 		FindRace();
 		FindCompRace();
@@ -30,7 +30,7 @@ function InitializeEverything(noButtons) {
 		ApplyProficiencies(false);
 		UpdateTooltips();
 		SetRichTextFields();
-	} else if (tDoc.info.SpellsOnly) {
+	} else if (tDoc.info.SpellsOnly && !noVars) {
 		AmendSpellsList();
 	};
 	

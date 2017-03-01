@@ -1008,7 +1008,7 @@ function DirectImport(consoleTrigger) {
 	
 	// A pop-up to inform the user of the changes
 	if (!closeAlert) {
-		InitializeEverything(consoleTrigger);
+		InitializeEverything(consoleTrigger, true);
 		tDoc.dirty = true;
 		
 		var aText = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
