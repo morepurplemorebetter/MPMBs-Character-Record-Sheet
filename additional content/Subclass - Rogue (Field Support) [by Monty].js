@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Rogue, called "Field Support"
-				This subclass is made by Monty and can be found here: https://docs.google.com/document/d/1jnay6qUwoHeqyYPUVYfnIMOf9DkNp2WerLFqUNTq2dY/edit
+				This subclass is made by Monty and can be found here: https://www.dropbox.com/s/49lcya9a11xmoi1/Field%20Support%2C%20Roguish%20Archetype.pdf?dl=0
 	Code by:	Monty & MorePurpleMoreBetter
 	Date:		2016-11-21 (sheet v12.59)
 */
