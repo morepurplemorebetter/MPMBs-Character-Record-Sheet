@@ -4390,7 +4390,7 @@ var CreatureList = {
 		attacksAction : 1,
 		attacks : [{
 				name : "Bite",
-				ability : 1,
+				ability : 2,
 				damage : [2, 4, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "Target must succeed on a DC 11 Strength saving throw or be knocked prone",
