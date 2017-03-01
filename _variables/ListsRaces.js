@@ -127,7 +127,7 @@ var RaceList = {
 				additional : ["", "", "+3 damage", "+4 damage", "+5 damage", "+6 damage", "+7 damage", "+8 damage", "+9 damage", "+10 damage", "+11 damage", "+12 damage", "+13 damage", "+14 damage", "+15 damage", "+16 damage", "+17 damage", "+18 damage", "+19 damage", "+20 damage"],
 				action : ["action", " (start)"],
 				eval : "AddAction(\"bonus action\", \"Necrotic Shroud (end)\", \"being a Fallen Aasimar\");",
-				removeeval : "RemoveAction(\"bonus action\", \"Necrotic Shroud (end)\", \"being a Fallen Aasimar\");",
+				removeeval : "RemoveAction(\"bonus action\", \"Necrotic Shroud (end)\");",
 			}
 		}
 	},
@@ -174,7 +174,7 @@ var RaceList = {
 				additional : ["", "", "+3 damage", "+4 damage", "+5 damage", "+6 damage", "+7 damage", "+8 damage", "+9 damage", "+10 damage", "+11 damage", "+12 damage", "+13 damage", "+14 damage", "+15 damage", "+16 damage", "+17 damage", "+18 damage", "+19 damage", "+20 damage"],
 				action : ["action", " (start)"],
 				eval : "AddAction(\"bonus action\", \"Radiant Soul (end)\", \"being a Protector Aasimar\");",
-				removeeval : "RemoveAction(\"bonus action\", \"Radiant Soul (end)\", \"being a Protector Aasimar\");",
+				removeeval : "RemoveAction(\"bonus action\", \"Radiant Soul (end)\");",
 			}
 		}
 	},
@@ -221,7 +221,7 @@ var RaceList = {
 				additional : ["", "", "1/3 damage", "2/4 damage", "2/5 damage", "3/6 damage", "3/7 damage", "4/8 damage", "4/9 damage", "5/10 damage", "5/11 damage", "6/12 damage", "6/13 damage", "7/14 damage", "7/15 damage", "8/16 damage", "8/17 damage", "9/18 damage", "9/19 damage", "10/20 damage"],
 				action : ["action", " (start)"],
 				eval : "AddAction(\"bonus action\", \"Radiant Consumption (end)\", \"being a Scourge Aasimar\");",
-				removeeval : "RemoveAction(\"bonus action\", \"Radiant Consumption (end)\", \"being a Scourge Aasimar\");",
+				removeeval : "RemoveAction(\"bonus action\", \"Radiant Consumption (end)\");",
 			}
 		}
 	},

@@ -1041,7 +1041,7 @@ function RemoveAction(actiontype, action, isRegex) {
 	} else if (TheAction.indexOf("action") !== -1) {
 		var field = "Action ";
 	}
-	action = isRegex ? action : action.toLowerCase();
+	action = isRegex == true ? action : action.toLowerCase();
 	var numberOfFields = field === "Action " ? FieldNumbers.trueactions : FieldNumbers.actions;
 	for (var i = 1; i <= numberOfFields; i++) {
 		var next = tDoc.getField(field + i);
@@ -4617,8 +4617,7 @@ function RemoveRace() {
 			var theRemoveeval = What("Unit System") === "metric" && CurrentRace.removeeval.indexOf("String") !== -1 ? ConvertToMetric(CurrentRace.removeeval, 0.5) : CurrentRace.removeeval;
 			eval(theRemoveeval);
 		};
-		CurrentRace.level = 0;
-		UpdateLevelFeatures("race");
+		UpdateLevelFeatures("race", 0);
 		return;
 	} else if (CurrentRace.known) {
 		//remove necessary race information such as height, weight, age, traits, languages
@@ -4687,15 +4686,21 @@ function RemoveRace() {
 				RemoveWeapon(CurrentRace.weapons[i]);
 			}
 		};
+		/*
 		if (CurrentRace.features) {
 			for (var key in CurrentRace.features) {
-				var FeaUse = isArray(CurrentRace.features[key].usages) ? CurrentRace.features[key].usages[CurrentRace.level - 1] : CurrentRace.features[key].usages;
-				RemoveFeature(CurrentRace.features[key].name, FeaUse);
-				if (CurrentRace.features[key].action) {
-					RemoveAction(CurrentRace.features[key].action[0], CurrentRace.features[key].name + CurrentRace.features[key].action[1]);
+				var keyFea = CurrentRace.features[key];
+				var FeaUse = isArray(keyFea.usages) ? keyFea.usages[CurrentRace.level - 1] : keyFea.usages;
+				RemoveFeature(keyFea.name, FeaUse);
+				if (keyFea.action) {
+					RemoveAction(keyFea.action[0], keyFea.name + keyFea.action[1]);
+				}
+				if (keyFea.calcChanges) {
+					addEvals(keyFea.calcChanges, [keyFea.name, CurrentRace.name], false);
 				}
 			}
 		};
+		*/
 
 		//run custom code included in race
 		if (CurrentRace.removeeval) {
@@ -4706,8 +4711,7 @@ function RemoveRace() {
 		//remove the race from the CurrentSpells variable
 		delete CurrentSpells[CurrentRace.known];
 
-		CurrentRace.level = 0;
-		UpdateLevelFeatures("race");
+		UpdateLevelFeatures("race", 0);
 		ApplyProficiencies(true); //call to update the armor, shield and weapon proficiencies
 		UpdateTooltips(); //skills tooltip, ability score tooltip
 	};
@@ -5565,7 +5569,7 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice) {
 }
 
 //change all the level-variables gained from classes and races
-function UpdateLevelFeatures(Typeswitch) {
+function UpdateLevelFeatures(Typeswitch, raceLvl) {
 	if (!IsNotReset) return; //stop this function on a reset
 	
 	thermoM("start"); //start a progress dialog
@@ -5576,7 +5580,7 @@ function UpdateLevelFeatures(Typeswitch) {
 	var isWildShape = false;
 
 	var oldRaceLvl = Number(CurrentRace.level);
-	var newRaceLvl = What("Character Level");
+	var newRaceLvl = raceLvl !== undefined ? raceLvl : What("Character Level");
 
 	//check if race level went up (RaceLevelUp[0] = true) down (RaceLevelUp[0] = false), or nothing has changed (RaceLevelUp[0] = "stop"); RaceLevelUp[1] = lowest lvl, RaceLevelUp[2] = highest lvl
 	var RaceLevelUp = [true, oldRaceLvl, newRaceLvl];
@@ -5593,20 +5597,20 @@ function UpdateLevelFeatures(Typeswitch) {
 			for (var key in CurrentRace.features) {
 				// now we know whether to add or remove features
 				var keyFea = CurrentRace.features[key];
-				var GoAnyway = keyFea.minlevel <= newRaceLvl;
+				var GoAnyway = false;
 				thermoM("Updating " + CurrentRace.name + "'s " + keyFea.name + "..."); //change the progress dialog text
 
 				var FeaUse = keyFea.usages;
-				if (FeaUse && isArray(FeaUse) && newRaceLvl > 0) {
-					FeaUse = FeaUse[newRaceLvl - 1];
-					var FeaUseOld = oldRaceLvl > 0 ? FeaUse[oldRaceLvl - 1] : 0;
-					GoAnyway = GoAnyway && FeaUse !== FeaUseOld;
+				if (FeaUse && isArray(FeaUse)) {
+					FeaUse = newRaceLvl ? FeaUse[newRaceLvl - 1] : 0;
+					var FeaUseOld = oldRaceLvl ? FeaUse[oldRaceLvl - 1] : 0;
+					GoAnyway = FeaUse !== FeaUseOld;
 				}
 
 				var FeaAdd = keyFea.additional ? " (" + keyFea.additional + ")" : "";
 				if (FeaAdd && isArray(keyFea.additional)) {
-					FeaAdd = " (" + keyFea.additional[newRaceLvl - 1] + ")";
-					GoAnyway = GoAnyway || (keyFea.minlevel <= newRaceLvl && keyFea.additional[newRaceLvl - 1] !== keyFea.additional[oldRaceLvl - 1]);
+					FeaAdd = newRaceLvl ? " (" + keyFea.additional[newRaceLvl - 1] + ")" : "";
+					GoAnyway = GoAnyway || (oldRaceLvl && keyFea.additional[newRaceLvl - 1] !== keyFea.additional[oldRaceLvl - 1]);
 				}
 				
 				//see if we are going to add or remove a feature
@@ -5618,7 +5622,7 @@ function UpdateLevelFeatures(Typeswitch) {
 				//add, remove, or update the feature
 				if (keyFea.usages && (GoAnyway || checkLVL)) {
 					var FeaTooltip = CurrentRace.name + keyFea.tooltip;
-					var AddRemoveFea = AddRemove === "Add" && FeaUse && RaceLevelUp[0] && FeaUse.search(/unlimited|\u221E/i) === -1 ? "Add" : "Remove";
+					var AddRemoveFea = AddRemove === "Add" && FeaUse && FeaUse.search(/unlimited|\u221E/i) === -1 ? "Add" : "Remove";
 					tDoc[AddRemoveFea + "Feature"](keyFea.name, AddRemoveFea === "Remove" ? FeaUseOld : FeaUse, FeaAdd, keyFea.recovery, FeaTooltip, FeaUseOld);
 				}
 				
@@ -5626,13 +5630,13 @@ function UpdateLevelFeatures(Typeswitch) {
 
 				//add or remove action, if defined
 				if (keyFea.action && checkLVL) {
-					tDoc[AddRemove + "Action"](keyFea.action[0], keyFea.name + keyFea.action[1], "being a " + CurrentRace.name);
+					tDoc[AddRemove + "Action"](keyFea.action[0], keyFea.name + keyFea.action[1], AddRemove === "Add" ? "being a " + CurrentRace.name : false);
 				}
 
 				//do custom script, if defined
-				if (AddRemove === "Add" && keyFea.eval && (GoAnyway || checkLVL)) {
+				if (AddRemove === "Add" && keyFea.eval && checkLVL) {
 					eval(keyFea.eval);
-				} else if (AddRemove === "Remove" && keyFea.removeeval && (GoAnyway || checkLVL)) {
+				} else if (AddRemove === "Remove" && keyFea.removeeval && checkLVL) {
 					eval(keyFea.removeeval);
 				}
 
@@ -6028,7 +6032,7 @@ function MakeClassMenu() {
 
 	var ClassMenu = [], toTest = "";
 	var toTestE = What("Extra.Notes") + What("Class Features");
-	var hasEldritchBlast = isSpellUsed("eldritch blast") ? true : false;
+	var hasEldritchBlast = isSpellUsed("eldritch blast").length || CurrentWeapons.known.toString().match(/(eldritch|agonizing) (blast|spear)/i);
 	
 	for (var aClass in classes.known) {
 		var classname = aClass;
@@ -6283,6 +6287,7 @@ function ClassFeatureOptions(Input, AddOrRemove) {
 		
 		thermoM("stop"); //stop the top progress dialog
 		SetStringifieds(); //set the global variables to their fields for future reference
+		if (!Input && forceReCalcWeapons) ReCalcWeapons();
 	}
 	
 	tDoc.calculate = IsNotReset;

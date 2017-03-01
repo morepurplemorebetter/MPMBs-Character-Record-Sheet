@@ -5754,7 +5754,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			theWea.description.match(/finesse/i) ? StrDex : theWea.ability;
 		
 		//change mod if this is concerning a spell/cantrip
-		if (thisWeapon[3]) {
+		if (thisWeapon[3] && thisWeapon[4].length) {
 			var abiArr = thisWeapon[4].map( function(sClass) {
 				return CurrentSpells[sClass] && CurrentSpells[sClass].ability ? CurrentSpells[sClass].ability : 0;
 			});

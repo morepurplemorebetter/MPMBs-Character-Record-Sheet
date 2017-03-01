@@ -5048,5 +5048,5 @@ function isSpellUsed(spll) {
 			}
 		}
 	};
-	return rtrnA.length ? rtrnA : false;
+	return rtrnA;
 };
