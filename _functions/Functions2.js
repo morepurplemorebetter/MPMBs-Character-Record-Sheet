@@ -5621,7 +5621,7 @@ function addEvals(evalObj, NameEntity, Add) {
 		if (evalObj[atkT][1]) atkStr += "\n - " + evalObj[atkT][1];
 		if (Add) {
 			if (!CurrentEvals[atkT]) CurrentEvals[atkT] = "";
-			if (!CurrentEvals[atkT].match(evalObj[atkT][0])) CurrentEvals[atkT] += evalObj[atkT][0];
+			if (CurrentEvals[atkT].indexOf(evalObj[atkT][0]) === -1) CurrentEvals[atkT] += evalObj[atkT][0];
 		} else if (CurrentEvals[atkT]) {
 			CurrentEvals[atkT] = CurrentEvals[atkT].replace(evalObj[atkT][0], "");
 		}
@@ -5629,7 +5629,7 @@ function addEvals(evalObj, NameEntity, Add) {
 	if (atkStr) {
 		if (Add) {
 			if (!CurrentEvals.atkStr) CurrentEvals.atkStr = "";
-			if (!CurrentEvals.atkStr.match(atkStr)) CurrentEvals.atkStr += atkStr;
+			if (CurrentEvals.atkStr.indexOf(atkStr) === -1) CurrentEvals.atkStr += atkStr;
 		} else if (atkStr && CurrentEvals.atkStr) {
 			CurrentEvals.atkStr = CurrentEvals.atkStr.replace(atkStr, "");
 		}
@@ -5640,7 +5640,7 @@ function addEvals(evalObj, NameEntity, Add) {
 	if (evalObj.hp) {
 		if (Add) {
 			if (!CurrentEvals.hp) CurrentEvals.hp = "";
-			if (!CurrentEvals.hp.match(evalObj.hp)) CurrentEvals.hp += evalObj.hp;
+			if (CurrentEvals.hp.indexOf(evalObj.hp) === -1) CurrentEvals.hp += evalObj.hp;
 		} else if (CurrentEvals.hp) {
 			CurrentEvals.hp = CurrentEvals.hp.replace(evalObj.hp, "");
 		};

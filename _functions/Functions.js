@@ -9244,7 +9244,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 				}
 			}
 			
-			var delimiter = measurements[i].match("-") ? "-" : " ";
+			var delimiter = measurements[i].match(/-/) ? "-" : " ";
 			
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
@@ -9324,7 +9324,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 				var resulted = theConvert(parseFloat(org), orgUnit);
 			}
 			
-			var delimiter = measurements[i].match("-") ? "-" : " ";
+			var delimiter = measurements[i].match(/-/) ? "-" : " ";
 			
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
