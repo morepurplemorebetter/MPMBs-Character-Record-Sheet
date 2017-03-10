@@ -1,17 +1,16 @@
 function AbilityScores_Button() {
 	var Header0 = "Calculate the Ability Scores";
 	var MainTxt0 = "Here you can edit the ability scores using the components they are made up off.";
-	MainTxt0 += "\n\nPlease use the lists below as a reference for what your character can do with its ability scores.";
-	MainTxt0 += "\n\nAbility score improvements gained from classes cannot take the total over 20.";
-	MainTxt0 += "\n\nThe standard array is: 15, 14, 13, 12, 10, and 8.";
-	MainTxt0 += "\n\nStandard Point Buy is 27 points. You can't go higher than 15 before racial modifiers.";
+	MainTxt0 += "\nPlease use the lists below as a reference for what your character can do with its ability scores.";
+	MainTxt0 += "\n\nThe standard array is: 15, 14, 13, 12, 10, and 8. Standard Point Buy is 27 points. You can't go higher than 15 before racial modifiers.";
+	MainTxt0 += "\n\nAbility score improvements gained from class cannot take the total over 20.";
 
 	var Header2 = "Improvements from Race and Feats ";
 	var MainTxt2 = AbilityScores.improvements.racefeats.replace("\n", "");
 	var Txt2Height = !MainTxt2 ? 0 : 30 + (MainTxt2.match(/\n/g) || []).length * 15;
 
-	var Header3 = "Improvements from Class Level(s)";
-	var MainTxt3 = AbilityScores.improvements.classlvl ? "2 points to ability scores or 1 feat.\n" + AbilityScores.improvements.classlvl.replace("\n", "") : "";
+	var Header3 = "Improvements from Class Levels";
+	var MainTxt3 = AbilityScores.improvements.classlvl ? "Add 2 points to ability scores -or- take 1 feat.\n" + AbilityScores.improvements.classlvl.replace("\n", "") : "";
 	var Txt3Height = !MainTxt3 ? 0 : 30 + (MainTxt3.match(/\n/g) || []).length * 15;
 
 	var Header4 = "Primary Scores";
@@ -91,18 +90,22 @@ function AbilityScores_Button() {
 				"EHoS" : enableHoS,
 				"mHoS" : enableHoS,
 				"tHoS" : enableHoS,
+				"Hea2" : MainTxt2 !== "",
+				"Hea3" : MainTxt3 !== "",
+				"Hea4" : MainTxt4 !== "",
+				"Hea5" : MainTxt5 !== ""
 			});			
 			
 			dialog.load({
 				"Hea0" : Header0,
 				"txt0" : MainTxt0,
-				"Hea2" : !MainTxt2 ? "" : Header2,
+				"Hea2" : Header2,
 				"txt2" : MainTxt2,
-				"Hea3" : !MainTxt3 ? "" : Header3,
+				"Hea3" : Header3,
 				"txt3" : MainTxt3,
-				"Hea4" : !MainTxt4 ? "" : Header4,
+				"Hea4" : Header4,
 				"txt4" : MainTxt4,
-				"Hea5" : !MainTxt5 ? "" : Header5,
+				"Hea5" : Header5,
 				"txt5" : MainTxt5,
 				"oNm0" : "Current Score",
 				"oStr" : ASround(What("Str")),
@@ -653,104 +656,85 @@ function AbilityScores_Button() {
 									font : "heading",
 									bold : true,
 									height : 21,
-									char_width : 50,
+									char_width : 65,
 								}, {
 									type : "static_text",
 									item_id : "txt0",
 									alignment : "align_fill",
 									font : "dialog",
-									char_height : 14,
-									char_width : 50,
+									char_height : 10,
+									char_width : 65,
 								}, {
 									type : "view",
-									char_width : 50,
+									char_width : 65,
 									align_children : "align_distribute",
 									elements : [{
-											type : "view",
+										type : "view",
+										align_children : "align_left",
+										elements : [{
+											type : "cluster",
 											alignment : "align_left",
+											item_id : "Hea2",
+											font : "dialog",
+											bold : true,
 											elements : [{
-													type : "static_text",
-													item_id : "Hea2",
-													alignment : "align_fill",
-													font : "dialog",
-													bold : true,
-													char_width : 24,
-												}, {
-													type : "static_text",
-													item_id : "txt2",
-													alignment : "align_fill",
-													font : "dialog",
-													height : Txt2Height,
-													char_width : 24,
-												}
-											]
+												type : "static_text",
+												item_id : "txt2",
+												alignment : "align_fill",
+												font : "dialog",
+												height : Txt2Height,
+												char_width : 32
+											}]
 										}, {
-											type : "view",
-											alignment : "align_right",
-											elements : [{
-													type : "static_text",
-													item_id : "Hea3",
-													alignment : "align_fill",
-													font : "dialog",
-													bold : true,
-													char_width : 24,
-												}, {
-													type : "static_text",
-													item_id : "txt3",
-													alignment : "align_fill",
-													font : "dialog",
-													height : Txt3Height,
-													char_width : 24,
-												}
-											]
-										}
-									]
-								}, {
-									type : "view",
-									char_width : 49,
-									align_children : "align_distribute",
-									elements : [{
-											type : "view",
+											type : "cluster",
 											alignment : "align_left",
+											item_id : "Hea4",
+											font : "dialog",
+											bold : true,
 											elements : [{
-													type : "static_text",
-													item_id : "Hea4",
-													alignment : "align_fill",
-													font : "dialog",
-													bold : true,
-													char_width : 25,
-												}, {
-													type : "static_text",
-													item_id : "txt4",
-													alignment : "align_fill",
-													font : "dialog",
-													height : Txt4Height,
-													char_width : 25,
-												}
-											]
-										}, {
-											type : "view",
+												type : "static_text",
+												item_id : "txt4",
+												alignment : "align_fill",
+												font : "dialog",
+												height : Txt4Height,
+												char_width : 32
+											}]
+										}]
+									}, {
+										type : "view",
+										align_children : "align_right",
+										elements : [{
+											type : "cluster",
 											alignment : "align_right",
+											item_id : "Hea3",
+											font : "dialog",
+											bold : true,
 											elements : [{
-													type : "static_text",
-													item_id : "Hea5",
-													alignment : "align_fill",
-													font : "dialog",
-													bold : true,
-													char_width : 24,
-												}, {
-													type : "static_text",
-													item_id : "txt5",
-													alignment : "align_fill",
-													font : "dialog",
-													height : Txt5Height,
-													char_width : 24,
-												}
-											]
-										}
-									]
+												type : "static_text",
+												item_id : "txt3",
+												alignment : "align_fill",
+												font : "dialog",
+												height : Txt3Height,
+												char_width : 32
+											}]
+										}, {
+											type : "cluster",
+											alignment : "align_right",
+											item_id : "Hea5",
+											font : "dialog",
+											bold : true,
+											elements : [{
+												type : "static_text",
+												item_id : "txt5",
+												alignment : "align_fill",
+												font : "dialog",
+												height : Txt5Height,
+												char_width : 32
+											}]
+										}]
+									}]
 								}, {
-									type : "view",
+									type : "cluster",
 									align_children : "align_distribute",
 									elements : [{
 											type : "view",
