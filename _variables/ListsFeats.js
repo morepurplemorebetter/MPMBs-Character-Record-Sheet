@@ -3,7 +3,8 @@ var FeatsList = {
 		name : "Actor",
 		source : ["P", 165],
 		description : "Advantage on Charisma (Deception) and (Performance) if trying to pass as another. I can mimic a person's speech or other creature's sounds if I've heard it for at least 1 minute. Wisdom (Insight) vs. Charisma (Deception) to determine the sound is faked. [+1 Charisma]",
-		improvements : "Actor (feat): +1 Charisma;"
+		improvements : "Actor (feat): +1 Charisma;",
+		scores : [0, 0, 0, 0, 0, 1]
 	},
 	"alert" : {
 		name : "Alert",
@@ -61,7 +62,8 @@ var FeatsList = {
 		name : "Durable",
 		source : ["P", 166],
 		description : "When I roll a hit die to regain hit points, the minimum number of hit points I regain from the roll equals twice my Constitution modifier (minimum of 2). [+1 Constitution]",
-		improvements : "Durable (feat): +1 Constitution;"
+		improvements : "Durable (feat): +1 Constitution;",
+		scores : [0, 0, 1, 0, 0, 0]
 	},
 	"elemental adept" : {
 		name : "Elemental Adept",
@@ -100,6 +102,7 @@ var FeatsList = {
 		description : "I gain proficiency with heavy armor. [+1 Strength]",
 		prerequisite : "Proficiency with medium armor",
 		improvements : "Heavily Armored (feat): +1 Strength;",
+		scores : [1, 0, 0, 0, 0, 0],
 		armor : [false, false, true, false]
 	},
 	"heavy armor master" : {
@@ -107,7 +110,8 @@ var FeatsList = {
 		source : ["P", 167],
 		description : "While wearing heavy armor, bludgeoning, piercing, and slashing damage taken from nonmagical weapons is reduced by 3. [+1 Strength]",
 		prerequisite : "Proficiency with heavy armor",
-		improvements : "Heavy Armor Master (feat): +1 Strength;"
+		improvements : "Heavy Armor Master (feat): +1 Strength;",
+		scores : [1, 0, 0, 0, 0, 0]
 	},
 	"inspiring leader" : {
 		name : "Inspiring Leader",
@@ -119,7 +123,8 @@ var FeatsList = {
 		name : "Keen Mind",
 		source : ["P", 167],
 		description : "I always know which way is north and the number of hours left before the next sunrise or sunset. I can accurately recall anything I have seen or heard within the past month. [+1 Intelligence]",
-		improvements : "Keen Mind (feat): +1 Intelligence;"
+		improvements : "Keen Mind (feat): +1 Intelligence;",
+		scores : [0, 0, 0, 1, 0, 0]
 	},
 	"lightly armored" : {
 		name : "Lightly Armored",
@@ -133,6 +138,7 @@ var FeatsList = {
 		source : ["P", 167],
 		calculate : "event.value = \"I can ably create written ciphers that others can't decipher unless I teach them, they succeed on an Intelligence check DC \" + (What(\"Int\") + What(\"Proficiency Bonus\")) + \" (Intelligence score + proficiency bonus), or they use magic to decipher it. I learn three languages of my choice. [+1 Intelligence]\"",
 		improvements : "Linguist (feat): +1 Intelligence;",
+		scores : [0, 0, 0, 1, 0, 0],
 		eval : "AddLanguage(\"+3 from Linguist feat\", \"the Linguist feat\");",
 		removeeval : "RemoveLanguage(\"+3 from Linguist feat\", \"the Linguist feat\");"
 	},
@@ -248,6 +254,7 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "I gain proficiency with Strength saving throws. [+1 Strength]",
 		improvements : "Resilient (feat): +1 Strength;",
+		scores : [1, 0, 0, 0, 0, 0],
 		eval : "Checkbox(\"Str ST Prof\", true, \"Proficiency with Strength saving throw was gained from the Resilient feat\")",
 		removeeval : "Checkbox(\"Str ST Prof\", false, \"\")"
 
@@ -257,6 +264,7 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "I gain proficiency with Dexterity saving throws. [+1 Dexterity]",
 		improvements : "Resilient (feat): +1 Dexterity;",
+		scores : [0, 1, 0, 0, 0, 0],
 		eval : "Checkbox(\"Dex ST Prof\", true, \"Proficiency with Dexterity saving throw was gained from the Resilient feat\")",
 		removeeval : "Checkbox(\"Dex ST Prof\", false, \"\")"
 
@@ -266,6 +274,7 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "I gain proficiency with Constitution saving throws. [+1 Constitution]",
 		improvements : "Resilient (feat): +1 Constitution;",
+		scores : [0, 0, 1, 0, 0, 0],
 		eval : "Checkbox(\"Con ST Prof\", true, \"Proficiency with Constitution saving throw was gained from the Resilient feat\")",
 		removeeval : "Checkbox(\"Con ST Prof\", false, \"\")"
 
@@ -275,6 +284,7 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "I gain proficiency with Intelligence saving throws. [+1 Intelligence]",
 		improvements : "Resilient (feat): +1 Intelligence;",
+		scores : [0, 0, 0, 1, 0, 0],
 		eval : "Checkbox(\"Int ST Prof\", true, \"Proficiency with Intelligence saving throw was gained from the Resilient feat\")",
 		removeeval : "Checkbox(\"Int ST Prof\", false, \"\")"
 
@@ -284,6 +294,7 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "I gain proficiency with Wisdom saving throws. [+1 Wisdom]",
 		improvements : "Resilient (feat): +1 Wisdom;",
+		scores : [0, 0, 0, 0, 1, 0],
 		eval : "Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throw was gained from the Resilient feat\")",
 		removeeval : "Checkbox(\"Wis ST Prof\", false, \"\")"
 
@@ -293,6 +304,7 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "I gain proficiency with Charisma saving throws. [+1 Charisma]",
 		improvements : "Resilient (feat): +1 Charisma;",
+		scores : [0, 0, 0, 0, 0, 1],
 		eval : "Checkbox(\"Cha ST Prof\", true, \"Proficiency with Charisma saving throw was gained from the Resilient feat\")",
 		removeeval : "Checkbox(\"Cha ST Prof\", false, \"\")"
 

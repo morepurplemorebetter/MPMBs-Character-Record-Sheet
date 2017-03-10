@@ -4686,21 +4686,13 @@ function RemoveRace() {
 				RemoveWeapon(CurrentRace.weapons[i]);
 			}
 		};
-		/*
-		if (CurrentRace.features) {
-			for (var key in CurrentRace.features) {
-				var keyFea = CurrentRace.features[key];
-				var FeaUse = isArray(keyFea.usages) ? keyFea.usages[CurrentRace.level - 1] : keyFea.usages;
-				RemoveFeature(keyFea.name, FeaUse);
-				if (keyFea.action) {
-					RemoveAction(keyFea.action[0], keyFea.name + keyFea.action[1]);
-				}
-				if (keyFea.calcChanges) {
-					addEvals(keyFea.calcChanges, [keyFea.name, CurrentRace.name], false);
-				}
-			}
-		};
-		*/
+		
+		//get the ability score arrays from the fields, set the racial bonuses to 0, and put them back in the field
+		for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
+			var tempArray = What(AbilityScores.abbreviations[i] + " Remember").split(",");
+			tempArray[1] = 0;
+			Value(AbilityScores.abbreviations[i] + " Remember", tempArray);
+		}
 
 		//run custom code included in race
 		if (CurrentRace.removeeval) {
@@ -5227,8 +5219,17 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			addEvals(theFeat.calcChanges, [theFeat.name, "feat"], false);
 		}
 		
+		if (IsNotFeatMenu && theFeat.scores) {
+			//get the ability score arrays from the fields, remove the feat bonuses, and put them back in the field
+			for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
+				var tempArray = What(AbilityScores.abbreviations[i] + " Remember").split(",");
+				tempArray[5] = (tempArray[5] ? Number(tempArray[5]) : 0) - theFeat.scores[i];
+				Value(AbilityScores.abbreviations[i] + " Remember", tempArray);
+			};
+		};
+		
 		tDoc.getField(FeatFlds[2]).setAction("Calculate", "");
-		tDoc.resetForm([FeatFlds[2]]);
+		if (IsNotFeatMenu) tDoc.resetForm([FeatFlds[2]]);
 		AddTooltip(FeatFlds[2], "");
 	}
 	
@@ -5274,6 +5275,15 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		if (IsNotFeatMenu && theFeat.calcChanges) {
 			addEvals(theFeat.calcChanges, [theFeat.name, "feat"], true);
 		}
+		
+		if (IsNotFeatMenu && theFeat.scores) {
+			//get the ability score arrays from the fields, add the feat bonuses, and put them back in the field
+			for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
+				var tempArray = What(AbilityScores.abbreviations[i] + " Remember").split(",");
+				tempArray[5] = (tempArray[5] ? Number(tempArray[5]) : 0) + theFeat.scores[i];
+				Value(AbilityScores.abbreviations[i] + " Remember", tempArray);
+			};
+		};
 	}
 	thermoM("Finalizing the changes of the feat..."); //change the progress dialog text
 	ApplyProficiencies(true); //call to update armor, shield and weapon proficiencies
@@ -9820,10 +9830,11 @@ function FeatInsert(itemNmbr) {
 				Value(FieldNames[H] + i, What(FieldNames[H] + (i - 1)));
 			}
 		}
-		IsNotFeatMenu = true;
 		
 		//empty the selected slot
 		tDoc.resetForm(Fields);
+		
+		IsNotFeatMenu = true;
 	}
 }
 

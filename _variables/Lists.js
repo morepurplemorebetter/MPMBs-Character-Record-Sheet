@@ -45,46 +45,60 @@ var AbilityScores = {
 	},
 	"current" : {
 		"Str" : {
-			base : 10,
+			base : 8,
 			race : 0,
 			extra : 0,
-			magic : 0
+			extra2 : 0,
+			magic : 0,
+			feat : 0
 		},
 		"Dex" : {
-			base : 10,
+			base : 8,
 			race : 0,
 			extra : 0,
-			magic : 0
+			extra2 : 0,
+			magic : 0,
+			feat : 0
 		},
 		"Con" : {
-			base : 10,
+			base : 8,
 			race : 0,
 			extra : 0,
-			magic : 0
+			extra2 : 0,
+			magic : 0,
+			feat : 0
 		},
 		"Int" : {
-			base : 10,
+			base : 8,
 			race : 0,
 			extra : 0,
-			magic : 0
+			extra2 : 0,
+			magic : 0,
+			feat : 0
 		},
 		"Wis" : {
-			base : 10,
+			base : 8,
 			race : 0,
 			extra : 0,
-			magic : 0
+			extra2 : 0,
+			magic : 0,
+			feat : 0
 		},
 		"Cha" : {
-			base : 10,
+			base : 8,
 			race : 0,
 			extra : 0,
-			magic : 0
+			extra2 : 0,
+			magic : 0,
+			feat : 0
 		},
 		"HoS" : {
-			base : 10,
+			base : 8,
 			race : 0,
 			extra : 0,
-			magic : 0
+			extra2 : 0,
+			magic : 0,
+			feat : 0
 		},
 	},
 	"improvements" : {

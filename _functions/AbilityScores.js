@@ -31,7 +31,8 @@ function AbilityScores_Button() {
 		AbilityScores.current[AbiI].extra = tempArray[2];
 		AbilityScores.current[AbiI].magic = tempArray[3];
 		AbilityScores.current[AbiI].extra2 = tempArray[4] ? tempArray[4] : "0";
-	}
+		AbilityScores.current[AbiI].feat = tempArray[5] ? tempArray[5] : "0";
+	};
 
 	//The dialog for calculating the ability scores
 	var AbilityScores_Dialog = {
@@ -61,13 +62,13 @@ function AbilityScores_Button() {
 			this.totalWis = elements["tWis"];
 			this.totalCha = elements["tCha"];
 			this.totalHoS = elements["tHoS"];
-			this.arrayStr = [elements["bStr"], elements["rStr"], elements["eStr"], elements["mStr"], elements["EStr"]];
-			this.arrayDex = [elements["bDex"], elements["rDex"], elements["eDex"], elements["mDex"], elements["EDex"]];
-			this.arrayCon = [elements["bCon"], elements["rCon"], elements["eCon"], elements["mCon"], elements["ECon"]];
-			this.arrayInt = [elements["bInt"], elements["rInt"], elements["eInt"], elements["mInt"], elements["EInt"]];
-			this.arrayWis = [elements["bWis"], elements["rWis"], elements["eWis"], elements["mWis"], elements["EWis"]];
-			this.arrayCha = [elements["bCha"], elements["rCha"], elements["eCha"], elements["mCha"], elements["ECha"]];
-			this.arrayHoS = [elements["bHoS"], elements["rHoS"], elements["eHoS"], elements["mHoS"], elements["EHoS"]];
+			this.arrayStr = [elements["bStr"], elements["rStr"], elements["eStr"], elements["mStr"], elements["EStr"], elements["fStr"]];
+			this.arrayDex = [elements["bDex"], elements["rDex"], elements["eDex"], elements["mDex"], elements["EDex"], elements["fDex"]];
+			this.arrayCon = [elements["bCon"], elements["rCon"], elements["eCon"], elements["mCon"], elements["ECon"], elements["fCon"]];
+			this.arrayInt = [elements["bInt"], elements["rInt"], elements["eInt"], elements["mInt"], elements["EInt"], elements["fInt"]];
+			this.arrayWis = [elements["bWis"], elements["rWis"], elements["eWis"], elements["mWis"], elements["EWis"], elements["fWis"]];
+			this.arrayCha = [elements["bCha"], elements["rCha"], elements["eCha"], elements["mCha"], elements["ECha"], elements["fCha"]];
+			this.arrayHoS = [elements["bHoS"], elements["rHoS"], elements["eHoS"], elements["mHoS"], elements["EHoS"], elements["fHoS"]];
 		},
 
 		//when starting the dialog
@@ -79,12 +80,13 @@ function AbilityScores_Button() {
 				if ((thing === " " && !theHoS) || thing === theHoS) {
 					popupHoS[thing] = 1;
 				}
-			}
+			};
 			dialog.visible({
 				"oHoS" : enableHoS,
 				"bHoS" : enableHoS,
 				"pHoS" : enableHoS,
 				"rHoS" : enableHoS,
+				"fHoS" : enableHoS,
 				"eHoS" : enableHoS,
 				"EHoS" : enableHoS,
 				"mHoS" : enableHoS,
@@ -129,6 +131,14 @@ function AbilityScores_Button() {
 				"rWis" : AbilityScores.current.Wis.race,
 				"rCha" : AbilityScores.current.Cha.race,
 				"rHoS" : AbilityScores.current.HoS.race,
+				"fNm0" : "Feat Bonus",
+				"fStr" : AbilityScores.current.Str.feat,
+				"fDex" : AbilityScores.current.Dex.feat,
+				"fCon" : AbilityScores.current.Con.feat,
+				"fInt" : AbilityScores.current.Int.feat,
+				"fWis" : AbilityScores.current.Wis.feat,
+				"fCha" : AbilityScores.current.Cha.feat,
+				"fHoS" : AbilityScores.current.HoS.feat,
 				"eNm0" : "Extra Bonus",
 				"eStr" : AbilityScores.current.Str.extra,
 				"eDex" : AbilityScores.current.Dex.extra,
@@ -203,6 +213,15 @@ function AbilityScores_Button() {
 			});
 		},
 
+		//fun whenever the feat number changes
+		fStr : function (dialog) {
+			var elements = dialog.store();
+			dialog.load({
+				"fStr" : ASround(elements["fStr"]),
+				"tStr" : ASCalcTotal(elements, "Str")
+			});
+		},
+
 		//fun whenever the extra number changes
 		eStr : function (dialog) {
 			var elements = dialog.store();
@@ -251,6 +270,15 @@ function AbilityScores_Button() {
 			var elements = dialog.store();
 			dialog.load({
 				"rDex" : ASround(elements["rDex"]),
+				"tDex" : ASCalcTotal(elements, "Dex")
+			});
+		},
+
+		//fun whenever the feat number changes
+		fDex : function (dialog) {
+			var elements = dialog.store();
+			dialog.load({
+				"fDex" : ASround(elements["fDex"]),
 				"tDex" : ASCalcTotal(elements, "Dex")
 			});
 		},
@@ -307,6 +335,15 @@ function AbilityScores_Button() {
 			});
 		},
 
+		//fun whenever the race number changes
+		fCon : function (dialog) {
+			var elements = dialog.store();
+			dialog.load({
+				"fCon" : ASround(elements["fCon"]),
+				"tCon" : ASCalcTotal(elements, "Con")
+			});
+		},
+
 		//fun whenever the extra number changes
 		eCon : function (dialog) {
 			var elements = dialog.store();
@@ -355,6 +392,15 @@ function AbilityScores_Button() {
 			var elements = dialog.store();
 			dialog.load({
 				"rInt" : ASround(elements["rInt"]),
+				"tInt" : ASCalcTotal(elements, "Int")
+			});
+		},
+
+		//fun whenever the race number changes
+		fInt : function (dialog) {
+			var elements = dialog.store();
+			dialog.load({
+				"fInt" : ASround(elements["fInt"]),
 				"tInt" : ASCalcTotal(elements, "Int")
 			});
 		},
@@ -411,6 +457,15 @@ function AbilityScores_Button() {
 			});
 		},
 
+		//fun whenever the race number changes
+		fWis : function (dialog) {
+			var elements = dialog.store();
+			dialog.load({
+				"fWis" : ASround(elements["fWis"]),
+				"tWis" : ASCalcTotal(elements, "Wis")
+			});
+		},
+
 		//fun whenever the extra number changes
 		eWis : function (dialog) {
 			var elements = dialog.store();
@@ -459,6 +514,15 @@ function AbilityScores_Button() {
 			var elements = dialog.store();
 			dialog.load({
 				"rCha" : ASround(elements["rCha"]),
+				"tCha" : ASCalcTotal(elements, "Cha")
+			});
+		},
+
+		//fun whenever the race number changes
+		fCha : function (dialog) {
+			var elements = dialog.store();
+			dialog.load({
+				"fCha" : ASround(elements["fCha"]),
 				"tCha" : ASCalcTotal(elements, "Cha")
 			});
 		},
@@ -515,6 +579,15 @@ function AbilityScores_Button() {
 			});
 		},
 
+		//fun whenever the race number changes
+		fHoS : function (dialog) {
+			var elements = dialog.store();
+			dialog.load({
+				"fHoS" : ASround(elements["fHoS"]),
+				"tHoS" : ASCalcTotal(elements, "HoS")
+			});
+		},
+
 		//fun whenever the extra number changes
 		eHoS : function (dialog) {
 			var elements = dialog.store();
@@ -555,6 +628,7 @@ function AbilityScores_Button() {
 				"bHoS" : this.fieldHoS !== "",
 				"pHoS" : this.fieldHoS !== "",
 				"rHoS" : this.fieldHoS !== "",
+				"fHoS" : this.fieldHoS !== "",
 				"eHoS" : this.fieldHoS !== "",
 				"EHoS" : this.fieldHoS !== "",
 				"mHoS" : this.fieldHoS !== "",
@@ -579,17 +653,17 @@ function AbilityScores_Button() {
 									font : "heading",
 									bold : true,
 									height : 21,
-									char_width : 49,
+									char_width : 50,
 								}, {
 									type : "static_text",
 									item_id : "txt0",
 									alignment : "align_fill",
 									font : "dialog",
 									char_height : 14,
-									char_width : 49,
+									char_width : 50,
 								}, {
 									type : "view",
-									char_width : 49,
+									char_width : 50,
 									align_children : "align_distribute",
 									elements : [{
 											type : "view",
@@ -633,7 +707,7 @@ function AbilityScores_Button() {
 									]
 								}, {
 									type : "view",
-									char_width : 48,
+									char_width : 49,
 									align_children : "align_distribute",
 									elements : [{
 											type : "view",
@@ -644,14 +718,14 @@ function AbilityScores_Button() {
 													alignment : "align_fill",
 													font : "dialog",
 													bold : true,
-													char_width : 24,
+													char_width : 25,
 												}, {
 													type : "static_text",
 													item_id : "txt4",
 													alignment : "align_fill",
 													font : "dialog",
 													height : Txt4Height,
-													char_width : 24,
+													char_width : 25,
 												}
 											]
 										}, {
@@ -991,6 +1065,60 @@ function AbilityScores_Button() {
 											type : "view",
 											elements : [{
 													type : "static_text",
+													item_id : "fNm0",
+													font : "dialog",
+													bold : true,
+													char_width : 4,
+													height : 30,
+													alignment : "align_left",
+												}, {
+													type : "edit_text",
+													item_id : "fStr",
+													char_width : 3,
+													height : 25,
+													SpinEdit : true,
+												}, {
+													type : "edit_text",
+													item_id : "fDex",
+													char_width : 3,
+													height : 25,
+													SpinEdit : true,
+												}, {
+													type : "edit_text",
+													item_id : "fCon",
+													char_width : 3,
+													height : 25,
+													SpinEdit : true,
+												}, {
+													type : "edit_text",
+													item_id : "fInt",
+													char_width : 3,
+													height : 25,
+													SpinEdit : true,
+												}, {
+													type : "edit_text",
+													item_id : "fWis",
+													char_width : 3,
+													height : 25,
+													SpinEdit : true,
+												}, {
+													type : "edit_text",
+													item_id : "fCha",
+													char_width : 3,
+													height : 25,
+													SpinEdit : true,
+												}, {
+													type : "edit_text",
+													item_id : "fHoS",
+													char_width : 3,
+													height : 25,
+													SpinEdit : true,
+												},
+											]
+										}, {
+											type : "view",
+											elements : [{
+													type : "static_text",
 													item_id : "eNm0",
 													font : "dialog",
 													bold : true,
@@ -1310,9 +1438,10 @@ function ASround(input) {
 function ASCalcTotal(elements, AStype) {
 	var Base = Number(elements["b" + AStype]);
 	var Race = Number(elements["r" + AStype]);
+	var Feat = Number(elements["f" + AStype]);
 	var Extra = Number(elements["e" + AStype]);
 	var Extra2 = Number(elements["E" + AStype]);
 	var Magic = ASround(Number(elements["m" + AStype]));
-	var TheTotal = ASround(Base + Race + Extra + Extra2);
+	var TheTotal = ASround(Base + Race + Feat + Extra + Extra2);
 	return Number(Magic) > Number(TheTotal) ? Magic : TheTotal;
 }
