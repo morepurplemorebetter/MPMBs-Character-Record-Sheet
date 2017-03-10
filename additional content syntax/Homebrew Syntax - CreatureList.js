@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Creature
 	Effect:		This is the syntax for adding a creature that can be used on the Companion and Wild Shape pages
-	Sheet:		v12.83 (2017-02-18)
+	Sheet:		v12.87 (2017-03-09)
 */
 
 CreatureList["big cat"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [] //the name entered here is used to identify the input, so it has to be the same as the "name : " below, but in lower case
@@ -75,7 +75,7 @@ CreatureList["big cat"] = { //Object name; Note the use of only lower case! Also
 		}, // you can add more by copying what is between the {}, (also include the {}, )and putting it here
 	], // if the creature has no attacks, simply put [], DO NEVER DELETE the attack entry
 
-	traits : [{ // Optional; traits that are added to the companion "Features" section as bullet points //with the Wild Shape, these traits are only added (also as bullet points) if no "wildshapeString" is defined, see below
+	features : [{ // Optional; features that are added to the companion "Features" section as bullet points after the abovementioned vulnerabilitie, immunities, resistances, senses, and languages //with the Wild Shape, these features are never added
 			name : "Air Form", // name of the trait
 			description : "The elemental can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing.", // description of the trait
 		},
@@ -86,6 +86,12 @@ CreatureList["big cat"] = { //Object name; Note the use of only lower case! Also
 			description : "As an action, the nightmare and up to three willing creatures within 5 feet of it magically enter the Ethereal Plane from the Material Plane, or vice versa.", // description of the action
 		},
 	],
+
+	traits : [{ // Optional; traits that are added to the companion "Traits" section as bullet points after the actions //with the Wild Shape, these traits are only added (also as bullet points) if no "wildshapeString" is defined, see below
+			name : "Air Form", // name of the trait
+			description : "The elemental can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing.", // description of the trait
+		},
+	], // if the creature has no traits, you can delete the entire traits entry
 
 	wildshapeString : "Darkvision 60 ft| Knows Auran| Resistant to: lightning, thunder, and bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious| Air Form: can move through 1 inch wide space without squeezing and can move through and stop in space of hostiles| Whirlwind: see Monster Manual page 124", // Optional; a string to put in the Wild Shape Traits & Features field. If you define this, no trait or action will be added to the Wild Shape Traits & Features field. This is here so you can make all the traits and features fit into the limited space on the Wild Shape page //This line can be deleted if you don't have anything to put here
 };
