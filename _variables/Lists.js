@@ -248,7 +248,7 @@ var CurrentCompRace = {};
 
 var CurrentSpells = {};
 var CurrentCasters = {};
-var CurrentSources = {};
+var CurrentSources = {firstTime : true, globalExcl : []};
 var CurrentEvals = {};
 
 var UpdateSpellSheets = {};
