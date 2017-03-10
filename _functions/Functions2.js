@@ -389,30 +389,6 @@ function ApplyCompRace(newRace) {
 			}
 		}
 		
-		thermoM(6/10); //increment the progress dialog's progress
-		
-		//add actions
-		if (CurrentCompRace[prefix].actions) {
-			for (var t = 0; t < CurrentCompRace[prefix].actions.length; t++) {
-				var actionString = "\u25C6 " + CurrentCompRace[prefix].actions[t].name + ": ";
-				actionString += CurrentCompRace[prefix].actions[t].description;
-				AddString(prefix + "Comp.Use.Traits", actionString, true);
-			}
-		}
-		
-		thermoM(7/10); //increment the progress dialog's progress
-		
-		//add traits
-		if (CurrentCompRace[prefix].traits) {
-			for (var t = 0; t < CurrentCompRace[prefix].traits.length; t++) {
-				var traitString = "\u25C6 " + CurrentCompRace[prefix].traits[t].name + ": ";
-				traitString += CurrentCompRace[prefix].traits[t].description;
-				AddString(prefix + "Comp.Use.Traits", traitString, true);
-			}
-		}
-		
-		thermoM(8/10); //increment the progress dialog's progress
-		
 		//add features
 		if (CurrentCompRace[prefix].damage_vulnerabilities) {
 			var tempString = "\u25C6 Damage Vulnerabilities: " + CurrentCompRace[prefix].damage_vulnerabilities + ".";
@@ -433,6 +409,39 @@ function ApplyCompRace(newRace) {
 		if (CurrentCompRace[prefix].languages) {
 			var tempString = "\u25C6 Languages: " + CurrentCompRace[prefix].languages + ".";
 			AddString(prefix + "Comp.Use.Features", tempString, true);
+		}
+		
+		thermoM(6/10); //increment the progress dialog's progress
+		
+		//add features
+		if (CurrentCompRace[prefix].features) {
+			for (var t = 0; t < CurrentCompRace[prefix].features.length; t++) {
+				var featureString = "\u25C6 " + CurrentCompRace[prefix].features[t].name + ": ";
+				featureString += CurrentCompRace[prefix].features[t].description;
+				AddString(prefix + "Comp.Use.Features", featureString, true);
+			}
+		}
+		
+		thermoM(7/10); //increment the progress dialog's progress
+		
+		//add actions
+		if (CurrentCompRace[prefix].actions) {
+			for (var t = 0; t < CurrentCompRace[prefix].actions.length; t++) {
+				var actionString = "\u25C6 " + CurrentCompRace[prefix].actions[t].name + ": ";
+				actionString += CurrentCompRace[prefix].actions[t].description;
+				AddString(prefix + "Comp.Use.Traits", actionString, true);
+			}
+		}
+		
+		thermoM(8/10); //increment the progress dialog's progress
+		
+		//add traits
+		if (CurrentCompRace[prefix].traits) {
+			for (var t = 0; t < CurrentCompRace[prefix].traits.length; t++) {
+				var traitString = "\u25C6 " + CurrentCompRace[prefix].traits[t].name + ": ";
+				traitString += CurrentCompRace[prefix].traits[t].description;
+				AddString(prefix + "Comp.Use.Traits", traitString, true);
+			}
 		}
 		
 		thermoM(9/10); //increment the progress dialog's progress
@@ -796,8 +805,8 @@ function ApplyWildshape() {
 		//get the particulars of the skill
 		var skill = SkillsList.abbreviations[s];
 		var skillFull = SkillsList.names[s];
-		var skillLookup = Who("Text.SkillsNames") === "alphabeta" ? SkillsList.abilityScores : SkillsList.abilityScoresByAS;
-		var skillAbi = skillLookup[SkillsList.abbreviations.indexOf(skill)];
+		var skillDruid = Who("Text.SkillsNames") === "alphabeta" ? skill : SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(skill)];
+		var skillAbi = SkillsList.abilityScores[s];
 		var skillMod = mods[AbilityScores.abbreviations.indexOf(skillAbi)];
 		if (!typePF) {
 			var skillFlds = [
@@ -821,9 +830,9 @@ function ApplyWildshape() {
 		
 		//see if the druid has proficiency/expertise in it
 		var charProfFlds = [
-			tDoc.getField(skill + " Prof").isBoxChecked(0) === 1,
-			tDoc.getField(skill + " Exp").isBoxChecked(0) === 1,
-			What(skill + " Bonus"),
+			tDoc.getField(skillDruid + " Prof").isBoxChecked(0) === 1,
+			tDoc.getField(skillDruid + " Exp").isBoxChecked(0) === 1,
+			What(skillDruid + " Bonus"),
 			What("All Skills Bonus"),
 			tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1 || (tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1 && (skillAbi === "Str" || skillAbi === "Dex" || skillAbi === "Con"))
 		];

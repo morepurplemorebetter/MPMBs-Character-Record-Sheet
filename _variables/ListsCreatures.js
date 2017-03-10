@@ -1005,6 +1005,68 @@ var CreatureList = {
 			},
 		],
 	},
+	"faerie dragon" : { //contains contributions by Patrick O.
+		name : "Faerie Dragon",
+		source : ["M", 133],
+		size : 5, //Tiny
+		type : "Dragon",
+		subtype : "",
+		alignment : "Chaotic Good",
+		ac : 15,
+		hp : 14,
+		hd : [4, 4],
+		speed : "10 ft, fly 60 ft",
+		scores : [3, 20, 13, 14, 12, 16], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		skills : {
+			"arcana" : 4,
+			"perception" : 3,
+			"stealth" : 7
+		},
+		senses : "Darkvision 60 ft",
+		passivePerception : 13,
+		languages : "Draconic, Sylvan",
+		challengeRating : "1",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Bite",
+				ability : 2,
+				damage : [1, "", "piercing"],
+				range : "Melee (5 ft)",
+				description : "",
+				modifiers : ["", "", false]
+			}, {
+				name : "Euphoria Breath (Recharge 5-6)",
+				ability : 3,
+				damage : ["Wis save", "", "Euphoria"],
+				range : "5 ft",
+				description : "For 1 min, target rolls d6 at turn start: 1-4 move random (no actions), 5-6 save again (no actions/move)",
+				dc : true,
+				modifiers : ["", "", false],
+				tooltip : "The dragon exhales a puff of euphoria gas at one creature within 5 feet of it. The target must succeed on a DC 11 Wisdom saving throw, or for 1 minute, the target can't take reactions and must roll a d6 at the start of each of its turns to determine its behavior during the turn: 1-4 - the target takes no action or bonus action and uses all its movment to move in a random direction. 5-6 - the target doesn't move, and the only thing it can do on its turn is make a DC 11 Wisdom saving throw, ending the effect on itself on a success."
+			}
+		],
+		traits : [{
+				name : "Superior Invisibility",
+				description : "As a bonus action, the dragon can magically turn invisible until its concentration ends (as with a spell). Anything it wears or carries is invisible with it.",
+			}, {
+				name : "Limited Telepathy",
+				description : "Using telepathy, the dragon can magically communicate with any other faerie dragon within 60 feet of it.",
+			}, {
+				name : "Magic Resistance",
+				description : "The dragon has advantage on saves against spells and magical effects.",
+			}, {
+				name : "Euphoria Breath (Recharge 5-6)",
+				description : "Exhale a puff of euphoria gas at a creature within 5 ft. It must succeed on a DC 11 Wisdom save, or for 1 minute, it can't take reactions and must roll a d6 at the start of each of its turns:\n 1-4 - No action or bonus action, using all movment to move in a random direction.\n 5-6 - The target does nothing except attempt another save to try end the effect on itself.",
+			}
+		],
+		features : [{
+				name : "Innate Spellcasting",
+				description : "Cast spells using Charisma (save DC 13), requiring no material components. The spells it knows depends on its age (and stack):\n Red: 1/day - Dancing Lights, Mage Hand, Minor Illusion\n Orange (6-10 years): 1/day - Color Spray\n Yellow (11-20 years): 1/day - Mirror Image\n Green (21-30 years): 1/day - Suggestion\n Blue (31-40 years): 1/day - Major Image\n Indigo (41-50 years): 1/day - Hallucinatory Terrain\n Violet (51+ years): 1/day - Polymorph",
+			}
+		]
+	},
 	"fire elemental" : {
 		name : "Fire Elemental",
 		source : ["M", 124],
