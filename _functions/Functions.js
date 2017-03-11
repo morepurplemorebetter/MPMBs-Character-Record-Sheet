@@ -5660,12 +5660,12 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 							level : newRaceLvl,
 							ability : CurrentRace.spellcastingAbility,
 							typeSp : "known",
-							bonus : {},
+							bonus : {}
 						};
 					}
 					CurrentSpells[CurrentRace.known].bonus[key] = raceSpellBonus;
 					UpdateSpellSheets.race = true;
-				} else if (raceSpellBonus && CurrentSpells[CurrentRace.known].bonus[key]) {//if losing the level and the thing is defined
+				} else if (raceSpellBonus && CurrentSpells[CurrentRace.known] && CurrentSpells[CurrentRace.known].bonus[key]) {//if losing the level and the thing is defined
 					delete CurrentSpells[CurrentRace.known].bonus[key];
 					if (!CurrentRace.spellcastingBonus) { //the race has no level 1 spell ability, so maybe delete more than just this bonus entry
 						var bonusTest = true;
