@@ -2874,7 +2874,7 @@ ClassSubList["warlock-the raven queen"] = {
 	spellcastingExtra : ["false life", "sanctuary", "silence", "spiritual weapon", "feign death", "speak with dead", "ice storm", "locate creature", "commune", "cone of cold"],
 	features : {
 		"subclassfeature1" : {
-			name : "Sentinal Raven",
+			name : "Sentinel Raven",
 			source : ["UA:WnW", 2],
 			minlevel : 1,
 			description : desc([
