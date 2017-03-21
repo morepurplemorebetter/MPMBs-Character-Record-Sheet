@@ -357,7 +357,7 @@ ClassSubList["cavalier"] = {
 			source : ["UA:KoO", 3],
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with two skills or one skill and any one tool" + "\n   " + "For skills I can choose from Animal Handling, Insight, Performance, or Persuasion",
-			skillstxt : "\n\n" + toUni("Cavalier") + ": Choose two skills from: Animal Handling, Insight, Performance, or Persuasion. - or - Choose one of those skills and any one tool.",
+			skillstxt : "\n\n" + toUni("Cavalier") + ": Choose two skills from: Animal Handling, Insight, Performance, or Persuasion. - or - Choose one of those skills and any one tool."
 		},
 		"subclassfeature3.1" : {
 			name : "Born in the Saddle",
@@ -3443,13 +3443,4 @@ function UAstartupCode() {
 		ClassList.warlock.features["eldritch invocations"][invoc.objname.toLowerCase()] = invoc;
 	});
 	ClassList.warlock.features["eldritch invocations"].extrachoices.sort();
-	
-	//Add Unearthed Arcana classes to the SpellsList objects
-	AmendSpellsList();
-	
-	//Add the psionics to the SpellsList object
-	for (var psiO in PsionicsList) {
-		var objNm = SpellsList[psiO] ? "psionic-" + psiO : psiO;
-		SpellsList[objNm] = PsionicsList[psiO];
-	};
 };

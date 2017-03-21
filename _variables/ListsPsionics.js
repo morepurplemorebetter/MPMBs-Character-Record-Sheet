@@ -62,7 +62,6 @@ var PsionicsList = {
 	"ab1-environmental adaptation" : {
 		name : "Environmental Adaptation",
 		nameShort : "Environmental Adapt.",
-		classes : [], //empty for all things that are part of a "dependencies" of another object
 		source : ["UA:TMC", 10],
 		psionic : true,
 		level : 1,
@@ -76,7 +75,6 @@ var PsionicsList = {
 	},
 	"ab2-adaptive shield" : {
 		name : "Adaptive Shield",
-		classes : [], //empty for all things that are part of a "dependencies" of another object
 		source : ["UA:TMC", 10],
 		psionic : true,
 		level : 1,
@@ -90,7 +88,6 @@ var PsionicsList = {
 	},
 	"ab3-energy adaptation" : {
 		name : "Energy Adaptation",
-		classes : [], //empty for all things that are part of a "dependencies" of another object
 		source : ["UA:TMC", 10],
 		psionic : true,
 		level : 1,
@@ -104,7 +101,6 @@ var PsionicsList = {
 	},
 	"ab4-energy immunity" : {
 		name : "Energy Immunity",
-		classes : [], //empty for all things that are part of a "dependencies" of another object
 		source : ["UA:TMC", 10],
 		psionic : true,
 		level : 1,
@@ -136,23 +132,20 @@ var PsionicsList = {
 	},
 	"cr1-primal fury" : {
 		name : "Primal Fury",
-		classes : [], //empty for all things that are part of a "dependencies" of another object //empty for all things that are part of a "dependencies" of another object
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
 		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
 		time : "1 a",
 		range : "60 ft",
-		components : "1-7 PP",
 		duration : "Instantaneous",
 		save : "Cha",
 		description : "1 crea save or 1d6/PP Psychic dmg, use rea to move its speed toward nearest enemy (charm effect)",
-		descriptionFull : "[1-7 psi points]\n   As an action, choose one creature you can see within 60 feet of you. The target must succeed on a Charisma saving throw or take 1d6 psychic damage per psi point spent on this ability and immediately use its reaction to move its speed in a straight line toward its nearest enemy. The save automatically succeeds if the target is immune to being charmed.",
-		firstCol : 1 //power point cost
+		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must succeed on a Charisma saving throw or take 1d6 psychic damage per psi point spent on this ability and immediately use its reaction to move its speed in a straight line toward its nearest enemy. The save automatically succeeds if the target is immune to being charmed.",
+		firstCol : "1-7" //power point cost
 	},
 	"cr2-fighting words" : {
 		name : "Fighting Words",
-		classes : [], //empty for all things that are part of a "dependencies" of another object //empty for all things that are part of a "dependencies" of another object
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
@@ -167,7 +160,6 @@ var PsionicsList = {
 	},
 	"cr3-mindless courage" : {
 		name : "Mindless Courage",
-		classes : [], //empty for all things that are part of a "dependencies" of another object //empty for all things that are part of a "dependencies" of another object
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
@@ -182,7 +174,6 @@ var PsionicsList = {
 	},
 	"cr4-punishing fury" : {
 		name : "Punishing Fury",
-		classes : [], //empty for all things that are part of a "dependencies" of another object
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
@@ -195,4 +186,6 @@ var PsionicsList = {
 		descriptionFull : "You cause a creature's rage to grow so hot that it attacks without heeding its own safety. As a bonus action, choose one creature you can see within 60 feet of you. The target must succeed on a Wisdom saving throw or, until your concentration ends, any creature within 5 feet of it can use a reaction to make a melee attack against it whenever the target makes a melee attack. The save automatically succeeds if the target is immune to being charmed. ",
 		firstCol : 5 //power point cost
 	},
-}
+};
+
+var AllPsionicsArray, AllPsionicsObject, AddPsionicsMenu, AllPsionicClasses;

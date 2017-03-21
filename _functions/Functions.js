@@ -4,23 +4,23 @@ function MakeDocName() {
 };
 
 function Hide(field) {
-	tDoc.getField(field).display = display.hidden;
+	if (tDoc.getField(field)) tDoc.getField(field).display = display.hidden;
 };
 
 function DontPrint(field) {
-	tDoc.getField(field).display = display.noPrint;
+	if (tDoc.getField(field)) tDoc.getField(field).display = display.noPrint;
 };
 
 function Show(field) {
-	tDoc.getField(field).display = display.visible;
+	if (tDoc.getField(field)) tDoc.getField(field).display = display.visible;
 };
 
 function Editable(field) {
-	tDoc.getField(field).readonly = false;
+	if (tDoc.getField(field)) tDoc.getField(field).readonly = false;
 };
 
 function Uneditable(field) {
-	tDoc.getField(field).readonly = true;
+	if (tDoc.getField(field)) tDoc.getField(field).readonly = true;
 };
 
 function Value(field, FldValue, tooltip) {
@@ -40,11 +40,11 @@ function Who(field) {
 }
 
 function Clear(field) {
-	tDoc.getField(field).clearItems();
+	if (tDoc.getField(field)) tDoc.getField(field).clearItems();
 };
 
 function AddTooltip(field, tooltip) {
-	tDoc.getField(field).userName = tooltip;
+	if (tDoc.getField(field)) tDoc.getField(field).userName = tooltip;
 };
 
 function SwapTooltip(field1, field2) {
@@ -7513,7 +7513,7 @@ function MakeMobileReady(toggle) {
 		tempReadOnlyArray = tempArrayBoth[0].split(",");
 		tempNoPrintArray = tempArrayBoth[1].split(",");
 		for (var RO = 0; RO < tempReadOnlyArray.length; RO++) {
-			tDoc.getField(tempReadOnlyArray[RO]).readonly = false;
+			Editable(tempReadOnlyArray[RO]);
 		}
 		for (var DP = 0; DP < tempNoPrintArray.length; DP++) {
 			DontPrint(tempNoPrintArray[DP]);

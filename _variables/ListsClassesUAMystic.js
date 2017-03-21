@@ -264,8 +264,8 @@ ClassList.mystic = {
 				return "+" + (n < 14 ? 1 : 2) + "d8 psychic damage";
 			}),
 			calcChanges : {
-				atkAdd : ["if (classes.known.mystic && classes.known.mystic.level > 7 && !isSpell) { fields.Description += (fields.Description ? '; ' : '') + 'Once per turn +' + (classes.known.cleric.level < 14 ? 1 : 2) + 'd8 psychic damage'; }; ", "Once per turn, I can have one of my weapon attacks that hit do extra psychic damage.\n - My psionic talents get my Intelligence modifier added to their damage roll."],
-				atkCalc : ["if (classes.known.mystic && classes.known.mystic.level > 7 && isSpell && theWea.list === 'psionic' && ClassList.mystic.features['psionic talents'][theWea.name.toLowerCase()]) { output.modToDmg = true; }; ", ""]
+				atkAdd : ["if (classes.known.mystic && classes.known.mystic.level > 7 && !isSpell) { fields.Description += (fields.Description ? '; ' : '') + 'Once per turn +' + (classes.known.mystic.level < 14 ? 1 : 2) + 'd8 psychic damage'; }; ", "Once per turn, I can have one of my weapon attacks that hit do extra psychic damage.\n - My psionic talents get my Intelligence modifier added to their damage roll."],
+				atkCalc : ["if (classes.known.mystic && classes.known.mystic.level > 7 && thisWeapon[4].indexOf('mystic') !== -1 && thisWeapon[3] && SpellsList[thisWeapon[3]].level === 0) { output.extraDmg += What('Int Mod'); }; ", ""]
 			}
 		},
 		"consumptive power" : {
@@ -274,8 +274,7 @@ ClassList.mystic = {
 			minlevel : 10,
 			description : desc([
 				"Once per long rest, I can use my HP to fuel a psionic discipline instead of psi points",
-				"I reduce my HP and HP max with the amount of psi points I would've otherwise used",
-				"This HP maximum reduction stays until I finish my next long rest"
+				"I lose the HP; My HP max is reduced with the same until I finish my next long rest"
 			]),
 			usages : 1,
 			recovery : "long rest"
@@ -323,7 +322,6 @@ ClassSubList["mystic-avatar"] = {
 	regExpSearch : /^((?=.*(psion|mystic))|(?=.*psychic)(?=.*warrior))(?=.*avatar).*$/i,
 	subname : "Order of the Avatar",
 	source : ["UA:TMC", 5],
-	fullname : "Avatar Mystic",
 	features : {
 		"subclassfeature1" : {
 			name : "Bonus Disciplines",
@@ -375,45 +373,65 @@ ClassSubList["mystic-awakened"] = {
 	regExpSearch : /^((?=.*(psion|mystic))|(?=.*psychic)(?=.*warrior))(?=.*awakened).*$/i,
 	subname : "Order of the Awakened",
 	source : ["UA:TMC", 6],
-	fullname : "Awakened Mystic",
 	features : {
 		"subclassfeature1" : {
 			name : "Bonus Disciplines",
 			source : ["UA:TMC", 6],
 			minlevel : 1,
-			description : "\n   " + "I know two additional psionic disciplines, taken from the awakened discpilines"
+			description : " [+2 awakened disciplines]",
+			spellcastingBonus : {
+				name : "Bonus Disciplines",
+				class : "mystic",
+				school : ["Awake"], //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+				level : [1, 9],
+				psionic : true,
+				times : 2
+			}
 		},
 		"subclassfeature1.1" : {
-			name : "",
+			name : "Awakened Talent",
 			source : ["UA:TMC", 6],
 			minlevel : 1,
 			description : desc([
-				""
-			])
+				"I gain proficiency with two skills of my choice, taken from the list below:",
+				"Animal Handling, Deception, Insight, Intimidation, Investigation, Perception, Persuasion"
+			]),
+			skillstxt : "\n\n" + toUni("Order of the Awakened") + ": Choose two skills from: Animal Handling, Deception, Insight, Intimidation, Investigation, Perception, and Persuasion."
 		},
 		"subclassfeature3" : {
-			name : "",
+			name : "Psionic Investigation",
 			source : ["UA:TMC", 6],
 			minlevel : 3,
 			description : desc([
-				""
-			])
+				"By concentrating on an object I'm holding for 10 minutes, I learn the object's history",
+				"I see/hear its surroundings the previous hour and know who hold it in the last 24 hours",
+				"Also, for the next 24 hours, I can use an action to locate it and see its surroundings"
+			]),
+			usages : 1,
+			recovery : "short rest"
 		},
 		"subclassfeature6" : {
-			name : "",
+			name : "Psionic Surge",
 			source : ["UA:TMC", 6],
 			minlevel : 6,
 			description : desc([
-				""
-			])
+				"I can end my psychic focus to impose disadv. on a save vs. a discipline or talent I use",
+				"Once I do this, I can't regain psychic focus in any discipline until I can use this again"
+			]),
+			usages : 1,
+			recovery : "short rest"
 		},
 		"subclassfeature14" : {
-			name : "",
+			name : "Spectral Form",
 			source : ["UA:TMC", 6],
 			minlevel : 14,
 			description : desc([
-				""
-			])
+				"As an action, I can become ghostly and move through objects and creatures for 10 min",
+				"I also have resistance to all damage and move at half speed; I can end it as an action"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : ["action", ""]
 		}
 	}
 };
@@ -423,13 +441,20 @@ ClassSubList["mystic-immortal"] = {
 	regExpSearch : /^((?=.*(psion|mystic))|(?=.*psychic)(?=.*warrior))(?=.*immortal).*$/i,
 	subname : "Order of the Immortal",
 	source : ["UA:TMC", 6],
-	fullname : "Immortal Mystic",
 	features : {
 		"subclassfeature1" : {
 			name : "Bonus Disciplines",
 			source : ["UA:TMC", 7],
 			minlevel : 1,
-			description : "\n   " + "I know two additional psionic disciplines, taken from the immortal discpilines"
+			description : "\n   " + "I know two additional psionic disciplines, taken from the immortal disciplines",
+			spellcastingBonus : {
+				name : "Bonus Disciplines",
+				class : "mystic",
+				school : ["Immor"], //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+				level : [1, 9],
+				psionic : true,
+				times : 2
+			}
 		},
 		"subclassfeature1.1" : {
 			name : "",
@@ -471,13 +496,20 @@ ClassSubList["mystic-nomad"] = {
 	regExpSearch : /^((?=.*(psion|mystic))|(?=.*psychic)(?=.*warrior))(?=.*nomad).*$/i,
 	subname : "Order of the Nomad",
 	source : ["UA:TMC", 7],
-	fullname : "Nomad Mystic",
 	features : {
 		"subclassfeature1" : {
 			name : "Bonus Disciplines",
 			source : ["UA:TMC", 7],
 			minlevel : 1,
-			description : "\n   " + "I know two additional psionic disciplines, taken from the nomad discpilines"
+			description : "\n   " + "I know two additional psionic disciplines, taken from the nomad disciplines",
+			spellcastingBonus : {
+				name : "Bonus Disciplines",
+				class : "mystic",
+				school : ["Nomad"], //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+				level : [1, 9],
+				psionic : true,
+				times : 2
+			}
 		},
 		"subclassfeature1.1" : {
 			name : "",
@@ -573,7 +605,15 @@ ClassSubList["mystic-wu jen"] = {
 			name : "Bonus Disciplines",
 			source : ["UA:TMC", 8],
 			minlevel : 1,
-			description : "\n   " + "I know two additional psionic disciplines, taken from the wu jen discpilines"
+			description : "\n   " + "I know two additional psionic disciplines, taken from the wu jen disciplines",
+			spellcastingBonus : {
+				name : "Bonus Disciplines",
+				class : "mystic",
+				school : ["Wu Jen"], //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+				level : [1, 9],
+				psionic : true,
+				times : 2
+			}
 		},
 		"subclassfeature1.1" : {
 			name : "",

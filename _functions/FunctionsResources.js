@@ -568,8 +568,8 @@ function resourceDecisionDialog() {
 		
 		//if something changed for the spells make the spell menu again
 		var oldCS = eval(remCS);
-		if (oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
-			AddSpellsMenu = ParseSpellMenu();
+		if (oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
+			setSpellVariables();
 		};
 	} else {
 		CurrentSources = eval(remCS);
