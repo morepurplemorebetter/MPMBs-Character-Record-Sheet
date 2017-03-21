@@ -37,29 +37,35 @@ var SourceList = {
 		url : "http://media.wizards.com/2015/downloads/dnd/EE_PlayersCompanion.pdf"
 	},
 
-	//small sources
+	//Adventure books
+	"HotDQ" : {
+		name : "Hoard of the Dragon Queen [background features]",
+		abbreviation : "HotDQ",
+		group : "Adventure Books",
+		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/hoard-dragon-queen"
+	},
+	"OotA" : {
+		name : "Out of the Abyss [background features]",
+		abbreviation : "OotA",
+		group : "Adventure Books",
+		url : "http://media.wizards.com/2015/downloads/dnd/OotA_CharacterBackgrounds.pdf"
+	},
 	"CoS" : {
 		name : "Curse of Strahd [background]",
 		abbreviation : "CoS",
-		group : "Official Sources (small)",
-		url : "http://media.wizards.com/2016/downloads/DND/CharacterBackground_HauntedOne.pdf"
-	},
-	"CoS:OB" : {
-		name : "Curse of Strahd: Optional Backgrounds",
-		abbreviation : "CoS:OB",
-		group : "Official Sources (small)",
+		group : "Adventure Books",
 		url : "http://media.wizards.com/2016/downloads/DND/CoS_Character_Options.pdf"
 	},
 	"SKT" : {
-		name : "Storm King's Thunder [tressym]",
+		name : "Storm King's Thunder [creatures]",
 		abbreviation : "SKT",
-		group : "Official Sources (small)",
-		url : "http://www.dmsguild.com/product/189150/"
+		group : "Adventure Books",
+		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/storm-kings-thunder"
 	},
 
 	//sources for custom scripts
 	"DMguild" : {
-		name : "Dungeon Masters Guild (online)",
+		name : "Dungeon Masters Guild [online]",
 		abbreviation : "DMguild",
 		group : "default",
 		url : "http://www.dmsguild.com/"
@@ -68,6 +74,26 @@ var SourceList = {
 		name : "Homebrew",
 		abbreviation : "Homebrew",
 		group : "default"
+	},
+
+	//Adventurers League specific sources
+/*	"AL:EE" : {
+		name : "Elemental Evil Backgrounds [Mulmaster]", //AL season 2 (Elemental Evil) optional backgrounds (2015-04-15)
+		abbreviation : "AL:EE",
+		group : "Adventurers League",
+		url : "http://dndadventurersleague.org/wp-content/uploads/2015/04/Mulmaster-Bonds-and-Backgrounds.pdf"
+	}, */
+	"AL:RoD" : {
+		name : "Rage of Demons Backgrounds [Hillsfar]", //AL season 3 (Rage of Demons) optional backgrounds (2015-07-14)
+		abbreviation : "AL:RoD",
+		group : "Adventurers League",
+		url : "http://dndadventurersleague.org/wp-content/uploads/2015/07/Hillsfar-Regional-Character-Options.pdf"
+	},
+	"AL:CoS" : {
+		name : "Curse of Strahd Backgrounds", //AL season 4 (Curse of Strahd) optional backgrounds (2016-04-07, v1.1)
+		abbreviation : "AL:CoS",
+		group : "Adventurers League",
+		url : "http://dndadventurersleague.org/wp-content/uploads/2016/06/Curse-of-Strahd-Backgrounds-v1.1.pdf"
 	},
 
 	//Unearthed Arcana
@@ -184,5 +210,11 @@ var SourceList = {
 		abbreviation : "UA:WnW",	
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2017/dnd/downloads/20170213_Wizrd_Wrlck_UAv2_i48nf.pdf"
+	},
+	"UA:TMC" : {
+		name : "Unearthed Arcana: The Mystic Class", //2017-03-13
+		abbreviation : "UA:TMC",	
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2017/dnd/downloads/UAMystic3.pdf"
 	},
 };

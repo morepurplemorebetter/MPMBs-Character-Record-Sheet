@@ -11,13 +11,14 @@
 	Subject:	Weapons
 	Effect:		This script adds the firearms (renaissance, modern, and futuristic) found in the Dungeon Master Guide, page 268
 	Code by:	grungydan (and a bit by MorePurpleMoreBetter)
-	Date:		2017-02-18 (sheet v12.83)
+	Date:		2017-03-15 (sheet v12.88)
 */
 
 WeaponsList["pistol"] = {
 	regExpSearch : /^(?=.*pistol)(?!.*automatic).*$/i,
 	name : "Pistol",
 	source : ["D", 268],
+	list : "firearm",
 	ability : 2, 
 	type: "Martial",
 	damage : [1, 10, "piercing"],
@@ -31,6 +32,7 @@ WeaponsList["musket"] = {
 	regExpSearch : /musket/i,
 	name : "Musket",
 	source : ["D", 268],
+	list : "firearm",
 	ability : 2, 
 	type: "Martial",
 	damage : [1, 12, "piercing"],
@@ -44,6 +46,7 @@ WeaponsList["pistol automatic"] = {
 	regExpSearch : /^(?!.*rifle)(?=.*pistol)(?=.*automatic).*$/i,
 	name : "Pistol, automatic",
 	source : ["D", 268],
+	list : "firearm",
 	ability : 2, 
 	type: "Martial",
 	damage : [2, 6, "piercing"],
@@ -57,6 +60,7 @@ WeaponsList["revolver"] = {
 	regExpSearch : /revolver/i,
 	name : "Revolver",
 	source : ["D", 268],
+	list : "firearm",
 	ability : 2, 
 	type: "Martial",
 	damage : [2, 8, "piercing"],
@@ -70,6 +74,7 @@ WeaponsList["rifle hunting"] = {
 	regExpSearch : /^(?!=laser|antimatter)(?=.*hunting)(?=.*rifle).*$/i,
 	name : "Hunting Rifle",
 	source : ["D", 268],
+	list : "firearm",
 	ability : 2, 
 	type: "Martial",
 	damage : [2, 10, "piercing"],
@@ -83,6 +88,7 @@ WeaponsList["rifle automatic"] = {
 	regExpSearch : /^(?!=.*laser|antimatter)(?=.*automatic)(?=.*rifle).*$/i,
 	name : "Automatic Rifle",
 	source : ["D", 268],
+	list : "firearm",
 	ability : 2, 
 	type: "Martial",
 	damage : [2, 8, "piercing"],
@@ -96,6 +102,7 @@ WeaponsList["shotgun"] = {
 	regExpSearch : /shotgun/i,
 	name : "Shotgun",
 	source : ["D", 268],
+	list : "firearm",
 	ability : 2, 
 	type: "Martial",
 	damage : [2, 8, "piercing"],
@@ -109,6 +116,7 @@ WeaponsList["laser pistol"] = {
 	regExpSearch : /^(?=.*laser)(?=.*pistol).*$/i,
 	name : "Laser Pistol",
 	source : ["D", 268],
+	list : "firearm",
 	ability : 2, 
 	type: "Martial",
 	damage : [3, 6, "radiant"],
@@ -122,6 +130,7 @@ WeaponsList["antimatter rifle"] = {
 	regExpSearch : /^(?!.*laser)(?=.*antimatter)(?=.*rifle).*$/i,
 	name : "Antimatter Rifle",
 	source : ["D", 268],
+	list : "firearm",
 	ability : 2, 
 	type: "Martial",
 	damage : [6, 8, "necrotic"],
@@ -135,6 +144,7 @@ WeaponsList["laser rifle"] = {
 	regExpSearch : /^(?!.*antimatter)(?=.*laser)(?=.*rifle).*$/i,
 	name : "Laser Rifle",
 	source : ["D", 268],
+	list : "firearm",
 	ability : 2, 
 	type: "Martial",
 	damage : [3, 8, "radiant"],
@@ -179,15 +189,4 @@ AmmoList["energy cell"] = {
 }
 
 UpdateDropdown("ammo");	
-UpdateDropdown("weapon", [
-	"Pistol",
-	"Musket",
-	"Automatic Pistol",
-	"Revolver", 
-	"Hunting Rifle",
-	"Automatic Rifle",
-	"Shotgun",
-	"Laser Pistol",
-	"Antimatter Rifle",
-	"Laser Rifle",
-]);
+UpdateDropdown("weapon");

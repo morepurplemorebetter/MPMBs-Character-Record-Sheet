@@ -14,7 +14,7 @@
 				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170778/)
 				This subclass is made by Matthew Mercer
 	Code by:	SoilentBrad & MorePurpleMoreBetter
-	Date:		2016-11-10 (sheet v12.5)
+	Date:		2017-03-15 (sheet v12.88)
 	
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 */
@@ -114,6 +114,8 @@ SourceList["MM:GMA"] = {
 WeaponsList["pistol"] = {
 	regExpSearch : /^(?=.*pistol)(?!.*automatic).*$/i,
 	name : "Pistol",
+	source : ["MM:GMA", 3],
+	list : "firearm",
 	ability : 2,
 	type: "Firearms",
 	damage : [1, 10, "piercing"],
@@ -134,6 +136,8 @@ AmmoList["pistol bullets"] = {
 WeaponsList["musket"] = {
 	regExpSearch : /musket/i,
 	name : "Musket",
+	source : ["MM:GMA", 3],
+	list : "firearm",
 	ability : 2,
 	type: "Firearms",
 	damage : [1, 12, "piercing"],
@@ -154,6 +158,8 @@ AmmoList["musket bullets"] = {
 WeaponsList["pepperbox"] = {
 	regExpSearch : /pepperbox/i,
 	name : "Pepperbox",
+	source : ["MM:GMA", 3],
+	list : "firearm",
 	ability : 2,
 	type: "Firearms",
 	damage : [1, 10, "piercing"],
@@ -174,6 +180,8 @@ AmmoList["pepperbox bullets"] = {
 WeaponsList["scattergun"] = {
 	regExpSearch : /scattergun/i,
 	name : "Scattergun",
+	source : ["MM:GMA", 3],
+	list : "firearm",
 	ability : 2,
 	type: "Firearms",
 	damage : [1, 8, "piercing"],
@@ -194,6 +202,8 @@ AmmoList["scattergun shells"] = {
 WeaponsList["bad news"] = {
 	regExpSearch : /bad news/i,
 	name : "Bad News",
+	source : ["MM:GMA", 3],
+	list : "firearm",
 	ability : 2,
 	type: "Firearms",
 	damage : [2, 12, "piercing"],
@@ -214,6 +224,8 @@ AmmoList["bad news bullets"] = {
 WeaponsList["hand mortar"] = {
 	regExpSearch : /hand mortar/i,
 	name : "Hand Mortar",
+	source : ["MM:GMA", 3],
+	list : "firearm",
 	ability : 2,
 	type: "Firearms",
 	damage : [2, 8, "fire"],
@@ -232,11 +244,4 @@ AmmoList["hand mortar grenades"] = {
 	invName : "Hand mortar grenades"
 };
 UpdateDropdown("ammo");	
-UpdateDropdown("weapon", [
-	"Pistol",
-	"Musket",
-	"Pepperbox",
-	"Scattergun",
-	"Bad News",
-	"Hand Mortar",
-]);
+UpdateDropdown("weapon");

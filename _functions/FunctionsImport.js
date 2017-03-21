@@ -25,7 +25,6 @@ function StartDirectImport() {
 
 // call this to add the folder level javascript if it is missing
 function AddFolderJavaScript(justConsole) {
-	var isWindows = app.platform === "WIN";
 	var isType = app.viewerType === "Exchange-Pro" ? "Pro" : (app.viewerType === "Exchange" ? "Standard" : "Reader");
 	var isContin = app.viewerVersion.substring(6, 8) != 30;
 	var vYear = 20 + app.viewerVersion.substring(0, 2);

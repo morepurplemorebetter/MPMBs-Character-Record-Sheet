@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Weapon / Attack
 	Effect:		This is the syntax for adding a new type of weapon, cantrip, or anything else you want to add to the attack section's automation
-	Sheet:		v12.83 (2017-02-18)
+	Sheet:		v12.88 (2017-03-15)
 */
 
 WeaponsList["leattack"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
@@ -20,6 +20,8 @@ WeaponsList["leattack"] = { //Object name; Note the use of only lower case! Also
 	name : "LeAttack", // Required; name of the weapon
 	
 	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js"
+	
+	list : "spell", //optional; by having this attribute, the attack will appear in the dropdown fields. It will be grouped according to what you enter. The lists of weapons in the sheet are: "melee", "ranged", "spell", and "improvised" // However, you can define your own groupings. These will always appear below all the weapons that are included in the sheet
 	
 	ability : 1, // Required; the ability score used to calculate the to hit modifier (and the damage if applicable, see below). [Str=1, Dex=2, Con=3, Int=4, Wis=5, Cha=6]
 	
@@ -46,5 +48,4 @@ WeaponsList["leattack"] = { //Object name; Note the use of only lower case! Also
 	SpellsList : "eldritch blast", // Optional; if the attack you are making is a spell/cantrip that is listed in the SpellsList variable under another name that you are using for this weapon (in this example it would be "leattack"), write the name used in the SpellsList variable here
 }
 
-UpdateDropdown("weapon", ["leattack"]); // Optional; This updates all attack dropdown fields; Note that you have to provide the name of your attack exactly the same as it is in the first line above, the object name.
-// If you are planning on adding multiple weapons to the sheet, only use the UpdateDropdown once or else you will get duplicates. You can make an array of the names of the attacks you want to have added to the lists.
+UpdateDropdown("weapon"); // Optional; This updates all attack dropdown fields with weapons that have a 'list' attribute

@@ -963,6 +963,7 @@ var BackgroundList = {
 		variant : [],
 		lifestyle : "modest",
 	},
+	
 	//SCAG background
 	"far traveler" : {
 		regExpSearch : /^(?=.*far)(?=.*traveler).*$/i,
@@ -1038,6 +1039,7 @@ var BackgroundList = {
 		variant : [],
 		lifestyle : "modest",
 	},
+	
 	//CoS backgrounds (with the help of RCanine)
 	"haunted one" : {
 		regExpSearch : /haunted/i,
@@ -1117,14 +1119,14 @@ var BackgroundList = {
 	"black fist double agent" : {
 		regExpSearch : /black\W*fist/i,
 		name : "Black Fist Double Agent",
-		source : ["CoS:OB", 2],
+		source : ["AL:CoS", 2],
 		skills : ["Deception", "Insight"],
 		gold : 15,
 		equipleft : [
 			["Disguise kit", "", 3],
 			["Tears of Virulence emblem", "", ""],
 			["Writ of free agency", "", ""],
-			["set of artisan's tools or gaming set", "", ""]
+			["Set of artisan's tools or gaming set", "", ""]
 		],
 		equipright : [
 			["Common clothes", "", 3],
@@ -1175,7 +1177,7 @@ var BackgroundList = {
 	"dragon casualty" : {
 		regExpSearch : /^(?=.*dragon)(?=.*casualty).*$/i,
 		name : "Dragon Casualty",
-		source : ["CoS:OB", 3],
+		source : ["AL:CoS", 3],
 		skills : ["Intimidation", "Survival"],
 		languages : ["Draconic"],
 		tools : ["Based on my origin"],
@@ -1241,7 +1243,7 @@ var BackgroundList = {
 	"iron route bandit" : {
 		regExpSearch : /^(?=.*iron)(?=.*route)(?=.*bandit).*$/i,
 		name : "Iron Route Bandit",
-		source : ["CoS:OB", 5],
+		source : ["AL:CoS", 5],
 		skills : ["Animal Handling", "Stealth"],
 		tools : ["Type of gaming set", "Vehicles (land)"],
 		gold : 5,
@@ -1307,7 +1309,7 @@ var BackgroundList = {
 	"phlan insurgent" : {
 		regExpSearch : /^(?=.*phlan)(?=.*insurgent).*$/i,
 		name : "Phlan Insurgent",
-		source : ["CoS:OB", 6],
+		source : ["AL:CoS", 6],
 		skills : ["Stealth", "Survival"],
 		tools : ["Type of artisan's tools", "Vehicles (land)"],
 		gold : 5,
@@ -1380,7 +1382,7 @@ var BackgroundList = {
 	"stojanow prisoner" : {
 		regExpSearch : /^(?=.*stojanow)(?=.*prisoner).*$/i,
 		name : "Stojanow Prisoner",
-		source : ["CoS:OB", 8],
+		source : ["AL:CoS", 8],
 		skills : ["Deception", "Perception"],
 		tools : ["Type of gaming set", "Thieves' tools"],
 		gold : 10,
@@ -1433,7 +1435,7 @@ var BackgroundList = {
 	"ticklebelly nomad" : {
 		regExpSearch : /^(?=.*ticklebelly)(?=.*nomad).*$/i,
 		name : "Ticklebelly Nomad",
-		source : ["CoS:OB", 9],
+		source : ["AL:CoS", 9],
 		skills : ["Animal Handling", "Nature"],
 		languages : ["Giant"],
 		tools : ["Herbalism Kit"],
@@ -1485,6 +1487,469 @@ var BackgroundList = {
 		variant : [],
 		lifestyle : "poor",
 	},
+	
+	//RoD backgrounds (with the help of AggieBear)
+	"cormanthor refugee" : {
+		regExpSearch :  /^(?=.*cormanthor)(?=.*refugee).*$/i,
+		name : "Cormanthor Refugee",
+		source : ["AL:RoD", 5],
+		skills : ["Nature", "Survival"],
+		gold : 5,
+		equipleft : [
+			["Two-person tent", "", 20],
+			["Set of artisan's tools", "", ""]
+		],
+		equipright : [
+			["Traveler's clothes", "", 4],
+			["Holy symbol (type)", "", 1],
+			["Belt pouch (with coins)", "", 1]
+		],
+		feature : "Shelter of the Elven Clergy",
+		trait : [
+			"I long for a home that never really existed, whether in the camps, Hillsfar, or Myth Drannor.",
+			"Though I am not an elf, I am a fervent, radical worshipper of the elven gods.",
+			"I live in the moment, knowing my life could be turned upside down any day.",
+			"I appreciate beauty in all of its forms.",
+			"I hate the dark elves and the Netherese for each driving the elves out of Cormanthyr in the past.",
+			"I am a forest bumpkin who grew up in a tent in the woods and is wholly ignorant of city life.",
+			"I was raised alongside children of many other races. I harbor no racial prejudices at all.",
+			"The elves have just the right word for so many things that cannot be expressed as well in other languages. I pepper my speech with elven words, phrases, and sayings."
+		],
+		ideal : [
+			["Patient",
+				"Patient: The elves have taught me to think and plan for the long-term. (Lawful)"
+			],
+			["Rebellious",
+				"Rebellious: Governments and politicians drove my family to the camps. I subtly defy authority whenever I think I can get away with it. (Chaotic)"
+			],
+			["Self-Absorbed",
+				"Self-Absorbed: I've had to look out for number one so long that it has become second nature. (Any)"
+			],
+			["Wanderlust",
+				"Wanderlust: I want to see as much of the world beyond the camps as I can. (Any)"
+			],
+			["Generous",
+				"Generous: I give everything I can to help those in need, regardless of who they are. (Good)"
+			],
+			["To the Abyss with Them",
+				"To the Abyss with Them: The people of Hillsfar cast me out. I won't risk my hide to help them. (Evil)"
+			]
+		],
+		bond : [
+			"The elves took me in when I had nowhere else to go. In return, I do what I can to help elves in need.",
+			"I seek revenge against the people of Hillsfar for driving my family into the forest.",
+			"My family lost everything when they were driven from Hillsfar. I strive to rebuild that fortune.",
+			"The forest has provided me with food and shelter. In return, I protect forests and those who dwell within.",
+			"I am deeply, tragically in love with someone whose racial lifespan is far longer or shorter than mine.",
+			"Members of my extended family did not make it to the camps or have been kidnapped to fight in the Arena. I search for them tirelessly."
+		],
+		flaw : [
+			"I am very uncomfortable indoors and underground",
+			"I am haughty. I grew up among the elves and emulate them. Other races are crude in comparison.",
+			"Elf this, elf that. I am sick and tired of the elves.",
+			"I am a miser. Having lost everything once before, I clutch my possessions and wealth very tightly.",
+			"I am a moocher. I am so used to others providing for me that I have come to expect everyone to do it.",
+			"I believe the gods have cursed me, my family, and all of the Cormanthor refugees. We are all doomed, doomed I tell you!"
+		],
+		tools : ["Type of artisan's tools"],
+		languages : ["Elvish"],
+		variant : [],
+		lifestyle : "poor"
+	},
+	"gate urchin" : {
+		regExpSearch :  /^(?=.*gate)(?=.*urchin).*$/i,
+		name : "Gate Urchin",
+		source : ["AL:RoD", 6],
+		skills : ["Deception", "Sleight of Hand"],
+		gold : 10,
+		equipleft : [
+			["Battered alms box", "", 1]
+		],
+		equipright : [
+			["Common clothes", "", 3],
+			["Cast-off military jacket, cap, or scarf", "", ""],
+			["Belt pouch (with coins)", "", 1],
+			["Musical instrument of my choice", "", ""]
+		],
+		feature : "Red Plume and Mage Guild Contacts",
+		trait : [
+			"I appreciate the simple things in life: a song, a warm meal, a sunny day. I don't need any more.",
+			"My problems are always caused by others. I'm never to blame.",
+			"I am afraid I could wind up back on the streets any day.",
+			"I get along with everyone.",
+			"I see people as marks for a con and have difficulty feeling true empathy for them.",
+			"I have a real flair for matchmaking. I can find anyone a spouse!",
+			"I think money is the true measure of appreciation and affection. Everything else is talk or an act.",
+			"I don't like having a lot of stuff, just a few simple things I need. I don't like being tied down and tend to leave things behind when I don't need them anymore."
+		],
+		ideal : [
+			["Loyal",
+				"Loyal: I never rat out any of my friends, even when the Red Plumes or the Rogues Guild ask. (Lawful)"
+			],
+			["Adventurous",
+				"Adventurous: I don't like doing the same thing every day. I crave variety. (Chaotic)"
+			],
+			["Strong",
+				"Strong: Only the strong survive. I respect those who are strong and powerful. (Any)"
+			],
+			["Witty",
+				"Witty: Brains are better than brawn. I rely on my wits and respect others who do the same. (Any)"
+			],
+			["Honest",
+				"Honest: Others can do what they want, but I won't lie or steal, even to feed my family. (Good)"
+			],
+			["Ungrateful",
+				"Ungrateful: Those who give, only do it to make themselves feel better. I steal from them. (Evil)"
+			]
+		],
+		bond : [
+			"The Joydancers of Lliira gave me my instrument when I really needed food. I hate them for that.",
+			"Busking has taught me to love music above all else.",
+			"The Rogues Guild spared me when I did a job without cutting them in. I owe them a great debt.",
+			"I know people hate the Red Plumes, but some of them were really good to me. I help Red Plumes whenever I can, and I respect them. They're just doing what they have to do to get by in this world.",
+			"I will be wealthy some day. My descendants will live in comfort and style.",
+			"I know how hard life on the streets is. I do everything I can for those who have less than me."
+		],
+		flaw : [
+			"Though I no longer live at the Gate, I am still always concerned about where I will get my next meal.",
+			"Years of thieving have become habit. I sometimes steal from strangers without thinking about it.",
+			"I am ashamed of my origins. I pretend I am higher-born and fear others will find out the truth.",
+			"I think people who grew up in houses are soft, spoiled, and ungrateful. I frequently tell them so.",
+			"I am still very uncomfortable wearing nice clothes, sleeping in a warm bed, and eating fine food.",
+			"I do not trust anyone who has not had a hard life."
+		],
+		tools : ["Thieves' tools", "Type of musical instrument"],
+		variant : [],
+		lifestyle : "poor"
+	},
+	"hillsfar merchant" : {
+		regExpSearch :  /^(?=.*hillsfar)(?=.*merchant).*$/i,
+		name : "Hillsfar Merchant",
+		source : ["AL:RoD", 7],
+		skills : ["Insight", "Persuasion"],
+		gold : 25,
+		equipright : [
+			["Fine clothes", "", 6],
+			["Signet ring", "", ""],
+			["Purse (with coins)", "", 1],
+			["Letter of introduction from family's trading house", "", 1]
+		],
+		feature : "Factor",
+		featureAlt : "Trade Contact",
+		trait : [
+			"I fill my evenings with wine or mead and song.",
+			"I greatly admire gladiators and enjoy the Arena.",
+			"I take my wealth for granted. It seldom occurs to me that others aren't rich themselves.",
+			"I leave broken hearts all around the Moonsea and up and down the Sword Coast.",
+			"I work hard and seldom make time for fun.",
+			"I am a particularly devout and pray often.",
+			"The Red Plumes caught me once. I hate them.",
+			"I ask a lot of questions to get information about those with whom I am working and dealing."
+		],
+		ideal : [
+			["Frugal",
+				"Frugal: I spend my money very carefully. (Lawful)"
+			],
+			["Profligate",
+				"Profligate: I tend to spend extravagantly. (Chaotic)"
+			],
+			["Honest",
+				"Honest: I deal with others above board. (Any)"
+			],
+			["Sharp",
+				"Sharp: I seek to make the best deal possible. (Any)"
+			],
+			["Charitable",
+				"Charitable: I give generously to others. (Good)"
+			],
+			["Greedy",
+				"Greedy: I do not share my wealth with others. (Evil)"
+			],
+		],
+		bond : [
+			"I am fiercely loyal to those with whom I work.",
+			"I must uphold the good name of my family.",
+			"I will prove myself to my family as an adventurer.",
+			"Deals are sacrosanct. I never go back on my word.",
+			"I love making deals and negotiating agreements.",
+			"I guard my wealth jealously."
+		],
+		flaw : [
+			"I am a braggart. I promote myself shamelessly.",
+			"I am vain. I always wear the latest fashions.",
+			"I am a glutton. I eat and drink to excess.",
+			"I am a snob. I want only the finest things in life.",
+			"I am lazy. I want others to take care of everything.",
+			"I am overconfident. I overestimate my abilities."
+		],
+
+		tools : ["Vehicles (land)", "Vehicles (water)"],
+		variant : [],
+		lifestyle : "wealthy"
+	},
+	"hillsfar smuggler" : {
+		regExpSearch :  /^(?=.*hillsfar)(?=.*smuggler).*$/i,
+		name : "Hillsfar Smuggler",
+		source : ["AL:RoD", 8],
+		skills : ["Perception", "Stealth"],
+		gold : 5,
+		equipleft : [
+			["Forgery kit", "", 5]
+		],
+		equipright : [
+			["Common clothes", "", 3],
+			["Belt pouch (with coins)", "", 1],
+		],
+		feature : "Secret Passage",
+		trait : [
+			"When I'm not smuggling, I gamble.",
+			"I just love Halfling cooking and baking!",
+			"I party with dwarves whenever I can.",
+			"I'm a terrible singer, but I love to do it.",
+			"I was raised to honor Chauntea and still do.",
+			"The blood sports of the Arena sicken me.",
+			"I think non-humans are really interesting.",
+			"I exaggerate the tales of my exploits."
+		],
+		ideal : [
+			["Fair",
+				"Fair: I think everyone deserves to be treated fairly. I don't play favorites. (Lawful)"
+			],
+			["Impulsive",
+				"Impulsive: Planning is often a waste of time. No plan survives contact with reality. It's easier to dive in and deal with the consequences. (Chaotic)"
+			],
+			["Curious",
+				"Curious: I want to learn as much as I can about the people and places I encounter. (Any)"
+			],
+			["Prepared",
+				"Prepared: I think success depends on preparing as much as possible in advance. (Any)"
+			],
+			["Respectful",
+				"Respectful: I think everyone deserves to be treated with respect and dignity, regardless of their race, creed, color, or origin. (Good)"
+			],
+			["Corrupt",
+				"Corrupt: I will break the law or act dishonestly if the money is right. (Evil)"
+			],
+		],
+		bond : [
+			"I am loyal to the Rogues Guild and would do anything for them.",
+			"I love the city of Hillsfar and my fellow Hillsfarians, despite the recent problems.",
+			"I admire the elves. I help them whenever I can.",
+			"A gnome helped me once. I pay the favor forward.",
+			"I enjoy tricking the Red Plumes at every opportunity.",
+			"I smuggled agricultural goods for non-human farmers. I try to help them when I can."
+		],
+		flaw : [
+			"My hatred for the Red Plumes burns so brightly that I have difficulty suppressing It around them.",
+			"The Red Plumes caught me once before, and I was branded for my crime. If they catch me again, for any offense, the punishment will be dire..",
+			"I treat all Hillsfarans poorly. I am disgusted with their failure to revolt against the Great Law of Humanity.",
+			"I have difficulty trusting strangers. Anyone could be a spy for the authorities.",
+			"I am greedy. There Isn't much I won't do for money.",
+			"I'm an informant for the Red Plumes. They let me continue my activities, so long as I pass them information about illegal activity in Hillsfar."
+		],
+		tools : ["Forgery kit"],
+		languages : ["+1 racial from "],
+		variant : [],
+		lifestyle : "modest",
+	},
+	"secret identity" : {
+		regExpSearch : /^(?=.*secret)(?=.*identity).*$/i,
+		name : "Secret Identity",
+		source : ["AL:RoD", 9],
+		skills : ["Deception", "Stealth"],
+		gold : 5,
+		equipleft : [
+			["Disguise kit", "", 3],
+			["Forgery kit", "", 5]
+		],
+		equipright : [
+			["Common clothes", "", 3],
+			["Belt pouch (with coins)", "", 1]
+		],
+		feature : "Secret Identity",
+		trait : [
+			"Despite its problems, I love Hillsfar, it's the greatest city in the world. The only one for me.",
+			"I move from place to place, never staying anywhere long and leaving nothing behind.",
+			"I think flattery is the best way to direct attention away from me.",
+			"I don't make friends easily. They're a liability I cannot afford.",
+			"Risk and danger are exhilarate me. Pulling off schemes and deceptions is a rush.",
+			"The First Lord is right, humans are superior. I really admire them, despite the atrocities.",
+			"I avoid people of my own race, as well as things associated with my race, lest they give me away.",
+			"I live for the Arena. I admire gladiators and enjoy the thrill of blood on the sands!"
+		],
+		ideal : [
+			["Quisling",
+				"Quisling: Supporting the rulers of the land and following the laws is the road to salvation. (Lawful)"
+			],
+			["Scoflaw",
+				"Scoflaw: The laws and lawmakers are corrupt. I follow laws only when it suits me. (Chaotic))"
+			],
+			["Optimist",
+				"Optimist: Everyone Is basically good. Though the government is misguided it will all be okay. (Any)"
+			],
+			["Secretive",
+				"Secretive: I am in the habit of not talking about myself. My business is none of yours. (Any)"
+			],
+			["Heroic",
+				"Heroic: I do everything I can to help non-humans, regardless of the personal cost to me. (Good)"
+			],
+			["Depraved",
+				"Depraved: I have lost my moral compass. The ends justify most any means. (Evil)"
+			],
+		],
+		bond : [
+			"The humans of Hillsfar have inflicted terrible harm on me, my family, and my race. I will have revenge.",
+			"I am part of an underground network that smuggles non-humans into and out of the city.",
+			"I am a partisan. I commit minor acts of defiance against the First Lord and Red Plumes when I can.",
+			"I am a spy. I report on events in and around Hillfar.",
+			"My secret identity is the only thing protecting me from the Arena. I will stop at nothing to maintain it.",
+			"I am madly in love with a human who does not know my true identity, and I fear rejection if I reveal it."
+		],
+		flaw : [
+			"After years of denying who I am, I now despise myself and other members of my pathetic race.",
+			"Years have hiding have made me somewhat paranoid. I trust no one.",
+			"I've been lying so often and for so long that I can't help it anymore. I frequently lie for no reason at all.",
+			"I am ashamed. I failed to protect a member of my family who was seized and thrown into the Area.",
+			"I am struggling with maintaining my secret identity. I subconsciously want to get caught and therefore sometimes let my secret identity slip.",
+			"Years of successfully deceiving others have made me cocky. I think no one can see through my lies."
+		],
+		tools : ["Disguise kit", "Forgery kit"],
+		variant : [],
+		lifestyle : "modest"
+	},
+	"shade fanatic" : {
+		regExpSearch : /^(?=.*shade)(?=.*fanatic).*$/i,
+		name : "Shade Fanatic",
+		source : ["AL:RoD", 10],
+		skills : ["Deception", "Intimidation"],
+		gold : 15,
+		equipleft : [
+			["Forgery kit", "", 5],
+			["Transparent shadow cylinder", "", ""]
+		],
+		equipright : [
+			["Fine clothes", "", 6],
+			["Signet ring", "", ""],
+			["Belt pouch (with coins)", "", 1]
+		],
+		feature : "Secret Society",
+		trait : [
+			"I am a bully; I try to hide it though.",
+			"I let my actions speak for themselves",
+			"I am important; I will not let anyone forget that.",
+			"You are either with me or against me.",
+			"I know it is only a time before I am betrayed by those I care for.",
+			"I never understand why people get so emotional.",
+			"They are out to get me. It is only my cunning that keeps me ahead of them",
+			"Everyone has a choice, the one I make is always right though."
+		],
+		ideal : [
+			["Hope",
+				"Hope: I know even if I need do evil acts, history will be my redemption. (Chaos)"
+			],
+			["Dedicated",
+				"Dedicated: I can do anything I put my mind to (Lawful)"
+			],
+			["Exciting",
+				"Exciting: I have found the truth of the Shadovar and want to share it with everyone. (Any)"
+			],
+			["Frugal",
+				"Frugal: I horde my possessions knowing that someday I will be called upon to give everything I have to the cause (Any)"
+			],
+			["Eloquent",
+				"Eloquent: I use my words to sway others to my beliefs. (Any)"
+			],
+			["Compassionate",
+				"Compassionate: It is through love that others will join In our cause. (Good)"
+			],
+		],
+		bond : [
+			"They say the Shade broke the bonds of mortality; I want to find out how.",
+			"The whispers in my head remind me that there is power to be found in the shadows.",
+			"For the glory of Netheril, I will grow in power.",
+			"I once lived in Hillsfar, I was chased out before I was able to say farewell.",
+			"My true love was a killed by the Red Plumes; I plot to make them suffer.",
+			"I had a loved one die in the arena at Hillsfar; I am out to prove I am stronger than them!"
+		],
+		flaw : [
+			"I always over exaggerate my abilities.",
+			"I cannot bear to let those I care for out of my sight.",
+			"I am incapable of standing up for myself.",
+			"The group I am with has committed atrocities; I am always worried their actions will become public.",
+			"I always enjoy a good mug of ale … or five.",
+			"I know what I do is wrong, but am afraid to speak up about it."
+		],
+		tools : ["Forgery kit"],
+		languages : ["Netherese"],
+		variant : [],
+		lifestyle : "moderate"
+	},
+	"trade sheriff" : {
+		regExpSearch :  /^(?=.*trade)(?=.*sheriff).*$/i,
+		name : "Trade Sheriff",
+		source : ["AL:RoD", 11],
+		skills : ["Investigation", "Persuasion"],
+		gold : 17,
+		equipleft : [
+			["Thieves' tools", "", 1]
+		],
+		equipright : [
+			["Fine clothes", "", 6],
+			["Gray cloak", "", ""],
+			["Sheriff's insignia", "", ""]
+		],
+		feature : "Investigative Services",
+		trait : [
+			"I am always polite and respectful",
+			"I let my actions speak for themselves",
+			"I am haunted by my past having seen the murder of a close friend or family member and it is the one case I always needed to solve but have not been able to.",
+			"I am quick to judge and slow to vindicate",
+			"I can be very persuasive and am able to ask questions where others might not be able to.",
+			"I have a quirky personality that seems to take others off their guard.",
+			"My sense of humor is considered by most to be awkward",
+			"Everyone has a choice, and they can always make the right choice, mine!"
+		],
+		ideal : [
+			["Hope",
+				"Hope: my job is to speak for the victim (good)"
+			],
+			["Dedicated",
+				"Dedicated: Once I start an investigation, until told to do so, I do not quit, not matter where it leads. (Lawful)"
+			],
+			["Nation",
+				"Nation: My city, nation, or people are all that matter (any)"
+			],
+			["Mercenary",
+				"Mercenary: When I do investigations, I expect answers immediately (Any)"
+			],
+			["Eloquent",
+				"Eloquent: I use my words to sway others to give me answers.(good)"
+			],
+			["Might",
+				"Might: It is through threats and force that I get my answers (lawful)"
+			],
+		],
+		bond : [
+			"To this day an unsolved case will always leave me haunted and bother me.",
+			"Through the might of my personality I will solve an investigation or puzzle.",
+			"It is my right to believe what I will, just try and stop me.",
+			"I need to prove my worth to my fellow Sheriffs.",
+			"Someone I cared for died under suspicious circumstances. I will find out what happened to them and bring their killer to justice.",
+			"I speak for those that cannot speak for themselves."
+		],
+		flaw : [
+			"I always over exaggerate my abilities.",
+			"I cannot bear to let those I care for out of my sight.",
+			"I took a bribe to tank an investigation and I would do anything to keep it secret.",
+			"I have little respect for those that are of \"low\" intelligence/race.",
+			"I always enjoy a good mug of ale … or five to cover up my past.",
+			"I speak for the First Lord of Hillsfar and make sure everyone knows it."
+		],
+		tools : ["Thieves' tools"],
+		languages : ["Elvish"],
+		variant : [],
+		lifestyle : "moderate"
+	},
 }
 
 var BackgroundSubList = {
@@ -1530,8 +1995,8 @@ var BackgroundSubList = {
 		equipright : [
 			["Fine clothes", "", 6],
 			["Signet ring", "", ""],
-			["Purse (with coins)", 1, 1],
-			["Banner or token from devoted love", "", ""],
+			["Purse (with coins)", "", 1],
+			["Banner or token from devoted love", "", ""]
 		],
 		feature : "Retainers",
 	},
@@ -1540,6 +2005,7 @@ var BackgroundSubList = {
 		name : "Pirate",
 		feature : "Bad Reputation",
 	},
+	
 	//SCAG variant backgrounds
 	"city watch" : {
 		regExpSearch : /^(?=.*city)(?=.*(watch|guard)).*$/i,
@@ -1597,7 +2063,6 @@ var BackgroundSubList = {
 		],
 		feature : "Library Access",
 		extra : ["Name your Library"],
-		tools : ["Type of artisan's tool"],
 		languages : ["+2 from "],
 		lifestyle : "modest",
 	},
@@ -1778,17 +2243,10 @@ var BackgroundSubList = {
 }
 
 var BackgroundFeatureList = {
-	"all eyes on you" : {
-		description : "My accent, mannerisms, figures of speech all mark me as foreign. Curious glances are directed my way wherever I go. A nuisance, but I also gain the friendly interest of the curious. I can parley this attention into access I might not otherwise have, for me and my companions. Nobles, scholars, merchants, and guilds, might be among the interested.",
-		source : ["S", 149],
-	},
+	//PHB backgrounds features
 	"are you entertained?" : {
 		description : "I can always find a place to perform (arena/pit fight), where I receive free lodging and food of a modest or comfortable standard, as long as I perform each night. In addition, my performance makes me something of a local figure. When strangers recognize me in a town where I have performed, they typically take a liking to me.",
 		source : ["P", 131],
-	},
-	"at home in the wild" : {
-		description : "In the wilderness, my home, I can find a place to hide, rest, or recuperate that is secure enough to conceal me from most natural threats, but not all supernatural, magical, or threats that actively seek me out. However, this feature doesn't shield or conceal me from scrying, mental probing, nor from threats that don't need the five senses to find me.",
-		source : ["CoS:OB", 9]
 	},
 	"bad reputation" : {
 		description : "No matter where I go, people are afraid of me due to my reputation. When I am in a civilized settlement, I can get away with minor criminal offenses, such as refusing to pay for food at a tavern or breaking down doors at a local shop, since most people will not report my activity to the authorities.",
@@ -1798,17 +2256,9 @@ var BackgroundFeatureList = {
 		description : "I can always find a place to perform (inn/tavern/circus/etc.), where I receive free lodging and food of a modest or comfortable standard, as long as I perform each night. In addition, my performance makes me something of a local figure. When strangers recognize me in a town where I have performed, they typically take a liking to me.",
 		source : ["P", 130],
 	},
-	"black-market breeder" : {
-		description : "I know how to find people who are always looking for stolen animals and vehicles, for pit fights or getaways during an illegal job. This provides me with information of what such animals & vehicles are in high demand in the area, but also offer to give me favors and information (DM choice) if I bring such animals and vehicles to them.",
-		source : ["CoS:OB", 5]
-	},
 	"city secrets" : {
 		description : "I know the secret patterns and flow to cities and can find passages through the urban sprawl that others would miss. When I am not in combat, I (and companions I lead) can travel between any two locations in the city twice as fast as my speed would normally allow.",
 		source : ["P", 141],
-	},
-	"court functionary" : {
-		description : "My knowledge of how bureaucracies function lets me gain access to the records and inner workings of any noble court or government I encounter. I know or can easily acquire the knowledge who the movers and shakers are, whom to go to for the favors I seek, and what the current intrigues of interest in the group are.",
-		source : ["S", 147],
 	},
 	"criminal contact" : {
 		description : "I have a reliable and trustworthy contact who acts as my liaison to a network of other criminals. I know how to get messages to and from my contact, even over great distances; specifically, I know the local messengers, corrupt caravan masters, and seedy sailors who can deliver my messages.",
@@ -1818,37 +2268,59 @@ var BackgroundFeatureList = {
 		description : "The quiet seclusion of my extended hermitage gave me access to a unique and powerful discovery. The exact nature of this revelation depends on the nature of my seclusion. It might be a great truth, a hidden site, a long forgotten fact, or unearthed some relic of the past that could rewrite history.",
 		source : ["P", 134],
 	},
-	"double agent" : {
-		description : "I have a trusty contact in the Tears of Virulence garrison in Phlan to whom I pass information. In exchange, I get away with minor criminal offenses in Phlan. My Black Fists contacts can help me get an audience with the Lord Regent, the Lord Sage, Black Fists members, or deposed nobles who are sympathetic to the Phlan refugees and insurgents.",
-		source : ["CoS:OB", 2]
-	},
-	"dragonscarred" : {
-		description : "My extensive scars from being tortured by Vorgansharax give me fame and notoriety, but it is difficult to disguise my appearance and hide from prying eyes. I can use this to gain access to people and places I might not otherwise have, for me and my companions. However, I fear that my afflictions are not completely mundane, as they burn and writhe.",
-		source : ["CoS:OB", 3]
-	},
-	"ear to the ground" : {
-		description : "I am in frequent contact with people in my chosen segment of society. These people might be associated with the criminal underworld, the rough-and-tumble folk of the streets, or members of high society. This connection comes in the form of a contact in any city I visit, a person who provides information about the people and places of the local area.",
-		source : ["S", 153],
-	},
-	"ex-convict" : {
-		description : "The knowledge gained during my incarceration lets me gain insight into local guards and jailors. I know which will accept bribes, or look the other way for me. I can also seek shelter for myself from authorities with other criminals in the area.",
-		source : ["CoS:OB", 8]
-	},
 	"false identity" : {
 		description : "I have created a second identity that includes documentation, established acquaintances, and disguises that allow me to assume that persona. Additionally, I can forge documents, including official papers and personal letters, as long as I have seen an example of the kind of document or the handwriting I am trying to copy.",
 		source : ["P", 128],
-	},
-	"guerilla" : {
-		description : "I've come to know the surrounding other natural features in which I can take refuge--or set up ambushes. I can quickly survey my environment for advantageous features. Additionally, I can scavenge around my natural surroundings to cobble together simple supplies (such as improvised torches, rope, patches of fabric, etc.) that are consumed after use.",
-		source : ["CoS:OB", 6]
 	},
 	"guild membership" : {
 		description : "5 gp membership fees per month: The guild offers lodging if possible. In case of being accused of a crime, the guild will support me if a good case can be made for my innocence or the crime is justifiable. I can also gain access to powerful political figures through the guild, as long as I'm in good standing and the guild is paid enough.",
 		source : ["P", 133],
 	},
-	"heart of darkness" : {
-		description : "Those who look into my eyes can see that I have faced unimaginable horror and that I am no stranger to darkness. Though they might fear me, commoners will extend me every courtesy and do their utmost to help. Unless I have shown myself to be a danger to them, they will even take up arms to fight with me, should I find myself facing an enemy alone.",
-		source : ["CoS", 209],
+	"military rank" : {
+		description : "I have a military rank from my career as a soldier. Soldiers loyal to my former military organization still recognize my authority and influence. I can invoke my rank to influence soldiers and temporarily requisition simple equipment or horses. I can usually gain access to friendly military encampments and fortresses where my rank is recognized.",
+		source : ["P", 140],
+	},
+	"position of privilege" : {
+		description : "I am welcome in high society, and people assume I have the right to be wherever I am. The common folk make every effort to accommodate me and avoid my displeasure, and other people of high birth treat me as a member of the same social sphere. I can secure an audience with a local noble if I need to.",
+		source : ["P", 135],
+	},
+	"researcher" : {
+		description : "When I attempt to learn or recall a piece of lore, if I do not know that information, I often know where and from whom I can obtain it. Usually, this information comes from a library, scriptorium, university, or a sage or other learned person or creature. Unearthing the deepest secrets of the multiverse can require an adventure or even a whole campaign.",
+		source : ["P", 138],
+	},
+	"retainers" : {
+		description : "I have the service of three retainers loyal to me family, one of whom is another noble and my squire. My other retainers are commoners who can perform mundane tasks for me, but they do not fight for me, will not follow me into obviously dangerous areas (such as dungeons), and will leave if they are frequently endangered or abused.",
+		source : ["P", 136],
+	},
+	"rustic hospitality" : 	{
+		description : "Since I come from the ranks of the common folk, I fit in among them with ease. I can find a place to hide, rest, or recuperate among other commoners, unless I have shown myself to be a danger to them. They will shield me from the law or anyone else searching for me, though they will not risk their lives for me.",
+		source : ["P", 131],
+	},
+	"shelter of the faithful" : {
+		description : "I command the respect of those who share my faith. I can perform the religious ceremonies of my faith. My companions and I can expect free healing and care at an establishment of my faith, though I must provide any material components needed for spells. Those who share my religion will support me at a modest lifestyle.",
+		source : ["P", 127],
+	},
+	"ship's passage" : {
+		description : "When I need to, I can secure free passage on a sailing ship for myself and my companions. I might sail on the ship I served on, or another ship I have good relations with. Because I'm calling in a favor, I can't be certain of a schedule or route that will meet my every need. My companions and I are expected to assist the crew during the voyage.",
+		source : ["P", 139],
+	},
+	"wanderer" : {
+		description : "I have an excellent memory for maps and geography, and I can always recall the general layout of terrain, settlements, and other features around me. In addition, I can find food and fresh water for myself and up to five other people each day, provided that the land offers berries, small game, water, and so forth.",
+		source : ["P", 136]
+	},
+	
+	//SCAG backgrounds features
+	"court functionary" : {
+		description : "My knowledge of how bureaucracies function lets me gain access to the records and inner workings of any noble court or government I encounter. I know or can easily acquire the knowledge who the movers and shakers are, whom to go to for the favors I seek, and what the current intrigues of interest in the group are.",
+		source : ["S", 147],
+	},
+	"all eyes on you" : {
+		description : "My accent, mannerisms, figures of speech all mark me as foreign. Curious glances are directed my way wherever I go. A nuisance, but I also gain the friendly interest of the curious. I can parley this attention into access I might not otherwise have, for me and my companions. Nobles, scholars, merchants, and guilds, might be among the interested.",
+		source : ["S", 149],
+	},
+	"ear to the ground" : {
+		description : "I am in frequent contact with people in my chosen segment of society. These people might be associated with the criminal underworld, the rough-and-tumble folk of the streets, or members of high society. This connection comes in the form of a contact in any city I visit, a person who provides information about the people and places of the local area.",
+		source : ["S", 153],
 	},
 	"inheritance" : {
 		description : "The item I inherited has a special significance, history, power, and/or important value. When I begin my adventuring career, I can decide whether to tell my companions about it right away. Rather than attracting attention to myself, I could decide to keep it a secret until I learn more about what it means to me and what it can do for me.",
@@ -1870,52 +2342,104 @@ var BackgroundFeatureList = {
 		description : "I know the mercenary life well. I am able to identify mercenary company emblems, and I know a little about any such company, including the leaders, reputation, and who hired them recently. I can find the locales where mercenaries abide anywhere, as long as I speak the language. My mercenary work between adventures affords me a comfortable lifestyle.",
 		source : ["S", 152],
 	},
-	"military rank" : {
-		description : "I have a military rank from my career as a soldier. Soldiers loyal to my former military organization still recognize my authority and influence. I can invoke my rank to influence soldiers and temporarily requisition simple equipment or horses. I can usually gain access to friendly military encampments and fortresses where my rank is recognized.",
-		source : ["P", 140],
-	},
-	"position of privilege" : {
-		description : "I am welcome in high society, and people assume I have the right to be wherever I am. The common folk make every effort to accommodate me and avoid my displeasure, and other people of high birth treat me as a member of the same social sphere. I can secure an audience with a local noble if I need to.",
-		source : ["P", 135],
-	},
-	"researcher" : {
-		description : "When I attempt to learn or recall a piece of lore, if I do not know that information, I often know where and from whom I can obtain it. Usually, this information comes from a library, scriptorium, university, or a sage or other learned person or creature. Unearthing the deepest secrets of the multiverse can require an adventure or even a whole campaign.",
-		source : ["P", 138],
-	},
 	"respect of the stout folk" : {
 		description : "No one esteems clan crafters quite so highly as dwarves do. I always have free room and board in any place where shield dwarves or gold dwarves dwell, and the individuals in such a settlement might vie among themselves to determine who can offer you (and possibly your compatriots) the finest accommodations and assistance.",
 		source : ["S", 145],
 	},
-	"retainers" : {
-		description : "I have the service of three retainers loyal to me family, one of whom is another noble and my squire. My other retainers are commoners who can perform mundane tasks for me, but they do not fight for me, will not follow me into obviously dangerous areas (such as dungeons), and will leave if they are frequently endangered or abused.",
-		source : ["P", 136],
-	},
-	"rustic hospitality" : 	{
-		description : "Since I come from the ranks of the common folk, I fit in among them with ease. I can find a place to hide, rest, or recuperate among other commoners, unless I have shown myself to be a danger to them. They will shield me from the law or anyone else searching for me, though they will not risk their lives for me.",
-		source : ["P", 131],
-	},
 	"safe haven" : {
 		description : "As a faction agent, I have access to a secret network of support and operatives who can provide assistance on my adventures. I know secret signs and passwords to identify such operatives, who can provide me with access to a hidden safe house, free room and board, or assistance in finding information. These agents never risk their lives or identity for me.",
-		source : ["S", 147],
-	},
-	"shelter of the faithful" : {
-		description : "I command the respect of those who share my faith. I can perform the religious ceremonies of my faith. My companions and I can expect free healing and care at an establishment of my faith, though I must provide any material components needed for spells. Those who share my religion will support me at a modest lifestyle.",
-		source : ["P", 127],
-	},
-	"ship's passage" : {
-		description : "When I need to, I can secure free passage on a sailing ship for myself and my companions. I might sail on the ship I served on, or another ship I have good relations with. Because I'm calling in a favor, I can't be certain of a schedule or route that will meet my every need. My companions and I are expected to assist the crew during the voyage.",
-		source : ["P", 139],
+		source : ["S", 147]
 	},
 	"uthgardt heritage" : {
 		description : "I have an excellent knowledge of my tribe's territory, and surrounding terrain and natural resources. I am familiar enough with any wilderness area that I can find twice as much food and water as one normally would. I can call upon the hospitality of my people, and those allied, often including members of druid circles, nomadic elves, and priesthoods.",
-		source : ["S", 154],
-	},
-	"wanderer" : {
-		description : "I have an excellent memory for maps and geography, and I can always recall the general layout of terrain, settlements, and other features around me. In addition, I can find food and fresh water for myself and up to five other people each day, provided that the land offers berries, small game, water, and so forth.",
-		source : ["P", 136],
+		source : ["S", 154]
 	},
 	"watcher's eye" : {
 		description : "My experience in enforcing the law, and dealing with lawbreakers, gives me a feel for local laws and criminals. I can easily find the local outpost of the watch, guards or a similar organization, and just as easily pick out the dens of criminal activity in a community. I am far more likely to be welcome in the former locations rather than the latter, however.",
-		source : ["S", 145],
+		source : ["S", 145]
+	},
+	
+	//HotDQ background features
+	"cult of the dragon infiltrator" : {
+		description : "I have infiltrated the ranks of the Cult of the Dragon. Having spied on the organization for quite some time, I am familiar with its inner workings and customs. I have a second identity as an initiate of the cult, enough of a facade to blend in as a simple grunt or servant.",
+		source : ["HotDQ", 87]
+	},
+	"dragon scholar" : {
+		description : "I have studied dragons and their lore for many years. I can automatically identify locations built or used by dragons, and I can identify dragon eggs and scales by sight. If I fail an Intelligence check to recall lore relating to dragons, I know someone or some book that I can consult for the answer unless the DM rules that the lore is unknown.",
+		source : ["HotDQ", 87]
+	},
+	
+	//OotA background features
+	"deep delver" : {
+		description : "I have a knack for finding my way in the Underdark, recalling all twists and turns with ease, such that I can always retrace my steps underground. I can determine which sources of food and water are safe to consume. I can always find sufficient food and water for myself and up to five other people in the Underdark, if sustenance is available in the area.",
+		source : ["OotA", 221]
+	},
+	"underdark experience" : {
+		description : "I'm no casual visitor to the Underdark, but have spent considerable time there learning its ways. I'm familiar with the various races, civilizations, settlements, and travel routes of the Underdark. If I fail an Intelligence check to recall some piece of Underdark lore, I know a source I can consult for the answer unless the DM rules that the lore is unknown.",
+		source : ["OotA", 221]
+	},
+	
+	//CoS background features
+	"at home in the wild" : {
+		description : "In the wilderness, my home, I can find a place to hide, rest, or recuperate that is secure enough to conceal me from most natural threats, but not all supernatural, magical, or threats that actively seek me out. However, this feature doesn't shield or conceal me from scrying, mental probing, nor from threats that don't need the five senses to find me.",
+		source : ["AL:CoS", 9]
+	},
+	"black-market breeder" : {
+		description : "I know how to find people who are always looking for stolen animals and vehicles, for pit fights or getaways during an illegal job. This provides me with information of what such animals & vehicles are in high demand in the area, but also offer to give me favors and information (DM choice) if I bring such animals and vehicles to them.",
+		source : ["AL:CoS", 5]
+	},
+	"double agent" : {
+		description : "I have a trusty contact in the Tears of Virulence garrison in Phlan to whom I pass information. In exchange, I get away with minor criminal offenses in Phlan. My Black Fists contacts can help me get an audience with the Lord Regent, the Lord Sage, Black Fists members, or deposed nobles who are sympathetic to the Phlan refugees and insurgents.",
+		source : ["AL:CoS", 2]
+	},
+	"dragonscarred" : {
+		description : "My extensive scars from being tortured by Vorgansharax give me fame and notoriety, but it is difficult to disguise my appearance and hide from prying eyes. I can use this to gain access to people and places I might not otherwise have, for me and my companions. However, I fear that my afflictions are not completely mundane, as they burn and writhe.",
+		source : ["AL:CoS", 3]
+	},
+	"ex-convict" : {
+		description : "The knowledge gained during my incarceration lets me gain insight into local guards and jailors. I know which will accept bribes, or look the other way for me. I can also seek shelter for myself from authorities with other criminals in the area.",
+		source : ["AL:CoS", 8]
+	},
+	"guerilla" : {
+		description : "I've come to know the surrounding other natural features in which I can take refuge--or set up ambushes. I can quickly survey my environment for advantageous features. Additionally, I can scavenge around my natural surroundings to cobble together simple supplies (such as improvised torches, rope, patches of fabric, etc.) that are consumed after use.",
+		source : ["AL:CoS", 6]
+	},
+	"heart of darkness" : {
+		description : "Those who look into my eyes can see that I have faced unimaginable horror and that I am no stranger to darkness. Though they might fear me, commoners will extend me every courtesy and do their utmost to help. Unless I have shown myself to be a danger to them, they will even take up arms to fight with me, should I find myself facing an enemy alone.",
+		source : ["CoS", 209],
+	},
+
+	//RoD background features
+	"factor" : {
+		description : "My family has assigned me the services of a loyal retainer from the business. This person can perform mundane tasks for me such as making purchases, delivering messages, and running errands. He or she will not fight for me or follow me into danger, and will leave if frequently endangered or abused. If killed, my family assigns me another within days.",
+		source : ["AL:RoD", 7]
+	},
+	"investigative services" : {
+		description : "I have a way of communicating with others that puts them at ease. I can invoke my rank to allow me access to a crime scene or to requisition equipment or horses on a temporary basis. When entering a settlement around Hillsfar, I can identify a contact who will give me information and would help me because I want to stop anyone from disrupting trade.",
+		source : ["AL:RoD", 11]
+	},
+	"red plume and mage guild contacts" : {
+		description : "I made friends among the Red Plumes and Mage's Guild when I lived at the Hillsfar Gate. They remember me fondly and help me in little ways when they can. I can invoke their assistance in and around Hillsfar to obtain food, simple equipment for temporary use, and to gain access to the low-security areas of their garrisons, halls, and encampments.",
+		source : ["AL:RoD", 6]
+	},
+	"secret identity" : {
+		description : "I have created a secret identity that I use to conceal my true race and that offers a covering explanation for my presence in Hillsfar. In addition, I can forge documents, including official papers and personal letters, as long as I have seen an example of the kind of document or the handwriting I am trying to copy.",
+		source : ["AL:RoD", 9]
+	},
+	"secret passage" : {
+		description : "I can call on my smuggler contacts to secure secret passage into or out of Hillsfar for myself and my friends, no questions asked, and no Red Plume entanglements. Because I'm calling in a favor, I can’t be certain when or if they can help. In return for passage, my companions and I may owe the Rouges Guild a favor and/or may have to pay bribes.",
+		source : ["AL:RoD", 8]
+	},
+	"secret society" : {
+		description : "I have a special way of communicating with others who feel the same way I do about the Shade. When I enter a village or larger city, I can identify a contact who will give me information on those that would hinder my goals and those would help me simply because of my desire to see the Shade Enclave return in all its glory.",
+		source : ["AL:RoD", 10]
+	},
+	"shelter of the elven clergy" : {
+		description : "The clerics of Elventree have vowed to care for the Cormanthor refugees. They will help me when they can, including providing me and my companions with free healing and care at temples, shrines, and other established presences in Elventree. They will also provide me (but only me) with a poor lifestyle.",
+		source : ["AL:RoD", 5]
+	},
+	"trade contact" : {
+		description : "My family and I have trade contacts such as caravan masters, sailors, artisans, farmers, and shopkeepers throughout the Moonsea region and all along the Sword Coast. When adventuring in either of those areas, I can use those contacts to get information about the local area or to pass a message to someone in those areas, even across great distance.",
+		source : ["AL:RoD", 7]
 	},
 }

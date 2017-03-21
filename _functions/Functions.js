@@ -2721,7 +2721,7 @@ function FindClasses(Event) {
 			var casterType = !isNaN(Temps.spellcastingFactor) ? "default" : Temps.spellcastingFactor.replace(/\d/g, "");
 			var casterFactor = Temps.spellcastingFactor.match(/\d/g) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
 			//now only continue if the class level is the factor or higher
-			if (casterFactor <= classes.known[aClass].level) {
+			if (Math.max(casterFactor, 1) <= classes.known[aClass].level) {
 				//add one to the casterType for seeing if this casterType is multiclassing later on
 				if (multiCaster[casterType]) {
 					multiCaster[casterType] += 1;
@@ -2738,7 +2738,7 @@ function FindClasses(Event) {
 				cSpells.name = Temps.fullname;
 				cSpells.level = classes.known[aClass].level;
 				cSpells.ability = Temps.abilitySave;
-				cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass};
+				cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass, psionic : casterType == "psionic"};
 				cSpells.known = Temps.spellcastingKnown;
 				cSpells.typeSp = !cSpells.known || cSpells.known.spells === undefined ? false : isArray(cSpells.known.spells) ? cSpells.known.spells[cSpells.level - 1] : cSpells.known.spells;
 				cSpells.typeSp = cSpells.typeSp === "" ? "" : isNaN(cSpells.typeSp) ? cSpells.typeSp : "known";
@@ -2771,20 +2771,22 @@ function FindClasses(Event) {
 			var casterType = !isNaN(Temps.spellcastingFactor) ? "default" : Temps.spellcastingFactor.replace(/\d/g, "");
 			var casterFactor = Temps.spellcastingFactor.match(/\d/g) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
 			//now add this class' levels to the global variable when using the known tables and are of sufficient level
-			if (classes.known[aClass].level >= casterFactor && (multiCaster[casterType] > 1 || !Temps.spellcastingTable)) {
-				var casterLvl = multiCaster[casterType] > 1 ? Math.floor(classes.known[aClass].level / casterFactor) : Math.ceil(classes.known[aClass].level / casterFactor);
-				if (classes.spellcastlvl[casterType]) {
-					classes.spellcastlvl[casterType] += casterLvl;
-				} else {
-					classes.spellcastlvl[casterType] = casterLvl;
-				}
-			} else if (classes.known[aClass].level >= casterFactor && Temps.spellcastingTable && multiCaster[casterType] === 1) {
-				if (!classes.spellcastlvl.otherTables) {
-					classes.spellcastlvl.otherTables = Temps.spellcastingTable[classes.known[aClass].level]
-				} else {
-					classes.spellcastlvl.otherTables = classes.spellcastlvl.otherTables.map(function (num, idx) {
-					  return num + Temps.spellcastingTable[classes.known[aClass].level][idx];
-					});
+			if (casterFactor && classes.known[aClass].level >= casterFactor) {
+				if (multiCaster[casterType] > 1 || !Temps.spellcastingTable) {
+					var casterLvl = multiCaster[casterType] > 1 ? Math.floor(classes.known[aClass].level / casterFactor) : Math.ceil(classes.known[aClass].level / casterFactor);
+					if (classes.spellcastlvl[casterType]) {
+						classes.spellcastlvl[casterType] += casterLvl;
+					} else {
+						classes.spellcastlvl[casterType] = casterLvl;
+					}
+				} else if (Temps.spellcastingTable && multiCaster[casterType] === 1) {
+					if (!classes.spellcastlvl.otherTables) {
+						classes.spellcastlvl.otherTables = Temps.spellcastingTable[classes.known[aClass].level]
+					} else {
+						classes.spellcastlvl.otherTables = classes.spellcastlvl.otherTables.map(function (num, idx) {
+						  return num + Temps.spellcastingTable[classes.known[aClass].level][idx];
+						});
+					}
 				}
 			}
 		}
@@ -3527,17 +3529,68 @@ function SetWeaponsdropdown() {
 	string += "\n\n" + toUni("To Hit and Damage calculations") + "\nThese are calculated using the proficiency bonus, the selected ability modifier and any bonus added in the \"modifier\" fields, see below.";
 	string += "\n\n" + toUni("Context-aware calculations") + "\nSome class features, racial features, and feats can affect the attack to hit and damage calculations. You can read what these are by clicking the button in this line.";
 	string += "\n\n" + toUni("Modifier or blue text fields") + "\nThese are hidden by default. You can toggle their visibility with the \"Mods\" button in the \'JavaScript Window\' or the \"Modifiers\" bookmark.";
-
+	
+	var weaponlists = {
+		endlist : [
+			"Axe, Hand",
+			"Axe, Battle",
+			"Axe, Great",
+			"Bow, Short",
+			"Bow, Long",
+			"Crossbow, Hand",
+			"Crossbow, Light",
+			"Crossbow, Heavy",
+			"Hammer, Light",
+			"Hammer, War",
+			"Hammer, Great",
+			"Sword, Short",
+			"Sword, Long",
+			"Sword, Great"
+		]
+	};
+	var knownweaponlists = ["endlist", "melee", "ranged", "improvised", "spell", "spell specific"];
+	
+	for (var key in WeaponsList) {
+		var weaKey = WeaponsList[key];
+		if (!weaKey.list || testSource(key, WeaponsList[key], "weaponExcl")) continue; // test if the weapon or its source is set to be included
+		if (!weaponlists[weaKey.list]) weaponlists[weaKey.list] = [];
+		weaponlists[weaKey.list].push(WeaponsList[key].name.capitalize());
+	};
+	
+	//make the definitive list of weapons for the dropdown box
+	var setweapons = [];
+	var addWeaList = function (weArr, addFirst, noSort) {
+		if (!noSort) weArr.sort();
+		if (addFirst) weArr.unshift(addFirst);
+		weArr.unshift("");
+		setweapons = setweapons.concat(weArr);
+	};
+	addWeaList(weaponlists.melee.concat(weaponlists.ranged), "Unarmed Strike"); //add the natural weapons
+	addWeaList(weaponlists.improvised, "Improvised Weapon"); //add the improvised weapons
+	addWeaList(weaponlists.spell, "Spell Attack"); //add the spells
+	addWeaList(weaponlists["spell specific"]); //add the specific spells
+	addWeaList(weaponlists.endlist, false, true); //add the endlist weapons
+	//now add any lists that are not known
+	for (var listW in weaponlists) {
+		if (knownweaponlists.indexOf(listW) === -1) {
+			addWeaList(weaponlists[listW]);
+		};
+	};
+	
 	for (var i = 1; i <= FieldNumbers.attacks; i++) {
 		var theFld = "Attack." + i + ".Weapon Selection";
+		if (tDoc.getField(theFld).submitName === setweapons.toSource()) continue; //no changes, so no reason to set this field
+		tDoc.getField(theFld).submitName = setweapons.toSource();
 		var theFldVal = What(theFld);
-		tDoc.getField(theFld).setItems(WeaponsList.DropDownList);
+		tDoc.getField(theFld).setItems(setweapons);
 		Value(theFld, theFldVal, string);
 	};
 	for (var c = 1; c <= 3; c++) {
 		theFld = "Comp.Use.Attack." + c + ".Weapon Selection";
+		if (tDoc.getField(theFld).submitName === setweapons.toSource()) continue; //no changes, so no reason to set this field
+		tDoc.getField(theFld).submitName = setweapons.toSource();
 		theFldVal = What(theFld);
-		tDoc.getField(theFld).setItems(WeaponsList.DropDownList);
+		tDoc.getField(theFld).setItems(setweapons);
 		Value(theFld, theFldVal, string);
 	};
 	tDoc.calculate = IsNotReset;
@@ -5576,7 +5629,28 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice) {
 	}
 	var theFinalReturn = theReturn !== "" && What("Unit System") === "metric" ? ConvertToMetric(theReturn, 0.5) : theReturn;
 	return theFinalReturn;
-}
+};
+
+function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld) {
+	var FeaKey = CurrentClasses[theClass] ? CurrentClasses[theClass].features[theFeature][extraChoice.toLowerCase()] : false;
+	var old = ForceOld ? "Old" : "";
+	if (!FeaKey) return "";
+	var FeaExtraName = CurrentClasses[theClass].features[theFeature].extraname;
+	var FeaSource = Fea.Source && SourceList[Fea.Source[0]] ? ", " + SourceList[Fea.Source[0]].abbreviation + (Fea.Source[1] ? " " + Fea.Source[1] : "") : "";
+	var FeaRef = " (" + FeaExtraName + FeaSource + ")";
+	var FeaUse = !Fea["Use" + old] ? "" : Fea["Use" + old] + (!isNaN(Fea["Use" + old]) ? "\u00D7 per " : "");
+	var FeaPost = "";
+	if (Fea["Add" + old] && FeaUse) {
+		FeaPost = " [" + Fea["Add" + old] + ", " + FeaUse + Fea["Recov" + old] + "]";
+	} else if (Fea["Add" + old]) {
+		FeaPost = " [" + Fea["Add" + old] + "]";
+	} else if (FeaUse) {
+		FeaPost = " [" + FeaUse + Fea["Recov" + old] + "]";
+	};
+	var theReturn = "\u25C6 " + FeaKey.name + FeaRef + FeaPost + FeaKey.description;
+	var theFinalReturn = theReturn !== "" && What("Unit System") === "metric" ? ConvertToMetric(theReturn, 0.5) : theReturn;
+	return theFinalReturn;
+};
 
 //change all the level-variables gained from classes and races
 function UpdateLevelFeatures(Typeswitch, raceLvl) {
@@ -5892,7 +5966,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					var ActionAddRemove = CheckFea && propFea.minlevel <= newClassLvl[aClass] ? "Add" : "Remove";
 					if (propFea.action && CheckFea) {
 						var thePropFeaAct = What("Unit System") === "metric" && propFea.action[1] ? ConvertToMetric(propFea.action[1], 0.5) : propFea.action[1];
-						tDoc[ActionAddRemove + "Action"](propFea.action[0], propFea.name + thePropFeaAct, temp.fullname);
+						tDoc[ActionAddRemove + "Action"](propFea.action[0], propFea.name + thePropFeaAct, ActionAddRemove === "Add" ? temp.fullname : false);
 					}
 					if (CheckFea && FeaChoice && propFea[FeaChoice].action) {
 						var thePropFeaChoiceAct = What("Unit System") === "metric" ? ConvertToMetric(propFea[FeaChoice].action[1], 0.5) : propFea[FeaChoice].action[1];
@@ -5975,6 +6049,33 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 						isWildShape = [newClassLvl[aClass], Fea.Use, Fea.Recov, Fea.Add];
 						WSinUse = true;
 					}
+					
+					//if the feature has extrachoices and old- or newlevel meets minlevel of the feature, go over them one by one to see if they changed with level
+					if (propFea.extrachoices && propFea.minlevel <= ClassLevelUp[aClass][2]) {
+						var addRemoveEC = propFea.minlevel > newClassLvl[aClass] && propFea.minlevel <= oldClassLvl[aClass] ? "remove" : propFea.minlevel < newClassLvl[aClass] ? "update" : false;
+						if (addRemoveEC) {propFea.extrachoices.forEach( function(extraF) {
+							extraF = extraF.toLowerCase();
+							var feaExtra = propFea[extraF];
+							var textFlds = [What("Extra.Notes"), What("Class Features")];
+							var testTxt = feaExtra.name + " (" + propFea.extraname;
+							if (!feaExtra || textFlds.join("").indexOf(testTxt) === -1 || (addRemoveEC === "Update" && !isArray(feaExtra.recovery) && !isArray(feaExtra.usages) && !isArray(feaExtra.additional))) return; //no need to do this feature
+							if (addRemoveEC === "remove") { //remove the feature
+								ClassFeatureOptions([aClass, prop, extraF, "extra"], addRemoveEC, oldClassLvl[aClass]);
+							} else if (addRemoveEC === "update") {
+								var ecFea = ReturnClassFeatures(aClass, prop, newClassLvl[aClass], extraF, oldClassLvl[aClass], extraF, false, true);
+								var ecFeaNewString = ParseClassFeatureExtra(aClass, prop, extraF, ecFea, false);
+								var ecFeaOldString = ParseClassFeatureExtra(aClass, prop, extraF, ecFea, true);
+								if (ecFeaOldString !== ecFeaNewString) {
+									ReplaceString(textFlds[0].indexOf(testTxt) !== -1 ? "Extra.Notes" : "Class Features", ecFeaNewString, false, ecFeaOldString);
+									if ((ecFea.Use || ecFea.UseCalc) && ecFea.Use.search(/unlimited|\u221E/i) === -1) {
+										AddFeature(ecFea.UseName, ecFea.Use, ecFea.Add ? " (" + ecFea.Add + ")" : "", ecFea.Recov, CurrentClasses[aClass].fullname, ecFea.UseOld, ecFea.UseCalc);
+									} else if (ecFea.Use.search(/unlimited|\u221E/i) !== -1 || (ecFea.UseOld || ecFea.UseCalcOld)) {
+										RemoveFeature(ecFea.UseNameOld, ecFea.UseOld, "", "", "", "", ecFea.UseCalcOld);
+									};
+								};
+							};
+						}); };
+					};
 				}
 				LastProp = propFea.minlevel <= ClassLevelUp[aClass][2] ? FeaNewString : LastProp;
 			}
@@ -6058,7 +6159,7 @@ function MakeClassMenu() {
 				toTest = GetClassFeatureChoice(classname, prop);
 				menuLVL3(tempItem, propFea.name, propFea.choices, classname, prop, "", propFea);
 			}
-			if (propFea.extrachoices && propFea.minlevel <= classlevel) {
+			if (propFea.extrachoices && !propFea.choicesNotInMenu && propFea.minlevel <= classlevel) {
 				menuLVL3(tempItem, propFea.extraname, propFea.extrachoices, classname, prop, "extra", propFea);
 			}
 		}
@@ -6074,11 +6175,11 @@ function MakeClassMenu() {
 };
 
 //call the Class Features menu and do something with the results
-function ClassFeatureOptions(Input, AddOrRemove) {
+function ClassFeatureOptions(Input, inputRemove, useLVL) {
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	var MenuSelection = Input ? Input : getMenu("classfeatures");
-	AddOrRemove = AddOrRemove ? AddOrRemove : (MenuSelection && MenuSelection[4] ? MenuSelection[4] : "");
+	AddOrRemove = inputRemove ? inputRemove : (MenuSelection && MenuSelection[4] ? MenuSelection[4] : "");
 	var tempArray = [];
 
 	if (AddOrRemove !== "stop" && MenuSelection && MenuSelection[0] !== "nothing") {
@@ -6087,15 +6188,13 @@ function ClassFeatureOptions(Input, AddOrRemove) {
 		var theFea = CurrentClasses[MenuSelection[0]].features[MenuSelection[1]];
 		var FeaOldChoice = MenuSelection[3] === "extra" ? "" : GetClassFeatureChoice(MenuSelection[0], MenuSelection[1]);
 
-		classlevel = classes.known[MenuSelection[0]].level;
+		var classlevel = inputRemove === "remove" && classes.old[MenuSelection[0]] ? classes.old[MenuSelection[0]].classlevel : classes.known[MenuSelection[0]].level;
 
 		if (MenuSelection[3] === "extra") {
 			//get a string for the feature
 			var theFeaExtra = theFea[MenuSelection[2]];
-			var FeaSource = theFeaExtra.source && SourceList[theFeaExtra.source[0]] ? ", " + SourceList[theFeaExtra.source[0]].abbreviation + (theFeaExtra.source[1] ? " " + theFeaExtra.source[1] : "") : "";
-			var FeaStringMake = "\u25C6 " + theFeaExtra.name + " (" + theFea.extraname + FeaSource + ")" + theFeaExtra.description;
-			var FeaString = What("Unit System") === "metric" ? ConvertToMetric(FeaStringMake, 0.5) : FeaStringMake;
 			var Fea = ReturnClassFeatures(MenuSelection[0], MenuSelection[1], classlevel, MenuSelection[2], classlevel, MenuSelection[2], false, true);
+			var FeaString = ParseClassFeatureExtra(MenuSelection[0], MenuSelection[1], MenuSelection[2], Fea, false);
 			
 			//if the feature is already present in the Extra.Notes, it must now be removed
 			if (AddOrRemove === "remove") {
@@ -6161,7 +6260,7 @@ function ClassFeatureOptions(Input, AddOrRemove) {
 			var Fea = ReturnClassFeatures(MenuSelection[0], MenuSelection[1], classlevel, MenuSelection[2], classlevel, FeaOldChoice);
 			
 			//continue if anything changed
-			var DoLimFea = Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld || Fea.UseName !== Fea.UseNameOld
+			var DoLimFea = Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld || Fea.UseName !== Fea.UseNameOld;
 			
 			//if something changed and the old has a limited feature, remove it
 			if (DoLimFea && (Fea.UseOld || Fea.UseCalcOld)) {
@@ -10649,9 +10748,9 @@ function CalcCarriedLocation() {
 function AddUserScript() {
 	var theUserScripts = What("User Script").match(/(.|\r){1,65500}/g);
 	if (!theUserScripts) theUserScripts = [];
-	var defaultTxt = toUni("The JavaScript") + " you put into the field below will be run immediately and whenever the sheet is opened, using eval().\nIf the script results in an error you will be informed immediately and the script will not be added to the sheet.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet. What you submit now (all dialogues put together) does not get added to anything you entered before, but will replace it.\n" + toUni("Reset the sheet") + " before you enter code into it (or use a fresh one).\n\n" + toUni("Be warned") + ", things you do here can break the sheet! If you are unsure how to write JavaScript to do what you want, please " + toUni("contact MorePurpleMoreBetter") + " on enworld.org, reddit, or via flapkan@gmail.com.\n\n";
-	var extraTxt = toUni("A character limit of 65642") + " applies to the area below. You can add longer scripts by using the \"Open Another Dialogue\" button. That way you get more dialogues like this one. When you press \"Add Script to Sheet\", the code of all dialogues will be joined together (with not characters put inbetween!), is then run/tested and added to the sheet as a whole.\n" + toUni("An error will result in all content being lost") + ", so please save it somewhere else as well!";
-	var getTxt = toUni("Using the proper syntax") + ", you can add homebrew materials for classes, races, weapons, feats, spells, backgrounds, etc. Section 3 of the " + toUni("FAQ") + " has more information and links to the syntax.\n\n" + toUni("Pre-Written Scripts ") + " can be obtained using the \"Additional Content\" button to the left. These include some more Unearthed Arcana materials, as well as the materials by Matthew Mercer (Blood Hunter, Gunslinger, College of the Maestro), and more...";
+	var defaultTxt = toUni("The JavaScript") + " you put into the field below will be run immediately and whenever the sheet is opened, using eval().\nIf the script results in an error you will be informed immediately and the script will not be added to the sheet or saved.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet, when you click \"Add Script to Sheet\".\n" + toUni("Resetting the sheet is recommended") + " before you have enter custom content into it (or use a fresh one).\n\n" + toUni("Be warned") + ", things you do here can break the sheet! You can " + toUni("aks MorePurpleMoreBetter for help") + " using the contact bookmarks.\n\n";
+	var extraTxt = toUni("A character limit of 65642") + " applies to the area below. You can add longer scripts by using the \"Open Another Dialogue\" button. That way you get more dialogues like this one. When you press \"Add Script to Sheet\", the code of all dialogues will be joined together (with no characters put inbetween!), is then run/tested and added to the sheet as a whole.\n" + toUni("An error will result in all content being lost") + ", so please save it somewhere else before exiting this dialogue!";
+	var getTxt = toUni("Using the proper syntax") + ", you can add homebrew materials for classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has more information and links to this syntax, or you can use the \"Syntax\" buttons above.\n\n" + toUni("Pre-Written Scripts") + " can be obtained using the \"Extras\" buttons above. These include some more Unearthed Arcana materials, as well as the DMs Guild creations by Matthew Mercer (Blood Hunter, Gunslinger, College of the Maestro), and more...\n\n" + toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JS Console\" button).";
 	var diaIteration = 1;
 	
 	var tries = 0;
@@ -10674,9 +10773,9 @@ function AddUserScript() {
 			initScripts : theUserScripts,
 			iteration : diaIteration,
 			diaMax : diaMax,
+			getTxt : getTxt,
 			defaultTxt : defaultTxt,
 			extraTxt : extraTxt,
-			getTxt : getTxt,
 			script: theUserScripts.length >= diaIteration ? theUserScripts[diaIteration - 1] : "",
 
 			initialize: function(dialog) {
@@ -10684,7 +10783,7 @@ function AddUserScript() {
 					"jscr": this.script,
 					"head": "Add custom JavaScript that is run on startup (dialogue " + this.iteration + "/" + this.diaMax + ")",
 					"txt0": this.iteration === 1 ? this.defaultTxt + this.extraTxt : this.extraTxt,
-					"txt1": this.getTxt,
+					"txt1": this.getTxt
 				});
 				dialog.enable({
 					bPre : this.iteration > 1,
@@ -10709,8 +10808,22 @@ function AddUserScript() {
 				this.script = results["jscr"];
 				dialog.end("bpre");
 			},
-			bADD: function(dialog) {
+			bDBA: function(dialog) {
 				contactMPMB("additions");
+			},
+			bDBS: function(dialog) {
+				contactMPMB("syntax");
+			},
+			bGHA: function(dialog) {
+				contactMPMB("additionsGit");
+			},
+			bGHS: function(dialog) {
+				contactMPMB("syntaxGit");
+			},
+			bCon: function(dialog) {
+				var results = dialog.store();
+				this.script = results["jscr"];
+				dialog.end("bcon");
 			},
 			description : {
 				name : "Add your custom JavaScript that has to run on startup",
@@ -10727,61 +10840,77 @@ function AddUserScript() {
 							font : "heading",
 							bold : true,
 							height : 21,
-							width : 640,
+							width : 750,
 						}, {
 							type : "static_text",
 							item_id : "txt0",
 							alignment : "align_fill",
 							font : "dialog",
-							char_height : 20,
-							width : 640,
+							char_height : diaIteration === 1 ? 17 : 6,
+							width : 750,
 						}, {
 							type : "view",
 							align_children : "align_distribute",
+							width : 750,
 							elements : [{
-								type : "view",
-								align_children : "align_left",
-								elements : [{
-									type : "button",
-									item_id : "bFAQ",
-									name : "Open the FAQ", //Cancel && 
-									width : 100,
-								}, {
-									type : "gap",
-									height : 5,
-								}, {
-									type : "button",
-									item_id : "bADD",
-									name : "Additional Content",
-									width : 100,
-								}, ]
-							}, { 
-								type : "view",
-								align_children : "align_right",
-								elements : [{
-									type : "static_text",
-									item_id : "txt1",
-									alignment : "align_fill",
-									font : "dialog",
-									char_height : 10,
-									width : 500,
-								}, ]
-							}, ]
+								type : "button",
+								item_id : "bFAQ",
+								name : "Open the FAQ",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "button",
+								item_id : "bDBA",
+								name : "Extras - Dropbox",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "button",
+								item_id : "bDBS",
+								name : "Syntax - Dropbox",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "button",
+								item_id : "bGHA",
+								name : "Extras - GitHub",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "button",
+								item_id : "bGHS",
+								name : "Syntax - GitHub",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "button",
+								item_id : "bCon",
+								name : "JS Console",
+								font : "dialog",
+								bold : true
+							}]
+						}, {
+							type : "static_text",
+							item_id : "txt1",
+							alignment : "align_fill",
+							font : "dialog",
+							char_height : 11,
+							width : 750,
 						}, {
 							type : "edit_text",
 							item_id : "jscr",
 							alignment : "align_fill",
 							multiline: true,
 							height : selBoxHeight,
-							width : 640,
+							width : 750,
 						}, {
 							type : "gap",
 							height : 5,
-						}, ]
+						}]
 					}, {
 						type : "view",
 						align_children : "align_row",
-						width : 640,
+						width : 750,
 						elements : [{
 							type : "button",
 							name : "<< Go to Previous Dialogue",
@@ -10793,18 +10922,15 @@ function AddUserScript() {
 							ok_name : "Add Script to Sheet",
 							item_id : "OKbt",
 							alignment : "align_right",
-						}, ]
-					}, ]
-				}, ]
+						}]
+					}]
+				}]
 			}
 		};
 		if (moreDialogues) {
 			AddUserScript_dialog.description.elements[0].elements[1].elements[1].type = "ok_cancel";
 			AddUserScript_dialog.description.elements[0].elements[1].elements[1].ok_name = "Go to Next Dialogue >>";
 		};
-		if (diaIteration > 1) {
-			AddUserScript_dialog.description.elements[0].elements[0].elements[1].char_height = 7;
-		}
 		var theDialog = app.execDialog(AddUserScript_dialog);
 		theUserScripts[diaIteration - 1] = AddUserScript_dialog.script;
 		if (clean(AddUserScript_dialog.script, [" ", "\t"]).slice(-1) === "}") theUserScripts[diaIteration - 1] += ";\n";
@@ -10818,11 +10944,14 @@ function AddUserScript() {
 			diaIteration -= 1;
 		} else if (askForScripts === "bfaq") {
 			tDoc.exportDataObject({ cName: "FAQ.pdf", nLaunch: 2 });
+		} else if (askForScripts === "bcon") {
+			console.println("\nYour code has been copied below, but hasn't been commited/saved to the sheet!\nYou can run code here by selecting the appropriate lines and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + ".\n\n" + theUserScripts.join(""));
+			console.show();
 		} else {
 			diaIteration += 1;
 		};
 	}
-	while (askForScripts !== "ok" && askForScripts !== "cancel");
+	while (askForScripts !== "ok" && askForScripts !== "cancel" && askForScripts !== "bcon");
 
 	if (askForScripts === "ok") {
 		theUserScripts = theUserScripts.join("");
@@ -10831,7 +10960,7 @@ function AddUserScript() {
 			Value("User Script", theUserScripts.replace(/UpdateDropdown\([^\)]*\)\;?\r?/g, ""));
 		} catch (e) {
 			app.alert({
-				cMsg : "The script you entered is faulty, it returns the following error when run:\n\"" + e + "\"\n\nYour script has not been added to the sheet, please try again after fixing the error.",
+				cMsg : "The script you entered is faulty, it returns the following error when run:\n\"" + e + "\"\n\nYour script has not been added to the sheet, please try again after fixing the error.\n\nIf you run your code from the console, it will give you a line number for where the error is. You can open this console from inside the \"Add Custom Script\" dialogue.",
 				nIcon : 0,
 				cTitle : "Error in your script",
 			});

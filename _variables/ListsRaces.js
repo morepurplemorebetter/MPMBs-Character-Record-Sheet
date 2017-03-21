@@ -218,7 +218,10 @@ var RaceList = {
 				usages : 1,
 				minlevel : 3,
 				recovery : "long rest",
-				additional : ["", "", "1/3 damage", "2/4 damage", "2/5 damage", "3/6 damage", "3/7 damage", "4/8 damage", "4/9 damage", "5/10 damage", "5/11 damage", "6/12 damage", "6/13 damage", "7/14 damage", "7/15 damage", "8/16 damage", "8/17 damage", "9/18 damage", "9/19 damage", "10/20 damage"],
+				additional : levels.map(function (n) {
+					if (n < 3) return ""
+					return  Math.ceil(n/2) + "/" + n + " damage";
+				}),
 				action : ["action", " (start)"],
 				eval : "AddAction(\"bonus action\", \"Radiant Consumption (end)\", \"being a Scourge Aasimar\");",
 				removeeval : "RemoveAction(\"bonus action\", \"Radiant Consumption (end)\");",

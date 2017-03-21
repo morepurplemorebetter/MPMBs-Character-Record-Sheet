@@ -4497,15 +4497,13 @@ function UpdateDropdown(type, weapon) {
 	 case "weapon" :
 	 case "weapons" :
 		if (weapon) {
-			if (WeaponsList.DropDownList[WeaponsList.DropDownList.length - 1] === "Sword, Great") {
-				WeaponsList.DropDownList.push(""); //adds an empty value to the bottom of the dropdown list
-			}
-			if (isArray(weapon)) {//this adds newly defined attack(s) to the bottom of the dropdown list, after the empty value
-				WeaponsList.DropDownList = WeaponsList.DropDownList.concat(weapon); 
-			} else {
-				WeaponsList.DropDownList.push(weapon);
-			}
-		}
+			if (!isArray(weapon)) weapon = [weapon]; //make this into an array
+			weapon.forEach( function (wea) {
+				var weaKey = WeaponsList[wea];
+				if (!weaKey || weaKey.list) return;
+				weaKey.list = "extra";
+			});
+		};
 		SetWeaponsdropdown();
 		break;
 	 case "armour" :
@@ -5522,6 +5520,12 @@ function contactMPMB(medium) {
 	 case "additions" :
 		app.launchURL("http://flapkan.com/mpmb/additions", true);
 		break;
+	 case "syntaxgit" :
+		app.launchURL("https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/tree/master/additional%20content%20syntax", true);
+		break;
+	 case "additionsgit" :
+		app.launchURL("https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/tree/master/additional%20content", true);
+		break;
 	 case "latestversion" :
 		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild[minVer ? (tDoc.info.SpellsOnly ? "spell" : "advlog") : "character"][typePF ? "PF" : "CF"]), true);
 		break;
@@ -5781,7 +5785,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		if (QI && CurrentEvals.atkAdd) {
 			
 			// define some variables that we can check against later or with the CurrentEvals
-			var WeaponText = inputText + fields.Description;
+			var WeaponText = inputText + " " + fields.Description;
 			var isDC = fields.To_Hit_Bonus.toLowerCase() === "dc";
 			var isSpell = thisWeapon[3] || theWea.type.match(/cantrip|spell/i) || WeaponText.match(/\b(cantrip|spell)\b/i);
 			var isMeleeWeapon = !isSpell && fields.Range.match(/melee/i);
@@ -5873,7 +5877,7 @@ function CalcAttackDmgHit(fldName) {
 	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
 	var WeaponName = thisWeapon[0];
 	var theWea = WeaponsList[WeaponName];
-	var WeaponText = (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]) + fields.Description;
+	var WeaponText = (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]) + " " + fields.Description;
 	
 	if (!WeaponText || fields.Mod.match(/^(| |empty)$/)) {
 		Value(fldBase + "Damage", "");
@@ -5898,7 +5902,7 @@ function CalcAttackDmgHit(fldName) {
 	var isDC = fields.To_Hit_Bonus.toLowerCase() === "dc";
 	if (QI) {
 		var isSpell = thisWeapon[3] || (theWea && theWea.type.match(/cantrip|spell/i)) || WeaponText.match(/\b(cantrip|spell)\b/i);
-		var isMeleeWeapon = !isSpell && fields.Range.match(/melee/i);
+		var isMeleeWeapon = (!isSpell || thisWeapon[0] === "shillelagh") && fields.Range.match(/melee/i);
 		var isRangedWeapon = !isSpell && fields.Range.match(/^(?!.*melee).*\d+.*$/i);
 
 		// see if this is a off-hand attack and the modToDmg shouldn't be use

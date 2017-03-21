@@ -105,13 +105,14 @@ function ApplySpell(FldValue, rememberFldName) {
 	var input = FldValue !== undefined ? FldValue.split("##") : event.value.split("##");
 	var base = rememberFldName ? rememberFldName : event.target.name;
 	var isPF = typePF;
+	var isPsionics = input[0].match(/psionic/i);
 	
 	var HeaderList = [
 		["", "check", ""], //0
-		["SPELL", "name", Array(21 + (isPF ? 6 : 0)).join("_")], //1
+		[isPsionics ? "PSIONIC POWER" : "SPELL", "name", Array(21 + (isPF ? 6 : 0)).join("_")], //1
 		["DESCRIPTION", "description", Array(84 + (isPF ? 25 : 0)).join("_")], //2
 		["SAVE", "save", Array(4 + (isPF ? 1 : 0)).join("_")], //3
-		["SCHOOL", "school", Array(7 + (isPF ? 1 : 0)).join("_")], //4
+		[isPsionics ? "ORDER" : "SCHOOL", "school", Array(7 + (isPF ? 1 : 0)).join("_")], //4
 		["TIME", "time", Array(7 + (isPF ? 1 : 0)).join("_")], //5
 		["RANGE", "range", Array(10 + (isPF ? 2 : 0)).join("_")], //6
 		["COMP", "components", Array(7).join("_")], //7
@@ -121,7 +122,7 @@ function ApplySpell(FldValue, rememberFldName) {
 	]
 	
 	//make this a header line if the input is "setcaptions"
-	if (input[0].toLowerCase() === "setcaptions") {
+	if (input[0].match(/setcaptions/i)) {
 		HeaderList[0][0] = input[1] ? input[1].substring(0, input[1].match(/\(.\)/) ? 3 : 2).toUpperCase() : "";
 		
 		//have a function to create rich text span
@@ -175,7 +176,7 @@ function ApplySpell(FldValue, rememberFldName) {
 	}
 	
 	// Now test if the fields should be hidden, or revealed
-	if (input[0].toLowerCase() === "hidethisline" || input[0].toLowerCase() === "setheader" || input[0].toLowerCase() === "setdivider" || input[0].toLowerCase() === "setglossary") {
+	if (input[0].match(/hidethisline|setheader|setdivider|setglossary/i)) {
 		//reset all the field's values and hide them
 		for (var i = 0; i < HeaderList.length; i++) {
 			var theFld = base.replace("remember", HeaderList[i][1]);
@@ -183,7 +184,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Hide(theFld);
 		}
 		
-		if (input[0].toLowerCase() === "hidethisline") {
+		if (input[0].match(/hidethisline/i)) {
 		//and don't do the rest of this function if we are here to hide this line
 			if (IsNotSpellSheetGenerating) {
 				tDoc.calculate = IsNotReset;
@@ -224,20 +225,20 @@ function ApplySpell(FldValue, rememberFldName) {
 			};
 			setCheck();
 		};
-	} else if (input[0].toLowerCase() === "setheader") {
+	} else if (input[0].match(/setheader/i)) {
 		var theClass = input[1] && CurrentSpells[input[1].toLowerCase()] ? input[1].toLowerCase() : "";
 		var theSuffix = input[2] !== undefined && !isNaN(parseFloat(input[2])) ? parseFloat(input[2]) : false;
 		var hidePrepared = input.indexOf("nopreps") !== -1;
 		if (theSuffix !== false ) {
-			SetSpellSheetElement(base, "header", theSuffix, theClass, hidePrepared);
+			SetSpellSheetElement(base, "header", theSuffix, theClass, hidePrepared, isPsionics);
 		}
-	} else if (input[0].toLowerCase() === "setdivider") {
+	} else if (input[0].match(/setdivider/i)) {
 		var theLevel = input[1] !== undefined && !isNaN(parseFloat(input[1])) ? parseFloat(input[1]) : false;
 		var theSuffix = input[2] !== undefined && !isNaN(parseFloat(input[2])) ? parseFloat(input[2]) : false;
 		if (theClass !== false && theSuffix !== false ) {
-			SetSpellSheetElement(base, "divider", theSuffix, theLevel);
+			SetSpellSheetElement(base, "divider", theSuffix, theLevel, false, isPsionics);
 		}
-	} else if (input[0].toLowerCase() === "setglossary") {
+	} else if (input[0].match(/setglossary/i)) {
 		SetSpellSheetElement(base, "glossary", "");
 	} else if (input[0].indexOf("_") === 0) { //make all the fields lines
 		//reset all the field's values and tooltips to the lines defined in the array
@@ -273,10 +274,15 @@ function ApplySpell(FldValue, rememberFldName) {
 			}
 			
 			//make the tooltip for the description field
-			var spTooltip = toUni(aSpell.name) + " \u2014 ";
-			spTooltip += aSpell.level === 0 ? spellSchoolList[aSpell.school].capitalize() + " cantrip" :  spellLevelList[aSpell.level] + " " + spellSchoolList[aSpell.school];
-			spTooltip += aSpell.ritual ? " (ritual)" : "";
-			spTooltip += "\n   " + aSpell.descriptionFull;
+			var spTooltip = "";
+			if (aSpell.descriptionFull && (aSpell.school || aSpell.psionic)) {
+				spTooltip += toUni(aSpell.name) + " \u2014 ";
+				spTooltip += aSpell.psionic ? (aSpell.level === 0 ? "Psionic talent" : spellSchoolList[aSpell.school].capitalize() + " discipline") :
+					aSpell.level === 0 ? spellSchoolList[aSpell.school].capitalize() + " cantrip" :
+					spellLevelList[aSpell.level] + " " + spellSchoolList[aSpell.school];
+				spTooltip += aSpell.ritual ? " (ritual)" : "";
+				spTooltip += "\n   " + aSpell.descriptionFull;
+			};
 			
 			//set the spell description and the tooltip with the full description
 			Value(base.replace("remember", "description"), spDescr, spTooltip);
@@ -285,7 +291,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "save"), aSpell.save ? aSpell.save : "\u2014");
 			
 			//set the spell school
-			Value(base.replace("remember", "school"), aSpell.school);
+			Value(base.replace("remember", "school"), aSpell.school ? aSpell.school : "\u2014");
 			
 			//set the spell time
 			Value(base.replace("remember", "time"), aSpell.time);
@@ -294,7 +300,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "range"), spRange);
 			
 			//set the spell components
-			Value(base.replace("remember", "components"), aSpell.components, aSpell.compMaterial ? aSpell.compMaterial : "");
+			Value(base.replace("remember", "components"), aSpell.components ? aSpell.components : "\u2014", aSpell.compMaterial ? aSpell.compMaterial : "");
 			
 			//set the spell duration
 			Value(base.replace("remember", "duration"), aSpell.duration);
@@ -307,6 +313,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "book"), spBook, spBookFull);
 			Value(base.replace("remember", "page"), spPage, spBookFull);
 			
+			if (aSpell.firstCol !== undefined && !input[1]) input[1] = aSpell.firstCol;
 		}
 		setCheck();
 	}
@@ -337,7 +344,7 @@ function SetSpell(FldValue, nameFldName) {
 }
 
 //set the text on the spell divider (the level of the spell)
-function SetSpellDividerName(field, level) {
+function SetSpellDividerName(field, level, isPsionics) {
 	var spellLvl = [
 		["Cantrips (", 0, " Level)"],
 		["", 1, "st Level"],
@@ -351,7 +358,9 @@ function SetSpellDividerName(field, level) {
 		["", 9, "th Level"],
 	];
 	
-	if (!typePF) {
+	if (isPsionics) {
+		Value(field, level ? "Psionic Disciplines" : "Psionic Talents");
+	} else if (!typePF) {
 		var spans = [{
 			text : spellLvl[level][0],
 		}, {
@@ -375,7 +384,7 @@ function SetSpellDividerName(field, level) {
 // header is 4 high, divider is 2 high
 // if type[0] is "header", caster is the name of the CurrentSpells entry
 // if type[0] is "divider", caster is the level of the divider head to set
-function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
+function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, isPsionics) {
 	var prefix = target.substring(0, target.indexOf("spells."));
 	if (!suffix && suffix !== 0 && type !== "glossary") { //if suffix is false, it means we have to find the first that is not visible
 		suffix = findNextHeaderDivider(prefix, type);
@@ -484,7 +493,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 	if (type === "divider") {
 		var divTextFld = dividerArray[!typePF ? 0 : 1]
 		//set the name of the divider
-		SetSpellDividerName(divTextFld, caster);
+		SetSpellDividerName(divTextFld, caster, isPsionics);
 		//set the submitName to remember the line where this divider is at
 		var submitNameFld = divTextFld;
 	} else if (type === "header") {
@@ -492,8 +501,9 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 		
 		if (caster && CurrentSpells[caster]) {
 			var spCast = CurrentSpells[caster];
-			var casterName = spCast.name.replace(/book of /i, "").replace(/ (\(|\[).+?(\)|\])/, "");
-			casterName = casterName + (casterName.length < testLength ? " Spells" : "");
+			isPsionics = isPsionics || (spCast.factor && spCast.factor[1].match(/psionics/i);
+			var casterName = spCast.name.replace(/book of /i, "").replace(/ (\(|\[).+?(\)|\])/g, "");
+			casterName = casterName + (casterName.length >= testLength || casterName.match(/\b(spells|powers|psionics)\b/i) ? "" : isPsionics ? " Psionics" : " Spells");
 			if (What(headerArray[2]) !== caster) { //if the header was not already set to the class
 				Value(headerArray[1], casterName); //set the name of the header
 				Value(headerArray[2], caster); //set the name of the class
@@ -516,8 +526,8 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 			tDoc.resetForm(headerArray);
 			var casterName = " ";
 			if (caster) {
-				casterName = caster.replace(/book of | ?spells| (\(|\[).+?(\)|\])/ig, "").replace(/ (\(|\[).+?(\)|\])/, "").replace(/ ?spells/i, "");
-				casterName = casterName.capitalize() + (casterName.length < testLength ? " Spells" : "");
+				casterName = caster.replace(/book of | (\(|\[).+?(\)|\])/ig, "").replace(/ (\(|\[).+?(\)|\])/g, "");
+				casterName = casterName + (casterName.length >= testLength || casterName.match(/\b(spells|powers|psionics)\b/i) ? "" : isPsionics ? " Psionics" : " Spells");
 				if (ClassList[caster]) {
 					PickDropdown(headerArray[3], ClassList[caster].abilitySave);
 				} else if (ClassSubList[caster]) {
@@ -595,7 +605,7 @@ function CalcSpellScores() {
 			//add the class level
 			if (CurrentSpells[aClass]) {
 				var cSpells = CurrentSpells[aClass];
-				if (cSpells.factor) {
+				if (cSpells.factor && cSpells.factor[0]) {
 					theResult += Math.max(Math.floor(cSpells.level / cSpells.factor[0]), 1);
 				} else {
 					theResult += cSpells.level;
@@ -732,9 +742,11 @@ function CreateSpellList(inputObject, display, extraArray, returnOrdered) {
 			if (isArray(inputObject.class)) {
 				var testClass = false;
 				for (var c = 0; c < inputObject.class.length; c++) {
-					testClass = testClass || aSpell.classes.indexOf(inputObject.class[c]) !== -1;
-				}
-				addSp = testClass;
+					if (aSpell.classes.indexOf(inputObject.class[c]) !== -1) {
+						addSp = true;
+						break;
+					};
+				};
 			} else {
 				addSp = inputObject.class === "any" || aSpell.classes.indexOf(inputObject.class) !== -1;
 			}
@@ -749,8 +761,11 @@ function CreateSpellList(inputObject, display, extraArray, returnOrdered) {
 			addSp = !aSpell.save && aSpell.description.toLowerCase().indexOf("spell attack") !== -1;
 		}
 		if (extraArray && extraArray.indexOf(key) !== -1) addSp = true;
-		if (addSp && inputObject.ritual) {
-			addSp = aSpell.ritual === inputObject.ritual;
+		if (addSp && inputObject.ritual !== undefined) {
+			addSp = aSpell.ritual ? aSpell.ritual == inputObject.ritual : !inputObject.ritual;
+		}
+		if (addSp && inputObject.psionic !== undefined) {
+			addSp = aSpell.psionic ? aSpell.psionic == inputObject.psionic : !inputObject.psionic;
 		}
 		if (addSp) {
 			if (display) {
@@ -836,7 +851,9 @@ var SpellSheetSelect_Dialog = {
 	showAd : true,
 	showSp : true,
 	showSpRadio : true,
-	txt : "Please set the spells/cantrips you want to have on the Spell Sheet.\nNote that some things might not be available in this dialog, because what you are editing has no access to it.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.", //You will be prompted like this for each thing that grants you spellcasting. After that, you will be prompted to choose which to include/exclude and in which order you want them on the Spell Sheet.
+	spNm : "Spells",
+	caNm : "Cantrips",
+	txt : "",
 	header : "",
 	fullname : "",
 	SpBook : false,
@@ -845,23 +862,26 @@ var SpellSheetSelect_Dialog = {
 	//when starting the dialog
 	initialize : function (dialog) {
 		this.SpBook = false;
+		this.txt = "Please set the " + this.spNm.toLowerCase() + "/" + this.caNm.toLowerCase() + " you want to have on the Spell Sheet.\nNote that some things might not be available in this dialog, because what you are editing has no access to it.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.";
+		
+		var psiSpells = this.spNm === "Spells" ? "Spells" : "Psionics";
 		
 		//make a string for the information
 		var info = "Which grants:\t";
-		if (this.showCa) info += "Cantrips known:\t" + toUni(this.nmbrCa) + "\n\t\t";
+		if (this.showCa) info += this.caNm + " known:\t" + toUni(this.nmbrCa) + "\n\t\t";
 		switch (this.typeSp) {
 		 case "book" :
-			info += "Spells known:\t" + toUni("All in spellbook") + "\n\t\t";
+			info += this.spNm + " known:\t" + toUni("All in spellbook") + "\n\t\t";
 			break;
 		 case "list" :
-			info += "Spells known:\t" + toUni("All on the class' spell list") + "\n\t\t";
+			info += this.spNm + " known:\t" + toUni("All on the class' spell list") + "\n\t\t";
 			break
 		 case "known" :
-			info += "Spells known:\t" + toUni(this.nmbrSp) + "\n\t\t";
+			info += this.spNm + " known:\t" + toUni(this.nmbrSp) + "\n\t\t";
 			break;
 		}
 		if (this.levelSp) info += "of Spell Level:\t" + toUni(spellLevelList[this.levelSp]) + (this.levelSp > 1 ? " (and lower)" : "") + "\n\t\t";
-		if (this.showBo) info += "Extra Spells:\t" + toUni(this.nmbrBo);
+		if (this.showBo) info += "Extra " + psiSpells + ":\t" + toUni(this.nmbrBo);
 		
 		var theBo = this.nmbrBo + this.offsetBo;
 		var theCa = this.nmbrCa + this.offsetCa;
@@ -869,14 +889,17 @@ var SpellSheetSelect_Dialog = {
 		
 		//set the value of various text entries
 		dialog.load({
-			"Hea0" : "Set " + this.header.capitalize() + " Spells",
+			"Hea0" : "Set " + this.header.capitalize() + " " + this.spNm,
 			"txt0" : this.txt,
 			"BonK" : ASround(theBo),
 			"CanK" : ASround(theCa),
 			"SplK" : ASround(theSp),
 			"txC1" : this.fullname,
 			"txC2" : info,
-			"SplT" : this.typeSp === "book" ? "Spellbook" : "Spells",
+			"BonT" : "Extra " + psiSpells,
+			"CanT" : this.caNm,
+			"AdIT" : "Subclass " + psiSpells,
+			"SplT" : this.typeSp === "book" ? "Spellbook" : this.spNm,
 		});
 		
 		//set the visibility of the clusters
@@ -2829,7 +2852,7 @@ function AskUserSpellSheet() {
 		classesArray.push(aCast);
 		
 		//put some general things in variables
-		if (spCast.level && spCast.factor) {
+		if (spCast.level && spCast.factor && spCast.factor[0]) {
 			var scLevel = spCast.level / spCast.factor[0];
 			var highestLevel = spCast.spellsTable ? spCast.spellsTable[Math.ceil(scLevel)].indexOf(0) : tDoc[spCast.factor[1] + "SpellTable"][Math.ceil(scLevel)].indexOf(0);
 			scLevel = Math.max(Math.floor(scLevel), 1);
@@ -2837,9 +2860,14 @@ function AskUserSpellSheet() {
 		} else {
 			var scLevel = false;
 			var highestLevel = false;
-		}
+		};
+		
+		//see if this is a psionic caster
+		var isPsionics = spCast.factor && spCast.factor[1].match(/psionic/i);
 		
 		//set all the general parts of the dialog
+		dia.caNm = isPsionics ? "Talents" : "Cantrips";
+		dia.spNm = isPsionics ? "Disciplines" : "Spells";
 		dia.levelSp = highestLevel;
 		dia.header = aCast; //the name in the dialog's header
 		dia.fullname = spCast.name + (spCast.level ? ", level " + spCast.level : ""); //the full name of the feature including level
@@ -3251,6 +3279,7 @@ function GenerateSpellSheet(GoOn) {
 	for (var i = 0; i < CurrentCasters.incl.length; i++) {
 		
 		var spCast = CurrentSpells[CurrentCasters.incl[i]];
+		var isPsionics = spCast.factor && spCast.factor[1].match(/psionic/i) ? "psionic" : ""; //see if this is a psionic caster
 		
 		//get a list of all the spells to put on the Spell Sheet
 		var fullSpellList = [];
@@ -3285,7 +3314,7 @@ function GenerateSpellSheet(GoOn) {
 					delete spCast.list.level;
 				}
 			}
-		} else if (spCast.extra && spCast.extra[100] === "AddToKnown") { // add spells to the full list for classes with spells known/spellbook, if set to add to the known. Only add the levels that can be used
+		} else if (spCast.extra && spCast.extra[100] === "AddToKnown" && spCast.factor && spCast.factor[0]) { // add spells to the full list for classes with spells known/spellbook, if set to add to the known. Only add the levels that can be used
 			var CasterLevel = Math.ceil(spCast.level / spCast.factor[0]);
 			var maxSpell = spCast.spellsTable ? spCast.spellsTable[CasterLevel].indexOf(0) : tDoc[spCast.factor[1] + "SpellTable"][CasterLevel].indexOf(0);
 			maxSpell = Number(maxSpell === -1 ? 9 : maxSpell);
@@ -3296,20 +3325,20 @@ function GenerateSpellSheet(GoOn) {
 			}
 		}
 		
-		//now see if we have any spells to add to the spell sheet for this class. If not, skip this class (only the bonus spells will always be present, so the minimum length is always 15)
+		//now see if we have any spells to add to the spell sheet for this class. If not, skip this class
 		var testArray = removeEmptyValues(fullSpellList);
 		if (testArray.length === 0) {
 			isFirst = i === 0 ? 1 : 0;
 			continue;
 		}
 		
-		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : (spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : (spCast.typeSp === "race" ? "##kn" : "##")); //add "Me" or "Kn" to the name or not?
+		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : isPsionics ? "##pp" : (spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : (spCast.typeSp === "race" ? "##kn" : "##")); //add "Me" or "Kn" to the name or not?
 		
 		var orderedSpellList = OrderSpells(fullSpellList, "multi"); //get an array of 10 arrays, one for each spell level
 		
 		//see if we need to stop short of doing all the spells
 		var maxLvl = 9;
-		if (spCast.level && spCast.typeList && spCast.typeList !== 2) {
+		if (spCast.level && spCast.typeList && spCast.typeList !== 2 && spCast.factor && spCast.factor[0]) {
 			var CasterLevel = Math.ceil(spCast.level / spCast.factor[0]);
 			var maxSpell = spCast.spellsTable ? spCast.spellsTable[CasterLevel].indexOf(0) : tDoc[spCast.factor[1] + "SpellTable"][CasterLevel].indexOf(0);
 			maxLvl = Number(maxSpell === -1 ? 9 : maxSpell);
@@ -3325,6 +3354,8 @@ function GenerateSpellSheet(GoOn) {
 		for (var lvl = 0; lvl <= maxLvl; lvl++) {
 			var spArray = orderedSpellList[lvl];
 			if (spArray.length > 0) {
+				//add spell dependencies to fill out the array
+				spArray = addSpellDependencies(spArray);
 				//first test if there is enough space left on the current page to add what we need to
 				//assume that we need to add at least 10 of the spells, the total of this level of spells, whichever is less
 				// so 3 (divider + title line) + 4 (header, if applicable) + lowest of [10, arrayLength]
@@ -3334,9 +3365,9 @@ function GenerateSpellSheet(GoOn) {
 				//the first spells to add needs a header in front of it
 				if (start) {
 					if (lineCurrent === 0 && SSfront) {
-						SetSpellSheetElement(prefixCurrent + "spells.remember.0", "header", 0, CurrentCasters.incl[i]);
+						SetSpellSheetElement(prefixCurrent + "spells.remember.0", "header", 0, CurrentCasters.incl[i], false, isPsionics);
 					} else {
-						Value(prefixCurrent + "spells.remember." + lineCurrent, "setheader##" + CurrentCasters.incl[i] + "##" + headerCurrent);
+						Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setheader##" + CurrentCasters.incl[i] + "##" + headerCurrent);
 						lineCurrent += 4;
 					}
 					headerCurrent += 1;
@@ -3345,15 +3376,15 @@ function GenerateSpellSheet(GoOn) {
 				
 				//then add the divider
 				if (lineCurrent === 0 && SSfront) {
-					SetSpellSheetElement(prefixCurrent + "spells.remember.0", "divider", 0, lvl);
+					SetSpellSheetElement(prefixCurrent + "spells.remember.0", "divider", 0, lvl, false, isPsionics);
 				} else {
-					Value(prefixCurrent + "spells.remember." + lineCurrent, "setdivider##" + lvl + "##" + dividerCurrent);
+					Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setdivider##" + lvl + "##" + dividerCurrent);
 					lineCurrent += 2;
 				}
 				dividerCurrent += 1;
 				
 				//then add the title line
-				Value(prefixCurrent + "spells.remember." + lineCurrent, "setcaptions" + MeKn);
+				Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + MeKn);
 				lineCurrent += 1;
 				
 				for (var y = 0; y < spArray.length; y++) {
@@ -3362,20 +3393,20 @@ function GenerateSpellSheet(GoOn) {
 					if (lineCurrent > lineMax) AddPage();
 					var toCheck = "";
 					if (atwillArray.indexOf(aSpell) !== -1) {
-						var toCheck = "##atwill";
+						toCheck = "##atwill";
 					} else if (oncelrArray.indexOf(aSpell) !== -1) {
-						var toCheck = "##oncelr";
+						toCheck = "##oncelr";
 					} else if (oncesrArray.indexOf(aSpell) !== -1) {
-						var toCheck = "##oncesr";
+						toCheck = "##oncesr";
 					} else if (alwaysPrepared.indexOf(aSpell) !== -1 && spCast.typeList !== 3) {
-						var toCheck = "##markedbox";
+						toCheck = "##markedbox";
 					} else if (otherObject[aSpell]) {
-						var toCheck = "##" + otherObject[aSpell];
-					} else if (spCast.known && spCast.known.prepared && spCast.typeList !== 3) {
-						if (SpellsList[aSpell].level !== 0) {
-							var toCheck = "##checkbox";
+						toCheck = "##" + otherObject[aSpell];
+					} else if (SpellsList[aSpell] && SpellsList[aSpell].firstCol === undefined && (isPsionics || (spCast.known && spCast.known.prepared && spCast.typeList !== 3))) {
+						if (SpellsList[aSpell].level === 0) {
+							toCheck = "##atwill";
 						} else {
-							var toCheck = "##atwill";
+							toCheck = "##checkbox";
 						}
 					}
 					Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck);
@@ -3687,21 +3718,21 @@ function OrderSpells(inputArray, outputFormat) {
 		var nxtSpell = inputArray[S];
 		if (SpellsList[nxtSpell] && orderedSpellList[SpellsList[nxtSpell].level].indexOf(nxtSpell) === -1) {
 			orderedSpellList[SpellsList[nxtSpell].level].push(nxtSpell);
-		}
-	}
+		};
+	};
 	
 	//now make sure all of them are sorted
 	for (var i = 0; i < 10; i++) orderedSpellList[i].sort();
 	
 	var returnArray = [];
 	switch (outputFormat) {
-		 case "multi" :
-			returnArray = orderedSpellList;
-			break;
-		 case "single" :
-			for (var i = 0; i < 10; i++) returnArray = returnArray.concat(orderedSpellList[i]);
-			break;
-	}
+	 case "multi" :
+		returnArray = orderedSpellList;
+		break;
+	 case "single" :
+		for (var i = 0; i < 10; i++) returnArray = returnArray.concat(orderedSpellList[i]);
+		break;
+	};
 	
 	return returnArray;
 }
@@ -3958,6 +3989,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		["with 'At Will'", "atwill"],
 		["with '1\u00D7 Long Rest'", "oncelr"],
 		["with '1\u00D7 Short Rest'", "oncesr"],
+		["Ask me for the first column", "askuserinput"]
 	];
 	//make an array of the default options for first column
 	var lineTypesTo = [
@@ -3967,7 +3999,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		["to 'At Will'", "atwill"],
 		["to '1\u00D7 Long Rest'", "oncelr"],
 		["to '1\u00D7 Short Rest'", "oncesr"],
-		["Ask me", "askuserinput"]
+		["Ask me for the first column", "askuserinput"]
 	];
 	
 	//now make the menu
@@ -3980,7 +4012,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	menuLVL2(spellsLineMenu, ["Empty Printable Line", "___"], lineTypes);
 	
 	//add the options for adding a caption line
-	menuLVL2(spellsLineMenu, ["Column Captions", "setcaptions"], [["with empty first column", ""], ["with 'Me' as first column", "me"], ["with 'Kn' as first column", "kn"], ["Ask me", "askuserinput"]]);
+	menuLVL2(spellsLineMenu, ["Column Captions", "setcaptions"], [["with empty first column", ""], ["with 'Me' as first column", "me"], ["with 'Kn' as first column", "kn"], ["for Psionics", "psionicpp"], ["Ask me for the first column", "askuserinput"]]);
 	
 	spellsLineMenu.push({cName : "-"}); //add a divider
 	
@@ -4009,6 +4041,8 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		dividersArray.push([d === 0 ? "Cantrips (0 Level)" : spellLevelList[d].replace("-l", " L"), d]);
 		numberArray.push([(d + 1) + " empty row" + (d === 0 ? "" : "s"), d + 1]);
 	}
+	dividersArray.push(["Psionic Talents", "psionic0"])
+	dividersArray.push(["Psionic Disciplines", "psionic1"])
 	menuLVL2(spellsLineMenu, ["Spell Level Divider", "setdivider"], dividersArray);
 	
 	//add the options for adding a glossary
@@ -4053,13 +4087,16 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			Value(RemLine, MenuSelection[1] + "##" + MenuSelection[2]);
 			break;
 		 case "setcaptions" :
-			if (MenuSelection[1] === "askuserinput") {
-				MenuSelection[1] = AskUserTwoLetters(true);
-			}
 		 case "___" :
 		 case "setheader" :
 		 case "setdivider" :
 		 case "setglossary" :
+			if (MenuSelection[1] === "askuserinput") {
+				MenuSelection[1] = AskUserTwoLetters(MenuSelection[0] !== "___");
+			} else if (MenuSelection[1].match(/psionic/i)) {
+				MenuSelection[0] = "psionic" + MenuSelection[0];
+				MenuSelection[1] = MenuSelection[1].replace(/psionic/i, "");
+			}
 			Value(RemLine, MenuSelection.join("##"));
 			break;
 		 case "clear" :
@@ -4079,7 +4116,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			break;
 		 case "firstcolumn" :
 			if (MenuSelection[1] === "askuserinput") {
-				MenuSelection[1] = AskUserTwoLetters(false);
+				MenuSelection[1] = AskUserTwoLetters(What(RemLine).match(/setcaptions/i));
 			}
 			var RemLineValue = What(RemLine).split("##");
 			RemLineValue[1] = MenuSelection[1];
@@ -4618,7 +4655,7 @@ function CheckForSpellUpdate() {
 						// if this is a list/book and the caster just got access to a new spell slot level
 						if (aCast.spellsTable) {
 							askUserUpdateSS = aCast.spellsTable[lvlOld + 1].indexOf(0) !== aCast.spellsTable[lvlNew + 1].indexOf(0);
-						} else {
+						} else if (aCast.factor && aCast.factor[0]) {
 							askUserUpdateSS = tDoc[aCast.factor[1] + "SpellTable"][lvlOld + 1].indexOf(0) !== tDoc[aCast.factor[1] + "SpellTable"][lvlNew + 1].indexOf(0);
 						}
 					}
@@ -5104,4 +5141,25 @@ function AmendSpellsList() {
 	].forEach(function (spell) {
 		if (SpellsList[spell]) SpellsList[spell].classes.push("artificer");
 	});
+}
+
+//a way to test is an array of spells is correct
+function testSpellArray(spArr) {
+	var wrongArr = [];
+	spArr.forEach(function (sp) {
+		if (!SpellsList[sp]) wrongArr.push(sp);
+	})
+	return wrongArr.length ? wrongArr : "All Good";
+};
+
+//a way to add dependencies of spells to an array of spells at the right spot
+function addSpellDependencies(spArr) {
+	var returnArray = [];
+	spArr.forEach(function (sp) {
+		if (SpellsList[sp]) {
+			returnArray.push(sp);
+			if (SpellsList[sp].dependencies) returnArray = returnArray.concat(SpellsList[sp].dependencies);
+		}
+	})
+	return returnArray;
 }

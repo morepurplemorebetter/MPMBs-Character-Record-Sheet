@@ -753,6 +753,47 @@ var CreatureList = {
 			},
 		],
 	},
+	"death dog" : {
+		name : "Death Dog",
+		source : ["M", 321],
+		size : 3, //Medium
+		type : "Monstrosity",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 12,
+		hp : 39,
+		hd : [6, 8], //[#, die]
+		speed : "40 ft",
+		scores : [15, 14, 14, 3, 13, 6], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		skills : {
+			"perception" : 5,
+			"stealth" : 4,
+		},
+		senses : "Darkvision 120 ft; Adv. on Wis (Perception) checks",
+		passivePerception : 15,
+		languages : "",
+		challengeRating : "1",
+		proficiencyBonus : 2,
+		attacksAction : 2,
+		attacks : [{
+				name : "Bite",
+				ability : 1,
+				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "Two bite attacks as an Attack action; Target DC 12 Con save or diseased and poisoned",
+				tooltip : "If the target of the death dog's bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 5 (1d10) on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0."
+			},
+		],
+		traits : [{
+				name : "Two-Headed",
+				description : "The death dog has advantage on Wisdom (Perception) checks and on saving throws against being blinded, charmed, deafened, frightened, stunned, or knocked unconscious."
+			}, {
+				name : "Bite attack",
+				description : "If the target of the death dog's bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 5 (1d10) on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0."
+			}
+		]
+	},
 	"deer" : {
 		name : "Deer",
 		source : ["M", 321],

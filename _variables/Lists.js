@@ -2,6 +2,7 @@ var typePF = tDoc.info.SheetType.search(/printer friendly/i) !== -1;
 var typeA4 = tDoc.info.SheetType.search(/a4/i) !== -1;
 var typeLR = tDoc.info.SheetType.search(/letter/i) !== -1;
 var minVer = tDoc.info.SpellsOnly || tDoc.info.AdvLogOnly;
+var isWindows = app.platform === "WIN";
 
 var UnitsList = {
 	metric : {

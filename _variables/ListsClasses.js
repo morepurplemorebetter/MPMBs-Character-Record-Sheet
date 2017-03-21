@@ -2184,7 +2184,7 @@ var ClassSubList = {
 					name : "Reaper",
 					class : "any",
 					school : ["Necro"],
-					level : [0, 0],
+					level : [0, 0]
 				},
 			},
 			"subclassfeature2" : {
@@ -2598,7 +2598,7 @@ var ClassSubList = {
 					return "+" + (n < 14 ? 1 : 2) + "d8 damage of the weapon's type";
 				}),
 				calcChanges : {
-					atkAdd : ["if (classes.known.cleric && classes.known.cleric.level > 7 && !isSpell) {fields.Description += (fields.Description ? '; ' : '') + 'once per turn +' + (classes.known.cleric.level < 14 ? 1 : 2) + 'd8 damage'; }; ", "Once per turn, I can have one of my weapon attacks that hit do extra damage."]
+					atkAdd : ["if (classes.known.cleric && classes.known.cleric.level > 7 && !isSpell) {fields.Description += (fields.Description ? '; ' : '') + 'Once per turn +' + (classes.known.cleric.level < 14 ? 1 : 2) + 'd8 damage'; }; ", "Once per turn, I can have one of my weapon attacks that hit do extra damage."]
 				}
 			},
 			"subclassfeature17" : {
@@ -2818,7 +2818,7 @@ var ClassSubList = {
 					name : "Great Weapon Fighting Style",
 					description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
 					calcChanges : {
-						atkAdd : ["if (isMeleeWeapon && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += '; Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+						atkAdd : ["if (isMeleeWeapon && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += (fields.Description ? '; ' : '') + 'Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
 					}
 				},
 				"protection" : {
@@ -4448,7 +4448,7 @@ var ClassSubList = {
 				name : "Awakened Mind",
 				source : ["P", 110],
 				minlevel : 1,
-				description : "\n   " + "I can communicate telepathically one-way to any seen creatures within 30 ft of me"
+				description : "\n   " + "I can telepathically speak to creatures I can see within 30 ft if they know a language" // 'to' not 'with', so one-way
 			},
 			"subclassfeature6" : {
 				name : "Entropic Ward",
