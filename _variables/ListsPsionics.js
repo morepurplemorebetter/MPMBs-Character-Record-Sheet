@@ -112,6 +112,76 @@ var PsionicsList = {
 		descriptionFull : "As an action, you can touch one creature and give it immunity to acid, cold, fire, lightning, or thunder damage (your choice), which lasts until your concentration ends.",
 		firstCol : 7 //power point cost
 	},
+	
+	//the aura sight discipline (contributed by Justin W.)
+	"aura sight" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Aura Sight",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 10], //the number is the page number in the PDF in the PDF
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "Advantage on Wisdom (Insight) checks",
+		descriptionFull : "You refocus your sight to see the energy that surrounds all creatures. You perceive auras, energy signatures that can reveal key elements of a creature’s nature." + PsychicFocus + "While focused on this discipline, you have advantage on Wisdom (Insight) checks.",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["as1-asses foe", "as2-read moods", "as3-view aura", "as4-perceive the unseen"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"as1-asses foe" : {
+		name : "Asses Foe",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Sight", 
+		duration : "Instantaneous",
+		description : "Learn one creature's current HP total and all its immunities, resistances, and vulnerabilities",
+		descriptionFull : "As a bonus action, you analyze the aura of one creature you see. You learn its current hit point total and all its immunities, resistances, and vulnerabilities.",
+		firstCol : 2 //power point cost
+	},
+	"as2-read moods" : {
+		name : "Read Moods",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Sight",
+		duration : "Instantaneous",
+		description : "Learn an one-word summary of the emotional state of up to 6 crea",
+		descriptionFull : "As a bonus action, you learn a one-word summary of the emotional state of up to six creatures you can see, such as happy, confused, afraid, or violent.",
+		firstCol : 2 //power point cost
+	},
+	"as3-view aura" : {
+		name : "View Aura",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "Sight",
+		duration : "Conc, 1 h",
+		description : "Monitor 1 crea: current HP, if magic effects it, basic emotional state; adv. on Insight/Cha checks vs. it",
+		descriptionFull : "As an action, you study one creature’s aura. Until your concentration ends, while you can see the target, you learn if it’s under the effect of any magical or psionic effects, its current hit point total, and its basic emotional state. While this effect lasts, you have advantage on Wisdom (Insight) and Charisma checks you make against it.",
+		firstCol : 3 //power point cost
+	},
+	"as4-perceive the unseen" : {
+		name : "Perceive the Unseen",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Sight",
+		duration : "Conc, 1 min",
+		description : "See all creatures, including hidden and invisible ones, regardless of lighting conditions",
+		descriptionFull : "As a bonus action, you gain the ability to see auras even of invisible or hidden creatures. Until your concentration ends, you can see all creatures, including hidden and invisible ones, regardless of lighting conditions.",
+		firstCol : 5 //power point cost
+	},
 
 	//the crown of rage discipline
 	"crown of rage" : { //the first entry of the discipline has the effect of the Psychic Focus
