@@ -3223,7 +3223,7 @@ function ApplyRace(inputracetxt) {
 	var oldRace = [CurrentRace.known, CurrentRace.variant];
 	if (newRace[0] !== oldRace[0] || (newRace[0] === oldRace[0] && newRace[1] !== "" && newRace[1] !== oldRace[1])) {
 		if (IsNotReset && CurrentRace.known) {//don't continue on a reset, otherwise remove the old race if one was detected
-			thermoM("Removing the old race features..."); //change the progress dialog text
+			thermoM("Removing the " + CurrentRace.name + " features..."); //change the progress dialog text
 			RemoveRace();
 		}
 		thermoM("Recognizing the entered race..."); //change the progress dialog text
@@ -3232,7 +3232,7 @@ function ApplyRace(inputracetxt) {
 	}
 
 	if (CurrentRace.known && (CurrentRace.known !== oldRace[0] || CurrentRace.variant !== oldRace[1])) {
-		thermoM("Applying the race's features..."); //change the progress dialog text
+		thermoM("Applying the " + CurrentRace.name + " features..."); //change the progress dialog text
 		thermoM(1/6); //increment the progress dialog's progress
 		
 		//add necessary race information such as height, weight, age, size, traits, languages
