@@ -3007,6 +3007,72 @@ ClassSubList["wizard-lore mastery"] = {
 };
 ClassList.wizard.subclasses[1].push("wizard-lore mastery");
 
+/*
+	Wizard Revisited Unearthed Arcana of 2017-03-20
+	(http://media.wizards.com/2017/dnd/downloads/MJ320UAWizardVF2017.pdf)
+ */
+//adds one subclass: a subclass for the Wizard, called "War Magic"
+//this code includes contributions by erickrause
+ClassSubList["wizard-war magic"] = {
+	regExpSearch : /^(?=.*war)(?=.*(magic|mage)).*$/i,
+	subname : "War Magic",
+	source : ["UA:WR", 2],
+	fullname : "War Mage",
+	features : {
+		"subclassfeature2" : { //has to be identical to a feature named in the ClassList
+			name : "Arcane Deflection",
+			source : ["UA:WR", 2],
+			minlevel : 2,
+			description : desc([
+				"As a reaction when I'm hit by an attack, I can gain +2 to my AC against that attack",
+				"As a reaction when I fail a Con save, I can gain +4 bonus to that saving throw",
+				"After I do either, I can’t cast spells other than cantrips until the end of my next turn"
+			]),
+			action : ["reaction", ""]
+		},
+		"subclassfeature2.1" : {
+			name : "Tactical Wit",
+			source : ["UA:WR", 2],
+			minlevel : 2,
+			description : desc([
+				"I gain a bonus to my initiative rolls equal to my Intelligence modifier"
+			]),
+			eval : "if (!What('Init Bonus')) { Value('Init Bonus', 'Int')'};",
+			removeeval : "if (What('Init Bonus') === 'Int') { Value('Init Bonus', 0); };"
+		},
+		"subclassfeature6" : {
+			name : "Power Surge",
+			source : ["UA:WR", 2],
+			minlevel : 6,
+			description : desc([
+				"When multiple targets have to save vs. one of my spells, I can have it do more damage",
+				"On the turn I cast the spell, I can roll 2 additional damage dice for it"
+			]),
+			usages : 1,
+			recovery : "short rest"
+		},
+		"subclassfeature10" : {
+			name : "Durable Magic",
+			source : ["UA:WR", 2],
+			minlevel : 10,
+			description : desc([
+				"While I'm maintaining concentration on a spell, I gain +2 to AC and all saving throws"
+			])
+		},
+		"subclassfeature14" : {
+			name : "Deflecting Shroud",
+			source : ["UA:WR", 2],
+			minlevel : 14,
+			description : desc([
+				"When I use my Arcane Deflection feature, magical energy arcs from me",
+				"Any creatures of my choice within 10 ft of me take half my level in force damage"
+			]),
+			additional : levels.map( function(n) { return n < 14 ? "" : Math.floor(n/2) + " force damage"; })
+		}
+	}
+};
+ClassList.wizard.subclasses[1].push("wizard-war magic");
+
 //a function to run at startup of the sheet to ensure that all of the UA additions work as they should
 function UAstartupCode() {
 	//Sorcerer (Favored Soul): add all cleric domain spells to the options of the first level ability "Chosen of the Gods"

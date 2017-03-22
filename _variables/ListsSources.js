@@ -183,31 +183,31 @@ var SourceList = {
 	},
 	"UA:PSO" : {
 		name : "Unearthed Arcana: Paladin Sacred Oaths", //2016-12-19
-		abbreviation : "UA:PSO",	
+		abbreviation : "UA:PSO",
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2016/dnd/downloads/UAPaladin_SO_20161219_1.pdf"
 	},
 	"UA:A" : {
 		name : "Unearthed Arcana: Artificer", //2017-01-09
-		abbreviation : "UA:A",	
+		abbreviation : "UA:A",
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2016/dnd/downloads/1_UA_Artificer_20170109.pdf"
 	},
 	"UA:RnR" : {
 		name : "Unearthed Arcana: Ranger and Rogue", //2017-01-16
-		abbreviation : "UA:RnR",	
+		abbreviation : "UA:RnR",
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2016/dnd/downloads/2017_01_UA_RangerRogue_0117JCMM.pdf"
 	},
 	"UA:SO" : {
 		name : "Unearthed Arcana: Sorcerous Origins", //2017-02-06
-		abbreviation : "UA:SO",	
+		abbreviation : "UA:SO",
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2017/dnd/downloads/26_UASorcererUA020617s.pdf"
 	},
 	"UA:WnW" : {
 		name : "Unearthed Arcana: Warlock and Wizard", //2017-02-13
-		abbreviation : "UA:WnW",	
+		abbreviation : "UA:WnW",
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2017/dnd/downloads/20170213_Wizrd_Wrlck_UAv2_i48nf.pdf"
 	},
@@ -216,5 +216,11 @@ var SourceList = {
 		abbreviation : "UA:TMC",	
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2017/dnd/downloads/UAMystic3.pdf"
+	},
+	"UA:WR" : {
+		name : "Unearthed Arcana: Wizard Revisited", //2017-03-20
+		abbreviation : "UA:WR",
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2017/dnd/downloads/MJ320UAWizardVF2017.pdf"
 	},
 };
