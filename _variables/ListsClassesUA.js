@@ -222,7 +222,7 @@ ClassSubList["the undying light"] = {
 			eval : "AddResistance(\"Radiant\", \"Warlock (the Undying Light)\");",
 			removeeval : "RemoveResistance(\"Radiant\");",
 			calcChanges : {
-				atkCalc : ["if (isSpell && fields.Damage_Type.match(/fire|radiant/i)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spells that deal fire or radiant damage get my Charisma modifier added to the damage."]
+				atkCalc : ["if (isSpell && (/fire|radiant/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spells that deal fire or radiant damage get my Charisma modifier added to the damage."]
 			}
 		},
 		"subclassfeature6" : {
@@ -685,7 +685,7 @@ ClassSubList["theurgy"] = {
 			description : "\n   " + "Use the \"Choose Features\" button above to select the domain",
 			choices : [],
 			choicesNotInMenu : true,
-			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*domain).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature2.2,\" + FeaChoice, false);};};"
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*domain).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature2.2,\" + FeaChoice, false);};};"
 		},
 		"subclassfeature6" : {
 			name : "Arcane Acolyte",
@@ -694,7 +694,7 @@ ClassSubList["theurgy"] = {
 			description : "\n   " + "Use the \"Choose Features\" button above to select the domain",
 			choices : [],
 			choicesNotInMenu : true,
-			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*?domain).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature6,\" + FeaChoice, false);};};"
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*?domain).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature6,\" + FeaChoice, false);};};"
 		},
 		"subclassfeature10" : {
 			name : "Arcane Priest",
@@ -703,7 +703,7 @@ ClassSubList["theurgy"] = {
 			description : "\n   " + "Use the \"Choose Features\" button above to select the domain",
 			choices : [],
 			choicesNotInMenu : true,
-			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*?domain).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature10,\" + FeaChoice, false);};};"
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*?domain).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature10,\" + FeaChoice, false);};};"
 		},
 		"subclassfeature14" : {
 			name : "Arcane High Priest",
@@ -712,7 +712,7 @@ ClassSubList["theurgy"] = {
 			description : "\n   " + "Use the \"Choose Features\" button above to select the domain",
 			choices : [],
 			choicesNotInMenu : true,
-			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*?domain).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature14,\" + FeaChoice, false);};};"
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?wizard,subclassfeature2,(.*?domain).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"wizard,subclassfeature14,\" + FeaChoice, false);};};"
 		}
 	}
 };
@@ -785,7 +785,7 @@ ClassList["rangerua"] = {
 			eval : "AddLanguage(\"+1 from Favored Enemy\", \"Ranger (Favored Enemy)\");",
 			removeeval : "RemoveLanguage(\"+1 from Favored Enemy\", \"Ranger (Favored Enemy)\");",
 			calcChanges : {
-				atkCalc : ["if (!isSpell && classes.known.rangerua && classes.known.rangerua.level && WeaponText.match(/favou?red.{1,2}enemy/i)) { output.extraDmg += classes.known.rangerua.level < 6 ? 2 : 4; }; ", "If I include the words 'Favored Enemy' in the name or description of a weapon, it gets bonus damage, depending on my Ranger level."]
+				atkCalc : ["if (!isSpell && classes.known.rangerua && classes.known.rangerua.level && (/favou?red.{1,2}enemy/i).test(WeaponText)) { output.extraDmg += classes.known.rangerua.level < 6 ? 2 : 4; }; ", "If I include the words 'Favored Enemy' in the name or description of a weapon, it gets bonus damage, depending on my Ranger level."]
 			}
 		},
 		"natural explorer" : {
@@ -825,7 +825,7 @@ ClassList["rangerua"] = {
 				name : "Dueling Fighting Style",
 				description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
 				calcChanges : {
-					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
 				}
 			},
 			"two-weapon fighting" : {
@@ -1217,7 +1217,7 @@ ClassSubList["storm herald"] = {
 				removeeval : "RemoveResistance(\"Cold\");",
 				save : "Immune to effects of extreme cold"
 			},
-			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?barbarian,subclassfeature3,(desert|sea|tundra).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"barbarian,subclassfeature6,\" + FeaChoice, false);};};"
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?barbarian,subclassfeature3,(desert|sea|tundra).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"barbarian,subclassfeature6,\" + FeaChoice, false);};};"
 		},
 		"subclassfeature10" : {
 			name : "Shield of the Storm",
@@ -1240,14 +1240,14 @@ ClassSubList["storm herald"] = {
 				name : "Raging Storm: Sea",
 				description : "\n   " + "Creatures in my aura hit by my attack must make a Str save or be knocked prone" + "\n   " + "The DC for this save is 8 + my proficiency bonus + my Strength modifier",
 				calcChanges : {
-					atkAdd : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level > 13 && inputText.match(/\\brage\\b/i)) {fields.Description += (fields.Description ? '; ' : '') + 'Str save or knocked prone'; }; ", "If I include the word 'Rage' in a melee weapon's name, it will show in its description that it forces targets that are hit to make a Strength saving throw or be knocked prone."]
+					atkAdd : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level > 13 && (/\\brage\\b/i).test(inputText)) {fields.Description += (fields.Description ? '; ' : '') + 'Str save or knocked prone'; }; ", "If I include the word 'Rage' in a melee weapon's name, it will show in its description that it forces targets that are hit to make a Strength saving throw or be knocked prone."]
 				}
 			},
 			"tundra" : {
 				name : "Raging Storm: Tundra",
 				description : "\n   " + "The area within my aura is difficult terrain for my enemies"
 			},
-			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?barbarian,subclassfeature3,(desert|sea|tundra).*/i; if (CFrem.match(tReg)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"barbarian,subclassfeature14,\" + FeaChoice, false);};};"
+			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?barbarian,subclassfeature3,(desert|sea|tundra).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"barbarian,subclassfeature14,\" + FeaChoice, false);};};"
 		}
 	}
 };
@@ -1794,7 +1794,7 @@ ClassSubList["arcane archer"] = {
 			eval : "AddAction(\"bonus action\", \"Create Magical Arrow\", \"Arcane Archer (Arcane Arrow)\");",
 			removeeval : "RemoveAction(\"bonus action\", \"Create Magical Arrow\")",
 			calcChanges : {
-				atkAdd : ["if (WeaponName.match(/longbow|shortbow/i) && inputText.match(/^(?=.*arcane)(?=.*arrow).*$/i) && classes.known.fighter && classes.known.fighter.level) {fields.Description += (fields.Description ? '; +' : '+') + (classes.known.fighter.level < 18 ? 2 : 4) + 'd6 force damage' + (thisWeapon[1] ? '' : '; Counts as magical'); }; ", "If I include the words 'Arcane Arrow' in a longbow or shortbow's name, it gets an added description of the damage this Arcane Arrow adds."]
+				atkAdd : ["if ((/longbow|shortbow/i).test(WeaponName) && (/^(?=.*arcane)(?=.*arrow).*$/i).test(inputText) && classes.known.fighter && classes.known.fighter.level) {fields.Description += (fields.Description ? '; +' : '+') + (classes.known.fighter.level < 18 ? 2 : 4) + 'd6 force damage' + (thisWeapon[1] ? '' : '; Counts as magical'); }; ", "If I include the words 'Arcane Arrow' in a longbow or shortbow's name, it gets an added description of the damage this Arcane Arrow adds."]
 			}
 		},
 		"subclassfeature3.1" : {
@@ -1897,7 +1897,7 @@ ClassSubList["knight"] = {
 			}),
 			action : ["reaction", ""],
 			calcChanges : {
-				atkCalc : ["if (isMeleeWeapon && classes.known.fighter && classes.known.fighter.level > 2 && WeaponText.match(/\\b(implacable.?mark|marked)\\b/i)) { output.extraDmg += classes.known.fighter.level; }; ", "If I include the words 'Implacable Mark' or 'Marked' in the name or description of a melee weapon, it gets my fighter level added to its Damage."]
+				atkCalc : ["if (isMeleeWeapon && classes.known.fighter && classes.known.fighter.level > 2 && (/\\b(implacable.?mark|marked)\\b/i).test(WeaponText)) { output.extraDmg += classes.known.fighter.level; }; ", "If I include the words 'Implacable Mark' or 'Marked' in the name or description of a melee weapon, it gets my fighter level added to its Damage."]
 			}
 		},
 		"subclassfeature7" : {
@@ -1919,7 +1919,7 @@ ClassSubList["knight"] = {
 			}),
 			action : ["reaction", ""],
 			calcChanges : {
-				atkCalc : ["if (isMeleeWeapon && classes.known.fighter && classes.known.fighter.level > 9 && WeaponText.match(/holds?.the.line/i)) { output.extraDmg += Math.floor(classes.known.fighter.level / 2); }; ", "If I include the words 'Hold the Line' in the name or description of a melee weapon, it gets half my fighter level added to its Damage."]
+				atkCalc : ["if (isMeleeWeapon && classes.known.fighter && classes.known.fighter.level > 9 && (/holds?.the.line/i).test(WeaponText)) { output.extraDmg += Math.floor(classes.known.fighter.level / 2); }; ", "If I include the words 'Hold the Line' in the name or description of a melee weapon, it gets half my fighter level added to its Damage."]
 			}
 		},
 		"subclassfeature15" : {
@@ -2013,8 +2013,8 @@ ClassSubList["sharpshooter"] = {
 			}),
 			action : ["bonus action", ""],
 			calcChanges : {
-				atkAdd : ["if (isRangedWeapon && classes.known.fighter && classes.known.fighter.level > 2 && inputText.match(/steady.{0,3}aim/i)) { fields.Description += (fields.Description ? '; ' : '') + 'Ignores 1/2 and 3/4 cover'; }; ", "If I include the words 'Steady Aim' in the name of a ranged weapon, it gets 2 + half my fighter level added to its Damage, and the fact that it ignores half and three-quarter cover added to its description."],
-				atkCalc : ["if (isRangedWeapon && classes.known.fighter && classes.known.fighter.level > 2 && WeaponText.match(/steady.{0,3}aim/i)) { output.extraDmg += 2 + Math.floor(classes.known.fighter.level / 2); }; ", ""]
+				atkAdd : ["if (isRangedWeapon && classes.known.fighter && classes.known.fighter.level > 2 && (/steady.{0,3}aim/i).test(inputText)) { fields.Description += (fields.Description ? '; ' : '') + 'Ignores 1/2 and 3/4 cover'; }; ", "If I include the words 'Steady Aim' in the name of a ranged weapon, it gets 2 + half my fighter level added to its Damage, and the fact that it ignores half and three-quarter cover added to its description."],
+				atkCalc : ["if (isRangedWeapon && classes.known.fighter && classes.known.fighter.level > 2 && (/steady.{0,3}aim/i).test(WeaponText)) { output.extraDmg += 2 + Math.floor(classes.known.fighter.level / 2); }; ", ""]
 			}
 		},
 		"subclassfeature7" : {
@@ -2073,7 +2073,7 @@ ClassSubList["way of the kensei"] = {
 			eval : "ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"kensei defense\", \"extra\"]);",
 			removeeval : "ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"kensei defense\", \"extra\"], \"remove\");",
 			calcChanges : {
-				atkAdd : ["var monkDie = function(n) {return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10;}; if (classes.known.monk && classes.known.monk.level > 2 && fields.Proficiency && theWea && !isSpell && !theWea.name.match(/shortsword/i) && theWea.type.match(/martial/i)) {var aMonkDie = aMonkDie ? aMonkDie : monkDie(classes.known.monk.level); try {var curDie = eval(fields.Damage_Die.replace('d', '*'));} catch (e) {var curDie = 'x';}; if (isNaN(curDie) || curDie < aMonkDie) {fields.Damage_Die = '1d' + aMonkDie; }; fields.Mod = StrDex; fields.Description += (fields.Description ? '; ' : '') + 'As bonus action with Attack action, +1d4 bludg. damage'; }; ", "I can use either Strength or Dexterity and my Martial Arts damage die in place of the normal damage die for any martial weapons I am proficient with (Kensei Weapons).\n - If I score a hit with one of these kensei weapons as part of an Attack action, I can take a bonus action to have that hit, and any other hit after that as part of the same action, do +1d4 bludgeoning damage."]
+				atkAdd : ["var monkDie = function(n) {return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10;}; if (classes.known.monk && classes.known.monk.level > 2 && fields.Proficiency && theWea && !isSpell && !(/shortsword/i).test(theWea.name) && (/martial/i).test(theWea.type)) {var aMonkDie = aMonkDie ? aMonkDie : monkDie(classes.known.monk.level); try {var curDie = eval(fields.Damage_Die.replace('d', '*'));} catch (e) {var curDie = 'x';}; if (isNaN(curDie) || curDie < aMonkDie) {fields.Damage_Die = '1d' + aMonkDie; }; fields.Mod = StrDex; fields.Description += (fields.Description ? '; ' : '') + 'As bonus action with Attack action, +1d4 bludg. damage'; }; ", "I can use either Strength or Dexterity and my Martial Arts damage die in place of the normal damage die for any martial weapons I am proficient with (Kensei Weapons).\n - If I score a hit with one of these kensei weapons as part of an Attack action, I can take a bonus action to have that hit, and any other hit after that as part of the same action, do +1d4 bludgeoning damage."]
 			}
 		},
 		"ki-empowered strikes" : {
@@ -2082,7 +2082,7 @@ ClassSubList["way of the kensei"] = {
 			minlevel : 6,
 			description : "\n   " + "My unarmed strikes and kensei weapon attacks count as magical",
 			calcChanges : {
-				atkAdd : ["if ((WeaponName.match(/unarmed strike/i) || (theWea && !isSpell && theWea.type.match(/martial/i))) && fields.Description.indexOf('Counts as magical') === -1 && !thisWeapon[1]) {fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';}; ", "My unarmed strikes and Kensei Weapons count as magical for overcoming resistances and immunities."]
+				atkAdd : ["if (((/unarmed strike/i).test(WeaponName) || (theWea && !isSpell && (/martial/i).test(theWea.type))) && fields.Description.indexOf('Counts as magical') === -1 && !thisWeapon[1]) {fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';}; ", "My unarmed strikes and Kensei Weapons count as magical for overcoming resistances and immunities."]
 			}
 		},
 		"subclassfeature6" : {
@@ -2094,7 +2094,7 @@ ClassSubList["way of the kensei"] = {
 			recovery : "short rest",
 			action : ["bonus action", ""],
 			calcChanges : {
-				atkCalc : ["if (!isSpell && !isDC && WeaponText.match(/precise.{0,3}strike/i)) {output.prof *= 2; }; ", "If I include the words 'Precise Strike' in a weapon's name, or description it gets twice my proficiency bonus added to its To Hit instead of only once."]
+				atkCalc : ["if (!isSpell && !isDC && (/precise.{0,3}strike/i).test(WeaponText)) {output.prof *= 2; }; ", "If I include the words 'Precise Strike' in a weapon's name, or description it gets twice my proficiency bonus added to its To Hit instead of only once."]
 			}
 		},
 		"subclassfeature17" : {
@@ -2249,7 +2249,7 @@ ClassSubList["oath of treachery"] = {
 				return n < 3 ? "" : "2d10+" + n + " damage";
 			}),
 			calcChanges : {
-				atkAdd : ["if (!isSpell && inputText.match(/^(?=.*poison)(?=.*strike).*$/i)) {fields.Description += (fields.Description ? '; +' : '+') + '2d10+' + classes.known.paladin.level + ' poison damage (or ' + (classes.known.paladin.level + 20) + ' if adv.)'; }; ", "If I include the words 'Poison Strike' in a weapon's name, it gets an added description of the extra 2d10 + paladin level of poison damage it would do. If I have advantage on the attack, I can treat the 2d10 as rolling 20 in total."]
+				atkAdd : ["if (!isSpell && (/^(?=.*poison)(?=.*strike).*$/i).test(inputText)) {fields.Description += (fields.Description ? '; +' : '+') + '2d10+' + classes.known.paladin.level + ' poison damage (or ' + (classes.known.paladin.level + 20) + ' if adv.)'; }; ", "If I include the words 'Poison Strike' in a weapon's name, it gets an added description of the extra 2d10 + paladin level of poison damage it would do. If I have advantage on the attack, I can treat the 2d10 as rolling 20 in total."]
 			}
 		},
 		"subclassfeature7" : {
@@ -2641,8 +2641,8 @@ ClassSubList["sea sorcery"] = {
 			source : ["UA:SO", 3],
 			minlevel : 1,
 			description : "\n   " + "I can breathe underwater and I have a swim speed equal to my walking speed",
-			eval : "if (!CurrentRace.speed || !CurrentRace.speed[0].match(/swim/i)) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
-			removeeval : "if (!CurrentRace.speed || !CurrentRace.speed[0].match(/swim/i)) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };"
+			eval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
+			removeeval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };"
 		},
 		"subclassfeature1.1" : {
 			name : "Curse of the Sea",
@@ -2813,7 +2813,7 @@ ClassSubList["warlock-the hexblade"] = {
 			armor : [false, true, false, true],
 			weapons : [false, true],
 			calcChanges : {
-				atkAdd : ["if (isMeleeWeapon && !WeaponText.match(/\\b(2|two).?hand(ed)?s?\\b/i)) { fields.Mod = What('Cha Mod') > What(AbilityScores.abbreviations[fields.Mod - 1] + ' Mod') ? 6 : fields.Mod; }; ", "For melee weapons that lack the two-handed property, I can use my Charisma instead of Strength or Dexterity."]
+				atkAdd : ["if (isMeleeWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(WeaponText)) { fields.Mod = What('Cha Mod') > What(AbilityScores.abbreviations[fields.Mod - 1] + ' Mod') ? 6 : fields.Mod; }; ", "For melee weapons that lack the two-handed property, I can use my Charisma instead of Strength or Dexterity."]
 			}
 		},
 		"subclassfeature1.1" : {
@@ -2830,8 +2830,8 @@ ClassSubList["warlock-the hexblade"] = {
 			usages : levels.map( function(n) { return n < 14 ? 1 : ""; }),
 			action : ["bonus action", ""],
 			calcChanges : {
-				atkAdd : ["if (!isDC && WeaponText.match(/hexblade/i) && !CritChance) {var CritChance = 19; fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20'; }; ", "If I include the word 'Hexblade' in the name of a weapon, the automation will treat the attack as being against a target of the Hexblade's Curse: adding my proficiency bonus to the damage and adding the increased chance of a critical hit to the description."],
-				atkCalc : ["if (WeaponText.match(/hexblade/i)) {output.extraDmg += output.prof; }; ", ""]
+				atkAdd : ["if (!isDC && (/hexblade/i).test(WeaponText) && !CritChance) {var CritChance = 19; fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20'; }; ", "If I include the word 'Hexblade' in the name of a weapon, the automation will treat the attack as being against a target of the Hexblade's Curse: adding my proficiency bonus to the damage and adding the increased chance of a critical hit to the description."],
+				atkCalc : ["if ((/hexblade/i).test(WeaponText)) {output.extraDmg += output.prof; }; ", ""]
 			}
 		},
 		"subclassfeature6" : {
@@ -2887,7 +2887,7 @@ ClassSubList["warlock-the raven queen"] = {
 				"If it dies, I gain advantage on all attack rolls against its killer for 24 hours",
 				"After a short rest, I can recall it to me regardless of its location or if it died"
 			]),
-			eval : "if (!What('Vision').match(/darkvision/i)) {AddString('Vision', 'Darkvision 30 ft', '; '); }; AddString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]', '; '); Value('Passive Perception Bonus', 'Cha'); Value(SkillsList.abbreviations[SkillsList[Who('Text.SkillsNames') === 'alphabeta' ? 'abbreviations' : 'abbreviationsByAS'].indexOf('Perc')] + ' Bonus', 'Cha');",
+			eval : "if (!(/darkvision/i).test(What('Vision'))) {AddString('Vision', 'Darkvision 30 ft', '; '); }; AddString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]', '; '); Value('Passive Perception Bonus', 'Cha'); Value(SkillsList.abbreviations[SkillsList[Who('Text.SkillsNames') === 'alphabeta' ? 'abbreviations' : 'abbreviationsByAS'].indexOf('Perc')] + ' Bonus', 'Cha');",
 			removeeval : "RemoveString('Vision', 'Darkvision 30 ft'); RemoveString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]'); if (What('Passive Perception Bonus') === 'Cha') {Value('Passive Perception Bonus', 0); }; var perFC = SkillsList.abbreviations[SkillsList[Who('Text.SkillsNames') === 'alphabeta' ? 'abbreviations' : 'abbreviationsByAS'].indexOf('Perc')] + ' Bonus'; if (What(perFC) === 'Cha') {Value(perFC, 0); };"
 		},
 		"subclassfeature6" : {
@@ -3100,7 +3100,7 @@ function UAstartupCode() {
 		var AIdomain = MTfeat["subclassfeature2"][aDomain.subname.toLowerCase()];
 		for (var aFea in aDomain.features) {
 			var dFea = aDomain.features[aFea];
-			if (dFea.minlevel === 2 && dFea.name.match(/channel divinity/i)) {
+			if (dFea.minlevel === 2 && (/channel divinity/i).test(dFea.name)) {
 				MTfeat["subclassfeature2.3"].choices.push(aDomain.subname);
 				MTfeat["subclassfeature2.3"][aDomain.subname.toLowerCase()] = eval(dFea.toSource());
 				MTfeat["subclassfeature2.3"][aDomain.subname.toLowerCase()].name = MTfeat["subclassfeature2.3"][aDomain.subname.toLowerCase()].name.replace(/channel divinity/i, "Channel Arcana");
@@ -3272,7 +3272,7 @@ function UAstartupCode() {
 		source : ["UA:WnW", 4],
 		prereqeval : "hasEldritchBlast && classes.known.warlock.subclass === 'the archfey'",
 		calcChanges : {
-			atkAdd : ["if (theWea && theWea.name.match(/eldritch blast/i)) {fields.Description += '; Target -10 ft speed'; }; ", "When I hit a creature with my Eldritch Blast cantrip once or more times in a turn, I can reduce its speed by 10 ft until the end of my next turn."]
+			atkAdd : ["if (theWea && (/eldritch blast/i).test(theWea.name)) {fields.Description += '; Target -10 ft speed'; }; ", "When I hit a creature with my Eldritch Blast cantrip once or more times in a turn, I can reduce its speed by 10 ft until the end of my next turn."]
 		}
 	}, {
 		objname : "Gaze of Khirad (prereq: level 7 warlock, the Great Old One patron)",
@@ -3292,7 +3292,7 @@ function UAstartupCode() {
 		source : ["UA:WnW", 4],
 		prereqeval : "hasEldritchBlast && classes.known.warlock.subclass === 'the great old one'",
 		calcChanges : {
-			atkAdd : ["if (theWea && theWea.name.match(/eldritch blast/i)) {fields.Description += '; Target moved 10 ft to me'; }; ", "When I hit a creature with my Eldritch Blast cantrip once or more times in a turn, I can move it in a straight line 10 ft closer to me."]
+			atkAdd : ["if (theWea && (/eldritch blast/i).test(theWea.name)) {fields.Description += '; Target moved 10 ft to me'; }; ", "When I hit a creature with my Eldritch Blast cantrip once or more times in a turn, I can move it in a straight line 10 ft closer to me."]
 		}
 	}, {
 		objname : "Green Lord's Gift (prereq: the Archfey patron)",
@@ -3311,7 +3311,7 @@ function UAstartupCode() {
 		source : ["UA:WnW", 4],
 		prereqeval : "classes.known.warlock.level >= 5 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the blade') !== -1",
 		calcChanges : {
-			atkCalc : ["if (!thisWeapon[1] && WeaponText.match(/\\bpact\\b/i)) { var pactMag = pactMag !== undefined ? 1 - pactMag : 1; output.magic += pactMag; }; ", "If I include the word 'Pact' in a weapon's name or description, it will be treated as a Pact Weapon. If it doesn't already include a magical bonus in its name, the calculation will add +1 to its To Hit and Damage."]
+			atkCalc : ["if (!thisWeapon[1] && (/\\bpact\\b/i).test(WeaponText)) { var pactMag = pactMag !== undefined ? 1 - pactMag : 1; output.magic += pactMag; }; ", "If I include the word 'Pact' in a weapon's name or description, it will be treated as a Pact Weapon. If it doesn't already include a magical bonus in its name, the calculation will add +1 to its To Hit and Damage."]
 		}
 	}, {
 		objname : "Mace of Dispater (prereq: the Fiend patron, Pact of the Blade)",
@@ -3382,8 +3382,8 @@ function UAstartupCode() {
 		},
 		source : ["UA:WnW", 5],
 		prereqeval : "classes.known.warlock.subclass === 'the archfey'",
-		eval : "if (!CurrentRace.speed || !CurrentRace.speed[0].match(/swim/i)) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
-		removeeval : "if (!CurrentRace.speed || !CurrentRace.speed[0].match(/swim/i)) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };"
+		eval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
+		removeeval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };"
 	}, {
 		objname : "Seeker's Speech (prereq: the Seeker patron)",
 		name : "Seeker's Speech",
@@ -3412,7 +3412,7 @@ function UAstartupCode() {
 		source : ["UA:WnW", 5],
 		prereqeval : "classes.known.warlock.level >= 9 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the blade') !== -1",
 		calcChanges : {
-			atkCalc : ["if (!thisWeapon[1] && WeaponText.match(/\\bpact\\b/i)) { var pactMag = pactMag !== undefined ? 2 - pactMag : 2; output.magic += pactMag; }; ", "If I include the word 'Pact' in a weapon's name or description, it will be treated as a Pact Weapon. If it doesn't already include a magical bonus in its name, the calculation will add +2 to its To Hit and Damage."]
+			atkCalc : ["if (!thisWeapon[1] && (/\\bpact\\b/i).test(WeaponText)) { var pactMag = pactMag !== undefined ? 2 - pactMag : 2; output.magic += pactMag; }; ", "If I include the word 'Pact' in a weapon's name or description, it will be treated as a Pact Weapon. If it doesn't already include a magical bonus in its name, the calculation will add +2 to its To Hit and Damage."]
 		}
 	}, {
 		objname : "Tomb of Levistus (prereq: the Fiend patron)",
@@ -3436,7 +3436,7 @@ function UAstartupCode() {
 		source : ["UA:WnW", 5],
 		prereqeval : "classes.known.warlock.level >= 15 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the blade') !== -1",
 		calcChanges : {
-			atkCalc : ["if (!thisWeapon[1] && WeaponText.match(/\\bpact\\b/i)) { var pactMag = pactMag !== undefined ? 3 - pactMag : 3; output.magic += pactMag; }; ", "If I include the word 'Pact' in a weapon's name or description, it will be treated as a Pact Weapon. If it doesn't already include a magical bonus in its name, the calculation will add +3 to its To Hit and Damage."]
+			atkCalc : ["if (!thisWeapon[1] && (/\\bpact\\b/i).test(WeaponText)) { var pactMag = pactMag !== undefined ? 3 - pactMag : 3; output.magic += pactMag; }; ", "If I include the word 'Pact' in a weapon's name or description, it will be treated as a Pact Weapon. If it doesn't already include a magical bonus in its name, the calculation will add +3 to its To Hit and Damage."]
 		}
 	}].forEach( function (invoc) {
 		ClassList.warlock.features["eldritch invocations"].extrachoices.push(invoc.objname);

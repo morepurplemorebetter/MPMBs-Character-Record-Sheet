@@ -38,7 +38,7 @@ var ClassList = {
 				removeeval : "RemoveResistance(\"Bludgeon. (in rage)\"); RemoveResistance(\"Piercing (in rage)\"); RemoveResistance(\"Slashing (in rage)\");",
 				save : "Adv. on Strength saves in rage",
 				calcChanges : {
-					atkCalc : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level && WeaponText.match(/\\brage\\b/i)) {output.extraDmg += function(n){return n < 9 ? 2 : n < 16 ? 3 : 4;}(classes.known.barbarian.level); }; ", "If I include the word 'Rage' in a melee weapon's name or description, the calculation will add my Rage's bonus damage to it."]
+					atkCalc : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level && (/\\brage\\b/i).test(WeaponText)) {output.extraDmg += function(n){return n < 9 ? 2 : n < 16 ? 3 : 4;}(classes.known.barbarian.level); }; ", "If I include the word 'Rage' in a melee weapon's name or description, the calculation will add my Rage's bonus damage to it."]
 				}
 			},
 			"unarmored defense" : {
@@ -94,7 +94,7 @@ var ClassList = {
 					return "3 additional dice";
 				}),
 				calcChanges : {
-					atkAdd : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level > 8 && fields.Damage_Die.match(/d\\d+/)) {var pExtraCritM = extraCritM ? extraCritM : 0; var extraCritM = pExtraCritM + function(n){return n < 13 ? 1 : n < 17 ? 2 : 3;}(classes.known.barbarian.level); if (pExtraCritM) {fields.Description = fields.Description.replace(pExtraCritM + 'd', extraCritM + 'd'); } else {fields.Description += (fields.Description ? '; ' : '') + extraCritM + fields.Damage_Die.replace(/.*(d\\d+).*/, '$1') + ' extra on a crit in melee'; }; }; ", "My melee attacks roll additional dice on a critical hit."]
+					atkAdd : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level > 8 && (/d\\d+/).test(fields.Damage_Die)) {var pExtraCritM = extraCritM ? extraCritM : 0; var extraCritM = pExtraCritM + function(n){return n < 13 ? 1 : n < 17 ? 2 : 3;}(classes.known.barbarian.level); if (pExtraCritM) {fields.Description = fields.Description.replace(pExtraCritM + 'd', extraCritM + 'd'); } else {fields.Description += (fields.Description ? '; ' : '') + extraCritM + fields.Damage_Die.replace(/.*(d\\d+).*/, '$1') + ' extra on a crit in melee'; }; }; ", "My melee attacks roll additional dice on a critical hit."]
 				}
 			},
 			"relentless rage" : {
@@ -440,14 +440,14 @@ var ClassList = {
 					name : "Dueling Fighting Style",
 					description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
 					calcChanges : {
-						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
 					}
 				},
 				"great weapon fighting" : {
 					name : "Great Weapon Fighting Style",
 					description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
 					calcChanges : {
-						atkAdd : ["if (isMeleeWeapon && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += '; Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+						atkAdd : ["if (isMeleeWeapon && (/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i).test(theWea.description)) {fields.Description += (fields.Description ? '; ' : '') + 'Re-roll 1 or 2 on damage die' + ((/versatile/i).test(fields.Description) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
 					}
 				},
 				"protection" : {
@@ -542,7 +542,7 @@ var ClassList = {
 				eval : "AddString(\"Extra.Notes\", \"Monk features:\\n\\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor\/shields\", true);",
 				removeeval : "RemoveString(\"Extra.Notes\", \"Monk features:\\n\\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor\/shields\", true);",
 				calcChanges : {
-					atkAdd : ["var monkDie = function(n) {return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10;}; if (classes.known.monk && classes.known.monk.level && theWea && (theWea.monkweapon || theWea.name.match(/shortsword/i) || (isMeleeWeapon && theWea.type.match(/simple/i) && !theWea.description.match(/\\b(heavy|(2|two).?hand(ed)?s?)\\b/i)))) {var aMonkDie = monkDie(classes.known.monk.level); try {var curDie = eval(fields.Damage_Die.replace('d', '*'));} catch (e) {var curDie = 'x';}; if (isNaN(curDie) || curDie < aMonkDie) {fields.Damage_Die = '1d' + aMonkDie;}; fields.Mod = StrDex;}; ", "I can use either Strength or Dexterity and my Martial Arts damage die in place of the normal damage die for any 'Monk Weapons', which include unarmed strike, shortsword, and any simple melee weapon that is not two-handed or heavy."]
+					atkAdd : ["var monkDie = function(n) {return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10;}; if (classes.known.monk && classes.known.monk.level && theWea && (theWea.monkweapon || (/shortsword/i).test(theWea.name) || (isMeleeWeapon && (/simple/i).test(theWea.type) && !(/\\b(heavy|(2|two).?hand(ed)?s?)\\b/i).test(theWea.description)))) {var aMonkDie = monkDie(classes.known.monk.level); try {var curDie = eval(fields.Damage_Die.replace('d', '*'));} catch (e) {var curDie = 'x';}; if (isNaN(curDie) || curDie < aMonkDie) {fields.Damage_Die = '1d' + aMonkDie;}; fields.Mod = StrDex;}; ", "I can use either Strength or Dexterity and my Martial Arts damage die in place of the normal damage die for any 'Monk Weapons', which include unarmed strike, shortsword, and any simple melee weapon that is not two-handed or heavy."]
 				}
 			},
 			"ki" : {
@@ -624,7 +624,7 @@ var ClassList = {
 				minlevel : 6,
 				description : "\n   " + "My unarmed strikes count as magical for overcoming resistances and immunities",
 				calcChanges : {
-					atkAdd : ["if (WeaponName.match(/unarmed strike/i)) {fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';}; ", "My unarmed strikes count as magical for overcoming resistances and immunities."]
+					atkAdd : ["if ((/unarmed strike/i).test(WeaponName)) {fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';}; ", "My unarmed strikes count as magical for overcoming resistances and immunities."]
 				}
 			},
 			"evasion" : {
@@ -751,14 +751,14 @@ var ClassList = {
 					name : "Dueling Fighting Style",
 					description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
 					calcChanges : {
-						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
 					}
 				},
 				"great weapon fighting" : {
 					name : "Great Weapon Fighting Style",
 					description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
 					calcChanges : {
-						atkAdd : ["if (isMeleeWeapon && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += '; Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+						atkAdd : ["if (isMeleeWeapon && (/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i).test(theWea.description)) {fields.Description += (fields.Description ? '; ' : '') + 'Re-roll 1 or 2 on damage die' + ((/versatile/i).test(fields.Description) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
 					}
 				},
 				"protection" : {
@@ -1017,7 +1017,7 @@ var ClassList = {
 					name : "Dueling Fighting Style",
 					description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
 					calcChanges : {
-						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
 					}
 				},
 				"two-weapon fighting" : {
@@ -1126,7 +1126,7 @@ var ClassList = {
 					return Math.ceil(n / 2) + "d6";
 				}),
 				calcChanges : {
-					atkAdd : ["if (classes.known.rogue && classes.known.rogue.level && !isSpell && (fields.Description.match(/\\bfinesse\\b/i) || isRangedWeapon)) {var sneakAtk = Math.ceil(classes.known.rogue.level / 2); fields.Description += (fields.Description ? '; ' : '') + 'Sneak attack ' + sneakAtk + 'd6'; }; ", "Once per turn, when I attack with a ranged or finesse weapon while I have advantage or an conscious ally is within 5 ft of the target, I can add my sneak attack damage to the attack."]
+					atkAdd : ["if (classes.known.rogue && classes.known.rogue.level && !isSpell && ((/\\bfinesse\\b/i).test(fields.Description) || isRangedWeapon)) {var sneakAtk = Math.ceil(classes.known.rogue.level / 2); fields.Description += (fields.Description ? '; ' : '') + 'Sneak attack ' + sneakAtk + 'd6'; }; ", "Once per turn, when I attack with a ranged or finesse weapon while I have advantage or an conscious ally is within 5 ft of the target, I can add my sneak attack damage to the attack."]
 				}
 			},
 			"thieves cant" : {
@@ -1513,7 +1513,7 @@ var ClassList = {
 					description : "\n   " + "My pact weapon does extra necrotic damage equal to my Charisma modifier",
 					source : ["P", 111],
 					calcChanges : {
-						atkCalc : ["if (isMeleeWeapon && WeaponText.match(/\\bpact\\b/i)) { output.extraDmg += What('Cha Mod'); }; ", "If I include the word 'Pact' in a melee weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."]
+						atkCalc : ["if (isMeleeWeapon && (/\\bpact\\b/i).test(WeaponText)) { output.extraDmg += What('Cha Mod'); }; ", "If I include the word 'Pact' in a melee weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."]
 					},
 					prereqeval : "classes.known.warlock.level >= 12 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the blade') !== -1"
 				},
@@ -1603,7 +1603,7 @@ var ClassList = {
 					description : "\n   " + "I can have creatures hit by my Eldritch Blast cantrip be pushed 10 ft away from me",
 					source : ["P", 111],
 					calcChanges : {
-						atkAdd : ["if (theWea && theWea.name.match(/eldritch blast/i)) {fields.Description += '; Target pushed back 10 ft'; }; ", "When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."]
+						atkAdd : ["if (theWea && (/eldritch blast/i).test(theWea.name)) {fields.Description += '; Target pushed back 10 ft'; }; ", "When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."]
 					},
 					prereqeval : "hasEldritchBlast"
 				},
@@ -1706,7 +1706,7 @@ var ClassList = {
 					description : "\n   " + "As an action, I can create a pact weapon in my empty hand; I'm proficient in its use" + "\n   " + "I can choose the type of melee weapon every time I create it, and it has those statistics" + "\n   " + "The weapon disappears if it is more than 5 ft away from me for 1 minute" + "\n   " + "The weapon counts as magical; I can transform a magic weapon into my pact weapon" + "\n   " + "This occurs over an hour-long ritual that I can perform during a short rest" + "\n   " + "I can use an action to re-summon it in any form and can dismiss it as no action",
 					action : ["action", ""],
 					calcChanges : {
-						atkAdd : ["if (isMeleeWeapon && inputText.match(/\\bpact\\b/i)) {fields.Proficiency = true; fields.Description += thisWeapon[1] ? '' : (fields.Description ? '; ' : '') + 'Counts as magical'; }; ", "If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."]
+						atkAdd : ["if (isMeleeWeapon && (/\\bpact\\b/i).test(inputText)) {fields.Proficiency = true; fields.Description += thisWeapon[1] ? '' : (fields.Description ? '; ' : '') + 'Counts as magical'; }; ", "If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."]
 					}
 				},
 				"pact of the chain" : {
@@ -2811,14 +2811,14 @@ var ClassSubList = {
 					name : "Dueling Fighting Style",
 					description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
 					calcChanges : {
-						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
 					}
 				},
 				"great weapon fighting" : {
 					name : "Great Weapon Fighting Style",
 					description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
 					calcChanges : {
-						atkAdd : ["if (isMeleeWeapon && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += (fields.Description ? '; ' : '') + 'Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+						atkAdd : ["if (isMeleeWeapon && (/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i).test(theWea.description)) {fields.Description += (fields.Description ? '; ' : '') + 'Re-roll 1 or 2 on damage die' + ((/versatile/i).test(fields.Description) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
 					}
 				},
 				"protection" : {
@@ -3172,7 +3172,7 @@ var ClassSubList = {
 					source : ["P", 81],
 					description : " [1 ki point]" + "\n   " + "With Attack action, my unarmed strikes +10 ft reach and deal fire damage this turn" + "\n   " + "Also, I can spent an additional 1 ki point to cause an attack to deal +1d10 fire damage",
 					calcChanges : {
-						atkAdd : ["if (WeaponName.match(/unarmed strike/i) && inputText.match(/^(?=.*fire)(?=.*snake).*$/i)) {fields.Description += (fields.Description ? '; ' : '') + 'After hit, spend 1 ki point for +1d10 fire damage'; fields.Range = 'Melee (15 ft reach)'; fields.Damage_Type = 'fire'; }; ", "If I include the words 'Fire Snake' in the name of an unarmed strike, it gets +10 ft reach, does fire damage, and gains the option to deal +1d10 fire damage by spending 1 additional ki point."]
+						atkAdd : ["if ((/unarmed strike/i).test(WeaponName) && (/^(?=.*fire)(?=.*snake).*$/i).test(inputText)) {fields.Description += (fields.Description ? '; ' : '') + 'After hit, spend 1 ki point for +1d10 fire damage'; fields.Range = 'Melee (15 ft reach)'; fields.Damage_Type = 'fire'; }; ", "If I include the words 'Fire Snake' in the name of an unarmed strike, it gets +10 ft reach, does fire damage, and gains the option to deal +1d10 fire damage by spending 1 additional ki point."]
 					}
 				},
 				"fist of four thunders" : {
@@ -3634,7 +3634,7 @@ var ClassSubList = {
 				description : "\n   " + "As an action, for 1 minute, I add my Cha modifier to hit for one weapon I'm holding" + "\n   " + "It also counts as magical and emits bright light in a 20-ft radius and equal dim light",
 				action : ["action", ""],
 				calcChanges : {
-					atkCalc : ["if (classes.known.paladin && classes.known.paladin.level > 2 && !isSpell && WeaponText.match(/^(?=.*sacred)(?=.*weapon).*$/i)) { output.extraHit += What('Cha Mod'); }; ", "If I include the words 'Sacred Weapon' in the name or description of a weapon, it gets my Charisma modifier added to its To Hit."]
+					atkCalc : ["if (classes.known.paladin && classes.known.paladin.level > 2 && !isSpell && (/^(?=.*sacred)(?=.*weapon).*$/i).test(WeaponText)) { output.extraHit += What('Cha Mod'); }; ", "If I include the words 'Sacred Weapon' in the name or description of a weapon, it gets my Charisma modifier added to its To Hit."]
 				}
 			},
 			"subclassfeature3.1" : {
@@ -4208,38 +4208,38 @@ var ClassSubList = {
 					name : "Acid Elemental Affinity",
 					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does acid damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain acid resistance for 1 hour",
 					calcChanges : {
-						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && fields.Damage_Type.match(/acid/i)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage."]
+						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/acid/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage."]
 					}
 				},
 				"cold" : {
 					name : "Cold Elemental Affinity",
 					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does cold damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain cold resistance for 1 hour",
 					calcChanges : {
-						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && fields.Damage_Type.match(/cold/i)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal cold damage get my Charisma modifier added to their Damage."]
+						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/cold/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal cold damage get my Charisma modifier added to their Damage."]
 					}
 				},
 				"fire" : {
 					name : "Fire Elemental Affinity",
 					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does fire damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain fire resistance for 1 hour",
 					calcChanges : {
-						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && fields.Damage_Type.match(/fire/i)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal fire damage get my Charisma modifier added to their Damage."]
+						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/fire/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal fire damage get my Charisma modifier added to their Damage."]
 					}
 				},
 				"lightning" : {
 					name : "Lightning Elemental Affinity",
 					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does lightning damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain lightning resistance for 1 hour",
 					calcChanges : {
-						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && fields.Damage_Type.match(/lightning/i)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal lightning damage get my Charisma modifier added to their Damage."]
+						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/lightning/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal lightning damage get my Charisma modifier added to their Damage."]
 					}
 				},
 				"poison" : {
 					name : "Poison Elemental Affinity",
 					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does poison damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain poison resistance for 1 hour",
 					calcChanges : {
-						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && fields.Damage_Type.match(/poison/i)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."]
+						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/poison/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."]
 					}
 				},
-				eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?sorcerer,subclassfeature1,((black|blue|brass|bronze|copper|gold|green|red|silver|white) dragon ancestor).*/i; if (CFrem.match(tReg)) {FeaChoice = CurrentClasses.sorcerer.features.subclassfeature1[CFrem.replace(tReg, \"$1\")].dragonElement; AddString(\"Class Features Remember\", \"sorcerer,subclassfeature6,\" + FeaChoice, false);};};",
+				eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?sorcerer,subclassfeature1,((black|blue|brass|bronze|copper|gold|green|red|silver|white) dragon ancestor).*/i; if ((tReg).test(CFrem)) {FeaChoice = CurrentClasses.sorcerer.features.subclassfeature1[CFrem.replace(tReg, \"$1\")].dragonElement; AddString(\"Class Features Remember\", \"sorcerer,subclassfeature6,\" + FeaChoice, false);};};",
 			},
 			"subclassfeature14" : {
 				name : "Dragon Wings",
@@ -4904,7 +4904,7 @@ var ClassSubList = {
 				minlevel : 14,
 				description : "\n   " + "While my bladesong is active, I can add my Int mod to melee weapon attack damage",
 				calcChanges : {
-					atkCalc : ["if (classes.known.wizard && classes.known.wizard.level > 13 && isMeleeWeapon && WeaponText.match(/blade.?song/i)) { output.extraDmg += What('Int Mod'); }; ", "If I include the word 'Bladesong' in the name or description of a melee weapon, it gets my Intelligence modifier added to its Damage."]
+					atkCalc : ["if (classes.known.wizard && classes.known.wizard.level > 13 && isMeleeWeapon && (/blade.?song/i).test(WeaponText)) { output.extraDmg += What('Int Mod'); }; ", "If I include the word 'Bladesong' in the name or description of a melee weapon, it gets my Intelligence modifier added to its Damage."]
 				}
 			}
 		}

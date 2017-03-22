@@ -282,12 +282,12 @@ function format2() {
 function keystroke1(allowDec, allowNegative) {
 	if (!event.willCommit) {
 		if (allowDec) {
-			var tests = !isNaN(event.change) || (event.change.match(/,|\./g) && (!event.value.match(/,|\./g) || event.value.substring(event.selStart, event.selEnd).match(/,|\./g)));
+			var tests = !isNaN(event.change) || ((/,|\./g).test(event.change) && (!(/,|\./g).test(event.value) || (/,|\./g).test(event.value.substring(event.selStart, event.selEnd))));
 		} else {
 			var tests = !isNaN(event.change);
 		}
 		if (allowNegative) {
-			tests = tests || (event.change === "-" && event.selStart === 0 && (!event.value.match(/-/g) || event.value.substring(event.selStart, event.selEnd).match(/-/g)));
+			tests = tests || (event.change === "-" && event.selStart === 0 && (!(/-/g).test(event.value) || (/-/g).test(event.value.substring(event.selStart, event.selEnd))));
 		}
 		event.rc = tests;
 	} else {
@@ -2098,7 +2098,7 @@ function ApplyArmor(input) {
 
 	if (CurrentArmour.known !== undefined && ArmourList[CurrentArmour.known] !== undefined) {
 		thermoM("Applying the recognized armor..."); //change the progress dialog text
-		var ArmorStealth = (ArmourList[CurrentArmour.known].type === "medium" && What("Medium Armor Max Mod") === 3) || CurrentArmour.field.match(/mithral/i) ? false : ArmourList[CurrentArmour.known].stealthdis;
+		var ArmorStealth = (ArmourList[CurrentArmour.known].type === "medium" && What("Medium Armor Max Mod") === 3) || (/mithral/i).test(CurrentArmour.field) ? false : ArmourList[CurrentArmour.known].stealthdis;
 		Checkbox(ArmorFields[3], ArmorStealth);
 		ConditionSet();
 		Checkbox(ArmorFields[1], ArmourList[CurrentArmour.known].type === "medium");
@@ -2670,7 +2670,7 @@ function FindClasses(Event) {
 		//add features of the class
 		for (prop in ClassList[aClass].features) {
 			var cPropAtt = ClassList[aClass].features[prop];
-			var fNm = ("0" + cPropAtt.minlevel).slice(-2) + (prop.match(/subclassfeature/i) ? "" : "()") + cPropAtt.name;
+			var fNm = ("0" + cPropAtt.minlevel).slice(-2) + ((/subclassfeature/i).test(prop) ? "" : "()") + cPropAtt.name;
 			if (fNm.toString().length > 2) {
 				fAB.push(fNm);
 				fTrans[fNm] = {name: prop, list: "ClassList", item: aClass};
@@ -2695,7 +2695,7 @@ function FindClasses(Event) {
 		
 		for (var f = 0; f < fAB.length; f++) {
 			var propAtt = fTrans[fAB[f]];
-			if (hasSub && propAtt.list === "ClassList" && propAtt.name.match(/subclassfeature/i)) continue; // skip any "subclassfeature" from the class if a subclass is known
+			if (hasSub && propAtt.list === "ClassList" && (/subclassfeature/i).test(propAtt.name)) continue; // skip any "subclassfeature" from the class if a subclass is known
 			Temps.features[propAtt.name] = tDoc[propAtt.list][propAtt.item].features[propAtt.name];
 		}
 
@@ -2719,7 +2719,7 @@ function FindClasses(Event) {
 		//see if this class is a spellcaster and what we need to do with that
 		if (Temps.spellcastingFactor) {
 			var casterType = !isNaN(Temps.spellcastingFactor) ? "default" : Temps.spellcastingFactor.replace(/\d/g, "");
-			var casterFactor = Temps.spellcastingFactor.match(/\d/g) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
+			var casterFactor = (/\d/g).test(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
 			//now only continue if the class level is the factor or higher
 			if (Math.max(casterFactor, 1) <= classes.known[aClass].level) {
 				//add one to the casterType for seeing if this casterType is multiclassing later on
@@ -2769,7 +2769,7 @@ function FindClasses(Event) {
 		//add the spellcasting level to the classes.spellcastlvl global variable
 		if (Temps.spellcastingFactor) {
 			var casterType = !isNaN(Temps.spellcastingFactor) ? "default" : Temps.spellcastingFactor.replace(/\d/g, "");
-			var casterFactor = Temps.spellcastingFactor.match(/\d/g) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
+			var casterFactor = (/\d/g).test(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
 			//now add this class' levels to the global variable when using the known tables and are of sufficient level
 			if (casterFactor && classes.known[aClass].level >= casterFactor) {
 				if (multiCaster[casterType] > 1 || !Temps.spellcastingTable) {
@@ -3492,7 +3492,7 @@ function FindWeapons(ArrayNmbr) {
 	
 		//if this is a spell or a cantrip, see if we can link it to an object in the CurrentCasters variable
 		var isSpell = tempArray[j][0] ? (WeaponsList[tempArray[j][0]].SpellsList ? WeaponsList[tempArray[j][0]].SpellsList : tempArray[j][0]) : ParseSpell(tempString);
-		if ((!tempArray[j][0] || WeaponsList[tempArray[j][0]].type.match(/spell|cantrip/i)) && SpellsList[isSpell]) {
+		if ((!tempArray[j][0] || (/spell|cantrip/i).test(WeaponsList[tempArray[j][0]].type)) && SpellsList[isSpell]) {
 			tempArray[j][3] = isSpell;
 			if (!tempArray[j][0]) tempArray[j][2] = false;
 			tempArray[j][4] = isSpellUsed(isSpell);
@@ -3507,7 +3507,7 @@ function FindWeapons(ArrayNmbr) {
 var forceReCalcWeapons = false;
 function ReCalcWeapons(justProfs) {
 	IsNotReset = false;
-	justProfs = justProfs && !forceReCalcWeapons && (!CurrentEvals.atkAdd || !CurrentEvals.atkAdd.match(/level/i)) ? true : false;
+	justProfs = justProfs && !forceReCalcWeapons && (!CurrentEvals.atkAdd || !(/level/i).test(CurrentEvals.atkAdd)) ? true : false;
 	for (var xy = 0; xy < CurrentWeapons.known.length; xy++) {
 		if (CurrentWeapons.field[xy]) {
 			ApplyWeapon(CurrentWeapons.field[xy], "Attack." + (xy + 1) + ".Weapon Selection", true, justProfs);
@@ -5093,7 +5093,7 @@ function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, Update
 	var calculation = Calc ? Calc : "";
 	var SslotsVisible = !typePF && eval(What("SpellSlotsRemember"))[0];
 	var recovery = recovery === "long rest" || recovery === "short rest" || recovery === "dawn" ? recovery : recovery.capitalize();
-	if (usages.match(/ ?\bper\b ?/)) usages = usages.replace(/ ?\bper\b ?/, "");
+	if ((/ ?\bper\b ?/).test(usages)) usages = usages.replace(/ ?\bper\b ?/, "");
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 1; i <= FieldNumbers.limfea; i++) {
 			var featureFld = tDoc.getField("Limited Feature " + i);
@@ -6143,7 +6143,7 @@ function MakeClassMenu() {
 
 	var ClassMenu = [], toTest = "";
 	var toTestE = What("Extra.Notes") + What("Class Features");
-	var hasEldritchBlast = isSpellUsed("eldritch blast").length || CurrentWeapons.known.toString().match(/(eldritch|agonizing) (blast|spear)/i);
+	var hasEldritchBlast = isSpellUsed("eldritch blast").length || (/(eldritch|agonizing) (blast|spear)/i).test(CurrentWeapons.known);
 	
 	for (var aClass in classes.known) {
 		var classname = aClass;
@@ -7860,7 +7860,7 @@ function FindManualOtherWeapons(startup) {
 
 //Calculate the weight of a column of items in the equipment section [field calculation]
 function CalcWeightSubtotal() {
-	var type = event.target.name.match(/extra.*/i) ? "Extra.Gear " : (event.target.name.match(/Adventuring.*/i) ? "Adventuring Gear " : event.target.name.substring(0, event.target.name.indexOf("Comp.") + 14));
+	var type = (/extra.*/i).test(event.target.name) ? "Extra.Gear " : ((/Adventuring.*/i).test(event.target.name) ? "Adventuring Gear " : event.target.name.substring(0, event.target.name.indexOf("Comp.") + 14));
 	var column = event.target.name.slice(-4) === "Left" ? "Left" : (event.target.name.slice(-5) === "Right" ? "Right" : "Middle");
 	var allGear = type === "Extra.Gear " ? FieldNumbers.extragear : (type === "Adventuring Gear " ? FieldNumbers.gear : FieldNumbers.compgear);
 	var division = typePF && type === "Adventuring Gear " ? 3 : 2;
@@ -9338,7 +9338,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
-			if (measurements[i].match(/'/) && measurements[i].match(/\"/)) {
+			if ((/'/).test(measurements[i]) && (/\"/).test(measurements[i])) {
 				var orgFT = parseFloat(measurements[i].substring(0,measurements[i].indexOf("'")));
 				var orgIN = parseFloat(measurements[i].substring(measurements[i].indexOf("'") + 1, measurements[i].indexOf("\"")));
 				var resulted = theConvert(parseFloat(orgIN/12) + parseFloat(orgFT), "ft");
@@ -9346,14 +9346,14 @@ function ConvertToMetric(inputString, rounded, exact) {
 				var org = measurements[i].replace(/,/g, ".");
 				var orgUnit = org.match(/([a-z]+|')$/)[0], fraction;
 				
-				if ( fraction = org.match(/(\d+\.?\d*)\/(\d+\.?\d*)/) ){
+				if (fraction = org.match(/(\d+\.?\d*)\/(\d+\.?\d*)/) ){
 					var resulted = [theConvert(fraction[1], orgUnit), theConvert(fraction[2], orgUnit)];
 				} else {
 					var resulted = theConvert(parseFloat(org), orgUnit);
 				}
 			}
 			
-			var delimiter = measurements[i].match(/-/) ? "-" : " ";
+			var delimiter = (/-/).test(measurements[i]) ? "-" : " ";
 			
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
@@ -9433,7 +9433,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 				var resulted = theConvert(parseFloat(org), orgUnit);
 			}
 			
-			var delimiter = measurements[i].match(/-/) ? "-" : " ";
+			var delimiter = (/-/).test(measurements[i]) ? "-" : " ";
 			
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
@@ -10099,7 +10099,7 @@ function WeaponOptions() {
 			for (var H = 0; H < FieldNames.length; H++) {
 				Value(FieldsUp[H], FieldsValue[H]);
 				Value(Fields[H], FieldsUpValue[H]);
-				if (!QI && Fields[H].match(/description/i)) SwapTooltip(FieldsUp[H], Fields[H])
+				if (!QI && (/description/i).test(Fields[H])) SwapTooltip(FieldsUp[H], Fields[H])
 				thermoM(H/FieldNames.length); //increment the progress dialog's progress
 			};
 			if (!typePF) {
@@ -10116,7 +10116,7 @@ function WeaponOptions() {
 			for (var H = 0; H < FieldNames.length; H++) {
 				Value(FieldsDown[H], FieldsValue[H]);
 				Value(Fields[H], FieldsDownValue[H]);
-				if (!QI && Fields[H].match(/description/i)) SwapTooltip(FieldsDown[H], Fields[H])
+				if (!QI && (/description/i).test(Fields[H])) SwapTooltip(FieldsDown[H], Fields[H])
 				thermoM(H/FieldNames.length); //increment the progress dialog's progress
 			};
 			if (!typePF) {
@@ -10228,7 +10228,7 @@ function WeaponInsert(itemNmbr) {
 			//move the values
 			for (var H = 0; H < FieldNames.length; H++) {
 				var fromFld = prefix + FieldNames[H][0] + Q + "Attack." + (i - 1) + FieldNames[H][1];
-				Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(fromFld), !QI && FieldNames[H][1].match(/description/i) ? Who(fromFld) : undefined);
+				Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(fromFld), !QI && (/description/i).test(FieldNames[H][1]) ? Who(fromFld) : undefined);
 			}
 			if (!typePF) {
 				var theIcon = tDoc.getField(prefix + "Image." + Q + "Attack." + (i - 1)).buttonGetIcon();
@@ -10298,7 +10298,7 @@ function WeaponDelete(itemNmbr) {
 		//move the values
 		for (var H = 0; H < FieldNames.length; H++) {			
 			var fromFld = prefix + FieldNames[H][0] + Q + "Attack." + (i + 1) + FieldNames[H][1];
-			Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(fromFld), !QI && FieldNames[H][1].match(/description/i) ? Who(fromFld) : undefined);
+			Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(fromFld), !QI && (/description/i).test(FieldNames[H][1]) ? Who(fromFld) : undefined);
 		};
 	}
 	

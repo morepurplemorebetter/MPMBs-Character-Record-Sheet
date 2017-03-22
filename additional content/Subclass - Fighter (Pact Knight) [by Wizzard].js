@@ -37,7 +37,7 @@ ClassSubList["fighter-pact knight"] = {
 			description : "\n   " + "As a bonus action, I can create a pact weapon in my empty hand; I'm proficient in its use" + "\n   " + "I can choose the type of melee weapon every time I create it, and it has those statistics" + "\n   " + "The weapon disappears if it is more than 5 ft away from me for 1 minute" + "\n   " + "The weapon counts as magical; I can transform a magic weapon Chao my pact weapon" + "\n   " + "This occurs over an hour-long ritual that I can perform during a short rest" + "\n   " + "I can use an action to re-summon it in any form and can dismiss it as no action",
 			action : ["bonus action", ""],
 			calcChanges : {
-				atkAdd : ["if (isMeleeWeapon && inputText.match(/\\bpact\\b/i)) {fields.Proficiency = true; fields.Description += thisWeapon[1] ? '' : (fields.Description ? '; ' : '') + 'Counts as magical'; }; ", "If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."]
+				atkAdd : ["if (isMeleeWeapon && (/\\bpact\\b/i).test(inputText)) {fields.Proficiency = true; fields.Description += thisWeapon[1] ? '' : (fields.Description ? '; ' : '') + 'Counts as magical'; }; ", "If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."]
 			}
 		},
 		"subclassfeature3.1" : {
@@ -146,7 +146,7 @@ ClassSubList["fighter-pact knight"] = {
 				description : "\n   " + "My pact weapon does extra necrotic damage equal to my Charisma modifier",
 				source : ["P", 111],
 				calcChanges : {
-					atkCalc : ["if (isMeleeWeapon && WeaponText.match(/\\bpact\\b/i)) { output.extraDmg += What('Cha Mod'); }; ", "If I include the word 'Pact' in a melee weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."]
+					atkCalc : ["if (isMeleeWeapon && (/\\bpact\\b/i).test(WeaponText)) { output.extraDmg += What('Cha Mod'); }; ", "If I include the word 'Pact' in a melee weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."]
 				}
 			},
 			"mask of many faces" : {
@@ -204,7 +204,7 @@ ClassSubList["fighter-pact knight"] = {
 				description : "\n   " + "I can have creatures hit by my Eldritch Blast cantrip be pushed 10 ft away from me",
 				source : ["P", 111],
 				calcChanges : {
-					atkAdd : ["if (theWea && theWea.name.match(/eldritch blast/i)) {fields.Description += '; Target pushed back 10 ft'; }; ", "When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."]
+					atkAdd : ["if (theWea && (/eldritch blast/i).test(theWea.name)) {fields.Description += '; Target pushed back 10 ft'; }; ", "When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."]
 				}
 			},
 			"visions of distant realms (prereq: level 15 pact knight)" : {
@@ -273,7 +273,7 @@ ClassSubList["fighter-pact knight"] = {
 			minlevel : 18,
 			description : "\n   " + "Attacks with my pact weapon score a critical hit on a roll of both 19 and 20",
 			calcChanges : {
-				atkAdd : ["if (isMeleeWeapon && inputText.match(/\\bpact\\b/i) && classes.known.fighter && classes.known.fighter.level > 17) {fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20'; }; ", "My pact weapon attacks score a critical on a to hit roll of both 19 and 20."]
+				atkAdd : ["if (isMeleeWeapon && (/\\bpact\\b/i).test(inputText) && classes.known.fighter && classes.known.fighter.level > 17) {fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20'; }; ", "My pact weapon attacks score a critical on a to hit roll of both 19 and 20."]
 			}
 		},
 		"subclassfeature18.1" : {

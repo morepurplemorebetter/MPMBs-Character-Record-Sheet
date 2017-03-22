@@ -48,7 +48,7 @@ ClassSubList["black powder"] = {
 				source : ["P", 72],
 				description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
 				calcChanges : {
-					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if (What('Bonus Action ' + i).match(/off.hand.attack/i)) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !theWea.description.match(/\\b(2|two).?hand(ed)?s?\\b/i)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
 				}
 			},
 			"great weapon fighting" : {
@@ -56,7 +56,7 @@ ClassSubList["black powder"] = {
 				source : ["P", 72],
 				description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
 				calcChanges : {
-					atkAdd : ["if (isMeleeWeapon && fields.Description.match(/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i)) {fields.Description += '; Re-roll 1 or 2 on damage die' + (fields.Description.match(/versatile/i) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+					atkAdd : ["if (isMeleeWeapon && (/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i).test(theWea.description)) {fields.Description += (fields.Description ? '; ' : '') + 'Re-roll 1 or 2 on damage die' + ((/versatile/i).test(fields.Description) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
 				}
 			},
 			"mariner" : {
@@ -73,7 +73,7 @@ ClassSubList["black powder"] = {
 			minlevel : 1,
 			description : "\n   " + "I gain proficiency with a martial weapon/firearm of my choice, my signature weapon" + "\n   " + "While wielding this weapon and nothing else, I may use Cha for to hit and damage rolls" + "\n   " + "My signature weapon may be used with the Blade of the Pact class feature" + "\n   " + "My signature weapon counts as magical for the purpose of overcoming resistances" + "\n   " + "I may use my signature weapon as a spellcasting focus",
 			calcChanges : {
-				atkAdd : ["if (WeaponText.match(/signature/i) && What(AbilityScores.abbreviations[fields.Mod - 1] + ' Mod') < What('Cha Mod')) {fields.Mod = 6; }; ", "If a weapon has the word 'signature' in its name or description field, it will use the Charisma modifier for to hit and damage if better than its normal ability modifier."]
+				atkAdd : ["if ((/signature/i).test(WeaponText) && What(AbilityScores.abbreviations[fields.Mod - 1] + ' Mod') < What('Cha Mod')) {fields.Mod = 6; }; ", "If a weapon has the word 'signature' in its name or description field, it will use the Charisma modifier for to hit and damage if better than its normal ability modifier."]
 			}
 		},
 		"subclassfeature6" : {

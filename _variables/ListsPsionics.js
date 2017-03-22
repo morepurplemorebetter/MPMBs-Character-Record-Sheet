@@ -2,8 +2,7 @@ var PsychicFocus = "\n   " + toUni("Psychic Focus") + ": ";
 
 //Psionic Talents/Disciplines for the Mystic
 var PsionicsList = {
-	
-	//the psionic talents
+	//the psionic talents (with help from Karsten J.)
 	"beacon" : {
 		name : "Beacon",
 		classes : ["mystic"],
@@ -40,6 +39,119 @@ var PsionicsList = {
 		save : "Wis",
 		description : "1 creature save or treats me as invisible until the end of my next turn",
 		descriptionFull : "As an action, you erase your image from the mind of one creature you can see within 120 feet of you; the target must succeed on a Wisdom saving throw, or you are invisible to it until the end of your next turn."
+	},
+	"delusion" : {
+		name : "Delusion",
+		classes : ["mystic"],
+		source : ["UA:TMC", 27],
+		psionic : true,
+		level : 0,
+		time : "1 a",
+		range : "60 ft",
+		duration : "1 min",
+		description : "1 crea either hears a sound (whisper-scream), or sees up to 5-ft cube object that disappears on touch",
+		descriptionFull : "As an action, you plant a false belief in the mind of one creature that you can see within 60 feet of you. You can create a sound or an image. Only the target of this talent perceives the sound or image you create." + "\n   " +  "If you create a sound, its volume can range from a whisper to a scream. It can be your voice, someone else's voice, a creature's roar, a musical instrument, or any other sound you pick. It lasts for 1 minute." + "\n   " +  "If you create an object, it must fit within a 5-foot cube and can’t move or be reflective. The image can't create any effect that influences a sense other than sight. The image lasts for 1 minute, and it disappears if the creature touches it."
+	},
+	"energy beam" : {
+		name : "Energy Beam",
+		classes : ["mystic"],
+		source : ["UA:TMC", 27],
+		psionic : true,
+		level : 0,
+		time : "1 a",
+		range : "90 ft",
+		duration : "Instantaneous",
+		save : "Dex",
+		description : "1 crea save or 1d8 Acid, Cold, Fire, Lightning, or Thunder dmg; +1d8 at CL 5, 11, and 17",
+		descriptionFull : "As an action, you target one creature you can see within 90 feet of you. The target must succeed on a Dexterity saving throw or take 1d8 acid, cold, fire, lightning, or thunder damage (your choice)." + "\n   " +  "The talent’s damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8)"
+	},
+	"light step" : {
+		name : "Light Step",
+		classes : ["mystic"],
+		source : ["UA:TMC", 27],
+		psionic : true,
+		level : 0,
+		time : "1 bns",
+		range : "Self",
+		duration : "1 rnd",
+		description : "My walking speed increases by 10 ft; standing up costs 0 movement, once",
+		descriptionFull : "As a bonus action, you alter your density and weight to improve your mobility. For the rest of your turn, your walking speed increases by 10 feet, and the first time you stand up this turn, you do so without expending any of your movement if your speed is greater than 0."
+	},
+	"mind meld" : {
+		name : "Mind Meld",
+		classes : ["mystic"],
+		source : ["UA:TMC", 27],
+		psionic : true,
+		level : 0,
+		time : "1 bns",
+		range : "120 ft",
+		duration : "1 rnd",
+		description : "Communicate telepathically with 1 willing crea (int > 1) and access 1 memory of theirs",
+		descriptionFull : "As a bonus action, you can communicate telepathically with one willing creature you can see within 120 feet of you. The target must have an Intelligence of at least 2, otherwise this talent fails and the action is wasted." + "\n   " +  "This communication can occur until the end of the current turn. You don’t need to share a language with the target for it to understand your telepathic utterances, and it understands you even if it lacks a language. You also gain access to one memory of the target’s choice, gaining perfect recall of one thing it saw or did."
+	},
+	"mind slam" : {
+		name : "Mind Slam",
+		classes : ["mystic"],
+		source : ["UA:TMC", 28],
+		psionic : true,
+		level : 0,
+		time : "1 a",
+		range : "60 ft",
+		duration : "Instantaneous",
+		save : "Con",
+		description : "1 crea save or 1d6 Psychic dmg, and knocked prone if Large or smaller; +1d6 at CL 5, 11, and 17",
+		descriptionFull : "As an action, you target one creature you can see within 60 feet of you. The target must succeed on a Constitution saving throw or take 1d6 force damage. If it takes any of this damage and is Large or smaller, it is knocked prone." + "\n   " +  "The talent’s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6)"
+	},
+	"mind thrust" : {
+		name : "Mind Thrust",
+		classes : ["mystic"],
+		source : ["UA:TMC", 28],
+		psionic : true,
+		level : 0,
+		time : "1 a",
+		range : "120 ft",
+		duration : "Instantaneous",
+		save : "Int",
+		description : "1 crea save or 1d10 Psychic dmg; +1d10 at CL 5, 11, and 17",
+		descriptionFull : "As an action, you target one creature you can see within 120 feet of you. The target must succeed on an Intelligence saving throw or take 1d10 psychic damage." + "\n   " +  "The talent’s damage increases by 1d10 when you reach 5th level (2d10), 11th level (3d10), and 17th level (4d10)."
+	},
+	"mystic charm" : {
+		name : "Mystic Charm",
+		classes : ["mystic"],
+		source : ["UA:TMC", 28],
+		psionic : true,
+		level : 0,
+		time : "1 a",
+		range : "120 ft",
+		duration : "1 rnd",
+		save : "Cha",
+		description : "1 humanoid save or charmed until end of next turn",
+		descriptionFull : "As an action, you beguile one humanoid you can see within 120 feet of you. The target must succeed on a Charisma saving throw or be charmed by you until the end of your next turn."
+	},
+	"mystic hand" : {
+		name : "Mystic Hand",
+		classes : ["mystic"],
+		source : ["UA:TMC", 28],
+		psionic : true,
+		level : 0,
+		time : "1 a",
+		range : "30 ft",
+		duration : "1 rnd",
+		description : "Move 1 unattended object (up to 10 lbs) up to 30 ft, or manipulate an object",
+		descriptionFull : "You can use your action to manipulate or move one object within 30 feet of you. The object can’t weigh more than 10 pounds, and you can’t affect an object being worn or carried by another creature. If the object is loose, you can move it up to 30 feet in any direction." + "\n   " +  "This talent allows you to open an unlocked door, pour out a beer stein, and so on." + "\n   " +  "The object falls to the ground at the end of your turn if you leave it suspended in midair."
+	},
+	"psychic hammer" : {
+		name : "Psychic Hammer",
+		classes : ["mystic"],
+		source : ["UA:TMC", 28],
+		psionic : true,
+		level : 0,
+		time : "1 a",
+		range : "120 ft",
+		duration : "Instantaneous",
+		save : "Str",
+		description : "1 crea save or 1d6 Force dmg and moved up to 10 ft in chosen direction; +1d6 at CL 5, 11, and 17",
+		descriptionFull : "As an action, you try to grasp one creature you can see within 120 feet of you, with a hand crafted from telekinetic energy. The target must succeed on a Strength saving throw or take 1d6 force damage. If it takes any of this damage and is Large or smaller, you can move it up to 10 feet in a straight line in a direction of your choice. You can’t lift the target off the ground unless it is already airborne or underwater." + "\n   " +  "The talent’s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6)."
 	},
 
 	//the adaptive body discipline
@@ -181,6 +293,141 @@ var PsionicsList = {
 		description : "See all creatures, including hidden and invisible ones, regardless of lighting conditions",
 		descriptionFull : "As a bonus action, you gain the ability to see auras even of invisible or hidden creatures. Until your concentration ends, you can see all creatures, including hidden and invisible ones, regardless of lighting conditions.",
 		firstCol : 5 //power point cost
+	},
+	
+	//the bestial form discipline (contributed by Karsten J.)
+	"bestial form" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Bestial Form",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "Advantage on Wisdom (Animal Handling) checks",
+		descriptionFull : "You transform your body, gaining traits of different beasts." + PsychicFocus + "While focused on this discipline, you have advantage on Wisdom (Animal Handling) checks.",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["bf1-bestial claws", "bf2-bestial transformation", "bf3-bt - amphibious" , "bf4-bt - climbing", "bf5-bt - flight", "bf6-bt - keen senses", "bf7-bt - perfect senses", "bf8-bt - swimming", "bf9-bt - tough hide"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"bf1-bestial claws" : {
+		name : "Bestial Claws",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "5 ft",
+		duration : "Instantaneous",
+		description : "Melee weapon attack with manifested claw, dealing 1d10/PP Slashing dmg", //the /PP has to come directly after the damage die
+		descriptionFull : "You manifest long claws for an instant and make a melee weapon attack against one creature within 5 feet of you. On a hit, this attack deals 1d10 slashing damage per psi point spent.",
+		firstCol : "1-7" //power point cost
+	},
+	"bf2-bestial transformation" : {
+		name : "Bestial Transformation",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		duration : "1 hr (D)",
+		description : "Alter physique to gain one or more of following effects; sum PP cost for a single use; end with bns a",
+		descriptionFull : "As a bonus action, you alter your physical form to gain different characteristics. When you use this ability, you can choose one or more of the following effects. Each effect has its own psi point cost. Add them together to determine the total cost. This transformation lasts for 1 hour, until you die, or until you end it as a bonus action.",
+		firstCol : "2-7" //power point cost
+	},
+	"bf3-bt - amphibious" : {
+		name : " - Amphibious",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "",
+		range : "Self",
+		duration : "1 hr (D)",
+		description : "Able to breathe air and water by gaining gills",
+		descriptionFull : "You gain gills; you can breathe air and water",
+		firstCol : 2 //power point cost
+	},
+	"bf4-bt - climbing" : {
+		name : " - Climbing",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "",
+		range : "Self",
+		duration : "1 hr (D)",
+		description : "Climb speed equal to walking speed by growing tiny hooked claws",
+		descriptionFull : "You grow tiny hooked claws that give you gain a climbing speed equal to your walking speed.",
+		firstCol : 2 //power point cost
+	},
+	"bf5-bt - flight" : {
+		name : " - Flight",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "",
+		range : "Self",
+		duration : "1 hr (D)",
+		description : "Fly speed equal to walking speed by sprouting wings",
+		descriptionFull : "Wings sprout from your back. You gain a flying speed equal to your walking speed.",
+		firstCol : 5 //power point cost
+	},
+	"bf6-bt - keen senses" : {
+		name : " - Keen Senses",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "",
+		range : "Self",
+		duration : "1 hr (D)",
+		description : "Advantage on Wisdom (Perception) checks through more sensitive eyes and ears",
+		descriptionFull : "Your eyes and ears become more sensitive. You gain advantage on Wisdom (Perception) checks.",
+		firstCol : 2 //power point cost
+	},
+	"bf7-bt - perfect senses" : {
+		name : " - Perfect Senses",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "",
+		range : "Self",
+		duration : "1 hr (D)",
+		description : "See invisible creatures/objects within 10 ft, even when blinded, through smell",
+		descriptionFull : "You gain a keen sense of smell and an instinct to detect prey. You can see invisible creatures and objects within 10 feet of you, even if you are blinded.",
+		firstCol : 3 //power point cost
+	},
+	"bf8-bt - swimming" : {
+		name : " - Swimming",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "",
+		range : "Self",
+		duration : "1 hr (D)",
+		description : "Swim speed equal to walking speed by growing fins and webbed feet/hands",
+		descriptionFull : "You gain fins and webbing between your fingers and toes; you gain a swimming speed equal to your walking speed.",
+		firstCol : 2 //power point cost
+	},
+	"bf9-bt  - tough hide" : {
+		name : " - Tough Hide",
+		source : ["UA:TMC", 11],
+		psionic : true,
+		level : 1,
+		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "",
+		range : "Self",
+		duration : "1 hr (D)",
+		description : "+2 bonus to AC through thicker skin",
+		descriptionFull : "Your skin becomes as tough as leather; you gain a +2 bonus to AC.",
+		firstCol : 2 //power point cost
 	},
 
 	//the crown of rage discipline

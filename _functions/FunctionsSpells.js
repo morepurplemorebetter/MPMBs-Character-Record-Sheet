@@ -105,14 +105,14 @@ function ApplySpell(FldValue, rememberFldName) {
 	var input = FldValue !== undefined ? FldValue.split("##") : event.value.split("##");
 	var base = rememberFldName ? rememberFldName : event.target.name;
 	var isPF = typePF;
-	var isPsionics = input[0].match(/psionic/i);
+	var isPsionics = (/psionic/i).test(input[0]);
 	
 	var HeaderList = [
 		["", "check", ""], //0
 		[isPsionics ? "PSIONIC POWER" : "SPELL", "name", Array(21 + (isPF ? 6 : 0)).join("_")], //1
 		["DESCRIPTION", "description", Array(84 + (isPF ? 25 : 0)).join("_")], //2
 		["SAVE", "save", Array(4 + (isPF ? 1 : 0)).join("_")], //3
-		[isPsionics ? "ORDER" : "SCHOOL", "school", Array(7 + (isPF ? 1 : 0)).join("_")], //4
+		[isPsionics ? " ORDER" : "SCHOOL", "school", Array(7 + (isPF ? 1 : 0)).join("_")], //4
 		["TIME", "time", Array(7 + (isPF ? 1 : 0)).join("_")], //5
 		["RANGE", "range", Array(10 + (isPF ? 2 : 0)).join("_")], //6
 		["COMP", "components", Array(7).join("_")], //7
@@ -122,17 +122,18 @@ function ApplySpell(FldValue, rememberFldName) {
 	]
 	
 	//make this a header line if the input is "setcaptions"
-	if (input[0].match(/setcaptions/i)) {
-		HeaderList[0][0] = input[1] ? input[1].substring(0, input[1].match(/\(.\)|\d-\d/) ? 3 : 2).toUpperCase() : "";
+	if ((/setcaptions/i).test(input[0])) {
+		HeaderList[0][0] = input[1] ? input[1].substring(0, (/\(.\)|\d-\d/).test(input[1]) ? 3 : 2).toUpperCase() : "";
 		
 		//have a function to create rich text span
 		var createSpan = function(input) {
+			var toCap = input.substring(0, input.indexOf(" ") === 0 ? 2 : 1)
 			// First build up an array of Span objects
 			var spans = [{
-				text : input.substring(0, 1),
+				text : toCap,
 				textSize : 7,
 			}, {
-				text : input.substring(1),
+				text : input.replace(toCap, ""),
 				textSize : 5.6,
 			}];
 			return spans;
@@ -176,7 +177,7 @@ function ApplySpell(FldValue, rememberFldName) {
 	}
 	
 	// Now test if the fields should be hidden, or revealed
-	if (input[0].match(/hidethisline|setheader|setdivider|setglossary/i)) {
+	if ((/hidethisline|setheader|setdivider|setglossary/i).test(input[0])) {
 		//reset all the field's values and hide them
 		for (var i = 0; i < HeaderList.length; i++) {
 			var theFld = base.replace("remember", HeaderList[i][1]);
@@ -184,7 +185,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Hide(theFld);
 		}
 		
-		if (input[0].match(/hidethisline/i)) {
+		if ((/hidethisline/i).test(input[0])) {
 		//and don't do the rest of this function if we are here to hide this line
 			if (IsNotSpellSheetGenerating) {
 				tDoc.calculate = IsNotReset;
@@ -206,7 +207,7 @@ function ApplySpell(FldValue, rememberFldName) {
 		var currentCheck = What(theCheck).toLowerCase();
 		var input1 = input[1] ? input[1].toLowerCase() : false;
 		if (!input1 || okChecks.indexOf(input1) === -1) {
-			Value(theCheck, input1 ? input1.toUpperCase().substring(0, input1.match(/\(.\)|\d-\d/) ? 3 : 2) : "");
+			Value(theCheck, input1 ? input1.toUpperCase().substring(0, (/\(.\)|\d-\d/).test(input1) ? 3 : 2) : "");
 		} else if (input1 !== currentCheck && okChecks.indexOf(input1) !== -1 && (input1.substring(0, 4) !== currentCheck.substring(0, 4) || okChecks.indexOf(input1) > 1)) {
 			Value(theCheck, input[1].toLowerCase());
 		}
@@ -225,20 +226,20 @@ function ApplySpell(FldValue, rememberFldName) {
 			};
 			setCheck();
 		};
-	} else if (input[0].match(/setheader/i)) {
+	} else if ((/setheader/i).test(input[0])) {
 		var theClass = input[1] && CurrentSpells[input[1].toLowerCase()] ? input[1].toLowerCase() : "";
 		var theSuffix = input[2] !== undefined && !isNaN(parseFloat(input[2])) ? parseFloat(input[2]) : false;
 		var hidePrepared = input.indexOf("nopreps") !== -1;
 		if (theSuffix !== false ) {
 			SetSpellSheetElement(base, "header", theSuffix, theClass, hidePrepared, isPsionics);
 		}
-	} else if (input[0].match(/setdivider/i)) {
+	} else if ((/setdivider/i).test(input[0])) {
 		var theLevel = input[1] !== undefined && !isNaN(parseFloat(input[1])) ? parseFloat(input[1]) : false;
 		var theSuffix = input[2] !== undefined && !isNaN(parseFloat(input[2])) ? parseFloat(input[2]) : false;
 		if (theClass !== false && theSuffix !== false ) {
 			SetSpellSheetElement(base, "divider", theSuffix, theLevel, false, isPsionics);
 		}
-	} else if (input[0].match(/setglossary/i)) {
+	} else if ((/setglossary/i).test(input[0])) {
 		SetSpellSheetElement(base, "glossary", "");
 	} else if (input[0].indexOf("_") === 0) { //make all the fields lines
 		//reset all the field's values and tooltips to the lines defined in the array
@@ -294,16 +295,16 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "school"), aSpell.school ? aSpell.school : "\u2014");
 			
 			//set the spell time
-			Value(base.replace("remember", "time"), aSpell.time);
+			Value(base.replace("remember", "time"), aSpell.time ? aSpell.time : "\u2014");
 			
 			//set the spell range
-			Value(base.replace("remember", "range"), spRange);
+			Value(base.replace("remember", "range"), spRange ? spRange : "\u2014");
 			
 			//set the spell components
 			Value(base.replace("remember", "components"), aSpell.components ? aSpell.components : "\u2014", aSpell.compMaterial ? aSpell.compMaterial : "");
 			
 			//set the spell duration
-			Value(base.replace("remember", "duration"), aSpell.duration);
+			Value(base.replace("remember", "duration"), aSpell.duration ? aSpell.duration : "\u2014");
 			
 			//set the spell book name and page
 			var spBook = aSpell.source && aSpell.source[0] ? aSpell.source[0].substring(0, 1) : "";
@@ -501,9 +502,9 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, isPsio
 		
 		if (caster && CurrentSpells[caster]) {
 			var spCast = CurrentSpells[caster];
-			isPsionics = isPsionics || (spCast.factor && spCast.factor[1].match(/psionic/i));
+			isPsionics = isPsionics || (spCast.factor && (/psionic/i).test(spCast.factor[1]));
 			var casterName = spCast.name.replace(/book of /i, "").replace(/ (\(|\[).+?(\)|\])/g, "");
-			casterName = casterName + (casterName.length >= testLength || casterName.match(/\b(spells|powers|psionics)\b/i) ? "" : isPsionics ? " Psionics" : " Spells");
+			casterName = casterName + (casterName.length >= testLength || (/\b(spells|powers|psionics)\b/i).test(casterName) ? "" : isPsionics ? " Psionics" : " Spells");
 			if (What(headerArray[2]) !== caster) { //if the header was not already set to the class
 				Value(headerArray[1], casterName); //set the name of the header
 				Value(headerArray[2], caster); //set the name of the class
@@ -527,7 +528,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, isPsio
 			var casterName = " ";
 			if (caster) {
 				casterName = caster.replace(/book of | (\(|\[).+?(\)|\])/ig, "").replace(/ (\(|\[).+?(\)|\])/g, "");
-				casterName = casterName + (casterName.length >= testLength || casterName.match(/\b(spells|powers|psionics)\b/i) ? "" : isPsionics ? " Psionics" : " Spells");
+				casterName = casterName + (casterName.length >= testLength || (/\b(spells|powers|psionics)\b/i).test(casterName) ? "" : isPsionics ? " Psionics" : " Spells");
 				if (ClassList[caster]) {
 					PickDropdown(headerArray[3], ClassList[caster].abilitySave);
 				} else if (ClassSubList[caster]) {
@@ -2869,7 +2870,7 @@ function AskUserSpellSheet() {
 		};
 		
 		//see if this is a psionic caster
-		var isPsionics = spCast.factor && spCast.factor[1].match(/psionic/i);
+		var isPsionics = spCast.factor && (/psionic/i).test(spCast.factor[1]);
 		
 		//set all the general parts of the dialog
 		dia.caNm = isPsionics ? "Talents" : "Cantrips";
@@ -3043,7 +3044,7 @@ function AskUserSpellSheet() {
 						if (BonusSpecialActions.atwill[boNmr]) spCast.special.atwill.push(dia.selectBo[boNmr]); //those that are autoprepared for referencing it later
 						if (BonusSpecialActions.oncelr[boNmr]) spCast.special.oncelr.push(dia.selectBo[boNmr]); //those that are autoprepared for referencing it later
 						if (BonusSpecialActions.oncesr[boNmr]) spCast.special.oncesr.push(dia.selectBo[boNmr]); //those that are autoprepared for referencing it later
-						if (BonusSpecialActions.other[boNmr]) spCast.special.other[dia.selectBo[boNmr]] = BonusSpecialActions.other[boNmr].substring(0, BonusSpecialActions.other[boNmr].match(/\(.\)|\d-\d/) ? 3 : 2); //those that have a special first column, up to two characters
+						if (BonusSpecialActions.other[boNmr]) spCast.special.other[dia.selectBo[boNmr]] = BonusSpecialActions.other[boNmr].substring(0, (/\(.\)|\d-\d/).test(BonusSpecialActions.other[boNmr]) ? 3 : 2); //those that have a special first column, up to two/three characters
 						spBonusi.selection.push(dia.selectBo[boNmr]); //set the selection(s)
 						boNmr += 1; //count the number of bonus things
 					}
@@ -3285,7 +3286,7 @@ function GenerateSpellSheet(GoOn) {
 	for (var i = 0; i < CurrentCasters.incl.length; i++) {
 		
 		var spCast = CurrentSpells[CurrentCasters.incl[i]];
-		var isPsionics = spCast.factor && spCast.factor[1].match(/psionic/i) ? "psionic" : ""; //see if this is a psionic caster
+		var isPsionics = spCast.factor && (/psionic/i).test(spCast.factor[1]) ? "psionic" : ""; //see if this is a psionic caster
 		
 		//get a list of all the spells to put on the Spell Sheet
 		var fullSpellList = [];
@@ -3822,13 +3823,13 @@ function ParseSpellMenu() {
 	var moreSpellCasters = [];
 	for (var aClass in ClassList) {
 		if (aClass === "rangerua") continue;
-		if (ClassList[aClass].spellcastingFactor && !ClassList[aClass].spellcastingFactor.match(/psionic/i)) {
+		if (ClassList[aClass].spellcastingFactor && !(/psionic/i).test(ClassList[aClass].spellcastingFactor)) {
 			if (allSpellCasters.indexOf(aClass) === -1 && moreSpellCasters.indexOf(aClass) === -1 && !testSource(aClass, ClassList[aClass], "classExcl")) moreSpellCasters.push(aClass);
 		} else {
 			var subClasses = ClassList[aClass].subclasses[1];
 			for (var SC = 0; SC < subClasses.length; SC++) {
 				var aSubClass = subClasses[SC];
-				if (ClassSubList[aSubClass].spellcastingFactor && !ClassSubList[aSubClass].spellcastingFactor.match(/psionic/i) && allSpellCasters.indexOf(aSubClass) === -1 && moreSpellCasters.indexOf(aSubClass) === -1 && !testSource(aSubClass, ClassSubList[aSubClass], "classExcl")) moreSpellCasters.push(aSubClass);
+				if (ClassSubList[aSubClass].spellcastingFactor && !(/psionic/i).test(ClassSubList[aSubClass].spellcastingFactor) && allSpellCasters.indexOf(aSubClass) === -1 && moreSpellCasters.indexOf(aSubClass) === -1 && !testSource(aSubClass, ClassSubList[aSubClass], "classExcl")) moreSpellCasters.push(aSubClass);
 			}
 		}
 	};
@@ -3925,13 +3926,13 @@ function ParsePsionicsMenu() {
 	
 	var morePsionicists = [];
 	for (var aClass in ClassList) {
-		if (ClassList[aClass].spellcastingFactor && ClassList[aClass].spellcastingFactor.match(/psionic/i)) {
+		if (ClassList[aClass].spellcastingFactor && (/psionic/i).test(ClassList[aClass].spellcastingFactor)) {
 			if (allPsionicists.indexOf(aClass) === -1 && morePsionicists.indexOf(aClass) === -1 && !testSource(aClass, ClassList[aClass], "classExcl")) morePsionicists.push(aClass);
 		} else {
 			var subClasses = ClassList[aClass].subclasses[1];
 			for (var SC = 0; SC < subClasses.length; SC++) {
 				var aSubClass = subClasses[SC];
-				if (ClassSubList[aSubClass].spellcastingFactor && ClassSubList[aSubClass].spellcastingFactor.match(/psionic/i) && allPsionicists.indexOf(aSubClass) === -1 && morePsionicists.indexOf(aSubClass) === -1 && !testSource(aSubClass, ClassSubList[aSubClass], "classExcl")) morePsionicists.push(aSubClass);
+				if (ClassSubList[aSubClass].spellcastingFactor && (/psionic/i).test(ClassSubList[aSubClass].spellcastingFactor) && allPsionicists.indexOf(aSubClass) === -1 && morePsionicists.indexOf(aSubClass) === -1 && !testSource(aSubClass, ClassSubList[aSubClass], "classExcl")) morePsionicists.push(aSubClass);
 			}
 		}
 	};
@@ -4189,7 +4190,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		 case "setdivider" :
 			if (MenuSelection[1] === "askuserinput") {
 				MenuSelection[1] = AskUserTwoLetters(MenuSelection[0] !== "___");
-			} else if (MenuSelection[1].match(/psionic/i)) {
+			} else if ((/psionic/i).test(MenuSelection[1])) {
 				MenuSelection[0] = "psionic" + MenuSelection[0];
 				MenuSelection[1] = MenuSelection[1].replace(/psionic/i, "");
 			}
@@ -4213,7 +4214,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			break;
 		 case "firstcolumn" :
 			if (MenuSelection[1] === "askuserinput") {
-				MenuSelection[1] = AskUserTwoLetters(What(RemLine).match(/setcaptions/i));
+				MenuSelection[1] = AskUserTwoLetters((/setcaptions/i).test(What(RemLine)));
 			}
 			var RemLineValue = What(RemLine).split("##");
 			RemLineValue[1] = MenuSelection[1];
@@ -4821,7 +4822,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	if (!skipdoGoOn && app.alert(doGoOn) !== 4) return;
 	
 	var spCast = ClassList[thisClass] ? ClassList[thisClass] : ClassSubList[thisClass] ? ClassSubList[thisClass] : false;
-	var isPsionics = spCast && spCast.spellcastingFactor && spCast.spellcastingFactor.match(/psionic/i) ? "psionic" : ""; //see if this is a psionic caster
+	var isPsionics = spCast && spCast.spellcastingFactor && (/psionic/i).test(spCast.spellcastingFactor) ? "psionic" : ""; //see if this is a psionic caster
 	
 	thermoM("start"); //start a progress dialog
 	thermoM("Generating the " + thisClass.capitalize() + " Spell Sheets..."); //change the progress dialog text
@@ -5180,7 +5181,7 @@ function isSpellUsed(spll) {
 					break;
 				};
 			};
-			if (rtrnA.indexOf(aClass) === -1 && SpellsList[spll].level && sClass.typeSp.match(/list/i)) {
+			if (rtrnA.indexOf(aClass) === -1 && SpellsList[spll].level && (/list/i).test(sClass.typeSp)) {
 				var spObj = eval(sClass.list.toSource());
 				spObj.level = [1, 9];
 				var theSpList = CreateSpellList(spObj);

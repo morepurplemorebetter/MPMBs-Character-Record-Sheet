@@ -132,7 +132,7 @@ function resetCompTypes(prefix) {
 			};
 			
 			var removeDarkv = What(prefix + "Comp.Use.Senses").match(/darkvision \d+.?\d*.?(ft|m)/i);
-			if (removeDarkv && CurrentCompRace[prefix] && CurrentCompRace[prefix].known && (CurrentCompRace[prefix].vision + CurrentCompRace[prefix].senses).match(/darkvision \d+.?\d*.?ft/i)) {
+			if (removeDarkv && CurrentCompRace[prefix] && CurrentCompRace[prefix].known && (/darkvision \d+.?\d*.?ft/i).test(CurrentCompRace[prefix].vision + CurrentCompRace[prefix].senses)) {
 				var creaDarkv = (CurrentCompRace[prefix].vision + CurrentCompRace[prefix].senses).match(/darkvision \d+.?\d*.?ft/i)[0];
 				if (What("Unit System") === "metric") creaDarkv = ConvertToMetric(creaDarkv, 0.5);
 				ReplaceString(prefix + "Comp.Use.Senses", creaDarkv, ";", removeDarkv[0], true);
@@ -766,7 +766,7 @@ function ApplyWildshape() {
 	for (var aClass in CurrentClasses) {
 		for (var pop in CurrentClasses[aClass].features) {
 			var fea = CurrentClasses[aClass].features[pop];
-			if (fea.name.match(/unarmored defense|draconic resilience/i) && fea.minlevel <= classes.known[aClass].level) {
+			if ((/unarmored defense|draconic resilience/i).test(fea.name) && fea.minlevel <= classes.known[aClass].level) {
 				var newAC = fea.description.match(/\d+ ?\+/i);
 				newAC = Number(newAC ? newAC[0].replace(/ ?\+/, "") : 10);
 				var addAbi = fea.description.match(/\+ ?(Str|Dex|Con|Int|Wis|Cha)/ig);
@@ -780,7 +780,7 @@ function ApplyWildshape() {
 			}
 		}
 	}
-	if (CurrentArmour.known.match(/^(mage armor|unarmored|draconic resilience)$/i)) {
+	if ((/^(mage armor|unarmored|draconic resilience)$/i).test(CurrentArmour.known)) {
 		var newAC = ArmourList[CurrentArmour.known].ac;
 		if (CurrentArmour.known.mod) newAC += What(prefix + "Wildshape." + Fld + ".Ability." + CurrentArmour.known.mod.replace(/ Mod/i, "") + ".Mod");
 		theAC.push(newAC);
@@ -1676,7 +1676,7 @@ function changeCompType(inputType, prefix) {
 		
 		//add the new poison damage immunity
 		var creaDamI = What(prefix + "Comp.Use.Features").match(/\u25C6 damage immunities:.*/i);
-		if (!creaDamI || !creaDamI.match(/poison/i)) {
+		if (!creaDamI || !(/poison/i).test(creaDamI)) {
 			var newDamI = (creaDamI ? creaDamI[0].replace(/\.$/, ", ") : "\u25C6 Damage Immunities: ") + "poison.";
 			if (creaDamI) {
 				ReplaceString(prefix + "Comp.Use.Features", newDamI, true, creaDamI[0], true);
@@ -1690,13 +1690,13 @@ function changeCompType(inputType, prefix) {
 		if (!creaConI) {
 			var newConI = "\u25C6 Condition Immunities: charmed, poisoned.";
 			AddString(prefix + "Comp.Use.Features", newConI, true);
-		} else if (!creaConI.match(/poisoned/i) || !creaConI.match(/charmed/i)) {
+		} else if (!(/poisoned/i).test(creaConI) || !(/charmed/i).test(creaConI)) {
 			newConI = creaConI[0].replace(/\.$/, ", ");
-			if (!creaConI.match(/charmed/i)) {
+			if (!(/charmed/i).test(creaConI)) {
 				newConI += "charmed";
 				var goCo = true;
 			}
-			if (!creaConI.match(/poisoned/i)) newConI += (goCo ? ", " : "") + "poisoned";
+			if (!(/poisoned/i).test(creaConI)) newConI += (goCo ? ", " : "") + "poisoned";
 			newConI += ".";
 			ReplaceString(prefix + "Comp.Use.Features", newConI, true, creaConI[0], true);
 		};
@@ -1704,9 +1704,9 @@ function changeCompType(inputType, prefix) {
 		//add the 60 ft darkvision, if not already there, or upgrade it to 60 ft
 		var creaSens = What(prefix + "Comp.Use.Senses");
 		var newDarkv = What("Unit System") === "metric" ? "Darkvision 18 m" : "Darkvision 60 ft";
-		if (!creaSens.match(/darkvision \d+.?\d*.?(ft|m)/i)) {
+		if (!(/darkvision \d+.?\d*.?(ft|m)/i).test(creaSens)) {
 			AddString(prefix + "Comp.Use.Senses", newDarkv, "; ");
-		} else if (!creaSens.match(/darkvision (60.?ft|18.?m)/i)) {
+		} else if (!(/darkvision (60.?ft|18.?m)/i).test(creaSens)) {
 			var darkvis = creaSens.match(/darkvision \d+.?\d*.?(ft|m)/i)[0];
 			if (parseFloat(darkvis.match(/\d+/)[0]) < (What("Unit System") === "metric" ? 18 : 60)) {
 				ReplaceString(prefix + "Comp.Use.Senses", newDarkv, true, darkvis, true);
@@ -1717,7 +1717,7 @@ function changeCompType(inputType, prefix) {
 		return; //don't do the rest of this function if inputType doesn't match one of the above
 	}
 	
-	if (inputType.match(/familiar|pact_of_the_chain|mount/) && CurrentCompRace[prefix].type === "Beast") changeCompDialog(prefix); //change the type if just a beast
+	if ((/familiar|pact_of_the_chain|mount/).test(inputType) && CurrentCompRace[prefix].type === "Beast") changeCompDialog(prefix); //change the type if just a beast
 	
 	//add a string in the creature's feature section
 	AddString(prefix + "Comp.Use.Features", compString[inputType].featurestring, true);
@@ -4106,10 +4106,10 @@ function AddAttacksPerAction() {
 			RemoveAction("action", RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i"), true);
 		} else {
 			var action1 = What("Action 1");
-			if (action1 !== "" && !action1.match(RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i"))) {
+			if (action1 !== "" && !(RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i")).test(action1)) {
 				ActionInsert("action", 1);
 			}
-			if (What("Action 1") === "" || action1.match(RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i"))) {
+			if (What("Action 1") === "" || (RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i")).test(action1)) {
 				Value("Action 1", theString[0] + classes.attacks + theString[1]);
 			}
 		}
@@ -5757,14 +5757,14 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		
 		//add proficiency checkmark
 		fields.Proficiency = !QI ? true : 
-			QI && theWea.type.match(/natural|spell|cantrip/i) ? true : 
+			QI && (/natural|spell|cantrip/i).test(theWea.type) ? true : 
 			CurrentWeapons.extraproficiencies.indexOf(WeaponName) !== -1 || CurrentWeapons.extraproficiencies.indexOf(theWea.type.toLowerCase()) !== -1 ? true : 
-			theWea.type.match(/simple|martial/i) ? tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) : false;
+			(/^(simple|martial)$/i).test(theWea.type) ? tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) : false;
 		
 		//add mod
 		var StrDex = What("Str Mod") < What("Dex Mod") ? 2 : 1;
 		fields.Mod = isReCalc && !theWea.ability ? What(fldBase + "Mod") :
-			theWea.description.match(/finesse/i) ? StrDex : theWea.ability;
+			(/finesse/i).test(theWea.description) ? StrDex : theWea.ability;
 		
 		//change mod if this is concerning a spell/cantrip
 		if (thisWeapon[3] && thisWeapon[4].length) {
@@ -5787,9 +5787,9 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			// define some variables that we can check against later or with the CurrentEvals
 			var WeaponText = inputText + " " + fields.Description;
 			var isDC = fields.To_Hit_Bonus.toLowerCase() === "dc";
-			var isSpell = thisWeapon[3] || theWea.type.match(/cantrip|spell/i) || WeaponText.match(/\b(cantrip|spell)\b/i);
-			var isMeleeWeapon = !isSpell && fields.Range.match(/melee/i);
-			var isRangedWeapon = !isSpell && fields.Range.match(/^(?!.*melee).*\d+.*$/i);
+			var isSpell = thisWeapon[3] || (/cantrip|spell/i).test(theWea.type) || (/\b(cantrip|spell)\b/i).test(WeaponText);
+			var isMeleeWeapon = !isSpell && (/melee/i).test(fields.Range);
+			var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 			
 			try {
 				eval(CurrentEvals.atkAdd);
@@ -5879,7 +5879,7 @@ function CalcAttackDmgHit(fldName) {
 	var theWea = WeaponsList[WeaponName];
 	var WeaponText = (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]) + " " + fields.Description;
 	
-	if (!WeaponText || fields.Mod.match(/^(| |empty)$/)) {
+	if (!WeaponText || (/^(| |empty)$/).test(fields.Mod)) {
 		Value(fldBase + "Damage", "");
 		Value(fldBase + "To Hit", "");
 		return;
@@ -5901,12 +5901,12 @@ function CalcAttackDmgHit(fldName) {
 	// define some variables that we can check against later or with the CurrentEvals
 	var isDC = fields.To_Hit_Bonus.toLowerCase() === "dc";
 	if (QI) {
-		var isSpell = thisWeapon[3] || (theWea && theWea.type.match(/cantrip|spell/i)) || WeaponText.match(/\b(cantrip|spell)\b/i);
-		var isMeleeWeapon = (!isSpell || thisWeapon[0] === "shillelagh") && fields.Range.match(/melee/i);
-		var isRangedWeapon = !isSpell && fields.Range.match(/^(?!.*melee).*\d+.*$/i);
+		var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (/\b(cantrip|spell)\b/i).test(WeaponText);
+		var isMeleeWeapon = (!isSpell || thisWeapon[0] === "shillelagh") && (/melee/i).test(fields.Range);
+		var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 
 		// see if this is a off-hand attack and the modToDmg shouldn't be use
-		var isOffHand = isMeleeWeapon && WeaponText.match(/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i) ? true : false;
+		var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText) ? true : false;
 		if (isOffHand) {
 			AddAction("bonus action", "Off-hand Attack");
 			output.modToDmg = false;
@@ -5925,8 +5925,8 @@ function CalcAttackDmgHit(fldName) {
 	var hitNum = 0;
 	var addNum = function(inP, DmgHit) {
 		if (isNaN(inP)) inP = isNaN(Number(inP)) ? 0 : Number(inP);
-		if (!DmgHit || DmgHit.match(/dmg/i)) dmgNum += Number(inP);
-		if (!DmgHit || DmgHit.match(/hit/i)) hitNum += Number(inP);
+		if (!DmgHit || (/dmg/i).test(DmgHit)) dmgNum += Number(inP);
+		if (!DmgHit || (/hit/i).test(DmgHit)) hitNum += Number(inP);
 	};
 	
 	for (var out in output) {
@@ -5943,7 +5943,7 @@ function CalcAttackDmgHit(fldName) {
 			addNum(output[out], "dmg");
 			break;
 		 case "die" :
-			if (output[out].match(/(B|C)/)) { //if this involves a cantrip calculation
+			if ((/(B|C)/).test(output[out])) { //if this involves a cantrip calculation
 				var cLvl = Number(QI ? What("Character Level") : What(prefix + "Comp.Use.HD.Level"));
 				var cDie = cantripDie[Math.min(Math.max(cLvl - 1, 1), 19)];
 				output[out] = output[out].replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/0.?d\d+/g, 0);
@@ -5977,7 +5977,7 @@ function CalcAttackDmgHit(fldName) {
 	var hitTot = (isDC ? "DC " : (hitNum >= 0 ? "+" : "")) + hitNum;
 	
 	Value(fldBase + "Damage", dmgTot == 0 ? "" : dmgTot);
-	if (event.target && event.target.name && event.target.name.match(/.*Attack.*To Hit/)) {
+	if (event.target && event.target.name && (/.*Attack.*To Hit/).test(event.target.name)) {
 		event.value = hitTot;
 	} else {
 		Value(fldBase + "To Hit", hitTot);

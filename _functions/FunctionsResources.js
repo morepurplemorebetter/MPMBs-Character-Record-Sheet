@@ -193,8 +193,8 @@ function ObjectToArray(obj, type, testObj) {
 	for (var p in obj) {
 		if (obj[p].constructor == Object) {
 			theArr.push.apply(theArr, ObjectToArray(obj[p], type, testObj));
-			if (type.match(/nodes|all/i) && testArr.indexOf(p) === -1) theArr.push(p);
-		} else if (type.match(/elements|all/i) && testArr.indexOf(p.replace(/^ basic /, "")) === -1) {
+			if ((/nodes|all/i).test(type) && testArr.indexOf(p) === -1) theArr.push(p);
+		} else if ((/elements|all/i).test(type) && testArr.indexOf(p.replace(/^ basic /, "")) === -1) {
 			theArr.push(p);
 		}
 	}
@@ -511,7 +511,7 @@ function resourceDecisionDialog() {
 							font : "dialog",
 							bold : true,
 							item_id : "bSpe",
-							name : "Spells",
+							name : "Spells/Psionics",
 						}]
 					}, {
 						type : "view",
@@ -670,7 +670,7 @@ function resourceSelectionDialog(type) {
 			var uName = amendSource(FeatsList[u].name, FeatsList[u]);
 			var uTest = testSource(u, FeatsList[u], CSatt, true);
 			if (uTest === "source") continue;
-			var uGroup = u.match(/\[.+\]/) ? u.replace(/( ?\[.+\])/, "").capitalize() : false;
+			var uGroup = (/\[.+\]/).test(u) ? u.replace(/( ?\[.+\])/, "").capitalize() : false;
 			refObj[uName] = u;
 			if (uGroup) {
 				uGroup = amendSource(uGroup, FeatsList[u]);
@@ -696,8 +696,9 @@ function resourceSelectionDialog(type) {
 		for (var u in SpellsList) {
 			var uName = amendSource(SpellsList[u].name, SpellsList[u]);
 			var uTest = testSource(u, SpellsList[u], CSatt, true);
-			if (uTest === "source") continue;
+			if (uTest === "source" || !SpellsList[u] || !SpellsList[u].school || !SpellsList[u].classes) continue;
 			var uGroup = spellSchoolList[SpellsList[u].school].capitalize();
+			uGroup = ((/avatar|awakened|immortal|nomad|wu jen/i).test(uGroup) ? "Order of " : "School of ") + uGroup;
 			refObj[uName] = u;
 			if (!exclObj[uGroup]) exclObj[uGroup] = {};
 			if (!inclObj[uGroup]) inclObj[uGroup] = {};
@@ -1034,7 +1035,7 @@ function toSup(inString) {
 	var output = [];
 	var useCaps = true;
 	for (i = 0; i < input.length; i++) {
-		useCaps = !useCaps || input[i].match(/c|f|s|x|y|z/i) ? false : true;
+		useCaps = !useCaps || (/c|f|s|x|y|z/i).test(input[i]) ? false : true;
 		output[i] = "";
 		for (c = 0; c < input[i].length; c++) {
 			output[i] += doChar(input[i].charAt(c));

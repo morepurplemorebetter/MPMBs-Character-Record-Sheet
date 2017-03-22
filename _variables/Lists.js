@@ -1138,7 +1138,7 @@ var SetTextOptions_Dialog = {
 	//do this whenever a number is entered to make sure it has a dot as decimal separator and not trailing zeroes
 	sOSi : function (dialog) {
 		var cResult = dialog.store()["sOSi"];
-		if (isNaN(cResult) && cResult.match(/,/)) {
+		if (isNaN(cResult) && (/,/).test(cResult)) {
 			var Parsed = parseFloat(cResult.replace(/,/, "."));
 		} else {
 			var Parsed = parseFloat(cResult);

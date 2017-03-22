@@ -65,8 +65,8 @@ ClassList.artificer = {
 			minlevel : 2,
 			description : desc(["I have expertise with any tool proficiencies I gain from the Artificer class"]),
 			skillstxt : "\n\n" + toUni("Artificer") + ": expertise with with any tool proficiencies gained from the Artificer class.",
-			eval : "if (What(\"Too Text\").match(/thieves' tools/i)) { Checkbox(\"Too Exp\", true); };",
-			removeeval : "if (What(\"Too Text\").match(/thieves' tools/i)) { Checkbox(\"Too Exp\", false); };"
+			eval : "if ((/thieves.? tools/i).test(What(\"Too Text\"))) { Checkbox(\"Too Exp\", true); };",
+			removeeval : "if ((/thieves.? tools/i).test(What(\"Too Text\"))) { Checkbox(\"Too Exp\", false); };"
 		},
 		"wondrous invention" : {
 			name : "Wondrous Invention",

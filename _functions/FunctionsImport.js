@@ -657,7 +657,7 @@ function DirectImport(consoleTrigger) {
 			for (var i = 1; i <= iterations; i++) {
 				var fromFld = global.docFrom.getField(typeFlds + i);
 				if (fromFld && fromFld.value && fromFld.value !== fromFld.defaultValue) {
-					var fromFldUNit = fromFld.userName && fromFld.userName.match(/.*?\"(.*?)\".*/, "$1") ? fromFld.userName.replace(/.*?\"(.*?)\".*/, "$1") : (fromFld.userName ? fromFld.userName.replace(/.*?resistance to (.*?) was gained from.*/, "$1") : "");
+					var fromFldUNit = fromFld.userName && (/.*?\"(.*?)\".*/).test(fromFld.userName) ? fromFld.userName.replace(/.*?\"(.*?)\".*/, "$1") : (fromFld.userName ? fromFld.userName.replace(/.*?resistance to (.*?) was gained from.*/, "$1") : "");
 					var fromFldUNor = fromFld.userName ? fromFld.userName.replace(/.*?was gained from (.*?)\./, "$1") : "";
 					if (!fromFld.userName || fromFldUNit.toLowerCase() !== fromFld.value.toLowerCase()) {
 						eval(functionEval + fromFld.value.replace(/"/g, "\\\"") + "\", \"" + fromFldUNor.replace(/"/g, "\\\"") + "\", \"" + fromFldUNit.replace(/"/g, "\\\"") + "\");");
@@ -760,7 +760,7 @@ function DirectImport(consoleTrigger) {
 			parentA = parentA.getArray();
 			for (var pA =  0; pA < parentA.length; pA++) {
 				var pAnameTo = parentA[pA].name;
-				if (excludeRegEx && pAnameTo.match(excludeRegEx)) continue;
+				if (excludeRegEx && (excludeRegEx).test(pAnameTo)) continue;
 				var pAnameFrom = pAnameTo.replace(toPre, fromPre);
 				ImportField(pAnameTo, {notTooltip: true, doVisiblity: inclVisibility}, pAnameFrom);
 			}

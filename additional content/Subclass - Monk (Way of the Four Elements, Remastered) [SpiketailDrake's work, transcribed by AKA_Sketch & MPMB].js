@@ -86,7 +86,7 @@ ClassSubList["way of the four elements"].features = {
 			source : ["IB:WotFE", 2],
 			description : " [0-1 ki points]" + "\n   " + "On my turn, I can have any of my unarmed strikes gain +5 ft reach and deal fire damage" + "\n   " + "If such an attack hits, I can spend 1 ki point to cause it to deal +1d10 fire damage",
 			calcChanges : {
-				atkAdd : ["if (WeaponName.match(/unarmed strike/i) && inputText.match(/^(?=.*fire)(?=.*snake).*$/i)) {fields.Description += (fields.Description ? '; ' : '') + 'After hit, spend 1 ki point for +1d10 fire damage'; fields.Range = 'Melee (10 ft reach)'; fields.Damage_Type = 'fire'; }; ", "If I include the words 'Fire Snake' in the name of an unarmed strike, it gets +5 ft reach, does fire damage, and gains the option to deal +1d10 fire damage by spending 1 ki point."]
+				atkAdd : ["if ((/unarmed strike/i).test(WeaponName) && (/^(?=.*fire)(?=.*snake).*$/i).test(inputText)) {fields.Description += (fields.Description ? '; ' : '') + 'After hit, spend 1 ki point for +1d10 fire damage'; fields.Range = 'Melee (10 ft reach)'; fields.Damage_Type = 'fire'; }; ", "If I include the words 'Fire Snake' in the name of an unarmed strike, it gets +5 ft reach, does fire damage, and gains the option to deal +1d10 fire damage by spending 1 ki point."]
 			}
 		},
 		"fang of the frost wolf" : {
@@ -118,7 +118,7 @@ ClassSubList["way of the four elements"].features = {
 			source : ["IB:WotFE", 2],
 			description : " [0-1 ki points]" + "\n   " + "On my turn, I can have any of my unarmed strikes gain +10 ft reach against a target" + "\n   " + "On a hit, I can use 1 ki point to force a Str save on it or push it 10 ft and knock it prone",
 			calcChanges : {
-				atkAdd : ["if (WeaponName.match(/unarmed strike/i) && inputText.match(/^(?=.*unbroken)(?=.*air).*$/i)) {fields.Description += (fields.Description ? '; ' : '') + 'After hit, spend 1 ki point to impose Str save or push 10 ft and knock prone'; fields.Range = 'Melee (15 ft reach)'; }; ", "If I include the words 'Unbroken Air' in the name of an unarmed strike, it gets +10 ft reach and gains the option to, by spending 1 ki point, force the target to make a Strength saving throw or be pushed back 10 ft and knocked prone."]
+				atkAdd : ["if ((/unarmed strike/i).test(WeaponName) && (/^(?=.*unbroken)(?=.*air).*$/i).test(inputText)) {fields.Description += (fields.Description ? '; ' : '') + 'After hit, spend 1 ki point to impose Str save or push 10 ft and knock prone'; fields.Range = 'Melee (15 ft reach)'; }; ", "If I include the words 'Unbroken Air' in the name of an unarmed strike, it gets +10 ft reach and gains the option to, by spending 1 ki point, force the target to make a Strength saving throw or be pushed back 10 ft and knocked prone."]
 			}
 		},
 		"golden snake's icy path" : {

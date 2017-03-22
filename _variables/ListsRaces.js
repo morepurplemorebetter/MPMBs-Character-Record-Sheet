@@ -21,7 +21,7 @@ var RaceList = {
 				name : "Talons",
 				minlevel : 1,
 				calcChanges : {
-					atkAdd : ["if (WeaponName.match(/unarmed strike/i)) { fields.Damage_Type = 'slashing'; if (fields.Damage_Die == 1) {fields.Damage_Die = '1d4'; }; }; ", "I have talons, which cause my unarmed strikes to deal 1d4 slashing damage."]
+					atkAdd : ["if ((/unarmed strike/i).test(WeaponName)) { fields.Damage_Type = 'slashing'; if (fields.Damage_Die == 1) {fields.Damage_Die = '1d4'; }; }; ", "I have talons, which cause my unarmed strikes to deal 1d4 slashing damage."]
 				}
 			}
 		},
@@ -1029,7 +1029,7 @@ var RaceList = {
 				name : "Savage Attacks",
 				minlevel : 1,
 				calcChanges : {
-					atkAdd : ["if (isMeleeWeapon && fields.Damage_Die.match(/d\\d+/)) {var pExtraCritM = extraCritM ? extraCritM : 0; var extraCritM = pExtraCritM + 1; if (pExtraCritM) {fields.Description = fields.Description.replace(pExtraCritM + 'd', extraCritM + 'd'); } else {fields.Description += (fields.Description ? '; ' : '') + extraCritM + fields.Damage_Die.replace(/.*(d\\d+).*/, '$1') + ' extra on a crit in melee'; }; }; ", "My melee attacks roll 1 additional dice on a critical hit."]
+					atkAdd : ["if (isMeleeWeapon && (/d\\d+/).test(fields.Damage_Die)) {var pExtraCritM = extraCritM ? extraCritM : 0; var extraCritM = pExtraCritM + 1; if (pExtraCritM) {fields.Description = fields.Description.replace(pExtraCritM + 'd', extraCritM + 'd'); } else {fields.Description += (fields.Description ? '; ' : '') + extraCritM + fields.Damage_Die.replace(/.*(d\\d+).*/, '$1') + ' extra on a crit in melee'; }; }; ", "My melee attacks roll 1 additional dice on a critical hit."]
 				}
 			}
 		},
