@@ -894,7 +894,7 @@ var PsionicsList = {
 		firstCol : 5 //power point cost
 	},
 
-	//the iron durability discipline (contributed by Matt O.)
+	//the iron durability discipline (contributed by mattohara)
 	"iron durability" : { //the first entry of the discipline has the effect of the Psychic Focus
 		name : "Iron Durability",
 		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
@@ -949,6 +949,199 @@ var PsionicsList = {
 		description : "You gain resistance to bludgeoning, piercing, or slashing (your choice)",
 		descriptionFull : "As an action, you gain resistance to bludgeoning, piercing, or slashing damage (your choice), which lasts until your concentration ends.",
 		firstCol : 7 //power point cost
+	},
+
+	//the mantle of awe discipline (contributed by mattohara)
+	"mantle of awe" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Mantle of Awe",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 15],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You gain a bonus to Charisma checks, bonus equals half you Intelligence modifier (min 1)",
+		descriptionFull : "You learn to use psionic energy to manipulate others with a subtle combination of psi and your own, natural charm." + PsychicFocus + "While focused on this discipline, you gain a bonus to Charisma checks. The bonus equals half your Intelligence modifier (minimum of +1).",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["moa1-charming presence", "moa2-center of attention", "moa3-invoke awe"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"moa1-charming presence" : {
+		name : "Charming Presence",
+		source : ["UA:TMC", 15],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "30 ft",
+		duration : "10 min",
+		description : "2d8/PP hp of conscious, not in combat, not immune to charm crea charmed; use hp max, not current",
+		descriptionFull : "As an action, you exert an aura of sympathetic power. Roll 2d8 per psi point spent on this ability; the total is how many hit points worth of creatures this option can affect. Creatures within 30 feet of you are affected in ascending order of their hit point maximums, ignoring incapacitated creatures, creatures immune to being charmed, and creatures engaged in combat." + "\n   " + "Starting with the creature that has the lowest hit point maximum, each creature affected by this option is charmed by you for 10 minutes, regarding you as a friendly acquaintance. Subtract each creature’s hit point maximum from the total before moving on to the next creature. A creature’s hit point maximum must be equal to or less than the remaining total for that creature to be affected.",
+		firstCol : "1-7" //power point cost
+	},
+	"moa2-center of attention" : {
+		name : "Center of Attention",
+		source : ["UA:TMC", 15],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		save : "Cha",
+		description : "1 crea save or all other creatures are invisible to it; ends if it leaves your sight/earshot or takes dmg",
+		descriptionFull : "As an action, you exert an aura of power that grabs a creature's attention. Choose one creature you can see within 60 feet of you. It must make a Charisma saving throw. On a failed save, the creature is so thoroughly distracted by you that all other creatures are invisible to it until your concentration ends. This effect ends if the creature can no longer see or hear you or if it takes damage.",
+		firstCol : 2 //power point cost
+	},
+	"moa3-invoke awe" : {
+		name : "Invoke Awe",
+		source : ["UA:TMC", 15],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 10 min",
+		save : "Int",
+		description : "5 crea save or charmed, obey verbal commands; no self harm; will atk crea that atk you; save each rnd",
+		descriptionFull : "As an action, you exert an aura that inspires awe in others. Choose up to 5 creatures you can see within 60 feet of you. Each target must succeed on an Intelligence saving throw or be charmed by you until your concentration ends. While charmed, the target obeys all your verbal commands to the best of its ability and without doing anything obviously self-destructive. The charmed target will attack only creatures that it has seen attack you since it was charmed or that it was already hostile toward. At the end of each of its turns, it can repeat the saving throw, ending the effect on itself on a success.",
+		firstCol : 7 //power point cost
+	},
+
+	//the psychic disruption discipline (contributed by Justin W.)
+	"psychic disruption" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Psychic Disruption",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 24],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You have advantage on Charisma (Deception) checks",
+		descriptionFull : "You create psychic static that disrupts other creatures’ ability to think clearly." + PsychicFocus + "While focused on this discipline, you have advantage on Charisma (Deception) checks.",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["pd1-distracting haze", "pd2-daze", "pd3-mind storm"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"pd1-distracting haze" : {
+		name : "Distracting Haze",
+		source : ["UA:TMC", 24],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		save : "Int",
+		description : "1 crea save or 1d10/PP Psychic dmg, can't see more than 10 ft; save halves and see normal",
+		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. That creature must make an Intelligence saving throw. On a failed save, it takes 1d10 psychic damage per psi point spent and can’t see anything more than 10 feet from it until your concentration ends. On a successful save, it takes half as much damage.",
+		firstCol : "1-7" //power point cost
+	},
+	"pd2-daze" : {
+		name : "Daze",
+		source : ["UA:TMC", 25],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "60 ft",
+		duration : "Next turn end",
+		save : "Int",
+		description : "1 crea save or incapacitated until end of your next turn or it takes any damage",
+		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. That creature must make an Intelligence saving throw. On a failed save, the target is incapacitated until the end of your next turn or until it takes any damage.",
+		firstCol : 3 //power point cost
+	},
+	"pd3-mind storm" : {
+		name : "Mine Storm",
+		source : ["UA:TMC", 25],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "60 ft",
+		duration : "Next turn end",
+		save : "Wis",
+		description : "20-ft rad all crea 6d8(+1d6/extra PP) Psychic dmg and dis. on saves; save halves and no dis. on saves",
+		descriptionFull : "As an action, choose a point you can see within 60 feet of you. Each creature in a 20-foot-radius sphere centered on that point must make a Wisdom saving throw. On a failed save, a target takes 6d8 psychic damage and suffers disadvantage on all saving throws until the end of your next turn. On a successful save, a creature takes half as much damage. You can increase the damage by 1d6 per additional psi point spent on this ability.",
+		firstCol : "5-7" //power point cost
+	},
+
+	//the psychic inquisition discipline (contributed by Justin W.)
+	"psychic inquisition" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Psychic Inquisition",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 25],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You know when a creature telepathically communicating with you is lying",
+		descriptionFull : "You reach into a creature’s mind to uncover information or plant ideas within it." + PsychicFocus + "While focused on this discipline, you know when a creature communicating with you via telepathy is lying.",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["pi1-hammer of inquisition", "pi2-forceful query", "pi3-ransack mind", "pi4-phantom idea"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"pi1-hammer of inquisition" : {
+		name : "Hammer of Inquisition",
+		source : ["UA:TMC", 25],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "60 ft",
+		duration : "Instantaneous",
+		save : "Int",
+		description : "1 crea save or 1d10/PP Psychic dmg, dis. next Wis save before your next turn; save halves \u0026 no effects",
+		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must make an Intelligence saving throw. On a failed save, it takes 1d10 psychic damage per psi point spent and suffers disadvantage on its next Wisdom saving throw before the end of your next turn. On a successful save, it takes half as much damage.",
+		firstCol : "1-7" //power point cost
+	},
+	"pi2-forceful query" : {
+		name : "Forceful Query",
+		source : ["UA:TMC", 25],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "30 ft",
+		duration : "Instantaneous",
+		save : "Int",
+		description : "1 crea save or they must truthfully answer a yes or no question (charm effect)",
+		descriptionFull : "As an action, you ask a question of one creature that can see and hear you within 30 feet of you. The question must be phrased so that it can be answered with a yes or no, otherwise this ability fails. The target must succeed on a Wisdom saving throw, or it replies with a truthful answer. A creature is immune to this ability if it is immune to being charmed.",
+		firstCol : 2 //power point cost
+	},
+	"pi3-ransack mind" : {
+		name : "Ransack Mind",
+		source : ["UA:TMC", 25],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 h",
+		range : "30 ft",
+		duration : "12/24/48 h",
+		save : "Int",
+		description : "1 crea 3 saves if in range for full duration; learn key memories from 12/24/48 h (1/2/3 failed saves)",
+		descriptionFull : "While you concentrate on this ability, you probe one creature’s mind. The creature must remain within 30 feet of you, and you must be able to see it. If you reach the ability’s full duration, the target must make three Intelligence saving throws, and you learn information from it based on the number of saving throws it fails." + "\n   " +  "With one failed saving throw, you learn its key memories from the past 12 hours." + "\n   " +  "With two failed saving throws, you learn its key memories from the past 24 hours." + "\n   " +  "With three failed saving throws, you learn its key memories from the past 48 hours.",
+		firstCol : 5 //power point cost
+	},
+	"pi4-phantom idea" : {
+		name : "Phantom Idea",
+		source : ["UA:TMC", 25],
+		psionic : true,
+		level : 1,
+		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 h",
+		range : "30 ft",
+		duration : "4/24/48 h",
+		save : "Int",
+		description : "1 crea 3 saves if in range for full duration; implant memory lasting 4/24/48 h (1/2/3 failed saves)",
+		descriptionFull : "While you concentrate on this ability, you probe one creature’s mind. The creature must remain within 30 feet of you, and you must be able to see it. If you reach the ability’s full duration, the target must make three Intelligence saving throws, and you plant a memory or an idea in it, which lasts for a number of hours based on the number of saving throws it fails. You choose whether the idea or memory is trivial (such as “I had porridge for breakfast” or “Ale is the worst”) or personality-defining (“I failed to save my village from orc marauders and am therefore a coward” or “Magic is a scourge, so I renounce it”)." + "\n   " +  "With one failed saving throw, the idea or memory lasts for the next 4 hours. With two failed saving throws, it lasts for 24 hours. With three failed saving throws, it lasts for 48 hours.",
+		firstCol : 6 //power point cost
 	},
 
 	//the psychic phantoms discipline (contributed by Justin W.)
