@@ -737,26 +737,24 @@ ClassSubList["war magic"] = {
       name : "Arcane Deflection",
       source : ["UA:WR", 2],
       minlevel : 2,
-      description : "\n   " + "When you are hit by an attack or fail a Constitution saving throw, you can use your reaction" +
-                    "\n   " + "to gain a +2 bonus to your AC against that attack or a +4 bonus to that saving throw." +
-                    "\n   " + "When you use this feature, you can’t cast spells other than cantrips until" +
-                    "\n   " + "the end of your next turn.",
+      description : desc(["When hit by an attack, I can use my reaction to gain a +2 bonus to my AC against that attack",
+                          "When I fail a Con saving throw, I can use my reaction to gain +4 bonus to that saving throw",
+                          "When I use this feature, I can’t cast spells other than cantrips until the end of my next turn"]),
       action: ["reaction", ""]
     },
     "subclassfeature2.1" : {
       name : "Tactical Wit",
       source : ["UA:WR", 2],
       minlevel : 2,
-      description : "\n   " + "You gain a bonus to your initiative rolls equal to your Intelligence modifier",
-      changeeval : "if (classes.known.wizard.level >= 2) {Value(\"Init Bonus\", What(\"Int Mod\"))}"
+      description : desc(["I gain a bonus to my initiative rolls equal to my Intelligence modifier"]),
+      eval : "if (!What(\"Init Bonus\")) {Value(\"Init Bonus\", \"Int\")}",
+      removeeval : "if (What(\"Init Bonus\") === \"Int\") {Value(\"Init Bonus\", \"\")}"
     },
     "subclassfeature6" : {
       name : "Power Surge",
       source : ["UA:WR", 2],
       minlevel : 6,
-      description : "\n   " + "When you force multiple creatures to make saving throws against the damage" +
-                    "\n   " + "of one of your spells, you can increase the spell’s damage by rolling two more" +
-                    "\n   " + "of its damage dice. This increase occurs only on the turn you cast the spell.",
+      description : desc(["When casting a spell with a saving throw against multiple enemies, I can add 2 damage dice"]),
       usages : 1,
       recovery : "short rest"
     },
@@ -764,16 +762,14 @@ ClassSubList["war magic"] = {
       name : "Durable Magic",
       source : ["UA:WR", 2],
       minlevel : 10,
-      description : "\n   " + "While you maintain concentration on a spell," +
-                    "\n   " + "you have a +2 bonus to AC and all saving throws."
+      description : desc(["While I maintain concentration on a spell, I have a +2 bonus to AC and all saving throws"])
     },
     "subclassfeature14" : {
       name : "Deflecting Shroud",
       source : ["UA:WR", 2],
       minlevel : 14,
-      description : "\n   " + "When you use your Arcane Deflection feature, magical energy arcs from you;" +
-                    "\n   " + "each creature of your choice within 10 feet of you takes force damage" +
-                    "\n   " + "equal to half your wizard level."
+      description : desc(["When I use my arcane deflection feature, magical energy arcs from me",
+                          "Each creature of my choice within 10ft of me takes force damage equal to half my wizard level"])
     }
   }
 };
