@@ -1368,8 +1368,8 @@ var ClassList = {
 					name : "Agonizing Blast",
 					description : "\n   " + "I can add my Charisma modifier to the damage of my Eldritch Blast cantrip",
 					source : ["P", 110],
-					eval : "var ES = (What(\"Extra.Notes\").search(/eldritch spear/i) !== -1); RemoveWeapon(\"eldritch blast\"); RemoveWeapon(\"eldritch spear\"); RemoveWeapon(\"agonizing blast\"); if (ES) {AddWeapon(\"Agonizing Spear\")} else {AddWeapon(\"Agonizing Blast\")}",
-					removeeval : "RemoveWeapon(\"agonizing blast\"); RemoveWeapon(\"agonizing spear\"); var ES = (What(\"Extra.Notes\").search(/eldritch spear/i) !== -1); if (ES) {AddWeapon(\"Eldritch Spear\")} else {AddWeapon(\"Eldritch Blast\")}",
+					eval : "var ES = (/eldritch spear/i).test(What('Extra.Notes') + What('Class Features')); RemoveWeapon('eldritch blast'); RemoveWeapon('eldritch spear'); RemoveWeapon('agonizing blast'); if (ES) {AddWeapon('Agonizing Spear')} else {AddWeapon('Agonizing Blast')}",
+					removeeval : "RemoveWeapon('agonizing blast'); RemoveWeapon('agonizing spear'); var ES = (/eldritch spear/i).test(What('Extra.Notes') + What('Class Features')); if (ES) {AddWeapon('Eldritch Spear')} else {AddWeapon('Eldritch Blast')}",
 					prereqeval : "hasEldritchBlast"
 				},
 				"armor of shadows" : {
@@ -1483,8 +1483,8 @@ var ClassList = {
 					name : "Eldritch Spear",
 					description : "\n   " + "My Eldritch Blast cantrip has a range of 300 ft",
 					source : ["P", 111],
-					eval : "var AB = (What(\"Extra.Notes\").search(/agonizing blast/i) !== -1); RemoveWeapon(\"eldritch blast\"); RemoveWeapon(\"eldritch spear\"); RemoveWeapon(\"agonizing blast\"); if (AB) {AddWeapon(\"Agonizing Spear\")} else {AddWeapon(\"Eldritch Spear\")}",
-					removeeval : "RemoveWeapon(\"eldritch spear\"); RemoveWeapon(\"agonizing spear\"); var AB = (What(\"Extra.Notes\").search(/agonizing blast/i) !== -1); if (AB) {AddWeapon(\"Agonizing Blast\")} else {AddWeapon(\"Eldritch Blast\")}",
+					eval : "var AB = (/agonizing blast/i).test(What('Extra.Notes') + What('Class Features')); RemoveWeapon('eldritch blast'); RemoveWeapon('eldritch spear'); RemoveWeapon('agonizing blast'); if (AB) {AddWeapon('Agonizing Spear')} else {AddWeapon('Eldritch Spear')}",
+					removeeval : "RemoveWeapon('eldritch spear'); RemoveWeapon('agonizing spear'); var AB = (/agonizing blast/i).test(What('Extra.Notes') + What('Class Features')); RemoveWeapon('eldritch blast'); if (AB) {AddWeapon('Agonizing Blast')} else {AddWeapon('Eldritch Blast')}",
 					prereqeval : "hasEldritchBlast"
 				},
 				"eyes of the rune keeper" : {

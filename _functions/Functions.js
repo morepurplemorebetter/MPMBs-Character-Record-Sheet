@@ -717,7 +717,7 @@ function AddInvL(item, amount, weight, location) {
 		var Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
 		var Wht = tDoc.getField("Adventuring Gear Weight " + i);
 		var Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-		if ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value === item) {
+		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
 			if (Nmbr.value === "") {
 				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
 			} else if (!isNaN(Nmbr.value)) {
@@ -766,7 +766,7 @@ function AddInvM(item, amount, weight, location) {
 		var Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
 		var Wht = tDoc.getField("Adventuring Gear Weight " + i);
 		var Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-		if ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value === item) {
+		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
 			if (Nmbr.value === "") {
 				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
 			} else if (!isNaN(Nmbr.value)) {
@@ -813,7 +813,7 @@ function AddInvR(item, amount, weight, location) {
 		var Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
 		var Wht = tDoc.getField("Adventuring Gear Weight " + i);
 		var Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-		if ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value === item) {
+		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
 			if (Nmbr.value === "") {
 				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
 			} else if (!isNaN(Nmbr.value)) {
@@ -855,7 +855,7 @@ function RemoveInv(item) {
 		var Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
 		var Wht = tDoc.getField("Adventuring Gear Weight " + i);
 		var Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-		if ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value === item) {
+		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
 			Name.value = "";
 			Nmbr.value = "";
 			Wht.value = "";
@@ -876,7 +876,7 @@ function AddInvLExtra(inputitem, amount, weight, location) {
 		var Nmbr = tDoc.getField("Extra.Gear Amount " + i);
 		var Wht = tDoc.getField("Extra.Gear Weight " + i);
 		var Loc = tDoc.getField("Extra.Gear Location.Row " + i);
-		if ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value === item) {
+		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
 			if (Nmbr.value === "") {
 				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
 			} else if (!isNaN(Nmbr.value)) {
@@ -920,7 +920,7 @@ function AddInvRExtra(inputitem, amount, weight, location) {
 		var Nmbr = tDoc.getField("Extra.Gear Amount " + i);
 		var Wht = tDoc.getField("Extra.Gear Weight " + i);
 		var Loc = tDoc.getField("Extra.Gear Location.Row " + i);
-		if ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value === item) {
+		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
 			if (Nmbr.value === "") {
 				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
 			} else if (!isNaN(Nmbr.value)) {
@@ -1055,7 +1055,7 @@ function RemoveAction(actiontype, action, isRegex) {
 function AddResistance(Input, tooltiptext, replaceThis) {
 	var useful = 0;
 	var tooltipString = Input;
-	if (isNaN(Input) && Input.search(/\(.+\)/) === -1) {
+	if (isNaN(Input) && !(/\(.+\)/).test(Input)) {
 		for (var key in DamageTypes) {
 			if (Input.toLowerCase().indexOf(key) !== -1) {
 				useful = DamageTypes[key].index;
@@ -1090,7 +1090,7 @@ function AddResistance(Input, tooltiptext, replaceThis) {
 function RemoveResistance(Input) {
 	var useful = Input;
 	var temp = false;
-	if (isNaN(Input) && Input.search(/\(.+\)/) === -1) {
+	if (isNaN(Input) && !(/\(.+\)/).test(Input)) {
 		useful = Input.toLowerCase();
 		for (var key in DamageTypes) {
 			if (!temp && useful.indexOf(key) !== -1) {
@@ -1240,7 +1240,7 @@ function Import(type) {
 	
 	//set the weight carried multiplier back one if a race with powerful build was added
 	
-	if (CurrentRace.known && CurrentRace.trait.search(/powerful build/i) !== -1 && What("Carrying Capacity Multiplier") === 3) {
+	if (CurrentRace.known && (/powerful build/i).test(CurrentRace.trait) && What("Carrying Capacity Multiplier") === 3) {
 		tDoc.getField("Carrying Capacity Multiplier").value -= 1;
 	}
 
@@ -2034,7 +2034,7 @@ function ParseArmor(input) {
 		if (ArmourList[key].regExpSearch) {
 			if (testSource(key, ArmourList[key], "armorExcl")) continue; // test if the armour or its source isn't excluded
 			var wSearch = ArmourList[key].regExpSearch; //use the defined regular expression of the weapon
-			if (input.search(wSearch) !== -1 && outputL < key.length) {
+			if ((wSearch).test(input) && outputL < key.length) {
 				outputL = key.length;
 				output = key;
 			}
@@ -2204,7 +2204,7 @@ function ConditionSet() {
 	var ArmDis = tDoc.getField("AC Stealth Disadvantage");
 	
 	//check if by (un)checking this field, another field needs to be (un)checked as well
-	var theField = (event.target && event.target.name && event.target.name.search(/ac|reset|import/i) === -1) ? event.target.name : "reset";
+	var theField = (event.target && event.target.name && !(/ac|reset|import/i).test(event.target.name)) ? event.target.name : "reset";
 	var FieldNmbr = Number(theField.slice(-2));
 	var FieldChecked = theField !== "reset" && event.target.type === "checkbox" ? event.target.isBoxChecked(0) : "reset";
 	var CheckItAlso = FieldChecked === 1;
@@ -2376,7 +2376,7 @@ function ParseClass(tempString) {
 		for (var obj in ClassList) { //scan string for all classes, choosing subclasses over classes
 			if (testSource(obj, ClassList[obj], "classExcl")) continue; //only testing if the source of the class isn't excluded
 			var cSearch = ClassList[obj].regExpSearch;
-			if ((i === 2 && !tempFound) || (tempFoundL < obj.length && tempString.search(cSearch) !== -1)) {
+			if ((i === 2 && !tempFound) || (tempFoundL < obj.length && (cSearch).test(tempString))) {
 				found = i === 2 ? false : [obj, ""];
 				tempFoundL = obj.length;
 				for (var z = 0; z < ClassList[obj].subclasses[1].length; z++) {
@@ -2384,7 +2384,7 @@ function ParseClass(tempString) {
 					var theSubIL = ClassSubList[theSub];
 					if (!theSubIL || testSource(theSub, theSubIL, "classExcl")) continue; // test if the subclass exists or if it or its source isn't excluded
 					var oldSub = found && found[1] && ClassSubList[found[1]] ? ClassSubList[found[1]] : false;
-					if (tempString.search(theSubIL.regExpSearch) !== -1 && (!oldSub || theSubIL.subname.length > oldSub.subname.length)) {
+					if ((theSubIL.regExpSearch).test(tempString) && (!oldSub || theSubIL.subname.length > oldSub.subname.length)) {
 						found = [obj, theSub];
 						tempFound = true;
 						i = 8;
@@ -3087,7 +3087,7 @@ function ParseRace(Inputs) {
 
 		for (var key in RaceList) { //scan string for all races
 			var rSearch = RaceList[key].regExpSearch; //use the defined regular expression of the race
-			if (tempFound < RaceList[key].name.length && Inputs.search(rSearch) !== -1) {
+			if (tempFound < RaceList[key].name.length && (rSearch).test(Inputs)) {
 				if (testSource(key, RaceList[key], "racesExcl")) continue; // test if the race or its source isn't excluded
 				resultArray = [key, ""];
 				tempFound = RaceList[key].name.length;
@@ -3099,7 +3099,7 @@ function ParseRace(Inputs) {
 						var rVars = RaceSubList[theR];
 						if (testSource(theR, rVars, "racesExcl")) continue; // test if the racial variant or its source isn't excluded
 						var rvSearch = rVars.regExpSearch; //use the defined regular expression of the racial variant
-						if (tempFound2 < theR.length && Inputs.search(rvSearch) !== -1) {
+						if (tempFound2 < theR.length && (rvSearch).test(Inputs)) {
 							resultArray[1] = RaceOpt[sub];
 							tempFound2 = theR.length;
 						}
@@ -3447,7 +3447,7 @@ function ParseWeapon(input) {
 		if (WeaponsList[key].regExpSearch) {
 			if (testSource(key, WeaponsList[key], "weapExcl")) continue; // test if the weapon or its source isn't excluded
 			var wSearch = WeaponsList[key].regExpSearch; //use the defined regular expression of the weapon
-			if (inputS.search(wSearch) !== -1 && outputL < WeaponsList[key].name.length) {
+			if ((wSearch).test(inputS) && outputL < WeaponsList[key].name.length) {
 				outputL = WeaponsList[key].name.length;
 				output = key;
 			}
@@ -3927,7 +3927,7 @@ function ParseBackground(Input) {
 					var bVars = BackgroundSubList[BackOpt[sub]];
 					if (testSource(BackOpt[sub], bVars, "backgrExcl")) continue; // test if the background variant or its source isn't excluded
 					var bvSearch = bVars.regExpSearch; //use the defined regular expression of the background variant
-					if (tempFound < bVars.name.length && Input.search(bvSearch) !== -1) {
+					if (tempFound < bVars.name.length && (bvSearch).test(Input)) {
 						resultArray[0] = key;
 						resultArray[1] = BackOpt[sub];
 						tempFound = bVars.name.length;
@@ -3936,7 +3936,7 @@ function ParseBackground(Input) {
 			}
 			if (testSource(key, BackgroundList[key], "backgrExcl")) continue; // test if the background or its source isn't excluded
 			var bSearch = BackgroundList[key].regExpSearch; //use the defined regular expression of the background
-			if (tempFound < BackgroundList[key].name.length && Input.search(bSearch) !== -1) {
+			if (tempFound < BackgroundList[key].name.length && (bSearch).test(Input)) {
 				resultArray[0] = key;
 				tempFound = BackgroundList[key].name.length;
 			}
@@ -4148,7 +4148,7 @@ function MakeBackgroundMenu() {
 			menu.oSubMenu.push({
 				cName : array[i],
 				cReturn : name + "#" + i,
-				bMarked : theEntry.search(RegExp(array[i].RegEscape(), "i")) !== -1,
+				bMarked : (RegExp(array[i].RegEscape(), "i")).test(theEntry)
 			})
 		}
 	};
@@ -4161,7 +4161,7 @@ function MakeBackgroundMenu() {
 			menu.oSubMenu.push({
 				cName : array[i][0],
 				cReturn : name + "#" + i,
-				bMarked : theEntry.search(RegExp(array[i][1].RegEscape(), "i")) !== -1,
+				bMarked : (RegExp(array[i][1].RegEscape(), "i")).test(theEntry)
 			})
 		}
 	};
@@ -4234,7 +4234,7 @@ function AddInvNewArmorShield() {
 		for (var E = 1; E <= FieldNumbers.gear; E++) {
 			if (What("Adventuring Gear Remember") === false && E === FieldNumbers.gearMIrow) { continue; }
 			var Name = tDoc.getField("Adventuring Gear Row " + E);
-			if ((Name.value.search(RegExp("\\b" + tempArmorRegEx + "\\b", "i")) !== -1 && Name.value.search(RegExp("\\b" + tempArmorRegEx + " \\+\\d+", "i")) === -1) || Name.value === tempArmor) {
+			if (((RegExp("\\b" + tempArmorRegEx + "\\b", "i")).test(Name.value) && !(RegExp("\\b" + tempArmorRegEx + " \\+\\d+", "i")).test(Name.value)) || Name.value === tempArmor) {
 				isFound = true;
 				E = 500;
 			}
@@ -4252,7 +4252,7 @@ function AddInvNewArmorShield() {
 		for (var E = 1; E <= FieldNumbers.gear; E++) {
 			if (What("Adventuring Gear Remember") === false && E === FieldNumbers.gearMIrow) { continue; }
 			var Name = tDoc.getField("Adventuring Gear Row " + E);
-			if ((Name.value.search(RegExp("\\b" + tempShieldRegEx + "\\b", "i")) !== -1 && Name.value.search(RegExp("\\b" + tempShieldRegEx + " \\+\\d+", "i")) === -1) || Name.value === tempShield) {
+			if (((RegExp("\\b" + tempShieldRegEx + "\\b", "i")).test(Name.value) && !(RegExp("\\b" + tempShieldRegEx + " \\+\\d+", "i")).test(Name.value)) || Name.value === tempShield) {
 				isFound = true;
 				E = 500;
 			}
@@ -4290,7 +4290,7 @@ function AddInvNewWeapons() {
 				for (var E = 1; E <= FieldNumbers.gear; E++) {
 					if (What("Adventuring Gear Remember") === false && E === FieldNumbers.gearMIrow) { continue; }
 					var Name = tDoc.getField("Adventuring Gear Row " + E);
-					if ((Name.value.search(RegExp("\\b" + weaponRegEx + "\\b", "i")) !== -1 && Name.value.search(RegExp("\\b" + weaponRegEx + " \\+\\d+", "i")) === -1) || Name.value === temp3) {
+					if (((RegExp("\\b" + weaponRegEx + "\\b", "i")).test(Name.value) && !(RegExp("\\b" + weaponRegEx + " \\+\\d+", "i")).test(Name.value)) || Name.value === temp3) {
 						isFound = true;
 						E = 500;
 					}
@@ -4357,7 +4357,7 @@ function AddInvNewAmmo() {
 				var Name = tDoc.getField("Adventuring Gear Row " + j);
 				var Nmbr = tDoc.getField("Adventuring Gear Amount " + j);
 				var Wht = tDoc.getField("Adventuring Gear Weight " + j);
-				if (Name.value.search(RegExp(RegExItem, "i")) !== -1 || Name.value === theName) {
+				if ((RegExp(RegExItem, "i")).test(Name.value) || Name.value === theName) {
 					Nmbr.value = Ammos[i][1];
 					Wht.value = Ammos[i][2];
 					tempFound = true;
@@ -4450,7 +4450,7 @@ function RemoveTool(tool, toolstooltip) {
 		}
 	}
 
-	if (tool.search(/thieves.*tools/i) !== -1 && What("Too Text").search(/thieves.*tools/i) !== -1) {
+	if ((/thieves.*tools/i).test(tool) && (/thieves.*tools/i).test(What("Too Text"))) {
 		tDoc.resetForm(["Too Text"]);
 		Checkbox("Too Prof", false);
 	}
@@ -4468,10 +4468,10 @@ function AddWeapon(weapon, partialReplace) {
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 1; i <= maxItems; i++) {
 			var next = tDoc.getField(prefix + Q + "Attack." + i + ".Weapon Selection");
-			if (n === 1 && next.value.search(RegExp("\\b" + weapon.RegEscape() + "\\b", "i")) !== -1) {
+			if (n === 1 && (RegExp("\\b" + weapon.RegEscape() + "\\b", "i")).test(next.value)) {
 				i = maxItems + 1;
 				n = 3;
-			} else if (n === 2 && (next.value === "" || (partialReplace && weapon.search(RegExp("\\b" + next.value.RegEscape() + "\\b", "i")) !== -1))) {
+			} else if (n === 2 && (next.value === "" || (partialReplace && (RegExp("\\b" + next.value.RegEscape() + "\\b", "i")).test(weapon)))) {
 				next.value = weapon.capitalize();
 				i = maxItems + 1;
 				n = 3;
@@ -4505,7 +4505,7 @@ function AddString(field, inputstring, newline) {
 	var multithestring = "\r" + thestring;
 	var multilines = thefield.type === "text" && thefield.multiline && newline === true && thefield.value !== "";
 	var separator = (newline !== true && newline !== false && thefield.value !== "") ? (newline ? newline : " ") : "";
-	if (thefield.value.search(RegExp(regExString, "i")) === -1 && thefield.value.toLowerCase().indexOf(thestring.toLowerCase()) === -1) {
+	if (!(RegExp(regExString, "i")).test(thefield.value) && thefield.value.toLowerCase().indexOf(thestring.toLowerCase()) === -1) {
 		if (!multilines && thefield.value !== "") {
 			var cleanSep = clean(separator, " ");
 			var cleanFld = clean(thefield.value, " ");
@@ -4549,7 +4549,7 @@ function RemoveString(field, toremove, newline) {
 		regExStringsArray = [regExString];
 	}
 	for (var i = 0; i < stringsArray.length; i++) {
-		if (thefield.value.search(RegExp(regExStringsArray[i], "i")) !== -1) {
+		if ((RegExp(regExStringsArray[i], "i")).test(thefield.value)) {
 			thefield.value = thefield.value.replace(RegExp(regExStringsArray[i], "i"), "");
 			i = stringsArray.length;
 		} else if (thefield.value.indexOf(stringsArray[i]) !== -1) {
@@ -4565,7 +4565,7 @@ function ReplaceString(field, inputstring, newline, theoldstring, alreadyRegExp)
 	var thestring = theoldstring.replace(/\n/g, "\r");
 	var regExString = alreadyRegExp ? thestring : thestring.RegEscape();
 	var multilines = newline !== undefined ? newline : thefield.multiline;
-	if (thefield.value.search(RegExp(regExString, "i")) !== -1 && theoldstring) {
+	if ((RegExp(regExString, "i")).test(thefield.value)  && theoldstring) {
 		thefield.value = thefield.value.replace(RegExp(regExString, "i"), inputstring);
 	} else if (thefield.value.indexOf(thestring) !== -1 && theoldstring) {
 		thefield.value = thefield.value.replace(thestring, inputstring);
@@ -4584,7 +4584,7 @@ function SpliceString(field, inputstring, newline, theoldstring) {
 	var multilines = newline !== undefined ? newline : thefield.multiline;
 	var startChr = thefield.value.search(RegExp(regExString, "i"));
 	startChr = startChr === -1 ? thefield.value.indexOf(thestring) : startChr;
-	if (thefield.value.search(RegExp(regExinputString, "i")) === -1 && thefield.value.indexOf(theinputstring) === -1 && startChr !== -1 && theoldstring) {
+	if (!(RegExp(regExinputString, "i")).test(thefield.value) && thefield.value.indexOf(theinputstring) === -1 && startChr !== -1 && theoldstring) {
 		startChr += thestring.length;
 		thefield.value = thefield.value.slice(0, startChr) + inputstring + thefield.value.slice(startChr);
 	} else {
@@ -4816,7 +4816,7 @@ function CalcSkill() {
 		ExtraBonus = Number(What(ExtraBonus + " Mod"));
 	}
 
-	var AllBonus = event.target.name.search("Initiative") === -1 ? What("All Skills Bonus") : 0;
+	var AllBonus = (/Initiative/).test(event.target.name) ? What("All Skills Bonus") : 0;
 	if (isNaN(AllBonus)) {
 		AllBonus = Number(What(AllBonus + " Mod"));
 	}
@@ -5706,7 +5706,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 				//add, remove, or update the feature
 				if (keyFea.usages && (GoAnyway || checkLVL)) {
 					var FeaTooltip = CurrentRace.name + keyFea.tooltip;
-					var AddRemoveFea = AddRemove === "Add" && FeaUse && FeaUse.search(/unlimited|\u221E/i) === -1 ? "Add" : "Remove";
+					var AddRemoveFea = AddRemove === "Add" && FeaUse && !(/unlimited|\u221E/i).test(FeaUse) ? "Add" : "Remove";
 					tDoc[AddRemoveFea + "Feature"](keyFea.name, AddRemoveFea === "Remove" ? FeaUseOld : FeaUse, FeaAdd, keyFea.recovery, FeaTooltip, FeaUseOld);
 				}
 				
@@ -5812,7 +5812,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 				var ClassHeaderString = "";
 
 				//See if the class already exists and if the field is empty
-				if (ClassFeaFld.value.search(RegExp(temp.name.RegEscape())) === -1 && ClassFeaFld.value) {
+				if (!(RegExp(temp.name.RegEscape())).test(ClassFeaFld.value) && ClassFeaFld.value) {
 					ClassHeaderString += "\n\n";
 				}
 
@@ -6016,12 +6016,12 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					GoAnyway = ForceAll || (newClassLvl[aClass] > 0 && propFea.minlevel <= oldClassLvl[aClass] && (Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld || Fea.UseName !== Fea.UseNameOld));
 					
 					//remove the limited feature if it should be removed because of downgrading the level --or-- the old feature was defined, but the new isn't --or-- if the old has a different name than the new --or-- if the new amount of usages is unlimited
-					if (((Fea.UseOld || Fea.UseCalcOld) && propFea.minlevel > newClassLvl[aClass] && propFea.minlevel <= oldClassLvl[aClass]) || ((Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc) || (Fea.Recov !== Fea.RecovOld)) && (Fea.UseOld || Fea.UseCalcOld)) || Fea.Use.search(/unlimited|\u221E/i) !== -1) {
+					if (((Fea.UseOld || Fea.UseCalcOld) && propFea.minlevel > newClassLvl[aClass] && propFea.minlevel <= oldClassLvl[aClass]) || ((Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc) || (Fea.Recov !== Fea.RecovOld)) && (Fea.UseOld || Fea.UseCalcOld)) || (/unlimited|\u221E/i).test(Fea.Use)) {
 						RemoveFeature(Fea.UseNameOld ? Fea.UseNameOld : Fea.UseName, newClassLvl[aClass] === 0 ? "" : Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
 						Fea.UseOld = 0;
 					}
 					// now add the limited feature depending on the changes of the level or changes of something else or if it is being forced, as long as the usages have been defined
-					if ((Fea.UseCalc || Fea.Use) && Fea.Use.search(/unlimited|\u221E/i) === -1 && (GoAnyway || (propFea.minlevel <= newClassLvl[aClass] && propFea.minlevel > oldClassLvl[aClass]))) {
+					if ((Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use) && (GoAnyway || (propFea.minlevel <= newClassLvl[aClass] && propFea.minlevel > oldClassLvl[aClass]))) {
 						AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, temp.fullname, Fea.UseOld, Fea.UseCalc);
 					}
 					
@@ -6067,9 +6067,9 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 								var ecFeaOldString = ParseClassFeatureExtra(aClass, prop, extraF, ecFea, true);
 								if (ecFeaOldString !== ecFeaNewString) {
 									ReplaceString(textFlds[0].indexOf(testTxt) !== -1 ? "Extra.Notes" : "Class Features", ecFeaNewString, false, ecFeaOldString);
-									if ((ecFea.Use || ecFea.UseCalc) && ecFea.Use.search(/unlimited|\u221E/i) === -1) {
+									if ((ecFea.Use || ecFea.UseCalc) && !(/unlimited|\u221E/i).test(ecFea.Use)) {
 										AddFeature(ecFea.UseName, ecFea.Use, ecFea.Add ? " (" + ecFea.Add + ")" : "", ecFea.Recov, CurrentClasses[aClass].fullname, ecFea.UseOld, ecFea.UseCalc);
-									} else if (ecFea.Use.search(/unlimited|\u221E/i) !== -1 || (ecFea.UseOld || ecFea.UseCalcOld)) {
+									} else if ((/unlimited|\u221E/i).test(ecFea.Use) || (ecFea.UseOld || ecFea.UseCalcOld)) {
 										RemoveFeature(ecFea.UseNameOld, ecFea.UseOld, "", "", "", "", ecFea.UseCalcOld);
 									};
 								};
@@ -6267,7 +6267,7 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 				RemoveFeature(Fea.UseNameOld, Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
 			}
 			//if something changed and the new has a limited feature, add it
-			if (DoLimFea && (Fea.Use || Fea.UseCalc) && Fea.Use.search(/unlimited|\u221E/i) === -1) {
+			if (DoLimFea && (Fea.Use || Fea.UseCalc) && !(/unlimited|\u221E/i).test(Fea.Use)) {
 				AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, CurrentClasses[MenuSelection[0]].fullname, 0, Fea.UseCalc);
 			}
 		}
@@ -7468,8 +7468,8 @@ function MakeMobileReady(toggle) {
 				var Ffield = tDoc.getField(Fname);
 
 				//check if field is not in one of the exceptionlists, but continue if it is in the TooMuchExceptionArray
-				var isException = (exceptionArray.indexOf(Fname) !== -1 || Fname.search(/^(Bonus |Re)?action \d+/i) !== -1) && Fname.search(/button/i) === -1 && Fname.search(/Attack\.\d+\.Weapon$/i) === -1;
-				if (!isException && Fname.search(/button/i) === -1) {
+				var isException = (exceptionArray.indexOf(Fname) !== -1 || (/^(Bonus |Re)?action \d+/i).test(Fname)) && !(/button/i).test(Fname) && !(/Attack\.\d+\.Weapon$/i).test(Fname);
+				if (!isException && !(/button/i).test(Fname)) {
 					for (var x = 0; x < exceptionPartsArray.length; x++) {
 						if (Fname.indexOf(exceptionPartsArray[x]) !== -1) {
 							isException = true;
@@ -7685,7 +7685,7 @@ function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow) {
 			var Attune = "Extra.Magic Item Attuned " + i;
 			var Description = tDoc.getField("Extra.Magic Item Description " + i);
 			var Weight = tDoc.getField("Extra.Magic Item Weight " + i);
-			if (n === 1 && ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value.toLowerCase() === item.toLowerCase())) {
+			if (n === 1 && (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value.toLowerCase() === item.toLowerCase())) {
 				i = FieldNumbers.magicitems + 1;
 				n = 3;
 				tempFound = true;
@@ -7706,7 +7706,7 @@ function RemoveMagicItem(item) {
 	var RegExItem = item.substring(0, 2) === "- " ? "\\b" + item.substring(2).RegEscape() + "\\b" : "\\b" + item.RegEscape() + "\\b";
 	for (var i = 1; i <= FieldNumbers.magicitems; i++) {
 		var Name = What("Extra.Magic Item " + i);
-		if ((Name.search(RegExp(RegExItem, "i")) !== -1 && Name.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.toLowerCase() === item.toLowerCase()) {
+		if (((RegExp(RegExItem, "i")).test(Name) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name)) || Name.toLowerCase() === item.toLowerCase()) {
 			tDoc.resetForm([
 				"Extra.Magic Item " + i,
 				"Extra.Magic Item Attuned " + i,
@@ -7728,7 +7728,7 @@ function AddInvMagic(item, amount, weight, location) {
 		var Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
 		var Wht = tDoc.getField("Adventuring Gear Weight " + i);
 		var Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-		if ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value === item) {
+		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
 			if (Nmbr.value === "") {
 				Nmbr.value = 2;
 			} else if (!isNaN(Nmbr.value) && amount === "") {
@@ -8377,7 +8377,7 @@ function AddAmmo(inputtxt) {
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 0; i < AmmoFlds.length; i++) {
 			var next = tDoc.getField(AmmoFlds[i]);
-			if (n === 1 && (next.value.search(RegExp(inputtxt.RegEscape(), "i")) !== -1 || next.value.toLowerCase().indexOf(inputtxt) !== -1)) {
+			if (n === 1 && ((RegExp(inputtxt.RegEscape(), "i")).test(next.value) || next.value.toLowerCase().indexOf(inputtxt) !== -1)) {
 				i = AmmoFlds.length;
 				n = 3;
 			} else if (n === 2 && next.value === "") {
@@ -10719,7 +10719,7 @@ function CalcCarriedLocation() {
 		var totalweight = 0;
 		for (var i = 1; i <= total; i++) {
 			var theLoc = clean(What(type + "Location.Row " + i), " ").RegEscape();
-			if (theLoc.search(RegExp(toSearch, "i")) === 0) {
+			if ((RegExp("\\b" + toSearch + "\\b", "i")).test(theLoc)) {
 				var amount = What(type + "Amount " + i);
 				var weight = What(type + "Weight " + i);
 				if (amount && isNaN(amount) && amount.indexOf(",") !== -1) {

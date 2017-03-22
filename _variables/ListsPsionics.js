@@ -35,7 +35,7 @@ var PsionicsList = {
 		level : 0,
 		time : "1 a",
 		range : "120 ft",
-		duration : "1 rnd",
+		duration : "Next turn end",
 		save : "Wis",
 		description : "1 creature save or treats me as invisible until the end of my next turn",
 		descriptionFull : "As an action, you erase your image from the mind of one creature you can see within 120 feet of you; the target must succeed on a Wisdom saving throw, or you are invisible to it until the end of your next turn."
@@ -416,7 +416,7 @@ var PsionicsList = {
 		descriptionFull : "You gain fins and webbing between your fingers and toes; you gain a swimming speed equal to your walking speed.",
 		firstCol : 2 //power point cost
 	},
-	"bf9-bt  - tough hide" : {
+	"bf9-bt - tough hide" : {
 		name : " - Tough Hide",
 		source : ["UA:TMC", 11],
 		psionic : true,
@@ -483,7 +483,7 @@ var PsionicsList = {
 		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
 		time : "1 bns",
 		range : "60 ft",
-		duration : "1 rnd",
+		duration : "Next turn end",
 		save : "Wis",
 		description : "1 crea save or it can only move towards the nearest enemy it can see, or not move at all (charm effect)",
 		descriptionFull : "You cause a creature's bloodlust to overcome its sense of preservation. As a bonus action, choose one creature you can see within 60 feet of you. The target must succeed on a Wisdom saving throw or, until the end of your next turn, it can’t willingly move unless its movement brings it closer to its nearest enemy that it can see. The save automatically succeeds if the target is immune to being charmed.",

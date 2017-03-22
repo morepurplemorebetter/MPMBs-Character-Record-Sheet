@@ -1851,8 +1851,8 @@ function MakeExportArray() {
 		var Fname = tDoc.getNthFieldName(F);
 		var Fvalue = What(Fname) !== tDoc.getField(Fname).defaultValue;
 		var Frtf = tDoc.getField(Fname).type === "text" && tDoc.getField(Fname).richText;
-		var Fcalc = Fname.search(/Bonus$/i) !== -1 || tDoc.getField(Fname).calcOrderIndex === -1;
-		if (!Frtf && Fvalue && Fcalc && notExport.indexOf(Fname) === -1 && Fname.indexOf("Limited Feature") === -1 && Fname.indexOf("SpellSlots") === -1 && Fname.search(/^(Comp.Use.)?Attack.\d.(?!Weapon Selection)/i) === -1 && Fname.search(/^Feat Description \d$/i) === -1 && Fname.search(/^Tool \d$/i) === -1 && Fname.search(/^Language \d$/i) === -1 && Fname.search(/^(bonus |re)?action \d$/i) === -1 && Fname.search(/^HD\d (Used|Level|Die|Con Mod)$/i) === -1 && Fname.search(/Wildshape.\d./i) === -1 && Fname.search(/^Resistance Damage Type \d$/i) === -1 && Fname.search(/^Extra.Exhaustion Level \d$/i) === -1 && Fname.search(/^Extra.Condition \d+$/i) === -1 && Fname.search(/^Template\.extras.+$/i) === -1 && Fname.search(/spells\..*\.\d+|spellshead|spellsdiv|spellsgloss/i) === -1) {
+		var Fcalc = (/Bonus$/i).test(Fname) || tDoc.getField(Fname).calcOrderIndex === -1;
+		if (!Frtf && Fvalue && Fcalc && notExport.indexOf(Fname) === -1 && Fname.indexOf("Limited Feature") === -1 && Fname.indexOf("SpellSlots") === -1 && !(/^(Comp.Use.)?Attack.\d.(?!Weapon Selection)|^Feat Description \d$|^Tool \d$|^Language \d$|^(bonus |re)?action \d$|^HD\d (Used|Level|Die|Con Mod)$|Wildshape.\d.|^Resistance Damage Type \d$|^Extra.Exhaustion Level \d$|^Extra.Condition \d+$|^Template\.extras.+$|spells\..*\.\d+|spellshead|spellsdiv|spellsgloss/i).test(Fname)) {
 			tempArray.push(Fname);
 		}
 	}
@@ -4179,8 +4179,7 @@ function ParseGear(input) {
 
 		for (var key in WeaponsList) { //scan string for all weapons
 			var aList = WeaponsList[key];
-			var aSearch = aList.regExpSearch;
-			if (aList.weight && key.length > foundLen && tempString.search(aSearch) !== -1) {
+			if (aList.weight && key.length > foundLen && (aList.regExpSearch).test(tempString)) {
 				result = ["WeaponsList", key];
 				foundLen = key.length;
 			}
@@ -4189,7 +4188,7 @@ function ParseGear(input) {
 		for (var key in GearList) { //scan string for all gear
 			var aList = GearList[key];
 			var aListName = aList.name.replace(/\,[^\,]+$/, "").replace("\uFEFF", "");
-			if (aListName.length > foundLen && tempString.search(RegExp("\\b" + aListName + "\\b", "i")) !== -1) {
+			if (aListName.length > foundLen && (RegExp("\\b" + aListName + "\\b", "i")).test(tempString)) {
 				result = ["GearList", key];
 				foundLen = aListName.length;
 			}
@@ -4197,7 +4196,7 @@ function ParseGear(input) {
 
 		for (var key in ToolsList) { //scan string for all gear
 			var aList = ToolsList[key];
-			if (aList.name.length > foundLen && tempString.indexOf(RegExp("\\b" + aListName + "\\b", "i")) !== -1) {
+			if (aList.name.length > foundLen && (RegExp("\\b" + aListName + "\\b", "i")).test(tempString)) {
 				result = ["ToolsList", key];
 				foundLen = aList.name.length;
 			}
@@ -4611,9 +4610,9 @@ function ChangeToCompleteAdvLogSheet() {
 	forConsole += " this.info.Subject = \"D&D 5e; Character Sheet; Adventurers League; Adventure Logsheet\";";
 	forConsole += " this.info.ContactEmail = \"Flapkan@gmail.com\";";
 	forConsole += " this.info.Title = MakeDocName();";
-	forConsole += " typePF = this.info.SheetType.search(/printer friendly/i) !== -1;";
-	forConsole += " typeA4 = this.info.SheetType.search(/a4/i) !== -1;";
-	forConsole += " typeLR = this.info.SheetType.search(/letter/i) !== -1;";
+	forConsole += " typePF = (/printer friendly/i).test(this.info.SheetType);";
+	forConsole += " typeA4 = (/a4/i).test(this.info.SheetType);";
+	forConsole += " typeLR = (/letter/i).test(this.info.SheetType);";
 	forConsole += " minVer = this.info.SpellsOnly || this.info.AdvLogOnly;";
 	forConsole += " CreateBkmrksCompleteAdvLogSheet();";
 	forConsole += " this.calculateNow();";
@@ -4872,7 +4871,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 			
 			//remove the old ASI line (if any)
 			var ASIregex = /whenever I gain an ASI\r.*Currently.+(scores|Cha\))/;
-			if (What(prefix + "Cnote.Left").search(ASIregex) !== -1) {
+			if ((ASIregex).test(What(prefix + "Cnote.Left"))) {
 				ReplaceString(prefix + "Cnote.Left", "whenever I gain an ASI", false, "whenever I gain an ASI\\r.*Currently.+(scores|Cha\\))", true);
 			}
 			
@@ -4904,7 +4903,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 				//bring back the multiattack trait, if applicable
 				for (var t = 0; t < thisCrea.traits.length; t++) {
 					var tName = thisCrea.traits[t].name;
-					if (tName.search(/multiattack/i) !== -1) {
+					if ((/multiattack/i).test(tName)) {
 						var traitString = "\u25C6 " + tName + ": " + thisCrea.traits[t].description;
 						AddString(prefix + "Comp.Use.Traits", traitString, true);
 					}
@@ -5103,7 +5102,7 @@ function AddInvLComp(item, amount, weight, prefix) {
 		var Name = tDoc.getField(prefix + "Comp.eqp.Gear Row " + i);
 		var Nmbr = tDoc.getField(prefix + "Comp.eqp.Gear Amount " + i);
 		var Wht = tDoc.getField(prefix + "Comp.eqp.Gear Weight " + i);
-		if ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value === item) {
+		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
 			if (Nmbr.value === "") {
 				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
 			} else if (!isNaN(Nmbr.value)) {
@@ -5127,7 +5126,7 @@ function AddInvLComp(item, amount, weight, prefix) {
 				Wht.value = weight;
 				i = 500;
 			} else {
-				Container = Name.value.indexOf("-") === 0 || Name.value.indexOf("-") === 1 || Name.value.toLowerCase().indexOf("backpack") !== -1 || Name.value.search(/^(?=.*saddle)(?=.*bag).*$/i) !== -1 || Name.value.toLowerCase().indexOf(", with:") !== -1 ? "- " : "";
+				Container = Name.value.indexOf("-") === 0 || Name.value.indexOf("-") === 1 || Name.value.toLowerCase().indexOf("backpack") !== -1 || (/^(?=.*saddle)(?=.*bag).*$/i).test(Name.value) || Name.value.toLowerCase().indexOf(", with:") !== -1 ? "- " : "";
 			}
 		}
 	}
@@ -5144,7 +5143,7 @@ function AddInvRComp(item, amount, weight, prefix) {
 		var Name = tDoc.getField(prefix + "Comp.eqp.Gear Row " + i);
 		var Nmbr = tDoc.getField(prefix + "Comp.eqp.Gear Amount " + i);
 		var Wht = tDoc.getField(prefix + "Comp.eqp.Gear Weight " + i);
-		if ((Name.value.search(RegExp(RegExItem, "i")) !== -1 && Name.value.search(RegExp(RegExItem + " \\+\\d+", "i")) === -1) || Name.value === item) {
+		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
 			if (Nmbr.value === "") {
 				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
 			} else if (!isNaN(Nmbr.value)) {
@@ -5168,7 +5167,7 @@ function AddInvRComp(item, amount, weight, prefix) {
 				Wht.value = weight;
 				i = 500;
 			} else {
-				Container = Name.value.indexOf("-") === 0 || Name.value.indexOf("-") === 1 || Name.value.toLowerCase().indexOf("backpack") !== -1 || Name.value.search(/^(?=.*saddle)(?=.*bag).*$/i) !== -1 || Name.value.toLowerCase().indexOf(", with:") !== -1 ? "- " : "";
+				Container = Name.value.indexOf("-") === 0 || Name.value.indexOf("-") === 1 || Name.value.toLowerCase().indexOf("backpack") !== -1 || (/^(?=.*saddle)(?=.*bag).*$/i).test(Name.value) || Name.value.toLowerCase().indexOf(", with:") !== -1 ? "- " : "";
 			}
 		}
 	}

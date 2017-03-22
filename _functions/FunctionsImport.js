@@ -365,7 +365,7 @@ function DirectImport(consoleTrigger) {
 		} else {
 			MPMBOpenFile(this, importFromPath[0], importFromPath[1]);
 		}
-		closeAlert = global.docFrom && global.docFrom.info.title.search(/^(?=.*morepurplemorebetter)(?=.*character)(?=.*sheet).*$/i) !== -1 ? false : ["File is not one of MPMB's Character Record Sheets", "The opened document is not recognized as being one of MPMB's Character Record Sheets.\nIt will now be closed and no changes will be made to either documents."];
+		closeAlert = global.docFrom && (/^(?=.*morepurplemorebetter)(?=.*character)(?=.*sheet).*$/i).test(global.docFrom.info.title) ? false : ["File is not one of MPMB's Character Record Sheets", "The opened document is not recognized as being one of MPMB's Character Record Sheets.\nIt will now be closed and no changes will be made to either documents."];
 	} catch (errorCode) {
 		closeAlert = ["File not found", "Invalid file location or file type \"" + (importFromPath[1] ? tDoc.path.replace(tDoc.documentFileName, "") : "") + importFromPath[0] + "\".\n\nPlease try again and don't forget that the path must include the file extension (.pdf)."];
 	};
@@ -390,8 +390,8 @@ function DirectImport(consoleTrigger) {
 		//make sure to remove the flatten function
 		if (global.docFrom.getField("MakeMobileReady Remember") && global.docFrom.getField("MakeMobileReady Remember").value !== "") global.docFrom.MakeMobileReady(false);
 		
-		var fromSheetTypePF = global.docFrom.info.SheetType ? global.docFrom.info.SheetType.search(/printer friendly/i) !== -1 : false;
-		var fromSheetTypeLR = global.docFrom.info.SheetType ? global.docFrom.info.SheetType.search(/letter/i) !== -1 : (global.docFrom.info.Title ? global.docFrom.info.Title.search(/letter/i) !== -1 : false);
+		var fromSheetTypePF = global.docFrom.info.SheetType ? (/printer friendly/i).test(global.docFrom.info.SheetType) : false;
+		var fromSheetTypeLR = global.docFrom.info.SheetType ? (/letter/i).test(global.docFrom.info.SheetType) : (global.docFrom.info.Title ? (/letter/i).test(global.docFrom.info.Title) : false);
 		var bothPF = typePF && fromSheetTypePF;
 		var bothCF = !typePF && !fromSheetTypePF;
 		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
@@ -1120,7 +1120,7 @@ function ImportField(fldNm, actionsObj, fromFldNm) {
 function ImportIcons(pagesLayout, viaSaving) {
 	if (!global.docTo || !global.docFrom) return true; //either of the documents or fields doesn't exist
 	
-	var fromSheetTypePF = global.docFrom.info.SheetType ? global.docFrom.info.SheetType.search(/printer friendly/i) !== -1 : false;
+	var fromSheetTypePF = global.docFrom.info.SheetType ? (/printer friendly/i).test(global.docFrom.info.SheetType) : false;
 	var bothPF = typePF && fromSheetTypePF;
 	var bothCF = !typePF && !fromSheetTypePF;
 	var FromVersion = global.docFrom.info.SheetVersion;

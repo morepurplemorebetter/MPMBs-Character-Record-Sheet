@@ -80,9 +80,9 @@ function ParseSpell(input) {
 		var foundLen = 0;
 
 		for (var key in SpellsList) { //scan string for all creatures
-			var toSearch = "\\b(" + SpellsList[key].name;
-			toSearch += SpellsList[key].nameShort ? "|" + SpellsList[key].nameShort : "";
-			toSearch += SpellsList[key].nameAlt ? "|" + SpellsList[key].nameAlt : "";
+			var toSearch = "\\b(" + clean(SpellsList[key].name).RegEscape();
+			toSearch += SpellsList[key].nameShort ? "|" + clean(SpellsList[key].nameShort).RegEscape() : "";
+			toSearch += SpellsList[key].nameAlt ? "|" + clean(SpellsList[key].nameAlt).RegEscape() : "";
 			toSearch += ")\\b";
 			var toTest = RegExp(toSearch, "i");
 			if (key.length > foundLen && toTest.test(input)) {
@@ -5024,9 +5024,9 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	forConsole += " this.info.ContactEmail = \"Flapkan@gmail.com\";";
 	forConsole += " this.info.Subject = \"D&D 5e; Character Sheet; Spell Sheet; Spell Sheet Generator\";";
 	forConsole += " this.info.Title = MakeDocName();";
-	forConsole += " typePF = this.info.SheetType.search(/printer friendly/i) !== -1;";
-	forConsole += " typeA4 = this.info.SheetType.search(/a4/i) !== -1;";
-	forConsole += " typeLR = this.info.SheetType.search(/letter/i) !== -1;";
+	forConsole += " typePF = (/printer friendly/i).test(this.info.SheetType);";
+	forConsole += " typeA4 = (/a4/i).test(this.info.SheetType);";
+	forConsole += " typeLR = (/letter/i).test(this.info.SheetType);";
 	forConsole += " minVer = this.info.SpellsOnly || this.info.AdvLogOnly;";
 	forConsole += " CreateBkmrksCompleteSpellSheet();";
 	forConsole += " this.calculateNow();";
@@ -5143,7 +5143,7 @@ function SpellPointsLimFea(AddRemove) {
 		var SPexists = false;
 		//first see if the limited feature not already exists
 		for (var i = 1; i <= FieldNumbers.limfea; i++) {
-			if (What("Limited Feature " + i).search(/spell.?points?/i) !== -1) {
+			if ((/spell.?points?/i).test(What("Limited Feature " + i))) {
 				SPexists = true;
 				break;
 			}
