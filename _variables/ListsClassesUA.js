@@ -757,6 +757,7 @@ ClassSubList["war magic"] = {
       description : "\n   " + "When you force multiple creatures to make saving throws against the damage" +
                     "\n   " + "of one of your spells, you can increase the spell’s damage by rolling two more" +
                     "\n   " + "of its damage dice. This increase occurs only on the turn you cast the spell.",
+      usages : 1,
       recovery : "short rest"
     },
     "subclassfeature10" : {
