@@ -719,6 +719,66 @@ ClassSubList["theurgy"] = {
 ClassList.wizard.subclasses[1].push("theurgy");
 
 /*
+	Wizard Revisited Unearthed Arcana of 2017-03-20
+	(http://media.wizards.com/2017/dnd/downloads/MJ320UAWizardVF2017.pdf)
+*/
+ClassSubList["war magic"] = {
+
+  regExpSearch : /^(?=.*war)(?=.*magic).*$/i,
+
+  subname : "War Magic",
+
+  source : ["UA:WR", 2],
+
+  features : {
+
+    "subclassfeature2" : { //has to be identical to a feature named in the ClassList
+      name : "Arcane Deflection",
+      source : ["UA:WR", 2],
+      minlevel : 2,
+      description : "\n   " + "When you are hit by an attack or fail a Constitution saving throw, you can use your reaction" +
+                    "\n   " + "to gain a +2 bonus to your AC against that attack or a +4 bonus to that saving throw." +
+                    "\n   " + "When you use this feature, you can’t cast spells other than cantrips until" +
+                    "\n   " + "the end of your next turn.",
+      action: ["reaction", ""]
+    },
+    "subclassfeature2.1" : {
+      name : "Tactical Wit",
+      source : ["UA:WR", 2],
+      minlevel : 2,
+      description : "\n   " + "You gain a bonus to your initiative rolls equal to your Intelligence modifier",
+      changeeval : "if (classes.known.wizard.level >= 2) {Value(\"Init Bonus\", What(\"Int Mod\"))}"
+    },
+    "subclassfeature6" : {
+      name : "Power Surge",
+      source : ["UA:WR", 2],
+      minlevel : 6,
+      description : "\n   " + "When you force multiple creatures to make saving throws against the damage" +
+                    "\n   " + "of one of your spells, you can increase the spell’s damage by rolling two more" +
+                    "\n   " + "of its damage dice. This increase occurs only on the turn you cast the spell.",
+      recovery : "short rest"
+    },
+    "subclassfeature10" : {
+      name : "Durable Magic",
+      source : ["UA:WR", 2],
+      minlevel : 10,
+      description : "\n   " + "While you maintain concentration on a spell," +
+                    "\n   " + "you have a +2 bonus to AC and all saving throws."
+    },
+    "subclassfeature14" : {
+      name : "Deflecting Shroud",
+      source : ["UA:WR", 2],
+      minlevel : 14,
+      description : "\n   " + "When you use your Arcane Deflection feature, magical energy arcs from you;" +
+                    "\n   " + "each creature of your choice within 10 feet of you takes force damage" +
+                    "\n   " + "equal to half your wizard level."
+    }
+  }
+};
+
+ClassList["wizard"].subclasses[1].push("war magic");
+
+/*
 	The Ranger, Revised Unearthed Arcana of 2016-09-12
 	(http://media.wizards.com/2016/dnd/downloads/UA_RevisedRanger.pdf)
 */
