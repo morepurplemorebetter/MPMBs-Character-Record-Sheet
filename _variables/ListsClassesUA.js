@@ -724,11 +724,12 @@ ClassList.wizard.subclasses[1].push("theurgy");
 */
 ClassSubList["war magic"] = {
 
-  regExpSearch : /^(?=.*war)(?=.*magic).*$/i,
+  regExpSearch : /^(?=.*war)(?=.*(magic|mage)).*$/i,
 
   subname : "War Magic",
 
   source : ["UA:WR", 2],
+  fullname : "War Mage",
 
   features : {
 
