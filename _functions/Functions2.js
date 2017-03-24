@@ -4103,13 +4103,13 @@ function AddAttacksPerAction() {
 	if (typePF) {
 		var theString = ["Attack (", " attacks per action)"];
 		if (Number(classes.attacks) < 2) {
-			RemoveAction("action", RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i"), true);
+			RemoveAction("action", RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i"));
 		} else {
 			var action1 = What("Action 1");
 			if (action1 !== "" && !(RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i")).test(action1)) {
 				ActionInsert("action", 1);
 			}
-			if (What("Action 1") === "" || (RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i")).test(action1)) {
+			if (action1 === "" || (RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i")).test(action1)) {
 				Value("Action 1", theString[0] + classes.attacks + theString[1]);
 			}
 		}

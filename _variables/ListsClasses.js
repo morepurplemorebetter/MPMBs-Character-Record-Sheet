@@ -2733,6 +2733,7 @@ var ClassSubList = {
 				recovery : "short rest",
 				additional : ["", "CR 1, no fly/swim; 1 hour", "CR 1, no fly/swim; 1 hour", "CR 1, no fly; 2 hours", "CR 1, no fly; 2 hours", "CR 2, no fly; 3 hours", "CR 2, no fly; 3 hours", "CR 2; 4 hours", "CR 3; 4 hours", "CR 3; 5 hours", "CR 3; 5 hours", "CR 4; 6 hours", "CR 4; 6 hours", "CR 4; 7 hours", "CR 5; 7 hours", "CR 5; 8 hours", "CR 5; 8 hours", "CR 6; 9 hours", "CR 6; 9 hours", "CR 6; 10 hours"],
 				action : ["bonus action", " (start/stop)"],
+				eval : "RemoveAction('action', 'Wild Shape (start)'); RemoveAction('bonus action', 'Wild Shape (end)');"
 			},
 			"subclassfeature2.1" : {
 				name : "Combat Wild Shape",
@@ -2740,8 +2741,7 @@ var ClassSubList = {
 				minlevel : 2,
 				description : "\n   " + "As a bonus action while in Wild Shape, I can expend spell slots to heal myself" + "\n   " + "I regain 1d8 HP per expended spell slot level; I can use Wild Shape as a bonus action",
 				action : ["bonus action", " (heal)"],
-				eval : "RemoveAction(\"action\", \"Wild Shape (start)\"); RemoveAction(\"bonus action\", \"Wild Shape (end)\");",
-				removeeval : "AddAction(\"action\", \"Wild Shape (start)\", \"Druid (Circle of the Moon)\"); AddAction(\"bonus action\", \"Wild Shape (end)\", \"Druid (Circle of the Moon)\");"
+				removeeval : "AddAction('action', 'Wild Shape (start)', 'Druid'); AddAction('bonus action', 'Wild Shape (end)', 'Druid');"
 
 			},
 			"subclassfeature6" : {

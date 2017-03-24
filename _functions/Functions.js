@@ -1032,7 +1032,7 @@ function AddAction(actiontype, action, actiontooltip, replaceThis) {
 	}
 }
 
-function RemoveAction(actiontype, action, isRegex) {
+function RemoveAction(actiontype, action) {
 	var TheAction = actiontype.toLowerCase();
 	if (TheAction.indexOf("bonus") !== -1) {
 		var field = "Bonus Action ";
@@ -1041,11 +1041,10 @@ function RemoveAction(actiontype, action, isRegex) {
 	} else if (TheAction.indexOf("action") !== -1) {
 		var field = "Action ";
 	}
-	action = isRegex == true ? action : action.toLowerCase();
 	var numberOfFields = field === "Action " ? FieldNumbers.trueactions : FieldNumbers.actions;
 	for (var i = 1; i <= numberOfFields; i++) {
 		var next = tDoc.getField(field + i);
-		if (next.value.toLowerCase().search(action) !== -1) {
+		if ((typeof action == "object" && (action).test(next.value)) || (typeof action == "string" && next.value.toLowerCase().indexOf(action.toLowerCase()) !== -1)) {
 			DeleteItemType(field, i, numberOfFields);
 			i = numberOfFields + 1;
 		}
@@ -2646,14 +2645,16 @@ function FindClasses(Event) {
 		};
 
 		var Temps = CurrentClasses[aClass];
+		var classObj = ClassList[aClass];
+		var subClObj = classes.known[aClass].subclass && ClassSubList[classes.known[aClass].subclass] ? ClassSubList[classes.known[aClass].subclass] : false;
 
 		//fill in the properties of this newly defined global variable and prefer subclass attributes over class attributes
 		for (var prop in Temps) {
 			if (prop !== "features") {
-				if (classes.known[aClass].subclass && ClassSubList[classes.known[aClass].subclass][prop] !== undefined) {
-					Temps[prop] = ClassSubList[classes.known[aClass].subclass][prop];
-				} else if (ClassList[aClass][prop] !== undefined) {
-					Temps[prop] = ClassList[aClass][prop];
+				if (classes.known[aClass].subclass && subClObj[prop] !== undefined) {
+					Temps[prop] = subClObj[prop];
+				} else if (classObj[prop] !== undefined) {
+					Temps[prop] = classObj[prop];
 				}
 			}
 		}
@@ -2668,21 +2669,20 @@ function FindClasses(Event) {
 		var fAB = [];
 		var fTrans = {};
 		//add features of the class
-		for (prop in ClassList[aClass].features) {
-			var cPropAtt = ClassList[aClass].features[prop];
+		for (prop in classObj.features) {
+			var cPropAtt = classObj.features[prop];
 			var fNm = ("0" + cPropAtt.minlevel).slice(-2) + ((/subclassfeature/i).test(prop) ? "" : "()") + cPropAtt.name;
+			//subClObj && subClObj.features[prop]
 			if (fNm.toString().length > 2) {
 				fAB.push(fNm);
 				fTrans[fNm] = {name: prop, list: "ClassList", item: aClass};
 			}
 		}
 		
-		var hasSub = false;
 		//add features of subclass
-		if (classes.known[aClass].subclass && ClassSubList[classes.known[aClass].subclass].features !== undefined) {
-			hasSub = true;
-			for (prop in ClassSubList[classes.known[aClass].subclass].features) {
-				var csPropAtt = ClassSubList[classes.known[aClass].subclass].features[prop];
+		if (subClObj && subClObj.features) {
+			for (prop in subClObj.features) {
+				var csPropAtt = subClObj.features[prop];
 				var fNm = ("0" + csPropAtt.minlevel).slice(-2) + csPropAtt.name;
 				if (fNm.toString().length > 2) {
 					fAB.push(fNm);
@@ -2695,7 +2695,7 @@ function FindClasses(Event) {
 		
 		for (var f = 0; f < fAB.length; f++) {
 			var propAtt = fTrans[fAB[f]];
-			if (hasSub && propAtt.list === "ClassList" && (/subclassfeature/i).test(propAtt.name)) continue; // skip any "subclassfeature" from the class if a subclass is known
+			if (subClObj && propAtt.list === "ClassList" && ((/subclassfeature/i).test(propAtt.name) || subClObj.features[propAtt.name])) continue; // skip any features from the class if a subclass is known and has that same feature
 			Temps.features[propAtt.name] = tDoc[propAtt.list][propAtt.item].features[propAtt.name];
 		}
 
@@ -5714,7 +5714,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 
 				//add or remove action, if defined
 				if (keyFea.action && checkLVL) {
-					tDoc[AddRemove + "Action"](keyFea.action[0], keyFea.name + keyFea.action[1], AddRemove === "Add" ? "being a " + CurrentRace.name : false);
+					tDoc[AddRemove + "Action"](keyFea.action[0], keyFea.name + keyFea.action[1], "being a " + CurrentRace.name);
 				}
 
 				//do custom script, if defined
@@ -5863,14 +5863,15 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 				if (Typeswitch !== "proficiencies" && ClassLevelUp[aClass][0] !== "stop") {
 					
 					//if this is about a feature only available to a subclass, but no subclass is defined, ask to add a subclass
-					if (prop.indexOf("subclassfeature") !== -1 && propFea.minlevel <= ClassLevelUp[aClass][2] && !classes.known[aClass].subclass && IsNotReset) {
+					var theSubClass = classes.known[aClass].subclass;
+					if (prop.indexOf("subclassfeature") !== -1 && propFea.minlevel <= ClassLevelUp[aClass][2] && !theSubClass && IsNotReset) {
 						thermoM("No subclass known, asking for subclass to add..."); //change the progress dialog text
 						var stopNow = PleaseSubclass(aClass); //ask to add a subclass
 						if (stopNow) {
 							thermoM("stop");
 							break; //this function is going to run again, so stop it now for this class
 						}
-					} else if (prop.indexOf("subclassfeature") !== -1) {
+					} else if (prop.indexOf("subclassfeature") !== -1 || (theSubClass&& ClassSubList[theSubClass].features[prop])) {
 						delete IsSubclassException[aClass];
 					} else if (IsSubclassException[aClass]) {
 						var FeaNewString = ParseClassFeature(aClass, prop, newClassLvl[aClass], false, FeaChoice);
@@ -5879,17 +5880,18 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					}
 					thermoM("Updating " + temp.fullname + "'s " + propFea.name + "..."); //change the progress dialog text
 					
-					var ForceAll = false;
-					//if this is the first time adding in a subclass, its features must be forced. But only if the feature meets the level requirement both before and after the level change
-					var theSubClass = classes.known[aClass].subclass;
-					if (theSubClass && ClassSubList[theSubClass].features[prop] && classes.old[aClass] && theSubClass !== classes.old[aClass].subclass && propFea.minlevel <= ClassLevelUp[aClass][2] && propFea.minlevel <= ClassLevelUp[aClass][1]) {
-						ForceAll = true;
-					}
-					
-					thermoM(2/8); //increment the progress dialog's progress
-					
 					//make a check to see if level-dependent features should be dealt with
 					var CheckLVL = propFea.minlevel <= ClassLevelUp[aClass][2] && propFea.minlevel > ClassLevelUp[aClass][1];
+					
+					var ForceAll = false;
+					var ForceSpecial = false;
+					//if this is the first time adding in a subclass, its features must be forced. But only if the feature meets the level requirement both before and after the level change
+					if (theSubClass && ClassSubList[theSubClass].features[prop] && classes.old[aClass] && theSubClass !== classes.old[aClass].subclass && ((prop.indexOf("subclassfeature") === -1 && CheckLVL) || (propFea.minlevel <= ClassLevelUp[aClass][2] && propFea.minlevel <= ClassLevelUp[aClass][1]))) {
+						ForceAll = true;
+						ForceSpecial = prop.indexOf("subclassfeature") === -1 && CheckLVL;
+					};
+					
+					thermoM(2/8); //increment the progress dialog's progress
 
 					//check for features that are not level-dependent
 					var CheckFea = ForceAll || CheckLVL;
@@ -5899,6 +5901,19 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 
 					// --- add or remove something via custom script, if defined
 					var evalAddRemove = CheckFea && propFea.minlevel <= newClassLvl[aClass] ? "eval" : "removeeval";
+/*
+					if ((/wild shape|subclassfeature/i).test(prop)) {
+						console.println(
+							prop+":\nForceAll: "+ForceAll+"\n"+
+							"classes.known.druid.subclass: "+classes.known.druid.subclass+"\n"+
+							"classes.old.druid.subclass: "+(classes.old.druid ?classes.old.druid.subclass : false)+"\n"+(classes.old.druid ?							"Are the same?: "+(classes.old.druid ? (theSubClass == classes.old.druid.subclass) : false)+"\n" : "")+
+							"oldLevel: "+oldClassLvl.druid+"\n"+
+							"newLevel: "+newClassLvl.druid+"\n"+
+							"evalAddRemove: "+evalAddRemove+"\n"+
+							"propFea[evalAddRemove]: "+(propFea[evalAddRemove] ? true : false)+"\n"
+						);
+					} // // DEBUGGING!!!
+*/
 					if (propFea[evalAddRemove] && CheckFea) {
 						var thePropFeaeval = What("Unit System") === "metric" && propFea[evalAddRemove].indexOf("String") !== -1 ? ConvertToMetric(propFea[evalAddRemove], 0.5) : propFea[evalAddRemove];
 						eval(thePropFeaeval);
@@ -5966,7 +5981,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					var ActionAddRemove = CheckFea && propFea.minlevel <= newClassLvl[aClass] ? "Add" : "Remove";
 					if (propFea.action && CheckFea) {
 						var thePropFeaAct = What("Unit System") === "metric" && propFea.action[1] ? ConvertToMetric(propFea.action[1], 0.5) : propFea.action[1];
-						tDoc[ActionAddRemove + "Action"](propFea.action[0], propFea.name + thePropFeaAct, ActionAddRemove === "Add" ? temp.fullname : false);
+						tDoc[ActionAddRemove + "Action"](propFea.action[0], propFea.name + thePropFeaAct, temp.fullname);
 					}
 					if (CheckFea && FeaChoice && propFea[FeaChoice].action) {
 						var thePropFeaChoiceAct = What("Unit System") === "metric" ? ConvertToMetric(propFea[FeaChoice].action[1], 0.5) : propFea[FeaChoice].action[1];
@@ -6028,7 +6043,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					thermoM(7/8); //increment the progress dialog's progress
 
 					//--- get the new and old string of the class features
-					var FeaOldString = ParseClassFeature(aClass, prop, oldClassLvl[aClass], ForceAll, FeaOldChoice);
+					var FeaOldString = ParseClassFeature(aClass, prop, ForceSpecial ? newClassLvl[aClass] : oldClassLvl[aClass], ForceAll, FeaOldChoice);
 					var FeaNewString = ParseClassFeature(aClass, prop, newClassLvl[aClass], false, FeaChoice);
 					
 					//make variables for the text in the class features field
@@ -6045,7 +6060,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 							RemoveClassFeatureChoice(aClass, prop);
 						}
 					}
-					if (prop === "wild shape") {
+					if (prop.indexOf("wild shape") !== -1) {
 						isWildShape = [newClassLvl[aClass], Fea.Use, Fea.Recov, Fea.Add];
 						WSinUse = true;
 					}
