@@ -24,6 +24,20 @@ var ArmourList = {
 		addMod : true
 	},
 
+	// UA Immortal Mystic armour
+	"Immortal's durability" : {
+		regExpSearch : /^(?=.*immortal)(?=.*durability).*$/i,
+		name : "Immortal Durability (Con)",
+		source : ["UA:TMC", 7],
+		type : "",
+		ac : 13,
+		stealthdis : false,
+		weight : 0,
+		strReq : 0,
+		dex : -10,
+		addMod : true
+	},
+
 	"draconic resilience" : {
 		regExpSearch : /^(?=.*(dragon|draconic|scaly))(?=.*(hide|skin|scales|resilience)).*$/i,
 		name : "Draconic resilience",
@@ -1058,7 +1072,6 @@ var WeaponsList = {
 		regExpSearch : /improvised/i,
 		name : "Improvised weapon",
 		source : ["P", 147],
-		list : "improvised",
 		ability : 1,
 		type : "Improvised Weapons",
 		damage : [1, 4, "bludgeoning"],
@@ -1344,6 +1357,18 @@ var WeaponsList = {
 		damage : ["C", 6, "force"],
 		range : "120 ft",
 		description : "Str save, success - no damage, fail - also move 10 ft in chosen direction (UA:TMC 28)",
+		abilitytodamage : false,
+		dc : true
+	},
+	"soul knife" : {
+		regExpSearch : /^(?=.*\bsoul)(?=.*(knives|knife|weapon)\b).*$/i,
+		name : "Soul Knife",
+		source : ["UA:TMC", 8],
+		ability : 1,
+		type : "Martial",
+		damage : [1, 8, "psychic"],
+		range : "Melee",
+		description : "Finesse, light",
 		abilitytodamage : false,
 		dc : true
 	},

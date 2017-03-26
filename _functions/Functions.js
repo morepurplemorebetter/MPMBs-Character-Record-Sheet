@@ -3579,19 +3579,21 @@ function SetWeaponsdropdown() {
 	
 	for (var i = 1; i <= FieldNumbers.attacks; i++) {
 		var theFld = "Attack." + i + ".Weapon Selection";
-		if (tDoc.getField(theFld).submitName === setweapons.toSource()) continue; //no changes, so no reason to set this field
-		tDoc.getField(theFld).submitName = setweapons.toSource();
+		var theFldSuNm = "Attack." + i + ".Proficiency";
+		if (tDoc.getField(theFldSuNm).submitName === setweapons.toSource()) continue; //no changes, so no reason to set this field
+		tDoc.getField(theFldSuNm).submitName = setweapons.toSource();
 		var theFldVal = What(theFld);
 		tDoc.getField(theFld).setItems(setweapons);
-		Value(theFld, theFldVal, string);
+		if (theFldVal !== What(theFld)) Value(theFld, theFldVal, string);
 	};
 	for (var c = 1; c <= 3; c++) {
 		theFld = "Comp.Use.Attack." + c + ".Weapon Selection";
-		if (tDoc.getField(theFld).submitName === setweapons.toSource()) continue; //no changes, so no reason to set this field
-		tDoc.getField(theFld).submitName = setweapons.toSource();
+		theFldSuNm = "Comp.Use.Attack." + c + ".Proficiency";
+		if (tDoc.getField(theFldSuNm).submitName === setweapons.toSource()) continue; //no changes, so no reason to set this field
+		tDoc.getField(theFldSuNm).submitName = setweapons.toSource();
 		theFldVal = What(theFld);
 		tDoc.getField(theFld).setItems(setweapons);
-		Value(theFld, theFldVal, string);
+		if (theFldVal !== What(theFld)) Value(theFld, theFldVal, string);
 	};
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;

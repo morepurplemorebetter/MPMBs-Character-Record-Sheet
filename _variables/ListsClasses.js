@@ -2073,7 +2073,7 @@ var ClassSubList = {
 				minlevel : 3,
 				description : "\n   " + "I gain proficiency with medium armor, shields, and martial weapons",
 				armor : [false, true, false, true],
-				weapons : [false, true],
+				weapons : [false, true]
 			},
 			"subclassfeature3.1" : {
 				name : "Combat Inspiration",
@@ -2142,22 +2142,22 @@ var ClassSubList = {
 					name : "Arcane Mastery (6)",
 					class : "wizard",
 					level : [6, 6],
-					prepared : true,
+					prepared : true
 				}, {
 					name : "Arcane Mastery (7)",
 					class : "wizard",
 					level : [7, 7],
-					prepared : true,
+					prepared : true
 				}, {
 					name : "Arcane Mastery (8)",
 					class : "wizard",
 					level : [8, 8],
-					prepared : true,
+					prepared : true
 				}, {
 					name : "Arcane Mastery (9)",
 					class : "wizard",
 					level : [9, 9],
-					prepared : true,
+					prepared : true
 				},]
 			}
 		}
@@ -3497,7 +3497,7 @@ var ClassSubList = {
 				additional : "1 ki point for 2 extra attacks",
 				description : "\n   " + "I gain a ranged spell attack that I can use as part of the Attack action" + "\n   " + "If I do this and spend 1 ki point, I can make two extra attacks as a bonus action",
 				action : ["bonus action", " (2\u00D7 with Attack action)"],
-				eval : "AddWeapon(\"Radiant Sun Bolt\");",
+				eval : "AddWeapon('Radiant Sun Bolt');",
 				removeeval : "RemoveWeapon(\"Radiant Sun Bolt\");",
 				extraname : "Way of the Sun Soul 6",
 				changeeval : "if (newClassLvl.monk >= 6 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"searing arc strike\") === -1) {ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"searing arc strike\", \"extra\"])} else if (newClassLvl.monk < 6 && oldClassLvl.monk >= 6) {ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"searing arc strike\", \"extra\"], \"remove\")};",

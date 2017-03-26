@@ -241,6 +241,7 @@ function resourceDecisionDialog() {
 		var srcGroup = SourceList[src].group;
 		var srcName = SourceList[src].name.replace(RegExp(srcGroup + " ?:? ?", "i"), "") + " (" + SourceList[src].abbreviation + ")";
 		if (!srcGroup || srcGroup === "default") continue;
+		if (srcGroup !== "Official Sources") srcGroup = "\u200B" + srcGroup;
 		if (!exclObj[srcGroup]) exclObj[srcGroup] = {};
 		if (!inclObj[srcGroup]) inclObj[srcGroup] = {};
 		if (CurrentSources.globalExcl.indexOf(src) !== -1) {

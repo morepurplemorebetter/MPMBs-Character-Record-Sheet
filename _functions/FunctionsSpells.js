@@ -3284,10 +3284,6 @@ function GenerateSpellSheet(GoOn) {
 	IsNotSpellSheetGenerating = false;
 	var isFirst = 0;
 	for (var i = 0; i < CurrentCasters.incl.length; i++) {
-		
-		var spCast = CurrentSpells[CurrentCasters.incl[i]];
-		var isPsionics = spCast.factor && (/psionic/i).test(spCast.factor[1]) ? "psionic" : ""; //see if this is a psionic caster
-		
 		//get a list of all the spells to put on the Spell Sheet
 		var fullSpellList = [];
 		if (spCast.selectCa) fullSpellList = fullSpellList.concat(spCast.selectCa); //add the cantrips
@@ -3335,13 +3331,13 @@ function GenerateSpellSheet(GoOn) {
 		//now see if we have any spells to add to the spell sheet for this class. If not, skip this class
 		var testArray = removeEmptyValues(fullSpellList);
 		if (testArray.length === 0) {
-			isFirst = i === 0 ? 1 : 0;
+			if (isFirst === i) isFirst += 1;
 			continue;
 		}
 		
-		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : isPsionics ? "##pp" : (spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : (spCast.typeSp === "race" ? "##kn" : "##")); //add "Me" or "Kn" to the name or not?
+		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : (spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : (spCast.typeSp === "race" ? "##kn" : "##")); //add "Me" or "Kn" to the name or not?
 		
-		var orderedSpellList = OrderSpells(fullSpellList, "multi"); //get an array of 10 arrays, one for each spell level
+		var orderedSpellList = OrderSpells(fullSpellList, "multi", true); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
 		
 		//see if we need to stop short of doing all the spells
 		var maxLvl = 9;
@@ -3358,9 +3354,10 @@ function GenerateSpellSheet(GoOn) {
 		
 		//now sort each of those new arrays and put them on the sheet
 		var start = true;
+		var isPsionics = false;
 		for (var lvl = 0; lvl <= maxLvl; lvl++) {
 			var spArray = orderedSpellList[lvl];
-			if (spArray.length > 0) {
+			if (spArray && spArray.length > 0) {
 				//add spell dependencies to fill out the array
 				spArray = addSpellDependencies(spArray);
 				//first test if there is enough space left on the current page to add what we need to
@@ -3419,6 +3416,13 @@ function GenerateSpellSheet(GoOn) {
 					Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck);
 					lineCurrent += 1;
 				}
+			}
+			//now do the psionic talents/disciplines
+			if (i <= 9 && lvl === maxLvl) {
+				i = 10;
+				maxLvl = 11;
+				isPsionics = true;
+				MeKn = spCast.firstCol ? "##" + spCast.firstCol : "##pp";
 			}
 		}
 		
@@ -3723,19 +3727,24 @@ function MakeSpellMenu_SpellOptions() {
 
 //a function that takes an array of spells and orders it by level (and alphabet)
 //outputFormat defines whether to return an Array of Arrays ("multi"), or just one array "single";
-function OrderSpells(inputArray, outputFormat) {
+function OrderSpells(inputArray, outputFormat, sepPsionics) {
 	var orderedSpellList = [[], [], [], [], [], [], [], [], [], []]; //array of 10 arrays, one for each spell level
-	
-	//put these spells into their right level-array in orderedSpellList
+	if (sepPsionics) { //add two more arrayw, for the psionics
+		orderedSpellList[10] = [];
+		orderedSpellList[11] = [];
+	};
+	//put these spells into their right level-array in orderedSpellList and ignore duplicates
 	for (var S = 0; S < inputArray.length; S++) {
 		var nxtSpell = inputArray[S];
-		if (SpellsList[nxtSpell] && orderedSpellList[SpellsList[nxtSpell].level].indexOf(nxtSpell) === -1) {
-			orderedSpellList[SpellsList[nxtSpell].level].push(nxtSpell);
+		if (SpellsList[nxtSpell] && inputArray.indexOf(nxtSpell) === S) {
+			var spLvl = SpellsList[nxtSpell].level;
+			if (sepPsionics && SpellsList[nxtSpell].psionic) spLvl += 10;
+			orderedSpellList[spLvl].push(nxtSpell);
 		};
 	};
 	
 	//now make sure all of them are sorted
-	for (var i = 0; i < 10; i++) orderedSpellList[i].sort();
+	for (var i = 0; i < orderedSpellList.length; i++) orderedSpellList[i].sort();
 	
 	var returnArray = [];
 	switch (outputFormat) {
@@ -3743,7 +3752,7 @@ function OrderSpells(inputArray, outputFormat) {
 		returnArray = orderedSpellList;
 		break;
 	 case "single" :
-		for (var i = 0; i < 10; i++) returnArray = returnArray.concat(orderedSpellList[i]);
+		for (var i = 0; i < orderedSpellList.length; i++) returnArray = returnArray.concat(orderedSpellList[i]);
 		break;
 	};
 	

@@ -4489,7 +4489,10 @@ function UpdateDropdown(type, weapon) {
 		SetCompDropdown();
 		SetWildshapeDropdown();
 		SetArmordropdown();
-		if (notAll) break;
+		if (notAll) {
+			SetWeaponsdropdown();
+			break;
+		}
 		SetAmmosdropdown();
 	 case "attack" :
 	 case "attacks" :

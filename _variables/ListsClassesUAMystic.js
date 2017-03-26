@@ -249,7 +249,7 @@ ClassSubList["mystic-awakened"] = {
 			source : ["UA:TMC", 6],
 			minlevel : 1,
 			description : desc([
-				"I gain proficiency with two skills of my choice, taken from the list below:",
+				"I gain proficiency with two skills of my choice, taken from the following list:",
 				"Animal Handling, Deception, Insight, Intimidation, Investigation, Perception, Persuasion"
 			]),
 			skillstxt : "\n\n" + toUni("Order of the Awakened") + ": Choose two skills from: Animal Handling, Deception, Insight, Intimidation, Investigation, Perception, and Persuasion."
@@ -313,36 +313,48 @@ ClassSubList["mystic-immortal"] = {
 			}
 		},
 		"subclassfeature1.1" : {
-			name : "",
+			name : "Immortal Durability",
 			source : ["UA:TMC", 7],
 			minlevel : 1,
 			description : desc([
-				""
-			])
+				"My hit point maximum increases by an amount equal to my mystic level",
+				"Without armor, my AC is 10 + my Dexterity modifier + my Constitution modifier"
+			]),
+			calcChanges : {
+				hp : "if (classes.known.mystic) {extrahp += classes.known.mystic.level; extrastring += '\\n + ' + classes.known.mystic.level + ' from Immortal Durability (Mystic)'; }; "
+			}
 		},
 		"subclassfeature3" : {
-			name : "",
+			name : "Psionic Resilience",
 			source : ["UA:TMC", 7],
 			minlevel : 3,
 			description : desc([
-				""
+				"At the start of each turn, I gain my Intelligence modifier in temporary HP (min 0)"
 			])
 		},
 		"subclassfeature6" : {
-			name : "",
+			name : "Surge of Health",
 			source : ["UA:TMC", 7],
 			minlevel : 6,
 			description : desc([
-				""
-			])
+				"As a reaction when I take damage, I can halve that damage, but end my psychic focus",
+				"Once I do this, I can't regain psychic focus in any discipline until I can use this again"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : ["reaction", ""]
 		},
 		"subclassfeature14" : {
-			name : "",
+			name : "Immortal Will",
 			source : ["UA:TMC", 7],
 			minlevel : 14,
 			description : desc([
-				""
-			])
+				"If I end my turn at 0 HP, I can use 5 psi points to regain mystic level + Con mod in HP"
+			]),
+			additional : levels.map(function (n) {
+				if (n < 14) return "";
+				return "HP: " + n + " + Constitution modifier";
+			})
 		}
 	}
 };
@@ -368,35 +380,41 @@ ClassSubList["mystic-nomad"] = {
 			}
 		},
 		"subclassfeature1.1" : {
-			name : "",
+			name : "Breadth of Knowledge",
 			source : ["UA:TMC", 7],
 			minlevel : 1,
 			description : desc([
-				""
+				"After I finish a long rest, I gain two proficiencies in chosen language, tool, or skill",
+				"These proficiencies last until I finish my next long rest"
 			])
 		},
 		"subclassfeature3" : {
-			name : "",
+			name : "Memory of One Thousand Steps",
 			source : ["UA:TMC", 7],
 			minlevel : 3,
 			description : desc([
-				""
-			])
+				"As a reaction when hit by an attack, I can teleport away, causing the attack to miss",
+				"I can teleport to any empty space that I had occupied since the start of my last turn"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : ["reaction", ""]
 		},
 		"subclassfeature6" : {
-			name : "",
+			name : "Superior Teleportation",
 			source : ["UA:TMC", 7],
 			minlevel : 6,
 			description : desc([
-				""
+				"When I use a psionic discipline to teleport, I can increase its distance by up to 10 ft"
 			])
 		},
 		"subclassfeature14" : {
-			name : "",
+			name : "Effortless Journey",
 			source : ["UA:TMC", 7],
 			minlevel : 14,
 			description : desc([
-				""
+				"Once during my turn, I can teleport instead of moving, up to my movement speed ",
+				"I subtracting the distance teleported from my remaining speed"
 			])
 		}
 	}
@@ -413,39 +431,47 @@ ClassSubList["mystic-soul knife"] = {
 			name : "Martial Training",
 			source : ["UA:TMC", 7],
 			minlevel : 1,
-			description : "\n   " + ""
+			description : "\n   " + "I gain proficiency with medium armor and martial weapons",
+			armor : [false, true, false, false],
+			weapons : [false, true]			
 		},
 		"subclassfeature1.1" : {
-			name : "",
+			name : "Soul Knife",
 			source : ["UA:TMC", 8],
 			minlevel : 1,
 			description : desc([
-				""
-			])
+				"As a bonus action, I can create or dismiss my soul knives on both my fists",
+				"As a bonus action, I can parry with these to get +2 AC until the start of my next turn"
+			]),
+			action : ["bonus action", " (create/dismiss)"],
+			eval : "AddAction('bonus action', 'Soul Knife Parry', 'Soul Knife'); AddWeapon('Soul Knife');"
+			removeeval : "RemoveAction('bonus action', 'Soul Knife Parry'); RemoveWeapon('Soul Knife');"
 		},
 		"subclassfeature3" : {
-			name : "",
+			name : "Hone the Blade",
 			source : ["UA:TMC", 8],
 			minlevel : 3,
 			description : desc([
-				""
+				"I can spend psi points to give my soul knives a bonus to attack and damage for 10 min",
+				"2 psi points: +1; 5 psi points: +2; 7 psi points: +4"
 			])
 		},
 		"subclassfeature6" : {
-			name : "",
+			name : "Consumptive Knife",
 			source : ["UA:TMC", 8],
 			minlevel : 6,
 			description : desc([
-				""
+				"Whenever I slay an enemy with a soul knife attack, I immediately regain 2 psi points"
 			])
 		},
 		"subclassfeature14" : {
-			name : "",
+			name : "Phantom Knife",
 			source : ["UA:TMC", 8],
 			minlevel : 14,
 			description : desc([
-				""
-			])
+				"As an action, I can make one attack with my soul knife, treating the target's AC as 10"
+			]),
+			action : ["action", ""]
 		}
 	}
 };
@@ -461,6 +487,7 @@ ClassSubList["mystic-wu jen"] = {
 			name : "Bonus Disciplines",
 			source : ["UA:TMC", 8],
 			minlevel : 1,
+//			description : " [+2 awakened disciplines]",
 			description : "\n   " + "I know two additional psionic disciplines, taken from the wu jen disciplines",
 			spellcastingBonus : {
 				name : "Bonus Disciplines",
@@ -472,41 +499,53 @@ ClassSubList["mystic-wu jen"] = {
 			}
 		},
 		"subclassfeature1.1" : {
-			name : "",
+			name : "Hermit's Study",
 			source : ["UA:TMC", 8],
 			minlevel : 1,
 			description : desc([
-				""
-			])
+				"I gain proficiency with two skills of my choice, taken from the following list:",
+				"Animal Handling|Arcana|History|Insight|Medicine|Nature|Perception|Religion|Survival"
+			]),
+			skillstxt : "\n\n" + toUni("Order of the Awakened") + ": Choose two skills from: Animal Handling, Arcana, History, Insight, Medicine, Nature, Perception, Religion, and Survival."
 		},
 		"subclassfeature3" : {
-			name : "",
+			name : "Elemental Attunement",
 			source : ["UA:TMC", 8],
 			minlevel : 3,
 			description : desc([
-				""
+				"If a target's resistance reduces damage of one of my psionic disciplines, I can bypass it",
+				"With 1 extra psi point for the discipline (psi limit permitting), the resistance is ignored"
 			])
 		},
 		"subclassfeature6" : {
-			name : "",
+			name : "Arcane Dabbler",
 			source : ["UA:TMC", 8],
 			minlevel : 6,
 			description : desc([
-				""
-			])
+				"I know 3 wizard spells (1-3 level); When I gain a mystic level, I can swap one of these",
+				"As a bonus action, I can use psi points to make spell slots; Last until my next long rest",
+				"2 PP: 1st-level; 3 PP: 2nd-level; 5 PP: 3rd-level; 6 PP: 4th-level; 7 PP: 5th-level"
+			]),
+			spellcastingBonus : {
+				name : "Arcane Dabbler",
+				class : "wizard",
+				level : [1, 3],
+				prepared : true,
+				times : 3
+			}
 		},
 		"subclassfeature14" : {
-			name : "",
+			name : "Elemental Mastery",
 			source : ["UA:TMC", 8],
 			minlevel : 14,
 			description : desc([
-				""
+				"As a reaction when I take damage to which I have resistance, I can ignore that damage",
+				"I gain immunity to that damage type until the start of my next turn"
 			])
 		}
 	}
 };
 
-/*	TO DO:
-	- Add a way to set Psionics from the line menu
+/*	TO DO: 
 	- Generate complete spell sheet of the mystic
 */
