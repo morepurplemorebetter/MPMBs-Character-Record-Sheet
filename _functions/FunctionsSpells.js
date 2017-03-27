@@ -701,8 +701,8 @@ function SetSpellCheckbox() {
 	}
 }
 
-//generate a list of all the spells; if display = true it means this is meant for the drop-down boxes
-function CreateSpellList(inputObject, display, extraArray, returnOrdered) {
+//generate a list of all the spells; if toDisplay = true it means this is meant for the drop-down boxes
+function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 	if (typeof inputObject === "string") {
 		switch (inputObject) {
 			case "eldritch knight" :
@@ -771,7 +771,7 @@ function CreateSpellList(inputObject, display, extraArray, returnOrdered) {
 		}
 		if (addSp || (extraArray && extraArray.indexOf(key) !== -1)) {
 			var SpPs = !aSpell.psionic ? "sp" : "ps";
-			if (display) {
+			if (toDisplay) {
 				spByLvl[SpPs + aSpell.level].push(aSpell.name);
 			} else if (returnOrdered) {
 				spByLvl[SpPs + aSpell.level].push(key);
@@ -781,7 +781,7 @@ function CreateSpellList(inputObject, display, extraArray, returnOrdered) {
 		}
 	}
 	
-	if (display) {
+	if (toDisplay) {
 		var count = 0;
 		//now cycle through all the spell level arrays and add them, if not empty, to the returnArray
 		for (var i = 0; i <= 11; i++) {
@@ -5256,7 +5256,7 @@ function AmendSpellsList() {
 	//Add the psionics to the SpellsList object
 	if (PsionicsList) {
 		for (var psiO in PsionicsList) {
-			var objNm = SpellsList[psiO] ? "psionic-" + psiO : psiO;
+			var objNm = SpellsList[psiO] && !SpellsList[psiO].psionic ? "psionic-" + psiO : psiO;
 			SpellsList[objNm] = PsionicsList[psiO];
 		};
 	};
@@ -5284,7 +5284,11 @@ function addSpellDependencies(spArr) {
 }
 
 //set some global variables concerning spells and psionics
-function setSpellVariables() {
+function setSpellVariables(reDoAll) {
+	if (reDoAll) {
+		AllPsionicClasses = false;
+		AllCasterClasses = false;
+	}
 	AllSpellsArray = CreateSpellList({class : "any"}, true);
 	AllPsionicsArray = CreateSpellList({class : "any", psionic : true}, true);
 	AllSpellsObject = CreateSpellObject(AllSpellsArray);

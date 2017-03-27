@@ -3583,7 +3583,9 @@ function SetWeaponsdropdown() {
 		if (tDoc.getField(theFldSuNm).submitName === setweapons.toSource()) continue; //no changes, so no reason to set this field
 		tDoc.getField(theFldSuNm).submitName = setweapons.toSource();
 		var theFldVal = What(theFld);
+		IsNotWeaponMenu = false;
 		tDoc.getField(theFld).setItems(setweapons);
+		IsNotWeaponMenu = true;
 		if (theFldVal !== What(theFld)) Value(theFld, theFldVal, string);
 	};
 	for (var c = 1; c <= 3; c++) {
@@ -3592,7 +3594,9 @@ function SetWeaponsdropdown() {
 		if (tDoc.getField(theFldSuNm).submitName === setweapons.toSource()) continue; //no changes, so no reason to set this field
 		tDoc.getField(theFldSuNm).submitName = setweapons.toSource();
 		theFldVal = What(theFld);
+		IsNotWeaponMenu = false;
 		tDoc.getField(theFld).setItems(setweapons);
+		IsNotWeaponMenu = true;
 		if (theFldVal !== What(theFld)) Value(theFld, theFldVal, string);
 	};
 	tDoc.calculate = IsNotReset;
@@ -5903,19 +5907,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 
 					// --- add or remove something via custom script, if defined
 					var evalAddRemove = CheckFea && propFea.minlevel <= newClassLvl[aClass] ? "eval" : "removeeval";
-/*
-					if ((/wild shape|subclassfeature/i).test(prop)) {
-						console.println(
-							prop+":\nForceAll: "+ForceAll+"\n"+
-							"classes.known.druid.subclass: "+classes.known.druid.subclass+"\n"+
-							"classes.old.druid.subclass: "+(classes.old.druid ?classes.old.druid.subclass : false)+"\n"+(classes.old.druid ?							"Are the same?: "+(classes.old.druid ? (theSubClass == classes.old.druid.subclass) : false)+"\n" : "")+
-							"oldLevel: "+oldClassLvl.druid+"\n"+
-							"newLevel: "+newClassLvl.druid+"\n"+
-							"evalAddRemove: "+evalAddRemove+"\n"+
-							"propFea[evalAddRemove]: "+(propFea[evalAddRemove] ? true : false)+"\n"
-						);
-					} // // DEBUGGING!!!
-*/
+
 					if (propFea[evalAddRemove] && CheckFea) {
 						var thePropFeaeval = What("Unit System") === "metric" && propFea[evalAddRemove].indexOf("String") !== -1 ? ConvertToMetric(propFea[evalAddRemove], 0.5) : propFea[evalAddRemove];
 						eval(thePropFeaeval);
@@ -9305,7 +9297,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 	if (typeof inputString != 'string' || inputString === "") {return "";};
 	var rounding = rounded ? rounded : 1;
 	var ratio = exact ? "metricExact" : "metric";
-	var INtoM = function (unit) {
+	var INtoCM = function (unit) {
 		return unit * UnitsList[ratio].lengthInch;
 	}
 	var FTtoM = function (unit) {
@@ -9334,6 +9326,10 @@ function ConvertToMetric(inputString, rounded, exact) {
 			var total = FTtoM(Number(amount));
 			var unit = "m";
 			break;
+		 case "in" : case "inch" : case "inches" :
+			var total = INtoCM(Number(amount));
+			var unit = "cm";
+			break;
 		 case "cu ft" : case "cubic foot" : case "cubic feet" :
 			var total = CUFTtoM(Number(amount));
 			var unit = "l";
@@ -9351,7 +9347,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 	}
 	
 	// find all labeled measurements in string
-	var measurements = inputString.match(/\b\d+(,|\.|\/)?\d*\/?(\d+?(,|\.|\/)?\d*)?\s?-?((miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?)\b|('($|\s)|'\d+\w?"))/ig);
+	var measurements = inputString.match(/\b\d+(,|\.|\/)?\d*\/?(\d+?(,|\.|\/)?\d*)?\s?-?((in|inch|inches|miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?)\b|('($|\s)|'\d+\w?"))/ig);
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
@@ -9387,7 +9383,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 	if (typeof inputString != 'string' || inputString === "") {return "";};
 	var ratio = exact ? "metricExact" : "metric";
 	var rounding = rounded ? rounded : 1;
-	var INofM = function (unit) {
+	var INofCM = function (unit) {
 		return unit / UnitsList[ratio].lengthInch;
 	}
 	var FTofM = function (unit) {
@@ -9409,6 +9405,11 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 	var theConvert = function (amount, units) {
 		switch (units){
 		 case "cm" :
+			if (amount < 30) {
+				var total = INofCM(Number(amount));
+				var unit = "in";
+				break;
+			}
 			amount = amount / 100;
 		 case "m" : case "meter" :  case "metre" :
 			var total = FTofM(Number(amount));

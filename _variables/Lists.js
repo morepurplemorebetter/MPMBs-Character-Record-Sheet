@@ -8,7 +8,7 @@ var UnitsList = {
 	metric : {
 		mass : 0.5,
 		length : 0.3,
-		lengthInch : 0.025,
+		lengthInch : 2.5,
 		volume : 30,
 		surface : 0.1,
 		distance : 1.6,
@@ -16,7 +16,7 @@ var UnitsList = {
 	metricExact : {
 		mass : 0.45359237,
 		length : 0.3048,
-		lengthInch : 0.0254,
+		lengthInch : 2.54,
 		volume : 28.316846592,
 		surface : 0.09290304,
 		distance : 1.609344,

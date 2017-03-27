@@ -3919,24 +3919,6 @@ function SetHPTooltip(resetHP) {
 	
 	if (CurrentEvals.hp) eval(CurrentEvals.hp);
 
-/*	No Longer needed as the CurrentEvals.hp replaces these
-
-	if (CurrentFeats.known.indexOf("tough") !== -1) {
-		extrahp += totalhd * 2;
-		extrastring += "\n + " + totalhd + " \u00D7 2 from the Tough feat (" + totalhd * 2 + ")";
-	}
-	
-	if (CurrentRace.known === "hill dwarf") {
-		extrahp += totalhd;
-		extrastring += "\n + " + totalhd + " from Dwarven Toughness";
-	}
-	
-	if (What("Class Features").toLowerCase().indexOf("draconic resilience") !== -1) {
-		var sorcLvl = classes.known.sorcerer ? classes.known.sorcerer.level : 0;
-		extrahp += sorcLvl;
-		extrastring += "\n + " + sorcLvl + " from Draconic Resilience";
-	}
-*/
 	hdplaceholder = totalhd === 0 ? "level \u00D7 hit dice (0)" : "";
 	totalhd = totalhd === 0 ? "level" : totalhd;
 	conhp = conhp === 0 ? ConMod : conhp;
@@ -5678,7 +5660,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	
 	//set the input as the submitName for reference and set the non-automated field with the same value as well
 	tDoc.getField(fldBase + "Weapon Selection").submitName = inputText;
-	if (!IsNotWeaponMenu || What("Manual Attack Remember") === "Yes") return; //don't do the rest of this function if only moving weapons around or weapons are set to manual or the compfield didn't change
+	if (!IsNotWeaponMenu || What("Manual Attack Remember") === "Yes" || inputText === (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr])) return; //don't do the rest of this function if only moving weapons around or weapons are set to manual or the CurrentWeapons.field didn't change
 	
 	if (What(fldBase + "Weapon") !== inputText) Value(fldBase + "Weapon", inputText);
 	

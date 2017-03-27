@@ -569,8 +569,8 @@ function resourceDecisionDialog() {
 		
 		//if something changed for the spells make the spell menu again
 		var oldCS = eval(remCS);
-		if (oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
-			setSpellVariables();
+		if (oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.classExcl !== CurrentSources.classExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
+			setSpellVariables(oldCS.spellsExcl !== CurrentSources.spellsExcl);
 		};
 	} else {
 		CurrentSources = eval(remCS);
