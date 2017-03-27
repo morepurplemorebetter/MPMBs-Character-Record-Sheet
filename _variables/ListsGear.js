@@ -1369,8 +1369,7 @@ var WeaponsList = {
 		damage : [1, 8, "psychic"],
 		range : "Melee",
 		description : "Finesse, light",
-		abilitytodamage : false,
-		dc : true
+		abilitytodamage : true
 	},
 	
 	

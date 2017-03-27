@@ -1,6 +1,6 @@
 var AtHigherLevels = "\n   " + toUni("At Higher Levels") + ": ";
 
-var spellLevelList = ["cantrip", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level"];
+var spellLevelList = ["cantrip", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level","Psionic Talents","Psionic Disciplines"];
 
 var spellSchoolList = {
 	"Abjur" : "abjuration",

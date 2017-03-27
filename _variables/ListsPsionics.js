@@ -644,6 +644,7 @@ var PsionicsList = {
 	},
 	"cm4-breath of the black dragon" : {
 		name : "Breath of the Black Dragon",
+		nameShort : "Breath o/t Black Dragon",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
@@ -658,6 +659,7 @@ var PsionicsList = {
 	},
 	"cm5-breath of the green dragon" : {
 		name : "Breath of the Green Dragon",
+		nameShort : "Breath o/t Green Dragon",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
@@ -1377,4 +1379,4 @@ var PsionicsList = {
 	},	
 };
 
-var AllPsionicsArray, AllPsionicsObject, AddPsionicsMenu, AllPsionicClasses;
+var AllPsionicsArray, AddPsionicsMenu, AllPsionicClasses;

@@ -37,8 +37,7 @@ ClassList.mystic = {
 			source : ["UA:TMC", 3],
 			minlevel : 1,
 			description : desc([
-				"I use psi points to fuel my psionic disciplines, up to my psi limit per instance",
-//				"I can tap into my psionic talents without using psi points"
+				"I use psi points to fuel my psionic disciplines, up to my psi limit per instance"
 			]),
 			usages : levels.map(function (n) {
 				return n < 2 ? 4 : n < 3 ? 6 : n < 4 ? 14 : n < 5 ? 17 :
@@ -55,8 +54,7 @@ ClassList.mystic = {
 			source : ["UA:TMC", 3],
 			minlevel : 1,
 			description : desc([
-				"I can use psionic talents/disciplines that I know, using Intelligence as my psionic ability",
-//				"Whenever I gain a mystic level, I can replace a discipline I know with another"
+				"I can use psionic talents/disciplines that I know, using Intelligence as my psionic ability"
 			]),
 			additional : levels.map(function (n) {
 				var talent = n < 3 ? "1 talent" : (n < 10 ? 2 : n < 17 ? 3 : 4) + " talents";
@@ -187,9 +185,8 @@ ClassSubList["mystic-avatar"] = {
 			spellcastingBonus : {
 				name : "Bonus Disciplines",
 				class : "mystic",
-				school : ["Avatar"], //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+				school : ["Avatar"],
 				level : [1, 9],
-				psionic : true,
 				times : 2
 			}
 		},
@@ -238,9 +235,8 @@ ClassSubList["mystic-awakened"] = {
 			spellcastingBonus : {
 				name : "Bonus Disciplines",
 				class : "mystic",
-				school : ["Awake"], //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+				school : ["Awake"],
 				level : [1, 9],
-				psionic : true,
 				times : 2
 			}
 		},
@@ -306,9 +302,8 @@ ClassSubList["mystic-immortal"] = {
 			spellcastingBonus : {
 				name : "Bonus Disciplines",
 				class : "mystic",
-				school : ["Immor"], //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+				school : ["Immor"],
 				level : [1, 9],
-				psionic : true,
 				times : 2
 			}
 		},
@@ -373,9 +368,8 @@ ClassSubList["mystic-nomad"] = {
 			spellcastingBonus : {
 				name : "Bonus Disciplines",
 				class : "mystic",
-				school : ["Nomad"], //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+				school : ["Nomad"],
 				level : [1, 9],
-				psionic : true,
 				times : 2
 			}
 		},
@@ -444,7 +438,7 @@ ClassSubList["mystic-soul knife"] = {
 				"As a bonus action, I can parry with these to get +2 AC until the start of my next turn"
 			]),
 			action : ["bonus action", " (create/dismiss)"],
-			eval : "AddAction('bonus action', 'Soul Knife Parry', 'Soul Knife'); AddWeapon('Soul Knife');"
+			eval : "AddAction('bonus action', 'Soul Knife Parry', 'Soul Knife'); AddWeapon('Soul Knife');",
 			removeeval : "RemoveAction('bonus action', 'Soul Knife Parry'); RemoveWeapon('Soul Knife');"
 		},
 		"subclassfeature3" : {
@@ -487,14 +481,12 @@ ClassSubList["mystic-wu jen"] = {
 			name : "Bonus Disciplines",
 			source : ["UA:TMC", 8],
 			minlevel : 1,
-//			description : " [+2 awakened disciplines]",
-			description : "\n   " + "I know two additional psionic disciplines, taken from the wu jen disciplines",
+			description : " [+2 awakened disciplines]",
 			spellcastingBonus : {
 				name : "Bonus Disciplines",
 				class : "mystic",
-				school : ["Wu Jen"], //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+				school : ["Wu Jen"],
 				level : [1, 9],
-				psionic : true,
 				times : 2
 			}
 		},
@@ -530,7 +522,6 @@ ClassSubList["mystic-wu jen"] = {
 				name : "Arcane Dabbler",
 				class : "wizard",
 				level : [1, 3],
-				prepared : true,
 				times : 3
 			}
 		},
@@ -545,7 +536,3 @@ ClassSubList["mystic-wu jen"] = {
 		}
 	}
 };
-
-/*	TO DO: 
-	- Generate complete spell sheet of the mystic
-*/
