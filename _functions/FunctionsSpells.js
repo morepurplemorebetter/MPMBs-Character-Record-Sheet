@@ -80,9 +80,9 @@ function ParseSpell(input) {
 		var foundLen = 0;
 
 		for (var key in SpellsList) { //scan string for all creatures
-			var toSearch = "\\b(" + clean(SpellsList[key].name).RegEscape();
-			toSearch += SpellsList[key].nameShort ? "|" + clean(SpellsList[key].nameShort).RegEscape() : "";
-			toSearch += SpellsList[key].nameAlt ? "|" + clean(SpellsList[key].nameAlt).RegEscape() : "";
+			var toSearch = "\\b(" + clean(SpellsList[key].name).replace(/^\W|\W$/g, "").RegEscape();
+			toSearch += SpellsList[key].nameShort ? "|" + clean(SpellsList[key].nameShort).replace(/^\W|\W$/g, "").RegEscape() : "";
+			toSearch += SpellsList[key].nameAlt ? "|" + clean(SpellsList[key].nameAlt).replace(/^\W|\W$/g, "").RegEscape() : "";
 			toSearch += ")\\b";
 			var toTest = RegExp(toSearch, "i");
 			if (key.length > foundLen && toTest.test(input)) {

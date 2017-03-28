@@ -155,21 +155,21 @@ var PsionicsList = {
 	},
 
 	//the adaptive body discipline
-	"adaptive body" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"adaptive body" : {
 		name : "Adaptive Body",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 10],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You don't need to eat, breathe, or sleep; You can long rest with 8 hours of light activity, without sleep",
 		descriptionFull : "You can alter your body to match your surroundings, allowing you to withstand punishing environments. With greater psi energy, you can extend this protection to others." + PsychicFocus + "While focused on this discipline, you don't need to eat, breathe, or sleep. To gain the benefits of a long rest, you can spend 8 hours engaged in light activity, rather than sleeping during any of it.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["ab1-environmental adaptation", "ab2-adaptive shield", "ab3-energy adaptation", "ab4-energy immunity"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["ab1-environmental adaptation", "ab2-adaptive shield", "ab3-energy adaptation", "ab4-energy immunity"]
 	},
 	"ab1-environmental adaptation" : {
 		name : "Environmental Adaptation",
@@ -177,470 +177,470 @@ var PsionicsList = {
 		source : ["UA:TMC", 10],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "Touch",
 		duration : "1 h",
 		description : "1 creature ignores the effects of extreme heat or cold (but not Fire or Cold damage)",
 		descriptionFull : "As an action, you or a creature you touch ignores the effects of extreme heat or cold (but not cold or fire damage) for the next hour.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"ab2-adaptive shield" : {
 		name : "Adaptive Shield",
 		source : ["UA:TMC", 10],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 rea",
 		range : "Self",
 		duration : "Next turn end",
 		description : "If taking Acid, Cold, Fire, Lightning, or Thunder damage, gain resistance to it until end of next turn",
 		descriptionFull : "When you take acid, cold, fire, lightning, or thunder damage, you can use your reaction to gain resistance to damage of that type -including the triggering damage- until the end of your next turn.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"ab3-energy adaptation" : {
 		name : "Energy Adaptation",
 		source : ["UA:TMC", 10],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "Touch",
 		duration : "Conc, 1 h",
 		description : "1 creature gains resistance to either Acid, Cold, Fire, Lightning, or Thunder damage",
 		descriptionFull : "As an action, you can touch one creature and give it resistance to acid, cold, fire, lightning, or thunder damage (your choice), which lasts until your concentration ends.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"ab4-energy immunity" : {
 		name : "Energy Immunity",
 		source : ["UA:TMC", 10],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "Touch",
 		duration : "Conc, 1 h",
 		description : "1 creature gains immunity to either Acid, Cold, Fire, Lightning, or Thunder damage",
 		descriptionFull : "As an action, you can touch one creature and give it immunity to acid, cold, fire, lightning, or thunder damage (your choice), which lasts until your concentration ends.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the aura sight discipline (contributed by Justin W.)
-	"aura sight" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"aura sight" : {
 		name : "Aura Sight",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
-		source : ["UA:TMC", 10], //the number is the page number in the PDF in the PDF
+		classes : ["mystic"],
+		source : ["UA:TMC", 10],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain advantage on Wisdom (Insight) checks",
 		descriptionFull : "You refocus your sight to see the energy that surrounds all creatures. You perceive auras, energy signatures that can reveal key elements of a creature’s nature." + PsychicFocus + "While focused on this discipline, you have advantage on Wisdom (Insight) checks.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["as1-asses foe", "as2-read moods", "as3-view aura", "as4-perceive the unseen"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["as1-asses foe", "as2-read moods", "as3-view aura", "as4-perceive the unseen"]
 	},
 	"as1-asses foe" : {
 		name : "Asses Foe",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Sight",
 		duration : "Instantaneous",
 		description : "Learn one creature's current HP total and all its immunities, resistances, and vulnerabilities",
 		descriptionFull : "As a bonus action, you analyze the aura of one creature you see. You learn its current hit point total and all its immunities, resistances, and vulnerabilities.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"as2-read moods" : {
 		name : "Read Moods",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Sight",
 		duration : "Instantaneous",
 		description : "Learn an one-word summary of the emotional state of up to 6 crea",
 		descriptionFull : "As a bonus action, you learn a one-word summary of the emotional state of up to six creatures you can see, such as happy, confused, afraid, or violent.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"as3-view aura" : {
 		name : "View Aura",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "Sight",
 		duration : "Conc, 1 h",
 		description : "Monitor 1 crea: current HP, if magic effects it, basic emotional state; adv. on Insight/Cha checks vs. it",
 		descriptionFull : "As an action, you study one creature’s aura. Until your concentration ends, while you can see the target, you learn if it’s under the effect of any magical or psionic effects, its current hit point total, and its basic emotional state. While this effect lasts, you have advantage on Wisdom (Insight) and Charisma checks you make against it.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"as4-perceive the unseen" : {
 		name : "Perceive the Unseen",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Sight",
 		duration : "Conc, 1 min",
 		description : "See all creatures, including hidden and invisible ones, regardless of lighting conditions",
 		descriptionFull : "As a bonus action, you gain the ability to see auras even of invisible or hidden creatures. Until your concentration ends, you can see all creatures, including hidden and invisible ones, regardless of lighting conditions.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 
 	//the bestial form discipline (contributed by rabidknave)
-	"bestial form" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"bestial form" : {
 		name : "Bestial Form",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain advantage on Wisdom (Animal Handling) checks",
 		descriptionFull : "You transform your body, gaining traits of different beasts." + PsychicFocus + "While focused on this discipline, you have advantage on Wisdom (Animal Handling) checks.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["bf1-bestial claws", "bf2-bestial transformation", "bf3-bt - amphibious", "bf4-bt - climbing", "bf5-bt - flight", "bf6-bt - keen senses", "bf7-bt - perfect senses", "bf8-bt - swimming", "bf9-bt - tough hide"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["bf1-bestial claws", "bf2-bestial transformation", "bf3-bt - amphibious", "bf4-bt - climbing", "bf5-bt - flight", "bf6-bt - keen senses", "bf7-bt - perfect senses", "bf8-bt - swimming", "bf9-bt - tough hide"]
 	},
 	"bf1-bestial claws" : {
 		name : "Bestial Claws",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "5 ft",
 		duration : "Instantaneous",
-		description : "Melee weapon attack with manifested claw, dealing 1d10/PP Slashing dmg", //the /PP has to come directly after the damage die
+		description : "Melee weapon attack with manifested claw, dealing 1d10/PP Slashing dmg",
 		descriptionFull : "You manifest long claws for an instant and make a melee weapon attack against one creature within 5 feet of you. On a hit, this attack deals 1d10 slashing damage per psi point spent.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"bf2-bestial transformation" : {
 		name : "Bestial Transformation",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "1 hr (D)",
 		description : "Alter physique to gain one or more of following effects; sum PP cost for a single use; end with bns a",
 		descriptionFull : "As a bonus action, you alter your physical form to gain different characteristics. When you use this ability, you can choose one or more of the following effects. Each effect has its own psi point cost. Add them together to determine the total cost. This transformation lasts for 1 hour, until you die, or until you end it as a bonus action.",
-		firstCol : "2-7" //power point cost
+		firstCol : "2-7"
 	},
 	"bf3-bt - amphibious" : {
 		name : " - Amphibious",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "",
 		range : "Self",
 		duration : "1 hr (D)",
 		description : "You are able to breathe air and water by gaining gills",
 		descriptionFull : "You gain gills; you can breathe air and water",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"bf4-bt - climbing" : {
 		name : " - Climbing",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "",
 		range : "Self",
 		duration : "1 hr (D)",
 		description : "You gain climbing speed equal to your walking speed by growing tiny hooked claws",
 		descriptionFull : "You grow tiny hooked claws that give you gain a climbing speed equal to your walking speed.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"bf5-bt - flight" : {
 		name : " - Flight",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "",
 		range : "Self",
 		duration : "1 hr (D)",
 		description : "You gain flying speed equal to your walking speed by sprouting wings",
 		descriptionFull : "Wings sprout from your back. You gain a flying speed equal to your walking speed.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"bf6-bt - keen senses" : {
 		name : " - Keen Senses",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "",
 		range : "Self",
 		duration : "1 hr (D)",
 		description : "You gain advantage on Wisdom (Perception) checks through more sensitive eyes and ears",
 		descriptionFull : "Your eyes and ears become more sensitive. You gain advantage on Wisdom (Perception) checks.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"bf7-bt - perfect senses" : {
 		name : " - Perfect Senses",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "",
 		range : "Self",
 		duration : "1 hr (D)",
 		description : "You see invisible creatures/objects within 10 ft, even when blinded, through smell",
 		descriptionFull : "You gain a keen sense of smell and an instinct to detect prey. You can see invisible creatures and objects within 10 feet of you, even if you are blinded.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"bf8-bt - swimming" : {
 		name : " - Swimming",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "",
 		range : "Self",
 		duration : "1 hr (D)",
 		description : "You gain swimming speed equal to your walking speed by growing fins and webbed feet/hands",
 		descriptionFull : "You gain fins and webbing between your fingers and toes; you gain a swimming speed equal to your walking speed.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"bf9-bt - tough hide" : {
 		name : " - Tough Hide",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "",
 		range : "Self",
 		duration : "1 hr (D)",
 		description : "You gain +2 bonus to AC through thicker skin",
 		descriptionFull : "Your skin becomes as tough as leather; you gain a +2 bonus to AC.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 
 	//the brute force discipline (contributed by rabidknave)
-	"brute force" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"brute force" : {
 		name : "Brute Force",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain advantage on Strength (Athletics) checks",
 		descriptionFull : "You augment your natural strength with psionic energy, granting you the ability to achieve incredible feats of might." + PsychicFocus + "While focused on this discipline, you have advantage on Strength (Athletics) checks.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["bf1-brute strike", "bf2-knock back", "bf3-mighty leap", "bf4-feat of strength"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["bf1-brute strike", "bf2-knock back", "bf3-mighty leap", "bf4-feat of strength"]
 	},
 	"bf1-brute strike" : {
 		name : "Brute Strike",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "This turn end",
 		description : "Your next melee attack during this turn deals +1d6/PP damage, of the same type as the melee attack",
 		descriptionFull : "As a bonus action, you gain a bonus to your next damage roll against a target you hit with a melee attack during the current turn. The bonus equals +1d6 per psi point spent, and the bonus damage is the same type as the attack. If the attack has more than one damage type, you choose which one to use for the bonus damage.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"bf2-knock back" : {
 		name : "Knock Back",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 rea",
 		range : "Self",
 		duration : "Instantaneous",
 		save : "Str",
 		description : "Use after melee atk hit; crea hit saves or move 10 ft/PP away; if it then hits obj, takes 1d6/PP Bludg. dmg", //added the damage
 		descriptionFull : "When you hit a target with a melee attack, you can activate this ability as a reaction. The target must succeed on a Strength saving throw or be knocked 10 feet away from you per psi point spent. The target moves in a straight line. If it hits an object, this movement immediately ends and the target takes 1d6 bludgeoning damage per psi point spent.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"bf3-mighty leap" : {
 		name : "Mighty Leap",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "Move",
 		range : "Self",
 		duration : "Instantaneous",
 		description : "As part of your movement, jump 20 ft/PP in any direction",
 		descriptionFull : "As part of your movement, you jump in any direction up to 20 feet per psi point spent.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"bf4-feat of strength" : {
 		name : "Feat of Strength",
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "Next turn end",
 		description : "You gain +5 bonus to Strength checks until the end of next turn",
 		descriptionFull : "As a bonus action, you gain a +5 bonus to Strength checks until the end of your next turn.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 
 	//the celerity discipline (contributed by rabidknave)
-	"celerity" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"celerity" : {
 		name : "Celerity",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "Your walking speed increases by 10 ft",
 		descriptionFull : "You channel psionic power into your body, honing your reflexes and agility to an incredible degree. The world seems to slow down while you continue to move as normal." + PsychicFocus + "While focused on this discipline, your walking speed increases by 10 feet.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["c1-rapid step", "c2-agile defense", "c3-blur of motion", "c4-surge of speed", "c5-surge of action"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["c1-rapid step", "c2-agile defense", "c3-blur of motion", "c4-surge of speed", "c5-surge of action"]
 	},
 	"c1-rapid step" : {
 		name : "Rapid Step",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "This turn end",
 		description : "Your walking, swim, and climb speeds increases by 10 ft/PP; doesn't grant new movement modes",
 		descriptionFull : "As a bonus action, you increase your walking speed by 10 feet per psi point spent until the end of the current turn. If you have a climbing or swimming speed, this increase applies to that speed as well.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"c2-agile defense" : {
 		name : "Agile Defense",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "Instantaneous",
 		description : "You can take the Dodge action now, as part of using this power",
 		descriptionFull : "As a bonus action, you take the Dodge action.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"c3-blur of motion" : {
 		name : "Blur of Motion",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "Self",
 		duration : "This turn end",
 		description : "Your invisible while moving during the current turn",
 		descriptionFull : "As an action, you cause yourself to be invisible during any of your movement during the current turn.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"c4-surge of speed" : {
 		name : "Surge of Speed",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "This turn end",
 		description : "You don't provoke opportunity attacks and gain a climbing speed equal to your walking speed",
 		descriptionFull : "As a bonus action, you gain two benefits until the end of the current turn: you don’t provoke opportunity attacks, and you have a climbing speed equal to your walking speed.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"c5-surge of action" : {
 		name : "Surge of Action",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "Instantaneous",
 		description : "You can take either the Dash action or make one weapon attack now, as part of using this power",
 		descriptionFull : "As a bonus action, you can Dash or make one weapon attack.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 
 	//the corrosive metabolism discipline (contributed by rabidknave)
-	"corrosive metabolism" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"corrosive metabolism" : {
 		name : "Corrosive Metabolism",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 11],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain resistance to Acid and Poison damage",
 		descriptionFull : "Your control over your body allows you to deliver acid or poison attacks." + PsychicFocus + "While focused on this discipline, you have resistance to acid and poison damage.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["cm1-corrosive touch", "cm2-venom strike", "cm3-acid spray", "cm4-breath of the black dragon", "cm5-breath of the green dragon"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["cm1-corrosive touch", "cm2-venom strike", "cm3-acid spray", "cm4-breath of the black dragon", "cm5-breath of the green dragon"]
 	},
 	"cm1-corrosive touch" : {
 		name : "Corrosive Touch",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "Touch", //use "Touch" instead of "5 ft" when its about reach
 		duration : "Instantaneous",
 		save : "Dex",
 		description : "1 crea 1d10/PP Acid damage; save halves", // use "; save halves" for this kind of situations
 		descriptionFull : "As an action, you deliver a touch of acid to one creature within your reach. The target must make a Dexterity saving throw, taking 1d10 acid damage per psi point spent on a failed save, or half as much damage on a successful one.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"cm2-venom strike" : {
 		name : "Venom Strike",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "30 ft",
 		duration : "Instantaneous",
 		save : "Con",
 		description : "1 crea 1d6/PP Poison damage; save halves; if save failed, poisoned until end of your next turn",
 		descriptionFull : "As an action, you create a poison spray that targets one creature you can see within 30 feet of you. The target must make a Constitution saving throw. On a failed save, it takes 1d6 poison damage per psi point spent and is poisoned until the end of your next turn. On a successful save, the target takes half as much damage and isn’t poisoned.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"cm3-acid spray" : {
 		name : "Acid Spray",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 rea",
 		range : "5 ft",
 		duration : "Instantaneous",
 		description : "Use after you take Piercing or Slashing damage; all creatures in range take 2d6 Acid damage",
 		descriptionFull : "As a reaction when you take piercing or slashing damage, you cause acid to spray from your wound; each creature within 5 feet of you takes 2d6 acid damage.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"cm4-breath of the black dragon" : {
 		name : "Breath of the Black Dragon",
@@ -648,14 +648,14 @@ var PsionicsList = {
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
-		range : "60-ft line", //don't forget the hyphen for all things like this, like "20-ft rad", "30-ft cube", "40-ft cone", etc.
+		range : "60-ft line",
 		duration : "Instantaneous",
 		save : "Con",
 		description : "60-ft long 5-ft wide line all creatures 6d6(+1d6/extra PP) Acid dmg; save halves",
 		descriptionFull : "You exhale a wave of acid in a 60-foot line that is 5 feet wide. Each creature in the line must make a Constitution saving throw, taking 6d6 acid damage on a failed save, or half as much on a successful one. You can increase the damage by 1d6 per additional psi point spent on it.",
-		firstCol : "5-7" //power point cost
+		firstCol : "5-7"
 	},
 	"cm5-breath of the green dragon" : {
 		name : "Breath of the Green Dragon",
@@ -663,127 +663,127 @@ var PsionicsList = {
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "90-ft cone",
 		duration : "Instantaneous",
 		save : "Con",
 		description : "All creatures 10d6 poison damage; save halves",
 		descriptionFull : "You exhale a cloud of poison in a 90-foot cone. Each creature in the line must make a Constitution saving throw, taking 10d6 poison damage on a failed save, or half as much damage on a successful one.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the crown of despair discipline (contributed by rabidknave)
-	"crown of despair" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"crown of despair" : {
 		name : "Crown of Despair",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "5-ft rad",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain advantage on Charisma (Intimidation) checks",
 		descriptionFull : "You have learned to harvest seeds of despair in a creature’s psyche, wracking it with self-doubt and inaction." + PsychicFocus + "While focused on this discipline, you have advantage on Charisma (Intimidation) checks.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["cd1-crowned in sorrow", "cd2-call to inaction", "cd3-visions of despair", "cd4-dolorous mind"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["cd1-crowned in sorrow", "cd2-call to inaction", "cd3-visions of despair", "cd4-dolorous mind"]
 	},
 	"cd1-crowned in sorrow" : {
-		name : "Crowned in Sorrow", //empty for all things that are part of a "dependencies" of another object
+		name : "Crowned in Sorrow",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Next turn start",
 		save : "Cha",
 		description : "1 crea 1d8/PP Psychic dmg and can't take reactions; save halves damage and normal reactions",
 		descriptionFull : "As an action, one creature you can see within 60 feet of you must make a Charisma saving throw. On a failed save, it takes 1d8 psychic damage per psi point spent, and it can’t take reactions until the start of its next turn. On a successful save, it takes half as much damage.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"cd2-call to inaction" : {
-		name : "Call to Inaction", //empty for all things that are part of a "dependencies" of another object
+		name : "Call to Inaction",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 min",
 		range : "Self",
 		duration : "Conc, 10 min",
 		save : "Wis",
 		description : "After 1 min conversation, 1 crea save or incapacitated; ends if it or its ally is attacked (charm effect)",
 		descriptionFull : "If you spend 1 minute conversing with a creature, you can attempt to seed it with overwhelming ennui. At the end of the minute, you can use an action to force the creature to make a Wisdom saving throw. The save automatically succeeds if the target is immune to being charmed. On a failed save, it sits and is incapacitated until your concentration ends. This effect immediately ends if the target or any ally it can see is attacked or takes damage. On a successful save, the creature is unaffected and has no inkling of your attempt to bend its will.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"cd3-visions of despair" : {
-		name : "Visions of Despair", //empty for all things that are part of a "dependencies" of another object
+		name : "Visions of Despair",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "1 rnd",
 		save : "Cha",
 		description : "1 crea 3d6(+1d6/extra PP) Psychic dmg and speed reduced to 0; save halves and no speed reduction",
 		descriptionFull : "As an action, you force one creature you can see within 60 feet of you to make a Charisma saving throw. On a failed save, it takes 3d6 psychic damage, and its speed is reduced to 0 until the end of its next turn. On a successful save, it takes half as much damage. You can increase the damage by 1d6 per additional psi point spent on it.",
-		firstCol : "3-7" //power point cost
+		firstCol : "3-7"
 	},
 	"cd4-dolorous mind" : {
 		name : "Dolorous Mind",
 		source : ["UA:TMC", 12],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Cha",
 		description : "1 crea save or incapacitated and speed 0; save at end of each turn",
 		descriptionFull : "As an action, you choose one creature you can see within 60 feet of you. It must succeed on a Charisma saving throw, or it is incapacitated and has a speed of 0 until your concentration ends. It can repeat this saving throw at the end of each of its turns, ending the effect on itself on a success.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 
 	//the crown of disgust discipline
-	"crown of disgust" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"crown of disgust" : {
 		name : "Crown of Disgust",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "5-ft rad",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "5-ft rad around you is difficult terrain for creatures that aren't immune to being frightened",
 		descriptionFull : "You cause a creature to be flooded with emotions of disgust." + PsychicFocus + "While you are focused on this discipline, the area in a 5-foot radius around you is difficult terrain for any enemy that isn’t immune to being frightened.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["cd1-eye of horror", "cd2-wall of repulsion", "cd3-visions of disgust", "cd4-world of horror"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["cd1-eye of horror", "cd2-wall of repulsion", "cd3-visions of disgust", "cd4-world of horror"]
 	},
 	"cd1-eye of horror" : {
 		name : "Eye of Horror",
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Next turn end",
 		save : "Cha",
 		description : "1 crea save or 1d6/PP Psychic damage and can't move closer; save halves and no movement restriction",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must make a Charisma saving throw. On a failed save, it takes 1d6 psychic damage per psi point spent and can’t move closer to you until the end of its next turn. On a successful save, it takes half as much damage.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"cd2-wall of repulsion" : {
 		name : "Wall of Repulsion",
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 10 min",
@@ -791,226 +791,226 @@ var PsionicsList = {
 		description : "Up to 30\u00D71\u00D710 ft (l\u00D7w\u00D7h) invisible wall of energy; save to move through it, even for unwilling move",
 		description : "Up to 9\u00D70,3\u00D73 m (l\u00D7w\u00D7h) invisible wall of energy; save to move through it, even for unwilling move",
 		descriptionFull : "As an action, you create an invisible, insubstantial wall of energy within 60 feet of you that is up to 30 feet long, 10 feet high, and 1 foot thick. The wall lasts until your concentration ends. Any creature attempting to move through it must make a Wisdom saving throw. On a failed save, a creature can’t move through the wall until the start of its next turn. On a successful save, the creature can pass through it. A creature must make this save whenever it attempts to pass through the wall, whether willingly or unwillingly.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"cd3-visions of disgust" : {
 		name : "Visions of Disgust",
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Wis",
 		description : "1 crea save or 5d6 Psychic dmg (half on save) & 1d6 Psychic dmg per crea within 5 ft at its turn end",
 		descriptionFull : "You cause a creature to regard all other beings as horrid, alien entities. As an action, choose one creature you can see within 60 feet of you. The target must make a Wisdom saving throw. On a failed save, it takes 5d6 psychic damage, and until your concentration ends, it takes 1d6 psychic damage per creature within 5 feet of it at the end of each of its turns. On a successful save, the target takes only half the initial damage and suffers none of the other effects.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"cd4-world of horror" : {
 		name : "World of Horror",
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Cha",
 		description : "6 crea 8d6 Psychic dmg, frightened, \u0026 do only melee atks; save halves, no other effects; save each rnd",
 		descriptionFull : "As an action, choose up to six creatures within 60 feet of you. Each target must make a Charisma saving throw. On a failed save, a target takes 8d6 psychic damage, and it is frightened until your concentration ends. On a successful save, a target takes half as much damage." + "\n   " + "While frightened by this effect, a target’s speed is reduced to 0, and the target can use its action, and any bonus action it might have, only to make melee attacks. The frightened target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the crown of rage discipline
-	"crown of rage" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"crown of rage" : {
 		name : "Crown of Rage",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "5-ft rad",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "Any crea within range has disadvantage on melee attack rolls against targets other than you",
 		descriptionFull : "You place a mote of pure fury within a creature’s mind, causing its bloodlust to overcome its senses and for it to act as you wish it to." + PsychicFocus + "While you are focused on this discipline, any enemy within 5 feet of you that makes a melee attack roll against creatures other than you does so with disadvantage.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["cr1-primal fury", "cr2-fighting words", "cr3-mindless courage", "cr4-punishing fury"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["cr1-primal fury", "cr2-fighting words", "cr3-mindless courage", "cr4-punishing fury"]
 	},
 	"cr1-primal fury" : {
 		name : "Primal Fury",
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Instantaneous",
 		save : "Cha",
 		description : "1 crea save or 1d6/PP Psychic dmg, use rea to move its speed toward nearest enemy (charm effect)",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must succeed on a Charisma saving throw or take 1d6 psychic damage per psi point spent on this ability and immediately use its reaction to move its speed in a straight line toward its nearest enemy. The save automatically succeeds if the target is immune to being charmed.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"cr2-fighting words" : {
 		name : "Fighting Words",
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 min",
 		range : "Self",
 		duration : "Conc, 10 min",
 		save : "Wis",
 		description : "After 1 min conversation, 1 crea save or attack one other, chosen crea for 5 rnds (charm effect)",
 		descriptionFull : "If you spend 1 minute conversing with a creature, you can attempt to leave a simmering violence in its mind. At the end of the minute, you can use an action to force the creature to make a Wisdom saving throw to resist feeling violent urges against one creature you describe to it or name. The save automatically succeeds if the target is immune to being charmed. On a failed save, the target attacks the chosen creature if it sees that creature before your concentration ends, using weapons or spells against a creature it was already hostile toward or unarmed strikes against an ally or a creature it was neutral toward. Once the fight starts, it continues to attack for 5 rounds before this effect ends. This effect immediately ends if the target or any ally it can see is attacked or takes damage from any creature other than the one it has been incited against. On a successful save, the creature is unaffected and has no inkling of your attempt to bend its will.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"cr3-mindless courage" : {
 		name : "Mindless Courage",
 		source : ["UA:TMC", 13],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Next turn end",
 		save : "Wis",
 		description : "1 crea save or it can only move towards the nearest enemy it can see, or not move at all (charm effect)",
 		descriptionFull : "You cause a creature's bloodlust to overcome its sense of preservation. As a bonus action, choose one creature you can see within 60 feet of you. The target must succeed on a Wisdom saving throw or, until the end of your next turn, it can’t willingly move unless its movement brings it closer to its nearest enemy that it can see. The save automatically succeeds if the target is immune to being charmed.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"cr4-punishing fury" : {
 		name : "Punishing Fury",
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Wis",
 		description : "1 crea save or when it makes melee atk, all in 5 ft of it can make melee atk vs. it as rea (charm effect)",
 		descriptionFull : "You cause a creature's rage to grow so hot that it attacks without heeding its own safety. As a bonus action, choose one creature you can see within 60 feet of you. The target must succeed on a Wisdom saving throw or, until your concentration ends, any creature within 5 feet of it can use a reaction to make a melee attack against it whenever the target makes a melee attack. The save automatically succeeds if the target is immune to being charmed.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 
 	//the diminution discipline (contributed by mattohara & TheBob427)
-	"diminution" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"diminution" : {
 		name : "Diminution",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You have advantage on Dexterity (Stealth) checks",
 		descriptionFull : "You manipulate the matter that composes your body, drastically reducing your size without surrendering any of your might." + PsychicFocus + "While focused on this discipline, you have advantage on Dexterity (Stealth) checks.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["d1-miniature form", "d2-toppling shift", "d3-sudden shift", "d4-microscopic form"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["d1-miniature form", "d2-toppling shift", "d3-sudden shift", "d4-microscopic form"]
 	},
 	"d1-miniature form" : {
 		name : "Miniature Form",
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "Conc, 10 min",
 		description : "Become Tiny, gain +5 to Dex (Stealth) and can fit through gaps of up to 6\" without squeezing",
 		descriptionMetric : "Become Tiny, gain +5 to Dex (Stealth) and can fit through gaps of up to 15 cm without squeezing",
 		descriptionFull : "As a bonus action, you become Tiny until your concentration ends. While this size, you gain a +5 bonus to Dexterity (Stealth) checks and can move through gaps up to 6 inches across without squeezing.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"d2-toppling shift" : {
 		name : "Toppling Shift",
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "5 ft",
 		duration : "Instantaneous",
 		save : "Str",
 		description : "1 creature save or be knocked prone",
 		descriptionFull : "As a bonus action, you shift to an incredibly small size and then suddenly return to normal, sending an opponent flying backward. Choose one creature you can see within 5 feet of you. It must succeed on a Strength saving throw or be knocked prone.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"d3-sudden shift" : {
 		name : "Sudden Shift",
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 rea",
 		range : "Self",
 		duration : "Instantaneous",
 		description : "Use when hit by an attack; it misses, and you move up to 5 ft without provoking opportunity attacks",
 		descriptionFull : "As a reaction when you are hit by an attack, you shift down to minute size to avoid the attack. The attack misses, and you move up to 5 feet without provoking opportunity attacks before returning to normal size.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"d4-microscopic form" : {
 		name : "Microscopic Form",
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "Conc, 10 min",
 		description : "Become diminutive, gain +5 AC, +10 to Dex (Stealth), can fit through 1\" gaps, but can't use wea atks",
 		descriptionMetric : "Become diminutive, gain +5 AC, +10 to Dex (Stealth), can fit through 2,5 cm gaps, can't use wea atks",
 		descriptionFull : "As a bonus action, you become smaller than Tiny until your concentration ends. While this size, you gain a +10 bonus to Dexterity (Stealth) checks and a +5 bonus to AC, you can move through gaps up to 1 inch across without squeezing, and you can’t make weapon attacks.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the giant growth discipline (contributed by mattohara & TheBob427)
-	"giant growth" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"giant growth" : {
 		name : "Giant Growth",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Touch",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "Your reach increases by 5 ft",
 		descriptionFull : "You infuse yourself with psionic energy to grow to tremendous size, bolstering your strength and durability." + PsychicFocus + "While focused on this discipline, your reach increases by 5 feet.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["gg1-ogre form", "gg2-giant form"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["gg1-ogre form", "gg2-giant form"]
 	},
 	"gg1-ogre form" : {
 		name : "Ogre Form",
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "Conc, 1 min",
 		description : "10 temp. hp; for duration: become Large, +5 ft reach, melee attacks deal +1d4 Bludgeoning dmg",
 		descriptionFull : "As a bonus action, you gain 10 temporary hit points. In addition, until your concentration ends, your melee weapon attacks deal an extra 1d4 bludgeoning damage on a hit, and your reach increases by 5 feet. If you’re smaller than Large, you also become Large for the duration.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"gg2-giant form" : {
 		name : "Giant Form",
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "Conc, 1 min",
 		description : "30 temp. hp; for duration: become Huge, +10 ft reach, melee attacks deal +2d6 Bludgeoning dmg",
 		descriptionFull : "As a bonus action, you gain 30 temporary hit points. In addition, until your concentration ends, your melee weapon attacks deal an extra 2d6 bludgeoning damage on a hit, and your reach increases by 10 feet. If you’re smaller than Huge, you also become Huge for the duration.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the intellect fortress discipline (contributed by TheBob427)
@@ -1020,1494 +1020,2264 @@ var PsionicsList = {
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F",
 		duration : "While focused",
 		description : "You gain resistance to Psychic damage",
 		descriptionFull : "You forge an indomitable wall of psionic energy around your mind-one that allows you to launch counterattacks against your opponents." + PsychicFocus + "While focused on this discipline, you have resistance to psychic damage.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["if1-psychic backlash", "if2-psychic parry", "if3-psychic redoubt"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["if1-psychic backlash", "if2-psychic parry", "if3-psychic redoubt"]
 	},
 	"if1-psychic backlash" : {
 		name : "Psychic Backlash",
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 rea",
 		range : "Sight",
 		duration : "Instantaneous",
 		description : "You impose dis. on an attack roll vs. you; if you're hit anyway, the attacker takes 2d10 Psychic damage",
 		descriptionFull : "As a reaction, you can impose disadvantage on an attack roll against you if you can see the attacker. If the attack still hits you, the attacker takes 2d10 psychic damage.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"if2-psychic parry" : {
 		name : "Psychic Parry",
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 rea",
 		range : "Self",
 		duration : "Instantaneous",
 		description : "Add +1/PP to the result of an Int, Wis, or Cha save; use after rolling, but before knowing if successful",
 		descriptionFull : "As a reaction when you make an Intelligence, a Wisdom, or a Charisma saving throw, you gain a +1 bonus to that saving throw for each psi point you spend on this ability. You can use this ability after rolling the die but before suffering the results.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"if3-psychic redoubt" : {
 		name : "Psychic Redoubt",
 		source : ["UA:TMC", 14],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "30 ft",
 		duration : "Conc, 10 min",
 		description : "Any creatures in range gain resistance to Psychic damage and advantage on Int, Wis, and Cha saves",
 		descriptionFull : "As an action, you create a field of protective psychic energy. Choose any number of creatures within 30 feet of you. Until your concentration ends, each target has resistance to psychic damage and advantage on Intelligence, Wisdom, and Charisma saving throws.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 
 	//the iron durability discipline (contributed by mattohara)
-	"iron durability" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"iron durability" : {
 		name : "Iron Durability",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain a +1 bonus to AC",
 		descriptionFull : "You transform your body to become a living metal, allowing you to shrug off attacks that would cripple weaker creatures." + PsychicFocus + "While focused on this discipline, you gain a +1 bonus to AC.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["id1-iron hide", "id2-steel hide", "id3-iron resistance"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["id1-iron hide", "id2-steel hide", "id3-iron resistance"]
 	},
 	"id1-iron hide" : {
 		name : "Iron Hide",
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 rea",
 		range : "Self",
 		duration : "Next turn end",
 		description : "You gain +1/PP AC; use when hit by attack; bonus works against triggering attack",
 		descriptionFull : "As a reaction when you are hit by an attack, you gain a +1 bonus to AC for each psi point you spend on this ability. The bonus lasts until the end of your next turn. This bonus applies against the triggering attack.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"id2-steel hide" : {
 		name : "Steel Hide",
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "Next turn end",
 		description : "You gain resistance to Bludgeoning, Piercing, and Slashing damage",
 		descriptionFull : "As a bonus action, you gain resistance to bludgeoning, piercing, and slashing damage until the end of your next turn.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"id3-iron resistance" : {
 		name : "Iron Resistance",
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "Self",
 		duration : "Conc, 1 h",
 		description : "You gain resistance to bludgeoning, piercing, or slashing (your choice)",
 		descriptionFull : "As an action, you gain resistance to bludgeoning, piercing, or slashing damage (your choice), which lasts until your concentration ends.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the mantle of awe discipline (contributed by mattohara)
-	"mantle of awe" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"mantle of awe" : {
 		name : "Mantle of Awe",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain a bonus to Charisma checks, bonus equals half you Intelligence modifier (min 1)",
 		descriptionFull : "You learn to use psionic energy to manipulate others with a subtle combination of psi and your own, natural charm." + PsychicFocus + "While focused on this discipline, you gain a bonus to Charisma checks. The bonus equals half your Intelligence modifier (minimum of +1).",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["moa1-charming presence", "moa2-center of attention", "moa3-invoke awe"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["moa1-charming presence", "moa2-center of attention", "moa3-invoke awe"]
 	},
 	"moa1-charming presence" : {
 		name : "Charming Presence",
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "30 ft",
 		duration : "10 min",
 		description : "2d8/PP hp of conscious, not in combat, not immune to charm crea charmed; use hp max, not current",
 		descriptionFull : "As an action, you exert an aura of sympathetic power. Roll 2d8 per psi point spent on this ability; the total is how many hit points worth of creatures this option can affect. Creatures within 30 feet of you are affected in ascending order of their hit point maximums, ignoring incapacitated creatures, creatures immune to being charmed, and creatures engaged in combat." + "\n   " + "Starting with the creature that has the lowest hit point maximum, each creature affected by this option is charmed by you for 10 minutes, regarding you as a friendly acquaintance. Subtract each creature’s hit point maximum from the total before moving on to the next creature. A creature’s hit point maximum must be equal to or less than the remaining total for that creature to be affected.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"moa2-center of attention" : {
 		name : "Center of Attention",
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Cha",
 		description : "1 crea save or all other creatures are invisible to it; ends if it leaves your sight/earshot or takes dmg",
 		descriptionFull : "As an action, you exert an aura of power that grabs a creature's attention. Choose one creature you can see within 60 feet of you. It must make a Charisma saving throw. On a failed save, the creature is so thoroughly distracted by you that all other creatures are invisible to it until your concentration ends. This effect ends if the creature can no longer see or hear you or if it takes damage.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"moa3-invoke awe" : {
 		name : "Invoke Awe",
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 10 min",
 		save : "Int",
 		description : "5 crea save or charmed, obey verbal commands; no self harm; will atk crea that atk you; save each rnd",
 		descriptionFull : "As an action, you exert an aura that inspires awe in others. Choose up to 5 creatures you can see within 60 feet of you. Each target must succeed on an Intelligence saving throw or be charmed by you until your concentration ends. While charmed, the target obeys all your verbal commands to the best of its ability and without doing anything obviously self-destructive. The charmed target will attack only creatures that it has seen attack you since it was charmed or that it was already hostile toward. At the end of each of its turns, it can repeat the saving throw, ending the effect on itself on a success.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the mantle of command discipline
-	"mantle of command" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"mantle of command" : {
 		name : "Mantle of Command",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "When ending a turn you didn't move in, use your rea to have 1 ally within 30 ft move half its speed",
 		descriptionFull : "You exert an aura of trust and authority, enhancing the coordination among your allies." + PsychicFocus + "While focused on this discipline, when you end your turn and didn’t move during it, you can use your reaction to allow one ally you can see within 30 feet of you to move up to half their speed, following a path of your choice. To move in this way, the ally mustn’t be incapacitated.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["mc1-coordinated movement", "mc2-commander's sight", "mc3-command to strike", "mc4-strategic mind", "mc5-overwhelming attack"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["mc1-coordinated movement", "mc2-commander's sight", "mc3-command to strike", "mc4-strategic mind", "mc5-overwhelming attack"]
 	},
 	"mc1-coordinated movement" : {
 		name : "Coordinated Movement",
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Instantaneous",
 		description : "Up to 5 allies you can see can use their reaction to move half their speed, following a path you choose",
 		descriptionFull : "As a bonus action, choose up to five allies you can see within 60 feet of you. Each of those allies can use their reaction to move up to half their speed, following a path of your choice.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"mc2-commander's sight" : {
 		name : "Commander's Sight",
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 rnd",
 		description : "You mark 1 crea; until the start of your next turn, your allies have adv. on attacks vs. it",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. Until the start of your next turn, your allies have advantage on attack rolls against that target.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"mc3-command to strike" : {
 		name : "Command to Strike",
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Instantaneous",
 		description : "1 ally you can see can use their reaction to take the Attack action, with you choosing the targets",
 		descriptionFull : "As an action, choose one ally you can see within 60 feet of you. That ally can use their reaction to immediately take the Attack action. You choose the targets.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"mc4-strategic mind" : {
 		name : "Strategic Mind",
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		description : "1 ally can, on its turn, either add 1d4 to its attack rolls or take Dash or Disengage as a bonus action",
 		descriptionFull : "As an action, you exert an aura of trust and command that unites your allies into a cohesive unit. Until your concentration ends, any ally within 60 feet of you on their turn can, as a bonus action, take the Dash or Disengage action or roll a d4 and add the number rolled to each attack roll they make that turn.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"mc5-overwhelming attack" : {
 		name : "Overwhelming Attack",
 		source : ["UA:TMC", 15],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Instantaneous",
 		description : "Up to 5 allies you see can use their reactions to take the Attack action, with you choosing the targets",
 		descriptionFull : "As an action, choose up to five allies you can see within 60 feet of you. Each of those allies can use their reaction to take the Attack action. You choose the targets of the attacks.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the mantle of courage discipline
-	"mantle of courage" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"mantle of courage" : {
 		name : "Mantle of Courage",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You and allies within 10 ft of you that can see you have advantage on saves vs. being frightened",
 		descriptionFull : "You focus your mind on courage, radiating confidence and bravado to your allies." + PsychicFocus + "While focused on this discipline, you and allies within 10 feet of you who can see you have advantage on saving throws against being frightened.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["mc1-incite courage", "mc2-aura of victory", "mc3-pillar of confidence"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["mc1-incite courage", "mc2-aura of victory", "mc3-pillar of confidence"]
 	},
 	"mc1-incite courage" : {
 		name : "Incite Courage",
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Instantaneous",
 		description : "Up to 6 creatures are no longer frightened",
 		descriptionFull : "As a bonus action, choose up to six creatures you can see within 60 feet of you. If any of those creatures is frightened, that condition ends on that creature.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"mc2-aura of victory" : {
 		name : "Aura of Victory",
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "30 ft",
 		duration : "Conc, 10 min",
 		description : "When an enemy you can see is reduced to 0 hp, you and allies within range gain 2/PP temporary hp",
 		descriptionFull : "As a bonus action, you project psionic energy until your concentration ends. The energy fortifies you and your allies when your enemies are felled; whenever an enemy you can see is reduced to 0 hit points, you and each of your allies within 30 feet of you gain temporary hit points equal to double the psi points spent to activate this effect.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"mc3-pillar of confidence" : {
 		name : "Pillar of Confidence",
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Next turn end",
 		description : "You \u0026 up to 5 crea gain, on their turn, a special action to either make 1 wea atk, Dash, or Disengage",
 		descriptionFull : "As an action, you and up to five creatures you can see within 60 feet of you each gain one extra action to use on their individual turns. The action goes away if not used before the end of your next turn. the action can be used only to make one weapon attack or to take the Dash or Disengage action.",
-		firstCol : 6 //power point cost
+		firstCol : 6
 	},
 
 	//the mantle of fear discipline
-	"mantle of fear" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"mantle of fear" : {
 		name : "Mantle of Fear",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain advantage on Charisma (Intimidation) checks",
 		descriptionFull : "You tap into a well of primal fear and turn yourself into a beacon of terror to your enemies." + PsychicFocus + "While focused on this discipline, you have advantage on Charisma (Intimidation) checks.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["mf1-incite fear", "mf2-unsettling aura", "mf3-incite panic"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["mf1-incite fear", "mf2-unsettling aura", "mf3-incite panic"]
 	},
 	"mf1-incite fear" : {
 		name : "Incite Fear",
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Wis",
 		description : "1 crea save or be frightened of you; repeat save each turn when out of line of sight",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must succeed on a Wisdom saving throw or become frightened of you until your concentration ends. Whenever the frightened target ends its turn in a location where it can’t see you, it can repeat the saving throw, ending the effect on itself on a success.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"mf2-unsettling aura" : {
 		name : "Unsettling Aura",
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Conc, 1 h",
 		description : "All crea in range that can see you move only half speed when moving towards you (frightening effect)",
 		descriptionFull : "As a bonus action, you cloak yourself in unsettling psychic energy. Until your concentration ends, any enemy within 60 feet of you that can see you must spend 1 extra foot of movement for every foot it moves toward you. A creature ignores this effect if immune to being frightened.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"mf3-incite panic" : {
 		name : "Incite Panic",
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "90 ft",
 		duration : "Conc, 1 min",
 		save : "Wis",
 		description : "8 crea save each rnd or frightened and spend turn on random move or melee atk; 3 saves ends; see B",
 		descriptionFull : "As an action, choose up to eight creatures you can see within 90 feet of you that can see you. At the start of each of a target’s turns before your concentration ends, the target must make a Wisdom saving throw. On a failed save, the target is frightened until the start of its next turn, and you roll a die. If you roll an odd number, the frightened target moves half its speed in a random direction and takes no action on that turn, other than to scream in terror. If you roll an even number, the frightened target makes one melee attack against a random target within its reach. If there is no such target, it moves half its speed in a random direction and takes no action on that turn. This effect ends on a target if it succeeds on three saving throws against it.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 
 	//the mantle of fury discipline
-	"mantle of fury" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"mantle of fury" : {
 		name : "Mantle of Fury",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You and allies within 10 ft at start of your turn gain +5 ft walking speed for that turn",
 		descriptionFull : "You allow the primal fury lurking deep within your mind to burst forth, catching you and your allies in an implacable bloodthirst." + PsychicFocus + "While focused on this discipline in combat, you and any ally who starts their turn within 10 feet of you gains a 5-foot increase to their walking speed during that turn.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["mf1-incite fury", "mf2-mindless charge", "mf3-aura of bloodletting", "mf4-overwhelming fury"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["mf1-incite fury", "mf2-mindless charge", "mf3-aura of bloodletting", "mf4-overwhelming fury"]
 	},
 	"mf1-incite fury" : {
 		name : "Incite Fury",
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		description : "3 creatures can add 1d4 to the damage of melee weapon attacks during the duration",
 		descriptionFull : "As a bonus action, choose up to three allies you can see within 60 feet of you (you can choose yourself in place of one of the allies). Until your concentration ends, each target can roll a d4 when rolling damage for a melee weapon attack and add the number rolled to the damage roll.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"mf2-mindless charge" : {
 		name : "Mindless Charge",
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Instantaneous",
 		description : "3 creatures can use their reactions to move their speed straight towards the nearest enemy",
 		descriptionFull : "As a bonus action, choose up to three creatures you can see within 60 feet of you. Each target can immediately use its reaction to move up to its speed in a straight line toward its nearest enemy.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"mf3-aura of bloodletting" : {
 		name : "Aura of Bloodletting",
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		description : "You and all creatures within range during the duration have advantage on melee attack rolls",
 		descriptionFull : "As a bonus action, you unleash an aura of rage. Until your concentration ends, you and any creature within 60 feet of you has advantage on melee attack rolls.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"mf4-overwhelming fury" : {
 		name : "Overwhelming Fury",
 		source : ["UA:TMC", 16],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Cha",
 		description : "1 creature save or it can use its actions only to make melee attacks; save at the end of each of its turns",
 		descriptionFull : "As an action, you flood rage into one creature you can see within 60 feet of you. The target must succeed on a Charisma saving throw, or it can use its actions only to make melee attacks until your concentration ends. It can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 
 	//the mantle of joy discipline
-	"mantle of joy" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"mantle of joy" : {
 		name : "Mantle of Joy",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 17],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain advantage on Charisma (Persuasion) checks",
 		descriptionFull : "You tap into the joy within you, radiating it outward in soothing, psychic energy that brings hope and comfort to creatures around you." + PsychicFocus + "While focused on this discipline, you have advantage on Charisma (Persuasion) checks.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["mj1-soothing presence", "mj2-comforting aura", "mj3-aura of jubilation", "mj4-beacon of recovery"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["mj1-soothing presence", "mj2-comforting aura", "mj3-aura of jubilation", "mj4-beacon of recovery"]
 	},
 	"mj1-soothing presence" : {
 		name : "Soothing Presence",
 		source : ["UA:TMC", 17],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Instantaneous",
 		description : "3 creatures gain 3/PP temporary hit points",
 		descriptionFull : "As a bonus action, choose up to three creatures you can see within 60 feet of you. Each target gains 3 temporary hit points per psi point spent on this effect.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"mj2-comforting aura" : {
 		name : "Comforting Aura",
 		source : ["UA:TMC", 17],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "Sight",
 		duration : "Conc, 1 min",
 		description : "3 creatures can add 1d4 on every saving throw during the duration",
 		descriptionFull : "As a bonus action, choose up to three allies you can see (you can choose yourself in place of one of the allies). Until your concentration ends, each target can roll a d4 when making a saving throw and add the number rolled to the total.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"mj3-aura of jubilation" : {
 		name : "Aura of Jubilation",
 		source : ["UA:TMC", 17],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		description : "All creatures within range that can see you have disadvantage on Perception and Investigation checks",
 		descriptionFull : "As a bonus action, you radiate a distracting mirth until your concentration ends. Each creature within 60 feet of you that can see you suffers disadvantage on any checks using the Perception and Investigation skills.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"mj4-beacon of recovery" : {
 		name : "Beacon of Recovery",
 		source : ["UA:TMC", 17],
 		psionic : true,
 		level : 1,
-		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Avatar",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Instantaneous",
 		description : "You + 5 allies can make an extra save against every effect that allows a save at the start/end of a turn",
 		descriptionFull : "As a bonus action, you and up to five allies you can see within 60 feet of you can immediately make saving throws against every effect they’re suffering that allows a save at the start or end of their turns.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 
-	//the nomadic arrow discipline (contributed by mattohara)
-	"nomadic arrow" : { //the first entry of the discipline has the effect of the Psychic Focus
-		name : "Nomadic Arrow",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+	//the mastery of air discipline (contributed by mattohara)
+	"mastery of air" : {
+		name : "Mastery of Air",
+		classes : ["mystic"],
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You take no falling damage and ignore difficult terrain when walking",
+		descriptionFull : "You become one with the power of elemental air." + PsychicFocus + "While focused on this discipline, you take no falling damage, and you ignore difficult terrain when walking.",
+		firstCol : "checkbox",
+		dependencies : ["ma1-wind step", "ma2-wind stream", "ma3-cloak of air", "ma4-wind form", "ma5-misty form", "ma6-animate air"]
+	},
+	"ma1-wind step" : {
+		name : "Wind Step",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "\u2014",
+		range : "Self",
+		duration : "This turn end",
+		description : "Fly 20 ft/PP as part of your move this turn; if you end your turn in the air, you fall",
+		descriptionFull : "As part of your move on your turn, you can fly up to 20 feet for each psi point spent. If you end this flight in the air, you fall unless something else holds you aloft.",
+		firstCol : "1-7"
+	},
+	"ma2-wind stream" : {
+		name : "Wind Stream",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "30-ft line",
+		duration : "Instantaneous",
+		save: "Str",
+		description : "30-ft long 5-ft wide all crea 1d8/PP Bludgeoning dmg and knocked prone; save halves and not prone",
+		descriptionFull : "As an action, you create a line of focused air that is 30 feet long and 5 feet wide. Each creature in that area must make a Strength saving throw, taking 1d8 bludgeoning damage per psi point spent and being knocked prone on a failed save, or half as much damage on a successful one.",
+		firstCol : "1-7"
+	},
+	"ma3-cloak of air" : {
+		name : "Cloak of Air",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		duration : "Conc, 10 min",
+		description : "Atks vs. you have dis.; when missed by melee atk, use rea to have attacker repeat the attack on itself",
+		descriptionFull : "As a bonus action, you seize control of the air around you to create a protective veil. Until your concentration ends, attack rolls against you have disadvantage, and when a creature you can see misses you with a melee attack, you can use your reaction to force the creature to repeat the attack roll against itself.",
+		firstCol : 3
+	},
+	"ma4-wind form" : {
+		name : "Wind Form",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		duration : "Conc, 10 min",
+		description : "You gain a flying speed of 60 ft",
+		descriptionFull : "As a bonus action, you gain a flying speed of 60 feet, which lasts until your concentration ends.",
+		firstCol : 5
+	},
+	"ma5-misty form" : {
+		name : "Misty Form",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "Self",
+		duration : "Conc, 1 min",
+		description : "Gain resistance to Bludgeoning/Piercing/Slashing, can only take Dash actions, fit through 1\" opening",
+		descriptionMetric : "Gain resistance to Bludgeoning/Piercing/Slashing, only take Dash actions, fit through 2,5 cm opening",
+		descriptionFull : "As an action, your body becomes like a misty cloud until your concentration ends. In this form, you gain resistance to bludgeoning, piercing, and slashing damage, and you can’t take actions other than the Dash action. You can pass through openings that are no more than 1 inch wide without squeezing.",
+		firstCol : 6
+	},
+	"ma6-animate air" : {
+		name : "Animate Air",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "120 ft",
+		duration : "Conc, 1 h",
+		description : "Summon an air elemental that obeys your verbal commands; See Monster Manual, page 124",
+		descriptionFull : "As an action, you cause an air elemental to appear in an unoccupied space you can see within 120 feet of you. The elemental lasts until your concentration ends, and it obeys your verbal commands. In combat, roll for its initiative, and choose its behavior during its turns. When this effect ends, the elemental disappears. See the Monster Manual for its stat block.",
+		firstCol : 7
+	},
+
+	//the mastery of fire discipline
+	"mastery of fire" : {
+		name : "Mastery of Fire",
+		classes : ["mystic"],
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You gain resistance to Fire damage and gain a +2 bonus on rolls for Fire damage",
+		descriptionFull : "You align your mind with the energy of elemental fire." + PsychicFocus + "While focused on this discipline, you gain resistance to fire damage, and you gain a +2 bonus to rolls for fire damage.",
+		firstCol : "checkbox",
+		dependencies : ["mf1-combustion", "mf2-rolling flame", "mf3-detonation", "mf4-fire storm", "mf5-animate fire"]
+	},
+	"mf1-combustion" : {
+		name : "Combustion",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "120 ft",
+		duration : "Conc, 1 min",
+		save : "Con",
+		description : "1 crea save or 1d10/PP Fire dmg, on fire: 1d6 Fire dmg/rnd, it can 1 a to end; save half \u0026 not on fire",
+		descriptionFull : "As an action, choose one creature or object you can see within 120 feet of you. The target must make a Constitution save. On a failed save, the target takes 1d10 fire damage per psi point spent, and it catches on fire, taking 1d6 fire damage at the end of each of its turns until your concentration ends or until it or a creature adjacent to it extinguishes the flames with an action. On a successful save, the target takes half as much damage and doesn’t catch on fire.",
+		firstCol : "1-7"
+	},
+	"mf2-rolling flame" : {
+		name : "Rolling Flame",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "5 ft",
+		duration : "Conc, 1 min",
+		description : "20-ft cube all 5 Fire damage and any that end their turn in it also 5 Fire damage",
+		descriptionFull : "As an action, you create fire in a 20-foot-by-20-foot cube within 5 feet of you. The fire lasts until your concentration ends. Any creature in that area when you use this ability and any creature that ends its turn there takes 5 fire damage.",
+		firstCol : 3
+	},
+	"mf3-detonation" : {
+		name : "Detonation",
+		source : ["UA:TMC", 18],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "120 ft",
+		duration : "Instantaneous",
+		description : "20-ft rad all creatures save or 7d6 Fire damage and knocked prone; save halves and not prone",
+		save : "Con",
+		descriptionFull : "As an action, you create a fiery explosion at a point you can see within 120 feet of you. Each creature in a 20-foot-radius sphere centered on that point must make a Constitution saving throw, taking 7d6 fire damage and being knocked prone on a failed save, or half as much damage on a successful one.",
+		firstCol : 5
+	},
+	"mf4-fire storm" : {
+		name : "Fire Storm",
+		source : ["UA:TMC", 18],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		duration : "Conc, 1 min",
+		description : "All creatures that end their turn within 5 ft of you take 3d6 Fire damage",
+		descriptionFull : "As a bonus action, you become wreathed in flames until your concentration ends. Any creature that end its turn within 5 feet of you takes 3d6 fire damage.",
+		firstCol : 5
+	},
+	"mf5-animate fire" : {
+		name : "Animate Fire",
+		source : ["UA:TMC", 18],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "120 ft",
+		duration : "Conc, 1 h",
+		description : "Summon a fire elemental that obeys your verbal commands; See Monster Manual, page 124",
+		descriptionFull : "As an action, you cause a fire elemental to appear in an unoccupied space you can see within 120 feet of you. The elemental lasts until your concentration ends, and it obeys your verbal commands. In combat, roll for its initiative, and choose its behavior during its turns. When this effect ends, the elemental disappears. See the Monster Manual for its stat block.",
+		firstCol : 7
+	},
+
+	//the mastery of force discipline
+	"mastery of force" : {
+		name : "Mastery of Force",
+		classes : ["mystic"],
+		source : ["UA:TMC", 18],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You gain advantage on Strength checks",
+		descriptionFull : "As a student of psionic power, you perceive the potential energy that flows through all things. You reach out with your mind, transforming the potential into the actual. Objects and creatures move at your command." + PsychicFocus + ". While focused on this discipline, you have advantage on Strength checks.",
+		firstCol : "checkbox",
+		dependencies : ["mf1-push", "mf2-move", "mf3-inertial armor", "mf4-telekinetic barrier", "mf5-grasp", "mf6-crush (with grasp)" , "mf7-move (with grasp)"]
+	},
+	"mf1-push" : {
+		name : "Push",
+		source : ["UA:TMC", 18],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Instantaneous",
+		save : "Str",
+		description : "1 crea save or 1d8/PP Force dmg and pushed 5 ft/PP straight away; save halves and not pushed",
+		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must make a Strength saving throw. On a failed save, it takes 1d8 force damage per psi point spent and is pushed up to 5 feet per point spent in a straight line away from you. On a successful save, it takes half as much damage.",
+		firstCol : "1-7"
+	},
+	"mf2-move" : {
+		name : "Move",
+		source : ["UA:TMC", 18],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Instantaneous",
+		save : "Dex",
+		description : "Move obj 60 ft, after which it falls; crea under obj DC 10 save or 1d6+1d6/PP Bludg. dmg; see book",
+		descriptionFull : "Choose one object you can see within 60 feet of you that isn’t being worn or carried by another creature and that isn’t secured in place. It can’t be larger than 20 feet on a side, and its maximum weight depends on the psi points spent on this ability, as shown below." + "\n   " + "As an action, you move the object up to 60 feet, and you must keep the object within sight during this movement. If the object ends this movement in the air, it falls. If the object would fall on a creature, the creature must succeed on a DC 10 Dexterity saving throw or take damage as listed on the table below.\n\n  " + toUni("Psi") + "\t" + toUni("Maximum") + "    " + toUni("Bludgeoning") + "\n" + toUni("Points") + "\t " + toUni("Weight") + "\t        " + toUni("Damage") + "\n    2\t     25 lbs.  \t             2d6" + "\n    3\t     50 lbs.  \t             4d6" + "\n    5\t   250 lbs.  \t             6d6" + "\n    6\t   500 lbs.  \t             7d6" + "\n    7\t 1000 lbs.  \t             8d6",
+		firstCol : "2-7"
+	},
+	"mf3-inertial armor" : {
+		name : "Inertial Armor",
+		source : ["UA:TMC", 18],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "Self",
+		duration : "8 h",
+		description : "You gain AC 14 + Dex modifier and resistance to Force dmg if not wearing armor; ends if don armor",
+		descriptionFull : "As an action, you sheathe yourself in an intangible field of magical force. For 8 hours, your base AC is 14 + your Dexterity modifier, and you gain resistance to force damage. This effect ends if you are wearing or don armor.",
+		firstCol : 2
+	},
+	"mf4-telekinetic barrier" : {
+		name : "Telekinetic Barrier",
+		source : ["UA:TMC", 18],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 10 min",
+		description : "40-ft long, 10-ft high, 1-inch thick transparent wall of energy; each 10-ft section has AC 10 \u0026 10 hp",
+		descriptionFull : "As an action, you create a transparent wall of telekinetic energy, at least one portion of which must be within 60 feet of you. The wall is 40 feet long, 10 feet high, and 1 inch thick. The wall lasts until your concentration ends. Each 10-foot section of the wall has an AC of 10 and 10 hit points.",
+		firstCol : 3
+	},
+	"mf5-grasp" : {
+		name : "Grasp",
+		source : ["UA:TMC", 18],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		description : "1 crea save or grappled; escape Athl./Acro. vs. your spell atk +1/PP; if grappled you can Crush/Move",
+		save : "Str",
+		descriptionFull : "You attempt to grasp a creature in telekinetic energy and hold it captive. As an action, choose one creature you can see within 60 feet of you. The target must succeed on a Strength saving throw or be grappled by you until your concentration ends or until the target leaves your reach, which is 60 feet for this grapple." + "\n   " + "The grappled target can escape by succeeding on a Strength (Athletics) or Dexterity (Acrobatics) check contested by your psionic ability plus your proficiency bonus. When a target attempts to escape in this way, you can spend psi points to boost your check, abiding by your psi limit. You gain a +1 bonus per psi point spent." + "\n   " + "While a target is grappled in this manner, you create one of the following effects as an action: " + toUni("Crush") + " (1–7 psi) The target takes 1d6 bludgeoning damage per psi point spent." + toUni("Move") + " (1–7 psi) You move the target up to 5 feet per psi point spent. You can move it in the air and hold it there. It falls if the grapple ends.",
+		firstCol : 3
+	},
+	"mf6-crush (with grasp)" : {
+		name : " - Crush (with Grasp)",
+		source : ["UA:TMC", 18],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Instantaneous",
+		description : "1 creature grappled by Grasp takes 1d6/PP Bludgeoning damage",
+		descriptionFull : "While the target is grappled by Grasp from the Mastery of Force discipline, you can use Crush on it as an action:" + "\n  " + "The target takes 1d6 bludgeoning damage per psi point spent.",
+		firstCol : "1-7"
+	},
+	"mf7-move (with grasp)" : {
+		name : " - Move (with Grasp)",
+		source : ["UA:TMC", 18],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Instantaneous",
+		description : "1 creature grappled by Grasp moved up to 5 ft/PP; can hold it aloft, but it falls when grapple ends",
+		descriptionFull : "While the target is grappled by Grasp from the Mastery of Force discipline, you can use Move on it as an action:" + "\n  " + "You move the target up to 5 feet per psi point spent. You can move it in the air and hold it there. It falls if the grapple ends.",
+		firstCol : "1-7"
+	},
+
+	//the mastery of ice discipline (contributed by Justin W.)
+	"mastery of ice" : {
+		name : "Mastery of Ice",
+		classes : ["mystic"],
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You gain resistance to Cold damage",
+		descriptionFull : "You master the power of ice, shaping it to meet you demands." + PsychicFocus + "While focused on this discipline, you have resistance to cold damage.",
+		firstCol : "checkbox",
+		dependencies : ["mi1-ice spike", "mi2-ice sheet", "mi3-frozen sanctuary", "mi4-frozen rain", "mi5-ice barrier"]
+	},
+	"mi1-ice spike" : {
+		name : "Ice Spike",
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "120 ft",
+		duration : "Next turn end",
+		save : "Dex",
+		description : "1 creature save or 1d8/PP Necrotic damage and speed halved; save halves and normal speed",
+		descriptionFull : "As an action, you hurl a mote of ice at one creature you can see within 120 feet of you. The target must make a Dexterity saving throw. On a failed save, the target takes 1d8 cold damage per psi point spent and has its speed halved until the start of your next turn. On a successful save, the target takes half as much damage.",
+		firstCol : "1-7"
+	},
+	"mi2-ice sheet" : {
+		name : "Ice Sheet",
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "10 min",
+		save : "Dex",
+		description : "Create 20-ft rad of difficult terrain; crea move more than 10 ft save or prone; on slope slide to bottom",
+		descriptionFull : "As an action, choose a point on the ground you can see within 60 feet of you. The ground in a 20-foot radius centered on that point becomes covered in ice for 10 minutes. It is difficult terrain, and any creature that moves more than 10 feet on it must succeed on a Dexterity saving throw or fall prone. If the surface is sloped, a creature that falls prone in the area immediately slides to the bottom of the slope.",
+		firstCol : 2
+	},
+	"mi3-frozen sanctuary" : {
+		name : "Frozen Sanctuary",
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		duration : "Instantaneous",
+		description : "You gain 20 temporary hit points",
+		descriptionFull : "As a bonus action, you sheathe yourself with icy resilience. You gain 20 temporary hit points.",
+		firstCol : 3
+	},
+	"mi4-frozen rain" : {
+		name : "Frozen Rain",
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "120 ft",
+		duration : "Conc, 1 min",
+		save : "Con",
+		description : "20-ft rad all 6d6(+1d6/extra PP) Cold dmg \u0026 spd 0; save half \u0026 no spd 0; 1 a Athl. vs DC for no spd 0",
+		descriptionFull : "As an action, choose a point you can see within 120 feet of you. The air in a 20-foot-radius sphere centered on that point becomes deathly cold and saturated with moisture. Each creature in that area must make a Constitution saving throw. On a failed save, a target takes 6d6 cold damage, and its speed is reduced to 0 until your concentration ends. On a successful save, a target takes half as much damage." + "\n   " + "As an action, a target that has its speed reduced can end the effect early if it succeeds on a Strength (Athletics) check with a DC equal to this effect’s save DC." + "\n   " + "You can increase this effect’s damage by 1d6 per each additional psi point spent on it.",
+		firstCol : "5-7"
+	},
+	"mi5-ice barrier" : {
+		name : "Ice Barrier",
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60-ft",
+		duration : "Conc, 10 min",
+		description : "60\u00D71\u00D715ft (l\u00D7w\u00D7h) wall; a 10-ft section has AC 12 & 30 hp; melee atks do same as Cold dmg back",
+		descriptionMetric : "20\u00D70,3\u00D75m (l\u00D7w\u00D7h) wall; a 3-m section has AC 12 & 30 hp; melee atks do same as Cold dmg back",
+		descriptionFull : "As an action, you create a wall of ice, at least one portion of which must be within 60 feet of you. The wall is 60 feet long, 15 feet high, and 1 foot thick. The wall lasts until your concentration ends. Each 10-foot section of the wall has AC 12 and 30 hit points. A creature that damages the wall with a melee attack takes cold damage equal to the damage the creature dealt to the wall.",
+		firstCol : 6
+	},
+
+	//the mastery of light and darkness discipline (contributed by Justin W.)
+	"mastery of light and darkness" : {
+		name : "Mastery of Light and Darkness",
+		nameShort : "Mastery of Light \u0026 Dark",
+		classes : ["mystic"],
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You can see through natural and magical darkness out to 30 ft",
+		descriptionFull : "You claim dominion over light and darkness with your mind." + PsychicFocus + "While focused on this discipline, natural and magical darkness within 30 feet of you has no effect on your vision.",
+		firstCol : "checkbox",
+		dependencies : ["mld1-darkness", "mld2-light", "mld3-shadow beasts", "mld4-radiant beam"]
+	},
+	"mld1-darkness" : {
+		name : "Darkness",
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		description : "10 ft/PP rad darkness from point; darkvision doesn't work; only magical light of SL 3 or higher works",
+		descriptionFull : "As an action, you create an area of magical darkness, which foils darkvision. Choose a spot you can see within 60 feet of you. Magical darkness radiates from that point in a sphere with a 10-foot radius per psi point spent on this ability. The light produced by spells of 2nd level or less is suppressed in this area.",
+		firstCol : "1-7"
+	},
+	"mld2-light" : {
+		name : "Light",
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "Touch",
+		duration : "Conc, 1 min",
+		save : "Dex",
+		description : "1 crea/obj save or sheds bright light 20-ft rad and dim light 20-ft, and can't hide, atks vs. it have adv.",
+		descriptionFull : "As an action, an object you touch radiates light in a 20-foot radius and dim light for an additional 20 feet. The light lasts until your concentration ends. Alternatively, a creature you touch radiates light in the same manner if it fails a Dexterity saving throw. While lit in this manner, it can't hide, and attack rolls against it gain advantage.",
+		firstCol : 2
+	},
+	"mld3-shadow beasts" : {
+		name : "Shadow Beasts",
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		description : "Summon 2 shadows that obeys your verbal commands; See Monster Manual, page 269",
+		descriptionFull : "As an action, you cause two shadows to appear in unoccupied spaces you can see within 60 feet of you. The shadows last until your concentration ends, and they obey your verbal commands. In combat, roll for their initiative, and choose their behavior during their turns. When this effect ends, the shadows disappear. See the Monster Manual for their stat block.",
+		firstCol : 3
+	},
+	"mld4-radiant beam" : {
+		name : "Radiant Beam",
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		save : "Dex",
+		description : "1 crea 6d6(+1d6/extra PP) Radiant dmg, blinded, save each turn to end blind; save halves \u0026 not blind",
+		descriptionFull : "As an action, you project a beam of light at one creature you can see within 60 feet of you. The target must make a Dexterity saving throw. On a failed save, it takes 6d6 radiant damage and is blinded until your concentration ends. On a successful save, it takes half as much damage. A blinded target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." + "\n   " + "You can increase this effect's damage by 1d6 per each additional psi point spent on it.",
+		firstCol : "5-7"
+	},
+
+	//the mastery of water discipline (contributed by Justin W.)
+	"mastery of water" : {
+		name : "Mastery of Water",
+		classes : ["mystic"],
+		source : ["UA:TMC", 19],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You gain a swimming speed equal to your walking speed and you can breathe underwater",
+		descriptionFull : "Your mind becomes one with elemental water, attuning your thoughts to its ebb and flow." + PsychicFocus + "While focused on this discipline, you have a swimming speed equal to your walking speed, and you can breathe underwater.",
+		firstCol : "checkbox",
+		dependencies : ["mwa1-dessicate", "mwa2-watery grasp", "mwa3-water whip", "mwa4-water breathing","mwa5-water sphere","mwa6-animate water"]
+	},
+	"mwa1-dessicate" : {
+		name : "Dessicate",
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Instantaneous",
+		save : "Con",
+		description : "1 creature 1d10/PP Necrotic damage; save halves",
+		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must make a Constitution saving throw, taking 1d10 necrotic damage per psi point spent on this ability, or half as much damage on a successful one.",
+		firstCol : "1-7"
+	},
+	"mwa2-watery grasp" : {
+		name : "Watery Grasp",
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "5 ft",
+		duration : "Instantaneous",
+		save : "Dex",
+		description : "20-ft sq all save or 2d6(+1d6/extra PP) Bludg. dmg, prone, pulled 10 ft to you; save half \u0026 not prone",
+		descriptionFull : "As an action, you unleash a wave that surges forth and then retreats to you like the rising tide. You create a wave in a 20-foot-by-20-foot square. At least some portion of the square’s border must be within 5 feet of you. Any creature in that square must make a Strength saving throw. On a failed save, a target takes 2d6 bludgeoning damage, is knocked prone, and is pulled up to 10 feet closer to you. On a successful save, a target takes half as much damage. You can increase this ability’s damage by 1d6 per additional psi point spent on it.",
+		firstCol : "2-7"
+	},
+	"mwa3-water whip" : {
+		name : "Water Whip",
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60-ft line",
+		duration : "Instantaneous",
+		save : "Str",
+		description : "60\u00D75-ft (l\u00D7w) all 3d6(+1d6/extra PP) Bludg. dmg \u0026 move to empty spot on line; save half \u0026 no move",
+		descriptionMetric : "20\u00D71,5m (l\u00D7w) all 3d6(+1d6/extra PP) Bludg. dmg, move to empty spot on line; save half \u0026 no move",
+		descriptionFull : "As an action, you unleash a jet of water in a line that is 60 feet long and 5 feet wide. Each creature in the line must make a Strength saving throw, taking 3d6 bludgeoning damage on a failed save, or half as much damage on a successful one. In addition, you can move each target that fails its saving throw to any unoccupied space touching the line. You can increase this ability's damage by 1d6 per additional psi point spent on it.",
+		firstCol : "3-7"
+	},
+	"mwa4-water breathing" : {
+		name : "Water Breathing",
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "24 h",
+		description : "You and up to 10 willing creatures can breathe underwater for the duration",
+		descriptionFull : "As an action, you grant yourself and up to ten willing creatures you can see within 60 feet of you the ability to breathe underwater for the next 24 hours.",
+		firstCol : 5
+	},
+	"mwa5-water sphere" : {
+		name : "Water Sphere",
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		save : "Dex",
+		description : "1 crea save or half speed, dis. on atks, can see only 10 ft, atks vs. it also dis.; save at end of each turn",
+		descriptionFull : "As an action, you cause a sphere of water to form around a creature. Choose one creature you can see within 60 feet of you. The target must make a Dexterity saving throw. On a failed save, it becomes trapped in the sphere of water until your concentration ends. While the target is trapped, its speed is halved, it suffers disadvantage on attack rolls, and it can’t see anything more than 10 feet away from it. However, attack rolls against it also suffer disadvantage. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a successful one.",
+		firstCol : 6
+	},
+	"mwa6-animate water" : {
+		name : "Animate Water",
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "120 ft",
+		duration : "Conc, 1 h",
+		description : "Summon a water elemental that obeys your verbal commands; See Monster Manual, page 124",
+		descriptionFull : "As an action, you cause a water elemental to appear in an unoccupied space you can see within 120 feet of you. The elemental lasts until your concentration ends, and it obeys your verbal commands. In combat, roll for its initiative, and choose its behavior during its turns. When this effect ends, the elemental disappears. See the Monster Manual for its stat block.",
+		firstCol : 7
+	},
+
+	//the mastery of weather discipline (contributed by Justin W.)
+	"mastery of weather" : {
+		name : "Mastery of Weather",
+		classes : ["mystic"],
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You gain resistance to Lightning and Thunder damage",
+		descriptionFull : "Your mind reaches into the sky, reshaping the stuff of storms to serve your needs." + PsychicFocus + "While focused on this discipline, you have resistance to lightning and thunder damage.",
+		firstCol : "checkbox",
+		dependencies : ["mw1-cloud steps", "mw2-hungry lightning", "mw3-wall of clouds", "mw4-whirlwind", "mw5-lightning leap", "mw6-wall of thunder", "mw7-thunder clap"]
+	},
+	"mw1-cloud steps" : {
+		name : "Cloud Steps",
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "Self",
+		duration : "Conc, 10 min",
+		description : "You summon a 10 ft by 10 ft spiral staircase, that reaches 20 ft/PP upward",
+		descriptionFull : "As an action, you conjure forth clouds to create a solid, translucent staircase that lasts until your concentration ends. The stairs form a spiral that fills a 10-foot-by-10-foot area and reaches upward 20 feet per psi point spent.",
+		firstCol : "1-7"
+	},
+	"mw2-hungry lightning" : {
+		name : "Hungry Lightning",
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Instantaneous",
+		save : "Dex",
+		description : "1 creature 1d8/PP Lightning damage; save halves; disadvantage on save if wearing heavy armor",
+		descriptionFull : "As an action, you lash out at one creature you can see within 60 feet of you with tendrils of lightning. The target must make a Dexterity saving throw, with disadvantage if it’s wearing heavy armor. The target takes 1d8 lightning damage per psi point spent on a failed save, or half as much damage on a successful one.",
+		firstCol : "1-7"
+	},
+	"mw3-wall of clouds" : {
+		name : "Wall of Clouds",
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 10 min",
+		description : "You create a 60-ft long, 15-ft high, 1-ft thick wall of clouds that blocks vision; it must start in range",
+		descriptionFull : "As an action, you create a wall of clouds, at least one portion of which must be within 60 feet of you. The wall is 60 feet long, 15 feet high, and 1 foot thick. The wall lasts until your concentration ends. Creatures can pass through it without hindrance, but the wall blocks vision.",
+		firstCol : 2
+	},
+	"mw4-whirlwind" : {
+		name : "Whirlwind",
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Instantaneous",
+		save : "Str",
+		description : "20-ft rad all crea save or 1d6 Bludg. dmg & moved to chosen empty space in rad; obj moved as well",
+		descriptionFull : "As an action, choose a point you can see within 60 feet of you. Winds howl in a 20-foot-radius sphere centered on that point. Each creature in the sphere must succeed on a Strength saving throw or take 1d6 bludgeoning damage and be moved to an unoccupied space of your choice in the sphere. Any loose object in the sphere is moved to an unoccupied space of your choice within it if the object weighs no more than 100 pounds.",
+		firstCol : 2
+	},
+	"mw5-lightning leap" : {
+		name : "Lightning Leap",
+		source : ["UA:TMC", 20],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60-ft line",
+		duration : "Instantaneous",
+		save : "Dex",
+		description : "60-ft long 5-ft wide all 6d6(+1d6/extra PP) Lightning dmg; save halves; you teleport to spot on line",
+		descriptionFull : "As an action, you let loose a line of lightning that is 60 feet long and 5 feet wide. Each creature in the line must make a Dexterity saving throw, taking 6d6 lightning damage on a failed save, or half as much damage on a successful one. You can then teleport to an unoccupied space touched by the line." + "\n   " + "You can increase this ability’s damage by 1d6 per additional psi point spent on it.",
+		firstCol : "5-7"
+	},
+	"mw6-wall of thunder" : {
+		name : "Wall of Thunder",
 		source : ["UA:TMC", 21],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 10 min",
+		save : "Str",
+		description : "60\u00D71\u00D715 ft (l\u00D7w\u00D7h) wall; diff. terr.; crea start/move in save or 6d6 Thunder dmg, push 30 ft, prone",
+		descriptionMetric : "20×0,3×5 m (l×w×h) wall; diff. terr.; crea start/move in save or 6d6 Thunder dmg, push 10m, prone",
+		descriptionFull : "As an action, you create a wall of thunder, at least one portion of which must be within 60 feet of you. The wall is 60 feet long, 15 feet high, and 1 foot thick. The wall lasts until your concentration ends. Every foot moved through the wall costs 1 extra foot of movement. When a creature moves into the wall’s space for the first time on a turn or starts its turn there, that creature must succeed on a Strength saving throw, or it takes 6d6 thunder damage, is pushed in a straight line up to 30 feet away from the wall, and is knocked prone.",
+		firstCol : 6
+	},
+	"mw7-thunder clap" : {
+		name : "Thunder Clap",
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Next turn end",
+		save : "Con",
+		description : "20-ft rad all save or 8d6 Thunder dmg and stunned until your next turn ends; save halves \u0026 no stun",
+		descriptionFull : "As an action, choose a point you can see within 60 feet of you. Thunder energy erupts in a 20-foot-radius sphere centered on that point. Each creature in that area must make Constitution saving throw. On a failed save, a target takes 8d6 thunder damage, and it is stunned until the end of your next turn. On a successful save, a target takes half as much damage.",
+		firstCol : 7
+	},
+
+	//the mastery of wood and earth discipline (contributed by Justin W.)
+	"mastery of wood and earth" : {
+		name : "Mastery of Wood and Earth",
+		nameShort : "Mastery of Wood \u0026 Earth",
+		classes : ["mystic"],
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You gain a +1 bonus to AC",
+		descriptionFull : "You attune your mind to seize control of wood and earth." + PsychicFocus + "While focused on this discipline, you have a +1 bonus to AC.",
+		firstCol : "checkbox",
+		dependencies : ["mwe1-animate weapon", "mwe2-warp weapon", "mwe3-warp armor", "mwe4-wall of wood", "mwe5-armored form", "mwe6-animate earth"]
+	},
+	"mwe1-animate weapon" : {
+		name : "Animate Weapon",
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "30 ft",
+		duration : "Instantaneous",
+		description : "1 crea attacked by your 1-handed melee wea; use discipline score for atk/dmg; +1d10/PP Force dmg",
+		descriptionFull : "As an action, your mind seizes control of a one-handed melee weapon you're holding. The weapon flies toward one creature you can see within 30 feet of you and makes a one-handed melee weapon attack against it, using your discipline attack modifier for the attack and damage rolls. On a hit, the weapon deals its normal damage, plus an extra 1d10 force damage per psi point spent on this ability. The weapon returns to your grasp after it attacks.",
+		firstCol : "1-7"
+	},
+	"mwe2-warp weapon" : {
+		name : "Warp Weapon",
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Next turn end",
+		save : "Str",
+		description : "1 crea save or 1 chosen nonmagical wea it is holding can't be used to attack until your next turn ends",
+		descriptionFull : "As an action, choose one nonmagical weapon held by one creature you can see within 60 feet of you. That creature must succeed on a Strength saving throw, or the chosen weapon can’t be used to attack until the end of your next turn.",
+		firstCol : 2
+	},
+	"mwe3-warp armor" : {
+		name : "Warp Armor",
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Next turn end",
+		save : "Con",
+		description : "1 crea wearing a nonmagical armor save or have AC 10 + its Dex modifier until your next turn ends",
+		descriptionFull : "As an action, choose a nonmagical suit of armor worn by one creature you can see within 60 feet of you. That creature must succeed on a Constitution saving throw, or the creature’s AC becomes 10 + its Dexterity modifier until the end of your next turn.",
+		firstCol : 3
+	},
+	"mwe4-wall of wood" : {
+		name : "Wall of Wood",
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 h",
+		description : "Create 60-ft long, 15-ft high, 1-ft thick wall of solid wood; each 5-ft section has AC 12 and 100 hp",
+		descriptionFull : "As an action, you create a wall of wood at least one portion of which must be within 60 feet of you. The wall is 60 feet long, 15 feet high, and 1 foot thick. The wall lasts until your concentration ends. Each 5-foot wide section of the wall has AC 12 and 100 hit points. Breaking one section creates a 5-foot by 5-foot hole in it, but the wall otherwise remains intact.",
+		firstCol : 3
+	},
+	"mwe5-armored form" : {
+		name : "Armored Form",
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 bns",
+		range : "Self",
+		duration : "Conc, 1 min",
+		description : "You gain resistance to Bludgeoning, Piercing, and Slashing damage",
+		descriptionFull : "As a bonus action, you gain resistance to bludgeoning, piercing, and slashing damage, which lasts until your concentration ends.",
+		firstCol : 6
+	},
+	"mwe6-animate earth" : {
+		name : "Animate Earth",
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Wu Jen",
+		time : "1 a",
+		range : "120 ft",
+		duration : "Conc, 1 h",
+		description : "Summon an earth elemental that obeys your verbal commands; See Monster Manual, page 124",
+		descriptionFull : "As an action, you cause an earth elemental to appear in an unoccupied space you can see within 120 feet of you. The elemental lasts until your concentration ends, and it obeys your verbal commands. In combat, roll for its initiative, and choose its behavior during its turns. When this effect ends, the elemental disappears. See the Monster Manual for its stat block.",
+		firstCol : 7
+	},
+
+	//the nomadic arrow discipline (contributed by mattohara)
+	"nomadic arrow" : {
+		name : "Nomadic Arrow",
+		classes : ["mystic"],
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "Your ranged weapon attacks ignore disadvantage, but can't get adv. if it was subject to dis.",
 		descriptionFull : "You imbue a ranged weapon with a strange semblance of sentience, allowing it to unerringly find its mark." + PsychicFocus + "While you are focused on this discipline, any attack roll you make for a ranged weapon attack ignores disadvantage. If disadvantage would normally apply to the roll, that roll also can’t benefit from advantage.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["na1-speed dart", "na2-seeking missile", "na3-faithful archer"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["na1-speed dart", "na2-seeking missile", "na3-faithful archer"]
 	},
 	"na1-speed dart" : {
 		name : "Speed Dart",
 		source : ["UA:TMC", 21],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		duration : "This turn end",
 		description : "1 ranged weapon gains psionic power; next hit with it deals +1d10/PP Psychic damage",
 		descriptionFull : "As a bonus action, you imbue one ranged weapon you hold with psionic power. The next attack you make with it that hits before the end of the current turn deals an extra 1d10 psychic damage per psi point spent.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"na2-seeking missile" : {
 		name : "Seeking Missile",
 		source : ["UA:TMC", 21],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 rea",
 		range : "Self",
 		duration : "Instantaneous",
 		description : "When you miss with a ranged attack, you can reroll the attack roll against the same target",
 		descriptionFull : "As a reaction when you miss with a ranged weapon attack, you can repeat the attack roll against the same target.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"na3-faithful archer" : {
 		name : "Faithful Archer",
 		source : ["UA:TMC", 21],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		duration : "Conc, 1 min",
 		description : "1 ranged weapon gains sentience; free attack with it at the start of each turn; thrown weapons return",
 		descriptionFull : "As a bonus action, you imbue a ranged weapon with a limited sentience. Until your concentration ends, you can make an extra attack with the weapon at the start of each of your turns (no action required). If it is a thrown weapon, it returns to your grasp each time you make any attack with it.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 
 	//the nomadic chameleon discipline (contributed by mattohara)
-	"nomadic chameleon" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"nomadic chameleon" : {
 		name : "Nomadic Chameleon",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain advantage on Dexterity (Stealth) checks",
 		descriptionFull : "You create a screen of psychic power that distorts your appearance, allowing you to blend into the background or even turn invisible." + PsychicFocus + "While focused on this discipline, you have advantage on Dexterity (Stealth) checks.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["nc1-chameleon", "nc2-step from sight", "nc3-enduring invisibility"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["nc1-chameleon", "nc2-step from sight", "nc3-enduring invisibility"]
 	},
 	"nc1-chameleon" : {
 		name : "Chameleon",
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 a",
 		range : "Self",
 		duration : "This turn end",
 		description : "You can hide, regardless of requirements; at end of turn, remain hidden only if requirements are met",
 		descriptionFull : "As an action, you can attempt to hide even if you fail to meet the requirements needed to do so. At the end of the current turn, you remain hidden only if you then meet the normal requirements for hiding.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"nc2-step from sight" : {
 		name : "Step from Sight",
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		description : "You(+1 crea/extra PP) become invisible; attacking/targeting/affecting other crea makes a crea visible",
 		descriptionFull : "As a bonus action, cloak yourself from sight. You can target one additional creature for every additional psi point you spend on this ability. The added targets must be visible to you and within 60 feet of you." + "\n   " + "Each target turns invisible and remains so until your concentration ends or until immediately after it targets, damages, or otherwise affects any creature with an attack, a spell, or another ability.",
-		firstCol : "3-7" //power point cost
+		firstCol : "3-7"
 	},
 	"nc3-enduring invisibility" : {
 		name : "Enduring Invisibility",
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		duration : "Conc, 1 min",
 		description : "You turn invisible for the duration",
 		descriptionFull : "As a bonus action, you turn invisible and remain so until your concentration ends.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the nomadic mind discipline (contributed by mattohara)
-	"nomadic mind" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"nomadic mind" : {
 		name : "Nomadic Mind",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain proficiency with one skill, tool, or language",
 		descriptionFull : "You dispatch part of your psyche into the noosphere, the collective vista of minds and knowledge possessed by living things." + PsychicFocus + "Whenever you focus on this discipline, you choose one skill or tool and have proficiency with it until your focus ends. Alternatively, you gain the ability to read and write one language of your choice until your focus ends.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["nm1-wandering mind", "nm2-find creature", "nm3-item lore", "nm4-psychic speech", "nm5-wandering eye", "nm6-phasing eye"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["nm1-wandering mind", "nm2-find creature", "nm3-item lore", "nm4-psychic speech", "nm5-wandering eye", "nm6-phasing eye"]
 	},
 	"nm1-wandering mind" : {
 		name : "Wandering Mind",
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "10 min",
 		range : "Self",
 		duration : "1 h",
 		description : "Gain prof. with 1 skill/2PP: Animal Hand., History, Medicine, Nature, Performance, Religion, Survival",
 		descriptionFull : "You enter a deep contemplation. If you concentrate for this option’s full duration, you then gain proficiency with up to three of the following skills (one skill for every 2 psi points spent): Animal Handling, Arcana, History, Medicine, Nature, Performance, Religion, and Survival. The benefit lasts for 1 hour, no concentration required.",
-		firstCol : "2-6" //power point cost
+		firstCol : "2-6"
 	},
 	"nm2-find creature" : {
 		name : "Find Creature",
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 h",
 		range : "Self",
 		duration : "Instantaneous",
 		description : "Learn general location of a creature, within 1-3 miles; if it's on other plane, learn which plane instead",
 		descriptionFull : "You cast your mind about for information about a specific creature. If you concentrate for this option’s full duration, you then gain a general understanding of the creature’s current location. You learn the region, city, town, village, or district where it is, pinpointing an area between 1 and 3 miles on a side (DM’s choice). If the creature is on another plane of existence, you instead learn which plane.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"nm3-item lore" : {
 		name : "Item Lore",
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 h",
 		range : "5 ft",
 		duration : "Instantaneous",
 		description : "1 magical item or magic-imbued crea/obj; learn properties, how to use, and spells affecting it",
 		descriptionFull : "You carefully study an item. If you concentrate for this option’s full duration while remaining within 5 feet of the item, you then gain the benefits of an identify spell cast on that item.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"nm4-psychic speech" : {
 		name : "Psychic Speech",
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 a",
 		range : "Self",
 		duration : "1 h",
 		description : "You understands all spoken/written languages and all with a language can understand what you say",
 		descriptionFull : "As an action, you attune your mind to the psychic imprint of all language. For 1 hour, you gain the ability to understand any language you hear or attempt to read. In addition, when you speak, all creatures that can understand a language understand what you say, regardless of what language you use.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"nm5-wandering eye" : {
 		name : "Wandering Eye",
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 h",
 		description : "Create invisible, moving (unlimited range, 30ft/rnd) 1\" magic eye with darkvision you see through",
 		description : "Create invisible, moving (unlimited range, 10m/rnd) 2,5cm magic eye /w darkvision you see through",
 		descriptionFull : "As an action, you create a psychic sensor within 60 feet of you. The sensor lasts until your concentration ends. The sensor is invisible and hovers in the air. You mentally receive visual information from it, which has normal vision and darkvision with a range of 60 feet. The sensor can look in all directions. As an action, you can move the sensor up to 30 feet in any direction. There is no limit to how far away from you the eye can move, but it can’t enter another plane of existence. A solid barrier blocks the eye’s movement, but the eye can pass through an opening as small as 1 inch in diameter.",
-		firstCol : 6 //power point cost
+		firstCol : 6
 	},
 	"nm6-phasing eye" : {
 		name : "Phasing Eye",
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 h",
 		description : "As Wandering Eye above, except the eye can move through objects but can't end its movement in one",
 		descriptionFull : "As Wandering Eye above, except the eye can move through solid objects but can’t end its movement in one. If it does so, the effect immediately ends.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the nomadic step discipline (contributed by Justin W.)
-	"nomadic step" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"nomadic step" : {
 		name : "Nomadic Step",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "1/turn; after you teleport, increase speed by 10 ft until end of your turn",
 		descriptionFull : "You exert your mind on the area around you, twisting the intraplanar pathways you perceive to allow instantaneous travel." + PsychicFocus + "After you teleport on your turn while focused on this discipline, your walking speed increases by 10 feet until the end of the turn, as you are propelled by the magic of your teleportation. You can receive this increase only once per turn.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["ns1-step of a dozen paces", "ns2-nomadic anchor", "ns3-defensive step", "ns4-there and back again", "ns5-transposition", "ns6-baleful transposition", "ns7-phantom caravan", "ns8-nomad's gate"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["ns1-step of a dozen paces", "ns2-nomadic anchor", "ns3-defensive step", "ns4-there and back again", "ns5-transposition", "ns6-baleful transposition", "ns7-phantom caravan", "ns8-nomad's gate"]
 	},
 	"ns1-step of a dozen paces" : {
 		name : "Step of a Dozen Paces",
 		source : ["UA:TMC", 22],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		duration : "Instantaneous",
 		description : "You teleport up to 20 ft/PP to where you can see, instead of moving this turn; only if not moved yet",
 		descriptionFull : "If you haven’t moved yet on your turn, you take a bonus action to teleport up to 20 feet per psi point spent to an unoccupied space you can see, and your speed is reduced to 0 until the end of the turn.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"ns2-nomadic anchor" : {
 		name : "Nomadic Anchor",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 a",
 		range : "120 ft",
 		duration : "8 h",
 		description : "Create 5-ft cu teleport anchor; any teleport from this discipline can go to it if within range",
 		descriptionFull : "As an action, you create an invisible, intangible teleportation anchor in a 5-foot cube you can see within 120 feet of you. For the next 8 hours, whenever you use this psionic discipline to teleport, you can instead teleport to the anchor, even if you can’t see it, but it must be within range of the teleportation ability.",
-		firstCol : 1 //power point cost
+		firstCol : 1
 	},
 	"ns3-defensive step" : {
 		name : "Defensive Step",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 rea",
 		range : "Self",
 		duration : "Instantaneous",
 		description : "When hit by an attack, you gain +4 AC, and then teleport 10 ft to a space you can see",
 		descriptionFull : "When you are hit by an attack, you can use your reaction to gain a +4 bonus to AC against that attack, possibly turning it into a miss. You then teleport up to 10 feet to an unoccupied space you can see.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"ns4-there and back again" : {
 		name : "There and Back Again",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		duration : "End of Turn",
 		description : "You teleport 20 ft and move half your speed; you may teleport back to starting spot at end of your turn",
 		descriptionFull : "As a bonus action, you teleport up to 20 feet to an unoccupied space you can see and then move up to half your speed. At the end of your turn, you can teleport back to the spot you occupied before teleporting, unless it is now occupied or on a different plane of existence.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"ns5-transposition" : {
 		name : "Transposition",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "60 ft",
 		duration : "Instantaneous",
 		description : "Willing creature and you teleport, swapping places, instead of moving this turn; only if not moved yet",
 		descriptionFull : "If you haven’t moved yet on your turn, choose an ally you can see within 60 feet of you. As a bonus action, you and that creature teleport, swapping places, and your speed is reduced to 0 until the end of the turn. This ability fails and is wasted if either of you can’t fit in the destination space.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"ns6-baleful transposition" : {
 		name : "Baleful Transposition",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 a",
 		range : "120 ft",
 		duration : "Instantaneous",
 		save : "Wis",
 		description : "1 creature save or it and you teleport, swapping places",
 		descriptionFull : "As an action, choose one creature you can see within 120 feet of you. That creature must make a Wisdom saving throw. On a failed save, you and that creature teleport, swapping places. This ability fails and is wasted if either of you can’t fit in the destination space.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"ns7-phantom caravan" : {
 		name : "Phantom Caravan",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Instantaneous",
 		description : "You and up to 6 willing creatures teleport up to 1 mile to a spot you can see",
 		descriptionFull : "As an action, you and up to six willing creatures of your choice that you can see within 60 feet of you teleport up to 1 mile to a spot you can see. If there isn’t an open space for all the targets to occupy at the arrival point, this ability fails and is wasted.",
-		firstCol : 6 //power point cost
+		firstCol : 6
 	},
 	"ns8-nomad's gate" : {
 		name : "Nomad's Gate",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 a",
 		range : "5 ft",
 		duration : "Conc, 1 h",
 		description : "Create a 5-ft cu in range, and another up to 1 mile away; anyone entering one, teleports to the other",
 		descriptionFull : "As an action, you create a 5-foot cube of dim, gray light within 5 feet of you. You create an identical cube at any point of your choice within 1 mile that you have viewed within the past 24 hours. Until your concentration ends, anyone entering one of the cubes immediately teleports to the other one, appearing in an unoccupied space next to it. The teleportation fails if there is no space for the creature to appear in.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the precognition discipline (contributed by Justin W.)
-	"precognition" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"precognition" : {
 		name : "Precognition",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain advangage on initiative rolls",
 		descriptionFull : "By analyzing information around you, from subtle hints to seemingly disconnected facts, you learn to weave a string of probabilities in an instant that gives you extraordinary insights." + PsychicFocus + "While focused on this discipline, you have advantage on initiative rolls.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["p1-precognitive hunch", "p2-all-around sight", "p3-danger sense", "p4-victory before battle"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["p1-precognitive hunch", "p2-all-around sight", "p3-danger sense", "p4-victory before battle"]
 	},
 	"p1-precognitive hunch" : {
 		name : "Precognitive Hunch",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Self",
 		duration : "Conc, 1 min",
 		description : "You add 1d4 to attack rolls, saving throws, and ability checks",
 		descriptionFull : "As a bonus action, you open yourself to receive momentary insights that improve your odds of success; until your concentration ends, whenever you make an attack roll, a saving throw, or an ability check, you roll a d4 and add it to the total.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"p2-all-around sight" : {
 		name : "All-Around Sight",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 rea",
 		range : "Self",
 		duration : "Instantaneous",
 		description : "After an attack hits you, impose disadvantage on that attack roll",
 		descriptionFull : "In response to an attack hitting you, you use your reaction to impose disadvantage on that attack roll, possibly causing it to miss.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"p3-danger sense" : {
 		name : "Danger Sense",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "Self",
 		duration : "Conc, 8 h",
 		description : "You gain +10 on the initiative roll, can't be surprised, and attacks against you can't gain advantage",
 		descriptionFull : "As an action, you create a psychic model of reality in your mind and set it to show you a few seconds into the future. Until your concentration ends, you can’t be surprised, attack rolls against you can’t gain advantage, and you gain a +10 bonus to initiative.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"p4-victory before battle" : {
 		name : "Victory Before Battle",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "\u2014",
 		range : "60-ft rad",
 		duration : "Instantaneous",
 		description : "Use when rolling initiative; grant yourself and up to 5 creatures +10 on the initiative roll",
 		descriptionFull : "When you roll initiative, you can use this ability to grant yourself and up to five creatures of your choice within 60 feet of you a +10 bonus to initiative.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the psionic restoration discipline (contributed by Justin W.)
-	"psionic restoration" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"psionic restoration" : {
 		name : "Psionic Restoration",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "While focused, you can touch a creature with 0 hp as a bonus action and stabilize it",
 		descriptionFull : "You wield psionic energy to cure wounds and restore health to yourself and others." + PsychicFocus + "While focused on this discipline, you can use a bonus action to touch a creature that has 0 hit points and stabilize it.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["pr1-mend wounds", "pr2-restore health", "pr3-restore life", "pr4-restore vigor"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["pr1-mend wounds", "pr2-restore health", "pr3-restore life", "pr4-restore vigor"]
 	},
 	"pr1-mend wounds" : {
 		name : "Mend Wounds",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "Touch",
 		duration : "Instantaneous",
 		description : "1 creature is healed for 1d8/PP hp",
 		descriptionFull : "As an action, you can spend psi points to restore hit points to one creature you touch. The creature regains 1d8 hit points per psi point spent.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"pr2-restore health" : {
 		name : "Restore Health",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "Touch",
 		duration : "Instantaneous",
 		description : "1 creature is cured of either blindness, deafness, paralysis, poison, or 1 disease",
 		descriptionFull : "As an action, you touch one creature and remove one of the following conditions from it: blinded, deafened, paralyzed, or poisoned. Alternatively, you remove one disease from the creature.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"pr3-restore life" : {
 		name : "Restore Life",
 		source : ["UA:TMC", 23],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "Touch",
 		duration : "Instantaneous",
 		description : "Resurrects 1 crea that has died in last minute to 1 hp, if not missing vital body parts or died of old age",
 		descriptionFull : "As an action, you touch one creature that has died within the last minute. The creature returns to life with 1 hit point. This ability can’t return to life a creature that has died of old age, nor can it restore a creature missing any vital body parts.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"pr4-restore vigor" : {
 		name : "Restore Vigor",
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 a",
 		range : "Touch",
 		duration : "Instantaneous",
 		description : "1 crea removes either 1 ability score reduction, 1 hp max reduction effect, or 1 level of exhaustion",
 		descriptionFull : "As an action, you can touch one creature and choose one of the following: remove any reductions to one of its ability scores, remove one effect that reduces its hit point maximum, or reduce its exhaustion level by one.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the psionic weapon discipline (contributed by Justin W.)
-	"psionic weapon" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"psionic weapon" : {
 		name : "Psionic Weapon",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "1 weapon or unarmed strike does Psychic dmg and counts as magical; no Str or Dex to dmg until CL6",
 		descriptionFull : "You have learned how to channel psionic energy into your attacks, lending them devastating power." + PsychicFocus + "Whenever you focus on this discipline, choose one weapon you’re holding or your unarmed strike. When you attack with it while focused on this discipline, its damage is psychic and magical, rather than its normal damage type. Until you reach 6th level as a mystic, you don’t add your Strength or Dexterity modifier to the psychic attack’s damage rolls.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["pw1-ethereal weapon", "pw2-lethal strike", "pw3-augmented weapon"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["pw1-ethereal weapon", "pw2-lethal strike", "pw3-augmented weapon"]
 	},
 	"pw1-ethereal weapon" : {
 		name : "Ethereal Weapon",
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "Next turn end",
 		description : "1 crea save or auto hit by your next wea/unarmed atk; save halves atk dmg \u0026 negates any side-effects",
 		descriptionFull : "As a bonus action, you temporarily transform one weapon you’re holding or your unarmed strike into pure psionic energy. The next attack you make with it before the end of your turn ignores the target’s armor, requiring no attack roll. Instead, the target makes a Dexterity saving throw against this discipline. On a failed save, the target takes the attack’s normal damage and suffers its additional effects. On a successful save, the target takes half damage from the attack but suffers no additional effects that would normally be imposed on a hit.",
-		firstCol : 1 //power point cost
+		firstCol : 1
 	},
 	"pw2-lethal strike" : {
 		name : "Lethal Strike",
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Self",
 		duration : "Next turn end",
 		description : "Your next weapon or unarmed attack that hits does +1d10/PP Psychic damage",
 		descriptionFull : "As a bonus action, you imbue a weapon you’re holding or your unarmed strike with psychic energy. The next time you hit with it before the end of your turn, it deals an extra 1d10 psychic damage per psi point spent.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"pw3-augmented weapon" : {
 		name : "Augmented Weapon",
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Immor", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Immor",
 		time : "1 bns",
 		range : "Touch",
 		duration : "Conc, 10 min",
 		description : "1 weapon becomes a magic weapon with a +3 bonus to its attack and damage rolls",
 		descriptionFull : "As a bonus action, touch one simple or martial weapon. Until your concentration ends, that weapon becomes a magic weapon with a +3 bonus to its attack and damage rolls.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 
 	//the psychic assault discipline
-	"psychic assault" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"psychic assault" : {
 		name : "Psychic Assault",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain a +2 bonus to damage rolls with psionic talents that deal Psychic damage",
 		descriptionFull : "You wield your mind like a weapon, unleashing salvos of psionic energy." + PsychicFocus + "While focused on this discipline, you gain a +2 bonus to damage rolls with psionic talents that deal psychic damage.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["pa1-psionic blast", "pa2-ego whip", "pa3-id insinuation", "pa4-psychic blast", "pa5-psychic crush"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["pa1-psionic blast", "pa2-ego whip", "pa3-id insinuation", "pa4-psychic blast", "pa5-psychic crush"]
 	},
 	"pa1-psionic blast" : {
 		name : "Psionic Blast",
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Instantaneous",
 		description : "1 creature takes 1d8/PP Psychic damage",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target takes 1d8 psychic damage per psi point spent on this ability.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"pa2-ego whip" : {
 		name : "Ego Whip",
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Instantaneous",
 		save : "Int",
 		description : "1 crea save or 3d8 Psychic dmg, next turn just Dodge/Disengage/Hide action; save half \u0026 act normal",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must make an Intelligence saving throw. On a failed save, the creature takes 3d8 psychic damage, and it is filled with self-doubt, leaving it able to use its action on its next turn only to take the Dodge, Disengage, or Hide action. On a successful saving throw, it takes half as much damage.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"pa3-id insinuation" : {
 		name : "Id Insinuation",
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Instantaneous",
 		save : "Int",
 		description : "1 crea save or 5d8 Psychic dmg, next turn only Dodge/Attack action; save halves \u0026 act normal",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must make an Intelligence saving throw. On a failed save, the creature takes 5d8 psychic damage, and it goes into a fury, as its id runs rampant. On its next turn, it can use its action only to take the Dodge or Attack action. On a successful save, it takes half as much damage.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"pa4-psychic blast" : {
 		name : "Psychic Blast",
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60-ft cone",
 		duration : "Instantaneous",
 		save : "Int",
 		description : "All creatures 8d8(+2d8/extra PP) Psychic dmg; save halves",
 		descriptionFull : "As an action, you unleash devastating psychic energy in a 60-foot cone. Each creature in that area must make an Intelligence saving throw, taking 8d8 psychic damage on a failed save, or half as much damage on a successful one. You can increase the damage by 2d8 if you spend 1 more psi point on this ability.",
-		firstCol : "6-7" //power point cost
+		firstCol : "6-7"
 	},
 	"pa5-psychic crush" : {
 		name : "Psychic Crush",
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "120 ft",
 		duration : "Instantaneous",
 		save : "Int",
 		description : "20-ft cu all crea save or 8d8 Psychic dmg \u0026 stunned until your next turn ends; save halves \u0026 no stun",
 		descriptionFull : "As an action, you create a 20-foot cube of psychic energy within 120 feet of you. Each creature in that area must make an Intelligence saving throw. On a failed save, a target takes 8d8 psychic damage and is stunned until the end of your next turn. On a successful save, a target takes half as much damage.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the psychic disruption discipline (contributed by Justin W.)
-	"psychic disruption" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"psychic disruption" : {
 		name : "Psychic Disruption",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You have advantage on Charisma (Deception) checks",
 		descriptionFull : "You create psychic static that disrupts other creatures’ ability to think clearly." + PsychicFocus + "While focused on this discipline, you have advantage on Charisma (Deception) checks.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["pd1-distracting haze", "pd2-daze", "pd3-mind storm"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["pd1-distracting haze", "pd2-daze", "pd3-mind storm"]
 	},
 	"pd1-distracting haze" : {
 		name : "Distracting Haze",
 		source : ["UA:TMC", 24],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Int",
 		description : "1 crea save or 1d10/PP Psychic dmg, can't see more than 10 ft; save halves and see normal",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. That creature must make an Intelligence saving throw. On a failed save, it takes 1d10 psychic damage per psi point spent and can’t see anything more than 10 feet from it until your concentration ends. On a successful save, it takes half as much damage.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"pd2-daze" : {
 		name : "Daze",
 		source : ["UA:TMC", 25],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Next turn end",
 		save : "Int",
 		description : "1 crea save or incapacitated until end of your next turn or it takes any damage",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. That creature must make an Intelligence saving throw. On a failed save, the target is incapacitated until the end of your next turn or until it takes any damage.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"pd3-mind storm" : {
 		name : "Mine Storm",
 		source : ["UA:TMC", 25],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Next turn end",
 		save : "Wis",
 		description : "20-ft rad all crea 6d8(+1d6/extra PP) Psychic dmg and dis. on saves; save halves and no dis. on saves",
 		descriptionFull : "As an action, choose a point you can see within 60 feet of you. Each creature in a 20-foot-radius sphere centered on that point must make a Wisdom saving throw. On a failed save, a target takes 6d8 psychic damage and suffers disadvantage on all saving throws until the end of your next turn. On a successful save, a creature takes half as much damage. You can increase the damage by 1d6 per additional psi point spent on this ability.",
-		firstCol : "5-7" //power point cost
+		firstCol : "5-7"
 	},
 
 	//the psychic inquisition discipline (contributed by Justin W.)
-	"psychic inquisition" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"psychic inquisition" : {
 		name : "Psychic Inquisition",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 25],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You know when a creature telepathically communicating with you is lying",
 		descriptionFull : "You reach into a creature’s mind to uncover information or plant ideas within it." + PsychicFocus + "While focused on this discipline, you know when a creature communicating with you via telepathy is lying.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["pi1-hammer of inquisition", "pi2-forceful query", "pi3-ransack mind", "pi4-phantom idea"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["pi1-hammer of inquisition", "pi2-forceful query", "pi3-ransack mind", "pi4-phantom idea"]
 	},
 	"pi1-hammer of inquisition" : {
 		name : "Hammer of Inquisition",
 		source : ["UA:TMC", 25],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Instantaneous",
 		save : "Int",
 		description : "1 crea save or 1d10/PP Psychic dmg, dis. next Wis save before your next turn; save halves \u0026 no effects",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must make an Intelligence saving throw. On a failed save, it takes 1d10 psychic damage per psi point spent and suffers disadvantage on its next Wisdom saving throw before the end of your next turn. On a successful save, it takes half as much damage.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"pi2-forceful query" : {
 		name : "Forceful Query",
 		source : ["UA:TMC", 25],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "30 ft",
 		duration : "Instantaneous",
 		save : "Int",
 		description : "1 crea save or they must truthfully answer a yes or no question (charm effect)",
 		descriptionFull : "As an action, you ask a question of one creature that can see and hear you within 30 feet of you. The question must be phrased so that it can be answered with a yes or no, otherwise this ability fails. The target must succeed on a Wisdom saving throw, or it replies with a truthful answer. A creature is immune to this ability if it is immune to being charmed.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"pi3-ransack mind" : {
 		name : "Ransack Mind",
 		source : ["UA:TMC", 25],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 h",
 		range : "30 ft",
 		duration : "12/24/48 h",
 		save : "Int",
 		description : "1 crea 3 saves if in range for full duration; learn key memories from 12/24/48 h (1/2/3 failed saves)",
 		descriptionFull : "While you concentrate on this ability, you probe one creature’s mind. The creature must remain within 30 feet of you, and you must be able to see it. If you reach the ability’s full duration, the target must make three Intelligence saving throws, and you learn information from it based on the number of saving throws it fails." + "\n   " + "With one failed saving throw, you learn its key memories from the past 12 hours." + "\n   " + "With two failed saving throws, you learn its key memories from the past 24 hours." + "\n   " + "With three failed saving throws, you learn its key memories from the past 48 hours.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"pi4-phantom idea" : {
 		name : "Phantom Idea",
 		source : ["UA:TMC", 25],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 h",
 		range : "30 ft",
 		duration : "4/24/48 h",
 		save : "Int",
 		description : "1 crea 3 saves if in range for full duration; implant memory lasting 4/24/48 h (1/2/3 failed saves)",
 		descriptionFull : "While you concentrate on this ability, you probe one creature’s mind. The creature must remain within 30 feet of you, and you must be able to see it. If you reach the ability’s full duration, the target must make three Intelligence saving throws, and you plant a memory or an idea in it, which lasts for a number of hours based on the number of saving throws it fails. You choose whether the idea or memory is trivial (such as “I had porridge for breakfast” or “Ale is the worst”) or personality-defining (“I failed to save my village from orc marauders and am therefore a coward” or “Magic is a scourge, so I renounce it”)." + "\n   " + "With one failed saving throw, the idea or memory lasts for the next 4 hours. With two failed saving throws, it lasts for 24 hours. With three failed saving throws, it lasts for 48 hours.",
-		firstCol : 6 //power point cost
+		firstCol : 6
 	},
 
 	//the psychic phantoms discipline (contributed by Justin W.)
-	"psychic phantoms" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"psychic phantoms" : {
 		name : "Psychic Phantoms",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 25],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain advantage on Charisma (Deception) checks",
 		descriptionFull : "Your power reaches into a creature’s mind and causes it false perceptions." + PsychicFocus + "While focused on this discipline, you have advantage on Charisma (Deception) checks.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["pp1-distracting figment", "pp2-phantom foe", "pp3-phantom betrayal", "pp4-phantom riches"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["pp1-distracting figment", "pp2-phantom foe", "pp3-phantom betrayal", "pp4-phantom riches"]
 	},
 	"pp1-distracting figment" : {
 		name : "Distracting Figment",
 		source : ["UA:TMC", 25],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Next turn end",
 		save : "Int",
 		description : "1 crea save or 1d10/PP Psychic dmg, can't use rea, melee atks vs. it have adv.; save halves \u0026 no effects",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must make an Intelligence saving throw. On a failed save, it takes 1d10 psychic damage per psi point spent and thinks it perceives a threatening creature just out of its sight; until the end of your next turn, it can’t use reactions, and melee attack rolls against it have advantage. On a successful save, it takes half as much damage.",
-		firstCol : "1-7" //power point cost
+		firstCol : "1-7"
 	},
 	"pp2-phantom foe" : {
 		name : "Phantom Foe",
 		source : ["UA:TMC", 25],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Int",
 		description : "1 crea save or no rea and 1d8(+1d8/extra PP) Psychic dmg at start its turn; save at end of each turn",
 		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must make an Intelligence saving throw. On a failed save, it perceives a horrid creature adjacent to it until your concentration ends. During this time, the target can’t take reactions, and it takes 1d8 psychic damage at the start of each of its turns. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. You can increase the damage by 1d8 for each additional psi point spent on the ability.",
-		firstCol : "3-7" //power point cost
+		firstCol : "3-7"
 	},
 	"pp3-phantom betrayal" : {
 		name : "Phantom Betrayal",
 		source : ["UA:TMC", 26],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Int",
 		description : "1 crea save or targets its allies with attacks/damaging effects; save at end of each turn (charm effect)",
 		descriptionFull : "As an action, you plant delusional paranoia in a creature’s mind. Choose one creature you can see within 60 feet of you. The target must succeed on an Intelligence saving throw, or until your concentration ends, it must target its allies with attacks and other damaging effects. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. A creature is immune to this ability if it is immune to being charmed.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"pp4-phantom riches" : {
 		name : "Phantom Riches",
 		source : ["UA:TMC", 26],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Int",
 		description : "1 crea save or you move it and it can't act if not taking dmg since last turn; save at end of each turn",
 		descriptionFull : "As an action, you plant the phantom of a greatly desired object in a creature’s mind. Choose one creature you can see within 60 feet of you. The target must make an Intelligence saving throw. On a failed save, you gain partial control over the target’s behavior until your concentration ends; the target moves as you wish on each of its turns, as it thinks it pursues the phantom object it desires. If it hasn’t taken damage since its last turn, it can use its action only to admire the object you created in its perception. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the telepathic contact discipline (contributed by Justin W.)
-	"telepathic contact" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"telepathic contact" : {
 		name : "Telepathic Contact",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 26],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "Use telepathy class feature with up to 6 crea; If no telepathy feature, gain telepathy 120 ft instead",
 		descriptionFull : "By channeling psionic power, you gain the ability to control other creatures by substituting your will for their own." + PsychicFocus + "While focused on this discipline, you gain the ability to use your Telepathy class feature with up to six creatures at once. If you don’t have that feature from the mystic class, you instead gain it while focused on this discipline.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["tc1-exacting query", "tc2-occluded mind", "tc3-broken will", "tc4-psychic grip", "tc5-psychic domination"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["tc1-exacting query", "tc2-occluded mind", "tc3-broken will", "tc4-psychic grip", "tc5-psychic domination"]
 	},
 	"tc1-exacting query" : {
 		name : "Exacting Query",
 		source : ["UA:TMC", 26],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "120 ft",
 		duration : "Instantaneous",
 		save : "Int",
 		description : "1 crea save or answer 1 telepathically asked question; on save, target is immune until you long rest",
 		descriptionFull : "As an action, you target one creature you can communicate with via telepathy. The target must make an Intelligence saving throw. On a failed save, the target truthfully answers one question you ask it via telepathy. On a successful save, the target is unaffected, and you can’t use this ability on it again until you finish a long rest. A creature is immune to this ability if it is immune to being charmed.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"tc2-occluded mind" : {
 		name : "Occluded Mind",
 		source : ["UA:TMC", 26],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "120 ft",
 		duration : "5 min",
 		save : "Int",
 		description : "1 crea save or believes telepathic statement; on save, target immune until you long rest (charm effect)",
 		descriptionFull : "As an action, you target one creature you can communicate with via telepathy. The target must make an Intelligence saving throw. On a failed save, the target believes one statement of your choice for the next 5 minutes that you communicate to it via telepathy. The statement can be up to ten words long, and it must describe you or a creature or an object the target can see. On a successful save, the target is unaffected, and you can’t use this ability on it again until you finish a long rest. A creature is immune to this ability if it is immune to being charmed.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"tc3-broken will" : {
 		name : "Broken Will",
 		source : ["UA:TMC", 26],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "120 ft",
 		duration : "1 rnd",
 		save : "Int",
 		description : "1 crea save or you control it on its next turn; on save, target immune until you long rest (charm effect)",
 		descriptionFull : "As an action, you target one creature you can communicate with via telepathy. The target must make an Intelligence saving throw. On a failed save, you choose the target’s movement and action on its next turn. On a successful save, the target is unaffected, and you can’t use this ability on it again until you finish a long rest. A creature is immune to this ability if it is immune to being charmed.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 	"tc4-psychic grip" : {
 		name : "Psychic Grip",
 		source : ["UA:TMC", 26],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Int",
 		description : "1 crea save or paralyzed; save at end of each turn, on failure you use rea to have it move half its speed",
 		descriptionFull : "As an action, you target one creature you can see within 60 feet of you. The target must succeed on an Intelligence saving throw, or it is paralyzed until your concentration ends. At the end of each of its turns, it can repeat the saving throw. On a success, this effect ends. On a failure, you can use your reaction to force the target to move up to half its speed, even though it’s paralyzed.",
-		firstCol : 6 //power point cost
+		firstCol : 6
 	},
 	"tc5-psychic domination" : {
 		name : "Psychic Domination",
 		source : ["UA:TMC", 26],
 		psionic : true,
 		level : 1,
-		school : "Awake", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Awake",
 		time : "1 a",
 		range : "60 ft",
 		duration : "Conc, 1 min",
 		save : "Int",
 		description : "1 crea save or you direct its actions and move on its turns; save at end of each turn (charm effect)",
 		descriptionFull : "As an action, you target one creature you can see within 60 feet of you. The target must succeed on an Intelligence saving throw, or you choose the creature’s actions and movement on its turns until your concentration ends. At the end of each of its turns, it can repeat the saving throw, ending the effect on itself on a success. A creature is immune to this ability if it is immune to being charmed.",
-		firstCol : 7 //power point cost
+		firstCol : 7
 	},
 
 	//the third eye discipline (contributed by Justin W.)
-	"third eye" : { //the first entry of the discipline has the effect of the Psychic Focus
+	"third eye" : {
 		name : "Third Eye",
-		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		classes : ["mystic"],
 		source : ["UA:TMC", 26],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		components : "Psi-F.",
 		duration : "While focused",
 		description : "You gain darkvision 60 ft; if already darkvision of 60 ft or more, increase range by 10 ft instead",
 		descriptionFull : "You create a third, psychic eye in your mind which you cast out into the world. It channels thoughts and knowledge back to you, greatly enhancing your senses." + PsychicFocus + "While focused on this discipline, you have darkvision with a range of 60 feet. If you already have darkvision with that range or greater, increase its range by 10 feet.",
-		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
-		dependencies : ["te1-tremorsense", "te2-unwavering eye", "te3-piercing sight", "te4-truesight"] //array of object names that should be filled after this one on the spell sheet
+		firstCol : "checkbox",
+		dependencies : ["te1-tremorsense", "te2-unwavering eye", "te3-piercing sight", "te4-truesight"]
 	},
 	"te1-tremorsense" : {
 		name : "Tremorsense",
 		source : ["UA:TMC", 26],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		duration : "Conc, 1 min",
 		description : "You gain tremorsense with a radius of 30 ft",
 		descriptionFull : "As a bonus action, you gain tremorsense with a radius of 30 feet, which lasts until your concentration ends.",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"te2-unwavering eye" : {
 		name : "Unwavering Eye",
 		source : ["UA:TMC", 26],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		duration : "1 min",
 		description : "You gain advantage on Wisdom checks",
 		descriptionFull : "As a bonus action, you gain advantage on Wisdom checks for 1 minute",
-		firstCol : 2 //power point cost
+		firstCol : 2
 	},
 	"te3-piercing sight" : {
 		name : "Piercing Sight",
 		source : ["UA:TMC", 27],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		duration : "Conc, 1 min",
 		description : "You see through objects that are up to 1 ft thick within 30 ft",
 		descriptionFull : "As a bonus action, you gain the ability to see through objects that are up to 1 foot thick within 30 feet of you. This sight lasts until your concentration ends.",
-		firstCol : 3 //power point cost
+		firstCol : 3
 	},
 	"te4-truesight" : {
 		name : "Truesight",
 		source : ["UA:TMC", 27],
 		psionic : true,
 		level : 1,
-		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		school : "Nomad",
 		time : "1 bns",
 		range : "Self",
 		duration : "Conc, 1 min",
 		description : "You gain truesight with a radius of 30 ft",
 		descriptionFull : "As a bonus action, you gain truesight with a radius of 30 feet, which lasts until your concentration ends.",
-		firstCol : 5 //power point cost
+		firstCol : 5
 	},
 };
 
