@@ -5739,7 +5739,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 							name : CurrentRace.name,
 							level : newRaceLvl,
 							ability : CurrentRace.spellcastingAbility,
-							typeSp : "known",
+							typeSp : "race",
 							bonus : {}
 						};
 					}

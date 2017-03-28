@@ -1008,7 +1008,6 @@ var PsionicsList = {
 		time : "1 bns",
 		range : "Self",
 		duration : "Conc, 1 min",
-		save : "Str",
 		description : "30 temp. hp; for duration: become Huge, +10 ft reach, melee attacks deal +2d6 Bludgeoning dmg",
 		descriptionFull : "As a bonus action, you gain 30 temporary hit points. In addition, until your concentration ends, your melee weapon attacks deal an extra 2d6 bludgeoning damage on a hit, and your reach increases by 10 feet. If you’re smaller than Huge, you also become Huge for the duration.",
 		firstCol : 7 //power point cost
@@ -1053,7 +1052,7 @@ var PsionicsList = {
 		time : "1 rea",
 		range : "Self",
 		duration : "Instantaneous",
-		description : "Use just before rolling an Int, Wis, or Cha save; you gain a +1/PP bonus to that save",
+		description : "Add +1/PP to the result of an Int, Wis, or Cha save; use after rolling, but before knowing if successful",
 		descriptionFull : "As a reaction when you make an Intelligence, a Wisdom, or a Charisma saving throw, you gain a +1 bonus to that saving throw for each psi point you spend on this ability. You can use this ability after rolling the die but before suffering the results.",
 		firstCol : "1-7" //power point cost
 	},
@@ -1267,6 +1266,474 @@ var PsionicsList = {
 		duration : "Instantaneous",
 		description : "Up to 5 allies you see can use their reactions to take the Attack action, with you choosing the targets",
 		descriptionFull : "As an action, choose up to five allies you can see within 60 feet of you. Each of those allies can use their reaction to take the Attack action. You choose the targets of the attacks.",
+		firstCol : 7 //power point cost
+	},
+
+	//the mantle of courage discipline
+	"mantle of courage" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Mantle of Courage",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You and allies within 10 ft of you that can see you have advantage on saves vs. being frightened",
+		descriptionFull : "You focus your mind on courage, radiating confidence and bravado to your allies." + PsychicFocus + "While focused on this discipline, you and allies within 10 feet of you who can see you have advantage on saving throws against being frightened.",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["mc1-incite courage", "mc2-aura of victory", "mc3-pillar of confidence"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"mc1-incite courage" : {
+		name : "Incite Courage",
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "60 ft",
+		duration : "Instantaneous",
+		description : "Up to 6 creatures are no longer frightened",
+		descriptionFull : "As a bonus action, choose up to six creatures you can see within 60 feet of you. If any of those creatures is frightened, that condition ends on that creature.",
+		firstCol : 2 //power point cost
+	},
+	"mc2-aura of victory" : {
+		name : "Aura of Victory",
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "30 ft",
+		duration : "Conc, 10 min",
+		description : "When an enemy you can see is reduced to 0 hp, you and allies within range gain 2/PP temporary hp",
+		descriptionFull : "As a bonus action, you project psionic energy until your concentration ends. The energy fortifies you and your allies when your enemies are felled; whenever an enemy you can see is reduced to 0 hit points, you and each of your allies within 30 feet of you gain temporary hit points equal to double the psi points spent to activate this effect.",
+		firstCol : "1-7" //power point cost
+	},
+	"mc3-pillar of confidence" : {
+		name : "Pillar of Confidence",
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "60 ft",
+		duration : "Next turn end",
+		description : "You \u0026 up to 5 crea gain, on their turn, a special action to either make 1 wea atk, Dash, or Disengage",
+		descriptionFull : "As an action, you and up to five creatures you can see within 60 feet of you each gain one extra action to use on their individual turns. The action goes away if not used before the end of your next turn. the action can be used only to make one weapon attack or to take the Dash or Disengage action.",
+		firstCol : 6 //power point cost
+	},
+
+	//the mantle of fear discipline
+	"mantle of fear" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Mantle of Fear",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You gain advantage on Charisma (Intimidation) checks",
+		descriptionFull : "You tap into a well of primal fear and turn yourself into a beacon of terror to your enemies." + PsychicFocus + "While focused on this discipline, you have advantage on Charisma (Intimidation) checks.",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["mf1-incite fear", "mf2-unsettling aura", "mf3-incite panic"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"mf1-incite fear" : {
+		name : "Incite Fear",
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		save : "Wis",
+		description : "1 crea save or be frightened of you; repeat save each turn when out of line of sight",
+		descriptionFull : "As an action, choose one creature you can see within 60 feet of you. The target must succeed on a Wisdom saving throw or become frightened of you until your concentration ends. Whenever the frightened target ends its turn in a location where it can’t see you, it can repeat the saving throw, ending the effect on itself on a success.",
+		firstCol : 2 //power point cost
+	},
+	"mf2-unsettling aura" : {
+		name : "Unsettling Aura",
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "60 ft",
+		duration : "Conc, 1 h",
+		description : "All crea in range that can see you move only half speed when moving towards you (frightening effect)",
+		descriptionFull : "As a bonus action, you cloak yourself in unsettling psychic energy. Until your concentration ends, any enemy within 60 feet of you that can see you must spend 1 extra foot of movement for every foot it moves toward you. A creature ignores this effect if immune to being frightened.",
+		firstCol : 3 //power point cost
+	},
+	"mf3-incite panic" : {
+		name : "Incite Panic",
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "90 ft",
+		duration : "Conc, 1 min",
+		save : "Wis",
+		description : "8 crea save each rnd or frightened and spend turn on random move or melee atk; 3 saves ends; see B",
+		descriptionFull : "As an action, choose up to eight creatures you can see within 90 feet of you that can see you. At the start of each of a target’s turns before your concentration ends, the target must make a Wisdom saving throw. On a failed save, the target is frightened until the start of its next turn, and you roll a die. If you roll an odd number, the frightened target moves half its speed in a random direction and takes no action on that turn, other than to scream in terror. If you roll an even number, the frightened target makes one melee attack against a random target within its reach. If there is no such target, it moves half its speed in a random direction and takes no action on that turn. This effect ends on a target if it succeeds on three saving throws against it.",
+		firstCol : 5 //power point cost
+	},
+
+	//the mantle of fury discipline
+	"mantle of fury" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Mantle of Fury",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You and allies within 10 ft at start of your turn gain +5 ft walking speed for that turn",
+		descriptionFull : "You allow the primal fury lurking deep within your mind to burst forth, catching you and your allies in an implacable bloodthirst." + PsychicFocus + "While focused on this discipline in combat, you and any ally who starts their turn within 10 feet of you gains a 5-foot increase to their walking speed during that turn.",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["mf1-incite fury", "mf2-mindless charge", "mf3-aura of bloodletting", "mf4-overwhelming fury"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"mf1-incite fury" : {
+		name : "Incite Fury",
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		description : "3 creatures can add 1d4 to the damage of melee weapon attacks during the duration",
+		descriptionFull : "As a bonus action, choose up to three allies you can see within 60 feet of you (you can choose yourself in place of one of the allies). Until your concentration ends, each target can roll a d4 when rolling damage for a melee weapon attack and add the number rolled to the damage roll.",
+		firstCol : 2 //power point cost
+	},
+	"mf2-mindless charge" : {
+		name : "Mindless Charge",
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "60 ft",
+		duration : "Instantaneous",
+		description : "3 creatures can use their reactions to move their speed straight towards the nearest enemy",
+		descriptionFull : "As a bonus action, choose up to three creatures you can see within 60 feet of you. Each target can immediately use its reaction to move up to its speed in a straight line toward its nearest enemy.",
+		firstCol : 2 //power point cost
+	},
+	"mf3-aura of bloodletting" : {
+		name : "Aura of Bloodletting",
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		description : "You and all creatures within range during the duration have advantage on melee attack rolls",
+		descriptionFull : "As a bonus action, you unleash an aura of rage. Until your concentration ends, you and any creature within 60 feet of you has advantage on melee attack rolls.",
+		firstCol : 3 //power point cost
+	},
+	"mf4-overwhelming fury" : {
+		name : "Overwhelming Fury",
+		source : ["UA:TMC", 16],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		save : "Cha",
+		description : "1 creature save or it can use its actions only to make melee attacks; save at the end of each of its turns",
+		descriptionFull : "As an action, you flood rage into one creature you can see within 60 feet of you. The target must succeed on a Charisma saving throw, or it can use its actions only to make melee attacks until your concentration ends. It can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
+		firstCol : 5 //power point cost
+	},
+
+	//the mantle of joy discipline
+	"mantle of joy" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Mantle of Joy",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You gain advantage on Charisma (Persuasion) checks",
+		descriptionFull : "You tap into the joy within you, radiating it outward in soothing, psychic energy that brings hope and comfort to creatures around you." + PsychicFocus + "While focused on this discipline, you have advantage on Charisma (Persuasion) checks.",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["mj1-soothing presence", "mj2-comforting aura", "mj3-aura of jubilation", "mj4-beacon of recovery"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"mj1-soothing presence" : {
+		name : "Soothing Presence",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "60 ft",
+		duration : "Instantaneous",
+		description : "3 creatures gain 3/PP temporary hit points",
+		descriptionFull : "As a bonus action, choose up to three creatures you can see within 60 feet of you. Each target gains 3 temporary hit points per psi point spent on this effect.",
+		firstCol : "1-7" //power point cost
+	},
+	"mj2-comforting aura" : {
+		name : "Comforting Aura",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Sight",
+		duration : "Conc, 1 min",
+		description : "3 creatures can add 1d4 on every saving throw during the duration",
+		descriptionFull : "As a bonus action, choose up to three allies you can see (you can choose yourself in place of one of the allies). Until your concentration ends, each target can roll a d4 when making a saving throw and add the number rolled to the total.",
+		firstCol : 2 //power point cost
+	},
+	"mj3-aura of jubilation" : {
+		name : "Aura of Jubilation",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		description : "All creatures within range that can see you have disadvantage on Perception and Investigation checks",
+		descriptionFull : "As a bonus action, you radiate a distracting mirth until your concentration ends. Each creature within 60 feet of you that can see you suffers disadvantage on any checks using the Perception and Investigation skills.",
+		firstCol : 3 //power point cost
+	},
+	"mj4-beacon of recovery" : {
+		name : "Beacon of Recovery",
+		source : ["UA:TMC", 17],
+		psionic : true,
+		level : 1,
+		school : "Avatar", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "60 ft",
+		duration : "Instantaneous",
+		description : "You + 5 allies can make an extra save against every effect that allows a save at the start/end of a turn",
+		descriptionFull : "As a bonus action, you and up to five allies you can see within 60 feet of you can immediately make saving throws against every effect they’re suffering that allows a save at the start or end of their turns.",
+		firstCol : 5 //power point cost
+	},
+
+	//the nomadic arrow discipline (contributed by mattohara)
+	"nomadic arrow" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Nomadic Arrow",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "Your ranged weapon attacks ignore disadvantage, but can't get adv. if it was subject to dis.",
+		descriptionFull : "You imbue a ranged weapon with a strange semblance of sentience, allowing it to unerringly find its mark." + PsychicFocus + "While you are focused on this discipline, any attack roll you make for a ranged weapon attack ignores disadvantage. If disadvantage would normally apply to the roll, that roll also can’t benefit from advantage.",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["na1-speed dart", "na2-seeking missile", "na3-faithful archer"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"na1-speed dart" : {
+		name : "Speed Dart",
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		duration : "This turn end",
+		description : "1 ranged weapon gains psionic power; next hit with it deals +1d10/PP Psychic damage",
+		descriptionFull : "As a bonus action, you imbue one ranged weapon you hold with psionic power. The next attack you make with it that hits before the end of the current turn deals an extra 1d10 psychic damage per psi point spent.",
+		firstCol : "1-7" //power point cost
+	},
+	"na2-seeking missile" : {
+		name : "Seeking Missile",
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 rea",
+		range : "Self",
+		duration : "Instantaneous",
+		description : "When you miss with a ranged attack, you can reroll the attack roll against the same target",
+		descriptionFull : "As a reaction when you miss with a ranged weapon attack, you can repeat the attack roll against the same target.",
+		firstCol : 2 //power point cost
+	},
+	"na3-faithful archer" : {
+		name : "Faithful Archer",
+		source : ["UA:TMC", 21],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		duration : "Conc, 1 min",
+		description : "1 ranged weapon gains sentience; free attack with it at the start of each turn; thrown weapons return",
+		descriptionFull : "As a bonus action, you imbue a ranged weapon with a limited sentience. Until your concentration ends, you can make an extra attack with the weapon at the start of each of your turns (no action required). If it is a thrown weapon, it returns to your grasp each time you make any attack with it.",
+		firstCol : 5 //power point cost
+	},
+
+	//the nomadic chameleon discipline (contributed by mattohara)
+	"nomadic chameleon" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Nomadic Chameleon",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 22],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You gain advantage on Dexterity (Stealth) checks",
+		descriptionFull : "You create a screen of psychic power that distorts your appearance, allowing you to blend into the background or even turn invisible." + PsychicFocus + "While focused on this discipline, you have advantage on Dexterity (Stealth) checks.",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["nc1-chameleon", "nc2-step from sight", "nc3-enduring invisibility"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"nc1-chameleon" : {
+		name : "Chameleon",
+		source : ["UA:TMC", 22],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "Self",
+		duration : "This turn end",
+		description : "You can hide, regardless of requirements; at end of turn, remain hidden only if requirements are met",
+		descriptionFull : "As an action, you can attempt to hide even if you fail to meet the requirements needed to do so. At the end of the current turn, you remain hidden only if you then meet the normal requirements for hiding.",
+		firstCol : 2 //power point cost
+	},
+	"nc2-step from sight" : {
+		name : "Step from Sight",
+		source : ["UA:TMC", 22],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "60 ft",
+		duration : "Conc, 1 min",
+		description : "You(+1 crea/extra PP) become invisible; attacking/targeting/affecting other crea makes a crea visible",
+		descriptionFull : "As a bonus action, cloak yourself from sight. You can target one additional creature for every additional psi point you spend on this ability. The added targets must be visible to you and within 60 feet of you." + "\n   " + "Each target turns invisible and remains so until your concentration ends or until immediately after it targets, damages, or otherwise affects any creature with an attack, a spell, or another ability.",
+		firstCol : "3-7" //power point cost
+	},
+	"nc3-enduring invisibility" : {
+		name : "Enduring Invisibility",
+		source : ["UA:TMC", 22],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		duration : "Conc, 1 min",
+		description : "You turn invisible for the duration",
+		descriptionFull : "As a bonus action, you turn invisible and remain so until your concentration ends.",
+		firstCol : 7 //power point cost
+	},
+
+	//the nomadic mind discipline (contributed by mattohara)
+	"nomadic mind" : { //the first entry of the discipline has the effect of the Psychic Focus
+		name : "Nomadic Mind",
+		classes : ["mystic"], //only has "mystic" for the first entry of the discipline
+		source : ["UA:TMC", 22],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 bns",
+		range : "Self",
+		components : "Psi-F.",
+		duration : "While focused",
+		description : "You gain proficiency with one skill, tool, or language",
+		descriptionFull : "You dispatch part of your psyche into the noosphere, the collective vista of minds and knowledge possessed by living things." + PsychicFocus + "Whenever you focus on this discipline, you choose one skill or tool and have proficiency with it until your focus ends. Alternatively, you gain the ability to read and write one language of your choice until your focus ends.",
+		firstCol : "checkbox", //power point cost, or "checkbox" when it concerns the psychic focus
+		dependencies : ["nm1-wandering mind", "nm2-find creature", "nm3-item lore", "nm4-psychic speech", "nm5-wandering eye", "nm6-phasing eye"] //array of object names that should be filled after this one on the spell sheet
+	},
+	"nm1-wandering mind" : {
+		name : "Wandering Mind",
+		source : ["UA:TMC", 22],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "10 min",
+		range : "Self",
+		duration : "1 h",
+		description : "Gain prof. with 1 skill/2PP: Animal Hand., History, Medicine, Nature, Performance, Religion, Survival",
+		descriptionFull : "You enter a deep contemplation. If you concentrate for this option’s full duration, you then gain proficiency with up to three of the following skills (one skill for every 2 psi points spent): Animal Handling, Arcana, History, Medicine, Nature, Performance, Religion, and Survival. The benefit lasts for 1 hour, no concentration required.",
+		firstCol : "2-6" //power point cost
+	},
+	"nm2-find creature" : {
+		name : "Find Creature",
+		source : ["UA:TMC", 22],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 h",
+		range : "Self",
+		duration : "Instantaneous",
+		description : "Learn general location of a creature, within 1-3 miles; if it's on other plane, learn which plane instead",
+		descriptionFull : "You cast your mind about for information about a specific creature. If you concentrate for this option’s full duration, you then gain a general understanding of the creature’s current location. You learn the region, city, town, village, or district where it is, pinpointing an area between 1 and 3 miles on a side (DM’s choice). If the creature is on another plane of existence, you instead learn which plane.",
+		firstCol : 2 //power point cost
+	},
+	"nm3-item lore" : {
+		name : "Item Lore",
+		source : ["UA:TMC", 22],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 h",
+		range : "5 ft",
+		duration : "Instantaneous",
+		description : "1 magical item or magic-imbued crea/obj; learn properties, how to use, and spells affecting it",
+		descriptionFull : "You carefully study an item. If you concentrate for this option’s full duration while remaining within 5 feet of the item, you then gain the benefits of an identify spell cast on that item.",
+		firstCol : 3 //power point cost
+	},
+	"nm4-psychic speech" : {
+		name : "Psychic Speech",
+		source : ["UA:TMC", 22],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "Self",
+		duration : "1 h",
+		description : "You understands all spoken/written languages and all with a language can understand what you say",
+		descriptionFull : "As an action, you attune your mind to the psychic imprint of all language. For 1 hour, you gain the ability to understand any language you hear or attempt to read. In addition, when you speak, all creatures that can understand a language understand what you say, regardless of what language you use.",
+		firstCol : 5 //power point cost
+	},
+	"nm5-wandering eye" : {
+		name : "Wandering Eye",
+		source : ["UA:TMC", 22],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 h",
+		description : "Create invisible, moving (unlimited range, 30ft/rnd) 1\" magic eye with darkvision you see through",
+		description : "Create invisible, moving (unlimited range, 10m/rnd) 2,5cm magic eye /w darkvision you see through",
+		descriptionFull : "As an action, you create a psychic sensor within 60 feet of you. The sensor lasts until your concentration ends. The sensor is invisible and hovers in the air. You mentally receive visual information from it, which has normal vision and darkvision with a range of 60 feet. The sensor can look in all directions. As an action, you can move the sensor up to 30 feet in any direction. There is no limit to how far away from you the eye can move, but it can’t enter another plane of existence. A solid barrier blocks the eye’s movement, but the eye can pass through an opening as small as 1 inch in diameter.",
+		firstCol : 6 //power point cost
+	},
+	"nm6-phasing eye" : {
+		name : "Phasing Eye",
+		source : ["UA:TMC", 22],
+		psionic : true,
+		level : 1,
+		school : "Nomad", //"Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
+		time : "1 a",
+		range : "60 ft",
+		duration : "Conc, 1 h",
+		description : "As Wandering Eye above, except the eye can move through objects but can't end its movement in one",
+		descriptionFull : "As Wandering Eye above, except the eye can move through solid objects but can’t end its movement in one. If it does so, the effect immediately ends.",
 		firstCol : 7 //power point cost
 	},
 
