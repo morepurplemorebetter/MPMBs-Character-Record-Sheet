@@ -20,7 +20,7 @@ var ArmourList = {
 		stealthdis : false,
 		weight : 0,
 		strReq : 0,
-		dex : -10,
+		dex : 0,
 		addMod : true
 	},
 
@@ -39,7 +39,7 @@ var ArmourList = {
 	},
 
 	// UA Oath of Redemption Paladin Armor of Peace
-	"Armor of Peace" : {
+	"armor of peace" : {
 		regExpSearch : /^(?=.*armou?r)(?=.*peace).*$/i,
 		name : "Armor of Peace",
 		source : ["UA:AToS", 2],
@@ -1178,6 +1178,7 @@ var WeaponsList = {
 		regExpSearch : /^(?=.*alchemical)(?=.*acid).*$/i,
 		name : "Alchemical Acid",
 		source : ["UA:A", 5],
+		list : "artificer",
 		ability : 4,
 		type : "Artificer",
 		damage : [1, 6, "acid"],
@@ -1191,6 +1192,7 @@ var WeaponsList = {
 		regExpSearch : /^(?=.*alchemical)(?=.*fire).*$/i,
 		name : "Alchemical Fire",
 		source : ["UA:A", 5],
+		list : "artificer",
 		ability : 4,
 		type : "Artificer",
 		damage : [1, 6, "fire"],

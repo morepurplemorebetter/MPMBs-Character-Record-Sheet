@@ -3860,7 +3860,7 @@ function ParseSpellMenu() {
 			continue;
 		}
 		var aCastClass = aObj && aObj.spellcastingList ? aObj.spellcastingList : {class : aCast, psionic : false};
-		var aCastName = aCast === "any" ? "All spells" : aObj.name + " spells";
+		var aCastName = aCast === "any" ? "All spells" : (aObj.fullname ? aObj.fullname : aObj.subname ? aObj.subname : aObj.name) + " spells";
 		
 		//get a list of all the spells in the class' spell list and sort it
 		var allSpells = CreateSpellList(aCastClass, false);
@@ -4877,7 +4877,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	
 	//now sort each of those new arrays and put them on the sheet
 	var start = true;
-	for (var lvl = 0; lvl <= orderedSpellList.length; lvl++) {
+	for (var lvl = 0; lvl < orderedSpellList.length; lvl++) {
 		var spArray = orderedSpellList[lvl];
 		var isPsionics = i <= 9 ? "" : "psionic";
 		if (spArray.length > 0) {

@@ -470,7 +470,7 @@ var PsionicsList = {
 		range : "Self",
 		duration : "Instantaneous",
 		save : "Str",
-		description : "Use after melee atk hit; crea hit saves or move 10 ft/PP away; if it then hits obj, takes 1d6/PP Bludg. dmg", //added the damage
+		description : "Use after melee atk hit; crea hit save or move 10 ft/PP away; if it then hits obj, 1d6/PP Bludg. dmg", //added the damage
 		descriptionFull : "When you hit a target with a melee attack, you can activate this ability as a reaction. The target must succeed on a Strength saving throw or be knocked 10 feet away from you per psi point spent. The target moves in a straight line. If it hits an object, this movement immediately ends and the target takes 1d6 bludgeoning damage per psi point spent.",
 		firstCol : "1-7"
 	},
@@ -2960,7 +2960,7 @@ var PsionicsList = {
 		firstCol : 3
 	},
 	"pd3-mind storm" : {
-		name : "Mine Storm",
+		name : "Mind Storm",
 		source : ["UA:TMC", 25],
 		psionic : true,
 		level : 1,

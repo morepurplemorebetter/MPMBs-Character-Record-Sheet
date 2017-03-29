@@ -77,12 +77,12 @@ var SourceList = {
 	},
 
 	//Adventurers League specific sources
-/*	"AL:EE" : {
+	"AL:EE" : {
 		name : "Elemental Evil Backgrounds [Mulmaster]", //AL season 2 (Elemental Evil) optional backgrounds (2015-04-15)
 		abbreviation : "AL:EE",
 		group : "Adventurers League",
 		url : "http://dndadventurersleague.org/wp-content/uploads/2015/04/Mulmaster-Bonds-and-Backgrounds.pdf"
-	}, */
+	},
 	"AL:RoD" : {
 		name : "Rage of Demons Backgrounds [Hillsfar]", //AL season 3 (Rage of Demons) optional backgrounds (2015-07-14)
 		abbreviation : "AL:RoD",

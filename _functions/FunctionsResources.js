@@ -392,6 +392,8 @@ function resourceDecisionDialog() {
 		bBac : function (dialog) {resourceSelectionDialog("background");},
 		bBaF : function (dialog) {resourceSelectionDialog("background feature");},
 		bCre : function (dialog) {resourceSelectionDialog("creature");},
+		bAtk : function (dialog) {resourceSelectionDialog("weapon");},
+		bArm : function (dialog) {resourceSelectionDialog("armor");},
 		bLin : function (dialog) {if (this.sourceLink) app.launchURL(this.sourceLink, true)},
 		description : {
 			name : "Pick which resources are excluded and included",
@@ -505,14 +507,14 @@ function resourceDecisionDialog() {
 							type : "button",
 							font : "dialog",
 							bold : true,
-							item_id : "bFea",
-							name : "Feats",
+							item_id : "bBac",
+							name : "Backgrounds",
 						}, {
 							type : "button",
 							font : "dialog",
 							bold : true,
-							item_id : "bSpe",
-							name : "Spells/Psionics",
+							item_id : "bBaF",
+							name : "Background Features",
 						}]
 					}, {
 						type : "view",
@@ -522,14 +524,26 @@ function resourceDecisionDialog() {
 							type : "button",
 							font : "dialog",
 							bold : true,
-							item_id : "bBac",
-							name : "Backgrounds",
+							item_id : "bAtk",
+							name : "Weapons/Attacks",
 						}, {
 							type : "button",
 							font : "dialog",
 							bold : true,
-							item_id : "bBaF",
-							name : "Background Features",
+							item_id : "bArm",
+							name : "Armor",
+						}, {
+							type : "button",
+							font : "dialog",
+							bold : true,
+							item_id : "bFea",
+							name : "Feats",
+						}, {
+							type : "button",
+							font : "dialog",
+							bold : true,
+							item_id : "bSpe",
+							name : "Spells/Psionics",
 						}, {
 							type : "button",
 							font : "dialog",
@@ -557,7 +571,7 @@ function resourceDecisionDialog() {
 			font : "dialog",
 			bold : true,
 			item_id : "bSpe",
-			name : "Spells",
+			name : "Spells/Psionics",
 			alignment : "align_center",
 		}
 		selectionDialogue.description.elements[0].elements[3].elements[2] = {};
@@ -773,12 +787,41 @@ function resourceSelectionDialog(type) {
 		};
 		break;
 	 case "weapon" :
-		var theName = "Attacks";
+		var theName = "Weapons/Attacks";
 		var CSatt = "weapExcl";
+		for (var u in WeaponsList) {
+			var uName = amendSource(WeaponsList[u].name, WeaponsList[u]);
+			var uTest = testSource(u, WeaponsList[u], CSatt, true);
+			if (uTest === "source") continue;
+			
+			var uGroup = (/martial|simple/i).test(WeaponsList[u].type) && !WeaponsList[u].list ? "Other" : WeaponsList[u].type;
+			refObj[uName] = u;
+			if (!exclObj[uGroup]) exclObj[uGroup] = {};
+			if (!inclObj[uGroup]) inclObj[uGroup] = {};
+			if (uTest) {
+				exclObj[uGroup][uName] = -1;
+			} else {
+				inclObj[uGroup][uName] = -1;
+			}
+		};
 		break;
 	 case "armor" :
 		var theName = "Armors";
 		var CSatt = "armorExcl";
+		for (var u in ArmourList) {
+			var uName = amendSource(ArmourList[u].name, ArmourList[u]);
+			var uTest = testSource(u, ArmourList[u], CSatt, true);
+			if (uTest === "source") continue;
+			var uGroup = ArmourList[u].type ? ArmourList[u].type.capitalize() : "Other";
+			refObj[uName] = u;
+			if (!exclObj[uGroup]) exclObj[uGroup] = {};
+			if (!inclObj[uGroup]) inclObj[uGroup] = {};
+			if (uTest) {
+				exclObj[uGroup][uName] = -1;
+			} else {
+				inclObj[uGroup][uName] = -1;
+			}
+		};
 		break;
 	};
 	
@@ -795,7 +838,7 @@ function resourceSelectionDialog(type) {
 			dialog.load({
 				"ExcL" : this.exclObject,
 				"IncL" : this.inclObject,
-				"txt0" : "Please select which " + theName + " you want to exclude or include from being used by the sheet." + theExtra[0] + "\n\nNote that " + theName + " from sourebooks that you excluded in the previous dialogue are not shown here at all."
+				"txt0" : "Please select which " + theName + " you want to exclude or include from being used by the sheet." + theExtra[0] + "\n\nNote that " + theName + " from sourcebooks that you excluded in the previous dialogue are not shown here at all."
 			});
 		},
 		commit : function (dialog) {

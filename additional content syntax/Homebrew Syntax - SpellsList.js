@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Spell
 	Effect:		This is the syntax for adding a new spell
-	Sheet:		v12.88 (2017-03-19)
+	Sheet:		v12.9 (2017-03-29)
 	
 	Please note that there is no code here to update drop-down boxes because the rop-down boxes in the spell selection dialogues are generated automatically and will include any spells you add correctly
 	
@@ -31,7 +31,7 @@ SpellsList["abi-dalzim's horrid wilting"] = { //Object name; note the use of onl
 	
 	ritual : false, //Optional; Whether (true) or not (false) this spell is a ritual
 	
-	level : 0, //Required; The Spell Level. Has to be a number from 0 to 9
+	level : 0, //Required; The Spell Level. Has to be a number from 0 to 9 // use 1 if you are adding a psionic discipline, and 0 for a psionic talent
 	
 	school : "Trans", //Optional; Spell School as it will show up on the Spell Sheet; Can only select from: "Abjur", "Conj", "Div", "Ench", "Evoc", "Illus", "Necro", "Trans", and for psionic discipline orders: "Avatar", "Awake", "Immor", "Nomad", "Wu Jen"
 	
@@ -39,13 +39,15 @@ SpellsList["abi-dalzim's horrid wilting"] = { //Object name; note the use of onl
 	
 	range : "Touch", //Required; Spell Range as it will show up on the Spell Sheet
 	
-	components : "V,S,M", //Optional; Components as they will show up on the Spell Sheet
+	components : "V,S,M", //Optional; Components as they will show up on the Spell Sheet; Use "M\u0192" for a material component that is costly (Mƒ), and use "M\u2020" for a material component that is costly and also consumed (M†)
 	
 	compMaterial : "Two lodestones", //Optional; Material Component. This string will be put in the mouseover text (tooltip) of the component field
 	
 	duration : "Instantaneous", //Required; Spell Duration as it will show up on the Spell Sheet
 	
 	description : "Repair a single broken object no larger than 1 cu ft; can't restore magic to broken magic item", //Required; Short Spell Description as it will show up on the Spell Sheet
+	
+	descriptionMetric : "Repair a single broken object no larger than 1 cu ft; can't restore magic to broken magic item", //Optional; Short Spell Description as it will show up on the Spell Sheet when it is set to use the metric system. If this is ommitted the sheet will automatically try to convert the 'description' to metric
 	
 	descriptionFull : "This spell repairs a single break or tear in an object you touch, such as broken chain link, two halves of a broken key, a torn clack, or a leaking wineskin. As long as the break or tear is no larger than 1 foot in any dimension, you mend it, leaving no trace of the former damage." + "\n   " + "This spell can physically repair a magic item or construct, but the spell can't restore magic to such an object.", //Optional; The full Spell Description. This string will be put in the mouseover text (tooltip) of the description field
 	
