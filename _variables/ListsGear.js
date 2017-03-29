@@ -25,7 +25,7 @@ var ArmourList = {
 	},
 
 	// UA Immortal Mystic armour
-	"Immortal's durability" : {
+	"immortal's durability" : {
 		regExpSearch : /^(?=.*immortal)(?=.*durability).*$/i,
 		name : "Immortal Durability (Con)",
 		source : ["UA:TMC", 7],
@@ -36,6 +36,19 @@ var ArmourList = {
 		strReq : 0,
 		dex : -10,
 		addMod : true
+	},
+
+	// UA Oath of Redemption Paladin Armor of Peace
+	"Armor of Peace" : {
+		regExpSearch : /^(?=.*armou?r)(?=.*peace).*$/i,
+		name : "Armor of Peace",
+		source : ["UA:AToS", 2],
+		type : "",
+		ac : 16,
+		stealthdis : false,
+		weight : 0,
+		strReq : 0,
+		dex : -10
 	},
 
 	"draconic resilience" : {

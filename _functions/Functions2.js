@@ -766,8 +766,8 @@ function ApplyWildshape() {
 	for (var aClass in CurrentClasses) {
 		for (var pop in CurrentClasses[aClass].features) {
 			var fea = CurrentClasses[aClass].features[pop];
-			if ((/unarmored defense|draconic resilience/i).test(fea.name) && fea.minlevel <= classes.known[aClass].level) {
-				var newAC = fea.description.match(/\d+ ?\+/i);
+			if ((/armor of peace|unarmored defense|draconic resilience|durability/i).test(fea.name) && (/ AC /).test(fea.description) && fea.minlevel <= classes.known[aClass].level) {
+				var newAC = fea.description.match(/\d+ ?\+/);
 				newAC = Number(newAC ? newAC[0].replace(/ ?\+/, "") : 10);
 				var addAbi = fea.description.match(/\+ ?(Str|Dex|Con|Int|Wis|Cha)/ig);
 				if (addAbi) { for (var aA = 0; aA < addAbi.length; aA++) {
@@ -775,14 +775,14 @@ function ApplyWildshape() {
 				}; };
 				if (newAC) {
 					theAC.push(newAC);
-					theACtt.push("\n\nThe AC used here is calculated using " + fea.name + " (" + ClassList[aClass].name + ")");
+					theACtt.push("\n\nThe AC used here is calculated using " + fea.name + " (" + CurrentClasses[aClass].fullname + ")");
 				}
 			}
 		}
 	}
-	if ((/^(mage armor|unarmored|draconic resilience)$/i).test(CurrentArmour.known)) {
+	if (CurrentArmour.known && CurrentArmour.mod) {
 		var newAC = ArmourList[CurrentArmour.known].ac;
-		if (CurrentArmour.known.mod) newAC += What(prefix + "Wildshape." + Fld + ".Ability." + CurrentArmour.known.mod.replace(/ Mod/i, "") + ".Mod");
+		if (CurrentArmour.mod) newAC += What(prefix + "Wildshape." + Fld + ".Ability." + CurrentArmour.mod.replace(/ Mod/i, "") + ".Mod");
 		theAC.push(newAC);
 		theACtt.push("\n\nThe AC used here is calculated using " + What("AC Armor Description"));
 	}

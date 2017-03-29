@@ -223,4 +223,10 @@ var SourceList = {
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2017/dnd/downloads/MJ320UAWizardVF2017.pdf"
 	},
+	"UA:AToS" : {
+		name : "Unearthed Arcana: A Trio of Subclasses", //2017-03-27
+		abbreviation : "UA:AToS",
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2017/dnd/downloads/UAThreeSubclasses.pdf"
+	},
 };

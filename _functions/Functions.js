@@ -2373,6 +2373,7 @@ function ParseClass(tempString) {
 	var found = false, tempFound = false, tempFoundL = 0;
 	for (var i = 1; i <= 2; i++) { //first time around just look if the class matches and then look for its subclasses. If that doesn't yield anything, look if any of the subclasses match
 		for (var obj in ClassList) { //scan string for all classes, choosing subclasses over classes
+			if (obj === "ranger" && !testSource("rangerua", ClassList.rangerua, "classExcl")) continue;
 			if (testSource(obj, ClassList[obj], "classExcl")) continue; //only testing if the source of the class isn't excluded
 			var cSearch = ClassList[obj].regExpSearch;
 			if ((i === 2 && !tempFound) || (tempFoundL < obj.length && (cSearch).test(tempString))) {
