@@ -80,6 +80,11 @@ function ParseSpell(input) {
 		var foundLen = 0;
 
 		for (var key in SpellsList) { //scan string for all creatures
+			if (testSource(key, SpellsList[key], "spellsExcl")) continue; //only testing if the source of the class isn't excluded
+			if (input.toLowerCase() === key) {
+				result = key;
+				break;
+			};
 			var toSearch = "\\b(" + clean(SpellsList[key].name).replace(/^\W|\W$/g, "").RegEscape();
 			toSearch += SpellsList[key].nameShort ? "|" + clean(SpellsList[key].nameShort).replace(/^\W|\W$/g, "").RegEscape() : "";
 			toSearch += SpellsList[key].nameAlt ? "|" + clean(SpellsList[key].nameAlt).replace(/^\W|\W$/g, "").RegEscape() : "";
@@ -88,7 +93,7 @@ function ParseSpell(input) {
 			if (key.length > foundLen && toTest.test(input)) {
 				result = key;
 				foundLen = key.length;
-			}
+			};
 		}
 	}
 	return result;
