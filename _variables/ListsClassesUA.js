@@ -3037,7 +3037,7 @@ ClassSubList["wizard-war magic"] = {
 			description : desc([
 				"I gain a bonus to my initiative rolls equal to my Intelligence modifier"
 			]),
-			eval : "if (!What('Init Bonus')) { Value('Init Bonus', 'Int')'};",
+			eval : "if (!What('Init Bonus')) { Value('Init Bonus', 'Int'); };",
 			removeeval : "if (What('Init Bonus') === 'Int') { Value('Init Bonus', 0); };"
 		},
 		"subclassfeature6" : {
