@@ -3423,7 +3423,7 @@ function GenerateSpellSheet(GoOn) {
 			}
 			//now do the psionic talents/disciplines
 			if (lvl <= 9 && lvl === maxLvl) {
-				lvl = 10;
+				lvl = 9;
 				maxLvl = 11;
 				isPsionics = "psionic";
 				MeKn = spCast.firstCol ? "##" + spCast.firstCol : "##pp";
