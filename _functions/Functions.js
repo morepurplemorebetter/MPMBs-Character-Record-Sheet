@@ -655,6 +655,20 @@ function MakeButtons() {
 };
 
 function OpeningStatement() {
+	if (app.viewerVersion < 15) {
+		CurrentSources.globalExcl = ["UA:TMC"];
+		var oldVerAlert = app.alert({
+			nIcon : 0,
+			cTitle : "Please update your Adobe Acrobat",
+			cMsg : "This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. You need at least Adobe Acrobat DC (Reader, Pro, or Standard) to use this PDF's full automation. Please know that if you continue to use the sheet with this outdated version of Adobe Acrobat, some features will not work and others will produce errors (e.g. the Source Selection and the Mystic class).\n\nDo you want to close this pdf and visit the Adobe website where you can download the latest version of Adobe Acrobat Reader for free (https://get.adobe.com/reader/)?\n\nPlease understand that if you choose 'No', there will be no support if anything doesn't work.",
+			nType : 2
+		});
+		if (oldVerAlert === 4) {
+			app.launchURL("https://get.adobe.com/reader/", true);
+			tDoc.closeDoc();
+			return;
+		};
+	};
 	if (What("Opening Remember") === "No") {
 		this.dirty = false;
 		this.pane = "bookmarks"; //open the bookmarks so that on the first opening people can see its existance
@@ -684,7 +698,7 @@ function OpeningStatement() {
 		if (oCk.bAfterValue) {
 			Value("Opening Remember", "Yes");
 		};
-		if (!minVer && CurrentSources.firstTime) resourceDecisionDialog();
+		if (!minVer && CurrentSources.firstTime && app.viewerVersion >= 15) resourceDecisionDialog();
 	};
 	tDoc.calculate = true;
 	tDoc.delay = false;
@@ -4823,7 +4837,7 @@ function CalcSkill() {
 		ExtraBonus = Number(What(ExtraBonus + " Mod"));
 	}
 
-	var AllBonus = (/Initiative/).test(event.target.name) ? What("All Skills Bonus") : 0;
+	var AllBonus = !(/Initiative/).test(event.target.name) ? What("All Skills Bonus") : 0;
 	if (isNaN(AllBonus)) {
 		AllBonus = Number(What(AllBonus + " Mod"));
 	}

@@ -204,6 +204,10 @@ function ObjectToArray(obj, type, testObj) {
 //a function that sets the global variable of excluded materials
 //inclA must be the same length as inclA_Names, and exclA must be the same length as exclA_Names
 function resourceDecisionDialog() {
+	if (app.viewerVersion < 15) {
+		FunctionIsNotAvailable();
+		return;
+	}
 	var isFirstTime = CurrentSources.firstTime;
 	if (this.info.SpellsOnly) { //if this is a spell sheet, only use sources that have spells associated with them
 		var spellSources = [];
@@ -290,7 +294,7 @@ function resourceDecisionDialog() {
 			//run through the sourcelist and get the name of the source
 			var theSrc = false;
 			for (var src in SourceList) {
-				if (sourceNm === (SourceList[src].name.replace(/unearthed arcana: /i, "") + " (" + SourceList[src].abbreviation + ")")) {
+				if (sourceNm === (SourceList[src].name.replace(RegExp(SourceList[src].group + " ?:? ?", "i"), "") + " (" + SourceList[src].abbreviation + ")")) {
 					theSrc = src;
 					break;
 				}
@@ -308,7 +312,7 @@ function resourceDecisionDialog() {
 			//set the CurrentSources variable
 			CurrentSources.globalExcl = [];
 			for (var src in SourceList) {
-				var srcName = SourceList[src].name.replace(/unearthed arcana: /i, "") + " (" + SourceList[src].abbreviation + ")";
+				var srcName = SourceList[src].name.replace(RegExp(SourceList[src].group + " ?:? ?", "i"), "") + " (" + SourceList[src].abbreviation + ")";
 				if (exclArr.indexOf(srcName) !== -1) CurrentSources.globalExcl.push(src);
 			};
 		},

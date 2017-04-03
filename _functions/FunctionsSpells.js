@@ -77,6 +77,7 @@ function ParseSpell(input) {
 	var result = "";
 	
 	if (input) {
+		input = RemoveZeroWidths(input);
 		var foundLen = 0;
 
 		for (var key in SpellsList) { //scan string for all creatures
@@ -822,6 +823,15 @@ function GetZeroWidths(number) {
 	//now replace every 20 of these things with one zero-width joiner (\u200C)
 	toAdd = toAdd.replace(/\u200B{20}/g, "\u200C");
 	return toAdd;
+}
+
+//remove all the no space characters from the string
+function RemoveZeroWidths(input) {
+	var out = input
+	do {
+		out = out.replace(/\u200C*\u200B*/ig, "")
+	} while ((/\u200C|\u200B/).test(out));
+	return out;
 }
 
 //create an object of a spell list array to be used in the dialog
@@ -4885,7 +4895,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	var start = true;
 	for (var lvl = 0; lvl < orderedSpellList.length; lvl++) {
 		var spArray = orderedSpellList[lvl];
-		var isPsionics = i <= 9 ? "" : "psionic";
+		var isPsionics = lvl <= 9 ? "" : "psionic";
 		if (spArray.length > 0) {
 			//add spell dependencies to fill out the array
 			spArray = addSpellDependencies(spArray);
@@ -5261,12 +5271,20 @@ function AmendSpellsList() {
 	
 	//Add the psionics to the SpellsList object
 	if (PsionicsList) {
+		var errorPsi = "";
 		for (var psiO in PsionicsList) {
-			var objNm = SpellsList[psiO] && !SpellsList[psiO].psionic ? "psionic-" + psiO : psiO;
-			SpellsList[objNm] = PsionicsList[psiO];
+			if (SpellsList[psiO]) {
+				if (!SpellsList[psiO].psionic) errorPsi += "\n - " + psiO + " was skipped, because it already exists in SpellsList.";
+			} else {
+				SpellsList[psiO] = PsionicsList[psiO];
+			}
 		};
 	};
-}
+	if (errorPsi) {
+		console.println("Error while adding Psionics to the sheet:" + errorPsi);
+		console.show();
+	}
+};
 
 //a way to test is an array of spells is correct
 function testSpellArray(spArr) {

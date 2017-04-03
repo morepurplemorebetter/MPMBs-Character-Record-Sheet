@@ -18,9 +18,8 @@ var ArmourList = {
 		type : "",
 		ac : 13,
 		stealthdis : false,
-		weight : 0,
 		strReq : 0,
-		dex : 0,
+		dex : -10,
 		addMod : true
 	},
 
@@ -30,11 +29,9 @@ var ArmourList = {
 		name : "Immortal Durability (Con)",
 		source : ["UA:TMC", 7],
 		type : "",
-		ac : 13,
+		ac : 10,
 		stealthdis : false,
-		weight : 0,
 		strReq : 0,
-		dex : -10,
 		addMod : true
 	},
 
@@ -46,9 +43,7 @@ var ArmourList = {
 		type : "",
 		ac : 16,
 		stealthdis : false,
-		weight : 0,
-		strReq : 0,
-		dex : -10
+		strReq : 0
 	},
 
 	"draconic resilience" : {
@@ -434,7 +429,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"shortbow" : {
-		regExpSearch : /^(?!.*crossbow)(((?=.*short)(?=.*bow))|((?!.*long)(?=.*\bbow\b))).*$/i,
+		regExpSearch : /^(?!.*crossbow)(((?=.*short)(?=.*bow))|((?!.*(moon|long))(?=.*\bbow\b))).*$/i,
 		name : "Shortbow",
 		source : ["P", 149],
 		list : "ranged",
@@ -1386,8 +1381,6 @@ var WeaponsList = {
 		description : "Finesse, light",
 		abilitytodamage : true
 	},
-	
-	
 };
 
 //A list of all types of 'ammo' for the ammunition section on the first page

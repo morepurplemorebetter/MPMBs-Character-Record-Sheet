@@ -3575,7 +3575,7 @@ function UAstartupCode() {
 		objname : "Mace of Dispater (prereq: the Fiend patron, Pact of the Blade)",
 		name : "Mace of Dispater",
 		description : desc([
-			"As a pact weapon, I can create an icon mace forged in Dis, the 2nd layer of the Nine Hells",
+			"As a pact weapon, I can create an iron mace forged in Dis, the 2nd layer of the Nine Hells",
 			"I can knock a target prone with it on a hit, if the target's size is Huge or smaller",
 			"On a hit, I can expand a spell slot to have it do +2d8 force damage per spell slot level"
 		]),

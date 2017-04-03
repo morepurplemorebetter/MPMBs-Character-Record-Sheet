@@ -5660,7 +5660,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	
 	//set the input as the submitName for reference and set the non-automated field with the same value as well
 	tDoc.getField(fldBase + "Weapon Selection").submitName = inputText;
-	if (!IsNotWeaponMenu || What("Manual Attack Remember") === "Yes" || inputText === (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr])) return; //don't do the rest of this function if only moving weapons around or weapons are set to manual or the CurrentWeapons.field didn't change
+	if (!IsNotWeaponMenu || What("Manual Attack Remember") === "Yes" || (!isReCalc && inputText === (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]))) return; //don't do the rest of this function if only moving weapons around or weapons are set to manual or the CurrentWeapons.field didn't change
 	
 	if (What(fldBase + "Weapon") !== inputText) Value(fldBase + "Weapon", inputText);
 	
@@ -6028,4 +6028,12 @@ function CalcInitDexMod() {
 	var QI = event.target.name.indexOf("Comp.") === -1;
 	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
 	event.value = QI ? What(SkillsList.abilityScores[SkillsList.abbreviations.indexOf("Init")] + " Mod") : What(prefix + "Comp.Use.Ability.Dex.Mod");
+};
+
+function FunctionIsNotAvailable() {
+	app.alert({
+		nIcon : 0,
+		cTitle : "Please update your Adobe Acrobat",
+		cMsg : "This feature doesn't work with the version of Adobe Acrobat you are using. This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. Please update to Adobe Acrobat DC.\n\nYou can get Adobe Acrobat DC for free at https://get.adobe.com/reader/"
+	});
 };

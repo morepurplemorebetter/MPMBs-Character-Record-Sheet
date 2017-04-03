@@ -25,7 +25,7 @@ ArmourList["protectme"] = { //Object name; Note the use of only lower case! Also
 	
 	ac : 10, //Required; the Armor Class (AC) granted by the Armor
 	
-	dex : 2, //Optional; the maximum Dexterity modifier that is allowed in combination with this armor. Just remove this entry if the armour doesn't have a maximum Dex mod allowence or if the Dex mod is determined by the armor type (i.e. 2 for Medium and 0 for Heavy). //This entry will always override any maximum that is determined by the type. // If you set this to -10, no Dex mod will be added to the AC, regarless of the value of the Dex mod (so also not negative values)
+	dex : 2, //Optional; the maximum Dexterity modifier that is allowed in combination with this armor. Just remove this entry if the armour doesn't have a maximum Dex mod allowence or if the Dex mod is determined by the armor type (i.e. 2 for Medium and 0 for Heavy). //This entry will always override any maximum that is determined by the type. // If you set this to -10, no Dex mod will be added to the AC, regardless of the value of the Dex mod (so also not negative values)
 	
 	stealthdis : false, //Required; whether or not the armor gives disadvantage on stealth checks (true or false)
 	

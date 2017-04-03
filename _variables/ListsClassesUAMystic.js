@@ -313,7 +313,7 @@ ClassSubList["mystic-immortal"] = {
 			minlevel : 1,
 			description : desc([
 				"My hit point maximum increases by an amount equal to my mystic level",
-				"Without armor, my AC is 10 + my Dexterity modifier + my Constitution modifier"
+				"If not wearing armor or wielding a shield, my AC is 10 + my Dex mod + my Con mod"
 			]),
 			calcChanges : {
 				hp : "if (classes.known.mystic) {extrahp += classes.known.mystic.level; extrastring += '\\n + ' + classes.known.mystic.level + ' from Immortal Durability (Mystic)'; }; "
