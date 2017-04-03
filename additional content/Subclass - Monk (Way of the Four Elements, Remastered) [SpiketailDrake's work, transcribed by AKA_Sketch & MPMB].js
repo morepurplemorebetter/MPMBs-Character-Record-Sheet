@@ -259,7 +259,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["aganazzar's scorcher"],
 				firstCol : 2
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 6"
 		},
 		"mote of the sun (prereq: level 6 monk)" : {
 			name : "Mote of the Sun",
@@ -293,7 +294,8 @@ ClassSubList["way of the four elements"].features = {
 				selection : ["scorching ray"],
 				firstCol : 2
 			},
-			spellFirstColTitle : "Ki"
+			spellFirstColTitle : "Ki",
+			prereqeval : "classes.known.monk.level >= 6"
 		},
 		"swarming ice rabbit (prereq: level 6 monk)" : {
 			name : "Swarming Ice Rabbit",
