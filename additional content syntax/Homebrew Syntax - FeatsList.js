@@ -60,8 +60,37 @@ FeatsList["extra ability"] = { //Object name; note the use of only lower case! T
 				// You can use the attributes of the "fields" object with the eval-string of atkCalc to check for things, but changing them will have no effect on the sheet.
 			
 				// With the atkCalc you have to change the "output" object in order to affect the outcome of the calculations. This object has the following attributes: output.prof (wether or not to add the proficiency bonus to the To Hit), output.die (Damage Die to use), output.mod (ability modifier), output.modToDmg (wether or not to add the ability modifier to Damage), output.magic (any magic bonus that's to be added to both To Hit and Damage), output.bHit (the To Hit bonus from the Blue Text/Modifier field), output.bDmg (the Damage bonus from the Blue Text/Modifier field), output.extraHit (a number added to the To Hit that is reserved for this eval), output.extraDmg (a number added to the damage that is reserved for this eval)
-	}
+	},
+	
+	spellcastingBonus : { //optional; an object that adds something to the "Bonus Spells" section of the spell selection dialog //this object can have all the same attributes as the "spellcastingList" object as defined in the ClassList, but must also have an "spellcastingAbility" defined //the other things that can be defined in this that are not in the "spellcastingList" object, are the "selection", "times" and "prepared" values
+	
+		name : "feat bonus spell", //required; the name of the bonus ability as it will appear in the spell selection dialogue
+	
+		spellcastingAbility : 6, //required; the ability score to use for spellcasting. (Str=1, Dex=2, Con=3, Int=4, Wis=5, Cha=6)
+		
+		class : "wizard", //optional but required if not including the "spells" attribute; The name of the class from whose spell list the spells come from. This can be "any" if the spells are not limited by a spell list of just one class. The entry has to match the name of the class in the SpellsList
+		
+		school : ["Evoc", "Abjur"], //optional; An array of abbreviations of spell school names (see SpellsList). These have to be in an array, even if it is just one value. Each entry has to match the name of the spell school in the SpellsList
+		
+		level : [0, 4], //Optional; The lower and upper limit of spell levels that the class has access to.
+		
+		ritual : false, //Optional; Donates if only ritual (true) or only non-ritual (false) spells should be included in the list
+		
+		spells : ["light", "mending"], //Optional, but required if not including the "class" attribute; If a "spells" array is present, all other objects will be ignored and only this list of spells will populate the list of available spells. each entry has to match the name of the spell in the SpellsList
+		
+		selection : ["light"], //optional if "spells" is defined; this is the default selection for the array specified in "spells" //if you use the "times" attribute below, you can add one item in this array for every one of the times
+		
+		times : 2, //optional; this is the number of times the bonus spells should be added. //This can also be an array of 20 values. That way the number of times are level-dependent
+		
+		prepared : true, //optional; if set to 'true', this makes the spell selected for this/these bonus spells to automatically get a checked off checkbox in the first column, similar to domain spells for a cleric
+		
+		atwill : true, //optional; if set to 'true', this makes the spell selected for this/these bonus spells to get "At Will" in the first column
+		
+		oncesr : true, //optional; if set to 'true', this makes the spell selected for this/these bonus spells to get "1×SR" in the first column
+		
+		oncelr : true, //optional; if set to 'true', this makes the spell selected for this/these bonus spells to get "1×LR" in the first column
+	},
 
 };
 
-UpdateDropdown("feat"); //Optional; This updates and resets all feat dropdown fields
+UpdateDropdown("feat"); //Optional; This updates all feat dropdown fields

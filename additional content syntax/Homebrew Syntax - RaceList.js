@@ -71,19 +71,19 @@ RaceList["something catlike"] = { //Object name; Note the use of only lower case
 	
 	spellcastingAbility : 6, //required for a spellcaster; the ability score to use for spellcasting. Remove this line if your race has no spellcasting. (Str=1, Dex=2, Con=3, Int=4, Wis=5, Cha=6)
 	
-	spellcastingBonus : { //optional; an object that adds something to the "Bonus Spells" section of the spell selection dialog //this object can have all the same attributes as the "spellcastingList" object as defined in the ClassList, but must also have a "name" defined" //the other things that can be defined in this that are not in the "spellcastingList" object, are the "selection", "times" and "prepared" values
+	spellcastingBonus : { //optional; an object that adds something to the "Bonus Spells" section of the spell selection dialog //this object can have all the same attributes as the "spellcastingList" object as defined in the ClassList, but must also have a "name" defined //the other things that can be defined in this that are not in the "spellcastingList" object, are the "selection", "times" and "prepared" values
 	
 		name : "Arcane Initiate", //required; this is used to identify the object, so must be an unique name
 		
-		class : "wizard", //Required; The name of the class from whose spell list the spells come from. This can be "any" if the spells are not limited by a spell list of just one class. The entry has to match the name of the class in the SpellsList
+		class : "wizard", //optional but required if not including the "spells" entry; The name of the class from whose spell list the spells come from. This can be "any" if the spells are not limited by a spell list of just one class. The entry has to match the name of the class in the SpellsList
 		
-		school : ["Evoc", "Abjur"], //Optional; An array of abbreviations of spell school names (see SpellsList). These have to be in an array, even if it is just one value. Each entry has to match the name of the spell school in the SpellsList
+		school : ["Evoc", "Abjur"], //optional; An array of abbreviations of spell school names (see SpellsList). These have to be in an array, even if it is just one value. Each entry has to match the name of the spell school in the SpellsList
 		
 		level : [0, 4], //Optional; The lower and upper limit of spell levels that the class has access to.
 		
 		ritual : false, //Optional; Donates if only ritual (true) or only non-ritual (false) spells should be included in the list
 		
-		spells : ["light", "mending"], //Optional; If a "spells" array is present, all other objects will be ignored and only this list of spells will populate the list of available spells. each entry has to match the name of the spell in the SpellsList
+		spells : ["light", "mending"], //Optional, but required if not including the "class" entry; If a "spells" array is present, all other objects will be ignored and only this list of spells will populate the list of available spells. each entry has to match the name of the spell in the SpellsList
 		
 		selection : ["light"], //optional if "spells" is defined; this is the default selection for the array specified in "spells"
 		
@@ -164,4 +164,4 @@ RaceList["something catlike"] = { //Object name; Note the use of only lower case
 	
 };
 
-UpdateDropdown("race"); //Optional; This updates and resets all race dropdown fields (both on first page and first companion page)
+UpdateDropdown("race"); //Optional; This updates all race dropdown fields (both on first page and companion pages)

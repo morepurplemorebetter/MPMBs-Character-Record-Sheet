@@ -133,6 +133,12 @@ var SourceList = {
 		group : "Unearthed Arcana",
 		url : "http://dnd.wizards.com/sites/default/files/media/upload/articles/UA%20Gothic%20Characters.pdf"
 	},
+	"UA:F" : {
+		name : "Unearthed Arcana: Feats", //2016-06-06
+		abbreviation : "UA:F",
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2016/downloads/DND/UA-Feats-V1.pdf"
+	},
 	"UA:TF" : {
 		name : "Unearthed Arcana: The Faithful", //2016-08-01
 		abbreviation : "UA:TF",

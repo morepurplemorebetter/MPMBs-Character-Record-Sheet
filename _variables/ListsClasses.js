@@ -1380,7 +1380,7 @@ var ClassList = {
 						name : "Armor of Shadows",
 						spells : ["mage armor"],
 						selection : ["mage armor"],
-						atwill : true,
+						atwill : true
 					}
 				},
 				"ascendant step (prereq: level 9 warlock)" : {
@@ -1391,7 +1391,7 @@ var ClassList = {
 						name : "Ascendant Step",
 						spells : ["levitate"],
 						selection : ["levitate"],
-						atwill : true,
+						atwill : true
 					},
 					prereqeval : "classes.known.warlock.level >= 9"
 				},
@@ -1403,7 +1403,7 @@ var ClassList = {
 						name : "Beast Speech",
 						spells : ["speak with animals"],
 						selection : ["speak with animals"],
-						atwill : true,
+						atwill : true
 					}
 				},
 				"beguiling influence" : {
@@ -1423,7 +1423,7 @@ var ClassList = {
 						name : "Bewitching Whispers",
 						spells : ["compulsion"],
 						selection : ["compulsion"],
-						oncelr : true,
+						oncelr : true
 					},
 					prereqeval : "classes.known.warlock.level >= 7"
 				},
@@ -1443,7 +1443,7 @@ var ClassList = {
 						name : "Chains of Carceri",
 						spells : ["hold monster"],
 						selection : ["hold monster"],
-						oncelr : true,
+						oncelr : true
 					},
 					prereqeval : "classes.known.warlock.level >= 15 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the chain') !== -1"
 				},
@@ -1452,7 +1452,7 @@ var ClassList = {
 					description : "\n   " + "I can see in magical and nonmagical darkness out to 120 ft",
 					source : ["P", 110],
 					eval : "AddString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");",
-					removeeval : "RemoveString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");",
+					removeeval : "RemoveString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");"
 				},
 				"dreadful word (prereq: level 7 warlock)" : {
 					name : "Dreadful Word",
@@ -1464,7 +1464,7 @@ var ClassList = {
 						name : "Dreadful Word",
 						spells : ["confusion"],
 						selection : ["confusion"],
-						oncelr : true,
+						oncelr : true
 					},
 					prereqeval : "classes.known.warlock.level >= 7"
 				},
@@ -1476,7 +1476,7 @@ var ClassList = {
 						name : "Eldritch Sight",
 						spells : ["detect magic"],
 						selection : ["detect magic"],
-						atwill : true,
+						atwill : true
 					}
 				},
 				"eldritch spear (prereq: eldritch blast cantrip)" : {
@@ -1500,7 +1500,7 @@ var ClassList = {
 						name : "Fiendish Vigor",
 						spells : ["false life"],
 						selection : ["false life"],
-						atwill : true,
+						atwill : true
 					}
 				},
 				"gaze of two minds" : {
@@ -1525,7 +1525,7 @@ var ClassList = {
 						name : "Mask of Many Faces",
 						spells : ["disguise self"],
 						selection : ["disguise self"],
-						atwill : true,
+						atwill : true
 					}
 				},
 				"master of myriad forms (prereq: level 15 warlock)" : {
@@ -1536,7 +1536,7 @@ var ClassList = {
 						name : "Mask of Myriad Forms",
 						spells : ["alter self"],
 						selection : ["alter self"],
-						atwill : true,
+						atwill : true
 					},
 					prereqeval : "classes.known.warlock.level >= 15"
 				},
@@ -1550,7 +1550,7 @@ var ClassList = {
 						name : "Minions of Chaos",
 						spells : ["conjure elemental"],
 						selection : ["conjure elemental"],
-						oncelr : true,
+						oncelr : true
 					},
 					prereqeval : "classes.known.warlock.level >= 9"
 				},
@@ -1564,7 +1564,7 @@ var ClassList = {
 						name : "Mire the Mind",
 						spells : ["slow"],
 						selection : ["slow"],
-						oncelr : true,
+						oncelr : true
 					},
 					prereqeval : "classes.known.warlock.level >= 5"
 				},
@@ -1576,7 +1576,7 @@ var ClassList = {
 						name : "Misty Visions",
 						spells : ["silent image"],
 						selection : ["silent image"],
-						atwill : true,
+						atwill : true
 					}
 				},
 				"one with shadows (prereq: level 5 warlock)" : {
@@ -1594,7 +1594,7 @@ var ClassList = {
 						name : "Otherworldly Leap",
 						spells : ["jump"],
 						selection : ["jump"],
-						atwill : true,
+						atwill : true
 					},
 					prereqeval : "classes.known.warlock.level >= 9"
 				},
@@ -1617,7 +1617,7 @@ var ClassList = {
 						name : "Sculptor of Flesh",
 						spells : ["polymorph"],
 						selection : ["polymorph"],
-						oncelr : true,
+						oncelr : true
 					},
 					prereqeval : "classes.known.warlock.level >= 7"
 				},
@@ -1631,7 +1631,7 @@ var ClassList = {
 						name : "Sign of Ill Omen",
 						spells : ["bestow curse"],
 						selection : ["bestow curse"],
-						oncelr : true,
+						oncelr : true
 					},
 					prereqeval : "classes.known.warlock.level >= 5"
 				},
@@ -1645,7 +1645,7 @@ var ClassList = {
 						name : "Thief of Five Fates",
 						spells : ["bane"],
 						selection : ["bane"],
-						oncelr : true,
+						oncelr : true
 					}
 				},
 				"thirsting blade (prereq: level 5 warlock, pact of the blade)" : {
@@ -1664,7 +1664,7 @@ var ClassList = {
 						name : "Visions of Distant Realms",
 						spells : ["arcane eye"],
 						selection : ["arcane eye"],
-						atwill : true,
+						atwill : true
 					},
 					prereqeval : "classes.known.warlock.level >= 15"
 				},
@@ -1682,7 +1682,7 @@ var ClassList = {
 						name : "Whispers of the Grave",
 						spells : ["speak with dead"],
 						selection : ["speak with dead"],
-						atwill : true,
+						atwill : true
 					},
 					prereqeval : "classes.known.warlock.level >= 9"
 				},
@@ -4867,7 +4867,7 @@ var ClassSubList = {
 	},
 	"bladesinging" : {
 		regExpSearch : /(bladesinging|bladesinger)/i,
-		subname : "Arcane Tradition of Bladesinging",
+		subname : "Tradition of Bladesinging",
 		fullname : "Bladesinger",
 		attacks : [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		source : ["S", 142],

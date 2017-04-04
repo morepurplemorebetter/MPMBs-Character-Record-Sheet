@@ -3300,7 +3300,7 @@ function UAstartupCode() {
 			name : "Pact of the Star Chain",
 			spells : ["augury"],
 			selection : ["augury"],
-			firstCol : "R"
+			firstCol : "(R)"
 		}
 	};
 	

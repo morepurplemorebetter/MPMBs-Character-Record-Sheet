@@ -2871,15 +2871,16 @@ function AskUserSpellSheet() {
 		classesArray.push(aCast);
 		
 		//put some general things in variables
-		if (spCast.level && spCast.factor && spCast.factor[0]) {
-			var scLevel = spCast.level / spCast.factor[0];
-			var highestLevel = spCast.spellsTable ? spCast.spellsTable[Math.ceil(scLevel)].indexOf(0) : tDoc[spCast.factor[1] + "SpellTable"][Math.ceil(scLevel)].indexOf(0);
-			scLevel = Math.max(Math.floor(scLevel), 1);
-			highestLevel = Number(highestLevel === -1 ? 9 : highestLevel);
+		if (spCast.level && spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) {
+			var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
+			var maxSpell = spCast.spellsTable ? spCast.spellsTable[CasterLevel].indexOf(0) : tDoc[spCast.factor[1] + "SpellTable"][CasterLevel].indexOf(0);
+			maxLvl = Number(maxSpell === -1 ? 9 : maxSpell);
 		} else {
-			var scLevel = false;
-			var highestLevel = false;
+			var CasterLevel = false;
+			var maxSpell = false;
 		};
+		
+		if (spCast.typeSp === "feat" && spCast.level !== undefined) spCast.level = What("Character Level"); //set the level if concerning a feat
 		
 		//see if this is a psionic caster
 		var isPsionics = spCast.factor && (/psionic/i).test(spCast.factor[1]);
@@ -2887,7 +2888,7 @@ function AskUserSpellSheet() {
 		//set all the general parts of the dialog
 		dia.caNm = isPsionics ? "Talents" : "Cantrips";
 		dia.spNm = isPsionics ? "Disciplines" : "Spells";
-		dia.levelSp = highestLevel;
+		dia.levelSp = maxSpell;
 		dia.header = aCast; //the name in the dialog's header
 		dia.fullname = spCast.name + (spCast.level ? ", level " + spCast.level : ""); //the full name of the feature including level
 		if (spCast.list) {
@@ -2982,8 +2983,13 @@ function AskUserSpellSheet() {
 					BonusSpecialActions.oncelr.push(spBonusi.oncelr); //those that are once per long rest for referencing it later
 					BonusSpecialActions.oncesr.push(spBonusi.oncesr); //those that are once per long rest for referencing it later
 					BonusSpecialActions.other.push(spBonusi.firstCol); //those that are once per long rest for referencing it later
-					if (spBonusi.selection) {
+					if (spBonusi.selection && spBonusi.selection[y - 1]) {
 						dia.selectBo.push(spBonusi.selection[y - 1]);
+						if (SpellsList[spBonusi.selection[y - 1]].level === 0 && (spBonusi.oncelr || spBonusi.oncesr)) {
+							BonusSpecialActions.atwill[y - 1] = true;
+							BonusSpecialActions.oncelr[y - 1] = undefined;
+							BonusSpecialActions.oncesr[y - 1] = undefined;
+						}
 					} else {
 						dia.selectBo.push(undefined);
 					}
@@ -2991,7 +2997,7 @@ function AskUserSpellSheet() {
 			}
 		}}
 		//fill the rest of the bonus items that are essential
-		for (var i = dia.nmbrBo; i <= 14; i++) {
+		for (var i = dia.nmbrBo; i < 15; i++) {
 			dia.listBo.push(AllSpellsObject);
 			dia.namesBo.push("");
 			if (spCast.extraBo) dia.selectBo[i] = spCast.extraBo[i - dia.nmbrBo];
@@ -3064,7 +3070,7 @@ function AskUserSpellSheet() {
 			}}
 			var EvenMoreBo = [];
 			if (spCast.offsetBo > 0) {
-				for (var i = boNmr; i < 10; i++) {
+				for (var i = boNmr; i < 15; i++) {
 					if (dia.selectBo[i]) EvenMoreBo.push(dia.selectBo[i]);
 				}
 			}
@@ -3105,7 +3111,7 @@ function AskUserSpellSheet() {
 				diaPrep.fullname = dia.fullname;
 				
 				//determine how many spells can be prepared
-				diaPrep.nmbrPrep = scLevel;
+				diaPrep.nmbrPrep = CasterLevel;
 				diaPrep.ability = spCast.ability;
 				
 				//make the array of spells that the preparations can come from
@@ -3114,7 +3120,7 @@ function AskUserSpellSheet() {
 					if (spCast.selectSpSB) listPrepRef = listPrepRef.concat(spCast.selectSpSB); //add the spells from the extra spellbook dialog
 				} else {
 					var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
-					spCast.list.level = [1, highestLevel]; //set the list level to 1 to max level able to cast
+					spCast.list.level = [1, maxSpell]; //set the list level to 1 to max level able to cast
 					var listPrepRef = CreateSpellList(spCast.list, true); //create an array of all the spells that can be prepared at this level
 					if (spListLevel) { //put that list level back in the right variable
 						spCast.list.level = spListLevel;
@@ -3331,8 +3337,8 @@ function GenerateSpellSheet(GoOn) {
 					delete spCast.list.level;
 				}
 			}
-		} else if (spCast.extra && spCast.extra[100] === "AddToKnown" && spCast.factor && spCast.factor[0]) { // add spells to the full list for classes with spells known/spellbook, if set to add to the known. Only add the levels that can be used
-			var CasterLevel = Math.ceil(spCast.level / spCast.factor[0]);
+		} else if (spCast.extra && spCast.extra[100] === "AddToKnown" && spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) { // add spells to the full list for classes with spells known/spellbook, if set to add to the known. Only add the levels that can be used
+			var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
 			var maxSpell = spCast.spellsTable ? spCast.spellsTable[CasterLevel].indexOf(0) : tDoc[spCast.factor[1] + "SpellTable"][CasterLevel].indexOf(0);
 			maxSpell = Number(maxSpell === -1 ? 9 : maxSpell);
 			for (var eS = 0; eS < spCast.extra.length; eS++) {
@@ -3349,14 +3355,14 @@ function GenerateSpellSheet(GoOn) {
 			continue;
 		}
 		
-		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : (spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : (spCast.typeSp === "race" ? "##kn" : "##")); //add "Me" or "Kn" to the name or not?
+		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : (spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : ((/race|feat/i).test(spCast.typeSp) ? "##kn" : "##")); //add "Me" or "Kn" to the name or not?
 		
 		var orderedSpellList = OrderSpells(fullSpellList, "multi", true); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
 		
 		//see if we need to stop short of doing all the spells
 		var maxLvl = 9;
-		if (spCast.level && spCast.typeList && spCast.typeList !== 2 && spCast.factor && spCast.factor[0]) {
-			var CasterLevel = Math.ceil(spCast.level / spCast.factor[0]);
+		if (spCast.level && spCast.typeList && spCast.typeList !== 2 && spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) {
+			var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
 			var maxSpell = spCast.spellsTable ? spCast.spellsTable[CasterLevel].indexOf(0) : tDoc[spCast.factor[1] + "SpellTable"][CasterLevel].indexOf(0);
 			maxLvl = Number(maxSpell === -1 ? 9 : maxSpell);
 		}

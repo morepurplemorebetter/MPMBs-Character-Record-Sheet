@@ -4451,8 +4451,8 @@ function AddTool(tool, toolstooltip, replaceThis) {
 				}
 			}
 		}
-		if (tool.toLowerCase().indexOf("thieves' tools") !== -1 && What("Too Text").toLowerCase().indexOf("thieves' tools") === -1 && What("Too") === "") {
-			Value("Too Text", "Thieves' Tools (Dex)")
+		if ((/thieves.*tools/i).test(tool) && !(/thieves.*tools/i).test(What("Too Text")) && What("Too") === "") {
+			Value("Too Text", "Thieves' Tools (Dex)");
 			Checkbox("Too Prof", true);
 		}
 	}
@@ -4472,8 +4472,7 @@ function RemoveTool(tool, toolstooltip) {
 	}
 
 	if ((/thieves.*tools/i).test(tool) && (/thieves.*tools/i).test(What("Too Text"))) {
-		tDoc.resetForm(["Too Text"]);
-		Checkbox("Too Prof", false);
+		tDoc.resetForm(["Too Prof", "Too Exp", "Too Text"]);
 	}
 	
 	if (overflow) RemoveString("MoreProficiencies", tool);
@@ -5257,6 +5256,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		"Feat Description " + FldNmbr
 	];
 	var tempString = "";
+	var setSpellVars = false;
 
 	//only update the tooltips if feats are set to manual
 	if (What("Manual Feat Remember") === "Yes") {
@@ -5300,6 +5300,11 @@ function ApplyFeat(InputFeat, FldNmbr) {
 				tempArray[5] = (tempArray[5] ? Number(tempArray[5]) : 0) - theFeat.scores[i];
 				Value(AbilityScores.abbreviations[i] + " Remember", tempArray);
 			};
+		};
+		
+		if (IsNotFeatMenu && theFeat.spellcastingBonus) {
+			delete CurrentSpells[CurrentFeats.known[ArrayNmbr]];
+			setSpellVars = true;
 		};
 		
 		tDoc.getField(FeatFlds[2]).setAction("Calculate", "");
@@ -5358,7 +5363,21 @@ function ApplyFeat(InputFeat, FldNmbr) {
 				Value(AbilityScores.abbreviations[i] + " Remember", tempArray);
 			};
 		};
+		
+		if (IsNotFeatMenu && theFeat.spellcastingBonus) {
+			CurrentSpells[NewFeat] = {
+				name : theFeat.name,
+				level : theFeat.spellcastingBonus.times && isArray(theFeat.spellcastingBonus.times) ? What("Character Level") : undefined,
+				ability : theFeat.spellcastingBonus.spellcastingAbility,
+				typeSp : "feat",
+				bonus : {
+					"someFeat" : theFeat.spellcastingBonus
+				}
+			};
+			setSpellVars = true;
+		};
 	}
+	if (setSpellVars) SetStringifieds("spells"); //set the global variables to their fields for future reference
 	thermoM("Finalizing the changes of the feat..."); //change the progress dialog text
 	ApplyProficiencies(true); //call to update armor, shield and weapon proficiencies
 	UpdateTooltips(); //skills tooltip, ability score tooltip
@@ -5382,8 +5401,10 @@ function SetFeatsdropdown() {
 	tDoc.getField("Feat Name 1").submitName = ArrayDing.toSource();
 	
 	for (var i = 1; i <= FieldNumbers.feats; i++) {
-		tDoc.getField("Feat Name " + i).setItems(ArrayDing);
-		AddTooltip("Feat Name " + i, "Type in the name of the feat (or select it from the drop-down menu) and its text and features will be filled out automatically, provided it is a recognized feat. Ability scores will not be altered other than their tool tips (mouseover texts).\n\nUpon changing to another feat, all features of the previous feat will be undone.");
+		var theFeatFld = "Feat Name " + i;
+		var theFeati = What(theFeatFld);
+		tDoc.getField(theFeatFld).setItems(ArrayDing);
+		Value(theFeatFld, theFeati, "Type in the name of the feat (or select it from the drop-down menu) and its text and features will be filled out automatically, provided it is a recognized feat. Ability scores will not be altered other than their tool tips (mouseover texts).\n\nUpon changing to another feat, all features of the previous feat will be undone.");
 	}
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
