@@ -121,6 +121,12 @@ var SourceList = {
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf"
 	},
+	"UA:TOBM" : {
+		name : "Unearthed Arcana: That Old Black Magic", //2015-12-17
+		abbreviation : "UA:TOBM",
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2015/downloads/dnd/07_UA_That_Old_Black_Magic.pdf"
+	},
 	"UA:KoO" : {
 		name : "Unearthed Arcana: Kits of Old", //2016-01-04
 		abbreviation : "UA:KoO",

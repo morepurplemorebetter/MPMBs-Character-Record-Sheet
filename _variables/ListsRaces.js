@@ -1253,7 +1253,7 @@ var RaceList = {
 			name : "Infernal Legacy (level 1)",
 			spells : ["thaumaturgy"],
 			selection : ["thaumaturgy"],
-			atwill : true,
+			atwill : true
 		},
 		features : {
 			"hellish rebuke" : {
@@ -1268,8 +1268,8 @@ var RaceList = {
 					name : "Infernal Legacy (level 3)",
 					spells : ["hellish rebuke"],
 					selection : ["hellish rebuke"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			},
 			"darkness" : {
 				name : "Darkness",
@@ -1282,11 +1282,11 @@ var RaceList = {
 					name : "Infernal Legacy (level 5)",
 					spells : ["darkness"],
 					selection : ["darkness"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
 		},
-		variants : ["feral", "devil's tongue", "hellfire", "winged"]
+		variants : ["devil's tongue", "hellfire", "winged"]
 	},
 
 	"triton" : {
@@ -1652,16 +1652,6 @@ var RaceSubList = {
 		removeeval : "RemoveString(\"Feat Note 1\", \"Human bonus feat\");"
 	},
 
-	"tiefling-feral" : {
-		regExpSearch : /feral/i,
-		name : "Feral tiefling",
-		source : ["S", 118],
-		plural : "Feral tieflings",
-		improvements : "Feral Tiefling: +2 Dexterity, +1 Intelligence;",
-		scores : [0, 2, 0, 1, 0, 0],
-		trait : "Feral Tiefling (+2 Dexterity, +1 Intelligence)\n\nInfernal Legacy:\n   I know the Thaumaturgy cantrip.\n   At 3rd level, I can cast the Hellish Rebuke spell once per long rest as a 2nd-level spell.\n   At 5th level, I can also cast the Darkness spell once per long rest.\n   Charisma is my spellcasting ability for these spells.",
-	},
-
 	"tiefling-devil's tongue" : {
 		regExpSearch : /^(?=.*devil)(?=.*tongue).*$/i,
 		name : "Devil's tongue tiefling",
@@ -1672,7 +1662,7 @@ var RaceSubList = {
 			name : "Devil's Tongue (level 1)",
 			spells : ["vicious mockery"],
 			selection : ["vicious mockery"],
-			atwill : true,
+			atwill : true
 		},
 		features : {
 			"charm person" : {
@@ -1687,8 +1677,8 @@ var RaceSubList = {
 					name : "Devil's Tongue (level 3)",
 					spells : ["charm person"],
 					selection : ["charm person"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			},
 			"enthrall" : {
 				name : "Enthrall",
@@ -1701,10 +1691,10 @@ var RaceSubList = {
 					name : "Devil's Tongue (level 5)",
 					spells : ["enthrall"],
 					selection : ["enthrall"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
-		},
+		}
 	},
 
 	"tiefling-hellfire" : {
@@ -1726,7 +1716,7 @@ var RaceSubList = {
 					name : "Hellfire Legacy (level 3)",
 					spells : ["burning hands"],
 					selection : ["burning hands"],
-					oncelr : true,
+					oncelr : true
 				},
 			},
 			"darkness" : {
@@ -1740,10 +1730,10 @@ var RaceSubList = {
 					name : "Infernal Legacy (level 5)",
 					spells : ["darkness"],
 					selection : ["darkness"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
-		},
+		}
 	},
 
 	"tiefling-winged" : {
@@ -1756,6 +1746,6 @@ var RaceSubList = {
 		features : "",
 		abilitySave : 0,
 		spellcastingAbility : "",
-		spellcastingBonus : "",
+		spellcastingBonus : ""
 	},
 }

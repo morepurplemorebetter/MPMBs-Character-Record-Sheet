@@ -55,7 +55,7 @@ ClassList.wizard.subclasses[1].push("wizard-artificer");
 	the Modifying Classes Unearthed Arcana of 2015-04-06
 	(http://media.wizards.com/2015/downloads/dnd/UA3_ClassDesignVariants.pdf)
 */
-//adds a subclass for the Sorcerer, called "Favored Soul"
+//adds the spell-less ranger class and a subclass for the Sorcerer, called "Favored Soul"
 ClassSubList["favored soul"] = {
 	regExpSearch : /^(?=.*favou?red)(?=.*soul).*$/i,
 	subname : "Favored Soul",
@@ -94,6 +94,412 @@ ClassSubList["favored soul"] = {
 	}
 };
 ClassList.sorcerer.subclasses[1].push("favored soul");
+
+//a version of the ranger, the spell-less ranger
+ClassList["spell-less ranger"] = {
+	regExpSearch : /^(?=.*spell.?less)((?=.*(ranger|strider))|((?=.*(nature|natural))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
+	name : "Spell-less Ranger",
+	source : ["UA:MC", 6],
+	primaryAbility : "\n \u2022 Ranger: Dexterity and Wisdom;",
+	abilitySave : 1,
+	abilitySaveAlt : 2,
+	prereqs : "\n \u2022 Ranger: Dexterity 13 and Wisdom 13;",
+	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
+	die : 10,
+	saves : ["Str", "Dex"],
+	skills : ["\n\n" + toUni("Spell-less Ranger") + ": Choose three from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival", "\n\n" + toUni("Multiclass Spell-less Ranger") + ": Choose one from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival"],
+	armor : [
+		[true, true, false, true],
+		[true, true, false, true]
+	],
+	weapons : [
+		[true, true],
+		[true, true]
+	],
+	equipment : "Spell-less Ranger starting equipment:\n \u2022 Scale mail -or- leather armor;\n \u2022 Two shortswords -or- two simple melee weapons;\n \u2022 A dungeoneer's pack -or- an explorer's pack;\n \u2022 A longbow and a quiver of 20 arrows.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+	subclasses : ["Ranger Archetype", ["spell-less beast master", "spell-less hunter"]],
+	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+	features : {
+		"favored enemy" : {
+			name : "Favored Enemy",
+			source : ["P", 91],
+			minlevel : 1,
+			description : "\n   " + "Use the \"Choose Features\" button above to add a favored enemy to the third page" + "\n   " + "When selecting a favored enemy, I also learn one of the languages it speaks" + "\n   " + "I have adv. on Wis (Survival) checks to track and Int checks to recall info about them",
+			additional : ["1 favored enemy", "1 favored enemy", "1 favored enemy", "1 favored enemy", "1 favored enemy", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies"],
+			extraname : "Favored Enemy",
+			extrachoices : ["Aberrations", "Beasts", "Celestials", "Constructs", "Dragons", "Elementals", "Fey", "Fiends", "Giants", "Monstrosities", "Oozes", "Plants", "Undead", "Two Races of Humanoids"],
+			"aberrations" : {
+				name : "Aberrations",
+				description : "",
+				source : ["P", 91]
+			},
+			"beasts" : {
+				name : "Beasts",
+				description : "",
+				source : ["P", 91]
+			},
+			"celestials" : {
+				name : "Celestials",
+				description : "",
+				source : ["P", 91]
+			},
+			"constructs" : {
+				name : "Constructs",
+				description : "",
+				source : ["P", 91]
+			},
+			"dragons" : {
+				name : "Dragons",
+				description : "",
+				source : ["P", 91]
+			},
+			"elementals" : {
+				name : "Elementals",
+				description : "",
+				source : ["P", 91]
+			},
+			"fey" : {
+				name : "Fey",
+				description : "",
+				source : ["P", 91]
+			},
+			"fiends" : {
+				name : "Fiends",
+				description : "",
+				source : ["P", 91]
+			},
+			"giants" : {
+				name : "Giants",
+				description : "",
+				source : ["P", 91]
+			},
+			"monstrosities" : {
+				name : "Monstrosities",
+				description : "",
+				source : ["P", 91]
+			},
+			"oozes" : {
+				name : "Oozes",
+				description : "",
+				source : ["P", 91]
+			},
+			"plants" : {
+				name : "Plants",
+				description : "",
+				source : ["P", 91]
+			},
+			"undead" : {
+				name : "Undead",
+				description : "",
+				source : ["P", 91]
+			},
+			"two races of humanoids" : {
+				name : "Two Races of Humanoids",
+				description : "",
+				source : ["P", 91]
+			}
+		},
+		"natural explorer" : {
+			name : "Natural Explorer",
+			source : ["P", 91],
+			minlevel : 1,
+			description : "\n   " + "Use the \"Choose Features\" button above to add a favored terrain to the third page",
+			additional : ["1 favored terrain", "1 favored terrain", "1 favored terrain", "1 favored terrain", "1 favored terrain", "2 favored terrains", "2 favored terrains", "2 favored terrains", "2 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains"],
+			extraname : "Favored Terrain",
+			extrachoices : ["Arctic", "Coast", "Desert", "Forest", "Grassland", "Mountain", "Swamp", "Underdark"],
+			"arctic" : {
+				name : "Arctic",
+				source : ["P", 91],
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning arctic terrain" + "\n   " + "While traveling for an hour or more in arctic terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+			},
+			"coast" : {
+				name : "Coast",
+				source : ["P", 91],
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning coast terrain" + "\n   " + "While traveling for an hour or more in coast terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+			},
+			"desert" : {
+				name : "Desert",
+				source : ["P", 91],
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning desert terrain" + "\n   " + "While traveling for an hour or more in desert terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+			},
+			"forest" : {
+				name : "Forest",
+				source : ["P", 91],
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning forest terrain" + "\n   " + "While traveling for an hour or more in forest terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+			},
+			"grassland" : {
+				name : "Grassland",
+				source : ["P", 91],
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning grassland terrain" + "\n   " + "While traveling for an hour or more in grassland terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+			},
+			"mountain" : {
+				name : "Mountain",
+				source : ["P", 91],
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning mountain terrain" + "\n   " + "While traveling for an hour or more in mountain terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+			},
+			"swamp" : {
+				name : "Swamp",
+				source : ["P", 91],
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning swamp terrain" + "\n   " + "While traveling for an hour or more in swamp terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+			},
+			"underdark" : {
+				name : "Underdark",
+				source : ["P", 91],
+				description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning underdark terrain" + "\n   " + "While traveling for an hour or more in underdark terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+			}
+		},
+		"combat superiority" : {
+			name : "Combat Superiority",
+			source : ["UA:MC", 6],
+			minlevel : 2,
+			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special Maneuvers" + "\n   " + "I regain all superiority dice after a short rest",
+			additional : "d8",
+			usages : levels.map( function(n) {
+				if (n < 2) return "";
+				return (n < 9 ? 4 : n < 17 ? 5 : 6) + " maneuvers known";
+			}),
+			additional : ["", "", "d8", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12"],
+			usages : [0, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6],
+			recovery : "short rest"
+		},
+		"combat maneuvers" : {
+			name : "Combat Maneuvers",
+			source : ["UA:MC", 6],
+			minlevel : 2,
+			description : "\n   " + "Use the \"Choose Features\" button above to add a Maneuver to the third page" + "\n   " + "I can use a Maneuver by expending a superiority die (only one Maneuver per attack)",
+			additional : levels.map( function(n) {
+				if (n < 2) return "";
+				return (n < 5 ? 2 : n < 9 ? 3 : n < 13 ? 4 : n < 17 ? 5 : 6) + " maneuvers known";
+			}),
+			extraname : "Maneuver",
+			extrachoices : ["Commander's Strike", "Disarming Attack", "Distracting Strike", "Evasive Footwork", "Feinting Attack", "Goading Attack", "Lunging Attack", "Maneuvering Attack", "Menacing Attack", "Parry", "Precision Attack", "Pushing Attack", "Rally", "Riposte", "Sweeping Attack", "Trip Attack"],
+			"commander's strike" : {
+				name : "Commander's Strike",
+				source : ["P", 74],
+				description : "\n   " + "I forgo one attack of my Attack action to use a bonus action to direct an ally I see/hear" + "\n   " + "The ally can use a reaction to make an attack, adding the superiority die to damage",
+				action : ["bonus action", " (with Attack action)"]
+			},
+			"disarming attack" : {
+				name : "Disarming Attack",
+				source : ["P", 74],
+				description : "\n   " + "Use after hitting a creature; I add the superiority die to my attack's damage" + "\n   " + "Target makes a Strength save or drops a held object of my choice to its feet"
+			},
+			"distracting strike" : {
+				name : "Distracting Strike",
+				source : ["P", 74],
+				description : "\n   " + "Use after hitting a creature; I add the superiority die to my attack's damage" + "\n   " + "The next attack of an ally before my next turn has adv. against the creature"
+			},
+			"evasive footwork" : {
+				name : "Evasive Footwork",
+				source : ["P", 74],
+				description : "\n   " + "Use when moving; I add the superiority die to my AC until I stop moving"
+			},
+			"feinting attack" : {
+				name : "Feinting Attack",
+				source : ["P", 74],
+				description : "\n   " + "As a bonus action, I can feint to gain adv. on my next attack against a target within 5 ft" + "\n   " + "If the attack hits, I add the superiority die to my attack's damage",
+				action : ["bonus action", ""]
+			},
+			"goading attack" : {
+				name : "Goading Attack",
+				source : ["P", 74],
+				description : "\n   " + "Use after hitting a creature; I add the superiority die to my attack's damage" + "\n   " + "Target makes a Wis save or has disadv. vs. other targets until the end of my next turn"
+			},
+			"lunging attack" : {
+				name : "Lunging Attack",
+				source : ["P", 74],
+				description : "\n   " + "I can spend a superiority die to increase the reach of a melee weapon attack by 5 ft" + "\n   " + "If the attack hits, I add the superiority die to my attack's damage"
+			},
+			"maneuvering attack" : {
+				name : "Maneuvering Attack",
+				source : ["P", 74],
+				description : "\n   " + "Use after hitting a creature; I add the superiority die to my attack's damage" + "\n   " + "Ally can use reaction to move half speed without opportunity attack from the target"
+
+			},
+			"menacing attack" : {
+				name : "Menacing Attack",
+				source : ["P", 74],
+				description : "\n   " + "Use after hitting a creature; I add the superiority die to my attack's damage" + "\n   " + "Target makes a Wisdom save or is frightened of me until the end of my next turn"
+			},
+			"parry" : {
+				name : "Parry",
+				source : ["P", 74],
+				description : "\n   " + "When damaged in melee, I can use a reaction to reduce it by superiority die + Dex mod",
+				action : ["reaction", " (when damaged in melee)"]
+			},
+			"precision attack" : {
+				name : "Precision Attack",
+				source : ["P", 74],
+				description : "\n   " + "I add the superiority die to my attack roll, either before or after rolling"
+			},
+			"pushing attack" : {
+				name : "Pushing Attack",
+				source : ["P", 74],
+				description : "\n   " + "Use after hitting a creature; I add the superiority die to the attack's damage" + "\n   " + "If target is Large or smaller, it must make a Strength save or be pushed up to 15 ft away"
+			},
+			"rally" : {
+				name : "Rally",
+				source : ["P", 74],
+				description : "\n   " + "Ally that can see/hear me gets temporary HP equal to superiority die + Charisma mod",
+				action : ["bonus action", ""]
+			},
+			"riposte" : {
+				name : "Riposte",
+				source : ["P", 74],
+				description : "\n   " + "When missed in melee, I can use my reaction to make one melee attack vs. the attacker" + "\n   " + "If the attack hits, I add the superiority die to my attack's damage",
+				action : ["reaction", " (after missed in melee)"]
+			},
+			"sweeping attack" : {
+				name : "Sweeping Attack",
+				source : ["P", 74],
+				description : "\n   " + "Use after hitting a creature and a second creature is within 5 ft of the first" + "\n   " + "If the original attack roll hits this second creature, it takes the superiority die in damage"
+			},
+			"trip attack" : {
+				name : "Trip Attack",
+				source : ["P", 74],
+				description : "\n   " + "Use after hitting a creature; I add the superiority die to the attack's damage" + "\n   " + "If target is Large or smaller, it must make a Strength save or be knocked prone"
+			}
+		},
+		"fighting style" : {
+			name : "Fighting Style",
+			source : ["P", 91],
+			minlevel : 2,
+			description : "\n   " + "Choose a Fighting Style for the ranger using the \"Choose Feature\" button above",
+			choices : ["Archery", "Defense", "Dueling", "Two-Weapon Fighting"],
+			"archery" : {
+				name : "Archery Fighting Style",
+				description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
+				calcChanges : {
+					atkCalc : ["if (isRangedWeapon) {output.extraHit += 2; }; ", "My ranged weapons get a +2 bonus on the To Hit."]
+				}
+			},
+			"defense" : {
+				name : "Defense Fighting Style",
+				description : "\n   " + "+1 bonus to AC when I'm wearing armor",
+				eval : "AddACMisc(1, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\", \"CurrentArmour.known && !ArmourList[CurrentArmour.known].type\")",
+				removeeval : "AddACMisc(0, \"Defense Fighting Style\", \"When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC\")"
+			},
+			"dueling" : {
+				name : "Dueling Fighting Style",
+				description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
+				calcChanges : {
+					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+				}
+			},
+			"two-weapon fighting" : {
+				name : "Two-Weapon Fighting Style",
+				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+				calcChanges : {
+					atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."]
+				}
+			}
+		},
+		"poultices" : {
+			name : "Poultices",
+			source : ["UA:MC", 7],
+			minlevel : 3,
+			description : desc([
+				"In 1 hour, I can create a number of poultices equal to my Wisdom mod (min 1)",
+				"The amount of poultices I have with me cannot exceed my Wisdom mod (min 1)",
+				"I can applying a poultice in 1 minute, healing a creature; Poultices last for 24 hours"
+			]),
+			additional : levels.map( function(n) {
+				if (n < 3) return "";
+				return "heals 1d6+" + Math.ceil(n/2);
+			})
+		},
+		"primeval awareness" : {
+			name : "Primeval Awareness",
+			source : ["P", 92],
+			minlevel : 3,
+			description : "\n   " + "As an action, I can use a spell slot to focus my awareness for 1 min per spell slot level" + "\n   " + "Out to 1 mile (6 in favored terrain), I sense if certain types of creatures are present",
+			additional : "aber/celest/drag/elem/fey/fie/und",
+			action : ["action", ""]
+		},
+		"subclassfeature3" : {
+			name : "Ranger Archetype",
+			source : ["UA:MC", 6],
+			minlevel : 3,
+			description : "\n   " + "Choose a Ranger Archetype you strive to emulate and put it in the \"Class\" field" + "\n   " + "Choose either Spell-less Beast Master or Spell-less Hunter"
+		},
+		"land's stride" : {
+			name : "Land's Stride",
+			source : ["P", 92],
+			minlevel : 8,
+			description : "\n   " + "I can travel through nonmagical, difficult terrain without penalty" + "\n   " + "I have advantage on saves vs. plants that impede movement by magical influence",
+			save : "Adv. vs. magical plants that impede movement"
+		},
+		"natural antivenom" : {
+			name : "Natural Antivenom",
+			source : ["UA:MC", 7],
+			minlevel : 9,
+			description : desc([
+				"I have advantage on saves vs. poison and resistance to poison damage",
+				"When I use a poultice, in addition to healing, I cure one poison effect on the creature"
+			]),
+			save : "Adv. vs. poison effects",
+			eval : "AddResistance('Poison', 'Natural Antivenom')",
+			removeeval : "RemoveResistance('Poison');"
+			
+		},
+		"hide in plain sight" : {
+			name : "Hide in Plain Sight",
+			source : ["P", 92],
+			minlevel : 10,
+			description : "\n   " + "I can hide with +10 to Dex (Stealth) after spending 1 minute creating camouflage" + "\n   " + "Once I move or take an action or a reaction, the benefit is lost"
+		},
+		"call natural allies" : {
+			name : "Call Natural Allies",
+			source : ["UA:MC", 7],
+			minlevel : 13,
+			description : desc([
+				"While in an area that is my Favored Terrain, I can call on beasts within 1 mile to help",
+				"The DM determines the beasts: 1\u00D7CR 2, 2\u00D7CR 1, 4\u00D7CR 1/2, or 8\u00D7CR 1/4",
+				"They will fight alongside me, are friendly to me and my allies, and help up to 1 hour",
+				"After I use these feature, I can't use it in the same general area again for 24 hours"
+			])
+		},
+		"vanish" : {
+			name : "Vanish",
+			source : ["P", 92],
+			minlevel : 14,
+			description : "\n   " + "I can't be nonmagically tracked if I don't want to be and can Hide as a bonus action",
+			action : ["bonus action", ""]
+		},
+		"relentless" : {
+			name : "Relentless",
+			source : ["UA:MC", 7],
+			minlevel : 17,
+			description : "\n   " + "I regain one superiority die if I have no more remaining when I roll initiative"
+		},
+		"feral senses" : {
+			name : "Feral Senses",
+			source : ["P", 92],
+			minlevel : 18,
+			description : "\n   " + "When not blinded or deafened, I'm aware of invisible, non-hidden creatures in 30 ft" + "\n   " + "I don't have disadvantage when attacking creatures I am aware of but can't see"
+		},
+		"foe slayer" : {
+			name : "Foe Slayer",
+			source : ["P", 92],
+			minlevel : 20,
+			description : "\n   " + "Once per turn, I can add Wis mod to the attack or damage roll vs. favored enemy"
+		}
+	}
+};
+ClassSubList["spell-less beast master"] = eval(ClassSubList["beast master"].toSource());
+ClassSubList["spell-less beast master"].source = ["UA:MC", 6];
+delete ClassSubList["spell-less beast master"].fullname;
+ClassSubList["spell-less beast master"].regExpSearch = /^(?=.*spell.?less)(?=.*(animal|beast))((?=.*(master|ranger|strider))|((?=.*(nature|natural|green))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i;
+ClassSubList["spell-less beast master"].features["subclassfeature15"] = {
+	name : "Beastly Coordination",
+	source : ["UA:MC", 7],
+	minlevel : 15,
+	description : "\n   " + "My companion can, as a reaction, halve an attack's damage from an attacker that I see"
+}
+ClassSubList["spell-less hunter"] = eval(ClassSubList["hunter"].toSource());
+ClassSubList["spell-less hunter"].source = ["UA:MC", 6];
+delete ClassSubList["spell-less hunter"].fullname;
+ClassSubList["spell-less hunter"].regExpSearch = /^(?=.*spell.?less)(?!.*(monster|barbarian|bard|cleric|druid|fighter|monk|paladin|rogue|sorcerer|warlock|wizard))(?=.*(hunter|huntress|hunts(wo)?m(e|a)n)).*$/i;
 
 /*
 	the Light, Dark, Underdark! Unearthed Arcana of 2015-11-02
@@ -3305,7 +3711,7 @@ function UAstartupCode() {
 	};
 	
 	//Add fighting styles to the options of fighter, paladin, and ranger
-	var FSclasses = ["fighter", "ranger", "paladin", "rangerua", "champion"];
+	var FSclasses = ["fighter", "ranger", "paladin", "rangerua", "spell-less ranger", "champion"];
 	[{
 		choice : "Mariner",
 		feature : {
@@ -3335,7 +3741,8 @@ function UAstartupCode() {
 		}
 	}].forEach(function (FStyle, indx, arr) {
 		for (var cla = 0; cla < FSclasses.length; cla++) {
-			var FSfeat = cla < 4 ? ClassList[FSclasses[cla]].features["fighting style"] : ClassSubList.champion.features.subclassfeature10;
+			var FSclass = FSclasses[cla];
+			var FSfeat = ClassList[FSclass] ? ClassList[FSclass].features["fighting style"] : ClassSubList[FSclass].features.subclassfeature10;
 			FSfeat.choices.push(FStyle.choice);
 			FSfeat[FStyle.choice.toLowerCase()] = FStyle.feature;
 			if (indx === arr.length - 1) FSfeat.choices.sort();
@@ -3701,4 +4108,6 @@ function UAstartupCode() {
 		ClassList.warlock.features["eldritch invocations"][invoc.objname.toLowerCase()] = invoc;
 	});
 	ClassList.warlock.features["eldritch invocations"].extrachoices.sort();
+	
+	AmendRaces();
 };

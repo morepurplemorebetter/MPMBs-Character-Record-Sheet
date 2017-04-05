@@ -289,7 +289,12 @@ var ClassList = {
 				name : "Channel Divinity: Turn Undead",
 				source : ["P", 59],
 				minlevel : 2,
-				description : "\n   " + "As an action, all undead within 30 ft that can see/hear me must make a Wisdom save" + "\n   " + "If an undead fails this save, it is turned for 1 minute or until it takes any damage" + "\n   " + "Turned: move away, never within 30 ft of me, no reactions or actions other than Dash" + "\n   " + "Turned: may Dodge instead of Dash when nowhere to move and unable to escape bonds",
+				description : desc([
+					"As an action, all undead within 30 ft that can see/hear me must make a Wisdom save",
+					"If an undead fails this save, it is turned for 1 minute or until it takes any damage",
+					"Turned: move away, never within 30 ft of me, no reactions or actions other than Dash",
+					"Turned: may Dodge instead of Dash when nowhere to move and unable to escape bonds"
+				]),
 				action : ["action", ""]
 			},
 			"destroy undead" : {
@@ -863,7 +868,7 @@ var ClassList = {
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		spellcastingFactor : 2,
 		spellcastingKnown : {
-			spells : [0, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11],
+			spells : [0, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11]
 		},
 		features : {
 			"favored enemy" : {
@@ -877,73 +882,73 @@ var ClassList = {
 				"aberrations" : {
 					name : "Aberrations",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"beasts" : {
 					name : "Beasts",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"celestials" : {
 					name : "Celestials",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"constructs" : {
 					name : "Constructs",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"dragons" : {
 					name : "Dragons",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"elementals" : {
 					name : "Elementals",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"fey" : {
 					name : "Fey",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"fiends" : {
 					name : "Fiends",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"giants" : {
 					name : "Giants",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"monstrosities" : {
 					name : "Monstrosities",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"oozes" : {
 					name : "Oozes",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"plants" : {
 					name : "Plants",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"undead" : {
 					name : "Undead",
 					description : "",
-					source : ["P", 91],
+					source : ["P", 91]
 				},
 				"two races of humanoids" : {
 					name : "Two Races of Humanoids",
 					description : "",
-					source : ["P", 91],
-				},
+					source : ["P", 91]
+				}
 			},
 			"natural explorer" : {
 				name : "Natural Explorer",
@@ -956,43 +961,43 @@ var ClassList = {
 				"arctic" : {
 					name : "Arctic",
 					source : ["P", 91],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning arctic terrain" + "\n   " + "While traveling for an hour or more in arctic terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
+					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning arctic terrain" + "\n   " + "While traveling for an hour or more in arctic terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
 				},
 				"coast" : {
 					name : "Coast",
 					source : ["P", 91],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning coast terrain" + "\n   " + "While traveling for an hour or more in coast terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
+					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning coast terrain" + "\n   " + "While traveling for an hour or more in coast terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
 				},
 				"desert" : {
 					name : "Desert",
 					source : ["P", 91],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning desert terrain" + "\n   " + "While traveling for an hour or more in desert terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
+					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning desert terrain" + "\n   " + "While traveling for an hour or more in desert terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
 				},
 				"forest" : {
 					name : "Forest",
 					source : ["P", 91],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning forest terrain" + "\n   " + "While traveling for an hour or more in forest terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
+					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning forest terrain" + "\n   " + "While traveling for an hour or more in forest terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
 				},
 				"grassland" : {
 					name : "Grassland",
 					source : ["P", 91],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning grassland terrain" + "\n   " + "While traveling for an hour or more in grassland terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
+					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning grassland terrain" + "\n   " + "While traveling for an hour or more in grassland terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
 				},
 				"mountain" : {
 					name : "Mountain",
 					source : ["P", 91],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning mountain terrain" + "\n   " + "While traveling for an hour or more in mountain terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
+					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning mountain terrain" + "\n   " + "While traveling for an hour or more in mountain terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
 				},
 				"swamp" : {
 					name : "Swamp",
 					source : ["P", 91],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning swamp terrain" + "\n   " + "While traveling for an hour or more in swamp terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
+					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning swamp terrain" + "\n   " + "While traveling for an hour or more in swamp terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
 				},
 				"underdark" : {
 					name : "Underdark",
 					source : ["P", 91],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning underdark terrain" + "\n   " + "While traveling for an hour or more in underdark terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing",
-				},
+					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning underdark terrain" + "\n   " + "While traveling for an hour or more in underdark terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+				}
 			},
 			"fighting style" : {
 				name : "Fighting Style",
@@ -1039,7 +1044,7 @@ var ClassList = {
 				name : "Ranger Archetype",
 				source : ["P", 92],
 				minlevel : 3,
-				description : "\n   " + "Choose a Ranger Archetype you strive to emulate and put it in the \"Class\" field" + "\n   " + "Choose either Beast Master or Hunter",
+				description : "\n   " + "Choose a Ranger Archetype you strive to emulate and put it in the \"Class\" field" + "\n   " + "Choose either Beast Master or Hunter"
 			},
 			"primeval awareness" : {
 				name : "Primeval Awareness",
@@ -1060,14 +1065,14 @@ var ClassList = {
 				name : "Hide in Plain Sight",
 				source : ["P", 92],
 				minlevel : 10,
-				description : "\n   " + "I can hide with +10 to Dex (Stealth) after spending 1 minute creating camouflage" + "\n   " + "Once I move or take an action or a reaction, the benefit is lost",
+				description : "\n   " + "I can hide with +10 to Dex (Stealth) after spending 1 minute creating camouflage" + "\n   " + "Once I move or take an action or a reaction, the benefit is lost"
 			},
 			"vanish" : {
 				name : "Vanish",
 				source : ["P", 92],
 				minlevel : 14,
 				description : "\n   " + "I can't be nonmagically tracked if I don't want to be and can Hide as a bonus action",
-				action : ["bonus action", ""],
+				action : ["bonus action", ""]
 			},
 			"feral senses" : {
 				name : "Feral Senses",
@@ -1080,7 +1085,7 @@ var ClassList = {
 				source : ["P", 92],
 				minlevel : 20,
 				description : "\n   " + "Once per turn, I can add Wis mod to the attack or damage roll vs. favored enemy"
-			},
+			}
 		}
 	},
 

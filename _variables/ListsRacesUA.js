@@ -1,6 +1,6 @@
 //All the races from the Unearthed Arcana articles are present in this file chronologically
 
-//the Eberron Unearthed Arcana (http://media.wizards.com/2015/downloads/dnd/UA_Eberron_v1.pdf)
+//the Eberron Unearthed Arcana (http://media.wizards.com/2015/downloads/dnd/UA_Eberron_v1.pdf) of 2015-02-02
 //adds three races: the race Changeling
 RaceList["changeling"] = {
 	regExpSearch : /changeling/i,
@@ -178,4 +178,89 @@ RaceSubList["minotaur-strength"] = {
 	improvements : "Minotaur [strength]: +2 Strength;",
 	scores : [1, 0, 0, 0, 0, 0],
 	trait : "Minotaur [strength] (+2 Strength)\nHorns: I am proficient with my horns, a 1d10 piercing damage melee weapon that grant me advantage on shoving a creature, but not to avoid being shoved myself.\nGoring Rush: When taking a Dash action, I can make a horns attack as a bonus action.\nHammering Horns: When taking a melee Attack action, I can attempt to shove with my horns as a bonus action. I cannot use this to knock a creature prone.\nLabyrinthine Recall: I can perfectly recall any path I have travelled.",
+};
+
+//the That Old Black Magic Unearthed Arcana (http://media.wizards.com/2015/downloads/dnd/07_UA_That_Old_Black_Magic.pdf) of 2015-12-17
+//adds a racial variant: the Abyssal Tiefling
+function AmendRaces() { //a function to create these tiefling alternatives, together with the Feral Tiefling from SCAG
+	[{
+		objname : "feral tiefling",
+		replaceTraitTxt : ["+1 Intelligence, +2 Charisma", "+2 Dexterity, +1 Intelligence"],
+		replaceNameTxt : ["tiefling", "feral tiefling"],
+		regExpSearch : /^(?=.*feral)((?=.*tiefling)|(?=.*planetouched)(?=.*(hell|abyss|fiend|devil))).*$/i,
+		name : "Feral tiefling",
+		source : ["S", 118],
+		plural : "Feral tieflings",
+		sortname : "Tiefling, Feral",
+		improvements : "Feral Tiefling: +2 Dexterity, +1 Intelligence;",
+		scores : [0, 2, 0, 1, 0, 0],
+		trait : "Feral Tiefling (+2 Dexterity, +1 Intelligence)\n\nInfernal Legacy:\n   I know the Thaumaturgy cantrip.\n   At 3rd level, I can cast the Hellish Rebuke spell once per long rest as a 2nd-level spell.\n   At 5th level, I can also cast the Darkness spell once per long rest.\n   Charisma is my spellcasting ability for these spells."
+	}, {
+		objname : "abyssal tiefling",
+		replaceTraitTxt : ["+1 Intelligence, +2 Charisma", "+1 Constitution, +2 Charisma"],
+		replaceNameTxt : ["tiefling", "abyssal tiefling"],
+		regExpSearch : /^(?=.*abyssal)((?=.*tiefling)|(?=.*planetouched)(?=.*(hell|abyss|fiend|devil))).*$/i,
+		name : "Abyssal tiefling",
+		source : ["UA:TOBM", 1],
+		plural : "Abyssal tieflings",
+		sortname : "Tiefling, Abyssal",
+		improvements : "Abyssal Tiefling: +1 Constitution, +2 Charisma;",
+		scores : [0, 0, 1, 0, 0, 2],
+		trait : "Abyssal Tiefling (+1 Constitution, +2 Charisma)\nAbyssal Toughness: My hit point maximum increases with half the levels I have (min 1). Abyssal Arcana: After each long rest I gain randomly determined spellcasting ability (d6). This is a cantrip, and on both 3rd and 5th level a spell that I can cast once, at 2nd-level.\n1: (Dancing Lights, Burning Hands, Alter Self); 2: (True Strike, Charm Person, Darkness)" + (!typePF ? ";" : " ") + " 3: (Light, Magic Missile, Invisibility); 4: (Spare the Dying, Hideous Laughter, Mirror Image)" + (!typePF ? ";" : " ") + " 5: (Message, Cure Wounds, Levitate); 6: (Prestidigitation, Thunderwave, Spider Climb)",
+		languages : ["Common", "Abyssal"],
+		spellcastingBonus : {
+			name : "Abyssal Arcana (level 1)",
+			spells : ["dancing lights", "true strike", "light", "message", "spare the dying", "prestidigitation"],
+			atwill : true
+		},
+		features : {
+			"abyssal fortitude" : {
+				name : "Abyssal Fortitude",
+				minlevel : 1,
+				calcChanges : {
+					hp : "extrahp += Math.max(1,Math.floor(totalhd/2)); extrastring += \"\\n + \" + Math.max(1,Math.floor(totalhd/2)) + \" from Abyssal Fortitude\";"
+				}
+			},
+			"abyssal arcana (level 3)" : {
+				name : "Abyssal Arcana (level 3)",
+				minlevel : 3,
+				usages : 1,
+				recovery : "long rest",
+				action : ["action", ""],
+				spellcastingBonus : {
+					name : "Abyssal Arcana (level 3)",
+					spells : ["burning hands", "charm person", "magic missile", "cure wounds", "tasha's hideous laughter", "thunderwave"],
+					oncelr : true
+				}
+			},
+			"abyssal arcana (level 5)" : {
+				name : "Abyssal Arcana (level 5)",
+				minlevel : 5,
+				usages : 1,
+				recovery : "long rest",
+				action : ["action", ""],
+				spellcastingBonus : {
+					name : "Abyssal Arcana (level 5)",
+					spells : ["alter self", "darkness", "invisibility", "levitate", "mirror image", "spider climb"],
+					oncelr : true
+				}
+			}
+		}
+	}].forEach( function(tRace) {
+		//make a new RaceList object for each race
+		RaceList[tRace.objname] = eval(RaceList.tiefling.toSource());
+		for (var rFea in tRace) {
+			if ((/objname|replaceTraitTxt|replaceNameTxt/).test(rFea)) continue;
+			RaceList[tRace.objname][rFea] = tRace[rFea];
+		};
+		//now do the variants
+		RaceList[tRace.objname].variants.forEach( function(nVar) {
+			RaceSubList[tRace.objname + "-" + nVar] = eval(RaceSubList["tiefling-" + nVar].toSource());
+			var thisVar = RaceSubList[tRace.objname + "-" + nVar];
+			thisVar.trait = thisVar.trait.replace(tRace.replaceTraitTxt[0], tRace.replaceTraitTxt[1]);
+			thisVar.trait = thisVar.trait.replace(tRace.replaceNameTxt[0].capitalize(), tRace.replaceNameTxt[1].capitalize());
+			thisVar.name = thisVar.name.replace(tRace.replaceNameTxt[0], tRace.replaceNameTxt[1]);
+			thisVar.plural = thisVar.plural.replace(tRace.replaceNameTxt[0], tRace.replaceNameTxt[1]);
+		});
+	});
 };
