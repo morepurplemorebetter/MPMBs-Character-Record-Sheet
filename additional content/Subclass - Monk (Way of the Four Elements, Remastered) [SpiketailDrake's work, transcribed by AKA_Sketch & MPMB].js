@@ -12,7 +12,7 @@
 	Effect:     This script adds a subclass for the Monk, called "Way of the Four Elements Remastered"
 				This is a homebrewed subclass that tries to fix the PHB subclass "Way of the Four Elements"
 	Code by:    AKA_Sketch & MorePurpleMoreBetter
-	Date:       2017-02-20 (sheet v12.84)
+	Date:       2017-04-05 (sheet v12.94)
 	
 	This is a fan-made homebrew to replace the "Way of the Four Elements" subclass.
 	
@@ -26,6 +26,13 @@
 */
 
 ClassSubList["way of the four elements"].source = ["IB:WotFE", 1];
+ClassSubList["way of the four elements"].spellcastingFactor = "default0";
+ClassSubList["way of the four elements"].spellcastingKnown = {
+	cantrips : [0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4]
+};
+ClassSubList["way of the four elements"].spellcastingList = {
+	spells : ["control flames", "gust", "mold earth", "shape water"]
+};
 ClassSubList["way of the four elements"].features = {
 	"subclassfeature3" : {
 		name : "Initiate of the Way",
@@ -35,12 +42,7 @@ ClassSubList["way of the four elements"].features = {
 		additional : levels.map(function (n) {
 			if (n < 6) return n < 3 ? "" : "1 cantrip";
 			return (n < 11 ? 2 : n < 17 ? 3 : 4) + " cantrips";
-		}),
-		spellcastingBonus : {
-			name : "Initiate of the Way",
-			spells : ["control flames", "gust", "mold earth", "shape water"],
-			times : [0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4]
-		}
+		})
 	},
 	"subclassfeature3.1" : {
 		name : "Disciple of the Elements",
@@ -49,7 +51,7 @@ ClassSubList["way of the four elements"].features = {
 		description : desc([
 			"I know several Elemental Disciplines, depending on level, that I can use with my ki",
 			"Use the \"Choose Features\" button above to add Elemental Disciplines to the third page",
-			"Some Elemental Disciplines give me the ability to cast a spell without material components",
+			"Some Elemental Disciplines give me the ability to cast a spell without material comp.",
 			"From 5th level onward, I can use additional ki points to increase their spell slot level",
 			"When I gain access to new Elemental Disciplines, I can trade a known one for another"
 		]),
