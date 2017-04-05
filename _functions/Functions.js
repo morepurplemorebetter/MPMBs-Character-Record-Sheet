@@ -2569,7 +2569,12 @@ function FindClasses(Event) {
 			
 			//remove tools gained from the class
 			for (var tls = 0; tls < tempCl.tools.length; tls++) {
-				RemoveTool(tempCl.tools[tls], tempCl.name);
+				var classTools = tempCl.tools[tls];
+				if (isArray(classTools)) {
+					classTools.forEach( function(acTool) { AddTool(acTool, tempCl.name); });
+				} else {
+					RemoveTool(classTools, tempCl.name);
+				}
 			}
 			
 			//delete class header string
@@ -2925,7 +2930,12 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 		for (var aClass in classes.known) {
 			n = aClass === classes.primary ? 0 : 1;
 			if (CurrentClasses[aClass].tools[n] !== undefined) {
-				AddTool(CurrentClasses[aClass].tools[n], CurrentClasses[aClass].name);
+				var classTools = CurrentClasses[aClass].tools[n];
+				if (isArray(classTools)) {
+					classTools.forEach( function(acTool) { AddTool(acTool, CurrentClasses[aClass].name); });
+				} else {
+					AddTool(classTools, CurrentClasses[aClass].name);
+				}
 			}
 		}
 	
