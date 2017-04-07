@@ -2437,6 +2437,7 @@ function FindClasses(Event) {
 	var oldClasses = eval(oldClassesString);
 	var goDeleteUSS = true;
 	classes.old = {};
+	classes.oldprimary = classes.primary;
 	classes.oldspellcastlvl = classes.spellcastlvl;
 	for (var aClass in classes.known) {
 		classes.old[aClass] = {
@@ -2450,15 +2451,8 @@ function FindClasses(Event) {
 	}
 	if(goDeleteUSS) delete UpdateSpellSheets.class;
 
-	//reset the global classes variables
-	classes.parsed = [];
-	classes.known = {};
-	classes.hd = [];
-	classes.hp = 0;
-	var i = 0;
-
 	//split raw string at string-number divides and push parts into temp array
-	for (i = 0; i < temp.length; i++) {
+	for (var i = 0; i < temp.length; i++) {
 		tempChar = parseInt(temp.charAt(i), 10);
 		if (isNaN(tempChar)) {
 			if (tempType === 2) {
@@ -2481,8 +2475,7 @@ function FindClasses(Event) {
 		}
 	}
 
-	//move elements tempArray into parsed array
-
+	//move elements from tempArray into parsed array
 	temp = [];
 	
 	for (i = 0; i < tempArray.length; i++) {
@@ -2502,9 +2495,16 @@ function FindClasses(Event) {
 			temp[temp.length - 1][1] = temp.length - 1 === 0 && What("Character Level") ? What("Character Level") : 1;
 		}
 	}
+	
+	//reset the global classes variables
+	classes.hd = [];
+	classes.hp = 0;
 
 	classes.parsed = temp;
 	classesTemp = {};
+	
+	//determine the character level
+	var level = classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);
 
 	//find known classes and push them into known array, add hd
 	for (i = 0; i < classes.parsed.length; i++) {
@@ -2512,19 +2512,34 @@ function FindClasses(Event) {
 		tempLevel = classes.parsed[i][1];
 		tempFound = ParseClass(tempString);
 		
-		if (tempFound) { //class detected
+		if (tempFound) { //class detected and meets any Prestige Class prereqs it has
 			tempClass = tempFound[0];
 			tempSubClass = tempFound[1];
 			tempDie = ClassList[tempClass].die;
+			
+			//see if the found class isn't a prestige class and if all prereqs are met. If not, skip this class
+			var tempPrereq = !ignorePrereqs && ClassList[tempClass].prestigeClassPrereq ? ClassList[tempClass].prestigeClassPrereq : false;
+			if (tempPrereq) {
+				if (!isNaN(tempPrereq) && tempPrereq <= level - tempLevel) {
+					continue;
+				} else {
+					try {
+						tempPrereq = eval(tempPrereq);
+					} catch (err) {
+						tempPrereq = true;
+					}
+					if (tempPrereq === false) continue;
+				}
+			}
 
-			if (i === 0) {
+			if (primeClass === "" && !ClassList[tempClass].prestigeClassPrereq) {
 				primeClass = tempClass;
 			};
 			classesTemp[tempClass] = {
 				name : tempClass,
 				level : tempLevel,
 				subclass : tempSubClass,
-				string : clean(tempString, " ")
+				string : classes.field.match(RegExp(clean(tempString, " "), "i"))[0]
 			};
 
 			if (classes.hd[tempDie] === undefined) { //add hd
@@ -2538,6 +2553,25 @@ function FindClasses(Event) {
 			}
 		}
 	}
+	
+	//if the found classes is the same as the classes.known, don't do anything
+	var isChange = primeClass !== classes.primary;
+	if (!isChange) {
+		var testArray = [];
+		for (var testCl in classesTemp) testArray.push(testCl);
+		for (var testCl in classes.known) testArray.push(testCl);
+		for (var t = 0; t < testArray.length; t++) {
+			var theKcl = classes.known[testArray[t]];
+			var theNcl = classesTemp[testArray[t]];
+			if (!isChange && theKcl && theNcl && theNcl.name === theKcl.name && theNcl.level === theKcl.level && theNcl.subclass === theKcl.subclass) {
+				theKcl.string = theNcl.string; //because otherwise we skip this change, if it is the only thing that changes
+				continue;
+			}
+			isChange = true;
+			break;
+		};
+	}
+	if (!isChange) return true;
 	
 	//check every class in classes old and if they are not in classesTemp, remove their features. Don't do anything on a reset
 	if (IsNotReset) {
@@ -2554,18 +2588,24 @@ function FindClasses(Event) {
 		var tempCl = CurrentClasses[oClass];
 		var oClassLvl = classes.old[oClass].classlevel;
 		
-		if (!classesTemp[oClass]) { //when removing a class, do the following
+		//remove saving throw proficiencies and rest equipment button tooltip, if it was primary class
+		if (primeClass !== classes.primary && classes.primary === oClass) {
+		
 			//delete armor and weapon proficiencies gained from class features
 			delete CurrentArmour.proficiencies[tempCl.fullname];
 			delete CurrentWeapons.proficiencies[tempCl.fullname];
 			
-			//remove saving throw proficiencies and rest equipment button tooltip, if it was primary class
-			if (classes.primary === oClass) {
-				Checkbox(tempCl.saves[0] + " ST Prof", false, "");
-				Checkbox(tempCl.saves[1] + " ST Prof", false, "");
-				
-				AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
-			}
+			Checkbox(tempCl.saves[0] + " ST Prof", false, "");
+			Checkbox(tempCl.saves[1] + " ST Prof", false, "");
+			
+			AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
+		}
+		
+		if (!classesTemp[oClass]) { //when removing a class, do the following
+		
+			//delete armor and weapon proficiencies gained from class features
+			delete CurrentArmour.proficiencies[tempCl.fullname];
+			delete CurrentWeapons.proficiencies[tempCl.fullname];
 			
 			//remove tools gained from the class
 			for (var tls = 0; tls < tempCl.tools.length; tls++) {
@@ -2758,7 +2798,7 @@ function FindClasses(Event) {
 				cSpells.name = Temps.fullname;
 				cSpells.level = classes.known[aClass].level;
 				cSpells.ability = Temps.abilitySave;
-				cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass, psionic : casterType == "psionic"};
+				cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass};
 				cSpells.known = Temps.spellcastingKnown;
 				cSpells.typeSp = !cSpells.known || cSpells.known.spells === undefined ? false : isArray(cSpells.known.spells) ? cSpells.known.spells[cSpells.level - 1] : cSpells.known.spells;
 				cSpells.typeSp = cSpells.typeSp === "" ? "" : isNaN(cSpells.typeSp) ? cSpells.typeSp : "known";
@@ -2827,8 +2867,6 @@ function FindClasses(Event) {
 
 //apply the effect of the classes
 function ApplyClasses(inputclasstxt, inputlevel) {
-	tDoc.delay = true;
-	tDoc.calculate = false;
 		
 	var level = 0;
 	var updateall = inputlevel !== undefined ? inputlevel : true;
@@ -2837,8 +2875,14 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 	thermoM("start"); //start a progress dialog
 	thermoM("Recognizing the entered class(es)..."); //change the progress dialog text
 	
-	//detects classes entered and parses information to global classes variable
-	FindClasses(classes.field);
+	//detects classes entered and parses information to global classes variable, if nothing has changed, it returns true and we can stop this function
+	if (FindClasses(classes.field)) {
+		thermoM("stop"); //stop the top progress dialog
+		return;
+	}
+
+	tDoc.delay = true;
+	tDoc.calculate = false;
 
 	//only update the tooltips if class is set to manual
 	if (What("Manual Class Remember") === "Yes") {
@@ -2876,7 +2920,7 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 	thermoM("Adding saves and proficiencies..."); //change the progress dialog text
 	//put hit dice on sheet
 	
-	//add saves and tools of the first class
+	//add saves and tools of the primary class
 	if (classes.primary) {
 		var save1 = CurrentClasses[classes.primary].saves[0];
 		var save2 = CurrentClasses[classes.primary].saves[1];
@@ -2920,10 +2964,7 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 		//put hit dice on sheet
 		
 		//add all levels and set character level
-		for (var j = 0; j < classes.parsed.length; j++) {
-			level += classes.parsed[j][1];
-		};
-		level = level === 0 ? 1 : level;
+		var level = classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);
 		Value("Character Level", level);
 		
 		//add tool proficiencies
@@ -3516,8 +3557,8 @@ function FindWeapons(ArrayNmbr) {
 		tempArray[j][2] = tempArray[j][0] ? WeaponsList[tempArray[j][0]].abilitytodamage : true;
 	
 		//if this is a spell or a cantrip, see if we can link it to an object in the CurrentCasters variable
-		var isSpell = tempArray[j][0] ? (WeaponsList[tempArray[j][0]].SpellsList ? WeaponsList[tempArray[j][0]].SpellsList : tempArray[j][0]) : ParseSpell(tempString);
-		if ((!tempArray[j][0] || (/spell|cantrip/i).test(WeaponsList[tempArray[j][0]].type)) && SpellsList[isSpell]) {
+		var isSpell = !tempArray[j][0] ? ParseSpell(tempString) : WeaponsList[tempArray[j][0]].SpellsList ? WeaponsList[tempArray[j][0]].SpellsList : SpellsList[tempArray[j][0]] ? tempArray[j][0] : ParseSpell(tempArray[j][0]);
+		if ((!tempArray[j][0] || (/spell|cantrip/i).test(WeaponsList[tempArray[j][0]].type)) && isSpell) {
 			tempArray[j][3] = isSpell;
 			if (!tempArray[j][0]) tempArray[j][2] = false;
 			tempArray[j][4] = isSpellUsed(isSpell);
@@ -6627,7 +6668,7 @@ function PleaseSubclass(theclass) {
 		var SubName1 = ClassSubList[testSubClass].subname;
 		var SubName2 = ClassSubList[testSubClass].fullname ? ClassSubList[testSubClass].fullname : ClassSubList[testSubClass].subname;
 
-		var classString = classes.known[theclass].string ? classes.known[theclass].string.capitalize() : aclass.name;
+		var classString = classes.known[theclass].string ? classes.known[theclass].string : aclass.name;
 		var theString = "The " + aclass.name + " class you entered into the Class field on the first page has a high enough level to add a subclass. However, no " + aclass.subclasses[0] + " has been detected."
 		var clusterString = "Select the " + aclass.subclasses[0];
 		var moreString = "Alternatively, you can add a subclass manually by typing it into the Class field on the first page. Just put your chosen " + aclass.subclasses[0] + " next to, or in place of, \"" + classString + "\".\n\nFor example: \"" + classString + " (" + SubName1 + ")\", or just \"" + SubName2 + "\".";

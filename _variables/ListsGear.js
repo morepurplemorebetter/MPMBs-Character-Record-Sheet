@@ -1318,7 +1318,7 @@ var WeaponsList = {
 	},
 	
 	//UA Mystic psionic talents that work like damage cantrips
-	"mystic-energy beam" : {
+	"energy beam" : {
 		regExpSearch : /^(?=.*\benergy\b)(?=.*\bbeam\b).*$/i,
 		name : "Energy Beam",
 		source : ["UA:TMC", 27],
@@ -1331,7 +1331,7 @@ var WeaponsList = {
 		abilitytodamage : false,
 		dc : true
 	},
-	"mystic-mind slam" : {
+	"mind slam" : {
 		regExpSearch : /^(?=.*\bmind\b)(?=.*\bslam\b).*$/i,
 		name : "Mind Slam",
 		source : ["UA:TMC", 28],
@@ -1344,7 +1344,7 @@ var WeaponsList = {
 		abilitytodamage : false,
 		dc : true
 	},
-	"mystic-mind thrust" : {
+	"mind thrust" : {
 		regExpSearch : /^(?=.*\bmind\b)(?=.*\bthrust\b).*$/i,
 		name : "Mind Thrust",
 		source : ["UA:TMC", 28],
@@ -1357,7 +1357,7 @@ var WeaponsList = {
 		abilitytodamage : false,
 		dc : true
 	},
-	"mystic-psychic hammer" : {
+	"psychic hammer" : {
 		regExpSearch : /^(?=.*\bpsychic\b)(?=.*\bhammer\b).*$/i,
 		name : "Psychic Hammer",
 		source : ["UA:TMC", 28],

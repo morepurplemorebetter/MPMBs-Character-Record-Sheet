@@ -115,6 +115,12 @@ var SourceList = {
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf"
 	},
+	"UA:PCRM" : {
+		name : "Unearthed Arcana: Prestige Classes and Rune Magic", //2015-10-05
+		abbreviation : "UA:PCRM",
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2015/downloads/dnd/UA_Rune_Magic_Prestige_Class.pdf"
+	},
 	"UA:LDU" : {
 		name : "Unearthed Arcana: Light, Dark, Underdark!", //2015-11-02
 		abbreviation : "UA:LDU",
