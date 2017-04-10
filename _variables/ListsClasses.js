@@ -2342,8 +2342,8 @@ var ClassSubList = {
 				spellcastingBonus : {
 					name : "Bonus Cantrip (Light)",
 					spells : ["light"],
-					selection : ["light"],
-				},
+					selection : ["light"]
+				}
 			},
 			"subclassfeature1.1" : {
 				name : "Warding Flare",

@@ -5741,8 +5741,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		
 		//add proficiency checkmark
 		fields.Proficiency = !QI ? true : 
-			QI && (/natural|spell|cantrip/i).test(theWea.type) ? true : 
-			CurrentWeapons.extraproficiencies.indexOf(WeaponName) !== -1 || CurrentWeapons.extraproficiencies.indexOf(theWea.type.toLowerCase()) !== -1 ? true : 
+			QI && (/natural|spell|cantrip/i).test(theWea.type) ? true : (RegExp(";" + CurrentWeapons.extraproficiencies.join(";|;").replace(/s;\|/g, "s;?|") + ";", "i")).test(";" + [WeaponName, theWea.type, theWea.list ? theWea.list : " "].join(";") + ";") ? true : 
 			(/^(simple|martial)$/i).test(theWea.type) ? tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) : false;
 		
 		//add mod

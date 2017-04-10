@@ -115,6 +115,12 @@ var SourceList = {
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf"
 	},
+	"UA:MM" : {
+		name : "Unearthed Arcana: Modern Magic", //2015-08-03
+		abbreviation : "UA:MM",
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2015/downloads/dnd/UA_ModernMagic.pdf"
+	},
 	"UA:PCRM" : {
 		name : "Unearthed Arcana: Prestige Classes and Rune Magic", //2015-10-05
 		abbreviation : "UA:PCRM",

@@ -502,6 +502,239 @@ delete ClassSubList["spell-less hunter"].fullname;
 ClassSubList["spell-less hunter"].regExpSearch = /^(?=.*spell.?less)(?!.*(monster|barbarian|bard|cleric|druid|fighter|monk|paladin|rogue|sorcerer|warlock|wizard))(?=.*(hunter|huntress|hunts(wo)?m(e|a)n)).*$/i;
 
 /*
+	the Modern Magic Unearthed Arcana of 2015-08-03
+	(http://media.wizards.com/2015/downloads/dnd/UA_ModernMagic.pdf)
+	
+	That article also references another WotC article: http://dnd.wizards.com/articles/features/my-new-d20-modern-campaign
+	Both those articles, and thus this code by extension, are missing an explenation what "sidearms" or "long arms" are.
+	
+	This Unearthed Arcana article has some internal consistency problems that are open for interpertation and MPMB has chosen one of those
+*/
+//adds three subclasses: a subclass for the Cleric, called "City Domain"
+ClassSubList["city domain"] = {
+	regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*(urban|city)).*$/i,
+	subname : "City Domain",
+	source: ["UA:MM", 1],
+	spellcastingExtra : ["comprehend languages", "remote access", "find vehicle", "heat metal", "lightning bolt", "protection from ballistics", "locate creature", "synchronicity", "commune with city", "shutdown"],
+	features : {
+		"subclassfeature1" : {
+			name : "Bonus Cantrip",
+			source: ["UA:MM", 1],
+			minlevel : 1,
+			description : "\n   " + "I learn the On/Off cantrip if I didn't already know it",
+			spellcastingBonus : {
+				name : "Bonus Cantrip (On/Off)",
+				spells : ["on/off"],
+				selection : ["on/off"]
+			}
+		},
+		"subclassfeature1.1" : {
+			name : "Bonus Proficiency",
+			source: ["UA:MM", 1],
+			minlevel : 1,
+			description : "\n   " + "I gain proficiency with sidearms and land vehicles",
+			weapons : [false, false, ["Sidearms"]],
+			eval: "AddTool('Hacking Tools', 'City Domain');",
+			removeeval: "RemoveTool('Hacking Tools');"
+		},
+		"subclassfeature1.2" : {
+			name : "Heart of the City",
+			source: ["UA:MM", 1],
+			minlevel : 1,
+			description : desc([
+				"While I'm in a city, I can gain adv. on a Cha (Deception, Intimidation, Persuasion) check",
+				"I'm considered proficient with the appropriate skill for that one check"
+			]),
+			usages: "Wisdom modifier per ",
+			usagescalc: "event.value = Math.max(1, tDoc.getField('Wis Mod').value);",
+			recovery: "long rest"
+		},
+		"subclassfeature2" : {
+			name : "Channel Divinity: Spirits of the City",
+			source: ["UA:MM", 1],
+			minlevel : 2,
+			description : desc([
+				"As an action, I make all city utilities in 30 ft either stop or work perfectly for 1 min",
+				"Additionally, all hostiles within 30 ft must make a Cha save at the time of use",
+				"If failed, it is either knocked prone or restrained (my choice) by city hazards",
+				"A restrained target can escape with an Athletics or Acrobatics check vs. my spell DC"
+			]),
+			action : ["action", ""]
+		},
+		"subclassfeature6" : {
+			name : "Block Watch",
+			source: ["UA:MM", 2],
+			minlevel : 6,
+			description : "\n   " + "While in an urban environment, I'm proficient and expertise in Insight and Perception"
+		},
+		"subclassfeature8" : {
+			name : "Divine Strike",
+			source: ["UA:MM", 2],
+			minlevel : 8,
+			description : "\n   " + "Once per turn, when I hit a creature with a weapon attack, I can do extra damage",
+			additional : levels.map(function (n) {
+				if (n < 8) return "";
+				return "+" + (n < 14 ? 1 : 2) + "d8 psychic damage";
+			}),
+			calcChanges : {
+				atkAdd : ["if (classes.known.cleric && classes.known.cleric.level > 7 && !isSpell) {fields.Description += (fields.Description ? '; ' : '') + 'Once per turn +' + (classes.known.cleric.level < 14 ? 1 : 2) + 'd8 psychic damage'; }; ", "Once per turn, I can have one of my weapon attacks that hit do extra psychic damage."]
+			}
+		},
+		"subclassfeature17" : {
+			name : "Express Transit",
+			source: ["UA:MM", 2],
+			minlevel : 17,
+			description : desc([
+				"As an action, I can teleport from one mass transit site to another in the same city",
+				"This works just like a Teleport spell; Mass transits sites include bus/train/subway stops"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : ["action", ""]
+		},
+	},
+};
+ClassList.cleric.subclasses[1].push("city domain");
+
+//a subclass for the Warlock, called "Ghost in the Machine"
+ClassSubList["warlock-ghost in the machine"] = {
+	regExpSearch : /^(?=.*warlock)(?=.*ghost)(?=.*(machine|computer)).*$/i,
+	subname : "Ghost in the Machine",
+	source : ["UA:MM", 2],
+	spellcastingExtra : ["infallible relay", "remote access", "arcane hacking", "digital phantom", "haywire", "invisibility to cameras", "conjure knowbot", "system backdoor", "shutdown", "synchronicity"],
+	features : {
+		"subclassfeature1" : {
+			name : "Bonus Proficiency",
+			source : ["UA:MM", 2],
+			minlevel : 1,
+			description : "\n   " + "I am proficient with hacking tools and know the On/Off cantrip",
+			eval: "AddTool('Hacking Tools', 'City Domain');",
+			removeeval: "RemoveTool('Hacking Tools');",
+			spellcastingBonus : {
+				name : "Bonus Cantrip (On/Off)",
+				spells : ["on/off"],
+				selection : ["on/off"]
+			}
+		},
+		"subclassfeature1.1" : {
+			name : "Information Surge",
+			source : ["UA:MM", 2],
+			minlevel : 1,
+			description : desc([
+				"As an action, I can cause a computerized device within 30 ft to make an Int save",
+				"If the device is held/used by a creature, that creature makes the saving throw",
+				"If the device is not held/used, it makes a save with a +0 modifier and disadvantage",
+				"On a failed save, the device stops functioning until the end of my next turn"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : ["action", ""]
+		},
+		"subclassfeature6" : {
+			name : "Wire Walk",
+			source : ["UA:MM", 3],
+			minlevel : 6,
+			description : desc([
+				"As a bonus action, I can teleport through a hardwired network to a point I can see",
+				"Both where I start and end must be a device, cable, or socket connected to the network"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : ["bonus action", ""]
+		},
+		"subclassfeature10" : {
+			name : "Personal Encryption",
+			source : ["UA:MM", 3],
+			minlevel : 10,
+			description : desc([
+				"I have adv. on saves vs. scrying, thought detection, and magics for learning my location",
+				"If the effect doesn't let me a save, the user has disadv. on checks to use it on me, if any"
+			])
+		},
+		"subclassfeature14" : {
+			name : "Technovirus",
+			source : ["UA:MM", 3],
+			minlevel : 14,
+			description : desc([
+				"As an action, I make a melee spell attack to infect someone with a techno-organic virus",
+				"The target takes 8d10 psychic damage, or half that with a successful Con save",
+				"If it failed its save, I can use an action to cast Command on it while it remains infected",
+				"It makes its save vs. this Command with disadvantage and I can cast it at any range",
+				"It is infected until my next long rest; The virus can be removed with Lesser Restoration"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : ["action", ""]
+		}
+	}
+};
+ClassList.warlock.subclasses[1].push("the undying light");
+
+//a subclass for the Wizard, called "Technomancy"
+//this code was contributed by AKA_Sketch
+ClassSubList["technomancy"] = {
+	regExpSearch: /technomancy|technomancer/i,
+	subname: "Technomancy",
+	source: ["UA:MM", 3],
+	fullname: "Technomancer",
+	features: {
+		"subclassfeature2": {
+			name: "Bonus Proficiencies",
+			source: ["UA:MM", 3],
+			minlevel: 2,
+			description: "\n   " + "I gain proficiency with sidearms and hacking tools",
+			weapons : [false, false, ["Sidearms"]],
+			eval: "AddTool('Hacking Tools', 'Technomancer');",
+			removeeval: "RemoveTool('Hacking Tools');"
+		},
+		"subclassfeature2.1": {
+			name: "Technological Savant",
+			source: ["UA:MM", 3],
+			minlevel: 2,
+			description: desc([
+				"I can use a single tablet computer (or similar) instead of a spellbook",
+				"Spells copied into this device cost half the normal amount of gp"
+			])
+		},
+		"subclassfeature6": {
+			name: "Program Spell",
+			source: ["UA:MM", 4],
+			minlevel: 6,
+			description: desc([
+				"I can cast a spell into a device of at least smartphone-level of computing power",
+				"Variables of the spell are chosen at time of casting; I can have only one active at a time",
+				"As an action within the next 48 hours, the spell can be cast from the device",
+				"I can't activate a concentration spell in this way if I am concentrating on another spell"
+			]),
+			recovery: "long rest",
+			usages: 1
+		},
+		"subclassfeature10": {
+			name: "Online Casting",
+			source: ["UA:MM", 4],
+			minlevel: 10,
+			description: desc([
+				"I can cast a spell, that is not area-of-effect, through networked electronic devices",
+				"If the spell requires sight/hearing, the audio/visual must be transmitted electronically",
+				"The spell's range is determined from me to my device plus from the target to its device"
+			]),
+			usages: "Intelligence modifier per ",
+			usagescalc: "event.value = Math.max(1, tDoc.getField('Int Mod').value);",
+			recovery: "long rest"
+		},
+		"subclassfeature14": {
+			name: "Chained Device",
+			source: ["UA:MM", 4],
+			minlevel: 14,
+			description: "\n   " + "I can use a held/worn tablet computer to concentrate on a spell I cast instead of me" + "\n   " + "If the device is separated from me, turned off, or broken, the effect is lost",
+			recovery: "long rest",
+			usages: 1
+		}
+	}
+};
+ClassList.wizard.subclasses[1].push("technomancy");
+
+/*
 	the Prestige Classes and Rune Magic Unearthed Arcana of 2015-10-05
 	(http://media.wizards.com/2015/downloads/dnd/UA_Rune_Magic_Prestige_Class.pdf)
 */
@@ -859,7 +1092,7 @@ ClassSubList["college of swords"] = {
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with medium armor and scimitars",
 			armor : [false, true, false, false],
-			weapons : [false, false, ["scimitar"]],
+			weapons : [false, false, ["scimitar"]]
 		},
 		"subclassfeature3.1" : {
 			name : "Two-Weapon Fighting Style",
@@ -883,7 +1116,7 @@ ClassSubList["college of swords"] = {
 			minlevel : 14,
 			description : "\n   " + "When I use my action to cast a Bard spell, I can make one bonus action weapon attack",
 			action : ["bonus action", " (with Bard spell)"]
-		},
+		}
 	}
 };
 ClassList.bard.subclasses[1].push("college of swords");
@@ -4285,6 +4518,17 @@ function UAstartupCode() {
 		prereqeval : "classes.known.warlock.level >= 15 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the blade') !== -1",
 		calcChanges : {
 			atkCalc : ["if (!thisWeapon[1] && (/\\bpact\\b/i).test(WeaponText)) { var pactMag = pactMag !== undefined ? 3 - pactMag : 3; output.magic += pactMag; }; ", "If I include the word 'Pact' in a weapon's name or description, it will be treated as a Pact Weapon. If it doesn't already include a magical bonus in its name, the calculation will add +3 to its To Hit and Damage."]
+		}
+	}, {
+		objname : "Arcane Gunslinger (prereq: Pact of the Blade)",
+		name : "Arcane Gunslinger",
+		description : desc([
+			"My pact weapon can take firearm forms, and I can transform magical firearms into one"
+		]),
+		source : ["UA:MM", 3],
+		prereqeval : "What('Class Features Remember').indexOf('warlock,pact boon,pact of the blade') !== -1",
+		calcChanges : {
+			atkAdd : ["if (isRangedWeapon &&  && (/\\bpact\\b/i).test(inputText)) {fields.Proficiency = true; fields.Description += thisWeapon[1] ? '' : (fields.Description ? '; ' : '') + 'Counts as magical'; }; ", "If I include the word 'Pact' in a firearm weapon's name, it gets treated as my Pact Weapon."]
 		}
 	}].forEach( function (invoc) {
 		ClassList.warlock.features["eldritch invocations"].extrachoices.push(invoc.objname);

@@ -2539,7 +2539,7 @@ function FindClasses(Event) {
 				name : tempClass,
 				level : tempLevel,
 				subclass : tempSubClass,
-				string : classes.field.match(RegExp(clean(tempString, " "), "i"))[0]
+				string : classes.field.match(RegExp(clean(tempString, " ").RegEscape(), "i"))[0]
 			};
 
 			if (classes.hd[tempDie] === undefined) { //add hd
@@ -3612,7 +3612,12 @@ function SetWeaponsdropdown() {
 			"Sword, Short",
 			"Sword, Long",
 			"Sword, Great"
-		]
+		],
+		melee : [],
+		ranged : [],
+		improvised : [],
+		spell : [],
+		"spell specific" : []
 	};
 	var knownweaponlists = ["endlist", "melee", "ranged", "improvised", "spell", "spell specific"];
 	
