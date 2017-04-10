@@ -1541,6 +1541,64 @@ ClassSubList["theurgy"] = {
 ClassList.wizard.subclasses[1].push("theurgy");
 
 /*
+	Wizard Revisited Unearthed Arcana of 2017-03-20
+	(http://media.wizards.com/2017/dnd/downloads/MJ320UAWizardVF2017.pdf)
+*/
+ClassSubList["war magic"] = {
+
+  regExpSearch : /^(?=.*war)(?=.*(magic|mage)).*$/i,
+
+  subname : "War Magic",
+
+  source : ["UA:WR", 2],
+  fullname : "War Mage",
+
+  features : {
+
+    "subclassfeature2" : { //has to be identical to a feature named in the ClassList
+      name : "Arcane Deflection",
+      source : ["UA:WR", 2],
+      minlevel : 2,
+      description : desc(["When hit by an attack, I can use my reaction to gain a +2 bonus to my AC against that attack",
+                          "When I fail a Con saving throw, I can use my reaction to gain +4 bonus to that saving throw",
+                          "When I use this feature, I can’t cast spells other than cantrips until the end of my next turn"]),
+      action: ["reaction", ""]
+    },
+    "subclassfeature2.1" : {
+      name : "Tactical Wit",
+      source : ["UA:WR", 2],
+      minlevel : 2,
+      description : desc(["I gain a bonus to my initiative rolls equal to my Intelligence modifier"]),
+      eval : "if (!What(\"Init Bonus\")) {Value(\"Init Bonus\", \"Int\")}",
+      removeeval : "if (What(\"Init Bonus\") === \"Int\") {Value(\"Init Bonus\", \"\")}"
+    },
+    "subclassfeature6" : {
+      name : "Power Surge",
+      source : ["UA:WR", 2],
+      minlevel : 6,
+      description : desc(["When casting a spell with a saving throw against multiple enemies, I can add 2 damage dice"]),
+      usages : 1,
+      recovery : "short rest"
+    },
+    "subclassfeature10" : {
+      name : "Durable Magic",
+      source : ["UA:WR", 2],
+      minlevel : 10,
+      description : desc(["While I maintain concentration on a spell, I have a +2 bonus to AC and all saving throws"])
+    },
+    "subclassfeature14" : {
+      name : "Deflecting Shroud",
+      source : ["UA:WR", 2],
+      minlevel : 14,
+      description : desc(["When I use my arcane deflection feature, magical energy arcs from me",
+                          "Each creature of my choice within 10ft of me takes force damage equal to half my wizard level"])
+    }
+  }
+};
+
+ClassList["wizard"].subclasses[1].push("war magic");
+
+/*
 	The Ranger, Revised Unearthed Arcana of 2016-09-12
 	(http://media.wizards.com/2016/dnd/downloads/UA_RevisedRanger.pdf)
 */
