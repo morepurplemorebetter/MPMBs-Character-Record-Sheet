@@ -599,7 +599,7 @@ ClassList.cleric.subclasses[1].push("city domain");
 //a subclass for the Warlock, called "Ghost in the Machine"
 ClassSubList["warlock-ghost in the machine"] = {
 	regExpSearch : /^(?=.*warlock)(?=.*ghost)(?=.*(machine|computer)).*$/i,
-	subname : "Ghost in the Machine",
+	subname : "the Ghost in the Machine",
 	source : ["UA:MM", 2],
 	spellcastingExtra : ["infallible relay", "remote access", "arcane hacking", "digital phantom", "haywire", "invisibility to cameras", "conjure knowbot", "system backdoor", "shutdown", "synchronicity"],
 	features : {
@@ -668,7 +668,7 @@ ClassSubList["warlock-ghost in the machine"] = {
 		}
 	}
 };
-ClassList.warlock.subclasses[1].push("the undying light");
+ClassList.warlock.subclasses[1].push("warlock-ghost in the machine");
 
 //a subclass for the Wizard, called "Technomancy"
 //this code was contributed by AKA_Sketch

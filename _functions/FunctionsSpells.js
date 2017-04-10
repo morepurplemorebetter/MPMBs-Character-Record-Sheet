@@ -2874,7 +2874,7 @@ function AskUserSpellSheet() {
 		if (spCast.level && spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) {
 			var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
 			var maxSpell = spCast.spellsTable ? spCast.spellsTable[CasterLevel].indexOf(0) : tDoc[spCast.factor[1] + "SpellTable"][CasterLevel].indexOf(0);
-			maxLvl = Number(maxSpell === -1 ? 9 : maxSpell);
+			maxSpell = Number(maxSpell === -1 ? 9 : maxSpell);
 		} else {
 			var CasterLevel = false;
 			var maxSpell = false;
