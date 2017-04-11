@@ -5930,7 +5930,13 @@ function CalcAttackDmgHit(fldName) {
 			if ((/(B|C)/).test(output[out])) { //if this involves a cantrip calculation
 				var cLvl = Number(QI ? What("Character Level") : What(prefix + "Comp.Use.HD.Level"));
 				var cDie = cantripDie[Math.min(Math.max(cLvl - 1, 1), 19)];
-				output[out] = output[out].replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/0.?d\d+/g, 0);
+				var mouse0270Dice = output[out].replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/0.?d\d+/g, 0);
+				
+				output[out] = mouse0270Dice.split("/").map(function(v) { 
+					return v.split("d").map(function(c) {
+						return eval(c);
+					}).join('d')
+				}).join('/');
 			};
 			dmgDie = output[out];
 			break;
