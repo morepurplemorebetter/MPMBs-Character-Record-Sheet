@@ -3623,7 +3623,7 @@ function SetWeaponsdropdown() {
 	
 	for (var key in WeaponsList) {
 		var weaKey = WeaponsList[key];
-		if (!weaKey.list || testSource(key, weaKey, "weaponExcl")) continue; // test if the weapon or its source is set to be included
+		if (!weaKey.list || testSource(key, weaKey, "weapExcl")) continue; // test if the weapon or its source is set to be included
 		if (!weaponlists[weaKey.list]) weaponlists[weaKey.list] = [];
 		weaponlists[weaKey.list].push(WeaponsList[key].name.capitalize());
 	};
@@ -10867,7 +10867,7 @@ function CalcCarriedLocation() {
 function AddUserScript() {
 	var theUserScripts = What("User Script").match(/(.|\r){1,65500}/g);
 	if (!theUserScripts) theUserScripts = [];
-	var defaultTxt = toUni("The JavaScript") + " you put into the field below will be run immediately and whenever the sheet is opened, using eval().\nIf the script results in an error you will be informed immediately and the script will not be added to the sheet or saved.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet, when you click \"Add Script to Sheet\".\n" + toUni("Resetting the sheet is recommended") + " before you have enter custom content into it (or use a fresh one).\n\n" + toUni("Be warned") + ", things you do here can break the sheet! You can " + toUni("aks MorePurpleMoreBetter for help") + " using the contact bookmarks.\n\n";
+	var defaultTxt = toUni("The JavaScript") + " you put into the field below will be run immediately and whenever the sheet is opened, using eval().\nIf the script results in an error you will be informed immediately and the script will not be added to the sheet or saved.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet, when you click \"Add Script to Sheet\".\n" + toUni("Resetting the sheet is recommended") + " before you have enter custom content into it (or use a fresh one).\n\n" + toUni("Be warned") + ", things you do here can break the sheet! You can " + toUni("ask MorePurpleMoreBetter for help") + " using the contact bookmarks.\n\n";
 	var extraTxt = toUni("A character limit of 65642") + " applies to the area below. You can add longer scripts by using the \"Open Another Dialogue\" button. That way you get more dialogues like this one. When you press \"Add Script to Sheet\", the code of all dialogues will be joined together (with no characters put inbetween!), is then run/tested and added to the sheet as a whole.\n" + toUni("An error will result in all content being lost") + ", so please save it somewhere else before exiting this dialogue!";
 	var getTxt = toUni("Using the proper syntax") + ", you can add homebrew materials for classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has more information and links to this syntax, or you can use the \"Syntax\" buttons above.\n\n" + toUni("Pre-Written Scripts") + " can be found using the \"Extras\" buttons above. These include 3rd-party materials such as the 'Remastered: Way of the Four Elements', DMs Guild creations by Matt Mercer (Blood Hunter, Gunslinger, College of the Maestro), Michael Wolf (Shaman), and more...\n\n" + toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JS Console\" button).";
 	var diaIteration = 1;
