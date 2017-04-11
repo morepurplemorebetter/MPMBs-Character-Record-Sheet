@@ -2520,8 +2520,8 @@ function FindClasses(Event) {
 			//see if the found class isn't a prestige class and if all prereqs are met. If not, skip this class
 			var tempPrereq = !ignorePrereqs && ClassList[tempClass].prestigeClassPrereq ? ClassList[tempClass].prestigeClassPrereq : false;
 			if (tempPrereq) {
-				if (!isNaN(tempPrereq) && tempPrereq <= level - tempLevel) {
-					continue;
+				if (!isNaN(tempPrereq)) {
+					if (tempPrereq > level - tempLevel) continue;
 				} else {
 					try {
 						tempPrereq = eval(tempPrereq);
