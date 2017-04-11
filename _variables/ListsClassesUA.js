@@ -1,7 +1,6 @@
 //All the subclasses from the Unearthed Arcana articles are present in this file chronologically
 
-/*
-	the Eberron Unearthed Arcana of 2015-02-02
+/*	the Eberron Unearthed Arcana of 2015-02-02
 	(http://media.wizards.com/2015/downloads/dnd/UA_Eberron_v1.pdf)
 */
 //adds a subclass for the Wizard, called "Tradition of the Artificer"
@@ -51,8 +50,7 @@ ClassSubList["wizard-artificer"] = {
 };
 ClassList.wizard.subclasses[1].push("wizard-artificer");
 
-/*
-	the Modifying Classes Unearthed Arcana of 2015-04-06
+/*	the Modifying Classes Unearthed Arcana of 2015-04-06
 	(http://media.wizards.com/2015/downloads/dnd/UA3_ClassDesignVariants.pdf)
 */
 //adds the spell-less ranger class and a subclass for the Sorcerer, called "Favored Soul"
@@ -501,8 +499,7 @@ ClassSubList["spell-less hunter"].source = ["UA:MC", 6];
 delete ClassSubList["spell-less hunter"].fullname;
 ClassSubList["spell-less hunter"].regExpSearch = /^(?=.*spell.?less)(?!.*(monster|barbarian|bard|cleric|druid|fighter|monk|paladin|rogue|sorcerer|warlock|wizard))(?=.*(hunter|huntress|hunts(wo)?m(e|a)n)).*$/i;
 
-/*
-	the Modern Magic Unearthed Arcana of 2015-08-03
+/*	the Modern Magic Unearthed Arcana of 2015-08-03
 	(http://media.wizards.com/2015/downloads/dnd/UA_ModernMagic.pdf)
 	
 	That article also references another WotC article: http://dnd.wizards.com/articles/features/my-new-d20-modern-campaign
@@ -734,8 +731,7 @@ ClassSubList["technomancy"] = {
 };
 ClassList.wizard.subclasses[1].push("technomancy");
 
-/*
-	the Prestige Classes and Rune Magic Unearthed Arcana of 2015-10-05
+/*	the Prestige Classes and Rune Magic Unearthed Arcana of 2015-10-05
 	(http://media.wizards.com/2015/downloads/dnd/UA_Rune_Magic_Prestige_Class.pdf)
 */
 //adds a prestige class, called "Rune Scribe"
@@ -911,8 +907,7 @@ ClassList["rune scribe"] = {
 	}
 };
 
-/*
-	the Light, Dark, Underdark! Unearthed Arcana of 2015-11-02
+/*	the Light, Dark, Underdark! Unearthed Arcana of 2015-11-02
 	(http://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf)
 */
 //adds three subclasses: a subclass for the Ranger, called "Deep Stalker"
@@ -1075,8 +1070,7 @@ ClassSubList["the undying light"] = {
 };
 ClassList.warlock.subclasses[1].push("the undying light");
 
-/*
-	the Kits of Old Unearthed Arcana of 2016-01-04
+/*	the Kits of Old Unearthed Arcana of 2016-01-04
 	(http://media.wizards.com/2015/downloads/dnd/04_UA_Classics_Revisited.pdf)
 */
 //adds four subclasses: a subclass for the Bard, called "College of Swords"
@@ -1311,8 +1305,7 @@ ClassSubList["scout"] = {
 };
 ClassList.fighter.subclasses[1].push("scout");
 
-/*
-	the Gothic Heroes Unearthed Arcana of 2016-04-04
+/*	the Gothic Heroes Unearthed Arcana of 2016-04-04
 	(http://dnd.wizards.com/sites/default/files/media/upload/articles/UA%20Gothic%20Characters.pdf)
 */
 //adds two subclasses: a subclass for the Fighter, called "Monster Hunter"
@@ -1423,8 +1416,7 @@ ClassSubList["inquisitive"] = {
 };
 ClassList.rogue.subclasses[1].push("inquisitive");
 
-/*
-	The Faithful Unearthed Arcana of 2016-08-01
+/*	The Faithful Unearthed Arcana of 2016-08-01
 	(http://media.wizards.com/2016/dnd/downloads/UA%20Non-Divine%20Faithful%20SFG.pdf)
 */
 //adds two subclasses: a subclass for the Warlock, called "The Seeker"
@@ -1540,8 +1532,7 @@ ClassSubList["theurgy"] = {
 };
 ClassList.wizard.subclasses[1].push("theurgy");
 
-/*
-	The Ranger, Revised Unearthed Arcana of 2016-09-12
+/*	The Ranger, Revised Unearthed Arcana of 2016-09-12
 	(http://media.wizards.com/2016/dnd/downloads/UA_RevisedRanger.pdf)
 */
 //adds an alternative ranger class, including three subclasses
@@ -1933,8 +1924,7 @@ ClassSubList["deep stalker conclave"] = {
 };
 ClassSubList["deep stalker conclave"].features["subclassfeature3.1"].spellcastingExtra[100] = "AddToKnown";
 
-/*
-	the Barbarian Primal Paths Unearthed Arcana of 2016-11-07
+/*	the Barbarian Primal Paths Unearthed Arcana of 2016-11-07
 	(http://media.wizards.com/2016/dnd/downloads/UA_Barbarian.pdf)
 */
 //adds three subclasses: a subclass for the Barbarian, called "Path of the Ancestral Guardian"
@@ -2134,8 +2124,7 @@ ClassSubList["zealot"] = {
 };
 ClassList.barbarian.subclasses[1].push("zealot");
 
-/*
-	the Bard Colleges Unearthed Arcana of 2016-11-14
+/*	the Bard Colleges Unearthed Arcana of 2016-11-14
 	(http://media.wizards.com/2016/dnd/downloads/UA_Bard.pdf)
 */
 //adds two subclasses: a subclass for the Bard, called "College of Glamour"
@@ -2246,8 +2235,7 @@ ClassSubList["college of whispers"] = {
 };
 ClassList.bard.subclasses[1].push("college of whispers");
 
-/*
-	the Cleric: Divine Domains Unearthed Arcana of 2016-11-21
+/*	the Cleric: Divine Domains Unearthed Arcana of 2016-11-21
 	(http://media.wizards.com/2016/dnd/downloads/UA_Cleric.pdf)
 */
 //adds three subclasses: a subclass for the Cleric, called "Forge Domain"
@@ -2446,8 +2434,7 @@ ClassSubList["protection domain"] = {
 };
 ClassList.cleric.subclasses[1].push("protection domain");
 
-/*
-	the Druid Circles Unearthed Arcana of 2016-11-28
+/*	the Druid Circles Unearthed Arcana of 2016-11-28
 	(http://media.wizards.com/2016/dnd/downloads/UA_Druid11272016_CAWS.pdf)
 */
 //adds three subclasses: a subclass for the Druid, called "Circle of Dreams"
@@ -2590,8 +2577,7 @@ ClassSubList["circle of twilight"] = {
 };
 ClassList.druid.subclasses[1].push("circle of twilight");
 
-/*
-	the Fighter Martial Archetypes Unearthed Arcana of 2016-12-05
+/*	the Fighter Martial Archetypes Unearthed Arcana of 2016-12-05
 	(http://media.wizards.com/2016/dnd/downloads/2016_Fighter_UA_1205_1.pdf)
 */
 //adds four subclasses: a subclass for the Fighter, called "Arcane Archer"
@@ -2870,8 +2856,7 @@ ClassSubList["sharpshooter"] = {
 };
 ClassList.fighter.subclasses[1].push("sharpshooter");
 
-/*
-	the Monk Monastic Traditions Unearthed Arcana of 2016-12-12
+/*	the Monk Monastic Traditions Unearthed Arcana of 2016-12-12
 	(http://media.wizards.com/2016/dnd/downloads/M_2016_UAMonk1_12_12WKWT.pdf)
 */
 //adds two subclasses: a subclass for the Monk, called "Way of the Kensei"
@@ -2995,8 +2980,7 @@ ClassSubList["way of tranquility"] = {
 };
 ClassList.monk.subclasses[1].push("way of tranquility");
 
-/*
-	the Paladin Sacred Oaths Unearthed Arcana of 2016-12-19
+/*	the Paladin Sacred Oaths Unearthed Arcana of 2016-12-19
 	(http://media.wizards.com/2016/dnd/downloads/UAPaladin_SO_20161219_1.pdf)
 */
 //adds two subclasses: a subclass for the Paladin, called "Oath of Conquest"
@@ -3112,8 +3096,7 @@ ClassSubList["oath of treachery"] = {
 };
 ClassList.paladin.subclasses[1].push("oath of treachery");
 
-/*
-	the Ranger and Rogue Unearthed Arcana of 2017-01-16
+/*	the Ranger and Rogue Unearthed Arcana of 2017-01-16
 	(http://media.wizards.com/2016/dnd/downloads/2017_01_UA_RangerRogue_0117JCMM.pdf)
 */
 //adds three subclasses: a subclass for the Ranger, called "Horizon Walker"
@@ -3287,8 +3270,7 @@ ClassSubList["rogue_scout"] = {
 };
 ClassList.rogue.subclasses[1].push("rogue_scout");
 
-/*
-	the Sorcerous Origins Unearthed Arcana of 2017-02-06
+/*	the Sorcerous Origins Unearthed Arcana of 2017-02-06
 	(http://media.wizards.com/2017/dnd/downloads/26_UASorcererUA020617s.pdf)
 */
 //adds four subclasses: a subclass for the Sorcerer, called "Favored Soul"
@@ -3611,8 +3593,7 @@ ClassSubList["stone sorcery"] = {
 };
 ClassList.sorcerer.subclasses[1].push("stone sorcery");
 
-/*
-	Warlock and Wizard Unearthed Arcana of 2017-02-13
+/*	Warlock and Wizard Unearthed Arcana of 2017-02-13
 	(http://media.wizards.com/2017/dnd/downloads/20170213_Wizrd_Wrlck_UAv2_i48nf.pdf)
 */
 //adds numerous warlock invocations (see UAstartupCode), and three subclasses:
@@ -3829,8 +3810,7 @@ ClassSubList["wizard-lore mastery"] = {
 };
 ClassList.wizard.subclasses[1].push("wizard-lore mastery");
 
-/*
-	Wizard Revisited Unearthed Arcana of 2017-03-20
+/*	Wizard Revisited Unearthed Arcana of 2017-03-20
 	(http://media.wizards.com/2017/dnd/downloads/MJ320UAWizardVF2017.pdf)
  */
 //adds one subclass: a subclass for the Wizard, called "War Magic"
@@ -3895,8 +3875,7 @@ ClassSubList["wizard-war magic"] = {
 };
 ClassList.wizard.subclasses[1].push("wizard-war magic");
 
-/*
-	A Trio of Subclasses Unearthed Arcana of 2017-02-27
+/*	A Trio of Subclasses Unearthed Arcana of 2017-02-27
 	(http://media.wizards.com/2017/dnd/downloads/UAThreeSubclasses.pdf)
 */
 //adds three subclass: a subclass for the Monk, called "Way of the Drunken Master"

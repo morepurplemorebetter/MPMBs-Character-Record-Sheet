@@ -228,13 +228,19 @@ function resourceDecisionDialog() {
 	if (isFirstTime) {
 		CurrentSources = {
 			firstTime : false,
-			globalExcl : []
+			globalExcl : [],
+			ammoExcl : [],
+			weapExcl : []
 		};
 		for (var src in SourceList) {
 			if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
-			if (SourceList[src].group === "Unearthed Arcana") {
-				CurrentSources.globalExcl.push(src);
-			}
+			if (SourceList[src].group === "Unearthed Arcana") CurrentSources.globalExcl.push(src);
+		};
+		for (var amm in AmmoList) {
+			if (AmmoList[amm].source && AmmoList[amm].source[0] === "D") CurrentSources.ammoExcl.push(amm);
+		};
+		for (var wea in WeaponsList) {
+			if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source[0] === "D") CurrentSources.weapExcl.push(wea);
 		};
 		Value("CurrentSources.Stringified", CurrentSources.toSource());
 	};
@@ -398,6 +404,7 @@ function resourceDecisionDialog() {
 		bCre : function (dialog) {resourceSelectionDialog("creature");},
 		bAtk : function (dialog) {resourceSelectionDialog("weapon");},
 		bArm : function (dialog) {resourceSelectionDialog("armor");},
+		bAmm : function (dialog) {resourceSelectionDialog("ammo");},
 		bLin : function (dialog) {if (this.sourceLink) app.launchURL(this.sourceLink, true)},
 		description : {
 			name : "Pick which resources are excluded and included",
@@ -519,6 +526,12 @@ function resourceDecisionDialog() {
 							bold : true,
 							item_id : "bBaF",
 							name : "Background Features",
+						}, {
+							type : "button",
+							font : "dialog",
+							bold : true,
+							item_id : "bFea",
+							name : "Feats",
 						}]
 					}, {
 						type : "view",
@@ -540,8 +553,8 @@ function resourceDecisionDialog() {
 							type : "button",
 							font : "dialog",
 							bold : true,
-							item_id : "bFea",
-							name : "Feats",
+							item_id : "bAmm",
+							name : "Ammunition",
 						}, {
 							type : "button",
 							font : "dialog",
@@ -798,7 +811,27 @@ function resourceSelectionDialog(type) {
 			var uTest = testSource(u, WeaponsList[u], CSatt, true);
 			if (uTest === "source") continue;
 			
-			var uGroup = (/martial|simple/i).test(WeaponsList[u].type) && !WeaponsList[u].list ? "Other" : WeaponsList[u].type;
+			var uGroup = !(/martial|simple/i).test(WeaponsList[u].type) ? WeaponsList[u].type : !WeaponsList[u].list ? "Other" : WeaponsList[u].type + " - " + WeaponsList[u].list;
+			refObj[uName] = u;
+			if (!exclObj[uGroup]) exclObj[uGroup] = {};
+			if (!inclObj[uGroup]) inclObj[uGroup] = {};
+			if (uTest) {
+				exclObj[uGroup][uName] = -1;
+			} else {
+				inclObj[uGroup][uName] = -1;
+			}
+		};
+		break;
+	 case "ammo" :
+		var theName = "Ammunition";
+		var CSatt = "ammoExcl";
+		for (var u in AmmoList) {
+			var uName = AmmoList[u].name;
+			var uTest = testSource(u, AmmoList[u], CSatt, true);
+			if (uTest === "source") continue;
+			
+			var ammSource = AmmoList[u].source && AmmoList[u].source[0] && SourceList[AmmoList[u].source[0]] ? SourceList[AmmoList[u].source[0]] : false;
+			var uGroup = ammSource ? ammSource.name : "Homebrew";
 			refObj[uName] = u;
 			if (!exclObj[uGroup]) exclObj[uGroup] = {};
 			if (!inclObj[uGroup]) inclObj[uGroup] = {};
@@ -991,6 +1024,14 @@ function resourceSelectionDialog(type) {
 		for (var a = 0; a < selectionDialogue.exclArr.length; a++) {
 			var theA = selectionDialogue.exclArr[a];
 			CurrentSources[CSatt].push(refObj[theA]);
+		}
+		//include ammo for weapons now included
+		if (type === "weapon") {
+			for (var key in WeaponsList) {
+				var weaKey = WeaponsList[key];
+				if (testSource(key, weaKey, "weaponExcl")) continue;
+				if (weaKey.ammo && CurrentSources.ammoExcl.indexOf(weaKey.ammo) !== -1) CurrentSources.ammoExcl.splice(CurrentSources.ammoExcl.indexOf(weaKey.ammo), 1);
+			};
 		}
 	};
 };

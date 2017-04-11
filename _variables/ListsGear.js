@@ -1266,7 +1266,7 @@ var WeaponsList = {
 		ammo : "arcane magazine"
 	},
 	
-	//UA Warlock Invocations
+	// UA Warlock Invocations
 	"claw of acamar" : {
 		regExpSearch : /^(?=.*\bclaw\b)(?=.*\bacamar\b).*$/i,
 		name : "Claw of Acamar",
@@ -1317,7 +1317,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	
-	//UA Mystic psionic talents that work like damage cantrips
+	// UA Mystic psionic talents that work like damage cantrips
 	"energy beam" : {
 		regExpSearch : /^(?=.*\benergy\b)(?=.*\bbeam\b).*$/i,
 		name : "Energy Beam",
@@ -1381,12 +1381,208 @@ var WeaponsList = {
 		description : "Finesse, light",
 		abilitytodamage : true
 	},
+
+	// DMG firearms (contributed by grungydan)
+	"pistol" : {
+		regExpSearch : /^(?=.*pistol)(?!.*automatic).*$/i,
+		name : "Pistol",
+		source : ["D", 268],
+		list : "firearm",
+		ability : 2, 
+		type: "Martial",
+		damage : [1, 10, "piercing"],
+		range : "30/90 ft",
+		weight : 3,
+		description : "Ammunition, loading",
+		abilitytodamage : true,
+		ammo : "renaissance bullet"
+	},
+	"musket" : {
+		regExpSearch : /musket/i,
+		name : "Musket",
+		source : ["D", 268],
+		list : "firearm",
+		ability : 2, 
+		type: "Martial",
+		damage : [1, 12, "piercing"],
+		range : "40/120 ft",
+		weight : 10,
+		description : "Ammunition, loading, two handed",
+		abilitytodamage : true,
+		ammo : "renaissance bullet"
+	},
+	"pistol automatic" : {
+		regExpSearch : /^(?!.*rifle)(?=.*pistol)(?=.*automatic).*$/i,
+		name : "Pistol, automatic",
+		source : ["D", 268],
+		list : "firearm",
+		ability : 2, 
+		type: "Martial",
+		damage : [2, 6, "piercing"],
+		range : "50/150 ft",
+		weight : 3,
+		description : "Ammunition, reload (15 shots)",
+		abilitytodamage : true,
+		ammo : "modern bullet"
+	},
+	"revolver" : {
+		regExpSearch : /revolver/i,
+		name : "Revolver",
+		source : ["D", 268],
+		list : "firearm",
+		ability : 2, 
+		type: "Martial",
+		damage : [2, 8, "piercing"],
+		range : "40/120 ft",
+		weight : 3,
+		description : "Ammunition, reload (6 shots)",
+		abilitytodamage : true,
+		ammo : "modern bullet"
+	},
+	"rifle hunting" : {
+		regExpSearch : /^(?!=laser|antimatter)(?=.*hunting)(?=.*rifle).*$/i,
+		name : "Hunting Rifle",
+		source : ["D", 268],
+		list : "firearm",
+		ability : 2, 
+		type: "Martial",
+		damage : [2, 10, "piercing"],
+		range : "80/240 ft",
+		weight : 8,
+		description : "Ammunition, reload (5 shots), two handed",
+		abilitytodamage : true,
+		ammo : "modern bullet"
+	},
+	"rifle automatic" : {
+		regExpSearch : /^(?!=.*laser|antimatter)(?=.*automatic)(?=.*rifle).*$/i,
+		name : "Automatic Rifle",
+		source : ["D", 268],
+		list : "firearm",
+		ability : 2, 
+		type: "Martial",
+		damage : [2, 8, "piercing"],
+		range : "80/240 ft",
+		weight : 8,
+		description : "Ammunition, burst fire, reload (30 shots), two handed",
+		abilitytodamage : true,
+		ammo : "modern bullet"
+	},
+	"shotgun" : {
+		regExpSearch : /shotgun/i,
+		name : "Shotgun",
+		source : ["D", 268],
+		list : "firearm",
+		ability : 2, 
+		type: "Martial",
+		damage : [2, 8, "piercing"],
+		range : "30/90 ft",
+		weight : 7,
+		description : "Ammunition, reload (2 shots), two handed",
+		abilitytodamage : true,
+		ammo : "modern bullet"
+	},
+	"laser pistol" : {
+		regExpSearch : /^(?=.*laser)(?=.*pistol).*$/i,
+		name : "Laser Pistol",
+		source : ["D", 268],
+		list : "firearm",
+		ability : 2, 
+		type: "Martial",
+		damage : [3, 6, "radiant"],
+		range : "40/120 ft",
+		weight : 2,
+		description : "Ammunition, reload (50 shots), two handed",
+		abilitytodamage : true,
+		ammo : "energy cell" 
+	},
+	"antimatter rifle" : {
+		regExpSearch : /^(?!.*laser)(?=.*antimatter)(?=.*rifle).*$/i,
+		name : "Antimatter Rifle",
+		source : ["D", 268],
+		list : "firearm",
+		ability : 2, 
+		type: "Martial",
+		damage : [6, 8, "necrotic"],
+		range : "120/360 ft",
+		weight : 10,
+		description : "Ammunition, reload (2 shots), two handed",
+		abilitytodamage : true,
+		ammo : "energy cell" 
+	},
+	"laser rifle" : {
+		regExpSearch : /^(?!.*antimatter)(?=.*laser)(?=.*rifle).*$/i,
+		name : "Laser Rifle",
+		source : ["D", 268],
+		list : "firearm",
+		ability : 2, 
+		type: "Martial",
+		damage : [3, 8, "radiant"],
+		range : "100/300 ft",
+		weight : 7,
+		description : "Ammunition, reload (30 shots), two handed",
+		abilitytodamage : true,
+		ammo : "energy cell" 
+	},
+
+	// UA Starter Spells cantrips
+	"hand of radiance" : {
+		regExpSearch : /^(?=.*hand)(?=.*radiance).*$/i,
+		name : "Hand of Radiance",
+		source : ["UA:SS", 3],
+		list : "spell",
+		ability : 5,
+		type : "Cantrip",
+		damage : ["C", 6, "radiant"],
+		range : "5-ft radius",
+		description : "Con save, success - no damage; Only chosen creatures I can see are affected (UA:SS 3)",
+		abilitytodamage : false,
+		dc : true
+	},
+	"infestation" : {
+		regExpSearch : /infestation/i,
+		name : "Infestation",
+		source : ["UA:SS", 3],
+		list : "spell",
+		ability : 6,
+		type : "Cantrip",
+		damage : ["C", 6, "piercing"],
+		range : "30 ft",
+		description : "Con save, success - no damage, fail - target also moved 5 ft in random direction (UA:SS 3)",
+		abilitytodamage : false,
+		dc : true
+	},
+	"primal savagery" : {
+		regExpSearch : /^(?=.*primal)(?=.*savagery).*$/i,
+		name : "Primal Savagery",
+		source : ["UA:SS", 3],
+		list : "spell",
+		ability : 5,
+		type : "Cantrip",
+		damage : ["C", 10, "piercing"],
+		range : "Melee (5 ft)",
+		description : "Does either Piercing or Slashing damage (my choice) (UA:SS 3)",
+		abilitytodamage : false
+	},
+	"toll the dead" : {
+		regExpSearch : /^(?=.*toll)(?=.*the)(?=.*dead).*$/i,
+		name : "Toll the Dead",
+		source : ["UA:SS", 4],
+		list : "spell",
+		ability : 5,
+		type : "Cantrip",
+		damage : ["C", 12, "necrotic"],
+		range : "60 ft",
+		description : "Wis save, success - no damage; If target is at full hp, d8 instead of d12 damage (UA:SS 4)",
+		abilitytodamage : false,
+		dc : true
+	},
 };
 
 //A list of all types of 'ammo' for the ammunition section on the first page
 var AmmoList = {
 	"arrow" : {
 		name : "Arrows",
+		source : ["P", 150],
 		weight : 0.05,
 		icon : "Arrows",
 		checks : [".Top", ".Base"],
@@ -1395,6 +1591,7 @@ var AmmoList = {
 	"bolt" : {
 		name : "Bolts",
 		weight : 0.075,
+		source : ["P", 150],
 		icon : "Arrows",
 		checks : [".Top", ".Base"],
 		display : 20,
@@ -1403,13 +1600,16 @@ var AmmoList = {
 	"bullet" : {
 		name : "Bullets",
 		weight : 0.075,
+		source : ["P", 150],
 		icon : "Bullets",
 		checks : [".Bullet"],
 		display : 50,
-		invName : "Sling bullets"
+		invName : "Sling bullets",
+		alternatives : ["sling bullets", "bullets, sling"]
 	},
 	"dagger" : {
 		name : "Daggers",
+		source : ["P", 149],
 		weight : 1,
 		icon : "Daggers",
 		checks : [".Top"],
@@ -1417,6 +1617,7 @@ var AmmoList = {
 	},
 	"dart" : {
 		name : "Darts",
+		source : ["P", 149],
 		weight : 0.25,
 		icon : "Arrows",
 		checks : [".Top", ".Base"],
@@ -1424,6 +1625,7 @@ var AmmoList = {
 	},
 	"flask" : {
 		name : "Flasks (1 pint)",
+		source : ["P", 150],
 		weight : 1,
 		icon : "Flasks",
 		checks : [".Top", ".Base"],
@@ -1431,6 +1633,7 @@ var AmmoList = {
 	},
 	"axe" : {
 		name : "Handaxes",
+		source : ["P", 149],
 		weight : 2,
 		icon : "Axes",
 		checks : [".Top.Axe", ".Base.Axe"],
@@ -1438,6 +1641,7 @@ var AmmoList = {
 	},
 	"javelin" : {
 		name : "Javelins",
+		source : ["P", 149],
 		weight : 2,
 		icon : "Spears",
 		checks : [".Base"],
@@ -1445,6 +1649,7 @@ var AmmoList = {
 	},
 	"hammer" : {
 		name : "Light Hammers",
+		source : ["P", 149],
 		weight : 2,
 		icon : "Hammers",
 		checks : [".Top.Axe", ".Base.Axe"],
@@ -1452,6 +1657,7 @@ var AmmoList = {
 	},
 	"needle" : {
 		name : "Needles",
+		source : ["P", 149],
 		weight : 0.02,
 		icon : "Bullets",
 		checks : [".Bullet"],
@@ -1460,6 +1666,7 @@ var AmmoList = {
 	},
 	"spear" : {
 		name : "Spears",
+		source : ["P", 149],
 		weight : 3,
 		icon : "Spears",
 		checks : [".Base"],
@@ -1467,6 +1674,7 @@ var AmmoList = {
 	},
 	"trident" : {
 		name : "Tridents",
+		source : ["P", 149],
 		weight : 4,
 		icon : "Spears",
 		checks : [".Base"],
@@ -1474,22 +1682,15 @@ var AmmoList = {
 	},
 	"vial" : {
 		name : "Vials (4 ounces)",
+		source : ["P", 150],
 		weight : 0.25,
 		icon : "Vials",
 		checks : [".Top", ".Base"],
 		display : 20
 	},
-	"vials of acid" : {
-		name : "Vials of Acid",
-		weight : 1,
-		icon : "Vials",
-		checks : [".Top", ".Base"],
-		display : 20,
-		invName : "Acid, vials of",
-		alternatives : ["vial of acid", "acid vial"]
-	},
 	"alchemist fire" : {
 		name : "Alchemist's Fire, flasks",
+		source : ["P", 148],
 		weight : 1,
 		icon : "Flasks",
 		checks : [".Top", ".Base"],
@@ -1497,17 +1698,57 @@ var AmmoList = {
 		invName : "Alchemist's fire, flasks of",
 		alternatives : ["alchemist's fire"]
 	},
+	"vials of acid" : {
+		name : "Vials of Acid",
+		source : ["P", 148],
+		weight : 1,
+		icon : "Vials",
+		checks : [".Top", ".Base"],
+		display : 20,
+		invName : "Acid, vials of",
+		alternatives : ["vial of acid", "acid vial"]
+	},
 	
 	// UA Artificer ammo
 	"arcane magazine" : {
 		name : "Arcane Magazine",
+		source : ["UA:A", 7],
 		weight : 0.2, // based on the weight of renaissance bullets from the DMG
 		icon : "Bullets",
 		checks : [".Bullet"],
 		display : 50,
 		invName : "Thunder Cannon Rounds"
-	}
-}
+	},
+
+	// DMG firearms ammo
+	"renaissance bullet" : {
+		name : "Renaissance Bullets",
+		source : ["D", 268],
+		weight : 0.2,
+		icon : "Bullets",
+		checks : [".Bullet"],
+		display : 50,
+		invName : "Bullets, renaissance"
+	},
+	"modern bullet" : {
+		name : "Modern Bullets",
+		source : ["D", 268],
+		weight : 0.1,
+		icon : "Bullets",
+		checks : [".Bullet"],
+		display : 50,
+		invName : "Bullets, modern"
+	},
+	"energy cell" : {
+		name : "Energy Cell",
+		source : ["D", 268],
+		weight : 0,
+		icon : "Bullets",
+		checks : [".Bullet"],
+		display : 50,
+		invName : "Energy Cell"
+	},
+};
 
 var PacksList = {
 	"burglar's pack (16 gp)" : [

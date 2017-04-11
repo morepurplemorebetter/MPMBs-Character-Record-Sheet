@@ -31,10 +31,10 @@ var CreatureList = {
 			}, {
 				name : "Whirlwind (Recharge 4-6)",
 				ability : 1,
-				damage : [2, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [3, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "All in shared area",
 				dc : true,
-				description : "Str Save; fail\u2015 flung 20 ft random direction, prone; success\u2015 half damage",
+				description : "Str save; fail\u2015 flung 20 ft random direction, prone; success\u2015 half damage",
 				tooltip : "Each creature in the elemental's space that fails its saving throw is flung up to 20 feet away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 feet it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone."
 			},
 		],
@@ -640,7 +640,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [1, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 14); can't use constrict again until grapple ends",
+				description : "Target is grappled and restrained (escape DC 14); Can't use constrict again until grapple ends",
 			},
 		],
 	},
@@ -744,7 +744,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 12); can't use bite again until grapple ends",
+				description : "Target is grappled and restrained (escape DC 12); Can't use bite again until grapple ends",
 			},
 		],
 		traits : [{
@@ -1135,7 +1135,7 @@ var CreatureList = {
 				ability : 2,
 				damage : [2, 6, "fire"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "2 per Attack; ignites flammable; until action to douse, target 1d10 fire damage at start of its turn",
+				description : "2 per Attack; Ignites flammable; Until action to douse, target 1d10 fire damage at start of its turn",
 			},
 		],
 		traits : [{
@@ -1520,7 +1520,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [2, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 16); can't use constrict again until grapple ends",
+				description : "Target is grappled and restrained (escape DC 16); Can't use constrict again until grapple ends",
 			},
 		],
 	},
@@ -1551,7 +1551,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [1, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target is grappled (escape DC 11); can't use a claw again until grapple ends",
+				description : "Target is grappled (escape DC 11); Can't use a claw again until grapple ends",
 			},
 		],
 		traits : [{
@@ -1587,7 +1587,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [3, 10, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 16); can't use bite again until grapple ends",
+				description : "Target is grappled and restrained (escape DC 16); Can't use bite again until grapple ends",
 			}, {
 				name : "Tail",
 				ability : 1,
@@ -1750,7 +1750,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 11); can't use bite again until grapple ends",
+				description : "Target is grappled and restrained (escape DC 11); Can't use bite again until grapple ends",
 			},
 		],
 		traits : [{
@@ -1764,7 +1764,7 @@ var CreatureList = {
 				description : "The frog makes one bite attack against a Small or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the frog, and it takes 5 (2d4) acid damage at the start of each of the frog's turns. The frog can have only one target swallowed at a time. If the frog dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 ft of movement, exiting prone.",
 			}
 		],
-		wildshapeString : "Darkvision 30 ft| Amphibious: can breathe air and water| Standing Leap: can long jump up to 20 ft and high jump up to 10 ft, with or without a running start| Swallow: if a bite attack hits a Small or smaller target it is grappling, it is swallowed, ending the grapple. Swallowed: blinded, restrained, total cover, takes 2d4 acid damage at the start of each of the toad's turns; can have only 1 swallowed at a time.",
+		wildshapeString : "Darkvision 30 ft| Amphibious: can breathe air and water| Standing Leap: can long jump up to 20 ft and high jump up to 10 ft, with or without a running start| Swallow: if a bite attack hits a Small or smaller target it is grappling, it is swallowed, ending the grapple. Swallowed: blinded, restrained, total cover, takes 2d4 acid damage at the start of each of the frog's turns; can have only 1 swallowed at a time.",
 	},
 	"giant goat" : {
 		name : "Giant Goat",
@@ -1902,7 +1902,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (15 ft)",
-				description : "Target is grappled and restrained (escape DC 16); can't use tentacles again until grapple ends",
+				description : "Target is grappled and restrained (escape DC 16); Can't use tentacles again until grapple ends",
 			},
 		],
 		traits : [{
@@ -2087,7 +2087,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [1, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target is grappled (escape DC 12); can't use a claw again until grapple ends",
+				description : "Target is grappled (escape DC 12); Can't use a claw again until grapple ends",
 			}, {
 				name : "Sting",
 				ability : 1,
@@ -2191,7 +2191,7 @@ var CreatureList = {
 		scores : [14, 16, 12, 2, 11, 4], //[Str, Dex, Con, Int, Wis, Cha]
 		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
 		skills : {
-			"stealth" : 7,
+			"stealth" : 7
 		},
 		senses : "Blindsight 10 ft; Darkvision 60 ft",
 		passivePerception : 10,
@@ -2204,7 +2204,7 @@ var CreatureList = {
 				ability : 2,
 				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target also takes 2d8 poison damage, half on a DC 11 Constitution saving throw",
+				description : "Target also takes 2d8 poison damage, half on a DC 11 Constitution saving throw"
 			}, {
 				name : "Web (Recharge 5-6)",
 				ability : 2,
@@ -2213,28 +2213,28 @@ var CreatureList = {
 				description : "Target can escape as an action with a DC 12 Strength check, or by destroying the webbing (AC 10; 5 HP)",
 				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
 				tooltip : "On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)."
-			},
+			}
 		],
 		traits : [{
 				name : "Bite",
-				description : "If the poison damage from the spider's bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way.",
+				description : "If the poison damage from the spider's bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way."
 			}, {
 				name : "Spider Climb",
-				description : "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.",
+				description : "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
 			}, {
 				name : "Web Sense",
-				description : "While in contact with a web, the spider knows the exact location of any other creature in contact with the same web.",
+				description : "While in contact with a web, the spider knows the exact location of any other creature in contact with the same web."
 			}, {
 				name : "Web Walker",
-				description : "The spider ignores movement restrictions caused by webbing.",
-			},
+				description : "The spider ignores movement restrictions caused by webbing."
+			}
 		],
 		actions : [{
 				name : "Web (Recharge 5-6)",
-				description : "See attack. On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage).",
-			},
+				description : "See attack. On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)."
+			}
 		],
-		wildshapeString : "Blindsight 10 ft; Darkvision 60 ft| If the bite's poison damage reduces the target to 0 HP, the target is stable but poisoned and paralyzed for 1 hour, even after regaining HP| Spider Climb: climb difficult surfaces, including upside down, without an ability check| Web Sense: knows the exact location of any other creature in contact with the same web| Web Walker: ignores movement restrictions from webbing",
+		wildshapeString : "Blindsight 10 ft; Darkvision 60 ft| If the bite's poison damage reduces the target to 0 HP, the target is stable but poisoned and paralyzed for 1 hour, even after regaining HP| Spider Climb: climb difficult surfaces, including upside down, without an ability check| Web Sense: knows the exact location of any other creature in contact with the same web| Web Walker: ignores movement restrictions from webbing"
 	},
 	"giant toad" : {
 		name : "Giant Toad",
@@ -2260,7 +2260,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "+1d10 poison damage; target is grappled and restrained (escape DC 13); can't use bite again until grapple ends",
+				description : "+1d10 poison damage; target is grappled and restrained (escape DC 13); Can't use bite again until grapple ends",
 			},
 		],
 		traits : [{
@@ -3131,7 +3131,7 @@ var CreatureList = {
 				ability : 2,
 				damage : [1, "", "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
-				description : "Target is grappled (escape DC 10); can't use tentacles again until grapple ends",
+				description : "Target is grappled (escape DC 10); Can't use tentacles again until grapple ends",
 				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
 			},
 		],
@@ -4203,7 +4203,7 @@ var CreatureList = {
 				ability : 1,
 				damage : [3, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (10 ft)",
-				description : "Medium or smaller target is grappled and restrained (escape DC 17); can't use bite again until grapple ends",
+				description : "Medium or smaller target is grappled and restrained (escape DC 17); Can't use bite again until grapple ends",
 			}, {
 				name : "Bite",
 				ability : 1,
@@ -5343,7 +5343,282 @@ var CreatureList = {
 			},
 		],
 	},
+
+	// Tales of the Yawning Portal
+	"giant crayfish" : {
+		name : "Giant Crayfish",
+		source : ["TotYP", 235],
+		size : 2, //Large
+		type : "Beast",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 15,
+		hp : 45,
+		hd : [7, 10], //[#, die]
+		speed : "30 ft, swim 30 ft",
+		scores : [15, 13, 13, 1, 9, 3], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		skills : {
+			"stealth" : 3
+		},
+		senses : "Blindsight 30 ft",
+		passivePerception : 9,
+		languages : "",
+		challengeRating : "2",
+		proficiencyBonus : 2,
+		attacksAction : 2,
+		attacks : [{
+				name : "Claw",
+				ability : 1,
+				damage : [1, 10, "bludgeoning"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "Target grappled on hit (escape DC 12); 2 claw attacks as Attack action, if not grappling with claw",
+			},
+		],
+		traits : [{
+				name : "Amphibious",
+				description : "The giant crayfish can breathe air and water.",
+			},
+		],
+	},
+	"giant ice toad" : {
+		name : "Giant Ice Toad",
+		source : ["TotYP", 235],
+		size : 2, //Large
+		type : "Beast",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 14,
+		hp : 52,
+		hd : [7, 10], //[#, die]
+		speed : "30 ft",
+		scores : [16, 13, 14, 8, 10, 6], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		damage_immunities : "cold",
+		senses : "Darkvision 60 ft",
+		passivePerception : 10,
+		languages : "Ice Toad",
+		challengeRating : "3",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Bite",
+				ability : 1,
+				damage : [2, 6, "piercing"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "Target is grappled and restrained (escape DC 13); Can't use bite again until grapple ends",
+			},
+		],
+		traits : [{
+				name : "Amphibious",
+				description : "The toad can breathe air and water",
+			}, {
+				name : "Cold Aura",
+				description : "A creature that starts its turn within 10 feet of the toad takes 5 (1d10) cold damage.",
+			}, {
+				name : "Standing Leap",
+				description : "The toad's long jump is up to 20 ft and its high jump is up to 10 ft, with or without a running start."
+			}
+		],
+		features : [{
+				name : "Swallow",
+				description : "The toad can make a bite attack against a Medium or smaller target it is grappling. If it hits, the target takes bite damage, is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the toad, and it takes 10 (3d6) acid damage and 11 (2d6) cold damage at the start of each of the toad's turns. The toad can have only one target swallowed at a time.\nIf the toad dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 feet of movement, exiting prone.",
+			}
+		],
+		wildshapeString : "Darkvision 60 ft| Cold Aura: Any within 5 ft at start of their turn take 1d10 cold damage| Amphibious: breathe air and water| Standing Leap: long jump 20 ft and high jump 10 ft, regardless of start| Swallow: if bite attack hits Medium or smaller being grappling, it takes bite damageand is swallowed: blinded, restrained, total cover, takes 3d6 acid and 2d6 cold damage at the start of each of the toad's turns; Only 1 swallowed at a time.",
+	},
+	"giant lightning eel" : {
+		name : "Giant Lightning Eel",
+		source : ["TotYP", 236],
+		size : 2, //Large
+		type : "Beast",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 13,
+		hp : 42,
+		hd : [5, 10], //[#, die]
+		speed : "5 ft, swim 30 ft",
+		scores : [11, 17, 16, 2, 12, 3], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		damage_resistances : "lightning",
+		senses : "Blindsight 60 ft",
+		passivePerception : 11,
+		languages : "",
+		challengeRating : "3",
+		proficiencyBonus : 2,
+		attacksAction : 2,
+		attacks : [{
+				name : "Bite",
+				ability : 1,
+				damage : [2, 6, "piercing"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "Two bite attacks as an Attack action; +1d8 lightning damage on a hit",
+			}, {
+				name : "Lightning Jolt (Recharge 5-6)",
+				ability : 3,
+				damage : [3, 8, "lightning"], //[#, die, type] "" for die is allowed
+				range : "Out/in 5/15 ft",
+				dc : true,
+				description : "Out water: 5 ft, 1 crea; In water: all in 15 ft; Con save: fail― stunned until eel's next turn end, success― half damage",
+				modifiers : [-1, "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				tooltip : "One creature the eel touches within 5 feet of it outside water, or each creature within 15 feet of it in a body of water, must make a DC 12 Constitution saving throw. On failed save, a target takes 13 (3d8) lightning damage. If the target takes any of this damage, the target is stunned until the end of the eel's next turn. On a successful save, a target takes half as much damage and isn't stunned"
+			}
+		],
+		traits : [{
+				name : "Water Breathing",
+				description : "The eel can breathe only underwater.",
+			}
+		],
+		actions : [{
+				name : "Lightning Jolt (Recharge 5-6)",
+				description : "See Attack. One creature the eel touches within 5 feet of it outside water, or each creature within 15 feet of it in a body of water, must make a DC 12 Constitution saving throw. On failed save, a target takes 13 (3d8) lightning damage. If the target takes any of this damage, the target is stunned until the end of the eel's next turn. On a successful save, a target takes half as much damage and isn't stunned"
+			}
+		]
+	},
+	"giant subterranean lizard" : {
+		name : "Giant Subterranean Lizard",
+		source : ["TotYP", 236],
+		size : 1, //Huge
+		type : "Beast",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 14,
+		hp : 66,
+		hd : [7, 12], //[#, die]
+		speed : "30 ft, swim 50 ft",
+		scores : [21, 9, 17, 2, 10, 7], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		skills : {
+			"stealth" : 3
+		},
+		senses : "",
+		passivePerception : 10,
+		languages : "",
+		challengeRating : "4",
+		proficiencyBonus : 2,
+		attacksAction : 2,
+		attacks : [{
+				name : "Bite",
+				ability : 1,
+				damage : [2, 10, "piercing"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "1 bite \u0026 1 tail attack as Attack action; Target grappled \u0026 restrained (escape DC 15); Can't use bite until grapple ends"
+			}, {
+				name : "Tail",
+				ability : 1,
+				damage : [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				range : "Melee (10 ft)",
+				description : "1 bite \u0026 1 tail attack as Attack action; Target DC 15 Str save or knocked prone"
+			},
+		],
+		traits : [{
+				name : "Swallow",
+				description : "The lizard can make one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target takes bite damage, is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the lizard, and it takes 10 (3d6) acid damage at the start of each of the lizard's turns. The lizard can have only one target swallowed at a time.\nIf the lizard dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 10 feet of movement, exiting prone.",
+			}
+		],
+		wildshapeString : "\u25C6 Swallow: If a bite attack hits a Small or smaller target that is currently being grappled by the lizard, the target is swallowed, ending the grapple. While swallowed, it is blinded, restrained, has total cover, and takes 3d4 acid damage at the start of each of the lizard's turns; The lizard can have only 1 swallowed at a time. If the lizard dies, the swallowed creature is no longer restrained and can escape using 10 ft movement.",
+	},
+
+	// Out of the Abyss
+	"steeder, female" : {
+		name : "Steeder, Female",
+		source : ["OotA", 231],
+		size : 2, //Large
+		type : "Beast",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 14,
+		hp : 30,
+		hd : [4, 10], //[#, die]
+		speed : "30 ft, climb 30 ft",
+		scores : [15, 16, 14, 2, 10, 3], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		skills : {
+			"stealth" : 7
+		},
+		senses : "Darkvision 120 ft",
+		passivePerception : 10,
+		languages : "",
+		challengeRating : "1",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Bite",
+				ability : 2,
+				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "Target also takes 2d8 acid damage, half on a DC 12 Constitution saving throw"
+			}, {
+				name : "Sticky Leg",
+				ability : 2,
+				damage : ["Grappled", "", ""], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "Medium or smaller is stuck to the steeder's leg and grappled (escape DC 12); Can't use again until grapple ends",
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+			}
+		],
+		traits : [{
+				name : "Spider Climb",
+				description : "The steeder can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
+			}, {
+				name : "Leap",
+				description : "The steeder can expend all its movement on its turn to jump up to 90 ft vertically or horizontally, provided that its speed is at least 30 feet."
+			}
+		]
+	},
+	"steeder, male" : {
+		name : "Steeder, Male",
+		source : ["OotA", 231],
+		size : 3, //Medium
+		type : "Beast",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 12,
+		hp : 13,
+		hd : [2, 8], //[#, die]
+		speed : "30 ft, climb 30 ft",
+		scores : [15, 12, 14, 2, 10, 3], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		skills : {
+			"stealth" : 5
+		},
+		senses : "Darkvision 120 ft",
+		passivePerception : 10,
+		languages : "",
+		challengeRating : "1/4",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Bite",
+				ability : 1,
+				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "Target also takes 1d8 acid damage, half on a DC 12 Constitution saving throw"
+			}, {
+				name : "Sticky Leg",
+				ability : 1,
+				damage : ["Grappled", "", ""], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "Small or smaller is stuck to the steeder's leg and grappled (escape DC 12); Can't use again until grapple ends",
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+			}
+		],
+		traits : [{
+				name : "Spider Climb",
+				description : "The steeder can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
+			}, {
+				name : "Leap",
+				description : "The steeder can expend all its movement on its turn to jump up to 60 ft vertically or horizontally, provided that its speed is at least 30 feet."
+			}
+		]
+	},
 };
+
+// make a default 'horse' entry to point to the 'riding horse' entry
+CreatureList["horse"] = CreatureList["riding horse"];
+// make a default 'steeder' entry to point to the 'steeder, female' entry
+CreatureList["steeder"] = CreatureList["steeder, female"];
+
 var license = [
       "OPEN GAME LICENSE Version 1.0a",
       "The following text is the property of Wizards of the Coast, Inc. and is Copyright 2000 Wizards of the Coast, Inc (\"Wizards\"). All Rights Reserved.",

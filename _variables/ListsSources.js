@@ -45,7 +45,7 @@ var SourceList = {
 		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/hoard-dragon-queen"
 	},
 	"OotA" : {
-		name : "Out of the Abyss [background features]",
+		name : "Out of the Abyss [beasts, background features]",
 		abbreviation : "OotA",
 		group : "Adventure Books",
 		url : "http://media.wizards.com/2015/downloads/dnd/OotA_CharacterBackgrounds.pdf"
@@ -57,10 +57,16 @@ var SourceList = {
 		url : "http://media.wizards.com/2016/downloads/DND/CoS_Character_Options.pdf"
 	},
 	"SKT" : {
-		name : "Storm King's Thunder [creatures]",
+		name : "Storm King's Thunder [beasts]",
 		abbreviation : "SKT",
 		group : "Adventure Books",
 		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/storm-kings-thunder"
+	},
+	"TotYP" : {
+		name : "Tales of the Yawning Portal [beasts]",
+		abbreviation : "TotYP",
+		group : "Adventure Books",
+		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/tales-yawning-portal"
 	},
 
 	//sources for custom scripts
@@ -252,5 +258,11 @@ var SourceList = {
 		abbreviation : "UA:AToS",
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2017/dnd/downloads/UAThreeSubclasses.pdf"
+	},
+	"UA:SS" : {
+		name : "Unearthed Arcana: Starter Spells", //2017-04-03
+		abbreviation : "UA:SS",
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2017/dnd/downloads/UA-Starter-Spells.pdf"
 	},
 };

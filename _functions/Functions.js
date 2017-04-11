@@ -3623,7 +3623,7 @@ function SetWeaponsdropdown() {
 	
 	for (var key in WeaponsList) {
 		var weaKey = WeaponsList[key];
-		if (!weaKey.list || testSource(key, WeaponsList[key], "weaponExcl")) continue; // test if the weapon or its source is set to be included
+		if (!weaKey.list || testSource(key, weaKey, "weaponExcl")) continue; // test if the weapon or its source is set to be included
 		if (!weaponlists[weaKey.list]) weaponlists[weaKey.list] = [];
 		weaponlists[weaKey.list].push(WeaponsList[key].name.capitalize());
 	};
@@ -8407,7 +8407,7 @@ function ParseAmmo(input) {
 	var output = "";
 	var tempFound = 0;
 	
-	//scan string for all weapons, including the alternative spellings
+	//scan string for all ammunition, including the alternative spellings
 	for (var key in AmmoList) {
 		if (AmmoList[key].alternatives) {
 			for (var z = 0; z < AmmoList[key].alternatives.length; z++) {
@@ -8582,14 +8582,23 @@ function SetAmmosdropdown() {
 	
 	for (ammo in AmmoList) {
 		var theAmmo = AmmoList[ammo];
+		if (testSource(ammo, theAmmo, "ammoExcl")) continue; // test if the weapon or its source is set to be included
 		theDropList.push(theAmmo.name);
 	}
+	theDropList.sort();
 	
+	if (tDoc.getField("AmmoLeftDisplay.Name").submitName === theDropList.toSource()) return;
+	tDoc.getField("AmmoLeftDisplay.Name").submitName = theDropList.toSource();
+	
+	var remAmmo = What("AmmoLeftDisplay.Name");
 	tDoc.getField("AmmoLeftDisplay.Name").setItems(theDropList);
 	tDoc.getField("AmmoLeftDisplay.Name").userName = string;
+	Value("AmmoLeftDisplay.Name", remAmmo);
 	
+	remAmmo = What("AmmoRightDisplay.Name");
 	tDoc.getField("AmmoRightDisplay.Name").setItems(theDropList);
 	tDoc.getField("AmmoRightDisplay.Name").userName = string;
+	Value("AmmoRightDisplay.Name", remAmmo);
 	
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;

@@ -127,6 +127,7 @@ WeaponsList["pistol"] = {
 };
 AmmoList["pistol bullets"] = {
 	name : "Pistol Bullets",
+	source : ["MM:GMA", 3],
 	weight : 0.015,
 	icon : "Bullets",
 	checks : [".Bullet"],
@@ -149,6 +150,7 @@ WeaponsList["musket"] = {
 };
 AmmoList["musket bullets"] = {
 	name : "Musket Bullets",
+	source : ["MM:GMA", 3],
 	weight : 0.025,
 	icon : "Bullets",
 	checks : [".Bullet"],
@@ -171,6 +173,7 @@ WeaponsList["pepperbox"] = {
 };
 AmmoList["pepperbox bullets"] = {
 	name : "Pepperbox Bullets",
+	source : ["MM:GMA", 3],
 	weight : 0.015,
 	icon : "Bullets",
 	checks : [".Bullet"],
@@ -193,6 +196,7 @@ WeaponsList["scattergun"] = {
 };
 AmmoList["scattergun shells"] = {
 	name : "Scattergun Shells",
+	source : ["MM:GMA", 3],
 	weight : 0.2,
 	icon : "Bullets",
 	checks : [".Bullet"],
@@ -215,6 +219,7 @@ WeaponsList["bad news"] = {
 };
 AmmoList["bad news bullets"] = {
 	name : "Bad News Bullets",
+	source : ["MM:GMA", 3],
 	weight : 0.05,
 	icon : "Bullets",
 	checks : [".Bullet"],
@@ -237,6 +242,7 @@ WeaponsList["hand mortar"] = {
 };
 AmmoList["hand mortar grenades"] = {
 	name : "Hand Mortar Grenades",
+	source : ["MM:GMA", 3],
 	weight : 0.65,
 	icon : "Bullets",
 	checks : [".Bullet"],

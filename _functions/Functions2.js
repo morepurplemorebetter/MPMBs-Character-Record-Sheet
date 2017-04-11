@@ -1387,7 +1387,7 @@ function SetWildshapeDropdown() {
 	for (var key in CreatureList) {
 		if ((CreatureList[key].type === "Beast" && eval(CreatureList[key].challengeRating) <= 6) || key === "air elemental" || key === "earth elemental" ||  key === "fire elemental" || key === "water elemental") {
 			if (testSource(key, CreatureList[key], "creaExcl")) continue;
-			theList.push(CreatureList[key].name);
+			if (theList.indexOf(CreatureList[key].name) === -1) theList.push(CreatureList[key].name);
 		}
 	}
 	theList.sort();
@@ -1431,7 +1431,7 @@ function SetCompDropdown() {
 	var theListC = [""];
 	for (var key in CreatureList) {
 		if (testSource(key, CreatureList[key], "creaExcl")) continue;
-		theListC.push(CreatureList[key].name);
+		if (theListC.indexOf(CreatureList[key].name) === -1) theListC.push(CreatureList[key].name);
 	}
 	theListC.sort();
 	
@@ -3461,6 +3461,7 @@ function MakeIconMenu_IconOptions() {
 			["Rage of Demons icon", "rod"],
 			["Curse of Strahd icon", "cos"],
 			["Storm King's Thunder icon", "skt"],
+			["Tales of the Yawning Portal icon", "totyp"],
 		];
 		IconMenu.push({cName : "-", cReturn : "-"}); // add a divider
 		menuLVL2(IconMenu, ["Set Adventure League season icon", "seasonicon"], classes);
