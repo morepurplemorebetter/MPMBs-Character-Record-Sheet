@@ -5932,6 +5932,15 @@ function CalcAttackDmgHit(fldName) {
 				var cDie = cantripDie[Math.min(Math.max(cLvl - 1, 1), 19)];
 				output[out] = output[out].replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/0.?d\d+/g, 0);
 			};
+			if (output[out][0] == "=") { // a string staring with "=" means it wants to be calculate to values
+				output[out] = output[out].substr(1).split("d").map(function(v) {
+					try {
+						return eval(v);
+					} catch (errV) {
+						return v;
+					};
+				}).join("d");
+			};
 			dmgDie = output[out];
 			break;
 		 case "mod" :
