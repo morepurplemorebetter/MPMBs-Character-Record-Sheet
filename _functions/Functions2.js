@@ -5939,7 +5939,7 @@ function CalcAttackDmgHit(fldName) {
  						return a.join('d')
  					}).join('/');
  				} catch (err) {/* USE DEFAULT OUTPUT IF CALC FAILS */}
-			}else if ((/(B|C)/).test(output[out])) { //if this involves a cantrip calculation
+			}else if ((/^(?=.*(B|C))(?=.*d\d).*$/).test(output[out])) { //if this involves a cantrip calculation
 				var cLvl = Number(QI ? What("Character Level") : What(prefix + "Comp.Use.HD.Level"));
 				var cDie = cantripDie[Math.min(Math.max(cLvl - 1, 1), 19)];
 				output[out] = output[out].replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/0.?d\d+/g, 0);
