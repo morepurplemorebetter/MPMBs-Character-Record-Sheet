@@ -5931,6 +5931,14 @@ function CalcAttackDmgHit(fldName) {
 				var cLvl = Number(QI ? What("Character Level") : What(prefix + "Comp.Use.HD.Level"));
 				var cDie = cantripDie[Math.min(Math.max(cLvl - 1, 1), 19)];
 				output[out] = output[out].replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/0.?d\d+/g, 0);
+				
+				try {
+					output[out] = output[out].split("/").map(function(v) {
+						var a = v.split("d");
+						a[0] = eval(a[0]);
+						return a.join('d')
+					}).join('/');
+				} catch (err) {/* USE DEFAULT OUTPUT IF CALC FAILS */}
 			};
 			dmgDie = output[out];
 			break;
