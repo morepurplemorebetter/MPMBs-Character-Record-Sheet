@@ -5105,7 +5105,7 @@ var CreatureList = {
 			}, {
 				name : "Bite",
 				ability : 1,
-				damage : [2, 10, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "Two claw and one bite as one Attack action (also, see Pounce trait)",
 			},
@@ -5385,7 +5385,7 @@ var CreatureList = {
 		name : "Giant Ice Toad",
 		source : ["TotYP", 235],
 		size : 2, //Large
-		type : "Beast",
+		type : "Monstrosity",
 		subtype : "",
 		alignment : "Unaligned",
 		ac : 14,

@@ -475,8 +475,7 @@ function CompSkillRefer(Skill, SkillBonus, scores, profB) {
 		}
 	};
 	
-	var skillLookup = Who("Text.SkillsNames") === "alphabeta" ? SkillsList.abilityScores : SkillsList.abilityScoresByAS;
-	var SkillAbility = skillLookup[SkillsList.abbreviations.indexOf(SkillName)];
+	var SkillAbility = SkillsList.abilityScores[SkillsList.abbreviations.indexOf(SkillName)];
 	var SkillMod = Math.round((scores[AbilityScores.abbreviations.indexOf(SkillAbility)] - 10.5) * 0.5);
 	
 	if (SkillBonus === SkillMod) {
@@ -528,24 +527,15 @@ function CalcSkillComp() {
 			}
 		}
 	}
-	var ExtraBonus = What(eName.replace("Comp.", blueTxt + "Comp.").replace("Mod", "Bonus").replace("Perc.Pass", alphaB || !typePF ? "Perc" : "Perf"));
-	if (isNaN(ExtraBonus)) {
-		ExtraBonus = What(prefix + "Comp.Use.Ability." + ExtraBonus + ".Mod");
-	}
 
-	var AllBonus = Skill === "Init" ? 0 : What(prefix + "BlueText.Comp.Use.Skills.All.Bonus");
-	if (isNaN(AllBonus)) {
-		AllBonus = What(prefix + "Comp.Use.Ability." + AllBonus + ".Mod");
-	}
+	var ExtraBonus = EvalBonus(What(eName.replace("Comp.", blueTxt + "Comp.").replace("Mod", "Bonus").replace("Perc.Pass", alphaB || !typePF ? "Perc" : "Perf")), prefix);
+
+	var AllBonus = Skill === "Init" ? 0 : EvalBonus(What(prefix + "BlueText.Comp.Use.Skills.All.Bonus"), prefix);
 	
-	var PassBonus = eName.indexOf("Pass") === -1 ? 0 : What(eName.replace("Comp.", "BlueText.Comp.").replace("Mod", "Bonus"));
-	if (isNaN(PassBonus)) {
-		PassBonus = 10 + Number(What(prefix + "Comp.Use.Ability." + PassBonus + ".Mod"));
-	} else if (eName.indexOf("Pass") !== -1) {
-		PassBonus = 10 + Number(PassBonus);
-	}
+	var isPP = eName.indexOf("Pass") !== -1 ? 10 : 0;
+	var PassBonus = !isPP ? 0 : EvalBonus(What(eName.replace("Comp.", "BlueText.Comp.").replace("Mod", "Bonus")), prefix);
 	
-	event.value = Mod === "" ? "" : Number(PassBonus) + Number(Mod) + Number(ExtraBonus) + Number(ProfBonus) + Number(AllBonus);
+	event.value = Mod === "" ? "" : Number(isPP) + Number(PassBonus) + Number(Mod) + Number(ExtraBonus) + Number(ProfBonus) + Number(AllBonus);
 };
 
 //see if the weapon matches one of the companion as a creature
@@ -793,8 +783,7 @@ function ApplyWildshape() {
 	thermoM(3/10); //increment the progress dialog's progress
 	
 	//set the initiative value
-	var initBonus = What("Init Bonus");
-	if (isNaN(initBonus)) initBonus = What(prefix + "Wildshape." + Fld + ".Ability." + initBonus + ".Mod");
+	var initBonus = EvalBonus(What("Init Bonus"), prefix, Fld);
 	if (tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1 || tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1) initBonus += Math.floor(charProfBcalc / 2); //add half the proficiency bonus if either Jack of All Trades or Remarkable Athlete is checked off
 	Value(prefix + "Wildshape." + Fld + ".Initiative Bonus", mods[1] + Number(initBonus));
 	
@@ -839,8 +828,8 @@ function ApplyWildshape() {
 		var skillChar = [
 			skill,
 			charProfFlds[0] && charProfFlds[1] ? "expertise" : charProfFlds[0] ? "proficient" : "nothing",
-			Number(isNaN(charProfFlds[2]) ? What(prefix + "Wildshape." + Fld + ".Ability." + charProfFlds[2] + ".Mod") : charProfFlds[2]),
-			Number(isNaN(charProfFlds[3]) ? What(prefix + "Wildshape." + Fld + ".Ability." + charProfFlds[3] + ".Mod") : charProfFlds[3]),
+			EvalBonus(charProfFlds[2], prefix, Fld),
+			EvalBonus(charProfFlds[3], prefix, Fld)
 		];
 		
 		//set the right colouring of the skill name (i.e. the proficiency level)
@@ -862,7 +851,7 @@ function ApplyWildshape() {
 			var skillBonus = theCrea.skills && theCrea.skills[skillFull.toLowerCase()] !== undefined ? Math.max(theCrea.skills[skillFull.toLowerCase()], What(skill)) : Math.max(skillMod, What(skill));
 		} else {
 			//if set to use char's prof bonus for everything, but not double it on creature expertise, add it to the 
-			if (setting[1].indexOf("expertise") !== -1 && skillCrea[1] === "expertise") {
+			if (setting[1].indexOf("expertise") === -1 && skillCrea[1] === "expertise") {
 				skillCrea[2] += creaProfBfix; //add the prof bonus from the creature stat block, because we are not now doubling any prof bonus
 				skillCrea[1] = "proficient"; //just set it to proficient, so that it will be only added once
 			}
@@ -877,8 +866,7 @@ function ApplyWildshape() {
 		
 		//set the passive perception if calculating the perception score
 		if (skillFull === "Perception") {
-			var passPercBonus = What("Passive Perception Bonus");
-			if (isNaN(passPercBonus)) passPercBonus = What(prefix + "Wildshape." + Fld + ".Ability." + passPercBonus + ".Mod");
+			var passPercBonus = EvalBonus(What("Passive Perception Bonus"), prefix, Fld);
 			Value(prefix + "Wildshape." + Fld + ".Skills.PassPerc", 10 + skillBonus + Number(passPercBonus));
 		}
 	}
@@ -911,8 +899,8 @@ function ApplyWildshape() {
 		var saveChar = [
 			saveCharFlds[0] ? "proficient" : "nothing",
 			saveCharFlds[0] ? charProfBcalc : 0,
-			Number(isNaN(saveCharFlds[1]) ? What(prefix + "Wildshape." + Fld + ".Ability." + saveCharFlds[1] + ".Mod") : saveCharFlds[1]),
-			Number(isNaN(saveCharFlds[2]) ? What(prefix + "Wildshape." + Fld + ".Ability." + saveCharFlds[2] + ".Mod") : saveCharFlds[2]),
+			EvalBonus(saveCharFlds[1], prefix, Fld),
+			EvalBonus(saveCharFlds[2], prefix, Fld)
 		];
 		
 		//check the box for proficiency, if applicable
@@ -4472,11 +4460,11 @@ function UpdateDropdown(type, weapon) {
 		SetCompDropdown();
 		SetWildshapeDropdown();
 		SetArmordropdown();
+		SetAmmosdropdown();
 		if (notAll) {
 			SetWeaponsdropdown();
 			break;
 		}
-		SetAmmosdropdown();
 	 case "attack" :
 	 case "attacks" :
 	 case "weapon" :
@@ -4928,17 +4916,18 @@ function CountASIs() {
 //a function to change the sorting of the skills
 function MakeSkillsMenu_SkillsOptions(input) {
 	var sWho = Who("Text.SkillsNames");
-	var modString = " Bonus Modifier:\nThe number you type in here will be added to the calculated Acrobatics value.\n\nYou can also have it dynamically add the modifier of one ability score. In order to do that, simply type in the three letter abbreviation of an ability score here (don't worry if it doesn't fit, the field will auto-complete)."
-	
+	var modString = toUni(" Bonus Modifier") + "\nThe number you type in here will be added to the calculated Acrobatics value.\n\n" + toUni("Dynamic Modifiers") + "\nYou can also have the field use ability score modifiers. To do this, use the abbreviations of ability scores (Str, Dex, Con, Int, Wis, Cha, HoS), math operators (+, -, /, *), and numbers.\n   For example: '2+Str' or 'Wis+Int'.\nDon't worry if you are only able to write one or two letters of an ability score's abbreviation, the field will auto-complete (e.g. typing 'S+1' will result in 'Str+1').";
+	var modStringC = modString.replace(", HoS", "");
 	var modStringE = "\n\nNote that any bonus from \"Jack of All Trades\" or \"Remarkable Athelete\" will be added automatically if the appropriate checkbox is checked.";
 	
 	if (IsNotReset === false) {//on a reset only re-do the bonus modifier tooltips
-		for (var S = 0; S < (SkillsList.abbreviations.length -2); S++) {
-			AddTooltip(SkillsList.abbreviations[S] + " Bonus", SkillsList.names[S] + modString + modStringE);
-			if (typePF) AddTooltip("BlueText.Comp.Use.Skills." + SkillsList.abbreviations[S] + ".Bonus", SkillsList.names[S] + modString);
+		for (var S = 0; S < (SkillsList.abbreviations.length - 2); S++) {
+			var newSkill = SkillsList.names[S];
+			AddTooltip(SkillsList.abbreviations[S] + " Bonus", toUni(newSkill) + modString.replace("Acrobatics", newSkill) + modStringE);
+			if (typePF) AddTooltip("BlueText.Comp.Use.Skills." + SkillsList.abbreviations[S] + ".Bonus", toUni(newSkill) + modString.replace("Acrobatics", newSkill).replace(", HoS", ""));
 		}
 		return;
-	}
+	};
 	
 	Menus.skills = [{
 		cName : "Sort skills alphabetically",
@@ -4975,7 +4964,7 @@ function MakeSkillsMenu_SkillsOptions(input) {
 			var oSkillDis = [];
 			var oSkillBon = [];
 			var currentList = sWho === "alphabeta" ? SkillsList.abbreviations : SkillsList.abbreviationsByAS;
-			for (var S = 0; S < (SkillsList.abbreviations.length -2); S++) {
+			for (var S = 0; S < (SkillsList.abbreviations.length - 2); S++) {
 				var sNm = currentList[S];
 				var sFld = SkillsList.abbreviations[S];
 				if (tDoc.getField(sFld + " Prof").isBoxChecked(0)) {
@@ -5015,7 +5004,7 @@ function MakeSkillsMenu_SkillsOptions(input) {
 			for (var B = 0; B < oSkillBon.length; B++) {
 				newFld = SkillsList.abbreviations[newList.indexOf(oSkillBon[B][0])];
 				var newSkill = SkillsList.names[SkillsList.abbreviations.indexOf(oSkillBon[B][0])];
-				Value(newFld + " Bonus", oSkillBon[B][1], newSkill + modString + modStringE);
+				Value(newFld + " Bonus", oSkillBon[B][1], toUni(newSkill) + modString.replace("Acrobatics", newSkill) + modStringE);
 			}
 			
 			//show the stealth disadvantage field, for Printer Friendly, if checked
@@ -5034,7 +5023,7 @@ function MakeSkillsMenu_SkillsOptions(input) {
 					var oSkillProf = [];
 					var oSkillExp = [];
 					var oSkillBon = [];
-					for (var S = 0; S < (SkillsList.abbreviations.length -2); S++) {
+					for (var S = 0; S < (SkillsList.abbreviations.length - 2); S++) {
 						var sNm = currentList[S];
 						var sFld = SkillsList.abbreviations[S];
 						if (tDoc.getField(aField + sFld + ".Prof").isBoxChecked(0)) {
@@ -5059,7 +5048,7 @@ function MakeSkillsMenu_SkillsOptions(input) {
 					for (var B = 0; B < oSkillBon.length; B++) {
 						newFld = SkillsList.abbreviations[newList.indexOf(oSkillBon[B][0])];
 						var newSkill = SkillsList.names[SkillsList.abbreviations.indexOf(oSkillBon[B][0])];
-						Value(bField + newFld + ".Bonus", oSkillBon[B][1], newSkill + modString);
+						Value(bField + newFld + ".Bonus", oSkillBon[B][1], toUni(newSkill) + modString.replace("Acrobatics", newSkill).replace(", HoS", ""));
 					}
 				}
 			}
@@ -5725,20 +5714,20 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		fields.Damage_Type = theWea.damage[2]; //add Damage Type
 		
 		//add Weight
-		fields.Weight = theWea.weight ? theWea.weight :
-			isReCalc ? What(fldBaseBT + "Weight") : ""; 
+		fields.Weight = isReCalc ? What(fldBaseBT + "Weight") : 
+			theWea.weight ? theWea.weight : "";
 		
 		//add Damage Die
 		fields.Damage_Die = theWea.damage[0] + (parseFloat(theWea.damage[1]) ? "d" + theWea.damage[1] : "");
 		
 		//add To Hit Bonus
-		fields.To_Hit_Bonus = theWea.dc ? "dc" : 
-			theWea.modifiers && theWea.modifiers[0] ? theWea.modifiers[0] : 
-			isReCalc ? What(fldBaseBT + "To Hit Bonus") : 0;
+		fields.To_Hit_Bonus = isReCalc ? What(fldBaseBT + "To Hit Bonus") :
+			theWea.dc ? "dc" :
+			theWea.modifiers && theWea.modifiers[0] ? theWea.modifiers[0] : 0;
 		
 		//add Damage Bonus
-		fields.Damage_Bonus = theWea.modifiers && theWea.modifiers[1] ? theWea.modifiers[1] : 
-			isReCalc ? What(fldBaseBT + "Damage Bonus") : 0;
+		fields.Damage_Bonus = isReCalc ? What(fldBaseBT + "Damage Bonus") :
+			theWea.modifiers && theWea.modifiers[1] ? theWea.modifiers[1] : 0;
 		
 		//add proficiency checkmark
 		fields.Proficiency = !QI ? true : 
@@ -5770,7 +5759,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			
 			// define some variables that we can check against later or with the CurrentEvals
 			var WeaponText = inputText + " " + fields.Description;
-			var isDC = fields.To_Hit_Bonus.toLowerCase() === "dc";
+			var isDC = (/dc/i).test(fields.To_Hit_Bonus);
 			var isSpell = thisWeapon[3] || (/cantrip|spell/i).test(theWea.type) || (/\b(cantrip|spell)\b/i).test(WeaponText);
 			var isMeleeWeapon = !isSpell && (/melee/i).test(fields.Range);
 			var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
@@ -5883,7 +5872,7 @@ function CalcAttackDmgHit(fldName) {
 	};
 	
 	// define some variables that we can check against later or with the CurrentEvals
-	var isDC = fields.To_Hit_Bonus.toLowerCase() === "dc";
+	var isDC = (/dc/i).test(fields.To_Hit_Bonus);
 	if (QI) {
 		var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (/\b(cantrip|spell)\b/i).test(WeaponText);
 		var isMeleeWeapon = (!isSpell || thisWeapon[0] === "shillelagh") && (/melee/i).test(fields.Range);
@@ -5895,7 +5884,17 @@ function CalcAttackDmgHit(fldName) {
 			AddAction("bonus action", "Off-hand Attack");
 			output.modToDmg = false;
 		};
-	
+
+		//add the BlueText field value of the corresponding spellcasting class
+		if (thisWeapon[3] && thisWeapon[4].length) {
+			var DCorHit = isDC ? "dc" : "atk";
+			var abiBonArr = thisWeapon[4].map( function(sClass) {
+				var ExtraBonus = CurrentSpells[sClass] && CurrentSpells[sClass].blueTxt && CurrentSpells[sClass].blueTxt[DCorHit] ? CurrentSpells[sClass].blueTxt[DCorHit] : 0;
+				return EvalBonus(ExtraBonus, true);
+			});
+			output.extraHit += Math.max.apply(Math, abiBonArr);
+		};
+
 		// now run the code that was added by class/race/feat
 		if (CurrentEvals.atkCalc) {
 			try {
@@ -5935,7 +5934,7 @@ function CalcAttackDmgHit(fldName) {
 			if (output[out][0] == "=") { // a string staring with "=" means it wants to be calculate to values
 				output[out] = output[out].substr(1).split("d").map(function(v) {
 					try {
-						return eval(v);
+						return EvalBonus(v, QI ? true : prefix);
 					} catch (errV) {
 						return v;
 					};
@@ -5948,16 +5947,12 @@ function CalcAttackDmgHit(fldName) {
 			addNum(output[out], "hit");
 			break;
 		 case "bHit" :
-			if (output[out].toLowerCase() === "dc") {
+			if (isDC) {
 				addNum(8, "hit");
-				break;
 			};
 		 case "bDmg" :
 		 // if the blueText field is not a number, find the ability modifier
-			if (isNaN(output[out])) {
-				output[out] = QI ? What(output[out] + " Mod") : What(prefix + "Comp.Use.Ability." + output[out] + ".Mod");
-			};
-			addNum(output[out], out);
+			addNum(EvalBonus(output[out], QI ? true : prefix), out);
 			break;
 		 default :
 			addNum(output[out]);
@@ -5971,9 +5966,9 @@ function CalcAttackDmgHit(fldName) {
 	
 	Value(fldBase + "Damage", dmgTot == 0 ? "" : dmgTot);
 	if (event.target && event.target.name && (/.*Attack.*To Hit/).test(event.target.name)) {
-		event.value = hitTot;
+		event.value = fields.Range === "With melee wea" ? "" : hitTot;
 	} else {
-		Value(fldBase + "To Hit", hitTot);
+		Value(fldBase + "To Hit", fields.Range === "With melee wea" ? "" : hitTot);
 	};
 };
 
@@ -6043,6 +6038,90 @@ function FunctionIsNotAvailable() {
 	app.alert({
 		nIcon : 0,
 		cTitle : "Please update your Adobe Acrobat",
-		cMsg : "This feature doesn't work with the version of Adobe Acrobat you are using. This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. Please update to Adobe Acrobat DC.\n\nYou can get Adobe Acrobat DC for free at https://get.adobe.com/reader/"
+		cMsg : "This feature doesn't work with the version of Adobe Acrobat you are using. This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. Please update to Adobe Acrobat DC.\n\nYou can get Adobe Acrobat Reader DC for free at https://get.adobe.com/reader/"
 	});
+};
+
+// a way to eval the content of a modifier field; notComp if it is the character (true) or if it is for a companion page (the prefix of the companion page); if isSpecial === "test" it will output undefined if an error occurs; if isSpecial is a number it will look for that entry on the Wild Shape page with the corresponding notComp variable as a prefix;
+function EvalBonus(input, notComp, isSpecial) {
+	if (!input) {
+		return 0;
+	} else if (!isNaN(input)) {
+		return Number(input);
+	}
+	var modStr = notComp === true ? ["", " Mod"] : !isSpecial || isSpecial === "test" ? [notComp + "Comp.Use.Ability.", ".Mod"] : [notComp + "Wildshape." + isSpecial + ".Ability.", ".Mod"];
+	// first remove "dc", add a "+" between abbreviations, and removing double or trailing operators
+	input = input.replace(/dc/ig, "").replace(/(Str|Dex|Con|Int|Wis|Cha|HoS)(Str|Dex|Con|Int|Wis|Cha|HoS)/ig, "$1+$2").replace(/(\+|\-|\/|\*)(\+|\-|\/|\*)/g, "$2").replace(/(^(\+|\/|\*))|((\+|\-|\/|\*)$)/g, "");
+	// change ability score abbreviations with their modifier
+	["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"].forEach(function(AbiS) {
+		input = input.replace(RegExp(AbiS, "ig"), Number(What(modStr[0] + AbiS + modStr[1])));
+	});
+	try {
+		output = eval(input);
+		return !isNaN(output) ? Number(output) : 0;
+	} catch (err) {
+		return isSpecial === "test" ? undefined : 0;
+	};
+};
+
+// add a way to set the value of a field
+function SetThisFldVal() {
+	if (event.modifier || event.shift) {
+		var theVal = event.target.value;
+		if (!isNaN(theVal)) theVal = theVal.toString();
+		var theDialog = {
+			theTXT : "",
+			initialize : function (dialog) {
+				dialog.load({
+					"user" : theVal
+				});
+			},
+			commit : function (dialog) {
+				var oResult = dialog.store();
+				this.theTXT = oResult["user"];
+			},
+			description : {
+				name : "Set the field's value",
+				elements : [{
+					type : "view",
+					align_children : "align_left",
+					elements : [{
+						type : "static_text",
+						item_id : "head",
+						alignment : "align_fill",
+						font : "heading",
+						bold : true,
+						height : 21,
+						char_width : 35,
+						name : "Set the field's value"
+					}, {
+						type : "static_text",
+						alignment : "align_fill",
+						item_id : "txt0",
+						name : "Please enter the value you want to set for the field:",
+						char_width : 35,
+						height : 20
+					}, {
+						type : "edit_text",
+						alignment : "align_center",
+						item_id : "user",
+						char_width : 35,
+						height : 20
+					}, {
+						type : "static_text",
+						alignment : "align_fill",
+						item_id : "txt1",
+						name : "The field won't appear to change until you click/tab out of it.",
+						char_width : 35,
+						height : 20
+					}, {
+						type : "ok_cancel"
+					}]
+				}]
+			}
+		}
+		if (app.execDialog(theDialog) === "ok") {
+			event.target.value = theDialog.theTXT;
+		};
+	};
 };

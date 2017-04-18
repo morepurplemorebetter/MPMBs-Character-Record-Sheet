@@ -265,4 +265,10 @@ var SourceList = {
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2017/dnd/downloads/UA-Starter-Spells.pdf"
 	},
+	"UA:FS" : {
+		name : "Unearthed Arcana: Feats for Skills", //2017-04-17
+		abbreviation : "UA:FS",
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2017/dnd/downloads/UA-SkillFeats.pdf"
+	},
 };

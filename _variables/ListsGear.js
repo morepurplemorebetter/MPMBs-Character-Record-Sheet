@@ -1605,7 +1605,7 @@ var AmmoList = {
 		checks : [".Bullet"],
 		display : 50,
 		invName : "Sling bullets",
-		alternatives : ["sling bullets", "bullets, sling"]
+		alternatives : [/^(?=.*bullet)(?=.*sling).*$/i]
 	},
 	"dagger" : {
 		name : "Daggers",
@@ -1696,7 +1696,7 @@ var AmmoList = {
 		checks : [".Top", ".Base"],
 		display : 20,
 		invName : "Alchemist's fire, flasks of",
-		alternatives : ["alchemist's fire"]
+		alternatives : [/^(?=.*alchemist)(?=.*fire).*$/i]
 	},
 	"vials of acid" : {
 		name : "Vials of Acid",
@@ -1706,7 +1706,7 @@ var AmmoList = {
 		checks : [".Top", ".Base"],
 		display : 20,
 		invName : "Acid, vials of",
-		alternatives : ["vial of acid", "acid vial"]
+		alternatives : [/^(?=.*acid)(?=.*vial).*$/i]
 	},
 	
 	// UA Artificer ammo
@@ -1717,27 +1717,30 @@ var AmmoList = {
 		icon : "Bullets",
 		checks : [".Bullet"],
 		display : 50,
-		invName : "Thunder Cannon Rounds"
+		invName : "Thunder Cannon Rounds",
+		alternatives : [/^((?=.*arcane)(?=.*magazine)|(?=.*thunder)(?=.*cannon)).*$/i]
 	},
 
 	// DMG firearms ammo
 	"renaissance bullet" : {
-		name : "Renaissance Bullets",
+		name : "Bullets, Renaissance",
 		source : ["D", 268],
 		weight : 0.2,
 		icon : "Bullets",
 		checks : [".Bullet"],
 		display : 50,
-		invName : "Bullets, renaissance"
+		invName : "Bullets, renaissance",
+		alternatives : [/^(?=.*bullet)(?=.*renaissance).*$/i]
 	},
 	"modern bullet" : {
-		name : "Modern Bullets",
+		name : "Bullets, Modern",
 		source : ["D", 268],
 		weight : 0.1,
 		icon : "Bullets",
 		checks : [".Bullet"],
 		display : 50,
-		invName : "Bullets, modern"
+		invName : "Bullets, modern",
+		alternatives : [/^(?=.*bullet)(?=.*modern).*$/i]
 	},
 	"energy cell" : {
 		name : "Energy Cell",

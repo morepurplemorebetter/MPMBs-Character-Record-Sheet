@@ -1252,7 +1252,6 @@ function Import(type) {
 	thermoM(24/25); //increment the progress dialog's progress
 	
 	//set the weight carried multiplier back one if a race with powerful build was added
-	
 	if (CurrentRace.known && (/powerful build/i).test(CurrentRace.trait) && What("Carrying Capacity Multiplier") === 3) {
 		tDoc.getField("Carrying Capacity Multiplier").value -= 1;
 	}
@@ -4668,7 +4667,7 @@ function SpliceString(field, inputstring, newline, theoldstring) {
 	}
 };
 
-// add (change === true) or remove (change === false) a skill proficiency with or without expertise; If expertise === "only" and change === undefined, only add the expertise if the skill already has proficiency
+// add (change === true) or remove (change === false) a skill proficiency with or without expertise; If expertise === "only", only add/remove the expertise, considering the skill already has proficiency; If expertise === "increment", only add/remove the expertise, considering the skill already has proficiency, otherwise add proficiency
 function AddSkillProf(SkillName, change, expertise) {
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
@@ -4684,16 +4683,16 @@ function AddSkillProf(SkillName, change, expertise) {
 	if ((QI || typePF) && !alphaB) tempString = SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(tempString)];
 	if (QI) {
 		change = change !== undefined ? change : true;
-		if (expertise !== "only") Checkbox(tempString + " Prof", change);
-		if (expertise === "only" ? tDoc.getField(tempString + " Prof").isBoxChecked(0) : expertise) {
+		if ((/only|increment/i).test(expertise) ? tDoc.getField(tempString + " Prof").isBoxChecked(0) : expertise) {
 			Checkbox(tempString + " Exp", change);
 		}
+		if (expertise !== "only") Checkbox(tempString + " Prof", change);
 	} else if (typePF) {
 		change = change !== undefined ? change : true;
-		if (expertise !== "only") Checkbox(prefix + ".Comp.Use.Skills." + tempString + ".Prof", change);
-		if (expertise === "only" ? tDoc.getField(prefix + ".Comp.Use.Skills." + tempString + ".Prof").isBoxChecked(0) : expertise) {
+		if ((/only|increment/i).test(expertise) ? tDoc.getField(prefix + ".Comp.Use.Skills." + tempString + ".Prof").isBoxChecked(0) : expertise) {
 			Checkbox(prefix + ".Comp.Use.Skills." + tempString + ".Exp", change);
 		}
+		if (expertise !== "only") Checkbox(prefix + ".Comp.Use.Skills." + tempString + ".Prof", change);
 	} else {
 		change = change === false ? "nothing" : expertise && (change || expertise !== "only") ? "expertise" : "proficient";
 		Value(prefix + "Text.Comp.Use.Skills." + tempString + ".Prof", change);
@@ -4843,16 +4842,13 @@ function ValidateBonus(goEmpty, allowDC) {
 	var test = 0;
 	var input = Number(event.value.replace(/,/g,"."));
 	if (isNaN(input)) {
-		if (allowDC && event.value.toLowerCase() === "dc") {
-			test = "dc";
-		} else {
-			for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
-				if (AbilityScores.abbreviations[i].toLowerCase().indexOf(event.value.toLowerCase()) === 0) {
-					test = AbilityScores.abbreviations[i];
-				}
-			}
-		}
-		event.value = test;
+		var notComp = event.target.name.indexOf("Comp.") === -1 ? true : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+		test = event.value;
+		if (!allowDC) test = test.replace(/dc/ig, "");
+		["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"].forEach( function(AbiS) {
+			test = test.replace(RegExp("(\\b|\\d)" + AbiS[0] + AbiS[1] + "?" + AbiS[2] + "?" + "(\\b|\\d)", "ig"), "$1" + AbiS + "$2");
+		});
+		event.value = EvalBonus(test, notComp, "test") !== undefined ? test : 0;
 	} else {
 		event.value = event.value === "" && goEmpty ? "" : Math.round(input);
 	}
@@ -4887,17 +4883,13 @@ function CalcSkill() {
 		ProfBonus = Math.floor(theProf / 2);
 	}
 
-	var ExtraBonus = isPP ? What("Passive Perception Bonus") : What(Skill + " Bonus");
-	if (isNaN(ExtraBonus)) {
-		ExtraBonus = Number(What(ExtraBonus + " Mod"));
-	}
+	var ExtraBonus = EvalBonus(What(Skill + " Bonus"), true);
 
-	var AllBonus = !(/Initiative/).test(event.target.name) ? What("All Skills Bonus") : 0;
-	if (isNaN(AllBonus)) {
-		AllBonus = Number(What(AllBonus + " Mod"));
-	}
+	var AllBonus = (/Initiative/).test(event.target.name) ? 0 : EvalBonus(What("All Skills Bonus"), true);
 
-	event.value = Mod === "" ? "" : Number(isPP) + Number(Mod) + Number(ProfBonus) + Number(ExtraBonus) + Number(AllBonus);
+	var PassBonus = isPP ? EvalBonus(What("Passive Perception Bonus"), true) : 0;
+
+	event.value = Mod === "" ? "" : Number(isPP) + Number(Mod) + Number(ProfBonus) + Number(ExtraBonus) + Number(AllBonus) + Number(PassBonus);
 };
 
 //calculate the saving throw modifier (field calculation)
@@ -4917,17 +4909,11 @@ function CalcSave() {
 	var ProfBonus = useDice || !Sprof ? 0 : What(prefix + Q + "Proficiency Bonus");
 		
 	//get the variable entered into the bonus field
-	var ExtraBonus = What(Save.replace("Comp.", "BlueText.Comp.").replace("Mod", "Bonus"));
-	if (isNaN(ExtraBonus)) {
-		ExtraBonus = Number(What((Save.substring(0, Sabi) + "Mod").replace(Ability, ExtraBonus)));
-	}
+	var ExtraBonus = EvalBonus(What(Save.replace("Comp.", "BlueText.Comp.").replace("Mod", "Bonus")), QI ? true : prefix);
 
 	//get the variable entered into the bonus field for all
-	var AllBonus = What(Save.replace("Comp.", "BlueText.Comp.").replace("Mod", "Bonus").replace(Ability, "All"));
-	if (isNaN(AllBonus)) {
-		AllBonus = Number(What((Save.substring(0, Sabi) + "Mod").replace(Ability, AllBonus)));
-	}
-	
+	var AllBonus = EvalBonus(What(Save.replace("Comp.", "BlueText.Comp.").replace("Mod", "Bonus").replace(Ability, "All")), QI ? true : prefix);
+
 	//calculate the total
 	var theResult = Mod === "" ? "" : Number(Mod) + Number(ProfBonus) + Number(ExtraBonus) + Number(AllBonus);
 	
@@ -5421,10 +5407,17 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		};
 		
 		if (IsNotFeatMenu && theFeat.spellcastingBonus) {
+			var spFeatArr = isArray(theFeat.spellcastingBonus);
+			var spFeatLvl = false;
+			var spAbility = 6;
+			(!spFeatArr ? [theFeat.spellcastingBonus] : theFeat.spellcastingBonus).forEach(function(spB) {
+				if (!spFeatLvl && spB.times && isArray(spB.times)) spFeatLvl = true;
+				if (spB.spellcastingAbility) spAbility = spB.spellcastingAbility;
+			});
 			CurrentSpells[NewFeat] = {
 				name : theFeat.name,
-				level : theFeat.spellcastingBonus.times && isArray(theFeat.spellcastingBonus.times) ? What("Character Level") : undefined,
-				ability : theFeat.spellcastingBonus.spellcastingAbility,
+				level : spFeatLvl ? What("Character Level") : undefined,
+				ability : spAbility,
 				typeSp : "feat",
 				bonus : {
 					"someFeat" : theFeat.spellcastingBonus
@@ -5661,12 +5654,8 @@ function CalcEncumbrance() {
 	var Str = What("Str"), result = "";
 	var Size = What("Size Category");
 	Size = Size ? Size : 1;
-	var CarMult = What("Carrying Capacity Multiplier");
+	var CarMult = Math.max(What("Carrying Capacity Multiplier"), 0);
 	var decSep = What("Decimal Separator");
-	if (isNaN(CarMult)) {
-		CarMult = What(CarMult + " Mod");
-		CarMult = CarMult < 0 ? 1 : CarMult;
-	}
 	var FldName = event.target.name;
 	var Mult1 = FldName.indexOf("Push") !== -1 || FldName.indexOf("Carrying Capacity") !== -1 ? 15 : FldName.indexOf("Heavily") !== -1 ? 10 : 5;
 	var Mult2 = FldName.indexOf("Push") !== -1 ? 30 : FldName.indexOf("Heavily") !== -1 ? 15 : 10;
@@ -5802,10 +5791,10 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 				var checkLVL = keyFea.minlevel <= RaceLevelUp[2] && keyFea.minlevel > RaceLevelUp[1];
 				
 				//add, remove, or update the feature
-				if (keyFea.usages && (GoAnyway || checkLVL)) {
+				if ((keyFea.usages || keyFea.usagescalc) && (GoAnyway || checkLVL)) {
 					var FeaTooltip = CurrentRace.name + keyFea.tooltip;
 					var AddRemoveFea = AddRemove === "Add" && FeaUse && !(/unlimited|\u221E/i).test(FeaUse) ? "Add" : "Remove";
-					tDoc[AddRemoveFea + "Feature"](keyFea.name, AddRemoveFea === "Remove" ? FeaUseOld : FeaUse, FeaAdd, keyFea.recovery, FeaTooltip, FeaUseOld);
+					tDoc[AddRemoveFea + "Feature"](keyFea.name, AddRemoveFea === "Remove" ? FeaUseOld : FeaUse, FeaAdd, keyFea.recovery, FeaTooltip, FeaUseOld, keyFea.usagescalc);
 				}
 				
 				thermoM(1/2); //increment the progress dialog's progress
@@ -6508,10 +6497,10 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 //add a miscellaneous AC bonus. Filling in a 0 for ACbonus will remove the ability
 //submitNm is a string that can be run as eval in an if statement. If this returns True, the armor bonus is not added to the total
 function AddACMisc(ACbonus, Name, Tooltip, submitNm) {
-	ACMiscFlds = ["AC Misc Mod 1", "AC Misc Mod 2", "AC Misc Mod 1 Description", "AC Misc Mod 2 Description"];
-	for (var i = 0; i <= 1; i++) {
-		var Mod = tDoc.getField(ACMiscFlds[i]);
-		var Desc = tDoc.getField(ACMiscFlds[i + 2]);
+	ACMiscFlds = [["AC Misc Mod 1", "AC Misc Mod 1 Description"], ["AC Misc Mod 2", "AC Misc Mod 2 Description"]];
+	for (var i = 0; i < ACMiscFlds.length; i++) {
+		var Mod = tDoc.getField(ACMiscFlds[i][0]);
+		var Desc = tDoc.getField(ACMiscFlds[i][1]);
 		if (ACbonus !== 0) { //if adding something
 			if (Desc.userName === Tooltip || Desc.value === Name) {
 				i = 2
@@ -6882,23 +6871,15 @@ function CalcAC() {
 	var ACshield = What("AC Shield Bonus");
 	var ACdex = What("AC Dexterity Modifier");
 
-	var ACmagic = What("AC Magic");
-	if (isNaN(ACmagic)) {
-		ACmagic = Number(What(ACmagic + " Mod"));
-	}
-	var ACmisc1 = What("AC Misc Mod 1");
-	var ACmisc1Desc = What("AC Misc Mod 1 Description");
-	if (isNaN(ACmisc1)) {
-		ACmisc1 = Number(What(ACmisc1 + " Mod"));
-	}
-	if (ACmisc1 && tDoc.getField("AC Misc Mod 1 Description").submitName && eval(tDoc.getField("AC Misc Mod 1 Description").submitName)) ACmisc1 = 0;
+	var ACmagic = EvalBonus(What("AC Magic"), true);
 	
-	var ACmisc2 = What("AC Misc Mod 2");
-	var ACmisc2Desc = What("AC Misc Mod 2 Description");
-	if (isNaN(ACmisc2)) {
-		ACmisc2 = Number(What(ACmisc2 + " Mod"));
-	}
-	if (ACmisc2 && tDoc.getField("AC Misc Mod 2 Description").submitName && eval(tDoc.getField("AC Misc Mod 2 Description").submitName)) ACmisc2 = 0;
+	var ACmisc1 = EvalBonus(What("AC Misc Mod 1"), true);
+	var ACmisc1Desc = tDoc.getField("AC Misc Mod 1 Description");
+	if (ACmisc1 && ACmisc1Desc.submitName && eval(ACmisc1Desc.submitName)) ACmisc1 = 0;
+	
+	var ACmisc2 = EvalBonus(What("AC Misc Mod 2"), true);
+	var ACmisc2Desc = tDoc.getField("AC Misc Mod 2 Description");
+	if (ACmisc2 && ACmisc2Desc.submitName && eval(ACmisc2Desc.submitName)) ACmisc2 = 0;
 	
 	if (ACbase === "") {
 		event.value = "";
@@ -7001,10 +6982,7 @@ function CalcAbilityDC() {
 	var SpellAbi = What("Spell DC " + Nmbr + " Mod");
 
 	//damage added manually in the bluetext field
-	var ExtraBonus = What("Spell DC " + Nmbr + " Bonus");
-	if (isNaN(ExtraBonus)) {
-		ExtraBonus = What(ExtraBonus + " Mod");
-	}
+	var ExtraBonus = EvalBonus(What("Spell DC " + Nmbr + " Bonus"), true);
 
 	if (SpellAbi !== "" && SpellAbi !== " " && What(SpellAbi) !== "") {
 		event.value = 8 + Number(What("Proficiency Bonus")) + Number(What(SpellAbi)) + Number(ExtraBonus);
@@ -8411,9 +8389,11 @@ function ParseAmmo(input) {
 	for (var key in AmmoList) {
 		if (AmmoList[key].alternatives) {
 			for (var z = 0; z < AmmoList[key].alternatives.length; z++) {
-				if (tempFound < AmmoList[key].alternatives[z].length && tempString.indexOf(AmmoList[key].alternatives[z]) !== -1) {
+				var theAlt = AmmoList[key].alternatives[z];
+				var doTest = typeof theAlt != "string";
+				if (tempFound < theAlt.toString().length && (doTest ? theAlt.test(tempString) : tempString.indexOf(theAlt) !== -1)) {
 					output = key;
-					tempFound = AmmoList[key].alternatives[z].length;
+					tempFound = theAlt.toString().length;
 				}
 			}
 		};

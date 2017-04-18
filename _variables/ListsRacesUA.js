@@ -1,6 +1,8 @@
 //All the races from the Unearthed Arcana articles are present in this file chronologically
 
-//the Eberron Unearthed Arcana (http://media.wizards.com/2015/downloads/dnd/UA_Eberron_v1.pdf) of 2015-02-02
+/*	the Eberron Unearthed Arcana of 2015-02-02
+	(http://media.wizards.com/2015/downloads/dnd/UA_Eberron_v1.pdf)
+*/
 //adds three races: the race Changeling
 RaceList["changeling"] = {
 	regExpSearch : /changeling/i,
@@ -131,7 +133,9 @@ RaceSubList["shifter-wildhunt"] = {
 	trait : "Wildhunt Shifter (+1 Dexterity, +1 Wisdom)\nShifting:\n   On my turn, I can shift as a bonus action. Shifting lasts for 1 minute or until I end it on my turn as a bonus action. I must finish a short rest before I can shift again.\n   While shifted, I gain temporary hit points equal to my level + my Constitution modifier (minimum of 1) and I gain advantage on all Wisdom-based checks and saving throws."
 };
 
-//the Waterborne Adventures Unearthed Arcana (https://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf) of 2015-05-04
+/*	the Waterborne Adventures Arcana of 2015-05-04
+	(http://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf)
+*/
 //adds the race Minotaur (Krynn) and its three variants.
 RaceList["minotaur"] = {
 	regExpSearch : /(minotaur|krynn)/i,
@@ -180,7 +184,195 @@ RaceSubList["minotaur-strength"] = {
 	trait : "Minotaur [strength] (+2 Strength)\nHorns: I am proficient with my horns, a 1d10 piercing damage melee weapon that grant me advantage on shoving a creature, but not to avoid being shoved myself.\nGoring Rush: When taking a Dash action, I can make a horns attack as a bonus action.\nHammering Horns: When taking a melee Attack action, I can attempt to shove with my horns as a bonus action. I cannot use this to knock a creature prone.\nLabyrinthine Recall: I can perfectly recall any path I have travelled.",
 };
 
-//the That Old Black Magic Unearthed Arcana (http://media.wizards.com/2015/downloads/dnd/07_UA_That_Old_Black_Magic.pdf) of 2015-12-17
+/*	the Gothic Heroes Unearthed Arcana of 2016-04-04
+	(http://dnd.wizards.com/sites/default/files/media/upload/articles/UA%20Gothic%20Characters.pdf)
+*/
+//adds eight new races, the Revenant versions of the Aasimar, Dragonborn, Dwarf, Elf, Gnome, Halfling, Human, and Tiefling
+RaceList["aasimar revenant"] = { //based on the VGtM Aasimar
+	regExpSearch : /^(?=.*revenant)((?=.*aasimar)|((?=.*planetouched)(?=.*(celestial|angel))))(?=.*fallen).*$/i,
+	name : "Aasimar Revenant",
+	sortname : "Revenant, Aasimar",
+	source : ["UA:GH", 1],
+	plural : "Aasimar",
+	size : 3,
+	speed : [30, 20],
+	languages : ["Common", "Celestial"],
+	vision : "Darkvision 60 ft",
+	dmgres : ["necrotic", "radiant"],
+	age : " reach adulthood in their late teens and live around 160 years",
+	height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
+	weight : " weigh around 155 lb (110 + 2d8 \xD7 2d4 lb)",
+	heightMetric : " range from 1,5 to over 1,8 metres tall (145 + 5d8 cm)",
+	weightMetric : " weigh around 70 kg (50 + 5d8 \xD7 4d4 / 10 kg)",
+	improvements : "Aasimar Revenant: +1 Constitution, +2 Charisma;",
+	scores : [1, 0, 0, 0, 0, 2],
+	trait : "Aasimar Revenant (+1 Constitution, +2 Charisma)" + (typePF ? "\n" : " ") + "Healing Hands: As an action, once per long rest, I can touch to heal for my level in HP.\nRelentless Nature: I have returned to life with one goal: avenge my death or finish an unresolved task. I will rest once I fulfill my goal, but until then I can't truly die. Whenever I'm below half my max HP at the start of my turn, I regain 1 HP. If I die, I return to life within 24 hours. If my body was destroyed, it is reformed within 1 mile of where I died. I always know the distance and direction to creatures involved with my goal.",
+	features : {
+		"healing hands" : {
+			name : "Healing Hands",
+			usages : 1,
+			minlevel : 1,
+			recovery : "long rest",
+			additional : ["1 HP", "2 HP", "3 HP", "4 HP", "5 HP", "6 HP", "7 HP", "8 HP", "9 HP", "10 HP", "11 HP", "12 HP", "13 HP", "14 HP", "15 HP", "16 HP", "17 HP", "18 HP", "19 HP", "20 HP"],
+			action : ["action", ""]
+		}
+	}
+};
+RaceList["dwarf revenant"] = {
+	regExpSearch : /^(?=.*revenant)(?=.*\b(dwarfs?|dwarves|dwarfish|dwarvish|dwarven)\b).*$/i,
+	name : "Dwarf Revenant",
+	sortname : "Dwarf, Revenant",
+	source : ["UA:GH", 1],
+	plural : "Dwarves",
+	size : 3,
+	speed : [25, 25],
+	languages : ["Common", "Dwarvish"],
+	vision : "Darkvision 60 ft",
+	savetxt : "Adv. vs. Poison",
+	dmgres : ["poison"],
+	weaponprofs : [false, false, ["battleaxe", "handaxe", "warhammer", "light hammer"]],
+	tools : ["smith, brewer, or mason tools"],
+	age : " are considered young until they are 50 and live about 350 years",
+	height : " stand between 4 and 5 feet tall (4' + 2d4\")",
+	weight : " weigh around 150 lb (130 + 2d4 \xD7 2d6 lb)",
+	heightMetric : " stand between 1,2 and 1,5 metres tall (120 + 5d4 cm)",
+	weightMetric : " weigh around 75 kg (60 + 5d4 \xD7 4d6 / 10 kg)",
+	improvements : "Dwarf Revenant: +3 Constitution;",
+	scores : [0, 0, 3, 0, 0, 0],
+	trait : "Dwarf Revenant (+3 Constitution)\nStonecunning: I have expertise on Int (History) checks related to the origin of stonework.\nRelentless Nature: I have returned to life with one goal: avenge my death or finish an unresolved task. I will rest once I fulfill my goal, but until then I can't truly die. Whenever I'm below half my max HP at the start of my turn, I regain 1 HP. If I die, I return to life within 24 hours. If my body was destroyed, it is reformed within 1 mile of where I died. I always know the distance and direction to creatures involved with my goal.",
+};
+RaceList["elf revenant"] = {
+	regExpSearch : /^(?!.*half)(?=.*revenant)(?=.*\b(elfs?|elves|elvish|elven)\b).*$/i,
+	name : "Elf Revenant",
+	sortname : "Revenant, Elf",
+	source : ["UA:GH", 1],
+	plural : "Elves",
+	size : 3,
+	speed : [30, 20],
+	languages : ["Common", "Elvish"],
+	vision : "Darkvision 60 ft",
+	savetxt : "Adv. vs. being charmed; Magic can't put me to sleep",
+	skills : ["Perception"],
+	age : " typically claim adulthood around age 100 and can live to be 750 years old",
+	height : " range from under 5 to over 6 feet tall (4'6\" + 2d10\")",
+	weight : " weigh around 115 lb (90 + 2d10 \xD7 1d4 lb)",
+	heightMetric : " range from under 1,5 to over 1,8 metres tall (140 + 5d10 cm)",
+	weightMetric : " weigh around 55 kg (40 + 5d10 \xD7 2d4 / 10 kg)",
+	improvements : "Elf Revenant: +2 Dexterity, +1 Constitution;",
+	scores : [0, 2, 1, 0, 0, 0],
+	trait : "Elf Revenant (+2 Dexterity, +1 Constitution)\nTrance: I don't sleep, but meditate for 4 hours a day. I still need 8 hours for a long rest.\nRelentless Nature: I have returned to life with one goal: avenge my death or finish an unresolved task. I will rest once I fulfill my goal, but until then I can't truly die. Whenever I'm below half my max HP at the start of my turn, I regain 1 HP. If I die, I return to life within 24 hours. If my body was destroyed, it is reformed within 1 mile of where I died. I always know the distance and direction to creatures involved with my goal."
+};
+RaceList["halfling revenant"] = {
+	regExpSearch : /^(?=.*revenant)(?=.*\b(halflings?|hobbits?)\b).*$/i,
+	name : "Halfling Revenant",
+	sortname : "Revenant, Halfling",
+	source : ["UA:GH", 1],
+	plural : "Halflings",
+	size : 4,
+	speed : [25, 15],
+	languages : ["Common", "Halfling"],
+	savetxt : "Adv. vs. being frightened",
+	age : " reach adulthood at age 20 and live around 150 years",
+	height : " average about 3 feet tall (2'7\" + 2d4\")",
+	weight : " weigh around 40 lb (35 + 2d4 lb)",
+	heightMetric : " average about 90 cm tall (80 + 5d4)",
+	weightMetric : " weigh around 18 kg (16 + 5d4 / 10 kg)",
+	improvements : "Halfling Revenant: +2 Dexterity, +1 Constitution;",
+	scores : [0, 2, 1, 0, 0, 0],
+	trait : "Halfling Revenant (+2 Dexterity, +1 Constitution)" + (typePF ? "\n" : " ") + "Lucky: I reroll 1's on attack/check/save. Halfling Nimbleness: I can move through the space of anybody of a size larger than me.\nRelentless Nature: I have returned to life with one goal: avenge my death or finish an unresolved task. I will rest once I fulfill my goal, but until then I can't truly die. Whenever I'm below half my max HP at the start of my turn, I regain 1 HP. If I die, I return to life within 24 hours. If my body was destroyed, it is reformed within 1 mile of where I died. I always know the distance and direction to creatures involved with my goal.",
+};
+RaceList["gnome revenant"] = {
+	regExpSearch : /^(?=.*revenant)(?=.*\bgnomes?\b).*$/i,
+	name : "Gnome Revenant",
+	sortname : "Revenant, Gnome",
+	source : ["UA:GH", 1],
+	plural : "Gnomes",
+	size : 4,
+	speed : [25, 15],
+	languages : ["Common", "Gnomish"],
+	vision : "Darkvision 60 ft",
+	savetxt : "Adv. on Int/Wis/Cha saves vs. magic",
+	age : " start adult life around age 40 and can live 350 to almost 500 years",
+	height : " are 3 to 4 feet tall (2'11\" + 2d4\")",
+	weight : " weigh around 40 lb (35 + 2d4 lb)",
+	heightMetric : " are 90 to 120 cm tall (2'11\" + 5d4)",
+	weightMetric : " weigh around 18 kg (16 + 5d4 / 10 kg)",
+	improvements : "Gnome Revenant: +1 Constitution, +2 Intelligence;",
+	scores : [0, 0, 1, 2, 0, 0],
+	trait : "Gnome Revenant (+1 Constitution, +2 Intelligence)\nRelentless Nature: I have returned to life with one goal: avenge my death or finish a critical, unresolved task. I will find rest once I fulfill my goal, but until then I can't truly die. Whenever I'm below half my max HP at the start of my turn, I regain 1 HP. If I die, I return to life within 24 hours. If my body was destroyed, it is reformed within 1 mile of where I died. Any destroyed equipment is not regained. I always know the distance and direction between me and any creature involved with my goal that is on the same plane.",
+},
+RaceList["dragonborn revenant"] = {
+	regExpSearch : /^(?=.*dragonborn)(?=.*revenant).*$/i,
+	name : "Dragonborn Revenant",
+	sortname : "Revenant, Dragonborn",
+	source : ["UA:GH", 1],
+	plural : "Dragonborn",
+	size : 3,
+	speed : [30, 20],
+	languages : ["Common", "Draconic"],
+	age : " reach adulthood by 15 and live around 80 years",
+	height : " stand well over 6 feet tall (5'6\" + 2d8\")",
+	weight : " weigh around 240 lb (175 + 2d8 \xD7 2d6 lb)",
+	heightMetric : " stand well over 1,8 metres tall (170 + 5d8 cm)",
+	weightMetric : " weigh around 110 kg (80 + 5d8 \xD7 4d6 / 10 kg)",
+	improvements : "Dragonborn Revenant: +1 Strength, +1 Constitution, +1 Charisma;",
+	scores : [1, 0, 1, 0, 0, 1],
+	trait : "Dragonborn Revenant (+1 Strength, +1 Constitution, +1 Charisma)\nBreath Weapon: As an action, 5 ft by 30 ft line, Dex save halves, necrotic damage.\nRelentless Nature: I have returned to life with one goal: avenge my death or finish an unresolved task. I will rest once I fulfill my goal, but until then I can't truly die. Whenever I'm below half my max HP at the start of my turn, I regain 1 HP. If I die, I return to life within 24 hours. If my body was destroyed, it is reformed within 1 mile of where I died. I always know the distance and direction to creatures involved with my goal.",
+	abilitySave : 3,
+	dmgres : ["necrotic"],
+	features : {
+		"breath weapon" : {
+			name : "Breath Weapon",
+			minlevel : 1,
+			usages : 1,
+			additional : ["2d6", "2d6", "2d6", "2d6", "2d6", "3d6", "3d6", "3d6", "3d6", "3d6", "4d6", "4d6", "4d6", "4d6", "4d6", "5d6", "5d6", "5d6", "5d6", "5d6"],
+			recovery : "short rest",
+			tooltip : " (Draconic Ancestry)",
+			action : ["action", ""]
+		}
+	}
+};
+RaceList["human revenant"] = {
+	regExpSearch : /^(?=.*human)(?=.*revenant).*$/i,
+	name : "Human Revenant",
+	sortname : "Revenant, Human",
+	source : ["UA:GH", 1],
+	plural : "Humans",
+	size : 3,
+	speed : [30, 20],
+	languages : ["Common", "+1 from Human"],
+	age : " reach adulthood in their late teens and live less than 100 years",
+	height : " range from barely 5 to well over 6 feet tall (4'8\" + 2d10\")",
+	weight : " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
+	heightMetric : " range from barely 1,5 to well over 1,8 metres tall (145 + 5d10 cm)",
+	weightMetric : " weigh around 75 kg (50 + 5d10 \xD7 4d4 / 10 kg)",
+	improvements : "Human Revenant: +1 Constitution and +1 to two different ability scores of my choice;",
+	scores : [0, 0, 1, 0, 0, 0],
+	trait : "Human Revenant (+1 Constitution and +1 to two different ability scores of my choice)\nRelentless Nature: I have returned to life with one goal: avenge my death or finish a critical, unresolved task. I will find rest once I fulfill my goal, but until then I can't truly die. Whenever I'm below half my max HP at the start of my turn, I regain 1 HP. If I die, I return to life within 24 hours. If my body was destroyed, it is reformed within 1 mile of where I died. Any destroyed equipment is not regained. I always know the distance and direction between me and any creature involved with my goal that is on the same plane."
+};
+RaceList["tiefling revenant"] = {
+	regExpSearch : /^(?=.*revenant)((?=.*tiefling)|(?=.*planetouched)(?=.*(hell|abyss|fiend|devil))).*$/i,
+	name : "Tiefling Revenant",
+	sortname : "Revenant, Tiefling",
+	source : ["UA:GH", 1],
+	plural : "Tieflings",
+	size : 3,
+	speed : [30, 20],
+	languages : ["Common", "Infernal"],
+	vision : "Darkvision 60 ft",
+	age : " reach adulthood in their late teens and live around 100 years",
+	height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
+	weight : " weigh around 155 lb (110 + 2d8 \xD7 2d4 lb)",
+	heightMetric : " range from 1,5 to over 1,8 metres tall (145 + 5d8 cm)",
+	weightMetric : " weigh around 70 kg (50 + 5d8 \xD7 4d4 / 10 kg)",
+	improvements : "Tiefling Revenant: +1 Constitution, +2 Charisma;",
+	scores : [0, 0, 1, 0, 0, 2],
+	trait : "Tiefling Revenant (+1 Constitution, +2 Charisma)\nRelentless Nature: I have returned to life with one goal: avenge my death or finish a critical, unresolved task. I will find rest once I fulfill my goal, but until then I can't truly die. Whenever I'm below half my max HP at the start of my turn, I regain 1 HP. If I die, I return to life within 24 hours. If my body was destroyed, it is reformed within 1 mile of where I died. Any destroyed equipment is not regained. I always know the distance and direction between me and any creature involved with my goal that is on the same plane.",
+};
+
+/*	the That Old Black Magic Unearthed Arcana of 2015-12-17
+	(http://media.wizards.com/2015/downloads/dnd/07_UA_That_Old_Black_Magic.pdf)
+*/
 //adds a racial variant: the Abyssal Tiefling
 function AmendRaces() { //a function to create these tiefling alternatives, together with the Feral Tiefling from SCAG
 	[{
@@ -204,6 +396,7 @@ function AmendRaces() { //a function to create these tiefling alternatives, toge
 		source : ["UA:TOBM", 1],
 		plural : "Abyssal tieflings",
 		sortname : "Tiefling, Abyssal",
+		dmgres : "",
 		improvements : "Abyssal Tiefling: +1 Constitution, +2 Charisma;",
 		scores : [0, 0, 1, 0, 0, 2],
 		trait : "Abyssal Tiefling (+1 Constitution, +2 Charisma)\nAbyssal Toughness: My hit point maximum increases with half the levels I have (min 1). Abyssal Arcana: After each long rest I gain randomly determined spellcasting ability (d6). This is a cantrip, and on both 3rd and 5th level a spell that I can cast once, at 2nd-level.\n1: (Dancing Lights, Burning Hands, Alter Self); 2: (True Strike, Charm Person, Darkness)" + (!typePF ? ";" : " ") + " 3: (Light, Magic Missile, Invisibility); 4: (Spare the Dying, Hideous Laughter, Mirror Image)" + (!typePF ? ";" : " ") + " 5: (Message, Cure Wounds, Levitate); 6: (Prestidigitation, Thunderwave, Spider Climb)",

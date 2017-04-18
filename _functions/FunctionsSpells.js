@@ -519,8 +519,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 					Value(headerArray[7], spCast.blueTxt.prep ? spCast.blueTxt.prep : 0); //set the bluetext for preparing
 					Value(headerArray[8], spCast.blueTxt.atk ? spCast.blueTxt.atk : 0); //set the bluetext for attack
 					Value(headerArray[9], spCast.blueTxt.dc ? spCast.blueTxt.dc : 0); //set the bluetext for dc
-				}
-				
+				};
 				//set the variable to true to later hide the prepared fields if not concerning a list or book
 				if (!spCast.level || (spCast.typeSp !== "list" && spCast.typeSp !== "book") || spCast.typeList === 3) {
 					hidePrepared = true;
@@ -593,11 +592,7 @@ function CalcSpellScores() {
 		theResult = Number(What(theMod));
 		
 		//damage added manually in the bluetext field
-		var ExtraBonus = What(event.target.name.replace("spellshead", "BlueText.spellshead"));
-		if (isNaN(ExtraBonus)) {
-			ExtraBonus = What(ExtraBonus + " Mod");
-		}
-		theResult += Number(ExtraBonus);
+		theResult += EvalBonus(What(event.target.name.replace("spellshead", "BlueText.spellshead")), true);
 		
 		switch (type) {
 		 case "dc" :
@@ -624,6 +619,28 @@ function CalcSpellScores() {
 	}
 	
 	event.value = theResult;
+}
+
+//set the blueText field bonus to the global CurrentSpells object for spells to memorize, attack modifier, and DC (field blur)
+function SetSpellBluetext() {
+	if (tDoc.info.SpellsOnly) return;
+	var type = event.target.name.replace(/.*spellshead\.(\w+).*/, "$1");
+	//find the associated class
+	var aClass = What(event.target.name.replace("BlueText.spellshead." + type, "spellshead.class"));
+	
+	//if that class is known in the CurrentSpells object, set the associated bluetext variable
+	if (CurrentSpells[aClass]) {
+		var cSpells = CurrentSpells[aClass];
+		if (!cSpells.blueTxt) {
+			cSpells.blueTxt = {
+				prep : 0,
+				atk : 0,
+				dc : 0
+			};
+		};
+		cSpells.blueTxt[type === "dc" ? "dc" : type === "attack" ? "atk" : "prep"] = event.value;
+	};
+	tDoc.calculateNow();
 }
 
 //change the icon of the checkbox based on the value of this field (field validation)
@@ -750,13 +767,9 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 			if (!aSpell.classes) {
 				continue;
 			} else if (isArray(inputObject.class)) {
-				var testClass = false;
-				for (var c = 0; c < inputObject.class.length; c++) {
-					if (aSpell.classes.indexOf(inputObject.class[c]) !== -1) {
-						addSp = true;
-						break;
-					};
-				};
+				addSp = inputObject.class.some(function (v) {
+					return aSpell.classes.indexOf(v) !== -1;
+				});
 			} else {
 				addSp = inputObject.class === "any" || aSpell.classes.indexOf(inputObject.class) !== -1;
 			}
@@ -3234,19 +3247,6 @@ function GenerateSpellSheet(GoOn) {
 	//first we do need to remember any BlueText values, so we will be keeping those safe somewhere
 	var SSarray = What("Template.extras.SSfront").split(",");
 	SSarray = SSarray.concat(What("Template.extras.SSmore").split(","));
-	for (var A = 0; A < SSarray.length; A++) {
-		if (SSarray[A] === "") continue;
-		for (var i = 0; i < 4; i++) {
-			var aCast = What(SSarray[A] + "spellshead.class." + i);
-			if (aCast && CurrentSpells[aCast]) {
-				CurrentSpells[aCast].blueTxt = {
-					prep : What(SSarray[A] + "BlueText.spellshead.prepare." + i),
-					atk : What(SSarray[A] + "BlueText.spellshead.attack." + i),
-					dc : What(SSarray[A] + "BlueText.spellshead.dc." + i),
-				};
-			}
-		}
-	}
 	
 	//first ask the user for input on what to do with all the spellcasting classes
 	if (!GoOn) var GoOn = AskUserSpellSheet();
@@ -4689,7 +4689,7 @@ function HideSpellSheetElement(theTarget) {
 		tDoc.resetForm(resetArray);
 		tDoc.getField(base).submitName = "";
 		
-		//if this is a header, add the blue text values to the document level variable
+/* 		//if this is a header, add the blue text values to the document level variable
 		if (type === "header") {
 			var aCast = What(headerArray[2]);
 			if (aCast && CurrentSpells[aCast]) {
@@ -4698,7 +4698,7 @@ function HideSpellSheetElement(theTarget) {
 				CurrentSpells[aCast].blueTxt.atk = What(headerArray[8]);
 				CurrentSpells[aCast].blueTxt.dc = What(headerArray[9]);
 			}
-		}
+		} */
 	} else if (base === SSfrontPrefix + "spellshead.Text.header.0") {
 		//search the entry if it matches any of the CurrentSpells entries
 		var toSearch = What(base).toLowerCase();
@@ -5289,7 +5289,7 @@ function AmendSpellsList() {
 	if (errorPsi) {
 		console.println("Error while adding Psionics to the sheet:" + errorPsi);
 		console.show();
-	}
+	};
 };
 
 //a way to test is an array of spells is correct

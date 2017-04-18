@@ -256,8 +256,8 @@ var RaceList = {
 			},
 		},
 		trait : "Bugbear (+2 Strength, +1 Dexterity)\nPowerful Build: I count as one size larger when determining my carrying capacity and the weight I can push, drag, or lift.\nLong-Limbed: I have an additional 5 feet reach with melee attacks that I make on my turn.\nSurprise Attack: If I hit a surprised creature on my first turn in combat, that attack deals an extra 2d6 damage. I can do this only once per combat.",
-		eval : "tDoc.getField(\"Carrying Capacity Multiplier\").value *= 2;",
-		removeeval : "tDoc.getField(\"Carrying Capacity Multiplier\").value /= 2;"
+		eval : "tDoc.getField('Carrying Capacity Multiplier').value *= 2;",
+		removeeval : "tDoc.getField('Carrying Capacity Multiplier').value /= 2;"
 	},
 
 	"dragonborn" : {
@@ -615,8 +615,8 @@ var RaceList = {
 				action : ["bonus action", ""],
 			}
 		},
-		eval : "tDoc.getField(\"Carrying Capacity Multiplier\").value *= 2;",
-		removeeval : "tDoc.getField(\"Carrying Capacity Multiplier\").value /= 2;"
+		eval : "tDoc.getField('Carrying Capacity Multiplier').value *= 2;",
+		removeeval : "tDoc.getField('Carrying Capacity Multiplier').value /= 2;"
 	},
 
 	"air genasi" : {
@@ -913,8 +913,8 @@ var RaceList = {
 			}
 		},
 		trait : "Goliath (+2 Strength, +1 Constitution)" + (typePF ? "\n" : "") + "\nStone's Endurance: Once per short rest, when I take damage, I can use my reaction to reduce the damage by 1d12 + my Con" + (typePF ? "" : "stitution") + " modifier." + (typePF ? "\n" : "") + "\nPowerful Build: I count as one size larger when determining my carrying capacity and the weight I can push, drag, or lift." + (typePF ? "\n" : "") + "\nMountain Born: I'm acclimated to high altitude, including elevations above 20,000 feet. I'm also naturally adapted to cold climates.",
-		eval : "tDoc.getField(\"Carrying Capacity Multiplier\").value *= 2;",
-		removeeval : "tDoc.getField(\"Carrying Capacity Multiplier\").value /= 2;"
+		eval : "tDoc.getField('Carrying Capacity Multiplier').value *= 2;",
+		removeeval : "tDoc.getField('Carrying Capacity Multiplier').value /= 2;"
 	},
 
 	"ghostwise halfling" : {
@@ -954,7 +954,7 @@ var RaceList = {
 		weightMetric : " weigh around 18 kg (16 + 5d4 / 10 kg)",
 		improvements : "Lightfoot Halfling: +2 Dexterity, +1 Charisma;",
 		scores : [0, 2, 0, 0, 0, 1],
-		trait : "Lightfoot Halfling (+2 Dexterity, +1 Charisma)" + (typePF ? "\n" : " ") + "\nLucky: When I roll a 1 on an attack roll, ability check, or saving throw, I can reroll the die and must use the new roll." + (typePF ? "\n" : " ") + "\nHalfling Nimbleness: I can move through the space of any creature that is of a size larger than me." + (typePF ? "\n" : " ") + "\nNaturally Stealthy: I can attempt to hide even when I am obscured only by a creature that is at least one size larger than me.",
+		trait : "Lightfoot Halfling (+2 Dexterity, +1 Charisma)" + (typePF ? "\n" : "") + "\nLucky: When I roll a 1 on an attack roll, ability check, or saving throw, I can reroll the die and must use the new roll." + (typePF ? "\n" : "") + "\nHalfling Nimbleness: I can move through the space of any creature that is of a size larger than me." + (typePF ? "\n" : "") + "\nNaturally Stealthy: I can attempt to hide even when I am obscured only by a creature that is at least one size larger than me.",
 	},
 
 	"stout halfling" : {
@@ -1194,8 +1194,8 @@ var RaceList = {
 			}
 		},
 		trait : "Orc (+2 Strength, +1 Constitution, -2 Intelligence)\n\nPowerful Build: I count as one size larger when determining my carrying capacity and the weight I can push, drag, or lift.\n\nAggressive: As a bonus action, I can move up to my speed toward an enemy that I can see or hear. I must end my move closer to this enemy than I started.",
-		eval : "tDoc.getField(\"Carrying Capacity Multiplier\").value *= 2;",
-		removeeval : "tDoc.getField(\"Carrying Capacity Multiplier\").value /= 2;"
+		eval : "tDoc.getField('Carrying Capacity Multiplier').value *= 2;",
+		removeeval : "tDoc.getField('Carrying Capacity Multiplier').value /= 2;"
 	},
 
 	"tabaxi" : {

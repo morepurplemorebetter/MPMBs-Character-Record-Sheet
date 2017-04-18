@@ -395,8 +395,8 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "I can try to hide when I am lightly obscured. My position is not revealed when I am hidden from a creature and miss it with a ranged weapon attack. Dim light doesn't impose disadvantage on my Wisdom (Perception) checks relying on sight.",
 		prerequisite : "Dexterity 13 or higher",
-		eval : "AddString(\"Vision\", \"No disadv. on Perception in dim light to see\", \"; \");",
-		removeeval : "RemoveString(\"Vision\", \"No disadv. on Perception in dim light to see\");"
+		eval : "AddString('Vision', 'No disadv. on Perception in dim light to see', '; ');",
+		removeeval : "RemoveString('Vision', 'No disadv. on Perception in dim light to see');"
 	},
 	"spell sniper [bard]" : {
 		name : "Spell Sniper [Bard]",
@@ -469,8 +469,19 @@ var FeatsList = {
 		source : ["E", 7],
 		prerequisite : "Being a Svirfneblin (Deep Gnome)",
 		description : "I can cast Nondetection on myself at will, without a material component. I can also cast the spells Blindness/Deafness, Blur, and Disguise Self once each. I regain the ability to cast these spells when I finish a long rest. Intelligence is my spellcasting ability for these spells.",
-		eval : "CurrentSpells[\"svirfneblin magic\"] = {name:\"Svirfneblin Magic\",ability:4,bonus:{nondetection:{name:\"at will (self only)\",spells:[\"nondetection\"],selection:[\"nondetection\"],atwill:true},svirfneblin:{name:\"1x long rest (self only)\",spells:[\"blindness/deafness\",\"blur\",\"disguise self\"],selection:[\"blindness/deafness\",\"blur\",\"disguise self\"],oncelr:true,times:3}}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"svirfneblin magic\"]; SetStringifieds(\"spells\");",
+		spellcastingBonus : [{
+			name : "at will (self only)",
+			spellcastingAbility : 4,
+			spells : ["nondetection"],
+			selection : ["nondetection"],
+			atwill : true
+		}, {
+			name : "1x long rest (self only)",
+			spells : ["disguise self", "blindness/deafness", "blur"],
+			selection : ["disguise self", "blindness/deafness", "blur"],
+			oncelr : true,
+			times : 3
+		}]
 	},
 	"tavern brawler" : {
 		name : "Tavern Brawler",
