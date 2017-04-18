@@ -3827,7 +3827,7 @@ ClassSubList["wizard-war magic"] = {
 			description : desc([
 				"As a reaction when I'm hit by an attack, I can gain +2 to my AC against that attack",
 				"As a reaction when I fail a Con save, I can gain +4 bonus to that saving throw",
-				"After I do either, I can’t cast spells other than cantrips until the end of my next turn"
+				"After I do either, I can't cast spells other than cantrips until the end of my next turn"
 			]),
 			action : ["reaction", ""]
 		},

@@ -2237,7 +2237,7 @@ var BackgroundList = {
 			"I prepare for everything, it paid off in Phlan and it will pay off again.",
 			"I will reclaim my home, though the path may be long, I will never give up hope.",
 			"I never cared for personal hygiene, and am amazed that It bothers others.",
-			"I am always willing to volunteer my services, just as long as don’t have to do anything."
+			"I am always willing to volunteer my services, just as long as don't have to do anything."
 		],
 		ideal : [
 			["Justice",
@@ -2273,7 +2273,7 @@ var BackgroundList = {
 			"I am incapable of standing up for myself.",
 			"I will borrow money from friends with no intention to repay it.",
 			"I am unable to keep secrets. A secret is just an untold story.",
-			"When something goes wrong, it’s never my fault."
+			"When something goes wrong, it's never my fault."
 		],
 		tools : ["Type of artisan's tools"],
 		languages : ["+1 from "],
@@ -2757,7 +2757,7 @@ var BackgroundFeatureList = {
 		source : ["AL:RoD", 9]
 	},
 	"secret passage" : {
-		description : "I can call on my smuggler contacts to secure secret passage into or out of Hillsfar for myself and my friends, no questions asked, and no Red Plume entanglements. Because I'm calling in a favor, I can’t be certain when or if they can help. In return for passage, my companions and I may owe the Rouges Guild a favor and/or may have to pay bribes.",
+		description : "I can call on my smuggler contacts to secure secret passage into or out of Hillsfar for myself and my friends, no questions asked, and no Red Plume entanglements. Because I'm calling in a favor, I can't be certain when or if they can help. In return for passage, my companions and I may owe the Rouges Guild a favor and/or may have to pay bribes.",
 		source : ["AL:RoD", 8]
 	},
 	"secret society" : {
