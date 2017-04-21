@@ -5974,6 +5974,10 @@ function CalcAttackDmgHit(fldName) {
 
 //a way to show a very long piece of text without the dialogue overflowing the screen
 function ShowDialog(hdr, strng) {
+	if (strng = "sources") {
+		strng = "";
+		for (var src in SourceList) strng += "\n\u2022 " + (SourceList[src].abbreviation + "            ").substr(0,12) + "\t" + SourceList[src].name;
+	}
 	var ShowString_dialog = {
 		header : hdr,
 		string : strng,

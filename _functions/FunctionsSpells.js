@@ -978,12 +978,10 @@ var SpellSheetSelect_Dialog = {
 		var setSpell = function(aObj, aSpell) {
 			var isFound = false;
 			for (var a in aObj) {
-				if (!isFound) {
-					var theAspell = ParseSpell(a);
-					if (aSpell === theAspell) {
-						aObj[a] = 1;
-						isFound = true;
-					}
+				var theAspell = ParseSpell(a);
+				if (aSpell === theAspell) {
+					aObj[a] = 1;
+					break;
 				}
 			}
 			return aObj; //if nothing was found

@@ -1862,7 +1862,7 @@ var ClassSubList = {
 		}
 	},
 	"berserker" : {
-		regExpSearch : /^((?=.*\b(berserker|berserks?|berserkr|ulfheoinn|ulfheonar)\b)|((?=.*(warrior|fighter))(?=.*(odin|thor)))).*$/i,
+		regExpSearch : /^((?=.*\b(berserker|berserk|berserkr|ulfheoinn|ulfheonar)s?\b)|((?=.*(warrior|fighter))(?=.*(odin|thor)))).*$/i,
 		subname : "Path of the Berserker",
 		fullname : "Berserker",
 		source : ["P", 49],
