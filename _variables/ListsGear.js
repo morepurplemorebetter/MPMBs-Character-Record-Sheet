@@ -76,6 +76,17 @@ var ArmourList = {
 		strReq : 0
 	},
 
+	// UA Psionic Discipline 'Mastery of Force' power 'Inertial Armour'
+	"inertial armor" : {
+		regExpSearch : /^(?=.*(inertial|psychic|psionic))(?=.*armou?r).*$/i,
+		name : "Inertial armor",
+		source : ["UA:TMC", 18],
+		type : "",
+		ac : 14,
+		stealthdis : false,
+		strReq : 0
+	},
+
 	"padded" : {
 		regExpSearch : /^(?!.*(plate|hide))(?=.*(padding|padded)).*$/i,
 		name : "Padded",

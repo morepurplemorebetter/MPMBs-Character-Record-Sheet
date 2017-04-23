@@ -3391,9 +3391,10 @@ function MakeIconMenu_IconOptions() {
 	};
 	
 	//make default menu items
+	var restrictedViewer = app.viewerType === "Reader" && app.viewerVersion < 17;
 	var IconMenu = [];
 	var OptionMenu = [
-		[(app.viewerType !== "Reader" ? "Set any image file as " : "Set a pdf file as ") + DisplayName, "set"],
+		[(restrictedViewer ? "Set a pdf file as " : "Set any image/pdf file as ") + DisplayName, "set"],
 		["Reset the " + DisplayName, "reset"],
 		["Empty the " + DisplayName, "empty"],
 	];
@@ -3456,7 +3457,7 @@ function MakeIconMenu_IconOptions() {
 	}
 	
 	//add a link to an online pdf converter, if not using Acrobat Pro/Standard
-	if (app.viewerType === "Reader") {
+	if (restrictedViewer) {
 		var Conversions = [
 			["-", "-"],
 			["Go to an online image-to-pdf converter", "convertor"],
@@ -4069,18 +4070,30 @@ function FormatHD() {
 	}
 }
 
-// add the action "Attack (X attacks per action)" to the top of the "actions" field, if there is room to do so
+// add the action "Attack (X attacks per action)" to the top of the "actions" fields, if there is room to do so
 function AddAttacksPerAction() {
 	if (typePF) {
 		var theString = ["Attack (", " attacks per action)"];
+		var regExStr = /\d+.{0,3}attacks/i;
 		if (Number(classes.attacks) < 2) {
-			RemoveAction("action", RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i"));
+			RemoveAction("action", regExStr);
 		} else {
-			var action1 = What("Action 1");
-			if (action1 !== "" && !(RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i")).test(action1)) {
-				ActionInsert("action", 1);
-			}
-			if (action1 === "" || (RegExp(theString[0].RegEscape() + "\\d+" + theString[1].RegEscape(), "i")).test(action1)) {
+			// first see if it isn't anywhere already
+			var actFld = false;
+			for (var i = 1; i <= FieldNumbers.trueactions; i++) {
+				var actVal = What("Action " + i);
+				if ((regExStr).test(actVal)) {
+					actFld = actVal.indexOf(classes.attacks) === -1 ? "Action " + i : false;
+					break;
+				} else if (actVal === "") {
+					actFld = true;
+				};
+			};
+			//then if a matching field is found, put it there, or otherwise put it at the top
+			if (actFld !== false && actFld !== true) {
+				Value(actFld, theString[0] + classes.attacks + theString[1]);
+			} else if (actFld) {
+				if (What("Action 1") !== "") ActionInsert("action", 1);
 				Value("Action 1", theString[0] + classes.attacks + theString[1]);
 			}
 		}

@@ -13,8 +13,9 @@ function SetPositiveElement(objIn, element) {
 	return obj;
 };
 
-//a dialogue that allows immediate feedback on what a class' name will look like
+//a dialogue that allows immediate feedback on what a class' name will look like and create a comprehensive, complete string to put in the class field
 function SelectClass() {
+	var theChar = What("PC Name") ? What("PC Name") : "Your character";
 	var hasUAranger = false;
 	var ClassFld = What("Class and Levels");
 	//make an object for each class' list of subclasses
@@ -42,7 +43,7 @@ function SelectClass() {
 			clCount--;
 		};
 		
-		ClassSelection_Dialog.description.elements[0].elements[4].char_height = hasUAranger ? 3 : -1;
+		ClassSelection_Dialog.description.elements[0].elements[6].char_height = hasUAranger ? 3 : -1;
 	};
 	//add the classes to the dialog
 	var loadKnownClassesToDialog = function() {
@@ -50,7 +51,6 @@ function SelectClass() {
 		ClassSelection_Dialog.finalText = ClassFld;
 		//then add the total level
 		ClassSelection_Dialog.finalLevel = 0;
-		ClassSelection_Dialog.currentLevel = Math.max(0, Number(What("Character Level")));
 		//then fill the text for each class
 		ClassSelection_Dialog.curSelec = [];
 		classes.parsed.forEach( function(clP) {
@@ -62,6 +62,11 @@ function SelectClass() {
 				"" // recognized subclass
 			]);
 		});
+		ClassSelection_Dialog.currentLevel = Number(What("Character Level"));
+		ClassSelection_Dialog.LVLchange = ClassSelection_Dialog.currentLevel - ClassSelection_Dialog.finalLevel;
+		if (!ClassSelection_Dialog.LVLchange) {
+			ClassSelection_Dialog.description.elements[0].elements[1].char_height = -1;
+		};
 		//have something to compare the classes.known against for filling in the other variables
 		var selecCompare = ClassSelection_Dialog.curSelec.reduce(function(acc, val) { return acc.concat(val[1]); }, []);
 		//now fill in the recognized class and subclass, if any
@@ -83,7 +88,7 @@ function SelectClass() {
 		for (var i = 0; i <= 9; i++) {
 			ClassSelection_Dialog.lines += setHeight > 0 ? 1 : 0;
 			var cS = ClassSelection_Dialog.curSelec[i];
-			var de = ClassSelection_Dialog.description.elements[0].elements[2].elements[i];
+			var de = ClassSelection_Dialog.description.elements[0].elements[4].elements[i];
 			if (!AddExtra || de.height < 0) {
 				de.height = setHeight;
 				de.margin_height = setHeight > 0 ? 0 : setHeight;
@@ -101,21 +106,27 @@ function SelectClass() {
 	var ClassSelection_Dialog = {
 		finalText : "",
 		finalLevel : 0,
+		currentLevel : 0,
+		LVLchange : 0,
 		curSelec : [],
 		delimiter : What("Delimiter"),
 		lines : 1,
 		initialize : function (dialog) {
 			var toLoad = {
-				desc : "When you select a class or a subclass from the drop-down boxes, the text field will update accordingly.\nThe other way around also works: When you type into the text field, the dialogue will automatically update the drop-down boxes to correspond accordingly. However, they will only update once you click/tab outside of that text field.\n\nAlthough the sheet knows of only one way to set the text field from the drop-down boxes, it understands very many different textual inputs. You can test this by typing something in the text field and see what the sheet recognizes it as. For example, if you enter 'War Priest' it will be recognized as a 'Cleric (War Domain)', and when you enter 'Exalted Knight of Obedience' it will be recognized as 'Paladin (Oath of Devotion)'.",
+				dsc1 : "When you select a class or a subclass in the drop-down boxes in this dialogue, the text field in the same line will update accordingly, and vice versa.\nThe drop-down boxes will only update once you click/tab outside of the text field.",
+				dsc2 : "Although the sheet knows of only one way to set the text field from the drop-down boxes, it understands very many different textual inputs. You can test this by typing something in the text field and see what the sheet recognizes it as. For example, if you enter 'War Priest' it will be recognized as a 'Cleric (War Domain)', and when you enter 'Exalted Knight of Obedience' it will be recognized as 'Paladin (Oath of Devotion)'.",
+				lvlu : theChar + "'s level has increased by " + this.LVLchange + ", for a total of " + this.currentLevel + ". Please change the level of one or more classes accordingly, or add a new class in its entirety.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level).",
 				note : "* This first row has to be used and is considered the class you took at 1st level, i.e. the class that grants all its proficiencies.",
 				rngr : "IMPORTANT: As you have included the source 'Unearthed Arcana: The Ranger, Revised', the UA ranger will be used when you select a Ranger. If you want to make a PHB Ranger, you will first have to exclude the Revised Ranger or its source (UA:RR). You can do so with the button below.",
 				full : this.finalText,
 				tLVL : this.finalLevel.toString(),
+				nLVL : "\u03B4-level: " + (this.currentLevel - this.finalLevel),
 				DeLi : this.delimiter,
 				bAdR : this.lines > 9 ? "Max 10 Rows" : "Add Extra Row"
 			};
 			var toUse = {
-				bAdR : this.lines < 10
+				bAdR : this.lines < 10,
+				nLVL : this.LVLchange ? this.currentLevel - this.finalLevel : false
 			};
 			for (var i = 0; i <= 9; i++) {
 				toUse["r" + i + "VW"] = i < this.lines;
@@ -138,6 +149,10 @@ function SelectClass() {
 			};
 			dialog.load(toLoad);
 			dialog.enable(toUse);
+			delete toUse.bAdR;
+			dialog.visible(toUse);
+			dialog.setForeColorRed("nLVL");
+			dialog.setForeColorRed("rngr");
 		},
 		lvlChange : function (dialog, e) {
 			var cs = this.curSelec[e];
@@ -156,7 +171,7 @@ function SelectClass() {
 			//set the new things
 			cs[1] = dialog.store()["r" + e + "TX"];
 			var hasCl = ParseClass(cs[1]);
-			cs[0] = !hasCl && !cs[1] ? 0 : cs[0] ? cs[0] : 1;
+			cs[0] = !hasCl && !cs[1] ? 0 : cs[0] ? cs[0] : Math.max(1, this.currentLevel - this.finalLevel);
 			cs[2] = hasCl ? hasCl[0] : "";
 			cs[3] = hasCl ? hasCl[1] : "";
 			//change the class and subclass drop-downs of the row
@@ -174,7 +189,7 @@ function SelectClass() {
 			var cs = this.curSelec[e];
 			var oldLvl = cs[0];
 			//set the new things
-			cs[0] = !result || result === " " ? 0 : cs[0] ? cs[0] : 1;
+			cs[0] = !result || result === " " ? 0 : cs[0] ? cs[0] : Math.max(1, this.currentLevel - this.finalLevel);
 			cs[2] = result && result !== " " ? this.classesRef[result] : "";
 			cs[3] = "";
 			cs[1] = cs[2] ? ClassList[cs[2]].name : "";
@@ -225,11 +240,13 @@ function SelectClass() {
 			this.finalText = toLoad.full;
 			this.finalLevel = toLoad.tLVL;
 			toLoad.tLVL = toLoad.tLVL.toString();
+			toLoad.nLVL = "\u03B4-level: " + (this.currentLevel - this.finalLevel);
+			var toUse = { nLVL : this.LVLchange ? this.currentLevel - this.finalLevel : false };
 			dialog.load(toLoad);
+			dialog.enable(toUse);
+			dialog.visible(toUse);
 		},
-		commit : function (dialog) {
-			
-		},
+		commit : function (dialog) {},
 		DeLi : function (dialog) {
 			this.delimiter = dialog.store()["DeLi"];
 			this.updateFull(dialog);
@@ -292,10 +309,25 @@ function SelectClass() {
 					name : "Select the class(es) for your character"
 				}, {
 					type : "static_text",
-					item_id : "desc",
+					item_id : "lvlu",
 					alignment : "align_fill",
 					font : "dialog",
-					char_height : 11,
+					bold : true,
+					char_height : 3,
+					char_width : 80
+				}, {
+					type : "static_text",
+					item_id : "dsc1",
+					alignment : "align_fill",
+					font : "dialog",
+					char_height : 3,
+					char_width : 80
+				}, {
+					type : "static_text",
+					item_id : "dsc2",
+					alignment : "align_fill",
+					font : "palette",
+					char_height : 4,
 					char_width : 80
 				}, {
 					type : "cluster", //the cluster that contains all the rows
@@ -303,7 +335,7 @@ function SelectClass() {
 					char_width : 80,
 					font : "heading",
 					bold : true,
-					name : "Classes",
+					name : theChar + "'s Classes",
 					elements : [{
 						item_id : "r0VW", // row 0 (with heading row)
 						type : "view",
@@ -777,6 +809,7 @@ function SelectClass() {
 							type : "cluster",
 							char_width : 12,
 							alignment : "align_left",
+							align_children : "align_row",
 							font : "heading",
 							bold : true,
 							name : "Total Level",
@@ -786,8 +819,15 @@ function SelectClass() {
 								font : "heading",
 								bold : true,
 								height : 25,
-								char_width : 3
-							}]
+								char_width : 2
+							}, {
+								item_id : "nLVL",
+								type : "static_text",
+								font : "heading",
+								bold : true,
+								height : 25,
+								char_width : 7
+							},]
 						}]
 					}, {
 						type : "view",
@@ -808,7 +848,7 @@ function SelectClass() {
 								font : "dialog",
 								bold : true,
 								height : 25,
-								char_width : 60
+								char_width : 55
 							}]
 						}]
 					}, {
@@ -893,18 +933,41 @@ function SelectClass() {
 		};
 	} while (dia !== "ok" && dia !== "cancel");
 
-	if (dia === "ok") {
+	if (dia === "ok") { // apply the changes
+		// update the delimiter
 		Value("Delimiter", ClassSelection_Dialog.delimiter);
+		
+		// set the character level and xp
 		Value("Character Level", ClassSelection_Dialog.finalLevel > 0 ? ClassSelection_Dialog.finalLevel : "");
-		Value("Class and Levels", ClassSelection_Dialog.finalText);
-	}
+		var curXP = Number(What("Total Experience"));
+		var curXPlvl = ExperiencePointsList.reduce(function(acc, val) { return acc += curXP > Number(val) ? 1 : 0; }, 0);
+		if (ClassSelection_Dialog.finalLevel != curXPlvl) {
+			var newXP = ClassSelection_Dialog.finalLevel ? ExperiencePointsList[Math.min(ClassSelection_Dialog.finalLevel, 20) - 1] : "";
+			Value("Total Experience", newXP);
+			if (curXP) {
+				Value("Add Experience", Number(What("Add Experience").replace(",", ".")) + curXP - newXP);
+				app.alert({
+					nIcon : 2,
+					cTitle : "Experience Points have been updated",
+					cMsg : "As you changed the total character level to " + ClassSelection_Dialog.finalLevel + ", the total experience points field has been updated from " + curXP + " to " + newXP + ".\n\nThe difference of " + (newXP - curXP) + " has been subtracted from the blue-text field next to the 'Add' button. This way you can easily correct the XP total again. You can also just delete the content of that field if you want to keep the new total of " + newXP + ".\n\nPlease know that any fields with blue-colored text won't print."
+				});
+			};
+		};
+		// update the class field
+		if (ClassFld !== ClassSelection_Dialog.finalText) {
+			Value("Class and Levels", ClassSelection_Dialog.finalText);
+		} else {
+			ApplyClasses(ClassSelection_Dialog.finalText);
+		};
+	};
+	return ClassSelection_Dialog;
 };
 //TESTING DEBUGGING
 var u = SelectClass();
 
 //and On Click function for the Class and Levels field
 function ClickClasses() {
-	if (!event.target.value || event.modifier || event.shift) {
+	if (app.viewerVersion >= 15 && (!event.target.value || event.modifier || event.shift)) {
 		tDoc.getField("Player Name").setFocus();
 		SelectClass();
 	};
@@ -912,6 +975,10 @@ function ClickClasses() {
 
 //at level that ends up editing the level field, ask for which class to add a level to, or start multiclassing
 function AskMulticlassing() {
+	if (app.viewerVersion >= 15) {
+		SelectClass();
+		return;
+	};
 	var Multiclassing_Dialog = {
 		//variables to be set by the calling function
 		Class1 : "",

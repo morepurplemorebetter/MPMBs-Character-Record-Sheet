@@ -973,19 +973,17 @@ var SpellSheetSelect_Dialog = {
 		}
 		dialog.enable(toEnable);
 		dialog.load(toLoad);
-		
+
 		//a function to set the right object to positive
 		var setSpell = function(aObj, aSpell) {
-			var isFound = false;
 			for (var a in aObj) {
-				var theAspell = ParseSpell(a);
-				if (aSpell === theAspell) {
-					aObj[a] = 1;
+				if (aSpell === ParseSpell(a)) {
+					aObj[a] *= -1;
 					break;
-				}
-			}
+				};
+			};
 			return aObj; //if nothing was found
-		}
+		};
 		
 		//set the various entries to the right values
 		var iResult = dialog.store();
@@ -2056,18 +2054,14 @@ var SpellBookSelect_Dialog = {
 		
 		//a function to set the right object to positive
 		var setSpell = function(aObj, aSpell) {
-			var isFound = false;
 			for (var a in aObj) {
-				if (!isFound) {
-					var theAspell = ParseSpell(a);
-					if (aSpell === theAspell) {
-						aObj[a] *= -1;
-						isFound = true;
-					}
-				}
-			}
+				if (aSpell === ParseSpell(a)) {
+					aObj[a] *= -1;
+					break;
+				};
+			};
 			return aObj; //if nothing was found
-		}
+		};
 		
 		//set the various entries to the right values
 		var iResult = dialog.store();
@@ -2600,18 +2594,14 @@ var SpellsPrepared_Dialog = {
 		
 		//a function to set the right object to positive
 		var setSpell = function(aObj, aSpell) {
-			var isFound = false;
 			for (var a in aObj) {
-				if (!isFound) {
-					var theAspell = ParseSpell(a);
-					if (aSpell === theAspell) {
-						aObj[a] = 1;
-						isFound = true;
-					}
-				}
-			}
+				if (aSpell === ParseSpell(a)) {
+					aObj[a] *= -1;
+					break;
+				};
+			};
 			return aObj; //if nothing was found
-		}
+		};
 		
 		//set the various entries to the right values
 		var iResult = dialog.store();

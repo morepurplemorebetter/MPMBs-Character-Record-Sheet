@@ -99,7 +99,7 @@ var PsionicsList = {
 		range : "60 ft",
 		duration : "Instantaneous",
 		save : "Con",
-		description : "1 crea save or 1d6 Psychic dmg, and knocked prone if Large or smaller; +1d6 at CL 5, 11, and 17",
+		description : "1 crea save or 1d6 Force dmg, and knocked prone if Large or smaller; +1d6 at CL 5, 11, and 17",
 		descriptionFull : "As an action, you target one creature you can see within 60 feet of you. The target must succeed on a Constitution saving throw or take 1d6 force damage. If it takes any of this damage and is Large or smaller, it is knocked prone." + "\n   " + "The talent's damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6)"
 	},
 	"mind thrust" : {
