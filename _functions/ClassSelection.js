@@ -15,6 +15,10 @@ function SetPositiveElement(objIn, element) {
 
 //a dialogue that allows immediate feedback on what a class' name will look like and create a comprehensive, complete string to put in the class field
 function SelectClass() {
+	if (app.viewerVersion < 15) {
+		FunctionIsNotAvailable();
+		return;
+	};
 	var theChar = What("PC Name") ? What("PC Name") : "Your character";
 	var hasUAranger = false;
 	var ClassFld = What("Class and Levels");
@@ -940,7 +944,7 @@ function SelectClass() {
 		// set the character level and xp
 		Value("Character Level", ClassSelection_Dialog.finalLevel > 0 ? ClassSelection_Dialog.finalLevel : "");
 		var curXP = Number(What("Total Experience"));
-		var curXPlvl = ExperiencePointsList.reduce(function(acc, val) { return acc += curXP > Number(val) ? 1 : 0; }, 0);
+		var curXPlvl = ExperiencePointsList.reduce(function(acc, val) { return acc += curXP >= Number(val) ? 1 : 0; }, 0);
 		if (ClassSelection_Dialog.finalLevel != curXPlvl) {
 			var newXP = ClassSelection_Dialog.finalLevel ? ExperiencePointsList[Math.min(ClassSelection_Dialog.finalLevel, 20) - 1] : "";
 			Value("Total Experience", newXP);
@@ -962,8 +966,6 @@ function SelectClass() {
 	};
 	return ClassSelection_Dialog;
 };
-//TESTING DEBUGGING
-var u = SelectClass();
 
 //and On Click function for the Class and Levels field
 function ClickClasses() {

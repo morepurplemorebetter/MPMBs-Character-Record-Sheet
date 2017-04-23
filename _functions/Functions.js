@@ -455,6 +455,23 @@ function MakeButtons() {
 				width : 20,
 				height : 20,
 				read : function (nBytes) {
+					return ButtonIcons.classes.slice(this.count, this.count += nBytes);
+				}
+			};
+			app.addToolButton({
+				cName : "ClassesButton",
+				cExec : "SelectClass();",
+				oIcon : oIcon,
+				cTooltext : toUni("Set Character Classes") + "\nOpen a pop-up dialogue where you can set the classes, subclasses, and levels the character has.\n\nYou get drop-down boxes for selecting a class and its subclass, and can test what class something you enter is being recognized as.",
+				nPos : 5,
+				cLabel : "Class"
+			});
+			
+			oIcon = {
+				count : 0,
+				width : 20,
+				height : 20,
+				read : function (nBytes) {
 					return ButtonIcons.automanual.slice(this.count, this.count += nBytes);
 				}
 			};
@@ -463,7 +480,7 @@ function MakeButtons() {
 				cExec : "SetToManual_Button();",
 				oIcon : oIcon,
 				cTooltext : toUni("Auto / Manual") + "\nSwitch between manual or automatic calculation\/implementation of:\n   \u2022  Attacks;\n   \u2022  Background;\n   \u2022  Class;\n   \u2022  Feats;\n   \u2022  Race.",
-				nPos : 5,
+				nPos : 6,
 				cLabel : "Manual"
 			});
 
@@ -480,7 +497,7 @@ function MakeButtons() {
 				cExec : "WeightToCalc_Button();",
 				oIcon : oIcon,
 				cTooltext : toUni("Weight Calculation") + "\nOpen the Total Weight dialogue where you can choose what is and what is not counted towards the Total Weight on the second page.\n\nIn the dialogue you can also select which encumbrance rules to use.",
-				nPos : 6,
+				nPos : 7,
 				cLabel : "Weight"
 			});
 
@@ -497,7 +514,7 @@ function MakeButtons() {
 				cExec : "AbilityScores_Button();",
 				oIcon : oIcon,
 				cTooltext : toUni("Ability Scores") + "\nOpen the Ability Scores dialog where you can set them using their separate parts, see the Point Buy value, and apply a magic item that overrides.\n\nThis dialog also gives the option to add Honor/Sanity.",
-				nPos : 7,
+				nPos : 8,
 				cLabel : "Scores"
 			});
 			oIcon = {
@@ -514,7 +531,7 @@ function MakeButtons() {
 				oIcon : oIcon,
 				cTooltext : toUni("Modifier Fields") + "\nHide\/show fields where you can manually add modifiers for:\n   \u2022  Ability save DC;\n   \u2022  Attacks to hit and damage bonusses;\n   \u2022  Attacks damage die;\n   \u2022  Proficiency bonus, or the use of proficiency dice;\n   \u2022  Saves;\n   \u2022  Skills, with Jack of All Trades and Remarkable Athlete;\n   \u2022  Number of spell slots;\n   \u2022  Initiative;\n   \u2022  Carrying capacity multiplier;\n   \u2022  Weights of armor, shield, weapons, and ammunition.\n\nThese are the so-called \"blue text fields\" and they won't print, even when they are visible.",
 				cMarked : "event.rc = What(\"BlueTextRemember\") === \"Yes\";",
-				nPos : 8,
+				nPos : 9,
 				cLabel : "Mods"
 			});
 		}
@@ -533,7 +550,7 @@ function MakeButtons() {
 				cExec : "MakeSpellMenu_SpellOptions();",
 				oIcon : oIcon,
 				cTooltext : toUni("Spells Options") + "\nGet a menu with the options to:\n   \u2022  Create a Spell Sheet;\n   \u2022  Select the sources for that Spell Sheet;\n   \u2022  Delete an existing Spell Sheet;" + (!typePF ? "\n   \u2022  Set the visibility of the Spell Slot check boxes to the Spell Sheet, the Limited Feature section, or both;" : "") + "\n   \u2022  Set the sheet to use Spell Points instead of Spell Slots.\n\nGenerating a Spell Sheet will involve filling out a dialog for each spellcasting class/race/feat. After that you can select which is included in the Spell Sheet and in what order.", //\n\nAlternatively you can create an empty Spell Sheet which you can fill out manually.",
-				nPos : 9,
+				nPos : 10,
 				cLabel : "Spells"
 			});
 		}
@@ -553,7 +570,7 @@ function MakeButtons() {
 				oIcon : oIcon,
 				cTooltext : toUni("Adventurers League") + "\nHide\/show fields for Adventurer's League play:\n   \u2022  'DCI' on the 1st page;\n   \u2022  'Faction' and 'Renown' on the 4th page;\n   \u2022  Fixed hp value on the 1st page;\n   \u2022  The action options from the DMG on the 1st page;\n   \u2022  Notes for action options from the DMG on the 3rd page.\n\nThis button also makes the \"Adventurers Logsheet\" visible if it isn't already.\n\nNote that this Character Generator\/Sheet offers some options that are not legal in Adventurer's League play regardless of enabling this button or not.",
 				cMarked : "event.rc = What(\"League Remember\") === \"On\";",
-				nPos : 10,
+				nPos : 11,
 				cLabel : "League",
 			});
 
@@ -570,7 +587,7 @@ function MakeButtons() {
 				cExec : "PrintButton();",
 				oIcon : oIcon,
 				cTooltext : toUni("Print") + "\nSelect what pages you want to print and open the print dialog.\n\nThe pages you select will be remembered for the next time you press this button.\n\nYou also get an option to hide all fields on the sheet before printing.",
-				nPos : 11,
+				nPos : 12,
 				cLabel : "Print"
 			});
 		}
@@ -589,7 +606,7 @@ function MakeButtons() {
 			oIcon : oIcon,
 			cTooltext : toUni("Flatten") + "\nSwitch to or from a version of the sheet that is compatible with Acrobat Reader for mobile devices.\nThis flattens all form fields and hides non-printable ones to make the sheet more usable on a phone or tablet.\n\nThe fields used during normal play will stay editable:\n   \u2022  1st page: health, attacks, actions, adv.\/disadv., etc.;\n   \u2022  2nd page: equipment and proficiencies;\n   \u2022  3rd-6th page: all except buttons and portrait\/symbol.",
 			cMarked : "event.rc = What(\"MakeMobileReady Remember\") !== \"\";",
-			nPos : 12,
+			nPos : 13,
 			cLabel : "Flatten"
 		});
 		oIcon = {
@@ -605,7 +622,7 @@ function MakeButtons() {
 			cExec : "SetUnitDecimals_Button();",
 			oIcon : oIcon,
 			cTooltext : toUni("Unit System") + "\nOpen a dialog where you can select the following:\n   \u2022  Unit system: metric or imperial\n   \u2022  Decimal separator: dot or comma.",
-			nPos : 13,
+			nPos : 14,
 			cLabel : "Units"
 		});
 
@@ -622,7 +639,7 @@ function MakeButtons() {
 			cExec : "MakeColorMenu(); ColoryOptions();",
 			oIcon : oIcon,
 			cTooltext : !typePF ? toUni("Set Color Theme") + "\nControl the color theme of the sheet in the following ways:\n   \u2022  Color of the Headers;\n   \u2022  Color of the Dragon Heads;" + (minVer ? "" : "\n   \u2022  Color of the HP Dragons;\n   \u2022  Color of the Ability Save DCs;") + "\n   \u2022  Color of the form field highlighting.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet." : toUni("Set Highlighting Color") + "\nSet the color of the form field highlighting.\n\nYou can select several colors, the adobe default color, or turn form field highlighting off.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet.",
-			nPos : 14,
+			nPos : 15,
 			cLabel : "Color"
 		});
 
@@ -639,7 +656,7 @@ function MakeButtons() {
 			cExec : "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });",
 			oIcon : oIcon,
 			cTooltext : toUni("FAQ") + "\nOpen the frequently asked questions pdf.\n\nThere you can find information on how to add custom code to the sheet, like homebrew races\/weapons\/feats\/etc.",
-			nPos : 15,
+			nPos : 16,
 			cLabel : "FAQ"
 		});
 	} catch (err) {
@@ -655,12 +672,13 @@ function MakeButtons() {
 };
 
 function OpeningStatement() {
-	if (app.viewerVersion < 15) {
+	var reminders = Number(tDoc.getField("Opening Remember").submitName);
+	if (app.viewerVersion < 15 && reminders < 3) {
 		CurrentSources.globalExcl = ["UA:TMC"];
 		var oldVerAlert = app.alert({
 			nIcon : 0,
 			cTitle : "Please update your Adobe Acrobat",
-			cMsg : "This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. You need at least Adobe Acrobat DC (Reader, Pro, or Standard) to use this PDF's full automation. Please know that if you continue to use the sheet with this outdated version of Adobe Acrobat, some features will not work and others will produce errors (e.g. the Source Selection and the Mystic class).\n\nDo you want to close this pdf and visit the Adobe website where you can download the latest version of Adobe Acrobat Reader for free (https://get.adobe.com/reader/)?\n\nPlease understand that if you choose 'No', there will be no support if anything doesn't work.",
+			cMsg : "This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. You need at least Adobe Acrobat DC (Reader, Pro, or Standard) to use this PDF's full automation. Please know that if you continue to use the sheet with this outdated version of Adobe Acrobat, some features will not work and others will produce errors (e.g. the Source Selection and the Mystic class).\n\nDo you want to close this pdf and visit the Adobe website where you can download the latest version of Adobe Acrobat Reader for free (https://get.adobe.com/reader/)?\n\nPlease understand that if you choose 'No', there will be no support if anything doesn't work.\n\n" + (reminders == 0 ? "You will get this warning again the next two times that you open this sheet in an unsupported version of Adobe Acrobat." : reminders == 1 ? "You will get this warning again the next time you open this sheet in an unsupported version of Adobe Acrobat." : "This is the last time this pdf character sheet shows this warning."),
 			nType : 2
 		});
 		if (oldVerAlert === 4) {
@@ -668,6 +686,7 @@ function OpeningStatement() {
 			tDoc.closeDoc();
 			return;
 		};
+		tDoc.getField("Opening Remember").submitName = reminders + 1;
 	};
 	if (What("Opening Remember") === "No") {
 		this.dirty = false;
