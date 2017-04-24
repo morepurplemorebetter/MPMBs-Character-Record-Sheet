@@ -1411,6 +1411,7 @@ function ResetAll(GoOn) {
 		}
 		tDoc.getField("AC Misc Mod 1 Description").submitName = "";
 		tDoc.getField("AC Misc Mod 2 Description").submitName = "";
+		tDoc.getField("Opening Remember").submitName = 0;
 		tDoc.resetForm();
 		thermoM(4/9); //increment the progress dialog's progress
 		
@@ -2824,7 +2825,7 @@ function FindClasses(Event) {
 				cSpells.ability = Temps.abilitySave;
 				cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass};
 				cSpells.known = Temps.spellcastingKnown;
-				cSpells.typeSp = !cSpells.known || cSpells.known.spells === undefined ? false : isArray(cSpells.known.spells) ? cSpells.known.spells[cSpells.level - 1] : cSpells.known.spells;
+				cSpells.typeSp = !cSpells.known || cSpells.known.spells === undefined ? false : isArray(cSpells.known.spells) ? cSpells.known.spells[Math.min(cSpells.known.spells.length, cSpells.level) - 1] : cSpells.known.spells;
 				cSpells.typeSp = cSpells.typeSp === "" ? "" : isNaN(cSpells.typeSp) ? cSpells.typeSp : "known";
 				cSpells.factor = [casterFactor, casterType];
 				cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
@@ -2840,7 +2841,7 @@ function FindClasses(Event) {
 		}
 
 		//add number of attacks to temp array
-		temp.push(CurrentClasses[aClass].attacks[Math.floor(classes.known[aClass].level - 1, 20)]);		
+		temp.push(CurrentClasses[aClass].attacks[Math.min(classes.known[aClass].level, CurrentClasses[aClass].attacks.length) - 1]);		
 	}
 	//pick highest number of attacks in temp array and put that into global classes variable
 	classes.attacks = Math.max.apply(Math, temp);
@@ -2864,11 +2865,12 @@ function FindClasses(Event) {
 						classes.spellcastlvl[casterType] = casterLvl;
 					}
 				} else if (Temps.spellcastingTable && multiCaster[casterType] === 1) {
+					var casterLvl = Math.min(Temps.spellcastingTable.length - 1, classes.known[aClass].level);
 					if (!classes.spellcastlvl.otherTables) {
-						classes.spellcastlvl.otherTables = Temps.spellcastingTable[classes.known[aClass].level]
+						classes.spellcastlvl.otherTables = Temps.spellcastingTable[casterLvl]
 					} else {
 						classes.spellcastlvl.otherTables = classes.spellcastlvl.otherTables.map(function (num, idx) {
-						  return num + Temps.spellcastingTable[classes.known[aClass].level][idx];
+						  return num + Temps.spellcastingTable[casterLvl][idx];
 						});
 					}
 				}
@@ -2968,10 +2970,11 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 		if (classes.spellcastlvl.otherTables) SpellSlotsTotal += classes.spellcastlvl.otherTables[ss]; //add the old slots
 		if (classes.oldspellcastlvl.otherTables) SpellSlotsTotal -= classes.oldspellcastlvl.otherTables[ss]; //remove the old slots
 		for (var casterType in classes.spellcastlvl) {
-			if (casterType !== "otherTables") {
-				SpellSlotsTotal += tDoc[casterType + "SpellTable"][Math.min(20, classes.spellcastlvl[casterType])][ss]; //add the new slots
+			if (casterType !== "otherTables" && tDoc[casterType + "SpellTable"]) {
+				var spTable = tDoc[casterType + "SpellTable"];
+				SpellSlotsTotal += spTable[Math.min(spTable.length - 1, classes.spellcastlvl[casterType])][ss]; //add the new slots
 				if (classes.oldspellcastlvl[casterType]) {
-					SpellSlotsTotal -= tDoc[casterType + "SpellTable"][Math.min(20, classes.oldspellcastlvl[casterType])][ss]; //remove the old slots
+					SpellSlotsTotal -= spTable[Math.min(spTable.length - 1, classes.oldspellcastlvl[casterType])][ss]; //remove the old slots
 				}
 			}
 		}
@@ -3042,45 +3045,31 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 
 //Check if the level or XP entered matches the XP or level
 function CalcExperienceLevel(AlsoClass) {
-	var Level = tDoc.getField("Character Level");
-	var exp = tDoc.getField("Total Experience");
+	var oldLevel = Number(tDoc.getField("Character Level").submitName);
+	var Level = What("Character Level");
+	var exp = Number(What("Total Experience").replace(",", "."));
 	
 	//stop this function if resetting or importing the sheet
-	if (!IsNotImport || !IsNotReset || (!Level.value && !exp.value)) {
-		return;
-	} else {
+	if (!IsNotImport || !IsNotReset || (!Level && !exp)) return;
+
 	tDoc.delay = true;
 	tDoc.calculate = false;
-	var xplvl = 1;
-	var currentxplvl = !Level.value ? 0 : Level.value >= 20 ? ExperiencePointsList[19] : ExperiencePointsList[Level.value - 1];
-	var theLvl = Level.value >= 20 ? "higher than 20" : Level.value;
+	var LVLbyXP = ExperiencePointsList.reduce(function(acc, val) { return acc += exp >= Number(val) ? 1 : 0; }, 0);
+	var XPforLVL = !Level ? 0 : ExperiencePointsList[Math.min(ExperiencePointsList.length - 1, Level) - 1];
+	var LVLtxt = Level >= ExperiencePointsList.length ? "a level higher than 20" : "level " + Level;
+	var XPtxt = !exp ? "no" : "only " + exp;
 
-	if (exp.value === 0 || exp.value === "") {
-		var txt = "no";
-	} else {
-		var txt = "only " + exp.value;
-	};
-	
-	var theXP = Number(exp.value.replace(/,/g, "."));
-	
-	for (var i = 0; i < ExperiencePointsList.length; i++) {
-		if (ExperiencePointsList[i] > theXP) {
-			xplvl = i;
-			i = ExperiencePointsList.length;
-		}
-	};
+	var StringHigherLvl = "This character has " + XPtxt + " experience points. This is not enough to attain the level that has been entered (" + Level + "). You need at least " + XPforLVL + " experience points for " + LVLtxt + ". You can upgrade the experience points, downgrade the level, or leave it as it is.\n\nBy pressing 'Upgrade XP' you change the experience points total to " + XPforLVL + ".\n\nBy pressing 'Downgrade level' you change the character level to level " + LVLbyXP + ".\n\nBy pressing 'Cancel' neither happens.";
 
-	var StringHigherLvl = "This character has " + txt + " experience points. This is not enough to attain the level that has been entered (" + Level.value + "). You need at least " + currentxplvl + " experience points for level " + theLvl + ". You can upgrade the experience points, downgrade the level, or leave it as it is.\n\nBy pressing 'Upgrade XP' you change the experience points total to " + currentxplvl + ".\n\nBy pressing 'Downgrade level' you change the character level to level " + xplvl + ".\n\nBy pressing 'Cancel' neither happens.";
+	var StringHigherXP = "This character is level " + Level + ", but already has " + exp + " experience points. This amount is enough to attain level " + LVLbyXP + ". You can upgrade the level, downgrade the experience points, or leave it as it is.\n\nBy pressing 'Upgrade level' you change the character level to level " + LVLbyXP + ".\n\nBy pressing 'Downgrade XP' you change the experience points total to " + XPforLVL + ".\n\nBy pressing 'Cancel' neither happens.";
 
-	var StringHigherXP = "This character is level " + Level.value + ", but already has " + exp.value + " experience points. This amount is enough to attain level " + xplvl + ". You can upgrade the level, downgrade the experience points, or leave it as it is.\n\nBy pressing 'Upgrade level' you change the character level to level " + xplvl + ".\n\nBy pressing 'Downgrade XP' you change the experience points total to " + currentxplvl + ".\n\nBy pressing 'Cancel' neither happens.";
-
-	if (Level.value > xplvl) {
+	if (Level > LVLbyXP) {
 		var theText = StringHigherLvl;
 		var okReturn = "xp";
 		var otherReturn = "lvl";
 		var okButton = "Upgrade XP";
 		var otherButton = "Downgrade level";
-	} else if (Level.value < xplvl) {
+	} else if (Level < LVLbyXP) {
 		var theText = StringHigherXP;
 		var okReturn = "lvl";
 		var otherReturn = "xp";
@@ -3094,7 +3083,7 @@ function CalcExperienceLevel(AlsoClass) {
 		//when starting the dialog
 		initialize : function (dialog) {
 			dialog.load({
-				"text" : theText,
+				"text" : theText
 			});
 		},
 
@@ -3138,35 +3127,34 @@ function CalcExperienceLevel(AlsoClass) {
 		}
 	};
 
-	if ((Level.value < 21 || xplvl < 21) && Level.value !== xplvl) {
+	if ((Level < ExperiencePointsList.length || LVLbyXP < (ExperiencePointsList.length - 1)) && Level !== LVLbyXP) {
 		app.execDialog(Experience_Dialog);
 		switch (Experience_Dialog.result) {
 			case "lvl":
-				Value("Character Level", xplvl);
+				Value("Character Level", LVLbyXP);
 				break;
 			case "xp":
-				Value("Total Experience", currentxplvl);
+				Value("Total Experience", XPforLVL);
 				break;
 		}
+	};
+	if (oldLevel !== Number(What("Character Level"))) {
+		tDoc.getField("Character Level").submitName = What("Character Level");
 		//update features gained from level
 		UpdateLevelFeatures("race");
 		
 		//call the multiclassing function that will ask for what class to add a level to
-		if (AlsoClass) {
-			AskMulticlassing();
-		}
+		if (AlsoClass) AskMulticlassing();
 		
 		//update level-dependent things for any ranger companions
 		UpdateRangerCompanions();
 		
 		//show a dialogue about ASI
 		CountASIs();
-	} else if (CurrentRace.known && !CurrentRace.level && Level.value === 1) {
-		UpdateLevelFeatures("race");
-	}
+	};
+	
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
-	}
 };
 
 function ParseRace(Inputs) {
@@ -3492,7 +3480,7 @@ function UpdateTooltips() {
 		AbilityScores.improvements.classprime += CurrentClasses[aClass].primaryAbility;
 		stringAbiMulti += (n === 0 && multiClass) ? "\n\nMulticlassing required ability scores:" : "";
 		AbilityScores.improvements.classmulti += multiClass ? CurrentClasses[aClass].prereqs : "";
-		temp = CurrentClasses[aClass].improvements[classes.known[aClass].level - 1];
+		temp = CurrentClasses[aClass].improvements[Math.min(CurrentClasses[aClass].improvements.length, classes.known[aClass].level) - 1];
 		if (temp > 0) {
 			stringAbiImpr += AbilityScores.improvements.classlvl === "" ? "\n\nAbility score improvements from classes:\n(either add 2 points to ability scores or take 1 feat)" : "";
 			AbilityScores.improvements.classlvl += "\n \u2022 " + CurrentClasses[aClass].name + ": \u00D7" + temp + ";";
@@ -3649,7 +3637,8 @@ function SetWeaponsdropdown() {
 		var weaKey = WeaponsList[key];
 		if (!weaKey.list || testSource(key, weaKey, "weapExcl")) continue; // test if the weapon or its source is set to be included
 		if (!weaponlists[weaKey.list]) weaponlists[weaKey.list] = [];
-		weaponlists[weaKey.list].push(WeaponsList[key].name.capitalize());
+		var weaName = WeaponsList[key].name.capitalize();
+		if (weaponlists[weaKey.list].indexOf(weaName) === -1) weaponlists[weaKey.list].push(weaName);
 	};
 	
 	//make the definitive list of weapons for the dropdown box
@@ -3713,11 +3702,13 @@ function SetArmordropdown() {
 		"Unarmored Defense (Wis)"
 	];
 	
+	var armNm = "";
 	for (var key in ArmourList) {
 		if (key === "unarmored" || testSource(key, ArmourList[key], "armorExcl")) continue; // test if the armour or its source isn't excluded
-		TheList.push(ArmourList[key].name.capitalize());
+		if (armNm === "Plate") TheList.push("");
+		armNm = ArmourList[key].name.capitalize();
+		if (TheList.indexOf(armNm) === -1) TheList.push(armNm);
 	};
-	if (TheList.indexOf("Plate") !== TheList.length - 1) TheList.splice(TheList.indexOf("Plate") + 1, 0, "")
 	
 	if (tDoc.getField("AC Armor Description").submitName === TheList.toSource()) return; //no changes, so no reason to do this
 	tDoc.getField("AC Armor Description").submitName = TheList.toSource();
@@ -3744,7 +3735,8 @@ function SetBackgrounddropdown() {
 		for (var i = 0; i < BackgroundList[key].variant.length; i++) {
 			var varKey = BackgroundList[key].variant[i];
 			if (testSource(varKey, BackgroundSubList[varKey], "backgrExcl")) continue;
-			ArrayDing.push(BackgroundSubList[varKey].name);
+			var backNm = BackgroundSubList[varKey].name;
+			if (ArrayDing.indexOf(backNm) === -1) ArrayDing.push(backNm);
 		}
 	};
 	ArrayDing.sort();
@@ -3768,11 +3760,8 @@ function SetRacesdropdown() {
 	
 	for (var key in RaceList) {
 		if (testSource(key, RaceList[key], "racesExcl")) continue;
-		if (RaceList[key].sortname) {
-			ArrayDing.push(RaceList[key].sortname);
-		} else {
-			ArrayDing.push(RaceList[key].name.capitalize());
-		}
+		var raceNm = RaceList[key].sortname ? RaceList[key].sortname : RaceList[key].name.capitalize();
+		if (ArrayDing.indexOf(raceNm) === -1) ArrayDing.push(raceNm);
 	}
 	ArrayDing.sort();
 	if (tDoc.getField("Race").submitName === ArrayDing.toSource()) return; //no changes, so no reason to do this
@@ -3782,22 +3771,7 @@ function SetRacesdropdown() {
 	Value("Race", theFldVal, tempString);
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
-}
-
-function SetClassTooltips() {
-	var tempString = "";
-	tempString += "Class and class level\n";
-	tempString += "After typing in a class it will be recognized and its features, HD, and proficiencies will update automatically, conform its level.\n\n";
-	tempString += "Single class\n";
-	tempString += "Please type in the class or subclass name and fill out the \"Level\" field in the top left with your character level. That way your class level and features will increase automatically when you have enough experience points to go to the next level. Either way, the character level (total level) will be adjusted automatically.\n\n"
-	tempString += "Multiclassing\n";
-	tempString += "You can enter as many classes as you like, as long as you write down a class level (in the form of a number) after each class name and as long as the first class is the one you started at level 1 with. Example: \"Ranger (beastmaster) 2, Illusionist 4, Eldritch Knight 6\". All things will be added automatically for all recognized classes and the total character level will be updated accordingly.\n\n";
-	tempString += "Subclass\n";
-	tempString += "You can always enter a subclass at a later time. Just add the subclass name to the class name, like \"Cleric (light domain)\". Alternatively you can replace the class name with the subclass name, like \"Berserker\".\n\n";
-	tempString += "Changing class or subclass\n";
-	tempString += "If you change the class or subclass, all its proficiencies and features will be removed and the new class' and/or subclass' proficiencies and features will be applied. However, any features added to the third page by using the \"Choose Feature\" button on the second page will not be removed automatically.";
-	tDoc.getField("Class and Levels").userName = tempString;
-}
+};
 
 function SetDefenceTooltips() {
 	var tempString = "";
@@ -5467,7 +5441,8 @@ function SetFeatsdropdown() {
 	var ArrayDing = [""];
 	for (var key in FeatsList) {
 		if (testSource(key, FeatsList[key], "featsExcl")) continue;
-		ArrayDing.push(FeatsList[key].name);
+		var feaNm = FeatsList[key].name;
+		if (ArrayDing.indexOf(feaNm) === -1) ArrayDing.push(feaNm);
 	}
 	ArrayDing.sort();
 	
@@ -5656,23 +5631,15 @@ function HealItNow() {
 	tDoc.delay = !IsNotReset;
 }
 
-function AddExperiencePoints() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
-	
+function AddExperiencePoints() {	
 	if (What("Add Experience")) {
-		var XPS = "," + What("Total Experience");
-		var AddXP = "," + What("Add Experience");
-		XPS = Number(XPS.replace(/,/g, ".").substring(1));
-		AddXP = Number(AddXP.replace(/,/g, ".").substring(1));
+		var XPS = Number(What("Total Experience").replace(/,/g, "."));
+		var AddXP = Number(What("Add Experience").replace(/,/g, "."));
 		Value("Total Experience", RoundTo(XPS + AddXP, 0.01));
 		Value("Add Experience", "");
 	};
-
 	CalcExperienceLevel(true);
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-}
+};
 
 //calculate the encumbrance (field calculation)
 function CalcEncumbrance() {
@@ -5793,10 +5760,29 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 			for (var key in CurrentRace.features) {
 				// now we know whether to add or remove features
 				var keyFea = CurrentRace.features[key];
-				var GoAnyway = false;
 				thermoM("Updating " + CurrentRace.name + "'s " + keyFea.name + "..."); //change the progress dialog text
+				
+				//make a check to see if level-dependent features should be dealt with
+				var checkLVL = keyFea.minlevel <= RaceLevelUp[2] && keyFea.minlevel > RaceLevelUp[1];
+				
+				//see if we are going to add or remove a feature
+				var AddRemove = keyFea.minlevel <= newRaceLvl ? "Add" : "Remove"
 
-				var FeaUse = keyFea.usages;
+				// --- add or remove Limited Features --- //
+				
+				// get all the attributes of this feature
+				var Fea = ReturnClassFeatures("race", key, newRaceLvl, false, oldRaceLvl, false);
+				
+				//see if we need to force updating the limited feature section
+				var GoAnyway = newRaceLvl > 0 && propFea.minlevel <= oldRaceLvl && (Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld);
+
+				if ((Fea.Use || Fea.UseCalc) && (GoAnyway || checkLVL)) {
+					var FeaTooltip = CurrentRace.name + keyFea.tooltip;
+					var AddRemoveFea = AddRemove === "Add" && FeaUse && !(/unlimited|\u221E/i).test(FeaUse) ? "Add" : "Remove";
+					tDoc[AddRemoveFea + "Feature"](keyFea.name, AddRemoveFea === "Add" ? Fea.Use : Fea.UseOld, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, FeaTooltip, Fea.UseOld, Fea.UseCalc);
+				};
+				
+/* 				var FeaUse = keyFea.usages;
 				if (FeaUse && isArray(FeaUse)) {
 					FeaUse = newRaceLvl ? FeaUse[newRaceLvl - 1] : 0;
 					var FeaUseOld = oldRaceLvl ? FeaUse[oldRaceLvl - 1] : 0;
@@ -5820,23 +5806,23 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					var FeaTooltip = CurrentRace.name + keyFea.tooltip;
 					var AddRemoveFea = AddRemove === "Add" && FeaUse && !(/unlimited|\u221E/i).test(FeaUse) ? "Add" : "Remove";
 					tDoc[AddRemoveFea + "Feature"](keyFea.name, AddRemoveFea === "Remove" ? FeaUseOld : FeaUse, FeaAdd, keyFea.recovery, FeaTooltip, FeaUseOld, keyFea.usagescalc);
-				}
+				} */
 				
 				thermoM(1/2); //increment the progress dialog's progress
 
-				//add or remove action, if defined
+				// --- add or remove action, if defined --- //
 				if (keyFea.action && checkLVL) {
 					tDoc[AddRemove + "Action"](keyFea.action[0], keyFea.name + keyFea.action[1], "being a " + CurrentRace.name);
 				}
 
-				//do custom script, if defined
+				// --- add or remove something via custom script, if defined --- //
 				if (AddRemove === "Add" && keyFea.eval && checkLVL) {
 					eval(keyFea.eval);
 				} else if (AddRemove === "Remove" && keyFea.removeeval && checkLVL) {
 					eval(keyFea.removeeval);
 				}
 
-				//add or remove bonus spells in the CurrentSpells variable, if defined
+				// --- add or remove bonus spells in the CurrentSpells variable, if defined --- //
 				var raceSpellBonus = !checkLVL ? false : (keyFea.spellcastingBonus ? keyFea.spellcastingBonus : false);
 				if (raceSpellBonus && keyFea.minlevel <= newRaceLvl) {//if gaining the level
 					//first see if the entry exists or not, and create it if it doesn't
@@ -5865,7 +5851,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					UpdateSpellSheets.race = true;
 				}
 				
-				//add or remove custom calculations to the CurrentEvals variable
+				// --- add or remove custom calculations to the CurrentEvals variable --- //
 				if (checkLVL && keyFea.calcChanges) {
 					addEvals(keyFea.calcChanges, [keyFea.name, CurrentRace.name], keyFea.minlevel <= newRaceLvl);
 				}
@@ -6011,7 +5997,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					// get all the attributes of this feature
 					var Fea = ReturnClassFeatures(aClass, prop, newClassLvl[aClass], FeaChoice, oldClassLvl[aClass], FeaOldChoice);
 
-					// --- add or remove something via custom script, if defined
+					// --- add or remove something via custom script, if defined --- //
 					var evalAddRemove = CheckFea && propFea.minlevel <= newClassLvl[aClass] ? "eval" : "removeeval";
 
 					if (propFea[evalAddRemove] && CheckFea) {
@@ -6023,13 +6009,13 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 						eval(thePropFeaChoiceeval);
 					}
 					
-					//if the eval changed the choice, do some things with this new choice
+					// --- if the eval changed the choice, do some things with this new choice --- //
 					if (FeaChoice !== FeaOldChoice) {
 						Fea = ReturnClassFeatures(aClass, prop, newClassLvl[aClass], FeaChoice, oldClassLvl[aClass], FeaOldChoice);
 						if (propFea[FeaChoice].skillstxt) classes.extraskills.push(propFea[FeaChoice].skillstxt);
 					}
 					
-					// --- add or remove bonus spells in the CurrentSpells variable, if defined
+					// --- add or remove bonus spells in the CurrentSpells variable, if defined --- //
 					var spellBonus = !CheckFea ? false : (propFea.spellcastingBonus ? propFea.spellcastingBonus : (FeaChoice && propFea[FeaChoice].spellcastingBonus ? propFea[FeaChoice].spellcastingBonus : false));
 					if (spellBonus && propFea.minlevel <= newClassLvl[aClass]) {//if gaining the level
 						//first see if the entry exists or not, and create it if it doesn't
@@ -6061,7 +6047,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 						UpdateSpellSheets.class = true;
 					}
 					
-					// --- add or remove custom calculations to the CurrentEvals variable
+					// --- add or remove custom calculations to the CurrentEvals variable --- //
 					if (CheckFea && propFea.calcChanges) {
 						addEvals(propFea.calcChanges, [propFea.name, aClass], propFea.minlevel <= newClassLvl[aClass]);
 					}
@@ -6069,7 +6055,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 						addEvals(propFea[FeaChoice].calcChanges, [propFea[FeaChoice].name, aClass], propFea.minlevel <= newClassLvl[aClass]);
 					}
 					
-					// --- if a change was detected, do something via custom script, if defined
+					// --- if a change was detected, do something via custom script, if defined --- //
 					if (propFea.changeeval) {
 						var theChangeeval = What("Unit System") === "metric" && propFea.changeeval.indexOf("String") !== -1 ? ConvertToMetric(propFea.changeeval, 0.5) : propFea.changeeval;
 						eval(theChangeeval);
@@ -6077,7 +6063,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					
 					thermoM(3/8); //increment the progress dialog's progress
 
-					// --- add or remove action, if defined
+					// --- add or remove action, if defined --- //
 					var ActionAddRemove = CheckFea && propFea.minlevel <= newClassLvl[aClass] ? "Add" : "Remove";
 					if (propFea.action && CheckFea) {
 						var thePropFeaAct = What("Unit System") === "metric" && propFea.action[1] ? ConvertToMetric(propFea.action[1], 0.5) : propFea.action[1];
@@ -6090,7 +6076,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					
 					thermoM(4/8); //increment the progress dialog's progress
 
-					// --- add or remove skill proficiencies, if defined
+					// --- add or remove skill proficiencies, if defined --- //
 					var SkillAddRemove = CheckFea && propFea.minlevel <= newClassLvl[aClass] ? true : false;
 					if (propFea.skills && CheckFea) {
 						for (var sk = 0; sk < propFea.skills.length; sk++) {
@@ -6103,7 +6089,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 						}
 					}
 
-					// --- add or remove extra spells in the CurrentSpells variable, if defined
+					// --- add or remove extra spells in the CurrentSpells variable, if defined --- //
 					var spellExtra = !CheckFea ? false : (propFea.spellcastingExtra ? propFea.spellcastingExtra : (FeaChoice && propFea[FeaChoice].spellcastingExtra ? propFea[FeaChoice].spellcastingExtra : false));
 					if (spellExtra && propFea.minlevel <= newClassLvl[aClass]) {//if gaining the level
 						CurrentSpells[aClass].extra = spellExtra;
@@ -6824,9 +6810,8 @@ function SetToManual_Button() {
 //calculate how much experience points are needed for the next level (field calculation)
 function CalcXPnextlvl() {
 	var lvl = Number(What("Character Level"));
-	var XPnextlvl = lvl && !isNaN(lvl) && lvl < 20 ? ExperiencePointsList[lvl] : "";
-	event.value = XPnextlvl;
-}
+	event.value = lvl && !isNaN(lvl) && lvl < (ExperiencePointsList.length - 1) ? ExperiencePointsList[lvl] : "";
+};
 
 //calculate the Ability Save DC (field calculation)
 function CalcAbilityDC() {
@@ -8415,7 +8400,7 @@ function SetAmmosdropdown() {
 	for (ammo in AmmoList) {
 		var theAmmo = AmmoList[ammo];
 		if (testSource(ammo, theAmmo, "ammoExcl")) continue; // test if the weapon or its source is set to be included
-		theDropList.push(theAmmo.name);
+		if (theDropList.indexOf(theAmmo.name) === -1) theDropList.push(theAmmo.name);
 	}
 	theDropList.sort();
 	
@@ -9157,7 +9142,8 @@ function SetBackgroundFeaturesdropdown() {
 	
 	for (var feature in BackgroundFeatureList) {
 		if (testSource(feature, BackgroundFeatureList[feature], "backFeaExcl")) continue;
-		tempArray.push(feature.capitalize());
+		var feaNm = feature.capitalize();
+		if (tempArray.indexOf(feaNm) === -1) tempArray.push(feaNm);
 	};
 	tempArray.sort();
 

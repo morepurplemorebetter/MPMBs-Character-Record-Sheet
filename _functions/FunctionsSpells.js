@@ -2873,8 +2873,10 @@ function AskUserSpellSheet() {
 		
 		//put some general things in variables
 		if (spCast.level && spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) {
-			var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
-			var maxSpell = spCast.spellsTable ? spCast.spellsTable[CasterLevel].indexOf(0) : tDoc[spCast.factor[1] + "SpellTable"][CasterLevel].indexOf(0);
+			var CasterLevel = Math.ceil(spCast.level / Math.max(1, spCast.factor[0]));
+			var theTable = spCast.spellsTable ? spCast.spellsTable : tDoc[spCast.factor[1] + "SpellTable"];
+			var tableLevel = Math.min(theTable.length - 1, CasterLevel);
+			var maxSpell = theTable[tableLevel].indexOf(0);
 			maxSpell = Number(maxSpell === -1 ? 9 : maxSpell);
 		} else {
 			var CasterLevel = false;
@@ -2899,7 +2901,8 @@ function AskUserSpellSheet() {
 			//see what spell section to activate
 			if (spCast.known.cantrips) {
 				dia.showCa = true; //show the cantrips section
-				dia.nmbrCa = isArray(spCast.known.cantrips) ? spCast.known.cantrips[spCast.level - 1] : spCast.known.cantrips; //set the amount of cantrips
+				var CaLvl = Math.min(spCast.known.cantrips.length, spCast.level) - 1;
+				dia.nmbrCa = isArray(spCast.known.cantrips) ? spCast.known.cantrips[CaLvl] : spCast.known.cantrips; //set the amount of cantrips
 				dia.offsetCa = spCast.offsetCa ? spCast.offsetCa : 0; //set the manually added cantrips
 				dia.selectCa = spCast.selectCa ? spCast.selectCa : []; //set the cantrips already selected
 				
@@ -2911,7 +2914,8 @@ function AskUserSpellSheet() {
 				dia.showCa = false; //hide the cantrip section
 			}
 			//now also do this for the spells
-			dia.nmbrSp = spCast.known.spells === undefined ? "" : isArray(spCast.known.spells) ? spCast.known.spells[spCast.level - 1] : spCast.known.spells; //set the amount of spells
+			var SpLvl = Math.min(spCast.known.spells.length, spCast.level) - 1;
+			dia.nmbrSp = spCast.known.spells === undefined ? "" : isArray(spCast.known.spells) ? spCast.known.spells[SpLvl] : spCast.known.spells; //set the amount of spells
 			dia.typeSp = dia.nmbrSp === "" ? "" : isNaN(dia.nmbrSp) ? dia.nmbrSp : "known"; //set the type of spells (book, list, known)
 			dia.nmbrSp = !isNaN(dia.nmbrSp) ? dia.nmbrSp : 18; //if spells known is not a number, set the dialog to the max of 18
 			dia.showSpRadio = spCast.level && (dia.typeSp === "list" || dia.typeSp === "book"); //show the spell radio buttons if concerning a list (druid/cleric/paladin)
@@ -2973,7 +2977,7 @@ function AskUserSpellSheet() {
 				var theBonusArray = CreateSpellList(spBonusi, true);
 				var theBonusObject = CreateSpellObject(theBonusArray);
 				
-				var iterate = !spBonusi.times ? 1 : isArray(spBonusi.times) ? spBonusi.times[spCast.level - 1] : spBonusi.times; //if we have to apply this thing multiple times, do so
+				var iterate = !spBonusi.times ? 1 : isArray(spBonusi.times) ? spBonusi.times[Math.min(spBonusi.times.length, spCast.level) - 1] : spBonusi.times; //if we have to apply this thing multiple times, do so
 				for (var y = 1; y <= iterate; y++) {
 					dia.nmbrBo += 1; //count the number of bonus things
 					dia.listBo.push(theBonusObject); //add object to the array
@@ -3057,7 +3061,7 @@ function AskUserSpellSheet() {
 					var spBonusi = loop ? spCast.bonus[bKey][i] : spCast.bonus[bKey];
 					spBonusi.selection = [];
 					
-					var iterate = !spBonusi.times ? 1 : isArray(spBonusi.times) ? spBonusi.times[spCast.level - 1] : spBonusi.times; //if we have to apply this thing multiple times, do so
+					var iterate = !spBonusi.times ? 1 : isArray(spBonusi.times) ? spBonusi.times[Math.min(spBonusi.times.length, spCast.level) - 1] : spBonusi.times; //if we have to apply this thing multiple times, do so
 					for (var y = 1; y <= iterate; y++) {
 						if (BonusSpecialActions.prepared[boNmr]) spCast.special.prepared.push(dia.selectBo[boNmr]); //those that are autoprepared for referencing it later
 						if (BonusSpecialActions.atwill[boNmr]) spCast.special.atwill.push(dia.selectBo[boNmr]); //those that are autoprepared for referencing it later
@@ -3327,7 +3331,9 @@ function GenerateSpellSheet(GoOn) {
 			}
 		} else if (spCast.extra && spCast.extra[100] === "AddToKnown" && spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) { // add spells to the full list for classes with spells known/spellbook, if set to add to the known. Only add the levels that can be used
 			var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
-			var maxSpell = spCast.spellsTable ? spCast.spellsTable[CasterLevel].indexOf(0) : tDoc[spCast.factor[1] + "SpellTable"][CasterLevel].indexOf(0);
+			var theTable = spCast.spellsTable ? spCast.spellsTable : tDoc[spCast.factor[1] + "SpellTable"];
+			var tableLevel = Math.min(theTable.length - 1, CasterLevel);
+			var maxSpell = theTable[tableLevel].indexOf(0);
 			maxSpell = Number(maxSpell === -1 ? 9 : maxSpell);
 			for (var eS = 0; eS < spCast.extra.length; eS++) {
 				var eSpell = spCast.extra[eS];
@@ -3351,7 +3357,9 @@ function GenerateSpellSheet(GoOn) {
 		var maxLvl = 9;
 		if (spCast.level && spCast.typeList && spCast.typeList !== 2 && spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) {
 			var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
-			var maxSpell = spCast.spellsTable ? spCast.spellsTable[CasterLevel].indexOf(0) : tDoc[spCast.factor[1] + "SpellTable"][CasterLevel].indexOf(0);
+			var theTable = spCast.spellsTable ? spCast.spellsTable : tDoc[spCast.factor[1] + "SpellTable"];
+			var tableLevel = Math.min(theTable.length - 1, CasterLevel);
+			var maxSpell = theTable[tableLevel].indexOf(0);
 			maxLvl = Number(maxSpell === -1 ? 9 : maxSpell);
 		}
 		
@@ -4763,18 +4771,23 @@ function CheckForSpellUpdate() {
 				if (aCast.known) {
 					// see if there is a cantrips array in the known section and the amount of known
 					if (isArray(aCast.known.cantrips)) {
-						askUserUpdateSS = aCast.known.cantrips[lvlOld] !== aCast.known.cantrips[lvlNew];
+						var oldCaLvl = Math.min(aCast.known.cantrips.length - 1, lvlOld);
+						var newCaLvl = Math.min(aCast.known.cantrips.length - 1, lvlNew);
+						askUserUpdateSS = aCast.known.cantrips[oldCaLvl] !== aCast.known.cantrips[newCaLvl];
 					}
 					// see if there is a spells array in the known section and the amount of known
 					if (!askUserUpdateSS && isArray(aCast.known.spells)) {
-						askUserUpdateSS = aCast.known.spells[lvlOld] !== aCast.known.spells[lvlNew];
+						var oldSpLvl = Math.min(aCast.known.spells.length - 1, lvlOld);
+						var newSpLvl = Math.min(aCast.known.spells.length - 1, lvlNew);
+						askUserUpdateSS = aCast.known.spells[oldSpLvl] !== aCast.known.spells[newSpLvl];
 					} else if (!askUserUpdateSS && aCast.typeSp && (aCast.typeSp === "book" || aCast.typeSp === "list") && aCast.typeList !== 2) {
 						// if this is a list/book and the caster just got access to a new spell slot level
-						if (aCast.spellsTable) {
-							askUserUpdateSS = aCast.spellsTable[lvlOld + 1].indexOf(0) !== aCast.spellsTable[lvlNew + 1].indexOf(0);
-						} else if (aCast.factor && aCast.factor[0]) {
-							askUserUpdateSS = tDoc[aCast.factor[1] + "SpellTable"][lvlOld + 1].indexOf(0) !== tDoc[aCast.factor[1] + "SpellTable"][lvlNew + 1].indexOf(0);
-						}
+						var theTable = spCast.spellsTable ? spCast.spellsTable : aCast.factor && aCast.factor[0] ? tDoc[spCast.factor[1] + "SpellTable"] : false;
+						if (theTable) {
+							var oldTableLvl = Math.min(theTable.length - 1, lvlOld + 1);
+							var newTableLvl = Math.min(theTable.length - 1, lvlNew + 1);
+							askUserUpdateSS = theTable[oldTableLvl].indexOf(0) !== theTable[newTableLvl].indexOf(0);
+						};
 					}
 				}
 				//see if any of the bonus additions has an array for which the value changed with the changing of the level
@@ -4782,7 +4795,9 @@ function CheckForSpellUpdate() {
 					for (var theBonus in aCast.bonus) {
 						aBonus = aCast.bonus[theBonus];
 						if (aBonus.times && isArray(aBonus.times)) {
-							askUserUpdateSS = aBonus.times[lvlOld] !== aBonus.times[lvlNew];
+							var oldBoLvl = Math.min(aBonus.times.length - 1, lvlOld);
+							var newBoLvl = Math.min(aBonus.times.length - 1, lvlNew);
+							askUserUpdateSS = aBonus.times[oldBoLvl] !== aBonus.times[newBoLvl];
 						}
 						if (askUserUpdateSS) break;
 					}
@@ -5165,7 +5180,7 @@ function SpellPointsLimFea(AddRemove) {
 				break;
 			}
 		}
-		var SpellPointsAmount = SpellPointsTable[classes.spellcastlvl.default];
+		var SpellPointsAmount = SpellPointsTable[Math.min(SpellPointsTable.length - 1, classes.spellcastlvl.default)];
 		if (!SPexists && What("Limited Feature 1") !== "") LimFeaInsert(1);
 		AddFeature("Spell Points", SpellPointsAmount, "", "long rest", "Spell Point variant rules, Dungeon Master Guide page 288");
 		break;

@@ -14,7 +14,7 @@
 				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170778/)
 				This subclass is made by Matthew Mercer
 	Code by:	SoilentBrad & MorePurpleMoreBetter
-	Date:		2017-03-15 (sheet v12.88)
+	Date:		2017-04-24 (sheet v12.96)
 	
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 */
@@ -111,7 +111,7 @@ SourceList["MM:GMA"] = {
 	url : "http://www.dmsguild.com/product/170778/"
 };
 
-WeaponsList["pistol"] = {
+WeaponsList["pistol-mm"] = {
 	regExpSearch : /^(?=.*pistol)(?!.*automatic).*$/i,
 	name : "Pistol",
 	source : ["MM:GMA", 3],
@@ -134,7 +134,7 @@ AmmoList["pistol bullets"] = {
 	display : 50,
 	invName : "Bullets, pistol"
 };
-WeaponsList["musket"] = {
+WeaponsList["musket-mm"] = {
 	regExpSearch : /musket/i,
 	name : "Musket",
 	source : ["MM:GMA", 3],

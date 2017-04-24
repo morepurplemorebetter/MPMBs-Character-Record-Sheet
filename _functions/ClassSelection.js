@@ -121,7 +121,7 @@ function SelectClass() {
 				dsc2 : "Although the sheet knows of only one way to set the text field from the drop-down boxes, it understands very many different textual inputs. You can test this by typing something in the text field and see what the sheet recognizes it as. For example, if you enter 'War Priest' it will be recognized as a 'Cleric (War Domain)', and when you enter 'Exalted Knight of Obedience' it will be recognized as 'Paladin (Oath of Devotion)'.",
 				lvlu : theChar + "'s level has increased by " + this.LVLchange + ", for a total of " + this.currentLevel + ". Please change the level of one or more classes accordingly, or add a new class in its entirety.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level).",
 				note : "* This first row has to be used and is considered the class you took at 1st level, i.e. the class that grants all its proficiencies.",
-				rngr : "IMPORTANT: As you have included the source 'Unearthed Arcana: The Ranger, Revised', the UA ranger will be used when you select a Ranger. If you want to make a PHB Ranger, you will first have to exclude the Revised Ranger or its source (UA:RR). You can do so with the button below.",
+				rngr : "IMPORTANT: As you have included the source 'Unearthed Arcana: The Ranger, Revised', the UA Ranger will be used when you select a Ranger. If you want to make a PHB Ranger, you will first have to exclude the Revised Ranger or its source (UA:RR). You can do so with the button below.",
 				full : this.finalText,
 				tLVL : this.finalLevel.toString(),
 				nLVL : "\u03B4-level: " + (this.currentLevel - this.finalLevel),
@@ -830,7 +830,7 @@ function SelectClass() {
 								font : "heading",
 								bold : true,
 								height : 25,
-								char_width : 7
+								char_width : 9
 							},]
 						}]
 					}, {
@@ -937,16 +937,17 @@ function SelectClass() {
 		};
 	} while (dia !== "ok" && dia !== "cancel");
 
+	delete tDoc.getField("Class and Levels").remVal;
 	if (dia === "ok") { // apply the changes
 		// update the delimiter
 		Value("Delimiter", ClassSelection_Dialog.delimiter);
 		
 		// set the character level and xp
 		Value("Character Level", ClassSelection_Dialog.finalLevel > 0 ? ClassSelection_Dialog.finalLevel : "");
-		var curXP = Number(What("Total Experience"));
+		var curXP = Number(What("Total Experience").replace(",", "."));
 		var curXPlvl = ExperiencePointsList.reduce(function(acc, val) { return acc += curXP >= Number(val) ? 1 : 0; }, 0);
-		if (ClassSelection_Dialog.finalLevel != curXPlvl) {
-			var newXP = ClassSelection_Dialog.finalLevel ? ExperiencePointsList[Math.min(ClassSelection_Dialog.finalLevel, 20) - 1] : "";
+		if (ClassSelection_Dialog.finalLevel < ExperiencePointsList.length && ClassSelection_Dialog.finalLevel != curXPlvl) {
+			var newXP = ClassSelection_Dialog.finalLevel ? ExperiencePointsList[Math.min(ClassSelection_Dialog.finalLevel, ExperiencePointsList.length - 1) - 1] : "";
 			Value("Total Experience", newXP);
 			if (curXP) {
 				Value("Add Experience", Number(What("Add Experience").replace(",", ".")) + curXP - newXP);
@@ -964,12 +965,12 @@ function SelectClass() {
 			ApplyClasses(ClassSelection_Dialog.finalText);
 		};
 	};
-	return ClassSelection_Dialog;
 };
 
 //and On Click function for the Class and Levels field
 function ClickClasses() {
 	if (app.viewerVersion >= 15 && (!event.target.value || event.modifier || event.shift)) {
+		event.target.remVal = event.target.value;
 		tDoc.getField("Player Name").setFocus();
 		SelectClass();
 	};
@@ -1197,8 +1198,7 @@ function AskMulticlassing() {
 				}, ]
 			}, ]
 		}
-	}
-
+	};
 	
 	var Nmbr = classes.parsed.length;
 	var Cl1 = classes.parsed[0] ? classes.parsed[0][0].capitalize() : "";
@@ -1251,8 +1251,8 @@ function AskMulticlassing() {
 				Value("Class and Levels", newClassText);
 			}
 		}
-	}
-}
+	};
+};
 
 //show a dialog when the subclass is not set but the level is high enough to need a subclass
 function PleaseSubclass(theclass) {

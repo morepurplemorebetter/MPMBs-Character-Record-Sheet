@@ -50,7 +50,7 @@ function AddFolderJavaScript(justConsole) {
 				"txt2": this.Text2,
 				"txt3": this.Text3,
 				"txtJ": this.TextLoc,
-				"locJ": this.LocJS,
+				"locJ": this.LocJS
 			});
 		},
 		bADD : function(dialog) {
@@ -215,11 +215,11 @@ function DirectImport_Dialogue() {
 				"icTx": this.TextIcons,
 				"fLoc": this.fileLoc,
 				"icCl": "Import user-defined icons as well?" + (isReader ? " (Requires Acrobat Pro or Standard)" : ""),
-				"icNo": true,
+				"icNo": true
 			});
 			dialog.enable({
 				"icNo": !isReader,
-				"icYe": !isReader,
+				"icYe": !isReader
 			});
 		},
 		bFND : function(dialog) {
@@ -395,11 +395,39 @@ function DirectImport(consoleTrigger) {
 		var bothPF = typePF && fromSheetTypePF;
 		var bothCF = !typePF && !fromSheetTypePF;
 		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
+		var FromVersion = global.docFrom.info.SheetVersion;
+		if (isNaN(FromVersion)) FromVersion = FromVersion.replace("b", "");
 		
 		//copy any custom script and run it
 		if (ImportField("User Script")) RunUserScript();
 		if (ImportField("CurrentSources.Stringified")) {
 			GetStringifieds();
+			if (!CurrentSources.globalExcl) CurrentSources.globalExcl = [];
+			//set any UA sources that weren't in the old sheet to excluded, if any UA source was set to be excluded
+			for (var s = 0; s < CurrentSources.globalExcl.length; s++) {
+				var theSrc = CurrentSources.globalExcl[s];
+				if ((/Unearthed Arcana/i).test(SourceList[theSrc].group)) {
+					for (var src in SourceList) {
+						if ((/Unearthed Arcana/i).test(SourceList[src].group) && !global.docFrom.SourceList[src]) {
+							CurrentSources.globalExcl.push(src);
+						};
+					};
+					break;
+				};
+			};
+			//set the DMG weapons to being excluded, if importing from sheet version 12.93 or earlier
+			if (FromVersion < 12.94) {
+				if (!CurrentSources.ammoExcl) CurrentSources.ammoExcl = [];
+				for (var amm in AmmoList) {
+					if (AmmoList[amm].source && AmmoList[amm].source[0] === "D") CurrentSources.ammoExcl.push(amm);
+				};
+				if (!CurrentSources.weapExcl) CurrentSources.weapExcl = [];
+				for (var wea in WeaponsList) {
+					if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source[0] === "D") CurrentSources.weapExcl.push(wea);
+				};
+			}
+			SetStringifieds("sources");
+			//now update the dropdowns with these new settings
 			UpdateDropdown("resources");
 		};
 		
@@ -546,7 +574,8 @@ function DirectImport(consoleTrigger) {
 		ImportField("Character Level", {notTooltip: true}); ImportField("Total Experience", {notTooltip: true}); ImportField("Add Experience", {notTooltip: true});
 		
 		//set the race
-		ImportField("Race Remember"); ImportField("Race", {notTooltip: true, notSubmitName: true});
+		ImportField("Race", {notTooltip: true, notSubmitName: true});
+		if (ImportField("Race Remember")) ApplyRace(What("Race Remember"));
 		
 		//set the background
 		ImportField("Background", {notTooltip: true, notSubmitName: true}); ImportField("Background Extra", {notTooltip: true});
