@@ -5774,39 +5774,13 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 				var Fea = ReturnClassFeatures("race", key, newRaceLvl, false, oldRaceLvl, false);
 				
 				//see if we need to force updating the limited feature section
-				var GoAnyway = newRaceLvl > 0 && propFea.minlevel <= oldRaceLvl && (Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld);
+				var GoAnyway = newRaceLvl > 0 && keyFea.minlevel <= oldRaceLvl && (Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld);
 
 				if ((Fea.Use || Fea.UseCalc) && (GoAnyway || checkLVL)) {
 					var FeaTooltip = CurrentRace.name + keyFea.tooltip;
-					var AddRemoveFea = AddRemove === "Add" && FeaUse && !(/unlimited|\u221E/i).test(FeaUse) ? "Add" : "Remove";
+					var AddRemoveFea = AddRemove === "Add" && Fea.Use && !(/unlimited|\u221E/i).test(Fea.Use) ? "Add" : "Remove";
 					tDoc[AddRemoveFea + "Feature"](keyFea.name, AddRemoveFea === "Add" ? Fea.Use : Fea.UseOld, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, FeaTooltip, Fea.UseOld, Fea.UseCalc);
 				};
-				
-/* 				var FeaUse = keyFea.usages;
-				if (FeaUse && isArray(FeaUse)) {
-					FeaUse = newRaceLvl ? FeaUse[newRaceLvl - 1] : 0;
-					var FeaUseOld = oldRaceLvl ? FeaUse[oldRaceLvl - 1] : 0;
-					GoAnyway = FeaUse !== FeaUseOld;
-				}
-
-				var FeaAdd = keyFea.additional ? " (" + keyFea.additional + ")" : "";
-				if (FeaAdd && isArray(keyFea.additional)) {
-					FeaAdd = newRaceLvl ? " (" + keyFea.additional[newRaceLvl - 1] + ")" : "";
-					GoAnyway = GoAnyway || (oldRaceLvl && keyFea.additional[newRaceLvl - 1] !== keyFea.additional[oldRaceLvl - 1]);
-				}
-				
-				//see if we are going to add or remove a feature
-				var AddRemove = keyFea.minlevel <= newRaceLvl ? "Add" : "Remove"
-				
-				//make a check to see if level-dependent features should be dealt with
-				var checkLVL = keyFea.minlevel <= RaceLevelUp[2] && keyFea.minlevel > RaceLevelUp[1];
-				
-				//add, remove, or update the feature
-				if ((keyFea.usages || keyFea.usagescalc) && (GoAnyway || checkLVL)) {
-					var FeaTooltip = CurrentRace.name + keyFea.tooltip;
-					var AddRemoveFea = AddRemove === "Add" && FeaUse && !(/unlimited|\u221E/i).test(FeaUse) ? "Add" : "Remove";
-					tDoc[AddRemoveFea + "Feature"](keyFea.name, AddRemoveFea === "Remove" ? FeaUseOld : FeaUse, FeaAdd, keyFea.recovery, FeaTooltip, FeaUseOld, keyFea.usagescalc);
-				} */
 				
 				thermoM(1/2); //increment the progress dialog's progress
 
