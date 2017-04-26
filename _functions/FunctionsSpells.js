@@ -4304,7 +4304,7 @@ function AskUserTwoLetters(caption) {
 }
 
 //aks the user for a number on how manu rows to insert that are used for the caption of the first column of the spell table
-function AskUserNumber() {
+function AskUserNumber(caption) {
 	var theDialog = {
 		theNMBR : "",
 		initialize : function (dialog) {
@@ -4317,7 +4317,7 @@ function AskUserNumber() {
 			this.theNMBR = oResult["user"];
 		},
 		description : {
-			name : "Amount of empty rows to insert",
+			name : caption ? caption : "Amount of empty rows to insert",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -4329,7 +4329,7 @@ function AskUserNumber() {
 					bold : true,
 					height : 21,
 					char_width : 30,
-					name : "Amount of empty rows to insert"
+					name : caption ? caption : "Amount of empty rows to insert"
 				}, {
 					type : "edit_text",
 					alignment : "align_center",

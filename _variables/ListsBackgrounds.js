@@ -1807,7 +1807,7 @@ var BackgroundList = {
 		],
 		flaw : [
 			"After years of denying who I am, I now despise myself and other members of my pathetic race.",
-			"Years have hiding have made me somewhat paranoid. I trust no one.",
+			"Years of hiding have made me somewhat paranoid. I trust no one.",
 			"I've been lying so often and for so long that I can't help it anymore. I frequently lie for no reason at all.",
 			"I am ashamed. I failed to protect a member of my family who was seized and thrown into the Area.",
 			"I am struggling with maintaining my secret identity. I subconsciously want to get caught and therefore sometimes let my secret identity slip.",

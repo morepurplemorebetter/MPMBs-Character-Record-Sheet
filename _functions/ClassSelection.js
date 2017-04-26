@@ -87,22 +87,24 @@ function SelectClass() {
 		};
 	};
 	var setNumberOfLinesInDialog = function(AddExtra) {
-		var setHeight = 25;
+		var setHeight = 23;
 		ClassSelection_Dialog.lines = 0;
 		for (var i = 0; i <= 9; i++) {
 			ClassSelection_Dialog.lines += setHeight > 0 ? 1 : 0;
 			var cS = ClassSelection_Dialog.curSelec[i];
 			var de = ClassSelection_Dialog.description.elements[0].elements[4].elements[i];
 			if (!AddExtra || de.height < 0) {
-				de.height = setHeight;
-				de.margin_height = setHeight > 0 ? 0 : setHeight;
-				de.elements.forEach( function (elem) {
-					elem.height = setHeight;
-				});
+				if (i > 0) {
+					de.height = setHeight + (setHeight < 0 ? 0 : 2);
+					de.margin_height = setHeight > 0 ? 0 : setHeight;
+					de.elements.forEach( function (elem) {
+						elem.height = setHeight;
+					});
+				};
 				if (AddExtra) { // if we are adding just one more, this function is now done
 					break;
 				} else if (!cS || cS.length === 0) { // otherwise see if we have more classes and hide all from this one, so that at least one more than the ones that are filled are shown
-					setHeight = -10;
+					setHeight = isWindows ? -12 : -6;
 				};
 			};
 		};
@@ -153,7 +155,7 @@ function SelectClass() {
 			};
 			dialog.load(toLoad);
 			dialog.enable(toUse);
-			delete toUse.bAdR;
+			var toShow = {nLVL : toUse.nLVL};
 			dialog.visible(toUse);
 			dialog.setForeColorRed("nLVL");
 			dialog.setForeColorRed("rngr");
@@ -357,6 +359,7 @@ function SelectClass() {
 							}, {
 								item_id : "r0NR",
 								type : "static_text",
+								height : 23,
 								char_width : 3,
 								font : "heading",
 								name : "1*"
@@ -375,6 +378,7 @@ function SelectClass() {
 							}, {
 								item_id : "r0LV",
 								type : "edit_text",
+								height : 23,
 								char_width : 2,
 								SpinEdit : true
 							}]
@@ -392,6 +396,7 @@ function SelectClass() {
 							}, {
 								item_id : "r0TX",
 								type : "edit_text",
+								height : 23,
 								char_width : 25
 							}]
 						}, {
@@ -404,7 +409,7 @@ function SelectClass() {
 								bold : true,
 								height : 20,
 								char_width : 8,
-								name : "Class"
+								name : " Class"
 							}, {
 								item_id : "r0CD",
 								type : "popup",
@@ -422,6 +427,7 @@ function SelectClass() {
 							}, {
 								item_id : "r0CS",
 								type : "static_text",
+								height : 23,
 								char_width : 7
 							}]
 						}, {
@@ -434,7 +440,7 @@ function SelectClass() {
 								bold : true,
 								height : 20,
 								char_width : 15,
-								name : "Subclass / Archetype"
+								name : " Subclass / Archetype"
 							}, {
 								item_id : "r0SD",
 								type : "popup",
@@ -452,6 +458,7 @@ function SelectClass() {
 							}, {
 								item_id : "r0SS",
 								type : "static_text",
+								height : 23,
 								char_width : 6
 							}]
 						}]
@@ -879,23 +886,29 @@ function SelectClass() {
 					char_height : 3,
 					char_width : 80
 				}, {
-					type : "view", // buttons for viewing/changing sources
-					align_children : "align_row",
-					alignment : "align_left",
+					type : "view", // the bottom row of buttons
+					align_children : "align_distribute",
+					alignment : "align_fill",
 					elements : [{
-						item_id : "bCSS",
-						type : "button",
-						font : "dialog",
-						bold : true,
-						name : "Change Available Sources / Classes / Archetypes"
+						type : "view", // buttons for viewing/changing sources
+						align_children : "align_row",
+						alignment : "align_left",
+						elements : [{
+							item_id : "bCSS",
+							type : "button",
+							font : "dialog",
+							bold : true,
+							name : "Change Available Classes && Archetypes"
+						}, {
+							item_id : "bSrc",
+							type : "button",
+							name : "List Source Abbreviations"
+						}]
 					}, {
-						item_id : "bSrc",
-						type : "button",
-						name : "View Abbreviations of Sources"
+						type : "ok_cancel",
+						alignment : "align_right",
+						ok_name : "Apply"
 					}]
-				}, {
-					type : "ok_cancel",
-					ok_name : "Apply"
 				}]
 			}]
 		}
