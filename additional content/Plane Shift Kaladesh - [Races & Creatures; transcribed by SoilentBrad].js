@@ -11,8 +11,10 @@
 	Subject:	Races, Subraces, Creatures
 	Effect:		This script adds a number of races and creatures from the Magic: The Gathering plane of Kaladesh
 				This is taken from the Plane Shift: Kaladesh article (http://magic.wizards.com/en/articles/archive/feature/plane-shift-kaladesh-2017-02-16)
-	Code by:	SoilentBrad (and tiny corrections by MPMB)
-	Date:		2017-04-24 (sheet v12.96)
+	Code by:	SoilentBrad
+				userZynx_name (additions of Pyromancer, Servo, and feats)
+				tiny corrections by MPMB
+	Date:		2017-04-28 (sheet v12.98)
 */
 
 SourceList["PS:K"] = {
@@ -155,7 +157,7 @@ CreatureList["gremlin"] = {
 	traits : [{
 			name : "Aether Scent",
 			description : "The gremlin can pinpoint, by scent, the location of refined or unrefined aether within 30 feet of it.",
-		},
+		}
 	],
 	actions : [{
 			name : "Siphon",
@@ -210,5 +212,103 @@ CreatureList["sky whale"] = {
 	]
 };
 
+CreatureList["servo"] = {
+	name : "Servo",
+	source : ["PS:K", 32],
+	size : 5,
+	type : "Construct",
+	subtype : "",
+	alignment : "Unaligned",
+	ac : 11,
+	hp : 10,
+	hd : [3, 4],
+	speed : "20 ft",
+	scores : [4, 11, 12, 3, 10, 7],
+	saves : ["", "", "", "", "", ""],
+	passivePerception : 10,
+	damage_immunities : "poison",
+	condition_immunities : "charmed, poisoned",
+	senses : "",
+	languages : "",
+	challengeRating : "0",
+	proficiencyBonus : 2,
+	attacksAction : 1,
+	attacks : [{
+			name : "Claw",
+			ability : 1,
+			damage : [1, "", "slashing"],
+			range : "Melee",
+			description : "",
+			modifiers : [1, "", false]
+		}
+	]
+};
+
+ClassSubList["sorcerer-pyromancer"] = {
+	regExpSearch : /pyromancer|pyromancy/i,
+	subname : "Pyromancy",
+	source : ["PS:K", 9],
+	fullname : "Pyromancer",
+	features : {
+		"subclassfeature1" : {
+			name : "Heart of Fire",
+			source : ["PS:K", 9],
+			minlevel : 1,
+			description : "\n   " + "When I start casting a spell (not cantrip) that deals fire damage, flames erupt from me" + "\n   " + "Any creatures of my choice within 10 ft take half my sorcerer level in fire damage",
+			additional : levels.map( function(n) { return (n > 1 ? Math.floor(n/2) : 1) + " fire damage"; })
+		},
+		"subclassfeature6" : {
+			name : "Fire in the Veins",
+			source : ["PS:K", 9],
+			minlevel : 6,
+			description : "\n   " + "I have resistance to fire damage and spells I cast ignore resistance to fire damage",
+			eval : "AddResistance('Fire', 'Pyromancer');",
+			removeeval : "RemoveResistance('Fire');"
+		},
+		"subclassfeature14" : {
+			name : "Pyromancer's Fury",
+			source : ["PS:K", 9],
+			minlevel : 14,
+			description : "\n   " + "As a reaction when hit by a melee attack, I can deal fire damage to the attacker" + "\n   " + "The damage is equal to my sorcerer level and ignores resistance to fire damage",
+			action : ["reaction", ""],
+			additional : ["", "", "", "", "", "", "", "", "", "", "", "", "", "14 fire damage", "15 fire damage", "16 fire damage", "17 fire damage", "18 fire damage", "19 fire damage", "20 fire damage"]
+		},
+		"subclassfeature18" : {
+			name : "Fiery Soul",
+			source : ["PS:K", 9],
+			minlevel : 18,
+			description : "\n   " + "I have immunity to fire damage" + "\n   " + "Any spell or effect I create ingores resistance to fire damage" + "\n   " + "In addition, it will treat immunity to fire damage as resistance to fire damage",
+			save : "Immune to fire damage",
+			eval : "RemoveResistance('Fire');",
+			removeeval : "AddResistance('Fire', 'Pyromancer');"
+		},
+	}
+};
+ClassList.sorcerer.subclasses[1].push("sorcerer-pyromancer");
+
+FeatsList["quicksmithing"] = {
+	name : "Quicksmithing",
+	source : ["PS:K", 13],
+	description : "I gain the Tinker ability of a Rock Gnome, including proficiency with tinker's tools. I learn two 1st-level ritual spells and can learn more if found and no higher spell level than half my character level. I can cast these as rituals with Intelligence as my spellcasting ability.",
+	prerequisite : "Intelligence 13 or higher",
+	eval : "CurrentSpells['quicksmithing'] = {name : 'Quicksmithing Ritual Spells', ability : 4, list : {class : 'any', ritual : true}, known : {spells : 'book'}, bonus : { someFeat : { name : '1st-level ritual spell', class : 'any', level : [1, 1], ritual : true, times : 2} } }; SetStringifieds('spells');",
+	removeeval : "delete CurrentSpells['quicksmithing']; SetStringifieds('spells');"
+};
+
+FeatsList["servo crafting"] = {
+	name : "Servo Crafting",
+	source : ["PS:K", 13],
+	description : "I can cast Find Familiar as a ritual, creating a servo instead of an animal. I can telepathically communicate with it, perceive its senses, and speak through it in my own voice. When I use the Attack action, I can forfeit one attack for it to attack.",
+	prerequisite : "Intelligence 13 or higher",
+	spellcastingBonus : {
+		name : "Servo Crafting",
+		spellcastingAbility : 4,
+		spells : ["find familiar"],
+		selection : ["find familiar"],
+		firstCol : "(R)"
+	}
+};
+
 UpdateDropdown("race");
 UpdateDropdown("creature");
+UpdateDropdown("feat");
