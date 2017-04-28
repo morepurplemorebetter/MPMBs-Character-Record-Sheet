@@ -30,8 +30,8 @@ var FeatsList = {
 		name : "Crossbow Expert",
 		source : ["P", 165],
 		description : "I ignore the loading quality of crossbows I'm proficient with. I don't suffer disadvantage on ranged attack rolls for being within 5 feet of a hostile. When I attack with a one-handed weapon, I can use a bonus action to attack with a loaded hand crossbow I'm holding.",
-		eval : "AddAction(\"bonus action\", \"Hand crossbow (when taking attack action)\", \"the Crossbow Expert feat\");",
-		removeeval : "AddAction(\"bonus action\", \"Hand crossbow (when taking attack action)\");",
+		eval : "AddAction('bonus action', 'Hand crossbow (when taking attack action)', 'the Crossbow Expert feat');",
+		removeeval : "AddAction('bonus action', 'Hand crossbow (when taking attack action)');",
 		calcChanges : {
 			atkAdd : ["if ((/crossbow/i).test(WeaponName) && fields.Proficiency) {fields.Description = fields.Description.replace(/(,? ?loading|loading,? ?)/i, '');};", "I ignore the loading quality of crossbows I'm proficient with."]
 		}
@@ -55,8 +55,8 @@ var FeatsList = {
 		name : "Dungeon Delver",
 		source : ["P", 166],
 		description : "I have advantage on Wis (Perception) and Int (Investigation) checks made to detect the presence of secret doors. I can search for traps while traveling at a normal pace. I have resistance to damage dealt by traps and advantage on saves to avoid or resist traps.",
-		eval : "AddString(\"Saving Throw advantages / disadvantages\", \"Advantage on saves vs. traps.\", \"; \"); AddResistance(\"Traps\", \"Dungeon Delver\"); AddString(\"Vision\", \"Adv. on Perception and Investigation for secret doors\", \"; \");",
-		removeeval : "RemoveString(\"Saving Throw advantages \/ disadvantages\", \"Advantage on saves vs. traps.\"); RemoveResistance(\"Traps\");"
+		eval : "AddString('Saving Throw advantages / disadvantages', 'Adv. vs. traps', '; '); AddResistance('Traps', 'Dungeon Delver'); AddString('Vision', 'Adv. on Perception and Investigation for secret doors', '; ');",
+		removeeval : "RemoveString('Saving Throw advantages / disadvantages', 'Adv. vs. traps'); RemoveResistance('Traps'); RemoveString('Vision', 'Adv. on Perception and Investigation for secret doors');"
 	},
 	"durable" : {
 		name : "Durable",

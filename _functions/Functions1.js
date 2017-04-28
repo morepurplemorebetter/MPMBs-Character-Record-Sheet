@@ -1,359 +1,5 @@
-var tDoc = this;
 function MakeDocName() {
 	return "MorePurpleMoreBetter's D&D 5th edition " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + tDoc.info.SheetVersion.toString() + " (" + tDoc.info.SheetType + ")";
-};
-
-function Hide(field) {
-	if (tDoc.getField(field)) tDoc.getField(field).display = display.hidden;
-};
-
-function DontPrint(field) {
-	if (tDoc.getField(field)) tDoc.getField(field).display = display.noPrint;
-};
-
-function Show(field) {
-	if (tDoc.getField(field)) tDoc.getField(field).display = display.visible;
-};
-
-function Editable(field) {
-	if (tDoc.getField(field)) tDoc.getField(field).readonly = false;
-};
-
-function Uneditable(field) {
-	if (tDoc.getField(field)) tDoc.getField(field).readonly = true;
-};
-
-function Value(field, FldValue, tooltip) {
-	if (!tDoc.getField(field)) return false;
-	tDoc.getField(field).value = FldValue;
-	if (tooltip !== undefined) {
-		tDoc.getField(field).userName = tooltip;
-	}
-};
-
-function What(field) {
-	return tDoc.getField(field) ? tDoc.getField(field).value : "";
-}
-
-function Who(field) {
-	return tDoc.getField(field) ? tDoc.getField(field).userName : "";
-}
-
-function Clear(field) {
-	if (tDoc.getField(field)) tDoc.getField(field).clearItems();
-};
-
-function AddTooltip(field, tooltip) {
-	if (tDoc.getField(field)) tDoc.getField(field).userName = tooltip;
-};
-
-function SwapTooltip(field1, field2) {
-	tt1 = Who(field1);
-	tt2 = Who(field2);
-	AddTooltip(field1, tt2);
-	AddTooltip(field2, tt1);
-};
-
-function Checkbox(field, FldValue, tooltip) {
-	if (!tDoc.getField(field)) return false;
-	var Checkit = (FldValue === undefined) ? true : FldValue;
-	var checkNo = isArray(tDoc.getField(field).page) ? tDoc.getField(field).page.length : 1;
-	for (var c = 0; c < checkNo; c++) {
-		tDoc.getField(field).checkThisBox(c, Checkit);
-		if (tooltip !== undefined) {
-			tDoc.getField(field).userName = tooltip;
-		}
-	}
-};
-
-function desc(arr) {
-	return "\n   " + arr.join("\n   ");
-};
-
-//adding a way of capitalizing every first letter of every word in a string
-String.prototype.capitalize = function () {
-	var string = this.toLowerCase().replace(/([^']|^)\b\w/g, function (m) {
-		return m.toUpperCase();
-	});
-	
-	// Certain minor words should be left lowercase unless 
-	// they are the first or last words in the string
-	lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At', 
-	'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
-	for (var Ca = 0; Ca < lowers.length; Ca++)
-	string = string.replace(new RegExp('\\W' + lowers[Ca] + '\\W', 'g'), function(txt) {
-		return txt.toLowerCase();
-	});
-	
-	return string;
-};
-Number.prototype.capitalize = function () {
-	return this.toString().capitalize();
-};
-RegExp.prototype.capitalize = function () {
-	return this.toString().capitalize();
-};
-
-//adding a way to convert a string with special characters into a regular expression
-String.prototype.RegEscape = function () {
-	return this.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-};
-Number.prototype.RegEscape = function () {
-	return this.toString().RegEscape();
-};
-RegExp.prototype.RegEscape = function () {
-	return this.toString().RegEscape();
-};
-
-//define a way for numbers and regular expressions to return an indexOf(), match(), replace(), search(), slice(), split(), substring(), substr(), toLowerCase(), or toUpperCase() to avoid errors
-Number.prototype.indexOf = function (searchValue, fromIndex) {
-	return this.toString().indexOf(searchValue, fromIndex);
-};
-Number.prototype.match = function (regexpObj) {
-	return this.toString().match(regexpObj);
-};
-Number.prototype.replace = function (regexp_substr, newSubStr_function) {
-	return this.toString().replace(regexp_substr, newSubStr_function);
-};
-Number.prototype.search = function (regexpObj) {
-	return this.toString().search(regexpObj);
-};
-Number.prototype.slice = function (beginSlice, endSlice) {
-	return this.toString().slice(beginSlice, endSlice);
-};
-Number.prototype.split = function (separator, limit) {
-	return this.toString().split(separator, limit);
-};
-Number.prototype.substring = function (indexStart, indexEnd) {
-	return this.toString().substring(indexStart, indexEnd);
-};
-Number.prototype.substr = function (start, length) {
-	return this.toString().substr(start, length);
-};
-Number.prototype.toLowerCase = function () {
-	return this.toString().toLowerCase();
-};
-Number.prototype.toUpperCase = function () {
-	return this.toString().toUpperCase();
-};
-RegExp.prototype.indexOf = function (searchValue, fromIndex) {
-	return this.toString().indexOf(searchValue, fromIndex);
-};
-RegExp.prototype.match = function (regexpObj) {
-	return this.toString().match(regexpObj);
-};
-RegExp.prototype.replace = function (regexp_substr, newSubStr_function) {
-	return this.toString().replace(regexp_substr, newSubStr_function);
-};
-RegExp.prototype.search = function (regexpObj) {
-	return this.toString().search(regexpObj);
-};
-RegExp.prototype.slice = function (beginSlice, endSlice) {
-	return this.toString().slice(beginSlice, endSlice);
-};
-RegExp.prototype.split = function (separator, limit) {
-	return this.toString().split(separator, limit);
-};
-RegExp.prototype.substring = function (indexStart, indexEnd) {
-	return this.toString().substring(indexStart, indexEnd);
-};
-RegExp.prototype.substr = function (start, length) {
-	return this.toString().substr(start, length);
-};
-RegExp.prototype.toLowerCase = function () {
-	return this.toString().toLowerCase();
-};
-RegExp.prototype.toUpperCase = function () {
-	return this.toString().toUpperCase();
-};
-Array.prototype.match = function (regexpObj) {
-	return this.toString().match(regexpObj);
-};
-Array.prototype.replace = function (regexp_substr, newSubStr_function) {
-	return this.toString().replace(regexp_substr, newSubStr_function);
-};
-Array.prototype.search = function (regexpObj) {
-	return this.toString().search(regexpObj);
-};
-Array.prototype.split = function (separator, limit) {
-	return this.toString().split(separator, limit);
-};
-Array.prototype.substring = function (indexStart, indexEnd) {
-	return this.toString().substring(indexStart, indexEnd);
-};
-Array.prototype.substr = function (start, length) {
-	return this.toString().substr(start, length);
-};
-Array.prototype.toLowerCase = function () {
-	return this.toString().toLowerCase();
-};
-Array.prototype.toUpperCase = function () {
-	return this.toString().toUpperCase();
-};
-
-function ChangeWidth(field, amount) {
-	var Fld = tDoc.getField(field);
-	var aRect = Fld.rect; // Make a copy of Fld.rect
-	aRect[2] += amount; // Increment lower right x coordinate by given amount
-	Fld.rect = aRect; // Update the value of Fld.rect
-	Fld.value = Fld.value; //Set the value of the Fld to match the original value, as to not mess up the font scaling
-}
-
-function ClearIcons(field, clickMe) {
-	if (!tDoc.getField(field)) return false;
-	var iconFld = clickMe ? "SaveIMG.ClickMeIcon" : "SaveIMG.EmptyIcon";
-	var oIcon = tDoc.getField(iconFld).buttonGetIcon();
-	tDoc.getField(field).buttonSetIcon(oIcon);
-	if (clickMe) {
-		DontPrint(field);
-	} else if (tDoc.getField(field).display === display.noPrint) {
-		Show(field);
-	}
-};
-
-function PickDropdown(field, FldValue) {
-	var thisFld = tDoc.getField(field);
-	if (!thisFld) return;
-	if (!isNaN(FldValue) && thisFld.type === "combobox") {
-		tDoc.getField(field).currentValueIndices = Number(FldValue);
-	} else {
-		Value(field, FldValue);
-	}
-};
-
-function isArray(input) {
-	var giveback = false;
-	if (Object.prototype.toString.call(input) === "[object Array]") {
-		giveback = true;
-	}
-	return giveback;
-};
-
-function sign(x){return x>0?1:x<0?-1:x;}
-
-function format1(extraDec, fixedDec, unit) {
-	var plusDec = extraDec && !isNaN(extraDec) ? Number(extraDec) : 0;
-	var decShow = 0;
-	AFNumber_Format(2 + plusDec, 1, 0, 0, "", false);
-	var decLoc = event.value.indexOf(".");
-	var decSep = What("Decimal Separator");
-	
-	decShow = (3 + plusDec) - decLoc;
-	decShow = decShow < 0 ? 0 : decShow;
-	
-	if (fixedDec !== undefined && !isNaN(fixedDec) && fixedDec !== "") {
-		decShow = fixedDec;
-	}
-	
-	if (decSep === "dot") {
-		AFNumber_Format(decShow, 0, 0, 0, "", false);
-		if (decShow) {
-			// Replace any trailing zeroes with nothing
-			event.value = event.value.replace(/[0]+$/, "");
-			// Replace a trailing decimal with nothing
-			event.value = event.value.replace(/\.$/, "");
-		}
-	} else if (decSep === "comma") {
-		AFNumber_Format(decShow, 2, 0, 0, "", false);
-		if (decShow) {
-			// Replace any trailing zeroes with nothing
-			event.value = event.value.replace(/[0]+$/, "");
-			// Replace a trailing decimal with nothing
-			event.value = event.value.replace(/,$/, "");
-		}
-	}
-	
-	if (event.value !== "" && unit && unit === "mass") {
-		var UnitSystem = What("Unit System");
-		if (UnitSystem === "imperial") {
-			event.value += " lb";
-		} else if (UnitSystem === "metric") {
-			event.value += " kg";
-		}
-	}
-}
-
-//replace all commas and dots with the set decimal separator
-function format2() {
-	var theDec = What("Decimal Separator") === "dot" ? "." : ",";
-	if (event.value) event.value = event.value.replace(/(\.|,)/, theDec);
-}
-
-function keystroke1(allowDec, allowNegative) {
-	if (!event.willCommit) {
-		if (allowDec) {
-			var tests = !isNaN(event.change) || ((/,|\./g).test(event.change) && (!(/,|\./g).test(event.value) || (/,|\./g).test(event.value.substring(event.selStart, event.selEnd))));
-		} else {
-			var tests = !isNaN(event.change);
-		}
-		if (allowNegative) {
-			tests = tests || (event.change === "-" && event.selStart === 0 && (!(/-/g).test(event.value) || (/-/g).test(event.value.substring(event.selStart, event.selEnd))));
-		}
-		event.rc = tests;
-	} else {
-		event.rc = !isNaN(event.value.replace(/,/, "."));
-	}
-}
-
-function keystroke2() {
-	var allowedA = [".", ",", "-", "+", "*", "/"];
-	var tests = event.value === "";
-	if (!event.willCommit) {
-		tests = !isNaN(event.change) || allowedA.indexOf(event.change) !== -1;
-	} else if (event.value !== "") {
-		tests = false;
-		var toUse = event.value.replace(/(\.)+(\,)+/g, ",").replace(/(\.|\,)+/g, "$1");
-		toUse = toUse.replace(/(\-)+(\+)+/g, "-").replace(/(\+|\-)+/g, "$1").replace(/(\*|\/|\+|\-)+/g, "$1").replace(/^(\*|\/)/, "");
-		var toTest = toUse.replace(/,/g, ".");
-		try {
-			var tests = !isNaN(eval(toTest));
-			event.value = toUse;
-		} catch (err) {
-			try {
-				var tests = !isNaN(eval(toTest.slice(0, -1)));
-				event.value = toUse.slice(0, -1);
-			} catch (err) {
-				var tests = false;
-			}
-		}
-	}
-	event.rc = tests;
-}
-
-function RoundTo(inputNmbr, roundNmbr, emptyAtZero, applyDec) {
-	var input = isNaN(inputNmbr) ? Number(inputNmbr.replace(/,/g,".")) : inputNmbr, result = inputNmbr;
-	
-	if (roundNmbr && !isNaN(roundNmbr)) {
-		if (roundNmbr >= 1) {
-			result = Math.round(input / roundNmbr) * roundNmbr;
-		} else if (roundNmbr > 0 && roundNmbr < 1) {
-			result = Math.round(input * Math.pow(roundNmbr,-1)) / Math.pow(roundNmbr,-1);
-		}
-	}
-	
-	if (emptyAtZero && result === 0) {
-		result = "";
-	} else if (applyDec && result % 1 != 0 && What("Decimal Separator") === "comma") {
-		result = result.replace(".", ",");
-	}
-	
-	return result;
-}
-
-function NormDecimal(dec) {
-  var i = 0;
-  var first = ding.match(/,|\./);
-  var result = dec.replace(/,|\./g, function(all, match) { return i++===0 ? first : ''; });
-  return result;
-}
-
-//adding a way to see the number of keys in an object (i.e. length)
-function ObjLength(theObj) {
-	var size = 0;
-	for (var thingy in theObj) {
-		size++;
-	}
-	return size;
 };
 
 function MakeButtons() {
@@ -678,7 +324,7 @@ function OpeningStatement() {
 		var oldVerAlert = app.alert({
 			nIcon : 0,
 			cTitle : "Please update your Adobe Acrobat",
-			cMsg : "This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. You need at least Adobe Acrobat DC (Reader, Pro, or Standard) to use this PDF's full automation. Please know that if you continue to use the sheet with this outdated version of Adobe Acrobat, some features will not work and others will produce errors (e.g. the Source Selection and the Mystic class).\n\nDo you want to close this pdf and visit the Adobe website where you can download the latest version of Adobe Acrobat Reader for free (https://get.adobe.com/reader/)?\n\nPlease understand that if you choose 'No', there will be no support if anything doesn't work.\n\n" + (reminders == 0 ? "You will get this warning again the next two times that you open this sheet in an unsupported version of Adobe Acrobat." : reminders == 1 ? "You will get this warning again the next time you open this sheet in an unsupported version of Adobe Acrobat." : "This is the last time this pdf character sheet shows this warning."),
+			cMsg : "This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. You need at least Adobe Acrobat DC (Reader, Pro, or Standard) to use this PDF's full automation. Please know that if you continue to use the sheet with this outdated version of Adobe Acrobat, some features will not work (correctly) and others might produce errors (e.g. the Source Selection and the Mystic class).\n\nDo you want to close this pdf and visit the Adobe website where you can download the latest version of Adobe Acrobat Reader for free (https://get.adobe.com/reader/)?\n\nPlease understand that if you choose 'No', there will be no support if anything doesn't work.\n\n" + (reminders == 0 ? "You will get this warning again the next two times that you open this sheet in an unsupported version of Adobe Acrobat." : reminders == 1 ? "You will get this warning again the next time you open this sheet in an unsupported version of Adobe Acrobat." : "This is the last time this pdf character sheet shows this warning."),
 			nType : 2
 		});
 		if (oldVerAlert === 4) {
@@ -724,17 +370,6 @@ function OpeningStatement() {
 	if (tDoc.getField("SaveIMG.Patreon").submitName !== "") {
 		OpeningStatementVar = app.setTimeOut("PatreonStatement();", 66000);
 	};
-};
-
-function clean(input, remove) {
-	var charArray = (typeof remove !== "undefined") ? remove : [" ", "-", ".", ",", "\\", "/", ":", ";"];
-	while (charArray.indexOf(input[0]) !== -1) {
-		input = input.slice(1);
-	}
-	while (charArray.indexOf(input[input.length - 1]) !== -1) {
-		input = input.slice(0, -1);
-	}
-	return input;
 };
 
 function AddInvL(item, amount, weight, location) {
@@ -1052,7 +687,7 @@ function AddAction(actiontype, action, actiontooltip, replaceThis) {
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 1; i <= numberOfFields; i++) {
 			var next = tDoc.getField(field + i);
-			if (n === 1 && next.value.toLowerCase().indexOf(action.toLowerCase()) !== -1) {
+			if (n === 1 && next.value.toLowerCase().indexOf(action.toLowerCase()) !== -1 && (!replaceThis || next.value.toLowerCase().indexOf(replaceThis.toLowerCase()) === -1)) {
 				i = 90; n = 3;
 			} else if (n === 1 && replaceThis && next.value.toLowerCase().indexOf(replaceThis.toLowerCase()) !== -1) {
 				doReplace = true;
@@ -1424,6 +1059,7 @@ function ResetAll(GoOn) {
 		CurrentWeapons.proficiencies = {};
 		CurrentWeapons.extraproficiencies = [];
 		CurrentWeapons.manualproficiencies = [];
+		ApplyProficiencies(true);
 		CurrentClasses = {};
 		classes.known = {};
 		classes.extraskills = [];
@@ -1431,6 +1067,7 @@ function ResetAll(GoOn) {
 		CurrentBackground = {};
 		CurrentCompRace = {};
 		GetStringifieds(GoOn);
+		resourceDecisionDialog(true, true); //to make sure that even if the sheet is used before re-opening, the resources are set to default
 
 		//call upon some functions to reset other stuff than field values
 		ShowCalcBoxesLines();
@@ -2056,15 +1693,16 @@ function ToggleAdventureLeague(Toggle, skipLogSheet) {
 };
 
 //search the string for possible armour
-function ParseArmor(input) {
+function ParseArmor(input, onlyInv) {
 	if (!input) return "";
+	input = removeDiacritics(input);
 	var outputL = 0;
 	var output = "";
 	
 	//scan string for all weapons, including the alternative spellings using regular expression
 	for (var key in ArmourList) {
 		if (ArmourList[key].regExpSearch) {
-			if (testSource(key, ArmourList[key], "armorExcl")) continue; // test if the armour or its source isn't excluded
+			if ((onlyInv && ArmourList[key].weight == undefined) || testSource(key, ArmourList[key], "armorExcl")) continue; // test if the armour or its source isn't excluded
 			var wSearch = ArmourList[key].regExpSearch; //use the defined regular expression of the weapon
 			if ((wSearch).test(input) && outputL < key.length) {
 				outputL = key.length;
@@ -2404,6 +2042,7 @@ function ConditionSet() {
 //search the string for possible class and subclass
 function ParseClass(tempString) {
 	var found = false, tempFound = false, tempFoundL = 0;
+	tempString = removeDiacritics(tempString);
 	for (var i = 1; i <= 2; i++) { //first time around just look if the class matches and then look for its subclasses. If that doesn't yield anything, look if any of the subclasses match
 		for (var obj in ClassList) { //scan string for all classes, choosing subclasses over classes
 			if (testSource(obj, ClassList[obj], "classExcl") || (obj === "ranger" && !testSource("rangerua", ClassList.rangerua, "classExcl"))) continue; //only testing if the source of the class isn't excluded
@@ -2572,7 +2211,7 @@ function FindClasses(Event) {
 		};
 	};
 	
-	//if the found classes is the same as the classes.known, don't do anything
+	//if the found classes are the exact same as the classes.known, don't do anything
 	var isChange = primeClass !== classes.primary;
 	if (!isChange) {
 		var testArray = [];
@@ -2892,15 +2531,13 @@ function FindClasses(Event) {
 };
 
 //apply the effect of the classes
-function ApplyClasses(inputclasstxt, inputlevel) {
-		
-	var level = 0;
-	var updateall = inputlevel !== undefined ? inputlevel : true;
+function ApplyClasses(inputclasstxt, updateall) {
+	updateall = updateall !== undefined ? updateall : true;
 	classes.field = inputclasstxt;
 
 	thermoM("start"); //start a progress dialog
 	thermoM("Recognizing the entered class(es)..."); //change the progress dialog text
-	
+
 	//detects classes entered and parses information to global classes variable, if nothing has changed, it returns true and we can stop this function
 	if (FindClasses(classes.field)) {
 		thermoM("stop"); //stop the top progress dialog
@@ -2914,7 +2551,7 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 	if (What("Manual Class Remember") === "Yes") {
 		UpdateTooltips();
 		tDoc.calculate = IsNotReset;
-		tDoc.delay = false;
+		tDoc.delay = !IsNotReset;
 		thermoM("stop"); //stop the top progress dialog
 		return; //don't do the rest of this function
 	}
@@ -2984,43 +2621,44 @@ function ApplyClasses(inputclasstxt, inputlevel) {
 	}
 	if (What("SpellSlotsRemember") === "[false,false]") SpellPointsLimFea("Add");
 	
-	//don't update other things if only the "Character Level" field was changed (updateall = false)
-	if (updateall) {
-		thermoM(4/6); //increment the progress dialog's progress
-		thermoM("Setting the total character level..."); //change the progress dialog text
-		//put hit dice on sheet
-		
-		//add all levels and set character level
-		var level = classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);
-		Value("Character Level", level);
-		
-		//add tool proficiencies
-		for (var aClass in classes.known) {
-			n = aClass === classes.primary ? 0 : 1;
-			if (CurrentClasses[aClass].tools[n] !== undefined) {
-				var classTools = CurrentClasses[aClass].tools[n];
-				if (isArray(classTools)) {
-					classTools.forEach( function(acTool) { AddTool(acTool, CurrentClasses[aClass].name); });
-				} else {
-					AddTool(classTools, CurrentClasses[aClass].name);
-				}
+	thermoM(4/6); //increment the progress dialog's progress
+	thermoM("Setting the total character level..."); //change the progress dialog text
+	
+	
+	//add tool proficiencies
+	for (var aClass in classes.known) {
+		n = aClass === classes.primary ? 0 : 1;
+		if (CurrentClasses[aClass].tools[n] !== undefined) {
+			var classTools = CurrentClasses[aClass].tools[n];
+			if (isArray(classTools)) {
+				classTools.forEach( function(acTool) { AddTool(acTool, CurrentClasses[aClass].name); });
+			} else {
+				AddTool(classTools, CurrentClasses[aClass].name);
 			}
 		}
-	
-		//put the ability save DC right
-		SetTheAbilitySaveDCs();
-		
-		if (inputclasstxt !== "") {
-			CalcExperienceLevel();
-		}; //call to check XP level
 	}
+
+	//put the ability save DC right
+	SetTheAbilitySaveDCs();
+	
+	//add all levels and set character level
+	if (updateall) {
+		var level = classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);
+		Value("Character Level", level);
+		CalcExperienceLevel();
+	};
 	
 	thermoM(5/6); //increment the progress dialog's progress
-	thermoM("Finalizing the changes of the class(es)..."); //change the progress dialog text
-	//put hit dice on sheet
+	
+	var noSubClExc = IsSubclassException.toSource() === "({})";
 	
 	UpdateLevelFeatures("class");
-	if (IsSubclassException.toSource() === "({})") {
+	
+	// if a subclass was just selected, run applyclasses again
+	if (IsSubclassException.toSource() !== "({})" && event.target.name && event.target.name === "Class and Levels" && event.value !== classes.field) ApplyClasses(classes.field);
+	
+	if (noSubClExc) {
+		thermoM("Finalizing the changes of the class(es)..."); //change the progress dialog text
 		AddAttacksPerAction(); //update number of attacks
 		ApplyProficiencies(true); //call to update armor, shield and weapon proficiencies
 		UpdateTooltips(); //skills tooltip, ability score tooltip
@@ -3161,6 +2799,7 @@ function ParseRace(Inputs) {
 	var resultArray = ["", ""];
 	
 	if (Inputs) {
+		Inputs = removeDiacritics(Inputs);
 		var tempFound = 0;
 
 		for (var key in RaceList) { //scan string for all races
@@ -3514,16 +3153,16 @@ function UpdateTooltips() {
 };
 
 //see if a known weapon is in a string, and return the weapon
-function ParseWeapon(input) {
+function ParseWeapon(input, onlyInv) {
 	if (!input) return "";
 	var outputL = 0;
 	var output = "";
-	var inputS = input.replace(/off.{0,3}hand/i, "");
+	var inputS = removeDiacritics(input.replace(/off.{0,3}hand/i, ""));
 	
 	//scan string for all weapons, including the alternative spellings using regular expression
 	for (var key in WeaponsList) {
 		if (WeaponsList[key].regExpSearch) {
-			if (testSource(key, WeaponsList[key], "weapExcl")) continue; // test if the weapon or its source isn't excluded
+			if ((onlyInv && WeaponsList[key].weight == undefined) || testSource(key, WeaponsList[key], "weapExcl")) continue; // test if the weapon or its source isn't excluded
 			var wSearch = WeaponsList[key].regExpSearch; //use the defined regular expression of the weapon
 			if ((wSearch).test(inputS) && outputL < WeaponsList[key].name.length) {
 				outputL = WeaponsList[key].name.length;
@@ -3533,7 +3172,7 @@ function ParseWeapon(input) {
 	};
 	
 	return output;
-}
+};
 
 //detects weapons entered and put information to global CurrentWeapons variable
 function FindWeapons(ArrayNmbr) {
@@ -3994,7 +3633,7 @@ function ParseBackground(Input) {
 
 	if (Input) {
 		var tempFound = 0;
-
+		Input = removeDiacritics(Input);
 		for (var key in BackgroundList) { //scan string for all backgrounds
 			if (BackgroundList[key].variant) {
 				var BackOpt = BackgroundList[key].variant;
@@ -5238,6 +4877,7 @@ function LoadLevelsonStartup() {
 //lookup the name of a Feat and if it exists in the FeatsList
 function ParseFeat(Inputtxt) {
 	if (!Inputtxt) return "";
+	Inputtxt = removeDiacritics(Inputtxt);
 	var tempFound = 0;
 	var temp = "";
 	for (var key in FeatsList) {
@@ -5943,7 +5583,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 							thermoM("stop");
 							break; //this function is going to run again, so stop it now for this class
 						}
-					} else if (prop.indexOf("subclassfeature") !== -1 || (theSubClass&& ClassSubList[theSubClass].features[prop])) {
+					} else if (IsSubclassException[aClass] && (prop.indexOf("subclassfeature") !== -1 || (theSubClass && ClassSubList[theSubClass].features[prop]))) {
 						delete IsSubclassException[aClass];
 					} else if (IsSubclassException[aClass]) {
 						var FeaNewString = ParseClassFeature(aClass, prop, newClassLvl[aClass], false, FeaChoice);
@@ -6161,7 +5801,6 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 		}
 	}
 	thermoM("Finalizing updating level features..."); //change the progress dialog text
-	if (Typeswitch !== "proficiencies") SetStringifieds(); //set the global variables to their fields for future reference
 	thermoM("stop"); //stop the top progress dialog
 };
 
@@ -8192,7 +7831,7 @@ function WeightToCalc_Button() {
 //see if a known ammunition is in a string, and return the ammo name
 function ParseAmmo(input) {
 	if (!input) return "";
-	var tempString = input.toLowerCase();
+	var tempString = removeDiacritics(input.toLowerCase());
 	var output = "";
 	var tempFound = 0;
 	

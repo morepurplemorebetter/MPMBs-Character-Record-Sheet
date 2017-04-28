@@ -240,7 +240,7 @@ var ArmourList = {
 
 var WeaponsList = {
 	"polearm butt end" : {
-		regExpSearch : /^(?=.*(polearm|glaive|halberd|staff))(?=.*butt)(?=.*end).*$/i,
+		regExpSearch : /^(?=.*(polearm|(glaive|guandao|bisento|naginata)|(halberd|\bji\b|kamayari)|(quarterstaff|\bstaff\b|\bbo\b)))(?=.*butt)(?=.*end).*$/i,
 		name : "Polearm butt end",
 		source : ["P", 168],
 		ability : 1,
@@ -262,7 +262,7 @@ var WeaponsList = {
 		abilitytodamage : true,
 	},
 	"club" : {
-		regExpSearch : /^(?!.*(great|heavy|big))(?=.*\bclub\b).*$/i,
+		regExpSearch : /^(?!.*(great|heavy|big))(?=.*\b(club|bian|tonfa)\b).*$/i,
 		name : "Club",
 		source : ["P", 149],
 		list : "melee",
@@ -276,7 +276,7 @@ var WeaponsList = {
 		monkweapon : true
 	},
 	"dagger" : {
-		regExpSearch : /dagger/i,
+		regExpSearch : /dagger|bishou|\btamo\b|kozuka|\btanto\b/i,
 		name : "Dagger",
 		source : ["P", 149],
 		list : "melee",
@@ -290,7 +290,7 @@ var WeaponsList = {
 		monkweapon : true
 	},
 	"greatclub" : {
-		regExpSearch : /^(?=.*(great|heavy|big))(?=.*club).*$/i,
+		regExpSearch : /^(?=.*(great|heavy|big|weida))(?=.*(club|bian|tonfa)\b).*$|tetsubo/i,
 		name : "Greatclub",
 		source : ["P", 149],
 		list : "melee",
@@ -303,7 +303,7 @@ var WeaponsList = {
 		abilitytodamage : true,
 	},
 	"handaxe" : {
-		regExpSearch : /^(?=.*(light|hand|short|small|throw))(?=.*axe).*$/i,
+		regExpSearch : /^(?=.*(light|hand|short|small|throw))(?=.*\b(axe|fu)\b).*$|\bono\b/i,
 		name : "Handaxe",
 		source : ["P", 149],
 		list : "melee",
@@ -317,7 +317,7 @@ var WeaponsList = {
 		monkweapon : true,
 	},
 	"javelin" : {
-		regExpSearch : /javelin/i,
+		regExpSearch : /javelin|\bmau\b|uchi-ne/i,
 		name : "Javelin",
 		source : ["P", 149],
 		list : "melee",
@@ -345,7 +345,7 @@ var WeaponsList = {
 		monkweapon : true,
 	},
 	"mace" : {
-		regExpSearch : /mace/i,
+		regExpSearch : /mace\b|\bchui\b|kanabo/i,
 		name : "Mace",
 		source : ["P", 149],
 		list : "melee",
@@ -359,7 +359,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"quarterstaff" : {
-		regExpSearch : /staff/i,
+		regExpSearch : /quarterstaff|\bstaff\b|\bbo\b|^gun(.?(\+|-)\d+)?$/i,
 		name : "Quarterstaff",
 		source : ["P", 149],
 		list : "melee",
@@ -373,7 +373,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"sickle" : {
-		regExpSearch : /sickle/i,
+		regExpSearch : /sickle|\bkama\b/i,
 		name : "Sickle",
 		source : ["P", 149],
 		list : "melee",
@@ -387,7 +387,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"spear" : {
-		regExpSearch : /^(?!.*agonizing)(?!.*eldritch)(?=.*spear).*$/i,
+		regExpSearch : /^(?!.*agonizing)(?!.*eldritch)(?=.*(spear|qiang|\byari\b)).*$/i,
 		name : "Spear",
 		source : ["P", 149],
 		list : "melee",
@@ -427,7 +427,7 @@ var WeaponsList = {
 		ammo : "bolt"
 	},
 	"dart" : {
-		regExpSearch : /dart/i,
+		regExpSearch : /dart|shuriken/i,
 		name : "Dart",
 		source : ["P", 149],
 		list : "ranged",
@@ -440,7 +440,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"shortbow" : {
-		regExpSearch : /^(?!.*crossbow)(((?=.*short)(?=.*bow))|((?!.*(moon|long))(?=.*\bbow\b))).*$/i,
+		regExpSearch : /^(?!.*crossbow)(((?=.*short)(?=.*bow))|((?!.*(moon|long))(?=.*\bbow\b))).*$|hankyu/i,
 		name : "Shortbow",
 		source : ["P", 149],
 		list : "ranged",
@@ -468,7 +468,7 @@ var WeaponsList = {
 		ammo : "bullet"
 	},
 	"battleaxe" : {
-		regExpSearch : /^(((?=.*battle)(?=.*axe))|((?!.*(light|hand|short|small|great|heavy|throw))(?=.*\baxe\b))).*$/i,
+		regExpSearch : /^(((?=.*battle)(?=.*(axe|ono|fu)\b))|((?!.*(light|hand|short|small|great|heavy|throw))(?=.*\b(axe|fu|masakari)\b))).*$/i,
 		name : "Battleaxe",
 		source : ["P", 149],
 		list : "melee",
@@ -481,7 +481,7 @@ var WeaponsList = {
 		abilitytodamage : true,
 	},
 	"flail" : {
-		regExpSearch : /flail/i,
+		regExpSearch : /flail|nunchaku/i,
 		name : "Flail",
 		source : ["P", 149],
 		list : "melee",
@@ -494,7 +494,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"glaive" : {
-		regExpSearch : /glaive/i,
+		regExpSearch : /glaive|guandao|bisento|naginata/i,
 		name : "Glaive",
 		source : ["P", 149],
 		list : "melee",
@@ -507,7 +507,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"greataxe" : {
-		regExpSearch : /^(?=.*(great|heavy))(?=.*axe).*$/i,
+		regExpSearch : /^(?=.*(great|heavy|weida))(?=.*(axe|ono|fu|masakari)\b).*$/i,
 		name : "Greataxe",
 		source : ["P", 149],
 		list : "melee",
@@ -520,7 +520,7 @@ var WeaponsList = {
 		abilitytodamage : true,
 	},
 	"greatsword" : {
-		regExpSearch : /^(?=.*(great|heavy))(?=.*sword).*$/i,
+		regExpSearch : /^(?=.*(great|heavy))(?=.*sword).*$|changdao|nodachi/i,
 		name : "Greatsword",
 		source : ["P", 149],
 		list : "melee",
@@ -533,7 +533,7 @@ var WeaponsList = {
 		abilitytodamage : true,
 	},
 	"halberd" : {
-		regExpSearch : /halberd/i,
+		regExpSearch : /halberd|\bji\b|kamayari/i,
 		name : "Halberd",
 		source : ["P", 149],
 		list : "melee",
@@ -546,7 +546,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"lance" : {
-		regExpSearch : /lance/i,
+		regExpSearch : /lance|umayari/i,
 		name : "Lance",
 		source : ["P", 149],
 		list : "melee",
@@ -559,7 +559,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"longsword" : {
-		regExpSearch : /^((?=.*katana)|((?=.*long)(?=.*sword))|((?!.*(burst|light|hand|short|small|great|heavy))(?=.*\bsword\b))).*$/i,
+		regExpSearch : /katana|\bjian\b|^(((?=.*long)(?=.*sword))|((?!.*(burst|light|hand|short|small|great|heavy))(?=.*\bsword\b))).*$/i,
 		name : "Longsword",
 		source : ["P", 149],
 		list : "melee",
@@ -598,7 +598,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"pike" : {
-		regExpSearch : /^(?!.*armou?r)(?!.*\bspike)(?=.*pike).*$/i,
+		regExpSearch : /^(?!.*armou?r)(?!.*\bspike)(?=.*(pike|\bmao\b|nagaeyari)).*$/i,
 		name : "Pike",
 		source : ["P", 149],
 		list : "melee",
@@ -624,7 +624,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"scimitar" : {
-		regExpSearch : /scimitar/i,
+		regExpSearch : /scimitar|liuyedao|wakizashi/i,
 		name : "Scimitar",
 		source : ["P", 149],
 		list : "melee",
@@ -637,7 +637,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"shortsword" : {
-		regExpSearch : /^(?=.*short)(?=.*sword).*$/i,
+		regExpSearch : /^(?=.*short)(?=.*sword).*$|shuangdao/i,
 		name : "Shortsword",
 		source : ["P", 149],
 		list : "melee",
@@ -651,7 +651,7 @@ var WeaponsList = {
 		monkweapon : true
 	},
 	"trident" : {
-		regExpSearch : /trident/i,
+		regExpSearch : /trident|\bcha\b|magariyari/i,
 		name : "Trident",
 		source : ["P", 149],
 		list : "melee",
@@ -664,7 +664,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"war pick" : {
-		regExpSearch : /^(((?=.*pick)(?=.*war))|((?!.*(heavy|great|light))(?=.*\bpick\b))).*$/i,
+		regExpSearch : /^(((?=.*pick)(?=.*war))|((?!.*(heavy|great|light))(?=.*\bpick\b))).*$|\bkuwa\b/i,
 		name : "War pick",
 		source : ["P", 149],
 		list : "melee",
@@ -745,7 +745,7 @@ var WeaponsList = {
 		ammo : "bolt"
 	},
 	"longbow" : {
-		regExpSearch : /^(?!.*crossbow)(?=.*long)(?=.*bow).*$/i,
+		regExpSearch : /^(?!.*crossbow)(?=.*long)(?=.*bow).*$|daikyu/i,
 		name : "Longbow",
 		source : ["P", 149],
 		list : "ranged",
@@ -771,7 +771,7 @@ var WeaponsList = {
 		description : "Thrown, only 1 attack, up to large creature hit is restrained (PHB 148)",
 		abilitytodamage : false
 	},
-	"alchemist's fire" : {
+	"alchemist fire" : {
 		regExpSearch : /^(?=.*alchemist)(?=.*fire).*$/i,
 		name : "Alchemist's Fire",
 		source : ["P", 148],
@@ -785,7 +785,7 @@ var WeaponsList = {
 		abilitytodamage : false,
 		ammo : "alchemist fire"
 	},
-	"vial of acid" : {
+	"vials of acid" : {
 		regExpSearch : /^(?=.*vial)(?=.*acid).*$/i,
 		name : "Vial of Acid",
 		source : ["P", 148],
@@ -798,6 +798,20 @@ var WeaponsList = {
 		description : "",
 		abilitytodamage : false,
 		ammo : "vials of acid"
+	},
+	"holy water" : {
+		regExpSearch : /^(?=.*holy)(?=.*water).*$/i,
+		name : "Holy Water",
+		source : ["P", 151],
+		list : "improvised",
+		ability : 2,
+		type : "Improvised Weapons",
+		damage : [2, 6, "radiant"],
+		range : "20 ft",
+		weight : 1,
+		description : "Only does damage against fiends and undead; Comes in flasks",
+		abilitytodamage : false,
+		ammo : "holy water"
 	},
 	"acid splash" : {
 		regExpSearch : /^(?=.*acid)(?=.*splash).*$/i,
@@ -1115,7 +1129,7 @@ var WeaponsList = {
 	
 	// VGtM Tabaxi weapon
 	"cat's claws" : {
-		regExpSearch : /^(?=.*\bcat)(?=.*\bclaws?\b).*$/i,
+		regExpSearch : /^(?=.*\b(cat|dragon|retractable))(?=.*\bclaws?\b).*$/i,
 		name : "Cat's Claws",
 		source : ["V", 115],
 		ability : 1,
@@ -1718,6 +1732,16 @@ var AmmoList = {
 		display : 20,
 		invName : "Acid, vials of",
 		alternatives : [/^(?=.*acid)(?=.*vial).*$/i]
+	},
+	"holy water" : {
+		name : "Holy Water, flasks",
+		source : ["P", 151],
+		weight : 1,
+		icon : "Flasks",
+		checks : [".Top", ".Base"],
+		display : 20,
+		invName : "Holy Water, flasks of",
+		alternatives : [/^(?=.*holy)(?=.*water).*$/i]
 	},
 	
 	// UA Artificer ammo

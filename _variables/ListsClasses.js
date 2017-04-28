@@ -3503,7 +3503,7 @@ var ClassSubList = {
 				description : "\n   " + "I gain a ranged spell attack that I can use as part of the Attack action" + "\n   " + "If I do this and spend 1 ki point, I can make two extra attacks as a bonus action",
 				action : ["bonus action", " (2\u00D7 with Attack action)"],
 				eval : "AddWeapon('Radiant Sun Bolt');",
-				removeeval : "RemoveWeapon(\"Radiant Sun Bolt\");",
+				removeeval : "RemoveWeapon('Radiant Sun Bolt');",
 				extraname : "Way of the Sun Soul 6",
 				changeeval : "if (newClassLvl.monk >= 6 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"searing arc strike\") === -1) {ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"searing arc strike\", \"extra\"])} else if (newClassLvl.monk < 6 && oldClassLvl.monk >= 6) {ClassFeatureOptions([\"monk\", \"subclassfeature3\", \"searing arc strike\", \"extra\"], \"remove\")};",
 				"searing arc strike" : {

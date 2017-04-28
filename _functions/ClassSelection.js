@@ -19,6 +19,7 @@ function SelectClass() {
 		FunctionIsNotAvailable();
 		return;
 	};
+	if (CurrentSources.firstTime) OpeningStatement();
 	var theChar = What("PC Name") ? What("PC Name") : "Your character";
 	var hasUAranger = false;
 	var ClassFld = What("Class and Levels");
@@ -956,7 +957,8 @@ function SelectClass() {
 		Value("Delimiter", ClassSelection_Dialog.delimiter);
 		
 		// set the character level and xp
-		Value("Character Level", ClassSelection_Dialog.finalLevel > 0 ? ClassSelection_Dialog.finalLevel : "");
+		var newLvl = ClassSelection_Dialog.finalLevel > 0 ? ClassSelection_Dialog.finalLevel : "";
+		Value("Character Level", newLvl, undefined, newLvl);
 		var curXP = Number(What("Total Experience").replace(",", "."));
 		var curXPlvl = ExperiencePointsList.reduce(function(acc, val) { return acc += curXP >= Number(val) ? 1 : 0; }, 0);
 		if (ClassSelection_Dialog.finalLevel < ExperiencePointsList.length && ClassSelection_Dialog.finalLevel != curXPlvl) {
@@ -975,7 +977,7 @@ function SelectClass() {
 		if (ClassFld !== ClassSelection_Dialog.finalText) {
 			Value("Class and Levels", ClassSelection_Dialog.finalText);
 		} else {
-			ApplyClasses(ClassSelection_Dialog.finalText);
+			ApplyClasses(ClassSelection_Dialog.finalText, false);
 		};
 	};
 };
@@ -1259,7 +1261,7 @@ function AskMulticlassing() {
 		} else if (newClassText) {
 			Value("Character Level", CharLVL);
 			if (What("Class and Levels") === newClassText) {
-				ApplyClasses(newClassText);
+				ApplyClasses(newClassText, false);
 			} else {
 				Value("Class and Levels", newClassText);
 			}
@@ -1430,12 +1432,9 @@ function PleaseSubclass(theclass) {
 			IsSubclassException[theclass] = true;
 			returnTrue = true;
 			var oldName = classes.known[theclass].string;
-			if (!event.target.name || event.target.name !== "Class and Levels") {
-				ReplaceString("Class and Levels", newName, false, oldName);
-			} else {
-				classes.field = classes.field.replace(RegExp(oldName, "i"), newName);
-			}
-		}
-	}
+			classes.field = classes.field.replace(oldName, newName);
+			if (!event.target.name || event.target.name !== "Class and Levels") Value("Class and Levels", classes.field);
+		};
+	};
 	return returnTrue;
-}
+};

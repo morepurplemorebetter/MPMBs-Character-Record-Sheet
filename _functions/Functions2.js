@@ -3,7 +3,7 @@ function ParseCreature(Inputs) {
 	var result = "";
 	
 	if (Inputs) {
-		var tempString = Inputs.toLowerCase();
+		var tempString = removeDiacritics(Inputs.toLowerCase());
 		var foundLen = 0;
 
 		for (var key in CreatureList) { //scan string for all creatures
@@ -543,7 +543,7 @@ function parseCompWeapon(input, prefix) {
 	if (!input || !CurrentCompRace[prefix] || !CurrentCompRace[prefix].attacks) {
 		return "";
 	}
-	var tempString = input.toLowerCase();
+	var tempString = removeDiacritics(input.toLowerCase());
 	var output = "";
 	var tempFound = false;
 	
@@ -2065,18 +2065,6 @@ function ChangeFont(newFont, oldFont) {
 	}
 }
 
-//test if a font works or not
-function testFont(fontTest) {
-	var remFont = tDoc.getField((tDoc.info.AdvLogOnly ? "AdvLog." : "") + "Player Name").textFont;
-	try {
-		tDoc.getField((tDoc.info.AdvLogOnly ? "AdvLog." : "") + "Player Name").textFont = fontTest;
-		tDoc.getField((tDoc.info.AdvLogOnly ? "AdvLog." : "") + "Player Name").textFont = remFont;
-		return true;
-	} catch (e) {
-		return false;
-	}
-}
-
 //change the colorscheme that is used for the Ability Save DC. Choose from: "red", "green", ""; The "DC" can be either 1 or 2.
 function ApplyDCColorScheme(colour, DC) {
 	if (typePF || (!colour && What("Color.DC") === tDoc.getField("Color.DC").defaultValue)) return; //don't do this function in the Printer-Friendly version or if resetting with the default colour 
@@ -2937,48 +2925,6 @@ function DnDlogo(input) {
 	}
 }
 
-//start a progress dialog. input can be a value to add, the command "stop" to stop, or a string to display.
-function thermoM(input) {
-	var t = app.thermometer;
-	var dT = 100;
-	if (input === undefined || input === false || t.cancelled === true) {
-		for (var i = 1; i <= thermoCount.length; i++) { t.end(); };
-		thermoCount = [];
-		thermoDur = {};
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) { tDoc.calculateNow(); };
-	}
-	if (input === undefined || input === false) {
-		return;
-	} else if (isNaN(input)) {
-		if (input === "start" && t.text !== "Applying changes...") {
-			t.begin();
-			t.duration = dT;
-			t.value = 1;
-			t.text = "Applying changes...";
-			thermoCount.push("Applying changes...");
-			thermoDur["Applying changes..."] = 1;
-		} else if (input === "start" || input === "stop" || (thermoCount.indexOf("Applying changes...") !== thermoCount.length - 1 && thermoCount.indexOf("Applying changes...") !== -1)) {
-			thermoCount.splice(thermoCount.indexOf(t.text), 1);
-			delete thermoDur[t.text];
-			t.end();
-			if (thermoCount.length) {
-				t.text = thermoCount[thermoCount.length - 1];
-				t.value = thermoDur[thermoCount[thermoCount.length - 1]];
-			}
-		} else {
-			thermoCount.splice(thermoCount.indexOf(t.text), 1);
-			thermoCount.push(input);
-			t.text = input;
-			thermoDur[input] = t.value;
-		}
-	} else if (!isNaN(input)) {
-		t.value = input * dT;
-		thermoDur[thermoCount[thermoCount.length - 1]] = input * dT;
-	}
-}
-
 //change the color of a section of bookmarks, including all children
 function amendBookmarks(theParent, show) {
 	if (minVer) return;
@@ -3115,7 +3061,6 @@ function MakeNotesMenu_NotesOptions() {
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
 }
-
 
 //make a string of all the classes and levels (field calculation)
 function CalcFullClassLvlName() {
@@ -3597,16 +3542,7 @@ function SetStringifieds(type) {
 	}
 	if (!type || type === "sources") Value("CurrentSources.Stringified", CurrentSources.toSource());
 	if (!type || type === "evals") Value("CurrentEvals.Stringified", CurrentEvals.toSource());
-}
-
-//remove the empty values from an array (removes all things that are considered false, such as 0, "", undefined, false)
-function removeEmptyValues(array) {
-	var returnArray = [];
-	for (var i = 0; i < array.length; i++) {
-		if (array[i]) returnArray.push(array[i]);
-	}
-	return returnArray;
-}
+};
 
 //set the sheet version
 function Publish(version) {
@@ -4056,18 +3992,7 @@ function MakeHPMenu_HPOptions() {
 
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
-}
-
-// a format function for the "Die" field of the Hit Dice section
-function FormatHD() {
-	var theResult = clean(event.value, " ");
-	if (theResult !== "") {
-		var QI = event.target.name.indexOf("Comp.") === -1;
-		var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
-		var theCon = Number(What(QI ? "Con Mod" : prefix + "Comp.Use.Ability.Con.Mod"));
-		event.value = "d" + theResult + (theCon < 0 ? theCon : "+" + theCon);
-	}
-}
+};
 
 // add the action "Attack (X attacks per action)" to the top of the "actions" fields, if there is room to do so
 function AddAttacksPerAction() {
@@ -4146,47 +4071,57 @@ function UpdateFactionSymbols() {
 
 // find if the entry is an equipment
 function ParseGear(input) {
-	var result = "";
+	if (!input) return false;
+	var foundLen = 0;
+	var result = false;
+	var tempString = removeDiacritics(input.toLowerCase());
 	
-	if (input) {
-		var tempString = input.toLowerCase();
-		var foundLen = 0;
+	//see if it is an armour
+	var findArmor = ParseArmor(tempString, true);
+	if (findArmor) {
+		foundLen = tempString.match(ArmourList[findArmor].regExpSearch)[0].length;
+		if (foundLen === tempString.length) foundLen = findArmor.length;
+		result = ["ArmourList", findArmor];
+	};
+	
+	var findWeapon = ParseWeapon(tempString, true);
+	if (findWeapon) {
+		var testLen = tempString.match(WeaponsList[findWeapon].regExpSearch)[0].length;
+		if (testLen === tempString.length) testLen = findWeapon.length;
+		if (testLen > foundLen) {
+			foundLen = testLen;
+			result = ["WeaponsList", findWeapon];
+		};
+	};
 
-		for (var key in ArmourList) { //scan string for all armours
-			var aList = ArmourList[key];
-			if (aList.weight && key.length > foundLen && tempString.indexOf(aList.name.toLowerCase()) !== -1) {
-				result = ["ArmourList", key];
-				foundLen = key.length;
-			}
-		}
-
-		for (var key in WeaponsList) { //scan string for all weapons
-			var aList = WeaponsList[key];
-			if (aList.weight && key.length > foundLen && (aList.regExpSearch).test(tempString)) {
-				result = ["WeaponsList", key];
-				foundLen = key.length;
-			}
-		}
-
-		for (var key in GearList) { //scan string for all gear
-			var aList = GearList[key];
-			var aListName = aList.name.replace(/\,[^\,]+$/, "").replace("\uFEFF", "");
-			if (aListName.length > foundLen && (RegExp("\\b" + aListName + "\\b", "i")).test(tempString)) {
+	for (var key in GearList) { //scan string for all gear
+		var aList = GearList[key];
+		if (aList.name === "-") continue;
+		var aListRegEx = RegExp("\\b" + aList.name.replace(/\uFEFF|\,[^\,]+$/g, "").RegEscape() + "s?\\b", "i");
+		if ((aListRegEx).test(tempString)) {
+			var testLen = tempString.match(aListRegEx)[0].length;
+			if (testLen >= foundLen) {
 				result = ["GearList", key];
-				foundLen = aListName.length;
-			}
-		}
+				foundLen = testLen;
+			};
+		};
+	};
 
-		for (var key in ToolsList) { //scan string for all gear
-			var aList = ToolsList[key];
-			if (aList.name.length > foundLen && (RegExp("\\b" + aListName + "\\b", "i")).test(tempString)) {
+	for (var key in ToolsList) { //scan string for all tools
+		var aList = ToolsList[key];
+		if (aList.name === "-") continue;
+		var aListRegEx = RegExp("\\b" + aList.name.replace(/\uFEFF|\,[^\,]+$/g, "").RegEscape() + "s?\\b", "i");
+		if ((aListRegEx).test(tempString)) {
+			var testLen = tempString.match(aListRegEx)[0].length;
+			if (testLen >= foundLen) {
 				result = ["ToolsList", key];
-				foundLen = aList.name.length;
-			}
-		}
-	}
+				foundLen = testLen;
+			};
+		};
+	};
+	
 	return result;
-}
+};
 
 // set the value of the gear field to be remembered (on focus)
 function RememberGearTempOnFocus() {
@@ -4219,7 +4154,7 @@ function SetGearWeightOnBlur() {
 	}
 	
 	//now reset the temp
-	event.target.temp = undefined;
+	delete event.target.temp;
 }
 
 //make a menu for the text fields and text line options
@@ -4341,26 +4276,6 @@ function returnInputForm(displayForm, asArray) {
 	}
 	if (asArray) theReturn = theReturn.split("/");
 	return theReturn;
-}
-
-//format the date (format)
-function FormatDay() {
-	var dateForm = What("DateFormat_Remember");
-	var dateInputForm = returnInputForm(dateForm);
-	var dateInputFormLong = dateInputForm.replace(/y+/, "year").replace(/d+/, "day").replace(/m+/, "month");
-	var dateValue = util.scand(dateInputForm, event.value);
-	if (dateValue == null) {
-		app.alert({
-			cMsg : "Please enter a valid date of the form \"" + dateInputFormLong + "\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" button above.",
-			cTitle : "Invalid date format",
-			nIcon : 1,
-		});
-		event.value = "";
-	} else if (event.value === "") {
-		event.value = "";
-	} else {
-		event.value = util.printd(dateForm, dateValue);
-	}
 }
 
 //chane the format of all the date fields of the AL log page, and change the month-day order if appropriate
@@ -4527,11 +4442,6 @@ function UpdateDropdown(type, weapon) {
 		SetWildshapeDropdown();
 		break;
 	};
-}
-
-//a field "format" function to add a space at the start and end of the field, to make sure it looks better on the sheet
-function addWhitespace() {
-	event.value = " " + event.value + " ";	
 }
 
 function ChangeToCompleteAdvLogSheet() {
@@ -6056,7 +5966,7 @@ function FunctionIsNotAvailable() {
 	app.alert({
 		nIcon : 0,
 		cTitle : "Please update your Adobe Acrobat",
-		cMsg : "This feature doesn't work with the version of Adobe Acrobat you are using. This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. Please update to Adobe Acrobat DC.\n\nYou can get Adobe Acrobat Reader DC for free at https://get.adobe.com/reader/"
+		cMsg : "This feature doesn't work (correctly) with the version of Adobe Acrobat you are using. This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. Please update to Adobe Acrobat DC.\n\nYou can get Adobe Acrobat Reader DC for free at https://get.adobe.com/reader/"
 	});
 };
 
