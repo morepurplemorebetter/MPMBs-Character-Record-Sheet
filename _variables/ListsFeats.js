@@ -23,15 +23,13 @@ var FeatsList = {
 		name : "Charger",
 		source : ["P", 165],
 		description : "When taking the Dash action and moving 10 feet or more in a straight line, I can immediately take a bonus action to make either one melee weapon attack with +5 damage or try to shove the target up to 10 feet away.",
-		eval : "AddAction(\"bonus action\", \"Charger (when taking dash action)\", \"the Charger feat\");",
-		removeeval : "RemoveAction(\"bonus action\", \"Charger (when taking dash action)\");"
+		action : ["bonus action", " (after Dash action)"]
 	},
 	"crossbow expert" : {
 		name : "Crossbow Expert",
 		source : ["P", 165],
 		description : "I ignore the loading quality of crossbows I'm proficient with. I don't suffer disadvantage on ranged attack rolls for being within 5 feet of a hostile. When I attack with a one-handed weapon, I can use a bonus action to attack with a loaded hand crossbow I'm holding.",
-		eval : "AddAction('bonus action', 'Hand crossbow (when taking attack action)', 'the Crossbow Expert feat');",
-		removeeval : "AddAction('bonus action', 'Hand crossbow (when taking attack action)');",
+		action : ["bonus action", " (with Attack action)"],
 		calcChanges : {
 			atkAdd : ["if ((/crossbow/i).test(WeaponName) && fields.Proficiency) {fields.Description = fields.Description.replace(/(,? ?loading|loading,? ?)/i, '');};", "I ignore the loading quality of crossbows I'm proficient with."]
 		}
@@ -41,8 +39,7 @@ var FeatsList = {
 		source : ["P", 165],
 		description : "When wielding a finesse weapon with which I am proficient and another creature hits me with a melee attack, I can use my reaction to add my proficiency bonus to my AC for that attack, potentially causing the attack to miss me.",
 		prerequisite : "Dexterity 13 or higher",
-		eval : "AddAction(\"reaction\", \"Defensive Duelist (when hit in melee)\", \"the Defensive Duelist feat\");",
-		removeeval : "RemoveAction(\"reaction\", \"Defensive Duelist (when hit in melee)\");"
+		action : ["reaction", " (when hit in melee)"]
 	},
 	"dual wielder" : {
 		name : "Dual Wielder",
@@ -76,15 +73,13 @@ var FeatsList = {
 		source : ["P", 167],
 		description : "I have advantage on attack rolls against a creature I am grappling. As an action, I can try to pin a creature grappled by me. If I succeed on a grapple check, both the creature and I are restrained until the grapple ends.",
 		prerequisite : "Strength 13 or higher",
-		eval : "AddAction(\"action\", \"Pin grappled opponent\", \"the Grappler feat\");",
-		removeeval : "RemoveAction(\"action\", \"Pin grappled opponent\");"
+		action : ["action", " feat (pin grappled)"]
 	},
 	"great weapon master" : {
 		name : "Great Weapon Master",
 		source : ["P", 167],
 		description : "If I score a critical hit or reduce a creature to 0 hit points with a melee weapon in my turn, I can make one melee weapon attack as a bonus action. With a heavy melee weapon, I can choose to take a -5 penalty on the attack roll for +10 on the attack's damage.",
-		eval : "AddAction(\"bonus action\", \"Melee weapon attack (after crit or take-down)\", \"the Great Weapon Master feat\");",
-		removeeval : "RemoveAction(\"bonus action\", \"Melee weapon attack (after crit or take-down)\");",
+		action : ["bonus action", " (after crit or take-down)"],
 		calcChanges : {
 			atkCalc : ["if (isMeleeWeapon && (/heavy/i).test(fields.Description) && (/power.{0,3}attack|great.{0,3}weapon.{0,3}master/i).test(WeaponText)) {output.extraDmg += 10; output.extraHit -= 5;};", "If I include the words 'Power Attack' or 'Great Weapon Master' in a heavy melee weapon's name or description, the calculation will put a -5 penalty on the attack's To Hit and +10 on its Damage."]
 		}
@@ -93,8 +88,7 @@ var FeatsList = {
 		name : "Healer",
 		source : ["P", 167],
 		description : "Using a healer's kit to stabilize someone gives them 1 hit point as well. As an action, I can spend one use of a healer's kit to restore 1d6 + 4 + (creature's HD) hit points. After that, the creature can't gain hit points from this feat again until it finishes a short rest.",
-		eval : "AddAction(\"action\", \"Healer (1d6+4+HD with healing kit)\", \"the Healer feat\");",
-		removeeval : "RemoveAction(\"action\", \"Healer (1d6+4+HD with healing kit)\");"
+		action : ["action", " (1d6+4+HD with healing kit)"]
 	},
 	"heavily armored" : {
 		name : "Heavily Armored",
@@ -153,8 +147,8 @@ var FeatsList = {
 		name : "Mage Slayer",
 		source : ["P", 168],
 		description : "As a reaction, I can make a melee weapon attack on a creature within 5 ft of me that casts a spell. Concentration checks from damage from me are made with disadvantage. I have advantage on saving throws against spells cast by creatures within 5 feet of me.",
-		eval : "AddString(\"Saving Throw advantages \/ disadvantages\", \"Advantage on saves vs. spells cast within 5 ft\", \"; \"); AddAction(\"reaction\", \"Melee weapon attack (if spell cast in 5 ft)\", \"the Mage Slayer feat\");",
-		removeeval : "RemoveString(\"Saving Throw advantages \/ disadvantages\", \"Advantage on saves vs. spells cast within 5 ft\"); RemoveAction(\"reaction\", \"Melee weapon attack (if spell cast in 5 ft)\");"
+		eval : "AddString('Saving Throw advantages / disadvantages', 'Advantage on saves vs. spells cast within 5 ft', '; '); AddAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)', 'the Mage Slayer feat');",
+		removeeval : "RemoveString('Saving Throw advantages / disadvantages', 'Advantage on saves vs. spells cast within 5 ft'); RemoveAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)');"
 	},
 	"magic initiate [bard]" : {
 		name : "Magic Initiate [Bard]",
@@ -315,7 +309,7 @@ var FeatsList = {
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual bard spells.\nI can copy ritual bard spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Charisma is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
 		eval : "CurrentSpells[\"ritual caster bard\"] = {name : \"Ritual Book [Bard]\", ability : 6, list : {class : \"bard\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"ritual caster bard\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"ritual caster bard\"]; SetStringifieds(\"spells\");"
 	},
 	"ritual caster [cleric]" : {
 		name : "Ritual Caster [Cleric]",
@@ -323,7 +317,7 @@ var FeatsList = {
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual cleric spells.\nI can copy ritual cleric spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Wisdom is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
 		eval : "CurrentSpells[\"ritual caster cleric\"] = {name : \"Ritual Book [Cleric]\", ability : 5, list : {class : \"cleric\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"ritual caster cleric\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"ritual caster cleric\"]; SetStringifieds(\"spells\");"
 	},
 	"ritual caster [druid]" : {
 		name : "Ritual Caster [Druid]",
@@ -331,7 +325,7 @@ var FeatsList = {
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual druid spells.\nI can copy ritual druid spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Wisdom is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
 		eval : "CurrentSpells[\"ritual caster druid\"] = {name : \"Ritual Book [Druid]\", ability : 5, list : {class : \"druid\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"ritual caster druid\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"ritual caster druid\"]; SetStringifieds(\"spells\");"
 	},
 	"ritual caster [sorcerer]" : {
 		name : "Ritual Caster [Sorcerer]",
@@ -339,7 +333,7 @@ var FeatsList = {
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual sorcerer spells.\nI can copy ritual sorcerer spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Charisma is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
 		eval : "CurrentSpells[\"ritual caster sorcerer\"] = {name : \"Ritual Book [Sorcerer]\", ability : 6, list : {class : \"sorcerer\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"ritual caster sorcerer\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"ritual caster sorcerer\"]; SetStringifieds(\"spells\");"
 	},
 	"ritual caster [warlock]" : {
 		name : "Ritual Caster [Warlock]",
@@ -347,7 +341,7 @@ var FeatsList = {
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual warlock spells.\nI can copy ritual warlock spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Charisma is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
 		eval : "CurrentSpells[\"ritual caster warlock\"] = {name : \"Ritual Book [Warlock]\", ability : 6, list : {class : \"warlock\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"ritual caster warlock\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"ritual caster warlock\"]; SetStringifieds(\"spells\");"
 	},
 	"ritual caster [wizard]" : {
 		name : "Ritual Caster [Wizard]",
@@ -355,7 +349,7 @@ var FeatsList = {
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual wizard spells.\nI can copy ritual wizard spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Intelligence is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
 		eval : "CurrentSpells[\"ritual caster wizard\"] = {name : \"Ritual Book [Wizard]\", ability : 4, list : {class : \"wizard\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"ritual caster wizard\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"ritual caster wizard\"]; SetStringifieds(\"spells\");"
 	},
 	"savage attacker" : {
 		name : "Savage Attacker",
@@ -366,8 +360,7 @@ var FeatsList = {
 		name : "Sentinel",
 		source : ["P", 169],
 		description : "Creatures I hit with opportunity attacks have 0 speed for this turn. The Disengage action doesn't work on me. When a creature within 5 ft makes an attack against a target other than me, I can use my reaction to make a melee weapon attack against the attacker.",
-		eval : "AddAction(\"reaction\", \"Melee weapon attack (after attack on ally)\", \"the Sentinel feat\");",
-		removeeval : "RemoveAction(\"reaction\", \"Melee weapon attack (after attack on ally)\");"
+		action : ["reaction", " (after attack on ally)"]
 	},
 	"sharpshooter" : {
 		name : "Sharpshooter",
@@ -381,8 +374,8 @@ var FeatsList = {
 		name : "Shield Master",
 		source : ["P", 170],
 		description : "As a bonus action, when I use the Attack action, I can shove someone within 5 ft with my shield. I add my shield's AC bonus to Dex saves vs. effects targeting only me. As a reaction, if I succeed on a Dex save for half damage, I can interpose my shield to avoid the damage.",
-		eval : "AddAction(\"bonus action\", \"Shove with shield (on Attack action)\", \"the Shield Master feat\"); AddAction(\"reaction\", \"Interpose shield (if Dex save half dmg)\", \"the Shield Master feat\");",
-		removeeval : "RemoveAction(\"bonus action\", \"Shove with shield (on Attack action)\"); RemoveAction(\"reaction\", \"Interpose shield (if Dex save half dmg)\");"
+		eval : "AddAction(\"bonus action\", \"Shove with shield (with Attack action)\", \"the Shield Master feat\"); AddAction(\"reaction\", \"Interpose shield (if Dex save half dmg)\", \"the Shield Master feat\");",
+		removeeval : "RemoveAction(\"bonus action\", \"Shove with shield (with Attack action)\"); RemoveAction(\"reaction\", \"Interpose shield (if Dex save half dmg)\");"
 	},
 	"skilled" : {
 		name : "Skilled",
@@ -488,8 +481,8 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "I am proficient with improvised weapons. My unarmed strike does 1d4 damage. When I hit a creature with an unarmed strike or improvised weapon on my turn, I can attempt to grapple the target as a bonus action. [+1 Strength or Constitution]",
 		improvements : "Tavern Brawler (feat): +1 Strength or Constitution;",
-		eval : "AddAction(\"bonus action\", \"Grapple (if hit with unarmed/improv.)\", \"the Tavern Brawler feat\");",
-		removeeval : "RemoveAction(\"bonus action\", \"Grapple (if hit with unarmed/improv.)\");",
+		eval : "AddAction(\"bonus action\", \"Grapple (on hit with unarmed/improv.)\", \"the Tavern Brawler feat\");",
+		removeeval : "RemoveAction(\"bonus action\", \"Grapple (on hit with unarmed/improv.)\");",
 		weapons : [false, false, ["improvised weapons"]],
 		calcChanges : {
 			atkAdd : ["if (isMeleeWeapon && ((/unarmed strike/i).test(WeaponName) || (/improvised/i).test(WeaponName) || (/improvised weapon/i).test(theWea.type))) {fields.Description += (fields.Description ? '; ' : '') + 'After hitting, can attempt to grapple as a bonus action'; fields.Proficiency = true; }; if ((/unarmed strike/i).test(WeaponName) && fields.Damage_Die == 1) {fields.Damage_Die = '1d4'; }; ", "My unarmed strikes do 1d4 damage instead of 1;\n - After hitting a creature with an unarmed strike or improvised weapon in melee, I can attempt to start a grapple as a bonus action."]
@@ -508,8 +501,9 @@ var FeatsList = {
 		source : ["P", 170],
 		prerequisite : "The ability to cast at least one spell",
 		description : "Advantage on Con saves to maintain concentration on spells when damaged. Perform somatic components even when holding weapons or shield in one or both hands. Cast spell of 1 action casting time that targets only one creature instead of an opportunity attack.",
-		eval : "AddAction(\"reaction\", \"Opportunity Spell\", \"the War Caster feat\"); AddString(\"Saving Throw advantages \/ disadvantages\", \"Adv. on Con (Concentration) saves when damaged\", \"; \");",
-		removeeval : "RemoveAction(\"reaction\", \"Opportunity Spell\"); RemoveString(\"Saving Throw advantages \/ disadvantages\", \"Adv. on Con (Concentration) saves when damaged\", false);"
+		action : ["reaction", " - Opportunity Spell"],
+		eval : "AddString(\"Saving Throw advantages \/ disadvantages\", \"Adv. on Con (Concentration) saves when damaged\", \"; \");",
+		removeeval : "RemoveString(\"Saving Throw advantages \/ disadvantages\", \"Adv. on Con (Concentration) saves when damaged\", false);"
 	},
 	"weapon master" : {
 		name : "Weapon Master",

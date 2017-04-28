@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Feat
 	Effect:		This is the syntax for adding a new feat
-	Sheet:		v12.83 (2017-02-18)
+	Sheet:		v12.98 (2017-04-28)
 */
 
 FeatsList["extra ability"] = { //Object name; note the use of only lower case! The spelling here is used to identify the feat with. Also note the absence of the word "var" and the use of brackets []
@@ -32,6 +32,8 @@ FeatsList["extra ability"] = { //Object name; note the use of only lower case! T
 	skills : "\n\nSkilled (feat): Choose three skills or tools." //Optional; adds the following text to any display of skills gained. Take note of the leading "\n\n", they are essential. (this line can be removed if not applicable)
 	
 	calculate : "event.value = \"I can spend 10 minutes inspiring up to 6 friendly creatures within 30 feet who can see or hear and can understand me. Each gains lvl (\" + What(\"Character Level\") + \") + Cha mod (\" + What(\"Cha Mod\") + \") temporary hit points. One can't gain temporary hit points from this feat again until after a short rest.\"", //Optional; this can be used instead of a description. This will set a calculated value for the feat field instead of a description. Note the use of \" within the syntax instead of just ""
+	
+	action : ["reaction", ""] //optional; adds the name of this feat to the reaction list when chosen. The options are "action", "bonus action", and "reaction" //the second value in the array is added as a suffix for the "name" of the feature when entered into the action field
 				
 	calcChanges : { //optional; adds stuff to the calculation of attacks and/or HP
 		

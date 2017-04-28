@@ -183,8 +183,7 @@ FeatsList["blade mastery"] = {
 		atkAdd : ["if ((/shortsword|longsword|greatsword|scimitar|rapier/).test(WeaponName)) {fields.Description += (fields.Description ? '; ' : '') + 'Advantage on opportunity attacks';}; ", "With a shortsword, longsword, greatsword, scimitar, or rapier, I get the following benefits:\n - +1 to hit;\n - Advantage on opportunity attacks."],
 		atkCalc : ["if ((/shortsword|longsword|greatsword|scimitar|rapier/).test(WeaponName)) {output.extraHit += 1;}; ", ""]
 	},
-	eval : "AddAction('reaction', 'Blade Mastery Parrying Stance', 'the Blade Mastery feat');",
-	removeeval : "RemoveAction('reaction', 'Blade Mastery Parrying Stance');",
+	action : ["reaction", " Parrying Stance"]
 };
 FeatsList["flail mastery"] = {
 	name : "Flail Mastery",
@@ -194,8 +193,7 @@ FeatsList["flail mastery"] = {
 		atkAdd : ["if (WeaponName === 'flail') {fields.Description += (fields.Description ? '; ' : '') + 'On opportunity attack hit, Strength save (DC 8 + Prof. bonus + Str mod) or knocked prone';}; ", "With a flail, I get the following benefits:\n - +1 to hit;\n - Targets hit with it must make a Strength saving throw (DC 8 + proficiency bonus + Strength modifier) or be knocked prone."],
 		atkCalc : ["if (WeaponName === 'flail') {output.extraHit += 1;}; ", ""]
 	},
-	eval : "AddAction('bonus action', 'Flail Mastery', 'the Flail Mastery feat');",
-	removeeval : "RemoveAction('bonus action', 'Flail Mastery');",
+	action : ["bonus action", ""]
 };
 FeatsList["spear mastery"] = {
 	name : "Spear Mastery",
@@ -205,8 +203,9 @@ FeatsList["spear mastery"] = {
 		atkAdd : ["if (WeaponName === 'spear') { fields.Damage_Die = fields.Damage_Die === '1d6' ? '1d8' : fields.Damage_Die; fields.Description = fields.Description.replace('versatile (1d8)', 'versatile (1d10)'); }; ", "With a spear, I get the following benefits:\n - +1 to hit;\n - The spear damage die increases to d8 (versatile d10)."],
 		atkCalc : ["if (WeaponName === 'spear') {output.extraHit += 1;}; ", ""]
 	},
-	eval : "AddAction('bonus action', 'Spear Mastery (set vs. charge)', 'the Spear Mastery feat'); AddAction('bonus action', 'Spear Mastery (increase reach)', 'the Spear Mastery feat');",
-	removeeval : "RemoveAction('bonus action', 'Spear Mastery (set vs. charge)'); RemoveAction('bonus action', 'Spear Mastery (increase reach)');",
+	action : ["bonus action", " (set vs. charge)"],
+	eval : "AddAction('bonus action', 'Spear Mastery (increase reach)', 'the Spear Mastery feat');",
+	removeeval : "RemoveAction('bonus action', 'Spear Mastery (increase reach)');",
 };
 FeatsList["alchemist"] = {
 	name : "Alchemist",
@@ -214,8 +213,9 @@ FeatsList["alchemist"] = {
 	description : "I gain proficiency with alchemist's supplies, or expertise if already proficient. As an action, I can identify a potion within 5 ft. During a rest with alchemist's supplies, I can make a potion of healing, of any rarity. Consuming it within 1 hour maximizes its effects [+1 Int]",
 	improvements : "Alchemist (feat): +1 Intelligence;",
 	scores : [0, 0, 0, 1, 0, 0],
-	eval : "AddTool('Alchemist\\'s Supplies', 'the Alchemist feat'); AddAction('action', 'Alchemist (identify potion)', 'the Alchemist feat'); if ((/(alchemist|alchemy).*(supplies|kit)/i).test(What('Too Text'))) { Checkbox('Too Exp', true); } else if (What('Too') === '') {Checkbox('Too Prof', true); Value('Too Text', 'Alchemist Kit (Int)'); };",
-	removeeval : "RemoveTool('Alchemist\\'s Supplies', 'the Alchemist feat'); RemoveAction('action', 'Alchemist (identify potion)'); if ((/(alchemist|alchemy).*(supplies|kit)/i).test(What('Too Text'))) { if (tDoc.getField('Too Exp').isBoxChecked(0)) { Checkbox('Too Exp', false); } else { tDoc.resetForm(['Too Prof', 'Too Exp', 'Too Text']); }; };"
+	action : ["action", " (identify potion)"],
+	eval : "AddTool('Alchemist\\'s Supplies', 'the Alchemist feat'); if ((/(alchemist|alchemy).*(supplies|kit)/i).test(What('Too Text'))) { Checkbox('Too Exp', true); } else if (What('Too') === '') {Checkbox('Too Prof', true); Value('Too Text', 'Alchemist Kit (Int)'); };",
+	removeeval : "RemoveTool('Alchemist\\'s Supplies', 'the Alchemist feat'); if ((/(alchemist|alchemy).*(supplies|kit)/i).test(What('Too Text'))) { if (tDoc.getField('Too Exp').isBoxChecked(0)) { Checkbox('Too Exp', false); } else { tDoc.resetForm(['Too Prof', 'Too Exp', 'Too Text']); }; };"
 };
 FeatsList["burglar"] = {
 	name : "Burglar",
@@ -232,8 +232,9 @@ FeatsList["gourmand"] = {
 	description : "I gain proficiency with cook's utensils, or expertise if already proficient. As an action, I can detect poison in food within 5 ft. In a long rest with food/supplies, I can have 6 creatures regain 2 extra HD and give them adv. on Con saves vs. disease for 24 hours. [+1 Con]",
 	improvements : "Gourmand (feat): +1 Constitution;",
 	scores : [0, 0, 1, 0, 0, 0],
-	eval : "AddTool('Cook\\'s Utensils', 'the Gourmand feat'); AddAction('action', 'Gourmand (inspect food)', 'the Gourmand feat'); if ((/cook.*utensils/i).test(What('Too Text'))) { Checkbox('Too Exp', true); } else if (What('Too') === '') {Checkbox('Too Prof', true); Value('Too Text', 'Cook\\'s Utensils (Int)'); };",
-	removeeval : "RemoveTool('Cook\\'s Utensils', 'the Gourmand feat'); RemoveAction('action', 'Gourmand (inspect food)'); if ((/cook.*utensils/i).test(What('Too Text'))) { if (tDoc.getField('Too Exp').isBoxChecked(0)) { Checkbox('Too Exp', false); } else { tDoc.resetForm(['Too Prof', 'Too Exp', 'Too Text']); }; };"
+	action : ["action", " (inspect food)"],
+	eval : "AddTool('Cook\\'s Utensils', 'the Gourmand feat'); if ((/cook.*utensils/i).test(What('Too Text'))) { Checkbox('Too Exp', true); } else if (What('Too') === '') {Checkbox('Too Prof', true); Value('Too Text', 'Cook\\'s Utensils (Int)'); };",
+	removeeval : "RemoveTool('Cook\\'s Utensils', 'the Gourmand feat'); if ((/cook.*utensils/i).test(What('Too Text'))) { if (tDoc.getField('Too Exp').isBoxChecked(0)) { Checkbox('Too Exp', false); } else { tDoc.resetForm(['Too Prof', 'Too Exp', 'Too Text']); }; };"
 };
 FeatsList["master of disguise"] = {
 	name : "Master of Disguise",
@@ -241,8 +242,9 @@ FeatsList["master of disguise"] = {
 	description : "I gain proficiency with the disguise kit, or expertise with it if I'm already proficient. After observing a creature for 1 hour, I can craft a disguise to mimic it in 8 hours with a disguise kit. Once finished, I can don this disguise as an action. [+1 Charisma]",
 	improvements : "Master of Disguise (feat): +1 Charisma;",
 	scores : [0, 0, 0, 0, 0, 1],
-	eval : "AddTool('Disguise Kit', 'the Master of Disguise feat'); AddAction('action', 'Master of Disguise (don disguise)', 'the Master of Disguise feat'); if ((/disguise.*kit/i).test(What('Too Text'))) { Checkbox('Too Exp', true); } else if (What('Too') === '') {Checkbox('Too Prof', true); Value('Too Text', 'Disguise Kit (Cha)'); };",
-	removeeval : "RemoveTool('Disguise Kit', 'the Master of Disguise feat'); RemoveAction('action', 'Master of Disguise (don disguise)'); if ((/disguise.*kit/i).test(What('Too Text'))) { if (tDoc.getField('Too Exp').isBoxChecked(0)) { Checkbox('Too Exp', false); } else { tDoc.resetForm(['Too Prof', 'Too Exp', 'Too Text']); }; };"
+	action : ["action", " (don disguise)"],
+	eval : "AddTool('Disguise Kit', 'the Master of Disguise feat'); if ((/disguise.*kit/i).test(What('Too Text'))) { Checkbox('Too Exp', true); } else if (What('Too') === '') {Checkbox('Too Prof', true); Value('Too Text', 'Disguise Kit (Cha)'); };",
+	removeeval : "RemoveTool('Disguise Kit', 'the Master of Disguise feat'); if ((/disguise.*kit/i).test(What('Too Text'))) { if (tDoc.getField('Too Exp').isBoxChecked(0)) { Checkbox('Too Exp', false); } else { tDoc.resetForm(['Too Prof', 'Too Exp', 'Too Text']); }; };"
 };
 
 /*	the Feats for Skills Unearthed Arcana of 2017-04-17

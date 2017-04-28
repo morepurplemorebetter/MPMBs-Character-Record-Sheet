@@ -4988,6 +4988,11 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			setSpellVars = true;
 		};
 		
+		if (IsNotFeatMenu && theFeat.action) {
+			var FeatAct = What("Unit System") === "metric" ? ConvertToMetric(theFeat.action[1], 0.5) : theFeat.action[1];
+			RemoveAction(theFeat.action[0], propFea[FeaChoice].name + FeatAct);
+		};
+		
 		tDoc.getField(FeatFlds[2]).setAction("Calculate", "");
 		if (IsNotFeatMenu) tDoc.resetForm([FeatFlds[2]]);
 		AddTooltip(FeatFlds[2], "");
@@ -5034,7 +5039,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		}
 		if (IsNotFeatMenu && theFeat.calcChanges) {
 			addEvals(theFeat.calcChanges, [theFeat.name, "feat"], true);
-		}
+		};
 		
 		if (IsNotFeatMenu && theFeat.scores) {
 			//get the ability score arrays from the fields, add the feat bonuses, and put them back in the field
@@ -5063,6 +5068,11 @@ function ApplyFeat(InputFeat, FldNmbr) {
 				}
 			};
 			setSpellVars = true;
+		};
+		
+		if (IsNotFeatMenu && theFeat.action) {
+			var FeatAct = What("Unit System") === "metric" ? ConvertToMetric(theFeat.action[1], 0.5) : theFeat.action[1];
+			AddAction(theFeat.action[0], propFea[FeaChoice].name + FeatAct, "the " + theFeat.name + " feat");
 		};
 	}
 	if (setSpellVars) SetStringifieds("spells"); //set the global variables to their fields for future reference
