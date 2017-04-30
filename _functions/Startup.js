@@ -14,6 +14,7 @@ function InitializeEverything(noButtons, noVars) {
 	};
 	
 	if (!minVer) {
+		SetGearVariables();
 		setListsUnitSystem(false, true);
 		if (!noVars) UAstartupCode();
 		FindClasses();

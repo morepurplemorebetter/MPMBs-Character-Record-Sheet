@@ -458,7 +458,7 @@ function testFont(fontTest) {
 };
 
 function clean(input, remove, diacretics) {
-	var charArray = remove && typeof remove !== "undefined" ? remove : [" ", "-", ".", ",", "\\", "/", ":", ";"];
+	var charArray = remove ? remove : [" ", "-", ".", ",", "\\", "/", ":", ";"];
 	while (charArray.indexOf(input[0]) !== -1) {
 		input = input.slice(1);
 	}

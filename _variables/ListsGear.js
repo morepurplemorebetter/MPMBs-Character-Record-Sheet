@@ -1789,102 +1789,123 @@ var AmmoList = {
 };
 
 var PacksList = {
-	"burglar's pack (16 gp)" : [
-		["Backpack, with:", "", 5],
-		["Bag of 1000 ball bearings", 1, 2],
-		["String, feet of", 10, ""],
-		["Bell", "", ""],
-		["Candles", 5, ""],
-		["Crowbar", "", 5],
-		["Hammer", "", 3],
-		["Pitons", 10, .25],
-		["Hooded lantern", "", 2],
-		["Oil, flasks of", 2, 1],
-		["Rations, days of", 5, 2],
-		["Tinderbox", "", 1],
-		["Waterskin", "", 5],
-		["Hempen rope, feet of", 50, 0.2]
-	],
-	"diplomat's pack (39 gp)" : [
-		["Chest, with:", "", 25],
-		["Map or scroll case", 2, 1],
-		["Fine clothes", "", 6],
-		["Ink, 1 ounce bottle of", "", ""],
-		["Ink pen", "", ""],
-		["Lamp", "", 1],
-		["Oil, flasks of", 2, 1],
-		["Paper, sheets of", 5, ""],
-		["Perfume, vial of", "", ""],
-		["Sealing Wax", "", ""],
-		["Soap", "", ""]
-	],
-	"dungeoneer's pack (12 gp)" : [
-		["Backpack, with:", "", 5],
-		["Crowbar", "", 5],
-		["Hammer", "", 3],
-		["Pitons", 10, .25],
-		["Torches", 10, 1],
-		["Tinderbox", "", 1],
-		["Rations, days of", 10, 2],
-		["Waterskin", "", 5],
-		["Hempen rope, feet of", 50, 0.2]
-	],
-	"entertainer's pack (40 gp)" : [
-		["Backpack, with:", "", 5],
-		["Bedroll", "", 7],
-		["Costumes", 2, 4],
-		["Candles", 5, ""],
-		["Rations, days of", 5, 2],
-		["Waterskin", "", 5],
-		["Disguise kit", "", 3]
-	],
-	"explorer's pack (10 gp)" : [
-		["Backpack, with:", "", 5],
-		["Bedroll", "", 7],
-		["Mess kit", "", 1],
-		["Tinderbox", "", 1],
-		["Torches", 10, 1],
-		["Rations, days of", 10, 2],
-		["Waterskin", "", 5],
-		["Hempen rope, feet of", 50, 0.2]
-	],
-	"priest's pack (19 gp)" : [
-		["Backpack, with:", "", 5],
-		["Blanket", "", 3],
-		["Candles", 10, ""],
-		["Tinderbox", "", 1],
-		["Alms box", "", 1],
-		["Incense, blocks of", 2, ""],
-		["Censer", "", 1],
-		["Vestments", "", 4],
-		["Rations, days of", 2, 2],
-		["Waterskin", "", 5]
-	],
-	"scholar's pack (40 gp)" : [
-		["Backpack, with:", "", 5],
-		["Book of lore", "", 5],
-		["Ink, 1 ounce bottle of", "", ""],
-		["Ink pen", "", ""],
-		["Parchment, sheets of", 10, ""],
-		["Little bag of sand", "", 1],
-		["Small knife", "", 0.25]
-	]
+	burglar : {
+		name : "Burglar's pack (16 gp)",
+		items : [
+			["Backpack, with:", "", 5],
+			["Bag of 1000 ball bearings", 1, 2],
+			["String, feet of", 10, ""],
+			["Bell", "", ""],
+			["Candles", 5, ""],
+			["Crowbar", "", 5],
+			["Hammer", "", 3],
+			["Pitons", 10, .25],
+			["Hooded lantern", "", 2],
+			["Oil, flasks of", 2, 1],
+			["Rations, days of", 5, 2],
+			["Tinderbox", "", 1],
+			["Waterskin", "", 5],
+			["Hempen rope, feet of", 50, 0.2]
+		]
+	},
+	diplomat : {
+		name : "Diplomat's pack (39 gp)",
+		items : [
+			["Chest, with:", "", 25],
+			["Map or scroll case", 2, 1],
+			["Fine clothes", "", 6],
+			["Ink, 1 ounce bottle of", "", ""],
+			["Ink pen", "", ""],
+			["Lamp", "", 1],
+			["Oil, flasks of", 2, 1],
+			["Paper, sheets of", 5, ""],
+			["Perfume, vial of", "", ""],
+			["Sealing Wax", "", ""],
+			["Soap", "", ""]
+		]
+	},
+	dungeoneer : {
+		name : "Dungeoneer's pack (12 gp)",
+		items : [
+			["Backpack, with:", "", 5],
+			["Crowbar", "", 5],
+			["Hammer", "", 3],
+			["Pitons", 10, .25],
+			["Torches", 10, 1],
+			["Tinderbox", "", 1],
+			["Rations, days of", 10, 2],
+			["Waterskin", "", 5],
+			["Hempen rope, feet of", 50, 0.2]
+		]
+	},
+	entertainer : {
+		name : "Entertainer's pack (40 gp)",
+		items : [
+			["Backpack, with:", "", 5],
+			["Bedroll", "", 7],
+			["Costumes", 2, 4],
+			["Candles", 5, ""],
+			["Rations, days of", 5, 2],
+			["Waterskin", "", 5],
+			["Disguise kit", "", 3]
+		]
+	},
+	explorer : {
+		name : "Explorer's pack (10 gp)",
+		items : [
+			["Backpack, with:", "", 5],
+			["Bedroll", "", 7],
+			["Mess kit", "", 1],
+			["Tinderbox", "", 1],
+			["Torches", 10, 1],
+			["Rations, days of", 10, 2],
+			["Waterskin", "", 5],
+			["Hempen rope, feet of", 50, 0.2]
+		]
+	},
+	priest : {
+		name : "Priest's pack (19 gp)",
+		items : [
+			["Backpack, with:", "", 5],
+			["Blanket", "", 3],
+			["Candles", 10, ""],
+			["Tinderbox", "", 1],
+			["Alms box", "", 1],
+			["Incense, blocks of", 2, ""],
+			["Censer", "", 1],
+			["Vestments", "", 4],
+			["Rations, days of", 2, 2],
+			["Waterskin", "", 5]
+		]
+	},
+	scholar : {
+		name : "Scholar's pack (40 gp)",
+		items : [
+			["Backpack, with:", "", 5],
+			["Book of lore", "", 5],
+			["Ink, 1 ounce bottle of", "", ""],
+			["Ink pen", "", ""],
+			["Parchment, sheets of", 10, ""],
+			["Little bag of sand", "", 1],
+			["Small knife", "", 0.25]
+		]
+	}
 };
 
 var GearList = {
-	"abacus [2 gp]" : {
+	"abacus" : {
 		infoname : "Abacus [2 gp]",
 		name : "Abacus",
 		amount : "",
 		weight : 2
 	},
-	"acid (vial) [25 gp]" : {
+	"acid (vial)" : {
 		infoname : "Acid (vial) [25 gp]",
 		name : "Acid, vials of",
 		amount : "",
 		weight : 1
 	},
-	"alchemist's fire (flask) [50 gp]" : {
+	"alchemist's fire (flask)" : {
 		infoname : "Alchemist's fire (flask) [50 gp]",
 		name : "Alchemist's fire, flasks of",
 		amount : "",
@@ -1896,31 +1917,31 @@ var GearList = {
 		amount : "",
 		weight : ""
 	},
-	"   arrows (20) [1 gp]" : {
+	"ammunition: arrows (20)" : {
 		infoname : "   Arrows (20) [1 gp]",
 		name : "Arrows",
 		amount : 20,
 		weight : 0.05
 	},
-	"   blowgun needles (50) [1 gp]" : {
+	"ammunition: blowgun needles (50)" : {
 		infoname : "   Blowgun needles (50) [1 gp]",
 		name : "Blowgun needles",
 		amount : 50,
 		weight : 0.02
 	},
-	"   crossbow bolts (20) [1 gp]" : {
+	"ammunition: crossbow bolts (20)" : {
 		infoname : "   Crossbow bolts (20) [1 gp]",
 		name : "Crossbow bolts",
 		amount : 20,
 		weight : 0.075
 	},
-	"   sling bullets (20) [4 cp]" : {
+	"ammunition: sling bullets (20)" : {
 		infoname : "   Sling bullets (20) [4 cp]",
 		name : "Sling bullets",
 		amount : 20,
 		weight : 0.075
 	},
-	"antitoxin (vial) [50 gp]" : {
+	"antitoxin (vial)" : {
 		infoname : "Antitoxin (vial) [50 gp]",
 		name : "Antitoxin, vials of",
 		amount : "",
@@ -1932,145 +1953,145 @@ var GearList = {
 		amount : "",
 		weight : ""
 	},
-	"   crystal [10 gp]" : {
+	"arcane focus: crystal" : {
 		infoname : "   Crystal [10 gp]",
 		name : "Crystal arcane focus",
 		amount : "",
 		weight : 1
 	},
-	"   orb [20 gp]" : {
+	"arcane focus: orb" : {
 		infoname : "   Orb [20 gp]",
 		name : "Orb arcane focus",
 		amount : "",
 		weight : 3
 	},
-	"   rod [10 gp]" : {
+	"arcane focus: rod" : {
 		infoname : "   Rod [10 gp]",
 		name : "Rod arcane focus",
 		amount : "",
 		weight : 2
 	},
-	"   staff [5 gp]" : {
+	"arcane focus: staff" : {
 		infoname : "   Staff [5 gp]",
 		name : "Staff arcane focus",
 		amount : "",
 		weight : 4
 	},
-	"   wand [10 gp]" : {
+	"arcane focus: wand" : {
 		infoname : "   Wand [10 gp]",
 		name : "Wand arcane focus",
 		amount : "",
 		weight : 1
 	},
-	"backpack [2 gp]" : {
+	"backpack" : {
 		infoname : "Backpack [2 gp]",
 		name : "Backpack",
 		amount : "",
 		weight : 5
 	},
-	"ball bearings (bag of 1,000) [1 gp]" : {
+	"ball bearings (bag of 1,000)" : {
 		infoname : "Ball bearings (bag of 1,000) [1 gp]",
 		name : "Bag of 1000 ball bearings",
 		amount : "",
 		weight : 2
 	},
-	"barrel [2 gp]" : {
+	"barrel" : {
 		infoname : "Barrel [2 gp]",
 		name : "Barrel",
 		amount : "",
 		weight : 70
 	},
-	"basket [4 sp]" : {
+	"basket" : {
 		infoname : "Basket [4 sp]",
 		name : "Basket",
 		amount : "",
 		weight : 2
 	},
-	"bedroll [1 gp]" : {
+	"bedroll" : {
 		infoname : "Bedroll [1 gp]",
 		name : "Bedroll",
 		amount : "",
 		weight : 7
 	},
-	"bell [1 gp]" : {
+	"bell" : {
 		infoname : "Bell [1 gp]",
 		name : "Bell",
 		amount : "",
 		weight : ""
 	},
-	"blanket [5 sp]" : {
+	"blanket" : {
 		infoname : "Blanket [5 sp]",
 		name : "Blanket",
 		amount : "",
 		weight : 3
 	},
-	"block and tackle [1 gp]" : {
+	"block and tackle" : {
 		infoname : "Block and tackle [1 gp]",
 		name : "Block and tackle",
 		amount : "",
 		weight : 5
 	},
-	"book [25 gp]" : {
+	"book" : {
 		infoname : "Book [25 gp]",
 		name : "Book",
 		amount : "",
 		weight : 5
 	},
-	"bottle, glass [2 gp]" : {
+	"bottle, glass" : {
 		infoname : "Bottle, glass [2 gp]",
 		name : "Glass bottle",
 		amount : "",
 		weight : 2
 	},
-	"bucket [5 sp]" : {
+	"bucket" : {
 		infoname : "Bucket [5 sp]",
 		name : "Bucket",
 		amount : "",
 		weight : 2
 	},
-	"caltrops [1 gp]" : {
+	"caltrops" : {
 		infoname : "Caltrops [1 gp]",
 		name : "Caltrops",
 		amount : 20,
 		weight : 0.1
 	},
-	"candle [1 cp]" : {
+	"candle" : {
 		infoname : "Candle [1 cp]",
 		name : "Candle",
 		amount : "",
 		weight : ""
 	},
-	"case, crossbow bolt [1 gp]" : {
+	"case, crossbow bolt" : {
 		infoname : "Case, crossbow bolt [1 gp]",
 		name : "Crossbow bolt case",
 		amount : "",
 		weight : 1
 	},
-	"case, map or scroll [1 gp]" : {
+	"case, map or scroll" : {
 		infoname : "Case, map or scroll [1 gp]",
 		name : "Map or scroll case",
 		amount : "",
 		weight : 1
 	},
-	"chain (10 feet) [5 gp]" : {
+	"chain (10 feet)" : {
 		infoname : "Chain (10 feet) [5 gp]",
 		name : "Chain, feet of",
 		amount : 10,
 		weight : 1
 	},
-	"chalk (1 piece) [1 cp]" : {
+	"chalk (1 piece)" : {
 		infoname : "Chalk (1 piece) [1 cp]",
 		name : "Chalk, pieces of",
 		amount : "",
 		weight : ""
 	},
-	"chest [5 gp]" : {
+	"chest" : {
 		infoname : "Chest [5 gp]",
 		name : "Chest",
 		amount : "",
 		weight : 25
 	},
-	"climber's kit [25 gp]" : {
+	"climber's kit" : {
 		infoname : "Climber's kit [25 gp]",
 		name : "Climber's kit",
 		amount : "",
@@ -2082,37 +2103,37 @@ var GearList = {
 		amount : "",
 		weight : ""
 	},
-	"   common [5 sp]" : {
+	"clothes: common" : {
 		infoname : "   Common [5 sp]",
 		name : "Common clothes",
 		amount : "",
 		weight : 3
 	},
-	"   costume [5 gp]" : {
+	"clothes: costume" : {
 		infoname : "   Costume [5 gp]",
 		name : "Costume clothes",
 		amount : "",
 		weight : 4
 	},
-	"   fine [15 gp]" : {
+	"clothes: fine" : {
 		infoname : "   Fine [15 gp]",
 		name : "Fine clothes",
 		amount : "",
 		weight : 6
 	},
-	"   traveler's [2 gp]" : {
+	"clothes: traveler's" : {
 		infoname : "   Traveler's [2 gp]",
 		name : "Traveler's clothes",
 		amount : "",
 		weight : 4
 	},
-	"component pouch [25 gp]" : {
+	"component pouch" : {
 		infoname : "Component pouch [25 gp]",
 		name : "Component pouch",
 		amount : "",
 		weight : 2
 	},
-	"crowbar [2 gp]" : {
+	"crowbar" : {
 		infoname : "Crowbar [2 gp]",
 		name : "Crowbar",
 		amount : "",
@@ -2124,61 +2145,61 @@ var GearList = {
 		amount : "",
 		weight : ""
 	},
-	"   sprig of mistletoe [1 gp]" : {
+	"druidic focus: sprig of mistletoe" : {
 		infoname : "   Sprig of mistletoe [1 gp]",
 		name : "Sprig of mistletoe druidic focus",
 		amount : "",
 		weight : ""
 	},
-	"   totem [1 gp]" : {
+	"druidic focus: totem" : {
 		infoname : "   Totem [1 gp]",
 		name : "Totem druidic focus",
 		amount : "",
 		weight : ""
 	},
-	"   wooden staff [5 gp]" : {
+	"druidic focus: wooden staff" : {
 		infoname : "   Wooden staff [5 gp]",
 		name : "Wooden staff druidic focus",
 		amount : "",
 		weight : 4
 	},
-	"   yew wand  [10 gp]" : {
+	"druidic focus: yew wand " : {
 		infoname : "   Yew wand  [10 gp]",
 		name : "Yew wand druidic focus",
 		amount : "",
 		weight : 1
 	},
-	"fishing tackle [1 gp]" : {
+	"fishing tackle" : {
 		infoname : "Fishing tackle [1 gp]",
 		name : "Fishing tackle",
 		amount : "",
 		weight : 4
 	},
-	"flask or tankard [2 cp]" : {
+	"flask or tankard" : {
 		infoname : "Flask or tankard [2 cp]",
 		name : "Flask or tankard",
 		amount : "",
 		weight : 1
 	},
-	"grappling hook [2 gp]" : {
+	"grappling hook" : {
 		infoname : "Grappling hook [2 gp]",
 		name : "Grappling hook",
 		amount : "",
 		weight : 4
 	},
-	"hammer [1 gp]" : {
+	"hammer" : {
 		infoname : "Hammer [1 gp]",
 		name : "Hammer",
 		amount : "",
 		weight : 3
 	},
-	"hammer, sledge [2 gp]" : {
+	"hammer, sledge" : {
 		infoname : "Hammer, sledge [2 gp]",
 		name : "Sledge hammer",
 		amount : "",
 		weight : 10
 	},
-	"healer's kit [5 gp]" : {
+	"healer's kit" : {
 		infoname : "Healer's kit [5 gp]",
 		name : "Healer's kit",
 		amount : "",
@@ -2190,313 +2211,313 @@ var GearList = {
 		amount : "",
 		weight : ""
 	},
-	"   amulet [5 gp]" : {
+	"holy symbol: amulet" : {
 		infoname : "   Amulet [5 gp]",
 		name : "Amulet holy symbol",
 		amount : "",
 		weight : 1
 	},
-	"   emblem [5 gp]" : {
+	"holy symbol: emblem" : {
 		infoname : "   Emblem [5 gp]",
 		name : "Emblem holy symbol",
 		amount : "",
 		weight : ""
 	},
-	"   reliquary [5 gp]" : {
+	"holy symbol: reliquary" : {
 		infoname : "   Reliquary [5 gp]",
 		name : "Reliquary holy symbol",
 		amount : "",
 		weight : 2
 	},
-	"holy water (flask) [25 gp]" : {
+	"holy water (flask)" : {
 		infoname : "Holy water (flask) [25 gp]",
 		name : "Holy water, flasks of",
 		amount : "",
 		weight : 1
 	},
-	"hourglass [25 gp]" : {
+	"hourglass" : {
 		infoname : "Hourglass [25 gp]",
 		name : "Hourglass",
 		amount : "",
 		weight : 1
 	},
-	"hunting trap [5 gp]" : {
+	"hunting trap" : {
 		infoname : "Hunting trap [5 gp]",
 		name : "Hunting trap",
 		amount : "",
 		weight : 25
 	},
-	"ink (1 once bottle) [10 gp]" : {
+	"ink (1 once bottle)" : {
 		infoname : "Ink (1 once bottle) [10 gp]",
 		name : "Ink, 1 ounce bottle of",
 		amount : "",
 		weight : ""
 	},
-	"ink pen [2 cp]" : {
+	"ink pen" : {
 		infoname : "Ink pen [2 cp]",
 		name : "Ink pen",
 		amount : "",
 		weight : ""
 	},
-	"jug or pitcher [2 cp]" : {
+	"jug or pitcher" : {
 		infoname : "Jug or pitcher [2 cp]",
 		name : "Jug or pitcher",
 		amount : "",
 		weight : 4
 	},
-	"small knife [1 gp]" : {
+	"small knife" : {
 		infoname : "Small Knife [1 sp]",
 		name : "Small Knife",
 		amount : "",
 		weight : 0.25
 	},
-	"ladder (10-foot) [1 sp]" : {
+	"ladder (10-foot)" : {
 		infoname : "Ladder (10-foot) [1 sp]",
 		name : "10-foot ladder",
 		amount : "",
 		weight : 25
 	},
-	"lamp [5 sp]" : {
+	"lamp" : {
 		infoname : "Lamp [5 sp]",
 		name : "Lamp",
 		amount : "",
 		weight : 1
 	},
-	"lantern, bullseye [10 gp]" : {
+	"lantern, bullseye" : {
 		infoname : "Lantern, bullseye [10 gp]",
 		name : "Bullseye lantern",
 		amount : "",
 		weight : 2
 	},
-	"lantern, hooded [5 gp]" : {
+	"lantern, hooded" : {
 		infoname : "Lantern, hooded [5 gp]",
 		name : "Hooded lantern",
 		amount : "",
 		weight : 2
 	},
-	"lock [10 gp]" : {
+	"lock" : {
 		infoname : "Lock [10 gp]",
 		name : "Lock",
 		amount : "",
 		weight : 1
 	},
-	"magnifying glass [100 gp]" : {
+	"magnifying glass" : {
 		infoname : "Magnifying glass [100 gp]",
 		name : "Magnifying glass",
 		amount : "",
 		weight : ""
 	},
-	"manacles [2 gp]" : {
+	"manacles" : {
 		infoname : "Manacles [2 gp]",
 		name : "Manacles",
 		amount : "",
 		weight : 6
 	},
-	"mess kit [2 sp]" : {
+	"mess kit" : {
 		infoname : "Mess kit [2 sp]",
 		name : "Mess kit",
 		amount : "",
 		weight : 1
 	},
-	"mirror, steel [5 gp]" : {
+	"mirror, steel" : {
 		infoname : "Mirror, steel [5 gp]",
 		name : "Steel mirror",
 		amount : "",
 		weight : 0.5
 	},
-	"oil (flask) [1 sp]" : {
+	"oil (flask)" : {
 		infoname : "Oil (flask) [1 sp]",
 		name : "Oil, flasks of",
 		amount : "",
 		weight : 1
 	},
-	"paper (one sheet) [2 sp]" : {
+	"paper (one sheet)" : {
 		infoname : "Paper (one sheet) [2 sp]",
 		name : "Paper, sheets of",
 		amount : "",
 		weight : ""
 	},
-	"parchment (one sheet) [1 sp]" : {
+	"parchment (one sheet)" : {
 		infoname : "Parchment (one sheet) [1 sp]",
 		name : "Parchment, sheets of",
 		amount : "",
 		weight : ""
 	},
-	"perfume (vial) [5 gp]" : {
+	"perfume (vial)" : {
 		infoname : "Perfume (vial) [5 gp]",
 		name : "Perfume, vials of",
 		amount : "",
 		weight : ""
 	},
-	"pick, miner's [2 gp]" : {
+	"pick, miner's" : {
 		infoname : "Pick, miner's [2 gp]",
 		name : "Miner's pick",
 		amount : "",
 		weight : 10
 	},
-	"piton [5 cp]" : {
+	"piton" : {
 		infoname : "Piton [5 cp]",
 		name : "Piton",
 		amount : "",
 		weight : 0.25
 	},
-	"poison, basic (vial) [100 gp]" : {
+	"poison, basic (vial)" : {
 		infoname : "Poison, basic (vial) [100 gp]",
 		name : "Basic poison, vials of",
 		amount : "",
 		weight : ""
 	},
-	"pole (10-foot) [5 cp]" : {
+	"pole (10-foot)" : {
 		infoname : "Pole (10-foot) [5 cp]",
 		name : "10-foot pole",
 		amount : "",
 		weight : 7
 	},
-	"pot, iron [2 gp]" : {
+	"pot, iron" : {
 		infoname : "Pot, iron [2 gp]",
 		name : "Iron pot",
 		amount : "",
 		weight : 10
 	},
-	"potion of healing [50 gp]" : {
+	"potion of healing" : {
 		infoname : "Potion of healing [50 gp]",
 		name : "Potion of healing",
 		amount : "",
 		weight : 0.5
 	},
-	"pouch [5 sp]" : {
+	"pouch" : {
 		infoname : "Pouch [5 sp]",
 		name : "Pou\uFEFFch",
 		amount : "",
 		weight : 1
 	},
-	"quiver [1 gp]" : {
+	"quiver" : {
 		infoname : "Quiver [1 gp]",
 		name : "Quiver",
 		amount : "",
 		weight : 1
 	},
-	"ram, portable [4 gp]" : {
+	"ram, portable" : {
 		infoname : "Ram, portable [4 gp]",
 		name : "Portable ram",
 		amount : "",
 		weight : 35
 	},
-	"rations (1 day) [5 sp]" : {
+	"rations (1 day)" : {
 		infoname : "Rations (1 day) [5 sp]",
 		name : "Rations, days of",
 		amount : "",
 		weight : 2
 	},
-	"robes [1 gp]" : {
+	"robes" : {
 		infoname : "Robes [1 gp]",
 		name : "Robes",
 		amount : "",
 		weight : 4
 	},
-	"rope, hempen (50 feet) [1 gp]" : {
+	"rope, hempen (50 feet)" : {
 		infoname : "Rope, hempen (50 feet) [1 gp]",
 		name : "Hempen rope, feet of",
 		amount : 50,
 		weight : 0.2
 	},
-	"rope, silk (50 feet) [10 gp]" : {
+	"rope, silk (50 feet)" : {
 		infoname : "Rope, silk (50 feet) [10 gp]",
 		name : "Silk rope, feet of",
 		amount : 50,
 		weight : 0.1
 	},
-	"sack [1 cp]" : {
+	"sack" : {
 		infoname : "Sack [1 cp]",
 		name : "Sack",
 		amount : "",
 		weight : 0.5
 	},
-	"scale, merchant's [5 gp]" : {
+	"scale, merchant's" : {
 		infoname : "Scale, merchant's [5 gp]",
 		name : "Merchant's scale",
 		amount : "",
 		weight : 3
 	},
-	"sealing wax [5 cp]" : {
+	"sealing wax" : {
 		infoname : "Sealing wax [5 cp]",
 		name : "Sealing wax",
 		amount : "",
 		weight : ""
 	},
-	"shovel [2 gp]" : {
+	"shovel" : {
 		infoname : "Shovel [2 gp]",
 		name : "Shovel",
 		amount : "",
 		weight : 5
 	},
-	"signal whistle [5 cp]" : {
+	"signal whistle" : {
 		infoname : "Signal whistle [5 cp]",
 		name : "Signal whistle",
 		amount : "",
 		weight : ""
 	},
-	"signet ring [5 gp]" : {
+	"signet ring" : {
 		infoname : "Signet ring [5 gp]",
 		name : "Signet ring",
 		amount : "",
 		weight : ""
 	},
-	"soap [2 cp]" : {
+	"soap" : {
 		infoname : "Soap [2 cp]",
 		name : "Soap",
 		amount : "",
 		weight : ""
 	},
-	"spellbook [50 gp]" : {
+	"spellbook" : {
 		infoname : "Spellbook [50 gp]",
 		name : "Spellbook",
 		amount : "",
 		weight : 3
 	},
-	"spikes, iron (10) [1 gp]" : {
+	"spikes, iron (10)" : {
 		infoname : "Spikes, iron (10) [1 gp]",
 		name : "Iron spike",
 		amount : 10,
 		weight : 0.5
 	},
-	"spyglass [1000 gp]" : {
+	"spyglass" : {
 		infoname : "Spyglass [1000 gp]",
 		name : "Spyglass",
 		amount : "",
 		weight : 1
 	},
-	"tent, two-person [2 gp]" : {
+	"tent, two-person" : {
 		infoname : "Tent, two-person [2 gp]",
 		name : "Two-person tent",
 		amount : "",
 		weight : 20
 	},
-	"tinderbox [5 sp]" : {
+	"tinderbox" : {
 		infoname : "Tinderbox [5 sp]",
 		name : "Tinderbox",
 		amount : "",
 		weight : 1
 	},
-	"torch [1 cp]" : {
+	"torch" : {
 		infoname : "Torch [1 cp]",
 		name : "Torch",
 		amount : "",
 		weight : 1
 	},
-	"vial [1 gp]" : {
+	"vial" : {
 		infoname : "Vial [1 gp]",
 		name : "Vial",
 		amount : "",
 		weight : ""
 	},
-	"waterskin [2 sp]" : {
+	"waterskin" : {
 		infoname : "Waterskin [2 sp]",
 		name : "Waterskin (full)",
 		amount : "",
 		weight : 5
 	},
-	"whetstone [1 cp]" : {
+	"whetstone" : {
 		infoname : "Whetstone [1 cp]",
 		name : "Whetstone",
 		amount : "",
@@ -2511,115 +2532,115 @@ var ToolsList = {
 		amount : "",
 		weight : ""
 	},
-	"   alchemist's supplies [50 gp]" : {
+	"artisan's tools: alchemist's supplies" : {
 		infoname : "   Alchemist's supplies [50 gp]",
 		name : "Alchemist's supplies",
 		amount : "",
 		weight : 8
 	},
-	"   brewer's supplies [20 gp]" : {
+	"artisan's tools: brewer's supplies" : {
 		infoname : "   Brewer's supplies [20 gp]",
 		name : "Brewer's supplies",
 		amount : "",
 		weight : 9
 	},
-	"   calligrapher's supplies [10 gp]" : {
+	"artisan's tools: calligrapher's supplies" : {
 		infoname : "   Calligrapher's supplies [10 gp]",
 		name : "Calligrapher's supplies",
 		amount : "",
 		weight : 5
 	},
-	"   carpenter's tools [8 gp]" : {
+	"artisan's tools: carpenter's tools" : {
 		infoname : "   Carpenter's tools [8 gp]",
 		name : "Carpenter's tools",
 		amount : "",
 		weight : 6
 	},
-	"   cartographer's tools [15 gp]" : {
+	"artisan's tools: cartographer's tools" : {
 		infoname : "   Cartographer's tools [15 gp]",
 		name : "Cartographer's tools",
 		amount : "",
 		weight : 6
 	},
-	"   cobbler's tools [5 gp]" : {
+	"artisan's tools: cobbler's tools" : {
 		infoname : "   Cobbler's tools [5 gp]",
 		name : "Cobbler's tools",
 		amount : "",
 		weight : 5
 	},
-	"   cook's utensils [1 gp]" : {
+	"artisan's tools: cook's utensils" : {
 		infoname : "   Cook's utensils [1 gp]",
 		name : "Cook's utensils",
 		amount : "",
 		weight : 8
 	},
-	"   glassblower's tools [30 gp]" : {
+	"artisan's tools: glassblower's tools" : {
 		infoname : "   Glassblower's tools [30 gp]",
 		name : "Glassblower's tools",
 		amount : "",
 		weight : 5
 	},
-	"   jeweler's tools [25 gp]" : {
+	"artisan's tools: jeweler's tools" : {
 		infoname : "   Jeweler's tools [25 gp]",
 		name : "Jeweler's tools",
 		amount : "",
 		weight : 2
 	},
-	"   leatherworker's tools [5 gp]" : {
+	"artisan's tools: leatherworker's tools" : {
 		infoname : "   Leatherworker's tools [5 gp]",
 		name : "Leatherworker's tools",
 		amount : "",
 		weight : 5
 	},
-	"   mason's tools [10 gp]" : {
+	"artisan's tools: mason's tools" : {
 		infoname : "   Mason's tools [10 gp]",
 		name : "Mason's tools",
 		amount : "",
 		weight : 8
 	},
-	"   painter's supplies [10 gp]" : {
+	"artisan's tools: painter's supplies" : {
 		infoname : "   Painter's supplies [10 gp]",
 		name : "Painter's supplies",
 		amount : "",
 		weight : 5
 	},
-	"   potter's tools [10 gp]" : {
+	"artisan's tools: potter's tools" : {
 		infoname : "   Potter's tools [10 gp]",
 		name : "Potter's tools",
 		amount : "",
 		weight : 3
 	},
-	"   smith's tools [20 gp]" : {
+	"artisan's tools: smith's tools" : {
 		infoname : "   Smith's tools [20 gp]",
 		name : "Smith's tools",
 		amount : "",
 		weight : 8
 	},
-	"   tinker's tools [50 gp]" : {
+	"artisan's tools: tinker's tools" : {
 		infoname : "   Tinker's tools [50 gp]",
 		name : "Tinker's tools",
 		amount : "",
 		weight : 10
 	},
-	"   weaver's tools [1 gp]" : {
+	"artisan's tools: weaver's tools" : {
 		infoname : "   Weaver's tools [1 gp]",
 		name : "Weaver's tools",
 		amount : "",
 		weight : 5
 	},
-	"   woodcarver's tools [1 gp]" : {
+	"artisan's tools: woodcarver's tools" : {
 		infoname : "   Woodcarver's tools [1 gp]",
 		name : "Woodcarver's tools",
 		amount : "",
 		weight : 5
 	},
-	"disguise kit [25 gp]" : {
+	"disguise kit" : {
 		infoname : "Disguise kit [25 gp]",
 		name : "Disguise kit",
 		amount : "",
 		weight : 3
 	},
-	"forgery kit [15 gp]" : {
+	"forgery kit" : {
 		infoname : "Forgery kit [15 gp]",
 		name : "Forgery kit",
 		amount : "",
@@ -2631,31 +2652,31 @@ var ToolsList = {
 		amount : "",
 		weight : ""
 	},
-	"   dice set [1 sp]" : {
+	"gaming set: dice set" : {
 		infoname : "   Dice set [1 sp]",
 		name : "Dice set",
 		amount : "",
 		weight : ""
 	},
-	"   dragonchess set [1 gp]" : {
+	"gaming set: dragonchess set" : {
 		infoname : "   Dragonchess set [1 gp]",
 		name : "Dragonchess set",
 		amount : "",
 		weight : 0.5
 	},
-	"   playing card set [5 sp]" : {
+	"gaming set: playing card set" : {
 		infoname : "   Playing card set [5 sp]",
 		name : "Playing card set",
 		amount : "",
 		weight : ""
 	},
-	"   three-dragon ante set [1 gp]" : {
+	"gaming set: three-dragon ante set" : {
 		infoname : "   Three-Dragon Ante set [1 gp]",
 		name : "Three-Dragon Ante set",
 		amount : "",
 		weight : ""
 	},
-	"herbalism kit [5 gp]" : {
+	"herbalism kit" : {
 		infoname : "Herbalism kit [5 gp]",
 		name : "Herbalism kit",
 		amount : "",
@@ -2667,79 +2688,79 @@ var ToolsList = {
 		amount : "",
 		weight : ""
 	},
-	"   bagpipes [30 gp]" : {
+	"musical instrument: bagpipes" : {
 		infoname : "   Bagpipes [30 gp]",
 		name : "Bagpipes",
 		amount : "",
 		weight : 6
 	},
-	"   drum [6 gp]" : {
+	"musical instrument: drum" : {
 		infoname : "   Drum [6 gp]",
 		name : "Drum",
 		amount : "",
 		weight : 3
 	},
-	"   dulcimer [25 gp]" : {
+	"musical instrument: dulcimer" : {
 		infoname : "   Dulcimer [25 gp]",
 		name : "Dulcimer",
 		amount : "",
 		weight : 10
 	},
-	"   flute [2 gp]" : {
+	"musical instrument: flute" : {
 		infoname : "   Flute [2 gp]",
 		name : "Flute",
 		amount : "",
 		weight : 1
 	},
-	"   horn [3 gp]" : {
+	"musical instrument: horn" : {
 		infoname : "   Horn [3 gp]",
 		name : "Horn",
 		amount : "",
 		weight : 2
 	},
-	"   lute [35 gp]" : {
+	"musical instrument: lute" : {
 		infoname : "   Lute [35 gp]",
 		name : "Lute",
 		amount : "",
 		weight : 2
 	},
-	"   lyre [30 gp]" : {
+	"musical instrument: lyre" : {
 		infoname : "   Lyre [30 gp]",
 		name : "Lyre",
 		amount : "",
 		weight : 2
 	},
-	"   pan flute [12 gp]" : {
+	"musical instrument: pan flute" : {
 		infoname : "   Pan flute [12 gp]",
 		name : "Pan flute",
 		amount : "",
 		weight : 2
 	},
-	"   shawm [2 gp]" : {
+	"musical instrument: shawm" : {
 		infoname : "   Shawm [2 gp]",
 		name : "Shawm",
 		amount : "",
 		weight : 1
 	},
-	"   viol [30 gp]" : {
+	"musical instrument: viol" : {
 		infoname : "   Viol [30 gp]",
 		name : "Viol",
 		amount : "",
 		weight : 1
 	},
-	"navigator's tools [25 gp]" : {
+	"navigator's tools" : {
 		infoname : "Navigator's tools [25 gp]",
 		name : "Navigator's tools",
 		amount : "",
 		weight : 2
 	},
-	"poisoner's kit [50 gp]" : {
+	"poisoner's kit" : {
 		infoname : "Poisoner's kit [50 gp]",
 		name : "Poisoner's kit",
 		amount : "",
 		weight : 2
 	},
-	"thieves' tools [25 gp]" : {
+	"thieves' tools" : {
 		infoname : "Thieves' tools [25 gp]",
 		name : "Thieves' tools",
 		amount : "",
