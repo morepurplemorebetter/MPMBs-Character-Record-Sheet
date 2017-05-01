@@ -2827,8 +2827,7 @@ function AskUserSpellSheet() {
 			//see what spell section to activate
 			if (spCast.known.cantrips) {
 				dia.showCa = true; //show the cantrips section
-				var CaLvl = Math.min(spCast.known.cantrips.length, spCast.level) - 1;
-				dia.nmbrCa = isArray(spCast.known.cantrips) ? spCast.known.cantrips[CaLvl] : spCast.known.cantrips; //set the amount of cantrips
+				dia.nmbrCa = isArray(spCast.known.cantrips) ? spCast.known.cantrips[Math.min(spCast.known.cantrips.length, spCast.level) - 1] : spCast.known.cantrips; //set the amount of cantrips
 				dia.offsetCa = spCast.offsetCa ? spCast.offsetCa : 0; //set the manually added cantrips
 				dia.selectCa = spCast.selectCa ? spCast.selectCa : []; //set the cantrips already selected
 				
