@@ -532,151 +532,6 @@ function AddDmgType(Field, Input) {
 	PickDropdown(Field, useful);
 };
 
-function Import(type) {
-	
-	//first ask if this sheet is already set-up the right way before importing and if we can continue
-	var AskFirst = {
-		cMsg : "Before you import anything into this sheet, please make sure that the following things are set correctly. If you don't do this, not everything will import. You will have to make the following things identical to the sheet you exported the data from:" + "\n  \u2022  The unit and decimal system;" + "\n  \u2022  The layout of the pages.\n      In order to do this, you will have to hide and/or add pages in the same order as you did in the sheet you are importing from. This is because the moment you add an extra page (so after the first of its type), that page gets a name based on the location of that page in the document. That location is based solely on the pages that are visible at the time of itscreation.\n      For example, if the sheet you are importing from has two Adventurers Logsheet pages, and these were added after generating a Spell Sheet of three pages long, while all of the other pages were visible as well, the second Adventurers Logsheet page would have been generated as page number 12. In order for this sheet to properly receive the import for that page, you will first need to generate an Adventurers Logsheet page at page number 12." + "\n\n\nDo you want to continue importing?",
-		nIcon : 2,
-		cTitle : "Is everything ready for importing?",
-		nType : 2,
-	};
-	
-	
-	if (app.alert(AskFirst) !== 4) {
-		return;
-	}
-	
-	tDoc.delay = true;
-	tDoc.calculate = false;
-	
-	//if the sheet is currently flattened, undo that first
-	if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
-	
-	thermoM("start"); //start a progress dialog
-	thermoM("Importing the data..."); //change the progress dialog text
-	
-	templateA = [
-		["Template.extras.AScomp", What("Template.extras.AScomp")],
-		["Template.extras.ASnotes", What("Template.extras.ASnotes")],
-		["Template.extras.WSfront", What("Template.extras.WSfront")],
-		["Template.extras.ALlog", What("Template.extras.ALlog")],
-	];
-	var locStateOld = What("Gear Location Remember").split(",");
-	
-	if (typeof ProcResponse === "undefined") {
-		IsNotImport = false;
-		if (type === "fdf") {
-			tDoc.importAnFDF();
-		} else if (type === "xfdf") {
-			tDoc.importAnXFDF();
-		}
-		if (What("Race Remember").split("-")[1]) ApplyRace(What("Race Remember"));
-		IsNotImport = true;
-	};
-	
-	//set the values of the templates back
-	for (var i = 0; i < templateA.length; i++) {
-		Value(templateA[i][0], templateA[i][1]);
-	}
-	
-	thermoM(13/25); //increment the progress dialog's progress
-	thermoM("Getting the sheet ready..."); //change the progress dialog text
-	
-	//set the layer visibility to what the imported field says
-	LayerVisibilityOptions(false);
-	
-	//set the visibility of Honor/Sanity as imported
-	ShowHonorSanity();
-	
-	thermoM(14/25); //increment the progress dialog's progress
-	
-	tDoc.resetForm(["MakeMobileReady Remember"]); //make the sheet believe it is not flattened
-	
-	thermoM(15/25); //increment the progress dialog's progress
-
-	//set the visiblity of the text lines as the imported remember field has been set to
-	if (What("WhiteoutRemember") !== false) {
-		ToggleWhiteout(false);
-	}
-	
-	thermoM(16/25); //increment the progress dialog's progress
-
-	//set the text size for multiline fields as the imported remember field has been set to
-	if (What("FontSize Remember") !== (typePF ? 7 : 5.74)) {
-		ToggleTextSize(What("FontSize Remember"));
-	}
-	
-	thermoM(17/25); //increment the progress dialog's progress
-
-	//set the visiblity of the manual attack fiels the first page as the imported remember field has been set to
-	if (What("Manual Attack Remember") !== "No") {
-		ToggleAttacks("No");
-	}
-	
-	thermoM(18/25); //increment the progress dialog's progress
-	
-	//set the visiblity of the adventure league as the imported field has been set to
-	ToggleAdventureLeague(What("League Remember") === "On" ? "Off" : "On");
-	
-	thermoM(19/25); //increment the progress dialog's progress
-
-	//set the visiblity of the Blue Text fields as the imported remember field has been set to
-	if (What("BlueTextRemember") !== "No") {
-		ToggleBlueText("No");
-	}
-	
-	thermoM(20/25); //increment the progress dialog's progress
-
-	//set the visiblity of the spell slots on the first page as the imported remember field has been set to
-	SetSpellSlotsVisibility();
-	
-	thermoM(21/25); //increment the progress dialog's progress
-	
-	//set the visiblity of the location columns as the imported remember field has been set to
-	
-	var locStateNew = What("Gear Location Remember").split(",");
-	if (locStateNew[0] !== locStateOld[0]) { //only do something if current visiblity (locStateOld) is not what was imported
-		HideInvLocationColumn("Adventuring Gear ", locStateOld[0] === "true");
-	}
-	if (locStateNew[1] !== locStateOld[1]) { //only do something if current visiblity (locStateOld) is not what was imported
-		HideInvLocationColumn("Extra.Gear ", locStateOld[1] === "true");
-	}
-
-	thermoM(22/25); //increment the progress dialog's progress
-
-	//set the visiblity of the attuned magical item line on the second page as the imported remember field has been set to
-	if (What("Adventuring Gear Remember") !== false) {
-		ShowAttunedMagicalItems(false);
-	}
-
-	thermoM(23/25); //increment the progress dialog's progress
-	
-	//set all the color schemes as the newly imported fields dictate
-	setColorThemes();
-
-	thermoM(24/25); //increment the progress dialog's progress
-	
-	//set the weight carried multiplier back one if a race with powerful build was added
-	if (CurrentRace.known && (/powerful build/i).test(CurrentRace.trait) && What("Carrying Capacity Multiplier") === 3) {
-		tDoc.getField("Carrying Capacity Multiplier").value -= 1;
-	}
-
-	app.alert({
-		cMsg : "Be aware that some fields might not have imported correctly if you imported data that you exported from another version of this sheet.\n\nTooltips might no longer display the correct information after importing (especially if you exported all the fields and not just the non-calculated ones). Also, some fields may be left empty and other fields may display the wrong information. Unfortunately, this can't be helped.\n\nIt is recommended that you check all the fields whether or not correspond with the data that you wanted to import.\n\nUnfortunately, the portrait and symbol on the fourth page can't be imported, you will have to re-do them manually.\n\nIf the sheet you exported information from has extra pages added (e.g. two companion pages, or multiple adventurers logsheets), than those will only be imported if you create those pages first in this document as well, in the exact same order as you did in the previous document.\n\nThe following only applies if you are importing from a version before v11:\nIf you imported a class and/or race that has any options that are selected via the buttons on the second page, then please select those features that grant spellcasting again (even if they are already displayed). Selecting them again will give the automation the information necessary to produce the proper Spell Sheets.",
-		nIcon : 1,
-		cTitle : "Notes on Importing",
-		nType : 0,
-	});
-
-	thermoM(); //stop any and all progress dialogs
-	
-	//re-apply stuff just as when starting the sheet
-	InitializeEverything(false, true);
-	
-	tDoc.dirty = true;
-};
-
 // Toggle between text lines being visible and whiteout hidden Toggle = false ("Yes") or lines being hidden and whiteout visible Toggle = true ("No")
 function ToggleWhiteout(Toggle) {
 	thermoM("start"); //start a progress dialog
@@ -3177,7 +3032,42 @@ function getMenu(menuname) {
 	return temp;
 };
 
-//---- INVENTORY FUNCTIONS ----
+/* ---- INVENTORY FUNCTIONS START ---- */
+
+// set the value of the gear field to be remembered (on focus)
+function RememberGearTempOnFocus() {
+	event.target.temp = event.target.value;
+};
+
+// set the weight of the gear field (on blur)
+function SetGearWeightOnBlur() {
+	var theValue = event.target.value;
+	var weightFld = event.target.name.replace("Row", "Weight");
+	
+	if (!theValue) {
+		tDoc.resetForm([weightFld, event.target.name.replace("Row", "Amount")])
+	} else if (event.target.temp && event.target.temp === theValue) {
+		//do nothing
+	} else {
+		var theGear = ParseGear(theValue);
+		if (theGear) {
+			var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
+			var theWeight = RoundTo(tDoc[theGear[0]][theGear[1]].weight * massMod, 0.001, true);
+			var weightCurrent = What(weightFld);
+			var setWeight = false;
+			if (weightCurrent && event.target.temp) {
+				var theGearOld = event.target.temp ? ParseGear(event.target.temp) : "";
+				if (theGearOld && (theGearOld[0] !== theGear[0] || theGearOld[1] !== theGear[1])) setWeight = true;
+			} else if (!weightCurrent || weightCurrent !== theWeight) {
+				setWeight = true;
+			}
+			if (setWeight) Value(weightFld, theWeight);
+		}
+	}
+	
+	//now reset the temp
+	delete event.target.temp;
+};
 
 // find if the entry is an equipment
 function ParseGear(input, exclAmmunition) {
@@ -3218,7 +3108,7 @@ function ParseGear(input, exclAmmunition) {
 	//see if it is gear
 	for (var key in GearList) { //scan string for all gear
 		var aList = GearList[key];
-		if (!aList.name || aList.name === "-" || testSource(key, aList, "gearExcl") || (exclAmmunition && key.indexOf("ammunition")) continue;
+		if (!aList.name || aList.name === "-" || testSource(key, aList, "gearExcl") || (exclAmmunition && key.indexOf("ammunition") !== -1)) continue;
 		//var aListRegEx = RegExp(("\\b" + aList.name.replace(/\uFEFF|\,[^\,]+$/g, "").RegEscape() + "\\b").replace("s\\b", "s?\\b"), "i");
 		var aListRegEx = MakeRegex(aList.name.replace(/\uFEFF|\,[^\,]+$/g, ""));
 		if ((aListRegEx).test(tempString)) {
@@ -3250,676 +3140,568 @@ function ParseGear(input, exclAmmunition) {
 	return result;
 };
 
-// set the value of the gear field to be remembered (on focus)
-function RememberGearTempOnFocus() {
-	event.target.temp = event.target.value;
-}
-
-function SetGearWeightOnBlur() {
-	var theValue = event.target.value;
-	var weightFld = event.target.name.replace("Row", "Weight");
+// a way to add an item to one of the equipment sections
+// area = "gear" "magic" "extra" "comp"
+// column = "l", "m", "r"; can be followed/preceded by 'only' to limit searching to just that column
+function AddToInv(area, column, item, amount, weight, location, searchRegex, AddTestReplace, checkKey, isCorrectUnits) {
+	if (item == undefined || area == undefined) return;
+	//set area and prefix, if any
+	var prefix = area.indexOf("AScomp.") !== -1 ? area.substring(0, area.indexOf("AScomp.") + 7) : "";
+	area = area.toLowerCase();
+	//set start and end row
+	var maxRow = FieldNumbers[(/adventuring|gear|magic/).test(area) ? "gear" : area.indexOf("extra") !== -1 ? "extragear" : area.indexOf("comp") !== -1 ? "compgear" : false];
+	if (!maxRow) return;
+	column = column ? column.toLowerCase() : "";
+	var columnCalc = !column ? false : typePF && (/adventuring|gear/).test(area) ? (column.indexOf("r") !== -1 ? 1.5 : column.indexOf("m") !== -1 ? 3 : false) : (column.indexOf("r") !== -1 ? 2 : false);
+	var startRow = area.indexOf("magic") !== -1 ? FieldNumbers.gearMIrow + 1 : columnCalc ? Math.round(maxRow / columnCalc + 1) : 1;
+	var endRow = (/adventuring|gear/).test(area) && !What("Adventuring Gear Remember") ? maxRow - 4 : maxRow;
 	
-	if (!theValue) {
-		tDoc.resetForm([weightFld, event.target.name.replace("Row", "Amount")])
-	} else if (event.target.temp && event.target.temp === theValue) {
-		//do nothing
-	} else {
-		var theGear = ParseGear(theValue);
-		if (theGear) {
-			var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
-			var theWeight = RoundTo(tDoc[theGear[0]][theGear[1]].weight * massMod, 0.001, true);
-			var weightCurrent = What(weightFld);
-			var setWeight = false;
-			if (weightCurrent && event.target.temp) {
-				var theGearOld = event.target.temp ? ParseGear(event.target.temp) : "";
-				if (theGearOld && (theGearOld[0] !== theGear[0] || theGearOld[1] !== theGear[1])) setWeight = true;
-			} else if (!weightCurrent || weightCurrent !== theWeight) {
-				setWeight = true;
-			}
-			if (setWeight) Value(weightFld, theWeight);
-		}
-	}
+	//set start and end row for searching
+	var startSearch = column.indexOf("only") !== -1 ? startRow : 1;
+	var endSearch = column.indexOf("only") === -1 ? endRow : typePF && (/adventuring|gear/).test(area) ? (!columnCalc ? Math.round(maxRow / 3) : columnCalc === 3 ? Math.round(maxRow / 1.5) : endRow) : (columnCalc ? endRow : Math.round(maxRow / 2));
 	
-	//now reset the temp
-	delete event.target.temp;
-}
-
-function AddInvL(item, amount, weight, location) {
-	item = clean(item.substring(0, 2) === "- " ? item.substring(2) : item, " "); //remove leading or trailing spaces
-	location = location === undefined ? "" : location;
-	var RegExItem = ("\\b" + item.RegEscape() + "\\b").replace("s\\b", "s?\\b");
-	var tempFound = false;
-	var totalslots = FieldNumbers.gear - (What("Adventuring Gear Remember") === true ? 0 : 4);
-	var endSearch = event.target && event.target.name === "Equipment.menu" ? FieldNumbers.gear : Math.round(FieldNumbers.gear / (!typePF ? 2 : 3));
-	for (var i = 1; i <= endSearch; i++) {
-		if (What("Adventuring Gear Remember") === false && i === FieldNumbers.gearMIrow) { continue; }
-		var Name = tDoc.getField("Adventuring Gear Row " + i);
-		var Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
-		var Wht = tDoc.getField("Adventuring Gear Weight " + i);
-		var Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
-			if (Nmbr.value === "") {
-				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else if (!isNaN(Nmbr.value)) {
-				Nmbr.value += (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else {
-				Name.value += " + one more";
-			};
-			i = 500;
-			tempFound = true;
-		}
-	}
-	if (!tempFound) {
-		var Container = "";
-		for (var i = 1; i <= totalslots; i++) {
-			if (What("Adventuring Gear Remember") === false && i === FieldNumbers.gearMIrow) { continue; }
-			Name = tDoc.getField("Adventuring Gear Row " + i);
-			Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
-			Wht = tDoc.getField("Adventuring Gear Weight " + i);
-			Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-			if (Name.value === "" && Nmbr.value === "" && Wht.value === "") {
-				Name.value = Container + item;
-				Nmbr.value = amount;
-				Wht.value = weight;
-				Loc.value = location;
-				i = 500;
-			} else {
-				Container = Name.value.indexOf("-") === 0 || Name.value.indexOf("-") === 1 || Name.value.toLowerCase().indexOf("backpack") !== -1 || Name.value.toLowerCase().indexOf(", with:") !== -1 ? "- " : "";
-			}
-		}
-	}
-}
-
-function AddInvM(item, amount, weight, location) {
-	if (!typePF) return; //don't do this function in the Printer-Friendly version
-	item = clean(item.substring(0, 2) === "- " ? item.substring(2) : item, " "); //remove leading or trailing spaces
-	location = location === undefined ? "" : location;
-	var RegExItem = ("\\b" + item.RegEscape() + "\\b").replace("s\\b", "s?\\b");
-	var tempFound = false;
-	var totalslots = FieldNumbers.gear - (What("Adventuring Gear Remember") === true ? 0 : 4);
-	var mColumn = Math.round(FieldNumbers.gear / 3 + 1);
-	var startSearch = event.target && event.target.name === "Equipment.menu" ? 1 : mColumn;
-	var endSearch = event.target && event.target.name === "Equipment.menu" ? FieldNumbers.gear : Math.round(FieldNumbers.gear / 1.5);
+	//define the names
+	var rowNm = prefix + (area.indexOf("extra") !== -1 ? "Extra.Gear " :  area.indexOf("comp") !== -1 ? "Comp.eqp.Gear " : "Adventuring Gear ");
+	var itemRow = rowNm + "Row ";
+	var amountRow = rowNm + "Amount ";
+	var weightRow = rowNm + "Weight ";
+	var locationRow = rowNm + "Location.Row ";
+	
+	//prepare the item name for searching
+	var searchItem = clean(item, false, true);
+	searchRegex = searchRegex ? searchRegex : MakeRegex(searchItem.replace(/\uFEFF|\,[^\,]+$/g, (/(\+|-)\d+/).test(searchItem) ? "" : "(?!.*(\\+|-)\\d+)"));
+	
+	//search through the items and do something if it is found
 	for (var i = startSearch; i <= endSearch; i++) {
-		if (What("Adventuring Gear Remember") === false && i === FieldNumbers.gearMIrow) { continue; }
-		var Name = tDoc.getField("Adventuring Gear Row " + i);
-		var Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
-		var Wht = tDoc.getField("Adventuring Gear Weight " + i);
-		var Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
-			if (Nmbr.value === "") {
-				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else if (!isNaN(Nmbr.value)) {
-				Nmbr.value += (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else {
-				Name.value += " + one more";
+		var theRow = clean(What(itemRow + i), false, true);
+		var isKey = !checkKey ? false : ParseGear(theRow, true);
+		if ((theRow === searchItem || (searchRegex).test(theRow)) && (!checkKey || isKey[1] === checkKey)) {
+			if (!AddTestReplace) {
+				var curAmount = What(amountRow + i);
+				if (curAmount === "") {
+					Value(amountRow + i, 1 + (amount && !isNaN(amount) ? amount : 1));
+				} else if (!isNaN(curAmount)) {
+					Value(amountRow + i, Number(curAmount) + (amount && !isNaN(amount) ? amount : 1));
+				} else {
+					Value(itemRow + i, What(itemRow + i) + " (+ one more)");
+				};
+			} else if (AddTestReplace === "replace") {
+				Value(amountRow + i, amount);
 			};
-			i = 500;
-			tempFound = true;
-		}
-	}
-	if (!tempFound) {
-		var Container = "";
-		for (var i = mColumn; i <= totalslots; i++) {
-			if (What("Adventuring Gear Remember") === false && i === FieldNumbers.gearMIrow) { continue; }
-			Name = tDoc.getField("Adventuring Gear Row " + i);
-			Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
-			Wht = tDoc.getField("Adventuring Gear Weight " + i);
-			Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-			if (Name.value === "" && Nmbr.value === "" && Wht.value === "") {
-				Name.value = Container + item;
-				Nmbr.value = amount;
-				Wht.value = weight;
-				Loc.value = location;
-				i = 500;
-			} else {
-				Container = Name.value.indexOf("-") === 0 || Name.value.indexOf("-") === 1 || Name.value.toLowerCase().indexOf("backpack") !== -1 || Name.value.toLowerCase().indexOf(", with:") !== -1 ? "- " : "";
-			}
-		}
-	}
-}
+			return;
+		};
+	};
+	
+	//as nothing above was found, add the item to the first empty row of the selected column
+	var Container = "";
+	if (!isCorrectUnits && What("Unit System") !== "imperial") weight = RoundTo(weight * UnitsList.metric.mass, 0.001, true);
+	item = clean(item);
+	for (var i = startRow; i <= endRow; i++) {
+		var theRow = What(itemRow + i);
+		if (!theRow) {
+			Value(itemRow + i, Container + item);
+			Value(amountRow + i, amount !== undefined ? amount : "");
+			Value(weightRow + i, weight !== undefined ? weight : "");
+			Value(locationRow + i, location !== undefined ? location : "");
+			return;
+		} else {
+			Container = (/^.{0,2}-|backpack|\bbag\b|^(?=.*saddle)(?=.*bag).*$|\bsack\b|\bchest\b|, with|, contain/i).test(theRow) ? "- " : "";
+		};
+	};
+};
 
-function AddInvR(item, amount, weight, location) {
-	item = clean(item.substring(0, 2) === "- " ? item.substring(2) : item, " "); //remove leading or trailing spaces
-	location = location === undefined ? "" : location;
-	var RegExItem = ("\\b" + item.RegEscape() + "\\b").replace("s\\b", "s?\\b");
-	var tempFound = false;
-	var totalslots = FieldNumbers.gear - (What("Adventuring Gear Remember") === true ? 0 : 4);
-	var rColumn = Math.round(FieldNumbers.gear / (typePF ? 1.5 : 2) + 1);
-	var startSearch = event.target && event.target.name === "Equipment.menu" ? 1 : rColumn;
-	for (var i = startSearch; i <= totalslots; i++) {
-		if (What("Adventuring Gear Remember") === false && i === FieldNumbers.gearMIrow) { continue; }
-		var Name = tDoc.getField("Adventuring Gear Row " + i);
-		var Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
-		var Wht = tDoc.getField("Adventuring Gear Weight " + i);
-		var Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
-			if (Nmbr.value === "") {
-				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else if (!isNaN(Nmbr.value)) {
-				Nmbr.value += (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else {
-				Name.value += " + one more";
-			};
-			i = 500;
-			tempFound = true;
-		}
-	}
-	if (!tempFound) {
-		var Container = "";
-		for (var i = rColumn; i <= totalslots; i++) {
-			if (What("Adventuring Gear Remember") === false && i === FieldNumbers.gearMIrow) { continue; }
-			Name = tDoc.getField("Adventuring Gear Row " + i);
-			Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
-			Wht = tDoc.getField("Adventuring Gear Weight " + i);
-			Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-			if (Name.value === "" && Nmbr.value === "" && Wht.value === "") {
-				Name.value = Container + item;
-				Nmbr.value = amount;
-				Wht.value = weight;
-				Loc.value = location;
-				i = 500;
-			} else {
-				Container = Name.value.indexOf("-") === 0 || Name.value.indexOf("-") === 1 || Name.value.toLowerCase().indexOf("backpack") !== -1 || Name.value.toLowerCase().indexOf(", with:") !== -1 ? "- " : "";
-			}
-		}
-	}
-}
+// redirect the old function names for legacy support
+function AddInvL(item, amount, weight, location) { AddToInv("gear", "l", item, amount, weight, location, false, false, false, true); };
+function AddInvM(item, amount, weight, location) { AddToInv("gear", "m", item, amount, weight, location, false, false, false, true); };
+function AddInvR(item, amount, weight, location) { AddToInv("gear", "r", item, amount, weight, location, false, false, false, true); };
+function AddInvMagic(item, amount, weight, location) { AddToInv("magic", false, item, amount, weight, location, false, false, false, true); };
+function AddInvLExtra(item, amount, weight, location) { AddToInv("extra", "l", item, amount, weight, location, false, false, false, true); };
+function AddInvRExtra(item, amount, weight, location) { AddToInv("extra", "r", item, amount, weight, location, false, false, false, true); };
+function AddInvLComp(item, amount, weight, prefix) { AddToInv(prefix + "comp", "l", item, amount, weight, location, false, false, false, true); };
+function AddInvRComp(item, amount, weight, prefix) { AddToInv(prefix + "comp", "r", item, amount, weight, location, false, false, false, true); };
 
-function AddInvLExtra(inputitem, amount, weight, location) {
-	var item = clean(inputitem.substring(0, 2) === "- " ? inputitem.substring(2) : inputitem, " "); //remove leading or trailing spaces
-	location = location === undefined ? "" : location;
-	var RegExItem = ("\\b" + item.RegEscape() + "\\b").replace("s\\b", "s?\\b");
-	var tempFound = false;
-	var endSearch = event.target && event.target.name === "Equipment.menu" ? FieldNumbers.extragear : Math.round(FieldNumbers.extragear / 2);
-	for (var i = 1; i <= endSearch; i++) {
-		var Name = tDoc.getField("Extra.Gear Row " + i);
-		var Nmbr = tDoc.getField("Extra.Gear Amount " + i);
-		var Wht = tDoc.getField("Extra.Gear Weight " + i);
-		var Loc = tDoc.getField("Extra.Gear Location.Row " + i);
-		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
-			if (Nmbr.value === "") {
-				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else if (!isNaN(Nmbr.value)) {
-				Nmbr.value += (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else {
-				Name.value += " + one more";
-			};
-			i = 500;
-			tempFound = true;
-		}
-	}
-	if (!tempFound) {
-		var Container = "";
-		for (var i = 1; i <= FieldNumbers.extragear; i++) {
-			Name = tDoc.getField("Extra.Gear Row " + i);
-			Nmbr = tDoc.getField("Extra.Gear Amount " + i);
-			Wht = tDoc.getField("Extra.Gear Weight " + i);
-			Loc = tDoc.getField("Extra.Gear Location.Row " + i);
-			if (Name.value === "" && Nmbr.value === "" && Wht.value === "") {
-				Name.value = Container + item;
-				Nmbr.value = amount;
-				Wht.value = weight;
-				Loc.value = location;
-				i = 500;
-			} else {
-				Container = Name.value.indexOf("-") === 0 || Name.value.indexOf("-") === 1 || Name.value.toLowerCase().indexOf("backpack") !== -1 || Name.value.toLowerCase().indexOf(", with:") !== -1 ? "- " : "";
-			}
-		}
-	}
-}
+// make an array of all the gear, tools, and packs, saving each to the menus variable
+function SetGearVariables() {
+	if (minVer) return;
+	//make a menu array for all the packs
+	GearMenus.packs = [];
+	var packArray = [];
+	for (var key in PacksList) {
+		if (testSource(key, PacksList[key], "gearExcl")) continue;
+		packArray.push(key);
+	};
+	packArray.sort();
+	for (var i = 0; i < packArray.length; i++) {
+		GearMenus.packs.push({
+			cName : PacksList[packArray[i]].name,
+			cReturn : "pack#" + packArray[i]
+		});
+	};
 
-function AddInvRExtra(inputitem, amount, weight, location) {
-	var item = clean(inputitem.substring(0, 2) === "- " ? inputitem.substring(2) : inputitem, " "); //remove leading or trailing spaces
-	location = location === undefined ? "" : location;
-	var RegExItem = ("\\b" + item.RegEscape() + "\\b").replace("s\\b", "s?\\b");
-	var tempFound = false;
-	var rColumn = Math.round(FieldNumbers.extragear / 2 + 1);
-	var startSearch = event.target && event.target.name === "Equipment.menu" ? 1 : rColumn;
-	for (var i = startSearch; i <= FieldNumbers.extragear; i++) {
-		var Name = tDoc.getField("Extra.Gear Row " + i);
-		var Nmbr = tDoc.getField("Extra.Gear Amount " + i);
-		var Wht = tDoc.getField("Extra.Gear Weight " + i);
-		var Loc = tDoc.getField("Extra.Gear Location.Row " + i);
-		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
-			if (Nmbr.value === "") {
-				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else if (!isNaN(Nmbr.value)) {
-				Nmbr.value += (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else {
-				Name.value += " + one more";
-			};
-			i = 500;
-			tempFound = true;
-		}
-	}
-	if (!tempFound) {
-		var Container = "";
-		for (var i = rColumn; i <= FieldNumbers.extragear; i++) {
-			Name = tDoc.getField("Extra.Gear Row " + i);
-			Nmbr = tDoc.getField("Extra.Gear Amount " + i);
-			Wht = tDoc.getField("Extra.Gear Weight " + i);
-			Loc = tDoc.getField("Extra.Gear Location.Row " + i);
-			if (Name.value === "" && Nmbr.value === "" && Wht.value === "") {
-				Name.value = Container + item;
-				Nmbr.value = amount;
-				Wht.value = weight;
-				Loc.value = location;
-				i = 500;
-			} else {
-				Container = Name.value.indexOf("-") === 0 || Name.value.indexOf("-") === 1 || Name.value.toLowerCase().indexOf("backpack") !== -1 || Name.value.toLowerCase().indexOf(", with:") !== -1 ? "- " : "";
-			}
-		}
-	}
-}
+	//make a menu array for all the gear
+	GearMenus.gear = [];
+	var gearArray = [];
+	for (var key in GearList) {
+		if (testSource(key, GearList[key], "gearExcl")) continue;
+		gearArray.push(key);
+	};
+	gearArray.sort();
+	for (var i = 0; i < gearArray.length; i++) {
+		var theGear = GearList[gearArray[i]];
+		GearMenus.gear.push({
+			cName : theGear.infoname,
+			cReturn : !theGear.name || theGear.name === "-" ? null : "gear#" + gearArray[i]
+		});
+	};
+
+	//make a menu array for all the tools
+	GearMenus.tools = [];
+	var toolsArray = [];
+	for (var key in ToolsList) {
+		if (testSource(key, ToolsList[key], "gearExcl")) continue;
+		toolsArray.push(key);
+	};
+	toolsArray.sort();
+	for (var i = 0; i < toolsArray.length; i++) {
+		var theTool = ToolsList[toolsArray[i]];
+		GearMenus.tools.push({
+			cName : theTool.infoname,
+			cReturn : !theTool.name || theTool.name === "-" ? null : "tool#" + toolsArray[i]
+		});
+	};
+};
 
 //Make menu for 'add equipment' button and parse it to Menus.inventory
 function MakeInventoryMenu() {
 	var InvMenu = [];
-	var temp = "";
-	var BackgrString = (CurrentBackground.known && CurrentBackground.name) ? CurrentBackground.name + "'s items and gold" : "Background's items and gold";
+	
+	var backgroundKn = CurrentBackground.name ? CurrentBackground.name : "Background";
+	
+	//first make the top three entries (Pack, Gear, Tool)
+	var itemMenu = function(menu, name, array, object) {
+		var temp = {
+			cName : name,
+			oSubMenu : []
+		};
+		for (var i = 0; i < array.length; i++) {
+			temp.oSubMenu[i] = {
+				cName : array[i][0],
+				oSubMenu : eval(object.toSource())
+			};
+			for (var j = 0; j < temp.oSubMenu[i].oSubMenu.length; j++) {
+				var tempObject = temp.oSubMenu[i].oSubMenu[j];
+				if (tempObject.cReturn) tempObject.cReturn += "#" + array[i][1];
+			};
+		};
+		menu.push(temp);
+	};
+	
+	var menuExtraTypes = [
+		["To left column", "lonly"],
+		["To middle column", "monly"],
+		["To right column", "ronly"],
+	];
+	if (!typePF) menuExtraTypes.splice(1, 1);
+	itemMenu(InvMenu, "Pack", menuExtraTypes, GearMenus.packs);
+	itemMenu(InvMenu, "Gear", menuExtraTypes, GearMenus.gear);
+	itemMenu(InvMenu, "Tool", menuExtraTypes, GearMenus.tools);
 
+	//add the other single-level options to the menu	
 	var menuLVL1 = function (item, array) {
 		for (i = 0; i < array.length; i++) {
-			var isMarked = false;
-			var isEnabled = true;
-			if (array[i] === "Show 'Attuned Magical Items' subsection" && What("Adventuring Gear Remember") === false) {
-				isMarked = true;
-			} else if (array[i] === "Show location column for Equipment" && What("Gear Location Remember").split(",")[0] === "true") {
-				isMarked = true;
-			} else if (array[i] === "Show location column for Extra Equipment") {
-				if (What("Gear Location Remember").split(",")[1] === "true") isMarked = true;
-				if (tDoc.getField(BookMarkList["ASfront"]).page === -1) isEnabled = false;
-			} else if (array[i] === "Background's items and gold") {
-				isEnabled = false;
-			}
+			var isMarked = array[i][1] === "attuned" ? What("Adventuring Gear Remember") === false :
+				array[i][1] === "location2" ? What("Gear Location Remember").split(",")[0] === "true" :
+				array[i][1] === "location3" ? What("Gear Location Remember").split(",")[1] === "true" : false;
+			var isEnabled = array[i][1] === "location3" ? tDoc.getField(BookMarkList["ASfront"]).page !== -1 : array[i][1].indexOf("background") !== -1 && backgroundKn === "Background";
 			item.push({
-				cName : array[i],
-				cReturn : item + "#" + array[i],
+				cName : array[i][0],
+				cReturn : array[i][1],
 				bMarked : isMarked,
 				bEnabled : isEnabled,
 			});
 		}
 	};
-
-	var menuLVL2 = function (menu, name, array, type) {
-		menu.cName = name;
-		menu.oSubMenu = [];
-		for (i = 0; i < array.length; i++) {
-			menu.oSubMenu.push({
-				cName : array[i],
-				cReturn : type + "#" + array[i]
-			})
-		}
-	};
 	
-	var amendMenu = function(theMenu, nameChange, extraReturn) {
-		theMenu.cName = nameChange
-		for (var a = 0; a < theMenu.oSubMenu.length; a++) {
-			theMenu.oSubMenu[a].cReturn += "#" + extraReturn;
-		}
-	};
-
-	//add submenu for packs
-	var packArray = [];
-	for (var key in PacksList) {
-		packArray.push(key.substring(0, 1).toUpperCase() + key.substring(1));
-	};
-	packArray.sort();
-	var packMenu = {};
-	menuLVL2(packMenu, "packmenu", packArray, "pack");
-
-	//add two submenus for adventuring gear (left column and right column)
-	var gearArray = [];
-	for (var item in GearList) {
-		gearArray.push(GearList[item].infoname);
-	};
-	var gearMenu = {};
-	menuLVL2(gearMenu, "gearmenu", gearArray, "gear");
-	
-	var toolArray = [];
-	for (var item in ToolsList) {
-		toolArray.push(ToolsList[item].infoname);
-	};
-	var toolMenu = {};
-	menuLVL2(toolMenu, "toolmenu", toolArray, "tool");
-	
-	var menuStringsArray = [
-		["Pack", packMenu.toSource()],
-		["Gear", gearMenu.toSource()],
-		["Tool", toolMenu.toSource()],
-	];
-
-	var menuExtraTypes = [["To left column", "left"]];
-	if (typePF) menuExtraTypes.push(["To middle column", "middle"]);
-	menuExtraTypes.push(["To right column", "right"]);
-	
-	//add a menu with a changed name 
-	for (var i = 0; i < menuStringsArray.length; i++) {
-		var tempMenu = {cName : menuStringsArray[i][0], oSubMenu : []};
-		for (var e = 0; e < menuExtraTypes.length; e++) {
-			var aMenu = eval(menuStringsArray[i][1]);
-			amendMenu(aMenu, menuExtraTypes[e][0], menuExtraTypes[e][1]);
-			tempMenu.oSubMenu.push(aMenu);
-		}
-		InvMenu.push(tempMenu);
-	}
-
-	menuLVL1(InvMenu, ["-", BackgrString, "Armor && shield (from 1st page)", "Weapons (from 1st page)", "Ammunition (from 1st page)", "-", "All four of the above", "-", "Only new armor && shield", "Only new weapons", "Update ammunition", "-", "All three of the above", "-", "Reset equipment section", "-", "Show 'Attuned Magical Items' subsection", "Show location column for Equipment", "Show location column for Extra Equipment"]);
+	menuLVL1(InvMenu, [
+		["-", "-"],
+		[backgroundKn + "'s items and gold", "background"],
+		["Armor && Shield (from 1st page) [only adds new]", "armour"],
+		["Weapons && Ammunition (from 1st page) [only updates/adds new]", "weapon"],
+		["-", "-"],
+		["All three of the above (" + backgroundKn + ", armour, weapons)", "background-armour-weapon"],
+		["Just two of the above (armour, weapons)", "armour-weapon"],
+		["-", "-"],
+		["Reset equipment section", "reset"],
+		["-", "-"],
+		["Show 'Attuned Magical Items' subsection", "attuned"],
+		["Show location column for Equipment (this page)", "location2"],
+		["Show location column for Extra Equipment (3rd page)", "location3"]
+	]);
 
 	Menus.inventory = InvMenu;
 };
 
-//call the inventory menu and do something with the results
+//call the inventory menu ('add equipment' button) and do something with the results
 function InventoryOptions() {
 	var MenuSelection = getMenu("inventory");
-
-	if (MenuSelection !== undefined) {
-		tDoc.delay = true;
-		tDoc.calculate = false;
-		thermoM("start"); //start a progress dialog
-		thermoM("Inventory menu option..."); //change the progress 
-		if (MenuSelection[0] === "pack") {
-			thermoM("Adding pack " + MenuSelection[1] + "..."); //change the progress dialog text
-			AddPack(MenuSelection[1], MenuSelection[2]);
-		} else if (MenuSelection[0] === "gear" || MenuSelection[0] === "tool") {
-			thermoM("Adding " + MenuSelection[0] + " '" + MenuSelection[1] + "'..."); //change the progress dialog text
-			AddEquipment(MenuSelection[0], MenuSelection[1], MenuSelection[2]);
-		} else if (MenuSelection[1] === "reset equipment section") {
-			thermoM("Resetting the equipment section..."); //change the progress dialog text
-			var tempArray = [];
-			tempArray = [
-				"Platinum Pieces",
-				"Gold Pieces",
-				"Electrum Pieces",
-				"Silver Pieces",
-				"Copper Pieces",
-			];
-			if (!typePF) tempArray = tempArray.concat(["Lifestyle", "Lifestyle daily cost",]);
-			for (i = 1; i <= FieldNumbers.gear; i++) {
-				tempArray.push("Adventuring Gear Row " + i);
-				tempArray.push("Adventuring Gear Location.Row " + i);
-				tempArray.push("Adventuring Gear Amount " + i);
-				tempArray.push("Adventuring Gear Weight " + i);
-			};
-			for (i = 1; i < 5; i++) {
-				tempArray.push("Valuables" + i);
-			}
-			tDoc.resetForm(tempArray);
-		} else if (MenuSelection[1].indexOf("'s items and gold") !== -1) {
-			thermoM("Adding the " + MenuSelection[1] + "..."); //change the progress dialog text
-			AddInvBackgroundItems();
-		} else if (MenuSelection[1] === "armor && shield (from 1st page)") {
-			thermoM("Adding the armor and shield (from 1st page)..."); //change the progress dialog text
-			AddInvArmorShield();
-		} else if (MenuSelection[1] === "weapons (from 1st page)") {
-			thermoM("Adding the " + MenuSelection[1] + "..."); //change the progress dialog text
-			AddInvWeapons();
-		} else if (MenuSelection[1] === "ammunition (from 1st page)") {
-			thermoM("Adding the " + MenuSelection[1] + "..."); //change the progress dialog text
-			AddInvAmmo();
-		} else if (MenuSelection[1] === "all four of the above") {
-			thermoM("Adding the background items, armor, shield, weapons, and ammunition..."); 
-			AddInvBackgroundItems();
-			AddInvArmorShield();
-			AddInvWeapons();
-			AddInvNewAmmo();
-		} else if (MenuSelection[1] === "only new armor && shield") {
-			thermoM("Updating the armor and shield (from 1st page)..."); //change the progress 
-			AddInvNewArmorShield();
-		} else if (MenuSelection[1] === "only new weapons") {
-			thermoM("Updating the weapons (from 1st page)..."); //change the progress
-			AddInvNewWeapons();
-		} else if (MenuSelection[1] === "update ammunition") {
-			thermoM("Updating the ammunition (from 1st page)..."); //change the progress
-			AddInvNewAmmo();
-		} else if (MenuSelection[1] === "all three of the above") {
-			thermoM("Updating the armor, shield, weapons, and ammunition..."); //change the progress
-			AddInvNewArmorShield();
-			AddInvNewWeapons();
-			AddInvNewAmmo();
-		} else if (MenuSelection[1] === "show 'attuned magical items' subsection") {
-			thermoM((What("Adventuring Gear Remember") === true ? "showing" : "hiding") + " the 'attuned magical items' subsection..."); //change the progress
-			ShowAttunedMagicalItems(What("Adventuring Gear Remember") === true);
-		} else if (MenuSelection[1] === "show location column for equipment") {
-			thermoM((What("Gear Location Remember").split(",")[0] === "true" ? "hiding" : "showing") + " the location column on page 2..."); //change the progress
-			HideInvLocationColumn("Adventuring Gear ", What("Gear Location Remember").split(",")[0] === "true");
-		} else if (MenuSelection[1] === "show location column for extra equipment") {
-			thermoM((What("Gear Location Remember").split(",")[1] === "true" ? "hiding" : "showing") + " the location column on page 3..."); //change the progress
-			HideInvLocationColumn("Extra.Gear ", What("Gear Location Remember").split(",")[1] === "true");
-		}
-		thermoM("stop"); //stop the top progress dialog
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) tDoc.calculateNow();
-	}
+	
+	if (!MenuSelection) return;
+	
+	tDoc.delay = true;
+	tDoc.calculate = false;
+	thermoM("start"); //start a progress dialog
+	thermoM("Inventory menu option..."); //change the progress
+	
+	if (MenuSelection[0] === "pack") {
+		var thePack = PacksList[MenuSelection[1]];
+		thermoM("Adding pack " + thePack.name + "..."); //change the progress dialog text
+		var columnCalc = typePF ? (MenuSelection[2].indexOf("r") !== -1 ? 1.5 : MenuSelection[2].indexOf("m") !== -1 ? 3 : false) : (MenuSelection[2].indexOf("r") !== -1 ? 2 : false);
+		var startRow = columnCalc ? Math.round(FieldNumbers.gear / columnCalc + 1) : 1;
+		if (What("Adventuring Gear Row " + startRow)) InvInsert("Adventuring ", startRow);
+		for (var i = 0; i < thePack.items.length; i++) {
+			var theGear = thePack.items[i];
+			AddToInv("gear", MenuSelection[2], theGear[0], theGear[1], theGear[2]);
+		};
+	} else if (MenuSelection[0] === "gear" || MenuSelection[0] === "tool") {
+		var theGear = MenuSelection[0] === "gear" ? GearList[MenuSelection[1]] : ToolsList[MenuSelection[1]];
+		thermoM("Adding '" + theGear.name + "' to the adventuring gear..."); //change the progress dialog text
+		AddToInv("gear", MenuSelection[2], theGear.name, theGear.amount, theGear.weight);
+	} else if (MenuSelection[0] === "reset") {
+		thermoM("Resetting the equipment section..."); //change the progress dialog text
+		var tempArray = ["Platinum Pieces", "Gold Pieces", "Electrum Pieces", "Silver Pieces", "Copper Pieces"];
+		if (!typePF) {
+			for (var i = 1; i < 5; i++) { tempArray.push("Valuables" + i); };
+			tempArray = tempArray.concat(["Lifestyle", "Lifestyle daily cost"]);
+		};
+		for (var i = 1; i <= FieldNumbers.gear; i++) {
+			tempArray.push("Adventuring Gear Row " + i);
+			tempArray.push("Adventuring Gear Location.Row " + i);
+			tempArray.push("Adventuring Gear Amount " + i);
+			tempArray.push("Adventuring Gear Weight " + i);
+		};
+		tDoc.resetForm(tempArray);
+	} else if (MenuSelection[0] === "attuned") {
+		thermoM("Toggling the visibility of the Attuned Magical Items subsection...");
+		ShowAttunedMagicalItems(What("Adventuring Gear Remember") === true);
+	} else if (MenuSelection[0] === "location2") {
+		thermoM("Toggling the visibility of the location column on page 2...");
+		HideInvLocationColumn("Adventuring Gear ", What("Gear Location Remember").split(",")[0] === "true");
+	} else if (MenuSelection[0] === "location3") {
+		thermoM("Toggling the visibility of the location column on page 3...");
+		HideInvLocationColumn("Extra.Gear ", What("Gear Location Remember").split(",")[1] === "true");
+	} else if (MenuSelection[0].indexOf("background") !== -1) {
+		AddInvBackgroundItems();
+	};
+	if (MenuSelection[0].indexOf("armour") !== -1) {
+		AddInvArmorShield();
+	};
+	if (MenuSelection[0].indexOf("weapon") !== -1) {
+		AddInvWeaponsAmmo();
+	};
+	
+	thermoM("stop"); //stop the top progress dialog
+	tDoc.calculate = IsNotReset;
+	tDoc.delay = !IsNotReset;
+	if (IsNotReset) tDoc.calculateNow();
 };
-
-//add the armor and shield in the 'defense' section to the inventory
-function AddInvArmorShield() {
-	var tempMagicSign = CurrentArmour.magic > 0 ? " \+" : CurrentArmour.magic < 0 ? " " : "";
-	var tempArmorString = CurrentArmour.magic ? tempMagicSign + CurrentArmour.magic : "";
-	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].weight) {
-		var armName = ArmourList[CurrentArmour.known].invName ? ArmourList[CurrentArmour.known].invName : ArmourList[CurrentArmour.known].name;
-		AddInvR(armName + tempArmorString, "", What("AC Armor Weight"));
-	}
-	var temp = What("AC Shield Bonus Description");
-	if (temp !== "") {
-		var tempShield = temp.toLowerCase().indexOf("shield") === -1 ? temp + " shield" : temp;
-		AddInvR(tempShield, "", What("AC Shield Weight"))
-	}
-};
-
-//add the armor and shield in the 'defense' section to the inventory, provided they are not already there
-function AddInvNewArmorShield() {
-	var tempMagicSign = CurrentArmour.magic >= 0 ? " +" : " ";
-	var tempArmorString = CurrentArmour.magic ? tempMagicSign + CurrentArmour.magic : "";
-	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].weight) {
-		var armName = ArmourList[CurrentArmour.known].invName ? ArmourList[CurrentArmour.known].invName : ArmourList[CurrentArmour.known].name;
-		var tempArmor = armName + tempArmorString;
-		var tempArmorRegEx = tempArmor.RegEscape();
-		var isFound = false;
-		for (var E = 1; E <= FieldNumbers.gear; E++) {
-			if (What("Adventuring Gear Remember") === false && E === FieldNumbers.gearMIrow) { continue; }
-			var Name = tDoc.getField("Adventuring Gear Row " + E);
-			if (((RegExp("\\b" + tempArmorRegEx + "\\b", "i")).test(Name.value) && !(RegExp("\\b" + tempArmorRegEx + " \\+\\d+", "i")).test(Name.value)) || Name.value === tempArmor) {
-				isFound = true;
-				E = 500;
-			}
-		}
-		if (!isFound) {
-			AddInvR(tempArmor, "", What("AC Armor Weight"));
-		}
-	}
-
-	var temp = What("AC Shield Bonus Description");
-	if (temp !== "") {
-		var tempShield = temp.toLowerCase().indexOf("shield") === -1 ? temp + " shield" : temp;
-		var tempShieldRegEx = tempShield.RegEscape();
-		var isFound = false;
-		for (var E = 1; E <= FieldNumbers.gear; E++) {
-			if (What("Adventuring Gear Remember") === false && E === FieldNumbers.gearMIrow) { continue; }
-			var Name = tDoc.getField("Adventuring Gear Row " + E);
-			if (((RegExp("\\b" + tempShieldRegEx + "\\b", "i")).test(Name.value) && !(RegExp("\\b" + tempShieldRegEx + " \\+\\d+", "i")).test(Name.value)) || Name.value === tempShield) {
-				isFound = true;
-				E = 500;
-			}
-		}
-		if (!isFound) {
-			AddInvR(tempShield, "", What("AC Shield Weight"));
-		}
-	}
-};
-
-//add all the weapons in the 'attacks' section to the inventory
-function AddInvWeapons() {
-	if (CurrentWeapons.known) {
-		for (var i = 0; i < FieldNumbers.attacks; i++) {
-			var temp = CurrentWeapons.known[i];
-			if (temp && temp[0] && (WeaponsList[temp[0]].type === "Simple" || WeaponsList[temp[0]].type === "Martial")) {
-				var temp2 = temp[1] === 0 ? "" : (temp[1] > 0 ? " +": " ") + temp[1];
-				var temp3 = WeaponsList[temp[0]].name + temp2;
-				AddInvR(temp3, "", What("BlueText.Attack." + (i + 1) + ".Weight"));
-			}
-		}
-	}
-};
-
-//add all the weapons in the 'attacks' section to the inventory, provided they are not already there
-function AddInvNewWeapons() {
-	if (CurrentWeapons.known) {
-		for (var i = 0; i < FieldNumbers.attacks; i++) {
-			var temp = CurrentWeapons.known[i];
-			var temp2 = temp[1] === 0 ? "" : (temp[1] > 0 ? " +": " ") + temp[1];
-			var temp3 = temp && temp[0] ? WeaponsList[temp[0]].name + temp2 : "";
-			var weaponRegEx = temp3.RegEscape();
-			if (temp3 && (WeaponsList[temp[0]].type === "Simple" || WeaponsList[temp[0]].type === "Martial")) {
-				var isFound = false;
-				for (var E = 1; E <= FieldNumbers.gear; E++) {
-					if (What("Adventuring Gear Remember") === false && E === FieldNumbers.gearMIrow) { continue; }
-					var Name = tDoc.getField("Adventuring Gear Row " + E);
-					if (((RegExp("\\b" + weaponRegEx + "\\b", "i")).test(Name.value) && !(RegExp("\\b" + weaponRegEx + " \\+\\d+", "i")).test(Name.value)) || Name.value === temp3) {
-						isFound = true;
-						E = 500;
-					}
-				}
-				if (!isFound) {
-					AddInvR(temp3, "", What("BlueText.Attack." + (i + 1) + ".Weight"));
-				}
-			}
-		}
-	}
-}
-
-function AddInvAmmo() {
-	var Ammos = [
-		[
-			What("AmmoLeftDisplay.Name"),
-			What("AmmoLeftDisplay.Amount"),
-			What("AmmoLeftDisplay.Weight")
-		],
-		[
-			What("AmmoRightDisplay.Name"),
-			What("AmmoRightDisplay.Amount"),
-			What("AmmoRightDisplay.Weight")
-		],
-	];
-	for (var i = 0; i < Ammos.length; i++) {
-		if (Ammos[i][0]) {
-			var AmmoL = AmmoList[ParseAmmo(Ammos[i][0])];
-			if (AmmoL.invName) {
-				var theName = AmmoL.invName;
-			} else {
-				var theName = Ammos[i][0];
-			}
-			AddInvR(theName, Ammos[i][1], Ammos[i][2]);
-		}
-	}
-}
-
-function AddInvNewAmmo() {
-	var Ammos = [
-		[
-			What("AmmoLeftDisplay.Name"),
-			What("AmmoLeftDisplay.Amount"),
-			What("AmmoLeftDisplay.Weight")
-		],
-		[
-			What("AmmoRightDisplay.Name"),
-			What("AmmoRightDisplay.Amount"),
-			What("AmmoRightDisplay.Weight")
-		],
-	];
-	for (var i = 0; i < Ammos.length; i++) {
-		if (Ammos[i][0]) {
-			var tempFound = false;
-			var AmmoL = AmmoList[ParseAmmo(Ammos[i][0])];
-			if (AmmoL.invName) {
-				var theName = clean(AmmoL.invName, " ");
-			} else {
-				var theName = Ammos[i][0];
-			}
-			var RegExItem = ("\\b" + theName.RegEscape() + "\\b").replace("s\\b", "s?\\b");
-			for (var j = 1; j <= FieldNumbers.gear; j++) {
-				if (What("Adventuring Gear Remember") === false && j === FieldNumbers.gearMIrow) { continue; }
-				var Name = tDoc.getField("Adventuring Gear Row " + j);
-				var Nmbr = tDoc.getField("Adventuring Gear Amount " + j);
-				var Wht = tDoc.getField("Adventuring Gear Weight " + j);
-				if ((RegExp(RegExItem, "i")).test(Name.value) || Name.value === theName) {
-					Nmbr.value = Ammos[i][1];
-					Wht.value = Ammos[i][2];
-					tempFound = true;
-					j = 500;
-				}
-			}
-			if (!tempFound) {
-				AddInvR(theName, Ammos[i][1], Ammos[i][2]);
-			}
-		}
-	}
-}
 
 function AddInvBackgroundItems() {
-	var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
-	var temp = [];
-	var temp2 = tDoc.getField("Gold Pieces");
-	if (CurrentBackground.equipleft) {
-		temp = CurrentBackground.equipleft;
-		for (var i = 0; i < temp.length; i++) {
-			AddInvL(temp[i][0], temp[i][1], RoundTo(temp[i][2] * massMod, 0.001, true));
-		}
-	}
-	if (CurrentBackground.equipright) {
-		temp = CurrentBackground.equipright;
-		for (var i = 0; i < temp.length; i++) {
-			AddInvR(temp[i][0], temp[i][1], RoundTo(temp[i][2] * massMod, 0.001, true));
-		}
-	}
-	if (CurrentBackground.gold) {
-		temp2.value = temp2.value + CurrentBackground.gold;
+	if (!CurrentBackground.known) return;
+	if (CurrentBackground.gold) Value("Gold Pieces", Number(What("Gold Pieces").replace(",", ".")) + CurrentBackground.gold);
+	var addEquip = function (array, LR) {
+		for (var i = 0; i < array.length; i++) {
+			AddToInv("gear", LR, array[i][0], array[i][1], array[i][2]);
+		};
+	};
+	if (CurrentBackground.equipleft) addEquip(CurrentBackground.equipleft, "l");
+	if (CurrentBackground.equipright) addEquip(CurrentBackground.equipright, "r");
+};
+
+function AddInvArmorShield() {
+	//see if two strings don't differ too much in length
+	var similarLen = function (str1, str2) {
+		return Math.abs(str1.length - str2.length) < 5 || Math.abs(str1.length, str2.length) / Math.max(str1.length, str2.length) < 0.2;
+	};
+	
+	//add the armour
+	var theArm = What("AC Armor Description");
+	var theArmWght = What("AC Armor Weight");
+	var theArmKn = ArmourList[CurrentArmour.known];
+	if (theArm && theArmWght && (theArmKn ? theArmKn.weight : true)) {
+		var hasInvName = theArmKn && theArmKn.invName ? theArmKn.invName.replace(theArmKn.name, "") : false;
+		var theTxt = hasInvName && !(RegExp(hasInvName, "i")).test(theArm) && (RegExp(theArmKn.name, "i")).test(theArm) && similarLen(theArmKn.name, theArm) ? theArm.replace(RegExp("(" + theArmKn.name + ")", "i"), "$1" + hasInvName) : theArm;
+		var searchRegex = MakeRegex(theTxt.replace(/ ?\([^\)]\)| ?\[[^\]]\]/g, ""), theArmKn.magic ? "" : "(?!.*(\\+|-)\\d+)");
+		
+		AddToInv("gear", "r", theTxt, "", theArmWght, "", searchRegex, "replace", false, true);
+	};
+	
+
+	//add the shield
+	var theShi = What("AC Shield Bonus Description");
+	var theShiWght = What("AC Shield Weight");
+	if (theShi && theShiWght) {
+		var theTxt = theShi + (theShi.length < 6 && !(/shield/i).test(theShi) ? " shield" : "");
+		var searchRegex = MakeRegex(theTxt.replace(/ ?\([^\)]\)| ?\[[^\]]\]/g, ""), CurrentShield.magic ? "" : "(?!.*(\\+|-)\\d+)");
+		
+		AddToInv("gear", "r", theTxt, "", theShiWght, "", searchRegex, "replace", false, true);
 	}
 };
 
-//add a magic item to the second page
-function AddInvMagic(item, amount, weight, location) {
-	location = location === undefined ? "" : location;
-	var RegExItem = item.substring(0, 2) === "- " ? "\\b" + item.substring(2).RegEscape() + "\\b" : "\\b" + item.RegEscape() + "\\b";
-	var tempFound = false;
-	for (var i = 1; i <= FieldNumbers.gear; i++) {
-		var Name = tDoc.getField("Adventuring Gear Row " + i);
-		var Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
-		var Wht = tDoc.getField("Adventuring Gear Weight " + i);
-		var Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
-			if (Nmbr.value === "") {
-				Nmbr.value = 2;
-			} else if (!isNaN(Nmbr.value) && amount === "") {
-				Nmbr.value += 1;
-			} else if (!isNaN(Nmbr.value) && !isNaN(amount)) {
-				Nmbr.value += amount;
+//add all the weapons and ammo from the first page to the second page
+function AddInvWeaponsAmmo() {
+	//a way to see if there are any special calculation-driven entries in the attack's name
+	var specialAtkName = function (atkNm) {
+		var isSpecial = false;
+		if (CurrentEvals.atkCalc) {
+			isSpecial = CurrentEvals.atkCalc.match(/\(\/.*?\/i?g?i?\)\.test\(WeaponText\)/g).some( function (C) {
+				try {
+					return eval(C.replace("WeaponText", "atkNm"));
+				} catch (err) {};
+			});
+		};
+		return isSpecial;
+	};
+	
+	//see if two strings don't differ too much in length
+	var similarLen = function (str1, str2) {
+		return Math.abs(str1.length - str2.length) < 5 || Math.abs(str1.length, str2.length) / Math.max(str1.length, str2.length) < 0.2;
+	};
+	
+	//make an array of the weapons to add; only those with weight and not alternative attack entries
+	var testArray = [];
+	var items = {};
+	for (var i = 1; i <= FieldNumbers.attacks; i++) {
+		var theAtk = CurrentWeapons.known[i - 1];
+		var theWea = theAtk[0] ? theAtk[0] : false;
+		var theFld = What("Attack." + i + ".Weapon Selection");
+		var theWeight = What("BlueText.Attack." + i + ".Weight");
+		if (theWeight && !theAtk[3] && !specialAtkName(theFld)) {
+			var theTxt = (theWea ? theWea : theFld) + theAtk[1];
+			if (testArray.indexOf(theTxt) === -1) {
+				items[theTxt] = {
+					key : theWea, // item key
+					name : clean(theFld.replace(/\(?\[?(off.{0,3}hand|secondary)\)?\]?/i, "")), // the name in the field
+					weight : theWeight,
+					magic : theAtk[1], // magic bonus
+					amount : 1, // the number of these
+					isOffHand : (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(theFld)
+				};
 			} else {
-				Name.value += " + one more";
+				if (similarLen(theFld.replace(/off.{0,3}hand|secondary/i, ""), items[theTxt].name)) {
+					if ((/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(theFld) || items[theTxt].isOffHand) {
+						items[theTxt].amount = 2;
+						items[theTxt].isOffHand = false;
+					}
+				} else if (theWea && !items[theFld]) {
+					items[theFld] = {
+						key : theWea, // item key
+						name : clean(theFld.replace(/\(?\[?(off.{0,3}hand|secondary)\)?\]?/i, "")), // the name in the field
+						weight : theWeight,
+						magic : theAtk[2], // magic bonus
+						amount : 1, // the number of these
+						isOffHand : (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(theFld)
+					};
+				};
 			};
-			i = 500;
-			tempFound = true;
-		}
-	}
-	if (!tempFound) {
-		for (var i = (FieldNumbers.gearMIrow + 1); i <= FieldNumbers.gear; i++) {
-			Name = tDoc.getField("Adventuring Gear Row " + i);
-			Nmbr = tDoc.getField("Adventuring Gear Amount " + i);
-			Wht = tDoc.getField("Adventuring Gear Weight " + i);
-			Loc = tDoc.getField("Adventuring Gear Location.Row " + i);
-			if (Name.value === "" && Nmbr.value === "" && Wht.value === "") {
-				Name.value = item;
-				Nmbr.value = amount;
-				Wht.value = weight;
-				Loc.value = location;
-				i = 500;
-			}
-		}
-	}
-}
+			testArray.push(theTxt);
+		};
+	};
+	
+	//then do the ammo
+	var addAmmo = function(aNm, aNr, aWght) {
+		var theAmmo = ParseAmmo(aNm);
+		var magicBonus = parseFloat(aNm.match(/(^|\s)[\+|-]\d+/i));
+		if (isNaN(magicBonus)) magicBonus = 0;
+		for (var it in items) {
+			var aItem = items[it];
+			if (aItem.magic === magicBonus && ((!theAmmo && aItem.name.indexOf(aNm) !== -1) || (theAmmo && aItem.key === theAmmo && (it.replace(/\d+/, "") === theAmmo || similarLen(aItem.name, aNm))))) {
+				aItem.amount = aNr;
+				return;
+			};
+		};
+		var theTxt = theAmmo ? theAmmo : aNm;
+		if (!items[theTxt]) {
+			items[theTxt] = {
+				key : theAmmo, // item key
+				name : aNm, // the name in the field
+				weight : aWght,
+				magic : 0, // magic bonus
+				amount : aNr // the number of these
+			};
+		};
+	};
+	if (What("AmmoLeftDisplay.Weight") && What("AmmoLeftDisplay.Amount")) addAmmo(What("AmmoLeftDisplay.Name"), What("AmmoLeftDisplay.Amount"), What("AmmoLeftDisplay.Weight"));
+	if (What("AmmoRightDisplay.Weight") && What("AmmoRightDisplay.Amount")) addAmmo(What("AmmoRightDisplay.Name"), What("AmmoRightDisplay.Amount"), What("AmmoRightDisplay.Weight"));
+	
+	// loop through the items and add them to the adventuring gear
+	for (var it in items) {
+		var aItem = items[it];
+		var searchRegex = MakeRegex(aItem.name.replace(/ ?\([^\)]\)| ?\[[^\]]\]/g, ""), aItem.magic ? "" : "(?!.*(\\+|-)\\d+)");
+		AddToInv("gear", "r", aItem.name, aItem.amount, aItem.weight, "", searchRegex, "replace", aItem.key, true);
+	};
+};
+
+//Make menu for the button on each equipment line and parse it to Menus.gearline
+function MakeInventoryLineMenu() {
+	var gearMenu = [];
+	var type = event.target.name.indexOf("Adventuring") !== -1 ? "Adventuring " : 
+		event.target.name.indexOf("Extra.") !== -1 ? "Extra." : 
+		event.target.name.substring(0, event.target.name.indexOf("Comp.") + 8) + ".";
+	var lineNmbr = Number(event.target.name.slice(-2));
+	var theField = What(type + "Gear Row " + lineNmbr);
+	var magic = type === "Adventuring " && What("Adventuring Gear Remember") === false && lineNmbr > FieldNumbers.gearMIrow;
+	var maxRow = FieldNumbers[type === "Adventuring " ? "gear" : type === "Extra." ? "extragear" : "compgear"];
+	var upRow = lineNmbr === 1 ? false : magic ? lineNmbr !== FieldNumbers.gearMIrow + 1 : true;
+	var downRow = lineNmbr === maxRow ? false : magic ? lineNmbr !== FieldNumbers.gearMIrow - 1 : true
+	
+	var numColumns = typePF && type === "Adventuring " ? 3 : 2;
+	var curCol = typePF && type.indexOf("Comp.") !== -1 ? 1 : Math.ceil(lineNmbr / Math.round(maxRow / numColumns));
+	var moveCol = curCol > 1 ? "left" : numColumns === 3 ? "middle" : "right";
+	var moveCol2 = numColumns !== 3 ? false : curCol === 3 ? "middle" : "right";
+	
+	var menuLVL1 = function (menu, array) {
+		for (var i = 0; i < array.length; i++) {
+			var isEnabled = (array[i][1] === "up" && !upRow) || (array[i][1] === "down" && !downRow) || (!theField && (/move|insert/i).test(array[i][1])) ? false : true;
+			menu.push({
+				cName : array[i][0],
+				cReturn : type + "#" + lineNmbr + "#" + array[i][1],
+				bEnabled : isEnabled
+			});
+		};
+	};
+	
+	var AddCompOptions = function(menu) {
+		var AScompA = What("Template.extras.AScomp").split(",");
+		var prefix = type.substring(0, type.indexOf("Comp."));
+		if (type.indexOf("Comp.") !== -1) AScompA.splice(AScompA.indexOf(prefix), 1);
+		var temp = {
+			cName : "Move to a Companion's Equipment",
+			oSubMenu : []
+		};
+		var isEnabled = !theField ? false : AScompA.length > 1 || tDoc.getField(BookMarkList["AScomp"]).page !== -1;
+		for (var i = 0; i < AScompA.length; i++) {
+			if ((type.indexOf("Comp.") !== -1 && prefix === AScompA[i]) || (i === 0 && tDoc.getField(BookMarkList["AScomp"]).page === -1)) continue;
+			var CompNm = What(AScompA[i] + "Comp.Desc.Name");
+			var CompPg = tDoc.getField(AScompA[i] + "Comp.Desc.Name").page;
+			if (isArray(CompPg)) CompPg = CompPg[1];
+			temp.oSubMenu.push({
+				cName : (CompNm ? CompNm : "NAME") + "'s Equipment Section (page " + CompPg + ")",
+				cReturn : type + "#" + lineNmbr + "#" + "movepage#" + AScompA[i] + "Comp.",
+				bEnabled : isEnabled
+			});
+		};
+		menu.push(temp);
+	};
+	
+	menuLVL1(gearMenu, [
+		["Move up", "up"],
+		["Move down", "down"],
+		["-", "-"],
+		["Move to " + moveCol + " column", "movecol#" + moveCol.substr(0, 1) + "only"]
+	]);
+	
+	if (moveCol2) menuLVL1(gearMenu, [["Move to " + moveCol2 + " column", "movecol#" + moveCol2.substr(0, 1) + "only"]]);
+	
+	gearMenu.push({cName : "-"});
+	
+	if (type !== "Adventuring ") menuLVL1(gearMenu, [["Move to Equipment (page 2)", "movepage#gear"]]);
+	if (type !== "Extra.") menuLVL1(gearMenu, [["Move to Extra Equipment (page 3)", "movepage#extra"]]);
+	AddCompOptions(gearMenu);
+	
+	gearMenu.push({cName : "-"});
+	
+	if (magic) menuLVL1(gearMenu, [["Copy to Magic Items (page 3)", "copy#magic"], ["-", "-"]]);
+		
+	menuLVL1(gearMenu, [
+		["Insert line", "insert"],
+		["Delete line", "delete"],
+		["Clear line", "clear"]
+	]);
+	
+	Menus.gearline = gearMenu;
+};
+
+//call the inventory line menu and do something with the results
+function InventoryLineOptions() {
+
+	var MenuSelection = getMenu("gearline");
+	
+	if (MenuSelection === undefined) return;
+	tDoc.delay = true;
+	tDoc.calculate = false;
+	var type = MenuSelection[0].capitalize().replace("Ascomp", "AScomp").replace("Eqp", "eqp");
+	var lineNmbr = Number(MenuSelection[1]);
+
+	var Fields = [
+		type + "Gear Row " + lineNmbr,
+		type + "Gear Amount " + lineNmbr,
+		type + "Gear Weight " + lineNmbr,
+		type + "Gear Location.Row " + lineNmbr
+	];
+	var FieldsValue = [
+		What(Fields[0]),
+		What(Fields[1]),
+		What(Fields[2]),
+		What(Fields[3])
+	];
+	
+	switch (MenuSelection[2]) {
+	 case "up" :
+	 case "down" :
+		thermoM("Moving the gear " + MenuSelection[2] + "..."); //change the progress dialog text
+		var A = MenuSelection[2] === "up" ? -1 : 1;
+		var FieldsNext = [
+			type + "Gear Row " + (lineNmbr + A),
+			type + "Gear Amount " + (lineNmbr + A),
+			type + "Gear Weight " + (lineNmbr + A),
+			type + "Gear Location.Row " + (lineNmbr + A)
+		];
+		var FieldsNextValue = [
+			What(FieldsNext[0]),
+			What(FieldsNext[1]),
+			What(FieldsNext[2]),
+			What(FieldsNext[3])
+		];
+		for (var H = 0; H < Fields.length; H++) {
+			Value(FieldsNext[H], FieldsValue[H]);
+			Value(Fields[H], FieldsNextValue[H]);
+			thermoM(H/Fields.length); //increment the progress dialog's progress
+		};
+		break;
+	 case "movecol" :
+		var toCol = MenuSelection[3];
+		thermoM("Moving the gear to the " + (toCol.indexOf("r") !== -1 ? "right" : toCol.indexOf("m") !== -1 ? "middle" : "left") + " column..."); //change the progress dialog text
+		InvDelete(type, lineNmbr);
+		AddToInv(type, MenuSelection[3], FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3], false, false, false, true);
+		break;
+	 case "movepage" :
+		thermoM("Moving the gear to another page..."); //change the progress dialog text
+		InvDelete(type, lineNmbr);
+		var toPageType = MenuSelection[3].capitalize().replace("Ascomp", "AScomp").replace("Eqp", "eqp");
+		AddToInv(toPageType, "l", FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3], false, false, false, true);
+		break;
+	 case "copy" :
+		thermoM("Copying the gear to magic items on page 3..."); //change the progress dialog text
+		AddMagicItem(FieldsValue[0], true, "", FieldsValue[2]);
+		break;
+	case "insert":
+		thermoM("Inserting empty gear line..."); //change the progress dialog text
+		InvInsert(type, lineNmbr);
+		break;
+	case "delete":
+		thermoM("Deleting gear line..."); //change the progress dialog text
+		InvDelete(type, lineNmbr);
+		break;
+	case "clear":
+		thermoM("Clearing gear line..."); //change the progress dialog text
+		tDoc.resetForm(Fields);
+		break;
+	};	
+	
+	tDoc.calculate = IsNotReset;
+	tDoc.delay = !IsNotReset;
+	if (IsNotReset) tDoc.calculateNow();
+};
 
 //insert a slot at the position wanted
 function InvInsert(type, slot, extraPre) {
@@ -3946,7 +3728,7 @@ function InvInsert(type, slot, extraPre) {
 		//cycle to the slots starting with the empty one and add the values of the one above
 		for (var i = endslot; i > slot; i--) {
 			var lastRowName = What(type + "Gear Row " + (i - 1));
-			lastRowName = extraPre && lastRowName.indexOf(extraPre) !== 0 ? extraPre + lastRowName : lastRowName;
+			lastRowName = (extraPre && lastRowName.indexOf(extraPre) !== 0 ? extraPre : "") + lastRowName;
 			Value(type + "Gear Row " + i, lastRowName);
 			Value(type + "Gear Amount " + i, What(type + "Gear Amount " + (i - 1)));
 			Value(type + "Gear Weight " + i, What(type + "Gear Weight " + (i - 1)));
@@ -3969,7 +3751,7 @@ function InvDelete(type, slot) {
 	var perColumn = Math.round(lastslot / numColumns);
 	var endslot = isComp && typePF ? lastslot : perColumn * Math.ceil(slot / perColumn);
 	if (type === "Adventuring " && endslot === FieldNumbers.gear && What("Adventuring Gear Remember") === false && slot <= FieldNumbers.gearMIrow) {
-		endslot = FieldNumbers.gearMIrow
+		endslot = FieldNumbers.gearMIrow;
 	}
 
 	//move every line up one space, starting with the selected line
@@ -3984,350 +3766,13 @@ function InvDelete(type, slot) {
 		type + "Gear Row " + endslot,
 		type + "Gear Amount " + endslot,
 		type + "Gear Weight " + endslot,
-		type + "Gear Location.Row " + endslot,
+		type + "Gear Location.Row " + endslot
 	];
 	if (!isComp) resetA.pop();
 	tDoc.resetForm(resetA);
 }
 
-//add adventuring gear using the equipment menu
-function AddEquipment(GearTool, Input, Column) {
-	var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
-	switch (GearTool) {
-	case "gear":
-		var theStuff = GearList[Input.toLowerCase()];
-		break;
-	case "tool":
-		var theStuff = ToolsList[Input.toLowerCase()];
-		break;
-	}
-
-	//continue if not a placeholder was selected
-	if (theStuff && theStuff.name !== "-") {
-		var AddInvLRM = Column === "left" ? "AddInvL" : (Column === "right" ? "AddInvR" : "AddInvM");
-		tDoc[AddInvLRM](theStuff.name, theStuff.amount, RoundTo(theStuff.weight * massMod, 0.001, true));
-	}
-}
-
-//Make menu for the button on each equipment line and parse it to Menus.gear
-function MakeInventoryLineMenu() {
-	var gearMenu = [];
-	var type = event.target.name.indexOf("Adventuring") !== -1 ? "Adventuring " : (event.target.name.indexOf("Extra.") !== -1 ? "Extra." : event.target.name.substring(0, event.target.name.indexOf("Comp.") + 8) + ".");
-	var lineNmbr = Number(event.target.name.slice(-2));
-	var magic = What("Adventuring Gear Remember") === false && lineNmbr > FieldNumbers.gearMIrow;
-	var lastslot = type === "Adventuring " ? FieldNumbers.gear : (type === "Extra." ? FieldNumbers.extragear : FieldNumbers.compgear);
-	var totalslots = type === "Adventuring " && !magic && What("Adventuring Gear Remember") === false ? lastslot - 4 : lastslot;
-	var moveToPage = type === "Adventuring " ? "Move to Extra Equipment (page 3)" : "Move to Equipment (page 2)";
-	var theField = What(type + "Gear Row " + lineNmbr);
-	var AScompA = What("Template.extras.AScomp").split(",");
-	var prefix = type.substring(0, type.indexOf("Comp."));
-	if (type.indexOf("Comp.") !== -1) AScompA.splice(AScompA.indexOf(prefix), 1);
-
-	var noValDisable = [
-		"Move to Extra Equipment (page 3)",
-		"Move to Equipment (page 2)",
-		"Move to right column",
-		"Move to left column",
-		"Move to middle column",
-		"Insert line",
-		"Copy to Magic Items (page 3)"
-	]
-	
-	var menuLVL1 = function (item, array) {
-		for (i = 0; i < array.length; i++) {
-			var disabled = true
-			if ((array[i] === "Move up" && (lineNmbr === 1 || (magic && lineNmbr === FieldNumbers.gearMIrow + 1))) || (array[i] === "Move down" && lineNmbr === totalslots) || (array[i] === "Insert line" && lineNmbr === totalslots)) {
-				disabled = false;
-			} else if (!theField && noValDisable.indexOf(array[i]) !== -1) {
-				disabled = false;
-			}
-			item.push({
-				cName : array[i],
-				cReturn : array[i],
-				bEnabled : disabled
-			});
-		}
-	};
-	
-	var menuLVL2comp = function (menu, name, array) {
-		var temp = {};
-		temp.cName = name;
-		temp.oSubMenu = [];
-		for (var i = 0; i < array.length; i++) {
-			var CompNm = What(array[i] + "Comp.Desc.Name");
-			var CompPg = tDoc.getField(array[i] + "Comp.Desc.Name").page;
-			if (array[i] === "" && !CompPg[1]) {
-				continue;
-			}
-			CompPg = CompPg[1] ? CompPg[1] + 1 : CompPg + 1;
-			temp.oSubMenu.push({
-				cName : (CompNm ? CompNm : "'Companion name'") + "'s Equipment Section (page " + CompPg + ")",
-				cReturn : name + "#" + array[i]
-			})
-		}
-		if (temp.oSubMenu.length === 0 || array.length === 0 || !theField) {
-			temp.bEnabled = false;
-			delete temp.oSubMenu;
-			temp.cReturn = "-";
-		}
-		menu.push(temp);
-	};
-	
-	var MenuArray = ["Move up", "Move down", "-", moveToPage];
-	if (type.indexOf("Comp.eqp.") !== -1) MenuArray.push("Move to Extra Equipment (page 3)");
-	menuLVL1(gearMenu, MenuArray);
-	menuLVL2comp(gearMenu, "Move to a Companion's Equipment", AScompA);
-	
-	var MenuArray = ["-"]
-	if (type === "Adventuring " || type === "Extra." || (type.indexOf("Comp.eqp.") !== -1 && !typePF)) {
-		var numColumns = typePF && type === "Adventuring " ? 3 : 2;
-		var perColumn = Math.round(lastslot / numColumns);
-		if (lineNmbr / perColumn > 2) {
-			MenuArray.push("Move to left column");
-			MenuArray.push("Move to middle column");
-		} else if (lineNmbr / perColumn > 1) {
-			MenuArray.push("Move to left column");
-			if (numColumns === 3) MenuArray.push("Move to right column");
-		} else {
-			if (numColumns === 3) MenuArray.push("Move to middle column");
-			MenuArray.push("Move to right column");
-		}
-		if (magic) {
-			MenuArray.push("-");
-			MenuArray.push("Copy to Magic Items (page 3)");
-		};
-	}
-	MenuArray = MenuArray.concat(["-", "Insert line", "Delete line", "Clear line"]);
-	menuLVL1(gearMenu, MenuArray);
-
-	Menus.gear = gearMenu;
-};
-
-//call the inventory menu and do something with the results
-function InventoryLineOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
-
-	var MenuSelection = getMenu("gear");
-	var type = event.target.name.indexOf("Adventuring") !== -1 ? "Adventuring " : (event.target.name.indexOf("Extra.") !== -1 ? "Extra." : event.target.name.substring(0, event.target.name.indexOf("Comp.") + 8) + ".");
-	var lineNmbr = Number(event.target.name.slice(-2));
-	var magic = What("Adventuring Gear Remember") === false && lineNmbr > FieldNumbers.gearMIrow;
-	var lastslot = type === "Adventuring " ? FieldNumbers.gear : (type === "Extra." ? FieldNumbers.extragear : FieldNumbers.compgear);
-	var totalslots = type === "Adventuring " && !magic && What("Adventuring Gear Remember") === false ? lastslot - 4 : lastslot;
-	var prefix = type.substring(0, type.indexOf("Comp."));
-	var Fields = [
-		type + "Gear Row " + lineNmbr,
-		type + "Gear Amount " + lineNmbr,
-		type + "Gear Weight " + lineNmbr,
-		type + "Gear Location.Row " + lineNmbr,
-	];
-	var FieldsValue = [
-		What(Fields[0]),
-		What(Fields[1]),
-		What(Fields[2]),
-		What(Fields[3]),
-	];
-	if (lineNmbr !== 1) {
-		var FieldsUp = [
-			type + "Gear Row " + (lineNmbr - 1),
-			type + "Gear Amount " + (lineNmbr - 1),
-			type + "Gear Weight " + (lineNmbr - 1),
-			type + "Gear Location.Row " + (lineNmbr - 1),
-		];
-		var FieldsUpValue = [
-			What(FieldsUp[0]),
-			What(FieldsUp[1]),
-			What(FieldsUp[2]),
-			What(FieldsUp[3]),
-		];
-	}
-	if (lineNmbr !== totalslots) {
-		var FieldsDown = [
-			type + "Gear Row " + (lineNmbr + 1),
-			type + "Gear Amount " + (lineNmbr + 1),
-			type + "Gear Weight " + (lineNmbr + 1),
-			type + "Gear Location.Row " + (lineNmbr + 1),
-		];
-		var FieldsDownValue = [
-			What(FieldsDown[0]),
-			What(FieldsDown[1]),
-			What(FieldsDown[2]),
-			What(FieldsDown[3]),
-		];
-	}
-	
-	if (type.indexOf("Comp.") !== -1) {
-		Fields.pop();
-	}
-	
-	if (MenuSelection !== undefined) {
-		switch (MenuSelection[0]) {
-		case "move up":
-			thermoM("Moving the gear up..."); //change the progress dialog text
-			for (var H = 0; H < Fields.length; H++) {
-				Value(FieldsUp[H], FieldsValue[H]);
-				Value(Fields[H], FieldsUpValue[H]);
-				thermoM(H/Fields.length); //increment the progress dialog's progress
-			};
-			break;
-		case "move down":
-			thermoM("Moving the gear down..."); //change the progress dialog text
-			for (var H = 0; H < Fields.length; H++) {
-				Value(FieldsDown[H], FieldsValue[H]);
-				Value(Fields[H], FieldsDownValue[H]);
-				thermoM(H/Fields.length); //increment the progress dialog's progress
-			};
-			break;
-		case "move to extra equipment (page 3)":
-			thermoM("Moving the gear to page 3..."); //change the progress dialog text
-			AddInvLExtra(FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3]);
-			InvDelete(type, lineNmbr);
-			break;
-		case "move to equipment (page 2)":
-			thermoM("Moving the gear to page 2..."); //change the progress dialog text
-			AddInvL(FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3]);
-			InvDelete(type, lineNmbr);
-			break;
-		case "move to right column":
-			thermoM("Moving the gear to the right column..."); //change the progress dialog text
-			if (type === "Adventuring ") {
-				AddInvR(FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3]);
-			} else if (type === "Extra.") {
-				AddInvRExtra(FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3]);
-			} else { //companion page
-				AddInvRComp(FieldsValue[0], FieldsValue[1], FieldsValue[2], prefix);
-			}
-			InvDelete(type, lineNmbr);
-			break;
-		case "move to left column":
-			thermoM("Moving the gear to the left column..."); //change the progress dialog text
-			if (type === "Adventuring ") {
-				AddInvL(FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3]);
-			} else if (type === "Extra.") {
-				AddInvLExtra(FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3]);
-			} else { //companion page
-				AddInvLComp(FieldsValue[0], FieldsValue[1], FieldsValue[2], prefix);
-			}
-			InvDelete(type, lineNmbr);
-			break;
-		case "move to middle column":
-			thermoM("Moving the gear to the middle column..."); //change the progress dialog text
-			if (type === "Adventuring ") {
-				AddInvM(FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3]);
-			}
-			InvDelete(type, lineNmbr);
-			break;
-		case "insert line":
-			thermoM("Inserting empty gear line..."); //change the progress dialog text
-			InvInsert(type, lineNmbr);
-			break;
-		case "delete line":
-			thermoM("Deleting gear line..."); //change the progress dialog text
-			InvDelete(type, lineNmbr);
-			break;
-		case "clear line":
-			thermoM("Clearing gear line..."); //change the progress dialog text
-			tDoc.resetForm(Fields);
-			break;
-		case "copy to magic items (page 3)":
-			thermoM("Copying the gear to magic items on page 3..."); //change the progress dialog text
-			AddMagicItem(FieldsValue[0], true, "", FieldsValue[2]);
-			break;
-		case "move to a companion's equipment":
-			AddInvLComp(FieldsValue[0], FieldsValue[1], FieldsValue[2], MenuSelection[1]);
-			InvDelete(type, lineNmbr);
-			break;
-		}
-	}
-
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
-}
-
-function AddInvLComp(item, amount, weight, prefix) {
-	prefix = prefix ? prefix : "";
-	item = clean(item.substring(0, 2) === "- " ? item.substring(2) : item, " "); //remove leading or trailing spaces
-	var RegExItem = ("\\b" + item.RegEscape() + "\\b").replace("s\\b", "s?\\b");
-	var tempFound = false;
-	var totalslots = FieldNumbers.compgear;
-	var endsearch = Math.round(FieldNumbers.compgear / 2);
-	for (var i = 1; i <= endsearch; i++) {
-		var Name = tDoc.getField(prefix + "Comp.eqp.Gear Row " + i);
-		var Nmbr = tDoc.getField(prefix + "Comp.eqp.Gear Amount " + i);
-		var Wht = tDoc.getField(prefix + "Comp.eqp.Gear Weight " + i);
-		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
-			if (Nmbr.value === "") {
-				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else if (!isNaN(Nmbr.value)) {
-				Nmbr.value += (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else {
-				Name.value += " + one more";
-			};
-			i = 500;
-			tempFound = true;
-		}
-	}
-	if (!tempFound) {
-		var Container = "";
-		for (var i = 1; i <= totalslots; i++) {
-			Name = tDoc.getField(prefix + "Comp.eqp.Gear Row " + i);
-			Nmbr = tDoc.getField(prefix + "Comp.eqp.Gear Amount " + i);
-			Wht = tDoc.getField(prefix + "Comp.eqp.Gear Weight " + i);
-			if (Name.value === "" && Nmbr.value === "" && Wht.value === "") {
-				Name.value = Container + item;
-				Nmbr.value = amount;
-				Wht.value = weight;
-				i = 500;
-			} else {
-				Container = Name.value.indexOf("-") === 0 || Name.value.indexOf("-") === 1 || Name.value.toLowerCase().indexOf("backpack") !== -1 || (/^(?=.*saddle)(?=.*bag).*$/i).test(Name.value) || Name.value.toLowerCase().indexOf(", with:") !== -1 ? "- " : "";
-			}
-		}
-	}
-}
-
-function AddInvRComp(item, amount, weight, prefix) {
-	prefix = prefix ? prefix : "";
-	item = clean(item.substring(0, 2) === "- " ? item.substring(2) : item, " "); //remove leading or trailing spaces
-	var RegExItem = ("\\b" + item.RegEscape() + "\\b").replace("s\\b", "s?\\b");
-	var tempFound = false;
-	var startslots = Math.round(FieldNumbers.compgear / 2 + 1);
-	var totalslots = FieldNumbers.compgear;
-	for (var i = startslots; i <= totalslots; i++) {
-		var Name = tDoc.getField(prefix + "Comp.eqp.Gear Row " + i);
-		var Nmbr = tDoc.getField(prefix + "Comp.eqp.Gear Amount " + i);
-		var Wht = tDoc.getField(prefix + "Comp.eqp.Gear Weight " + i);
-		if (((RegExp(RegExItem, "i")).test(Name.value) && !(RegExp(RegExItem + " \\+\\d+", "i")).test(Name.value)) || Name.value === item) {
-			if (Nmbr.value === "") {
-				Nmbr.value = 1 + (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else if (!isNaN(Nmbr.value)) {
-				Nmbr.value += (!isNaN(amount) && amount !== "" ? amount : 1);
-			} else {
-				Name.value += " + one more";
-			};
-			i = 500;
-			tempFound = true;
-		}
-	}
-	if (!tempFound) {
-		var Container = "";
-		for (var i = startslots; i <= totalslots; i++) {
-			Name = tDoc.getField(prefix + "Comp.eqp.Gear Row " + i);
-			Nmbr = tDoc.getField(prefix + "Comp.eqp.Gear Amount " + i);
-			Wht = tDoc.getField(prefix + "Comp.eqp.Gear Weight " + i);
-			if (Name.value === "" && Nmbr.value === "" && Wht.value === "") {
-				Name.value = Container + item;
-				Nmbr.value = amount;
-				Wht.value = weight;
-				i = 500;
-			} else {
-				Container = Name.value.indexOf("-") === 0 || Name.value.indexOf("-") === 1 || Name.value.toLowerCase().indexOf("backpack") !== -1 || (/^(?=.*saddle)(?=.*bag).*$/i).test(Name.value) || Name.value.toLowerCase().indexOf(", with:") !== -1 ? "- " : "";
-			}
-		}
-	}
-}
-
-//---- INVENTORY FUNCTIONS ----
+/* ---- INVENTORY FUNCTIONS END ---- */
 
 //see if text contains a background
 function ParseBackground(Input) {
@@ -4872,23 +4317,6 @@ function AddSkillProf(SkillName, change, expertise) {
 	} else {
 		change = change === false ? "nothing" : expertise && (change || expertise !== "only") ? "expertise" : "proficient";
 		Value(prefix + "Text.Comp.Use.Skills." + tempString + ".Prof", change);
-	}
-};
-
-function AddPack(Input, Column) {
-	var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
-	var PackName = Input.toLowerCase();
-	if (PacksList[PackName]) {
-		//empty the top left slot by inserting an empty one, if it isn't already empty, or doesn't already has the same thing as the first thing of the pack
-		if (What("Adventuring Gear Row 1") !== PacksList[PackName][0][0]) {
-			InvInsert("Adventuring ", 1, "- ");
-		}
-		var addTo = Column === "left" ? "AddInvL" : (Column === "right" ? "AddInvR" : "AddInvM");
-		
-		//add the pack defined equipment
-		for (var i = 0; i < PacksList[PackName].length; i++) {
-			tDoc[addTo](PacksList[PackName][i][0], PacksList[PackName][i][1], RoundTo(PacksList[PackName][i][2] * massMod, 0.001, true))
-		}
 	}
 };
 
@@ -5507,7 +4935,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		
 		if (IsNotFeatMenu && theFeat.action) {
 			var FeatAct = What("Unit System") === "metric" ? ConvertToMetric(theFeat.action[1], 0.5) : theFeat.action[1];
-			RemoveAction(theFeat.action[0], propFea[FeaChoice].name + FeatAct);
+			RemoveAction(theFeat.action[0], theFeat.name + FeatAct);
 		};
 		
 		tDoc.getField(FeatFlds[2]).setAction("Calculate", "");
@@ -5576,7 +5004,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 				if (spB.spellcastingAbility) spAbility = spB.spellcastingAbility;
 			});
 			CurrentSpells[NewFeat] = {
-				name : theFeat.name,
+				name : theFeat.name + " (feat)",
 				level : spFeatLvl ? What("Character Level") : undefined,
 				ability : spAbility,
 				typeSp : "feat",
@@ -5589,7 +5017,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		
 		if (IsNotFeatMenu && theFeat.action) {
 			var FeatAct = What("Unit System") === "metric" ? ConvertToMetric(theFeat.action[1], 0.5) : theFeat.action[1];
-			AddAction(theFeat.action[0], propFea[FeaChoice].name + FeatAct, "the " + theFeat.name + " feat");
+			AddAction(theFeat.action[0], theFeat.name + FeatAct, "the " + theFeat.name + " feat");
 		};
 	}
 	if (setSpellVars) SetStringifieds("spells"); //set the global variables to their fields for future reference
@@ -7308,55 +6736,56 @@ function MakeMagicItemMenu() {
 
 //call the Magic Item menu and do something with the results
 function MagicItemOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
 
 	var MenuSelection = getMenu("magicitems");
-	var itemNmbr = parseFloat(event.target.name.slice(-2));
-	var Fields = [
-		"Extra.Magic Item " + itemNmbr,
-		"Extra.Magic Item Attuned " + itemNmbr,
-		"Extra.Magic Item Description " + itemNmbr,
-		"Extra.Magic Item Weight " + itemNmbr
-	];
-	var FieldsValue = [
-		What(Fields[0]),
-		tDoc.getField(Fields[1]).isBoxChecked(0),
-		What(Fields[2]),
-		What(Fields[3]),
-	];
-	if (itemNmbr !== 1) {
-		var FieldsUp = [
-			"Extra.Magic Item " + (itemNmbr - 1),
-			"Extra.Magic Item Attuned " + (itemNmbr - 1),
-			"Extra.Magic Item Description " + (itemNmbr - 1),
-			"Extra.Magic Item Weight " + (itemNmbr - 1)
-		];
-		var FieldsUpValue = [
-			What(FieldsUp[0]),
-			tDoc.getField(FieldsUp[1]).isBoxChecked(0),
-			What(FieldsUp[2]),
-			What(FieldsUp[3]),
-		];
-	}
-	if (itemNmbr !== FieldNumbers.magicitems) {
-		var FieldsDown = [
-			"Extra.Magic Item " + (itemNmbr + 1),
-			"Extra.Magic Item Attuned " + (itemNmbr + 1),
-			"Extra.Magic Item Description " + (itemNmbr + 1),
-			"Extra.Magic Item Weight " + (itemNmbr + 1)
-		];
-		var FieldsDownValue = [
-			What(FieldsDown[0]),
-			tDoc.getField(FieldsDown[1]).isBoxChecked(0),
-			What(FieldsDown[2]),
-			What(FieldsDown[3]),
-		];
-	}
 
 	if (MenuSelection !== undefined) {
+		tDoc.delay = true;
+		tDoc.calculate = false;
 		thermoM("start"); //start a progress dialog
 		thermoM("Magic item menu option..."); //change the progress 
+		var itemNmbr = parseFloat(event.target.name.slice(-2));
+		var Fields = [
+			"Extra.Magic Item " + itemNmbr,
+			"Extra.Magic Item Attuned " + itemNmbr,
+			"Extra.Magic Item Description " + itemNmbr,
+			"Extra.Magic Item Weight " + itemNmbr
+		];
+		var FieldsValue = [
+			What(Fields[0]),
+			tDoc.getField(Fields[1]).isBoxChecked(0),
+			What(Fields[2]),
+			What(Fields[3]),
+		];
+		if (itemNmbr !== 1) {
+			var FieldsUp = [
+				"Extra.Magic Item " + (itemNmbr - 1),
+				"Extra.Magic Item Attuned " + (itemNmbr - 1),
+				"Extra.Magic Item Description " + (itemNmbr - 1),
+				"Extra.Magic Item Weight " + (itemNmbr - 1)
+			];
+			var FieldsUpValue = [
+				What(FieldsUp[0]),
+				tDoc.getField(FieldsUp[1]).isBoxChecked(0),
+				What(FieldsUp[2]),
+				What(FieldsUp[3]),
+			];
+		}
+		if (itemNmbr !== FieldNumbers.magicitems) {
+			var FieldsDown = [
+				"Extra.Magic Item " + (itemNmbr + 1),
+				"Extra.Magic Item Attuned " + (itemNmbr + 1),
+				"Extra.Magic Item Description " + (itemNmbr + 1),
+				"Extra.Magic Item Weight " + (itemNmbr + 1)
+			];
+			var FieldsDownValue = [
+				What(FieldsDown[0]),
+				tDoc.getField(FieldsDown[1]).isBoxChecked(0),
+				What(FieldsDown[2]),
+				What(FieldsDown[3]),
+			];
+		}
+		
 		switch (MenuSelection[0]) {
 		case "move up" :
 			thermoM("Moving the magic item up..."); //change the progress dialog text
@@ -7398,11 +6827,11 @@ function MagicItemOptions() {
 			break;
 		}
 		thermoM("stop"); //stop the top progress dialog
-	}
 
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
+		tDoc.calculate = IsNotReset;
+		tDoc.delay = !IsNotReset;
+		if (IsNotReset) tDoc.calculateNow();
+	}
 }
 
 //add a magic item to the third page or overflow page
@@ -8040,6 +7469,8 @@ function ApplyAmmo(inputtxt, Fld) {
 	
 	var LeftRight = !event.target || !event.target.name || event.target.name.substring(0, 8) === "AmmoLeft" ? "AmmoLeft" : event.target.name.substring(0, 9) === "AmmoRight" ? "AmmoRight" : "Ammo" + Fld;
 	var theAmmo = ParseAmmo(inputtxt);
+	var parseAsWeapon = theAmmo ? false : ParseWeapon(inputtxt);
+	if (parseAsWeapon && AmmoList[parseAsWeapon]) theAmmo = parseAsWeapon;
 	
 	if (theAmmo) {
 		var aList = AmmoList[theAmmo];
@@ -9727,7 +9158,7 @@ function MakeWeaponMenu() {
 	var maxItems = QI ? FieldNumbers.attacks : 3;
 	var theField = What("Manual Attack Remember") === "No" ? What(prefix + Q + "Attack." + itemNmbr + ".Weapon Selection") : What(prefix + Q + "Attack." + itemNmbr + ".Weapon");
 	var theWea = CurrentWeapons.known[itemNmbr - 1];
-	var isWeapon = QI && ((!theWea[0] && CurrentWeapons.field[itemNmbr - 1]) || (theWea[0] && (WeaponsList[theWea[0]].type === "Simple" || WeaponsList[theWea[0]].type === "Martial")));
+	var isWeapon = QI && ((!theWea[0] && CurrentWeapons.field[itemNmbr - 1]) || (theWea[0] && WeaponsList[theWea[0]].weight));
 	var isEquipment = QI && What("BlueText.Attack." + itemNmbr + ".Weight") && (What("Manual Attack Remember") === "Yes" || isWeapon) ? true : false;
 	
 	//decide what items to put on there
@@ -9763,15 +9194,20 @@ function MakeWeaponMenu() {
 
 //call the weapon menu and do something with the results
 function WeaponOptions() {
+	var MenuSelection = getMenu("attacks");
+	
+	if (MenuSelection === undefined) return;
 	tDoc.delay = true;
 	tDoc.calculate = false;
+	
+	thermoM("start"); //start a progress dialog
+	thermoM("Weapon menu option..."); //change the progress
 	
 	var QI = event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
 	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
 	var maxItems = QI ? FieldNumbers.attacks : 3;
 
-	var MenuSelection = getMenu("attacks");
 	var itemNmbr = Number(event.target.name.slice(-1));
 	var FieldNames = [
 		["", ".Weapon"], //0
@@ -9803,96 +9239,91 @@ function WeaponOptions() {
 			FieldsDownValue.push(What(FieldsDown[F]));
 		}
 	}
+	var IconFld = !typePF ? tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonGetIcon() : "";
+	var findWeaps = false;
+	switch (MenuSelection[0]) {
+	 case "move up":
+		thermoM("Moving the attack up..."); //change the progress dialog text
+		IsNotWeaponMenu = false;
+		for (var H = 0; H < FieldNames.length; H++) {
+			Value(FieldsUp[H], FieldsValue[H]);
+			Value(Fields[H], FieldsUpValue[H]);
+			if (!QI && (/description/i).test(Fields[H])) SwapTooltip(FieldsUp[H], Fields[H])
+			thermoM(H/FieldNames.length); //increment the progress dialog's progress
+		};
+		if (!typePF) {
+			var IconUp = tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr - 1)).buttonGetIcon();
+			tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr - 1)).buttonSetIcon(IconFld);
+			tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonSetIcon(IconUp);
+		}
+		IsNotWeaponMenu = true;
+		findWeaps = true;
+		break;
+	 case "move down":
+		thermoM("Moving the attack down..."); //change the progress dialog text
+		IsNotWeaponMenu = false;
+		for (var H = 0; H < FieldNames.length; H++) {
+			Value(FieldsDown[H], FieldsValue[H]);
+			Value(Fields[H], FieldsDownValue[H]);
+			if (!QI && (/description/i).test(Fields[H])) SwapTooltip(FieldsDown[H], Fields[H])
+			thermoM(H/FieldNames.length); //increment the progress dialog's progress
+		};
+		if (!typePF) {
+			var IconDown = tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr + 1)).buttonGetIcon();
+			tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr + 1)).buttonSetIcon(IconFld);
+			tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonSetIcon(IconDown);
+		}
+		IsNotWeaponMenu = true;
+		findWeaps = true;
+		break;
+	 case "copy to adventuring gear (page 2)":
+		thermoM("Copying the attack to the equipment on page 2..."); //change the progress dialog text
+		if (What("Manual Attack Remember") === "No") {
+			AddInvR(FieldsValue[3], "", FieldsValue[7]);
+		} else {
+			AddInvR(FieldsValue[0], "", FieldsValue[7]);
+		}
+		break;
+	 case "insert empty attack":
+		thermoM("Inserting empty attack..."); //change the progress dialog text
+		WeaponInsert(itemNmbr);
+		break;
+	 case "delete attack":
+		thermoM("Deleting attack..."); //change the progress dialog text
+		WeaponDelete(itemNmbr);
+		break;
+	 case "clear attack":
+		thermoM("Clearing attack..."); //change the progress dialog text
+		tDoc.resetForm(Fields);
+		if (!QI) AddTooltip(Fields[12], "Description and notes");
+		//reset the color outline
+		ApplyAttackColor(itemNmbr);
+		findWeaps = true;
+		break;
+	 case "outline color":
+		thermoM("Changing the attack outline color..."); //change the progress dialog text
+		ApplyAttackColor(itemNmbr, MenuSelection[1]);
+		break;
+	 case "show what things are affecting the attack calculations":
+		if (CurrentEvals.atkStr) {
+			ShowDialog("Things Affecting the Attack Calculations", CurrentEvals.atkStr);
+		}
+		break;
+	}
 	
-	if (MenuSelection !== undefined) {
-		thermoM("start"); //start a progress dialog
-		thermoM("Weapon menu option..."); //change the progress
-		var IconFld = !typePF ? tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonGetIcon() : "";
-		var findWeaps = false;
-		switch (MenuSelection[0]) {
-		 case "move up":
-			thermoM("Moving the attack up..."); //change the progress dialog text
-			IsNotWeaponMenu = false;
-			for (var H = 0; H < FieldNames.length; H++) {
-				Value(FieldsUp[H], FieldsValue[H]);
-				Value(Fields[H], FieldsUpValue[H]);
-				if (!QI && (/description/i).test(Fields[H])) SwapTooltip(FieldsUp[H], Fields[H])
-				thermoM(H/FieldNames.length); //increment the progress dialog's progress
-			};
-			if (!typePF) {
-				var IconUp = tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr - 1)).buttonGetIcon();
-				tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr - 1)).buttonSetIcon(IconFld);
-				tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonSetIcon(IconUp);
-			}
-			IsNotWeaponMenu = true;
-			findWeaps = true;
-			break;
-		 case "move down":
-			thermoM("Moving the attack down..."); //change the progress dialog text
-			IsNotWeaponMenu = false;
-			for (var H = 0; H < FieldNames.length; H++) {
-				Value(FieldsDown[H], FieldsValue[H]);
-				Value(Fields[H], FieldsDownValue[H]);
-				if (!QI && (/description/i).test(Fields[H])) SwapTooltip(FieldsDown[H], Fields[H])
-				thermoM(H/FieldNames.length); //increment the progress dialog's progress
-			};
-			if (!typePF) {
-				var IconDown = tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr + 1)).buttonGetIcon();
-				tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr + 1)).buttonSetIcon(IconFld);
-				tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonSetIcon(IconDown);
-			}
-			IsNotWeaponMenu = true;
-			findWeaps = true;
-			break;
-		 case "copy to adventuring gear (page 2)":
-			thermoM("Copying the attack to the equipment on page 2..."); //change the progress dialog text
-			if (What("Manual Attack Remember") === "No") {
-				AddInvR(FieldsValue[3], "", FieldsValue[7]);
-			} else {
-				AddInvR(FieldsValue[0], "", FieldsValue[7]);
-			}
-			break;
-		 case "insert empty attack":
-			thermoM("Inserting empty attack..."); //change the progress dialog text
-			WeaponInsert(itemNmbr);
-			break;
-		 case "delete attack":
-			thermoM("Deleting attack..."); //change the progress dialog text
-			WeaponDelete(itemNmbr);
-			break;
-		 case "clear attack":
-			thermoM("Clearing attack..."); //change the progress dialog text
-			tDoc.resetForm(Fields);
-			if (!QI) AddTooltip(Fields[12], "Description and notes");
-			//reset the color outline
-			ApplyAttackColor(itemNmbr);
-			findWeaps = true;
-			break;
-		 case "outline color":
-			thermoM("Changing the attack outline color..."); //change the progress dialog text
-			ApplyAttackColor(itemNmbr, MenuSelection[1]);
-			break;
-		 case "show what things are affecting the attack calculations":
-			if (CurrentEvals.atkStr) {
-				ShowDialog("Things Affecting the Attack Calculations", CurrentEvals.atkStr);
-			}
-			break;
-		}
-		
-		//re-populate the CurrentWeapons variable because of the thing that just changed
-		if (findWeaps && QI) {
-			FindWeapons();
-		} else if (findWeaps) {
-			FindCompWeapons(undefined, prefix);
-		}
-		
-		thermoM("stop"); //stop the top progress dialog
-	};
+	//re-populate the CurrentWeapons variable because of the thing that just changed
+	if (findWeaps && QI) {
+		FindWeapons();
+	} else if (findWeaps) {
+		FindCompWeapons(undefined, prefix);
+	}
+	
+	thermoM("stop"); //stop the top progress dialog
 	
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
 	if (IsNotReset) tDoc.calculateNow();
-}
+};
 
 //insert a weapon at the position wanted
 function WeaponInsert(itemNmbr) {

@@ -4515,4 +4515,5 @@ function UAstartupCode() {
 	ClassList.warlock.features["eldritch invocations"].extrachoices.sort();
 	
 	AmendRaces();
+	AmendFeats();
 };

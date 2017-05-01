@@ -1325,4 +1325,349 @@ function ImportExtraChoices() {
 			}
 		}
 	}
+};
+
+/* ---- the old, depreciated import function ---- */
+function Import(type) {
+	
+	//first ask if this sheet is already set-up the right way before importing and if we can continue
+	var AskFirst = {
+		cMsg : "Before you import anything into this sheet, please make sure that the following things are set correctly. If you don't do this, not everything will import. You will have to make the following things identical to the sheet you exported the data from:" + "\n  \u2022  The unit and decimal system;" + "\n  \u2022  The layout of the pages.\n      In order to do this, you will have to hide and/or add pages in the same order as you did in the sheet you are importing from. This is because the moment you add an extra page (so after the first of its type), that page gets a name based on the location of that page in the document. That location is based solely on the pages that are visible at the time of itscreation.\n      For example, if the sheet you are importing from has two Adventurers Logsheet pages, and these were added after generating a Spell Sheet of three pages long, while all of the other pages were visible as well, the second Adventurers Logsheet page would have been generated as page number 12. In order for this sheet to properly receive the import for that page, you will first need to generate an Adventurers Logsheet page at page number 12." + "\n\n\nDo you want to continue importing?",
+		nIcon : 2,
+		cTitle : "Is everything ready for importing?",
+		nType : 2,
+	};
+	
+	
+	if (app.alert(AskFirst) !== 4) {
+		return;
+	}
+	
+	tDoc.delay = true;
+	tDoc.calculate = false;
+	
+	//if the sheet is currently flattened, undo that first
+	if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
+	
+	thermoM("start"); //start a progress dialog
+	thermoM("Importing the data..."); //change the progress dialog text
+	
+	templateA = [
+		["Template.extras.AScomp", What("Template.extras.AScomp")],
+		["Template.extras.ASnotes", What("Template.extras.ASnotes")],
+		["Template.extras.WSfront", What("Template.extras.WSfront")],
+		["Template.extras.ALlog", What("Template.extras.ALlog")],
+	];
+	var locStateOld = What("Gear Location Remember").split(",");
+	
+	if (typeof ProcResponse === "undefined") {
+		IsNotImport = false;
+		if (type === "fdf") {
+			tDoc.importAnFDF();
+		} else if (type === "xfdf") {
+			tDoc.importAnXFDF();
+		}
+		if (What("Race Remember").split("-")[1]) ApplyRace(What("Race Remember"));
+		IsNotImport = true;
+	};
+	
+	//set the values of the templates back
+	for (var i = 0; i < templateA.length; i++) {
+		Value(templateA[i][0], templateA[i][1]);
+	}
+	
+	thermoM(13/25); //increment the progress dialog's progress
+	thermoM("Getting the sheet ready..."); //change the progress dialog text
+	
+	//set the layer visibility to what the imported field says
+	LayerVisibilityOptions(false);
+	
+	//set the visibility of Honor/Sanity as imported
+	ShowHonorSanity();
+	
+	thermoM(14/25); //increment the progress dialog's progress
+	
+	tDoc.resetForm(["MakeMobileReady Remember"]); //make the sheet believe it is not flattened
+	
+	thermoM(15/25); //increment the progress dialog's progress
+
+	//set the visiblity of the text lines as the imported remember field has been set to
+	if (What("WhiteoutRemember") !== false) {
+		ToggleWhiteout(false);
+	}
+	
+	thermoM(16/25); //increment the progress dialog's progress
+
+	//set the text size for multiline fields as the imported remember field has been set to
+	if (What("FontSize Remember") !== (typePF ? 7 : 5.74)) {
+		ToggleTextSize(What("FontSize Remember"));
+	}
+	
+	thermoM(17/25); //increment the progress dialog's progress
+
+	//set the visiblity of the manual attack fiels the first page as the imported remember field has been set to
+	if (What("Manual Attack Remember") !== "No") {
+		ToggleAttacks("No");
+	}
+	
+	thermoM(18/25); //increment the progress dialog's progress
+	
+	//set the visiblity of the adventure league as the imported field has been set to
+	ToggleAdventureLeague(What("League Remember") === "On" ? "Off" : "On");
+	
+	thermoM(19/25); //increment the progress dialog's progress
+
+	//set the visiblity of the Blue Text fields as the imported remember field has been set to
+	if (What("BlueTextRemember") !== "No") {
+		ToggleBlueText("No");
+	}
+	
+	thermoM(20/25); //increment the progress dialog's progress
+
+	//set the visiblity of the spell slots on the first page as the imported remember field has been set to
+	SetSpellSlotsVisibility();
+	
+	thermoM(21/25); //increment the progress dialog's progress
+	
+	//set the visiblity of the location columns as the imported remember field has been set to
+	
+	var locStateNew = What("Gear Location Remember").split(",");
+	if (locStateNew[0] !== locStateOld[0]) { //only do something if current visiblity (locStateOld) is not what was imported
+		HideInvLocationColumn("Adventuring Gear ", locStateOld[0] === "true");
+	}
+	if (locStateNew[1] !== locStateOld[1]) { //only do something if current visiblity (locStateOld) is not what was imported
+		HideInvLocationColumn("Extra.Gear ", locStateOld[1] === "true");
+	}
+
+	thermoM(22/25); //increment the progress dialog's progress
+
+	//set the visiblity of the attuned magical item line on the second page as the imported remember field has been set to
+	if (What("Adventuring Gear Remember") !== false) {
+		ShowAttunedMagicalItems(false);
+	}
+
+	thermoM(23/25); //increment the progress dialog's progress
+	
+	//set all the color schemes as the newly imported fields dictate
+	setColorThemes();
+
+	thermoM(24/25); //increment the progress dialog's progress
+	
+	//set the weight carried multiplier back one if a race with powerful build was added
+	if (CurrentRace.known && (/powerful build/i).test(CurrentRace.trait) && What("Carrying Capacity Multiplier") === 3) {
+		tDoc.getField("Carrying Capacity Multiplier").value -= 1;
+	}
+
+	app.alert({
+		cMsg : "Be aware that some fields might not have imported correctly if you imported data that you exported from another version of this sheet.\n\nTooltips might no longer display the correct information after importing (especially if you exported all the fields and not just the non-calculated ones). Also, some fields may be left empty and other fields may display the wrong information. Unfortunately, this can't be helped.\n\nIt is recommended that you check all the fields whether or not correspond with the data that you wanted to import.\n\nUnfortunately, the portrait and symbol on the fourth page can't be imported, you will have to re-do them manually.\n\nIf the sheet you exported information from has extra pages added (e.g. two companion pages, or multiple adventurers logsheets), than those will only be imported if you create those pages first in this document as well, in the exact same order as you did in the previous document.\n\nThe following only applies if you are importing from a version before v11:\nIf you imported a class and/or race that has any options that are selected via the buttons on the second page, then please select those features that grant spellcasting again (even if they are already displayed). Selecting them again will give the automation the information necessary to produce the proper Spell Sheets.",
+		nIcon : 1,
+		cTitle : "Notes on Importing",
+		nType : 0,
+	});
+
+	thermoM(); //stop any and all progress dialogs
+	
+	//re-apply stuff just as when starting the sheet
+	InitializeEverything(false, true);
+	
+	tDoc.dirty = true;
+};
+
+/* ---- the old, depreciated export functions ---- */
+//Export only the parts of the sheet that are unaffected by automation
+function MakeExportArray() {
+	var notExport = [
+		"Spell DC 1 Mod",
+		"Spell DC 2 Mod",
+		"Speed Remember",
+		"Racial Traits",
+		"Class Features",
+		"Proficiency Armor Light",
+		"Proficiency Armor Medium",
+		"Proficiency Armor Heavy",
+		"Proficiency Shields",
+		"Proficiency Weapon Simple",
+		"Proficiency Weapon Martial",
+		"Proficiency Weapon Other",
+		"Background Feature",
+		"Background Feature Description",
+		"SheetInformation",
+		"SpellSheetInformation",
+		"CopyrightInformation",
+		"Opening Remember",
+	]
+	var tempArray = [];
+	for (var F = 0; F < tDoc.numFields; F++) {
+		var Fname = tDoc.getNthFieldName(F);
+		var Fvalue = What(Fname) !== tDoc.getField(Fname).defaultValue;
+		var Frtf = tDoc.getField(Fname).type === "text" && tDoc.getField(Fname).richText;
+		var Fcalc = (/Bonus$/i).test(Fname) || tDoc.getField(Fname).calcOrderIndex === -1;
+		if (!Frtf && Fvalue && Fcalc && notExport.indexOf(Fname) === -1 && Fname.indexOf("Limited Feature") === -1 && Fname.indexOf("SpellSlots") === -1 && !(/^(Comp.Use.)?Attack.\d.(?!Weapon Selection)|^Feat Description \d$|^Tool \d$|^Language \d$|^(bonus |re)?action \d$|^HD\d (Used|Level|Die|Con Mod)$|Wildshape.\d.|^Resistance Damage Type \d$|^Extra.Exhaustion Level \d$|^Extra.Condition \d+$|^Template\.extras.+$|spells\..*\.\d+|spellshead|spellsdiv|spellsgloss/i).test(Fname)) {
+			tempArray.push(Fname);
+		}
+	}
+	return tempArray.length > 0 ? tempArray : "";
+}
+
+//Export only the parts of the sheet that are unaffected by automation
+function MakeEquipmentExportArray() {
+	var toExport = [
+		"Platinum Pieces",
+		"Gold Pieces",
+		"Electrum Pieces",
+		"Silver Pieces",
+		"Copper Pieces",
+		"Lifestyle",
+		"Extra.Other Holdings",
+	];
+	for (var i = 1; i <= FieldNumbers.gear; i++) {
+		toExport.push("Adventuring Gear Row " + i);
+		toExport.push("Adventuring Gear Location.Row " + i);
+		toExport.push("Adventuring Gear Amount " + i);
+		toExport.push("Adventuring Gear Weight " + i);
+		if (!typePF && i <= 4) toExport.push("Valuables" + i);
+		if (i <= FieldNumbers.magicitems) {
+			toExport.push("Extra.Magic Item " + i);
+			toExport.push("Extra.Magic Item Attuned " + i);
+			toExport.push("Extra.Magic Item Description " + i);
+			toExport.push("Extra.Magic Item Weight " + i);
+		}
+		if (i <= FieldNumbers.extragear) {
+			toExport.push("Extra.Gear Row " + i);
+			toExport.push("Extra.Gear Location.Row " + i);
+			toExport.push("Extra.Gear Amount " + i);
+			toExport.push("Extra.Gear Weight " + i);
+		}
+	}
+	var tempArray = [];
+	for (var F = 0; F < toExport.length; F++) {
+		if (tDoc.getField(toExport[F]).type !== "checkbox" && What(toExport[F]) !== tDoc.getField(toExport[F]).defaultValue) {
+			tempArray.push(toExport[F]);
+		} else if (tDoc.getField(toExport[F]).type === "checkbox" && tDoc.getField(toExport[F]).isBoxChecked(0)) {
+			tempArray.push(toExport[F]);
+		}
+	}
+	return tempArray.length > 0 ? tempArray : "";
+}
+
+//Export only the parts of the sheet that are unaffected by automation
+function MakeDescriptionExportArray() {
+	var toExport = [
+		"PC Name",
+		"Player Name",
+		"Height",
+		"Weight",
+		"Sex",
+		"Hair colour",
+		"Eyes colour",
+		"Skin colour",
+		"Age",
+		"Alignment",
+		"Faith/Deity",
+		"Personality Trait",
+		"Ideal",
+		"Bond",
+		"Flaw",
+		"Background_History",
+		"Background_Appearance",
+		"Background_Enemies",
+		"Background_Organisation",
+		"Background_Faction.Text",
+		"Background_FactionRank.Text",
+		"Background_Renown.Text",
+		"Comp.Desc.Name",
+		"Comp.Desc.Sex",
+		"Comp.Desc.Age",
+		"Comp.Desc.Height",
+		"Comp.Desc.Weight",
+		"Comp.Desc.Alignment",
+		"Notes.Left",
+		"Notes.Right",
+	];
+	var tempArray = [];
+	for (var F = 0; F < toExport.length; F++) {
+		if (tDoc.getField(toExport[F]).type !== "checkbox" && What(toExport[F]) !== tDoc.getField(toExport[F]).defaultValue) {
+			tempArray.push(toExport[F]);
+		} else if (tDoc.getField(toExport[F]).type === "checkbox" && tDoc.getField(toExport[F]).isBoxChecked(0)) {
+			tempArray.push(toExport[F]);
+		}
+	}
+	return tempArray.length > 0 ? tempArray : "";
+}
+
+function MakeXFDFExport(partial) {
+	if (partial !== "all") { // if given the command to only partially export
+		var theArray = partial === "equipment" ? MakeEquipmentExportArray() : (partial === "description" ? MakeDescriptionExportArray() : MakeExportArray());
+		if (!theArray) {
+			app.alert("Nothing was found that was worthy to export. None of the fields that are not auto-filled seem to have anything but there default values in them. If you still want to export the settings, try exporting all field values.", 0, 0, "Nothing to Export");
+			return; // stop the function, because no fields were found that are exportable
+		}
+		var theSettings = {aFields: theArray};
+	} else {
+		var theSettings = {bAllFields: true};
+	}
+	try {
+		tDoc.exportAsXFDF(theSettings);
+	} catch (err) {
+		var toExport = tDoc.exportAsXFDFStr(theSettings);
+	
+		var explainTXT = "This is a work-around for Acrobat Reader. It requires a little bit more work, but otherwise you will have to get Acrobat Pro in order to do this more easily. You will be able to import the file you create into MPMB's Character Sheet version 10.2 or later.\nThe field below contains all the exported data in a XML format. All you have to do is copy this data and save it as an .xfdf file with UTF-8 encoding.";
+		if (app.platform === "WIN") {
+			explainTXT += " If you don't know how to do this, just follow the steps below:\n\nOn Windows:\n  1 - Open Notepad and copy the complete content of the field below into it;\n  2 - On the Notepad menu bar, select File -- Save;\n  3 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  4 - At Encoding, choose \"UTF-8\";\n  5 - Press Save."
+		} else if (app.platform === "MAC") {
+			explainTXT += " If you don't know how to do this, just follow the steps below:\n\nOn Mac:\n  1 - Open TextEdit and copy the complete content of the field below into it;\n  2 - On the TextEdit menu bar, select Format -- Make Plain Text;\n  3 - Then, on the TextEdit menu bar, select File -- Save As;\n  4 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  5 - At Plain Text Encoding, choose \"UTF-8\";\n  6 - Press Save."
+		}
+		
+		var DisplayExport_dialog = {
+			
+			initialize: function(dialog) {
+				dialog.load({
+					"expo": toExport,
+					"txt0": explainTXT,
+				});
+			},
+			commit: function(dialog) { // called when OK pressed
+			},
+
+			description : {
+				name : "Create a .xfdf file from the text below",
+				elements : [{
+					type : "view",
+					elements : [{
+						type : "view",
+						elements : [{
+							type : "static_text",
+							item_id : "head",
+							alignment : "align_fill",
+							font : "heading",
+							bold : true,
+							height : 21,
+							char_width : 39,
+							name : "Create a .xfdf file from the text below"
+						}, {
+							type : "static_text",
+							item_id : "txt0",
+							alignment : "align_fill",
+							font : "dialog",
+							char_height : 20,
+							char_width : 55,
+						}, {
+							type : "edit_text",
+							item_id : "expo",
+							alignment : "align_fill",
+							multiline: true,
+							char_height : 35,
+							char_width : 55,
+						}, {
+							type : "gap",
+							height : 5,
+						}, ]
+					}, {
+						type : "ok",
+					}, ]
+				}, ]
+			}
+		}
+		app.execDialog(DisplayExport_dialog);
+	}
 }

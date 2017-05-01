@@ -116,6 +116,7 @@ var Menus = {
 	"classfeatures" : "",
 	"chooselayers" : "",
 	"gear" : "",
+	"gearline" : "",
 	"magicitems" : "",
 	"color" : "",
 	"raceoptions" : "",

@@ -1656,13 +1656,14 @@ var AmmoList = {
 		checks : [".Top", ".Base"],
 		display : 20
 	},
-	"axe" : {
+	"handaxe" : {
 		name : "Handaxes",
 		source : ["P", 149],
 		weight : 2,
 		icon : "Axes",
 		checks : [".Top.Axe", ".Base.Axe"],
-		display : 8
+		display : 8,
+		alternatives : ["axe"]
 	},
 	"javelin" : {
 		name : "Javelins",
@@ -1672,13 +1673,14 @@ var AmmoList = {
 		checks : [".Base"],
 		display : 10
 	},
-	"hammer" : {
+	"light hammer" : {
 		name : "Light Hammers",
 		source : ["P", 149],
 		weight : 2,
 		icon : "Hammers",
 		checks : [".Top.Axe", ".Base.Axe"],
-		display : 8
+		display : 8,
+		alternatives : ["hammer"]
 	},
 	"needle" : {
 		name : "Needles",

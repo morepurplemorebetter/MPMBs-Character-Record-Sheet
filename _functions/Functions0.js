@@ -468,6 +468,11 @@ function clean(input, remove, diacretics) {
 	return diacretics ? removeDiacritics(input) : input;
 };
 
+//convert string to usable, complex regex
+function MakeRegex(inputString, extraRegex) {
+	return RegExp("^(?=.*\\b" + inputString.replace(/\W/g, " ").replace(/^ +| +$/g, "").RegEscape().replace(/('?s'?)\b/ig, "\($1\)?").replace(/ +/g, "\\b)(?=.*\\b") + "\\b)" + (extraRegex ? extraRegex : "") + ".*$", "i");
+};
+
 function toUni(input) {
 	input = input.toString();
 	var UniBoldItal = {

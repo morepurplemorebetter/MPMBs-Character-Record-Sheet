@@ -519,8 +519,8 @@ FeatsList["critter friend"] = {
 		oncelr : true
 	}, {
 		name : "Once per long rest",
-		spells : ["speak with animals"],
-		selection : ["speak with animals"],
+		spells : ["animal friendship"],
+		selection : ["animal friendship"],
 		oncelr : true
 	}]
 };
@@ -528,16 +528,16 @@ FeatsList["dragon fear"] = {
 	name : "Dragon Fear",
 	source : ["UA:FR", 2],
 	prerequisite : "Being a Dragonborn",
-	calculate : "event.value = 'I can expend a Breath Weapon use to roar instead. Each creature of my choice within 30 ft that can see or hear me must make a DC ' + (8 + What('Proficiency Bonus') + What('Wis Mod') + ' Wis save (8 + prof. bonus + Cha mod) or be frightened for 1 min. It can repeat the save whenever it takes damage. [+1 Str or Cha]';",
+	calculate : "event.value = 'I can expend a Breath Weapon use to roar instead. Each creature of my choice within 30 ft that can see or hear me must make a DC ' + (8 + Number(What('Proficiency Bonus')) + Number(What('Wis Mod'))) + ' Wis save (8 + prof. bonus + Cha mod) or be frightened for 1 min. It can repeat the save whenever it takes damage. [+1 Str or Cha]';",
 	improvements : "Dragon Fear (feat): +1 Strength or Charisma;",
 	eval : "AddAction('action', 'Breath Weapon or Dragon Fear', 'Dragon Fear (feat)', 'Breath Weapon');",
-	removeeval : "AddAction('action', 'Breath Weapon', 'Dragonborn (Draconic Ancestry)', 'Breath Weapon or Dragon Fear');"
+	removeeval : "AddAction('action', 'Breath Weapon', 'Dragonborn (Draconic Ancestry)', 'Breath Weapon or Dragon Fear'); if (CurrentRace.known !== 'dragonborn') { RemoveAction('action', 'Breath Weapon'); }; "
 };
 FeatsList["dragon hide"] = {
 	name : "Dragon Hide",
 	source : ["UA:FR", 2],
 	prerequisite : "Being a Dragonborn",
-	description : " [+1 Strength or Charisma]",
+	description : "I gain retractable claws that I can retract or extend, requiring no action. While extended, my unarmed strikes deal 1d4 slashing damage. My scales harden, giving me a +1 bonus to AC when I'm not wearing armor. [+1 Strength or Charisma]",
 	improvements : "Dragon Hide (feat): +1 Strength or Charisma;",
 	eval : "AddWeapon('Retractable Claws'); AddACMisc(1, 'Dragon Hide', 'While not wearing armor, the Dragon Hide feat gives a +1 bonus to AC', 'CurrentArmour.known && ArmourList[CurrentArmour.known].type');",
 	removeeval : "RemoveWeapon('Retractable Claws'); AddACMisc(0, 'Dragon Hide', 'While not wearing armor, the Dragon Hide feat gives a +1 bonus to AC');"
@@ -624,7 +624,9 @@ FeatsList["fey teleportation"] = {
 		spells : ["misty step"],
 		selection : ["misty step"],
 		oncesr : true
-	}
+	},
+	eval : "AddFeature('Fey Teleportation', 1, '', 'short rest', 'Fey Teleportation feat');",
+	removeeval : "RemoveFeature('Fey Teleportation');"
 };
 FeatsList["flames of phlegethos"] = {
 	name : "Flames of Phlegethos",
@@ -647,14 +649,6 @@ FeatsList["grudge-bearer [aberrations]"] = {
 	description : "My hatred for aberrations gives me these benefits against them: Adv. on attacks in the first round of combat. Their opportunity attacks have disadv. against me. I add twice my prof. bonus on related Arcana, History, Nature, and Religion checks [+1 Str, Con, or Wis]",
 	improvements : "Grudge-Bearer [aberrations] (feat): +1 Strength, Constitution, or Wisdom;"	
 };
-var grudgeBearerFeat = FeatsList["grudge-bearer [aberrations]"].toSource();
-["beasts", "celestials", "constructs", "dragons", "elementals", "fey", "fiends", "giants", "monstrosities", "oozes", "plants", "undead"].forEach( function(GBcrea) {
-	var theNm = "grudge-bearer [" + GBcrea + "]";
-	FeatsList[theNm] = eval(grudgeBearerFeat);
-	FeatsList[theNm].name.replace("aberrations", GBcrea);
-	FeatsList[theNm].description.replace("aberrations", GBcrea);
-	FeatsList[theNm].improvements.replace("aberrations", GBcrea);
-});
 FeatsList["human determination"] = {
 	name : "Human Determination",
 	source : ["UA:FR", 3],
@@ -707,8 +701,8 @@ FeatsList["second chance"] = {
 	prerequisite : "Being a Halfling",
 	description : "When a creature I can see hits me with an attack roll, I can use my reaction to force that creature to reroll. Once I use this ability, I can't do so again until I finish a short rest.\n[+1 Dexterity, Constitution, or Charisma]",
 	improvements : "Second Chance (feat): +1 Dexterity, Constitution, or Charisma;",
-	eval : "AddFeature('Second Chance (extra damage)', 1, '', 'short rest', 'Second Chance feat');",
-	removeeval : "RemoveFeature('Second Chance (extra damage)');",
+	eval : "AddFeature('Second Chance', 1, '', 'short rest', 'Second Chance feat');",
+	removeeval : "RemoveFeature('Second Chance');",
 	action : ["reaction", ""]
 };
 FeatsList["squat nimbleness"] = {
@@ -746,8 +740,22 @@ FeatsList["wood elf magic"] = {
 		oncelr : true
 	}, {
 		name : "Once per long rest",
-		spells : ["pass without trace,"],
-		selection : ["pass without trace,"],
+		spells : ["pass without trace"],
+		selection : ["pass without trace"],
 		oncelr : true
 	}]
+};
+
+//add the other variants of the Grudge-bearer feat
+function AmendFeats() {
+	var grudgeBearerFeat = FeatsList["grudge-bearer [aberrations]"].toSource();
+	var GBarray = ["beasts", "celestials", "constructs", "dragons", "elementals", "fey", "fiends", "giants", "monstrosities", "oozes", "plants", "undead"];
+	for (var i = 0; i < GBarray.length; i++) {
+		var GBcrea = GBarray[i];
+		var theNm = "grudge-bearer [" + GBcrea + "]";
+		FeatsList[theNm] = eval(grudgeBearerFeat);
+		FeatsList[theNm].name = FeatsList[theNm].name.replace("aberrations", GBcrea);
+		FeatsList[theNm].description = FeatsList[theNm].description.replace("aberrations", GBcrea);
+		FeatsList[theNm].improvements = FeatsList[theNm].improvements.replace("aberrations", GBcrea);
+	};
 };
