@@ -3596,10 +3596,9 @@ function MakeInventoryLineMenu() {
 	menuLVL1(gearMenu, [
 		["Move up", "up"],
 		["Move down", "down"],
-		["-", "-"],
-		["Move to " + moveCol + " column", "movecol#" + moveCol.substr(0, 1) + "only"]
+		["-", "-"]
 	]);
-	
+	if (!typePF || type.indexOf("Comp.") === -1) menuLVL1(gearMenu, [["Move to " + moveCol + " column", "movecol#" + moveCol.substr(0, 1) + "only"]]);
 	if (moveCol2) menuLVL1(gearMenu, [["Move to " + moveCol2 + " column", "movecol#" + moveCol2.substr(0, 1) + "only"]]);
 	
 	gearMenu.push({cName : "-"});
