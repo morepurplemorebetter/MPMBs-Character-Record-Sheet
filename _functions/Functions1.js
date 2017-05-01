@@ -6806,11 +6806,11 @@ function MagicItemOptions() {
 			break;
 		case "copy to adventuring gear (page 2)" :
 			thermoM("Copying the item to equipment section on page 2..."); //change the progress dialog text
-			AddInvR(FieldsValue[0], "", (FieldsValue[3] > 0 ? FieldsValue[3] : ""));
+			AddToInv("gear", "r", FieldsValue[0], "", FieldsValue[3] > 0 ? FieldsValue[3] : "", "", false, false, false, true);
 			break;
 		case "copy to attuned magical items (page 2)" :
 			thermoM("Copying the item to attuned magical items section on page 2..."); //change the progress dialog text
-			AddInvMagic(FieldsValue[0], "", (FieldsValue[3] > 0 ? FieldsValue[3] : ""));
+			AddToInv("magic", false, FieldsValue[0], "", FieldsValue[3] > 0 ? FieldsValue[3] : "", "", false, false, false, true);
 			break;
 		case "insert empty item" :
 			thermoM("Inserting empty magic item..."); //change the progress dialog text
@@ -9277,11 +9277,7 @@ function WeaponOptions() {
 		break;
 	 case "copy to adventuring gear (page 2)":
 		thermoM("Copying the attack to the equipment on page 2..."); //change the progress dialog text
-		if (What("Manual Attack Remember") === "No") {
-			AddInvR(FieldsValue[3], "", FieldsValue[7]);
-		} else {
-			AddInvR(FieldsValue[0], "", FieldsValue[7]);
-		}
+		AddToInv("gear", "r", FieldsValue[3], "", FieldsValue[7], "", false, false, false, true);
 		break;
 	 case "insert empty attack":
 		thermoM("Inserting empty attack..."); //change the progress dialog text

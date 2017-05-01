@@ -731,7 +731,7 @@ function DirectImport(consoleTrigger) {
 			if (i <= FieldNumbers.gear) {
 				ImportField("Adventuring Gear Row " + i); ImportField("Adventuring Gear Location.Row " + i); ImportField("Adventuring Gear Amount " + i); ImportField("Adventuring Gear Weight " + i);
 			} else if (fromFld && fromFld.value) {
-				AddInvR(fromFld.value, global.docFrom.getField("Adventuring Gear Amount " + i).value, global.docFrom.getField("Adventuring Gear Weight " + i).value, global.docFrom.getField("Adventuring Gear Location.Row " + i).value);
+				AddToInv("gear", "ronly", fromFld.value, global.docFrom.getField("Adventuring Gear Amount " + i).value, global.docFrom.getField("Adventuring Gear Weight " + i).value, global.docFrom.getField("Adventuring Gear Location.Row " + i).value, false, false, false, true);
 			}
 		}
 		
@@ -756,7 +756,7 @@ function DirectImport(consoleTrigger) {
 			if (i <= FieldNumbers.extragear) {
 				ImportField("Extra.Gear Row " + i); ImportField("Extra.Gear Location.Row " + i); ImportField("Extra.Gear Amount " + i); ImportField("Extra.Gear Weight " + i);
 			} else if (fromFld && fromFld.value) {
-				AddInvR(fromFld.value, global.docFrom.getField("Extra.Gear Amount " + i).value, global.docFrom.getField("Extra.Gear Weight " + i).value, global.docFrom.getField("Extra.Gear Location.Row " + i).value);
+				AddToInv("extra", "ronly", fromFld.value, global.docFrom.getField("Extra.Gear Amount " + i).value, global.docFrom.getField("Extra.Gear Weight " + i).value, global.docFrom.getField("Extra.Gear Location.Row " + i).value, false, false, false, true);
 			}
 		}
 		
@@ -853,7 +853,7 @@ function DirectImport(consoleTrigger) {
 				for (var i = FieldNumbers.compgear + 1; i <= nmbrFlds; i++) {
 					var fromFld = global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Row " + i);
 					if (fromFld && fromFld.value) {
-						AddInvLComp(fromFld.value, global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Amount " + i).value, global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Weight " + i).value, global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Location.Row " + i).value);
+						AddToInv(prefixFrom + "Comp.", "l", fromFld.value, global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Amount " + i).value, global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Weight " + i).value, "", false, false, false, true);
 					}
 				}
 			} else if (fromSheetTypePF && !typePF) {
