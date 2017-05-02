@@ -285,11 +285,12 @@ function resourceDecisionDialog(atOpening, atReset) {
 			dialog.load({
 				"ExcL" : this.exclObject,
 				"IncL" : this.inclObject,
-				"txt0" : (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon) and change it.\n" : "") + "First you can set the sourcebooks the sheet is allowed to use for its automation.\nBelow that, you can open dialogues to include or exclude different parts of the sourcebooks set to be included.\nNote that you can always add more resources using the \"Add Custom Script\" bookmark.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.",
+				"txt0" : (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon), or the \"Source Material\" bookmark, and change it.\n" : "") + "You can include or exclude entire sourcebooks (top) and exclude just elements of the sourcebooks set to be included (buttons below).\nNote that you can also add more resources using the \"Add Custom Script\" bookmark.\nIf multiple things with the same name are included, like the Ranger from the PHB and the Ranger from UA:RR, the newest source will be used.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.",
 				"txt1" : "By pressing one of the buttons below, you open another dialogue where you can exclude and include parts of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up in the dialogue created when you press the buttons below, as all of its content will be ignored by the sheet's automation.",
-				"txt2" : toUni("Warning:") + " If you change anything that affects any drop-down boxes on the sheet, those will be updated." + (isFirstTime ? " If a lot of drop-down boxes are affected, this can take several minutes." : "\nPlease be aware, that this will reset those drop-down boxes to their default value. After that, the sheet will re-enter the values, which in turn will trigger the automation. This automation will then be run using the resources selected above. This can take several minutes."),
+				"txt2" : toUni("Warning:") + " If you change anything that affects any drop-down boxes on the sheet, those will be updated. " + (isFirstTime ? "If a lot of drop-down boxes are affected, this can take several minutes." : "Please be aware, that if those drop-down boxes contained any value, they will first be reset and then re-applied using the resources selected above. This can take several minutes."),
 				"bLin" : "This button links to the web page of the selected sourcebook"
 			});
+			dialog.setForeColorRed("txt2");
 		},
 		commit : function (dialog) {},
 		updateLink : function (dialog, ExcInc) {
@@ -430,12 +431,6 @@ function resourceDecisionDialog(atOpening, atReset) {
 					font : "heading",
 					bold : true,
 					elements : [{
-						type : "static_text",
-						item_id : "txtf",
-						height : 21,
-						width : 710,
-						name : "Please select which sources you want to exclude or include in their entirety."
-					}, {
 						type : "view",
 						align_children : "align_row",
 						elements : [{
@@ -569,13 +564,21 @@ function resourceDecisionDialog(atOpening, atReset) {
 						}]
 					}]
 				}, {
-					type : "static_text",
-					item_id : "txt2",
-					char_height : isFirstTime ? 3 : 5,
-					width : 720,
-				}, {
-					type : "ok_cancel",
-					ok_name : "Apply (can take a long time)",
+					type : "view", // the bottom row of buttons
+					align_children : "align_distribute",
+					alignment : "align_fill",
+					elements : [{
+						type : "static_text",
+						alignment : "align_left",
+						item_id : "txt2",
+						font : "palette",
+						char_height : isFirstTime ? 3 : 5,
+						width : 500,
+					}, {
+						type : "ok_cancel",
+						alignment : "align_right",
+						ok_name : "Apply (can take a long time)",
+					}]
 				}]
 			}]
 		}

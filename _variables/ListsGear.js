@@ -2021,6 +2021,12 @@ var GearList = {
 		amount : "",
 		weight : ""
 	},
+	"bit and bridle" : {
+		infoname : "Bit and bridle [2 gp]",
+		name : "Bit and bridle",
+		amount : "",
+		weight : 1
+	},
 	"blanket" : {
 		infoname : "Blanket [5 sp]",
 		name : "Blanket",
@@ -2434,6 +2440,42 @@ var GearList = {
 		name : "Sack",
 		amount : "",
 		weight : 0.5
+	},
+	"saddle:" : {
+		infoname : "Saddle:",
+		name : "-",
+		amount : "",
+		weight : ""
+	},
+	"saddle: exotic" : {
+		infoname : "   Exotic [60 gp]",
+		name : "Exotic saddle",
+		amount : "",
+		weight : 40
+	},
+	"saddle: military" : {
+		infoname : "   Military [20 gp]",
+		name : "Military saddle",
+		amount : "",
+		weight : 30
+	},
+	"saddle: pack" : {
+		infoname : "   Pack [5 gp]",
+		name : "Pack saddle",
+		amount : "",
+		weight : 15
+	},
+	"saddle: riding" : {
+		infoname : "   Riding [25 gp]",
+		name : "Riding saddle",
+		amount : "",
+		weight : 10
+	},
+	"saddlebags" : {
+		infoname : "Saddlebags [4 gp]",
+		name : "Saddlebags",
+		amount : "",
+		weight : 8
 	},
 	"scale, merchant's" : {
 		infoname : "Scale, merchant's [5 gp]",

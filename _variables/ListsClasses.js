@@ -1912,12 +1912,12 @@ var ClassSubList = {
 				spellcastingBonus : [{
 					name : "Spirit Seeker",
 					spells : ["beast sense"],
-					selection : ["beast sense"],
+					selection : ["beast sense"]
 				}, {
 					name : "Spirit Seeker",
 					spells : ["speak with animals"],
-					selection : ["speak with animals"],
-				}],
+					selection : ["speak with animals"]
+				}]
 			},
 			"subclassfeature3.1" : {
 				name : "Totem Spirit",

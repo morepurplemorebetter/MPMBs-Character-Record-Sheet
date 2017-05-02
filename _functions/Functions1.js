@@ -3312,7 +3312,7 @@ function MakeInventoryMenu() {
 			var isMarked = array[i][1] === "attuned" ? What("Adventuring Gear Remember") === false :
 				array[i][1] === "location2" ? What("Gear Location Remember").split(",")[0] === "true" :
 				array[i][1] === "location3" ? What("Gear Location Remember").split(",")[1] === "true" : false;
-			var isEnabled = array[i][1] === "location3" ? tDoc.getField(BookMarkList["ASfront"]).page !== -1 : array[i][1].indexOf("background") !== -1 && backgroundKn === "Background";
+			var isEnabled = array[i][1] === "location3" ? tDoc.getField(BookMarkList["ASfront"]).page !== -1 : array[i][1].indexOf("background") !== -1 ? backgroundKn !== "Background" : true;
 			item.push({
 				cName : array[i][0],
 				cReturn : array[i][1],
@@ -3543,7 +3543,6 @@ function AddInvWeaponsAmmo() {
 
 //Make menu for the button on each equipment line and parse it to Menus.gearline
 function MakeInventoryLineMenu() {
-	var gearMenu = [];
 	var type = event.target.name.indexOf("Adventuring") !== -1 ? "Adventuring " : 
 		event.target.name.indexOf("Extra.") !== -1 ? "Extra." : 
 		event.target.name.substring(0, event.target.name.indexOf("Comp.") + 8) + ".";
@@ -3558,6 +3557,27 @@ function MakeInventoryLineMenu() {
 	var curCol = typePF && type.indexOf("Comp.") !== -1 ? 1 : Math.ceil(lineNmbr / Math.round(maxRow / numColumns));
 	var moveCol = curCol > 1 ? "left" : numColumns === 3 ? "middle" : "right";
 	var moveCol2 = numColumns !== 3 ? false : curCol === 3 ? "middle" : "right";
+	
+	var amendMenu = function(inputArray) {
+		var array = eval(inputArray.toSource());
+		for (var i = 0; i < array.length; i++) {
+			array[i].cReturn = type + "#" + lineNmbr + "#" + array[i].cReturn;
+		};
+		return array;
+	};
+	
+	var gearMenu = [{
+		cName : "Put item on this line" + (theField ? " (overwrites current)" : ""),
+		oSubMenu : [{
+			cName : "Gear",
+			oSubMenu : amendMenu(GearMenus.gear)
+		}, {
+			cName : "Tool",
+			oSubMenu : amendMenu(GearMenus.tools)
+		}]
+	}, {
+		cName : "-"
+	}];
 	
 	var menuLVL1 = function (menu, array) {
 		for (var i = 0; i < array.length; i++) {
@@ -3625,7 +3645,7 @@ function InventoryLineOptions() {
 
 	var MenuSelection = getMenu("gearline");
 	
-	if (MenuSelection === undefined) return;
+	if (!MenuSelection) return;
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	var type = MenuSelection[0].capitalize().replace("Ascomp", "AScomp").replace("Eqp", "eqp");
@@ -3694,6 +3714,15 @@ function InventoryLineOptions() {
 	case "clear":
 		thermoM("Clearing gear line..."); //change the progress dialog text
 		tDoc.resetForm(Fields);
+		break;
+	case "gear":
+	case "tool":
+		var theGear = MenuSelection[2] === "gear" ? GearList[MenuSelection[3]] : ToolsList[MenuSelection[3]];
+		thermoM("Adding '" + theGear.name + "' to the line..."); //change the progress dialog text
+		var theNm = (lineNmbr > 1 && (/^.{0,2}-|backpack|\bbag\b|^(?=.*saddle)(?=.*bag).*$|\bsack\b|\bchest\b|, with|, contain/i).test(What(type + "Gear Row " + (lineNmbr - 1))) ? "- " : "") + theGear.name;
+		Value(Fields[0], theNm);
+		Value(Fields[1], theGear.amount);
+		Value(Fields[2], theGear.weight);
 		break;
 	};	
 	

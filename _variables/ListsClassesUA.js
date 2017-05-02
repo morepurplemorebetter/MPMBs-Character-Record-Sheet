@@ -67,14 +67,14 @@ ClassSubList["favored soul"] = {
 			minlevel : 1,
 			description : "\n   " + "I gain proficiency with light armor, medium armor, shields, and simple weapons",
 			armor : [true, true, false, true],
-			weapons : [true, false],
+			weapons : [true, false]
 		},
 		"subclassfeature1.1" : {
 			name : "Chosen of the Gods",
 			source : ["UA:MC", 8],
 			minlevel : 1,
 			description : "\n   " + "Choose a Cleric Domain using the \"Choose Feature\" button above" + "\n   " + "I add the chosen domain's spells to my known spells, when they are of a level I can cast" + "\n   " + "These count as sorcerer spells, but do not count against the number of spells I can know",
-			choices : [],
+			choices : []
 		},
 		"subclassfeature14" : {
 			name : "Divine Wings",
@@ -87,7 +87,7 @@ ClassSubList["favored soul"] = {
 			name : "Power of the Chosen",
 			source : ["UA:MC", 8],
 			minlevel : 18,
-			description : "\n   " + "When I cast a spell I gained from the Chosen of the Gods class feature, I heal myself" + "\n   " + "I regain a number of HP equal to my Charisma modifier (minimum 1) + the spell's level",
+			description : "\n   " + "When I cast a spell I gained from the Chosen of the Gods class feature, I heal myself" + "\n   " + "I regain a number of HP equal to my Charisma modifier (minimum 1) + the spell's level"
 		}
 	}
 };
@@ -2636,7 +2636,7 @@ ClassSubList["arcane archer"] = {
 			"grasping arrow" : {
 				name : "Grasping Arrow",
 				source : ["UA:FMA", 2],
-				description : "[Conjuration Magic]" + "\n   " + "If the arrow hits, the target is wrapped with grasping, thorny brambles for 1 minute" + "\n   " + "The target has -10 ft speed; It takes 2d6 slashing damage when moving more than 1 ft" + "\n   " + "As an action, the target or a creature can remove the brambles with a DC 10 Str check"
+				description : " [Conjuration]" + "\n   " + "If the arrow hits, the target is wrapped with grasping, thorny brambles for 1 minute" + "\n   " + "The target has -10 ft speed; It takes 2d6 slashing damage when moving more than 1 ft" + "\n   " + "As an action, the target or a creature can remove the brambles with a DC 10 Str check"
 			},
 			"piercing arrow" : {
 				name : "Piercing Arrow",
@@ -2916,7 +2916,7 @@ ClassSubList["way of the kensei"] = {
 				description : " [1 to 3 ki points]" + "\n   " + "As a bonus action, I can grant my weapon a bonus to attack and damage rolls" + "\n   " + "This bonus is equal to the number of ki points I spend; It lasts for 1 minute",
 				action : ["bonus action", ""]
 			},
-			changeeval : "if (newClassLvl.monk >= 11 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"sharpen the blade\") === -1) {ClassFeatureOptions([\"monk\", \"subclassfeature17\", \"sharpen the blade\", \"extra\"])} else if (newClassLvl.monk <= 11 && oldClassLvl.monk >= 11) {ClassFeatureOptions([\"monk\", \"subclassfeature17\", \"sharpen the blade\", \"extra\"], \"remove\")}"
+			changeeval : "if (newClassLvl.monk >= 11 && (What('Extra.Notes') + What('Class Features')).toLowerCase().indexOf('sharpen the blade') === -1) {ClassFeatureOptions(['monk', 'subclassfeature17', 'sharpen the blade', 'extra'])} else if (newClassLvl.monk <= 11 && oldClassLvl.monk >= 11) {ClassFeatureOptions(['monk', 'subclassfeature17', 'sharpen the blade', 'extra'], 'remove')}"
 		}
 	}
 };
@@ -3277,7 +3277,7 @@ ClassList.rogue.subclasses[1].push("rogue_scout");
 //this code includes contributions by /u/SoilentBrad, as well as LamentingDemon on GitHub
 ClassSubList["sorcerer-favoured soul"] = {
 	regExpSearch : /^(?=.*favou?red)(?=.*soul).*$/i,
-	subname : "Favoured Soul",
+	subname : "Favored Soul",
 	source : ["UA:SO", 1],
 	fullname : "Favored Soul",
 	spellcastingList : {
@@ -3348,7 +3348,7 @@ ClassSubList["sorcerer-favoured soul"] = {
 			name : "Unearthly Recovery",
 			source : ["UA:SO", 1],
 			minlevel : 18,
-			description : "\n   " + "As a bonus action when I have less than half of my max HP, I can heals myself" + "\n   " + "I regain a number of HP equal to half my maximum Hit Points",
+			description : "\n   " + "As a bonus action when I have less than half of my max HP, I can heal myself" + "\n   " + "I regain a number of HP equal to half my maximum Hit Points",
 			action : ["bonus action", ""],
 			recovery : "long rest",
 			usages : 1
@@ -4064,6 +4064,435 @@ ClassSubList["ranger-monster slayer"].features["subclassfeature3"].spellcastingE
 ClassList.ranger.subclasses[1].push("ranger-monster slayer");
 ClassSubList["rangerua-monster slayer"] = eval(ClassSubList["ranger-monster slayer"].toSource());
 ClassList.rangerua.subclasses[1].push("rangerua-monster slayer");
+
+/*	Revised Subclasses Unearthed Arcana of 2017-05-01
+	(http://media.wizards.com/2017/dnd/downloads/UA-RevisedSubclasses.pdf)
+*/
+//add five subclasses from previous Unearthed Arcana articles: a subclass for the Barbarian, called "Path of the Ancestral Guardian"
+ClassSubList["barbarian-ancestral guardian2"] = {
+	regExpSearch : /^(?=.*ancestral)(?=.*guardian).*$/i,
+	subname : "Path of the Ancestral Guardian",
+	source : ["UA:RS", 1],
+	fullname : "Ancestral Guardian",
+	features : {
+		"subclassfeature3" : {
+			name : "Ancestral Protectors",
+			source : ["UA:RS", 1],
+			minlevel : 3,
+			description : desc([
+				"While raging, the first creature I hit with an attack on my turn becomes distracted",
+				"While distracted, it has disadvantage on attack rolls that don't target me",
+				"In addition, everybody but me counts as having resistance to all of the target's attacks",
+				"This lasts until the start of my next turn, or until my rage ends"
+			])
+		},
+		"subclassfeature6" : {
+			name : "Spirit Shield",
+			source : ["UA:RS", 1],
+			minlevel : 6,
+			description : desc([
+				"As a reaction while raging when an ally I see within 30 ft is damaged, I can reduce it",
+				"My guardian spirits reduce the damage by an amount equal to the roll of the dice"
+			]),
+			additional : levels.map(function (n) { return n < 6 ? "" : (n < 10 ? 2 : n < 14 ? 3 : 4) + "d8 damage reduced"; }),
+			action : ["reaction", ""]
+		},
+		"subclassfeature10" : {
+			name : "Consult the Spirits",
+			source : ["UA:RS", 1],
+			minlevel : 10,
+			description : "\n   " + "Through consulting my ancestral spirits, I can cast Clairvoyance without a spell slot",
+			spellcastingBonus : {
+				name : "Consult the Spirits",
+				spells : ["clairvoyance"],
+				selection : ["clairvoyance"],
+				oncesr : true
+			},
+			usages : 1,
+			recovery : "short rest"
+		},
+		"subclassfeature14" : {
+			name : "Vengeful Ancestors",
+			source : ["UA:RS", 1],
+			minlevel : 14,
+			description : "\n   " + "Whenever I use Spirit Shield to reduce damage, the attacker takes the reduced damage"
+		}
+	}
+};
+ClassList.barbarian.subclasses[1].push("barbarian-ancestral guardian2");
+
+//a subclass for the Bard, called "College of Swords"
+ClassSubList["bard-college of swords2"] = {
+	regExpSearch : /^(?=.*(college|bard|minstrel|troubadour|jongleur))(?=.*\bswords?\b).*$/i,
+	subname : "College of Swords",
+	source : ["UA:RS", 1],
+	features : {
+		"subclassfeature3" : {
+			name : "Bonus Proficiencies",
+			source : ["UA:RS", 2],
+			minlevel : 3,
+			description : desc([
+				"I gain proficiency with medium armor and scimitars",
+				"I can a simple or martial melee weapon that I'm proficient with as spellcasting focus"
+			]),
+			armor : [false, true, false, false],
+			weapons : [false, false, ["scimitar"]]
+		},
+		"subclassfeature3.1" : {
+			name : "Fighting Style",
+			source : ["UA:RS", 2],
+			minlevel : 3,
+			description : "\n   " + "Select a Fighting Style for the college of swords using the \"Choose Feature\" button above",
+			choices : ["Dueling", "Two-Weapon Fighting"],
+			"dueling" : {
+				name : "Dueling Fighting Style",
+				description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
+				calcChanges : {
+					atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+				}
+			},
+			"two-weapon fighting" : {
+				name : "Two-Weapon Fighting Style",
+				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+				calcChanges : {
+					atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."]
+				}
+			}
+		},
+		"subclassfeature3.2" : {
+			name : "Blade Flourish",
+			source : ["UA:RS", 2],
+			minlevel : 3,
+			description : desc([
+				"As an action, I can make one melee weapon attack and use one flourish option below",
+				"In addition, I gain +10 ft to my walking speed until the end of the current turn",
+				" - Defensive Flourish [one Bardic Inspiration die]",
+				"    I add the result of the die to my AC until the start of my next turn",
+				" - Slashing Flourish [one Bardic Inspiration die]",
+				"    If the attack hits, I can use a die to deal damage to creatures next to the target",
+				"    All creatures within 5 ft of the target take the result of the die in damage",
+				" - Mobile Flourish [one Bardic Inspiration die]",
+				"    If the attack this, I can use a die to push the target back 5 + the die result in feet",
+				"    After this, I can use my reaction to move my speed to a space next to the target"
+			]),
+			action : ["action", ""]
+		},
+		"subclassfeature6" : {
+			name : "Cunning Flourish",
+			source : ["UA:RS", 2],
+			minlevel : 6,
+			description : "\n   " + "When I take the Blade Flourish action, I can attack twice, but still only use one flourish"
+		},
+		"subclassfeature14" : {
+			name : "Master Flourish",
+			source : ["UA:RS", 2],
+			minlevel : 14,
+			description : "\n   " + "When I do a Blade Flourish, I can use a d6 instead of expending a Bardic Inspiration die"
+		}
+	}
+};
+ClassList.bard.subclasses[1].push("bard-college of swords2");
+
+//a subclass for the Fighter, called "Arcane Archer"
+ClassSubList["fighter-arcane archer2"] = {
+	regExpSearch : /^(?=.*arcane)(?=.*archer).*$/i,
+	subname : "Arcane Archer",
+	source : ["UA:RS", 2],
+	fullname : "Arcane Archer",
+	abilitySave : 4,
+	features : {
+		"subclassfeature3" : {
+			name : "Magic Arrow",
+			source : ["UA:RS", 3],
+			minlevel : 3,
+			description : desc([
+				"Whenever I fire a nonmagical arrow from a short- or longbow I can make it magical",
+				"This magical arrow gives a +1 bonus to the attack and damage rolls for the one attack"
+			]),
+			calcChanges : {
+				atkCalc : ["if ((/longbow|shortbow/i).test(WeaponName) && !thisWeapon[1]) {output.magic += 1; }; ", "Any longbow or shortbow that doesn't include a magic bonus in its name gets a +1 magical bonus to damage and to hit as any arrows fired with it are automatically made magical."]
+			}
+		},
+		"subclassfeature3.1" : {
+			name : "Arcane Shot",
+			source : ["UA:RS", 3],
+			minlevel : 3,
+			description : desc([
+				"I can unleash magical effects when I fire a magic arrow from a short- or longbow",
+				"I can use this once per turn as part of the Attack action, after an attack hits",
+				"I know a number of Arcane Shot Options and learn additional at certain levels",
+				"Use the \"Choose Features\" button above to add Arcane Shots Options to the third page"
+			]),
+			usages : 2,
+			recovery : "short rest",
+			additional : levels.map( function(n) { return n < 3 ? "" : (n < 7 ? 2 : n < 10 ? 3 : n < 15 ? 4 : n < 18 ? 5 : 6) + " options known"; }),
+			extraname : "Arcane Shot Option",
+			extrachoices : ["Banishing Arrow [Abjuration]", "Brute Bane Arrow [Necromancy]", "Bursting Arrow [Evocation]", "Grasping Arrow [Conjuration]", "Mind-Scrambling Arrow [Enchantment]", "Piercing Arrow [Transmutation]", "Seeking Arrow [Divination]", "Shadow Arrow [Illusion]"],
+			"banishing arrow [abjuration]" : {
+				name : "Banishing Arrow [Abjuration]",
+				source : ["UA:RS", 3],
+				description : desc([
+					"The target makes a Cha save or is banished to the Feywild until the end of its next turn",
+					"While banished, its speed is 0 and is incapacitated; It re-appearing in the same spot",
+					"When I reach 18th level, this Arcane Shot Option also does an extra 2d6 force damage"
+				]),
+				additional : levels.map( function(n) { return n < 18 ? "" : "+2d6 force damage"; })
+			},
+			"brute bane arrow [necromancy]" : {
+				name : "Brute Bane Arrow [Necromancy]",
+				source : ["UA:RS", 3],
+				description : desc([
+					"The target takes extra necrotic damage and must make a Constitution save",
+					"If failed, the damage of the target's attacks is halved until the start of my next turn"
+				]),
+				additional : levels.map( function(n) { return n < 3 ? "" : "+" + (n < 18 ? 2 : 4) + "d6 necrotic damage"; })
+			},
+			"bursting arrow [evocation]" : {
+				name : "Bursting Arrow [Evocation]",
+				source : ["UA:RS", 3],
+				description : "" + "\n   " + "The target, in addition to the shot, and all creatures within 10 ft of it take damage",
+				additional : levels.map( function(n) { return n < 3 ? "" : "+" + (n < 18 ? 2 : 4) + "d6 force damage"; })
+			},
+			"grasping arrow [conjuration]" : {
+				name : "Grasping Arrow [Conjuration]",
+				source : ["UA:RS", 3],
+				description : desc([
+					"The target takes extra poison damage as brambles wrap around it for 1 minute",
+					"The brambles give it -10 ft speed and do it slashing damage every round it moves",
+					"These can be removed by it or another as an action with Strength (Athletics) vs. my DC"
+				]),
+				additional : levels.map( function(n) { return n < 3 ? "" : (n < 18 ? 2 : 4) + "d6 poison/slash. damage"; })
+			},
+			"mind-scrambling arrow [enchantment]" : {
+				name : "Mind-Scrambling Arrow [Enchantment]",
+				source : ["UA:RS", 4],
+				description : desc([
+					"The target takes extra psychic damage and must succeed on a Wisdom save",
+					"If failed, it can't attack or harm one of my allies within 30 ft of it that I choose",
+					"This lasts until the start of my next turn or until the chosen ally harms the target"
+				]),
+				additional : levels.map( function(n) { return n < 3 ? "" : "+" + (n < 18 ? 2 : 4) + "d6 damage"; })
+			},
+			"piercing arrow [transmutation]" : {
+				name : "Piercing Arrow [Transmutation]",
+				source : ["UA:RS", 4],
+				description : desc([
+					"With this I don't roll for the attack, but shoot the arrow in a 30-ft long, 1-ft wide line",
+					"It passes through objects, ignoring cover, but all creatures in the area take damage",
+					"The damage is the same as a normal hit from my attack, plus extra piercing damage",
+					"A creature can make a Dexterity save to reduce the damage by half"
+				]),
+				additional : levels.map( function(n) { return n < 3 ? "" : "+" + (n < 18 ? 1 : 2) + "d6 piercing damage"; })
+			},
+			"seeking arrow [divination]" : {
+				name : "Seeking Arrow [Divination]",
+				source : ["UA:RS", 4],
+				description : desc([
+					"With this I don't roll for the attack, but I choose a target I have seen in the last minute",
+					"The seeking arrow moves around corners, obstacles, and ignores cover to hit the target",
+					"It is hit if it is within the weapon's range and there is a path for the arrow to get to it",
+					"The target takes the full damage of the attack plus extra force damage",
+					"It can make a Dexterity save to reduce the damage by half; If failed, I know its location"
+				]),
+				additional : levels.map( function(n) { return n < 3 ? "" : "+" + (n < 18 ? 1 : 2) + "d6 force damage"; })
+			},
+			"shadow arrow [illusion]" : {
+				name : "Shadow Arrow [Illusion]",
+				source : ["UA:RS", 4],
+				description : desc([
+					"The target takes extra psychic damage and must succeed on a Wisdom save",
+					"If failed, the target can't see anything beyond 5 ft until the end of my next turn"
+				]),
+				additional : levels.map( function(n) { return n < 3 ? "" : "+" + (n < 18 ? 2 : 4) + "d6 psyhic damage"; })
+			}
+		},
+		"subclassfeature3.2" : {
+			name : "Arcane Archer's Lore",
+			source : ["UA:RS", 3],
+			minlevel : 3,
+			description : "\n   " + "I gain proficiency with either the Arcana or Nature skill",
+			skillstxt : "\n\n" + toUni("Arcane Archer") + ": Choose Arcana or Nature."
+		},
+		"subclassfeature7" : {
+			name : "Curving Shot",
+			source : ["UA:RS", 3],
+			minlevel : 7,
+			description : desc([
+				"When I miss with a magic arrow, I can use a bonus action to redirect the attack",
+				"I reroll the attack against a different target within 60 ft of the original target"
+			]),
+			action : ["bonus action", ""]
+		},
+		"subclassfeature15" : {
+			name : "Ever-Ready Shot",
+			source : ["UA:RS", 3],
+			minlevel : 15,
+			description : "\n   " + "I regain one use of Arcane Shot if I have no more remaining when I roll initiative"
+		}
+	}
+};
+ClassList.fighter.subclasses[1].push("fighter-arcane archer2");
+
+//a subclass for the Monk, called "Way of the Kensei"
+ClassSubList["monk-way of the kensei2"] = {
+	regExpSearch : /^(?=.*kensei)((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
+	subname : "Way of the Kensei",
+	source : ["UA:RS", 4],
+	features : {
+		"subclassfeature3" : {
+			name : "Path of the Kensei",
+			source : ["UA:RS", 4],
+			minlevel : 3,
+			description : desc([
+				"Some weapons, that don't have heavy or special property, are kensei weapons for me",
+				"At least one ranged and one melee weapon, more at higher levels (longbow does qualify)",
+				"With these: proficient, count as a monk weapons, special bonuses while holding them:",
+				" - If I do an unarmed strike during an Attack action, +2 AC until my next turn starts",
+				" - As a bonus action, ranged kensei weapon attacks deal +1d4 damage in current turn"
+			]),
+			action: ["bonus action", " (with ranged)"],
+			additional : levels.map( function(n) { return n < 3 ? "" : (n < 6 ? 2 : n < 11 ? 3 : n < 17 ? 4 : 5) + " kensei weapons"; }),
+			calcChanges : {
+				atkAdd : [
+					"var monkDie = function(n) {return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10;}; if (classes.known.monk && classes.known.monk.level > 2 && theWea && !isSpell && !theWea.monkweapon && (!(/heavy|special/i).test(fields.Description) || WeaponName === 'longbow') && inputText.toLowerCase().indexOf('kensei') !== -1) {var aMonkDie = aMonkDie ? aMonkDie : monkDie(classes.known.monk.level); try {var curDie = eval(fields.Damage_Die.replace('d', '*'));} catch (e) {var curDie = 'x';}; if (isNaN(curDie) || curDie < aMonkDie) {fields.Damage_Die = '1d' + aMonkDie; }; if (theWea.ability === 1) {fields.Mod = StrDex; }; if (isRangedWeapon) {fields.Description += (fields.Description ? '; ' : '') + 'As bonus action with Attack action, +1d4 damage'; }; fields.Proficiency = true; }; ",
+					"If I inlcude the word 'Kensei' in the name of a weapon that doesn't have the Heavy or Special attribute, or that is a longbow, that weapon gains the same benefits as any other 'Monk Weapon'.\nIn addition, with ranged 'Kensei Weapons', I can take a bonus action to have that hit, and any other hit after that as part of the same action, do +1d4 damage."
+				]
+			}
+		},
+		"ki-empowered strikes" : {
+			name : "One with the Blade",
+			source : ["UA:RS", 5],
+			minlevel : 6,
+			description : "\n   " + "My unarmed strikes and kensei weapon attacks count as magical",
+			calcChanges : {
+				atkAdd : ["if (((/unarmed strike/i).test(WeaponName) || (inputText.toLowerCase().indexOf('kensei') !== -1  && theWea && !isSpell && !theWea.monkweapon && (!(/heavy|special/i).test(fields.Description) || WeaponName === 'longbow'))) && fields.Description.indexOf('Counts as magical') === -1 && !thisWeapon[1]) {fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';}; ", "My unarmed strikes and any Kensei Weapons count as magical for overcoming resistances and immunities."]
+			},
+			extraname : "Way of the Kensei 6",
+			"precise strike" : {
+				name : "Precise Strike",
+				source : ["UA:RS", 5],
+				description : " [1 ki point]" + "\n   " + "Once per turn when I hit with a kensei weapon, I can do a martial arts die extra damage",
+				action : ["bonus action", ""]
+			},
+			eval : "ClassFeatureOptions(['monk', 'ki-empowered strikes', 'precise strike', 'extra']);",
+			removeeval : "ClassFeatureOptions(['monk', 'ki-empowered strikes', 'precise strike', 'extra'], 'remove');",
+		},
+		"subclassfeature17" : {
+			name : "Unerring Accuracy",
+			source : ["UA:RS", 5],
+			minlevel : 17,
+			description : "\n   " + "On each of my turns, I can reroll one weapon attack roll I make that misses",
+			extraname : "Way of the Kensei 11",
+			"sharpen the blade" : {
+				name : "Sharpen the Blade",
+				source : ["UA:RS", 5],
+				description : " [1 to 3 ki points]" + "\n   " + "As a bonus action, I can grant my weapon a bonus to attack and damage rolls" + "\n   " + "This bonus is equal to the number of ki points I spend; It lasts for 1 minute",
+				action : ["bonus action", ""]
+			},
+			changeeval : "if (newClassLvl.monk >= 11 && (What('Extra.Notes') + What('Class Features')).toLowerCase().indexOf('sharpen the blade') === -1) {ClassFeatureOptions(['monk', 'subclassfeature17', 'sharpen the blade', 'extra'])} else if (newClassLvl.monk <= 11 && oldClassLvl.monk >= 11) {ClassFeatureOptions(['monk', 'subclassfeature17', 'sharpen the blade', 'extra'], 'remove')}"
+		}
+	}
+};
+ClassList.monk.subclasses[1].push("monk-way of the kensei2");
+
+//a subclass for the Sorcerer, called "Favored Soul"
+ClassSubList["sorcerer-favoured soul2"] = {
+	regExpSearch : /^(?=.*favou?red)(?=.*soul).*$/i,
+	subname : "Favored Soul",
+	source : ["UA:RS", 5],
+	fullname : "Favored Soul",
+	spellcastingList : {
+		class : ["cleric", "sorcerer"]
+	},
+	features : {
+		"subclassfeature1" : {
+			name : "Divine Magic",
+			source : ["UA:RS", 5],
+			minlevel : 1,
+			description : desc([
+				"When I select my 1st level or higher spells, I can also pick spells from the cleric spell list",
+				"These cleric spells count as sorcerer spells for me",
+				"I also learn Cure Wounds, which doesn't count against my number of spells known"
+			]),
+			spellcastingBonus : {
+				name : "Divine Magic",
+				spells : ["cure wounds"],
+				selection : ["cure wounds"]
+			}
+		},
+		"subclassfeature1.2" : {
+			name : "Favored by the Gods",
+			source : ["UA:RS", 5],
+			minlevel : 1,
+			description : "\n   " + "If I fail a saving throw or miss with an attack roll, I can add 2d4 to the total",
+			recovery : "short rest",
+			usages : 1
+		},
+		"subclassfeature6" : {
+			name : "Empowered Healing",
+			source : ["UA:RS", 5],
+			minlevel : 6,
+			description : " [1 sorcery point]" + desc([
+				"When I roll dice for healing with one of my sorcerer spells, I can reroll them once",
+				"By spending 1 sorcery point, I can reroll any number of those dice for that spell"
+			])
+		},
+		"subclassfeature14" : {
+			name : "Angelic Form",
+			source : ["UA:RS", 5],
+			minlevel : 14,
+			description : desc([
+				"Choose an otherworldly quality using the \"Choose Feature\" button above",
+				"As a bonus action, I can manifest a pair of spectral wings that give me 30 ft fly speed",
+				"These wings last until I become incapacitated or I dismiss them as a bonus action"
+			]),
+			choices : ["Beautiful", "Youthful", "Kind", "Imposing"],
+			"beautiful" : {
+				name : "Angelic Form: Beautiful",
+				description : desc([
+					"My appearance takes on an otherworldly quality of beauty",
+					"As a bonus action, I can manifest a pair of spectral wings that give me 30 ft fly speed",
+					"These wings last until I become incapacitated or I dismiss them as a bonus action"
+				])
+			},
+			"youthful" : {
+				name : "Angelic Form: Youthful",
+				description : desc([
+					"My appearance takes on an otherworldly quality of youthfulness",
+					"As a bonus action, I can manifest a pair of spectral wings that give me 30 ft fly speed",
+					"These wings last until I become incapacitated or I dismiss them as a bonus action"
+				])
+			},
+			"kind" : {
+				name : "Angelic Form: Kind",
+				description : desc([
+					"My appearance takes on an otherworldly quality of kindness",
+					"As a bonus action, I can manifest a pair of spectral wings that give me 30 ft fly speed",
+					"These wings last until I become incapacitated or I dismiss them as a bonus action"
+				])
+			},
+			"imposing" : {
+				name : "Angelic Form: Imposing",
+				description : desc([
+					"My appearance takes on an otherworldly quality of imposingness",
+					"As a bonus action, I can manifest a pair of spectral wings that give me 30 ft fly speed",
+					"These wings last until I become incapacitated or I dismiss them as a bonus action"
+				])
+			},
+			action : ["bonus action", " Wings"]
+		},
+		"subclassfeature18" : {
+			name : "Unearthly Recovery",
+			source : ["UA:RS", 6],
+			minlevel : 18,
+			description : "\n   " + "As a bonus action when I have less than half of my max HP, I can heal myself" + "\n   " + "I regain a number of HP equal to half my maximum Hit Points",
+			action : ["bonus action", ""],
+			recovery : "long rest",
+			usages : 1
+		}
+	}
+};
+ClassList.sorcerer.subclasses[1].push("sorcerer-favoured soul2");
 
 //a function to run at startup of the sheet to ensure that all of the UA additions work as they should
 function UAstartupCode() {

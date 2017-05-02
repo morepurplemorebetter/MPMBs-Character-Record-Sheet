@@ -882,9 +882,9 @@ function SelectClass() {
 					item_id : "rngr", // UA ranger warning text
 					type : "static_text",
 					alignment : "align_fill",
-					font : "dialog",
+					font : "palette",
 					bold : true,
-					char_height : 3,
+					char_height : 2,
 					char_width : 80
 				}, {
 					type : "view", // the bottom row of buttons

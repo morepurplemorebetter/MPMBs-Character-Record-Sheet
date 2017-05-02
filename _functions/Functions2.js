@@ -5557,7 +5557,7 @@ function ShowDialog(hdr, strng) {
 						alignment : "align_fill",
 						font : "dialog",
 						height : 20,
-						width : 450,
+						width : 550,
 					}, {
 						type : "static_text",
 						item_id : "head",
@@ -5565,7 +5565,7 @@ function ShowDialog(hdr, strng) {
 						font : "heading",
 						bold : true,
 						height : 21,
-						width : 450
+						width : 550
 					}, {
 						type : "edit_text",
 						item_id : "Eval",
@@ -5573,7 +5573,7 @@ function ShowDialog(hdr, strng) {
 						readonly : true,
 						multiline: true,
 						height : 500,
-						width : 450,
+						width : 550,
 					}, {
 						type : "gap",
 						height : 5,
