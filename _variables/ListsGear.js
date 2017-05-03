@@ -303,7 +303,7 @@ var WeaponsList = {
 		abilitytodamage : true,
 	},
 	"handaxe" : {
-		regExpSearch : /^(?=.*(light|hand|short|small|throw))(?=.*\b(axe|fu)\b).*$|\bono\b/i,
+		regExpSearch : /^(?=.*(light|hand|short|small|throw))(?=.*(axe|\bfu)\b).*$|\bono\b/i,
 		name : "Handaxe",
 		source : ["P", 149],
 		list : "melee",
@@ -468,7 +468,7 @@ var WeaponsList = {
 		ammo : "bullet"
 	},
 	"battleaxe" : {
-		regExpSearch : /^(((?=.*battle)(?=.*(axe|ono|fu)\b))|((?!.*(light|hand|short|small|great|heavy|throw))(?=.*\b(axe|fu|masakari)\b))).*$/i,
+		regExpSearch : /^(((?=.*battle)(?=.*(axe|\bono|\bfu)\b))|((?!.*(light|hand|short|small|great|heavy|throw))(?=.*\b(axe|fu|masakari)\b))).*$/i,
 		name : "Battleaxe",
 		source : ["P", 149],
 		list : "melee",
@@ -507,7 +507,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"greataxe" : {
-		regExpSearch : /^(?=.*(great|heavy|weida))(?=.*(axe|ono|fu|masakari)\b).*$/i,
+		regExpSearch : /^(?=.*(great|heavy|weida))(?=.*(axe|\bono|\bfu|masakari)\b).*$/i,
 		name : "Greataxe",
 		source : ["P", 149],
 		list : "melee",

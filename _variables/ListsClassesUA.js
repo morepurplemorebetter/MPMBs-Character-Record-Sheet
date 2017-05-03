@@ -115,7 +115,7 @@ ClassList["spell-less ranger"] = {
 		[true, true]
 	],
 	equipment : "Spell-less Ranger starting equipment:\n \u2022 Scale mail -or- leather armor;\n \u2022 Two shortswords -or- two simple melee weapons;\n \u2022 A dungeoneer's pack -or- an explorer's pack;\n \u2022 A longbow and a quiver of 20 arrows.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
-	subclasses : ["Ranger Archetype", ["spell-less beast master", "spell-less hunter"]],
+	subclasses : ["Ranger Archetype", ["slr-beast master", "slr-hunter"]],
 	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 	features : {
 		"favored enemy" : {
@@ -484,20 +484,20 @@ ClassList["spell-less ranger"] = {
 		}
 	}
 };
-ClassSubList["spell-less beast master"] = eval(ClassSubList["beast master"].toSource());
-ClassSubList["spell-less beast master"].source = ["UA:MC", 6];
-delete ClassSubList["spell-less beast master"].fullname;
-ClassSubList["spell-less beast master"].regExpSearch = /^(?=.*spell.?less)(?=.*(animal|beast))((?=.*(master|ranger|strider))|((?=.*(nature|natural|green))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i;
-ClassSubList["spell-less beast master"].features["subclassfeature15"] = {
+ClassSubList["slr-beast master"] = eval(ClassSubList["ranger-beast master"].toSource());
+ClassSubList["slr-beast master"].source = ["UA:MC", 6];
+delete ClassSubList["slr-beast master"].fullname;
+ClassSubList["slr-beast master"].regExpSearch = /^(?=.*spell.?less)(?=.*(animal|beast))((?=.*(master|ranger|strider))|((?=.*(nature|natural|green))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i;
+ClassSubList["slr-beast master"].features["subclassfeature15"] = {
 	name : "Beastly Coordination",
 	source : ["UA:MC", 7],
 	minlevel : 15,
 	description : "\n   " + "My companion can, as a reaction, halve an attack's damage from an attacker that I see"
 }
-ClassSubList["spell-less hunter"] = eval(ClassSubList["hunter"].toSource());
-ClassSubList["spell-less hunter"].source = ["UA:MC", 6];
-delete ClassSubList["spell-less hunter"].fullname;
-ClassSubList["spell-less hunter"].regExpSearch = /^(?=.*spell.?less)(?!.*(monster|barbarian|bard|cleric|druid|fighter|monk|paladin|rogue|sorcerer|warlock|wizard))(?=.*(hunter|huntress|hunts(wo)?m(e|a)n)).*$/i;
+ClassSubList["slr-hunter"] = eval(ClassSubList["ranger-hunter"].toSource());
+ClassSubList["slr-hunter"].source = ["UA:MC", 6];
+delete ClassSubList["slr-hunter"].fullname;
+ClassSubList["slr-hunter"].regExpSearch = /^(?=.*spell.?less)(?!.*(monster|barbarian|bard|cleric|druid|fighter|monk|paladin|rogue|sorcerer|warlock|wizard))(?=.*(hunter|huntress|hunts(wo)?m(e|a)n)).*$/i;
 
 /*	the Modern Magic Unearthed Arcana of 2015-08-03
 	(http://media.wizards.com/2015/downloads/dnd/UA_ModernMagic.pdf)
@@ -2861,7 +2861,7 @@ ClassList.fighter.subclasses[1].push("sharpshooter");
 */
 //adds two subclasses: a subclass for the Monk, called "Way of the Kensei"
 ClassSubList["way of the kensei"] = {
-	regExpSearch : /^(?=.*kensei)((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
+	regExpSearch : /kensei/i,
 	subname : "Way of the Kensei",
 	source : ["UA:MMT", 1],
 	features : {
@@ -4335,7 +4335,7 @@ ClassList.fighter.subclasses[1].push("fighter-arcane archer2");
 
 //a subclass for the Monk, called "Way of the Kensei"
 ClassSubList["monk-way of the kensei2"] = {
-	regExpSearch : /^(?=.*kensei)((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
+	regExpSearch : /kensei/i,
 	subname : "Way of the Kensei",
 	source : ["UA:RS", 4],
 	features : {
