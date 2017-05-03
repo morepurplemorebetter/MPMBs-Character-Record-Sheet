@@ -3469,12 +3469,12 @@ ClassSubList["sea sorcery"] = {
 			description : desc([
 				"I gain resistance to fire damage",
 				"I can protect myself when an attack deals bludgeoning, piercing, or slashing damage",
-				"As a reaction when that happens, I reduce the damage by my sorcerer level + Cha mod",
+				"As a reaction when that happens, I reduce the damage by my sorcerer level + Charisma",
 				"I can then also move up to 30 ft without provoking opportunity attacks"
 			]),
 			additional : levels.map( function(n) {
 				if (n < 6) return "";
-				return n + " + Cha mod";
+				return n + " + Charisma score";
 			}),
 			action : ["reaction", ""],
 			recovery : "short rest",
