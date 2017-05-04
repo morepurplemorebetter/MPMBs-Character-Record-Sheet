@@ -701,6 +701,7 @@ function DirectImport(consoleTrigger) {
 		addNotDefined("Reaction ", nmbrFlds); addNotDefined("Bonus Action ", nmbrFlds);
 		nmbrFlds = global.docFrom.FieldNumbers.trueactions ? global.docFrom.FieldNumbers.trueactions : FieldNumbers.trueactions;
 		addNotDefined("Action ", nmbrFlds);
+		addNotDefined("Resistance Damage Type ", 6);
 		
 		//armor
 		ImportField("AC Armor Description", {notTooltip: true}); ImportField("AC Armor Bonus", {notTooltip: true}); ImportField("AC Armor Weight", {notTooltip: true}); ImportField("AC during Rest");

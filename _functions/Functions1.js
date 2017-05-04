@@ -483,7 +483,7 @@ function AddResistance(Input, tooltiptext, replaceThis) {
 			}
 		}
 	};
-	var tempString = tooltiptext !== undefined ? "The resistance to \"" + tooltipString + "\" was gained from " + tooltiptext + "." : "";
+	var tempString = tooltiptext ? "The resistance to \"" + tooltipString + "\" was gained from " + tooltiptext + "." : "";
 	var doReplace = false;
 	for (var n = 1; n <= 2; n++) {
 		for (var k = 1; k < 7; k++) {

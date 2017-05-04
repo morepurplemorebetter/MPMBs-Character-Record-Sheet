@@ -1155,6 +1155,7 @@ function MakeWildshapeMenu() {
 
 	var WildshapeMenu = [];
 	
+	elementals = [];
 	shapesBeast = [];
 	shapesBeastCR1_4 = [];
 	shapesBeastCR1_2 = [];
@@ -1166,11 +1167,17 @@ function MakeWildshapeMenu() {
 	shapesBeastCR6 = [];
 	
 	//make a list of all the creatures
+	var theElems = ["air elemental", "earth elemental", "fire elemental", "water elemental"];
 	for (var aCrea in CreatureList) {
 		var theCrea = CreatureList[aCrea];
-		if (theCrea.type !== "Beast" || testSource(aCrea, theCrea, "creaExcl")) {
+		if ((theElems.indexOf(aCrea) === -1 && theCrea.type !== "Beast") || testSource(aCrea, theCrea, "creaExcl")) {
 			continue; //go on to the next creature if the creature is not a beast or its source isn't excluded
-		}
+		};
+		
+		if (theElems.indexOf(aCrea) !== -1)  {
+			elementals.push([theCrea.name, aCrea]);
+			continue; //it is not one of the other things, so just stop here
+		};
 		
 		//see if the creature has a fly and/or swim speed
 		var Spd = theCrea.speed.match(/fly|swim/ig);
@@ -1214,6 +1221,8 @@ function MakeWildshapeMenu() {
 			 creaName += (Spd ? " (" + Spd + ")" : "");
 		}
 		
+		
+		
 		//add it to the array of all
 		shapesBeast.push([theCrea.name + " (CR " + CR + (Spd ? ", " + Spd : "") + ")", aCrea]);
 		
@@ -1235,8 +1244,15 @@ function MakeWildshapeMenu() {
 		cName : "Add Wild Shape",
 		oSubMenu : []
 	};
+	if (CurrentSources.globalExcl.indexOf("M") !== -1) { // the monster manual has been excluded from the sources
+		BeastMenu.oSubMenu.push({
+			cName : "Be aware: the Monster Manual is excluded from the sources!",
+			cReturn : "-",
+			bEnabled : false
+		});
+	};
 	menuLVL3(BeastMenu, "All Beasts", shapesBeast);
-	menuLVL3(BeastMenu, "Elementals", [["Air Elemental", "air elemental"], ["Earth Elemental", "earth elemental"], ["Fire Elemental", "fire elemental"], ["Water Elemental", "water elemental"]]);
+	menuLVL3(BeastMenu, "Elementals", elementals);
 	menuLVL3(BeastMenu, "Beasts up to CR 1/4", shapesBeastCR1_4);
 	menuLVL3(BeastMenu, "Beasts of CR 1/2", shapesBeastCR1_2);
 	menuLVL3(BeastMenu, "Beasts of CR 1", shapesBeastCR1);
@@ -1464,7 +1480,7 @@ function MakeCompMenu() {
 					cName : array[i][0],
 					cReturn : name[1] + "#" + array[i][1],
 					bMarked : subMarked,
-					bEnabled : name[1] === "change" && (array[i][1] === "companion" || array[i][1] === "companionrr") && CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound !== "creature" ? false : true,
+					bEnabled : array[i][1] === "no-mm" ? false : name[1] === "change" && (array[i][1] === "companion" || array[i][1] === "companionrr") && CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound !== "creature" ? false : true,
 				})
 			}
 		}
@@ -1528,6 +1544,16 @@ function MakeCompMenu() {
 	companions.sort();
 	companionRR.sort();
 	mechanicalServs.sort();
+	
+	if (CurrentSources.globalExcl.indexOf("M") !== -1) { // the monster manual has been excluded from the sources
+		var reminder = ["Be aware: the Monster Manual is excluded from the sources!", "no-mm"];
+		familiars.unshift(reminder);
+		chainPact.unshift(reminder);
+		mounts.unshift(reminder);
+		companions.unshift(reminder);
+		companionRR.unshift(reminder);
+		mechanicalServs.unshift(reminder);
+	};
 	
 	menuLVL2(CompMenu, ["Create familiar (Find Familiar spell)", "familiar"], familiars);
 	menuLVL2(CompMenu, ["Create familiar (Pact of the Chain)", "pact_of_the_chain"], chainPact);
