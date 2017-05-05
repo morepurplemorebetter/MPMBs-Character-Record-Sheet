@@ -3533,7 +3533,7 @@ function UpdateRangerCompanions(deleteIt) {
 	
 	var newLvl = deleteIt ? 0 : Number(What("Character Level"));
 	var newLvlProfB = theProfB(newLvl);
-	var RangerLvl = deleteIt || !classes.known.ranger ? newLvl : classes.known.ranger.level;
+	var RangerLvl = deleteIt || (!classes.known.ranger && !classes.known["spell-less ranger"]) ? newLvl : (classes.known.ranger ? classes.known.ranger.level : 0) + (classes.known["spell-less ranger"] ? classes.known["spell-less ranger"].level : 0);
 	var newLvlText = theText(RangerLvl);
 	var AScompA = What("Template.extras.AScomp").split(",");
 	var progressDia = 0;
