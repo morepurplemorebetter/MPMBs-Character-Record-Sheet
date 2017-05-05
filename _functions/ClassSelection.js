@@ -32,15 +32,15 @@ function SelectClass() {
 		ClassSelection_Dialog.subclassesRef = {};
 		var clCount = -2;
 		for (var aClass in ClassList) {
-			if (testSource(aClass, ClassList[aClass], "classExcl") || (aClass === "ranger" && hasUAranger)) continue; //only include if the source of the class isn't excluded (and special exception for the ranger/rangerua)
 			var CL = ClassList[aClass];
+			if (testSource(aClass, ClassList[aClass], "classExcl") || (aClass === "ranger" && hasUAranger) || (ClassSelection_Dialog.classesRef[CL.name] && ClassSelection_Dialog.classesRef[CL.name].length >= aClass.length)) continue; //only include if the source of the class isn't excluded (and special exception for the ranger/rangerua)
 			ClassSelection_Dialog.classes[CL.name] = clCount;
 			ClassSelection_Dialog.classesRef[CL.name] = aClass;
 			ClassSelection_Dialog.subclasses[aClass] = {" " : 1};
 			var sClCount = -2;
 			CL.subclasses[1].forEach( function(aSubClass) {
 				var sCL = ClassSubList[aSubClass];
-				if (!sCL || testSource(aSubClass, sCL, "classExcl")) return;
+				if (!sCL || testSource(aSubClass, sCL, "classExcl") || (ClassSelection_Dialog.subclassesRef[sCL.subname] && ClassSelection_Dialog.subclassesRef[sCL.subname].length >= aSubClass.length)) return;
 				ClassSelection_Dialog.subclasses[aClass][sCL.subname] = sClCount;
 				ClassSelection_Dialog.subclassesRef[sCL.subname] = aSubClass;
 				sClCount--;
