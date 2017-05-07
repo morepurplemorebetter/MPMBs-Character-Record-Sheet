@@ -1848,7 +1848,7 @@ var PsionicsList = {
 		range : "120 ft",
 		duration : "Next turn end",
 		save : "Dex",
-		description : "1 creature save or 1d8/PP Necrotic damage and speed halved; save halves and normal speed",
+		description : "1 creature save or 1d8/PP Cold damage and speed halved; save halves and normal speed",
 		descriptionFull : "As an action, you hurl a mote of ice at one creature you can see within 120 feet of you. The target must make a Dexterity saving throw. On a failed save, the target takes 1d8 cold damage per psi point spent and has its speed halved until the start of your next turn. On a successful save, the target takes half as much damage.",
 		firstCol : "1-7"
 	},
