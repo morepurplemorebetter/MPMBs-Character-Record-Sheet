@@ -3431,8 +3431,9 @@ function AddInvArmorShield() {
 	var theArmWght = What("AC Armor Weight");
 	var theArmKn = ArmourList[CurrentArmour.known];
 	if (theArm && theArmWght && (theArmKn ? theArmKn.weight : true)) {
-		var hasInvName = theArmKn && theArmKn.invName ? theArmKn.invName.replace(theArmKn.name, "") : false;
-		var theTxt = hasInvName && !(RegExp(hasInvName, "i")).test(theArm) && (RegExp(theArmKn.name, "i")).test(theArm) && similarLen(theArmKn.name, theArm) ? theArm.replace(RegExp("(" + theArmKn.name + ")", "i"), "$1" + hasInvName) : theArm;
+		var regexArmNm = RegExp("(" + theArmKn.name.RegEscape() + ")", "i");
+		var hasInvName = theArmKn && theArmKn.invName ? theArmKn.invName.replace(regexArmNm, "") : false;
+		var theTxt = hasInvName && !(RegExp(hasInvName.RegEscape(), "i")).test(theArm) && (regexArmNm).test(theArm) && similarLen(theArmKn.name, theArm) ? theArm.replace(regexArmNm, "$1" + hasInvName) : theArm;
 		var searchRegex = MakeRegex(theTxt.replace(/ ?\([^\)]\)| ?\[[^\]]\]/g, ""), theArmKn.magic ? "" : "(?!.*(\\+|-)\\d+)");
 		
 		AddToInv("gear", "r", theTxt, "", theArmWght, "", searchRegex, "replace", false, true);
@@ -4900,35 +4901,73 @@ function FindFeats(ArrayNmbr) {
 
 //add the text and features of a Feat
 function ApplyFeat(InputFeat, FldNmbr) {
-	if (event.target && event.target.name === "Feat Name " + FldNmbr && InputFeat.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
-	
-	tDoc.delay = true;
-	tDoc.calculate = false;
-		
-	var NewFeat = ParseFeat(InputFeat);
-	var ArrayNmbr = FldNmbr - 1;
 	var FeatFlds = [
 		"Feat Name " + FldNmbr,
 		"Feat Note " + FldNmbr,
 		"Feat Description " + FldNmbr
 	];
+	if (!event.target || event.target.name !== FeatFlds[0]) {
+		Value(FeatFlds[0], InputFeat);
+		return;
+	};
+	var NewFeat = ParseFeat(InputFeat);
+	var theFeat = FeatsList[NewFeat];
+	var ArrayNmbr = FldNmbr - 1;
+	
+	if (CurrentFeats.known[ArrayNmbr] === NewFeat) return; //no changes were made
 	var tempString = "";
 	var setSpellVars = false;
 
 	//only update the tooltips if feats are set to manual
 	if (What("Manual Feat Remember") === "Yes") {
 		UpdateTooltips();
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = false;
 		return; //don't do the rest of this function
 	}
 	
 	thermoM("start"); //start a progress dialog
-	thermoM("Applying feat..."); //change the progress 
+	thermoM("Applying feat..."); //change the progress
+	thermoM(1/6); //increment the progress dialog's progress
+		
+	//first test if the feat has a prerequisite and if it meets that
+	if (IsNotFeatMenu && IsNotReset && theFeat && theFeat.prereqeval) {
+		try {
+			var meetsPrereq = eval(theFeat.prereqeval);
+		} catch (e) {
+			console.println("The prereqeval for the feat '" + theFeat.name + "' produces an error and is subsequently ignored. If this is one of the built-in feats, please contact morepurplemorebetter using on of the contact bookmarks to let him know about this bug. Don't forget to name the version number of the sheet, of the software you are using, and the name of the feat.");
+			console.show();
+			var meetsPrereq = true;
+		};
+		if (!meetsPrereq) {
+			thermoM("The feat '" + theFeat.name + "' has prerequisites that have not been met..."); //change the progress dialog text
+			thermoM(1/5); //increment the progress dialog's progress
+			
+			var askUserFeat = app.alert({
+				cTitle : "The prerequisites for '" + theFeat.name + "' have not been met",
+				cMsg : "The feat that you have selected, '" + theFeat.name + "' has a prerequisite listed" + (theFeat.prerequisite ? " as: \n\t\"" + theFeat.prerequisite + "\"" : ".") + "\n\nYour character does not meet this requirement. Are you sure you want to apply this feat?",
+				nIcon : 1,
+				nType : 2
+			});
+			
+			if (askUserFeat !== 4) { // do not continue and remove the feat
+				
+				if (event.target && event.target.name === FeatFlds[0]) {
+					event.rc = false;
+					if (isArray(tDoc.getField(event.target.name).page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + ".1').setFocus();", 10);
+				};
+				thermoM("stop"); //stop the top progress dialog
+				return;
+			};
+		};
+	};
+	
+	tDoc.delay = true;
+	tDoc.calculate = false;
 
 	//remove previous feat at the same field
 	if (CurrentFeats.known[ArrayNmbr] && CurrentFeats.known[ArrayNmbr] !== NewFeat) {
+		console.println("removing"); //DEBUGGING!!!
 		thermoM("Removing the old feat..."); //change the progress dialog text
+		thermoM(1/4); //increment the progress dialog's progress
 		var theFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
 		if (IsNotFeatMenu && theFeat.armor) {
 			delete CurrentArmour.proficiencies[theFeat.name + " feat"];
@@ -4972,18 +5011,16 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		tDoc.getField(FeatFlds[2]).setAction("Calculate", "");
 		if (IsNotFeatMenu) tDoc.resetForm([FeatFlds[2]]);
 		AddTooltip(FeatFlds[2], "");
-	}
+	};
 	
-	thermoM("Recognizing the entered feat..."); //change the progress dialog text
 	CurrentFeats.known = [];
 	CurrentFeats.known[ArrayNmbr] = NewFeat;
 	FindFeats(ArrayNmbr);
 
 	if (CurrentFeats.known[ArrayNmbr]) {
+		var theFeat = FeatsList[NewFeat];
 		thermoM("Applying the feat's features..."); //change the progress dialog text
 		thermoM(1/3); //increment the progress dialog's progress
-		
-		var theFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
 
 		if (IsNotFeatMenu && theFeat.description) {
 			var theDesc = What("Unit System") === "imperial" ? theFeat.description : ConvertToMetric(theFeat.description, 0.5);

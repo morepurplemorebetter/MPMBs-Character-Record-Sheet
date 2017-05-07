@@ -39,6 +39,7 @@ var FeatsList = {
 		source : ["P", 165],
 		description : "When wielding a finesse weapon with which I am proficient and another creature hits me with a melee attack, I can use my reaction to add my proficiency bonus to my AC for that attack, potentially causing the attack to miss me.",
 		prerequisite : "Dexterity 13 or higher",
+		prereqeval : "What('Dex') >= 13",
 		action : ["reaction", " (when hit in melee)"]
 	},
 	"dual wielder" : {
@@ -66,13 +67,15 @@ var FeatsList = {
 		name : "Elemental Adept",
 		source : ["P", 166],
 		description : "Choose one of the damage types: acid, cold, fire, lightning, or thunder. Spells I cast ignore resistance to damage from this damage type. For any spell I cast that deals this damage type, I can treat any 1 on a damage die as a 2.",
-		prerequisite : "The ability to cast at least one spell"
+		prerequisite : "The ability to cast at least one spell",
+		prereqeval : "CurrentSpells.toSource() !== '({})'"
 	},
 	"grappler" : {
 		name : "Grappler",
 		source : ["P", 167],
 		description : "I have advantage on attack rolls against a creature I am grappling. As an action, I can try to pin a creature grappled by me. If I succeed on a grapple check, both the creature and I are restrained until the grapple ends.",
 		prerequisite : "Strength 13 or higher",
+		prereqeval : "What('Str') >= 13",
 		action : ["action", " feat (pin grappled)"]
 	},
 	"great weapon master" : {
@@ -95,6 +98,7 @@ var FeatsList = {
 		source : ["P", 167],
 		description : "I gain proficiency with heavy armor. [+1 Strength]",
 		prerequisite : "Proficiency with medium armor",
+		prereqeval : "tDoc.getField('Proficiency Armor Medium').isBoxChecked(0)",
 		improvements : "Heavily Armored (feat): +1 Strength;",
 		scores : [1, 0, 0, 0, 0, 0],
 		armor : [false, false, true, false]
@@ -104,6 +108,7 @@ var FeatsList = {
 		source : ["P", 167],
 		description : "While wearing heavy armor, bludgeoning, piercing, and slashing damage taken from nonmagical weapons is reduced by 3. [+1 Strength]",
 		prerequisite : "Proficiency with heavy armor",
+		prereqeval : "tDoc.getField('Proficiency Armor Heavy').isBoxChecked(0)",
 		improvements : "Heavy Armor Master (feat): +1 Strength;",
 		scores : [1, 0, 0, 0, 0, 0]
 	},
@@ -111,7 +116,8 @@ var FeatsList = {
 		name : "Inspiring Leader",
 		source : ["P", 167],
 		calculate : "event.value = \"I can spend 10 minutes inspiring up to 6 friendly creatures within 30 feet who can see or hear and can understand me. Each gains lvl (\" + What(\"Character Level\") + \") + Cha mod (\" + What(\"Cha Mod\") + \") temporary hit points. One can't gain temporary hit points from this feat again until after a short rest.\"",
-		prerequisite : "Charisma 13 or higher"
+		prerequisite : "Charisma 13 or higher",
+		prereqeval : "What('Cha') >= 13"
 	},
 	"keen mind" : {
 		name : "Keen Mind",
@@ -204,6 +210,7 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "Wearing medium armor doesn't impose disadvantage on my Dexterity (Stealth) checks. When I wear medium armor, I can add up to 3, rather than 2, to my AC if my Dexterity is 16 or higher.",
 		prerequisite : "Proficiency with medium armor",
+		prereqeval : "tDoc.getField('Proficiency Armor Medium').isBoxChecked(0)",
 		eval : "Value(\"Medium Armor Max Mod\", 3); if (CurrentArmour.known && ArmourList[CurrentArmour.known].type === \"medium\") {Checkbox(\"AC Stealth Disadvantage\", false)}",
 		removeeval : "tDoc.resetForm([\"Medium Armor Max Mod\"]); if (CurrentArmour.known && ArmourList[CurrentArmour.known].type === \"medium\") {Checkbox(\"AC Stealth Disadvantage\", ArmourList[CurrentArmour.known].stealthdis)};"
 	},
@@ -219,6 +226,7 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "I gain proficiency with medium armor and shields. [+1 Strength or Dexterity]",
 		prerequisite : "Proficiency with light armor",
+		prereqeval : "tDoc.getField('Proficiency Armor Light').isBoxChecked(0)",
 		improvements : "Moderately Armored (feat): +1 Strength or Dexterity;",
 		armor : [false, true, false, true]
 	},
@@ -308,6 +316,7 @@ var FeatsList = {
 		source : ["P", 169],
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual bard spells.\nI can copy ritual bard spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Charisma is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
+		prereqeval : "What('Int') >= 13 || What('Wis') >= 13",
 		eval : "CurrentSpells[\"ritual caster bard\"] = {name : \"Ritual Book [Bard]\", ability : 6, list : {class : \"bard\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"ritual caster bard\"]; SetStringifieds(\"spells\");"
 	},
@@ -316,6 +325,7 @@ var FeatsList = {
 		source : ["P", 169],
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual cleric spells.\nI can copy ritual cleric spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Wisdom is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
+		prereqeval : "What('Int') >= 13 || What('Wis') >= 13",
 		eval : "CurrentSpells[\"ritual caster cleric\"] = {name : \"Ritual Book [Cleric]\", ability : 5, list : {class : \"cleric\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"ritual caster cleric\"]; SetStringifieds(\"spells\");"
 	},
@@ -324,6 +334,7 @@ var FeatsList = {
 		source : ["P", 169],
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual druid spells.\nI can copy ritual druid spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Wisdom is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
+		prereqeval : "What('Int') >= 13 || What('Wis') >= 13",
 		eval : "CurrentSpells[\"ritual caster druid\"] = {name : \"Ritual Book [Druid]\", ability : 5, list : {class : \"druid\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"ritual caster druid\"]; SetStringifieds(\"spells\");"
 	},
@@ -332,6 +343,7 @@ var FeatsList = {
 		source : ["P", 169],
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual sorcerer spells.\nI can copy ritual sorcerer spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Charisma is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
+		prereqeval : "What('Int') >= 13 || What('Wis') >= 13",
 		eval : "CurrentSpells[\"ritual caster sorcerer\"] = {name : \"Ritual Book [Sorcerer]\", ability : 6, list : {class : \"sorcerer\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"ritual caster sorcerer\"]; SetStringifieds(\"spells\");"
 	},
@@ -340,6 +352,7 @@ var FeatsList = {
 		source : ["P", 169],
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual warlock spells.\nI can copy ritual warlock spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Charisma is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
+		prereqeval : "What('Int') >= 13 || What('Wis') >= 13",
 		eval : "CurrentSpells[\"ritual caster warlock\"] = {name : \"Ritual Book [Warlock]\", ability : 6, list : {class : \"warlock\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"ritual caster warlock\"]; SetStringifieds(\"spells\");"
 	},
@@ -348,6 +361,7 @@ var FeatsList = {
 		source : ["P", 169],
 		description : "I can cast spells in my ritual book as rituals only. I gain two 1st-level ritual wizard spells.\nI can copy ritual wizard spells that I find into my book if they are not more than half my level (2 hours and 50 gp per spell level). Intelligence is my spellcasting ability for these.",
 		prerequisite : "Intelligence or Wisdom 13 or higher",
+		prereqeval : "What('Int') >= 13 || What('Wis') >= 13",
 		eval : "CurrentSpells[\"ritual caster wizard\"] = {name : \"Ritual Book [Wizard]\", ability : 4, list : {class : \"wizard\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"ritual caster wizard\"]; SetStringifieds(\"spells\");"
 	},
@@ -388,6 +402,7 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "I can try to hide when I am lightly obscured. My position is not revealed when I am hidden from a creature and miss it with a ranged weapon attack. Dim light doesn't impose disadvantage on my Wisdom (Perception) checks relying on sight.",
 		prerequisite : "Dexterity 13 or higher",
+		prereqeval : "What('Dex') >= 13",
 		eval : "AddString('Vision', 'No disadv. on Perception in dim light to see', '; ');",
 		removeeval : "RemoveString('Vision', 'No disadv. on Perception in dim light to see');"
 	},
@@ -396,6 +411,7 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "Any spell that I cast that has a ranged attack roll has its range doubled and ignores half cover and three-quarters cover. I learn one bard cantrip that requires an attack roll. Charisma is my spellcasting ability for this.",
 		prerequisite : "The ability to cast at least one spell",
+		prereqeval : "CurrentSpells.toSource() !== '({})'",
 		eval : "CurrentSpells[\"spell sniper bard\"] = {name : \"Spell Sniper [Bard]\", ability : 6, list : {class : \"bard\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper bard\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
@@ -407,6 +423,7 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "Any spell that I cast that has a ranged attack roll has its range doubled and ignores half cover and three-quarters cover. I learn one cleric cantrip that requires an attack roll. Wisdom is my spellcasting ability for this.",
 		prerequisite : "The ability to cast at least one spell",
+		prereqeval : "CurrentSpells.toSource() !== '({})'",
 		eval : "CurrentSpells[\"spell sniper cleric\"] = {name : \"Spell Sniper [Cleric]\", ability : 5, list : {class : \"cleric\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper cleric\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
@@ -418,6 +435,7 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "Any spell that I cast that has a ranged attack roll has its range doubled and ignores half cover and three-quarters cover. I learn one druid cantrip that requires an attack roll. Wisdom is my spellcasting ability for this.",
 		prerequisite : "The ability to cast at least one spell",
+		prereqeval : "CurrentSpells.toSource() !== '({})'",
 		eval : "CurrentSpells[\"spell sniper druid\"] = {name : \"Spell Sniper [Druid]\", ability : 5, list : {class : \"druid\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper druid\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
@@ -429,6 +447,7 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "Any spell that I cast that has a ranged attack roll has its range doubled and ignores half cover and three-quarters cover. I learn one sorcerer cantrip that requires an attack roll. Charisma is my spellcasting ability for this.",
 		prerequisite : "The ability to cast at least one spell",
+		prereqeval : "CurrentSpells.toSource() !== '({})'",
 		eval : "CurrentSpells[\"spell sniper sorcerer\"] = {name : \"Spell Sniper [Sorcerer]\", ability : 6, list : {class : \"sorcerer\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper sorcerer\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
@@ -440,6 +459,7 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "Any spell that I cast that has a ranged attack roll has its range doubled and ignores half cover and three-quarters cover. I learn one warlock cantrip that requires an attack roll. Charisma is my spellcasting ability for this.",
 		prerequisite : "The ability to cast at least one spell",
+		prereqeval : "CurrentSpells.toSource() !== '({})'",
 		eval : "CurrentSpells[\"spell sniper warlock\"] = {name : \"Spell Sniper [Warlock]\", ability : 6, list : {class : \"warlock\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper warlock\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
@@ -451,6 +471,7 @@ var FeatsList = {
 		source : ["P", 170],
 		description : "Any spell that I cast that has a ranged attack roll has its range doubled and ignores half cover and three-quarters cover. I learn one wizard cantrip that requires an attack roll. Intelligence is my spellcasting ability for this.",
 		prerequisite : "The ability to cast at least one spell",
+		prereqeval : "CurrentSpells.toSource() !== '({})'",
 		eval : "CurrentSpells[\"spell sniper wizard\"] = {name : \"Spell Sniper [Wizard]\", ability : 4, list : {class : \"wizard\", attackOnly : \"true\"}, known : {cantrips : 1}}; SetStringifieds(\"spells\");",
 		removeeval : "delete CurrentSpells[\"spell sniper wizard\"]; SetStringifieds(\"spells\");",
 		calcChanges : {
@@ -461,6 +482,7 @@ var FeatsList = {
 		name : "Svirfneblin Magic",
 		source : ["E", 7],
 		prerequisite : "Being a Svirfneblin (Deep Gnome)",
+		prereqeval : "CurrentRace.known === 'deep gnome'",
 		description : "I can cast Nondetection on myself at will, without a material component. I can also cast the spells Blindness/Deafness, Blur, and Disguise Self once each. I regain the ability to cast these spells when I finish a long rest. Intelligence is my spellcasting ability for these spells.",
 		spellcastingBonus : [{
 			name : "at will (self only)",
@@ -500,6 +522,7 @@ var FeatsList = {
 		name : "War Caster",
 		source : ["P", 170],
 		prerequisite : "The ability to cast at least one spell",
+		prereqeval : "CurrentSpells.toSource() !== '({})'",
 		description : "Advantage on Con saves to maintain concentration on spells when damaged. Perform somatic components even when holding weapons or shield in one or both hands. Cast spell of 1 action casting time that targets only one creature instead of an opportunity attack.",
 		action : ["reaction", " - Opportunity Spell"],
 		eval : "AddString(\"Saving Throw advantages \/ disadvantages\", \"Adv. on Con (Concentration) saves when damaged\", \"; \");",
