@@ -319,12 +319,12 @@ function MakeButtons() {
 
 function OpeningStatement() {
 	var reminders = Number(tDoc.getField("Opening Remember").submitName);
-	if (app.viewerVersion < 15 && reminders < 3) {
+	if (!app.viewerVersion || !reminders || (app.viewerVersion < 15 && reminders <= 3)) {
 		CurrentSources.globalExcl = ["UA:TMC"];
 		var oldVerAlert = app.alert({
 			nIcon : 0,
 			cTitle : "Please update your Adobe Acrobat",
-			cMsg : "This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. You need at least Adobe Acrobat DC (Reader, Pro, or Standard) to use this PDF's full automation. Please know that if you continue to use the sheet with this outdated version of Adobe Acrobat, some features will not work (correctly) and others might produce errors (e.g. the Source Selection and the Mystic class).\n\nDo you want to close this pdf and visit the Adobe website where you can download the latest version of Adobe Acrobat Reader for free (https://get.adobe.com/reader/)?\n\nPlease understand that if you choose 'No', there will be no support if anything doesn't work.\n\n" + (reminders == 0 ? "You will get this warning again the next two times that you open this sheet in an unsupported version of Adobe Acrobat." : reminders == 1 ? "You will get this warning again the next time you open this sheet in an unsupported version of Adobe Acrobat." : "This is the last time this pdf character sheet shows this warning."),
+			cMsg : "This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. You need at least Adobe Acrobat DC (Reader, Pro, or Standard) to use this PDF's full automation. Please know that if you continue to use the sheet with this outdated version of Adobe Acrobat, some features will not work (correctly) and others might produce errors (e.g. the Source Selection and the Mystic class).\n\nDo you want to close this pdf and visit the Adobe website where you can download the latest version of Adobe Acrobat Reader for free (https://get.adobe.com/reader/)?\n\nPlease understand that if you choose 'No', there will be no support if anything doesn't work.\n\n" + (!reminders ? "As you aren't using Adobe Acrobat to view this PDF, you will not be redirected to the website to download Adobe Acrobat Reader for free. Please go there manually.\n\nhttps://get.adobe.com/reader/" : reminders == 1 ? "You will get this warning again the next two times that you open this sheet in an unsupported version of Adobe Acrobat." : reminders == 2 ? "You will get this warning again the next time you open this sheet in an unsupported version of Adobe Acrobat." : "This is the last time this pdf character sheet shows this warning."),
 			nType : 2
 		});
 		if (oldVerAlert === 4) {
@@ -10243,7 +10243,7 @@ function ProfBonusDisplay(input) {
 	if (useDice) {
 		event.value = GetProfDice(ProfB);
 	} else {
-		event.value = event.value ? "+" + event.value : event.value;
+		event.value = !isNaN(event.value) && event.value > 0 ? "+" + event.value : event.value;
 	}
 }
 

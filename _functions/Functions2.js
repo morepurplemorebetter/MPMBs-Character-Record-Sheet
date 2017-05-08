@@ -3379,7 +3379,7 @@ function Publish(version) {
 		tDoc.info.Title = MakeDocName();
 	};
 	tDoc.resetForm(["Opening Remember", "CurrentSources.Stringified"]);
-	tDoc.getField("Opening Remember").submitName = 0;
+	tDoc.getField("Opening Remember").submitName = 1;
 	tDoc.getField("SaveIMG.Patreon").submitName = "";
 	if (!minVer) DontPrint("d20warning");
 	DnDlogo();
