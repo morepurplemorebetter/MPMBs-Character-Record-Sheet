@@ -1,5 +1,4 @@
 function AbilityScores_Button() {
-	var Header0 = "Calculate the Ability Scores";
 	var MainTxt0 = "Here you can edit the ability scores using the components they are made up off.";
 	MainTxt0 += "\nPlease use the lists below as a reference for what your character can do with its ability scores.";
 	MainTxt0 += "\n\nThe standard array is: 15, 14, 13, 12, 10, and 8. Standard Point Buy is 27 points. You can't go higher than 15 before racial modifiers.";
@@ -32,7 +31,7 @@ function AbilityScores_Button() {
 		AbilityScores.current[AbiI].extra2 = tempArray[4] ? tempArray[4] : "0";
 		AbilityScores.current[AbiI].feat = tempArray[5] ? tempArray[5] : "0";
 	};
-
+	
 	//The dialog for calculating the ability scores
 	var AbilityScores_Dialog = {
 		totalStr : 0,
@@ -97,7 +96,7 @@ function AbilityScores_Button() {
 			});			
 			
 			dialog.load({
-				"Hea0" : Header0,
+				"img1" : allIcons.scores,
 				"txt0" : MainTxt0,
 				"Hea2" : Header2,
 				"txt2" : MainTxt2,
@@ -166,7 +165,7 @@ function AbilityScores_Button() {
 				"mWis" : AbilityScores.current.Wis.magic,
 				"mCha" : AbilityScores.current.Cha.magic,
 				"mHoS" : AbilityScores.current.HoS.magic,
-				"tNm0" : "New Total",
+				"tNm0" : "New Total"
 			});
 			var elements = dialog.store();
 			dialog.load({
@@ -183,11 +182,11 @@ function AbilityScores_Button() {
 				"tInt" : ASCalcTotal(elements, "Int"),
 				"tWis" : ASCalcTotal(elements, "Wis"),
 				"tCha" : ASCalcTotal(elements, "Cha"),
-				"tHoS" : ASCalcTotal(elements, "HoS"),
+				"tHoS" : ASCalcTotal(elements, "HoS")
 			});
 			elements = dialog.store();
 			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements),
+				"tPBT" : ASCalcPointBuyTotal(elements)
 			});
 		},
 
@@ -203,7 +202,7 @@ function AbilityScores_Button() {
 			});
 			elements = dialog.store();
 			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements),
+				"tPBT" : ASCalcPointBuyTotal(elements)
 			});
 		},
 
@@ -264,7 +263,7 @@ function AbilityScores_Button() {
 			});
 			elements = dialog.store();
 			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements),
+				"tPBT" : ASCalcPointBuyTotal(elements)
 			});
 		},
 
@@ -325,7 +324,7 @@ function AbilityScores_Button() {
 			});
 			elements = dialog.store();
 			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements),
+				"tPBT" : ASCalcPointBuyTotal(elements)
 			});
 		},
 
@@ -386,7 +385,7 @@ function AbilityScores_Button() {
 			});
 			elements = dialog.store();
 			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements),
+				"tPBT" : ASCalcPointBuyTotal(elements)
 			});
 		},
 
@@ -447,7 +446,7 @@ function AbilityScores_Button() {
 			});
 			elements = dialog.store();
 			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements),
+				"tPBT" : ASCalcPointBuyTotal(elements)
 			});
 		},
 
@@ -508,7 +507,7 @@ function AbilityScores_Button() {
 			});
 			elements = dialog.store();
 			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements),
+				"tPBT" : ASCalcPointBuyTotal(elements)
 			});
 		},
 
@@ -569,7 +568,7 @@ function AbilityScores_Button() {
 			});
 			elements = dialog.store();
 			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements),
+				"tPBT" : ASCalcPointBuyTotal(elements)
 			});
 		},
 
@@ -635,718 +634,712 @@ function AbilityScores_Button() {
 				"eHoS" : this.fieldHoS !== "",
 				"EHoS" : this.fieldHoS !== "",
 				"mHoS" : this.fieldHoS !== "",
-				"tHoS" : this.fieldHoS !== "",
+				"tHoS" : this.fieldHoS !== ""
 			});
 			var elements = dialog.store();
 			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements),
+				"tPBT" : ASCalcPointBuyTotal(elements)
 			});
 		},
 
 		description : {
 			name : "Set Ability Scores",
 			elements : [{
+				type : "view",
+				elements : [{
 					type : "view",
 					elements : [{
+						type : "view",
+						align_children : "align_row",
+						elements : [{
+							type : "image",
+							item_id : "img1",
+							alignment : "align_bottom",
+							width : 20,
+							height : 20
+						}, {
+							type : "static_text",
+							item_id : "Hea0",
+							alignment : "align_fill",
+							font : "title",
+							bold : true,
+							height : 21,
+							width : 65,
+							name : "Calculate the Ability Scores"
+						}]
+					}, {
+						type : "static_text",
+						item_id : "txt0",
+						alignment : "align_fill",
+						font : "dialog",
+						char_height : 10,
+						char_width : 65
+					}, {
+						type : "view",
+						char_width : 65,
+						align_children : "align_distribute",
+						elements : [{
 							type : "view",
+							align_children : "align_left",
 							elements : [{
+								type : "cluster",
+								alignment : "align_left",
+								item_id : "Hea2",
+								font : "dialog",
+								bold : true,
+								elements : [{
 									type : "static_text",
-									item_id : "Hea0",
-									alignment : "align_fill",
-									font : "heading",
-									bold : true,
-									height : 21,
-									char_width : 65,
-								}, {
-									type : "static_text",
-									item_id : "txt0",
+									item_id : "txt2",
 									alignment : "align_fill",
 									font : "dialog",
-									char_height : 10,
-									char_width : 65,
-								}, {
+									height : Txt2Height,
+									char_width : 32
+								}]
+							}, {
+								type : "cluster",
+								alignment : "align_left",
+								item_id : "Hea4",
+								font : "dialog",
+								bold : true,
+								elements : [{
+									type : "static_text",
+									item_id : "txt4",
+									alignment : "align_fill",
+									font : "dialog",
+									height : Txt4Height,
+									char_width : 32
+								}]
+							}]
+						}, {
+							type : "view",
+							align_children : "align_right",
+							elements : [{
+								type : "cluster",
+								alignment : "align_right",
+								item_id : "Hea3",
+								font : "dialog",
+								bold : true,
+								elements : [{
+									type : "static_text",
+									item_id : "txt3",
+									alignment : "align_fill",
+									font : "dialog",
+									height : Txt3Height,
+									char_width : 32
+								}]
+							}, {
+								type : "cluster",
+								alignment : "align_right",
+								item_id : "Hea5",
+								font : "dialog",
+								bold : true,
+								elements : [{
+									type : "static_text",
+									item_id : "txt5",
+									alignment : "align_fill",
+									font : "dialog",
+									height : Txt5Height,
+									char_width : 32
+								}]
+							}]
+						}]
+					}, {
+						type : "cluster",
+						align_children : "align_distribute",
+						elements : [{
+							type : "view",
+							elements : [{
+								type : "static_text",
+								item_id : "oNm0",
+								font : "dialog",
+								bold : true,
+								char_width : 6,
+								height : 32,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "oStr",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "oDex",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "oCon",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "oInt",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "oWis",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "oCha",
+								name : "0",
+								char_width : 3,
+								height : 29,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "oHoS",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}]
+						}, {
+							type : "view",
+							elements : [{
+								type : "view",
+								align_children : "align_distribute",
+								elements : [{
 									type : "view",
-									char_width : 65,
-									align_children : "align_distribute",
 									elements : [{
-										type : "view",
-										align_children : "align_left",
-										elements : [{
-											type : "cluster",
-											alignment : "align_left",
-											item_id : "Hea2",
-											font : "dialog",
-											bold : true,
-											elements : [{
-												type : "static_text",
-												item_id : "txt2",
-												alignment : "align_fill",
-												font : "dialog",
-												height : Txt2Height,
-												char_width : 32
-											}]
-										}, {
-											type : "cluster",
-											alignment : "align_left",
-											item_id : "Hea4",
-											font : "dialog",
-											bold : true,
-											elements : [{
-												type : "static_text",
-												item_id : "txt4",
-												alignment : "align_fill",
-												font : "dialog",
-												height : Txt4Height,
-												char_width : 32
-											}]
-										}]
+										type : "static_text",
+										item_id : "aNm0",
+										font : "dialog",
+										bold : true,
+										char_width : 6,
+										height : 32,
+										alignment : "align_left"
 									}, {
-										type : "view",
-										align_children : "align_right",
-										elements : [{
-											type : "cluster",
-											alignment : "align_right",
-											item_id : "Hea3",
-											font : "dialog",
-											bold : true,
-											elements : [{
-												type : "static_text",
-												item_id : "txt3",
-												alignment : "align_fill",
-												font : "dialog",
-												height : Txt3Height,
-												char_width : 32
-											}]
-										}, {
-											type : "cluster",
-											alignment : "align_right",
-											item_id : "Hea5",
-											font : "dialog",
-											bold : true,
-											elements : [{
-												type : "static_text",
-												item_id : "txt5",
-												alignment : "align_fill",
-												font : "dialog",
-												height : Txt5Height,
-												char_width : 32
-											}]
-										}]
+										type : "static_text",
+										item_id : "aStr",
+										height : 25,
+										name : "Strength"
+									}, {
+										type : "static_text",
+										item_id : "aDex",
+										height : 25,
+										name : "Dexterity"
+									}, {
+										type : "static_text",
+										item_id : "aCon",
+										height : 25,
+										name : "Constitution"
+									}, {
+										type : "static_text",
+										item_id : "aInt",
+										height : 25,
+										name : "Intelligence"
+									}, {
+										type : "static_text",
+										item_id : "aWis",
+										height : 25,
+										name : "Wisdom"
+									}, {
+										type : "static_text",
+										item_id : "aCha",
+										height : 25,
+										name : "Charisma"
+									}, {
+										type : "popup",
+										item_id : "aHoS",
+										height : 22,
+										char_width : 8
 									}]
 								}, {
-									type : "cluster",
-									align_children : "align_distribute",
+									type : "view",
 									elements : [{
-											type : "view",
-											elements : [{
-													type : "static_text",
-													item_id : "oNm0",
-													font : "dialog",
-													bold : true,
-													char_width : 6,
-													height : 32,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "oStr",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "oDex",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "oCon",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "oInt",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "oWis",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "oCha",
-													name : "0",
-													char_width : 3,
-													height : 29,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "oHoS",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												},
-											]
-										}, {
-											type : "view",
-											elements : [{
-													type : "view",
-													align_children : "align_distribute",
-													elements : [{
-															type : "view",
-															elements : [{
-																	type : "static_text",
-																	item_id : "aNm0",
-																	font : "dialog",
-																	bold : true,
-																	char_width : 6,
-																	height : 32,
-																	alignment : "align_left",
-																}, {
-																	type : "static_text",
-																	item_id : "aStr",
-																	height : 25,
-																	name : "Strength"
-																}, {
-																	type : "static_text",
-																	item_id : "aDex",
-																	height : 25,
-																	name : "Dexterity"
-																}, {
-																	type : "static_text",
-																	item_id : "aCon",
-																	height : 25,
-																	name : "Constitution"
-																}, {
-																	type : "static_text",
-																	item_id : "aInt",
-																	height : 25,
-																	name : "Intelligence"
-																}, {
-																	type : "static_text",
-																	item_id : "aWis",
-																	height : 25,
-																	name : "Wisdom"
-																}, {
-																	type : "static_text",
-																	item_id : "aCha",
-																	height : 25,
-																	name : "Charisma"
-																}, {
-																	type : "popup",
-																	item_id : "aHoS",
-																	height : 22,
-																	char_width : 8,
-																},
-															]
-														}, {
-															type : "view",
-															elements : [{
-																	type : "static_text",
-																	item_id : "bNm0",
-																	font : "dialog",
-																	bold : true,
-																	char_width : 4,
-																	height : 30,
-																	alignment : "align_left",
-																}, {
-																	type : "edit_text",
-																	item_id : "bStr",
-																	char_width : 3,
-																	height : 25,
-																	SpinEdit : true,
-																}, {
-																	type : "edit_text",
-																	item_id : "bDex",
-																	char_width : 3,
-																	height : 25,
-																	SpinEdit : true,
-																}, {
-																	type : "edit_text",
-																	item_id : "bCon",
-																	char_width : 3,
-																	height : 25,
-																	SpinEdit : true,
-																}, {
-																	type : "edit_text",
-																	item_id : "bInt",
-																	char_width : 3,
-																	height : 25,
-																	SpinEdit : true,
-																}, {
-																	type : "edit_text",
-																	item_id : "bWis",
-																	char_width : 3,
-																	height : 25,
-																	SpinEdit : true,
-																}, {
-																	type : "edit_text",
-																	item_id : "bCha",
-																	char_width : 3,
-																	height : 25,
-																	SpinEdit : true,
-																}, {
-																	type : "edit_text",
-																	item_id : "bHoS",
-																	char_width : 3,
-																	height : 25,
-																	SpinEdit : true,
-																},
-															]
-														}
-													]
-												}, {
-													type : "view",
-													char_width : 12,
-													align_children : "align_right",
-													elements : [{
-															type : "static_text",
-															item_id : "tPNm",
-															font : "dialog",
-															bold : true,
-															char_height : 3,
-															char_width : 4,
-															name : "Point Buy total:"
-														},
-													]
-												}
-											]
-										}, {
-											type : "view",
-											elements : [{
-													type : "static_text",
-													item_id : "pNm0",
-													font : "dialog",
-													bold : true,
-													char_width : 4,
-													height : 32,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "pStr",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "pDex",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "pCon",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "pInt",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "pWis",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "pCha",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "pHoS",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "tPBT",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													font : "dialog",
-													bold : true,
-													alignment : "align_center",
-												},
-											]
-										}, {
-											type : "view",
-											elements : [{
-													type : "static_text",
-													item_id : "rNm0",
-													font : "dialog",
-													bold : true,
-													char_width : 4,
-													height : 30,
-													alignment : "align_left",
-												}, {
-													type : "edit_text",
-													item_id : "rStr",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "rDex",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "rCon",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "rInt",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "rWis",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "rCha",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "rHoS",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												},
-											]
-										}, {
-											type : "view",
-											elements : [{
-													type : "static_text",
-													item_id : "fNm0",
-													font : "dialog",
-													bold : true,
-													char_width : 4,
-													height : 30,
-													alignment : "align_left",
-												}, {
-													type : "edit_text",
-													item_id : "fStr",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "fDex",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "fCon",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "fInt",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "fWis",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "fCha",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "fHoS",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												},
-											]
-										}, {
-											type : "view",
-											elements : [{
-													type : "static_text",
-													item_id : "eNm0",
-													font : "dialog",
-													bold : true,
-													char_width : 4,
-													height : 30,
-													alignment : "align_left",
-												}, {
-													type : "edit_text",
-													item_id : "eStr",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "eDex",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "eCon",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "eInt",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "eWis",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "eCha",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "eHoS",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												},
-											]
-										}, {
-											type : "view",
-											elements : [{
-													type : "static_text",
-													item_id : "ENm0",
-													font : "dialog",
-													bold : true,
-													char_width : 4,
-													height : 30,
-													alignment : "align_left",
-												}, {
-													type : "edit_text",
-													item_id : "EStr",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "EDex",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "ECon",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "EInt",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "EWis",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "ECha",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "EHoS",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												},
-											]
-										}, {
-											type : "view",
-											elements : [{
-													type : "static_text",
-													item_id : "mNm0",
-													font : "dialog",
-													bold : true,
-													char_width : 6,
-													height : 30,
-													alignment : "align_left",
-												}, {
-													type : "edit_text",
-													item_id : "mStr",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "mDex",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "mCon",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "mInt",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "mWis",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "mCha",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												}, {
-													type : "edit_text",
-													item_id : "mHoS",
-													char_width : 3,
-													height : 25,
-													SpinEdit : true,
-												},
-											]
-										}, {
-											type : "view",
-											elements : [{
-													type : "static_text",
-													item_id : "tNm0",
-													font : "dialog",
-													bold : true,
-													char_width : 4,
-													height : 32,
-													alignment : "align_center",
-												}, {
-													type : "static_text",
-													item_id : "tStr",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-													font : "dialog",
-													bold : true,
-												}, {
-													type : "static_text",
-													item_id : "tDex",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-													font : "dialog",
-													bold : true,
-												}, {
-													type : "static_text",
-													item_id : "tCon",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-													font : "dialog",
-													bold : true,
-												}, {
-													type : "static_text",
-													item_id : "tInt",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-													font : "dialog",
-													bold : true,
-												}, {
-													type : "static_text",
-													item_id : "tWis",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-													font : "dialog",
-													bold : true,
-												}, {
-													type : "static_text",
-													item_id : "tCha",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-													font : "dialog",
-													bold : true,
-												}, {
-													type : "static_text",
-													item_id : "tHoS",
-													name : "0",
-													char_width : 3,
-													height : 25,
-													alignment : "align_center",
-													font : "dialog",
-													bold : true,
-												},
-											]
-										},
-									]
-								}, {
-									type : "ok_cancel",
-									ok_name : "Apply",
-								},
-							]
-						}
-					]
-				}
-			]
+										type : "static_text",
+										item_id : "bNm0",
+										font : "dialog",
+										bold : true,
+										char_width : 4,
+										height : 30,
+										alignment : "align_left"
+									}, {
+										type : "edit_text",
+										item_id : "bStr",
+										char_width : 3,
+										height : 25,
+										SpinEdit : true
+									}, {
+										type : "edit_text",
+										item_id : "bDex",
+										char_width : 3,
+										height : 25,
+										SpinEdit : true
+									}, {
+										type : "edit_text",
+										item_id : "bCon",
+										char_width : 3,
+										height : 25,
+										SpinEdit : true
+									}, {
+										type : "edit_text",
+										item_id : "bInt",
+										char_width : 3,
+										height : 25,
+										SpinEdit : true
+									}, {
+										type : "edit_text",
+										item_id : "bWis",
+										char_width : 3,
+										height : 25,
+										SpinEdit : true
+									}, {
+										type : "edit_text",
+										item_id : "bCha",
+										char_width : 3,
+										height : 25,
+										SpinEdit : true
+									}, {
+										type : "edit_text",
+										item_id : "bHoS",
+										char_width : 3,
+										height : 25,
+										SpinEdit : true
+									}]
+								}]
+							}, {
+								type : "view",
+								char_width : 12,
+								align_children : "align_right",
+								elements : [{
+									type : "static_text",
+									item_id : "tPNm",
+									font : "dialog",
+									bold : true,
+									char_height : 3,
+									char_width : 4,
+									name : "Point Buy total:"
+								}]
+							}]
+						}, {
+							type : "view",
+							elements : [{
+								type : "static_text",
+								item_id : "pNm0",
+								font : "dialog",
+								bold : true,
+								char_width : 4,
+								height : 32,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "pStr",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "pDex",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "pCon",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "pInt",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "pWis",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "pCha",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "pHoS",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "tPBT",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								font : "dialog",
+								bold : true,
+								alignment : "align_center"
+							}]
+						}, {
+							type : "view",
+							elements : [{
+								type : "static_text",
+								item_id : "rNm0",
+								font : "dialog",
+								bold : true,
+								char_width : 4,
+								height : 30,
+								alignment : "align_left"
+							}, {
+								type : "edit_text",
+								item_id : "rStr",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "rDex",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "rCon",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "rInt",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "rWis",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "rCha",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "rHoS",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}]
+						}, {
+							type : "view",
+							elements : [{
+								type : "static_text",
+								item_id : "fNm0",
+								font : "dialog",
+								bold : true,
+								char_width : 4,
+								height : 30,
+								alignment : "align_left"
+							}, {
+								type : "edit_text",
+								item_id : "fStr",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "fDex",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "fCon",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "fInt",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "fWis",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "fCha",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "fHoS",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}]
+						}, {
+							type : "view",
+							elements : [{
+								type : "static_text",
+								item_id : "eNm0",
+								font : "dialog",
+								bold : true,
+								char_width : 4,
+								height : 30,
+								alignment : "align_left"
+							}, {
+								type : "edit_text",
+								item_id : "eStr",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "eDex",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "eCon",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "eInt",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "eWis",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "eCha",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "eHoS",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}]
+						}, {
+							type : "view",
+							elements : [{
+								type : "static_text",
+								item_id : "ENm0",
+								font : "dialog",
+								bold : true,
+								char_width : 4,
+								height : 30,
+								alignment : "align_left"
+							}, {
+								type : "edit_text",
+								item_id : "EStr",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "EDex",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "ECon",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "EInt",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "EWis",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "ECha",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "EHoS",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}]
+						}, {
+							type : "view",
+							elements : [{
+								type : "static_text",
+								item_id : "mNm0",
+								font : "dialog",
+								bold : true,
+								char_width : 6,
+								height : 30,
+								alignment : "align_left"
+							}, {
+								type : "edit_text",
+								item_id : "mStr",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "mDex",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "mCon",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "mInt",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "mWis",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "mCha",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}, {
+								type : "edit_text",
+								item_id : "mHoS",
+								char_width : 3,
+								height : 25,
+								SpinEdit : true
+							}]
+						}, {
+							type : "view",
+							elements : [{
+								type : "static_text",
+								item_id : "tNm0",
+								font : "dialog",
+								bold : true,
+								char_width : 4,
+								height : 32,
+								alignment : "align_center"
+							}, {
+								type : "static_text",
+								item_id : "tStr",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "static_text",
+								item_id : "tDex",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "static_text",
+								item_id : "tCon",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "static_text",
+								item_id : "tInt",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "static_text",
+								item_id : "tWis",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "static_text",
+								item_id : "tCha",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "static_text",
+								item_id : "tHoS",
+								name : "0",
+								char_width : 3,
+								height : 25,
+								alignment : "align_center",
+								font : "dialog",
+								bold : true
+							}]
+						}]
+					}, {
+						type : "ok_cancel",
+						ok_name : "Apply"
+					}]
+				}]
+			}]
 		}
 	};
 	var Results = app.execDialog(AbilityScores_Dialog);

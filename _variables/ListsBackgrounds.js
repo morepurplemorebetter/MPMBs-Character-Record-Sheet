@@ -65,7 +65,7 @@ var BackgroundList = {
 		],
 		languages : ["+2 from "],
 		variant : ["faction agent"],
-		lifestyle : "modest",
+		lifestyle : "modest"
 	},
 	"charlatan" : {
 		regExpSearch : /charlatan/i,
@@ -213,7 +213,7 @@ var BackgroundList = {
 		],
 		tools : ["A type of gaming set", "Thieves' tools"],
 		variant : ["urban bounty hunter"],
-		lifestyle : "poor",
+		lifestyle : "poor"
 	},
 	"entertainer" : {
 		regExpSearch : /(entertainer|actor|dancer|fire.?eater|jester|juggler|instrumentalist|poet|singer|storyteller|tumbler)/i,
@@ -368,7 +368,7 @@ var BackgroundList = {
 		],
 		tools : ["Type of artisan's tools", "Vehicles (land)"],
 		variant : ["inheritor"],
-		lifestyle : "modest",
+		lifestyle : "modest"
 	},
 	"guild artisan" : {
 		regExpSearch : /^(?=.*guild)(?=.*artisan).*$/i,
@@ -457,7 +457,7 @@ var BackgroundList = {
 		tools : ["Type of artisan's tools"],
 		languages : ["+1 from "],
 		variant : ["clan crafter", "courtier", "guild merchant"],
-		lifestyle : "comfortable",
+		lifestyle : "comfortable"
 	},
 	"hermit" : {
 		regExpSearch : /hermit/i,
@@ -677,7 +677,7 @@ var BackgroundList = {
 		tools : ["Type of musical instrument"],
 		languages : ["+1 from "],
 		variant : ["uthgardt tribe member"],
-		lifestyle : "poor",
+		lifestyle : "poor"
 	},
 	"sage" : {
 		regExpSearch : /(sage|alchemist|astronomer|academic|librarian|professor|researcher|apprentice|scribe)/i,
@@ -754,7 +754,7 @@ var BackgroundList = {
 		],
 		languages : ["+2 from "],
 		variant : ["cloistered scholar"],
-		lifestyle : "modest",
+		lifestyle : "modest"
 	},
 	"sailor" : {
 		regExpSearch : /sailor/i,
@@ -763,7 +763,7 @@ var BackgroundList = {
 		skills : ["Athletics", "Perception"],
 		gold : 10,
 		equipleft : [
-			["Silk rope, feet of", 50, 0.1],
+			["Silk rope, feet of", 50, 0.1]
 		],
 		equipright : [
 			["Common clothes", "", 3],
@@ -894,7 +894,7 @@ var BackgroundList = {
 		],
 		tools : ["Type of gaming set", "Vehicles (land)"],
 		variant : ["city watch", "investigator", "knight of the order", "mercenary veteran"],
-		lifestyle : "modest",
+		lifestyle : "modest"
 	},
 	"urchin" : {
 		regExpSearch : /urchin/i,
@@ -973,12 +973,12 @@ var BackgroundList = {
 		gold : 5,
 		equipleft : [
 			["Gaming set or musical instrument", "", ""],
-			["Poorly wrought maps", "", ""],
+			["Poorly wrought maps", "", ""]
 		],
 		equipright : [
 			["Traveler's clothes", "", 4],
 			["Piece of jewelry worth 5 gp", "", ""],
-			["Belt pouch (with coins)", "", 1],
+			["Belt pouch (with coins)", "", 1]
 		],
 		feature : "All Eyes on You",
 		trait : [
@@ -987,7 +987,7 @@ var BackgroundList = {
 			"I have a strong code of honor or sense of propriety that others don't comprehend.",
 			"I express affection or contempt in ways that are unfamiliar to others.",
 			"I honor my deities through practices that are foreign to this land.",
-			"I begin or end my day with small traditional rituals that are unfamiliar to those around me.",
+			"I begin or end my day with small traditional rituals that are unfamiliar to those around me."
 		],
 		ideal : [
 			["Open",
@@ -1007,7 +1007,7 @@ var BackgroundList = {
 			],
 			["Suspicious",
 				"Suspicious: I must be careful, for I have no way of telling friend from foe here. (Any)"
-			],
+			]
 		],
 		bond : [
 			"So long as I have this token from my homeland, I can face any adversity in this strange land.",
@@ -1015,7 +1015,7 @@ var BackgroundList = {
 			"I hold no greater cause than my service to my people.",
 			"My freedom is my most precious possession. I'll never let anyone take it from me again.",
 			"I'm fascinated by the beauty and wonder of this new land.",
-			"Though I had no choice, I lament having to leave my loved one(s) behind. I hope to see them again one day.",
+			"Though I had no choice, I lament having to leave my loved one(s) behind. I hope to see them again one day."
 		],
 		flaw : [
 			"I am secretly (or not so secretly) convinced of the superiority of my own culture over that of this foreign land.",
@@ -1023,7 +1023,7 @@ var BackgroundList = {
 			"I have a weakness for the new intoxicants and other pleasures of this land.",
 			"I don't take kindly to some of the actions and motivations of the people of this land, because these folk are different from me.",
 			"I consider the adherents of other gods to be deluded innocents at best, or ignorant fools at worst.",
-			"I have a weakness for the exotic beauty of the people of these lands.",
+			"I have a weakness for the exotic beauty of the people of these lands."
 		],
 		extra : [
 			"Select Why You Are Here",
@@ -1032,12 +1032,12 @@ var BackgroundList = {
 			"Fugitive",
 			"Pilgrim",
 			"Sightseer",
-			"Wanderer",
+			"Wanderer"
 		],
 		tools : ["Gaming set or musical instrument"],
 		languages : ["+1 from "],
 		variant : [],
-		lifestyle : "modest",
+		lifestyle : "modest"
 	},
 
 	//CoS backgrounds (with the help of RCanine)
@@ -1114,7 +1114,7 @@ var BackgroundList = {
 			"Formerly possessed by A fiend.",
 			"Avenged a murder"
 		],
-		variant : [],
+		variant : []
 	},
 	"black fist double agent" : {
 		regExpSearch : /black\W*fist/i,
@@ -1172,7 +1172,7 @@ var BackgroundList = {
 			"Type of artisan's tools or gaming set"
 		],
 		variant : [],
-		lifestyle : "modest",
+		lifestyle : "modest"
 	},
 	"dragon casualty" : {
 		regExpSearch : /^(?=.*dragon)(?=.*casualty).*$/i,
@@ -1238,7 +1238,7 @@ var BackgroundList = {
 			"Once I make up my mind, I follow my chosen course of action regardless of the consequences."
 		],
 		variant : [],
-		lifestyle : "wretched",
+		lifestyle : "wretched"
 	},
 	"iron route bandit" : {
 		regExpSearch : /^(?=.*iron)(?=.*route)(?=.*bandit).*$/i,
@@ -1304,7 +1304,7 @@ var BackgroundList = {
 			"I judge people based on how well they stand their ground in a fight. I got not time for cowards…"
 		],
 		variant : [],
-		lifestyle : "poor",
+		lifestyle : "poor"
 	},
 	"phlan insurgent" : {
 		regExpSearch : /^(?=.*phlan)(?=.*insurgent).*$/i,
@@ -1377,7 +1377,7 @@ var BackgroundList = {
 			"I relentlessly despise the Maimed Virulence and his allies. I'd abandon other goals in order to strike out at them"
 		],
 		variant : [],
-		lifestyle : "poor",
+		lifestyle : "poor"
 	},
 	"stojanow prisoner" : {
 		regExpSearch : /^(?=.*stojanow)(?=.*prisoner).*$/i,
@@ -1430,7 +1430,7 @@ var BackgroundList = {
 			"The ghosts from my past hinder my actions."
 		],
 		variant : [],
-		lifestyle : "poor",
+		lifestyle : "poor"
 	},
 	"ticklebelly nomad" : {
 		regExpSearch : /^(?=.*ticklebelly)(?=.*nomad).*$/i,
@@ -1485,7 +1485,7 @@ var BackgroundList = {
 			"My lack of worldliness often proves my undoing in social, commercial, and hostile situations."
 		],
 		variant : [],
-		lifestyle : "poor",
+		lifestyle : "poor"
 	},
 
 	//RoD backgrounds (with the help of AggieBear)
@@ -1664,7 +1664,7 @@ var BackgroundList = {
 			],
 			["Greedy",
 				"Greedy: I do not share my wealth with others. (Evil)"
-			],
+			]
 		],
 		bond : [
 			"I am fiercely loyal to those with whom I work.",
@@ -1698,7 +1698,7 @@ var BackgroundList = {
 		],
 		equipright : [
 			["Common clothes", "", 3],
-			["Belt pouch (with coins)", "", 1],
+			["Belt pouch (with coins)", "", 1]
 		],
 		feature : "Secret Passage",
 		trait : [
@@ -1729,7 +1729,7 @@ var BackgroundList = {
 			],
 			["Corrupt",
 				"Corrupt: I will break the law or act dishonestly if the money is right. (Evil)"
-			],
+			]
 		],
 		bond : [
 			"I am loyal to the Rogues Guild and would do anything for them.",
@@ -1750,7 +1750,7 @@ var BackgroundList = {
 		tools : ["Forgery kit"],
 		languages : ["+1 racial from "],
 		variant : [],
-		lifestyle : "modest",
+		lifestyle : "modest"
 	},
 	"secret identity" : {
 		regExpSearch : /^(?=.*secret)(?=.*identity).*$/i,
@@ -1795,7 +1795,7 @@ var BackgroundList = {
 			],
 			["Depraved",
 				"Depraved: I have lost my moral compass. The ends justify most any means. (Evil)"
-			],
+			]
 		],
 		bond : [
 			"The humans of Hillsfar have inflicted terrible harm on me, my family, and my race. I will have revenge.",
@@ -1861,7 +1861,7 @@ var BackgroundList = {
 			],
 			["Compassionate",
 				"Compassionate: It is through love that others will join In our cause. (Good)"
-			],
+			]
 		],
 		bond : [
 			"They say the Shade broke the bonds of mortality; I want to find out how.",
@@ -1927,7 +1927,7 @@ var BackgroundList = {
 			],
 			["Might",
 				"Might: It is through threats and force that I get my answers (lawful)"
-			],
+			]
 		],
 		bond : [
 			"To this day an unsolved case will always leave me haunted and bother me.",
@@ -2136,7 +2136,7 @@ var BackgroundList = {
 			"The Cloaks killed my friend for spellcasting. I'll get them back somehow, someday.",
 			"The High House of Hurting helped me when I was hurt and asked nothing in return. I owe them my life.",
 			"I was robbed in the Zhent ghetto once. It will not happen again.",
-			"I would do anything to protect the other harborfolk. They are my family.",
+			"I would do anything to protect the other harborfolk. They are my family."
 		],
 		flaw : [
 			"I drink too much, which causes me to miss the tide.",
@@ -2144,7 +2144,7 @@ var BackgroundList = {
 			"I oversell myself and make promises I can't keep when I want to impress someone.",
 			"Book learning is a waste of time. I have no patience for people who don't speak from experience.",
 			"I almost always cheat. I can't help myself.",
-			"I am a secret informant for the Hawks. I send them reports about everything I see and hear, even what my friends and allies are up to.",
+			"I am a secret informant for the Hawks. I send them reports about everything I see and hear, even what my friends and allies are up to."
 		],
 		tools : ["A type of gaming set", "Vehicles (water)"],
 		variant : [],
@@ -2172,7 +2172,7 @@ var BackgroundList = {
 			"I will not admit I am wrong if I can avoid it.",
 			"I am extremely well-educated and frequently remind others of that fact.",
 			"I take what I can today, because I do not know what tomorrow holds.",
-			"My life is full of dance, song, drink, and love.",
+			"My life is full of dance, song, drink, and love."
 		],
 		ideal : [
 			["Generous",
@@ -2292,23 +2292,23 @@ var BackgroundSubList = {
 			["Costume", "", 4],
 			["Favor of an admirer", "", ""],
 			["Belt pouch (with coins)", "", 1],
-			["Inexpensive, unusual weapon", "", ""],
+			["Inexpensive, unusual weapon", "", ""]
 		],
 		feature : "Are You Entertained?",
-		extra : "",
+		extra : ""
 	},
 	"guild merchant" : {
 		regExpSearch : /^(?=.*guild)(?=.*merchant).*$/i,
 		name : "Guild Merchant",
 		source : ["P", 133],
 		equipleft : [
-			["Letter of introduction from guild", "", ""],
+			["Letter of introduction from guild", "", ""]
 		],
 		equipright : [
 			["Traveler's clothes", "", 4],
 			["Belt pouch (with coins)", "", 1],
 			["Cart", "", ""],
-			["Mule", "", ""],
+			["Mule", "", ""]
 		],
 		extra : [
 			"Select a Guild Business",
@@ -2316,7 +2316,7 @@ var BackgroundSubList = {
 			"Caravan masters",
 			"Shopkeepers"
 		],
-		tools : ["Navigator's tools (or language)"],
+		tools : ["Navigator's tools (or language)"]
 	},
 	"knight" : {
 		regExpSearch : /^(?!.*order)(?=.*knight).*$/i,
@@ -2328,12 +2328,12 @@ var BackgroundSubList = {
 			["Purse (with coins)", "", 1],
 			["Banner or token from devoted love", "", ""]
 		],
-		feature : "Retainers",
+		feature : "Retainers"
 	},
 	"pirate" : {
 		regExpSearch : /pirate/i,
 		name : "Pirate",
-		feature : "Bad Reputation",
+		feature : "Bad Reputation"
 	},
 	
 	//SCAG variant backgrounds
@@ -2353,7 +2353,7 @@ var BackgroundSubList = {
 		extra : "",
 		tools : "",
 		languages : ["+2 from "],
-		lifestyle : "modest",
+		lifestyle : "modest"
 	},
 	"clan crafter" : {
 		regExpSearch : /^(?=.*clan)(?=.*(crafter|smith|builder|miner)).*$/i,
@@ -2362,7 +2362,7 @@ var BackgroundSubList = {
 		skills : ["History", "Insight"],
 		equipleft : [
 			["Set of artisan's tools", "", ""],
-			["Maker's mark chisel", "", 0.5],
+			["Maker's mark chisel", "", 0.5]
 		],
 		equipright : [
 			["Traveler's clothes", "", 4],
@@ -2371,7 +2371,7 @@ var BackgroundSubList = {
 		feature : "Respect of the Stout Folk",
 		extra : "",
 		languages : ["Dwarvish"],
-		lifestyle : "comfortable",
+		lifestyle : "comfortable"
 	},
 	"cloistered scholar" : {
 		regExpSearch : /^(?=.*cloistered)(?=.*scholar).*$/i,
@@ -2385,16 +2385,16 @@ var BackgroundSubList = {
 			["Quill", "", ""],
 			["Parchment, sheets of", 1, ""],
 			["Small penknife", "", 0.5],
-			["Borrowed book", "", 5],
+			["Borrowed book", "", 5]
 		],
 		equipright : [
 			["Scholar's robes", "", 3],
-			["Belt pouch (with coins)", "", 1],
+			["Belt pouch (with coins)", "", 1]
 		],
 		feature : "Library Access",
 		extra : ["Name your Library"],
 		languages : ["+2 from "],
-		lifestyle : "modest",
+		lifestyle : "modest"
 	},
 	"courtier" : {
 		regExpSearch : /courtier/i,
@@ -2411,7 +2411,7 @@ var BackgroundSubList = {
 		extra : "",
 		tools : "",
 		languages : ["+2 from "],
-		lifestyle : "comfortable",
+		lifestyle : "comfortable"
 	},
 	"faction agent" : {
 		regExpSearch : /^(?=.*agent)(?=.*(faction|harper|order of the gauntlet|emerald enclave|lord.?s alliance|zhentarim)).*$/i,
@@ -2421,7 +2421,7 @@ var BackgroundSubList = {
 		skillstxt : "Insight and choose one Intelligence, Wisdom, or Charisma skill",
 		gold : 15,
 		equipleft : [
-			["Copy of seminal faction's text", "", ""],
+			["Copy of seminal faction's text", "", ""]
 		],
 		equipright : [
 			["Common clothes", "", 3],
@@ -2435,10 +2435,10 @@ var BackgroundSubList = {
 			"The Order of the Gauntlet",
 			"The Emerald Enclave",
 			"The Lord's Alliance",
-			"The Zhentarim",
+			"The Zhentarim"
 		],
 		languages : ["+2 from "],
-		lifestyle : "modest",
+		lifestyle : "modest"
 	},
 	"inheritor" : {
 		regExpSearch : /inheritor/i,
@@ -2448,7 +2448,7 @@ var BackgroundSubList = {
 		skillstxt : "Survival and choose one from Arcana, History, and Religion",
 		gold : 15,
 		equipleft : [
-			["Gaming set or musical instrument", "", ""],
+			["Gaming set or musical instrument", "", ""]
 		],
 		equipright : [
 			["Traveler's clothes", "", 4],
@@ -2468,7 +2468,7 @@ var BackgroundSubList = {
 		],
 		tools : ["Gaming set or musical instrument"],
 		languages : ["+1 from "],
-		lifestyle : "wealthy",
+		lifestyle : "wealthy"
 	},
 	"investigator" : {
 		regExpSearch : /investigator/i,
@@ -2485,7 +2485,7 @@ var BackgroundSubList = {
 		feature : "Watcher's Eye",
 		extra : "",
 		tools : "",
-		languages : ["+2 from "],
+		languages : ["+2 from "]
 	},
 	"knight of the order" : {
 		regExpSearch : /^(?=.*knight)(?=.*order).*$/i,
@@ -2502,7 +2502,7 @@ var BackgroundSubList = {
 		extra : ["Name your Knightly Order"],
 		tools : ["Gaming set or musical instrument"],
 		languages : ["+1 from "],
-		lifestyle : "comfortable",
+		lifestyle : "comfortable"
 	},
 	"mercenary veteran" : {
 		regExpSearch : /^(?=.*mercenary)(?=.*(veteran|soldier)).*$/i,
@@ -2517,7 +2517,7 @@ var BackgroundSubList = {
 		],
 		feature : "Mercenary Life",
 		extra : ["Name your Mercenary Company"],
-		lifestyle : "modest",
+		lifestyle : "modest"
 	},
 	"urban bounty hunter" : {
 		regExpSearch : /^(?=.*urban)(?=.*bounty)(?=.*hunter).*$/i,
@@ -2558,7 +2558,7 @@ var BackgroundSubList = {
 		gold : 20,
 		equipleft : [
 			["Scroll of pedigree", "", ""],
-			["Skin of fine zzar or wine", "", 5],
+			["Skin of fine zzar or wine", "", 5]
 		],
 		equipright : [
 			["Fine clothes", "", 6],
@@ -2568,7 +2568,7 @@ var BackgroundSubList = {
 		feature : "Kept in Style",
 		tools : ["Gaming set or musical instrument"],
 		languages : ["+1 from "],
-		lifestyle : "wealthy",
+		lifestyle : "wealthy"
 	},
 }
 
@@ -2576,63 +2576,63 @@ var BackgroundFeatureList = {
 	//PHB backgrounds features
 	"are you entertained?" : {
 		description : "I can always find a place to perform (arena/pit fight), where I receive free lodging and food of a modest or comfortable standard, as long as I perform each night. In addition, my performance makes me something of a local figure. When strangers recognize me in a town where I have performed, they typically take a liking to me.",
-		source : ["P", 131],
+		source : ["P", 131]
 	},
 	"bad reputation" : {
 		description : "No matter where I go, people are afraid of me due to my reputation. When I am in a civilized settlement, I can get away with minor criminal offenses, such as refusing to pay for food at a tavern or breaking down doors at a local shop, since most people will not report my activity to the authorities.",
-		source : ["P", 139],
+		source : ["P", 139]
 	},
 	"by popular demand" : {
 		description : "I can always find a place to perform (inn/tavern/circus/etc.), where I receive free lodging and food of a modest or comfortable standard, as long as I perform each night. In addition, my performance makes me something of a local figure. When strangers recognize me in a town where I have performed, they typically take a liking to me.",
-		source : ["P", 130],
+		source : ["P", 130]
 	},
 	"city secrets" : {
 		description : "I know the secret patterns and flow to cities and can find passages through the urban sprawl that others would miss. When I am not in combat, I (and companions I lead) can travel between any two locations in the city twice as fast as my speed would normally allow.",
-		source : ["P", 141],
+		source : ["P", 141]
 	},
 	"criminal contact" : {
 		description : "I have a reliable and trustworthy contact who acts as my liaison to a network of other criminals. I know how to get messages to and from my contact, even over great distances; specifically, I know the local messengers, corrupt caravan masters, and seedy sailors who can deliver my messages.",
-		source : ["P", 129],
+		source : ["P", 129]
 	},
 	"discovery" : {
 		description : "The quiet seclusion of my extended hermitage gave me access to a unique and powerful discovery. The exact nature of this revelation depends on the nature of my seclusion. It might be a great truth, a hidden site, a long forgotten fact, or unearthed some relic of the past that could rewrite history.",
-		source : ["P", 134],
+		source : ["P", 134]
 	},
 	"false identity" : {
 		description : "I have created a second identity that includes documentation, established acquaintances, and disguises that allow me to assume that persona. Additionally, I can forge documents, including official papers and personal letters, as long as I have seen an example of the kind of document or the handwriting I am trying to copy.",
-		source : ["P", 128],
+		source : ["P", 128]
 	},
 	"guild membership" : {
 		description : "5 gp membership fees per month: The guild offers lodging if possible. In case of being accused of a crime, the guild will support me if a good case can be made for my innocence or the crime is justifiable. I can also gain access to powerful political figures through the guild, as long as I'm in good standing and the guild is paid enough.",
-		source : ["P", 133],
+		source : ["P", 133]
 	},
 	"military rank" : {
 		description : "I have a military rank from my career as a soldier. Soldiers loyal to my former military organization still recognize my authority and influence. I can invoke my rank to influence soldiers and temporarily requisition simple equipment or horses. I can usually gain access to friendly military encampments and fortresses where my rank is recognized.",
-		source : ["P", 140],
+		source : ["P", 140]
 	},
 	"position of privilege" : {
 		description : "I am welcome in high society, and people assume I have the right to be wherever I am. The common folk make every effort to accommodate me and avoid my displeasure, and other people of high birth treat me as a member of the same social sphere. I can secure an audience with a local noble if I need to.",
-		source : ["P", 135],
+		source : ["P", 135]
 	},
 	"researcher" : {
 		description : "When I attempt to learn or recall a piece of lore, if I do not know that information, I often know where and from whom I can obtain it. Usually, this information comes from a library, scriptorium, university, or a sage or other learned person or creature. Unearthing the deepest secrets of the multiverse can require an adventure or even a whole campaign.",
-		source : ["P", 138],
+		source : ["P", 138]
 	},
 	"retainers" : {
 		description : "I have the service of three retainers loyal to me family, one of whom is another noble and my squire. My other retainers are commoners who can perform mundane tasks for me, but they do not fight for me, will not follow me into obviously dangerous areas (such as dungeons), and will leave if they are frequently endangered or abused.",
-		source : ["P", 136],
+		source : ["P", 136]
 	},
 	"rustic hospitality" : 	{
 		description : "Since I come from the ranks of the common folk, I fit in among them with ease. I can find a place to hide, rest, or recuperate among other commoners, unless I have shown myself to be a danger to them. They will shield me from the law or anyone else searching for me, though they will not risk their lives for me.",
-		source : ["P", 131],
+		source : ["P", 131]
 	},
 	"shelter of the faithful" : {
 		description : "I command the respect of those who share my faith. I can perform the religious ceremonies of my faith. My companions and I can expect free healing and care at an establishment of my faith, though I must provide any material components needed for spells. Those who share my religion will support me at a modest lifestyle.",
-		source : ["P", 127],
+		source : ["P", 127]
 	},
 	"ship's passage" : {
 		description : "When I need to, I can secure free passage on a sailing ship for myself and my companions. I might sail on the ship I served on, or another ship I have good relations with. Because I'm calling in a favor, I can't be certain of a schedule or route that will meet my every need. My companions and I are expected to assist the crew during the voyage.",
-		source : ["P", 139],
+		source : ["P", 139]
 	},
 	"wanderer" : {
 		description : "I have an excellent memory for maps and geography, and I can always recall the general layout of terrain, settlements, and other features around me. In addition, I can find food and fresh water for myself and up to five other people each day, provided that the land offers berries, small game, water, and so forth.",
@@ -2642,39 +2642,39 @@ var BackgroundFeatureList = {
 	//SCAG backgrounds features
 	"court functionary" : {
 		description : "My knowledge of how bureaucracies function lets me gain access to the records and inner workings of any noble court or government I encounter. I know or can easily acquire the knowledge who the movers and shakers are, whom to go to for the favors I seek, and what the current intrigues of interest in the group are.",
-		source : ["S", 147],
+		source : ["S", 147]
 	},
 	"all eyes on you" : {
 		description : "My accent, mannerisms, figures of speech all mark me as foreign. Curious glances are directed my way wherever I go. A nuisance, but I also gain the friendly interest of the curious. I can parley this attention into access I might not otherwise have, for me and my companions. Nobles, scholars, merchants, and guilds, might be among the interested.",
-		source : ["S", 149],
+		source : ["S", 149]
 	},
 	"ear to the ground" : {
 		description : "I am in frequent contact with people in my chosen segment of society. These people might be associated with the criminal underworld, the rough-and-tumble folk of the streets, or members of high society. This connection comes in the form of a contact in any city I visit, a person who provides information about the people and places of the local area.",
-		source : ["S", 153],
+		source : ["S", 153]
 	},
 	"inheritance" : {
 		description : "The item I inherited has a special significance, history, power, and/or important value. When I begin my adventuring career, I can decide whether to tell my companions about it right away. Rather than attracting attention to myself, I could decide to keep it a secret until I learn more about what it means to me and what it can do for me.",
-		source : ["S", 150],
+		source : ["S", 150]
 	},
 	"kept in style" : {
 		description : "While I am in Waterdeep or elsewhere in the North my house sees to my everyday needs. My name and signet are sufficient to cover most of my expenses; the inns, taverns, and festhalls I frequent are glad to record my debt and send an accounting to my family's estate. This advantage enables me to take 2 gp of my daily lifestyle costs down to 0 gp.",
-		source : ["S", 154],
+		source : ["S", 154]
 	},
 	"knightly regard" : {
 		description : "I receive shelter and succor from members of my knightly order and its sympathizers. Religious knightly orders get aid from temples and communities of my deity. Civic order knights get help from the community they serve. Philosophical order knights can find help from those they have aided in pursuit of their ideals, and those who share those ideals.",
-		source : ["S", 151],
+		source : ["S", 151]
 	},
 	"library access" : {
 		description : "I have free access to most of the library I work at, though it might have repositories of lore that are too valuable, magical, or secret to permit anyone immediate access. I have a working knowledge of my cloister's personnel and bureaucracy, and I know how to navigate those connections. I am likely to gain preferential treatment at other libraries.",
-		source : ["S", 146],
+		source : ["S", 146]
 	},
 	"mercenary life" : {
 		description : "I know the mercenary life well. I am able to identify mercenary company emblems, and I know a little about any such company, including the leaders, reputation, and who hired them recently. I can find the locales where mercenaries abide anywhere, as long as I speak the language. My mercenary work between adventures affords me a comfortable lifestyle.",
-		source : ["S", 152],
+		source : ["S", 152]
 	},
 	"respect of the stout folk" : {
 		description : "No one esteems clan crafters quite so highly as dwarves do. I always have free room and board in any place where shield dwarves or gold dwarves dwell, and the individuals in such a settlement might vie among themselves to determine who can offer you (and possibly your compatriots) the finest accommodations and assistance.",
-		source : ["S", 145],
+		source : ["S", 145]
 	},
 	"safe haven" : {
 		description : "As a faction agent, I have access to a secret network of support and operatives who can provide assistance on my adventures. I know secret signs and passwords to identify such operatives, who can provide me with access to a hidden safe house, free room and board, or assistance in finding information. These agents never risk their lives or identity for me.",
@@ -2736,7 +2736,7 @@ var BackgroundFeatureList = {
 	},
 	"heart of darkness" : {
 		description : "Those who look into my eyes can see that I have faced unimaginable horror and that I am no stranger to darkness. Though they might fear me, commoners will extend me every courtesy and do their utmost to help. Unless I have shown myself to be a danger to them, they will even take up arms to fight with me, should I find myself facing an enemy alone.",
-		source : ["CoS", 209],
+		source : ["CoS", 209]
 	},
 
 	//RoD background features

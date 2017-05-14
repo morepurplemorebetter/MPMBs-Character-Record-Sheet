@@ -104,7 +104,7 @@ var ClassList = {
 				description : " [DC 10 + 5 per try, per short rest]" + "\n   " + "If I drop to 0 HP while raging, I can make a DC 10 Constitution save to stay at 1 HP" + "\n   " + "The DC increases by 5 for every attempt until I finish a short or long rest",
 				recovery : "short rest",
 				usages : "",
-				usagescalc : "var FieldNmbr = parseFloat(event.target.name.slice(-2)); var usages = What(\"Limited Feature Used \" + FieldNmbr); var DCmod = Number(usages) * 5; event.value = (isNaN(Number(usages)) || usages === \"\") ? \"DC\u2003\u2003\" : \"DC \" + Number(10 + DCmod);",
+				usagescalc : "var FieldNmbr = parseFloat(event.target.name.slice(-2)); var usages = What(\"Limited Feature Used \" + FieldNmbr); var DCmod = Number(usages) * 5; event.value = (isNaN(Number(usages)) || usages === \"\") ? \"DC\u2003\u2003\" : \"DC \" + Number(10 + DCmod);"
 			},
 			"persistent rage" : {
 				name : "Persistent Rage",
@@ -160,7 +160,7 @@ var ClassList = {
 				source : ["P", 52],
 				minlevel : 1,
 				description : "\n   " + "I can cast bard cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use a musical instrument as a spellcasting focus" + "\n   " + "I can cast my known bard spells as rituals if they have the ritual tag",
-				additional : ["2 cantrips \u0026 4 spells known", "2 cantrips \u0026 5 spells known", "2 cantrips \u0026 6 spells known", "3 cantrips \u0026 7 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 9 spells known", "3 cantrips \u0026 10 spells known", "3 cantrips \u0026 11 spells known", "3 cantrips \u0026 12 spells known", "4 cantrips \u0026 14 spells known", "4 cantrips \u0026 15 spells known", "4 cantrips \u0026 15 spells known", "4 cantrips \u0026 16 spells known", "4 cantrips \u0026 18 spells known", "4 cantrips \u0026 19 spells known", "4 cantrips \u0026 19 spells known", "4 cantrips \u0026 20 spells known", "4 cantrips \u0026 22 spells known", "4 cantrips \u0026 22 spells known", "4 cantrips \u0026 22 spells known"],
+				additional : ["2 cantrips \u0026 4 spells known", "2 cantrips \u0026 5 spells known", "2 cantrips \u0026 6 spells known", "3 cantrips \u0026 7 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 9 spells known", "3 cantrips \u0026 10 spells known", "3 cantrips \u0026 11 spells known", "3 cantrips \u0026 12 spells known", "4 cantrips \u0026 14 spells known", "4 cantrips \u0026 15 spells known", "4 cantrips \u0026 15 spells known", "4 cantrips \u0026 16 spells known", "4 cantrips \u0026 18 spells known", "4 cantrips \u0026 19 spells known", "4 cantrips \u0026 19 spells known", "4 cantrips \u0026 20 spells known", "4 cantrips \u0026 22 spells known", "4 cantrips \u0026 22 spells known", "4 cantrips \u0026 22 spells known"]
 			},
 			"bardic inspiration" : {
 				name : "Bardic Inspiration",
@@ -200,13 +200,13 @@ var ClassList = {
 				minlevel : 3,
 				description : "\n   " + "I gain expertise with two skills I am proficient with; two more at 10th level",
 				skillstxt : "\n\n" + toUni("Expertise (Bard 3)") + ": Choose any two skill proficiencies, and two more at 10th level.",
-				additional : ["", "", "with two skills", "with two skills", "with two skills", "with two skills", "with two skills", "with two skills", "with two skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills"],
+				additional : ["", "", "with two skills", "with two skills", "with two skills", "with two skills", "with two skills", "with two skills", "with two skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills"]
 			},
 			"font of inspiration" : {
 				name : "Font of Inspiration",
 				source : ["P", 54],
 				minlevel : 5,
-				description : "\n   " + "I can now also recover my expended Bardic Inspiration uses after a short rest",
+				description : "\n   " + "I can now also recover my expended Bardic Inspiration uses after a short rest"
 			},
 			"countercharm" : {
 				name : "Countercharm",
@@ -224,15 +224,15 @@ var ClassList = {
 				spellcastingBonus : {
 					name : "Magical Secret",
 					class : "any",
-					times : [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6],
-				},
+					times : [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6]
+				}
 			},
 			"superior inspiration" : {
 				name : "Superior Inspiration",
 				source : ["P", 54],
 				minlevel : 20,
-				description : "\n   " + "I regain one use of Bardic Inspiration if I have no more remaining when I roll initiative",
-			},
+				description : "\n   " + "I regain one use of Bardic Inspiration if I have no more remaining when I roll initiative"
+			}
 		}
 	},
 
@@ -261,7 +261,7 @@ var ClassList = {
 		spellcastingKnown : {
 			cantrips : [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
 			spells : "list",
-			prepared : true,
+			prepared : true
 		},
 		features : {
 			"spellcasting" : {
@@ -269,13 +269,13 @@ var ClassList = {
 				source : ["P", 58],
 				minlevel : 1,
 				description : "\n   " + "I can cast prepared cleric cantrips/spells, using Wisdom as my spellcasting ability" + "\n   " + "I can use a holy symbol as a spellcasting focus" + "\n   " + "I can cast my prepared cleric spells as rituals if they have the ritual tag",
-				additional : ["3 cantrips known", "3 cantrips known", "3 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known"],
+				additional : ["3 cantrips known", "3 cantrips known", "3 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known"]
 			},
 			"subclassfeature1" : {
 				name : "Divine Domain",
 				source : ["P", 58],
 				minlevel : 1,
-				description : "\n   " + "Choose a Domain related to your deity and put it in the \"Class\" field on the first page" + "\n   " + "Choose either Arcana, Death, Life, Light, Nature, Tempest, Trickery, or War Domain",
+				description : "\n   " + "Choose a Domain related to your deity and put it in the \"Class\" field on the first page" + "\n   " + "Choose either Arcana, Death, Life, Light, Nature, Tempest, Trickery, or War Domain"
 			},
 			"channel divinity" : {
 				name : "Channel Divinity",
@@ -343,7 +343,7 @@ var ClassList = {
 		spellcastingKnown : {
 			cantrips : [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
 			spells : "list",
-			prepared : true,
+			prepared : true
 		},
 		features : {
 			"druidic" : {
@@ -359,13 +359,13 @@ var ClassList = {
 				source : ["P", 66],
 				minlevel : 1,
 				description : "\n   " + "I can cast prepared druid cantrips/spells, using Wisdom as my spellcasting ability" + "\n   " + "I can use a druidic focus as a spellcasting focus" + "\n   " + "I can cast my prepared druid spells as rituals if they have the ritual tag",
-				additional : ["2 cantrips known", "2 cantrips known", "2 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known"],
+				additional : ["2 cantrips known", "2 cantrips known", "2 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known"]
 			},
 			"subclassfeature2" : {
 				name : "Druid Circle",
 				source : ["P", 67],
 				minlevel : 2,
-				description : "\n   " + "Choose a Circle you can identify with and put it in the \"Class\" field on the first page" + "\n   " + "Choose either the Circle of the Land or the Circle of the Moon",
+				description : "\n   " + "Choose a Circle you can identify with and put it in the \"Class\" field on the first page" + "\n   " + "Choose either the Circle of the Land or the Circle of the Moon"
 			},
 			"wild shape" : {
 				name : "Wild Shape",
@@ -377,26 +377,26 @@ var ClassList = {
 				additional : ["", "CR 1/4, no fly/swim; 1 hour", "CR 1/4, no fly/swim; 1 hour", "CR 1/2, no fly; 2 hours", "CR 1/2, no fly; 2 hours", "CR 1/2, no fly; 3 hours", "CR 1/2, no fly; 3 hours", "CR 1; 4 hours", "CR 1; 4 hours", "CR 1; 5 hours", "CR 1; 5 hours", "CR 1; 6 hours", "CR 1; 6 hours", "CR 1; 7 hours", "CR 1; 7 hours", "CR 1; 8 hours", "CR 1; 8 hours", "CR 1; 9 hours", "CR 1; 9 hours", "CR 1; 10 hours"],
 				action : ["action", " (start)"],
 				eval : "AddAction(\"bonus action\", \"Wild Shape (end)\", \"Druid\");",
-				removeeval : "RemoveAction(\"bonus action\", \"Wild Shape (end)\", \"Druid\");",
+				removeeval : "RemoveAction(\"bonus action\", \"Wild Shape (end)\", \"Druid\");"
 			},
 			"timeless body" : {
 				name : "Timeless Body",
 				source : ["P", 67],
 				minlevel : 18,
-				description : "\n   " + "I age more slowly, only 1 year for every 10 years that pass",
+				description : "\n   " + "I age more slowly, only 1 year for every 10 years that pass"
 			},
 			"beast spells" : {
 				name : "Beast Spells",
 				source : ["P", 67],
 				minlevel : 18,
-				description : "\n   " + "I can perform the somatic and verbal components of druid spells while in a beast shape",
+				description : "\n   " + "I can perform the somatic and verbal components of druid spells while in a beast shape"
 			},
 			"archdruid" : {
 				name : "Archdruid",
 				source : ["P", 67],
 				minlevel : 20,
-				description : "\n   " + "I can use Wild Shape an unlimited number of times" + "\n   " + "My druid spells don't require verbal, somatic, or free material components",
-			},
+				description : "\n   " + "I can use Wild Shape an unlimited number of times" + "\n   " + "My druid spells don't require verbal, somatic, or free material components"
+			}
 		}
 	},
 
@@ -490,7 +490,7 @@ var ClassList = {
 				name : "Martial Archetype",
 				source : ["P", 72],
 				minlevel : 3,
-				description : "\n   " + "Choose a Martial Archetype you strive to emulate and put it in the \"Class\" field" + "\n   " + "Choose either Champion, Battle Master, Eldritch Knight, or Purple Dragon Knight",
+				description : "\n   " + "Choose a Martial Archetype you strive to emulate and put it in the \"Class\" field" + "\n   " + "Choose either Champion, Battle Master, Eldritch Knight, or Purple Dragon Knight"
 			},
 			"indomitable" : {
 				name : "Indomitable",
@@ -605,7 +605,7 @@ var ClassList = {
 				name : "Monastic Tradition",
 				source : ["P", 78],
 				minlevel : 3,
-				description : "\n   " + "Choose a Monastic Tradition to commit to and put it in the \"Class\" field on page 1" + "\n   " + "Choose either Way of the Four Elements, Long Death, Open Hand, Shadow, or Sun Soul",
+				description : "\n   " + "Choose a Monastic Tradition to commit to and put it in the \"Class\" field on page 1" + "\n   " + "Choose either Way of the Four Elements, Long Death, Open Hand, Shadow, or Sun Soul"
 			},
 			"deflect missiles" : {
 				name : "Deflect Missiles",
@@ -689,7 +689,7 @@ var ClassList = {
 				source : ["P", 79],
 				minlevel : 20,
 				description : "\n   " + "I regain 4 ki points if I have no more remaining when I roll initiative"
-			},
+			}
 		}
 	},
 
@@ -718,7 +718,7 @@ var ClassList = {
 		spellcastingFactor : 2,
 		spellcastingKnown : {
 			spells : "list",
-			prepared : true,
+			prepared : true
 		},
 		features : {
 			"divine sense" : {
@@ -796,7 +796,7 @@ var ClassList = {
 				name : "Sacred Oath",
 				source : ["P", 84],
 				minlevel : 3,
-				description : "\n   " + "Choose a Sacred Oath you swear to and put it in the \"Class\" field on the first page" + "\n   " + "Choose Oath of the Ancients, Crown, Devotion, Vengeance, or become an Oathbreaker",
+				description : "\n   " + "Choose a Sacred Oath you swear to and put it in the \"Class\" field on the first page" + "\n   " + "Choose Oath of the Ancients, Crown, Devotion, Vengeance, or become an Oathbreaker"
 			},
 			"divine health" : {
 				name : "Divine Health",
@@ -1038,7 +1038,7 @@ var ClassList = {
 				source : ["P", 91],
 				minlevel : 2,
 				description : "\n   " + "I can cast ranger spells that I know, using Wisdom as my spellcasting ability",
-				additional : ["", "2 spells known", "3 spells known", "3 spells known", "4 spells known", "4 spells known", "5 spells known", "5 spells known", "6 spells known", "6 spells known", "7 spells known", "7 spells known", "8 spells known", "8 spells known", "9 spells known", "9 spells known", "10 spells known", "10 spells known", "11 spells known", "11 spells known"],
+				additional : ["", "2 spells known", "3 spells known", "3 spells known", "4 spells known", "4 spells known", "5 spells known", "5 spells known", "6 spells known", "6 spells known", "7 spells known", "7 spells known", "8 spells known", "8 spells known", "9 spells known", "9 spells known", "10 spells known", "10 spells known", "11 spells known", "11 spells known"]
 			},
 			"subclassfeature3" : {
 				name : "Ranger Archetype",
@@ -1120,7 +1120,7 @@ var ClassList = {
 				additional : levels.map(function (n) {
 					if (n < 6) return "with two skills";
 					return "with four skills";
-				}),
+				})
 			},
 			"sneak attack" : {
 				name : "Sneak Attack",
@@ -1153,7 +1153,7 @@ var ClassList = {
 				name : "Roguish Archetype",
 				source : ["P", 96],
 				minlevel : 3,
-				description : "\n   " + "Choose a Roguish Archetype you strive to emulate and put it in the \"Class\" field" + "\n   " + "Choose either Arcane Trickster, Assassin, Mastermind, Swashbuckler, or Thief",
+				description : "\n   " + "Choose a Roguish Archetype you strive to emulate and put it in the \"Class\" field" + "\n   " + "Choose either Arcane Trickster, Assassin, Mastermind, Swashbuckler, or Thief"
 			},
 			"uncanny dodge" : {
 				name : "Uncanny Dodge",
@@ -1231,7 +1231,7 @@ var ClassList = {
 		spellcastingFactor : 1,
 		spellcastingKnown : {
 			cantrips : [4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
-			spells : [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15],
+			spells : [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15]
 		},
 		features : {
 			"spellcasting" : {
@@ -1239,13 +1239,13 @@ var ClassList = {
 				source : ["P", 101],
 				minlevel : 1,
 				description : "\n   " + "I can cast sorcerer cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus ",
-				additional : ["4 cantrips \u0026 2 spells known", "4 cantrips \u0026 3 spells known", "4 cantrips \u0026 4 spells known", "5 cantrips \u0026 5 spells known", "5 cantrips \u0026 6 spells known", "5 cantrips \u0026 7 spells known", "5 cantrips \u0026 8 spells known", "5 cantrips \u0026 9 spells known", "5 cantrips \u0026 10 spells known", "6 cantrips \u0026 11 spells known", "6 cantrips \u0026 12 spells known", "6 cantrips \u0026 12 spells known", "6 cantrips \u0026 13 spells known", "6 cantrips \u0026 13 spells known", "6 cantrips \u0026 14 spells known", "6 cantrips \u0026 14 spells known", "6 cantrips \u0026 15 spells known", "6 cantrips \u0026 15 spells known", "6 cantrips \u0026 15 spells known", "6 cantrips \u0026 15 spells known"],
+				additional : ["4 cantrips \u0026 2 spells known", "4 cantrips \u0026 3 spells known", "4 cantrips \u0026 4 spells known", "5 cantrips \u0026 5 spells known", "5 cantrips \u0026 6 spells known", "5 cantrips \u0026 7 spells known", "5 cantrips \u0026 8 spells known", "5 cantrips \u0026 9 spells known", "5 cantrips \u0026 10 spells known", "6 cantrips \u0026 11 spells known", "6 cantrips \u0026 12 spells known", "6 cantrips \u0026 12 spells known", "6 cantrips \u0026 13 spells known", "6 cantrips \u0026 13 spells known", "6 cantrips \u0026 14 spells known", "6 cantrips \u0026 14 spells known", "6 cantrips \u0026 15 spells known", "6 cantrips \u0026 15 spells known", "6 cantrips \u0026 15 spells known", "6 cantrips \u0026 15 spells known"]
 			},
 			"subclassfeature1" : {
 				name : "Sorcerous Origin",
 				source : ["P", 101],
 				minlevel : 1,
-				description : "\n   " + "Choose the Sorcerous Origin for your innate powers and put it in the \"Class\" field" + "\n   " + "Choose either Draconic Bloodline, Storm Sorcery, or Wild Magic",
+				description : "\n   " + "Choose the Sorcerous Origin for your innate powers and put it in the \"Class\" field" + "\n   " + "Choose either Draconic Bloodline, Storm Sorcery, or Wild Magic"
 			},
 			"font of magic" : {
 				name : "Font of Magic",
@@ -1305,14 +1305,14 @@ var ClassList = {
 					name : "Twinned Spell",
 					source : ["P", 102],
 					description : " [1 sorcery point per spell level, minimum 1]" + "\n   " + "If spell/cantrip has a target of one and not self, I can aim it at second target within range"
-				},
+				}
 			},
 			"sorcerous restoration" : {
 				name : "Sorcerous Restoration",
 				source : ["P", 102],
 				minlevel : 20,
-				description : "\n   " + "I regain 4 expended sorcery points whenever I finish a short rest",
-			},
+				description : "\n   " + "I regain 4 expended sorcery points whenever I finish a short rest"
+			}
 		}
 	},
 
@@ -1341,7 +1341,7 @@ var ClassList = {
 		spellcastingFactor : "warlock1",
 		spellcastingKnown : {
 			cantrips : [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-			spells : [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15],
+			spells : [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15]
 		},
 		spellcastingList : {
 			class : "warlock",
@@ -1353,13 +1353,13 @@ var ClassList = {
 				source : ["P", 107],
 				minlevel : 1,
 				description : "\n   " + "I can cast warlock cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus" + "\n   " + "I regain these spell slots on a short rest",
-				additional : ["2 cantrips \u0026 2 spells known", "2 cantrips \u0026 3 spells known", "2 cantrips \u0026 4 spells known", "3 cantrips \u0026 5 spells known", "3 cantrips \u0026 6 spells known", "3 cantrips \u0026 7 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 9 spells known", "3 cantrips \u0026 10 spells known", "4 cantrips \u0026 10 spells known", "4 cantrips \u0026 11 spells known", "4 cantrips \u0026 11 spells known", "4 cantrips \u0026 12 spells known", "4 cantrips \u0026 12 spells known", "4 cantrips \u0026 13 spells known", "4 cantrips \u0026 13 spells known", "4 cantrips \u0026 14 spells known", "4 cantrips \u0026 14 spells known", "4 cantrips \u0026 15 spells known", "4 cantrips \u0026 15 spells known"],
+				additional : ["2 cantrips \u0026 2 spells known", "2 cantrips \u0026 3 spells known", "2 cantrips \u0026 4 spells known", "3 cantrips \u0026 5 spells known", "3 cantrips \u0026 6 spells known", "3 cantrips \u0026 7 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 9 spells known", "3 cantrips \u0026 10 spells known", "4 cantrips \u0026 10 spells known", "4 cantrips \u0026 11 spells known", "4 cantrips \u0026 11 spells known", "4 cantrips \u0026 12 spells known", "4 cantrips \u0026 12 spells known", "4 cantrips \u0026 13 spells known", "4 cantrips \u0026 13 spells known", "4 cantrips \u0026 14 spells known", "4 cantrips \u0026 14 spells known", "4 cantrips \u0026 15 spells known", "4 cantrips \u0026 15 spells known"]
 			},
 			"subclassfeature1" : {
 				name : "Otherworldly Patron",
 				source : ["P", 107],
 				minlevel : 1,
-				description : "\n   " + "Choose the Otherworldly Patron you have a bargain with and put it in the \"Class\" field" + "\n   " + "Choose either the Archfey, the Fiend, the Great Old One, or the Undying",
+				description : "\n   " + "Choose the Otherworldly Patron you have a bargain with and put it in the \"Class\" field" + "\n   " + "Choose either the Archfey, the Fiend, the Great Old One, or the Undying"
 			},
 			"eldritch invocations" : {
 				name : "Eldritch Invocations",
@@ -1698,7 +1698,7 @@ var ClassList = {
 					eval : "AddString(\"Vision\", \"Witch Sight 30 ft\", \"; \");",
 					removeeval : "RemoveString(\"Vision\", \"Witch Sight 30 ft\", \"; \");",
 					prereqeval : "classes.known.warlock.level >= 15"
-				},
+				}
 			},
 			"pact boon" : {
 				name : "Pact Boon",
@@ -1716,7 +1716,7 @@ var ClassList = {
 				},
 				"pact of the chain" : {
 					name : "Pact of the Chain",
-					description : "\n   " + "I can cast Find Familiar as a ritual (PHB 240); Also Imp/Pseudodragon/Quasit/Sprite" + "\n   " + "When taking the attack action, I can forgo 1 attack to have my familiar attack instead" + "\n   " + "It makes this 1 attack by using its reaction",
+					description : "\n   " + "I can cast Find Familiar as a ritual (PHB 240); Also Imp/Pseudodragon/Quasit/Sprite" + "\n   " + "When taking the attack action, I can forgo 1 attack to have my familiar attack instead" + "\n   " + "It makes this 1 attack by using its reaction"
 				},
 				"pact of the tome" : {
 					name : "Pact of the Tome",
@@ -1726,8 +1726,8 @@ var ClassList = {
 						name : "Pact of the Tome",
 						class : "any",
 						level : [0, 0],
-						times : 3,
-					},
+						times : 3
+					}
 				}
 			},
 			"mystic arcanum" : {
@@ -1740,9 +1740,9 @@ var ClassList = {
 					name : "Mystic Arcanum (6)",
 					class : "warlock",
 					level : [6, 6],
-					oncelr : true,
+					oncelr : true
 				},
-				changeeval : "if (classes.known.warlock.level < 13) {delete CurrentSpells.warlock.bonus[\"mystic arcanum (7)\"]} else {if (!CurrentSpells.warlock.bonus[\"mystic arcanum (7)\"]) {CurrentSpells.warlock.bonus[\"mystic arcanum (7)\"] = {name : \"Mystic Arcanum (7)\", class : \"warlock\", level : [7, 7], oncelr : true}}}; if (classes.known.warlock.level < 15) {delete CurrentSpells.warlock.bonus[\"mystic arcanum (8)\"]} else {if (!CurrentSpells.warlock.bonus[\"mystic arcanum (8)\"]) {CurrentSpells.warlock.bonus[\"mystic arcanum (8)\"] = {name : \"Mystic Arcanum (8)\", class : \"warlock\", level : [8, 8], oncelr : true}}}; if (classes.known.warlock.level < 17) {delete CurrentSpells.warlock.bonus[\"mystic arcanum (9)\"]} else {if (!CurrentSpells.warlock.bonus[\"mystic arcanum (9)\"]) {CurrentSpells.warlock.bonus[\"mystic arcanum (9)\"] = {name : \"Mystic Arcanum (9)\", class : \"warlock\", level : [9, 9], oncelr : true}}}",
+				changeeval : "if (classes.known.warlock.level < 13) {delete CurrentSpells.warlock.bonus[\"mystic arcanum (7)\"]} else {if (!CurrentSpells.warlock.bonus[\"mystic arcanum (7)\"]) {CurrentSpells.warlock.bonus[\"mystic arcanum (7)\"] = {name : \"Mystic Arcanum (7)\", class : \"warlock\", level : [7, 7], oncelr : true}}}; if (classes.known.warlock.level < 15) {delete CurrentSpells.warlock.bonus[\"mystic arcanum (8)\"]} else {if (!CurrentSpells.warlock.bonus[\"mystic arcanum (8)\"]) {CurrentSpells.warlock.bonus[\"mystic arcanum (8)\"] = {name : \"Mystic Arcanum (8)\", class : \"warlock\", level : [8, 8], oncelr : true}}}; if (classes.known.warlock.level < 17) {delete CurrentSpells.warlock.bonus[\"mystic arcanum (9)\"]} else {if (!CurrentSpells.warlock.bonus[\"mystic arcanum (9)\"]) {CurrentSpells.warlock.bonus[\"mystic arcanum (9)\"] = {name : \"Mystic Arcanum (9)\", class : \"warlock\", level : [9, 9], oncelr : true}}}"
 			},
 			"eldritch master" : {
 				name : "Eldritch Master",
@@ -1779,7 +1779,7 @@ var ClassList = {
 		spellcastingKnown : {
 			cantrips : [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
 			spells : "book",
-			prepared : true,
+			prepared : true
 		},
 		features : {
 			"spellcasting" : {
@@ -1787,7 +1787,7 @@ var ClassList = {
 				source : ["P", 114],
 				minlevel : 1,
 				description : "\n   " + "I can cast prepared wizard cantrips/spells, using Intelligence as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus" + "\n   " + "I can cast all wizard spells in my spellbook as rituals if they have the ritual tag",
-				additional : ["3 cantrips known", "3 cantrips known", "3 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known"],
+				additional : ["3 cantrips known", "3 cantrips known", "3 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known"]
 			},
 			"arcane recovery" : {
 				name : "Arcane Recovery",
@@ -1817,7 +1817,7 @@ var ClassList = {
 				description : "\n   " + "Two 3rd-level spells of my choice in my spellbook will always count as prepared" + "\n   " + "I can cast both at third level once per short rest without expending spell slots",
 				recovery : "short rest",
 				usages : 2
-			},
+			}
 		}
 	}
 }
@@ -1844,7 +1844,7 @@ var ClassSubList = {
 				name : "Reckless Abandon",
 				source : ["S", 121],
 				minlevel : 6,
-				description : "\n   " + "If I use Reckless Attack during rage, I also gain temporary HP equal to my Con mod",
+				description : "\n   " + "If I use Reckless Attack during rage, I also gain temporary HP equal to my Con mod"
 			},
 			"subclassfeature10" : {
 				name : "Battlerager Charge",
@@ -1939,7 +1939,7 @@ var ClassSubList = {
 				"elk" : {
 					name : "Elk Spirit",
 					source : ["S", 122],
-					description : "\n   " + "While raging without heavy armor, my base walking speed increases with 15 foot",
+					description : "\n   " + "While raging without heavy armor, my base walking speed increases with 15 foot"
 				},
 				"wolf" : {
 					name : "Wolf Spirit",
@@ -1948,8 +1948,8 @@ var ClassSubList = {
 				"tiger" : {
 					name : "Tiger Spirit",
 					source : ["S", 122],
-					description : "\n   " + "While raging, I can add 10 feet to my long jump and 3 feet to my high jump distance",
-				},
+					description : "\n   " + "While raging, I can add 10 feet to my long jump and 3 feet to my high jump distance"
+				}
 			},
 			"subclassfeature6" : {
 				name : "Aspect of the Beast",
@@ -1965,23 +1965,23 @@ var ClassSubList = {
 				},
 				"eagle" : {
 					name : "Aspect of the Eagle",
-					description : "\n   " + "I can see up to 1 mile away perfectly; No disadvantage on Perception from dim light",
+					description : "\n   " + "I can see up to 1 mile away perfectly; No disadvantage on Perception from dim light"
 				},
 				"elk" : {
 					name : "Aspect of the Elk",
 					source : ["S", 122],
-					description : "\n   " + "While mounted or on foot and not incapacitated, my travel pace is doubled" + "\n   " + "I can extend this benefit to up to ten companions, while they are within 60 ft of me",
+					description : "\n   " + "While mounted or on foot and not incapacitated, my travel pace is doubled" + "\n   " + "I can extend this benefit to up to ten companions, while they are within 60 ft of me"
 				},
 				"wolf" : {
 					name : "Aspect of the Wolf",
-					description : "\n   " + "I can track while traveling at a fast pace; I can move stealthily at a normal pace",
+					description : "\n   " + "I can track while traveling at a fast pace; I can move stealthily at a normal pace"
 				},
 				"tiger" : {
 					name : "Aspect of the Tiger",
 					source : ["S", 122],
 					description : "\n   " + "I gain proficiency with two skills chosen from: Athletics, Acrobatics, Stealth, or Survival",
 					skillstxt : "\n\n" + toUni("Aspect of the Tiger") + ": Choose two from Athletics, Acrobatics, Stealth, and Survival."
-				},
+				}
 			},
 			"subclassfeature10" : {
 				name : "Spirit Walker",
@@ -1991,8 +1991,8 @@ var ClassSubList = {
 				spellcastingBonus : {
 					name : "Spirit Walker",
 					spells : ["commune with nature"],
-					selection : ["commune with nature"],
-				},
+					selection : ["commune with nature"]
+				}
 			},
 			"subclassfeature14" : {
 				name : "Totemic Attunement",
@@ -2024,7 +2024,7 @@ var ClassSubList = {
 					source : ["S", 122],
 					description : "\n   " + "As a bonus action while raging, I can make a melee weapon attack on these conditions:" + "\n    - " + "I move at least 20 ft in a straight line towards the target that is Large or smaller" + "\n    - " + "I make a melee weapon attack against it after the bonus action",
 					action : ["bonus action", " (in rage)"]
-				},
+				}
 			}
 		}
 	},
@@ -2038,7 +2038,7 @@ var ClassSubList = {
 				source : ["P", 54],
 				minlevel : 3,
 				description : "\n   " + "I gain proficiency with three skills of my choice",
-				skillstxt : "\n\n" + toUni("College of Lore") + ": Choose any three skills.",
+				skillstxt : "\n\n" + toUni("College of Lore") + ": Choose any three skills."
 			},
 			"subclassfeature3.1" : {
 				name : "Cutting Words",
@@ -2055,15 +2055,15 @@ var ClassSubList = {
 				spellcastingBonus : {
 					name : "Additional Magical Secret",
 					class : "any",
-					times : 2,
-				},
+					times : 2
+				}
 			},
 			"subclassfeature14" : {
 				name : "Peerless Skill",
 				source : ["P", 55],
 				minlevel : 14,
-				description : "\n   " + "When making an ability check, I can expend a use of Bardic Inspiration to add the die",
-			},
+				description : "\n   " + "When making an ability check, I can expend a use of Bardic Inspiration to add the die"
+			}
 		}
 	},
 	"college of valor" : {
@@ -2092,7 +2092,7 @@ var ClassSubList = {
 				minlevel : 14,
 				description : "\n   " + "When I use my action to cast a Bard spell, I can make one bonus action weapon attack",
 				action : ["bonus action", " (with Bard spell)"]
-			},
+			}
 		}
 	},
 	"arcana domain" : {
@@ -2112,8 +2112,8 @@ var ClassSubList = {
 					name : "Arcane Initiate",
 					class : "wizard",
 					level : [0, 0],
-					times : 2,
-				},
+					times : 2
+				}
 			},
 			"subclassfeature2" : {
 				name : "Channel Divinity: Arcane Abjuration",
@@ -2127,7 +2127,7 @@ var ClassSubList = {
 				name : "Spell Breaker",
 				source : ["S", 126],
 				minlevel : 6,
-				description : "\n   " + "When I restore HP to an ally with a 1st-level or higher spell, I can also end one spell" + "\n   " + "The chosen spell on the ally ends if it is equal or lower level to the spell slot level used",
+				description : "\n   " + "When I restore HP to an ally with a 1st-level or higher spell, I can also end one spell" + "\n   " + "The chosen spell on the ally ends if it is equal or lower level to the spell slot level used"
 			},
 			"subclassfeature8" : {
 				name : "Potent Spellcasting",
@@ -2178,7 +2178,7 @@ var ClassSubList = {
 				source : ["D", 96],
 				minlevel : 1,
 				description : "\n   " + "I gain proficiency with martial weapons",
-				weapons : [false, true],
+				weapons : [false, true]
 			},
 			"subclassfeature1.1" : {
 				name : "Reaper",
@@ -2190,7 +2190,7 @@ var ClassSubList = {
 					class : "any",
 					school : ["Necro"],
 					level : [0, 0]
-				},
+				}
 			},
 			"subclassfeature2" : {
 				name : "Channel Divinity: Touch of Death",
@@ -2203,7 +2203,7 @@ var ClassSubList = {
 				name : "Inescapable Destruction",
 				source : ["D", 97],
 				minlevel : 6,
-				description : "\n   " + "When I deal necrotic damage with spells or Channel Divinity, I ignore resistance to it",
+				description : "\n   " + "When I deal necrotic damage with spells or Channel Divinity, I ignore resistance to it"
 			},
 			"subclassfeature8" : {
 				name : "Divine Strike",
@@ -2222,7 +2222,7 @@ var ClassSubList = {
 				name : "Improved Reaper",
 				source : ["D", 97],
 				minlevel : 17,
-				description : "\n   " + "If I cast a 5th-level or lower necromancy spell that has one target, I can target two" + "\n   " + "They need to be within 5 ft of each other; I have to provide material comp. for both",
+				description : "\n   " + "If I cast a 5th-level or lower necromancy spell that has one target, I can target two" + "\n   " + "They need to be within 5 ft of each other; I have to provide material comp. for both"
 			}
 		}
 	},
@@ -2239,7 +2239,7 @@ var ClassSubList = {
 				description : "\n   " + "I learn two languages and gain proficiency and expertise with two skills" + "\n   " + "I can choose from the following: Arcana, History, Nature, or Religion",
 				skillstxt : "\n\n" + toUni("Knowledge Domain") + ": Choose two from Arcana, History, Nature, and Religion. You also gain expertise with these skills.",
 				eval : "AddLanguage(\"+2 from Knowledge Domain\", \"being a Cleric (Knowledge Domain)\");",
-				removeeval : "RemoveLanguage(\"+2 from Knowledge Domain\", \"being a Cleric (Knowledge Domain)\");",
+				removeeval : "RemoveLanguage(\"+2 from Knowledge Domain\", \"being a Cleric (Knowledge Domain)\");"
 			},
 			"subclassfeature2" : {
 				name : "Channel Divinity: Knowledge of Ages",
@@ -2285,13 +2285,13 @@ var ClassSubList = {
 				source : ["P", 60],
 				minlevel : 1,
 				description : "\n   " + "I gain proficiency with heavy armor",
-				armor : [false, false, true, false],
+				armor : [false, false, true, false]
 			},
 			"subclassfeature1.1" : {
 				name : "Disciple of Life",
 				source : ["P", 60],
 				minlevel : 1,
-				description : "\n   " + "When I use a spell that restores hit points, it restores an additional 2 + spell level",
+				description : "\n   " + "When I use a spell that restores hit points, it restores an additional 2 + spell level"
 			},
 			"subclassfeature2" : {
 				name : "Channel Divinity: Preserve Life",
@@ -2305,7 +2305,7 @@ var ClassSubList = {
 				name : "Blessed Healer",
 				source : ["P", 60],
 				minlevel : 6,
-				description : "\n   " + "When I restore HP to another with a spell, I regain 2 + the spell's level in HP",
+				description : "\n   " + "When I restore HP to another with a spell, I regain 2 + the spell's level in HP"
 			},
 			"subclassfeature8" : {
 				name : "Divine Strike",
@@ -2324,7 +2324,7 @@ var ClassSubList = {
 				name : "Supreme Healing",
 				source : ["P", 60],
 				minlevel : 17,
-				description : "\n   " + "When I restore HP with a spell, I heal the maximum amount instead of rolling the dice",
+				description : "\n   " + "When I restore HP with a spell, I heal the maximum amount instead of rolling the dice"
 			}
 		}
 	},
@@ -2367,7 +2367,7 @@ var ClassSubList = {
 				name : "Improved Flame",
 				source : ["P", 61],
 				minlevel : 6,
-				description : "\n   " + "I can also use my Warding Flare if another is attacked by a creature within 30 ft of me",
+				description : "\n   " + "I can also use my Warding Flare if another is attacked by a creature within 30 ft of me"
 			},
 			"subclassfeature8" : {
 				name : "Potent Spellcasting",
@@ -2398,7 +2398,7 @@ var ClassSubList = {
 				source : ["P", 62],
 				minlevel : 1,
 				description : "\n   " + "I gain proficiency with heavy armor",
-				armor : [false, false, true, false],
+				armor : [false, false, true, false]
 			},
 			"subclassfeature1.1" : {
 				name : "Acolyte of Nature",
@@ -2409,8 +2409,8 @@ var ClassSubList = {
 				spellcastingBonus : {
 					name : "Acolyte of Nature",
 					class : "druid",
-					level : [0, 0],
-				},
+					level : [0, 0]
+				}
 			},
 			"subclassfeature2" : {
 				name : "Channel Divinity: Charm Animals and Plants",
@@ -2460,7 +2460,7 @@ var ClassSubList = {
 				minlevel : 1,
 				description : "\n   " + "I gain proficiency with martial weapons and heavy armor",
 				armor : [false, false, true, false],
-				weapons : [false, true],
+				weapons : [false, true]
 			},
 			"subclassfeature1.1" : {
 				name : "Wrath of the Storm",
@@ -2476,13 +2476,13 @@ var ClassSubList = {
 				name : "Channel Divinity: Destructive Wrath",
 				source : ["P", 62],
 				minlevel : 2,
-				description : "\n   " + "Instead of rolling, I can do maximum damage when I do lightning or thunder damage",
+				description : "\n   " + "Instead of rolling, I can do maximum damage when I do lightning or thunder damage"
 			},
 			"subclassfeature6" : {
 				name : "Thunderbolt Strike",
 				source : ["P", 62],
 				minlevel : 6,
-				description : "\n   " + "When I deal lightning damage to a Large or smaller foe, I can push it up to 10 ft away",
+				description : "\n   " + "When I deal lightning damage to a Large or smaller foe, I can push it up to 10 ft away"
 			},
 			"subclassfeature8" : {
 				name : "Divine Strike",
@@ -2501,7 +2501,7 @@ var ClassSubList = {
 				name : "Stormborn",
 				source : ["P", 62],
 				minlevel : 17,
-				description : "\n   " + "Whenever I'm not underground or indoors, I have a fly speed equal to my current speed",
+				description : "\n   " + "Whenever I'm not underground or indoors, I have a fly speed equal to my current speed"
 			}
 		}
 	},
@@ -2526,7 +2526,7 @@ var ClassSubList = {
 				additional : ["", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "1 illusory duplicate", "4 illusory duplicates", "4 illusory duplicates", "4 illusory duplicates", "4 illusory duplicates"],
 				action : ["action", ""],
 				eval : "AddAction(\"bonus action\", \"Move Duplicate(s)\", \"Cleric (Trickery Domain) - Channel Divinity: Invoke Duplicity\")",
-				removeeval : "RemoveAction(\"bonus action\", \"Move Duplicate(s)\")",
+				removeeval : "RemoveAction(\"bonus action\", \"Move Duplicate(s)\")"
 			},
 			"subclassfeature6" : {
 				name : "Channel Divinity: Cloak of Shadows",
@@ -2552,7 +2552,7 @@ var ClassSubList = {
 				name : "Improved Duplicity",
 				source : ["P", 63],
 				minlevel : 17,
-				description : "\n   " + "When I use Invoke Duplicity, I make four illusory duplicates instead of one" + "\n   " + "I can move any number of the illusory duplicates as part of the same bonus action",
+				description : "\n   " + "When I use Invoke Duplicity, I make four illusory duplicates instead of one" + "\n   " + "I can move any number of the illusory duplicates as part of the same bonus action"
 			}
 		}
 	},
@@ -2568,7 +2568,7 @@ var ClassSubList = {
 				minlevel : 1,
 				description : "\n   " + "I gain proficiency with martial weapons and heavy armor",
 				armor : [false, false, true, false],
-				weapons : [false, true],
+				weapons : [false, true]
 			},
 			"subclassfeature1.1" : {
 				name : "War Priest",
@@ -2584,7 +2584,7 @@ var ClassSubList = {
 				name : "Channel Divinity: Guided Strike",
 				source : ["P", 63],
 				minlevel : 2,
-				description : "\n   " + "When I make an attack roll, I can add a +10 bonus to the roll after seeing the d20 roll",
+				description : "\n   " + "When I make an attack roll, I can add a +10 bonus to the roll after seeing the d20 roll"
 			},
 			"subclassfeature6" : {
 				name : "Channel Divinity: War God's Blessing",
@@ -2629,8 +2629,8 @@ var ClassSubList = {
 				spellcastingBonus : {
 					name : "Bonus Druid Cantrip",
 					class : "druid",
-					level : [0, 0],
-				},
+					level : [0, 0]
+				}
 			},
 			"subclassfeature2.1" : {
 				name : "Natural Recovery",
@@ -2651,50 +2651,50 @@ var ClassSubList = {
 					name : "Arctic Circle Spells",
 					description : "\n   " + "My mystical connection to the arctic infuses me with the ability to cast certain spells" + "\n   " + "These are always prepared, but don't count against the number of spells I can prepare",
 					spellcastingExtra : ["hold person", "spike growth", "sleet storm", "slow", "freedom of movement", "ice storm", "commune with nature", "cone of cold"],
-					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};",
+					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};"
 				},
 				"coast" : {
 					name : "Coast Circle Spells",
 					description : "\n   " + "My mystical connection to the coast infuses me with the ability to cast certain spells" + "\n   " + "These are always prepared, but don't count against the number of spells I can prepare",
 					spellcastingExtra : ["mirror image", "misty step", "water breathing", "water walk", "control water", "freedom of movement", "conjure elemental", "scrying"],
-					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};",
+					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};"
 				},
 				"desert" : {
 					name : "Desert Circle Spells",
 					description : "\n   " + "My mystical connection to the desert infuses me with the ability to cast certain spells" + "\n   " + "These are always prepared, but don't count against the number of spells I can prepare",
 					spellcastingExtra : ["blur", "silence", "create food and water", "protection from energy", "blight", "hallucinatory terrain", "insect plague", "wall of stone"],
-					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};",
+					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};"
 				},
 				"forest" : {
 					name : "Forest Circle Spells",
 					description : "\n   " + "My mystical connection to the forest infuses me with the ability to cast certain spells" + "\n   " + "These are always prepared, but don't count against the number of spells I can prepare",
 					spellcastingExtra : ["barkskin", "spider climb", "call lightning", "plant growth", "divination", "freedom of movement", "commune with nature", "tree stride"],
-					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};",
+					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};"
 				},
 				"grassland" : {
 					name : "Grassland Circle Spells",
 					description : "\n   " + "My connection to the grassland infuses me with the ability to cast certain spells" + "\n   " + "These are always prepared, but don't count against the number of spells I can prepare",
 					spellcastingExtra : ["invisibility", "pass without trace", "daylight", "haste", "divination", "freedom of movement", "dream", "insect plague"],
-					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};",
+					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};"
 				},
 				"mountain" : {
 					name : "Mountain Circle Spells",
 					description : "\n   " + "My connection to the mountains infuses me with the ability to cast certain spells" + "\n   " + "These are always prepared, but don't count against the number of spells I can prepare",
 					spellcastingExtra : ["spider climb", "spike growth", "lightning bolt", "meld into stone", "stone shape", "stoneskin", "passwall", "wall of stone"],
-					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};",
+					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};"
 				},
 				"swamp" : {
 					name : "Swamp Circle Spells",
 					description : "\n   " + "My mystical connection to the swamp infuses me with the ability to cast certain spells" + "\n   " + "These are always prepared, but don't count against the number of spells I can prepare",
 					spellcastingExtra : ["darkness", "melf's acid arrow", "water walk", "stinking cloud", "freedom of movement", "locate creature", "insect plague", "scrying"],
-					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};",
+					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};"
 				},
 				"underdark" : {
 					name : "Underdark Circle Spells",
 					description : "\n   " + "My connection to the underdark infuses me with the ability to cast certain spells" + "\n   " + "These are always prepared, but don't count against the number of spells I can prepare",
 					spellcastingExtra : ["spider climb", "web", "gaseous form", "stinking cloud", "greater invisibility", "stone shape", "cloudkill", "insect plague"],
-					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};",
-				},
+					eval : "if (event.target.name === \"Class Features Menu\") {app.alert({cMsg: \"You just changed the spells that should appear on the spell sheet. Please use the 'Spells' button or bookmark generate a new spell sheet so that these changes can be incorporated\", cTitle: \"Circle Spells need to be added to the Spell Sheet(s)\", nIcon : 3, nType : 0})};"
+				}
 			},
 			"subclassfeature6" : {
 				name : "Land's Stride",
@@ -2714,8 +2714,8 @@ var ClassSubList = {
 				name : "Nature's Sanctuary",
 				source : ["P", 68],
 				minlevel : 14,
-				description : "\n   " + "When a beast or plant attacks me, it must make a Wis save or pick a different target" + "\n   " + "If it can't, it automatically misses; On a successful save, it is immune for 24 hours",
-			},
+				description : "\n   " + "When a beast or plant attacks me, it must make a Wis save or pick a different target" + "\n   " + "If it can't, it automatically misses; On a successful save, it is immune for 24 hours"
+			}
 		}
 	},
 	"circle of the moon" : {
@@ -2727,7 +2727,7 @@ var ClassSubList = {
 				name : "Circle Forms",
 				source : ["P", 69],
 				minlevel : 2,
-				description : "\n   " + "I am able to transform into more dangerous animal forms when using Wild Shape",
+				description : "\n   " + "I am able to transform into more dangerous animal forms when using Wild Shape"
 			},
 			"wild shape" : {
 				name : "Wild Shape",
@@ -2753,20 +2753,20 @@ var ClassSubList = {
 				name : "Primal Strike",
 				source : ["P", 69],
 				minlevel : 6,
-				description : "\n   " + "My attacks count as magical while in Wild Shape",
+				description : "\n   " + "My attacks count as magical while in Wild Shape"
 			},
 			"subclassfeature10" : {
 				name : "Elemental Wild Shape",
 				source : ["P", 69],
 				minlevel : 10,
-				description : "\n   " + "I can transform into an air/earth/fire/water elemental by expending 2 Wild Shape uses",
+				description : "\n   " + "I can transform into an air/earth/fire/water elemental by expending 2 Wild Shape uses"
 			},
 			"subclassfeature14" : {
 				name : "Thousand Forms",
 				source : ["P", 69],
 				minlevel : 14,
-				description : "\n   " + "I can cast Alter Self at will without using spell slots (PHB 211)",
-			},
+				description : "\n   " + "I can cast Alter Self at will without using spell slots (PHB 211)"
+			}
 		}
 
 	},
@@ -2993,7 +2993,7 @@ var ClassSubList = {
 				source : ["P", 74],
 				minlevel : 15,
 				description : "\n   " + "I regain one superiority die if I have no more remaining when I roll initiative"
-			},
+			}
 		}
 	},
 	"eldritch knight" : {
@@ -3010,7 +3010,7 @@ var ClassSubList = {
 		},
 		spellcastingKnown : {
 			cantrips : [0, 0, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-			spells : [0, 0, 2, 3, 3, 3, 4, 4, 4, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9],
+			spells : [0, 0, 2, 3, 3, 3, 4, 4, 4, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9]
 		},
 		features : {
 			"action surge" : {
@@ -3020,7 +3020,7 @@ var ClassSubList = {
 				description : "\n   " + "I can take one additional action on my turn on top of my normally allowed actions",
 				usages : [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2],
 				recovery : "short rest",
-				additional : ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "30 ft teleport", "30 ft teleport", "30 ft teleport", "30 ft teleport", "30 ft teleport", "30 ft teleport"],
+				additional : ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "30 ft teleport", "30 ft teleport", "30 ft teleport", "30 ft teleport", "30 ft teleport", "30 ft teleport"]
 			},
 			"subclassfeature3" : {
 				name : "Spellcasting",
@@ -3033,40 +3033,40 @@ var ClassSubList = {
 					class : "wizard",
 					times : [0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4],
 					level : [1, 4], //lower and higher limit
-				},
+				}
 			},
 			"subclassfeature3.1" : {
 				name : "Weapon Bond",
 				source : ["P", 75],
 				minlevel : 3,
 				description : "\n   " + "I can bond with up to two weapons by spending a short rest with each" + "\n   " + "I can't be disarmed of a bonded weapon and I can summon one as a bonus action",
-				action : ["bonus action", ""],
+				action : ["bonus action", ""]
 			},
 			"subclassfeature7" : {
 				name : "War Magic",
 				source : ["P", 75],
 				minlevel : 7,
 				description : "\n   " + "When I use my action to cast a cantrip, I can make a weapon attack as a bonus action",
-				action : ["bonus action", ""],
+				action : ["bonus action", ""]
 			},
 			"subclassfeature10" : {
 				name : "Eldritch Strike",
 				source : ["P", 75],
 				minlevel : 10,
-				description : "\n   " + "A creature hit by my weapon attack has disadv. on the save vs. the next spell I cast" + "\n   " + "This lasts until the end of my next turn",
+				description : "\n   " + "A creature hit by my weapon attack has disadv. on the save vs. the next spell I cast" + "\n   " + "This lasts until the end of my next turn"
 			},
 			"subclassfeature15" : {
 				name : "Arcane Charge",
 				source : ["P", 75],
 				minlevel : 15,
-				description : "\n   " + "When I use Action Surge, I can also teleport up to 30 ft to an empty space I can see" + "\n   " + "I can do so before or after the extra action",
+				description : "\n   " + "When I use Action Surge, I can also teleport up to 30 ft to an empty space I can see" + "\n   " + "I can do so before or after the extra action"
 			},
 			"subclassfeature18" : {
 				name : "Improved War Magic",
 				source : ["P", 75],
 				minlevel : 18,
 				description : "\n   " + "When I use my action to cast a spell, I can make a weapon attack as a bonus action",
-				action : ["bonus action", ""],
+				action : ["bonus action", ""]
 			}
 		}
 	},
@@ -3083,7 +3083,7 @@ var ClassSubList = {
 				description : "\n   " + "When I use Second Wind, I also heal three allies within 60 ft that can see or hear me",
 				additional : ["", "", "3 HP", "4 HP", "5 HP", "6 HP", "7 HP", "8 HP", "9 HP", "10 HP", "11 HP", "12 HP", "13 HP", "14 HP", "15 HP", "16 HP", "17 HP", "18 HP", "19 HP", "20 HP"],
 				eval : "RemoveAction(\"bonus action\", \"Second Wind\"); AddAction(\"bonus action\", \"Second Wind (+ Rallying Cry)\", \"Purple Dragon Knight\")",
-				removeeval : "RemoveAction(\"bonus action\", \"Second Wind (+ Rallying Cry)\"); AddAction(\"bonus action\", \"Second Wind\", \"Fighter\")",
+				removeeval : "RemoveAction(\"bonus action\", \"Second Wind (+ Rallying Cry)\"); AddAction(\"bonus action\", \"Second Wind\", \"Fighter\")"
 			},
 			"subclassfeature7" : {
 				name : "Royal Envoy",
@@ -3099,14 +3099,14 @@ var ClassSubList = {
 				source : ["S", 128],
 				minlevel : 10,
 				description : "\n   " + "When I use my Action Surge, I can inspire an ally within 60 ft that can see or hear me" + "\n   " + "The ally can then use its reaction to make one melee or ranged weapon attack",
-				additional : ["", "", "", "", "", "", "", "", "", "1 ally", "1 ally", "1 ally", "1 ally", "1 ally", "1 ally", "1 ally", "1 ally", "2 allies", "2 allies", "2 allies"],
+				additional : ["", "", "", "", "", "", "", "", "", "1 ally", "1 ally", "1 ally", "1 ally", "1 ally", "1 ally", "1 ally", "1 ally", "2 allies", "2 allies", "2 allies"]
 			},
 			"subclassfeature15" : {
 				name : "Bulwark",
 				source : ["S", 128],
 				minlevel : 15,
 				description : "\n   " + "When I use Indomitable to reroll a Int, Wis, or Cha save, I can extend it to an ally" + "\n   " + "The ally can reroll its failed saving throw against the same effect and take the result" + "\n   " + "It only works if not incapacitated and the ally is within 60 ft and can see or hear me"
-			},
+			}
 		}
 	},
 	"way of the four elements" : {
@@ -3139,7 +3139,7 @@ var ClassSubList = {
 						name : "Breath of Winter",
 						spells : ["cone of cold"],
 						selection : ["cone of cold"],
-						firstCol : 6,
+						firstCol : 6
 					},
 					spellFirstColTitle : "Ki",
 					prereqeval : "classes.known.monk.level >= 17"
@@ -3153,7 +3153,7 @@ var ClassSubList = {
 						name : "Clench of the North Wind",
 						spells : ["hold person"],
 						selection : ["hold person"],
-						firstCol : 3,
+						firstCol : 3
 					},
 					spellFirstColTitle : "Ki",
 					prereqeval : "classes.known.monk.level >= 6"
@@ -3167,7 +3167,7 @@ var ClassSubList = {
 						name : "Eternal Mountain Defense",
 						spells : ["stoneskin"],
 						selection : ["stoneskin"],
-						firstCol : 5,
+						firstCol : 5
 					},
 					spellFirstColTitle : "Ki",
 					prereqeval : "classes.known.monk.level >= 11"
@@ -3189,7 +3189,7 @@ var ClassSubList = {
 						name : "Fist of Four Thunders",
 						spells : ["thunderwave"],
 						selection : ["thunderwave"],
-						firstCol : 2,
+						firstCol : 2
 					},
 					spellFirstColTitle : "Ki"
 				},
@@ -3208,7 +3208,7 @@ var ClassSubList = {
 						name : "Flames of the Phoenix",
 						spells : ["fireball"],
 						selection : ["fireball"],
-						firstCol : 4,
+						firstCol : 4
 					},
 					spellFirstColTitle : "Ki",
 					prereqeval : "classes.known.monk.level >= 11"
@@ -3222,7 +3222,7 @@ var ClassSubList = {
 						name : "Gong of the Summit",
 						spells : ["shatter"],
 						selection : ["shatter"],
-						firstCol : 3,
+						firstCol : 3
 					},
 					spellFirstColTitle : "Ki",
 					prereqeval : "classes.known.monk.level >= 6"
@@ -3236,7 +3236,7 @@ var ClassSubList = {
 						name : "Mist Stance",
 						spells : ["gaseous form"],
 						selection : ["gaseous form"],
-						firstCol : 4,
+						firstCol : 4
 					},
 					spellFirstColTitle : "Ki",
 					prereqeval : "classes.known.monk.level >= 11"
@@ -3250,7 +3250,7 @@ var ClassSubList = {
 						name : "Ride the Wind",
 						spells : ["fly"],
 						selection : ["fly"],
-						firstCol : 4,
+						firstCol : 4
 					},
 					spellFirstColTitle : "Ki",
 					prereqeval : "classes.known.monk.level >= 11"
@@ -3264,7 +3264,7 @@ var ClassSubList = {
 						name : "Rive of Hungry Flame",
 						spells : ["wall of fire"],
 						selection : ["wall of fire"],
-						firstCol : 5,
+						firstCol : 5
 					},
 					spellFirstColTitle : "Ki",
 					prereqeval : "classes.known.monk.level >= 17"
@@ -3278,7 +3278,7 @@ var ClassSubList = {
 						name : "Rush of the Gale Spirits",
 						spells : ["gust of wind"],
 						selection : ["gust of wind"],
-						firstCol : 2,
+						firstCol : 2
 					},
 					spellFirstColTitle : "Ki"
 				},
@@ -3297,7 +3297,7 @@ var ClassSubList = {
 						name : "Sweeping Cinder Strike",
 						spells : ["burning hands"],
 						selection : ["burning hands"],
-						firstCol : 2,
+						firstCol : 2
 					},
 					spellFirstColTitle : "Ki"
 				},
@@ -3316,11 +3316,11 @@ var ClassSubList = {
 						name : "Wave of Rolling Earth",
 						spells : ["wall of stone"],
 						selection : ["wall of stone"],
-						firstCol : 6,
+						firstCol : 6
 					},
 					spellFirstColTitle : "Ki",
 					prereqeval : "classes.known.monk.level >= 17"
-				},
+				}
 			}
 		}
 	},
@@ -3425,7 +3425,7 @@ var ClassSubList = {
 						selection : ["darkness"],
 						firstCol : 2
 					},
-					spellFirstColTitle : "Ki",
+					spellFirstColTitle : "Ki"
 				},
 				"darkvision" : {
 					name : "Darkvision",
@@ -3438,7 +3438,7 @@ var ClassSubList = {
 						selection : ["darkvision"],
 						firstCol : 2
 					},
-					spellFirstColTitle : "Ki",
+					spellFirstColTitle : "Ki"
 				},
 				"pass without trace" : {
 					name : "Pass Without Trace",
@@ -3451,7 +3451,7 @@ var ClassSubList = {
 						selection : ["pass without trace"],
 						firstCol : 2
 					},
-					spellFirstColTitle : "Ki",
+					spellFirstColTitle : "Ki"
 				},
 				"silence" : {
 					name : "Silence",
@@ -3464,8 +3464,8 @@ var ClassSubList = {
 						selection : ["silence"],
 						firstCol : 2
 					},
-					spellFirstColTitle : "Ki",
-				},
+					spellFirstColTitle : "Ki"
+				}
 			},
 			"subclassfeature6" : {
 				name : "Shadow Step",
@@ -3529,7 +3529,7 @@ var ClassSubList = {
 				action : ["bonus action", " (start/stop)"],
 				additional : "30-ft rad bright + 30-ft dim light",
 				eval : "AddAction(\"reaction\", \"Sun Shield (hit in melee)\", \"Monk (Way of the Sun Soul)\")",
-				removeeval : "RemoveAction(\"reaction\", \"Sun Shield\");",
+				removeeval : "RemoveAction(\"reaction\", \"Sun Shield\");"
 			}
 		}
 	},
@@ -3900,7 +3900,7 @@ var ClassSubList = {
 		},
 		spellcastingKnown : {
 			cantrips : [0, 0, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-			spells : [0, 0, 2, 3, 3, 3, 4, 4, 4, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9],
+			spells : [0, 0, 2, 3, 3, 3, 4, 4, 4, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9]
 		},
 		features : {
 			"subclassfeature3" : {
@@ -3912,13 +3912,13 @@ var ClassSubList = {
 				spellcastingBonus : [{//for the Mage Hand cantrip gained at level 1
 					name : "Mage Hand cantrip",
 					spells : ["mage hand"],
-					selection : ["mage hand"],
+					selection : ["mage hand"]
 				}, { //for the spells gained at level 3, 8, 14, 20
 					name : "From any School",
 					class : "wizard",
 					times : [0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4],
 					level : [1, 4], //lower and higher limit
-				}],
+				}]
 			},
 			"subclassfeature3.1" : {
 				name : "Mage Hand Legerdemain",
@@ -4244,7 +4244,7 @@ var ClassSubList = {
 						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/poison/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."]
 					}
 				},
-				eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?sorcerer,subclassfeature1,((black|blue|brass|bronze|copper|gold|green|red|silver|white) dragon ancestor).*/i; if ((tReg).test(CFrem)) {FeaChoice = CurrentClasses.sorcerer.features.subclassfeature1[CFrem.replace(tReg, \"$1\")].dragonElement; AddString(\"Class Features Remember\", \"sorcerer,subclassfeature6,\" + FeaChoice, false);};};",
+				eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?sorcerer,subclassfeature1,((black|blue|brass|bronze|copper|gold|green|red|silver|white) dragon ancestor).*/i; if ((tReg).test(CFrem)) {FeaChoice = CurrentClasses.sorcerer.features.subclassfeature1[CFrem.replace(tReg, \"$1\")].dragonElement; AddString(\"Class Features Remember\", \"sorcerer,subclassfeature6,\" + FeaChoice, false);};};"
 			},
 			"subclassfeature14" : {
 				name : "Dragon Wings",
@@ -4275,14 +4275,14 @@ var ClassSubList = {
 				minlevel : 1,
 				description : "\n   " + "I can speak, read, and write Primordial (and its dialects Aquan, Auran, Ignan, Terran)",
 				eval : "AddLanguage(\"Primordial\", \"being a Storm Sorcerer\");",
-				removeeval : "RemoveLanguage(\"Primordial\", \"being a Storm Sorcerer\");",
+				removeeval : "RemoveLanguage(\"Primordial\", \"being a Storm Sorcerer\");"
 			},
 			"subclassfeature1.1" : {
 				name : "Tempestuous Magic",
 				source : ["S", 137],
 				minlevel : 1,
 				description : "\n   " + "As a bonus action, after casting a 1st-level or higher spell, I can control elemental air" + "\n   " + "I can use this control to fly up to 10 feet without provoking opportunity attacks",
-				action : ["bonus action", " (after casting)"],
+				action : ["bonus action", " (after casting)"]
 			},
 			"subclassfeature6" : {
 				name : "Heart of the Storm",
@@ -4298,7 +4298,7 @@ var ClassSubList = {
 				source : ["S", 137],
 				minlevel : 6,
 				description : "\n   " + "As an action, I can stop rain around me in 20-ft radius; bonus action for it to resume" + "\n   " + "As a bonus action, I can choose the direction of wind around me in a 100-ft radius" + "\n   " + "This lasts until the end of my next turn and doesn't alter the wind's speed",
-				action : ["bonus action", ""],
+				action : ["bonus action", ""]
 			},
 			"subclassfeature14" : {
 				name : "Storm's Fury",
@@ -4306,7 +4306,7 @@ var ClassSubList = {
 				minlevel : 14,
 				description : "\n   " + "As a reaction when hit by a melee attack, I can deal lightning damage to the attacker" + "\n   " + "The attacker must also make a Strength save or be pushed up to 20 ft away from me",
 				action : ["reaction", ""],
-				additional : ["", "", "", "", "", "", "", "", "", "", "", "", "", "14 lightning damage", "15 lightning damage", "16 lightning damage", "17 lightning damage", "18 lightning damage", "19 lightning damage", "20 lightning damage"],
+				additional : ["", "", "", "", "", "", "", "", "", "", "", "", "", "14 lightning damage", "15 lightning damage", "16 lightning damage", "17 lightning damage", "18 lightning damage", "19 lightning damage", "20 lightning damage"]
 			},
 			"subclassfeature18" : {
 				name : "Wind Soul",
@@ -4348,7 +4348,7 @@ var ClassSubList = {
 				minlevel : 6,
 				description : "\n   " + "As a reaction, I can add/subtract 1d4 from another's attack roll, ability check, or save",
 				action : ["reaction", " (2 sorcery points)"],
-				additional : "2 sorcery points",
+				additional : "2 sorcery points"
 			},
 			"subclassfeature14" : {
 				name : "Controlled Chaos",
@@ -4495,8 +4495,8 @@ var ClassSubList = {
 				spellcastingBonus : {
 					name : "Among the Dead",
 					spells : ["spare the dying"],
-					selection : ["spare the dying"],
-				},
+					selection : ["spare the dying"]
+				}
 			},
 			"subclassfeature6" : {
 				name : "Defy Death",
@@ -4520,7 +4520,7 @@ var ClassSubList = {
 				action : ["bonus action", ""],
 				recovery : "short rest",
 				usages : 1,
-				additional : ["", "", "", "", "", "", "", "", "", "", "", "", "", "1d8 + 14 HP", "1d8 + 15 HP", "1d8 + 16 HP", "1d8 + 17 HP", "1d8 + 18 HP", "1d8 + 19 HP", "1d8 + 20 HP"],
+				additional : ["", "", "", "", "", "", "", "", "", "", "", "", "", "1d8 + 14 HP", "1d8 + 15 HP", "1d8 + 16 HP", "1d8 + 17 HP", "1d8 + 18 HP", "1d8 + 19 HP", "1d8 + 20 HP"]
 			}
 		}
 	},
@@ -4553,7 +4553,7 @@ var ClassSubList = {
 				source : ["P", 115],
 				minlevel : 6,
 				description : "\n   " + "As a reaction, my Arcane Ward can absorb damage done to a creature within 30 ft",
-				action : ["reaction", ""],
+				action : ["reaction", ""]
 			},
 			"subclassfeature10" : {
 				name : "Improved Abjuration",
@@ -4735,7 +4735,7 @@ var ClassSubList = {
 				minlevel : 14,
 				description : "\n   " + "When I cast a 5th-level or lower wizard spell that damages, it can deal max damage" + "\n   " + "Except the first time I do this after a long rest, I suffer 2d12 necrotic dmg per spell lvl" + "\n   " + "Every time I do it after that, before a long rest, I take another 1d12 necrotic damage" + "\n   " + "This necrotic damage surpasses my resistances/immunities; I can't overchannel cantrips",
 				recovery : "long rest",
-				usagescalc : "event.value = \"1 + \u221E\";",
+				usagescalc : "event.value = \"1 + \u221E\";"
 			}
 		}
 	},
@@ -4759,8 +4759,8 @@ var ClassSubList = {
 				spellcastingBonus : {
 					name : "Minor Illusion cantrip",
 					spells : ["minor illusion"],
-					selection : ["minor illusion"],
-				},
+					selection : ["minor illusion"]
+				}
 			},
 			"subclassfeature6" : {
 				name : "Malleable Illusion",
@@ -4783,7 +4783,7 @@ var ClassSubList = {
 				source : ["P", 118],
 				minlevel : 14,
 				description : "\n   " + "As a bonus action, after I cast a 1st-level or higher illusion spell, I can make it real" + "\n   " + "One inanimate, nonmagical object that is part of the illusion becomes real for 1 minute" + "\n   " + "The object can't be something that directly harms someone",
-				action : ["bonus action", ""],
+				action : ["bonus action", ""]
 			}
 		}
 	},
@@ -4803,7 +4803,7 @@ var ClassSubList = {
 				name : "Grim Harvest",
 				source : ["P", 118],
 				minlevel : 2,
-				description : "\n   " + "Once per turn, when I kill something with a 1st-level or higher spell, I regain hit points" + "\n   " + "The number of hit points regained is 2\u00D7 the spell's level (or 3\u00D7 with necromancy spells)" + "\n   " + "This doesn't occur for constructs/undead",
+				description : "\n   " + "Once per turn, when I kill something with a 1st-level or higher spell, I regain hit points" + "\n   " + "The number of hit points regained is 2\u00D7 the spell's level (or 3\u00D7 with necromancy spells)" + "\n   " + "This doesn't occur for constructs/undead"
 			},
 			"subclassfeature6" : {
 				name : "Undead Thralls",
@@ -4845,7 +4845,7 @@ var ClassSubList = {
 				name : "Minor Alchemy",
 				source : ["P", 119],
 				minlevel : 2,
-				description : "\n   " + "I can transform an object of wood/stone/iron/copper/silver into another of those" + "\n   " + "For each 10 min I spend, I can transform up to 1 cubic foot of the material" + "\n   " + "It reverts back when I lose concentration or after 1 hour",
+				description : "\n   " + "I can transform an object of wood/stone/iron/copper/silver into another of those" + "\n   " + "For each 10 min I spend, I can transform up to 1 cubic foot of the material" + "\n   " + "It reverts back when I lose concentration or after 1 hour"
 			},
 			"subclassfeature6" : {
 				name : "Transmuter's Stone",
@@ -4884,7 +4884,7 @@ var ClassSubList = {
 				description : "\n   " + "I gain proficiency with light armor, a one-handed melee weapon, and Performance",
 				armor : [true, false, false, false],
 				skills : ["Performance"],
-				skillstxt : "\n\n" + toUni("Bladesinger") + ": Performance",
+				skillstxt : "\n\n" + toUni("Bladesinger") + ": Performance"
 			},
 			"subclassfeature2.1" : {
 				name : "Bladesong",

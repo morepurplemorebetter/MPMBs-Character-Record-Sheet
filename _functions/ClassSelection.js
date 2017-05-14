@@ -48,7 +48,7 @@ function SelectClass() {
 			clCount--;
 		};
 		
-		ClassSelection_Dialog.description.elements[0].elements[6].char_height = hasUAranger ? 3 : -1;
+		setDialogName(ClassSelection_Dialog, "rngr", "char_height", hasUAranger ? 3 : -1);
 	};
 	//add the classes to the dialog
 	var loadKnownClassesToDialog = function() {
@@ -70,7 +70,7 @@ function SelectClass() {
 		ClassSelection_Dialog.currentLevel = Number(What("Character Level"));
 		ClassSelection_Dialog.LVLchange = ClassSelection_Dialog.currentLevel - ClassSelection_Dialog.finalLevel;
 		if (!ClassSelection_Dialog.LVLchange) {
-			ClassSelection_Dialog.description.elements[0].elements[1].char_height = -1;
+			setDialogName(ClassSelection_Dialog, "lvlu", "char_height", -1);
 		};
 		//have something to compare the classes.known against for filling in the other variables
 		var selecCompare = ClassSelection_Dialog.curSelec.reduce(function(acc, val) { return acc.concat(val[1]); }, []);
@@ -120,6 +120,7 @@ function SelectClass() {
 		lines : 1,
 		initialize : function (dialog) {
 			var toLoad = {
+				img1 : allIcons.classes,
 				dsc1 : "When you select a class or a subclass in the drop-down boxes in this dialogue, the text field in the same line will update accordingly, and vice versa.\nThe drop-down boxes will only update once you click/tab outside of the text field.",
 				dsc2 : "Although the sheet knows of only one way to set the text field from the drop-down boxes, it understands very many different textual inputs. You can test this by typing something in the text field and see what the sheet recognizes it as. For example, if you enter 'War Priest' it will be recognized as a 'Cleric (War Domain)', and when you enter 'Exalted Knight of Obedience' it will be recognized as 'Paladin (Oath of Devotion)'.",
 				lvlu : theChar + "'s level has increased by " + this.LVLchange + ", for a total of " + this.currentLevel + ". Please change the level of one or more classes accordingly, or add a new class in its entirety.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level).",
@@ -259,7 +260,7 @@ function SelectClass() {
 			this.updateFull(dialog);
 		},
 		bAdR : function (dialog) { dialog.end("bAdR"); },
-		bSrc : function (dialog) { ShowDialog("List of Sources", "sources"); },
+		bSrc : function (dialog) { ShowDialog("List of Sources, sorted by abbreviation", "sources"); },
 		bCSS : function (dialog) { dialog.end("bCSS"); },
 		r0LV : function (dialog) { this.lvlChange(dialog, 0); },
 		r0TX : function (dialog) { this.textChange(dialog, 0); },
@@ -306,14 +307,24 @@ function SelectClass() {
 			elements : [{
 				type : "view",
 				elements : [{
-					type : "static_text",
-					item_id : "titl",
-					alignment : "align_fill",
-					font : "heading",
-					bold : true,
-					height : 21,
-					char_width : 80,
-					name : "Select the class(es) for your character"
+					type : "view",
+					align_children : "align_row",
+					elements : [{
+						type : "image",
+						item_id : "img1",
+						alignment : "align_bottom",
+						width : 20,
+						height : 20
+					}, {
+						type : "static_text",
+						item_id : "titl",
+						alignment : "align_fill",
+						font : "title",
+						bold : true,
+						height : 21,
+						char_width : 80,
+						name : "Select the class(es) for your character"
+					}]
 				}, {
 					type : "static_text",
 					item_id : "lvlu",
@@ -958,7 +969,7 @@ function SelectClass() {
 		
 		// set the character level and xp
 		var newLvl = ClassSelection_Dialog.finalLevel > 0 ? ClassSelection_Dialog.finalLevel : "";
-		Value("Character Level", newLvl, undefined, newLvl);
+		Value("Character Level", newLvl, undefined);
 		var curXP = Number(What("Total Experience").replace(",", "."));
 		var curXPlvl = ExperiencePointsList.reduce(function(acc, val) { return acc += curXP >= Number(val) ? 1 : 0; }, 0);
 		if (ClassSelection_Dialog.finalLevel < ExperiencePointsList.length && ClassSelection_Dialog.finalLevel != curXPlvl) {
@@ -977,7 +988,7 @@ function SelectClass() {
 		if (ClassFld !== ClassSelection_Dialog.finalText) {
 			Value("Class and Levels", ClassSelection_Dialog.finalText);
 		} else {
-			ApplyClasses(ClassSelection_Dialog.finalText, false);
+			ApplyClasses(ClassSelection_Dialog.finalText, true);
 		};
 	};
 };
@@ -1023,7 +1034,7 @@ function AskMulticlassing() {
 				"rCl2" : false,
 				"rCl3" : false,
 				"rCl4" : false,
-				"rClN" : parseFloat(this.ClassNmbrs) <= 0,
+				"rClN" : parseFloat(this.ClassNmbrs) <= 0
 			});
 			dialog.enable({
 				"rClN" : true,
@@ -1031,14 +1042,14 @@ function AskMulticlassing() {
 				"rCl2" : parseFloat(this.ClassNmbrs) >= 2,
 				"rCl3" : parseFloat(this.ClassNmbrs) >= 3,
 				"rCl4" : parseFloat(this.ClassNmbrs) >= 4,
-				"cAll" : Math.abs(this.LVLchange) > 1,
+				"cAll" : Math.abs(this.LVLchange) > 1
 			});
 			dialog.visible({
 				"vCl1" : parseFloat(this.ClassNmbrs) >= 1,
 				"vCl2" : parseFloat(this.ClassNmbrs) >= 2,
 				"vCl3" : parseFloat(this.ClassNmbrs) >= 3,
 				"vCl4" : parseFloat(this.ClassNmbrs) >= 4,
-				"vAll" : Math.abs(this.LVLchange) > 1,
+				"vAll" : Math.abs(this.LVLchange) > 1
 			})
 		},
 
@@ -1062,7 +1073,7 @@ function AskMulticlassing() {
 		//do this whenever a custom text is entered so that the right bullet point is selected
 		tClN : function (dialog) {
 			dialog.load({
-				"rClN" : true,
+				"rClN" : true
 			});
 		},
 		
@@ -1087,7 +1098,7 @@ function AskMulticlassing() {
 						alignment : "align_fill",
 						font : "dialog",
 						char_height : 5,
-						char_width : 40,
+						char_width : 40
 					}, {
 						type : "view",
 						align_children : "align_left",
@@ -1101,13 +1112,13 @@ function AskMulticlassing() {
 								item_id : "rClN",
 								group_id : "Class",
 								name : "New class:",
-								char_width : 10,
+								char_width : 10
 							}, {
 								type : "edit_text",
 								item_id : "tClN",
 								alignment : "align_fill",
 								char_width : 30,
-								height : 20,
+								height : 20
 							}, ]
 						}, {
 							type : "view",
@@ -1118,7 +1129,7 @@ function AskMulticlassing() {
 								item_id : "rCl1",
 								group_id : "Class",
 								name : "Class 1:",
-								char_width : 10,
+								char_width : 10
 							}, {
 								type : "static_text",
 								item_id : "tCl1",
@@ -1126,7 +1137,7 @@ function AskMulticlassing() {
 								height : 20,
 								alignment : "align_fill",
 								font : "dialog",
-								bold : true,
+								bold : true
 							}, ]
 						}, {
 							type : "view",
@@ -1137,7 +1148,7 @@ function AskMulticlassing() {
 								item_id : "rCl2",
 								group_id : "Class",
 								name : "Class 2:",
-								char_width : 10,
+								char_width : 10
 							}, {
 								type : "static_text",
 								item_id : "tCl2",
@@ -1145,7 +1156,7 @@ function AskMulticlassing() {
 								height : 20,
 								alignment : "align_fill",
 								font : "dialog",
-								bold : true,
+								bold : true
 							}, ]
 						}, {
 							type : "view",
@@ -1156,7 +1167,7 @@ function AskMulticlassing() {
 								item_id : "rCl3",
 								group_id : "Class",
 								name : "Class 3:",
-								char_width : 10,
+								char_width : 10
 							}, {
 								type : "static_text",
 								item_id : "tCl3",
@@ -1164,7 +1175,7 @@ function AskMulticlassing() {
 								height : 20,
 								alignment : "align_fill",
 								font : "dialog",
-								bold : true,
+								bold : true
 							}, ]
 						}, {
 							type : "view",
@@ -1175,7 +1186,7 @@ function AskMulticlassing() {
 								item_id : "rCl4",
 								group_id : "Class",
 								name : "Class 4:",
-								char_width : 10,
+								char_width : 10
 							}, {
 								type : "static_text",
 								item_id : "tCl4",
@@ -1183,7 +1194,7 @@ function AskMulticlassing() {
 								height : 20,
 								alignment : "align_fill",
 								font : "dialog",
-								bold : true,
+								bold : true
 							}, ]
 						}, ]
 					}, {
@@ -1197,19 +1208,19 @@ function AskMulticlassing() {
 							alignment : "align_fill",
 							font : "dialog",
 							char_height : 6,
-							char_width : 38,
+							char_width : 38
 						}, {
 							type : "view",
 							align_children : "align_left",
 							elements : [{
 								type : "check_box",
 								item_id : "cAll",
-								name : "Apply the entire level change to the selected class.",
+								name : "Apply the entire level change to the selected class."
 							}, ]
 						}, ]
 					}, ]
 				}, {
-					type : "ok",
+					type : "ok"
 				}, ]
 			}, ]
 		}
@@ -1374,14 +1385,14 @@ function PleaseSubclass(theclass) {
 							font : "heading",
 							bold : true,
 							height : 21,
-							width : 500,
+							width : 500
 						}, {
 							type : "static_text",
 							item_id : "tex0",
 							alignment : "align_fill",
 							font : "dialog",
 							height : 45,
-							width : 500,
+							width : 500
 						}, {
 							type : "cluster",
 							item_id : "clu1",
@@ -1392,13 +1403,13 @@ function PleaseSubclass(theclass) {
 								align_children : "align_top",
 								elements : [{
 										type : "view",
-										elements : SubclassArrayLeft,
+										elements : SubclassArrayLeft
 									}, {
 										type : "gap",
-										width : 5,
+										width : 5
 									}, {
 										type : "view",
-										elements : SubclassArrayRight,
+										elements : SubclassArrayRight
 									}]
 							}, {
 								type : "static_text",
@@ -1406,7 +1417,7 @@ function PleaseSubclass(theclass) {
 								alignment : "align_fill",
 								font : "dialog",
 								height : !isAsterisk ? 0 : 18 * Math.ceil(asteriskString.length / 80),
-								//width : 450,
+								//width : 450
 							}]
 						}, {
 							type : "static_text",
@@ -1414,7 +1425,7 @@ function PleaseSubclass(theclass) {
 							alignment : "align_fill",
 							font : "dialog",
 							height : 18 + (18 * Math.ceil(moreString.length / 80)),
-							width : 500,
+							width : 500
 						}]
 					}, {
 						type : "ok_cancel_other",

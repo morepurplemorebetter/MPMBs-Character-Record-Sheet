@@ -164,7 +164,7 @@ function ApplyCompRace(newRace) {
 	var compFields = [
 		prefix + "Comp.Use",
 		prefix + "Text.Comp.Use",
-		prefix + "BlueText.Comp.Use",
+		prefix + "BlueText.Comp.Use"
 	];
 	
 	//reset all the fields if the input is nothing
@@ -631,7 +631,7 @@ function ApplyWildshape() {
 	var newForm = event.value.toLowerCase();
 	var resetFlds = [
 		prefix + "Wildshape." + Fld,
-		prefix + "Text.Wildshape." + Fld,
+		prefix + "Text.Wildshape." + Fld
 	];
 	var resetTooltipsFlds = function() {
 		AddTooltip(prefix + "Wildshape." + Fld + ".Attack." + 1 + ".Description", "");
@@ -680,7 +680,7 @@ function ApplyWildshape() {
 		theCrea.scores[2],
 		What("Int"),
 		What("Wis"),
-		What("Cha"),
+		What("Cha")
 	];
 	
 	//calculate the ability score modifiers
@@ -887,7 +887,7 @@ function ApplyWildshape() {
 		var saveCrea = [
 			theCrea.saves[s] !== "" ? "proficient" : "nothing",
 			theCrea.saves[s] !== "" ? creaProfBcalc : 0,
-			theCrea.saves[s] !== "" ? theCrea.saves[s] - Math.round((theCrea.scores[s] - 10.5) * 0.5) - creaProfBfix : 0,
+			theCrea.saves[s] !== "" ? theCrea.saves[s] - Math.round((theCrea.scores[s] - 10.5) * 0.5) - creaProfBfix : 0
 		];
 		
 		//see if the druid has proficiency/expertise in it, and any possible bonuses
@@ -1116,7 +1116,7 @@ function MakeWildshapeMenu() {
 			temp.push({
 				cName : array[i][0],
 				cReturn : "add" + "#" + array[i][1],
-				bMarked : removeShapes.indexOf(array[i][0]) !== -1,
+				bMarked : removeShapes.indexOf(array[i][0]) !== -1
 			})
 		}
 		menu.oSubMenu.push({
@@ -1480,7 +1480,7 @@ function MakeCompMenu() {
 					cName : array[i][0],
 					cReturn : name[1] + "#" + array[i][1],
 					bMarked : subMarked,
-					bEnabled : array[i][1] === "no-mm" ? false : name[1] === "change" && (array[i][1] === "companion" || array[i][1] === "companionrr") && CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound !== "creature" ? false : true,
+					bEnabled : array[i][1] === "no-mm" ? false : name[1] === "change" && (array[i][1] === "companion" || array[i][1] === "companionrr") && CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound !== "creature" ? false : true
 				})
 			}
 		}
@@ -1513,7 +1513,7 @@ function MakeCompMenu() {
 	
 	var visOptions = [
 		["Show box for Companion's Appearance", "comp.img"],
-		["Show Equipment section", "comp.eqp"],
+		["Show Equipment section", "comp.eqp"]
 	];
 	
 	//make a list of all the creatures
@@ -1749,7 +1749,7 @@ function changeCompType(inputType, prefix) {
 		app.alert({
 			cMsg : toUni("Pick Two Skills") + "\nThe Ranger's Animal Companion that you have just added, gains proficiency with two additional skills as those already selected. Because there is no automation for selecting these proficiencies, please do it manually.\n\n" + toUni("Ability Score Improvements") + "\nThe Ranger's Animal Companion gains Ability Score Improvements whenever your character gains them. There is no automation for adding these either, so please don't forget to increase the ability scores for the animal companion when you get the reminder pop-up. Also, remember that any DCs for abilities that the beast possesses are based on ability scores and that they might need to be manually changed when changing the ability scores.\nThe 'Notes' section on the companion page automatically keeps track of how many points you can increase the ability scores and what the base value of those scores are according to the Monster Manual.",
 			nIcon : 3,
-			cTitle : "Don't forget the Skills and Ability Score Improvements!",
+			cTitle : "Don't forget the Skills and Ability Score Improvements!"
 		})
 	}
 };
@@ -1765,7 +1765,7 @@ function changeCompDialog(prefix) {
 		//when starting the dialog
 		initialize : function (dialog) {
 			dialog.load({
-				"txt0" : "A familiar or mount's type changes from beast to either celestial, fey, or fiend. Please select one.",
+				"txt0" : "A familiar or mount's type changes from beast to either celestial, fey, or fiend. Please select one."
 			});
 		},
 		
@@ -1800,7 +1800,7 @@ function changeCompDialog(prefix) {
 					alignment : "align_fill",
 					font : "dialog",
 					char_height : 3,
-					char_width : 30,
+					char_width : 30
 				}, {
 					type : "cluster",
 					align_children : "align_distribute",
@@ -1808,23 +1808,23 @@ function changeCompDialog(prefix) {
 						type : "radio",
 						item_id : "rCel",
 						group_id : "Type",
-						name : "Celestial",
+						name : "Celestial"
 					}, {
 						type : "radio",
 						item_id : "rFey",
 						group_id : "Type",
-						name : "Fey",
+						name : "Fey"
 					}, {
 						type : "radio",
 						item_id : "rFie",
 						group_id : "Type",
-						name : "Fiend",
+						name : "Fiend"
 					}, ]
 				}, {
 					type : "gap",
-					height : 8,
+					height : 8
 				}, {
-					type : "ok",
+					type : "ok"
 				}, ]
 			}, ]
 		}
@@ -2596,7 +2596,7 @@ function MakePagesMenu() {
 		["Companion", "AScomp"],
 		["Notes", "ASnotes"],
 		["Wild Shapes", "WSfront"],
-		["Adventurers Log", "ALlog"],
+		["Adventurers Log", "ALlog"]
 	];
 	var pagesArrayAdd = [];
 	var pagesArrayRemove = [];
@@ -2657,7 +2657,7 @@ function MakePagesMenu() {
 				cName : array[i][0] + (!isEnabled ? extraName : ""),
 				cReturn : name + "#" + array[i][1],
 				bMarked : isMarked,
-				bEnabled : isEnabled,
+				bEnabled : isEnabled
 			})
 		}
 		menu.push(temp);
@@ -2822,7 +2822,7 @@ function MakeNotesMenu_NotesOptions() {
 			item.push({
 				cName : array[i][0],
 				cReturn : array[i][1],
-				bMarked : isMarked,
+				bMarked : isMarked
 			});
 		}
 	};
@@ -3166,7 +3166,7 @@ function MakeIconMenu_IconOptions() {
 	var OptionMenu = [
 		[(restrictedViewer ? "Set a pdf file as " : "Set any image/pdf file as ") + DisplayName, "set"],
 		["Reset the " + DisplayName, "reset"],
-		["Empty the " + DisplayName, "empty"],
+		["Empty the " + DisplayName, "empty"]
 	];
 	menuLVL1(IconMenu, OptionMenu);
 	
@@ -3179,7 +3179,7 @@ function MakeIconMenu_IconOptions() {
 			["Harpers", "harpers"],
 			["Lord's Alliance", "lordsalliance"],
 			["Order of the Gauntlet", "ordergauntlet"],
-			["Zhentarim", "zhentarim"],
+			["Zhentarim", "zhentarim"]
 		];
 		var factionSymbols = [];
 		var factionIcons = [];
@@ -3208,7 +3208,7 @@ function MakeIconMenu_IconOptions() {
 			["Rogue icon", "rogue"],
 			["Sorcerer icon", "sorcerer"],
 			["Warlock icon", "warlock"],
-			["Wizard icon", "wizard"],
+			["Wizard icon", "wizard"]
 		];
 		IconMenu.push({cName : "-", cReturn : "-"}); // add a divider
 		menuLVL2(IconMenu, ["Set class icon", "classicon"], classes);
@@ -3220,7 +3220,7 @@ function MakeIconMenu_IconOptions() {
 			["Rage of Demons icon", "rod"],
 			["Curse of Strahd icon", "cos"],
 			["Storm King's Thunder icon", "skt"],
-			["Tales of the Yawning Portal icon", "totyp"],
+			["Tales of the Yawning Portal icon", "totyp"]
 		];
 		IconMenu.push({cName : "-", cReturn : "-"}); // add a divider
 		menuLVL2(IconMenu, ["Set Adventure League season icon", "seasonicon"], classes);
@@ -3230,7 +3230,7 @@ function MakeIconMenu_IconOptions() {
 	if (restrictedViewer) {
 		var Conversions = [
 			["-", "-"],
-			["Go to an online image-to-pdf converter", "convertor"],
+			["Go to an online image-to-pdf converter", "convertor"]
 		];
 		menuLVL1(IconMenu, Conversions);
 	}
@@ -3330,7 +3330,7 @@ function SetAdvLogCalcOrder(prefix) {
 		".gold",
 		".downtime",
 		".renown",
-		".magicItems",
+		".magicItems"
 	];
 
 	
@@ -3403,11 +3403,11 @@ function ShowHonorSanity(input) {
 			"HoS",
 			"HoS Mod",
 			"HoS ST Mod",
-			"HoS ST Prof",
+			"HoS ST Prof"
 		];
 		var fieldsArrayHide = [
 			"Vision.0",
-			"Passive Perception.0",
+			"Passive Perception.0"
 		];
 		Value("Text.HoS.Ability", toShow.toUpperCase());
 		Value("Text.HoS.Save", toShow.toUpperCase());
@@ -3429,10 +3429,10 @@ function ShowHonorSanity(input) {
 			"HoS ST Mod",
 			"HoS ST Adv",
 			"HoS ST Dis",
-			"HoS ST Prof",
+			"HoS ST Prof"
 		];
 		var fieldsArrayHide = [
-			"Saving Throw advantages / disadvantages.0",
+			"Saving Throw advantages / disadvantages.0"
 		];
 		if (toShow) {
 			var theIcon = tDoc.getField("SaveIMG." + toShow).buttonGetIcon();
@@ -3465,7 +3465,7 @@ function setLifeStyle(input) {
 		"modest",
 		"comfortable",
 		"wealthy",
-		"aristocratic",
+		"aristocratic"
 	];
 	var ExpensesArray = [
 		"\u2014",
@@ -3474,7 +3474,7 @@ function setLifeStyle(input) {
 		"1 gp",
 		"2 gp",
 		"4 gp",
-		"10 gp min.",
+		"10 gp min."
 	];
 	var theStyle = LifestyleArray.indexOf(input.toLowerCase());
 	if (theStyle !== -1) {
@@ -3549,7 +3549,7 @@ function UpdateRangerCompanions(deleteIt) {
 			var remLvl = Who(prefix + "Companion.Remember").split(",");
 			var oldLvl = [
 				Number(remLvl[0]),
-				remLvl[1] !== undefined ? Number(remLvl[1]) : 0,
+				remLvl[1] !== undefined ? Number(remLvl[1]) : 0
 			]
 			var oldLvlProfB = theProfB(oldLvl[0]);
 			if (newLvlProfB !== oldLvlProfB) {
@@ -3776,7 +3776,7 @@ function MakeHPMenu_HPOptions() {
 	var optionsArray = [
 		["The total average HP (" + theInputs[0] + ")", "average"],
 		["The total HP when using fixed values (" + theInputs[1] + ")", "fixed"],
-		["The total maximum HP (" + theInputs[2] + ")", "max"],
+		["The total maximum HP (" + theInputs[2] + ")", "max"]
 	]
 	var hpMenu = [];
 	
@@ -3789,7 +3789,7 @@ function MakeHPMenu_HPOptions() {
 			temp.oSubMenu.push({
 				cName : array[i][0],
 				cReturn : name[1] + "#" + theInputs[i] + "#" + array[i][1],
-				bMarked : isMarked,
+				bMarked : isMarked
 			})
 		}
 		menu.push(temp);
@@ -3908,10 +3908,10 @@ function MakeTextMenu_TextOptions() {
 	
 	Menus.texts = [{
 			cName : "Change the font size and/or font",
-			cReturn : "dodialog",
+			cReturn : "dodialog"
 		}, {
 			cName : "-",
-			cReturn : "-",
+			cReturn : "-"
 		}
 	];
 	
@@ -3921,16 +3921,16 @@ function MakeTextMenu_TextOptions() {
 			oSubMenu : [{
 				cName : "Show boxes for single-line fields",
 				cReturn : "calc_boxes",
-				bMarked : isBoxesLines === "calc_boxes",
+				bMarked : isBoxesLines === "calc_boxes"
 			}, {
 				cName : "Show lines for single-line fields",
 				cReturn : "calc_lines",
-				bMarked : isBoxesLines === "calc_lines",
+				bMarked : isBoxesLines === "calc_lines"
 			}]
 		});
 		Menus.texts.push({
 			cName : "-",
-			cReturn : "-",
+			cReturn : "-"
 		});
 	}
 	
@@ -3939,11 +3939,11 @@ function MakeTextMenu_TextOptions() {
 		oSubMenu : [{
 			cName : "Show lines for multi-line fields",
 			cReturn : "show lines",
-			bMarked : !isWhiteout,
+			bMarked : !isWhiteout
 		}, {
 			cName : "Hide lines for multi-line fields",
 			cReturn : "hide lines",
-			bMarked : isWhiteout,
+			bMarked : isWhiteout
 		}]
 	});
 	
@@ -4429,7 +4429,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 			var remLvl = Who(prefix + "Companion.Remember").split(",");
 			var oldLvl = [
 				Number(remLvl[0]),
-				remLvl[1] !== undefined ? Number(remLvl[1]) : 0,
+				remLvl[1] !== undefined ? Number(remLvl[1]) : 0
 			]
 			var oldLvlProfB = theProfB(oldLvl[0]);
 			if (deleteIt || newLvlProfB !== oldLvlProfB) {
@@ -4573,7 +4573,7 @@ function CountASIs() {
 		app.alert({
 			cMsg : pTxt,
 			nIcon : 3,
-			cTitle : "Don't forget the Ability Score Improvements!",
+			cTitle : "Don't forget the Ability Score Improvements!"
 		})
 	}	
 }
@@ -4616,7 +4616,7 @@ function MakeSkillsMenu_SkillsOptions(input) {
 			app.alert({
 				cTitle : "Skill selection options",
 				cMsg : Who("SkillsClick").replace(/.*\n\n/, ""),
-				nIcon : 3,
+				nIcon : 3
 			});
 		} else if (MenuSelection[1] !== sWho) {
 			tDoc.delay = true;
@@ -4820,7 +4820,7 @@ function addALlogEnrry() {
 		".gold",
 		".downtime",
 		".renown",
-		".magicItems",
+		".magicItems"
 	];
 	var ALlogA = What("Template.extras.ALlog").split(",");
 	var emptyLog = [];
@@ -4902,7 +4902,7 @@ function addALlogEnrry() {
 		cMsg : "The sheet automatically filled '" + toUni(What(emptyLog[0] + "Text.AdvLog." + emptyLog[1]).capitalize()) + "' with the date of today.\n\nThe numerical 'gain' fields are calculated using the information from the rest of the sheet compared to the last entry.\nThe Adventure Name, Session number, and DMs Name have been taken from the previous entry.\n\nNote that the Downtime gain is set to zero as the sheet doesn't track those.",
 		cTitle : "A new Logsheet Entry has been added",
 		nType : 0,
-		nIcon : 3,
+		nIcon : 3
 	});
 };
 
@@ -4916,7 +4916,7 @@ function MakeAdvLogLineMenu_AdvLogLineOptions() {
 		["-", "-"],
 		["Insert empty Logsheet Entry", "insert"],
 		["Delete Logsheet Entry", "delete"],
-		["Clear Logsheet Entry", "clear"],
+		["Clear Logsheet Entry", "clear"]
 	];
 	var menuLVL1 = function (item, array) {
 		for (var i = 0; i < array.length; i++) {
@@ -4956,7 +4956,7 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 		".adventure",
 		".session",
 		".dm",
-		".notes",
+		".notes"
 	];
 	var extraPage = false;
 	switch (action) {
@@ -5135,14 +5135,14 @@ function PatreonStatement() {
 									font : "title",
 									bold : true,
 									height : 24,
-									char_width : 40,
+									char_width : 40
 								}, {
 									type : "static_text",
 									item_id : "txt1",
 									alignment : "align_fill",
 									font : "dialog",
 									char_height : 13,
-									char_width : 40,
+									char_width : 40
 								}, {
 									type : "button",
 									font : "heading",
@@ -5156,7 +5156,7 @@ function PatreonStatement() {
 									alignment : "align_fill",
 									font : "dialog",
 									char_height : 10,
-									char_width : 40,
+									char_width : 40
 								}]
 							}]
 						}, {
@@ -5558,7 +5558,27 @@ function CalcAttackDmgHit(fldName) {
 function ShowDialog(hdr, strng) {
 	if (strng === "sources") {
 		strng = "";
-		for (var src in SourceList) strng += "\n\u2022 " + (SourceList[src].abbreviation + "            ").substr(0,12) + "\t" + SourceList[src].name;
+		var srcRef = {};
+		var srcArr = {};
+		var srcGroups = [];
+		for (var src in SourceList) {
+			var tSrc = SourceList[src];
+			srcRef[tSrc.abbreviation] = src;
+			var tGroup = !tSrc.group || tSrc.group === "default" ? "\u200B\u200Bother" : tSrc.group === "Primary Sources" ? tSrc.group : "\u200B" + tSrc.group;
+			if (!srcArr[tGroup]) srcArr[tGroup] = [];
+			srcArr[tGroup].push(tSrc.abbreviation);
+			if (srcGroups.indexOf(tGroup) === -1) srcGroups.push(tGroup);
+		};
+		srcGroups.sort();
+		for (var group in srcArr) srcArr[group].sort();
+		for (var i = 0; i < srcGroups.length; i++) {
+			strng += "\n\n" + srcGroups[i].replace(/\u200B/g, "") + ":";
+			tArr = srcArr[srcGroups[i]];
+			for (var j = 0; j < tArr.length; j++) {
+				var theSrc = srcRef[tArr[j]];
+				strng += "\n\u2022 " + (SourceList[theSrc].abbreviation + "            ").substr(0,12) + "\t" + SourceList[theSrc].name;
+			};
+		};
 	}
 	var ShowString_dialog = {
 		header : hdr,
@@ -5583,7 +5603,7 @@ function ShowDialog(hdr, strng) {
 						alignment : "align_fill",
 						font : "dialog",
 						height : 20,
-						width : 550,
+						width : 550
 					}, {
 						type : "static_text",
 						item_id : "head",
@@ -5599,15 +5619,15 @@ function ShowDialog(hdr, strng) {
 						readonly : true,
 						multiline: true,
 						height : 500,
-						width : 550,
+						width : 550
 					}, {
 						type : "gap",
-						height : 5,
-					} ]
+						height : 5
+					}]
 				}, {
 					type : "ok"
-				} ]
-			} ]
+				}]
+			}]
 		}
 	};
 	app.execDialog(ShowString_dialog);
@@ -5705,7 +5725,7 @@ function SetThisFldVal() {
 					}]
 				}]
 			}
-		}
+		};
 		if (app.execDialog(theDialog) === "ok") {
 			event.target.value = theDialog.theTXT;
 		};

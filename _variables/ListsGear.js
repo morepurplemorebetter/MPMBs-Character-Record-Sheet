@@ -259,7 +259,7 @@ var WeaponsList = {
 		damage : [1, 4, "piercing"],
 		range : "Melee",
 		description : "Does 3 piercing damage when using your attack to grapple",
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"club" : {
 		regExpSearch : /^(?!.*(great|heavy|big))(?=.*\b(club|bian|tonfa)\b).*$/i,
@@ -300,7 +300,7 @@ var WeaponsList = {
 		range : "Melee",
 		weight : 10,
 		description : "Two-handed",
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"handaxe" : {
 		regExpSearch : /^(?=.*(light|hand|short|small|throw))(?=.*(axe|\bfu)\b).*$|\bono\b/i,
@@ -314,7 +314,7 @@ var WeaponsList = {
 		weight : 2,
 		description : "Light, thrown",
 		abilitytodamage : true,
-		monkweapon : true,
+		monkweapon : true
 	},
 	"javelin" : {
 		regExpSearch : /javelin|\bmau\b|uchi-ne/i,
@@ -342,7 +342,7 @@ var WeaponsList = {
 		weight : 2,
 		description : "Light, thrown",
 		abilitytodamage : true,
-		monkweapon : true,
+		monkweapon : true
 	},
 	"mace" : {
 		regExpSearch : /mace\b|\bchui\b|kanabo/i,
@@ -398,7 +398,7 @@ var WeaponsList = {
 		weight : 3,
 		description : "Thrown, versatile (1d8)",
 		monkweapon : true,
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"unarmed strike" : {
 		regExpSearch : /^((?=.*\b(unarmed|fist|arm|leg|foot|feet|razorclaw|talons)\b)|((?=.*martial)(?=.*arts))|((?=.*tavern)(?=.*brawler))).*$/i,
@@ -410,7 +410,7 @@ var WeaponsList = {
 		range : "Melee",
 		description : "",
 		monkweapon : true,
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"light crossbow" : {
 		regExpSearch : /^(((?=.*light)(?=.*crossbow))|((?!.*(hand|short|great|heavy))(?=.*\bcrossbow\b))).*$/i,
@@ -478,7 +478,7 @@ var WeaponsList = {
 		range : "Melee",
 		weight : 4,
 		description : "Versatile (1d10)",
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"flail" : {
 		regExpSearch : /flail|nunchaku/i,
@@ -517,7 +517,7 @@ var WeaponsList = {
 		range : "Melee",
 		weight : 7,
 		description : "Heavy, two-handed",
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"greatsword" : {
 		regExpSearch : /^(?=.*(great|heavy))(?=.*sword).*$|changdao|nodachi/i,
@@ -530,7 +530,7 @@ var WeaponsList = {
 		range : "Melee",
 		weight : 6,
 		description : "Heavy, two-handed",
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"halberd" : {
 		regExpSearch : /halberd|\bji\b|kamayari/i,
@@ -569,7 +569,7 @@ var WeaponsList = {
 		range : "Melee",
 		weight : 3,
 		description : "Versatile (1d10)",
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"maul" : {
 		regExpSearch : /^((?=.*maul)|((?=.*(great|heavy))(?=.*hammer))).*$/i,
@@ -582,7 +582,7 @@ var WeaponsList = {
 		range : "Melee",
 		weight : 10,
 		description : "Heavy, two-handed",
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"morningstar" : {
 		regExpSearch : /morningstar/i,
@@ -674,7 +674,7 @@ var WeaponsList = {
 		range : "Melee",
 		weight : 2,
 		description : "",
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"warhammer" : {
 		regExpSearch : /^(((?=.*hammer)(?=.*war))|((?!.*(light|hand|short|small|great|heavy|throw|maul))(?=.*\bhammer\b))).*$/i,
@@ -687,7 +687,7 @@ var WeaponsList = {
 		range : "Melee",
 		weight : 2,
 		description : "Versatile (1d10)",
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"whip" : {
 		regExpSearch : /^(?!.*thorn)(?=.*whip).*$/i,
@@ -875,7 +875,7 @@ var WeaponsList = {
 		range : "120 ft",
 		description : "Each d10 is a separate beam requiring separate rolls (PHB 237)",
 		abilitytodamage : true,
-		SpellsList : "eldritch blast",
+		SpellsList : "eldritch blast"
 	},
 	"agonizing spear" : { //Eldritch Blast (Agonizing Blast & Eldritch Spear)
 		regExpSearch : /^(?=.*agonizing)(?=.*spear).*$/i,
@@ -888,7 +888,7 @@ var WeaponsList = {
 		range : "300 ft",
 		description : "Each d10 is a separate beam requiring separate rolls (PHB 237)",
 		abilitytodamage : true,
-		SpellsList : "eldritch blast",
+		SpellsList : "eldritch blast"
 	},
 	"eldritch blast" : {
 		regExpSearch : /^(?!.*agonizing)(?!.*spear)(?=.*eldritch)(?=.*blast).*$/i,
@@ -913,7 +913,7 @@ var WeaponsList = {
 		range : "300 ft",
 		description : "Each d10 is a separate beam requiring separate rolls (PHB 237)",
 		abilitytodamage : false,
-		SpellsList : "eldritch blast",
+		SpellsList : "eldritch blast"
 	},
 	"fire bolt" : {
 		regExpSearch : /^(?=.*fire)(?=.*bolt).*$/i,
@@ -1111,6 +1111,21 @@ var WeaponsList = {
 		range : "Melee, 20/60 ft",
 		description : "Damage die, type, range, etc. are at the DM's discretion",
 		abilitytodamage : true
+	},
+	
+	// Dragonborn breath weapons
+	"breath weapon" : {
+		regExpSearch : /^(?=.*breath)(?=.*weapon).*$/i,
+		name : "Breath Weapon",
+		source : ["P", 34],
+		ability : 3,
+		type : "Natural",
+		damage : [2, 6, "fire"],
+		range : "15-ft cone",
+		description : "Hits all in area; Dex save, success - half damage; Usable only once per short rest",
+		abilitytodamage : false,
+		monkweapon : false,
+		dc : true
 	},
 	
 	// VGtM Lizardfolk weapon
@@ -1314,7 +1329,7 @@ var WeaponsList = {
 		range : "Melee",
 		weight : 6,
 		description : "Pact weapon, heavy, two-handed; On hit: Reduces speed to 0, Expend spell slot for +2d8 slashing damage per slot level",
-		abilitytodamage : true,
+		abilitytodamage : true
 	},
 	"mace of dispater" : {
 		regExpSearch : /^(?=.*\bmace\b)(?=.*\bdispater\b).*$/i,

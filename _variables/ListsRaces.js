@@ -24,7 +24,7 @@ var RaceList = {
 					atkAdd : ["if ((/unarmed strike/i).test(WeaponName)) { fields.Damage_Type = 'slashing'; if (fields.Damage_Die == 1) {fields.Damage_Die = '1d4'; }; }; ", "I have talons, which cause my unarmed strikes to deal 1d4 slashing damage."]
 				}
 			}
-		},
+		}
 	},
 
 	"aasimar" : {
@@ -50,7 +50,7 @@ var RaceList = {
 			name : "Celestial Legacy (level 1)",
 			spells : ["light"],
 			selection : ["light"],
-			atwill : true,
+			atwill : true
 		},
 		features : {
 			"lesser restoration" : {
@@ -64,8 +64,8 @@ var RaceList = {
 					name : "Celestial Legacy (level 3)",
 					spells : ["lesser restoration"],
 					selection : ["lesser restoration"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			},
 			"daylight" : {
 				name : "Daylight",
@@ -78,8 +78,8 @@ var RaceList = {
 					name : "Celestial Legacy (level 5)",
 					spells : ["daylight"],
 					selection : ["daylight"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
 		}
 	},
@@ -108,7 +108,7 @@ var RaceList = {
 			name : "Light Bearer",
 			spells : ["light"],
 			selection : ["light"],
-			atwill : true,
+			atwill : true
 		},
 		features : {
 			"healing hands" : {
@@ -117,7 +117,7 @@ var RaceList = {
 				minlevel : 1,
 				recovery : "long rest",
 				additional : ["1 HP", "2 HP", "3 HP", "4 HP", "5 HP", "6 HP", "7 HP", "8 HP", "9 HP", "10 HP", "11 HP", "12 HP", "13 HP", "14 HP", "15 HP", "16 HP", "17 HP", "18 HP", "19 HP", "20 HP"],
-				action : ["action", ""],
+				action : ["action", ""]
 			},
 			"necrotic shroud" : {
 				name : "Necrotic Shroud",
@@ -127,7 +127,7 @@ var RaceList = {
 				additional : ["", "", "+3 damage", "+4 damage", "+5 damage", "+6 damage", "+7 damage", "+8 damage", "+9 damage", "+10 damage", "+11 damage", "+12 damage", "+13 damage", "+14 damage", "+15 damage", "+16 damage", "+17 damage", "+18 damage", "+19 damage", "+20 damage"],
 				action : ["action", " (start)"],
 				eval : "AddAction(\"bonus action\", \"Necrotic Shroud (end)\", \"being a Fallen Aasimar\");",
-				removeeval : "RemoveAction(\"bonus action\", \"Necrotic Shroud (end)\");",
+				removeeval : "RemoveAction(\"bonus action\", \"Necrotic Shroud (end)\");"
 			}
 		}
 	},
@@ -155,7 +155,7 @@ var RaceList = {
 			name : "Light Bearer",
 			spells : ["light"],
 			selection : ["light"],
-			atwill : true,
+			atwill : true
 		},
 		features : {
 			"healing hands" : {
@@ -164,7 +164,7 @@ var RaceList = {
 				minlevel : 1,
 				recovery : "long rest",
 				additional : ["1 HP", "2 HP", "3 HP", "4 HP", "5 HP", "6 HP", "7 HP", "8 HP", "9 HP", "10 HP", "11 HP", "12 HP", "13 HP", "14 HP", "15 HP", "16 HP", "17 HP", "18 HP", "19 HP", "20 HP"],
-				action : ["action", ""],
+				action : ["action", ""]
 			},
 			"radiant soul" : {
 				name : "Radiant Soul",
@@ -174,7 +174,7 @@ var RaceList = {
 				additional : ["", "", "+3 damage", "+4 damage", "+5 damage", "+6 damage", "+7 damage", "+8 damage", "+9 damage", "+10 damage", "+11 damage", "+12 damage", "+13 damage", "+14 damage", "+15 damage", "+16 damage", "+17 damage", "+18 damage", "+19 damage", "+20 damage"],
 				action : ["action", " (start)"],
 				eval : "AddAction(\"bonus action\", \"Radiant Soul (end)\", \"being a Protector Aasimar\");",
-				removeeval : "RemoveAction(\"bonus action\", \"Radiant Soul (end)\");",
+				removeeval : "RemoveAction(\"bonus action\", \"Radiant Soul (end)\");"
 			}
 		}
 	},
@@ -202,7 +202,7 @@ var RaceList = {
 			name : "Light Bearer",
 			spells : ["light"],
 			selection : ["light"],
-			atwill : true,
+			atwill : true
 		},
 		features : {
 			"healing hands" : {
@@ -211,7 +211,7 @@ var RaceList = {
 				minlevel : 1,
 				recovery : "long rest",
 				additional : ["1 HP", "2 HP", "3 HP", "4 HP", "5 HP", "6 HP", "7 HP", "8 HP", "9 HP", "10 HP", "11 HP", "12 HP", "13 HP", "14 HP", "15 HP", "16 HP", "17 HP", "18 HP", "19 HP", "20 HP"],
-				action : ["action", ""],
+				action : ["action", ""]
 			},
 			"radiant consumption" : {
 				name : "Radiant Consumption",
@@ -224,7 +224,7 @@ var RaceList = {
 				}),
 				action : ["action", " (start)"],
 				eval : "AddAction(\"bonus action\", \"Radiant Consumption (end)\", \"being a Scourge Aasimar\");",
-				removeeval : "RemoveAction(\"bonus action\", \"Radiant Consumption (end)\");",
+				removeeval : "RemoveAction(\"bonus action\", \"Radiant Consumption (end)\");"
 			}
 		}
 	},
@@ -252,8 +252,8 @@ var RaceList = {
 				minlevel : 1,
 				usages : 1,
 				recovery : "Combat",
-				tooltip : "",
-			},
+				tooltip : ""
+			}
 		},
 		trait : "Bugbear (+2 Strength, +1 Dexterity)\nPowerful Build: I count as one size larger when determining my carrying capacity and the weight I can push, drag, or lift.\nLong-Limbed: I have an additional 5 feet reach with melee attacks that I make on my turn.\nSurprise Attack: If I hit a surprised creature on my first turn in combat, that attack deals an extra 2d6 damage. I can do this only once per combat.",
 		eval : "tDoc.getField('Carrying Capacity Multiplier').value *= 2;",
@@ -268,6 +268,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languages : ["Common", "Draconic"],
+		weapons : ["breath weapon"],
 		age : " reach adulthood by 15 and live around 80 years",
 		height : " stand well over 6 feet tall (5'6\" + 2d8\")",
 		weight : " weigh around 240 lb (175 + 2d8 \xD7 2d6 lb)",
@@ -276,7 +277,6 @@ var RaceList = {
 		improvements : "Dragonborn: +2 Strength, +1 Charisma;",
 		scores : [2, 0, 0, 0, 0, 1],
 		trait : "Dragonborn (+2 Strength, +1 Charisma)\nDraconic Ancestry: Choose one type of dragon using the \"Racial Options\" button. I gain a breath weapon and damage resistance as determined by the dragon type chosen.\nBreath Weapon: Exhale destructive energy as an action with a size, shape, saving throw type, and damage type as found in the table. All in the area must make a saving throw with DC 8 + Con modifier + prof bonus. It does 2d6 (+1d6 at level 6, 11, 16) damage, half as much damage on a successful save. I can use it again after a short rest.",
-		abilitySave : 3,
 		features : {
 			"breath weapon" : {
 				name : "Breath Weapon",
@@ -285,10 +285,14 @@ var RaceList = {
 				additional : ["2d6", "2d6", "2d6", "2d6", "2d6", "3d6", "3d6", "3d6", "3d6", "3d6", "4d6", "4d6", "4d6", "4d6", "4d6", "5d6", "5d6", "5d6", "5d6", "5d6"],
 				recovery : "short rest",
 				tooltip : " (Draconic Ancestry)",
-				action : ["action", ""]
+				action : ["action", ""],
+				calcChanges : {
+					atkAdd : ["if (WeaponName === 'breath weapon' && CurrentRace.known === 'dragonborn' && CurrentRace.variant) { fields.Damage_Type = CurrentRace.dmgres[0]; fields.Description = fields.Description.replace(/(dex|con) save/i, ((/cold|poison/i).test(CurrentRace.dmgres[0]) ? 'Con' : 'Dex') + ' save'); fields.Range = (/black|blue|brass|bronze|copper/i).test(CurrentRace.variant) ? '5-ft \u00D7 30-ft line' : '15-ft cone'; }; ", "As a Dragonborn I have a breath weapon. The damage type, range, and type of saving throw are dependent on which variant of Dragonborn I am. Furthermore, the amount of damage is dependent on my character level."],
+					atkCalc : ["if (WeaponName === 'breath weapon' && CurrentRace.known === 'dragonborn' && CurrentRace.level > 5) { output.die = output.die.replace('2d6', (CurrentRace.level < 11 ? 3 : CurrentRace.level < 16 ? 4 : 5) + 'd6'); }; ", ""]
+				}
 			}
 		},
-		variants : ["black", "blue", "brass", "bronze", "copper", "gold", "green", "red", "silver", "white"],
+		variants : ["black", "blue", "brass", "bronze", "copper", "gold", "green", "red", "silver", "white"]
 	},
 
 	"gray dwarf" : {
@@ -326,8 +330,8 @@ var RaceList = {
 					name : "Duergar Magic (level 3)",
 					spells : ["enlarge/reduce"],
 					selection : ["enlarge/reduce"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			},
 			"invisibility" : {
 				name : "Invisibility (self only)",
@@ -340,8 +344,8 @@ var RaceList = {
 					name : "Duergar Magic (level 5)",
 					spells : ["invisibility"],
 					selection : ["invisibility"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
 		}
 	},
@@ -401,7 +405,7 @@ var RaceList = {
 		weightMetric : " weigh around 75 kg (60 + 5d4 \xD7 4d6 / 10 kg)",
 		improvements : "Mountain Dwarf: +2 Strength, +2 Constitution;",
 		scores : [2, 0, 2, 0, 0, 0],
-		trait : "Mountain Dwarf (+2 Strength, +2 Constitution)\n\nStonecunning:\n   Whenever I make an Intelligence (History) check related to the origin of stonework, I am considered proficient in the History skill and add double my proficiency bonus to the check, instead of my normal proficiency bonus.",
+		trait : "Mountain Dwarf (+2 Strength, +2 Constitution)\n\nStonecunning:\n   Whenever I make an Intelligence (History) check related to the origin of stonework, I am considered proficient in the History skill and add double my proficiency bonus to the check, instead of my normal proficiency bonus."
 	},
 
 	"dark elf" : {
@@ -431,7 +435,7 @@ var RaceList = {
 			name : "Drow Magic (level 1)",
 			spells : ["dancing lights"],
 			selection : ["dancing lights"],
-			atwill : true,
+			atwill : true
 		},
 		features : {
 			"faerie fire" : {
@@ -445,8 +449,8 @@ var RaceList = {
 					name : "Drow Magic (level 3)",
 					spells : ["faerie fire"],
 					selection : ["faerie fire"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			},
 			"darkness" : {
 				name : "Darkness",
@@ -459,8 +463,8 @@ var RaceList = {
 					name : "Drow Magic (level 5)",
 					spells : ["darkness"],
 					selection : ["darkness"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
 		}
 	},
@@ -499,8 +503,8 @@ var RaceList = {
 					name : "Fey Step",
 					spells : ["misty step"],
 					selection : ["misty step"],
-					oncesr : true,
-				},
+					oncesr : true
+				}
 			}
 		}
 	},
@@ -532,8 +536,8 @@ var RaceList = {
 			name : "High Elf Cantrip",
 			class : "wizard",
 			level : [0, 0],
-			atwill : true,
-		},
+			atwill : true
+		}
 	},
 
 	"wood elf" : {
@@ -556,7 +560,7 @@ var RaceList = {
 		weightMetric : " weigh around 55 kg (40 + 5d10 \xD7 2d4 / 10 kg)",
 		improvements : "Wood Elf: +2 Dexterity, +1 Wisdom;",
 		scores : [0, 2, 0, 0, 1, 0],
-		trait : "Wood Elf (+2 Dexterity, +1 Wisdom)\nTrance: Elves don't need to sleep, but meditate semiconsciously, for 4 hours a day. While meditating, I can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, I gain the same benefit that a human does from 8 hours of sleep, but I still need 8 hours for a long rest.\nMask of the Wild: I can attempt to hide even when I am only lightly obscured by foliage, heavy rain, falling snow, mist, and other natural phenomena.",
+		trait : "Wood Elf (+2 Dexterity, +1 Wisdom)\nTrance: Elves don't need to sleep, but meditate semiconsciously, for 4 hours a day. While meditating, I can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, I gain the same benefit that a human does from 8 hours of sleep, but I still need 8 hours for a long rest.\nMask of the Wild: I can attempt to hide even when I am only lightly obscured by foliage, heavy rain, falling snow, mist, and other natural phenomena."
 	},
 
 	"firbolg" : {
@@ -589,7 +593,7 @@ var RaceList = {
 					name : "Firbolg Magic",
 					spells : ["detect magic"],
 					selection : ["detect magic"],
-					oncesr : true,
+					oncesr : true
 				}
 			},
 			"firbolg magic (disguise self)" : {
@@ -603,7 +607,7 @@ var RaceList = {
 					name : "Firbolg Magic",
 					spells : ["disguise self"],
 					selection : ["disguise self"],
-					oncesr : true,
+					oncesr : true
 				}
 			},
 			"hidden step" : {
@@ -612,7 +616,7 @@ var RaceList = {
 				usages : 1,
 				recovery : "short rest",
 				tooltip : " (Hidden Step)",
-				action : ["bonus action", ""],
+				action : ["bonus action", ""]
 			}
 		},
 		eval : "tDoc.getField('Carrying Capacity Multiplier').value *= 2;",
@@ -650,8 +654,8 @@ var RaceList = {
 					name : "Mingle with the Wind",
 					spells : ["levitate"],
 					selection : ["levitate"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
 		}
 	},
@@ -686,8 +690,8 @@ var RaceList = {
 					name : "Merge with Stone",
 					spells : ["pass without trace"],
 					selection : ["pass without trace"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
 		}
 	},
@@ -717,7 +721,7 @@ var RaceList = {
 			name : "Reach to the Blaze (level 1)",
 			spells : ["produce flame"],
 			selection : ["produce flame"],
-			atwill : true,
+			atwill : true
 		},
 		features : {
 			"burning hands" : {
@@ -731,8 +735,8 @@ var RaceList = {
 					name : "Reach to the Blaze (level 3)",
 					spells : ["burning hands"],
 					selection : ["burning hands"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
 		}
 	},
@@ -760,7 +764,7 @@ var RaceList = {
 			name : "Call to the Wave (level 1)",
 			spells : ["shape water"],
 			selection : ["shape water"],
-			atwill : true,
+			atwill : true
 		},
 		features : {
 			"create or destroy water" : {
@@ -774,8 +778,8 @@ var RaceList = {
 					name : "Call to the Wave (level 3)",
 					spells : ["create or destroy water"],
 					selection : ["create or destroy water"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
 		}
 	},
@@ -798,7 +802,7 @@ var RaceList = {
 		weightMetric : " weigh around 50 kg (35 + 5d4 \xD7 4d4 / 10 kg)",
 		improvements : "Svirfneblin: +1 Dexterity, +2 Intelligence;",
 		scores : [0, 1, 0, 2, 0, 0],
-		trait : "Svirfneblin (+1 Dexterity, +2 Intelligence)\n\nStone Camouflage:\n   I have advantage on Dexterity (stealth) checks to hide in rocky terrain.",
+		trait : "Svirfneblin (+1 Dexterity, +2 Intelligence)\n\nStone Camouflage:\n   I have advantage on Dexterity (stealth) checks to hide in rocky terrain."
 	},
 
 	"forest gnome" : {
@@ -826,8 +830,8 @@ var RaceList = {
 			name : "Natural Illusionist",
 			spells : ["minor illusion"],
 			selection : ["minor illusion"],
-			atwill : true,
-		},
+			atwill : true
+		}
 	},
 
 	"rock gnome" : {
@@ -849,7 +853,7 @@ var RaceList = {
 		weightMetric : " weigh around 18 kg (16 + 5d4 / 10 kg)",
 		improvements : "Rock Gnome: +1 Constitution, +2 Intelligence;",
 		scores : [0, 0, 1, 2, 0, 0],
-		trait : "Rock Gnome (+1 Constitution, +2 Intelligence)" + (typePF ? "\n" : " ") + "Artificer's Lore: Add twice my proficiency bonus to Intelligence (History) checks with magic, alchemical, and technological items.\nTinker: Construct a Tiny clockwork device (AC 5, 1 HP) using tinker's tools, 1 hour, and 10 gp of material components, that functions for 24 hours. I can have up to 3 active." + (typePF ? "\n - " : " -") + "Clockwork Toy: animal, monster, or person that can move 5 ft per turn in a random direction, making appropriate noises;" + (typePF ? "\n - " : " -") + "Fire Starter: 1 action to produce miniature flame to light things;" + (typePF ? "\n - " : " -") + "Music Box: plays single song at a moderate volume.",
+		trait : "Rock Gnome (+1 Constitution, +2 Intelligence)" + (typePF ? "\n" : " ") + "Artificer's Lore: Add twice my proficiency bonus to Intelligence (History) checks with magic, alchemical, and technological items.\nTinker: Construct a Tiny clockwork device (AC 5, 1 HP) using tinker's tools, 1 hour, and 10 gp of material components, that functions for 24 hours. I can have up to 3 active." + (typePF ? "\n - " : " -") + "Clockwork Toy: animal, monster, or person that can move 5 ft per turn in a random direction, making appropriate noises;" + (typePF ? "\n - " : " -") + "Fire Starter: 1 action to produce miniature flame to light things;" + (typePF ? "\n - " : " -") + "Music Box: plays single song at a moderate volume."
 	},
 	
 	"goblin" : {
@@ -875,12 +879,12 @@ var RaceList = {
 				usages : 1,
 				recovery : "short rest",
 				additional : ["+1 damage", "+2 damage", "+3 damage", "+4 damage", "+5 damage", "+6 damage", "+7 damage", "+8 damage", "+9 damage", "+10 damage", "+11 damage", "+12 damage", "+13 damage", "+14 damage", "+15 damage", "+16 damage", "+17 damage", "+18 damage", "+19 damage", "+20 damage"],
-				tooltip : "",
+				tooltip : ""
 			},
 			"nimble escape" : {
 				name : "Nimble Escape",
 				minlevel : 1,
-				action : ["bonus action", " (disengage/hide)"],
+				action : ["bonus action", " (disengage/hide)"]
 			}
 		},
 		trait : "Goblin (+2 Dexterity, +1 Constitution)\n\nFury of the Small: Once per short rest, when I hit a creature of a size category larger than mine, I deal extra damage equal to my level.\n\nNimble Escape: As a bonus action, I can take the Disengage or Hide action."
@@ -934,7 +938,7 @@ var RaceList = {
 		weightMetric : " weigh around 18 kg (16 + 5d4 / 10 kg)",
 		improvements : "Ghostwise Halfling: +2 Dexterity, +1 Wisdom;",
 		scores : [0, 2, 0, 0, 1, 0],
-		trait : "Ghostwise Halfling (+2 Dexterity, +1 Wisdom)" + (typePF ? "\n" : " ") + "\nLucky: When I roll a 1 on an attack roll, ability check, or saving throw, I can reroll the die and must use the new roll." + (typePF ? "\n" : " ") + "\nHalfling Nimbleness: I can move through the space of any creature that is of a size larger than me." + (typePF ? "\n" : " ") + "\nSilent Speech: I can speak telepathically to any one creature within 30 feet of me. It only understands me if we share a language.",
+		trait : "Ghostwise Halfling (+2 Dexterity, +1 Wisdom)" + (typePF ? "\n" : " ") + "\nLucky: When I roll a 1 on an attack roll, ability check, or saving throw, I can reroll the die and must use the new roll." + (typePF ? "\n" : " ") + "\nHalfling Nimbleness: I can move through the space of any creature that is of a size larger than me." + (typePF ? "\n" : " ") + "\nSilent Speech: I can speak telepathically to any one creature within 30 feet of me. It only understands me if we share a language."
 	},
 
 	"lightfoot halfling" : {
@@ -954,7 +958,7 @@ var RaceList = {
 		weightMetric : " weigh around 18 kg (16 + 5d4 / 10 kg)",
 		improvements : "Lightfoot Halfling: +2 Dexterity, +1 Charisma;",
 		scores : [0, 2, 0, 0, 0, 1],
-		trait : "Lightfoot Halfling (+2 Dexterity, +1 Charisma)" + (typePF ? "\n" : "") + "\nLucky: When I roll a 1 on an attack roll, ability check, or saving throw, I can reroll the die and must use the new roll." + (typePF ? "\n" : "") + "\nHalfling Nimbleness: I can move through the space of any creature that is of a size larger than me." + (typePF ? "\n" : "") + "\nNaturally Stealthy: I can attempt to hide even when I am obscured only by a creature that is at least one size larger than me.",
+		trait : "Lightfoot Halfling (+2 Dexterity, +1 Charisma)" + (typePF ? "\n" : "") + "\nLucky: When I roll a 1 on an attack roll, ability check, or saving throw, I can reroll the die and must use the new roll." + (typePF ? "\n" : "") + "\nHalfling Nimbleness: I can move through the space of any creature that is of a size larger than me." + (typePF ? "\n" : "") + "\nNaturally Stealthy: I can attempt to hide even when I am obscured only by a creature that is at least one size larger than me."
 	},
 
 	"stout halfling" : {
@@ -997,7 +1001,7 @@ var RaceList = {
 		improvements : "Half-Elf: +2 Charisma and +1 to two other ability scores of my choice;",
 		scores : [0, 0, 0, 0, 0, 2],
 		trait : "Half-Elf (+2 Charisma and +1 to two other ability scores of my choice)\n\nSkill Versatility: I gain proficiency in two skills of my choice.",
-		variants : ["aquatic", "cantrip", "drow magic", "elf weapon training", "fleet of foot", "mask of the wild"],
+		variants : ["aquatic", "cantrip", "drow magic", "elf weapon training", "fleet of foot", "mask of the wild"]
 	},
 
 	"half-orc" : {
@@ -1052,15 +1056,15 @@ var RaceList = {
 		heightMetric : " range from barely 1,5 to well over 1,8 metres tall (145 + 5d10 cm)",
 		weightMetric : " weigh between 70 and 90 kg (50 + 5d10 \xD7 4d4 / 10 kg)",
 		improvements : "Hobgoblin: +2 Constitution, +1 Intelligence;",
-		scores : [0, 2, 1, 0, 0, 0],
+		scores : [0, 0, 2, 1, 0, 0],
 		features : {
 			"saving face" : {
 				name : "Saving Face",
 				minlevel : 1,
 				usages : 1,
 				recovery : "short rest",
-				tooltip : "",
-			},
+				tooltip : ""
+			}
 		},
 		trait : "Hobgoblin (+2 Constitution, +1 Intelligence)\n\nMartial Training: I am proficient with two martial weapons of my choice and light armor.\n\nSaving Face: Once per short rest, when I miss an attack roll or fail an ability check or a saving throw, I can gain a bonus to the roll equal to the number of allies I can see within 30 feet of me (max +5)."
 	},
@@ -1081,7 +1085,7 @@ var RaceList = {
 		improvements : "Human: +1 to all ability scores;",
 		scores : [1, 1, 1, 1, 1, 1],
 		trait : "Human (+1 to all ability scores)",
-		variants : ["variant"],
+		variants : ["variant"]
 	},
 
 	"kenku" : {
@@ -1100,7 +1104,7 @@ var RaceList = {
 		weightMetric : " weigh between 40 and 55 kg (35 + 5d8 \xD7 2d4 / 10 kg)",
 		improvements : "Kenku: +2 Dexterity, +1 Wisdom;",
 		scores : [0, 2, 0, 0, 1, 0],
-		trait : "Kenku (+2 Dexterity, +1 Wisdom)" + (typePF ? "\n" : "") + "\nExpert Forgery: Kenku can duplicate other creatures' handwriting and craftwork. I have advantage on all checks made to produce forgeries or duplicates of existing objects." + (typePF ? "\n" : "") + "\nMimicry: I can mimic any sounds I have heard, including voices, but can otherwise not speak. Creatures hearing these sounds can determine they are imitations with a successful Wisdom (Insight) check opposed by my Charisma (Deception).",
+		trait : "Kenku (+2 Dexterity, +1 Wisdom)" + (typePF ? "\n" : "") + "\nExpert Forgery: Kenku can duplicate other creatures' handwriting and craftwork. I have advantage on all checks made to produce forgeries or duplicates of existing objects." + (typePF ? "\n" : "") + "\nMimicry: I can mimic any sounds I have heard, including voices, but can otherwise not speak. Creatures hearing these sounds can determine they are imitations with a successful Wisdom (Insight) check opposed by my Charisma (Deception)."
 	},
 	
 	"kobold" : {
@@ -1126,8 +1130,8 @@ var RaceList = {
 				usages : 1,
 				recovery : "short rest",
 				tooltip : "",
-				action : ["action", ""],
-			},
+				action : ["action", ""]
+			}
 		},
 		trait : "Kobold (-2 Strength, +2 Dexterity)\nSunlight Sensitivity: Disadvantage on attack rolls and Wisdom (Perception) checks that rely on sight when I or what I am trying to attack/perceive is in direct sunlight.\nGrovel, Cower, and Beg: As an action, I can distract all foes within 10 feet of me that can see me so that my allies gain advantage on attack rolls against them.\nPack Tactics: I have advantage on attack rolls against creatures when at least one of my allies is within 5 feet of that creature and that ally is not incapacitated."
 	},
@@ -1155,7 +1159,7 @@ var RaceList = {
 				minlevel : 1,
 				usages : 1,
 				recovery : "short rest",
-				tooltip : "",
+				tooltip : ""
 			},
 			"hungry jaws" : {
 				name : "Hungry Jaws",
@@ -1164,9 +1168,9 @@ var RaceList = {
 				recovery : "short rest",
 				tooltip : "",
 				action : ["bonus action", ""]
-			},
+			}
 		},
-		trait : "Lizardfolk (+2 Constitution, +1 Wisdom) Bite: I can use my fanged maw to make unarmed strikes dealing 1d6 piercing damage." + (typePF ? "\n" : " ") + "Cunning Artisan: As part of a short rest I can harvest parts of a slain creature to make a shield, club, javelin, or 1d4 darts/blowgun needles. This requires a suitable corpse and appropriate tools." + (typePF ? "\n" : " ") + "Hold Breath: I can hold my breath for up to 15 minutes at a time." + (typePF ? "\n" : " ") + "Natural Armor: I have an AC of 13 + Dexterity modifier + shield." + (typePF ? "\n" : " ") + "Hungry Jaws: As a bonus action, once per short rest, I can make a special bite attack and if it hits I gain temporary HP equal to my Con modifier (min 1).",
+		trait : "Lizardfolk (+2 Constitution, +1 Wisdom) Bite: I can use my fanged maw to make unarmed strikes dealing 1d6 piercing damage." + (typePF ? "\n" : " ") + "Cunning Artisan: As part of a short rest I can harvest parts of a slain creature to make a shield, club, javelin, or 1d4 darts/blowgun needles. This requires a suitable corpse and appropriate tools." + (typePF ? "\n" : " ") + "Hold Breath: I can hold my breath for up to 15 minutes at a time." + (typePF ? "\n" : " ") + "Natural Armor: I have an AC of 13 + Dexterity modifier + shield." + (typePF ? "\n" : " ") + "Hungry Jaws: As a bonus action, once per short rest, I can make a special bite attack and if it hits I gain temporary HP equal to my Con modifier (min 1)."
 	},
 
 	"orc" : {
@@ -1190,7 +1194,7 @@ var RaceList = {
 			"aggressive" : {
 				name : "Aggressive",
 				minlevel : 1,
-				action : ["bonus action", " (dash to enemy)"],
+				action : ["bonus action", " (dash to enemy)"]
 			}
 		},
 		trait : "Orc (+2 Strength, +1 Constitution, -2 Intelligence)\n\nPowerful Build: I count as one size larger when determining my carrying capacity and the weight I can push, drag, or lift.\n\nAggressive: As a bonus action, I can move up to my speed toward an enemy that I can see or hear. I must end my move closer to this enemy than I started.",
@@ -1223,10 +1227,10 @@ var RaceList = {
 				usages : 1,
 				recovery : " Turn",
 				additional : "still for 1 turn to recover",
-				tooltip : " (can be replenished by not moving for one whole turn)",
+				tooltip : " (can be replenished by not moving for one whole turn)"
 			}
 		},
-		trait : "Tabaxi (+2 Dexterity, +1 Charisma)\n\nCat's Claws: I can use my fanged claws to make unarmed strikes dealing 1d4 slashing damage. They also give me a climbing speed of 20 feet.\n\nFeline Agility: When moving on my turn in combat, I can move double my speed. Once I do this, I can't do it again until I don't move at all on one of my turns.",
+		trait : "Tabaxi (+2 Dexterity, +1 Charisma)\n\nCat's Claws: I can use my fanged claws to make unarmed strikes dealing 1d4 slashing damage. They also give me a climbing speed of 20 feet.\n\nFeline Agility: When moving on my turn in combat, I can move double my speed. Once I do this, I can't do it again until I don't move at all on one of my turns."
 	},
 
 	"tiefling" : {
@@ -1320,8 +1324,8 @@ var RaceList = {
 					name : "Control Air and Water (1)",
 					spells : ["fog cloud"],
 					selection : ["fog cloud"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			},
 			"gust of wind" : {
 				name : "Gust of Wind",
@@ -1334,8 +1338,8 @@ var RaceList = {
 					name : "Control Air and Water (3)",
 					spells : ["gust of wind"],
 					selection : ["gust of wind"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			},
 			"wall of water" : {
 				name : "Wall of Water",
@@ -1348,10 +1352,10 @@ var RaceList = {
 					name : "Control Air and Water (5)",
 					spells : ["wall of water"],
 					selection : ["wall of water"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
-		},
+		}
 	},
 
 	"yuan-ti pureblood" : {
@@ -1377,7 +1381,7 @@ var RaceList = {
 			name : "Innate Spellcasting (1)",
 			spells : ["poison spray"],
 			selection : ["poison spray"],
-			atwill : true,
+			atwill : true
 		},
 		features : {
 			"animal friendship" : {
@@ -1388,8 +1392,8 @@ var RaceList = {
 					name : "Innate Spellcasting (1)",
 					spells : ["animal friendship"],
 					selection : ["animal friendship"],
-					atwill : true,
-				},
+					atwill : true
+				}
 			},
 			"suggestion" : {
 				name : "Suggestion",
@@ -1402,11 +1406,11 @@ var RaceList = {
 					name : "Innate Spellcasting (3)",
 					spells : ["suggestion"],
 					selection : ["suggestion"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
 		},
-		trait : "Yuan-Ti Pureblood (+1 Intelligence, +2 Charisma)\n\nInnate Spellcasting:\n   I know the Poison Spray cantrip.\n   I can cast the spell Animal Friendship on snakes at will.\n   Once I reach 3rd level, I can cast the Suggestion spell once per long rest.\n   Charisma is my spellcasting ability for these spells.",
+		trait : "Yuan-Ti Pureblood (+1 Intelligence, +2 Charisma)\n\nInnate Spellcasting:\n   I know the Poison Spray cantrip.\n   I can cast the spell Animal Friendship on snakes at will.\n   Once I reach 3rd level, I can cast the Suggestion spell once per long rest.\n   Charisma is my spellcasting ability for these spells."
 	},
 }
 
@@ -1421,7 +1425,7 @@ var RaceSubList = {
 		+ "\n   " + "It does 2d6 acid damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
-		dmgres : ["acid"],
+		dmgres : ["acid"]
 	},
 	
 	"dragonborn-blue" : {
@@ -1434,7 +1438,7 @@ var RaceSubList = {
 		+ "\n   " + "It does 2d6 lightning damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
-		dmgres : ["lightning"],
+		dmgres : ["lightning"]
 	},
 	
 	"dragonborn-brass" : {
@@ -1447,7 +1451,7 @@ var RaceSubList = {
 		+ "\n   " + "It does 2d6 fire damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
-		dmgres : ["fire"],
+		dmgres : ["fire"]
 	},
 	
 	"dragonborn-bronze" : {
@@ -1460,7 +1464,7 @@ var RaceSubList = {
 		+ "\n   " + "It does 2d6 lightning damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
-		dmgres : ["lightning"],
+		dmgres : ["lightning"]
 	},
 	
 	"dragonborn-copper" : {
@@ -1473,7 +1477,7 @@ var RaceSubList = {
 		+ "\n   " + "It does 2d6 acid damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
-		dmgres : ["acid"],
+		dmgres : ["acid"]
 	},
 	
 	"dragonborn-gold" : {
@@ -1486,7 +1490,7 @@ var RaceSubList = {
 		+ "\n   " + "It does 2d6 fire damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
-		dmgres : ["fire"],
+		dmgres : ["fire"]
 	},
 	
 	"dragonborn-green" : {
@@ -1499,7 +1503,7 @@ var RaceSubList = {
 		+ "\n   " + "It does 2d6 poison damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
-		dmgres : ["poison"],
+		dmgres : ["poison"]
 	},
 	
 	"dragonborn-red" : {
@@ -1512,7 +1516,7 @@ var RaceSubList = {
 		+ "\n   " + "It does 2d6 fire damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
-		dmgres : ["fire"],
+		dmgres : ["fire"]
 	},
 	
 	"dragonborn-silver" : {
@@ -1525,7 +1529,7 @@ var RaceSubList = {
 		+ "\n   " + "It does 2d6 cold damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
-		dmgres : ["cold"],
+		dmgres : ["cold"]
 	},
 	
 	"dragonborn-white" : {
@@ -1538,7 +1542,7 @@ var RaceSubList = {
 		+ "\n   " + "It does 2d6 cold damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
-		dmgres : ["cold"],
+		dmgres : ["cold"]
 	},
 
 	"half-elf-aquatic" : {
@@ -1548,7 +1552,7 @@ var RaceSubList = {
 		plural : "Half-aquatic elves",
 		speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
 		skillstxt : "",
-		trait : "Half-Aquatic Elf (+2 Charisma and +1 to two other ability scores of my choice)\n\nSwimming Speed:\n   My aquatic heritage gives me a swimming speed of 30 feet.",
+		trait : "Half-Aquatic Elf (+2 Charisma and +1 to two other ability scores of my choice)\n\nSwimming Speed:\n   My aquatic heritage gives me a swimming speed of 30 feet."
 	},
 
 	"half-elf-cantrip" : {
@@ -1564,8 +1568,8 @@ var RaceSubList = {
 			name : "High Elf Cantrip",
 			class : "wizard",
 			level : [0, 0],
-			atwill : true,
-		},
+			atwill : true
+		}
 	},
 
 	"half-elf-drow magic" : {
@@ -1581,7 +1585,7 @@ var RaceSubList = {
 			name : "Drow Magic (level 1)",
 			spells : ["dancing lights"],
 			selection : ["dancing lights"],
-			atwill : true,
+			atwill : true
 		},
 		features : {
 			"faerie fire" : {
@@ -1595,8 +1599,8 @@ var RaceSubList = {
 					name : "Drow Magic (level 3)",
 					spells : ["faerie fire"],
 					selection : ["faerie fire"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			},
 			"darkness" : {
 				name : "Darkness",
@@ -1609,8 +1613,8 @@ var RaceSubList = {
 					name : "Drow Magic (level 5)",
 					spells : ["darkness"],
 					selection : ["darkness"],
-					oncelr : true,
-				},
+					oncelr : true
+				}
 			}
 		}
 	},
@@ -1622,7 +1626,7 @@ var RaceSubList = {
 		plural : "Half-wood elves",
 		speed : [35, 25],
 		skillstxt : "",
-		trait : "Half-Wood Elf (+2 Charisma and +1 to two other ability scores of my choice)",
+		trait : "Half-Wood Elf (+2 Charisma and +1 to two other ability scores of my choice)"
 	},
 	
 	"half-elf-elf weapon training" : {
@@ -1630,7 +1634,7 @@ var RaceSubList = {
 		source : ["S", 116],
 		skillstxt : "",
 		trait : "Half-Elf (+2 Charisma and +1 to two other ability scores of my choice)",
-		weaponprofs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
+		weaponprofs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]]
 	},
 
 	"half-elf-mask of the wild" : {
@@ -1639,7 +1643,7 @@ var RaceSubList = {
 		source : ["S", 116],
 		plural : "Half-wood elves",
 		skillstxt : "",
-		trait : "Half-Wood Elf (+2 Charisma and +1 to two other ability scores of my choice)\n\nMask of the Wild:\n   I can attempt to hide even when I am only lightly obscured by foliage, heavy rain, falling snow, mist, and other natural phenomena.",
+		trait : "Half-Wood Elf (+2 Charisma and +1 to two other ability scores of my choice)\n\nMask of the Wild:\n   I can attempt to hide even when I am only lightly obscured by foliage, heavy rain, falling snow, mist, and other natural phenomena."
 	},
 
 	"human-variant" : {
@@ -1717,7 +1721,7 @@ var RaceSubList = {
 					spells : ["burning hands"],
 					selection : ["burning hands"],
 					oncelr : true
-				},
+				}
 			},
 			"darkness" : {
 				name : "Darkness",

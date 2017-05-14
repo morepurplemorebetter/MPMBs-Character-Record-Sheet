@@ -352,7 +352,7 @@ function FormatDay() {
 		app.alert({
 			cMsg : "Please enter a valid date of the form \"" + dateInputFormLong + "\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" button above.",
 			cTitle : "Invalid date format",
-			nIcon : 1,
+			nIcon : 1
 		});
 		event.value = "";
 	} else if (event.value === "") {
@@ -537,7 +537,7 @@ function toUni(input) {
 		"w" : "\uD835\uDE6C",
 		"x" : "\uD835\uDE6D",
 		"y" : "\uD835\uDE6E",
-		"z" : "\uD835\uDE6F",
+		"z" : "\uD835\uDE6F"
 	};
 	var output = "";
 	for (i = 0; i < input.length; i++) {
@@ -921,4 +921,24 @@ function removeDiacritics(str) {
 	return str.replace(/[^\u0000-\u007E]/g, function (a) {
 		return diacriticsMap[a] || a;
 	});
+};
+
+// a way to change an attribute of a particular itemID element in a dialog.
+function setDialogName(dialogElem, itemID, attrNm, setAttr) {
+	if (dialogElem.description && dialogElem.description.elements) dialogElem = dialogElem.description.elements;
+	for (var i = 0; i < dialogElem.length; i++) {
+		var tElem = dialogElem[i];
+		if (tElem.item_id && tElem.item_id === itemID) {
+			tElem[attrNm] = setAttr;
+			return true;
+		} else if (tElem.elements) {
+			var isSet = setDialogName(tElem.elements, itemID, attrNm, setAttr);
+			if (isSet) return true;
+		};
+	};
+};
+
+//return a random number between 1 and the input 'die'
+function RollD(die) {
+    return Math.floor(Math.random() * die) + 1;
 };

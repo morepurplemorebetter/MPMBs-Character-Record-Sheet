@@ -161,42 +161,42 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "I learn two cantrips and one 1st-level spell of my choice from the bard's spell list.\nI can cast the spell it at its lowest level once per long rest.\nCharisma is my spellcasting ability for these.",
 		eval : "CurrentSpells[\"magic initiate bard\"] = {name : \"Magic Initiate [Bard]\", ability : 6, list : {class : \"bard\"}, known : {cantrips : 2}, bonus : {bonus1 : {name : \"1st-Level Spell\", class : \"bard\", level : [1, 1], oncelr : true}}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"magic initiate bard\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"magic initiate bard\"]; SetStringifieds(\"spells\");"
 	},
 	"magic initiate [cleric]" : {
 		name : "Magic Initiate [Cleric]",
 		source : ["P", 168],
 		description : "I learn two cantrips and one 1st-level spell of my choice from the cleric's spell list.\nI can cast the spell it at its lowest level once per long rest.\nWisdom is my spellcasting ability for these.",
 		eval : "CurrentSpells[\"magic initiate cleric\"] = {name : \"Magic Initiate [Cleric]\", ability : 5, list : {class : \"cleric\"}, known : {cantrips : 2}, bonus : {bonus1 : {name : \"1st-Level Spell\", class : \"cleric\", level : [1, 1], oncelr : true}}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"magic initiate cleric\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"magic initiate cleric\"]; SetStringifieds(\"spells\");"
 	},
 	"magic initiate [druid]" : {
 		name : "Magic Initiate [Druid]",
 		source : ["P", 168],
 		description : "I learn two cantrips and one 1st-level spell of my choice from the druid's spell list.\nI can cast the spell it at its lowest level once per long rest.\nWisdom is my spellcasting ability for these.",
 		eval : "CurrentSpells[\"magic initiate druid\"] = {name : \"Magic Initiate [Druid]\", ability : 5, list : {class : \"druid\"}, known : {cantrips : 2}, bonus : {bonus1 : {name : \"1st-Level Spell\", class : \"druid\", level : [1, 1], oncelr : true}}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"magic initiate druid\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"magic initiate druid\"]; SetStringifieds(\"spells\");"
 	},
 	"magic initiate [sorcerer]" : {
 		name : "Magic Initiate [Sorcerer]",
 		source : ["P", 168],
 		description : "I learn two cantrips and one 1st-level spell of my choice from the sorcerer's spell list.\nI can cast the spell it at its lowest level once per long rest.\nCharisma is my spellcasting ability for these.",
 		eval : "CurrentSpells[\"magic initiate sorcerer\"] = {name : \"Magic Initiate [Sorcerer]\", ability : 6, list : {class : \"sorcerer\"}, known : {cantrips : 2}, bonus : {bonus1 : {name : \"1st-Level Spell\", class : \"sorcerer\", level : [1, 1], oncelr : true}}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"magic initiate sorcerer\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"magic initiate sorcerer\"]; SetStringifieds(\"spells\");"
 	},
 	"magic initiate [warlock]" : {
 		name : "Magic Initiate [Warlock]",
 		source : ["P", 168],
 		description : "I learn two cantrips and one 1st-level spell of my choice from the warlock's spell list.\nI can cast the spell it at its lowest level once per long rest.\nCharisma is my spellcasting ability for these.",
 		eval : "CurrentSpells[\"magic initiate warlock\"] = {name : \"Magic Initiate [Warlock]\", ability : 6, list : {class : \"warlock\"}, known : {cantrips : 2}, bonus : {bonus1 : {name : \"1st-Level Spell\", class : \"warlock\", level : [1, 1], oncelr : true}}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"magic initiate warlock\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"magic initiate warlock\"]; SetStringifieds(\"spells\");"
 	},
 	"magic initiate [wizard]" : {
 		name : "Magic Initiate [Wizard]",
 		source : ["P", 168],
 		description : "I learn two cantrips and one 1st-level spell of my choice from the wizard's spell list.\nI can cast the spell it at its lowest level once per long rest.\nIntelligence is my spellcasting ability for these.",
 		eval : "CurrentSpells[\"magic initiate wizard\"] = {name : \"Magic Initiate  [Wizard]\", ability : 4, list : {class : \"wizard\"}, known : {cantrips : 2}, bonus : {bonus1 : {name : \"1st-Level Spell\", class : \"wizard\", level : [1, 1], oncelr : true}}}; SetStringifieds(\"spells\");",
-		removeeval : "delete CurrentSpells[\"magic initiate wizard\"]; SetStringifieds(\"spells\");",
+		removeeval : "delete CurrentSpells[\"magic initiate wizard\"]; SetStringifieds(\"spells\");"
 	},
 	"martial adept" : {
 		name : "Martial Adept",
@@ -532,6 +532,6 @@ var FeatsList = {
 		name : "Weapon Master",
 		source : ["P", 170],
 		description : "I gain proficiency with four simple or martial weapons of my choice.\n[+1 Strength or Dexterity]",
-		improvements : "Weapon Master (feat): +1 Strength or Dexterity;",
+		improvements : "Weapon Master (feat): +1 Strength or Dexterity;"
 	}
 };

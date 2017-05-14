@@ -3,37 +3,37 @@ var SourceList = {
 	"P" : {
 		name : "Player's Handbook",
 		abbreviation : "PHB",
-		group : "Official Sources",
+		group : "Primary Sources",
 		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/rpg_playershandbook"
 	},
 	"D" : {
 		name : "Dungeon Master's Guide",
 		abbreviation : "DMG",
-		group : "Official Sources",
+		group : "Primary Sources",
 		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/dungeon-masters-guide"
 	},
 	"M" : {
 		name : "Monster Manual",
 		abbreviation : "MM",
-		group : "Official Sources",
+		group : "Primary Sources",
 		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/monster-manual"
 	},
 	"E" : {
 		name : "Elemental Evil Player's Companion",
 		abbreviation : "EE",
-		group : "Official Sources",
+		group : "Primary Sources",
 		url : "http://media.wizards.com/2015/downloads/dnd/EE_PlayersCompanion.pdf"
 	},
 	"S" : {
 		name : "Sword Coast Adventure Guide",
 		abbreviation : "SCAG",
-		group : "Official Sources",
+		group : "Primary Sources",
 		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/sc-adventurers-guide"
 	},
 	"V" : {
 		name : "Volo's Guide to Monsters",
 		abbreviation : "VGtM",
-		group : "Official Sources",
+		group : "Primary Sources",
 		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/volos-guide-to-monsters"
 	},
 

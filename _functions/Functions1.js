@@ -3,73 +3,42 @@ function MakeDocName() {
 };
 
 function MakeButtons() {
+	CreateIcons();
 	var oIcon = null; // iconstream
 	try {
 		if (!tDoc.info.SpellsOnly) {
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.layout.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "LayoutButton",
 				cExec : minVer ? "MakeAdvLogMenu_AdvLogOptions(true);" : "MakePagesMenu(); PagesOptions();",
-				oIcon : oIcon,
+				oIcon : allIcons.layout,
 				cTooltext : toUni("Set Pages Layout") + "\nSelect which pages are visible in the sheet.\n\nYou can also add more instances of the following pages:\n   \u2022  Companion page;\n   \u2022  Notes page;\n   \u2022  Wild Shapes page.\n\nNote that if you add more pages or you hide/show the pages many times, the file size might increase.",
 				nPos : 0,
 				cLabel : "Layout"
 			});
 		}
 		if (!minVer) {
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.reset.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "ResetButton",
 				cExec : "ResetAll();",
-				oIcon : oIcon,
+				oIcon : allIcons.reset,
 				cTooltext : toUni("Reset") + "\nReset the entire sheet and all form fields to their initial value.",
 				nPos : 1,
 				cLabel : "Reset"
 			});
 		}
 		if (!tDoc.info.AdvLogOnly) {
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.import.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "ImportExportButton",
 				cExec : minVer ? "AddUserScript();" : "ImportExport_Button();",
-				oIcon : oIcon,
+				oIcon : allIcons.import,
 				cTooltext :  minVer ? toUni("Add Custom Script") + "\nAdd a script to add new spells, modify spells and more, see FAQ." : toUni("Import / Export") + "\n \u2022  Import all the information from an old sheet directly;\n \u2022  Add custom script, see FAQ;\n \u2022  Alternatively, you can import or export data with the .xfdf file format. This method is depreciated, but might still be interesting if you only want to import the equipment sections or only the description sections.\n\nThe description sections include the top of first page, background page, notes, and companion description.",
 				nPos : 2,
 				cLabel : "Import"
 			});
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.sources.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "SourcesButton",
 				cExec : "resourceDecisionDialog();",
-				oIcon : oIcon,
+				oIcon : allIcons.sources,
 				cTooltext : toUni("Select Sources") + "\nOpen a dialogue where you can select which sourcebooks and materials the sheet is allowed to use and which it has to excluded from the automation." + (this.info.SpellsOnly ? "\n\nHere you can select which sources are used for the spells or even exclude certain spells or spell schools. After you have set this, you will have to manually re-generate the spell sheet using the 'Spells' button/bookmark." : "\n\nHere you can make the sheet include all Unearthed Arcana material or even have the sheet exclude certain classes, races, spells, etc. etc.\n\nYou are advised to set the sources before filling out the sheet as it may cause certain fields to be reset."),
 				nPos : 3,
 				cLabel : "Sources"
@@ -77,18 +46,10 @@ function MakeButtons() {
 		}
 
 		if (!tDoc.info.SpellsOnly) {
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.textsize.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "SetTextOptionsButton",
 				cExec : "MakeTextMenu_TextOptions();",
-				oIcon : oIcon,
+				oIcon : allIcons.textsize,
 				cTooltext : toUni("Text Options") + "\nGives a dialog where you can:\n   \u2022  Set the font of all fillable fields" + "\n   \u2022  Set the font size of fields with multiple lines;\n   \u2022  Hide\/show the text lines on all pages" + (!typePF ? "" : ";\n   \u2022  Switch between boxes or lines for single-line fields."),
 				nPos : 4,
 				cLabel : "Text"
@@ -96,85 +57,42 @@ function MakeButtons() {
 		}
 		
 		if (!minVer) {
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.classes.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "ClassesButton",
 				cExec : "SelectClass();",
-				oIcon : oIcon,
+				oIcon : allIcons.classes,
 				cTooltext : toUni("Set Character Classes") + "\nOpen a pop-up dialogue where you can set the classes, subclasses, and levels the character has.\n\nYou get drop-down boxes for selecting a class and its subclass, and can test what class something you enter is being recognized as.",
 				nPos : 5,
 				cLabel : "Class"
 			});
-			
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.automanual.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "SetToManualButton",
 				cExec : "SetToManual_Button();",
-				oIcon : oIcon,
+				oIcon : allIcons.automanual,
 				cTooltext : toUni("Auto / Manual") + "\nSwitch between manual or automatic calculation\/implementation of:\n   \u2022  Attacks;\n   \u2022  Background;\n   \u2022  Class;\n   \u2022  Feats;\n   \u2022  Race.",
 				nPos : 6,
 				cLabel : "Manual"
 			});
-
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.weight.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "WeightToCalcButton",
 				cExec : "WeightToCalc_Button();",
-				oIcon : oIcon,
+				oIcon : allIcons.weight,
 				cTooltext : toUni("Weight Calculation") + "\nOpen the Total Weight dialogue where you can choose what is and what is not counted towards the Total Weight on the second page.\n\nIn the dialogue you can also select which encumbrance rules to use.",
 				nPos : 7,
 				cLabel : "Weight"
 			});
-
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.scores.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "AbilityScoresButton",
 				cExec : "AbilityScores_Button();",
-				oIcon : oIcon,
+				oIcon : allIcons.scores,
 				cTooltext : toUni("Ability Scores") + "\nOpen the Ability Scores dialog where you can set them using their separate parts, see the Point Buy value, and apply a magic item that overrides.\n\nThis dialog also gives the option to add Honor/Sanity.",
 				nPos : 8,
 				cLabel : "Scores"
 			});
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.modifiers.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "BlueTextButton",
 				cExec : "ToggleBlueText(What(\"BlueTextRemember\"));",
-				oIcon : oIcon,
+				oIcon : allIcons.modifiers,
 				cTooltext : toUni("Modifier Fields") + "\nHide\/show fields where you can manually add modifiers for:\n   \u2022  Ability save DC;\n   \u2022  Attacks to hit and damage bonusses;\n   \u2022  Attacks damage die;\n   \u2022  Proficiency bonus, or the use of proficiency dice;\n   \u2022  Saves;\n   \u2022  Skills, with Jack of All Trades and Remarkable Athlete;\n   \u2022  Number of spell slots;\n   \u2022  Initiative;\n   \u2022  Carrying capacity multiplier;\n   \u2022  Weights of armor, shield, weapons, and ammunition.\n\nThese are the so-called \"blue text fields\" and they won't print, even when they are visible.",
 				cMarked : "event.rc = What(\"BlueTextRemember\") === \"Yes\";",
 				nPos : 9,
@@ -183,18 +101,10 @@ function MakeButtons() {
 		}
 
 		if (!tDoc.info.AdvLogOnly) {
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.spells.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "SpellsButton",
 				cExec : "MakeSpellMenu_SpellOptions();",
-				oIcon : oIcon,
+				oIcon : allIcons.spells,
 				cTooltext : toUni("Spells Options") + "\nGet a menu with the options to:\n   \u2022  Create a Spell Sheet;\n   \u2022  Select the sources for that Spell Sheet;\n   \u2022  Delete an existing Spell Sheet;" + (!typePF ? "\n   \u2022  Set the visibility of the Spell Slot check boxes to the Spell Sheet, the Limited Feature section, or both;" : "") + "\n   \u2022  Set the sheet to use Spell Points instead of Spell Slots.\n\nGenerating a Spell Sheet will involve filling out a dialog for each spellcasting class/race/feat. After that you can select which is included in the Spell Sheet and in what order.", //\n\nAlternatively you can create an empty Spell Sheet which you can fill out manually.",
 				nPos : 10,
 				cLabel : "Spells"
@@ -202,105 +112,53 @@ function MakeButtons() {
 		}
 		
 		if (!minVer) {
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.league.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "AdventureLeagueButton",
 				cExec : "ToggleAdventureLeague(What(\"League Remember\"));",
-				oIcon : oIcon,
-				cTooltext : toUni("Adventurers League") + "\nHide\/show fields for Adventurer's League play:\n   \u2022  'DCI' on the 1st page;\n   \u2022  'Faction' and 'Renown' on the 4th page;\n   \u2022  Fixed hp value on the 1st page;\n   \u2022  The action options from the DMG on the 1st page;\n   \u2022  Notes for action options from the DMG on the 3rd page.\n\nThis button also makes the \"Adventurers Logsheet\" visible if it isn't already.\n\nNote that this Character Generator\/Sheet offers some options that are not legal in Adventurer's League play regardless of enabling this button or not.",
+				oIcon : allIcons.league,
+				cTooltext : toUni("Adventurers League") + "\nHide\/show fields for Adventurers League play:\n   \u2022  'DCI' on the 1st page;\n   \u2022  'Faction Rank' and 'Renown' on the Background page;\n   \u2022  Sets HP value on the 1st page to 'always fixed';" + (typePF ? "" : "\n   \u2022  Removes the action options from the DMG on the 1st page;") + "\n   \u2022  Adds asterisks for action options taken from the DMG in the reference section.\n\nThis button also makes the \"Adventurers Logsheet\" visible if it isn't already.\n\nNote that this Character Generator\/Sheet offers some options that are not legal in Adventurer's League play regardless of enabling this button or not.",
 				cMarked : "event.rc = What(\"League Remember\") === \"On\";",
 				nPos : 11,
-				cLabel : "League",
+				cLabel : "League"
 			});
-
-			oIcon = {
-				count : 0,
-				width : 20,
-				height : 20,
-				read : function (nBytes) {
-					return ButtonIcons.print.slice(this.count, this.count += nBytes);
-				}
-			};
 			app.addToolButton({
 				cName : "PrintButton",
 				cExec : "PrintButton();",
-				oIcon : oIcon,
+				oIcon : allIcons.print,
 				cTooltext : toUni("Print") + "\nSelect what pages you want to print and open the print dialog.\n\nThe pages you select will be remembered for the next time you press this button.\n\nYou also get an option to hide all fields on the sheet before printing.",
 				nPos : 12,
 				cLabel : "Print"
 			});
-		}
-		
-		oIcon = {
-			count : 0,
-			width : 20,
-			height : 20,
-			read : function (nBytes) {
-				return ButtonIcons.tablet.slice(this.count, this.count += nBytes);
-			}
 		};
 		app.addToolButton({
 			cName : "MakeMobileReadyButton",
 			cExec : "MakeMobileReady(What(\"MakeMobileReady Remember\") === \"\");",
-			oIcon : oIcon,
+			oIcon : allIcons.tablet,
 			cTooltext : toUni("Flatten") + "\nSwitch to or from a version of the sheet that is compatible with Acrobat Reader for mobile devices.\nThis flattens all form fields and hides non-printable ones to make the sheet more usable on a phone or tablet.\n\nThe fields used during normal play will stay editable:\n   \u2022  1st page: health, attacks, actions, adv.\/disadv., etc.;\n   \u2022  2nd page: equipment and proficiencies;\n   \u2022  3rd-6th page: all except buttons and portrait\/symbol.",
 			cMarked : "event.rc = What(\"MakeMobileReady Remember\") !== \"\";",
 			nPos : 13,
 			cLabel : "Flatten"
 		});
-		oIcon = {
-			count : 0,
-			width : 20,
-			height : 20,
-			read : function (nBytes) {
-				return ButtonIcons.unitsystem.slice(this.count, this.count += nBytes);
-			}
-		};
 		app.addToolButton({
 			cName : "SetUnitDecimalsButton",
 			cExec : "SetUnitDecimals_Button();",
-			oIcon : oIcon,
+			oIcon : allIcons.unitsystem,
 			cTooltext : toUni("Unit System") + "\nOpen a dialog where you can select the following:\n   \u2022  Unit system: metric or imperial\n   \u2022  Decimal separator: dot or comma.",
 			nPos : 14,
 			cLabel : "Units"
 		});
-
-		oIcon = {
-			count : 0,
-			width : 20,
-			height : 20,
-			read : function (nBytes) {
-				return ButtonIcons.colors.slice(this.count, this.count += nBytes);
-			}
-		};
 		app.addToolButton({
 			cName : "ColorButton",
 			cExec : "MakeColorMenu(); ColoryOptions();",
-			oIcon : oIcon,
+			oIcon : allIcons.colors,
 			cTooltext : !typePF ? toUni("Set Color Theme") + "\nControl the color theme of the sheet in the following ways:\n   \u2022  Color of the Headers;\n   \u2022  Color of the Dragon Heads;" + (minVer ? "" : "\n   \u2022  Color of the HP Dragons;\n   \u2022  Color of the Ability Save DCs;") + "\n   \u2022  Color of the form field highlighting.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet." : toUni("Set Highlighting Color") + "\nSet the color of the form field highlighting.\n\nYou can select several colors, the adobe default color, or turn form field highlighting off.\n\nNote that the color of the highlighting might affect other PDFs you currently have opened. It will revert to normal once you close this sheet, but will be applied again once you open this sheet.",
 			nPos : 15,
 			cLabel : "Color"
 		});
-
-		oIcon = {
-			count : 0,
-			width : 20,
-			height : 20,
-			read : function (nBytes) {
-				return ButtonIcons.faq.slice(this.count, this.count += nBytes);
-			}
-		};
 		app.addToolButton({
 			cName : "FAQButton",
 			cExec : "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });",
-			oIcon : oIcon,
+			oIcon : allIcons.faq,
 			cTooltext : toUni("FAQ") + "\nOpen the frequently asked questions pdf.\n\nThere you can find information on how to add custom code to the sheet, like homebrew races\/weapons\/feats\/etc.",
 			nPos : 16,
 			cLabel : "FAQ"
@@ -312,7 +170,7 @@ function MakeButtons() {
 			cLabel : "Just to make it appear"
 		});
 		app.removeToolButton({
-			cName : "TempButton",
+			cName : "TempButton"
 		});
 	}
 };
@@ -583,7 +441,7 @@ function ToggleWhiteout(Toggle) {
 function ResetAll(GoOn) {
 	var ResetDialog = {
 		cTitle : "Reset the whole sheet",
-		cMsg : "Are you sure you want to reset all fields and functions to their initial value?\nThis will undue any changes you have made, including Custom Scripts, page layout, source selection, and imported images.\n\nThis cannot be undone!",
+		cMsg : "Are you sure you want to reset all fields and functions to their initial value?\nThis will undo any changes you have made, including Custom Scripts, page layout, source selection, and imported images.\n\nThis cannot be undone!",
 		nIcon : 1, //Warning
 		nType : 2, //Yes, No
 	}
@@ -759,7 +617,7 @@ function ToggleTextSize(Toggle) {
 			"Background_History",
 			"Background_Appearance",
 			"Background_Enemies",
-			"MoreProficiencies",
+			"MoreProficiencies"
 		];
 		if (!typePF) {
 			LinesFld.push("Background_Organisation");
@@ -846,15 +704,15 @@ function LayerVisibilityOptions(input) {
 	Menus.chooselayers = [{
 			cName : "Rules left - Equipment right",
 			cReturn : "rules#equipment",
-			bMarked : selection[0] === "rules" && selection[1] === "equipment",
+			bMarked : selection[0] === "rules" && selection[1] === "equipment"
 		}, {
 			cName : "Notes left - Equipment right",
 			cReturn : "notes#equipment",
-			bMarked : selection[0] === "notes" && selection[1] === "equipment",
+			bMarked : selection[0] === "notes" && selection[1] === "equipment"
 		}, {
 			cName : "Notes left - Rules right",
 			cReturn : "notes#rules",
-			bMarked : selection[0] === "notes" && selection[1] === "rules",
+			bMarked : selection[0] === "notes" && selection[1] === "rules"
 		}, ]
 	
 	if (input) {
@@ -872,7 +730,7 @@ function LayerVisibilityOptions(input) {
 		var HideShowLNotesFlds = "Hide";
 		var LRulesFlds = [
 			"Text.Header.Rules.Left",
-			"Image.Rules.Left",
+			"Image.Rules.Left"
 		];
 		var HideShowLRulesFlds = "Hide";
 		var RRulesFlds = [
@@ -880,7 +738,7 @@ function LayerVisibilityOptions(input) {
 			"Image.Header.RightRules",
 			"Image.DragonheadRightRules",
 			"Image.DragonheadshadowRightRules",
-			"Image.Rules.Right",
+			"Image.Rules.Right"
 		];
 		var HideShowRRulesFlds = "Hide";
 		var REquipFlds = [
@@ -891,7 +749,7 @@ function LayerVisibilityOptions(input) {
 			"Display.Weighttxt.LbKgPage3",
 			"Extra.Gear Weight Subtotal Left",
 			"Extra.Gear Weight Subtotal Right",
-			"Extra.Other Holdings",
+			"Extra.Other Holdings"
 		];
 		var HideShowREquipFlds = "Hide";
 		var REquipFldsNP = [];
@@ -1096,7 +954,7 @@ function ToggleBlueText(Toggle) {
 		"AmmoLeftDisplay.WeightText",
 		"AmmoLeftDisplay.Weight",
 		"AmmoRightDisplay.WeightText",
-		"AmmoRightDisplay.Weight",
+		"AmmoRightDisplay.Weight"
 	];
 	
 	if (typePF) {
@@ -1337,7 +1195,7 @@ function FindArmor(input) {
 	}
 
 	//add magical bonus, denoted by a "+"
-	var magicBonus = parseFloat(tempString.match(/(^|\s)[\+|-]\d+/i));
+	var magicBonus = parseFloat(tempString.match(/(^|\s|\(|\[)[\+|-]\d+/));
 	CurrentArmour.magic = !isNaN(magicBonus) ? Number(magicBonus) : 0;
 	
 	CurrentArmour.mod = "";
@@ -1434,7 +1292,7 @@ function FindShield(input) {
 	var temp = "";
 
 	//add magical bonus, denoted by a "+"
-	var magicBonus = parseFloat(tempString.match(/(^|\s)[\+|-]\d+/i));
+	var magicBonus = parseFloat(tempString.match(/(^|\s|\(|\[)[\+|-]\d+/));
 	CurrentShield.magic = !isNaN(magicBonus) ? Number(magicBonus) : 0;
 }
 
@@ -1683,7 +1541,7 @@ function FindClasses(Event) {
 	if (Event === undefined) {
 		classes.field = What("Class and Levels");
 	};
-	var temp = clean(classes.field.toLowerCase()) === "" ? "" : classes.field.toLowerCase();
+	var temp = clean(classes.field.replace(/^\d+/, "")) === "" ? "" : classes.field.replace(/^\d+/, "").toLowerCase();
 	var tempArray = [];
 	var tempPosition = 0;
 	var tempChar = "";
@@ -1972,7 +1830,7 @@ function FindClasses(Event) {
 			spellcastingTable : "",
 			spellcastingList : "",
 			spellcastingKnown : "",
-			spellcastingExtra : "",
+			spellcastingExtra : ""
 		};
 
 		var Temps = CurrentClasses[aClass];
@@ -2188,7 +2046,6 @@ function ApplyClasses(inputclasstxt, updateall) {
 	
 	thermoM(2/6); //increment the progress dialog's progress
 	thermoM("Adding saves and proficiencies..."); //change the progress dialog text
-	//put hit dice on sheet
 	
 	//add saves and tools of the primary class
 	if (classes.primary) {
@@ -2204,7 +2061,6 @@ function ApplyClasses(inputclasstxt, updateall) {
 	
 	thermoM(3/6); //increment the progress dialog's progress
 	thermoM("Setting the spell slots..."); //change the progress dialog text
-	//put hit dice on sheet
 	
 	//set the spell slots of the class' levels
 	for (var ss = 0; ss <= 8; ss++) {
@@ -2230,7 +2086,6 @@ function ApplyClasses(inputclasstxt, updateall) {
 	
 	thermoM(4/6); //increment the progress dialog's progress
 	thermoM("Setting the total character level..."); //change the progress dialog text
-	
 	
 	//add tool proficiencies
 	for (var aClass in classes.known) {
@@ -2355,14 +2210,14 @@ function CalcExperienceLevel(AlsoClass) {
 					font : "heading",
 					bold : true,
 					height : 21,
-					char_width : 45,
+					char_width : 45
 				}, {
 					type : "static_text",
 					item_id : "text",
 					alignment : "align_fill",
 					font : "dialog",
 					height : 165,
-					char_width : 45,
+					char_width : 45
 				}, {
 					type : "ok_cancel_other",
 					ok_name : okButton,
@@ -2473,7 +2328,7 @@ function FindRace(inputracetxt) {
 		variants : "",
 		abilitySave : 0,
 		spellcastingAbility : 0,
-		spellcastingBonus : "",
+		spellcastingBonus : ""
 	};
 	
 	for (var prop in CurrentRace) {
@@ -2808,7 +2663,7 @@ function FindWeapons(ArrayNmbr) {
 		];
 		
 		//add magical bonus, denoted by a "+" or "-"
-		var magicBonus = parseFloat(tempString.match(/(^|\s)[\+|-]\d+/i));
+		var magicBonus = parseFloat(tempString.match(/(^|\s|\(|\[)[\+|-]\d+/));
 		tempArray[j][1] = !isNaN(magicBonus) ? magicBonus : 0;
 	
 		//add the true/false switch for adding ability score to damage or not
@@ -3299,7 +3154,7 @@ function MakeInventoryMenu() {
 	var menuExtraTypes = [
 		["To left column", "lonly"],
 		["To middle column", "monly"],
-		["To right column", "ronly"],
+		["To right column", "ronly"]
 	];
 	if (!typePF) menuExtraTypes.splice(1, 1);
 	itemMenu(InvMenu, "Pack", menuExtraTypes, GearMenus.packs);
@@ -3317,7 +3172,7 @@ function MakeInventoryMenu() {
 				cName : array[i][0],
 				cReturn : array[i][1],
 				bMarked : isMarked,
-				bEnabled : isEnabled,
+				bEnabled : isEnabled
 			});
 		}
 	};
@@ -3861,7 +3716,7 @@ function FindBackground(Event) {
 		extra : "",
 		tools : "",
 		source : [],
-		lifestyle : "",
+		lifestyle : ""
 	};
 
 	for (var prop in CurrentBackground) {
@@ -3957,7 +3812,7 @@ function ApplyBackground(input) {
 				"modest",
 				"comfortable",
 				"wealthy",
-				"aristocratic",
+				"aristocratic"
 			];
 			var styleIndex = LifestyleArray.indexOf(CurrentBackground.lifestyle);
 			if (styleIndex !== -1) PickDropdown("Lifestyle", styleIndex);
@@ -4028,7 +3883,7 @@ function MakeBackgroundMenu() {
 			item.push({
 				cName : array[i],
 				cReturn : item + "#" + array[i],
-				bEnabled : array[i] !== "No background entry has been detected on the first page",
+				bEnabled : array[i] !== "No background entry has been detected on the first page"
 			});
 		}
 	};
@@ -5662,7 +5517,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 								level : newClassLvl[aClass],
 								ability : temp.abilitySave ? temp.abilitySave : 0,
 								typeSp : "known",
-								bonus : {},
+								bonus : {}
 							};
 							if (propFea.spellFirstColTitle) {
 								CurrentSpells[aClass].firstCol = propFea.spellFirstColTitle;
@@ -5835,7 +5690,7 @@ function MakeClassMenu() {
 			item.push({
 				cName : array[i],
 				cReturn : thereturn + "#" + array[i],
-				bEnabled : array[i] !== "No class features detected that require a choice",
+				bEnabled : array[i] !== "No class features detected that require a choice"
 			});
 		}
 	};
@@ -6072,7 +5927,7 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 				level : classes.known[MenuSelection[0]].level,
 				ability : CurrentClasses[MenuSelection[0]].abilitySave ? CurrentClasses[MenuSelection[0]].abilitySave : 0,
 				typeSp : "known",
-				bonus : {},
+				bonus : {}
 			};
 		}
 		var cSpells = CurrentSpells[MenuSelection[0]];
@@ -6185,9 +6040,8 @@ function PrintButton() {
 		"ASnotes",
 		"WSfront",
 		"SSmore",
-		"ALlog",
+		"ALlog"
 	];
-	
 	if (typePF) {
 		thePageOptions.push("PRsheet");
 		SetPrintPages_Dialog.bshowPR = true;
@@ -6642,7 +6496,7 @@ function MakeMobileReady(toggle) {
 			"AmmoLeftDisplay.Amount",
 			"AmmoRightDisplay.Name",
 			"AmmoRightDisplay.Amount",
-			"Reaction Used This Round",
+			"Reaction Used This Round"
 		];
 		var exceptionPartsArray = [
 			"Comp.Use.HD.Used",
@@ -6682,11 +6536,11 @@ function MakeMobileReady(toggle) {
 			"Extra.Notes",
 			"Background_",
 			"SpellSlots.Checkboxes.",
-			"SpellSlots2.Checkboxes.",
+			"SpellSlots2.Checkboxes."
 		];
 		if (What("Manual Attack Remember") === "Yes") exceptionPartsArray.push("Attack.");
 		var TooMuchExceptionArray = [
-			"AC Stealth Disadvantage",
+			"AC Stealth Disadvantage"
 		]
 		var tempReadOnlyArray = [];
 		var tempNoPrintArray = [];
@@ -6785,7 +6639,7 @@ function MakeMagicItemMenu() {
 		"Move up",
 		"Move down",
 		"-",
-		"Copy to Adventuring Gear (page 2)",
+		"Copy to Adventuring Gear (page 2)"
 	]
 	if (What("Adventuring Gear Remember") === false) {
 		theArray.push("Copy to Attuned Magical Items (page 2)");
@@ -6823,7 +6677,7 @@ function MagicItemOptions() {
 			What(Fields[0]),
 			tDoc.getField(Fields[1]).isBoxChecked(0),
 			What(Fields[2]),
-			What(Fields[3]),
+			What(Fields[3])
 		];
 		if (itemNmbr !== 1) {
 			var FieldsUp = [
@@ -6836,7 +6690,7 @@ function MagicItemOptions() {
 				What(FieldsUp[0]),
 				tDoc.getField(FieldsUp[1]).isBoxChecked(0),
 				What(FieldsUp[2]),
-				What(FieldsUp[3]),
+				What(FieldsUp[3])
 			];
 		}
 		if (itemNmbr !== FieldNumbers.magicitems) {
@@ -6850,7 +6704,7 @@ function MagicItemOptions() {
 				What(FieldsDown[0]),
 				tDoc.getField(FieldsDown[1]).isBoxChecked(0),
 				What(FieldsDown[2]),
-				What(FieldsDown[3]),
+				What(FieldsDown[3])
 			];
 		}
 		
@@ -7187,6 +7041,7 @@ function WeightToCalc_Button() {
 		//when starting the dialog
 		initialize : function (dialog) {
 			dialog.load({
+				"img1" : allIcons.weight,
 				"cArm" : What("Weight Remember Armor") !== "No",
 				"cShi" : What("Weight Remember Shield") !== "No",
 				"cWea" : What("Weight Remember Weapons") !== "No",
@@ -7200,12 +7055,12 @@ function WeightToCalc_Button() {
 				"cMaI" : What("Weight Remember Magic Items") !== "No",
 				"text" : "Note that you can change the weight of the armor, shield, weapons, and ammunition on the 1st page and the magic items on the 3rd page by using the \"bluetext fields\" that appear when you press the \"Mods\" button.\nFor the ammunition, only the number listed under \"total\" is counted as that already includes the unchecked ammo icons.",
 				"rEnc" : this.UseEnc,
-				"rCar" : !this.UseEnc,
+				"rCar" : !this.UseEnc
 			});
 			
 			if (this.AddMiddleC) {
 				dialog.load({
-					"cP2M" : What("Weight Remember Page2 Middle") !== "No",
+					"cP2M" : What("Weight Remember Page2 Middle") !== "No"
 				})
 			}
 		},
@@ -7237,12 +7092,26 @@ function WeightToCalc_Button() {
 				elements : [{
 					type : "view",
 					elements : [{
+						type : "view",
+						align_children : "align_row",
+						elements : [{
+							type : "image",
+							item_id : "img1",
+							alignment : "align_bottom",
+							width : 20,
+							height : 20
+						}, {
+							type : "static_text",
+							item_id : "head",
+							alignment : "align_fill",
+							font : "heading",
+							bold : true,
+							height : 21,
+							name : "What to count towards the Total Weight on the second page"
+						}]
+					}, {
 						type : "cluster",
 						align_children : "align_distribute",
-						name : "Count towards the Total Weight on the second page",
-						bold : true,
-						font : "heading",
-						char_width : 44,
 						elements : [{
 							type : "view",
 							align_children : "align_left",
@@ -7255,11 +7124,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cArm",
 									name : "Armor",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tArm",
-									name : (this.AddMiddleC ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page.",
+									name : (this.AddMiddleC ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page."
 								}, ]
 							}, {
 								type : "view",
@@ -7270,11 +7139,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cShi",
 									name : "Shield",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tShi",
-									name : (this.AddMiddleC ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page.",
+									name : (this.AddMiddleC ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page."
 								}, ]
 							}, {
 								type : "view",
@@ -7285,11 +7154,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cWea",
 									name : "Weapons",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tWea",
-									name : "\"Attacks\" section on the 1st page.",
+									name : "\"Attacks\" section on the 1st page."
 								}, ]
 							}, {
 								type : "view",
@@ -7300,11 +7169,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cAmL",
 									name : "Ammunition on the left",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tAmL",
-									name : "\"Attacks\" section on the 1st page.",
+									name : "\"Attacks\" section on the 1st page."
 								}, ]
 							}, {
 								type : "view",
@@ -7315,11 +7184,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cAmR",
 									name : "Ammunition on the right",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tAmR",
-									name : "\"Attacks\" section on the 1st page.",
+									name : "\"Attacks\" section on the 1st page."
 								}, ]
 							}, {
 								type : "view",
@@ -7330,11 +7199,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cCoi",
 									name : "Coins",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tCoi",
-									name : "\"Equipment\" section on the 2nd page (1 lb per 50).",
+									name : "\"Equipment\" section on the 2nd page (1 lb per 50)."
 								}, ]
 							}, {
 								type : "view",
@@ -7345,11 +7214,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cP2L",
 									name : "Left column equipment",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tP2L",
-									name : "\"Equipment\" section on the 2nd page.",
+									name : "\"Equipment\" section on the 2nd page."
 								}, ]
 							}, {
 								type : "view",
@@ -7360,11 +7229,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cP2M",
 									name : "Middle column equipment",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tP2M",
-									name : "\"Equipment\" section on the 2nd page.",
+									name : "\"Equipment\" section on the 2nd page."
 								}, ]
 							}, {
 								type : "view",
@@ -7375,11 +7244,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cP2R",
 									name : "Right column equipment",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tP2R",
-									name : "\"Equipment\" section on the 2nd page.",
+									name : "\"Equipment\" section on the 2nd page."
 								}, ]
 							}, {
 								type : "view",
@@ -7390,11 +7259,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cP3L",
 									name : "Left column extra equipment",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tP3L",
-									name : "\"Extra Equipment\" section on the 3rd page.",
+									name : "\"Extra Equipment\" section on the 3rd page."
 								}, ]
 							}, {
 								type : "view",
@@ -7405,11 +7274,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cP3R",
 									name : "Right column extra equipment",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tP3R",
-									name : "\"Extra Equipment\" section on the 3rd page.",
+									name : "\"Extra Equipment\" section on the 3rd page."
 								}, ]
 							}, {
 								type : "view",
@@ -7420,11 +7289,11 @@ function WeightToCalc_Button() {
 									type : "check_box",
 									item_id : "cMaI",
 									name : "Magic items",
-									char_width : 20,
+									char_width : 20
 								}, {
 									type : "static_text",
 									item_id : "tMaI",
-									name : "\"Magic Items\" section on the 3rd page.",
+									name : "\"Magic Items\" section on the 3rd page."
 								}, ]
 							}, ]
 						}, ]
@@ -7434,7 +7303,7 @@ function WeightToCalc_Button() {
 						alignment : "align_fill",
 						font : "dialog",
 						char_height : 9,
-						char_width : 45,
+						char_width : 45
 					}, {
 						type : "cluster",
 						align_children : "align_left",
@@ -7446,20 +7315,20 @@ function WeightToCalc_Button() {
 							type : "radio",
 							item_id : "rEnc",
 							group_id : "encu",
-							name : "Use the variant encumbrance rules",
+							name : "Use the variant encumbrance rules"
 						}, {
 							type : "radio",
 							item_id : "rCar",
 							group_id : "encu",
-							name : "Use the fixed carrying capacity rules",
+							name : "Use the fixed carrying capacity rules"
 						}, ]
 					}, {
 						type : "gap",
-						height : 8,
+						height : 8
 					}, ]
 				}, {
 					type : "ok_cancel",
-					ok_name : "Apply",
+					ok_name : "Apply"
 				}, ]
 			}, ]
 		}
@@ -7569,7 +7438,7 @@ function ApplyAmmo(inputtxt, Fld) {
 function AddAmmo(inputtxt) {
 	var AmmoFlds = [
 		"AmmoLeftDisplay.Name",
-		"AmmoRightDisplay.Name",
+		"AmmoRightDisplay.Name"
 	]
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 0; i < AmmoFlds.length; i++) {
@@ -7590,7 +7459,7 @@ function AddAmmo(inputtxt) {
 function RemoveAmmo(inputtxt) {
 	var AmmoFlds = [
 		"AmmoLeftDisplay.Name",
-		"AmmoRightDisplay.Name",
+		"AmmoRightDisplay.Name"
 	]
 	for (var i = 0; i < AmmoFlds.length; i++) {
 		var next = tDoc.getField(AmmoFlds[i]);
@@ -7726,7 +7595,7 @@ function Toggle2ndAbilityDC(ShowHide) {
 			"Image.SaveDC",
 			"Spell DC 2 Mod",
 			"Spell save DC 2",
-			"Spell DC 1 Mod.1",
+			"Spell DC 1 Mod.1"
 		];
 		tDoc[VisibleHidden]("Spell DC 1 Mod.0");
 	} else {
@@ -7736,14 +7605,14 @@ function Toggle2ndAbilityDC(ShowHide) {
 			"Image.SaveDC.1",
 			"Spell DC 1 Mod",
 			"Spell save DC 1",
-			"Spell DC 1 Bonus",
+			"Spell DC 1 Bonus"
 		];
 		var DC2array = [
 			"Text.SaveDC.2",
 			"Image.SaveDCarrow.2",
 			"Image.SaveDC.2",
 			"Spell DC 2 Mod",
-			"Spell save DC 2",
+			"Spell save DC 2"
 		];
 		
 		var toMove = ToShow ? 27 : -27;
@@ -7843,7 +7712,7 @@ function ApplyColorScheme(aColour) {
 		"Title",
 		"Header.Left",
 		"Divider",
-		"DividerFlip",
+		"DividerFlip"
 	];
 	for (var i = 0; i < SSimgFields.length; i++) {
 		theIcon = tDoc.getField("SaveIMG." + SSimgFields[i] + "." + colour).buttonGetIcon();
@@ -7869,10 +7738,10 @@ function ApplyColorScheme(aColour) {
 		"Button",
 		"Attack.Button",
 		"Comp.Use.Attack.Button",
-		"Comp.eqpB",
+		"Comp.eqpB"
 	];
 	var fillList = [
-		"Line",
+		"Line"
 	];
 	var textList = [
 		"Background Feature",
@@ -7880,7 +7749,7 @@ function ApplyColorScheme(aColour) {
 		"Background_FactionRank.Title",
 		"Background_Renown.Title",
 		"Text.Armor Proficiencies",
-		"Text.Weapon Proficiencies",
+		"Text.Weapon Proficiencies"
 	];
 	
 	//add any possible other template prefixes to the list
@@ -7959,7 +7828,7 @@ function ApplyColorScheme(aColour) {
 		"Header.Left",
 		"Header.Right",
 		"Arrow",
-		"IntArrow",
+		"IntArrow"
 	];
 	
 	//set the colored icons
@@ -8097,7 +7966,7 @@ function ApplyDragonColorScheme(aColour) {
 	if (SSfrontA) SSmoreA.push(SSfrontA);
 	var SSnameFields = [
 		"spellshead.",
-		"spellsdiv.",
+		"spellsdiv."
 	];
 	for (var SS = 0; SS < SSmoreA.length; SS++) {
 		for (var i = 0; i < SSnameFields.length; i++) {
@@ -8148,7 +8017,7 @@ function ApplyDragonColorScheme(aColour) {
 		"Class Features Menu",
 		"Equipment.menu",
 		"Extra.Layers Button",
-		"Buttons",
+		"Buttons"
 	];
 	
 	//add the buttons names of the extra templates to buttons array
@@ -8258,7 +8127,7 @@ function MakeColorMenu() {
 				item.push({
 					cName : array[i].capitalize(),
 					cReturn : name + "#" + array[i],
-					bMarked : lookIt === array[i],
+					bMarked : lookIt === array[i]
 				});
 			}
 		};
@@ -8276,7 +8145,7 @@ function MakeColorMenu() {
 				item.push({
 					cName : array[i].capitalize(),
 					cReturn : array[i],
-					bMarked : lookIt === array[i],
+					bMarked : lookIt === array[i]
 				});
 			}
 		};
@@ -8289,7 +8158,7 @@ function MakeColorMenu() {
 				menu.oSubMenu.push({
 					cName : array[i].capitalize(),
 					cReturn : name + "#" + array[i],
-					bMarked : lookIt === array[i],
+					bMarked : lookIt === array[i]
 				})
 			}
 		};
@@ -8301,7 +8170,7 @@ function MakeColorMenu() {
 				temp.push({
 					cName : array[i].capitalize(),
 					cReturn : extraReturn + "#" + array[i],
-					bMarked : lookIt === array[i],
+					bMarked : lookIt === array[i]
 				})
 			}
 			menu.oSubMenu.push({
@@ -8452,7 +8321,7 @@ function MakeRaceMenu() {
 			item.push({
 				cName : array[i].capitalize() + " " + RaceList[CurrentRace.known].name,
 				cReturn : CurrentRace.known + "#" + array[i],
-				bMarked : (isCurrent === "" && array[i] === "basic") || isCurrent === array[i],
+				bMarked : (isCurrent === "" && array[i] === "basic") || isCurrent === array[i]
 			});
 		}
 	};
@@ -8463,7 +8332,7 @@ function MakeRaceMenu() {
 		RaceMenu = [{
 			cName : "No race options that require a choice",
 			cReturn : "nothing",
-			bEnabled : false,
+			bEnabled : false
 		}];
 	} else {
 		menuLVL1R(RaceMenu, racialVarArr);
@@ -8715,14 +8584,14 @@ function SetUnitDecimals_Button() {
 			"Speed Remember",
 			"Background Feature Description",
 			"Extra.Notes",
-			"MoreProficiencies",
+			"MoreProficiencies"
 		];
 		//Weight fields (that don't include a unit) to update with 4 decimals
 		var FldsWeight = [
 			"AC Armor Weight",
 			"AC Shield Weight",
 			"AmmoLeftDisplay.Weight",
-			"AmmoRightDisplay.Weight",
+			"AmmoRightDisplay.Weight"
 		];
 		//field calculations to update
 		var FldsCalc = [];
@@ -8965,8 +8834,7 @@ function SetTextOptions_Button() {
 		} else {
 			fontArray[fo] = 1;
 		}
-	}
-	
+	};
 	SetTextOptions_Dialog.bSize = FontSize.toString();
 	SetTextOptions_Dialog.bDefSize = FontDefSize;
 	SetTextOptions_Dialog.bDefFont = FontDef;
@@ -8983,7 +8851,7 @@ function SetTextOptions_Button() {
 			ChangeFont(SetTextOptions_Dialog.bFont);
 		}
 	}
-}
+};
 
 function ImportExport_Button() {
 	var theMenu = getMenu("importexport");
@@ -9047,7 +8915,7 @@ function FeatOptions() {
 	var FieldNames = [
 		"Feat Name ",
 		"Feat Note ",
-		"Feat Description ",
+		"Feat Description "
 	];
 	var Fields = [], FieldsValue = [], FieldsUp = [], FieldsUpValue = [], FieldsDown = [], FieldsDownValue = [];
 
@@ -9129,7 +8997,7 @@ function FeatInsert(itemNmbr) {
 	var FieldNames = [
 		"Feat Name ",
 		"Feat Note ",
-		"Feat Description ",
+		"Feat Description "
 	];
 	var Fields = [];
 	for (var F = 0; F < FieldNames.length; F++) {
@@ -9160,7 +9028,7 @@ function FeatDelete(itemNmbr) {
 	var FieldNames = [
 		"Feat Name ",
 		"Feat Note ",
-		"Feat Description ",
+		"Feat Description "
 	];
 	var Fields = [];
 	var EndFields = [];
@@ -9202,7 +9070,7 @@ function MakeWeaponMenu() {
 			item.push({
 				cName : array[i],
 				cReturn : array[i],
-				bEnabled : !disable,
+				bEnabled : !disable
 			});
 		}
 	};
@@ -9215,7 +9083,7 @@ function MakeWeaponMenu() {
 			menu.oSubMenu.push({
 				cName : array[i].capitalize(),
 				cReturn : name + "#" + array[i],
-				bMarked : lookIt === array[i],
+				bMarked : lookIt === array[i]
 			})
 		}
 	};
@@ -9536,11 +9404,11 @@ function ShowAttunedMagicalItems(currentstate) {
 	var ExtraLine = [
 		"Adventuring Gear Row " + FieldNumbers.gearMIrow,
 		"Adventuring Gear Amount " + FieldNumbers.gearMIrow,
-		"Adventuring Gear Weight " + FieldNumbers.gearMIrow,
+		"Adventuring Gear Weight " + FieldNumbers.gearMIrow
 	]
 	var MagicItems = [
 		"Attuned Magic Items Whiteout",
-		"Attuned Magic Items Title",
+		"Attuned Magic Items Title"
 	]
 	if (!typePF) MagicItems.push("Line.adventuringGear");
 	if (!currentstate) {
@@ -9757,10 +9625,10 @@ function SetSpellSlotsVisibility() {
 		if (suffix !== 2) {
 			var SpellSlotsFields0 = [ 
 				"Text.Header.SpellSlots",
-				"Line.SpellSlots",
+				"Line.SpellSlots"
 			]
 			var LimitedFeatureFields = [
-				"Image.LimitedFeatures.Full",
+				"Image.LimitedFeatures.Full"
 			];
 			var LimitedFeatureButtons = [];
 			//append the LimitedFeatureFields array with the fillable form fields
@@ -9788,7 +9656,7 @@ function SetSpellSlotsVisibility() {
 		
 		var SpellSlotFields = [
 			prefix + "Image.SpellSlots" + suffix,
-			prefix + "SpellSlots" + suffix + ".Extra",
+			prefix + "SpellSlots" + suffix + ".Extra"
 		];
 		
 		//show or hide the fields of the spell slots
@@ -9931,13 +9799,14 @@ function AddUserScript() {
 
 			initialize: function(dialog) {
 				dialog.load({
+					"img1" : allIcons.import,
 					"jscr": this.script,
 					"head": "Add custom JavaScript that is run on startup (dialogue " + this.iteration + "/" + this.diaMax + ")",
 					"txt0": this.iteration === 1 ? this.defaultTxt + this.extraTxt : this.extraTxt,
 					"txt1": this.getTxt
 				});
 				dialog.enable({
-					bPre : this.iteration > 1,
+					bPre : this.iteration > 1
 				})
 			},
 			commit: function(dialog) { // called when OK pressed
@@ -9985,20 +9854,30 @@ function AddUserScript() {
 					elements : [{
 						type : "view",
 						elements : [{
-							type : "static_text",
-							item_id : "head",
-							alignment : "align_fill",
-							font : "heading",
-							bold : true,
-							height : 21,
-							width : 750,
+							type : "view",
+							align_children : "align_row",
+							elements : [{
+								type : "image",
+								item_id : "img1",
+								alignment : "align_bottom",
+								width : 20,
+								height : 20
+							}, {
+								type : "static_text",
+								item_id : "head",
+								alignment : "align_fill",
+								font : "heading",
+								bold : true,
+								height : 21,
+								width : 720
+							}]
 						}, {
 							type : "static_text",
 							item_id : "txt0",
 							alignment : "align_fill",
 							font : "dialog",
 							char_height : diaIteration === 1 ? 17 : 6,
-							width : 750,
+							width : 750
 						}, {
 							type : "view",
 							align_children : "align_distribute",
@@ -10046,17 +9925,17 @@ function AddUserScript() {
 							alignment : "align_fill",
 							font : "dialog",
 							char_height : 11,
-							width : 750,
+							width : 750
 						}, {
 							type : "edit_text",
 							item_id : "jscr",
 							alignment : "align_fill",
 							multiline: true,
 							height : selBoxHeight,
-							width : 750,
+							width : 750
 						}, {
 							type : "gap",
-							height : 5,
+							height : 5
 						}]
 					}, {
 						type : "view",
@@ -10066,21 +9945,21 @@ function AddUserScript() {
 							type : "button",
 							name : "<< Go to Previous Dialogue",
 							item_id : "bPre",
-							alignment : "align_right",
+							alignment : "align_right"
 						}, {
 							type : "ok_cancel_other",
 							other_name : "Open Another Dialogue",
 							ok_name : "Add Script to Sheet",
 							item_id : "OKbt",
-							alignment : "align_right",
+							alignment : "align_right"
 						}]
 					}]
 				}]
 			}
 		};
 		if (moreDialogues) {
-			AddUserScript_dialog.description.elements[0].elements[1].elements[1].type = "ok_cancel";
-			AddUserScript_dialog.description.elements[0].elements[1].elements[1].ok_name = "Go to Next Dialogue >>";
+			setDialogName(AddUserScript_dialog, "OKbt", "type", "ok_cancel");
+			setDialogName(AddUserScript_dialog, "OKbt", "ok_name", "Go to Next Dialogue >>");
 		};
 		var theDialog = app.execDialog(AddUserScript_dialog);
 		theUserScripts[diaIteration - 1] = AddUserScript_dialog.script;
@@ -10113,7 +9992,7 @@ function AddUserScript() {
 			app.alert({
 				cMsg : "The script you entered is faulty, it returns the following error when run:\n\"" + e + "\"\n\nYour script has not been added to the sheet, please try again after fixing the error.\n\nIf you run your code from the console, it will give you a line number for where the error is. You can open this console from inside the \"Add Custom Script\" dialogue.",
 				nIcon : 0,
-				cTitle : "Error in your script",
+				cTitle : "Error in your script"
 			});
 			var goOn = false;
 		};
@@ -10132,7 +10011,7 @@ function RunUserScript() {
 		app.alert({
 			cMsg : "The script entered by a user to run on startup is faulty, it returns the following error when run:\n\"" + e + "\"\n\nThe script has been removed from this pdf.",
 			nIcon : 0,
-			cTitle : "Error in user-defined script",
+			cTitle : "Error in user-defined script"
 		});
 		tDoc.resetForm(["User Script"]);
 	}

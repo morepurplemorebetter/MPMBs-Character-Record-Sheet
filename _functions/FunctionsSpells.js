@@ -63,10 +63,10 @@ function ApplySpell(FldValue, rememberFldName) {
 			// First build up an array of Span objects
 			var spans = [{
 				text : toCap,
-				textSize : 7,
+				textSize : 7
 			}, {
 				text : input.replace(toCap, ""),
-				textSize : 5.6,
+				textSize : 5.6
 			}];
 			return spans;
 		}
@@ -290,18 +290,18 @@ function SetSpellDividerName(field, level) {
 		["", 8, "th Level"],
 		["", 9, "th Level"],
 		["", "", "Psionic Talents"],
-		["", "", "Psionic Disciplines"],
+		["", "", "Psionic Disciplines"]
 	];
 	
 	if (!typePF) {
 		var spans = [{
-			text : spellLvl[level][0],
+			text : spellLvl[level][0]
 		}, {
 			text : spellLvl[level][1].toString(),
 			fontFamily : ["Pterra"],
-			textSize : 13,
+			textSize : 13
 		}, {
-			text : spellLvl[level][2],
+			text : spellLvl[level][2]
 		}];
 		
 		tDoc.getField(field).richValue = spans;
@@ -787,12 +787,12 @@ function CreateSpellObject(inputArray) {
 //a dialog for user input on spells
 var SpellSheetSelect_Dialog = {
 	
-	listBo : [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}], //array of 15 lists
-	namesBo : [], //always 15 long!
-	keysBo : [], //always 15 long!
+	listBo : [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}], //array of 16 lists
+	namesBo : [], //always 16 long!
+	keysBo : [], //always 16 long!
 	listCa : {},
 	listSp : {},
-	selectBo : [], //always 15 long!
+	selectBo : [], //always 16 long!
 	selectCa : [],
 	selectAd : [],
 	selectSp : [],
@@ -816,6 +816,7 @@ var SpellSheetSelect_Dialog = {
 	fullname : "",
 	SpBook : false,
 	levelSp : 1,
+	nameAd : "[always prepared]",
 	
 	//when starting the dialog
 	initialize : function (dialog) {
@@ -825,20 +826,20 @@ var SpellSheetSelect_Dialog = {
 		var psiSpells = this.spNm === "Spells" ? "Spells" : "Psionics";
 		
 		//make a string for the information
-		var info = "Which grants:\t";
-		if (this.showCa) info += this.caNm + " known:\t" + toUni(this.nmbrCa) + "\n\t\t";
+		var info = "";
+		if (this.showCa) info += this.caNm + " known:\t" + toUni(this.nmbrCa) + "\n";
 		switch (this.typeSp) {
 		 case "book" :
-			info += this.spNm + " known:\t" + toUni("All in spellbook") + "\n\t\t";
+			info += this.spNm + " known:\t" + toUni("All in spellbook") + "\n";
 			break;
 		 case "list" :
-			info += this.spNm + " known:\t" + toUni("All on the class' spell list") + "\n\t\t";
+			info += this.spNm + " known:\t" + toUni("All on the class' spell list") + "\n";
 			break
 		 case "known" :
-			info += this.spNm + " known:\t" + toUni(this.nmbrSp) + "\n\t\t";
+			info += this.spNm + " known:\t" + toUni(this.nmbrSp) + "\n";
 			break;
 		}
-		if (this.levelSp) info += "of Spell Level:\t" + toUni(spellLevelList[this.levelSp]) + (this.levelSp > 1 ? " (and lower)" : "") + "\n\t\t";
+		if (this.levelSp) info += "of Spell Level:\t" + toUni(spellLevelList[this.levelSp]) + (this.levelSp > 1 ? " (and lower)" : "") + "\n";
 		if (this.showBo) info += "Extra " + psiSpells + ":\t" + toUni(this.nmbrBo);
 		
 		var theBo = this.nmbrBo + this.offsetBo;
@@ -858,6 +859,7 @@ var SpellSheetSelect_Dialog = {
 			"CanT" : this.caNm,
 			"AdIT" : "Subclass " + psiSpells,
 			"SplT" : this.typeSp === "book" ? "Spellbook" : this.spNm,
+			"AdET" : this.nameAd
 		});
 		
 		//set the visibility of the clusters
@@ -868,10 +870,14 @@ var SpellSheetSelect_Dialog = {
 			"SpCL" : this.showSp,
 			"RaCL" : this.showSpRadio,
 			"SplK" : this.showSp && this.typeSp !== "book",
+			"SpR3" : this.typeSp !== "known"
 		});
 		
 		//enable the various entries or disable them and load their values
-		var toEnable = {};
+		var toEnable = {
+			AdET : false,
+			SpR3 : this.typeSp !== "known"
+		};
 		var toLoad = {};
 		if (this.showSpRadio) toLoad["SpR" + this.selectSpRadio] = true;
 		for (var i = 1; i <= 18; i++) {
@@ -880,7 +886,7 @@ var SpellSheetSelect_Dialog = {
 			var Ca = "Ca" + ("0" + i).slice(-2);
 			var Sp = "Sp" + ("0" + i).slice(-2);
 			var Ad = "Ad" + ("0" + i).slice(-2);
-			if (this.showBo && i <= 15) {
+			if (this.showBo && i <= 16) {
 				toEnable[BS] = i <= theBo;
 				toLoad[BS] = this.listBo[i - 1];
 				toLoad[BT] = this.namesBo[i - 1];
@@ -962,7 +968,7 @@ var SpellSheetSelect_Dialog = {
 			
 			var resultSp = i <= oResult["SplK"] ? findSpell(oResult[Sp]) : "";
 			if (resultSp) this.selectSp.push(resultSp);
-			if (i <= 15) this.selectBo.push(i <= oResult["BonK"] ? findSpell(oResult[Bo]) : "");
+			if (i <= 16) this.selectBo.push(i <= oResult["BonK"] ? findSpell(oResult[Bo]) : "");
 			if (i <= 10) {
 				var resultCa = i <= oResult["CanK"] ? findSpell(oResult[Ca]) : "";
 				if (resultCa) this.selectCa.push(resultCa);
@@ -970,17 +976,17 @@ var SpellSheetSelect_Dialog = {
 		}
 		
 		//set the results of the radio button
-		this.selectSpRadio = oResult["SpR1"] ? 1 : (oResult["SpR2"] ? 2 : 3);
+		this.selectSpRadio = oResult["SpR1"] ? 1 : oResult["SpR2"] ? 2 : oResult["SpR3"] ? 3 : 4;
 	},
 	
 	BonK : function (dialog) {
 		var elements = dialog.store();
 		var theBo = ASround(elements["BonK"]);
 		dialog.load({
-			"BonK" : theBo,
+			"BonK" : theBo
 		});
 		var allBo = {};
-		for (var B = 1; B <= 15; B++) {
+		for (var B = 1; B <= 16; B++) {
 			allBo["BS" + ("0" + B).slice(-2)] = B <= theBo;
 			allBo["BT" + ("0" + B).slice(-2)] = B <= theBo;
 		}
@@ -991,7 +997,7 @@ var SpellSheetSelect_Dialog = {
 		var elements = dialog.store();
 		var theCa = ASround(elements["CanK"]);
 		dialog.load({
-			"CanK" : theCa,
+			"CanK" : theCa
 		});
 		var allCa = {};
 		for (var C = 1; C <= 10; C++) {
@@ -1004,7 +1010,7 @@ var SpellSheetSelect_Dialog = {
 		var elements = dialog.store();
 		var theSp = ASround(elements["SplK"]);
 		dialog.load({
-			"SplK" : theSp,
+			"SplK" : theSp
 		});
 		var allSp = {};
 		for (var S = 1; S <= 18; S++) {
@@ -1042,35 +1048,52 @@ var SpellSheetSelect_Dialog = {
 						font : "title",
 						bold : true,
 						height : 21,
-						char_width : 39,
+						char_width : 39
 					}, {
 						type : "static_text",
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
 						height : 60,
-						char_width : 39,
+						char_width : 39
 					}, {
-						type : "view", //class name view
-						align_children : "align_row",
+ 						type : "view",
+						align_children : "align_left",
 						char_width : 39,
 						elements : [{
-							type : "static_text",
-							item_id : "txt1",
-							char_width : 10,
-							name : "Currently editing:",
+							type : "view",
+							align_children : "align_top",
+							char_width : 39,
+							elements : [{
+								type : "static_text",
+								item_id : "txt1",
+								char_width : 10,
+								name : "Currently editing:"
+							}, {
+								type : "static_text",
+								item_id : "txC1",
+								alignment : "align_top",
+								char_width : 28,
+								font : "dialog",
+								bold : true
+							}]
 						}, {
-							type : "static_text",
-							item_id : "txC1",
-							char_width : 28,
-							font : "dialog",
-							bold : true,
+							type : "view",
+							align_children : "align_top",
+							char_width : 39,
+							elements : [{
+								type : "static_text",
+								item_id : "txt8",
+								char_width : 10,
+								name : "Which grants:"
+							}, {
+								type : "static_text",
+								item_id : "txC2",
+								alignment : "align_top",
+								char_width : 28,
+								height : 60
+							}]
 						}]
-					}, {
-						type : "static_text",
-						item_id : "txC2",
-						char_width : 39,
-						height : 60,
 					}, {
 						type : "cluster", //bonus spells cluster
 						alignment : "align_center",
@@ -1088,14 +1111,14 @@ var SpellSheetSelect_Dialog = {
 								char_width : 12,
 								alignment : "align_left",
 								font : "heading",
-								bold : true,
+								bold : true
 							}, {
 								type : "edit_text",
 								item_id : "BonK",
 								alignment : "align_right",
 								char_width : 3,
 								height : 22,
-								SpinEdit : true,
+								SpinEdit : true
 							}, {
 								type : "static_text",
 								item_id : "BoT2",
@@ -1103,7 +1126,7 @@ var SpellSheetSelect_Dialog = {
 								height : 22,
 								char_width : 15,
 								alignment : "align_left",
-								font : "heading",
+								font : "heading"
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1113,13 +1136,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS01",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT01",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1129,13 +1152,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS02",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT02",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1145,13 +1168,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS03",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT03",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1161,13 +1184,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS04",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT04",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1177,13 +1200,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS05",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT05",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1193,13 +1216,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS06",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT06",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1209,13 +1232,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS07",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT07",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1225,13 +1248,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS08",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT08",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1241,13 +1264,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS09",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT09",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1257,13 +1280,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS10",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT10",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1273,13 +1296,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS11",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT11",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1289,13 +1312,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS12",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT12",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1305,13 +1328,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS13",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT13",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1321,13 +1344,13 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS14",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT14",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
 							}]
 						}, {
 							type : "view", //view with a row
@@ -1337,21 +1360,37 @@ var SpellSheetSelect_Dialog = {
 								type : "popup",
 								item_id : "BS15",
 								char_width : 15,
-								height : 15,
+								height : 15
 							}, {
 								type : "static_text",
 								item_id : "BT15",
 								alignment : "align_left",
 								char_width : 14,
-								height : 15,
+								height : 15
+							}]
+						}, {
+							type : "view", //view with a row
+							align_children : "align_row",
+							char_width : 29,
+							elements : [{
+								type : "popup",
+								item_id : "BS16",
+								char_width : 15,
+								height : 15
+							}, {
+								type : "static_text",
+								item_id : "BT16",
+								alignment : "align_left",
+								char_width : 14,
+								height : 15
 							}]
 						}, {
 							type : "gap",
-							height : 1,
+							height : 1
 						}]
-					}]			
+					}]		
 				}, {
-					type : "view", //middle (cantrip & added spells) view with one column
+					type : "view", //middle view (cantrip & added spells)
 					align_children : "align_left",
 					char_width : 15,
 					elements : [{
@@ -1371,68 +1410,68 @@ var SpellSheetSelect_Dialog = {
 								char_width : 12,
 								alignment : "align_left",
 								font : "heading",
-								bold : true,
+								bold : true
 							}, {
 								type : "edit_text",
 								alignment : "align_right",
 								item_id : "CanK",
 								char_width : 3,
 								height : 22,
-								SpinEdit : true,
+								SpinEdit : true
 							}]
 						}, {
 							type : "popup",
 							item_id : "Ca01",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Ca02",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Ca03",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Ca04",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Ca05",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Ca06",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Ca07",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Ca08",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Ca09",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Ca10",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "gap",
-							height : 5,
+							height : 7
 						}]
 					}, {
 						type : "cluster", //subclass spells cluster (only for cleric/druid/paladin)
@@ -1446,61 +1485,68 @@ var SpellSheetSelect_Dialog = {
 							char_width : 15,
 							height : 20,
 							font : "heading",
-							bold : true,
+							bold : true
+						}, {
+							type : "static_text",
+							item_id : "AdET",
+							char_width : 18,
+							height : 13,
+							font : "palette",
+							bold : true
 						}, {
 							type : "static_text",
 							item_id : "Ad01",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "static_text",
 							item_id : "Ad02",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "static_text",
 							item_id : "Ad03",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "static_text",
 							item_id : "Ad04",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "static_text",
 							item_id : "Ad05",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "static_text",
 							item_id : "Ad06",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "static_text",
 							item_id : "Ad07",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "static_text",
 							item_id : "Ad08",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "static_text",
 							item_id : "Ad09",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "static_text",
 							item_id : "Ad10",
 							char_width : 15,
-							height : 25,
+							height : 25
 						}]
 					}]
 				}, {
-					type : "view", //
+					type : "view", //right view (spells & radio buttons)
 					elements : [{
 						type : "cluster", //spell cluster
 						align_children : "align_left",
@@ -1518,132 +1564,138 @@ var SpellSheetSelect_Dialog = {
 								char_width : 12,
 								alignment : "align_left",
 								font : "heading",
-								bold : true,
+								bold : true
 							}, {
 								type : "edit_text",
 								item_id : "SplK",
 								alignment : "align_right",
 								char_width : 3,
 								height : 22,
-								SpinEdit : true,
+								SpinEdit : true
 							}]
 						}, {
 							type : "popup",
 							item_id : "Sp01",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp02",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp03",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp04",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp05",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp06",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp07",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp08",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp09",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp10",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp11",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp12",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp13",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp14",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp15",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp16",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp17",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "popup",
 							item_id : "Sp18",
 							char_width : 15,
-							height : 15,
+							height : 15
 						}, {
 							type : "gap",
-							height : 5,
+							height : 7
 						}]
 					}, {
 						type : "cluster", //radio button cluster
 						item_id : "RaCL",
-						name : "What Spells to Show",
+						name : "What Spells to Show?",
 						align_children : "align_left",
-						char_width : 15,
+						char_width : 16,
 						font : "heading",
 						bold : true,
+						margin_width : 5,
 						elements : [{
 							type : "radio",
 							item_id : "SpR1",
 							group_id : "RadB",
-							name : "Spells of levels I can cast",
+							name : "Spells of levels I can cast"
 						}, {
 							type : "radio",
 							item_id : "SpR2",
 							group_id : "RadB",
-							name : "All spells regardless of level",
+							name : "All spells regardless of level"
 						}, {
 							type : "radio",
 							item_id : "SpR3",
 							group_id : "RadB",
-							name : "Prepared spells only",
+							name : "Prepared spells only"
+						}, {
+							type : "radio",
+							item_id : "SpR4",
+							group_id : "RadB",
+							name : "Full class list (spells && cantrips)"
 						}]
 					}]
 				}]
@@ -1652,11 +1704,11 @@ var SpellSheetSelect_Dialog = {
 				ok_name : "Add More Spells to the Spellbook",
 				alignment : "align_right",
 				other_name : "Continue to Next Dialog",
-				cancel_name : "Cancel and Stop",
+				cancel_name : "Cancel and Stop"
 			}]
 		}]
 	}
-}
+};
 
 var SpellSheetOrder_Dialog = {
 	
@@ -1671,10 +1723,11 @@ var SpellSheetOrder_Dialog = {
 			ExcObj[this.bExcL[Ex]] = -1;
 		}
 		dialog.load({
+			"img1" : allIcons.spells,
 			"ExcL" : ExcObj,
 			"IncL" : {},
 			"txt0" : "Please select which of your spellcasting sources you want to include in the Spell Sheet and in which order they should appear.\n\nNote that generating a new Spell Sheet deletes any current Spell Sheet(s) in this pdf.\n\nPlease be patient, generating a Spell Sheet can take a long time, often more than ten minutes, and sometimes up to an hour (yes, even on your new gaming rig). During this time Adobe Acrobat will appear unresponsive (but will still be working).",
-			"Glos" : this.glossary,
+			"Glos" : this.glossary
 		});
 		
 		//set the IncLuded list
@@ -1875,23 +1928,33 @@ var SpellSheetOrder_Dialog = {
 			type : "view",
 			align_children : "align_left",
 			elements : [{
-				type : "static_text",
-				item_id : "head",
-				alignment : "align_fill",
-				font : "heading",
-				bold : true,
-				height : 21,
-				width : 700,
-				name : "Select what to include in the Spell Sheet"
+				type : "view",
+				align_children : "align_row",
+				elements : [{
+					type : "image",
+					item_id : "img1",
+					alignment : "align_bottom",
+					width : 20,
+					height : 20
+				}, {
+					type : "static_text",
+					item_id : "head",
+					alignment : "align_fill",
+					font : "heading",
+					bold : true,
+					height : 21,
+					width : 650,
+					name : "Select what to include in the Spell Sheet"
+				}]
 			}, {
 				type : "static_text",
 				item_id : "txt0",
 				char_height : 10,
-				width : 700,
+				width : 680
 			}, {
 				type : "check_box",
 				item_id : "Glos",
-				name : "Add a Glossary of Abbreviations to the end of the Spell Sheet(s)",
+				name : "Add a Glossary of Abbreviations to the end of the Spell Sheet(s)"
 			}, {
 				type : "view",
 				align_children : "align_row",
@@ -1910,19 +1973,19 @@ var SpellSheetOrder_Dialog = {
 					elements : [{
 						type : "button",
 						item_id : "BTRA",
-						name: ">>",
+						name: ">>"
 					}, {
 						type : "button",
 						item_id : "BTR1",
-						name: ">",
+						name: ">"
 					}, {
 						type : "button",
 						item_id : "BTL1",
-						name: "<",
+						name: "<"
 					}, {
 						type : "button",
 						item_id : "BTLA",
-						name: "<<",
+						name: "<<"
 					}]
 				}, {
 					type : "cluster",
@@ -1932,7 +1995,7 @@ var SpellSheetOrder_Dialog = {
 						width : 180,
 						height : 130,
 						type : "list_box",
-						item_id : "IncL",
+						item_id : "IncL"
 					}]
 				}, {
 					type : "view",
@@ -1940,17 +2003,17 @@ var SpellSheetOrder_Dialog = {
 					elements : [{
 						type : "button",
 						item_id : "BTNU",
-						name: "\u22CF",
+						name: "\u22CF"
 					},{
 						type : "button",
 						item_id : "BTND",
-						name: "\u22CE",
+						name: "\u22CE"
 					}]
 				}]
 			}, {
 				type : "ok_cancel",
 				ok_name : "Generate the Spell Sheet (takes extremely long)",
-				cancel_name : "Don't generate a Spell Sheet",
+				cancel_name : "Don't generate a Spell Sheet"
 			}]
 		}]
 	},
@@ -1967,7 +2030,7 @@ var SpellBookSelect_Dialog = {
 	initialize : function (dialog) {		
 		//set the value of various text entries
 		dialog.load({
-			"Hea0" : "Additional Spellbook Spells for " + this.fullname,
+			"Hea0" : "Additional Spellbook Spells for " + this.fullname
 		});
 		
 		//enable the various entries or disable them and load their values
@@ -2046,105 +2109,105 @@ var SpellBookSelect_Dialog = {
 						type : "popup",
 						item_id : "Sp01",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp02",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp03",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp04",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp05",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp06",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp07",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp08",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp09",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp10",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp11",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp12",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp13",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp14",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp15",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp16",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp17",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp18",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp19",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp20",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "gap",
-						height : 5,
+						height : 5
 					}]
 				}, {
 					type : "view", //left view
@@ -2154,105 +2217,105 @@ var SpellBookSelect_Dialog = {
 						type : "popup",
 						item_id : "Sp21",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp22",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp23",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp24",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp25",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp26",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp27",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp28",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp29",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp30",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp31",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp32",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp33",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp34",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp35",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp36",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp37",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp38",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp39",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp40",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "gap",
-						height : 5,
+						height : 5
 					}]
 				}, {
 					type : "view", //left view
@@ -2262,105 +2325,105 @@ var SpellBookSelect_Dialog = {
 						type : "popup",
 						item_id : "Sp41",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp42",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp43",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp44",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp45",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp46",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp47",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp48",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp49",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp50",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp51",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp52",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp53",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp54",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp55",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp56",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp57",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp58",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp59",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp60",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "gap",
-						height : 5,
+						height : 5
 					}]
 				}, {
 					type : "view", //left view
@@ -2370,111 +2433,111 @@ var SpellBookSelect_Dialog = {
 						type : "popup",
 						item_id : "Sp61",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp62",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp63",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp64",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp65",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp66",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp67",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp68",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp69",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp70",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp71",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp72",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp73",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp74",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp75",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp76",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp77",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp78",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp79",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp80",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "gap",
-						height : 5,
+						height : 5
 					}]
 				}]
 			}, {
 				type : "ok_cancel",
 				ok_name : "Continue to Next Dialog",
-				cancel_name : "Cancel and Stop",
+				cancel_name : "Cancel and Stop"
 			}]
 		}]
 	}
@@ -2503,7 +2566,7 @@ var SpellsPrepared_Dialog = {
 		dialog.load({
 			"Hea0" : "Prepared spells for " + this.fullname,
 			"txt0" : "The number of spells to prepare is:\t" + toUni(this.nmbrPrep) + "  (level)\t\t" + (abiMod < 0 ? "- " : "+ ") + toUni(Math.abs(abiMod)) + "  (" + abiNm + " modifier)",
-			"SplK" : ASround(theSp),
+			"SplK" : ASround(theSp)
 		});
 		
 		//enable the various entries or disable them and load their values
@@ -2567,7 +2630,7 @@ var SpellsPrepared_Dialog = {
 		var elements = dialog.store();
 		var theSp = ASround(elements["SplK"]);
 		dialog.load({
-			"SplK" : theSp,
+			"SplK" : theSp
 		});
 		var allSp = {};
 		for (var S = 1; S <= 30; S++) {
@@ -2592,20 +2655,20 @@ var SpellsPrepared_Dialog = {
 					font : "title",
 					bold : true,
 					height : 22,
-					char_width : 51,
+					char_width : 51
 				}, {
 					type : "edit_text",
 					item_id : "SplK",
 					alignment : "align_right",
 					char_width : 3,
 					height : 22,
-					SpinEdit : true,
+					SpinEdit : true
 				}]
 			}, {
 				type : "static_text",
 				item_id : "txt0",
 				height : 22,
-				char_width : 54,
+				char_width : 54
 			}, {
 				type : "view", //view with three columns of spells
 				align_children : "align_distribute",
@@ -2616,52 +2679,52 @@ var SpellsPrepared_Dialog = {
 						type : "popup",
 						item_id : "Sp01",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp02",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp03",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp04",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp05",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp06",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp07",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp08",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp09",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp10",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}]
 				}, {
 					type : "view", //second column view
@@ -2670,52 +2733,52 @@ var SpellsPrepared_Dialog = {
 						type : "popup",
 						item_id : "Sp11",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp12",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp13",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp14",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp15",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp16",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp17",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp18",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp19",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp20",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}]
 				}, {
 					type : "view", //third column view
@@ -2724,60 +2787,60 @@ var SpellsPrepared_Dialog = {
 						type : "popup",
 						item_id : "Sp21",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp22",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp23",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp24",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp25",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp26",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp27",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp28",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp29",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}, {
 						type : "popup",
 						item_id : "Sp30",
 						char_width : 15,
-						height : 15,
+						height : 15
 					}]
 				}]
 			}, {
-				type : "gap",
+				type : "gap"
 			}, {
 				type : "ok_cancel",
 				ok_name : "Continue to Next Dialog",
-				cancel_name : "Cancel and Stop",
+				cancel_name : "Cancel and Stop"
 			}]
 		}]
 	}
@@ -2808,6 +2871,7 @@ function AskUserSpellSheet() {
 			var CasterLevel = false;
 			var maxSpell = false;
 		};
+		spCast.maxSpell = maxSpell;
 		
 		if (spCast.typeSp === "feat" && spCast.level !== undefined) spCast.level = What("Character Level"); //set the level if concerning a feat
 		
@@ -2842,9 +2906,18 @@ function AskUserSpellSheet() {
 			dia.nmbrSp = spCast.known.spells === undefined ? "" : isArray(spCast.known.spells) ? spCast.known.spells[Math.min(spCast.known.spells.length, spCast.level) - 1] : spCast.known.spells; //set the amount of spells
 			dia.typeSp = dia.nmbrSp === "" ? "" : isNaN(dia.nmbrSp) ? dia.nmbrSp : "known"; //set the type of spells (book, list, known)
 			dia.nmbrSp = !isNaN(dia.nmbrSp) ? dia.nmbrSp : 18; //if spells known is not a number, set the dialog to the max of 18
-			dia.showSpRadio = spCast.level && (dia.typeSp === "list" || dia.typeSp === "book"); //show the spell radio buttons if concerning a list (druid/cleric/paladin)
+			dia.showSpRadio = !isPsionics && spCast.level && (/list|book|known/i).test(dia.typeSp); //show the spell radio buttons if concerning a level-dependent spellcaster (classes)
+			if (dia.showSpRadio) { // set the name of the radio buttons and set the selection
+				var SpellLevel = maxSpell
+				if (aCast === "warlock" && spCast.level >= 11) {
+					SpellLevel = defaultSpellTable[spCast.level].indexOf(0);
+					SpellLevel = Number(SpellLevel === -1 ? 9 : SpellLevel);
+				};
+				setDialogName(SpellSheetSelect_Dialog, "SpR1", "name", "Spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " of level " + SpellLevel + (SpellLevel > 1 ? " or lower" : "")) ;
+				setDialogName(SpellSheetSelect_Dialog, "SpR2", "name", "All spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " regardless of level");
+				dia.selectSpRadio = spCast.typeList ? spCast.typeList : 1;
+			};
 			dia.showSp = dia.typeSp !== "list" && dia.typeSp !== ""; //show the spells section
-			dia.selectSpRadio = spCast.typeList ? spCast.typeList : 1;
 			dia.offsetSp = spCast.offsetSp ? spCast.offsetSp : 0; //set the manually added spells
 			dia.selectSp = spCast.selectSp ? spCast.selectSp : []; //set the spells already selected
 			if (dia.typeSp !== "list") {
@@ -2871,10 +2944,10 @@ function AskUserSpellSheet() {
 		if (spCast.extra) {
 			dia.showAd = true; //show the subclass spells section
 			dia.selectAd = spCast.extra; //set the array of known subclass spells
+			dia.nameAd = dia.typeSp === "list" ? "[always prepared]" : dia.typeSp === "book" ? "[added to spellbook]" : spCast.extra[100] === "AddToKnown" ? "[added to spells known]" : "[extra options for spells known]";
 		} else {
 			dia.showAd = false; //hide the subclass spell section
-			
-		}
+		};
 		
 		//set the bonus spell things to their basic value
 		dia.nmbrBo = 0;
@@ -2926,7 +2999,7 @@ function AskUserSpellSheet() {
 			}
 		}}
 		//fill the rest of the bonus items that are essential
-		for (var i = dia.nmbrBo; i < 15; i++) {
+		for (var i = dia.nmbrBo; i < 16; i++) {
 			dia.listBo.push(AllSpellsObject);
 			dia.namesBo.push("");
 			if (spCast.extraBo) dia.selectBo[i] = spCast.extraBo[i - dia.nmbrBo];
@@ -2999,7 +3072,7 @@ function AskUserSpellSheet() {
 			}}
 			var EvenMoreBo = [];
 			if (spCast.offsetBo > 0) {
-				for (var i = boNmr; i < 15; i++) {
+				for (var i = boNmr; i < 16; i++) {
 					if (dia.selectBo[i]) EvenMoreBo.push(dia.selectBo[i]);
 				}
 			}
@@ -3045,8 +3118,9 @@ function AskUserSpellSheet() {
 				
 				//make the array of spells that the preparations can come from
 				if (spCast.selectSp) {
-					var listPrepRef = spCast.selectSp;
-					if (spCast.selectSpSB) listPrepRef = listPrepRef.concat(spCast.selectSpSB); //add the spells from the extra spellbook dialog
+					var selectedSpells = spCast.selectSp;
+					if (spCast.selectSpSB) selectedSpells = selectedSpells.concat(spCast.selectSpSB); //add the spells from the extra spellbook dialog
+					var listPrepRef = CreateSpellList({spells : selectedSpells}, true); //create an array of all the spells that can be prepared at this level
 				} else {
 					var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
 					spCast.list.level = [1, maxSpell]; //set the list level to 1 to max level able to cast
@@ -3236,61 +3310,56 @@ function GenerateSpellSheet(GoOn) {
 		var oncelrArray = spCast.special ? spCast.special.oncelr : [];
 		var oncesrArray = spCast.special ? spCast.special.oncesr : [];
 		var otherObject = spCast.special ? spCast.special.other : {};
-		if (spCast.typeSp === "list") {
-			if (spCast.extra) {
-				fullSpellList = fullSpellList.concat(spCast.extra); //add the extra spells
+		if (spCast.extra && (spCast.extra[100] === "AddToKnown" || spCast.typeSp === "list")) {
+			fullSpellList = fullSpellList.concat(spCast.extra); //add the extra spells
+			if (spCast.typeSp === "list") {
 				alwaysPrepared = alwaysPrepared.concat(spCast.extra); //and add them to the always prepared array
+			};
+		};
+		
+		var knownSpells = fullSpellList; //put the total list of selected spells here for safekeeping before we add more to this list
+		
+		//now add the general list, if chosen to do the full class list or if this is a 'list' spellcaster that didn't chose to only do the prepared spells
+		if (spCast.typeList === 4 || (spCast.typeSp === "list" && spCast.typeList !== 3)) {
+			var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
+			spCast.list.level = [spCast.typeList === 4 ? 0 : 1, spCast.typeList !== 4 && spListLevel ? spListLevel[1] : 9]; //set the list level to 1 to max set before
+			fullSpellList = fullSpellList.concat(CreateSpellList(spCast.list)); //add the full spell list of the class, excluding cantrips
+			if (spListLevel) { //put that level list back in the right variable
+				spCast.list.level = spListLevel;
+			} else {
+				delete spCast.list.level;
 			}
-			
-			//now add the general list, if not choosen to only do the prepared spells
-			if (spCast.typeList !== 3) {
-				var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
-				spCast.list.level = [1, spListLevel ? spListLevel[1] : 9]; //set the list level to 1 to max set before
-				fullSpellList = fullSpellList.concat(CreateSpellList(spCast.list)); //add the full spell list of the class, excluding cantrips
-				if (spListLevel) { //put that level list back in the right variable
-					spCast.list.level = spListLevel;
-				} else {
-					delete spCast.list.level;
-				}
-			}
-		} else if (spCast.extra && spCast.extra[100] === "AddToKnown" && spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) { // add spells to the full list for classes with spells known/spellbook, if set to add to the known. Only add the levels that can be used
-			var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
-			var theTable = spCast.spellsTable ? spCast.spellsTable : tDoc[spCast.factor[1] + "SpellTable"];
-			var tableLevel = Math.min(theTable.length - 1, CasterLevel);
-			var maxSpell = theTable[tableLevel].indexOf(0);
-			maxSpell = Number(maxSpell === -1 ? 9 : maxSpell);
-			for (var eS = 0; eS < spCast.extra.length; eS++) {
-				var eSpell = spCast.extra[eS];
-				if (!eSpell) break;
-				if (SpellsList[eSpell] && SpellsList[eSpell].level <= maxSpell) fullSpellList.push(eSpell);
-			}
-		}
+		};
 		
 		//now see if we have any spells to add to the spell sheet for this class. If not, skip this class
 		var testArray = removeEmptyValues(fullSpellList);
 		if (testArray.length === 0) {
 			if (isFirst === i) isFirst += 1;
 			continue;
-		}
+		};
 		
-		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : (spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : ((/race|feat/i).test(spCast.typeSp) ? "##kn" : "##")); //add "Me" or "Kn" to the name or not?
+		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : spCast.typeList === 4 || (/race|feat/i).test(spCast.typeSp) ? "##kn" : "##"; //add "Me" or "Kn" to the name or not?
 		
 		var orderedSpellList = OrderSpells(fullSpellList, "multi", true); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
 		
 		//see if we need to stop short of doing all the spells
 		var maxLvl = 9;
-		if (spCast.level && spCast.typeList && spCast.typeList !== 2 && spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) {
-			var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
-			var theTable = spCast.spellsTable ? spCast.spellsTable : tDoc[spCast.factor[1] + "SpellTable"];
-			var tableLevel = Math.min(theTable.length - 1, CasterLevel);
-			var maxSpell = theTable[tableLevel].indexOf(0);
-			maxLvl = Number(maxSpell === -1 ? 9 : maxSpell);
-		}
+		if (spCast.level && spCast.typeList !== 2 && spCast.typeList !== 4) {
+			if (spCast.maxSpell && CurrentCasters.incl[i] !== "warlock") {
+				maxLvl = spCast.maxSpell;
+			} else if (spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) {
+				var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
+				var theTable = spCast.spellsTable ? spCast.spellsTable : spCast.factor[1] === "warlock" && CurrentCasters.incl[i] === "warlock" ? defaultSpellTable : tDoc[spCast.factor[1] + "SpellTable"];
+				var tableLevel = Math.min(theTable.length - 1, CasterLevel);
+				var maxSpell = theTable[tableLevel].indexOf(0);
+				maxLvl = Number(maxSpell === -1 ? 9 : maxSpell);
+			};
+		};
 		
 		if (i === isFirst) {
 			SSfront = true;
 			prefixCurrent = DoTemplate("SSfront", "Add"); //for the first entry we need to make the template
-		}
+		};
 		
 		//now sort each of those new arrays and put them on the sheet
 		var start = true;
@@ -3304,7 +3373,7 @@ function GenerateSpellSheet(GoOn) {
 				//assume that we need to add at least 10 of the spells, the total of this level of spells, whichever is less
 				// so 3 (divider + title line) + 4 (header, if applicable) + lowest of [10, arrayLength]
 				var needSpace = 3 + (start ? 4 : 0) + Math.min(10, spArray.length);
-				if (needSpace >= (lineMax - lineCurrent + 1)) AddPage();
+				if (needSpace > (lineMax - lineCurrent + 1)) AddPage();
 				
 				//the first spells to add needs a header in front of it
 				if (start) {
@@ -3328,7 +3397,7 @@ function GenerateSpellSheet(GoOn) {
 				dividerCurrent += 1;
 				
 				//then add the title line
-				Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + MeKn);
+				Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + ((lvl === 0 || lvl === 10) && spCast.typeList === 4 ? "##kn" : MeKn));
 				lineCurrent += 1;
 				
 				for (var y = 0; y < spArray.length; y++) {
@@ -3346,12 +3415,8 @@ function GenerateSpellSheet(GoOn) {
 						toCheck = "##markedbox";
 					} else if (otherObject[aSpell]) {
 						toCheck = "##" + otherObject[aSpell];
-					} else if (SpellsList[aSpell] && SpellsList[aSpell].firstCol === undefined && (isPsionics || (spCast.known && spCast.known.prepared && spCast.typeList !== 3))) {
-						if (SpellsList[aSpell].level === 0) {
-							toCheck = "##atwill";
-						} else {
-							toCheck = "##checkbox";
-						}
+					} else if (SpellsList[aSpell] && SpellsList[aSpell].firstCol === undefined && (isPsionics || spCast.typeList === 4 || (spCast.known && spCast.known.prepared && spCast.typeList !== 3))) {
+						toCheck = spCast.typeList === 4 ? (knownSpells.indexOf(aSpell) !== -1 ? "##checkedbox" : "##checkbox") : SpellsList[aSpell].level === 0 ? "##atwill" : "##checkbox";
 					}
 					Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck);
 					lineCurrent += 1;
@@ -3470,7 +3535,7 @@ function MakeSpellMenu_SpellOptions() {
 			temp.oSubMenu.push({
 				cName : array[i][0],
 				cReturn : name[1] + "#" + array[i][1] + "#" + isMarked,
-				bMarked : isMarked,
+				bMarked : isMarked
 			})
 		}
 		menu.push(temp);
@@ -3482,7 +3547,7 @@ function MakeSpellMenu_SpellOptions() {
 		spellsMenu.push({
 			cName : (SSvisible ? "(Re)g" : "G") + "enerate a Spell Sheet" + (anyCasters ? "" : " (no spellcasting detected)"),
 			cReturn : "generate",
-			bEnabled : anyCasters,
+			bEnabled : anyCasters
 		});
 	}
 	
@@ -3495,14 +3560,14 @@ function MakeSpellMenu_SpellOptions() {
 			cName : SSvisible ? "Replace Spell Sheets with empty one (to fill manually)" : "Add an empty Spell Sheet (to fill manually)",
 			oSubMenu : [{
 				cName : "Without text lines",
-				cReturn : "makeempty",
+				cReturn : "makeempty"
 			}, {
 				cName : "With text lines",
-				cReturn : "makeempty#lines",
+				cReturn : "makeempty#lines"
 			}, {
 				cName : "With text lines and checkboxes",
-				cReturn : "addempty#lines#boxes",
-			}],
+				cReturn : "addempty#lines#boxes"
+			}]
 		});
 	}
 	
@@ -3512,14 +3577,14 @@ function MakeSpellMenu_SpellOptions() {
 			cName : "Add an empty Spell Sheet page (to fill manually)",
 			oSubMenu : [{
 				cName : "Without text lines",
-				cReturn : "addempty",
+				cReturn : "addempty"
 			}, {
 				cName : "With text lines",
-				cReturn : "addempty#lines",
+				cReturn : "addempty#lines"
 			}, {
 				cName : "With text lines and checkboxes",
-				cReturn : "addempty#lines#boxes",
-			}],
+				cReturn : "addempty#lines#boxes"
+			}]
 		});
 	}
 	
@@ -3529,16 +3594,16 @@ function MakeSpellMenu_SpellOptions() {
 	}, {
 		cName : "Delete all the Spell Sheet(s) (can't be undone)",
 		cReturn : "delete",
-		bEnabled : SSvisible,
+		bEnabled : SSvisible
 	}, {
 		cName : "Delete the last page of the Spell Sheets (can't be undone)",
 		cReturn : SSmultiple ? "deleteone" : "delete",
-		bEnabled : !tDoc.info.SpellsOnly ? SSvisible : SSmultiple,
+		bEnabled : !tDoc.info.SpellsOnly ? SSvisible : SSmultiple
 	}, {
 		cName : "-"
 	}, {
 		cName : "Spell sources to use (set before generating)",
-		cReturn : "source",
+		cReturn : "source"
 	}, {
 		cName : "-"
 	}]);
@@ -3722,7 +3787,7 @@ function ParseSpellMenu() {
 			"6th-level",
 			"7th-level",
 			"8th-level",
-			"9th-level",
+			"9th-level"
 		];
 		var classTemp = {cName : className, oSubMenu : []};
 		for (var y = 0; y < fullArray.length; y++) {
@@ -3732,7 +3797,7 @@ function ParseSpellMenu() {
 				for (var i = 0; i < spellsArray.length; i++) {
 					spellsTemp.oSubMenu.push({
 						cName : SpellsList[spellsArray[i]].name,
-						cReturn : "spell" + "#" + spellsArray[i] + "#",
+						cReturn : "spell" + "#" + spellsArray[i] + "#"
 					})
 				}
 				classTemp.oSubMenu.push(spellsTemp);
@@ -3829,7 +3894,7 @@ function ParseSpellMenu() {
 		["with 'At Will'", "atwill"],
 		["with '1\u00D7 Long Rest'", "oncelr"],
 		["with '1\u00D7 Short Rest'", "oncesr"],
-		["Ask me for the first column", "askuserinput"],
+		["Ask me for the first column", "askuserinput"]
 	]
 	//add a menu with a changed name 
 	for (var e = 0; e < menuExtraTypes.length; e++) {
@@ -3859,7 +3924,7 @@ function ParsePsionicsMenu() {
 				for (var i = 0; i < spellsArray.length; i++) {
 					spellsTemp.oSubMenu.push({
 						cName : SpellsList[spellsArray[i]].name + (SpellsList[spellsArray[i]].dependencies ? " [uses " + (1 + SpellsList[spellsArray[i]].dependencies.length) + " rows]" : ""),
-						cReturn : "spell" + "#" + spellsArray[i] + (SpellsList[spellsArray[i]].firstCol ? "#" : SpellsList[spellsArray[i]].level ? "#checkbox" : "#atwill"),
+						cReturn : "spell" + "#" + spellsArray[i] + (SpellsList[spellsArray[i]].firstCol ? "#" : SpellsList[spellsArray[i]].level ? "#checkbox" : "#atwill")
 					})
 				}
 				classTemp.oSubMenu.push(spellsTemp);
@@ -3870,7 +3935,7 @@ function ParsePsionicsMenu() {
 	
 	var allPsionicists = [
 		"any",
-		"-",
+		"-"
 	];
 	
 	var morePsionicists = [];
@@ -3983,7 +4048,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			menu.push({
 				cName : array[i][0] + extraName,
 				cReturn : array[i][1],
-				bEnabled : isEnabled,
+				bEnabled : isEnabled
 			});
 		}
 	};
@@ -4015,7 +4080,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 				temp.oSubMenu.push({
 					cName : array[i][0],
 					cReturn : name[1] + "#" + array[i][1] + "#" + extraReturn,
-					bMarked : isMarked,
+					bMarked : isMarked
 				})
 			}
 		}
@@ -4130,6 +4195,8 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			Value(RemLine, MenuSelection[1] + "##" + MenuSelection[2]);
 			if (SpellsList[MenuSelection[1]] && SpellsList[MenuSelection[1]].dependencies) {
 				theDeps = SpellsList[MenuSelection[1]].dependencies;
+				var theNextLineValue = What(RemLine.replace("." + lineNmbr, "." + (lineNmbr + 1)));
+				insertSpellRow(prefix, lineNmbr + 1, theDeps.length - (theNextLineValue ? 0 : 1));
 				for (var sD = 0; sD < theDeps.length; sD++) {
 					Value(RemLine.replace("." + lineNmbr, "." + (lineNmbr + sD + 1)), theDeps[sD]);
 				};
@@ -4146,6 +4213,10 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			}
 		 case "setheader" :
 		 case "setglossary" :
+			if ((/setheader|setdivider|setglossary/i).test(MenuSelection[0])) {
+				tDoc.resetForm([RemLine]);
+				insertSpellRow(prefix, lineNmbr, MenuSelection[0] === "setheader" ? 3 : MenuSelection[0] === "setdivider" ? 1 : 11);
+			};
 			Value(RemLine, MenuSelection.join("##"));
 			break;
 		 case "clear" :
@@ -4184,7 +4255,7 @@ function AskUserTwoLetters(caption) {
 		theTXT : "",
 		initialize : function (dialog) {
 			dialog.load({
-				"txt0" : "Please type the two characters you want to have as the " + (caption ? "caption for the " : "") + "first column.\n\nAlternatively, you can type a single character between brackets, e.g. '(R)', or two numbers with a hyphen.",
+				"txt0" : "Please type the two characters you want to have as the " + (caption ? "caption for the " : "") + "first column.\n\nAlternatively, you can type a single character between brackets, e.g. '(R)', or two numbers with a hyphen."
 			});
 		},
 		destroy : function (dialog) {
@@ -4210,13 +4281,13 @@ function AskUserTwoLetters(caption) {
 					alignment : "align_fill",
 					item_id : "txt0",
 					char_height : 8,
-					char_width : 30,
+					char_width : 30
 				}, {
 					type : "edit_text",
 					alignment : "align_center",
 					item_id : "user",
 					char_width : 5,
-					height : 20,
+					height : 20
 				}, {
 					type : "ok"
 				}]
@@ -4233,7 +4304,7 @@ function AskUserNumber(caption) {
 		theNMBR : "",
 		initialize : function (dialog) {
 			dialog.load({
-				"user" : ASround(11),
+				"user" : ASround(11)
 			});
 		},
 		destroy : function (dialog) {
@@ -4260,7 +4331,7 @@ function AskUserNumber(caption) {
 					item_id : "user",
 					char_width : 4,
 					height : 20,
-					SpinEdit : true,
+					SpinEdit : true
 				}, {
 					type : "ok"
 				}]
@@ -4371,6 +4442,8 @@ function deleteSpellRow(prefix, lineNmbr) {
 function insertSpellRow(prefix, lineNmbr, toMove) {
 	lineNmbr = Number(lineNmbr);
 	toMove = Number(toMove);
+	var startLineVal = What(prefix + "spells.remember." + lineNmbr);
+	var nextLineFld = tDoc.getField(prefix + "spells.remember." + (lineNmbr + 1));
 	//first figure out if toMove is more than a page
 	var toCheck = toMove;
 	var extraPages = 0;
@@ -4379,13 +4452,14 @@ function insertSpellRow(prefix, lineNmbr, toMove) {
 			toCheck -= FieldNumbers.spells[0];
 			extraPages += 1;
 		}
-	}
+	};
 	if (toCheck > FieldNumbers.spells[1]) {
 		var amountPages = Math.floor(toCheck/FieldNumbers.spells[1]);
 		toCheck -= amountPages * FieldNumbers.spells[1];
 		extraPages += amountPages;
-	}
-	
+	};
+	// if the selected line is empty, the user must want to add the rows below it, so start one line lower
+	if (nextLineFld && !startLineVal) lineNmbr += 1;
 	//make an array of all the remember field values, starting with the one we are at, until we find enough empty rows (same as toMove)
 	var valuesArray = [];
 	var emptyCount = 0;
@@ -4401,7 +4475,7 @@ function insertSpellRow(prefix, lineNmbr, toMove) {
 		for (var L = startRow; L <= endRow; L++) {
 			var thisLine = What(theLine + L);
 			valuesArray.push(thisLine);
-			if (!(L === startRow && SS === thisSheet) && (thisLine === "" || thisLine.indexOf("___") === 0)) {
+			if (thisLine === "" || thisLine.indexOf("___") === 0) {
 				emptyCount += 1;
 				if (emptyCount === toCheck) {
 					valuesArray.splice(-1 * emptyCount, emptyCount); //remove the last empty items
@@ -4425,7 +4499,7 @@ function insertSpellRow(prefix, lineNmbr, toMove) {
 				}
 				emptyCount = 0;
 			}
-			if (rememberRow[0] === 0 && (thisLine.indexOf("setheader") !== -1 || thisLine.indexOf("setdivider") !== -1 || thisLine.indexOf("setglossary") !== -1)) {
+			if (rememberRow[0] === 0 && (/setheader|setdivider|setglossary/i).test(thisLine)) {
 				//if the amount of lines we need to move down too is not on this page anymore, we need to add some empty lines to move it to the next page
 				var setType = thisLine.indexOf("setheader") !== -1 ? "header" : thisLine.indexOf("setdivider") !== -1 ? "divider" : "glossary";
 				var thisValueArray = thisLine.split("##");
@@ -4446,7 +4520,7 @@ function insertSpellRow(prefix, lineNmbr, toMove) {
 					setType === "header" ? 3 : setType === "divider" ? 1 : 11,
 					SSmoreA[SS],
 					setType === "header" ? "spellshead.Text.header." : setType === "divider" ?  "spellsdiv.Text." : "spellsgloss.Image",
-					setType === "glossary" ? "" : thisValueArray[2],
+					setType === "glossary" ? "" : thisValueArray[2]
 				];
 			} else if (rememberRow[0] > 0) {
 				rememberRow[0] -= 1;
@@ -4465,20 +4539,23 @@ function insertSpellRow(prefix, lineNmbr, toMove) {
 			removeEmpties(array);
 		} else {
 			return;
-		}
-	}
+		};
+	};
 	removeEmpties(valuesArray);
 	
 	//see how many lines of values we need to add and if we need to add any pages for that
 	var theLastRow = resultRow ? resultRow : [SSmoreA[SSmoreA.length - 1], (SSmoreA.length === 1 ? FieldNumbers.spells[0] : FieldNumbers.spells[1]) - emptyCount];
-	if ((theLastRow[1] + toCheck) > (theLastRow[0] === "" ? FieldNumbers.spells[0] : FieldNumbers.spells[1])) {
+	if ((theLastRow[1] + toCheck) > (theLastRow[0].indexOf(".SSfront.") !== -1 ? FieldNumbers.spells[0] : FieldNumbers.spells[1])) {
 		extraPages += 1;
-	}
+	};
 	
 	//add the amount of extra pages that we need
 	for (var page = 1; page <= extraPages; page++) {
 		DoTemplate("SSmore", "Add");
-	}
+	};
+	
+	//if no values to any of the rows, just stop now
+	if (!valuesArray.length) return;
 	
 	//calculate at which page we start
 	var totalInserts = lineNmbr + toMove + valuesArray.length - 1;
@@ -4488,14 +4565,14 @@ function insertSpellRow(prefix, lineNmbr, toMove) {
 			totalInserts -= FieldNumbers.spells[0];
 			jumpPages += 1;
 			totalInserts -= 1; //compensate for the fact that a page starts at 0
-		}
-	}
+		};
+	};
 	if (totalInserts > FieldNumbers.spells[1]) {
 		amountPages = Math.floor(totalInserts/FieldNumbers.spells[1]);
 		totalInserts -= amountPages * FieldNumbers.spells[1];
 		jumpPages += amountPages;
 		totalInserts -= amountPages; //compensate for the fact that a page starts at 0
-	}
+	};
 	
 	var startLine = totalInserts;
 	var startPage = thisSheet + jumpPages;
@@ -4521,13 +4598,13 @@ function insertSpellRow(prefix, lineNmbr, toMove) {
 					var thisValueArray = theValue.split("##");
 					thisValueArray[2] = findNextHeaderDivider(nowPage, setType);
 					theValue = thisValueArray.join("##");
-				}
+				};
 				Value(nowPage + "spells.remember." + I, theValue);
 				valuesCountdown -= 1;
-			}
-		}
-	}
-}
+			};
+		};
+	};
+};
 
 //hide the class header or spell level divider if their value is made completely empty before an On Blur action
 function HideSpellSheetElement(theTarget) {
@@ -4578,7 +4655,7 @@ function HideSpellSheetElement(theTarget) {
 		];
 	}
 	var glossaryArray = [
-		prefix + "spellsgloss.Image",
+		prefix + "spellsgloss.Image"
 	];
 	if ((theTarget || event.value === "") && !(prefix === SSfrontPrefix && suffix === 0)) {
 		var lineBase = tDoc.getField(base).submitName;
@@ -4609,16 +4686,6 @@ function HideSpellSheetElement(theTarget) {
 		tDoc.resetForm(resetArray);
 		tDoc.getField(base).submitName = "";
 		
-/* 		//if this is a header, add the blue text values to the document level variable
-		if (type === "header") {
-			var aCast = What(headerArray[2]);
-			if (aCast && CurrentSpells[aCast]) {
-				CurrentSpells[aCast].blueTxt = {};
-				CurrentSpells[aCast].blueTxt.prep = What(headerArray[7]);
-				CurrentSpells[aCast].blueTxt.atk = What(headerArray[8]);
-				CurrentSpells[aCast].blueTxt.dc = What(headerArray[9]);
-			}
-		} */
 	} else if (base === SSfrontPrefix + "spellshead.Text.header.0") {
 		//search the entry if it matches any of the CurrentSpells entries
 		var toSearch = What(base).toLowerCase();
@@ -4692,7 +4759,7 @@ function CheckForSpellUpdate() {
 				var aCast = CurrentSpells[theCaster];
 				var lvlOld = classes.old[theCaster] && classes.old[theCaster].classlevel ? classes.old[theCaster].classlevel - 1 : 0;
 				var lvlNew = classes.known[theCaster].level - 1;
-				if (aCast.known) {
+				if (aCast.known && (!aCast.typeList || aCast.typeList !== 4)) {
 					// see if there is a cantrips array in the known section and the amount of known
 					if (isArray(aCast.known.cantrips)) {
 						var oldCaLvl = Math.min(aCast.known.cantrips.length - 1, lvlOld);
@@ -4704,7 +4771,7 @@ function CheckForSpellUpdate() {
 						var oldSpLvl = Math.min(aCast.known.spells.length - 1, lvlOld);
 						var newSpLvl = Math.min(aCast.known.spells.length - 1, lvlNew);
 						askUserUpdateSS = aCast.known.spells[oldSpLvl] !== aCast.known.spells[newSpLvl];
-					} else if (!askUserUpdateSS && aCast.typeSp && (aCast.typeSp === "book" || aCast.typeSp === "list") && aCast.typeList !== 2) {
+					} else if (!askUserUpdateSS && aCast.typeSp && (aCast.typeSp === "book" || (aCast.typeSp === "list" && aCast.typeList !== 2))) {
 						// if this is a list/book and the caster just got access to a new spell slot level
 						var theTable = aCast.spellsTable ? aCast.spellsTable : aCast.factor && aCast.factor[0] ? tDoc[aCast.factor[1] + "SpellTable"] : false;
 						if (theTable) {
@@ -4747,7 +4814,7 @@ function AskForSpellUpdate() {
 			cMsg : "Do not show this message again, I will update the Spell Sheet manually from now on.",
 			bInitialValue : false,
 			bAfterValue : false
-		},
+		}
 	};
 	var rAskPopUp = app.alert(askPopUp);
 	Value("SpellSheetUpdate.Remember", askPopUp.oCheckbox.bAfterValue);
@@ -4775,7 +4842,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClass.capitalize() + " class.\n\nThis will not include any access to spells granted by a subclass.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nThis process will take a very, very long time! For classes with a lot of spells, such as a Wizard, this could be well over an hour (or several hours, depending on your machine).\n\nAre you sure you want to continue?",
 		nIcon: 2,
 		cTitle: "Continue with slow generation of complete spell sheet?",
-		nType: 2,
+		nType: 2
 	};
 	if (!skipdoGoOn && app.alert(doGoOn) !== 4) return;
 	
@@ -4839,7 +4906,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 			//assume that we need to add at least 10 of the spells, the total of this level of spells, whichever is less
 			// so 3 (divider + title line) + 4 (header, if applicable) + lowest of [10, arrayLength]
 			var needSpace = 3 + (start ? 4 : 0) + Math.min(10, spArray.length);
-			if (needSpace >= (lineMax - lineCurrent + 1)) AddPage();
+			if (needSpace > (lineMax - lineCurrent + 1)) AddPage();
 			
 			//the first spells to add needs a header in front of it
 			if (start) {
@@ -4888,7 +4955,7 @@ function MakePreparedMenu_PreparedOptions(target) {
 	
 	Menus.spellsPrepared = [{
 		cName : "Hide this prepared spells section",
-		cReturn : "removepreps",
+		cReturn : "removepreps"
 	}];
 	
 	//now call the menu
@@ -5120,7 +5187,7 @@ function ShowSpellPointInfo() {
 	app.alert({
 		cMsg : "You have set the sheet to use the " + toUni("Spell Points variant rule") + " from Dungeon Master's Guide, page 288. This hides the Spell Slots and only shows the Spell Point Cost on the spell sheets." + (minVer ? "" : "The amount of Spell Points your character possesses is shown in the Limited Features section on the first page.") + "\n\nPlease be aware that the " + toUni("Warlock class does not work with the Spell Points variant rule") + " and that any spell slots gained from the Warlock class will be effectively invisible. This is also true for any classes you have entered via Custom Script that use their own table for spell slots\nIf your character has levels in the Warlock class or otherwise uses the Warlock way of spellcasting, it is highly recommended not to use the Spell Points function of this sheet.",
 		nIcon : 3,
-		cTitle : "Spell Points and Warlocks don't mix!",
+		cTitle : "Spell Points and Warlocks don't mix!"
 	})
 }
 

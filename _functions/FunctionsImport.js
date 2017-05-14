@@ -11,7 +11,7 @@ function StartDirectImport() {
 	if (app.viewerVersion < 15) {
 		app.alert({
 			cMsg: "This features requires Adobe Acrobat DC or newer (Reader, Standard, or Pro).\n\nYou can get Adobe Acrobat Reader DC for free at get.adobe.com/reader/",
-			cTitle: "Old version of Adobe Acrobat",
+			cTitle: "Old version of Adobe Acrobat"
 		});
 		return;
 	} else if (MPMBImportFunctionsInstalled) {
@@ -75,14 +75,14 @@ function AddFolderJavaScript(justConsole) {
 						bold : true,
 						name : justConsole ? "User-defined Icons: requires JavaScript file to be added" : "Add a JavaScript file to your Acrobat installation or use the Console",
 						height : 21,
-						width : 530,
+						width : 530
 					}, {
 						type : "static_text",
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
 						char_height : justConsole ? 5 : 9,
-						width : 530,
+						width : 530
 					}, {
 						type : "view",
 						item_id : "viJ1",
@@ -104,14 +104,14 @@ function AddFolderJavaScript(justConsole) {
 								font : "dialog",
 								bold : true,
 								char_height : 8,
-								width : 500,
+								width : 500
 							}, {
 								type : "button",
 								item_id : "bADD",
 								name : "Click here to save the JavaScript file",
 								font : "heading",
 								bold : true,
-								alignment : "align_center",
+								alignment : "align_center"
 							}, {
 								type : "view",
 								item_id : "viJ2",
@@ -130,21 +130,21 @@ function AddFolderJavaScript(justConsole) {
 										item_id : "locJ",
 										alignment : "align_fill",
 										font : "dialog",
-										width : 470,
+										width : 470
 									}, {
 										type : "static_text",
 										item_id : "txt2",
 										alignment : "align_fill",
 										font : "dialog",
 										char_height : 7,
-										width : 470,
+										width : 470
 									}, ]
 								}, ]
 							}, ]
 						}, ]
 					}, {
 						type : "gap",
-						height : 5,
+						height : 5
 					}, {
 						type : "view",
 						item_id : "vieC",
@@ -164,21 +164,21 @@ function AddFolderJavaScript(justConsole) {
 								item_id : "txt3",
 								alignment : "align_fill",
 								char_height : 3,
-								width : 500,
+								width : 500
 							}, {
 								type : "button",
 								item_id : "bCON",
 								name : "Click here to Open the Console",
 								font : "heading",
 								bold : true,
-								alignment : "align_center",
+								alignment : "align_center"
 							}, ]
 						}, ]
 					}, ]
 				}, {
 					type : justConsole ? "ok_cancel" : "ok",
 					ok_name : "Done",
-					cancel_name : "Continue without importing icons",
+					cancel_name : "Continue without importing icons"
 				}, ]
 			}, ]
 		}
@@ -210,6 +210,7 @@ function DirectImport_Dialogue() {
 		initialize : function(dialog) {
 			var isReader = app.viewerType === "Reader";
 			dialog.load({
+				"img1": allIcons.import,
 				"txt0": this.Text0,
 				"txt1": this.Text1,
 				"icTx": this.TextIcons,
@@ -244,21 +245,31 @@ function DirectImport_Dialogue() {
 				elements : [{
 					type : "view",
 					elements : [{
-						type : "static_text",
-						item_id : "head",
-						alignment : "align_fill",
-						font : "heading",
-						bold : true,
-						name : "Import all data, settings, and layout from a MPMB's Character Record Sheet",
-						height : 21,
-						width : 500,
+						type : "view",
+						align_children : "align_row",
+						elements : [{
+							type : "image",
+							item_id : "img1",
+							alignment : "align_bottom",
+							width : 20,
+							height : 20
+						}, {
+							type : "static_text",
+							item_id : "head",
+							alignment : "align_fill",
+							font : "heading",
+							bold : true,
+							height : 21,
+							width : 470,
+							name : "Import all data, settings, and layout from a MPMB's Character Sheet"
+						}]
 					}, {
 						type : "static_text",
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
 						char_height : 17,
-						width : 500,
+						width : 500
 					}, {
 						type : "cluster",
 						item_id : "fTxt",
@@ -274,19 +285,19 @@ function DirectImport_Dialogue() {
 							font : "dialog",
 							bold : true,
 							alignment : "align_center",
-							next_tab : "fLoc",
+							next_tab : "fLoc"
 						}, {
 							type : "edit_text",
 							item_id : "fLoc",
 							alignment : "align_fill",
 							font : "dialog",
 							width : 470,
-							next_tab : "fRel",
+							next_tab : "fRel"
 						}, {
 							type : "check_box",
 							item_id : "fRel",
 							alignment : "align_left",
-							name : "Resolve the path above relative to the current open sheet.",
+							name : "Resolve the path above relative to the current open sheet."
 						}, ]
 					}, {
 						type : "cluster",
@@ -302,12 +313,12 @@ function DirectImport_Dialogue() {
 								type : "radio",
 								item_id : "icNo",
 								name : "No. I will set them again manually (recommended).",
-								group_id : "icon",
+								group_id : "icon"
 							}, {
 								type : "radio",
 								item_id : "icYe",
 								name : "Yes. Import the user-defined icons as well (experimental).",
-								group_id : "icon",
+								group_id : "icon"
 							}, ]
 						}, {
 							type : "static_text",
@@ -315,7 +326,7 @@ function DirectImport_Dialogue() {
 							alignment : "align_fill",
 							font : "palette",
 							width : 470,
-							char_height : 8,
+							char_height : 8
 						}, ]
 					}, {
 						type : "static_text",
@@ -324,13 +335,13 @@ function DirectImport_Dialogue() {
 						font : "dialog",
 						bold : true,
 						char_height : 2,
-						width : 500,
+						width : 500
 					}, ]
 				}, {
 					type : "ok_cancel",
 					item_id : "okca",
 					ok_name : "Import (takes extremely long)",
-					next_tab : "bFND",
+					next_tab : "bFND"
 				}, ]
 			}, ]
 		}
@@ -378,7 +389,7 @@ function DirectImport(consoleTrigger) {
 	if (closeAlert) {
 		app.alert({
 			cTitle: closeAlert[0],
-			cMsg: closeAlert[1],
+			cMsg: closeAlert[1]
 		});
 	} else if (global.docFrom && global.docTo) { try { //we are good to go and import stuff!
 		ResetAll(true); //first reset the current sheet to its initial state
@@ -1066,7 +1077,7 @@ function DirectImport(consoleTrigger) {
 		app.alert({
 			cMsg : aText,
 			nIcon : 3,
-			cTitle : "Some things to consider about the new sheet",
+			cTitle : "Some things to consider about the new sheet"
 		});
 	}
 	
@@ -1160,7 +1171,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 	var IconArray = [
 		["Portrait", "Portrait"],
 		["Symbol", "Symbol"],
-		["Comp.img.Portrait", "Comp.img.Portrait"],
+		["Comp.img.Portrait", "Comp.img.Portrait"]
 	];
 	if (pagesLayout && pagesLayout.AScompExtras) {
 		for (var i = 1; i < pagesLayout.AScompExtraNmFrom.length; i++) {
@@ -1272,7 +1283,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 					cName : "tempIconImports." + fldIncr,
 					cFieldType : "button",
 					nPageNum : usePage,
-					oCoords : [40, 40, 0, 0],
+					oCoords : [40, 40, 0, 0]
 				});
 				nwFld.buttonPosition = position.iconOnly;
 				nwFld.buttonSetIcon(fromIcon);
@@ -1336,7 +1347,7 @@ function Import(type) {
 		cMsg : "Before you import anything into this sheet, please make sure that the following things are set correctly. If you don't do this, not everything will import. You will have to make the following things identical to the sheet you exported the data from:" + "\n  \u2022  The unit and decimal system;" + "\n  \u2022  The layout of the pages.\n      In order to do this, you will have to hide and/or add pages in the same order as you did in the sheet you are importing from. This is because the moment you add an extra page (so after the first of its type), that page gets a name based on the location of that page in the document. That location is based solely on the pages that are visible at the time of itscreation.\n      For example, if the sheet you are importing from has two Adventurers Logsheet pages, and these were added after generating a Spell Sheet of three pages long, while all of the other pages were visible as well, the second Adventurers Logsheet page would have been generated as page number 12. In order for this sheet to properly receive the import for that page, you will first need to generate an Adventurers Logsheet page at page number 12." + "\n\n\nDo you want to continue importing?",
 		nIcon : 2,
 		cTitle : "Is everything ready for importing?",
-		nType : 2,
+		nType : 2
 	};
 	
 	
@@ -1357,7 +1368,7 @@ function Import(type) {
 		["Template.extras.AScomp", What("Template.extras.AScomp")],
 		["Template.extras.ASnotes", What("Template.extras.ASnotes")],
 		["Template.extras.WSfront", What("Template.extras.WSfront")],
-		["Template.extras.ALlog", What("Template.extras.ALlog")],
+		["Template.extras.ALlog", What("Template.extras.ALlog")]
 	];
 	var locStateOld = What("Gear Location Remember").split(",");
 	
@@ -1463,7 +1474,7 @@ function Import(type) {
 		cMsg : "Be aware that some fields might not have imported correctly if you imported data that you exported from another version of this sheet.\n\nTooltips might no longer display the correct information after importing (especially if you exported all the fields and not just the non-calculated ones). Also, some fields may be left empty and other fields may display the wrong information. Unfortunately, this can't be helped.\n\nIt is recommended that you check all the fields whether or not correspond with the data that you wanted to import.\n\nUnfortunately, the portrait and symbol on the fourth page can't be imported, you will have to re-do them manually.\n\nIf the sheet you exported information from has extra pages added (e.g. two companion pages, or multiple adventurers logsheets), than those will only be imported if you create those pages first in this document as well, in the exact same order as you did in the previous document.\n\nThe following only applies if you are importing from a version before v11:\nIf you imported a class and/or race that has any options that are selected via the buttons on the second page, then please select those features that grant spellcasting again (even if they are already displayed). Selecting them again will give the automation the information necessary to produce the proper Spell Sheets.",
 		nIcon : 1,
 		cTitle : "Notes on Importing",
-		nType : 0,
+		nType : 0
 	});
 
 	thermoM(); //stop any and all progress dialogs
@@ -1495,7 +1506,7 @@ function MakeExportArray() {
 		"SheetInformation",
 		"SpellSheetInformation",
 		"CopyrightInformation",
-		"Opening Remember",
+		"Opening Remember"
 	]
 	var tempArray = [];
 	for (var F = 0; F < tDoc.numFields; F++) {
@@ -1519,7 +1530,7 @@ function MakeEquipmentExportArray() {
 		"Silver Pieces",
 		"Copper Pieces",
 		"Lifestyle",
-		"Extra.Other Holdings",
+		"Extra.Other Holdings"
 	];
 	for (var i = 1; i <= FieldNumbers.gear; i++) {
 		toExport.push("Adventuring Gear Row " + i);
@@ -1583,7 +1594,7 @@ function MakeDescriptionExportArray() {
 		"Comp.Desc.Weight",
 		"Comp.Desc.Alignment",
 		"Notes.Left",
-		"Notes.Right",
+		"Notes.Right"
 	];
 	var tempArray = [];
 	for (var F = 0; F < toExport.length; F++) {
@@ -1624,7 +1635,7 @@ function MakeXFDFExport(partial) {
 			initialize: function(dialog) {
 				dialog.load({
 					"expo": toExport,
-					"txt0": explainTXT,
+					"txt0": explainTXT
 				});
 			},
 			commit: function(dialog) { // called when OK pressed
@@ -1651,20 +1662,20 @@ function MakeXFDFExport(partial) {
 							alignment : "align_fill",
 							font : "dialog",
 							char_height : 20,
-							char_width : 55,
+							char_width : 55
 						}, {
 							type : "edit_text",
 							item_id : "expo",
 							alignment : "align_fill",
 							multiline: true,
 							char_height : 35,
-							char_width : 55,
+							char_width : 55
 						}, {
 							type : "gap",
-							height : 5,
+							height : 5
 						}, ]
 					}, {
-						type : "ok",
+						type : "ok"
 					}, ]
 				}, ]
 			}

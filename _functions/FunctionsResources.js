@@ -247,10 +247,10 @@ function resourceDecisionDialog(atOpening, atReset) {
 	
 	for (var src in SourceList) {
 		if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
-		var srcGroup = SourceList[src].group;
+		var srcGroup = !SourceList[src].group ? "other" : SourceList[src].group;
 		var srcName = SourceList[src].name.replace(RegExp(srcGroup + " ?:? ?", "i"), "") + " (" + SourceList[src].abbreviation + ")";
 		if (!srcGroup || srcGroup === "default") continue;
-		if (srcGroup !== "Official Sources") srcGroup = "\u200B" + srcGroup;
+		if (srcGroup !== "Primary Sources") srcGroup = "\u200B" + srcGroup;
 		if (!exclObj[srcGroup]) exclObj[srcGroup] = {};
 		if (!inclObj[srcGroup]) inclObj[srcGroup] = {};
 		if (CurrentSources.globalExcl.indexOf(src) !== -1) {
@@ -283,6 +283,7 @@ function resourceDecisionDialog(atOpening, atReset) {
 		sourceLink : "",
 		initialize : function (dialog) {
 			dialog.load({
+				"img1" : allIcons.sources,
 				"ExcL" : this.exclObject,
 				"IncL" : this.inclObject,
 				"txt0" : (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon), or the \"Source Material\" bookmark, and change it.\n" : "") + "You can include or exclude entire sourcebooks (top) and exclude just elements of the sourcebooks set to be included (buttons below).\nNote that you can also add more resources using the \"Add Custom Script\" bookmark.\nIf multiple things with the same name are included, like the Ranger from the PHB and the Ranger from UA:RR, the newest source will be used.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.",
@@ -406,25 +407,36 @@ function resourceDecisionDialog(atOpening, atReset) {
 		bArm : function (dialog) {resourceSelectionDialog("armor");},
 		bAmm : function (dialog) {resourceSelectionDialog("ammo");},
 		bLin : function (dialog) {if (this.sourceLink) app.launchURL(this.sourceLink, true)},
+		bSrc : function (dialog) { ShowDialog("List of Sources, sorted by abbreviation", "sources"); },
 		description : {
 			name : "Pick which resources are excluded and included",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
 				elements : [{
-					type : "static_text",
-					item_id : "head",
-					alignment : "align_fill",
-					font : "title",
-					bold : true,
-					height : 21,
-					width : 720,
-					name : "Select which resources the sheet's automation should use"
+					type : "view",
+					align_children : "align_row",
+					elements : [{
+						type : "image",
+						item_id : "img1",
+						alignment : "align_bottom",
+						width : 20,
+						height : 20
+					}, {
+						type : "static_text",
+						item_id : "head",
+						alignment : "align_fill",
+						font : "title",
+						bold : true,
+						height : 21,
+						width : 770,
+						name : "Select which resources the sheet's automation should use"
+					}]
 				}, {
 					type : "static_text",
 					item_id : "txt0",
 					char_height : isFirstTime ? 11 : 6,
-					width : 720,
+					width : 800
 				}, {
 					type : "cluster",
 					name : "The Sourcebooks",
@@ -434,11 +446,16 @@ function resourceDecisionDialog(atOpening, atReset) {
 						type : "view",
 						align_children : "align_row",
 						elements : [{
-							type : "cluster",
-							name : "Excluded from the automation",
-							font : "heading",
+							type : "view",
 							elements : [{
-								width : 250,
+								type : "static_text",
+								height : 21,
+								alignment : "align_center",
+								item_id : "Etxt",
+								name : "Excluded from the automation",
+								font : "heading"
+							}, {
+								width : 325,
 								height : selBoxHeight,
 								type : "hier_list_box",
 								item_id : "ExcL"
@@ -448,39 +465,54 @@ function resourceDecisionDialog(atOpening, atReset) {
 							elements : [{
 								type : "button",
 								item_id : "BTRA",
-								name : ">>",
+								name : ">>"
 							}, {
 								type : "button",
 								item_id : "BTR1",
-								name : ">",
+								name : ">"
 							}, {
 								type : "button",
 								item_id : "BTL1",
-								name : "<",
+								name : "<"
 							}, {
 								type : "button",
 								item_id : "BTLA",
-								name : "<<",
+								name : "<<"
 							}]
 						}, {
-							type : "cluster",
-							name : "Included in the automation",
-							font : "heading",
+							type : "view",
 							elements : [{
-								width : 250,
+								type : "static_text",
+								height : 21,
+								alignment : "align_center",
+								item_id : "Itxt",
+								name : "Included in the automation",
+								font : "heading"
+							}, {
+								width : 325,
 								height : selBoxHeight,
 								type : "hier_list_box",
-								item_id : "IncL",
+								item_id : "IncL"
 							}]
 						}]
 					}, {
-						type : "button",
-						font : "dialog",
-						bold : true,
-						item_id : "bLin",
-						alignment : "align_center",
-						width : 700,
-						name : "This button links to the web page of the selected sourcebook"
+						type : "view",
+						align_children : "align_distribute",
+						alignment : "align_fill",
+						elements : [{
+							type : "button",
+							font : "dialog",
+							bold : true,
+							item_id : "bLin",
+							alignment : "align_left",
+							width : 575,
+							name : "This button links to the web page of the selected sourcebook"
+						}, {
+							type : "button",
+							item_id : "bSrc",
+							alignment : "align_right",
+							name : "List Source Abbreviations"
+						}]
 					}]
 				}, {
 					type : "cluster",
@@ -491,7 +523,7 @@ function resourceDecisionDialog(atOpening, atReset) {
 						type : "static_text",
 						item_id : "txt1",
 						char_height : 7,
-						width : 710,
+						width : 775
 					}, {
 						type : "view",
 						align_children : "align_row",
@@ -501,31 +533,31 @@ function resourceDecisionDialog(atOpening, atReset) {
 							font : "dialog",
 							bold : true,
 							item_id : "bCla",
-							name : "Classes && Archetypes",
+							name : "Classes && Archetypes"
 						}, {
 							type : "button",
 							font : "dialog",
 							bold : true,
 							item_id : "bRac",
-							name : "Player Races",
+							name : "Player Races"
 						}, {
 							type : "button",
 							font : "dialog",
 							bold : true,
 							item_id : "bBac",
-							name : "Backgrounds",
+							name : "Backgrounds"
 						}, {
 							type : "button",
 							font : "dialog",
 							bold : true,
 							item_id : "bBaF",
-							name : "Background Features",
+							name : "Background Features"
 						}, {
 							type : "button",
 							font : "dialog",
 							bold : true,
 							item_id : "bFea",
-							name : "Feats",
+							name : "Feats"
 						}]
 					}, {
 						type : "view",
@@ -536,31 +568,31 @@ function resourceDecisionDialog(atOpening, atReset) {
 							font : "dialog",
 							bold : true,
 							item_id : "bAtk",
-							name : "Weapons/Attacks",
+							name : "Weapons/Attacks"
 						}, {
 							type : "button",
 							font : "dialog",
 							bold : true,
 							item_id : "bArm",
-							name : "Armor",
+							name : "Armor"
 						}, {
 							type : "button",
 							font : "dialog",
 							bold : true,
 							item_id : "bAmm",
-							name : "Ammunition",
+							name : "Ammunition"
 						}, {
 							type : "button",
 							font : "dialog",
 							bold : true,
 							item_id : "bSpe",
-							name : "Spells/Psionics",
+							name : "Spells/Psionics"
 						}, {
 							type : "button",
 							font : "dialog",
 							bold : true,
 							item_id : "bCre",
-							name : "Creatures",
+							name : "Creatures"
 						}]
 					}]
 				}, {
@@ -573,11 +605,11 @@ function resourceDecisionDialog(atOpening, atReset) {
 						item_id : "txt2",
 						font : "palette",
 						char_height : isFirstTime ? 3 : 5,
-						width : 500,
+						width : 500
 					}, {
 						type : "ok_cancel",
 						alignment : "align_right",
-						ok_name : "Apply (can take a long time)",
+						ok_name : "Apply (can take a long time)"
 					}]
 				}]
 			}]
@@ -591,7 +623,7 @@ function resourceDecisionDialog(atOpening, atReset) {
 			bold : true,
 			item_id : "bSpe",
 			name : "Spells/Psionics",
-			alignment : "align_center",
+			alignment : "align_center"
 		}
 		selectionDialogue.description.elements[0].elements[3].elements[2] = {};
 	};
@@ -951,6 +983,7 @@ function resourceSelectionDialog(type) {
 			this.exclActive = true;
 			this.inclActive = false;
 		},
+		bSrc : function (dialog) { ShowDialog("List of Sources, sorted by abbreviation", "sources"); },
 		description : {
 			name : "Pick which resources are excluded and included",
 			elements : [{
@@ -988,19 +1021,19 @@ function resourceSelectionDialog(type) {
 						elements : [{
 							type : "button",
 							item_id : "BTRA",
-							name : ">>",
+							name : ">>"
 						}, {
 							type : "button",
 							item_id : "BTR1",
-							name : ">",
+							name : ">"
 						}, {
 							type : "button",
 							item_id : "BTL1",
-							name : "<",
+							name : "<"
 						}, {
 							type : "button",
 							item_id : "BTLA",
-							name : "<<",
+							name : "<<"
 						}]
 					}, {
 						type : "cluster",
@@ -1010,12 +1043,23 @@ function resourceSelectionDialog(type) {
 							width : 250,
 							height : 250,
 							type : "hier_list_box",
-							item_id : "IncL",
+							item_id : "IncL"
 						}]
 					}]
 				}, {
-					type : "ok_cancel",
-					ok_name : "Apply",
+					type : "view", // the bottom row of buttons
+					align_children : "align_distribute",
+					alignment : "align_fill",
+					elements : [{
+						item_id : "bSrc",
+						type : "button",
+						alignment : "align_left",
+						name : "List Source Abbreviations"
+					}, {
+						type : "ok_cancel",
+						alignment : "align_right",
+						ok_name : "Apply"
+					}]
 				}]
 			}]
 		}
