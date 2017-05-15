@@ -1227,8 +1227,8 @@ ClassSubList["scout"] = {
 			name : "Bonus Proficiencies",
 			source : ["UA:KoO", 4],
 			minlevel : 3,
-			description : "\n   " + "I gain proficiency with two skills or one skill and Thieves' Tools; For skills choose from:" + "\n   " + "Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival",
-			skillstxt : "\n\n" + toUni("Scout") + ": Choose two skills from: Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival. - or - Choose one of those skills and Thieves' Tools."
+			description : "\n   " + "I gain proficiency with three skills or two skills and Thieves' Tools; For skills choose from:" + "\n   " + "Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival",
+			skillstxt : "\n\n" + toUni("Scout") + ": Choose three skills from: Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival. - or - Choose two of those skills and Thieves' Tools."
 		},
 		"subclassfeature3.1" : {
 			name : "Combat Superiority",

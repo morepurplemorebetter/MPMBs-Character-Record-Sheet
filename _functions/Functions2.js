@@ -2896,7 +2896,7 @@ function CalcFullClassLvlName() {
 	if (!prefix) {
 		var ClLvls = What("Class and Levels");
 		var LVL = What("Character Level");
-		if (ClLvls === "" || LVL === "") {
+		if (!classes.parsed.length || ClLvls === "" || LVL === "") {
 			var theValue = "";
 		} else {
 			var isOnlyClass = ClLvls.indexOf(LVL) !== -1;
