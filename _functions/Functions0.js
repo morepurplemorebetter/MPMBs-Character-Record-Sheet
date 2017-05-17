@@ -13,6 +13,10 @@ function Show(field) {
 	if (tDoc.getField(field)) tDoc.getField(field).display = display.visible;
 };
 
+function isDisplay(field) {
+	return !tDoc.getField(field) ? 100 : tDoc.getField(field).display;
+};
+
 function Editable(field) {
 	if (tDoc.getField(field)) tDoc.getField(field).readonly = false;
 };

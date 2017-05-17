@@ -848,7 +848,6 @@ var WeaponsList = {
 		damage : ["C", 8, "fire"],
 		range : "60 ft",
 		description : "5-ft cube; Dex save at casting or when re-entering, success - no damage; Conc, 1 min (EE 16)",
-		description : "Con save, success - no damage, fail - also disadv. on next weapon attack roll in next turn; 1 creature (EE 18)",
 		abilitytodamage : false,
 		dc : true
 	},

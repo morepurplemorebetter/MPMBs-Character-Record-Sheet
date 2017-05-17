@@ -486,7 +486,30 @@ function DirectImport(consoleTrigger) {
 		if ((bothPF || bothCF) && global.docFrom.getField("Player Name").textFont !== global.docTo.getField("Player Name").textFont) ChangeFont(global.docFrom.getField("Player Name").textFont);
 		
 		//set the league remember toggle
-		if (ImportField("League Remember")) ToggleAdventureLeague(What("League Remember") === "On" ? "Off" : "On", true);
+		if (ImportField("League Remember")) {
+			if (FromVersion < 12.99) {
+				if (What("League Remember") === "On") {
+					ToggleAdventureLeague({
+						dci : true,
+						factionrank : true,
+						renown : true,
+						actions : true,
+						asterisks : true
+					});
+				} else {
+					global.docTo.resetForm(["League Remember"]);
+				};
+			} else {
+				var theAdvL = eval(What("League Remember"));
+				ToggleAdventureLeague({
+					dci : theAdvL.dci,
+					factionrank : theAdvL.factionrank,
+					renown : theAdvL.renown,
+					actions : theAdvL.actions,
+					asterisks : theAdvL.asterisks
+				});
+			};
+		};
 		
 		//set the D&D logos visiblity
 		if (global.docFrom.getField("Image.DnDLogo.long") && global.docFrom.getField("Image.DnDLogo.long").display !== global.docTo.getField("Image.DnDLogo.long").display) global.docTo.getField("Image.DnDLogo").display = global.docFrom.getField("Image.DnDLogo.long").display;
@@ -1425,7 +1448,29 @@ function Import(type) {
 	thermoM(18/25); //increment the progress dialog's progress
 	
 	//set the visiblity of the adventure league as the imported field has been set to
-	ToggleAdventureLeague(What("League Remember") === "On" ? "Off" : "On");
+	if (FromVersion < 12.99) {
+		if (What("League Remember") === "On") {
+			ToggleAdventureLeague({
+				dci : true,
+				factionrank : true,
+				renown : true,
+				actions : true,
+				asterisks : true
+			});
+		} else {
+			global.docTo.resetForm(["League Remember"]);
+		};
+		ToggleAdventureLeague(What("League Remember") === "On" ? "Off" : {});
+	} else {
+		var theAdvL = eval(What("League Remember"));
+		ToggleAdventureLeague({
+			dci : theAdvL.dci,
+			factionrank : theAdvL.factionrank,
+			renown : theAdvL.renown,
+			actions : theAdvL.actions,
+			asterisks : theAdvL.asterisks
+		});
+	};
 	
 	thermoM(19/25); //increment the progress dialog's progress
 

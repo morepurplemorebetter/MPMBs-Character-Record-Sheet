@@ -169,7 +169,8 @@ var Menus = {
 	"glossary" : "",
 	"hp" : "",
 	"texts" : "",
-	"skills" : ""
+	"skills" : "",
+	"adventureLeague" : ""
 };
 
 var GearMenus = {

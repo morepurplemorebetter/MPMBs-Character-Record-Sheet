@@ -91,10 +91,10 @@ function MakeButtons() {
 			});
 			app.addToolButton({
 				cName : "BlueTextButton",
-				cExec : "ToggleBlueText(What(\"BlueTextRemember\"));",
+				cExec : "ToggleBlueText(What('BlueTextRemember'));",
 				oIcon : allIcons.modifiers,
 				cTooltext : toUni("Modifier Fields") + "\nHide\/show fields where you can manually add modifiers for:\n   \u2022  Ability save DC;\n   \u2022  Attacks to hit and damage bonusses;\n   \u2022  Attacks damage die;\n   \u2022  Proficiency bonus, or the use of proficiency dice;\n   \u2022  Saves;\n   \u2022  Skills, with Jack of All Trades and Remarkable Athlete;\n   \u2022  Number of spell slots;\n   \u2022  Initiative;\n   \u2022  Carrying capacity multiplier;\n   \u2022  Weights of armor, shield, weapons, and ammunition.\n\nThese are the so-called \"blue text fields\" and they won't print, even when they are visible.",
-				cMarked : "event.rc = What(\"BlueTextRemember\") === \"Yes\";",
+				cMarked : "event.rc = What('BlueTextRemember') === 'Yes';",
 				nPos : 9,
 				cLabel : "Mods"
 			});
@@ -114,10 +114,10 @@ function MakeButtons() {
 		if (!minVer) {
 			app.addToolButton({
 				cName : "AdventureLeagueButton",
-				cExec : "ToggleAdventureLeague(What(\"League Remember\"));",
+				cExec : "MakeAdventureLeagueMenu(); AdventureLeagueOptions();",
 				oIcon : allIcons.league,
-				cTooltext : toUni("Adventurers League") + "\nHide\/show fields for Adventurers League play:\n   \u2022  'DCI' on the 1st page;\n   \u2022  'Faction Rank' and 'Renown' on the Background page;\n   \u2022  Sets HP value on the 1st page to 'always fixed';" + (typePF ? "" : "\n   \u2022  Removes the action options from the DMG on the 1st page;") + "\n   \u2022  Adds asterisks for action options taken from the DMG in the reference section.\n\nThis button also makes the \"Adventurers Logsheet\" visible if it isn't already.\n\nNote that this Character Generator\/Sheet offers some options that are not legal in Adventurer's League play regardless of enabling this button or not.",
-				cMarked : "event.rc = What(\"League Remember\") === \"On\";",
+				cTooltext : toUni("Adventurers League") + "\nHide\/show fields for Adventurers League play:\n   \u2022  'DCI' on the 1st page;\n   \u2022  'Faction Rank' and 'Renown' on the Background page;\n   \u2022  Sets HP value on the 1st page to 'always fixed';" + (typePF ? "" : "\n   \u2022  Removes the action options from the DMG on the 1st page;") + "\n   \u2022  Adds asterisks for action options taken from the DMG in the reference section.\n\nThis button can also make the \"Adventurers Logsheet\" visible if it isn't already.\n\nNote that this Character Generator\/Sheet offers some options that are not legal in Adventurer's League play regardless of enabling this button or not.",
+				cMarked : "event.rc = Number(tDoc.getField('League Remember').submitName);",
 				nPos : 11,
 				cLabel : "League"
 			});
@@ -132,10 +132,10 @@ function MakeButtons() {
 		};
 		app.addToolButton({
 			cName : "MakeMobileReadyButton",
-			cExec : "MakeMobileReady(What(\"MakeMobileReady Remember\") === \"\");",
+			cExec : "MakeMobileReady(What('MakeMobileReady Remember') === '');",
 			oIcon : allIcons.tablet,
 			cTooltext : toUni("Flatten") + "\nSwitch to or from a version of the sheet that is compatible with Acrobat Reader for mobile devices.\nThis flattens all form fields and hides non-printable ones to make the sheet more usable on a phone or tablet.\n\nThe fields used during normal play will stay editable:\n   \u2022  1st page: health, attacks, actions, adv.\/disadv., etc.;\n   \u2022  2nd page: equipment and proficiencies;\n   \u2022  3rd-6th page: all except buttons and portrait\/symbol.",
-			cMarked : "event.rc = What(\"MakeMobileReady Remember\") !== \"\";",
+			cMarked : "event.rc = What('MakeMobileReady Remember') !== '';",
 			nPos : 13,
 			cLabel : "Flatten"
 		});
@@ -157,7 +157,7 @@ function MakeButtons() {
 		});
 		app.addToolButton({
 			cName : "FAQButton",
-			cExec : "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });",
+			cExec : "tDoc.exportDataObject({ cName: 'FAQ.pdf', nLaunch: 2 });",
 			oIcon : allIcons.faq,
 			cTooltext : toUni("FAQ") + "\nOpen the frequently asked questions pdf.\n\nThere you can find information on how to add custom code to the sheet, like homebrew races\/weapons\/feats\/etc.",
 			nPos : 16,
@@ -542,7 +542,7 @@ function ResetAll(GoOn) {
 		ToggleAttacks("Yes");
 		ToggleBlueText("Yes");
 		ShowHideStealthDisadv();
-		ToggleAdventureLeague("On");
+		AdventureLeagueOptions("advleague#all#0");
 		SetSpellSlotsVisibility();
 		ShowHonorSanity();
 		thermoM(6/9); //increment the progress dialog's progress
@@ -1155,6 +1155,173 @@ function ToggleAdventureLeague(Toggle, skipLogSheet) {
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
 	if (IsNotReset) tDoc.calculateNow();
+};
+
+//make a menu for the adventure league button/bookmark and put it in the global variable
+function MakeAdventureLeagueMenu() {	
+	var submenuItems = [
+		["Set the HP on the 1st page to automatically use fixed values", "hp", tDoc.getField("HP Max").submitName.split(",")[3] === "fixed"], // 0
+		["Show DCI field on 1st page", "dci", isDisplay("DCI.Text") === display.visible], // 1
+		["Remove DMG actions from 1st page (not legal in AL play)", "actions", true], // 2
+		[typePF ? "Show space for Faction Rank on the Background page" : "Show space for Faction, Faction Rank, and Renown on the Background page", "factionrank", isDisplay("Background_FactionRank.Text") === display.visible], // 3
+		["-", "-", false], // 4
+		["Show Adventure Logsheet", "allog", tDoc.getField(BookMarkList["ALlog"]).page !== -1], // 5
+		["-", "-", false], // 6
+		["Prepare the sheet for Adventurers League play (i.e. do all of the above)", "all#1", false], // 7
+		["Undo all of those marked above", "all#0", false], // 8
+	];
+	
+	if (typePF) {
+		submenuItems[2] = ["Show Renown on the Background page", "renown", isDisplay("Background_Renown.Text") === display.visible];
+		submenuItems.splice(4, 0, ["Mark actions on the Player Reference page that are not legal in AL play", "asterisks", isDisplay("Text.PRsheet.AL.asterisk") === display.visible])
+	} else {
+		for (var i = 1; i <= FieldNumbers.trueactions; i++) {
+			if ((/^(?=.*overrun)(?=.*tumble).*$/i).test(What("Action " + i))) {
+				submenuItems[2][2] = false;
+				break;
+			};
+		};
+	};
+	
+	var AdvLeagueMenu = [];
+	for (i = 0; i < submenuItems.length; i++) {
+		AdvLeagueMenu.push({
+			cName : submenuItems[i][0],
+			cReturn : "advleague#" + submenuItems[i][1] + "#" + (submenuItems[i][2] ? 0 : 1),
+			bMarked : submenuItems[i][2]
+		});
+	};
+	
+	Menus.adventureLeague = AdvLeagueMenu;
+	
+	tDoc.getField("League Remember").submitName = submenuItems.slice(0,4).every(function(theN) { return theN[2]; }) ? 1 : 0;
+};
+
+//call the adventure league menu (or use the input) and do something with the results
+function AdventureLeagueOptions(MenuSelection) {
+	MenuSelection = MenuSelection ? MenuSelection : getMenu("adventureLeague");
+	
+	if (MenuSelection[0] === "advleague") {
+		tDoc.delay = true;
+		tDoc.calculate = false;
+		var set = Number(MenuSelection[2]);
+		var toSaveSelection = {};
+		var selectionAll = {};
+		for (i = 0; i < Menus.adventureLeague.length; i++) {
+			var theAll = Menus.adventureLeague[i];
+			var thecReturn = theAll.cReturn.split("#")[1];
+			toSaveSelection[thecReturn] = MenuSelection[1] === "all" || MenuSelection[1] === thecReturn ? set : theAll.bMarked;
+			if (MenuSelection[1] !== "all" || (/^(-|all)$/i).test(thecReturn) || set == theAll.bMarked) continue;
+			selectionAll[thecReturn] = set;
+		};
+		if (MenuSelection[1] === "all") {
+			tDoc.getField("League Remember").submitName = set;
+			ToggleAdventureLeague(selectionAll);
+		} else {
+			var selection = {
+				allog : undefined,
+				dci : undefined,
+				factionrank : undefined,
+				renown : undefined,
+				actions : undefined,
+				asterisks : undefined,
+				hp : undefined
+			};
+			selection[MenuSelection[1]] = set;
+			ToggleAdventureLeague(selection);
+			if (!set) tDoc.getField("League Remember").submitName = set;
+		};
+		//Save the toSaveSelection for later reprisal when importing
+		Value("League Remember", toSaveSelection.toSource());
+		
+		tDoc.calculate = IsNotReset;
+		tDoc.delay = !IsNotReset;
+		if (IsNotReset) tDoc.calculateNow();
+	};
+};
+
+// Set the visibility of the fields for faction, faction ranks, renown, and DCI
+function ToggleAdventureLeague(Setting) {
+	Setting = Setting ? Setting : {};
+	var isBackgrVisible = tDoc.getField(BookMarkList["ASbackgr"]).page !== -1
+
+	//Undo the MakeMobileReady if it was active
+	if (What("MakeMobileReady Remember") !== "") {
+		MakeMobileReady(false);
+	};
+	
+	//Show the adventurers log, if not already visible
+	if (Setting.allog !== undefined) {
+		DoTemplate("ALlog");
+	};
+	
+	//Show the DCI field
+	if (Setting.dci !== undefined) {
+		tDoc[Setting.dci ? "Show" : "Hide"]("DCI.Title");
+		tDoc[Setting.dci ? "Show" : "Hide"]("DCI.Text");
+		if (!typePF) {
+			tDoc[Setting.dci ? "Hide" : "Show"]("Class and Levels.0");
+			tDoc[Setting.dci ? "Show" : "Hide"]("Class and Levels.1");
+		};
+	};
+	
+	//Show the Faction and Renown fields
+	if (Setting.factionrank !== undefined) {
+		var VisibleHidden = Setting.factionrank ? "Show" : "Hide";
+		var HiddenVisible = Setting.factionrank ? "Hide" : "Show";
+		if (!typePF) {
+			var FactionList = [
+				"Background_Organisation.1",
+				"Background_Faction.Title",
+				"Background_Faction.Text",
+				"Background_FactionRank.Title",
+				"Background_FactionRank.Text",
+				"Background_Renown.Title",
+				"Background_Renown.Text"
+			];
+			if (isBackgrVisible) {
+				FactionList.push("Background_Organisation.3");
+				tDoc[HiddenVisible]("Background_Organisation.2");
+			};
+			for (var i = 0; i < FactionList.length; i++) {
+				tDoc[VisibleHidden](FactionList[i]);
+			};
+		} else {
+			tDoc[VisibleHidden]("Background_FactionRank.Text");
+			tDoc[VisibleHidden]("Image.Background_FactionRank");
+			tDoc[HiddenVisible]("Background_Organisation.Right");
+		};
+	};
+	
+	//Show the Renown field
+	if (typePF && Setting.renown !== undefined) {
+		tDoc[Setting.renown ? "Show" : "Hide"]("Background_Renown.Title");
+		tDoc[Setting.renown ? "Show" : "Hide"]("Background_Renown.Text");
+	};
+	
+	//Show the asterisks on the reference sheet field
+	if (typePF && Setting.asterisks !== undefined) {
+		tDoc[Setting.asterisks ? "Show" : "Hide"]("Text.PRsheet.AL");
+	};
+	
+	//Remove the DMG actions on the 1st page
+	if (!typePF && Setting.actions !== undefined) {
+		if (Setting.actions) {
+			RemoveAction("action", "Overrun / Tumble (or as bonus action)");
+			AddAction("action", "Grapple / Shove (instead of 1 attack)", "", "As 1 attack: Disarm / Grapple / Shove");
+		} else {
+			AddAction("action", "Overrun / Tumble (or as bonus action)");
+			AddAction("action", "As 1 attack: Disarm / Grapple / Shove", "", "Grapple / Shove (instead of 1 attack)");
+		};
+	};
+
+	//Set the HP to using fixed values
+	if (Setting.hp !== undefined) {
+		var theHP = tDoc.getField("HP Max").submitName.split(",");
+		theHP[3] = Setting.hp ? "fixed" : "nothing";
+		tDoc.getField("HP Max").submitName = theHP.join();
+		SetHPTooltip();
+	};
 };
 
 //search the string for possible armour

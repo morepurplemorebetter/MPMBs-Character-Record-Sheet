@@ -4005,8 +4005,6 @@ function findNextHeaderDivider(prefix, type) {
 
 //make a menu for each spell line and do something with the results
 function MakeSpellLineMenu_SpellLineOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
 	
 	var SSmaxLine = function(inputPrefix) {
 		return inputPrefix.indexOf(".SSfront.") !== -1 ? FieldNumbers.spells[0] : FieldNumbers.spells[1];
@@ -4176,7 +4174,9 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	var MenuSelection = getMenu("spellsLine");
 	
 	//and do something with this menus results
-	if (MenuSelection !== undefined) {
+	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
+		tDoc.delay = true;
+		tDoc.calculate = false;
 		switch (MenuSelection[0]) {
 		 case "move up" :
 			var upValue = What(RemLineUp);
@@ -4215,7 +4215,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		 case "setglossary" :
 			if ((/setheader|setdivider|setglossary/i).test(MenuSelection[0])) {
 				tDoc.resetForm([RemLine]);
-				insertSpellRow(prefix, lineNmbr, MenuSelection[0] === "setheader" ? 3 : MenuSelection[0] === "setdivider" ? 1 : 11);
+				insertSpellRow(prefix, lineNmbr, MenuSelection[0] === "setheader" ? 3 : MenuSelection[0] === "setdivider" ? 1 : 11, true);
 			};
 			Value(RemLine, MenuSelection.join("##"));
 			break;
@@ -4243,11 +4243,11 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			Value(RemLine, RemLineValue.join("##"));
 			break;
 		}
-	}
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
-}
+		tDoc.calculate = IsNotReset;
+		tDoc.delay = !IsNotReset;
+		if (IsNotReset) tDoc.calculateNow();
+	};
+};
 
 //aks the user for 2 characters that are used for the caption of the first column of the spell table
 function AskUserTwoLetters(caption) {
@@ -4439,7 +4439,7 @@ function deleteSpellRow(prefix, lineNmbr) {
 }
 
 //insert a number of empty rows on the spell list
-function insertSpellRow(prefix, lineNmbr, toMove) {
+function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 	lineNmbr = Number(lineNmbr);
 	toMove = Number(toMove);
 	var startLineVal = What(prefix + "spells.remember." + lineNmbr);
@@ -4484,7 +4484,7 @@ function insertSpellRow(prefix, lineNmbr, toMove) {
 					L = endRow + 1;
 					SS = SSmoreA.length;
 					continue;
-				}
+				};
 			} else {
 				if (emptyCount > 0 && L < emptyCount) { //if we just passed the end of a page, we can use the empty values to 'catch up' some of the movement we need to do
 					valuesArray.splice(-1 * emptyCount - 1, emptyCount + 1); //remove the last empty items and the current line
@@ -4496,7 +4496,9 @@ function insertSpellRow(prefix, lineNmbr, toMove) {
 						SS = SSmoreA.length;
 						continue;
 					}
-				}
+				} else if (ignoreEmptyTop && SS === thisSheet && emptyCount === L - startRow) { //if we are adding something that want to use as many of the empty rows at the top as possible
+					toMove -= emptyCount;
+				};
 				emptyCount = 0;
 			}
 			if (rememberRow[0] === 0 && (/setheader|setdivider|setglossary/i).test(thisLine)) {

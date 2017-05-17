@@ -2668,6 +2668,13 @@ function MakePagesMenu() {
 	menuLVL2(pagesMenu, "Remove extra", pagesArrayRemove);
 	pagesMenu.push({cName : "-", cReturn : "-"}); // add a divider
 	menuLVL2(pagesMenu, "Visible D&&D logos", logoArray);
+	
+	pagesMenu.push({cName : "-", cReturn : "-"}); // add a divider
+	MakeAdventureLeagueMenu();
+	pagesMenu.push({ //add the menu for setting adventurers league stuff
+		cName : "Adventurers League options",
+		oSubMenu : Menus.adventureLeague
+	})
 
 	Menus.pages = pagesMenu;
 }
@@ -2681,7 +2688,12 @@ function PagesOptions() {
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
 		MenuSelection[1] = MenuSelection[1].charAt(0).toUpperCase() + MenuSelection[1].charAt(1).toUpperCase() + MenuSelection[1].substring(2);
-		if (MenuSelection[1] === "REmovespellsheets") {
+		if (MenuSelection[0] === "visible d&&d logos") {
+			DnDlogo(MenuSelection[2]);
+		} else if (MenuSelection[0] === "advleague") {
+			MenuSelection[1] = MenuSelection[1].toLowerCase();
+			AdventureLeagueOptions(MenuSelection);
+		} else if (MenuSelection[1] === "REmovespellsheets") {
 			RemoveSpellSheets();
 		} else if (MenuSelection[1] === "SSfront") {
 			GenerateSpellSheet();
@@ -2710,8 +2722,6 @@ function PagesOptions() {
 				 DoTemplate("SSmore", "Remove");
 				 break;
 			}
-		} else if (MenuSelection[0] === "visible d&&d logos") {
-			DnDlogo(MenuSelection[2]);
 		} else {
 			switch (MenuSelection[0]) {
 				case "visible pages" : 
@@ -5050,7 +5060,7 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 function contactMPMB(medium) {
 	switch (medium.toLowerCase()) {
 	 case "email" :
-		app.launchURL(("mailto:flapkan@gmail.com?subject=MPMBs Character Tools&body=%0D%0A%0D%0A%0D%0ASheet version: MPMB\'s " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + tDoc.info.SheetVersion.toString() + " (" + tDoc.info.SheetType + ")" + "%0D%0APDF viewer: " + app.viewerType + ", v" + app.viewerVersion + "; Language: " + app.language + "; OS: " + app.platform).replace(/ /g, "%20"), true);
+		app.launchURL(("mailto:flapkan@gmail.com?subject=MPMBs Character Tools&body=%0D%0A%0D%0A%0D%0ASheet version: MPMB\'s " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + tDoc.info.SheetVersion.toString() + " (" + tDoc.info.SheetType + ")" + " %0D%0APDF viewer: " + app.viewerType + ", v" + app.viewerVersion + "; Language: " + app.language + "; OS: " + app.platform).replace(/ /g, "%20"), true);
 		break;
 	 case "twitter" :
 		app.launchURL("https://twitter.com/BetterOfPurple", true);

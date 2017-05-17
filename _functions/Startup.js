@@ -30,6 +30,7 @@ function InitializeEverything(noButtons, noVars) {
 		ApplyProficiencies(false);
 		UpdateTooltips();
 		SetRichTextFields();
+		MakeAdventureLeagueMenu();
 	};
 	
 	SetHighlighting();
