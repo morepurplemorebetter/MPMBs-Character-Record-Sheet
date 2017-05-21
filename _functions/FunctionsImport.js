@@ -417,7 +417,9 @@ function DirectImport(consoleTrigger) {
 			//set any UA sources that weren't in the old sheet to excluded, if any UA source was set to be excluded
 			for (var s = 0; s < CurrentSources.globalExcl.length; s++) {
 				var theSrc = CurrentSources.globalExcl[s];
-				if ((/Unearthed Arcana/i).test(SourceList[theSrc].group)) {
+				if (!SourceList[theSrc]) {
+					CurrentSources.globalExcl.splice(s, 1);
+				} else if ((/Unearthed Arcana/i).test(SourceList[theSrc].group)) {
 					for (var src in SourceList) {
 						if ((/Unearthed Arcana/i).test(SourceList[src].group) && !global.docFrom.SourceList[src]) {
 							CurrentSources.globalExcl.push(src);
@@ -500,14 +502,18 @@ function DirectImport(consoleTrigger) {
 					global.docTo.resetForm(["League Remember"]);
 				};
 			} else {
-				var theAdvL = eval(What("League Remember"));
-				ToggleAdventureLeague({
-					dci : theAdvL.dci,
-					factionrank : theAdvL.factionrank,
-					renown : theAdvL.renown,
-					actions : theAdvL.actions,
-					asterisks : theAdvL.asterisks
-				});
+				try {
+					var theAdvL = eval(What("League Remember"));
+					ToggleAdventureLeague({
+						dci : theAdvL.dci,
+						factionrank : theAdvL.factionrank,
+						renown : theAdvL.renown,
+						actions : theAdvL.actions,
+						asterisks : theAdvL.asterisks
+					});
+				} catch (e) {
+					global.docTo.resetForm(["League Remember"]);
+				};
 			};
 		};
 		
@@ -1448,28 +1454,27 @@ function Import(type) {
 	thermoM(18/25); //increment the progress dialog's progress
 	
 	//set the visiblity of the adventure league as the imported field has been set to
-	if (FromVersion < 12.99) {
-		if (What("League Remember") === "On") {
+	if (What("League Remember") === "On") {
+		ToggleAdventureLeague({
+			dci : true,
+			factionrank : true,
+			renown : true,
+			actions : true,
+			asterisks : true
+		});
+	} else {
+		try {
+			var theAdvL = eval(What("League Remember"));
 			ToggleAdventureLeague({
-				dci : true,
-				factionrank : true,
-				renown : true,
-				actions : true,
-				asterisks : true
+				dci : theAdvL.dci,
+				factionrank : theAdvL.factionrank,
+				renown : theAdvL.renown,
+				actions : theAdvL.actions,
+				asterisks : theAdvL.asterisks
 			});
-		} else {
+		} catch (e) {
 			global.docTo.resetForm(["League Remember"]);
 		};
-		ToggleAdventureLeague(What("League Remember") === "On" ? "Off" : {});
-	} else {
-		var theAdvL = eval(What("League Remember"));
-		ToggleAdventureLeague({
-			dci : theAdvL.dci,
-			factionrank : theAdvL.factionrank,
-			renown : theAdvL.renown,
-			actions : theAdvL.actions,
-			asterisks : theAdvL.asterisks
-		});
 	};
 	
 	thermoM(19/25); //increment the progress dialog's progress

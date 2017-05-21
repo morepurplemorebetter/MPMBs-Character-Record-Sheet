@@ -1149,7 +1149,7 @@ ClassSubList["college of satire"] = {
 			action : ["action", " (Detect Thoughts)"]
 		},
 		"subclassfeature14" : {
-			name : "Fool's Look",
+			name : "Fool's Luck",
 			source : ["UA:KoO", 3],
 			minlevel : 14,
 			description : " [one bardic inspiration die]" + "\n   " + "When I fail an ability check, saving throw, or attack roll, I can add one inspiration die" + "\n   " + "If this turns the roll into a success, I have to note down the number rolled" + "\n   " + "I can't use this ability again until the DM subtracts the amount from a check or attack",

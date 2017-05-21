@@ -3478,8 +3478,9 @@ function AddInvWeaponsAmmo() {
 	//a way to see if there are any special calculation-driven entries in the attack's name
 	var specialAtkName = function (atkNm) {
 		var isSpecial = false;
-		if (CurrentEvals.atkCalc) {
-			isSpecial = CurrentEvals.atkCalc.match(/\(\/.*?\/i?g?i?\)\.test\(WeaponText\)/g).some( function (C) {
+		var toMatch = /\(\/.*?\/i?g?i?\)\.test\(WeaponText\)/g;
+		if (CurrentEvals.atkCalc && (toMatch).test(CurrentEvals.atkCalc)) {
+			isSpecial = CurrentEvals.atkCalc.match(toMatch).some( function (C) {
 				try {
 					return eval(C.replace("WeaponText", "atkNm"));
 				} catch (err) {};
@@ -7296,7 +7297,7 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tArm",
 									name : (this.AddMiddleC ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page."
-								}, ]
+								} ]
 							}, {
 								type : "view",
 								char_height : 2,
@@ -7311,7 +7312,7 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tShi",
 									name : (this.AddMiddleC ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page."
-								}, ]
+								} ]
 							}, {
 								type : "view",
 								align_children : "align_row",
@@ -7326,7 +7327,7 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tWea",
 									name : "\"Attacks\" section on the 1st page."
-								}, ]
+								} ]
 							}, {
 								type : "view",
 								char_height : 2,
@@ -7341,7 +7342,7 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tAmL",
 									name : "\"Attacks\" section on the 1st page."
-								}, ]
+								} ]
 							}, {
 								type : "view",
 								char_height : 2,
@@ -7356,7 +7357,7 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tAmR",
 									name : "\"Attacks\" section on the 1st page."
-								}, ]
+								} ]
 							}, {
 								type : "view",
 								char_height : 2,
@@ -7371,7 +7372,7 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tCoi",
 									name : "\"Equipment\" section on the 2nd page (1 lb per 50)."
-								}, ]
+								} ]
 							}, {
 								type : "view",
 								char_height : 2,
@@ -7386,7 +7387,7 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tP2L",
 									name : "\"Equipment\" section on the 2nd page."
-								}, ]
+								} ]
 							}, {
 								type : "view",
 								char_height : 2,
@@ -7401,7 +7402,7 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tP2M",
 									name : "\"Equipment\" section on the 2nd page."
-								}, ]
+								} ]
 							}, {
 								type : "view",
 								char_height : 2,
@@ -7416,7 +7417,7 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tP2R",
 									name : "\"Equipment\" section on the 2nd page."
-								}, ]
+								} ]
 							}, {
 								type : "view",
 								char_height : 2,
@@ -7431,7 +7432,7 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tP3L",
 									name : "\"Extra Equipment\" section on the 3rd page."
-								}, ]
+								} ]
 							}, {
 								type : "view",
 								align_children : "align_row",
@@ -7446,7 +7447,7 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tP3R",
 									name : "\"Extra Equipment\" section on the 3rd page."
-								}, ]
+								} ]
 							}, {
 								type : "view",
 								align_children : "align_row",
@@ -7461,9 +7462,9 @@ function WeightToCalc_Button() {
 									type : "static_text",
 									item_id : "tMaI",
 									name : "\"Magic Items\" section on the 3rd page."
-								}, ]
-							}, ]
-						}, ]
+								} ]
+							} ]
+						} ]
 					}, {
 						type : "static_text",
 						item_id : "text",
@@ -7488,16 +7489,16 @@ function WeightToCalc_Button() {
 							item_id : "rCar",
 							group_id : "encu",
 							name : "Use the fixed carrying capacity rules"
-						}, ]
+						} ]
 					}, {
 						type : "gap",
 						height : 8
-					}, ]
+					} ]
 				}, {
 					type : "ok_cancel",
 					ok_name : "Apply"
-				}, ]
-			}, ]
+				} ]
+			} ]
 		}
 	};
 	
@@ -7507,7 +7508,7 @@ function WeightToCalc_Button() {
 	if (!typePF) {
 		WeightToCalc_Dialog.AddMiddleC = false;
 		//remove the option about the middle column on the second page
-		WeightToCalc_Dialog.description.elements[0].elements[0].elements[0].elements[0].elements.splice(7, 1);
+		WeightToCalc_Dialog.description.elements[0].elements[0].elements[1].elements[0].elements.splice(7, 1);
 	}
 	app.execDialog(WeightToCalc_Dialog);
 	
