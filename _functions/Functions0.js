@@ -243,7 +243,9 @@ function removeEmptyValues(array) {
 	return returnArray;
 };
 
-function sign(x){return x>0?1:x<0?-1:x;};
+function sign(x) {
+	return x > 0 ? 1 : x < 0 ? -1 : x;
+};
 
 
 function format1(extraDec, fixedDec, unit) {

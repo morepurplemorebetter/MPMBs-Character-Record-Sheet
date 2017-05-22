@@ -762,9 +762,12 @@ function resourceSelectionDialog(type) {
 		for (var u in SpellsList) {
 			var uName = amendSource(SpellsList[u].name, SpellsList[u]);
 			var uTest = testSource(u, SpellsList[u], CSatt, true);
-			if (uTest === "source" || !SpellsList[u] || !SpellsList[u].school || !SpellsList[u].classes) continue;
-			var uGroup = spellSchoolList[SpellsList[u].school].capitalize();
-			uGroup = ((/avatar|awakened|immortal|nomad|wu jen/i).test(uGroup) ? "Order of " : "School of ") + uGroup;
+			if (uTest === "source" || !SpellsList[u] || !SpellsList[u].classes) continue;
+			if (spellSchoolList[SpellsList[u].school]) {
+				var uGroup = ((/avatar|awakened|immortal|nomad|wu jen/i).test(spellSchoolList[SpellsList[u].school]) ? "Order of " : "School of ") + spellSchoolList[SpellsList[u].school].capitalize();
+			} else {
+				var uGroup = SpellsList[u].level == 0 && SpellsList[u].classes[0] === "mystic" ? "Psionic Talents" : "Other";
+			};
 			refObj[uName] = u;
 			if (!exclObj[uGroup]) exclObj[uGroup] = {};
 			if (!inclObj[uGroup]) inclObj[uGroup] = {};

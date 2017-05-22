@@ -198,7 +198,7 @@ SpellsList["invisibility to cameras"] = {
 	source : ["UA:MM", 7],
 	ritual : false,
 	level : 3,
-	school : "Ilus",
+	school : "Illus",
 	time : "1 a",
 	range : "10 ft",
 	components : "V,S,M",
