@@ -190,7 +190,7 @@ function OpeningStatement() {
 			tDoc.closeDoc();
 			return;
 		};
-		tDoc.getField("Opening Remember").submitName = reminders + 1;
+		tDoc.getField("Opening Remember").submitName += 1;
 	};
 	if (What("Opening Remember") === "No") {
 		this.dirty = false;
@@ -199,9 +199,8 @@ function OpeningStatement() {
 		var Text = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
 		Text += "Welcome to " + toUni(sheetTitle);
 		Text += " (get the latest version using the bookmark).";
-		Text += "\n\n" + toUni("Software") + ": Please use " + toUni("Adobe Acrobat DC") + " with this sheet, as only Adobe Acrobat DC (Reader, Standard, or Pro) is supported.";
 		Text += "\n\n" + toUni("Tooltips") + ": This sheet makes extensive use of tooltips (mouseover texts). Hover your cursor over a field to find how you can enter things into the field, reference to the source, explanatory text, or even a list of options your selection offers you.";
-		Text += "\n\n" + toUni("Functions") + ": Check out the buttons in the \'JavaScript Window\' (and bookmarks). Hover your cursor over a button in the \'JavaScript Window\' to see what it does.";
+		Text += "\n\n" + toUni("Functions") + ": Check out the buttons in the \'JavaScript Window\'-toolbar and the bookmarks. Hover your cursor over a button in the \'JavaScript Window\'-toolbar to see what it does.";
 		Text += minVer ? "" : "\n\n" + toUni("Modifiers") + ": With the \"Mods\" button you can add modifiers to the calculated values.";
 		Text += tDoc.info.SpellsOnly ? "" : "\n\n" + toUni("Layout") + ": With the \"Layout\" button you can hide, add, and remove certain pages.";
 		Text += tDoc.info.AdvLogOnly ? "" : "\n\n" + toUni("Spells") + ": With the \"Spells\" button you can have the sheet generate a spell sheet based on your character, or manually create one.";
@@ -511,7 +510,7 @@ function ResetAll(GoOn) {
 		}
 		tDoc.getField("AC Misc Mod 1 Description").submitName = "";
 		tDoc.getField("AC Misc Mod 2 Description").submitName = "";
-		tDoc.getField("Opening Remember").submitName = 0;
+		tDoc.getField("Opening Remember").submitName = 1;
 		tDoc.resetForm();
 		thermoM(4/9); //increment the progress dialog's progress
 		
