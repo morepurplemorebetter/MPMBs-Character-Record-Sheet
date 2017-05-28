@@ -159,7 +159,7 @@ var BackgroundList = {
 			"The first thing I do in a new place is note the locations of everything valuable \u2015 or where such things could be hidden.",
 			"I would rather make a new friend than a new enemy.",
 			"I am incredibly slow to trust. Those who seem the fairest often have the most to hide.",
-			"I don't play attention to the risks in a situation. Never tell me the odds.",
+			"I don't pay attention to the risks in a situation. Never tell me the odds.",
 			"The best way to get me to do something is to tell me I can't do it.",
 			"I blow up at the slightest insult."
 		],
