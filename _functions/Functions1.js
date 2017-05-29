@@ -6757,6 +6757,8 @@ function MakeMobileReady(toggle) {
 		}
 
 		Value("MakeMobileReady Remember", tempReadOnlyArray.toString() + "!#TheListSeparator#!" + tempNoPrintArray.toString());
+		
+		tDoc.getField("d20warning").rect = [0,0,0,0];
 	} else if (!toggle) {
 		var tempArrayBoth = What("MakeMobileReady Remember").split("!#TheListSeparator#!");
 		tempReadOnlyArray = tempArrayBoth[0].split(",");
