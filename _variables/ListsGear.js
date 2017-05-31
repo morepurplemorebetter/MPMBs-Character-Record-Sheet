@@ -2269,8 +2269,8 @@ var GearList = {
 		amount : "",
 		weight : 25
 	},
-	"ink (1 once bottle)" : {
-		infoname : "Ink (1 once bottle) [10 gp]",
+	"ink (1 ounce bottle)" : {
+		infoname : "Ink (1 ounce bottle) [10 gp]",
 		name : "Ink, 1 ounce bottle of",
 		amount : "",
 		weight : ""
