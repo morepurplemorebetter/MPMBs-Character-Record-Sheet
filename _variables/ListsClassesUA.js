@@ -3689,8 +3689,8 @@ ClassSubList["warlock-the raven queen"] = {
 				"If it dies, I gain advantage on all attack rolls against its killer for 24 hours",
 				"After a short rest, I can recall it to me regardless of its location or if it died"
 			]),
-			eval : "if (!(/darkvision/i).test(What('Vision'))) {AddString('Vision', 'Darkvision 30 ft', '; '); }; AddString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]', '; '); Value(SkillsList.abbreviations[SkillsList[Who('Text.SkillsNames') === 'alphabeta' ? 'abbreviations' : 'abbreviationsByAS'].indexOf('Perc')] + ' Bonus', 'Cha');",
-			removeeval : "RemoveString('Vision', 'Darkvision 30 ft'); RemoveString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]'); var perFC = SkillsList.abbreviations[SkillsList[Who('Text.SkillsNames') === 'alphabeta' ? 'abbreviations' : 'abbreviationsByAS'].indexOf('Perc')] + ' Bonus'; if (What(perFC) === 'Cha') {Value(perFC, 0); };"
+			eval : "if (!(/darkvision/i).test(What('Vision'))) {AddString('Vision', 'Darkvision 30 ft', '; '); }; AddString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]', '; '); AddToModFld(SkillsList.abbreviations[SkillsList[Who('Text.SkillsNames') === 'alphabeta' ? 'abbreviations' : 'abbreviationsByAS'].indexOf('Perc')] + ' Bonus', 'Cha');",
+			removeeval : "RemoveString('Vision', 'Darkvision 30 ft'); RemoveString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]'); AddToModFld(SkillsList.abbreviations[SkillsList[Who('Text.SkillsNames') === 'alphabeta' ? 'abbreviations' : 'abbreviationsByAS'].indexOf('Perc')] + ' Bonus', 'Cha', true);"
 		},
 		"subclassfeature6" : {
 			name : "Soul of the Raven",
@@ -3838,8 +3838,8 @@ ClassSubList["wizard-war magic"] = {
 			description : desc([
 				"I gain a bonus to my initiative rolls equal to my Intelligence modifier"
 			]),
-			eval : "if (!What('Init Bonus')) { Value('Init Bonus', 'Int'); };",
-			removeeval : "if (What('Init Bonus') === 'Int') { Value('Init Bonus', 0); };"
+			eval : "AddToModFld('Init Bonus', 'Int');",
+			removeeval : "AddToModFld('Init Bonus', 'Int', true);"
 		},
 		"subclassfeature6" : {
 			name : "Power Surge",

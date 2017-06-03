@@ -5664,14 +5664,17 @@ function EvalBonus(input, notComp, isSpecial) {
 		return 0;
 	} else if (!isNaN(input)) {
 		return Number(input);
-	}
+	};
 	var modStr = notComp === true ? ["", " Mod"] : !isSpecial || isSpecial === "test" ? [notComp + "Comp.Use.Ability.", ".Mod"] : [notComp + "Wildshape." + isSpecial + ".Ability.", ".Mod"];
 	// first remove "dc", add a "+" between abbreviations, and removing double or trailing operators
-	input = input.replace(/dc/ig, "").replace(/(Str|Dex|Con|Int|Wis|Cha|HoS)(Str|Dex|Con|Int|Wis|Cha|HoS)/ig, "$1+$2").replace(/(\+|\-|\/|\*)(\+|\-|\/|\*)/g, "$2").replace(/(^(\+|\/|\*))|((\+|\-|\/|\*)$)/g, "");
+	input = input.replace(/dc/ig, "").replace(/(Str|Dex|Con|Int|Wis|Cha|HoS|Prof)(Str|Dex|Con|Int|Wis|Cha|HoS|Prof)/ig, "$1+$2").replace(/(\+|\-|\/|\*)(\+|\-|\/|\*)/g, "$2").replace(/(^(\+|\/|\*))|((\+|\-|\/|\*)$)/g, "");
 	// change ability score abbreviations with their modifier
 	["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"].forEach(function(AbiS) {
 		input = input.replace(RegExp(AbiS, "ig"), Number(What(modStr[0] + AbiS + modStr[1])));
 	});
+	// change Prof with the proficiency bonus
+	var ProfB = notComp === true ? tDoc.getField("Proficiency Bonus").submitName : !isSpecial || isSpecial === "test" ? What(notComp + "Comp.Use.Proficiency Bonus") : What(notComp + "Wildshape." + isSpecial + ".Proficiency Bonus");
+	input = input.replace(/Prof/ig, ProfB);
 	try {
 		output = eval(input);
 		return !isNaN(output) ? Number(output) : 0;
@@ -5740,4 +5743,31 @@ function SetThisFldVal() {
 			event.target.value = theDialog.theTXT;
 		};
 	};
+};
+
+// add a modifier to a modifier field so that the formula stays intact; Remove is boolean
+function AddToModFld(Fld, Mod, Remove) {
+	if (!tDoc.getField(Fld)) return;
+	var aFld = What(Fld);
+	var setFld = "";
+	if (!isNaN(Mod)) {
+		Mod = Remove ? -1 * Mod : Mod;
+		if (!isNaN(aFld)) {
+			setFld = aFld + Mod;
+		} else if ((/\d+/).test(aFld)) {
+			var FldNum = Number(aFld.match(/-?\d+/)[0]);
+			var FldNumNew = FldNum + Mod;
+			setFld = aFld.replace(RegExp("\\+?" + FldNum.toString(), "i"), (FldNumNew < 0 ? "" : "+") + FldNumNew);
+		} else {
+			setFld = aFld + (Mod < 0 ? "" : "+") + Mod;
+		};
+	} else {
+		if (Remove) {
+			setFld = aFld.replace(RegExp("\\+?" + Mod, "i"), "");
+		} else {
+			setFld = (aFld ? aFld : "") + (Mod.substr(0, 1) === "-" ? "" : "+") + Mod
+		};
+	};
+	setFld = setFld.replace(/^\+|(\+|-)0/g, "");
+	Value(Fld, setFld);
 };

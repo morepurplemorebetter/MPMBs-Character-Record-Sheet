@@ -13,7 +13,7 @@
 				This is taken from the DMs Guild website (http://www.dmsguild.com/product/194789/)
 				This subclass is made by Cody Faulk
 	Code by:	MorePurpleMoreBetter
-	Date:		2017-03-15 (sheet v12.87)
+	Date:		2017-06-03 (sheet v12.992)
 	
 	Please support the creator of this content (Cody Faulk) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?author=Cody%20Faulk
 */
@@ -38,8 +38,8 @@ ClassSubList["fate domain"] = {
 				spells : ["resistance"],
 				selection : ["resistance"],
 			}],
-			eval : "if (!What(\"Init Bonus\")) {Value(\"Init Bonus\", \"Wis\")}",
-			removeeval : "if (What(\"Init Bonus\") === \"Wis\") {Value(\"Init Bonus\", \"\")}"
+			eval : "AddToModFld('Init Bonus', 'Wis');",
+			removeeval : "AddToModFld('Init Bonus', 'Wis', true);"
 		},
 		"subclassfeature2" : {
 			name : "Channel Divinity: Pierce the Veil",

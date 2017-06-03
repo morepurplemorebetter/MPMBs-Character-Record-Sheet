@@ -811,8 +811,8 @@ var ClassList = {
 				minlevel : 6,
 				description : "\n   " + "While I'm conscious, allies within range and I can add my Cha mod (min 1) to saves",
 				additional : ["", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				eval : "tDoc.getField(\"All ST Bonus\").setAction(\"Calculate\", \"event.value = Math.max(1, tDoc.getField(\'Cha Mod\').value);\");",
-				removeeval : "tDoc.getField(\"All ST Bonus\").setAction(\"Calculate\", \"var placeholder = 1;\");"
+				eval : "AddToModFld('All ST Bonus', 'Cha');",
+				removeeval : "AddToModFld('All ST Bonus', 'Cha', true);"
 			},
 			"aura of courage" : {
 				name : "Aura of Courage",
@@ -4053,8 +4053,8 @@ var ClassSubList = {
 				source : ["S", 136],
 				minlevel : 3,
 				description : "\n   " + "I don't need advantage to sneak attack if my target is the only one within 5 ft of me" + "\n   " + "I can add my Charisma modifier to initiative rolls",
-				eval : "if (!What(\"Init Bonus\")) {Value(\"Init Bonus\", \"Cha\")}",
-				removeeval : "if (What(\"Init Bonus\") === \"Cha\") {Value(\"Init Bonus\", \"\")}"
+				eval : "AddToModFld('Init Bonus', 'Cha');",
+				removeeval : "AddToModFld('Init Bonus', 'Cha', true);"
 			},
 			"subclassfeature9" : {
 				name : "Panache",

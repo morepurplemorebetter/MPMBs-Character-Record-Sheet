@@ -4490,13 +4490,13 @@ function ValidateBonus(goEmpty, allowDC) {
 		var notComp = event.target.name.indexOf("Comp.") === -1 ? true : event.target.name.substring(0, event.target.name.indexOf("Comp."));
 		test = event.value;
 		if (!allowDC) test = test.replace(/dc/ig, "");
-		["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"].forEach( function(AbiS) {
+		["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS", "Prof"].forEach( function(AbiS) {
 			test = test.replace(RegExp("(\\b|\\d)" + AbiS[0] + AbiS[1] + "?" + AbiS[2] + "?" + "(\\b|\\d)", "ig"), "$1" + AbiS + "$2");
 		});
-		event.value = EvalBonus(test, notComp, "test") !== undefined ? test : 0;
+		event.value = EvalBonus(test, notComp, "test") !== undefined ? test : event.target.value;
 	} else {
 		event.value = event.value === "" && goEmpty ? "" : Math.round(input);
-	}
+	};
 };
 
 //calculate the skill modifier (field calculation)
