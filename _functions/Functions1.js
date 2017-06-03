@@ -3091,7 +3091,7 @@ function SetGearWeightOnBlur() {
 };
 
 // find if the entry is an equipment
-function ParseGear(input, exclAmmunition) {
+function ParseGear(input) {
 	if (!input) return false;
 	var foundLen = 0;
 	var result = false;
@@ -3129,7 +3129,7 @@ function ParseGear(input, exclAmmunition) {
 	//see if it is gear
 	for (var key in GearList) { //scan string for all gear
 		var aList = GearList[key];
-		if (!aList.name || aList.name === "-" || testSource(key, aList, "gearExcl") || (exclAmmunition && key.indexOf("ammunition") !== -1)) continue;
+		if (!aList.name || aList.name === "-" || testSource(key, aList, "gearExcl") || key.indexOf("ammunition") !== -1) continue;
 		//var aListRegEx = RegExp(("\\b" + aList.name.replace(/\uFEFF|\,[^\,]+$/g, "").RegEscape() + "\\b").replace("s\\b", "s?\\b"), "i");
 		var aListRegEx = MakeRegex(aList.name.replace(/\uFEFF|\,[^\,]+$/g, ""));
 		if ((aListRegEx).test(tempString)) {
@@ -3195,7 +3195,7 @@ function AddToInv(area, column, item, amount, weight, location, searchRegex, Add
 	//search through the items and do something if it is found
 	for (var i = startSearch; i <= endSearch; i++) {
 		var theRow = clean(What(itemRow + i), false, true);
-		var isKey = !checkKey ? false : ParseGear(theRow, true);
+		var isKey = !checkKey ? false : ParseGear(theRow);
 		if ((theRow === searchItem || (searchRegex).test(theRow)) && (!checkKey || isKey[1] === checkKey)) {
 			if (!AddTestReplace) {
 				var curAmount = What(amountRow + i);
@@ -3541,15 +3541,17 @@ function AddInvWeaponsAmmo() {
 		for (var it in items) {
 			var aItem = items[it];
 			if (aItem.magic === magicBonus && ((!theAmmo && aItem.name.indexOf(aNm) !== -1) || (theAmmo && aItem.key === theAmmo && (it.replace(/\d+/, "") === theAmmo || similarLen(aItem.name, aNm))))) {
-				aItem.amount = aNr;
+				aItem.amount = aNr + (theAmmo && aItem.key === theAmmo ? aItem.amount : 0);
 				return;
 			};
 		};
 		var theTxt = theAmmo ? theAmmo : aNm;
 		if (!items[theTxt]) {
+			var InvName = theAmmo && AmmoList[theAmmo].invName ? AmmoList[theAmmo].invName : aNm;
+			var parsedInv = ParseGear(InvName);
 			items[theTxt] = {
-				key : theAmmo, // item key
-				name : aNm, // the name in the field
+				key : parsedInv ? parsedInv[1] : theAmmo, // item key
+				name : InvName, // the name of the ammo
 				weight : aWght,
 				magic : 0, // magic bonus
 				amount : aNr // the number of these
@@ -3617,6 +3619,13 @@ function MakeInventoryLineMenu() {
 	};
 	
 	var AddCompOptions = function(menu) {
+		if (!theField) {
+			menu.push({
+				cName : "Move to a Companion's Equipment",
+				bEnabled : false
+			})
+			return;
+		};
 		var AScompA = What("Template.extras.AScomp").split(",");
 		var prefix = type.substring(0, type.indexOf("Comp."));
 		if (type.indexOf("Comp.") !== -1) AScompA.splice(AScompA.indexOf(prefix), 1);
@@ -3624,16 +3633,15 @@ function MakeInventoryLineMenu() {
 			cName : "Move to a Companion's Equipment",
 			oSubMenu : []
 		};
-		var isEnabled = !theField ? false : AScompA.length > 1 || tDoc.getField(BookMarkList["AScomp"]).page !== -1;
 		for (var i = 0; i < AScompA.length; i++) {
 			if ((type.indexOf("Comp.") !== -1 && prefix === AScompA[i]) || (i === 0 && tDoc.getField(BookMarkList["AScomp"]).page === -1)) continue;
 			var CompNm = What(AScompA[i] + "Comp.Desc.Name");
 			var CompPg = tDoc.getField(AScompA[i] + "Comp.Desc.Name").page;
+			var eqpVis = eval(What(AScompA[i] + "Companion.Layers.Remember"))[1];
 			if (isArray(CompPg)) CompPg = CompPg[1];
 			temp.oSubMenu.push({
-				cName : (CompNm ? CompNm : "NAME") + "'s Equipment Section (page " + CompPg + ")",
-				cReturn : type + "#" + lineNmbr + "#" + "movepage#" + AScompA[i] + "Comp.",
-				bEnabled : isEnabled
+				cName : (CompNm ? CompNm : "NAME") + "'s Equipment Section " + (eqpVis ? "" : "\[not visible currently\] ") + "(page " + CompPg + ")",
+				cReturn : type + "#" + lineNmbr + "#" + "movepage#" + AScompA[i] + "Comp."
 			});
 		};
 		menu.push(temp);
@@ -4987,7 +4995,6 @@ function ApplyFeat(InputFeat, FldNmbr) {
 
 	//remove previous feat at the same field
 	if (CurrentFeats.known[ArrayNmbr] && CurrentFeats.known[ArrayNmbr] !== NewFeat) {
-		console.println("removing"); //DEBUGGING!!!
 		thermoM("Removing the old feat..."); //change the progress dialog text
 		thermoM(1/4); //increment the progress dialog's progress
 		var theFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
@@ -7532,6 +7539,7 @@ function ParseAmmo(input, onlyInv) {
 	var tempString = removeDiacritics(input.toLowerCase());
 	var output = "";
 	var tempFound = 0;
+	var keyLen = 0;
 	
 	//scan string for all ammunition, including the alternative spellings
 	for (var key in AmmoList) {
@@ -7543,17 +7551,19 @@ function ParseAmmo(input, onlyInv) {
 				if (tempFound < theAlt.toString().length && (doTest ? theAlt.test(tempString) : tempString.indexOf(theAlt) !== -1)) {
 					output = key;
 					tempFound = theAlt.toString().length;
+					keyLen = doTest ? key.length : tempFound;
 				}
 			}
 		};
 		if (tempFound < key.length && tempString.indexOf(key) !== -1) {
 			output = key;
 			tempFound = key.length;
+			keyLen = key.length;
 		};
 	}
 	
 	if (onlyInv && output) {
-		return [output, tempFound];
+		return [output, keyLen];
 	} else {
 		return output;
 	}

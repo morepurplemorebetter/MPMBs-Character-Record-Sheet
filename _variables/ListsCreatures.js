@@ -3217,13 +3217,13 @@ var CreatureList = {
 		attacks : [{
 				name : "Claw",
 				ability : 1,
-				damage : [1, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "slashing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Pounce trait"
 			}, {
 				name : "Bite",
 				ability : 1,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "Can be used in combination with claw while pouncing (see Pounce trait)"
 			}

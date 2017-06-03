@@ -413,7 +413,7 @@ var WeaponsList = {
 		abilitytodamage : true
 	},
 	"light crossbow" : {
-		regExpSearch : /^(((?=.*light)(?=.*crossbow))|((?!.*(hand|short|great|heavy))(?=.*\bcrossbow\b))).*$/i,
+		regExpSearch : /^(((?=.*light)(?=.*crossbow))|((?!.*(hand|short|great|heavy|bolt))(?=.*\bcrossbow\b))).*$/i,
 		name : "Light crossbow",
 		source : ["P", 149],
 		list : "ranged",
@@ -462,7 +462,7 @@ var WeaponsList = {
 		type : "Simple",
 		damage : [1, 4, "bludgeoning"],
 		range : "30/120 ft",
-		weight : 0,
+		weight : 0.000001,
 		description : "Ammunition",
 		abilitytodamage : true,
 		ammo : "bullet"
