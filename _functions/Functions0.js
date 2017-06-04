@@ -948,3 +948,9 @@ function setDialogName(dialogElem, itemID, attrNm, setAttr) {
 function RollD(die) {
     return Math.floor(Math.random() * die) + 1;
 };
+
+//set the other checkbox Dis/Adv off when clicking this field (on MouseUp)
+function SetDisAdv() {
+	var Adv = (/Adv$/).test(event.target.name);
+	this.getField(event.target.name.replace(Adv ? "Adv" : "Dis", Adv ? "Dis" : "Adv")).value = "Off";
+};
