@@ -201,7 +201,7 @@ function AddFolderJavaScript(justConsole) {
 function DirectImport_Dialogue() {
 	var DirectImport_dialog = {
 		Text0 : "This 'Direct Import' function opens another MPMB's Character Record Sheet and goes through every field and layout setting in it to make this sheet similar to the other. This can take a long time and will not copy everything literally as this sheet will run through its automation to benefit from any updates to its code compared to the other sheet.\n\nIn order to do this, you will need to give the full path to a local file you want to import from.\nYou can use the 'Lookup' button to get the path.\n\nAlternatively, place the sheet you want to import from in the same folder as this sheet, give the file name of the sheet you want to import from (including file extension), and check the box to use a relative path.",
-		Text1 : "If you continue with importing, all data in the current sheet will be removed without notice!",
+		Text1 : "If you continue with importing, the current sheet will first be reset without notice!",
 		TextIcons : (app.viewerType === "Reader" ? "Because of limitations in Adobe Acrobat Reader, this function is not available." : "'User-defined icons\' refers to those images that have been set for the symbol, portrait, companion(s) appearance, etc. that have been added from another file.") + "\n\nIcons that have been selected from the sheet built-in options will be imported regardless (faction symbols, Adventure League season icons, class icons).",
 		fileLoc : "",
 		relPath : false,
@@ -313,12 +313,14 @@ function DirectImport_Dialogue() {
 								type : "radio",
 								item_id : "icNo",
 								name : "No. I will set them again manually (recommended).",
-								group_id : "icon"
+								group_id : "icon",
+								height : 20
 							}, {
 								type : "radio",
 								item_id : "icYe",
 								name : "Yes. Import the user-defined icons as well (experimental).",
-								group_id : "icon"
+								group_id : "icon",
+								height : 20
 							}, ]
 						}, {
 							type : "static_text",

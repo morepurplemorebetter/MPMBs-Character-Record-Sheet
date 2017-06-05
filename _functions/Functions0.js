@@ -476,7 +476,7 @@ function clean(input, remove, diacretics) {
 
 //convert string to usable, complex regex
 function MakeRegex(inputString, extraRegex) {
-	return RegExp("^(?=.*\\b" + inputString.replace(/\W/g, " ").replace(/^ +| +$/g, "").RegEscape().replace(/('?s'?)\b/ig, "\($1\)?").replace(/ +/g, "\\b)(?=.*\\b") + "\\b)" + (extraRegex ? extraRegex : "") + ".*$", "i");
+	return RegExp("^(?=.*\\b" + inputString.replace(/\W/g, " ").replace(/^ +| +$/g, "").RegEscape().replace(/('?s'?)\b/ig, "\($1\)?").replace(/ +/g, "s?\\b)(?=.*\\b") + "s?\\b)" + (extraRegex ? extraRegex : "") + ".*$", "i");
 };
 
 function toUni(input) {

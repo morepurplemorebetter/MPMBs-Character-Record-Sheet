@@ -3129,11 +3129,9 @@ function ParseGear(input) {
 	//see if it is gear
 	for (var key in GearList) { //scan string for all gear
 		var aList = GearList[key];
-		if (!aList.name || aList.name === "-" || testSource(key, aList, "gearExcl") || key.indexOf("ammunition") !== -1) continue;
-		//var aListRegEx = RegExp(("\\b" + aList.name.replace(/\uFEFF|\,[^\,]+$/g, "").RegEscape() + "\\b").replace("s\\b", "s?\\b"), "i");
+		if (!aList.name || aList.name === "-" || testSource(key, aList, "gearExcl")) continue; // || key.indexOf("ammunition") !== -1) continue;
 		var aListRegEx = MakeRegex(aList.name.replace(/\uFEFF|\,[^\,]+$/g, ""));
 		if ((aListRegEx).test(tempString)) {
-			//var testLen = tempString.match(aListRegEx)[0].length;
 			var testLen = aList.name.length;
 			if (testLen >= foundLen) {
 				result = ["GearList", key];
@@ -3146,10 +3144,8 @@ function ParseGear(input) {
 	for (var key in ToolsList) { //scan string for all tools
 		var aList = ToolsList[key];
 		if (!aList.name || aList.name === "-" || testSource(key, aList, "gearExcl")) continue;
-		//var aListRegEx = RegExp(("\\b" + aList.name.replace(/\uFEFF|\,[^\,]+$/g, "").RegEscape() + "\\b").replace("s\\b", "s?\\b"), "i");
 		var aListRegEx = MakeRegex(aList.name.replace(/\uFEFF|\,[^\,]+$/g, ""));
 		if ((aListRegEx).test(tempString)) {
-			//var testLen = tempString.match(aListRegEx)[0].length;
 			var testLen = aList.name.length;
 			if (testLen >= foundLen) {
 				result = ["ToolsList", key];
@@ -3169,6 +3165,10 @@ function AddToInv(area, column, item, amount, weight, location, searchRegex, Add
 	//set area and prefix, if any
 	var prefix = area.indexOf("AScomp.") !== -1 ? area.substring(0, area.indexOf("AScomp.") + 7) : "";
 	area = area.toLowerCase();
+	if (!checkKey) {
+		var isItem = ParseGear(item);
+		if (isItem) checkKey = isItem[1]
+	}; 
 	//set start and end row
 	var maxRow = FieldNumbers[(/adventuring|gear|magic/).test(area) ? "gear" : area.indexOf("extra") !== -1 ? "extragear" : area.indexOf("comp") !== -1 ? "compgear" : false];
 	if (!maxRow) return;

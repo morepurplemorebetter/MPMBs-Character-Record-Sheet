@@ -462,7 +462,7 @@ var WeaponsList = {
 		type : "Simple",
 		damage : [1, 4, "bludgeoning"],
 		range : "30/120 ft",
-		weight : 0.000001,
+		weight : 0.001,
 		description : "Ammunition",
 		abilitytodamage : true,
 		ammo : "bullet"
