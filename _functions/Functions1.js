@@ -4959,11 +4959,11 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	thermoM(1/6); //increment the progress dialog's progress
 		
 	//first test if the feat has a prerequisite and if it meets that
-	if (IsNotFeatMenu && IsNotReset && theFeat && theFeat.prereqeval) {
+	if (IsNotFeatMenu && IsNotReset && theFeat && theFeat.prereqeval && !ignorePrereqs) {
 		try {
 			var meetsPrereq = eval(theFeat.prereqeval);
 		} catch (e) {
-			console.println("The prereqeval for the feat '" + theFeat.name + "' produces an error and is subsequently ignored. If this is one of the built-in feats, please contact morepurplemorebetter using on of the contact bookmarks to let him know about this bug. Don't forget to name the version number of the sheet, of the software you are using, and the name of the feat.");
+			console.println("The prereqeval for the feat '" + theFeat.name + "' produces an error and is subsequently ignored. If this is one of the built-in feats, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the feat.");
 			console.show();
 			var meetsPrereq = true;
 		};
@@ -5857,7 +5857,6 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 };
 
 //Make menu for 'choose class feature' button and parse it to Menus.classfeatures
-var ignorePrereqs = false;
 function MakeClassMenu() {
 	var menuLVL1 = function (item, array, thereturn) {
 		for (var i = 0; i < array.length; i++) {

@@ -395,6 +395,7 @@ function DirectImport(consoleTrigger) {
 		ResetAll(true); //first reset the current sheet to its initial state
 		Value("Opening Remember", "Yes");
 		IsNotImport = false;
+		ignorePrereqs = true;
 		//make sure no pop-up comes up with welcome text
 		if (global.docFrom.getField("Opening Remember")) global.docFrom.Value("Opening Remember", "Yes");
 		
@@ -1068,9 +1069,10 @@ function DirectImport(consoleTrigger) {
 	if (global.docFrom && global.docFrom.toString() === "[object Doc]") {
 		global.docFrom.dirty = false;
 		global.docFrom.closeDoc();
-	}
+	};
 	//remove the global objects so that they don't make a clutter
 	IsNotImport = true;
+	ignorePrereqs = false;
 	if (global.docTo) delete global.docTo;
 	if (global.docFrom) delete global.docFrom;
 	if (IIerror && isNaN(IIerror)) app.alert(IIerror);
@@ -1403,6 +1405,7 @@ function Import(type) {
 	
 	if (typeof ProcResponse === "undefined") {
 		IsNotImport = false;
+		ignorePrereqs = true;
 		if (type === "fdf") {
 			tDoc.importAnFDF();
 		} else if (type === "xfdf") {
@@ -1410,6 +1413,7 @@ function Import(type) {
 		}
 		if (What("Race Remember").split("-")[1]) ApplyRace(What("Race Remember"));
 		IsNotImport = true;
+		ignorePrereqs = false;
 	};
 	
 	//set the values of the templates back

@@ -1295,7 +1295,7 @@ function PleaseSubclass(theclass) {
 				console.show();
 				continue;
 			};
-			if (testSource(aSub, ClassSubList[aSub], "classExcl")) continue;
+			if (testSource(aSub, ClassSubList[aSub], "classExcl") || aclassArray.indexOf(ClassSubList[aSub].subname) !== -1) continue;
 			aclassObj[ClassSubList[aSub].subname] = aSub;
 			aclassArray.push(ClassSubList[aSub].subname);
 		};

@@ -231,6 +231,7 @@ var IsNotImport = true;
 var IsNotFeatMenu = true;
 var IsNotWeaponMenu = true;
 var IsNotSpellSheetGenerating = true;
+var ignorePrereqs = false;
 
 var FieldsRemember = [];
 
