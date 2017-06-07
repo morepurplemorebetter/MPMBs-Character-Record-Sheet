@@ -964,6 +964,18 @@ var WeaponsList = {
 		abilitytodamage : false,
 		dc : true
 	},
+	"magic stone" : {
+		regExpSearch : /^(?=.*magic)(?=.*stone).*$/i,
+		name : "Magic Stone",
+		source : ["E", 20],
+		list : "spell",
+		ability : 5,
+		type : "Cantrip",
+		damage : [1, 6, "bludgeoning"],
+		range : "60/120 ft",
+		description : "Produces 3 stones that each can be thrown (60 ft) or hurled with a sling (120 ft) as a spell attack (EE 20)",
+		abilitytodamage : true
+	},
 	"poison spray" : {
 		regExpSearch : /^(?=.*poison)(?=.*spray).*$/i,
 		name : "Poison Spray",
