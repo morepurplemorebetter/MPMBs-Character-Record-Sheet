@@ -4537,7 +4537,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 
 //Give a pop-up dialogue when the amount of Ability Score Improvements after changing level
 function CountASIs() {
-	if (!AbilityScores.improvements.classlvl) UpdateTooltips();
+	UpdateTooltips();
 	var newASI = 0;
 	for (var nClass in classes.known) {
 		var clLvl = Math.min(CurrentClasses[nClass].improvements.length, classes.known[nClass].level);
@@ -4545,8 +4545,8 @@ function CountASIs() {
 	}
 	var oldASI = 0;
 	for (var oClass in classes.old) {
-		clLvl = Math.min(CurrentClasses[nClass].improvements.length, classes.old[oClass].classlevel);
-		oldASI += clLvl ? CurrentClasses[nClass].improvements[clLvl - 1] : 0;
+		clLvl = Math.min(CurrentClasses[oClass].improvements.length, classes.old[oClass].classlevel);
+		oldASI += clLvl ? CurrentClasses[oClass].improvements[clLvl - 1] : 0;
 	}
 	if (newASI !== oldASI) {		
 		var pTxt = "The change in level has granted your character " + toUni(newASI - oldASI) + " additional " + toUni("Ability Score Improvement") + "(s)!\n\nThe current total of Ability Score Improvements is:" + AbilityScores.improvements.classlvl + "\n\nYou can use these in one of two ways:\n    1. Divide 2 points over ability scores (to max 20);\n        (See the Ability Scores dialogue, i.e. \"Scores\" button.)\n    2. Take 1 feat.\n        (See the Feats section on the sheet.)";

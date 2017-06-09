@@ -360,12 +360,12 @@ function KeystrokeDay() {
 		var isDate = util.scand('yy-mm-dd', event.value);
 		if (!isDate) {
 			app.alert({
-				cMsg : "Please enter a valid date of the form \"Year-Month-Day\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" button above.",
+				cMsg : "Please enter a valid date using the date-picker (the little arrow in the field) or enter the date manually using of the form \"Year-Month-Day\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" button above.",
 				cTitle : "Invalid date format",
 				nIcon : 1
 			});
-		}
-	}
+		};
+	};
 };
 
 //a field "format" function to add a space at the start and end of the field, to make sure it looks better on the sheet

@@ -2149,7 +2149,7 @@ function FindClasses(Event) {
 	}
 	
 	//add the current classes.known into classes.old on startup of the sheet
-	if (!Event) {
+	if (Event == undefined) {
 		for (var aClass in classes.known) {
 			classes.old[aClass] = {
 				classlevel : classes.known[aClass].level,
@@ -2165,15 +2165,15 @@ function FindClasses(Event) {
 function ApplyClasses(inputclasstxt, updateall) {
 	updateall = updateall !== undefined ? updateall : true;
 	classes.field = inputclasstxt;
-
+	
 	thermoM("start"); //start a progress dialog
 	thermoM("Recognizing the entered class(es)..."); //change the progress dialog text
-
+	
 	//detects classes entered and parses information to global classes variable, if nothing has changed, it returns true and we can stop this function
 	if (FindClasses(classes.field)) {
 		thermoM("stop"); //stop the top progress dialog
 		return;
-	}
+	};
 
 	tDoc.delay = true;
 	tDoc.calculate = false;
@@ -2249,6 +2249,7 @@ function ApplyClasses(inputclasstxt, updateall) {
 		}
 	}
 	if (What("SpellSlotsRemember") === "[false,false]") SpellPointsLimFea("Add");
+
 	
 	thermoM(4/6); //increment the progress dialog's progress
 	thermoM("Setting the total character level..."); //change the progress dialog text
