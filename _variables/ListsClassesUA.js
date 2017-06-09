@@ -4494,6 +4494,113 @@ ClassSubList["sorcerer-favoured soul2"] = {
 };
 ClassList.sorcerer.subclasses[1].push("sorcerer-favoured soul2");
 
+/*	Revised Class Options Unearthed Arcana of 2017-06-05
+	(http://media.wizards.com/2017/dnd/downloads/June5UA_RevisedClassOptv1.pdf)
+*/
+//adds four subclasses from previous Unearthed Arcana articles, and revised Warlock Eldritch Invocations
+
+//a subclass for the Druid, called "Circle of the Shepherd"
+ClassSubList["druid-circle of the shepherd2"] = {
+	regExpSearch : /^(?=.*(druid|shaman))(?=.*shepherd).*$/i,
+	subname : "Circle of the Shepherd",
+	source : ["UA:RCO", 1],
+	features : {
+		"subclassfeature2" : {
+			name : "Speech of the Woods",
+			source : ["UA:RCO", 1],
+			minlevel : 2,
+			description : "\n   " + "I can talk with beasts, they understand me and I them, to the limit of their intelligence" + "\n   " + "This doesn't automatically make me friends with all beasts"
+		},
+		"subclassfeature2.1" : {
+			name : "Spirit Totem",
+			source : ["UA:RCO", 1],
+			minlevel : 2,
+			description : "\n   " + "As a bonus action, I can summon a spirit to an empty space within 60 ft that I can see" + "\n   " + "The Bear, Hawk, or Wolf spirit, creates a 30-ft radius aura and persist for 1 minute" + "\n   " + "It doesn't occupy space, is immobile, and counts as neither a creature nor an object" + "\n    - " + "Bear: my allies in the area and I instantly gain 5 + my druid level in temp HP" + "\n       " + "While in the aura, my allies and I gain advantage on Strength checks and saves" + "\n    - " + "Hawk: my allies and I gain advantage on attacks against targets in the aura" + "\n    - " + "Wolf: my allies and I gain advantage on ability checks to detect targets in the aura" + "\n       " + "If I cast a healing spell with a spell slot, allies in the aura heal my druid level in HP",
+			usages : 1,
+			recovery : "short rest",
+			action : ["bonus action", ""]
+		},
+		"subclassfeature6" : {
+			name : "Mighty Summoner",
+			source : ["UA:RCO", 2],
+			minlevel : 6,
+			description : "\n   " + "Beast I summon with my spells have +2 HP per HD and their attacks count as magical"
+		},
+		"subclassfeature10" : {
+			name : "Guardian Spirit",
+			source : ["UA:RCO", 2],
+			minlevel : 10,
+			description : "\n   " + "Whenever I finish a long rest, I gain the benefits of a Death Ward spell for 24 hours"
+		},
+		"subclassfeature14" : {
+			name : "Faithful Summons",
+			source : ["UA:RCO", 2],
+			minlevel : 14,
+			description : "\n   " + "When I am reduced to 0 HP or incapacitated against my will, I can summon protectors" + "\n   " + "I gain the benefits of a Conjure Animals spell as if cast with a 9th-level spell slot" + "\n   " + "It summons 4 beast of my choice with CR 2 or lower within 20 ft of me for 1 hour" + "\n   " + "If they receive no commands from me, they protect me from harm and attack foes",
+			usages : 1,
+			recovery : "long rest"
+		}
+	}
+};
+ClassList.druid.subclasses[1].push("druid-circle of the shepherd2");
+
+//a subclass for the Fighter, called "Cavalier"
+ClassSubList["fighter-cavalier2"] = {
+	regExpSearch : /cavalier/i,
+	subname : "Cavalier",
+	source : ["UA:RCO", 2],
+	fullname : "Cavalier",
+	abilitySave : 1,
+	features : {
+		"subclassfeature3" : {
+			name : "Bonus Proficiency",
+			source : ["UA:RCO", 2],
+			minlevel : 3,
+			description : "\n   " + "I gain proficiency with two skills or one skill and any one tool" + "\n   " + "For skills I can choose from Animal Handling, Insight, Performance, or Persuasion",
+			skillstxt : "\n\n" + toUni("Cavalier") + ": Choose two skills from: Animal Handling, Insight, Performance, or Persuasion. - or - Choose one of those skills and any one tool."
+		},
+		"subclassfeature3.1" : {
+			name : "Born in the Saddle",
+			source : ["UA:RCO", 2],
+			minlevel : 3,
+			description : "\n   " + "I have advantage on saves to avoid falling off my mount, and land on my feet if I fail" + "\n   " + "Mounting or dismounting a creature costs me only 5 ft of movement instead of half",
+			save : "Adv. to avoid falling off my mount"
+		},
+		"subclassfeature3.2" : {
+			name : "Combat Superiority",
+			source : ["UA:RCO", 2],
+			minlevel : 3,
+			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special maneuvers (see below)" + "\n   " + "I can use only one maneuver per attack; I regain all superiority dice after a short rest" + "\n    - " + "Use after rolling to influence/control an animal; I add the superiority die to the roll" + "\n    - " + "Use after rolling to hit; I add the superiority die to my attack roll" + "\n    - " + "Use on a mount, before rolling to hit with a lance; I add the die to the damage roll" + "\n       " + "Also, the target must make a Str save (DC 8 + Prof + Str mod) or be knocked prone" + "\n    - " + "As a reaction when I'm hit or my mount is hit, I add the superiority die to AC" + "\n       " + "If the attack still hits, I or my mount only take half damage from it",
+			additional : ["", "", "d8", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12"],
+			usages : [0, 0, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6],
+			recovery : "short rest",
+			action : ["reaction", " (if hit/mount hit)"]
+		},
+		"subclassfeature7" : {
+			name : "Ferocious Charger",
+			source : ["UA:RCO", 3],
+			minlevel : 7,
+			usages : 1,
+			recovery : "long rest",
+			description : "\n   " + "I can use two superiority dice, instead of just one, to increase the damage of my lance" + "\n   " + "If doing so, the target has disadvantage on its Str save to avoid being knocked prone",
+			action : ["action", ""]
+		},
+		"subclassfeature10" : {
+			name : "Improved Combat Superiority",
+			source : ["UA:RCO", 3],
+			minlevel : 10,
+			description : "\n   " + "My superiority dice turn into d10s at 10th level and into d12s at 18th level"
+		},
+		"subclassfeature15" : {
+			name : "Relentless",
+			source : ["UA:RCO", 3],
+			minlevel : 15,
+			description : "\n   " + "I regain one superiority die if I have no more remaining when I roll initiative"
+		}
+	}
+};
+ClassList.fighter.subclasses[1].push("fighter-cavalier2");
+
 //a function to run at startup of the sheet to ensure that all of the UA additions work as they should
 function UAstartupCode() {
 	//Sorcerer (Favored Soul): add all cleric domain spells to the options of the first level ability "Chosen of the Gods"

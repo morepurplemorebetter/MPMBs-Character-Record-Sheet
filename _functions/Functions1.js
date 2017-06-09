@@ -7210,8 +7210,8 @@ function WeightToCalc_Button() {
 	tDoc.calculate = false;
 
 	//The dialog for setting what things are added to the total weight carried on page 2
+	var explTxt = "Note that you can change the weight of the armor, shield, weapons, and ammunition on the 1st page and the magic items on the 3rd page by using the 'Modifier' that appear when you press the \"Mods\" button or the \"Modifiers\" bookmark.\nFor the ammunition, only the number listed under \"total\" is counted as that already includes the unchecked ammo icons.";
 	var WeightToCalc_Dialog = {
-		AddMiddleC : true,
 		UseEnc : true,
 
 		//when starting the dialog
@@ -7229,12 +7229,11 @@ function WeightToCalc_Button() {
 				"cP3L" : What("Weight Remember Page3 Left") !== "No",
 				"cP3R" : What("Weight Remember Page3 Right") !== "No",
 				"cMaI" : What("Weight Remember Magic Items") !== "No",
-				"text" : "Note that you can change the weight of the armor, shield, weapons, and ammunition on the 1st page and the magic items on the 3rd page by using the \"bluetext fields\" that appear when you press the \"Mods\" button.\nFor the ammunition, only the number listed under \"total\" is counted as that already includes the unchecked ammo icons.",
 				"rEnc" : this.UseEnc,
 				"rCar" : !this.UseEnc
 			});
 			
-			if (this.AddMiddleC) {
+			if (typePF) {
 				dialog.load({
 					"cP2M" : What("Weight Remember Page2 Middle") !== "No"
 				})
@@ -7256,7 +7255,7 @@ function WeightToCalc_Button() {
 			Value("Weight Remember Page3 Right", oResult["cP3R"] ? "Yes" : "No");
 			Value("Weight Remember Magic Items", oResult["cMaI"] ? "Yes" : "No");
 			this.UseEnc = oResult["rEnc"];
-			if (this.AddMiddleC) {
+			if (typePF) {
 				Value("Weight Remember Page2 Middle", oResult["cP2M"] ? "Yes" : "No");
 			}
 		},
@@ -7304,7 +7303,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tArm",
-									name : (this.AddMiddleC ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page."
+									name : (typePF ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page."
 								} ]
 							}, {
 								type : "view",
@@ -7319,7 +7318,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tShi",
-									name : (this.AddMiddleC ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page."
+									name : (typePF ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page."
 								} ]
 							}, {
 								type : "view",
@@ -7396,7 +7395,7 @@ function WeightToCalc_Button() {
 									item_id : "tP2L",
 									name : "\"Equipment\" section on the 2nd page."
 								} ]
-							}, {
+							}].concat(typePF ? [{
 								type : "view",
 								char_height : 2,
 								align_children : "align_row",
@@ -7411,7 +7410,7 @@ function WeightToCalc_Button() {
 									item_id : "tP2M",
 									name : "\"Equipment\" section on the 2nd page."
 								} ]
-							}, {
+							}] : []).concat([{
 								type : "view",
 								char_height : 2,
 								align_children : "align_row",
@@ -7471,14 +7470,15 @@ function WeightToCalc_Button() {
 									item_id : "tMaI",
 									name : "\"Magic Items\" section on the 3rd page."
 								} ]
-							} ]
+							} ])
 						} ]
 					}, {
 						type : "static_text",
 						item_id : "text",
 						alignment : "align_fill",
 						font : "dialog",
-						char_height : 9,
+						wrap_name : true,
+						name : explTxt,
 						char_width : 45
 					}, {
 						type : "cluster",
@@ -7513,11 +7513,6 @@ function WeightToCalc_Button() {
 	var isEnc = tDoc.getField("Weight Carrying Capacity.Field").display === display.hidden;
 	WeightToCalc_Dialog.UseEnc = isEnc;
 	
-	if (!typePF) {
-		WeightToCalc_Dialog.AddMiddleC = false;
-		//remove the option about the middle column on the second page
-		WeightToCalc_Dialog.description.elements[0].elements[0].elements[1].elements[0].elements.splice(7, 1);
-	}
 	app.execDialog(WeightToCalc_Dialog);
 	
 	if (WeightToCalc_Dialog.UseEnc !== isEnc) {

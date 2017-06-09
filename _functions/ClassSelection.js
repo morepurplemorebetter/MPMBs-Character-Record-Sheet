@@ -20,7 +20,7 @@ function SelectClass() {
 		return;
 	};
 	if (CurrentSources.firstTime) OpeningStatement();
-	var theChar = What("PC Name") ? What("PC Name") : "Your character";
+	var theChar = What("PC Name") ? What("PC Name") : "Your Character";
 	var hasUAranger = false;
 	var ClassFld = What("Class and Levels");
 	//make an object for each class' list of subclasses
@@ -47,8 +47,8 @@ function SelectClass() {
 			});
 			clCount--;
 		};
-		
-		setDialogName(ClassSelection_Dialog, "rngr", "char_height", hasUAranger ? 3 : -1);
+		setDialogName(ClassSelection_Dialog, "rngr", "wrap_name", hasUAranger ? true : false);
+		setDialogName(ClassSelection_Dialog, "rngr", "name", hasUAranger ? dialogTxt.rngr : "");
 	};
 	//add the classes to the dialog
 	var loadKnownClassesToDialog = function() {
@@ -70,7 +70,8 @@ function SelectClass() {
 		ClassSelection_Dialog.currentLevel = Number(What("Character Level"));
 		ClassSelection_Dialog.LVLchange = ClassSelection_Dialog.currentLevel - ClassSelection_Dialog.finalLevel;
 		if (!ClassSelection_Dialog.LVLchange) {
-			setDialogName(ClassSelection_Dialog, "lvlu", "char_height", -1);
+			setDialogName(ClassSelection_Dialog, "lvlu", "wrap_name", false);
+			setDialogName(ClassSelection_Dialog, "lvlu", "name", "");
 		};
 		//have something to compare the classes.known against for filling in the other variables
 		var selecCompare = ClassSelection_Dialog.curSelec.reduce(function(acc, val) { return acc.concat(val[1]); }, []);
@@ -110,6 +111,13 @@ function SelectClass() {
 			};
 		};
 	};
+	var dialogTxt = {
+		dsc1 : "When you select a class or a subclass in the drop-down boxes in this dialogue, the text field in the same line will update accordingly, and vice versa.\nThe drop-down boxes will only update once you click/tab outside of the text field.",
+		dsc2 : "Although the sheet knows of only one way to set the text field from the drop-down boxes, it understands very many different textual inputs. You can test this by typing something in the text field and see what the sheet recognizes it as. For example, if you enter 'War Priest' it will be recognized as a 'Cleric (War Domain)', and when you enter 'Exalted Knight of Obedience' it will be recognized as 'Paladin (Oath of Devotion)'.",
+		lvlu : theChar + "'s level has increased by 1, to a total of 1. Please change the level of one or more classes accordingly, or add a new class.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level).",
+		note : "* This first row has to be used and is considered the class taken at 1st level, i.e. the class that grants all its proficiencies.",
+		rngr : "IMPORTANT: As you have included the source 'Unearthed Arcana: The Ranger, Revised', the UA Ranger will be used when you select a Ranger. If you want to make a PHB Ranger, you will first have to exclude the Revised Ranger or its source (UA:RR). You can do so with the button below.",
+	};
 	var ClassSelection_Dialog = {
 		finalText : "",
 		finalLevel : 0,
@@ -121,12 +129,8 @@ function SelectClass() {
 		initialize : function (dialog) {
 			var toLoad = {
 				img1 : allIcons.classes,
-				dsc1 : "When you select a class or a subclass in the drop-down boxes in this dialogue, the text field in the same line will update accordingly, and vice versa.\nThe drop-down boxes will only update once you click/tab outside of the text field.",
-				dsc2 : "Although the sheet knows of only one way to set the text field from the drop-down boxes, it understands very many different textual inputs. You can test this by typing something in the text field and see what the sheet recognizes it as. For example, if you enter 'War Priest' it will be recognized as a 'Cleric (War Domain)', and when you enter 'Exalted Knight of Obedience' it will be recognized as 'Paladin (Oath of Devotion)'.",
-				lvlu : theChar + "'s level has increased by " + this.LVLchange + ", for a total of " + this.currentLevel + ". Please change the level of one or more classes accordingly, or add a new class in its entirety.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level).",
-				note : "* This first row has to be used and is considered the class you took at 1st level, i.e. the class that grants all its proficiencies.",
-				rngr : "IMPORTANT: As you have included the source 'Unearthed Arcana: The Ranger, Revised', the UA Ranger will be used when you select a Ranger. If you want to make a PHB Ranger, you will first have to exclude the Revised Ranger or its source (UA:RR). You can do so with the button below.",
 				full : this.finalText,
+				lvlu : this.LVLchange ? theChar + "'s level has increased by " + ClassSelection_Dialog.LVLchange + ", to a total of " + ClassSelection_Dialog.currentLevel + ". Please change the level of one or more classes accordingly, or add a new class.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level)." : "",
 				tLVL : this.finalLevel.toString(),
 				nLVL : "\u03B4-level: " + (this.currentLevel - this.finalLevel),
 				DeLi : this.delimiter,
@@ -321,9 +325,9 @@ function SelectClass() {
 						alignment : "align_fill",
 						font : "title",
 						bold : true,
-						height : 21,
+						height : 23,
 						char_width : 80,
-						name : "Select the class(es) for your character"
+						name : "Select the class(es) for " + theChar
 					}]
 				}, {
 					type : "static_text",
@@ -331,21 +335,25 @@ function SelectClass() {
 					alignment : "align_fill",
 					font : "dialog",
 					bold : true,
-					char_height : 3,
+					name : dialogTxt.lvlu,
+					wrap_name : true,
+					char_height : -1,
 					char_width : 80
 				}, {
 					type : "static_text",
 					item_id : "dsc1",
 					alignment : "align_fill",
 					font : "dialog",
-					char_height : 3,
+					name : dialogTxt.dsc1,
+					wrap_name : true,
 					char_width : 80
 				}, {
 					type : "static_text",
 					item_id : "dsc2",
 					alignment : "align_fill",
 					font : "palette",
-					char_height : 4,
+					name : dialogTxt.dsc2,
+					wrap_name : true,
 					char_width : 80
 				}, {
 					type : "cluster", //the cluster that contains all the rows
@@ -409,7 +417,8 @@ function SelectClass() {
 								item_id : "r0TX",
 								type : "edit_text",
 								height : 23,
-								char_width : 25
+								char_width : 25,
+								truncate : "truncate_end"
 							}]
 						}, {
 							type : "view",
@@ -805,11 +814,12 @@ function SelectClass() {
 						elements : [{
 							item_id : "note",
 							type : "static_text",
-							alignment : "align_fill",
+							alignment : "align_bottom",
 							font : "dialog",
 							bold : true,
-							height : 20,
-							char_width : 58
+							name : dialogTxt.note,
+							wrap_name : true,
+							char_width : 69
 						}, {
 							item_id : "bAdR",
 							type : "button",
@@ -871,7 +881,8 @@ function SelectClass() {
 								font : "dialog",
 								bold : true,
 								height : 25,
-								char_width : 55
+								char_width : 55,
+								truncate : "truncate_end"
 							}]
 						}]
 					}, {
@@ -895,7 +906,9 @@ function SelectClass() {
 					alignment : "align_fill",
 					font : "palette",
 					bold : true,
-					char_height : 2,
+					name : dialogTxt.rngr,
+					wrap_name : true,
+					char_height : -1,
 					char_width : 80
 				}, {
 					type : "view", // the bottom row of buttons
@@ -928,6 +941,7 @@ function SelectClass() {
 	setClassesToDialog();
 	loadKnownClassesToDialog();
 	setNumberOfLinesInDialog();
+	
 	
 	do {
 		var dia = app.execDialog(ClassSelection_Dialog);
@@ -1332,7 +1346,7 @@ function PleaseSubclass(theclass) {
 				item_id : "Su" + ("0" + i).slice(-2),
 				name : theName
 			}
-			if (i < 4 || (i + 1) <= Math.ceil((aclassArray.length) / 2)) {
+			if ((i + 1) <= Math.ceil((aclassArray.length) / 2)) {
 				SubclassArrayLeft.push(temp);
 			} else {
 				SubclassArrayRight.push(temp);
@@ -1346,11 +1360,8 @@ function PleaseSubclass(theclass) {
 
 			//when starting the dialog
 			initialize : function (dialog) {
-				dialog.load({
-					"tex0" : theString,
-					"tex1" : asteriskString,
-					"tex2" : moreString,
-					"clu1" : clusterString
+ 				dialog.load({
+					img1 : allIcons.classes
 				});
 			},
 
@@ -1378,29 +1389,42 @@ function PleaseSubclass(theclass) {
 					elements : [{
 						type : "view",
 						elements : [{
-							type : "static_text",
-							name : aclass.name + " has no detectable " + aclass.subclasses[0],
-							item_id : "head",
-							alignment : "align_top",
-							font : "heading",
-							bold : true,
-							height : 21,
-							width : 500
+							type : "view",
+							align_children : "align_row",
+							elements : [{
+								type : "image",
+								item_id : "img1",
+								alignment : "align_bottom",
+								width : 20,
+								height : 20
+							}, {
+								type : "static_text",
+								item_id : "titl",
+								alignment : "align_fill",
+								font : "title",
+								bold : true,
+								height : 23,
+								width : 470,
+								name : aclass.name + " has no detectable " + aclass.subclasses[0]
+							}]
 						}, {
 							type : "static_text",
 							item_id : "tex0",
 							alignment : "align_fill",
 							font : "dialog",
-							height : 45,
+							name : theString,
+							wrap_name : true,
 							width : 500
 						}, {
 							type : "cluster",
 							item_id : "clu1",
+							name : clusterString,
 							font : "dialog",
 							bold : true,
 							elements : [{
 								type : "view",
-								align_children : "align_top",
+								align_children : "align_distribute",
+								alignment : "align_center",
 								elements : [{
 										type : "view",
 										elements : SubclassArrayLeft
@@ -1416,15 +1440,18 @@ function PleaseSubclass(theclass) {
 								item_id : "tex1",
 								alignment : "align_fill",
 								font : "dialog",
-								height : !isAsterisk ? 0 : 18 * Math.ceil(asteriskString.length / 80),
-								//width : 450
+								name : asteriskString,
+								wrap_name : true,
+								char_height : -1,
+								width : 480
 							}]
 						}, {
 							type : "static_text",
 							item_id : "tex2",
 							alignment : "align_fill",
 							font : "dialog",
-							height : 18 + (18 * Math.ceil(moreString.length / 80)),
+							name : moreString,
+							wrap_name : true,
 							width : 500
 						}]
 					}, {
@@ -1436,6 +1463,10 @@ function PleaseSubclass(theclass) {
 			}
 		};
 
+		if (!isAsterisk) {
+			setDialogName(SubclassSelect_Dialog, "tex1", "wrap_name", false);
+		};
+		
 		var theDialog = app.execDialog(SubclassSelect_Dialog);
 		if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
 			var selection = aclassObj[aclassArray[SubclassSelect_Dialog.result]];

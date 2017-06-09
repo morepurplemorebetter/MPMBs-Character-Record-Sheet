@@ -350,21 +350,21 @@ function FormatHD() {
 
 //format the date (format)
 function FormatDay() {
-	var dateForm = What("DateFormat_Remember");
-	var dateInputForm = returnInputForm(dateForm);
-	var dateInputFormLong = dateInputForm.replace(/y+/, "year").replace(/d+/, "day").replace(/m+/, "month");
-	var dateValue = util.scand(dateInputForm, event.value);
-	if (dateValue == null) {
-		app.alert({
-			cMsg : "Please enter a valid date of the form \"" + dateInputFormLong + "\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" button above.",
-			cTitle : "Invalid date format",
-			nIcon : 1
-		});
-		event.value = "";
-	} else if (event.value === "") {
-		event.value = "";
-	} else {
-		event.value = util.printd(dateForm, dateValue);
+	var isDate = util.scand('yy-mm-dd', event.value);
+	event.value = event.value && isDate ? util.printd(What("DateFormat_Remember"), isDate) : "";
+};
+
+//make sure the date is entered in the correct format (keystroke)
+function KeystrokeDay() {
+	if (event.willCommit && event.value) {
+		var isDate = util.scand('yy-mm-dd', event.value);
+		if (!isDate) {
+			app.alert({
+				cMsg : "Please enter a valid date of the form \"Year-Month-Day\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" button above.",
+				cTitle : "Invalid date format",
+				nIcon : 1
+			});
+		}
 	}
 };
 

@@ -939,6 +939,7 @@ function DirectImport(consoleTrigger) {
 		}
 		
 	//do the adventure logsheet pages
+		if (FromVersion < 12.994 && FromVersion >= 11.5) {global.docFrom.UpdateALdateFormat("yy-mm-dd"); };
 		doChildren("AdvLog.1", "", "", /^(?!.*start).*$/i); //the starting values
 		prefixA = pagesLayout && pagesLayout.ALlogExtras ? [pagesLayout.ALlogExtraNmFrom, pagesLayout.ALlogExtraNmTo] : [[""], [""]];
 		for (var i = 0; i < prefixA[0].length; i++) {

@@ -4016,46 +4016,19 @@ function ShowCalcBoxesLines(input) {
 	}
 }
 
-// give the default inputform
-function returnInputForm(displayForm, asArray) {
-	var theReturn = "dd/mm/yyyy";
-	if (displayForm.substr(0,1) === "m") {
-		theReturn = "mm/dd/yyyy";
-	} else if (displayForm.substr(0,1) === "y") {
-		theReturn = "yyyy/mm/dd";
-	}
-	if (asArray) theReturn = theReturn.split("/");
-	return theReturn;
-}
-
 //chane the format of all the date fields of the AL log page, and change the month-day order if appropriate
 function UpdateALdateFormat(dateForm) {	
 	dateForm = dateForm ? dateForm : What("DateFormat_Remember");
-	var oldDateForm = What("DateFormat_Remember");
-	var oldDateInputFormA = returnInputForm(oldDateForm, true);
 	Value("DateFormat_Remember", dateForm);
-	var dateInputForm = returnInputForm(dateForm);
-	var dateInputFormA = dateInputForm.split("/");
-	var dateInputFormLong = dateInputForm.replace(/y+/, "year").replace(/d+/, "day").replace(/m+/, "month");
-	var changeOrder = dateForm.substr(0,1) !== oldDateForm.substr(0,1); // see if the month and day order should be changed or not
-	
 	var ALlogA = What("Template.extras.ALlog").split(",");
 	for (var tA = 0; tA < ALlogA.length; tA++) {
 		var prefix = ALlogA[tA];
 		for (var i = 1; i < FieldNumbers.logs; i++) {
 			var dateFld = prefix + "AdvLog." + i + ".date";
-			var dateFldValue = What(dateFld);
-			if (dateFldValue && changeOrder && dateFldValue.match(/\d+/g).length === 3) {
-				dateFldValue = dateFldValue.match(/\d+/g);
-				dateFldValue = dateFldValue[oldDateInputFormA.indexOf(dateInputFormA[0])] + "/" + dateFldValue[oldDateInputFormA.indexOf(dateInputFormA[1])] + "/" + dateFldValue[oldDateInputFormA.indexOf(dateInputFormA[2])];
-			}
-			if (dateFldValue && util.scand(dateInputForm, dateFldValue)) {
-				Value(dateFld, dateFldValue);
-			}
-			AddTooltip(dateFld, "Write the date of the session or event here, using the format \"" + dateInputFormLong + "\".\n\nYou can change this format using the \"Logsheet Options\" button above.");
-		}
-	}
-}
+			Value(dateFld, What(dateFld));
+		};
+	};
+};
 
 //return the value of the field that this notes field (field calculation)
 function CalcCompNotes() {
@@ -4893,8 +4866,7 @@ function addALlogEnrry() {
 	Value(baseFld + "magicItems.gain", (total >= 0 ? "+" : "") + total);
 	
 	// set today's date
-	var dateInputForm = returnInputForm(What("DateFormat_Remember"));
-	Value(baseFld + "date", util.printd(dateInputForm, new Date()));
+	Value(baseFld + "date", util.printd('yy-mm-dd', new Date()));
 	
 	// set the other fields, if a previous entry was detected
 	if (emptyLog[2] !== "stop") {

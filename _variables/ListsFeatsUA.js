@@ -759,8 +759,8 @@ FeatsList["wood elf magic"] = {
 		atwill : true
 	}, {
 		name : "Once per long rest",
-		spells : ["levitate"],
-		selection : ["levitate"],
+		spells : ["longstrider"],
+		selection : ["longstrider"],
 		oncelr : true
 	}, {
 		name : "Once per long rest",
