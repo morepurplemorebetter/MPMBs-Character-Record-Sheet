@@ -330,31 +330,26 @@ function RemoveAction(actiontype, action) {
 
 function AddResistance(Input, tooltiptext, replaceThis) {
 	var useful = 0;
-	var tooltipString = Input;
-	if (isNaN(Input) && !(/\(.+\)/).test(Input)) {
-		for (var key in DamageTypes) {
-			if (Input.toLowerCase().indexOf(key) !== -1) {
-				useful = DamageTypes[key].index;
-				tooltipString = key.capitalize();
-				break;
-			}
-		}
+	var tooltipString = clean(Input, false, true);
+	if (DamageTypes[tooltipString.toLowerCase()]) {
+		useful = DamageTypes[tooltipString.toLowerCase()].index;
 	};
 	var tempString = tooltiptext ? "The resistance to \"" + tooltipString + "\" was gained from " + tooltiptext + "." : "";
 	var doReplace = false;
+	var testRegex = useful ? false : MakeRegex(tooltipString);
 	for (var n = 1; n <= 2; n++) {
 		for (var k = 1; k < 7; k++) {
 			var next = tDoc.getField("Resistance Damage Type " + k);
-			if (n === 1 && ((useful && next.currentValueIndices === useful) || (!useful && next.value.toLowerCase().indexOf(Input.toLowerCase()) !== -1))) {
+			if (n === 1 && ((useful && next.currentValueIndices === useful) || (!useful && (testRegex).test(next.value)))) {
 				k = 7;
 				n = 3;
 			} else if (n === 1 && replaceThis && next.value.toLowerCase().indexOf(replaceThis.toLowerCase()) !== -1) {
-				doReplace = true;
-			} else if (n === 2 && ((doReplace && next.value.toLowerCase().indexOf(replaceThis.toLowerCase()) !== -1) || (!doReplace && clean(next.value) === ""))) {
+				doReplace = k;
+			} else if (n === 2 && (doReplace === k || (!doReplace && clean(next.value) === ""))) {
 				if (useful) {
 					next.currentValueIndices = useful;
 				} else {
-					next.value = Input;
+					next.value = tooltipString;
 				}
 				if (!doReplace) next.userName = tempString;
 				k = 7;
@@ -364,22 +359,13 @@ function AddResistance(Input, tooltiptext, replaceThis) {
 };
 
 function RemoveResistance(Input) {
-	var useful = Input;
-	var temp = false;
-	if (isNaN(Input) && !(/\(.+\)/).test(Input)) {
-		useful = Input.toLowerCase();
-		for (var key in DamageTypes) {
-			if (!temp && useful.indexOf(key) !== -1) {
-				useful = DamageTypes[key].index;
-				temp = true;
-			}
-		}
-	};
-	for (var k = 1; k < 7; k++) {
-		var ResFld = tDoc.getField("Resistance Damage Type " + k);
-		if ((temp && ResFld.currentValueIndices === useful) || ResFld.value === useful) {
+	var useStr = clean(Input, false, true);
+	var useReg = MakeRegex(useStr);
+	for (var k = 1; k <= 6; k++) {
+		var ResFld = What("Resistance Damage Type " + k);
+		if ((useReg).test(ResFld) && similarLen(ResFld, useStr)) {
 			DeleteItemType("Resistance Damage Type ", k, 6);
-			k = 7;
+			break;
 		}
 	}
 };
@@ -3442,12 +3428,7 @@ function AddInvBackgroundItems() {
 	if (CurrentBackground.equipright) addEquip(CurrentBackground.equipright, "r");
 };
 
-function AddInvArmorShield() {
-	//see if two strings don't differ too much in length
-	var similarLen = function (str1, str2) {
-		return Math.abs(str1.length - str2.length) < 5 || Math.abs(str1.length, str2.length) / Math.max(str1.length, str2.length) < 0.2;
-	};
-	
+function AddInvArmorShield() {	
 	//add the armour
 	var theArm = What("AC Armor Description");
 	var theArmWght = What("AC Armor Weight");
@@ -3487,11 +3468,6 @@ function AddInvWeaponsAmmo() {
 			});
 		};
 		return isSpecial;
-	};
-	
-	//see if two strings don't differ too much in length
-	var similarLen = function (str1, str2) {
-		return Math.abs(str1.length - str2.length) < 5 || Math.abs(str1.length, str2.length) / Math.max(str1.length, str2.length) < 0.2;
 	};
 	
 	//make an array of the weapons to add; only those with weight and not alternative attack entries

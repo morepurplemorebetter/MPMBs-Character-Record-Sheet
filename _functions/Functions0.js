@@ -954,3 +954,8 @@ function SetDisAdv() {
 	var Adv = (/Adv$/).test(event.target.name);
 	this.getField(event.target.name.replace(Adv ? "Adv" : "Dis", Adv ? "Dis" : "Adv")).value = "Off";
 };
+
+//see if two strings don't differ too much in length
+function similarLen(str1, str2) {
+	return Math.abs(str1.length - str2.length) < 5 || Math.abs(str1.length, str2.length) / Math.max(str1.length, str2.length) < 0.2;
+};
