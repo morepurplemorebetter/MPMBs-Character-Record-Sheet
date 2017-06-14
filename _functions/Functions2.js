@@ -5386,6 +5386,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
 	if (IsNotReset) tDoc.calculateNow();
+	if (QI && (fldName === event.target.name || Number(fldNmbr) === FieldNumbers.attacks)) SetOffHandAction();
 };
 
 //calculate the attack damage and to hit, can be called from any of the attack fields (sets the fields)
@@ -5419,6 +5420,7 @@ function CalcAttackDmgHit(fldName) {
 	if (!WeaponText || (/^(| |empty)$/).test(fields.Mod)) {
 		Value(fldBase + "Damage", "");
 		Value(fldBase + "To Hit", "");
+		if (QI) CurrentWeapons.offHands[ArrayNmbr] = false;
 		return;
 	};
 	
@@ -5443,11 +5445,9 @@ function CalcAttackDmgHit(fldName) {
 		var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 
 		// see if this is a off-hand attack and the modToDmg shouldn't be use
-		var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText) ? true : false;
-		if (isOffHand) {
-			AddAction("bonus action", "Off-hand Attack");
-			output.modToDmg = false;
-		};
+		var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText);
+		CurrentWeapons.offHands[ArrayNmbr] = isOffHand;
+		if (isOffHand) output.modToDmg = output.mod < 0;
 
 		//add the BlueText field value of the corresponding spellcasting class
 		if (thisWeapon[3] && thisWeapon[4].length) {
@@ -5534,6 +5534,12 @@ function CalcAttackDmgHit(fldName) {
 	} else {
 		Value(fldBase + "To Hit", fields.Range === "With melee wea" ? "" : hitTot);
 	};
+};
+
+//see if the bonus action for Off-hand attack is needed or not
+function SetOffHandAction() {
+	var areOffHands = CurrentWeapons.offHands.some( function(n) { return n});
+	tDoc[(areOffHands ? "Add" : "Remove") + "Action"]("bonus action", "Off-hand Attack");
 };
 
 //a way to show a very long piece of text without the dialogue overflowing the screen

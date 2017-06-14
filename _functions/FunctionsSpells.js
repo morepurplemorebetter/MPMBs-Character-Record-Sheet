@@ -2861,9 +2861,9 @@ function AskUserSpellSheet() {
 		classesArray.push(aCast);
 		
 		//put some general things in variables
-		if (spCast.level && spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) {
+		if (spCast.level && spCast.factor && (tDoc[spCast.factor[1] + "SpellTable"] || spCast.spellsTable)) {
 			var CasterLevel = Math.ceil(spCast.level / Math.max(1, spCast.factor[0]));
-			var theTable = spCast.spellsTable ? spCast.spellsTable : tDoc[spCast.factor[1] + "SpellTable"];
+			var theTable = spCast.spellsTable ? spCast.spellsTable : spCast.factor[1] === "warlock" ? defaultSpellTable : tDoc[spCast.factor[1] + "SpellTable"];
 			var tableLevel = Math.min(theTable.length - 1, CasterLevel);
 			var maxSpell = theTable[tableLevel].indexOf(0);
 			maxSpell = Number(maxSpell === -1 ? 9 : maxSpell);
@@ -2913,7 +2913,7 @@ function AskUserSpellSheet() {
 					SpellLevel = defaultSpellTable[spCast.level].indexOf(0);
 					SpellLevel = Number(SpellLevel === -1 ? 9 : SpellLevel);
 				};
-				setDialogName(SpellSheetSelect_Dialog, "SpR1", "name", "Spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " of level " + SpellLevel + (SpellLevel > 1 ? " or lower" : "")) ;
+				setDialogName(SpellSheetSelect_Dialog, "SpR1", "name", spellLevelList[SpellLevel] + (SpellLevel > 1 ? " and lower" : "") + " spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known"));
 				setDialogName(SpellSheetSelect_Dialog, "SpR2", "name", "All spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " regardless of level");
 				dia.selectSpRadio = spCast.typeList ? spCast.typeList : 1;
 			};
@@ -3347,9 +3347,9 @@ function GenerateSpellSheet(GoOn) {
 		if (spCast.level && spCast.typeList !== 2 && spCast.typeList !== 4) {
 			if (spCast.maxSpell && CurrentCasters.incl[i] !== "warlock") {
 				maxLvl = spCast.maxSpell;
-			} else if (spCast.factor && tDoc[spCast.factor[1] + "SpellTable"]) {
+			} else if (spCast.factor && (tDoc[spCast.factor[1] + "SpellTable"] || spCast.spellsTable)) {
 				var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
-				var theTable = spCast.spellsTable ? spCast.spellsTable : spCast.factor[1] === "warlock" && CurrentCasters.incl[i] === "warlock" ? defaultSpellTable : tDoc[spCast.factor[1] + "SpellTable"];
+				var theTable = spCast.spellsTable ? spCast.spellsTable : spCast.factor[1] === "warlock" ? defaultSpellTable : tDoc[spCast.factor[1] + "SpellTable"];
 				var tableLevel = Math.min(theTable.length - 1, CasterLevel);
 				var maxSpell = theTable[tableLevel].indexOf(0);
 				maxLvl = Number(maxSpell === -1 ? 9 : maxSpell);
@@ -3482,8 +3482,6 @@ function RemoveSpellSheets() {
 //make menu for the spell options button
 //after that, do something with the menu and its results
 function MakeSpellMenu_SpellOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
 	
 	//make a list of all the spell sources
 	var SpellSourcesArray = [];
@@ -3644,6 +3642,8 @@ function MakeSpellMenu_SpellOptions() {
 	
 	//and do something with this menus results
 	if (MenuSelection !== undefined) {
+		tDoc.delay = true;
+		tDoc.calculate = false;
 		switch (MenuSelection[0]) {
 		 case "generate" :
 			GenerateSpellSheet();
@@ -3722,13 +3722,12 @@ function MakeSpellMenu_SpellOptions() {
 		 case "spellpoints" :
 			ToggleSpellPoints();
 			break;
-		}
-	}
-	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
-}
+		};
+		tDoc.calculate = IsNotReset;
+		tDoc.delay = !IsNotReset;
+		if (IsNotReset) tDoc.calculateNow();
+	};
+};
 
 //a function that takes an array of spells and orders it by level (and alphabet)
 //outputFormat defines whether to return an Array of Arrays ("multi"), or just one array "single";
@@ -4759,27 +4758,28 @@ function CheckForSpellUpdate() {
 		for (var theCaster in CurrentSpells) {
 			if (classes.known[theCaster]) {
 				var aCast = CurrentSpells[theCaster];
-				var lvlOld = classes.old[theCaster] && classes.old[theCaster].classlevel ? classes.old[theCaster].classlevel - 1 : 0;
+				var newClass = !classes.old[theCaster];
+				var lvlOld = newClass ? 0 : classes.old[theCaster].classlevel - 1;
 				var lvlNew = classes.known[theCaster].level - 1;
 				if (aCast.known && (!aCast.typeList || aCast.typeList !== 4)) {
 					// see if there is a cantrips array in the known section and the amount of known
 					if (isArray(aCast.known.cantrips)) {
 						var oldCaLvl = Math.min(aCast.known.cantrips.length - 1, lvlOld);
 						var newCaLvl = Math.min(aCast.known.cantrips.length - 1, lvlNew);
-						askUserUpdateSS = aCast.known.cantrips[oldCaLvl] !== aCast.known.cantrips[newCaLvl];
+						askUserUpdateSS = (newClass && aCast.known.cantrips[newCaLvl]) || (aCast.known.cantrips[oldCaLvl] !== aCast.known.cantrips[newCaLvl]);
 					}
 					// see if there is a spells array in the known section and the amount of known
 					if (!askUserUpdateSS && isArray(aCast.known.spells)) {
 						var oldSpLvl = Math.min(aCast.known.spells.length - 1, lvlOld);
 						var newSpLvl = Math.min(aCast.known.spells.length - 1, lvlNew);
-						askUserUpdateSS = aCast.known.spells[oldSpLvl] !== aCast.known.spells[newSpLvl];
+						askUserUpdateSS = (newClass && aCast.known.spells[newSpLvl]) || (aCast.known.spells[oldSpLvl] !== aCast.known.spells[newSpLvl]);
 					} else if (!askUserUpdateSS && aCast.typeSp && (aCast.typeSp === "book" || (aCast.typeSp === "list" && aCast.typeList !== 2))) {
 						// if this is a list/book and the caster just got access to a new spell slot level
-						var theTable = aCast.spellsTable ? aCast.spellsTable : aCast.factor && aCast.factor[0] ? tDoc[aCast.factor[1] + "SpellTable"] : false;
+						var theTable = aCast.spellsTable ? aCast.spellsTable : aCast.factor && aCast.factor[0] ? (spCast.factor[1] === "warlock" ? defaultSpellTable : tDoc[aCast.factor[1] + "SpellTable"]) : false;
 						if (theTable) {
 							var oldTableLvl = Math.min(theTable.length - 1, lvlOld + 1);
 							var newTableLvl = Math.min(theTable.length - 1, lvlNew + 1);
-							askUserUpdateSS = theTable[oldTableLvl].indexOf(0) !== theTable[newTableLvl].indexOf(0);
+							askUserUpdateSS = (newClass && aCast.known.spells[newSpLvl]) || (theTable[oldTableLvl].indexOf(0) !== theTable[newTableLvl].indexOf(0));
 						};
 					}
 				}
@@ -4790,7 +4790,7 @@ function CheckForSpellUpdate() {
 						if (aBonus.times && isArray(aBonus.times)) {
 							var oldBoLvl = Math.min(aBonus.times.length - 1, lvlOld);
 							var newBoLvl = Math.min(aBonus.times.length - 1, lvlNew);
-							askUserUpdateSS = aBonus.times[oldBoLvl] !== aBonus.times[newBoLvl];
+							askUserUpdateSS = (newClass && aBonus.times[newBoLvl]) || (aBonus.times[oldBoLvl] !== aBonus.times[newBoLvl]);
 						}
 						if (askUserUpdateSS) break;
 					}
@@ -4807,6 +4807,10 @@ function CheckForSpellUpdate() {
 //call a dialogue to see if the user wants to update the spell sheets
 function AskForSpellUpdate() {
 	if (eval(What("SpellSheetUpdate.Remember"))) return;
+	//update the sheet so that users don't think that their previous class/race changes have not been committed
+	tDoc.calculate = true;
+	tDoc.delay = false;
+	tDoc.calculateNow();
 	var askPopUp = {
 		cMsg : "A change has been detected in the spellcasting abilities of your character that require the Spell Sheet(s) to be updated.\n\nWould you like to generate a (new) Spell Sheet?",
 		cTitle : "Would you like to generate a new Spell Sheet?",
@@ -4820,8 +4824,12 @@ function AskForSpellUpdate() {
 	};
 	var rAskPopUp = app.alert(askPopUp);
 	Value("SpellSheetUpdate.Remember", askPopUp.oCheckbox.bAfterValue);
-	if (rAskPopUp === 4) GenerateSpellSheet();
-}
+	if (rAskPopUp === 4) {
+		tDoc.calculate = false;
+		tDoc.delay = true;
+		GenerateSpellSheet();
+	};
+};
 
 // make all lines on the newly generated empty sheet
 function AddSpellSheetTextLines(prefix, boxes, maxLine) {

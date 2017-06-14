@@ -216,6 +216,7 @@ var CurrentWeapons = {
 	manualproficiencies : [],
 	compField : {},
 	compKnown : {},
+	offHands : []
 };
 
 var CurrentBackground = {};

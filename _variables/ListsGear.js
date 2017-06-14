@@ -2583,7 +2583,7 @@ var GearList = {
 	},
 	"waterskin" : {
 		infoname : "Waterskin [2 sp]",
-		name : "Waterskin (full)",
+		name : "Waterskin",
 		amount : "",
 		weight : 5
 	},

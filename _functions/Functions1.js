@@ -2832,7 +2832,7 @@ function FindWeapons(ArrayNmbr) {
 		
 		//put tempArray in known
 		CurrentWeapons.known[j] = tempArray[j];
-	}
+	};
 };
 
 //update the weapons to apply the change in proficiencies
@@ -2843,8 +2843,8 @@ function ReCalcWeapons(justProfs) {
 	for (var xy = 0; xy < CurrentWeapons.known.length; xy++) {
 		if (CurrentWeapons.field[xy]) {
 			ApplyWeapon(CurrentWeapons.field[xy], "Attack." + (xy + 1) + ".Weapon Selection", true, justProfs);
-		}
-	}
+		};
+	};
 	IsNotReset = true;
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
@@ -3735,7 +3735,7 @@ function InventoryLineOptions() {
 		Value(Fields[1], theGear.amount);
 		Value(Fields[2], theGear.weight);
 		break;
-	};	
+	};
 	
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
@@ -6286,62 +6286,47 @@ function PrintTheSheet() {
 	tDoc.print(GoPrint);
 };
 
-//make sure the right fields are shown
-function CorrectWronglyVisible() {
-	var Toggle = What("League Remember");
-	var VisibleHidden = Toggle === "Off" ? "Show" : "Hide";
-	var HiddenVisible = Toggle === "Off" ? "Hide" : "Show";
-	tDoc[VisibleHidden]("Class and Levels.0");
-	tDoc[HiddenVisible]("Class and Levels.1");
-	tDoc[VisibleHidden]("Background_Organisation.0");
-	tDoc[HiddenVisible]("Background_Organisation.1");
-	
-}
-
 //Hide (true) or show (false) all the different form fields in the entire sheet
-function HideShowEverything(toggle) {	
-	var exceptionList = [
-		"Spell save DC Whiteout",
-		"SheetInformation",
-		"SpellSheetInformation",
-		"CopyrightInformation",
-		"DCI.Title",
-		"Background_Faction.Title",
-		"Background_FactionRank.Title",
-		"Background_Renown.Title",
-		"Attuned Magic Items Whiteout",
-		"Attuned Magic Items Title",
-		"Weight Encumbered Text",
-		"Weight Heavily Encumbered Text",
-		"Weight Push/Drag/Lift Text",
-		"Adventuring Gear Location.Title",
-		"Adventuring Gear Location.Line",
-		"Extra.Gear Location.Title",
-		"Extra.Gear Location.Line",
-		"Medium Armor Max Mod"
-	]
-	if (toggle) {
+function HideShowEverything(toggle) {
+	if (toggle) {		
 		//first undo the visibility of the blue-text fields, if visible
 		if (What("BlueTextRemember") === "Yes") ToggleBlueText("Yes");
 		
-		var tempArray = [];
+		thermoM("start"); //start a progress dialog
+		thermoM("Hiding all the fields..."); //change the progress dialog text
+		if (FieldsRemember.length) HideShowEverything(false);
+		
+		var exceptionRegex = /(Sheet|Copyright)Information|(Whiteout|Title|^(?!Too).* Text)$|(Whiteout|Image|Text|Line|Display)\.|Circle|Location\.Line|Medium Armor Max Mod|Comp\.Type|Ammo(Right|Left)\.Icon|spellshead\.Box/;
 		for (var F = 0; F < tDoc.numFields; F++) {
+			thermoM(F/tDoc.numFields); //increment the progress dialog's progress
 			var Fname = tDoc.getNthFieldName(F);
 			var Ffield = tDoc.getField(Fname);
-			if (exceptionList.indexOf(Fname) === -1 && Fname.indexOf("Whiteout.") === -1 && Fname.indexOf("Display.") === -1 && Fname.indexOf("Image.") === -1 && Fname.indexOf("Text.") === -1 && Fname.indexOf("Line.") === -1 && Fname.indexOf("AmmoLeft.Icon") === -1 && Fname.indexOf("AmmoRight.Icon") === -1 && Fname.indexOf("Comp.Type") === -1 && Fname.indexOf("Circle") === -1 && Fname.indexOf("spellshead.Box") === -1) {
-				tempArray.push([Fname, Ffield.display]);
-				Hide(Fname);
-			}
-		}
-		FieldsRemember = tempArray;
+			if (!(exceptionRegex).test(Fname) && Ffield.display !== 1) {
+				if (Ffield.page.length) {
+					for (var i = 0; i < Ffield.page.length; i++) {
+						var Fnamei = Fname + "." + i;
+						var Ffieldi = tDoc.getField(Fnamei);
+						FieldsRemember.push([Fnamei, Ffieldi.display]);
+						Ffieldi.display = 1
+					};
+				} else {
+					FieldsRemember.push([Fname, Ffield.display]);
+					Ffield.display = 1;
+				};
+			};
+		};
+		thermoM("stop"); //stop the top progress dialog
 	} else if (!toggle) {
+		thermoM("start"); //start a progress dialog
+		thermoM("Restoring the visiblity of all the fields..."); //change the progress dialog text
 		for (var H = 0; H < FieldsRemember.length; H++) {
+			thermoM(H/FieldsRemember.length); //increment the progress dialog's progress
 			tDoc.getField(FieldsRemember[H][0]).display = FieldsRemember[H][1];
-		}
+		};
 		FieldsRemember = [];
-		CorrectWronglyVisible();
-	}
-}
+		thermoM("stop"); //stop the top progress dialog
+	};
+};
 
 //calculate the AC (field calculation)
 function CalcAC() {
