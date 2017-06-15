@@ -1054,8 +1054,9 @@ var SpellSheetSelect_Dialog = {
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
-						height : 60,
-						char_width : 39
+						char_width : 39,
+						wrap_name : true,
+						name :  "Please set the spells/cantrips you want to have on the Spell Sheet.\nNote that some things might not be available in this dialog, because what you are editing has no access to it.\nYou can always use ENTER to confirm or ESC to cancel this dialogue."
 					}, {
  						type : "view",
 						align_children : "align_left",
@@ -1091,7 +1092,8 @@ var SpellSheetSelect_Dialog = {
 								item_id : "txC2",
 								alignment : "align_top",
 								char_width : 28,
-								height : 60
+								wrap_name : true,
+								name :  "Cantrips known:\nSpells known:\nof Spell Level:\nExtra:"
 							}]
 						}]
 					}, {
@@ -1726,7 +1728,6 @@ var SpellSheetOrder_Dialog = {
 			"img1" : allIcons.spells,
 			"ExcL" : ExcObj,
 			"IncL" : {},
-			"txt0" : "Please select which of your spellcasting sources you want to include in the Spell Sheet and in which order they should appear.\n\nNote that generating a new Spell Sheet deletes any current Spell Sheet(s) in this pdf.\n\nPlease be patient, generating a Spell Sheet can take a long time, often more than ten minutes, and sometimes up to an hour (yes, even on your new gaming rig). During this time Adobe Acrobat will appear unresponsive (but will still be working).",
 			"Glos" : this.glossary
 		});
 		
@@ -1949,8 +1950,9 @@ var SpellSheetOrder_Dialog = {
 			}, {
 				type : "static_text",
 				item_id : "txt0",
-				char_height : 10,
-				width : 680
+				wrap_name : true,
+				width : 680,
+				name : "Please select which of your spellcasting sources you want to include in the Spell Sheet and in which order they should appear.\n\nNote that generating a new Spell Sheet deletes any current Spell Sheet(s) in this pdf.\n\nPlease be patient, generating a Spell Sheet can take a long time, often more than ten minutes, and sometimes up to an hour (yes, even on your new gaming rig). During this time Adobe Acrobat will appear unresponsive (but will still be working)."
 			}, {
 				type : "check_box",
 				item_id : "Glos",
@@ -4279,8 +4281,9 @@ function AskUserTwoLetters(caption) {
 					type : "static_text",
 					alignment : "align_fill",
 					item_id : "txt0",
-					char_height : 8,
-					char_width : 30
+					wrap_name : true,
+					char_width : 30,
+					name : "Please type the two characters you want to have as the caption for the first column.\n\nAlternatively, you can type a single character between brackets, e.g. '(R)', or two numbers with a hyphen."
 				}, {
 					type : "edit_text",
 					alignment : "align_center",
@@ -4321,7 +4324,7 @@ function AskUserNumber(caption) {
 					alignment : "align_fill",
 					font : "heading",
 					bold : true,
-					height : 21,
+					wrap_name : true,
 					char_width : 30,
 					name : caption ? caption : "Amount of empty rows to insert"
 				}, {
@@ -4775,7 +4778,7 @@ function CheckForSpellUpdate() {
 						askUserUpdateSS = (newClass && aCast.known.spells[newSpLvl]) || (aCast.known.spells[oldSpLvl] !== aCast.known.spells[newSpLvl]);
 					} else if (!askUserUpdateSS && aCast.typeSp && (aCast.typeSp === "book" || (aCast.typeSp === "list" && aCast.typeList !== 2))) {
 						// if this is a list/book and the caster just got access to a new spell slot level
-						var theTable = aCast.spellsTable ? aCast.spellsTable : aCast.factor && aCast.factor[0] ? (spCast.factor[1] === "warlock" ? defaultSpellTable : tDoc[aCast.factor[1] + "SpellTable"]) : false;
+						var theTable = aCast.spellsTable ? aCast.spellsTable : aCast.factor && aCast.factor[0] ? (aCast.factor[1] === "warlock" ? defaultSpellTable : tDoc[aCast.factor[1] + "SpellTable"]) : false;
 						if (theTable) {
 							var oldTableLvl = Math.min(theTable.length - 1, lvlOld + 1);
 							var newTableLvl = Math.min(theTable.length - 1, lvlNew + 1);

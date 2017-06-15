@@ -2308,37 +2308,33 @@ function CalcExperienceLevel(AlsoClass) {
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	var LVLbyXP = ExperiencePointsList.reduce(function(acc, val) { return acc += exp >= Number(val) ? 1 : 0; }, 0);
-	var XPforLVL = !Level ? 0 : ExperiencePointsList[Math.min(ExperiencePointsList.length - 1, Level) - 1];
+	var XPforLVL = !Level ? 0 : ExperiencePointsList[Math.min(ExperiencePointsList.length - 1, Level)];
 	var LVLtxt = Level >= ExperiencePointsList.length ? "a level higher than 20" : "level " + Level;
 	var XPtxt = !exp ? "no" : "only " + exp;
 
-	var StringHigherLvl = "This character has " + XPtxt + " experience points. This is not enough to attain the level that has been entered (" + Level + "). You need at least " + XPforLVL + " experience points for " + LVLtxt + ". You can upgrade the experience points, downgrade the level, or leave it as it is.\n\nBy pressing 'Upgrade XP' you change the experience points total to " + XPforLVL + ".\n\nBy pressing 'Downgrade level' you change the character level to level " + LVLbyXP + ".\n\nBy pressing 'Cancel' neither happens.";
+	var StringHigherLvl = "This character has " + XPtxt + " experience points. This is not enough to attain the level that has been entered (" + Level + "). You need at least " + XPforLVL + " experience points for " + LVLtxt + ".\n\nYou can upgrade the experience points to " + XPforLVL + ", downgrade the level to " + LVLbyXP + ", or leave it as it is.";
 
-	var StringHigherXP = "This character is level " + Level + ", but already has " + exp + " experience points. This amount is enough to attain level " + LVLbyXP + ". You can upgrade the level, downgrade the experience points, or leave it as it is.\n\nBy pressing 'Upgrade level' you change the character level to level " + LVLbyXP + ".\n\nBy pressing 'Downgrade XP' you change the experience points total to " + XPforLVL + ".\n\nBy pressing 'Cancel' neither happens.";
+	var StringHigherXP = "This character is level " + Level + ", but already has " + exp + " experience points. This amount is enough to attain level " + LVLbyXP + ".\n\nYou can upgrade the level to " + LVLbyXP + ", downgrade the experience points to " + XPforLVL + ", or leave it as it is.";
 
 	if (Level > LVLbyXP) {
 		var theText = StringHigherLvl;
 		var okReturn = "xp";
 		var otherReturn = "lvl";
-		var okButton = "Upgrade XP";
-		var otherButton = "Downgrade level";
+		var okButton = "Upgrade XP to " + XPforLVL;
+		var otherButton = "Downgrade level to " + LVLbyXP;
 	} else if (Level < LVLbyXP) {
 		var theText = StringHigherXP;
 		var okReturn = "lvl";
 		var otherReturn = "xp";
-		var okButton = "Upgrade level";
-		var otherButton = "Downgrade XP";
+		var okButton = "Upgrade level to " + LVLbyXP;
+		var otherButton = "Downgrade XP to " + XPforLVL;
 	};
 
 	var Experience_Dialog = {
 		result : false,
 
 		//when starting the dialog
-		initialize : function (dialog) {
-			dialog.load({
-				"text" : theText
-			});
-		},
+		initialize : function (dialog) { },
 
 		//when pressing the ok button
 		commit : function (dialog) {
@@ -2369,8 +2365,9 @@ function CalcExperienceLevel(AlsoClass) {
 					item_id : "text",
 					alignment : "align_fill",
 					font : "dialog",
-					height : 165,
-					char_width : 45
+					char_width : 45,
+					wrap_name : true,
+					name : theText
 				}, {
 					type : "ok_cancel_other",
 					ok_name : okButton,
@@ -9903,9 +9900,11 @@ function CalcCarriedLocation() {
 function AddUserScript() {
 	var theUserScripts = What("User Script").match(/(.|\r){1,65500}/g);
 	if (!theUserScripts) theUserScripts = [];
-	var defaultTxt = toUni("The JavaScript") + " you put into the field below will be run immediately and whenever the sheet is opened, using eval().\nIf the script results in an error you will be informed immediately and the script will not be added to the sheet or saved.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet, when you click \"Add Script to Sheet\".\n" + toUni("Resetting the sheet is recommended") + " before you have enter custom content into it (or use a fresh one).\n\n" + toUni("Be warned") + ", things you do here can break the sheet! You can " + toUni("ask MorePurpleMoreBetter for help") + " using the contact bookmarks.\n\n";
+	var defaultTxt = toUni("The JavaScript") + " you put into the field below will be run immediately and whenever the sheet is opened, using eval().\nIf the script results in an error you will be informed immediately and the script will not be added to the sheet or saved.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet, when you click \"Add Script to Sheet\".\n" + toUni("Resetting the sheet is recommended") + " before you have enter custom content into it (or use a fresh one).";
+	var defaultTxt2 = toUni("Be warned") + ", things you do here can break the sheet! You can " + toUni("ask MorePurpleMoreBetter for help") + " using the contact bookmarks.";
 	var extraTxt = toUni("A character limit of 65642") + " applies to the area below. You can add longer scripts by using the \"Open Another Dialogue\" button. That way you get more dialogues like this one. When you press \"Add Script to Sheet\", the code of all dialogues will be joined together (with no characters put inbetween!), is then run/tested and added to the sheet as a whole.\n" + toUni("An error will result in all content being lost") + ", so please save it somewhere else before exiting this dialogue!";
-	var getTxt = toUni("Using the proper syntax") + ", you can add homebrew materials for classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has more information and links to this syntax, or you can use the \"Syntax\" buttons above.\n\n" + toUni("Pre-Written Scripts") + " can be found using the \"Extras\" buttons above. These include 3rd-party materials such as the 'Remastered: Way of the Four Elements', DMs Guild creations by Matt Mercer (Blood Hunter, Gunslinger, College of the Maestro), Michael Wolf (Shaman), and more...\n\n" + toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JS Console\" button).";
+	var getTxt = toUni("Using the proper syntax") + ", you can add homebrew materials for classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has more information and links to this syntax, or you can use the \"Syntax\" buttons above.";
+	var getTxt2 = toUni("Pre-Written Scripts") + " can be found using the \"Extras\" buttons above. These include 3rd-party materials such as the 'Remastered: Way of the Four Elements', DMs Guild creations by Matt Mercer (Blood Hunter, Gunslinger, College of the Maestro), Michael Wolf (Shaman), and more...\n\n" + toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JS Console\" button).";
 	var diaIteration = 1;
 	
 	var tries = 0;
@@ -9928,18 +9927,13 @@ function AddUserScript() {
 			initScripts : theUserScripts,
 			iteration : diaIteration,
 			diaMax : diaMax,
-			getTxt : getTxt,
-			defaultTxt : defaultTxt,
-			extraTxt : extraTxt,
 			script: theUserScripts.length >= diaIteration ? theUserScripts[diaIteration - 1] : "",
 
 			initialize: function(dialog) {
 				dialog.load({
 					"img1" : allIcons.import,
 					"jscr": this.script,
-					"head": "Add custom JavaScript that is run on startup (dialogue " + this.iteration + "/" + this.diaMax + ")",
-					"txt0": this.iteration === 1 ? this.defaultTxt + this.extraTxt : this.extraTxt,
-					"txt1": this.getTxt
+					"head": "Add custom JavaScript that is run on startup (dialogue " + this.iteration + "/" + this.diaMax + ")"
 				});
 				dialog.enable({
 					bPre : this.iteration > 1
@@ -10009,11 +10003,30 @@ function AddUserScript() {
 							}]
 						}, {
 							type : "static_text",
-							item_id : "txt0",
+							item_id : "txtD",
 							alignment : "align_fill",
 							font : "dialog",
-							char_height : diaIteration === 1 ? 17 : 6,
-							width : 750
+							wrap_name : diaIteration === 1,
+							char_height : -1,
+							width : 750,
+							name : defaultTxt
+						}, {
+							type : "static_text",
+							item_id : "txtB",
+							alignment : "align_fill",
+							font : "dialog",
+							wrap_name : diaIteration === 1,
+							char_height : -1,
+							width : 750,
+							name : defaultTxt2
+						}, {
+							type : "static_text",
+							item_id : "txtE",
+							alignment : "align_fill",
+							font : "dialog",
+							wrap_name : true,
+							width : 750,
+							name : extraTxt
 						}, {
 							type : "view",
 							align_children : "align_distribute",
@@ -10057,11 +10070,20 @@ function AddUserScript() {
 							}]
 						}, {
 							type : "static_text",
-							item_id : "txt1",
+							item_id : "txtG",
 							alignment : "align_fill",
 							font : "dialog",
-							char_height : 11,
-							width : 750
+							wrap_name : true,
+							width : 750,
+							name : getTxt
+						}, {
+							type : "static_text",
+							item_id : "txtT",
+							alignment : "align_fill",
+							font : "dialog",
+							wrap_name : true,
+							width : 750,
+							name : getTxt2
 						}, {
 							type : "edit_text",
 							item_id : "jscr",
