@@ -21,7 +21,7 @@
 
 ClassSubList["ancient dragon"] = {
 	regExpSearch : /^(?=.*warlock)((?=.*dragon)|(?=.*ancient)(?=.*dragon)).*$/i,
-	subname : "ancient dragon",
+	subname : "the Ancient Dragon",
 	source : ["HB", 0],
 	spellcastingExtra : ["command", "shield", "locate object", "see invisibility", "elemental weapon", "protection from energy", "compulsion", "fire shield", "dominate person", "hallow"],
 	features : {
@@ -161,4 +161,4 @@ ClassSubList["ancient dragon"] = {
 		}	
 	}
 };
-ClassList.warlock.subclasses[1].push("inner darkness");
+ClassList.warlock.subclasses[1].push("ancient dragon");
