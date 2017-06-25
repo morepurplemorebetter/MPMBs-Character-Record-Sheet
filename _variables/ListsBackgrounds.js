@@ -977,7 +977,7 @@ var BackgroundList = {
 		],
 		equipright : [
 			["Traveler's clothes", "", 4],
-			["Piece of jewelry worth 5 gp", "", ""],
+			["Piece of jewelry worth 10 gp", "", ""],
 			["Belt pouch (with coins)", "", 1]
 		],
 		feature : "All Eyes on You",
@@ -2572,7 +2572,7 @@ var BackgroundSubList = {
 		gold : 20,
 		equipleft : [
 			["Scroll of pedigree", "", ""],
-			["Skin of fine zzar or wine", "", 5]
+			["Skin of fine zzar or wine", "", 5] // weight based on waterskin
 		],
 		equipright : [
 			["Fine clothes", "", 6],

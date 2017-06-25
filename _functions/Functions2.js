@@ -1758,15 +1758,13 @@ function changeCompType(inputType, prefix) {
 function changeCompDialog(prefix) {
 	if (!IsNotImport) return;
 	//The dialog for setting the pages to print
+	var theTxt = "A familiar or mount's type changes from beast to either celestial, fey, or fiend. Please select one.";
 	var theDialog = {
 		//variables to be set by the calling function
 		bType : "Celestial",
 
 		//when starting the dialog
 		initialize : function (dialog) {
-			dialog.load({
-				"txt0" : "A familiar or mount's type changes from beast to either celestial, fey, or fiend. Please select one."
-			});
 		},
 		
 		//when pressing the ok button
@@ -1797,10 +1795,11 @@ function changeCompDialog(prefix) {
 				}, {
 					type : "static_text",
 					item_id : "txt0",
+					wrap_name : true,
 					alignment : "align_fill",
 					font : "dialog",
-					char_height : 3,
-					char_width : 30
+					char_width : 30,
+					name : theTxt
 				}, {
 					type : "cluster",
 					align_children : "align_distribute",
@@ -5085,12 +5084,12 @@ function PatreonStatement() {
 			var oButIcon = this.getField("SaveIMG.Patreon").buttonGetIcon();
 			var oMyIcon = util.iconStreamFromIcon(oButIcon);	
 			
+			var theTxt = "If you like this sheet, please consider becoming a patron at the Patreon for MPMB's Character Record Sheet.\n\nWith your contribution on Patreon:\n   \u2022 I can add all Unearthed Arcana material right after it has been released.\n   \u2022 You get to choose which new features get added.\n   \u2022 Your favourite third-party material gets added.\n   \u2022 You get instant access and alerts when new versions are released.";
+			var theTxt2 = "Don't worry, the sheet will stay as 'Pay What You Want' on DMs Guild.\nHowever, if you feel like contributing more, it will all flow back into expanding the sheets' features and content.\n\nYou can always visit the Patreon webpage using the bottom \"Contact MPMB\" bookmarks.";
 			var PatreonDialog = {
 				initialize : function (dialog) {
 					dialog.load({
-						"img1" : oMyIcon,
-						"txt1" : "If you like this sheet, please consider becoming a patron at the Patreon for MPMB's Character Record Sheet.\n\nWith your contribution on Patreon:\n   \u2022 I can add all Unearthed Arcana material right after it has been released.\n   \u2022 You get to choose which new features get added.\n   \u2022 Your favourite third-party material gets added.\n   \u2022 You get instant access and alerts when new versions are released.",
-						"txt2" : "Don't worry, the sheet will stay as 'Pay What You Want' on DMs Guild.\nHowever, if you feel like contributing more, it will all flow back into expanding the sheets' features and content.\n\nYou can always visit the Patreon webpage using the bottom \"Contact MPMB\" bookmarks."
+						"img1" : oMyIcon
 					});
 				},
 				bPat : function (dialog) {contactMPMB("patreon");},
@@ -5123,8 +5122,9 @@ function PatreonStatement() {
 									item_id : "txt1",
 									alignment : "align_fill",
 									font : "dialog",
+									wrap_name : true,
 									char_height : 13,
-									char_width : 40
+									name : theTxt
 								}, {
 									type : "button",
 									font : "heading",
@@ -5137,8 +5137,9 @@ function PatreonStatement() {
 									item_id : "txt2",
 									alignment : "align_fill",
 									font : "dialog",
+									wrap_name : true,
 									char_height : 10,
-									char_width : 40
+									name : theTxt2
 								}]
 							}]
 						}, {
@@ -5569,13 +5570,9 @@ function ShowDialog(hdr, strng) {
 		};
 	}
 	var ShowString_dialog = {
-		header : hdr,
-		string : strng,
 		initialize : function(dialog) {
 			dialog.load({
-				"txt0" : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]",
-				"head" : this.header,
-				"Eval" : this.string.replace(/^\n/, "").replace(/^\n/, "")
+				"Eval" : strng.replace(/^\n/, "").replace(/^\n/, "")
 			});
 		},
 		description : {
@@ -5590,16 +5587,18 @@ function ShowDialog(hdr, strng) {
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
+						wrap_name : true,
 						height : 20,
-						width : 550
+						name : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]"
 					}, {
 						type : "static_text",
 						item_id : "head",
 						alignment : "align_fill",
 						font : "heading",
 						bold : true,
-						height : 21,
-						width : 550
+						wrap_name : true,
+						width : 550,
+						name : hdr
 					}, {
 						type : "edit_text",
 						item_id : "Eval",
@@ -5695,9 +5694,9 @@ function SetThisFldVal() {
 						type : "static_text",
 						alignment : "align_fill",
 						item_id : "txt0",
+						wrap_name : true,
 						name : "Please enter the value you want to set for the field:",
-						char_width : 35,
-						height : 20
+						char_width : 35
 					}, {
 						type : "edit_text",
 						alignment : "align_center",
@@ -5708,9 +5707,9 @@ function SetThisFldVal() {
 						type : "static_text",
 						alignment : "align_fill",
 						item_id : "txt1",
+						wrap_name : true,
 						name : "The field won't appear to change until you click/tab out of it.",
-						char_width : 35,
-						height : 20
+						char_width : 35
 					}, {
 						type : "ok_cancel"
 					}]

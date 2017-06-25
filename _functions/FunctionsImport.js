@@ -33,25 +33,14 @@ function AddFolderJavaScript(justConsole) {
 	var locWin = "C:\\Program Files (x86)\\Adobe\\Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + "\\" + (isType === "Reader" ? "Reader" : "Acrobat") + "\\Javascripts\\";
 	var locMac = "/Applications/Adobe Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + ".app/Contents/Resources/JavaScripts/";
 
-	var startTxt = justConsole ? "In order to import user-defined icons, you will have to manually add a JavaScript file to your Adobe Acrobat installation. This is necessary, because of Adobe Acrobat's security protocol. You will have to do this only once to get this function working." : "In order to use the 'Direct Import' functionality, you will need to do something to appease Adobe Acrobat's security settings. You have two options:\nOption 1 is that you add a JavaScript file to your installation. After you've done this, you will never see this dialogue again.\nOption 2 is that you run the code from console, but you will have to do this every time if you want to use this function.";
-
+	var Text0 = justConsole ? "In order to import user-defined icons, you will have to manually add a JavaScript file to your Adobe Acrobat installation. This is necessary, because of Adobe Acrobat's security protocol. You will have to do this only once to get this function working." : "In order to use the 'Direct Import' functionality, you will need to do something to appease Adobe Acrobat's security settings. You have two options:\nOption 1 is that you add a JavaScript file to your installation. After you've done this, you will never see this dialogue again.\nOption 2 is that you run the code from console, but you will have to do this every time if you want to use this function.";
+	var Text1 = "Do the following steps:\n   1)  Use the button below to save the file somewhere (don't change the filename).\n   2)  Rename the file so that its extension is \".js\" (can't be done while saving).\n   3)  Move the file to the right location mentioned below (can't be saved there directly).\n   4)  Restart Adobe Acrobat and try the 'Direct Import' function again.";
+	var Text2 = "The directory where you have to put this file depends on your version of Adobe Acrobat and your operating system. The path shown here is an estimated guess for your installation. It is possible that this folder doesn't exist yet, or that it is hidden.\n" + toUni("Note that you can't save the file directly to this location!");
+	var Text3 = "Open the console (a.k.a. \"JavaScript Debugger\") and run the code that is printed there. Running the code is done by selecting the line it is on and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + " (or the numpad Enter).";
+	var LocJS = isWindows ? locWin : locMac;
+	
 	var AddJS_dialog = {
-		Text0 : startTxt,
-		TextLoc : textLoc,
-		LocJS : isWindows ? locWin : locMac,
-		Text1 : "Do the following steps:\n   1)  Use the button below to save the file somewhere (don't change the filename).\n   2)  Rename the file so that its extension is \".js\" (can't be done while saving).\n   3)  Move the file to the right location mentioned below (can't be saved there directly).\n   4)  Restart Adobe Acrobat and try the 'Direct Import' function again.",
-		Text2 : "The directory where you have to put this file depends on your version of Adobe Acrobat and your operating system. The path shown here is an estimated guess for your installation. It is possible that this folder doesn't exist yet, or that it is hidden.\n" + toUni("Note that you can't save the file directly to this location!"),
-		Text3 : "Open the console (a.k.a. \"JavaScript Debugger\") and run the code that is printed there. Running the code is done by selecting the line it is on and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + " (or the numpad Enter).",
-
 		initialize : function(dialog) {
-			dialog.load({
-				"txt0": this.Text0,
-				"txt1": this.Text1,
-				"txt2": this.Text2,
-				"txt3": this.Text3,
-				"txtJ": this.TextLoc,
-				"locJ": this.LocJS
-			});
 		},
 		bADD : function(dialog) {
 			tDoc.exportDataObject({ cName: "MPMB-IF Remove '.txt' from the end.js.txt", nLaunch: 0});
@@ -81,8 +70,9 @@ function AddFolderJavaScript(justConsole) {
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
-						char_height : justConsole ? 5 : 9,
-						width : 530
+						wrap_name : true,
+						width : 530,
+						name : Text0
 					}, {
 						type : "view",
 						item_id : "viJ1",
@@ -103,8 +93,9 @@ function AddFolderJavaScript(justConsole) {
 								alignment : "align_fill",
 								font : "dialog",
 								bold : true,
-								char_height : 8,
-								width : 500
+								wrap_name : true,
+								width : 500,
+								name : Text1
 							}, {
 								type : "button",
 								item_id : "bADD",
@@ -125,19 +116,22 @@ function AddFolderJavaScript(justConsole) {
 									font : "dialog",
 									bold : true,
 									width : 500,
+									name : textLoc,
 									elements : [{
 										type : "edit_text",
 										item_id : "locJ",
 										alignment : "align_fill",
 										font : "dialog",
-										width : 470
+										width : 470,
+										name : LocJS
 									}, {
 										type : "static_text",
 										item_id : "txt2",
 										alignment : "align_fill",
 										font : "dialog",
-										char_height : 7,
-										width : 470
+										wrap_name : true,
+										width : 470,
+										name : Text2
 									}, ]
 								}, ]
 							}, ]
@@ -163,8 +157,9 @@ function AddFolderJavaScript(justConsole) {
 								type : "static_text",
 								item_id : "txt3",
 								alignment : "align_fill",
-								char_height : 3,
-								width : 500
+								wrap_name : true,
+								width : 500,
+								name : Text3
 							}, {
 								type : "button",
 								item_id : "bCON",
@@ -199,10 +194,11 @@ function AddFolderJavaScript(justConsole) {
 
 //the dialogue for the DirectImport function that ask for the path to a file to import from
 function DirectImport_Dialogue() {
+	var Text0 = "This 'Direct Import' function opens another MPMB's Character Record Sheet and goes through every field and layout setting in it to make this sheet similar to the other. This can take a long time and will not copy everything literally as this sheet will run through its automation to benefit from any updates to its code compared to the other sheet.\n\nIn order to do this, you will need to give the full path to a local file you want to import from.\nYou can use the 'Lookup' button to get the path."
+	var Text01 = "Alternatively, place the sheet you want to import from in the same folder as this sheet, give the file name of the sheet you want to import from (including file extension), and check the box to use a relative path.";
+	var Text1 = "If you continue with importing, the current sheet will first be reset without notice!";
+	var TextIcons = (app.viewerType === "Reader" ? "Because of limitations in Adobe Acrobat Reader, this function is not available." : "'User-defined icons\' refers to those images that have been set for the symbol, portrait, companion(s) appearance, etc. that have been added from another file.") + "\n\nIcons that have been selected from the sheet built-in options will be imported regardless (faction symbols, Adventure League season icons, class icons).";
 	var DirectImport_dialog = {
-		Text0 : "This 'Direct Import' function opens another MPMB's Character Record Sheet and goes through every field and layout setting in it to make this sheet similar to the other. This can take a long time and will not copy everything literally as this sheet will run through its automation to benefit from any updates to its code compared to the other sheet.\n\nIn order to do this, you will need to give the full path to a local file you want to import from.\nYou can use the 'Lookup' button to get the path.\n\nAlternatively, place the sheet you want to import from in the same folder as this sheet, give the file name of the sheet you want to import from (including file extension), and check the box to use a relative path.",
-		Text1 : "If you continue with importing, the current sheet will first be reset without notice!",
-		TextIcons : (app.viewerType === "Reader" ? "Because of limitations in Adobe Acrobat Reader, this function is not available." : "'User-defined icons\' refers to those images that have been set for the symbol, portrait, companion(s) appearance, etc. that have been added from another file.") + "\n\nIcons that have been selected from the sheet built-in options will be imported regardless (faction symbols, Adventure League season icons, class icons).",
 		fileLoc : "",
 		relPath : false,
 		importIcons : false,
@@ -211,9 +207,6 @@ function DirectImport_Dialogue() {
 			var isReader = app.viewerType === "Reader";
 			dialog.load({
 				"img1": allIcons.import,
-				"txt0": this.Text0,
-				"txt1": this.Text1,
-				"icTx": this.TextIcons,
 				"fLoc": this.fileLoc,
 				"icCl": "Import user-defined icons as well?" + (isReader ? " (Requires Acrobat Pro or Standard)" : ""),
 				"icNo": true
@@ -268,8 +261,17 @@ function DirectImport_Dialogue() {
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
-						char_height : 17,
-						width : 500
+						wrap_name : true,
+						width : 500,
+						name : Text0
+					}, {
+						type : "static_text",
+						item_id : "txtx",
+						alignment : "align_fill",
+						font : "dialog",
+						wrap_name : true,
+						width : 500,
+						name : Text01
 					}, {
 						type : "cluster",
 						item_id : "fTxt",
@@ -328,7 +330,8 @@ function DirectImport_Dialogue() {
 							alignment : "align_fill",
 							font : "palette",
 							width : 470,
-							char_height : 8
+							wrap_name : true,
+							name : TextIcons
 						}, ]
 					}, {
 						type : "static_text",
@@ -336,8 +339,9 @@ function DirectImport_Dialogue() {
 						alignment : "align_fill",
 						font : "dialog",
 						bold : true,
-						char_height : 2,
-						width : 500
+						wrap_name : true,
+						width : 500,
+						name : Text1
 					}, ]
 				}, {
 					type : "ok_cancel",
@@ -1681,21 +1685,14 @@ function MakeXFDFExport(partial) {
 		var toExport = tDoc.exportAsXFDFStr(theSettings);
 	
 		var explainTXT = "This is a work-around for Acrobat Reader. It requires a little bit more work, but otherwise you will have to get Acrobat Pro in order to do this more easily. You will be able to import the file you create into MPMB's Character Sheet version 10.2 or later.\nThe field below contains all the exported data in a XML format. All you have to do is copy this data and save it as an .xfdf file with UTF-8 encoding.";
-		if (app.platform === "WIN") {
-			explainTXT += " If you don't know how to do this, just follow the steps below:\n\nOn Windows:\n  1 - Open Notepad and copy the complete content of the field below into it;\n  2 - On the Notepad menu bar, select File -- Save;\n  3 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  4 - At Encoding, choose \"UTF-8\";\n  5 - Press Save."
-		} else if (app.platform === "MAC") {
-			explainTXT += " If you don't know how to do this, just follow the steps below:\n\nOn Mac:\n  1 - Open TextEdit and copy the complete content of the field below into it;\n  2 - On the TextEdit menu bar, select Format -- Make Plain Text;\n  3 - Then, on the TextEdit menu bar, select File -- Save As;\n  4 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  5 - At Plain Text Encoding, choose \"UTF-8\";\n  6 - Press Save."
-		}
+		var explainTXT2 = app.platform === "WIN" ? "If you don't know how to do this, just follow the steps below:\n\nOn Windows:\n  1 - Open Notepad and copy the complete content of the field below into it;\n  2 - On the Notepad menu bar, select File -- Save;\n  3 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  4 - At Encoding, choose \"UTF-8\";\n  5 - Press Save." : " If you don't know how to do this, just follow the steps below:\n\nOn Mac:\n  1 - Open TextEdit and copy the complete content of the field below into it;\n  2 - On the TextEdit menu bar, select Format -- Make Plain Text;\n  3 - Then, on the TextEdit menu bar, select File -- Save As;\n  4 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  5 - At Plain Text Encoding, choose \"UTF-8\";\n  6 - Press Save.";
 		
 		var DisplayExport_dialog = {
 			
 			initialize: function(dialog) {
 				dialog.load({
-					"expo": toExport,
-					"txt0": explainTXT
+					"expo": toExport
 				});
-			},
-			commit: function(dialog) { // called when OK pressed
 			},
 
 			description : {
@@ -1718,8 +1715,17 @@ function MakeXFDFExport(partial) {
 							item_id : "txt0",
 							alignment : "align_fill",
 							font : "dialog",
-							char_height : 20,
-							char_width : 55
+							wrap_name : true,
+							char_width : 55,
+							name : explainTXT
+						}, {
+							type : "static_text",
+							item_id : "txt1",
+							alignment : "align_fill",
+							font : "dialog",
+							wrap_name : true,
+							char_width : 55,
+							name : explainTXT2
 						}, {
 							type : "edit_text",
 							item_id : "expo",

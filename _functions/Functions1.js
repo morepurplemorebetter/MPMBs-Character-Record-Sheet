@@ -2835,6 +2835,7 @@ function FindWeapons(ArrayNmbr) {
 //update the weapons to apply the change in proficiencies
 var forceReCalcWeapons = false;
 function ReCalcWeapons(justProfs) {
+	var remIsNotReset = IsNotReset;
 	IsNotReset = false;
 	justProfs = justProfs && !forceReCalcWeapons && (!CurrentEvals.atkAdd || !(/level/i).test(CurrentEvals.atkAdd)) ? true : false;
 	for (var xy = 0; xy < CurrentWeapons.known.length; xy++) {
@@ -2842,7 +2843,7 @@ function ReCalcWeapons(justProfs) {
 			ApplyWeapon(CurrentWeapons.field[xy], "Attack." + (xy + 1) + ".Weapon Selection", true, justProfs);
 		};
 	};
-	IsNotReset = true;
+	IsNotReset = remIsNotReset;
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
 	forceReCalcWeapon = false;
@@ -5863,12 +5864,12 @@ function MakeClassMenu() {
 				continue;
 			};
 			if (testSource("", feaObjA)) continue;
-			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name : array[i].toLowerCase();
+			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name + (feaObjA.source && SourceList[feaObjA.source[0]] ? ", " + SourceList[feaObjA.source[0]].abbreviation : "") : array[i].toLowerCase();
 			var theTest = (extrareturn === "extra" ? toTestE : toTest).indexOf(testWith) !== -1;
 			var removeStop = extrareturn === "extra" ? (theTest ? "remove" : false) : (theTest ? "stop" : false);
 			var isEnabled = ignorePrereqs || theTest || !feaObjA.prereqeval ? true : eval(feaObjA.prereqeval);
 			temp.push({
-				cName : array[i],
+				cName : array[i] + (feaObjA.source && SourceList[feaObjA.source[0]] ? "\t   [" + SourceList[feaObjA.source[0]].abbreviation + (feaObjA.source[1] ? " " + feaObjA.source[1] : "") + "]" : ""),
 				cReturn : classNm + "#" + featureNm + "#" + array[i] + "#" + extrareturn + "#" + removeStop,
 				bMarked : theTest,
 				bEnabled : isEnabled
