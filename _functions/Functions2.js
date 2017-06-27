@@ -5108,6 +5108,7 @@ function PatreonStatement() {
 								height : 63
 							}, {
 								type : "view",
+								char_width : 40,
 								elements : [{
 									type : "static_text",
 									name : "Become a patron on Patreon",
@@ -5123,7 +5124,7 @@ function PatreonStatement() {
 									alignment : "align_fill",
 									font : "dialog",
 									wrap_name : true,
-									char_height : 13,
+									char_width : 40,
 									name : theTxt
 								}, {
 									type : "button",
@@ -5138,7 +5139,7 @@ function PatreonStatement() {
 									alignment : "align_fill",
 									font : "dialog",
 									wrap_name : true,
-									char_height : 10,
+									char_width : 40,
 									name : theTxt2
 								}]
 							}]
