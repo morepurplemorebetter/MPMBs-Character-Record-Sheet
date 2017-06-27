@@ -5257,33 +5257,21 @@ function HealItNow() {
 		var HD1 = Number(What("HD1 Used"));
 		var HD2 = Number(What("HD2 Used"));
 		var HD3 = Number(What("HD3 Used"));
-		var HDtotal = HD1 + HD2 + HD3;
-		var toHeal = Math.max(1, Math.floor(HDtotal / 2));
-
-		if (HD1 - toHeal === 0) {
-			Value("HD1 Used", "");
-		} else if (HD1 - toHeal > 0) {
-			Value("HD1 Used", HD1 - toHeal);
-		} else {
-			Value("HD1 Used", "");
+		var toHeal = Math.max(1, Math.floor((Number(What("HD1 Level")) + Number(What("HD2 Level")) + Number(What("HD3 Level"))) / 2));
+		
+		//now go through the HD and recover theMenu
+		if (toHeal > 0 && HD1) {
+			Value("HD1 Used", HD1 - toHeal <= 0 ? "" : Math.max(1, HD1 - toHeal));
 			toHeal -= HD1;
-			if (HD2 - toHeal === 0) {
-				Value("HD2 Used", "");
-			} else if (HD2 - toHeal > 0) {
-				Value("HD2 Used", HD2 - toHeal);
-			} else {
-				Value("HD2 Used", "");
-				toHeal -= HD2;
-				if (HD3 - toHeal === 0) {
-					Value("HD3 Used", "");
-				} else if (HD3 - toHeal > 0) {
-					Value("HD3 Used", HD2 - toHeal);
-				} else {
-					Value("HD3 Used", "");
-					toHeal -= HD2;
-				}
-			}
-		}
+		};
+		if (toHeal > 0 && HD2) {
+			Value("HD2 Used", HD2 - toHeal <= 0 ? "" : Math.max(1, HD2 - toHeal));
+			toHeal -= HD2;
+		};
+		if (toHeal > 0 && HD3) {
+			Value("HD3 Used", HD3 - toHeal <= 0 ? "" : Math.max(1, HD3 - toHeal));
+			toHeal -= HD3;
+		};
 	} else {
 		var toHeal = Math.max(1, Math.floor(What(prefix + "Comp.Use.HD.Level") / 2));
 		var HD1 = Number(What(prefix + "Comp.Use.HD.Used"));
@@ -5296,7 +5284,7 @@ function HealItNow() {
 	}
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
-}
+};
 
 function AddExperiencePoints() {	
 	if (What("Add Experience")) {

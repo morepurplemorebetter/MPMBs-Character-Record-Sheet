@@ -1099,7 +1099,7 @@ var ClassList = {
 		die : 8,
 		saves : ["Int", "Dex"],
 		skills : ["\n\n" + toUni("Rogue") + ": Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth.", "\n\n" + toUni("Multiclass Rogue") + ": Choose one from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth."],
-		tools : ["Thieves' tools"],
+		tools : ["Thieves' tools", "Thieves' tools"],
 		armor : [
 			[true, false, false, false],
 			[true, false, false, false]
