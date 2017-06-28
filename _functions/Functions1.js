@@ -389,13 +389,10 @@ function ToggleWhiteout(Toggle) {
 	var HiddenNoPrint = !Toggle ? "Hide" : "DontPrint";
 	
 	//add the fields for all the template pages into an array
-	var compTemps = What("Template.extras.AScomp").split(",");
-	var noteTemps = What("Template.extras.ASnotes").split(",");
-	noteTemps.splice(noteTemps.indexOf(""), 1);
-	var wildTemps = What("Template.extras.WSfront").split(",");
-	wildTemps.splice(wildTemps.indexOf(""), 1);
-	var logTemps = What("Template.extras.ALlog").split(",");
-	logTemps.splice(logTemps.indexOf(""), 1);
+	var compTemps = What("Template.extras.AScomp").split(",").splice(1);
+	var noteTemps = What("Template.extras.ASnotes").split(",").splice(1);
+	var wildTemps = What("Template.extras.WSfront").split(",").splice(1);
+	var logTemps = What("Template.extras.ALlog").split(",").splice(1);
 	var templateA = compTemps.concat(noteTemps).concat(wildTemps).concat(logTemps);
 
 	//show/hide the whiteout fields as per the array
@@ -460,25 +457,25 @@ function ResetAll(GoOn) {
 		for (var R in TemplateDep) {
 			if (R === "SSfront" || R === "SSmore" || (!typePF && R === "PRsheet")) continue; //don't do this for the spell sheets, they have their own function; also don't do it for the player reference sheet in not the Printer Friendly version, as it doesn't exist
 			//first see if the template is visible
-			var isTempVisible = tDoc.getField(BookMarkList[R]).page !== -1;
+			var isTempVisible = isTemplVis(R);
 			var tempExtras = What("Template.extras." + R);
 			
 			//if invisible, make it visible
 			if (!isTempVisible) {
-				if (R !== "ALlog" && R !== "WSfront" && R !== "ASoverflow") DoTemplate(R); //only show the page if it is not the adventurers logsheet page or the wild shapes page or the overflow page
+				if (R !== "ALlog" && R !== "WSfront" && R !== "ASoverflow") DoTemplate(R, "Add"); //only show the page if it is not the adventurers logsheet page or the wild shapes page or the overflow page
 			//if visible AND extra templates are an option, remove any extra templates
 			} else if (tempExtras) {
 				tempExtras = tempExtras.split(",");
 				if (tempExtras) {
 					for (var RtE = 1; RtE < tempExtras.length; RtE++) {
 						DoTemplate(R, "Remove");
-					}
-				}
-			}
+					};
+				};
+			};
 			if (isTempVisible && (R === "ALlog" || R === "WSfront" || R === "ASoverflow")) {
-				DoTemplate(R); //remove the adventurers logsheet page or wild shapes page or the overflow page
-			}
-		}
+				DoTemplate(R, "Remove"); //remove the adventurers logsheet page or wild shapes page or the overflow page
+			};
+		};
 		// now move the focus to the first page
 		tDoc.getField(BookMarkList["CSfront"]).setFocus();
 		tDoc.getField("All ST Bonus").setAction("Calculate", "var placeholder = 1;");
@@ -1061,87 +1058,6 @@ function ToggleBlueText(Toggle) {
 	};
 };
 
-// Toggle faction, faction ranks, renown, and DCI to visible (Off) or hidden (On)
-function ToggleAdventureLeague(Toggle, skipLogSheet) {
-	tDoc.delay = true;
-	tDoc.calculate = false;
-
-	//Undo the MakeMobileReady if it was active
-	if (What("MakeMobileReady Remember") !== "") {
-		MakeMobileReady(false);
-	}
-	
-	//Show the adventurers log, if not already visible
-	if (!skipLogSheet && Toggle === "Off" && tDoc.getField(BookMarkList["ALlog"]).page === -1) {
-		DoTemplate("ALlog");
-	}
-
-	var OnOff = Toggle === "Off" ? "On" : "Off";
-	var HiddenVisible = Toggle === "Off" ? "Hide" : "Show";	var VisibleHidden = Toggle === "Off" ? "Show" : "Hide";
-	var NoPrintHidden = Toggle === "Off" ? "DontPrint" : "Hide";
-	var HiddenNoPrint = Toggle === "Off" ? "Hide" : "DontPrint";
-	var isBackgrVisible = tDoc.getField(BookMarkList["ASbackgr"]).page !== -1
-	
-	if (!typePF) {
-		var FactionList = [
-			"Background_Organisation.1",
-			"Background_Faction.Title",
-			"Background_Faction.Text",
-			"Background_FactionRank.Title",
-			"Background_FactionRank.Text",
-			"Background_Renown.Title",
-			"Background_Renown.Text",
-			"Class and Levels.1",
-			"DCI.Text",
-			"DCI.Title"
-		];
-		if (isBackgrVisible) {
-			FactionList.push("Background_Organisation.3")
-			tDoc[HiddenVisible]("Background_Organisation.2");
-		}
-		
-		tDoc[HiddenVisible]("Background_Organisation.0");
-		tDoc[HiddenVisible]("Class and Levels.0");
-	
-		if (Toggle === "Off") {
-			RemoveAction("action", "Overrun / Tumble (or as bonus action)");
-			RemoveAction("action", "As 1 attack: Disarm / Grapple / Shove");
-			AddAction("action", "Grapple / Shove (instead of 1 attack)");
-		} else {
-			RemoveAction("action", "Grapple / Shove (instead of 1 attack)");
-			AddAction("action", "Overrun / Tumble (or as bonus action)");
-			AddAction("action", "As 1 attack: Disarm / Grapple / Shove");
-		}
-	} else {
-		var FactionList = [
-			"Background_FactionRank.Text",
-			"Image.Background_FactionRank",
-			"Background_Renown.Title",
-			"Background_Renown.Text",
-			"DCI.Text",
-			"DCI.Title",
-			"Text.PRsheet.AL"
-		];
-		
-		tDoc[HiddenVisible]("Background_Organisation.Right");
-	}
-
-	for (var i = 0; i < FactionList.length; i++) {
-		tDoc[VisibleHidden](FactionList[i]);
-	};
-	
-	Value("League Remember", OnOff);
-	
-	var theHP = tDoc.getField("HP Max").submitName.split(",");
-	theHP[3] = Toggle === "Off" ? "fixed" : "nothing";
-	tDoc.getField("HP Max").submitName = theHP.join();
-	if (OnOff === "On") SetHPTooltip();
-	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
-};
-
 //make a menu for the adventure league button/bookmark and put it in the global variable
 function MakeAdventureLeagueMenu() {	
 	var submenuItems = [
@@ -1150,7 +1066,7 @@ function MakeAdventureLeagueMenu() {
 		["Remove DMG actions from 1st page (not legal in AL play)", "actions", true], // 2
 		[typePF ? "Show space for Faction Rank on the Background page" : "Show space for Faction, Faction Rank, and Renown on the Background page", "factionrank", isDisplay("Background_FactionRank.Text") === display.visible], // 3
 		["-", "-", false], // 4
-		["Show Adventure Logsheet", "allog", tDoc.getField(BookMarkList["ALlog"]).page !== -1], // 5
+		["Show Adventure Logsheet(s)", "allog", isTemplVis("ALlog")], // 5
 		["-", "-", false], // 6
 		["Prepare the sheet for Adventurers League play (i.e. do all of the above)", "all#1", false], // 7
 		["Undo all of those marked above", "all#0", false], // 8
@@ -1228,7 +1144,7 @@ function AdventureLeagueOptions(MenuSelection) {
 // Set the visibility of the fields for faction, faction ranks, renown, and DCI
 function ToggleAdventureLeague(Setting) {
 	Setting = Setting ? Setting : {};
-	var isBackgrVisible = tDoc.getField(BookMarkList["ASbackgr"]).page !== -1
+	var isBackgrVisible = isTemplVis("ASbackgr");
 
 	//Undo the MakeMobileReady if it was active
 	if (What("MakeMobileReady Remember") !== "") {
@@ -1237,7 +1153,11 @@ function ToggleAdventureLeague(Setting) {
 	
 	//Show the adventurers log, if not already visible
 	if (Setting.allog !== undefined) {
-		DoTemplate("ALlog");
+		if (isTemplVis("ALlog")) {
+			DoTemplate("ALlog", "RemoveAll");
+		} else {
+			DoTemplate("ALlog", "Add");
+		};
 	};
 	
 	//Show the DCI field
@@ -3318,7 +3238,7 @@ function MakeInventoryMenu() {
 			var isMarked = array[i][1] === "attuned" ? What("Adventuring Gear Remember") === false :
 				array[i][1] === "location2" ? What("Gear Location Remember").split(",")[0] === "true" :
 				array[i][1] === "location3" ? What("Gear Location Remember").split(",")[1] === "true" : false;
-			var isEnabled = array[i][1] === "location3" ? tDoc.getField(BookMarkList["ASfront"]).page !== -1 : array[i][1].indexOf("background") !== -1 ? backgroundKn !== "Background" : true;
+			var isEnabled = array[i][1] === "location3" ? isTemplVis("ASfront") : array[i][1].indexOf("background") !== -1 ? backgroundKn !== "Background" : true;
 			item.push({
 				cName : array[i][0],
 				cReturn : array[i][1],
@@ -3601,7 +3521,7 @@ function MakeInventoryLineMenu() {
 			})
 			return;
 		};
-		var AScompA = What("Template.extras.AScomp").split(",");
+		var AScompA = What("Template.extras.AScomp").split(",").splice(1);
 		var prefix = type.substring(0, type.indexOf("Comp."));
 		if (type.indexOf("Comp.") !== -1) AScompA.splice(AScompA.indexOf(prefix), 1);
 		var temp = {
@@ -3609,11 +3529,10 @@ function MakeInventoryLineMenu() {
 			oSubMenu : []
 		};
 		for (var i = 0; i < AScompA.length; i++) {
-			if ((type.indexOf("Comp.") !== -1 && prefix === AScompA[i]) || (i === 0 && tDoc.getField(BookMarkList["AScomp"]).page === -1)) continue;
+			if (type.indexOf("Comp.") !== -1 && prefix === AScompA[i]) continue;
 			var CompNm = What(AScompA[i] + "Comp.Desc.Name");
 			var CompPg = tDoc.getField(AScompA[i] + "Comp.Desc.Name").page;
 			var eqpVis = eval(What(AScompA[i] + "Companion.Layers.Remember"))[1];
-			if (isArray(CompPg)) CompPg = CompPg[1];
 			temp.oSubMenu.push({
 				cName : (CompNm ? CompNm : "NAME") + "'s Equipment Section " + (eqpVis ? "" : "\[not visible currently\] ") + "(page " + CompPg + ")",
 				cReturn : type + "#" + lineNmbr + "#" + "movepage#" + AScompA[i] + "Comp."
@@ -5511,7 +5430,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 	
 	//make a list of the current wild shapes entered
 	var WSinUse = false;
-	var prefixA = What("Template.extras.WSfront").split(",");
+	var prefixA = What("Template.extras.WSfront").split(",").slice(1);
 	for (var p = 0; p < prefixA.length; p++) {
 		for (var i = 1; i <= 4; i++) {
 			var theFld = What(prefixA[p] + "Wildshape.Race." + i);
@@ -6191,8 +6110,8 @@ function PrintButton() {
 		SetPrintPages_Dialog["b" + thePageOptions[x]] = PageArray.indexOf(thePageOptions[x]) !== -1;
 		
 		//set whether or not the fields are editable in the dialog (not editable if page is hidden)
-		var theTempP = tDoc.getField(BookMarkList[thePageOptions[x]]).page;
-		SetPrintPages_Dialog["a" + thePageOptions[x]] = thePageOptions[x] !== "SSmore" ? theTempP !== -1 : What("Template.extras.SSfront") !== "";
+		var isVisible = TemplatesWithExtras.indexOf(thePageOptions[x]) === -1 ? tDoc.getField(BookMarkList[thePageOptions[x]]).page !== -1 : isTemplVis(thePageOptions[x]);
+		SetPrintPages_Dialog["a" + thePageOptions[x]] = isVisible;
 	}
 	
 	if (PrintFld[0] === "true") {
@@ -6237,9 +6156,9 @@ function PrintTheSheet() {
 		for (var P = 1; P < PageArray.length; P++) {
 			//in the case of the three extendable types, also go add all the extra sheets
 			if (PageArray[P] === "SSmore") {
-				var prefixArray = What("Template.extras.SSfront").split(",");
-				if (prefixArray[1]) prefixArray = prefixArray.slice(1).concat(What("Template.extras.SSmore").split(",").slice(1));
-			} else if (PageArray[P] === "AScomp" || PageArray[P] === "ASnotes" || PageArray[P] === "WSfront" || PageArray[P] === "ALlog") {
+				var prefixArray = What("Template.extras.SSmore").split(",");
+				prefixArray[0] = What("Template.extras.SSfront").split(",")[1];
+			} else if (TemplatesWithExtras.indexOf(PageArray[P]) !== -1) {
 				var prefixArray = What("Template.extras." + PageArray[P]).split(",");
 			} else {
 				var prefixArray = [""];
@@ -6695,13 +6614,12 @@ function MakeMobileReady(toggle) {
 					}
 				}
 			}
-		}
-		var SSfrontA = What("Template.extras.SSfront").split(",");
-		if (SSfrontA.length > 1) {
+		};
+		var SSmoreA = What("Template.extras.SSmore").split(",");
+		SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
+		if (SSmoreA.length > 1) {
 			//we also have to set all the checkboxes back to readable, if they are visible
-			var SSmoreA = SSfrontA.concat(What("Template.extras.SSmore").split(","));
 			for (var SS = 0; SS < SSmoreA.length; SS++) {
-				if (SSmoreA[SS] === "") continue;
 				var maxLine = SSmoreA[SS] === SSfrontA[1] ? FieldNumbers.spells[0] : FieldNumbers.spells[1];
 				for (var S = 0; S < maxLine; S++) {
 					var SSbox = tDoc.getField(SSmoreA[SS] + "spells.checkbox." + S);
@@ -6902,7 +6820,7 @@ function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow) {
 				Description.value = itemDescr;
 				Weight.value = itemWeight;
 				i = FieldNumbers.magicitems + 1;
-				if (overflow && !tDoc.getField(BookMarkList["Overflow sheet"])) DoTemplate("ASoverflow");
+				if (overflow && !tDoc.getField(BookMarkList["Overflow sheet"])) DoTemplate("ASoverflow", "Add");
 			}
 		}
 	}
@@ -8717,8 +8635,8 @@ function SetUnitDecimals_Button() {
 		];
 		//field calculations to update
 		var FldsCalc = [];
-		var AScompA = What("Template.extras.AScomp").split(",");
-		var WSfrontA = What("Template.extras.WSfront").split(",");
+		var AScompA = What("Template.extras.AScomp").split(",").split(1);
+		var WSfrontA = What("Template.extras.WSfront").split(",").split(1);
 		for (var C = 0; C < AScompA.length; C++) {
 			var prefix = AScompA[C];
 			FldsGameMech.push(prefix + "Comp.Use.Speed");

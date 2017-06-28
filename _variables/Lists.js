@@ -1613,7 +1613,7 @@ var FontList = {
 	"Garamond" : !typePF ? 7.7 : 8.45,
 	"TimesNewRoman" : !typePF ? 7.4 : 8.1,
 	"Calibri" : !typePF ? 7.47 : 8.2,
-}
+};
 
 //list of field names that correspond to the name of the bookmark
 var BookMarkList = {
@@ -1627,7 +1627,7 @@ var BookMarkList = {
 	"WSfront" : "Wildshapes.Settings",
 	"ALlog" : "AdvLog.Options",
 	"SSfront" : "spells.name.0",
-	"SSmore" : "spells.name.0", //maak dit hetzelfde als SSfront, zodat het gedetecteerd wordt alsof deze zichtbaar is wanneer SSfront zichtbaar is en er vervolgens alleen clones worden toegevoegd i.p.v. het origineel
+	"SSmore" : "spells.name.0",
 	"PRsheet" : "PRsheet.toFocus",
 	
 	"CSfront_Bookmarks" : tDoc.bookmarkRoot.children[0].children[0],
@@ -1711,50 +1711,67 @@ var BookMarkList = {
 	"Organization Symbol" : "Symbol.1",
 	"Lifestyle" : "Lifestyle.1",
 	
-	"Companion sheet" : "Companion.Options.1",
+	"Companion sheet" : "Companion.Options",
 	"Companion sheet_template" : "AScomp",
-	"Descriptive Header" : "Comp.Type.1",
-	"Abilities" : "Comp.Use.Ability.Str.Score.1",
-	"Skills" : "Comp.Use.Skills.Acr.Mod.1",
-	"Attacks" : "Comp.Use.Attack.1.Weapon Selection.1",
-	"Initiative" : "Comp.Use.Combat.Init.Mod.1",
-	"Initiative / Speed / HD" : "Comp.Use.Combat.Init.Mod.1",
-	"Speed" : "Comp.Use.Speed.1",
-	"AC / Prof Bonus / HP" : "Comp.Use.AC.1",
-	"Defense" : "Comp.Use.AC.1",
-	"Health" : "Comp.Use.HP.Current.1",
-	"Features" : "Comp.Use.Features.1",
-	"Proficiency Bonus" : "Comp.Use.Proficiency Bonus.1",
-	"Traits" : "Comp.Use.Traits.1",
-	"Notes " : "Cnote.Left.1",
+	"Descriptive Header" : "Comp.Type",
+	"Abilities" : "Comp.Use.Ability.Str.Score",
+	"Skills" : "Comp.Use.Skills.Acr.Mod",
+	"Attacks" : "Comp.Use.Attack.1.Weapon Selection",
+	"Initiative" : "Comp.Use.Combat.Init.Mod",
+	"Initiative / Speed / HD" : "Comp.Use.Combat.Init.Mod",
+	"Speed" : "Comp.Use.Speed",
+	"AC / Prof Bonus / HP" : "Comp.Use.AC",
+	"Defense" : "Comp.Use.AC",
+	"Health" : "Comp.Use.HP.Current",
+	"Features" : "Comp.Use.Features",
+	"Proficiency Bonus" : "Comp.Use.Proficiency Bonus",
+	"Traits" : "Comp.Use.Traits",
+	"Notes " : "Cnote.Left",
 	
-	"Notes sheet" : "Notes.Left.1",
+	"Notes sheet" : "Notes.Left",
 	"Notes sheet_template" : "ASnotes",
-	"Notes" : "Notes.Left.1",
+	"Notes" : "Notes.Left",
 	
-	"Wild Shapes" : "Wildshapes.Settings.1",
+	"Wild Shapes" : "Wildshapes.Settings",
 	"Wild Shapes_template" : "WSfront",
-	"Wild Shape 1" : "Wildshape.Race.1.1",
-	"Wild Shape 2" : "Wildshape.Race.2.1",
-	"Wild Shape 3" : "Wildshape.Race.3.1",
-	"Wild Shape 4" : "Wildshape.Race.4.1",
+	"Wild Shape 1" : "Wildshape.Race.1",
+	"Wild Shape 2" : "Wildshape.Race.2",
+	"Wild Shape 3" : "Wildshape.Race.3",
+	"Wild Shape 4" : "Wildshape.Race.4",
 	
 	"Spell Sheets" : "spells.name.0",
 	"Spell Sheets_template" : "SSfront",
 	
-	"Adventurers Logsheet" : "AdvLog.Options.1",
+	"Adventurers Logsheet" : "AdvLog.Options",
 	"Adventurers Logsheet_template" : "ALlog",
-	"Logsheet Entry 1" : "Text.AdvLog.1.1",
-	"Logsheet Entry 2" : "Text.AdvLog.2.1",
-	"Logsheet Entry 3" : "Text.AdvLog.3.1",
-	"Logsheet Entry 4" : "Text.AdvLog.4.1",
-	"Logsheet Entry 5" : "Text.AdvLog.5.1",
-	"Logsheet Entry 6" : "Text.AdvLog.6.1",
-	"Logsheet Entry 7" : "Text.AdvLog.7.1",
+	"Logsheet Entry 1" : "Text.AdvLog.1",
+	"Logsheet Entry 2" : "Text.AdvLog.2",
+	"Logsheet Entry 3" : "Text.AdvLog.3",
+	"Logsheet Entry 4" : "Text.AdvLog.4",
+	"Logsheet Entry 5" : "Text.AdvLog.5",
+	"Logsheet Entry 6" : "Text.AdvLog.6",
+	"Logsheet Entry 7" : "Text.AdvLog.7",
 	
 	"Reference Sheet" : "PRsheet.toFocus.1",
 	"Reference Sheet_template" : "PRsheet",
 };
+
+var TemplateNames = {
+	"CSfront" : "Character sheet front",
+	"CSback" : "Character sheet back",
+	"ASfront" : !typePF ? "Conditions and Magic Items sheet" : "Feats and Magic Items sheet",
+	"ASoverflow" : "Overflow (magic items, feats, actions, etc.) sheet",
+	"ASbackgr" : "Background and Organization sheet",
+	"AScomp" : "Companion sheet",
+	"ASnotes" : "Notes sheet",
+	"WSfront" : "Wild Shapes sheet",
+	"ALlog" : "Adventurers Logsheet",
+	"SSfront" : "Spell sheet",
+	"SSmore" : "Spell sheet",
+	"PRsheet" : "Rules Reference sheet"
+};
+
+var TemplatesWithExtras = ["AScomp", "ASnotes", "WSfront", "SSfront", "SSmore", "ALlog"];
 
 var TemplateDep = {
 	"ASfront" : [],

@@ -3235,11 +3235,7 @@ function AskUserSpellSheet() {
 }
 
 //generate the spell sheet for all the different classes
-function GenerateSpellSheet(GoOn) {
-	//first we do need to remember any BlueText values, so we will be keeping those safe somewhere
-	var SSarray = What("Template.extras.SSfront").split(",");
-	SSarray = SSarray.concat(What("Template.extras.SSmore").split(","));
-	
+function GenerateSpellSheet(GoOn) {	
 	//first ask the user for input on what to do with all the spellcasting classes
 	if (!GoOn) var GoOn = AskUserSpellSheet();
 	
@@ -3288,7 +3284,7 @@ function GenerateSpellSheet(GoOn) {
 		headerCurrent = 0;
 		dividerCurrent = 0;
 		SSfront = false;
-	}
+	};
 	
 	//now use the newly acquired CurrentSpells information to make a Spell Sheet addition for every entry in the included list
 	IsNotSpellSheetGenerating = false;
@@ -3445,45 +3441,42 @@ function GenerateSpellSheet(GoOn) {
 	
 	IsNotSpellSheetGenerating = true;
 	
-	if (What("Template.extras.SSfront").split(",").length > 1) tDoc.getField(What("Template.extras.SSfront").split(",")[1] + "Spells Button").setFocus(); // set the focus to the top of the Spell Sheet
+	var SSvisible = isTemplVis("SSfront", true);
+	if (SSvisible[0]) tDoc.getField(SSvisible[1] + "spells.name.0").setFocus(); // set the focus to the top of the Spell Sheet
 	thermoM(); //stop all the progress dialogs
 }
 
-//remove all visible spell sheets and reset the templates
-function RemoveSpellSheets() {
-	//delete all of the pages
-	var SSarray = What("Template.extras.SSfront").split(",");
-	if (SSarray.length > 1) {
-		SSarray = SSarray.concat(What("Template.extras.SSmore").split(","));
+//remove all visible spell sheets and reset the template remember fields
+function RemoveSpellSheets(noFirst) {
+	if (What("Template.extras.SSfront")) {
+		var SSarray = What("Template.extras.SSmore").split(",");
+		SSarray[0] = What("Template.extras.SSfront").split(",")[1];
+		if (tDoc.info.SpellsOnly) tDoc.getTemplate("blank").spawn(0, false, false);
 		for (var A = 1; A < SSarray.length; A++) {
-			if (A === 1 && tDoc.info.SpellsOnly) {
-				continue;
-			} else if (SSarray[A]) {
-				thePage = tDoc.getField(SSarray[A] + BookMarkList["SSmore"]).page;
-				tDoc.deletePages(thePage);
-			}
+			thePage = tDoc.getField(SSarray[A] + BookMarkList["SSmore"]).page;
+			tDoc.deletePages(thePage);
 		}
 		//reset the template remember fields
+		tDoc.resetForm(["Template.extras.SSmore", "Template.extras.SSfront"]);
 		if (!tDoc.info.SpellsOnly) {
-			tDoc.resetForm(["Template.extras.SSmore", "Template.extras.SSfront"]);
 			//grey out the appropriate bookmarks
 			amendBookmarks(BookMarkList["SSfront_Bookmarks"], false);
 		} else {
-			tDoc.resetForm(["Template.extras.SSmore", "P0.SSfront"]);
-			HideSpellSheetElement("P0.SSfront.spellshead.Text.header.0");
-			for (var x = 1; x <= 9; x++) {
-				var spellsH = "P0.SSfront.spellshead.Text.header." + x;
-				var spellsD = "P0.SSfront.spellsdiv.Text." + x;
-				if (x <= 3 && tDoc.getField(spellsH).display === display.visible) HideSpellSheetElement(spellsH);
-				if (tDoc.getField(spellsD).display === display.visible) HideSpellSheetElement(spellsD);
-			}
+			tDoc.resetForm(["Template.extras.SSmore"]);
+			if (!noFirst) {
+				tDoc.getTemplate("SSfront").spawn(0, true, false);
+				Value("Template.extras.SSfront", ",P0.SSfront");
+				tDoc.deletePages(1);
+			};
 		}
 	}
 }
 
 //make menu for the spell options button
-//after that, do something with the menu and its results
-function MakeSpellMenu_SpellOptions() {
+function MakeSpellMenu() {
+	//see if the Spell Sheets are visible
+	var SSvisible = What("Template.extras.SSfront") !== "" || What("Template.extras.SSmore") !== "";
+	var SSmultiple = What("Template.extras.SSmore").split(",").length > 2 || (What("Template.extras.SSfront") !== "" && What("Template.extras.SSmore") !== "");
 	
 	//make a list of all the spell sources
 	var SpellSourcesArray = [];
@@ -3515,11 +3508,7 @@ function MakeSpellMenu_SpellOptions() {
 	for (var key in CurrentSpells) {
 		anyCasters = true;
 		break;
-	}
-	
-	//see if the Spell Sheets are visible
-	var SSvisible = What("Template.extras.SSfront").split(",").length > 1;
-	var SSmultiple = What("Template.extras.SSmore").split(",").length > 1;
+	};
 	
 	var menuLVL2 = function (menu, name, array) {
 		var temp = [];
@@ -3534,7 +3523,7 @@ function MakeSpellMenu_SpellOptions() {
 			}
 			temp.oSubMenu.push({
 				cName : array[i][0],
-				cReturn : name[1] + "#" + array[i][1] + "#" + isMarked,
+				cReturn : "ssheet#" + name[1] + "#" + array[i][1] + "#" + isMarked,
 				bMarked : isMarked
 			})
 		}
@@ -3546,7 +3535,7 @@ function MakeSpellMenu_SpellOptions() {
 	if (!tDoc.info.SpellsOnly) {
 		spellsMenu.push({
 			cName : (SSvisible ? "(Re)g" : "G") + "enerate a Spell Sheet" + (anyCasters ? "" : " (no spellcasting detected)"),
-			cReturn : "generate",
+			cReturn : "ssheet#generate",
 			bEnabled : anyCasters
 		});
 	}
@@ -3560,13 +3549,13 @@ function MakeSpellMenu_SpellOptions() {
 			cName : SSvisible ? "Replace Spell Sheets with empty one (to fill manually)" : "Add an empty Spell Sheet (to fill manually)",
 			oSubMenu : [{
 				cName : "Without text lines",
-				cReturn : "makeempty"
+				cReturn : "ssheet#makeempty"
 			}, {
 				cName : "With text lines",
-				cReturn : "makeempty#lines"
+				cReturn : "ssheet#makeempty#lines"
 			}, {
 				cName : "With text lines and checkboxes",
-				cReturn : "addempty#lines#boxes"
+				cReturn : "ssheet#makeempty#lines#boxes"
 			}]
 		});
 	}
@@ -3577,13 +3566,13 @@ function MakeSpellMenu_SpellOptions() {
 			cName : "Add an empty Spell Sheet page (to fill manually)",
 			oSubMenu : [{
 				cName : "Without text lines",
-				cReturn : "addempty"
+				cReturn : "ssheet#addempty"
 			}, {
 				cName : "With text lines",
-				cReturn : "addempty#lines"
+				cReturn : "ssheet#addempty#lines"
 			}, {
 				cName : "With text lines and checkboxes",
-				cReturn : "addempty#lines#boxes"
+				cReturn : "ssheet#addempty#lines#boxes"
 			}]
 		});
 	}
@@ -3593,17 +3582,17 @@ function MakeSpellMenu_SpellOptions() {
 		cName : "-"
 	}, {
 		cName : "Delete all the Spell Sheet(s) (can't be undone)",
-		cReturn : "delete",
+		cReturn : "ssheet#delete",
 		bEnabled : SSvisible
 	}, {
 		cName : "Delete the last page of the Spell Sheets (can't be undone)",
-		cReturn : SSmultiple ? "deleteone" : "delete",
+		cReturn : "ssheet#" + (SSmultiple ? "deleteone" : "delete"),
 		bEnabled : !tDoc.info.SpellsOnly ? SSvisible : SSmultiple
 	}, {
 		cName : "-"
 	}, {
 		cName : "Spell sources to use (set before generating)",
-		cReturn : "source"
+		cReturn : "ssheet#source"
 	}, {
 		cName : "-"
 	}]);
@@ -3620,33 +3609,42 @@ function MakeSpellMenu_SpellOptions() {
 		//options to show/hide spell slot modifier fields
 		spellsMenu = spellsMenu.concat([{
 			cName : "Change the number of Spell Slot checkboxes",
-			cReturn : "toggleslots",
+			cReturn : "ssheet#toggleslots",
 			bMarked : slotsVisible,
 			bEnabled : !spellPointsVis
 		}, {
 			cName : "Use Spell Points instead of Spell Slots",
-			cReturn : typePF ? "spellpoints" : "slots#" + (spellPointsVis ? "[false,true]" : "[false,false]") + "#false",
+			cReturn : "ssheet#" + (typePF ? "spellpoints" : "slots#" + (spellPointsVis ? "[false,true]" : "[false,false]") + "#false"),
 			bMarked : spellPointsVis
 		}]);
 	} else if (typePF) {
 		//options to toggle the use of spell points
 		spellsMenu = spellsMenu.concat([{
 			cName : "Use Spell Points instead of Spell Slots",
-			cReturn : "spellpoints",
+			cReturn : "ssheet#spellpoints",
 			bMarked : RememberSlots === "[false,false]"
 		}]);
 	}
 	
 	Menus.spells = spellsMenu;
-	
-	//now call the menu
-	var MenuSelection = getMenu("spells");
+};
+
+//create the spell menu and do something with the menu and its results
+function MakeSpellMenu_SpellOptions(MenuSelection) {
+	if (!MenuSelection) {
+		MakeSpellMenu();
+		//now call the menu
+		MenuSelection = getMenu("spells");
+	};
 	
 	//and do something with this menus results
 	if (MenuSelection !== undefined) {
+		//see if the Spell Sheets are visible
+		var SSvisible = What("Template.extras.SSfront") !== "" || What("Template.extras.SSmore") !== "";
+		var SSmultiple = What("Template.extras.SSmore").split(",").length > 2 || (What("Template.extras.SSfront") !== "" && What("Template.extras.SSmore") !== "");
 		tDoc.delay = true;
 		tDoc.calculate = false;
-		switch (MenuSelection[0]) {
+		switch (MenuSelection[1]) {
 		 case "generate" :
 			GenerateSpellSheet();
 			break;
@@ -3695,7 +3693,7 @@ function MakeSpellMenu_SpellOptions() {
 					Show("Image.SpellPoints");
 					Show("SpellSlots.Checkboxes.SpellPoints");
 					var SSfrontA = What("Template.extras.SSfront").split(",")[1];
-					if (SSvisible) {
+					if (SSfrontA) {
 						Show(SSfrontA + "Image.SpellPoints");
 						Show(SSfrontA + "SpellSlots.Checkboxes.SpellPoints");
 					}
@@ -3705,7 +3703,7 @@ function MakeSpellMenu_SpellOptions() {
 					Hide("Image.SpellPoints");
 					Hide("SpellSlots.Checkboxes.SpellPoints");
 					var SSfrontA = What("Template.extras.SSfront").split(",")[1];
-					if (SSvisible) {
+					if (SSfrontA) {
 						Hide(SSfrontA + "Image.SpellPoints");
 						Hide(SSfrontA + "SpellSlots.Checkboxes.SpellPoints");
 					}
@@ -4014,11 +4012,13 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	var base = event.target.name;
 	var prefix = base.substring(0, base.indexOf("spells."));
 	var lineNmbr = parseFloat(base.slice(-2)[0] === "." ? base.slice(-1) : base.slice(-2));
-	var SSmoreA = What("Template.extras.SSmore").split(",");
+	var SSmoreA = What("Template.extras.SSmore").split(",").splice[0];
+	var SSfrontA = What("Template.extras.SSmore").split(",")[1];
+	if (SSfrontA) SSmoreA.unshift(SSfrontA);
 	var thisSheet = SSmoreA.indexOf(prefix);
 	var maxLine = SSmaxLine(prefix);
 	var RemLine = base.replace("checkbox", "remember");
-	var RemLineUp = lineNmbr === 0 && prefix.indexOf(".SSfront.") !== -1 ? false : (lineNmbr === 0 ? SSmoreA[thisSheet - 1] + "spells.remember." + SSmaxLine(SSmoreA[thisSheet - 1]) : RemLine.replace("." + lineNmbr, "." + (lineNmbr - 1)));
+	var RemLineUp = lineNmbr === 0 && thisSheet === 0 ? false : (lineNmbr === 0 ? SSmoreA[thisSheet - 1] + "spells.remember." + SSmaxLine(SSmoreA[thisSheet - 1]) : RemLine.replace("." + lineNmbr, "." + (lineNmbr - 1)));
 	var RemLineDown = lineNmbr === maxLine && thisSheet === (SSmoreA.length - 1) ? false : (lineNmbr === maxLine ? SSmoreA[thisSheet + 1] + "spells.remember." + 0 : RemLine.replace("." + lineNmbr, "." + (lineNmbr + 1)));
 	var suffixHeader = findNextHeaderDivider(prefix, "header");
 	var suffixDivider = findNextHeaderDivider(prefix, "divider");
@@ -5000,8 +5000,7 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	tDoc.getTemplate("SSmore").hidden = false;
 	tDoc.getTemplate("remember").hidden = false;
 	tDoc.getTemplate("blank").hidden = false;
-	tDoc.getField("Template.extras.SSfront").defaultValue = ",P0.SSfront.";
-	tDoc.resetForm(["Template.extras.SSfront"]);
+	Value("Template.extras.SSfront", ",P0.SSfront.");
 	
 	//remove the saveIMG fields that are now useless
 	tDoc.removeField("SaveIMG.Faction");
@@ -5018,8 +5017,9 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	};
 
 	if (typePF) { //if the Printer Friendly version, update the copyright
-		tDoc.getField("CopyrightInformation").defaultValue = "Inspired by Wizards of the Coast character sheet; made by Joost Wijnen - Flapkan@gmail.com";
-		tDoc.getField("P0.SSfront.CopyrightInformation").defaultValue = "Inspired by Wizards of the Coast character sheet; made by Joost Wijnen - Flapkan@gmail.com";
+		var newCR = "Inspired by Wizards of the Coast character sheet; made by Joost Wijnen - Flapkan@gmail.com";
+		tDoc.getField("CopyrightInformation").defaultValue = newCR;
+		tDoc.getField("P0.SSfront.CopyrightInformation").defaultValue = newCR;
 		tDoc.resetForm(["CopyrightInformation", "P0.SSfront.CopyrightInformation"]);
 	} else { //if the Colorful version, remove some more useless fields
 		tDoc.removeField("SaveIMG.Level");
@@ -5169,7 +5169,7 @@ function ToggleSpellPoints() {
 	Value("SpellSlotsRemember", SPactive ? "[false,false]" : "[true,true]");
 	
 	if (SPactive) ShowSpellPointInfo();
-}
+};
 
 // a function to add (AddRemove == "Add") or remove (AddRemove == "Remove") the spell points limited feature as the first limited feature
 function SpellPointsLimFea(AddRemove) {

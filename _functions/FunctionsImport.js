@@ -579,7 +579,7 @@ function DirectImport(consoleTrigger) {
 				if (pagesLayout[templ] !== undefined && global.docTo.getField(BookMarkList[templ])) {
 					var templAte = pagesLayout[templ];
 					var tempExtr = pagesLayout[templ + "Extras"];
-					var templToVis = global.docTo.getField(BookMarkList[templ]).page !== -1;
+					var templToVis = global.docTo.isTemplVis(templ);
 					if (!templAte && !tempExtr) {
 						if (templ.substring(0, 2) !== "SS" && templToVis) DoTemplate(templ, "Remove");
 					} else if (tempExtr) {
@@ -1279,7 +1279,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 	}
 	
 	//now if selected and possible, see if we can transfer the icons for the remaining fields
-	//for the sheets before v3.0, there is no way of making an empty page. Chances are very slim that anybody is still using
+	//for the sheets before v3.0, there is no way of making an empty page. Chances are very slim that anybody is still using those
 	var goodImport = 1;
 	var madeFlds = false;
 	if (MPMBImportFunctionsInstalled && viaSaving) {

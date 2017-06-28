@@ -959,3 +959,19 @@ function SetDisAdv() {
 function similarLen(str1, str2) {
 	return Math.abs(str1.length - str2.length) < 5 || Math.abs(str1.length, str2.length) / Math.max(str1.length, str2.length) < 0.2;
 };
+
+//test if a template is visible or not
+function isTemplVis(tempNm, returnPrefix) {
+	var isVisible = false;
+	var multiTemp = TemplatesWithExtras.indexOf(tempNm) !== -1;
+	var firstTempl = "";
+	if (!multiTemp) {
+		var tempPage = tDoc.getField(BookMarkList[tempNm]).page;
+		isVisible = (isArray(tempPage) ? Math.max.apply(Math, tempPage) : tempPage) !== -1;
+	} else {
+		isVisible = What("Template.extras." + tempNm) !== "";
+		firstTempl = What("Template.extras." + tempNm).split(",")[1];
+	};
+	if (!isVisible && tempNm === "SSfront") isVisible = isTemplVis("SSmore");
+	return returnPrefix && firstTempl ? [isVisible, firstTempl] : isVisible;
+};

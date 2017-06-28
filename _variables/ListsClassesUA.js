@@ -3530,8 +3530,7 @@ ClassSubList["stone sorcery"] = {
 			name : "Metal Magic",
 			source : ["UA:SO", 4],
 			minlevel : 1,
-			description : "\n   " + "My affinity for metal allows me to select from a broader range of spells",
-			spellcastingExtra : ["compelled duel", "searing smite", "thunderous smite", "wrathful smite", "branding smite", "magic weapon", "blinding smite", "elemental weapon", "staggering smite"]
+			description : "\n   " + "My affinity for metal allows me to select from a broader range of spells"
 		},
 		"subclassfeature1.2" : {
 			name : "Stone's Durability",
@@ -4365,7 +4364,7 @@ ClassSubList["monk-way of the kensei2"] = {
 			minlevel : 6,
 			description : "\n   " + "My unarmed strikes and kensei weapon attacks count as magical",
 			calcChanges : {
-				atkAdd : ["if (((/unarmed strike/i).test(WeaponName) || (inputText.toLowerCase().indexOf('kensei') !== -1  && theWea && !isSpell && !theWea.monkweapon && (!(/heavy|special/i).test(fields.Description) || WeaponName === 'longbow'))) && fields.Description.indexOf('Counts as magical') === -1 && !thisWeapon[1]) {fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';}; ", "My unarmed strikes and any Kensei Weapons count as magical for overcoming resistances and immunities."]
+				atkAdd : ["if (((/unarmed strike/i).test(WeaponName) || (inputText.toLowerCase().indexOf('kensei') !== -1  && theWea && !isSpell && (!(/heavy|special/i).test(fields.Description) || WeaponName === 'longbow'))) && fields.Description.indexOf('Counts as magical') === -1 && !thisWeapon[1]) {fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';}; ", "My unarmed strikes and any Kensei Weapons count as magical for overcoming resistances and immunities."]
 			},
 			extraname : "Way of the Kensei 6",
 			"precise strike" : {
