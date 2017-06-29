@@ -4136,7 +4136,7 @@ function ChangeToCompleteAdvLogSheet() {
 	//move the pages that we want to extract to a new instance, by running code from a console
 	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 3});\n\n";
 	forConsole += "this.info.AdvLogOnly = true;";
-	forConsole += " var toDelScripts = ['ListsBackgrounds', 'ListsClasses', 'ListsClassesUA', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsRaces', 'ListsRacesUA', 'ListsSpells', 'ListsSources']; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
+	forConsole += " var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsClasses', 'ListsClassesUA', 'ListsClassesUAArtificer', 'ListsClassesUAMystic', 'ListsCreatures', 'ListsFeats', 'ListsFeatsUA', 'ListsGear', 'ListsPsionics', 'ListsRaces', 'ListsRacesUA' 'ListsSources', 'ListsSpells', 'ListsSpellsUA',]; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
 	forConsole += " this.createTemplate({cName:\"ALlog\", nPage:1 });";
 	forConsole += " this.createTemplate({cName:\"remember\", nPage:2 });";
 	forConsole += " this.createTemplate({cName:\"blank\", nPage:3 });";

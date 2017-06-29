@@ -6167,7 +6167,7 @@ function PrintTheSheet() {
 			if (PageArray[P] === "SSmore") {
 				var prefixArray = What("Template.extras.SSmore").split(",");
 				prefixArray[0] = What("Template.extras.SSfront").split(",")[1];
-				if (!prefixArray[0]) prefixArray.unshift();
+				if (!prefixArray[0]) prefixArray.shift();
 			} else if (TemplatesWithExtras.indexOf(PageArray[P]) !== -1) {
 				var prefixArray = What("Template.extras." + PageArray[P]).split(",");
 			} else {
@@ -6627,7 +6627,7 @@ function MakeMobileReady(toggle) {
 		};
 		var SSmoreA = What("Template.extras.SSmore").split(",");
 		SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
-		if (!SSmoreA[0]) SSmoreA.unshift();
+		if (!SSmoreA[0]) SSmoreA.shift();
 		if (SSmoreA.length > 1) {
 			//we also have to set all the checkboxes back to readable, if they are visible
 			for (var SS = 0; SS < SSmoreA.length; SS++) {
@@ -8705,7 +8705,7 @@ function SetUnitDecimals_Button() {
 		var spellsArray = []; // an array of all the spell fields
 		var SSmoreA = What("Template.extras.SSmore").split(",");
 		SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
-		if (!SSmoreA[0]) SSmoreA.unshift();
+		if (!SSmoreA[0]) SSmoreA.shift();
 		var SkipArray = ["hidethisline", "setcaptions", "setheader", "setdivider", "setglossary"];
 		if (SSmoreA[0]) {
 			for (var SS = 0; SS < SSmoreA.length; SS++) {

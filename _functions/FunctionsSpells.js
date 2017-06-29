@@ -3442,19 +3442,20 @@ function GenerateSpellSheet(GoOn) {
 	
 	IsNotSpellSheetGenerating = true;
 	
+	thermoM(); //stop all the progress dialogs
+	
 	var SSvisible = isTemplVis("SSfront", true);
 	if (SSvisible[0]) tDoc.getField(SSvisible[1] + "spells.name.0").setFocus(); // set the focus to the top of the Spell Sheet
-	thermoM(); //stop all the progress dialogs
 }
 
 //remove all visible spell sheets and reset the template remember fields
 function RemoveSpellSheets(noFirst) {
 	var SSarray = What("Template.extras.SSmore").split(",");
 	SSarray[0] = What("Template.extras.SSfront").split(",")[1];
-	if (!SSarray[0]) SSarray.unshift();
+	if (!SSarray[0]) SSarray.shift();
 	if (SSarray.length) {
 		if (tDoc.info.SpellsOnly) tDoc.getTemplate("blank").spawn(0, false, false);
-		for (var A = 1; A < SSarray.length; A++) {
+		for (var A = 0; A < SSarray.length; A++) {
 			thePage = tDoc.getField(SSarray[A] + BookMarkList["SSmore"]).page;
 			tDoc.deletePages(thePage);
 		}
@@ -3464,10 +3465,9 @@ function RemoveSpellSheets(noFirst) {
 			//grey out the appropriate bookmarks
 			amendBookmarks(BookMarkList["SSfront_Bookmarks"], false);
 		} else {
-			tDoc.resetForm(["Template.extras.SSmore", "Template.extras.SSfront"]);
 			var forFirst = noFirst ? "SSmore" : "SSfront";
 			tDoc.getTemplate(forFirst).spawn(0, true, false);
-			Value("Template.extras." + forFirst, ",P0." + forFirst);
+			Value("Template.extras." + forFirst, ",P0." + forFirst + ".");
 			tDoc.deletePages(1);
 		};
 	};
@@ -3773,7 +3773,7 @@ function CalcSpellsheetNumber() {
 	var prefix = event.target.name.substring(0, event.target.name.indexOf("SpellSheet"));
 	var SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
-	if (!SSmoreA[0]) SSmoreA.unshift();
+	if (!SSmoreA[0]) SSmoreA.shift();
 	return MakeDocName() + (tDoc.info.SpellsOnly ? "; page " : "; Spell Sheet ") + (SSmoreA.indexOf(prefix) + 1) + "/" + SSmoreA.length;
 }
 
@@ -4020,7 +4020,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	var lineNmbr = parseFloat(base.slice(-2)[0] === "." ? base.slice(-1) : base.slice(-2));
 	var SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
-	if (!SSmoreA[0]) SSmoreA.unshift();
+	if (!SSmoreA[0]) SSmoreA.shift();
 	var thisSheet = SSmoreA.indexOf(prefix);
 	var maxLine = SSmaxLine(prefix);
 	var RemLine = base.replace("checkbox", "remember");
@@ -4358,7 +4358,7 @@ function deleteSpellRow(prefix, lineNmbr) {
 	//make an array of all the rows below this one on the sheet
 	var SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
-	if (!SSmoreA[0]) SSmoreA.unshift();
+	if (!SSmoreA[0]) SSmoreA.shift();
 	var thisSheet = SSmoreA.indexOf(prefix);
 	var offset = 0;
 	for (var SS = thisSheet; SS < SSmoreA.length; SS++) {
@@ -4474,7 +4474,7 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 	var emptyCount = 0;
 	var SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
-	if (!SSmoreA[0]) SSmoreA.unshift();
+	if (!SSmoreA[0]) SSmoreA.shift();
 	var thisSheet = SSmoreA.indexOf(prefix);
 	var resultRow = false;
 	var rememberRow = [0];
@@ -4592,7 +4592,7 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 	//now update the array of spell pages
 	SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
-	if (!SSmoreA[0]) SSmoreA.unshift();
+	if (!SSmoreA[0]) SSmoreA.shift();
 	
 	//then put all the values back, starting with the bottom row
 	var valuesCountdown = valuesArray.length - 1;
@@ -4967,6 +4967,9 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	IsNotSpellSheetGenerating = true;
 	
 	thermoM(); //stop all the progress dialogs
+	
+	//set the focus to the top of the spell sheets
+	tDoc.getField(What("Template.extras.SSfront").split(",")[1] + BookMarkList["SSfront"]).setFocus(); 
 }
 
 //a way to hide the 'prepared' section on the first page of the spell sheet //if a "target" is given, assume it has to be hidden
@@ -5053,7 +5056,7 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	//move the pages that we want to extract to a new instance, by running code from a console
 	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 4});\n\n";
 	forConsole += "this.info.SpellsOnly = \"" + thisClass + "\";";
-	forConsole += " var toDelScripts = ['ListsBackgrounds', 'ListsClassesUA', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsRaces', 'ListsRacesUA']; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
+	forConsole += " var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsCreatures', 'ListsFeats', 'ListsFeatsUA', 'ListsGear', 'ListsRaces', 'ListsRacesUA']; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
 	forConsole += " this.createTemplate({cName:\"SSfront\", nPage:1 });";
 	forConsole += " this.createTemplate({cName:\"SSmore\", nPage:2 });";
 	forConsole += " this.createTemplate({cName:\"remember\", nPage:3 });";
@@ -5453,4 +5456,7 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 	IsNotSpellSheetGenerating = true;
 	
 	thermoM(); //stop all the progress dialogs
+	
+	//set the focus to the top of the spell sheets
+	tDoc.getField(What("Template.extras.SSmore").split(",")[1] + BookMarkList["SSmore"]).setFocus(); 
 };
