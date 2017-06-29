@@ -10,19 +10,19 @@
 /*	-INFORMATION-
 	Subject:	Tool (for the equipment menu)
 	Effect:		This is the syntax for adding a new tool
-	Sheet:		v12.83 (2017-02-18)
+	Sheet:		v12.995 (2017-06-29)
 
 	NOTE that any items added like this will appear at the end of the list of gear visible in the equipment menu.
 	They will appear in the order you add them.
 */
 
-ToolsList["disguise kit [25 gp]"] = { //Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []. The spelling here is used to identify the tool with and has to be the exact same as what you enter in "infoname" below, but lower case.
+ToolsList["disguise kit"] = { //Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 	
-	infoname : "Disguise kit [25 gp]", //Required; Has to be exact the same as what is entered above, but can use upper case if you want
+	infoname : "Disguise kit [25 gp]", //Required; This is the name as it will appear in the equipment menu
 	
 	name : "Disguise kit", //Required; The name as it will be put into the equipment table
 	
-	amount : "", //Required; The amount as will be put into the equipment table
+	amount : "", //Required; The amount as will be put into the equipment table. You can put "" here if you like
 	
-	weight : 3 //Required, has to be a number; The weight as will be put into the equipment table. Note that the total weight is calculated as Amount×Weight
+	weight : 3 //Required, has to be a number; The weight as will be put into the equipment table. Note that the total weight is calculated as Amount×Weight. You can put "" here if you like
 };
