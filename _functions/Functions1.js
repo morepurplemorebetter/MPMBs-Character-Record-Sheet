@@ -420,7 +420,7 @@ function ToggleWhiteout(Toggle) {
 	tDoc.delay = !IsNotReset;
 };
 
-function ResetAll(GoOn) {
+function ResetAll(GoOn, noTempl) {
 	var ResetDialog = {
 		cTitle : "Reset the whole sheet",
 		cMsg : "Are you sure you want to reset all fields and functions to their initial value?\nThis will undo any changes you have made, including Custom Scripts, page layout, source selection, and imported images.\n\nThis cannot be undone!",
@@ -454,30 +454,22 @@ function ResetAll(GoOn) {
 		
 		//delete any extra templates and make any template that is invisible, visible
 		RemoveSpellSheets(); //first do all the Spell Sheets
+		var defaultShowTempl = ["ASfront", "ASbackgr", "PRsheet"];
 		for (var R in TemplateDep) {
 			if (R === "SSfront" || R === "SSmore" || (!typePF && R === "PRsheet")) continue; //don't do this for the spell sheets, they have their own function; also don't do it for the player reference sheet in not the Printer Friendly version, as it doesn't exist
 			//first see if the template is visible
 			var isTempVisible = isTemplVis(R);
 			var tempExtras = What("Template.extras." + R);
 			
-			//if invisible, make it visible
-			if (!isTempVisible) {
-				if (R !== "ALlog" && R !== "WSfront" && R !== "ASoverflow") DoTemplate(R, "Add"); //only show the page if it is not the adventurers logsheet page or the wild shapes page or the overflow page
-			//if visible AND extra templates are an option, remove any extra templates
-			} else if (tempExtras) {
-				tempExtras = tempExtras.split(",");
-				if (tempExtras) {
-					for (var RtE = 1; RtE < tempExtras.length; RtE++) {
-						DoTemplate(R, "Remove");
-					};
-				};
-			};
-			if (isTempVisible && (R === "ALlog" || R === "WSfront" || R === "ASoverflow")) {
-				DoTemplate(R, "Remove"); //remove the adventurers logsheet page or wild shapes page or the overflow page
+			//if invisible, and one of the defaultShowTempl, make it visible
+			if (!isTempVisible && defaultShowTempl.indexOf(R) !== -1) {
+				DoTemplate(R, "Add");
+			} else if (tempExtras) { //if there can be multiples of a template, remove them
+				DoTemplate(R, "RemoveAll", false, true); //remove all of them
+			} else if (isTempVisible && defaultShowTempl.indexOf(R) === -1) {
+				DoTemplate(R, "Remove"); //remove all of them
 			};
 		};
-		// now move the focus to the first page
-		tDoc.getField(BookMarkList["CSfront"]).setFocus();
 		tDoc.getField("All ST Bonus").setAction("Calculate", "var placeholder = 1;");
 		
 		setListsUnitSystem("imperial"); //reset the values of some variables to the right unit system
@@ -539,8 +531,6 @@ function ResetAll(GoOn) {
 		SetHPTooltip("reset");
 		UpdateALdateFormat();
 		DnDlogo();
-		Hide("Weight Carrying Capacity");
-		Show("Weight Heavily Encumbered");
 		thermoM(7/9); //increment the progress dialog's progress
 		
 		//Reset portrait & symbol to original blank
@@ -559,6 +549,14 @@ function ResetAll(GoOn) {
 		Toggle2ndAbilityDC("hide");
 		
 		thermoM(8/9); //increment the progress dialog's progress
+		
+		//generate an instance of the AScomp and ASnotes templates
+		if (!noTempl) {
+			DoTemplate("AScomp", "Add");
+			DoTemplate("ASnotes", "Add");
+		};
+		// now move the focus to the first page
+		tDoc.getField(BookMarkList["CSfront"]).setFocus();
 		
 		//Set global variable to reflect end of reset
 		IsNotReset = true;
@@ -1062,20 +1060,25 @@ function ToggleBlueText(Toggle) {
 function MakeAdventureLeagueMenu() {	
 	var submenuItems = [
 		["Set the HP on the 1st page to automatically use fixed values", "hp", tDoc.getField("HP Max").submitName.split(",")[3] === "fixed"], // 0
-		["Show DCI field on 1st page", "dci", isDisplay("DCI.Text") === display.visible], // 1
-		["Remove DMG actions from 1st page (not legal in AL play)", "actions", true], // 2
+		["Show DCI field on 1st page", "dci", isDisplay("DCI.Text") === display.visible] // 1
+	].concat(typePF ? 
+		[["Show Renown on the Background page", "renown", isDisplay("Background_Renown.Text") === display.visible]] : // 2
+		[["Remove DMG actions from 1st page (not legal in AL play)", "actions", true]] // 2
+	).concat([
 		[typePF ? "Show space for Faction Rank on the Background page" : "Show space for Faction, Faction Rank, and Renown on the Background page", "factionrank", isDisplay("Background_FactionRank.Text") === display.visible], // 3
-		["-", "-", false], // 4
-		["Show Adventure Logsheet(s)", "allog", isTemplVis("ALlog")], // 5
+	]).concat(typePF ? 
+		[["Mark actions on the Player Reference page that are not legal in AL play", "asterisks", isDisplay("Text.PRsheet.AL.asterisk") === display.visible]] : //4
+		[]
+	).concat([
+		["Use the fixed carrying capacity rules", "encumbrance", tDoc.getField("Weight Carrying Capacity.Field").display === display.visible], // 5
 		["-", "-", false], // 6
-		["Prepare the sheet for Adventurers League play (i.e. do all of the above)", "all#1", false], // 7
-		["Undo all of those marked above", "all#0", false], // 8
-	];
+		["Show Adventure Logsheet(s)", "allog", isTemplVis("ALlog")], // 7
+		["-", "-", false], // 8
+		["Prepare the sheet for Adventurers League play (i.e. do all of the above)", "all#1", false], // 9
+		["Undo all of those marked above", "all#0", false] // 10
+	]);
 	
-	if (typePF) {
-		submenuItems[2] = ["Show Renown on the Background page", "renown", isDisplay("Background_Renown.Text") === display.visible];
-		submenuItems.splice(4, 0, ["Mark actions on the Player Reference page that are not legal in AL play", "asterisks", isDisplay("Text.PRsheet.AL.asterisk") === display.visible])
-	} else {
+	if (!typePF) {
 		for (var i = 1; i <= FieldNumbers.trueactions; i++) {
 			if ((/^(?=.*overrun)(?=.*tumble).*$/i).test(What("Action " + i))) {
 				submenuItems[2][2] = false;
@@ -1126,7 +1129,8 @@ function AdventureLeagueOptions(MenuSelection) {
 				renown : undefined,
 				actions : undefined,
 				asterisks : undefined,
-				hp : undefined
+				hp : undefined,
+				encumbrance : undefined
 			};
 			selection[MenuSelection[1]] = set;
 			ToggleAdventureLeague(selection);
@@ -1226,6 +1230,11 @@ function ToggleAdventureLeague(Setting) {
 		theHP[3] = Setting.hp ? "fixed" : "nothing";
 		tDoc.getField("HP Max").submitName = theHP.join();
 		SetHPTooltip();
+	};
+
+	//Set the encumbrance rules to using fixed value
+	if (Setting.encumbrance !== undefined) {
+		SetEncumbrance(!Setting.encumbrance);
 	};
 };
 
@@ -6158,6 +6167,7 @@ function PrintTheSheet() {
 			if (PageArray[P] === "SSmore") {
 				var prefixArray = What("Template.extras.SSmore").split(",");
 				prefixArray[0] = What("Template.extras.SSfront").split(",")[1];
+				if (!prefixArray[0]) prefixArray.unshift();
 			} else if (TemplatesWithExtras.indexOf(PageArray[P]) !== -1) {
 				var prefixArray = What("Template.extras." + PageArray[P]).split(",");
 			} else {
@@ -6617,6 +6627,7 @@ function MakeMobileReady(toggle) {
 		};
 		var SSmoreA = What("Template.extras.SSmore").split(",");
 		SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
+		if (!SSmoreA[0]) SSmoreA.unshift();
 		if (SSmoreA.length > 1) {
 			//we also have to set all the checkboxes back to readable, if they are visible
 			for (var SS = 0; SS < SSmoreA.length; SS++) {
@@ -7381,17 +7392,20 @@ function WeightToCalc_Button() {
 	
 	app.execDialog(WeightToCalc_Dialog);
 	
-	if (WeightToCalc_Dialog.UseEnc !== isEnc) {
-		var ShowHide = WeightToCalc_Dialog.UseEnc ? "Show" : "Hide";
-		var HideShow = WeightToCalc_Dialog.UseEnc ? "Hide" : "Show";
-		tDoc[HideShow]("Weight Carrying Capacity");
-		tDoc[ShowHide]("Weight Heavily Encumbered");
-	}
+	if (WeightToCalc_Dialog.UseEnc !== isEnc) SetEncumbrance(WeightToCalc_Dialog.UseEnc);
 	
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
 	if (IsNotReset) tDoc.calculateNow();
-}
+};
+
+//set the type of encumbrance rules to use (if variant = true, use the variant rules)
+function SetEncumbrance(variant) {
+	var ShowHide = variant ? "Show" : "Hide";
+	var HideShow = variant ? "Hide" : "Show";
+	tDoc[HideShow]("Weight Carrying Capacity");
+	tDoc[ShowHide]("Weight Heavily Encumbered");
+};
 
 //see if a known ammunition is in a string, and return the ammo name
 function ParseAmmo(input, onlyInv) {
@@ -8691,6 +8705,7 @@ function SetUnitDecimals_Button() {
 		var spellsArray = []; // an array of all the spell fields
 		var SSmoreA = What("Template.extras.SSmore").split(",");
 		SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
+		if (!SSmoreA[0]) SSmoreA.unshift();
 		var SkipArray = ["hidethisline", "setcaptions", "setheader", "setdivider", "setglossary"];
 		if (SSmoreA[0]) {
 			for (var SS = 0; SS < SSmoreA.length; SS++) {
@@ -10110,7 +10125,7 @@ function ApplyAttackColor(attackNmbr, aColour, type, prefix) {
 					colour = What("Color.DragonHeads");
 					break;
 			}
-			if (!ColorList[colour]) break;
+			if (colour !== "black" && !ColorList[colour]) break;
 			var theIcon = tDoc.getField("SaveIMG.Attack." + colour).buttonGetIcon();
 			
 			tDoc.getField(prefixA[pA] + "Image." + Q + "Attack." + a).buttonSetIcon(theIcon);

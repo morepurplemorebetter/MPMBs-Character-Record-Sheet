@@ -1639,6 +1639,7 @@ var BookMarkList = {
 	"ASnotes_Bookmarks" : tDoc.bookmarkRoot.children[0].children[6],
 	"WSfront_Bookmarks" : tDoc.bookmarkRoot.children[0].children[7],
 	"SSfront_Bookmarks" : tDoc.bookmarkRoot.children[0].children[8],
+	"SSmore_Bookmarks" : tDoc.bookmarkRoot.children[0].children[8],
 	"ALlog_Bookmarks" : tDoc.bookmarkRoot.children[0].children[9],
 	"PRsheet_Bookmarks" : tDoc.bookmarkRoot.children[0].children[10],
 	

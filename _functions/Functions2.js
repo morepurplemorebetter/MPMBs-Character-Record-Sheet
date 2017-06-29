@@ -2374,7 +2374,7 @@ function Bookmark_Goto(BookNm) {
 };
 
 // show/hide a template (AddRemove == undefined) or add/remove template with multiple instances (AddRemove == "Add" | "Remove" | "RemoveAll")
-function DoTemplate(tempNm, AddRemove, removePrefix) {
+function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 	//if the sheet is currently flattened, undo that first
 	if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
 	
@@ -2458,7 +2458,7 @@ function DoTemplate(tempNm, AddRemove, removePrefix) {
 				nType: 2
 			};
 			thermoM("Deleting the " + TemplateNames[tempNm] + "..."); //change the progress dialog text
-			if (app.alert(doGoOn) === 4) {
+			if (GoOn || app.alert(doGoOn) === 4) {
 				for (var i = tempExtras.length - 1; i >= 0; i--) {
 					var tempPage = tDoc.getField(tempExtras[i] + BookMarkList[tempNm]).page;
 					thermoM("Deleting " + TemplateNames[tempNm] + ", from page " + (tempPage + 1) + "..."); //change the progress dialog text
@@ -2512,20 +2512,13 @@ function DoTemplate(tempNm, AddRemove, removePrefix) {
 			};
 			
 			//now amend the bookmarks
-			if (!isTempVisible) amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], true);
+			if (!isTempVisible && BookMarkList[tempNm + "_Bookmarks"]) amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], true);
 			
 			//now do some extra actions, depending on the page added
 			switch (tempNm) {
 			 case "AScomp" :
-//				SetRichTextFields(true, true); //re-do the rich text fields
-//				ApplyAttackColor("", "", "Comp.", theNewPrefix); //re-do this companion page's attack colors
 				FindCompRace(undefined, theNewPrefix); //re-find this companion page's races
 				FindCompWeapons(undefined, theNewPrefix); //re-find this companion page's weapons
-//				ShowCompanionLayer(theNewPrefix); //reset the layers
-//				ClearIcons(theNewPrefix + "Comp.img.Portrait", true); //reset the image
-				break;
- 			 case "WSfront" : // niet meer nodig want geen reset meer
-//				WildshapeUpdate(); //update the header texts for the newly added wildshape page
 				break;
 			 case "ALlog" :
 				if (isTempVisible) UpdateLogsheetNumbering(theNewPrefix); //update the header texts for the newly added log page
@@ -2882,7 +2875,7 @@ function CalcLogsheetValue() {
 		event.value = theGain === "" ? theStartNmr : theStartNmr + eval(theGain);
 	} else {
 		var FldNmbr = Number(fNm.replace(/.*AdvLog\.(\d+?)\..+/, "$1"));
-		if (!prefix || (prefix === What("Template.extras.ALlog").split(",")[1] && FldNmbr === 1)) {
+		if (prefix === What("Template.extras.ALlog").split(",")[1] && FldNmbr === 1) {
 			event.target.readonly = false;
 			return;
 		} else {
@@ -2919,6 +2912,7 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	var prefix = Button ? "P0.AdvLog." : event.target.name.substring(0, event.target.name.indexOf("AdvLog."));
+	var isFirstPrefix = prefix === What("Template.extras.ALlog").split(",")[1];
 	var cLogoDisplay = minVer && typePF ? tDoc.getField("Image.DnDLogo.AL").display : false;
 	
 	var menuLVL1 = function (item, array) {
@@ -2953,7 +2947,7 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 	var alMenuItems = [
 		["Add extra " + (Button ? "page" : "'Adventurers Log' page"), "add page"]
 	].concat(
-		(Button || (tDoc.info.AdvLogOnly && !prefix)) ?
+		(Button || (tDoc.info.AdvLogOnly && isFirstPrefix)) ?
 		[["Remove all pages and reset the 1st", "remove all"]] :
 		[["Remove this 'Adventurers Log' page", "remove page"]]
 	).concat(

@@ -972,6 +972,12 @@ function isTemplVis(tempNm, returnPrefix) {
 		isVisible = What("Template.extras." + tempNm) !== "";
 		firstTempl = What("Template.extras." + tempNm).split(",")[1];
 	};
-	if (!isVisible && tempNm === "SSfront") isVisible = isTemplVis("SSmore");
+	if (!isVisible && tempNm === "SSfront") {
+		isVisible = isTemplVis("SSmore", returnPrefix);
+		if (isArray(isVisible)) {
+			firstTempl = isVisible[1];
+			isVisible = isVisible[0];
+		};
+	};
 	return returnPrefix && firstTempl ? [isVisible, firstTempl] : isVisible;
 };

@@ -391,14 +391,14 @@ function DirectImport(consoleTrigger) {
 		closeAlert = ["An error occurred", "An unknown error occurred. Importing failed.\n\nPlease make sure the file you want to import is not currently open in any application."];
 	}
 	
-	//if opening the doc failed, or it is not one of MPMB's Character Recond Sheets (according)
+	//if opening the doc failed, or it is not one of MPMB's Character Record Sheets (according)
 	if (closeAlert) {
 		app.alert({
 			cTitle: closeAlert[0],
 			cMsg: closeAlert[1]
 		});
 	} else if (global.docFrom && global.docTo) { try { //we are good to go and import stuff!
-		ResetAll(true); //first reset the current sheet to its initial state
+		ResetAll(true, true); //first reset the current sheet to its initial state, but without the extra templates generated
 		Value("Opening Remember", "Yes");
 		IsNotImport = false;
 		ignorePrereqs = true;
@@ -413,8 +413,7 @@ function DirectImport(consoleTrigger) {
 		var bothPF = typePF && fromSheetTypePF;
 		var bothCF = !typePF && !fromSheetTypePF;
 		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
-		var FromVersion = global.docFrom.info.SheetVersion;
-		if (isNaN(FromVersion)) FromVersion = FromVersion.replace("b", "");
+		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
 		
 		//copy any custom script and run it
 		if (ImportField("User Script")) RunUserScript();
@@ -562,33 +561,36 @@ function DirectImport(consoleTrigger) {
 		
 		//get the page layout of the sheet and copy it
 		var pagesLayout = {};
+		var onlySpawnsFrom = FromVersion >= 12.995;
 		if (global.docFrom.BookMarkList) { //if no bookmarklist exists where we are importing from, don't do anything
 			for (var templ in TemplateDep) {
+				var onlySpawnsFromT = onlySpawnsFrom || templ.substring(0, 2) === "SS";
 				//see if the template exists in the docFrom
-				var dFfldT = global.docFrom.BookMarkList[templ] ? global.docFrom.getField(global.docFrom.BookMarkList[templ]) : false;
-				if (dFfldT) pagesLayout[templ] = dFfldT.page !== -1;
-				//see if any extra versions have been added
-				var dFfldTE = global.docFrom.getField("Template.extras." + templ);
+				var dFfldT = onlySpawnsFrom ? global.docFrom.isTemplVis(templ) : global.docFrom.BookMarkList[templ] ? global.docFrom.getField(global.docFrom.BookMarkList[templ]) : false;
+				if (dFfldT) pagesLayout[templ] = onlySpawnsFrom ? true : dFfldT.page !== -1;
+				var dFfldTE = global.docFrom.getField("Template.extras." + templ); //see if any extra versions have been added
 				if (dFfldTE) {
-					pagesLayout[templ + "Extras"] = dFfldTE.value.split(",").length - 1;
-					if (pagesLayout[templ + "Extras"]) pagesLayout[templ + "ExtraNmFrom"] = dFfldTE.value.split(",");
-				}
-			}
+					pagesLayout[templ + "Extras"] = dFfldTE.value.split(",").length - (onlySpawnsFromT || !pagesLayout[templ] ? 1 : 0);
+					if (pagesLayout[templ + "Extras"]) {
+						pagesLayout[templ + "ExtraNmFrom"] = dFfldTE.value.split(",").splice(onlySpawnsFromT || !pagesLayout[templ] ? 1 : 0);
+					};
+				};
+			};
 			//now replicate that layout
 			for (var templ in TemplateDep) {
 				if (pagesLayout[templ] !== undefined && global.docTo.getField(BookMarkList[templ])) {
 					var templAte = pagesLayout[templ];
 					var tempExtr = pagesLayout[templ + "Extras"];
 					var templToVis = global.docTo.isTemplVis(templ);
-					if (!templAte && !tempExtr) {
-						if (templ.substring(0, 2) !== "SS" && templToVis) DoTemplate(templ, "Remove");
-					} else if (tempExtr) {
-						if (templ.substring(0, 2) !== "SS" && !templToVis) DoTemplate(templ);
-						if (sameType || (templ !== "SSmore" && (templ !== "SSfront" || !pagesLayout.SSmoreExtras))) for (var tE = 0; tE < tempExtr; tE++) DoTemplate(templ, "Add");
-						if (templ.substring(0, 2) !== "SS" && !templAte) DoTemplate(templ);
-						pagesLayout[templ + "ExtraNmTo"] = What("Template.extras." + templ).split(",");
-					} else if (templAte && templ.substring(0, 2) !== "SS" && !templToVis) {
+					if (templToVis && !templAte && !tempExtr) { // remove any visible pages that are not visible in the docFrom
+						DoTemplate(templ, "Remove", false, true);
+					} else if (templAte && !templToVis && TemplatesWithExtras.indexOf(templ) === -1) { //add the non-duplicatable templates
 						DoTemplate(templ);
+					} else if (tempExtr) { // add templates with dependencies
+						if (sameType || (templ !== "SSmore" && (templ !== "SSfront" || !pagesLayout.SSmoreExtras))) {
+							for (var tE = 0; tE < tempExtr; tE++) DoTemplate(templ, "Add");
+						};
+						pagesLayout[templ + "ExtraNmTo"] = What("Template.extras." + templ).split(",").splice(1);
 					};
 				};
 			};
@@ -845,7 +847,7 @@ function DirectImport(consoleTrigger) {
 		
 	// do the companion pages
 		//run through each one in the array
-		var prefixA = pagesLayout && pagesLayout.AScompExtras ? [pagesLayout.AScompExtraNmFrom, pagesLayout.AScompExtraNmTo] : [[""], [""]];
+		var prefixA = pagesLayout && pagesLayout.AScompExtras ? [pagesLayout.AScompExtraNmFrom, pagesLayout.AScompExtraNmTo] : [[], []];
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
@@ -924,7 +926,7 @@ function DirectImport(consoleTrigger) {
 		}
 		
 	//do the notes pages
-		prefixA = pagesLayout && pagesLayout.ASnotesExtras ? [pagesLayout.ASnotesExtraNmFrom, pagesLayout.ASnotesExtraNmTo] : [[""], [""]];
+		prefixA = pagesLayout && pagesLayout.ASnotesExtras ? [pagesLayout.ASnotesExtraNmFrom, pagesLayout.ASnotesExtraNmTo] : [[], []];
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
@@ -935,7 +937,7 @@ function DirectImport(consoleTrigger) {
 	//do the wildshape pages
 		doChildren("Wildshapes.Info", "", "", /^(?!.*start).*$/i); //the info values
 		doChildren("AdvLog.1", "", "", /^(?!.*start).*$/i); //the starting values
-		prefixA = pagesLayout && pagesLayout.WSfrontExtras ? [pagesLayout.WSfrontExtraNmFrom, pagesLayout.WSfrontExtraNmTo] : [[""], [""]];
+		prefixA = pagesLayout && pagesLayout.WSfrontExtras ? [pagesLayout.WSfrontExtraNmFrom, pagesLayout.WSfrontExtraNmTo] : [[], []];
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
@@ -945,7 +947,7 @@ function DirectImport(consoleTrigger) {
 	//do the adventure logsheet pages
 		if (FromVersion < 12.994 && FromVersion >= 11.5) {global.docFrom.UpdateALdateFormat("yy-mm-dd"); };
 		doChildren("AdvLog.1", "", "", /^(?!.*start).*$/i); //the starting values
-		prefixA = pagesLayout && pagesLayout.ALlogExtras ? [pagesLayout.ALlogExtraNmFrom, pagesLayout.ALlogExtraNmTo] : [[""], [""]];
+		prefixA = pagesLayout && pagesLayout.ALlogExtras ? [pagesLayout.ALlogExtraNmFrom, pagesLayout.ALlogExtraNmTo] : [[], []];
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
@@ -1010,10 +1012,10 @@ function DirectImport(consoleTrigger) {
 			
 			//now do the spell rows, but only if the sheet type is the same or only the first page was visible
 			if (pagesLayout && pagesLayout.SSfrontExtras && (sameType || !pagesLayout.SSmoreExtras)) {
-				prefixA = [[pagesLayout.SSfrontExtraNmFrom[1]], [pagesLayout.SSfrontExtraNmTo[1]]];
+				prefixA = [[pagesLayout.SSfrontExtraNmFrom], [pagesLayout.SSfrontExtraNmTo]];
 				if (pagesLayout.SSmoreExtras) {
-					prefixA[0] = prefixA[0].concat(pagesLayout.SSmoreExtraNmFrom.slice(1));
-					prefixA[1] = prefixA[1].concat(pagesLayout.SSmoreExtraNmTo.slice(1));
+					prefixA[0] = prefixA[0].concat(pagesLayout.SSmoreExtraNmFrom);
+					prefixA[1] = prefixA[1].concat(pagesLayout.SSmoreExtraNmTo);
 				}
 				for (var i = 0; i < prefixA[0].length; i++) {
 					var prefixFrom = prefixA[0][i];
@@ -1064,6 +1066,9 @@ function DirectImport(consoleTrigger) {
 		
 		//import the icons
 		var IIerror = ImportIcons(pagesLayout, app.viewerType !== "Reader" && importFromPath[2]);
+	
+		// set the focus to the top of the first page
+		tDoc.getField("Player Name").setFocus();
 	} catch (error) {
 		var eText = "An error occured during importing:\n " + error + "\n ";
 		for (var e in error) eText += e + ": " + error[e] + ";\n ";

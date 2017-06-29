@@ -168,7 +168,7 @@ function ApplySpell(FldValue, rememberFldName) {
 	} else if ((/setdivider/i).test(input[0])) {
 		var theLevel = input[1] !== undefined && !isNaN(parseFloat(input[1])) ? parseFloat(input[1]) : false;
 		var theSuffix = input[2] !== undefined && !isNaN(parseFloat(input[2])) ? parseFloat(input[2]) : false;
-		if (theClass !== false && theSuffix !== false ) {
+		if (theClass !== false && theSuffix !== false) {
 			SetSpellSheetElement(base, "divider", theSuffix, theLevel, false);
 		}
 	} else if ((/setglossary/i).test(input[0])) {
@@ -290,9 +290,10 @@ function SetSpellDividerName(field, level) {
 		["", 8, "th Level"],
 		["", 9, "th Level"],
 		["", "", "Psionic Talents"],
-		["", "", "Psionic Disciplines"]
+		["", "", "Psionic Disciplines"],
+		["Spells (", "1-9", "th Level)"]
 	];
-	
+	if (level > 11) level = 12;
 	if (!typePF) {
 		var spans = [{
 			text : spellLvl[level][0]
@@ -3448,9 +3449,10 @@ function GenerateSpellSheet(GoOn) {
 
 //remove all visible spell sheets and reset the template remember fields
 function RemoveSpellSheets(noFirst) {
-	if (What("Template.extras.SSfront")) {
-		var SSarray = What("Template.extras.SSmore").split(",");
-		SSarray[0] = What("Template.extras.SSfront").split(",")[1];
+	var SSarray = What("Template.extras.SSmore").split(",");
+	SSarray[0] = What("Template.extras.SSfront").split(",")[1];
+	if (!SSarray[0]) SSarray.unshift();
+	if (SSarray.length) {
 		if (tDoc.info.SpellsOnly) tDoc.getTemplate("blank").spawn(0, false, false);
 		for (var A = 1; A < SSarray.length; A++) {
 			thePage = tDoc.getField(SSarray[A] + BookMarkList["SSmore"]).page;
@@ -3462,15 +3464,14 @@ function RemoveSpellSheets(noFirst) {
 			//grey out the appropriate bookmarks
 			amendBookmarks(BookMarkList["SSfront_Bookmarks"], false);
 		} else {
-			tDoc.resetForm(["Template.extras.SSmore"]);
-			if (!noFirst) {
-				tDoc.getTemplate("SSfront").spawn(0, true, false);
-				Value("Template.extras.SSfront", ",P0.SSfront");
-				tDoc.deletePages(1);
-			};
-		}
-	}
-}
+			tDoc.resetForm(["Template.extras.SSmore", "Template.extras.SSfront"]);
+			var forFirst = noFirst ? "SSmore" : "SSfront";
+			tDoc.getTemplate(forFirst).spawn(0, true, false);
+			Value("Template.extras." + forFirst, ",P0." + forFirst);
+			tDoc.deletePages(1);
+		};
+	};
+};
 
 //make menu for the spell options button
 function MakeSpellMenu() {
@@ -3501,7 +3502,11 @@ function MakeSpellMenu() {
 		if (sClass === "any") continue;
 		CasterClasses.push([sClass === "-" ? sClass : "with all " + sClass.capitalize() + " psionics", sClass]);
 	};
-	if (CasterClasses[CasterClasses.length - 1][0] === "-") CasterClasses.pop(); //remove a trailing hyphen
+	if (CasterClasses.slice(-1)[0][0] !== "-") 	CasterClasses.push("-"); //add a hyphen, if it is not there already
+	CasterClasses = CasterClasses.concat([
+		["with all spells, sorted alphabetically", "alphabetical"],
+		["with all spells, sorted by level", "grouped by level"],
+	]);
 	
 	//see if their are any number of spellcasting things
 	var anyCasters = false;
@@ -3664,15 +3669,15 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 			if (goThrough === 4) {
 				if (SSvisible) RemoveSpellSheets();
 				var thePrefix = DoTemplate("SSfront", "Add");
-				if (MenuSelection[1] === "lines") {
-					AddSpellSheetTextLines(thePrefix, MenuSelection[2] === "boxes", FieldNumbers.spells[0]);
+				if (MenuSelection[2] === "lines") {
+					AddSpellSheetTextLines(thePrefix, MenuSelection[3] === "boxes", FieldNumbers.spells[0]);
 				}
 			}
 			break;
 		 case "addempty" :
 			var thePrefix = DoTemplate("SSmore", "Add");
-			if (MenuSelection[1] === "lines") {
-				AddSpellSheetTextLines(thePrefix, MenuSelection[2] === "boxes");
+			if (MenuSelection[2] === "lines") {
+				AddSpellSheetTextLines(thePrefix, MenuSelection[3] === "boxes");
 			}
 			break;
 		 case "delete" :
@@ -3685,10 +3690,10 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 			resourceDecisionDialog();
 			break;
 		 case "slots" :
-			if (MenuSelection[2] !== "true") { //it wasn't marked, so something is about the change
-				Value("SpellSlotsRemember", MenuSelection[1]);
+			if (MenuSelection[3] != "true") { //it wasn't marked, so something is about the change
+				Value("SpellSlotsRemember", MenuSelection[2]);
 				SetSpellSlotsVisibility();
-				if (MenuSelection[1] === "[false,false]") {
+				if (MenuSelection[2] === "[false,false]") {
 					SpellPointsLimFea("Add");
 					Show("Image.SpellPoints");
 					Show("SpellSlots.Checkboxes.SpellPoints");
@@ -3711,7 +3716,7 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 			}
 			break;
 		 case "complete" :
-			GenerateCompleteSpellSheet(MenuSelection[1]);
+			GenerateCompleteSpellSheet(MenuSelection[2]);
 			break;
 		 case "toggleslots" :
 			var hiddenNoPrint = slotsVisible ? "Hide" : "DontPrint";
@@ -3768,6 +3773,7 @@ function CalcSpellsheetNumber() {
 	var prefix = event.target.name.substring(0, event.target.name.indexOf("SpellSheet"));
 	var SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
+	if (!SSmoreA[0]) SSmoreA.unshift();
 	return MakeDocName() + (tDoc.info.SpellsOnly ? "; page " : "; Spell Sheet ") + (SSmoreA.indexOf(prefix) + 1) + "/" + SSmoreA.length;
 }
 
@@ -4012,9 +4018,9 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	var base = event.target.name;
 	var prefix = base.substring(0, base.indexOf("spells."));
 	var lineNmbr = parseFloat(base.slice(-2)[0] === "." ? base.slice(-1) : base.slice(-2));
-	var SSmoreA = What("Template.extras.SSmore").split(",").splice[0];
-	var SSfrontA = What("Template.extras.SSmore").split(",")[1];
-	if (SSfrontA) SSmoreA.unshift(SSfrontA);
+	var SSmoreA = What("Template.extras.SSmore").split(",");
+	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
+	if (!SSmoreA[0]) SSmoreA.unshift();
 	var thisSheet = SSmoreA.indexOf(prefix);
 	var maxLine = SSmaxLine(prefix);
 	var RemLine = base.replace("checkbox", "remember");
@@ -4352,6 +4358,7 @@ function deleteSpellRow(prefix, lineNmbr) {
 	//make an array of all the rows below this one on the sheet
 	var SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
+	if (!SSmoreA[0]) SSmoreA.unshift();
 	var thisSheet = SSmoreA.indexOf(prefix);
 	var offset = 0;
 	for (var SS = thisSheet; SS < SSmoreA.length; SS++) {
@@ -4467,6 +4474,7 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 	var emptyCount = 0;
 	var SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
+	if (!SSmoreA[0]) SSmoreA.unshift();
 	var thisSheet = SSmoreA.indexOf(prefix);
 	var resultRow = false;
 	var rememberRow = [0];
@@ -4584,6 +4592,7 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 	//now update the array of spell pages
 	SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
+	if (!SSmoreA[0]) SSmoreA.unshift();
 	
 	//then put all the values back, starting with the bottom row
 	var valuesCountdown = valuesArray.length - 1;
@@ -4845,6 +4854,10 @@ function AddSpellSheetTextLines(prefix, boxes, maxLine) {
 
 //generate the spell sheet for all the different classes
 function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
+	if ((/alphabetical|grouped by level/i).test(thisClass)) {
+		GenerateSpellSheetWithAll(thisClass, skipdoGoOn);
+		return;
+	};
 	if (app.viewerType !== "Reader" && tDoc.info.SpellsOnly) {
 		tDoc.info.SpellsOnly = thisClass;
 		tDoc.info.Title = MakeDocName();
@@ -4852,7 +4865,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	}
 	//first ask the user if he really wants to wait for an hour
 	var doGoOn = {
-		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClass.capitalize() + " class.\n\nThis will not include any access to spells granted by a subclass.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nThis process will take a very, very long time! For classes with a lot of spells, such as a Wizard, this could be well over an hour (or several hours, depending on your machine).\n\nAre you sure you want to continue?",
+		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClass.capitalize() + " class.\n\nThis will not include any access to spells granted by a subclass, or spells excluded in the Source Selection dialogue.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nThis process will take a very, very long time! For classes with a lot of spells, such as a Wizard, this could be well over an hour (or several hours, depending on your machine).\n\nAre you sure you want to continue?",
 		nIcon: 2,
 		cTitle: "Continue with slow generation of complete spell sheet?",
 		nType: 2
@@ -4871,7 +4884,6 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	var lineCurrent = 0; //set the current line on the Spell Sheet
 	var headerCurrent = 0; //set the current header on the Spell Sheet
 	var dividerCurrent = 0; //set the current divider on the Spell Sheet
-	var prefixCurrent = ""; //set the current prefix on the Spell Sheet
 	var SSfront = true; //set the state of on which Spell Sheet we are working
 	
 	//define a function for adding a new page
@@ -4897,11 +4909,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	var orderedSpellList = CreateSpellList(thisClass, false, false, true); //get an array of all the spells of the class, divided up in 1 array per spell level
 		
 	//for the first entry we need to make the template SSfront appear
-	if (tDoc.info.SpellsOnly) {
-		prefixCurrent = "P0.SSfront.";
-	} else { //if this a normal character sheet, we now have to make the first spell sheet
-		prefixCurrent = DoTemplate("SSfront", "Add"); //for the first entry we need to make the template
-	}
+	var prefixCurrent = tDoc.info.SpellsOnly ? "P0.SSfront." : DoTemplate("SSfront", "Add"); //set the current prefix on the Spell Sheet
 	thermoM("Filling out page 1 of the Spell Sheet..."); //change the progress dialog text
 	
 	//now sort each of those new arrays and put them on the sheet
@@ -5332,3 +5340,117 @@ function setSpellVariables(reDoAll) {
 	AddSpellsMenu = ParseSpellMenu();
 	AddPsionicsMenu = ParsePsionicsMenu();
 }
+
+//a way to generate a spell sheet that has all spells on it (alphabetical = true for an alphabetical list, and false for a list grouped by level)
+function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
+	if (app.viewerType !== "Reader" && tDoc.info.SpellsOnly) {
+		tDoc.info.SpellsOnly = alphabetical ? "alphabetical" : "grouped by level";
+		tDoc.info.Title = MakeDocName();
+		Value("Opening Remember", "No");
+	};
+	//first ask the user if he really wants to wait for an hour
+	var doGoOn = {
+		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available " + (alphabetical ? "in alphabetical order" : "grouped by level") + ".\n\nThis will not include any access to spells excluded in the Source Selection dialogue.\n\nThis process will take a very, very long time! This could be well over an hour (or several hours, depending on your machine).\n\nAre you sure you want to continue?",
+		nIcon: 2,
+		cTitle: "Continue with slow generation of complete spell sheet?",
+		nType: 2
+	};
+	if (!skipdoGoOn && app.alert(doGoOn) !== 4) return;
+	
+	thermoM("start"); //start a progress dialog
+	thermoM("Generating the Spell Sheets for all spells..."); //change the progress dialog text
+	
+	thermoM(1/7); //increment the progress dialog's progress
+	
+	//then we remove all the existing sheets (if any)
+	RemoveSpellSheets(true);
+	
+	var lineMax = FieldNumbers.spells[1]; //set the maximum we can go on this sheet
+	var lineCurrent = 0; //set the current line on the Spell Sheet
+	var headerCurrent = 0; //set the current header on the Spell Sheet
+	var dividerCurrent = 0; //set the current divider on the Spell Sheet
+	var SSfront = true; //set the state of on which Spell Sheet we are working
+	
+	//define a function for adding a new page
+	var SpellPages = 1;
+	var AddPage = function() {
+		//add one more page and set the corresponding prefix to the variable
+		prefixCurrent = DoTemplate("SSmore", "Add");
+		SpellPages += 1;
+		thermoM("Filling out page " + SpellPages + " of the Spell Sheets..."); //change the progress dialog text
+		//now reset all the incremental variables to 0;
+		lineMax = FieldNumbers.spells[1];
+		lineCurrent = 0;
+		headerCurrent = 0;
+		dividerCurrent = 0;
+		SSfront = false;
+	}
+	
+	//now we add all the spells of this single class into a new set of spell sheets
+	IsNotSpellSheetGenerating = false;
+	
+	//get an array of all the spells of the class, divided up in 1 array per spell level
+	var fullSpellList = CreateSpellList("any", false, false, true);
+	
+	//now if this is an alphabetical list, we want to combine the arrays 1-9 into a single array
+	if (alphabetical) {
+		var orderedSpellList = new Array(12);
+		orderedSpellList[0] = fullSpellList[0];
+		orderedSpellList[1] = [].concat.apply([], fullSpellList.slice(1, 10)).sort();
+		orderedSpellList[10] = fullSpellList[10];
+		orderedSpellList[11] = fullSpellList[11];
+	} else {
+		var orderedSpellList = fullSpellList;
+	}
+		
+	//for the first entry we need to make the template SSfront appear
+	var prefixCurrent = tDoc.info.SpellsOnly ? "P0.SSmore." : DoTemplate("SSmore", "Add"); //set the current prefix on the Spell Sheet
+	
+	thermoM("Filling out page 1 of the Spell Sheet..."); //change the progress dialog text
+	
+	//now sort each of those new arrays and put them on the sheet
+	for (var lvl = 0; lvl < orderedSpellList.length; lvl++) {
+		var spArray = orderedSpellList[lvl];
+		var isPsionics = lvl <= 9 ? "" : "psionic";
+		if (spArray && spArray.length > 0) {
+			//add spell dependencies to fill out the array
+			spArray = addSpellDependencies(spArray);
+			
+			//first test if there is enough space left on the current page to add what we need to
+			//assume that we need to add at least 5 of the spells, the total of this level of spells, whichever is less
+			// so 3 (divider + title line) + lowest of [5, arrayLength]
+			var needSpace = 3 + Math.min(5, spArray.length);
+			if (needSpace > (lineMax - lineCurrent + 1)) AddPage();
+			
+			//then add the divider
+			//if this is an alphabetical list, we want only four headers: "cantrips", "spells", "talents", "disciplines"
+			var divLevel = !alphabetical || isPsionics || !lvl ? lvl : 12;
+			Value(prefixCurrent + "spells.remember." + lineCurrent, "setdivider##" + divLevel + "##" + dividerCurrent);
+			lineCurrent += 2;
+			dividerCurrent += 1;
+			
+			//then add the title line
+			var firstCol = isPsionics && lvl === 11 ? "##pp" : !isPsionics && alphabetical && lvl ? "##lv" : "";
+			Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + firstCol);
+			lineCurrent += 1;
+			
+			for (var y = 0; y < spArray.length; y++) {
+				aSpell = spArray[y];
+				//check if not at the end of the page and, if so, create a new page
+				if (lineCurrent > lineMax) AddPage();
+				var spellLvl = alphabetical && !isPsionics && SpellsList[aSpell] && SpellsList[aSpell].level && SpellsList[aSpell].firstCol === undefined ? "##" + SpellsList[aSpell].level : "";
+				Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + spellLvl);
+				lineCurrent += 1;
+			}
+		}
+	};
+	
+	//add the glossary if there is still space on the last page
+	if ((lineCurrent + 11) <= lineMax) {
+		Value(prefixCurrent + "spells.remember." + lineCurrent, "setglossary");
+	};
+	
+	IsNotSpellSheetGenerating = true;
+	
+	thermoM(); //stop all the progress dialogs
+};
