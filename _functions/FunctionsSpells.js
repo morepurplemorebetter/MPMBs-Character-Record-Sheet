@@ -3608,8 +3608,8 @@ function MakeSpellMenu() {
 	if (!typePF && !tDoc.info.SpellsOnly) {
 		menuLVL2(spellsMenu, ["Where to show Spell Slots (Spell Points)", "slots"], [["On Spell Sheet", "[false,true]"], ["On first page (in Limited Features)", "[true,false]"], ["On both Spell Sheet and first page", "[true,true]"], ["-", "-"], ["Use Spell Points instead of Spell Slots", "[false,false]"]]);
 	} else if (tDoc.info.SpellsOnly) {
-		var slotsVisible = tDoc.getField("P0.SSfront.SpellSlots.CheckboxesSet.lvl1").display === display.noPrint;
-		var spellPointsVis = RememberSlots === "[false,false]";
+		var slotsVisible = What("Template.extras.SSfront") ? tDoc.getField("SpellSlots.CheckboxesSet.lvl1").display === display.noPrint : false;
+		var spellPointsVis = What("Template.extras.SSfront") ? RememberSlots === "[false,false]" : false;
 		
 		//options to show/hide spell slot modifier fields
 		spellsMenu = spellsMenu.concat([{
@@ -3620,7 +3620,8 @@ function MakeSpellMenu() {
 		}, {
 			cName : "Use Spell Points instead of Spell Slots",
 			cReturn : "ssheet#" + (typePF ? "spellpoints" : "slots#" + (spellPointsVis ? "[false,true]" : "[false,false]") + "#false"),
-			bMarked : spellPointsVis
+			bMarked : spellPointsVis,
+			bEnabled : What("Template.extras.SSfront") !== ""
 		}]);
 	} else if (typePF) {
 		//options to toggle the use of spell points
@@ -4855,7 +4856,7 @@ function AddSpellSheetTextLines(prefix, boxes, maxLine) {
 //generate the spell sheet for all the different classes
 function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	if ((/alphabetical|grouped by level/i).test(thisClass)) {
-		GenerateSpellSheetWithAll(thisClass, skipdoGoOn);
+		GenerateSpellSheetWithAll((/alphabetical/i).test(thisClass), skipdoGoOn);
 		return;
 	};
 	if (app.viewerType !== "Reader" && tDoc.info.SpellsOnly) {

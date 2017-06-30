@@ -5311,7 +5311,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
 	if (IsNotReset) tDoc.calculateNow();
-	if (QI && (fldName === event.target.name || Number(fldNmbr) === FieldNumbers.attacks)) SetOffHandAction();
+	if (QI && ((event.target && fldName === event.target.name) || Number(fldNmbr) === FieldNumbers.attacks)) SetOffHandAction();
 };
 
 //calculate the attack damage and to hit, can be called from any of the attack fields (sets the fields)
