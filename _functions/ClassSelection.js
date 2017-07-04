@@ -264,7 +264,7 @@ function SelectClass() {
 			this.updateFull(dialog);
 		},
 		bAdR : function (dialog) { dialog.end("bAdR"); },
-		bSrc : function (dialog) { ShowDialog("List of Sources, sorted by abbreviation", "sources"); },
+		bSrc : function (dialog) { MakeSourceMenu_SourceOptions(); },
 		bCSS : function (dialog) { dialog.end("bCSS"); },
 		r0LV : function (dialog) { this.lvlChange(dialog, 0); },
 		r0TX : function (dialog) { this.textChange(dialog, 0); },

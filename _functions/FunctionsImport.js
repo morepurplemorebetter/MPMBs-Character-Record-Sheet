@@ -833,15 +833,19 @@ function DirectImport(consoleTrigger) {
 		
 		
 	//>> make a function to do all children of a parent field
-		var doChildren = function(parentFld, fromPre, toPre, excludeRegEx, inclVisibility) {
+		var doChildren = function(parentFld, fromPre, toPre, excludeRegEx, inclVisibility, actionsObj) {
 			var parentA = global.docTo.getField(toPre + parentFld);
 			if (!parentA) return;
+			if (actionsObj) {
+				actionsObj.notTooltip = true;
+				actionsObj.doVisiblity = inclVisibility
+			};
 			parentA = parentA.getArray();
 			for (var pA =  0; pA < parentA.length; pA++) {
 				var pAnameTo = parentA[pA].name;
 				if (excludeRegEx && (excludeRegEx).test(pAnameTo)) continue;
 				var pAnameFrom = pAnameTo.replace(toPre, fromPre);
-				ImportField(pAnameTo, {notTooltip: true, doVisiblity: inclVisibility}, pAnameFrom);
+				ImportField(pAnameTo, actionsObj ? actionsObj : {notTooltip: true, doVisiblity: inclVisibility}, pAnameFrom);
 			}
 		}
 		
@@ -935,23 +939,32 @@ function DirectImport(consoleTrigger) {
 		}
 		
 	//do the wildshape pages
-		doChildren("Wildshapes.Info", "", "", /^(?!.*start).*$/i); //the info values
-		doChildren("AdvLog.1", "", "", /^(?!.*start).*$/i); //the starting values
 		prefixA = pagesLayout && pagesLayout.WSfrontExtras ? [pagesLayout.WSfrontExtraNmFrom, pagesLayout.WSfrontExtraNmTo] : [[], []];
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
-			doChildren("Wildshape.Race", prefixFrom, prefixTo, /^(?!.*\d)|(?=.*(start|total)).*$/i);
+			doChildren("Wildshapes.Info", prefixFrom, prefixTo); //the info values
+			doChildren("Wildshape.Race", prefixFrom, prefixTo);
 		}
 		
 	//do the adventure logsheet pages
-		if (FromVersion < 12.994 && FromVersion >= 11.5) {global.docFrom.UpdateALdateFormat("yy-mm-dd"); };
-		doChildren("AdvLog.1", "", "", /^(?!.*start).*$/i); //the starting values
 		prefixA = pagesLayout && pagesLayout.ALlogExtras ? [pagesLayout.ALlogExtraNmFrom, pagesLayout.ALlogExtraNmTo] : [[], []];
+		var advLogRegChl = FromVersion < 12.994 ? /^(?!.*\d)|(?=.*(start|total|date)).*$/i : /^(?!.*\d)|(?=.*(start|total)).*$/i;
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
-			doChildren("AdvLog", prefixFrom, prefixTo, /^(?!.*\d)|(?=.*(start|total)).*$/i);
+			if (i === 0) doChildren("AdvLog.1", prefixFrom, prefixTo, /^(?!.*start).*$/i); //the starting values
+			if (FromVersion < 12.994) {
+				for (var x = 1; x <= FieldNumbers.logs; x++) {
+					var dateFldFr = global.docFrom.getField(prefixFrom + "AdvLog." + x + ".date");
+					var dateFldTo = global.docTo.getField(prefixTo + "AdvLog." + x + ".date");
+					if (!dateFldTo || !dateFldFr) continue;
+					var theDateForm = global.docFrom.What("DateFormat_Remember") ? global.docFrom.What("DateFormat_Remember") : "d mmm yyyy";
+					var theDateVal = util.scand(theDateForm, dateFldFr.value);
+					if (theDateVal) dateFldTo.value = util.printd("yy-mm-dd", theDateVal);
+				};
+			};
+			doChildren("AdvLog", prefixFrom, prefixTo, advLogRegChl);
 		}
 		
 	//do the spell sheet pages
@@ -1148,6 +1161,7 @@ function ImportField(fldNm, actionsObj, fromFldNm) {
 	if (fromFld.value !== fromFld.defaultValue) {
 		var testValFrom = fromFld.value.toString();
 		var testValTo = toFld.value.toString();
+		if (actionsObj.replaceFrom) testValFrom = testValFrom.replace(actionsObj.replaceFrom, actionsObj.replaceWith ? actionsObj.replaceWith : "");
 		if (toFld.type === "combobox" && !toFld.editable && testValFrom !== testValTo) {
 			try {toFld.value = fromFld.value} catch (e) {};
 		} else if (!actionsObj.cleanValue && !actionsObj.compareNoSpaces && testValFrom !== testValTo) {
@@ -1207,8 +1221,8 @@ function ImportIcons(pagesLayout, viaSaving) {
 	var fromSheetTypePF = global.docFrom.info.SheetType ? (/printer friendly/i).test(global.docFrom.info.SheetType) : false;
 	var bothPF = typePF && fromSheetTypePF;
 	var bothCF = !typePF && !fromSheetTypePF;
-	var FromVersion = global.docFrom.info.SheetVersion;
-	if (isNaN(FromVersion)) FromVersion = FromVersion.replace("b", "");
+	var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
+	if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/b/ig, ""));
 	if (FromVersion < 3.7) return true; //the form is of a version before there were any icon fields
 	
 	var IconArray = [
@@ -1217,7 +1231,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 		["Comp.img.Portrait", "Comp.img.Portrait"]
 	];
 	if (pagesLayout && pagesLayout.AScompExtras) {
-		for (var i = 1; i < pagesLayout.AScompExtraNmFrom.length; i++) {
+		for (var i = 0; i < pagesLayout.AScompExtraNmFrom.length; i++) {
 			IconArray.push([pagesLayout.AScompExtraNmFrom[i] + "Comp.img.Portrait", pagesLayout.AScompExtraNmTo[i] + "Comp.img.Portrait"]);
 		}
 	};
@@ -1225,7 +1239,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 		IconArray.push(["HeaderIcon", "HeaderIcon"]);
 		IconArray.push(["AdvLog.HeaderIcon", "AdvLog.HeaderIcon"]);
 		if (pagesLayout.ALlogExtras) {
-			for (var i = 1; i < pagesLayout.ALlogExtraNmFrom.length; i++) {
+			for (var i = 0; i < pagesLayout.ALlogExtraNmFrom.length; i++) {
 				IconArray.push([pagesLayout.ALlogExtraNmFrom[i] + "AdvLog.HeaderIcon", pagesLayout.ALlogExtraNmTo[i] + "AdvLog.HeaderIcon"]);
 			}
 		}

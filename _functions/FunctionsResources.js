@@ -987,7 +987,7 @@ function resourceSelectionDialog(type) {
 			this.exclActive = true;
 			this.inclActive = false;
 		},
-		bSrc : function (dialog) { ShowDialog("List of Sources, sorted by abbreviation", "sources"); },
+		bSrc : function (dialog) { MakeSourceMenu_SourceOptions(); },
 		description : {
 			name : "Pick which resources are excluded and included",
 			elements : [{

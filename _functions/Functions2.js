@@ -2741,8 +2741,6 @@ function functionBookmarks(theParent) {
 //make a menu to hide/show the lines of the notes on the page
 //after that, do something with the menu and its results
 function MakeNotesMenu_NotesOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
 	
 	//define some variables
 	var toSearch = event.target.name.indexOf("Notes") !== -1 ? "Notes." : "Cnote.";
@@ -2788,6 +2786,8 @@ function MakeNotesMenu_NotesOptions() {
 	var MenuSelection = getMenu("notes");
 	
 	if (MenuSelection !== undefined) {
+		tDoc.delay = true;
+		tDoc.calculate = false;
 		var toDo = false;
 		switch (MenuSelection[0]) {
 		 case WhiteL.toLowerCase() :
@@ -2818,10 +2818,9 @@ function MakeNotesMenu_NotesOptions() {
 				Show(toDo);
 			}
 		} 
+		tDoc.calculate = IsNotReset;
+		tDoc.delay = !IsNotReset;
 	}
-
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
 }
 
 //make a string of all the classes and levels (field calculation)
@@ -5469,7 +5468,7 @@ function SetOffHandAction() {
 
 //a way to show a very long piece of text without the dialogue overflowing the screen
 function ShowDialog(hdr, strng) {
-	if (strng === "sources") {
+	if (strng === "sources") { // ShowDialog("List of Sources, sorted by abbreviation", "sources");
 		strng = "";
 		var srcRef = {};
 		var srcArr = {};
@@ -5671,4 +5670,94 @@ function AddToModFld(Fld, Mod, Remove) {
 	};
 	setFld = setFld.replace(/^\+|(\+|-)0/g, "");
 	Value(Fld, setFld);
+};
+
+// make a menu off all the sources where clicking on them gets you to their linked URL
+function MakeSourceMenu_SourceOptions() {
+	var SourceMenu = [{
+		cName : "[clicking a source will open a web page]",
+		bEnabled : false
+	}, {
+		cName : "All",
+		oSubMenu : []
+	}, {
+		cName : "Primary Sources",
+		oSubMenu : []
+	}, {
+		cName : "Adventure Books",
+		oSubMenu : []
+	}, {
+		cName : "Adventurers League",
+		oSubMenu : []
+	}, {
+		cName : "Unearthed Arcana",
+		oSubMenu : []
+	}, {
+		cName : "-"
+	}, {
+		cName : "Open a dialogue with a list of the sources",
+		cReturn : "sourcelist#dialogue"
+	}];
+	
+	var menuLoc = {
+		"primary sources" : 2,
+		"adventure books" : 3,
+		"adventurers league" : 4,
+		"unearthed arcana" : 5
+	};
+	
+	var abbrObj = { arr : [], obj : {}, lowObj : {} };
+	for (var aSource in SourceList) {
+		abbrObj.arr.push(SourceList[aSource].abbreviation);
+		abbrObj.obj[SourceList[aSource].abbreviation] = aSource;
+		abbrObj.lowObj[aSource.toLowerCase()] = aSource;
+	};
+	abbrObj.arr.sort();
+	
+	for (var i = 0; i < abbrObj.arr.length; i++) {
+		var aSource = abbrObj.obj[abbrObj.arr[i]];
+		if (/^(DMguild|HB)$/.test(aSource)) continue;
+		var src = SourceList[aSource];
+		var theIndex = menuLoc[src.group.toLowerCase()];
+		if (!theIndex) {
+			theIndex = SourceMenu.length
+			SourceMenu.push({
+				cName : src.group,
+				oSubMenu : []
+			});
+			menuLoc[src.group.toLowerCase()] = theIndex;
+		};
+		
+		var allItem = {
+			//cName : (src.abbreviation + "          ").substr(0, 10) + src.name,
+			cName : (src.abbreviation + (new Array(10)).join("\u2002")).substr(0, 10) + src.name,
+			cReturn : "sourcelist#" + aSource
+		};
+		if ((/(\d+\/\d+\/\d+)(.*)/).test(allItem.cName)) allItem.cName = allItem.cName.replace(/(\d+\/\d+\/\d+)(.*)/, "$2 ($1)");
+		SourceMenu[1].oSubMenu.push(allItem);
+		var srcItem = {
+			cName : allItem.cName.replace(RegExp(src.group + ":? ?", "i"), ""),
+			cReturn : allItem.cReturn
+		};
+		SourceMenu[theIndex].oSubMenu.push(srcItem);
+	};
+	
+	for (var entry in SourceMenu) if (SourceMenu[entry].oSubmenu) SourceMenu[entry].oSubmenu.sort();
+	
+	//parse it into a global variable
+	Menus.sources = SourceMenu;
+	
+	//now call the menu
+	var MenuSelection = getMenu("sources");
+	
+	if (MenuSelection === undefined) return;
+	if (MenuSelection[1] === "dialogue") {
+		ShowDialog("List of Sources, sorted by abbreviation", "sources");
+		return;
+	};
+	var theSrc = abbrObj.lowObj[MenuSelection[1]];
+	
+	if (SourceList[theSrc].url) {
+		app.launchURL(SourceList[theSrc].url, true);
+	};
 };

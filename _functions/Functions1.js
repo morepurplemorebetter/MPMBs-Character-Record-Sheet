@@ -389,7 +389,7 @@ function ToggleWhiteout(Toggle) {
 	var HiddenNoPrint = !Toggle ? "Hide" : "DontPrint";
 	
 	//add the fields for all the template pages into an array
-	var compTemps = What("Template.extras.AScomp").split(",").splice(1);
+	var compTemps = What("Template.extras.AScomp").split(","); // so include the ""
 	var noteTemps = What("Template.extras.ASnotes").split(",").splice(1);
 	var wildTemps = What("Template.extras.WSfront").split(",").splice(1);
 	var logTemps = What("Template.extras.ALlog").split(",").splice(1);
@@ -6103,7 +6103,7 @@ function PrintButton() {
 		"AScomp",
 		"ASnotes",
 		"WSfront",
-		"SSmore",
+		"SSfront",
 		"ALlog"
 	];
 	if (typePF) {
@@ -6119,7 +6119,7 @@ function PrintButton() {
 		SetPrintPages_Dialog["b" + thePageOptions[x]] = PageArray.indexOf(thePageOptions[x]) !== -1;
 		
 		//set whether or not the fields are editable in the dialog (not editable if page is hidden)
-		var isVisible = TemplatesWithExtras.indexOf(thePageOptions[x]) === -1 ? tDoc.getField(BookMarkList[thePageOptions[x]]).page !== -1 : isTemplVis(thePageOptions[x]);
+		var isVisible = isTemplVis(thePageOptions[x]);
 		SetPrintPages_Dialog["a" + thePageOptions[x]] = isVisible;
 	}
 	

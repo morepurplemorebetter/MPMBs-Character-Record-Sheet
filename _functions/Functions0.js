@@ -359,11 +359,14 @@ function KeystrokeDay() {
 	if (event.willCommit && event.value) {
 		var isDate = util.scand('yy-mm-dd', event.value);
 		if (!isDate) {
-			app.alert({
-				cMsg : "Please enter a valid date using the date-picker (the little arrow in the field) or enter the date manually using of the form \"Year-Month-Day\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" button above.",
-				cTitle : "Invalid date format",
-				nIcon : 1
-			});
+			event.value = "";
+			if (IsNotImport) {
+				app.alert({
+					cMsg : "Please enter a valid date using the date-picker (the little arrow in the field) or enter the date manually using of the form \"Year-Month-Day\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" at the top of each Adventurers Logsheet. Note that the format of the date in the field never changes, but only the way it is displayed.",
+					cTitle : "Invalid date format",
+					nIcon : 1
+				});
+			};
 		};
 	};
 };

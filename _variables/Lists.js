@@ -170,7 +170,8 @@ var Menus = {
 	"hp" : "",
 	"texts" : "",
 	"skills" : "",
-	"adventureLeague" : ""
+	"adventureLeague" : "",
+	"sources" : ""
 };
 
 var GearMenus = {
@@ -455,7 +456,7 @@ var SetPrintPages_Dialog = {
 	bASnotes : false,
 	bWSfront : false,
 	bALlog : false,
-	bSSmore : false,
+	bSSfront : false,
 	bPRsheet : false,
 	bASoverflow : false,
 	bHide : false,
@@ -469,7 +470,7 @@ var SetPrintPages_Dialog = {
 	aASnotes : true,
 	aWSfront : true,
 	aALlog : true,
-	aSSmore : false,
+	aSSfront : false,
 	aPRsheet : false,
 	aASoverflow : false,
 
@@ -485,7 +486,7 @@ var SetPrintPages_Dialog = {
 			"Pag6" : this.bASnotes,
 			"Pag7" : this.bWSfront,
 			"Pag8" : this.bALlog,
-			"Pag9" : this.bSSmore,
+			"Pag9" : this.bSSfront,
 			"Pag0" : this.bPRsheet,
 			"Pa10" : this.bASoverflow,
 			"Hide" : this.bHide
@@ -514,7 +515,7 @@ var SetPrintPages_Dialog = {
 			"Pag6" : this.aASnotes,
 			"Pag7" : this.aWSfront,
 			"Pag8" : this.aALlog,
-			"Pag9" : this.aSSmore,
+			"Pag9" : this.aSSfront,
 			"Pag0" : this.aPRsheet,
 			"Pa10" : this.aASoverflow
 		});
@@ -539,7 +540,7 @@ var SetPrintPages_Dialog = {
 		this.bASnotes = oResult["Pag6"];
 		this.bWSfront = oResult["Pag7"];
 		this.bALlog = oResult["Pag8"];
-		this.bSSmore = oResult["Pag9"];
+		this.bSSfront = oResult["Pag9"];
 		this.bPRsheet = oResult["Pag0"];
 		this.bASoverflow = oResult["Pa10"];
 		this.bDupl = oResult["dupl"];
