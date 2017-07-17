@@ -138,7 +138,7 @@ var ClassList = {
 		die : 8,
 		saves : ["Dex", "Cha"],
 		skills : ["\n\n" + toUni("Bard") + ": Choose any three skills.", "\n\n" + toUni("Multiclass Bard") + ": Choose any one skill."],
-		tools : ["Three musical instruments", "One musical instrument"],
+		tools : ["Three musical instruments", "A musical instrument"],
 		armor : [
 			[true, false, false, false],
 			[true, false, false, false]

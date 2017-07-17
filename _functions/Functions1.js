@@ -2224,6 +2224,7 @@ function ApplyClasses(inputclasstxt, updateall) {
 	tDoc.delay = !IsNotReset;
 	if (IsNotReset) tDoc.calculateNow();
 };
+};
 
 //Check if the level or XP entered matches the XP or level
 function CalcExperienceLevel(AlsoClass) {
@@ -2237,7 +2238,8 @@ function CalcExperienceLevel(AlsoClass) {
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	var LVLbyXP = ExperiencePointsList.reduce(function(acc, val) { return acc += exp >= Number(val) ? 1 : 0; }, 0);
-	var XPforLVL = !Level ? 0 : ExperiencePointsList[Math.min(ExperiencePointsList.length - 1, Level)];
+	var XPforLVL = !Level || Level === 1 ? 0 : ExperiencePointsList[Math.min(ExperiencePointsList.length - 1, Level - 1)];
+	if (!XPforLVL) XPforLVL = 0;
 	var LVLtxt = Level >= ExperiencePointsList.length ? "a level higher than 20" : "level " + Level;
 	var XPtxt = !exp ? "no" : "only " + exp;
 
@@ -3445,7 +3447,8 @@ function AddInvWeaponsAmmo() {
 		for (var it in items) {
 			var aItem = items[it];
 			if (aItem.magic === magicBonus && ((!theAmmo && aItem.name.indexOf(aNm) !== -1) || (theAmmo && aItem.key === theAmmo && (it.replace(/\d+/, "") === theAmmo || similarLen(aItem.name, aNm))))) {
-				aItem.amount = aNr + (theAmmo && aItem.key === theAmmo ? aItem.amount : 0);
+				aItem.amount = aNr + (theAmmo && aItem.isAmmo ? aItem.amount : 0);
+				aItem.isAmmo = true;
 				return;
 			};
 		};
@@ -3458,7 +3461,8 @@ function AddInvWeaponsAmmo() {
 				name : InvName, // the name of the ammo
 				weight : aWght,
 				magic : 0, // magic bonus
-				amount : aNr // the number of these
+				amount : aNr, // the number of these
+				isAmmo : true
 			};
 		};
 	};
@@ -5884,7 +5888,7 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 					app.alert({
 						cMsg : "The " + theFea.extraname + " \"" + theFeaExtra.name + "\" has been added to the \"Notes\" section on the third page" + (!typePF ? ", while the \"Rules\" section on the third page has been hidden" : "") + ".\n\nAdding this to the \"Class Features\" on the second page would not leave enough room for other class features at level 20.\n\nYou can copy the text to the class features if you want" + (!typePF ? " (and even bring back the \"Rules\" section)" : "") + ". This will not interfere with any of the sheets automation, and will even allow you to remove the feature again with the same menu. However, future " + theFea.extraname + "s you add will still be added to the third page notes section.",
 						nIcon : 3,
-						cTitle : theFea.name + "has been added to the third page",
+						cTitle : theFea.name + " has been added to the third page",
 						oCheckbox : oCk
 					});
 					if (oCk.bAfterValue) {

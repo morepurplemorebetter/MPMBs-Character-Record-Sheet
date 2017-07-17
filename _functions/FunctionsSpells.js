@@ -5197,8 +5197,12 @@ function SpellPointsLimFea(AddRemove) {
 			}
 		}
 		var SpellPointsAmount = SpellPointsTable[Math.min(SpellPointsTable.length - 1, classes.spellcastlvl.default)];
-		if (!SPexists && What("Limited Feature 1") !== "") LimFeaInsert(1);
-		AddFeature("Spell Points", SpellPointsAmount, "", "long rest", "Spell Point variant rules, Dungeon Master Guide page 288");
+		if (!SPexists && What("Limited Feature 1") !== "" && SpellPointsAmount) LimFeaInsert(1);
+		if (SpellPointsAmount) {
+			AddFeature("Spell Points", SpellPointsAmount, "", "long rest", "Spell Point variant rules, Dungeon Master Guide page 288");
+		} else if (SPexists) {
+			RemoveFeature("Spell Points");
+		};
 		break;
 	 case "remove" :
 		RemoveFeature("Spell Points");

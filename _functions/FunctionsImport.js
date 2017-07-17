@@ -41,6 +41,9 @@ function AddFolderJavaScript(justConsole) {
 	
 	var AddJS_dialog = {
 		initialize : function(dialog) {
+			dialog.load({
+				locJ : LocJS
+			});
 		},
 		bADD : function(dialog) {
 			tDoc.exportDataObject({ cName: "MPMB-IF Remove '.txt' from the end.js.txt", nLaunch: 0});
@@ -123,7 +126,7 @@ function AddFolderJavaScript(justConsole) {
 										alignment : "align_fill",
 										font : "dialog",
 										width : 470,
-										name : LocJS
+										readonly : true
 									}, {
 										type : "static_text",
 										item_id : "txt2",

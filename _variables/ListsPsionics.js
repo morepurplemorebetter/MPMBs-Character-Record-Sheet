@@ -1549,7 +1549,7 @@ var PsionicsList = {
 		psionic : true,
 		level : 1,
 		school : "Wu Jen",
-		time : "\u2014",
+		time : "Move",
 		range : "Self",
 		duration : "This turn end",
 		description : "Fly 20 ft/PP as part of your move this turn; if you end your turn in the air, you fall",
