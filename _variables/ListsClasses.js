@@ -367,7 +367,7 @@ var ClassList = {
 				minlevel : 2,
 				description : "\n   " + "Choose a Circle you can identify with and put it in the \"Class\" field on the first page" + "\n   " + "Choose either the Circle of the Land or the Circle of the Moon"
 			},
-			"wild shape" : {
+			"subclassfeature2.wild shape" : {
 				name : "Wild Shape",
 				source : ["P", 66],
 				minlevel : 2,
@@ -2729,7 +2729,7 @@ var ClassSubList = {
 				minlevel : 2,
 				description : "\n   " + "I am able to transform into more dangerous animal forms when using Wild Shape"
 			},
-			"wild shape" : {
+			"subclassfeature2.wild shape" : {
 				name : "Wild Shape",
 				source : ["P", 66],
 				minlevel : 2,

@@ -2224,7 +2224,6 @@ function ApplyClasses(inputclasstxt, updateall) {
 	tDoc.delay = !IsNotReset;
 	if (IsNotReset) tDoc.calculateNow();
 };
-};
 
 //Check if the level or XP entered matches the XP or level
 function CalcExperienceLevel(AlsoClass) {
@@ -5529,7 +5528,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 						if (stopNow) {
 							thermoM("stop");
 							break; //this function is going to run again, so stop it now for this class
-						}
+						};
 					} else if (IsSubclassException[aClass] && (prop.indexOf("subclassfeature") !== -1 || (theSubClass && ClassSubList[theSubClass].features[prop]))) {
 						delete IsSubclassException[aClass];
 					} else if (IsSubclassException[aClass]) {
@@ -5707,7 +5706,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 							RemoveClassFeatureChoice(aClass, prop);
 						}
 					}
-					if (prop.indexOf("wild shape") !== -1) {
+					if (CheckLVL && prop.indexOf("wild shape") !== -1) {
 						isWildShape = [newClassLvl[aClass], Fea.Use, Fea.Recov, Fea.Add];
 						WSinUse = true;
 					}

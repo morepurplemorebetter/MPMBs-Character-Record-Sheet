@@ -987,7 +987,7 @@ function SelectClass() {
 		var curXP = Number(What("Total Experience").replace(",", "."));
 		var curXPlvl = ExperiencePointsList.reduce(function(acc, val) { return acc += curXP >= Number(val) ? 1 : 0; }, 0);
 		if (ClassSelection_Dialog.finalLevel < ExperiencePointsList.length && ClassSelection_Dialog.finalLevel != curXPlvl) {
-			var newXP = ClassSelection_Dialog.finalLevel ? ExperiencePointsList[Math.min(ClassSelection_Dialog.finalLevel, ExperiencePointsList.length - 1) - 1] : "";
+			var newXP = ClassSelection_Dialog.finalLevel ? ExperiencePointsList[Math.min(ClassSelection_Dialog.finalLevel - 1, ExperiencePointsList.length - 1)] : "";
 			Value("Total Experience", newXP);
 			if (curXP) {
 				Value("Add Experience", Number(What("Add Experience").replace(",", ".")) + curXP - newXP);

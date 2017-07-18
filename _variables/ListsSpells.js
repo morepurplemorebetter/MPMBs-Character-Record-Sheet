@@ -2048,7 +2048,7 @@ var SpellsList = {
 		compMaterial : "A handful of clay, crystal, glass, or mineral spheres",
 		duration : "Instantaneous",
 		save : "Int",
-		description : "1 crea 4d6 Psychic dmg and save or and Cha become 1; extra save every 30 days to end spell",
+		description : "1 crea 4d6 Psychic dmg and save or Int and Cha become 1; extra save every 30 days to end spell",
 		descriptionFull : "You blast the mind of a creature that you can see within range, attempting to shatter its intellect and personality. The target takes 4d6 psychic damage and must make an Intelligence saving throw." + "\n   " + "On a failed save, the creature's Intelligence and Charisma scores become 1. The creature can't cast spells, activate magic items, understand language, or communicate in any intelligible way. The creature can, however, identify its friends, follow them, and even protect them." + "\n   " + "At the end of every 30 days, the creature can repeat its saving throw against this spell. If it succeeds on its saving throw, the spell ends." + "\n   " + "The spell can also be ended by greater restoration, heal or wish."
 	},
 	"feign death" : {
