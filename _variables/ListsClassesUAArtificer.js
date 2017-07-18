@@ -18,7 +18,7 @@ ClassList.artificer = {
 	die : 8,
 	saves : ["Con", "Int"],
 	skills : ["\n\n" + toUni("Artificer") + ": Choose three from Arcana, Deception, History, Investigation, Medicine, Nature, Religion, and Sleight of Hand.", "\n\n" + toUni("Multiclass Artificer") + ": Choose one from Arcana, Deception, History, Investigation, Medicine, Nature, Religion, and Sleight of Hand."],
-	tools : ["Thieves' tools + any two tools", "Any one tool"],
+	tools : ["Thieves' tools + any two tools", "Any one tool (Artificer)"],
 	armor : [
 		[true, true, false, false]
 	],

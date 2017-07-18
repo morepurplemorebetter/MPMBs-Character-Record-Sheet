@@ -138,7 +138,7 @@ var ClassList = {
 		die : 8,
 		saves : ["Dex", "Cha"],
 		skills : ["\n\n" + toUni("Bard") + ": Choose any three skills.", "\n\n" + toUni("Multiclass Bard") + ": Choose any one skill."],
-		tools : ["Three musical instruments", "One musical instrument"],
+		tools : ["Three musical instruments", "A musical instrument"],
 		armor : [
 			[true, false, false, false],
 			[true, false, false, false]
@@ -367,7 +367,7 @@ var ClassList = {
 				minlevel : 2,
 				description : "\n   " + "Choose a Circle you can identify with and put it in the \"Class\" field on the first page" + "\n   " + "Choose either the Circle of the Land or the Circle of the Moon"
 			},
-			"wild shape" : {
+			"subclassfeature2.wild shape" : {
 				name : "Wild Shape",
 				source : ["P", 66],
 				minlevel : 2,
@@ -811,8 +811,8 @@ var ClassList = {
 				minlevel : 6,
 				description : "\n   " + "While I'm conscious, allies within range and I can add my Cha mod (min 1) to saves",
 				additional : ["", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				eval : "tDoc.getField(\"All ST Bonus\").setAction(\"Calculate\", \"event.value = Math.max(1, tDoc.getField(\'Cha Mod\').value);\");",
-				removeeval : "tDoc.getField(\"All ST Bonus\").setAction(\"Calculate\", \"var placeholder = 1;\");"
+				eval : "AddToModFld('All ST Bonus', 'Cha');",
+				removeeval : "AddToModFld('All ST Bonus', 'Cha', true);"
 			},
 			"aura of courage" : {
 				name : "Aura of Courage",
@@ -1099,7 +1099,7 @@ var ClassList = {
 		die : 8,
 		saves : ["Int", "Dex"],
 		skills : ["\n\n" + toUni("Rogue") + ": Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth.", "\n\n" + toUni("Multiclass Rogue") + ": Choose one from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth."],
-		tools : ["Thieves' tools"],
+		tools : ["Thieves' tools", "Thieves' tools"],
 		armor : [
 			[true, false, false, false],
 			[true, false, false, false]
@@ -2729,7 +2729,7 @@ var ClassSubList = {
 				minlevel : 2,
 				description : "\n   " + "I am able to transform into more dangerous animal forms when using Wild Shape"
 			},
-			"wild shape" : {
+			"subclassfeature2.wild shape" : {
 				name : "Wild Shape",
 				source : ["P", 66],
 				minlevel : 2,
@@ -4053,8 +4053,8 @@ var ClassSubList = {
 				source : ["S", 136],
 				minlevel : 3,
 				description : "\n   " + "I don't need advantage to sneak attack if my target is the only one within 5 ft of me" + "\n   " + "I can add my Charisma modifier to initiative rolls",
-				eval : "if (!What(\"Init Bonus\")) {Value(\"Init Bonus\", \"Cha\")}",
-				removeeval : "if (What(\"Init Bonus\") === \"Cha\") {Value(\"Init Bonus\", \"\")}"
+				eval : "AddToModFld('Init Bonus', 'Cha');",
+				removeeval : "AddToModFld('Init Bonus', 'Cha', true);"
 			},
 			"subclassfeature9" : {
 				name : "Panache",

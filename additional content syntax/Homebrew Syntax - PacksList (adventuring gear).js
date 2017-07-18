@@ -10,25 +10,29 @@
 /*	-INFORMATION-
 	Subject:	Pack (for the equipment menu
 	Effect:		This is the syntax for adding a new Pack of equipment
-	Sheet:		v12.83 (2017-02-18)
+	Sheet:		v12.995 (2017-06-29)
 */
 
-PacksList["burglar's pack (16 gp)"] = [ //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []. The spelling here is used to identify the pack with and is how the pack will appear in the equipment menu (although in the menu the first letter will be capitalized automatically).
+PacksList["burglar"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 
-	["Backpack, with:", "", 5], // Optional; you can add any number of these lines and the syntax is [Item name, Amount, Weight]; A item name is required, but the other two can be put as "", if you don't want it to have anything
-	
-	//the rest below are examples:
-	["Bag of 1000 ball bearings", 1, 2],
-	["String, feet of", 10, ""],
-	["Bell", "", ""],
-	["Candles", 5, ""],
-	["Crowbar", "", 5],
-	["Hammer", "", 3],
-	["Pitons", 10, .25],
-	["Hooded lantern", "", 2],
-	["Oil, flasks of", 2, 1],
-	["Rations, days of", 5, 2],
-	["Tinderbox", "", 1],
-	["Waterskin", "", 5],
-	["Hempen rope, feet of", 50, 0.2]
-];
+	name : "Burglar's pack (16 gp)", // Required; the name as it will appear in the equipment menu.
+
+	items : [ // Required; an array of all the items. Although the array is required, you don't acutally have to put anything in it.
+		["Backpack, with:", "", 5], // Optional; you can add any number of these lines and the syntax is [Item name, Amount, Weight]; A item name is required, but the other two can be put as "", if you don't want it to have anything
+		
+		//the rest below are examples:
+		["Bag of 1000 ball bearings", 1, 2],
+		["String, feet of", 10, ""],
+		["Bell", "", ""],
+		["Candles", 5, ""],
+		["Crowbar", "", 5],
+		["Hammer", "", 3],
+		["Pitons", 10, .25],
+		["Hooded lantern", "", 2],
+		["Oil, flasks of", 2, 1],
+		["Rations, days of", 5, 2],
+		["Tinderbox", "", 1],
+		["Waterskin", "", 5],
+		["Hempen rope, feet of", 50, 0.2]
+	]
+};

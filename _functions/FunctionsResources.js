@@ -128,13 +128,12 @@ function SelectElement_Dialog(theNodes) {
 		}
 	}
 	var theElem = countNodes[0] === 1 ? countNodes[1] : false;
+	var theTxt = "This pop-up is necessary because Adobe Acrobat can only detect if you selected an element, and not if you selected a node (i.e. an element you can collapse/expand).\nPlease select which node you want to move from the options below, or press cancel if you don't want anything to move.";
 	var dialogue = {
 		selection : false,
-		input : theNodes,
 		initialize : function (dialog) {
 			dialog.load({
-				"sele" : this.input,
-				"txt0" : "This pop-up is necessary because Adobe Acrobat can only detect if you selected an element, and not if you selected a node (i.e. an element you can collapse/expand).\nPlease select which node you want to move from the options below, or press cancel if you don't want anything to move."
+				"sele" : theNodes
 			});
 		},
 		commit : function (dialog) {
@@ -151,14 +150,15 @@ function SelectElement_Dialog(theNodes) {
 					item_id : "head",
 					font : "heading",
 					bold : true,
-					height : 21,
+					wrap_name : true,
 					width : 400,
 					name : "Select a node to use (because Adobe Acrobat is stupid)"
 				}, {
 					type : "static_text",
 					item_id : "txt0",
-					char_height : 8,
-					width : 400
+					wrap_name : true,
+					width : 400,
+					name : theTxt
 				}, {
 					type : "hier_list_box",
 					item_id : "sele",
@@ -275,6 +275,11 @@ function resourceDecisionDialog(atOpening, atReset) {
 		}
 	} while (tries < 5);
 	
+	
+	var Text0 = (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon), or the \"Source Material\" bookmark, and change it.\n" : "") + "You can include or exclude entire sourcebooks (top) and exclude just elements of the sourcebooks set to be included (buttons below).\nNote that you can also add more resources using the \"Add Custom Script\" bookmark.\nIf multiple things with the same name are included, like the Ranger from the PHB and the Ranger from UA:RR, the newest source will be used.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.";
+	var Text1 = "By pressing one of the buttons below, you open another dialogue where you can exclude and include parts of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up in the dialogue created when you press the buttons below, as all of its content will be ignored by the sheet's automation.";
+	var Text2 = toUni("Warning:") + " If you change anything that affects any drop-down boxes on the sheet, those will be updated. " + (isFirstTime ? "If a lot of drop-down boxes are affected, this can take several minutes." : "Please be aware, that if those drop-down boxes contained any value, they will first be reset and then re-applied using the resources selected above. This can take several minutes.");
+	
 	var selectionDialogue = {
 		exclActive : true,
 		inclActive : false,
@@ -286,9 +291,6 @@ function resourceDecisionDialog(atOpening, atReset) {
 				"img1" : allIcons.sources,
 				"ExcL" : this.exclObject,
 				"IncL" : this.inclObject,
-				"txt0" : (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon), or the \"Source Material\" bookmark, and change it.\n" : "") + "You can include or exclude entire sourcebooks (top) and exclude just elements of the sourcebooks set to be included (buttons below).\nNote that you can also add more resources using the \"Add Custom Script\" bookmark.\nIf multiple things with the same name are included, like the Ranger from the PHB and the Ranger from UA:RR, the newest source will be used.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.",
-				"txt1" : "By pressing one of the buttons below, you open another dialogue where you can exclude and include parts of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up in the dialogue created when you press the buttons below, as all of its content will be ignored by the sheet's automation.",
-				"txt2" : toUni("Warning:") + " If you change anything that affects any drop-down boxes on the sheet, those will be updated. " + (isFirstTime ? "If a lot of drop-down boxes are affected, this can take several minutes." : "Please be aware, that if those drop-down boxes contained any value, they will first be reset and then re-applied using the resources selected above. This can take several minutes."),
 				"bLin" : "This button links to the web page of the selected sourcebook"
 			});
 			dialog.setForeColorRed("txt2");
@@ -428,15 +430,16 @@ function resourceDecisionDialog(atOpening, atReset) {
 						alignment : "align_fill",
 						font : "title",
 						bold : true,
-						height : 21,
+						wrap_name : true,
 						width : 770,
 						name : "Select which resources the sheet's automation should use"
 					}]
 				}, {
 					type : "static_text",
 					item_id : "txt0",
-					char_height : isFirstTime ? 11 : 6,
-					width : 800
+					wrap_name : true,
+					width : 800,
+					name : Text0
 				}, {
 					type : "cluster",
 					name : "The Sourcebooks",
@@ -522,13 +525,21 @@ function resourceDecisionDialog(atOpening, atReset) {
 					elements : [{
 						type : "static_text",
 						item_id : "txt1",
-						char_height : 7,
-						width : 775
+						wrap_name : true,
+						width : 775,
+						name : Text1
 					}, {
 						type : "view",
 						align_children : "align_row",
 						alignment : "align_center",
-						elements : [{
+						elements : minVer ? [{
+							type : "button",
+							font : "dialog",
+							bold : true,
+							item_id : "bSpe",
+							name : "Spells/Psionics",
+							alignment : "align_center"
+						}] : [{
 							type : "button",
 							font : "dialog",
 							bold : true,
@@ -563,7 +574,7 @@ function resourceDecisionDialog(atOpening, atReset) {
 						type : "view",
 						align_children : "align_row",
 						alignment : "align_center",
-						elements : [{
+						elements : minVer ? [] : [{
 							type : "button",
 							font : "dialog",
 							bold : true,
@@ -604,8 +615,9 @@ function resourceDecisionDialog(atOpening, atReset) {
 						alignment : "align_left",
 						item_id : "txt2",
 						font : "palette",
-						char_height : isFirstTime ? 3 : 5,
-						width : 500
+						wrap_name : true,
+						width : 500,
+						name : Text2
 					}, {
 						type : "ok_cancel",
 						alignment : "align_right",
@@ -614,18 +626,6 @@ function resourceDecisionDialog(atOpening, atReset) {
 				}]
 			}]
 		}
-	};
-	
-	if (minVer) {
-		selectionDialogue.description.elements[0].elements[3].elements[1] = {
-			type : "button",
-			font : "dialog",
-			bold : true,
-			item_id : "bSpe",
-			name : "Spells/Psionics",
-			alignment : "align_center"
-		}
-		selectionDialogue.description.elements[0].elements[3].elements[2] = {};
 	};
 	
 	if (app.execDialog(selectionDialogue) === "ok") {
@@ -901,6 +901,8 @@ function resourceSelectionDialog(type) {
 	
 	exclObj = CleanObject(exclObj); inclObj = CleanObject(inclObj);
 	
+	var Text0 = "Please select which " + theName + " you want to exclude or include from being used by the sheet." + theExtra[0] + "\n\nNote that " + theName + " from sourcebooks that you excluded in the previous dialogue are not shown here at all.";
+	
 	var selectionDialogue = {
 		inclInA : inclInArr,
 		exclActive : true,
@@ -911,8 +913,7 @@ function resourceSelectionDialog(type) {
 		initialize : function (dialog) {
 			dialog.load({
 				"ExcL" : this.exclObject,
-				"IncL" : this.inclObject,
-				"txt0" : "Please select which " + theName + " you want to exclude or include from being used by the sheet." + theExtra[0] + "\n\nNote that " + theName + " from sourcebooks that you excluded in the previous dialogue are not shown here at all."
+				"IncL" : this.inclObject
 			});
 		},
 		commit : function (dialog) {
@@ -986,7 +987,7 @@ function resourceSelectionDialog(type) {
 			this.exclActive = true;
 			this.inclActive = false;
 		},
-		bSrc : function (dialog) { ShowDialog("List of Sources, sorted by abbreviation", "sources"); },
+		bSrc : function (dialog) { MakeSourceMenu_SourceOptions(); },
 		description : {
 			name : "Pick which resources are excluded and included",
 			elements : [{
@@ -1004,8 +1005,9 @@ function resourceSelectionDialog(type) {
 				}, {
 					type : "static_text",
 					item_id : "txt0",
-					char_height : 5 + theExtra[1],
-					width : 710
+					wrap_name : true,
+					width : 710,
+					name : Text0
 				}, {
 					type : "view",
 					align_children : "align_row",

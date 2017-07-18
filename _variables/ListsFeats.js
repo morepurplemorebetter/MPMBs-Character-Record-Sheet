@@ -10,8 +10,8 @@ var FeatsList = {
 		name : "Alert",
 		source : ["P", 165],
 		description : "I can't be surprised while I'm conscious. I have a +5 bonus on initiative rolls. Other creatures don't gain advantage on attack rolls against me as a result of being hidden from me.",
-		eval : "Value(\"Init Bonus\", 5);",
-		removeeval : "Value(\"Init Bonus\", \"\");"
+		eval : "AddToModFld('Init Bonus', 5);",
+		removeeval : "AddToModFld('Init Bonus', -5);"
 	},
 	"athlete" : {
 		name : "Athlete",
@@ -240,8 +240,8 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "If I can see a creature's mouth while it is speaking a language I understand, I can interpret what it's saying by reading its lips. I have a +5 bonus to passive Wisdom (Perception) and passive Intelligence (Investigation) scores. [+1 Intelligence or Wisdom]",
 		improvements : "Observant (feat): +1 Intelligence or Wisdom;",
-		eval : "Value(\"Passive Perception Bonus\", 5, \"The Observant feat gives a +5 bonus to passive Wisdom (Perception)\");",
-		removeeval : "Value(\"Passive Perception Bonus\", \"\", \"\");"
+		eval : "AddToModFld('Passive Perception Bonus', 5);",
+		removeeval : "AddToModFld('Passive Perception Bonus', -5);"
 	},
 	"polearm master" : {
 		name : "Polearm Master",

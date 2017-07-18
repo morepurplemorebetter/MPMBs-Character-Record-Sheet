@@ -33,24 +33,16 @@ function AddFolderJavaScript(justConsole) {
 	var locWin = "C:\\Program Files (x86)\\Adobe\\Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + "\\" + (isType === "Reader" ? "Reader" : "Acrobat") + "\\Javascripts\\";
 	var locMac = "/Applications/Adobe Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + ".app/Contents/Resources/JavaScripts/";
 
-	var startTxt = justConsole ? "In order to import user-defined icons, you will have to manually add a JavaScript file to your Adobe Acrobat installation. This is necessary, because of Adobe Acrobat's security protocol. You will have to do this only once to get this function working." : "In order to use the 'Direct Import' functionality, you will need to do something to appease Adobe Acrobat's security settings. You have two options:\nOption 1 is that you add a JavaScript file to your installation. After you've done this, you will never see this dialogue again.\nOption 2 is that you run the code from console, but you will have to do this every time if you want to use this function.";
-
+	var Text0 = justConsole ? "In order to import user-defined icons, you will have to manually add a JavaScript file to your Adobe Acrobat installation. This is necessary, because of Adobe Acrobat's security protocol. You will have to do this only once to get this function working." : "In order to use the 'Direct Import' functionality, you will need to do something to appease Adobe Acrobat's security settings. You have two options:\nOption 1 is that you add a JavaScript file to your installation. After you've done this, you will never see this dialogue again.\nOption 2 is that you run the code from console, but you will have to do this every time if you want to use this function.";
+	var Text1 = "Do the following steps:\n   1)  Use the button below to save the file somewhere (don't change the filename).\n   2)  Rename the file so that its extension is \".js\" (can't be done while saving).\n   3)  Move the file to the right location mentioned below (can't be saved there directly).\n   4)  Restart Adobe Acrobat and try the 'Direct Import' function again.";
+	var Text2 = "The directory where you have to put this file depends on your version of Adobe Acrobat and your operating system. The path shown here is an estimated guess for your installation. It is possible that this folder doesn't exist yet, or that it is hidden.\n" + toUni("Note that you can't save the file directly to this location!");
+	var Text3 = "Open the console (a.k.a. \"JavaScript Debugger\") and run the code that is printed there. Running the code is done by selecting the line it is on and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + " (or the numpad Enter).";
+	var LocJS = isWindows ? locWin : locMac;
+	
 	var AddJS_dialog = {
-		Text0 : startTxt,
-		TextLoc : textLoc,
-		LocJS : isWindows ? locWin : locMac,
-		Text1 : "Do the following steps:\n   1)  Use the button below to save the file somewhere (don't change the filename).\n   2)  Rename the file so that its extension is \".js\" (can't be done while saving).\n   3)  Move the file to the right location mentioned below (can't be saved there directly).\n   4)  Restart Adobe Acrobat and try the 'Direct Import' function again.",
-		Text2 : "The directory where you have to put this file depends on your version of Adobe Acrobat and your operating system. The path shown here is an estimated guess for your installation. It is possible that this folder doesn't exist yet, or that it is hidden.\n" + toUni("Note that you can't save the file directly to this location!"),
-		Text3 : "Open the console (a.k.a. \"JavaScript Debugger\") and run the code that is printed there. Running the code is done by selecting the line it is on and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + " (or the numpad Enter).",
-
 		initialize : function(dialog) {
 			dialog.load({
-				"txt0": this.Text0,
-				"txt1": this.Text1,
-				"txt2": this.Text2,
-				"txt3": this.Text3,
-				"txtJ": this.TextLoc,
-				"locJ": this.LocJS
+				locJ : LocJS
 			});
 		},
 		bADD : function(dialog) {
@@ -81,8 +73,9 @@ function AddFolderJavaScript(justConsole) {
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
-						char_height : justConsole ? 5 : 9,
-						width : 530
+						wrap_name : true,
+						width : 530,
+						name : Text0
 					}, {
 						type : "view",
 						item_id : "viJ1",
@@ -103,8 +96,9 @@ function AddFolderJavaScript(justConsole) {
 								alignment : "align_fill",
 								font : "dialog",
 								bold : true,
-								char_height : 8,
-								width : 500
+								wrap_name : true,
+								width : 500,
+								name : Text1
 							}, {
 								type : "button",
 								item_id : "bADD",
@@ -125,19 +119,22 @@ function AddFolderJavaScript(justConsole) {
 									font : "dialog",
 									bold : true,
 									width : 500,
+									name : textLoc,
 									elements : [{
 										type : "edit_text",
 										item_id : "locJ",
 										alignment : "align_fill",
 										font : "dialog",
-										width : 470
+										width : 470,
+										readonly : true
 									}, {
 										type : "static_text",
 										item_id : "txt2",
 										alignment : "align_fill",
 										font : "dialog",
-										char_height : 7,
-										width : 470
+										wrap_name : true,
+										width : 470,
+										name : Text2
 									}, ]
 								}, ]
 							}, ]
@@ -163,8 +160,9 @@ function AddFolderJavaScript(justConsole) {
 								type : "static_text",
 								item_id : "txt3",
 								alignment : "align_fill",
-								char_height : 3,
-								width : 500
+								wrap_name : true,
+								width : 500,
+								name : Text3
 							}, {
 								type : "button",
 								item_id : "bCON",
@@ -199,10 +197,11 @@ function AddFolderJavaScript(justConsole) {
 
 //the dialogue for the DirectImport function that ask for the path to a file to import from
 function DirectImport_Dialogue() {
+	var Text0 = "This 'Direct Import' function opens another MPMB's Character Record Sheet and goes through every field and layout setting in it to make this sheet similar to the other. This can take a long time and will not copy everything literally as this sheet will run through its automation to benefit from any updates to its code compared to the other sheet.\n\nIn order to do this, you will need to give the full path to a local file you want to import from.\nYou can use the 'Lookup' button to get the path."
+	var Text01 = "Alternatively, place the sheet you want to import from in the same folder as this sheet, give the file name of the sheet you want to import from (including file extension), and check the box to use a relative path.";
+	var Text1 = "If you continue with importing, the current sheet will first be reset without notice!";
+	var TextIcons = (app.viewerType === "Reader" ? "Because of limitations in Adobe Acrobat Reader, this function is not available." : "'User-defined icons\' refers to those images that have been set for the symbol, portrait, companion(s) appearance, etc. that have been added from another file.") + "\n\nIcons that have been selected from the sheet built-in options will be imported regardless (faction symbols, Adventure League season icons, class icons).";
 	var DirectImport_dialog = {
-		Text0 : "This 'Direct Import' function opens another MPMB's Character Record Sheet and goes through every field and layout setting in it to make this sheet similar to the other. This can take a long time and will not copy everything literally as this sheet will run through its automation to benefit from any updates to its code compared to the other sheet.\n\nIn order to do this, you will need to give the full path to a local file you want to import from.\nYou can use the 'Lookup' button to get the path.\n\nAlternatively, place the sheet you want to import from in the same folder as this sheet, give the file name of the sheet you want to import from (including file extension), and check the box to use a relative path.",
-		Text1 : "If you continue with importing, all data in the current sheet will be removed without notice!",
-		TextIcons : (app.viewerType === "Reader" ? "Because of limitations in Adobe Acrobat Reader, this function is not available." : "'User-defined icons\' refers to those images that have been set for the symbol, portrait, companion(s) appearance, etc. that have been added from another file.") + "\n\nIcons that have been selected from the sheet built-in options will be imported regardless (faction symbols, Adventure League season icons, class icons).",
 		fileLoc : "",
 		relPath : false,
 		importIcons : false,
@@ -211,9 +210,6 @@ function DirectImport_Dialogue() {
 			var isReader = app.viewerType === "Reader";
 			dialog.load({
 				"img1": allIcons.import,
-				"txt0": this.Text0,
-				"txt1": this.Text1,
-				"icTx": this.TextIcons,
 				"fLoc": this.fileLoc,
 				"icCl": "Import user-defined icons as well?" + (isReader ? " (Requires Acrobat Pro or Standard)" : ""),
 				"icNo": true
@@ -268,8 +264,17 @@ function DirectImport_Dialogue() {
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
-						char_height : 17,
-						width : 500
+						wrap_name : true,
+						width : 500,
+						name : Text0
+					}, {
+						type : "static_text",
+						item_id : "txtx",
+						alignment : "align_fill",
+						font : "dialog",
+						wrap_name : true,
+						width : 500,
+						name : Text01
 					}, {
 						type : "cluster",
 						item_id : "fTxt",
@@ -313,12 +318,14 @@ function DirectImport_Dialogue() {
 								type : "radio",
 								item_id : "icNo",
 								name : "No. I will set them again manually (recommended).",
-								group_id : "icon"
+								group_id : "icon",
+								height : 20
 							}, {
 								type : "radio",
 								item_id : "icYe",
 								name : "Yes. Import the user-defined icons as well (experimental).",
-								group_id : "icon"
+								group_id : "icon",
+								height : 20
 							}, ]
 						}, {
 							type : "static_text",
@@ -326,7 +333,8 @@ function DirectImport_Dialogue() {
 							alignment : "align_fill",
 							font : "palette",
 							width : 470,
-							char_height : 8
+							wrap_name : true,
+							name : TextIcons
 						}, ]
 					}, {
 						type : "static_text",
@@ -334,8 +342,9 @@ function DirectImport_Dialogue() {
 						alignment : "align_fill",
 						font : "dialog",
 						bold : true,
-						char_height : 2,
-						width : 500
+						wrap_name : true,
+						width : 500,
+						name : Text1
 					}, ]
 				}, {
 					type : "ok_cancel",
@@ -385,16 +394,17 @@ function DirectImport(consoleTrigger) {
 		closeAlert = ["An error occurred", "An unknown error occurred. Importing failed.\n\nPlease make sure the file you want to import is not currently open in any application."];
 	}
 	
-	//if opening the doc failed, or it is not one of MPMB's Character Recond Sheets (according)
+	//if opening the doc failed, or it is not one of MPMB's Character Record Sheets (according)
 	if (closeAlert) {
 		app.alert({
 			cTitle: closeAlert[0],
 			cMsg: closeAlert[1]
 		});
 	} else if (global.docFrom && global.docTo) { try { //we are good to go and import stuff!
-		ResetAll(true); //first reset the current sheet to its initial state
+		ResetAll(true, true); //first reset the current sheet to its initial state, but without the extra templates generated
 		Value("Opening Remember", "Yes");
 		IsNotImport = false;
+		ignorePrereqs = true;
 		//make sure no pop-up comes up with welcome text
 		if (global.docFrom.getField("Opening Remember")) global.docFrom.Value("Opening Remember", "Yes");
 		
@@ -406,8 +416,7 @@ function DirectImport(consoleTrigger) {
 		var bothPF = typePF && fromSheetTypePF;
 		var bothCF = !typePF && !fromSheetTypePF;
 		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
-		var FromVersion = global.docFrom.info.SheetVersion;
-		if (isNaN(FromVersion)) FromVersion = FromVersion.replace("b", "");
+		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
 		
 		//copy any custom script and run it
 		if (ImportField("User Script")) RunUserScript();
@@ -555,33 +564,36 @@ function DirectImport(consoleTrigger) {
 		
 		//get the page layout of the sheet and copy it
 		var pagesLayout = {};
+		var onlySpawnsFrom = FromVersion >= 12.995;
 		if (global.docFrom.BookMarkList) { //if no bookmarklist exists where we are importing from, don't do anything
 			for (var templ in TemplateDep) {
+				var onlySpawnsFromT = onlySpawnsFrom || templ.substring(0, 2) === "SS";
 				//see if the template exists in the docFrom
-				var dFfldT = global.docFrom.BookMarkList[templ] ? global.docFrom.getField(global.docFrom.BookMarkList[templ]) : false;
-				if (dFfldT) pagesLayout[templ] = dFfldT.page !== -1;
-				//see if any extra versions have been added
-				var dFfldTE = global.docFrom.getField("Template.extras." + templ);
+				var dFfldT = onlySpawnsFrom ? global.docFrom.isTemplVis(templ) : global.docFrom.BookMarkList[templ] ? global.docFrom.getField(global.docFrom.BookMarkList[templ]) : false;
+				if (dFfldT) pagesLayout[templ] = onlySpawnsFrom ? true : dFfldT.page !== -1;
+				var dFfldTE = global.docFrom.getField("Template.extras." + templ); //see if any extra versions have been added
 				if (dFfldTE) {
-					pagesLayout[templ + "Extras"] = dFfldTE.value.split(",").length - 1;
-					if (pagesLayout[templ + "Extras"]) pagesLayout[templ + "ExtraNmFrom"] = dFfldTE.value.split(",");
-				}
-			}
+					pagesLayout[templ + "Extras"] = dFfldTE.value.split(",").length - (onlySpawnsFromT || !pagesLayout[templ] ? 1 : 0);
+					if (pagesLayout[templ + "Extras"]) {
+						pagesLayout[templ + "ExtraNmFrom"] = dFfldTE.value.split(",").splice(onlySpawnsFromT || !pagesLayout[templ] ? 1 : 0);
+					};
+				};
+			};
 			//now replicate that layout
 			for (var templ in TemplateDep) {
 				if (pagesLayout[templ] !== undefined && global.docTo.getField(BookMarkList[templ])) {
 					var templAte = pagesLayout[templ];
 					var tempExtr = pagesLayout[templ + "Extras"];
-					var templToVis = global.docTo.getField(BookMarkList[templ]).page !== -1;
-					if (!templAte && !tempExtr) {
-						if (templ.substring(0, 2) !== "SS" && templToVis) DoTemplate(templ, "Remove");
-					} else if (tempExtr) {
-						if (templ.substring(0, 2) !== "SS" && !templToVis) DoTemplate(templ);
-						if (sameType || (templ !== "SSmore" && (templ !== "SSfront" || !pagesLayout.SSmoreExtras))) for (var tE = 0; tE < tempExtr; tE++) DoTemplate(templ, "Add");
-						if (templ.substring(0, 2) !== "SS" && !templAte) DoTemplate(templ);
-						pagesLayout[templ + "ExtraNmTo"] = What("Template.extras." + templ).split(",");
-					} else if (templAte && templ.substring(0, 2) !== "SS" && !templToVis) {
+					var templToVis = global.docTo.isTemplVis(templ);
+					if (templToVis && !templAte && !tempExtr) { // remove any visible pages that are not visible in the docFrom
+						DoTemplate(templ, "Remove", false, true);
+					} else if (templAte && !templToVis && TemplatesWithExtras.indexOf(templ) === -1) { //add the non-duplicatable templates
 						DoTemplate(templ);
+					} else if (tempExtr) { // add templates with dependencies
+						if (sameType || (templ !== "SSmore" && (templ !== "SSfront" || !pagesLayout.SSmoreExtras))) {
+							for (var tE = 0; tE < tempExtr; tE++) DoTemplate(templ, "Add");
+						};
+						pagesLayout[templ + "ExtraNmTo"] = What("Template.extras." + templ).split(",").splice(1);
 					};
 				};
 			};
@@ -824,21 +836,25 @@ function DirectImport(consoleTrigger) {
 		
 		
 	//>> make a function to do all children of a parent field
-		var doChildren = function(parentFld, fromPre, toPre, excludeRegEx, inclVisibility) {
+		var doChildren = function(parentFld, fromPre, toPre, excludeRegEx, inclVisibility, actionsObj) {
 			var parentA = global.docTo.getField(toPre + parentFld);
 			if (!parentA) return;
+			if (actionsObj) {
+				actionsObj.notTooltip = true;
+				actionsObj.doVisiblity = inclVisibility
+			};
 			parentA = parentA.getArray();
 			for (var pA =  0; pA < parentA.length; pA++) {
 				var pAnameTo = parentA[pA].name;
 				if (excludeRegEx && (excludeRegEx).test(pAnameTo)) continue;
 				var pAnameFrom = pAnameTo.replace(toPre, fromPre);
-				ImportField(pAnameTo, {notTooltip: true, doVisiblity: inclVisibility}, pAnameFrom);
+				ImportField(pAnameTo, actionsObj ? actionsObj : {notTooltip: true, doVisiblity: inclVisibility}, pAnameFrom);
 			}
 		}
 		
 	// do the companion pages
 		//run through each one in the array
-		var prefixA = pagesLayout && pagesLayout.AScompExtras ? [pagesLayout.AScompExtraNmFrom, pagesLayout.AScompExtraNmTo] : [[""], [""]];
+		var prefixA = pagesLayout && pagesLayout.AScompExtras ? [pagesLayout.AScompExtraNmFrom, pagesLayout.AScompExtraNmTo] : [[], []];
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
@@ -917,7 +933,7 @@ function DirectImport(consoleTrigger) {
 		}
 		
 	//do the notes pages
-		prefixA = pagesLayout && pagesLayout.ASnotesExtras ? [pagesLayout.ASnotesExtraNmFrom, pagesLayout.ASnotesExtraNmTo] : [[""], [""]];
+		prefixA = pagesLayout && pagesLayout.ASnotesExtras ? [pagesLayout.ASnotesExtraNmFrom, pagesLayout.ASnotesExtraNmTo] : [[], []];
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
@@ -926,22 +942,32 @@ function DirectImport(consoleTrigger) {
 		}
 		
 	//do the wildshape pages
-		doChildren("Wildshapes.Info", "", "", /^(?!.*start).*$/i); //the info values
-		doChildren("AdvLog.1", "", "", /^(?!.*start).*$/i); //the starting values
-		prefixA = pagesLayout && pagesLayout.WSfrontExtras ? [pagesLayout.WSfrontExtraNmFrom, pagesLayout.WSfrontExtraNmTo] : [[""], [""]];
+		prefixA = pagesLayout && pagesLayout.WSfrontExtras ? [pagesLayout.WSfrontExtraNmFrom, pagesLayout.WSfrontExtraNmTo] : [[], []];
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
-			doChildren("Wildshape.Race", prefixFrom, prefixTo, /^(?!.*\d)|(?=.*(start|total)).*$/i);
+			doChildren("Wildshapes.Info", prefixFrom, prefixTo); //the info values
+			doChildren("Wildshape.Race", prefixFrom, prefixTo);
 		}
 		
 	//do the adventure logsheet pages
-		doChildren("AdvLog.1", "", "", /^(?!.*start).*$/i); //the starting values
-		prefixA = pagesLayout && pagesLayout.ALlogExtras ? [pagesLayout.ALlogExtraNmFrom, pagesLayout.ALlogExtraNmTo] : [[""], [""]];
+		prefixA = pagesLayout && pagesLayout.ALlogExtras ? [pagesLayout.ALlogExtraNmFrom, pagesLayout.ALlogExtraNmTo] : [[], []];
+		var advLogRegChl = FromVersion < 12.994 ? /^(?!.*\d)|(?=.*(start|total|date)).*$/i : /^(?!.*\d)|(?=.*(start|total)).*$/i;
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
-			doChildren("AdvLog", prefixFrom, prefixTo, /^(?!.*\d)|(?=.*(start|total)).*$/i);
+			if (i === 0) doChildren("AdvLog.1", prefixFrom, prefixTo, /^(?!.*start).*$/i); //the starting values
+			if (FromVersion < 12.994) {
+				for (var x = 1; x <= FieldNumbers.logs; x++) {
+					var dateFldFr = global.docFrom.getField(prefixFrom + "AdvLog." + x + ".date");
+					var dateFldTo = global.docTo.getField(prefixTo + "AdvLog." + x + ".date");
+					if (!dateFldTo || !dateFldFr) continue;
+					var theDateForm = global.docFrom.What("DateFormat_Remember") ? global.docFrom.What("DateFormat_Remember") : "d mmm yyyy";
+					var theDateVal = util.scand(theDateForm, dateFldFr.value);
+					if (theDateVal) dateFldTo.value = util.printd("yy-mm-dd", theDateVal);
+				};
+			};
+			doChildren("AdvLog", prefixFrom, prefixTo, advLogRegChl);
 		}
 		
 	//do the spell sheet pages
@@ -1002,10 +1028,10 @@ function DirectImport(consoleTrigger) {
 			
 			//now do the spell rows, but only if the sheet type is the same or only the first page was visible
 			if (pagesLayout && pagesLayout.SSfrontExtras && (sameType || !pagesLayout.SSmoreExtras)) {
-				prefixA = [[pagesLayout.SSfrontExtraNmFrom[1]], [pagesLayout.SSfrontExtraNmTo[1]]];
+				prefixA = [[pagesLayout.SSfrontExtraNmFrom], [pagesLayout.SSfrontExtraNmTo]];
 				if (pagesLayout.SSmoreExtras) {
-					prefixA[0] = prefixA[0].concat(pagesLayout.SSmoreExtraNmFrom.slice(1));
-					prefixA[1] = prefixA[1].concat(pagesLayout.SSmoreExtraNmTo.slice(1));
+					prefixA[0] = prefixA[0].concat(pagesLayout.SSmoreExtraNmFrom);
+					prefixA[1] = prefixA[1].concat(pagesLayout.SSmoreExtraNmTo);
 				}
 				for (var i = 0; i < prefixA[0].length; i++) {
 					var prefixFrom = prefixA[0][i];
@@ -1056,6 +1082,9 @@ function DirectImport(consoleTrigger) {
 		
 		//import the icons
 		var IIerror = ImportIcons(pagesLayout, app.viewerType !== "Reader" && importFromPath[2]);
+	
+		// set the focus to the top of the first page
+		tDoc.getField("Player Name").setFocus();
 	} catch (error) {
 		var eText = "An error occured during importing:\n " + error + "\n ";
 		for (var e in error) eText += e + ": " + error[e] + ";\n ";
@@ -1068,9 +1097,10 @@ function DirectImport(consoleTrigger) {
 	if (global.docFrom && global.docFrom.toString() === "[object Doc]") {
 		global.docFrom.dirty = false;
 		global.docFrom.closeDoc();
-	}
+	};
 	//remove the global objects so that they don't make a clutter
 	IsNotImport = true;
+	ignorePrereqs = false;
 	if (global.docTo) delete global.docTo;
 	if (global.docFrom) delete global.docFrom;
 	if (IIerror && isNaN(IIerror)) app.alert(IIerror);
@@ -1134,6 +1164,7 @@ function ImportField(fldNm, actionsObj, fromFldNm) {
 	if (fromFld.value !== fromFld.defaultValue) {
 		var testValFrom = fromFld.value.toString();
 		var testValTo = toFld.value.toString();
+		if (actionsObj.replaceFrom) testValFrom = testValFrom.replace(actionsObj.replaceFrom, actionsObj.replaceWith ? actionsObj.replaceWith : "");
 		if (toFld.type === "combobox" && !toFld.editable && testValFrom !== testValTo) {
 			try {toFld.value = fromFld.value} catch (e) {};
 		} else if (!actionsObj.cleanValue && !actionsObj.compareNoSpaces && testValFrom !== testValTo) {
@@ -1193,8 +1224,8 @@ function ImportIcons(pagesLayout, viaSaving) {
 	var fromSheetTypePF = global.docFrom.info.SheetType ? (/printer friendly/i).test(global.docFrom.info.SheetType) : false;
 	var bothPF = typePF && fromSheetTypePF;
 	var bothCF = !typePF && !fromSheetTypePF;
-	var FromVersion = global.docFrom.info.SheetVersion;
-	if (isNaN(FromVersion)) FromVersion = FromVersion.replace("b", "");
+	var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
+	if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/b/ig, ""));
 	if (FromVersion < 3.7) return true; //the form is of a version before there were any icon fields
 	
 	var IconArray = [
@@ -1203,7 +1234,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 		["Comp.img.Portrait", "Comp.img.Portrait"]
 	];
 	if (pagesLayout && pagesLayout.AScompExtras) {
-		for (var i = 1; i < pagesLayout.AScompExtraNmFrom.length; i++) {
+		for (var i = 0; i < pagesLayout.AScompExtraNmFrom.length; i++) {
 			IconArray.push([pagesLayout.AScompExtraNmFrom[i] + "Comp.img.Portrait", pagesLayout.AScompExtraNmTo[i] + "Comp.img.Portrait"]);
 		}
 	};
@@ -1211,7 +1242,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 		IconArray.push(["HeaderIcon", "HeaderIcon"]);
 		IconArray.push(["AdvLog.HeaderIcon", "AdvLog.HeaderIcon"]);
 		if (pagesLayout.ALlogExtras) {
-			for (var i = 1; i < pagesLayout.ALlogExtraNmFrom.length; i++) {
+			for (var i = 0; i < pagesLayout.ALlogExtraNmFrom.length; i++) {
 				IconArray.push([pagesLayout.ALlogExtraNmFrom[i] + "AdvLog.HeaderIcon", pagesLayout.ALlogExtraNmTo[i] + "AdvLog.HeaderIcon"]);
 			}
 		}
@@ -1270,7 +1301,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 	}
 	
 	//now if selected and possible, see if we can transfer the icons for the remaining fields
-	//for the sheets before v3.0, there is no way of making an empty page. Chances are very slim that anybody is still using
+	//for the sheets before v3.0, there is no way of making an empty page. Chances are very slim that anybody is still using those
 	var goodImport = 1;
 	var madeFlds = false;
 	if (MPMBImportFunctionsInstalled && viaSaving) {
@@ -1403,6 +1434,7 @@ function Import(type) {
 	
 	if (typeof ProcResponse === "undefined") {
 		IsNotImport = false;
+		ignorePrereqs = true;
 		if (type === "fdf") {
 			tDoc.importAnFDF();
 		} else if (type === "xfdf") {
@@ -1410,6 +1442,7 @@ function Import(type) {
 		}
 		if (What("Race Remember").split("-")[1]) ApplyRace(What("Race Remember"));
 		IsNotImport = true;
+		ignorePrereqs = false;
 	};
 	
 	//set the values of the templates back
@@ -1674,21 +1707,14 @@ function MakeXFDFExport(partial) {
 		var toExport = tDoc.exportAsXFDFStr(theSettings);
 	
 		var explainTXT = "This is a work-around for Acrobat Reader. It requires a little bit more work, but otherwise you will have to get Acrobat Pro in order to do this more easily. You will be able to import the file you create into MPMB's Character Sheet version 10.2 or later.\nThe field below contains all the exported data in a XML format. All you have to do is copy this data and save it as an .xfdf file with UTF-8 encoding.";
-		if (app.platform === "WIN") {
-			explainTXT += " If you don't know how to do this, just follow the steps below:\n\nOn Windows:\n  1 - Open Notepad and copy the complete content of the field below into it;\n  2 - On the Notepad menu bar, select File -- Save;\n  3 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  4 - At Encoding, choose \"UTF-8\";\n  5 - Press Save."
-		} else if (app.platform === "MAC") {
-			explainTXT += " If you don't know how to do this, just follow the steps below:\n\nOn Mac:\n  1 - Open TextEdit and copy the complete content of the field below into it;\n  2 - On the TextEdit menu bar, select Format -- Make Plain Text;\n  3 - Then, on the TextEdit menu bar, select File -- Save As;\n  4 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  5 - At Plain Text Encoding, choose \"UTF-8\";\n  6 - Press Save."
-		}
+		var explainTXT2 = app.platform === "WIN" ? "If you don't know how to do this, just follow the steps below:\n\nOn Windows:\n  1 - Open Notepad and copy the complete content of the field below into it;\n  2 - On the Notepad menu bar, select File -- Save;\n  3 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  4 - At Encoding, choose \"UTF-8\";\n  5 - Press Save." : " If you don't know how to do this, just follow the steps below:\n\nOn Mac:\n  1 - Open TextEdit and copy the complete content of the field below into it;\n  2 - On the TextEdit menu bar, select Format -- Make Plain Text;\n  3 - Then, on the TextEdit menu bar, select File -- Save As;\n  4 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  5 - At Plain Text Encoding, choose \"UTF-8\";\n  6 - Press Save.";
 		
 		var DisplayExport_dialog = {
 			
 			initialize: function(dialog) {
 				dialog.load({
-					"expo": toExport,
-					"txt0": explainTXT
+					"expo": toExport
 				});
-			},
-			commit: function(dialog) { // called when OK pressed
 			},
 
 			description : {
@@ -1711,8 +1737,17 @@ function MakeXFDFExport(partial) {
 							item_id : "txt0",
 							alignment : "align_fill",
 							font : "dialog",
-							char_height : 20,
-							char_width : 55
+							wrap_name : true,
+							char_width : 55,
+							name : explainTXT
+						}, {
+							type : "static_text",
+							item_id : "txt1",
+							alignment : "align_fill",
+							font : "dialog",
+							wrap_name : true,
+							char_width : 55,
+							name : explainTXT2
 						}, {
 							type : "edit_text",
 							item_id : "expo",

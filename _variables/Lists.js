@@ -170,7 +170,8 @@ var Menus = {
 	"hp" : "",
 	"texts" : "",
 	"skills" : "",
-	"adventureLeague" : ""
+	"adventureLeague" : "",
+	"sources" : ""
 };
 
 var GearMenus = {
@@ -216,6 +217,7 @@ var CurrentWeapons = {
 	manualproficiencies : [],
 	compField : {},
 	compKnown : {},
+	offHands : []
 };
 
 var CurrentBackground = {};
@@ -231,6 +233,7 @@ var IsNotImport = true;
 var IsNotFeatMenu = true;
 var IsNotWeaponMenu = true;
 var IsNotSpellSheetGenerating = true;
+var ignorePrereqs = false;
 
 var FieldsRemember = [];
 
@@ -453,7 +456,7 @@ var SetPrintPages_Dialog = {
 	bASnotes : false,
 	bWSfront : false,
 	bALlog : false,
-	bSSmore : false,
+	bSSfront : false,
 	bPRsheet : false,
 	bASoverflow : false,
 	bHide : false,
@@ -467,7 +470,7 @@ var SetPrintPages_Dialog = {
 	aASnotes : true,
 	aWSfront : true,
 	aALlog : true,
-	aSSmore : false,
+	aSSfront : false,
 	aPRsheet : false,
 	aASoverflow : false,
 
@@ -483,12 +486,10 @@ var SetPrintPages_Dialog = {
 			"Pag6" : this.bASnotes,
 			"Pag7" : this.bWSfront,
 			"Pag8" : this.bALlog,
-			"Pag9" : this.bSSmore,
+			"Pag9" : this.bSSfront,
 			"Pag0" : this.bPRsheet,
 			"Pa10" : this.bASoverflow,
-			"Hide" : this.bHide,
-			"txt0" : "Please select the pages you want to print or save for future use.\n\nThe values you enter here will be remembered for the next time you push the \"Print\" button in the \"JavaScript Window\" or bookmarks section.\n\nNote that what you do here will have no effect on 'normal' print commands (i.e. using the file menu or Ctrl+P).",
-			"txt1" : "Note that this cannot be changed in the next dialog, the print pop-up. The selection you make here will always override anything you do in the next dialog or print settings."
+			"Hide" : this.bHide
 		});
 		
 		if (this.bDupl) {
@@ -514,7 +515,7 @@ var SetPrintPages_Dialog = {
 			"Pag6" : this.aASnotes,
 			"Pag7" : this.aWSfront,
 			"Pag8" : this.aALlog,
-			"Pag9" : this.aSSmore,
+			"Pag9" : this.aSSfront,
 			"Pag0" : this.aPRsheet,
 			"Pa10" : this.aASoverflow
 		});
@@ -539,7 +540,7 @@ var SetPrintPages_Dialog = {
 		this.bASnotes = oResult["Pag6"];
 		this.bWSfront = oResult["Pag7"];
 		this.bALlog = oResult["Pag8"];
-		this.bSSmore = oResult["Pag9"];
+		this.bSSfront = oResult["Pag9"];
 		this.bPRsheet = oResult["Pag0"];
 		this.bASoverflow = oResult["Pa10"];
 		this.bDupl = oResult["dupl"];
@@ -581,8 +582,9 @@ var SetPrintPages_Dialog = {
 					item_id : "txt0",
 					alignment : "align_fill",
 					font : "dialog",
-					char_height : 11,
-					char_width : 40
+					wrap_name : true,
+					char_width : 40,
+					name : "Please select the pages you want to print or save for future use.\n\nThe values you enter here will be remembered for the next time you push the \"Print\" button in the \"JavaScript Window\" or bookmarks section.\n\nNote that what you do here will have no effect on 'normal' print commands (i.e. using the file menu or Ctrl+P)."
 				}, {
 					type : "cluster",
 					align_children : "align_distribute",
@@ -661,8 +663,9 @@ var SetPrintPages_Dialog = {
 							item_id : "txt1",
 							alignment : "align_fill",
 							font : "dialog",
-							char_height : 5,
-							char_width : 38
+							wrap_name : true,
+							char_width : 38,
+							name : "Note that this cannot be changed in the next dialog, the print pop-up. The selection you make here will always override anything you do in the next dialog or print settings."
 						}, ]
 					}, ]
 				},  {
@@ -703,8 +706,7 @@ var SetToManual_Dialog = {
 			"Back" : this.mBac,
 			"Clas" : this.mCla,
 			"Feat" : this.mFea,
-			"Race" : this.mRac,
-			"text" : "Here you can select the functions of this sheet that you want to be done manually instead of calculated (which is the default setting).\n\nSimply check of any items you want to set to manual and press \"Apply\".\n\nIf some items are already set to manual, simply uncheck the box, press \"Apply\", and that feature will be calculated and added to the sheet immediately."
+			"Race" : this.mRac
 		});
 	},
 
@@ -754,8 +756,9 @@ var SetToManual_Dialog = {
 					item_id : "text",
 					alignment : "align_fill",
 					font : "dialog",
-					char_height : 11,
-					char_width : 40
+					wrap_name : true,
+					char_width : 40,
+					name : "Here you can select the functions of this sheet that you want to be done manually instead of calculated (which is the default setting).\n\nSimply check of any items you want to set to manual and press \"Apply\".\n\nIf some items are already set to manual, simply uncheck the box, press \"Apply\", and that feature will be calculated and added to the sheet immediately."
 				}, {
 					type : "cluster",
 					align_children : "align_distribute",
@@ -933,44 +936,22 @@ var SetUnitDecimals_Dialog = {
 
 	//when starting the dialog
 	initialize : function (dialog) {
+		var isImp = this.bSys === "imperial";
+		var isDot = this.bDec === "dot";
 		dialog.load({
 			"img1" : allIcons.unitsystem,
-			"txt0" : "Any changes you make will be applied immediately to all fields that would logically be impacted by them. The conversion is not completely accurate, as some accuracy is sacrificed for numbers that are easier to use during play.\n\n \u2022 Distances in game mechanics are converted by assuming 1 ft is 30 cm;\n \u2022 Weights used in game mechanics are converted by assuming 2 lb is 1 kg;\n \u2022 All converted units used in game mechanics are rounded to the nearest half;\n \u2022 Equipment weight is calculated to three decimals accuracy;\n \u2022 The Character's Height and Weight fields are converted with more accuracy.\n\nNote that units you added manually might not be converted correctly as not all units are supported.\nAny features that auto-fill will recognize these settings and use them to update the sheet. So you only have to set this once.\nThe Spell Sheet can't be flawlessly changed from one unit system to another on the fly. Changing unit systems is best done before generating a Spell Sheet.\nFields that are never auto-filled by sheet automation, such as the character history or notes on the 6th page, will not be changed."
+			"SyIm" : isImp,
+			"SyMe" : !isImp,
+			"DeDo" : isDot,
+			"DeCo" : !isDot
 		});
-		
-		if (this.bSys === "imperial") {
-			dialog.load({
-				"SyIm" : true
-			});
-		} else {
-			dialog.load({
-				"SyMe" : true
-			});
-		}
-		if (this.bDec === "dot") {
-			dialog.load({
-				"DeDo" : true
-			});
-		} else {
-			dialog.load({
-				"DeCo" : true
-			});
-		}
 	},
 
 	//when pressing the ok button
 	commit : function (dialog) {
 		var oResult = dialog.store();
-		if (oResult["SyIm"]) {
-			this.bSys = "imperial";
-		} else {
-			this.bSys = "metric";			
-		}
-		if (oResult["DeDo"]) {
-			this.bDec = "dot";
-		} else {
-			this.bDec = "comma";
-		}
+		this.bSys = oResult["SyIm"] ? "imperial" : "metric";
+		this.bDec = oResult["DeDo"] ? "dot" : "comma";
 	},
 
 	description : {
@@ -992,10 +973,10 @@ var SetUnitDecimals_Dialog = {
 						type : "static_text",
 						item_id : "head",
 						alignment : "align_fill",
-						font : "heading",
+						font : "title",
 						bold : true,
-						height : 21,
-						char_width : 38,
+						wrap_name : true,
+						width : 480,
 						name : "Choose the unit system and decimal separator"
 					}]
 				}, {
@@ -1003,43 +984,46 @@ var SetUnitDecimals_Dialog = {
 					item_id : "txt0",
 					alignment : "align_fill",
 					font : "dialog",
-					char_height : 27,
-					char_width : 43
+					wrap_name : true,
+					width : 480,
+					name : "Any changes you make will be applied immediately to all fields that would logically be impacted by them.\nThe conversion is not completely accurate, as some accuracy is sacrificed for numbers that are easier to use during play."
+				}, {
+					type : "static_text",
+					item_id : "txt1",
+					alignment : "align_fill",
+					font : "dialog",
+					wrap_name : true,
+					width : 480,
+					name : " \u2022 Distances in game mechanics are converted by assuming 1 ft is 30 cm;\n \u2022 Weights used in game mechanics are converted by assuming 2 lb is 1 kg;\n \u2022 All converted units used in game mechanics are rounded to the nearest half;\n \u2022 Equipment weight is calculated to three decimals accuracy;\n \u2022 The Character's Height and Weight fields are converted with more accuracy;\n \u2022 Units you added manually might not be converted as not all unit conversions are supported."
+				}, {
+					type : "static_text",
+					item_id : "txt2",
+					alignment : "align_fill",
+					font : "dialog",
+					wrap_name : true,
+					width : 480,
+					name : "Any features that auto-fill will recognize these settings and use them to update the sheet, so you only have to set this once.\nThe Spell Sheet can't be flawlessly changed from one unit system to another on the fly. Changing unit systems is best done before generating a Spell Sheet.\nFields that are never auto-filled by sheet automation, such as the character history or notes, will not be changed."
 				}, {
 					type : "view",
 					align_children : "align_row",
-					char_width : 43,
+					aligment : "align_center",
+					width : 480,
 					elements : [{
 						type : "cluster",
 						align_children : "align_left",
-						char_width : 15,
+						font : "heading",
+						bold : true,
+						name : "Unit System",
 						elements : [{
-							type : "view",
-							align_children : "align_left",
-							elements : [{
-								type : "static_text",
-								item_id : "SyTx",
-								font : "dialog",
-								bold : true,
-								height : 17,
-								char_width : 15,
-								name : "Unit System"
-							}]
+							type : "radio",
+							item_id : "SyIm",
+							group_id : "Syst",
+							name : "Imperial"
 						}, {
-							type : "view",
-							align_children : "align_left",
-							char_width : 15,
-							elements : [{
-								type : "radio",
-								item_id : "SyIm",
-								group_id : "Syst",
-								name : "Imperial"
-							}, {
-								type : "radio",
-								item_id : "SyMe",
-								group_id : "Syst",
-								name : "Metric"
-							}, ]
+							type : "radio",
+							item_id : "SyMe",
+							group_id : "Syst",
+							name : "Metric"
 						}, ]
 					}, {
 						type : "gap",
@@ -1047,34 +1031,19 @@ var SetUnitDecimals_Dialog = {
 					}, {
 						type : "cluster",
 						align_children : "align_left",
-						char_width : 15,
+						font : "heading",
+						bold : true,
+						name : "Decimal Separator",
 						elements : [{
-							type : "view",
-							align_children : "align_left",
-							elements : [{
-								type : "static_text",
-								item_id : "DeTx",
-								font : "dialog",
-								bold : true,
-								height : 17,
-								char_width : 15,
-								name : "Decimal Separator"
-							}]
+							type : "radio",
+							item_id : "DeDo",
+							group_id : "Deci",
+							name : "Dot (comma as thousands separator)"
 						}, {
-							type : "view",
-							align_children : "align_left",
-							char_width : 15,
-							elements : [{
-								type : "radio",
-								item_id : "DeDo",
-								group_id : "Deci",
-								name : "Dot (comma as thousands separator)"
-							}, {
-								type : "radio",
-								item_id : "DeCo",
-								group_id : "Deci",
-								name : "Comma (dot as thousands separator)"
-							}, ]
+							type : "radio",
+							item_id : "DeCo",
+							group_id : "Deci",
+							name : "Comma (dot as thousands separator)"
 						}, ]
 					}, ]
 				}, {
@@ -1103,7 +1072,6 @@ var SetTextOptions_Dialog = {
 	initialize : function (dialog) {	
 		dialog.load({
 			"img1" : allIcons.textsize,
-			"txt0" : "Below you can set the font size and" + " change the font of all the form fields.\n\nNote that if you use a font of your own choosing (custom font), it might not be possible to align the text properly with the text lines, regardless of the font size you select.\n\nThe settings for font size will be applied to all text fields that support multiple lines of text. Fields with a single line of text have a font size of 'auto'.\n\nIf you set the font size to 'auto', the text will resize to the size of the field. You can subsequently make the text smaller by entering more text or by entering line breaks.",
 			"StSz" : this.bDefSize.toString(),
 			"sOSi" : this.bSize.toString(),
 			"fAlS" : this.bFontsArray,
@@ -1340,25 +1308,25 @@ var SetTextOptions_Dialog = {
 					item_id : "txt0",
 					alignment : "align_fill",
 					font : "dialog",
-					char_height : 15,
-					char_width : 50
+					wrap_name : true,
+					char_width : 50,
+					name : "Below you can set the font size and change the font of all the form fields.\n\nNote that if you use a font of your own choosing (custom font), it might not be possible to align the text properly with the text lines, regardless of the font size you select."
+				}, {
+					type : "static_text",
+					item_id : "txt1",
+					alignment : "align_fill",
+					font : "dialog",
+					wrap_name : true,
+					char_width : 50,
+					name : "The settings for font size will be applied to all text fields that support multiple lines of text. Fields with a single line of text have a font size of 'auto'.\n\nIf you set the font size to 'auto', the text will resize to the size of the field. You can subsequently make the text smaller by entering more text or by entering line breaks."
 				}, {
 					type : "cluster",
 					align_children : "align_left",
 					char_width : 50,
+					name : "Select the Font",
+					font : "heading",
+					bold : true,
 					elements : [{
-						type : "view",
-						align_children : "align_left",
-						height : 18,
-						elements : [{
-							type : "static_text",
-							item_id : "txtf",
-							name : "Select the Font",
-							height : 18,
-							font : "heading",
-							bold : true
-						}, ]
-					}, {
 						type : "view",
 						align_children : "align_distribute",
 						height : 23,
@@ -1412,19 +1380,10 @@ var SetTextOptions_Dialog = {
 					type : "cluster",
 					align_children : "align_left",
 					char_width : 50,
+					name : "Select the Font Size",
+					font : "heading",
+					bold : true,
 					elements : [{
-						type : "view",
-						align_children : "align_left",
-						height : 18,
-						elements : [{
-							type : "static_text",
-							item_id : "txts",
-							name : "Select the Font Size",
-							height : 18,
-							font : "heading",
-							bold : true
-						}, ]
-					}, {
 						type : "view",
 						align_children : "align_row",
 						height : 20,
@@ -1474,224 +1433,6 @@ var SetTextOptions_Dialog = {
 				}, ]
 			}, {
 				type : "ok_cancel"
-			}, ]
-		}, ]
-	}
-}
-
-var Multiclassing_Dialog = {
-	//variables to be set by the calling function
-	Class1 : "",
-	Class2 : "",
-	Class3 : "",
-	Class4 : "",
-	ClassNmbrs : 0,
-	All : true,
-	LVLchange : 1,
-	Selection : 0,
-
-	//when starting the dialog
-	initialize : function (dialog) {
-		var theChar = What("PC Name") ? What("PC Name") : "your character";
-		dialog.load({
-			"txt0" : theChar.substring(0,1).toUpperCase() + theChar.substring(1) + "'s level has increased by " + parseFloat(this.LVLchange) + ". Select one of the classes of " + theChar + " that you you want to add this to. Alternatively, you can fill out a new class to add the level to.",
-			"txt1" : "Because you changed the character level by more than 1, you can choose to either have all levels be added to the selected class, or only 1. If you want only 1 level to be added to the class, uncheck the box below. That way you will be prompted for the next levels with this dialog again.",
-			"tCl1" : this.Class1,
-			"tCl2" : this.Class2,
-			"tCl3" : this.Class3,
-			"tCl4" : this.Class4,
-			"cAll" : true,
-			"rCl1" : parseFloat(this.ClassNmbrs) >= 1,
-			"rCl2" : false,
-			"rCl3" : false,
-			"rCl4" : false,
-			"rClN" : parseFloat(this.ClassNmbrs) <= 0
-		});
-		dialog.enable({
-			"rClN" : true,
-			"rCl1" : parseFloat(this.ClassNmbrs) >= 1,
-			"rCl2" : parseFloat(this.ClassNmbrs) >= 2,
-			"rCl3" : parseFloat(this.ClassNmbrs) >= 3,
-			"rCl4" : parseFloat(this.ClassNmbrs) >= 4,
-			"cAll" : Math.abs(this.LVLchange) > 1
-		});
-		dialog.visible({
-			"vCl1" : parseFloat(this.ClassNmbrs) >= 1,
-			"vCl2" : parseFloat(this.ClassNmbrs) >= 2,
-			"vCl3" : parseFloat(this.ClassNmbrs) >= 3,
-			"vCl4" : parseFloat(this.ClassNmbrs) >= 4,
-			"vAll" : Math.abs(this.LVLchange) > 1
-		})
-	},
-
-	//when pressing the ok button
-	commit : function (dialog) {
-		var oResult = dialog.store();
-		if (oResult["rCl1"]) {
-			this.Selection = 1;
-		} else if (oResult["rCl2"]) {
-			this.Selection = 2;
-		} else if (oResult["rCl3"]) {
-			this.Selection = 3;
-		} else if (oResult["rCl4"]) {
-			this.Selection = 4;
-		} else if (oResult["rClN"]) {
-			this.Selection = oResult["tClN"];
-		}
-		this.All = oResult["cAll"];
-	},
-
-	//do this whenever a custom text is entered so that the right bullet point is selected
-	tClN : function (dialog) {
-		dialog.load({
-			"rClN" : true
-		});
-	},
-	
-	description : {
-		name : "Choose Which Class to Level Up",
-		elements : [{
-			type : "view",
-			elements : [{
-				type : "view",
-				elements : [{
-					type : "static_text",
-					item_id : "head",
-					alignment : "align_fill",
-					font : "heading",
-					bold : true,
-					height : 21,
-					char_width : 43,
-					name : "Choose Which Class to Level Up"
-				}, {
-					type : "static_text",
-					item_id : "txt0",
-					alignment : "align_fill",
-					font : "dialog",
-					char_height : 5,
-					char_width : 40
-				}, {
-					type : "view",
-					align_children : "align_left",
-					char_width : 40,
-					elements : [{
-						type : "view",
-						item_id : "vClN",
-						align_children : "align_row",
-						elements : [{
-							type : "radio",
-							item_id : "rClN",
-							group_id : "Class",
-							name : "New class:",
-							char_width : 10
-						}, {
-							type : "edit_text",
-							item_id : "tClN",
-							alignment : "align_fill",
-							char_width : 30,
-							height : 20
-						}, ]
-					}, {
-						type : "view",
-						item_id : "vCl1",
-						align_children : "align_row",
-						elements : [{
-							type : "radio",
-							item_id : "rCl1",
-							group_id : "Class",
-							name : "Class 1:",
-							char_width : 10
-						}, {
-							type : "static_text",
-							item_id : "tCl1",
-							char_width : 30,
-							height : 20,
-							alignment : "align_fill",
-							font : "dialog",
-							bold : true
-						}, ]
-					}, {
-						type : "view",
-						item_id : "vCl2",
-						align_children : "align_row",
-						elements : [{
-							type : "radio",
-							item_id : "rCl2",
-							group_id : "Class",
-							name : "Class 2:",
-							char_width : 10
-						}, {
-							type : "static_text",
-							item_id : "tCl2",
-							char_width : 30,
-							height : 20,
-							alignment : "align_fill",
-							font : "dialog",
-							bold : true
-						}, ]
-					}, {
-						type : "view",
-						item_id : "vCl3",
-						align_children : "align_row",
-						elements : [{
-							type : "radio",
-							item_id : "rCl3",
-							group_id : "Class",
-							name : "Class 3:",
-							char_width : 10
-						}, {
-							type : "static_text",
-							item_id : "tCl3",
-							char_width : 30,
-							height : 20,
-							alignment : "align_fill",
-							font : "dialog",
-							bold : true
-						}, ]
-					}, {
-						type : "view",
-						item_id : "vCl4",
-						align_children : "align_row",
-						elements : [{
-							type : "radio",
-							item_id : "rCl4",
-							group_id : "Class",
-							name : "Class 4:",
-							char_width : 10
-						}, {
-							type : "static_text",
-							item_id : "tCl4",
-							char_width : 30,
-							height : 20,
-							alignment : "align_fill",
-							font : "dialog",
-							bold : true
-						}, ]
-					}, ]
-				}, {
-					type : "view",
-					item_id : "vAll",
-					align_children : "align_left",
-					char_width : 40,
-					elements : [{
-						type : "static_text",
-						item_id : "txt1",
-						alignment : "align_fill",
-						font : "dialog",
-						char_height : 6,
-						char_width : 38
-					}, {
-						type : "view",
-						align_children : "align_left",
-						elements : [{
-							type : "check_box",
-							item_id : "cAll",
-							name : "Apply the entire level change to the selected class."
-						}, ]
-					}, ]
-				}, ]
-			}, {
-				type : "ok"
 			}, ]
 		}, ]
 	}
@@ -1873,7 +1614,7 @@ var FontList = {
 	"Garamond" : !typePF ? 7.7 : 8.45,
 	"TimesNewRoman" : !typePF ? 7.4 : 8.1,
 	"Calibri" : !typePF ? 7.47 : 8.2,
-}
+};
 
 //list of field names that correspond to the name of the bookmark
 var BookMarkList = {
@@ -1887,7 +1628,7 @@ var BookMarkList = {
 	"WSfront" : "Wildshapes.Settings",
 	"ALlog" : "AdvLog.Options",
 	"SSfront" : "spells.name.0",
-	"SSmore" : "spells.name.0", //maak dit hetzelfde als SSfront, zodat het gedetecteerd wordt alsof deze zichtbaar is wanneer SSfront zichtbaar is en er vervolgens alleen clones worden toegevoegd i.p.v. het origineel
+	"SSmore" : "spells.name.0",
 	"PRsheet" : "PRsheet.toFocus",
 	
 	"CSfront_Bookmarks" : tDoc.bookmarkRoot.children[0].children[0],
@@ -1899,6 +1640,7 @@ var BookMarkList = {
 	"ASnotes_Bookmarks" : tDoc.bookmarkRoot.children[0].children[6],
 	"WSfront_Bookmarks" : tDoc.bookmarkRoot.children[0].children[7],
 	"SSfront_Bookmarks" : tDoc.bookmarkRoot.children[0].children[8],
+	"SSmore_Bookmarks" : tDoc.bookmarkRoot.children[0].children[8],
 	"ALlog_Bookmarks" : tDoc.bookmarkRoot.children[0].children[9],
 	"PRsheet_Bookmarks" : tDoc.bookmarkRoot.children[0].children[10],
 	
@@ -1971,50 +1713,67 @@ var BookMarkList = {
 	"Organization Symbol" : "Symbol.1",
 	"Lifestyle" : "Lifestyle.1",
 	
-	"Companion sheet" : "Companion.Options.1",
+	"Companion sheet" : "Companion.Options",
 	"Companion sheet_template" : "AScomp",
-	"Descriptive Header" : "Comp.Type.1",
-	"Abilities" : "Comp.Use.Ability.Str.Score.1",
-	"Skills" : "Comp.Use.Skills.Acr.Mod.1",
-	"Attacks" : "Comp.Use.Attack.1.Weapon Selection.1",
-	"Initiative" : "Comp.Use.Combat.Init.Mod.1",
-	"Initiative / Speed / HD" : "Comp.Use.Combat.Init.Mod.1",
-	"Speed" : "Comp.Use.Speed.1",
-	"AC / Prof Bonus / HP" : "Comp.Use.AC.1",
-	"Defense" : "Comp.Use.AC.1",
-	"Health" : "Comp.Use.HP.Current.1",
-	"Features" : "Comp.Use.Features.1",
-	"Proficiency Bonus" : "Comp.Use.Proficiency Bonus.1",
-	"Traits" : "Comp.Use.Traits.1",
-	"Notes " : "Cnote.Left.1",
+	"Descriptive Header" : "Comp.Type",
+	"Abilities" : "Comp.Use.Ability.Str.Score",
+	"Skills" : "Comp.Use.Skills.Acr.Mod",
+	"Attacks" : "Comp.Use.Attack.1.Weapon Selection",
+	"Initiative" : "Comp.Use.Combat.Init.Mod",
+	"Initiative / Speed / HD" : "Comp.Use.Combat.Init.Mod",
+	"Speed" : "Comp.Use.Speed",
+	"AC / Prof Bonus / HP" : "Comp.Use.AC",
+	"Defense" : "Comp.Use.AC",
+	"Health" : "Comp.Use.HP.Current",
+	"Features" : "Comp.Use.Features",
+	"Proficiency Bonus" : "Comp.Use.Proficiency Bonus",
+	"Traits" : "Comp.Use.Traits",
+	"Notes " : "Cnote.Left",
 	
-	"Notes sheet" : "Notes.Left.1",
+	"Notes sheet" : "Notes.Left",
 	"Notes sheet_template" : "ASnotes",
-	"Notes" : "Notes.Left.1",
+	"Notes" : "Notes.Left",
 	
-	"Wild Shapes" : "Wildshapes.Settings.1",
+	"Wild Shapes" : "Wildshapes.Settings",
 	"Wild Shapes_template" : "WSfront",
-	"Wild Shape 1" : "Wildshape.Race.1.1",
-	"Wild Shape 2" : "Wildshape.Race.2.1",
-	"Wild Shape 3" : "Wildshape.Race.3.1",
-	"Wild Shape 4" : "Wildshape.Race.4.1",
+	"Wild Shape 1" : "Wildshape.Race.1",
+	"Wild Shape 2" : "Wildshape.Race.2",
+	"Wild Shape 3" : "Wildshape.Race.3",
+	"Wild Shape 4" : "Wildshape.Race.4",
 	
 	"Spell Sheets" : "spells.name.0",
 	"Spell Sheets_template" : "SSfront",
 	
-	"Adventurers Logsheet" : "AdvLog.Options.1",
+	"Adventurers Logsheet" : "AdvLog.Options",
 	"Adventurers Logsheet_template" : "ALlog",
-	"Logsheet Entry 1" : "Text.AdvLog.1.1",
-	"Logsheet Entry 2" : "Text.AdvLog.2.1",
-	"Logsheet Entry 3" : "Text.AdvLog.3.1",
-	"Logsheet Entry 4" : "Text.AdvLog.4.1",
-	"Logsheet Entry 5" : "Text.AdvLog.5.1",
-	"Logsheet Entry 6" : "Text.AdvLog.6.1",
-	"Logsheet Entry 7" : "Text.AdvLog.7.1",
+	"Logsheet Entry 1" : "Text.AdvLog.1",
+	"Logsheet Entry 2" : "Text.AdvLog.2",
+	"Logsheet Entry 3" : "Text.AdvLog.3",
+	"Logsheet Entry 4" : "Text.AdvLog.4",
+	"Logsheet Entry 5" : "Text.AdvLog.5",
+	"Logsheet Entry 6" : "Text.AdvLog.6",
+	"Logsheet Entry 7" : "Text.AdvLog.7",
 	
 	"Reference Sheet" : "PRsheet.toFocus.1",
 	"Reference Sheet_template" : "PRsheet",
 };
+
+var TemplateNames = {
+	"CSfront" : "Character sheet front",
+	"CSback" : "Character sheet back",
+	"ASfront" : !typePF ? "Conditions and Magic Items sheet" : "Feats and Magic Items sheet",
+	"ASoverflow" : "Overflow (magic items, feats, actions, etc.) sheet",
+	"ASbackgr" : "Background and Organization sheet",
+	"AScomp" : "Companion sheet",
+	"ASnotes" : "Notes sheet",
+	"WSfront" : "Wild Shapes sheet",
+	"ALlog" : "Adventurers Logsheet",
+	"SSfront" : "Spell sheet",
+	"SSmore" : "Spell sheet",
+	"PRsheet" : "Rules Reference sheet"
+};
+
+var TemplatesWithExtras = ["AScomp", "ASnotes", "WSfront", "SSfront", "SSmore", "ALlog"];
 
 var TemplateDep = {
 	"ASfront" : [],

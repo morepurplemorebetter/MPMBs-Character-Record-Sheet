@@ -350,22 +350,25 @@ function FormatHD() {
 
 //format the date (format)
 function FormatDay() {
-	var dateForm = What("DateFormat_Remember");
-	var dateInputForm = returnInputForm(dateForm);
-	var dateInputFormLong = dateInputForm.replace(/y+/, "year").replace(/d+/, "day").replace(/m+/, "month");
-	var dateValue = util.scand(dateInputForm, event.value);
-	if (dateValue == null) {
-		app.alert({
-			cMsg : "Please enter a valid date of the form \"" + dateInputFormLong + "\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" button above.",
-			cTitle : "Invalid date format",
-			nIcon : 1
-		});
-		event.value = "";
-	} else if (event.value === "") {
-		event.value = "";
-	} else {
-		event.value = util.printd(dateForm, dateValue);
-	}
+	var isDate = util.scand('yy-mm-dd', event.value);
+	event.value = event.value && isDate ? util.printd(What("DateFormat_Remember"), isDate) : "";
+};
+
+//make sure the date is entered in the correct format (keystroke)
+function KeystrokeDay() {
+	if (event.willCommit && event.value) {
+		var isDate = util.scand('yy-mm-dd', event.value);
+		if (!isDate) {
+			event.value = "";
+			if (IsNotImport) {
+				app.alert({
+					cMsg : "Please enter a valid date using the date-picker (the little arrow in the field) or enter the date manually using of the form \"Year-Month-Day\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" at the top of each Adventurers Logsheet. Note that the format of the date in the field never changes, but only the way it is displayed.",
+					cTitle : "Invalid date format",
+					nIcon : 1
+				});
+			};
+		};
+	};
 };
 
 //a field "format" function to add a space at the start and end of the field, to make sure it looks better on the sheet
@@ -476,7 +479,7 @@ function clean(input, remove, diacretics) {
 
 //convert string to usable, complex regex
 function MakeRegex(inputString, extraRegex) {
-	return RegExp("^(?=.*\\b" + inputString.replace(/\W/g, " ").replace(/^ +| +$/g, "").RegEscape().replace(/('?s'?)\b/ig, "\($1\)?").replace(/ +/g, "\\b)(?=.*\\b") + "\\b)" + (extraRegex ? extraRegex : "") + ".*$", "i");
+	return RegExp("^(?=.*\\b" + inputString.replace(/\W/g, " ").replace(/^ +| +$/g, "").RegEscape().replace(/('?s'?)\b/ig, "\($1\)?").replace(/ +/g, "s?\\b)(?=.*\\b") + "s?\\b)" + (extraRegex ? extraRegex : "") + ".*$", "i");
 };
 
 function toUni(input) {
@@ -947,4 +950,37 @@ function setDialogName(dialogElem, itemID, attrNm, setAttr) {
 //return a random number between 1 and the input 'die'
 function RollD(die) {
     return Math.floor(Math.random() * die) + 1;
+};
+
+//set the other checkbox Dis/Adv off when clicking this field (on MouseUp)
+function SetDisAdv() {
+	var Adv = (/Adv$/).test(event.target.name);
+	this.getField(event.target.name.replace(Adv ? "Adv" : "Dis", Adv ? "Dis" : "Adv")).value = "Off";
+};
+
+//see if two strings don't differ too much in length
+function similarLen(str1, str2) {
+	return Math.abs(str1.length - str2.length) < 5 || Math.abs(str1.length, str2.length) / Math.max(str1.length, str2.length) < 0.2;
+};
+
+//test if a template is visible or not
+function isTemplVis(tempNm, returnPrefix) {
+	var isVisible = false;
+	var multiTemp = TemplatesWithExtras.indexOf(tempNm) !== -1;
+	var firstTempl = "";
+	if (!multiTemp) {
+		var tempPage = tDoc.getField(BookMarkList[tempNm]).page;
+		isVisible = (isArray(tempPage) ? Math.max.apply(Math, tempPage) : tempPage) !== -1;
+	} else {
+		isVisible = What("Template.extras." + tempNm) !== "";
+		firstTempl = What("Template.extras." + tempNm).split(",")[1];
+	};
+	if (!isVisible && tempNm === "SSfront") {
+		isVisible = isTemplVis("SSmore", returnPrefix);
+		if (isArray(isVisible)) {
+			firstTempl = isVisible[1];
+			isVisible = isVisible[0];
+		};
+	};
+	return returnPrefix && firstTempl ? [isVisible, firstTempl] : isVisible;
 };

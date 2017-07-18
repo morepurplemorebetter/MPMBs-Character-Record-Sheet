@@ -2048,7 +2048,7 @@ var SpellsList = {
 		compMaterial : "A handful of clay, crystal, glass, or mineral spheres",
 		duration : "Instantaneous",
 		save : "Int",
-		description : "1 crea 4d6 Psychic dmg and save or and Cha become 1; extra save every 30 days to end spell",
+		description : "1 crea 4d6 Psychic dmg and save or Int and Cha become 1; extra save every 30 days to end spell",
 		descriptionFull : "You blast the mind of a creature that you can see within range, attempting to shatter its intellect and personality. The target takes 4d6 psychic damage and must make an Intelligence saving throw." + "\n   " + "On a failed save, the creature's Intelligence and Charisma scores become 1. The creature can't cast spells, activate magic items, understand language, or communicate in any intelligible way. The creature can, however, identify its friends, follow them, and even protect them." + "\n   " + "At the end of every 30 days, the creature can repeat its saving throw against this spell. If it succeeds on its saving throw, the spell ends." + "\n   " + "The spell can also be ended by greater restoration, heal or wish."
 	},
 	"feign death" : {
@@ -3433,7 +3433,7 @@ var SpellsList = {
 		range : "Touch",
 		components : "V,S",
 		duration : "1 min",
-		description : "3 pebbles can be thrown 60 ft or with sling and deal 1d6+spellcasting modifier Bludgeoning dmg",
+		description : "Imbue 3 pebbles for spell attacks, thrown 60 ft or with sling, do 1d6+spellcasting mod Bludg. dmg",
 		descriptionFull : "You touch one to three pebbles and imbue them with magic. You or someone else can make a ranged spell attack with one of the pebbles by throwing it or hurling it with a sling. If thrown, it has a range of 60 feet. If someone else attacks with the pebble, that attacker adds your spellcasting ability modifier, not the attacker's, to the attack roll. On a hit, the target takes bludgeoning damage equal to 1d6 + your spellcasting ability modifier. Hit or miss, the spell then ends on the stone." + "\n   " + "If you cast this spell again, the spell ends early on any pebbles still affected by it."
 	},
 	"magic weapon" : {
@@ -5013,7 +5013,7 @@ var SpellsList = {
 		duration : "Conc, 8 h",
 		save : "Wis",
 		description : "1 crea save or follow understood reasonable stated course of action; ends if you or allies harm target",
-		descriptionFull : "You suggest a course of activity (limited to a sentence or two) and magically influence a creature you can see within range that can hear and understand you. Creatures that can't be charmed are immune to this effect. The suggestion must be worded in such a manner as to make the course of action sound reasonable. Asking the creature to stab itself, throw itself onto a spear, immolate itself, or do some other obviously harmful act ends the spell." + "\n   " + "The target must make a Wisdom saving throw. On a failed save, it pursues the course of action you described to the best of its ability. The suggested course of action can continue for the entire duration. If the suggested activity can be completed in a shorter time, the spell ends when the subject finishes what it was asked to do." + "\n   " + "You can also specify conditions that will trigger a special activity during the duration. For example, you might suggest that a knight five her warhorse to the first beggar she meets. If the condition isn't met before the spell expires, the activity isn't preformed." + "\n   " + "If you or any of your companions damage the target, the spell ends."
+		descriptionFull : "You suggest a course of activity (limited to a sentence or two) and magically influence a creature you can see within range that can hear and understand you. Creatures that can't be charmed are immune to this effect. The suggestion must be worded in such a manner as to make the course of action sound reasonable. Asking the creature to stab itself, throw itself onto a spear, immolate itself, or do some other obviously harmful act ends the spell." + "\n   " + "The target must make a Wisdom saving throw. On a failed save, it pursues the course of action you described to the best of its ability. The suggested course of action can continue for the entire duration. If the suggested activity can be completed in a shorter time, the spell ends when the subject finishes what it was asked to do." + "\n   " + "You can also specify conditions that will trigger a special activity during the duration. For example, you might suggest that a knight give her warhorse to the first beggar she meets. If the condition isn't met before the spell expires, the activity isn't performed." + "\n   " + "If you or any of your companions damage the target, the spell ends."
 	},
 	"sunbeam" : {
 		name : "Sunbeam",

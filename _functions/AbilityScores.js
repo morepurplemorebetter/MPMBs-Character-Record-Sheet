@@ -4,21 +4,21 @@ function AbilityScores_Button() {
 	MainTxt0 += "\n\nThe standard array is: 15, 14, 13, 12, 10, and 8. Standard Point Buy is 27 points. You can't go higher than 15 before racial modifiers.";
 	MainTxt0 += "\n\nAbility score improvements gained from class cannot take the total over 20.";
 
-	var Header2 = "Improvements from Race and Feats ";
-	var MainTxt2 = AbilityScores.improvements.racefeats.replace("\n", "");
-	var Txt2Height = !MainTxt2 ? 0 : 30 + (MainTxt2.match(/\n/g) || []).length * 15;
+	var Header2 = "Improvements from Race and Feats";
+	var MainTxt2 = AbilityScores.improvements.racefeats.replace(/^\n/, "").replace(/^\n/, "");
+	//var Txt2Height = !MainTxt2 ? -1 : 30 + (MainTxt2.match(/\n/g) || []).length * 15;
 
 	var Header3 = "Improvements from Class Levels";
 	var MainTxt3 = AbilityScores.improvements.classlvl ? "Add 2 points to ability scores -or- take 1 feat.\n" + AbilityScores.improvements.classlvl.replace("\n", "") : "";
-	var Txt3Height = !MainTxt3 ? 0 : 30 + (MainTxt3.match(/\n/g) || []).length * 15;
+	//var Txt3Height = !MainTxt3 ? 0 : 30 + (MainTxt3.match(/\n/g) || []).length * 15;
 
-	var Header4 = "Primary Scores";
-	var MainTxt4 = AbilityScores.improvements.classprime.replace("\n", "");
-	var Txt4Height = !MainTxt4 ? 0 : 30 + (MainTxt4.match(/\n/g) || []).length * 15;
+	var Header4 = "Primary Ability Scores";
+	var MainTxt4 = AbilityScores.improvements.classprime.replace(/^\n/, "").replace(/^\n/, "");
+	//var Txt4Height = !MainTxt4 ? 0 : 30 + (MainTxt4.match(/\n/g) || []).length * 15;
 
 	var Header5 = "Multiclassing Requirements";
-	var MainTxt5 = AbilityScores.improvements.classmulti.replace("\n", "");
-	var Txt5Height = !MainTxt5 ? 0 : 30 + (MainTxt5.match(/\n/g) || []).length * 15;
+	var MainTxt5 = AbilityScores.improvements.classmulti.replace(/^\n/, "").replace(/^\n/, "");
+	//var Txt5Height = !MainTxt5 ? 0 : 30 + (MainTxt5.match(/\n/g) || []).length * 15;
 	
 	//get the ability score arrays from the fields and parse them into the global variable
 	for (var i = 0; i <= AbilityScores.abbreviations.length; i++) {
@@ -88,24 +88,11 @@ function AbilityScores_Button() {
 				"eHoS" : enableHoS,
 				"EHoS" : enableHoS,
 				"mHoS" : enableHoS,
-				"tHoS" : enableHoS,
-				"Hea2" : MainTxt2 !== "",
-				"Hea3" : MainTxt3 !== "",
-				"Hea4" : MainTxt4 !== "",
-				"Hea5" : MainTxt5 !== ""
+				"tHoS" : enableHoS
 			});			
 			
 			dialog.load({
 				"img1" : allIcons.scores,
-				"txt0" : MainTxt0,
-				"Hea2" : Header2,
-				"txt2" : MainTxt2,
-				"Hea3" : Header3,
-				"txt3" : MainTxt3,
-				"Hea4" : Header4,
-				"txt4" : MainTxt4,
-				"Hea5" : Header5,
-				"txt5" : MainTxt5,
 				"oNm0" : "Current Score",
 				"oStr" : ASround(What("Str")),
 				"oDex" : ASround(What("Dex")),
@@ -663,86 +650,95 @@ function AbilityScores_Button() {
 							alignment : "align_fill",
 							font : "title",
 							bold : true,
-							height : 21,
+							height : 23,
 							width : 65,
 							name : "Calculate the Ability Scores"
 						}]
 					}, {
+						name : MainTxt0,
 						type : "static_text",
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
-						char_height : 10,
+						wrap_name : true,
 						char_width : 65
 					}, {
 						type : "view",
 						char_width : 65,
 						align_children : "align_distribute",
-						elements : [{
+						elements : [].concat(MainTxt2 || MainTxt4 ? [{
 							type : "view",
 							align_children : "align_left",
-							elements : [{
+							elements : [].concat(MainTxt2 ? [{
+								name : Header2,
 								type : "cluster",
 								alignment : "align_left",
 								item_id : "Hea2",
 								font : "dialog",
 								bold : true,
 								elements : [{
+									name : MainTxt2,
 									type : "static_text",
 									item_id : "txt2",
 									alignment : "align_fill",
 									font : "dialog",
-									height : Txt2Height,
+									wrap_name : true,
 									char_width : 32
 								}]
-							}, {
+							}] : []).concat(MainTxt4 ? [{
+								name : Header4,
 								type : "cluster",
 								alignment : "align_left",
 								item_id : "Hea4",
 								font : "dialog",
 								bold : true,
 								elements : [{
+									name : MainTxt4,
 									type : "static_text",
 									item_id : "txt4",
 									alignment : "align_fill",
 									font : "dialog",
-									height : Txt4Height,
+									wrap_name : true,
 									char_width : 32
 								}]
-							}]
-						}, {
+							}] : [])
+						}] : []).concat(MainTxt3 || MainTxt5 ? [{
 							type : "view",
 							align_children : "align_right",
-							elements : [{
+							elements : [].concat(MainTxt3 ? [{
+								name : Header3,
 								type : "cluster",
 								alignment : "align_right",
 								item_id : "Hea3",
 								font : "dialog",
 								bold : true,
 								elements : [{
+									name : MainTxt3,
 									type : "static_text",
 									item_id : "txt3",
 									alignment : "align_fill",
 									font : "dialog",
-									height : Txt3Height,
+									wrap_name : true,
 									char_width : 32
 								}]
-							}, {
+							}] : []).concat(MainTxt5 ? [{
+								name : Header5,
 								type : "cluster",
 								alignment : "align_right",
 								item_id : "Hea5",
 								font : "dialog",
 								bold : true,
 								elements : [{
+									name : MainTxt5,
 									type : "static_text",
 									item_id : "txt5",
 									alignment : "align_fill",
 									font : "dialog",
-									height : Txt5Height,
+									wrap_name : true,
 									char_width : 32
 								}]
-							}]
-						}]
+							}] : [])
+						}] : [])
 					}, {
 						type : "cluster",
 						align_children : "align_distribute",

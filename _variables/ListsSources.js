@@ -283,4 +283,10 @@ var SourceList = {
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2017/dnd/downloads/UA-RevisedSubclasses.pdf"
 	},
+	"UA:RCO" : {
+		name : "2017/06/05 Unearthed Arcana: Revised Class Options", //2017-06-05
+		abbreviation : "UA:RCO",
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2017/dnd/downloads/June5UA_RevisedClassOptv1.pdf"
+	},
 };

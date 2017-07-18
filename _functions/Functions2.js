@@ -518,10 +518,9 @@ function CalcSkillComp() {
 					break;
 			}
 		} else {
-			var instanceBox = prefix === "" ? 1 : 0;
-			if (tDoc.getField(eName.replace("Mod", "Prof").replace("Perc.Pass", alphaB ? "Perc" : "Perf")).isBoxChecked(instanceBox)) {
+			if (tDoc.getField(eName.replace("Mod", "Prof").replace("Perc.Pass", alphaB ? "Perc" : "Perf")).isBoxChecked(0)) {
 				ProfBonus += What(prefix + "Comp.Use.Proficiency Bonus");
-				if (tDoc.getField(eName.replace("Mod", "Exp").replace("Perc.Pass", alphaB ? "Perc" : "Perf")).isBoxChecked(instanceBox)) {
+				if (tDoc.getField(eName.replace("Mod", "Exp").replace("Perc.Pass", alphaB ? "Perc" : "Perf")).isBoxChecked(0)) {
 					ProfBonus += What(prefix + "Comp.Use.Proficiency Bonus");
 				}
 			}
@@ -1016,38 +1015,29 @@ function ApplyWildshape() {
 
 //add a wild shape to the top most empty place
 function AddWildshape(input) {
-	var prefixA = What("Template.extras.WSfront").split(",");
-	var isDone = false;
+	var prefixA = What("Template.extras.WSfront").split(",").splice(1);
 	for (var n = 1; n <= 2; n++) {
 		for (var p = 0; p < prefixA.length; p++) {
 			var prefix = prefixA[p];
 			for (var i = 1; i <= 4; i++) {
 				next = tDoc.getField(prefix + "Wildshape.Race." + i);
 				if (n === 1 && next.value.toLowerCase().indexOf(input.toLowerCase()) !== -1) {
-					i = 5;
-					n = 3;
-					p = prefixA.length;
-					isDone = true;
+					return; //the value was found to already exist
 				} else if (n === 2 && (next.value === "" || next.value.toLowerCase().indexOf("make a selection") !== -1)) {
 					next.value = input;
-					i = 5;
-					n = 3;
-					p = prefixA.length;
-					isDone = true;
+					return;
 				}
 			}
 		}
-	}
-	//if the wildshape to add was not found and there was no room to add it, add another wild shapes page and re-run this function
-	if (!isDone) {
-		DoTemplate("WSfront", "Add");
-		AddWildshape(input);
-	}
+	};
+	//if the wildshape to add was not found and there was no room to add it, add another wild shapes page and add the entry to the top of the new page
+	var newPrefix = DoTemplate("WSfront", "Add");
+	Value(newPrefix + "Wildshape.Race.1", input);
 }
 
 //remove the first instance of the wild shape found
 function RemoveWildshape(input) {
-	var prefixA = What("Template.extras.WSfront").split(",");
+	var prefixA = What("Template.extras.WSfront").split(",").splice(1);
 	for (var p = 0; p < prefixA.length; p++) {
 		var prefix = prefixA[p];
 		for (var i = 1; i <= 4; i++) {
@@ -1068,23 +1058,18 @@ function MakeWildshapeMenu() {
 	
 	if (!What("Character Level") || !What("Int")|| !What("Wis")|| !What("Cha")) { //If the character has not been defined enough, the function can be stopped after making a warning-menu
 		Menus.wildshape = [{cName : "Please create a character on the 1st page before trying a Wild Shape", cReturn : "nothing#toreport", bEnabled : false}];
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) {
-			tDoc.calculateNow();
-		};
 		return; //don't do the rest of the function
 	}
 	
 	//make a list of the current wild shapes entered
-	var removeShapes = [];
-	var prefixA = What("Template.extras.WSfront").split(",");
+	var usedShapes = [];
+	var prefixA = What("Template.extras.WSfront").split(",").splice(1);
 	for (var p = 0; p < prefixA.length; p++) {
 		for (var i = 1; i <= 4; i++) {
 			var theFld = What(prefixA[p] + "Wildshape.Race." + i);
 			if (!theFld || theFld.toLowerCase() === "make a selection") continue;
 			var theShape = ParseCreature(theFld);
-			if (theShape) removeShapes.push(theFld);
+			if (theShape) usedShapes.push(theShape);
 		}
 	}
 	
@@ -1116,9 +1101,9 @@ function MakeWildshapeMenu() {
 			temp.push({
 				cName : array[i][0],
 				cReturn : "add" + "#" + array[i][1],
-				bMarked : removeShapes.indexOf(array[i][0]) !== -1
-			})
-		}
+				bMarked : usedShapes.indexOf(array[i][1]) !== -1
+			});
+		};
 		menu.oSubMenu.push({
 			cName : name,
 			oSubMenu : temp
@@ -1155,26 +1140,39 @@ function MakeWildshapeMenu() {
 
 	var WildshapeMenu = [];
 	
-	elementals = [];
-	shapesBeast = [];
-	shapesBeastCR1_4 = [];
-	shapesBeastCR1_2 = [];
-	shapesBeastCR1 = [];
-	shapesBeastCR2 = [];
-	shapesBeastCR3 = [];
-	shapesBeastCR4 = [];
-	shapesBeastCR5 = [];
-	shapesBeastCR6 = [];
-	
-	//make a list of all the creatures
-	var theElems = ["air elemental", "earth elemental", "fire elemental", "water elemental"];
-	for (var aCrea in CreatureList) {
-		var theCrea = CreatureList[aCrea];
-		if ((theElems.indexOf(aCrea) === -1 && theCrea.type !== "Beast") || testSource(aCrea, theCrea, "creaExcl")) {
+	var allCrea = {
+		names : [],
+		keys : {}
+	};
+
+	for (var crea in CreatureList) {
+		var thisCrea = CreatureList[crea];
+		if ((!(/^(air|earth|fire|water) elemental$/i).test(crea) && thisCrea.type !== "Beast") || allCrea.keys[thisCrea.name] || testSource(crea, thisCrea, "creaExcl")) {
 			continue; //go on to the next creature if the creature is not a beast or its source isn't excluded
 		};
+		allCrea.keys[thisCrea.name] = crea;
+		allCrea.names.push(thisCrea.name);
+	};
+	allCrea.names.sort();
+	
+	var elementals = [];
+	var shapesBeast = {
+		all : [],
+		CR1_4 : [],
+		CR1_2 : [],
+		CR1 : [],
+		CR2 : [],
+		CR3 : [],
+		CR4 : [],
+		CR5 : [],
+		CR6 : []
+	};
+	
+	for (var C = 0; C < allCrea.names.length; C++) {
+		var aCrea = allCrea.keys[allCrea.names[C]];
+		var theCrea = CreatureList[aCrea];
 		
-		if (theElems.indexOf(aCrea) !== -1)  {
+		if ((/^(air|earth|fire|water) elemental$/i).test(aCrea))  {
 			elementals.push([theCrea.name, aCrea]);
 			continue; //it is not one of the other things, so just stop here
 		};
@@ -1219,25 +1217,14 @@ function MakeWildshapeMenu() {
 			case "6" :
 			 CRname = CR;
 			 creaName += (Spd ? " (" + Spd + ")" : "");
-		}
-		
-		
+		};
 		
 		//add it to the array of all
-		shapesBeast.push([theCrea.name + " (CR " + CR + (Spd ? ", " + Spd : "") + ")", aCrea]);
+		shapesBeast.all.push([theCrea.name + " (CR " + CR + (Spd ? ", " + Spd : "") + ")", aCrea]);
 		
 		//add it to the CR specific array
-		if (CRname) tDoc["shapesBeastCR" + CRname].push([creaName, aCrea]);
-	}
-	shapesBeast.sort();
-	shapesBeastCR1_4.sort();
-	shapesBeastCR1_2.sort();
-	shapesBeastCR1.sort();
-	shapesBeastCR2.sort();
-	shapesBeastCR3.sort();
-	shapesBeastCR4.sort();
-	shapesBeastCR5.sort();
-	shapesBeastCR6.sort();
+		if (CRname) shapesBeast["CR" + CRname].push([creaName, aCrea]);
+	};
 	
 	//add all the options for "Add Wild Shape"
 	var BeastMenu = {
@@ -1251,23 +1238,23 @@ function MakeWildshapeMenu() {
 			bEnabled : false
 		});
 	};
-	menuLVL3(BeastMenu, "All Beasts", shapesBeast);
+	menuLVL3(BeastMenu, "All Beasts", shapesBeast.all);
 	menuLVL3(BeastMenu, "Elementals", elementals);
-	menuLVL3(BeastMenu, "Beasts up to CR 1/4", shapesBeastCR1_4);
-	menuLVL3(BeastMenu, "Beasts of CR 1/2", shapesBeastCR1_2);
-	menuLVL3(BeastMenu, "Beasts of CR 1", shapesBeastCR1);
-	menuLVL3(BeastMenu, "Beasts of CR 2", shapesBeastCR2);
-	menuLVL3(BeastMenu, "Beasts of CR 3", shapesBeastCR3);
-	menuLVL3(BeastMenu, "Beasts of CR 4", shapesBeastCR4);
-	menuLVL3(BeastMenu, "Beasts of CR 5", shapesBeastCR5);
-	menuLVL3(BeastMenu, "Beasts of CR 6", shapesBeastCR6);
+	menuLVL3(BeastMenu, "Beasts up to CR 1/4", shapesBeast.CR1_4);
+	menuLVL3(BeastMenu, "Beasts of CR 1/2", shapesBeast.CR1_2);
+	menuLVL3(BeastMenu, "Beasts of CR 1", shapesBeast.CR1);
+	menuLVL3(BeastMenu, "Beasts of CR 2", shapesBeast.CR2);
+	menuLVL3(BeastMenu, "Beasts of CR 3", shapesBeast.CR3);
+	menuLVL3(BeastMenu, "Beasts of CR 4", shapesBeast.CR4);
+	menuLVL3(BeastMenu, "Beasts of CR 5", shapesBeast.CR5);
+	menuLVL3(BeastMenu, "Beasts of CR 6", shapesBeast.CR6);
 	WildshapeMenu.push(BeastMenu);
 	
 	WildshapeMenu.push({cName : "-"}); //add a divider
 	
 	//add all the options for "Remove Wild Shape"
-	if (removeShapes.length > 0) { //if any shapes are currently present
-		menuLVL2(WildshapeMenu, ["Remove Wild Shape", "remove"], removeShapes)
+	if (usedShapes.length > 0) { //if any shapes are currently present
+		menuLVL2(WildshapeMenu, ["Remove Wild Shape", "remove"], usedShapes)
 	} else { //if no shapes are present to be removed, add the item, but grey it out
 		WildshapeMenu.push({cName : "Remove Wild Shape", cReturn : "nothing", bEnabled : false});
 	}
@@ -1295,12 +1282,12 @@ function MakeWildshapeMenu() {
 
 //call the wildshape menu and do something with the results
 function WildshapeOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
 	var MenuSelection = getMenu("wildshape");
 	var prefix = event.target.name.substring(0, event.target.name.indexOf("Wildshape"));
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
+		tDoc.delay = true;
+		tDoc.calculate = false;
 		switch (MenuSelection[0]) {
 		 case "recalculate" :
 			WildshapeRecalc();
@@ -1332,23 +1319,13 @@ function WildshapeOptions() {
 			DoTemplate("WSfront", "Add");
 			break;
 		 case "remove page" :
-			var thePage = event.target.page;
-			if (isArray(thePage)) {
-				DoTemplate("WSfront");
-			} else {
-				//remove the prefix from the array in the remember field
-				var tempExtras = What("Template.extras.WSfront").split(",");
-				tempExtras.splice(tempExtras.indexOf(prefix), 1);
-				Value("Template.extras.WSfront", tempExtras);
-				tDoc.deletePages(thePage);
-			}
+			DoTemplate("WSfront", "Remove", prefix);
 			break;
 		}
+		tDoc.calculate = IsNotReset;
+		tDoc.delay = !IsNotReset;
+		if (IsNotReset) tDoc.calculateNow();
 	}
-	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();	
 }
 
 //re-calculate all the wild shapes
@@ -1356,7 +1333,7 @@ function WildshapeRecalc(order) {
 	thermoM("start"); //start a progress dialog
 	thermoM("Re-calculating the wild shapes..."); //change the progress dialog text
 	
-	var prefixA = What("Template.extras.WSfront").split(",");
+	var prefixA = What("Template.extras.WSfront").split(",").splice(1);
 	var theFields = [];
 	var theFieldsNames = [];
 	//first add all the wildshapes to an array and reset all the fields
@@ -1389,9 +1366,9 @@ function SetWildshapeDropdown() {
 	var theList = [];
 
 	for (var key in CreatureList) {
-		if ((CreatureList[key].type === "Beast" && eval(CreatureList[key].challengeRating) <= 6) || key === "air elemental" || key === "earth elemental" ||  key === "fire elemental" || key === "water elemental") {
-			if (testSource(key, CreatureList[key], "creaExcl")) continue;
-			if (theList.indexOf(CreatureList[key].name) === -1) theList.push(CreatureList[key].name);
+		if ((CreatureList[key].type === "Beast" && eval(CreatureList[key].challengeRating) <= 6) || (/^(air|earth|fire|water) elemental$/i).test(key)) {
+			if (testSource(key, CreatureList[key], "creaExcl") || theList.indexOf(CreatureList[key].name) !== -1) continue;
+			theList.push(CreatureList[key].name);
 		}
 	}
 	theList.sort();
@@ -1591,16 +1568,8 @@ function CompOptions() {
 		} else if (MenuSelection[0] === "add page") {
 			DoTemplate("AScomp", "Add");
 		} else if (MenuSelection[0] === "remove page") {
-			var thePage = event.target.page;
-			if (isArray(thePage)) {
-				DoTemplate("AScomp");
-			} else {
-				//remove the prefix, if found, from the array in the remember field
-				var tempExtras = What("Template.extras.AScomp").split(",");
-				tempExtras.splice(tempExtras.indexOf(prefix), 1);
-				Value("Template.extras.AScomp", tempExtras);
-				tDoc.deletePages(thePage);
-			}
+			//remove the prefix, if found, from the array in the remember field
+			DoTemplate("AScomp", "Remove", prefix);
 		} else if (MenuSelection[0] === "visible") {
 			var toShow = eval(What(prefix + "Companion.Layers.Remember"));
 			if (MenuSelection[1] === "comp.img") {
@@ -1758,15 +1727,13 @@ function changeCompType(inputType, prefix) {
 function changeCompDialog(prefix) {
 	if (!IsNotImport) return;
 	//The dialog for setting the pages to print
+	var theTxt = "A familiar or mount's type changes from beast to either celestial, fey, or fiend. Please select one.";
 	var theDialog = {
 		//variables to be set by the calling function
 		bType : "Celestial",
 
 		//when starting the dialog
 		initialize : function (dialog) {
-			dialog.load({
-				"txt0" : "A familiar or mount's type changes from beast to either celestial, fey, or fiend. Please select one."
-			});
 		},
 		
 		//when pressing the ok button
@@ -1797,10 +1764,11 @@ function changeCompDialog(prefix) {
 				}, {
 					type : "static_text",
 					item_id : "txt0",
+					wrap_name : true,
 					alignment : "align_fill",
 					font : "dialog",
-					char_height : 3,
-					char_width : 30
+					char_width : 30,
+					name : theTxt
 				}, {
 					type : "cluster",
 					align_children : "align_distribute",
@@ -1855,13 +1823,14 @@ function WildshapeUpdate(inputArray) {
 	}
 	for (var p = 0; p < prefixA.length; p++) {
 		var prefix = prefixA[p];
-		tDoc.resetForm([prefix + "Wildshapes.Info"]);
 		if (useString) {
 			Value(prefix + "Wildshapes.Info.Uses", useString);
 			Value(prefix + "Wildshapes.Info.Limitations", wLimit);
 			Value(prefix + "Wildshapes.Info.Duration", wDur);
-		}
-	}
+		} else {
+			tDoc.resetForm([prefix + "Wildshapes.Info"]);
+		};
+	};
 	//now recalculate all the wild shapes if not just adding a new sheet (i.e. inputArray === undefined)
 	if (inputArray !== undefined) WildshapeRecalc();
 }
@@ -2364,21 +2333,24 @@ function LimFeaDelete(itemNmbr) {
 
 //a way of going to a specified field (for making bookmarks independent of templates)
 function Bookmark_Goto(BookNm) {
-	// Initialize variables.
-	var r = false
-	
 	// Find the field corresponding to the bookmark name
-	var theFld = (BookNm === "Spell Sheets" ? What("Template.extras.SSfront").split(",")[1] : "") + BookMarkList[BookNm];
+	var theTemplate = event.type === "Bookmark" ? getBookmarkTemplate(event.target) : false;
+	var isVisible = theTemplate ? isTemplVis(theTemplate[0], true) : true;
+	var prefix = "";
+	if (isArray(isVisible)) {
+		prefix = isVisible[1];
+		isVisible = isVisible[0];
+	}
+	var theFld = prefix + BookMarkList[BookNm];
 	
 	// Determine if the selected section is on a visible page, and if so go to it.
-	if (theFld && tDoc.getField(theFld)) {
+	if (isVisible && theFld && tDoc.getField(theFld)) {
 		tDoc.getField(theFld).setFocus();
-		r = true;
-	}
+		return;
+	};
 	
 	// If the selected section is on a hidden page, alert the user.
-	if (r === false && event.type === "Bookmark") {
-		var theTemplate = getBookmarkTemplate(event.target);
+	if (theTemplate) {
 		var theMessage = {
 			cMsg : "The bookmark \"" + BookNm + "\" you have selected is on a page which is currently hidden.\n\You can change your page visibility settings using the \"Layout\" button in the \"JavaScript Window\" or in the bookmarks.\n\nDo you want to make the page \"" + theTemplate[1] + "\" visible now?" + (theTemplate[0] !== "SSfront" ? "" : "\n\nClicking \"Yes\" will start the Spell Sheets Generation process."),
 			nIcon : 2, //question mark
@@ -2386,68 +2358,76 @@ function Bookmark_Goto(BookNm) {
 			nType : 2, //Yes-No
 		};
 		if (app.alert(theMessage) === 4) {
-			if (theTemplate && theTemplate[0] !== "SSfront") {
-				DoTemplate(theTemplate[0]);
-				tDoc.getField(theFld).setFocus();
-			} else if (theTemplate && theTemplate[0] === "SSfront") {
+			if (theTemplate[0] !== "SSfront") {
+				var newPrefix = DoTemplate(theTemplate[0], "Add");
+				tDoc.getField(newPrefix + BookMarkList[BookNm]).setFocus();
+			} else {
 				tDoc.delay = true;
 				tDoc.calculate = false;
 				GenerateSpellSheet();
 				tDoc.calculate = IsNotReset;
 				tDoc.delay = !IsNotReset;
 				if (IsNotReset) tDoc.calculateNow();
-			}
-		}
-	}
-}
+			};
+		};
+	};
+};
 
-// show/hide (AddRemove == undefined) or add/remove (AddRemove == "Add" | "Remove") a template
-function DoTemplate(tempNm, AddRemove) {
+// show/hide a template (AddRemove == undefined) or add/remove template with multiple instances (AddRemove == "Add" | "Remove" | "RemoveAll")
+function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 	//if the sheet is currently flattened, undo that first
 	if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
 	
-	thermoM("start"); //start a progress dialog
-	var typeFldPage = tDoc.getField(BookMarkList[tempNm]).page;
-	var isTempVisible = typeFldPage !== -1;
-	var tempExtras = What("Template.extras." + tempNm);
-	if (tempNm.substring(0, 2) === "SS") {
-		//tempExtras = tempExtras ? tempExtras : What("Template.extras.SSfront");
-		isTempVisible = tempExtras;
-		AddRemove = AddRemove && isTempVisible ? AddRemove : "Add";
-	}
+	//make a function for determining the next page to add the template
+	var whatPage = function(templN) {
+		var DepL = TemplateDep[templN];
+		for (var T = 0; T < DepL.length; T++) {
+			var theDep = DepL[T];
+			var multiDep = TemplatesWithExtras.indexOf(theDep) !== -1;
+			if (!multiDep) {
+				var DepTypeFld = tDoc.getField(BookMarkList[theDep]);
+				if (DepTypeFld.page !== -1) {
+					return Math.max.apply(Math, DepTypeFld.page) + 1;
+				};
+			} else {
+				var DepTypeFlds = What("Template.extras." + theDep);
+				if (DepTypeFlds) {
+					return tDoc.getField(DepTypeFlds.split(",").slice(-1)[0] + BookMarkList[theDep]).page + 1;
+				};
+			};
+		};
+		return 2;
+	};
 	
-	//see if we are to just show/hide the template or add/remove an additional page of it
-	if (tempNm.substring(0, 2) !== "SS" && (!AddRemove || (AddRemove === "Remove" && !tempExtras) || (AddRemove === "Add" && !isTempVisible))) {
+	thermoM("start"); //start a progress dialog
+	thermoM("Changing the layout of the " + TemplateNames[tempNm] + " pages..."); //change the progress dialog text
+	
+	//are we dealing with a template that can have multiple instances or not?
+	var multiTemp = TemplatesWithExtras.indexOf(tempNm) !== -1;
+	
+	if (!multiTemp) { // spawn or hide the template page for templates that can't have multiple instances
+		var isTempVisible = isTemplVis(tempNm);
 		if (isTempVisible) {
-			thermoM("Deleting page..."); //change the progress dialog text
+			//find the current page of the template
+			var tempPage = Math.max.apply(Math, tDoc.getField(BookMarkList[tempNm]).page);
+			thermoM("Hiding " + TemplateNames[tempNm] + ", from page " + (tempPage + 1) + "..."); //change the progress dialog text
+			thermoM(0.9); //increment the progress dialog's progress
 
-			tDoc.deletePages(typeFldPage[1]);
-			thermoM(4/5); //increment the progress dialog's progress
+			tDoc.deletePages(tempPage);
 			
 			//grey out the appropriate bookmarks
 			amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], false);
 		} else {
-			thermoM("Adding page..."); //change the progress dialog text
 			//the template is invisible, so we have to add it at the right page
-			var tempPage = 2;
-			
-			//work out if each of the preceding pages if visible, and, if so, add 1 to the page where to put the template
-			var DepL = TemplateDep[tempNm];
-			for (var T = 0; T < DepL.length; T++) {
-				var theDep = DepL[T];
-				var DepTypeFldPage = tDoc.getField(BookMarkList[theDep]).page;
-				var isDepTypevisible = theDep.substring(0, 2) === "SS" ? What("Template.extras.SSfront") : DepTypeFldPage !== -1;
-				if (isDepTypevisible) {
-					tempPage += What("Template.extras." + theDep) ? What("Template.extras." + theDep).split(",").length : 1;
-				}
-			}
-			
-			//black out the appropriate bookmarks
-			amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], true);
+			var tempPage = whatPage(tempNm);
+			thermoM("Revealing " + TemplateNames[tempNm] + ", at page " + (tempPage + 1) + "..."); //change the progress dialog text
+			thermoM(0.75); //increment the progress dialog's progress
 			
 			//now spawn a new instance of the template with the same fields as the template at the desired page
 			tDoc.getTemplate(tempNm).spawn(tempPage, false, false);
-			thermoM(0.9); //increment the progress dialog's progress
+			
+			//black out the appropriate bookmarks
+			amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], true);
 			
 			//now do some extra actions, depending on the page added
 			switch (tempNm) {
@@ -2455,292 +2435,245 @@ function DoTemplate(tempNm, AddRemove) {
 				// if the location column on the second page was set to visible, re-do this again
 				if (What("Gear Location Remember").split(",")[1] === "true") {
 					HideInvLocationColumn("Extra.Gear ", false);
-				}
+				};
 				break;
-			}
+			};
 			
 			//move focus to this new page
 			if (IsNotImport) tDoc.getField(BookMarkList[tempNm] + ".1").setFocus();
-		}
-	} else if (isTempVisible || tempNm.substring(0, 2) === "SS") {
-		if (tempNm === "SSmore" && !What("Template.extras.SSfront")) {
-			tempNm = "SSfront";
-			tempExtras = What("Template.extras.SSfront");
-		}
-		if (tempExtras) {
-			tempExtras = tempExtras.split(",");
-			var lastEtypeFld = tempExtras[tempExtras.length - 1] + BookMarkList[tempNm];
-			var lastEpage = tDoc.getField(lastEtypeFld).page;
-		} else if (tempNm === "SSfront") {
-			tempExtras = tempExtras.split(",");
-			var lastEpage = 1;
+		};
+	} else { // add or remove a template that can have multiple instances
+		var isTempVisible = isTemplVis(tempNm);
+		var tempExtras = What("Template.extras." + tempNm).split(",");
+		//removing one or all pages
+		if ((/remove/i).test(AddRemove) && isTempVisible) { //if told to remove a page, also check if there is anything to remove
+			var newTemplList = What("Template.extras." + tempNm).split(",");
+			var removeWhich = (/removeall/i).test(AddRemove) ? "all" : removePrefix ? tempExtras.indexOf(removePrefix) : "last";
+			tempExtras = isNaN(removeWhich) ? tempExtras.splice(removeWhich === "all" ? 1 : -1) : tempExtras.splice(removeWhich, 1);
 			
-			if (!tDoc.info.SpellsOnly) {
-				//work out if each of the preceding pages if visible, and, if so, add 1 to the page where to put the template
-				var DepL = TemplateDep[tempNm];
-				for (var T = 0; T < DepL.length; T++) {
-					var theDep = DepL[T];
-					var DepTypeFldPage = tDoc.getField(BookMarkList[theDep]).page;
-					var isDepTypevisible = DepTypeFldPage !== -1;
-					if (isDepTypevisible) {
-						lastEpage += What("Template.extras." + theDep) ? What("Template.extras." + theDep).split(",").length : 1;
-					}
-				}
-			}
-		} else if (tempNm === "SSmore") {
-			tempExtras = tempExtras.split(",");
-			var lastEpage = tDoc.getField(What("Template.extras.SSfront").split(",")[1] + BookMarkList[tempNm]).page;
-		} else {
-			tempExtras = tempExtras.split(",");
-			var lastEpage = typeFldPage[1];
-		}
-		if (AddRemove === "Remove") {
-			thermoM("Deleting page..."); //change the progress dialog text
+			var doGoOn = {
+				cMsg: "You are about to remove " + (removeWhich === "all" ? "all" : !isNaN(removeWhich) ? "the page " + (tDoc.getField(tempExtras[0] + BookMarkList[tempNm]).page + 1) : "last") + " " + TemplateNames[tempNm] + (removeWhich === "all" ? "s that are currently in this document" : "") + ".\n\nThis can't be undone!\n\nAre you sure you want to continue?",
+				nIcon: 2,
+				cTitle: "Continue with deleting page(s)?",
+				nType: 2
+			};
+			thermoM("Deleting the " + TemplateNames[tempNm] + "..."); //change the progress dialog text
+			if (GoOn || app.alert(doGoOn) === 4) {
+				for (var i = tempExtras.length - 1; i >= 0; i--) {
+					var tempPage = tDoc.getField(tempExtras[i] + BookMarkList[tempNm]).page;
+					thermoM("Deleting " + TemplateNames[tempNm] + ", from page " + (tempPage + 1) + "..."); //change the progress dialog text
+					thermoM(1 / ((i + 1) / tempExtras.length)); //increment the progress dialog's progress
+					tDoc.deletePages(tempPage);
+					//remove the deleted entry from the newTemplList
+					newTemplList.splice(newTemplList.indexOf(tempExtras[i]), 1);
+				};
+				
+				//now put the updated array in the field
+				Value("Template.extras." + tempNm, newTemplList);
+				
+				//now amend the bookmarks
+				if (newTemplList.toString() === "") amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], false);
+				//now do some extra actions, depending on the page added
+				switch (tempNm) {
+				 case "ALlog" :
+					if (newTemplList.length) UpdateLogsheetNumbering(newTemplList[1]); //update the header texts for the newly added log page
+					break;
+				};
+			};
+		} else if ((/add/i).test(AddRemove)) {
+			// find the page where we want to add the new page at
+			var tempPage = !isTempVisible ? whatPage(tempNm) : tDoc.getField(tempExtras.slice(-1)[0] + BookMarkList[tempNm]).page + 1;
+			thermoM(tempNm.substring(0, 2) === "SS" ? "Generating the Spell Sheet(s), Acrobat will be unresponsive for a long time..." : "Adding " + TemplateNames[tempNm] + ", at page " + (tempPage + 1) + "..."); //change the progress dialog text
+			thermoM(0.75); //increment the progress dialog's progress
 			
-			//delete the page of the last extra entry
-			tDoc.deletePages(lastEpage);
+			var theNewPrefix = "P" + tempPage + "." + tempNm + ".";
 			
-			//remove this last entry from the array
-			tempExtras.pop();
-			
-			thermoM(0.5); //increment the progress dialog's progress
-			
-			//now put that array in the field
-			Value("Template.extras." + tempNm, tempExtras);
-			
-		} else if (AddRemove === "Add") {
-			thermoM(tempNm.substring(0, 2) === "SS" ? "Generating the Spell Sheet(s), Acrobat will be unresponsive for a long time..." : "Adding page..."); //change the progress dialog text
-			
-			//if this template is already in use at this exact page we want to add blank pages to increase the number until it is no longer already defined
+			//if this template is already in use, it might already have the exact prefix that we would make. Thus, we will have to add blank pages to increase the number until it is no longer already defined
 			var toDeleteArray = [];
-			for (var add = lastEpage + 1; add <= 1000; add++) {
-				var theNewPrefix = "P" + add + "." + tempNm;
-				if (tempExtras.indexOf(theNewPrefix + ".") === -1) {
-					lastEpage = add;
-					add = 1001
-				} else {
-					tDoc.getTemplate("blank").spawn(add, false, false);
-					toDeleteArray.push(add);
-				}
-			}
+			if (isTempVisible && tempExtras.indexOf(theNewPrefix) !== -1) {
+				while (tempExtras.indexOf(theNewPrefix) !== -1) {
+					tDoc.getTemplate("blank").spawn(tempPage, false, false);
+					toDeleteArray.push(tempPage);
+					tempPage++;
+					theNewPrefix = "P" + tempPage + "." + tempNm + ".";
+				};
+			};
 			
-			//add the template, but now with changing the field names, the page after the one the last extra page (or the template) was set at
-			tDoc.getTemplate(tempNm).spawn(lastEpage, true, false);
+			//add the template, but with changing the field names
+			tDoc.getTemplate(tempNm).spawn(tempPage, true, false);
+		
+			tempExtras.push(theNewPrefix);
+			//now put the updated array in the field
+			Value("Template.extras." + tempNm, tempExtras.toString());
 			
-			//now delete all the blank pages we just added
-			for (var del = 0; del < toDeleteArray.length; del++) {
-				tDoc.deletePages(toDeleteArray[0]);
-			}
+			//now delete all the blank pages we added earlier
+			if (toDeleteArray.length) {
+				tDoc.deletePages({nStart: toDeleteArray[0], nEnd: toDeleteArray[0] + toDeleteArray.length - 1});
+			};
 			
-			//update the field with the new prefix for all the fields on the newly created page
-			tempExtras.push(theNewPrefix + ".");
-			Value("Template.extras." + tempNm, tempExtras);
-			
-			//move focus to this new page
-			if (IsNotSpellSheetGenerating && IsNotImport) tDoc.getField(theNewPrefix + "." + BookMarkList[tempNm]).setFocus();
-			
-			thermoM(0.5); //increment the progress dialog's progress
-			
-			//now reset this newly created sheet
-			if (tempNm.substring(0,2) !== "SS") {
-				var resetFieldsBases = TemplateResetRanges[tempNm];
-				var resetFields = [];
-				for (var R = 0; R < resetFieldsBases.length; R++) {
-					resetFields.push(theNewPrefix + "." + resetFieldsBases[R]);
-				}
-				tDoc.resetForm(resetFields);
-			}
+			//now amend the bookmarks
+			if (!isTempVisible && BookMarkList[tempNm + "_Bookmarks"]) amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], true);
 			
 			//now do some extra actions, depending on the page added
 			switch (tempNm) {
 			 case "AScomp" :
-				SetRichTextFields(true, true); //re-do the rich text fields
-				ApplyAttackColor("", "", "Comp.", theNewPrefix + "."); //re-do this companion page's attack colors
-				FindCompRace(undefined, theNewPrefix + "."); //re-find this companion page's races
-				FindCompWeapons(undefined, theNewPrefix + "."); //re-find this companion page's weapons
-				ShowCompanionLayer(theNewPrefix + "."); //reset the layers
-				ClearIcons(theNewPrefix + ".Comp.img.Portrait", true); //reset the image
-				break;
-			 case "WSfront" :
-				WildshapeUpdate(); //update the header texts for the newly added wildshape page
+				FindCompRace(undefined, theNewPrefix); //re-find this companion page's races
+				FindCompWeapons(undefined, theNewPrefix); //re-find this companion page's weapons
 				break;
 			 case "ALlog" :
-				var prePrefix = CalcLogsheetPrevious(theNewPrefix + ".");
-				ApplyLogsheetNumbering(theNewPrefix + ".", prePrefix); //update the header texts for the newly added log page
-				SetAdvLogCalcOrder(theNewPrefix + "."); //update the calculation order of the newly added sheet
+				if (isTempVisible) UpdateLogsheetNumbering(theNewPrefix); //update the header texts for the newly added log page
+				SetAdvLogCalcOrder(theNewPrefix); //update the calculation order of the newly added sheet
 				break;
 			 case "SSfront" :
-				// black/grey out the appropriate bookmark
-				amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], AddRemove === "Add");
 				// change the tooltips of the top header and diver, as those can't be moved or hidden
-				AddTooltip(theNewPrefix + ".spellshead.Text.header.0", "Clear the content of this field to make its prepared section visible again, if you had hidden it.");
-				AddTooltip(theNewPrefix + ".spellsdiv.Text.0", "");
+				AddTooltip(theNewPrefix + "spellshead.Text.header.0", "Clear the content of this field to make its prepared section visible again, if you had hidden it.");
+				AddTooltip(theNewPrefix + "spellsdiv.Text.0", "");
 				break;
 			 case "SSmore" :
-				Uneditable(theNewPrefix + ".spellshead." + (!typePF? "Text" : "Image") + ".prepare.0");
+				Uneditable(theNewPrefix + "spellshead." + (!typePF? "Text" : "Image") + ".prepare.0");
 				break;
-			}
-		}
-	}
+			};
+			
+			//set focus to the new page
+			tDoc.getField(theNewPrefix + BookMarkList[tempNm]).setFocus();
+		};
+	};
+	
 	thermoM(); //stop all the ongoing progress dialogs
-	if (theNewPrefix) return theNewPrefix + "."; //if a new template was created with a prefix, return that prefix
-}
+	return theNewPrefix ? theNewPrefix : ""; //if a new template was created with a prefix, return that prefix
+};
 
 //Make menu for the options for hiding, adding, and removing templates (i.e. pages)
-function MakePagesMenu() {	
-	var pagesMenu = [];
-	var pagesArray = [
-		[!typePF ? "Conditions and Magic Items" : "Feats and Magic Items", "ASfront"],
-		["Overflow (magic items, feats, actions, etc.)", "ASoverflow"],
-		["Background and Organization", "ASbackgr"],
-		["Companion", "AScomp"],
-		["Notes", "ASnotes"],
-		["Wild Shapes", "WSfront"],
-		["Adventurers Log", "ALlog"]
-	];
-	var pagesArrayAdd = [];
-	var pagesArrayRemove = [];
-	for (var p = 3; p < pagesArray.length; p++) {
-		pagesArrayAdd.push(["Extra '" + pagesArray[p][0] + "' page", pagesArray[p][1]]);
-		pagesArrayRemove.push(["Last added extra '" + pagesArray[p][0] + "' page", pagesArray[p][1]]);
-	}
+function MakePagesMenu() {
+	//the functions for adding the base menu elements
+	var menuLvl1 = function (menu, array) {
+		for (var i = 0; i < array.length; i++) {
+			var isMarked = isTemplVis(array[i]);
+			menu.push({
+				cName : TemplateNames[array[i]],
+				cReturn : "template#" + array[i] + "#toggle",
+				bMarked : isMarked
+			});
+		};
+	};
+	
+	//the start menu entry
+	var pagesMenu = [{
+		cName : "[Mark the pages you want visible]",
+		cReturn : "nothing#toreport",
+		bEnabled : false
+	}];
+	//the menu items for the pages that can only be hidden/shown
+	menuLvl1(pagesMenu, ["ASfront", "ASoverflow", "ASbackgr"]);
+	
+	//the menu items for the templates of which multiple instances can exist
+	var menuLvl2templ = function (menu, array) {
+		for (var i = 0; i < array.length; i++) {
+			var isVisible = isTemplVis(array[i]);
+			var templName = TemplateNames[array[i]];
+			var temp = {
+				cName : templName,
+				bMarked : isVisible
+			};
+			if (isVisible) {
+				var visNr = What("Template.extras." + array[i]).split(",").length - 1;
+				temp.oSubMenu = (visNr <= 1 ? [] : [{
+					cName : "[" + visNr + " " + templName + "s active]",
+					bEnabled : false
+				}]).concat([{
+					cName : "Add extra " + templName,
+					cReturn : "template#" + array[i] + "#add"
+				}, {
+					cName : "Remove " + (visNr > 1 ? "last " : "") + templName,
+					cReturn : "template#" + array[i] +
+					"#remove"
+				}]).concat(visNr <= 1 ? [] : [{
+					cName : "Remove all " + templName + "s",
+					cReturn : "template#" + array[i] + "#removeall"
+				}]);
+			} else {
+				temp.cReturn = "template#" + array[i] + "#add";
+			};
+			menu.push(temp);
+		};
+	};
+	menuLvl2templ(pagesMenu, ["AScomp", "ASnotes", "WSfront", "ALlog"]);
+	
+	//the menu item for the refence sheet, if applicable
+	if (typePF) menuLvl1(pagesMenu, ["PRsheet"]);
 
-	if (typePF) {
-		pagesArray.push(["Rules Reference Sheet", "PRsheet"]);
-	}
-	
-	var isSpellSheetVisible = What("Template.extras.SSfront") !== "";
-	if (isSpellSheetVisible) {
-		pagesArray.push(["-", "-"]);
-		pagesArray.push(["(Re)generate Spell Sheet(s)", "SSfront"]);
-		pagesArray.push(["Replace Spell Sheets with empty one (to fill manually)", "SSmore"]);
-		pagesArray.push(["Delete the Spell Sheet(s) (can't be undone)", "removespellsheets"]);
-		pagesArrayAdd.push(["Extra empty 'Spell Sheet' page", "SSmore"]);
-		pagesArrayRemove.push(["Last added extra 'Spell Sheet' page", "SSmore"]);
-	} else {
-		pagesArray.push(["-", "-"]);
-		pagesArray.push(["Generate Spell Sheet(s) automatically", "SSfront"]);
-		pagesArray.push(["Add Spell Sheet to fill manually", "SSmore"]);
-	}
-	
-	var logoArray = [
+	//add the menu for setting the visibility of the D&D logos
+	var cLogoDisplay = tDoc.getField("Image.DnDLogo.long").display;
+	var menuLVL2 = function (menu, name, array) {
+		var temp = {
+			cName : name[0],
+			oSubMenu : []
+		};
+		for (var i = 0; i < array.length; i++) {
+			temp.oSubMenu.push({
+				cName : array[i][0],
+				cReturn : name[1] + "#" + array[i][1],
+				bMarked : array[i][1].split("#")[1] == cLogoDisplay
+			});
+		};
+		menu.push(temp);
+	};
+	pagesMenu.push({cName : "-", cReturn : "-"}); // add a divider
+	var cLogoDisplay = tDoc.getField("Image.DnDLogo.long").display;
+	menuLVL2(pagesMenu, ["Visible D&&D logos", "dndlogos"], [
 		["Show the D&&D logos", "show#0"],
 		["Show, but don't print the D&&D logos", "noprint#2"],
 		["Hide and don't print the D&&D logos", "hide#1"],
 		["Hide, but print the D&&D logos", "onlyprint#3"]
-	];
+	]);
 	
-	var cLogoDisplay = tDoc.getField("Image.DnDLogo.long").display;
-	
-	var menuLVL2 = function (menu, name, array) {
-		var temp = [];
-		temp.cName = name;
-		temp.oSubMenu = [];
-		var isMarked = false;
-		var isEnabled = true;
-		var extraName = "";
-		for (var i = 0; i < array.length; i++) {
-			if (array[i][0] !== "-") {
-				if (name === "Visible pages") {
-					isMarked = array[i][1] === "removespellsheets" || array[i][1] === "SSfront" || array[i][1] === "SSmore" ? false : tDoc.getField(BookMarkList[array[i][1]]).page !== -1;
-				} else if (name === "Add extra") {
-					isEnabled = tDoc.getField(BookMarkList[array[i][1]]).page !== -1;
-					extraName = " (default not visible)";
-				} else if (name === "Remove extra") {
-					isEnabled = What("Template.extras." + array[i][1]) !== "";
-					extraName = " (none to remove)";
-				} else if (name === "Visible D&&D logos") {
-					isMarked = array[i][1].split("#")[1] == cLogoDisplay;
-				}
-			}
-			temp.oSubMenu.push({
-				cName : array[i][0] + (!isEnabled ? extraName : ""),
-				cReturn : name + "#" + array[i][1],
-				bMarked : isMarked,
-				bEnabled : isEnabled
-			})
-		}
-		menu.push(temp);
-	};
-	
-	menuLVL2(pagesMenu, "Visible pages", pagesArray);
-	menuLVL2(pagesMenu, "Add extra", pagesArrayAdd);
-	menuLVL2(pagesMenu, "Remove extra", pagesArrayRemove);
-	pagesMenu.push({cName : "-", cReturn : "-"}); // add a divider
-	menuLVL2(pagesMenu, "Visible D&&D logos", logoArray);
-	
+	//add the menu for setting adventurers league stuff
 	pagesMenu.push({cName : "-", cReturn : "-"}); // add a divider
 	MakeAdventureLeagueMenu();
-	pagesMenu.push({ //add the menu for setting adventurers league stuff
+	pagesMenu.push({ 
 		cName : "Adventurers League options",
 		oSubMenu : Menus.adventureLeague
-	})
+	});
+	
+	//add the menu for setting Spell Sheet things
+	pagesMenu.push({cName : "-", cReturn : "-"}); // add a divider
+	MakeSpellMenu();
+	pagesMenu.push({
+		cName : "Spell Sheet options",
+		oSubMenu : Menus.spells
+	});
 
 	Menus.pages = pagesMenu;
-}
+};
 
 //call the pages menu and do something with the results
 function PagesOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
-
 	var MenuSelection = getMenu("pages");
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
-		MenuSelection[1] = MenuSelection[1].charAt(0).toUpperCase() + MenuSelection[1].charAt(1).toUpperCase() + MenuSelection[1].substring(2);
-		if (MenuSelection[0] === "visible d&&d logos") {
-			DnDlogo(MenuSelection[2]);
-		} else if (MenuSelection[0] === "advleague") {
-			MenuSelection[1] = MenuSelection[1].toLowerCase();
-			AdventureLeagueOptions(MenuSelection);
-		} else if (MenuSelection[1] === "REmovespellsheets") {
-			RemoveSpellSheets();
-		} else if (MenuSelection[1] === "SSfront") {
-			GenerateSpellSheet();
-		} else if (MenuSelection[1] === "SSmore") {
-			switch (MenuSelection[0]) {
-				case "visible pages" :
-				 if (What("Template.extras.SSfront").split(",").length > 1) {
-					var asking = {
-						cMsg : "Unfortunately it is not possible to hide the Spell Sheet. It can only be deleted.\n\nDo you want to remove all the Spell Sheets except the first one and remove the content of the first one?\nYou can then manually fill out the Spell Sheet and add/remove more pages using the \"Layout\" and \"Spells\" button in the \"JavaScript Window\" or in the bookmarks.\n\nRemoving the Spell Sheets cannot be undone!",
-						cTitle : "Delete all the Spell Sheets",
-						nIcon : 2, //question
-						nType : 2, //Yes-No
-					}
-					if (app.alert(asking) === 4) {
-						RemoveSpellSheets();
-						DoTemplate("SSfront", "Add");
-					}
-				 } else {
-					DoTemplate("SSfront", "Add");
-				 }
-				 break;
-				case "add extra" : 
-				 DoTemplate("SSmore", "Add");
-				 break;
-				case "remove extra" : 
-				 DoTemplate("SSmore", "Remove");
-				 break;
-			}
-		} else {
-			switch (MenuSelection[0]) {
-				case "visible pages" : 
-				 DoTemplate(MenuSelection[1]);
-				 break;
-				case "add extra" : 
-				 DoTemplate(MenuSelection[1], "Add");
-				 break;
-				case "remove extra" : 
-				 DoTemplate(MenuSelection[1], "Remove");
-				 break;
-			}
-		}
-	}
-	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) {
-		tDoc.calculateNow;
+		tDoc.delay = true;
+		tDoc.calculate = false;
+		
+		switch (MenuSelection[0]) {
+			case "dndlogos" :
+				DnDlogo(MenuSelection[2]);
+				break;
+			case "template" :
+				MenuSelection[1] = MenuSelection[1].substr(0, 2).toUpperCase() + MenuSelection[1].substr(2);
+				DoTemplate(MenuSelection[1], MenuSelection[2]);
+				break;
+			case "advleague" :
+				AdventureLeagueOptions(MenuSelection);
+				break;
+			case "ssheet" :
+				MakeSpellMenu_SpellOptions(MenuSelection);
+				break;
+		};
+		tDoc.calculate = IsNotReset;
+		tDoc.delay = !IsNotReset;
+		if (IsNotReset) {
+			tDoc.calculateNow;
+		};
 	};
 }
 
@@ -2808,8 +2741,6 @@ function functionBookmarks(theParent) {
 //make a menu to hide/show the lines of the notes on the page
 //after that, do something with the menu and its results
 function MakeNotesMenu_NotesOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
 	
 	//define some variables
 	var toSearch = event.target.name.indexOf("Notes") !== -1 ? "Notes." : "Cnote.";
@@ -2855,6 +2786,8 @@ function MakeNotesMenu_NotesOptions() {
 	var MenuSelection = getMenu("notes");
 	
 	if (MenuSelection !== undefined) {
+		tDoc.delay = true;
+		tDoc.calculate = false;
 		var toDo = false;
 		switch (MenuSelection[0]) {
 		 case WhiteL.toLowerCase() :
@@ -2867,16 +2800,7 @@ function MakeNotesMenu_NotesOptions() {
 			DoTemplate("ASnotes", "Add");
 			break;
 		 case "remove page" :
-			var thePage = event.target.page;
-			if (isArray(thePage)) {
-				DoTemplate("ASnotes");
-			} else {
-				//remove the prefix from the array in the remember field
-				var tempExtras = What("Template.extras.ASnotes").split(",");
-				tempExtras.splice(tempExtras.indexOf(prefix), 1);
-				Value("Template.extras.ASnotes", tempExtras);
-				tDoc.deletePages(thePage);
-			}
+			DoTemplate("ASnotes", "Remove", prefix);
 			break;
 		 case "comp.img" :
 			toShow[0] = !toShow[0];
@@ -2894,10 +2818,9 @@ function MakeNotesMenu_NotesOptions() {
 				Show(toDo);
 			}
 		} 
+		tDoc.calculate = IsNotReset;
+		tDoc.delay = !IsNotReset;
 	}
-
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
 }
 
 //make a string of all the classes and levels (field calculation)
@@ -2928,18 +2851,20 @@ function CalcFullClassLvlName() {
 function CalcLogsheetNumber() {
 	var prefix = event.target.name.substring(0, event.target.name.indexOf("AdvLog."));
 	var ALlogA = What("Template.extras.ALlog").split(",");
-	event.value = (ALlogA.indexOf(prefix) + 1) + " of " + ALlogA.length;
+	event.value = (ALlogA.indexOf(prefix)) + " of " + (ALlogA.length - 1);
 }
 
 //return the previous logsheet's prefix (field calculation)
 function CalcLogsheetPrevious(prefix) {
 	var ALlogA = What("Template.extras.ALlog").split(",");
-	return prefix ? ALlogA[ALlogA.indexOf(prefix) - 1] : "false";
+	return prefix && ALlogA.indexOf(prefix) - 1 ? ALlogA[ALlogA.indexOf(prefix) - 1] : "";
 }
 
 //calculate the total or starting value of an entry in the advanturers log sheet (field calculation)
 function CalcLogsheetValue() {
 	var fNm = event.target.name;
+	var prefix = fNm.substring(0, fNm.indexOf("AdvLog."));
+	if (!prefix) return;
 	var StrTot = fNm.indexOf("start") !== -1 ? "start" : "total";
 	if (StrTot === "total") {
 		var theStart = fNm.replace("total", "start");
@@ -2948,19 +2873,19 @@ function CalcLogsheetValue() {
 		var theStartNmr = Number(What(theStart).replace(/,/g, "."));
 		event.value = theGain === "" ? theStartNmr : theStartNmr + eval(theGain);
 	} else {
-		var prefix = fNm.substring(0, fNm.indexOf("AdvLog."));
 		var FldNmbr = Number(fNm.replace(/.*AdvLog\.(\d+?)\..+/, "$1"));
-		if (prefix === "" && FldNmbr === 1) {
+		if (prefix === What("Template.extras.ALlog").split(",")[1] && FldNmbr === 1) {
+			event.target.readonly = false;
 			return;
 		} else {
 			event.target.readonly = true;
-		}
+		};
 		if (FldNmbr !== 1) {
 			var preFld = fNm.replace("AdvLog." + FldNmbr, "AdvLog." + (FldNmbr - 1));
 		} else {
 			var prePrefix = What(prefix + "AdvLog.previous");
 			var preFld = fNm.replace(prefix, prePrefix).replace("AdvLog." + FldNmbr, "AdvLog." + FieldNumbers.logs);
-		}
+		};
 		var thisGain = What(fNm.replace("start", "gain")) !== "";
 		var preGain = What(preFld.replace("start", "gain")) !== "";
 		event.target.display = thisGain || preGain ? display.visible : display.hidden;
@@ -2969,21 +2894,24 @@ function CalcLogsheetValue() {
 }
 
 //add the correct numbers to the logsheet title sections
-function ApplyLogsheetNumbering(prefix, prePrefix) {
-	var preValue = Number(What(prePrefix + "Text.AdvLog." + FieldNumbers.logs).replace(/Logsheet Entry /i, ""));
+function UpdateLogsheetNumbering(prefix, prePrefix) {
+	prePrefix = prePrefix ? prePrefix : CalcLogsheetPrevious(prefix);
+	var preValue = prePrefix ? Number(What(prePrefix + "Text.AdvLog." + FieldNumbers.logs).replace(/Logsheet Entry /i, "")) : 0;
 	var logTxt = !typePF ? "Logsheet Entry " : "LOGSHEET ENTRY ";
 	for (var i = 1; i <= FieldNumbers.logs; i++) {
 		Value(prefix + "Text.AdvLog." + i, logTxt + (preValue + i));
-	}
-}
+	};
+	var ALlogA = What("Template.extras.ALlog").split(",");
+	if (prefix !== ALlogA.slice(-1)[0]) UpdateLogsheetNumbering(ALlogA[ALlogA.indexOf(prefix) + 1], prefix);
+};
 
 //Make menu for the button on the adventurers log page and parse it to Menus.advlog
 //after that, do something with the menu and its results
 function MakeAdvLogMenu_AdvLogOptions(Button) {
 	tDoc.delay = true;
 	tDoc.calculate = false;
-	var prefix = Button ? "" : event.target.name.substring(0, event.target.name.indexOf("AdvLog."));
-	var ALlogF = What("Template.extras.ALlog");
+	var prefix = Button ? "P0.AdvLog." : event.target.name.substring(0, event.target.name.indexOf("AdvLog."));
+	var isFirstPrefix = prefix === What("Template.extras.ALlog").split(",")[1];
 	var cLogoDisplay = minVer && typePF ? tDoc.getField("Image.DnDLogo.AL").display : false;
 	
 	var menuLVL1 = function (item, array) {
@@ -3016,15 +2944,15 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 	var AdvLogMenu = [];
 	
 	var alMenuItems = [
-		["Add extra 'Adventurers Log' page", "add page"],
-		[(prefix ? "Remove" : "Hide") + " this 'Adventurers Log' page", "remove page"],
-		["-", "-"],
-		["Reset this page", "reset"],
-		["-", "-"]
-	];
-
-	if (Button || (tDoc.info.AdvLogOnly && !prefix)) alMenuItems.splice(1, 1);
-	if (Button) alMenuItems.splice(2, 2);
+		["Add extra " + (Button ? "page" : "'Adventurers Log' page"), "add page"]
+	].concat(
+		(Button || (tDoc.info.AdvLogOnly && isFirstPrefix)) ?
+		[["Remove all pages and reset the 1st", "remove all"]] :
+		[["Remove this 'Adventurers Log' page", "remove page"]]
+	).concat(
+		(Button) ? [["-", "-"], ["Reset all pages", "reset all"], ["-", "-"]] :
+		[["-", "-"], ["Reset this page", "reset"], ["-", "-"]]
+	);
 
 	menuLVL1(AdvLogMenu, alMenuItems);
 	
@@ -3044,15 +2972,15 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 	var dateTypesMenu = [];
 	
 	menuLVL2(dateTypesMenu, ["Date format", "dateformat"], [
-			["24 Dec 2014", "d mmm yyyy"],
-			["24-12-2014", "d-m-yyyy"],
-			["24/12/2014", "d/m/yyyy"],
-			["Dec 24, 2014", "mmm d, yyyy"],
-			["12-24-2014", "m-d-yyyy"],
-			["12/24/2014", "m/d/yyyy"],
-			["2014 Dec 24", "yyyy mmm d"],
-			["2014-12-24", "yyyy-m-d"],
-			["2014/12/24", "yyyy/m/d"]
+		["24 Dec 2014", "d mmm yyyy"],
+		["24-12-2014", "d-m-yyyy"],
+		["24/12/2014", "d/m/yyyy"],
+		["Dec 24, 2014", "mmm d, yyyy"],
+		["12-24-2014", "m-d-yyyy"],
+		["12/24/2014", "m/d/yyyy"],
+		["2014 Dec 24", "yyyy mmm d"],
+		["2014-12-24", "yyyy-m-d"],
+		["2014/12/24", "yyyy/m/d"]
 	]);
 	
 	AdvLogMenu.push(dateTypesMenu);
@@ -3070,21 +2998,14 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 			DoTemplate("ALlog", "Add");
 			break;
 		 case "remove page" :
-			var thePage = event.target.page;
-			if (isArray(thePage)) {
-				DoTemplate("ALlog");
-			} else {
-				//remove the prefix from the array in the remember field
-				var tempExtras = What("Template.extras.ALlog").split(",");
-				var prePrefix = tempExtras[tempExtras.indexOf(prefix) - 1]; //the page before it
-				var postPrefix = tempExtras[tempExtras.indexOf(prefix) + 1]; //the page after it, if any
-				tempExtras.splice(tempExtras.indexOf(prefix), 1);
-				Value("Template.extras.ALlog", tempExtras);
-				if (postPrefix) {
-					ApplyLogsheetNumbering(postPrefix, prePrefix); //update the header texts for the newly added log page
-				}
-				tDoc.deletePages(thePage);
-			}
+			DoTemplate("ALlog", "Remove", prefix);
+			break;
+		 case "remove all" :
+			tDoc.getTemplate("blank").spawn(0, false, false);
+			tDoc.deletePages({nStart: 1, nEnd: tDoc.numPages - 1});
+			tDoc.getTemplate("ALlog").spawn(0, true, false);
+			Value("Template.extras.ALlog", ",P0.ALlog");
+			tDoc.deletePages(1);
 			break;
 		 case "tutorial" :
 			app.launchURL("http://dndadventurersleague.org/tutorial-for-dd-adventure-league-logsheets/", true);
@@ -3097,11 +3018,19 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 			for (var l = 0; l <= FieldNumbers.logs; l++) resetLogs.push(prefix + "AdvLog." + l)
 			tDoc.resetForm(resetLogs);
 			break;
+		 case "reset all" :
+			var ALlogF = What("Template.extras.ALlog").split(",").splice(1);
+			var resetLogs = [];
+			for (var i = 0; i < ALlogF.length; i++) {
+				for (var l = 0; l <= FieldNumbers.logs; l++) resetLogs.push(ALlogF[i] + "AdvLog." + l);
+			};
+			tDoc.resetForm(resetLogs);
+			break;
 		 case "dateformat" :
 			UpdateALdateFormat(MenuSelection[1]);
 			break;
 		 case "generate" :
-			addALlogEnrry();
+			addALlogEntry();
 			break;
 		 case "dndlogo" :
 			DnDlogo(MenuSelection[2]);
@@ -3116,26 +3045,13 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 
 //get the parent of the bookmark so we can know which template it is on
 function getBookmarkTemplate(bookmark) {
-	var templateReturn = "";
-	var checkName = function(Bmrk) {
-		var theName = Bmrk.name;
-		if (theName === "Root" || !BookMarkList[theName + "_template"]) {
-			var theReturn = false;
-		} else {
-			var theReturn = [BookMarkList[theName + "_template"], theName];
-		}
-		return theReturn;
-	}
-	var theNext = bookmark;
-	for (var i = 0; i < 100; i++) {
-		var theThing = checkName(theNext);
-		if (theThing) {
-			templateReturn = theThing;
-			i = 100;
-		}
-		theNext = theNext.parent;
-	}
-	return templateReturn;
+	while (bookmark.name !== "Root") {
+		if (BookMarkList[bookmark.name + "_template"]) {
+			return [BookMarkList[bookmark.name + "_template"], bookmark.name];
+		};
+		bookmark = bookmark.parent;
+	};
+	return "";
 }
 
 //make menu for the button to (re)set the portrait/organization symbol
@@ -3545,7 +3461,7 @@ function UpdateRangerCompanions(deleteIt) {
 	var newLvlProfB = theProfB(newLvl);
 	var RangerLvl = deleteIt || (!classes.known.ranger && !classes.known["spell-less ranger"]) ? newLvl : (classes.known.ranger ? classes.known.ranger.level : 0) + (classes.known["spell-less ranger"] ? classes.known["spell-less ranger"].level : 0);
 	var newLvlText = theText(RangerLvl);
-	var AScompA = What("Template.extras.AScomp").split(",");
+	var AScompA = What("Template.extras.AScomp").split(",").splice(1);
 	var progressDia = 0;
 	
 	for (var i = 0; i < AScompA.length; i++) {
@@ -3720,7 +3636,7 @@ function SetHPTooltip(resetHP) {
 	Value("HD3 Die", What("HD3 Die"));
 	
 	// now do the same for every companion page
-	var tempExtras = What("Template.extras.AScomp").split(",");
+	var tempExtras = What("Template.extras.AScomp").split(",").splice(1);
 	for (var tE = 0; tE < tempExtras.length; tE++) {
 		var prefix = tempExtras[tE];
 		var CompHDLVL = Math.floor(What(prefix + "Comp.Use.HD.Level"));
@@ -4016,46 +3932,19 @@ function ShowCalcBoxesLines(input) {
 	}
 }
 
-// give the default inputform
-function returnInputForm(displayForm, asArray) {
-	var theReturn = "dd/mm/yyyy";
-	if (displayForm.substr(0,1) === "m") {
-		theReturn = "mm/dd/yyyy";
-	} else if (displayForm.substr(0,1) === "y") {
-		theReturn = "yyyy/mm/dd";
-	}
-	if (asArray) theReturn = theReturn.split("/");
-	return theReturn;
-}
-
-//chane the format of all the date fields of the AL log page, and change the month-day order if appropriate
+//chane the format of all the date fields of the AL log pages
 function UpdateALdateFormat(dateForm) {	
 	dateForm = dateForm ? dateForm : What("DateFormat_Remember");
-	var oldDateForm = What("DateFormat_Remember");
-	var oldDateInputFormA = returnInputForm(oldDateForm, true);
 	Value("DateFormat_Remember", dateForm);
-	var dateInputForm = returnInputForm(dateForm);
-	var dateInputFormA = dateInputForm.split("/");
-	var dateInputFormLong = dateInputForm.replace(/y+/, "year").replace(/d+/, "day").replace(/m+/, "month");
-	var changeOrder = dateForm.substr(0,1) !== oldDateForm.substr(0,1); // see if the month and day order should be changed or not
-	
-	var ALlogA = What("Template.extras.ALlog").split(",");
+	var ALlogA = What("Template.extras.ALlog").split(",").splice(1);
 	for (var tA = 0; tA < ALlogA.length; tA++) {
 		var prefix = ALlogA[tA];
 		for (var i = 1; i < FieldNumbers.logs; i++) {
 			var dateFld = prefix + "AdvLog." + i + ".date";
-			var dateFldValue = What(dateFld);
-			if (dateFldValue && changeOrder && dateFldValue.match(/\d+/g).length === 3) {
-				dateFldValue = dateFldValue.match(/\d+/g);
-				dateFldValue = dateFldValue[oldDateInputFormA.indexOf(dateInputFormA[0])] + "/" + dateFldValue[oldDateInputFormA.indexOf(dateInputFormA[1])] + "/" + dateFldValue[oldDateInputFormA.indexOf(dateInputFormA[2])];
-			}
-			if (dateFldValue && util.scand(dateInputForm, dateFldValue)) {
-				Value(dateFld, dateFldValue);
-			}
-			AddTooltip(dateFld, "Write the date of the session or event here, using the format \"" + dateInputFormLong + "\".\n\nYou can change this format using the \"Logsheet Options\" button above.");
-		}
-	}
-}
+			Value(dateFld, What(dateFld));
+		};
+	};
+};
 
 //return the value of the field that this notes field (field calculation)
 function CalcCompNotes() {
@@ -4204,18 +4093,22 @@ function ChangeToCompleteAdvLogSheet() {
 	tDoc.getField("AdvLogS.Background_Faction.Text").setAction("OnBlur", "UpdateFactionSymbols();");
 	tDoc.getField("AdvLogS.Background_Faction.Text").setAction("Keystroke", "");
 	
-	tDoc.getTemplate("ALlog").spawn(0, false, false);
+	tDoc.getTemplate("ALlog").spawn(0, true, false);
 	tDoc.deletePages({nStart: 1, nEnd: tDoc.numPages - 1});
+	tDoc.getTemplate("ALlog").hidden = false;
 	tDoc.getTemplate("remember").hidden = false;
 	tDoc.getTemplate("blank").hidden = false;
+	Value("Template.extras.ALlog", ",P0.ALlog.");
 	
 	//remove the saveIMG fields that are now useless
 	tDoc.removeField("SaveIMG.SpellSlots");
 	tDoc.removeField("SaveIMG.Spells");
 
 	if (typePF) { //if the Printer Friendly version, update the copyright
-		tDoc.getField("CopyrightInformation").defaultValue = "Based on Wizards of the Coast " + (tDoc.info.SheetType === "Printer Friendly" ? "adventure logsheet" : "character sheet") + "; made by Joost Wijnen - Flapkan@gmail.com";
-		tDoc.resetForm(["CopyrightInformation"]);
+		var newCR = "Based on Wizards of the Coast " + (tDoc.info.SheetType === "Printer Friendly" ? "adventure logsheet" : "character sheet") + "; made by Joost Wijnen - Flapkan@gmail.com";
+		tDoc.getField("CopyrightInformation").defaultValue = newCR;
+		tDoc.getField("P0.ALlog.CopyrightInformation").defaultValue = newCR;
+		tDoc.resetForm(["CopyrightInformation", "P0.ALlog.CopyrightInformation"]);
 	} else { //if the Colorful version, remove some more useless fields
 		tDoc.removeField("SaveIMG.Title");
 		tDoc.removeField("SaveIMG.Level");
@@ -4231,7 +4124,7 @@ function ChangeToCompleteAdvLogSheet() {
 		tDoc.removeField("SaveIMG.DnDLogo");
 		tDoc.removeField("SaveIMG.Honor");
 		tDoc.removeField("SaveIMG.Sanity");
-	}
+	};
 	
 	var keyPF = "This Adventure Logsheet is an extraction from MPMB's Character Record Sheet [Printer Friendly]. It follows the design and uses elements of the official D&D 5e adventure logsheet by Wizards of the Coast, but has been heavily modified by Joost Wijnen [morepurplemorebetter] (flapkan@gmail.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'.";
 
@@ -4240,14 +4133,13 @@ function ChangeToCompleteAdvLogSheet() {
 	var keyCF = "This Adventure Logsheet is an extraction from MPMB's Character Record Sheet [" + tDoc.info.SheetType + "]. This sheet uses elements designed by Javier Aumente, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (flapkan@gmail.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'."
 	
 	//move the pages that we want to extract to a new instance, by running code from a console
-	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 2});\n\n";
+	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 3});\n\n";
 	forConsole += "this.info.AdvLogOnly = true;";
-	forConsole += " var toDelScripts = ['ListsBackgrounds', 'ListsClasses', 'ListsClassesUA', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsRaces', 'ListsRacesUA', 'ListsSpells', 'ListsSources']; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
-	forConsole += " this.createTemplate({cName:\"ALlog\", nPage:0 });";
-	forConsole += " this.createTemplate({cName:\"remember\", nPage:1 });";
-	forConsole += " this.createTemplate({cName:\"blank\", nPage:2 });";
+	forConsole += " var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsClasses', 'ListsClassesUA', 'ListsClassesUAArtificer', 'ListsClassesUAMystic', 'ListsCreatures', 'ListsFeats', 'ListsFeatsUA', 'ListsGear', 'ListsPsionics', 'ListsRaces', 'ListsRacesUA' 'ListsSources', 'ListsSpells', 'ListsSpellsUA',]; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
+	forConsole += " this.createTemplate({cName:\"ALlog\", nPage:1 });";
+	forConsole += " this.createTemplate({cName:\"remember\", nPage:2 });";
+	forConsole += " this.createTemplate({cName:\"blank\", nPage:3 });";
 	forConsole += " this.getTemplate(\"ALlog\").hidden = true;";
-	forConsole += " this.getTemplate(\"ALlog\").spawn(0, false, false);";
 	forConsole += " this.getTemplate(\"remember\").hidden = true;";
 	forConsole += " this.getTemplate(\"blank\").hidden = true;";
 	forConsole += " this.info.SheetVersion = \"" + tDoc.info.SheetVersion + "\";";
@@ -4418,7 +4310,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 	var RangerLvl = deleteIt || !classes.known.rangerua ? newLvl : classes.known.rangerua.level;
 	var newLvlText = theText(RangerLvl);
 	var newLvlFea = theFeature(RangerLvl);
-	var AScompA = What("Template.extras.AScomp").split(",");
+	var AScompA = What("Template.extras.AScomp").split(",").splice(1);
 	var progressDia = 0;
 	
 	for (var i = 0; i < AScompA.length; i++) {
@@ -4564,7 +4456,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 
 //Give a pop-up dialogue when the amount of Ability Score Improvements after changing level
 function CountASIs() {
-	if (!AbilityScores.improvements.classlvl) UpdateTooltips();
+	UpdateTooltips();
 	var newASI = 0;
 	for (var nClass in classes.known) {
 		var clLvl = Math.min(CurrentClasses[nClass].improvements.length, classes.known[nClass].level);
@@ -4572,8 +4464,8 @@ function CountASIs() {
 	}
 	var oldASI = 0;
 	for (var oClass in classes.old) {
-		clLvl = Math.min(CurrentClasses[nClass].improvements.length, classes.old[oClass].classlevel);
-		oldASI += clLvl ? CurrentClasses[nClass].improvements[clLvl - 1] : 0;
+		clLvl = Math.min(CurrentClasses[oClass].improvements.length, classes.old[oClass].classlevel);
+		oldASI += clLvl ? CurrentClasses[oClass].improvements[clLvl - 1] : 0;
 	}
 	if (newASI !== oldASI) {		
 		var pTxt = "The change in level has granted your character " + toUni(newASI - oldASI) + " additional " + toUni("Ability Score Improvement") + "(s)!\n\nThe current total of Ability Score Improvements is:" + AbilityScores.improvements.classlvl + "\n\nYou can use these in one of two ways:\n    1. Divide 2 points over ability scores (to max 20);\n        (See the Ability Scores dialogue, i.e. \"Scores\" button.)\n    2. Take 1 feat.\n        (See the Feats section on the sheet.)";
@@ -4823,7 +4715,7 @@ function setListsUnitSystem(isMetric, onStart) {
 }
 
 // automatically add a new entry on the Adventurers Logsheet with the sheets current values
-function addALlogEnrry() {
+function addALlogEntry() {
 	//first find the next empty logsheet entry
 	var theTypesA = [
 		".xp",
@@ -4832,7 +4724,7 @@ function addALlogEnrry() {
 		".renown",
 		".magicItems"
 	];
-	var ALlogA = What("Template.extras.ALlog").split(",");
+	var ALlogA = What("Template.extras.ALlog").split(",").splice(1);
 	var emptyLog = [];
 	var emptyFound = false;
 	for (var tA = 0; tA < ALlogA.length; tA++) {
@@ -4893,8 +4785,7 @@ function addALlogEnrry() {
 	Value(baseFld + "magicItems.gain", (total >= 0 ? "+" : "") + total);
 	
 	// set today's date
-	var dateInputForm = returnInputForm(What("DateFormat_Remember"));
-	Value(baseFld + "date", util.printd(dateInputForm, new Date()));
+	Value(baseFld + "date", util.printd('yy-mm-dd', new Date()));
 	
 	// set the other fields, if a previous entry was detected
 	if (emptyLog[2] !== "stop") {
@@ -4919,6 +4810,7 @@ function addALlogEnrry() {
 //menu for logsheet entries to move up, move down, insert, delete, or clear
 function MakeAdvLogLineMenu_AdvLogLineOptions() {
 	var prefix = event.target.name.substring(0, event.target.name.indexOf("Button.AdvLog."));
+	var firstPrefix = isTemplVis("ALlog", true)[1];
 	var lineNmbr = Number(event.target.name.slice(-1));
 	var theArray = [
 		["Move up", "up"],
@@ -4931,7 +4823,7 @@ function MakeAdvLogLineMenu_AdvLogLineOptions() {
 	var menuLVL1 = function (item, array) {
 		for (var i = 0; i < array.length; i++) {
 			var isEnabled = true;
-			if (array[i][1] === "up" && prefix === "" && lineNmbr === 1) {
+			if (array[i][1] === "up" && prefix === firstPrefix && lineNmbr === 1) {
 				isEnabled = false;
 			}
 			item.push({
@@ -4954,8 +4846,9 @@ function MakeAdvLogLineMenu_AdvLogLineOptions() {
 function doAdvLogLine(action, lineNmbr, prefix) {
 	tDoc.delay = true;
 	tDoc.calculate = false;
-	var ALlogA = What("Template.extras.ALlog").split(",");
+	var ALlogA = What("Template.extras.ALlog").split(",").splice(1);
 	var preNm = prefix + "AdvLog.";
+	var firstPrefix = isTemplVis("ALlog", true)[1];
 	var FieldNames = [
 		".xp.gain",
 		".gold.gain",
@@ -4976,7 +4869,7 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 		for (var F = 0; F < FieldNames.length; F++) {
 			Fields[F] = preNm + lineNmbr + FieldNames[F];
 			FieldsValue[F] = What(Fields[F]);
-			if (action === "up" && (prefix !== "" || lineNmbr !== 1)) {
+			if (action === "up" && (prefix !== firstPrefix || lineNmbr !== 1)) {
 				if (lineNmbr !== 1) {
 					FieldsUp[F] = preNm + (lineNmbr - 1) + FieldNames[F];
 					FieldsUpValue[F] = What(FieldsUp[F]);
@@ -5113,12 +5006,12 @@ function PatreonStatement() {
 			var oButIcon = this.getField("SaveIMG.Patreon").buttonGetIcon();
 			var oMyIcon = util.iconStreamFromIcon(oButIcon);	
 			
+			var theTxt = "If you like this sheet, please consider becoming a patron at the Patreon for MPMB's Character Record Sheet.\n\nWith your contribution on Patreon:\n   \u2022 I can add all Unearthed Arcana material right after it has been released.\n   \u2022 You get to choose which new features get added.\n   \u2022 Your favourite third-party material gets added.\n   \u2022 You get instant access and alerts when new versions are released.";
+			var theTxt2 = "Don't worry, the sheet will stay as 'Pay What You Want' on DMs Guild.\nHowever, if you feel like contributing more, it will all flow back into expanding the sheets' features and content.\n\nYou can always visit the Patreon webpage using the bottom \"Contact MPMB\" bookmarks.";
 			var PatreonDialog = {
 				initialize : function (dialog) {
 					dialog.load({
-						"img1" : oMyIcon,
-						"txt1" : "If you like this sheet, please consider becoming a patron at the Patreon for MPMB's Character Record Sheet.\n\nWith your contribution on Patreon:\n   \u2022 I can add all Unearthed Arcana material right after it has been released.\n   \u2022 You get to choose which new features get added.\n   \u2022 Your favourite third-party material gets added.\n   \u2022 You get instant access and alerts when new versions are released.",
-						"txt2" : "Don't worry, the sheet will stay as 'Pay What You Want' on DMs Guild.\nHowever, if you feel like contributing more, it will all flow back into expanding the sheets' features and content.\n\nYou can always visit the Patreon webpage using the bottom \"Contact MPMB\" bookmarks."
+						"img1" : oMyIcon
 					});
 				},
 				bPat : function (dialog) {contactMPMB("patreon");},
@@ -5137,6 +5030,7 @@ function PatreonStatement() {
 								height : 63
 							}, {
 								type : "view",
+								char_width : 40,
 								elements : [{
 									type : "static_text",
 									name : "Become a patron on Patreon",
@@ -5151,8 +5045,9 @@ function PatreonStatement() {
 									item_id : "txt1",
 									alignment : "align_fill",
 									font : "dialog",
-									char_height : 13,
-									char_width : 40
+									wrap_name : true,
+									char_width : 40,
+									name : theTxt
 								}, {
 									type : "button",
 									font : "heading",
@@ -5165,8 +5060,9 @@ function PatreonStatement() {
 									item_id : "txt2",
 									alignment : "align_fill",
 									font : "dialog",
-									char_height : 10,
-									char_width : 40
+									wrap_name : true,
+									char_width : 40,
+									name : theTxt2
 								}]
 							}]
 						}, {
@@ -5414,6 +5310,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
 	if (IsNotReset) tDoc.calculateNow();
+	if (QI && ((event.target && fldName === event.target.name) || Number(fldNmbr) === FieldNumbers.attacks)) SetOffHandAction();
 };
 
 //calculate the attack damage and to hit, can be called from any of the attack fields (sets the fields)
@@ -5447,6 +5344,7 @@ function CalcAttackDmgHit(fldName) {
 	if (!WeaponText || (/^(| |empty)$/).test(fields.Mod)) {
 		Value(fldBase + "Damage", "");
 		Value(fldBase + "To Hit", "");
+		if (QI) CurrentWeapons.offHands[ArrayNmbr] = false;
 		return;
 	};
 	
@@ -5471,11 +5369,9 @@ function CalcAttackDmgHit(fldName) {
 		var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 
 		// see if this is a off-hand attack and the modToDmg shouldn't be use
-		var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText) ? true : false;
-		if (isOffHand) {
-			AddAction("bonus action", "Off-hand Attack");
-			output.modToDmg = false;
-		};
+		var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText);
+		CurrentWeapons.offHands[ArrayNmbr] = isOffHand;
+		if (isOffHand) output.modToDmg = output.mod < 0;
 
 		//add the BlueText field value of the corresponding spellcasting class
 		if (thisWeapon[3] && thisWeapon[4].length) {
@@ -5564,9 +5460,15 @@ function CalcAttackDmgHit(fldName) {
 	};
 };
 
+//see if the bonus action for Off-hand attack is needed or not
+function SetOffHandAction() {
+	var areOffHands = CurrentWeapons.offHands.some( function(n) { return n});
+	tDoc[(areOffHands ? "Add" : "Remove") + "Action"]("bonus action", "Off-hand Attack");
+};
+
 //a way to show a very long piece of text without the dialogue overflowing the screen
 function ShowDialog(hdr, strng) {
-	if (strng === "sources") {
+	if (strng === "sources") { // ShowDialog("List of Sources, sorted by abbreviation", "sources");
 		strng = "";
 		var srcRef = {};
 		var srcArr = {};
@@ -5591,13 +5493,9 @@ function ShowDialog(hdr, strng) {
 		};
 	}
 	var ShowString_dialog = {
-		header : hdr,
-		string : strng,
 		initialize : function(dialog) {
 			dialog.load({
-				"txt0" : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]",
-				"head" : this.header,
-				"Eval" : this.string.replace(/^\n/, "").replace(/^\n/, "")
+				"Eval" : strng.replace(/^\n/, "").replace(/^\n/, "")
 			});
 		},
 		description : {
@@ -5612,16 +5510,18 @@ function ShowDialog(hdr, strng) {
 						item_id : "txt0",
 						alignment : "align_fill",
 						font : "dialog",
+						wrap_name : true,
 						height : 20,
-						width : 550
+						name : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]"
 					}, {
 						type : "static_text",
 						item_id : "head",
 						alignment : "align_fill",
 						font : "heading",
 						bold : true,
-						height : 21,
-						width : 550
+						wrap_name : true,
+						width : 550,
+						name : hdr
 					}, {
 						type : "edit_text",
 						item_id : "Eval",
@@ -5664,14 +5564,17 @@ function EvalBonus(input, notComp, isSpecial) {
 		return 0;
 	} else if (!isNaN(input)) {
 		return Number(input);
-	}
+	};
 	var modStr = notComp === true ? ["", " Mod"] : !isSpecial || isSpecial === "test" ? [notComp + "Comp.Use.Ability.", ".Mod"] : [notComp + "Wildshape." + isSpecial + ".Ability.", ".Mod"];
 	// first remove "dc", add a "+" between abbreviations, and removing double or trailing operators
-	input = input.replace(/dc/ig, "").replace(/(Str|Dex|Con|Int|Wis|Cha|HoS)(Str|Dex|Con|Int|Wis|Cha|HoS)/ig, "$1+$2").replace(/(\+|\-|\/|\*)(\+|\-|\/|\*)/g, "$2").replace(/(^(\+|\/|\*))|((\+|\-|\/|\*)$)/g, "");
+	input = input.replace(/dc/ig, "").replace(/(Str|Dex|Con|Int|Wis|Cha|HoS|Prof)(Str|Dex|Con|Int|Wis|Cha|HoS|Prof)/ig, "$1+$2").replace(/(\+|\-|\/|\*)(\+|\-|\/|\*)/g, "$2").replace(/(^(\+|\/|\*))|((\+|\-|\/|\*)$)/g, "");
 	// change ability score abbreviations with their modifier
 	["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"].forEach(function(AbiS) {
 		input = input.replace(RegExp(AbiS, "ig"), Number(What(modStr[0] + AbiS + modStr[1])));
 	});
+	// change Prof with the proficiency bonus
+	var ProfB = notComp === true ? tDoc.getField("Proficiency Bonus").submitName : !isSpecial || isSpecial === "test" ? What(notComp + "Comp.Use.Proficiency Bonus") : What(notComp + "Wildshape." + isSpecial + ".Proficiency Bonus");
+	input = input.replace(/Prof/ig, ProfB);
 	try {
 		output = eval(input);
 		return !isNaN(output) ? Number(output) : 0;
@@ -5714,9 +5617,9 @@ function SetThisFldVal() {
 						type : "static_text",
 						alignment : "align_fill",
 						item_id : "txt0",
+						wrap_name : true,
 						name : "Please enter the value you want to set for the field:",
-						char_width : 35,
-						height : 20
+						char_width : 35
 					}, {
 						type : "edit_text",
 						alignment : "align_center",
@@ -5727,9 +5630,9 @@ function SetThisFldVal() {
 						type : "static_text",
 						alignment : "align_fill",
 						item_id : "txt1",
+						wrap_name : true,
 						name : "The field won't appear to change until you click/tab out of it.",
-						char_width : 35,
-						height : 20
+						char_width : 35
 					}, {
 						type : "ok_cancel"
 					}]
@@ -5739,5 +5642,122 @@ function SetThisFldVal() {
 		if (app.execDialog(theDialog) === "ok") {
 			event.target.value = theDialog.theTXT;
 		};
+	};
+};
+
+// add a modifier to a modifier field so that the formula stays intact; Remove is boolean
+function AddToModFld(Fld, Mod, Remove) {
+	if (!tDoc.getField(Fld)) return;
+	var aFld = What(Fld);
+	var setFld = "";
+	if (!isNaN(Mod)) {
+		Mod = Remove ? -1 * Mod : Mod;
+		if (!isNaN(aFld)) {
+			setFld = aFld + Mod;
+		} else if ((/\d+/).test(aFld)) {
+			var FldNum = Number(aFld.match(/-?\d+/)[0]);
+			var FldNumNew = FldNum + Mod;
+			setFld = aFld.replace(RegExp("\\+?" + FldNum.toString(), "i"), (FldNumNew < 0 ? "" : "+") + FldNumNew);
+		} else {
+			setFld = aFld + (Mod < 0 ? "" : "+") + Mod;
+		};
+	} else {
+		if (Remove) {
+			setFld = aFld.replace(RegExp("\\+?" + Mod, "i"), "");
+		} else {
+			setFld = (aFld ? aFld : "") + (Mod.substr(0, 1) === "-" ? "" : "+") + Mod
+		};
+	};
+	setFld = setFld.replace(/^\+|(\+|-)0/g, "");
+	Value(Fld, setFld);
+};
+
+// make a menu off all the sources where clicking on them gets you to their linked URL
+function MakeSourceMenu_SourceOptions() {
+	var SourceMenu = [{
+		cName : "[clicking a source will open a web page]",
+		bEnabled : false
+	}, {
+		cName : "All",
+		oSubMenu : []
+	}, {
+		cName : "Primary Sources",
+		oSubMenu : []
+	}, {
+		cName : "Adventure Books",
+		oSubMenu : []
+	}, {
+		cName : "Adventurers League",
+		oSubMenu : []
+	}, {
+		cName : "Unearthed Arcana",
+		oSubMenu : []
+	}, {
+		cName : "-"
+	}, {
+		cName : "Open a dialogue with a list of the sources",
+		cReturn : "sourcelist#dialogue"
+	}];
+	
+	var menuLoc = {
+		"primary sources" : 2,
+		"adventure books" : 3,
+		"adventurers league" : 4,
+		"unearthed arcana" : 5
+	};
+	
+	var abbrObj = { arr : [], obj : {}, lowObj : {} };
+	for (var aSource in SourceList) {
+		abbrObj.arr.push(SourceList[aSource].abbreviation);
+		abbrObj.obj[SourceList[aSource].abbreviation] = aSource;
+		abbrObj.lowObj[aSource.toLowerCase()] = aSource;
+	};
+	abbrObj.arr.sort();
+	
+	for (var i = 0; i < abbrObj.arr.length; i++) {
+		var aSource = abbrObj.obj[abbrObj.arr[i]];
+		if (/^(DMguild|HB)$/.test(aSource)) continue;
+		var src = SourceList[aSource];
+		var theIndex = menuLoc[src.group.toLowerCase()];
+		if (!theIndex) {
+			theIndex = SourceMenu.length
+			SourceMenu.push({
+				cName : src.group,
+				oSubMenu : []
+			});
+			menuLoc[src.group.toLowerCase()] = theIndex;
+		};
+		
+		var allItem = {
+			//cName : (src.abbreviation + "          ").substr(0, 10) + src.name,
+			cName : (src.abbreviation + (new Array(10)).join("\u2002")).substr(0, 10) + src.name,
+			cReturn : "sourcelist#" + aSource
+		};
+		if ((/(\d+\/\d+\/\d+)(.*)/).test(allItem.cName)) allItem.cName = allItem.cName.replace(/(\d+\/\d+\/\d+)(.*)/, "$2 ($1)");
+		SourceMenu[1].oSubMenu.push(allItem);
+		var srcItem = {
+			cName : allItem.cName.replace(RegExp(src.group + ":? ?", "i"), ""),
+			cReturn : allItem.cReturn
+		};
+		SourceMenu[theIndex].oSubMenu.push(srcItem);
+	};
+	
+	for (var entry in SourceMenu) if (SourceMenu[entry].oSubmenu) SourceMenu[entry].oSubmenu.sort();
+	
+	//parse it into a global variable
+	Menus.sources = SourceMenu;
+	
+	//now call the menu
+	var MenuSelection = getMenu("sources");
+	
+	if (MenuSelection === undefined) return;
+	if (MenuSelection[1] === "dialogue") {
+		ShowDialog("List of Sources, sorted by abbreviation", "sources");
+		return;
+	};
+	var theSrc = abbrObj.lowObj[MenuSelection[1]];
+	
+	if (SourceList[theSrc].url) {
+		app.launchURL(SourceList[theSrc].url, true);
 	};
 };
