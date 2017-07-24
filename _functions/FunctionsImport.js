@@ -868,7 +868,7 @@ function DirectImport(consoleTrigger) {
 			
 			//set the type, if any
 			var compTypeFrom = global.docFrom.getField(prefixFrom + "Companion.Remember");
-			if (compTypeFrom && compTypeFrom.value) changeCompType(compTypeFrom.value, prefixFrom);
+			if (compTypeFrom && compTypeFrom.value) changeCompType(compTypeFrom.value, prefixTo);
 			
 			//Set some one-off fields
 			ImportField(prefixTo + "Comp.Type", {notTooltip: true, notSubmitName: true}, prefixFrom + "Comp.Type");

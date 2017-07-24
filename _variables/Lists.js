@@ -1505,7 +1505,7 @@ var compString = {
 				"\n   " + "If it has an Intelligence of 5 or less, its Intelligence becomes 6 " +
 				"\n   " + "It gains the ability to understand one language that I, the caster, can speak" +
 				"\n   " + "When the steed drops to 0 hit points, it disappears, leaving behind no physical form" +
-				"\n\u2022 " + "The steed serves me as a mountl I have a bond with it that allows us to fight as a seamless unit" +
+				"\n\u2022 " + "The steed serves me as a mount. I have a bond with it that allows us to fight as a seamless unit" +
 				"\n\u2022 " + "While mounted on my steed, I can make any spell I cast that targets only me also target it" +
 				"\n\u2022 " + "While my steed is within 1 mile of me, I can communicate with it telepathically" +
 				"\n\u2022 " + "I can dismiss my steed at any time as an action, causing it to disappear" +

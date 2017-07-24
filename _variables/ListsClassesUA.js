@@ -1724,7 +1724,7 @@ ClassList["rangerua"] = {
 			name : "Hide in Plain Sight",
 			source : ["UA:RR", 4],
 			minlevel : 10,
-			description : "\n   " + "When I hide on my turn without moving, others take -10 Wis (Perception) to find me" + "\n   " + "This lasts until something reveals my precense, or until I (voluntarily) move/fall prone"
+			description : "\n   " + "When I hide on my turn without moving, others take -10 Wis (Perception) to find me" + "\n   " + "This lasts until something reveals my presence, or until I (voluntarily) move/fall prone"
 		},
 		"vanish" : {
 			name : "Vanish",

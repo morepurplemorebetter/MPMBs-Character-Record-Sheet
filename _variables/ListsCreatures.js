@@ -5286,7 +5286,7 @@ var CreatureList = {
 		],
 		traits : [{
 				name : "Pack Tactics",
-				description : "The velociraptor has advantage on an attack roll against a creature if at least one of the rat's allies is within 5 ft of the creature and the ally isn't incapacitated."
+				description : "The velociraptor has advantage on an attack roll against a creature if at least one of the velociraptor's allies is within 5 ft of the creature and the ally isn't incapacitated."
 			}
 		]
 	},
