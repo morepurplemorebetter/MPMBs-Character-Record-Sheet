@@ -1248,8 +1248,8 @@ var WeaponsList = {
 		abilitytodamage : false,
 		dc : true
 	},
-	"thunder cannon" : {
-		regExpSearch : /^(?!.*(blast|monger|piercing|explosive))(?=.*\bthunder)(?=.*cannon\b).*$/i,
+	"thunder cannon-thunder cannon" : {
+		regExpSearch : /^(?!.*(blast|monger|piercing|explosive|round))(?=.*\bthunder)(?=.*cannon\b).*$/i,
 		name : "Thunder Cannon",
 		source : ["UA:A", 6],
 		ability : 2,
@@ -1781,7 +1781,7 @@ var AmmoList = {
 		checks : [".Bullet"],
 		display : 50,
 		invName : "Thunder Cannon Rounds",
-		alternatives : [/^((?=.*arcane)(?=.*magazine)|(?=.*thunder)(?=.*cannon)).*$/i]
+		alternatives : [/^((?=.*arcane)(?=.*magazine)|(?=.*thunder)(?=.*cannon)(?=.*rounds)).*$/i]
 	},
 
 	// DMG firearms ammo
