@@ -189,7 +189,7 @@ RaceSubList["minotaur-strength"] = {
 */
 //adds eight new races, the Revenant versions of the Aasimar, Dragonborn, Dwarf, Elf, Gnome, Halfling, Human, and Tiefling
 RaceList["aasimar revenant"] = { //based on the VGtM Aasimar
-	regExpSearch : /^(?=.*revenant)((?=.*aasimar)|((?=.*planetouched)(?=.*(celestial|angel))))(?=.*fallen).*$/i,
+	regExpSearch : /^(?=.*revenant)((?=.*aasimar)|((?=.*planetouched)(?=.*(celestial|angel)))).*$/i,
 	name : "Aasimar Revenant",
 	sortname : "Revenant, Aasimar",
 	source : ["UA:GH", 1],
@@ -221,7 +221,7 @@ RaceList["aasimar revenant"] = { //based on the VGtM Aasimar
 RaceList["dwarf revenant"] = {
 	regExpSearch : /^(?=.*revenant)(?=.*\b(dwarfs?|dwarves|dwarfish|dwarvish|dwarven)\b).*$/i,
 	name : "Dwarf Revenant",
-	sortname : "Dwarf, Revenant",
+	sortname : "Revenant, Dwarf",
 	source : ["UA:GH", 1],
 	plural : "Dwarves",
 	size : 3,
