@@ -18,7 +18,7 @@
 				
 	Code by:	Darryl Cook & MorePurpleMoreBetter
 				Order of the Lycan code by MorePurpleMoreBetter
-	Date:		2017-02-28 (sheet v12.83)
+	Date:		2017-08-03 (sheet v12.997)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 	
@@ -711,6 +711,9 @@ WeaponsList["predatory strike"] = {
 
 //a function to update the notes page with the Hybrid form
 UpdateHybridForm = function() {
+	var NotesPrefix = isTemplVis("ASnotes", true);
+	if (!NotesPrefix) continue;
+	
 	var BHlevelOld = classes.old["blood hunter"] ? classes.old["blood hunter"].classlevel : 0;
 	var BHlevelNew = classes.known["blood hunter"] ? classes.known["blood hunter"].level : 0;
 	if (BHlevelOld <= 2 && BHlevelNew <= 2) return;
@@ -737,7 +740,7 @@ UpdateHybridForm = function() {
 	//update the hybrid feature on the notes page
 	var BHstringOld = makeHybridText(BHlevelOld);
 	var BHstringNew = makeHybridText(BHlevelNew);
-	ReplaceString("Notes.Left", BHstringNew, false, BHstringOld);
+	ReplaceString(NotesPrefix + "Notes.Left", BHstringNew, false, BHstringOld);
 	
 	//update the predatory strikes
 	var PSdie = BHlevelNew >= 18 ? 10 : (BHlevelNew >= 11 ? 8 : 6);
