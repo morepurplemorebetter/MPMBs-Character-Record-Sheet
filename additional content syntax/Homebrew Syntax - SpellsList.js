@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Spell
 	Effect:		This is the syntax for adding a new spell
-	Sheet:		v12.9 (2017-03-29)
+	Sheet:		v12.997 (2017-08-02)
 	
 	Please note that there is no code here to update drop-down boxes because the rop-down boxes in the spell selection dialogues are generated automatically and will include any spells you add correctly
 	
@@ -44,6 +44,8 @@ SpellsList["abi-dalzim's horrid wilting"] = { //Object name; note the use of onl
 	compMaterial : "Two lodestones", //Optional; Material Component. This string will be put in the mouseover text (tooltip) of the component field
 	
 	duration : "Instantaneous", //Required; Spell Duration as it will show up on the Spell Sheet
+
+	save : "Int", //Optional; The ability score that the spell's Saving Throw uses. This will be put in the save field
 	
 	description : "Repair a single broken object no larger than 1 cu ft; can't restore magic to broken magic item", //Required; Short Spell Description as it will show up on the Spell Sheet
 	
