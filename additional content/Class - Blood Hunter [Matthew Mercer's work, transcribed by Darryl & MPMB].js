@@ -751,7 +751,7 @@ UpdateHybridForm = function() {
 	if (BHlevelNew >= 3) {
 		for (var PSi = 0; PSi < CurrentWeapons.known.length; PSi++) {
 			if (CurrentWeapons.known[PSi][0] === "predatory strike") {
-				Value("BlueText.Attack." + (PSi + 1) + ".Damage Die", PSdie);
+				Value("BlueText.Attack." + (PSi + 1) + ".Damage Die", "d" + PSdie);
 				Value("BlueText.Attack." + (PSi + 1) + ".Damage Bonus", PSdmg);
 				Value("BlueText.Attack." + (PSi + 1) + ".To Hit Bonus", PShit);
 			}
