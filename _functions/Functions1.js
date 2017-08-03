@@ -1965,7 +1965,7 @@ function FindClasses(Event) {
 		
 		for (var f = 0; f < fAB.length; f++) {
 			var propAtt = fTrans[fAB[f]];
-			if (subClObj && propAtt.list === "ClassList" && ((/subclassfeature/i).test(propAtt.name) || subClObj.features[propAtt.name])) continue; // skip any features from the class if a subclass is known and has that same feature
+			if (subClObj && propAtt.list === "ClassList" && subClObj.features[propAtt.name]) continue; // skip any features from the class if a subclass is known and has that same feature
 			Temps.features[propAtt.name] = tDoc[propAtt.list][propAtt.item].features[propAtt.name];
 		}
 

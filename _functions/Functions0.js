@@ -965,6 +965,7 @@ function similarLen(str1, str2) {
 
 //test if a template is visible or not
 function isTemplVis(tempNm, returnPrefix) {
+	if (!BookMarkList[tempNm] || !tDoc.getField(BookMarkList[tempNm]) return false;
 	var isVisible = false;
 	var multiTemp = TemplatesWithExtras.indexOf(tempNm) !== -1;
 	var firstTempl = "";

@@ -567,6 +567,7 @@ function DirectImport(consoleTrigger) {
 		var onlySpawnsFrom = FromVersion >= 12.995;
 		if (global.docFrom.BookMarkList) { //if no bookmarklist exists where we are importing from, don't do anything
 			for (var templ in TemplateDep) {
+				if (templ === "PRsheet" && (!fromSheetTypePF || !typePF)) continue;
 				var onlySpawnsFromT = onlySpawnsFrom || templ.substring(0, 2) === "SS";
 				//see if the template exists in the docFrom
 				var dFfldT = onlySpawnsFrom ? global.docFrom.isTemplVis(templ) : global.docFrom.BookMarkList[templ] ? global.docFrom.getField(global.docFrom.BookMarkList[templ]) : false;
