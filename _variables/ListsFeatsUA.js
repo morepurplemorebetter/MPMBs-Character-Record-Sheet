@@ -210,7 +210,7 @@ FeatsList["spear mastery"] = {
 FeatsList["alchemist"] = {
 	name : "Alchemist",
 	source : ["UA:F", 4],
-	description : "I gain proficiency with alchemist's supplies, or expertise if already proficient. As an action, I can identify a potion within 5 ft. During a rest with alchemist's supplies, I can make a potion of healing, of any rarity. Consuming it within 1 hour maximizes its effects [+1 Int]",
+	description : "I gain proficiency with alchemist's supplies, or expertise if already proficient. As an action, I can identify a potion within 5 ft. During a rest with alchemist's supplies, I can enhance a potion of healing, to heal its max. Consuming it within 1 hour maximizes its effects [+1 Int]",
 	improvements : "Alchemist (feat): +1 Intelligence;",
 	scores : [0, 0, 0, 1, 0, 0],
 	action : ["action", " (identify potion)"],
@@ -412,7 +412,7 @@ FeatsList["performer"] = {
 FeatsList["quick-fingered"] = {
 	name : "Quick-Fingered",
 	source : ["UA:FS", 3],
-	description : "I gain expertise with Sleight of Hand, or proficiency if not so already. As a bonus action, I can make a Dexterity (Sleight of Hand) check to plan something on someone else, conceal an object on a creature, lift a purse, or take something from a pocket. [+1 Dexterity]",
+	description : "I gain expertise with Sleight of Hand, or proficiency if not so already. As a bonus action, I can make a Dexterity (Sleight of Hand) check to plant something on someone else, conceal an object on a creature, lift a purse, or take something from a pocket. [+1 Dexterity]",
 	improvements : "Quick-Fingered (feat): +1 Dexterity;",
 	scores : [0, 1, 0, 0, 0, 0],
 	skills : "\n\n" + toUni("Quick-Fingered (feat)") + ": Sleight of Hand, or expertise if already proficient.",
