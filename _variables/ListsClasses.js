@@ -1716,7 +1716,13 @@ var ClassList = {
 				},
 				"pact of the chain" : {
 					name : "Pact of the Chain",
-					description : "\n   " + "I can cast Find Familiar as a ritual (PHB 240); Also Imp/Pseudodragon/Quasit/Sprite" + "\n   " + "When taking the attack action, I can forgo 1 attack to have my familiar attack instead" + "\n   " + "It makes this 1 attack by using its reaction"
+					description : "\n   " + "I can cast Find Familiar as a ritual (PHB 240); Also Imp/Pseudodragon/Quasit/Sprite" + "\n   " + "When taking the attack action, I can forgo 1 attack to have my familiar attack instead" + "\n   " + "It makes this 1 attack by using its reaction",
+					spellcastingBonus : {
+						name : "Pact of the Chain",
+						spells : ["find familiar"],
+						selection : ["find familiar"],
+						firstCol : "(R)"
+					}
 				},
 				"pact of the tome" : {
 					name : "Pact of the Tome",
@@ -4097,7 +4103,9 @@ var ClassSubList = {
 				name : "Second-Story Work",
 				source : ["P", 97],
 				minlevel : 3,
-				description : "\n   " + "I climb at my normal speed; I add my Dex modifier to the distance of a running jump"
+				description : "\n   " + "I climb at my normal speed; I add my Dex modifier to the distance of a running jump",
+				eval : "Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m).*(\\d+ (ft|m))?)/i, '$1 $2\\n$1 $2 climb')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m).*(\\d+ (ft|m))?)/i, '$1 $2\\n$1 $2 climb').replace(/\\n/, typePF ? ' ' : '\\n')); };",
+				removeeval : "Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) climb/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) climb/i, '')); "
 			},
 			"subclassfeature9" : {
 				name : "Supreme Sneak",
