@@ -712,7 +712,7 @@ WeaponsList["predatory strike"] = {
 //a function to update the notes page with the Hybrid form
 UpdateHybridForm = function() {
 	var NotesPrefix = isTemplVis("ASnotes", true);
-	if (!NotesPrefix) continue;
+	if (!NotesPrefix) return;
 	
 	var BHlevelOld = classes.old["blood hunter"] ? classes.old["blood hunter"].classlevel : 0;
 	var BHlevelNew = classes.known["blood hunter"] ? classes.known["blood hunter"].level : 0;
