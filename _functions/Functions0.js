@@ -195,6 +195,17 @@ Array.prototype.toLowerCase = function () {
 Array.prototype.toUpperCase = function () {
 	return this.toString().toUpperCase();
 };
+Array.prototype.trailingIndexOf = function(e) {
+    var index = -1, len = this.length;
+    for (var i = len - 1; i > -1; i--) {
+        if (i in this && e === this[i]) {
+            index = i;
+        } else {
+			break;
+		}
+    }
+    return index;
+};
 
 function ChangeWidth(field, amount) {
 	var Fld = tDoc.getField(field);
@@ -965,7 +976,7 @@ function similarLen(str1, str2) {
 
 //test if a template is visible or not
 function isTemplVis(tempNm, returnPrefix) {
-	if (!BookMarkList[tempNm] || !tDoc.getField(BookMarkList[tempNm]) return false;
+	if (!BookMarkList[tempNm] || !tDoc.getField(BookMarkList[tempNm])) return false;
 	var isVisible = false;
 	var multiTemp = TemplatesWithExtras.indexOf(tempNm) !== -1;
 	var firstTempl = "";

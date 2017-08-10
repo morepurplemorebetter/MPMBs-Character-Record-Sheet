@@ -3,11 +3,11 @@ function ParseSpell(input) {
 	var result = "";
 	
 	if (input) {
-		input = removeDiacritics(RemoveZeroWidths(input));
+		input = removeDiacritics(RemoveZeroWidths(input)).replace("(R)", "");
 		var foundLen = 0;
 
 		for (var key in SpellsList) { //scan string for all creatures
-			if (testSource(key, SpellsList[key], "spellsExcl")) continue; //only testing if the source of the class isn't excluded
+			if (testSource(key, SpellsList[key], "spellsExcl")) continue; //only testing if the source of the spell isn't excluded
 			if (input.toLowerCase() === key) {
 				result = key;
 				break;
@@ -719,7 +719,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 		if (addSp || (extraArray && extraArray.indexOf(key) !== -1)) {
 			var SpPs = !aSpell.psionic ? "sp" : "ps";
 			if (toDisplay) {
-				spByLvl[SpPs + aSpell.level].push(aSpell.name);
+				spByLvl[SpPs + aSpell.level].push(aSpell.name + (aSpell.ritual ? " (R)" : ""));
 			} else if (returnOrdered) {
 				spByLvl[SpPs + aSpell.level].push(key);
 			} else {
@@ -779,7 +779,7 @@ function CreateSpellObject(inputArray) {
 	var returnObject = {};
 	
 	for (var i = 0; i < inputArray.length; i++) {
-		var theObject = GetZeroWidths(i) + inputArray[i];;
+		var theObject = GetZeroWidths(i) + inputArray[i];
 		returnObject[theObject] = (i + 1) * -1;
 	}
 	return returnObject;
@@ -2865,10 +2865,10 @@ function AskUserSpellSheet() {
 		
 		//put some general things in variables
 		if (spCast.level && spCast.factor && (tDoc[spCast.factor[1] + "SpellTable"] || spCast.spellsTable)) {
-			var CasterLevel = Math.ceil(spCast.level / Math.max(1, spCast.factor[0]));
-			var theTable = spCast.spellsTable ? spCast.spellsTable : spCast.factor[1] === "warlock" ? defaultSpellTable : tDoc[spCast.factor[1] + "SpellTable"];
+			var CasterLevel = Math.ceil(spCast.level / Math.max(1, spCast.spellsTable ? 1 : spCast.factor[0]));
+			var theTable = spCast.spellsTable ? spCast.spellsTable : tDoc[spCast.factor[1] + "SpellTable"];
 			var tableLevel = Math.min(theTable.length - 1, CasterLevel);
-			var maxSpell = theTable[tableLevel].indexOf(0);
+			var maxSpell = theTable[tableLevel].trailingIndexOf(0);
 			maxSpell = Number(maxSpell === -1 ? 9 : maxSpell);
 		} else {
 			var CasterLevel = false;
@@ -3347,10 +3347,10 @@ function GenerateSpellSheet(GoOn) {
 			if (spCast.maxSpell && CurrentCasters.incl[i] !== "warlock") {
 				maxLvl = spCast.maxSpell;
 			} else if (spCast.factor && (tDoc[spCast.factor[1] + "SpellTable"] || spCast.spellsTable)) {
-				var CasterLevel = Math.ceil(spCast.level / Math.max(1,spCast.factor[0]));
+				var CasterLevel = Math.ceil(spCast.level / Math.max(1, spCast.spellsTable ? 1 : spCast.factor[0]));
 				var theTable = spCast.spellsTable ? spCast.spellsTable : spCast.factor[1] === "warlock" ? defaultSpellTable : tDoc[spCast.factor[1] + "SpellTable"];
 				var tableLevel = Math.min(theTable.length - 1, CasterLevel);
-				var maxSpell = theTable[tableLevel].indexOf(0);
+				var maxSpell = theTable[tableLevel].trailingIndexOf(0);
 				maxLvl = Number(maxSpell === -1 ? 9 : maxSpell);
 			};
 		};
@@ -4788,11 +4788,11 @@ function CheckForSpellUpdate() {
 						askUserUpdateSS = (newClass && aCast.known.spells[newSpLvl]) || (aCast.known.spells[oldSpLvl] !== aCast.known.spells[newSpLvl]);
 					} else if (!askUserUpdateSS && aCast.typeSp && (aCast.typeSp === "book" || (aCast.typeSp === "list" && aCast.typeList !== 2))) {
 						// if this is a list/book and the caster just got access to a new spell slot level
-						var theTable = aCast.spellsTable ? aCast.spellsTable : aCast.factor && aCast.factor[0] ? (aCast.factor[1] === "warlock" ? defaultSpellTable : tDoc[aCast.factor[1] + "SpellTable"]) : false;
+						var theTable = aCast.spellsTable ? aCast.spellsTable : aCast.factor && aCast.factor[0] ? tDoc[aCast.factor[1] + "SpellTable"] : false;
 						if (theTable) {
 							var oldTableLvl = Math.min(theTable.length - 1, lvlOld + 1);
 							var newTableLvl = Math.min(theTable.length - 1, lvlNew + 1);
-							askUserUpdateSS = (newClass && aCast.known.spells[newSpLvl]) || (theTable[oldTableLvl].indexOf(0) !== theTable[newTableLvl].indexOf(0));
+							askUserUpdateSS = (newClass && aCast.known.spells[newSpLvl]) || (theTable[oldTableLvl].trailingIndexOf(0) !== theTable[newTableLvl].trailingIndexOf(0));
 						};
 					}
 				}
