@@ -2771,7 +2771,7 @@ var BackgroundFeatureList = {
 		source : ["AL:RoD", 9]
 	},
 	"secret passage" : {
-		description : "I can call on my smuggler contacts to secure secret passage into or out of Hillsfar for myself and my friends, no questions asked, and no Red Plume entanglements. Because I'm calling in a favor, I can't be certain when or if they can help. In return for passage, my companions and I may owe the Rouges Guild a favor and/or may have to pay bribes.",
+		description : "I can call on my smuggler contacts to secure secret passage into or out of Hillsfar for myself and my friends, no questions asked, and no Red Plume entanglements. Because I'm calling in a favor, I can't be certain when or if they can help. In return for passage, my companions and I may owe the Rogue's Guild a favor and/or may have to pay bribes.",
 		source : ["AL:RoD", 8]
 	},
 	"secret society" : {
