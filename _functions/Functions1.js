@@ -5706,7 +5706,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 							RemoveClassFeatureChoice(aClass, prop);
 						}
 					}
-					if (CheckLVL && prop.indexOf("wild shape") !== -1) {
+					if (prop.indexOf("wild shape") !== -1) {
 						isWildShape = [newClassLvl[aClass], Fea.Use, Fea.Recov, Fea.Add];
 						WSinUse = true;
 					}
