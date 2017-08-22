@@ -6266,8 +6266,8 @@ function CalcAC() {
 		event.value = "";
 	} else {
 		event.value = Number(ACbase) + Number(ACshield) + Number(ACdex) + Number(ACmagic) + Number(ACmisc1) + Number(ACmisc2);
-	}
-}
+	};
+};
 
 function SetToManual_Button() {
 	tDoc.delay = true;
@@ -10023,12 +10023,12 @@ function AddUserScript() {
 					}, {
 						type : "view",
 						align_children : "align_row",
-						width : 750,
+						alignment : "align_fill",
 						elements : [{
 							type : "button",
 							name : "<< Go to Previous Dialogue",
 							item_id : "bPre",
-							alignment : "align_right"
+							alignment : "align_left"
 						}, {
 							type : "ok_cancel_other",
 							other_name : "Open Another Dialogue",

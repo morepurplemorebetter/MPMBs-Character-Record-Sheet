@@ -818,6 +818,7 @@ var SpellSheetSelect_Dialog = {
 	SpBook : false,
 	levelSp : 1,
 	nameAd : "[always prepared]",
+	prevBtn : false,
 	
 	//when starting the dialog
 	initialize : function (dialog) {
@@ -871,13 +872,15 @@ var SpellSheetSelect_Dialog = {
 			"SpCL" : this.showSp,
 			"RaCL" : this.showSpRadio,
 			"SplK" : this.showSp && this.typeSp !== "book",
-			"SpR3" : this.typeSp !== "known"
+			"SpR3" : this.typeSp !== "known",
+			"bPre" : this.prevBtn
 		});
 		
 		//enable the various entries or disable them and load their values
 		var toEnable = {
 			AdET : false,
-			SpR3 : this.typeSp !== "known"
+			SpR3 : this.typeSp !== "known",
+			bPre : this.prevBtn
 		};
 		var toLoad = {};
 		if (this.showSpRadio) toLoad["SpR" + this.selectSpRadio] = true;
@@ -1028,6 +1031,11 @@ var SpellSheetSelect_Dialog = {
 	other : function (dialog) {
 		this.saveIt(dialog);
 		dialog.end("ok");
+	},
+	
+	bPre : function (dialog) {
+		this.saveIt(dialog);
+		dialog.end("prev");
 	},
 	
 	description : {
@@ -1703,11 +1711,22 @@ var SpellSheetSelect_Dialog = {
 					}]
 				}]
 			}, {
-				type : "ok_cancel_other",
-				ok_name : "Add More Spells to the Spellbook",
-				alignment : "align_right",
-				other_name : "Continue to Next Dialog",
-				cancel_name : "Cancel and Stop"
+				type : "view",
+				align_children : "align_row",
+				alignment : "align_fill",
+				elements : [{
+					type : "button",
+					name : "<< Go to Previous Dialogue",
+					item_id : "bPre",
+					alignment : "align_left"
+				}, {
+					type : "ok_cancel_other",
+					item_id : "OKbt",
+					alignment : "align_right",
+					ok_name : "Add More Spells to the Spellbook",
+					other_name : "Continue to Next Dialogue >>",
+					cancel_name : "Cancel and Stop"
+				}]
 			}]
 		}]
 	}
@@ -2028,12 +2047,14 @@ var SpellBookSelect_Dialog = {
 	listSp : {},
 	selectSp : [],
 	fullname : "",
+	iteration : "1/1",
 	
 	//when starting the dialog
 	initialize : function (dialog) {		
 		//set the value of various text entries
 		dialog.load({
-			"Hea0" : "Additional Spellbook Spells for " + this.fullname
+			"Hea0" : "Additional Spellbook Spells for " + this.fullname,
+			"iter" : this.iteration
 		});
 		
 		//enable the various entries or disable them and load their values
@@ -2069,7 +2090,7 @@ var SpellBookSelect_Dialog = {
 		dialog.load(toSet);
 	},
 	
-	commit : function (dialog) {
+	saveIt : function (dialog) {
 		var oResult = dialog.store();
 		
 		//a function to return the right one in the list
@@ -2087,25 +2108,49 @@ var SpellBookSelect_Dialog = {
 		}
 	},
 	
+	ok : function (dialog) {
+		this.saveIt(dialog);
+	},
+	
+	other : function (dialog) {
+		this.saveIt(dialog);
+		dialog.end("book");
+	},
+	
+	bPre : function (dialog) {
+		this.saveIt(dialog);
+		dialog.end("prev");
+	},
+	
 	description : {
 		name : "Set Spells",
 		elements : [{
 			type : "view", //view to add ok buttons below everything else
 			align_children : "align_left",
 			elements : [{
-				type : "static_text",
-				item_id : "Hea0",
+				type : "view",
+				align_children : "align_row",
 				alignment : "align_fill",
-				font : "title",
-				bold : true,
-				height : 21,
-				char_width : 60,
-				
+				elements : [{
+					type : "static_text",
+					item_id : "Hea0",
+					alignment : "align_fill",
+					font : "title",
+					bold : true,
+					height : 21,
+					char_width : 50
+				}, {
+					type : "static_text",
+					item_id : "iter",
+					alignment : "align_right",
+					height : 21,
+					char_width : 8
+				}]
 			}, {
 				type : "view", //total view
 				align_children : "align_distribute",
 				elements : [{
-					type : "view", //left view
+					type : "view", //1st column view
 					align_children : "align_left",
 					char_width : 15,
 					elements : [{
@@ -2213,7 +2258,7 @@ var SpellBookSelect_Dialog = {
 						height : 5
 					}]
 				}, {
-					type : "view", //left view
+					type : "view", //2nd column view
 					align_children : "align_left",
 					char_width : 15,
 					elements : [{
@@ -2321,7 +2366,7 @@ var SpellBookSelect_Dialog = {
 						height : 5
 					}]
 				}, {
-					type : "view", //left view
+					type : "view", //3rd column view
 					align_children : "align_left",
 					char_width : 15,
 					elements : [{
@@ -2429,7 +2474,7 @@ var SpellBookSelect_Dialog = {
 						height : 5
 					}]
 				}, {
-					type : "view", //left view
+					type : "view", //4th column view
 					align_children : "align_left",
 					char_width : 15,
 					elements : [{
@@ -2538,9 +2583,22 @@ var SpellBookSelect_Dialog = {
 					}]
 				}]
 			}, {
-				type : "ok_cancel",
-				ok_name : "Continue to Next Dialog",
-				cancel_name : "Cancel and Stop"
+				type : "view",
+				align_children : "align_row",
+				alignment : "align_fill",
+				elements : [{
+					type : "button",
+					name : "<< Go to Previous Spellbook Dialogue",
+					item_id : "bPre",
+					alignment : "align_left"
+				}, {
+					type : "ok_cancel_other",
+					item_id : "OKbt",
+					alignment : "align_right",
+					ok_name : "Continue to Next Dialogue >>",
+					other_name : "Add More to the Spellbook",
+					cancel_name : "Cancel and Stop"
+				}]
 			}]
 		}]
 	}
@@ -2853,15 +2911,20 @@ var SpellsPrepared_Dialog = {
 function AskUserSpellSheet() {
 	var dia = SpellSheetSelect_Dialog;
 	var classesArray = [];
+	for (var aC in CurrentSpells) {
+		classesArray.push(aC);
+	};
 	
 	// go through all the entries in CurrentSpells and ask the user for input that we then store back in that same variable
-	for (var aCast in CurrentSpells) {
+	for (var theI = 0; theI < classesArray.length; theI++) {
+		var aCast = classesArray[theI];
+		var spCast = CurrentSpells[aCast];
+		
 		thermoM("start"); //start a progress dialog
 		thermoM("Generating the " + aCast + " dialog..."); //change the progress dialog text
 		thermoM(1/2); //increment the progress dialog's progress
 		
-		var spCast = CurrentSpells[aCast];
-		classesArray.push(aCast);
+		dia.prevBtn = theI !== 0;
 		
 		//put some general things in variables
 		if (spCast.level && spCast.factor && (tDoc[spCast.factor[1] + "SpellTable"] || spCast.spellsTable)) {
@@ -2964,7 +3027,7 @@ function AskUserSpellSheet() {
 			atwill : [], //at will
 			oncelr : [], //once per long rest
 			oncesr : [], //once per short rest
-			other : [], //once per short rest
+			other : [] //others
 		}
 		//now loop through all the bonus entries, if any
 		if (spCast.bonus) {for (var bKey in spCast.bonus) {
@@ -3011,24 +3074,19 @@ function AskUserSpellSheet() {
 		if (!GoAhead) continue; //not a single spellcasting attribute was found, so skip over this entry in the CurrentSpells variable
 		
 		//now set the ok buttons at the bottom of the dialog
-		var ding = dia.description.elements[0].elements[1];
-		if (dia.typeSp !== "book") {
-			ding.type = "ok_cancel";
-			ding.ok_name = "Continue to Next Dialog";
-		} else {
-			ding.type = "ok_cancel_other";
-			ding.ok_name = "Add More to the Spellbook";
-		}
-		
+		setDialogName(dia, "OKbt", "type", dia.typeSp !== "book" ? "ok_cancel" : "ok_cancel_other");
+		setDialogName(dia, "OKbt", "ok_name", dia.typeSp !== "book" ? "Continue to Next Dialogue >>" : "Add More Spells to the Spellbook");
+
 		thermoM("Opening the " + aCast + " dialog..."); //change the progress dialog text
 		
 		//now call the dialog and do something with the results if OK was pressed
-		if (app.execDialog(dia) !== "ok") {
-			SetStringifieds("spells");
+		var diaResult = app.execDialog(dia);
+		if (diaResult == "cancel") {
 			thermoM("stop"); //stop the top progress dialog
+			SetStringifieds("spells");
 			return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 		} else {
-			thermoM("Progressing the " + aCast + " dialog..."); //change the progress dialog text
+			thermoM("Processing the " + aCast + " dialog..."); //change the progress dialog text
 			
 			spCast.typeSp = dia.typeSp;
 			if (dia.showCa) {
@@ -3042,7 +3100,7 @@ function AskUserSpellSheet() {
 			}
 			if (dia.showSpRadio) {
 				spCast.typeList = dia.selectSpRadio;
-			}
+			};
 			spCast.selectBo = dia.selectBo;
 			spCast.offsetBo = dia.offsetBo;
 			spCast.special = {
@@ -3051,7 +3109,7 @@ function AskUserSpellSheet() {
 				oncelr : [], //once per long rest
 				oncesr : [], //once per short rest
 				other : {}, //other flags
-			}
+			};
 			var boNmr = 0;
 			if (spCast.bonus) {for (var bKey in spCast.bonus) {
 				var spBonus = spCast.bonus[bKey];
@@ -3072,45 +3130,102 @@ function AskUserSpellSheet() {
 						boNmr += 1; //count the number of bonus things
 					}
 				}
-			}}
+			}};
 			var EvenMoreBo = [];
 			if (spCast.offsetBo > 0) {
 				for (var i = boNmr; i < 16; i++) {
 					if (dia.selectBo[i]) EvenMoreBo.push(dia.selectBo[i]);
-				}
-			}
+				};
+			};
 			if (EvenMoreBo.length) {
 				spCast.extraBo = EvenMoreBo;
 			} else {
 				delete spCast.extraBo;
-			}
-		
-			thermoM("Opening the " + aCast + " Spellbook dialog..."); //change the progress dialog text
+			};
 			
-			//if it was selected to go set more spells in the spellbook, open another dialog now
-			if (dia.SpBook) {
+			//if the previous button was pressed, go back one iteration
+			if (diaResult == "prev") {
+				theI -= 2;
+				thermoM("stop"); //stop the top progress dialog
+				continue;
+			};
+			
+			//if it was selected to go set more spells in the spellbook or there are already more spells in the spellbook, open the spellbook dialog now
+			if (dia.SpBook || spCast.selectSpSB) {
+				thermoM("Opening the " + aCast + " Spellbook dialog..."); //change the progress dialog text
+				
+				// cut the extra spellbook spells into different chunks of 80
+				var SBextras = [];
+				if (spCast.selectSpSB) {
+					for (var si = 0, sj = spCast.selectSpSB.length; si < sj; si += 80) {
+						SBextras.push(spCast.selectSpSB.slice(si, si + 80));
+					};
+				};
+				
 				var diaSB = SpellBookSelect_Dialog;
 				diaSB.listSp = dia.listSp;
 				diaSB.fullname = dia.fullname;
-				diaSB.selectSp = spCast.selectSpSB ? spCast.selectSpSB : [];
+				var diaSBi = 0;
 				
-				if (app.execDialog(diaSB) !== "ok") {
-					SetStringifieds("spells");
-					thermoM("stop"); //stop the top progress dialog
-					return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
-				} else {
-					var totalSelectSp = OrderSpells(spCast.selectSp.concat(diaSB.selectSp), "single");
-					spCast.selectSp = totalSelectSp.slice(0, 18); //the first 18 of the array
-					if (totalSelectSp.length > 18) {
-						spCast.selectSpSB = totalSelectSp.slice(18); //the rest of the array after the 22nd
-					} else {
-						delete spCast.selectSpSB;
-					}
+				// call the dialogue, and keep on calling more if more spells need to be added to the spellbook
+				do {
+					diaSB.iteration = (diaSBi + 1) + "/" + Math.max(diaSBi + 1, SBextras.length, 1);
+					diaSB.selectSp = SBextras[diaSBi] ? SBextras[diaSBi] : [];
+					setDialogName(diaSB, "bPre", "name", diaSBi == 0 ? "<< Go Back (also Orders Spellbook)" : "<< Go to Previous Spellbook Dialogue");
+					var diaSBResult = app.execDialog(diaSB);
+					// now replace the SBextras entry with the new diaSB.selectSp
+					SBextras[diaSBi] = diaSB.selectSp;
+					
+					switch (diaSBResult) {
+						case "cancel" :
+							var contDiaSB = false;
+							break;
+						case "book" :
+							var contDiaSB = true;
+							diaSBi += 1;
+							break;
+						case "ok" :
+							diaSBi += 1;
+							var contDiaSB = SBextras[diaSBi] && SBextras[diaSBi].length;
+							break;
+						case "prev" :
+							if (diaSBi == 0) { // go back to the class spell dialogue
+								theI -= 1;
+								var contDiaSB = false;
+							} else { // go back to the previous spellbook dialogue
+								diaSBi -= 1;
+								var contDiaSB = true;
+							};
+							break;
+					};
 				}
-			}
+				while (contDiaSB);
+				
+				// now add all the spells selected in the spellbook dialogues to a single array, together with the spells selected in the original dialogue, sort them, and add them back into the proper places
+				SBextras = [].concat.apply([], SBextras);
+				var totalSelectSp = OrderSpells(spCast.selectSp.concat(SBextras), "single");
+				spCast.selectSp = totalSelectSp.slice(0, 18); //the first 18 of the array
+				if (totalSelectSp.length > 18) {
+					spCast.selectSpSB = totalSelectSp.slice(18); //the rest of the array
+				} else {
+					delete spCast.selectSpSB;
+				};
+				
+				// now if the spellbook dialogue was cancelled, do not continue with the rest of the function
+				if (diaSBResult == "cancel") {
+					thermoM("stop"); //stop the top progress dialog
+					SetStringifieds("spells");
+					return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
+				} else if (diaSBResult == "prev") {
+					thermoM("stop"); //stop the top progress dialog
+					continue;
+				};
+			};
 			
 			//now ask for the spells to prepare, if so selected in the radio buttons
 			if (spCast.typeList && spCast.typeList === 3) {
+				thermoM("Opening the " + aCast + " prepared spell selection dialog..."); //change the progress dialog text
+				
 				//make a new object for this
 				var diaPrep = SpellsPrepared_Dialog;
 				diaPrep.fullname = dia.fullname;
@@ -3133,7 +3248,7 @@ function AskUserSpellSheet() {
 					} else {
 						delete spCast.list.level;
 					}
-				}
+				};
 				diaPrep.listSp = CreateSpellObject(listPrepRef); //create the spells popup object
 				
 				//set the previously selected spells and the offset, if any was defined
@@ -3142,8 +3257,8 @@ function AskUserSpellSheet() {
 				
 				//call the dialog and do something with the results
 				if (app.execDialog(diaPrep) !== "ok") {
-					SetStringifieds("spells");
 					thermoM("stop"); //stop the top progress dialog
+					SetStringifieds("spells");
 					return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 				} else {
 					//save the new variables
@@ -3157,7 +3272,7 @@ function AskUserSpellSheet() {
 			}
 		}
 		thermoM("stop"); //stop the top progress dialog
-	}
+	};
 	
 	if (classesArray.length > 0) {		
 		//first see how the lists are doing
@@ -3802,7 +3917,7 @@ function ParseSpellMenu() {
 				var spellsTemp = {cName : nameArray[y], oSubMenu : []};
 				for (var i = 0; i < spellsArray.length; i++) {
 					spellsTemp.oSubMenu.push({
-						cName : SpellsList[spellsArray[i]].name,
+						cName : SpellsList[spellsArray[i]].name + (SpellsList[spellsArray[i]].ritual ? " (R)" : ""),
 						cReturn : "spell" + "#" + spellsArray[i] + "#"
 					})
 				}

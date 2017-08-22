@@ -2876,6 +2876,7 @@ function CalcLogsheetValue() {
 		var FldNmbr = Number(fNm.replace(/.*AdvLog\.(\d+?)\..+/, "$1"));
 		if (prefix === What("Template.extras.ALlog").split(",")[1] && FldNmbr === 1) {
 			event.target.readonly = false;
+			event.target.display = display.visible;
 			return;
 		} else {
 			event.target.readonly = true;
@@ -2886,9 +2887,7 @@ function CalcLogsheetValue() {
 			var prePrefix = What(prefix + "AdvLog.previous");
 			var preFld = fNm.replace(prefix, prePrefix).replace("AdvLog." + FldNmbr, "AdvLog." + FieldNumbers.logs);
 		};
-		var thisGain = What(fNm.replace("start", "gain")) !== "";
-		var preGain = What(preFld.replace("start", "gain")) !== "";
-		event.target.display = thisGain || preGain ? display.visible : display.hidden;
+		event.target.display = What(fNm.replace("start", "gain")) !== "" || What(preFld.replace("start", "gain")) !== "" ? display.visible : display.hidden;
 		event.value = What(preFld.replace("start", "total"));
 	}
 }

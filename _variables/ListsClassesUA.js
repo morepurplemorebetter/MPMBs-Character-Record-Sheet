@@ -3873,7 +3873,7 @@ ClassSubList["wizard-war magic"] = {
 };
 ClassList.wizard.subclasses[1].push("wizard-war magic");
 
-/*	A Trio of Subclasses Unearthed Arcana of 2017-02-27
+/*	A Trio of Subclasses Unearthed Arcana of 2017-03-27
 	(http://media.wizards.com/2017/dnd/downloads/UAThreeSubclasses.pdf)
 */
 //adds three subclass: a subclass for the Monk, called "Way of the Drunken Master"
@@ -3888,8 +3888,11 @@ ClassSubList["monk-way of the drunken master"] = {
 			source : ["UA:AToS", 1],
 			minlevel : 3,
 			description : desc([
-				"When using Flurry of Blows, I gain benefits of a Disengage and +10 ft speed this turn"
-			])
+				"I gain proficiency with the Performance skill",
+				"When using Flurry of Blows, I gain the benefits of a Disengage and +10 ft speed this turn"
+			]),
+			skills : ["Performance"],
+			skillstxt : "\n\n" + toUni("Monk (Way of the Drunken Master)") + ": Performance."
 		},
 		"subclassfeature6" : {
 			name : "Tipsy Sway",
@@ -3905,7 +3908,7 @@ ClassSubList["monk-way of the drunken master"] = {
 		"subclassfeature11" : {
 			name : "Drunkard's Luck",
 			source : ["UA:AToS", 1],
-			minlevel : 6,
+			minlevel : 11,
 			description : desc([
 				"Before I roll for a save, I can spend 1 ki to give myself advantage on it"
 			]),
