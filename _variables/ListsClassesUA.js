@@ -410,9 +410,11 @@ ClassList["spell-less ranger"] = {
 			name : "Primeval Awareness",
 			source : ["P", 92],
 			minlevel : 3,
-			description : "\n   " + "As an action, I can use a spell slot to focus my awareness for 1 min per spell slot level" + "\n   " + "Out to 1 mile (6 in favored terrain), I sense if certain types of creatures are present",
+			description : "\n   " + "As an action, I can focus my awareness for 1 min, once per short rest" + "\n   " + "Out to 1 mile (6 in favored terrain), I sense if certain types of creatures are present",
 			additional : "aber/celest/drag/elem/fey/fie/und",
-			action : ["action", ""]
+			action : ["action", ""],
+			usages : 1,
+			recovery : "short rest"
 		},
 		"subclassfeature3" : {
 			name : "Ranger Archetype",

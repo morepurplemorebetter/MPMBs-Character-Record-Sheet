@@ -146,6 +146,7 @@ function resetCompTypes(prefix) {
 
 //add a creature to the companion page
 function ApplyCompRace(newRace) {
+	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	if (event.target && event.target.name.indexOf("Comp.Race") !== -1 && newRace.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
 	
 	thermoM("start"); //start a progress dialog
@@ -618,6 +619,7 @@ function FindCompWeapons(ArrayNmbr, aPrefix) {
 
 //add a wildshape based on the selection and calculation settings
 function ApplyWildshape() {
+	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	if (event.target && event.value.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
 	
 	thermoM("start"); //start a progress dialog
@@ -4013,6 +4015,7 @@ function ShowHideStealthDisadv() {
 //(re)set the dropdowns
 function UpdateDropdown(type, weapon) {
 	if (minVer) return;
+	IsSetDropDowns = true;
 	type = type ? type.toLowerCase() : "all";
 	switch (type) {
 	 case "resources" : 
@@ -4080,7 +4083,8 @@ function UpdateDropdown(type, weapon) {
 		SetWildshapeDropdown();
 		break;
 	};
-}
+	IsSetDropDowns = false;
+};
 
 function ChangeToCompleteAdvLogSheet() {
 	if (minVer) return;
@@ -5126,6 +5130,7 @@ function addEvals(evalObj, NameEntity, Add) {
 
 //apply the effect of a weapon with inputText the literal string in the Weapon Selection field and fldName the name of the field (any one of them); If fldName is left blank, use the event.target.name
 function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
+	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	fldName = fldName ? fldName : event.target.name;
 	var QI = fldName.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";

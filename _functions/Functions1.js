@@ -1293,6 +1293,7 @@ function FindArmor(input) {
 
 // Change the armor features
 function ApplyArmor(input) {
+	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	thermoM("start"); //start a progress dialog
 	thermoM("Applying armor..."); //change the progress 
 	tDoc.delay = true;
@@ -2461,6 +2462,7 @@ function FindRace(inputracetxt) {
 
 //apply the effect of the player's race
 function ApplyRace(inputracetxt) {
+	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	if (event.target && event.target.name === "Race" && inputracetxt.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
 	
 	tDoc.delay = true;
@@ -3813,6 +3815,7 @@ function FindBackground(Event) {
 
 //apply the various attributes of the background
 function ApplyBackground(input) {
+	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	if (event.target && event.target.name === "Background" && input.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
 	
 	tDoc.delay = true;
@@ -4837,6 +4840,7 @@ function FindFeats(ArrayNmbr) {
 
 //add the text and features of a Feat
 function ApplyFeat(InputFeat, FldNmbr) {
+	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	var FeatFlds = [
 		"Feat Name " + FldNmbr,
 		"Feat Note " + FldNmbr,
@@ -7458,6 +7462,7 @@ function ResetAmmo(AmmoLeftRight) {
 
 //Set the Ammo fields upon filling out the Ammo name
 function ApplyAmmo(inputtxt, Fld) {
+	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	
@@ -8316,6 +8321,7 @@ function ColoryOptions() {
 
 //Add the text of the feature selected
 function ApplyBackgroundFeature(input) {
+	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	if (event.target && event.target.name === "Background Feature" && input.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
 	
 	var TheInput = input.toLowerCase();
