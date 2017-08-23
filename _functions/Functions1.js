@@ -2002,8 +2002,7 @@ function FindClasses(Event) {
 			//now update the entry in the CurrentSpells variable
 				//first see if the entry exists or not, and create it if it doesn't
 				if (!CurrentSpells[aClass]) {
-					CurrentSpells[aClass] = {};
-					CurrentSpells[aClass].bonus = {};
+					CurrentSpells[aClass] = {bonus : {}};
 				}
 				var cSpells = CurrentSpells[aClass];
 				cSpells.name = Temps.fullname;
@@ -4550,41 +4549,65 @@ function ApplyProficiencies(updatefields) {
 		
 		// now check if the armor proficiencies have been manually turned on or off, and use this to override previous setting
 		if (ProfRem.indexOf("lighton") !== -1) {
-			ArmorLight = true;
-			ArmorLightTip += ArmorLightTip === "" ? "Light armor proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			ArmorLightTip += "Manually enabled";
+			if (ArmorLight) {
+				RemoveString("Proficiencies Remember", "lighton");
+			} else {
+				ArmorLight = true;
+				ArmorLightTip = "Light armor proficiency gained from:\n \u2022 Manually enabled";
+			};
 		} else if (ProfRem.indexOf("lightoff") !== -1) {
-			ArmorLight = false;
-			ArmorLightTip += ArmorLightTip === "" ? "Light armor proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			ArmorLightTip += "Manually disabled";
-		}
+			if (!ArmorLight) {
+				RemoveString("Proficiencies Remember", "lightoff");
+			} else {
+				ArmorLight = false;
+				ArmorLightTip += ";\n \u2022 Manually disabled";
+			};
+		};
 		if (ProfRem.indexOf("mediumon") !== -1) {
-			ArmorMedium = true;
-			ArmorMediumTip += ArmorMediumTip === "" ? "Medium armor proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			ArmorMediumTip += "Manually enabled";
+			if (ArmorMedium) {
+				RemoveString("Proficiencies Remember", "mediumon");
+			} else {
+				ArmorMedium = true;
+				ArmorMediumTip = "Medium armor proficiency gained from:\n \u2022 Manually enabled";
+			};
 		} else if (ProfRem.indexOf("mediumoff") !== -1) {
-			ArmorMedium = false;
-			ArmorMediumTip += ArmorMediumTip === "" ? "Medium armor proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			ArmorMediumTip += "Manually disabled";
-		}
+			if (!ArmorMedium) {
+				RemoveString("Proficiencies Remember", "mediumoff");
+			} else {
+				ArmorMedium = false;
+				ArmorMediumTip += ";\n \u2022 Manually disabled";
+			};
+		};
 		if (ProfRem.indexOf("heavyon") !== -1) {
-			ArmorHeavy = true;
-			ArmorHeavyTip += ArmorHeavyTip === "" ? "Heavy armor proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			ArmorHeavyTip += "Manually enabled";
+			if (ArmorHeavy) {
+				RemoveString("Proficiencies Remember", "heavyon");
+			} else {
+				ArmorHeavy = true;
+				ArmorHeavyTip = "Heavy armor proficiency gained from:\n \u2022 Manually enabled";
+			};
 		} else if (ProfRem.indexOf("heavyoff") !== -1) {
-			ArmorHeavy = false;
-			ArmorHeavyTip += ArmorHeavyTip === "" ? "Heavy armor proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			ArmorHeavyTip += "Manually disabled";
-		}
+			if (!ArmorHeavy) {
+				RemoveString("Proficiencies Remember", "heavyoff");
+			} else {
+				ArmorHeavy = false;
+				ArmorHeavyTip += ";\n \u2022 Manually disabled";
+			};
+		};
 		if (ProfRem.indexOf("shieldson") !== -1) {
-			Shields = true;
-			ShieldsTip += ShieldsTip === "" ? "Shields proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			ShieldsTip += "Manually enabled";
+			if (Shields) {
+				RemoveString("Proficiencies Remember", "shieldson");
+			} else {
+				Shields = true;
+				ShieldsTip = "Shields proficiency gained from:\n \u2022 Manually enabled";
+			};
 		} else if (ProfRem.indexOf("shieldsoff") !== -1) {
-			Shields = false;
-			ShieldsTip += ShieldsTip === "" ? "Shields proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			ShieldsTip += "Manually disabled";
-		}
+			if (!Shields) {
+				RemoveString("Proficiencies Remember", "shieldsoff");
+			} else {
+				Shields = false;
+				ShieldsTip += ";\n \u2022 Manually disabled";
+			};
+		};
 		ArmorLightTip += ArmorLightTip !== "" ? "." : "";
 		ArmorMediumTip += ArmorMediumTip !== "" ? "." : "";
 		ArmorHeavyTip += ArmorHeavyTip !== "" ? "." : "";
@@ -4595,7 +4618,7 @@ function ApplyProficiencies(updatefields) {
 		Checkbox("Proficiency Armor Medium", ArmorMedium, ArmorMediumTip);
 		Checkbox("Proficiency Armor Heavy", ArmorHeavy, ArmorHeavyTip);
 		Checkbox("Proficiency Shields", Shields, ShieldsTip);
-	}
+	};
 	
 	//parse the weapon proficiencies
 	for (var key in CurrentWeapons.proficiencies) {
@@ -4635,23 +4658,35 @@ function ApplyProficiencies(updatefields) {
 	if (updatefields) {
 		// now check if the weapon proficiencies have been manually turned on or off, and use this to override previous setting
 		if (ProfRem.indexOf("simpleon") !== -1) {
-			WeaponSimple = true;
-			WeaponSimpleTip += WeaponSimpleTip === "" ? "Simple weapon proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			WeaponSimpleTip += "Manually enabled";
+			if (WeaponSimple) {
+				RemoveString("Proficiencies Remember", "simpleon");
+			} else {
+				WeaponSimple = true;
+				WeaponSimpleTip = "Simple weapon proficiency gained from:\n \u2022 Manually enabled";
+			};
 		} else if (ProfRem.indexOf("simpleoff") !== -1) {
-			WeaponSimple = false;
-			WeaponSimpleTip += WeaponSimpleTip === "" ? "Simple weapon proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			WeaponSimpleTip += "Manually disabled";
-		}
+			if (!WeaponSimple) {
+				RemoveString("Proficiencies Remember", "simpleoff");
+			} else {
+				WeaponSimple = false;
+				WeaponSimpleTip += ";\n \u2022 Manually disabled";
+			};
+		};
 		if (ProfRem.indexOf("martialon") !== -1) {
-			WeaponMartial = true;
-			WeaponMartialTip += WeaponMartialTip === "" ? "Martial weapon proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			WeaponMartialTip += "Manually enabled";
+			if (WeaponMartial) {
+				RemoveString("Proficiencies Remember", "martialon");
+			} else {
+				WeaponMartial = true;
+				WeaponMartialTip = "Martial weapon proficiency gained from:\n \u2022 Manually enabled";
+			};
 		} else if (ProfRem.indexOf("martialoff") !== -1) {
-			WeaponMartial = false;
-			WeaponMartialTip += WeaponMartialTip === "" ? "Martial weapon proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			WeaponMartialTip += "Manually disabled";
-		}
+			if (!WeaponMartial) {
+				RemoveString("Proficiencies Remember", "martialoff");
+			} else {
+				WeaponMartial = false;
+				WeaponMartialTip += ";\n \u2022 Manually disabled";
+			};
+		};
 		WeaponSimpleTip += WeaponSimpleTip !== "" ? "." : "";
 		WeaponMartialTip += WeaponMartialTip !== "" ? "." : "";
 		WeaponOtherTip += WeaponOtherTip !== "" ? "." : "";

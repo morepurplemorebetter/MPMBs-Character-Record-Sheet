@@ -2921,7 +2921,7 @@ function AskUserSpellSheet() {
 		var spCast = CurrentSpells[aCast];
 		
 		thermoM("start"); //start a progress dialog
-		thermoM("Generating the " + aCast + " dialog..."); //change the progress dialog text
+		thermoM("Generating the " + spCast.name + " dialog..."); //change the progress dialog text
 		thermoM(1/2); //increment the progress dialog's progress
 		
 		dia.prevBtn = theI !== 0;
@@ -3077,7 +3077,7 @@ function AskUserSpellSheet() {
 		setDialogName(dia, "OKbt", "type", dia.typeSp !== "book" ? "ok_cancel" : "ok_cancel_other");
 		setDialogName(dia, "OKbt", "ok_name", dia.typeSp !== "book" ? "Continue to Next Dialogue >>" : "Add More Spells to the Spellbook");
 
-		thermoM("Opening the " + aCast + " dialog..."); //change the progress dialog text
+		thermoM("Opening the " + spCast.name + " dialog..."); //change the progress dialog text
 		
 		//now call the dialog and do something with the results if OK was pressed
 		var diaResult = app.execDialog(dia);
@@ -3086,7 +3086,7 @@ function AskUserSpellSheet() {
 			SetStringifieds("spells");
 			return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 		} else {
-			thermoM("Processing the " + aCast + " dialog..."); //change the progress dialog text
+			thermoM("Processing the " + spCast.name + " dialog..."); //change the progress dialog text
 			
 			spCast.typeSp = dia.typeSp;
 			if (dia.showCa) {
@@ -3152,7 +3152,7 @@ function AskUserSpellSheet() {
 			
 			//if it was selected to go set more spells in the spellbook or there are already more spells in the spellbook, open the spellbook dialog now
 			if (dia.SpBook || spCast.selectSpSB) {
-				thermoM("Opening the " + aCast + " Spellbook dialog..."); //change the progress dialog text
+				thermoM("Opening the " + spCast.name + " Spellbook dialog..."); //change the progress dialog text
 				
 				// cut the extra spellbook spells into different chunks of 80
 				var SBextras = [];
@@ -3224,7 +3224,7 @@ function AskUserSpellSheet() {
 			
 			//now ask for the spells to prepare, if so selected in the radio buttons
 			if (spCast.typeList && spCast.typeList === 3) {
-				thermoM("Opening the " + aCast + " prepared spell selection dialog..."); //change the progress dialog text
+				thermoM("Opening the " + spCast.name + " prepared spell selection dialog..."); //change the progress dialog text
 				
 				//make a new object for this
 				var diaPrep = SpellsPrepared_Dialog;

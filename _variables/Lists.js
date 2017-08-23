@@ -201,12 +201,12 @@ var CurrentArmour = {
 	known : "",
 	mod : "",
 	proficiencies : {},
-	magic : 0,
+	magic : 0
 };
 
 var CurrentShield = {
 	field : "",
-	magic : 0,
+	magic : 0
 };
 
 var CurrentWeapons = {
@@ -226,6 +226,15 @@ var CurrentFeats = {
 	known : [],
 	improvements : [],
 	skills : []
+};
+
+var CurrentProfs = {
+	armour : {},
+	weapon : {},
+	save : {},
+	resistance : {},
+	language : {},
+	tool : {}
 };
 
 var IsNotReset = true;
