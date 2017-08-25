@@ -16,46 +16,58 @@ ClassSubList["thieving magpie"] = {
 			name : "Partner in Crime",
 			source : ["HB", 0],
 			minlevel : 3,
-			description : "\n   " + "You can cast the Find Familiar spell as a ritual, summoning a familiar from a list of forms. Your familiar gains proficiency in Sleight of Hand and Stealth in addition to its normal traits and uses your proficiency bonus for these skills."
+			description : 
+			"\n   " + "I can cast the Find Familiar spell as a ritual, summoning from a list of forms." + 
+			"\n   " + "It gains proficiency in Sleight of Hand and Stealth, using my proficiency bonus."
 			},
 		"subclassfeature3.1" : {
 			name : "Mugger",
 			source : ["HB", 0],
 			minlevel : 3,
-			description : "\n   " + "At 3rd level, whenever you deal sneak attack damage with a melee weapon attack that you were granted advantage on by your familiar performing the Help action, you steal a number of coins (or small obects with equal value) from the creature equal to the sneak attack damage dealt. The DM has final say on what you steal. You cannot use this feature unless you have a free hand."
+			description : 
+			"\n   " + "A sneak attack when my familiar gives me advantage earns me coins or treasure." + 
+			"\n   " + "The DM has final say how many or what value is earned. I also need a free hand for this."
 		},
 		"subclassfeature9" : {
 			name : "Slippery As A Snake",
 			source : ["HB", 0],
 			minlevel : 9,
-			description : "\n   " + "At 9th level, you can enhance some of your actions with new abilities tied to your familiar."
+			description : "\n   " + "I can enhance some of my actions with new abilities tied to my familiar."
 		},
 		"subclassfeature9.1": {
 			name: "Slippery As A Snake: Dash, Disengage, or Hide",
 			source: ["HB", 0],
 			minlevel : 9,
-			description: "\n   " + "You can use your bonus action on your turn to command your familiar to use the dash, disengage, or hide action.",
+			description: "\n   " + "I can use my turn's bonus action to command my familiar to dash, disengage, or hide.",
 			action: ["bonus action", ""]
 		},
 		"sublcassfeature9.2": {
 			name: "Slippery As A Snake: Dismiss Familiar",
 			source: ["HB", 0],
 			minlevel : 9,
-			description: "\n   " + "Whenever your familiar is attacked or forced to make a saving throw, you can use your reaction to dismiss it as described in the Find Familiar spell. When dismissed in this manner, it is no longer affected by whatever triggered the saving throw.",
+			description: 
+			"\n   " + "I can use my reaction to dismiss my familiar as described in the Find Familiar Spell." + 
+			"\n   " + "It must be under attack or being forced to make a saving throw." + 
+			"\n   " + "When dismissed, it is no longer affected by the conditions leading to the saving throw.",
 			action: ["reaction", ""]
 		},
 		"sublcassfeature9.3": {
 			name: "Slippery As A Snake: Slippery Dodge",
 			source: ["HB", 0],
 			minlevel : 9,
-			description: "\n   " + "Whenever you use your Uncanny Dodge feature or succeed on a Dexterity saving throw that Evasion effects, you can move 5 feet without provoking attacks of opportunity.",
+			description: 
+			"\n   " + "I can move 5ft. without opportunity attacks using uncanny dodge." + 
+			"\n   " + "I can also do this after a successful Dexterity saving throw.",
 			action: ["reaction", ""]
 		},
 		"subclassfeature13" : {
 			name : "Grow Together",
 			source : ["HB", 0],
 			minlevel : 13,
-			description : "\n   " + "Starting at 13th level, your familiar gains additional hit dice equal to your proficiency modifier and hit points as befits the hit die type. It gains a further hit die whenever your proficiency modifier increases."
+			description : 
+			"\n   " + "My familiar gains addt'l hit dice equal to my proficiency modifier." + 
+			"\n   " + "My familiar also gains hit points according to the hit die gained." + 
+			"\n   " + "It gains a further hit die when my proficiency bonus increases."
 		},
 		"subclassfeature17" : {
 			name : "Act As One",
@@ -63,9 +75,18 @@ ClassSubList["thieving magpie"] = {
 			minlevel : 17,
 			usages : 1,
 			recovery : "short rest",
-			description : "\n   " + "At 17th level, whenever your familiar uses the Help action to assist you, you gain advantage as usual but you also add your proficiency modifier to all ability checks and weapon damage rolls you make until the start of your next turn so long as your familiar is within 5 feet of you.",
+			description : 
+			"\n   " + "My prof. bonus doubles on all ability checks and weapon damage rolls until my next turn." + 
+			"\n   " + "My familiar must be within 5ft. and use the help action to assist me.",
 			action : ["action", ""]
 		}
 	}
 };
 ClassList.rogue.subclasses[1].push("thieving magpie");
+
+SourceList["HB:TM"] = {
+	name : "Homebrew: Thieving Magpie", 
+	abbreviation : "HB:TM", 
+	group: "other",
+	url : "http://firebringeraxels-junk.tumblr.com/"
+};
