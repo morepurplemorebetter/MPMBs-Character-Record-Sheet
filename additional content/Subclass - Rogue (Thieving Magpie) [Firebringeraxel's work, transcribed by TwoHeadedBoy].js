@@ -53,7 +53,7 @@ ClassSubList["rogue-thieving magpie"] = {
 			description: desc([
 				"As a bonus action, I can command my familiar to do the Dash, Disengage, or Hide action",
 				"As a reaction when my familiar takes damage or needs to save, I can dismiss it",
-				"When dismissed, it is no longer affected by the conditions leading to the saving throw"
+				"When dismissed, it is no longer affected by the conditions leading to the saving throw",
 				"When I use uncanny dodge or succeed a Dex save that evasion affects, I can move 5 ft",
 				"I don't provoke opportunity attacks for moving these 5 ft"
 			]),
