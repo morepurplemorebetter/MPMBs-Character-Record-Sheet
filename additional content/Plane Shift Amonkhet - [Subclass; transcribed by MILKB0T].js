@@ -11,7 +11,7 @@
 	Subject:	Subclass
 	Effect:		This script adds a subclass (for the Cleric, called "Zeal Domain") from the Magic: The Gathering plane of Amonkhet
 				This is taken from the Plane Shift: Amonkhet article (https://media.wizards.com/2017/downloads/magic/plane-shift_amonkhet.pdf)
-	Code by:	/u/MILKBOT (and tiny corrections by MPMB)
+	Code by:	/u/MILKB0T (and tiny corrections by MPMB)
 	Date:		2017-08-26 (sheet v12.998)
 	
 	Note that this script doesn't add anything else from the Plane Shift: Amonkhet article, just the one subclass
