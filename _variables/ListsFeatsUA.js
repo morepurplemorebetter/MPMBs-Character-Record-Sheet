@@ -682,8 +682,8 @@ FeatsList["infernal constitution"] = {
 	description : "I have resistance to cold and poison damage and I have advantage on saving throws against being poisoned.\n[+1 Constitution]",
 	improvements : "Infernal Constitution (feat): +1 Constitution;",
 	scores : [0, 0, 1, 0, 0, 0],
-	eval : "AddString('Saving Throw advantages / disadvantages', 'Adv. vs. being poisoned', '; '); AddResistance('Cold', 'Infernal Constitution'); AddResistance('Poison', 'Infernal Constitution');",
-	removeeval : "RemoveString('Saving Throw advantages / disadvantages', 'Adv. vs. being poisoned'); RemoveResistance('Cold'); RemoveResistance('Poison');"
+	dmgres : ["Cold", "Poison"],
+	savetxt : "Adv. vs. being poisoned"
 };
 FeatsList["orcish aggression"] = {
 	name : "Orcish Aggression",

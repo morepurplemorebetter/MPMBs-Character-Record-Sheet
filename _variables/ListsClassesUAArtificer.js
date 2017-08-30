@@ -132,7 +132,7 @@ ClassList.artificer = {
 			source : ["UA:A", 4],
 			minlevel : 20,
 			description : desc(["I gain a +1 bonus to all saving throws per magic item I am currently attuned to"]),
-			save : "+1 to all saves per attuned magic item"
+			savetxt : "+1 to all saves per attuned magic item"
 		}
 	}
 };

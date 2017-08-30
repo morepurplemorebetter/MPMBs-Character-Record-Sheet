@@ -53,8 +53,10 @@ var FeatsList = {
 		name : "Dungeon Delver",
 		source : ["P", 166],
 		description : "I have advantage on Wis (Perception) and Int (Investigation) checks made to detect the presence of secret doors. I can search for traps while traveling at a normal pace. I have resistance to damage dealt by traps and advantage on saves to avoid or resist traps.",
-		eval : "AddString('Saving Throw advantages / disadvantages', 'Adv. vs. traps', '; '); AddResistance('Traps', 'Dungeon Delver'); AddString('Vision', 'Adv. on Perception and Investigation for secret doors', '; ');",
-		removeeval : "RemoveString('Saving Throw advantages / disadvantages', 'Adv. vs. traps'); RemoveResistance('Traps'); RemoveString('Vision', 'Adv. on Perception and Investigation for secret doors');"
+		dmgres : ["Traps"],
+		savetxt : "Adv. vs. traps",
+		eval : "AddString('Vision', 'Adv. on Perception and Investigation for secret doors', '; ');",
+		removeeval : "RemoveString('Vision', 'Adv. on Perception and Investigation for secret doors');"
 	},
 	"durable" : {
 		name : "Durable",
@@ -153,8 +155,9 @@ var FeatsList = {
 		name : "Mage Slayer",
 		source : ["P", 168],
 		description : "As a reaction, I can make a melee weapon attack on a creature within 5 ft of me that casts a spell. Concentration checks from damage from me are made with disadvantage. I have advantage on saving throws against spells cast by creatures within 5 feet of me.",
-		eval : "AddString('Saving Throw advantages / disadvantages', 'Advantage on saves vs. spells cast within 5 ft', '; '); AddAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)', 'the Mage Slayer feat');",
-		removeeval : "RemoveString('Saving Throw advantages / disadvantages', 'Advantage on saves vs. spells cast within 5 ft'); RemoveAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)');"
+		savetxt : "Advantage on saves vs. spells cast within 5 ft",
+		eval : "AddAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)', 'the Mage Slayer feat');",
+		removeeval : "RemoveAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)');"
 	},
 	"magic initiate [bard]" : {
 		name : "Magic Initiate [Bard]",
@@ -257,8 +260,7 @@ var FeatsList = {
 		description : "I gain proficiency with Strength saving throws. [+1 Strength]",
 		improvements : "Resilient (feat): +1 Strength;",
 		scores : [1, 0, 0, 0, 0, 0],
-		eval : "Checkbox(\"Str ST Prof\", true, \"Proficiency with Strength saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Str ST Prof\", false, \"\")"
+		saves : ["Str"]
 
 	},
 	"resilient [dexterity]" : {
@@ -267,8 +269,7 @@ var FeatsList = {
 		description : "I gain proficiency with Dexterity saving throws. [+1 Dexterity]",
 		improvements : "Resilient (feat): +1 Dexterity;",
 		scores : [0, 1, 0, 0, 0, 0],
-		eval : "Checkbox(\"Dex ST Prof\", true, \"Proficiency with Dexterity saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Dex ST Prof\", false, \"\")"
+		saves : ["Dex"]
 
 	},
 	"resilient [constitution]" : {
@@ -277,8 +278,7 @@ var FeatsList = {
 		description : "I gain proficiency with Constitution saving throws. [+1 Constitution]",
 		improvements : "Resilient (feat): +1 Constitution;",
 		scores : [0, 0, 1, 0, 0, 0],
-		eval : "Checkbox(\"Con ST Prof\", true, \"Proficiency with Constitution saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Con ST Prof\", false, \"\")"
+		saves : ["Con"]
 
 	},
 	"resilient [intelligence]" : {
@@ -287,8 +287,7 @@ var FeatsList = {
 		description : "I gain proficiency with Intelligence saving throws. [+1 Intelligence]",
 		improvements : "Resilient (feat): +1 Intelligence;",
 		scores : [0, 0, 0, 1, 0, 0],
-		eval : "Checkbox(\"Int ST Prof\", true, \"Proficiency with Intelligence saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Int ST Prof\", false, \"\")"
+		saves : ["Int"]
 
 	},
 	"resilient [wisdom]" : {
@@ -297,8 +296,7 @@ var FeatsList = {
 		description : "I gain proficiency with Wisdom saving throws. [+1 Wisdom]",
 		improvements : "Resilient (feat): +1 Wisdom;",
 		scores : [0, 0, 0, 0, 1, 0],
-		eval : "Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Wis ST Prof\", false, \"\")"
+		saves : ["Wis"]
 
 	},
 	"resilient [charisma]" : {
@@ -307,8 +305,7 @@ var FeatsList = {
 		description : "I gain proficiency with Charisma saving throws. [+1 Charisma]",
 		improvements : "Resilient (feat): +1 Charisma;",
 		scores : [0, 0, 0, 0, 0, 1],
-		eval : "Checkbox(\"Cha ST Prof\", true, \"Proficiency with Charisma saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Cha ST Prof\", false, \"\")"
+		saves : ["Cha"]
 
 	},
 	"ritual caster [bard]" : {

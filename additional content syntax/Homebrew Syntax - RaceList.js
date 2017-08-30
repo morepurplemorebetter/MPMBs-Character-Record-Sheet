@@ -12,7 +12,7 @@
 	Effect:		This is the syntax for adding a new race to the sheet
 				Note that you will need to define the race once for every sub-race (i.e. there is a separate entry for High Elf, Wood Elf, and Dark Elf)
 				For races that have variants, like the human, you can define a variant using the RaceSubList. Any variant defined like that will only be selectable through the "Racial Options" button
-	Sheet:		v12.83 (2017-02-18)
+	Sheet:		v12.998 (2017-08-27)
 */
 
 RaceList["something catlike"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
@@ -37,7 +37,7 @@ RaceList["something catlike"] = { //Object name; Note the use of only lower case
 	
 	vision : "Darkvision 60 ft", //optional;  vision granted by the race. This text will be put in the "Senses" section on the sheet. This line can be deleted if you don't have anything to put here
 	
-	dmgres : ["necrotic", "radiant"], //optional; damage resistance(s) the race has. This line can be deleted if you don't have anything to put here
+	dmgres : ["necrotic", "radiant"], //optional; damage resistance(s) the race has. This line can be deleted if you don't have anything to put here // If the resistance has a condition attached to it, like only being against nonmagical attacks, substitute the entry in the array with an array of 2: [the damage type, the damage type with the condition. // For example: [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
 	
 	savetxt : "Adv. vs. being charmed; Magic can't put me to sleep", //optional; damage resistance(s) the race has. This line can be deleted if you don't have anything to put here
 	
@@ -96,6 +96,8 @@ RaceList["something catlike"] = { //Object name; Note the use of only lower case
 		oncesr : true, //optional; if set to 'true', this makes the spell selected for this/these bonus spells to get "1×SR" in the first column
 		
 		oncelr : true, //optional; if set to 'true', this makes the spell selected for this/these bonus spells to get "1×LR" in the first column
+		
+		dmgres : ["Poison"], //optional; an array of damage types that the racial feature give resistance against. // If the resistance has a condition attached to it, like only being against nonmagical attacks, substitute the entry in the array with an array of 2: [the damage type, the damage type with the condition. // For example: [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
 	},
 	
 	features : { //optional; the racial features. Each works the same way, so only a couple of example are given. You can add as many as you want. If the race has no level-dependent or limited features, you can just delete the whole feature entry all together

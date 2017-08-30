@@ -25,6 +25,7 @@ var UnitsList = {
 
 var AbilityScores = {
 	abbreviations : ["Str", "Dex", "Con", "Int", "Wis", "Cha"],
+	fields : {str : "Str", dex : "Dex", con : "Con", int : "Int", wis : "Wis", cha : "Cha", hos : "HoS", hon : "HoS", san : "HoS"},
 	names : ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"],
 	"strength" : {
 		index : 0
@@ -228,13 +229,15 @@ var CurrentFeats = {
 	skills : []
 };
 
-var CurrentProfs = {
+var CurrentProfs = { // Also change field defaultValue!
 	armour : {},
 	weapon : {},
 	save : {},
 	resistance : {},
 	language : {},
-	tool : {}
+	tool : {},
+	skill : {},
+	vision : {}
 };
 
 var IsNotReset = true;

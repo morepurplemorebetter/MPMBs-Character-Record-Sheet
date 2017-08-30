@@ -34,9 +34,8 @@ var ClassList = {
 				usages : [2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, "\u221E\u00D7 per "],
 				recovery : "long rest",
 				action : ["bonus action", " (start/stop)"],
-				eval : "AddResistance(\"Bludgeon. (in rage)\", \"Barbarian (Rage)\"); AddResistance(\"Piercing (in rage)\", \"Barbarian (Rage)\"); AddResistance(\"Slashing (in rage)\", \"Barbarian (Rage)\");",
-				removeeval : "RemoveResistance(\"Bludgeon. (in rage)\"); RemoveResistance(\"Piercing (in rage)\"); RemoveResistance(\"Slashing (in rage)\");",
-				save : "Adv. on Strength saves in rage",
+				dmgres : [["Bludgeoning", "Bludgeon. (in rage)"], ["Piercing", "Piercing (in rage)"], ["Slashing", "Slashing (in rage)"]],
+				savetxt : "Adv. on Strength saves in rage",
 				calcChanges : {
 					atkCalc : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level && (/\\brage\\b/i).test(WeaponText)) {output.extraDmg += function(n){return n < 9 ? 2 : n < 16 ? 3 : 4;}(classes.known.barbarian.level); }; ", "If I include the word 'Rage' in a melee weapon's name or description, the calculation will add my Rage's bonus damage to it."]
 				}
@@ -58,7 +57,7 @@ var ClassList = {
 				source : ["P", 48],
 				minlevel : 2,
 				description : "\n   " + "Adv. on Dexterity saves against seen effects (not blinded/deafened/incapacitated)",
-				save : "Adv. on Dex saves vs. seen effects"
+				savetxt : "Adv. on Dex saves vs. seen effects"
 			},
 			"subclassfeature3" : {
 				name : "Primal Path",
@@ -637,7 +636,7 @@ var ClassList = {
 				source : ["P", 79],
 				minlevel : 7,
 				description : "\n   " + "My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
-				save : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
+				savetxt : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
 			},
 			"stillness of mind" : {
 				name : "Stillness of Mind",
@@ -651,7 +650,7 @@ var ClassList = {
 				source : ["P", 79],
 				minlevel : 10,
 				description : typeA4 ? "\n   " + "My mastery of the ki flowing through me makes me immune to poison and disease" : " [" + "I am immune to poison and disease" + "]",
-				save : "Immune to poison and disease"
+				savetxt : "Immune to poison and disease"
 			},
 			"tongue of the sun and moon" : {
 				name : "Tongue of the Sun and Moon",
@@ -665,8 +664,7 @@ var ClassList = {
 				minlevel : 14,
 				description : "\n   " + "I am proficient with all saves; I can reroll a failed save once by spending 1 ki point",
 				additional : "1 ki point to reroll failed saving throw",
-				eval : "for (var Sc = 0; Sc < AbilityScores.abbreviations.length; Sc++) {var saveProf = AbilityScores.abbreviations[Sc] + \" ST Prof\"; var saveTxt = \"Proficiency with \" + AbilityScores.names[Sc] + \" saving throws was gained from Monk (Diamond Soul)\"; if (tDoc.getField(saveProf).userName === \"\") {Checkbox(saveProf, true, saveTxt)}}",
-				removeeval : "for (var Sc = 0; Sc < AbilityScores.abbreviations.length; Sc++) {var saveProf = AbilityScores.abbreviations[Sc] + \" ST Prof\"; var saveTxt = \"Proficiency with \" + AbilityScores.names[Sc] + \" saving throws was gained from Monk (Diamond Soul)\"; if (tDoc.getField(saveProf).userName === saveTxt) {Checkbox(saveProf, false, \"\")}}"
+				saves : ["Con", "Int", "Wis", "Cha"]
 			},
 			"timeless body" : {
 				name : "Timeless Body",
@@ -680,9 +678,7 @@ var ClassList = {
 				minlevel : 18,
 				description : "\n   " + "Be invisible and resist non-force damage for 1 min or cast Astral Projection on self",
 				additional : "Invisible: 4 ki point; Astral Projection: 8 ki points",
-				action : ["action", ""],
-				eval : "AddResistance(\"All -Force (invis.)\", \"Empty Body\");",
-				removeeval : "RemoveResistance(\"All -Force (invis.)\");"
+				action : ["action", ""]
 			},
 			"perfect self" : {
 				name : "Perfect Self",
@@ -803,7 +799,7 @@ var ClassList = {
 				source : ["P", 85],
 				minlevel : 3,
 				description : "\n   " + "I am immune to disease, thanks to the power of my faith",
-				save : "Immune to disease"
+				savetxt : "Immune to disease"
 			},
 			"aura of protection" : {
 				name : "Aura of Protection",
@@ -820,7 +816,7 @@ var ClassList = {
 				minlevel : 10,
 				description : "\n   " + "While I'm conscious, allies within range and I can't be frightened",
 				additional : ["", "", "", "", "", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				save : "Immune to being frightened"
+				savetxt : "Immune to being frightened"
 			},
 			"improved divine smite" : {
 				name : "Improved Divine Smite",
@@ -1059,7 +1055,7 @@ var ClassList = {
 				source : ["P", 92],
 				minlevel : 8,
 				description : "\n   " + "I can travel through nonmagical, difficult terrain without penalty" + "\n   " + "I have advantage on saves vs. plants that impede movement by magical influence",
-				save : "Adv. vs. magical plants that impede movement"
+				savetxt : "Adv. vs. magical plants that impede movement"
 			},
 			"hide in plain sight" : {
 				name : "Hide in Plain Sight",
@@ -1167,7 +1163,7 @@ var ClassList = {
 				source : ["P", 96],
 				minlevel : 7,
 				description : "\n   " + "My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
-				save : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
+				savetxt : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
 			},
 			"reliable talent" : {
 				name : "Reliable Talent",
@@ -1188,8 +1184,7 @@ var ClassList = {
 				source : ["P", 96],
 				minlevel : 15,
 				description : "\n   " + "I am proficient with Wisdom saving throws",
-				eval : "Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throws was gained from Rogue (Slippery Mind)\");",
-				removeeval : "Checkbox(\"Wis ST Prof\", false, \"\");"
+				saves : ["Wis"]
 			},
 			"elusive" : {
 				name : "Elusive",
@@ -1886,7 +1881,7 @@ var ClassSubList = {
 				source : ["P", 49],
 				minlevel : 6,
 				description : "\n   " + "While raging, I can't be charmed or frightened, and such effects are suspended",
-				save : "Immune to being charmed/frightened in rage"
+				savetxt : "Immune to being charmed/frightened in rage"
 			},
 			"subclassfeature10" : {
 				name : "Intimidating Presence",
@@ -1934,8 +1929,9 @@ var ClassSubList = {
 				"bear" : {
 					name : "Bear Spirit",
 					description : "\n   " + "While raging, I have resistance to all damage types except psychic",
-					eval : "RemoveResistance(\"Bludgeon. (in rage)\"); RemoveResistance(\"Piercing (in rage)\"); RemoveResistance(\"Slashing (in rage)\"); AddResistance(\"All -Psychic (rage)\", \"Totem Warrior (Bear Spirit)\");",
-					removeeval : "RemoveResistance(\"All -Psychic (rage)\"); AddResistance(\"Bludgeon. (in rage)\", \"Barbarian (Rage)\"); AddResistance(\"Piercing (in rage)\", \"Barbarian (Rage)\"); AddResistance(\"Slashing (in rage)\", \"Barbarian (Rage)\");"
+					dmgres : [["All -Psychic", "All -Psychic (rage)"]],
+					eval : "SetProf('resistance', false, 'Bludgeoning', 'Barbarian: Rage', 'Bludgeon. (in Rage)'); SetProf('resistance', false, 'Piercing', 'Barbarian: Rage', 'Piercing (in Rage)'); SetProf('resistance', false, 'Slashing', 'Barbarian: Rage', 'Slashing (in Rage)');",
+					removeeval : "SetProf('resistance', true, 'Bludgeoning', 'Barbarian: Rage', 'Bludgeon. (in Rage)'); SetProf('resistance', true, 'Piercing', 'Barbarian: Rage', 'Piercing (in Rage)'); SetProf('resistance', true, 'Slashing', 'Barbarian: Rage', 'Slashing (in Rage)');"
 				},
 				"eagle" : {
 					name : "Eagle Spirit",
@@ -2617,8 +2613,7 @@ var ClassSubList = {
 				source : ["P", 63],
 				minlevel : 17,
 				description : "\n   " + "I have resistance to bludgeoning/piercing/slashing damage from nonmagical weapons",
-				eval : "AddResistance(\"Bludg. (nonmagical)\", \"Cleric (War Domain)\"); AddResistance(\"Pierc. (nonmagical)\", \"Cleric (War Domain)\"); AddResistance(\"Slash. (nonmagical)\", \"Cleric (War Domain)\");",
-				removeeval : "RemoveResistance(\"Bludg. (nonmagical)\"); RemoveResistance(\"Pierc. (nonmagical)\"); RemoveResistance(\"Slash. (nonmagical)\");"
+				dmgres : [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
 			}
 		}
 	},
@@ -2707,14 +2702,14 @@ var ClassSubList = {
 				source : ["P", 68],
 				minlevel : 6,
 				description : "\n   " + "I can travel through nonmagical, difficult terrain without penalty" + "\n   " + "I have advantage on saves vs. plants that impede movement by magical influence",
-				save : "Adv. vs. magical plants that impede movement"
+				savetxt : "Adv. vs. magical plants that impede movement"
 			},
 			"subclassfeature10" : {
 				name : "Nature's Ward",
 				source : ["P", 68],
 				minlevel : 10,
 				description : "\n   " + "I am immune to poison/disease and I can't be charmed/frightened by elementals or fey",
-				save : "Immune to poison and disease"
+				savetxt : "Immune to poison and disease"
 			},
 			"subclassfeature14" : {
 				name : "Nature's Sanctuary",
@@ -3565,8 +3560,7 @@ var ClassSubList = {
 				minlevel : 7,
 				description : "\n   " + "Allies within range and I have resistance to damage from spells",
 				additional : ["", "", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				eval : "AddResistance(\"Spells\", \"Paladin (Aura of Warding)\")",
-				removeeval : "RemoveResistance(\"Spells\")"
+				dmgres : ["Spells"]
 			},
 			"subclassfeature15" : {
 				name : "Undying Sentinel",
@@ -3619,7 +3613,7 @@ var ClassSubList = {
 				source : ["S", 133],
 				minlevel : 15,
 				description : "\n   " + "I have advantage on saving throws against effects that paralyze or stun",
-				save : "Adv. vs. being paralyzed or stunned"
+				savetxt : "Adv. vs. being paralyzed or stunned"
 			},
 			"subclassfeature20" : {
 				name : "Exalted Champion",
@@ -3661,7 +3655,7 @@ var ClassSubList = {
 				minlevel : 7,
 				description : "\n   " + "While I'm conscious, allies within range and I can't be charmed",
 				additional : ["", "", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				save : "Immune to being charmed"
+				savetxt : "Immune to being charmed"
 			},
 			"subclassfeature15" : {
 				name : "Purity of Spirit",
@@ -3712,8 +3706,7 @@ var ClassSubList = {
 				source : ["P", 97],
 				minlevel : 15,
 				description : "\n   " + "I have resistance to bludgeoning/piercing/slashing damage from nonmagical weapons",
-				eval : "AddResistance(\"Bludg. (nonmagical)\", \"Paladin (Supernatural Resistance)\"); AddResistance(\"Pierc. (nonmagical)\", \"Paladin (Supernatural Resistance)\"); AddResistance(\"Slash. (nonmagical)\", \"Paladin (Supernatural Resistance)\");",
-				removeeval : "RemoveResistance(\"Bludg. (nonmagical)\"); RemoveResistance(\"Pierc. (nonmagical)\"); RemoveResistance(\"Slash. (nonmagical)\");"
+				dmgres : [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
 			},
 			"subclassfeature20" : {
 				name : "Dread Lord",
@@ -3848,7 +3841,7 @@ var ClassSubList = {
 				"steel will" : {
 					name : "Defensive Tactic: Steel Will",
 					description : "\n   " + "I have advantage on saves against being frightened",
-					save : "Adv. on saves vs. being frightened"
+					savetxt : "Adv. on saves vs. being frightened"
 				}
 			},
 			"subclassfeature11" : {
@@ -3877,7 +3870,7 @@ var ClassSubList = {
 				"evasion" : {
 					name : "Evasion",
 					description : "\n   " + "My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
-					save : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
+					savetxt : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
 				},
 				"stand against the tide" : {
 					name : "Stand Against the Tide",
@@ -4298,8 +4291,7 @@ var ClassSubList = {
 				minlevel : 6,
 				description : "\n   " + "I have resistance to lightning and thunder damage" + "\n   " + "When I start casting a 1st-level or higher spell that deals lightning or thunder damage," + "\n   " + "I deal lightning or thunder damage to a creature within 10 ft of me that I can see",
 				additional : ["", "", "", "", " ", "3 damage", "3 damage", "4 damage", "4 damage", "5 damage", "5 damage", "6 damage", "6 damage", "7 damage", "7 damage", "8 damage", "8 damage", "9 damage", "9 damage", "10 damage"],
-				eval : "AddResistance(\"Lightning\", \"Storm Sorcerer\"); AddResistance(\"Thunder\", \"Storm Sorcerer\");",
-				removeeval : "RemoveResistance(\"Lightning\"); RemoveResistance(\"Thunder\");"
+				dmgres : ["Lightning", "Thunder"]
 			},
 			"subclassfeature6.1" : {
 				name : "Storm Guide",
@@ -4322,9 +4314,9 @@ var ClassSubList = {
 				minlevel : 18,
 				description : "\n   " + "I have immunity to lightning and thunder damage and gain magical 60 ft fly speed" + "\n   " + "As an action, I reduce my fly speed to 30 ft and give allies 30 ft fly speed for 1 hour" + "\n   " + "I can do this once per short rest for up to 3 + my Charisma modifier allies within 30 ft",
 				action : ["action", ""],
-				save : "Immune to lightning and thunder damage",
-				eval : "RemoveResistance(\"Lightning\"); RemoveResistance(\"Thunder\"); AddString(\"Speed\", \"60 ft fly\", true); AddString(\"Speed encumbered\", \"60 ft fly\", true);",
-				removeeval : "AddResistance(\"Lightning\", \"Storm Sorcerer\"); AddResistance(\"Thunder\", \"Storm Sorcerer\"); RemoveString(\"Speed\", \"60 ft fly\", true); RemoveString(\"Speed encumbered\", \"60 ft fly\", true);",
+				savetxt : "Immune to lightning and thunder damage",
+				eval : "SetProf('resistance', false, 'Lightning', 'Storm Sorcerer: Heart of the Storm'); SetProf('resistance', false, 'Thunder', 'Storm Sorcerer: Heart of the Storm'); AddString(\"Speed\", \"60 ft fly\", true); AddString(\"Speed encumbered\", \"60 ft fly\", true);",
+				removeeval : "SetProf('resistance', true, 'Lightning', 'Storm Sorcerer: Heart of the Storm'); SetProf('resistance', true, 'Thunder', 'Storm Sorcerer: Heart of the Storm'); RemoveString(\"Speed\", \"60 ft fly\", true); RemoveString(\"Speed encumbered\", \"60 ft fly\", true);",
 				usages : 1,
 				recovery : "short rest"
 			}
@@ -4402,7 +4394,7 @@ var ClassSubList = {
 				minlevel : 10,
 				description : "\n   " + "As a reaction, when a creature tries to charm me, I can turn the charm back on it" + "\n   " + "It must make a Wis save or be charmed by me for 1 minute or until taking damage" + "\n   " + "I am immune to being charmed",
 				action : ["reaction", " (when charmed)"],
-				save : "Immune to being charmed"
+				savetxt : "Immune to being charmed"
 			},
 			"subclassfeature14" : {
 				name : "Dark Delirium",
@@ -4477,7 +4469,7 @@ var ClassSubList = {
 				source : ["P", 110],
 				minlevel : 10,
 				description : "\n   " + "No one can read my mind unless I allow it; I have resistance to psychic damage" + "\n   " + "When I take psychic damage, the dealer of the psychic damage takes the same amount",
-				eval : "AddResistance(\"Psychic\", \"Warlock (Thought Shield)\");"
+				dmgres : ["Psychic"]
 			},
 			"subclassfeature14" : {
 				name : "Create Thrall",
@@ -4499,7 +4491,7 @@ var ClassSubList = {
 				source : ["S", 139],
 				minlevel : 1,
 				description : "\n   " + "I learn the Spare the Dying cantrip and gain advantage on saving throws vs. diseases" + "\n   " + "If an undead targets me directly with an attack or spell, it must make a Wisdom save" + "\n   " + "On a fail, it must choose a new target or forfeit its attack or harmful spell" + "\n   " + "On a success or if I attack or cast a harmful spell on it, it is immune for 24 hours",
-				save : "Adv. vs. diseases",
+				savetxt : "Adv. vs. diseases",
 				spellcastingBonus : {
 					name : "Among the Dead",
 					spells : ["spare the dying"],
@@ -4574,9 +4566,8 @@ var ClassSubList = {
 				source : ["P", 116],
 				minlevel : 14,
 				description : "\n   " + "I have adv. on spell saves and resistance to damaging spells",
-				eval : "AddResistance(\"Spells\", \"Abjurer (Spell Resistance)\")",
-				removeeval : "RemoveResistance(\"Spells\")",
-				save : "Advantage on saves vs. spells"
+				dmgres : ["Spells"],
+				savetxt : "Advantage on saves vs. spells"
 			}
 		}
 	},
@@ -4824,8 +4815,7 @@ var ClassSubList = {
 				source : ["P", 119],
 				minlevel : 10,
 				description : "\n   " + "I have resistance to necrotic damage and my hit point maximum can't be reduced",
-				eval : "AddResistance(\"Necrotic\", \"Necromancer (Inured to Undead)\")",
-				removeeval : "RemoveResistance(\"Necrotic\")",
+				dmgres : ["Necrotic"]
 
 			},
 			"subclassfeature14" : {

@@ -12,7 +12,7 @@
 	Effect:     This script adds a subclass for the Warlock, called "Black Powder"
 				This subclass is made by Wizzard
 	Code by:    Wizzard
-	Date:       2017-02-18 (sheet v12.83)
+	Date:       2017-02-18 (sheet v12.998)
 */
 
 ClassSubList["black powder"] = {
@@ -130,7 +130,7 @@ ClassSubList["black powder"] = {
 			source : ["HB", 0],
 			minlevel : 10,
 			description : "\n   " + "I can't be frightened",
-			save : "Immune to being frightened"
+			savetxt : "Immune to being frightened"
 		},
 		"subclassfeature14" : {
 			name : "Killing strike",

@@ -14,7 +14,7 @@
 	Code by:	SoilentBrad
 				userZynx_name (additions of Pyromancer, Servo, and feats)
 				tiny corrections by MPMB
-	Date:		2017-04-28 (sheet v12.98)
+	Date:		2017-04-28 (sheet v12.998)
 */
 
 SourceList["PS:K"] = {
@@ -262,8 +262,7 @@ ClassSubList["sorcerer-pyromancer"] = {
 			source : ["PS:K", 9],
 			minlevel : 6,
 			description : "\n   " + "I have resistance to fire damage and spells I cast ignore resistance to fire damage",
-			eval : "AddResistance('Fire', 'Pyromancer');",
-			removeeval : "RemoveResistance('Fire');"
+			dmgres : ["Fire"]
 		},
 		"subclassfeature14" : {
 			name : "Pyromancer's Fury",
@@ -278,9 +277,9 @@ ClassSubList["sorcerer-pyromancer"] = {
 			source : ["PS:K", 9],
 			minlevel : 18,
 			description : "\n   " + "I have immunity to fire damage" + "\n   " + "Any spell or effect I create ingores resistance to fire damage" + "\n   " + "In addition, it will treat immunity to fire damage as resistance to fire damage",
-			save : "Immune to fire damage",
-			eval : "RemoveResistance('Fire');",
-			removeeval : "AddResistance('Fire', 'Pyromancer');"
+			savetxt : "Immune to fire damage",
+			eval : "SetProf('resistance', false, 'Fire', 'Pyromancer: Fiery Soul');",
+			removeeval : "SetProf('resistance', true, 'Fire', 'Pyromancer: Fiery Soul');"
 		},
 	}
 };

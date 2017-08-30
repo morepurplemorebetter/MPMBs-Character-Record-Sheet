@@ -164,9 +164,8 @@ ClassList.mystic = {
 				"I'm immune to disease, poison damage, and the poisoned condition",
 				"If I die, I have a 55% chance of discorporating instead and returning 1d3 days later"
 			]),
-			save : "Immune to poison and disease",
-			eval : "AddResistance('Bludgeoning', 'Mystic (Psionic Body)'); AddResistance('Piercing', 'Mystic (Psionic Body)'); AddResistance('Slashing', 'Mystic (Psionic Body)');",
-			removeeval : "RemoveResistance('Bludgeoning'); RemoveResistance('Piercing'); RemoveResistance('Slashing');"
+			savetxt : "Immune to poison and disease",
+			dmgres : ["Bludgeoning", "Piercing", "Slashing"]
 		}
 	}
 };

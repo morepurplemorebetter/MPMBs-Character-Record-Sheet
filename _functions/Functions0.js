@@ -28,28 +28,30 @@ function Uneditable(field) {
 function Value(field, FldValue, tooltip, submitNm) {
 	if (!tDoc.getField(field)) return false;
 	tDoc.getField(field).value = FldValue;
-	if (tooltip !== undefined) {
-		tDoc.getField(field).userName = tooltip;
-	}
-	if (submitNm !== undefined) {
-		tDoc.getField(field).submitName = submitNm;
-	}
+	if (tooltip !== undefined) tDoc.getField(field).userName = tooltip;
+	if (submitNm !== undefined) tDoc.getField(field).submitName = submitNm;
 };
 
 function What(field) {
 	return tDoc.getField(field) ? tDoc.getField(field).value : "";
-}
+};
 
 function Who(field) {
 	return tDoc.getField(field) ? tDoc.getField(field).userName : "";
-}
+};
+
+function How(field) {
+	return tDoc.getField(field) ? tDoc.getField(field).submitName : "";
+};
 
 function Clear(field) {
 	if (tDoc.getField(field)) tDoc.getField(field).clearItems();
 };
 
-function AddTooltip(field, tooltip) {
-	if (tDoc.getField(field)) tDoc.getField(field).userName = tooltip;
+function AddTooltip(field, tooltip, submitNm) {
+	if (!tDoc.getField(field)) return false;
+	if (tooltip !== undefined) tDoc.getField(field).userName = tooltip;
+	if (submitNm !== undefined) tDoc.getField(field).submitName = submitNm;
 };
 
 function SwapTooltip(field1, field2) {

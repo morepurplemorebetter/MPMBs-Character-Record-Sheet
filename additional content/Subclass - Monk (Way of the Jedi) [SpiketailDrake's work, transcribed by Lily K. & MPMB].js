@@ -140,7 +140,6 @@ SpellsList["force lightning"] = {
 	range : "30 ft",
 	components : "S",
 	duration : "Conc, 1 min",
-	save : "",
 	description : "1+1/SL targets; Each ranged atk for 1d12 Lightning dmg, move half, -2 AC/Dex saves, no rea, ee B",
 	descriptionFull : "A beam of crackling, blue energy lances out toward a creature within range, forming a sustained arc of lightning between you and the target. Make a ranged spell attack against that creature. On a hit, the target takes 1d12 lightning damage,  and for the duration its movement speed is halved, it takes a -2 penalty to AC and Dexterity saving throws, and it can’t use reactions." + "\n   " + "On each of your turns for the duration, you can use your action to deal 1d12 lightning damage to the target automatically. The spell ends if you use your action to do anything else. The spell also ends if the target is ever outside the spell’s range or if it has total cover from you." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, you can target one additional humanoid for each slot level above 2nd. The humanoids must be within 30 feet of each other when you target them."
 };

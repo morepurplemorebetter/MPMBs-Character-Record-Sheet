@@ -3283,6 +3283,7 @@ function GetStringifieds(notSources) {
 	CurrentCasters = eval(forSpells[1]);
 	if (!notSources) CurrentSources = eval(What("CurrentSources.Stringified"));
 	CurrentEvals = eval(What("CurrentEvals.Stringified"));
+	CurrentProfs = eval(What("CurrentProfs.Stringified"));
 }
 
 //set all stringified variables into their fields
@@ -3294,9 +3295,10 @@ function SetStringifieds(type) {
 		
 		//any time the CurrentSpells variable is changed, we need to update the CurrentWeapons variable as well
 		FindWeapons();
-	}
+	};
 	if (!type || type === "sources") Value("CurrentSources.Stringified", CurrentSources.toSource());
 	if (!type || type === "evals") Value("CurrentEvals.Stringified", CurrentEvals.toSource());
+	if (!type || type === "profs") Value("CurrentProfs.Stringified", CurrentProfs.toSource());
 };
 
 //set the sheet version
@@ -5765,3 +5767,289 @@ function MakeSourceMenu_SourceOptions() {
 		app.launchURL(SourceList[theSrc].url, true);
 	};
 };
+
+// ProfType can be: "armour", "weapon", "save", "resistance", "language", or "tool"
+// Add: AddRemove = true; Remove: AddRemove = false
+// ProfObj is the proficiency that is gained/removed
+// ProfSrce is the name of the thing granting the proficiency
+// What "Extra" is, depends on ProfType
+function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
+	var set = CurrentProfs[ProfType.toLowerCase()];
+	if (!set) return;
+	if (!Extra) Extra = false;
+	switch (ProfType.toLowerCase()) {
+	 case "armour" :
+		
+		break;
+	 case "weapon" :
+		
+		break;
+	 case "save" :
+		var Abi = AbilityScores.fields[ProfObj.substr(0,3)];
+		if (!Abi) return; // stop if the input can't be used
+		var SvFld = Abi + " ST Prof";
+		if (AddRemove) { // add
+			if (!set[Abi]) {
+				set[Abi] = [ProfSrc];
+			} else if (set[Abi].indexOf(ProfSrc) === -1) {
+				set[Abi].push(ProfSrc);
+			}
+		} else if (set[Abi] && set[Abi].indexOf(ProfSrc) !== -1) { // remove
+			set[Abi].splice(set[Abi].indexOf(ProfSrc), 1);
+			if (set[Abi].length === 0) delete set[Abi];
+		};
+		// now update the saving throw checkbox
+		if (set[Abi]) {
+			var AbiNm = AbilityScores.names[AbilityScores.abbreviations.indexOf(Abi)];
+			var TooltipTxt = AbiNm + " saving throws proficiency was gained from:\n\n \u2022 ";
+			for (var i = 0; i < set[Abi].length; i++) {
+				TooltipTxt += (i ? ";\n \u2022 " : "") + set[Abi][i];
+			};
+			TooltipTxt += ".";
+			Checkbox(SvFld, true, TooltipTxt);
+		} else {
+			Checkbox(SvFld, false, "");
+		};
+		break;
+	 case "resistance" : // Extra is something to replace the actual text, if even one source has no condition for the resistance (e.g. not something like "Bludg. (in Rage)"), then there is no need to add multiple instances of essentially the same resistance
+		var setRem = !set[ProfObj] ? undefined : set[ProfObj].merge;
+		if (AddRemove) { // add
+			if (!set[ProfObj]) set[ProfObj] = {src : [], cond : [], lookup : {}, merge : false};
+			var theSet = set[ProfObj];
+			if (theSet.src.indexOf(ProfSrc) !== -1) return; // the thing already exists so exit
+			theSet.src.push(ProfSrc);
+			if (Extra) {
+				theSet.cond.push(Extra);
+				if (theSet.lookup[Extra]) {
+					theSet.lookup[Extra].push(ProfSrc);
+				} else {
+					theSet.lookup[Extra] = [ProfSrc];
+				};
+			};
+			theSet.merge = theSet.src.length !== theSet.cond.length;
+		} else if (set[ProfObj]) { // remove
+			var theSet = set[ProfObj];
+			if (theSet.src.indexOf(ProfSrc) !== -1) theSet.src.splice(theSet.src.indexOf(ProfSrc), 1);
+			if (theSet.src.length == 0) {
+				delete set[ProfObj];
+			} else {
+				if (Extra && theSet.cond.indexOf(Extra) !== -1) theSet.cond.splice(theSet.cond.indexOf(Extra), 1);
+				if (Extra && theSet.lookup[Extra].indexOf(ProfSrc) !== -1) {
+					theSet.lookup[Extra].splice(theSet.lookup[Extra].indexOf(ProfSrc), 1);
+					if (theSet.lookup[Extra].length == 0) delete theSet.lookup[Extra];
+				};
+				theSet.merge = theSet.src.length !== theSet.cond.length;
+			};
+		};
+		// function for adding all resistances of a single entry
+		var DoResistance = function(keyName, skipA) {
+			var aSet = set[keyName];
+			if (!aSet) return;
+			if (!skipA) skipA = [];
+			if (aSet.merge) {
+				if (skipA.indexOf(keyName) === -1) AddResistance(keyName, aSet.src);
+			} else {
+				for (var i = 0; i < aSet.cond.length; i++) {
+					if (aSet.cond.indexOf(aSet.cond[i]) !== i) continue;
+					if (skipA.indexOf(aSet.cond[i]) === -1) AddResistance(aSet.cond[i], aSet.lookup[aSet.cond[i]]);
+				};
+			};
+		};
+		
+		// now update the resistance fields
+		var resRemoved = 0;
+		if (set[ProfObj]) {
+			if (setRem != undefined) { // the object existed before, so see if something changed
+				if (setRem && !theSet.merge) { // if before it was merged, but now no longer (removed the option without condiion)
+					RemoveResistance(ProfObj);
+					resRemoved = 1;
+				} else if (!setRem && theSet.merge) { // if before it was not merged, but now is (the new addition must be without condition)
+					for (var i = 0; i < theSet.cond.length; i++) {
+						RemoveResistance(theSet.cond[i]);
+						resRemoved += 1;
+					};
+				}; // if the merge status didn't change, we don't have to do anything here
+			};
+			// now add the resistance
+			DoResistance(ProfObj);
+		} else { // guess the current item was the only thing to remove
+			RemoveResistance(Extra ? Extra : ProfObj);
+			resRemoved = 1;
+		};
+		// if a space opened up, maybe some other resistances can finally fit
+		if (resRemoved) {
+			// first make a list of all the items currently in the fields
+			var curRes = [];
+			for (var k = 1; k <= 6; k++) {
+				curRes.push(What("Resistance Damage Type " + k));
+			};
+			for (var resObj in set) {
+				if (resObj !== ProfObj) DoResistance(resObj, curRes);
+			};
+		};
+		break;
+	 case "language" :
+	 case "tool" : // Extra is a number if the entry is a choice to be made by the user duplicates should be ignored (e.g. 'musical instrument')
+		var addtype = ProfType.toLowerCase() === "tool" ? "Tool" : "Language";
+		AskUserOptions("Language(s)", "Human", "Bonus language from Human", 3)
+		/* IDEEEN VOOR FEATURES
+			- pop-up box for choice(s)
+				> extra is aantal keuzes
+				> wanneer keuzes, duplicates toestaan
+				> keuze ergens onthouden of niet nodig? >> enkel nodig als het wordt gebruikt voor verwijderen, maar kan ook gewoon alles met keuzes verwijderen, altijd
+			- weghalen a.h.v. submitname wanneer keuze (flag in submitname als het gaat om een keuze? getal + naam?)
+			- import a.h.v. submitname
+			- Add/Remove Language/Tools één functie maken (1 voor Add en 1 voor Remove)
+			
+			- bij toevoegen/verwijderen Thieves' tools ook Too Text zo zetten.
+				> optie voor tools met skill entry?
+		*/
+		break;
+	 case "savetxt" :
+		
+		break;
+	 case "vision" :
+		
+		break;
+	};
+	SetStringifieds("profs");
+};
+
+
+// open a dialogue with a number of lines of choices and return the choices in an array
+function AskUserOptions(hdr, optSrc, optSubj, optNmbr) {
+	//first make the entry lines
+	var selectionLines = [];
+	for (var i = 0; i < optNmbr; i++) {
+		selectionLines.push({
+			type : "edit_text",
+			alignment : "align_center",
+			item_id : "sl" + ("0" + i).slice(-2),
+			char_width : 35,
+			height : 20
+		});
+	};
+	
+	var theDialog = {
+		number : optNmbr,
+		choices : [],
+		subj : optSubj,
+		initialize : function (dialog) {
+			var toLoad = {};
+			for (var i = 0; i < this.number; i++) {
+				toLoad["sl" + ("0" + i).slice(-2)] = this.subj;
+			};
+			dialog.load(toLoad);
+		},
+		commit : function (dialog) {
+			var oResult = dialog.store();
+			this.choices = [];
+			for (var i = 0; i < this.number; i++) {
+				var theResult = oResult["sl" + ("0" + i).slice(-2)];
+				this.choices.push(theResult ? theResult : this.subj);
+			};
+		},
+		description : {
+			name : "Select " + hdr,
+			elements : [{
+				type : "view",
+				align_children : "align_left",
+				elements : [{
+					type : "static_text",
+					item_id : "head",
+					alignment : "align_fill",
+					font : "heading",
+					bold : true,
+					height : 21,
+					wrap_name : true,
+					char_width : 35,
+					name : "Select " + hdr
+				}, {
+					type : "view",
+					alignment : "align_fill",
+					align_children : "align_row",
+					elements : [{
+						type : "static_text",
+						alignment : "align_left",
+						item_id : "scTx",
+						name : "Source of options:",
+						char_width : 6
+					}, {
+						type : "static_text",
+						alignment : "align_left",
+						item_id : "scIn",
+						font : "dialog",
+						bold : true,
+						name : optSrc,
+						char_width : 25
+					}]
+				}, {
+					type : "view",
+					alignment : "align_fill",
+					align_children : "align_row",
+					elements : [{
+						type : "static_text",
+						alignment : "align_left",
+						name : "Select from:",
+						char_width : 6
+					}, {
+						type : "static_text",
+						alignment : "align_left",
+						item_id : "suIn",
+						font : "dialog",
+						bold : true,
+						name : "Select " + optNmbr + " " + optSubj,
+						char_width : 25
+					}]
+				}, {
+					type : "view",
+					align_children : "align_left",
+					elements : selectionLines
+				}, {
+					type : "static_text",
+					alignment : "align_fill",
+					item_id : "txt1",
+					wrap_name : true,
+					name : "You can always change what you set here at a later time by editing the corresponding field on the sheet. What you select here is not permanent.",
+					char_width : 35
+				}, {
+					type : "ok"
+				}]
+			}]
+		}
+	};
+	app.execDialog(theDialog)
+	return theDialog.choices;
+};
+
+/* example 
+	AskUserOptions("language", "Human", "from Human", 3)
+*/
+
+/* Example
+SetProf("resistance", true, "Bludgeoning", "Barbarian (Path of the Berserker): Rage", "Pierc. (in Rage)");
+SetProf("resistance", true, "Bludgeoning", "Test");
+
+
+	NOG DOEN:
+	- Import for resistance / language / tools
+	
+	> ook voor save extra text?
+	> ook voor vision text?
+	> ook voor extra speed abilities (swim, fly)?
+	> ook voor actions? of enkel actions in de submitname zetten voor makkelijkere vergelijking?
+	
+	> language & toolString
+		- background
+		- race
+		- class
+		- class features
+		
+	> test
+		- SetProf:
+			o Saves
+			o Languages
+			o Tools
+		- Saves addition/removals from class, class features, and feats
+		- Resistances additions/removals from class, class features, races, and feats
+*/

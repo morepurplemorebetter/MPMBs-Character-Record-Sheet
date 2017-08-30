@@ -14,7 +14,7 @@
 				This content is made by Michael Wolf
 	Original:   Derek (with amendments by MorePurpleMoreBetter)
 	Completed:  /u/Fourleafclov (with amendments by MorePurpleMoreBetter)
-	Date:       2017-04-05 (sheet v12.94)
+	Date:       2017-04-05 (sheet v12.998)
 
 	Code Version:   1.0 (previous version 0.9 from 2016-11-07)
 
@@ -598,8 +598,7 @@ ClassSubList["speaker of ancestors"] = {
 				"I have resistance to necrotic damage",
 				"My HP maximum can't be reduced, and I no longer need food or water"
 			]),
-			eval : "AddResistance('Necrotic', 'Death\\'s Comfort')",
-			removeeval : "RemoveResistance('Necrotic');"
+			dmgres : ["Necrotic"]
 		},
 		"subclassfeature14" : {
 			name : "Deny the Untimely",
@@ -673,9 +672,8 @@ ClassSubList["speaker of dreams"] = {
 				"I am immune to being charmed and have resistance to psychic damage",
 				"When a creature deals psychic damage to me, that creature takes the same damage"
 			]),
-			eval : "AddResistance('Psychic', 'Thought Shield')",
-			removeeval : "RemoveResistance('Psychic');",
-			save : "Immune to Charm Effects",
+			dmgres : ["Psychic"],
+			savetxt : "Immune to Charm Effects",
 		},
 		"subclassfeature14" : {
 			name : "Dreamscape",
@@ -751,7 +749,7 @@ ClassSubList["speaker of flames"] = {
 				"I'm immune to fire damage and I regain HP instead of being damaged by it",
 				"The HP regained equals half the fire damage taken, up to half my HP maximum"
 			]),
-			save : "Immunity to Fire"
+			savetxt : "Immunity to Fire"
 		},
 		"subclassfeature14" : {
 			name : "Flames of Creation",
@@ -824,9 +822,8 @@ ClassSubList["speaker of stones"] = {
 				"I have resistance to bludgeoning damage",
 				"I have adv. on Str and Dex saves made against effects that would knock me prone"
 			]),
-			eval : "AddResistance('Bludgeoning', 'Roots of the Mountain');",
-			removeeval : "RemoveResistance('Bludgeoning');",
-			save : "Adv. on Str and Dex saves vs. effects that make me prone",
+			dmgres : ["Bludgeoning"],
+			savetxt : "Adv. on Str and Dex saves vs. effects that make me prone",
 		},
 		"subclassfeature14" : {
 			name : "Preserve in Stone",
@@ -900,9 +897,8 @@ ClassSubList["speaker of waters"] = {
 				"I have resistance to cold and fire damage and suffer no harm from -20\xB0 to 120\xB0 F",
 				"I have adv. on saves vs. effects that would reduce my speed or light me on fire"
 			]),
-			eval : "AddResistance('Cold', 'Master of Ice and Steam'); AddResistance('Fire', 'Master of Ice and Steam');",
-			removeeval : "RemoveResistance('Cold'); RemoveResistance('Fire');",
-			save : "Adv. saves vs. effects that reduce speed or light me on fire"
+			dmgres : ["Cold", "Fire"],
+			savetxt : "Adv. saves vs. effects that reduce speed or light me on fire"
 		},
 		"subclassfeature14" : {
 			name : "Move Across the Waters",
@@ -979,9 +975,8 @@ ClassSubList["speaker of winds"] = {
 			source : ["MW:SC", 13],
 			minlevel : 10,
 			description : "\n   " + "I have resistance to lightning and thunder damage, I am immune to being paralyzed",
-			eval : "AddResistance('Lightning', 'Weather the Storm'); AddResistance('Thunder', 'Weather the Storm');",
-			removeeval : "RemoveResistance('Lightning'); RemoveResistance('Thunder');",
-			save : "Immunity to being Paralyzed",
+			dmgres : ["Lightning", "Thunder"],
+			savetxt : "Immunity to being paralyzed"
 		},
 		"subclassfeature14" : {
 			name : "Stormwalker",

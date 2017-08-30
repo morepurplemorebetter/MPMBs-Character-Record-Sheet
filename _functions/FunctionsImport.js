@@ -715,8 +715,15 @@ function DirectImport(consoleTrigger) {
 			EqpProfRem = true;
 		}
 		if (EqpProfRem) ApplyProficiencies(true);
+		
 		//a function to add the 'new' languages, tools, resistances, actions
 		var addNotDefined = function(typeFlds, iterations) {
+			if (FromVersion <= 12.998) {
+				addNotDefinedOld(typeFlds, iterations);
+				return;
+			}
+		};
+		var addNotDefinedOld = function(typeFlds, iterations) { //the way this function worked before version 12.998
 			var functionEval = false;
 			switch (typeFlds) {
 				case "Language " :

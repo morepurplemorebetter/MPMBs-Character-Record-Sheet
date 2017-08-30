@@ -12,7 +12,7 @@
 	Effect:	 	This script adds a subclass for the Warlock, called "Inner Darkness"
 				This subclass is made by Wizzard
 	Code by:	Wizzard
-	Date:		2016-11-11 (sheet v12.54)
+	Date:		2016-11-11 (sheet v12.998)
 */
 
 ClassSubList["inner darkness"] = {
@@ -48,8 +48,7 @@ ClassSubList["inner darkness"] = {
 			source : ["HB", 0],
 			minlevel : 6,
 			description : "\n   " + "I gain resistance to nonmagical Bludgeoning, Slashing and Piercing damage" + "\n   " + "I do not need to eat or breathe, but I can ingest food and drink if I wish" + "\n   " + "Instead of sleeping, I appear dead (as if affected by Feign Death)" + "\n   " + "I do not dream in this state and I am fully aware of my surroundings" + "\n   " + "If an attack reduces me to 0 HP, I may instead use a spell slot to be prone, at 1 HP" + "\n   " + "I appear dead (as Feign Death) which persists until I choose to move or take any action" + "\n   " + "While under this effect I do not suffer any further damage if I don't take any actions" + "\n   " + "I can spend HD to heal (as if taking a short rest) without ending the illusion",
-			eval : "AddResistance(\"Bludg. (nonmagical)\", \"Relentless\"); AddResistance(\"Pierc. (nonmagical)\", \"Relentless\"); AddResistance(\"Slash. (nonmagical)\", \"Relentless\");",
-			removeeval : "RemoveResistance(\"Bludg. (nonmagical)\"); RemoveResistance(\"Pierc. (nonmagical)\"); RemoveResistance(\"Slash. (nonmagical)\");"
+			dmgres : [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
 		},
 		"subclassfeature10" : {
 			name : "Pervert Gravity",

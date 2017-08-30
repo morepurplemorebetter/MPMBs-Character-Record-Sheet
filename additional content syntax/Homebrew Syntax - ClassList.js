@@ -11,7 +11,7 @@
 	Subject:	Class
 	Effect:		This is the syntax for adding a new class to the sheet
 				Note that you will need the syntax for adding a subclass as well if you want the class to have any choices for subclasses
-	Sheet:		v12.84 (2017-02-21)
+	Sheet:		v12.998 (2017-08-27)
 */
 
 ClassList["myclass"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
@@ -264,6 +264,23 @@ ClassList["myclass"] = { //Object name; Note the use of only lower case! Also no
 		"subclassfeature3.1" : {
 			name : "", //any feature whos name is empty like this one is, will be ignored. Since v12.5 of the sheet, an entry like this serves no function
 			minlevel : 3,
+		},
+		
+		"natural antivenom" : {
+			name : "Natural Antivenom",
+			source : ["UA:MC", 7],
+			minlevel : 9,
+			description : desc([
+				"I have advantage on saves vs. poison and resistance to poison damage",
+				"When I use a poultice, in addition to healing, I cure one poison effect on the creature",
+				"I gain proficiency with Constitution saving throws"
+			]),
+			
+			savetxt : "Adv. vs. poison effects", //optional; the string put in the 'savetxt' attribute is put in the text box in the saving throw section
+			
+			dmgres : ["Poison"], //optional; an array of damage types that the class gets resistance against. // If the resistance has a condition attached to it, like only being against nonmagical attacks, substitute the entry in the array with an array of 2: [the damage type, the damage type with the condition. // For example: [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
+			
+			saves : ["Con"] //optional; an array of the ability scores with which the class feature grants proficiency in saving throws
 		},
 	}
 }

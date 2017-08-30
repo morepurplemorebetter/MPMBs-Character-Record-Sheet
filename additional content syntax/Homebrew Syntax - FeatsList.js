@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Feat
 	Effect:		This is the syntax for adding a new feat
-	Sheet:		v12.98 (2017-04-28)
+	Sheet:		v12.998 (2017-08-27)
 */
 
 FeatsList["extra ability"] = { //Object name; note the use of only lower case! The spelling here is used to identify the feat with. Also note the absence of the word "var" and the use of brackets []
@@ -93,6 +93,11 @@ FeatsList["extra ability"] = { //Object name; note the use of only lower case! T
 		oncelr : true, //optional; if set to 'true', this makes the spell selected for this/these bonus spells to get "1×LR" in the first column
 	},
 
+	savetxt : "Adv. vs. poison effects", //optional; the string put in the 'savetxt' attribute is put in the text box in the saving throw section
+
+	dmgres : ["Poison"], //optional; an array of damage types that the feat gives resistance against. // If the resistance has a condition attached to it, like only being against nonmagical attacks, substitute the entry in the array with an array of 2: [the damage type, the damage type with the condition. // For example: [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
+	
+	saves : ["Con"] //optional; an array of the ability scores with which the feat grants proficiency in saving throws
 };
 
 UpdateDropdown("feat"); //Optional; This updates all feat dropdown fields
