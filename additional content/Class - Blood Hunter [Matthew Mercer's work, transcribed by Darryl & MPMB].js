@@ -18,7 +18,7 @@
 				
 	Code by:	Darryl Cook & MorePurpleMoreBetter
 				Order of the Lycan code by MorePurpleMoreBetter
-	Date:		2017-08-03 (sheet v12.998)
+	Date:		2017-09-03 (sheet v12.998)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 	
@@ -741,7 +741,7 @@ UpdateHybridForm = function() {
 	//update the hybrid feature on the notes page
 	var BHstringOld = makeHybridText(BHlevelOld);
 	var BHstringNew = makeHybridText(BHlevelNew);
-	ReplaceString(NotesPrefix + "Notes.Left", BHstringNew, false, BHstringOld);
+	ReplaceString(NotesPrefix[1] + "Notes.Left", BHstringNew, false, BHstringOld);
 	
 	//update the predatory strikes
 	var PSdie = BHlevelNew >= 18 ? 10 : (BHlevelNew >= 11 ? 8 : 6);
