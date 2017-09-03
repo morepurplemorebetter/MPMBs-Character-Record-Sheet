@@ -1437,7 +1437,7 @@ function SetCompDropdown() {
 //Make menu for the button on the companion page and parse it to Menus.companion
 function MakeCompMenu() {
 	var prefix = event.target.name.substring(0, event.target.name.indexOf("Companion"));
-	var usingRevisedRanger = classes.known.rangerua ? true : false;
+	var usingRevisedRanger = CurrentSources.globalExcl.indexOf("UA:RR") === -1;
 	var menuLVL2 = function (menu, name, array) {
 		var temp = {};
 		var enabled = name[1] === "change" ? What(prefix + "Comp.Race") : true;
@@ -3413,7 +3413,7 @@ function setLifeStyle(input) {
 
 // update all the level-dependent features for the ranger companions on the companion pages
 function UpdateRangerCompanions(deleteIt) {
-	if (classes.known.rangerua) {
+	if (CurrentSources.globalExcl.indexOf("UA:RR") === -1) {
 		UpdateRevisedRangerCompanions(deleteIt);
 		return;
 	}
@@ -5257,6 +5257,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			var isSpell = thisWeapon[3] || (/cantrip|spell/i).test(theWea.type) || (/\b(cantrip|spell)\b/i).test(WeaponText);
 			var isMeleeWeapon = !isSpell && (/melee/i).test(fields.Range);
 			var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
+			var isNaturalWeapon = !isSpell && (/natural/i).test(theWea.type);
 			
 			try {
 				eval(CurrentEvals.atkAdd);
