@@ -14,7 +14,7 @@
 	Code by:	SoilentBrad
 				userZynx_name (additions of Pyromancer, Servo, and feats)
 				tiny corrections by MPMB
-	Date:		2017-04-28 (sheet v12.998)
+	Date:		2017-09-05 (sheet v12.998)
 */
 
 SourceList["PS:K"] = {
@@ -32,9 +32,9 @@ RaceList["aetherborn"] = {
 	plural : "Aetherborn",
 	size : 3,
 	speed : [30, 20],
-	languages : ["Common", "+2 from Aetherborn"],
+	languageProfs : ["Common", 2],
 	vision : "Darkvision 60 ft",
-	dmgres : ["necrotic"],
+	dmgres : ["Necrotic"],
 	skills : ["Intimidation"],
 	age : " come into being as adults and live no more than a few years",
 	height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
@@ -53,11 +53,11 @@ RaceList["kaladesh dwarf"] = {
 	plural : "Kaladesh dwarves",
 	size : 3,
 	speed : [25, 25],
-	languages : ["Common", "Dwarvish"],
+	languageProfs : ["Common", "Dwarvish"],
 	vision : "Darkvision 60 ft",
 	savetxt : "Adv. vs. Poison",
-	dmgres : ["poison"],
-	tools : ["+2 artisan's tools"],
+	dmgres : ["Poison"],
+	toolProfs : [["Artisan's tools", 2]],
 	age : " are considered young until they are 50 and live about 350 years",
 	height : " stand between 4 and 5 feet tall (3'8\" + 2d4\")",
 	weight : " weigh around 150 lb (115 + 2d4 \xD7 2d6 lb)",
@@ -86,7 +86,7 @@ RaceList["vahadar elf"] = {
 	plural : "Vahadar",
 	size : 3,
 	speed : [30, 20],
-	languages : ["Common", "Elvish", "+1 from Vahadar"],
+	languageProfs : ["Common", "Elvish", 1],
 	vision : "Darkvision 60 ft",
 	savetxt : "Adv. vs. being charmed; Magic can't put me to sleep",
 	weaponprofs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
@@ -117,7 +117,7 @@ RaceList["vedalken"] = {
 	plural : "Vedalken",
 	size : 3,
 	speed : [30, 20],
-	languages : ["Common", "Vedalken"],
+	languageProfs : ["Common", "Vedalken"],
 	savetxt : "Adv. on Int, Wis, Cha saves vs. magic",
 	age : " reach adulthood around 40 and live up to 500 years",
 	height : " range from 6 to 6 1/2 feet tall",

@@ -18,7 +18,10 @@ ClassList.artificer = {
 	die : 8,
 	saves : ["Con", "Int"],
 	skills : ["\n\n" + toUni("Artificer") + ": Choose three from Arcana, Deception, History, Investigation, Medicine, Nature, Religion, and Sleight of Hand.", "\n\n" + toUni("Multiclass Artificer") + ": Choose one from Arcana, Deception, History, Investigation, Medicine, Nature, Religion, and Sleight of Hand."],
-	tools : ["Thieves' tools + any two tools", "Any one tool (Artificer)"],
+	toolProfs : {
+		primary : [["Thieves' tools", "Dex"], ["Any tool", 2]],
+		secondary : [["Any tool", 1]]
+	},
 	armor : [
 		[true, true, false, false]
 	],
@@ -281,8 +284,7 @@ ClassSubList["artificer-gunsmith"] = {
 				spells : ["mending"],
 				selection : ["mending"]
 			},
-			eval : "AddTool(\"Smith's tools\", \"Gunsmith (Master Smith)\");",
-			removeeval : "RemoveTool(\"Smith's tools\", \"Gunsmith (Master Smith)\");"
+			toolProfs : ["Smith's tools"]
 		},
 		"subclassfeature1.2" : {
 			name : "Thunder Cannon",

@@ -13,7 +13,7 @@
 				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/208784/)
 				This background is made by Damion Meany
 	Code by:	Erik J
-	Date:		2017-06-12 (sheet v12.993)
+	Date:		2017-09-05 (sheet v12.998)
 
 	Please support the creator of this content (Damion Meany) and download his material from DM Guild: http://www.dmsguild.com/browse.php?author=Damion%20Meany
 */
@@ -82,7 +82,7 @@ BackgroundList["apprentice alchemist"] = {
 		"I have difficulty telling people no."
 	],
 	variant : [],
-	tools : ["Alchemists' Supplies", "Choose either Herbalism or Poisoner Kit"],
+	toolProfs : ["Alchemist's supplies", ["Herbalism or poisoner's kit", 1]],
 	lifestyle : "modest"
 };
 

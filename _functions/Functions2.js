@@ -1944,88 +1944,72 @@ function MakeActionMenu() {
 
 //call the Action menu and do something with the results
 function ActionOptions() {
+	var MenuSelection = getMenu("actions");
+	if (!MenuSelection || MenuSelection === undefined) return;
+	
 	tDoc.delay = true;
 	tDoc.calculate = false;
-
-	var MenuSelection = getMenu("actions");
+	thermoM("start"); //start a progress dialog
+	thermoM("Action menu option..."); //change the progress
+		
 	var itemNmbr = parseFloat(event.target.name.slice(-2));
 	var type = event.target.name.indexOf("Bonus") !== -1 ? "bonus action" : event.target.name.indexOf("Reaction") !== -1 ? "reaction" : "action";
 	var maxNmbr = type === "action" ? FieldNumbers.trueactions : FieldNumbers.actions;
-	var FieldNames = [type.capitalize() + " "];
-	var Fields = [], FieldsValue = [], FieldsTool = [], FieldsUp = [], FieldsUpValue = [], FieldsUpTool = [], FieldsDown = [], FieldsDownValue = [], FieldsDownTool = [];
-	var FieldsOpp = [], FieldsOppValue = [], FieldsOppTool = [];
 	if (itemNmbr <= (maxNmbr - 6)) {
 		var OppNmbr = itemNmbr > ((maxNmbr - 6) / 2) ? -1 * ((maxNmbr - 6) / 2) : ((maxNmbr - 6) / 2);
 	} else if (itemNmbr > (maxNmbr - 6)) {
 		var OppNmbr = itemNmbr > (maxNmbr - 3) ? -3 : 3;
-	}
+	};
+	var FldNm = type.capitalize() + " ";
 	
-	for (var F = 0; F < FieldNames.length; F++) {
-		Fields.push(FieldNames[F] + itemNmbr);
-		FieldsValue.push(What(Fields[F]));
-		FieldsTool.push(Who(Fields[F]));
-		if (itemNmbr !== 1) {
-			FieldsUp.push(FieldNames[F] + (itemNmbr - 1));
-			FieldsUpValue.push(What(FieldsUp[F]));
-			FieldsUpTool.push(Who(FieldsUp[F]));
-		}
-		if (itemNmbr !== maxNmbr) {
-			FieldsDown.push(FieldNames[F] + (itemNmbr + 1));
-			FieldsDownValue.push(What(FieldsDown[F]));
-			FieldsDownTool.push(Who(FieldsDown[F]));
-		}
-		if (type === "action") {
-			FieldsOpp.push(FieldNames[F] + (itemNmbr + OppNmbr));
-			FieldsOppValue.push(What(FieldsOpp[F]));
-			FieldsOppTool.push(Who(FieldsOpp[F]));
-		}
-	}
-	if (MenuSelection !== undefined) {
-		thermoM("start"); //start a progress dialog
-		thermoM("Action menu option..."); //change the progress 
-		switch (MenuSelection[0]) {
-		 case "move up":
-			thermoM("Moving the " + type + " field up..."); //change the progress dialog text
-			for (var H = 0; H < FieldNames.length; H++) {
-				Value(FieldsUp[H], FieldsValue[H], FieldsTool[H]);
-				Value(Fields[H], FieldsUpValue[H], FieldsUpTool[H]);
-				thermoM(H/FieldNames.length); //increment the progress dialog's progress
-			};
+	var Flds = {
+		it : FldNm + itemNmbr,
+		up : itemNmbr !== 1 ? FldNm + (itemNmbr - 1) : false,
+		down : itemNmbr !== maxNmbr ? FldNm + (itemNmbr + 1) : false,
+		opp : type === "action" ? FldNm + (itemNmbr + OppNmbr) : false
+	};
+	var entries = {
+		Value : "What",
+		Tooltip : "Who",
+		Submit : "How"
+	};
+	for (var key in Flds) {
+		var aFld = Flds[key];
+		if (!aFld) continue;
+		for (var e in entries) {
+			Flds[key + e] = tDoc[entries[e]](aFld);
+		};
+	};
+	switch (MenuSelection[0]) {
+		case "move up":
+			thermoM("Moving the " + type + " up..."); //change the progress dialog text
+			Value(Flds.it, Flds.upValue, Flds.upTooltip, Flds.upSubmit);
+			Value(Flds.up, Flds.itValue, Flds.itTooltip, Flds.itSubmit);
 			break;
-		 case "move down":
-			thermoM("Moving the " + type + " field down..."); //change the progress dialog text
-			for (var H = 0; H < FieldNames.length; H++) {
-				Value(FieldsDown[H], FieldsValue[H], FieldsTool[H]);
-				Value(Fields[H], FieldsDownValue[H], FieldsDownTool[H]);
-				thermoM(H/FieldNames.length); //increment the progress dialog's progress
-			};
+		case "move down":
+			thermoM("Moving the " + type + " down..."); //change the progress dialog text
+			Value(Flds.it, Flds.downValue, Flds.downTooltip, Flds.downSubmit);
+			Value(Flds.down, Flds.itValue, Flds.itTooltip, Flds.itSubmit);
 			break;
-		 case "move to opposing field":
-			thermoM("Moving the " + type + " field opposite..."); //change the progress dialog text
-			for (var H = 0; H < FieldNames.length; H++) {
-				Value(FieldsOpp[H], FieldsValue[H], FieldsTool[H]);
-				Value(Fields[H], FieldsOppValue[H], FieldsOppTool[H]);
-				thermoM(H/FieldNames.length); //increment the progress dialog's progress
-			};
-			break;
-		 case "insert empty " + type:
-			thermoM("Inserting empty " + type + " field..."); //change the progress dialog text
+		case "move to opposing field":
+			thermoM("Moving the " + type + " to opposite field..."); //change the progress dialog text
+			Value(Flds.it, Flds.oppValue, Flds.oppTooltip, Flds.oppSubmit);
+			Value(Flds.opp, Flds.itValue, Flds.itTooltip, Flds.itSubmit);
+		break;
+		case "insert empty " + type:
+			thermoM("Inserting empty " + type + "..."); //change the progress dialog text
 			ActionInsert(type, itemNmbr);
 			break;
-		 case "delete " + type:
-			thermoM("Deleting " + type + " field..."); //change the progress dialog text
+		case "delete " + type:
+			thermoM("Deleting " + type + "..."); //change the progress dialog text
 			ActionDelete(type, itemNmbr);
 			break;
-		 case "clear " + type:
-			thermoM("Clearing " + type + " field..."); //change the progress dialog text
-			for (var T = 0; T < Fields.length; T++) {
-				Value(Fields[T], "", "")
-				thermoM(T/Fields.length); //increment the progress dialog's progress
-			}
+		case "clear " + type:
+			thermoM("Clearing " + type + "..."); //change the progress dialog text
+			Value(Flds.it, "", "");
 			break;
-		}
-		thermoM("stop"); //stop the top progress dialog
 	}
+	thermoM("stop"); //stop the top progress dialog
 
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
@@ -2037,77 +2021,55 @@ function ActionOptions() {
 //insert a Action at the position wanted
 function ActionInsert(type, itemNmbr) {
 	var maxNmbr = type === "action" ? FieldNumbers.trueactions : FieldNumbers.actions;
-	var FieldNames = [type.capitalize() + " "];
-	var Fields = [];
-	for (var F = 0; F < FieldNames.length; F++) {
-		Fields.push(FieldNames[F] + itemNmbr);
-	}
+	var FldNm = type.capitalize() + " ";
+	var Field = FldNm + itemNmbr;
+	
+	// var FieldNames = [type.capitalize() + " "];
 	
 	//stop the function if the selected slot is already empty
-	if (What(Fields[0]) === "" || itemNmbr === maxNmbr) {
-		return;
-	}
+	if (What(Field) === "" || itemNmbr === maxNmbr) return;
 
 	//look for the first empty slot below the slot
 	var endslot = "";
 	for (var i = itemNmbr + 1; i <= maxNmbr; i++) {
-		if (What(FieldNames[0] + i) === "") {
+		if (What(FldNm + i) === "") {
 			endslot = i;
-			i = (maxNmbr + 1);
-		}
-	}
+			break;
+		};
+	};
 	
 	//only continu if an empty slot was found in the fields
 	if (endslot) {
 		//cycle to the slots starting with the empty one and add the values of the one above
 		for (var i = endslot; i > itemNmbr; i--) {
-			for (var H = 0; H < FieldNames.length; H++) {
-				Value(FieldNames[H] + i, What(FieldNames[H] + (i - 1)), Who(FieldNames[H] + (i - 1)));
-			}
-		}
+			Value(FldNm + i, What(FldNm + (i - 1)), Who(FldNm + (i - 1)), How(FldNm + (i - 1)));
+		};
 		
 		//empty the selected slot
-		for (var T = 0; T < Fields.length; T++) {
-			Value(Fields[T], "", "");
-		}
-	}
-}
+		Value(Field, "", "", "");
+	};
+};
 
 //delete a Action at the position wanted and move the rest up
 function ActionDelete(type, itemNmbr) {
-	if (type === "action") {
-		if (!typePF && itemNmbr < ((FieldNumbers.trueactions - 6) / 2)) {
-			var maxNmbr = (FieldNumbers.trueactions - 6) / 2;
-		} else {
-			var maxNmbr = FieldNumbers.trueactions;
-			maxNmbr = itemNmbr > (maxNmbr - 6) || What(type.capitalize() + " " + (maxNmbr - 6)) ? maxNmbr : maxNmbr - 6;//stop at the end of the first page if last one on first page is empty
-		}
+	var FldNm = type.capitalize() + " ";
+	// var Field = FldNm + itemNmbr;
+	var maxNmbr = type === "action" ? FieldNumbers.trueactions : FieldNumbers.actions;
+	if (!typePF && type === "action" && itemNmbr < ((FieldNumbers.trueactions - 6) / 2)) {
+		var maxNmbr = (FieldNumbers.trueactions - 6) / 2;
 	} else {
-		var maxNmbr = FieldNumbers.actions;
-		maxNmbr = itemNmbr > (maxNmbr - 6) || What(type.capitalize() + " " + (maxNmbr - 6)) ? maxNmbr : maxNmbr - 6;//stop at the end of the first page if last one on first page is empty
-	}
-	
-	var FieldNames = [type.capitalize() + " "];
-	var Fields = [];
-	var EndFields = [];
-	for (var F = 0; F < FieldNames.length; F++) {
-		Fields.push(FieldNames[F] + itemNmbr);
-		EndFields.push(FieldNames[F] + maxNmbr);
-	}
+		maxNmbr = itemNmbr > (maxNmbr - 6) || What(FldNm + (maxNmbr - 6)) ? maxNmbr : maxNmbr - 6; //stop at the end of the first page if last one on first page is empty
+	};
+	var EndField = FldNm + maxNmbr;
 	
 	//move every line up one space, starting with the line below the selected line
 	for (var i = itemNmbr; i < maxNmbr; i++) {
-		for (var H = 0; H < FieldNames.length; H++) {
-			Value(FieldNames[H] + i, What(FieldNames[H] + (i + 1)), Who(FieldNames[H] + (i + 1)));
-		};
-	}
+		Value(FldNm + i, What(FldNm + (i + 1)), Who(FldNm + (i + 1)), How(FldNm + (i + 1)));
+	};
 	
 	//delete the contents of the final line
-	tDoc.resetForm(EndFields);
-	for (var T = 0; T < EndFields.length; T++) {
-		AddTooltip(EndFields[T], "");
-	}
-}
+	Value(EndField, "", "", "");
+};
 
 //Make menu for the button on each Limited Feature line and parse it to Menus.limfea
 function MakeLimFeaMenu() {
@@ -5374,6 +5336,7 @@ function CalcAttackDmgHit(fldName) {
 		var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (/\b(cantrip|spell)\b/i).test(WeaponText);
 		var isMeleeWeapon = (!isSpell || thisWeapon[0] === "shillelagh") && (/melee/i).test(fields.Range);
 		var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
+		var isNaturalWeapon = !isSpell && (/natural/i).test(theWea.type);
 
 		// see if this is a off-hand attack and the modToDmg shouldn't be use
 		var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText);
@@ -5769,16 +5732,59 @@ function MakeSourceMenu_SourceOptions() {
 	};
 };
 
+// a way to pass an array of tools to be processed by the SetProf function
+// [["Musical instrument", 3], ["Thieves' tools", "Dex"]]
+// "Land vehicles"
+function processTools(AddRemove, srcNm, itemArr) {
+	if (!itemArr) return;
+	if (!isArray(itemArr) || (itemArr.length === 2 && !isArray(itemArr[0]) && !isArray(itemArr[1]) && (!isNaN(itemArr[1]) || AbilityScores.fields[itemArr[1].substr(0,3).toLowerCase()]))) {
+		itemArr = [itemArr];
+	};
+	for (var i = 0; i < itemArr.length; i++) {
+		var subj = itemArr[i];
+		if (isArray(subj)) {
+			var prof = subj[0];
+			var extra = subj[1];
+		} else {
+			var prof = subj;
+			var extra = false;
+		};
+		SetProf("tool", AddRemove, prof, srcNm, extra);
+	};
+};
+
+// a way to pass an array of languages to be processed by the SetProf function
+// ["Elvish", 3] >> elvish and three other languages
+function processLanguages(AddRemove, srcNm, itemArr) {
+	if (!itemArr) return;
+	itemArr = isArray(itemArr) ? itemArr : [itemArr];
+	for (var i = 0; i < itemArr.length; i++) {
+		var subj = itemArr[i];
+		if (isArray(subj)) {
+			var prof = subj[0];
+			var extra = subj[1];
+		} else if (isNaN(subj)) {
+			var prof = subj;
+			var extra = false;
+		} else {
+			var prof = "from " + srcNm;
+			var extra = subj;
+		};
+		SetProf("language", AddRemove, prof, srcNm, extra);
+	};
+};
+
 // ProfType can be: "armour", "weapon", "save", "resistance", "language", or "tool"
 // Add: AddRemove = true; Remove: AddRemove = false
 // ProfObj is the proficiency that is gained/removed
 // ProfSrce is the name of the thing granting the proficiency
 // What "Extra" is, depends on ProfType
 function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
-	var set = CurrentProfs[ProfType.toLowerCase()];
+	ProfType = ProfType.toLowerCase();
+	var set = CurrentProfs[ProfType];
 	if (!set) return;
 	if (!Extra) Extra = false;
-	switch (ProfType.toLowerCase()) {
+	switch (ProfType) {
 	 case "armour" :
 		
 		break;
@@ -5786,7 +5792,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		
 		break;
 	 case "save" :
-		var Abi = AbilityScores.fields[ProfObj.substr(0,3)];
+		var Abi = AbilityScores.fields[ProfObj.substr(0,3).toLowerCase()];
 		if (!Abi) return; // stop if the input can't be used
 		var SvFld = Abi + " ST Prof";
 		if (AddRemove) { // add
@@ -5802,7 +5808,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		// now update the saving throw checkbox
 		if (set[Abi]) {
 			var AbiNm = AbilityScores.names[AbilityScores.abbreviations.indexOf(Abi)];
-			var TooltipTxt = AbiNm + " saving throws proficiency was gained from:\n\n \u2022 ";
+			var TooltipTxt = AbiNm + " saving throws proficiency was gained from:\n \u2022 ";
 			for (var i = 0; i < set[Abi].length; i++) {
 				TooltipTxt += (i ? ";\n \u2022 " : "") + set[Abi][i];
 			};
@@ -5890,9 +5896,81 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		};
 		break;
 	 case "language" :
-	 case "tool" : // Extra is a number if the entry is a choice to be made by the user duplicates should be ignored (e.g. 'musical instrument')
-		var addtype = ProfType.toLowerCase() === "tool" ? "Tool" : "Language";
-		AskUserOptions("Language(s)", "Human", "Bonus language from Human", 3)
+	 case "tool" : // Extra is a number if the entry is a choice to be made by the user duplicates should be ignored (e.g. 'musical instrument'); // Alternatively, for a tool the Extra can be the 3-letter abbreviation if the tool is also to be added in the Skill Proficiencies section with a calculated value;
+		var optNmbr = Extra && !isNaN(Extra) ? Extra : false;
+		if (optNmbr) {
+			var uID = ProfSrc + "_" + ProfObj + "_" + optNmbr;
+			if (AddRemove) { // add
+				if (!set[uID]) set[uID] = {source : ProfSrc, entries : [], choices : []};
+				// first ask the user to select choices
+				var optType = ProfType.capitalize() + "s";
+				var optSubj = [];
+				for (var i = 1; i <= optNmbr; i++) {
+					optSubj.push(ProfObj + (optNmbr > 1 ? " (" + i + "/" + optNmbr + ")" : ""));
+					set[uID].entries.push(uID + "-" + i);
+				};
+				var knownOpt = [];
+				for (var i = 1; i <= FieldNumbers.langstools; i++) {
+					var theI = What(ProfType.capitalize() + " " + i);
+					if (theI) knownOpt.push(theI);
+				};
+				set[uID].choices = AskUserOptions(optType, ProfSrc, optSubj, knownOpt);
+				// now add these choices to the sheet
+				for (var i = 0; i < optNmbr; i++) {
+					AddLangTool(ProfType, set[uID].choices[i], ProfSrc, set[uID].entries[i]);
+				};
+			} else if (set[uID]) { // remove
+				for (var i = 0; i < optNmbr; i++) {
+					RemoveLangTool(ProfType, ProfObj, set[uID].entries[i], set[uID].choices[i]);
+				};
+				delete set[uID];
+			};
+		} else {
+			if (AddRemove) { // add
+				if (!set[ProfObj]) {
+					set[ProfObj] = [ProfSrc];
+				} else if (set[ProfObj].indexOf(ProfSrc) === -1) {
+					set[ProfObj].push(ProfSrc);
+				};
+			} else if (set[ProfObj] && set[ProfObj].indexOf(ProfSrc) !== -1) { // remove
+				set[ProfObj].splice(set[ProfObj].indexOf(ProfSrc), 1);
+				if (set[ProfObj].length === 0) delete set[ProfObj];
+			};
+			// now update the proficiency
+			if (set[ProfObj]) {
+				AddLangTool(ProfType, ProfObj, set[ProfObj]);
+			} else {
+				RemoveLangTool(ProfType, ProfObj);
+			};
+			
+			// if dealing with a tool, we might need to add it to the skill proficiencies section to get a calculated value
+			var toolAbi = ProfType === "tool" && Extra && isNaN(Extra) ? AbilityScores.fields[Extra.substr(0,3).toLowerCase()] : false;
+			if (toolAbi) {
+				var theTooTxt = ProfObj + " (" + toolAbi + ")";
+				if (AddRemove) { // add
+					if (!set.toolSkill) {
+						set.toolSkill = [theTooTxt];
+					} else if (set.toolSkill.indexOf(ProfSrc) === -1) {
+						set.toolSkill.push(theTooTxt);
+					};
+				} else if (!set[ProfObj] && set.toolSkill && set.toolSkill.indexOf(theTooTxt) !== -1) { // remove
+					set.toolSkill.splice(set.toolSkill.indexOf(theTooTxt), 1);
+					if (set.toolSkill.length === 0) delete set.toolSkill;
+				};
+				// now update the skill proficiency entry
+				var curToolTxt = What("Too Text");
+				if (theTooTxt.toLowerCase().indexOf(curToolTxt.toLowerCase()) !== -1 && set.toolSkill && set.toolSkill.indexOf(curToolTxt) === -1) {
+					Value("Too Text", set.toolSkill[0]);
+					Checkbox("Too Prof", true);
+					Checkbox("Too Exp", false);
+				} else if (!set.toolSkill && theTooTxt.toLowerCase().indexOf(curToolTxt.toLowerCase()) !== -1) {
+					tDoc.resetForm(["Too Text"]);
+					Checkbox("Too Prof", false);
+					Checkbox("Too Exp", false);
+				};
+			};
+		};
+		
 		/* IDEEEN VOOR FEATURES
 			- pop-up box for choice(s)
 				> extra is aantal keuzes
@@ -5904,6 +5982,10 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			
 			- bij toevoegen/verwijderen Thieves' tools ook Too Text zo zetten.
 				> optie voor tools met skill entry?
+				
+				
+			toolProfs : [["Musical instrument", 3], ["Thieves' tools, "Dex"]]
+			languageProfs : [1, "Elvish"]
 		*/
 		break;
 	 case "savetxt" :
@@ -5916,42 +5998,70 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	SetStringifieds("profs");
 };
 
-
 // open a dialogue with a number of lines of choices and return the choices in an array
-function AskUserOptions(hdr, optSrc, optSubj, optNmbr) {
+function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
+	if (!IsNotImport) return optSubj;
 	//first make the entry lines
 	var selectionLines = [];
-	for (var i = 0; i < optNmbr; i++) {
+	for (var i = 0; i < optSubj.length; i++) {
 		selectionLines.push({
-			type : "edit_text",
-			alignment : "align_center",
-			item_id : "sl" + ("0" + i).slice(-2),
-			char_width : 35,
-			height : 20
+			type : "view",
+			alignment : "align_fill",
+			align_children : "align_row",
+			elements : [{
+				type : "static_text",
+				alignment : "align_left",
+				item_id : "st" + ("0" + i).slice(-2),
+				font : "dialog",
+				name : "Already known!"
+			}, {
+				type : "edit_text",
+				alignment : "align_right",
+				item_id : "sl" + ("0" + i).slice(-2),
+				char_width : 30,
+				height : 20
+			}]
 		});
 	};
 	
+	//make all the known options lowercase for easier testing
+	if (knownOpt) { for (var i = 0; i < knownOpt.length; i++) { knownOpt[i] = knownOpt[i].toLowerCase(); }; };
+	
 	var theDialog = {
-		number : optNmbr,
 		choices : [],
-		subj : optSubj,
+		already : knownOpt,
+		subj : optSubj, //array of default choices
 		initialize : function (dialog) {
 			var toLoad = {};
-			for (var i = 0; i < this.number; i++) {
-				toLoad["sl" + ("0" + i).slice(-2)] = this.subj;
+			var toShow = {};
+			for (var i = 0; i < this.subj.length; i++) {
+				toLoad["sl" + ("0" + i).slice(-2)] = this.subj[i];
+				var stTxt = "st" + ("0" + i).slice(-2);
+				toShow[stTxt] = false;
+				dialog.setForeColorRed(stTxt);
 			};
 			dialog.load(toLoad);
+			dialog.visible(toShow);
 		},
 		commit : function (dialog) {
 			var oResult = dialog.store();
 			this.choices = [];
-			for (var i = 0; i < this.number; i++) {
+			for (var i = 0; i < this.subj.length; i++) {
 				var theResult = oResult["sl" + ("0" + i).slice(-2)];
-				this.choices.push(theResult ? theResult : this.subj);
+				this.choices.push(theResult ? theResult : this.subj[i]);
 			};
 		},
+		check : function (dialog, nmbr) {
+			if (!this.already) return;
+			var toChk = "sl" + ("0" + nmbr).slice(-2);
+			var tTxt = "st" + ("0" + nmbr).slice(-2);
+			var tResult = dialog.store()[toChk].toLowerCase();
+			var toShow = {};
+			toShow[tTxt] = this.already.indexOf(tResult) !== -1;
+			dialog.visible(toShow);
+		},
 		description : {
-			name : "Select " + hdr,
+			name : "Select proficiencies",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -5961,46 +6071,49 @@ function AskUserOptions(hdr, optSrc, optSubj, optNmbr) {
 					alignment : "align_fill",
 					font : "heading",
 					bold : true,
-					height : 21,
 					wrap_name : true,
-					char_width : 35,
-					name : "Select " + hdr
+					char_width : 40,
+					name : "Select proficiencies"
 				}, {
 					type : "view",
 					alignment : "align_fill",
 					align_children : "align_row",
 					elements : [{
-						type : "static_text",
+						type : "view",
 						alignment : "align_left",
-						item_id : "scTx",
-						name : "Source of options:",
-						char_width : 6
+						align_children : "align_left",
+						elements : [{
+								type : "static_text",
+								alignment : "align_left",
+								font : "dialog",
+								item_id : "txt0",
+								name : "Regarding:"
+							}, {
+								type : "static_text",
+								alignment : "align_left",
+								font : "dialog",
+								item_id : "txt2",
+								name : "Gained from:"
+							}]
 					}, {
-						type : "static_text",
-						alignment : "align_left",
-						item_id : "scIn",
-						font : "dialog",
-						bold : true,
-						name : optSrc,
-						char_width : 25
-					}]
-				}, {
-					type : "view",
-					alignment : "align_fill",
-					align_children : "align_row",
-					elements : [{
-						type : "static_text",
-						alignment : "align_left",
-						name : "Select from:",
-						char_width : 6
-					}, {
-						type : "static_text",
-						alignment : "align_left",
-						item_id : "suIn",
-						font : "dialog",
-						bold : true,
-						name : "Select " + optNmbr + " " + optSubj,
-						char_width : 25
+						type : "view",
+						alignment : "align_right",
+						align_children : "align_left",
+						elements : [{
+								type : "static_text",
+								alignment : "align_left",
+								item_id : "txt1",
+								font : "dialog",
+								bold : true,
+								name : optType
+							}, {
+								type : "static_text",
+								alignment : "align_left",
+								item_id : "txt3",
+								font : "dialog",
+								bold : true,
+								name : optSrc
+							}]
 					}]
 				}, {
 					type : "view",
@@ -6012,45 +6125,62 @@ function AskUserOptions(hdr, optSrc, optSubj, optNmbr) {
 					item_id : "txt1",
 					wrap_name : true,
 					name : "You can always change what you set here at a later time by editing the corresponding field on the sheet. What you select here is not permanent.",
-					char_width : 35
+					char_width : 40
 				}, {
 					type : "ok"
 				}]
 			}]
 		}
 	};
+	for (var i = 0; i < optSubj.length; i++) {
+		theDialog["sl" + ("0" + i).slice(-2)] = Function("dialog", "this.check(dialog, " + i + ");");
+	};
 	app.execDialog(theDialog)
 	return theDialog.choices;
 };
 
-/* example 
+/* EXAMPLES 
 	AskUserOptions("language", "Human", "from Human", 3)
+	SetProf("resistance", true, "Bludgeoning", "Barbarian (Path of the Berserker): Rage", "Pierc. (in Rage)");
+	SetProf("resistance", true, "Bludgeoning", "Test");
 */
 
-/* Example
-SetProf("resistance", true, "Bludgeoning", "Barbarian (Path of the Berserker): Rage", "Pierc. (in Rage)");
-SetProf("resistance", true, "Bludgeoning", "Test");
-
-
+/* 
 	NOG DOEN:
-	- Import for resistance / language / tools
 	
-	> ook voor save extra text?
-	> ook voor vision text?
-	> ook voor extra speed abilities (swim, fly)?
-	> ook voor actions? of enkel actions in de submitname zetten voor makkelijkere vergelijking?
-	
-	> language & toolString
-		- background
-		- race
-		- class
-		- class features
+	- ook voor save extra text?
+	- ook voor vision text?
+>> Volgende versie:
+	- extra optie voor damage type immunity (dmgImmune)?
+	- ook voor extra speed abilities (swim, fly)?
+	V ook voor actions? of enkel actions in de submitname zetten voor makkelijkere vergelijking? >> enkel submitname
 		
-	> test
+	- Test
 		- SetProf:
-			o Saves
+			V Resistances
+			V Saves
 			o Languages
 			o Tools
-		- Saves addition/removals from class, class features, and feats
-		- Resistances additions/removals from class, class features, races, and feats
+		- Import (with altered language, tool, dmgres, action)
+			o older version
+			o current version
+	- Edit
+		V Saves addition/removals from class, class features, and feats
+		V Resistances additions/removals from class, class features, races, and feats
+		- Languages and Tools Profs for [languageProfs, toolProfs]
+			V background
+			V race
+			V class
+			V class features
+			V feats
+		- Languages and Tools Profs add/removal codes for [languageProfs, toolProfs]
+			V background
+			V race
+			V class
+			V class features
+			V feats
+	- Syntax
+		=	
+	- Update Additional Content
+		= 
 */

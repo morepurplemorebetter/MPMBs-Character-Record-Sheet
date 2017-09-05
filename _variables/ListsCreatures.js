@@ -3874,6 +3874,53 @@ var CreatureList = {
 			}
 		]
 	},
+	"shadow" : {
+		name : "Shadow",
+		source : ["M", 269],
+		size : 3, //Medium
+		type : "Undead",
+		subtype : "",
+		alignment : "chaotic evil",
+		ac : 12,
+		hp : 16,
+		hd : [3, 8],
+		speed : "40 ft",
+		scores : [6, 14, 13, 6, 10, 8],
+		saves : ["", "", "", "", "", ""],
+		skills : {
+			"stealth" : 4,
+		},
+		damage_vulnerabilities : "radiant",
+		damage_resistances : "acid; cold; fire; lightning; thunder; bludgeoning, piercing, and slashing from nonmagical weapons",
+		damage_immunities : "necrotic, poison",
+		condition_immunities : "exhaustion, frightened, grappled, paralyzed, petrified, poisoned, prone, restrained",
+		senses : "Darkvision 60 ft",
+		passivePerception : 10,
+		languages : "",
+		challengeRating : "1/2",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Strength Drain",
+				ability : 2,
+				damage : [2, 6, "necrotic"],
+				range : "Melee (5 ft)",
+				description : "Reduces Str by 1d4 till target's next short rest; If Str goes to 0, the target dies and forms a new shadow",
+				tooltip : "A target of the shadows's strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later."
+			},
+		],
+		traits : [{
+				name : "Amorphous",
+				description : "The shadow can move through a space as narrow as 1 inch wide without squeezing."
+			}, {
+				name : "Shadow Stealth",
+				description : "While in dim light or darkness, the shadow can take the Hide action as a bonus action and adds an extra +2 on Stealth checks."
+			}, {
+				name : "Sunlight Weakness",
+				description : "While in sunlight, the shadow has disadvantage on attack rolls, ability checks, and saving throws."
+			}
+		],
+	},
 	"shield guardian" : {
 		name : "Shield Guardian",
 		source : ["M", 271],

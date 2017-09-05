@@ -137,7 +137,10 @@ var ClassList = {
 		die : 8,
 		saves : ["Dex", "Cha"],
 		skills : ["\n\n" + toUni("Bard") + ": Choose any three skills.", "\n\n" + toUni("Multiclass Bard") + ": Choose any one skill."],
-		tools : ["Three musical instruments", "A musical instrument"],
+		toolProfs : {
+			primary : [["Musical instrument", 3]],
+			secondary : [["Musical instrument", 1]]
+		},
 		armor : [
 			[true, false, false, false],
 			[true, false, false, false]
@@ -327,7 +330,9 @@ var ClassList = {
 		die : 8,
 		saves : ["Wis", "Int"],
 		skills : ["\n\n" + toUni("Druid") + ": Choose two from Arcana, Animal Handling, Insight, Medicine, Nature, Perception, Religion, and Survival."],
-		tools : ["Herbalism kit"],
+		toolProfs : {
+			primary : ["Herbalism kit"],
+		},
 		armor : [
 			[true, true, false, true],
 			[true, true, false, true]
@@ -350,8 +355,7 @@ var ClassList = {
 				source : ["P", 66],
 				minlevel : 1,
 				description : "\n   " + "I know Druidic; Hidden messages with it can only be understood by who know Druidic",
-				eval : "AddLanguage(\"Druidic\", \"being a Druid\");",
-				removeeval : "RemoveLanguage(\"Druidic\", \"being a Druid\");"
+				languageProfs : ["Druidic"]
 			},
 			"spellcasting" : {
 				name : "Spellcasting",
@@ -512,7 +516,9 @@ var ClassList = {
 		die : 8,
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		saves : ["Str", "Dex"],
-		tools : ["One artisan's tool or musical instrument"],
+		toolProfs : {
+			primary : [["Artisan's tool or musical instrument", 1]]
+		},
 		skills : ["\n\n" + toUni("Monk") + ": Choose two from Acrobatics, Athletics, History, Insight, Religion, and Stealth."],
 		armor : [
 			[false, false, false, false]
@@ -580,9 +586,9 @@ var ClassList = {
 					source : ["P", 79],
 					description : " [1 ki point]" + "\n   " + "After I hit a creature wit a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
 				},
-				eval : "ClassFeatureOptions([\"monk\", \"ki\", \"flurry of blows\", \"extra\"]); ClassFeatureOptions([\"monk\", \"ki\", \"patient defense\", \"extra\"]); ClassFeatureOptions([\"monk\", \"ki\", \"step of the wind\", \"extra\"]);",
-				removeeval : "ClassFeatureOptions([\"monk\", \"ki\", \"flurry of blows\", \"extra\"], \"remove\"); ClassFeatureOptions([\"monk\", \"ki\", \"patient defense\", \"extra\"], \"remove\"); ClassFeatureOptions([\"monk\", \"ki\", \"step of the wind\", \"extra\"], \"remove\");",
-				changeeval : "if (newClassLvl.monk >= 5 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"stunning strike\") === -1) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"])} else if (newClassLvl.monk < 5 && oldClassLvl.monk >= 5) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"], \"remove\");};"
+				eval : "ClassFeatureOptions(['monk', 'ki', 'flurry of blows', 'extra']); ClassFeatureOptions(['monk', 'ki', 'patient defense', 'extra']); ClassFeatureOptions(['monk', 'ki', 'step of the wind', 'extra']);",
+				removeeval : "ClassFeatureOptions(['monk', 'ki', 'flurry of blows', 'extra'], 'remove'); ClassFeatureOptions(['monk', 'ki', 'patient defense', 'extra'], 'remove'); ClassFeatureOptions(['monk', 'ki', 'step of the wind', 'extra'], 'remove');",
+				changeeval : "if (newClassLvl.monk >= 5 && (What('Extra.Notes') + What('Class Features')).toLowerCase().indexOf('stunning strike') === -1) {ClassFeatureOptions(['monk', 'ki', 'stunning strike', 'extra'])} else if (newClassLvl.monk < 5 && oldClassLvl.monk >= 5) {ClassFeatureOptions(['monk', 'ki', 'stunning strike', 'extra'], 'remove');};"
 			},
 			"unarmored movement" : {
 				name : "Unarmored Movement",
@@ -664,7 +670,7 @@ var ClassList = {
 				minlevel : 14,
 				description : "\n   " + "I am proficient with all saves; I can reroll a failed save once by spending 1 ki point",
 				additional : "1 ki point to reroll failed saving throw",
-				saves : ["Con", "Int", "Wis", "Cha"]
+				saves : ["Str", "Dex", "Con", "Int", "Wis", "Cha"]
 			},
 			"timeless body" : {
 				name : "Timeless Body",
@@ -878,67 +884,80 @@ var ClassList = {
 				"aberrations" : {
 					name : "Aberrations",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"beasts" : {
 					name : "Beasts",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"celestials" : {
 					name : "Celestials",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"constructs" : {
 					name : "Constructs",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"dragons" : {
 					name : "Dragons",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"elementals" : {
 					name : "Elementals",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"fey" : {
 					name : "Fey",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"fiends" : {
 					name : "Fiends",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"giants" : {
 					name : "Giants",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"monstrosities" : {
 					name : "Monstrosities",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"oozes" : {
 					name : "Oozes",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"plants" : {
 					name : "Plants",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"undead" : {
 					name : "Undead",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"two races of humanoids" : {
 					name : "Two Races of Humanoids",
@@ -1095,7 +1114,10 @@ var ClassList = {
 		die : 8,
 		saves : ["Int", "Dex"],
 		skills : ["\n\n" + toUni("Rogue") + ": Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth.", "\n\n" + toUni("Multiclass Rogue") + ": Choose one from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth."],
-		tools : ["Thieves' tools", "Thieves' tools"],
+		toolProfs : {
+			primary : [["Thieves' tools", "Dex"]],
+			secondary : [["Thieves' tools", "Dex"]]
+		},
 		armor : [
 			[true, false, false, false],
 			[true, false, false, false]
@@ -1135,8 +1157,7 @@ var ClassList = {
 				source : ["P", 96],
 				minlevel : 1,
 				description : "\n   " + "I know the secret rogue language that I can use to convey messages inconspicuously",
-				eval : "AddLanguage(\"Thieves' Cant\", \"being a Rogue\");",
-				removeeval : "RemoveLanguage(\"Thieves' Cant\", \"being a Rogue\");"
+				languageProfs : ["Thieves' Cant"]
 			},
 			"cunning action" : {
 				name : "Cunning Action",
@@ -2240,8 +2261,7 @@ var ClassSubList = {
 				minlevel : 1,
 				description : "\n   " + "I learn two languages and gain proficiency and expertise with two skills" + "\n   " + "I can choose from the following: Arcana, History, Nature, or Religion",
 				skillstxt : "\n\n" + toUni("Knowledge Domain") + ": Choose two from Arcana, History, Nature, and Religion. You also gain expertise with these skills.",
-				eval : "AddLanguage(\"+2 from Knowledge Domain\", \"being a Cleric (Knowledge Domain)\");",
-				removeeval : "RemoveLanguage(\"+2 from Knowledge Domain\", \"being a Cleric (Knowledge Domain)\");"
+				languageProfs : [2]
 			},
 			"subclassfeature2" : {
 				name : "Channel Divinity: Knowledge of Ages",
@@ -2974,8 +2994,7 @@ var ClassSubList = {
 				source : ["P", 73],
 				minlevel : 3,
 				description : "\n   " + "I have proficiency with one artisan's tool set of my choice",
-				eval : "AddTool(\"Type of artisan's tools\", \"Battle Master (Student of War)\")",
-				removeeval : "RemoveTool(\"Type of artisan's tools\", \"Battle Master (Student of War)\")"
+				toolProfs : [["Artisan's tools", 1]]
 			},
 			"subclassfeature7" : {
 				name : "Know Your Enemy",
@@ -3962,8 +3981,7 @@ var ClassSubList = {
 				source : ["P", 97],
 				minlevel : 3,
 				description : "\n   " + "I am proficient with disguise kits and poisoner's kits",
-				eval : "AddTool(\"Disguise kit\", \"Assassin\"); AddTool(\"Poisoner's kit\", \"Assassin\");",
-				removeeval : "RemoveTool(\"Disguise kit\", \"Assassin\"); RemoveTool(\"Poisoner's kit\", \"Assassin\");"
+				toolProfs : ["Disguise kit", "Poisoner's kit"]
 			},
 			"subclassfeature3.1" : {
 				name : "Assassinate",
@@ -4003,8 +4021,8 @@ var ClassSubList = {
 				source : ["S", 135],
 				minlevel : 3,
 				description : "\n   " + "I gain proficiency with disguise kits, forgery kits, one gaming set, and two languages" + "\n   " + "I can mimic speech patterns and accents if I've heard them for at least 1 minute",
-				eval : "AddTool(\"Disguise kit\", \"Mastermind\"); AddTool(\"Forgery kit\", \"Mastermind\"); AddTool(\"One gaming set\", \"Mastermind\"); AddLanguage(\"+2 from Mastermind\", \"Mastermind\");",
-				removeeval : "RemoveTool(\"Disguise kit\", \"Mastermind\"); RemoveTool(\"Forgery kit\", \"Mastermind\"); RemoveTool(\"One gaming set\", \"Mastermind\"); RemoveLanguage(\"+2 from Mastermind\", \"Mastermind\");"
+				languageProfs : [2],
+				toolProfs : ["Disguise kit", "Forgery kit", ["Gaming set", 1]]
 			},
 			"subclassfeature3.1" : {
 				name : "Master of Tactics",
@@ -4191,8 +4209,7 @@ var ClassSubList = {
 					eval : "var ToAdd = [\"sorcerer\", \"subclassfeature6\", \"cold\"]; if (classes.known.sorcerer.level >= 6 && tDoc.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "cold"
 				},
-				eval : "AddLanguage(\"Draconic\", \"being a Sorcerer (Draconic Bloodline)\");",
-				removeeval : "RemoveLanguage(\"Draconic\", \"being a Sorcerer (Draconic Bloodline)\");"
+				languageProfs : ["Draconic"]
 			},
 			"subclassfeature1.1" : {
 				name : "Draconic Resilience",
@@ -4275,8 +4292,7 @@ var ClassSubList = {
 				source : ["S", 137],
 				minlevel : 1,
 				description : "\n   " + "I can speak, read, and write Primordial (and its dialects Aquan, Auran, Ignan, Terran)",
-				eval : "AddLanguage(\"Primordial\", \"being a Storm Sorcerer\");",
-				removeeval : "RemoveLanguage(\"Primordial\", \"being a Storm Sorcerer\");"
+				languageProfs : ["Primordial"]
 			},
 			"subclassfeature1.1" : {
 				name : "Tempestuous Magic",

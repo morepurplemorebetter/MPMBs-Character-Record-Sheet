@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Feat
 	Effect:		This is the syntax for adding a new feat
-	Sheet:		v12.998 (2017-08-27)
+	Sheet:		v12.998 (2017-09-05)
 */
 
 FeatsList["extra ability"] = { //Object name; note the use of only lower case! The spelling here is used to identify the feat with. Also note the absence of the word "var" and the use of brackets []
@@ -95,9 +95,13 @@ FeatsList["extra ability"] = { //Object name; note the use of only lower case! T
 
 	savetxt : "Adv. vs. poison effects", //optional; the string put in the 'savetxt' attribute is put in the text box in the saving throw section
 
-	dmgres : ["Poison"], //optional; an array of damage types that the feat gives resistance against. // If the resistance has a condition attached to it, like only being against nonmagical attacks, substitute the entry in the array with an array of 2: [the damage type, the damage type with the condition. // For example: [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
+	dmgres : ["Poison"], //optional; an array of damage types that the feat gives resistance against. // If the resistance has a condition attached to it, like only being against nonmagical attacks, substitute the entry in the array with an array of 2: [the damage type, the damage type with the condition]. // For example: [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
 	
 	saves : ["Con"] //optional; an array of the ability scores with which the feat grants proficiency in saving throws
+	
+	toolProfs : [["Musical instrument", 3], ["Thieves' tools", "Dex"]], // optional; this is an array with the tool proficiencies gained. Each entry can be its own array of 2 entries. The first entry is the name of the tool and the second entry is either 1) a number if the tool is yet to be chosen, or 2) the 3-letter ability score abbreviation if the tool is to be listed in the skill section and have a bonus calculated
+	
+	languageProfs : [1, "Elvish"], // optional; this is an array of the language proficiencies gained. An entry can either be 1) a string that represents the language learned or 2) a number which is the number of language gained that can be chosen by the player
 };
 
 UpdateDropdown("feat"); //Optional; This updates all feat dropdown fields

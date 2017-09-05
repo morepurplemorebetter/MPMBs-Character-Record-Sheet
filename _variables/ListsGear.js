@@ -1819,6 +1819,7 @@ var AmmoList = {
 var PacksList = {
 	burglar : {
 		name : "Burglar's pack (16 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Bag of 1000 ball bearings", 1, 2],
@@ -1838,6 +1839,7 @@ var PacksList = {
 	},
 	diplomat : {
 		name : "Diplomat's pack (39 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Chest, with:", "", 25],
 			["Map or scroll case", 2, 1],
@@ -1854,6 +1856,7 @@ var PacksList = {
 	},
 	dungeoneer : {
 		name : "Dungeoneer's pack (12 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Crowbar", "", 5],
@@ -1868,6 +1871,7 @@ var PacksList = {
 	},
 	entertainer : {
 		name : "Entertainer's pack (40 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Bedroll", "", 7],
@@ -1880,6 +1884,7 @@ var PacksList = {
 	},
 	explorer : {
 		name : "Explorer's pack (10 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Bedroll", "", 7],
@@ -1893,6 +1898,7 @@ var PacksList = {
 	},
 	priest : {
 		name : "Priest's pack (19 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Blanket", "", 3],
@@ -1908,6 +1914,7 @@ var PacksList = {
 	},
 	scholar : {
 		name : "Scholar's pack (40 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Book of lore", "", 5],
@@ -1917,7 +1924,24 @@ var PacksList = {
 			["Little bag of sand", "", 1],
 			["Small knife", "", 0.25]
 		]
-	}
+	},
+	monsterhunter : {
+		name : "Monster hunter's pack (33 gp)",
+		source : ["CoS", 209],
+		items : [
+			["Chest, with:", "", 25],
+			["Crowbar", "", 5],
+			["Hammer", "", 3],
+			["Wooden stake", 3, 1],
+			["Amulet holy symbol", "", ""],
+			["Holy water, flasks of", 1, 1],
+			["Manacles", "", 6],
+			["Steel mirror", "", 0.5],
+			["Oil, flasks of", 1, 1],
+			["Tinderbox", "", 1],
+			["Torches", 3, 1]
+		]
+	},
 };
 
 var GearList = {

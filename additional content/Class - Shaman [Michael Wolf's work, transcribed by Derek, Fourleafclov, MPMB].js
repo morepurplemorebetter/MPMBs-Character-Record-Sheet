@@ -14,9 +14,7 @@
 				This content is made by Michael Wolf
 	Original:   Derek (with amendments by MorePurpleMoreBetter)
 	Completed:  /u/Fourleafclov (with amendments by MorePurpleMoreBetter)
-	Date:       2017-04-05 (sheet v12.998)
-
-	Code Version:   1.0 (previous version 0.9 from 2016-11-07)
+	Date:		2017-09-05 (sheet v12.998)
 
 	Please support the creator of this content (Michael Wolf) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Michael%20Wolf
 */
@@ -67,7 +65,7 @@ ClassList["shaman"] = {
 	die : 8,
 	saves : ["Wis", "Cha"],
 	skills : ["\n\n" + toUni("Shaman") + ": Choose two from Animal Handling, Arcana, Insight, Medicine, Nature, Perception, Persuasion, Religion, and Survival."],
-	tools : ["Herbalism kit"],
+	toolProfs : { primay : ["Herbalism kit"] },
 	armor : [
 		[true, false, false, true],
 		[true, false, false, true]
@@ -551,8 +549,7 @@ ClassSubList["speaker of ancestors"] = {
 				"I learn the Chill Touch, Spare the Dying, and Thaumaturgy cantrips",
 				"I learn one language of my choice from my Ancestors and become proficient in History"
 			]),
-			eval : "AddLanguage('+1 from Ancestors', 'Shaman (Blessing of the Ancestors)');",
-			removeeval : "RemoveLanguage('+1 from Ancestors', 'Shaman (Blessing of the Ancestors)');",
+			languageProfs : [1],
 			spellcastingBonus : {
 				name : "Blessings of the Ancestors",
 				spells : ["chill touch", "spare the dying", "thaumaturgy"],
@@ -706,8 +703,8 @@ ClassSubList["speaker of flames"] = {
 				"I learn the Control Flames, Fire Bolt, and Produce Flame cantrips",
 				"I learn the Ignan dialect of the Primordial language, and proficiency in an artisan's tool"
 			]),
-			eval : "AddLanguage('Ignan', 'Shaman (Blessing of Flame)'); AddTool('Type of artisan\\'s tools', 'Shaman (Blessing of Flame)');", 
-			removeeval : "RemoveLanguage('Ignan', 'Shaman (Blessing of Flame)'); RemoveTool('Type of artisan\\'s tools', 'Shaman (Blessing of Flame)');",
+			toolProfs : [["Artisan's tools", 1]],
+			languageProfs : ["Ignan"],
 			spellcastingBonus : {
 				name : "Blessings of the Flame",
 				spells : ["control flames", "fire bolt", "produce flame"],
@@ -785,8 +782,7 @@ ClassSubList["speaker of stones"] = {
 				"I learn the Magic Stone, Mold Earth, and Thorn Whip cantrips",
 				"I learn the Terran dialect of the Primordial language, and gain proficiency in Athletics"
 			]),
-			eval : "AddLanguage('Terran', 'Shaman (Blessing of Stone)');",
-			removeeval : "RemoveLanguage('Terran', 'Shaman (Blessing of Stone)');",
+			languageProfs : ["Terran"],
 			spellcastingBonus : {
 				name : "Blessings of the Stone",
 				spells : ["magic stone", "mold earth", "thorn whip"],
@@ -855,8 +851,7 @@ ClassSubList["speaker of waters"] = {
 				"I learn the Acid Splash, Frostbite, and Shape Water cantrips",
 				"I learn the Aquan dialect of the Primordial language, and proficiency in Investigation"
 			]),
-			eval : "AddLanguage('Aquan', 'Shaman (Blessing of Waters)');",
-			removeeval : "RemoveLanguage('Aquan', 'Shaman (Blessing of Waters)');",
+			languageProfs : ["Aquan"],
 			spellcastingBonus : {
 				name : "Blessings of the Waters",
 				spells : ["acid splash", "frostbite", "shape water"],
@@ -936,8 +931,7 @@ ClassSubList["speaker of winds"] = {
 				"I learn the Gust, Lashing Wind, and Shocking Grasp cantrips",
 				"I learn the Auran dialect of the Primordial language, and gain proficiency in Acrobatics"
 			]),
-			eval : "AddLanguage('Auran', 'Shaman (Blessing of the Wind)');",
-			removeeval : "RemoveLanguage('Auran', 'Shaman (Blessing of the Wind)');",
+			languageProfs : ["Auran"],
 			spellcastingBonus : {
 				name : "Blessings of the Wind",
 				spells : ["gust", "lashing wind", "shocking grasp"],

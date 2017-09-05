@@ -18,7 +18,7 @@
 				
 	Code by:	Darryl Cook & MorePurpleMoreBetter
 				Order of the Lycan code by MorePurpleMoreBetter
-	Date:		2017-09-03 (sheet v12.998)
+	Date:		2017-09-05 (sheet v12.998)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 	
@@ -35,6 +35,10 @@ ClassList["blood hunter"] = {
 	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 	saves : ["Str", "Wis"],
 	skills : ["\n\n" + toUni("Blood Hunter") + ": Choose two from Acrobatics, Arcane, Athletics, Insight, Investigation, and Survival."],
+	toolProfs : {
+		primary : ["Alchemist's supplies"],
+		secondary : ["Alchemist's supplies"]
+	},
 	tools : ["Alchemist's supplies", "Alchemist's supplies"],
 	armor : [
 		[true, true, false, false],

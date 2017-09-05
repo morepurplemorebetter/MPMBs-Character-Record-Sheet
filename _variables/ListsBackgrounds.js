@@ -63,7 +63,7 @@ var BackgroundList = {
 			"I am pessimistic and distrustful of strangers.",
 			"Once I choose an objective, I become so single minded that the rest of my life fades into the background."
 		],
-		languages : ["+2 from "],
+		languageProfs : [2],
 		variant : ["faction agent"],
 		lifestyle : "modest"
 	},
@@ -137,7 +137,7 @@ var BackgroundList = {
 			"Sleight-of-hand cons",
 			"Sell junk as expensive necessities"
 		],
-		tools : ["Disguise kit", "Forgery kit"],
+		toolProfs : ["Disguise kit", "Forgery kit"],
 		variant : [],
 		lifestyle : "comfortable",
 	},
@@ -211,7 +211,7 @@ var BackgroundList = {
 			"Smuggler",
 			"Spy"
 		],
-		tools : ["A type of gaming set", "Thieves' tools"],
+		toolProfs : [["Gaming set", 1], ["Thieves' tools", "Dex"]],
 		variant : ["urban bounty hunter"],
 		lifestyle : "poor"
 	},
@@ -287,7 +287,7 @@ var BackgroundList = {
 			"Storyteller",
 			"Tumbler"
 		],
-		tools : ["Disguise kit", "One musical instrument"],
+		toolProfs : ["Disguise kit", ["Musical instrument", 1]],
 		variant : ["gladiator"],
 		lifestyle : "modest",
 	},
@@ -366,7 +366,7 @@ var BackgroundList = {
 			"A magical creature gave me a blessing or insight",
 			"I rose to leadership in a lord's army"
 		],
-		tools : ["Type of artisan's tools", "Vehicles (land)"],
+		toolProfs : [["Artisan's tools", 1], "Vehicles (land)"],
 		variant : ["inheritor"],
 		lifestyle : "modest"
 	},
@@ -454,8 +454,8 @@ var BackgroundList = {
 			"Weavers and dyers",
 			"Woodcarvers, coopers, and bowyers"
 		],
-		tools : ["Type of artisan's tools"],
-		languages : ["+1 from "],
+		toolProfs : [["Artisan's tools", 1]],
+		languageProfs : [1],
 		variant : ["clan crafter", "courtier", "guild merchant"],
 		lifestyle : "comfortable"
 	},
@@ -531,8 +531,8 @@ var BackgroundList = {
 			"Caretaker of an ancient ruin or relic",
 			"Pilgrim in search of a thing of spiritual significance"
 		],
-		tools : ["Herbalism kit"],
-		languages : ["+1 from "],
+		toolProfs : ["Herbalism kit"],
+		languageProfs : [1],
 		variant : [],
 		lifestyle : "poor",
 	},
@@ -597,8 +597,8 @@ var BackgroundList = {
 			"In fact, the world does revolve around me.",
 			"By my words and actions, I often bring shame to my family."
 		],
-		tools : ["Type of gaming set"],
-		languages : ["+1 from "],
+		toolProfs : [["Gaming set", 1]],
+		languageProfs : [1],
 		variant : ["knight", "waterdhavian noble"],
 		lifestyle : "wealthy",
 	},
@@ -674,8 +674,8 @@ var BackgroundList = {
 			"Hunter-gatherer",
 			"Tribal marauder"
 		],
-		tools : ["Type of musical instrument"],
-		languages : ["+1 from "],
+		toolProfs : [["Musical instrument", 1]],
+		languageProfs : [1],
 		variant : ["uthgardt tribe member"],
 		lifestyle : "poor"
 	},
@@ -752,7 +752,7 @@ var BackgroundList = {
 			"Wizard's apprentice",
 			"Scribe"
 		],
-		languages : ["+2 from "],
+		languageProfs : [2],
 		variant : ["cloistered scholar"],
 		lifestyle : "modest"
 	},
@@ -818,7 +818,7 @@ var BackgroundList = {
 			"I can't help but pocket loose coins and other trinkets I come across.",
 			"My pride will probably lead to my destruction."
 		],
-		tools : ["Navigator's tools", "Vehicles (water)"],
+		toolProfs : ["Navigator's tools", "Vehicles (water)"],
 		variant : ["pirate"],
 		lifestyle : "modest",
 	},
@@ -892,7 +892,7 @@ var BackgroundList = {
 			"Standard-bearer",
 			"Support staff"
 		],
-		tools : ["Type of gaming set", "Vehicles (land)"],
+		toolProfs : [["Gaming set", 1], "Vehicles (land)"],
 		variant : ["city watch", "investigator", "knight of the order", "mercenary veteran"],
 		lifestyle : "modest"
 	},
@@ -959,7 +959,7 @@ var BackgroundList = {
 			"It's not theft if I have more use for it than someone else.",
 			"People who are incapable of taking care of themselves get what they deserve."
 		],
-		tools : ["Disguise kit", "Thieves' tools"],
+		toolProfs : ["Disguise kit", ["Thieves' tools", "Dex"]],
 		variant : [],
 		lifestyle : "modest",
 	},
@@ -1034,8 +1034,8 @@ var BackgroundList = {
 			"Sightseer",
 			"Wanderer"
 		],
-		tools : ["Gaming set or musical instrument"],
-		languages : ["+1 from "],
+		toolProfs : [["Gaming set or musical instrument", 1]],
+		languageProfs : [1],
 		variant : [],
 		lifestyle : "modest"
 	},
@@ -1047,7 +1047,7 @@ var BackgroundList = {
 		source : ["CoS", 209],
 		skills : "",
 		skillstxt : "Choose two from Arcana, Investigation, Religion, and Survival",
-		languages : ["+1 from "],
+		languageProfs : [1],
 		gold : 0,
 		equipleft : [
 			["Chest, with:", "", 25],
@@ -1167,10 +1167,7 @@ var BackgroundList = {
 			"My desire for vengeance often gets me into trouble",
 			"I am spendthrift, and share my wealth with the patrons of my favorite tavern."
 		],
-		tools : [
-			"Disguise Kit",
-			"Type of artisan's tools or gaming set"
-		],
+		toolProfs : ["Disguise Kit", ["Artisan's tools or gaming set", 1]],
 		variant : [],
 		lifestyle : "modest"
 	},
@@ -1179,8 +1176,7 @@ var BackgroundList = {
 		name : "Dragon Casualty",
 		source : ["AL:CoS", 3],
 		skills : ["Intimidation", "Survival"],
-		languages : ["Draconic"],
-		tools : ["Based on my origin"],
+		toolProfs : ["Based on my origin"],
 		gold : 5,
 		equipleft : [
 			["Loaf of moldy bread", "", 1],
@@ -1251,6 +1247,7 @@ var BackgroundList = {
 			"I am paranoid and overly suspicious of others. Anyone may be an agent of the Maimed Virulence.",
 			"Once I make up my mind, I follow my chosen course of action regardless of the consequences."
 		],
+		languageProfs : ["Draconic"],
 		variant : [],
 		lifestyle : "wretched"
 	},
@@ -1259,7 +1256,7 @@ var BackgroundList = {
 		name : "Iron Route Bandit",
 		source : ["AL:CoS", 5],
 		skills : ["Animal Handling", "Stealth"],
-		tools : ["Type of gaming set", "Vehicles (land)"],
+		toolProfs : [["Gaming set", 1], "Vehicles (land)"],
 		gold : 5,
 		equipleft : [
 			["Backpack, with:", "", 5],
@@ -1325,7 +1322,7 @@ var BackgroundList = {
 		name : "Phlan Insurgent",
 		source : ["AL:CoS", 6],
 		skills : ["Stealth", "Survival"],
-		tools : ["Type of artisan's tools", "Vehicles (land)"],
+		toolProfs : [["Artisan's tools", 1], "Vehicles (land)"],
 		gold : 5,
 		equipleft : [
 			["Caltrops", 20, 0.1],
@@ -1398,7 +1395,7 @@ var BackgroundList = {
 		name : "Stojanow Prisoner",
 		source : ["AL:CoS", 8],
 		skills : ["Deception", "Perception"],
-		tools : ["Type of gaming set", "Thieves' tools"],
+		toolProfs : [["Gaming set", 1], ["Thieves' tools", "Dex"]],
 		gold : 10,
 		equipleft : [
 			["Small knife", "", 0.25],
@@ -1451,8 +1448,7 @@ var BackgroundList = {
 		name : "Ticklebelly Nomad",
 		source : ["AL:CoS", 9],
 		skills : ["Animal Handling", "Nature"],
-		languages : ["Giant"],
-		tools : ["Herbalism Kit"],
+		toolProfs : ["Herbalism Kit"],
 		gold : 5,
 		equipleft : [
 			["Herbalism kit", "", 3],
@@ -1498,6 +1494,7 @@ var BackgroundList = {
 			"I am overly protective of nature, sometimes to the detriment of my companions and myself.",
 			"My lack of worldliness often proves my undoing in social, commercial, and hostile situations."
 		],
+		languageProfs : ["Giant"],
 		variant : [],
 		lifestyle : "poor"
 	},
@@ -1565,8 +1562,8 @@ var BackgroundList = {
 			"I am a moocher. I am so used to others providing for me that I have come to expect everyone to do it.",
 			"I believe the gods have cursed me, my family, and all of the Cormanthor refugees. We are all doomed, doomed I tell you!"
 		],
-		tools : ["Type of artisan's tools"],
-		languages : ["Elvish"],
+		toolProfs : [["Artisan's tools", 1]],
+		languageProfs : ["Elvish"],
 		variant : [],
 		lifestyle : "poor"
 	},
@@ -1632,7 +1629,7 @@ var BackgroundList = {
 			"I am still very uncomfortable wearing nice clothes, sleeping in a warm bed, and eating fine food.",
 			"I do not trust anyone who has not had a hard life."
 		],
-		tools : ["Thieves' tools", "Type of musical instrument"],
+		toolProfs : [["Thieves' tools", "Dex"], ["Musical instrument", 1]],
 		variant : [],
 		lifestyle : "poor"
 	},
@@ -1696,8 +1693,7 @@ var BackgroundList = {
 			"I am lazy. I want others to take care of everything.",
 			"I am overconfident. I overestimate my abilities."
 		],
-
-		tools : ["Vehicles (land)", "Vehicles (water)"],
+		toolProfs : ["Vehicles (land)", "Vehicles (water)"],
 		variant : [],
 		lifestyle : "wealthy"
 	},
@@ -1761,8 +1757,8 @@ var BackgroundList = {
 			"I am greedy. There Isn't much I won't do for money.",
 			"I'm an informant for the Red Plumes. They let me continue my activities, so long as I pass them information about illegal activity in Hillsfar."
 		],
-		tools : ["Forgery kit"],
-		languages : ["+1 racial from "],
+		toolProfs : ["Forgery kit"],
+		languageProfs : [1],
 		variant : [],
 		lifestyle : "modest"
 	},
@@ -1827,7 +1823,7 @@ var BackgroundList = {
 			"I am struggling with maintaining my secret identity. I subconsciously want to get caught and therefore sometimes let my secret identity slip.",
 			"Years of successfully deceiving others have made me cocky. I think no one can see through my lies."
 		],
-		tools : ["Disguise kit", "Forgery kit"],
+		toolProfs : ["Disguise kit", "Forgery kit"],
 		variant : [],
 		lifestyle : "modest"
 	},
@@ -1893,8 +1889,8 @@ var BackgroundList = {
 			"I always enjoy a good mug of ale … or five.",
 			"I know what I do is wrong, but am afraid to speak up about it."
 		],
-		tools : ["Forgery kit"],
-		languages : ["Netherese"],
+		toolProfs : ["Forgery kit"],
+		languageProfs : ["Netherese"],
 		variant : [],
 		lifestyle : "moderate"
 	},
@@ -1959,8 +1955,8 @@ var BackgroundList = {
 			"I always enjoy a good mug of ale … or five to cover up my past.",
 			"I speak for the First Lord of Hillsfar and make sure everyone knows it."
 		],
-		tools : ["Thieves' tools"],
-		languages : ["Elvish"],
+		toolProfs : [["Thieves' tools", "Dex"]],
+		languageProfs : ["Elvish"],
 		variant : [],
 		lifestyle : "moderate"
 	},
@@ -2027,8 +2023,8 @@ var BackgroundList = {
 			"Once I decide on a course of action, I do not waiver.",
 			"I like to explore, and my curiosity will sometimes get me into trouble."
 		],
-		tools : ["Vehicles (land)"],
-		languages : ["+1 from "],
+		toolProfs : ["Vehicles (land)"],
+		languageProfs : [1],
 		variant : [],
 		lifestyle : "poor"
 	},
@@ -2094,7 +2090,7 @@ var BackgroundList = {
 			"I am obsessed with getting rich. I always have a scheme brewing for making it big.",
 			"I'm afraid of the dark."
 		],
-		languages : ["Dwarvish", "Undercommon"],
+		languageProfs : ["Dwarvish", "Undercommon"],
 		variant : [],
 		lifestyle : "poor"
 	},
@@ -2160,7 +2156,7 @@ var BackgroundList = {
 			"I almost always cheat. I can't help myself.",
 			"I am a secret informant for the Hawks. I send them reports about everything I see and hear, even what my friends and allies are up to."
 		],
-		tools : ["A type of gaming set", "Vehicles (water)"],
+		toolProfs : [["Gaming set", 1], "Vehicles (water)"],
 		variant : [],
 		lifestyle : "poor"
 	},
@@ -2224,7 +2220,7 @@ var BackgroundList = {
 			"My family has lost everything. I must keep up appearances, lest we become a laughingstock.",
 			"I have no artistic sense. I hide that fact behind extreme opinons and have become a trendsetter."
 		],
-		tools : ["Type of artisan's tools", "Type of musical instrument"],
+		toolProfs : [["Artisan's tools", 1], ["Musical instrument", 1]],
 		variant : [],
 		lifestyle : "wealthy"
 	},
@@ -2289,8 +2285,8 @@ var BackgroundList = {
 			"I am unable to keep secrets. A secret is just an untold story.",
 			"When something goes wrong, it's never my fault."
 		],
-		tools : ["Type of artisan's tools"],
-		languages : ["+1 from "],
+		toolProfs : [["Artisan's tools", 1]],
+		languageProfs : [1],
 		variant : [],
 		lifestyle : "modest"
 	},
@@ -2330,7 +2326,7 @@ var BackgroundSubList = {
 			"Caravan masters",
 			"Shopkeepers"
 		],
-		tools : ["Navigator's tools (or language)"]
+		toolProfs : ["Navigator's tools (or language)"]
 	},
 	"knight" : {
 		regExpSearch : /^(?!.*order)(?=.*knight).*$/i,
@@ -2365,8 +2361,8 @@ var BackgroundSubList = {
 		],
 		feature : "Watcher's Eye",
 		extra : "",
-		tools : "",
-		languages : ["+2 from "],
+		toolProfs : "",
+		languageProfs : [2],
 		lifestyle : "modest"
 	},
 	"clan crafter" : {
@@ -2384,7 +2380,7 @@ var BackgroundSubList = {
 		],
 		feature : "Respect of the Stout Folk",
 		extra : "",
-		languages : ["Dwarvish"],
+		languageProfs : ["Dwarvish"],
 		lifestyle : "comfortable"
 	},
 	"cloistered scholar" : {
@@ -2407,7 +2403,7 @@ var BackgroundSubList = {
 		],
 		feature : "Library Access",
 		extra : ["Name your Library"],
-		languages : ["+2 from "],
+		languageProfs : [2],
 		lifestyle : "modest"
 	},
 	"courtier" : {
@@ -2423,8 +2419,8 @@ var BackgroundSubList = {
 		],
 		feature : "Court Functionary",
 		extra : "",
-		tools : "",
-		languages : ["+2 from "],
+		toolProfs : "",
+		languageProfs : [2],
 		lifestyle : "comfortable"
 	},
 	"faction agent" : {
@@ -2451,7 +2447,7 @@ var BackgroundSubList = {
 			"The Lord's Alliance",
 			"The Zhentarim"
 		],
-		languages : ["+2 from "],
+		languageProfs : [2],
 		lifestyle : "modest"
 	},
 	"inheritor" : {
@@ -2480,8 +2476,8 @@ var BackgroundSubList = {
 			"Written story, song, poem, or secret",
 			"Tattoo or other body marking"
 		],
-		tools : ["Gaming set or musical instrument"],
-		languages : ["+1 from "],
+		toolProfs : [["Gaming set or musical instrument", 1]],
+		languageProfs : [1],
 		lifestyle : "wealthy"
 	},
 	"investigator" : {
@@ -2498,8 +2494,8 @@ var BackgroundSubList = {
 		],
 		feature : "Watcher's Eye",
 		extra : "",
-		tools : "",
-		languages : ["+2 from "]
+		toolProfs : "",
+		languageProfs : [2]
 	},
 	"knight of the order" : {
 		regExpSearch : /^(?=.*knight)(?=.*order).*$/i,
@@ -2514,8 +2510,8 @@ var BackgroundSubList = {
 		],
 		feature : "Knightly Regard",
 		extra : ["Name your Knightly Order"],
-		tools : ["Gaming set or musical instrument"],
-		languages : ["+1 from "],
+		toolProfs : [["Gaming set or musical instrument", 1]],
+		languageProfs : [1],
 		lifestyle : "comfortable"
 	},
 	"mercenary veteran" : {
@@ -2546,8 +2542,8 @@ var BackgroundSubList = {
 		],
 		feature : "Ear to the Ground",
 		extra : "",
-		tools : ["2 of: gaming set, instrument, thieves' tools"],
-		lifestyle : "poor",	
+		toolProfs : [["Gaming set, instrument, or thieves' tools", 2]],
+		lifestyle : "poor"
 	},
 	"uthgardt tribe member" : {
 		regExpSearch : /^(?=.*(uthgardt|barbarian|nomad|clan))(?=.*tribe)(?=.*member).*$/i,
@@ -2561,9 +2557,9 @@ var BackgroundSubList = {
 		],
 		feature : "Uthgardt Heritage",
 		extra : "",
-		tools : ["Artisan's tools or musical instrument"],
-		languages : ["+1 from "],
-		lifestyle : "poor",
+		toolProfs : [["Artisan's tools or musical instrument", 1]],
+		languageProfs : [1],
+		lifestyle : "poor"
 	},
 	"waterdhavian noble" : {
 		regExpSearch : /^(?=.*(waterdhavian|waterdeep))(?=.*noble).*$/i,
@@ -2580,8 +2576,8 @@ var BackgroundSubList = {
 			["Purse (with coins)", "", 1],
 		],
 		feature : "Kept in Style",
-		tools : ["Gaming set or musical instrument"],
-		languages : ["+1 from "],
+		toolProfs : [["Gaming set or musical instrument", 1]],
+		languageProfs : [1],
 		lifestyle : "wealthy"
 	},
 }

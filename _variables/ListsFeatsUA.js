@@ -214,8 +214,9 @@ FeatsList["alchemist"] = {
 	improvements : "Alchemist (feat): +1 Intelligence;",
 	scores : [0, 0, 0, 1, 0, 0],
 	action : ["action", " (identify potion)"],
-	eval : "AddTool('Alchemist\\'s Supplies', 'the Alchemist feat'); if ((/(alchemist|alchemy).*(supplies|kit)/i).test(What('Too Text'))) { Checkbox('Too Exp', true); } else if (What('Too') === '') {Checkbox('Too Prof', true); Value('Too Text', 'Alchemist Kit (Int)'); };",
-	removeeval : "RemoveTool('Alchemist\\'s Supplies', 'the Alchemist feat'); if ((/(alchemist|alchemy).*(supplies|kit)/i).test(What('Too Text'))) { if (tDoc.getField('Too Exp').isBoxChecked(0)) { Checkbox('Too Exp', false); } else { tDoc.resetForm(['Too Prof', 'Too Exp', 'Too Text']); }; };"
+	toolProfs : [["Alchemist's supplies", "Int"]],
+	eval : "if (CurrentProfs.tool[\"Alchemist's supplies\"] && (/(alchemist|alchemy).*(supplies|kit)/i).test(What('Too Text'))) { Checkbox('Too Exp', true); }; ",
+	removeeval : "if (CurrentProfs.tool[\"Alchemist's supplies\"] && (/(alchemist|alchemy).*(supplies|kit)/i).test(What('Too Text'))) { Checkbox('Too Exp', false); }; "
 };
 FeatsList["burglar"] = {
 	name : "Burglar",
@@ -223,8 +224,9 @@ FeatsList["burglar"] = {
 	description : "I gain proficiency with thieves' tools, or expertise with them if I'm already proficient. [+1 Dexterity]",
 	improvements : "Burglar (feat): +1 Dexterity;",
 	scores : [0, 1, 0, 0, 0, 0],
-	eval : "if ((/thieves.*tools/i).test(What('Too Text'))) { Checkbox('Too Exp', true); }; AddTool('Thieves\\' Tools', 'the Burglar feat'); ",
-	removeeval : "if ((/thieves.*tools/i).test(What('Too Text'))) { if (tDoc.getField('Too Exp').isBoxChecked(0)) { Checkbox('Too Exp', false); } else { RemoveTool('Thieves\\' Tools', 'the Burglar feat'); tDoc.resetForm(['Too Prof', 'Too Exp', 'Too Text']); }; };"
+	toolProfs : [["Thieves' tools", "Dex"]],
+	eval : "if (CurrentProfs.tool[\"Thieves' tools\"] && (/thieves.*tools/i).test(What('Too Text'))) { Checkbox('Too Exp', true); }; ",
+	removeeval : "if (CurrentProfs.tool[\"Thieves' tools\"] && (/thieves.*tools/i).test(What('Too Text'))) { Checkbox('Too Exp', false); }; "
 };
 FeatsList["gourmand"] = {
 	name : "Gourmand",
@@ -233,8 +235,9 @@ FeatsList["gourmand"] = {
 	improvements : "Gourmand (feat): +1 Constitution;",
 	scores : [0, 0, 1, 0, 0, 0],
 	action : ["action", " (inspect food)"],
-	eval : "AddTool('Cook\\'s Utensils', 'the Gourmand feat'); if ((/cook.*utensils/i).test(What('Too Text'))) { Checkbox('Too Exp', true); } else if (What('Too') === '') {Checkbox('Too Prof', true); Value('Too Text', 'Cook\\'s Utensils (Int)'); };",
-	removeeval : "RemoveTool('Cook\\'s Utensils', 'the Gourmand feat'); if ((/cook.*utensils/i).test(What('Too Text'))) { if (tDoc.getField('Too Exp').isBoxChecked(0)) { Checkbox('Too Exp', false); } else { tDoc.resetForm(['Too Prof', 'Too Exp', 'Too Text']); }; };"
+	toolProfs : [["Cook's utensils", "Int"]],
+	eval : "if (CurrentProfs.tool[\"Cook's utensils\"] && (/cook.*utensils/i).test(What('Too Text'))) { Checkbox('Too Exp', true); }; ",
+	removeeval : "if (CurrentProfs.tool[\"Cook's utensils\"] && (/cook.*utensils/i).test(What('Too Text'))) { Checkbox('Too Exp', false); }; "
 };
 FeatsList["master of disguise"] = {
 	name : "Master of Disguise",
@@ -243,8 +246,9 @@ FeatsList["master of disguise"] = {
 	improvements : "Master of Disguise (feat): +1 Charisma;",
 	scores : [0, 0, 0, 0, 0, 1],
 	action : ["action", " (don disguise)"],
-	eval : "AddTool('Disguise Kit', 'the Master of Disguise feat'); if ((/disguise.*kit/i).test(What('Too Text'))) { Checkbox('Too Exp', true); } else if (What('Too') === '') {Checkbox('Too Prof', true); Value('Too Text', 'Disguise Kit (Cha)'); };",
-	removeeval : "RemoveTool('Disguise Kit', 'the Master of Disguise feat'); if ((/disguise.*kit/i).test(What('Too Text'))) { if (tDoc.getField('Too Exp').isBoxChecked(0)) { Checkbox('Too Exp', false); } else { tDoc.resetForm(['Too Prof', 'Too Exp', 'Too Text']); }; };"
+	toolProfs : [["Disguise kit", "Cha"]],
+	eval : "if (CurrentProfs.tool['Disguise kit'] && (/disguise.*kit/i).test(What('Too Text'))) { Checkbox('Too Exp', true); }; ",
+	removeeval : "if (CurrentProfs.tool['Disguise kit'] && (/disguise.*kit/i).test(What('Too Text'))) { Checkbox('Too Exp', false); }; "
 };
 
 /*	the Feats for Skills Unearthed Arcana of 2017-04-17
@@ -712,8 +716,8 @@ FeatsList["prodigy"] = {
 	description : "I gain one skill proficiency of my choice, one tool proficiency of my choice, fluency in one language of my choice, and +1 to one ability score of my choice. [+1 to one ability score]",
 	improvements : "Prodigy (feat): +1 to one ability score of your choice;",
 	skills : "\n\n" + toUni("Prodigy (feat)") + ": Choose any one skill.",
-	eval : "AddTool('+1 from Prodigy feat', 'the Prodigy feat'); AddLanguage('+1 from Prodigy feat', 'the Prodigy feat');",
-	removeeval : "RemoveTool('+1 from Prodigy feat', 'the Prodigy feat'); RemoveLanguage('+1 from Prodigy feat', 'the Prodigy feat');"
+	languageProfs : [1],
+	toolProfs : [["Any tool", 1]]
 };
 FeatsList["second chance"] = {
 	name : "Second Chance",

@@ -129,72 +129,86 @@ ClassList["spell-less ranger"] = {
 			"aberrations" : {
 				name : "Aberrations",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"beasts" : {
 				name : "Beasts",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"celestials" : {
 				name : "Celestials",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"constructs" : {
 				name : "Constructs",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"dragons" : {
 				name : "Dragons",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"elementals" : {
 				name : "Elementals",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"fey" : {
 				name : "Fey",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"fiends" : {
 				name : "Fiends",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"giants" : {
 				name : "Giants",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"monstrosities" : {
 				name : "Monstrosities",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"oozes" : {
 				name : "Oozes",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"plants" : {
 				name : "Plants",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"undead" : {
 				name : "Undead",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"two races of humanoids" : {
 				name : "Two Races of Humanoids",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			}
 		},
 		"natural explorer" : {
@@ -403,7 +417,7 @@ ClassList["spell-less ranger"] = {
 			]),
 			additional : levels.map( function(n) {
 				if (n < 3) return "";
-				return "heals 1d6+" + Math.ceil(n/2);
+				return "heals " + Math.ceil(n/2) + "d6";
 			})
 		},
 		"primeval awareness" : {
@@ -531,8 +545,7 @@ ClassSubList["city domain"] = {
 			minlevel : 1,
 			description : "\n   " + "I gain proficiency with sidearms and land vehicles",
 			weapons : [false, false, ["Sidearms"]],
-			eval: "AddTool('Hacking Tools', 'City Domain');",
-			removeeval: "RemoveTool('Hacking Tools');"
+			toolProfs : ["Hacking tools"]
 		},
 		"subclassfeature1.2" : {
 			name : "Heart of the City",
@@ -605,8 +618,7 @@ ClassSubList["warlock-ghost in the machine"] = {
 			source : ["UA:MM", 2],
 			minlevel : 1,
 			description : "\n   " + "I am proficient with hacking tools and know the On/Off cantrip",
-			eval: "AddTool('Hacking Tools', 'City Domain');",
-			removeeval: "RemoveTool('Hacking Tools');",
+			toolProfs : ["Hacking tools"],
 			spellcastingBonus : {
 				name : "Bonus Cantrip (On/Off)",
 				spells : ["on/off"],
@@ -681,8 +693,7 @@ ClassSubList["technomancy"] = {
 			minlevel: 2,
 			description: "\n   " + "I gain proficiency with sidearms and hacking tools",
 			weapons : [false, false, ["Sidearms"]],
-			eval: "AddTool('Hacking Tools', 'Technomancer');",
-			removeeval: "RemoveTool('Hacking Tools');"
+			toolProfs : ["Hacking tools"]
 		},
 		"subclassfeature2.1": {
 			name: "Technological Savant",
@@ -746,7 +757,9 @@ ClassList["rune scribe"] = {
 	improvements : levels.map(function (n) {return 0}),
 	saves : ["", ""],
 	skills : [""],
-	tools : ["", ["Calligrapher's Supplies", "Mason's Tools", "Woodcarver's Tools"]],
+	toolProfs : {
+		secondary : ["Calligrapher's Supplies", "Mason's Tools", "Woodcarver's Tools"]
+	},
 	armor : [
 		[false, false, false, false]
 	],
@@ -1128,8 +1141,7 @@ ClassSubList["college of satire"] = {
 			description : "\n   " + "I gain proficiency with thieves' tools, sleight of hand, and one other skill of my choice",
 			skills : ["Sleight of Hand"],
 			skillstxt : "\n\n" + toUni("College of Satire") + ": Thieves' Tools, Sleight of Hand, and any one other skill.",
-			eval : "AddTool(\"Thieves' Tools\", \"Bard (College of Satire)\")",
-			removeeval : "RemoveTool(\"Thieves' Tools\", \"Bard (College of Satire)\")"
+			toolProfs : [["Thieves' tools", "Dex"]]
 		},
 		"subclassfeature3.1" : {
 			name : "Tumbling Fool",
@@ -1339,8 +1351,7 @@ ClassSubList["monster hunter"] = {
 			recovery : "long rest",			
 			description : "\n   " + "I can cast Detect Magic as a ritual and Protection from Evil & Good once per long rest" + "\n   " + "I gain the ability to speak one of the following languages: Abyssal, Celestial, or Infernal",
 			action : ["action", " (Prot vs. Evil/Good)"],
-			eval : "AddLanguage(\"Abyssal, Celestial, or Infernal\", \"Monster Hunter (Hunter's Mysticism)\");",
-			removeeval : "RemoveLanguage(\"Abyssal, Celestial, or Infernal\", \"Monster Hunter (Hunter's Mysticism)\");"
+			languageProfs : [["Abyssal, Celestial, or Infernal", 1]]
 		},
 		"subclassfeature7" : {
 			name : "Monster Slayer",
@@ -1594,8 +1605,7 @@ ClassList["rangerua"] = {
 				name : "Favored Enemy: Undead",
 				description : "\n   " + "I get a bonus to damage rolls with weapon attacks against undead" + "\n   " + "I have adv. on Wis (Survival) to track and Int checks to recall info about undead" + "\n   " + "I learn a language, typically one spoken by or associated with undead"
 			},
-			eval : "AddLanguage(\"+1 from Favored Enemy\", \"Ranger (Favored Enemy)\");",
-			removeeval : "RemoveLanguage(\"+1 from Favored Enemy\", \"Ranger (Favored Enemy)\");",
+			languageProfs : [1],
 			calcChanges : {
 				atkCalc : ["if (!isSpell && classes.known.rangerua && classes.known.rangerua.level && (/favou?red.{1,2}enemy/i).test(WeaponText)) { output.extraDmg += classes.known.rangerua.level < 6 ? 2 : 4; }; ", "If I include the words 'Favored Enemy' in the name or description of a weapon, it gets bonus damage, depending on my Ranger level."]
 			}
@@ -1710,8 +1720,7 @@ ClassList["rangerua"] = {
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against giants" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by giants",
 				savetxt : "Adv. vs. spells and abilities of giants"
 			},
-			eval : "AddLanguage(\"+1 from Greater Favored Enemy\", \"Ranger (Greater Favored Enemy)\");",
-			removeeval : "RemoveLanguage(\"+1 from Greater Favored Enemy\", \"Ranger (Greater Favored Enemy)\");"
+			languageProfs : [1]
 		},
 		"fleet of foot" : {
 			name : "Fleet of Foot",
@@ -2709,9 +2718,7 @@ ClassSubList["knight"] = {
 			source : ["UA:FMA", 2],
 			minlevel : 7,
 			description : "\n   " + "I gain proficiency with two skills or one language" + "\n   " + "I can choose the skills from: Animal Handling, History, Insight, Persuasion, and Religion",
-			skillstxt : "\n\n" + toUni("Knight") + ": Choose two from Animal Handling, History, Insight, Persuasion, and Religion. Alternatively, I learn one language.",
-			eval : "AddLanguage(\"+1 from Noble Cavalry\", \"being a Knight (Noble Cavalry) and not opting to learn two skill proficiencies.\");",
-			removeeval : "RemoveLanguage(\"+1 from Noble Cavalry\", \"being a Knight (Noble Cavalry) and not opting to learn two skill proficiencies.\");"
+			skillstxt : "\n\n" + toUni("Knight") + ": Choose two from Animal Handling, History, Insight, Persuasion, and Religion. Alternatively, I learn one language."
 		},
 		"subclassfeature10" : {
 			name : "Hold the Line",
@@ -2767,8 +2774,7 @@ ClassSubList["samurai"] = {
 			minlevel : 7,
 			description : "\n   " + "I can add my Wis modifier to any Cha check to persuade anyone of a high social station" + "\n   " + "I gain proficiency with one language and the History, Insight, or Persuasion skill",
 			skillstxt : "\n\n" + toUni("Samurai") + ": History, Insight, or Persuasion.",
-			eval : "AddLanguage(\"+1 from Elegant Courtier\", \"being a Samurai (Elegant Courtier)\");",
-			removeeval : "RemoveLanguage(\"+1 from Elegant Courtier\", \"being a Samurai (Elegant Courtier)\");"
+			languageProfs : [1]
 		},
 		"subclassfeature10" : {
 			name : "Unbreakable Will",
@@ -4505,8 +4511,7 @@ ClassSubList["druid-circle of the shepherd2"] = {
 				"I can talk with beasts, they understand me and I them, to the limit of their intelligence",
 				"This doesn't automatically make me friends with all beasts; Additionally, I learn Sylvan"
 			]),
-			eval : "AddLanguage('Sylvan', 'being a Druid (Circle of the Shepherd)');",
-			removeeval : "RemoveLanguage('Sylvan', 'being a Druid (Circle of the Shepherd)');"
+			languageProfs : ["Sylvan"]
 		},
 		"subclassfeature2.1" : {
 			name : "Spirit Totem",

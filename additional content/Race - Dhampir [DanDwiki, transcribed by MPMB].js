@@ -13,7 +13,7 @@
 				This is taken from DanDwiki (https://www.dandwiki.com/wiki/Dhampir_(5e_Race))
 				Please note that DanDwiki is renowned for having very unbalanced content
 	Code by:	MorePurpleMoreBetter
-	Date:		2017-07-16 (sheet v12.995)
+	Date:		2017-09-05 (sheet v12.998)
 */
 
 RaceList["dhampir"] = {
@@ -23,7 +23,7 @@ RaceList["dhampir"] = {
 	plural : "Dhampirs",
 	size : 3,
 	speed : [30, 20],
-	languages : ["Common", "+1 from Dhampir"],
+	languageProfs : ["Common", 1],
 	weapons : ["Vampire's Bite"],
 	vision : "Darkvision 120 ft; Sunlight Sensitivity",
 	age : " mature at roughly the same rate as humans, but do not age further after reaching maturity, and they do not die of old age",

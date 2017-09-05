@@ -14,7 +14,7 @@
 				This content is made by Erik J
 	Original:	Erik
 	Completed:	/u/pbfarmer
-	Date:		2017-06-12 (sheet v12.993)
+	Date:		2017-09-05 (sheet v12.998)
  
 	Code Version:	1.0
  
@@ -66,7 +66,10 @@ ClassList["dawnforgedcast-alchemist"] = {
 	die : 8,
 	saves : ["Con", "Int"],
 	skills : ["\n\n" + toUni("Alchemist") + ": Choose three from Arcana, History, Investigation, Medicine, Nature, Religion, and Sleight of Hand."],
-	tools : ["Alchemist's supplies + Herbalism or Poisoner", "Alchemist's supplies + Herbalism or Poisoner"],
+	toolProfs : {
+		primary : ["Alchemist's supplies", ["Herbalism or poisoner's kit", 1]],
+		secondary : ["Alchemist's supplies", ["Herbalism or poisoner's kit", 1]]
+	},
 	armor : [
 		[true, false, false, false],
 		[true, false, false, false]

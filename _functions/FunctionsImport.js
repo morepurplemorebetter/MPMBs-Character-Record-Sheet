@@ -718,11 +718,39 @@ function DirectImport(consoleTrigger) {
 		
 		//a function to add the 'new' languages, tools, resistances, actions
 		var addNotDefined = function(typeFlds, iterations) {
-			if (FromVersion <= 12.998) {
-				addNotDefinedOld(typeFlds, iterations);
-				return;
-			}
+			var functionAdd = function(typeAdd, input, replaceThis) {
+				switch (typeAdd) {
+					case "Language " :
+					case "Tool " :
+						AddLangTool(typeAdd, input, false, false, replaceThis);
+						break;
+					case "Resistance Damage Type " :
+						AddResistance(input, false, replaceThis);
+						break;
+					case "Action " :
+					case "Bonus Action " :
+					case "Reaction " :
+						AddAction(typeAdd, input, false, replaceThis);
+						break;
+				};
+			};
+			for (var i = 1; i <= iterations; i++) {
+				var fromFld = global.docFrom.getField(typeFlds + i);
+				if (!fromFld || !fromFld.value || fromFld.value === fromFld.defaultValue) continue;
+				if (FromVersion >= 12.998) {
+					if (fromFld.value !== fromFld.submitName) {
+						functionAdd(typeFlds, fromFld.value, fromFld.submitName);
+					};
+				} else { // can't use the submitName as it wasn't used before v12.998
+					var fromFldUNit = fromFld.userName && (/.*?\"(.*?)\".*/).test(fromFld.userName) ? fromFld.userName.replace(/.*?\"(.*?)\".*/, "$1") : (fromFld.userName ? fromFld.userName.replace(/.*?resistance to (.*?) was gained from.*/, "$1") : "");
+					var fromFldUNor = fromFld.userName ? fromFld.userName.replace(/.*?was gained from (.*?)\./, "$1") : "";
+					if (!fromFld.userName || fromFldUNit.toLowerCase() !== fromFld.value.toLowerCase()) {
+						functionAdd(typeFlds, fromFld.value, fromFldUNit);
+					};
+				};
+			};
 		};
+/*
 		var addNotDefinedOld = function(typeFlds, iterations) { //the way this function worked before version 12.998
 			var functionEval = false;
 			switch (typeFlds) {
@@ -746,14 +774,15 @@ function DirectImport(consoleTrigger) {
 			for (var i = 1; i <= iterations; i++) {
 				var fromFld = global.docFrom.getField(typeFlds + i);
 				if (fromFld && fromFld.value && fromFld.value !== fromFld.defaultValue) {
-					var fromFldUNit = fromFld.userName && (/.*?\"(.*?)\".*/).test(fromFld.userName) ? fromFld.userName.replace(/.*?\"(.*?)\".*/, "$1") : (fromFld.userName ? fromFld.userName.replace(/.*?resistance to (.*?) was gained from.*/, "$1") : "");
-					var fromFldUNor = fromFld.userName ? fromFld.userName.replace(/.*?was gained from (.*?)\./, "$1") : "";
+*/ //					var fromFldUNit = fromFld.userName && (/.*?\"(.*?)\".*/).test(fromFld.userName) ? fromFld.userName.replace(/.*?\"(.*?)\".*/, "$1") : (fromFld.userName ? fromFld.userName.replace(/.*?resistance to (.*?) was gained from.*/, "$1") : "");
+/*					var fromFldUNor = fromFld.userName ? fromFld.userName.replace(/.*?was gained from (.*?)\./, "$1") : "";
 					if (!fromFld.userName || fromFldUNit.toLowerCase() !== fromFld.value.toLowerCase()) {
 						eval(functionEval + fromFld.value.replace(/"/g, "\\\"") + "\", \"" + fromFldUNor.replace(/"/g, "\\\"") + "\", \"" + fromFldUNit.replace(/"/g, "\\\"") + "\");");
-					}
-				}
-			}
+					};
+				};
+			};
 		};
+*/
 		//languages and tools
 		var nmbrFlds = global.docFrom.FieldNumbers.langstools ? global.docFrom.FieldNumbers.langstools : FieldNumbers.langstools;
 		addNotDefined("Language ", nmbrFlds); addNotDefined("Tool ", nmbrFlds);
@@ -1132,15 +1161,20 @@ function DirectImport(consoleTrigger) {
 			aText += ".\n\n"
 		};
 		aText += toUni("Some manual additions might not have transferred over");
-		aText += "\nSome things that you adjusted manually on your old sheet might not have transfered to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.";
+		aText += "\nSome things that you adjusted manually on your old sheet might not have transferred to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.";
 		aText += "\n\n" + toUni("The following things should be considered:");
 		aText += "\n  > Things you added to drop-down menus with Custom Scripts are no longer there;";
 		aText += "\n  > The 'Class Features' text is now solely what the automation added;";
 		aText += "\n  > The 'Notes' section on the 3rd page is now solely what the automation added;";
 		aText += "\n  > Attack and Ammunition attributes are now solely what the automation set;";
-		aText += "\n  > Companion pages have been copied exactly, not using any changes in automation;";
+		aText += "\n  > Companion pages have been copied exactly, not using any updates in automation;";
 		aText += "\n  > Wild Shapes have been re-calculated, manual changes have been ignored;";
 		aText += sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "\n  > Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "\n  > No spell sheets have been generated.";
+		if (FromVersion < 12.998) {
+			aText += "\n\n";
+			aText += toUni("Importing from older version, before v12.998");
+			aText += "\nSome proficiencies you adjusted manually, like languages and tools, might not have transferred over correctly. This is because the new version of the sheet uses a different way of setting those proficiencies with a choice.";
+		};
 		app.alert({
 			cMsg : aText,
 			nIcon : 3,

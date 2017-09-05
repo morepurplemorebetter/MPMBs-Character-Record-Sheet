@@ -13,7 +13,7 @@
 				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/208784/)
 				This background is made by Damion Meany
 	Code by:	Erik J
-	Date:		2017-06-12 (sheet v12.993)
+	Date:		2017-09-05 (sheet v12.998)
 
 	Please support the creator of this content (Damion Meany) and download his material from DM Guild: http://www.dmsguild.com/browse.php?author=Damion%20Meany
 */
@@ -79,7 +79,7 @@ BackgroundList["primitive tribe member"] = {
 		"I am insecure since my tribe appears weak compared to larger, more modern societies."
 	],
 	variant : [],
-	tools : ["+2 from Primitive Tribal Member"],
+	toolProfs : [["Any tool", 2],
 	lifestyle : "modest"
 };
  

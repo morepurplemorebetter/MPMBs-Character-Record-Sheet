@@ -11,7 +11,7 @@
 	Subject:	Races
 	Effect:		This script adds a race, Merfolk, with 4 subraces: Ocean Merfolk, River Merfolk, Deep Merfolk, and Awakened Merrow
 	Code by:	Sarixis
-	Date:		2016-07-05 (sheet v11.55)
+	Date:		2017-09-05 (sheet v12.998)
 */
 
 RaceList["ocean merfolk"] = {
@@ -21,7 +21,7 @@ RaceList["ocean merfolk"] = {
 	plural : "Ocean Merfolk",
 	size : 3,
 	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
-	languages : ["Common", "Aquan"],
+	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Perception", "Performance"],
 	age : " reach adulthood in their late teens and live around 100 years",
@@ -69,7 +69,7 @@ RaceList["river merfolk"] = {
 	plural : "River Merfolk",
 	size : 3,
 	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
-	languages : ["Common", "Aquan"],
+	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Animal Handling", "Perception"],
 	age : " reach adulthood in their late teens and live around 100 years",
@@ -110,7 +110,7 @@ RaceList["deep merfolk"] = {
 	plural : "Deep Merfolk",
 	size : 3,
 	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
-	languages : ["Common", "Aquan"],
+	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Animal Handling", "Perception"],
 	age : " reach adulthood in their late teens and live around 100 years",
@@ -152,7 +152,7 @@ RaceList["awakened merrow"] = {
 	plural : "Awakened Merrow",
 	size : 3,
 	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
-	languages : ["Common", "Aquan"],
+	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Perception", "Religion"],
 	age : " reach adulthood in their late teens and live around 100 years",

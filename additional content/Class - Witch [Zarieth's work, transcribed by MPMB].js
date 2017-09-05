@@ -16,7 +16,7 @@
 				This code is based on v0.4 of /u/Zarieth's work (2017-03-06)
 					
 	Code by:	MorePurpleMoreBetter
-	Date:		2017-03-10 (sheet v12.998)
+	Date:		2017-09-05 (sheet v12.998)
 */
 
 //first make the sheet know which spells are witch spells
@@ -66,7 +66,7 @@ ClassList["witch (zarieth)"] = {
 	die : 6,
 	saves : ["Wis", "Cha"],
 	skills : ["\n\n" + toUni("Witch") + ": Choose two from Arcana, Animal Handling, History, Insight, Medicine, Nature, and Religion."],
-	tools : ["Herbalism kit"],
+	toolProfs : { primay : ["Herbalism kit"] },
 	armor : [
 		[true, false, false, false]
 	],

@@ -13,7 +13,7 @@
 				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/171771)
 				This background is made by James Introcaso
 	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
-	Date:		2017-02-13 (sheet v12.81)
+	Date:		2017-09-05 (sheet v12.998)
 	
 	Please support the creator of this content (James Introcaso) and download their material from DM Guild: http://www.dmsguild.com/browse.php?author=James%20Introcaso
 */
@@ -80,9 +80,9 @@ BackgroundList["legendary lineage"] = {
 			"I put down others to boost my own confidence.",
 			"If something is fashionable, I will avoid it at all costs."
 		],
-		languages : ["+1 from "],
+		languageProfs : [1],
 		variant : [],
-		tools : ["Vehicles (land)"],
+		toolProfs : ["Vehicles (land)"],
 		lifestyle : "modest"
 };
 
