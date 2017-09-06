@@ -281,7 +281,7 @@ function RemoveTooltips() {
 	UpdateTooltips();
 };
 
-function AddAction(actiontype, action, actiontooltip, replaceThis) {
+function AddAction(actiontype, action, actiontooltip, replaceThis, replaceMatch) {
 	var TheAction = actiontype.toLowerCase();
 	if (TheAction.indexOf("bonus") !== -1) {
 		var field = "Bonus Action ";
@@ -293,14 +293,15 @@ function AddAction(actiontype, action, actiontooltip, replaceThis) {
 	var numberOfFields = field === "Action " ? FieldNumbers.trueactions : FieldNumbers.actions;
 	var tempString = actiontooltip ? "The \"" + action + "\" " + field.toLowerCase() + "was gained from:\n\u2022 " + actiontooltip + "." : "";
 	var doReplace = false;
-	for (var n = 1; n <= 2; n++) {
+	for (var n = 1; n <= 3; n++) {
 		for (var i = 1; i <= numberOfFields; i++) {
 			var next = tDoc.getField(field + i);
 			if (n === 1 && (next.value.toLowerCase().indexOf(action.toLowerCase()) !== -1 || next.submitName === action)) {
 				return;
-			} else if (n === 1 && replaceThis && next.value.toLowerCase().indexOf(replaceThis.toLowerCase()) !== -1) {
+			} else if (n === 2 && replaceThis && (next.submitName == replaceThis || next.value == replaceThis || (replaceMatch && replaceThis.toLowerCase().indexOf(next.value.toLowerCase()) !== -1))) {
 				doReplace = i;
-			} else if (n === 2 && ((doReplace && doReplace === i) || (!doReplace && next.value === ""))) {
+				break;
+			} else if (n === 3 && ((doReplace && doReplace === i) || (!doReplace && next.value === ""))) {
 				next.value = action;
 				if (!replaceThis) {
 					next.userName = tempString;
@@ -331,7 +332,7 @@ function RemoveAction(actiontype, action) {
 	};
 };
 
-function AddResistance(input, tooltip, replaceThis) {
+function AddResistance(input, tooltip, replaceThis, replaceMatch) {
 	var useful = undefined;
 	var usefulreplace = undefined;
 	var inputCl = clean(input, false, true);
@@ -363,7 +364,7 @@ function AddResistance(input, tooltip, replaceThis) {
 					next.submitName = inputCl;
 				};
 				return;
-			} else if (n === 1 && replaceThis && (next.submitName == replaceThisString || next.value == replaceThisString || (usefulreplace !== undefined && next.currentValueIndices === usefulreplace))) {
+			} else if (n === 1 && replaceThis && (next.submitName == replaceThisString || next.value == replaceThisString || (usefulreplace !== undefined && next.currentValueIndices === usefulreplace) || (replaceMatch && replaceThisString.toLowerCase().indexOf(next.value.toLowerCase()) !== -1))) {
 				doReplace = k;
 			} else if (n === 2 && (doReplace === k || (!doReplace && clean(next.value) === ""))) {
 				if (useful !== undefined) {
@@ -4203,7 +4204,7 @@ function BackgroundOptions() {
 };
 
 // add a tool or a language (typeLT = "tool" || "language"); uniqueID is the whole submitname for something that has a choice, it is the input + ID
-function AddLangTool(typeLT, input, tooltip, uniqueID, replaceThis) {
+function AddLangTool(typeLT, input, tooltip, uniqueID, replaceThis, replaceMatch) {
 	switch (clean(typeLT, false, true).toLowerCase()) {
 		case "language" :
 			var fld = "Language ";
@@ -4225,14 +4226,14 @@ function AddLangTool(typeLT, input, tooltip, uniqueID, replaceThis) {
 	if (!tooltip) {
 		var tooltipString = "";
 	} else {
-		var tooltipString = "\"" + inputCl + "\" " + type + " proficiency was gained from:\n \u2022 "
+		var tooltipString = "\"" + (uniqueID ? uniqueID.replace(/.*_#_(.*)_#_.*/, "$1") : inputCl) + "\" " + type + " proficiency was gained from:\n \u2022 "
 		tooltip = isArray(tooltip) ? tooltip : [tooltip];
 		for (var t = 0; t < tooltip.length; t++) {
 			tooltipString += (t ? ";\n \u2022 " : "") + tooltip[t];
 		};
 		tooltipString += ".";
 	};
-	for (var n = 1; n <= 2; n++) {
+	for (var n = 1; n <= 3; n++) {
 		for (var i = 1; i <= FieldNumbers.langstools; i++) {
 			var next = tDoc.getField(fld + i);
 			if (n === 1 && (!uniqueID || (uniqueID && next.submitName == uniqueID)) && (next.value == inputCl || next.submitName == theSubmit || ((useReg).test(next.value) && similarLen(next.value, inputCl)))) {
@@ -4241,9 +4242,10 @@ function AddLangTool(typeLT, input, tooltip, uniqueID, replaceThis) {
 					next.submitName = theSubmit;
 				};
 				return;
-			} else if (n === 1 && replaceThis && (next.submitName == replaceThisString || next.value == replaceThisString)) {
+			} else if (n === 2 && replaceThis && (next.submitName == replaceThisString || next.value == replaceThisString || (replaceMatch && replaceThisString.toLowerCase().indexOf(next.value.toLowerCase()) !== -1))) {
 				doReplace = i;
-			} else if (n === 2 && (doReplace === i || (!doReplace && clean(next.value) === ""))) {
+				break;
+			} else if (n === 3 && (doReplace === i || (!doReplace && clean(next.value) === ""))) {
 				next.value = inputCl;
 				if (!replaceThis) {
 					next.submitName = theSubmit;
@@ -4488,7 +4490,7 @@ function ReplaceString(field, inputstring, newline, theoldstring, alreadyRegExp)
 	var thestring = theoldstring.replace(/\n/g, "\r");
 	var regExString = alreadyRegExp ? thestring : thestring.RegEscape();
 	var multilines = newline !== undefined ? newline : thefield.multiline;
-	if ((RegExp(regExString, "i")).test(thefield.value)  && theoldstring) {
+	if ((RegExp(regExString, "i")).test(thefield.value) && theoldstring) {
 		thefield.value = thefield.value.replace(RegExp(regExString, "i"), inputstring);
 	} else if (thefield.value.indexOf(thestring) !== -1 && theoldstring) {
 		thefield.value = thefield.value.replace(thestring, inputstring);

@@ -3075,9 +3075,9 @@ function MakeIconMenu_IconOptions() {
 		var factionBanners = [];
 		for (var f = 0; f < faction.length; f++) {
 			var aFact = faction[f];
-			factionSymbols.push([aFact[0] + " symbol", aFact[1] + "#symbol"]);
-			factionIcons.push([aFact[0] + " icon", aFact[1] + "#icon"]);
-			factionBanners.push([aFact[0] + " banner", aFact[1] + "#banner"]);
+			factionSymbols.push([aFact[0], aFact[1] + "#symbol"]);
+			factionIcons.push([aFact[0], aFact[1] + "#icon"]);
+			factionBanners.push([aFact[0], aFact[1] + "#banner"]);
 		}
 		IconMenu.push({cName : "-", cReturn : "-"}); // add a divider
 		menuLVL2(IconMenu, ["Set faction symbol", "organizationicon"], factionSymbols);
@@ -3086,33 +3086,34 @@ function MakeIconMenu_IconOptions() {
 		
 		//second the class
 		var classes = [
-			["Barbarian icon", "barbarian"],
-			["Bard icon", "bard"],
-			["Cleric icon", "cleric"],
-			["Druid icon", "druid"],
-			["Fighter icon", "fighter"],
-			["Monk icon", "monk"],
-			["Paladin icon", "paladin"],
-			["Ranger icon", "ranger"],
-			["Rogue icon", "rogue"],
-			["Sorcerer icon", "sorcerer"],
-			["Warlock icon", "warlock"],
-			["Wizard icon", "wizard"]
+			["Barbarian", "barbarian"],
+			["Bard", "bard"],
+			["Cleric", "cleric"],
+			["Druid", "druid"],
+			["Fighter", "fighter"],
+			["Monk", "monk"],
+			["Paladin", "paladin"],
+			["Ranger", "ranger"],
+			["Rogue", "rogue"],
+			["Sorcerer", "sorcerer"],
+			["Warlock", "warlock"],
+			["Wizard", "wizard"]
 		];
 		IconMenu.push({cName : "-", cReturn : "-"}); // add a divider
 		menuLVL2(IconMenu, ["Set class icon", "classicon"], classes);
 		
 		//third the AL seasons
-		var classes = [
-			["Tyranny of Dragons icon", "tod"],
-			["Elemental Evil icon", "ee"],
-			["Rage of Demons icon", "rod"],
-			["Curse of Strahd icon", "cos"],
-			["Storm King's Thunder icon", "skt"],
-			["Tales of the Yawning Portal icon", "totyp"]
+		var ALseasons = [
+			["1 Tyranny of Dragons", "tod"],
+			["2 Elemental Evil", "ee"],
+			["3 Rage of Demons", "rod"],
+			["4 Curse of Strahd", "cos"],
+			["5 Storm King's Thunder", "skt"],
+			["6 Tales of the Yawning Portal", "totyp"],
+			["7 Tomb of Annihilation", "toa"]
 		];
 		IconMenu.push({cName : "-", cReturn : "-"}); // add a divider
-		menuLVL2(IconMenu, ["Set Adventure League season icon", "seasonicon"], classes);
+		menuLVL2(IconMenu, ["Set Adventure League season icon", "seasonicon"], ALseasons);
 	}
 	
 	//add a link to an online pdf converter, if not using Acrobat Pro/Standard
@@ -5782,6 +5783,7 @@ function processLanguages(AddRemove, srcNm, itemArr) {
 function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	ProfType = ProfType.toLowerCase();
 	var set = CurrentProfs[ProfType];
+	var ProfObjLC = clean(ProfObj, false, true).toLowerCase();
 	if (!set) return;
 	if (!Extra) Extra = false;
 	switch (ProfType) {
@@ -5792,7 +5794,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		
 		break;
 	 case "save" :
-		var Abi = AbilityScores.fields[ProfObj.substr(0,3).toLowerCase()];
+		var Abi = AbilityScores.fields[ProfObjLC.substr(0,3)];
 		if (!Abi) return; // stop if the input can't be used
 		var SvFld = Abi + " ST Prof";
 		if (AddRemove) { // add
@@ -5819,10 +5821,10 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		};
 		break;
 	 case "resistance" : // Extra is something to replace the actual text, if even one source has no condition for the resistance (e.g. not something like "Bludg. (in Rage)"), then there is no need to add multiple instances of essentially the same resistance
-		var setRem = !set[ProfObj] ? undefined : set[ProfObj].merge;
+		var setRem = !set[ProfObjLC] ? undefined : set[ProfObjLC].merge;
 		if (AddRemove) { // add
-			if (!set[ProfObj]) set[ProfObj] = {src : [], cond : [], lookup : {}, merge : false};
-			var theSet = set[ProfObj];
+			if (!set[ProfObjLC]) set[ProfObjLC] = {name : ProfObj, src : [], cond : [], lookup : {}, merge : false};
+			var theSet = set[ProfObjLC];
 			if (theSet.src.indexOf(ProfSrc) !== -1) return; // the thing already exists so exit
 			theSet.src.push(ProfSrc);
 			if (Extra) {
@@ -5834,11 +5836,11 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				};
 			};
 			theSet.merge = theSet.src.length !== theSet.cond.length;
-		} else if (set[ProfObj]) { // remove
-			var theSet = set[ProfObj];
+		} else if (set[ProfObjLC]) { // remove
+			var theSet = set[ProfObjLC];
 			if (theSet.src.indexOf(ProfSrc) !== -1) theSet.src.splice(theSet.src.indexOf(ProfSrc), 1);
 			if (theSet.src.length == 0) {
-				delete set[ProfObj];
+				delete set[ProfObjLC];
 			} else {
 				if (Extra && theSet.cond.indexOf(Extra) !== -1) theSet.cond.splice(theSet.cond.indexOf(Extra), 1);
 				if (Extra && theSet.lookup[Extra].indexOf(ProfSrc) !== -1) {
@@ -5854,7 +5856,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			if (!aSet) return;
 			if (!skipA) skipA = [];
 			if (aSet.merge) {
-				if (skipA.indexOf(keyName) === -1) AddResistance(keyName, aSet.src);
+				if (skipA.indexOf(aSet.name) === -1) AddResistance(aSet.name, aSet.src);
 			} else {
 				for (var i = 0; i < aSet.cond.length; i++) {
 					if (aSet.cond.indexOf(aSet.cond[i]) !== i) continue;
@@ -5865,7 +5867,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		
 		// now update the resistance fields
 		var resRemoved = 0;
-		if (set[ProfObj]) {
+		if (set[ProfObjLC]) {
 			if (setRem != undefined) { // the object existed before, so see if something changed
 				if (setRem && !theSet.merge) { // if before it was merged, but now no longer (removed the option without condiion)
 					RemoveResistance(ProfObj);
@@ -5878,7 +5880,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				}; // if the merge status didn't change, we don't have to do anything here
 			};
 			// now add the resistance
-			DoResistance(ProfObj);
+			DoResistance(ProfObjLC);
 		} else { // guess the current item was the only thing to remove
 			RemoveResistance(Extra ? Extra : ProfObj);
 			resRemoved = 1;
@@ -5888,10 +5890,13 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			// first make a list of all the items currently in the fields
 			var curRes = [];
 			for (var k = 1; k <= 6; k++) {
-				curRes.push(What("Resistance Damage Type " + k));
+				var aDmgRes = What("Resistance Damage Type " + k);
+				if (aDmgRes) curRes.push(aDmgRes);
 			};
-			for (var resObj in set) {
-				if (resObj !== ProfObj) DoResistance(resObj, curRes);
+			if (curRes.length !== 6) {
+				for (var resObj in set) {
+					if (resObj !== ProfObjLC) DoResistance(resObj, curRes);
+				};
 			};
 		};
 		break;
@@ -5899,7 +5904,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	 case "tool" : // Extra is a number if the entry is a choice to be made by the user duplicates should be ignored (e.g. 'musical instrument'); // Alternatively, for a tool the Extra can be the 3-letter abbreviation if the tool is also to be added in the Skill Proficiencies section with a calculated value;
 		var optNmbr = Extra && !isNaN(Extra) ? Extra : false;
 		if (optNmbr) {
-			var uID = ProfSrc + "_" + ProfObj + "_" + optNmbr;
+			var uID = ProfSrc + "_#_" + ProfObj + "_#_" + optNmbr;
 			if (AddRemove) { // add
 				if (!set[uID]) set[uID] = {source : ProfSrc, entries : [], choices : []};
 				// first ask the user to select choices
@@ -5927,18 +5932,18 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			};
 		} else {
 			if (AddRemove) { // add
-				if (!set[ProfObj]) {
-					set[ProfObj] = [ProfSrc];
-				} else if (set[ProfObj].indexOf(ProfSrc) === -1) {
-					set[ProfObj].push(ProfSrc);
+				if (!set[ProfObjLC]) {
+					set[ProfObjLC] = [ProfSrc];
+				} else if (set[ProfObjLC].indexOf(ProfSrc) === -1) {
+					set[ProfObjLC].push(ProfSrc);
 				};
-			} else if (set[ProfObj] && set[ProfObj].indexOf(ProfSrc) !== -1) { // remove
-				set[ProfObj].splice(set[ProfObj].indexOf(ProfSrc), 1);
-				if (set[ProfObj].length === 0) delete set[ProfObj];
+			} else if (set[ProfObjLC] && set[ProfObjLC].indexOf(ProfSrc) !== -1) { // remove
+				set[ProfObjLC].splice(set[ProfObjLC].indexOf(ProfSrc), 1);
+				if (set[ProfObjLC].length === 0) delete set[ProfObjLC];
 			};
 			// now update the proficiency
-			if (set[ProfObj]) {
-				AddLangTool(ProfType, ProfObj, set[ProfObj]);
+			if (set[ProfObjLC]) {
+				AddLangTool(ProfType, ProfObj, set[ProfObjLC]);
 			} else {
 				RemoveLangTool(ProfType, ProfObj);
 			};
@@ -5953,7 +5958,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					} else if (set.toolSkill.indexOf(ProfSrc) === -1) {
 						set.toolSkill.push(theTooTxt);
 					};
-				} else if (!set[ProfObj] && set.toolSkill && set.toolSkill.indexOf(theTooTxt) !== -1) { // remove
+				} else if (!set[ProfObjLC] && set.toolSkill && set.toolSkill.indexOf(theTooTxt) !== -1) { // remove
 					set.toolSkill.splice(set.toolSkill.indexOf(theTooTxt), 1);
 					if (set.toolSkill.length === 0) delete set.toolSkill;
 				};
@@ -5970,30 +5975,45 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				};
 			};
 		};
-		
-		/* IDEEEN VOOR FEATURES
-			- pop-up box for choice(s)
-				> extra is aantal keuzes
-				> wanneer keuzes, duplicates toestaan
-				> keuze ergens onthouden of niet nodig? >> enkel nodig als het wordt gebruikt voor verwijderen, maar kan ook gewoon alles met keuzes verwijderen, altijd
-			- weghalen a.h.v. submitname wanneer keuze (flag in submitname als het gaat om een keuze? getal + naam?)
-			- import a.h.v. submitname
-			- Add/Remove Language/Tools één functie maken (1 voor Add en 1 voor Remove)
-			
-			- bij toevoegen/verwijderen Thieves' tools ook Too Text zo zetten.
-				> optie voor tools met skill entry?
-				
-				
-			toolProfs : [["Musical instrument", 3], ["Thieves' tools, "Dex"]]
-			languageProfs : [1, "Elvish"]
-		*/
 		break;
-	 case "savetxt" :
+	 case "savetxt" : //literal text to be put in the "Saving Throw advantages / disadvantages" field
 		
+		break;
+/*
+	 case "dmgimmune" :
+		dmgImmune
+		2	"Immune to " + dmgtype + " damage"
+		break;
+	 case "saveextra" :
+		saveExtra : {
+			immune : [],
+			advantage : []
+		}
+		1	"Adv. on saves vs. " + conditions
+		2	"Immune to " + conditions
+		break;
+		
+	 case "condition" :
+		condition : {
+			immune : [],
+			advantage : []
+		}
+		1	"Adv. on saves vs. being " + conditions
+		2	"Immune to being " + conditions
 		break;
 	 case "vision" :
 		
 		break;
+	 case "speed" :
+		{
+			walk : [],
+			climb : { XXX : [nrm, enc], XXX2 : [nrm, enc] },
+			fly : {},
+			swim : {},
+			mods : { XXX : [amount, mode(s)], XXX2 : [amount, mode(s)] ],
+		}
+		break;
+*/
 	};
 	SetStringifieds("profs");
 };
@@ -6159,8 +6179,8 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 		- SetProf:
 			V Resistances
 			V Saves
-			o Languages
-			o Tools
+			V Languages
+			V Tools
 		- Import (with altered language, tool, dmgres, action)
 			o older version
 			o current version

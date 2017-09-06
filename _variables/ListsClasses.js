@@ -656,7 +656,7 @@ var ClassList = {
 				source : ["P", 79],
 				minlevel : 10,
 				description : typeA4 ? "\n   " + "My mastery of the ki flowing through me makes me immune to poison and disease" : " [" + "I am immune to poison and disease" + "]",
-				savetxt : "Immune to poison and disease"
+				savetxt : "Immune to poison and disease" //both immune to poison damage and the poisoned condition (see sage advice)
 			},
 			"tongue of the sun and moon" : {
 				name : "Tongue of the Sun and Moon",

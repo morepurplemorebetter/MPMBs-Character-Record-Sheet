@@ -718,32 +718,32 @@ function DirectImport(consoleTrigger) {
 		
 		//a function to add the 'new' languages, tools, resistances, actions
 		var addNotDefined = function(typeFlds, iterations) {
+			var fromOldVersion = FromVersion < 12.998;
 			var functionAdd = function(typeAdd, input, replaceThis) {
 				switch (typeAdd) {
 					case "Language " :
 					case "Tool " :
-						AddLangTool(typeAdd, input, false, false, replaceThis);
+						AddLangTool(typeAdd, input, false, false, replaceThis, fromOldVersion);
 						break;
 					case "Resistance Damage Type " :
-						AddResistance(input, false, replaceThis);
+						AddResistance(input, false, replaceThis, fromOldVersion);
 						break;
 					case "Action " :
 					case "Bonus Action " :
 					case "Reaction " :
-						AddAction(typeAdd, input, false, replaceThis);
+						AddAction(typeAdd, input, false, replaceThis, fromOldVersion);
 						break;
 				};
 			};
 			for (var i = 1; i <= iterations; i++) {
 				var fromFld = global.docFrom.getField(typeFlds + i);
 				if (!fromFld || !fromFld.value || fromFld.value === fromFld.defaultValue) continue;
-				if (FromVersion >= 12.998) {
+				if (!fromOldVersion) {
 					if (fromFld.value !== fromFld.submitName) {
 						functionAdd(typeFlds, fromFld.value, fromFld.submitName);
 					};
 				} else { // can't use the submitName as it wasn't used before v12.998
 					var fromFldUNit = fromFld.userName && (/.*?\"(.*?)\".*/).test(fromFld.userName) ? fromFld.userName.replace(/.*?\"(.*?)\".*/, "$1") : (fromFld.userName ? fromFld.userName.replace(/.*?resistance to (.*?) was gained from.*/, "$1") : "");
-					var fromFldUNor = fromFld.userName ? fromFld.userName.replace(/.*?was gained from (.*?)\./, "$1") : "";
 					if (!fromFld.userName || fromFldUNit.toLowerCase() !== fromFld.value.toLowerCase()) {
 						functionAdd(typeFlds, fromFld.value, fromFldUNit);
 					};
