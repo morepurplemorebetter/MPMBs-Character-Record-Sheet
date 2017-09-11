@@ -5784,6 +5784,8 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	ProfType = ProfType.toLowerCase();
 	var set = CurrentProfs[ProfType];
 	var ProfObjLC = clean(ProfObj, false, true).toLowerCase();
+	var metric = What("Unit System") !== "imperial";
+	var saveAD = "Saving Throw advantages / disadvantages";
 	if (!set) return;
 	if (!Extra) Extra = false;
 	switch (ProfType) {
@@ -5977,7 +5979,25 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		};
 		break;
 	 case "savetxt" : //literal text to be put in the "Saving Throw advantages / disadvantages" field
-		
+		var oldTooltipTxt = set[ProfObjLC] ? formatMultiList("\"" + set[ProfObjLC][metric ? "nameMetric" : "name"] + "\" was gained from:", set[ProfObjLC].sources) : false;
+		var oldSetNm = set[ProfObjLC] ? [set[ProfObjLC].name, set[ProfObjLC].nameMetric] : false;
+		if (AddRemove) { // add
+			if (!set[ProfObjLC]) {
+				set[ProfObjLC] = {name : clean(ProfObj, false, true), sources : [ProfSrc]};
+				set[ProfObjLC].nameMetric = ConvertToMetric(set[ProfObjLC].name, 0.5);
+			} else if (set[ProfObjLC].sources.indexOf(ProfSrc) === -1) {
+				set[ProfObjLC].sources.push(ProfSrc);
+			};
+		} else if (set[ProfObjLC] && set[ProfObjLC].sources.indexOf(ProfSrc) !== -1) { // remove
+			set[ProfObjLC].sources.splice(set[ProfObjLC].sources.indexOf(ProfSrc), 1);
+			if (set[ProfObjLC].sources.length === 0) delete set[ProfObjLC];
+		};
+		// now update the saving throw advantages / disadvantages field
+		if (set[ProfObjLC]) {
+			
+		} else if (oldSetNm) {
+			RemoveString(saveAD, oldSetNm[metric ? 1 : 0]);
+		};
 		break;
 /*
 	 case "dmgimmune" :
@@ -6016,6 +6036,26 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 */
 	};
 	SetStringifieds("profs");
+};
+
+//a way of creating a formatted list with multiple lines or on a single line
+function formatMultiList(caption, elements) {
+	elements = isArray(elements) ? elements : [elements];
+	var rStr = caption + "\n \u2022 " + elements[0];
+	for (var i = 1; i < elements.length; i++) {
+		rStr += ";\n \u2022 " + elements[i];
+	};
+	return rStr + ".";
+};
+function formatLineList(caption, elements) {
+	elements = isArray(elements) ? elements : [elements];
+	var rStr = caption + " " + elements[0];
+	var EL = elements.length;
+	for (var i = 1; i < EL; i++) {
+		rStr += EL > 2 ? "," : "";
+		rStr += (i === EL - 1 ? " and " : " ") + elements[i];
+	};
+	return rStr;
 };
 
 // open a dialogue with a number of lines of choices and return the choices in an array
@@ -6200,7 +6240,7 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 			V class features
 			V feats
 	- Syntax
-		=	
+		= Multiple sources
 	- Update Additional Content
 		= 
 */

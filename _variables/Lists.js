@@ -1051,12 +1051,12 @@ var SetUnitDecimals_Dialog = {
 							type : "radio",
 							item_id : "DeDo",
 							group_id : "Deci",
-							name : "Dot (comma as thousands separator)"
+							name : "Dot (and comma as thousands separator)"
 						}, {
 							type : "radio",
 							item_id : "DeCo",
 							group_id : "Deci",
-							name : "Comma (dot as thousands separator)"
+							name : "Comma (and dot as thousands separator)"
 						}, ]
 					}, ]
 				}, {

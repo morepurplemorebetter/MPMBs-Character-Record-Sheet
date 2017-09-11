@@ -239,10 +239,15 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "duration"), aSpell.duration ? aSpell.duration : "\u2014");
 			
 			//set the spell book name and page
-			var spBook = aSpell.source && aSpell.source[0] ? aSpell.source[0].substring(0, 1) : "";
-			var spPage = aSpell.source && aSpell.source[1] ? aSpell.source[1] : "";
-			var spBookFull = spBook && SourceList[aSpell.source[0]] ? SourceList[aSpell.source[0]].name : "";
-			spBookFull += spBookFull && spPage ? ", page " + spPage : "";
+			
+			var parseSrc = parseSource(aSpell.source);
+			var spBook = parseSrc ? parseSrc[0][0] : "";
+			//var spBook = aSpell.source && aSpell.source[0] ? aSpell.source[0].substring(0, 1) : "";
+			var spPage = parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
+			//var spPage = aSpell.source && aSpell.source[1] ? aSpell.source[1] : "";
+			var spBookFull = stringSource(aSpell, "full,page,multi");
+			//var spBookFull = spBook && SourceList[aSpell.source[0]] ? SourceList[aSpell.source[0]].name : "";
+			//spBookFull += spBookFull && spPage ? ", page " + spPage : "";
 			Value(base.replace("remember", "book"), spBook, spBookFull);
 			Value(base.replace("remember", "page"), spPage, spBookFull);
 			
@@ -3598,7 +3603,8 @@ function MakeSpellMenu() {
 	var SpellSourcesArray = [];
 	var SpellSourcesCheck = [];
 	for (var aSpell in SpellsList) {
-		var aSpellSource = SpellsList[aSpell].source && SpellsList[aSpell].source[0] ? SpellsList[aSpell].source[0] : "HB";
+		var aSpellSource = parseSource(SpellsList[aSpell].source);
+		aSpellSource = aSpellSource ? aSpellSource[0][0] : "HB";
 		if (SpellSourcesCheck.indexOf(aSpellSource) === -1) {
 			SpellSourcesCheck.push(aSpellSource);
 			SpellSourcesArray.push([SourceList[aSpellSource].name, aSpellSource]);

@@ -584,7 +584,7 @@ var ClassList = {
 				"stunning strike" : {
 					name : "Stunning Strike",
 					source : ["P", 79],
-					description : " [1 ki point]" + "\n   " + "After I hit a creature wit a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
+					description : " [1 ki point]" + "\n   " + "After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
 				},
 				eval : "ClassFeatureOptions(['monk', 'ki', 'flurry of blows', 'extra']); ClassFeatureOptions(['monk', 'ki', 'patient defense', 'extra']); ClassFeatureOptions(['monk', 'ki', 'step of the wind', 'extra']);",
 				removeeval : "ClassFeatureOptions(['monk', 'ki', 'flurry of blows', 'extra'], 'remove'); ClassFeatureOptions(['monk', 'ki', 'patient defense', 'extra'], 'remove'); ClassFeatureOptions(['monk', 'ki', 'step of the wind', 'extra'], 'remove');",

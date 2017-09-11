@@ -246,7 +246,8 @@ function RemoveTooltips() {
 		"Weight",
 		"Age",
 		"Racial Traits",
-		"Highlighting"
+		"Highlighting",
+		"Saving Throw advantages / disadvantages"
 	];
 	for (var i = 1; i <= FieldNumbers.langstools; i++) {
 		TooltipArray.push("Tool " + i);
@@ -291,7 +292,7 @@ function AddAction(actiontype, action, actiontooltip, replaceThis, replaceMatch)
 		var field = "Action ";
 	};
 	var numberOfFields = field === "Action " ? FieldNumbers.trueactions : FieldNumbers.actions;
-	var tempString = actiontooltip ? "The \"" + action + "\" " + field.toLowerCase() + "was gained from:\n\u2022 " + actiontooltip + "." : "";
+	var tempString = actiontooltip ? formatMultiList("The \"" + action + "\" " + field.toLowerCase() + "was gained from:", actiontooltip) : "";
 	var doReplace = false;
 	for (var n = 1; n <= 3; n++) {
 		for (var i = 1; i <= numberOfFields; i++) {
@@ -343,16 +344,7 @@ function AddResistance(input, tooltip, replaceThis, replaceMatch) {
 	if (replaceThis && DamageTypes[replaceThisString.toLowerCase()]) {
 		usefulreplace = DamageTypes[replaceThisString.toLowerCase()].index;
 	};
-	if (!tooltip) {
-		var tooltipString = "";
-	} else {
-		var tooltipString = "\"" + inputCl + "\" resistance was gained from:\n \u2022 "
-		tooltip = isArray(tooltip) ? tooltip : [tooltip];
-		for (var t = 0; t < tooltip.length; t++) {
-			tooltipString += (t ? ";\n \u2022 " : "") + tooltip[t];
-		};
-		tooltipString += ".";
-	};
+	var tooltipString = tooltip ? formatMultiList("\"" + inputCl + "\" resistance was gained from:", tooltip) : "";
 	var doReplace = false;
 	var testRegex = useful !== undefined ? /does_not_match/ : MakeRegex(inputCl);
 	for (var n = 1; n <= 2; n++) {
@@ -2552,7 +2544,7 @@ function ApplyRace(inputracetxt) {
 		AddTooltip("Weight", CurrentRace.plural + theWeight);
 		AddTooltip("Age", CurrentRace.plural + CurrentRace.age);
 		
-		var tempString = CurrentRace.source && SourceList[CurrentRace.source[0]] ? CurrentRace.name + " is found in the " + SourceList[CurrentRace.source[0]].name + (CurrentRace.source[1] ? ", page " + CurrentRace.source[1] : "") : "";
+		var tempString = stringSource(CurrentRace, "full,page", CurrentRace.name + " is found in ", ".");
 		
 		var theTraits = What("Unit System") === "imperial" ? CurrentRace.trait : ConvertToMetric(CurrentRace.trait, 0.5);
 		Value("Racial Traits", theTraits, tempString);
@@ -2778,15 +2770,7 @@ function UpdateTooltips() {
 
 	if (CurrentRace.known) {
 		if (CurrentRace.skills || CurrentRace.skillstxt) {
-			stringSkills += "\n\n" + toUni(CurrentRace.name) + ": "
-			temp = CurrentRace.skillstxt ? 1 : CurrentRace.skills.length;
-			for (var i = 0; i < temp; i++) {
-				stringSkills += (i === 0 || temp === 2) ? "" : ", ";
-				stringSkills += (i === 1 && temp === 2) ? " and " : "";
-				stringSkills += (i === (temp - 1) && temp > 2) ? "and " : "";
-				stringSkills += CurrentRace.skillstxt ? CurrentRace.skillstxt : CurrentRace.skills[i];
-			};
-			stringSkills += ".";
+			stringSkills += formatLineList("\n\n" + toUni(CurrentRace.name) + ":", CurrentRace.skillstxt ? CurrentRace.skillstxt : CurrentRace.skills) + ".";
 		};
 		AbilityScores.improvements.racefeats += "\n \u2022 " + CurrentRace.improvements;
 	};
@@ -3642,10 +3626,11 @@ function MakeInventoryLineMenu() {
 		event.target.name.substring(0, event.target.name.indexOf("Comp.") + 8) + ".";
 	var lineNmbr = Number(event.target.name.slice(-2));
 	var theField = What(type + "Gear Row " + lineNmbr);
-	var magic = type === "Adventuring " && What("Adventuring Gear Remember") === false && lineNmbr > FieldNumbers.gearMIrow;
+	var hasMagic = type === "Adventuring " && What("Adventuring Gear Remember") === false;
+	var magic = hasMagic && lineNmbr > FieldNumbers.gearMIrow;
 	var maxRow = FieldNumbers[type === "Adventuring " ? "gear" : type === "Extra." ? "extragear" : "compgear"];
 	var upRow = lineNmbr === 1 ? false : magic ? lineNmbr !== FieldNumbers.gearMIrow + 1 : true;
-	var downRow = lineNmbr === maxRow ? false : magic ? lineNmbr !== FieldNumbers.gearMIrow - 1 : true
+	var downRow = lineNmbr === maxRow ? false : hasMagic ? lineNmbr !== FieldNumbers.gearMIrow - 1 : true;
 	
 	var numColumns = typePF && type === "Adventuring " ? 3 : 2;
 	var curCol = typePF && type.indexOf("Comp.") !== -1 ? 1 : Math.ceil(lineNmbr / Math.round(maxRow / numColumns));
@@ -4223,16 +4208,7 @@ function AddLangTool(typeLT, input, tooltip, uniqueID, replaceThis, replaceMatch
 	var overflow = What("MoreProficiencies").toLowerCase().indexOf(inputCl.toLowerCase()) !== -1;
 	var theSubmit = uniqueID ? uniqueID : inputCl;
 	var useReg = MakeRegex(inputCl);
-	if (!tooltip) {
-		var tooltipString = "";
-	} else {
-		var tooltipString = "\"" + (uniqueID ? uniqueID.replace(/.*_#_(.*)_#_.*/, "$1") : inputCl) + "\" " + type + " proficiency was gained from:\n \u2022 "
-		tooltip = isArray(tooltip) ? tooltip : [tooltip];
-		for (var t = 0; t < tooltip.length; t++) {
-			tooltipString += (t ? ";\n \u2022 " : "") + tooltip[t];
-		};
-		tooltipString += ".";
-	};
+	var tooltipString = tooltip ? formatMultiList("\"" + (uniqueID ? uniqueID.replace(/.*_#_(.*)_#_.*/, "$1") : inputCl) + "\" " + type + " proficiency was gained from:", tooltip) : "";
 	for (var n = 1; n <= 3; n++) {
 		for (var i = 1; i <= FieldNumbers.langstools; i++) {
 			var next = tDoc.getField(fld + i);
@@ -5049,7 +5025,6 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	var ArrayNmbr = FldNmbr - 1;
 	
 	if (CurrentFeats.known[ArrayNmbr] === NewFeat) return; //no changes were made
-	var tempString = "";
 	var setSpellVars = false;
 
 	//only update the tooltips if feats are set to manual
@@ -5114,8 +5089,8 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			if (theFeat.weapons) {
 				delete CurrentWeapons.proficiencies[theFeat.name + " feat"];
 			}
-			if (theFeat.source && SourceList[theFeat.source[0]]) {
-				var sourceStringOld = "(" + SourceList[theFeat.source[0]].abbreviation + (theFeat.source[1] ? ", page " + theFeat.source[1] + ")" : "");
+			var sourceStringOld = stringSource(theFeat, "first,page");
+			if (sourceStringOld) {
 				RemoveString(FeatFlds[1], sourceStringOld);
 			}
 			
@@ -5192,20 +5167,18 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		
 		thermoM(2/3); //increment the progress dialog's progress
 		
-		if (theFeat.source && SourceList[theFeat.source[0]]) {
-			tempString = "The " + theFeat.name + " feat is taken from the " + SourceList[theFeat.source[0]].name + (theFeat.source[1] ? ", page " + theFeat.source[1] : "");
-			var sourceString = "(" + SourceList[theFeat.source[0]].abbreviation + (theFeat.source[1] ? ", page " + theFeat.source[1] : "") + ")";
-			if (IsNotFeatMenu) {
-				AddString(FeatFlds[1], sourceString, "; ");
-			}
-		}
+		var tempString = stringSource(theFeat, "full,page", "The \"" + theFeat.name + "\" feat is taken from: ", ".");
 		if (theFeat.prerequisite) {
 			tempString += tempString === "" ? "" : "\n\n";
-			tempString += "Prerequisite for the " + theFeat.name + " feat is: " + theFeat.prerequisite;
+			tempString += "Prerequisite for the \"" + theFeat.name + "\" feat is: " + theFeat.prerequisite;
 		}
 		AddTooltip(FeatFlds[2], tempString);
 		//only add things if not merely moving the feat
 		if (IsNotFeatMenu) {
+			//add the source to the secondary field
+			var sourceString = stringSource(theFeat, "first,page");
+			if (sourceString) AddString(FeatFlds[1], sourceString, "; ");
+			
 			// firstly do the eval for adding
 			if (theFeat.eval) {
 				var TheEval = What("Unit System") === "metric" && theFeat.eval.indexOf("String") !== -1 ? ConvertToMetric(theFeat.eval, 0.5) : theFeat.eval;
@@ -5526,7 +5499,7 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice) {
 	if (FeaName) {
 		var Fea = ReturnClassFeatures(theClass, theFeature, FeaLvl, SubChoice, "", "", ForceOld);
 		
-		var FeaSource = Fea.Source && SourceList[Fea.Source[0]] ? ", " + SourceList[Fea.Source[0]].abbreviation + (Fea.Source[1] ? " " + Fea.Source[1] : "") : "";
+		var FeaSource = stringSource(Fea, "abbr", ", ");
 		var FeaRef = " (" + FeaClass + " " + FeaKey.minlevel + FeaSource + ")";
 		if (Fea.Use && !isNaN(Fea.Use)) Fea.Use += "\u00D7 per ";
 		var FeaPost = "";
@@ -5549,7 +5522,7 @@ function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld
 	var old = ForceOld ? "Old" : "";
 	if (!FeaKey) return "";
 	var FeaExtraName = CurrentClasses[theClass].features[theFeature].extraname;
-	var FeaSource = Fea.Source && SourceList[Fea.Source[0]] ? ", " + SourceList[Fea.Source[0]].abbreviation + (Fea.Source[1] ? " " + Fea.Source[1] : "") : "";
+	var FeaSource = stringSource(Fea, "abbr", ", ");
 	var FeaRef = " (" + FeaExtraName + FeaSource + ")";
 	var FeaUse = !Fea["Use" + old] ? "" : Fea["Use" + old] + (!isNaN(Fea["Use" + old]) ? "\u00D7 per " : "");
 	var FeaPost = "";
@@ -6085,17 +6058,17 @@ function MakeClassMenu() {
 				continue;
 			};
 			if (testSource("", feaObjA)) continue;
-			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name + (feaObjA.source && SourceList[feaObjA.source[0]] ? ", " + SourceList[feaObjA.source[0]].abbreviation : "") : array[i].toLowerCase();
+			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name + stringSource(feaObjA, "abbr", ", ") : array[i].toLowerCase();
 			var theTest = (extrareturn === "extra" ? toTestE : toTest).indexOf(testWith) !== -1;
 			var removeStop = extrareturn === "extra" ? (theTest ? "remove" : false) : (theTest ? "stop" : false);
 			var isEnabled = ignorePrereqs || theTest || !feaObjA.prereqeval ? true : eval(feaObjA.prereqeval);
 			temp.push({
-				cName : array[i] + (feaObjA.source && SourceList[feaObjA.source[0]] ? "\t   [" + SourceList[feaObjA.source[0]].abbreviation + (feaObjA.source[1] ? " " + feaObjA.source[1] : "") + "]" : ""),
+				cName : array[i] + stringSource(feaObjA, "abbr", "\t   [", "]"),
 				cReturn : classNm + "#" + featureNm + "#" + array[i] + "#" + extrareturn + "#" + removeStop,
 				bMarked : theTest,
 				bEnabled : isEnabled
-			})
-		}
+			});
+		};
 		menu.oSubMenu.push({
 			cName : name,
 			oSubMenu : temp
@@ -8670,25 +8643,27 @@ function ApplyBackgroundFeature(input) {
 	
 	var TheInput = input.toLowerCase();
 	var TempFound = false;
-	var tempString = CurrentBackground.name && CurrentBackground.source && SourceList[CurrentBackground.source[0]] ? "The background '" + CurrentBackground.name + "' is found in the " + SourceList[CurrentBackground.source[0]].name + (CurrentBackground.source[1] ? ", page " + CurrentBackground.source[1] : "") + "\n" : "";
+	var tempString = 
+	var tempString = stringSource(CurrentBackground, "full,page", "The \"" + CurrentBackground.name + "\" background is found in ", ".\n");
 	
 	if (input === "") {
 		Value("Background Feature Description", "", "");
 	} else {
 		for (var feature in BackgroundFeatureList) {
-			if (!TempFound && TheInput.indexOf(feature) !== -1) {
+			if (TheInput.indexOf(feature) !== -1) {
 				if (testSource(feature, BackgroundFeatureList[feature], "backFeaExcl")) continue; // test if the background feature or its source isn't excluded
 				var FeaName = feature.capitalize();
-				tempString += BackgroundFeatureList[feature].source && SourceList[BackgroundFeatureList[feature].source[0]] ? "The feature '" + FeaName + "' is found in the " + SourceList[BackgroundFeatureList[feature].source[0]].name + (BackgroundFeatureList[feature].source[1] ? ", page " + BackgroundFeatureList[feature].source[1] : "") : "";
+				var theBfea = BackgroundFeatureList[feature];
+				tempString += stringSource(theBfea, "full,page", "The \"" + FeaName + "\" background is found in ", ".");
 				
 				var theDesc = What("Unit System") === "imperial" ? BackgroundFeatureList[feature].description : ConvertToMetric(BackgroundFeatureList[feature].description, 0.5);
 				Value("Background Feature Description", theDesc, tempString);
 				
-				TempFound = true;
-			}
-		}
-	}
-}
+				return;
+			};
+		};
+	};
+};
 
 //set the dropdown box options for the background features
 function SetBackgroundFeaturesdropdown() {

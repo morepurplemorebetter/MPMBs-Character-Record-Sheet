@@ -476,7 +476,7 @@ var FeatsList = {
 	},
 	"svirfneblin magic" : {
 		name : "Svirfneblin Magic",
-		source : ["E", 7],
+		source : [["E", 7], ["S", 115]],
 		prerequisite : "Being a Svirfneblin (Deep Gnome)",
 		prereqeval : "CurrentRace.known === 'deep gnome'",
 		description : "I can cast Nondetection on myself at will, without a material component. I can also cast the spells Blindness/Deafness, Blur, and Disguise Self once each. I regain the ability to cast these spells when I finish a long rest. Intelligence is my spellcasting ability for these spells.",
@@ -488,8 +488,8 @@ var FeatsList = {
 			atwill : true
 		}, {
 			name : "1x long rest (self only)",
-			spells : ["disguise self", "blindness/deafness", "blur"],
-			selection : ["disguise self", "blindness/deafness", "blur"],
+			spells : ["blindness/deafness", "blur", "disguise self"],
+			selection : ["blindness/deafness", "blur", "disguise self"],
 			oncelr : true,
 			times : 3
 		}]

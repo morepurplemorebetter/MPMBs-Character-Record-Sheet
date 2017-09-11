@@ -788,7 +788,7 @@ var RaceList = {
 		regExpSearch : /^((?=.*svirfneblin)|((?=.*\bgnomes?\b)(?=.*\b(underdarks?|deep|depths?)\b))).*$/i,
 		name : "Svirfneblin",
 		sortname : "Gnome, Deep (Svirfneblin)",
-		source : ["E", 7],
+		source : [["E", 7], ["S", 115]],
 		plural : "Svirfneblin",
 		size : 4,
 		speed : [25, 15],

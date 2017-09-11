@@ -153,11 +153,11 @@ function SelectClass() {
 				
 				var theClass = cs[2] && ClassList[cs[2]] ? ClassList[cs[2]].name : false;
 				toLoad["r" + i + "CD"] = theClass ? SetPositiveElement(this.classes, theClass) : this.classes;
-				toLoad["r" + i + "CS"] = cs[2] && ClassList[cs[2]].source && SourceList[ClassList[cs[2]].source[0]] ? SourceList[ClassList[cs[2]].source[0]].abbreviation : "";
+				toLoad["r" + i + "CS"] = cs[2] ? this.getSrc(ClassList[cs[2]]) : "";
 				
 				var theSubClass = theClass && this.subclasses[cs[2]] && cs[3] && ClassSubList[cs[3]] ? ClassSubList[cs[3]].subname : false;
 				toLoad["r" + i + "SD"] = theClass ? SetPositiveElement(this.subclasses[cs[2]], theSubClass) : {};
-				toLoad["r" + i + "SS"] = cs[3] && ClassSubList[cs[3]].source && SourceList[ClassSubList[cs[3]].source[0]] ? SourceList[ClassSubList[cs[3]].source[0]].abbreviation : "";
+				toLoad["r" + i + "SS"] = cs[3] ? this.getSrc(ClassSubList[cs[3]]) : "";
 			};
 			dialog.load(toLoad);
 			dialog.enable(toUse);
@@ -177,6 +177,11 @@ function SelectClass() {
 			};
 			this.updateFull(dialog);
 		},
+		getSrc : function (obj) {
+			if (!obj.source) return "";
+			var theSrc = parseSource(obj.source);
+			return theSrc ? SourceList[theSrc[0][0]].abbreviation : "";
+		},
 		textChange : function (dialog, e) {
 			var cs = this.curSelec[e];
 			var oldLvl = cs[0];
@@ -189,10 +194,13 @@ function SelectClass() {
 			//change the class and subclass drop-downs of the row
 			var toLoad = {};
 			if (oldLvl !== cs[0]) toLoad["r" + e + "LV"] = cs[0].toString();
+			
 			toLoad["r" + e + "CD"] = hasCl ? SetPositiveElement(this.classes, ClassList[cs[2]].name) : this.classes;
 			toLoad["r" + e + "SD"] = !hasCl ? {} : SetPositiveElement(this.subclasses[cs[2]], cs[3] ? ClassSubList[cs[3]].subname : false);
-			toLoad["r" + e + "CS"] = cs[2] && ClassList[cs[2]].source && SourceList[ClassList[cs[2]].source[0]] ? SourceList[ClassList[cs[2]].source[0]].abbreviation : "";
-			toLoad["r" + e + "SS"] = cs[3] && ClassSubList[cs[3]].source && SourceList[ClassSubList[cs[3]].source[0]] ? SourceList[ClassSubList[cs[3]].source[0]].abbreviation : "";
+			
+			toLoad["r" + e + "CS"] = cs[2] ? this.getSrc(ClassList[cs[2]]) : "";
+			toLoad["r" + e + "SS"] = cs[3] ? this.getSrc(ClassSubList[cs[3]]) : "";
+
 			dialog.load(toLoad);
 			this.updateFull(dialog);
 		},
@@ -208,7 +216,7 @@ function SelectClass() {
 			//change the text and subclass drop-down of the row
 			var toLoad = {};
 			if (oldLvl !== cs[0]) toLoad["r" + e + "LV"] = cs[0].toString();
-			toLoad["r" + e + "CS"] = cs[2] && ClassList[cs[2]].source && SourceList[ClassList[cs[2]].source[0]] ? SourceList[ClassList[cs[2]].source[0]].abbreviation : "";
+			toLoad["r" + e + "CS"] = cs[2] ? this.getSrc(ClassList[cs[2]]) : "";			
 			toLoad["r" + e + "SD"] = cs[2] ? this.subclasses[cs[2]] : {};
 			toLoad["r" + e + "SS"] = "";
 			toLoad["r" + e + "TX"] = cs[1];
@@ -231,7 +239,7 @@ function SelectClass() {
 			//change the text of the row
 			var toLoad = {};
 			toLoad["r" + e + "TX"] = cs[1];
-			toLoad["r" + e + "SS"] = cs[3] && ClassSubList[cs[3]].source && SourceList[ClassSubList[cs[3]].source[0]] ? SourceList[ClassSubList[cs[3]].source[0]].abbreviation : " ";
+			toLoad["r" + e + "SS"] = cs[3] ? this.getSrc(ClassSubList[cs[3]]) : "";
 			dialog.load(toLoad);
 			this.updateFull(dialog);
 		},

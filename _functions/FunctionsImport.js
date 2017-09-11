@@ -441,11 +441,11 @@ function DirectImport(consoleTrigger) {
 			if (FromVersion < 12.94) {
 				if (!CurrentSources.ammoExcl) CurrentSources.ammoExcl = [];
 				for (var amm in AmmoList) {
-					if (AmmoList[amm].source && AmmoList[amm].source[0] === "D") CurrentSources.ammoExcl.push(amm);
+					if (AmmoList[amm].source && AmmoList[amm].source.toSource().indexOf("D") !== -1) CurrentSources.ammoExcl.push(amm);
 				};
 				if (!CurrentSources.weapExcl) CurrentSources.weapExcl = [];
 				for (var wea in WeaponsList) {
-					if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source[0] === "D") CurrentSources.weapExcl.push(wea);
+					if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source.toSource().indexOf("D") !== -1) CurrentSources.weapExcl.push(wea);
 				};
 			}
 			SetStringifieds("sources");
