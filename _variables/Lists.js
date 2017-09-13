@@ -233,6 +233,7 @@ var CurrentProfs = { // Also change field defaultValue!
 	armour : {},
 	weapon : {},
 	save : {},
+	savetxt : {},
 	resistance : {},
 	language : {},
 	tool : {},

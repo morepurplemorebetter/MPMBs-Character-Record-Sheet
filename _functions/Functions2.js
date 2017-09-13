@@ -5783,19 +5783,20 @@ function processLanguages(AddRemove, srcNm, itemArr) {
 function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	ProfType = ProfType.toLowerCase();
 	var set = CurrentProfs[ProfType];
-	var ProfObjLC = clean(ProfObj, false, true).toLowerCase();
+	var ProfObjLC = typeof ProfObj == "string" ? clean(ProfObj, false, true).toLowerCase() : false;
 	var metric = What("Unit System") !== "imperial";
-	var saveAD = "Saving Throw advantages / disadvantages";
 	if (!set) return;
 	if (!Extra) Extra = false;
-	switch (ProfType) {
-	 case "armour" :
+ switch (ProfType) {
+	case "armour" : {
 		
 		break;
-	 case "weapon" :
+	};
+	case "weapon" : {
 		
 		break;
-	 case "save" :
+	};
+	case "save" : {
 		var Abi = AbilityScores.fields[ProfObjLC.substr(0,3)];
 		if (!Abi) return; // stop if the input can't be used
 		var SvFld = Abi + " ST Prof";
@@ -5822,7 +5823,8 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			Checkbox(SvFld, false, "");
 		};
 		break;
-	 case "resistance" : // Extra is something to replace the actual text, if even one source has no condition for the resistance (e.g. not something like "Bludg. (in Rage)"), then there is no need to add multiple instances of essentially the same resistance
+	};
+	case "resistance" : { // Extra is something to replace the actual text, if even one source has no condition for the resistance (e.g. not something like "Bludg. (in Rage)"), then there is no need to add multiple instances of essentially the same resistance
 		var setRem = !set[ProfObjLC] ? undefined : set[ProfObjLC].merge;
 		if (AddRemove) { // add
 			if (!set[ProfObjLC]) set[ProfObjLC] = {name : ProfObj, src : [], cond : [], lookup : {}, merge : false};
@@ -5902,8 +5904,9 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			};
 		};
 		break;
-	 case "language" :
-	 case "tool" : // Extra is a number if the entry is a choice to be made by the user duplicates should be ignored (e.g. 'musical instrument'); // Alternatively, for a tool the Extra can be the 3-letter abbreviation if the tool is also to be added in the Skill Proficiencies section with a calculated value;
+	};
+	case "language" :
+	case "tool" : { // Extra is a number if the entry is a choice to be made by the user duplicates should be ignored (e.g. 'musical instrument'); // Alternatively, for a tool the Extra can be the 3-letter abbreviation if the tool is also to be added in the Skill Proficiencies section with a calculated value;
 		var optNmbr = Extra && !isNaN(Extra) ? Extra : false;
 		if (optNmbr) {
 			var uID = ProfSrc + "_#_" + ProfObj + "_#_" + optNmbr;
@@ -5978,7 +5981,52 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			};
 		};
 		break;
-	 case "savetxt" : //literal text to be put in the "Saving Throw advantages / disadvantages" field
+	};
+	case "savetxt" : { // text to be put in the "Saving Throw advantages / disadvantages" field
+		var fld = "Saving Throw advantages / disadvantages";
+		var svFld = What(fld);
+		//create the set object if it doesn't exist already
+		var setKeys = function() {
+			for (var e in set) {return true;};
+			CurrentProfs.savetxt = { text : {}, immune : {}, adv_vs : {} };
+			set = CurrentProfs.savetxt;
+		}();
+		//put the input into a form we can use
+		if (typeof ProfObj == "string") ProfObj = { text : [ProfObj] };
+		for (var st in ProfObj) {
+			if (typeof ProfObj[st] == "string") ProfObj[st] = [ProfObj[st]];
+			for (var i = 0; i < ProfObj[st].length; i++) {
+				ProfObj[st][i] = clean(ProfObj[st][i], false, true);
+				if (st !== "text") ProfObj[st][i] = ProfObj[st][i].replace(/,/g, "");
+			};
+		};
+		//a functino to parse the 'immune' and 'adv_vs' parts into a usable string
+		var parseSvTxt = function() {
+			var adv_svArr = [], immuneArr = [];
+			for (var svAdv in set.adv_vs) {
+				if (!set.immune[svAdv]) adv_svArr.push(set.adv_vs[svAdv].name);
+			};
+			for (var svImm in set.immune) {
+				immuneArr.push(set.immune[svImm].name);
+			};
+			var theRe = {
+				immune : formatLineList("Immune to ", adv_svArr),
+				adv_vs : formatLineList("Adv. on saves vs. ", adv_svArr)
+			};
+			return theRe;
+		};
+		
+		
+		// elk object:
+		{
+			name : "",
+			source : []
+		}
+		
+		//Get any current immune or adv_vs strings from the savetxt field
+		var immuneRem = (/\u200BImmune to .*?\u200C/i).text(theSvFld) ? theSvFld.match(/\u200BImmune to .*?\u200C/i)[0] ? "";
+		
+		//process the 
 		var oldTooltipTxt = set[ProfObjLC] ? formatMultiList("\"" + set[ProfObjLC][metric ? "nameMetric" : "name"] + "\" was gained from:", set[ProfObjLC].sources) : false;
 		var oldSetNm = set[ProfObjLC] ? [set[ProfObjLC].name, set[ProfObjLC].nameMetric] : false;
 		if (AddRemove) { // add
@@ -6005,12 +6053,9 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		2	"Immune to " + dmgtype + " damage"
 		break;
 	 case "saveextra" :
-		saveExtra : {
-			immune : [],
-			advantage : []
-		}
-		1	"Adv. on saves vs. " + conditions
-		2	"Immune to " + conditions
+		savetxt : 
+		1	"Adv. on saves vs. " + stuff, stuff, and stuff;
+		2	"Immune to " + stuff, stuff, and stuff;
 		break;
 		
 	 case "condition" :
@@ -6035,6 +6080,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		break;
 */
 	};
+ };
 	SetStringifieds("profs");
 };
 
