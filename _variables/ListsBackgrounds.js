@@ -2290,6 +2290,165 @@ var BackgroundList = {
 		variant : [],
 		lifestyle : "modest"
 	},
+
+	//ToA backgrounds (with the help of SoilentBrad and @lowbrr)
+	"anthropologist" : {
+		regExpSearch : /anthropologist/i,
+		name : "Anthropologist",
+		source : ["ToA", 191],
+		skills : ["Insight", "Religion"],
+		gold : 10,
+		equipleft : [
+			["Leather-bound diary", "", 5],
+			["Ink, 1 ounce bottle of", 1, ""],
+			["Ink pen (quill)", "", ""]
+		],
+		equipright : [
+			["Traveler's clothes", "", 4],
+			["Trinket of special significance", "", ""],
+			["Belt pouch (with coins)", "", 1]
+		],
+		feature : "Adept Linguist",
+		trait : [
+			"I prefer the company of those who aren't like me, including people of other races.",
+			"I'm a stickler when it comes to observing proper etiquette and local customs.",
+			"I would rather observe than meddle.",
+			"By living among violent people, I have become desensitized to violence.",
+			"I would risk life and limb to discover a new culture or unravel the secrets of a dead one.",
+			"When I arrive at a new settlement for the first time, I must learn all its customs."
+		],
+		ideal : [
+			["Discovery",
+				"Discovery: I want to be the first person to discover a lost culture. (Any)"
+			],
+			["Distance",
+				"Distance: One must not interfere with the affairs of another culture \u2015 even one in need of aid. (Lawful)"
+			],
+			["Knowledge",
+				"Knowledge: By understanding other races and cultures, we learn to understand ourselves. (Any)"
+			],
+			["Power",
+				"Power: Common people crave strong leadership, and I do my utmost to provide it. (Lawful)"
+			],
+			["Protection",
+				"Protection: I must do everything possible to save a society facing extinction. (Good)"
+			],
+			["Indifferent",
+				"Indifferent: Life is cruel. What's the point in saving people if they're going to die anyway? (Chaotic)"
+			],
+		],
+		bond : [
+			"My mentor gave me a journal filled with lore and wisdom. Losing it would devastate me.",
+			"Having lived among the people of a primeval tribe or clan, I long to return and see how they are faring.",
+			"Years ago, tragedy struck the members of an isolated society I befriended, and I will honor them.",
+			"I want to learn more about a particular humanoid culture that fascinates me.",
+			"I seek to avenge a clan, tribe, kingdom, or empire that was wiped out.",
+			"I have a trinket that I believe is the key to finding a long-lost society."
+		], 	
+		flaw : [
+			"Boats make me seasick.",
+			"I talk to myself, and I don't make friends easily.",
+			"I believe that I'm intellectually superior to people from other cultures and have much to teach them.",
+			"I've picked up some unpleasant habits living among goblins, lizardfolk, or orcs.",
+			"I complain about everything.",
+			"I wear a tribal mask and never take it off."
+		], 
+		extra : [
+			"Select an Adopted Culture",
+			"Aarakocra",
+			"Dwarf",
+			"Elf",
+			"Goblin",
+			"Halfling",
+			"Human",
+			"Lizardfolk",
+			"Orc",
+		],
+		languageProfs : [2],
+		variant : [],
+		lifestyle : "modest"
+	},
+	"archaeologist" : {
+		regExpSearch : /archa?eologist/i,
+		name : "Archaeologist",
+		source : ["ToA", 192],
+		skills : ["History", "Survival"],
+		gold : 25,
+		equipleft : [
+			["Map case with a map of a ruin/dungeon", "", 1],
+			["Bullseye lantern", "", 2],
+			["Miner's pick", "", 10],
+			["Shovel", "", 5],
+			["Two-person tent", "", 20]
+		],
+		equipright : [
+			["Traveler's clothes", "", 4],
+			["Trinket recovered from a dig site", "", ""],
+			["Belt pouch (with coins)", "", 1]
+		],
+		feature : "Historical Knowledge",
+		trait : [
+			"I love a good puzzle or mystery.",
+			"I'm a pack rat who never throws anything away.",
+			"Fame is more important to me than money.",
+			"I have no qualms about stealing from the dead.",
+			"I'm happier in a dusty old tomb than I am in the centers of civilization.",
+			"Traps don't make me nervous. Idiots who trigger traps make me nervous.",
+			"I might fail, but I will never give up.",
+			"You might think I'm a scholar, but I love a good brawl. These fists were made for punching."
+		],
+		ideal : [
+			["Preservation",
+				"Preservation: That artifact belongs in a museum. (Good)"
+			],
+			["Greed",
+				"Greed: I won't risk my life for nothing. I expect some kind of payment. (Any)"
+			],
+			["Death Wish",
+				"Death Wish: Nothing is more exhilarating than a narrow escape from the jaws of death. (Chaotic)"
+			],
+			["Dignity",
+				"Dignity: The dead and their belongings deserve to be treated with respect. (Lawful)"
+			],
+			["Immortality",
+				"Immortality: All my exploring is part of a plan to find the secret of everlasting life. (Any)"
+			],
+			["Danger",
+				"Danger: With every great discovery comes grave danger. The two walk hand in hand. (Any)"
+			]
+		],
+		bond : [
+			"Ever since I was a child, I've heard stories about a lost city. I aim to find it, learn its secrets, and earn my place in the history books.",
+			"I want to find my mentor, who disappeared on an expedition some time ago.",
+			"I have a friendly rival. Only one of us can be the best, and I aim to prove it's me.",
+			"I won't sell an art object or other treasure that has historical significance or is one of a kind.",
+			"I'm secretly in love with the wealthy patron who sponsors my archaeological exploits.",
+			"I hope to bring prestige to a library, a museum, or a university."
+		],
+		flaw : [
+			"I have a secret fear of some common wild animal \u2015 and in my work, I see them everywhere.",
+			"I can't leave a room without searching it for secret doors.",
+			"When I'm not exploring dungeons or ruins, I get jittery and impatient.",
+			"I have no time for friends or family. I spend every waking moment thinking about and preparing for my next expedition.",
+			"When given the choice of going left or right, I always go left.",
+			"I can't sleep except in total darkness."
+		], 
+		extra : [
+			"Select a Signature Item",
+			"10-foot pole",
+			"Crowbar",
+			"Hat",
+			"Hooded lantern",
+			"Medallion",
+			"Shovel",
+			"Sledgehammer",
+			"Whip"
+		],
+		toolProfs : [["Cartographer or navigator tools", 1]],
+		languageProfs : [1],
+		variant : [],
+		lifestyle : "modest"
+	},
 }
 
 var BackgroundSubList = {
@@ -2803,5 +2962,15 @@ var BackgroundFeatureList = {
 	"phlan survivor" : {
 		description : "Whatever my prior standing I'm now one of the many refugees that came to Mulmaster. I'm able to find refuge with others from Phlan and those who sympathize with my plight. Within Mulmaster this means that I can find a place to sleep, recover, and hide from the watch with either other refugees from Phlan, or the Zhents within the ghettos.",
 		source : ["AL:EE", 6]
+	},
+
+	//ToA background features (with the help of SoilentBrad and @lowbrr)
+	"adept linguist" : { 
+		description : "I can communicate with humanoids who don't speak any language I know. I must observe the humanoids interacting with one another for at least one day, after which I learn a handful of important words, expressions, and gestures \u2015 enough to communicate on a rudimentary level.",
+		source : ["ToA", 191]
+	},
+	"historical knowledge" : { 
+		description : "When I enter a ruin or dungeon, I can correctly ascertain its original purpose and determine its builders, whether those were dwarves, elves, humans, yuan-ti, or some other known race. In addition, I can determine the monetary value of art objects more than a century old.",
+		source : ["ToA", 192]
 	},
 }

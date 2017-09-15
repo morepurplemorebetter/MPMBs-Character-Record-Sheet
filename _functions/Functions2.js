@@ -237,21 +237,41 @@ function ApplyCompRace(newRace) {
 		thermoM(4/11); //increment the progress dialog's progress
 		
 		//add a string of the languages known to the features
-		var languageString = "\u25C6 " + "Languages: ";
-		var theEnd = CurrentCompRace[prefix].languages.length - 1;
-		for (var l = 0; l <= theEnd; l++) {
-			var divider = l === 0 ? "" : l === theEnd ? " and " : ", ";
-			languageString += divider + CurrentCompRace[prefix].languages[l];
-			languageString += l === theEnd ? "." : "";
-		}
+		var theLangs = [];
+		for (var l = 0; l < CurrentCompRace[prefix].languageProfs.length; l++) {
+			var aLang = CurrentCompRace[prefix].languageProfs[l];
+			if (isNaN(aLang)) {
+				theLangs.push(aLang);
+			} else {
+				theLangs.push("+" + aLang);
+			};
+		};
+		var languageString = formatLineList("\u25C6 Languages:", theLangs);
 		AddString(prefix + "Comp.Use.Features", languageString, true);
 		
 		thermoM(5/11); //increment the progress dialog's progress
 		
 		//add a string of the saveText to the features
 		if (CurrentCompRace[prefix].savetxt) {
-			AddString(prefix + "Comp.Use.Features", "\u25C6 " + "Saving Throws: " + CurrentCompRace[prefix].savetxt + ".", true);
-		}
+			if (typeof CurrentCompRace[prefix].savetxt === "string") {
+				var svString = "\u25C6 Saving Throws:" + CurrentCompRace[prefix].savetxt + ".";
+			} else {
+				var svObj = CurrentCompRace[prefix].savetxt;
+				var svString = "";
+				if (svObj.text) {
+					svString += svString ? "; " : "\u25C6 Saving Throws:";
+					svString += svObj.text.join("; ");
+				};
+				if (svObj.adv_vs) {
+					svString += formatLineList((svString ? "; " : "\u25C6 Saving Throws: ") + "Adv. on saves vs.", svObj.adv_vs);
+				};
+				if (svObj.immune) {
+					svString += formatLineList((svString ? "; " : "\u25C6 Saving Throws: ") + "Immune to", svObj.immune);
+				};
+				svString += ".";
+			};
+			AddString(prefix + "Comp.Use.Features", svString, true);
+		};
 		
 		thermoM(6/11); //increment the progress dialog's progress
 		
@@ -288,16 +308,23 @@ function ApplyCompRace(newRace) {
 		thermoM(8/11); //increment the progress dialog's progress
 		
 		//add a string of any tool proficiencies to the features
-		if (CurrentCompRace[prefix].tools) {
-			toolString = "\u25C6 " + "Tool Proficiencies: ";
-			theEnd = CurrentCompRace[prefix].tools.length - 1;
-			for (var l = 0; l <= theEnd; l++) {
-				var divider = l === 0 ? "" : l === theEnd ? " and " : ", ";
-				toolString += divider + CurrentCompRace[prefix].tools[l];
-				toolString += l === theEnd ? "." : "";
-			}
-			AddString(prefix + "Comp.Use.Features", toolString, true);
-		}
+		if (CurrentCompRace[prefix].toolProfs) {
+			var theTools = [];
+			for (var l = 0; l < CurrentCompRace[prefix].toolProfs.length; l++) {
+				var aTool = CurrentCompRace[prefix].toolProfs[l];
+				if (isArray(aTool)) {
+					if (!isNaN(aTool[1]) && Number(aTool[1]) > 1) {
+						theTools.push(aTool[1] + " \u00d7 " + aTool[0]);
+					} else {
+						theTools.push(aTool[0]);
+					};
+				} else {
+					theTools.push(aTool);
+				};
+			};
+		};
+		var toolString = formatLineList("\u25C6 Tool Proficiencies:", theTools);
+		AddString(prefix + "Comp.Use.Features", toolString, true);
 		
 		thermoM(9/11); //increment the progress dialog's progress
 		
@@ -1474,13 +1501,7 @@ function MakeCompMenu() {
 		}
 	};
 
-	var CompMenu = [];
-	var familiars = [];
-	var chainPact = [];
-	var mounts = [];
-	var companions = [];
-	var companionRR = [];
-	var mechanicalServs = [];
+	var CompMenu = [], familiars = [], chainPact = [], mounts = [], companions = [], companionRR = [], mechanicalServs = [];
 	var change = [
 		["Into a familiar (Find Familiar spell)", "familiar"],
 		["Into a Pact of the Chain familiar", "pact_of_the_chain"],
@@ -1503,20 +1524,21 @@ function MakeCompMenu() {
 			companions.push([theCrea.name, aCrea]);
 		} else if (theCrea.type === "Beast" && theCrea.size === 2 && eval(theCrea.challengeRating) <= 2) {
 			mechanicalServs.push([theCrea.name, aCrea]);
-		}
-		if (!theCrea.companion) {
-			continue; //if no companion object is defined, move on to the next
-		} else if (theCrea.companion === "familiar") {
-			familiars.push([theCrea.name, aCrea]);
-			chainPact.push([theCrea.name, aCrea]);
-		} else if (theCrea.companion === "pact_of_the_chain") {
-			chainPact.push([theCrea.name, aCrea]);
-		} else if (theCrea.companion === "mount") {
-			mounts.push([theCrea.name, aCrea]);
-		} else if (theCrea.companion === "companion") {
-			companionRR.push([theCrea.name, aCrea]);
-		}
-	}
+		};
+		switch (theCrea.companion) {
+			case "familiar" :
+				familiars.push([theCrea.name, aCrea]);
+			case "pact_of_the_chain" :
+				chainPact.push([theCrea.name, aCrea]);
+				break;
+			case "mount" :
+				mounts.push([theCrea.name, aCrea]);
+				break;
+			case "companion" :
+				companionRR.push([theCrea.name, aCrea]);
+				break;
+		};
+	};
 	familiars.sort();
 	chainPact.sort();
 	mounts.sort();
@@ -5775,7 +5797,7 @@ function processLanguages(AddRemove, srcNm, itemArr) {
 	};
 };
 
-// ProfType can be: "armour", "weapon", "save", "resistance", "language", or "tool"
+// ProfType can be: "armour", "weapon", "save", "savetxt", "resistance", "vision", "speed", "language", or "tool"
 // Add: AddRemove = true; Remove: AddRemove = false
 // ProfObj is the proficiency that is gained/removed
 // ProfSrce is the name of the thing granting the proficiency
@@ -5787,6 +5809,22 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	var metric = What("Unit System") !== "imperial";
 	if (!set) return;
 	if (!Extra) Extra = false;
+	
+	// function for adding all resistances of a single entry
+	var DoResistance = function(keyName, skipA) {
+		var aSet = CurrentProfs.resistance[keyName];
+		if (!aSet) return;
+		if (!skipA) skipA = [];
+		if (aSet.merge) {
+			if (skipA.indexOf(aSet.name) === -1) AddResistance(aSet.name, aSet.src);
+		} else {
+			for (var i = 0; i < aSet.cond.length; i++) {
+				if (aSet.cond.indexOf(aSet.cond[i]) !== i) continue;
+				if (skipA.indexOf(aSet.cond[i]) === -1) AddResistance(aSet.cond[i], aSet.lookup[aSet.cond[i]]);
+			};
+		};
+	};
+	
  switch (ProfType) {
 	case "armour" : {
 		
@@ -5854,20 +5892,6 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				theSet.merge = theSet.src.length !== theSet.cond.length;
 			};
 		};
-		// function for adding all resistances of a single entry
-		var DoResistance = function(keyName, skipA) {
-			var aSet = set[keyName];
-			if (!aSet) return;
-			if (!skipA) skipA = [];
-			if (aSet.merge) {
-				if (skipA.indexOf(aSet.name) === -1) AddResistance(aSet.name, aSet.src);
-			} else {
-				for (var i = 0; i < aSet.cond.length; i++) {
-					if (aSet.cond.indexOf(aSet.cond[i]) !== i) continue;
-					if (skipA.indexOf(aSet.cond[i]) === -1) AddResistance(aSet.cond[i], aSet.lookup[aSet.cond[i]]);
-				};
-			};
-		};
 		
 		// now update the resistance fields
 		var resRemoved = 0;
@@ -5919,12 +5943,17 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					optSubj.push(ProfObj + (optNmbr > 1 ? " (" + i + "/" + optNmbr + ")" : ""));
 					set[uID].entries.push(uID + "-" + i);
 				};
-				var knownOpt = [];
-				for (var i = 1; i <= FieldNumbers.langstools; i++) {
-					var theI = What(ProfType.capitalize() + " " + i);
-					if (theI) knownOpt.push(theI);
+				set[uID].choices = optSubj;
+				if (IsNotImport) {
+					var knownOpt = [];
+					for (var i = 1; i <= FieldNumbers.langstools; i++) {
+						var theI = What(ProfType.capitalize() + " " + i);
+						if (theI) knownOpt.push(theI);
+					};
+					set[uID].choices = AskUserOptions(optType, ProfSrc, optSubj, knownOpt);
+				} else if (global.docFrom && global.docFrom.CurrentProfs && global.docFrom.CurrentProfs[ProfType] && global.docFrom.CurrentProfs[ProfType][uID] && global.docFrom.CurrentProfs[ProfType][uID].choices) {
+					if (global.docFrom.CurrentProfs[ProfType][uID].choices.length === optNmbr) set[uID].choices = global.docFrom.CurrentProfs[ProfType][uID].choices;
 				};
-				set[uID].choices = AskUserOptions(optType, ProfSrc, optSubj, knownOpt);
 				// now add these choices to the sheet
 				for (var i = 0; i < optNmbr; i++) {
 					AddLangTool(ProfType, set[uID].choices[i], ProfSrc, set[uID].entries[i]);
@@ -5984,7 +6013,6 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	};
 	case "savetxt" : { // text to be put in the "Saving Throw advantages / disadvantages" field
 		var fld = "Saving Throw advantages / disadvantages";
-		var svFld = What(fld);
 		//create the set object if it doesn't exist already
 		var setKeys = function() {
 			for (var e in set) {return true;};
@@ -5997,96 +6025,149 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			if (typeof ProfObj[st] == "string") ProfObj[st] = [ProfObj[st]];
 			for (var i = 0; i < ProfObj[st].length; i++) {
 				ProfObj[st][i] = clean(ProfObj[st][i], false, true);
-				if (st !== "text") ProfObj[st][i] = ProfObj[st][i].replace(/,/g, "");
+				if (st !== "text") ProfObj[st][i] = ProfObj[st][i].replace(/,|;/g, "");
 			};
 		};
 		//a functino to parse the 'immune' and 'adv_vs' parts into a usable string
+		var preTxt = {adv_vs : "Adv. on saves vs.", immune : "Immune to"};
 		var parseSvTxt = function() {
-			var adv_svArr = [], immuneArr = [];
+			var adv_vsArr = [], immuneArr = [];
 			for (var svAdv in set.adv_vs) {
-				if (!set.immune[svAdv]) adv_svArr.push(set.adv_vs[svAdv].name);
+				if (!set.immune[svAdv]) adv_vsArr.push(set.adv_vs[svAdv].name);
 			};
 			for (var svImm in set.immune) {
 				immuneArr.push(set.immune[svImm].name);
 			};
+			adv_vsArr.sort();
+			immuneArr.sort();
 			var theRe = {
-				immune : formatLineList("Immune to ", adv_svArr),
-				adv_vs : formatLineList("Adv. on saves vs. ", adv_svArr)
+				adv_vs : formatLineList(preTxt.adv_vs, adv_vsArr),
+				adv_vsA : adv_vsArr,
+				immune : formatLineList(preTxt.immune, immuneArr),
+				immuneA : immuneArr
 			};
 			return theRe;
 		};
-		
-		
-		// elk object:
-		{
-			name : "",
-			source : []
-		}
-		
-		//Get any current immune or adv_vs strings from the savetxt field
-		var immuneRem = (/\u200BImmune to .*?\u200C/i).text(theSvFld) ? theSvFld.match(/\u200BImmune to .*?\u200C/i)[0] ? "";
-		
-		//process the 
-		var oldTooltipTxt = set[ProfObjLC] ? formatMultiList("\"" + set[ProfObjLC][metric ? "nameMetric" : "name"] + "\" was gained from:", set[ProfObjLC].sources) : false;
-		var oldSetNm = set[ProfObjLC] ? [set[ProfObjLC].name, set[ProfObjLC].nameMetric] : false;
-		if (AddRemove) { // add
-			if (!set[ProfObjLC]) {
-				set[ProfObjLC] = {name : clean(ProfObj, false, true), sources : [ProfSrc]};
-				set[ProfObjLC].nameMetric = ConvertToMetric(set[ProfObjLC].name, 0.5);
-			} else if (set[ProfObjLC].sources.indexOf(ProfSrc) === -1) {
-				set[ProfObjLC].sources.push(ProfSrc);
+		//create an object of the current state
+		var oldSvTxt = parseSvTxt();
+		//Process the input. //for the simple text strings, immediately add/remove it
+		for (var attr in ProfObj) {
+			var setT = set[attr];
+			var addT = ProfObj[attr];
+			for (var i = 0; i < addT.length; i++) {
+				var iAdd = addT[i];
+				var iAddM = ConvertToMetric(iAdd, 0.5);
+				var iAddLC = iAdd.toLowerCase();
+				if (AddRemove) { // add
+					if (!setT[iAddLC]) {
+						setT[iAddLC] = {
+							name : iAdd,
+							nameMetric : iAddM,
+							src : [ProfSrc]
+						};
+						if (attr === "text") {
+							AddString(fld, metric ? iAdd : iAddM, "; ");
+						} else if (attr === "immune" && CurrentProfs.resistance[iAddLC]) {
+							//adding immunity to something that the character also has resistance to, so remove the resistance
+							var theRes = CurrentProfs.resistance[iAddLC];
+							if (theRes.merge) {
+								RemoveResistance(theRes.name);
+							} else {
+								for (var j = 0; j < theRes.cond.length; j++) {
+									RemoveResistance(theRes.cond[j]);
+								};
+							};
+						};
+					} else if (setT[iAddLC].src.indexOf(ProfSrc) === -1) {
+						setT[iAddLC].src.push(ProfSrc);
+					};
+				} else if (setT[iAddLC] && setT[iAddLC].src.indexOf(ProfSrc) !== -1) { // remove
+					setT[iAddLC].src.splice(setT[iAddLC].src.indexOf(ProfSrc), 1);
+					if (setT[iAddLC].src.length === 0) {
+						delete setT[iAddLC];
+						if (attr === "text") {
+							RemoveString(fld, metric ? iAdd : iAddM);
+						} else if (attr === "immune" && CurrentProfs.resistance[iAddLC]) {
+							//removing immunity to something that the character also has resistance to, so add the resistance (again)
+							DoResistance(iAddLC);
+						};
+					};
+				};
 			};
-		} else if (set[ProfObjLC] && set[ProfObjLC].sources.indexOf(ProfSrc) !== -1) { // remove
-			set[ProfObjLC].sources.splice(set[ProfObjLC].sources.indexOf(ProfSrc), 1);
-			if (set[ProfObjLC].sources.length === 0) delete set[ProfObjLC];
 		};
-		// now update the saving throw advantages / disadvantages field
-		if (set[ProfObjLC]) {
-			
-		} else if (oldSetNm) {
-			RemoveString(saveAD, oldSetNm[metric ? 1 : 0]);
+		// Put the immune and adv_vs into the field, if anything changed
+		var svFld = What(fld);
+		var newSvTxt = parseSvTxt();
+		for (var i = 0; i <= 1; i++) {
+			var attri = i ? "adv_vs" : "immune";
+			var oldStr = oldSvTxt[attri];
+			var oldStrRE = RegExp(oldStr.RegEscape(), "i");
+			var newStr = newSvTxt[attri];
+			if (!oldStr && newStr) {
+				svFld += (svFld ? "; " : "") + newStr;
+			} else if (oldStr && (oldStrRE).test(svFld)) {
+				svFld = svFld.replace(oldStrRE, newStr);
+			} else if (oldStr) {
+				// the string was probably altered manually, we got to find what was added, if anything
+				var oldArr = oldSvTxt[attri + "A"];
+				var newArr = newSvTxt[attri + "A"];
+				var findRE = RegExp(preTxt[attri].RegEscape() + " ?(.*?),?( and)? ?" + oldArr[oldArr.length - 1].RegEscape(), "i");
+				var foundStr = (findRE).test(svFld) ? svFld.match(findRE)[0].replace(findRE, "$1") : "";
+				if (foundStr) {
+					// we could match the string with something added in between, we can re-create the string with the manually added thing
+					var addOb = foundStr.split(/, |; /);
+					for (var j = 0; j < addOb.length; j++) {
+						if (addOb[j] && !(RegExp("\\b" + addOb[j] + "\\b", "i")).test(oldArr)) newArr.push(addOb[j]);
+					};
+					newArr.sort();
+					newStr = formatLineList(preTxt[attri], newArr);
+					svFld = svFld.replace(findRE, newStr);
+				} else if (newStr) {
+					// we could not match the string, so lets just add the new object
+					svFld += (svFld ? "; " : "") + newStr;
+				};
+			};
 		};
+		// Create the tooltip string for the "Saving Throw advantages / disadvantages" field
+		var svTooltip = "";
+		for (var a1 in set) {
+		 for (var b2 in set[a1]) {
+			var nmFld = a1 === "text" && metric ? "nameMetric" : "name";
+			var aSvHead = (a1 === "immune" ? "\"Immunity to " : a1 === "adv_vs" ? "\"Adv. on saves vs. " : "\"") + set[a1][b2][nmFld] + "\"" + " was gained from:";
+			var aSvTxt = formatLineList(aSvHead, set[a1][b2].src);
+			if (aSvTxt) svTooltip += (svTooltip ? "\n \u2022 " : " \u2022 ") + aSvTxt + ".";
+		 };
+		};
+		//Set the value of the field after cleaning any unfortunate replacement leftovers
+		svFld = svFld.replace(/(,|;) (,|;)/g, "$2").replace(/^(,|;) |(,|;) $/g, "");
+		Value(fld, svFld, svTooltip);
 		break;
-/*
-	 case "dmgimmune" :
-		dmgImmune
-		2	"Immune to " + dmgtype + " damage"
-		break;
-	 case "saveextra" :
-		savetxt : 
-		1	"Adv. on saves vs. " + stuff, stuff, and stuff;
-		2	"Immune to " + stuff, stuff, and stuff;
-		break;
+	};
+	case "vision" : { // Extra is optionally used to add a range, in feet, to the vision entry
+		set["darkvision"] = {name : "Darkvision", range : [60, "+30", 60, 90, 120, "+"], src : ["drow", "kobold"]}
 		
-	 case "condition" :
-		condition : {
-			immune : [],
-			advantage : []
-		}
-		1	"Adv. on saves vs. being " + conditions
-		2	"Immune to being " + conditions
-		break;
-	 case "vision" :
 		
 		break;
-	 case "speed" :
+	};
+/*	 case "speed" : {
 		{
 			walk : [],
-			climb : { XXX : [nrm, enc], XXX2 : [nrm, enc] },
+			climb : { XXX : [nmbr, enc], XXX2 : [nrm, enc] },
 			fly : {},
 			swim : {},
-			mods : { XXX : [amount, mode(s)], XXX2 : [amount, mode(s)] ],
+			mods : { XXX : [amount, mode(s)], XXX2 : [amount, mode(s)] ] },
 		}
 		break;
-*/
 	};
+*/
  };
 	SetStringifieds("profs");
 };
 
 //a way of creating a formatted list with multiple lines or on a single line
 function formatMultiList(caption, elements) {
-	elements = isArray(elements) ? elements : [elements];
+	if (isArray(elements) && elements.length === 0) return "";
+	if (!isArray(elements)) elements = [elements];
 	var rStr = caption + "\n \u2022 " + elements[0];
 	for (var i = 1; i < elements.length; i++) {
 		rStr += ";\n \u2022 " + elements[i];
@@ -6094,7 +6175,8 @@ function formatMultiList(caption, elements) {
 	return rStr + ".";
 };
 function formatLineList(caption, elements) {
-	elements = isArray(elements) ? elements : [elements];
+	if (isArray(elements) && elements.length === 0) return "";
+	if (!isArray(elements)) elements = [elements];
 	var rStr = caption + " " + elements[0];
 	var EL = elements.length;
 	for (var i = 1; i < EL; i++) {
@@ -6245,6 +6327,32 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 	return theDialog.choices;
 };
 
+// open a dialogue where you give the user a choice via radio button
+/*
+
+"The feature \"" + fNm + "\" requires you to make a choice. Select one of the options below. If the option you select offers you a choice of language or tool proficiency, you will be prompted for that seperately."
+
+"Important: the selection you make here can't be easily changed. If you want to change the selection, save the PDF and close it. Then open it again, remove the feature that gave you this choice (e.g. lower the level) and then add the feature again so you are again prompted. You won't be prompted again if you don't re-open the sheet 
+
+Class feature attributes
+chooseAttribute : [
+	["Text of the 1st radio button", array of attribute names to remove if the 1st is chosen],
+	["Text of the 2nd radio button", object with attributes to add if the 2nd is chosen]
+];
+// EXAMPLE:
+chooseAttribute : [
+	["Proficiency with a language", {languageProfs : [1]}]
+];
+
+Prompt voor keuze, dan voeg die attribute toe aan de feature en voeg de keuze (nummer) toe aan de global variable Currentprofs
+Bij weghalen,
+Als de feature al
+
+
+*/
+
+
+
 /* EXAMPLES 
 	AskUserOptions("language", "Human", "from Human", 3)
 	SetProf("resistance", true, "Bludgeoning", "Barbarian (Path of the Berserker): Rage", "Pierc. (in Rage)");
@@ -6254,39 +6362,33 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 /* 
 	NOG DOEN:
 	
-	- ook voor save extra text?
+	V ook voor save extra text?
 	- ook voor vision text?
->> Volgende versie:
-	- extra optie voor damage type immunity (dmgImmune)?
 	- ook voor extra speed abilities (swim, fly)?
+>> Volgende versie:
+	V extra optie voor damage type immunity (dmgImmune)?
 	V ook voor actions? of enkel actions in de submitname zetten voor makkelijkere vergelijking? >> enkel submitname
 		
 	- Test
 		- SetProf:
-			V Resistances
-			V Saves
-			V Languages
-			V Tools
-		- Import (with altered language, tool, dmgres, action)
-			o older version
+			V savetxt (text, immune, resistance)
+		- Import (save text)
+			V older version (disabled)
 			o current version
 	- Edit
-		V Saves addition/removals from class, class features, and feats
-		V Resistances additions/removals from class, class features, races, and feats
-		- Languages and Tools Profs for [languageProfs, toolProfs]
-			V background
+		V savetxt feature addition
 			V race
-			V class
-			V class features
-			V feats
-		- Languages and Tools Profs add/removal codes for [languageProfs, toolProfs]
-			V background
-			V race
-			V class
-			V class features
-			V feats
+			V companion race
+			V class feature
+			V class feature choice
+			V feat
 	- Syntax
-		= Multiple sources
+		V Multiple sources (overal)
+		V savetxt
+			V race
+			V class feature
+			V class feature choice
+			V feat
 	- Update Additional Content
-		= 
+		= savetxt
 */

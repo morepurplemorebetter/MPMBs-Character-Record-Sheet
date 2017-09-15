@@ -12,7 +12,7 @@
 	Effect:		This script adds a number of races, subraces, and creatures from the Magic: The Gathering plane of Zendikar
 				This is taken from the Plane Shift: Zendikar article (http://magic.wizards.com/en/articles/archive/feature/plane-shift-zendikar-2016-04-27)
 	Code by:	SoilentBrad (and tiny corrections by MPMB)
-	Date:		2017-09-05 (sheet v12.998)
+	Date:		2017-09-15 (sheet v12.998)
 */
 
 SourceList["PS:Z"] = {
@@ -29,7 +29,7 @@ RaceList["kor"] = {
 	plural : "Kor",
 	size : 3,
 	speed : ["30 ft\n30 ft climb", 20],
-	savetxt : "Adv. vs. being frightened",
+	savetxt : { adv_vs : ["frightened"] },
 	skills : ["Acrobatics", "Athletics"],
 	languageProfs : ["Common", "Kor (silent speech)"],
 	age : " reach adulthood in their late teens and live less than a century",
@@ -223,7 +223,10 @@ RaceList["tajuru elf"] = {
 	speed : [30, 20],
 	languageProfs : ["Common", "Elvish"],
 	vision : "Darkvision 60 ft",
-	savetxt : "Adv. vs. being charmed; Magic can't put me to sleep",
+	savetxt : {
+		text : ["Magic can't put me to sleep"],
+		adv_vs : ["charmed"]
+	},
 	skills : ["Perception"],
 	skillstxt : "Choose any two skills or tools",
 	age : " typically claim adulthood around age 100 and can live to be 750 years old",
@@ -245,7 +248,10 @@ RaceList["joraga elf"] = {
 	speed : [35, 25],
 	languageProfs : ["Common", "Elvish"],
 	vision : "Darkvision 60 ft",
-	savetxt : "Adv. vs. being charmed; Magic can't put me to sleep",
+	savetxt : {
+		text : ["Magic can't put me to sleep"],
+		adv_vs : ["charmed"]
+	},
 	weaponprofs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
 	skills : ["Perception"],
 	age : " typically claim adulthood around age 100 and can live to be 750 years old",
@@ -268,7 +274,10 @@ RaceList["mul daya elf"] = {
 	speed : [30, 20],
 	languageProfs : ["Common", "Elvish"],
 	vision : "Darkvision 120 ft; Sunlight Sensitivity",
-	savetxt : "Adv. vs. being charmed; Magic can't put me to sleep",
+	savetxt : {
+		text : ["Magic can't put me to sleep"],
+		adv_vs : ["charmed"]
+	},
 	skills : ["Perception"],
 	weaponprofs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
 	age : " typically claim adulthood around age 100 and can live to be 750 years old",

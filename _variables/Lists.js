@@ -230,15 +230,16 @@ var CurrentFeats = {
 };
 
 var CurrentProfs = { // Also change field defaultValue!
+	skill : {},
 	armour : {},
 	weapon : {},
 	save : {},
-	savetxt : {},
 	resistance : {},
 	language : {},
 	tool : {},
-	skill : {},
-	vision : {}
+	savetxt : {},
+	vision : {},
+	speed : {}
 };
 
 var IsNotReset = true;

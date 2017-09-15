@@ -687,7 +687,7 @@ FeatsList["infernal constitution"] = {
 	improvements : "Infernal Constitution (feat): +1 Constitution;",
 	scores : [0, 0, 1, 0, 0, 0],
 	dmgres : ["Cold", "Poison"],
-	savetxt : "Adv. vs. being poisoned"
+	savetxt : { adv_vs : ["poison"] }
 };
 FeatsList["orcish aggression"] = {
 	name : "Orcish Aggression",

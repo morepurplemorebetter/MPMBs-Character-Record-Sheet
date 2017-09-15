@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Armour
 	Effect:		This is the syntax for adding a new type of armour
-	Sheet:		v12.84 (2017-02-21)
+	Sheet:		v12.998 2017-09-15
 */
 
 ArmourList["protectme"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
@@ -19,7 +19,7 @@ ArmourList["protectme"] = { //Object name; Note the use of only lower case! Also
 	
 	name : "ProtectMe", //Required;
 	
-	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js"
+	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js". // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
 	
 	type : "medium", //Required; the type of the weapon. Options are "medium", "light", "heavy", and ""
 	

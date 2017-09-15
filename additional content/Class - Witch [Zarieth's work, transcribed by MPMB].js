@@ -16,7 +16,7 @@
 				This code is based on v0.4 of /u/Zarieth's work (2017-03-06)
 					
 	Code by:	MorePurpleMoreBetter
-	Date:		2017-09-05 (sheet v12.998)
+	Date:		2017-09-15 (sheet v12.998)
 */
 
 //first make the sheet know which spells are witch spells
@@ -328,7 +328,7 @@ ClassSubList["witch (zarieth)-covenant of charm"] = {
 			description : desc([
 				"I'm immune to being charmed; I can charm those that are immune (but they get adv.)"
 			]),
-			savetxt : "Immune to being charmed"
+			savetxt : { immune : ["charmed"] }
 		}
 	}
 };

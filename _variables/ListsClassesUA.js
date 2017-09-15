@@ -441,7 +441,7 @@ ClassList["spell-less ranger"] = {
 			source : ["P", 92],
 			minlevel : 8,
 			description : "\n   " + "I can travel through nonmagical, difficult terrain without penalty" + "\n   " + "I have advantage on saves vs. plants that impede movement by magical influence",
-			savetxt : "Adv. vs. magical plants that impede movement"
+			savetxt : { adv_vs : ["magical plants that impede movement"] }
 		},
 		"natural antivenom" : {
 			name : "Natural Antivenom",
@@ -451,7 +451,7 @@ ClassList["spell-less ranger"] = {
 				"I have advantage on saves vs. poison and resistance to poison damage",
 				"When I use a poultice, in addition to healing, I cure one poison effect on the creature"
 			]),
-			savetxt : "Adv. vs. poison effects",
+			savetxt : { adv_vs : ["poison"] },
 			dmgres : ["Poison"]
 		},
 		"hide in plain sight" : {
@@ -824,7 +824,7 @@ ClassList["rune scribe"] = {
 				]),
 				eval : "AddAction('bonus action', 'Stein Rune (Earthen Step)', 'Orb of the Stein Rune'); AddAction('action', 'Stein Rune (Indomitable Stand, Secrets, Bolt)', 'Orb of the Stein Rune');",
 				removeeval : "RemoveAction('bonus action', 'Stein Rune (Earthen Step)'); RemoveAction('action', 'Stein Rune (Indomitable Stand, Secrets, Bolt)');",
-				savetxt : "Immune to being Petrified",
+				savetxt : { immune : ["petrified"] },
 				spellcastingBonus : {
 					name : "Orb of the Stein Rune",
 					spells : ["meld into stone"],
@@ -850,7 +850,7 @@ ClassList["rune scribe"] = {
 				]),
 				eval : "AddAction('bonus action', 'Vind Rune (Wind Walker)', 'Pennant of the Vind Rune'); AddAction('action', 'Vind Rune (Wind Step, Shrieking Bolt)', 'Pennant of the Vind Rune'); AddAction('reaction', 'Vind Rune (Wind\\'s Grasp)', 'Pennant of the Vind Rune');",
 				removeeval : "RemoveAction('bonus action', 'Vind Rune (Wind Walker)'); RemoveAction('action', 'Vind Rune (Wind Step, Shrieking Bolt)'); RemoveAction('reaction', 'Vind Rune (Wind Step, Shrieking Bolt)');",
-				savetxt : "Adv. on saves vs. inhaled poisons and similar effects",
+				savetxt : { adv_vs : ["inhaled poison"] },
 				spellcastingBonus : {
 					name : "Pennant of the Vind Rune",
 					spells : ["levitate"],
@@ -1185,14 +1185,25 @@ ClassSubList["cavalier"] = {
 			source : ["UA:KoO", 3],
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with two skills or one skill and any one tool" + "\n   " + "For skills I can choose from Animal Handling, Insight, Performance, or Persuasion",
-			skillstxt : "\n\n" + toUni("Cavalier") + ": Choose two skills from: Animal Handling, Insight, Performance, or Persuasion. - or - Choose one of those skills and any one tool."
+			choices : ["1 Skill and 1 Tool proficiencies", "2 Skill proficiencies"],
+			"1 skill and 1 tool proficiencies" : {
+				name : "Bonus Proficiencies",
+				description : "\n   " + "I gain proficiency with one skill and any one tool of my choice" + "\n   " + "For the skill, I can choose Animal Handling, Insight, Performance, or Persuasion",
+				skillstxt : "\n\n" + toUni("Cavalier") + ": Choose one from: Animal Handling, Insight, Performance, or Persuasion.",
+				toolProfs : [["Any tool", 1]]
+			},
+			"2 skill proficiencies" : {
+				name : "Bonus Proficiencies",
+				description : "\n   " + "I gain two skill proficiencies: Animal Handling, Insight, Performance, or Persuasion",
+				skillstxt : "\n\n" + toUni("Cavalier") + ": Choose two from: Animal Handling, Insight, Performance, or Persuasion."
+			}
 		},
 		"subclassfeature3.1" : {
 			name : "Born in the Saddle",
 			source : ["UA:KoO", 3],
 			minlevel : 3,
 			description : "\n   " + "I have advantage on saves to avoid falling off my mount, and land on my feet if I fail" + "\n   " + "Mounting or dismounting a creature costs me only 5 ft of movement instead of half",
-			savetxt : "Adv. to avoid falling off my mount"
+			savetxt : { adv_vs : ["falling off my mount"] }
 		},
 		"subclassfeature3.2" : {
 			name : "Combat Superiority",
@@ -1239,8 +1250,25 @@ ClassSubList["scout"] = {
 			name : "Bonus Proficiencies",
 			source : ["UA:KoO", 4],
 			minlevel : 3,
-			description : "\n   " + "I gain proficiency with three skills or two skills and Thieves' Tools; For skills choose from:" + "\n   " + "Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival",
-			skillstxt : "\n\n" + toUni("Scout") + ": Choose three skills from: Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival. - or - Choose two of those skills and Thieves' Tools."
+			description : "\n   " + "I gain proficiency with three skills or two skills and Thieves' Tools; For skills choose from:" + "\n   " + "Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, and Survival",
+			choices : ["2 Skill proficiencies and Thieves' Tools proficiency", "3 Skill proficiencies"],
+			"2 skill proficiencies and thieves' tools proficiency" : {
+				name : "Bonus Proficiencies",
+				description : desc([
+					"I gain proficiency with two skills and Thieves' Tools; For skills choose from:",
+					"Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, and Survival"
+				]),
+				skillstxt : "\n\n" + toUni("Scout") + ": Choose two from: Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival.",
+				toolProfs : [["Thieves' tools", "Dex"]]
+			},
+			"3 skill proficiencies" : {
+				name : "Bonus Proficiencies",
+				description : desc([
+					"I gain proficiency with three skills, chosen from:",
+					"Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, and Survival"
+				]),
+				skillstxt : "\n\n" + toUni("Scout") + ": Choose three from: Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival."
+			}
 		},
 		"subclassfeature3.1" : {
 			name : "Combat Superiority",
@@ -1332,7 +1360,18 @@ ClassSubList["monster hunter"] = {
 			source : ["UA:GH", 2],
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with two skills or one skill and any one tool" + "\n   " + "For skills I can choose Arcana, History, Insight, Investigation, Nature, or Perception",
-			skillstxt : "\n\n" + toUni("Monster Hunter") + ": Choose two skills from: Arcana, History, Insight, Investigation, Nature, or Perception. - or - Choose one of those skills and any one tool."
+			choices : ["1 Skill and 1 Tool proficiencies", "2 Skill proficiencies"],
+			"1 skill and 1 tool proficiencies" : {
+				name : "Bonus Proficiencies",
+				description : "\n   " + "I gain proficiency with one skill and any one tool of my choice" + "\n   " + "For the skill, I can choose Arcana, History, Insight, Investigation, Nature, or Perception",
+				skillstxt : "\n\n" + toUni("Monster Hunter") + ": Choose one from: Arcana, History, Insight, Investigation, Nature, or Perception.",
+				toolProfs : [["Any tool", 1]]
+			},
+			"2 skill proficiencies" : {
+				name : "Bonus Proficiencies",
+				description : "\n   " + "I gain 2 skill proficiencies: Arcana, History, Insight, Investigation, Nature, or Perception",
+				skillstxt : "\n\n" + toUni("Monster Hunter") + ": Choose two from: Arcana, History, Insight, Investigation, Nature, or Perception."
+			}
 		},
 		"subclassfeature3.1" : {
 			name : "Combat Superiority",
@@ -1688,37 +1727,37 @@ ClassList["rangerua"] = {
 			"aberrations" : {
 				name : "Greater Favored Enemy: Aberrations",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against aberrations" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by aberrations",
-				savetxt : "Adv. vs. spells and abilities of aberrations"
+				savetxt : { adv_vs : ["spells/abilities of aberrations"] }
 			},
 			"celestials" : {
 				name : "Greater Favored Enemy: Celestials",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against celestials" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by celestials",
-				savetxt : "Adv. vs. spells and abilities of celestials"
+				savetxt : { adv_vs : ["spells/abilities of celestials"] }
 			},
 			"constructs" : {
 				name : "Greater Favored Enemy: Constructs",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against constructs" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by constructs",
-				savetxt : "Adv. vs. spells and abilities of constructs"
+				savetxt : { adv_vs : ["spells/abilities of constructs"] }
 			},
 			"dragons" : {
 				name : "Greater Favored Enemy: Dragons",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against dragons" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by dragons",
-				savetxt : "Adv. vs. spells and abilities of dragons"
+				savetxt : { adv_vs : ["spells/abilities of dragons"] }
 			},
 			"elementals" : {
 				name : "Greater Favored Enemy: Elementals",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against elementals" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by elementals",
-				savetxt : "Adv. vs. spells and abilities of elementals"
+				savetxt : { adv_vs : ["spells/abilities of elementals"] }
 			},
 			"fiends" : {
 				name : "Greater Favored Enemy: Fiends",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against fiends" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by fiends",
-				savetxt : "Adv. vs. spells and abilities of fiends"
+				savetxt : { adv_vs : ["spells/abilities of fiends"] }
 			},
 			"giants" : {
 				name : "Greater Favored Enemy: Giants",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against giants" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by giants",
-				savetxt : "Adv. vs. spells and abilities of giants"
+				savetxt : { adv_vs : ["spells/abilities of giants"] }
 			},
 			languageProfs : [1]
 		},
@@ -1843,7 +1882,7 @@ ClassSubList["hunter conclave"] = {
 			"steel will" : {
 				name : "Defensive Tactic: Steel Will",
 				description : "\n   " + "I have advantage on saves against being frightened",
-				savetxt : "Adv. on saves vs. being frightened"
+				savetxt : { adv_vs : ["frightened"] }
 			}
 		},
 		"subclassfeature11" : {
@@ -1872,7 +1911,7 @@ ClassSubList["hunter conclave"] = {
 			"evasion" : {
 				name : "Evasion",
 				description : "\n   " + "My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
-				savetxt : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
+				savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
 			},
 			"stand against the tide" : {
 				name : "Stand Against the Tide",
@@ -2021,7 +2060,7 @@ ClassSubList["storm herald"] = {
 				name : "Storm Soul: Desert",
 				description : "\n   " + "I have resistance to fire damage and don't suffer the effects of extreme heat",
 				dmgres : ["Fire"],
-				savetxt : "Immune to effects of extreme heat"
+				savetxt : { immune : ["effects of extreme heat"] }
 			},
 			"sea" : {
 				name : "Storm Soul: Sea",
@@ -2032,7 +2071,7 @@ ClassSubList["storm herald"] = {
 				name : "Storm Soul: Tundra",
 				description : "\n   " + "I have resistance to cold damage and don't suffer the effects of extreme cold",
 				dmgres : ["Cold"],
-				savetxt : "Immune to effects of extreme cold"
+				savetxt : { immune : ["effects of extreme cold"] }
 			},
 			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?barbarian,subclassfeature3,(desert|sea|tundra).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"barbarian,subclassfeature6,\" + FeaChoice, false);};};"
 		},
@@ -2300,10 +2339,8 @@ ClassSubList["forge domain"] = {
 			source : ["UA:CDD", 1],
 			minlevel : 17,
 			description : "\n   " + "I gain immunity to fire damage" + "\n   " + "If wearing heavy armor, I'm resistant to nonmagical bludg./piercing/slashing damage",
-			savetxt : "Immunity to fire damage",
-			dmgres : [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]],
-			eval : "SetProf('resistance', false, 'Fire', 'Cleric (Forge Domain): Soul of the Forge');",
-			removeeval : "SetProf('resistance', true, 'Fire', 'Cleric (Forge Domain): Soul of the Forge');"
+			savetxt : { immune : ["fire"] },
+			dmgres : [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
 		}
 	},
 };
@@ -2696,7 +2733,7 @@ ClassSubList["knight"] = {
 			source : ["UA:FMA", 2],
 			minlevel : 3,
 			description : "\n   " + "Mounting or dismounting a creature costs me only 5 ft of movement" + "\n   " + "I have advantage on saving throws made to avoid falling off my mount" + "\n   " + "If I fall off my mount for less than 10 ft while not incapacitated, I land on my feet",
-			savetxt : "Adv. vs. falling off my mount"
+			savetxt : { adv_vs : ["falling off my mount"] }
 		},
 		"subclassfeature3.1" : {
 			name : "Implacable Mark",
@@ -2718,7 +2755,17 @@ ClassSubList["knight"] = {
 			source : ["UA:FMA", 2],
 			minlevel : 7,
 			description : "\n   " + "I gain proficiency with two skills or one language" + "\n   " + "I can choose the skills from: Animal Handling, History, Insight, Persuasion, and Religion",
-			skillstxt : "\n\n" + toUni("Knight") + ": Choose two from Animal Handling, History, Insight, Persuasion, and Religion. Alternatively, I learn one language."
+			choices : ["Language proficiency", "2 Skill proficiencies: Animal Handling, History, Insight, Persuasion, or Religion"],
+			"language proficiency" : {
+				name : "Noble Cavalry",
+				description : "\n   " + "I learn one language of my choice",
+				languageProfs : [1]
+			},
+			"2 skill proficiencies: animal handling, history, insight, persuasion, or religion" : {
+				name : "Noble Cavalry",
+				description : "\n   " + "I gain 2 skill proficiencies: Animal Handling, History, Insight, Persuasion, or Religion",
+				skillstxt : "\n\n" + toUni("Knight") + ": Choose two from: Animal Handling, History, Insight, Persuasion, or Religion."
+			}
 		},
 		"subclassfeature10" : {
 			name : "Hold the Line",
@@ -2772,16 +2819,24 @@ ClassSubList["samurai"] = {
 			name : "Elegant Courtier",
 			source : ["UA:FMA", 3],
 			minlevel : 7,
-			description : "\n   " + "I can add my Wis modifier to any Cha check to persuade anyone of a high social station" + "\n   " + "I gain proficiency with one language and the History, Insight, or Persuasion skill",
-			skillstxt : "\n\n" + toUni("Samurai") + ": History, Insight, or Persuasion.",
-			languageProfs : [1]
+			description : "\n   " + "I can add my Wis modifier to any Cha check to persuade anyone of a high social station" + "\n   " + "I gain proficiency with either one language or the History, Insight, or Persuasion skill",
+			choices : ["Language proficiency", "Skill proficiency: History, Insight, or Persuasion"],
+			"language proficiency" : {
+				name : "Elegant Courtier",
+				description : "\n   " + "I can add my Wis modifier to any Cha check to persuade anyone of a high social station" + "\n   " + "I gain proficiency with one language of my choice",
+				languageProfs : [1]
+			},
+			"skill proficiency: history, insight, or persuasion" : {
+				name : "Elegant Courtier",
+				description : "\n   " + "I can add my Wis modifier to any Cha check to persuade anyone of a high social station" + "\n   " + "I gain proficiency with one skill: History, Insight, or Persuasion",
+				skillstxt : "\n\n" + toUni("Samurai") + ": History, Insight, or Persuasion.",
+			}
 		},
 		"subclassfeature10" : {
 			name : "Unbreakable Will",
 			source : ["UA:FMA", 3],
 			minlevel : 10,
 			description : "\n   " + "I gain proficiency with Wis saves, or if I'm already proficient, either Int or Cha saves",
-			skillstxt : "\n\n" + toUni("Samurai") + ": History, Insight, or Persuasion.",
 			saves : ["Wis"]
 		},
 		"subclassfeature15" : {
@@ -3015,7 +3070,7 @@ ClassSubList["oath of conquest"] = {
 			source : ["UA:PSO", 1],
 			minlevel : 15,
 			description : "\n   " + "I can't be charmed",
-			savetxt : "Immune to being charmed"
+			savetxt : { immune : ["charmed"] }
 		},
 		"subclassfeature20" : {
 			name : "Invincible Conqueror",
@@ -3342,8 +3397,8 @@ ClassSubList["sorcerer-favoured soul"] = {
 			name : "Divine Purity",
 			source : ["UA:SO", 1],
 			minlevel : 14,
-			description : "\n   " + "I become immune to disease, poison damage, and the poisoned condition",
-			savetxt : "Immune to poison damage, being poisoned, and disease"
+			description : "\n   " + "I become immune to disease and poison",
+			savetxt : { immune : ["poison", "disease"] }
 		},
 		"subclassfeature18" : {
 			name : "Unearthly Recovery",
@@ -3709,7 +3764,7 @@ ClassSubList["warlock-the raven queen"] = {
 			source : ["UA:WnW", 3],
 			minlevel : 10,
 			description : "\n   " + "I can't be frightened, have advantage on death saves, and resistance to necrotic damage",
-			savetxt : "Immune to being frightened; Adv. on death saves",
+			savetxt : { immune : ["frightened"], adv_vs : ["death"] },
 			dmgres : ["Necrotic"]
 		},
 		"subclassfeature14" : {
@@ -4580,7 +4635,17 @@ ClassSubList["fighter-cavalier2"] = {
 				"I gain proficiency with Animal Handling, History, Insight, Performance, or Persuasion",
 				"Alternatively, I learn one language of my choice"
 			]),
-			skillstxt : "\n\n" + toUni("Cavalier") + ": Choose one skill from: Animal Handling, History, Insight, Performance, or Persuasion. - or - Choose one language."
+			choices : ["Language proficiency", "Skill proficiency: Animal Handling, History, Insight, Performance, or Persuasion"],
+			"language proficiency" : {
+				name : "Bonus Proficiency",
+				description : "\n   " + "I learn one language of my choice",
+				languageProfs : [1]
+			},
+			"skill proficiency: animal handling, history, insight, performance, or persuasion" : {
+				name : "Bonus Proficiency",
+				description : "\n   " + "I gain proficiency with Animal Handling, History, Insight, Performance, or Persuasion",
+				skillstxt : "\n\n" + toUni("Cavalier") + ": Choose one from: Animal Handling, History, Insight, Performance, or Persuasion."
+			}
 		},
 		"subclassfeature3.1" : {
 			name : "Born in the Saddle",
@@ -4590,7 +4655,7 @@ ClassSubList["fighter-cavalier2"] = {
 				"I have advantage on saves to avoid falling off my mount, and land on my feet if I fail",
 				"Mounting or dismounting a creature costs me only 5 ft of movement instead of half"
 			]),
-			savetxt : "Adv. to avoid falling off my mount"
+			savetxt : { adv_vs : ["falling off my mount"] }
 		},
 		"subclassfeature3.2" : {
 			name : "Combat Superiority",

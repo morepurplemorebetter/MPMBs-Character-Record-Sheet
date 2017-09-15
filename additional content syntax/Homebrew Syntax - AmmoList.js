@@ -11,12 +11,14 @@
 	Subject:	Ammunition
 	Effect:		This is the syntax for adding a new type of ammunition to the sheet
 				Note that if you want this ammunition to be added automatically when selecting a certain weapon, you need to include its object-name as the 'ammo' attribute. Even if you don't do this, the ammo you define will be filled when typed into an ammo box
-	Sheet:		v12.83 (2017-02-18)
+	Sheet:		v12.998 2017-09-15
 */
 
 AmmoList["distantsting"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []. The spelling here is used to identify the ammo with.
 
 	name : "DistantSting", //Required; the name of the ammunition
+	
+	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js". // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
 	
 	weight : 0.05, //Required; the weight in lb
 	

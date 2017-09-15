@@ -54,7 +54,7 @@ var FeatsList = {
 		source : ["P", 166],
 		description : "I have advantage on Wis (Perception) and Int (Investigation) checks made to detect the presence of secret doors. I can search for traps while traveling at a normal pace. I have resistance to damage dealt by traps and advantage on saves to avoid or resist traps.",
 		dmgres : ["Traps"],
-		savetxt : "Adv. vs. traps",
+		savetxt : { adv_vs : ["traps"] },
 		eval : "AddString('Vision', 'Adv. on Perception and Investigation for secret doors', '; ');",
 		removeeval : "RemoveString('Vision', 'Adv. on Perception and Investigation for secret doors');"
 	},
@@ -154,7 +154,7 @@ var FeatsList = {
 		name : "Mage Slayer",
 		source : ["P", 168],
 		description : "As a reaction, I can make a melee weapon attack on a creature within 5 ft of me that casts a spell. Concentration checks from damage from me are made with disadvantage. I have advantage on saving throws against spells cast by creatures within 5 feet of me.",
-		savetxt : "Advantage on saves vs. spells cast within 5 ft",
+		savetxt : { adv_vs : ["spells cast within 5 ft"] },
 		eval : "AddAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)', 'the Mage Slayer feat');",
 		removeeval : "RemoveAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)');"
 	},

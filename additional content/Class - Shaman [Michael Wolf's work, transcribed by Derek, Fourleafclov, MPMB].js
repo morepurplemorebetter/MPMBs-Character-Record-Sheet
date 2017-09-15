@@ -14,7 +14,7 @@
 				This content is made by Michael Wolf
 	Original:   Derek (with amendments by MorePurpleMoreBetter)
 	Completed:  /u/Fourleafclov (with amendments by MorePurpleMoreBetter)
-	Date:		2017-09-05 (sheet v12.998)
+	Date:		2017-09-15 (sheet v12.998)
 
 	Please support the creator of this content (Michael Wolf) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Michael%20Wolf
 */
@@ -670,7 +670,7 @@ ClassSubList["speaker of dreams"] = {
 				"When a creature deals psychic damage to me, that creature takes the same damage"
 			]),
 			dmgres : ["Psychic"],
-			savetxt : "Immune to Charm Effects",
+			savetxt : { immune : ["charmed"] }
 		},
 		"subclassfeature14" : {
 			name : "Dreamscape",
@@ -746,7 +746,7 @@ ClassSubList["speaker of flames"] = {
 				"I'm immune to fire damage and I regain HP instead of being damaged by it",
 				"The HP regained equals half the fire damage taken, up to half my HP maximum"
 			]),
-			savetxt : "Immunity to Fire"
+			savetxt : { immune : ["fire"] }
 		},
 		"subclassfeature14" : {
 			name : "Flames of Creation",
@@ -819,7 +819,7 @@ ClassSubList["speaker of stones"] = {
 				"I have adv. on Str and Dex saves made against effects that would knock me prone"
 			]),
 			dmgres : ["Bludgeoning"],
-			savetxt : "Adv. on Str and Dex saves vs. effects that make me prone",
+			savetxt : { text : ["Adv. on Str and Dex saves vs. effects that make me prone"] }
 		},
 		"subclassfeature14" : {
 			name : "Preserve in Stone",
@@ -893,7 +893,7 @@ ClassSubList["speaker of waters"] = {
 				"I have adv. on saves vs. effects that would reduce my speed or light me on fire"
 			]),
 			dmgres : ["Cold", "Fire"],
-			savetxt : "Adv. saves vs. effects that reduce speed or light me on fire"
+			savetxt : { adv_vs : ["effects that reduce speed or light me on fire"] }
 		},
 		"subclassfeature14" : {
 			name : "Move Across the Waters",
@@ -970,7 +970,7 @@ ClassSubList["speaker of winds"] = {
 			minlevel : 10,
 			description : "\n   " + "I have resistance to lightning and thunder damage, I am immune to being paralyzed",
 			dmgres : ["Lightning", "Thunder"],
-			savetxt : "Immunity to being paralyzed"
+			savetxt : { immune : ["paralyzed"] }
 		},
 		"subclassfeature14" : {
 			name : "Stormwalker",

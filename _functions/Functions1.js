@@ -2591,10 +2591,7 @@ function ApplyRace(inputracetxt) {
 			var theVision = What("Unit System") === "imperial" ? CurrentRace.vision : ConvertToMetric(CurrentRace.vision, 0.5);	
 			AddString("Vision", theVision, "; ");
 		}
-		if (CurrentRace.savetxt) {
-			var theSavetxt = What("Unit System") === "imperial" ? CurrentRace.savetxt : ConvertToMetric(CurrentRace.savetxt, 0.5);
-			AddString("Saving Throw advantages / disadvantages", theSavetxt, "; ");
-		}
+		if (CurrentRace.savetxt) SetProf("savetxt", true, CurrentRace.savetxt, CurrentRace.name);
 		if (CurrentRace.dmgres) {
 			for (var i = 0; i < CurrentRace.dmgres.length; i++) {
 				var theDmgres = isArray(CurrentRace.dmgres[i]) ? CurrentRace.dmgres[i] : [CurrentRace.dmgres[i], false];
@@ -2608,16 +2605,7 @@ function ApplyRace(inputracetxt) {
 		};
 		if (CurrentRace.toolProfs) processTools(true, CurrentRace.name, CurrentRace.toolProfs);
 		if (CurrentRace.languageProfs) processLanguages(true, CurrentRace.name, CurrentRace.languageProfs);
-/*
-		if (CurrentRace.tools) {
-			for (i = 0; i < CurrentRace.tools.length; i++) {
-				AddTool(CurrentRace.tools[i], CurrentRace.name);
-			}
-		};
-		for (var L = 0; L < CurrentRace.languages.length; L++) {
-			AddLanguage(CurrentRace.languages[L], "being a " + CurrentRace.name);
-		}
-*/
+
 		if (CurrentRace.skills) {
 			for (i = 0; i < CurrentRace.skills.length; i++) {
 				AddSkillProf(CurrentRace.skills[i]);
@@ -2693,10 +2681,7 @@ function RemoveRace() {
 			var theVision = What("Unit System") === "imperial" ? CurrentRace.vision : ConvertToMetric(CurrentRace.vision, 0.5);
 			RemoveString("Vision", theVision);
 		}
-		if (CurrentRace.savetxt) {
-			var theSavetxt = What("Unit System") === "imperial" ? CurrentRace.savetxt : ConvertToMetric(CurrentRace.savetxt, 0.5);
-			RemoveString("Saving Throw advantages / disadvantages", theSavetxt);
-		}
+		if (CurrentRace.savetxt) SetProf("savetxt", false, CurrentRace.savetxt, CurrentRace.name);
 		if (CurrentRace.dmgres) {
 			for (var i = 0; i < CurrentRace.dmgres.length; i++) {
 				var theDmgres = isArray(CurrentRace.dmgres[i]) ? CurrentRace.dmgres[i] : [CurrentRace.dmgres[i], false];
@@ -2705,16 +2690,7 @@ function RemoveRace() {
 		};
 		if (CurrentRace.toolProfs) processTools(false, CurrentRace.name, CurrentRace.toolProfs);
 		if (CurrentRace.languageProfs) processLanguages(false, CurrentRace.name, CurrentRace.languageProfs);
-/*
-		if (CurrentRace.tools) {
-			for (i = 0; i < CurrentRace.tools.length; i++) {
-				RemoveTool(CurrentRace.tools[i], CurrentRace.name);
-			}
-		};
-		for (var L = 0; L < CurrentRace.languages.length; L++) {
-			RemoveLanguage(CurrentRace.languages[L], "being a " + CurrentRace.name);
-		}
-*/
+
 		if (CurrentRace.skills) {
 			for (i = 0; i < CurrentRace.skills.length; i++) {
 				AddSkillProf(CurrentRace.skills[i], false);
@@ -5130,10 +5106,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 				};
 			};
 			
-			if (theFeat.savetxt) {
-				var thePropFeaSave = What("Unit System") === "imperial" ? theFeat.savetxt : ConvertToMetric(theFeat.savetxt, 0.5);
-				RemoveString("Saving Throw advantages \/ disadvantages", thePropFeaSave, "; ");
-			};
+			if (theFeat.savetxt) SetProf("savetxt", false, theFeat.savetxt, theFeat.name);
 			
 			if (theFeat.toolProfs) processTools(false, theFeat.name, theFeat.toolProfs);
 			if (theFeat.languageProfs) processLanguages(false, theFeat.name, theFeat.languageProfs);
@@ -5235,10 +5208,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 				};
 			};
 			
-			if (theFeat.savetxt) {
-				var thePropFeaSave = What("Unit System") === "imperial" ? theFeat.savetxt : ConvertToMetric(theFeat.savetxt, 0.5);
-				AddString("Saving Throw advantages \/ disadvantages", thePropFeaSave, "; ");
-			};
+			if (theFeat.savetxt) SetProf("savetxt", true, theFeat.savetxt, theFeat.name);
 			
 			if (theFeat.toolProfs) processTools(true, theFeat.name, theFeat.toolProfs);
 			if (theFeat.languageProfs) processLanguages(true, theFeat.name, theFeat.languageProfs);
@@ -5936,12 +5906,10 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 
 					// --- add or remove save text, if defined --- //
 					if (propFea.savetxt && CheckFea) {
-						var thePropFeaSave = What("Unit System") === "imperial" ? propFea.savetxt : ConvertToMetric(propFea.savetxt, 0.5);
-						tDoc[ActionAddRemove + "String"]("Saving Throw advantages \/ disadvantages", thePropFeaSave, "; ");
+						SetProf("savetxt", profAddRemove, propFea.savetxt, profDisplNm);
 					};
 					if (CheckFea && FeaChoice && propFea[FeaChoice].savetxt) {
-						var thePropFeaChoiceSave = What("Unit System") === "imperial" ? propFea[FeaChoice].savetxt : ConvertToMetric(propFea[FeaChoice].savetxt, 0.5);
-						tDoc[ActionAddRemove + "String"]("Saving Throw advantages \/ disadvantages", thePropFeaChoiceSave, "; ");
+						SetProf("savetxt", profAddRemove, propFea[FeaChoice].savetxt, profChoiceDisplNm);
 					};
 					
 					thermoM(6/8); //increment the progress dialog's progress
@@ -6265,8 +6233,9 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 		// --- add or remove damage resistances --- //
 		var temp = CurrentClasses[MenuSelection[0]];
 		var theOldSubFeaNm = AddOrRemove === "remove" ? MenuSelection[2] : FeaOldChoice;
-		var profDisplNmOld = AddOrRemove !== "remove" ? "" : (theOldSubFeaNm.indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name) + ": " + theOldSubFea.name;
-		var profDisplNm = (MenuSelection[2].indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name) + ": " + theSubFea.name;
+		var profDisplCl = MenuSelection[1].indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name;
+		var profDisplNmOld = !FeaOldChoice ? "" : profDisplCl + ": " + theOldSubFea.name;
+		var profDisplNm = profDisplCl + ": " + theSubFea.name;
 		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.dmgres) {
 			for (var dr = 0; dr < theOldSubFea.dmgres.length; dr++) {
 				var theDmgres = isArray(theOldSubFea.dmgres[dr]) ? theOldSubFea.dmgres[dr] : [theOldSubFea.dmgres[dr], false];
@@ -6297,7 +6266,7 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 			processTools(false, profDisplNmOld, theOldSubFea.toolProfs);
 		};
 		if (theSubFea.toolProfs && AddOrRemove !== "remove") {
-			processTools(true, profDisplNm, theOldSubFea.toolProfs);
+			processTools(true, profDisplNm, theSubFea.toolProfs);
 		};
 
 		// --- add or remove language proficiencies --- //
@@ -6305,8 +6274,18 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 			processLanguages(false, profDisplNmOld, theOldSubFea.languageProfs);
 		};
 		if (theSubFea.languageProfs && AddOrRemove !== "remove") {
-			processLanguages(true, profDisplNm, theOldSubFea.languageProfs);
+			processLanguages(true, profDisplNm, theSubFea.languageProfs);
 		};
+
+		// --- add or remove text for saves, and immunities --- //
+		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.savetxt) {
+			SetProf("savetxt", false, theOldSubFea.savetxt, profDisplNmOld);
+		};
+		if (theSubFea.savetxt && AddOrRemove !== "remove") {
+			SetProf("savetxt", true, theSubFea.savetxt, profDisplNm);
+		};
+		
+		thermoM(4/6); //increment the progress dialog's progress
 		
 		//add, if defined, spells of the feature, and undo, if defined spells of previous if changed
 		if (!CurrentSpells[MenuSelection[0]] && AddOrRemove !== "remove" && (theSubFea.spellcastingExtra || theSubFea.spellcastingBonus)) { //first see if the entry exists or not, and create it if it doesn't
@@ -6352,7 +6331,7 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 			}
 		}
 		
-		thermoM(4/6); //increment the progress dialog's progress
+		thermoM(5/6); //increment the progress dialog's progress
 
 		//add, if defined, action of the feature, and undo, if defined action of previous if changed
 		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.action) {
@@ -6360,18 +6339,6 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 		}
 		if (theSubFea.action && AddOrRemove !== "remove") {
 			AddAction(isArray(theSubFea.action) ? theSubFea.action[0] : theSubFea.action, theSubFea.name + (isArray(theSubFea.action) && theSubFea.action[1] ? theSubFea.action[1] : ""), CurrentClasses[MenuSelection[0]].fullname);
-		}
-		
-		thermoM(5/6); //increment the progress dialog's progress
-
-		//add, if defined, save of the feature, and undo, if defined save of previous if changed
-		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.savetxt) {
-			var theOldSave = What("Unit System") === "imperial" ? theOldSubFea.savetxt : ConvertToMetric(theOldSubFea.savetxt, 0.5);
-			RemoveString("Saving Throw advantages / disadvantages", theOldSave);
-		}
-		if (theSubFea.savetxt && AddOrRemove !== "remove") {
-			var theSave = What("Unit System") === "imperial" ? theSubFea.savetxt : ConvertToMetric(theSubFea.savetxt, 0.5);
-			AddString("Saving Throw advantages / disadvantages", theSave, "; ");
 		}
 		
 		thermoM("stop"); //stop the top progress dialog
@@ -8643,7 +8610,6 @@ function ApplyBackgroundFeature(input) {
 	
 	var TheInput = input.toLowerCase();
 	var TempFound = false;
-	var tempString = 
 	var tempString = stringSource(CurrentBackground, "full,page", "The \"" + CurrentBackground.name + "\" background is found in ", ".\n");
 	
 	if (input === "") {

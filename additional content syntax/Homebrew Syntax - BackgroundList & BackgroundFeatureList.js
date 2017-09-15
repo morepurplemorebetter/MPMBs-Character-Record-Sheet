@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Background and Background Feature
 	Effect:		This is the syntax for adding a new background and the syntax for adding a new background feature below it
-	Sheet:		v12.998 (2017-09-05)
+	Sheet:		v12.998 2017-09-15
 */
 
 BackgroundList["where i am from"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
@@ -18,7 +18,7 @@ BackgroundList["where i am from"] = { //Object name; Note the use of only lower 
 	
 	name : "Where I am From", //required; the name as used
 	
-	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js"
+	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js". // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
 	
 	skills : ["Deception", "Stealth"], //optional; skill proficiencies gained from having the background. If the background doesn't give fixed proficiencies, but instead gives a choice, delete this line and use the line below, "skillstxt"
 	

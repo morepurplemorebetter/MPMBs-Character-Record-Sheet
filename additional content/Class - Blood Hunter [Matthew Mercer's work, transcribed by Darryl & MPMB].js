@@ -18,7 +18,7 @@
 				
 	Code by:	Darryl Cook & MorePurpleMoreBetter
 				Order of the Lycan code by MorePurpleMoreBetter
-	Date:		2017-09-05 (sheet v12.998)
+	Date:		2017-09-15 (sheet v12.998)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 	
@@ -218,7 +218,10 @@ ClassList["blood hunter"] = {
 			source : ["MM:BH", 4],
 			minlevel : 14,
 			description : "\n   " + "I am immune to being frightened, and have adv. on saves against magical charm effects",
-			savetxt : "Immune to being frightened; Adv. vs. magical charm effects"
+			savetxt : {
+				immune : ["frightened"],
+				adv_vs : ["charmed"]
+			}
 		},
 		"sanguine mastery" : {
 			name : "Sanguine Mastery",
@@ -601,7 +604,7 @@ ClassSubList["order of the mutant"] = {
 			source : ["MM:BH", 7],
 			minlevel : 15,
 			description : "\n   " + "I gain immunity to poison damage and the poison condition",
-			savetxt : "Immune to poison damage and the poison condition"
+			savetxt : { immune : ["poison"] }
 		},
 		"subclassfeature18" : {
 			name : "Exalted Mutation",
@@ -645,7 +648,7 @@ ClassSubList["order of the lycan"] = {
 			usages : ["", "", 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3],
 			recovery : "short rest",
 			action : ["action", " (start/end)"],
-			savetxt : "Adv. on Str saves while in Hybrid form",
+			savetxt : { text : ["Adv. on Str saves in Hybrid form"] },
 			dmgres : [["Bludgeoning", "Bludg. (in hybrid)"], ["Piercing", "Pierc. (in hybrid)"], ["Slashing", "Slash. (in hybrid)"]],
 			eval : "AddWeapon(\"Predatory Strike\"); AddAction(\"bonus action\", \"Predatory Strike (with Attack action)\", \"Order of the Lycan (Hybrid Transformation)\");",
 			removeeval : "RemoveWeapon(\"Predatory Strike\"); RemoveAction(\"bonus action\", \"Predatory Strike (with Attack action)\");",

@@ -41,7 +41,7 @@ ClassSubList["unyielding"] = {
 			minlevel : 7,
 			description : "\n   " + "Allies within range and I have adv. on saves against being moved while I am conscious",
 			additional : ["", "", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-			savetxt : "Adv. vs. effects that move me"
+			savetxt : { adv_vs : ["effects that move me"] }
 		},
 		"subclassfeature15" : {
 			name : "Unbending",

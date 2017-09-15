@@ -14,7 +14,7 @@
 	Code by:	SoilentBrad
 				userZynx_name (additions of Pyromancer, Servo, and feats)
 				tiny corrections by MPMB
-	Date:		2017-09-05 (sheet v12.998)
+	Date:		2017-09-15 (sheet v12.998)
 */
 
 SourceList["PS:K"] = {
@@ -55,7 +55,7 @@ RaceList["kaladesh dwarf"] = {
 	speed : [25, 25],
 	languageProfs : ["Common", "Dwarvish"],
 	vision : "Darkvision 60 ft",
-	savetxt : "Adv. vs. Poison",
+	savetxt : { adv_vs : ["poison"] },
 	dmgres : ["Poison"],
 	toolProfs : [["Artisan's tools", 2]],
 	age : " are considered young until they are 50 and live about 350 years",
@@ -88,7 +88,10 @@ RaceList["vahadar elf"] = {
 	speed : [30, 20],
 	languageProfs : ["Common", "Elvish", 1],
 	vision : "Darkvision 60 ft",
-	savetxt : "Adv. vs. being charmed; Magic can't put me to sleep",
+	savetxt : {
+		text : ["Magic can't put me to sleep"],
+		adv_vs : ["charmed"]
+	},
 	weaponprofs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
 	skills : ["Perception"],
 	age : " typically claim adulthood around age 100 and can live to be 750 years old",
@@ -118,7 +121,7 @@ RaceList["vedalken"] = {
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", "Vedalken"],
-	savetxt : "Adv. on Int, Wis, Cha saves vs. magic",
+	savetxt : { text : ["Adv. on Int/Wis/Cha saves vs. magic"] },
 	age : " reach adulthood around 40 and live up to 500 years",
 	height : " range from 6 to 6 1/2 feet tall",
 	weight : " weigh less than 200 lb",
@@ -277,7 +280,7 @@ ClassSubList["sorcerer-pyromancer"] = {
 			source : ["PS:K", 9],
 			minlevel : 18,
 			description : "\n   " + "I have immunity to fire damage" + "\n   " + "Any spell or effect I create ingores resistance to fire damage" + "\n   " + "In addition, it will treat immunity to fire damage as resistance to fire damage",
-			savetxt : "Immune to fire damage",
+			savetxt : { immune : ["fire"] },
 			eval : "SetProf('resistance', false, 'Fire', 'Pyromancer: Fiery Soul');",
 			removeeval : "SetProf('resistance', true, 'Fire', 'Pyromancer: Fiery Soul');"
 		},

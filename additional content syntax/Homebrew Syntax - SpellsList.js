@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Spell
 	Effect:		This is the syntax for adding a new spell
-	Sheet:		v12.997 (2017-08-02)
+	Sheet:		v12.998 2017-09-15
 	
 	Please note that there is no code here to update drop-down boxes because the rop-down boxes in the spell selection dialogues are generated automatically and will include any spells you add correctly
 	
@@ -27,7 +27,7 @@ SpellsList["abi-dalzim's horrid wilting"] = { //Object name; note the use of onl
 	
 	classes : ["bard", "cleric", "druid", "sorcerer", "wizard"], //Required; Array of all the classes that have this spell on their list. Needs at least one entry. Even with one entry you still need to put the brackets around it []. Note the use of only lower case!
 	
-	source : ["HB", 0], //Required; the source and the page number. "HB" stands for homebrew. //Note that filling out this incorrectly will prohibit the spell from showing up in the spell selection dialogues. //If you want to add a custom source, see "Homebrew Syntax - SourceList.js"
+	source : ["HB", 0], //Required; the source and the page number. "HB" stands for homebrew. //Note that filling out this incorrectly will prohibit the spell from showing up in the spell selection dialogues. //If you want to add a custom source, see "Homebrew Syntax - SourceList.js" // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
 	
 	ritual : false, //Optional; Whether (true) or not (false) this spell is a ritual
 	

@@ -35,7 +35,7 @@ var ClassList = {
 				recovery : "long rest",
 				action : ["bonus action", " (start/stop)"],
 				dmgres : [["Bludgeoning", "Bludgeon. (in rage)"], ["Piercing", "Piercing (in rage)"], ["Slashing", "Slashing (in rage)"]],
-				savetxt : "Adv. on Strength saves in rage",
+				savetxt : { text : ["Adv. on Str saves in rage"] },
 				calcChanges : {
 					atkCalc : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level && (/\\brage\\b/i).test(WeaponText)) {output.extraDmg += function(n){return n < 9 ? 2 : n < 16 ? 3 : 4;}(classes.known.barbarian.level); }; ", "If I include the word 'Rage' in a melee weapon's name or description, the calculation will add my Rage's bonus damage to it."]
 				}
@@ -57,7 +57,7 @@ var ClassList = {
 				source : ["P", 48],
 				minlevel : 2,
 				description : "\n   " + "Adv. on Dexterity saves against seen effects (not blinded/deafened/incapacitated)",
-				savetxt : "Adv. on Dex saves vs. seen effects"
+				savetxt : { text : ["Adv. on Dex saves vs. seen effects"] }
 			},
 			"subclassfeature3" : {
 				name : "Primal Path",
@@ -642,7 +642,7 @@ var ClassList = {
 				source : ["P", 79],
 				minlevel : 7,
 				description : "\n   " + "My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
-				savetxt : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
+				savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
 			},
 			"stillness of mind" : {
 				name : "Stillness of Mind",
@@ -656,7 +656,7 @@ var ClassList = {
 				source : ["P", 79],
 				minlevel : 10,
 				description : typeA4 ? "\n   " + "My mastery of the ki flowing through me makes me immune to poison and disease" : " [" + "I am immune to poison and disease" + "]",
-				savetxt : "Immune to poison and disease" //both immune to poison damage and the poisoned condition (see sage advice)
+				savetxt : { immune : ["poison", "disease"] } //both immune to poison damage and the poisoned condition (see sage advice)
 			},
 			"tongue of the sun and moon" : {
 				name : "Tongue of the Sun and Moon",
@@ -805,7 +805,7 @@ var ClassList = {
 				source : ["P", 85],
 				minlevel : 3,
 				description : "\n   " + "I am immune to disease, thanks to the power of my faith",
-				savetxt : "Immune to disease"
+				savetxt : { immune : ["disease"] }
 			},
 			"aura of protection" : {
 				name : "Aura of Protection",
@@ -822,7 +822,7 @@ var ClassList = {
 				minlevel : 10,
 				description : "\n   " + "While I'm conscious, allies within range and I can't be frightened",
 				additional : ["", "", "", "", "", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				savetxt : "Immune to being frightened"
+				savetxt : { immune : ["frightened"] }
 			},
 			"improved divine smite" : {
 				name : "Improved Divine Smite",
@@ -1074,7 +1074,7 @@ var ClassList = {
 				source : ["P", 92],
 				minlevel : 8,
 				description : "\n   " + "I can travel through nonmagical, difficult terrain without penalty" + "\n   " + "I have advantage on saves vs. plants that impede movement by magical influence",
-				savetxt : "Adv. vs. magical plants that impede movement"
+				savetxt : { adv_vs : ["magical plants that impede movement"] }
 			},
 			"hide in plain sight" : {
 				name : "Hide in Plain Sight",
@@ -1184,7 +1184,7 @@ var ClassList = {
 				source : ["P", 96],
 				minlevel : 7,
 				description : "\n   " + "My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
-				savetxt : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
+				savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
 			},
 			"reliable talent" : {
 				name : "Reliable Talent",
@@ -1902,7 +1902,7 @@ var ClassSubList = {
 				source : ["P", 49],
 				minlevel : 6,
 				description : "\n   " + "While raging, I can't be charmed or frightened, and such effects are suspended",
-				savetxt : "Immune to being charmed/frightened in rage"
+				savetxt : { text : ["Immune to being charmed/frightened in rage"] }
 			},
 			"subclassfeature10" : {
 				name : "Intimidating Presence",
@@ -2722,14 +2722,14 @@ var ClassSubList = {
 				source : ["P", 68],
 				minlevel : 6,
 				description : "\n   " + "I can travel through nonmagical, difficult terrain without penalty" + "\n   " + "I have advantage on saves vs. plants that impede movement by magical influence",
-				savetxt : "Adv. vs. magical plants that impede movement"
+				savetxt : { adv_vs : ["magical plants that impede movement"] }
 			},
 			"subclassfeature10" : {
 				name : "Nature's Ward",
 				source : ["P", 68],
 				minlevel : 10,
 				description : "\n   " + "I am immune to poison/disease and I can't be charmed/frightened by elementals or fey",
-				savetxt : "Immune to poison and disease"
+				savetxt : { text : ["Immune to being charmed or frightened by elementals or fey"], immune : ["poison", "disease"] }
 			},
 			"subclassfeature14" : {
 				name : "Nature's Sanctuary",
@@ -3632,7 +3632,7 @@ var ClassSubList = {
 				source : ["S", 133],
 				minlevel : 15,
 				description : "\n   " + "I have advantage on saving throws against effects that paralyze or stun",
-				savetxt : "Adv. vs. being paralyzed or stunned"
+				savetxt : { adv_vs : ["paralyzed", "stunned"] }
 			},
 			"subclassfeature20" : {
 				name : "Exalted Champion",
@@ -3674,7 +3674,7 @@ var ClassSubList = {
 				minlevel : 7,
 				description : "\n   " + "While I'm conscious, allies within range and I can't be charmed",
 				additional : ["", "", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				savetxt : "Immune to being charmed"
+				savetxt : { immune : ["charmed"] }
 			},
 			"subclassfeature15" : {
 				name : "Purity of Spirit",
@@ -3860,7 +3860,7 @@ var ClassSubList = {
 				"steel will" : {
 					name : "Defensive Tactic: Steel Will",
 					description : "\n   " + "I have advantage on saves against being frightened",
-					savetxt : "Adv. on saves vs. being frightened"
+					savetxt : { adv_vs : ["frightened"] }
 				}
 			},
 			"subclassfeature11" : {
@@ -3889,7 +3889,7 @@ var ClassSubList = {
 				"evasion" : {
 					name : "Evasion",
 					description : "\n   " + "My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
-					savetxt : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
+					savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
 				},
 				"stand against the tide" : {
 					name : "Stand Against the Tide",
@@ -4330,9 +4330,9 @@ var ClassSubList = {
 				minlevel : 18,
 				description : "\n   " + "I have immunity to lightning and thunder damage and gain magical 60 ft fly speed" + "\n   " + "As an action, I reduce my fly speed to 30 ft and give allies 30 ft fly speed for 1 hour" + "\n   " + "I can do this once per short rest for up to 3 + my Charisma modifier allies within 30 ft",
 				action : ["action", ""],
-				savetxt : "Immune to lightning and thunder damage",
-				eval : "SetProf('resistance', false, 'Lightning', 'Storm Sorcerer: Heart of the Storm'); SetProf('resistance', false, 'Thunder', 'Storm Sorcerer: Heart of the Storm'); AddString(\"Speed\", \"60 ft fly\", true); AddString(\"Speed encumbered\", \"60 ft fly\", true);",
-				removeeval : "SetProf('resistance', true, 'Lightning', 'Storm Sorcerer: Heart of the Storm'); SetProf('resistance', true, 'Thunder', 'Storm Sorcerer: Heart of the Storm'); RemoveString(\"Speed\", \"60 ft fly\", true); RemoveString(\"Speed encumbered\", \"60 ft fly\", true);",
+				savetxt : { immune : ["lightning", "thunder"] },
+				eval : "AddString(\"Speed\", \"60 ft fly\", true); AddString(\"Speed encumbered\", \"60 ft fly\", true);",
+				removeeval : "RemoveString(\"Speed\", \"60 ft fly\", true); RemoveString(\"Speed encumbered\", \"60 ft fly\", true);",
 				usages : 1,
 				recovery : "short rest"
 			}
@@ -4410,7 +4410,7 @@ var ClassSubList = {
 				minlevel : 10,
 				description : "\n   " + "As a reaction, when a creature tries to charm me, I can turn the charm back on it" + "\n   " + "It must make a Wis save or be charmed by me for 1 minute or until taking damage" + "\n   " + "I am immune to being charmed",
 				action : ["reaction", " (when charmed)"],
-				savetxt : "Immune to being charmed"
+				savetxt : { immune : ["charmed"] }
 			},
 			"subclassfeature14" : {
 				name : "Dark Delirium",
@@ -4507,7 +4507,7 @@ var ClassSubList = {
 				source : ["S", 139],
 				minlevel : 1,
 				description : "\n   " + "I learn the Spare the Dying cantrip and gain advantage on saving throws vs. diseases" + "\n   " + "If an undead targets me directly with an attack or spell, it must make a Wisdom save" + "\n   " + "On a fail, it must choose a new target or forfeit its attack or harmful spell" + "\n   " + "On a success or if I attack or cast a harmful spell on it, it is immune for 24 hours",
-				savetxt : "Adv. vs. diseases",
+				savetxt : { adv_vs : ["disease"] },
 				spellcastingBonus : {
 					name : "Among the Dead",
 					spells : ["spare the dying"],
@@ -4583,7 +4583,7 @@ var ClassSubList = {
 				minlevel : 14,
 				description : "\n   " + "I have adv. on spell saves and resistance to damaging spells",
 				dmgres : ["Spells"],
-				savetxt : "Advantage on saves vs. spells"
+				savetxt : { adv_vs : ["spells"] }
 			}
 		}
 	},

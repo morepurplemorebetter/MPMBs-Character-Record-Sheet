@@ -681,19 +681,62 @@ function DirectImport(consoleTrigger) {
 		//set the description fields
 		ImportField("PC Name"); ImportField("Player Name"); ImportField("Size Category", {notTooltip: true}); ImportField("Height", {notTooltip: true}); ImportField("Weight", {notTooltip: true}); ImportField("Sex"); ImportField("Hair colour", {notTooltip: true}); ImportField("Eyes colour", {notTooltip: true}); ImportField("Skin colour", {notTooltip: true}); ImportField("Age", {notTooltip: true}); ImportField("Alignment", {notTooltip: true}); ImportField("Faith/Deity", {notTooltip: true}); ImportField("Speed", {notTooltip: true}); ImportField("Speed encumbered", {notTooltip: true});
 		
-		//get the entries in these fields and add them one by one
-		var addConsolidatedEntries = function(fName) {
-			var fFld = global.docFrom.getField(fName);
-			if (!fFld) return;
-			var fArrF = fFld.value.split(";");
-			var fArrT = global.docTo.getField(fName).value.split(";");
-			for (var fF = 0; fF < fArrT.length; fF++) fArrT[fF] = clean(fArrT[fF].toLowerCase(), " ");
-			for (var fF = 0; fF < fArrF.length; fF++) {
-				var fVal = clean(fArrF[fF], " ");
-				if (fArrT.indexOf(fVal.toLowerCase()) === -1) AddString(fName, fVal, "; ");
-			}
-		}
-		addConsolidatedEntries("Vision"); addConsolidatedEntries("Saving Throw advantages / disadvantages");
+		//add the content from the saving throw and vision field, but not if importing from an older version
+		if (FromVersion >= 12.998) {
+			//First make sure the "Immune to" and "Adv. on saves vs." match with the import
+			var CurrentProfsFrom = eval(global.docFrom.getField("CurrentProfs.Stringified").value);
+			var importSaveTxt = function(type) {
+				var preTxt = type === "adv_vs" ? "Adv. on saves vs." : type === "immune" ? "Immune to" : false;
+				var fld = "Saving Throw advantages / disadvantages";
+				var svFld = global.docFrom.getField(fld).value;
+				if (!preTxt || !svFld) return;
+				var fromArr = [], toArr = [];
+				if (CurrentProfsFrom.savetxt[type]) {
+					for (var testAtt in CurrentProfsFrom.savetxt[type]) {
+						if (type === "immune" || !CurrentProfsFrom.savetxt.immune[testAtt]) {
+							fromArr.push(CurrentProfsFrom.savetxt[type][testAtt].name);
+						};
+					};
+				};
+				if (CurrentProfs.savetxt[type]) {
+					for (var testAtt in CurrentProfs.savetxt[type]) {
+						if (type === "immune" || !CurrentProfs.savetxt.immune[testAtt]) {
+							toArr.push(CurrentProfs.savetxt[type][testAtt].name);
+						};
+					};
+				};
+				var newArr = [].concat(toArr);
+				var svMatch = svFld.match(RegExp(preTxt.RegEscape() + ".*?(; |$)", "i"));
+				if (!svMatch) return;
+				var svOpt = svMatch[0].replace(/; ?$/, "").replace(RegExp(preTxt.RegEscape() + " *?", "i"), "").split(/, and | and |, |; /);
+				for (var i = 0; i < svOpt.length; i++) {
+					var addObj = svOpt[i].replace(/^and |^ +/i, "");
+					if (addObj && !(RegExp("\\b" + addObj + "\\b", "i")).test(toArr)) newArr.push(addObj);
+				};
+				newArr.sort();
+				var toStr = formatLineList(preTxt, toArr);
+				var newStr = formatLineList(preTxt, newArr);
+				if (toStr !== newStr) {
+					ReplaceString(fld, newStr, "; ", toStr, false);
+					global.docFrom.getField(fld).value = global.docFrom.getField(fld).value.replace(svMatch[0], "");
+				};
+			};
+			importSaveTxt("adv_vs");
+			importSaveTxt("immune");
+			//Then get the entries in these fields and add them one by one
+			var addConsolidatedEntries = function(fName) {
+				var fFld = global.docFrom.getField(fName);
+				if (!fFld) return;
+				var fArrF = fFld.value.split(/; ?/);
+				var fArrT = global.docTo.getField(fName).value.split(/; ?/);
+				for (var fF = 0; fF < fArrT.length; fF++) fArrT[fF] = clean(fArrT[fF].toLowerCase(), " ");
+				for (var fF = 0; fF < fArrF.length; fF++) {
+					var fVal = clean(fArrF[fF], " ");
+					if (fArrT.indexOf(fVal.toLowerCase()) === -1) AddString(fName, fVal, "; ");
+				};
+			};
+			addConsolidatedEntries("Vision"); addConsolidatedEntries("Saving Throw advantages / disadvantages");
+		};
 		
 		//add limited features that are not yet defined (all those without a tooltip)
 		for (var i = 1; i < FieldNumbers.limfea; i++) {
@@ -1173,7 +1216,8 @@ function DirectImport(consoleTrigger) {
 		if (FromVersion < 12.998) {
 			aText += "\n\n";
 			aText += toUni("Importing from older version, before v12.998");
-			aText += "\nSome proficiencies you adjusted manually, like languages and tools, might not have transferred over correctly. This is because the new version of the sheet uses a different way of setting those proficiencies with a choice.";
+			aText += "\n  > Some proficiencies you adjusted manually, like languages and tools, might not have transferred over correctly. This is because the new version of the sheet uses a different way of setting proficiencies that offer a choice.";
+			aText += "\n  > Things manually added/changed in the fields for Saving Throw Advantages/Disadvantages and Senses have not been copied.";
 		};
 		app.alert({
 			cMsg : aText,
