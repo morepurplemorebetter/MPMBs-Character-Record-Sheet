@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Armour
 	Effect:		This is the syntax for adding a new type of armour
-	Sheet:		v12.998 2017-09-15
+	Sheet:		v12.998 (2017-09-15)
 */
 
 ArmourList["protectme"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []

@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Pack (for the equipment menu
 	Effect:		This is the syntax for adding a new Pack of equipment
-	Sheet:		v12.998 2017-09-15
+	Sheet:		v12.998 (2017-09-15)
 */
 
 PacksList["burglar"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].

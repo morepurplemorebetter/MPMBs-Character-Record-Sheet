@@ -11,7 +11,7 @@
 	Subject:	Ammunition
 	Effect:		This is the syntax for adding a new type of ammunition to the sheet
 				Note that if you want this ammunition to be added automatically when selecting a certain weapon, you need to include its object-name as the 'ammo' attribute. Even if you don't do this, the ammo you define will be filled when typed into an ammo box
-	Sheet:		v12.998 2017-09-15
+	Sheet:		v12.998 (2017-09-15)
 */
 
 AmmoList["distantsting"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []. The spelling here is used to identify the ammo with.

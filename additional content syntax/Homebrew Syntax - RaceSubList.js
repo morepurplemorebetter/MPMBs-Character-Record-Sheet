@@ -12,7 +12,7 @@
 	Effect:		This is the syntax for adding a new racial variant to the sheet
 				If you want to define several subraces, please do so by defining multiple entries of the RaceList (i.e. there is a separate entry for High Elf, Wood Elf, and Dark Elf in the RaceList)
 				For races that have variants, like the human, you can define a variant using the RaceSubList. Any variant defined like this will only be selectable through the "Racial Options" button
-	Sheet:		v12.998 2017-09-15
+	Sheet:		v12.998 (2017-09-15)
 */
 
 RaceSubList["something catlike-something great catlike"] = { //Object name;  The name of the object must be the name of the parent ClassList entry ("something catlike" in this example), followed by a dash ("-"), followed by the name of the variant ("something great catlike" in this example), as defined in the 'variants' array in the ClassList entry (see bottom line). Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []

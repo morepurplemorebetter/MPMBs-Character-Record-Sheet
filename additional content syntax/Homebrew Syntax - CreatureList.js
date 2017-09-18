@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Creature
 	Effect:		This is the syntax for adding a creature that can be used on the Companion and Wild Shape pages
-	Sheet:		v12.998 2017-09-15
+	Sheet:		v12.998 (2017-09-15)
 */
 
 CreatureList["big cat"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [] //the name entered here is used to identify the input, so it has to be the same as the "name : " below, but in lower case

@@ -2365,8 +2365,7 @@ var BackgroundList = {
 			"Orc",
 		],
 		languageProfs : [2],
-		variant : [],
-		lifestyle : "modest"
+		variant : []
 	},
 	"archaeologist" : {
 		regExpSearch : /archa?eologist/i,
@@ -2446,8 +2445,7 @@ var BackgroundList = {
 		],
 		toolProfs : [["Cartographer or navigator tools", 1]],
 		languageProfs : [1],
-		variant : [],
-		lifestyle : "modest"
+		variant : []
 	},
 }
 

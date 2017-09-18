@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Background variant
 	Effect:		This is the syntax for adding a new variant on an existing background (or one that you made yourself)
-	Sheet:		v12.998 2017-09-15
+	Sheet:		v12.998 (2017-09-15)
 */
 
 BackgroundSubList["what i was doing"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
