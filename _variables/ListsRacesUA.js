@@ -38,7 +38,7 @@ RaceList["warforged"] = {
 	height : " stand between 6 and 7 feet tall (5'10\" + 2d6\")",
 	weight : " weigh around 300 lb (270 + 2d6 \xD7 4 lb)",
 	heightMetric : " stand between 1,8 and 2,1 metres tall (178 + 5d6 cm)",
-	weightMetric : " weigh around 135 lb (125 + 5d6 \xD7 8 / kg)",
+	weightMetric : " weigh around 135 kg (125 + 5d6 \xD7 8 / kg)",
 	improvements : "Warforged: +1 Strength, +1 Constitution;",
 	scores : [1, 0, 1, 0, 0, 0],
 	trait : "Warforged (+1 Strength, +1 Constitution)\nLiving Construct:\n   Even though I was constructed, I am a living creature. I am immune to disease. I do not need to eat or breathe, but I can ingest food and drink if I wish.\n   Instead of sleeping, I enter an inactive state for 4 hours each day. I do not dream in this state; I am fully aware of my surroundings and notice approaching enemies and other events as normal. I still need 8 hours for a long rest.",
@@ -633,3 +633,34 @@ RaceList["githzerai"] = {
 };
 
 
+/*	the Tortle Package from the DMs Guild of 2017-09-15
+	(http://www.dmsguild.com/product/221716/)
+*/
+//the Tortle race
+RaceList["tortle"] = {
+	regExpSearch : /tortle/i,
+	name : "Tortle",
+	source : ["TP", 4],
+	plural : "Tortles",
+	size : 3,
+	speed : [30, 20],
+	languageProfs : ["Common", "Aquan"],
+	skills : ["Survival"],
+	weapons : ["tortle's claws"],
+	age : " reach adulthood by the age of 15 and live an average of 50 years",
+	height : " stand between 5 and 6 feet tall",
+	weight : " weigh around 450 lb",
+	heightMetric : " stand between 1,5 and 1,8 metres tall",
+	weightMetric : " weigh around 200 kg",
+	improvements : "Tortle: +2 Strength, +1 Wisdom;",
+	scores : [2, 0, 0, 0, 1, 0],
+	features : {
+		"shell defense" : {
+			name : "Shell Defense",
+			minlevel : 1,
+			action : ["action", ""]
+		}
+	},
+	trait : "Tortle (+2 Strength, +1 Wisdom)\nClaws: I can use my claws to make unarmed strikes dealing 1d4 slashing damage.\nHold Breath: I can hold my breath for up to 1 hour at a time.\nNatural Armor: I have a base AC of 17, but I can't add my Dex to it or wear armour.\nShell Defense: As an action, I can withdraw into my shell and gain +4 AC and adv. on Str and Con saves, but I count as prone, have speed 0, have disadv. on Dex saves, and can't take reactions. The only action I can take is a bonus action to emerge from the shell.",
+	eval : "Value('AC Armor Description', \"Tortle's Shell\");"
+};

@@ -107,6 +107,12 @@ var SourceList = {
 		group : "Adventurers League",
 		url : "http://dndadventurersleague.org/wp-content/uploads/2016/06/Curse-of-Strahd-Backgrounds-v1.1.pdf"
 	},
+	"TP" : {
+		name : "Tortle Package",
+		abbreviation : "TP",
+		group : "Adventurers League",
+		url : "http://www.dmsguild.com/product/221716/"
+	},
 
 	//Unearthed Arcana
 	"UA:E" : {

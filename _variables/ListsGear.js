@@ -66,6 +66,18 @@ var ArmourList = {
 		strReq : 0
 	},
 
+	// TP Tortle's shell armour
+	"tortle shell" : {
+		regExpSearch : /^(?=.*tortle)(?=.*shell).*$/i,
+		name : "Tortle's Shell",
+		source : ["TP", 4],
+		type : "",
+		ac : 17,
+		dex : -10,
+		stealthdis : false,
+		strReq : 0
+	},
+
 	"mage armor" : {
 		regExpSearch : /^(?=.*(mage|magic))(?=.*armou?r).*$/i,
 		name : "Mage armor",
@@ -1153,11 +1165,11 @@ var WeaponsList = {
 		monkweapon : true
 	},
 	
-	// VGtM Tabaxi weapon
-	"cat's claws" : {
-		regExpSearch : /^(?=.*\b(cat|dragon|retractable))(?=.*\bclaws?\b).*$/i,
-		name : "Cat's Claws",
-		source : ["V", 115],
+	// VGtM Tabaxi weapon, UA:FR Dragon Fear feat, TP Tortle weapon
+	"claws" : {
+		regExpSearch : /^(?=.*\b(sharp|cat|dragon|retractable|tortle))(?=.*\bclaws?\b).*$/i,
+		name : "Sharp Claws",
+		source : [["V", 115], ["UA:FR", 2], ["TP", 4]],
 		ability : 1,
 		type : "Natural",
 		damage : [1, 4, "slashing"],
