@@ -6144,7 +6144,34 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		break;
 	};
 	case "vision" : { // Extra is optionally used to add a range, in feet, to the vision entry
-		set["darkvision"] = {name : "Darkvision", range : [60, "+30", 60, 90, 120, "+"], src : ["drow", "kobold"]}
+		var range = Extra ? Extra : 0;
+		if (AddRemove) { // add
+			if (!set[ProfObjLC]) set[ProfObjLC] = {name : ProfObj, src : [], ranges : {}};
+			var theSet = set[ProfObjLC];
+			if (theSet.src.indexOf(ProfSrc) !== -1) return; // the thing already exists so exit
+			theSet.src.push(ProfSrc);
+			theSet.ranges[ProfSrc] = range;
+			
+			// add someting to the field
+			
+		} else if (set[ProfObjLC]) { // remove
+			var theSet = set[ProfObjLC];
+			if (theSet.src.indexOf(ProfSrc) !== -1) theSet.src.splice(theSet.src.indexOf(ProfSrc), 1);
+			if (theSet.ranges[ProfSrc]) delete theSet.ranges[ProfSrc]
+			if (theSet.src.length == 0) {
+				delete set[ProfObjLC];
+			} else {
+				if (Extra && theSet.cond.indexOf(Extra) !== -1) theSet.cond.splice(theSet.cond.indexOf(Extra), 1);
+				if (Extra && theSet.lookup[Extra].indexOf(ProfSrc) !== -1) {
+					theSet.lookup[Extra].splice(theSet.lookup[Extra].indexOf(ProfSrc), 1);
+					if (theSet.lookup[Extra].length == 0) delete theSet.lookup[Extra];
+				};
+				theSet.merge = theSet.src.length !== theSet.cond.length;
+			};
+		};
+		
+		
+		set["darkvision"] = {name : "Darkvision", range : [60, "+30", 60, 90, 120, "x4", "/4", "-10"], src : ["drow", "kobold"]}
 		
 		
 		break;
@@ -6184,6 +6211,62 @@ function formatLineList(caption, elements) {
 		rStr += (i === EL - 1 ? " and " : " ") + elements[i];
 	};
 	return rStr;
+};
+
+//a way to condense an array of numbers down to the highest and modifiers
+function getHighestTotal(input, notRound) {
+	var values = [0];
+	var modifications = [];
+	var prsVal = function(val) {
+		if (!val) {
+			return;
+		} else if (isNaN(val.substring(0,1))) {
+			modifications.push(val);
+		} else {
+			values.push(val);
+		};
+	};
+	if (isArray(input)) {
+		for (var i = 0; i < input.length; i++) { prsVal(input[i]); };
+	} else if (typeof input == "object") {
+		for (var i in input) { prsVal(input[i]); };
+	};
+	//process the values and modifications
+	var tValue = Math.max.apply(Math, values);
+	if (!tValue) return false;
+	for (n = 1; n <= 2; n++) { // first do substractions and additions, then multiplications and divisions
+		for (var i = 0; i < modifications.length; i++) {
+			var aMod = modifications[i];
+			var aOperator = aMod.substring(0,1);
+			var aValue = Number(aMod.substring(1));
+			if (isNaN(aValue)) continue;
+			if (n === 1) {
+				switch (aOperator) {
+					case "+" :
+						tValue += aValue;
+						break;
+					case "-" :
+					case "\u2015" :
+						tValue -= aValue;
+						break;
+				};
+			} else {
+				switch (aOperator) {
+					case "x" :
+					case "X" :
+					case "*" :
+					case "\u00d7" :
+						tValue *= aValue;
+						break;
+					case "/" :
+					case ":" :
+						tValue /= aValue;
+						break;
+				};
+			};
+		};
+	};
+	return notRound ? tValue : Math.round(tValue);
 };
 
 // open a dialogue with a number of lines of choices and return the choices in an array
