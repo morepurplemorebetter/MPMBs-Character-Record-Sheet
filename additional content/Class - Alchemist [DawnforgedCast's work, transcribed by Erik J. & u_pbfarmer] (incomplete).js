@@ -14,7 +14,7 @@
 				This content is made by Erik J
 	Original:	Erik
 	Completed:	/u/pbfarmer
-	Date:		2017-09-05 (sheet v12.998)
+	Date:		2017-09-21 (sheet v12.998)
  
 	Code Version:	1.0
  
@@ -193,7 +193,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Permanent Mutation: Keen Senses",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "I have the senses of a mongoose" + "\n   " + "I gain the senses of a predator and now have darkvision up to 120 ft" + "\n   " + "I have advantage on Wisdom (Perception) checks that rely on smell or hearing.",
-				vision : "Darkvision 120 ft",
+				vision : [["Darkvision", 120]]
 			},
 			"prehensile tail" : {
 				name : "Permanent Mutation: Prehensile Tail",
@@ -257,7 +257,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Second Mutation: Keen Senses",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "I have the senses of a mongoose" + "\n   " + "I gain the senses of a predator and now have darkvision up to 120 ft" + "\n   " + "I have advantage on Wisdom (Perception) checks that rely on smell or hearing.",
-				vision : "Darkvision 120 ft",
+				vision : [["Darkvision", 120]]
 			},
 			"prehensile tail" : {
 				name : "Second Mutation: Prehensile Tail",

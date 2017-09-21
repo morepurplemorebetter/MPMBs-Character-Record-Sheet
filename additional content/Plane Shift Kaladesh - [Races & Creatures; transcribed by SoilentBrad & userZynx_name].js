@@ -14,7 +14,7 @@
 	Code by:	SoilentBrad
 				userZynx_name (additions of Pyromancer, Servo, and feats)
 				tiny corrections by MPMB
-	Date:		2017-09-15 (sheet v12.998)
+	Date:		2017-09-21 (sheet v12.998)
 */
 
 SourceList["PS:K"] = {
@@ -33,7 +33,7 @@ RaceList["aetherborn"] = {
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", 2],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	dmgres : ["Necrotic"],
 	skills : ["Intimidation"],
 	age : " come into being as adults and live no more than a few years",
@@ -54,7 +54,7 @@ RaceList["kaladesh dwarf"] = {
 	size : 3,
 	speed : [25, 25],
 	languageProfs : ["Common", "Dwarvish"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	savetxt : { adv_vs : ["poison"] },
 	dmgres : ["Poison"],
 	toolProfs : [["Artisan's tools", 2]],
@@ -87,7 +87,7 @@ RaceList["vahadar elf"] = {
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", "Elvish", 1],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	savetxt : {
 		text : ["Magic can't put me to sleep"],
 		adv_vs : ["charmed"]

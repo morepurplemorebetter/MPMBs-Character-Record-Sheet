@@ -13,7 +13,7 @@
 				This is taken from DanDwiki (https://www.dandwiki.com/wiki/Dhampir_(5e_Race))
 				Please note that DanDwiki is renowned for having very unbalanced content
 	Code by:	MorePurpleMoreBetter
-	Date:		2017-09-05 (sheet v12.998)
+	Date:		2017-09-21 (sheet v12.998)
 */
 
 RaceList["dhampir"] = {
@@ -25,7 +25,7 @@ RaceList["dhampir"] = {
 	speed : [30, 20],
 	languageProfs : ["Common", 1],
 	weapons : ["Vampire's Bite"],
-	vision : "Darkvision 120 ft; Sunlight Sensitivity",
+	vision : [["Darkvision", 120], ["Sunlight Sensitivity", 0]],
 	age : " mature at roughly the same rate as humans, but do not age further after reaching maturity, and they do not die of old age",
 	height : " range from 5 to 6 feet tall (4'9\" + 2d8\")",
 	weight : " weigh around 155 lb (110 + 2d8 \xD7 2d4 lb)",

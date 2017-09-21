@@ -230,9 +230,22 @@ function ApplyCompRace(newRace) {
 		
 		//set senses
 		if (CurrentCompRace[prefix].vision) {
-			var theSenses = What("Unit System") === "imperial" ? CurrentCompRace[prefix].vision : ConvertToMetric(CurrentCompRace[prefix].vision, 0.5);
-			Value(prefix + "Comp.Use.Senses", theSenses);
-		}
+			var theSenseStr = "";
+			var theSenses = CurrentCompRace[prefix].vision;
+			if (!isArray(theSenses) || (theSenses.length === 2 && !isArray(theSenses[0]) && !isArray(theSenses[1]) && (!isNaN(theSenses[1]) || !isNaN(theSenses[1].substr(1))))) {
+				theSenses = [theSenses];
+			};
+			for (var s = 0; s < theSenses.length; s++) {
+				var aSense = theSenses[s];
+				if (isArray(aSense)) {
+					theSenseStr += (theSenseStr ? "; " : "") + aSense[0] + (aSense[1] ? " " + aSense[1] + " ft": "");
+				} else {
+					theSenseStr += (theSenseStr ? "; " : "") + aSense;
+				};
+			};
+			if (What("Unit System") !== "imperial") theSenseStr = ConvertToMetric(theSenseStr, 0.5);
+			Value(prefix + "Comp.Use.Senses", theSenseStr);
+		};
 		
 		thermoM(4/11); //increment the progress dialog's progress
 		
@@ -4473,15 +4486,20 @@ function CountASIs() {
 //a function to change the sorting of the skills
 function MakeSkillsMenu_SkillsOptions(input) {
 	var sWho = Who("Text.SkillsNames");
-	var modString = toUni(" Bonus Modifier") + "\nThe number you type in here will be added to the calculated Acrobatics value.\n\n" + toUni("Dynamic Modifiers") + "\nYou can also have the field use ability score modifiers. To do this, use the abbreviations of ability scores (Str, Dex, Con, Int, Wis, Cha, HoS), math operators (+, -, /, *), and numbers.\n   For example: '2+Str' or 'Wis+Int'.\nDon't worry if you are only able to write one or two letters of an ability score's abbreviation, the field will auto-complete (e.g. typing 'S+1' will result in 'Str+1').";
-	var modStringC = modString.replace(", HoS", "");
-	var modStringE = "\n\nNote that any bonus from \"Jack of All Trades\" or \"Remarkable Athelete\" will be added automatically if the appropriate checkbox is checked.";
+	var mStr = toUni(" Bonus Modifier") + "\nThe number you type in here will be added to the calculated ";
+	var mStr1 = " value.\n\n" + toUni("Dynamic Modifiers") + "\nYou can also have the field use ability score modifiers. To do this, use the abbreviations of ability scores (Str, Dex, Con, Int, Wis, Cha, HoS), math operators (+, -, /, *), and numbers.\n   For example: '2+Str' or 'Wis+Int'.\nDon't worry if you are only able to write one or two letters of an ability score's abbreviation, the field will auto-complete (e.g. typing 'S+1' will result in 'Str+1').";
+	var mStrC = mStr1.replace(", HoS", "");
+	var mStr2 = "\n\nNote that any bonus from \"Jack of All Trades\" or \"Remarkable Athelete\" will be added automatically if the appropriate checkbox is checked.";
+	var mStr3 = "\n\n" + toUni("Not Enough Space to Write?") + "\nIf you find that you need more space to type out the modifier you want to use, you can get a bigger input-form by left-clicking in this field while holding either the Ctrl, Shift, or Cmd key.\n   This pop-up dialogue will also show you the origins of modifiers added by the automation, if any.";
+	var getStr = function(aSkill, isCom) {
+		return toUni(aSkill) + mStr + aSkill + (isCom ? mStrC : mStr1) + (isCom ? "" : mStr2) + mStr3;
+	};
 	
 	if (IsNotReset === false) {//on a reset only re-do the bonus modifier tooltips
 		for (var S = 0; S < (SkillsList.abbreviations.length - 2); S++) {
 			var newSkill = SkillsList.names[S];
-			AddTooltip(SkillsList.abbreviations[S] + " Bonus", toUni(newSkill) + modString.replace("Acrobatics", newSkill) + modStringE);
-			if (typePF) AddTooltip("BlueText.Comp.Use.Skills." + SkillsList.abbreviations[S] + ".Bonus", toUni(newSkill) + modString.replace("Acrobatics", newSkill).replace(", HoS", ""));
+			AddTooltip(SkillsList.abbreviations[S] + " Bonus", getStr(newSkill));
+			if (typePF) AddTooltip("BlueText.Comp.Use.Skills." + SkillsList.abbreviations[S] + ".Bonus", getStr(newSkill, true), "");
 		}
 		return;
 	};
@@ -4561,7 +4579,7 @@ function MakeSkillsMenu_SkillsOptions(input) {
 			for (var B = 0; B < oSkillBon.length; B++) {
 				newFld = SkillsList.abbreviations[newList.indexOf(oSkillBon[B][0])];
 				var newSkill = SkillsList.names[SkillsList.abbreviations.indexOf(oSkillBon[B][0])];
-				Value(newFld + " Bonus", oSkillBon[B][1], toUni(newSkill) + modString.replace("Acrobatics", newSkill) + modStringE);
+				Value(newFld + " Bonus", oSkillBon[B][1], getStr(newSkill));
 			}
 			
 			//show the stealth disadvantage field, for Printer Friendly, if checked
@@ -4605,7 +4623,7 @@ function MakeSkillsMenu_SkillsOptions(input) {
 					for (var B = 0; B < oSkillBon.length; B++) {
 						newFld = SkillsList.abbreviations[newList.indexOf(oSkillBon[B][0])];
 						var newSkill = SkillsList.names[SkillsList.abbreviations.indexOf(oSkillBon[B][0])];
-						Value(bField + newFld + ".Bonus", oSkillBon[B][1], toUni(newSkill) + modString.replace("Acrobatics", newSkill).replace(", HoS", ""));
+						Value(bField + newFld + ".Bonus", oSkillBon[B][1], getStr(newSkill, true));
 					}
 				}
 			}
@@ -5078,7 +5096,7 @@ function addEvals(evalObj, NameEntity, Add) {
 	var atkStr = "";
 	var remAtkAdd = CurrentEvals.atkAdd ? CurrentEvals.atkAdd : "";
 	var atkTypes = ["atkAdd", "atkCalc"];
-	var nameHeader = isArray(NameEntity) ? "\n\n" + toUni(NameEntity[0]) + " [" + NameEntity[1] + "]:" : "\n\n" + toUni(NameEntity) + ":";
+	var nameHeader = isArray(NameEntity) ? "\n\n" + toUni(NameEntity[0]) + " [" + NameEntity[1] + "]" : "\n\n" + toUni(NameEntity);
 	for (var i = 0; i < atkTypes.length; i++) {
 		var atkT = atkTypes[i];
 		if (!evalObj[atkT]) continue;
@@ -5359,7 +5377,7 @@ function CalcAttackDmgHit(fldName) {
 		var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (/\b(cantrip|spell)\b/i).test(WeaponText);
 		var isMeleeWeapon = (!isSpell || thisWeapon[0] === "shillelagh") && (/melee/i).test(fields.Range);
 		var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
-		var isNaturalWeapon = !isSpell && (/natural/i).test(theWea.type);
+		var isNaturalWeapon = !isSpell && theWea && (/natural/i).test(theWea.type);
 
 		// see if this is a off-hand attack and the modToDmg shouldn't be use
 		var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText);
@@ -5407,21 +5425,7 @@ function CalcAttackDmgHit(fldName) {
 			addNum(output[out], "dmg");
 			break;
 		 case "die" :
-			if ((/^(?=.*(B|C))(?=.*d\d).*$/).test(output[out])) { //if this involves a cantrip calculation
-				var cLvl = Number(QI ? What("Character Level") : What(prefix + "Comp.Use.HD.Level"));
-				var cDie = cantripDie[Math.min(Math.max(cLvl, 1), cantripDie.length) - 1];
-				output[out] = output[out].replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/0.?d\d+/g, 0);
-			};
-			if (output[out][0] == "=") { // a string staring with "=" means it wants to be calculate to values
-				output[out] = output[out].substr(1).split("d").map(function(v) {
-					try {
-						return EvalBonus(v, QI ? true : prefix);
-					} catch (errV) {
-						return v;
-					};
-				}).join("d");
-			};
-			dmgDie = output[out];
+			dmgDie = EvalDmgDie(output[out], QI ? true : prefix);
 			break;
 		 case "mod" :
 			if (output.modToDmg) addNum(output[out], "dmg");
@@ -5488,7 +5492,7 @@ function ShowDialog(hdr, strng) {
 	var ShowString_dialog = {
 		initialize : function(dialog) {
 			dialog.load({
-				"Eval" : strng.replace(/^\n/, "").replace(/^\n/, "")
+				"Eval" : strng.replace(/^\n*/, "")
 			});
 		},
 		description : {
@@ -5576,22 +5580,76 @@ function EvalBonus(input, notComp, isSpecial) {
 	};
 };
 
+// a way to eval the content of a weapon damage die field; notComp if it is the character (true) or if it is for a companion page (the prefix of the companion page); if isSpecial === "test" it will output _ERROR_ for the part that produces an error;
+function EvalDmgDie(input, notComp, isSpecial) {
+	if (!input) {
+		return 0;
+	} else if (!isNaN(input)) {
+		return Number(input);
+	};
+	// resolve the C and B for cantrip die, if present
+	if ((/^(?=.*(B|C))(?=.*d\d).*$/).test(input)) { //if this involves a cantrip calculation
+		var cLvl = Number(notComp === true ? What("Character Level") : What(notComp + "Comp.Use.HD.Level"));
+		var cDie = cantripDie[Math.min(Math.max(cLvl, 1), cantripDie.length) - 1];
+		input = input.replace(/cha/ig, "kha").replace(/con/ig, "kon");
+		input = input.replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/0.?d\d+/g, 0);
+		input = input.replace(/kha/g, "Cha").replace(/kon/g, "Con");
+	};
+	if (input[0] == "=") { // only if a string staring with "=" does it mean that it wants to be calculate to values
+		input = input.substr(1).split("_").map(function(u) {
+			return u.split("d").map(function(v) {
+				try {
+					var theEval = EvalBonus(v, notComp, isSpecial);
+					return theEval === undefined ? "_ERROR_" : theEval;
+				} catch (errV) {
+					return v;
+				};
+			}).join("d");
+		}).join("+");
+	};
+	return input;
+};
+
 // add a way to set the value of a field
 function SetThisFldVal() {
-	if (event.modifier || event.shift) {
+	var len = typePF ? 4 : 3;
+	if (event.target.submitName || event.target.value.length > len || event.modifier || event.shift) {
+		var QI = event.target.name.indexOf("Comp.") === -1 ? true : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+		var dmgDie = event.target.name.indexOf("Damage Die") !== -1;
+		var theName = event.target.userName;
+		if (theName && (/\n/).test(theName)) {
+			theName = theName.match(/.*\n/)[0].replace(/\n/, "");
+		};
 		var theVal = event.target.value;
 		if (!isNaN(theVal)) theVal = theVal.toString();
+		var theExpl = event.target.submitName.replace(/^\n*/, "");
 		var theDialog = {
-			theTXT : "",
+			notComp : QI,
+			isDmgDie : dmgDie,
+			theExp : theExpl,
+			theTXT : theVal,
 			initialize : function (dialog) {
-				dialog.load({
-					"user" : theVal
-				});
+				var toLoad = { "user" : this.theTXT };
+				if (this.theTXT) {
+					var calcVal = this.isDmgDie ? EvalDmgDie(this.theTXT, this.notComp, "test") : EvalBonus(this.theTXT, this.notComp, "test");
+					toLoad["rslt"] = calcVal === undefined ? "ERROR" : calcVal.toString();
+				};
+				if (this.theExp) {
+					toLoad["expl"] = this.theExp;
+				};
+				dialog.load(toLoad);
 			},
 			commit : function (dialog) {
 				var oResult = dialog.store();
 				this.theTXT = oResult["user"];
 			},
+			calc : function (dialog) {
+				var oResult = dialog.store()["user"];
+				var calcVal = this.isDmgDie ? EvalDmgDie(oResult, this.notComp, "test") : EvalBonus(oResult, this.notComp, "test");
+				dialog.load({
+					"rslt" : calcVal === undefined ? "ERROR" : calcVal.toString()
+				});
+			}, 
 			description : {
 				name : "Set the field's value",
 				elements : [{
@@ -5603,32 +5661,81 @@ function SetThisFldVal() {
 						alignment : "align_fill",
 						font : "heading",
 						bold : true,
-						height : 21,
+						wrap_name : true,
 						char_width : 35,
-						name : "Set the field's value"
+						name : theName ? theName : "Set the field's value"
 					}, {
-						type : "static_text",
+						type : "cluster",
 						alignment : "align_fill",
 						item_id : "txt0",
-						wrap_name : true,
-						name : "Please enter the value you want to set for the field:",
-						char_width : 35
-					}, {
-						type : "edit_text",
-						alignment : "align_center",
-						item_id : "user",
-						char_width : 35,
-						height : 20
+						name : "Fill out the value you want to set",
+						font : "dialog",
+						bold : true,
+						elements : [{
+							type : "static_text",
+							alignment : "align_left",
+							item_id : "txt3",
+							name : (dmgDie ? "If you want the Damage Die to be a calculated value, and not just a string, make sure the first character is a '='.\nRegardless of the first character, a 'C' will be replaced with the Cantrip die, and a 'B' with the Cantrip die minus 1.\n\nIf a calculated value (=), you can use underscores to keep the strings separate. For the calculated parts, y" : "Y") + "ou can use numbers, logical operators (+, -, /, *), ability score abbreviations (Str, Dex, Con, Int, Wis, Cha" + (QI === true ? ", HoS" : "") + "), and 'Prof'.",
+							char_width : 35,
+							wrap_name : true
+						}, {
+							type : "edit_text",
+							alignment : "align_center",
+							item_id : "user",
+							char_width : 35,
+							height : 20
+						}, {
+							type : "view",
+							align_children : "align_distribute",
+							char_width : 35,
+							elements : [{
+								type : "static_text",
+								alignment : "align_left",
+								item_id : "txt2",
+								name : "This calculates to:",
+								char_width : 1,
+								height : 25
+							}, {
+								type : "static_text",
+								alignment : "align_left",
+								item_id : "rslt",
+								font : "dialog",
+								bold : true,
+								name : "0",
+								char_width : 8,
+								height : 25
+							}, {
+								type : "button",
+								alignment : "align_left",
+								item_id : "calc",
+								name : "<< Re-Calculate This"
+							}]
+						}]
 					}, {
 						type : "static_text",
 						alignment : "align_fill",
 						item_id : "txt1",
 						wrap_name : true,
-						name : "The field won't appear to change until you click/tab out of it.",
+						name : "If the above calculates to 'ERROR', the field will not be changed.\nNote that the field won't appear to change until you click/tab out of it.",
 						char_width : 35
-					}, {
+					}].concat(theExpl ? [{
+						type : "cluster",
+						alignment : "align_fill",
+						name : "Modifiers set by class features, race, or feats",
+						font : "dialog",
+						bold : true,
+						elements : [{
+							type : "edit_text",
+							item_id : "expl",
+							alignment : "align_fill",
+							readonly : true,
+							multiline: true,
+							char_width : 35,
+							height : 200
+						}]
+					}] : []).concat([{
 						type : "ok_cancel"
-					}]
+					}])
 				}]
 			}
 		};
@@ -5639,7 +5746,7 @@ function SetThisFldVal() {
 };
 
 // add a modifier to a modifier field so that the formula stays intact; Remove is boolean
-function AddToModFld(Fld, Mod, Remove) {
+function AddToModFld(Fld, Mod, Remove, NameEntity, Explanation) {
 	if (!tDoc.getField(Fld)) return;
 	var aFld = What(Fld);
 	var setFld = "";
@@ -5662,7 +5769,55 @@ function AddToModFld(Fld, Mod, Remove) {
 		};
 	};
 	setFld = setFld.replace(/^\+|(\+|-)0/g, "");
-	Value(Fld, setFld);
+	var theSubmit = How(Fld);
+	if (NameEntity && Explanation) {
+		var theAdd = "\n\n" + toUni(NameEntity) + "\n" + Explanation;
+		if (Remove) {
+			theSubmit = theSubmit.replace(theAdd, "");
+		} else {
+			theSubmit += theAdd;
+		};
+	};
+	Value(Fld, setFld, undefined, theSubmit);
+};
+
+// add a modifier to a skill
+// addMod : {type : "save", field : "all", mod : "Cha", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws."} // this can be an array of objects, all of which will be processed
+function processMods(AddRemove, NameEntity, items) {
+	if (!isArray(items[0])) items = [items];
+	for (var i = 0; i < items.length; i++) {
+		var type = items[i].type.toLowerCase();
+		var Fld = items[i].field;
+		var Mod = items[i].mod;
+		var Explanation = items[i].text;
+		switch (type) {
+			case "skill" :
+				if ((/all/i).test(Fld)) {
+					Fld = "All Skills Bonus";
+				} else if ((/pass/i).test(Fld)) {
+					Fld = "Passive Perception Bonus";
+				} else {
+					var skill = Fld.substr(0,4).capitalize();
+					if (SkillsList.abbreviations.indexOf(skill) === -1) {
+						skill = skill.substr(0,3);
+						if (SkillsList.abbreviations.indexOf(skill) === -1) continue;
+					};
+					var skillOrder = Who("Text.SkillsNames") === "alphabeta" ? "abbreviations" : "abbreviationsByAS";
+					Fld = SkillsList.abbreviations[SkillsList[skillOrder].indexOf(skill)] + " Bonus";
+				};
+				break;
+			case "save" :
+				var matchSv = /.*(Str|Dex|Con|Int|Wis|Cha|HoS|All).*/i;
+				if (!(matchSv).test(Fld)) continue;
+				var save = Fld.replace(matchSv, "$1").capitalize();
+				if (save === "Hos") save = "HoS";
+				Fld = save + " ST Bonus";
+				break;
+			default :
+				if (!tDoc.getField(Fld)) continue;
+		};
+		AddToModFld(Fld, Mod, !AddRemove, NameEntity, Explanation);
+	};
 };
 
 // make a menu off all the sources where clicking on them gets you to their linked URL
@@ -5794,6 +5949,26 @@ function processLanguages(AddRemove, srcNm, itemArr) {
 			var extra = subj;
 		};
 		SetProf("language", AddRemove, prof, srcNm, extra);
+	};
+};
+
+// a way to pass an array of vision string to be processed by the SetProf function
+// ["Darkvision", 60] >> Darkvision 60 ft
+function processVision(AddRemove, srcNm, itemArr) {
+	if (!itemArr) return;
+	if (!isArray(itemArr) || (itemArr.length === 2 && !isArray(itemArr[0]) && !isArray(itemArr[1]) && (!isNaN(itemArr[1]) || !isNaN(itemArr[1].substr(1))))) {
+		itemArr = [itemArr];
+	};
+	for (var i = 0; i < itemArr.length; i++) {
+		var subj = itemArr[i];
+		if (isArray(subj)) {
+			var prof = subj[0];
+			var extra = subj[1];
+		} else {
+			var prof = subj;
+			var extra = 0;
+		};
+		SetProf("vision", AddRemove, prof, srcNm, extra);
 	};
 };
 
@@ -6144,36 +6319,63 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		break;
 	};
 	case "vision" : { // Extra is optionally used to add a range, in feet, to the vision entry
+		var fld = "Vision";
 		var range = Extra ? Extra : 0;
 		if (AddRemove) { // add
-			if (!set[ProfObjLC]) set[ProfObjLC] = {name : ProfObj, src : [], ranges : {}};
+			if (!set[ProfObjLC]) {
+				set[ProfObjLC] = {name : ProfObj, src : [], ranges : {}};
+				var prevNm = "";
+			} else {
+				var prevRng = RoundTo(getHighestTotal(set[ProfObjLC].ranges) * (metric ? 0.3 : 1), 0.5, false, true);
+				var prevNm = set[ProfObjLC].name + (!prevRng ? "" : " " + prevRng + (metric ? " m" : " ft"));
+			}
 			var theSet = set[ProfObjLC];
 			if (theSet.src.indexOf(ProfSrc) !== -1) return; // the thing already exists so exit
 			theSet.src.push(ProfSrc);
 			theSet.ranges[ProfSrc] = range;
-			
-			// add someting to the field
-			
+			// See what the new entry is now
+			var newRng = RoundTo(getHighestTotal(theSet.ranges) * (metric ? 0.3 : 1), 0.5, false, true);
+			var newNm = theSet.name + (!newRng ? "" : " " + newRng + (metric ? " m" : " ft"));
+			// Add or replace someting in the field
+			if (prevNm != newNm) {
+				ReplaceString(fld, newNm, "; ", prevNm);
+			};
 		} else if (set[ProfObjLC]) { // remove
 			var theSet = set[ProfObjLC];
 			if (theSet.src.indexOf(ProfSrc) !== -1) theSet.src.splice(theSet.src.indexOf(ProfSrc), 1);
-			if (theSet.ranges[ProfSrc]) delete theSet.ranges[ProfSrc]
-			if (theSet.src.length == 0) {
+			if (theSet.src.length == 0) { // remove all of this entry
+				var newRng = RoundTo(getHighestTotal(theSet.ranges) * (metric ? 0.3 : 1), 0.5, false, true);
+				var newNm = theSet.name + (!newRng ? "" : " " + newRng + (metric ? " m" : " ft"));
+				RemoveString(fld, newNm);
 				delete set[ProfObjLC];
 			} else {
-				if (Extra && theSet.cond.indexOf(Extra) !== -1) theSet.cond.splice(theSet.cond.indexOf(Extra), 1);
-				if (Extra && theSet.lookup[Extra].indexOf(ProfSrc) !== -1) {
-					theSet.lookup[Extra].splice(theSet.lookup[Extra].indexOf(ProfSrc), 1);
-					if (theSet.lookup[Extra].length == 0) delete theSet.lookup[Extra];
+				var prevRng = RoundTo(getHighestTotal(theSet.ranges) * (metric ? 0.3 : 1), 0.5, false, true);
+				var prevNm = theSet.name + (!prevRng ? "" : " " + prevRng + (metric ? " m" : " ft"));
+				if (theSet.ranges[ProfSrc] !== undefined) delete theSet.ranges[ProfSrc];
+				var newRng = RoundTo(getHighestTotal(theSet.ranges) * (metric ? 0.3 : 1), 0.5, false, true);
+				var newNm = theSet.name + (!newRng ? "" : " " + newRng + (metric ? " m" : " ft"));
+				if (prevNm != newNm) {
+					ReplaceString(fld, newNm, "; ", prevNm);
 				};
-				theSet.merge = theSet.src.length !== theSet.cond.length;
 			};
 		};
-		
-		
-		set["darkvision"] = {name : "Darkvision", range : [60, "+30", 60, 90, 120, "x4", "/4", "-10"], src : ["drow", "kobold"]}
-		
-		
+		//update the tooltip
+		var visTxt = "";
+		for (var aVis in set) {
+			var aSet = set[aVis];
+			var aSrcs = [];
+			for (var aSrc in aSet.ranges) {
+				var aRng = "";
+				if (aSet.ranges[aSrc]) {
+					aRng = " [" + aSet.ranges[aSrc] + " ft]";
+					if (metric) aRng = ConvertToMetric(aRng, 0.5);
+				};
+				aSrcs.push(aSrc + aRng);
+			};
+			var aVisTxt = formatLineList("\"" + aSet.name + "\" was gained from:", aSrcs);
+			if (aVisTxt) visTxt += (visTxt ? "\n \u2022 " : " \u2022 ") + aVisTxt + ".";
+		};
+		AddTooltip(fld, visTxt);
 		break;
 	};
 /*	 case "speed" : {
@@ -6233,7 +6435,7 @@ function getHighestTotal(input, notRound) {
 	};
 	//process the values and modifications
 	var tValue = Math.max.apply(Math, values);
-	if (!tValue) return false;
+	if (!tValue && !modifications.length) return false;
 	for (n = 1; n <= 2; n++) { // first do substractions and additions, then multiplications and divisions
 		for (var i = 0; i < modifications.length; i++) {
 			var aMod = modifications[i];
@@ -6410,43 +6612,14 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 	return theDialog.choices;
 };
 
-// open a dialogue where you give the user a choice via radio button
-/*
-
-"The feature \"" + fNm + "\" requires you to make a choice. Select one of the options below. If the option you select offers you a choice of language or tool proficiency, you will be prompted for that seperately."
-
-"Important: the selection you make here can't be easily changed. If you want to change the selection, save the PDF and close it. Then open it again, remove the feature that gave you this choice (e.g. lower the level) and then add the feature again so you are again prompted. You won't be prompted again if you don't re-open the sheet 
-
-Class feature attributes
-chooseAttribute : [
-	["Text of the 1st radio button", array of attribute names to remove if the 1st is chosen],
-	["Text of the 2nd radio button", object with attributes to add if the 2nd is chosen]
-];
-// EXAMPLE:
-chooseAttribute : [
-	["Proficiency with a language", {languageProfs : [1]}]
-];
-
-Prompt voor keuze, dan voeg die attribute toe aan de feature en voeg de keuze (nummer) toe aan de global variable Currentprofs
-Bij weghalen,
-Als de feature al
-
-
-*/
-
-
-
-/* EXAMPLES 
-	AskUserOptions("language", "Human", "from Human", 3)
-	SetProf("resistance", true, "Bludgeoning", "Barbarian (Path of the Berserker): Rage", "Pierc. (in Rage)");
-	SetProf("resistance", true, "Bludgeoning", "Test");
-*/
-
 /* 
-	NOG DOEN:
+	To Do:
 	
-	V ook voor save extra text?
-	- ook voor vision text?
+	- SetProf for Speed
+	
+	
+	V ook	voor save extra text?
+	V ook voor vision text?
 	- ook voor extra speed abilities (swim, fly)?
 >> Volgende versie:
 	V extra optie voor damage type immunity (dmgImmune)?
@@ -6455,23 +6628,40 @@ Als de feature al
 	- Test
 		- SetProf:
 			V savetxt (text, immune, resistance)
+			- vision
+			- addMod
 		- Import (save text)
 			V older version (disabled)
-			o current version
+			V current version
 	- Edit
-		V savetxt feature addition
+		V vision feature addition in functions (processVision)
 			V race
 			V companion race
 			V class feature
 			V class feature choice
 			V feat
-	- Syntax
-		V Multiple sources (overal)
-		V savetxt
-			V race
+		V modifiers addition in functions (processMods)
+			V racial features
 			V class feature
 			V class feature choice
 			V feat
+		V modifiers addition to Lists variables (addMod)
+			V racial features
+			V class features
+			V feats
+		V on a reset, remove all the submitnames from all the modifier fields that allow dynamic modifiers
+		V change the set modifier dialogue to include the descriptions that are in the submitname
+	- Syntax & Fan-made Additions
+		= vision
+			V race
+			V class feature
+			V feat
+		= modifiers
+			V race
+			V class feature
+			V feat
 	- Update Additional Content
-		= savetxt
+		V vision
+		V addMod
+		- speed
 */

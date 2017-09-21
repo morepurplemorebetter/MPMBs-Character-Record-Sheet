@@ -10,8 +10,7 @@ var FeatsList = {
 		name : "Alert",
 		source : ["P", 165],
 		description : "I can't be surprised while I'm conscious. I have a +5 bonus on initiative rolls. Other creatures don't gain advantage on attack rolls against me as a result of being hidden from me.",
-		eval : "AddToModFld('Init Bonus', 5);",
-		removeeval : "AddToModFld('Init Bonus', -5);"
+		addMod : { type : "skill", field : "Init", mod : 5, text : "I have a +5 bonus on initiative rolls." }
 	},
 	"athlete" : {
 		name : "Athlete",
@@ -55,8 +54,7 @@ var FeatsList = {
 		description : "I have advantage on Wis (Perception) and Int (Investigation) checks made to detect the presence of secret doors. I can search for traps while traveling at a normal pace. I have resistance to damage dealt by traps and advantage on saves to avoid or resist traps.",
 		dmgres : ["Traps"],
 		savetxt : { adv_vs : ["traps"] },
-		eval : "AddString('Vision', 'Adv. on Perception and Investigation for secret doors', '; ');",
-		removeeval : "RemoveString('Vision', 'Adv. on Perception and Investigation for secret doors');"
+		vision : [["Adv. on Perception and Investigation for secret doors", 0]]
 	},
 	"durable" : {
 		name : "Durable",
@@ -242,8 +240,7 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "If I can see a creature's mouth while it is speaking a language I understand, I can interpret what it's saying by reading its lips. I have a +5 bonus to passive Wisdom (Perception) and passive Intelligence (Investigation) scores. [+1 Intelligence or Wisdom]",
 		improvements : "Observant (feat): +1 Intelligence or Wisdom;",
-		eval : "AddToModFld('Passive Perception Bonus', 5);",
-		removeeval : "AddToModFld('Passive Perception Bonus', -5);"
+		addMod : { type : "skill", field : "passive perception", mod : 5, text : "I have a +5 bonus to passive Wisdom (Perception)." }
 	},
 	"polearm master" : {
 		name : "Polearm Master",
@@ -399,8 +396,7 @@ var FeatsList = {
 		description : "I can try to hide when I am lightly obscured. My position is not revealed when I am hidden from a creature and miss it with a ranged weapon attack. Dim light doesn't impose disadvantage on my Wisdom (Perception) checks relying on sight.",
 		prerequisite : "Dexterity 13 or higher",
 		prereqeval : "What('Dex') >= 13",
-		eval : "AddString('Vision', 'No disadv. on Perception in dim light to see', '; ');",
-		removeeval : "RemoveString('Vision', 'No disadv. on Perception in dim light to see');"
+		vision : [["No disadv. on Perception in dim light", 0]]
 	},
 	"spell sniper [bard]" : {
 		name : "Spell Sniper [Bard]",

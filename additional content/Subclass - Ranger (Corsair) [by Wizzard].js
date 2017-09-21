@@ -12,7 +12,7 @@
 	Effect:     This script adds a subclass for the Ranger, called "Corsair"
 				This is a homebrew class designed by Wizzard
 	Code by:    Wizzard
-	Date:       2017-06-03 (sheet v12.992)
+	Date:       2017-09-21 (sheet v12.998)
  */
 
 ClassSubList["corsair"] = {
@@ -55,8 +55,7 @@ ClassSubList["corsair"] = {
 			source : ["HB", 0],
 			minlevel : 7,
 			description : "\n   " + "I add my proficiency bonus to my initiative" + "\n   " + "I can stow a firearm and draw another as a single object interaction on my turn",
-			eval : "AddToModFld('Init Bonus', 'Prof');",
-			removeeval : "AddToModFld('Init Bonus', 'Prof', true);"
+			addMod : { type : "skill", field : "Init", mod : "Prof", text : "I add my proficiency bonus to my initiative rolls." }
 		},
 		"subclassfeature11" : {
 			name : "Angels Eye",

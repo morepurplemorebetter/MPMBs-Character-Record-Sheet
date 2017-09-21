@@ -614,7 +614,7 @@ function DirectImport(consoleTrigger) {
 		}
 		var weaBTflds = global.docTo.getField("BlueText.Attack").getArray();
 		for (var i = 0; i < weaBTflds.length; i++) {
-			if (weaBTflds[i].name.indexOf("Modifiers Title") === -1) ImportField(weaBTflds[i].name, {notTooltip: true});
+			if (weaBTflds[i].name.indexOf("Modifiers Title") === -1) ImportField(weaBTflds[i].name, {notTooltip: true, notSubmitName: true});
 		}
 		//the ammo
 		ImportField("AmmoLeftDisplay.Amount", {notTooltip: true}); ImportField("AmmoLeftDisplay.Name", {notTooltip: true}); ImportField("AmmoLeftDisplay.Weight", {notTooltip: true});
@@ -656,26 +656,26 @@ function DirectImport(consoleTrigger) {
 		
 		//set the ability scores and associated fields
 		for (var abiS in AbilityScores.current) {
-			ImportField(abiS); ImportField(abiS + " Remember"); ImportField(abiS + " ST Prof", {notTooltip: true}); ImportField(abiS + " ST Bonus", {notTooltip: true}); ImportField(abiS + " ST Adv", {doReadOnly: true}); ImportField(abiS + " ST Dis", {doReadOnly: true});
+			ImportField(abiS); ImportField(abiS + " Remember"); ImportField(abiS + " ST Prof", {notTooltip: true}); ImportField(abiS + " ST Bonus", {notTooltip: true, notSubmitName: true}); ImportField(abiS + " ST Adv", {doReadOnly: true}); ImportField(abiS + " ST Dis", {doReadOnly: true});
 		};
-		ImportField("All ST Bonus", {notTooltip: true});
+		ImportField("All ST Bonus", {notTooltip: true, notSubmitName: true});
 		
 		//now recalculate all the weapons, forcing them to re-do all attributes
 		forceReCalcWeapons = true; ReCalcWeapons();
 		
 		//set the ability save DC
-		ImportField("Spell DC 1 Mod", {notTooltip: true}); ImportField("Spell DC 1 Bonus", {notTooltip: true});
-		ImportField("Spell DC 2 Bonus", {notTooltip: true});
+		ImportField("Spell DC 1 Mod", {notTooltip: true}); ImportField("Spell DC 1 Bonus", {notTooltip: true, notSubmitName: true});
+		ImportField("Spell DC 2 Bonus", {notTooltip: true, notSubmitName: true});
 		if (ImportField("Spell DC 2 Mod", {notTooltip: true, doVisiblity: true})); Toggle2ndAbilityDC(global.docTo.getField("Spell DC 2 Mod").display === display.visible ? "show" : "hide");
 		
 		//set the prof bonus and inspiration
-		ImportField("Proficiency Bonus Dice", {notTooltip: true}); ImportField("Proficiency Bonus Modifier", {notTooltip: true}); ImportField("Inspiration", {notTooltip: true});
+		ImportField("Proficiency Bonus Dice", {notTooltip: true}); ImportField("Proficiency Bonus Modifier", {notTooltip: true, notSubmitName: true}); ImportField("Inspiration", {notTooltip: true});
 		
 		//set the skills and associated fields
-		ImportField("Jack of All Trades", {notTooltip: true}); ImportField("Remarkable Athlete", {notTooltip: true}); ImportField("All Skills Bonus", {notTooltip: true}); ImportField("Passive Perception Bonus", {notTooltip: true}); ImportField("Too Text", {notTooltip: true});
+		ImportField("Jack of All Trades", {notTooltip: true}); ImportField("Remarkable Athlete", {notTooltip: true}); ImportField("All Skills Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Passive Perception Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Too Text", {notTooltip: true, notSubmitName: true});
 		for (var i = 0; i < SkillsList.abbreviations.length; i++) {
 			var aSkill = SkillsList.abbreviations[i];
-			ImportField(aSkill + " Bonus", {notTooltip: true}); ImportField(aSkill + " Prof", {notTooltip: true}); ImportField(aSkill + " Exp", {notTooltip: true}); ImportField(aSkill + " Adv", {doReadOnly: true}); ImportField(aSkill + " Dis", {doReadOnly: true});
+			ImportField(aSkill + " Bonus", {notTooltip: true, notSubmitName: true}); ImportField(aSkill + " Prof", {notTooltip: true}); ImportField(aSkill + " Exp", {notTooltip: true}); ImportField(aSkill + " Adv", {doReadOnly: true}); ImportField(aSkill + " Dis", {doReadOnly: true});
 		};
 		
 		//set the description fields
@@ -793,39 +793,7 @@ function DirectImport(consoleTrigger) {
 				};
 			};
 		};
-/*
-		var addNotDefinedOld = function(typeFlds, iterations) { //the way this function worked before version 12.998
-			var functionEval = false;
-			switch (typeFlds) {
-				case "Language " :
-					functionEval = "AddLanguage(\"";
-					break;
-				case "Tool " :
-					functionEval = "AddTool(\"";
-					break;
-				case "Resistance Damage Type " :
-					functionEval = "AddResistance(\"";
-					break;
-				case "Action " :
-				case "Bonus Action " :
-				case "Reaction " :
-					functionEval = "AddAction(\"" + typeFlds + "\", \"";
-					break;
-				default :
-					return;
-			};
-			for (var i = 1; i <= iterations; i++) {
-				var fromFld = global.docFrom.getField(typeFlds + i);
-				if (fromFld && fromFld.value && fromFld.value !== fromFld.defaultValue) {
-*/ //					var fromFldUNit = fromFld.userName && (/.*?\"(.*?)\".*/).test(fromFld.userName) ? fromFld.userName.replace(/.*?\"(.*?)\".*/, "$1") : (fromFld.userName ? fromFld.userName.replace(/.*?resistance to (.*?) was gained from.*/, "$1") : "");
-/*					var fromFldUNor = fromFld.userName ? fromFld.userName.replace(/.*?was gained from (.*?)\./, "$1") : "";
-					if (!fromFld.userName || fromFldUNit.toLowerCase() !== fromFld.value.toLowerCase()) {
-						eval(functionEval + fromFld.value.replace(/"/g, "\\\"") + "\", \"" + fromFldUNor.replace(/"/g, "\\\"") + "\", \"" + fromFldUNit.replace(/"/g, "\\\"") + "\");");
-					};
-				};
-			};
-		};
-*/
+		
 		//languages and tools
 		var nmbrFlds = global.docFrom.FieldNumbers.langstools ? global.docFrom.FieldNumbers.langstools : FieldNumbers.langstools;
 		addNotDefined("Language ", nmbrFlds); addNotDefined("Tool ", nmbrFlds);
@@ -839,7 +807,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("AC Armor Description", {notTooltip: true}); ImportField("AC Armor Bonus", {notTooltip: true}); ImportField("AC Armor Weight", {notTooltip: true}); ImportField("AC during Rest");
 		ImportField("AC Shield Bonus Description", {notTooltip: true}); ImportField("AC Shield Bonus", {notTooltip: true}); ImportField("AC Shield Weight", {notTooltip: true});
 		ImportField("Medium Armor", {notTooltip: true}); ImportField("Heavy Armor", {notTooltip: true});
-		ImportField("AC Magic", {notTooltip: true}); ImportField("AC Magic Description", {notTooltip: true});
+		ImportField("AC Magic", {notTooltip: true, notSubmitName: true}); ImportField("AC Magic Description", {notTooltip: true});
 		if (ImportField("AC Stealth Disadvantage", {notTooltip: true})) ShowHideStealthDisadv(); ConditionSet();
 		ImportField("AC Misc Mod 1", {notTooltip: true}); ImportField("AC Misc Mod 1 Description", {notTooltip: true});
 		ImportField("AC Misc Mod 2", {notTooltip: true}); ImportField("AC Misc Mod 2 Description", {notTooltip: true});

@@ -400,8 +400,9 @@ FeatsList["perceptive"] = {
 	improvements : "Perceptive (feat): +1 Wisdom;",
 	scores : [0, 0, 0, 0, 1, 0],
 	skills : "\n\n" + toUni("Perceptive (feat)") + ": Perception, or expertise if already proficient.",
-	eval : "AddSkillProf('Perc', true, 'increment'); AddString('Vision', 'No disadv. on Perception in lightly obscured/dim light', '; ');",
-	removeeval : "AddSkillProf('Perc', false, 'increment'); RemoveString('Vision', 'No disadv. on Perception in lightly obscured/dim light to see');"
+	vision : [["No disadv. on Perception in lightly obscured or dim light", 0]],
+	eval : "AddSkillProf('Perc', true, 'increment');",
+	removeeval : "AddSkillProf('Perc', false, 'increment');"
 };
 FeatsList["performer"] = {
 	name : "Performer",

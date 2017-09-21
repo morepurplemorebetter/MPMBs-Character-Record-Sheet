@@ -247,8 +247,17 @@ function RemoveTooltips() {
 		"Age",
 		"Racial Traits",
 		"Highlighting",
-		"Saving Throw advantages / disadvantages"
+		"Saving Throw advantages / disadvantages",
+		"Vision"
 	];
+	var clearSubmits = [
+		"All ST Bonus",
+		"Init Bonus",
+		"Passive Perception Bonus",
+		"All Skills Bonus",
+		"Spell DC 1 Bonus",
+		"Spell DC 2 Bonus"
+	]
 	for (var i = 1; i <= FieldNumbers.langstools; i++) {
 		TooltipArray.push("Tool " + i);
 		TooltipArray.push("Language " + i);
@@ -262,6 +271,7 @@ function RemoveTooltips() {
 	}
 	for (i = 0; i <= AbilityScores.abbreviations.length; i++) {
 		TooltipArray.push((i === AbilityScores.abbreviations.length ? "HoS" : AbilityScores.abbreviations[i]) + " ST Prof");
+		clearSubmits.push((i === AbilityScores.abbreviations.length ? "HoS" : AbilityScores.abbreviations[i]) + " ST Bonus");
 	}
 	for (i = 1; i <= FieldNumbers.limfea; i++) {
 		TooltipArray.push("Limited Feature " + i);
@@ -269,15 +279,24 @@ function RemoveTooltips() {
 	for (i = 1; i <= 6; i++) {
 		TooltipArray.push("Resistance Damage Type " + i);
 	}
+	for (i = 1; i <= FieldNumbers.attacks; i++) {
+		var fld = "BlueText.Attack." + i;
+		clearSubmits.push(fld + ".To Hit Bonus");
+		clearSubmits.push(fld + ".Damage Bonus");
+		clearSubmits.push(fld + ".Damage Die");
+	}
 
 	//remove the tooltips from every fieldname in the array
 	for (i = 0; i < TooltipArray.length; i++) {
 		AddTooltip(TooltipArray[i], "", "");
-	}
+	};
+	for (i = 0; i < clearSubmits.length; i++) {
+		AddTooltip(clearSubmits[i], undefined, "");
+	};
 	AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
 	AddTooltip("Background Extra", "First fill out a background in the field to the left.\n\nOnce a background is recognized that offers additional options, those additional options will be displayed here. For example, the \"Origin\" for the \"Outlander\" background.");
 	AddTooltip("Size Category", "Selected size category will effect encumbrance on the second page.");
-
+	
 	// now call to update the tooltips with the new empty global variables
 	UpdateTooltips();
 };
@@ -490,7 +509,6 @@ function ResetAll(GoOn, noTempl) {
 				DoTemplate(R, "Remove"); //remove all of them
 			};
 		};
-		tDoc.getField("All ST Bonus").setAction("Calculate", "var placeholder = 1;");
 		
 		setListsUnitSystem("imperial"); //reset the values of some variables to the right unit system
 		
@@ -2587,10 +2605,7 @@ function ApplyRace(inputracetxt) {
 		AddTooltip("Size Category", CurrentRace.plural + " size is " + theSize + ".\nSelected size category will effect encumbrance on the second page.");
 
 		//add, if existing, the racial features, proficiencies, vision, etc. etc.
-		if (CurrentRace.vision) {
-			var theVision = What("Unit System") === "imperial" ? CurrentRace.vision : ConvertToMetric(CurrentRace.vision, 0.5);	
-			AddString("Vision", theVision, "; ");
-		}
+		if (CurrentRace.vision) processVision(true, CurrentRace.name, CurrentRace.vision);
 		if (CurrentRace.savetxt) SetProf("savetxt", true, CurrentRace.savetxt, CurrentRace.name);
 		if (CurrentRace.dmgres) {
 			for (var i = 0; i < CurrentRace.dmgres.length; i++) {
@@ -2677,10 +2692,7 @@ function RemoveRace() {
 		Value("Racial Traits", "", "");
 
 		//remove, if existed, the racial features, proficiencies, vision, etc. etc.
-		if (CurrentRace.vision) {
-			var theVision = What("Unit System") === "imperial" ? CurrentRace.vision : ConvertToMetric(CurrentRace.vision, 0.5);
-			RemoveString("Vision", theVision);
-		}
+		if (CurrentRace.vision) processVision(false, CurrentRace.name, CurrentRace.vision);
 		if (CurrentRace.savetxt) SetProf("savetxt", false, CurrentRace.savetxt, CurrentRace.name);
 		if (CurrentRace.dmgres) {
 			for (var i = 0; i < CurrentRace.dmgres.length; i++) {
@@ -4448,7 +4460,7 @@ function ReplaceString(field, inputstring, newline, theoldstring, alreadyRegExp)
 		thefield.value = thefield.value.replace(thestring, inputstring);
 	} else {
 		AddString(field, inputstring, multilines);
-	}
+	};
 };
 
 function SpliceString(field, inputstring, newline, theoldstring) {
@@ -5110,6 +5122,8 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			
 			if (theFeat.toolProfs) processTools(false, theFeat.name, theFeat.toolProfs);
 			if (theFeat.languageProfs) processLanguages(false, theFeat.name, theFeat.languageProfs);
+			if (theFeat.vision) processVision(false, theFeat.name, theFeat.vision);
+			if (theFeat.addMod) processMods(false, theFeat.name, theFeat.addMod);
 
 			// lastly do the eval for removal
 			if (theFeat.removeeval) {
@@ -5212,6 +5226,8 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			
 			if (theFeat.toolProfs) processTools(true, theFeat.name, theFeat.toolProfs);
 			if (theFeat.languageProfs) processLanguages(true, theFeat.name, theFeat.languageProfs);
+			if (theFeat.vision) processVision(true, theFeat.name, theFeat.vision);
+			if (theFeat.addMod) processMods(true, theFeat.name, theFeat.addMod);
 		};
 	};
 	if (setSpellVars) SetStringifieds("spells"); //set the global variables to their fields for future reference
@@ -5604,7 +5620,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 				
 				// --- add or remove custom calculations to the CurrentEvals variable --- //
 				if (checkLVL && keyFea.calcChanges) {
-					addEvals(keyFea.calcChanges, [keyFea.name, CurrentRace.name], keyFea.minlevel <= newRaceLvl);
+					addEvals(keyFea.calcChanges, [CurrentRace.name, keyFea.name], keyFea.minlevel <= newRaceLvl);
 				}
 				
 				// --- add or remove damage resistances --- //
@@ -5614,6 +5630,11 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 						SetProf("resistance", keyFea.minlevel <= newRaceLvl, theDmgres[0], CurrentRace.name, theDmgres[1]);
 					}
 				}
+
+				// --- add or remove modifiers from fields, if defined --- //
+				if (checkLVL && keyFea.addMod) {
+					processMods(keyFea.minlevel <= newRaceLvl, CurrentRace.name, keyFea.addMod);
+				};
 			}
 		}
 		//update the racial level
@@ -5806,14 +5827,6 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 						UpdateSpellSheets.class = true;
 					}
 					
-					// --- add or remove custom calculations to the CurrentEvals variable --- //
-					if (CheckFea && propFea.calcChanges) {
-						addEvals(propFea.calcChanges, [propFea.name, aClass], propFea.minlevel <= newClassLvl[aClass]);
-					}
-					if (CheckFea && FeaChoice && propFea[FeaChoice].calcChanges) {
-						addEvals(propFea[FeaChoice].calcChanges, [propFea[FeaChoice].name, aClass], propFea.minlevel <= newClassLvl[aClass]);
-					}
-					
 					// --- if a change was detected, do something via custom script, if defined --- //
 					if (propFea.changeeval) {
 						var theChangeeval = What("Unit System") === "metric" && propFea.changeeval.indexOf("String") !== -1 ? ConvertToMetric(propFea.changeeval, 0.5) : propFea.changeeval;
@@ -5839,6 +5852,14 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					var profAddRemove = propFea.minlevel <= newClassLvl[aClass];
 					var profDisplNm = (prop.indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name) + ": " + propFea.name;
 					var profChoiceDisplNm = FeaChoice ? (prop.indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name) + ": " + propFea[FeaChoice].name : "";
+					
+					// --- add or remove custom calculations to the CurrentEvals variable --- //
+					if (CheckFea && propFea.calcChanges) {
+						addEvals(propFea.calcChanges, profDisplNm, propFea.minlevel <= newClassLvl[aClass]);
+					}
+					if (CheckFea && FeaChoice && propFea[FeaChoice].calcChanges) {
+						addEvals(propFea[FeaChoice].calcChanges, profChoiceDisplNm, propFea.minlevel <= newClassLvl[aClass]);
+					}
 					
 					// --- add or remove skill proficiencies, if defined --- //
 					if (propFea.skills && CheckFea) {
@@ -5881,6 +5902,22 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					if (CheckFea && FeaChoice && propFea[FeaChoice].languageProfs) {
 						processLanguages(profAddRemove, profChoiceDisplNm, propFea[FeaChoice].languageProfs);
 					};
+
+					// --- add or remove vision text, if defined --- //
+					if (propFea.vision && CheckFea) {
+						processVision(profAddRemove, profDisplNm, propFea.vision);
+					};
+					if (CheckFea && FeaChoice && propFea[FeaChoice].vision) {
+						processVision(profAddRemove, profChoiceDisplNm, propFea[FeaChoice].vision);
+					};
+
+					// --- add or remove modifiers from fields, if defined --- //
+					if (propFea.addMod && CheckFea) {
+						processMods(profAddRemove, profDisplNm, propFea.addMod);
+					};
+					if (CheckFea && FeaChoice && propFea[FeaChoice].addMod) {
+						processMods(profAddRemove, profChoiceDisplNm, propFea[FeaChoice].addMod);
+					};
 					
 					// --- add or remove saving throw proficiencies --- //
 					if (propFea.saves && CheckFea) {
@@ -5894,22 +5931,22 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 						};
 					};
 
-					// --- add or remove extra spells in the CurrentSpells variable, if defined --- //
-					var spellExtra = !CheckFea ? false : (propFea.spellcastingExtra ? propFea.spellcastingExtra : (FeaChoice && propFea[FeaChoice].spellcastingExtra ? propFea[FeaChoice].spellcastingExtra : false));
-					if (spellExtra && propFea.minlevel <= newClassLvl[aClass]) {//if gaining the level
-						CurrentSpells[aClass].extra = spellExtra;
-					} else if (spellExtra) {//if losing the level
-						CurrentSpells[aClass].extra = "";
-					};
-					
-					thermoM(5/8); //increment the progress dialog's progress
-
 					// --- add or remove save text, if defined --- //
 					if (propFea.savetxt && CheckFea) {
 						SetProf("savetxt", profAddRemove, propFea.savetxt, profDisplNm);
 					};
 					if (CheckFea && FeaChoice && propFea[FeaChoice].savetxt) {
 						SetProf("savetxt", profAddRemove, propFea[FeaChoice].savetxt, profChoiceDisplNm);
+					};
+					
+					thermoM(5/8); //increment the progress dialog's progress
+
+					// --- add or remove extra spells in the CurrentSpells variable, if defined --- //
+					var spellExtra = !CheckFea ? false : (propFea.spellcastingExtra ? propFea.spellcastingExtra : (FeaChoice && propFea[FeaChoice].spellcastingExtra ? propFea[FeaChoice].spellcastingExtra : false));
+					if (spellExtra && propFea.minlevel <= newClassLvl[aClass]) {//if gaining the level
+						CurrentSpells[aClass].extra = spellExtra;
+					} else if (spellExtra) {//if losing the level
+						CurrentSpells[aClass].extra = "";
 					};
 					
 					thermoM(6/8); //increment the progress dialog's progress
@@ -6207,16 +6244,6 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 			var theEval = What("Unit System") === "metric" && theSubFea.eval.indexOf("String") !== -1 ? ConvertToMetric(theSubFea.eval, 0.5) : theSubFea.eval;
 			eval(theEval);
 		}
-		
-		//add or remove custom calculations to the CurrentEvals variable, and undo any of a previous choice, if changed
-		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.calcChanges) {
-			addEvals(theOldSubFea.calcChanges, [theOldSubFea.name, MenuSelection[0]], false);
-		}
-		if (theSubFea.calcChanges && AddOrRemove !== "remove") {
-			addEvals(theSubFea.calcChanges, [theSubFea.name, MenuSelection[0]], true);
-		}
-		
-		thermoM(3/6); //increment the progress dialog's progress
 
 		//add, if defined, skill proficiencies of the feature, and undo, if defined skill proficiencies of previous if changed
 		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.skills) {
@@ -6230,12 +6257,23 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 			}
 		}
 		
-		// --- add or remove damage resistances --- //
+		thermoM(3/6); //increment the progress dialog's progress
+		
 		var temp = CurrentClasses[MenuSelection[0]];
 		var theOldSubFeaNm = AddOrRemove === "remove" ? MenuSelection[2] : FeaOldChoice;
 		var profDisplCl = MenuSelection[1].indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name;
 		var profDisplNmOld = !FeaOldChoice ? "" : profDisplCl + ": " + theOldSubFea.name;
 		var profDisplNm = profDisplCl + ": " + theSubFea.name;
+		
+		//add or remove custom calculations to the CurrentEvals variable, and undo any of a previous choice, if changed
+		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.calcChanges) {
+			addEvals(theOldSubFea.calcChanges, profDisplNmOld, false);
+		}
+		if (theSubFea.calcChanges && AddOrRemove !== "remove") {
+			addEvals(theSubFea.calcChanges, profDisplNm, true);
+		}
+		
+		// --- add or remove damage resistances --- //
 		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.dmgres) {
 			for (var dr = 0; dr < theOldSubFea.dmgres.length; dr++) {
 				var theDmgres = isArray(theOldSubFea.dmgres[dr]) ? theOldSubFea.dmgres[dr] : [theOldSubFea.dmgres[dr], false];
@@ -6283,6 +6321,22 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 		};
 		if (theSubFea.savetxt && AddOrRemove !== "remove") {
 			SetProf("savetxt", true, theSubFea.savetxt, profDisplNm);
+		};
+
+		// --- add or remove vision text --- //
+		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.vision) {
+			processVision(false, profDisplNmOld, theOldSubFea.vision);
+		};
+		if (theSubFea.vision && AddOrRemove !== "remove") {
+			processVision(true, profDisplNm, theSubFea.vision);
+		};
+
+		// --- add or remove modifiers from fields --- //
+		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.addMod) {
+			processMods(false, profDisplNmOld, theOldSubFea.addMod);
+		};
+		if (theSubFea.addMod && AddOrRemove !== "remove") {
+			processMods(true, profDisplNm, theSubFea.addMod);
 		};
 		
 		thermoM(4/6); //increment the progress dialog's progress

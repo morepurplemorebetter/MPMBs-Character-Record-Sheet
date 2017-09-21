@@ -813,8 +813,7 @@ var ClassList = {
 				minlevel : 6,
 				description : "\n   " + "While I'm conscious, allies within range and I can add my Cha mod (min 1) to saves",
 				additional : ["", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				eval : "AddToModFld('All ST Bonus', 'Cha');",
-				removeeval : "AddToModFld('All ST Bonus', 'Cha', true);"
+				addMod : { type : "save", field : "all", mod : "Cha", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." }
 			},
 			"aura of courage" : {
 				name : "Aura of Courage",
@@ -1197,8 +1196,7 @@ var ClassList = {
 				source : ["P", 96],
 				minlevel : 14,
 				description : "\n   " + "With my hearing, I can locate hidden or invisible creatures that are within 10 ft of me",
-				eval : "AddString(\"Vision\", \"Blindsense 10 ft\", \"; \");",
-				removeeval : "RemoveString(\"Vision\", \"Blindsense 10 ft\");"
+				vision : [["Blindsense", 10]]
 			},
 			"slippery mind" : {
 				name : "Slippery Mind",
@@ -1472,8 +1470,7 @@ var ClassList = {
 					name : "Devil's Sight",
 					description : "\n   " + "I can see in magical and nonmagical darkness out to 120 ft",
 					source : ["P", 110],
-					eval : "AddString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");",
-					removeeval : "RemoveString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");"
+					vision : [["Devil's sight", 120]]
 				},
 				"dreadful word (prereq: level 7 warlock)" : {
 					name : "Dreadful Word",
@@ -1711,8 +1708,7 @@ var ClassList = {
 					name : "Witch Sight",
 					description : "\n   " + "I can see the true form of creatures (shapechangers/illusions/transmutations) within 30 ft",
 					source : ["P", 111],
-					eval : "AddString(\"Vision\", \"Witch Sight 30 ft\", \"; \");",
-					removeeval : "RemoveString(\"Vision\", \"Witch Sight 30 ft\", \"; \");",
+					vision : [["Witch sight", 30]],
 					prereqeval : "classes.known.warlock.level >= 15"
 				}
 			},
@@ -4070,8 +4066,7 @@ var ClassSubList = {
 				source : ["S", 136],
 				minlevel : 3,
 				description : "\n   " + "I don't need advantage to sneak attack if my target is the only one within 5 ft of me" + "\n   " + "I can add my Charisma modifier to initiative rolls",
-				eval : "AddToModFld('Init Bonus', 'Cha');",
-				removeeval : "AddToModFld('Init Bonus', 'Cha', true);"
+				addMod : { type : "skill", field : "Init", mod : "Cha", text : "I can add my Charisma modifier to initiative rolls." }
 			},
 			"subclassfeature9" : {
 				name : "Panache",

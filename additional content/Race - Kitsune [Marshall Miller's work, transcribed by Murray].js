@@ -13,7 +13,7 @@
 				This is taken from the DMs Guild website (http://www.dmsguild.com/product/171361/)
 				This subclass is made by Marshall Miller
 	Code by:	Murray (with amendments by MorePurpleMoreBetter)
-	Date:		2017-09-05 (sheet v12.998)
+	Date:		2017-09-21 (sheet v12.998)
 	
 	Please support the creator of this content (Marshall Miller) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?author=Marshall%20Miller
 */
@@ -27,7 +27,7 @@ RaceList["kitsune"] = {
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", "Sylvan"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	age : " reach adulthood around 100 years and live around 900 years",
 	height : " range from 5 to 6 feet tall)",
 	weight : " weigh around 135 to 175 lb.",

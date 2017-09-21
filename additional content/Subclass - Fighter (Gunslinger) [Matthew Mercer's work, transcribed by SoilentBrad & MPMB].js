@@ -14,7 +14,7 @@
 				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170778/)
 				This subclass is made by Matthew Mercer
 	Code by:	SoilentBrad & MorePurpleMoreBetter
-	Date:		2017-09-05 (sheet v12.998)
+	Date:		2017-09-21 (sheet v12.998)
 	
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 */
@@ -79,8 +79,7 @@ ClassSubList["gunslinger"] = {
 			source : ["MM:GMA", 2],
 			minlevel : 7,
 			description : "\n   " + "I add my proficiency bonus to my initiative" + "\n   " + "I can stow a firearm and draw another as a single object interaction on my turn",
-			eval : "AddToModFld('Init Bonus', 'Prof');",
-			removeeval : "AddToModFld('Init Bonus', 'Prof', true);"
+			addMod : { type : "skill", field : "Init", mod : "Prof", text : "I add my proficiency bonus to my initiative rolls." }
 		},
 		"subclassfeature15" : {
 			name : "Lightning Reload",

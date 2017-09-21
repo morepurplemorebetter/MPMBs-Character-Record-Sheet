@@ -945,8 +945,7 @@ ClassSubList["deep stalker"] = {
 			minlevel : 3,
 			description : "\n   " + "I have 90 ft darkvision and add a spell to my known spells at level 3, 5, 9, 13, and 15" + "\n   " + "These count as ranger spells, but do not count against the number of spells I can know",
 			spellcastingExtra : ["disguise self", "rope trick", "glyph of warding", "greater invisibility", "seeming"],
-			eval : "RemoveString(\"Vision\", \"Darkvision 60 ft\"); AddString(\"Vision\",\"Darkvision 90 ft\", \"; \");",
-			removeeval : "RemoveString(\"Vision\", \"Darkvision 90 ft\");"
+			vision : [["Darkvision", 90]]
 		},
 		"subclassfeature7" : {
 			name : "Iron Mind",
@@ -986,8 +985,7 @@ ClassSubList["shadow sorcerer"] = {
 			minlevel : 1,
 			description : "\n   " + "I have 60 ft darkvision and can cast Darkness by spending 1 sorcery point" + "\n   " + "I can see through any darkness spell I cast using this ability",
 			additional : "1 sorcery point",
-			eval : "AddString(\"Vision\",\"Darkvision 60 ft\", \"; \");",
-			removeeval : "RemoveString(\"Vision\", \"Darkvision 60 ft\");",
+			vision : [["Darkvision", 60]],
 			action : ["action", " (1 sorcery point)"],
 			spellcastingBonus : {
 				name : "Eyes of the Dark",
@@ -1944,8 +1942,7 @@ ClassSubList["deep stalker conclave"] = {
 			minlevel : 3,
 			description : "\n   " + "I have 90 ft darkvision and add a spell to my known spells at level 3, 5, 9, 13, and 15" + "\n   " + "These count as ranger spells, but do not count against the number of spells I can know",
 			spellcastingExtra : ["disguise self", "rope trick", "glyph of warding", "greater invisibility", "seeming"],
-			eval : "RemoveString(\"Vision\", \"Darkvision 60 ft\"); AddString(\"Vision\",\"Darkvision 90 ft\", \"; \");",
-			removeeval : "RemoveString(\"Vision\", \"Darkvision 90 ft\");"
+			vision : [["Darkvision", 90]]
 		},
 		"subclassfeature7" : {
 			name : "Iron Mind",
@@ -3741,8 +3738,8 @@ ClassSubList["warlock-the raven queen"] = {
 				"If it dies, I gain advantage on all attack rolls against its killer for 24 hours",
 				"After a short rest, I can recall it to me regardless of its location or if it died"
 			]),
-			eval : "if (!(/darkvision/i).test(What('Vision'))) {AddString('Vision', 'Darkvision 30 ft', '; '); }; AddString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]', '; '); AddToModFld(SkillsList.abbreviations[SkillsList[Who('Text.SkillsNames') === 'alphabeta' ? 'abbreviations' : 'abbreviationsByAS'].indexOf('Perc')] + ' Bonus', 'Cha');",
-			removeeval : "RemoveString('Vision', 'Darkvision 30 ft'); RemoveString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]'); AddToModFld(SkillsList.abbreviations[SkillsList[Who('Text.SkillsNames') === 'alphabeta' ? 'abbreviations' : 'abbreviationsByAS'].indexOf('Perc')] + ' Bonus', 'Cha', true);"
+			vision : [["Darkvision", 30]],
+			addMod : { type : "skill", field : "Perc", mod : "Cha", text : "While my sentinel raven on my shoulder, I can add my Charisma modifier to Perception." }
 		},
 		"subclassfeature6" : {
 			name : "Soul of the Raven",
@@ -3802,8 +3799,9 @@ ClassSubList["wizard-lore mastery"] = {
 				"I get expertise with each Arcana, History, Nature, and Religion, if I'm proficient with it"
 			]),
 			skillstxt : "\n\n" + toUni("Lore Master") + ": Expertise with Arcana, History, Nature, and Religion if I am already proficient with the skill.",
-			eval : "['Arc', 'His', 'Nat', 'Rel'].forEach( function(skl) { AddSkillProf(skl, undefined, 'only'); }); var changeI = \"if (What('Int Mod') > What('Dex Mod')) { var iIndx = SkillsList.abbreviations.indexOf('Init'); SkillsList.abilityScores[iIndx] = 'Int'; SkillsList.abbreviationsByAS[iIndx] = 'Int'; };\"; eval(changeI); if (What('User Script').indexOf(changeI) === -1) {tDoc.getField('User Script').value += '\\n\\n' + changeI};",
-			removeeval : "['Arc', 'His', 'Nat', 'Rel'].forEach( function(skl) { AddSkillProf(skl, false, 'only'); }); SkillsList.abilityScores[iIndx] = 'Dex'; SkillsList.abbreviationsByAS[iIndx] = 'Dex'; var changeI = \"if (What('Int Mod') > What('Dex Mod')) { var iIndx = SkillsList.abbreviations.indexOf('Init'); SkillsList.abilityScores[iIndx] = 'Int'; SkillsList.abbreviationsByAS[iIndx] = 'Int'; };\"; RemoveString('User Script', changeI);"
+			addMod : { type : "skill", field : "Init", mod : "Int-Dex", text : "I use my Intelligence modifier for initiative rolls instead of Dexterity." },
+			eval : "['Arc', 'His', 'Nat', 'Rel'].forEach( function(skl) { AddSkillProf(skl, undefined, 'only'); });",
+			removeeval : "['Arc', 'His', 'Nat', 'Rel'].forEach( function(skl) { AddSkillProf(skl, false, 'only'); });"
 		},
 		"subclassfeature2.1" : {
 			name : "Spell Secrets: Elements",
@@ -3889,8 +3887,7 @@ ClassSubList["wizard-war magic"] = {
 			description : desc([
 				"I gain a bonus to my initiative rolls equal to my Intelligence modifier"
 			]),
-			eval : "AddToModFld('Init Bonus', 'Int');",
-			removeeval : "AddToModFld('Init Bonus', 'Int', true);"
+			addMod : { type : "skill", field : "Init", mod : "Int", text : "I can add my Intelligence modifier to initiative rolls." }
 		},
 		"subclassfeature6" : {
 			name : "Power Surge",

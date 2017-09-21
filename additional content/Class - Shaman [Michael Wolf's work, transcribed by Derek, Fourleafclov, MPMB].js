@@ -14,7 +14,7 @@
 				This content is made by Michael Wolf
 	Original:   Derek (with amendments by MorePurpleMoreBetter)
 	Completed:  /u/Fourleafclov (with amendments by MorePurpleMoreBetter)
-	Date:		2017-09-15 (sheet v12.998)
+	Date:		2017-09-21 (sheet v12.998)
 
 	Please support the creator of this content (Michael Wolf) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Michael%20Wolf
 */
@@ -245,8 +245,7 @@ ClassList["shaman"] = {
 				name : "Pierce the Shadows",
 				description : "\n   " + "I can see in magical and nonmagical darkness out to 120 ft",
 				source : ["MW:SC", 14],
-				eval : "AddString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");",
-				removeeval : "RemoveString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");",
+				vision : [["Devil's sight", 120]],
 				prereqeval : "What('Class Features Remember').indexOf('shaman,spiritual gift,gift of sight') !== -1"
 			},
 			"rally the ancestors (prereq: level 9 shaman, speaker of ancestors)" : {
@@ -329,8 +328,7 @@ ClassList["shaman"] = {
 				name : "Sight Beyond Sight",
 				description : "\n   " + "I see the true form of any in 30 ft even if shapechanged, illusion or transmutation magic",
 				source : ["MW:SC", 14],
-				eval : "AddString(\"Vision\", \"Sight Beyond Sight 30 ft\", \"; \");",
-				removeeval : "RemoveString(\"Vision\", \"Sight Beyond Sight 30 ft\", \"; \");",
+				vision : [["Witch sight", 30]],
 				prereqeval : "classes.known.shaman.level >= 15 && What('Class Features Remember').indexOf('shaman,spiritual gift,gift of sight') !== -1"
 			},
 			"sky shaping (prereq: level 5 shaman)" : {
@@ -439,8 +437,8 @@ ClassList["shaman"] = {
 				name : "Unfiltered Perception",
 				description : "\n   " + "I can't be blinded or deafened unless seeing or hearing through another source" + "\n   " + "I can sense the presence, not exact location, of invisible creatures or objects within 10 ft",
 				source : ["MW:SC", 15],
-				eval : "AddString(\"Vision\", \"Sense Invisible 10 ft\", \"; \");",
-				removeeval : "RemoveString(\"Vision\", \"Sense Invisible 10 ft\", \"; \");",
+				savetxt : { immune : ["blinded", "deafened"] },
+				vision : [["Sense invisible", 10]],
 				prereqeval : "classes.known.shaman.level >= 7"
 			},
 			"unrestrained savagery (prereq: level 5 shaman, gift of savagery)" : {

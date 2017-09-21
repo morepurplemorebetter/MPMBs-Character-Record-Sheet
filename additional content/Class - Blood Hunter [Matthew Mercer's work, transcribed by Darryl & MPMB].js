@@ -18,7 +18,7 @@
 				
 	Code by:	Darryl Cook & MorePurpleMoreBetter
 				Order of the Lycan code by MorePurpleMoreBetter
-	Date:		2017-09-15 (sheet v12.998)
+	Date:		2017-09-21 (sheet v12.998)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 	
@@ -273,8 +273,7 @@ ClassSubList["order of the ghostslayer"] = {
 			source : ["MM:BH", 5],
 			minlevel : 15,
 			description : "\n   " + "Out to 30 feet, I can see in normal darkness as well as invisible creatures and objects",
-			eval : "AddString(\"Vision\",\"Darkvision 30 ft; See invisible 30 ft\", \"; \");",
-			removeeval : "RemoveString(\"Vision\", \"Darkvision 30 ft; See invisible 30 ft\");"
+			vision : [["Darkvision", 30], ["See invisible", 30]]
 		},
 		"subclassfeature18" : {
 			name : "Vengeful Spirit",
@@ -535,7 +534,8 @@ ClassSubList["order of the mutant"] = {
 			"nighteye" : {
 				name : "Nighteye",
 				source : ["MM:BH", 7],
-				description : "\n   " + "I gain darkvision up to 60 ft, or add an extra 60 ft to it if I already have darkvision" + "\n    - " + "Side effect: I gain sunlight sensitivity"
+				description : "\n   " + "I gain darkvision up to 60 ft, or add an extra 60 ft to it if I already have darkvision" + "\n    - " + "Side effect: I gain sunlight sensitivity",
+				vision : [["Darkvision", "+60"], ["Sunlight Sensitivity", 0]],
 			},
 			"potency" : {
 				name : "Potency",
@@ -637,8 +637,7 @@ ClassSubList["order of the lycan"] = {
 			source : ["MM:OotL", 2],
 			minlevel : 3,
 			description : "\n   " + "I gain advantage on Wisdom (Perception) checks that rely on hearing or smell",
-			eval : "AddString(\"Vision\",\"Adv. on Wis (Perception) checks that rely on hearing or smell\", \"; \");",
-			removeeval : "RemoveString(\"Vision\", \"Adv. on Wis (Perception) checks that rely on hearing or smell\");"
+			vision : [["Adv. on Perception relying on hearing or smell", 0]]
 		},
 		"subclassfeature3.1" : {
 			name : "Hybrid Transformation",

@@ -1108,10 +1108,10 @@ var BackgroundList = {
 			"Haunted by an apparition",
 			"Dark arts in the family",
 			"An oni took my sibling",
-			"Memory of cured with lycanthropy",
+			"Memory of cured lycanthropy",
 			"Raised by a hag",
 			"Studied an eldritch tome",
-			"Formerly possessed by A fiend.",
+			"Formerly possessed by a fiend",
 			"Avenged a murder"
 		],
 		variant : []

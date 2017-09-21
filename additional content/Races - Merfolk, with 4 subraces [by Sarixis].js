@@ -11,7 +11,7 @@
 	Subject:	Races
 	Effect:		This script adds a race, Merfolk, with 4 subraces: Ocean Merfolk, River Merfolk, Deep Merfolk, and Awakened Merrow
 	Code by:	Sarixis
-	Date:		2017-09-05 (sheet v12.998)
+	Date:		2017-09-21 (sheet v12.998)
 */
 
 RaceList["ocean merfolk"] = {
@@ -116,7 +116,7 @@ RaceList["deep merfolk"] = {
 	age : " reach adulthood in their late teens and live around 100 years",
 	height : " range from 5 to over 6 feet tall (4'9\" + 2d10\")",
 	weight : " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	improvements : "Deep Merfolk: +2 Constitution, +2 Wisdom;",
 	scores : [0, 0, 2, 0, 2, 0],
 	trait : "Deep Merfolk (+2 Constitution, +2 Wisdom)\nAmphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nBioluminescent: I emit dim light in a 5-foot radius around myself. This can be covered with opaque cloth or objects",

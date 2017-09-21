@@ -12,7 +12,7 @@
 	Effect:     This script adds a subclass for the fighter, called "Pact Knight"
 				This is a homebrewed class bringing warlock spellcasting to the fighter
 	Code by:    Wizzard (and a tiny bit MPMB)
-	Date:       2017-02-21 (sheet v12.84)
+	Date:       2017-09-21 (sheet v12.998)
 */
 
 ClassSubList["fighter-pact knight"] = {
@@ -99,8 +99,7 @@ ClassSubList["fighter-pact knight"] = {
 				name : "Devil's Sight",
 				description : "\n   " + "I can see in magical and nonmagical darkness out to 120 ft",
 				source : ["P", 110],
-				eval : "AddString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");",
-				removeeval : "RemoveString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");",
+				vision : [["Devil's sight", 120]]
 			},
 			"eldritch sight" : {
 				name : "Eldritch Sight",
@@ -233,8 +232,7 @@ ClassSubList["fighter-pact knight"] = {
 				name : "Witch Sight",
 				description : "\n   " + "I can see the true form of creatures (shapechangers/illusions/transmutations) within 30 ft",
 				source : ["P", 111],
-				eval : "AddString(\"Vision\", \"Witch Sight 30 ft\", \"; \");",
-				removeeval : "RemoveString(\"Vision\", \"Witch Sight 30 ft\", \"; \");",
+				vision : [["Witch sight", 30]]
 			},
 		},
 		"subclassfeature3.2" : {

@@ -38,8 +38,7 @@ ClassSubList["fate domain"] = {
 				spells : ["resistance"],
 				selection : ["resistance"],
 			}],
-			eval : "AddToModFld('Init Bonus', 'Wis');",
-			removeeval : "AddToModFld('Init Bonus', 'Wis', true);"
+			addMod : { type : "skill", field : "Init", mod : "Wis", text : "I add my Wisdom modifier to my initiative rolls." }
 		},
 		"subclassfeature2" : {
 			name : "Channel Divinity: Pierce the Veil",

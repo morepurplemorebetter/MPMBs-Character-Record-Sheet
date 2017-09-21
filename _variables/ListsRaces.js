@@ -35,7 +35,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Celestial"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		dmgres : ["Necrotic", "Radiant"],
 		age : " reach adulthood in their late teens and live around 160 years",
 		height : " range from 5 to over 6 feet tall (4'8\" + 2d10\")",
@@ -93,7 +93,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Celestial"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		dmgres : ["Necrotic", "Radiant"],
 		age : " reach adulthood in their late teens and live around 160 years",
 		height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
@@ -126,8 +126,8 @@ var RaceList = {
 				recovery : "long rest",
 				additional : ["", "", "+3 damage", "+4 damage", "+5 damage", "+6 damage", "+7 damage", "+8 damage", "+9 damage", "+10 damage", "+11 damage", "+12 damage", "+13 damage", "+14 damage", "+15 damage", "+16 damage", "+17 damage", "+18 damage", "+19 damage", "+20 damage"],
 				action : ["action", " (start)"],
-				eval : "AddAction(\"bonus action\", \"Necrotic Shroud (end)\", \"being a Fallen Aasimar\");",
-				removeeval : "RemoveAction(\"bonus action\", \"Necrotic Shroud (end)\");"
+				eval : "AddAction('bonus action', 'Necrotic Shroud (end)', 'being a Fallen Aasimar');",
+				removeeval : "RemoveAction('bonus action', 'Necrotic Shroud (end)');"
 			}
 		}
 	},
@@ -141,7 +141,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Celestial"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		dmgres : ["Necrotic", "Radiant"],
 		age : " reach adulthood in their late teens and live around 160 years",
 		height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
@@ -173,8 +173,8 @@ var RaceList = {
 				recovery : "long rest",
 				additional : ["", "", "+3 damage", "+4 damage", "+5 damage", "+6 damage", "+7 damage", "+8 damage", "+9 damage", "+10 damage", "+11 damage", "+12 damage", "+13 damage", "+14 damage", "+15 damage", "+16 damage", "+17 damage", "+18 damage", "+19 damage", "+20 damage"],
 				action : ["action", " (start)"],
-				eval : "AddAction(\"bonus action\", \"Radiant Soul (end)\", \"being a Protector Aasimar\");",
-				removeeval : "RemoveAction(\"bonus action\", \"Radiant Soul (end)\");"
+				eval : "AddAction('bonus action', 'Radiant Soul (end)', 'being a Protector Aasimar');",
+				removeeval : "RemoveAction('bonus action', 'Radiant Soul (end)');"
 			}
 		}
 	},
@@ -188,7 +188,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Celestial"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		dmgres : ["Necrotic", "Radiant"],
 		age : " reach adulthood in their late teens and live around 160 years",
 		height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
@@ -223,8 +223,8 @@ var RaceList = {
 					return  Math.ceil(n/2) + "/" + n + " damage";
 				}),
 				action : ["action", " (start)"],
-				eval : "AddAction(\"bonus action\", \"Radiant Consumption (end)\", \"being a Scourge Aasimar\");",
-				removeeval : "RemoveAction(\"bonus action\", \"Radiant Consumption (end)\");"
+				eval : "AddAction('bonus action', 'Radiant Consumption (end)', 'being a Scourge Aasimar');",
+				removeeval : "RemoveAction('bonus action', 'Radiant Consumption (end)');"
 			}
 		}
 	},
@@ -237,7 +237,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Goblin"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		skills : ["Stealth"],
 		age : " rearch adulthood at age 16 and live up to 80 years",
 		height : " are between 6 and 8 feet tall (6'0\" + 2d12\")",
@@ -304,7 +304,7 @@ var RaceList = {
 		size : 3,
 		speed : [25, 25],
 		languageProfs : ["Common", "Dwarvish", "Undercommon"],
-		vision : "Darkvision 120 ft; Sunlight Sensitivity",
+		vision : [["Darkvision", 120], ["Sunlight Sensitivity", 0]],
 		savetxt : { adv_vs : ["charmed", "illusions", "paralyzed", "poison"] },
 		dmgres : ["Poison"],
 		weaponprofs : [false, false, ["battleaxe", "handaxe", "warhammer", "light hammer"]],
@@ -359,7 +359,7 @@ var RaceList = {
 		size : 3,
 		speed : [25, 25],
 		languageProfs : ["Common", "Dwarvish"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		savetxt : { adv_vs : ["poison"] },
 		dmgres : ["Poison"],
 		weaponprofs : [false, false, ["battleaxe", "handaxe", "warhammer", "light hammer"]],
@@ -392,7 +392,7 @@ var RaceList = {
 		size : 3,
 		speed : [25, 25],
 		languageProfs : ["Common", "Dwarvish"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		savetxt : { adv_vs : ["poison"] },
 		dmgres : ["Poison"],
 		weaponprofs : [false, false, ["battleaxe", "handaxe", "warhammer", "light hammer"]],
@@ -417,7 +417,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Elvish"],
-		vision : "Darkvision 120 ft; Sunlight Sensitivity",
+		vision : [["Darkvision", 120], ["Sunlight Sensitivity", 0]],
 		savetxt : {
 			text : ["Magic can't put me to sleep"],
 			adv_vs : ["charmed"]
@@ -481,7 +481,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Elvish"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		savetxt : {
 			text : ["Magic can't put me to sleep"],
 			adv_vs : ["charmed"]
@@ -524,7 +524,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Elvish", 1],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		savetxt : {
 			text : ["Magic can't put me to sleep"],
 			adv_vs : ["charmed"]
@@ -558,7 +558,7 @@ var RaceList = {
 		size : 3,
 		speed : [35, 25],
 		languageProfs : ["Common", "Elvish"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		savetxt : {
 			text : ["Magic can't put me to sleep"],
 			adv_vs : ["charmed"]
@@ -714,7 +714,7 @@ var RaceList = {
 		sortname : "Genasi, Fire",
 		source : ["E", 9],
 		plural : "Fire genasi",
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Primordial"],
@@ -805,7 +805,7 @@ var RaceList = {
 		size : 4,
 		speed : [25, 15],
 		languageProfs : ["Common", "Gnomish", "Undercommon"],
-		vision : "Darkvision 120 ft",
+		vision : [["Darkvision", 120]],
 		savetxt : { text : ["Adv. on Int/Wis/Cha saves vs. magic"] },
 		age : " are considered full-grown adults when they reach 25 and live 200 to 250 years",
 		height : " stand between 3 and 3 1/2 feet tall (2'9\" + 2d4\")",
@@ -826,7 +826,7 @@ var RaceList = {
 		size : 4,
 		speed : [25, 15],
 		languageProfs : ["Common", "Gnomish"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		savetxt : { text : ["Adv. on Int/Wis/Cha saves vs. magic"] },
 		age : " start adult life around age 40 and can live 350 to almost 500 years",
 		height : " are 3 to 4 feet tall (2'11\" + 2d4\")",
@@ -856,7 +856,7 @@ var RaceList = {
 		speed : [25, 15],
 		languageProfs : ["Common", "Gnomish"],
 		toolProfs : ["Tinker's tools"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		savetxt : { text : ["Adv. on Int/Wis/Cha saves vs. magic"] },
 		age : " start adult life around age 40 and can live 350 to almost 500 years",
 		height : " are 3 to 4 feet tall (2'11\" + 2d4\")",
@@ -876,7 +876,7 @@ var RaceList = {
 		size : 4,
 		speed : [30, 20],
 		languageProfs : ["Common", "Goblin"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		age : " rearch adulthood at age 8 and live up to 60 years",
 		height : " are between 3 and a half and 4 feet tall (3'5\" + 2d4\")",
 		weight : " weigh between 40 and 70 lb (35 + 2d4 \xD7 1d4 lb)",
@@ -1002,7 +1002,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Elvish", 1],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		savetxt : {
 			text : ["Magic can't put me to sleep"],
 			adv_vs : ["charmed"]
@@ -1027,7 +1027,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Orc"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		skills : ["Intimidation"],
 		age : " reach adulthood around age 14 and rarely live longer than 75 years",
 		height : " range from 5 to well over 6 feet tall (4'10\" + 2d10\")",
@@ -1063,7 +1063,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Goblin"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		armor : [true, false, false, false],
 		age : " reach adulthood in their late teens and live less than 100 years",
 		height : " range from barely 5 to well over 6 feet tall (4'8\" + 2d10\")",
@@ -1130,7 +1130,7 @@ var RaceList = {
 		size : 4,
 		speed : [30, 20],
 		languageProfs : ["Common", "Draconic"],
-		vision : "Darkvision 60 ft; Sunlight Sensitivity",
+		vision : [["Darkvision", 60], ["Sunlight Sensitivity", 0]],
 		age : " reach adulthood at age 6 and can live up to 120 years, but rarely do so",
 		height : " are between 2 and 3 feet tall (2'1\" + 2d4\")",
 		weight : " weigh between 25 and 35 lb (25 + 2d4 \xD7 1 lb)",
@@ -1196,7 +1196,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Orc"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		skills : ["Intimidation"],
 		age : " reach adulthood at age 12 and live up to 50 years",
 		height : " are usually over 6 feet tall (5'4\" + 2d8\")",
@@ -1226,7 +1226,7 @@ var RaceList = {
 		speed : ["30 ft\n20 ft climb", "20 ft\n10 ft climb"],
 		skills : ["Perception", "Stealth"],
 		languageProfs : ["Common", 1],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		weapons : ["cat's claws"],
 		age : " reach adulthood in their late teens and live less than 100 years",
 		height : " range from 5 to well over 6 feet tall (4'10\" + 2d10\")",
@@ -1256,7 +1256,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Infernal"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		dmgres : ["Fire"],
 		age : " reach adulthood in their late teens and live around 100 years",
 		height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
@@ -1381,7 +1381,7 @@ var RaceList = {
 		size : 3,
 		speed : [30, 20],
 		languageProfs : ["Common", "Abyssal", "Draconic"],
-		vision : "Darkvision 60 ft",
+		vision : [["Darkvision", 60]],
 		savetxt : {
 			immune : ["poison"],
 			adv_vs : ["magic"]
@@ -1670,8 +1670,8 @@ var RaceSubList = {
 		improvements : "Human: +1 to two different ability scores of my choice;",
 		scores : [0, 0, 0, 0, 0, 0],
 		trait : "Human (+1 to two different ability scores of my choice)\n\nSkills: I gain proficiency in one skill of my choice.\n\nFeat: I gain one feat of my choice.",
-		eval : "AddString(\"Feat Note 1\", \"Human bonus feat\", \";\");",
-		removeeval : "RemoveString(\"Feat Note 1\", \"Human bonus feat\");"
+		eval : "AddString('Feat Note 1', 'Human bonus feat', '; ');",
+		removeeval : "RemoveString('Feat Note 1', 'Human bonus feat');"
 	},
 
 	"tiefling-devil's tongue" : {

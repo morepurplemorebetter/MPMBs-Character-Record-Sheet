@@ -21,8 +21,8 @@ RaceList["changeling"] = {
 	improvements : "Changeling: +1 Dexterity, +1 Charisma;",
 	scores : [0, 1, 0, 0, 0, 1],
 	trait : "Changeling (+1 Dexterity, +1 Charisma)\nShapechanger:\n   As an action, I can polymorph into any humanoid of my size that I have seen, or back into my true form.\n   However, my equipment does not change with me.\n   If I die, I revert to my natural appearance.",
-	eval : "AddAction(\"action\", \"Polymorph\", \"being a Changeling\");",
-	removeeval : "RemoveAction(\"action\", \"Polymorph\");"
+	eval : "AddAction('action', 'Polymorph', 'being a Changeling');",
+	removeeval : "RemoveAction('action', 'Polymorph');"
 };
 
 //the race Warforged
@@ -55,7 +55,7 @@ RaceList["shifter"] = {
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", "Sylvan"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	age : " reach adulthood at the end of their teens and live around 100 years",
 	height : " range from under 5 to 6 feet tall (4'6\" + 2d8\")",
 	weight : " weigh around 140 lb (95 + 2d8 \xD7 2d4 lb)",
@@ -155,8 +155,8 @@ RaceList["minotaur"] = {
 	improvements : "Minotaur: +1 Strength, and either +1 Intelligence, +1 Wisdom, or another +1 Strength;",
 	scores : [1, 0, 0, 0, 0, 0],
 	trait : "Minotaur (+1 Strength, and either +1 Int, Wis, or Str) use \"Racial Options\" button\nHorns: I am proficient with my horns, a 1d10 piercing damage melee weapon that grant me advantage on shoving a creature, but not to avoid being shoved myself.\nGoring Rush: When taking a Dash action, I can make a horns attack as a bonus action.\nHammering Horns: When taking a melee Attack action, I can attempt to shove with my horns as a bonus action. I cannot use this to knock a creature prone.\nLabyrinthine Recall: I can perfectly recall any path I have travelled.",
-	eval : "AddAction(\"bonus action\", \"Horns attack (when taking dash action)\", \"being a Minotaur\"); AddAction(\"bonus action\", \"Shove another (when taking attack action)\", \"being a Minotaur\");",
-	removeeval : "RemoveAction(\"bonus action\", \"Horns attack (when taking dash action)\"); RemoveAction(\"bonus action\", \"Shove another (when taking attack action)\");",
+	eval : "AddAction('bonus action', 'Horns attack (when taking dash action)', 'being a Minotaur'); AddAction('bonus action', 'Shove another (when taking attack action)', 'being a Minotaur');",
+	removeeval : "RemoveAction('bonus action', 'Horns attack (when taking dash action)'); RemoveAction('bonus action', 'Shove another (when taking attack action)');",
 	variants : ["cunning", "intellect", "strength"],
 };
 RaceSubList["minotaur-cunning"] = {
@@ -197,7 +197,7 @@ RaceList["aasimar revenant"] = { //based on the VGtM Aasimar
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", "Celestial"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	dmgres : ["Necrotic", "Radiant"],
 	age : " reach adulthood in their late teens and live around 160 years",
 	height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
@@ -227,7 +227,7 @@ RaceList["dwarf revenant"] = {
 	size : 3,
 	speed : [25, 25],
 	languageProfs : ["Common", "Dwarvish"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	savetxt : { adv_vs : ["poison"] },
 	dmgres : ["Poison"],
 	weaponprofs : [false, false, ["battleaxe", "handaxe", "warhammer", "light hammer"]],
@@ -250,7 +250,7 @@ RaceList["elf revenant"] = {
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", "Elvish"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	savetxt : {
 		text : ["Magic can't put me to sleep"],
 		adv_vs : ["charmed"]
@@ -293,7 +293,7 @@ RaceList["gnome revenant"] = {
 	size : 4,
 	speed : [25, 15],
 	languageProfs : ["Common", "Gnomish"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	savetxt : { text : ["Adv. on Int/Wis/Cha saves vs. magic"] },
 	age : " start adult life around age 40 and can live 350 to almost 500 years",
 	height : " are 3 to 4 feet tall (2'11\" + 2d4\")",
@@ -362,7 +362,7 @@ RaceList["tiefling revenant"] = {
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", "Infernal"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	age : " reach adulthood in their late teens and live around 100 years",
 	height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
 	weight : " weigh around 155 lb (110 + 2d8 \xD7 2d4 lb)",
@@ -475,7 +475,7 @@ RaceList["uaeladrin"] = {
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", "Elvish"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	savetxt : {
 		text : ["Magic can't put me to sleep"],
 		adv_vs : ["charmed"]

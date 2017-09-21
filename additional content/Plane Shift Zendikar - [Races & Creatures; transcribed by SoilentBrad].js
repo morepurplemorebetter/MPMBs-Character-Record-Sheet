@@ -12,7 +12,7 @@
 	Effect:		This script adds a number of races, subraces, and creatures from the Magic: The Gathering plane of Zendikar
 				This is taken from the Plane Shift: Zendikar article (http://magic.wizards.com/en/articles/archive/feature/plane-shift-zendikar-2016-04-27)
 	Code by:	SoilentBrad (and tiny corrections by MPMB)
-	Date:		2017-09-15 (sheet v12.998)
+	Date:		2017-09-21 (sheet v12.998)
 */
 
 SourceList["PS:Z"] = {
@@ -119,7 +119,7 @@ RaceList["vampire"] = {
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", "Vampire"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	dmgres : ["Necrotic"],
 	weapons : ["blood thirst"],
 	age : " don't mature and age in the same way that other races do. Every living vampire is either a bloodchief, infected by Ulamog's influence in the distant reaches of history, or was spawned by a bloodchief from a living human. Most vampires are thus very old, but few have any memory of their earliest years.",
@@ -150,7 +150,7 @@ RaceList["grotag tribe goblin"] = {
 	size : 4,
 	speed : [25, 15],
 	languageProfs : ["Common", "Goblin"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	dmgres : ["Fire", "Psychic"],
 	skills : ["Animal Handling"],
 	age : " reach adulthood at around 12 and rarely live longer than 50 years",
@@ -171,7 +171,7 @@ RaceList["lavastep tribe goblin"] = {
 	size : 4,
 	speed : [25, 15],
 	languageProfs : ["Common", "Goblin"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	dmgres : ["Fire", "Psychic"],
 	age : " reach adulthood at around 12 and rarely live longer than 50 years",
 	height : " average about 3 feet tall (3'\" + 2d4\")",
@@ -191,7 +191,7 @@ RaceList["tuktuk tribe goblin"] = {
 	size : 4,
 	speed : [25, 15],
 	languageProfs : ["Common", "Goblin"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	dmgres : ["Fire", "Psychic"],
 	toolProfs : [["Thieves' tools", "Dex"]],
 	age : " reach adulthood at around 12 and rarely live longer than 50 years",
@@ -222,7 +222,7 @@ RaceList["tajuru elf"] = {
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", "Elvish"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	savetxt : {
 		text : ["Magic can't put me to sleep"],
 		adv_vs : ["charmed"]
@@ -247,7 +247,7 @@ RaceList["joraga elf"] = {
 	size : 3,
 	speed : [35, 25],
 	languageProfs : ["Common", "Elvish"],
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	savetxt : {
 		text : ["Magic can't put me to sleep"],
 		adv_vs : ["charmed"]
@@ -273,7 +273,7 @@ RaceList["mul daya elf"] = {
 	size : 3,
 	speed : [30, 20],
 	languageProfs : ["Common", "Elvish"],
-	vision : "Darkvision 120 ft; Sunlight Sensitivity",
+	vision : [["Darkvision", 120], ["Sunlight Sensitivity", 0]],
 	savetxt : {
 		text : ["Magic can't put me to sleep"],
 		adv_vs : ["charmed"]
