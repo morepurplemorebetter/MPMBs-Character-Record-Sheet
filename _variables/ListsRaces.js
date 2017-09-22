@@ -5,7 +5,11 @@ var RaceList = {
 		source : ["E", 5],
 		plural : "Aarakocra",
 		size : 3,
-		speed : ["25 ft\n50 ft fly", 15],
+		speed : {
+			walk : { spd : 25, enc : 15 },
+			fly : { spd : 50, enc : 0 }
+		},
+//		speed : ["25 ft\n50 ft fly", 15],
 		languageProfs : ["Common", "Aarakocra", "Auran"],
 		weapons : ["talons"],
 		age : " rearch maturity by age 3 and live about 30 years",
@@ -33,7 +37,9 @@ var RaceList = {
 		source : ["D", 286],
 		plural : "Aasimar",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Celestial"],
 		vision : [["Darkvision", 60]],
 		dmgres : ["Necrotic", "Radiant"],
@@ -91,7 +97,9 @@ var RaceList = {
 		plural : "Fallen Aasimar",
 		sortname : "Aasimar, Fallen",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Celestial"],
 		vision : [["Darkvision", 60]],
 		dmgres : ["Necrotic", "Radiant"],
@@ -139,7 +147,9 @@ var RaceList = {
 		plural : "Protector Aasimar",
 		sortname : "Aasimar, Protector",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Celestial"],
 		vision : [["Darkvision", 60]],
 		dmgres : ["Necrotic", "Radiant"],
@@ -186,7 +196,9 @@ var RaceList = {
 		plural : "Scourge Aasimar",
 		sortname : "Aasimar, Scourge",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Celestial"],
 		vision : [["Darkvision", 60]],
 		dmgres : ["Necrotic", "Radiant"],
@@ -235,7 +247,9 @@ var RaceList = {
 		source : ["V", 119],
 		plural : "Bugbears",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Goblin"],
 		vision : [["Darkvision", 60]],
 		skills : ["Stealth"],
@@ -266,7 +280,9 @@ var RaceList = {
 		source : ["P", 34],
 		plural : "Dragonborn",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Draconic"],
 		weapons : ["breath weapon"],
 		age : " reach adulthood by 15 and live around 80 years",
@@ -302,7 +318,9 @@ var RaceList = {
 		source : ["S", 104],
 		plural : "Duergar",
 		size : 3,
-		speed : [25, 25],
+		speed : {
+			walk : { spd : 25, enc : 25 }
+		},
 		languageProfs : ["Common", "Dwarvish", "Undercommon"],
 		vision : [["Darkvision", 120], ["Sunlight Sensitivity", 0]],
 		savetxt : { adv_vs : ["charmed", "illusions", "paralyzed", "poison"] },
@@ -357,7 +375,9 @@ var RaceList = {
 		source : ["P", 20],
 		plural : "Hill dwarves",
 		size : 3,
-		speed : [25, 25],
+		speed : {
+			walk : { spd : 25, enc : 25 }
+		},
 		languageProfs : ["Common", "Dwarvish"],
 		vision : [["Darkvision", 60]],
 		savetxt : { adv_vs : ["poison"] },
@@ -390,7 +410,9 @@ var RaceList = {
 		source : ["P", 20],
 		plural : "Mountain dwarves",
 		size : 3,
-		speed : [25, 25],
+		speed : {
+			walk : { spd : 25, enc : 25 }
+		},
 		languageProfs : ["Common", "Dwarvish"],
 		vision : [["Darkvision", 60]],
 		savetxt : { adv_vs : ["poison"] },
@@ -415,7 +437,9 @@ var RaceList = {
 		source : ["P", 24],
 		plural : "Drow",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Elvish"],
 		vision : [["Darkvision", 120], ["Sunlight Sensitivity", 0]],
 		savetxt : {
@@ -479,7 +503,9 @@ var RaceList = {
 		source : ["D", 286],
 		plural : "Eladrin",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Elvish"],
 		vision : [["Darkvision", 60]],
 		savetxt : {
@@ -522,7 +548,9 @@ var RaceList = {
 		source : ["P", 23],
 		plural : "High elves",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Elvish", 1],
 		vision : [["Darkvision", 60]],
 		savetxt : {
@@ -556,7 +584,9 @@ var RaceList = {
 		source : ["P", 24],
 		plural : "Wood elves",
 		size : 3,
-		speed : [35, 25],
+		speed : {
+			walk : { spd : 35, enc : 25 }
+		},
 		languageProfs : ["Common", "Elvish"],
 		vision : [["Darkvision", 60]],
 		savetxt : {
@@ -581,7 +611,9 @@ var RaceList = {
 		source : ["V", 106],
 		plural : "Firbolg",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Elvish", "Giant"],
 		age : " reach adulthood around 30 and can live for 500 years",
 		height : " are between 6 and half and 8 feet tall (6'2\" + 2d12\")",
@@ -642,7 +674,9 @@ var RaceList = {
 		source : ["E", 9],
 		plural : "Air genasi",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Primordial"],
 		age : " reach adulthood in their late teens and live up to 120 years",
 		height : " range from barely 5 to well over 6 feet tall (4'8\" + 2d10\")",
@@ -679,7 +713,9 @@ var RaceList = {
 		source : ["E", 9],
 		plural : "Earth genasi",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Primordial"],
 		age : " reach adulthood in their late teens and live up to 120 years",
 		height : " range from barely 5 to well over 6 feet tall (4'8\" + 2d10\")",
@@ -716,7 +752,9 @@ var RaceList = {
 		plural : "Fire genasi",
 		vision : [["Darkvision", 60]],
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Primordial"],
 		dmgres : ["Fire"],
 		age : " reach adulthood in their late teens and live up to 120 years",
@@ -760,7 +798,11 @@ var RaceList = {
 		source : ["E", 10],
 		plural : "Water genasi",
 		size : 3,
-		speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
+		speed : {
+			walk : { spd : 30, enc : 20 },
+			swim : { spd : 30, enc : 20 }
+		},
+//		speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
 		languageProfs : ["Common", "Primordial"],
 		dmgres : ["Acid"],
 		age : " reach adulthood in their late teens and live up to 120 years",
@@ -803,7 +845,9 @@ var RaceList = {
 		source : [["E", 7], ["S", 115]],
 		plural : "Svirfneblin",
 		size : 4,
-		speed : [25, 15],
+		speed : {
+			walk : { spd : 25, enc : 15 }
+		},
 		languageProfs : ["Common", "Gnomish", "Undercommon"],
 		vision : [["Darkvision", 120]],
 		savetxt : { text : ["Adv. on Int/Wis/Cha saves vs. magic"] },
@@ -824,7 +868,9 @@ var RaceList = {
 		source : ["P", 37],
 		plural : "Forest gnomes",
 		size : 4,
-		speed : [25, 15],
+		speed : {
+			walk : { spd : 25, enc : 15 }
+		},
 		languageProfs : ["Common", "Gnomish"],
 		vision : [["Darkvision", 60]],
 		savetxt : { text : ["Adv. on Int/Wis/Cha saves vs. magic"] },
@@ -853,7 +899,9 @@ var RaceList = {
 		source : ["P", 37],
 		plural : "Rock gnomes",
 		size : 4,
-		speed : [25, 15],
+		speed : {
+			walk : { spd : 25, enc : 15 }
+		},
 		languageProfs : ["Common", "Gnomish"],
 		toolProfs : ["Tinker's tools"],
 		vision : [["Darkvision", 60]],
@@ -874,7 +922,9 @@ var RaceList = {
 		source : ["V", 119],
 		plural : "Goblins",
 		size : 4,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Goblin"],
 		vision : [["Darkvision", 60]],
 		age : " rearch adulthood at age 8 and live up to 60 years",
@@ -908,7 +958,9 @@ var RaceList = {
 		source : ["V", 108],
 		plural : "Goliaths",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Giant"],
 		skills : ["Athletics"],
 		age : " reach adulthood in their late teens and live less than 100 years",
@@ -940,7 +992,9 @@ var RaceList = {
 		plural : "Ghostwise halflings",
 		source : ["S", 110],
 		size : 4,
-		speed : [25, 15],
+		speed : {
+			walk : { spd : 25, enc : 15 }
+		},
 		languageProfs : ["Common", "Halfling"],
 		savetxt : { adv_vs : ["frightened"] },
 		age : " reach adulthood at age 20 and live around 150 years",
@@ -960,7 +1014,9 @@ var RaceList = {
 		source : ["P", 28],
 		plural : "Lightfoot halflings",
 		size : 4,
-		speed : [25, 15],
+		speed : {
+			walk : { spd : 25, enc : 15 }
+		},
 		languageProfs : ["Common", "Halfling"],
 		savetxt : { adv_vs : ["frightened"] },
 		age : " reach adulthood at age 20 and live around 150 years",
@@ -980,7 +1036,9 @@ var RaceList = {
 		source : ["P", 28],
 		plural : "Stout halflings",
 		size : 4,
-		speed : [25, 15],
+		speed : {
+			walk : { spd : 25, enc : 15 }
+		},
 		languageProfs : ["Common", "Halfling"],
 		savetxt : { adv_vs : ["frightened", "poison"] },
 		dmgres : ["Poison"],
@@ -1000,7 +1058,9 @@ var RaceList = {
 		source : ["P", 39],
 		plural : "Half-elves",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Elvish", 1],
 		vision : [["Darkvision", 60]],
 		savetxt : {
@@ -1025,7 +1085,9 @@ var RaceList = {
 		source : ["P", 41],
 		plural : "Half-orcs",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Orc"],
 		vision : [["Darkvision", 60]],
 		skills : ["Intimidation"],
@@ -1061,7 +1123,9 @@ var RaceList = {
 		source : ["V", 119],
 		plural : "Hobgoblins",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Goblin"],
 		vision : [["Darkvision", 60]],
 		armor : [true, false, false, false],
@@ -1090,7 +1154,9 @@ var RaceList = {
 		source : ["P", 31],
 		plural : "Humans",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", 1],
 		age : " reach adulthood in their late teens and live less than 100 years",
 		height : " range from barely 5 to well over 6 feet tall (4'8\" + 2d10\")",
@@ -1109,7 +1175,9 @@ var RaceList = {
 		source : ["V", 109],
 		plural : "Kenku",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		skillstxt : "Choose two from Acrobatics, Deception, Stealth, and Sleight of Hand.",
 		languageProfs : ["Common", "Auran"],
 		age : " reach maturity at about 12 years old and can live to 60",
@@ -1128,7 +1196,9 @@ var RaceList = {
 		source : ["V", 119],
 		plural : "Kobolds",
 		size : 4,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Draconic"],
 		vision : [["Darkvision", 60], ["Sunlight Sensitivity", 0]],
 		age : " reach adulthood at age 6 and can live up to 120 years, but rarely do so",
@@ -1157,7 +1227,11 @@ var RaceList = {
 		source : ["V", 111],
 		plural : "Lizardfolk",
 		size : 3,
-		speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
+		speed : {
+			walk : { spd : 30, enc : 20 },
+			swim : { spd : 30, enc : 20 }
+		},
+//		speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
 		skillstxt : "Choose two from Animal Handling, Nature, Perception, Stealth, and Survival.",
 		languageProfs : ["Common", "Draconic"],
 		weapons : ["bite"],
@@ -1194,7 +1268,9 @@ var RaceList = {
 		source : ["V", 120],
 		plural : "Orcs",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Orc"],
 		vision : [["Darkvision", 60]],
 		skills : ["Intimidation"],
@@ -1223,7 +1299,11 @@ var RaceList = {
 		source : ["V", 113],
 		plural : "Tabaxi",
 		size : 3,
-		speed : ["30 ft\n20 ft climb", "20 ft\n10 ft climb"],
+		speed : {
+			walk : { spd : 30, enc : 20 },
+			climb : { spd : 20, enc : 10 }
+		},
+//		speed : ["30 ft\n20 ft climb", "20 ft\n10 ft climb"],
 		skills : ["Perception", "Stealth"],
 		languageProfs : ["Common", 1],
 		vision : [["Darkvision", 60]],
@@ -1254,7 +1334,9 @@ var RaceList = {
 		source : ["P", 43],
 		plural : "Tieflings",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Infernal"],
 		vision : [["Darkvision", 60]],
 		dmgres : ["Fire"],
@@ -1314,7 +1396,11 @@ var RaceList = {
 		source : ["V", 115],
 		plural : "Triton",
 		size : 3,
-		speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
+		speed : {
+			walk : { spd : 30, enc : 20 },
+			swim : { spd : 30, enc : 20 }
+		},
+//		speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
 		languageProfs : ["Common", "Primordial"],
 		dmgres : ["Cold"],
 		age : " reach maturity around age 15 and can live up to 200 years",
@@ -1379,7 +1465,9 @@ var RaceList = {
 		source : ["V", 120],
 		plural : "Yuan-Ti Purebloods",
 		size : 3,
-		speed : [30, 20],
+		speed : {
+			walk : { spd : 30, enc : 20 }
+		},
 		languageProfs : ["Common", "Abyssal", "Draconic"],
 		vision : [["Darkvision", 60]],
 		savetxt : {
@@ -1568,7 +1656,11 @@ var RaceSubList = {
 		name : "Half-aquatic elf",
 		source : ["S", 116],
 		plural : "Half-aquatic elves",
-		speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
+		speed : {
+			walk : { spd : 30, enc : 20 },
+			swim : { spd : 30, enc : 20 }
+		},
+//		speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
 		skillstxt : "",
 		trait : "Half-Aquatic Elf (+2 Charisma and +1 to two other ability scores of my choice)\n\nSwimming Speed:\n   My aquatic heritage gives me a swimming speed of 30 feet."
 	},
@@ -1642,7 +1734,9 @@ var RaceSubList = {
 		name : "Half-wood elf",
 		source : ["S", 116],
 		plural : "Half-wood elves",
-		speed : [35, 25],
+		speed : {
+			walk : { spd : 35, enc : 25 }
+		},
 		skillstxt : "",
 		trait : "Half-Wood Elf (+2 Charisma and +1 to two other ability scores of my choice)"
 	},
@@ -1763,7 +1857,11 @@ var RaceSubList = {
 		name : "Winged tiefling",
 		source : ["S", 118],
 		plural : "Winged tieflings",
-		speed : ["30 ft\n30 ft fly", "20 ft\n20 ft fly"],
+		speed : {
+			walk : { spd : 30, enc : 20 },
+			fly : { spd : 30, enc : 20 }
+		},
+//		speed : ["30 ft\n30 ft fly", "20 ft\n20 ft fly"],
 		trait : "Winged Tiefling (+1 Intelligence, +2 Charisma)\n\nWings:\n   I have bat-like wings sprouting from my shoulder blades that give me flying speed of 30 feet.",
 		features : "",
 		abilitySave : 0,

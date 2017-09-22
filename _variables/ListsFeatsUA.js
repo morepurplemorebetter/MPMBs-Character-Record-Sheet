@@ -738,7 +738,8 @@ FeatsList["squat nimbleness"] = {
 	prereqeval : "(/dwarf|gnome|halfling/i).test(CurrentRace.known)",
 	description : "My walking speed increases by 5 ft. I gain proficiency in the Acrobatics or Athletics skill. If I'm already proficient in the chosen skill, I gain expertise with it instead.\n[+1 Strength or Dexterity]",
 	improvements : "Squat Nimbleness (feat): +1 Strength or Dexterity;",
-	skills : "\n\n" + toUni("Squat Nimbleness (feat)") + ": Acrobatics or Athletics; Expertise if already proficient."
+	skills : "\n\n" + toUni("Squat Nimbleness (feat)") + ": Acrobatics or Athletics; Expertise if already proficient.",
+	speed : { walk : {spd : "+5", enc : "+5" } }
 };
 FeatsList["wonder maker"] = {
 	name : "Wonder Maker",

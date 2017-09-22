@@ -81,7 +81,8 @@ ClassSubList["favored soul"] = {
 			source : ["UA:MC", 8],
 			minlevel : 14,
 			description : "\n   " + "As a bonus action, unless armor is in the way, I can sprout dragon wings from my back" + "\n   " + "I gain a fly speed equal to my current speed until I dismiss the wings as a bonus action",
-			action : ["bonus action", " (start/stop)"]
+			action : ["bonus action", " (start/stop)"],
+			speed : { fly : { spd : "walk", enc : "walk" } }
 		},
 		"subclassfeature18" : {
 			name : "Power of the Chosen",
@@ -326,7 +327,6 @@ ClassList["spell-less ranger"] = {
 				name : "Maneuvering Attack",
 				source : ["P", 74],
 				description : "\n   " + "Use after hitting a creature; I add the superiority die to my attack's damage" + "\n   " + "Ally can use reaction to move half speed without opportunity attack from the target"
-
 			},
 			"menacing attack" : {
 				name : "Menacing Attack",
@@ -1146,7 +1146,8 @@ ClassSubList["college of satire"] = {
 			source : ["UA:KoO", 2],
 			minlevel : 3,
 			description : "\n   " + "As a bonus action, I tumble which gives the benefits of the Dash and Disengage actions" + "\n   " + "I also gain a climbing speed at my current speed and half damage from falling",
-			action : ["bonus action", ""]
+			action : ["bonus action", ""],
+			speed : { climb : { spd : "walk", enc : "walk" } }
 		},
 		"subclassfeature6" : {
 			name : "Fool's Insight",
@@ -3302,8 +3303,11 @@ ClassSubList["rogue_scout"] = {
 			source : ["UA:RnR", 3],
 			minlevel : 9,
 			description : "\n   " + "I gain +10 ft to my walking speed (and swimming/climbing speed, if applicable)",
-			eval : "ChangeSpeed(10);",
-			removeeval : "ChangeSpeed(-10);"
+			speed : { 
+				walk : { spd : "+10", enc : "+10" },
+				climb : { spd : "_10", enc : "_10" },
+				swim : { spd : "_10", enc : "_10" }
+			}
 		},
 		"subclassfeature13" : {
 			name : "Ambush Master",
@@ -3496,8 +3500,9 @@ ClassSubList["sea sorcery"] = {
 			source : ["UA:SO", 3],
 			minlevel : 1,
 			description : "\n   " + "I can breathe underwater and I have a swim speed equal to my walking speed",
-			eval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
-			removeeval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };"
+			speed : { swim : { spd : "walk", enc : "walk" } }
+/* 			eval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
+			removeeval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };" */
 		},
 		"subclassfeature1.1" : {
 			name : "Curse of the Sea",
@@ -4529,7 +4534,8 @@ ClassSubList["sorcerer-favoured soul2"] = {
 					"These wings last until I become incapacitated or I dismiss them as a bonus action"
 				])
 			},
-			action : ["bonus action", " Wings"]
+			action : ["bonus action", " Wings"],
+			speed : { fly : { spd : 30, enc : 20 } }
 		},
 		"subclassfeature18" : {
 			name : "Unearthly Recovery",
@@ -4891,7 +4897,11 @@ function UAstartupCode() {
 		feature : {
 			name : "Mariner Fighting Style",
 			source : ["UA:WA", 3],
-			description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds equal my current walking speed",
+			description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds are equal to my current walking speed",
+			speed : {
+				climb : { spd : "walk", enc : "walk" },
+				swim : { spd : "walk", enc : "walk" }
+			},
 			eval : "AddACMisc(1, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\", \"ACshield || tDoc.getField('Heavy Armor').isBoxChecked(0)\")",
 			removeeval : "AddACMisc(0, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")"
 		}
@@ -5221,8 +5231,7 @@ function UAstartupCode() {
 		},
 		source : ["UA:WnW", 5],
 		prereqeval : "classes.known.warlock.subclass === 'the archfey'",
-		eval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
-		removeeval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };"
+		speed : { swim : { spd : "walk", enc : "walk" } }
 	}, {
 		objname : "Seeker's Speech (prereq: the Seeker patron)",
 		name : "Seeker's Speech",
@@ -5361,8 +5370,7 @@ function UAstartupCode() {
 			oncelr : true
 		},
 		prereqeval : "classes.known.warlock.level >= 5",
-		eval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
-		removeeval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };"
+		speed : { swim : { spd : "walk", enc : "walk" } }
 	}, {
 		objname : "Gift of the Ever-Living Ones (prereq: Pact of the Chain)",
 		name : "Gift of the Ever-Living Ones",

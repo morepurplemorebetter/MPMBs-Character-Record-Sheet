@@ -13,7 +13,7 @@
 				This is taken from DriveThruRPG (http://www.drivethrurpg.com/product/132657/)
 				This subrace is made by Goodman Games
 	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
-	Date:		2017-09-21 (sheet v12.998)
+	Date:		2017-09-22 (sheet v12.998)
 	
 	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: http://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
 */
@@ -25,7 +25,9 @@ RaceList["sojourner dwarf"] = {
 	source : ["FEF1:G", 14],
 	plural : "Sojourner dwarves",
 	size : 3,
-	speed : [25, 25],
+	speed : {
+		walk : { spd : 25, enc : 25 }
+	},
 	languageProfs : ["Common", "Dwarvish"],
 	vision : [["Darkvision", 60]],
 	savetxt : { adv_vs : ["poison"] },

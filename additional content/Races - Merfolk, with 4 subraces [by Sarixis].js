@@ -11,7 +11,7 @@
 	Subject:	Races
 	Effect:		This script adds a race, Merfolk, with 4 subraces: Ocean Merfolk, River Merfolk, Deep Merfolk, and Awakened Merrow
 	Code by:	Sarixis
-	Date:		2017-09-21 (sheet v12.998)
+	Date:		2017-09-22 (sheet v12.998)
 */
 
 RaceList["ocean merfolk"] = {
@@ -20,6 +20,10 @@ RaceList["ocean merfolk"] = {
 	source : ["HB", 0],
 	plural : "Ocean Merfolk",
 	size : 3,
+	speed : {
+		walk : { spd : 10, enc : 5 },
+		swim : { spd : 40, enc : 30 }
+	},
 	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
 	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
@@ -68,7 +72,10 @@ RaceList["river merfolk"] = {
 	source : ["HB", 0],
 	plural : "River Merfolk",
 	size : 3,
-	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
+	speed : {
+		walk : { spd : 10, enc : 5 },
+		swim : { spd : 40, enc : 30 }
+	},
 	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Animal Handling", "Perception"],
@@ -109,7 +116,10 @@ RaceList["deep merfolk"] = {
 	source : ["HB", 0],
 	plural : "Deep Merfolk",
 	size : 3,
-	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
+	speed : {
+		walk : { spd : 10, enc : 5 },
+		swim : { spd : 40, enc : 30 }
+	},
 	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Animal Handling", "Perception"],
@@ -151,7 +161,10 @@ RaceList["awakened merrow"] = {
 	source : ["HB", 0],
 	plural : "Awakened Merrow",
 	size : 3,
-	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
+	speed : {
+		walk : { spd : 10, enc : 5 },
+		swim : { spd : 40, enc : 30 }
+	},
 	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Perception", "Religion"],

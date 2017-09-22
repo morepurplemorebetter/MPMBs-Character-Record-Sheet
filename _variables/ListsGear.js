@@ -1147,7 +1147,6 @@ var WeaponsList = {
 		range : "15-ft cone",
 		description : "Hits all in area; Dex save, success - half damage; Usable only once per short rest",
 		abilitytodamage : false,
-		monkweapon : false,
 		dc : true
 	},
 	

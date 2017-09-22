@@ -12,7 +12,7 @@
 	Effect:     This script adds a subclass for the Ranger, called "Corsair"
 				This is a homebrew class designed by Wizzard
 	Code by:    Wizzard
-	Date:       2017-09-21 (sheet v12.998)
+	Date:       2017-09-22 (sheet v12.998)
  */
 
 ClassSubList["corsair"] = {
@@ -45,7 +45,11 @@ ClassSubList["corsair"] = {
 			"mariner" : {
 				name : "Mariner Fighting Style",
 				source : ["UA:WA", 3],
-				description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds equal my current walking speed",
+				description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds are equal to my current walking speed",
+				speed : {
+					climb : { spd : "walk", enc : "walk" },
+					swim : { spd : "walk", enc : "walk" }
+				},
 				eval : "AddACMisc(1, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\", \"ACshield || tDoc.getField('Heavy Armor').isBoxChecked(0)\")",
 				removeeval : "AddACMisc(0, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")"
 			},

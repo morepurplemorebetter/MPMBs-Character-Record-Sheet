@@ -12,7 +12,7 @@
 	Effect:		This script adds a number of races and creatures from the Magic: The Gathering plane of Innistrad
 				This is taken from the Plane Shift: Innistrad article (http://www.dragonmag.com/5.0/#!/article/106375/102161027)
 	Code by:	SoilentBrad (and tiny corrections by MPMB)
-	Date:		2017-09-05 (sheet v12.998)
+	Date:		2017-09-22 (sheet v12.998)
 */
 
 SourceList["PS:I"] = {
@@ -29,7 +29,9 @@ RaceList["human, gavony"] = {
 	source : ["PS:I", 8],
 	plural : "Gavonians",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", 1],
 	age : " reach adulthood in their late teens and live less than a century",
 	height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
@@ -47,7 +49,9 @@ RaceList["human, kessig"] = {
 	source : ["PS:I", 8],
 	plural : "Kessigers",
 	size : 3,
-	speed : [40, 30],
+	speed : {
+		walk : { spd : 40, enc : 30 }
+	},
 	skills : ["Survival"],
 	languageProfs : ["Common", 1],
 	age : " reach adulthood in their late teens and live less than a century",
@@ -66,7 +70,9 @@ RaceList["human, nephalia"] = {
 	source : ["PS:I", 8],
 	plural : "Nephalians",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	skillstxt : "Any combination of four skills and tools",
 	languageProfs : ["Common", 1],
 	age : " reach adulthood in their late teens and live less than a century",
@@ -85,7 +91,9 @@ RaceList["human, stensia"] = {
 	source : ["PS:I", 8],
 	plural : "Stensians",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	skills : ["Intimidation"],
 	languageProfs : ["Common", 1],
 	age : " reach adulthood in their late teens and live less than a century",

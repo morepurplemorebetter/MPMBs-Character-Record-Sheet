@@ -13,7 +13,7 @@
 				This is taken from DanDwiki (https://www.dandwiki.com/wiki/Dhampir_(5e_Race))
 				Please note that DanDwiki is renowned for having very unbalanced content
 	Code by:	MorePurpleMoreBetter
-	Date:		2017-09-21 (sheet v12.998)
+	Date:		2017-09-22 (sheet v12.998)
 */
 
 RaceList["dhampir"] = {
@@ -22,7 +22,9 @@ RaceList["dhampir"] = {
 	source : ["DanDw", 0],
 	plural : "Dhampirs",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", 1],
 	weapons : ["Vampire's Bite"],
 	vision : [["Darkvision", 120], ["Sunlight Sensitivity", 0]],

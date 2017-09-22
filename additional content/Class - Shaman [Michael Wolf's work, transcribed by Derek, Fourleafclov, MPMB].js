@@ -14,7 +14,7 @@
 				This content is made by Michael Wolf
 	Original:   Derek (with amendments by MorePurpleMoreBetter)
 	Completed:  /u/Fourleafclov (with amendments by MorePurpleMoreBetter)
-	Date:		2017-09-21 (sheet v12.998)
+	Date:		2017-09-22 (sheet v12.998)
 
 	Please support the creator of this content (Michael Wolf) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Michael%20Wolf
 */
@@ -463,8 +463,9 @@ ClassList["shaman"] = {
 				name : "Walker of the World",
 				description : "\n   " + "My movement speed increases by 10 feet while not wearing armor" + "\n   " + "While underground, I always know which way is north and my depth below the surface",
 				source : ["MW:SC", 15],
-				prereqeval : "classes.known.shaman.level >= 7"
-			},
+				prereqeval : "classes.known.shaman.level >= 7",
+				speed : { allModes : "+10" }
+			}
 		},
 		"spiritual gift" : {
 			name : "Spiritual Gift",

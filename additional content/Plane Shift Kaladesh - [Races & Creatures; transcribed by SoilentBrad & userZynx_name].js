@@ -14,7 +14,7 @@
 	Code by:	SoilentBrad
 				userZynx_name (additions of Pyromancer, Servo, and feats)
 				tiny corrections by MPMB
-	Date:		2017-09-21 (sheet v12.998)
+	Date:		2017-09-22 (sheet v12.998)
 */
 
 SourceList["PS:K"] = {
@@ -31,7 +31,9 @@ RaceList["aetherborn"] = {
 	source : ["PS:K", 17],
 	plural : "Aetherborn",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", 2],
 	vision : [["Darkvision", 60]],
 	dmgres : ["Necrotic"],
@@ -52,7 +54,9 @@ RaceList["kaladesh dwarf"] = {
 	source : ["PS:K", 19],
 	plural : "Kaladesh dwarves",
 	size : 3,
-	speed : [25, 25],
+	speed : {
+		walk : { spd : 25, enc : 25 }
+	},
 	languageProfs : ["Common", "Dwarvish"],
 	vision : [["Darkvision", 60]],
 	savetxt : { adv_vs : ["poison"] },
@@ -85,7 +89,9 @@ RaceList["vahadar elf"] = {
 	source : ["PS:K", 21],
 	plural : "Vahadar",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Elvish", 1],
 	vision : [["Darkvision", 60]],
 	savetxt : {
@@ -119,7 +125,9 @@ RaceList["vedalken"] = {
 	source : ["PS:K", 24],
 	plural : "Vedalken",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Vedalken"],
 	savetxt : { text : ["Adv. on Int/Wis/Cha saves vs. magic"] },
 	age : " reach adulthood around 40 and live up to 500 years",

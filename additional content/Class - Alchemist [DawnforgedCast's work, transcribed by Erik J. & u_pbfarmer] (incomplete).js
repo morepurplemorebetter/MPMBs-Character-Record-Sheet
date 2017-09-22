@@ -14,7 +14,7 @@
 				This content is made by Erik J
 	Original:	Erik
 	Completed:	/u/pbfarmer
-	Date:		2017-09-21 (sheet v12.998)
+	Date:		2017-09-22 (sheet v12.998)
  
 	Code Version:	1.0
  
@@ -215,6 +215,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Permanent Mutation: Suckers",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "Sucks to be me.  Get it?" + "\n   " + "I now have a climb speed of 30 ft" + "\n   " + "I can advantage on any check made to avoid being disarmed",
+				speed : { climb : { spd : 30, enc : 20 } }
 			},
 			"toxified metabolism" : {
 				name : "Permanent Mutation: Toxified Metabolism",
@@ -230,6 +231,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Permanent Mutation: Webbed Extremities",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "I drink like I swim, like a fish" + "\n   " + "I now have a swim speed of 60 ft",
+				speed : { swim : { spd : 60, enc : 50 } }
 			}
 		},
 		"second mutation" : {
@@ -279,6 +281,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Second Mutation: Suckers",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "Sucks to be me.  Get it?" + "\n   " + "I now have a climb speed of 30 ft" + "\n   " + "I can advantage on any check made to avoid being disarmed",
+				speed : { climb : { spd : 30, enc : 20 } }
 			},
 			"toxified metabolism" : {
 				name : "Second Mutation: Toxified Metabolism",
@@ -294,6 +297,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Second Mutation: Webbed Extremities",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "I drink like I swim, like a fish" + "\n   " + "I now have a swim speed of 60 ft",
+				speed : { swim : { spd : 60, enc : 50 } }
 			}
 		}
 	}

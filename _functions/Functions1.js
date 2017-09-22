@@ -1516,30 +1516,7 @@ function ConditionSet() {
 	}
 	thermoM(3/10); //increment the progress dialog's progress
 	
-	//put the speed in the remember field back in its place before doing anything with it
-	if (What("Speed Remember") !== "") {
-		var SpdRem = What("Speed Remember").split("!#TheListSeparator#!");
-		Value("Speed", SpdRem[0]);
-		Value("Speed encumbered", SpdRem[1]);
-		Value("Speed Remember", "");
-	}
-	//get the current field values
-	var Spd = What("Speed");
-	var SpdEnc = What("Speed encumbered");
-	thermoM(4/10); //increment the progress dialog's progress
-	
-	//look at all the speed-changing conditions, starting with the ones that make it 0
-	if (What("Speed") !== "" && (Grappled.isBoxChecked(0) === 1 || Restrained.isBoxChecked(0) === 1 || Exh5.isBoxChecked(0) === 1)) {
-		//remember the current value in the remember field
-		Value("Speed Remember", Spd + "!#TheListSeparator#!" + SpdEnc);
-		Value("Speed", What("Unit System") === "imperial" ? "0 ft" : "0 m");
-		Value("Speed encumbered", What("Unit System") === "imperial" ? "0 ft" : "0 m");
-	} else if (What("Speed") !== "" && Exh2.isBoxChecked(0) === 1) {
-		//remember the current value in the remember field
-		Value("Speed Remember", Spd + "!#TheListSeparator#!" + SpdEnc);
-		ChangeSpeed(0, true);
-	}
-	thermoM(5/10); //increment the progress dialog's progress
+	// No longer checking for half or 0 speed because of the changes to how speed is set (and the limited usefuleness of it in the first place)
 	
 	//see if checks have disadvantage or not
 	if (Exh1.isBoxChecked(0) === 1 || Frightened.isBoxChecked(0) === 1 || Poisoned.isBoxChecked(0) === 1) {
@@ -1860,17 +1837,7 @@ function FindClasses(Event) {
 			if (tempCl.toolProfs && tempCl.toolProfs.secondary && classes.primary !== oClass) {
 				processTools(false, tempCl.name, tempCl.toolProfs.secondary);
 			};
-/* 
-			//remove tools gained from the class
-			for (var tls = 0; tls < tempCl.tools.length; tls++) {
-				var classTools = tempCl.tools[tls];
-				if (isArray(classTools)) {
-					classTools.forEach( function(acTool) { AddTool(acTool, tempCl.name); });
-				} else {
-					RemoveTool(classTools, tempCl.name);
-				}
-			}
- */
+
 			//delete class header string
 			var ClassHeaderString = tempCl.fullname + ", level " + oClassLvl + ":";
 			if (What("Class Features").indexOf("\r\r"+ ClassHeaderString) !== -1) {
@@ -2173,14 +2140,7 @@ function ApplyClasses(inputclasstxt, updateall) {
 	
 	//add saves and tools of the primary class
 	if (classes.primary && (!classes.oldprimary || classes.oldprimary !== classes.primary)) {
-/*
-		var save1 = CurrentClasses[classes.primary].saves[0];
-		var save2 = CurrentClasses[classes.primary].saves[1];
-		var save1txt = "Proficiency with " + AbilityScores.names[AbilityScores.abbreviations.indexOf(save1)] + " saving throws was gained from " + CurrentClasses[classes.primary].name;
-		var save2txt = "Proficiency with " + AbilityScores.names[AbilityScores.abbreviations.indexOf(save2)] + " saving throws was gained from " + CurrentClasses[classes.primary].name;
-		Checkbox(save1 + " ST Prof", true, save1txt);
-		Checkbox(save2 + " ST Prof", true, save2txt);
-*/
+
 		var primeClass = CurrentClasses[classes.primary];
 		for (var s = 0; s < primeClass.saves.length; s++) {
 			SetProf("save", true, primeClass.saves[s], primeClass.name);
@@ -2200,17 +2160,6 @@ function ApplyClasses(inputclasstxt, updateall) {
 		if (classTools && classTools.secondary) {
 			processTools(true, CurrentClasses[aClass].name, classTools.secondary);
 		};
-/*
-		n = aClass === classes.primary ? 0 : 1;
-		if (CurrentClasses[aClass].tools[n] !== undefined) {
-			var classTools = CurrentClasses[aClass].tools[n];
-			if (isArray(classTools)) {
-				classTools.forEach( function(acTool) { AddTool(acTool, CurrentClasses[aClass].name); });
-			} else {
-				AddTool(classTools, CurrentClasses[aClass].name);
-			}
-		}
-*/
 	};
 	
 	thermoM(3/6); //increment the progress dialog's progress
@@ -2443,7 +2392,7 @@ function FindRace(inputracetxt) {
 		source : "", //must exist
 		plural : "", //must exist
 		size : 3, //must exist
-		speed : [30, 20], //must exist
+		speed : "", //must exist
 		languageProfs : "",
 		vision : "",
 		savetxt : "",
@@ -2570,27 +2519,8 @@ function ApplyRace(inputracetxt) {
 		thermoM(2/6); //increment the progress dialog's progress
 
 		//add the Race's speed
-		tempString = CurrentRace.plural + " have a base speed of " + CurrentRace.speed[0] + (!isNaN(CurrentRace.speed[0]) ? " ft" : "");
-		tempString = What("Unit System") === "imperial" ? tempString : ConvertToMetric(tempString, 0.5);
-		tempString = tempString.replace("\n", ", ");
-		var SpdToChange = [CurrentRace.speed[0], CurrentRace.speed[1]];
-		//see if the speed to change is a string or not
-		for (var Sp = 0; Sp <= 1; Sp++) {
-			var Field = Sp === 0 ? "Speed" : "Speed encumbered";
-			AddTooltip(Field, tempString); //set the tooltip
-			if (isNaN(SpdToChange[Sp])) {
-				var OldSpd = What(Field) ? parseFloat(What(Field)) : 0;
-				var SpdCon = SpdToChange[Sp];
-				if (What("Unit System") === "metric") {
-					OldSpd = RoundTo(OldSpd / 0.3, 0.5);
-					SpdCon = ConvertToMetric(SpdCon, 0.5);
-				}
-				SpdToChange[Sp] = OldSpd;
-				Value(Field, SpdCon);
-			}
-		}
-		ChangeSpeed(SpdToChange, false);
-		
+		if (CurrentRace.speed) SetProf("speed", true, CurrentRace.speed, CurrentRace.name);
+
 		thermoM(3/6); //increment the progress dialog's progress
 
 		//run custom code included in race
@@ -2669,24 +2599,8 @@ function RemoveRace() {
 		AddTooltip("Weight", "");
 		AddTooltip("Age", "");
 
-		var SpdsToChange = [CurrentRace.speed[0], CurrentRace.speed[1]];
-		//see if the speed to change is a string or not
-		for (var Ss = 0; Ss <= 1; Ss++) {
-			var Field = Ss === 0 ? "Speed" : "Speed encumbered";
-			AddTooltip(Field, ""); //remove the tooltip
-			if (isNaN(SpdsToChange[Ss])) {
-				var OldSpd = What(Field) ? parseFloat(What(Field)) + (What("Unit System") === "imperial" ? " ft" : " m") : 0;
-				Value(Field, OldSpd);
-				var SpdCon = parseFloat(SpdsToChange[Ss]);
-				if (What("Unit System") === "metric") {
-					SpdCon = parseFloat(ConvertToMetric(SpdCon, 0.5));
-				}
-				SpdsToChange[Ss] = -1 * SpdCon;
-			} else {
-				SpdsToChange[Ss] = -1 * SpdsToChange[Ss];
-			}
-		}
-		ChangeSpeed(SpdsToChange, false);
+		//remove the race's speed
+		if (CurrentRace.speed) SetProf("speed", false, CurrentRace.speed, CurrentRace.name);
 
 		//remove the racial traits
 		Value("Racial Traits", "", "");
@@ -4002,22 +3916,6 @@ function ApplyBackground(input) {
 		
 		if (CurrentBackground.toolProfs) processTools(true, CurrentBackground.name, CurrentBackground.toolProfs);
 		if (CurrentBackground.languageProfs) processLanguages(true, CurrentBackground.name, CurrentBackground.languageProfs);
-/*
-		if (CurrentBackground.tools) {
-			for (i = 0; i < CurrentBackground.tools.length; i++) {
-				AddTool(CurrentBackground.tools[i], CurrentBackground.name);
-			}
-		};
-		if (CurrentBackground.languages) {
-			for (var L = 0; L < CurrentBackground.languages.length; L++) {
-				var theLang = CurrentBackground.languages[L];
-				if (theLang.substring(0, 1) === "+") {
-					theLang += CurrentBackground.name;
-				}
-				AddLanguage(theLang, "being a " + CurrentBackground.name);
-			}
-		}
-*/
 		
 		//add the lifestyle, if defined
 		if (CurrentBackground.lifestyle) {
@@ -4067,22 +3965,7 @@ function RemoveBackground() {
 		};
 		if (CurrentBackground.toolProfs) processTools(false, CurrentBackground.name, CurrentBackground.toolProfs);
 		if (CurrentBackground.languageProfs) processLanguages(false, CurrentBackground.name, CurrentBackground.languageProfs);
-/*
-		if (CurrentBackground.tools) {
-			for (i = 0; i < CurrentBackground.tools.length; i++) {
-				RemoveTool(CurrentBackground.tools[i], CurrentBackground.name);
-			}
-		};
-		if (CurrentBackground.languages) {
-			for (var L = 0; L < CurrentBackground.languages.length; L++) {
-				var theLang = CurrentBackground.languages[L];
-				if (theLang.substring(0, 1) === "+") {
-					theLang += CurrentBackground.name;
-				}
-				RemoveLanguage(theLang, "being a " + CurrentBackground.name);
-			}
-		};
-*/
+
 		//remove the lifestyle, if defined
 		if (CurrentBackground.lifestyle && CurrentBackground.lifestyle === clean(What("Lifestyle").toLowerCase(), " ")) {
 			Value("Lifestyle", "");
@@ -5120,6 +5003,8 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			
 			if (theFeat.savetxt) SetProf("savetxt", false, theFeat.savetxt, theFeat.name);
 			
+			if (theFeat.speed) SetProf("speed", false, theFeat.speed, theFeat.name);
+			
 			if (theFeat.toolProfs) processTools(false, theFeat.name, theFeat.toolProfs);
 			if (theFeat.languageProfs) processLanguages(false, theFeat.name, theFeat.languageProfs);
 			if (theFeat.vision) processVision(false, theFeat.name, theFeat.vision);
@@ -5224,6 +5109,8 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			
 			if (theFeat.savetxt) SetProf("savetxt", true, theFeat.savetxt, theFeat.name);
 			
+			if (theFeat.speed) SetProf("speed", true, theFeat.speed, theFeat.name);
+			
 			if (theFeat.toolProfs) processTools(true, theFeat.name, theFeat.toolProfs);
 			if (theFeat.languageProfs) processLanguages(true, theFeat.name, theFeat.languageProfs);
 			if (theFeat.vision) processVision(true, theFeat.name, theFeat.vision);
@@ -5264,63 +5151,11 @@ function SetFeatsdropdown() {
 	tDoc.delay = !IsNotReset;
 }
 
-//change both speeds with a certain amount in feet (it will automatically convert to meters if needed)
-function ChangeSpeed(Input, Halve) {
-	if (!Input) {
-		return;
-	}
-	var StandardUnits = What("Unit System") === "imperial";
-	if (isArray(Input)) {
-		if (StandardUnits) {
-			var amount = [parseFloat(Input[0]), parseFloat(Input[1])];
-		} else {
-			var amount = [RoundTo(parseFloat(Input[0]) * 0.3, 0.5), RoundTo(parseFloat(Input[1]) * 0.3, 0.5)];
-		}
-	} else {
-		Input = StandardUnits ? parseFloat(Input) : RoundTo(parseFloat(Input) * 0.3, 0.5);
-		var amount = [Input, Input];
-	}
-	
-	//put the speed in the remember field back in its place before doing anything with it
-	setSpeedToNull = false;
-	if (What("Speed Remember") !== "") {
-		var setSpeedToNull = true;
-		var SpdRem = What("Speed Remember").split("!#TheListSeparator#!");
-		Value("Speed", SpdRem[0]);
-		Value("Speed encumbered", SpdRem[1]);
-	}
-	
-	for (var n = 0; n <= 1; n++) {
-		var Field = n === 0 ? "Speed" : "Speed encumbered";
-		var Spd = What(Field);
-		var unit = isNaN(Spd) ? "" : StandardUnits ? " ft" : " m";
-		var measurements = "";
-		if (measurements = Spd.match(/-?\d+(,|\.)?\d*/g)) {
-			var theResult = Spd;
-			for (var i = 0; i < measurements.length; i++) {
-				var org = parseFloat(measurements[i].replace(/,/g, "."));
-				var oldAmount = Halve ? Number(org) / 2 : Number(org);
-				var newSpd = oldAmount + amount[n];
-				newSpd = What("Decimal Separator") === "dot" ? newSpd : ("." + newSpd).replace(/\./g, ",").substring(1);
-				newSpd += unit;
-				theResult = theResult.replace(measurements[i], newSpd);
-			}
-		} else {
-			var theResult = What("Decimal Separator") === "dot" ? amount[n] : ("." + amount[n]).replace(/\./g, ",").substring(1);
-			theResult += unit;
-		}
-		//remove zero values
-		theResult = theResult.replace(/\r?\b\-?0 (ft|m)( swim| fly)?\r?/ig, "");
-		Value(Field, theResult);
-	}
-	
-	if (setSpeedToNull) {
-		Value("Speed Remember", What("Speed") + "!#TheListSeparator#!" + What("Speed encumbered"));
-		var theZero = StandardUnits ? "0 ft" : "0 m";
-		Value("Speed", theZero);
-		Value("Speed encumbered", theZero);
-	}
-}
+//this is now an empty function so that legacy code doesn't produce an error
+function ChangeSpeed(input) {
+	console.println("ChangeSpeed(" + input + ") was called, but this function is no longer supported since v12.998 of the sheet. Instead, a new, more comprehensive syntax for setting speed is available from v12.998 onwards.");
+	console.show();
+};
 
 function ResetFeaSR() {
 	tDoc.delay = true;
@@ -5780,6 +5615,11 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					// --- add or remove something via custom script, if defined --- //
 					var evalAddRemove = CheckFea && propFea.minlevel <= newClassLvl[aClass] ? "eval" : "removeeval";
 
+					// --- define some variables here so it can be used in the evals --- //
+					var profAddRemove = propFea.minlevel <= newClassLvl[aClass];
+					var profDisplNm = (prop.indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name) + ": " + propFea.name;
+					var profChoiceDisplNm = FeaChoice ? (prop.indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name) + ": " + propFea[FeaChoice].name : "";
+
 					if (propFea[evalAddRemove] && CheckFea) {
 						var thePropFeaeval = What("Unit System") === "metric" && propFea[evalAddRemove].indexOf("String") !== -1 ? ConvertToMetric(propFea[evalAddRemove], 0.5) : propFea[evalAddRemove];
 						eval(thePropFeaeval);
@@ -5940,6 +5780,14 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					};
 					
 					thermoM(5/8); //increment the progress dialog's progress
+
+					// --- add or remove speed, if defined --- //
+					if (propFea.speed && CheckFea) {
+						SetProf("speed", profAddRemove, propFea.speed, profDisplNm);
+					};
+					if (CheckFea && FeaChoice && propFea[FeaChoice].speed) {
+						SetProf("speed", profAddRemove, propFea[FeaChoice].speed, profChoiceDisplNm);
+					};
 
 					// --- add or remove extra spells in the CurrentSpells variable, if defined --- //
 					var spellExtra = !CheckFea ? false : (propFea.spellcastingExtra ? propFea.spellcastingExtra : (FeaChoice && propFea[FeaChoice].spellcastingExtra ? propFea[FeaChoice].spellcastingExtra : false));
@@ -6340,6 +6188,14 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 		};
 		
 		thermoM(4/6); //increment the progress dialog's progress
+
+		// --- add or remove speed, if defined --- //
+		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.speed) {
+			SetProf("speed", false, theOldSubFea.speed, profDisplNmOld);
+		};
+		if (theSubFea.speed && AddOrRemove !== "remove") {
+			SetProf("speed", true, theSubFea.speed, profDisplNm);
+		};
 		
 		//add, if defined, spells of the feature, and undo, if defined spells of previous if changed
 		if (!CurrentSpells[MenuSelection[0]] && AddOrRemove !== "remove" && (theSubFea.spellcastingExtra || theSubFea.spellcastingBonus)) { //first see if the entry exists or not, and create it if it doesn't
@@ -8983,7 +8839,6 @@ function SetUnitDecimals_Button() {
 			"Class Features",
 			"Speed",
 			"Speed encumbered",
-			"Speed Remember",
 			"Background Feature Description",
 			"Extra.Notes",
 			"MoreProficiencies"

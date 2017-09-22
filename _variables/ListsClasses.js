@@ -70,8 +70,7 @@ var ClassList = {
 				source : ["P", 49],
 				minlevel : 5,
 				description : "\n   " + "I gain +10 ft speed when I'm not wearing heavy armor",
-				eval : "ChangeSpeed(10);",
-				removeeval : "ChangeSpeed(-10);"
+				speed : { allModes : "+10" }
 			},
 			"feral instinct" : {
 				name : "Feral Instinct",
@@ -604,7 +603,7 @@ var ClassList = {
 					if (n < 18) return "+25 ft; Vertical surfaces and liquids";
 					return "+30 ft; Vertical surfaces and liquids";
 				}),
-				changeeval : "var monkSpd = function(n) {return n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30;}; var oldSpdM = monkSpd(oldClassLvl.monk); var newSpdM = monkSpd(newClassLvl.monk); if (oldSpdM !== newSpdM) {ChangeSpeed(newSpdM - oldSpdM)};"
+				changeeval : "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level); SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, profDisplNm);"
 			},
 			"subclassfeature3" : {
 				name : "Monastic Tradition",
@@ -2519,7 +2518,8 @@ var ClassSubList = {
 				name : "Stormborn",
 				source : ["P", 62],
 				minlevel : 17,
-				description : "\n   " + "Whenever I'm not underground or indoors, I have a fly speed equal to my current speed"
+				description : "\n   " + "Whenever I'm not underground or indoors, I have a fly speed equal to my current speed",
+				speed : { fly : { spd : "walk", enc : "walk" } }
 			}
 		}
 	},
@@ -4110,8 +4110,7 @@ var ClassSubList = {
 				source : ["P", 97],
 				minlevel : 3,
 				description : "\n   " + "I climb at my normal speed; I add my Dex modifier to the distance of a running jump",
-				eval : "Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m).*(\\d+ (ft|m))?)/i, '$1 $2\\n$1 $2 climb')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m).*(\\d+ (ft|m))?)/i, '$1 $2\\n$1 $2 climb').replace(/\\n/, typePF ? ' ' : '\\n')); };",
-				removeeval : "Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) climb/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) climb/i, '')); "
+				speed : { climb : { spd : "walk", enc : "walk" } }
 			},
 			"subclassfeature9" : {
 				name : "Supreme Sneak",
@@ -4264,7 +4263,8 @@ var ClassSubList = {
 				source : ["P", 103],
 				minlevel : 14,
 				description : "\n   " + "As a bonus action, unless armor is in the way, I can sprout dragon wings from my back" + "\n   " + "I gain a fly speed equal to my current speed until I dismiss the wings as a bonus action",
-				action : ["bonus action", " (start/stop)"]
+				action : ["bonus action", " (start/stop)"],
+				speed : { fly : { spd : "walk", enc : "walk" } }
 			},
 			"subclassfeature18" : {
 				name : "Draconic Presence",
@@ -4326,8 +4326,7 @@ var ClassSubList = {
 				description : "\n   " + "I have immunity to lightning and thunder damage and gain magical 60 ft fly speed" + "\n   " + "As an action, I reduce my fly speed to 30 ft and give allies 30 ft fly speed for 1 hour" + "\n   " + "I can do this once per short rest for up to 3 + my Charisma modifier allies within 30 ft",
 				action : ["action", ""],
 				savetxt : { immune : ["lightning", "thunder"] },
-				eval : "AddString(\"Speed\", \"60 ft fly\", true); AddString(\"Speed encumbered\", \"60 ft fly\", true);",
-				removeeval : "RemoveString(\"Speed\", \"60 ft fly\", true); RemoveString(\"Speed encumbered\", \"60 ft fly\", true);",
+				speed : { fly : { spd : "fixed60", enc : "fixed60" } },
 				usages : 1,
 				recovery : "short rest"
 			}

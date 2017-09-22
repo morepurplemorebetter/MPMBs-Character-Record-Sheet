@@ -11,7 +11,7 @@
 	Subject:	Class
 	Effect:		This is the syntax for adding a new class to the sheet
 				Note that you will need the syntax for adding a subclass as well if you want the class to have any choices for subclasses
-	Sheet:		v12.998 (2017-09-21)
+	Sheet:		v12.998 (2017-09-22)
 */
 
 ClassList["myclass"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
@@ -300,6 +300,21 @@ ClassList["myclass"] = { //Object name; Note the use of only lower case! Also no
 			toolProfs : [["Musical instrument", 3], ["Thieves' tools", "Dex"]], // optional; this is an array with the tool proficiencies gained. Each entry can be its own array of 2 entries. The first entry is the name of the tool and the second entry is either 1) a number if the tool is yet to be chosen, or 2) the 3-letter ability score abbreviation if the tool is to be listed in the skill section and have a bonus calculated
 			
 			languageProfs : [1, "Elvish"], // optional; this is an array of the language proficiencies gained. An entry can either be 1) a string that represents the language learned or 2) a number which is the number of language gained that can be chosen by the player
+			
+			speed : { //required; This sets a value for one or more speed modes, and/or a value to be added to a specific speed mode or to all speed modes // the attributes of this object can be "walk", "borrow", "climb", "fly", "swim", and "allModes"
+					
+				// all of the following attributes are optional and you can add more ("borrow" isn't part of this example!)
+				
+				walk : { spd : 30, enc : 20 }, // the objects "walk", "borrow", "climb", "fly", "swim" are all the same, they are an object with two attributes, 'spd' for the speed in feet, and 'enc' for the encumbered speed in feet.
+				
+				climb : { spd : "+50", enc : 0 }, // instead of numbers, you can also have modifiers. Modifiers are a string, starting with a mathematical operator, followed by a number (e.g. "-10", "+20"). // a value that is zero is ignored
+				
+				fly : { spd : "walk", enc : 0 }, // instead of a number/modifier, you can also set the attribute to "walk". This makes the speed mode assume the walking speed // Using an underscore as the first character means the value is only added if the value would be non-zero
+				
+				swim : { spd : "fixed60", enc : "fixed60" }, // if you include the word "fixed" together with a number, the movement mode will be that number, without any modifiers from other sources (like the Monk's speed bonus). However, if another entry that isn't 'fixed' does end up with a higher total while including any modifiers, that speed is used instead
+				
+				allModes : "+10" // the 'allModes' attribute can only consist of a modifier. This modifier is applied to all speed modes, both normal and encumbered. It is only applied if the speed mode exists, it won't give the character a borrow speed if it would otherwise have none, for example
+			},
 		},
 	}
 }

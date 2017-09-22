@@ -18,7 +18,7 @@
 				
 	Code by:	Darryl Cook & MorePurpleMoreBetter
 				Order of the Lycan code by MorePurpleMoreBetter
-	Date:		2017-09-21 (sheet v12.998)
+	Date:		2017-09-22 (sheet v12.998)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 	
@@ -502,7 +502,8 @@ ClassSubList["order of the mutant"] = {
 				name : "Aether",
 				source : ["MM:BH", 7],
 				description : "\n   " + "I gain 20 ft flying speed" + "\n    - " + "Side effect: I have disadvantage on Strength and Dexterity ability checks",
-				prereqeval : "classes.known['blood hunter'].level >= 11"
+				prereqeval : "classes.known['blood hunter'].level >= 11",
+				speed : { fly : { spd : 20, enc : 10 } }
 			},
 			"celerity" : {
 				name : "Celerity",
@@ -557,7 +558,8 @@ ClassSubList["order of the mutant"] = {
 				name : "Reconstruction",
 				source : ["MM:BH", 8],
 				description : "\n   " + "At the start of my turn in combat when I'm conscious and above 0 HP, I regenerate HP" + "\n   " + "The amount of HP I regenerate is equal to 2 times my mutagen score" + "\n    - " + "Side effect: My speed decreases by 10 ft",
-				prereqeval : "classes.known['blood hunter'].level >= 7"
+				prereqeval : "classes.known['blood hunter'].level >= 7",
+				speed : { allModes : "-10" }
 			},
 			"sagacity" : {
 				name : "Sagacity",
@@ -658,8 +660,7 @@ ClassSubList["order of the lycan"] = {
 			source : ["MM:OotL", 2],
 			minlevel : 7,
 			description : "\n   " + "My speed increases with 10 ft" + "\n   " + "I also add 10 ft to my long jump distance and 3 ft to my high jump distance" + "\n   " + "In my Hybrid form, I gain the Improved Predatory Strikes feature",
-			eval : "ChangeSpeed(10);",
-			removeeval : "ChangeSpeed(-10);"
+			speed : { allModes : "+10" }
 		},
 		"subclassfeature11" : {
 			name : "Advanced Transformation",

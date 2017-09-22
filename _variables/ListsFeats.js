@@ -218,8 +218,7 @@ var FeatsList = {
 		name : "Mobile",
 		source : ["P", 168],
 		description : "When I use the Dash action, difficult terrain doesn't cost me extra movement that turn. When I make a melee attack against a creature, I don't provoke opportunity attacks from that creature for the rest of the turn, whether I hit or not. [+10 ft speed]",
-		eval : "ChangeSpeed(10);",
-		removeeval : "ChangeSpeed(-10);"
+		speed : { allModes : "+10" }
 	},
 	"moderately armored" : {
 		name : "Moderately Armored",

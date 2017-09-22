@@ -222,7 +222,17 @@ function ApplyCompRace(newRace) {
 		thermoM(2/11); //increment the progress dialog's progress
 		
 		//set speed
-		var theSpeed = isNaN(CurrentCompRace[prefix].speed[0]) ? CurrentCompRace[prefix].speed[0] : CurrentCompRace[prefix].speed[0] + " ft";
+		var raceSpeed = CurrentCompRace[prefix].speed;
+		if (isArray(raceSpeed)) { //legacy
+			var theSpeed = isNaN(raceSpeed[0]) ? raceSpeed[0] : raceSpeed[0] + " ft";
+		} else {
+			var theSpeed = raceSpeed.walk && raceSpeed.walk.spd ? raceSpeed.walk.spd + " ft" : "";
+			for (aSpeed in raceSpeed) {
+				var Spd = raceSpeed[aSpeed].spd;
+				if (!Spd || aSpeed === "walk") continue;
+				theSpeed += (aSpeed ? ",\n" : "") + aSpeed + " " + Spd + " ft";
+			};
+		};
 		theSpeed = What("Unit System") === "imperial" ? theSpeed : ConvertToMetric(theSpeed, 0.5);
 		Value(prefix + "Comp.Use.Speed", theSpeed);
 		
@@ -250,17 +260,19 @@ function ApplyCompRace(newRace) {
 		thermoM(4/11); //increment the progress dialog's progress
 		
 		//add a string of the languages known to the features
-		var theLangs = [];
-		for (var l = 0; l < CurrentCompRace[prefix].languageProfs.length; l++) {
-			var aLang = CurrentCompRace[prefix].languageProfs[l];
-			if (isNaN(aLang)) {
-				theLangs.push(aLang);
-			} else {
-				theLangs.push("+" + aLang);
+		if (CurrentCompRace[prefix].languageProfs) {
+			var theLangs = [];
+			for (var l = 0; l < CurrentCompRace[prefix].languageProfs.length; l++) {
+				var aLang = CurrentCompRace[prefix].languageProfs[l];
+				if (isNaN(aLang)) {
+					theLangs.push(aLang);
+				} else {
+					theLangs.push("+" + aLang);
+				};
 			};
+			var languageString = formatLineList("\u25C6 Languages:", theLangs);
+			AddString(prefix + "Comp.Use.Features", languageString, true);
 		};
-		var languageString = formatLineList("\u25C6 Languages:", theLangs);
-		AddString(prefix + "Comp.Use.Features", languageString, true);
 		
 		thermoM(5/11); //increment the progress dialog's progress
 		
@@ -298,7 +310,7 @@ function ApplyCompRace(newRace) {
 				dmgresString += l === theEnd ? "." : "";
 			}
 			AddString(prefix + "Comp.Use.Features", dmgresString, true);
-		}
+		};
 		
 		thermoM(7/11); //increment the progress dialog's progress
 		
@@ -316,7 +328,7 @@ function ApplyCompRace(newRace) {
 				weaponString += l === theEnd ? "." : "";
 			}
 			AddString(prefix + "Comp.Use.Features", weaponString, true);
-		}
+		};
 		
 		thermoM(8/11); //increment the progress dialog's progress
 		
@@ -335,9 +347,9 @@ function ApplyCompRace(newRace) {
 					theTools.push(aTool);
 				};
 			};
+			var toolString = formatLineList("\u25C6 Tool Proficiencies:", theTools);
+			AddString(prefix + "Comp.Use.Features", toolString, true);
 		};
-		var toolString = formatLineList("\u25C6 Tool Proficiencies:", theTools);
-		AddString(prefix + "Comp.Use.Features", toolString, true);
 		
 		thermoM(9/11); //increment the progress dialog's progress
 		
@@ -6378,17 +6390,147 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		AddTooltip(fld, visTxt);
 		break;
 	};
-/*	 case "speed" : {
-		{
-			walk : [],
-			climb : { XXX : [nmbr, enc], XXX2 : [nrm, enc] },
-			fly : {},
-			swim : {},
-			mods : { XXX : [amount, mode(s)], XXX2 : [amount, mode(s)] ] },
-		}
+	case "speed" : {
+		var fldSpd = "Speed";
+		var fldSpdW = What(fldSpd).replace(/\n|\r/g, "").replace(/,/g, ".");
+		var fldEnc = "Speed encumbered";
+		var fldEncdW = What(fldEnc).replace(/\n|\r/g, "").replace(/,/g, ".");
+		var spdTypes = ["walk", "borrow", "climb", "fly", "swim"];
+		//create the set object if it doesn't exist already
+		var setKeys = function() {
+			for (var e in set) {return true;};
+			CurrentProfs.speed = { allModes : {} };
+			for (var i = 0; i < spdTypes.length; i++) CurrentProfs.speed[spdTypes[i]] = {spd : {}, enc : {}};
+			set = CurrentProfs.speed;
+		}();
+		// a function to get the correct value of the speed
+		var parseSpeed = function(type, inpObj, fullString, replaceWalk, extra) {
+			var useObj = eval(inpObj.toSource());
+			var goOn = function() {for (var e in useObj) {return true;} return false; }();
+			if (!goOn) return fullString == "both" ? ["", 0] : fullString ? "" : 0;
+			useObj.extra = extra;
+			var total = getHighestTotal(useObj, true, replaceWalk, CurrentProfs.speed.allModes);
+			var typeStr = type === "walk" ? "" : type + " ";
+			var totalStr = !total ? "" : typeStr + RoundTo(total * (metric ? 0.3 : 1), 0.5, false, true) + (metric ? " m" : " ft");
+			return fullString == "both" ? [totalStr, total] : fullString ? totalStr : total;
+		};
+		// get the totals before we change anything
+		var oldTotals = {
+			walkSpd : parseSpeed("walk", set.walk.spd, false, 0),
+			walkEnc : parseSpeed("walk", set.walk.enc, false, 0)
+		};
+		for (var i = 0; i < spdTypes.length; i++) {
+			var sT = spdTypes[i];
+			if (sT === "walk") continue;
+			oldTotals[sT + "Spd"] = parseSpeed(sT, set[sT].spd, false, oldTotals.walkSpd);
+			oldTotals[sT + "Enc"] = parseSpeed(sT, set[sT].enc, false, oldTotals.walkEnc);
+		};
+		// make an object of all the differences between the values of the field and the oldTotals
+		var deltaSpds = {};
+		var splitSpdString = function(type, str) {
+			for (var i = 0; i < spdTypes.length; i++) {
+				var sT = spdTypes[i];
+				if (!str) {
+					deltaSpds[sT + type] = 0;
+					continue;
+				};
+				var strParse = oldTotals[sT + type];
+				var typeRE = sT === "walk" ? /^(\d+.?\d*).*/ : RegExp(".*" + sT + " *(\\d+.?\\d*).*", "i");
+				if ((typeRE).test(str)) strParse = Number(str.replace(typeRE, "$1"));
+				if (metric) strParse = RoundTo(strParse / 0.3, 5, false, false);
+				var total = strParse - oldTotals[sT + type];
+				deltaSpds[sT + type] = !total ? 0 : total > 0 ? "+" + total : total.toString();
+			}
+		};
+		splitSpdString("Spd", fldSpdW);
+		splitSpdString("Enc", fldEncdW);
+		if (isArray(ProfObj)) ProfObj = { walk : {spd : parseFloat(ProfObj[0]), enc : parseFloat(ProfObj[1])} };
+		// add or remove the ProfObj from the current object
+		for (var spdType in ProfObj) {
+			if (!CurrentProfs.speed[spdType]) continue
+			var theInp = ProfObj[spdType];
+			var theSet = CurrentProfs.speed[spdType];
+			if (AddRemove) { // add
+				if (spdType === "allModes") {
+					theSet[ProfSrc] = theInp;
+				} else if (typeof theInp == "object") {
+					if (theInp.spd) theSet.spd[ProfSrc] = theInp.spd;
+					if (theInp.enc) theSet.enc[ProfSrc] = theInp.enc;
+				} else {
+					theSet.spd[ProfSrc] = theInp;
+					theSet.enc[ProfSrc] = theInp;
+				};
+			} else { // remove
+				if (spdType === "allModes") {
+					delete theSet[ProfSrc];
+				} else {
+					if (theSet.spd[ProfSrc] !== undefined) delete theSet.spd[ProfSrc];
+					if (theSet.enc[ProfSrc] !== undefined) delete theSet.enc[ProfSrc];
+				};
+			};
+		};
+		// get the new totals
+		var theWalks = {
+			spd : parseSpeed("walk", set.walk.spd, "both", 0, deltaSpds.walkSpd),
+			enc : parseSpeed("walk", set.walk.enc, "both", 0, deltaSpds.walkEnc)
+		};
+		var newTotals = { walkSpd : theWalks.spd[0], walkEnc : theWalks.enc[0] };
+		for (var i = 0; i < spdTypes.length; i++) {
+			var sT = spdTypes[i];
+			if (sT === "walk") continue;
+			newTotals[sT + "Spd"] = parseSpeed(sT, set[sT].spd, true, theWalks.spd[1], deltaSpds[sT + "Spd"]);
+			newTotals[sT + "Enc"] = parseSpeed(sT, set[sT].enc, true, theWalks.enc[1], deltaSpds[sT + "Enc"]);
+		};
+		// create the strings
+		var spdString = "";
+		var encString = "";
+		for (var i = 0; i < spdTypes.length; i++) {
+			var sT = spdTypes[i];
+			var sSpd = newTotals[sT + "Spd"];
+			if (sSpd) spdString += (!spdString ? "" : ",\n") + sSpd;
+			var eSpd = newTotals[sT + "Enc"];
+			if (eSpd) encString += (!encString ? "" : typePF ? ", " : ",\n") + eSpd;
+		};
+		// create the tooltips
+		var ttips = {spd : "", enc : ""};
+		var modArray = [];
+		for (var spMod in set.allModes) {
+			var theVal = set.allModes[spMod];
+			if (!theVal) continue;
+			theVal += " ft";
+			if (metric) theVal = ConvertToMetric(theVal, 0.5);
+			modArray.push(spMod + " [" + theVal + "]");
+		};
+		for (var i = 0; i < spdTypes.length; i++) {
+			var sT = spdTypes[i];
+			var arrs = {spd : [], enc : []};
+			for (var n = 0; n <= 1; n++) {
+				var sV = n ? "enc" : "spd";
+				var theSpeeds = set[sT][sV];
+				var goOn = false;
+				for (var aSpeed in theSpeeds) {
+					var theVal = theSpeeds[aSpeed];
+					if (!theVal) continue;
+					if (theVal === "walk") {
+						theVal = "as walking speed"
+					} else {
+						theVal += " ft";
+					};
+					if (metric) theVal = ConvertToMetric(theVal, 0.5);
+					arrs[sV].push(aSpeed + " [" + theVal + "]");
+					goOn = true;
+				};
+				if (goOn) {
+					arrs[sV] = arrs[sV].concat(modArray);
+					ttips[sV] += (ttips[sV] ? "\n\n" : "") + formatMultiList("The total " + (n ? "encumbered " : "") + sT + "ing speed comes from:", arrs[sV]);
+				};
+			};
+		};
+		// set them to the fields
+		Value(fldSpd, spdString, ttips.spd);
+		Value(fldEnc, encString, ttips.enc);
 		break;
 	};
-*/
  };
 	SetStringifieds("profs");
 };
@@ -6416,57 +6558,83 @@ function formatLineList(caption, elements) {
 };
 
 //a way to condense an array of numbers down to the highest and modifiers
-function getHighestTotal(input, notRound) {
+function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods) {
 	var values = [0];
 	var modifications = [];
+	var fixedVals = [0];
+	var noModsIfWalks = false;
 	var prsVal = function(val) {
 		if (!val) {
 			return;
-		} else if (isNaN(val.substring(0,1))) {
+		} else if (isNaN(val.substring(0,1)) && !isNaN(val.substring(1))) {
 			modifications.push(val);
-		} else {
+		} else if (!isNaN(val)) {
 			values.push(val);
+		} else if (replaceWalk !== undefined && replaceWalk !== "walk" && val === "walk") {
+			prsVal(replaceWalk);
+			noModsIfWalks = true;
+		} else if ((/fixed/i).test(val) && (/\d+/).test(val)) { // for Magic Items granting a speed, no modifiers at all
+			fixedVals.push(Number(val.match(/\d+/)[0]));
 		};
 	};
-	if (isArray(input)) {
-		for (var i = 0; i < input.length; i++) { prsVal(input[i]); };
-	} else if (typeof input == "object") {
-		for (var i in input) { prsVal(input[i]); };
+	var recurProcess = function(input) {
+		if (isArray(input)) {
+			for (var i = 0; i < input.length; i++) { recurProcess(input[i]); };
+		} else if (typeof input == "object") {
+			for (var i in input) { recurProcess(input[i]); };
+		} else {
+			prsVal(input);
+		};
 	};
-	//process the values and modifications
+	recurProcess(nmbrObj);
+	//process the values
 	var tValue = Math.max.apply(Math, values);
-	if (!tValue && !modifications.length) return false;
-	for (n = 1; n <= 2; n++) { // first do substractions and additions, then multiplications and divisions
-		for (var i = 0; i < modifications.length; i++) {
-			var aMod = modifications[i];
-			var aOperator = aMod.substring(0,1);
-			var aValue = Number(aMod.substring(1));
-			if (isNaN(aValue)) continue;
-			if (n === 1) {
-				switch (aOperator) {
-					case "+" :
-						tValue += aValue;
-						break;
-					case "-" :
-					case "\u2015" :
-						tValue -= aValue;
-						break;
-				};
-			} else {
-				switch (aOperator) {
-					case "x" :
-					case "X" :
-					case "*" :
-					case "\u00d7" :
-						tValue *= aValue;
-						break;
-					case "/" :
-					case ":" :
-						tValue /= aValue;
-						break;
+	//process the modifications
+	var processModifiers = function(modA) {
+		for (n = 1; n <= 2; n++) { // first do substractions and additions, then multiplications and divisions
+			for (var i = 0; i < modA.length; i++) {
+				var aMod = modA[i];
+				var aOperator = aMod.substring(0,1);
+				var aValue = Number(aMod.substring(1));
+				if (isNaN(aValue)) continue;
+				if (n === 1) {
+					switch (aOperator) {
+						case "+" :
+							tValue += aValue;
+							break;
+						case "-" :
+						case "\u2015" :
+							tValue -= aValue;
+							break;
+						case "_" :
+							tValue = tValue ? tValue + aValue : tValue;
+							break;
+					};
+				} else {
+					switch (aOperator) {
+						case "x" :
+						case "X" :
+						case "*" :
+						case "\u00d7" :
+							tValue *= aValue;
+							break;
+						case "/" :
+						case ":" :
+							tValue /= aValue;
+							break;
+					};
 				};
 			};
 		};
+	};
+	if (modifications.length) processModifiers(modifications);
+	if (tValue && extraMods && !(replaceWalk && noModsIfWalks && tValue === replaceWalk)) {
+		modifications = [];
+		recurProcess(extraMods);
+		if (modifications.length) processModifiers(modifications);
+	};
+	if (fixedVals.length > 1) {
+		tValue = Math.max.apply(Math, fixedVals.concat([tValue]));
 	};
 	return notRound ? tValue : Math.round(tValue);
 };
@@ -6611,57 +6779,3 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 	app.execDialog(theDialog)
 	return theDialog.choices;
 };
-
-/* 
-	To Do:
-	
-	- SetProf for Speed
-	
-	
-	V ook	voor save extra text?
-	V ook voor vision text?
-	- ook voor extra speed abilities (swim, fly)?
->> Volgende versie:
-	V extra optie voor damage type immunity (dmgImmune)?
-	V ook voor actions? of enkel actions in de submitname zetten voor makkelijkere vergelijking? >> enkel submitname
-		
-	- Test
-		- SetProf:
-			V savetxt (text, immune, resistance)
-			- vision
-			- addMod
-		- Import (save text)
-			V older version (disabled)
-			V current version
-	- Edit
-		V vision feature addition in functions (processVision)
-			V race
-			V companion race
-			V class feature
-			V class feature choice
-			V feat
-		V modifiers addition in functions (processMods)
-			V racial features
-			V class feature
-			V class feature choice
-			V feat
-		V modifiers addition to Lists variables (addMod)
-			V racial features
-			V class features
-			V feats
-		V on a reset, remove all the submitnames from all the modifier fields that allow dynamic modifiers
-		V change the set modifier dialogue to include the descriptions that are in the submitname
-	- Syntax & Fan-made Additions
-		= vision
-			V race
-			V class feature
-			V feat
-		= modifiers
-			V race
-			V class feature
-			V feat
-	- Update Additional Content
-		V vision
-		V addMod
-		- speed
-*/

@@ -11,7 +11,9 @@ RaceList["changeling"] = {
 	plural : "Changelings",
 	size : 3,
 	skills : ["Deception"],
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", 2],
 	age : " reach adulthood in their early teens and live around 80 years",
 	height : " stand between 5 and 6 feet tall (5'1\" + 2d4\")",
@@ -32,7 +34,9 @@ RaceList["warforged"] = {
 	source : ["UA:E", 3],
 	plural : "Warforged",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", 1],
 	age : " are created as adults and will only start to show signs of physical deterioration after 150 years, but have no further aging effects",
 	height : " stand between 6 and 7 feet tall (5'10\" + 2d6\")",
@@ -53,7 +57,9 @@ RaceList["shifter"] = {
 	source : ["UA:E", 2],
 	plural : "Shifters",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Sylvan"],
 	vision : [["Darkvision", 60]],
 	age : " reach adulthood at the end of their teens and live around 100 years",
@@ -143,7 +149,9 @@ RaceList["minotaur"] = {
 	source : ["UA:WA", 1],
 	plural : "Minotaurs",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common"],
 	toolProfs : ["Navigator's tools", "Vehicles (water)"],
 	weapons : ["horns"],
@@ -195,7 +203,9 @@ RaceList["aasimar revenant"] = { //based on the VGtM Aasimar
 	source : ["UA:GH", 1],
 	plural : "Aasimar",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Celestial"],
 	vision : [["Darkvision", 60]],
 	dmgres : ["Necrotic", "Radiant"],
@@ -225,7 +235,9 @@ RaceList["dwarf revenant"] = {
 	source : ["UA:GH", 1],
 	plural : "Dwarves",
 	size : 3,
-	speed : [25, 25],
+	speed : {
+		walk : { spd : 25, enc : 25 }
+	},
 	languageProfs : ["Common", "Dwarvish"],
 	vision : [["Darkvision", 60]],
 	savetxt : { adv_vs : ["poison"] },
@@ -248,7 +260,9 @@ RaceList["elf revenant"] = {
 	source : ["UA:GH", 1],
 	plural : "Elves",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Elvish"],
 	vision : [["Darkvision", 60]],
 	savetxt : {
@@ -272,7 +286,9 @@ RaceList["halfling revenant"] = {
 	source : ["UA:GH", 1],
 	plural : "Halflings",
 	size : 4,
-	speed : [25, 15],
+	speed : {
+		walk : { spd : 25, enc : 15 }
+	},
 	languageProfs : ["Common", "Halfling"],
 	savetxt : { adv_vs : ["frightened"] },
 	age : " reach adulthood at age 20 and live around 150 years",
@@ -291,7 +307,9 @@ RaceList["gnome revenant"] = {
 	source : ["UA:GH", 1],
 	plural : "Gnomes",
 	size : 4,
-	speed : [25, 15],
+	speed : {
+		walk : { spd : 25, enc : 15 }
+	},
 	languageProfs : ["Common", "Gnomish"],
 	vision : [["Darkvision", 60]],
 	savetxt : { text : ["Adv. on Int/Wis/Cha saves vs. magic"] },
@@ -311,7 +329,9 @@ RaceList["dragonborn revenant"] = {
 	source : ["UA:GH", 1],
 	plural : "Dragonborn",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Draconic"],
 	age : " reach adulthood by 15 and live around 80 years",
 	height : " stand well over 6 feet tall (5'6\" + 2d8\")",
@@ -342,7 +362,9 @@ RaceList["human revenant"] = {
 	source : ["UA:GH", 1],
 	plural : "Humans",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", 1],
 	age : " reach adulthood in their late teens and live less than 100 years",
 	height : " range from barely 5 to well over 6 feet tall (4'8\" + 2d10\")",
@@ -360,7 +382,9 @@ RaceList["tiefling revenant"] = {
 	source : ["UA:GH", 1],
 	plural : "Tieflings",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Infernal"],
 	vision : [["Darkvision", 60]],
 	age : " reach adulthood in their late teens and live around 100 years",
@@ -473,7 +497,9 @@ RaceList["uaeladrin"] = {
 	source : ["UA:EnG", 1],
 	plural : "Eladrin",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Elvish"],
 	vision : [["Darkvision", 60]],
 	savetxt : {
@@ -515,7 +541,9 @@ RaceList["githyanki"] = {
 	source : ["UA:EnG", 2],
 	plural : "Githyanki",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Gith", 1],
 	armor : [true, true, false, false],
 	skillstxt : "Choose any one skill or tool",
@@ -581,7 +609,9 @@ RaceList["githzerai"] = {
 	source : ["UA:EnG", 3],
 	plural : "Githzerai",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Gith"],
 	age : " reach adulthood in their late teens and live for about a century",
 	height : " are more leaner and taller than humans, most are a lean 6 feet tall (4'11\" + 2d12\")",
@@ -643,7 +673,9 @@ RaceList["tortle"] = {
 	source : ["TP", 4],
 	plural : "Tortles",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Aquan"],
 	skills : ["Survival"],
 	weapons : ["tortle's claws"],

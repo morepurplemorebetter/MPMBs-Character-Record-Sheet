@@ -12,7 +12,7 @@
 	Effect:		This script adds a number of races, subraces, and creatures from the Magic: The Gathering plane of Zendikar
 				This is taken from the Plane Shift: Zendikar article (http://magic.wizards.com/en/articles/archive/feature/plane-shift-zendikar-2016-04-27)
 	Code by:	SoilentBrad (and tiny corrections by MPMB)
-	Date:		2017-09-21 (sheet v12.998)
+	Date:		2017-09-22 (sheet v12.998)
 */
 
 SourceList["PS:Z"] = {
@@ -28,7 +28,10 @@ RaceList["kor"] = {
 	source : ["PS:Z", 11],
 	plural : "Kor",
 	size : 3,
-	speed : ["30 ft\n30 ft climb", 20],
+	speed : {
+		walk : { spd : 30, enc : 20 },
+		climb : { spd : 30, enc : 0 }
+	},
 	savetxt : { adv_vs : ["frightened"] },
 	skills : ["Acrobatics", "Athletics"],
 	languageProfs : ["Common", "Kor (silent speech)"],
@@ -47,7 +50,10 @@ RaceList["emeria merfolk"] = {
 	source : ["PS:Z", 13],
 	plural : "Emeria Creed Merfolk",
 	size : 3,
-	speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
+	speed : {
+		walk : { spd : 30, enc : 20 },
+		swim : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Merfolk", 1],
 	age : " reach adulthood around 20 and live considerably longer than humans",
 	skills : ["Deception", "Persuasion"],
@@ -70,7 +76,10 @@ RaceList["ula merfolk"] = {
 	source : ["PS:Z", 13],
 	plural : "Ula Creed Merfolk",
 	size : 3,
-	speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
+	speed : {
+		walk : { spd : 30, enc : 20 },
+		swim : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Merfolk", 1],
 	age : " reach adulthood around 20 and live considerably longer than humans",
 	skills : ["Survival"],
@@ -94,7 +103,10 @@ RaceList["cosi merfolk"] = {
 	source : ["PS:Z", 13],
 	plural : "Cosi Creed Merfolk",
 	size : 3,
-	speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
+	speed : {
+		walk : { spd : 30, enc : 20 },
+		swim : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Merfolk", 1],
 	age : " reach adulthood around 20 and live considerably longer than humans",
 	skills : ["Sleight of Hand", "Stealth"],
@@ -117,7 +129,9 @@ RaceList["vampire"] = {
 	source : ["PS:Z", 15],
 	plural : "Vampires",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Vampire"],
 	vision : [["Darkvision", 60]],
 	dmgres : ["Necrotic"],
@@ -148,7 +162,9 @@ RaceList["grotag tribe goblin"] = {
 	source : ["PS:Z", 17],
 	plural : "Grotag tribe goblins",
 	size : 4,
-	speed : [25, 15],
+	speed : {
+		walk : { spd : 25, enc : 15 }
+	},
 	languageProfs : ["Common", "Goblin"],
 	vision : [["Darkvision", 60]],
 	dmgres : ["Fire", "Psychic"],
@@ -169,7 +185,9 @@ RaceList["lavastep tribe goblin"] = {
 	source : ["PS:Z", 17],
 	plural : "Lavastep tribe goblins",
 	size : 4,
-	speed : [25, 15],
+	speed : {
+		walk : { spd : 25, enc : 15 }
+	},
 	languageProfs : ["Common", "Goblin"],
 	vision : [["Darkvision", 60]],
 	dmgres : ["Fire", "Psychic"],
@@ -189,7 +207,9 @@ RaceList["tuktuk tribe goblin"] = {
 	source : ["PS:Z", 17],
 	plural : "Tuktuk tribe goblins",
 	size : 4,
-	speed : [25, 15],
+	speed : {
+		walk : { spd : 25, enc : 15 }
+	},
 	languageProfs : ["Common", "Goblin"],
 	vision : [["Darkvision", 60]],
 	dmgres : ["Fire", "Psychic"],
@@ -220,7 +240,9 @@ RaceList["tajuru elf"] = {
 	source : ["PS:Z", 19],
 	plural : "Tajuru elves",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Elvish"],
 	vision : [["Darkvision", 60]],
 	savetxt : {
@@ -245,7 +267,9 @@ RaceList["joraga elf"] = {
 	source : ["PS:Z", 19],
 	plural : "Joraga elves",
 	size : 3,
-	speed : [35, 25],
+	speed : {
+		walk : { spd : 35, enc : 25 }
+	},
 	languageProfs : ["Common", "Elvish"],
 	vision : [["Darkvision", 60]],
 	savetxt : {
@@ -271,7 +295,9 @@ RaceList["mul daya elf"] = {
 	source : ["PS:Z", 19],
 	plural : "Mul Daya elves",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	languageProfs : ["Common", "Elvish"],
 	vision : [["Darkvision", 120], ["Sunlight Sensitivity", 0]],
 	savetxt : {
