@@ -6005,7 +6005,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	// function for adding all resistances of a single entry
 	var DoResistance = function(keyName, skipA) {
 		var aSet = CurrentProfs.resistance[keyName];
-		if (!aSet) return;
+		if (!aSet || (CurrentProfs.savetxt.immune && CurrentProfs.savetxt.immune[keyName])) return;
 		if (!skipA) skipA = [];
 		if (aSet.merge) {
 			if (skipA.indexOf(aSet.name) === -1) AddResistance(aSet.name, aSet.src);
