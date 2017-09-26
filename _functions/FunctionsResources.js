@@ -1094,7 +1094,7 @@ function resourceSelectionDialog(type) {
 
 //a function to test if the input is not being excluded by the resource dialogue
 function testSource(key, obj, CSatt, concise) {
-	if (!obj) return false;
+	if (!obj.source) return false;
 	var theRe = false;
 	var tSrc = parseSource(obj.source);
 	if (tSrc) {
@@ -1103,7 +1103,7 @@ function testSource(key, obj, CSatt, concise) {
 		};
 		var isExcl = tSrc.every(srcExcluded);
 		theRe = isExcl && concise ? "source" : isExcl;
-	}
+	};
 	if (!theRe && CSatt && CurrentSources[CSatt] && CurrentSources[CSatt].indexOf(key) !== -1) theRe = true;
 	return theRe;
 };
@@ -1130,13 +1130,12 @@ function parseSource(srcObj) {
 //a function to make a readable string of the source
 // verbosity = full (full source name), abbr (source abbreviation), page (, page), first (only first one found that is included), multi (add line break after each entry)
 function stringSource(obj, verbosity, prefix, suffix) {
-	if (!obj.source) return "";
-	var theRe = "";
-	verbosity = verbosity.toLowerCase();
-	var sFull = verbosity.indexOf("full") !== -1;
-	var pFull = verbosity.indexOf("page") !== -1;
 	var theSrc = parseSource(obj.source);
 	if (theSrc) {
+		var theRe = "";
+		verbosity = verbosity.toLowerCase();
+		var sFull = verbosity.indexOf("full") !== -1;
+		var pFull = verbosity.indexOf("page") !== -1;
 		for (var i = 0; i < theSrc.length; i++) {
 			if (CurrentSources.globalExcl.indexOf(theSrc[i][0]) !== -1) continue;
 			if (theRe) theRe += !pFull ? ", " : verbosity.indexOf("multi") !== -1 ? ";\n" : "; ";
@@ -1144,7 +1143,9 @@ function stringSource(obj, verbosity, prefix, suffix) {
 			theRe += !theSrc[i][1] ? "" : (pFull ? ", page " : " ") + theSrc[i][1];
 			if (verbosity.indexOf("first") !== -1) break;
 		};
-		if (theRe && theRe.indexOf("\n") !== -1) theRe += "."
+		if (theRe && theRe.indexOf("\n") !== -1) theRe += ".";
+		return theRe ? (prefix ? prefix : "") + theRe + (suffix ? suffix : "") : "";
+	} else {
+		return "";
 	};
-	return theRe ? (prefix ? prefix : "") + theRe + (suffix ? suffix : "") : "";
 };

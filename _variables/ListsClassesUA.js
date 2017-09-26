@@ -268,11 +268,8 @@ ClassList["spell-less ranger"] = {
 			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special Maneuvers" + "\n   " + "I regain all superiority dice after a short rest",
 			additional : "d8",
 			usages : levels.map( function(n) {
-				if (n < 2) return "";
-				return (n < 9 ? 4 : n < 17 ? 5 : 6) + " maneuvers known";
+				return n < 2 ? "" : n < 9 ? 4 : n < 17 ? 5 : 6;
 			}),
-			additional : ["", "", "d8", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12"],
-			usages : [0, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6],
 			recovery : "short rest"
 		},
 		"combat maneuvers" : {

@@ -4707,7 +4707,7 @@ function ReturnClassFeatures(aClass, feature, level, choice, oldlevel, oldchoice
 	tRe.UseName = choice && aFea[choice].name ? aFea[choice].name : (aFea.name && !ForceChoice ? aFea.name : "");
 	tRe.UseNameOld = oldchoice && aFea[oldchoice].name ? aFea[oldchoice].name : (aFea.name && !ForceChoice ? aFea.name : "");
 	
-	tRe.Source = choice && aFea[choice].source ? aFea[choice].source : (aFea.source ? aFea.source : "");
+	tRe.source = choice && aFea[choice].source ? aFea[choice].source : (aFea.source ? aFea.source : "");
 	
 	for (var aProp in tRe) {
 		if (aProp === "Source") continue;
@@ -5852,11 +5852,6 @@ function MakeSourceMenu_SourceOptions() {
 	}, {
 		cName : "Unearthed Arcana",
 		oSubMenu : []
-	}, {
-		cName : "-"
-	}, {
-		cName : "Open a dialogue with a list of the sources",
-		cReturn : "sourcelist#dialogue"
 	}];
 	
 	var menuLoc = {
@@ -5874,13 +5869,18 @@ function MakeSourceMenu_SourceOptions() {
 	};
 	abbrObj.arr.sort();
 	
+	var extraMenuItems = false;
 	for (var i = 0; i < abbrObj.arr.length; i++) {
 		var aSource = abbrObj.obj[abbrObj.arr[i]];
 		if (/^(DMguild|HB)$/.test(aSource)) continue;
 		var src = SourceList[aSource];
 		var theIndex = menuLoc[src.group.toLowerCase()];
 		if (!theIndex) {
-			theIndex = SourceMenu.length
+			if (!extraMenuItems) {
+				SourceMenu.push({ cName : "-" });
+				extraMenuItems = true;
+			};
+			theIndex = SourceMenu.length;
 			SourceMenu.push({
 				cName : src.group,
 				oSubMenu : []
@@ -5889,7 +5889,6 @@ function MakeSourceMenu_SourceOptions() {
 		};
 		
 		var allItem = {
-			//cName : (src.abbreviation + "          ").substr(0, 10) + src.name,
 			cName : (src.abbreviation + (new Array(10)).join("\u2002")).substr(0, 10) + src.name,
 			cReturn : "sourcelist#" + aSource
 		};
@@ -5903,6 +5902,12 @@ function MakeSourceMenu_SourceOptions() {
 	};
 	
 	for (var entry in SourceMenu) if (SourceMenu[entry].oSubmenu) SourceMenu[entry].oSubmenu.sort();
+	
+	SourceMenu.push({ cName : "-" });
+	SourceMenu.push({
+		cName : "Open a dialogue with a list of the sources",
+		cReturn : "sourcelist#dialogue"
+	});
 	
 	//parse it into a global variable
 	Menus.sources = SourceMenu;

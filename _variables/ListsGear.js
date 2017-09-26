@@ -1638,6 +1638,22 @@ var WeaponsList = {
 		abilitytodamage : false,
 		dc : true
 	},
+	
+	// Tomb of Annihilation weapon addition
+	"yklwa" : { 
+		regExpSearch : /yklwa/i, 
+		name : "Yklwa", 
+		source : ["ToA", 32], 
+		list : "melee",
+		ability : 1,
+		type : "Simple",
+		damage : [1, 8, "piercing"],
+		range : "Melee, 10/30 ft",
+		weight : 3,
+		description : "Thrown",
+		monkweapon : true,
+		abilitytodamage : true
+	}
 };
 
 //A list of all types of 'ammo' for the ammunition section on the first page

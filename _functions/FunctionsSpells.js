@@ -877,14 +877,16 @@ var SpellSheetSelect_Dialog = {
 			"SpCL" : this.showSp,
 			"RaCL" : this.showSpRadio,
 			"SplK" : this.showSp && this.typeSp !== "book",
-			"SpR3" : this.typeSp !== "known",
+			SpR1 : this.levelSp,
+			SpR3 : this.levelSp && this.typeSp !== "known",
 			"bPre" : this.prevBtn
 		});
 		
 		//enable the various entries or disable them and load their values
 		var toEnable = {
 			AdET : false,
-			SpR3 : this.typeSp !== "known",
+			SpR1 : this.levelSp,
+			SpR3 : this.levelSp && this.typeSp !== "known",
 			bPre : this.prevBtn
 		};
 		var toLoad = {};
@@ -2977,16 +2979,22 @@ function AskUserSpellSheet() {
 			dia.nmbrSp = spCast.known.spells === undefined ? "" : isArray(spCast.known.spells) ? spCast.known.spells[Math.min(spCast.known.spells.length, spCast.level) - 1] : spCast.known.spells; //set the amount of spells
 			dia.typeSp = dia.nmbrSp === "" ? "" : isNaN(dia.nmbrSp) ? dia.nmbrSp : "known"; //set the type of spells (book, list, known)
 			dia.nmbrSp = !isNaN(dia.nmbrSp) ? dia.nmbrSp : 18; //if spells known is not a number, set the dialog to the max of 18
-			dia.showSpRadio = !isPsionics && spCast.level && (/list|book|known/i).test(dia.typeSp); //show the spell radio buttons if concerning a level-dependent spellcaster (classes)
+			dia.showSpRadio = !isPsionics && (/list|book|known/i).test(dia.typeSp); //show the spell radio buttons if concerning a level-dependent spellcaster (classes)
 			if (dia.showSpRadio) { // set the name of the radio buttons and set the selection
-				var SpellLevel = maxSpell
-				if (aCast === "warlock" && spCast.level >= 11) {
-					SpellLevel = defaultSpellTable[spCast.level].indexOf(0);
-					SpellLevel = Number(SpellLevel === -1 ? 9 : SpellLevel);
+				if (spCast.level) {
+					var SpellLevel = maxSpell
+					if (aCast === "warlock" && spCast.level >= 11) {
+						SpellLevel = defaultSpellTable[spCast.level].indexOf(0);
+						SpellLevel = Number(SpellLevel === -1 ? 9 : SpellLevel);
+					};
+					setDialogName(SpellSheetSelect_Dialog, "SpR1", "name", spellLevelList[SpellLevel] + (SpellLevel > 1 ? " and lower" : "") + " spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known"));
+					setDialogName(SpellSheetSelect_Dialog, "SpR2", "name", "All spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " regardless of level");
+					setDialogName(SpellSheetSelect_Dialog, "SpR4", "name", "Full class list (spells && cantrips)");
+				} else {
+					setDialogName(SpellSheetSelect_Dialog, "SpR2", "name", "All selected spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known"));
+					setDialogName(SpellSheetSelect_Dialog, "SpR4", "name", "Full list (all spells && cantrips)");
 				};
-				setDialogName(SpellSheetSelect_Dialog, "SpR1", "name", spellLevelList[SpellLevel] + (SpellLevel > 1 ? " and lower" : "") + " spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known"));
-				setDialogName(SpellSheetSelect_Dialog, "SpR2", "name", "All spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " regardless of level");
-				dia.selectSpRadio = spCast.typeList ? spCast.typeList : 1;
+				dia.selectSpRadio = spCast.typeList ? spCast.typeList : spCast.level ? 1 : 2;
 			};
 			dia.showSp = dia.typeSp !== "list" && dia.typeSp !== ""; //show the spells section
 			dia.offsetSp = spCast.offsetSp ? spCast.offsetSp : 0; //set the manually added spells
