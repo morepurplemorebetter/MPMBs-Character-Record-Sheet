@@ -38,61 +38,61 @@ ClassSubList["tactician"] = {
 				name : "Attack",
 				source : ["JB:TAS", 2],
 				description : "\n   " + "As a bonus action, I can order one alley within 30 ft to make one weapon attack",
-				action : ["bonus action", ""]
+				action : ["bonus action", " (order)"]
 			},
 			"cast it" : {
 				name : "Cast It",
 				source : ["JB:TAS", 2],
 				description : "\n   " + "As an action, I can order one alley to cast a spell that has a casting time of one action",
-				action : ["action", ""]
+				action : ["action", " (order)"]
 			},
 			"find them" : {
 				name : "Find Them",
 				source : ["JB:TAS", 2],
 				description : "\n   " + "As a reaction, I can order an alley to use the search action",
-				action : ["reaction", ""]
+				action : ["reaction", " (order)"]
 			},
 			"grab them" : {
 				name : "Grab Them",
 				source : ["JB:TAS", 2],
 				description : "\n   " + "As a reaction, I can order one alley to make a grapple attempt",
-				action : ["reaction", ""]
+				action : ["reaction", " (order)"]
 			},
 			"line them up" : {
 				name : "Line Them Up",
 				source : ["JB:TAS", 2],
 				description : "\n   " + "As a reaction, I can order one alley to make a shove attempt",
-				action : ["reaction", ""]
+				action : ["reaction", " (order)"]
 			},
 			"lose them" : {
 				name : "Lose Them",
 				source : ["JB:TAS", 2],
 				description : "\n   " + "As a reaction, I can order one alley to take the hide action",
-				action : ["reaction", ""]
+				action : ["reaction", " (order)"]
 			},
 			"move" : {
 				name : "Move",
 				source : ["JB:TAS", 2],
 				description : "\n   " + "As a bonus action, I can order one alley to take the dash action",
-				action : ["bonus action", ""]
+				action : ["bonus action", " (order)"]
 			},
 			"retreat" : {
 				name : "Line Them Up",
 				source : ["JB:TAS", 2],
 				description : "\n   " + "As a reaction, I can order one alley to take the disengage action",
-				action : ["reaction", ""]
+				action : ["reaction", " (order)"]
 			},
 			"stand your ground" : {
 				name : "Stand Your Ground",
 				source : ["JB:TAS", 2],
 				description : "\n   " + "As a bonus action, I can order one alley to take the dodge action",
-				action : ["bonus action", ""]
+				action : ["bonus action", " (order)"]
 			},
 			"use it" : {
 				name : "Use It",
 				source : ["JB:TAS", 2],
 				description : "\n   " + "As a reaction, I can order one alley to take the use an object action",
-				action : ["reaction", ""]
+				action : ["reaction", " (order)"]
 			}
 		},
 		"subclassfeature7" : {
