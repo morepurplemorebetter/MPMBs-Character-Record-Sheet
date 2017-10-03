@@ -4597,7 +4597,7 @@ var ClassSubList = {
 				name : "Minor Conjuration",
 				source : ["P", 116],
 				minlevel : 2,
-				description : "\n   " + "As an action, I can conjure an object up to 3 ft on each side and no more than 10 lbs" + "\n   " + "It must be of a form of a nonmagical object I have seen and is created within 10 ft" + "\n   " + "The object disappears after 1 hour, if it takes damage, or when I use this feature again",
+				description : "\n   " + "As an action, I can conjure an object up to 3 ft on each side and no more than 10 lbs" + "\n   " + "It must be of a form of a nonmagical object I have seen and is created within 10 ft" + "\n   " + "The object disappears after 1 hour, if it takes or deals damage, or when I use this again",
 				action : ["action", ""]
 			},
 			"subclassfeature6" : {

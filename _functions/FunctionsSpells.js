@@ -3,7 +3,7 @@ function ParseSpell(input) {
 	var result = "";
 	
 	if (input) {
-		input = removeDiacritics(RemoveZeroWidths(input)).replace("(R)", "");
+		input = clean(RemoveZeroWidths(input.replace(/ \(.{1,2}\)/i, "")), false, true);
 		var foundLen = 0;
 
 		for (var key in SpellsList) { //scan string for all creatures
@@ -248,7 +248,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			var spBookFull = stringSource(aSpell, "full,page,multi");
 			//var spBookFull = spBook && SourceList[aSpell.source[0]] ? SourceList[aSpell.source[0]].name : "";
 			//spBookFull += spBookFull && spPage ? ", page " + spPage : "";
-			Value(base.replace("remember", "book"), spBook, spBookFull);
+			Value(base.replace("remember", "book"), spBook.substr(0,1), spBookFull);
 			Value(base.replace("remember", "page"), spPage, spBookFull);
 			
 			if (aSpell.firstCol !== undefined && !input[1]) input[1] = aSpell.firstCol;
