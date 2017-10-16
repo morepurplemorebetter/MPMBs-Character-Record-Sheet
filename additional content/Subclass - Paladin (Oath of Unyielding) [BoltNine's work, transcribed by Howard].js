@@ -12,7 +12,7 @@
 	Effect:		This script adds a subclass for the Paladin, called "Oath of the Unyielding"
 				This is made by BoltNine Homebrew (https://drive.google.com/drive/folders/0B2UyuHLUuCjxRmlXWExXTGR1eTA)
 	Code by:	Howard
-	Date:		2017-01-06 (sheet v12.8)
+	Date:		2017-01-06 (sheet v12.998)
 */
 
 ClassSubList["unyielding"] = {
@@ -41,7 +41,7 @@ ClassSubList["unyielding"] = {
 			minlevel : 7,
 			description : "\n   " + "Allies within range and I have adv. on saves against being moved while I am conscious",
 			additional : ["", "", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-			save : "Adv. vs. effects that move me"
+			savetxt : { adv_vs : ["effects that move me"] }
 		},
 		"subclassfeature15" : {
 			name : "Unbending",

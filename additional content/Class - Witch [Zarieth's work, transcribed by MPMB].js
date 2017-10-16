@@ -16,7 +16,7 @@
 				This code is based on v0.4 of /u/Zarieth's work (2017-03-06)
 					
 	Code by:	MorePurpleMoreBetter
-	Date:		2017-03-10 (sheet v12.86)
+	Date:		2017-09-21 (sheet v12.998)
 */
 
 //first make the sheet know which spells are witch spells
@@ -66,7 +66,7 @@ ClassList["witch (zarieth)"] = {
 	die : 6,
 	saves : ["Wis", "Cha"],
 	skills : ["\n\n" + toUni("Witch") + ": Choose two from Arcana, Animal Handling, History, Insight, Medicine, Nature, and Religion."],
-	tools : ["Herbalism kit"],
+	toolProfs : { primay : ["Herbalism kit"] },
 	armor : [
 		[true, false, false, false]
 	],
@@ -328,7 +328,7 @@ ClassSubList["witch (zarieth)-covenant of charm"] = {
 			description : desc([
 				"I'm immune to being charmed; I can charm those that are immune (but they get adv.)"
 			]),
-			save : "Immune to being charmed"
+			savetxt : { immune : ["charmed"] }
 		}
 	}
 };
@@ -391,8 +391,7 @@ ClassSubList["witch (zarieth)-covenant of shadows"] = {
 				"While I have at least 1 bound spirit, I can see 120 ft in magical and normal darkness",
 				"With at least 2 bound spirits, I have adv. on Wis (Perception) in dim light and darkness"
 			]),
-			eval : "AddString('Vision', '120 ft in (non)magical darkness; Adv. Perception in dim light \u0026 darkness', '; ');",
-			removeeval : "RemoveString('Vision', '120 ft in (non)magical darkness; Adv. Perception in dim light \u0026 darkness', '; ');"
+			vision : [["Devil's sight", 120], ["Adv. on Perception in dim light \u0026 darkness", 0]]
 		},
 		"subclassfeature6" : {
 			name : "Blinding Shackles",

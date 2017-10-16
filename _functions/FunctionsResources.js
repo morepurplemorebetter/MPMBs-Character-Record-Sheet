@@ -206,20 +206,23 @@ function ObjectToArray(obj, type, testObj) {
 function resourceDecisionDialog(atOpening, atReset) {
 	if (!atOpening && app.viewerVersion < 15) FunctionIsNotAvailable();
 	var isFirstTime = CurrentSources.firstTime;
-	if (this.info.SpellsOnly) { //if this is a spell sheet, only use sources that have spells associated with them
+	if (this.info.SpellsOnly) { //if this is a spell sheet, only use sources that have spells or spellcasting classes associated with them
 		var spellSources = [];
 		for (var u in SpellsList) {
-			var sSource = SpellsList[u].source;
-			var aSource = isArray(sSource) ? sSource[0] : sSource;
-			if (aSource && spellSources.indexOf(aSource) === -1) spellSources.push(aSource);
-		}
+			var sSource = parseSource(SpellsList[u].source);
+			if (!sSource) continue;
+			for (var i = 0; i < sSource.length; i++) {
+				if (spellSources.indexOf(sSource[i][0]) === -1) spellSources.push(sSource[i][0]);
+			};
+		};
 		for (var aClass in ClassList) {
-			var cSource = ClassList[aClass].source;
-			if (!cSource || !ClassList[aClass].spellcastingFactor || aClass === "rangerua") continue;
-			aSource = isArray(cSource) ? cSource[0] : cSource;
-			if (aSource && spellSources.indexOf(aSource) === -1) spellSources.push(aSource);
-		}
-	}
+			var sSource = parseSource(ClassList[aClass].source);
+			if (!sSource || !ClassList[aClass].spellcastingFactor || aClass === "rangerua") continue;
+			for (var i = 0; i < sSource.length; i++) {
+				if (spellSources.indexOf(sSource[i][0]) === -1) spellSources.push(sSource[i][0]);
+			};
+		};
+	};
 	
 	var exclObj = {}, inclObj = {};
 	if (isFirstTime) {
@@ -234,10 +237,10 @@ function resourceDecisionDialog(atOpening, atReset) {
 			if (SourceList[src].group === "Unearthed Arcana") CurrentSources.globalExcl.push(src);
 		};
 		for (var amm in AmmoList) {
-			if (AmmoList[amm].source && AmmoList[amm].source[0] === "D") CurrentSources.ammoExcl.push(amm);
+			if (AmmoList[amm].source && AmmoList[amm].source.toSource().indexOf("D") !== -1) CurrentSources.ammoExcl.push(amm);
 		};
 		for (var wea in WeaponsList) {
-			if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source[0] === "D") CurrentSources.weapExcl.push(wea);
+			if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source.toSource().indexOf("D") !== -1) CurrentSources.weapExcl.push(wea);
 		};
 		Value("CurrentSources.Stringified", CurrentSources.toSource());
 	};
@@ -649,18 +652,20 @@ function resourceSelectionDialog(type) {
 	for (var aSrc in SourceList) {
 		if (SourceList[aSrc].uniS) continue;
 		SourceList[aSrc].uniS = toSup(SourceList[aSrc].abbreviation);
-	}
+	};
 	
 	//a way to add the source abbreviation to the string
 	var amendSource = function(uString, uObj, altObj) {
 		var theSrc = uObj.source ? uObj.source : (altObj && altObj.source ? altObj.source : false);
+		theSrc = parseSource(theSrc);
 		if (theSrc) {
-			theSrc = isArray(theSrc) ? theSrc[0] : theSrc;
-			var theAbb = SourceList[theSrc] ? " " + SourceList[theSrc].uniS : "";
-			uString += theAbb;
-		}
+			for (var i = 0; i < theSrc.length; i++) {
+				if (CurrentSources.globalExcl.indexOf(theSrc[i][0]) !== -1) continue;
+				uString += " " + SourceList[theSrc[i][0]].uniS;
+			};
+		};
 		return uString;
-	}
+	};
 	
 	switch (type) {
 	 case "class" :
@@ -867,8 +872,8 @@ function resourceSelectionDialog(type) {
 			var uTest = testSource(u, AmmoList[u], CSatt, true);
 			if (uTest === "source") continue;
 			
-			var ammSource = AmmoList[u].source && AmmoList[u].source[0] && SourceList[AmmoList[u].source[0]] ? SourceList[AmmoList[u].source[0]] : false;
-			var uGroup = ammSource ? ammSource.name : "Homebrew";
+			var ammSource = parseSource(AmmoList[u].source);
+			var uGroup = ammSource ? SourceList[ammSource[0][0]].name : "Homebrew";
 			refObj[uName] = u;
 			if (!exclObj[uGroup]) exclObj[uGroup] = {};
 			if (!inclObj[uGroup]) inclObj[uGroup] = {};
@@ -1089,12 +1094,58 @@ function resourceSelectionDialog(type) {
 
 //a function to test if the input is not being excluded by the resource dialogue
 function testSource(key, obj, CSatt, concise) {
+	if (!obj.source) return false;
 	var theRe = false;
-	if (obj.source) {
-		var theSource = isArray(obj.source) ? obj.source[0] : obj.source;
-		theRe = SourceList[theSource] && CurrentSources.globalExcl.indexOf(theSource) !== -1;
-		if (theRe && concise) theRe = "source";
-	}
+	var tSrc = parseSource(obj.source);
+	if (tSrc) {
+		var srcExcluded = function(srcObj) {
+			return !SourceList[srcObj[0]] || CurrentSources.globalExcl.indexOf(srcObj[0]) !== -1;
+		};
+		var isExcl = tSrc.every(srcExcluded);
+		theRe = isExcl && concise ? "source" : isExcl;
+	};
 	if (!theRe && CSatt && CurrentSources[CSatt] && CurrentSources[CSatt].indexOf(key) !== -1) theRe = true;
 	return theRe;
+};
+
+//a function to make the source attribute into a consistent array [[source, page]]
+function parseSource(srcObj) {
+	if (!srcObj) return false;
+	var theRe = false;
+	if (!isArray(srcObj)) {
+		if (SourceList[srcObj]) theRe = [[srcObj, 0]];
+	} else if (srcObj.length === 2 && typeof srcObj[0] == "string" && !isArray(srcObj[1])) {
+		if (SourceList[srcObj[0]]) theRe = [srcObj];
+	} else {
+		theRe = [];
+		for (var i = 0; i < srcObj.length; i++) {
+			if (srcObj[i][0] && SourceList[srcObj[i][0]]) {
+				theRe.push([srcObj[i][0], srcObj[i][1] ? srcObj[i][1] : 0]);
+			};
+		};
+	};
+	return theRe;
+};
+
+//a function to make a readable string of the source
+// verbosity = full (full source name), abbr (source abbreviation), page (, page), first (only first one found that is included), multi (add line break after each entry)
+function stringSource(obj, verbosity, prefix, suffix) {
+	var theSrc = parseSource(obj.source);
+	if (theSrc) {
+		var theRe = "";
+		verbosity = verbosity.toLowerCase();
+		var sFull = verbosity.indexOf("full") !== -1;
+		var pFull = verbosity.indexOf("page") !== -1;
+		for (var i = 0; i < theSrc.length; i++) {
+			if (CurrentSources.globalExcl.indexOf(theSrc[i][0]) !== -1) continue;
+			if (theRe) theRe += !pFull ? ", " : verbosity.indexOf("multi") !== -1 ? ";\n" : "; ";
+			theRe += sFull ? SourceList[theSrc[i][0]].name : SourceList[theSrc[i][0]].abbreviation;
+			theRe += !theSrc[i][1] ? "" : (pFull ? ", page " : " ") + theSrc[i][1];
+			if (verbosity.indexOf("first") !== -1) break;
+		};
+		if (theRe && theRe.indexOf("\n") !== -1) theRe += ".";
+		return theRe ? (prefix ? prefix : "") + theRe + (suffix ? suffix : "") : "";
+	} else {
+		return "";
+	};
 };

@@ -68,6 +68,12 @@ var SourceList = {
 		group : "Adventure Books",
 		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/tales-yawning-portal"
 	},
+	"ToA" : {
+		name : "Tomb of Annihilation [backgrounds, beasts]",
+		abbreviation : "ToA",
+		group : "Adventure Books",
+		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/tomb-annihilation"
+	},
 
 	//sources for custom scripts
 	"DMguild" : {
@@ -100,6 +106,12 @@ var SourceList = {
 		abbreviation : "AL:CoS",
 		group : "Adventurers League",
 		url : "http://dndadventurersleague.org/wp-content/uploads/2016/06/Curse-of-Strahd-Backgrounds-v1.1.pdf"
+	},
+	"TP" : {
+		name : "Tortle Package",
+		abbreviation : "TP",
+		group : "Adventurers League",
+		url : "http://www.dmsguild.com/product/221716/"
 	},
 
 	//Unearthed Arcana
@@ -288,5 +300,11 @@ var SourceList = {
 		abbreviation : "UA:RCO",
 		group : "Unearthed Arcana",
 		url : "http://media.wizards.com/2017/dnd/downloads/June5UA_RevisedClassOptv1.pdf"
+	},
+	"UA:EnG" : {
+		name : "2017/09/11 Unearthed Arcana: Eladrin and Gith", //2017-09-11
+		abbreviation : "UA:EnG",
+		group : "Unearthed Arcana",
+		url : "http://media.wizards.com/2017/dnd/downloads/UA-Eladrin-Gith.pdf"
 	},
 };

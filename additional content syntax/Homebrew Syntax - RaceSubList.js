@@ -12,7 +12,7 @@
 	Effect:		This is the syntax for adding a new racial variant to the sheet
 				If you want to define several subraces, please do so by defining multiple entries of the RaceList (i.e. there is a separate entry for High Elf, Wood Elf, and Dark Elf in the RaceList)
 				For races that have variants, like the human, you can define a variant using the RaceSubList. Any variant defined like this will only be selectable through the "Racial Options" button
-	Sheet:		v12.83 (2017-02-18)
+	Sheet:		v12.998 (2017-09-15)
 */
 
 RaceSubList["something catlike-something great catlike"] = { //Object name;  The name of the object must be the name of the parent ClassList entry ("something catlike" in this example), followed by a dash ("-"), followed by the name of the variant ("something great catlike" in this example), as defined in the 'variants' array in the ClassList entry (see bottom line). Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
@@ -21,7 +21,7 @@ RaceSubList["something catlike-something great catlike"] = { //Object name;  The
 	
 	name : "Something Great Catlike", //required; the name to use for the race
 	
-	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew.
+	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js". // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
 	
 	plural : "Somethings Great Catlike", //required; the name to use for the race when the plural form is used
 	

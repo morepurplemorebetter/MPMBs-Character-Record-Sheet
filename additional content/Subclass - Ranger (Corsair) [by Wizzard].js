@@ -12,7 +12,7 @@
 	Effect:     This script adds a subclass for the Ranger, called "Corsair"
 				This is a homebrew class designed by Wizzard
 	Code by:    Wizzard
-	Date:       2017-06-03 (sheet v12.992)
+	Date:       2017-09-22 (sheet v12.998)
  */
 
 ClassSubList["corsair"] = {
@@ -45,7 +45,11 @@ ClassSubList["corsair"] = {
 			"mariner" : {
 				name : "Mariner Fighting Style",
 				source : ["UA:WA", 3],
-				description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds equal my current walking speed",
+				description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds are equal to my current walking speed",
+				speed : {
+					climb : { spd : "walk", enc : "walk" },
+					swim : { spd : "walk", enc : "walk" }
+				},
 				eval : "AddACMisc(1, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\", \"ACshield || tDoc.getField('Heavy Armor').isBoxChecked(0)\")",
 				removeeval : "AddACMisc(0, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")"
 			},
@@ -55,8 +59,7 @@ ClassSubList["corsair"] = {
 			source : ["HB", 0],
 			minlevel : 7,
 			description : "\n   " + "I add my proficiency bonus to my initiative" + "\n   " + "I can stow a firearm and draw another as a single object interaction on my turn",
-			eval : "AddToModFld('Init Bonus', 'Prof');",
-			removeeval : "AddToModFld('Init Bonus', 'Prof', true);"
+			addMod : { type : "skill", field : "Init", mod : "Prof", text : "I add my proficiency bonus to my initiative rolls." }
 		},
 		"subclassfeature11" : {
 			name : "Angels Eye",

@@ -1,5 +1,5 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://bit.ly/MPMBCharTools
+	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
 	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 	
 	-KEEP IN MIND-
@@ -12,7 +12,7 @@
 	Effect:		This script adds a number of races, subraces, and creatures from the Magic: The Gathering plane of Zendikar
 				This is taken from the Plane Shift: Zendikar article (http://magic.wizards.com/en/articles/archive/feature/plane-shift-zendikar-2016-04-27)
 	Code by:	SoilentBrad (and tiny corrections by MPMB)
-	Date:		2017-04-24 (sheet v12.96)
+	Date:		2017-09-22 (sheet v12.998)
 */
 
 SourceList["PS:Z"] = {
@@ -28,10 +28,13 @@ RaceList["kor"] = {
 	source : ["PS:Z", 11],
 	plural : "Kor",
 	size : 3,
-	speed : ["30 ft\n30 ft climb", 20],
-	savetxt : "Adv. vs. being frightened",
+	speed : {
+		walk : { spd : 30, enc : 20 },
+		climb : { spd : 30, enc : 0 }
+	},
+	savetxt : { adv_vs : ["frightened"] },
 	skills : ["Acrobatics", "Athletics"],
-	languages : ["Common", "Kor (silent speech)"],
+	languageProfs : ["Common", "Kor (silent speech)"],
 	age : " reach adulthood in their late teens and live less than a century",
 	height : " average nearly 6 feet tall (4'9\" + 2d8\")",
 	weight : " are more slender than humans",
@@ -47,8 +50,11 @@ RaceList["emeria merfolk"] = {
 	source : ["PS:Z", 13],
 	plural : "Emeria Creed Merfolk",
 	size : 3,
-	speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
-	languages : ["Common", "Merfolk", "+1 from Merfolk"],
+	speed : {
+		walk : { spd : 30, enc : 20 },
+		swim : { spd : 30, enc : 20 }
+	},
+	languageProfs : ["Common", "Merfolk", 1],
 	age : " reach adulthood around 20 and live considerably longer than humans",
 	skills : ["Deception", "Persuasion"],
 	improvements : "Emeria Creed Merfolk: +2 Wisdom, +1 Charisma;",
@@ -70,11 +76,14 @@ RaceList["ula merfolk"] = {
 	source : ["PS:Z", 13],
 	plural : "Ula Creed Merfolk",
 	size : 3,
-	speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
-	languages : ["Common", "Merfolk", "+1 from Merfolk"],
+	speed : {
+		walk : { spd : 30, enc : 20 },
+		swim : { spd : 30, enc : 20 }
+	},
+	languageProfs : ["Common", "Merfolk", 1],
 	age : " reach adulthood around 20 and live considerably longer than humans",
 	skills : ["Survival"],
-	tools : ["Navigator's tools"],
+	toolProfs : ["Navigator's tools"],
 	improvements : "Ula Creed Merfolk: +2 Intelligence, +1 Charisma;",
 	scores : [0, 0, 0, 2, 0, 1],
 	trait : "Ula Creed Merfolk (+2 Intelligence, +1 Charisma)\nAmphibious: I can breathe air and water.\nWater Creed Navigation: I have proficiency with navigator's tools and in the Survival skill.\nCantrip: I know one cantrip of my choice from the wizard spell list. Intelligence is my spellcasting ability for it.",
@@ -94,8 +103,11 @@ RaceList["cosi merfolk"] = {
 	source : ["PS:Z", 13],
 	plural : "Cosi Creed Merfolk",
 	size : 3,
-	speed : ["30 ft\n30 ft swim", "20 ft\n20 ft swim"],
-	languages : ["Common", "Merfolk", "+1 from Merfolk"],
+	speed : {
+		walk : { spd : 30, enc : 20 },
+		swim : { spd : 30, enc : 20 }
+	},
+	languageProfs : ["Common", "Merfolk", 1],
 	age : " reach adulthood around 20 and live considerably longer than humans",
 	skills : ["Sleight of Hand", "Stealth"],
 	improvements : "Ula Creed Merfolk: +1 Intelligence, +2 Charisma;",
@@ -117,10 +129,12 @@ RaceList["vampire"] = {
 	source : ["PS:Z", 15],
 	plural : "Vampires",
 	size : 3,
-	speed : [30, 20],
-	languages : ["Common", "Vampire"],
-	vision : "Darkvision 60 ft",
-	dmgres : ["necrotic"],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
+	languageProfs : ["Common", "Vampire"],
+	vision : [["Darkvision", 60]],
+	dmgres : ["Necrotic"],
 	weapons : ["blood thirst"],
 	age : " don't mature and age in the same way that other races do. Every living vampire is either a bloodchief, infected by Ulamog's influence in the distant reaches of history, or was spawned by a bloodchief from a living human. Most vampires are thus very old, but few have any memory of their earliest years.",
 	improvements : "Vampire: +1 Intelligence, +2 Charisma;",
@@ -148,10 +162,12 @@ RaceList["grotag tribe goblin"] = {
 	source : ["PS:Z", 17],
 	plural : "Grotag tribe goblins",
 	size : 4,
-	speed : [25, 15],
-	languages : ["Common", "Goblin"],
-	vision : "Darkvision 60 ft",
-	dmgres : ["fire", "psychic"],
+	speed : {
+		walk : { spd : 25, enc : 15 }
+	},
+	languageProfs : ["Common", "Goblin"],
+	vision : [["Darkvision", 60]],
+	dmgres : ["Fire", "Psychic"],
 	skills : ["Animal Handling"],
 	age : " reach adulthood at around 12 and rarely live longer than 50 years",
 	height : " average about 3 feet tall (3'\" + 2d4\")",
@@ -169,10 +185,12 @@ RaceList["lavastep tribe goblin"] = {
 	source : ["PS:Z", 17],
 	plural : "Lavastep tribe goblins",
 	size : 4,
-	speed : [25, 15],
-	languages : ["Common", "Goblin"],
-	vision : "Darkvision 60 ft",
-	dmgres : ["fire", "psychic"],
+	speed : {
+		walk : { spd : 25, enc : 15 }
+	},
+	languageProfs : ["Common", "Goblin"],
+	vision : [["Darkvision", 60]],
+	dmgres : ["Fire", "Psychic"],
 	age : " reach adulthood at around 12 and rarely live longer than 50 years",
 	height : " average about 3 feet tall (3'\" + 2d4\")",
 	weight : " weigh about 40 lb (35 + 2d4 \xD7 1d4 lb)",
@@ -189,11 +207,13 @@ RaceList["tuktuk tribe goblin"] = {
 	source : ["PS:Z", 17],
 	plural : "Tuktuk tribe goblins",
 	size : 4,
-	speed : [25, 15],
-	languages : ["Common", "Goblin"],
-	vision : "Darkvision 60 ft",
-	dmgres : ["fire", "psychic"],
-	tools : ["Thieves' tools"],
+	speed : {
+		walk : { spd : 25, enc : 15 }
+	},
+	languageProfs : ["Common", "Goblin"],
+	vision : [["Darkvision", 60]],
+	dmgres : ["Fire", "Psychic"],
+	toolProfs : [["Thieves' tools", "Dex"]],
 	age : " reach adulthood at around 12 and rarely live longer than 50 years",
 	height : " average about 3 feet tall (3'\" + 2d4\")",
 	weight : " weigh about 40 lb (35 + 2d4 \xD7 1d4 lb)",
@@ -220,10 +240,15 @@ RaceList["tajuru elf"] = {
 	source : ["PS:Z", 19],
 	plural : "Tajuru elves",
 	size : 3,
-	speed : [30, 20],
-	languages : ["Common", "Elvish"],
-	vision : "Darkvision 60 ft",
-	savetxt : "Adv. vs. being charmed; Magic can't put me to sleep",
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
+	languageProfs : ["Common", "Elvish"],
+	vision : [["Darkvision", 60]],
+	savetxt : {
+		text : ["Magic can't put me to sleep"],
+		adv_vs : ["charmed"]
+	},
 	skills : ["Perception"],
 	skillstxt : "Choose any two skills or tools",
 	age : " typically claim adulthood around age 100 and can live to be 750 years old",
@@ -242,10 +267,15 @@ RaceList["joraga elf"] = {
 	source : ["PS:Z", 19],
 	plural : "Joraga elves",
 	size : 3,
-	speed : [35, 25],
-	languages : ["Common", "Elvish"],
-	vision : "Darkvision 60 ft",
-	savetxt : "Adv. vs. being charmed; Magic can't put me to sleep",
+	speed : {
+		walk : { spd : 35, enc : 25 }
+	},
+	languageProfs : ["Common", "Elvish"],
+	vision : [["Darkvision", 60]],
+	savetxt : {
+		text : ["Magic can't put me to sleep"],
+		adv_vs : ["charmed"]
+	},
 	weaponprofs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
 	skills : ["Perception"],
 	age : " typically claim adulthood around age 100 and can live to be 750 years old",
@@ -265,10 +295,15 @@ RaceList["mul daya elf"] = {
 	source : ["PS:Z", 19],
 	plural : "Mul Daya elves",
 	size : 3,
-	speed : [30, 20],
-	languages : ["Common", "Elvish"],
-	vision : "Darkvision 120 ft; Sunlight Sensitivity",
-	savetxt : "Adv. vs. being charmed; Magic can't put me to sleep",
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
+	languageProfs : ["Common", "Elvish"],
+	vision : [["Darkvision", 120], ["Sunlight Sensitivity", 0]],
+	savetxt : {
+		text : ["Magic can't put me to sleep"],
+		adv_vs : ["charmed"]
+	},
 	skills : ["Perception"],
 	weaponprofs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
 	age : " typically claim adulthood around age 100 and can live to be 750 years old",

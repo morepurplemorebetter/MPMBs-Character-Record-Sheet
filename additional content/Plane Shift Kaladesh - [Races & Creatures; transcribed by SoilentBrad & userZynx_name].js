@@ -1,5 +1,5 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://bit.ly/MPMBCharTools
+	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
 	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 	
 	-KEEP IN MIND-
@@ -14,7 +14,7 @@
 	Code by:	SoilentBrad
 				userZynx_name (additions of Pyromancer, Servo, and feats)
 				tiny corrections by MPMB
-	Date:		2017-04-28 (sheet v12.98)
+	Date:		2017-09-22 (sheet v12.998)
 */
 
 SourceList["PS:K"] = {
@@ -31,10 +31,12 @@ RaceList["aetherborn"] = {
 	source : ["PS:K", 17],
 	plural : "Aetherborn",
 	size : 3,
-	speed : [30, 20],
-	languages : ["Common", "+2 from Aetherborn"],
-	vision : "Darkvision 60 ft",
-	dmgres : ["necrotic"],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
+	languageProfs : ["Common", 2],
+	vision : [["Darkvision", 60]],
+	dmgres : ["Necrotic"],
 	skills : ["Intimidation"],
 	age : " come into being as adults and live no more than a few years",
 	height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
@@ -52,12 +54,14 @@ RaceList["kaladesh dwarf"] = {
 	source : ["PS:K", 19],
 	plural : "Kaladesh dwarves",
 	size : 3,
-	speed : [25, 25],
-	languages : ["Common", "Dwarvish"],
-	vision : "Darkvision 60 ft",
-	savetxt : "Adv. vs. Poison",
-	dmgres : ["poison"],
-	tools : ["+2 artisan's tools"],
+	speed : {
+		walk : { spd : 25, enc : 25 }
+	},
+	languageProfs : ["Common", "Dwarvish"],
+	vision : [["Darkvision", 60]],
+	savetxt : { adv_vs : ["poison"] },
+	dmgres : ["Poison"],
+	toolProfs : [["Artisan's tools", 2]],
 	age : " are considered young until they are 50 and live about 350 years",
 	height : " stand between 4 and 5 feet tall (3'8\" + 2d4\")",
 	weight : " weigh around 150 lb (115 + 2d4 \xD7 2d6 lb)",
@@ -85,10 +89,15 @@ RaceList["vahadar elf"] = {
 	source : ["PS:K", 21],
 	plural : "Vahadar",
 	size : 3,
-	speed : [30, 20],
-	languages : ["Common", "Elvish", "+1 from Vahadar"],
-	vision : "Darkvision 60 ft",
-	savetxt : "Adv. vs. being charmed; Magic can't put me to sleep",
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
+	languageProfs : ["Common", "Elvish", 1],
+	vision : [["Darkvision", 60]],
+	savetxt : {
+		text : ["Magic can't put me to sleep"],
+		adv_vs : ["charmed"]
+	},
 	weaponprofs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
 	skills : ["Perception"],
 	age : " typically claim adulthood around age 100 and can live to be 750 years old",
@@ -116,9 +125,11 @@ RaceList["vedalken"] = {
 	source : ["PS:K", 24],
 	plural : "Vedalken",
 	size : 3,
-	speed : [30, 20],
-	languages : ["Common", "Vedalken"],
-	savetxt : "Adv. on Int, Wis, Cha saves vs. magic",
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
+	languageProfs : ["Common", "Vedalken"],
+	savetxt : { text : ["Adv. on Int/Wis/Cha saves vs. magic"] },
 	age : " reach adulthood around 40 and live up to 500 years",
 	height : " range from 6 to 6 1/2 feet tall",
 	weight : " weigh less than 200 lb",
@@ -262,8 +273,7 @@ ClassSubList["sorcerer-pyromancer"] = {
 			source : ["PS:K", 9],
 			minlevel : 6,
 			description : "\n   " + "I have resistance to fire damage and spells I cast ignore resistance to fire damage",
-			eval : "AddResistance('Fire', 'Pyromancer');",
-			removeeval : "RemoveResistance('Fire');"
+			dmgres : ["Fire"]
 		},
 		"subclassfeature14" : {
 			name : "Pyromancer's Fury",
@@ -278,9 +288,9 @@ ClassSubList["sorcerer-pyromancer"] = {
 			source : ["PS:K", 9],
 			minlevel : 18,
 			description : "\n   " + "I have immunity to fire damage" + "\n   " + "Any spell or effect I create ingores resistance to fire damage" + "\n   " + "In addition, it will treat immunity to fire damage as resistance to fire damage",
-			save : "Immune to fire damage",
-			eval : "RemoveResistance('Fire');",
-			removeeval : "AddResistance('Fire', 'Pyromancer');"
+			savetxt : { immune : ["fire"] },
+			eval : "SetProf('resistance', false, 'Fire', 'Pyromancer: Fiery Soul');",
+			removeeval : "SetProf('resistance', true, 'Fire', 'Pyromancer: Fiery Soul');"
 		},
 	}
 };

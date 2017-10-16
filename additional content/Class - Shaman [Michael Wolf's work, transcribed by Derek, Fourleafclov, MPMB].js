@@ -14,9 +14,7 @@
 				This content is made by Michael Wolf
 	Original:   Derek (with amendments by MorePurpleMoreBetter)
 	Completed:  /u/Fourleafclov (with amendments by MorePurpleMoreBetter)
-	Date:       2017-04-05 (sheet v12.94)
-
-	Code Version:   1.0 (previous version 0.9 from 2016-11-07)
+	Date:		2017-09-22 (sheet v12.998)
 
 	Please support the creator of this content (Michael Wolf) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Michael%20Wolf
 */
@@ -67,7 +65,7 @@ ClassList["shaman"] = {
 	die : 8,
 	saves : ["Wis", "Cha"],
 	skills : ["\n\n" + toUni("Shaman") + ": Choose two from Animal Handling, Arcana, Insight, Medicine, Nature, Perception, Persuasion, Religion, and Survival."],
-	tools : ["Herbalism kit"],
+	toolProfs : { primay : ["Herbalism kit"] },
 	armor : [
 		[true, false, false, true],
 		[true, false, false, true]
@@ -247,8 +245,7 @@ ClassList["shaman"] = {
 				name : "Pierce the Shadows",
 				description : "\n   " + "I can see in magical and nonmagical darkness out to 120 ft",
 				source : ["MW:SC", 14],
-				eval : "AddString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");",
-				removeeval : "RemoveString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");",
+				vision : [["Devil's sight", 120]],
 				prereqeval : "What('Class Features Remember').indexOf('shaman,spiritual gift,gift of sight') !== -1"
 			},
 			"rally the ancestors (prereq: level 9 shaman, speaker of ancestors)" : {
@@ -331,8 +328,7 @@ ClassList["shaman"] = {
 				name : "Sight Beyond Sight",
 				description : "\n   " + "I see the true form of any in 30 ft even if shapechanged, illusion or transmutation magic",
 				source : ["MW:SC", 14],
-				eval : "AddString(\"Vision\", \"Sight Beyond Sight 30 ft\", \"; \");",
-				removeeval : "RemoveString(\"Vision\", \"Sight Beyond Sight 30 ft\", \"; \");",
+				vision : [["Witch sight", 30]],
 				prereqeval : "classes.known.shaman.level >= 15 && What('Class Features Remember').indexOf('shaman,spiritual gift,gift of sight') !== -1"
 			},
 			"sky shaping (prereq: level 5 shaman)" : {
@@ -441,8 +437,8 @@ ClassList["shaman"] = {
 				name : "Unfiltered Perception",
 				description : "\n   " + "I can't be blinded or deafened unless seeing or hearing through another source" + "\n   " + "I can sense the presence, not exact location, of invisible creatures or objects within 10 ft",
 				source : ["MW:SC", 15],
-				eval : "AddString(\"Vision\", \"Sense Invisible 10 ft\", \"; \");",
-				removeeval : "RemoveString(\"Vision\", \"Sense Invisible 10 ft\", \"; \");",
+				savetxt : { immune : ["blinded", "deafened"] },
+				vision : [["Sense invisible", 10]],
 				prereqeval : "classes.known.shaman.level >= 7"
 			},
 			"unrestrained savagery (prereq: level 5 shaman, gift of savagery)" : {
@@ -467,8 +463,9 @@ ClassList["shaman"] = {
 				name : "Walker of the World",
 				description : "\n   " + "My movement speed increases by 10 feet while not wearing armor" + "\n   " + "While underground, I always know which way is north and my depth below the surface",
 				source : ["MW:SC", 15],
-				prereqeval : "classes.known.shaman.level >= 7"
-			},
+				prereqeval : "classes.known.shaman.level >= 7",
+				speed : { allModes : "+10" }
+			}
 		},
 		"spiritual gift" : {
 			name : "Spiritual Gift",
@@ -551,8 +548,7 @@ ClassSubList["speaker of ancestors"] = {
 				"I learn the Chill Touch, Spare the Dying, and Thaumaturgy cantrips",
 				"I learn one language of my choice from my Ancestors and become proficient in History"
 			]),
-			eval : "AddLanguage('+1 from Ancestors', 'Shaman (Blessing of the Ancestors)');",
-			removeeval : "RemoveLanguage('+1 from Ancestors', 'Shaman (Blessing of the Ancestors)');",
+			languageProfs : [1],
 			spellcastingBonus : {
 				name : "Blessings of the Ancestors",
 				spells : ["chill touch", "spare the dying", "thaumaturgy"],
@@ -598,8 +594,7 @@ ClassSubList["speaker of ancestors"] = {
 				"I have resistance to necrotic damage",
 				"My HP maximum can't be reduced, and I no longer need food or water"
 			]),
-			eval : "AddResistance('Necrotic', 'Death\\'s Comfort')",
-			removeeval : "RemoveResistance('Necrotic');"
+			dmgres : ["Necrotic"]
 		},
 		"subclassfeature14" : {
 			name : "Deny the Untimely",
@@ -673,9 +668,8 @@ ClassSubList["speaker of dreams"] = {
 				"I am immune to being charmed and have resistance to psychic damage",
 				"When a creature deals psychic damage to me, that creature takes the same damage"
 			]),
-			eval : "AddResistance('Psychic', 'Thought Shield')",
-			removeeval : "RemoveResistance('Psychic');",
-			save : "Immune to Charm Effects",
+			dmgres : ["Psychic"],
+			savetxt : { immune : ["charmed"] }
 		},
 		"subclassfeature14" : {
 			name : "Dreamscape",
@@ -708,8 +702,8 @@ ClassSubList["speaker of flames"] = {
 				"I learn the Control Flames, Fire Bolt, and Produce Flame cantrips",
 				"I learn the Ignan dialect of the Primordial language, and proficiency in an artisan's tool"
 			]),
-			eval : "AddLanguage('Ignan', 'Shaman (Blessing of Flame)'); AddTool('Type of artisan\\'s tools', 'Shaman (Blessing of Flame)');", 
-			removeeval : "RemoveLanguage('Ignan', 'Shaman (Blessing of Flame)'); RemoveTool('Type of artisan\\'s tools', 'Shaman (Blessing of Flame)');",
+			toolProfs : [["Artisan's tools", 1]],
+			languageProfs : ["Ignan"],
 			spellcastingBonus : {
 				name : "Blessings of the Flame",
 				spells : ["control flames", "fire bolt", "produce flame"],
@@ -751,7 +745,7 @@ ClassSubList["speaker of flames"] = {
 				"I'm immune to fire damage and I regain HP instead of being damaged by it",
 				"The HP regained equals half the fire damage taken, up to half my HP maximum"
 			]),
-			save : "Immunity to Fire"
+			savetxt : { immune : ["fire"] }
 		},
 		"subclassfeature14" : {
 			name : "Flames of Creation",
@@ -787,8 +781,7 @@ ClassSubList["speaker of stones"] = {
 				"I learn the Magic Stone, Mold Earth, and Thorn Whip cantrips",
 				"I learn the Terran dialect of the Primordial language, and gain proficiency in Athletics"
 			]),
-			eval : "AddLanguage('Terran', 'Shaman (Blessing of Stone)');",
-			removeeval : "RemoveLanguage('Terran', 'Shaman (Blessing of Stone)');",
+			languageProfs : ["Terran"],
 			spellcastingBonus : {
 				name : "Blessings of the Stone",
 				spells : ["magic stone", "mold earth", "thorn whip"],
@@ -824,9 +817,8 @@ ClassSubList["speaker of stones"] = {
 				"I have resistance to bludgeoning damage",
 				"I have adv. on Str and Dex saves made against effects that would knock me prone"
 			]),
-			eval : "AddResistance('Bludgeoning', 'Roots of the Mountain');",
-			removeeval : "RemoveResistance('Bludgeoning');",
-			save : "Adv. on Str and Dex saves vs. effects that make me prone",
+			dmgres : ["Bludgeoning"],
+			savetxt : { text : ["Adv. on Str and Dex saves vs. effects that make me prone"] }
 		},
 		"subclassfeature14" : {
 			name : "Preserve in Stone",
@@ -858,8 +850,7 @@ ClassSubList["speaker of waters"] = {
 				"I learn the Acid Splash, Frostbite, and Shape Water cantrips",
 				"I learn the Aquan dialect of the Primordial language, and proficiency in Investigation"
 			]),
-			eval : "AddLanguage('Aquan', 'Shaman (Blessing of Waters)');",
-			removeeval : "RemoveLanguage('Aquan', 'Shaman (Blessing of Waters)');",
+			languageProfs : ["Aquan"],
 			spellcastingBonus : {
 				name : "Blessings of the Waters",
 				spells : ["acid splash", "frostbite", "shape water"],
@@ -900,9 +891,8 @@ ClassSubList["speaker of waters"] = {
 				"I have resistance to cold and fire damage and suffer no harm from -20\xB0 to 120\xB0 F",
 				"I have adv. on saves vs. effects that would reduce my speed or light me on fire"
 			]),
-			eval : "AddResistance('Cold', 'Master of Ice and Steam'); AddResistance('Fire', 'Master of Ice and Steam');",
-			removeeval : "RemoveResistance('Cold'); RemoveResistance('Fire');",
-			save : "Adv. saves vs. effects that reduce speed or light me on fire"
+			dmgres : ["Cold", "Fire"],
+			savetxt : { adv_vs : ["effects that reduce speed or light me on fire"] }
 		},
 		"subclassfeature14" : {
 			name : "Move Across the Waters",
@@ -940,8 +930,7 @@ ClassSubList["speaker of winds"] = {
 				"I learn the Gust, Lashing Wind, and Shocking Grasp cantrips",
 				"I learn the Auran dialect of the Primordial language, and gain proficiency in Acrobatics"
 			]),
-			eval : "AddLanguage('Auran', 'Shaman (Blessing of the Wind)');",
-			removeeval : "RemoveLanguage('Auran', 'Shaman (Blessing of the Wind)');",
+			languageProfs : ["Auran"],
 			spellcastingBonus : {
 				name : "Blessings of the Wind",
 				spells : ["gust", "lashing wind", "shocking grasp"],
@@ -979,9 +968,8 @@ ClassSubList["speaker of winds"] = {
 			source : ["MW:SC", 13],
 			minlevel : 10,
 			description : "\n   " + "I have resistance to lightning and thunder damage, I am immune to being paralyzed",
-			eval : "AddResistance('Lightning', 'Weather the Storm'); AddResistance('Thunder', 'Weather the Storm');",
-			removeeval : "RemoveResistance('Lightning'); RemoveResistance('Thunder');",
-			save : "Immunity to being Paralyzed",
+			dmgres : ["Lightning", "Thunder"],
+			savetxt : { immune : ["paralyzed"] }
 		},
 		"subclassfeature14" : {
 			name : "Stormwalker",

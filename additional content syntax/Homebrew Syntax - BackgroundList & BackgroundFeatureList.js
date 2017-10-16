@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Background and Background Feature
 	Effect:		This is the syntax for adding a new background and the syntax for adding a new background feature below it
-	Sheet:		v12.83 (2017-02-18)
+	Sheet:		v12.998 (2017-09-15)
 */
 
 BackgroundList["where i am from"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
@@ -18,7 +18,7 @@ BackgroundList["where i am from"] = { //Object name; Note the use of only lower 
 	
 	name : "Where I am From", //required; the name as used
 	
-	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js"
+	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js". // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
 	
 	skills : ["Deception", "Stealth"], //optional; skill proficiencies gained from having the background. If the background doesn't give fixed proficiencies, but instead gives a choice, delete this line and use the line below, "skillstxt"
 	
@@ -102,9 +102,10 @@ BackgroundList["where i am from"] = { //Object name; Note the use of only lower 
 		"Spy"
 	], //optional; the extra options the background gives on the first page of the sheet (in line Background at the top there are two drop-down menus). The first entry in this array is what is used for the mouseover text. If your background offers no extra features, simply delete this entry. Make sure that text you enter here fits into the field, or it won't look as good
 	
-	tools : ["A type of gaming set", "Thieves' tools"], //optional; tool proficiencies gained from the background. If the background offers no tool proficiencies, you can delete this line
+/* SYNTAX CHANGE v12.998 >> old syntax for 'tools' and 'languages' are no longer supported!! */
+	toolProfs : [["Musical instrument", 3], ["Thieves' tools", "Dex"]], // optional; this is an array with the tool proficiencies gained. Each entry can be its own array of 2 entries. The first entry is the name of the tool and the second entry is either 1) a number if the tool is yet to be chosen, or 2) the 3-letter ability score abbreviation if the tool is to be listed in the skill section and have a bonus calculated
 	
-	languages : ["+1 from "], //optional; languages gained from the background. If the background offers no languages, you can delete this line
+	languageProfs : [1, "Elvish"], // optional; this is an array of the language proficiencies gained. An entry can either be 1) a string that represents the language learned or 2) a number which is the number of language gained that can be chosen by the player
 	
 	variant : ["urban bounty hunter", "pirate"], //optional; the variants this background has, using the exact names of the entry of the variant in the BackgroundSubList. If you don't want to define a variant, just put |variant : [],|
 	

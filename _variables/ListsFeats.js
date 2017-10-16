@@ -10,8 +10,7 @@ var FeatsList = {
 		name : "Alert",
 		source : ["P", 165],
 		description : "I can't be surprised while I'm conscious. I have a +5 bonus on initiative rolls. Other creatures don't gain advantage on attack rolls against me as a result of being hidden from me.",
-		eval : "AddToModFld('Init Bonus', 5);",
-		removeeval : "AddToModFld('Init Bonus', -5);"
+		addMod : { type : "skill", field : "Init", mod : 5, text : "I have a +5 bonus on initiative rolls." }
 	},
 	"athlete" : {
 		name : "Athlete",
@@ -28,7 +27,7 @@ var FeatsList = {
 	"crossbow expert" : {
 		name : "Crossbow Expert",
 		source : ["P", 165],
-		description : "I ignore the loading quality of crossbows I'm proficient with. I don't suffer disadvantage on ranged attack rolls for being within 5 feet of a hostile. When I attack with a one-handed weapon, I can use a bonus action to attack with a loaded hand crossbow I'm holding.",
+		description : "I ignore the loading quality of crossbows I'm proficient with. I don't suffer disadvantage on ranged attack rolls for being within 5 feet of a hostile. When I attack with a one-handed weapon, I can use a bonus action to attack with a hand crossbow I'm holding.",
 		action : ["bonus action", " (with Attack action)"],
 		calcChanges : {
 			atkAdd : ["if ((/crossbow/i).test(WeaponName) && fields.Proficiency) {fields.Description = fields.Description.replace(/(,? ?loading|loading,? ?)/i, '');};", "I ignore the loading quality of crossbows I'm proficient with."]
@@ -53,8 +52,9 @@ var FeatsList = {
 		name : "Dungeon Delver",
 		source : ["P", 166],
 		description : "I have advantage on Wis (Perception) and Int (Investigation) checks made to detect the presence of secret doors. I can search for traps while traveling at a normal pace. I have resistance to damage dealt by traps and advantage on saves to avoid or resist traps.",
-		eval : "AddString('Saving Throw advantages / disadvantages', 'Adv. vs. traps', '; '); AddResistance('Traps', 'Dungeon Delver'); AddString('Vision', 'Adv. on Perception and Investigation for secret doors', '; ');",
-		removeeval : "RemoveString('Saving Throw advantages / disadvantages', 'Adv. vs. traps'); RemoveResistance('Traps'); RemoveString('Vision', 'Adv. on Perception and Investigation for secret doors');"
+		dmgres : ["Traps"],
+		savetxt : { adv_vs : ["traps"] },
+		vision : [["Adv. on Perception and Investigation for secret doors", 0]]
 	},
 	"durable" : {
 		name : "Durable",
@@ -139,8 +139,7 @@ var FeatsList = {
 		calculate : "event.value = \"I can ably create written ciphers that others can't decipher unless I teach them, they succeed on an Intelligence check DC \" + (What(\"Int\") + What(\"Proficiency Bonus\")) + \" (Intelligence score + proficiency bonus), or they use magic to decipher it. I learn three languages of my choice. [+1 Intelligence]\"",
 		improvements : "Linguist (feat): +1 Intelligence;",
 		scores : [0, 0, 0, 1, 0, 0],
-		eval : "AddLanguage(\"+3 from Linguist feat\", \"the Linguist feat\");",
-		removeeval : "RemoveLanguage(\"+3 from Linguist feat\", \"the Linguist feat\");"
+		languageProfs : [3]
 	},
 	"lucky" : {
 		name : "Lucky",
@@ -153,8 +152,9 @@ var FeatsList = {
 		name : "Mage Slayer",
 		source : ["P", 168],
 		description : "As a reaction, I can make a melee weapon attack on a creature within 5 ft of me that casts a spell. Concentration checks from damage from me are made with disadvantage. I have advantage on saving throws against spells cast by creatures within 5 feet of me.",
-		eval : "AddString('Saving Throw advantages / disadvantages', 'Advantage on saves vs. spells cast within 5 ft', '; '); AddAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)', 'the Mage Slayer feat');",
-		removeeval : "RemoveString('Saving Throw advantages / disadvantages', 'Advantage on saves vs. spells cast within 5 ft'); RemoveAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)');"
+		savetxt : { adv_vs : ["spells cast within 5 ft"] },
+		eval : "AddAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)', 'the Mage Slayer feat');",
+		removeeval : "RemoveAction('reaction', 'Melee weapon attack (if spell cast in 5 ft)');"
 	},
 	"magic initiate [bard]" : {
 		name : "Magic Initiate [Bard]",
@@ -211,15 +211,14 @@ var FeatsList = {
 		description : "Wearing medium armor doesn't impose disadvantage on my Dexterity (Stealth) checks. When I wear medium armor, I can add up to 3, rather than 2, to my AC if my Dexterity is 16 or higher.",
 		prerequisite : "Proficiency with medium armor",
 		prereqeval : "tDoc.getField('Proficiency Armor Medium').isBoxChecked(0)",
-		eval : "Value(\"Medium Armor Max Mod\", 3); if (CurrentArmour.known && ArmourList[CurrentArmour.known].type === \"medium\") {Checkbox(\"AC Stealth Disadvantage\", false)}",
-		removeeval : "tDoc.resetForm([\"Medium Armor Max Mod\"]); if (CurrentArmour.known && ArmourList[CurrentArmour.known].type === \"medium\") {Checkbox(\"AC Stealth Disadvantage\", ArmourList[CurrentArmour.known].stealthdis)};"
+		eval : "Value('Medium Armor Max Mod', 3); if (CurrentArmour.known && ArmourList[CurrentArmour.known].type === 'medium') {Checkbox('AC Stealth Disadvantage', false); ShowHideStealthDisadv();}",
+		removeeval : "tDoc.resetForm(['Medium Armor Max Mod']); if (CurrentArmour.known && ArmourList[CurrentArmour.known].type === 'medium') {Checkbox('AC Stealth Disadvantage', ArmourList[CurrentArmour.known].stealthdis && !(/mithral/i).test(CurrentArmour.field)); ShowHideStealthDisadv();};"
 	},
 	"mobile" : {
 		name : "Mobile",
 		source : ["P", 168],
 		description : "When I use the Dash action, difficult terrain doesn't cost me extra movement that turn. When I make a melee attack against a creature, I don't provoke opportunity attacks from that creature for the rest of the turn, whether I hit or not. [+10 ft speed]",
-		eval : "ChangeSpeed(10);",
-		removeeval : "ChangeSpeed(-10);"
+		speed : { allModes : "+10" }
 	},
 	"moderately armored" : {
 		name : "Moderately Armored",
@@ -240,8 +239,7 @@ var FeatsList = {
 		source : ["P", 168],
 		description : "If I can see a creature's mouth while it is speaking a language I understand, I can interpret what it's saying by reading its lips. I have a +5 bonus to passive Wisdom (Perception) and passive Intelligence (Investigation) scores. [+1 Intelligence or Wisdom]",
 		improvements : "Observant (feat): +1 Intelligence or Wisdom;",
-		eval : "AddToModFld('Passive Perception Bonus', 5);",
-		removeeval : "AddToModFld('Passive Perception Bonus', -5);"
+		addMod : { type : "skill", field : "passive perception", mod : 5, text : "I have a +5 bonus to passive Wisdom (Perception)." }
 	},
 	"polearm master" : {
 		name : "Polearm Master",
@@ -257,8 +255,7 @@ var FeatsList = {
 		description : "I gain proficiency with Strength saving throws. [+1 Strength]",
 		improvements : "Resilient (feat): +1 Strength;",
 		scores : [1, 0, 0, 0, 0, 0],
-		eval : "Checkbox(\"Str ST Prof\", true, \"Proficiency with Strength saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Str ST Prof\", false, \"\")"
+		saves : ["Str"]
 
 	},
 	"resilient [dexterity]" : {
@@ -267,8 +264,7 @@ var FeatsList = {
 		description : "I gain proficiency with Dexterity saving throws. [+1 Dexterity]",
 		improvements : "Resilient (feat): +1 Dexterity;",
 		scores : [0, 1, 0, 0, 0, 0],
-		eval : "Checkbox(\"Dex ST Prof\", true, \"Proficiency with Dexterity saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Dex ST Prof\", false, \"\")"
+		saves : ["Dex"]
 
 	},
 	"resilient [constitution]" : {
@@ -277,8 +273,7 @@ var FeatsList = {
 		description : "I gain proficiency with Constitution saving throws. [+1 Constitution]",
 		improvements : "Resilient (feat): +1 Constitution;",
 		scores : [0, 0, 1, 0, 0, 0],
-		eval : "Checkbox(\"Con ST Prof\", true, \"Proficiency with Constitution saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Con ST Prof\", false, \"\")"
+		saves : ["Con"]
 
 	},
 	"resilient [intelligence]" : {
@@ -287,8 +282,7 @@ var FeatsList = {
 		description : "I gain proficiency with Intelligence saving throws. [+1 Intelligence]",
 		improvements : "Resilient (feat): +1 Intelligence;",
 		scores : [0, 0, 0, 1, 0, 0],
-		eval : "Checkbox(\"Int ST Prof\", true, \"Proficiency with Intelligence saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Int ST Prof\", false, \"\")"
+		saves : ["Int"]
 
 	},
 	"resilient [wisdom]" : {
@@ -297,8 +291,7 @@ var FeatsList = {
 		description : "I gain proficiency with Wisdom saving throws. [+1 Wisdom]",
 		improvements : "Resilient (feat): +1 Wisdom;",
 		scores : [0, 0, 0, 0, 1, 0],
-		eval : "Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Wis ST Prof\", false, \"\")"
+		saves : ["Wis"]
 
 	},
 	"resilient [charisma]" : {
@@ -307,8 +300,7 @@ var FeatsList = {
 		description : "I gain proficiency with Charisma saving throws. [+1 Charisma]",
 		improvements : "Resilient (feat): +1 Charisma;",
 		scores : [0, 0, 0, 0, 0, 1],
-		eval : "Checkbox(\"Cha ST Prof\", true, \"Proficiency with Charisma saving throw was gained from the Resilient feat\")",
-		removeeval : "Checkbox(\"Cha ST Prof\", false, \"\")"
+		saves : ["Cha"]
 
 	},
 	"ritual caster [bard]" : {
@@ -403,8 +395,7 @@ var FeatsList = {
 		description : "I can try to hide when I am lightly obscured. My position is not revealed when I am hidden from a creature and miss it with a ranged weapon attack. Dim light doesn't impose disadvantage on my Wisdom (Perception) checks relying on sight.",
 		prerequisite : "Dexterity 13 or higher",
 		prereqeval : "What('Dex') >= 13",
-		eval : "AddString('Vision', 'No disadv. on Perception in dim light to see', '; ');",
-		removeeval : "RemoveString('Vision', 'No disadv. on Perception in dim light to see');"
+		vision : [["No disadv. on Perception in dim light", 0]]
 	},
 	"spell sniper [bard]" : {
 		name : "Spell Sniper [Bard]",
@@ -480,7 +471,7 @@ var FeatsList = {
 	},
 	"svirfneblin magic" : {
 		name : "Svirfneblin Magic",
-		source : ["E", 7],
+		source : [["E", 7], ["S", 115]],
 		prerequisite : "Being a Svirfneblin (Deep Gnome)",
 		prereqeval : "CurrentRace.known === 'deep gnome'",
 		description : "I can cast Nondetection on myself at will, without a material component. I can also cast the spells Blindness/Deafness, Blur, and Disguise Self once each. I regain the ability to cast these spells when I finish a long rest. Intelligence is my spellcasting ability for these spells.",
@@ -492,8 +483,8 @@ var FeatsList = {
 			atwill : true
 		}, {
 			name : "1x long rest (self only)",
-			spells : ["disguise self", "blindness/deafness", "blur"],
-			selection : ["disguise self", "blindness/deafness", "blur"],
+			spells : ["blindness/deafness", "blur", "disguise self"],
+			selection : ["blindness/deafness", "blur", "disguise self"],
 			oncelr : true,
 			times : 3
 		}]

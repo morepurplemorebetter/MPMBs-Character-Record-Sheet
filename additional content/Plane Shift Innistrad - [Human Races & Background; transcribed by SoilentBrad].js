@@ -1,5 +1,5 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://bit.ly/MPMBCharTools
+	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
 	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 	
 	-KEEP IN MIND-
@@ -12,7 +12,7 @@
 	Effect:		This script adds a number of races and creatures from the Magic: The Gathering plane of Innistrad
 				This is taken from the Plane Shift: Innistrad article (http://www.dragonmag.com/5.0/#!/article/106375/102161027)
 	Code by:	SoilentBrad (and tiny corrections by MPMB)
-	Date:		2017-04-24 (sheet v12.96)
+	Date:		2017-09-22 (sheet v12.998)
 */
 
 SourceList["PS:I"] = {
@@ -29,8 +29,10 @@ RaceList["human, gavony"] = {
 	source : ["PS:I", 8],
 	plural : "Gavonians",
 	size : 3,
-	speed : [30, 20],
-	languages : ["Common", "+1 from human"],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
+	languageProfs : ["Common", 1],
 	age : " reach adulthood in their late teens and live less than a century",
 	height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
 	weight : " weigh around 155 lb (110 + 2d8 \xD7 2d4 lb)",
@@ -47,9 +49,11 @@ RaceList["human, kessig"] = {
 	source : ["PS:I", 8],
 	plural : "Kessigers",
 	size : 3,
-	speed : [40, 30],
+	speed : {
+		walk : { spd : 40, enc : 30 }
+	},
 	skills : ["Survival"],
-	languages : ["Common", "+1 from human"],
+	languageProfs : ["Common", 1],
 	age : " reach adulthood in their late teens and live less than a century",
 	height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
 	weight : " weigh around 155 lb (110 + 2d8 \xD7 2d4 lb)",
@@ -66,9 +70,11 @@ RaceList["human, nephalia"] = {
 	source : ["PS:I", 8],
 	plural : "Nephalians",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	skillstxt : "Any combination of four skills and tools",
-	languages : ["Common", "+1 from human"],
+	languageProfs : ["Common", 1],
 	age : " reach adulthood in their late teens and live less than a century",
 	height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
 	weight : " weigh around 155 lb (110 + 2d8 \xD7 2d4 lb)",
@@ -85,9 +91,11 @@ RaceList["human, stensia"] = {
 	source : ["PS:I", 8],
 	plural : "Stensians",
 	size : 3,
-	speed : [30, 20],
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
 	skills : ["Intimidation"],
-	languages : ["Common", "+1 from human"],
+	languageProfs : ["Common", 1],
 	age : " reach adulthood in their late teens and live less than a century",
 	height : " range from 5 to over 6 feet tall (4'9\" + 2d8\")",
 	weight : " weigh around 155 lb (110 + 2d8 \xD7 2d4 lb)",
@@ -165,7 +173,7 @@ BackgroundList["inquisitor"] = {
 		"I might have made a promise to a demon that I can't keep.",
 		"I'll do whatever grim task must be done, for my soul is already lost."
 	],
-	tools : ["One set of artisan's tools", "Thieves' tools"],
+	toolProfs : [["Artisan's tools", 1], ["Thieves' tools", "Dex"]],
 	variant : []
 };
 BackgroundFeatureList["legal authority"] = {

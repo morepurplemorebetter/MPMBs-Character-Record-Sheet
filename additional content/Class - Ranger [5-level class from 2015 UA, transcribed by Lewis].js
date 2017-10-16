@@ -16,7 +16,7 @@
 				https://media.wizards.com/2015/downloads/dnd/DX_0907_UA_RangerOptions.pdf
 				
 	Code by:	Lewis Henderson
-	Date:		2017-06-27 (sheet v12.994)
+	Date:		2017-09-05 (sheet v12.998)
 
 	Please note that the original .pdf has the hit dice as 2d6 per level.
 	At this time, there isn't any way to implement this, so the hit dice is recorded as a d12.
@@ -39,7 +39,7 @@ ClassList["ranger"] = {
 	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 	saves : ["Dex", "Wis"],
 	skills : ["\n\n" + toUni("Ranger") + ": Choose three from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival", "\n\n" + toUni("Multiclass Ranger") + ": Choose one from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival"],
-	tools : ["Herbalism kit"],
+	toolProfs : { primay : ["Herbalism kit"] },
 	armor : [
 		[true, false, false, true],
 		[true, false, false, true]

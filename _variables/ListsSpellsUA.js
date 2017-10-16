@@ -94,7 +94,7 @@ SpellsList["arcane hacking"] = {
 	classes : ["sorcerer", "warlock", "wizard"],
 	source : ["UA:MM", 5],
 	ritual : false,
-	level : 5,
+	level : 2,
 	school : "Trans",
 	time : "1 a",
 	range : "Self",
@@ -181,7 +181,7 @@ SpellsList["infallible relay"] = {
 	classes : ["sorcerer", "warlock", "wizard"],
 	source : ["UA:MM", 7],
 	ritual : false,
-	level : 3,
+	level : 1,
 	school : "Div",
 	time : "1 min",
 	range : "Self",
@@ -375,8 +375,8 @@ SpellsList["hand of radiance"] = {
 	description : "Any creatures you see in 5-ft radius save or 1d6 Radiant damage; +1d6 damage at CL 5, 11, and 17",
 	descriptionFull : "You raise your hand, and burning radiance erupts from it. Each creature of your choice that you can see within 5 feet of you must succeed on a Constitution saving throw or take 1d6 radiant damage." + "\n   " + "The spell's damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6)."
 };
-SpellsList["healing elixer"] = {
-	name : "Healing Elixer",
+SpellsList["healing elixir"] = {
+	name : "Healing Elixir",
 	classes : ["warlock", "wizard"],
 	source : ["UA:SS", 3],
 	ritual : false,

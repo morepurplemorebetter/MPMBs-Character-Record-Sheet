@@ -66,6 +66,18 @@ var ArmourList = {
 		strReq : 0
 	},
 
+	// TP Tortle's shell armour
+	"tortle shell" : {
+		regExpSearch : /^(?=.*tortle)(?=.*shell).*$/i,
+		name : "Tortle's Shell",
+		source : ["TP", 4],
+		type : "",
+		ac : 17,
+		dex : -10,
+		stealthdis : false,
+		strReq : 0
+	},
+
 	"mage armor" : {
 		regExpSearch : /^(?=.*(mage|magic))(?=.*armou?r).*$/i,
 		name : "Mage armor",
@@ -1135,7 +1147,6 @@ var WeaponsList = {
 		range : "15-ft cone",
 		description : "Hits all in area; Dex save, success - half damage; Usable only once per short rest",
 		abilitytodamage : false,
-		monkweapon : false,
 		dc : true
 	},
 	
@@ -1153,11 +1164,11 @@ var WeaponsList = {
 		monkweapon : true
 	},
 	
-	// VGtM Tabaxi weapon
-	"cat's claws" : {
-		regExpSearch : /^(?=.*\b(cat|dragon|retractable))(?=.*\bclaws?\b).*$/i,
-		name : "Cat's Claws",
-		source : ["V", 115],
+	// VGtM Tabaxi weapon, UA:FR Dragon Fear feat, TP Tortle weapon
+	"claws" : {
+		regExpSearch : /^(?=.*\b(sharp|cat|dragon|retractable|tortle))(?=.*\bclaws?\b).*$/i,
+		name : "Sharp Claws",
+		source : [["V", 115], ["UA:FR", 2], ["TP", 4]],
 		ability : 1,
 		type : "Natural",
 		damage : [1, 4, "slashing"],
@@ -1248,8 +1259,8 @@ var WeaponsList = {
 		abilitytodamage : false,
 		dc : true
 	},
-	"thunder cannon" : {
-		regExpSearch : /^(?!.*(blast|monger|piercing|explosive))(?=.*\bthunder)(?=.*cannon\b).*$/i,
+	"thunder cannon-thunder cannon" : {
+		regExpSearch : /^(?!.*(blast|monger|piercing|explosive|round))(?=.*\bthunder)(?=.*cannon\b).*$/i,
 		name : "Thunder Cannon",
 		source : ["UA:A", 6],
 		ability : 2,
@@ -1627,6 +1638,22 @@ var WeaponsList = {
 		abilitytodamage : false,
 		dc : true
 	},
+	
+	// Tomb of Annihilation weapon addition
+	"yklwa" : { 
+		regExpSearch : /yklwa/i, 
+		name : "Yklwa", 
+		source : ["ToA", 32], 
+		list : "melee",
+		ability : 1,
+		type : "Simple",
+		damage : [1, 8, "piercing"],
+		range : "Melee, 10/30 ft",
+		weight : 3,
+		description : "Thrown",
+		monkweapon : true,
+		abilitytodamage : true
+	}
 };
 
 //A list of all types of 'ammo' for the ammunition section on the first page
@@ -1781,7 +1808,7 @@ var AmmoList = {
 		checks : [".Bullet"],
 		display : 50,
 		invName : "Thunder Cannon Rounds",
-		alternatives : [/^((?=.*arcane)(?=.*magazine)|(?=.*thunder)(?=.*cannon)).*$/i]
+		alternatives : [/^((?=.*arcane)(?=.*magazine)|(?=.*thunder)(?=.*cannon)(?=.*rounds)).*$/i]
 	},
 
 	// DMG firearms ammo
@@ -1819,6 +1846,7 @@ var AmmoList = {
 var PacksList = {
 	burglar : {
 		name : "Burglar's pack (16 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Bag of 1000 ball bearings", 1, 2],
@@ -1838,6 +1866,7 @@ var PacksList = {
 	},
 	diplomat : {
 		name : "Diplomat's pack (39 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Chest, with:", "", 25],
 			["Map or scroll case", 2, 1],
@@ -1854,6 +1883,7 @@ var PacksList = {
 	},
 	dungeoneer : {
 		name : "Dungeoneer's pack (12 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Crowbar", "", 5],
@@ -1868,6 +1898,7 @@ var PacksList = {
 	},
 	entertainer : {
 		name : "Entertainer's pack (40 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Bedroll", "", 7],
@@ -1880,6 +1911,7 @@ var PacksList = {
 	},
 	explorer : {
 		name : "Explorer's pack (10 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Bedroll", "", 7],
@@ -1893,6 +1925,7 @@ var PacksList = {
 	},
 	priest : {
 		name : "Priest's pack (19 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Blanket", "", 3],
@@ -1908,6 +1941,7 @@ var PacksList = {
 	},
 	scholar : {
 		name : "Scholar's pack (40 gp)",
+		source : ["PHB", 151],
 		items : [
 			["Backpack, with:", "", 5],
 			["Book of lore", "", 5],
@@ -1917,7 +1951,24 @@ var PacksList = {
 			["Little bag of sand", "", 1],
 			["Small knife", "", 0.25]
 		]
-	}
+	},
+	monsterhunter : {
+		name : "Monster hunter's pack (33 gp)",
+		source : ["CoS", 209],
+		items : [
+			["Chest, with:", "", 25],
+			["Crowbar", "", 5],
+			["Hammer", "", 3],
+			["Wooden stake", 3, 1],
+			["Amulet holy symbol", "", ""],
+			["Holy water, flasks of", 1, 1],
+			["Manacles", "", 6],
+			["Steel mirror", "", 0.5],
+			["Oil, flasks of", 1, 1],
+			["Tinderbox", "", 1],
+			["Torches", 3, 1]
+		]
+	},
 };
 
 var GearList = {

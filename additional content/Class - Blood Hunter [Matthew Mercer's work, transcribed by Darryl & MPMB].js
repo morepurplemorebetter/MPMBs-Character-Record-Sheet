@@ -18,7 +18,7 @@
 				
 	Code by:	Darryl Cook & MorePurpleMoreBetter
 				Order of the Lycan code by MorePurpleMoreBetter
-	Date:		2017-02-28 (sheet v12.83)
+	Date:		2017-09-22 (sheet v12.998)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 	
@@ -35,6 +35,10 @@ ClassList["blood hunter"] = {
 	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 	saves : ["Str", "Wis"],
 	skills : ["\n\n" + toUni("Blood Hunter") + ": Choose two from Acrobatics, Arcane, Athletics, Insight, Investigation, and Survival."],
+	toolProfs : {
+		primary : ["Alchemist's supplies"],
+		secondary : ["Alchemist's supplies"]
+	},
 	tools : ["Alchemist's supplies", "Alchemist's supplies"],
 	armor : [
 		[true, true, false, false],
@@ -214,7 +218,10 @@ ClassList["blood hunter"] = {
 			source : ["MM:BH", 4],
 			minlevel : 14,
 			description : "\n   " + "I am immune to being frightened, and have adv. on saves against magical charm effects",
-			save : "Immune to being frightened; Adv. vs. magical charm effects"
+			savetxt : {
+				immune : ["frightened"],
+				adv_vs : ["charmed"]
+			}
 		},
 		"sanguine mastery" : {
 			name : "Sanguine Mastery",
@@ -266,8 +273,7 @@ ClassSubList["order of the ghostslayer"] = {
 			source : ["MM:BH", 5],
 			minlevel : 15,
 			description : "\n   " + "Out to 30 feet, I can see in normal darkness as well as invisible creatures and objects",
-			eval : "AddString(\"Vision\",\"Darkvision 30 ft; See invisible 30 ft\", \"; \");",
-			removeeval : "RemoveString(\"Vision\", \"Darkvision 30 ft; See invisible 30 ft\");"
+			vision : [["Darkvision", 30], ["See invisible", 30]]
 		},
 		"subclassfeature18" : {
 			name : "Vengeful Spirit",
@@ -496,7 +502,8 @@ ClassSubList["order of the mutant"] = {
 				name : "Aether",
 				source : ["MM:BH", 7],
 				description : "\n   " + "I gain 20 ft flying speed" + "\n    - " + "Side effect: I have disadvantage on Strength and Dexterity ability checks",
-				prereqeval : "classes.known['blood hunter'].level >= 11"
+				prereqeval : "classes.known['blood hunter'].level >= 11",
+				speed : { fly : { spd : 20, enc : 10 } }
 			},
 			"celerity" : {
 				name : "Celerity",
@@ -528,7 +535,8 @@ ClassSubList["order of the mutant"] = {
 			"nighteye" : {
 				name : "Nighteye",
 				source : ["MM:BH", 7],
-				description : "\n   " + "I gain darkvision up to 60 ft, or add an extra 60 ft to it if I already have darkvision" + "\n    - " + "Side effect: I gain sunlight sensitivity"
+				description : "\n   " + "I gain darkvision up to 60 ft, or add an extra 60 ft to it if I already have darkvision" + "\n    - " + "Side effect: I gain sunlight sensitivity",
+				vision : [["Darkvision", "+60"], ["Sunlight Sensitivity", 0]],
 			},
 			"potency" : {
 				name : "Potency",
@@ -550,7 +558,8 @@ ClassSubList["order of the mutant"] = {
 				name : "Reconstruction",
 				source : ["MM:BH", 8],
 				description : "\n   " + "At the start of my turn in combat when I'm conscious and above 0 HP, I regenerate HP" + "\n   " + "The amount of HP I regenerate is equal to 2 times my mutagen score" + "\n    - " + "Side effect: My speed decreases by 10 ft",
-				prereqeval : "classes.known['blood hunter'].level >= 7"
+				prereqeval : "classes.known['blood hunter'].level >= 7",
+				speed : { allModes : "-10" }
 			},
 			"sagacity" : {
 				name : "Sagacity",
@@ -597,7 +606,7 @@ ClassSubList["order of the mutant"] = {
 			source : ["MM:BH", 7],
 			minlevel : 15,
 			description : "\n   " + "I gain immunity to poison damage and the poison condition",
-			save : "Immune to poison damage and the poison condition"
+			savetxt : { immune : ["poison"] }
 		},
 		"subclassfeature18" : {
 			name : "Exalted Mutation",
@@ -630,8 +639,7 @@ ClassSubList["order of the lycan"] = {
 			source : ["MM:OotL", 2],
 			minlevel : 3,
 			description : "\n   " + "I gain advantage on Wisdom (Perception) checks that rely on hearing or smell",
-			eval : "AddString(\"Vision\",\"Adv. on Wis (Perception) checks that rely on hearing or smell\", \"; \");",
-			removeeval : "RemoveString(\"Vision\", \"Adv. on Wis (Perception) checks that rely on hearing or smell\");"
+			vision : [["Adv. on Perception relying on hearing or smell", 0]]
 		},
 		"subclassfeature3.1" : {
 			name : "Hybrid Transformation",
@@ -641,9 +649,10 @@ ClassSubList["order of the lycan"] = {
 			usages : ["", "", 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3],
 			recovery : "short rest",
 			action : ["action", " (start/end)"],
-			save : "Adv. on Str saves while in Hybrid form",
-			eval : "AddWeapon(\"Predatory Strike\"); AddResistance(\"Bludgeon. (in hybrid)\", \"Order of the Lycan (Hybrid Transformation)\"); AddResistance(\"Piercing (in hybrid)\", \"Order of the Lycan (Hybrid Transformation)\"); AddResistance(\"Slashing (in hybrid)\", \"Order of the Lycan (Hybrid Transformation)\"); AddAction(\"bonus action\", \"Predatory Strike (with Attack action)\", \"Order of the Lycan (Hybrid Transformation)\");",
-			removeeval : "RemoveWeapon(\"Predatory Strike\"); RemoveResistance(\"Bludgeon. (in hybrid)\"); RemoveResistance(\"Piercing (in hybrid)\"); RemoveResistance(\"Slashing (in hybrid)\"); RemoveAction(\"bonus action\", \"Predatory Strike (with Attack action)\");",
+			savetxt : { text : ["Adv. on Str saves in Hybrid form"] },
+			dmgres : [["Bludgeoning", "Bludg. (in hybrid)"], ["Piercing", "Pierc. (in hybrid)"], ["Slashing", "Slash. (in hybrid)"]],
+			eval : "AddWeapon(\"Predatory Strike\"); AddAction(\"bonus action\", \"Predatory Strike (with Attack action)\", \"Order of the Lycan (Hybrid Transformation)\");",
+			removeeval : "RemoveWeapon(\"Predatory Strike\"); RemoveAction(\"bonus action\", \"Predatory Strike (with Attack action)\");",
 			changeeval : "UpdateHybridForm();"
 		},
 		"subclassfeature7" : {
@@ -651,8 +660,7 @@ ClassSubList["order of the lycan"] = {
 			source : ["MM:OotL", 2],
 			minlevel : 7,
 			description : "\n   " + "My speed increases with 10 ft" + "\n   " + "I also add 10 ft to my long jump distance and 3 ft to my high jump distance" + "\n   " + "In my Hybrid form, I gain the Improved Predatory Strikes feature",
-			eval : "ChangeSpeed(10);",
-			removeeval : "ChangeSpeed(-10);"
+			speed : { allModes : "+10" }
 		},
 		"subclassfeature11" : {
 			name : "Advanced Transformation",
@@ -711,6 +719,9 @@ WeaponsList["predatory strike"] = {
 
 //a function to update the notes page with the Hybrid form
 UpdateHybridForm = function() {
+	var NotesPrefix = isTemplVis("ASnotes", true);
+	if (!NotesPrefix) return;
+	
 	var BHlevelOld = classes.old["blood hunter"] ? classes.old["blood hunter"].classlevel : 0;
 	var BHlevelNew = classes.known["blood hunter"] ? classes.known["blood hunter"].level : 0;
 	if (BHlevelOld <= 2 && BHlevelNew <= 2) return;
@@ -737,7 +748,7 @@ UpdateHybridForm = function() {
 	//update the hybrid feature on the notes page
 	var BHstringOld = makeHybridText(BHlevelOld);
 	var BHstringNew = makeHybridText(BHlevelNew);
-	ReplaceString("Notes.Left", BHstringNew, false, BHstringOld);
+	ReplaceString(NotesPrefix[1] + "Notes.Left", BHstringNew, false, BHstringOld);
 	
 	//update the predatory strikes
 	var PSdie = BHlevelNew >= 18 ? 10 : (BHlevelNew >= 11 ? 8 : 6);
@@ -748,7 +759,7 @@ UpdateHybridForm = function() {
 	if (BHlevelNew >= 3) {
 		for (var PSi = 0; PSi < CurrentWeapons.known.length; PSi++) {
 			if (CurrentWeapons.known[PSi][0] === "predatory strike") {
-				Value("BlueText.Attack." + (PSi + 1) + ".Damage Die", PSdie);
+				Value("BlueText.Attack." + (PSi + 1) + ".Damage Die", "d" + PSdie);
 				Value("BlueText.Attack." + (PSi + 1) + ".Damage Bonus", PSdmg);
 				Value("BlueText.Attack." + (PSi + 1) + ".To Hit Bonus", PShit);
 			}

@@ -11,7 +11,7 @@
 	Subject:	Races
 	Effect:		This script adds a race, Merfolk, with 4 subraces: Ocean Merfolk, River Merfolk, Deep Merfolk, and Awakened Merrow
 	Code by:	Sarixis
-	Date:		2016-07-05 (sheet v11.55)
+	Date:		2017-09-22 (sheet v12.998)
 */
 
 RaceList["ocean merfolk"] = {
@@ -20,8 +20,12 @@ RaceList["ocean merfolk"] = {
 	source : ["HB", 0],
 	plural : "Ocean Merfolk",
 	size : 3,
+	speed : {
+		walk : { spd : 10, enc : 5 },
+		swim : { spd : 40, enc : 30 }
+	},
 	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
-	languages : ["Common", "Aquan"],
+	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Perception", "Performance"],
 	age : " reach adulthood in their late teens and live around 100 years",
@@ -68,8 +72,11 @@ RaceList["river merfolk"] = {
 	source : ["HB", 0],
 	plural : "River Merfolk",
 	size : 3,
-	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
-	languages : ["Common", "Aquan"],
+	speed : {
+		walk : { spd : 10, enc : 5 },
+		swim : { spd : 40, enc : 30 }
+	},
+	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Animal Handling", "Perception"],
 	age : " reach adulthood in their late teens and live around 100 years",
@@ -109,14 +116,17 @@ RaceList["deep merfolk"] = {
 	source : ["HB", 0],
 	plural : "Deep Merfolk",
 	size : 3,
-	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
-	languages : ["Common", "Aquan"],
+	speed : {
+		walk : { spd : 10, enc : 5 },
+		swim : { spd : 40, enc : 30 }
+	},
+	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Animal Handling", "Perception"],
 	age : " reach adulthood in their late teens and live around 100 years",
 	height : " range from 5 to over 6 feet tall (4'9\" + 2d10\")",
 	weight : " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
-	vision : "Darkvision 60 ft",
+	vision : [["Darkvision", 60]],
 	improvements : "Deep Merfolk: +2 Constitution, +2 Wisdom;",
 	scores : [0, 0, 2, 0, 2, 0],
 	trait : "Deep Merfolk (+2 Constitution, +2 Wisdom)\nAmphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nBioluminescent: I emit dim light in a 5-foot radius around myself. This can be covered with opaque cloth or objects",
@@ -151,8 +161,11 @@ RaceList["awakened merrow"] = {
 	source : ["HB", 0],
 	plural : "Awakened Merrow",
 	size : 3,
-	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
-	languages : ["Common", "Aquan"],
+	speed : {
+		walk : { spd : 10, enc : 5 },
+		swim : { spd : 40, enc : 30 }
+	},
+	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Perception", "Religion"],
 	age : " reach adulthood in their late teens and live around 100 years",

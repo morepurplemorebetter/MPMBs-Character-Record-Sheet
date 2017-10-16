@@ -12,7 +12,7 @@
 	Effect:     This script adds a subclass for the Warlock, called "Black Powder"
 				This subclass is made by Wizzard
 	Code by:    Wizzard
-	Date:       2017-02-18 (sheet v12.83)
+	Date:		2017-09-22 (sheet v12.998)
 */
 
 ClassSubList["black powder"] = {
@@ -62,7 +62,11 @@ ClassSubList["black powder"] = {
 			"mariner" : {
 				name : "Mariner Fighting Style",
 				source : ["UA:WA", 3],
-				description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds equal my current walking speed",
+				description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds are equal to my current walking speed",
+				speed : {
+					climb : { spd : "walk", enc : "walk" },
+					swim : { spd : "walk", enc : "walk" }
+				},
 				eval : "AddACMisc(1, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\", \"ACshield || tDoc.getField('Heavy Armor').isBoxChecked(0)\")",
 				removeeval : "AddACMisc(0, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")"
 			}
@@ -130,7 +134,7 @@ ClassSubList["black powder"] = {
 			source : ["HB", 0],
 			minlevel : 10,
 			description : "\n   " + "I can't be frightened",
-			save : "Immune to being frightened"
+			savetxt : { immune : ["frightened"] }
 		},
 		"subclassfeature14" : {
 			name : "Killing strike",

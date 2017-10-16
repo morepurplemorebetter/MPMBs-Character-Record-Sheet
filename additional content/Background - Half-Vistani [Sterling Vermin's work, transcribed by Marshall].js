@@ -13,7 +13,7 @@
 				This is taken from the Sterling Vermin Adventuring Co. website (https://sterlingvermin.files.wordpress.com/2016/03/the-half-vistani.pdf)
 				This background is made by /u/coolgamertagbro
 	Code by:	Marshall
-	Date:		2017-01-05 (sheet v12.8)
+	Date:		2017-09-05 (sheet v12.998)
 	
 	Please support the creator of this content (Sterling Vermin Adventuring Co.) and download this and other material from there: https://sterlingvermin.com/
 */
@@ -81,7 +81,7 @@ BackgroundList["half-vistani (canjar)"] = {
 		"I will never bend a knee to a master or take orders from another.",
 		"I maintain a collection of personal trinkets from every residence I enter."
 	],
-	languages : ["Patterna", "+1 from "],
+	languageProfs : ["Patterna", 1],
 	variant : ["half-vistani (corvara)", "half-vistani (equaar)", "half-vistani (kamii)", "half-vistani (naiat)", "half-vistani (vatraska)", "half-vistani (zarovan)"],
 	lifestyle : "modest",
 };
@@ -90,7 +90,7 @@ BackgroundSubList["half-vistani (corvara)"] = {
 	name : "Half-Vistani (Corvara)",
 	source : ["SV:HV", 1],
 	skills : ["History"],
-	tools : ["forgery kit", "thieves' tools"],
+	toolProfs : ["Forgery kit", ["Thieves' tools", "Dex"]],
 };
 BackgroundSubList["half-vistani (equaar)"] = {
 	regExpSearch : /^(?=.*half)(?=.*vistani)(?=.*equaar).*$/i,
@@ -103,7 +103,7 @@ BackgroundSubList["half-vistani (kamii)"] = {
 	name : "Half-Vistani (Kamii)",
 	source : ["SV:HV", 1],
 	skills : ["History"],
-	tools : ["2 types of artisan's tool"],
+	toolProfs : [["Artisan's tool", 2]],
 };
 BackgroundSubList["half-vistani (naiat)"] = {
 	regExpSearch : /^(?=.*half)(?=.*vistani)(?=.*naiat).*$/i,

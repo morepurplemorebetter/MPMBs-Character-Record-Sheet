@@ -25,6 +25,7 @@ var UnitsList = {
 
 var AbilityScores = {
 	abbreviations : ["Str", "Dex", "Con", "Int", "Wis", "Cha"],
+	fields : {str : "Str", dex : "Dex", con : "Con", int : "Int", wis : "Wis", cha : "Cha", hos : "HoS", hon : "HoS", san : "HoS"},
 	names : ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"],
 	"strength" : {
 		index : 0
@@ -201,12 +202,12 @@ var CurrentArmour = {
 	known : "",
 	mod : "",
 	proficiencies : {},
-	magic : 0,
+	magic : 0
 };
 
 var CurrentShield = {
 	field : "",
-	magic : 0,
+	magic : 0
 };
 
 var CurrentWeapons = {
@@ -228,10 +229,24 @@ var CurrentFeats = {
 	skills : []
 };
 
+var CurrentProfs = { // Also change field defaultValue!
+	skill : {},
+	armour : {},
+	weapon : {},
+	save : {},
+	resistance : {},
+	language : {},
+	tool : {},
+	savetxt : {},
+	vision : {},
+	speed : {}
+};
+
 var IsNotReset = true;
 var IsNotImport = true;
 var IsNotFeatMenu = true;
 var IsNotWeaponMenu = true;
+var IsSetDropDowns = false;
 var IsNotSpellSheetGenerating = true;
 var ignorePrereqs = false;
 
@@ -1038,12 +1053,12 @@ var SetUnitDecimals_Dialog = {
 							type : "radio",
 							item_id : "DeDo",
 							group_id : "Deci",
-							name : "Dot (comma as thousands separator)"
+							name : "Dot (and comma as thousands separator)"
 						}, {
 							type : "radio",
 							item_id : "DeCo",
 							group_id : "Deci",
-							name : "Comma (dot as thousands separator)"
+							name : "Comma (and dot as thousands separator)"
 						}, ]
 					}, ]
 				}, {
@@ -1505,7 +1520,7 @@ var compString = {
 				"\n   " + "If it has an Intelligence of 5 or less, its Intelligence becomes 6 " +
 				"\n   " + "It gains the ability to understand one language that I, the caster, can speak" +
 				"\n   " + "When the steed drops to 0 hit points, it disappears, leaving behind no physical form" +
-				"\n\u2022 " + "The steed serves me as a mountl I have a bond with it that allows us to fight as a seamless unit" +
+				"\n\u2022 " + "The steed serves me as a mount. I have a bond with it that allows us to fight as a seamless unit" +
 				"\n\u2022 " + "While mounted on my steed, I can make any spell I cast that targets only me also target it" +
 				"\n\u2022 " + "While my steed is within 1 mile of me, I can communicate with it telepathically" +
 				"\n\u2022 " + "I can dismiss my steed at any time as an action, causing it to disappear" +

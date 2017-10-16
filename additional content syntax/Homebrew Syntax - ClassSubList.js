@@ -10,7 +10,7 @@
 /*	-INFORMATION-
 	Subject:	Subclass (a.k.a. Archetype)
 	Effect:		This is the syntax for adding a new subclass/archetype to a class that is defined in the sheet, or to a class you made yourself
-	Sheet:		v12.83 (2017-02-18)
+	Sheet:		v12.998 (2017-09-15)
 */
 
 ClassSubList["specialme"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
@@ -19,7 +19,7 @@ ClassSubList["specialme"] = { //Object name; Note the use of only lower case! Al
 	
 	subname : "Path of SpecialMe", //required; the name of the subclass
 	
-	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js"
+	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js". // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
 	
 	// after defining the above three, you don't need to define anything more, but you can. Defining more stuff will overwrite the entries as they are given in the ClassList. So if you do not need something to be different than the basics of the class (for example, you subclass uses the same spellcasting ability), then you don't need to define it again.
 	// For the syntax of how to define more stuff, look at the ClassList (see "Homebrew Syntax - ClassList.js"). You can define all the same stuff in the same way. The below are a couple of examples:

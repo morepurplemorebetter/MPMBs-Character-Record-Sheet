@@ -34,9 +34,8 @@ var ClassList = {
 				usages : [2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, "\u221E\u00D7 per "],
 				recovery : "long rest",
 				action : ["bonus action", " (start/stop)"],
-				eval : "AddResistance(\"Bludgeon. (in rage)\", \"Barbarian (Rage)\"); AddResistance(\"Piercing (in rage)\", \"Barbarian (Rage)\"); AddResistance(\"Slashing (in rage)\", \"Barbarian (Rage)\");",
-				removeeval : "RemoveResistance(\"Bludgeon. (in rage)\"); RemoveResistance(\"Piercing (in rage)\"); RemoveResistance(\"Slashing (in rage)\");",
-				save : "Adv. on Strength saves in rage",
+				dmgres : [["Bludgeoning", "Bludgeon. (in rage)"], ["Piercing", "Piercing (in rage)"], ["Slashing", "Slashing (in rage)"]],
+				savetxt : { text : ["Adv. on Str saves in rage"] },
 				calcChanges : {
 					atkCalc : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level && (/\\brage\\b/i).test(WeaponText)) {output.extraDmg += function(n){return n < 9 ? 2 : n < 16 ? 3 : 4;}(classes.known.barbarian.level); }; ", "If I include the word 'Rage' in a melee weapon's name or description, the calculation will add my Rage's bonus damage to it."]
 				}
@@ -58,7 +57,7 @@ var ClassList = {
 				source : ["P", 48],
 				minlevel : 2,
 				description : "\n   " + "Adv. on Dexterity saves against seen effects (not blinded/deafened/incapacitated)",
-				save : "Adv. on Dex saves vs. seen effects"
+				savetxt : { text : ["Adv. on Dex saves vs. seen effects"] }
 			},
 			"subclassfeature3" : {
 				name : "Primal Path",
@@ -71,8 +70,7 @@ var ClassList = {
 				source : ["P", 49],
 				minlevel : 5,
 				description : "\n   " + "I gain +10 ft speed when I'm not wearing heavy armor",
-				eval : "ChangeSpeed(10);",
-				removeeval : "ChangeSpeed(-10);"
+				speed : { allModes : "+10" }
 			},
 			"feral instinct" : {
 				name : "Feral Instinct",
@@ -138,7 +136,10 @@ var ClassList = {
 		die : 8,
 		saves : ["Dex", "Cha"],
 		skills : ["\n\n" + toUni("Bard") + ": Choose any three skills.", "\n\n" + toUni("Multiclass Bard") + ": Choose any one skill."],
-		tools : ["Three musical instruments", "A musical instrument"],
+		toolProfs : {
+			primary : [["Musical instrument", 3]],
+			secondary : [["Musical instrument", 1]]
+		},
 		armor : [
 			[true, false, false, false],
 			[true, false, false, false]
@@ -328,7 +329,9 @@ var ClassList = {
 		die : 8,
 		saves : ["Wis", "Int"],
 		skills : ["\n\n" + toUni("Druid") + ": Choose two from Arcana, Animal Handling, Insight, Medicine, Nature, Perception, Religion, and Survival."],
-		tools : ["Herbalism kit"],
+		toolProfs : {
+			primary : ["Herbalism kit"],
+		},
 		armor : [
 			[true, true, false, true],
 			[true, true, false, true]
@@ -351,8 +354,7 @@ var ClassList = {
 				source : ["P", 66],
 				minlevel : 1,
 				description : "\n   " + "I know Druidic; Hidden messages with it can only be understood by who know Druidic",
-				eval : "AddLanguage(\"Druidic\", \"being a Druid\");",
-				removeeval : "RemoveLanguage(\"Druidic\", \"being a Druid\");"
+				languageProfs : ["Druidic"]
 			},
 			"spellcasting" : {
 				name : "Spellcasting",
@@ -445,7 +447,7 @@ var ClassList = {
 					name : "Dueling Fighting Style",
 					description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
 					calcChanges : {
-						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+						atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !isNaturalWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
 					}
 				},
 				"great weapon fighting" : {
@@ -513,7 +515,9 @@ var ClassList = {
 		die : 8,
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		saves : ["Str", "Dex"],
-		tools : ["One artisan's tool or musical instrument"],
+		toolProfs : {
+			primary : [["Artisan's tool or musical instrument", 1]]
+		},
 		skills : ["\n\n" + toUni("Monk") + ": Choose two from Acrobatics, Athletics, History, Insight, Religion, and Stealth."],
 		armor : [
 			[false, false, false, false]
@@ -579,11 +583,11 @@ var ClassList = {
 				"stunning strike" : {
 					name : "Stunning Strike",
 					source : ["P", 79],
-					description : " [1 ki point]" + "\n   " + "After I hit a creature wit a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
+					description : " [1 ki point]" + "\n   " + "After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
 				},
-				eval : "ClassFeatureOptions([\"monk\", \"ki\", \"flurry of blows\", \"extra\"]); ClassFeatureOptions([\"monk\", \"ki\", \"patient defense\", \"extra\"]); ClassFeatureOptions([\"monk\", \"ki\", \"step of the wind\", \"extra\"]);",
-				removeeval : "ClassFeatureOptions([\"monk\", \"ki\", \"flurry of blows\", \"extra\"], \"remove\"); ClassFeatureOptions([\"monk\", \"ki\", \"patient defense\", \"extra\"], \"remove\"); ClassFeatureOptions([\"monk\", \"ki\", \"step of the wind\", \"extra\"], \"remove\");",
-				changeeval : "if (newClassLvl.monk >= 5 && (What(\"Extra.Notes\") + What(\"Class Features\")).toLowerCase().indexOf(\"stunning strike\") === -1) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"])} else if (newClassLvl.monk < 5 && oldClassLvl.monk >= 5) {ClassFeatureOptions([\"monk\", \"ki\", \"stunning strike\", \"extra\"], \"remove\");};"
+				eval : "ClassFeatureOptions(['monk', 'ki', 'flurry of blows', 'extra']); ClassFeatureOptions(['monk', 'ki', 'patient defense', 'extra']); ClassFeatureOptions(['monk', 'ki', 'step of the wind', 'extra']);",
+				removeeval : "ClassFeatureOptions(['monk', 'ki', 'flurry of blows', 'extra'], 'remove'); ClassFeatureOptions(['monk', 'ki', 'patient defense', 'extra'], 'remove'); ClassFeatureOptions(['monk', 'ki', 'step of the wind', 'extra'], 'remove');",
+				changeeval : "if (newClassLvl.monk >= 5 && (What('Extra.Notes') + What('Class Features')).toLowerCase().indexOf('stunning strike') === -1) {ClassFeatureOptions(['monk', 'ki', 'stunning strike', 'extra'])} else if (newClassLvl.monk < 5 && oldClassLvl.monk >= 5) {ClassFeatureOptions(['monk', 'ki', 'stunning strike', 'extra'], 'remove');};"
 			},
 			"unarmored movement" : {
 				name : "Unarmored Movement",
@@ -599,7 +603,7 @@ var ClassList = {
 					if (n < 18) return "+25 ft; Vertical surfaces and liquids";
 					return "+30 ft; Vertical surfaces and liquids";
 				}),
-				changeeval : "var monkSpd = function(n) {return n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30;}; var oldSpdM = monkSpd(oldClassLvl.monk); var newSpdM = monkSpd(newClassLvl.monk); if (oldSpdM !== newSpdM) {ChangeSpeed(newSpdM - oldSpdM)};"
+				changeeval : "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level); SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, profDisplNm);"
 			},
 			"subclassfeature3" : {
 				name : "Monastic Tradition",
@@ -637,7 +641,7 @@ var ClassList = {
 				source : ["P", 79],
 				minlevel : 7,
 				description : "\n   " + "My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
-				save : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
+				savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
 			},
 			"stillness of mind" : {
 				name : "Stillness of Mind",
@@ -651,7 +655,7 @@ var ClassList = {
 				source : ["P", 79],
 				minlevel : 10,
 				description : typeA4 ? "\n   " + "My mastery of the ki flowing through me makes me immune to poison and disease" : " [" + "I am immune to poison and disease" + "]",
-				save : "Immune to poison and disease"
+				savetxt : { immune : ["poison", "disease"] } //both immune to poison damage and the poisoned condition (see sage advice)
 			},
 			"tongue of the sun and moon" : {
 				name : "Tongue of the Sun and Moon",
@@ -665,8 +669,7 @@ var ClassList = {
 				minlevel : 14,
 				description : "\n   " + "I am proficient with all saves; I can reroll a failed save once by spending 1 ki point",
 				additional : "1 ki point to reroll failed saving throw",
-				eval : "for (var Sc = 0; Sc < AbilityScores.abbreviations.length; Sc++) {var saveProf = AbilityScores.abbreviations[Sc] + \" ST Prof\"; var saveTxt = \"Proficiency with \" + AbilityScores.names[Sc] + \" saving throws was gained from Monk (Diamond Soul)\"; if (tDoc.getField(saveProf).userName === \"\") {Checkbox(saveProf, true, saveTxt)}}",
-				removeeval : "for (var Sc = 0; Sc < AbilityScores.abbreviations.length; Sc++) {var saveProf = AbilityScores.abbreviations[Sc] + \" ST Prof\"; var saveTxt = \"Proficiency with \" + AbilityScores.names[Sc] + \" saving throws was gained from Monk (Diamond Soul)\"; if (tDoc.getField(saveProf).userName === saveTxt) {Checkbox(saveProf, false, \"\")}}"
+				saves : ["Str", "Dex", "Con", "Int", "Wis", "Cha"]
 			},
 			"timeless body" : {
 				name : "Timeless Body",
@@ -680,9 +683,7 @@ var ClassList = {
 				minlevel : 18,
 				description : "\n   " + "Be invisible and resist non-force damage for 1 min or cast Astral Projection on self",
 				additional : "Invisible: 4 ki point; Astral Projection: 8 ki points",
-				action : ["action", ""],
-				eval : "AddResistance(\"All -Force (invis.)\", \"Empty Body\");",
-				removeeval : "RemoveResistance(\"All -Force (invis.)\");"
+				action : ["action", ""]
 			},
 			"perfect self" : {
 				name : "Perfect Self",
@@ -803,7 +804,7 @@ var ClassList = {
 				source : ["P", 85],
 				minlevel : 3,
 				description : "\n   " + "I am immune to disease, thanks to the power of my faith",
-				save : "Immune to disease"
+				savetxt : { immune : ["disease"] }
 			},
 			"aura of protection" : {
 				name : "Aura of Protection",
@@ -811,8 +812,7 @@ var ClassList = {
 				minlevel : 6,
 				description : "\n   " + "While I'm conscious, allies within range and I can add my Cha mod (min 1) to saves",
 				additional : ["", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				eval : "AddToModFld('All ST Bonus', 'Cha');",
-				removeeval : "AddToModFld('All ST Bonus', 'Cha', true);"
+				addMod : { type : "save", field : "all", mod : "Cha", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." }
 			},
 			"aura of courage" : {
 				name : "Aura of Courage",
@@ -820,7 +820,7 @@ var ClassList = {
 				minlevel : 10,
 				description : "\n   " + "While I'm conscious, allies within range and I can't be frightened",
 				additional : ["", "", "", "", "", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				save : "Immune to being frightened"
+				savetxt : { immune : ["frightened"] }
 			},
 			"improved divine smite" : {
 				name : "Improved Divine Smite",
@@ -882,67 +882,80 @@ var ClassList = {
 				"aberrations" : {
 					name : "Aberrations",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"beasts" : {
 					name : "Beasts",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"celestials" : {
 					name : "Celestials",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"constructs" : {
 					name : "Constructs",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"dragons" : {
 					name : "Dragons",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"elementals" : {
 					name : "Elementals",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"fey" : {
 					name : "Fey",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"fiends" : {
 					name : "Fiends",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"giants" : {
 					name : "Giants",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"monstrosities" : {
 					name : "Monstrosities",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"oozes" : {
 					name : "Oozes",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"plants" : {
 					name : "Plants",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"undead" : {
 					name : "Undead",
 					description : "",
-					source : ["P", 91]
+					source : ["P", 91],
+					languageProfs : [1]
 				},
 				"two races of humanoids" : {
 					name : "Two Races of Humanoids",
@@ -1059,7 +1072,7 @@ var ClassList = {
 				source : ["P", 92],
 				minlevel : 8,
 				description : "\n   " + "I can travel through nonmagical, difficult terrain without penalty" + "\n   " + "I have advantage on saves vs. plants that impede movement by magical influence",
-				save : "Adv. vs. magical plants that impede movement"
+				savetxt : { adv_vs : ["magical plants that impede movement"] }
 			},
 			"hide in plain sight" : {
 				name : "Hide in Plain Sight",
@@ -1099,7 +1112,10 @@ var ClassList = {
 		die : 8,
 		saves : ["Int", "Dex"],
 		skills : ["\n\n" + toUni("Rogue") + ": Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth.", "\n\n" + toUni("Multiclass Rogue") + ": Choose one from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth."],
-		tools : ["Thieves' tools", "Thieves' tools"],
+		toolProfs : {
+			primary : [["Thieves' tools", "Dex"]],
+			secondary : [["Thieves' tools", "Dex"]]
+		},
 		armor : [
 			[true, false, false, false],
 			[true, false, false, false]
@@ -1139,8 +1155,7 @@ var ClassList = {
 				source : ["P", 96],
 				minlevel : 1,
 				description : "\n   " + "I know the secret rogue language that I can use to convey messages inconspicuously",
-				eval : "AddLanguage(\"Thieves' Cant\", \"being a Rogue\");",
-				removeeval : "RemoveLanguage(\"Thieves' Cant\", \"being a Rogue\");"
+				languageProfs : ["Thieves' Cant"]
 			},
 			"cunning action" : {
 				name : "Cunning Action",
@@ -1167,7 +1182,7 @@ var ClassList = {
 				source : ["P", 96],
 				minlevel : 7,
 				description : "\n   " + "My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
-				save : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
+				savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
 			},
 			"reliable talent" : {
 				name : "Reliable Talent",
@@ -1180,16 +1195,14 @@ var ClassList = {
 				source : ["P", 96],
 				minlevel : 14,
 				description : "\n   " + "With my hearing, I can locate hidden or invisible creatures that are within 10 ft of me",
-				eval : "AddString(\"Vision\", \"Blindsense 10 ft\", \"; \");",
-				removeeval : "RemoveString(\"Vision\", \"Blindsense 10 ft\");"
+				vision : [["Blindsense", 10]]
 			},
 			"slippery mind" : {
 				name : "Slippery Mind",
 				source : ["P", 96],
 				minlevel : 15,
 				description : "\n   " + "I am proficient with Wisdom saving throws",
-				eval : "Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throws was gained from Rogue (Slippery Mind)\");",
-				removeeval : "Checkbox(\"Wis ST Prof\", false, \"\");"
+				saves : ["Wis"]
 			},
 			"elusive" : {
 				name : "Elusive",
@@ -1436,8 +1449,8 @@ var ClassList = {
 					name : "Book of Ancient Secrets",
 					description : "\n   " + "I can add any two 1st-level spells that have the ritual tag to my Book of Shadows" + "\n   " + "If I come across spells with the ritual tag, I can transcribe them into my book, as well" + "\n   " + "I can cast any of these spells in my Book of Shadows as rituals, but not as normal spells" + "\n   " + "I can cast my known warlock spells as rituals if they have the ritual tag",
 					source : ["P", 110],
-					eval : "CurrentSpells[\"book of ancient secrets\"] = {name : \"Book of Ancient Secrets\", ability : 6, list : {class : \"any\", ritual : true}, known : {spells : \"book\"}}; SetStringifieds();",
-					removeeval : "delete CurrentSpells[\"book of ancient secrets\"]; SetStringifieds();",
+					eval : "CurrentSpells['book of ancient secrets'] = {name : 'Book of Ancient Secrets', ability : 6, list : {class : 'any', ritual : true}, known : {spells : 'book'}}; SetStringifieds();",
+					removeeval : "delete CurrentSpells['book of ancient secrets']; SetStringifieds();",
 					prereqeval : "classes.known.warlock.level >= 3 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the tome') !== -1"
 				},
 				"chains of carceri (prereq: level 15 warlock, pact of the chain)" : {
@@ -1456,8 +1469,7 @@ var ClassList = {
 					name : "Devil's Sight",
 					description : "\n   " + "I can see in magical and nonmagical darkness out to 120 ft",
 					source : ["P", 110],
-					eval : "AddString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");",
-					removeeval : "RemoveString(\"Vision\", \"Devil's Sight 120 ft\", \"; \");"
+					vision : [["Devil's sight", 120]]
 				},
 				"dreadful word (prereq: level 7 warlock)" : {
 					name : "Dreadful Word",
@@ -1695,8 +1707,7 @@ var ClassList = {
 					name : "Witch Sight",
 					description : "\n   " + "I can see the true form of creatures (shapechangers/illusions/transmutations) within 30 ft",
 					source : ["P", 111],
-					eval : "AddString(\"Vision\", \"Witch Sight 30 ft\", \"; \");",
-					removeeval : "RemoveString(\"Vision\", \"Witch Sight 30 ft\", \"; \");",
+					vision : [["Witch sight", 30]],
 					prereqeval : "classes.known.warlock.level >= 15"
 				}
 			},
@@ -1716,7 +1727,13 @@ var ClassList = {
 				},
 				"pact of the chain" : {
 					name : "Pact of the Chain",
-					description : "\n   " + "I can cast Find Familiar as a ritual (PHB 240); Also Imp/Pseudodragon/Quasit/Sprite" + "\n   " + "When taking the attack action, I can forgo 1 attack to have my familiar attack instead" + "\n   " + "It makes this 1 attack by using its reaction"
+					description : "\n   " + "I can cast Find Familiar as a ritual (PHB 240); Also Imp/Pseudodragon/Quasit/Sprite" + "\n   " + "When taking the attack action, I can forgo 1 attack to have my familiar attack instead" + "\n   " + "It makes this 1 attack by using its reaction",
+					spellcastingBonus : {
+						name : "Pact of the Chain",
+						spells : ["find familiar"],
+						selection : ["find familiar"],
+						firstCol : "(R)"
+					}
 				},
 				"pact of the tome" : {
 					name : "Pact of the Tome",
@@ -1880,7 +1897,7 @@ var ClassSubList = {
 				source : ["P", 49],
 				minlevel : 6,
 				description : "\n   " + "While raging, I can't be charmed or frightened, and such effects are suspended",
-				save : "Immune to being charmed/frightened in rage"
+				savetxt : { text : ["Immune to being charmed/frightened in rage"] }
 			},
 			"subclassfeature10" : {
 				name : "Intimidating Presence",
@@ -1928,8 +1945,9 @@ var ClassSubList = {
 				"bear" : {
 					name : "Bear Spirit",
 					description : "\n   " + "While raging, I have resistance to all damage types except psychic",
-					eval : "RemoveResistance(\"Bludgeon. (in rage)\"); RemoveResistance(\"Piercing (in rage)\"); RemoveResistance(\"Slashing (in rage)\"); AddResistance(\"All -Psychic (rage)\", \"Totem Warrior (Bear Spirit)\");",
-					removeeval : "RemoveResistance(\"All -Psychic (rage)\"); AddResistance(\"Bludgeon. (in rage)\", \"Barbarian (Rage)\"); AddResistance(\"Piercing (in rage)\", \"Barbarian (Rage)\"); AddResistance(\"Slashing (in rage)\", \"Barbarian (Rage)\");"
+					dmgres : [["All -Psychic", "All -Psychic (rage)"]],
+					eval : "SetProf('resistance', false, 'Bludgeoning', 'Barbarian: Rage', 'Bludgeon. (in Rage)'); SetProf('resistance', false, 'Piercing', 'Barbarian: Rage', 'Piercing (in Rage)'); SetProf('resistance', false, 'Slashing', 'Barbarian: Rage', 'Slashing (in Rage)');",
+					removeeval : "SetProf('resistance', true, 'Bludgeoning', 'Barbarian: Rage', 'Bludgeon. (in Rage)'); SetProf('resistance', true, 'Piercing', 'Barbarian: Rage', 'Piercing (in Rage)'); SetProf('resistance', true, 'Slashing', 'Barbarian: Rage', 'Slashing (in Rage)');"
 				},
 				"eagle" : {
 					name : "Eagle Spirit",
@@ -2238,8 +2256,7 @@ var ClassSubList = {
 				minlevel : 1,
 				description : "\n   " + "I learn two languages and gain proficiency and expertise with two skills" + "\n   " + "I can choose from the following: Arcana, History, Nature, or Religion",
 				skillstxt : "\n\n" + toUni("Knowledge Domain") + ": Choose two from Arcana, History, Nature, and Religion. You also gain expertise with these skills.",
-				eval : "AddLanguage(\"+2 from Knowledge Domain\", \"being a Cleric (Knowledge Domain)\");",
-				removeeval : "RemoveLanguage(\"+2 from Knowledge Domain\", \"being a Cleric (Knowledge Domain)\");"
+				languageProfs : [2]
 			},
 			"subclassfeature2" : {
 				name : "Channel Divinity: Knowledge of Ages",
@@ -2501,7 +2518,8 @@ var ClassSubList = {
 				name : "Stormborn",
 				source : ["P", 62],
 				minlevel : 17,
-				description : "\n   " + "Whenever I'm not underground or indoors, I have a fly speed equal to my current speed"
+				description : "\n   " + "Whenever I'm not underground or indoors, I have a fly speed equal to my current speed",
+				speed : { fly : { spd : "walk", enc : "walk" } }
 			}
 		}
 	},
@@ -2611,8 +2629,7 @@ var ClassSubList = {
 				source : ["P", 63],
 				minlevel : 17,
 				description : "\n   " + "I have resistance to bludgeoning/piercing/slashing damage from nonmagical weapons",
-				eval : "AddResistance(\"Bludg. (nonmagical)\", \"Cleric (War Domain)\"); AddResistance(\"Pierc. (nonmagical)\", \"Cleric (War Domain)\"); AddResistance(\"Slash. (nonmagical)\", \"Cleric (War Domain)\");",
-				removeeval : "RemoveResistance(\"Bludg. (nonmagical)\"); RemoveResistance(\"Pierc. (nonmagical)\"); RemoveResistance(\"Slash. (nonmagical)\");"
+				dmgres : [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
 			}
 		}
 	},
@@ -2701,14 +2718,14 @@ var ClassSubList = {
 				source : ["P", 68],
 				minlevel : 6,
 				description : "\n   " + "I can travel through nonmagical, difficult terrain without penalty" + "\n   " + "I have advantage on saves vs. plants that impede movement by magical influence",
-				save : "Adv. vs. magical plants that impede movement"
+				savetxt : { adv_vs : ["magical plants that impede movement"] }
 			},
 			"subclassfeature10" : {
 				name : "Nature's Ward",
 				source : ["P", 68],
 				minlevel : 10,
 				description : "\n   " + "I am immune to poison/disease and I can't be charmed/frightened by elementals or fey",
-				save : "Immune to poison and disease"
+				savetxt : { text : ["Immune to being charmed or frightened by elementals or fey"], immune : ["poison", "disease"] }
 			},
 			"subclassfeature14" : {
 				name : "Nature's Sanctuary",
@@ -2973,8 +2990,7 @@ var ClassSubList = {
 				source : ["P", 73],
 				minlevel : 3,
 				description : "\n   " + "I have proficiency with one artisan's tool set of my choice",
-				eval : "AddTool(\"Type of artisan's tools\", \"Battle Master (Student of War)\")",
-				removeeval : "RemoveTool(\"Type of artisan's tools\", \"Battle Master (Student of War)\")"
+				toolProfs : [["Artisan's tools", 1]]
 			},
 			"subclassfeature7" : {
 				name : "Know Your Enemy",
@@ -3559,8 +3575,7 @@ var ClassSubList = {
 				minlevel : 7,
 				description : "\n   " + "Allies within range and I have resistance to damage from spells",
 				additional : ["", "", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				eval : "AddResistance(\"Spells\", \"Paladin (Aura of Warding)\")",
-				removeeval : "RemoveResistance(\"Spells\")"
+				dmgres : ["Spells"]
 			},
 			"subclassfeature15" : {
 				name : "Undying Sentinel",
@@ -3613,7 +3628,7 @@ var ClassSubList = {
 				source : ["S", 133],
 				minlevel : 15,
 				description : "\n   " + "I have advantage on saving throws against effects that paralyze or stun",
-				save : "Adv. vs. being paralyzed or stunned"
+				savetxt : { adv_vs : ["paralyzed", "stunned"] }
 			},
 			"subclassfeature20" : {
 				name : "Exalted Champion",
@@ -3655,7 +3670,7 @@ var ClassSubList = {
 				minlevel : 7,
 				description : "\n   " + "While I'm conscious, allies within range and I can't be charmed",
 				additional : ["", "", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				save : "Immune to being charmed"
+				savetxt : { immune : ["charmed"] }
 			},
 			"subclassfeature15" : {
 				name : "Purity of Spirit",
@@ -3706,8 +3721,7 @@ var ClassSubList = {
 				source : ["P", 97],
 				minlevel : 15,
 				description : "\n   " + "I have resistance to bludgeoning/piercing/slashing damage from nonmagical weapons",
-				eval : "AddResistance(\"Bludg. (nonmagical)\", \"Paladin (Supernatural Resistance)\"); AddResistance(\"Pierc. (nonmagical)\", \"Paladin (Supernatural Resistance)\"); AddResistance(\"Slash. (nonmagical)\", \"Paladin (Supernatural Resistance)\");",
-				removeeval : "RemoveResistance(\"Bludg. (nonmagical)\"); RemoveResistance(\"Pierc. (nonmagical)\"); RemoveResistance(\"Slash. (nonmagical)\");"
+				dmgres : [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
 			},
 			"subclassfeature20" : {
 				name : "Dread Lord",
@@ -3842,7 +3856,7 @@ var ClassSubList = {
 				"steel will" : {
 					name : "Defensive Tactic: Steel Will",
 					description : "\n   " + "I have advantage on saves against being frightened",
-					save : "Adv. on saves vs. being frightened"
+					savetxt : { adv_vs : ["frightened"] }
 				}
 			},
 			"subclassfeature11" : {
@@ -3871,7 +3885,7 @@ var ClassSubList = {
 				"evasion" : {
 					name : "Evasion",
 					description : "\n   " + "My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
-					save : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
+					savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
 				},
 				"stand against the tide" : {
 					name : "Stand Against the Tide",
@@ -3963,8 +3977,7 @@ var ClassSubList = {
 				source : ["P", 97],
 				minlevel : 3,
 				description : "\n   " + "I am proficient with disguise kits and poisoner's kits",
-				eval : "AddTool(\"Disguise kit\", \"Assassin\"); AddTool(\"Poisoner's kit\", \"Assassin\");",
-				removeeval : "RemoveTool(\"Disguise kit\", \"Assassin\"); RemoveTool(\"Poisoner's kit\", \"Assassin\");"
+				toolProfs : ["Disguise kit", "Poisoner's kit"]
 			},
 			"subclassfeature3.1" : {
 				name : "Assassinate",
@@ -4004,8 +4017,8 @@ var ClassSubList = {
 				source : ["S", 135],
 				minlevel : 3,
 				description : "\n   " + "I gain proficiency with disguise kits, forgery kits, one gaming set, and two languages" + "\n   " + "I can mimic speech patterns and accents if I've heard them for at least 1 minute",
-				eval : "AddTool(\"Disguise kit\", \"Mastermind\"); AddTool(\"Forgery kit\", \"Mastermind\"); AddTool(\"One gaming set\", \"Mastermind\"); AddLanguage(\"+2 from Mastermind\", \"Mastermind\");",
-				removeeval : "RemoveTool(\"Disguise kit\", \"Mastermind\"); RemoveTool(\"Forgery kit\", \"Mastermind\"); RemoveTool(\"One gaming set\", \"Mastermind\"); RemoveLanguage(\"+2 from Mastermind\", \"Mastermind\");"
+				languageProfs : [2],
+				toolProfs : ["Disguise kit", "Forgery kit", ["Gaming set", 1]]
 			},
 			"subclassfeature3.1" : {
 				name : "Master of Tactics",
@@ -4053,8 +4066,7 @@ var ClassSubList = {
 				source : ["S", 136],
 				minlevel : 3,
 				description : "\n   " + "I don't need advantage to sneak attack if my target is the only one within 5 ft of me" + "\n   " + "I can add my Charisma modifier to initiative rolls",
-				eval : "AddToModFld('Init Bonus', 'Cha');",
-				removeeval : "AddToModFld('Init Bonus', 'Cha', true);"
+				addMod : { type : "skill", field : "Init", mod : "Cha", text : "I can add my Charisma modifier to initiative rolls." }
 			},
 			"subclassfeature9" : {
 				name : "Panache",
@@ -4097,7 +4109,8 @@ var ClassSubList = {
 				name : "Second-Story Work",
 				source : ["P", 97],
 				minlevel : 3,
-				description : "\n   " + "I climb at my normal speed; I add my Dex modifier to the distance of a running jump"
+				description : "\n   " + "I climb at my normal speed; I add my Dex modifier to the distance of a running jump",
+				speed : { climb : { spd : "walk", enc : "walk" } }
 			},
 			"subclassfeature9" : {
 				name : "Supreme Sneak",
@@ -4190,8 +4203,7 @@ var ClassSubList = {
 					eval : "var ToAdd = [\"sorcerer\", \"subclassfeature6\", \"cold\"]; if (classes.known.sorcerer.level >= 6 && tDoc.getField(\"Class Features Remember\").value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "cold"
 				},
-				eval : "AddLanguage(\"Draconic\", \"being a Sorcerer (Draconic Bloodline)\");",
-				removeeval : "RemoveLanguage(\"Draconic\", \"being a Sorcerer (Draconic Bloodline)\");"
+				languageProfs : ["Draconic"]
 			},
 			"subclassfeature1.1" : {
 				name : "Draconic Resilience",
@@ -4251,7 +4263,8 @@ var ClassSubList = {
 				source : ["P", 103],
 				minlevel : 14,
 				description : "\n   " + "As a bonus action, unless armor is in the way, I can sprout dragon wings from my back" + "\n   " + "I gain a fly speed equal to my current speed until I dismiss the wings as a bonus action",
-				action : ["bonus action", " (start/stop)"]
+				action : ["bonus action", " (start/stop)"],
+				speed : { fly : { spd : "walk", enc : "walk" } }
 			},
 			"subclassfeature18" : {
 				name : "Draconic Presence",
@@ -4274,8 +4287,7 @@ var ClassSubList = {
 				source : ["S", 137],
 				minlevel : 1,
 				description : "\n   " + "I can speak, read, and write Primordial (and its dialects Aquan, Auran, Ignan, Terran)",
-				eval : "AddLanguage(\"Primordial\", \"being a Storm Sorcerer\");",
-				removeeval : "RemoveLanguage(\"Primordial\", \"being a Storm Sorcerer\");"
+				languageProfs : ["Primordial"]
 			},
 			"subclassfeature1.1" : {
 				name : "Tempestuous Magic",
@@ -4290,8 +4302,7 @@ var ClassSubList = {
 				minlevel : 6,
 				description : "\n   " + "I have resistance to lightning and thunder damage" + "\n   " + "When I start casting a 1st-level or higher spell that deals lightning or thunder damage," + "\n   " + "I deal lightning or thunder damage to a creature within 10 ft of me that I can see",
 				additional : ["", "", "", "", " ", "3 damage", "3 damage", "4 damage", "4 damage", "5 damage", "5 damage", "6 damage", "6 damage", "7 damage", "7 damage", "8 damage", "8 damage", "9 damage", "9 damage", "10 damage"],
-				eval : "AddResistance(\"Lightning\", \"Storm Sorcerer\"); AddResistance(\"Thunder\", \"Storm Sorcerer\");",
-				removeeval : "RemoveResistance(\"Lightning\"); RemoveResistance(\"Thunder\");"
+				dmgres : ["Lightning", "Thunder"]
 			},
 			"subclassfeature6.1" : {
 				name : "Storm Guide",
@@ -4314,9 +4325,8 @@ var ClassSubList = {
 				minlevel : 18,
 				description : "\n   " + "I have immunity to lightning and thunder damage and gain magical 60 ft fly speed" + "\n   " + "As an action, I reduce my fly speed to 30 ft and give allies 30 ft fly speed for 1 hour" + "\n   " + "I can do this once per short rest for up to 3 + my Charisma modifier allies within 30 ft",
 				action : ["action", ""],
-				save : "Immune to lightning and thunder damage",
-				eval : "RemoveResistance(\"Lightning\"); RemoveResistance(\"Thunder\"); AddString(\"Speed\", \"60 ft fly\", true); AddString(\"Speed encumbered\", \"60 ft fly\", true);",
-				removeeval : "AddResistance(\"Lightning\", \"Storm Sorcerer\"); AddResistance(\"Thunder\", \"Storm Sorcerer\"); RemoveString(\"Speed\", \"60 ft fly\", true); RemoveString(\"Speed encumbered\", \"60 ft fly\", true);",
+				savetxt : { immune : ["lightning", "thunder"] },
+				speed : { fly : { spd : "fixed60", enc : "fixed60" } },
 				usages : 1,
 				recovery : "short rest"
 			}
@@ -4394,7 +4404,7 @@ var ClassSubList = {
 				minlevel : 10,
 				description : "\n   " + "As a reaction, when a creature tries to charm me, I can turn the charm back on it" + "\n   " + "It must make a Wis save or be charmed by me for 1 minute or until taking damage" + "\n   " + "I am immune to being charmed",
 				action : ["reaction", " (when charmed)"],
-				save : "Immune to being charmed"
+				savetxt : { immune : ["charmed"] }
 			},
 			"subclassfeature14" : {
 				name : "Dark Delirium",
@@ -4469,7 +4479,7 @@ var ClassSubList = {
 				source : ["P", 110],
 				minlevel : 10,
 				description : "\n   " + "No one can read my mind unless I allow it; I have resistance to psychic damage" + "\n   " + "When I take psychic damage, the dealer of the psychic damage takes the same amount",
-				eval : "AddResistance(\"Psychic\", \"Warlock (Thought Shield)\");"
+				dmgres : ["Psychic"]
 			},
 			"subclassfeature14" : {
 				name : "Create Thrall",
@@ -4491,7 +4501,7 @@ var ClassSubList = {
 				source : ["S", 139],
 				minlevel : 1,
 				description : "\n   " + "I learn the Spare the Dying cantrip and gain advantage on saving throws vs. diseases" + "\n   " + "If an undead targets me directly with an attack or spell, it must make a Wisdom save" + "\n   " + "On a fail, it must choose a new target or forfeit its attack or harmful spell" + "\n   " + "On a success or if I attack or cast a harmful spell on it, it is immune for 24 hours",
-				save : "Adv. vs. diseases",
+				savetxt : { adv_vs : ["disease"] },
 				spellcastingBonus : {
 					name : "Among the Dead",
 					spells : ["spare the dying"],
@@ -4566,9 +4576,8 @@ var ClassSubList = {
 				source : ["P", 116],
 				minlevel : 14,
 				description : "\n   " + "I have adv. on spell saves and resistance to damaging spells",
-				eval : "AddResistance(\"Spells\", \"Abjurer (Spell Resistance)\")",
-				removeeval : "RemoveResistance(\"Spells\")",
-				save : "Advantage on saves vs. spells"
+				dmgres : ["Spells"],
+				savetxt : { adv_vs : ["spells"] }
 			}
 		}
 	},
@@ -4588,7 +4597,7 @@ var ClassSubList = {
 				name : "Minor Conjuration",
 				source : ["P", 116],
 				minlevel : 2,
-				description : "\n   " + "As an action, I can conjure an object up to 3 ft on each side and no more than 10 lbs" + "\n   " + "It must be of a form of a nonmagical object I have seen and is created within 10 ft" + "\n   " + "The object disappears after 1 hour, if it takes damage, or when I use this feature again",
+				description : "\n   " + "As an action, I can conjure an object up to 3 ft on each side and no more than 10 lbs" + "\n   " + "It must be of a form of a nonmagical object I have seen and is created within 10 ft" + "\n   " + "The object disappears after 1 hour, if it takes or deals damage, or when I use this again",
 				action : ["action", ""]
 			},
 			"subclassfeature6" : {
@@ -4630,7 +4639,7 @@ var ClassSubList = {
 				name : "Portent",
 				source : ["P", 116],
 				minlevel : 2,
-				description : "\n   " + "After a short or long rest, I roll dice and keep results to be used before my next rest" + "\n   " + "A result can replace an attack/save/ability check made by me or a creature I can see" + "\n   " + "I choose to switch them before the dice to be replaced are rolled; Max once per turn",
+				description : "\n   " + "After a long rest, I roll dice and keep the results to be used before my next rest" + "\n   " + "A result can replace an attack/save/ability check made by me or a creature I can see" + "\n   " + "I choose to switch them before the dice to be replaced are rolled; Max once per turn",
 				additional : ["", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "2d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest", "3d20 after a long rest"]
 			},
 			"subclassfeature6" : {
@@ -4816,8 +4825,7 @@ var ClassSubList = {
 				source : ["P", 119],
 				minlevel : 10,
 				description : "\n   " + "I have resistance to necrotic damage and my hit point maximum can't be reduced",
-				eval : "AddResistance(\"Necrotic\", \"Necromancer (Inured to Undead)\")",
-				removeeval : "RemoveResistance(\"Necrotic\")",
+				dmgres : ["Necrotic"]
 
 			},
 			"subclassfeature14" : {

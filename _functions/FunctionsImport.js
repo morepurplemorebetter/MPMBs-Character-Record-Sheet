@@ -441,11 +441,11 @@ function DirectImport(consoleTrigger) {
 			if (FromVersion < 12.94) {
 				if (!CurrentSources.ammoExcl) CurrentSources.ammoExcl = [];
 				for (var amm in AmmoList) {
-					if (AmmoList[amm].source && AmmoList[amm].source[0] === "D") CurrentSources.ammoExcl.push(amm);
+					if (AmmoList[amm].source && AmmoList[amm].source.toSource().indexOf("D") !== -1) CurrentSources.ammoExcl.push(amm);
 				};
 				if (!CurrentSources.weapExcl) CurrentSources.weapExcl = [];
 				for (var wea in WeaponsList) {
-					if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source[0] === "D") CurrentSources.weapExcl.push(wea);
+					if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source.toSource().indexOf("D") !== -1) CurrentSources.weapExcl.push(wea);
 				};
 			}
 			SetStringifieds("sources");
@@ -567,6 +567,7 @@ function DirectImport(consoleTrigger) {
 		var onlySpawnsFrom = FromVersion >= 12.995;
 		if (global.docFrom.BookMarkList) { //if no bookmarklist exists where we are importing from, don't do anything
 			for (var templ in TemplateDep) {
+				if (templ === "PRsheet" && (!fromSheetTypePF || !typePF)) continue;
 				var onlySpawnsFromT = onlySpawnsFrom || templ.substring(0, 2) === "SS";
 				//see if the template exists in the docFrom
 				var dFfldT = onlySpawnsFrom ? global.docFrom.isTemplVis(templ) : global.docFrom.BookMarkList[templ] ? global.docFrom.getField(global.docFrom.BookMarkList[templ]) : false;
@@ -613,7 +614,7 @@ function DirectImport(consoleTrigger) {
 		}
 		var weaBTflds = global.docTo.getField("BlueText.Attack").getArray();
 		for (var i = 0; i < weaBTflds.length; i++) {
-			if (weaBTflds[i].name.indexOf("Modifiers Title") === -1) ImportField(weaBTflds[i].name, {notTooltip: true});
+			if (weaBTflds[i].name.indexOf("Modifiers Title") === -1) ImportField(weaBTflds[i].name, {notTooltip: true, notSubmitName: true});
 		}
 		//the ammo
 		ImportField("AmmoLeftDisplay.Amount", {notTooltip: true}); ImportField("AmmoLeftDisplay.Name", {notTooltip: true}); ImportField("AmmoLeftDisplay.Weight", {notTooltip: true});
@@ -655,44 +656,87 @@ function DirectImport(consoleTrigger) {
 		
 		//set the ability scores and associated fields
 		for (var abiS in AbilityScores.current) {
-			ImportField(abiS); ImportField(abiS + " Remember"); ImportField(abiS + " ST Prof", {notTooltip: true}); ImportField(abiS + " ST Bonus", {notTooltip: true}); ImportField(abiS + " ST Adv", {doReadOnly: true}); ImportField(abiS + " ST Dis", {doReadOnly: true});
+			ImportField(abiS); ImportField(abiS + " Remember"); ImportField(abiS + " ST Prof", {notTooltip: true}); ImportField(abiS + " ST Bonus", {notTooltip: true, notSubmitName: true}); ImportField(abiS + " ST Adv", {doReadOnly: true}); ImportField(abiS + " ST Dis", {doReadOnly: true});
 		};
-		ImportField("All ST Bonus", {notTooltip: true});
+		ImportField("All ST Bonus", {notTooltip: true, notSubmitName: true});
 		
 		//now recalculate all the weapons, forcing them to re-do all attributes
 		forceReCalcWeapons = true; ReCalcWeapons();
 		
 		//set the ability save DC
-		ImportField("Spell DC 1 Mod", {notTooltip: true}); ImportField("Spell DC 1 Bonus", {notTooltip: true});
-		ImportField("Spell DC 2 Bonus", {notTooltip: true});
+		ImportField("Spell DC 1 Mod", {notTooltip: true}); ImportField("Spell DC 1 Bonus", {notTooltip: true, notSubmitName: true});
+		ImportField("Spell DC 2 Bonus", {notTooltip: true, notSubmitName: true});
 		if (ImportField("Spell DC 2 Mod", {notTooltip: true, doVisiblity: true})); Toggle2ndAbilityDC(global.docTo.getField("Spell DC 2 Mod").display === display.visible ? "show" : "hide");
 		
 		//set the prof bonus and inspiration
-		ImportField("Proficiency Bonus Dice", {notTooltip: true}); ImportField("Proficiency Bonus Modifier", {notTooltip: true}); ImportField("Inspiration", {notTooltip: true});
+		ImportField("Proficiency Bonus Dice", {notTooltip: true}); ImportField("Proficiency Bonus Modifier", {notTooltip: true, notSubmitName: true}); ImportField("Inspiration", {notTooltip: true});
 		
 		//set the skills and associated fields
-		ImportField("Jack of All Trades", {notTooltip: true}); ImportField("Remarkable Athlete", {notTooltip: true}); ImportField("All Skills Bonus", {notTooltip: true}); ImportField("Passive Perception Bonus", {notTooltip: true}); ImportField("Too Text", {notTooltip: true});
+		ImportField("Jack of All Trades", {notTooltip: true}); ImportField("Remarkable Athlete", {notTooltip: true}); ImportField("All Skills Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Passive Perception Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Too Text", {notTooltip: true, notSubmitName: true});
 		for (var i = 0; i < SkillsList.abbreviations.length; i++) {
 			var aSkill = SkillsList.abbreviations[i];
-			ImportField(aSkill + " Bonus", {notTooltip: true}); ImportField(aSkill + " Prof", {notTooltip: true}); ImportField(aSkill + " Exp", {notTooltip: true}); ImportField(aSkill + " Adv", {doReadOnly: true}); ImportField(aSkill + " Dis", {doReadOnly: true});
+			ImportField(aSkill + " Bonus", {notTooltip: true, notSubmitName: true}); ImportField(aSkill + " Prof", {notTooltip: true}); ImportField(aSkill + " Exp", {notTooltip: true}); ImportField(aSkill + " Adv", {doReadOnly: true}); ImportField(aSkill + " Dis", {doReadOnly: true});
 		};
 		
 		//set the description fields
 		ImportField("PC Name"); ImportField("Player Name"); ImportField("Size Category", {notTooltip: true}); ImportField("Height", {notTooltip: true}); ImportField("Weight", {notTooltip: true}); ImportField("Sex"); ImportField("Hair colour", {notTooltip: true}); ImportField("Eyes colour", {notTooltip: true}); ImportField("Skin colour", {notTooltip: true}); ImportField("Age", {notTooltip: true}); ImportField("Alignment", {notTooltip: true}); ImportField("Faith/Deity", {notTooltip: true}); ImportField("Speed", {notTooltip: true}); ImportField("Speed encumbered", {notTooltip: true});
 		
-		//get the entries in these fields and add them one by one
-		var addConsolidatedEntries = function(fName) {
-			var fFld = global.docFrom.getField(fName);
-			if (!fFld) return;
-			var fArrF = fFld.value.split(";");
-			var fArrT = global.docTo.getField(fName).value.split(";");
-			for (var fF = 0; fF < fArrT.length; fF++) fArrT[fF] = clean(fArrT[fF].toLowerCase(), " ");
-			for (var fF = 0; fF < fArrF.length; fF++) {
-				var fVal = clean(fArrF[fF], " ");
-				if (fArrT.indexOf(fVal.toLowerCase()) === -1) AddString(fName, fVal, "; ");
-			}
-		}
-		addConsolidatedEntries("Vision"); addConsolidatedEntries("Saving Throw advantages / disadvantages");
+		//add the content from the saving throw and vision field, but not if importing from an older version
+		if (FromVersion >= 12.998) {
+			//First make sure the "Immune to" and "Adv. on saves vs." match with the import
+			var CurrentProfsFrom = eval(global.docFrom.getField("CurrentProfs.Stringified").value);
+			var importSaveTxt = function(type) {
+				var preTxt = type === "adv_vs" ? "Adv. on saves vs." : type === "immune" ? "Immune to" : false;
+				var fld = "Saving Throw advantages / disadvantages";
+				var svFld = global.docFrom.getField(fld).value;
+				if (!preTxt || !svFld) return;
+				var fromArr = [], toArr = [];
+				if (CurrentProfsFrom.savetxt[type]) {
+					for (var testAtt in CurrentProfsFrom.savetxt[type]) {
+						if (type === "immune" || !CurrentProfsFrom.savetxt.immune[testAtt]) {
+							fromArr.push(CurrentProfsFrom.savetxt[type][testAtt].name);
+						};
+					};
+				};
+				if (CurrentProfs.savetxt[type]) {
+					for (var testAtt in CurrentProfs.savetxt[type]) {
+						if (type === "immune" || !CurrentProfs.savetxt.immune[testAtt]) {
+							toArr.push(CurrentProfs.savetxt[type][testAtt].name);
+						};
+					};
+				};
+				var newArr = [].concat(toArr);
+				var svMatch = svFld.match(RegExp(preTxt.RegEscape() + ".*?(; |$)", "i"));
+				if (!svMatch) return;
+				var svOpt = svMatch[0].replace(/; ?$/, "").replace(RegExp(preTxt.RegEscape() + " *?", "i"), "").split(/, and | and |, |; /);
+				for (var i = 0; i < svOpt.length; i++) {
+					var addObj = svOpt[i].replace(/^and |^ +/i, "");
+					if (addObj && !(RegExp("\\b" + addObj + "\\b", "i")).test(toArr)) newArr.push(addObj);
+				};
+				newArr.sort();
+				var toStr = formatLineList(preTxt, toArr);
+				var newStr = formatLineList(preTxt, newArr);
+				if (toStr !== newStr) {
+					ReplaceString(fld, newStr, "; ", toStr, false);
+					global.docFrom.getField(fld).value = global.docFrom.getField(fld).value.replace(svMatch[0], "");
+				};
+			};
+			importSaveTxt("adv_vs");
+			importSaveTxt("immune");
+			//Then get the entries in these fields and add them one by one
+			var addConsolidatedEntries = function(fName) {
+				var fFld = global.docFrom.getField(fName);
+				if (!fFld) return;
+				var fArrF = fFld.value.split(/; ?/);
+				var fArrT = global.docTo.getField(fName).value.split(/; ?/);
+				for (var fF = 0; fF < fArrT.length; fF++) fArrT[fF] = clean(fArrT[fF].toLowerCase(), " ");
+				for (var fF = 0; fF < fArrF.length; fF++) {
+					var fVal = clean(fArrF[fF], " ");
+					if (fArrT.indexOf(fVal.toLowerCase()) === -1) AddString(fName, fVal, "; ");
+				};
+			};
+			addConsolidatedEntries("Vision"); addConsolidatedEntries("Saving Throw advantages / disadvantages");
+		};
 		
 		//add limited features that are not yet defined (all those without a tooltip)
 		for (var i = 1; i < FieldNumbers.limfea; i++) {
@@ -714,38 +758,42 @@ function DirectImport(consoleTrigger) {
 			EqpProfRem = true;
 		}
 		if (EqpProfRem) ApplyProficiencies(true);
+		
 		//a function to add the 'new' languages, tools, resistances, actions
 		var addNotDefined = function(typeFlds, iterations) {
-			var functionEval = false;
-			switch (typeFlds) {
-				case "Language " :
-					functionEval = "AddLanguage(\"";
-					break;
-				case "Tool " :
-					functionEval = "AddTool(\"";
-					break;
-				case "Resistance Damage Type " :
-					functionEval = "AddResistance(\"";
-					break;
-				case "Action " :
-				case "Bonus Action " :
-				case "Reaction " :
-					functionEval = "AddAction(\"" + typeFlds + "\", \"";
-					break;
-				default :
-					return;
+			var fromOldVersion = FromVersion < 12.998;
+			var functionAdd = function(typeAdd, input, replaceThis) {
+				switch (typeAdd) {
+					case "Language " :
+					case "Tool " :
+						AddLangTool(typeAdd, input, false, false, replaceThis, fromOldVersion);
+						break;
+					case "Resistance Damage Type " :
+						AddResistance(input, false, replaceThis, fromOldVersion);
+						break;
+					case "Action " :
+					case "Bonus Action " :
+					case "Reaction " :
+						AddAction(typeAdd, input, false, replaceThis, fromOldVersion);
+						break;
+				};
 			};
 			for (var i = 1; i <= iterations; i++) {
 				var fromFld = global.docFrom.getField(typeFlds + i);
-				if (fromFld && fromFld.value && fromFld.value !== fromFld.defaultValue) {
+				if (!fromFld || !fromFld.value || fromFld.value === fromFld.defaultValue) continue;
+				if (!fromOldVersion) {
+					if (fromFld.value !== fromFld.submitName) {
+						functionAdd(typeFlds, fromFld.value, fromFld.submitName);
+					};
+				} else { // can't use the submitName as it wasn't used before v12.998
 					var fromFldUNit = fromFld.userName && (/.*?\"(.*?)\".*/).test(fromFld.userName) ? fromFld.userName.replace(/.*?\"(.*?)\".*/, "$1") : (fromFld.userName ? fromFld.userName.replace(/.*?resistance to (.*?) was gained from.*/, "$1") : "");
-					var fromFldUNor = fromFld.userName ? fromFld.userName.replace(/.*?was gained from (.*?)\./, "$1") : "";
 					if (!fromFld.userName || fromFldUNit.toLowerCase() !== fromFld.value.toLowerCase()) {
-						eval(functionEval + fromFld.value.replace(/"/g, "\\\"") + "\", \"" + fromFldUNor.replace(/"/g, "\\\"") + "\", \"" + fromFldUNit.replace(/"/g, "\\\"") + "\");");
-					}
-				}
-			}
+						functionAdd(typeFlds, fromFld.value, fromFldUNit);
+					};
+				};
+			};
 		};
+		
 		//languages and tools
 		var nmbrFlds = global.docFrom.FieldNumbers.langstools ? global.docFrom.FieldNumbers.langstools : FieldNumbers.langstools;
 		addNotDefined("Language ", nmbrFlds); addNotDefined("Tool ", nmbrFlds);
@@ -759,7 +807,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("AC Armor Description", {notTooltip: true}); ImportField("AC Armor Bonus", {notTooltip: true}); ImportField("AC Armor Weight", {notTooltip: true}); ImportField("AC during Rest");
 		ImportField("AC Shield Bonus Description", {notTooltip: true}); ImportField("AC Shield Bonus", {notTooltip: true}); ImportField("AC Shield Weight", {notTooltip: true});
 		ImportField("Medium Armor", {notTooltip: true}); ImportField("Heavy Armor", {notTooltip: true});
-		ImportField("AC Magic", {notTooltip: true}); ImportField("AC Magic Description", {notTooltip: true});
+		ImportField("AC Magic", {notTooltip: true, notSubmitName: true}); ImportField("AC Magic Description", {notTooltip: true});
 		if (ImportField("AC Stealth Disadvantage", {notTooltip: true})) ShowHideStealthDisadv(); ConditionSet();
 		ImportField("AC Misc Mod 1", {notTooltip: true}); ImportField("AC Misc Mod 1 Description", {notTooltip: true});
 		ImportField("AC Misc Mod 2", {notTooltip: true}); ImportField("AC Misc Mod 2 Description", {notTooltip: true});
@@ -868,7 +916,7 @@ function DirectImport(consoleTrigger) {
 			
 			//set the type, if any
 			var compTypeFrom = global.docFrom.getField(prefixFrom + "Companion.Remember");
-			if (compTypeFrom && compTypeFrom.value) changeCompType(compTypeFrom.value, prefixFrom);
+			if (compTypeFrom && compTypeFrom.value) changeCompType(compTypeFrom.value, prefixTo);
 			
 			//Set some one-off fields
 			ImportField(prefixTo + "Comp.Type", {notTooltip: true, notSubmitName: true}, prefixFrom + "Comp.Type");
@@ -1124,15 +1172,21 @@ function DirectImport(consoleTrigger) {
 			aText += ".\n\n"
 		};
 		aText += toUni("Some manual additions might not have transferred over");
-		aText += "\nSome things that you adjusted manually on your old sheet might not have transfered to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.";
+		aText += "\nSome things that you adjusted manually on your old sheet might not have transferred to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.";
 		aText += "\n\n" + toUni("The following things should be considered:");
 		aText += "\n  > Things you added to drop-down menus with Custom Scripts are no longer there;";
 		aText += "\n  > The 'Class Features' text is now solely what the automation added;";
 		aText += "\n  > The 'Notes' section on the 3rd page is now solely what the automation added;";
 		aText += "\n  > Attack and Ammunition attributes are now solely what the automation set;";
-		aText += "\n  > Companion pages have been copied exactly, not using any changes in automation;";
+		aText += "\n  > Companion pages have been copied exactly, not using any updates in automation;";
 		aText += "\n  > Wild Shapes have been re-calculated, manual changes have been ignored;";
 		aText += sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "\n  > Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "\n  > No spell sheets have been generated.";
+		if (FromVersion < 12.998) {
+			aText += "\n\n";
+			aText += toUni("Importing from older version, before v12.998");
+			aText += "\n  > Some proficiencies you adjusted manually, like languages and tools, might not have transferred over correctly. This is because the new version of the sheet uses a different way of setting proficiencies that offer a choice.";
+			aText += "\n  > Things manually added/changed in the fields for Saving Throw Advantages/Disadvantages and Senses have not been copied.";
+		};
 		app.alert({
 			cMsg : aText,
 			nIcon : 3,

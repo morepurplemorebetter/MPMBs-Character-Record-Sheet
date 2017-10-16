@@ -14,7 +14,7 @@
 				This bloodline is made by Cain
 				For more details, download the full text for this bloodline here: http://bit.ly/2kjur6M
     Code by:    Cain
-    Date:       2017-01-25 (sheet v12.81)
+    Date:		2017-09-22 (sheet v12.998)
 */
 
 ClassSubList["blood of the primordials"] = {
@@ -52,8 +52,7 @@ ClassSubList["blood of the primordials"] = {
 				eval : "var ToAdd = [\"sorcerer\", \"subclassfeature6\", \"fire\"]; if (classes.known.sorcerer.level >= 6 && tDoc.getField(\"Class Features Remember\").value.indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 				primordialElement : "fire"
 			},
-			eval : "AddLanguage(\"Primordial\", \"being a Sorcerer (Primordial Bloodline)\");",
-			removeeval : "RemoveLanguage(\"Primordial\", \"being a Sorcerer (Primordial Bloodline)\");"
+			languageProfs : ["Primordial"]
 		},
 		"subclassfeature1.1" : {
 			name : "Primordial Resilience",
@@ -92,7 +91,8 @@ ClassSubList["blood of the primordials"] = {
 			source : ["HB", 0],
 			minlevel : 14,
 			description : "\n   " + "As a bonus action, unless armor is in the way, I can sprout elemental wings from my back"  + "\n   " + "They are magical and are not affected by the environment" + "\n   " + "I gain a fly speed equal to my current speed until I dismiss the wings as a bonus action",
-			action : ["bonus action", " (start/stop)"]
+			action : ["bonus action", " (start/stop)"],
+			speed : { fly : { spd : "walk", enc : "walk" } }
 		},
 		"subclassfeature18" : {
 			name : "Presence of the Dawn Titans",

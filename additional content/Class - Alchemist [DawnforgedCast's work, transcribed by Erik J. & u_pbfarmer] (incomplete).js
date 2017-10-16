@@ -14,7 +14,7 @@
 				This content is made by Erik J
 	Original:	Erik
 	Completed:	/u/pbfarmer
-	Date:		2017-06-12 (sheet v12.993)
+	Date:		2017-09-22 (sheet v12.998)
  
 	Code Version:	1.0
  
@@ -66,7 +66,10 @@ ClassList["dawnforgedcast-alchemist"] = {
 	die : 8,
 	saves : ["Con", "Int"],
 	skills : ["\n\n" + toUni("Alchemist") + ": Choose three from Arcana, History, Investigation, Medicine, Nature, Religion, and Sleight of Hand."],
-	tools : ["Alchemist's supplies + Herbalism or Poisoner", "Alchemist's supplies + Herbalism or Poisoner"],
+	toolProfs : {
+		primary : ["Alchemist's supplies", ["Herbalism or poisoner's kit", 1]],
+		secondary : ["Alchemist's supplies", ["Herbalism or poisoner's kit", 1]]
+	},
 	armor : [
 		[true, false, false, false],
 		[true, false, false, false]
@@ -190,7 +193,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Permanent Mutation: Keen Senses",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "I have the senses of a mongoose" + "\n   " + "I gain the senses of a predator and now have darkvision up to 120 ft" + "\n   " + "I have advantage on Wisdom (Perception) checks that rely on smell or hearing.",
-				vision : "Darkvision 120 ft",
+				vision : [["Darkvision", 120]]
 			},
 			"prehensile tail" : {
 				name : "Permanent Mutation: Prehensile Tail",
@@ -212,6 +215,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Permanent Mutation: Suckers",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "Sucks to be me.  Get it?" + "\n   " + "I now have a climb speed of 30 ft" + "\n   " + "I can advantage on any check made to avoid being disarmed",
+				speed : { climb : { spd : 30, enc : 20 } }
 			},
 			"toxified metabolism" : {
 				name : "Permanent Mutation: Toxified Metabolism",
@@ -227,6 +231,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Permanent Mutation: Webbed Extremities",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "I drink like I swim, like a fish" + "\n   " + "I now have a swim speed of 60 ft",
+				speed : { swim : { spd : 60, enc : 50 } }
 			}
 		},
 		"second mutation" : {
@@ -254,7 +259,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Second Mutation: Keen Senses",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "I have the senses of a mongoose" + "\n   " + "I gain the senses of a predator and now have darkvision up to 120 ft" + "\n   " + "I have advantage on Wisdom (Perception) checks that rely on smell or hearing.",
-				vision : "Darkvision 120 ft",
+				vision : [["Darkvision", 120]]
 			},
 			"prehensile tail" : {
 				name : "Second Mutation: Prehensile Tail",
@@ -276,6 +281,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Second Mutation: Suckers",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "Sucks to be me.  Get it?" + "\n   " + "I now have a climb speed of 30 ft" + "\n   " + "I can advantage on any check made to avoid being disarmed",
+				speed : { climb : { spd : 30, enc : 20 } }
 			},
 			"toxified metabolism" : {
 				name : "Second Mutation: Toxified Metabolism",
@@ -291,6 +297,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Second Mutation: Webbed Extremities",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "I drink like I swim, like a fish" + "\n   " + "I now have a swim speed of 60 ft",
+				speed : { swim : { spd : 60, enc : 50 } }
 			}
 		}
 	}

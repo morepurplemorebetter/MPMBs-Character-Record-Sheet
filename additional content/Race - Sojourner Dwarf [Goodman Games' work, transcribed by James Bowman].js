@@ -13,7 +13,7 @@
 				This is taken from DriveThruRPG (http://www.drivethrurpg.com/product/132657/)
 				This subrace is made by Goodman Games
 	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
-	Date:		2017-02-07 (sheet v12.81)
+	Date:		2017-09-22 (sheet v12.998)
 	
 	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: http://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
 */
@@ -25,13 +25,15 @@ RaceList["sojourner dwarf"] = {
 	source : ["FEF1:G", 14],
 	plural : "Sojourner dwarves",
 	size : 3,
-	speed : [25, 25],
-	languages : ["Common", "Dwarvish"],
-	vision : "Darkvision 60 ft",
-	savetxt : "Adv. vs. Poison",
-	dmgres : ["poison"],
+	speed : {
+		walk : { spd : 25, enc : 25 }
+	},
+	languageProfs : ["Common", "Dwarvish"],
+	vision : [["Darkvision", 60]],
+	savetxt : { adv_vs : ["poison"] },
+	dmgres : ["Poison"],
 	weaponprofs : [false, false, ["battleaxe", "handaxe", "warhammer", "light hammer"]],
-	tools : ["smith, brewer, or mason tools"],
+	toolProfs : [["Smith, brewer, or mason tools", 1]],
 	age : " are considered young until they are 50 and live about 350 years",
 	height : " stand between 4 and 5 feet tall (3'8\" + 2d4\")",
 	weight : " weigh around 150 lb (115 + 2d4 \xD7 2d6 lb)",

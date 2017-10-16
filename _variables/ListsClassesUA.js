@@ -81,7 +81,8 @@ ClassSubList["favored soul"] = {
 			source : ["UA:MC", 8],
 			minlevel : 14,
 			description : "\n   " + "As a bonus action, unless armor is in the way, I can sprout dragon wings from my back" + "\n   " + "I gain a fly speed equal to my current speed until I dismiss the wings as a bonus action",
-			action : ["bonus action", " (start/stop)"]
+			action : ["bonus action", " (start/stop)"],
+			speed : { fly : { spd : "walk", enc : "walk" } }
 		},
 		"subclassfeature18" : {
 			name : "Power of the Chosen",
@@ -129,72 +130,86 @@ ClassList["spell-less ranger"] = {
 			"aberrations" : {
 				name : "Aberrations",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"beasts" : {
 				name : "Beasts",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"celestials" : {
 				name : "Celestials",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"constructs" : {
 				name : "Constructs",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"dragons" : {
 				name : "Dragons",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"elementals" : {
 				name : "Elementals",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"fey" : {
 				name : "Fey",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"fiends" : {
 				name : "Fiends",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"giants" : {
 				name : "Giants",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"monstrosities" : {
 				name : "Monstrosities",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"oozes" : {
 				name : "Oozes",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"plants" : {
 				name : "Plants",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"undead" : {
 				name : "Undead",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			},
 			"two races of humanoids" : {
 				name : "Two Races of Humanoids",
 				description : "",
-				source : ["P", 91]
+				source : ["P", 91],
+				languageProfs : [1]
 			}
 		},
 		"natural explorer" : {
@@ -253,11 +268,8 @@ ClassList["spell-less ranger"] = {
 			description : "\n   " + "I gain a number of superiority dice that I can use to fuel special Maneuvers" + "\n   " + "I regain all superiority dice after a short rest",
 			additional : "d8",
 			usages : levels.map( function(n) {
-				if (n < 2) return "";
-				return (n < 9 ? 4 : n < 17 ? 5 : 6) + " maneuvers known";
+				return n < 2 ? "" : n < 9 ? 4 : n < 17 ? 5 : 6;
 			}),
-			additional : ["", "", "d8", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12"],
-			usages : [0, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6],
 			recovery : "short rest"
 		},
 		"combat maneuvers" : {
@@ -312,7 +324,6 @@ ClassList["spell-less ranger"] = {
 				name : "Maneuvering Attack",
 				source : ["P", 74],
 				description : "\n   " + "Use after hitting a creature; I add the superiority die to my attack's damage" + "\n   " + "Ally can use reaction to move half speed without opportunity attack from the target"
-
 			},
 			"menacing attack" : {
 				name : "Menacing Attack",
@@ -403,16 +414,18 @@ ClassList["spell-less ranger"] = {
 			]),
 			additional : levels.map( function(n) {
 				if (n < 3) return "";
-				return "heals 1d6+" + Math.ceil(n/2);
+				return "heals " + Math.ceil(n/2) + "d6";
 			})
 		},
 		"primeval awareness" : {
 			name : "Primeval Awareness",
-			source : ["P", 92],
+			source : ["UA:MC", 6],
 			minlevel : 3,
-			description : "\n   " + "As an action, I can use a spell slot to focus my awareness for 1 min per spell slot level" + "\n   " + "Out to 1 mile (6 in favored terrain), I sense if certain types of creatures are present",
+			description : "\n   " + "As an action, I can focus my awareness for 1 min, once per short rest" + "\n   " + "Out to 1 mile (6 in favored terrain), I sense if certain types of creatures are present",
 			additional : "aber/celest/drag/elem/fey/fie/und",
-			action : ["action", ""]
+			action : ["action", ""],
+			usages : 1,
+			recovery : "short rest"
 		},
 		"subclassfeature3" : {
 			name : "Ranger Archetype",
@@ -425,7 +438,7 @@ ClassList["spell-less ranger"] = {
 			source : ["P", 92],
 			minlevel : 8,
 			description : "\n   " + "I can travel through nonmagical, difficult terrain without penalty" + "\n   " + "I have advantage on saves vs. plants that impede movement by magical influence",
-			save : "Adv. vs. magical plants that impede movement"
+			savetxt : { adv_vs : ["magical plants that impede movement"] }
 		},
 		"natural antivenom" : {
 			name : "Natural Antivenom",
@@ -435,10 +448,8 @@ ClassList["spell-less ranger"] = {
 				"I have advantage on saves vs. poison and resistance to poison damage",
 				"When I use a poultice, in addition to healing, I cure one poison effect on the creature"
 			]),
-			save : "Adv. vs. poison effects",
-			eval : "AddResistance('Poison', 'Natural Antivenom')",
-			removeeval : "RemoveResistance('Poison');"
-			
+			savetxt : { adv_vs : ["poison"] },
+			dmgres : ["Poison"]
 		},
 		"hide in plain sight" : {
 			name : "Hide in Plain Sight",
@@ -531,8 +542,7 @@ ClassSubList["city domain"] = {
 			minlevel : 1,
 			description : "\n   " + "I gain proficiency with sidearms and land vehicles",
 			weapons : [false, false, ["Sidearms"]],
-			eval: "AddTool('Hacking Tools', 'City Domain');",
-			removeeval: "RemoveTool('Hacking Tools');"
+			toolProfs : ["Hacking tools"]
 		},
 		"subclassfeature1.2" : {
 			name : "Heart of the City",
@@ -605,8 +615,7 @@ ClassSubList["warlock-ghost in the machine"] = {
 			source : ["UA:MM", 2],
 			minlevel : 1,
 			description : "\n   " + "I am proficient with hacking tools and know the On/Off cantrip",
-			eval: "AddTool('Hacking Tools', 'City Domain');",
-			removeeval: "RemoveTool('Hacking Tools');",
+			toolProfs : ["Hacking tools"],
 			spellcastingBonus : {
 				name : "Bonus Cantrip (On/Off)",
 				spells : ["on/off"],
@@ -681,8 +690,7 @@ ClassSubList["technomancy"] = {
 			minlevel: 2,
 			description: "\n   " + "I gain proficiency with sidearms and hacking tools",
 			weapons : [false, false, ["Sidearms"]],
-			eval: "AddTool('Hacking Tools', 'Technomancer');",
-			removeeval: "RemoveTool('Hacking Tools');"
+			toolProfs : ["Hacking tools"]
 		},
 		"subclassfeature2.1": {
 			name: "Technological Savant",
@@ -746,7 +754,9 @@ ClassList["rune scribe"] = {
 	improvements : levels.map(function (n) {return 0}),
 	saves : ["", ""],
 	skills : [""],
-	tools : ["", ["Calligrapher's Supplies", "Mason's Tools", "Woodcarver's Tools"]],
+	toolProfs : {
+		secondary : ["Calligrapher's Supplies", "Mason's Tools", "Woodcarver's Tools"]
+	},
 	armor : [
 		[false, false, false, false]
 	],
@@ -786,8 +796,9 @@ ClassList["rune scribe"] = {
 					"   I can expend a spell slot to also give the weapon a magic bonus of slot level dived by 3",
 					"- Flame Stoker (complex): While attuned, I roll any fire damage twice and use the higher"
 				]),
-				eval : "AddResistance('Cold', 'Opal of the Ild Rune'); AddAction('action', 'Ild Rune (Ignite, Fire Tamer, Combusion)', 'Opal of the Ild Rune');",
-				removeeval : "RemoveResistance('Cold'); RemoveAction('action', 'Ild Rune (Ignite, Fire Tamer, Combusion)');"
+				dmgres : ["Cold"],
+				eval : "AddAction('action', 'Ild Rune (Ignite, Fire Tamer, Combusion)', 'Opal of the Ild Rune');",
+				removeeval : "RemoveAction('action', 'Ild Rune (Ignite, Fire Tamer, Combusion)');"
 			},
 			"orb of the stein rune" : {
 				name : "Orb of the Stein Rune",
@@ -810,7 +821,7 @@ ClassList["rune scribe"] = {
 				]),
 				eval : "AddAction('bonus action', 'Stein Rune (Earthen Step)', 'Orb of the Stein Rune'); AddAction('action', 'Stein Rune (Indomitable Stand, Secrets, Bolt)', 'Orb of the Stein Rune');",
 				removeeval : "RemoveAction('bonus action', 'Stein Rune (Earthen Step)'); RemoveAction('action', 'Stein Rune (Indomitable Stand, Secrets, Bolt)');",
-				save : "Immune to being Petrified",
+				savetxt : { immune : ["petrified"] },
 				spellcastingBonus : {
 					name : "Orb of the Stein Rune",
 					spells : ["meld into stone"],
@@ -836,7 +847,7 @@ ClassList["rune scribe"] = {
 				]),
 				eval : "AddAction('bonus action', 'Vind Rune (Wind Walker)', 'Pennant of the Vind Rune'); AddAction('action', 'Vind Rune (Wind Step, Shrieking Bolt)', 'Pennant of the Vind Rune'); AddAction('reaction', 'Vind Rune (Wind\\'s Grasp)', 'Pennant of the Vind Rune');",
 				removeeval : "RemoveAction('bonus action', 'Vind Rune (Wind Walker)'); RemoveAction('action', 'Vind Rune (Wind Step, Shrieking Bolt)'); RemoveAction('reaction', 'Vind Rune (Wind Step, Shrieking Bolt)');",
-				save : "Adv. on saves vs. inhaled poisons and similar effects",
+				savetxt : { adv_vs : ["inhaled poison"] },
 				spellcastingBonus : {
 					name : "Pennant of the Vind Rune",
 					spells : ["levitate"],
@@ -860,8 +871,9 @@ ClassList["rune scribe"] = {
 					"   I can expend a spell slot to also give the weapon a magic bonus of slot level dived by 3",
 					"- Winter's Howl (complex): I can cast Sleet Storm as an action once per short rest"
 				]),
-				eval : "AddResistance('Fire', 'Shard of the Kalt Rune'); AddAction('action', 'Kalt Rune (Touch, Mantle, Bolt, Howl)', 'Shard of the Kalt Rune');",
-				removeeval : "RemoveResistance('Fire'); RemoveAction('action', 'Kalt Rune (Touch, Mantle, Bolt, Howl)');",
+				dmgres : ["Fire"],
+				eval : "AddAction('action', 'Kalt Rune (Touch, Mantle, Bolt, Howl)', 'Shard of the Kalt Rune');",
+				removeeval : "RemoveAction('action', 'Kalt Rune (Touch, Mantle, Bolt, Howl)');",
 				spellcastingBonus : {
 					name : "Shard of the Kalt Rune",
 					spells : ["sleet storm"],
@@ -930,16 +942,14 @@ ClassSubList["deep stalker"] = {
 			minlevel : 3,
 			description : "\n   " + "I have 90 ft darkvision and add a spell to my known spells at level 3, 5, 9, 13, and 15" + "\n   " + "These count as ranger spells, but do not count against the number of spells I can know",
 			spellcastingExtra : ["disguise self", "rope trick", "glyph of warding", "greater invisibility", "seeming"],
-			eval : "RemoveString(\"Vision\", \"Darkvision 60 ft\"); AddString(\"Vision\",\"Darkvision 90 ft\", \"; \");",
-			removeeval : "RemoveString(\"Vision\", \"Darkvision 90 ft\");"
+			vision : [["Darkvision", 90]]
 		},
 		"subclassfeature7" : {
 			name : "Iron Mind",
 			source : ["UA:LDU", 2],
 			minlevel : 7,
 			description : "\n   " + "I am proficient with Wisdom saving throws",
-			eval : "Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throws was gained from Deep Stalker (Iron Mind)\");",
-			removeeval : "Checkbox(\"Wis ST Prof\", false, \"\");"
+			saves : ["Wis"]
 		},
 		"subclassfeature11" : {
 			name : "Stalker's Flurry",
@@ -972,8 +982,7 @@ ClassSubList["shadow sorcerer"] = {
 			minlevel : 1,
 			description : "\n   " + "I have 60 ft darkvision and can cast Darkness by spending 1 sorcery point" + "\n   " + "I can see through any darkness spell I cast using this ability",
 			additional : "1 sorcery point",
-			eval : "AddString(\"Vision\",\"Darkvision 60 ft\", \"; \");",
-			removeeval : "RemoveString(\"Vision\", \"Darkvision 60 ft\");",
+			vision : [["Darkvision", 60]],
 			action : ["action", " (1 sorcery point)"],
 			spellcastingBonus : {
 				name : "Eyes of the Dark",
@@ -1036,8 +1045,7 @@ ClassSubList["the undying light"] = {
 				spells : ["sacred flame"],
 				selection : ["sacred flame"]
 			}],
-			eval : "AddResistance(\"Radiant\", \"Warlock (the Undying Light)\");",
-			removeeval : "RemoveResistance(\"Radiant\");",
+			dmgres : ["Radiant"],
 			calcChanges : {
 				atkCalc : ["if (isSpell && (/fire|radiant/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spells that deal fire or radiant damage get my Charisma modifier added to the damage."]
 			}
@@ -1128,15 +1136,15 @@ ClassSubList["college of satire"] = {
 			description : "\n   " + "I gain proficiency with thieves' tools, sleight of hand, and one other skill of my choice",
 			skills : ["Sleight of Hand"],
 			skillstxt : "\n\n" + toUni("College of Satire") + ": Thieves' Tools, Sleight of Hand, and any one other skill.",
-			eval : "AddTool(\"Thieves' Tools\", \"Bard (College of Satire)\")",
-			removeeval : "RemoveTool(\"Thieves' Tools\", \"Bard (College of Satire)\")"
+			toolProfs : [["Thieves' tools", "Dex"]]
 		},
 		"subclassfeature3.1" : {
 			name : "Tumbling Fool",
 			source : ["UA:KoO", 2],
 			minlevel : 3,
 			description : "\n   " + "As a bonus action, I tumble which gives the benefits of the Dash and Disengage actions" + "\n   " + "I also gain a climbing speed at my current speed and half damage from falling",
-			action : ["bonus action", ""]
+			action : ["bonus action", ""],
+			speed : { climb : { spd : "walk", enc : "walk" } }
 		},
 		"subclassfeature6" : {
 			name : "Fool's Insight",
@@ -1173,14 +1181,25 @@ ClassSubList["cavalier"] = {
 			source : ["UA:KoO", 3],
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with two skills or one skill and any one tool" + "\n   " + "For skills I can choose from Animal Handling, Insight, Performance, or Persuasion",
-			skillstxt : "\n\n" + toUni("Cavalier") + ": Choose two skills from: Animal Handling, Insight, Performance, or Persuasion. - or - Choose one of those skills and any one tool."
+			choices : ["1 Skill and 1 Tool proficiencies", "2 Skill proficiencies"],
+			"1 skill and 1 tool proficiencies" : {
+				name : "Bonus Proficiencies",
+				description : "\n   " + "I gain proficiency with one skill and any one tool of my choice" + "\n   " + "For the skill, I can choose Animal Handling, Insight, Performance, or Persuasion",
+				skillstxt : "\n\n" + toUni("Cavalier") + ": Choose one from: Animal Handling, Insight, Performance, or Persuasion.",
+				toolProfs : [["Any tool", 1]]
+			},
+			"2 skill proficiencies" : {
+				name : "Bonus Proficiencies",
+				description : "\n   " + "I gain two skill proficiencies: Animal Handling, Insight, Performance, or Persuasion",
+				skillstxt : "\n\n" + toUni("Cavalier") + ": Choose two from: Animal Handling, Insight, Performance, or Persuasion."
+			}
 		},
 		"subclassfeature3.1" : {
 			name : "Born in the Saddle",
 			source : ["UA:KoO", 3],
 			minlevel : 3,
 			description : "\n   " + "I have advantage on saves to avoid falling off my mount, and land on my feet if I fail" + "\n   " + "Mounting or dismounting a creature costs me only 5 ft of movement instead of half",
-			save : "Adv. to avoid falling off my mount"
+			savetxt : { adv_vs : ["falling off my mount"] }
 		},
 		"subclassfeature3.2" : {
 			name : "Combat Superiority",
@@ -1227,8 +1246,25 @@ ClassSubList["scout"] = {
 			name : "Bonus Proficiencies",
 			source : ["UA:KoO", 4],
 			minlevel : 3,
-			description : "\n   " + "I gain proficiency with three skills or two skills and Thieves' Tools; For skills choose from:" + "\n   " + "Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival",
-			skillstxt : "\n\n" + toUni("Scout") + ": Choose three skills from: Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival. - or - Choose two of those skills and Thieves' Tools."
+			description : "\n   " + "I gain proficiency with three skills or two skills and Thieves' Tools; For skills choose from:" + "\n   " + "Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, and Survival",
+			choices : ["2 Skill proficiencies and Thieves' Tools proficiency", "3 Skill proficiencies"],
+			"2 skill proficiencies and thieves' tools proficiency" : {
+				name : "Bonus Proficiencies",
+				description : desc([
+					"I gain proficiency with two skills and Thieves' Tools; For skills choose from:",
+					"Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, and Survival"
+				]),
+				skillstxt : "\n\n" + toUni("Scout") + ": Choose two from: Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival.",
+				toolProfs : [["Thieves' tools", "Dex"]]
+			},
+			"3 skill proficiencies" : {
+				name : "Bonus Proficiencies",
+				description : desc([
+					"I gain proficiency with three skills, chosen from:",
+					"Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, and Survival"
+				]),
+				skillstxt : "\n\n" + toUni("Scout") + ": Choose three from: Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival."
+			}
 		},
 		"subclassfeature3.1" : {
 			name : "Combat Superiority",
@@ -1320,7 +1356,18 @@ ClassSubList["monster hunter"] = {
 			source : ["UA:GH", 2],
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with two skills or one skill and any one tool" + "\n   " + "For skills I can choose Arcana, History, Insight, Investigation, Nature, or Perception",
-			skillstxt : "\n\n" + toUni("Monster Hunter") + ": Choose two skills from: Arcana, History, Insight, Investigation, Nature, or Perception. - or - Choose one of those skills and any one tool."
+			choices : ["1 Skill and 1 Tool proficiencies", "2 Skill proficiencies"],
+			"1 skill and 1 tool proficiencies" : {
+				name : "Bonus Proficiencies",
+				description : "\n   " + "I gain proficiency with one skill and any one tool of my choice" + "\n   " + "For the skill, I can choose Arcana, History, Insight, Investigation, Nature, or Perception",
+				skillstxt : "\n\n" + toUni("Monster Hunter") + ": Choose one from: Arcana, History, Insight, Investigation, Nature, or Perception.",
+				toolProfs : [["Any tool", 1]]
+			},
+			"2 skill proficiencies" : {
+				name : "Bonus Proficiencies",
+				description : "\n   " + "I gain 2 skill proficiencies: Arcana, History, Insight, Investigation, Nature, or Perception",
+				skillstxt : "\n\n" + toUni("Monster Hunter") + ": Choose two from: Arcana, History, Insight, Investigation, Nature, or Perception."
+			}
 		},
 		"subclassfeature3.1" : {
 			name : "Combat Superiority",
@@ -1339,8 +1386,7 @@ ClassSubList["monster hunter"] = {
 			recovery : "long rest",			
 			description : "\n   " + "I can cast Detect Magic as a ritual and Protection from Evil & Good once per long rest" + "\n   " + "I gain the ability to speak one of the following languages: Abyssal, Celestial, or Infernal",
 			action : ["action", " (Prot vs. Evil/Good)"],
-			eval : "AddLanguage(\"Abyssal, Celestial, or Infernal\", \"Monster Hunter (Hunter's Mysticism)\");",
-			removeeval : "RemoveLanguage(\"Abyssal, Celestial, or Infernal\", \"Monster Hunter (Hunter's Mysticism)\");"
+			languageProfs : [["Abyssal, Celestial, or Infernal", 1]]
 		},
 		"subclassfeature7" : {
 			name : "Monster Slayer",
@@ -1448,8 +1494,7 @@ ClassSubList["the seeker"] = {
 			source : ["UA:TF", 2],
 			minlevel : 10,
 			description : "\n   " + "I no longer need to breathe, and I gain resistance to fire damage and cold damage",
-			eval : "AddResistance(\"Fire\", \"Warlock (the Seeker)\"); AddResistance(\"Cold\", \"Warlock (the Seeker)\");",
-			removeeval : "RemoveResistance(\"Fire\"); RemoveResistance(\"Cold\");"
+			dmgres : ["Cold", "Fire"]
 		},
 		"subclassfeature14" : {
 			name : "Astral Sequestration",
@@ -1595,8 +1640,7 @@ ClassList["rangerua"] = {
 				name : "Favored Enemy: Undead",
 				description : "\n   " + "I get a bonus to damage rolls with weapon attacks against undead" + "\n   " + "I have adv. on Wis (Survival) to track and Int checks to recall info about undead" + "\n   " + "I learn a language, typically one spoken by or associated with undead"
 			},
-			eval : "AddLanguage(\"+1 from Favored Enemy\", \"Ranger (Favored Enemy)\");",
-			removeeval : "RemoveLanguage(\"+1 from Favored Enemy\", \"Ranger (Favored Enemy)\");",
+			languageProfs : [1],
 			calcChanges : {
 				atkCalc : ["if (!isSpell && classes.known.rangerua && classes.known.rangerua.level && (/favou?red.{1,2}enemy/i).test(WeaponText)) { output.extraDmg += classes.known.rangerua.level < 6 ? 2 : 4; }; ", "If I include the words 'Favored Enemy' in the name or description of a weapon, it gets bonus damage, depending on my Ranger level."]
 			}
@@ -1660,7 +1704,8 @@ ClassList["rangerua"] = {
 			name : "Primeval Awareness",
 			source : ["UA:RR", 4],
 			minlevel : 3,
-			description : "\n   " + "If I haven't attacked a beast within the last 10 min, I can communicate with it" + "\n   " + "As an action, I convey simple ideas, and read mood, intent, emotions, needs, etc." + "\n   " + "By concentrating for 1 min, I know if any of my favored enemies are within 5 miles" + "\n   " + "Per group, I sense the number, general direction, distance, and type of favored enemy"
+			description : "\n   " + "If I haven't attacked a beast within the last 10 min, I can communicate with it" + "\n   " + "As an action, I convey simple ideas, and read mood, intent, emotions, needs, etc." + "\n   " + "By concentrating for 1 min, I know if any of my favored enemies are within 5 miles" + "\n   " + "Per group, I sense the number, general direction, distance, and type of favored enemy",
+			action : ["action", " (communicate)"]
 		},
 		"subclassfeature3" : {
 			name : "Ranger Conclave",
@@ -1678,40 +1723,39 @@ ClassList["rangerua"] = {
 			"aberrations" : {
 				name : "Greater Favored Enemy: Aberrations",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against aberrations" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by aberrations",
-				save : "Adv. vs. spells and abilities of aberrations"
+				savetxt : { adv_vs : ["spells/abilities of aberrations"] }
 			},
 			"celestials" : {
 				name : "Greater Favored Enemy: Celestials",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against celestials" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by celestials",
-				save : "Adv. vs. spells and abilities of celestials"
+				savetxt : { adv_vs : ["spells/abilities of celestials"] }
 			},
 			"constructs" : {
 				name : "Greater Favored Enemy: Constructs",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against constructs" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by constructs",
-				save : "Adv. vs. spells and abilities of constructs"
+				savetxt : { adv_vs : ["spells/abilities of constructs"] }
 			},
 			"dragons" : {
 				name : "Greater Favored Enemy: Dragons",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against dragons" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by dragons",
-				save : "Adv. vs. spells and abilities of dragons"
+				savetxt : { adv_vs : ["spells/abilities of dragons"] }
 			},
 			"elementals" : {
 				name : "Greater Favored Enemy: Elementals",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against elementals" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by elementals",
-				save : "Adv. vs. spells and abilities of elementals"
+				savetxt : { adv_vs : ["spells/abilities of elementals"] }
 			},
 			"fiends" : {
 				name : "Greater Favored Enemy: Fiends",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against fiends" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by fiends",
-				save : "Adv. vs. spells and abilities of fiends"
+				savetxt : { adv_vs : ["spells/abilities of fiends"] }
 			},
 			"giants" : {
 				name : "Greater Favored Enemy: Giants",
 				description : "\n   " + "The bonuses I get from Favored Enemy now also work against giants" + "\n   " + "Additionally, I have advantage on saves against spells and abilities used by giants",
-				save : "Adv. vs. spells and abilities of giants"
+				savetxt : { adv_vs : ["spells/abilities of giants"] }
 			},
-			eval : "AddLanguage(\"+1 from Greater Favored Enemy\", \"Ranger (Greater Favored Enemy)\");",
-			removeeval : "RemoveLanguage(\"+1 from Greater Favored Enemy\", \"Ranger (Greater Favored Enemy)\");"
+			languageProfs : [1]
 		},
 		"fleet of foot" : {
 			name : "Fleet of Foot",
@@ -1724,7 +1768,7 @@ ClassList["rangerua"] = {
 			name : "Hide in Plain Sight",
 			source : ["UA:RR", 4],
 			minlevel : 10,
-			description : "\n   " + "When I hide on my turn without moving, others take -10 Wis (Perception) to find me" + "\n   " + "This lasts until something reveals my precense, or until I (voluntarily) move/fall prone"
+			description : "\n   " + "When I hide on my turn without moving, others take -10 Wis (Perception) to find me" + "\n   " + "This lasts until something reveals my presence, or until I (voluntarily) move/fall prone"
 		},
 		"vanish" : {
 			name : "Vanish",
@@ -1834,7 +1878,7 @@ ClassSubList["hunter conclave"] = {
 			"steel will" : {
 				name : "Defensive Tactic: Steel Will",
 				description : "\n   " + "I have advantage on saves against being frightened",
-				save : "Adv. on saves vs. being frightened"
+				savetxt : { adv_vs : ["frightened"] }
 			}
 		},
 		"subclassfeature11" : {
@@ -1863,7 +1907,7 @@ ClassSubList["hunter conclave"] = {
 			"evasion" : {
 				name : "Evasion",
 				description : "\n   " + "My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
-				save : "Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"
+				savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
 			},
 			"stand against the tide" : {
 				name : "Stand Against the Tide",
@@ -1896,16 +1940,14 @@ ClassSubList["deep stalker conclave"] = {
 			minlevel : 3,
 			description : "\n   " + "I have 90 ft darkvision and add a spell to my known spells at level 3, 5, 9, 13, and 15" + "\n   " + "These count as ranger spells, but do not count against the number of spells I can know",
 			spellcastingExtra : ["disguise self", "rope trick", "glyph of warding", "greater invisibility", "seeming"],
-			eval : "RemoveString(\"Vision\", \"Darkvision 60 ft\"); AddString(\"Vision\",\"Darkvision 90 ft\", \"; \");",
-			removeeval : "RemoveString(\"Vision\", \"Darkvision 90 ft\");"
+			vision : [["Darkvision", 90]]
 		},
 		"subclassfeature7" : {
 			name : "Iron Mind",
 			source : ["UA:RR", 8],
 			minlevel : 7,
 			description : "\n   " + "I am proficient with Wisdom saving throws",
-			eval : "Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throws was gained from Deep Stalker (Iron Mind)\");",
-			removeeval : "Checkbox(\"Wis ST Prof\", false, \"\");"
+			saves : ["Wis"]
 		},
 		"subclassfeature11" : {
 			name : "Stalker's Flurry",
@@ -2012,22 +2054,19 @@ ClassSubList["storm herald"] = {
 			"desert" : {
 				name : "Storm Soul: Desert",
 				description : "\n   " + "I have resistance to fire damage and don't suffer the effects of extreme heat",
-				eval : "AddResistance(\"Fire\");",
-				removeeval : "RemoveResistance(\"Fire\");",
-				save : "Immune to effects of extreme heat"
+				dmgres : ["Fire"],
+				savetxt : { immune : ["effects of extreme heat"] }
 			},
 			"sea" : {
 				name : "Storm Soul: Sea",
 				description : "\n   " + "I have resistance to lightning damage and can breathe underwater",
-				eval : "AddResistance(\"Lightning\");",
-				removeeval : "RemoveResistance(\"Lightning\");"
+				dmgres : ["Lightning"]
 			},
 			"tundra" : {
 				name : "Storm Soul: Tundra",
 				description : "\n   " + "I have resistance to cold damage and don't suffer the effects of extreme cold",
-				eval : "AddResistance(\"Cold\");",
-				removeeval : "RemoveResistance(\"Cold\");",
-				save : "Immune to effects of extreme cold"
+				dmgres : ["Cold"],
+				savetxt : { immune : ["effects of extreme cold"] }
 			},
 			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?barbarian,subclassfeature3,(desert|sea|tundra).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, \"$1\"); AddString(\"Class Features Remember\", \"barbarian,subclassfeature6,\" + FeaChoice, false);};};"
 		},
@@ -2273,8 +2312,9 @@ ClassSubList["forge domain"] = {
 			minlevel : 6,
 			additional : ["", "", "", "", "", "+6 force damage", "+7 force damage", "+8 force damage", "+9 force damage", "+10 force damage", "+11 force damage", "+12 force damage", "+13 force damage", "+14 force damage", "+15 force damage", "+16 force damage", "+17 force damage", "+18 force damage", "+19 force damage", "+20 force damage"],
 			description : "\n   " + "I gain a +1 AC while wearing medium or heavy armor, and resistance to fire damage" + "\n   " + "When I hit a construct with an attack, I deal my cleric level in additional force damage",
-			eval : "AddResistance(\"Fire\", \"Cleric (Forge Domain)\"); AddACMisc(1, \"Soul of the Forge\", \"+1 AC while wearing Medium or Heavy armor.\\n\\nSoul of the Forge was gained from Cleric (Forge Domain).\", \"!tDoc.getField('Medium Armor').isBoxChecked(0) && !tDoc.getField('Heavy Armor').isBoxChecked(0)\");",
-			removeeval : "RemoveResistance(\"Fire\"); AddACMisc(0, \"Soul of the Forge\", \"+1 AC while wearing Medium or Heavy armor.\\n\\nSoul of the Forge was gained from Cleric (Forge Domain).\");"
+			dmgres : ["Fire"],
+			eval : "AddACMisc(1, \"Soul of the Forge\", \"+1 AC while wearing Medium or Heavy armor.\\n\\nSoul of the Forge was gained from Cleric (Forge Domain).\", \"!tDoc.getField('Medium Armor').isBoxChecked(0) && !tDoc.getField('Heavy Armor').isBoxChecked(0)\");",
+			removeeval : "AddACMisc(0, \"Soul of the Forge\", \"+1 AC while wearing Medium or Heavy armor.\\n\\nSoul of the Forge was gained from Cleric (Forge Domain).\");"
 		},
 		"subclassfeature8" : {
 			name : "Divine Strike",
@@ -2294,10 +2334,8 @@ ClassSubList["forge domain"] = {
 			source : ["UA:CDD", 1],
 			minlevel : 17,
 			description : "\n   " + "I gain immunity to fire damage" + "\n   " + "If wearing heavy armor, I'm resistant to nonmagical bludg./piercing/slashing damage",
-			save : "Immunity to fire damage",
-			dmgres : ["bludgeoning", "piercing", "slashing"],
-			eval : "RemoveResistance(\"Fire\"); AddResistance(\"Bludg. (nonmagical)\", \"Cleric (Forge Domain).\\n\\nThis only applies while wearing heavy armor.\"); AddResistance(\"Pierc. (nonmagical)\", \"Cleric (War Domain).\\n\\nThis only applies while wearing heavy armor.\"); AddResistance(\"Slash. (nonmagical)\", \"Cleric (War Domain).\\n\\nThis only applies while wearing heavy armor.\");",
-			removeeval : "AddResistance(\"Fire\", \"Cleric (Forge Domain)\"); RemoveResistance(\"Bludg. (nonmagical)\"); RemoveResistance(\"Pierc. (nonmagical)\"); RemoveResistance(\"Slash. (nonmagical)\");"
+			savetxt : { immune : ["fire"] },
+			dmgres : [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
 		}
 	},
 };
@@ -2556,8 +2594,7 @@ ClassSubList["circle of twilight"] = {
 			source : ["UA:DC", 3],
 			minlevel : 10,
 			description : "\n   " + "I gain resistance to necrotic and radiant damage" + "\n   " + "While I'm not incapacitated, allies within 30 ft of me gain adv. on their death saves",
-			eval : "AddResistance(\"Necrotic\", \"Watcher at the Threshold\"); AddResistance(\"Radiant\", \"Watcher at the Threshold\");",
-			removeeval : "RemoveResistance(\"Necrotic\"); RemoveResistance(\"Radiant\");"
+			dmgres : ["Necrotic", "Radiant"]
 		},
 		"subclassfeature14" : {
 			name : "Paths of the Dead",
@@ -2691,7 +2728,7 @@ ClassSubList["knight"] = {
 			source : ["UA:FMA", 2],
 			minlevel : 3,
 			description : "\n   " + "Mounting or dismounting a creature costs me only 5 ft of movement" + "\n   " + "I have advantage on saving throws made to avoid falling off my mount" + "\n   " + "If I fall off my mount for less than 10 ft while not incapacitated, I land on my feet",
-			save : "Adv. vs. falling off my mount"
+			savetxt : { adv_vs : ["falling off my mount"] }
 		},
 		"subclassfeature3.1" : {
 			name : "Implacable Mark",
@@ -2713,9 +2750,17 @@ ClassSubList["knight"] = {
 			source : ["UA:FMA", 2],
 			minlevel : 7,
 			description : "\n   " + "I gain proficiency with two skills or one language" + "\n   " + "I can choose the skills from: Animal Handling, History, Insight, Persuasion, and Religion",
-			skillstxt : "\n\n" + toUni("Knight") + ": Choose two from Animal Handling, History, Insight, Persuasion, and Religion. Alternatively, I learn one language.",
-			eval : "AddLanguage(\"+1 from Noble Cavalry\", \"being a Knight (Noble Cavalry) and not opting to learn two skill proficiencies.\");",
-			removeeval : "RemoveLanguage(\"+1 from Noble Cavalry\", \"being a Knight (Noble Cavalry) and not opting to learn two skill proficiencies.\");"
+			choices : ["Language proficiency", "2 Skill proficiencies: Animal Handling, History, Insight, Persuasion, or Religion"],
+			"language proficiency" : {
+				name : "Noble Cavalry",
+				description : "\n   " + "I learn one language of my choice",
+				languageProfs : [1]
+			},
+			"2 skill proficiencies: animal handling, history, insight, persuasion, or religion" : {
+				name : "Noble Cavalry",
+				description : "\n   " + "I gain 2 skill proficiencies: Animal Handling, History, Insight, Persuasion, or Religion",
+				skillstxt : "\n\n" + toUni("Knight") + ": Choose two from: Animal Handling, History, Insight, Persuasion, or Religion."
+			}
 		},
 		"subclassfeature10" : {
 			name : "Hold the Line",
@@ -2769,19 +2814,25 @@ ClassSubList["samurai"] = {
 			name : "Elegant Courtier",
 			source : ["UA:FMA", 3],
 			minlevel : 7,
-			description : "\n   " + "I can add my Wis modifier to any Cha check to persuade anyone of a high social station" + "\n   " + "I gain proficiency with one language and the History, Insight, or Persuasion skill",
-			skillstxt : "\n\n" + toUni("Samurai") + ": History, Insight, or Persuasion.",
-			eval : "AddLanguage(\"+1 from Elegant Courtier\", \"being a Samurai (Elegant Courtier)\");",
-			removeeval : "RemoveLanguage(\"+1 from Elegant Courtier\", \"being a Samurai (Elegant Courtier)\");"
+			description : "\n   " + "I can add my Wis modifier to any Cha check to persuade anyone of a high social station" + "\n   " + "I gain proficiency with either one language or the History, Insight, or Persuasion skill",
+			choices : ["Language proficiency", "Skill proficiency: History, Insight, or Persuasion"],
+			"language proficiency" : {
+				name : "Elegant Courtier",
+				description : "\n   " + "I can add my Wis modifier to any Cha check to persuade anyone of a high social station" + "\n   " + "I gain proficiency with one language of my choice",
+				languageProfs : [1]
+			},
+			"skill proficiency: history, insight, or persuasion" : {
+				name : "Elegant Courtier",
+				description : "\n   " + "I can add my Wis modifier to any Cha check to persuade anyone of a high social station" + "\n   " + "I gain proficiency with one skill: History, Insight, or Persuasion",
+				skillstxt : "\n\n" + toUni("Samurai") + ": History, Insight, or Persuasion.",
+			}
 		},
 		"subclassfeature10" : {
 			name : "Unbreakable Will",
 			source : ["UA:FMA", 3],
 			minlevel : 10,
 			description : "\n   " + "I gain proficiency with Wis saves, or if I'm already proficient, either Int or Cha saves",
-			skillstxt : "\n\n" + toUni("Samurai") + ": History, Insight, or Persuasion.",
-			eval : "if (Who(\"Wis ST Prof\") === \"\") Checkbox(\"Wis ST Prof\", true, \"Proficiency with Wisdom saving throws was gained from Samurai (Unbreakable Will)\");",
-			removeeval : "if (Who(\"Wis ST Prof\") === \"Proficiency with Wisdom saving throws was gained from Samurai (Unbreakable Will)\") Checkbox(\"Wis ST Prof\", false, \"\");"
+			saves : ["Wis"]
 		},
 		"subclassfeature15" : {
 			name : "Rapid Strike",
@@ -3014,7 +3065,7 @@ ClassSubList["oath of conquest"] = {
 			source : ["UA:PSO", 1],
 			minlevel : 15,
 			description : "\n   " + "I can't be charmed",
-			save : "Immune to being charmed"
+			savetxt : { immune : ["charmed"] }
 		},
 		"subclassfeature20" : {
 			name : "Invincible Conqueror",
@@ -3249,8 +3300,11 @@ ClassSubList["rogue_scout"] = {
 			source : ["UA:RnR", 3],
 			minlevel : 9,
 			description : "\n   " + "I gain +10 ft to my walking speed (and swimming/climbing speed, if applicable)",
-			eval : "ChangeSpeed(10);",
-			removeeval : "ChangeSpeed(-10);"
+			speed : { 
+				walk : { spd : "+10", enc : "+10" },
+				climb : { spd : "_10", enc : "_10" },
+				swim : { spd : "_10", enc : "_10" }
+			}
 		},
 		"subclassfeature13" : {
 			name : "Ambush Master",
@@ -3341,8 +3395,8 @@ ClassSubList["sorcerer-favoured soul"] = {
 			name : "Divine Purity",
 			source : ["UA:SO", 1],
 			minlevel : 14,
-			description : "\n   " + "I become immune to disease, poison damage, and the poisoned condition",
-			save : "Immune to poison damage, being poisoned, and disease"
+			description : "\n   " + "I become immune to disease and poison",
+			savetxt : { immune : ["poison", "disease"] }
 		},
 		"subclassfeature18" : {
 			name : "Unearthly Recovery",
@@ -3424,8 +3478,7 @@ ClassSubList["phoenix sorcery"] = {
 				"- I have resistance to all damage",
 				"- If I use my Phoenix Spark, it deals an extra 20 fire damage to each creature"
 			]),
-			eval : "AddResistance(\"All (Mantle of Flame)\", \"Form of the Phoenix\");",
-			removeeval : "RemoveResistance(\"All (Mantle of Flame)\");"
+			dmgres : [["All", "All (Mantle of Flame)"]]
 		}
 	}
 };
@@ -3444,8 +3497,9 @@ ClassSubList["sea sorcery"] = {
 			source : ["UA:SO", 3],
 			minlevel : 1,
 			description : "\n   " + "I can breathe underwater and I have a swim speed equal to my walking speed",
-			eval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
-			removeeval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };"
+			speed : { swim : { spd : "walk", enc : "walk" } }
+/* 			eval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
+			removeeval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };" */
 		},
 		"subclassfeature1.1" : {
 			name : "Curse of the Sea",
@@ -3479,8 +3533,7 @@ ClassSubList["sea sorcery"] = {
 			action : ["reaction", ""],
 			recovery : "short rest",
 			usages : 1,
-			eval : "AddResistance('fire', 'Watery Defense');",
-			removeeval : "RemoveResistance('fire');"
+			dmgres : ["Fire"]
 		},
 		"subclassfeature14" : {
 			name : "Shifting Form",
@@ -3502,8 +3555,7 @@ ClassSubList["sea sorcery"] = {
 				"I no longer need to eat, drink, or sleep; Critical hits against me become normal hits",
 				"I gain resistance to bludgeoning, piercing, and slashing damage"
 			]),
-			eval : "AddResistance('bludgeoning', 'Water Soul'); AddResistance('piercing', 'Water Soul'); AddResistance('slashing', 'Water Soul');",
-			removeeval : "RemoveResistance('bludgeoning'); RemoveResistance('piercing'); RemoveResistance('slashing');"
+			dmgres : ["Bludgeoning", "Piercing", "Slashing"]
 		}
 	}
 };
@@ -3688,8 +3740,8 @@ ClassSubList["warlock-the raven queen"] = {
 				"If it dies, I gain advantage on all attack rolls against its killer for 24 hours",
 				"After a short rest, I can recall it to me regardless of its location or if it died"
 			]),
-			eval : "if (!(/darkvision/i).test(What('Vision'))) {AddString('Vision', 'Darkvision 30 ft', '; '); }; AddString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]', '; '); AddToModFld(SkillsList.abbreviations[SkillsList[Who('Text.SkillsNames') === 'alphabeta' ? 'abbreviations' : 'abbreviationsByAS'].indexOf('Perc')] + ' Bonus', 'Cha');",
-			removeeval : "RemoveString('Vision', 'Darkvision 30 ft'); RemoveString('Vision', 'Cha mod added to (passive) Perception [Sentinel Raven]'); AddToModFld(SkillsList.abbreviations[SkillsList[Who('Text.SkillsNames') === 'alphabeta' ? 'abbreviations' : 'abbreviationsByAS'].indexOf('Perc')] + ' Bonus', 'Cha', true);"
+			vision : [["Darkvision", 30]],
+			addMod : { type : "skill", field : "Perc", mod : "Cha", text : "While my sentinel raven on my shoulder, I can add my Charisma modifier to Perception." }
 		},
 		"subclassfeature6" : {
 			name : "Soul of the Raven",
@@ -3711,9 +3763,8 @@ ClassSubList["warlock-the raven queen"] = {
 			source : ["UA:WnW", 3],
 			minlevel : 10,
 			description : "\n   " + "I can't be frightened, have advantage on death saves, and resistance to necrotic damage",
-			save : "Immune to being frightened; Adv. on death saves",
-			eval : "AddResistance('necrotic', 'Warlock (the Raven Queen)');",
-			removeeval : "RemoveResistance('necrotic', 'Warlock (the Raven Queen)');"
+			savetxt : { immune : ["frightened"], adv_vs : ["death"] },
+			dmgres : ["Necrotic"]
 		},
 		"subclassfeature14" : {
 			name : "Queen's Right Hand",
@@ -3750,8 +3801,9 @@ ClassSubList["wizard-lore mastery"] = {
 				"I get expertise with each Arcana, History, Nature, and Religion, if I'm proficient with it"
 			]),
 			skillstxt : "\n\n" + toUni("Lore Master") + ": Expertise with Arcana, History, Nature, and Religion if I am already proficient with the skill.",
-			eval : "['Arc', 'His', 'Nat', 'Rel'].forEach( function(skl) { AddSkillProf(skl, undefined, 'only'); }); var changeI = \"if (What('Int Mod') > What('Dex Mod')) { var iIndx = SkillsList.abbreviations.indexOf('Init'); SkillsList.abilityScores[iIndx] = 'Int'; SkillsList.abbreviationsByAS[iIndx] = 'Int'; };\"; eval(changeI); if (What('User Script').indexOf(changeI) === -1) {tDoc.getField('User Script').value += '\\n\\n' + changeI};",
-			removeeval : "['Arc', 'His', 'Nat', 'Rel'].forEach( function(skl) { AddSkillProf(skl, false, 'only'); }); SkillsList.abilityScores[iIndx] = 'Dex'; SkillsList.abbreviationsByAS[iIndx] = 'Dex'; var changeI = \"if (What('Int Mod') > What('Dex Mod')) { var iIndx = SkillsList.abbreviations.indexOf('Init'); SkillsList.abilityScores[iIndx] = 'Int'; SkillsList.abbreviationsByAS[iIndx] = 'Int'; };\"; RemoveString('User Script', changeI);"
+			addMod : { type : "skill", field : "Init", mod : "Int-Dex", text : "I use my Intelligence modifier for initiative rolls instead of Dexterity." },
+			eval : "['Arc', 'His', 'Nat', 'Rel'].forEach( function(skl) { AddSkillProf(skl, undefined, 'only'); });",
+			removeeval : "['Arc', 'His', 'Nat', 'Rel'].forEach( function(skl) { AddSkillProf(skl, false, 'only'); });"
 		},
 		"subclassfeature2.1" : {
 			name : "Spell Secrets: Elements",
@@ -3837,8 +3889,7 @@ ClassSubList["wizard-war magic"] = {
 			description : desc([
 				"I gain a bonus to my initiative rolls equal to my Intelligence modifier"
 			]),
-			eval : "AddToModFld('Init Bonus', 'Int');",
-			removeeval : "AddToModFld('Init Bonus', 'Int', true);"
+			addMod : { type : "skill", field : "Init", mod : "Int", text : "I can add my Intelligence modifier to initiative rolls." }
 		},
 		"subclassfeature6" : {
 			name : "Power Surge",
@@ -3873,7 +3924,7 @@ ClassSubList["wizard-war magic"] = {
 };
 ClassList.wizard.subclasses[1].push("wizard-war magic");
 
-/*	A Trio of Subclasses Unearthed Arcana of 2017-02-27
+/*	A Trio of Subclasses Unearthed Arcana of 2017-03-27
 	(http://media.wizards.com/2017/dnd/downloads/UAThreeSubclasses.pdf)
 */
 //adds three subclass: a subclass for the Monk, called "Way of the Drunken Master"
@@ -3888,8 +3939,11 @@ ClassSubList["monk-way of the drunken master"] = {
 			source : ["UA:AToS", 1],
 			minlevel : 3,
 			description : desc([
-				"When using Flurry of Blows, I gain benefits of a Disengage and +10 ft speed this turn"
-			])
+				"I gain proficiency with the Performance skill",
+				"When using Flurry of Blows, I gain the benefits of a Disengage and +10 ft speed this turn"
+			]),
+			skills : ["Performance"],
+			skillstxt : "\n\n" + toUni("Monk (Way of the Drunken Master)") + ": Performance."
 		},
 		"subclassfeature6" : {
 			name : "Tipsy Sway",
@@ -3905,7 +3959,7 @@ ClassSubList["monk-way of the drunken master"] = {
 		"subclassfeature11" : {
 			name : "Drunkard's Luck",
 			source : ["UA:AToS", 1],
-			minlevel : 6,
+			minlevel : 11,
 			description : desc([
 				"Before I roll for a save, I can spend 1 ki to give myself advantage on it"
 			]),
@@ -3996,8 +4050,7 @@ ClassSubList["paladin-oath of redemption"] = {
 				"When taking damage from a creature, I take only half and it takes the other half",
 				"If I attack or force a save on another, neither benefit work on it until I have a long rest"
 			]),
-			eval : "AddResistance('All from creatures', 'Paladin (Emissary of Redemption)');",
-			remmoveeval : "RemoveResistance('All from creatures');"
+			dmgres : ["All from creatures"]
 		}
 	}
 };
@@ -4171,7 +4224,7 @@ ClassSubList["bard-college of swords2"] = {
 				"    If the attack hits, I can use a die to deal damage to creatures next to the target",
 				"    All creatures within 5 ft of the target take the result of the die in damage",
 				" - Mobile Flourish [one Bardic Inspiration die]",
-				"    If the attack this, I can use a die to push the target back 5 + the die result in feet",
+				"    If the attack hits, I can use a die to push the target back 5 + the die result in feet",
 				"    After this, I can use my reaction to move my speed to a space next to the target"
 			]),
 			action : ["action", ""]
@@ -4478,7 +4531,8 @@ ClassSubList["sorcerer-favoured soul2"] = {
 					"These wings last until I become incapacitated or I dismiss them as a bonus action"
 				])
 			},
-			action : ["bonus action", " Wings"]
+			action : ["bonus action", " Wings"],
+			speed : { fly : { spd : 30, enc : 20 } }
 		},
 		"subclassfeature18" : {
 			name : "Unearthly Recovery",
@@ -4512,8 +4566,7 @@ ClassSubList["druid-circle of the shepherd2"] = {
 				"I can talk with beasts, they understand me and I them, to the limit of their intelligence",
 				"This doesn't automatically make me friends with all beasts; Additionally, I learn Sylvan"
 			]),
-			eval : "AddLanguage('Sylvan', 'being a Druid (Circle of the Shepherd)');",
-			removeeval : "RemoveLanguage('Sylvan', 'being a Druid (Circle of the Shepherd)');"
+			languageProfs : ["Sylvan"]
 		},
 		"subclassfeature2.1" : {
 			name : "Spirit Totem",
@@ -4582,7 +4635,17 @@ ClassSubList["fighter-cavalier2"] = {
 				"I gain proficiency with Animal Handling, History, Insight, Performance, or Persuasion",
 				"Alternatively, I learn one language of my choice"
 			]),
-			skillstxt : "\n\n" + toUni("Cavalier") + ": Choose one skill from: Animal Handling, History, Insight, Performance, or Persuasion. - or - Choose one language."
+			choices : ["Language proficiency", "Skill proficiency: Animal Handling, History, Insight, Performance, or Persuasion"],
+			"language proficiency" : {
+				name : "Bonus Proficiency",
+				description : "\n   " + "I learn one language of my choice",
+				languageProfs : [1]
+			},
+			"skill proficiency: animal handling, history, insight, performance, or persuasion" : {
+				name : "Bonus Proficiency",
+				description : "\n   " + "I gain proficiency with Animal Handling, History, Insight, Performance, or Persuasion",
+				skillstxt : "\n\n" + toUni("Cavalier") + ": Choose one from: Animal Handling, History, Insight, Performance, or Persuasion."
+			}
 		},
 		"subclassfeature3.1" : {
 			name : "Born in the Saddle",
@@ -4592,7 +4655,7 @@ ClassSubList["fighter-cavalier2"] = {
 				"I have advantage on saves to avoid falling off my mount, and land on my feet if I fail",
 				"Mounting or dismounting a creature costs me only 5 ft of movement instead of half"
 			]),
-			save : "Adv. to avoid falling off my mount"
+			savetxt : { adv_vs : ["falling off my mount"] }
 		},
 		"subclassfeature3.2" : {
 			name : "Combat Superiority",
@@ -4750,8 +4813,7 @@ ClassSubList["warlock-the celestal"] = {
 				"I add my Cha modifier to cantrips/spells I cast that deal fire or radiant damage",
 				"Additionally, I have resistance to radiant damage"
 			]),
-			eval : "AddResistance('Radiant', 'Warlock (the Celestial)');",
-			removeeval : "RemoveResistance('Radiant');",
+			dmgres : ["Radiant"],
 			calcChanges : {
 				atkCalc : ["if (isSpell && (/fire|radiant/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spells that deal fire or radiant damage get my Charisma modifier added to the damage."]
 			}
@@ -4832,7 +4894,11 @@ function UAstartupCode() {
 		feature : {
 			name : "Mariner Fighting Style",
 			source : ["UA:WA", 3],
-			description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds equal my current walking speed",
+			description : "\n   " + "While not wearing heavy armor or using a shield, I gain +1 AC and swim/climb speed" + "\n   " + "The swimming and climbing speeds are equal to my current walking speed",
+			speed : {
+				climb : { spd : "walk", enc : "walk" },
+				swim : { spd : "walk", enc : "walk" }
+			},
 			eval : "AddACMisc(1, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\", \"ACshield || tDoc.getField('Heavy Armor').isBoxChecked(0)\")",
 			removeeval : "AddACMisc(0, \"Mariner Fighting Style\", \"When not wearing heavy armor or using a shield, the class feature Mariner Fighting Style gives a +1 bonus to AC\")"
 		}
@@ -5162,8 +5228,7 @@ function UAstartupCode() {
 		},
 		source : ["UA:WnW", 5],
 		prereqeval : "classes.known.warlock.subclass === 'the archfey'",
-		eval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
-		removeeval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };"
+		speed : { swim : { spd : "walk", enc : "walk" } }
 	}, {
 		objname : "Seeker's Speech (prereq: the Seeker patron)",
 		name : "Seeker's Speech",
@@ -5302,8 +5367,7 @@ function UAstartupCode() {
 			oncelr : true
 		},
 		prereqeval : "classes.known.warlock.level >= 5",
-		eval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\d+) ?(ft|m)/i, '$1 $2\\n$1 $2 swim').replace(/\\n/, typePF ? ' ' : '\\n')); };",
-		removeeval : "if (!CurrentRace.speed || !(/swim/i).test(CurrentRace.speed[0])) { Value('Speed', What('Speed').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); Value('Speed encumbered', What('Speed encumbered').replace(/(\\r| )?(\\d+) ?(ft|m) swim/i, '')); };"
+		speed : { swim : { spd : "walk", enc : "walk" } }
 	}, {
 		objname : "Gift of the Ever-Living Ones (prereq: Pact of the Chain)",
 		name : "Gift of the Ever-Living Ones",

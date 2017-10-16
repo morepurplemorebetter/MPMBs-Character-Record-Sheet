@@ -3874,6 +3874,53 @@ var CreatureList = {
 			}
 		]
 	},
+	"shadow" : {
+		name : "Shadow",
+		source : ["M", 269],
+		size : 3, //Medium
+		type : "Undead",
+		subtype : "",
+		alignment : "chaotic evil",
+		ac : 12,
+		hp : 16,
+		hd : [3, 8],
+		speed : "40 ft",
+		scores : [6, 14, 13, 6, 10, 8],
+		saves : ["", "", "", "", "", ""],
+		skills : {
+			"stealth" : 4,
+		},
+		damage_vulnerabilities : "radiant",
+		damage_resistances : "acid; cold; fire; lightning; thunder; bludgeoning, piercing, and slashing from nonmagical weapons",
+		damage_immunities : "necrotic, poison",
+		condition_immunities : "exhaustion, frightened, grappled, paralyzed, petrified, poisoned, prone, restrained",
+		senses : "Darkvision 60 ft",
+		passivePerception : 10,
+		languages : "",
+		challengeRating : "1/2",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Strength Drain",
+				ability : 2,
+				damage : [2, 6, "necrotic"],
+				range : "Melee (5 ft)",
+				description : "Reduces Str by 1d4 till target's next short rest; If Str goes to 0, the target dies and forms a new shadow",
+				tooltip : "A target of the shadows's strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later."
+			},
+		],
+		traits : [{
+				name : "Amorphous",
+				description : "The shadow can move through a space as narrow as 1 inch wide without squeezing."
+			}, {
+				name : "Shadow Stealth",
+				description : "While in dim light or darkness, the shadow can take the Hide action as a bonus action and adds an extra +2 on Stealth checks."
+			}, {
+				name : "Sunlight Weakness",
+				description : "While in sunlight, the shadow has disadvantage on attack rolls, ability checks, and saving throws."
+			}
+		],
+	},
 	"shield guardian" : {
 		name : "Shield Guardian",
 		source : ["M", 271],
@@ -5042,7 +5089,7 @@ var CreatureList = {
 	},
 	"brontosaurus" : {
 		name : "Brontosaurus",
-		source : ["V", 139],
+		source : [["V", 139], ["ToA", 215]],
 		size : 0, //Gargantuan
 		type : "Beast",
 		subtype : "",
@@ -5076,7 +5123,7 @@ var CreatureList = {
 	},
 	"deinonychus" : {
 		name : "Deinonychus",
-		source : ["V", 139],
+		source : [["V", 139], ["ToA", 217]],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -5121,7 +5168,7 @@ var CreatureList = {
 	},
 	"dimetrodon" : {
 		name : "Dimetrodon",
-		source : ["V", 139],
+		source : [["V", 139], ["ToA", 217]],
 		size : 3, //Medium
 		type : "Beast",
 		subtype : "",
@@ -5152,7 +5199,7 @@ var CreatureList = {
 	},
 	"hadrosaurus" : {
 		name : "Hadrosaurus",
-		source : ["V", 140],
+		source : [["V", 140], ["ToA", 224]],
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
@@ -5183,7 +5230,7 @@ var CreatureList = {
 	},
 	"quetzalcoatlus" : {
 		name : "Quetzalcoatlus",
-		source : ["V", 140],
+		source : [["V", 140], ["ToA", 230]],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -5222,7 +5269,7 @@ var CreatureList = {
 	},
 	"stegosaurus" : {
 		name : "Stegosaurus",
-		source : ["V", 140],
+		source : [["V", 140], ["ToA", 231]],
 		size : 1, //Huge
 		type : "Beast",
 		subtype : "",
@@ -5250,7 +5297,7 @@ var CreatureList = {
 	},
 	"velociraptor" : {
 		name : "Velociraptor",
-		source : ["V", 140],
+		source : [["V", 140], ["ToA", 235]],
 		size : 5, //Tiny
 		type : "Beast",
 		subtype : "",
@@ -5286,7 +5333,7 @@ var CreatureList = {
 		],
 		traits : [{
 				name : "Pack Tactics",
-				description : "The velociraptor has advantage on an attack roll against a creature if at least one of the rat's allies is within 5 ft of the creature and the ally isn't incapacitated."
+				description : "The velociraptor has advantage on an attack roll against a creature if at least one of the velociraptor's allies is within 5 ft of the creature and the ally isn't incapacitated."
 			}
 		]
 	},
@@ -5611,6 +5658,163 @@ var CreatureList = {
 				description : "The steeder can expend all its movement on its turn to jump up to 60 ft vertically or horizontally, provided that its speed is at least 30 feet."
 			}
 		]
+	},
+
+	// Tomb of Annihilation (with the help of SoilentBrad and @lowbrr)
+	"almiraj" : {
+		name : "Almiraj",
+		source : ["ToA", 211],
+		size : 4, //Small
+		type : "Beast",
+		subtype : "",
+		companion : "familiar",
+		alignment : "Unaligned",
+		ac : 13,
+		hp : 3,
+		hd : [1, 6],
+		speed : "50 ft",
+		scores : [2, 16, 10, 2, 14, 10],
+		saves : ["", "", "", "", "", ""],
+		skills : {
+			"perception" : 4,
+			"stealth" : 5,
+		},
+		senses : "Darkvision 30 ft; Adv. on Wis (Perception) checks using hearing/sight",
+		passivePerception : 14,
+		languages : "",
+		challengeRating : "0",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Horn",
+				ability : 2,
+				damage : [1, 4, "piercing"],
+				range : "Melee (5 ft)",
+				description : ""
+			}
+		],
+		traits : [{
+				name : "Keen Senses",
+				description : "The almiraj has advantage on Wisdom (Perception) checks that rely on hearing or sight."
+			}
+		],
+	},
+	"flying monkey" : {
+		name : "Flying Monkey",
+		source : ["ToA", 220],
+		size : 4, //Small
+		type : "Beast",
+		subtype : "",
+		companion : "familiar",
+		alignment : "Unaligned",
+		ac : 12,
+		hp : 3,
+		hd : [1, 6],
+		speed : "30 ft, climb 20 ft, fly 30 ft",
+		scores : [8, 14, 11, 5, 12, 6],
+		saves : ["", "", "", "", "", ""],
+		senses : "",
+		passivePerception : 11,
+		languages : "",
+		challengeRating : "0",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Bite",
+				ability : 1,
+				damage : [1, 4, "piercing"],
+				range : "Melee (5 ft)",
+				description : ""
+			}
+		],
+		traits : [{
+				name : "Pack Tactics",
+				description : "The flying monkey has advantage on an attack roll against a creature if at least one of the monkey's allies is within 5 ft of the creature and the ally isn't incapacitated."
+			}
+		],
+	},
+	"giant snapping turtle" : {
+		name : "Giant Snapping Turtle",
+		source : ["ToA", 222],
+		size : 2, //Large
+		type : "Beast",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 17,
+		hp : 75,
+		hd : [10, 10],
+		speed : "30 ft, swim 40 ft",
+		scores : [19, 10, 14, 2, 12, 5],
+		saves : ["", "", "", "", "", ""],
+		senses : "Darkvision 60 ft",
+		passivePerception : 11,
+		languages : "",
+		challengeRating : "3",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Bite",
+				ability : 1,
+				damage : [4, 6, "slashing"],
+				range : "Melee (5 ft)",
+				description : ""
+			}
+		],
+		traits : [{
+				name : "Amphibious",
+				description : "The turtle can breathe air and water."
+			}, {
+				name : "Stable",
+				description : "Whenever an effect knocks the turtle prone, it can make a DC 10 Constitution saving throw to avoid being knocked prone. A prone turtle is upside down. To stand up, it must succeed on a DC 10 Dexterity check on its turn and then use all its movement for that turn. While prone, the turtle's AC becomes 12."
+			}
+		]
+	},
+	"jaculi" : {
+		name : "Jaculi",
+		source : ["ToA", 225],
+		size : 2, //Large
+		type : "Beast",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 14,
+		hp : 16,
+		hd : [3, 10],
+		speed : "30 ft, climb 20 ft",
+		scores : [15, 14, 11, 2, 8, 3],
+		saves : ["", "", "", "", "", ""],
+		skills : {
+			"athletics" : 4,
+			"perception" : 1,
+			"stealth" : 4
+		},
+		senses : "Blindsight 30 ft; Adv. on Wis (Perception) checks using smell",
+		passivePerception : 11,
+		languages : "",
+		challengeRating : "1/2",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Bite",
+				ability : 1,
+				damage : [2, 6, "piercing"],
+				range : "Melee (5 ft)",
+				description : "If used after at least 10 ft jump, adv. on to hit and extra 2d6 damage, see Spring trait"
+			}
+		],
+		actions : [{
+				name : "Spring",
+				description : "The jaculi springs up to 30 feet in a straight line and makes a bite attack against a target within its reach. This attack has advantage if the jaculi springs at least 10 feet. If the attack hits, the bite deals an extra 7 (2d6) piercing damage."
+			}
+		],
+		traits : [{
+				name : "Camouflage",
+				description : "The jaculi has advantage on Dexterity (Stealth) checks made to hide."
+			}, {
+				name : "Keen Smell",
+				description : "The jaculi has advantage on Wisdom (Perception) checks that rely on smell."
+			}
+		],
+		wildshapeString : "\u25C6 Senses: Blindsight 30 ft.\n\u25C6 Camouflage: advantage on Dexterity (Stealth) checks made to hide.\n\u25C6 Keen Smell: advantage on Wisdom (Perception) checks that rely on smell.\n\u25C6 Spring: 30 ft in a straight line and make a bite attack. Advantage on the attack roll if springing at least 10 ft. It deals an extra 7 (2d6) piercing damage on a hit."
 	},
 };
 

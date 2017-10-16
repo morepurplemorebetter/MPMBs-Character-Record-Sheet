@@ -19,5 +19,5 @@ FeatsList["heartbreaker"] = {
 	source : ["HB", 0],
 	description : "Advantage on Charisma (Deception) and (Persuasion) if dealing with a person of the opposite sex, if they are not hostile. When, in combat, a person of the opposite sex makes an attack against you, you can use your reaction to say some biting or honey words and impose disadvantade on that attack. A person of the opposite sex has disadvantage vs your charms",
 	prerequisite : "Charisma 13 or higher",
-	action : ["reaction", ""],
+	action : ["reaction", ""]
 }

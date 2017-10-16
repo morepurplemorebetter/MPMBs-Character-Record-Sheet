@@ -407,7 +407,7 @@ ClassSubList["way of the four elements"].features = {
 			name : "One with the Tides",
 			source : ["IB:WotFE", 3],
 			description : " [2 ki points]" + desc([
-				"As an action, I gain underwater adaptations that last for 8 hours: Breathe underwater",
+				"As an action, I gain underwater adaptations that last for 8 hours: Breathe underwater,",
 				"Swim speed equal to my walking speed, and Blindsight 60 ft while underwater"
 			]),
 			prereqeval : "classes.known.monk.level >= 11"
