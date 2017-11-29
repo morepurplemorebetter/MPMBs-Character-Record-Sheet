@@ -1,18 +1,22 @@
 /*	-WHAT IS THIS?-
 	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
-	You can add custom content to the Character Sheet's functionality by adding a script written with the syntax shown below in the "Add Custom Script" dialogue.
-	
+	To add your own content to the Character Sheet, use the syntax below and save it in a file. You can then import this file directly to the sheet using the "Import" button and "Import/Export" bookmark.
+	There you can either import the file as a whole or just copy the text into a dialogue.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
+	It is recommended to enter the code in a freshly downloaded or reset sheet before adding any other information so that there won't be any conflicts.
 */
 
 /*	-INFORMATION-
 	Subject:	Class
 	Effect:		This is the syntax for adding a new class to the sheet
 				Note that you will need the syntax for adding a subclass as well if you want the class to have any choices for subclasses
-	Sheet:		v12.998 (2017-09-22)
+	Sheet:		v12.999 (2017-11-29)
 */
+
+var iFileName = "Homebrew Syntax - ClassList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
+RequiredSheetVersion(12.999); // Optional; This is the minimum required version number of the sheet for the script to work. If the sheet being used to import the script is of an earlier version, the user will be warned
 
 ClassList["myclass"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
 

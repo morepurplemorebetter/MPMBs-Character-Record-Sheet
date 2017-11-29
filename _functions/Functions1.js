@@ -5402,11 +5402,16 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 				
 				//see if we need to force updating the limited feature section
 				var GoAnyway = newRaceLvl > 0 && keyFea.minlevel <= oldRaceLvl && (Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld);
-
-				if ((Fea.Use || Fea.UseCalc) && (GoAnyway || checkLVL)) {
-					var FeaTooltip = CurrentRace.name + keyFea.tooltip;
-					var AddRemoveFea = AddRemove === "Add" && Fea.Use && !(/unlimited|\u221E/i).test(Fea.Use) ? "Add" : "Remove";
-					tDoc[AddRemoveFea + "Feature"](keyFea.name, AddRemoveFea === "Add" ? Fea.Use : Fea.UseOld, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, FeaTooltip, Fea.UseOld, Fea.UseCalc);
+				var FeaTooltip = CurrentRace.name + (keyFea.tooltip ? keyFea.tooltip : "");
+					
+				//remove the limited feature if it should be removed because of downgrading the level --or-- the old feature was defined, but the new isn't --or-- if the old has a different name than the new --or-- if the new amount of usages is unlimited
+				if (((Fea.UseOld || Fea.UseCalcOld) && keyFea.minlevel > newRaceLvl && keyFea.minlevel <= oldRaceLvl) || (((!Fea.Use && !Fea.UseCalc) || (Fea.Recov !== Fea.RecovOld)) && (Fea.UseOld || Fea.UseCalcOld)) || (/unlimited|\u221E/i).test(Fea.Use)) {
+					RemoveFeature(Fea.UseName, newRaceLvl === 0 ? "" : Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
+					Fea.UseOld = 0;
+				};
+				// now add the limited feature depending on the changes of the level or changes of something else or if it is being forced, as long as the usages have been defined
+				if ((Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use) && (GoAnyway || (keyFea.minlevel <= newRaceLvl && keyFea.minlevel > oldRaceLvl))) {
+					AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, FeaTooltip, Fea.UseOld, Fea.UseCalc);
 				};
 				
 				thermoM(1/2); //increment the progress dialog's progress
@@ -5807,11 +5812,11 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					if (((Fea.UseOld || Fea.UseCalcOld) && propFea.minlevel > newClassLvl[aClass] && propFea.minlevel <= oldClassLvl[aClass]) || ((Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc) || (Fea.Recov !== Fea.RecovOld)) && (Fea.UseOld || Fea.UseCalcOld)) || (/unlimited|\u221E/i).test(Fea.Use)) {
 						RemoveFeature(Fea.UseNameOld ? Fea.UseNameOld : Fea.UseName, newClassLvl[aClass] === 0 ? "" : Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
 						Fea.UseOld = 0;
-					}
+					};
 					// now add the limited feature depending on the changes of the level or changes of something else or if it is being forced, as long as the usages have been defined
 					if ((Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use) && (GoAnyway || (propFea.minlevel <= newClassLvl[aClass] && propFea.minlevel > oldClassLvl[aClass]))) {
 						AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, temp.fullname, Fea.UseOld, Fea.UseCalc);
-					}
+					};
 					
 					thermoM(7/8); //increment the progress dialog's progress
 
@@ -6356,7 +6361,7 @@ function PrintButton() {
 	}
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
-}
+};
 
 //call the print dialog
 function PrintTheSheet() {
@@ -6366,7 +6371,7 @@ function PrintTheSheet() {
 		var PagesToPrint = [];
 		for (var P = 1; P < PageArray.length; P++) {
 			//in the case of the three extendable types, also go add all the extra sheets
-			if (PageArray[P] === "SSmore") {
+			if (PageArray[P] === "SSfront") {
 				var prefixArray = What("Template.extras.SSmore").split(",");
 				prefixArray[0] = What("Template.extras.SSfront").split(",")[1];
 				if (!prefixArray[0]) prefixArray.shift();
@@ -6827,13 +6832,14 @@ function MakeMobileReady(toggle) {
 				}
 			}
 		};
+		var SSfrontA = What("Template.extras.SSfront").split(",");
 		var SSmoreA = What("Template.extras.SSmore").split(",");
-		SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
+		SSmoreA[0] = SSfrontA[1];
 		if (!SSmoreA[0]) SSmoreA.shift();
 		if (SSmoreA.length > 1) {
 			//we also have to set all the checkboxes back to readable, if they are visible
 			for (var SS = 0; SS < SSmoreA.length; SS++) {
-				var maxLine = SSmoreA[SS] === SSfrontA[1] ? FieldNumbers.spells[0] : FieldNumbers.spells[1];
+				var maxLine = SS === 0 && SSmoreA[SS] === SSfrontA[1] ? FieldNumbers.spells[0] : FieldNumbers.spells[1];
 				for (var S = 0; S < maxLine; S++) {
 					var SSbox = tDoc.getField(SSmoreA[SS] + "spells.checkbox." + S);
 					if (SSbox.display === display.visible) SSbox.readonly = false;

@@ -25,6 +25,9 @@
 	Please take note that multiclassing the "Order of the Profane Soul" subclass with Warlock will result in too many spells/cantrips being asked for in the spell selection dialogues.
 */
 
+var iFileName = "Blood Hunter [Matthew Mercer's work, transcribed by Darryl & MPMB].js";
+RequiredSheetVersion(12.998);
+
 ClassList["blood hunter"] = {
 	regExpSearch : /^(?=.*blood)(?=.*hunter).*$/i,
 	name : "Blood Hunter",

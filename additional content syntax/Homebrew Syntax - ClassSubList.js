@@ -1,10 +1,11 @@
 /*	-WHAT IS THIS?-
 	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
-	You can add custom content to the Character Sheet's functionality by adding a script written with the syntax shown below in the "Add Custom Script" dialogue.
-	
+	To add your own content to the Character Sheet, use the syntax below and save it in a file. You can then import this file directly to the sheet using the "Import" button and "Import/Export" bookmark.
+	There you can either import the file as a whole or just copy the text into a dialogue.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
+	It is recommended to enter the code in a freshly downloaded or reset sheet before adding any other information so that there won't be any conflicts.
 */
 
 /*	-INFORMATION-
@@ -13,7 +14,10 @@
 	Sheet:		v12.999 (2017-11-29)
 */
 
-AddBackgroundVariant( // this is the function you will be calling to add the variant
+var iFileName = "Homebrew Syntax - ClassSubList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
+RequiredSheetVersion(12.999); // Optional; This is the minimum required version number of the sheet for the script to work. If the sheet being used to import the script is of an earlier version, the user will be warned
+
+AddSubClass( // this is the function you will be calling to add the variant
 
 	"fighter", // Parent Class object name; Required; This has to be the exact name of the class of which you are adding a subclass. Look for the name of the class in the ClassList variable. For the default 12 classes these names are: "barbarian", "bard", "cleric", "druid", "fighter", "monk", "paladin", "ranger", "rogue", "sorcerer", "warlock", and "wizard"
 	

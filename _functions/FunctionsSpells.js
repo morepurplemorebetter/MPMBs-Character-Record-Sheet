@@ -3835,9 +3835,9 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 					if (SSfrontA) {
 						Show(SSfrontA + "Image.SpellPoints");
 						Show(SSfrontA + "SpellSlots.Checkboxes.SpellPoints");
-					}
+					};
 					ShowSpellPointInfo();
-				} else if (RememberSlots === "[false,false]") {
+				} else {
 					SpellPointsLimFea("Remove");
 					Hide("Image.SpellPoints");
 					Hide("SpellSlots.Checkboxes.SpellPoints");
@@ -3845,9 +3845,9 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 					if (SSfrontA) {
 						Hide(SSfrontA + "Image.SpellPoints");
 						Hide(SSfrontA + "SpellSlots.Checkboxes.SpellPoints");
-					}
-				}
-			}
+					};
+				};
+			};
 			break;
 		 case "complete" :
 			GenerateCompleteSpellSheet(MenuSelection[2]);
