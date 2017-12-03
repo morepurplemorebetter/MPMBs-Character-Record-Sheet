@@ -460,151 +460,169 @@ function ToggleWhiteout(Toggle) {
 };
 
 function ResetAll(GoOn, noTempl) {
+	var oCk = {
+		cMsg : "Also delete all imported scripts, both files and manual input, as well as the source selection",
+		bInitialValue : false,
+		bAfterValue : false
+	};
 	var ResetDialog = {
 		cTitle : "Reset the whole sheet",
-		cMsg : "Are you sure you want to reset all fields and functions to their initial value?\nThis will undo any changes you have made, including Custom Scripts, page layout, source selection, and imported images.\n\nThis cannot be undone!",
+		cMsg : "Are you sure you want to reset all fields and functions to their initial value?\n\nThis will undo any changes you have made, including page layout and imported images.\n\nThis cannot be undone!",
 		nIcon : 1, //Warning
 		nType : 2, //Yes, No
+		oCheckbox : oCk
+	};
+	if (!GoOn && app.alert(ResetDialog) !== 4) return;
+	var keepImports = !oCk.bAfterValue;
+	if (keepImports) {
+		var filesScriptString = What("User_Imported_Files.Stringified");
+		var userScriptString = What("User Script");
+	};
+	thermoM("start"); //start a progress dialog
+	if (GoOn) {
+		thermoM("Resetting the sheet \"" + tDoc.documentFileName + "\"..."); //change the progress dialog text
+	} else {
+		thermoM("Resetting the sheet..."); //change the progress dialog text
 	}
 	
-	if (GoOn || app.alert(ResetDialog) === 4) {
-		thermoM("start"); //start a progress dialog
-		if (GoOn) {
-			thermoM("Resetting the sheet \"" + tDoc.documentFileName + "\"..."); //change the progress dialog text
-		} else {
-			thermoM("Resetting the sheet..."); //change the progress dialog text
-		}
-		
-		tDoc.delay = true;
-		tDoc.calculate = false;
-		
-		// Set global variable to reflect reset
-		IsNotReset = false;
-		
-		//make a variable of the current state of location columns in the equipment sections
-		var locColumns = What("Gear Location Remember").split(",");
+	tDoc.delay = true;
+	tDoc.calculate = false;
+	
+	// Set global variable to reflect reset
+	IsNotReset = false;
+	
+	//make a variable of the current state of location columns in the equipment sections
+	var locColumns = What("Gear Location Remember").split(",");
 
-		//Undo the MakeMobileReady if it was active
-		if (What("MakeMobileReady Remember") !== "") {
-			MakeMobileReady(false);
-		}
-		
-		thermoM(1/9); //increment the progress dialog's progress
-		
-		//delete any extra templates and make any template that is invisible, visible
-		RemoveSpellSheets(); //first do all the Spell Sheets
-		var defaultShowTempl = ["ASfront", "ASbackgr", "PRsheet"];
-		for (var R in TemplateDep) {
-			if (R === "SSfront" || R === "SSmore" || (!typePF && R === "PRsheet")) continue; //don't do this for the spell sheets, they have their own function; also don't do it for the player reference sheet in not the Printer Friendly version, as it doesn't exist
-			//first see if the template is visible
-			var isTempVisible = isTemplVis(R);
-			var tempExtras = What("Template.extras." + R);
-			
-			//if invisible, and one of the defaultShowTempl, make it visible
-			if (!isTempVisible && defaultShowTempl.indexOf(R) !== -1) {
-				DoTemplate(R, "Add");
-			} else if (tempExtras) { //if there can be multiples of a template, remove them
-				DoTemplate(R, "RemoveAll", false, true); //remove all of them
-			} else if (isTempVisible && defaultShowTempl.indexOf(R) === -1) {
-				DoTemplate(R, "Remove"); //remove all of them
-			};
-		};
-		
-		setListsUnitSystem("imperial"); //reset the values of some variables to the right unit system
-		
-		thermoM(2/9); //increment the progress dialog's progress
-		
-		//reset of all the form field values
-		tDoc.resetForm(["Wildshape.Race", "Race", "Class and Levels", "Background", "Comp.Race"]);
-		thermoM(3/9); //increment the progress dialog's progress
-		for (var i = 1; i <= FieldNumbers.limfea; i++) {
-			tDoc.getField("Limited Feature Max Usages " + i).setAction("Calculate", "");
-			tDoc.getField("Limited Feature Max Usages " + i).submitName = "";
-		}
-		tDoc.getField("AC Misc Mod 1 Description").submitName = "";
-		tDoc.getField("AC Misc Mod 2 Description").submitName = "";
-		tDoc.getField("Opening Remember").submitName = 1;
-		tDoc.resetForm();
-		thermoM(4/9); //increment the progress dialog's progress
-		
-		//Reset the color scheme to red
-		setColorThemes();
-		thermoM(5/9); //increment the progress dialog's progress
-
-		//reset some global variables
-		CurrentArmour.proficiencies = {};
-		CurrentWeapons.proficiencies = {};
-		CurrentWeapons.extraproficiencies = [];
-		CurrentWeapons.manualproficiencies = [];
-		ApplyProficiencies(true);
-		CurrentClasses = {};
-		classes.known = {};
-		classes.extraskills = [];
-		CurrentRace = {};
-		CurrentBackground = {};
-		CurrentCompRace = {};
-		GetStringifieds(GoOn);
-		resourceDecisionDialog(true, true); //to make sure that even if the sheet is used before re-opening, the resources are set to default
-
-		//call upon some functions to reset other stuff than field values
-		ShowCalcBoxesLines();
-		ToggleWhiteout(false);
-		ChangeFont();
-		ToggleTextSize();
-		ToggleAttacks("Yes");
-		ToggleBlueText("Yes");
-		ShowHideStealthDisadv();
-		AdventureLeagueOptions("advleague#all#0");
-		SetSpellSlotsVisibility();
-		ShowHonorSanity();
-		thermoM(6/9); //increment the progress dialog's progress
-		LayerVisibilityOptions(false);
-		ShowCompanionLayer();
-		ConditionSet();
-		RemoveTooltips();
-		ShowAttunedMagicalItems(true);
-		if (locColumns[0] === "true") HideInvLocationColumn("Adventuring Gear ", true);
-		if (locColumns[1] === "true") HideInvLocationColumn("Extra.Gear ", true);
-		SetHighlighting();
-		SetHPTooltip("reset");
-		UpdateALdateFormat();
-		DnDlogo();
-		thermoM(7/9); //increment the progress dialog's progress
-		
-		//Reset portrait & symbol to original blank
-		ClearIcons("HeaderIcon", true);
-		ClearIcons("AdvLog.HeaderIcon", true);
-		ClearIcons("Portrait", true);
-		ClearIcons("Symbol", true);
-		ClearIcons("Comp.img.Portrait", true);
-		
-		//re-apply the rich text (deleted because of resetting the form fields)
-		MakeSkillsMenu_SkillsOptions(["go", "alphabeta"]);
-		AddTooltip("Text.SkillsNames", "alphabeta");
-		SetRichTextFields();
-		
-		//Set the initial state of the Ability Save DC number 2
-		Toggle2ndAbilityDC("hide");
-		
-		thermoM(8/9); //increment the progress dialog's progress
-		
-		//generate an instance of the AScomp and ASnotes templates
-		if (!noTempl) {
-			DoTemplate("AScomp", "Add");
-			DoTemplate("ASnotes", "Add");
-		};
-		// now move the focus to the first page
-		tDoc.getField(BookMarkList["CSfront"]).setFocus();
-		
-		//Set global variable to reflect end of reset
-		IsNotReset = true;
-		
-		thermoM("stop"); //stop the top progress dialog
-
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		tDoc.calculateNow();
+	//Undo the MakeMobileReady if it was active
+	if (What("MakeMobileReady Remember") !== "") {
+		MakeMobileReady(false);
 	}
+	
+	thermoM(1/9); //increment the progress dialog's progress
+	
+	//delete any extra templates and make any template that is invisible, visible
+	RemoveSpellSheets(); //first do all the Spell Sheets
+	var defaultShowTempl = ["ASfront", "ASbackgr", "PRsheet"];
+	for (var R in TemplateDep) {
+		if (R === "SSfront" || R === "SSmore" || (!typePF && R === "PRsheet")) continue; //don't do this for the spell sheets, they have their own function; also don't do it for the player reference sheet in not the Printer Friendly version, as it doesn't exist
+		//first see if the template is visible
+		var isTempVisible = isTemplVis(R);
+		var tempExtras = What("Template.extras." + R);
+		
+		//if invisible, and one of the defaultShowTempl, make it visible
+		if (!isTempVisible && defaultShowTempl.indexOf(R) !== -1) {
+			DoTemplate(R, "Add");
+		} else if (tempExtras) { //if there can be multiples of a template, remove them
+			DoTemplate(R, "RemoveAll", false, true); //remove all of them
+		} else if (isTempVisible && defaultShowTempl.indexOf(R) === -1) {
+			DoTemplate(R, "Remove"); //remove all of them
+		};
+	};
+	
+	setListsUnitSystem("imperial"); //reset the values of some variables to the right unit system
+	
+	thermoM(2/9); //increment the progress dialog's progress
+	
+	//reset of all the form field values
+	tDoc.resetForm(["Wildshape.Race", "Race", "Class and Levels", "Background", "Comp.Race"]);
+	thermoM(3/9); //increment the progress dialog's progress
+	for (var i = 1; i <= FieldNumbers.limfea; i++) {
+		tDoc.getField("Limited Feature Max Usages " + i).setAction("Calculate", "");
+		tDoc.getField("Limited Feature Max Usages " + i).submitName = "";
+	};
+	tDoc.getField("AC Misc Mod 1 Description").submitName = "";
+	tDoc.getField("AC Misc Mod 2 Description").submitName = "";
+	tDoc.getField("Opening Remember").submitName = 1;
+	tDoc.resetForm();
+	thermoM(4/9); //increment the progress dialog's progress
+	
+	//Reset the color scheme to red
+	setColorThemes();
+	thermoM(5/9); //increment the progress dialog's progress
+
+	//reset some global variables
+	CurrentArmour.proficiencies = {};
+	CurrentWeapons.proficiencies = {};
+	CurrentWeapons.extraproficiencies = [];
+	CurrentWeapons.manualproficiencies = [];
+	ApplyProficiencies(true);
+	CurrentClasses = {};
+	classes.known = {};
+	classes.extraskills = [];
+	CurrentRace = {};
+	CurrentBackground = {};
+	CurrentCompRace = {};
+	InitiateLists();
+	GetStringifieds(keepImports);
+	
+	if (keepImports) { // remove the imports and reset the sources
+		SetStringifieds("sources");
+		Value("User_Imported_Files.Stringified", filesScriptString);
+		Value("User Script", userScriptString);
+		RunUserScript(true);
+	} else { // re-apply the imports and keep the sources setting
+		resourceDecisionDialog(true, true); //to make sure that even if the sheet is used before re-opening, the resources are set to default
+	};
+
+	//call upon some functions to reset other stuff than field values
+	ShowCalcBoxesLines();
+	ToggleWhiteout(false);
+	ChangeFont();
+	ToggleTextSize();
+	ToggleAttacks("Yes");
+	ToggleBlueText("Yes");
+	ShowHideStealthDisadv();
+	AdventureLeagueOptions("advleague#all#0");
+	SetSpellSlotsVisibility();
+	ShowHonorSanity();
+	thermoM(6/9); //increment the progress dialog's progress
+	LayerVisibilityOptions(false);
+	ShowCompanionLayer();
+	ConditionSet();
+	RemoveTooltips();
+	ShowAttunedMagicalItems(true);
+	if (locColumns[0] === "true") HideInvLocationColumn("Adventuring Gear ", true);
+	if (locColumns[1] === "true") HideInvLocationColumn("Extra.Gear ", true);
+	SetHighlighting();
+	SetHPTooltip("reset");
+	UpdateALdateFormat();
+	DnDlogo();
+	thermoM(7/9); //increment the progress dialog's progress
+	
+	//Reset portrait & symbol to original blank
+	ClearIcons("HeaderIcon", true);
+	ClearIcons("AdvLog.HeaderIcon", true);
+	ClearIcons("Portrait", true);
+	ClearIcons("Symbol", true);
+	ClearIcons("Comp.img.Portrait", true);
+	
+	//re-apply the rich text (deleted because of resetting the form fields)
+	MakeSkillsMenu_SkillsOptions(["go", "alphabeta"]);
+	AddTooltip("Text.SkillsNames", "alphabeta");
+	SetRichTextFields();
+	
+	//Set the initial state of the Ability Save DC number 2
+	Toggle2ndAbilityDC("hide");
+	
+	thermoM(8/9); //increment the progress dialog's progress
+	
+	//generate an instance of the AScomp and ASnotes templates
+	if (!noTempl) {
+		DoTemplate("AScomp", "Add");
+		DoTemplate("ASnotes", "Add");
+	};
+	// now move the focus to the first page
+	tDoc.getField(BookMarkList["CSfront"]).setFocus();
+	
+	//Set global variable to reflect end of reset
+	IsNotReset = true;
+	
+	thermoM("stop"); //stop the top progress dialog
+
+	tDoc.calculate = IsNotReset;
+	tDoc.delay = !IsNotReset;
+	tDoc.calculateNow();
 };
 
 // Select the text size to use, or, if left empty, select the default text size of 5.74
@@ -6026,9 +6044,9 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 					});
 					if (oCk.bAfterValue) {
 						AddString("Extra Class Feature Remember", theFea.extraname);
-					}
-				}
-			}
+					};
+				};
+			};
 		} else if (MenuSelection[2] === FeaOldChoice) { // the selection is the same as it was, so don't do anything
 			tDoc.calculate = IsNotReset;
 			tDoc.delay = !IsNotReset;

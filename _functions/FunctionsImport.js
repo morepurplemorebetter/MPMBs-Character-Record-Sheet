@@ -389,7 +389,7 @@ function DirectImport_Dialogue() {
 	}
 	
 	return theDialog === "ok" ? [DirectImport_dialog.fileLoc, DirectImport_dialog.relPath, goII] : false;
-}
+};
 
 //a function to import information directly from another MPMB's Character Record Sheets
 function DirectImport(consoleTrigger) {
@@ -422,6 +422,20 @@ function DirectImport(consoleTrigger) {
 			cMsg: closeAlert[1]
 		});
 	} else if (global.docFrom && global.docTo) { try { //we are good to go and import stuff!
+		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
+		if (FromVersion < 12.999) { // give a warning about importing from a version that had all materials included automatically
+			var askUserIsSure = {
+				cTitle : "Continue with import?",
+				cMsg : "You are about to import from a sheet with version " + FromVersion + ". Unlike the sheet you are importing to, v" + FromVersion + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material that it is legally allowed to by default.\n\nIf you (or someone else) didn't add the same materials to the current sheet as the old sheet uses, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet. See the \"Add Homebrew Material\" bookmark for more information on what is already added and how to add your preffered materials or materials you made yourself.\n\nAre you sure you want to continue importing?",
+				nIcon : 2, //Status
+				nType : 2 //Yes, No
+			};
+			if (app.alert(askUserIsSure) !== 4) {
+				closeAlert = true;
+				throw "user stop";
+			};
+		};
+		var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
 		ResetAll(true, true); //first reset the current sheet to its initial state, but without the extra templates generated
 		Value("Opening Remember", "Yes");
 		IsNotImport = false;
@@ -437,10 +451,13 @@ function DirectImport(consoleTrigger) {
 		var bothPF = typePF && fromSheetTypePF;
 		var bothCF = !typePF && !fromSheetTypePF;
 		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
-		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
 		
 		//copy any custom script and run it
-		if (ImportField("User Script")) RunUserScript();
+		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : {};
+		var filesScript = MergeRecursive(filesScriptFrom, filesScriptTo); // add the old to the new, preferring the new if both have the same entries
+		global.docTo.getField("User_Imported_Files.Stringified").value = filesScript.toSource();
+		if (ImportField("User Script") || filesScript.toSource() !== "({})") RunUserScript(true);
+		//set the excl./incl. sources
 		if (ImportField("CurrentSources.Stringified")) {
 			GetStringifieds();
 			if (!CurrentSources.globalExcl) CurrentSources.globalExcl = [];
@@ -462,11 +479,11 @@ function DirectImport(consoleTrigger) {
 			if (FromVersion < 12.94) {
 				if (!CurrentSources.ammoExcl) CurrentSources.ammoExcl = [];
 				for (var amm in AmmoList) {
-					if (AmmoList[amm].source && AmmoList[amm].source.toSource().indexOf("D") !== -1) CurrentSources.ammoExcl.push(amm);
+					if (AmmoList[amm].source && AmmoList[amm].source.toSource().indexOf('"D"') !== -1) CurrentSources.ammoExcl.push(amm);
 				};
 				if (!CurrentSources.weapExcl) CurrentSources.weapExcl = [];
 				for (var wea in WeaponsList) {
-					if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source.toSource().indexOf("D") !== -1) CurrentSources.weapExcl.push(wea);
+					if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source.toSource().indexOf('"D"') !== -1) CurrentSources.weapExcl.push(wea);
 				};
 			}
 			SetStringifieds("sources");
@@ -1155,10 +1172,12 @@ function DirectImport(consoleTrigger) {
 		// set the focus to the top of the first page
 		tDoc.getField("Player Name").setFocus();
 	} catch (error) {
-		var eText = "An error occured during importing:\n " + error + "\n ";
-		for (var e in error) eText += e + ": " + error[e] + ";\n ";
-		console.println(eText);
-		console.show();
+		if (error !== "user stop") {
+			var eText = "An error occured during importing:\n " + error + "\n ";
+			for (var e in error) eText += e + ": " + error[e] + ";\n ";
+			console.println(eText);
+			console.show();
+		};
 	};
 	};
 	
@@ -1218,7 +1237,7 @@ function DirectImport(consoleTrigger) {
 	tDoc.calculate = IsNotReset;
 	tDoc.delay = !IsNotReset;
 	if (IsNotReset) tDoc.calculateNow();
-}
+};
 
 //a function to import a field from the global.docFrom
 //several extra things can be set: actionsObj.SubmitCalc, actionsObj.notTooltip, actionsObj.notSubmitName, actionsObj.doReadOnly, actionsObj.cleanValue, actionsObj.doVisiblity, actionsObj.compareNoSpaces
