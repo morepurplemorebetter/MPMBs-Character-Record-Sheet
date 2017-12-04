@@ -151,40 +151,55 @@ var Menus = {
 	"magicitems" : "",
 	"color" : "",
 	"raceoptions" : "",
-	"importexport" : tDoc.info.SpellsOnly ? [{
-			cName : "Add custom script",
-			cReturn : "go#script"
-		}] : [{
-			cName : "Add custom script",
-			cReturn : "go#script"
+	"importscripts" : [{
+			cName : "Import a file with additional material",
+			cReturn : "go#script#file"
+		}, {
+			cName : "Add material manually (copy-paste)",
+			cReturn : "go#script#manual"
 		}, {
 			cName : "-"
 		}, {
-			cName : "Import Directly from a PDF (recommended)",
+			cName : "Don't know how this works? Click here to learn more!",
+			cReturn : "go#script#onlinehelp"
+		}, {
+			cName : "Find more content online...",
+			cReturn : "go#script#subreddit"
+		}],
+	"importexport" : [{
+			cName : "Add homebrew material (custom script)",
+			oSubMenu : []
+		}, {
+			cName : "-"
+		}, {
+			cName : "Import a character directly from another MPMB's PDF",
 			cReturn : "go#direct"
 		}, {
 			cName : "-"
 		}, {
-			cName : "Import .xfdf file (depreciated)",
-			cReturn : "go#import#xfdf"
-		}, {
-			cName : "Export .xfdf file (depreciated)",
+			cName : "Import/Export using files (depreciated, no longer support)",
 			oSubMenu: [{
-				cName : "Export .xfdf file of non-calculated fields",
-				cReturn : "go#export#partial"
+				cName : "Import .xfdf file",
+				cReturn : "go#import#xfdf"
 			}, {
-				cName : "Export .xfdf file of equipment fields only",
-				cReturn : "go#export#equipment"
-			}, {
-				cName : "Export .xfdf file of description fields only",
-				cReturn : "go#export#description"
-			}, {
-				cName : "-"
-			}, {
-				cName : "Export .xfdf file of all fields",
-				cReturn : "go#export#all"
-			}, ]
-		}, ],
+				cName : "Export .xfdf file",
+				oSubMenu: [{
+					cName : "Export .xfdf file of non-calculated fields",
+					cReturn : "go#export#partial"
+				}, {
+					cName : "Export .xfdf file of equipment fields only",
+					cReturn : "go#export#equipment"
+				}, {
+					cName : "Export .xfdf file of description fields only",
+					cReturn : "go#export#description"
+				}, {
+					cName : "-"
+				}, {
+					cName : "Export .xfdf file of all fields",
+					cReturn : "go#export#all"
+				}]
+			}]
+		}],
 	"feats" : "",
 	"attacks" : "",
 	"wildshape" : "",
@@ -204,6 +219,7 @@ var Menus = {
 	"adventureLeague" : "",
 	"sources" : ""
 };
+Menus.importexport[0].oSubMenu = Menus.importscripts;
 
 var GearMenus = {
 	gear : "",
@@ -1888,19 +1904,16 @@ var factionRanks = {
 		]
 }
 
-var LinkDMsGuild = {
-	character : {
-		PF : "186823",
-		CF : "193053"
-	},
-	spell : {
-		PF : "187619",
-		CF : "193298"
-	},
+var LinksLatest = {
 	advlog : {
-		PF : "194068",
-		CF : "194069"
-	}
+		PF : "http://www.dmsguild.com/product/194068",
+		CF : "http://www.dmsguild.com/product/194069"
+	},
+	character : {
+		PF : "https://flapkan.com/printer_friendly_character_sheet",
+		CF : "https://flapkan.com/colourful_character_sheet"
+	},
+	patreon : "https://www.patreon.com/posts/mpmbs-character-14927098"
 };
 
 var cantripDie = levels.map(function (n) {

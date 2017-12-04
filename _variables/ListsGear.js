@@ -3,7 +3,6 @@ var Base_ArmourList = {
 		regExpSearch : /(unarmou?red|naked|nothing|bare|no.?armou?r)/i,
 		name : "Unarmored",
 		source : [["SRD", 62], ["P", 14]],
-		source : ["P", 14],
 		type : "",
 		ac : 10,
 		stealthdis : false,
@@ -1068,7 +1067,6 @@ var Base_AmmoList = {
 	"holy water" : {
 		name : "Holy Water, flasks",
 		source : [["SRD", 67], ["P", 151]],
-		source : ["P", 151],
 		weight : 1,
 		icon : "Flasks",
 		checks : [".Top", ".Base"],

@@ -29,7 +29,7 @@ function MakeButtons() {
 		if (!tDoc.info.AdvLogOnly) {
 			app.addToolButton({
 				cName : "ImportExportButton",
-				cExec : minVer ? "AddUserScript();" : "ImportExport_Button();",
+				cExec : "ImportExport_Button();",
 				oIcon : allIcons.import,
 				cTooltext :  minVer ? toUni("Add Custom Script") + "\nAdd a script to add new spells, modify spells and more, see FAQ." : toUni("Import / Export") + "\n \u2022  Import all the information from an old sheet directly;\n \u2022  Add custom script, see FAQ;\n \u2022  Alternatively, you can import or export data with the .xfdf file format. This method is depreciated, but might still be interesting if you only want to import the equipment sections or only the description sections.\n\nThe description sections include the top of first page, background page, notes, and companion description.",
 				nPos : 2,

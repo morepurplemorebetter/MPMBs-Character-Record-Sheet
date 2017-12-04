@@ -225,6 +225,8 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	};
 	
 	var exclObj = {}, inclObj = {};
+	var getMoreCont = "\u200B\u200B>> click this line to get more content <<";
+	exclObj[getMoreCont] = -1;
 	if (isFirstTime) {
 		CurrentSources = {
 			firstTime : atReset ? true : false,
@@ -239,23 +241,24 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			if (SourceList[src].group === "Unearthed Arcana") CurrentSources.globalExcl.push(src);
 		};
 		for (var amm in AmmoList) {
-			if (AmmoList[amm].source && AmmoList[amm].source.toSource().indexOf("D") !== -1) CurrentSources.ammoExcl.push(amm);
+			if (AmmoList[amm].source && AmmoList[amm].source.toSource().indexOf('"D"') !== -1) CurrentSources.ammoExcl.push(amm);
 		};
 		for (var wea in WeaponsList) {
-			if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source.toSource().indexOf("D") !== -1) CurrentSources.weapExcl.push(wea);
+			if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source.toSource().indexOf('"D"') !== -1) CurrentSources.weapExcl.push(wea);
 		};
 		Value("CurrentSources.Stringified", CurrentSources.toSource());
 	};
 	if (atOpening && (atReset || app.viewerVersion < 15)) return;
 	
 	var remCS = CurrentSources.toSource();
-	
+	var onlySRD = [];
 	for (var src in SourceList) {
 		if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
 		var srcGroup = !SourceList[src].group ? "other" : SourceList[src].group;
 		var srcName = SourceList[src].name.replace(RegExp(srcGroup + " ?:? ?", "i"), "") + " (" + SourceList[src].abbreviation + ")";
 		if (srcGroup === "Unearthed Arcana" && SourceList[src].date) srcName = SourceList[src].date + " " + srcName;
 		if (!srcGroup || srcGroup === "default") continue;
+		onlySRD.push(src);
 		if (srcGroup !== "Primary Sources") srcGroup = "\u200B" + srcGroup;
 		if (!exclObj[srcGroup]) exclObj[srcGroup] = {};
 		if (!inclObj[srcGroup]) inclObj[srcGroup] = {};
@@ -265,6 +268,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			inclObj[srcGroup][srcName] = -1;
 		}
 	};
+	onlySRD = onlySRD.length === 1 && onlySRD[0] === "SRD";
 	
 	exclObj = CleanObject(exclObj); inclObj = CleanObject(inclObj);
 	
@@ -287,17 +291,21 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	var Text2 = toUni("Warning:") + " If you change anything that affects any drop-down boxes on the sheet, those will be updated. " + (isFirstTime ? "If a lot of drop-down boxes are affected, this can take several minutes." : "Please be aware, that if those drop-down boxes contained any value, they will first be reset and then re-applied using the resources selected above. This can take several minutes.");
 	
 	var selectionDialogue = {
-		exclActive : true,
+		exclActive : false,
 		inclActive : false,
 		exclObject : exclObj,
 		inclObject : inclObj,
 		sourceLink : "",
+		scrpMenu : false,
 		initialize : function (dialog) {
 			dialog.load({
 				"img1" : allIcons.sources,
 				"ExcL" : this.exclObject,
 				"IncL" : this.inclObject,
 				"bLin" : "This button links to the web page of the selected sourcebook"
+			});
+			dialog.visible({
+				"bWhy" : onlySRD
 			});
 			dialog.setForeColorRed("txt2");
 		},
@@ -312,14 +320,14 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 				if (sourceNm === (SourceList[src].name.replace(RegExp(SourceList[src].group + " ?:? ?", "i"), "") + " (" + SourceList[src].abbreviation + ")")) {
 					theSrc = src;
 					break;
-				}
+				};
 			};
 			if (theSrc && SourceList[theSrc].url) {
 				this.sourceLink = SourceList[theSrc].url;
 				dialog.load({
 					"bLin" : "Click here to look up the \"" + SourceList[theSrc].name + "\" resource"
-				})
-			}
+				});
+			};
 		},
 		updateCS : function (oResultExcL) {
 			//put the excluded element into an array
@@ -332,8 +340,21 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			};
 		},
 		ExcL : function (dialog) {
-			this.exclActive = true;
-			this.updateLink(dialog, "ExcL");
+			var exclElems = dialog.store()["ExcL"];
+			var isGetItem = GetPositiveElement(exclElems) === getMoreCont;
+			if (isGetItem) {
+				if (this.exclActive != "stop") {
+					this.exclActive = "stop";
+					this.bMor(dialog);
+				} else {
+					this.exclActive = false;
+				};
+				exclElems[getMoreCont] = -1;
+				dialog.load({"ExcL" : exclElems});
+			} else {
+				this.exclActive = true;
+				this.updateLink(dialog, "ExcL");
+			};
 		},
 		IncL : function (dialog) {
 			this.inclActive = true;
@@ -343,9 +364,11 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			// move all (remaining) items from ExcL to IncL
 			var elements = dialog.store();
 			var exclNow = elements["ExcL"];
+			delete exclNow[getMoreCont];
 			var inclNow = elements["IncL"];
+			var exclNew = {}; exclNew[getMoreCont] = -1;
 			dialog.load({
-				"ExcL" : {},
+				"ExcL" : exclNew,
 				"IncL" : MergeRecursive(inclNow, exclNow)
 			});
 			dialog.focus("IncL");
@@ -358,9 +381,11 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			if (!this.exclActive) return;
 			var elements = dialog.store();
 			var exclNow = elements["ExcL"];
+			delete exclNow[getMoreCont];
 			var inclNow = elements["IncL"];
 			var moveThem = GetElementAndMerge(exclNow, inclNow);
 			if (moveThem) {
+				moveThem[0][getMoreCont] = -1;
 				dialog.load({
 					"ExcL" : moveThem[0],
 					"IncL" : moveThem[1]
@@ -416,8 +441,26 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		bAmm : function (dialog) {resourceSelectionDialog("ammo");},
 		bLin : function (dialog) {if (this.sourceLink) app.launchURL(this.sourceLink, true)},
 		bSrc : function (dialog) { ShowDialog("List of Sources, sorted by abbreviation", "sources"); },
+		bMor : function (dialog) {
+			var MenuSelection = getMenu("importscripts");
+			if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
+				MenuSelection[3] = true;
+				this.scrpMenu = MenuSelection;
+				dialog.end("scrp");
+			};
+		},
+		bWhy : function (dialog) {
+			var goToWeb = {
+				cTitle : "Why does this sheet only include content from the System Reference Document?",
+				cMsg : "This sheet only includes content from the System Reference Document (SRD), because including any other material from Wizards of the Coast (WotC) would be a violation of their copyright. MorePurpleMoreBetter (MPMB) can't provide you with anything more from WotC other than the SRD, which is covered under the Open Gaming License (OGL).\n\nHowever, using the 'Get more' button, you can add content to the sheet that you or somebody else made.\n\nMPMB has some pre-written 3rd-party materials such as the 'Remastered: Way of the Four Elements', DMs Guild creations by Matt Mercer (Blood Hunter, Gunslinger, College of the Maestro), Michael Wolf (Shaman), and more...\nThere is also a subreddit dedicated to sharing people's own creations.\n\nWould you like to go a website where you can find more content?",
+				nIcon : 2,
+				nType : 2
+			};
+			if (app.alert(goToWeb) === 4) contactMPMB("additions");
+		},
 		description : {
 			name : "Pick which resources are excluded and included",
+			first_tab : "appl",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -453,7 +496,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 					bold : true,
 					elements : [{
 						type : "view",
-						align_children : "align_row",
+						align_children : "align_distribute",
 						elements : [{
 							type : "view",
 							elements : [{
@@ -471,7 +514,22 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 							}]
 						}, {
 							type : "view",
+							alignment : "align_top",
 							elements : [{
+								type : "button",
+								item_id : "bMor",
+								name : "Get more",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "button",
+								item_id : "bWhy",
+								name : "Why only SRD?",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "gap"
+							}, {
 								type : "button",
 								item_id : "BTRA",
 								name : ">>"
@@ -625,6 +683,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 						width : 500,
 						name : Text2
 					}, {
+						item_id : "appl",
 						type : "ok_cancel",
 						alignment : "align_right",
 						ok_name : "Apply (can take a long time)"
@@ -635,12 +694,14 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	};
 	
 	var CallDialogue = app.execDialog(selectionDialogue);
-	if (CallDialogue === "ok") {
+	if (CallDialogue === "ok" || CallDialogue === "scrp") {
 		SetStringifieds("sources");
 	} else {
 		CurrentSources = eval(remCS);
 	};
-	if (CallDialogue === "ok" || forceDDupdate) {
+	if (CallDialogue === "scrp") {
+		ImportScriptOptions(selectionDialogue.scrpMenu);
+	} else if (CallDialogue === "ok" || forceDDupdate) {
 		UpdateDropdown("resources");
 		
 		//if something changed for the spells make the spell menu again

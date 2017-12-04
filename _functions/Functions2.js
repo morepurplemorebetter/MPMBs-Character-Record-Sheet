@@ -3317,13 +3317,13 @@ function Publish(version) {
 		tDoc.info.SheetVersion = version;
 		tDoc.info.Title = MakeDocName();
 	};
-	tDoc.resetForm(["Opening Remember", "CurrentSources.Stringified"]);
+	tDoc.resetForm(["Opening Remember", "CurrentSources.Stringified", "User_Imported_Files.Stringified"]);
 	tDoc.getField("Opening Remember").submitName = 1;
-	tDoc.getField("SaveIMG.Patreon").submitName = "";
+	tDoc.getField("SaveIMG.Patreon").submitName = "(new Date(0))";
 	if (!minVer) DontPrint("d20warning");
 	DnDlogo();
 	tDoc.calculateNow();
-}
+};
 
 //show Honor or Sanity score, based on the field value
 function ShowHonorSanity(input) {
@@ -3392,7 +3392,7 @@ function ShowHonorSanity(input) {
 	} else {
 		Hide("HoS ST Bonus");
 	}
-}
+};
 
 //set the lifestyle
 function setLifeStyle(input) {
@@ -5006,15 +5006,26 @@ function contactMPMB(medium) {
 		app.launchURL("https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/tree/master/additional%20content", true);
 		break;
 	 case "latestversion" :
-		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild[minVer ? (tDoc.info.SpellsOnly ? "spell" : "advlog") : "character"][typePF ? "PF" : "CF"]), true);
+		app.launchURL(
+			!tDoc.getField("SaveIMG.Patreon").submitName || tDoc.info.SpellsOnly ? LinksLatest.patreon :
+			LinksLatest[minVer ? "advlog" : "character"][typePF ? "PF" : "CF"],
+			true
+		);
 		break;
 	 case "otherdesign" :
-		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild[minVer ? (tDoc.info.SpellsOnly ? "spell" : "advlog") : "character"][typePF ? "CF" : "PF"]), true);
+		app.launchURL(
+			tDoc.info.SpellsOnly ? LinksLatest.patreon :
+			LinksLatest[minVer ? "advlog" : "character"][typePF ? "CF" : "PF"],
+			true
+		);
 		break;
 	 case "fullversion" :
-		app.launchURL("http://www.dmsguild.com/product/" + (LinkDMsGuild.character[typePF ? "CF" : "PF"]), true);
+		app.launchURL(LinksLatest.character[typePF ? "PF" : "CF"], true);
 		break;
-	}
+	 case "subreddit" :
+		app.launchURL("https://www.reddit.com/r/mpmb", true);
+		break;
+	};
 };
 
 //open a dialogue for the Patreon

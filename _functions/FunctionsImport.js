@@ -6,12 +6,16 @@ try {
 }
 
 function ImportExport_Button() {
+	if (minVer) {
+		ImportScriptOptions();
+		return;
+	};
 	var theMenu = getMenu("importexport");
 	
 	if (theMenu !== undefined && theMenu[0] !== "nothing") {
 		switch (theMenu[1]) {
 			case "script" :
-				AddUserScript();
+				ImportScriptOptions(theMenu);
 				break;
 			case "import" :
 				Import(theMenu[2]);
@@ -1865,15 +1869,16 @@ function MakeXFDFExport(partial) {
 };
 
 //add a script to be run upon start of the sheet
-function AddUserScript() {
+function AddUserScript(retResDia) {
 	var theUserScripts = What("User Script").match(/(.|\r){1,65500}/g);
 	if (!theUserScripts) theUserScripts = [];
-	var defaultTxt = toUni("The JavaScript") + " you put into the field below will be run immediately and whenever the sheet is opened, using eval().\nIf the script results in an error you will be informed immediately and the script will not be added to the sheet or saved.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet, when you click \"Add Script to Sheet\".\n" + toUni("Resetting the sheet is recommended") + " before you have enter custom content into it (or use a fresh one).";
-	var defaultTxt2 = toUni("Be warned") + ", things you do here can break the sheet! You can " + toUni("ask MorePurpleMoreBetter for help") + " using the contact bookmarks.";
-	var extraTxt = toUni("A character limit of 65642") + " applies to the area below. You can add longer scripts by using the \"Open Another Dialogue\" button. That way you get more dialogues like this one. When you press \"Add Script to Sheet\", the code of all dialogues will be joined together (with no characters put inbetween!), is then run/tested and added to the sheet as a whole."
-	var extraTxt2 = toUni("An error will result in all content being lost") + ", so please save it somewhere else before exiting this dialogue!";
-	var getTxt = toUni("Using the proper syntax") + ", you can add homebrew materials for classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has more information and links to this syntax, or you can use the \"Syntax\" buttons above.";
-	var getTxt2 = toUni("Pre-Written Scripts") + " can be found using the \"Extras\" buttons above. These include 3rd-party materials such as the 'Remastered: Way of the Four Elements', DMs Guild creations by Matt Mercer (Blood Hunter, Gunslinger, College of the Maestro), Michael Wolf (Shaman), and more...\n\n" + toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JS Console\" button).";
+	var defaultTxt = toUni("The JavaScript") + " you paste into the field below will be run now and whenever the sheet is opened, using eval(). If that script results in an error you will be informed immediately and the script will not be added to the sheet.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet using this dialogue.\n" + toUni("Resetting the sheet is recommended") + " before you enter any custom content into it.";
+	var defaultTxt2 = "Be warned, things you do here can break the sheet! You can ask MorePurpleMoreBetter for help using the contact bookmarks.";
+	var extraTxt = toUni("A character limit of 65642") + " applies to the area below. You can add longer scripts with the \"Open Another Dialogue\" button. When you press \"Add Script to Sheet\", the code of all dialogues will be joined together (with no characters put inbetween!), is subsequently run/tested and added to the sheet as a whole.";
+	var extraTxt2 = "An error will result in all content being lost, so please save it somewhere else before exiting this dialogue!";
+	var getTxt = toUni("Pre-Written Scripts") + " can be found using the \"Get Content\" buttons.\n- MPMB has scripts for 3rd-party materials, including Matt Mercer's Blood Hunter, Gunslinger, and College of the Maestro.\n- The community has created scripts for more content, including links to all those made by MPMB.";
+	var getTxt2 = toUni("Using the proper JavaScript syntax") + ", you can add homebrew classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has information and links to resources about creating your own additions, as does the \"I don't get it?\" button.";
+	var getTxt3 = toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JavaScript Console\" button).";
 	var diaIteration = 1;
 	
 	var tries = 0;
@@ -1901,12 +1906,14 @@ function AddUserScript() {
 			initialize: function(dialog) {
 				dialog.load({
 					"img1" : allIcons.import,
-					"jscr": this.script,
-					"head": "Add custom JavaScript that is run on startup (dialogue " + this.iteration + "/" + this.diaMax + ")"
+					"jscr" : this.script,
+					"head" : "Manually add custom JavaScript that is run on startup (dialogue " + this.iteration + "/" + this.diaMax + ")"
 				});
 				dialog.enable({
 					bPre : this.iteration > 1
-				})
+				});
+				dialog.setForeColorRed("txtB");
+				dialog.setForeColorRed("txtF");
 			},
 			commit: function(dialog) { // called when OK pressed
 				var results = dialog.store();
@@ -1927,18 +1934,9 @@ function AddUserScript() {
 				this.script = results["jscr"];
 				dialog.end("bpre");
 			},
-			bDBA: function(dialog) {
-				contactMPMB("additions");
-			},
-			bDBS: function(dialog) {
-				contactMPMB("syntax");
-			},
-			bGHA: function(dialog) {
-				contactMPMB("additionsGit");
-			},
-			bGHS: function(dialog) {
-				contactMPMB("syntaxGit");
-			},
+			bWhy: function(dialog) { contactMPMB("additions"); },
+			bCoC: function(dialog) { contactMPMB("subreddit"); },
+			bCoM: function(dialog) { contactMPMB("additionsGit"); },
 			bCon: function(dialog) {
 				var results = dialog.store();
 				this.script = results["jscr"];
@@ -1959,8 +1957,8 @@ function AddUserScript() {
 								type : "image",
 								item_id : "img1",
 								alignment : "align_bottom",
-								width : 20,
-								height : 20
+								height : 20,
+								width : 20
 							}, {
 								type : "static_text",
 								item_id : "head",
@@ -1978,16 +1976,82 @@ function AddUserScript() {
 							wrap_name : diaIteration === 1,
 							char_height : -1,
 							width : 750,
-							name : defaultTxt
+							name : diaIteration !== 1 ? "" : defaultTxt
 						}, {
 							type : "static_text",
 							item_id : "txtB",
 							alignment : "align_fill",
 							font : "dialog",
+							bold : true,
 							wrap_name : diaIteration === 1,
 							char_height : -1,
 							width : 750,
-							name : defaultTxt2
+							name : diaIteration !== 1 ? "" : defaultTxt2
+ 						}, {
+							type : "cluster",
+							width : 750,
+							font : "heading",
+							bold : true,
+							name : "How to get/make the JavaScript script to enter here?",
+							elements : [{
+								type : "view",
+								align_children : "align_distribute",
+								elements : [{
+									type : "button",
+									item_id : "bCoC",
+									name : "Get Content: Community",
+									font : "dialog",
+									bold : true
+								}, {
+									type : "button",
+									item_id : "bCoM",
+									name : "Get Content: MPMB",
+									font : "dialog",
+									bold : true
+								}, {
+									type : "button",
+									item_id : "bWhy",
+									name : "I don't get it?",
+									font : "dialog",
+									bold : true
+								}, {
+									type : "button",
+									item_id : "bFAQ",
+									name : "Open the FAQ",
+									font : "dialog",
+									bold : true
+								}, {
+									type : "button",
+									item_id : "bCon",
+									name : "JavaScript Console",
+									font : "dialog",
+									bold : true
+								}]
+							}, {
+								type : "static_text",
+								item_id : "txtG",
+								alignment : "align_fill",
+								font : "dialog",
+								wrap_name : true,
+								width : 720,
+								name : getTxt
+							}, {
+								type : "static_text",
+								item_id : "txtH",
+								alignment : "align_fill",
+								font : "dialog",
+								wrap_name : true,
+								width : 720,
+								name : getTxt2
+							}, {
+								type : "static_text",
+								item_id : "txtI",
+								alignment : "align_fill",
+								font : "dialog",
+								wrap_name : true,
+								width : 720,
+								name : getTxt3
+							}]
 						}, {
 							type : "static_text",
 							item_id : "txtE",
@@ -1998,69 +2062,13 @@ function AddUserScript() {
 							name : extraTxt
 						}, {
 							type : "static_text",
-							item_id : "txtE",
+							item_id : "txtF",
 							alignment : "align_fill",
 							font : "dialog",
+							bold : true,
 							wrap_name : true,
 							width : 750,
 							name : extraTxt2
-						}, {
-							type : "view",
-							align_children : "align_distribute",
-							width : 750,
-							elements : [{
-								type : "button",
-								item_id : "bFAQ",
-								name : "Open the FAQ",
-								font : "dialog",
-								bold : true
-							}, {
-								type : "button",
-								item_id : "bDBA",
-								name : "Extras - Dropbox",
-								font : "dialog",
-								bold : true
-							}, {
-								type : "button",
-								item_id : "bDBS",
-								name : "Syntax - Dropbox",
-								font : "dialog",
-								bold : true
-							}, {
-								type : "button",
-								item_id : "bGHA",
-								name : "Extras - GitHub",
-								font : "dialog",
-								bold : true
-							}, {
-								type : "button",
-								item_id : "bGHS",
-								name : "Syntax - GitHub",
-								font : "dialog",
-								bold : true
-							}, {
-								type : "button",
-								item_id : "bCon",
-								name : "JS Console",
-								font : "dialog",
-								bold : true
-							}]
-						}, {
-							type : "static_text",
-							item_id : "txtG",
-							alignment : "align_fill",
-							font : "dialog",
-							wrap_name : true,
-							width : 750,
-							name : getTxt
-						}, {
-							type : "static_text",
-							item_id : "txtT",
-							alignment : "align_fill",
-							font : "dialog",
-							wrap_name : true,
-							width : 750,
-							name : getTxt2
 						}, {
 							type : "edit_text",
 							item_id : "jscr",
@@ -2092,7 +2100,7 @@ function AddUserScript() {
 				}]
 			}
 		};
-		if (moreDialogues) {
+ 		if (moreDialogues) {
 			setDialogName(AddUserScript_dialog, "OKbt", "type", "ok_cancel");
 			setDialogName(AddUserScript_dialog, "OKbt", "ok_name", "Go to Next Dialogue >>");
 		};
@@ -2104,7 +2112,7 @@ function AddUserScript() {
 	};
 
 	do {
-		var askForScripts = getDialog(diaIteration);
+		var askForScripts = getDialog();
 		if (askForScripts === "bpre") {
 			diaIteration -= 1;
 		} else if (askForScripts === "bfaq") {
@@ -2123,57 +2131,54 @@ function AddUserScript() {
 		if (RunUserScript(false, theUserScripts)) {
 			Value("User Script", theUserScripts);
 			app.alert({
-				cMsg : "Your script has been successfully added/changed to the sheet!\n\nYou will now be returned to the Source Selection Dialogue so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialogue, all drop-down boxes will be updated so that your changes will be visible on the sheet.",
+				cMsg : "Your script has been successfully added/changed in the sheet!\n\nYou will now be returned to the Source Selection Dialogue so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialogue, all drop-down boxes will be updated so that your changes will be visible on the sheet. This can take some time.",
 				nIcon : 3,
 				cTitle : "Success!"
 			});
-			resourceDecisionDialog(false, false, true);
+			retResDia = "also";
 		} else {
 			InitiateLists();
 			RunUserScript(false, false);
 		};
 	};
+	if (retResDia) resourceDecisionDialog(false, false, retResDia === "also"); // return to the Dialog for Selecting Resources
 };
 
 // Run the custom defined user scripts, if any exist
 function RunUserScript(atStartup, manualUserScripts) {
 	var ScriptsAtEnd = [];
-	var ScriptAtEnd, minSheetVersion;
+	var ScriptAtEnd = [];
+	var minSheetVersion = 0;
 	var RunFunctionAtEnd = function(inFunction) {
 		if (typeof inFunction === "function") ScriptAtEnd.push(inFunction);
 	};
-	var testVersion = function(inVersion) { return inVersion >= sheetVersion; };
 	var runIt = function(aScript, scriptName, isManual) {
 		var RequiredSheetVersion = function(inNumber) {
 			if (atStartup) return;
 			inNumber = parseFloat(inNumber);
-			if (!isNaN(inNumber)) minSheetVersion = minSheetVersion.push(inNumbers);
+			if (!isNaN(inNumber) && inNumber > minSheetVersion) minSheetVersion = inNumber;
 		};
 		try {
 			IsNotUserScript = false;
 			ScriptAtEnd = [];
-			minSheetVersion = [];
+			minSheetVersion = 0;
 			eval(aScript);
 			IsNotUserScript = true;
 			if (ScriptAtEnd.length > 0) ScriptsAtEnd.concat(ScriptAtEnd);
-			if (minSheetVersion.length > 0) {
-				var theTest = minSheetVersion.every(testVersion);
-				var theMax = Math.max.apply(Math, theTest);
-				if (!theTest) {
-					var failedTestMsg = {
-						cMsg : "The script '" + scriptName + "' reports that is was made for a newer version of the sheet (v" + theMax + "), and might thus not be compatible with this version of the sheet (v" + sheetVersion + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
-						nIcon : 2,
-						cTitle : "Script was made for newer version!",
-						nType : 2
-					};
-					if (app.alert(failedTestMsg) !== 4) return false;
+			if (minSheetVersion > sheetVersion) {
+				var failedTestMsg = {
+					cMsg : "The script '" + scriptName + "' reports that is was made for a newer version of the sheet (v" + minSheetVersion + "), and might thus not be compatible with this version of the sheet (v" + sheetVersion + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
+					nIcon : 2,
+					cTitle : "Script was made for newer version!",
+					nType : 2
 				};
+				if (app.alert(failedTestMsg) !== 4) return false;
 			};
 			return true;
 		} catch (e) {
 			IsNotUserScript = true;
 			app.alert({
-				cMsg : isManual ? "The script you entered is faulty, it returns the following error when run:\n\"" + e + "\"\n\nYour script has not been added to the sheet, please try again after fixing the error.\n\nIf you run your code from the console, it will give you a line number for where the error is. You can open this console from inside the \"Add Custom Script\" dialogue." : "The script '" + scriptName + "' is faulty, it returns the following error when run:\n\"" + e + "\"\n\nThe script has been removed from this pdf.",
+				cMsg : isManual ? "The script you entered is faulty, it returns the following error when run:\n\"" + e + "\"\n\nYour script has not been added to the sheet, please try again after fixing the error.\n\nIf you run your code from the console, it will give you a line number for where the error is. You can open this console from inside the \"Add Custom Script\" dialogue." : "The script '" + scriptName + "' is faulty, it returns the following error when run:\n\"" + e + "\"\n\nThe script has been removed from this pdf.\n\nFor a more specific error, that includes the line number of the error, try running the script from the JavaScript console (with the 'JS Console' button).",
 				nIcon : 0,
 				cTitle : "Error in running user script"
 			});
@@ -2207,7 +2212,9 @@ function RunUserScript(atStartup, manualUserScripts) {
 
 	// run the functions that are meant to be saved till the very end of all the scripts
 	if (ScriptsAtEnd.length > 0) {
+		IsNotUserScript = false;
 		for (var i = 0; i < ScriptsAtEnd.length; i++) ScriptsAtEnd[i]();
+		IsNotUserScript = true;
 	};
 	// when run at startup and one of the script fails, update all the dropdowns
 	if (atStartup && (!scriptsResult || !manualScriptResult)) {
@@ -2303,16 +2310,16 @@ function AddFightingStyle(classArr, fsName, fsObj) {
 };
 
 // side-loading a file and adding it to the field for safe-keeping
-function ImportUserScriptFile() {
+function ImportUserScriptFile(filePath) {
 	// open the dialogue to select the file or URL
-	var iFileStream = util.readFileIntoStream();
+	var iFileStream = filePath ? util.readFileIntoStream(filePath) : util.readFileIntoStream();
 	if (!iFileStream) return false;
 	var iFileCont = util.stringFromStream(iFileStream);
 	var iFileName = (/var iFileName ?= ?"([^"]+)";/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?"([^"]+)";/)[1] : util.printd("yyyy/mm/dd hh:mm", new Date()) + " - " + "no iFileName";
 	var filesScript = eval(What("User_Imported_Files.Stringified"));
 	if (filesScript[iFileName]) {
 		var askToOverwrite = {
-			cMsg : "There is already a file by the name \"" + iFileName + "\", do you want to overwrite it?\n\nIf you select 'No', the file will not be added.",
+			cMsg : "There is already a file by the name \"" + iFileName + "\", do you want to overwrite it?\n\nIf you select 'No', the file will not be changed.",
 			nIcon : 2, //question mark
 			cTitle : "File already exists, overwrite it?",
 			nType : 2, //Yes-No
@@ -2322,4 +2329,278 @@ function ImportUserScriptFile() {
 	filesScript[iFileName] = iFileCont;
 	Value("User_Imported_Files.Stringified", filesScript.toSource());
 	return true;
+};
+
+// Open the dialog for importing whole files with content
+function ImportScriptFileDialog(retResDia) {
+	var defaultTxt = "Import or delete files that add content and/or custom scripts to the sheet.";
+	var defaultTxt2 = "Note that, in modern Operating Systems, you can enter an URL in the 'Open' dialogue directly instead of first downloading a file and then navigating to it.";
+	var defaultTxt3 = "Use the \"Get Content\" buttons below to get pre-written files!";
+	var getTxt2 = toUni("Using the proper JavaScript syntax") + ", you can add homebrew classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has information and links to resources about creating your own additions, as does the \"I don't get it?\" button.";
+	var getTxt = toUni("Pre-Written Scripts") + " can be found using the \"Get Content\" buttons.\n- MPMB has scripts for 3rd-party materials, including Matt Mercer's Blood Hunter, Gunslinger, and College of the Maestro.\n- The community has created scripts for more content, including links to all those made by MPMB.";
+	var getTxt3 = toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JavaScript Console\" button).";
+	var filesScriptRem = What("User_Imported_Files.Stringified");
+	var filesScript = eval(filesScriptRem);
+	var dialogObj = {};
+	for (var scriptFile in filesScript) {
+		dialogObj[scriptFile] = -1;
+	};
+		
+	var AddScriptFiles_dialog = {
+		initialize: function(dialog) {
+			dialog.load({
+				"img1" : allIcons.import,
+				"scrF" : dialogObj,
+				"head" : defaultTxt
+			});
+			dialog.setForeColorRed("txtB");
+		},
+		commit: function(dialog) {},
+		bFAQ: function(dialog) {
+			var results = dialog.store();
+			this.script = results["jscr"];
+			dialog.end("bfaq");
+		},
+		bWhy: function(dialog) { contactMPMB("additions"); },
+		bCoC: function(dialog) { contactMPMB("subreddit"); },
+		bCoM: function(dialog) { contactMPMB("additionsGit"); },
+		bCon: function(dialog) {
+			var results = dialog.store();
+			this.script = results["jscr"];
+			dialog.end("bcon");
+		},
+		scrF: function(dialog) {
+			var allElem = dialog.store()["scrF"];
+			var remElem = GetPositiveElement(allElem);
+			if (remElem) dialog.load({ bRem : "Delete file '" + remElem + "'"});
+		},
+		bAdd: function(dialog) {
+			ImportUserScriptFile();
+			var filesScript = eval(What("User_Imported_Files.Stringified"));
+			var dialogObj = {};
+			for (var scriptFile in filesScript) {
+				dialogObj[scriptFile] = -1;
+			};
+			dialog.load({ "scrF" : dialogObj });
+		},
+		bRem: function(dialog) {
+			var allElem = dialog.store()["scrF"];
+			var remElem = GetPositiveElement(allElem);
+			if (remElem) {
+				var filesScript = eval(What("User_Imported_Files.Stringified"));
+				if (filesScript[remElem]) {
+					delete filesScript[remElem];
+					Value("User_Imported_Files.Stringified", filesScript.toSource());
+				} else {
+					app.alert("The name '" + remElem + "' in the dialogue was not found in any of the scripts the sheet. It will be removed from the dialogue, but nothing in the sheet will change.");
+				};
+				delete allElem[remElem];
+				dialog.load({ scrF : allElem });
+			};
+		},
+		description : {
+			name : "Add JavaScript files that are run on startup",
+			first_tab : "OKbt",
+			elements : [{
+				type : "view",
+				elements : [{
+					type : "view",
+					align_children : "align_left",
+					elements : [{
+						type : "view",
+						align_children : "align_row",
+						elements : [{
+							type : "image",
+							item_id : "img1",
+							alignment : "align_bottom",
+							width : 20,
+							height : 20
+						}, {
+							type : "static_text",
+							item_id : "head",
+							alignment : "align_fill",
+							font : "heading",
+							bold : true,
+							height : 21,
+							width : 720
+						}]
+					}, {
+						type : "cluster",
+						font : "heading",
+						bold : true,
+						name : "Current files with JavaScript additions",
+						align_children : "align_row",
+						elements : [{
+							width : 300,
+							height : 110,
+							type : "hier_list_box",
+							item_id : "scrF"
+						}, {
+							type : "view",
+							elements : [{
+								type : "view",
+								align_children : "align_row",
+								elements : [{
+									type : "button",
+									item_id : "bAdd",
+									name : "Add file",
+									font : "heading",
+									bold : true
+								}, {
+									type : "static_text",
+									item_id : "txtT",
+									alignment : "align_fill",
+									font : "dialog",
+									bold : true,
+									wrap_name : true,
+									width : 300,
+									name : defaultTxt2
+								}]
+							}, {
+								type : "button",
+								item_id : "bRem",
+								name : "Delete selected file",
+								font : "heading",
+								width : 380,
+								bold : true
+							}, {
+								type : "static_text",
+								item_id : "txtB",
+								alignment : "align_fill",
+								font : "dialog",
+								bold : true,
+								wrap_name : true,
+								width : 380,
+								name : defaultTxt3
+							}]
+						}]
+					}, {
+						type : "cluster",
+						font : "heading",
+						bold : true,
+						name : "How to get/make the JavaScript files to enter here?",
+						elements : [{
+							type : "view",
+							alignmen : "align_fill",
+							align_children : "align_row",
+							width : 730,
+							elements : [{
+								type : "button",
+								item_id : "bCoC",
+								name : "Get Content: Community",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "button",
+								item_id : "bCoM",
+								name : "Get Content: MPMB",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "button",
+								item_id : "bWhy",
+								name : "I don't get it?",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "button",
+								item_id : "bFAQ",
+								name : "Open the FAQ",
+								font : "dialog",
+								bold : true
+							}, {
+								type : "button",
+								item_id : "bCon",
+								name : "JavaScript Console",
+								font : "dialog",
+								bold : true
+							}]
+						}, {
+							type : "static_text",
+							item_id : "txtC",
+							alignment : "align_fill",
+							font : "dialog",
+							wrap_name : true,
+							width : 720,
+							name : getTxt
+						}, {
+							type : "static_text",
+							item_id : "txtD",
+							alignment : "align_fill",
+							font : "dialog",
+							wrap_name : true,
+							width : 720,
+							name : getTxt2
+						}, {
+							type : "static_text",
+							item_id : "txtE",
+							alignment : "align_fill",
+							font : "dialog",
+							wrap_name : true,
+							width : 720,
+							name : getTxt3
+						}]
+					}]
+				}, {
+					item_id : "OKbt",
+					type : "ok_cancel",
+					ok_name : "Apply changes",
+					cancel_name : "Cancel changes"
+				}]
+			}]
+		}
+	};
+	
+
+	do {
+		var scriptFilesDialog = app.execDialog(AddScriptFiles_dialog);
+		if (scriptFilesDialog === "bfaq") {
+			tDoc.exportDataObject({ cName: "FAQ.pdf", nLaunch: 2 });
+		} else if (scriptFilesDialog === "bcon") {
+			console.println("\nAny changes you made in the import script files dialogue have not been applied!\nYou can run code here by pasting it in, selecting the appropriate lines and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + ".");
+			console.show();
+		};
+	} while (scriptFilesDialog !== "ok" && scriptFilesDialog !== "bCon" && scriptFilesDialog !== "cancel");
+	
+	if (scriptFilesDialog === "ok") {
+		if (filesScriptRem !== What("User_Imported_Files.Stringified")) { // only do something if anything changed!
+			InitiateLists();
+			var runScriptsTest = RunUserScript(false, false);
+			if (!runScriptsTest) { // the scripts failed, so run them again just to be sure that no rogue elements end up in the variables
+				InitiateLists();
+				RunUserScript(false, false);
+			};
+			if (filesScriptRem !== What("User_Imported_Files.Stringified") || runScriptsTest) {
+				retResDia = "also";
+				app.alert({
+					cMsg : (runScriptsTest ? "All" : "Some") + " of the script file(s) have been " + (runScriptsTest ? "successfully " : "") + "changed in the sheet!\n\nYou will now be returned to the Source Selection Dialogue so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialogue, all drop-down boxes will be updated so that your changes will be visible on the sheet. This can take some time.",
+					nIcon : 3,
+					cTitle : runScriptsTest ? "Success!" : "Partial success"
+				});
+			};
+		};
+	} else {
+		Value("User_Imported_Files.Stringified", filesScriptRem.toSource());
+	};
+	if (retResDia) resourceDecisionDialog(false, false, retResDia === "also"); // return to the Dialog for Selecting Resources
+};
+
+// Open the menu to import materials
+function ImportScriptOptions(input) {
+	var MenuSelection = input ? input : getMenu("importscripts");
+	if (MenuSelection === undefined || MenuSelection[0] === "nothing") return;
+	switch (MenuSelection[2]) {
+		case "file" :
+			ImportScriptFileDialog(MenuSelection[3]);
+			break;
+		case "manual" :
+			AddUserScript(MenuSelection[3]);
+			break;
+		case "onlinehelp" :
+			contactMPMB("additions");
+			break;
+		case "subreddit" :
+			contactMPMB("subreddit");
+			break;
+	};
 };
