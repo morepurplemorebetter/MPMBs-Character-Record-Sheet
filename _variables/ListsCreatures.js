@@ -927,7 +927,7 @@ var Base_CreatureList = {
 			}
 		],
 	},
-	"skeleton (humanoid)" : {
+	"skeleton" : { // "Skeleton (humanoid)" entry so that just "skeleton" also matches this entry
 		name : "Skeleton (humanoid)",
 		source : [["SRD", 346], ["M", 272]],
 		size : 3, //Medium
@@ -4018,7 +4018,7 @@ var Base_CreatureList = {
 			}
 		]
 	},
-	"riding horse" : {
+	"horse" : { // "Riding Horse" entry, so that both "horse" and "riding horse" match this creature
 		name : "Riding Horse",
 		source : [["SRD", 388], ["M", 336]],
 		size : 2, //Large
@@ -4463,8 +4463,3 @@ var Base_CreatureList = {
 		]
 	}
 };
-
-// make a default 'horse' entry to point to the 'riding horse' entry
-Base_CreatureList["horse"] = Base_CreatureList["riding horse"];
-// make a default 'skeleton' entry to point to the 'skeleton (humanoid)' entry
-Base_CreatureList["skeleton"] = Base_CreatureList["skeleton (humanoid)"];

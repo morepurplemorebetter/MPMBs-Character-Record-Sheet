@@ -33,6 +33,7 @@ var typeLR = (/letter/i).test(tDoc.info.SheetType);
 var minVer = tDoc.info.SpellsOnly || tDoc.info.AdvLogOnly;
 var sheetVersion = parseFloat(tDoc.info.SheetVersion);
 var isWindows = app.platform === "WIN";
+var patreonVersion = tDoc.getField("SaveIMG.Patreon").submitName === "";
 
 var UnitsList = {
 	metric : {
@@ -324,6 +325,7 @@ var CurrentSpells = {};
 var CurrentCasters = {};
 var CurrentSources = {firstTime : true, globalExcl : []};
 var CurrentEvals = {};
+var CurrentScriptFiles = {};
 
 var UpdateSpellSheets = {};
 

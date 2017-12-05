@@ -205,7 +205,7 @@ function ObjectToArray(obj, type, testObj) {
 //inclA must be the same length as inclA_Names, and exclA must be the same length as exclA_Names
 function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	if (!atOpening && app.viewerVersion < 15) FunctionIsNotAvailable();
-	var isFirstTime = CurrentSources.firstTime;
+	var isFirstTime = atReset ? atReset : CurrentSources.firstTime;
 	if (this.info.SpellsOnly) { //if this is a spell sheet, only use sources that have spells or spellcasting classes associated with them
 		var spellSources = [];
 		for (var u in SpellsList) {
@@ -225,32 +225,40 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	};
 	
 	var exclObj = {}, inclObj = {};
-	var getMoreCont = "\u200B\u200B>> click this line to get more content <<";
-	exclObj[getMoreCont] = -1;
 	if (isFirstTime) {
 		CurrentSources = {
-			firstTime : atReset ? true : false,
+			firstTime : atReset ? "nextOpen" : false,
 			globalExcl : [],
 			ammoExcl : [],
 			weapExcl : [],
 			globalKnown : []
 		};
+	};
+	if (isFirstTime || forceDDupdate) {
+		var exclAllUA = isFirstTime || CurrentSources.globalExcl.toSource().toLowerCase().indexOf('"ua:') !== -1 || CurrentSources.globalKnown.toSource().toLowerCase().indexOf('"ua:') === -1;
+		var exclDMGfirearms = isFirstTime || CurrentSources.globalKnown.toSource().toLowerCase().indexOf('"D"') === -1;
 		for (var src in SourceList) {
 			if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
+			if (exclAllUA && SourceList[src].group === "Unearthed Arcana") CurrentSources.globalExcl.push(src);
 			CurrentSources.globalKnown.push(src);
-			if (SourceList[src].group === "Unearthed Arcana") CurrentSources.globalExcl.push(src);
 		};
-		for (var amm in AmmoList) {
-			if (AmmoList[amm].source && AmmoList[amm].source.toSource().indexOf('"D"') !== -1) CurrentSources.ammoExcl.push(amm);
+		if (!minVer && exclDMGfirearms) { // set all the DMG firearms to be excluded the first time they are added
+			for (var wea in WeaponsList) {
+				if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source.toSource().indexOf('"D"') !== -1) {
+					CurrentSources.weapExcl.push(wea);
+					if (WeaponsList[wea].ammo && AmmoList[WeaponsList[wea].ammo]) CurrentSources.ammoExcl.push(WeaponsList[wea].ammo);
+				};
+			};
 		};
-		for (var wea in WeaponsList) {
-			if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source.toSource().indexOf('"D"') !== -1) CurrentSources.weapExcl.push(wea);
-		};
-		Value("CurrentSources.Stringified", CurrentSources.toSource());
+		SetStringifieds("sources");
 	};
 	if (atOpening && (atReset || app.viewerVersion < 15)) return;
+	if (atOpening && CurrentSources.firstTime === "nextOpen") {
+		CurrentSources.firstTime = false;
+		isFirstTime = true;
+	};
 	
-	var remCS = CurrentSources.toSource();
+	var remCS = What("CurrentSources.Stringified");
 	var onlySRD = [];
 	for (var src in SourceList) {
 		if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
@@ -262,14 +270,16 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		if (srcGroup !== "Primary Sources") srcGroup = "\u200B" + srcGroup;
 		if (!exclObj[srcGroup]) exclObj[srcGroup] = {};
 		if (!inclObj[srcGroup]) inclObj[srcGroup] = {};
-		if (CurrentSources.globalExcl.indexOf(src) !== -1 || (srcGroup === "Unearthed Arcana" && CurrentSources.globalKnown.indexOf(src) === -1)) {
+		if (CurrentSources.globalExcl.indexOf(src) !== -1 || (srcGroup === "\u200BUnearthed Arcana" && CurrentSources.globalKnown.indexOf(src) === -1)) {
 			exclObj[srcGroup][srcName] = -1;
 		} else {
 			inclObj[srcGroup][srcName] = -1;
-		}
+		};
 	};
 	onlySRD = onlySRD.length === 1 && onlySRD[0] === "SRD";
 	
+	var getMoreCont = "\u200B\u200B>> click this line to get more content <<";
+	exclObj[getMoreCont] = -1;
 	exclObj = CleanObject(exclObj); inclObj = CleanObject(inclObj);
 	
 	var tries = 0;
@@ -284,7 +294,6 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			tries += 1;
 		}
 	} while (tries < 5);
-	
 	
 	var Text0 = (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon), or the \"Source Material\" bookmark, and change it.\n" : "") + "You can include or exclude entire sourcebooks (top section) and exclude just elements of the sourcebooks set to be included (section below).\nNote that you can also add more resources using the \"Add Custom Script\" bookmark.\nIf multiple things with the same name are included, like the Ranger from the PHB and the Ranger from UA:RR, the newest source will be used.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.";
 	var Text1 = "With the buttons below, you open another dialogue where you can exclude and include parts of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up at all with the buttons below!";
@@ -694,7 +703,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	};
 	
 	var CallDialogue = app.execDialog(selectionDialogue);
-	if (CallDialogue === "ok" || CallDialogue === "scrp") {
+	if (CallDialogue === "ok" || CallDialogue === "scrp" || (CallDialogue === "cancel" && forceDDupdate)) {
 		SetStringifieds("sources");
 	} else {
 		CurrentSources = eval(remCS);

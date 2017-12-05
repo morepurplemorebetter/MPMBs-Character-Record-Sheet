@@ -7,7 +7,7 @@ function ParseCreature(Inputs) {
 		var foundLen = 0;
 
 		for (var key in CreatureList) { //scan string for all creatures
-			if (key.length > foundLen && tempString.indexOf(key) !== -1) {
+			if (key.length > foundLen && (tempString.indexOf(key) !== -1 || tempString.indexOf(CreatureList[key].name.toLowerCase()) !== -1)) {
 				if (testSource(key, CreatureList[key], "creaExcl")) continue; // test if the creature or its source isn't excluded
 				result = key;
 				foundLen = key.length;
@@ -3291,7 +3291,10 @@ function GetStringifieds(notSources) {
 	if (forSpells[1][0] !== "(") forSpells[1] = "(" + forSpells[1] + ")";
 	CurrentSpells = eval(forSpells[0]);
 	CurrentCasters = eval(forSpells[1]);
-	if (!notSources) CurrentSources = eval(What("CurrentSources.Stringified"));
+	if (!notSources) {
+		CurrentSources = eval(What("CurrentSources.Stringified"));
+		CurrentScriptFiles = eval(What("User_Imported_Files.Stringified"));
+	};
 	CurrentEvals = eval(What("CurrentEvals.Stringified"));
 	CurrentProfs = eval(What("CurrentProfs.Stringified"));
 }
@@ -3309,12 +3312,14 @@ function SetStringifieds(type) {
 	if (!type || type === "sources") Value("CurrentSources.Stringified", CurrentSources.toSource());
 	if (!type || type === "evals") Value("CurrentEvals.Stringified", CurrentEvals.toSource());
 	if (!type || type === "profs") Value("CurrentProfs.Stringified", CurrentProfs.toSource());
+	if (type === "scriptfiles") Value("User_Imported_Files.Stringified", CurrentScriptFiles.toSource());
 };
 
 //set the sheet version
 function Publish(version) {
 	if (app.viewerType !== "Reader") {
 		tDoc.info.SheetVersion = version;
+		sheetVersion = parseFloat(tDoc.info.SheetVersion);
 		tDoc.info.Title = MakeDocName();
 	};
 	tDoc.resetForm(["Opening Remember", "CurrentSources.Stringified", "User_Imported_Files.Stringified"]);

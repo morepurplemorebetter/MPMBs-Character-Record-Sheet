@@ -199,6 +199,7 @@ function OpeningStatement() {
 		var Text = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
 		Text += "Welcome to " + toUni(sheetTitle);
 		Text += " (get the latest version using the bookmark).";
+		Text += patreonVersion ? "" : "\n\n" + toUni("Only SRD") + ": This sheet is only allowed to contain content from the System Reference Document and no other Wizards of the Coast publications, as they are protected by copyright. If you want to get more content to use with the sheet, see the \"Add Extra Materials\" bookmark.";
 		Text += "\n\n" + toUni("Tooltips") + ": This sheet makes extensive use of tooltips (mouseover texts). Hover your cursor over a field to find how you can enter things into the field, reference to the source, explanatory text, or even a list of options your selection offers you.";
 		Text += "\n\n" + toUni("Functions") + ": Check out the buttons in the \'JavaScript Window\'-toolbar and the bookmarks. Hover your cursor over a button in the \'JavaScript Window\'-toolbar to see what it does.";
 		Text += minVer ? "" : "\n\n" + toUni("Modifiers") + ": With the \"Mods\" button you can add modifiers to the calculated values.";
@@ -220,7 +221,7 @@ function OpeningStatement() {
 		if (oCk.bAfterValue) {
 			Value("Opening Remember", "Yes");
 		};
-		if (!minVer && CurrentSources.firstTime && app.viewerVersion >= 15) resourceDecisionDialog();
+		if (!minVer && CurrentSources.firstTime && app.viewerVersion >= 15) resourceDecisionDialog(true);
 	};
 	tDoc.calculate = true;
 	tDoc.delay = false;
@@ -475,7 +476,6 @@ function ResetAll(GoOn, noTempl) {
 	if (!GoOn && app.alert(ResetDialog) !== 4) return;
 	var keepImports = !oCk.bAfterValue;
 	if (keepImports) {
-		var filesScriptString = What("User_Imported_Files.Stringified");
 		var userScriptString = What("User Script");
 	};
 	thermoM("start"); //start a progress dialog
@@ -558,11 +558,12 @@ function ResetAll(GoOn, noTempl) {
 	
 	if (keepImports) { // remove the imports and reset the sources
 		SetStringifieds("sources");
-		Value("User_Imported_Files.Stringified", filesScriptString);
+		SetStringifieds("scriptfiles");
 		Value("User Script", userScriptString);
 		RunUserScript(true);
 	} else { // re-apply the imports and keep the sources setting
 		resourceDecisionDialog(true, true); //to make sure that even if the sheet is used before re-opening, the resources are set to default
+		UpdateDropdown("resources");
 	};
 
 	//call upon some functions to reset other stuff than field values

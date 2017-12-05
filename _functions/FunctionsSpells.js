@@ -242,6 +242,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			
 			var parseSrc = parseSource(aSpell.source);
 			var spBook = parseSrc ? parseSrc[0][0] : "";
+			if (spBook === "SRD") spBook = "R";
 			var spPage = parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
 			var spBookFull = stringSource(aSpell, "full,page,multi");
 			Value(base.replace("remember", "book"), spBook.substr(0,1), spBookFull);

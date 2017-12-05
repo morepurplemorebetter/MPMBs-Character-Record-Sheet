@@ -439,7 +439,6 @@ function DirectImport(consoleTrigger) {
 				throw "user stop";
 			};
 		};
-		var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
 		ResetAll(true, true); //first reset the current sheet to its initial state, but without the extra templates generated
 		Value("Opening Remember", "Yes");
 		IsNotImport = false;
@@ -458,12 +457,16 @@ function DirectImport(consoleTrigger) {
 		
 		//copy any custom script and run it
 		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : {};
-		var filesScript = MergeRecursive(filesScriptFrom, filesScriptTo); // add the old to the new, preferring the new if both have the same entries
-		global.docTo.getField("User_Imported_Files.Stringified").value = filesScript.toSource();
-		if (ImportField("User Script") || filesScript.toSource() !== "({})") RunUserScript(true);
+		var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
+		var filesScript = MergeRecursive(filesScriptFrom, filesScriptTo).toSource(); // add the old to the new, preferring the new if both have the same entries
+		global.docTo.getField("User_Imported_Files.Stringified").value = filesScript;
+		GetStringifieds();
+		if (ImportField("User Script") || filesScript !== "({})") {
+			InitiateLists();
+			RunUserScript(true);
+		};
 		//set the excl./incl. sources
 		if (ImportField("CurrentSources.Stringified")) {
-			GetStringifieds();
 			if (!CurrentSources.globalExcl) CurrentSources.globalExcl = [];
 			//set any UA sources that weren't in the old sheet to excluded, if any UA source was set to be excluded
 			for (var s = 0; s < CurrentSources.globalExcl.length; s++) {
@@ -2187,18 +2190,17 @@ function RunUserScript(atStartup, manualUserScripts) {
 	};
 
 	// first run the code added by importing whole file(s)
-	var filesScript = eval(What("User_Imported_Files.Stringified"));
 	var scriptsResult = true;
 	var changesInFilesScript = false;
-	for (var iScript in filesScript) {
-		var runIScript = runIt(filesScript[iScript], iScript);
+	for (var iScript in CurrentScriptFiles) {
+		var runIScript = runIt(CurrentScriptFiles[iScript], iScript);
 		if (!runIScript) {
-			delete filesScript[iScript];
+			delete CurrentScriptFiles[iScript];
 			changesInFilesScript = true;
 			scriptsResult = runIScript;
 		};
 	};
-	if (changesInFilesScript) Value("User_Imported_Files.Stringified", filesScript.toSource());
+	if (changesInFilesScript) SetStringifieds("scriptfiles");
 
 	// secondly, run the manually added code
 	var manualScript = manualUserScripts ? manualUserScripts : What("User Script");
@@ -2212,9 +2214,19 @@ function RunUserScript(atStartup, manualUserScripts) {
 
 	// run the functions that are meant to be saved till the very end of all the scripts
 	if (ScriptsAtEnd.length > 0) {
+		var functionErrors = [];
 		IsNotUserScript = false;
-		for (var i = 0; i < ScriptsAtEnd.length; i++) ScriptsAtEnd[i]();
+		for (var i = 0; i < ScriptsAtEnd.length; i++) {
+			try { ScriptsAtEnd[i](); } catch (err) { functionErrors.push(err); };
+		};
 		IsNotUserScript = true;
+		if (!atStartup && functionErrors.length > 0) {
+			app.alert({
+				cMsg : "One or more of the script you entered has a 'RunFunctionAtEnd()' statement. One or more of those functions gave an error. The sheet can't tell you which of those gave an error exactly, but it can tell you what the errors are:\n\n" + functionErrors.join("\n\n"),
+				nIcon : 0,
+				cTitle : "Error in RunFunctionAtEnd() from user script(s)"
+			});
+		};
 	};
 	// when run at startup and one of the script fails, update all the dropdowns
 	if (atStartup && (!scriptsResult || !manualScriptResult)) {
@@ -2315,9 +2327,10 @@ function ImportUserScriptFile(filePath) {
 	var iFileStream = filePath ? util.readFileIntoStream(filePath) : util.readFileIntoStream();
 	if (!iFileStream) return false;
 	var iFileCont = util.stringFromStream(iFileStream);
-	var iFileName = (/var iFileName ?= ?"([^"]+)";/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?"([^"]+)";/)[1] : util.printd("yyyy/mm/dd hh:mm", new Date()) + " - " + "no iFileName";
-	var filesScript = eval(What("User_Imported_Files.Stringified"));
-	if (filesScript[iFileName]) {
+	var iFileName = (/var iFileName ?= ?"([^"]+)";/).test(iFileCont) ? 
+		util.printd("yyyy/mm/dd", new Date()) + " - " + iFileCont.match(/var iFileName ?= ?"([^"]+)";/)[1] : 
+		util.printd("yyyy/mm/dd hh:mm", new Date()) + " - " + "no iFileName";
+	if (CurrentScriptFiles[iFileName]) {
 		var askToOverwrite = {
 			cMsg : "There is already a file by the name \"" + iFileName + "\", do you want to overwrite it?\n\nIf you select 'No', the file will not be changed.",
 			nIcon : 2, //question mark
@@ -2326,8 +2339,8 @@ function ImportUserScriptFile(filePath) {
 		};
 		if (app.alert(askToOverwrite) !== 4) return false;
 	};
-	filesScript[iFileName] = iFileCont;
-	Value("User_Imported_Files.Stringified", filesScript.toSource());
+	CurrentScriptFiles[iFileName] = iFileCont;
+	SetStringifieds("scriptfiles");
 	return true;
 };
 
@@ -2340,9 +2353,8 @@ function ImportScriptFileDialog(retResDia) {
 	var getTxt = toUni("Pre-Written Scripts") + " can be found using the \"Get Content\" buttons.\n- MPMB has scripts for 3rd-party materials, including Matt Mercer's Blood Hunter, Gunslinger, and College of the Maestro.\n- The community has created scripts for more content, including links to all those made by MPMB.";
 	var getTxt3 = toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JavaScript Console\" button).";
 	var filesScriptRem = What("User_Imported_Files.Stringified");
-	var filesScript = eval(filesScriptRem);
 	var dialogObj = {};
-	for (var scriptFile in filesScript) {
+	for (var scriptFile in CurrentScriptFiles) {
 		dialogObj[scriptFile] = -1;
 	};
 		
@@ -2376,9 +2388,8 @@ function ImportScriptFileDialog(retResDia) {
 		},
 		bAdd: function(dialog) {
 			ImportUserScriptFile();
-			var filesScript = eval(What("User_Imported_Files.Stringified"));
 			var dialogObj = {};
-			for (var scriptFile in filesScript) {
+			for (var scriptFile in CurrentScriptFiles) {
 				dialogObj[scriptFile] = -1;
 			};
 			dialog.load({ "scrF" : dialogObj });
@@ -2387,10 +2398,9 @@ function ImportScriptFileDialog(retResDia) {
 			var allElem = dialog.store()["scrF"];
 			var remElem = GetPositiveElement(allElem);
 			if (remElem) {
-				var filesScript = eval(What("User_Imported_Files.Stringified"));
-				if (filesScript[remElem]) {
-					delete filesScript[remElem];
-					Value("User_Imported_Files.Stringified", filesScript.toSource());
+				if (CurrentScriptFiles[remElem]) {
+					delete CurrentScriptFiles[remElem];
+					SetStringifieds("scriptfiles");
 				} else {
 					app.alert("The name '" + remElem + "' in the dialogue was not found in any of the scripts the sheet. It will be removed from the dialogue, but nothing in the sheet will change.");
 				};
@@ -2580,7 +2590,7 @@ function ImportScriptFileDialog(retResDia) {
 			};
 		};
 	} else {
-		Value("User_Imported_Files.Stringified", filesScriptRem.toSource());
+		Value("User_Imported_Files.Stringified", filesScriptRem);
 	};
 	if (retResDia) resourceDecisionDialog(false, false, retResDia === "also"); // return to the Dialog for Selecting Resources
 };
