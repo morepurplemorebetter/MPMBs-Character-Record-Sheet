@@ -52,7 +52,7 @@ ClassList["blood hunter"] = {
 		[true, true]
 	],
 	equipment : "Blood Hunter starting equipment:\n \u2022 Scale mail -or- studded leather armor;\n \u2022 A martial weapon -or- two simple weapons;\n \u2022 A light crossbow and 20 bolts -or- a hand crossbow and 20 bolts;\n \u2022 An explorer's pack.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
-	subclasses : ["Blood Hunter Orders", ["order of the ghostslayer", "order of the lycan", "order of the mutant", "order of the profane soul"]],
+	subclasses : ["Blood Hunter Orders", ["blood hunter-order of the ghostslayer", "blood hunter-order of the lycan", "blood hunter-order of the mutant", "blood hunter-order of the profane soul"]],
 	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 	features : {
 		"hunter's bane" : {
@@ -235,7 +235,7 @@ ClassList["blood hunter"] = {
 	},
 };
 
-ClassSubList["order of the ghostslayer"] = {
+ClassSubList["blood hunter-order of the ghostslayer"] = {
 	regExpSearch : /^(?=.*ghost)(?=.*slayer).*$/i,
 	subname : "Order of the Ghostslayer",
 	source : ["MM:BH", 5],
@@ -287,7 +287,7 @@ ClassSubList["order of the ghostslayer"] = {
 	},
 };
 
-ClassSubList["order of the profane soul"] = {
+ClassSubList["blood hunter-order of the profane soul"] = {
 	regExpSearch : /^(?=.*profane)(?=.*soul).*$/i,
 	subname : "Order of the Profane Soul",
 	source : ["MM:BH", 6],
@@ -488,7 +488,7 @@ ClassSubList["order of the profane soul"] = {
 	},
 };
 
-ClassSubList["order of the mutant"] = {
+ClassSubList["blood hunter-order of the mutant"] = {
 	regExpSearch : /mutant/i,
 	subname : "Order of the Mutant",
 	source : ["MM:BH", 7],
@@ -632,7 +632,7 @@ if (ClassSubList["hunter conclave"]) ClassSubList["hunter conclave"].regExpSearc
 
 //Start of the "Order of the Lycan" (v1.4) script
 
-ClassSubList["order of the lycan"] = {
+ClassSubList["blood hunter-order of the lycan"] = {
 	regExpSearch : /^(?=.*lycan)(?=.*blood)(?=.*hunter).*$/i,
 	subname : "Order of the Lycan",
 	source : ["MM:OotL", 2],
