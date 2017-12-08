@@ -5338,7 +5338,7 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice) {
 	if (FeaName) {
 		var Fea = ReturnClassFeatures(theClass, theFeature, FeaLvl, SubChoice, "", "", ForceOld);
 		
-		var FeaSource = stringSource(Fea, "abbr", ", ");
+		var FeaSource = stringSource(Fea, "first,abbr", ", ");
 		var FeaRef = " (" + FeaClass + " " + FeaKey.minlevel + FeaSource + ")";
 		if (Fea.Use && !isNaN(Fea.Use)) Fea.Use += "\u00D7 per ";
 		var FeaPost = "";
@@ -5361,7 +5361,7 @@ function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld
 	var old = ForceOld ? "Old" : "";
 	if (!FeaKey) return "";
 	var FeaExtraName = CurrentClasses[theClass].features[theFeature].extraname;
-	var FeaSource = stringSource(Fea, "abbr", ", ");
+	var FeaSource = stringSource(Fea, "first,abbr", ", ");
 	var FeaRef = " (" + FeaExtraName + FeaSource + ")";
 	var FeaUse = !Fea["Use" + old] ? "" : Fea["Use" + old] + (!isNaN(Fea["Use" + old]) ? "\u00D7 per " : "");
 	var FeaPost = "";
@@ -5934,12 +5934,12 @@ function MakeClassMenu() {
 				continue;
 			};
 			if (testSource("", feaObjA)) continue;
-			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name + stringSource(feaObjA, "abbr", ", ") : array[i].toLowerCase();
+			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name + stringSource(feaObjA, "fist,abbr", ", ") : array[i].toLowerCase();
 			var theTest = (extrareturn === "extra" ? toTestE : toTest).indexOf(testWith) !== -1;
 			var removeStop = extrareturn === "extra" ? (theTest ? "remove" : false) : (theTest ? "stop" : false);
 			var isEnabled = ignorePrereqs || theTest || !feaObjA.prereqeval ? true : eval(feaObjA.prereqeval);
 			temp.push({
-				cName : array[i] + stringSource(feaObjA, "abbr", "\t   [", "]"),
+				cName : array[i] + stringSource(feaObjA, "first,abbr", "\t   [", "]"),
 				cReturn : classNm + "#" + featureNm + "#" + array[i] + "#" + extrareturn + "#" + removeStop,
 				bMarked : theTest,
 				bEnabled : isEnabled

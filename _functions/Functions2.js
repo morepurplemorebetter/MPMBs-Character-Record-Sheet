@@ -1571,8 +1571,10 @@ function MakeCompMenu() {
 	companionRR.sort();
 	mechanicalServs.sort();
 	
-	if (CurrentSources.globalExcl.indexOf("M") !== -1) { // the monster manual has been excluded from the sources
-		var reminder = ["Be aware: the Monster Manual is excluded from the sources!", "no-mm"];
+	var noSrd = CurrentSources.globalExcl.indexOf("SRD") !== -1;
+	var existMm = SourceList.M;
+	if ((existMm && CurrentSources.globalExcl.indexOf("M") && noSrd) || (!existMm && noSrd)) { // the monster manual has been excluded from the sources
+		var reminder = ["Be aware: the SRD " + (existMm ? "and Monster Manual are" : "is") + " excluded from the sources!", "no-mm"];
 		familiars.unshift(reminder);
 		chainPact.unshift(reminder);
 		mounts.unshift(reminder);

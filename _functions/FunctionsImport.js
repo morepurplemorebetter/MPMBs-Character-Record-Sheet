@@ -430,7 +430,7 @@ function DirectImport(consoleTrigger) {
 		if (FromVersion < 12.999) { // give a warning about importing from a version that had all materials included automatically
 			var askUserIsSure = {
 				cTitle : "Continue with import?",
-				cMsg : "You are about to import from a sheet with version " + FromVersion + ". Unlike the sheet you are importing to, v" + FromVersion + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material that it is legally allowed to by default.\n\nIf you (or someone else) didn't add the same materials to the current sheet as the old sheet uses, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet. See the \"Add Homebrew Material\" bookmark for more information on what is already added and how to add your preffered materials or materials you made yourself.\n\nAre you sure you want to continue importing?",
+				cMsg : "You are about to import from a sheet with version " + FromVersion + ". Unlike the sheet you are importing to, v" + FromVersion + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material by default.\n\nIf the same resources weren't added to the current sheet as are used in the old sheet, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet! See the \"Add Extra Materials\" bookmark for more information on what is already added and how to add the required resources.\n\nAre you sure you want to continue importing?",
 				nIcon : 2, //Status
 				nType : 2 //Yes, No
 			};
@@ -494,9 +494,9 @@ function DirectImport(consoleTrigger) {
 				};
 			}
 			SetStringifieds("sources");
-			//now update the dropdowns with these new settings
-			UpdateDropdown("resources");
 		};
+		//now update the dropdowns with these new settings
+		UpdateDropdown("resources");
 		
 		//reset conditions
 		if (!fromSheetTypePF && global.docFrom.ConditionSet) {
@@ -1221,7 +1221,6 @@ function DirectImport(consoleTrigger) {
 		aText += toUni("Some manual additions might not have transferred over");
 		aText += "\nSome things that you adjusted manually on your old sheet might not have transferred to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.";
 		aText += "\n\n" + toUni("The following things should be considered:");
-		aText += "\n  > Things you added to drop-down menus with Custom Scripts are no longer there;";
 		aText += "\n  > The 'Class Features' text is now solely what the automation added;";
 		aText += "\n  > The 'Notes' section on the 3rd page is now solely what the automation added;";
 		aText += "\n  > Attack and Ammunition attributes are now solely what the automation set;";
@@ -2470,9 +2469,7 @@ function ImportScriptFileDialog(retResDia) {
 								type : "button",
 								item_id : "bRem",
 								name : "Delete selected file",
-								font : "heading",
-								width : 380,
-								bold : true
+								width : 380
 							}, {
 								type : "static_text",
 								item_id : "txtB",
@@ -2591,6 +2588,7 @@ function ImportScriptFileDialog(retResDia) {
 		};
 	} else {
 		Value("User_Imported_Files.Stringified", filesScriptRem);
+		CurrentScriptFiles = eval(filesScriptRem);
 	};
 	if (retResDia) resourceDecisionDialog(false, false, retResDia === "also"); // return to the Dialog for Selecting Resources
 };

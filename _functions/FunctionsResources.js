@@ -1208,8 +1208,10 @@ function parseSource(srcObj) {
 				};
 			};
 		};
- 		if (theSRD.length !== 0 && areExcl.length === theRe.length) {
+ 		if (theSRD.length > 0 && areExcl.length === theRe.length) {
 			theRe = theSRD;
+		} else {
+			theRe.push(theSRD[0])
 		};
 	};
 	return theRe;

@@ -173,7 +173,7 @@ var Menus = {
 		}, {
 			cName : "-"
 		}, {
-			cName : "Import a character directly from another MPMB's PDF",
+			cName : "Import a character directly from another MPMB's Character Sheet PDF",
 			cReturn : "go#direct"
 		}, {
 			cName : "-"
