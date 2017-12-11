@@ -464,6 +464,7 @@ function DirectImport(consoleTrigger) {
 		if (ImportField("User Script") || filesScript !== "({})") {
 			InitiateLists();
 			RunUserScript(true);
+			amendPsionicsToSpellsList();
 		};
 		//set the excl./incl. sources
 		if (ImportField("CurrentSources.Stringified")) {
@@ -495,8 +496,9 @@ function DirectImport(consoleTrigger) {
 			}
 			SetStringifieds("sources");
 		};
-		//now update the dropdowns with these new settings
+		//now update the dropdowns and spell menus with these new settings
 		UpdateDropdown("resources");
+		setSpellVariables(true);
 		
 		//reset conditions
 		if (!fromSheetTypePF && global.docFrom.ConditionSet) {
@@ -1504,7 +1506,7 @@ function Import(type) {
 	
 	//first ask if this sheet is already set-up the right way before importing and if we can continue
 	var AskFirst = {
-		cMsg : "Before you import anything into this sheet, please make sure that the following things are set correctly. If you don't do this, not everything will import. You will have to make the following things identical to the sheet you exported the data from:" + "\n  \u2022  The unit and decimal system;" + "\n  \u2022  The layout of the pages.\n      In order to do this, you will have to hide and/or add pages in the same order as you did in the sheet you are importing from. This is because the moment you add an extra page (so after the first of its type), that page gets a name based on the location of that page in the document. That location is based solely on the pages that are visible at the time of itscreation.\n      For example, if the sheet you are importing from has two Adventurers Logsheet pages, and these were added after generating a Spell Sheet of three pages long, while all of the other pages were visible as well, the second Adventurers Logsheet page would have been generated as page number 12. In order for this sheet to properly receive the import for that page, you will first need to generate an Adventurers Logsheet page at page number 12." + "\n\n\nDo you want to continue importing?",
+		cMsg : "This method is no longer supported and will result in your character only being partially imported. If you want to be guaranteed of a good import, use the option \"Import Directly from a MPMB's PDF\" instead!"+"\n\nBefore you import anything into this sheet, please make sure that the following things are set correctly. If you don't do this, not everything will import. You will have to make the following things identical to the sheet you exported the data from:" + "\n  \u2022  The unit and decimal system;" + "\n  \u2022  The layout of the pages.\n      In order to do this, you will have to hide and/or add pages in the same order as you did in the sheet you are importing from. This is because the moment you add an extra page (so after the first of its type), that page gets a name based on the location of that page in the document. That location is based solely on the pages that are visible at the time of itscreation.\n      For example, if the sheet you are importing from has two Adventurers Logsheet pages, and these were added after generating a Spell Sheet of three pages long, while all of the other pages were visible as well, the second Adventurers Logsheet page would have been generated as page number 12. In order for this sheet to properly receive the import for that page, you will first need to generate an Adventurers Logsheet page at page number 12." + "\n\n\nDo you want to continue importing?",
 		nIcon : 2,
 		cTitle : "Is everything ready for importing?",
 		nType : 2
@@ -1663,7 +1665,7 @@ function Import(type) {
 	thermoM(); //stop any and all progress dialogs
 	
 	//re-apply stuff just as when starting the sheet
-	InitializeEverything(false, true);
+	InitializeEverything();
 	
 	tDoc.dirty = true;
 };
@@ -2142,6 +2144,7 @@ function AddUserScript(retResDia) {
 			InitiateLists();
 			RunUserScript(false, false);
 		};
+		amendPsionicsToSpellsList();
 	};
 	if (retResDia) resourceDecisionDialog(false, false, retResDia === "also"); // return to the Dialog for Selecting Resources
 };
@@ -2577,6 +2580,7 @@ function ImportScriptFileDialog(retResDia) {
 				InitiateLists();
 				RunUserScript(false, false);
 			};
+			amendPsionicsToSpellsList();
 			if (filesScriptRem !== What("User_Imported_Files.Stringified") || runScriptsTest) {
 				retResDia = "also";
 				app.alert({

@@ -715,8 +715,8 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		
 		//if something changed for the spells make the spell menu again
 		var oldCS = eval(remCS);
-		if (oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.classExcl !== CurrentSources.classExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
-			setSpellVariables(oldCS.spellsExcl !== CurrentSources.spellsExcl);
+		if (forceDDupdate || oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.classExcl !== CurrentSources.classExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
+			setSpellVariables(forceDDupdate || oldCS.spellsExcl !== CurrentSources.spellsExcl);
 		};
 	};
 };
@@ -1211,7 +1211,7 @@ function parseSource(srcObj) {
  		if (theSRD.length > 0 && areExcl.length === theRe.length) {
 			theRe = theSRD;
 		} else {
-			theRe.push(theSRD[0])
+			theRe.push(theSRD[0]);
 		};
 	};
 	return theRe;

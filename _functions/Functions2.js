@@ -5045,7 +5045,7 @@ function PatreonStatement() {
 			var oMyIcon = util.iconStreamFromIcon(oButIcon);	
 			
 			var theTxt = "If you like this sheet, please consider becoming a patron at the Patreon for MPMB's Character Record Sheet.\n\nWith your contribution on Patreon:\n   \u2022 I can continue expanding the functionality of this sheet.\n   \u2022 You get to choose which new features get added.\n   \u2022 Your favourite third-party material gets added.\n   \u2022 You get instant access and alerts when new versions are released.";
-			var theTxt2 = "Don't worry, the sheet will stay available for free on my website.\nHowever, if you feel like contributing more, it will all flow back into expanding the sheets' features and content.\n\nYou can always visit the Patreon webpage using the bottom \"Contact MPMB\" bookmarks.";
+			var theTxt2 = "Don't worry, the sheet will stay available for free on my website.\nHowever, if you feel like contributing more, it will all flow back into expanding the sheets' features and content.\n\nYou can always visit the Patreon webpage using the \"Contact MPMB\" bookmarks.";
 			var PatreonDialog = {
 				initialize : function (dialog) {
 					dialog.load({

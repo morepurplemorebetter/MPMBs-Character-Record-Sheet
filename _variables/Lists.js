@@ -27,6 +27,13 @@ function InitiateLists() {
 	};
 };
 
+// A function to generate the spell variables after running imported scripts 
+function spellsAfterUserScripts(reDoAllSpells) {
+	if (tDoc.info.AdvLogOnly) return;
+	amendPsionicsToSpellsList();
+	setSpellVariables(reDoAllSpells);
+};
+
 var typePF = (/printer friendly/i).test(tDoc.info.SheetType);
 var typeA4 = (/a4/i).test(tDoc.info.SheetType);
 var typeLR = (/letter/i).test(tDoc.info.SheetType);

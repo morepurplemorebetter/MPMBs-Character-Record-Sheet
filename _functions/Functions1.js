@@ -553,17 +553,17 @@ function ResetAll(GoOn, noTempl) {
 	CurrentRace = {};
 	CurrentBackground = {};
 	CurrentCompRace = {};
-	InitiateLists();
 	GetStringifieds(keepImports);
 	
 	if (keepImports) { // remove the imports and reset the sources
 		SetStringifieds("sources");
 		SetStringifieds("scriptfiles");
 		Value("User Script", userScriptString);
-		RunUserScript(true);
 	} else { // re-apply the imports and keep the sources setting
+		InitiateLists();
 		resourceDecisionDialog(true, true); //to make sure that even if the sheet is used before re-opening, the resources are set to default
 		UpdateDropdown("resources");
+		spellsAfterUserScripts(true);
 	};
 
 	//call upon some functions to reset other stuff than field values
@@ -4767,7 +4767,7 @@ function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, Update
 	UpdateOrReplace = UpdateOrReplace ? UpdateOrReplace : "replace";
 	var calculation = Calc ? Calc : "";
 	var SslotsVisible = !typePF && eval(What("SpellSlotsRemember"))[0];
-	var recovery = recovery === "long rest" || recovery === "short rest" || recovery === "dawn" ? recovery : recovery.capitalize();
+	var recovery = (/^(long rest|short rest|dawn)$/).test(recovery) ? recovery : recovery.capitalize();
 	if ((/ ?\bper\b ?/).test(usages)) usages = usages.replace(/ ?\bper\b ?/, "");
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 1; i <= FieldNumbers.limfea; i++) {

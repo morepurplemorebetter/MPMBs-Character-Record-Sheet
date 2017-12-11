@@ -5386,60 +5386,7 @@ function isSpellUsed(spll) {
 	return rtrnA;
 };
 
-function AmendSpellsList() {
-	// Artificer spells
-	[	// level 1
-		"alarm",
-		"cure wounds",
-		"disguise self",
-		"expeditious retreat",
-		"false life",
-		"jump",
-		"longstrider",
-		"sanctuary",
-		"shield of faith",
-		// level 2
-		"aid",
-		"alter self",
-		"arcane lock",
-		"blur",
-		"continual flame",
-		"darkvision",
-		"enhance ability",
-		"enlarge/reduce",
-		"invisibility",
-		"lesser restoration",
-		"levitate",
-		"magic weapon",
-		"protection from poison",
-		"rope trick",
-		"see invisibility",
-		"spider climb",
-		// level 3
-		"blink",
-		"fly",
-		"gaseous form",
-		"glyph of warding",
-		"haste",
-		"protection from energy",
-		"revivify",
-		"water breathing",
-		"water walk",
-		// level 4
-		"arcane eye",
-		"death ward",
-		"fabricate",
-		"freedom of movement",
-		"leomund's secret chest",
-		"mordenkainen's faithful hound",
-		"mordenkainen's private sanctum",
-		"otiluke's resilient sphere",
-		"stone shape",
-		"stoneskin"
-	].forEach(function (spell) {
-		if (SpellsList[spell]) SpellsList[spell].classes.push("artificer");
-	});
-	
+function amendPsionicsToSpellsList() {
 	//Add the psionics to the SpellsList object
 	if (PsionicsList) {
 		var errorPsi = "";
@@ -5483,7 +5430,7 @@ function setSpellVariables(reDoAll) {
 	if (reDoAll) {
 		AllPsionicClasses = false;
 		AllCasterClasses = false;
-	}
+	};
 	AllSpellsArray = CreateSpellList({class : "any"}, true);
 	AllPsionicsArray = CreateSpellList({class : "any", psionic : true}, true);
 	AllSpellsObject = CreateSpellObject(AllSpellsArray);

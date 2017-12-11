@@ -1,17 +1,15 @@
 //functions to call at startup (in the right order)
 function InitializeEverything(noButtons, noVars) {
-	InitiateLists();
 	if (!minVer) Hide("d20warning");
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	GetStringifieds(); //populate some variables stored in fields
 	
-	RunUserScript(true);
-	
-	//define some document level variables after running the user scripts
-	if (!tDoc.info.AdvLogOnly && !noVars) {
-		AmendSpellsList();
-		setSpellVariables();
+	// Define some document level variables before and after running the user scripts
+	if (!noVars) {
+		InitiateLists();
+		RunUserScript(true);
+		spellsAfterUserScripts();
 	};
 	
 	if (!minVer) {
