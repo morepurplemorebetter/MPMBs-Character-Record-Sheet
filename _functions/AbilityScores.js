@@ -128,7 +128,7 @@ function AbilityScores_Button() {
 				"fWis" : AbilityScores.current.Wis.feat,
 				"fCha" : AbilityScores.current.Cha.feat,
 				"fHoS" : AbilityScores.current.HoS.feat,
-				"eNm0" : "Extra Bonus",
+				"eNm0" : "Level Bonus",
 				"eStr" : AbilityScores.current.Str.extra,
 				"eDex" : AbilityScores.current.Dex.extra,
 				"eCon" : AbilityScores.current.Con.extra,
