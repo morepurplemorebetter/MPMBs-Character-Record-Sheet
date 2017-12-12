@@ -5994,6 +5994,7 @@ function processVision(AddRemove, srcNm, itemArr) {
 	if (!isArray(itemArr) || (itemArr.length === 2 && !isArray(itemArr[0]) && !isArray(itemArr[1]) && (!isNaN(itemArr[1]) || !isNaN(itemArr[1].substr(1))))) {
 		itemArr = [itemArr];
 	};
+	var profsdone = {};
 	for (var i = 0; i < itemArr.length; i++) {
 		var subj = itemArr[i];
 		if (isArray(subj)) {
@@ -6003,7 +6004,9 @@ function processVision(AddRemove, srcNm, itemArr) {
 			var prof = subj;
 			var extra = 0;
 		};
-		SetProf("vision", AddRemove, prof, srcNm, extra);
+		if (!profsdone[prof]) { profsdone[prof] = 1; } else { profsdone[prof] += 1; };
+		var useScrNm = srcNm + (profsdone[prof] < 2 ? "" : " (" + profsdone[prof] + ")");
+		SetProf("vision", AddRemove, prof, useScrNm, extra);
 	};
 };
 

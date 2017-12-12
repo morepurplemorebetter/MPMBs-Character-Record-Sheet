@@ -773,8 +773,8 @@ var Base_ClassList = {
 				minlevel : 2,
 				description : "\n   " + "When I hit someone in melee, I can expend spell slots to do 2d8 extra radiant damage" + "\n   " + "This increases by +1d8 for each spell slot level above 1st and +1d8 against undead/fiends"
 			},
-			"channel divinity" : {
-				name : "Use Channel Divinity",
+			"subclassfeature3.0" : {
+				name : "Channel Divinity",
 				source : [["SRD", 32], ["P", 85]],
 				minlevel : 3,
 				description : "",
