@@ -4251,7 +4251,7 @@ function RemoveTool(tool, toolstooltip) {
 function AddWeapon(weapon, partialReplace) {
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var maxItems = QI ? FieldNumbers.attacks : 3;
 	
 	weapon = clean(weapon.toLowerCase(), " ") //remove leading or trailing spaces
@@ -4274,7 +4274,7 @@ function RemoveWeapon(weapon) {
 	if (!IsNotImport) return;
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var maxItems = QI ? FieldNumbers.attacks : 3;
 	
 	weapon = clean(weapon.toLowerCase(), " ") //remove leading or trailing spaces
@@ -4385,7 +4385,7 @@ function SpliceString(field, inputstring, newline, theoldstring) {
 // add (change === true) or remove (change === false) a skill proficiency with or without expertise; If expertise === "only", only add/remove the expertise, considering the skill already has proficiency; If expertise === "increment", only add/remove the expertise, considering the skill already has proficiency, otherwise add proficiency
 function AddSkillProf(SkillName, change, expertise) {
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var tempString = SkillName;
 	if (SkillName.length > 4) {
 		if (SkillsList.abbreviations.indexOf(SkillName.substring(0, 4)) !== -1) {
@@ -4419,7 +4419,7 @@ function ValidateBonus(goEmpty, allowDC) {
 	var test = 0;
 	var input = Number(event.value.replace(/,/g,"."));
 	if (isNaN(input)) {
-		var notComp = event.target.name.indexOf("Comp.") === -1 ? true : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+		var notComp = getTemplPre(event.target.name, "AScomp");
 		test = event.value;
 		if (!allowDC) test = test.replace(/dc/ig, "");
 		["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS", "Prof"].forEach( function(AbiS) {
@@ -4475,7 +4475,7 @@ function CalcSave() {
 	var Save = event.target.name;
 	var QI = event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var Sabi = QI ? 4 : 21 + prefix.length;
 	var Ability = Save.substring(0, Sabi - 1).slice(-3);
 	var Mod = What(Save.substring(0, Sabi) + "Mod");
@@ -5224,7 +5224,7 @@ function HealItNow() {
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	
 	var fields = [
 		"HP Current",
@@ -9320,7 +9320,7 @@ function FeatDelete(itemNmbr) {
 function MakeWeaponMenu() {
 	var QI = event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 
 	var menuLVL1 = function (item, array) {
 		for (var i = 0; i < array.length; i++) {
@@ -9404,7 +9404,7 @@ function WeaponOptions() {
 	
 	var QI = event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var maxItems = QI ? FieldNumbers.attacks : 3;
 
 	var itemNmbr = Number(event.target.name.slice(-1));
@@ -9524,7 +9524,7 @@ function WeaponOptions() {
 function WeaponInsert(itemNmbr) {
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var maxItems = QI ? FieldNumbers.attacks : 3;
 	var theField = What("Manual Attack Remember") === "No" ? ".Weapon Selection" : ".Weapon";
 
@@ -9597,7 +9597,7 @@ function WeaponInsert(itemNmbr) {
 function WeaponDelete(itemNmbr) {
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var maxItems = QI ? FieldNumbers.attacks : 3;
 	
 	var FieldNames = [
@@ -10032,7 +10032,7 @@ function ApplyAttackColor(attackNmbr, aColour, type, prefix) {
 	var QI = type ? type !== "Comp." : !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var prefixA = [""];
 	if (!QI && event.target && event.target.name && !prefix) {
-		prefixA = [event.target.name.substring(0, event.target.name.indexOf("Comp."))];
+		prefixA = [getTemplPre(event.target.name, "AScomp", true)];
 	} else if (!QI && prefix) {
 		prefixA = [prefix];
 	} else if (!QI && !prefix) {
@@ -10095,11 +10095,10 @@ function setColorThemes() {
 
 //calculate the proficiency bonus (field calculation)
 function ProfBonus() {
-	var QI = event.target.name.indexOf("Comp.") === -1;
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
-	var lvl = QI ? What("Character Level") : What(prefix + "Comp.Use.HD.Level");
-	var ProfMod = QI ? What("Proficiency Bonus Modifier") : 0;
-	var useDice = QI ? tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1 : tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
+	var QI = getTemplPre(event.target.name, "AScomp");
+	var lvl = What(QI === true ? "Character Level" : QI + "Comp.Use.HD.Level");
+	var ProfMod = QI === true ? What("Proficiency Bonus Modifier") : 0;
+	var useDice = tDoc.getField(QI === true ? "Proficiency Bonus Dice" : QI + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
 	
 	if (lvl >= 17) {
 		event.target.submitName = 6 + ProfMod;
@@ -10124,10 +10123,9 @@ function ProfBonus() {
 
 //show the proficiency die (field format)
 function ProfBonusDisplay(input) {
-	var QI = event.target.name.indexOf("Comp.") === -1;
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
-	var ProfB = QI ? event.target.submitName : input;
-	var useDice = QI ? tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1 : tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
+	var QI = getTemplPre(event.target.name, "AScomp");
+	var ProfB = QI === true ? event.target.submitName : input;
+	var useDice = tDoc.getField(QI === true ? "Proficiency Bonus Dice" : QI + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
 	if (useDice) {
 		event.value = GetProfDice(ProfB);
 	} else {

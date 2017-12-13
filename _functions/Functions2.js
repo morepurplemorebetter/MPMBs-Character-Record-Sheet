@@ -154,7 +154,7 @@ function ApplyCompRace(newRace) {
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = getTemplPre(event.target.name, "AScomp", true);
 	
 	var resetDescTooltips = function() {
 		AddTooltip(prefix + "Comp.Desc.Height", "");
@@ -679,7 +679,7 @@ function ApplyWildshape() {
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("Wildshape"));
+	var prefix = getTemplPre(event.target.name, "WSfront", true);
 	var Fld = event.target.name.slice(-1);
 	var newForm = event.value.toLowerCase();
 	var resetFlds = [
@@ -1108,7 +1108,7 @@ function RemoveWildshape(input) {
 
 //make a menu for wild shape options
 function MakeWildshapeMenu() {
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("Wildshape"));
+	var prefix = getTemplPre(event.target.name, "WSfront", true);
 	
 	if (!What("Character Level") || !What("Int")|| !What("Wis")|| !What("Cha")) { //If the character has not been defined enough, the function can be stopped after making a warning-menu
 		Menus.wildshape = [{cName : "Please create a character on the 1st page before trying a Wild Shape", cReturn : "nothing#toreport", bEnabled : false}];
@@ -1337,7 +1337,7 @@ function MakeWildshapeMenu() {
 //call the wildshape menu and do something with the results
 function WildshapeOptions() {
 	var MenuSelection = getMenu("wildshape");
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("Wildshape"));
+	var prefix = getTemplPre(event.target.name, "WSfront", true);
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
 		tDoc.delay = true;
@@ -1482,14 +1482,14 @@ function SetCompDropdown() {
 		var theFld = AScompA[A] + "Comp.Race";
 		var theFldVal = What(theFld);
 		tDoc.getField(theFld).setItems(theList);
-		Value("Comp.Race", theFldVal, theString);
+		Value(theFld, theFldVal, theString);
 	}
-}
+};
 
 //Make menu for the button on the companion page and parse it to Menus.companion
 function MakeCompMenu() {
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("Companion"));
-	var usingRevisedRanger = CurrentSources.globalExcl.indexOf("UA:RR") === -1;
+	var prefix = getTemplPre(event.target.name, "AScomp", true);
+	var usingRevisedRanger = ClassList.rangerua && !testSource("rangerua", ClassList.rangerua, "classExcl");
 	var menuLVL2 = function (menu, name, array) {
 		var temp = {};
 		var enabled = name[1] === "change" ? What(prefix + "Comp.Race") : true;
@@ -1607,7 +1607,7 @@ function CompOptions() {
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	var MenuSelection = getMenu("companion");
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("Companion"));
+	var prefix = getTemplPre(event.target.name, "AScomp", true);
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
 		if (MenuSelection[0] === "reset") {
@@ -1961,7 +1961,7 @@ function ApplyDCColorScheme(colour, DC) {
 function MakeActionMenu() {
 	var actionMenu = [];
 	var itemNmbr = parseFloat(event.target.name.slice(-2));
-	var type = event.target.name.indexOf("Bonus") !== -1 ? "bonus action" : event.target.name.indexOf("Reaction") !== -1 ? "reaction" : "action";
+	var type = event.target.name.match(/bonus action|reaction|action/i)[0].toLowerCase();
 	var maxNmbr = type === "action" ? FieldNumbers.trueactions : FieldNumbers.actions;
 	var theField = What(type.capitalize() + " " + itemNmbr);
 
@@ -2002,7 +2002,7 @@ function ActionOptions() {
 	thermoM("Action menu option..."); //change the progress
 		
 	var itemNmbr = parseFloat(event.target.name.slice(-2));
-	var type = event.target.name.indexOf("Bonus") !== -1 ? "bonus action" : event.target.name.indexOf("Reaction") !== -1 ? "reaction" : "action";
+	var type = event.target.name.match(/bonus action|reaction|action/i)[0].toLowerCase();
 	var maxNmbr = type === "action" ? FieldNumbers.trueactions : FieldNumbers.actions;
 	if (itemNmbr <= (maxNmbr - 6)) {
 		var OppNmbr = itemNmbr > ((maxNmbr - 6) / 2) ? -1 * ((maxNmbr - 6) / 2) : ((maxNmbr - 6) / 2);
@@ -2838,7 +2838,7 @@ function MakeNotesMenu_NotesOptions() {
 
 //make a string of all the classes and levels (field calculation)
 function CalcFullClassLvlName() {
-	var prefix = event.target && event.target.name ? event.target.name.substring(0, event.target.name.indexOf("AdvLog.")) : "";
+	var prefix = event.target && event.target.name ? getTemplPre(event.target.name, "ALlog", true) : "";
 	if (!prefix) {
 		var ClLvls = What("Class and Levels");
 		var LVL = What("Character Level");
@@ -2862,7 +2862,7 @@ function CalcFullClassLvlName() {
 
 //return the value of a logsheet's number (field calculation)
 function CalcLogsheetNumber() {
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("AdvLog."));
+	var prefix = getTemplPre(event.target.name, "ALlog", true);
 	var ALlogA = What("Template.extras.ALlog").split(",");
 	event.value = (ALlogA.indexOf(prefix)) + " of " + (ALlogA.length - 1);
 }
@@ -2922,7 +2922,7 @@ function UpdateLogsheetNumbering(prefix, prePrefix) {
 function MakeAdvLogMenu_AdvLogOptions(Button) {
 	tDoc.delay = true;
 	tDoc.calculate = false;
-	var prefix = Button ? "P0.AdvLog." : event.target.name.substring(0, event.target.name.indexOf("AdvLog."));
+	var prefix = Button ? "P0.AdvLog." : getTemplPre(event.target.name, "ALlog", true);
 	var isFirstPrefix = prefix === What("Template.extras.ALlog").split(",")[1];
 	var cLogoDisplay = minVer && typePF ? tDoc.getField("Image.DnDLogo.AL").display : false;
 	
@@ -3073,7 +3073,7 @@ function MakeIconMenu_IconOptions() {
 	tDoc.calculate = false;
 	
 	var SymbPort = event.target.name;
-	var DoAdvLog = event.target.name.indexOf("AdvLog") !== -1;
+	var DoAdvLog = SymbPort.indexOf("AdvLog") !== -1;
 	var DisplayName = SymbPort.indexOf("Comp.") !== -1 ? "Companion's Icon" : (SymbPort.indexOf("HeaderIcon") !== -1 ? "Header Icon" : SymbPort);
 	if (DoAdvLog) DisplayName = "Adventure Logsheet " + DisplayName;
 	
@@ -3238,7 +3238,7 @@ function CalcAdvLogInfo() {
 //see if the value of the field has been changed and differs from the original. If so, push the value to the original
 function ValidateAdvLogInfo() {
 	if (tDoc.info.SpellsOnly || (SetFactionSymbolIgnore && event.target.name.indexOf("Background_Faction.Text") !== -1)) return;
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("AdvLog."));
+	var prefix = getTemplPre(event.target.name, "ALlog", true);
 	if (tDoc.info.AdvLogOnly && !prefix) {
 		return;
 	} else {
@@ -3430,7 +3430,7 @@ function setLifeStyle(input) {
 
 // update all the level-dependent features for the ranger companions on the companion pages
 function UpdateRangerCompanions(deleteIt) {
-	if (CurrentSources.globalExcl.indexOf("UA:RR") === -1) {
+	if (ClassList.rangerua && !testSource("rangerua", ClassList.rangerua, "classExcl")) {
 		UpdateRevisedRangerCompanions(deleteIt);
 		return;
 	}
@@ -3488,62 +3488,85 @@ function UpdateRangerCompanions(deleteIt) {
 		progressDia += 1;
 		thermoM(progressDia/(AScompA.length + 1)); //increment the progress dialog's progress
 		var prefix = AScompA[i];
-		var remFld = What(prefix + "Companion.Remember");
-		if (remFld === "companion") { //only do something if the creature is set to "companion"
+		if (What(prefix + "Companion.Remember") === "companion") { //only do something if the creature is set to "companion"
 			var thisCrea = CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound === "creature" ? CurrentCompRace[prefix] : false;
 			//first look into adding the proficiency bonus to AC, attacks, proficiencies
 			var remLvl = Who(prefix + "Companion.Remember").split(",");
-			var oldLvl = [
-				Number(remLvl[0]),
-				remLvl[1] !== undefined ? Number(remLvl[1]) : 0
-			]
-			var oldLvlProfB = theProfB(oldLvl[0]);
-			if (newLvlProfB !== oldLvlProfB) {
-				if (deleteIt && thisCrea) newLvlProfB = thisCrea.proficiencyBonus;
-				var diff = newLvlProfB - oldLvlProfB;
-				var BlueTextArray = [];
-				
-				//add saving throw proficiencies
-				for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
-					var theSave = prefix + "Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".ST.Prof";
-					var theSaveBT = prefix + "BlueText.Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".ST.Bonus";
-					if (tDoc.getField(theSave).isBoxChecked(0) === 1) {
-						BlueTextArray.push(theSaveBT);
-					}
-				}
-				
-				//add skill proficiencies
-				for (var s = 0; s < (SkillsList.abbreviations.length - 2); s++) {
-					var theSkill = prefix + "Text.Comp.Use.Skills." + SkillsList.abbreviations[s] + ".Prof";
-					var theSkillBT = prefix + "BlueText.Comp.Use.Skills." + SkillsList.abbreviations[s] + ".Bonus";
-					if (What(theSkill) !== "nothing") {
-						BlueTextArray.push(theSkillBT);
-					}
-				}
-				
-				//add attacks damage and to hit bonus fields
-				for (var A = 1; A <= 3; A++) {
-					if (What(prefix + "Comp.Use.Attack." + A + ".Weapon Selection")) {
-						BlueTextArray.push(prefix + "BlueText.Comp.Use.Attack." + A + ".To Hit Bonus");
-						BlueTextArray.push(prefix + "BlueText.Comp.Use.Attack." + A + ".Damage Bonus");
-					}
-				}
-				
-				for (var f = 0; f < BlueTextArray.length; f++) {
-					var theBTvalue = Number(What(BlueTextArray[f]));
-					if (!isNaN(theBTvalue)) Value(BlueTextArray[f], theBTvalue + diff);
-				}
-			}
+			var oldLvl = Number(remLvl[0]);
+			var RangerLvlOld = remLvl[1] !== undefined ? Number(remLvl[1]) : 0;
+			var oldLvlProfB = theProfB(oldLvl);
+			var diff = newLvlProfB - oldLvlProfB;
+			var BlueTextArrayAdd = [];
+			var BlueTextArrayRemove = [];
+			
+			//add saving throw proficiencies
+			for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
+				var theSave = prefix + "Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".ST.Prof";
+				var theSaveBT = prefix + "BlueText.Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".ST.Bonus";
+				var hasProfAdded = What(theSaveBT).indexOf("oProf") !== -1;
+				if (!deleteIt && !hasProfAdded && tDoc.getField(theSave).isBoxChecked(0) === 1) {
+					BlueTextArrayAdd.push(theSaveBT);
+				} else if (hasProfAdded) {
+					BlueTextArrayRemove.push(theSaveBT);
+				};
+			};
+			
+			//add skill proficiencies
+			for (var s = 0; s < (SkillsList.abbreviations.length - 2); s++) {
+				var theSkill = prefix + (typePF ? "" : "Text.") + "Comp.Use.Skills." + SkillsList.abbreviations[s] + ".Prof";
+				var isProf = typePF ? tDoc.getField(theSkill).isBoxChecked(0) : What(theSkill) !== "nothing";
+				var theSkillBT = prefix + "BlueText.Comp.Use.Skills." + SkillsList.abbreviations[s] + ".Bonus";
+				hasProfAdded = What(theSkillBT).indexOf("oProf") !== -1;
+				if (!deleteIt && !hasProfAdded && isProf) {
+					BlueTextArrayAdd.push(theSkillBT);
+				} else if (hasProfAdded) {
+					BlueTextArrayRemove.push(theSkillBT);
+				};
+			};
+			
+			//add attacks damage and to hit bonus fields
+			for (var A = 1; A <= 3; A++) {
+				if (What(prefix + "Comp.Use.Attack." + A + ".Weapon Selection")) {
+					var weaHit = prefix + "BlueText.Comp.Use.Attack." + A + ".To Hit Bonus";
+					hasProfAdded = What(weaHit).indexOf("oProf") !== -1;
+					if (!deleteIt && !hasProfAdded) {
+						BlueTextArrayAdd.push(weaHit);
+					} else if (hasProfAdded) {
+						BlueTextArrayRemove.push(weaHit);
+					};
+					var weaDmg = prefix + "BlueText.Comp.Use.Attack." + A + ".Damage Bonus";
+					hasProfAdded = What(weaDmg).indexOf("oProf") !== -1;
+					if (!deleteIt && !hasProfAdded) {
+						BlueTextArrayAdd.push(weaDmg);
+					} else if (hasProfAdded) {
+						BlueTextArrayRemove.push(weaDmg);
+					};
+				};
+			};
+			
+			var NameEntity = "Ranger's Companion";
+			var Explanation = "The Ranger's Companion adds the ranger's proficiency bonus (oProf) to all skills and saving throws it is proficient with, as well as to the to hit and damage of its attacks.";
+			for (var f = 0; f < BlueTextArrayAdd.length; f++) {
+				AddToModFld(BlueTextArrayAdd[f], "oProf", false, NameEntity, Explanation);
+			};
+			for (var f = 0; f < BlueTextArrayRemove.length; f++) {
+				AddToModFld(BlueTextArrayRemove[f], "oProf", true, NameEntity, Explanation);
+			};
 			
 			//then look into the hit points
 			if (thisCrea) {
 				Value(prefix + "Comp.Use.HP.Max", Math.max(thisCrea.hp, RangerLvl * 4));
-			}
+			} else {
+				var newHP = Number(What(prefix + "Comp.Use.HP.Max")) + ((RangerLvl - RangerLvlOld) * 4);
+				if (!isNaN(newHP)) Value(prefix + "Comp.Use.HP.Max", newHP);
+			};
 			
 			//then look into the AC
 			if (thisCrea) {
 				Value(prefix + "Comp.Use.AC", thisCrea.ac + (deleteIt ? 0 : newLvlProfB));
-			}
+			} else if (diff) {
+				Value(prefix + "Comp.Use.AC", What(prefix + "Comp.Use.AC") + diff);
+			};
 			
 			//then look into the attacks per action
 			if (thisCrea && deleteIt) {
@@ -3556,11 +3579,11 @@ function UpdateRangerCompanions(deleteIt) {
 			if (deleteIt) {
 				for (var t = 0; t < textArray.length; t++) {
 					RemoveString(prefix + "Cnote.Left", textArray[t]);
-				}
+				};
 			} else {
-				var oldLvlText = theText(oldLvl[1]);
+				var oldLvlText = theText(RangerLvlOld);
 				ReplaceString(prefix + "Cnote.Left", newLvlText, false, oldLvlText);
-			}
+			};
 			
 			//set the new level to the tooltip text of the remember field for later use
 			if (!deleteIt) AddTooltip(prefix + "Companion.Remember", newLvl + "," + RangerLvl);
@@ -3835,7 +3858,7 @@ function SetFactionSymbol(theFld, newValue, commitIt) {
 
 //update the other faction symbol fields (only on AdvLogOnly) (field blur)
 function UpdateFactionSymbols() {
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("AdvLogS."));
+	var prefix = getTemplPre(event.target.name, "ALlog", true);
 	var ALlogA = What("Template.extras.ALlog").split(",");
 	for (var Al = 0; Al < ALlogA.length; Al++) {
 		if (ALlogA[Al] === prefix) continue;
@@ -3968,14 +3991,14 @@ function UpdateALdateFormat(dateForm) {
 
 //return the value of the field that this notes field (field calculation)
 function CalcCompNotes() {
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = getTemplPre(event.target.name, "AScomp", true);
 	var notesFld = prefix + (typePF ? "Cnote.Left" : "Cnote.Right");
 	event.value = What(notesFld);
 }
 
 // add the content to all the other fields that should share the content (field validation)
 function ValidateCompNotes() {
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("Comp."));
+	var prefix = getTemplPre(event.target.name, "AScomp", true);
 	var notesFld = prefix + (typePF ? "Cnote.Left" : "Cnote.Right");
 	var theValue = What(notesFld);
 	if (event.value !== theValue) {
@@ -4244,7 +4267,7 @@ function CreateBkmrksCompleteAdvLogSheet() {
 // update all the level-dependent features for the UA's revised ranger companions on the companion pages
 function UpdateRevisedRangerCompanions(deleteIt) {
 	thermoM("start"); //start a progress dialog
-	thermoM("Updating Ranger's Companion..."); //change the progress dialog text
+	thermoM("Updating Revised Ranger's Companion..."); //change the progress dialog text
 	
 	var theProfB = function (input) {
 		var toReturn = 0;
@@ -4343,43 +4366,30 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 			var thisCrea = CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound === "creature" ? CurrentCompRace[prefix] : false;
 			
 			//first update the proficiency bonus
-			if (deleteIt) {
-				Value(prefix + "Comp.Use.Proficiency Bonus", thisCrea ? thisCrea.proficiencyBonus : "");
-			} else {
-				Value(prefix + "Comp.Use.Proficiency Bonus", newLvlProfB);
-			}
+			Value(prefix + "Comp.Use.Proficiency Bonus", !deleteIt ? newLvlProfB : thisCrea ? thisCrea.proficiencyBonus : "");
 			
 			//now look into adding the proficiency bonus to attack damage and removing multiattacks
 			var remLvl = Who(prefix + "Companion.Remember").split(",");
-			var oldLvl = [
-				Number(remLvl[0]),
-				remLvl[1] !== undefined ? Number(remLvl[1]) : 0
-			]
-			var oldLvlProfB = theProfB(oldLvl[0]);
-			if (deleteIt || newLvlProfB !== oldLvlProfB) {
-				var diff = deleteIt ? "" : newLvlProfB - oldLvlProfB;
-				var WeaArray = [];
-				
-				//add attacks damage and to hit bonus fields
-				for (var A = 1; A <= 3; A++) {
-					var weaFld = prefix + "Comp.Use.Attack." + A + ".Weapon Selection";
-					var aWea = What(weaFld);
-					if (!deleteIt && aWea) {
-						WeaArray.push(prefix + "BlueText.Comp.Use.Attack." + A + ".Damage Bonus");
+			var oldLvl = Number(remLvl[0]);
+			var RangerLvlOld = remLvl[1] !== undefined ? Number(remLvl[1]) : 0;
+			var oldLvlProfB = theProfB(oldLvl);
+			var diff = newLvlProfB - oldLvlProfB;
+			
+			//add ranger's prof to attacks damage fields
+			var NameEntity = "Revised Ranger's Companion";
+			var Explanation = "The Revised Ranger's Companion adds the ranger's proficiency bonus (oProf) to the damage of its attacks.";
+			for (var A = 1; A <= 3; A++) {
+				if (What(prefix + "Comp.Use.Attack." + A + ".Weapon Selection")) {
+					var weaFldDmg = prefix + "BlueText.Comp.Use.Attack." + A + ".Damage Bonus";
+					var hasProfAdded = What(weaFldDmg).indexOf("oProf") !== -1;
+					if (!deleteIt) {
 						ReplaceString(prefix + "Comp.Use.Attack." + A + ".Description", "", false, "(((One|Two).+as an Attack action)|(2 per Attack));? ?", true);
-					} else if (aWea) {
-						tDoc.resetForm([weaFld]);
-						Value(weaFld, aWea)
-					}
-				}
-				
-				if (!deleteIt) {
-					for (var f = 0; f < WeaArray.length; f++) {
-						var theBTvalue = Number(What(WeaArray[f]));
-						if (!isNaN(theBTvalue)) Value(WeaArray[f], theBTvalue + diff);
-					}
-				}
-			}
+						if (!hasProfAdded) AddToModFld(weaFldDmg, "oProf", false, NameEntity, Explanation);
+					} else if (deleteIt && hasProfAdded) {
+						AddToModFld(weaFldDmg, "oProf", true, NameEntity, Explanation);
+					};
+				};
+			};
 			
 			//add the HD
 			if (thisCrea && deleteIt) {
@@ -4387,7 +4397,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 			} else if (thisCrea) {
 				Value(prefix + "Comp.Use.HD.Level", thisCrea.hd[0] + RangerLvl - 3);
 			} else if (What(prefix + "Comp.Use.HD.Level")) {
-				var HDincr = oldLvl[0] === 0 ? RangerLvl - 3 : RangerLvl - oldLvl[0];
+				var HDincr = oldLvl === 0 ? RangerLvl - 3 : RangerLvl - oldLvl;
 				Value(prefix + "Comp.Use.HD.Level", What(prefix + "Comp.Use.HD.Level") + HDincr);
 			}
 			var theCompSetting = tDoc.getField(prefix + "Comp.Use.HP.Max").submitName.split(",");
@@ -4421,6 +4431,13 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 			//then look into the AC
 			if (thisCrea) {
 				Value(prefix + "Comp.Use.AC", thisCrea.ac + (deleteIt ? 0 : newLvlProfB));
+			} else if (diff) {
+				Value(prefix + "Comp.Use.AC", What(prefix + "Comp.Use.AC") + diff);
+			};
+			
+			//then look into the AC
+			if (thisCrea) {
+				Value(prefix + "Comp.Use.AC", thisCrea.ac + (deleteIt ? 0 : newLvlProfB));
 			}
 			
 			//then look into the attacks per action
@@ -4446,9 +4463,9 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 				}
 				RemoveString(prefix + "Cnote.Left", compString.companionrr.string);
 			} else {
-				var oldLvlText = theText(oldLvl[1]);
+				var oldLvlText = theText(RangerLvlOld);
 				ReplaceString(prefix + "Cnote.Left", newLvlText, false, oldLvlText);
-				var oldLvlFea = theFeature(oldLvl[1]);
+				var oldLvlFea = theFeature(RangerLvlOld);
 				ReplaceString(prefix + "Comp.Use.Features", newLvlFea, false, oldLvlFea);
 				var creaASI = ASIstring(thisCrea);
 				ReplaceString(prefix + "Cnote.Left", creaASI, false, "whenever I gain an ASI");
@@ -4836,7 +4853,7 @@ function addALlogEntry() {
 
 //menu for logsheet entries to move up, move down, insert, delete, or clear
 function MakeAdvLogLineMenu_AdvLogLineOptions() {
-	var prefix = event.target.name.substring(0, event.target.name.indexOf("Button.AdvLog."));
+	var prefix = getTemplPre(event.target.name, "ALlog", true);
 	var firstPrefix = isTemplVis("ALlog", true)[1];
 	var lineNmbr = Number(event.target.name.slice(-1));
 	var theArray = [
@@ -5169,7 +5186,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	fldName = fldName ? fldName : event.target.name;
 	var QI = fldName.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : fldName.substring(0, fldName.indexOf("Comp."));
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var fldNmbr = fldName.replace(/.*Attack\.(\d+?)\..+/, "$1");
 	var ArrayNmbr = Number(fldNmbr) - 1;
 	var fldBase = prefix + Q + "Attack." + fldNmbr + ".";
@@ -5360,7 +5377,7 @@ function CalcAttackDmgHit(fldName) {
 	fldName = fldName ? fldName : event.target.name;
 	var QI = fldName.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : fldName.substring(0, fldName.indexOf("Comp."));
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var fldNmbr = fldName.replace(/.*Attack\.(\d+?)\..+/, "$1");
 	var ArrayNmbr = Number(fldNmbr) - 1;
 	var fldBase = prefix + Q + "Attack." + fldNmbr + ".";
@@ -5572,9 +5589,8 @@ function ShowDialog(hdr, strng) {
 
 //calculate the mod for the Dex field in the initiative section (field calculation)
 function CalcInitDexMod() {
-	var QI = event.target.name.indexOf("Comp.") === -1;
-	var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
-	event.value = QI ? What(SkillsList.abilityScores[SkillsList.abbreviations.indexOf("Init")] + " Mod") : What(prefix + "Comp.Use.Ability.Dex.Mod");
+	var QI = getTemplPre(event.target.name, "AScomp");
+	event.value = QI === true ? What(SkillsList.abilityScores[SkillsList.abbreviations.indexOf("Init")] + " Mod") : What(QI + "Comp.Use.Ability.Dex.Mod");
 };
 
 function FunctionIsNotAvailable() {
@@ -5594,13 +5610,17 @@ function EvalBonus(input, notComp, isSpecial) {
 	};
 	var modStr = notComp === true ? ["", " Mod"] : !isSpecial || isSpecial === "test" ? [notComp + "Comp.Use.Ability.", ".Mod"] : [notComp + "Wildshape." + isSpecial + ".Ability.", ".Mod"];
 	// first remove "dc", add a "+" between abbreviations, and removing double or trailing operators
-	input = input.replace(/,/g, ".").replace(/dc/ig, "").replace(/(Str|Dex|Con|Int|Wis|Cha|HoS|Prof)(Str|Dex|Con|Int|Wis|Cha|HoS|Prof)/ig, "$1+$2").replace(/(\+|\-|\/|\*)(\+|\-|\/|\*)/g, "$2").replace(/(^(\+|\/|\*))|((\+|\-|\/|\*)$)/g, "");
+	input = input.replace(/,/g, ".").replace(/dc/ig, "").replace(/o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof)o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof)/ig, "$1+$2").replace(/(\+|\-|\/|\*)(\+|\-|\/|\*)/g, "$2").replace(/(^(\+|\/|\*))|((\+|\-|\/|\*)$)/g, "");
 	// change ability score abbreviations with their modifier
+	["oStr", "oDex", "oCon", "oInt", "oWis", "oCha", "oHoS"].forEach(function(AbiS) {
+		input = input.replace(RegExp(AbiS, "ig"), Number(What(AbiS.substr(1) + " Mod")));
+	});
 	["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"].forEach(function(AbiS) {
 		input = input.replace(RegExp(AbiS, "ig"), Number(What(modStr[0] + AbiS + modStr[1])));
 	});
 	// change Prof with the proficiency bonus
 	var ProfB = notComp === true ? tDoc.getField("Proficiency Bonus").submitName : !isSpecial || isSpecial === "test" ? What(notComp + "Comp.Use.Proficiency Bonus") : What(notComp + "Wildshape." + isSpecial + ".Proficiency Bonus");
+	input = input.replace(/oProf/ig, tDoc.getField("Proficiency Bonus").submitName);
 	input = input.replace(/Prof/ig, ProfB);
 	try {
 		output = eval(input);
@@ -5644,7 +5664,7 @@ function EvalDmgDie(input, notComp, isSpecial) {
 function SetThisFldVal() {
 	var len = typePF ? 4 : 3;
 	if (event.target.submitName || event.target.value.length > len || event.modifier || event.shift) {
-		var QI = event.target.name.indexOf("Comp.") === -1 ? true : event.target.name.substring(0, event.target.name.indexOf("Comp."));
+		var QI = getTemplPre(event.target.name, "AScomp");
 		var dmgDie = event.target.name.indexOf("Damage Die") !== -1;
 		var theName = event.target.userName;
 		if (theName && (/\n/).test(theName)) {
@@ -5653,6 +5673,7 @@ function SetThisFldVal() {
 		var theVal = event.target.value;
 		if (!isNaN(theVal)) theVal = theVal.toString();
 		var theExpl = event.target.submitName.replace(/^\n*/, "");
+		var theDialTxt = (dmgDie ? "If you want the Damage Die to be a calculated value, and not just a string, make sure the first character is a '='.\nRegardless of the first character, a 'C' will be replaced with the Cantrip die, and a 'B' with the Cantrip die minus 1.\n\nIf a calculated value (=), you can use underscores to keep the strings separate. For the calculated parts, y" : "Y") + "ou can use numbers, logical operators (+, -, /, *), ability score abbreviations (Str, Dex, Con, Int, Wis, Cha" + (QI === true ? ", HoS" : "") + "), and 'Prof'." + (QI === true ? "" : "\nIn addition, you can use the values from the character (the 1st page) by adding the letter 'o' before the variable (oStr, oDex, oCon, oInt, oWis, oCha, oHoS, oProf).");
 		var theDialog = {
 			notComp : QI,
 			isDmgDie : dmgDie,
@@ -5705,7 +5726,7 @@ function SetThisFldVal() {
 							type : "static_text",
 							alignment : "align_left",
 							item_id : "txt3",
-							name : (dmgDie ? "If you want the Damage Die to be a calculated value, and not just a string, make sure the first character is a '='.\nRegardless of the first character, a 'C' will be replaced with the Cantrip die, and a 'B' with the Cantrip die minus 1.\n\nIf a calculated value (=), you can use underscores to keep the strings separate. For the calculated parts, y" : "Y") + "ou can use numbers, logical operators (+, -, /, *), ability score abbreviations (Str, Dex, Con, Int, Wis, Cha" + (QI === true ? ", HoS" : "") + "), and 'Prof'.",
+							name : theDialTxt,
 							char_width : 35,
 							wrap_name : true
 						}, {
@@ -5933,7 +5954,7 @@ function MakeSourceMenu_SourceOptions() {
 	//now call the menu
 	var MenuSelection = getMenu("sources");
 	
-	if (MenuSelection === undefined) return;
+	if (!MenuSelection || MenuSelection[0] === "nothing") return;
 	if (MenuSelection[1] === "dialogue") {
 		ShowDialog("List of Sources, sorted by abbreviation", "sources");
 		return;

@@ -354,9 +354,8 @@ function keystroke2() {
 function FormatHD() {
 	var theResult = clean(event.value, " ");
 	if (theResult !== "") {
-		var QI = event.target.name.indexOf("Comp.") === -1;
-		var prefix = QI ? "" : event.target.name.substring(0, event.target.name.indexOf("Comp."));
-		var theCon = Number(What(QI ? "Con Mod" : prefix + "Comp.Use.Ability.Con.Mod"));
+		var QI = getTemplPre(event.target.name, "AScomp");
+		var theCon = Number(What(QI ? "Con Mod" : QI + "Comp.Use.Ability.Con.Mod"));
 		event.value = "d" + theResult + (theCon < 0 ? theCon : "+" + theCon);
 	}
 };
@@ -1002,4 +1001,10 @@ function isTemplVis(tempNm, returnPrefix) {
 // A way to return a new, fresh object
 function newObj(inObj) {
 	return eval(inObj.toSource());
+};
+
+// Returns the template prefix, or true if not the template, or an empty string if rEmpty is true
+function getTemplPre(tName, templ, rEmpty) {
+	templ = templ + ".";
+	return tName.indexOf(templ) === -1 ? (rEmpty ? "" : true) : tName.substring(0, tName.indexOf(templ)) + templ;
 };
