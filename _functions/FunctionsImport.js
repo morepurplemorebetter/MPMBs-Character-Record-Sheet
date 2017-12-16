@@ -2295,6 +2295,7 @@ function AddWarlockInvocation(invocName, invocObj) {
 	var useName = invocName;
 	var suffix = 1;
 	while (warInv.extrachoices.indexOf(invocName) !== -1) {
+		if (warInv[invocObjName].source && invocObj.source && warInv[invocObjName].source.toString() === invocObj.source.toString()) return; // the exact same thing is being added again, so skip it
 		suffix += 1;
 		useName += invocName + " [" + suffix + "]";
 	};
