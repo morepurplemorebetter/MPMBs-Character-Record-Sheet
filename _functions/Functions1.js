@@ -4857,13 +4857,13 @@ function ParseFeat(Inputtxt) {
 	var temp = "";
 	for (var key in FeatsList) {
 		if (testSource(key, FeatsList[key], "featsExcl")) continue; // test if the feat or its source isn't excluded
-		if (tempFound < key.length && Inputtxt.toLowerCase().indexOf(key) !== -1) {
+		if (tempFound < key.length && Inputtxt.toLowerCase().indexOf(FeatsList[key].name.toLowerCase()) !== -1) {
 			temp = key;
 			tempFound = key.length;
 		}
 	}
 	return temp;
-}
+};
 
 //check all Feat fields and parse the once known into the global variable, as well as any proficiencies and tooltiptexts that need to go into global variables
 function FindFeats(ArrayNmbr) {
@@ -5028,6 +5028,8 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			if (theFeat.vision) processVision(false, theFeat.name, theFeat.vision);
 			if (theFeat.addMod) processMods(false, theFeat.name, theFeat.addMod);
 
+			if (theFeat.recovery && (theFeat.usages || theFeat.usagescalc)) RemoveFeature(theFeat.name, theFeat.usages ? theFeat.usages : 0);
+
 			// lastly do the eval for removal
 			if (theFeat.removeeval) {
 				var TheRemoveEval = What("Unit System") === "metric" && theFeat.removeeval.indexOf("String") !== -1 ? ConvertToMetric(theFeat.removeeval, 0.5) : theFeat.removeeval;
@@ -5133,6 +5135,8 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			if (theFeat.languageProfs) processLanguages(true, theFeat.name, theFeat.languageProfs);
 			if (theFeat.vision) processVision(true, theFeat.name, theFeat.vision);
 			if (theFeat.addMod) processMods(true, theFeat.name, theFeat.addMod);
+			
+			if (theFeat.recovery && (theFeat.usages || theFeat.usagescalc)) AddFeature(theFeat.name, theFeat.usages ? theFeat.usages : 0, theFeat.additional ? " (" + theFeat.additional + ")" : "", theFeat.recovery, "the " + theFeat.name + " feat", theFeat.UpdateOrReplace, theFeat.usagescalc);
 		};
 	};
 	if (setSpellVars) SetStringifieds("spells"); //set the global variables to their fields for future reference

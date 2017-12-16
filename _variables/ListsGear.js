@@ -19,9 +19,9 @@ var Base_ArmourList = {
 		strReq : 0
 	},
 	"natural armor" : {
-		regExpSearch : /^(?=.*natural)(?=.*armor).*$/i,
+		regExpSearch : /^((?=.*natural)(?=.*armor)|(?=.*\bdragon\b)(?=.*hide)).*$/i,
 		name : "Natural Armor",
-		source : ["V", 112],
+		source : [["V", 112], ["X", 74]],
 		type : "",
 		ac : 13,
 		stealthdis : false,

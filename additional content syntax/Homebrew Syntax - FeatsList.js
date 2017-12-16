@@ -11,7 +11,7 @@
 /*	-INFORMATION-
 	Subject:	Feat
 	Effect:		This is the syntax for adding a new feat
-	Sheet:		v12.999 (2017-11-29)
+	Sheet:		v12.999 (2017-12-16)
 */
 
 var iFileName = "Homebrew Syntax - FeatsList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -132,6 +132,8 @@ FeatsList["extra ability"] = { //Object name; note the use of only lower case! T
 		
 		allModes : "+10" // the 'allModes' attribute can only consist of a modifier. This modifier is applied to all speed modes, both normal and encumbered. It is only applied if the speed mode exists, it won't give the character a borrow speed if it would otherwise have none, for example
 	},
+	
+	usages : 1, //optional; number of times it can be used. This can be only be one value, the feat doesn't support having an array for different things per level. It is recommended to use a numerical value, but you can use a string
+	
+	recovery : "short rest", //required if "usages" is defined; way of getting the limited feature recharged. Only if you define both the 'usages' and 'recovery' will the feature be added to the limited features
 };
-
-UpdateDropdown("feat"); //Optional; This updates all feat dropdown fields

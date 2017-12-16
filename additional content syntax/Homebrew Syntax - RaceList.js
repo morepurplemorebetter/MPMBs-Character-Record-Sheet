@@ -13,7 +13,7 @@
 	Effect:		This is the syntax for adding a new race to the sheet
 				Note that you will need to define the race once for every sub-race (i.e. there is a separate entry for High Elf, Wood Elf, and Dark Elf)
 				For races that have variants, like the human, you can define a variant using the RaceSubList. Any variant defined like that will only be selectable through the "Racial Options" button
-	Sheet:		v12.999 (2017-11-29)
+	Sheet:		v12.999 (2017-12-16)
 */
 
 var iFileName = "Homebrew Syntax - RaceList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -192,5 +192,3 @@ RaceList["something catlike"] = { //Object name; Note the use of only lower case
 	}
 	
 };
-
-UpdateDropdown("race"); //Optional; This updates all race dropdown fields (both on first page and companion pages)

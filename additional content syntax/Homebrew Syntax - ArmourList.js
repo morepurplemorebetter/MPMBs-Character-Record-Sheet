@@ -11,7 +11,7 @@
 /*	-INFORMATION-
 	Subject:	Armour
 	Effect:		This is the syntax for adding a new type of armour
-	Sheet:		v12.999 (2017-11-29)
+	Sheet:		v12.999 (2017-12-16)
 */
 
 var iFileName = "Homebrew Syntax - ArmourList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -41,4 +41,3 @@ ArmourList["protectme"] = { //Object name; Note the use of only lower case! Also
 	
 	addMod : true, //Optional; set to true if the armor also allows for the addition of a secondary ability modifier (so in addition to dex), as is the case with the monk's unarmed defense
 };
-UpdateDropdown("armor"); //Optional; This updates the armor dropdown field

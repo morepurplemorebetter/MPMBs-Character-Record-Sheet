@@ -465,6 +465,45 @@ var Base_CreatureList = {
 		]
 	},
 	// Special familiars (find familiar, pact of the chain, DM's rulings)
+	"homunculus" : { // Contains contributions by SoilentBrad
+		name : "Homunculus",
+		source : [["SRD", 322], ["M", 188]],
+		size : 5,
+		type : "Construct",
+		subtype : "",
+		alignment : "Neutral",
+		ac : 13,
+		hp : 5,
+		hd : [2, 4],
+		speed : "20 ft, fly 40 ft",
+		scores : [4, 15, 11, 10, 10, 7],
+		saves : ["", "", "", "", "", ""],
+		damage_immunities : "poison",
+		condition_immunities : "charmed, poisoned",
+		senses : "Darkvision 60 ft",
+		passivePerception : 10,
+		languages : "understands the languages of its creator but can't speak",
+		challengeRating : "0",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		attacks : [{
+				name : "Bite",
+				ability : 2,
+				damage : [1, "", "piercing"],
+				range : "Melee (5 ft)",
+				description : "DC 10 Con save or poisoned for 1 min; Fail by 5 or more: poisoned and unconscious for 1d10 min",
+				tooltip : "A target of the homunculus' bite attack must succeed on a DC 10 Constitution saving throw or be poisoned for 1 minute. If the saving throw fails by 5 or more, the target is instead poisoned for 5 (1d10) minutes and unconscious while poisoned in this way."
+			}
+		],
+		features : [{
+				name : "Telepathic Bond",
+				description : "While the homunculus is on the same plane of existence as its master, it can magically convey what it senses to its master, and the two can communicate telepathically."
+			}, {
+				name : "Bite",
+				description : "A target of the homunculus' bite attack must succeed on a DC 10 Constitution saving throw or be poisoned for 1 minute. If the saving throw fails by 5 or more, the target is instead poisoned for 5 (1d10) minutes and unconscious while poisoned in this way."
+			}
+		]
+	},
 	"imp" : {
 		name : "Imp",
 		source : [["SRD", 277], ["M", 76]],
@@ -912,8 +951,8 @@ var Base_CreatureList = {
 				damage : [2, 6, "necrotic"],
 				range : "Melee (5 ft)",
 				description : "Reduces Str by 1d4 till target's next short rest; If Str goes to 0, the target dies and forms a new shadow",
-				tooltip : "A target of the shadows's strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later."
-			},
+				tooltip : "A target of the shadows' strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later."
+			}
 		],
 		traits : [{
 				name : "Amorphous",
@@ -924,6 +963,9 @@ var Base_CreatureList = {
 			}, {
 				name : "Sunlight Weakness",
 				description : "While in sunlight, the shadow has disadvantage on attack rolls, ability checks, and saving throws."
+			}, {
+				name : "Strength Drain",
+				description : "A target of the shadows' strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later."
 			}
 		],
 	},
@@ -992,6 +1034,50 @@ var Base_CreatureList = {
 				damage : [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : ""
+			}
+		]
+	},
+	"specter" : {
+		name : "Specter",
+		source : [["SRD", 346], ["M", 279]],
+		size : 3, //Medium
+		type : "Undead",
+		subtype : "",
+		alignment : "Chaotic Evil",
+		ac : 12,
+		hp : 22,
+		hd : [5, 8], //[#, die]
+		speed : "fly 50 ft (hover)",
+		scores : [1, 14, 11, 10, 10, 12], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		damage_resistances : "acid; cold; fire; lightning; thunder; bludgeoning, piercing, and slashing from nonmagical weapons",
+		damage_immunities : "necrotic, poison",
+		condition_immunities : "charmed, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious",
+		senses : "Darkvision 60 ft",
+		passivePerception : 10,
+		languages : "all languages it knew in life, but can't speak",
+		challengeRating : "1",
+		proficiencyBonus : 2,
+		attacksAction : 2,
+		attacks : [{
+				name : "Life Drain",
+				ability : 2,
+				damage : [3, 6, "necrotic"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "DC 10 Con save or HP max reduced by same as damage taken until a long rest",
+				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				tooltip : "A target of the specter's life drain must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0."
+			}
+		],
+		traits : [{
+				name : "Incorporeal Movement",
+				description : "The specter can move through other creatures and objects as if they were difficult terrain. It takes 5 (1d10) force damage if it ends its turn inside an object."
+			}, {
+				name : "Sunlight Sensitivity",
+				description : "While in sunlight, the specter has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight. "
+			}, {
+				name : "Life Drain",
+				description : "A target of the specter's life drain must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0."
 			}
 		]
 	},

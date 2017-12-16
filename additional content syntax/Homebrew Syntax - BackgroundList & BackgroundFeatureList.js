@@ -11,7 +11,7 @@
 /*	-INFORMATION-
 	Subject:	Background and Background Feature
 	Effect:		This is the syntax for adding a new background and the syntax for adding a new background feature below it
-	Sheet:		v12.999 (2017-11-29)
+	Sheet:		v12.999 (2017-12-16)
 */
 
 var iFileName = "Homebrew Syntax - BackgroundList & BackgroundFeatureList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -116,12 +116,8 @@ BackgroundList["where i am from"] = { //Object name; Note the use of only lower 
 	lifestyle : "comfortable", //optional; sets the lifestyle of the sheet. Options are: "wretched", "squalid", "poor", "modest", "comfortable", "wealthy", or "aristocratic"
 };
 
-UpdateDropdown("background"); //Optional; This updates the background dropdown field
-
 BackgroundFeatureList["exceptional quality"] = {  //Note the use of only lower case!
 	description : "My accent, mannerisms, figures of speech all mark me as foreign. Curious glances are directed my way wherever I go. A nuisance, but I also gain the friendly interest of the curious. I can parley this attention into access I might not otherwise have, for me and my companions. Nobles, scholars, merchants, and guilds, might be among the interested.", //required; the description of the feature as it will be put on the sheet. Make sure that this fits into the field or it won't look so pretty.
 	
 	source : ["S", 149], //required; the source and the page number of the feature
 };
-
-UpdateDropdown("backgroundfeature"); //Optional; This updates the background feature dropdown field

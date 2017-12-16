@@ -11,7 +11,7 @@
 /*	-INFORMATION-
 	Subject:	Creature
 	Effect:		This is the syntax for adding a creature that can be used on the Companion and Wild Shape pages
-	Sheet:		v12.999 (2017-11-29)
+	Sheet:		v12.999 (2017-12-16)
 */
 
 var iFileName = "Homebrew Syntax - CreatureList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -99,5 +99,3 @@ CreatureList["big cat"] = { //Object name; Note the use of only lower case! Also
 
 	wildshapeString : "Darkvision 60 ft| Knows Auran| Resistant to: lightning, thunder, and bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious| Air Form: can move through 1 inch wide space without squeezing and can move through and stop in space of hostiles| Whirlwind: see Monster Manual page 124", // Optional; a string to put in the Wild Shape Traits & Features field. If you define this, no trait or action will be added to the Wild Shape Traits & Features field. This is here so you can make all the traits and features fit into the limited space on the Wild Shape page //This line can be deleted if you don't have anything to put here
 };
-
-UpdateDropdown("creature"); //Optional; This updates all dropdown fields that have lists of creatures

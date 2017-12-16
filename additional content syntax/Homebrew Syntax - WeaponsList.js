@@ -11,7 +11,7 @@
 /*	-INFORMATION-
 	Subject:	Weapon / Attack
 	Effect:		This is the syntax for adding a new type of weapon, cantrip, or anything else you want to add to the attack section's automation
-	Sheet:		v12.999 (2017-11-29)
+	Sheet:		v12.999 (2017-12-16)
 */
 
 var iFileName = "Homebrew Syntax - WeaponsList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -50,6 +50,4 @@ WeaponsList["leattack"] = { //Object name; Note the use of only lower case! Also
 	modifiers : [1, ""], // Optional; bonuses to: [to hit, to damage]; "" means ignore. These values are added to the corresponding Modifier/Blue-Text fields. // You can also enter the three-letter abbreviation of an ability score (Str, Dex, Con, Int, Wis, or Cha), to have that ability's modifier added to it.
 	
 	SpellsList : "eldritch blast", // Optional; if the attack you are making is a spell/cantrip that is listed in the SpellsList variable under another name that you are using for this weapon (in this example it would be "leattack"), write the name used in the SpellsList variable here
-}
-
-UpdateDropdown("weapon"); // Optional; This updates all attack dropdown fields with weapons that have a 'list' attribute
+};
