@@ -1526,15 +1526,18 @@ function MakeCompMenu() {
 		}
 	};
 
-	var CompMenu = [], familiars = [], chainPact = [], mounts = [], companions = [], companionRR = [], mechanicalServs = [];
+	var CompMenu = [], familiars = [], chainPact = [], mounts = [], steeds = [], companions = [], companionRR = [], mechanicalServs = [];
 	var change = [
 		["Into a familiar (Find Familiar spell)", "familiar"],
 		["Into a Pact of the Chain familiar", "pact_of_the_chain"],
-		["Into a mount (Find Steed spell)", "mount"],
+		["Into a mount (Find Steed spell)", "mount"]
+	].concat(!SpellsList["find greater steed"] ? [] : [
+		["Into a greater mount (Find Greater Steed spell)", "steed"]
+	]).concat([
 		["Into a Ranger's Companion", usingRevisedRanger ? "companionrr" : "companion"],
 		["-", "-"],
 		["Reset to normal", "reset"]
-	];
+	]);
 	
 	var visOptions = [
 		["Show box for Companion's Appearance", "comp.img"],
@@ -1559,6 +1562,9 @@ function MakeCompMenu() {
 			case "mount" :
 				mounts.push([theCrea.name, aCrea]);
 				break;
+			case "steed" :
+				steeds.push([theCrea.name, aCrea]);
+				break;
 			case "companion" :
 				companionRR.push([theCrea.name, aCrea]);
 				break;
@@ -1567,6 +1573,7 @@ function MakeCompMenu() {
 	familiars.sort();
 	chainPact.sort();
 	mounts.sort();
+	steeds.sort();
 	companions.sort();
 	companionRR.sort();
 	mechanicalServs.sort();
@@ -1578,6 +1585,7 @@ function MakeCompMenu() {
 		familiars.unshift(reminder);
 		chainPact.unshift(reminder);
 		mounts.unshift(reminder);
+		steeds.unshift(reminder);
 		companions.unshift(reminder);
 		companionRR.unshift(reminder);
 		mechanicalServs.unshift(reminder);
@@ -1586,9 +1594,10 @@ function MakeCompMenu() {
 	menuLVL2(CompMenu, ["Create familiar (Find Familiar spell)", "familiar"], familiars);
 	menuLVL2(CompMenu, ["Create familiar (Pact of the Chain)", "pact_of_the_chain"], chainPact);
 	menuLVL2(CompMenu, ["Create mount (Find Steed spell)", "mount"], mounts);
+	if (SpellsList["find greater steed"]) menuLVL2(CompMenu, ["Create greater mount (Find Greater Steed spell)", "steed"], mounts);
 	menuLVL2(CompMenu, ["Create Ranger's Companion", usingRevisedRanger ? "companionrr" : "companion"], usingRevisedRanger ? companionRR : companions);
 	
-	if (CurrentSources.globalExcl.indexOf("UA:A") === -1) { // if the artificer source is not excluded
+	if (CurrentSources["UA:A"] && CurrentSources.globalExcl.indexOf("UA:A") === -1) { // if the artificer source is not excluded
 		menuLVL2(CompMenu, ["Create Mechanical Servant", "mechanicalserv"], mechanicalServs);
 		change.splice(4, 0, ["Into a Mechanical Servant", "mechanicalserv"]);
 	};
@@ -1663,12 +1672,15 @@ function changeCompType(inputType, prefix) {
 			var charFld = What("Language " + i);
 			if (charFld && (!creaLangs || creaLangs.toLowerCase().indexOf(charFld.toLowerCase()) === -1)) {
 				charLanguages.push(charFld);
-			} 
+			};
+		};
+		if ((/mount|steed/i).test(inputType)) {
+			charLanguages = AskUserOptions("Character's language the steed knows", "Find Greater Steed companion", charLanguages, "radio");
 		};
 		var charLangs = charLanguages.length === 0 ? "" : (creaLangs ? "; and understands, but doesn't speak," : "\u25C6 Languages: Understands, but doesn't speak,");
 		for (var i = 0; i < charLanguages.length; i++) {
 			charLangs += i !== 0 && charLanguages.length > 2 ? ", " : " ";
-			charLangs += i !== 0 && i === charLanguages.length - 1 ? (inputType === "mount" ? "or " : "and ") : "";
+			charLangs += i !== 0 && i === charLanguages.length - 1 ? "and " : "";
 			charLangs += charLanguages[i];
 		};
 		if (creaLangs && charLangs) {
@@ -1690,6 +1702,8 @@ function changeCompType(inputType, prefix) {
 		break;
 	 case "mount" :
 		Value(prefix + "Comp.Type", "Mount");
+	 case "steed" :
+		if (inputType === "steed") Value(prefix + "Comp.Type", "Steed");
 		
 		//add the new language options to the mount's features
 		addCharLangArr();
@@ -1748,18 +1762,18 @@ function changeCompType(inputType, prefix) {
 		return; //don't do the rest of this function if inputType doesn't match one of the above
 	}
 	
-	if ((/familiar|pact_of_the_chain|mount/).test(inputType) && CurrentCompRace[prefix].type === "Beast") changeCompDialog(prefix); //change the type if just a beast
+	if ((/familiar|pact_of_the_chain|mount|steed/).test(inputType) && CurrentCompRace[prefix].type === "Beast") changeCompDialog(prefix); //change the type if just a beast
 	
 	//add a string in the creature's feature section
 	AddString(prefix + "Comp.Use.Features", compString[inputType].featurestring, true);
 	
-	//make the string for the Find Steed spell explanation
+	//make the string for the spell/ability explanation
 	AddString(prefix + "Cnote.Left", compString[inputType].string, true);
 	
 	//add any actions this spell/companion gives the character
 	for (var i = 0; i < compString[inputType].actions.length; i++) {
 		AddAction(compString[inputType].actions[i][0], compString[inputType].actions[i][1], compString[inputType].actionTooltip);
-	}
+	};
 	
 	//add level-dependent things if this is a ranger's companion
 	if (inputType === "companion") {
@@ -6686,40 +6700,50 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods) {
 	return notRound ? tValue : Math.round(tValue);
 };
 
-// open a dialogue with a number of lines of choices and return the choices in an array
+// open a dialogue with a number of lines of choices and return the choices in an array; if knownOpt === "radio", show radio buttons instead, and return the entry selected
 function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 	if (!IsNotImport) return optSubj;
 	//first make the entry lines
 	var selectionLines = [];
 	for (var i = 0; i < optSubj.length; i++) {
-		selectionLines.push({
-			type : "view",
-			alignment : "align_fill",
-			align_children : "align_row",
-			elements : [{
-				type : "static_text",
-				alignment : "align_left",
-				item_id : "st" + ("0" + i).slice(-2),
-				font : "dialog",
-				name : "Already known!"
-			}, {
-				type : "edit_text",
-				alignment : "align_right",
+		if (knownOpt === "radio") {
+			selectionLines.push({
+				type : "radio",
 				item_id : "sl" + ("0" + i).slice(-2),
-				char_width : 30,
-				height : 20
-			}]
-		});
+				group_id : "slct",
+				name : optSubj[i]
+			});
+		} else {
+			selectionLines.push({
+				type : "view",
+				alignment : "align_fill",
+				align_children : "align_row",
+				elements : [{
+					type : "static_text",
+					alignment : "align_left",
+					item_id : "st" + ("0" + i).slice(-2),
+					font : "dialog",
+					name : "Already known!"
+				}, {
+					type : "edit_text",
+					alignment : "align_right",
+					item_id : "sl" + ("0" + i).slice(-2),
+					char_width : 30,
+					height : 20
+				}]
+			});
+		};
 	};
 	
 	//make all the known options lowercase for easier testing
-	if (knownOpt) { for (var i = 0; i < knownOpt.length; i++) { knownOpt[i] = knownOpt[i].toLowerCase(); }; };
+	if (knownOpt && knownOpt !== "radio") { for (var i = 0; i < knownOpt.length; i++) { knownOpt[i] = knownOpt[i].toLowerCase(); }; };
 	
 	var theDialog = {
 		choices : [],
 		already : knownOpt,
 		subj : optSubj, //array of default choices
 		initialize : function (dialog) {
+			if (this.already === "radio") return;
 			var toLoad = {};
 			var toShow = {};
 			for (var i = 0; i < this.subj.length; i++) {
@@ -6736,11 +6760,18 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 			this.choices = [];
 			for (var i = 0; i < this.subj.length; i++) {
 				var theResult = oResult["sl" + ("0" + i).slice(-2)];
-				this.choices.push(theResult ? theResult : this.subj[i]);
+				if (this.already === "radio") {
+					if (theResult) {
+						this.choices = this.subj[i];
+						return;
+					};
+				} else {
+					this.choices.push(theResult ? theResult : this.subj[i]);
+				};
 			};
 		},
 		check : function (dialog, nmbr) {
-			if (!this.already) return;
+			if (!this.already || this.already === "radio") return;
 			var toChk = "sl" + ("0" + nmbr).slice(-2);
 			var tTxt = "st" + ("0" + nmbr).slice(-2);
 			var tResult = dialog.store()[toChk].toLowerCase();
@@ -6771,40 +6802,41 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 						alignment : "align_left",
 						align_children : "align_left",
 						elements : [{
-								type : "static_text",
-								alignment : "align_left",
-								font : "dialog",
-								item_id : "txt0",
-								name : "Regarding:"
-							}, {
-								type : "static_text",
-								alignment : "align_left",
-								font : "dialog",
-								item_id : "txt2",
-								name : "Gained from:"
-							}]
+							type : "static_text",
+							alignment : "align_left",
+							font : "dialog",
+							item_id : "txt0",
+							name : "Regarding:"
+						}, {
+							type : "static_text",
+							alignment : "align_left",
+							font : "dialog",
+							item_id : "txt2",
+							name : "Gained from:"
+						}]
 					}, {
 						type : "view",
 						alignment : "align_right",
 						align_children : "align_left",
 						elements : [{
-								type : "static_text",
-								alignment : "align_left",
-								item_id : "txt1",
-								font : "dialog",
-								bold : true,
-								name : optType
-							}, {
-								type : "static_text",
-								alignment : "align_left",
-								item_id : "txt3",
-								font : "dialog",
-								bold : true,
-								name : optSrc
-							}]
+							type : "static_text",
+							alignment : "align_left",
+							item_id : "txt1",
+							font : "dialog",
+							bold : true,
+							name : optType
+						}, {
+							type : "static_text",
+							alignment : "align_left",
+							item_id : "txt3",
+							font : "dialog",
+							bold : true,
+							name : optSrc
+						}]
 					}]
 				}, {
 					type : "view",
+					alignment : "align_center",
 					align_children : "align_left",
 					elements : selectionLines
 				}, {
@@ -6820,9 +6852,9 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 			}]
 		}
 	};
-	for (var i = 0; i < optSubj.length; i++) {
+	if (knownOpt !== "radio") { for (var i = 0; i < optSubj.length; i++) {
 		theDialog["sl" + ("0" + i).slice(-2)] = Function("dialog", "this.check(dialog, " + i + ");");
-	};
+	}; };
 	app.execDialog(theDialog)
 	return theDialog.choices;
 };

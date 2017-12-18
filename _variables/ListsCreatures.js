@@ -313,6 +313,7 @@ var Base_CreatureList = {
 		size : 2, //Large
 		type : "Monstrosity",
 		subtype : "",
+		companion : "steed",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 59,
@@ -439,6 +440,7 @@ var Base_CreatureList = {
 		size : 2, //Large
 		type : "Celestial",
 		subtype : "",
+		companion : "steed",
 		alignment : "Chaotic Good",
 		ac : 12,
 		hp : 59,
@@ -1262,7 +1264,7 @@ var Base_CreatureList = {
 		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
-		attacksAction : 2,
+		attacksAction : 1,
 		attacks : [{
 				name : "Beak",
 				ability : 1,
@@ -1877,6 +1879,7 @@ var Base_CreatureList = {
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
+		companion : "steed",
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 37,
@@ -4077,6 +4080,7 @@ var Base_CreatureList = {
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
+		companion : "steed",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 45,
@@ -4138,6 +4142,7 @@ var Base_CreatureList = {
 		size : 2, //Large
 		type : "Beast",
 		subtype : "",
+		companion : "steed",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 52,

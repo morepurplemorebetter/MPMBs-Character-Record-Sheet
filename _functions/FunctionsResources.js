@@ -1174,7 +1174,7 @@ function testSource(key, obj, CSatt, concise) {
 	if (!obj.source) return false;
 	var theRe = false;
 	var tSrc = parseSource(obj.source);
-	if (tSrc) {
+	if (tSrc && tSrc.length > 0) {
 		var srcExcluded = function(srcObj) {
 			return !SourceList[srcObj[0]] || CurrentSources.globalExcl.indexOf(srcObj[0]) !== -1;
 		};
@@ -1195,11 +1195,11 @@ function parseSource(srcObj) {
 		if (SourceList[srcObj[0]]) theRe = [srcObj];
 	} else {
 		theRe = [];
-		theSRD = [];
-		areExcl = [];
+		var theSRD = [];
+		var areExcl = [];
 		for (var i = 0; i < srcObj.length; i++) {
 			if (srcObj[i][0] && SourceList[srcObj[i][0]]) {
-				theAdd = [srcObj[i][0], srcObj[i][1] ? srcObj[i][1] : 0];
+				var theAdd = [srcObj[i][0], srcObj[i][1] ? srcObj[i][1] : 0];
 				if (srcObj[i][0] === "SRD") {
 					theSRD.push(theAdd);
 				} else {
@@ -1210,7 +1210,7 @@ function parseSource(srcObj) {
 		};
  		if (theSRD.length > 0 && areExcl.length === theRe.length) {
 			theRe = theSRD;
-		} else {
+		} else if (theSRD.length > 0) {
 			theRe.push(theSRD[0]);
 		};
 	};

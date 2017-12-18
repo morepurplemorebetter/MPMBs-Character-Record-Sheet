@@ -5363,7 +5363,7 @@ function ShowSpellPointInfo() {
 }
 
 // a way to test is a certain spell is set as known/on a list in the CurrentCasters variable, returning an array of CurrentCaster object names in which it exists
-function isSpellUsed(spll) {
+function isSpellUsed(spll, returnBoolean) {
 	var rtrnA = [];
 	if (SpellsList[spll]) {
 		for (var aClass in CurrentSpells) {
@@ -5383,7 +5383,7 @@ function isSpellUsed(spll) {
 			}
 		}
 	};
-	return rtrnA;
+	return returnBoolean ? rtrnA.length > 0 : rtrnA;
 };
 
 function amendPsionicsToSpellsList() {

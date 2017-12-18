@@ -1585,6 +1585,24 @@ var compString = {
 		actions : [["action", "Find Steed (dismiss)"]],
 		actionTooltip : "the Find Steed spell"
 	},
+	steed : {
+		featurestring : "\u25C6 Find Greater Steed: If dropped to 0 HP, the steed disappears, leaving behind no physical form",
+		string : "Find Greater Steed (4th-level conjuration spell, XGtE 156):" +
+				"\n\u2022 " + "Summon a spirit in the form of a steed, appearing in an unoccupied space within 30 ft" +
+				"\n   " + "It has the chosen form: griffon, pegasus, peryton, dire wolf, rhinoceros, or saber-toothed tiger" +
+				"\n   " + "The steed has the statistics of the chosen form, though its type is celestial, fey, or fiend" +
+				"\n   " + "If it has an Intelligence of 5 or less, its Intelligence becomes 6 " +
+				"\n   " + "It gains the ability to understand one language that I, the caster, can speak" +
+				"\n   " + "When the steed drops to 0 hit points, it disappears, leaving behind no physical form" +
+				"\n\u2022 " + "The steed serves me as a mount. I have a bond with it that allows us to fight as a seamless unit" +
+				"\n\u2022 " + "While mounted on my steed, I can make any spell I cast that targets only me also target it" +
+				"\n\u2022 " + "While my steed is within 1 mile of me, I can communicate with it telepathically" +
+				"\n\u2022 " + "I can dismiss my steed at any time as an action, causing it to disappear" +
+				"\n\u2022 " + "Casting this spell again summons the same steed, restored to its hit point maximum" +
+				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond",
+		actions : [["action", "Find Greater Steed (dismiss)"]],
+		actionTooltip : "the Find Greater Steed spell"
+	},
 	familiar : {
 		featurestring : "\u25C6 Find Familiar: If dropped to 0 HP, the familiar disappears, leaving behind no physical form. The familiar must obey all commands of the master",
 		string : "Find Familiar (1st-level conjuration [ritual] spell, PHB 240):" +

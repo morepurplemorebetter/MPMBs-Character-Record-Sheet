@@ -2300,7 +2300,7 @@ function AddWarlockInvocation(invocName, invocObj) {
 		useName += invocName + " [" + suffix + "]";
 	};
 	warInv.extrachoices.push(useName);
-	warInv[useName] = invocObj;
+	warInv[useName.toLowerCase()] = invocObj;
 };
 
 // a way to add fighting styles to multiple classes; fsName is how it will appear in the menu
