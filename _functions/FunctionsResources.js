@@ -345,6 +345,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			CurrentSources.globalExcl = [];
 			for (var src in SourceList) {
 				var srcName = SourceList[src].name.replace(RegExp(SourceList[src].group + " ?:? ?", "i"), "") + " (" + SourceList[src].abbreviation + ")";
+				if (SourceList[src].group === "Unearthed Arcana" && SourceList[src].date) srcName = SourceList[src].date + " " + srcName;
 				if (exclArr.indexOf(srcName) !== -1) CurrentSources.globalExcl.push(src);
 			};
 		},

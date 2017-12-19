@@ -2290,12 +2290,10 @@ function AddBackgroundVariant(background, variantName, variantObj) {
 // a way to add a warlock invocation without conflicts; invocName is how it will appear in the menu
 function AddWarlockInvocation(invocName, invocObj) {
 	var warInv = ClassList.warlock.features["eldritch invocations"];
-	if (!warInv) return;
-	var invocObjName = invocName.toLowerCase();
+	if (!warInv || (warInv.extrachoices.indexOf(invocName) !== -1 && warInv[invocName.toLowerCase()].source && invocObj.source && warInv[invocName.toLowerCase()].source.toSource() === invocObj.source.toSource())) return; // the exact same thing is being added again, so skip it
 	var useName = invocName;
 	var suffix = 1;
-	while (warInv.extrachoices.indexOf(invocName) !== -1) {
-		if (warInv[invocObjName].source && invocObj.source && warInv[invocObjName].source.toString() === invocObj.source.toString()) return; // the exact same thing is being added again, so skip it
+	while (warInv.extrachoices.indexOf(useName) !== -1) {
 		suffix += 1;
 		useName += invocName + " [" + suffix + "]";
 	};
