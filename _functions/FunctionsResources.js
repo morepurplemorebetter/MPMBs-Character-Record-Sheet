@@ -326,7 +326,9 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			//run through the sourcelist and get the name of the source
 			var theSrc = false;
 			for (var src in SourceList) {
-				if (sourceNm === (SourceList[src].name.replace(RegExp(SourceList[src].group + " ?:? ?", "i"), "") + " (" + SourceList[src].abbreviation + ")")) {
+				var srcName = SourceList[src].name.replace(RegExp(SourceList[src].group + " ?:? ?", "i"), "") + " (" + SourceList[src].abbreviation + ")";
+				if (SourceList[src].group === "Unearthed Arcana" && SourceList[src].date) srcName = SourceList[src].date + " " + srcName;
+				if (sourceNm === srcName) {
 					theSrc = src;
 					break;
 				};

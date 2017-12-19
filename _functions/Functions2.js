@@ -5064,7 +5064,7 @@ function contactMPMB(medium) {
 		app.launchURL(LinksLatest.character[typePF ? "PF" : "CF"], true);
 		break;
 	 case "subreddit" :
-		app.launchURL("https://www.reddit.com/r/mpmb", true);
+		app.launchURL("http://flapkan.com/mpmb/fanforum", true);
 		break;
 	};
 };
