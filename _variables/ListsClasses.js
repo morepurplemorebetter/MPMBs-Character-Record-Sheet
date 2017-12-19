@@ -86,7 +86,8 @@ var Base_ClassList = {
 				name : "Unarmored Defense",
 				source : [["SRD", 8], ["P", 48]],
 				minlevel : 1,
-				description : "\n   " + "Without armor, my AC is 10 + Dexterity modifier + Constitution modifier + shield"
+				description : "\n   " + "Without armor, my AC is 10 + Dexterity modifier + Constitution modifier + shield",
+				addarmor : "Unarmored Defense (Con)"
 			},
 			"reckless attack" : {
 				name : "Reckless Attack",
@@ -543,7 +544,8 @@ var Base_ClassList = {
 				name : "Unarmored Defense",
 				source : [["SRD", 26], ["P", 48]],
 				minlevel : 1,
-				description : "\n   " + "Without armor and no shield, my AC is 10 + Dexterity modifier + Wisdom modifier"
+				description : "\n   " + "Without armor and no shield, my AC is 10 + Dexterity modifier + Wisdom modifier",
+				addarmor : "Unarmored Defense (Wis)"
 			},
 			"martial arts" : {
 				name : "Martial Arts",
@@ -2375,7 +2377,8 @@ var Base_ClassSubList = {
 				description : "\n   " + "When I am not wearing armor, my AC is 13 + Dexterity modifier" + "\n   " + "My hit point maximum increases by an amount equal to my sorcerer level",
 				calcChanges : {
 					hp : "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += '\\n + ' + classes.known.sorcerer.level + ' from Draconic Resilience (Sorcerer)'; }; "
-				}
+				},
+				addarmor : "Draconic Resilience"
 			},
 			"subclassfeature6" : {
 				name : "Elemental Affinity",

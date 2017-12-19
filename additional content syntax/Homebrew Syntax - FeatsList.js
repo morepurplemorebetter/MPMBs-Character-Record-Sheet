@@ -11,7 +11,7 @@
 /*	-INFORMATION-
 	Subject:	Feat
 	Effect:		This is the syntax for adding a new feat
-	Sheet:		v12.999 (2017-12-16)
+	Sheet:		v12.999 (2017-12-19)
 */
 
 var iFileName = "Homebrew Syntax - FeatsList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -128,7 +128,7 @@ FeatsList["extra ability"] = { //Object name; note the use of only lower case! T
 		
 		fly : { spd : "walk", enc : 0 }, // instead of a number/modifier, you can also set the attribute to "walk". This makes the speed mode assume the walking speed // Using an underscore as the first character means the value is only added if the value would be non-zero
 		
-		swim : { spd : "fixed60", enc : "fixed60" }, // if you include the word "fixed" together with a number, the movement mode will be that number, without any modifiers from other sources (like the Monk's speed bonus). However, if another entry that isn't 'fixed' does end up with a higher total while including any modifiers, that speed is used instead
+		swim : { spd : "fixed 60", enc : "fixed 60" }, // if you include the word "fixed" together with a number, the movement mode will be that number, without any modifiers from other sources (like the Monk's speed bonus). However, if another entry that isn't 'fixed' does end up with a higher total while including any modifiers, that speed is used instead
 		
 		allModes : "+10" // the 'allModes' attribute can only consist of a modifier. This modifier is applied to all speed modes, both normal and encumbered. It is only applied if the speed mode exists, it won't give the character a borrow speed if it would otherwise have none, for example
 	},
@@ -136,4 +136,6 @@ FeatsList["extra ability"] = { //Object name; note the use of only lower case! T
 	usages : 1, //optional; number of times it can be used. This can be only be one value, the feat doesn't support having an array for different things per level. It is recommended to use a numerical value, but you can use a string
 	
 	recovery : "short rest", //required if "usages" is defined; way of getting the limited feature recharged. Only if you define both the 'usages' and 'recovery' will the feature be added to the limited features
+	
+	addarmor : "Dragon Hide", //optional; a string of the name of the armour that is literally put in the Armor Description field when the feat is added, and removed when the feat is removed
 };

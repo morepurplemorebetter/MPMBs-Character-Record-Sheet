@@ -362,12 +362,13 @@ function ApplyCompRace(newRace) {
 		
 		thermoM(10/11); //increment the progress dialog's progress
 		
-		//add weapons
+		//add weapons and armor
 		if (CurrentCompRace[prefix].weapons) {
 			for (i = 0; i < CurrentCompRace[prefix].weapons.length; i++) {
 				AddWeapon(CurrentCompRace[prefix].weapons[i]);
 			}
 		};
+		if (CurrentCompRace[prefix].addarmor) AddArmor(CurrentCompRace[prefix].addarmor, true, prefix);
 		
 		thermoM("stop"); //stop the top progress dialog
 	} else if (CurrentCompRace[prefix].typeFound === "creature") {// do the following if a creature was found
@@ -1529,7 +1530,7 @@ function MakeCompMenu() {
 	var CompMenu = [], familiars = [], chainPact = [], mounts = [], steeds = [], companions = [], companionRR = [], mechanicalServs = [];
 	var change = [
 		["Into a familiar (Find Familiar spell)", "familiar"],
-		["Into a Pact of the Chain familiar", "pact_of_the_chain"],
+		["Into a Pact of the Chain familiar (Warlock feature)", "pact_of_the_chain"],
 		["Into a mount (Find Steed spell)", "mount"]
 	].concat(!SpellsList["find greater steed"] ? [] : [
 		["Into a greater mount (Find Greater Steed spell)", "steed"]
@@ -1580,7 +1581,7 @@ function MakeCompMenu() {
 	
 	var noSrd = CurrentSources.globalExcl.indexOf("SRD") !== -1;
 	var existMm = SourceList.M;
-	if ((existMm && CurrentSources.globalExcl.indexOf("M") && noSrd) || (!existMm && noSrd)) { // the monster manual has been excluded from the sources
+	if ((existMm && CurrentSources.globalExcl.indexOf("M") && noSrd) || (!existMm && noSrd)) { // the monster manual & SRD have been excluded from the sources
 		var reminder = ["Be aware: the SRD " + (existMm ? "and Monster Manual are" : "is") + " excluded from the sources!", "no-mm"];
 		familiars.unshift(reminder);
 		chainPact.unshift(reminder);
@@ -1592,14 +1593,17 @@ function MakeCompMenu() {
 	};
 	
 	menuLVL2(CompMenu, ["Create familiar (Find Familiar spell)", "familiar"], familiars);
-	menuLVL2(CompMenu, ["Create familiar (Pact of the Chain)", "pact_of_the_chain"], chainPact);
+	menuLVL2(CompMenu, ["Create familiar (Warlock Pact of the Chain)", "pact_of_the_chain"], chainPact);
 	menuLVL2(CompMenu, ["Create mount (Find Steed spell)", "mount"], mounts);
-	if (SpellsList["find greater steed"]) menuLVL2(CompMenu, ["Create greater mount (Find Greater Steed spell)", "steed"], mounts);
-	menuLVL2(CompMenu, ["Create Ranger's Companion", usingRevisedRanger ? "companionrr" : "companion"], usingRevisedRanger ? companionRR : companions);
-	
+	if (SpellsList["find greater steed"]) menuLVL2(CompMenu, ["Create greater mount (Find Greater Steed spell)", "steed"], steeds);
+	if (usingRevisedRanger) {
+		menuLVL2(CompMenu, ["Create Revised Ranger's Companion", "companionrr"], companionRR);
+	} else {
+		menuLVL2(CompMenu, ["Create Ranger's Companion", "companion"], companions);
+	};
 	if (CurrentSources["UA:A"] && CurrentSources.globalExcl.indexOf("UA:A") === -1) { // if the artificer source is not excluded
-		menuLVL2(CompMenu, ["Create Mechanical Servant", "mechanicalserv"], mechanicalServs);
-		change.splice(4, 0, ["Into a Mechanical Servant", "mechanicalserv"]);
+		menuLVL2(CompMenu, ["Create Artificer Mechanical Servant", "mechanicalserv"], mechanicalServs);
+		change.splice(4, 0, ["Into a Mechanical Servant (Artificer feature)", "mechanicalserv"]);
 	};
 	
 	CompMenu.push({cName : "-"}); //add a divider
@@ -1674,8 +1678,8 @@ function changeCompType(inputType, prefix) {
 				charLanguages.push(charFld);
 			};
 		};
-		if ((/mount|steed/i).test(inputType)) {
-			charLanguages = AskUserOptions("Character's language the steed knows", "Find Greater Steed companion", charLanguages, "radio");
+		if ((/mount|steed/i).test(inputType) && charLanguages.length > 1) {
+			charLanguages = [AskUserOptions("Character's language the steed knows", "Find Greater Steed companion", charLanguages, "radio")];
 		};
 		var charLangs = charLanguages.length === 0 ? "" : (creaLangs ? "; and understands, but doesn't speak," : "\u25C6 Languages: Understands, but doesn't speak,");
 		for (var i = 0; i < charLanguages.length; i++) {
@@ -1695,15 +1699,16 @@ function changeCompType(inputType, prefix) {
 		tDoc.resetForm([prefix + "Comp.Use.Attack"]); // familiars can't make attacks
 	 case "pact_of_the_chain" :
 		Value(prefix + "Comp.Type", "Familiar");
+		if (CurrentCompRace[prefix].type === "Beast") changeCompDialog(prefix); //change the type, but only if just a beast
 		break;
 	 case "companionrr" :
 	 case "companion" :
 		Value(prefix + "Comp.Type", "Companion");
 		break;
 	 case "mount" :
-		Value(prefix + "Comp.Type", "Mount");
 	 case "steed" :
-		if (inputType === "steed") Value(prefix + "Comp.Type", "Steed");
+		Value(prefix + "Comp.Type", "Mount");
+		changeCompDialog(prefix); // change the type
 		
 		//add the new language options to the mount's features
 		addCharLangArr();
@@ -1760,9 +1765,7 @@ function changeCompType(inputType, prefix) {
 		break;
 	 default : 
 		return; //don't do the rest of this function if inputType doesn't match one of the above
-	}
-	
-	if ((/familiar|pact_of_the_chain|mount|steed/).test(inputType) && CurrentCompRace[prefix].type === "Beast") changeCompDialog(prefix); //change the type if just a beast
+	};
 	
 	//add a string in the creature's feature section
 	AddString(prefix + "Comp.Use.Features", compString[inputType].featurestring, true);

@@ -1580,7 +1580,7 @@ var compString = {
 				"\n\u2022 " + "While mounted on my steed, I can make any spell I cast that targets only me also target it" +
 				"\n\u2022 " + "While my steed is within 1 mile of me, I can communicate with it telepathically" +
 				"\n\u2022 " + "I can dismiss my steed at any time as an action, causing it to disappear" +
-				"\n\u2022 " + "Casting this spell again summons the same steed, restored to its hit point maximum" +
+				"\n\u2022 " + "Casting this spell again summons the same steed, restored to its max HP, without conditions" +
 				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond",
 		actions : [["action", "Find Steed (dismiss)"]],
 		actionTooltip : "the Find Steed spell"
@@ -1598,7 +1598,7 @@ var compString = {
 				"\n\u2022 " + "While mounted on my steed, I can make any spell I cast that targets only me also target it" +
 				"\n\u2022 " + "While my steed is within 1 mile of me, I can communicate with it telepathically" +
 				"\n\u2022 " + "I can dismiss my steed at any time as an action, causing it to disappear" +
-				"\n\u2022 " + "Casting this spell again summons the same steed, restored to its hit point maximum" +
+				"\n\u2022 " + "Casting this spell again summons the same steed, restored to its max HP, without conditions" +
 				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond",
 		actions : [["action", "Find Greater Steed (dismiss)"]],
 		actionTooltip : "the Find Greater Steed spell"

@@ -1410,7 +1410,6 @@ function ApplyArmor(input) {
 function calcMaxDexToAC() {
 	var dexMod = What("Dex Mod");
 	if (dexMod === "") {
-		
 	} else if (CurrentArmour.dex !== "") {
 		dexMod = CurrentArmour.dex == -10 ? 0 : Math.min(dexMod, CurrentArmour.dex);
 	} else if (tDoc.getField("Heavy Armor").isBoxChecked(0)) {
@@ -1420,6 +1419,53 @@ function calcMaxDexToAC() {
 	};
 
 	return dexMod;
+};
+
+//a function to calculate the value of the Dex field in the Armour section (returns a value)
+function calcCompMaxDexToAC(prefix, armourKey) {
+	if (!prefix || !ArmourList[armourKey]) return 0;
+	var dexMod = Number(What(prefix + "Comp.Use.Ability.Dex.Mod"));
+	var theArmour = ArmourList[armourKey];
+	if (theArmour.dex) {
+		dexMod = theArmour.dex == -10 ? 0 : Math.min(dexMod, theArmour.dex);
+	} else if (theArmour.type === "heavy") {
+		dexMod = 0;
+	} else if (theArmour.type === "medium" && dexMod > 2) {
+		dexMod = 2;
+	};
+	return dexMod;
+};
+
+// add the armour; only overwrites if force == true
+function AddArmor(armour, force, comp) {
+	if (!armour) return;
+	var prefix = comp ? comp : !event.target || !event.target.name ? "" : getTemplPre(event.target.name, "AScomp", true);
+	var ACfld = prefix ? prefix + "Comp.Use.AC" : "AC Armor Description";
+	var curAC = What(ACfld);
+	if (curAC && !force) return;
+	if (prefix) { // calculate what the value should be and add it
+		var armKey = ParseArmor(armour);
+		if (!armKey) return;
+		var newAC = ArmourList[armKey].ac + calcCompMaxDexToAC(prefix, armKey);
+		Value(ACfld, newAC);
+	} else {
+		Value(ACfld, armour);
+	};
+};
+// remove the armour if it is the same
+function RemoveArmor(armour, comp) {
+	if (!armour) return;
+	var prefix = comp ? comp : !event.target || !event.target.name ? "" : getTemplPre(event.target.name, "AScomp", true);
+	var ACfld = prefix ? prefix + "Comp.Use.AC" : "AC Armor Description";
+	var curAC = What(ACfld);
+	var armKey = ParseArmor(armour);
+	if (!armKey) return;
+	if (prefix) { // calculate what the value would be
+		var newAC = ArmourList[armKey].ac + calcCompMaxDexToAC(prefix, armKey);
+		if (curAC == newAC) tDoc.resetForm([ACfld]); // remove it if it's the same
+	} else if (CurrentArmour.known === armKey) {
+		tDoc.resetForm([ACfld]);
+	};
 };
 
 // find the magic bonus in the shield description
@@ -2419,6 +2465,7 @@ function FindRace(inputracetxt) {
 		weaponprofs : "",
 		weapons : "",
 		armor : "",
+		addarmor : "",
 		toolProfs : "",
 		skills : "",
 		skillstxt : "",
@@ -2567,6 +2614,7 @@ function ApplyRace(inputracetxt) {
 				AddWeapon(CurrentRace.weapons[i]);
 			}
 		};
+		if (CurrentRace.addarmor) AddArmor(CurrentRace.addarmor);
 		if (CurrentRace.toolProfs) processTools(true, CurrentRace.name, CurrentRace.toolProfs);
 		if (CurrentRace.languageProfs) processLanguages(true, CurrentRace.name, CurrentRace.languageProfs);
 
@@ -2652,6 +2700,7 @@ function RemoveRace() {
 				RemoveWeapon(CurrentRace.weapons[i]);
 			}
 		};
+		if (CurrentRace.addarmor) RemoveArmor(CurrentRace.addarmor);
 		
 		//get the ability score arrays from the fields, set the racial bonuses to 0, and put them back in the field
 		for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
@@ -2945,15 +2994,28 @@ function SetArmordropdown() {
 		"",
 		"Unarmored",
 		"Unarmored Defense (Con)",
-		"Unarmored Defense (Wis)"
+		"Unarmored Defense (Wis)",
+		"Natural Armor",
+		""
 	];
-	
-	var armNm = "";
+	var armNm = "", armAno = [], added = [];
+	var armAtype = { light : [], medium : [], heavy : [] };
 	for (var key in ArmourList) {
-		if (key === "unarmored" || testSource(key, ArmourList[key], "armorExcl")) continue; // test if the armour or its source isn't excluded
-		if (armNm === "Plate") TheList.push("");
+		if ((/^(unarmored|natural armor)$/).test(key) || testSource(key, ArmourList[key], "armorExcl")) continue; // test if the armour or its source isn't excluded
 		armNm = ArmourList[key].name.capitalize();
-		if (TheList.indexOf(armNm) === -1) TheList.push(armNm);
+		if (added.indexOf(armNm) !== -1) continue; // test if the armour is not already listed
+		added.push(armNm);
+		if (ArmourList[key].type && armAtype[ArmourList[key].type]) {
+			armAtype[ArmourList[key].type].push(armNm);
+		} else {
+			armAno.push(armNm);
+		};
+	};
+	for (var aType in armAtype) { TheList = TheList.concat(armAtype[aType]); };
+	if (armAno.length > 0) {
+		armAno.sort;
+		TheList.push("");
+		TheList = TheList.concat(armAno);
 	};
 	
 	if (tDoc.getField("AC Armor Description").submitName === TheList.toSource()) return; //no changes, so no reason to do this
@@ -4247,7 +4309,6 @@ function RemoveTool(tool, toolstooltip) {
 	if (overflow) RemoveString("MoreProficiencies", tool);
 };
 
-
 function AddWeapon(weapon, partialReplace) {
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
@@ -4972,20 +5033,13 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		if (IsNotFeatMenu) {
 			tDoc.resetForm([FeatFlds[2]]);
 			
-			if (theFeat.armor) {
-				delete CurrentArmour.proficiencies[theFeat.name + " feat"];
-			}
-			if (theFeat.weapons) {
-				delete CurrentWeapons.proficiencies[theFeat.name + " feat"];
-			}
+			if (theFeat.armor) delete CurrentArmour.proficiencies[theFeat.name + " feat"];
+			if (theFeat.weapons) delete CurrentWeapons.proficiencies[theFeat.name + " feat"];
+			if (theFeat.addarmor) RemoveArmor(theFeat.addarmor);
 			var sourceStringOld = stringSource(theFeat, "first,page");
-			if (sourceStringOld) {
-				RemoveString(FeatFlds[1], sourceStringOld);
-			}
+			if (sourceStringOld) RemoveString(FeatFlds[1], sourceStringOld);
 			
-			if (theFeat.calcChanges) {
-				addEvals(theFeat.calcChanges, [theFeat.name, "feat"], false);
-			}
+			if (theFeat.calcChanges) addEvals(theFeat.calcChanges, [theFeat.name, "feat"], false);
 			
 			if (theFeat.scores) {
 				//get the ability score arrays from the fields, remove the feat bonuses, and put them back in the field
@@ -5126,6 +5180,8 @@ function ApplyFeat(InputFeat, FldNmbr) {
 					SetProf("save", true, theFeat.saves[i], theFeat.name);
 				};
 			};
+
+			if (theFeat.addarmor) AddArmor(theFeat.addarmor);
 			
 			if (theFeat.savetxt) SetProf("savetxt", true, theFeat.savetxt, theFeat.name);
 			
@@ -5806,6 +5862,14 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 						SetProf("savetxt", profAddRemove, propFea[FeaChoice].savetxt, profChoiceDisplNm);
 					};
 					
+					// --- add or remove armor string, if defined --- //
+					if (propFea.addarmor && CheckFea) {
+						tDoc[(profAddRemove ? "Add" : "Remove") + "Armor"](propFea.addarmor);
+					};
+					if (CheckFea && FeaChoice && propFea[FeaChoice].addarmor) {
+						tDoc[(profAddRemove ? "Add" : "Remove") + "Armor"](propFea[FeaChoice].addarmor);
+					};
+					
 					thermoM(5/8); //increment the progress dialog's progress
 
 					// --- add or remove speed, if defined --- //
@@ -6214,6 +6278,14 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 		};
 		if (theSubFea.addMod && AddOrRemove !== "remove") {
 			processMods(true, profDisplNm, theSubFea.addMod);
+		};
+
+		// --- add or remove armor string, if defined --- //
+		if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.addarmor) {
+			RemoveArmor(theOldSubFea.addarmor);
+		};
+		if (theSubFea.addarmor && AddOrRemove !== "remove") {
+			AddArmor(theSubFea.addarmor);
 		};
 		
 		thermoM(4/6); //increment the progress dialog's progress

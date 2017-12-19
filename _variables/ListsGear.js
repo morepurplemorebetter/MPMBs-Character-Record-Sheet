@@ -9,19 +9,10 @@ var Base_ArmourList = {
 		strReq : 0,
 		addMod : true
 	},
-	"draconic resilience" : {
-		regExpSearch : /^(?=.*(dragon|draconic|scaly))(?=.*(hide|skin|scales|resilience)).*$/i,
-		name : "Draconic resilience",
-		source : [["SRD", 45], ["P", 102]],
-		type : "",
-		ac : 13,
-		stealthdis : false,
-		strReq : 0
-	},
 	"natural armor" : {
-		regExpSearch : /^((?=.*natural)(?=.*armor)|(?=.*\bdragon\b)(?=.*hide)).*$/i,
+		regExpSearch : /^((?=.*natural)(?=.*armou?r)|(?=.*(dragon|draconic|scaly))(?=.*(hide|skin|scales|resilience))).*$/i,
 		name : "Natural Armor",
-		source : [["V", 112], ["X", 74]],
+		source : [["SRD", 45], ["P", 102], ["V", 112], ["X", 74]],
 		type : "",
 		ac : 13,
 		stealthdis : false,
