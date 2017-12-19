@@ -23,7 +23,11 @@ function InitiateLists() {
 		"spellSchoolList"
 	];
 	for (i = 0; i < lists.length; i++) {
-		if (tDoc["Base_" + lists[i]]) tDoc[lists[i]] = newObj(tDoc["Base_" + lists[i]]);
+		if (tDoc["Base_" + lists[i]]) {
+			tDoc[lists[i]] = newObj(tDoc["Base_" + lists[i]]);
+		} else {
+			tDoc[lists[i]] = {};
+		};
 	};
 };
 

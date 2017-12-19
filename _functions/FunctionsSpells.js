@@ -3742,7 +3742,7 @@ function MakeSpellMenu() {
 	if (!typePF && !tDoc.info.SpellsOnly) {
 		menuLVL2(spellsMenu, ["Where to show Spell Slots (Spell Points)", "slots"], [["On Spell Sheet", "[false,true]"], ["On first page (in Limited Features)", "[true,false]"], ["On both Spell Sheet and first page", "[true,true]"], ["-", "-"], ["Use Spell Points instead of Spell Slots", "[false,false]"]]);
 	} else if (tDoc.info.SpellsOnly) {
-		var slotsVisible = What("Template.extras.SSfront") ? tDoc.getField("SpellSlots.CheckboxesSet.lvl1").display === display.noPrint : false;
+		var slotsVisible = What("Template.extras.SSfront") ? isDisplay("P0.SSfront.SpellSlots.CheckboxesSet.lvl1") > 1 : false;
 		var spellPointsVis = What("Template.extras.SSfront") ? RememberSlots === "[false,false]" : false;
 		
 		//options to show/hide spell slot modifier fields
@@ -3854,7 +3854,7 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 			GenerateCompleteSpellSheet(MenuSelection[2]);
 			break;
 		 case "toggleslots" :
-			var hiddenNoPrint = slotsVisible ? "Hide" : "DontPrint";
+			var hiddenNoPrint = isDisplay("P0.SSfront.SpellSlots.CheckboxesSet.lvl1") > 1 ? "Hide" : "DontPrint";
 			for (var ss = 1; ss <= 9; ss++) {
 				tDoc[hiddenNoPrint]("P0.SSfront.SpellSlots.CheckboxesSet.lvl" + ss);
 			}
@@ -5198,21 +5198,21 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	
 	//move the pages that we want to extract to a new instance, by running code from a console
 	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 4});\n\n";
-	forConsole += "this.info.SpellsOnly = \"" + thisClass + "\";";
-	forConsole += " var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsCreatures', 'ListsFeats', 'ListsFeatsUA', 'ListsGear', 'ListsRaces', 'ListsRacesUA']; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
-	forConsole += " this.createTemplate({cName:\"SSfront\", nPage:1 });";
-	forConsole += " this.createTemplate({cName:\"SSmore\", nPage:2 });";
-	forConsole += " this.createTemplate({cName:\"remember\", nPage:3 });";
-	forConsole += " this.createTemplate({cName:\"blank\", nPage:4 });";
-	forConsole += " this.getTemplate(\"SSfront\").hidden = true;";
-	forConsole += " this.getTemplate(\"SSmore\").hidden = true;";
-	forConsole += " this.getTemplate(\"remember\").hidden = true;";
-	forConsole += " this.getTemplate(\"blank\").hidden = true;";
-	forConsole += " this.info.SheetVersion = \"" + tDoc.info.SheetVersion + "\";";
-	forConsole += " this.info.SheetType = \"" + tDoc.info.SheetType + "\";";
-	forConsole += " this.info.Keywords = \"" + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + "\";";
-	forConsole += " this.info.ContactEmail = \"Flapkan@gmail.com\";";
-	forConsole += " this.info.Subject = \"D&D 5e; Character Sheet; Spell Sheet; Spell Sheet Generator\";";
+	forConsole += "this.info.SpellsOnly = '" + thisClass + "';";
+	forConsole += " var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsRaces']; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
+	forConsole += " this.createTemplate({cName:'SSfront', nPage:1 });";
+	forConsole += " this.createTemplate({cName:'SSmore', nPage:2 });";
+	forConsole += " this.createTemplate({cName:'remember', nPage:3 });";
+	forConsole += " this.createTemplate({cName:'blank', nPage:4 });";
+	forConsole += " this.getTemplate('SSfront').hidden = true;";
+	forConsole += " this.getTemplate('SSmore').hidden = true;";
+	forConsole += " this.getTemplate('remember').hidden = true;";
+	forConsole += " this.getTemplate('blank').hidden = true;";
+	forConsole += " this.info.SheetVersion = '" + tDoc.info.SheetVersion + "';";
+	forConsole += " this.info.SheetType = '" + tDoc.info.SheetType + "';";
+	forConsole += " this.info.Keywords = '" + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + "';";
+	forConsole += " this.info.ContactEmail = 'Flapkan@gmail.com';";
+	forConsole += " this.info.Subject = 'D&D 5e; Character Sheet; Spell Sheet; Spell Sheet Generator';";
 	forConsole += " this.info.Title = MakeDocName();";
 	forConsole += " typePF = (/printer friendly/i).test(this.info.SheetType);";
 	forConsole += " typeA4 = (/a4/i).test(this.info.SheetType);";
@@ -5220,9 +5220,9 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	forConsole += " minVer = this.info.SpellsOnly || this.info.AdvLogOnly;";
 	forConsole += " CreateBkmrksCompleteSpellSheet();";
 	forConsole += " this.calculateNow();";
-	forConsole += " this.importDataObject({cName: \"FAQ.pdf\", cDIPath: \"/D/Joost's Documenten/Dungeons & Dragons/5th Edition/- Sheets Creation/- MPMB's Character Record Sheet/Frequently Asked Questions/FAQ.pdf\"});";
-	forConsole += " Value(\"Opening Remember\", \"Yes\");";
-	forConsole += " app.execMenuItem(\"GeneralInfo\");";
+	forConsole += " this.importDataObject({cName: 'FAQ.pdf', cDIPath: \"/D/Doc/NAS/02 Hobby/Dungeons & Dragons/5th Edition/- Sheets Creation/- MPMB's Character Record Sheet/Frequently Asked Questions/FAQ.pdf\"});";
+	forConsole += " Value('Opening Remember', 'Yes');";
+	forConsole += " app.execMenuItem('GeneralInfo');";
 	console.show();
 	console.println("Execute the following:\n" + forConsole);
 }
@@ -5238,7 +5238,7 @@ function CreateBkmrksCompleteSpellSheet() {
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Spells Options", cExpr: "MakeSpellMenu_SpellOptions();", nIndex: 1});
 	tDoc.bookmarkRoot.children[0].children[1].color = ["RGB", 0.2509765625, 0.5176544189453125, 0.67059326171875];
 
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady(What(\"MakeMobileReady Remember\") === \"\");", nIndex: 2});
+	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady(What('MakeMobileReady Remember') === '');", nIndex: 2});
 	tDoc.bookmarkRoot.children[0].children[2].color = ["RGB", 0.2823486328125, 0.1921539306640625, 0.478424072265625];
 	
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Unit System", cExpr: "SetUnitDecimals_Button();", nIndex: 3});
@@ -5248,37 +5248,37 @@ function CreateBkmrksCompleteSpellSheet() {
 	tDoc.bookmarkRoot.children[0].createChild({cName: NameBm, cExpr: "MakeColorMenu(); ColoryOptions();", nIndex: 4});
 	tDoc.bookmarkRoot.children[0].children[4].color = ["RGB", 0.5, 0.5, 0.5];
 	
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Add Custom Script", cExpr: "AddUserScript();", nIndex: 5});
+	tDoc.bookmarkRoot.children[0].createChild({cName: "Add Extra Materials", cExpr: "ImportScriptOptions();", nIndex: 5});
 
 	//make links bookmark section	
 	tDoc.bookmarkRoot.createChild({cName: "Links", cExpr: "", nIndex: 1});
 	tDoc.bookmarkRoot.children[1].style = 2;
 	
-	tDoc.bookmarkRoot.children[1].createChild({cName: "Get Additional Content (Custom Scripts)", cExpr: "contactMPMB(\"additions\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[1].createChild({cName: "Get Additional Content (Custom Scripts)", cExpr: "contactMPMB('additions');", nIndex: 0});
 	
-	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "contactMPMB(\"fullversion\");", nIndex: 1});
+	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "contactMPMB('fullversion');", nIndex: 1});
 	
 	var NameLink = tDoc.info.SheetType === "Printer Friendly" ? "Get the Printer Friendly Redesign" : "Get the Latest Version";
-	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB(\"latestversion\");", nIndex: 2});
+	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB('latestversion');", nIndex: 2});
 	
 	NameLink = typePF ? "Get the Colorful Design" : "Get the Printer Friendly Design";
-	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB(\"otherdesign\");", nIndex: 3});
+	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB('otherdesign');", nIndex: 3});
 	for (var c = 0; c < tDoc.bookmarkRoot.children[1].children.length; c++) tDoc.bookmarkRoot.children[1].children[c].style = 2;
 
 	//make FAQ bookmark section
-	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });", nIndex: 2});
+	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "tDoc.exportDataObject({ cName: 'FAQ.pdf', nLaunch: 2 });", nIndex: 2});
 	tDoc.bookmarkRoot.children[2].style = 2;
 	
 	//make the contact bookmark section
-	tDoc.bookmarkRoot.createChild({cName: "Contact MPMB", cExpr: "contactMPMB(\"patreon\");", nIndex: 3});
+	tDoc.bookmarkRoot.createChild({cName: "Contact MPMB", cExpr: "contactMPMB('patreon');", nIndex: 3});
 	tDoc.bookmarkRoot.children[3].style = 2;
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on DMs Guild", cExpr: "contactMPMB(\"dmsguild\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on EN world", cExpr: "contactMPMB(\"enworld\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "via Email", cExpr: "contactMPMB(\"email\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on GitHub", cExpr: "contactMPMB(\"github\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on Reddit", cExpr: "contactMPMB(\"reddit\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on Twitter", cExpr: "contactMPMB(\"twitter\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on Patreon", cExpr: "contactMPMB(\"patreon\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on DMs Guild", cExpr: "contactMPMB('dmsguild');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on EN world", cExpr: "contactMPMB('enworld');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "via Email", cExpr: "contactMPMB('email');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on GitHub", cExpr: "contactMPMB('github');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Reddit", cExpr: "contactMPMB('reddit');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Twitter", cExpr: "contactMPMB('twitter');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Patreon", cExpr: "contactMPMB('patreon');", nIndex: 0});
 	
 	//make all bookmarks bold
 	for (var p = 0; p < tDoc.bookmarkRoot.children.length; p++) {

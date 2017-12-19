@@ -4148,6 +4148,7 @@ function UpdateDropdown(type, weapon) {
 function ChangeToCompleteAdvLogSheet() {
 	if (minVer) return;
 	ResetAll();
+	tDoc.resetForm(["User Script", "User_Imported_Files.Stringified"]); // remove all custom scripts
 	tDoc.getField("AdvLog.Class and Levels").setAction("Calculate", "CalcAdvLogInfo();");
 	tDoc.getField("AdvLog.Class and Levels").setAction("Validate", "ValidateAdvLogInfo();");
 	tDoc.getField("AdvLog.Class and Levels").readonly = false;
@@ -4197,7 +4198,7 @@ function ChangeToCompleteAdvLogSheet() {
 	//move the pages that we want to extract to a new instance, by running code from a console
 	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 3});\n\n";
 	forConsole += "this.info.AdvLogOnly = true;";
-	forConsole += " var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsClasses', 'ListsClassesUA', 'ListsClassesUAArtificer', 'ListsClassesUAMystic', 'ListsCreatures', 'ListsFeats', 'ListsFeatsUA', 'ListsGear', 'ListsPsionics', 'ListsRaces', 'ListsRacesUA' 'ListsSources', 'ListsSpells', 'ListsSpellsUA',]; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
+	forConsole += " var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsClasses', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsPsionics', 'ListsRaces', 'ListsSources', 'ListsSpells']; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
 	forConsole += " this.createTemplate({cName:\"ALlog\", nPage:1 });";
 	forConsole += " this.createTemplate({cName:\"remember\", nPage:2 });";
 	forConsole += " this.createTemplate({cName:\"blank\", nPage:3 });";
@@ -4216,7 +4217,7 @@ function ChangeToCompleteAdvLogSheet() {
 	forConsole += " minVer = this.info.SpellsOnly || this.info.AdvLogOnly;";
 	forConsole += " CreateBkmrksCompleteAdvLogSheet();";
 	forConsole += " this.calculateNow();";
-	forConsole += " this.importDataObject({cName: \"FAQ.pdf\", cDIPath: \"/D/Joost's Documenten/Dungeons & Dragons/5th Edition/- Sheets Creation/- MPMB's Character Record Sheet/Frequently Asked Questions/FAQ.pdf\"});";
+	forConsole += " this.importDataObject({cName: 'FAQ.pdf', cDIPath: \"/D/Doc/NAS/02 Hobby/Dungeons & Dragons/5th Edition/- Sheets Creation/- MPMB's Character Record Sheet/Frequently Asked Questions/FAQ.pdf\"});";
 	forConsole += " Value(\"Opening Remember\", \"No\");";
 	forConsole += " app.execMenuItem(\"GeneralInfo\");";
 	console.show();
@@ -4235,7 +4236,7 @@ function CreateBkmrksCompleteAdvLogSheet() {
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Unit System", cExpr: "SetUnitDecimals_Button();", nIndex: 0});
 	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB",0.463,0.192,0.467];
 	
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady(What(\"MakeMobileReady Remember\") === \"\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady(What('MakeMobileReady Remember') === '');", nIndex: 0});
 	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.2823486328125, 0.1921539306640625, 0.478424072265625];
 	
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Text Options", cExpr: "MakeTextMenu_TextOptions();", nIndex: 0});
@@ -4248,27 +4249,27 @@ function CreateBkmrksCompleteAdvLogSheet() {
 	tDoc.bookmarkRoot.createChild({cName: "Links", cExpr: "", nIndex: 1});
 	
 	var aLink = typePF ? "http://www.dmsguild.com/product/186823/" : "http://www.dmsguild.com/product/193053/";
-	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "contactMPMB(\"fullversion\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "contactMPMB('fullversion');", nIndex: 0});
 	
 	var NameLink = tDoc.info.SheetType === "Printer Friendly" ? "Get the Printer Friendly Redesign" : "Get the Latest Version";
-	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB(\"latestversion\");", nIndex: 1});
+	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB('latestversion');", nIndex: 1});
 	
 	NameLink = typePF ? "Get the Colorful Design" : "Get the Printer Friendly Design";
-	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB(\"otherdesign\");", nIndex: 2});
+	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB('otherdesign');", nIndex: 2});
 	
 	//make FAQ bookmark section
-	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "tDoc.exportDataObject({ cName: \"FAQ.pdf\", nLaunch: 2 });", nIndex: 2});
+	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "tDoc.exportDataObject({ cName: 'FAQ.pdf', nLaunch: 2 });", nIndex: 2});
 	
 	//make the contact bookmark section
-	tDoc.bookmarkRoot.createChild({cName: "Contact MPMB", cExpr: "contactMPMB(\"patreon\");", nIndex: 3});
+	tDoc.bookmarkRoot.createChild({cName: "Contact MPMB", cExpr: "contactMPMB('patreon');", nIndex: 3});
 	tDoc.bookmarkRoot.children[3].style = 2;
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on DMs Guild", cExpr: "contactMPMB(\"dmsguild\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on EN world", cExpr: "contactMPMB(\"enworld\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "via Email", cExpr: "contactMPMB(\"email\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on GitHub", cExpr: "contactMPMB(\"github\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on Reddit", cExpr: "contactMPMB(\"reddit\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on Twitter", cExpr: "contactMPMB(\"twitter\");", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on Patreon", cExpr: "contactMPMB(\"patreon\");", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on DMs Guild", cExpr: "contactMPMB('dmsguild');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on EN world", cExpr: "contactMPMB('enworld');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "via Email", cExpr: "contactMPMB('email');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on GitHub", cExpr: "contactMPMB('github');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Reddit", cExpr: "contactMPMB('reddit');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Twitter", cExpr: "contactMPMB('twitter');", nIndex: 0});
+	tDoc.bookmarkRoot.children[3].createChild({cName: "on Patreon", cExpr: "contactMPMB('patreon');", nIndex: 0});
 	
 	//make all bookmarks bold
 	for (var p = 0; p < tDoc.bookmarkRoot.children.length; p++) {
@@ -5048,20 +5049,24 @@ function contactMPMB(medium) {
 		break;
 	 case "latestversion" :
 		app.launchURL(
-			!tDoc.getField("SaveIMG.Patreon").submitName || tDoc.info.SpellsOnly ? LinksLatest.patreon :
+			patreonVersion || tDoc.info.SpellsOnly ? LinksLatest.patreon :
 			LinksLatest[minVer ? "advlog" : "character"][typePF ? "PF" : "CF"],
 			true
 		);
 		break;
 	 case "otherdesign" :
 		app.launchURL(
-			tDoc.info.SpellsOnly ? LinksLatest.patreon :
+			patreonVersion || tDoc.info.SpellsOnly ? LinksLatest.patreon :
 			LinksLatest[minVer ? "advlog" : "character"][typePF ? "CF" : "PF"],
 			true
 		);
 		break;
 	 case "fullversion" :
-		app.launchURL(LinksLatest.character[typePF ? "PF" : "CF"], true);
+		app.launchURL(
+			patreonVersion ? LinksLatest.patreon :
+			LinksLatest.character[typePF ? "PF" : "CF"],
+			true
+		);
 		break;
 	 case "subreddit" :
 		app.launchURL("http://flapkan.com/mpmb/fanforum", true);
