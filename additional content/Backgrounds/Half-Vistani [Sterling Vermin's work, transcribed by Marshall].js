@@ -85,8 +85,7 @@ BackgroundList["half-vistani"] = {
 		"I maintain a collection of personal trinkets from every residence I enter."
 	],
 	languageProfs : ["Patterna", 1],
-	variant : ["half-vistani (corvara)", "half-vistani (equaar)", "half-vistani (kamii)", "half-vistani (naiat)", "half-vistani (vatraska)", "half-vistani (zarovan)"],
-	lifestyle : "modest",
+	lifestyle : "modest"
 };
 AddBackgroundVariant("half-vistani", "corvara", {
 	regExpSearch : /^(?=.*half)(?=.*vistani)(?=.*corvara).*$/i,
@@ -129,7 +128,7 @@ AddBackgroundVariant("half-vistani", "zarovan", {
 
 BackgroundFeatureList["wanderlust"] = {
 	description : "By leaving the ranks of the vistani you have lost the ability to walk the mists unharmed and without getting lost but you still feel a powerful compulsion to be on the move. You gain advantage on any rolls made to set or follow a course and traveling is considered light activity for the purposes of resting for you.",
-	source : ["SV:HV", 1],
+	source : ["SV:HV", 1]
 };
 
 SourceList["SV:HV"] = {

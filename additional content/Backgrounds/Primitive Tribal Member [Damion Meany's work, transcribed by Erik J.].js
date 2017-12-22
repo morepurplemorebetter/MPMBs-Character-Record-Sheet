@@ -82,7 +82,7 @@ BackgroundList["primitive tribe member"] = {
 		"I am insecure since my tribe appears weak compared to larger, more modern societies."
 	],
 	variant : [],
-	toolProfs : [["Any tool", 2],
+	toolProfs : [["Any tool", 2]],
 	lifestyle : "modest"
 };
  
