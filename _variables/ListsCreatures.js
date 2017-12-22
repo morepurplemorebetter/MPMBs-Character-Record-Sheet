@@ -2000,7 +2000,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Gore",
 				ability : 1,
-				damage : [3, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [3, 8, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
 			}, {
