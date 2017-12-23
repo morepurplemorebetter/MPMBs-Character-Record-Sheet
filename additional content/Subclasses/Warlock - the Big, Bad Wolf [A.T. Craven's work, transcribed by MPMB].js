@@ -94,7 +94,6 @@ CreatureList["dire wolf"].companion = "pact_of_the_chain";
 CreatureList["death dog"].companion = "pact_of_the_chain";
 
 //add the invocations
-[{
 AddWarlockInvocation("The Better to See You With", {
 	name : "The Better to See You With",
 	description : "\n   " + "I can cast Faerie Fire at will (PHB 239)",

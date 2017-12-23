@@ -113,7 +113,7 @@ AddBackgroundVariant("half-vistani", "naiat", {
 	source : ["SV:HV", 1],
 	skills : ["History", "Performance"]
 });
-AddBackgroundVariant("half-vistani", "vatraska", {{
+AddBackgroundVariant("half-vistani", "vatraska", {
 	regExpSearch : /^(?=.*half)(?=.*vistani)(?=.*vatraska).*$/i,
 	name : "Half-Vistani (Vatraska)",
 	source : ["SV:HV", 1],
