@@ -2169,7 +2169,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 			minSheetVersion = 0;
 			eval(aScript);
 			IsNotUserScript = true;
-			if (ScriptAtEnd.length > 0) ScriptsAtEnd.concat(ScriptAtEnd);
+			if (ScriptAtEnd.length > 0) ScriptsAtEnd = ScriptsAtEnd.concat(ScriptAtEnd);
 			if (minSheetVersion > sheetVersion) {
 				var failedTestMsg = {
 					cMsg : "The script '" + scriptName + "' reports that is was made for a newer version of the sheet (v" + minSheetVersion + "), and might thus not be compatible with this version of the sheet (v" + sheetVersion + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
