@@ -16,9 +16,9 @@
 				
 				The script now (2016-12-16) also includes the "Order of the Lycan" (v1.4), which is taken from http://www.dmsguild.com/product/175606/
 				
-	Code by:	Darryl Cook & MorePurpleMoreBetter
-				Order of the Lycan code by MorePurpleMoreBetter
-	Date:		2017-09-22 (sheet v12.998)
+	Code by:	Darryl Cook, MorePurpleMoreBetter & Smashman
+				Order of the Lycan code by MorePurpleMoreBetter, updated to v1.5 by Smashman
+	Date:		2017-12-28 (sheet v12.998)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 	
@@ -669,7 +669,7 @@ ClassSubList["blood hunter-order of the lycan"] = {
 			name : "Advanced Transformation",
 			source : ["MM:OotL", 2],
 			minlevel : 11,
-			description : "\n   " + "I can now transform into my Hybrid form as a bonus action and it lasts for 30 minutes" + "\n   " + "In my Hybrid form, I gain the Improved Resilient Hide and Feral Precision feature",
+			description : "\n   " + "I can now transform into my Hybrid form as a bonus action and it lasts for 30 minutes" + "\n   " + "In my Hybrid form, I gain the Lycan Regeneration and Beastly Precision feature",
 			eval : "RemoveAction(\"action\", \"Hybrid Transformation (start/end)\", \"Blood Hunter (Order of the Lycan)\"); AddAction(\"bonus action\", \"Hybrid Transformation (start)\", \"Blood Hunter (Order of the Lycan)\"); AddAction(\"action\", \"Hybrid Transformation (end)\", \"Blood Hunter (Order of the Lycan)\");",
 			removeeval : "RemoveAction(\"bonus action\", \"Hybrid Transformation (start)\"); RemoveAction(\"action\", \"Hybrid Transformation (end)\"); AddAction(\"action\", \"Hybrid Transformation (start/end)\");"
 		},
@@ -688,7 +688,7 @@ ClassSubList["blood hunter-order of the lycan"] = {
 			"blood curse of the howl" : {
 				name : "Blood Curse of the Howl",
 				source : ["MM:OotL", 3],
-				description : "\n   " + "As an action, I can howl at a creature within 30 ft, stunning them with fear" + "\n   " + "It makes a Wis save (DC 8 + Prof + Wis mod) or be stunned until the end of my next turn" + "\n   - " + "Amplify: Instead, all creatures within 15 ft of me are affected and must make a save",
+				description : "\n   " + "As an action, I can howl at any number of creatures within 30 ft, stunning them with fear" + "\n   " + "Any that can hear me make a Wis save (DC 8 + Prof + Wis mod) or become frightened until the end of my next turn. If they fail their saving throw by 5 or more, they are stunned until the end of my next turn. A creature that succeeds on this saving throw is immune to this blood curse for the next 24 hours" + "\n   - " + "Amplify: Any creatures within 60 ft of me are affected and must make a save",
 				action : ["action", ""]
 			},
 			eval : "ClassFeatureOptions([\"blood hunter\", \"subclassfeature18\", \"blood curse of the howl\", \"extra\"]);",
@@ -733,16 +733,17 @@ UpdateHybridForm = function() {
 	var makeHybridText = function(lvl) {
 		if (lvl < 3) return "";
 		var PSdie = lvl >= 18 ? "d10" : (lvl >= 11 ? "d8" : "d6");
+		var PShit = lvl >= 11 ? Math.floor(this.getField("Proficiency Bonus").submitName/2) : 0;
 		var theText = "Blood Hunter (Order of the Lycan) Hybrid form, at level " + lvl + ":\n   " + "As a" + (lvl < 11 ? "n " : " bonus ") + "action, I can transform into a Hybrid lycanthropy form" + "\n   " + "This form lasts for " + (lvl < 11 ? "10" : "30") + " minutes or until I transform back as an action" + "\n   " + "I can speak, use equipment, and wear armor in this form" + "\n   " + "I revert back to my normal form if I fall unconscious, drop to 0 HP, or die" + "\n   " + "While I am in this Hybrid form, I gain the following features:";
-		theText += "\n\u25C6 " + "Bloodlust (Order of the Lycan 3, MM:OotL 2)" + "\n   " + "I must save to keep control if I took damage since the beginning of my last turn" + "\n   " + "I do this at the start of my turn, a Wisdom save DC 10 (15 if I'm below half HP)" + "\n   " + "I automatically fail if I am under an effect that prevents concentrating (like Rage)" + "\n   " + "If failed, I must move to the nearest creature and take the Attack action on it" + "\n   " + "After this Attack action, my turn immediately ends and I regain control";
+		theText += "\n\u25C6 " + "Bloodlust (Order of the Lycan 3, MM:OotL 2)" + "\n   " + "I must save to keep control if I took damage since the beginning of my last turn" + "\n   " + "I do this at the start of my turn, a Wisdom save DC 10, or half the total damage I've taken since the start of my last turn" + "\n   " + "I automatically fail if I am under an effect that prevents concentrating (like Rage)" + "\n   " + "If failed, I must move to the nearest creature and take the Attack action on it" + "\n   " + "After this Attack action, my turn immediately ends and I regain control";
 		theText += "\n\u25C6 " + "Cursed Weakness (Order of the Lycan 3, MM:OotL 2)" + "\n   " + "I have vulnerability to damage from silvered weapons";
 		theText += "\n\u25C6 " + "Feral Might (Order of the Lycan 3, MM:OotL 2)" + "\n   " + "I gain bonus melee damage equal to half my proficiency bonus (rounded down)" + "\n   " + "I have advantage on Strength checks and saving throws";
 		theText += "\n\u25C6 " + "Predatory Strikes (Order of the Lycan 3, MM:OotL 2)" + "\n   " + "My unarmed strikes are more powerful and can be imbued with a Crimson Rite" + "\n   " + "These predatory strikes do " + PSdie + " damage and I can use Dex or Str with them" + "\n   " + "When I use them during an Attack action, I can make another as a bonus action";
 		theText += "\n\u25C6 " + "Resilient Hide (Order of the Lycan 3, MM:OotL 2)" + "\n   " + "I have resistance to bludgeoning, piercing, and slashing damage" + "\n   " + "Attacks that are magical or from silvered weapons bypass this resistance" + "\n   " + "I gain +1 bonus to AC while I am not wearing heavy armor";
 		if (lvl >= 7) theText += "\n\u25C6 " + "Improved Predatory Strikes (Order of the Lycan 7, MM:OotL 2)" + "\n   " + "If I have an active Crimson Rite, my predatory strikes are considered magical";
 		if (lvl >= 11) {
-			theText += "\n\u25C6 " + "Improved Resilient Hide (Order of the Lycan 11, MM:OotL 2)" + "\n   " + "If I have an active Crimson Rite, I gain resistance to that rite's damage type";
-			theText += "\n\u25C6 " + "Feral Precision (Order of the Lycan 11, MM:OotL 2)" + "\n   " + "My predatory strikes get a +2 bonus on the attack roll";
+			theText += "\n\u25C6 " + "Lycan Regeneration (Order of the Lycan 11, MM:OotL 2)" + "\n   " + "If I have less than half my hit points remaining, at the start of each of my turns, I gain hit points equal to 1 + Con mod (minimum 1). I do not gain this benefit if I have 0 hit points.";
+			theText += "\n\u25C6 " + "Beastly Precision (Order of the Lycan 11, MM:OotL 2)" + "\n   " + "My predatory strikes get a +" + PShit + " bonus on the attack roll";
 		}
 		if (lvl >= 15) theText += "\n\u25C6 " + "Pack Hunter (Order of the Lycan 15, MM:OotL 2)" + "\n   " + "I get adv. on attack rolls vs. a target if at least one of my allies is within 5 ft of it" + "\n   " + "The ally can't be incapacitated for it to grant me advantage";
 		return theText;
@@ -756,7 +757,7 @@ UpdateHybridForm = function() {
 	//update the predatory strikes
 	var PSdie = BHlevelNew >= 18 ? 10 : (BHlevelNew >= 11 ? 8 : 6);
 	var PSdmg = Math.floor(this.getField("Proficiency Bonus").submitName/2);
-	var PShit = BHlevelNew >= 11 ? 2 : 0;
+	var PShit = BHlevelNew >= 11 ? Math.floor(this.getField("Proficiency Bonus").submitName/2) : 0;
 	WeaponsList["predatory strike"].damage[1] = PSdie;
 	WeaponsList["predatory strike"].modifiers = [PShit, PSdmg];
 	if (BHlevelNew >= 3) {
