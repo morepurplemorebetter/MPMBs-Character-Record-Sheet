@@ -6002,7 +6002,7 @@ function MakeClassMenu() {
 				continue;
 			};
 			if (testSource("", feaObjA)) continue;
-			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name + stringSource(feaObjA, "fist,abbr", ", ") : array[i].toLowerCase();
+			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name + stringSource(feaObjA, "first,abbr", ", ") : array[i].toLowerCase();
 			var theTest = (extrareturn === "extra" ? toTestE : toTest).indexOf(testWith) !== -1;
 			var removeStop = extrareturn === "extra" ? (theTest ? "remove" : false) : (theTest ? "stop" : false);
 			var isEnabled = ignorePrereqs || theTest || !feaObjA.prereqeval ? true : eval(feaObjA.prereqeval);
