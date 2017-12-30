@@ -15,7 +15,7 @@
 	Date:		2017-11-29 (sheet v12.999)
 */
 
-var iFileName = "Soulbound [Greypilgrim333's work, transcribed by MPMB].js";
+var iFileName = "Variant - Half-Elf (Fey Step) [by Mike].js";
 RequiredSheetVersion(12.999);
 
 AddRacialVariant("half-elf", "fey step", {
