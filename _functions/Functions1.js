@@ -6518,18 +6518,19 @@ function HideShowEverything(toggle) {
 			thermoM(F/tDoc.numFields); //increment the progress dialog's progress
 			var Fname = tDoc.getNthFieldName(F);
 			var Ffield = tDoc.getField(Fname);
-			if (!(exceptionRegex).test(Fname) && Ffield.display !== 1) {
-				if (Ffield.page.length) {
-					for (var i = 0; i < Ffield.page.length; i++) {
-						var Fnamei = Fname + "." + i;
-						var Ffieldi = tDoc.getField(Fnamei);
+			if ((exceptionRegex).test(Fname)) continue;
+			if (Ffield.page.length) {
+				for (var i = 0; i < Ffield.page.length; i++) {
+					var Fnamei = Fname + "." + i;
+					var Ffieldi = tDoc.getField(Fnamei);
+					if (Ffieldi.display !== 1) {
 						FieldsRemember.push([Fnamei, Ffieldi.display]);
 						Ffieldi.display = 1
 					};
-				} else {
-					FieldsRemember.push([Fname, Ffield.display]);
-					Ffield.display = 1;
 				};
+			} else if (Ffield.display !== 1) {
+				FieldsRemember.push([Fname, Ffield.display]);
+				Ffield.display = 1;
 			};
 		};
 		thermoM("stop"); //stop the top progress dialog
