@@ -5378,7 +5378,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		if (resetFlds.length) tDoc.resetForm(resetFlds);
 	} else { //if not a known weapon or an empty field, still check if we need to set the checkmark for proficiency
 		for (var i = 0; i < CurrentWeapons.manualproficiencies.length; i++) {
-			if (CurrentWeapons.field[ArrayNmbr].toLowercase().indexOf(CurrentWeapons.manualproficiencies[i].toLowercase()) !== -1) {
+			if (CurrentWeapons.field[ArrayNmbr].toLowerCase().indexOf(CurrentWeapons.manualproficiencies[i].toLowerCase()) !== -1) {
 				Checkbox(fldBase + "Proficiency", true);
 				break;
 			};
