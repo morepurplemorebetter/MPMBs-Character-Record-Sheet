@@ -292,7 +292,6 @@ RaceList["joraga elf"] = {
 };
 RaceList["mul daya elf"] = {
 	regExpSearch : /^(?!.*half)(?=.*\b(elfs?|elves|elvish|elven)\b)(?=.*\bmul)(?=.*daya\b).*$/i,
-	regExpSearch : /^(?!.*half)((?=.*(silvanesti|qualinesti))|((?=.*\b(elfs?|elves|elvish|elven)\b)(?=.*\b(mul)(daya)\b))).*$/i,
 	name : "Mul Daya elf",
 	sortname : "Elf, Mul Daya",
 	source : ["PS:Z", 19],

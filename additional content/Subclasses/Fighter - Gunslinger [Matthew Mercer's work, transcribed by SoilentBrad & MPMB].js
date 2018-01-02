@@ -25,6 +25,7 @@ RequiredSheetVersion(12.999);
 AddSubClass("fighter", "gunslinger", {
 	regExpSearch : /gunslinger/i,
 	subname : "Gunslinger",
+	source : ["MM:GMA", 1],
 	fullname : "Gunslinger",
 	abilitySave : 2,
 	features : {
