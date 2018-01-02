@@ -657,25 +657,14 @@ function SetSpellCheckbox() {
 //generate a list of all the spells; if toDisplay = true it means this is meant for the drop-down boxes
 function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 	if (typeof inputObject === "string") {
-		switch (inputObject) {
-			case "eldritch knight" :
-				inputObject = {
-					class : "wizard",
-					school : ["Evoc", "Abjur"],
-					level : [0, 4], //lower and higher limit
-				};
-				break;
-			case "arcane trickster" :
-				inputObject = {
-					class : "wizard",
-					school : ["Ench", "Illus"],
-					level : [0, 4], //lower and higher limit
-				};
-				break;
-			default :
-				inputObject = {class : inputObject};
-		}
-	}
+		if (ClassList[inputObject] && ClassList[inputObject].spellcastingList) {
+			inputObject = ClassList[inputObject].spellcastingList;
+		} else if (ClassSubList[inputObject] && ClassSubList[inputObject].spellcastingList) {
+			inputObject = ClassSubList[inputObject].spellcastingList;
+		} else {
+			inputObject = {class : inputObject};
+		};
+	};
 	//define some arrays
 	var returnArray = [];
 	var spByLvl = {sp0 : [], sp1 : [], sp2 : [], sp3 : [], sp4 : [], sp5 : [], sp6 : [], sp7 : [], sp8 : [], sp9 : [], ps0 : [], ps1: []};
@@ -5047,7 +5036,13 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	//now we add all the spells of this single class into a new set of spell sheets
 	IsNotSpellSheetGenerating = false;
 	
-	var MeArray = ["cleric", "druid", "paladin", "wizard"];
+	//see if this is a 
+	var isPrep = false;
+	if (ClassList[thisClass] && ClassList[thisClass].spellcastingKnown) {
+		isPrep = ClassList[thisClass].spellcastingKnown.prepared;
+	} else if (ClassSubList[thisClass] && ClassSubList[thisClass].spellcastingKnown) {
+		isPrep = ClassSubList[thisClass].spellcastingKnown.prepared;
+	};
 	
 	var orderedSpellList = CreateSpellList(thisClass, false, false, true); //get an array of all the spells of the class, divided up in 1 array per spell level
 		
@@ -5064,7 +5059,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 			//add spell dependencies to fill out the array
 			spArray = addSpellDependencies(spArray);
 			spArray = spArray.concat(["___", "___", "___"]); //add three empty lines to the end of the level-array
-			var MeKn = isPsionics ? "##pp" : lvl === 0 ? "##Kn" : (MeArray.indexOf(thisClass) === -1 ? "##Kn" : "##Me");
+			var MeKn = isPsionics ? "##pp" : lvl === 0 ? "##Kn" : (isPrep ? "##Me" : "##Kn");
 			
 			//first test if there is enough space left on the current page to add what we need to
 			//assume that we need to add at least 10 of the spells, the total of this level of spells, whichever is less
@@ -5074,7 +5069,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 			
 			//the first spells to add needs a header in front of it
 			if (start) {
-				SetSpellSheetElement(prefixCurrent + "spells.remember.0", "header", 0, thisClass, MeArray.indexOf(thisClass) === -1);
+				SetSpellSheetElement(prefixCurrent + "spells.remember.0", "header", 0, thisClass, !isPrep);
 				start = false;
 			}
 			
