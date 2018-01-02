@@ -1009,10 +1009,10 @@ function ApplyWildshape() {
 	if (theCrea.wildshapeString) {
 		Value(traitsFld, theCrea.wildshapeString)
 	} else {
-		if (theCrea.languages) {
+/* 		if (theCrea.languages) {
 			var tempString = "\u25C6 Languages: " + theCrea.languages + ".";
 			AddString(traitsFld, tempString, true);
-		}
+		} */
 		var sensesToAdd = theCrea.senses.replace(/(\; )?Adv\..+(hearing|sight|smell)/i, ""); //avoid duplicating the information with regards to the keen hearing/sight/smell traits
 		if (sensesToAdd) {
 			AddString(traitsFld, "\u25C6 Senses: " + sensesToAdd, true); //set senses

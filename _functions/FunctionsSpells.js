@@ -708,7 +708,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 		if (addSp && inputObject.psionic !== undefined) {
 			addSp = aSpell.psionic ? aSpell.psionic == inputObject.psionic : !inputObject.psionic;
 		}
-		if (addSp || (extraArray && extraArray.indexOf(key) !== -1)) {
+		if (addSp || (inputObject.extraspells && inputObject.extraspells.indexOf(key) !== -1) || (extraArray && extraArray.indexOf(key) !== -1)) {
 			var SpPs = !aSpell.psionic ? "sp" : "ps";
 			var spName = getSpNm(key);
 			if (toDisplay) {
@@ -3618,12 +3618,14 @@ function MakeSpellMenu() {
 	for (var i = 2; i < AllCasterClasses.length; i++) {
 		var sClass = AllCasterClasses[i];
 		if (sClass === "any") continue;
-		CasterClasses.push([sClass === "-" ? sClass : "with all " + sClass.capitalize() + " spells", sClass]);
+		var sClassName = sClass === "-" ? "" : ClassList[sClass] ? ClassList[sClass].name : ClassSubList[sClass] ? ClassSubList[sClass].subname : sClass.capitalize();
+		CasterClasses.push([sClass === "-" ? sClass : "with all " + sClassName + " spells", sClass]);
 	};
 	for (var i = 1; i < AllPsionicClasses.length; i++) {
 		var sClass = AllPsionicClasses[i];
 		if (sClass === "any") continue;
-		CasterClasses.push([sClass === "-" ? sClass : "with all " + sClass.capitalize() + " psionics", sClass]);
+		var sClassName = sClass === "-" ? "" : ClassList[sClass] ? ClassList[sClass].name : ClassSubList[sClass] ? ClassSubList[sClass].subname : sClass.capitalize();
+		CasterClasses.push([sClass === "-" ? sClass : "with all " + sClassName + " psionics", sClass]);
 	};
 	if (CasterClasses.slice(-1)[0][0] !== "-") 	CasterClasses.push("-"); //add a hyphen, if it is not there already
 	CasterClasses = CasterClasses.concat([
@@ -4996,8 +4998,9 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 		Value("Opening Remember", "No");
 	}
 	//first ask the user if he really wants to wait for an hour
+	var thisClassName = ClassList[thisClass] ? ClassList[thisClass].name : ClassSubList[thisClass] ? ClassSubList[thisClass].subname : thisClass.capitalize();
 	var doGoOn = {
-		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClass.capitalize() + " class.\n\nThis will not include any access to spells granted by a subclass, or spells excluded in the Source Selection dialogue.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nThis process will take a very, very long time! For classes with a lot of spells, such as a Wizard, this could be well over an hour (or several hours, depending on your machine).\n\nAre you sure you want to continue?",
+		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClassName + " (sub)class.\n\nThis will not include any access to spells granted by a subclass, or spells excluded in the Source Selection dialogue.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nThis process will take a very, very long time! For classes with a lot of spells, such as a Wizard, this could be well over an hour (or several hours, depending on your machine).\n\nAre you sure you want to continue?",
 		nIcon: 2,
 		cTitle: "Continue with slow generation of complete spell sheet?",
 		nType: 2
@@ -5005,7 +5008,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	if (!skipdoGoOn && app.alert(doGoOn) !== 4) return;
 	
 	thermoM("start"); //start a progress dialog
-	thermoM("Generating the " + thisClass.capitalize() + " Spell Sheets..."); //change the progress dialog text
+	thermoM("Generating the " + thisClassName + " Spell Sheets..."); //change the progress dialog text
 	
 	thermoM(1/7); //increment the progress dialog's progress
 	
@@ -5036,7 +5039,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	//now we add all the spells of this single class into a new set of spell sheets
 	IsNotSpellSheetGenerating = false;
 	
-	//see if this is a 
+	//see if this is a prepared or known spell list
 	var isPrep = false;
 	if (ClassList[thisClass] && ClassList[thisClass].spellcastingKnown) {
 		isPrep = ClassList[thisClass].spellcastingKnown.prepared;

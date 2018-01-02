@@ -1206,6 +1206,74 @@ var Base_CreatureList = {
 			}
 		]
 	},
+	// Fungi
+	"shrieker" : {
+		name : "Shrieker",
+		source : [["SRD", 309], ["M", 138]],
+		size : 3, //Medium
+		type : "Plant",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 5,
+		hp : 13,
+		hd : [3, 8], //[#, die]
+		speed : "0 ft",
+		scores : [1, 1, 10, 1, 3, 1], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		condition_immunities : "blinded, deafened, frightened",
+		senses : "Blindsight 30 ft (blind beyond this radius).",
+		passivePerception : 6,
+		languages : "",
+		challengeRating : "0",
+		proficiencyBonus : 2,
+		attacksAction : 0,
+		attacks : [],
+		traits : [{
+				name : "False Appearance",
+				description : "While the shrieker remains motionless, it is indistinguishable from an ordinary fungus."
+			}
+		],
+		actions : [{
+				name : "Shriek",
+				description : "As a reaction when bright light or a creature is within 30 feet of the shrieker, it emits a shriek audible within 300 feet of it. The shrieker continues to shriek until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward."
+			}
+		],
+		wildshapeString : "\u25C6 Senses: blindsight 30 ft (blind beyond this radius).\n\u25C6 Condition Immunities: blinded, deafened, frightened.\n\u25C6 Shriek: As a reaction when bright light or a creature is within 30 ft of the shrieker, emits a shriek audible out to 300 ft. This continues until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward.\n\u25C6 False Appearance: While motionless, the shrieker is indistinguishable from an ordinary fungus."
+	},
+	"violet fungus" : {
+		name : "Violet Fungus",
+		source : [["SRD", 309], ["M", 138]],
+		size : 3, //Medium
+		type : "Plant",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 5,
+		hp : 18,
+		hd : [4, 8], //[#, die]
+		speed : "5 ft",
+		scores : [3, 1, 10, 1, 3, 1], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		condition_immunities : "blinded, deafened, frightened",
+		senses : "Blindsight 30 ft (blind beyond this radius).",
+		passivePerception : 6,
+		languages : "",
+		challengeRating : "1/4",
+		proficiencyBonus : 2,
+		attacksAction : "1",
+		attacks : [{
+				name : "Rotting Touch",
+				ability : 3,
+				damage : [1, 8, "necrotic"], //[#, die, type] "" for die is allowed
+				range : "Melee (10 ft)",
+				description : "1d4 rotting touch attacks as an Attack action"
+			}
+		],
+		traits : [{
+				name : "False Appearance",
+				description : "While the violet fungus remains motionless, it is indistinguishable from an ordinary fungus."
+			}
+		]
+	},
 	// Beasts (familiars, Ranger and general animal companions, and Druid Wild Shapes) [Miscellaneous Creatures Section]
 	"ape" : {
 		name : "Ape",
