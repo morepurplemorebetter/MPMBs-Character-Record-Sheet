@@ -2240,7 +2240,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 	};
 };
 
-// Define some custom script functions as document-level functions so they can be run from console
+// Define some custom import script functions as document-level functions so custom scripts including these can still be run from console
 function RequiredSheetVersion(versNmbr) {
 	var inNumber = parseFloat(versNmbr);
 	if (!inNumber || isNaN(inNumber) || inNumber <= sheetVersion) return;
@@ -2268,7 +2268,6 @@ function RunFunctionAtEnd(inFunc) {
 		});
 	};
 };
-
 
 // a way to add a racial variant without conflicts
 function AddRacialVariant(race, variantName, variantObj) {
