@@ -696,7 +696,8 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 		if (addSp && inputObject.level) {
 			addSp = aSpell.level >= inputObject.level[0] && aSpell.level <= inputObject.level[1];
 		}
-		if (addSp && inputObject.school && aSpell.level !== 0) { //only check for school if not a cantrip
+		if (addSp && inputObject.school && !(inputObject.level && inputObject.level[1] > 0 && aSpell.level === 0)) {
+			//only check for school if not a cantrip and not only looking for cantrips
 			addSp = inputObject.school.indexOf(aSpell.school) !== -1;
 		}
 		if (addSp && inputObject.attackOnly) {
