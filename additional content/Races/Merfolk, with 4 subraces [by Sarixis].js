@@ -27,7 +27,6 @@ RaceList["ocean merfolk"] = {
 		walk : { spd : 10, enc : 5 },
 		swim : { spd : 40, enc : 30 }
 	},
-	speed : ["10 ft\n40 ft swim", "5 ft\n30 ft swim"],
 	languageProfs : ["Common", "Aquan"],
 	weaponprofs : [false, false, ["spear", "shortsword", "trident", "net"]],
 	skills : ["Perception", "Performance"],
