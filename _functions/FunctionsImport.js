@@ -2155,7 +2155,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 	var ScriptAtEnd = [];
 	var minSheetVersion = 0;
 	var RunFunctionAtEnd = function(inFunction) {
-		if (typeof inFunction === "function") ScriptAtEnd.push(inFunction);
+		if (inFunction && typeof inFunction === "function") ScriptAtEnd.push(inFunction);
 	};
 	var runIt = function(aScript, scriptName, isManual) {
 		var RequiredSheetVersion = function(inNumber) {
@@ -2239,6 +2239,36 @@ function RunUserScript(atStartup, manualUserScripts) {
 		return scriptsResult;
 	};
 };
+
+// Define some custom script functions as document-level functions so they can be run from console
+function RequiredSheetVersion(versNmbr) {
+	var inNumber = parseFloat(versNmbr);
+	if (!inNumber || isNaN(inNumber) || inNumber <= sheetVersion) return;
+	app.alert({
+		cMsg : "The RequiredSheetVersion() function in your script suggests that the script is made for v" + inNumber + " of MPMB's Character Record Sheets.\nTake not that you are executing this script in a sheet of v" + sheetVersion + " and might thus not work properly.\nOr perhaps you are using the RequiredSheetVersion() function wrongly.",
+		nIcon : 2,
+		cTitle : "Script was made for newer version!"
+	});
+};
+function RunFunctionAtEnd(inFunc) {
+	if (!inFunc && typeof inFunc !== "function") return;
+	var funcstart = inFunc.toString().replace(/function *\([^)]*\) *{(\r\n)*\t*/i,"").substr(0,50);
+	app.alert({
+		cMsg : "The script you are running from the console contains the function RunFunctionAtEnd(). This function can be exectured from the console, but will be executed immediately after you close this dialogue, and not at the end of all the code you are trying to run from console. When you import this script as a file, or manually paste it into the dialogue for scripts, it will be run at the end of all scripts as intended.\n\nAfter clicking 'OK', the function will be run that starts with the following:\n\t\"" + funcstart + "...\"",
+		nIcon : 1,
+		cTitle : "RunFunctionAtEnd() works different when executed from the console"
+	});
+	try {
+		inFunc();
+	} catch(e) {
+		app.alert({
+			cMsg : "The function entered in 'RunFunctionAtEnd()', that starts with:\n\t\"" + funcstart + "...\"\nproduces the following error, which might be because it was run from the console:\n\n" + e,
+			nIcon : 0,
+			cTitle : "Error in RunFunctionAtEnd() from user script(s)"
+		});
+	};
+};
+
 
 // a way to add a racial variant without conflicts
 function AddRacialVariant(race, variantName, variantObj) {
