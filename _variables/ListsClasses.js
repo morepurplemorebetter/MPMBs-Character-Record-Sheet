@@ -1689,7 +1689,7 @@ var Base_ClassList = {
 					description : "\n   " + "As an action, I can create a pact weapon in my empty hand; I'm proficient in its use" + "\n   " + "I can choose the type of melee weapon every time I create it, and it has those statistics" + "\n   " + "The weapon disappears if it is more than 5 ft away from me for 1 minute" + "\n   " + "The weapon counts as magical; I can transform a magic weapon into my pact weapon" + "\n   " + "This occurs over an hour-long ritual that I can perform during a short rest" + "\n   " + "I can use an action to re-summon it in any form and can dismiss it as no action",
 					action : ["action", ""],
 					calcChanges : {
-						atkAdd : ["if (WeaponName === 'moon bow' || (isMeleeWeapon && (/\\bpact\\b/i).test(inputText))) {fields.Proficiency = true; fields.Description += thisWeapon[1] ? '' : (fields.Description ? '; ' : '') + 'Counts as magical'; }; ", "If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."]
+						atkAdd : ["if (WeaponName === 'moon bow' || (isMeleeWeapon && (/\\bpact\\b/i).test(WeaponText))) {fields.Proficiency = true; fields.Description += thisWeapon[1] ? '' : (fields.Description ? '; ' : '') + 'Counts as magical'; }; ", "If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."]
 					}
 				},
 				"pact of the chain" : {
