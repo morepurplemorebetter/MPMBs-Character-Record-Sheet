@@ -2324,7 +2324,7 @@ function AddWarlockInvocation(invocName, invocObj) {
 	var suffix = 1;
 	while (warInv.extrachoices.indexOf(useName) !== -1) {
 		suffix += 1;
-		useName += invocName + " [" + suffix + "]";
+		useName = invocName + " [" + suffix + "]";
 	};
 	warInv.extrachoices.push(useName);
 	warInv[useName.toLowerCase()] = invocObj;
