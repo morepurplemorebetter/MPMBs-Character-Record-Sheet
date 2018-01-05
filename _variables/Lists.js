@@ -62,7 +62,7 @@ var UnitsList = {
 		volume : 28.316846592,
 		surface : 0.09290304,
 		distance : 1.609344
-	},
+	}
 }
 
 var AbilityScores = {
@@ -250,7 +250,7 @@ var classes = {
 	extraskills : [],
 	primary : "",
 	spellcastlvl : {default : 0, warlock : 0},
-	oldspellcastlvl : {default : 0, warlock : 0},
+	oldspellcastlvl : {default : 0, warlock : 0}
 };
 
 var CurrentClasses = {};
@@ -325,7 +325,7 @@ var FieldNumbers = {
 	extragear : typePF ? 36 : 42,
 	gearMIrow : typePF ? 51 : 43,
 	compgear : typePF ? 17 : 24,
-	limfea : 16,
+	limfea : 16
 }
 
 var CurrentRace = {};
@@ -475,7 +475,7 @@ var SkillsList = {
 		"Persuasion",
 		"Initiative",
 		"Tool"
-	],
+	]
 };
 
 var DamageTypes = {
@@ -517,7 +517,7 @@ var DamageTypes = {
 	},
 	"thunder" : {
 		index : 13
-	},
+	}
 };
 
 //The dialog for setting the pages to print
@@ -685,7 +685,7 @@ var SetPrintPages_Dialog = {
 							type : "check_box",
 							item_id : "Pag9",
 							name : "Spell Sheet(s)"
-						}, ]
+						}]
 					}, {
 						type : "view",
 						elements : [{
@@ -712,8 +712,8 @@ var SetPrintPages_Dialog = {
 							type : "check_box",
 							item_id : "Pag0",
 							name : "Reference sheet"
-						}, ]
-					}, ]
+						}]
+					}]
 				}, {
 					type : "cluster",
 					align_children : "align_left",
@@ -730,7 +730,7 @@ var SetPrintPages_Dialog = {
 							item_id : "sing",
 							group_id : "prin",
 							name : "Simplex printing (single side)"
-						}, ]
+						}]
 					}, {
 						type : "view",
 						elements : [{
@@ -741,8 +741,8 @@ var SetPrintPages_Dialog = {
 							wrap_name : true,
 							char_width : 38,
 							name : "Note that this cannot be changed in the next dialog, the print pop-up. The selection you make here will always override anything you do in the next dialog or print settings."
-						}, ]
-					}, ]
+						}]
+					}]
 				},  {
 					type : "cluster",
 					align_children : "align_distribute",
@@ -750,17 +750,17 @@ var SetPrintPages_Dialog = {
 						type : "check_box",
 						item_id : "Hide",
 						name : "Hide all fields as to print a truly empty sheet to fill out by hand"
-					}, ]
+					}]
 				}, {
 					type : "gap",
 					height : 8
-				}, ]
+				}]
 			}, {
 				type : "ok_cancel_other",
 				ok_name : "Print",
 				other_name : "Remember"
-			}, ]
-		}, ]
+			}]
+		}]
 	}
 };
 
@@ -853,7 +853,7 @@ var SetToManual_Dialog = {
 								type : "static_text",
 								item_id : "tAtt",
 								name : "No drop-down box; to hit and damage are calculated manually"
-							}, ]
+							}]
 						}, {
 							type : "view",
 							align_children : "align_row",
@@ -868,7 +868,7 @@ var SetToManual_Dialog = {
 								type : "static_text",
 								item_id : "tBac",
 								name : "Do nothing when changing the background"
-							}, ]
+							}]
 						}, {
 							type : "view",
 							align_children : "align_row",
@@ -883,7 +883,7 @@ var SetToManual_Dialog = {
 								type : "static_text",
 								item_id : "tCla",
 								name : "Do nothing when changing the class or level"
-							}, ]
+							}]
 						}, {
 							type : "view",
 							align_children : "align_row",
@@ -898,7 +898,7 @@ var SetToManual_Dialog = {
 								type : "static_text",
 								item_id : "tFea",
 								name : "Stop auto-calculation and auto-fill for feats"
-							}, ]
+							}]
 						}, {
 							type : "view",
 							align_children : "align_row",
@@ -913,18 +913,18 @@ var SetToManual_Dialog = {
 								type : "static_text",
 								item_id : "tRac",
 								name : "Do nothing when changing the race"
-							}, ]
-						}, ]
-					}, ]
+							}]
+						}]
+					}]
 				}, {
 					type : "gap",
 					height : 8
-				}, ]
+				}]
 			}, {
 				type : "ok_cancel",
 				ok_name : "Apply"
-			}, ]
-		}, ]
+			}]
+		}]
 	}
 };
 
@@ -972,7 +972,7 @@ var ColorList = {
 	yellow : { //cleric
 		RGB : ["RGB", 0.9529, 0.5725, 0],
 		CMYK : ["CMYK", 0, 0.5, 1, 0]
-	}, //f39200
+	} //f39200
 } //for gradients, add 15% brightness as BHS color
 
 var DarkColorList = {
@@ -986,7 +986,7 @@ var DarkColorList = {
 	purple : ["CMYK", 0.76, 1, 0.03, 0.5], //401150
 	red : ["CMYK", 0.18, 1, 0.91, 0.58], //6e110b
 	teal : ["CMYK", 0.79, 0.12, 0.45, 0.5], //00645f
-	yellow : ["CMYK", 0, 0.5, 1, 0.5], //935b00
+	yellow : ["CMYK", 0, 0.5, 1, 0.5] //935b00
 } // +50% black
 
 var LightColorList = {
@@ -1000,7 +1000,7 @@ var LightColorList = {
 	purple : ["CMYK", 0.58, 0.78, 0.01, 0], //844e99
 	red : ["CMYK", 0.1, 0.79, 0.55, 0], //db535c
 	teal : ["CMYK", 0.7, 0, 0.35, 0], //26bdb8
-	yellow : ["CMYK", 0, 0.38, 0.82, 0], //f8ad3c
+	yellow : ["CMYK", 0, 0.38, 0.82, 0] //f8ad3c
 }
 
 //The dialog for setting the unit system and decimal
@@ -1099,7 +1099,7 @@ var SetUnitDecimals_Dialog = {
 							item_id : "SyMe",
 							group_id : "Syst",
 							name : "Metric"
-						}, ]
+						}]
 					}, {
 						type : "gap",
 						char_width : 3
@@ -1119,16 +1119,16 @@ var SetUnitDecimals_Dialog = {
 							item_id : "DeCo",
 							group_id : "Deci",
 							name : "Comma (and dot as thousands separator)"
-						}, ]
-					}, ]
+						}]
+					}]
 				}, {
 					type : "gap",
 					height : 8
-				}, ]
+				}]
 			}, {
 				type : "ok_cancel"
-			}, ]
-		}, ]
+			}]
+		}]
 	}
 };
 
@@ -1418,7 +1418,7 @@ var SetTextOptions_Dialog = {
 							height : 20,
 							font : "dialog",
 							bold : true
-						}, ]
+						}]
 					}, {
 						type : "view",
 						align_children : "align_distribute",
@@ -1433,7 +1433,7 @@ var SetTextOptions_Dialog = {
 							type : "popup",
 							item_id : "fAlS",
 							char_width : 10
-						}, ]
+						}]
 					}, {
 						type : "view",
 						align_children : "align_distribute",
@@ -1449,8 +1449,8 @@ var SetTextOptions_Dialog = {
 							item_id : "fOtS",
 							char_width : 20,
 							height : 20
-						}, ]
-					}, ]
+						}]
+					}]
 				}, {
 					type : "cluster",
 					align_children : "align_left",
@@ -1474,7 +1474,7 @@ var SetTextOptions_Dialog = {
 							height : 20,
 							font : "dialog",
 							bold : true
-						}, ]
+						}]
 					}, {
 						type : "view",
 						align_children : "align_left",
@@ -1484,7 +1484,7 @@ var SetTextOptions_Dialog = {
 							item_id : "sAut",
 							group_id : "Size",
 							name : "Auto font size. The text will resize to the size of the field."
-						}, ]
+						}]
 					}, {
 						type : "view",
 						align_children : "align_distribute",
@@ -1500,25 +1500,25 @@ var SetTextOptions_Dialog = {
 							char_width : 4,
 							height : 20,
 							SpinEdit : true
-						}, ]
-					}, ]
+						}]
+					}]
 				}, {
 					type : "gap",
 					height : 8
-				}, ]
+				}]
 			}, {
 				type : "ok_cancel"
-			}, ]
-		}, ]
+			}]
+		}]
 	}
-}
+};
 
 var Highlighting = {
 	initialState : app.runtimeHighlight,
 	initialColor : app.runtimeHighlightColor,
 	rememberState : eval(tDoc.getField("Highlighting").value),
-	rememberColor : tDoc.getField("Highlighting").fillColor,
-}
+	rememberColor : tDoc.getField("Highlighting").fillColor
+};
 
 var defaultSpellTable = [
 	[0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -1585,7 +1585,7 @@ var compString = {
 				"\n\u2022 " + "While my steed is within 1 mile of me, I can communicate with it telepathically" +
 				"\n\u2022 " + "I can dismiss my steed at any time as an action, causing it to disappear" +
 				"\n\u2022 " + "Casting this spell again summons the same steed, restored to its max HP, without conditions" +
-				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond",
+				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond"
 		actions : [["action", "Find Steed (dismiss)"]],
 		actionTooltip : "the Find Steed spell"
 	},
@@ -1603,7 +1603,7 @@ var compString = {
 				"\n\u2022 " + "While my steed is within 1 mile of me, I can communicate with it telepathically" +
 				"\n\u2022 " + "I can dismiss my steed at any time as an action, causing it to disappear" +
 				"\n\u2022 " + "Casting this spell again summons the same steed, restored to its max HP, without conditions" +
-				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond",
+				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond"
 		actions : [["action", "Find Greater Steed (dismiss)"]],
 		actionTooltip : "the Find Greater Steed spell"
 	},
@@ -1625,7 +1625,7 @@ var compString = {
 			"\n\u2022 " + "I can't have more than one familiar bonded at a time; as an action, I can dismiss it forever" +
 			"\n\u2022 " + "When I cast a spell with a range of touch, my familiar can deliver the spell" +
 			"\n   " + "It must be within 100 ft of me and it must use its reaction to deliver the spell when I cast it" +
-			"\n   " + "It acts as if it cast the spells, but it can use my modifiers for any attack rolls the spell requires",
+			"\n   " + "It acts as if it cast the spells, but it can use my modifiers for any attack rolls the spell requires"
 		actions : [["action", "Find Familiar (dismiss/reappear)"], ["action", "Use familiar's senses"]],
 		actionTooltip : "the Find Familiar spell"
 	},
@@ -1649,7 +1649,7 @@ var compString = {
 			"\n\u2022 " + "I can't have more than one familiar bonded at a time; as an action, I can dismiss it forever" +
 			"\n\u2022 " + "When I cast a spell with a range of touch, my familiar can deliver the spell" +
 			"\n   " + "It must be within 100 ft of me and it must use its reaction to deliver the spell when I cast it" +
-			"\n   " + "It acts as if it cast the spells, but it can use my modifiers for any attack rolls the spell requires",
+			"\n   " + "It acts as if it cast the spells, but it can use my modifiers for any attack rolls the spell requires"
 		actions : [["action", "Have familiar attack (part of my Attack action)"], ["action", "Familiar (dismiss/reappear)"], ["action", "Use familiar's senses"]],
 		actionTooltip : "Warlock (Pact of the Chain)"
 	},
@@ -1680,7 +1680,7 @@ var compString = {
 			"\n\u2022 " + "My companion obeys my commands as best it can, or act on its own if I can't command it" +
 			"\n\u2022 " + "My companion rolls for initiative and takes actions as normal, but can't use Multiattack" +
 			"\n\u2022 " + "When moving stealthily together with only my companion, we can move at a normal pace" +
-			"\n\u2022 " + "My companion gains a bonus on damage rolls against my favored enemies just like me",
+			"\n\u2022 " + "My companion gains a bonus on damage rolls against my favored enemies just like me"
 		actions : []
 	},
 	mechanicalserv : {
@@ -1694,9 +1694,9 @@ var compString = {
 			"\n  " + "I can build a new servant by spending 8 hours a day for 7 days and 1000 gp of materials" +
 			"\n\u2022 " + "The servant rolls initiative and takes actions as normal, obeying my commands as best it can" +
 			"\n\u2022 " + "As a reaction when I am attacked in melee and my mechanical servant is within 5 ft of me," +
-			"\n  I can command the servant to use its reaction to make a melee attack against the attacker",
+			"\n  I can command the servant to use its reaction to make a melee attack against the attacker"
 		actions : [["reaction", "Mechanical Servant (if attacked)"]]
-	},
+	}
 };
 
 //list of recommended fonts and there size to use
@@ -1706,7 +1706,7 @@ var FontList = {
 	"SegoeUI-Semibold" : !typePF ? 6.3 : 6.9,
 	"Garamond" : !typePF ? 7.7 : 8.45,
 	"TimesNewRoman" : !typePF ? 7.4 : 8.1,
-	"Calibri" : !typePF ? 7.47 : 8.2,
+	"Calibri" : !typePF ? 7.47 : 8.2
 };
 
 //list of field names that correspond to the name of the bookmark
@@ -1848,7 +1848,7 @@ var BookMarkList = {
 	"Logsheet Entry 7" : "Text.AdvLog.7",
 	
 	"Reference Sheet" : "PRsheet.toFocus.1",
-	"Reference Sheet_template" : "PRsheet",
+	"Reference Sheet_template" : "PRsheet"
 };
 
 var TemplateNames = {
@@ -1878,15 +1878,15 @@ var TemplateDep = {
 	"SSfront" : ["WSfront", "ASnotes", "AScomp", "ASbackgr", "ASoverflow", "ASfront"],
 	"SSmore" : ["SSfront", "WSfront", "ASnotes", "AScomp", "ASbackgr", "ASoverflow", "ASfront"],
 	"ALlog" : ["SSmore", "SSfront", "WSfront", "ASnotes", "AScomp", "ASbackgr", "ASoverflow", "ASfront"],
-	"PRsheet" : ["ALlog", "SSmore", "SSfront", "WSfront", "ASnotes", "AScomp", "ASbackgr", "ASoverflow", "ASfront"],
-}
+	"PRsheet" : ["ALlog", "SSmore", "SSfront", "WSfront", "ASnotes", "AScomp", "ASbackgr", "ASoverflow", "ASfront"]
+};
 
 var TemplateResetRanges = {
 	"AScomp" : ["Comp", "Text.Comp", "Companion", "Cnote", "BlueText.Comp"],
 	"ASnotes" : ["Notes"],
 	"WSfront" : ["Wildshape.Race"],
-	"ALlog" : ["AdvLog", "Text.AdvLog"],
-}
+	"ALlog" : ["AdvLog", "Text.AdvLog"]
+};
 
 var thermoCount = [];
 var thermoDur = {};
@@ -1900,7 +1900,7 @@ var factionRanks = {
 		"Autumnreaver (rank 3)",
 		"Winterstalker (rank 4)",
 		"Master of the Wild (rank 5)"
-		],
+	],
 	"harpers" : [
 		"",
 		"Watcher (rank 1)",
@@ -1908,7 +1908,7 @@ var factionRanks = {
 		"Brightcandle (rank 3)",
 		"Wise Owl (rank 4)",
 		"High Harper (rank 5)"
-		],
+	],
 	"lordsalliance" : [
 		"",
 		"Cloak (rank 1)",
@@ -1916,7 +1916,7 @@ var factionRanks = {
 		"Stingblade (rank 3)",
 		"Warduke (rank 4)",
 		"Lioncrown (rank 5)"
-		],
+	],
 	"ordergauntlet" : [
 		"",
 		"Chevall (rank 1)",
@@ -1924,7 +1924,7 @@ var factionRanks = {
 		"Whitehawk (rank 3)",
 		"Vindicator (rank 4)",
 		"Righteous Hand (rank 5)"
-		],
+	],
 	"zhentarim" : [
 		"",
 		"Fang (rank 1)",
@@ -1932,7 +1932,7 @@ var factionRanks = {
 		"Viper (rank 3)",
 		"Ardragon (rank 4)",
 		"Dread Lord (rank 5)"
-		]
+	]
 }
 
 var LinksLatest = {
