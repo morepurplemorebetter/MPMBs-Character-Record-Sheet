@@ -4953,7 +4953,7 @@ function CheckForSpellUpdate() {
 
 //call a dialogue to see if the user wants to update the spell sheets
 function AskForSpellUpdate() {
-	if (eval(What("SpellSheetUpdate.Remember"))) return;
+	if (eval(What("SpellSheetUpdate.Remember")) || !IsNotReset || !IsNotImport) return;
 	//update the sheet so that users don't think that their previous class/race changes have not been committed
 	tDoc.calculate = true;
 	tDoc.delay = false;

@@ -549,6 +549,7 @@ function ResetAll(GoOn, noTempl) {
 	ApplyProficiencies(true);
 	CurrentClasses = {};
 	classes.known = {};
+	classes.old = {};
 	classes.extraskills = [];
 	CurrentRace = {};
 	CurrentBackground = {};
@@ -5719,7 +5720,9 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					}
 					
 					// --- add or remove bonus spells in the CurrentSpells variable, if defined --- //
-					var spellBonus = !CheckFea ? false : (propFea.spellcastingBonus ? propFea.spellcastingBonus : (FeaChoice && propFea[FeaChoice].spellcastingBonus ? propFea[FeaChoice].spellcastingBonus : false));
+					var feaChoiceSpellBonus = FeaChoice && propFea[FeaChoice].spellcastingBonus;
+					var spellBonus = !CheckFea ? false : propFea.spellcastingBonus ? propFea.spellcastingBonus : feaChoiceSpellBonus ? propFea[FeaChoice].spellcastingBonus : false;
+					var spellProp = prop + (feaChoiceSpellBonus ? "-" + FeaChoice : "");
 					if (spellBonus && propFea.minlevel <= newClassLvl[aClass]) {//if gaining the level
 						//first see if the entry exists or not, and create it if it doesn't
 						if (!CurrentSpells[aClass]) {
@@ -5734,10 +5737,10 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 								CurrentSpells[aClass].firstCol = propFea.spellFirstColTitle;
 							}
 						}
-						CurrentSpells[aClass].bonus[prop] = spellBonus;
+						CurrentSpells[aClass].bonus[spellProp] = spellBonus;
 						UpdateSpellSheets.class = true;
-					} else if (spellBonus && CurrentSpells[aClass].bonus[prop]) {//if losing the level and the thing is defined
-						delete CurrentSpells[aClass].bonus[prop];
+					} else if (spellBonus && CurrentSpells[aClass].bonus[spellProp]) {//if losing the level and the thing is defined
+						delete CurrentSpells[aClass].bonus[spellProp];
 						if (!temp.spellcastingFactor) { //the class has no spellcasting other than these bonus things, so check if there is any left after deleting this one
 							var bonusTest = true;
 							for (var tester in CurrentSpells[aClass].bonus) {
@@ -6319,14 +6322,14 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 		//add, if defined, bonus spells of the feature, and undo, if defined bonus spells of previous if changed
 		var checkSpellObj = false;
 		if (FeaOldChoice && theOldSubFea.spellcastingBonus) {
-			delete cSpells.bonus[FeaOldChoice];
+			delete cSpells.bonus[MenuSelection[1] + "-" + FeaOldChoice];
 			checkSpellObj = true;
 		} else if (AddOrRemove === "remove" && theOldSubFea.spellcastingBonus) {
-			delete cSpells.bonus[MenuSelection[2]];
+			delete cSpells.bonus[MenuSelection[1] + "-" + MenuSelection[2]];
 			checkSpellObj = true;
 		}
 		if (theSubFea.spellcastingBonus && AddOrRemove !== "remove") {
-			cSpells.bonus[MenuSelection[2]] = theSubFea.spellcastingBonus;
+			cSpells.bonus[MenuSelection[1] + "-" + MenuSelection[2]] = theSubFea.spellcastingBonus;
 			if (theSubFea.spellFirstColTitle) {
 				cSpells.firstCol = theSubFea.spellFirstColTitle;
 			}
@@ -6370,22 +6373,22 @@ function AddACMisc(ACbonus, Name, Tooltip, submitNm) {
 		var Mod = tDoc.getField(ACMiscFlds[i][0]);
 		var Desc = tDoc.getField(ACMiscFlds[i][1]);
 		if (ACbonus !== 0) { //if adding something
-			if (Desc.userName === Tooltip || Desc.value === Name) {
-				i = 2
+			if (Desc.value.toLowerCase() === Name.toLowerCase() || Desc.userName === Tooltip) {
+				break;
 			} else if (!Mod.value) {
 				Mod.value = ACbonus;
 				Desc.value = Name;
 				Desc.userName = Tooltip;
 				Desc.submitName = submitNm ? submitNm : "";
-				i = 2
-			}
+				break;
+			};
 		} else { //if removing something
 			if (Desc.value.toLowerCase() === Name.toLowerCase() || Desc.userName === Tooltip) {
 				Mod.value = "";
 				Desc.value = "";
 				Desc.userName = "";
 				Desc.submitName = "";
-				i = 2
+				break;
 			}
 		}
 	}
