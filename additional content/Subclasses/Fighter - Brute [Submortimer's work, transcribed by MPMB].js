@@ -40,10 +40,10 @@ var theCoD = AddSubClass("fighter", "brute-giantitp", {
 			minlevel : 3,
 			description : "\n   " + "I can do additional damage with weapons that have the heavy property",
 			additional : levels.map(function (n) { 
-				return n < 2 ? "" : "+1d" + (n < 10 ? 4 : n < 18 ? 6 : 8) + " damage";
+				return n < 3 ? "" : "+1d" + (n < 10 ? 4 : n < 18 ? 6 : 8) + " damage";
 			}),
 			calcChanges : {
-				atkAdd : ["if (classes.known.fighter && classes.known.fighter.level > 2 && (/heavy/i).test(fields.Description)) {fields.Description += (fields.Description ? '; ' : '') + '+1d' + (classes.known.fighter.level < 10 ? 4 : classes.known.fighter.level < 18 ? 6 : 8) + ' damage'}; ", "I do +1d4 damage with weapons that have the heavy property. This increases to 1d6 at 10th level and 1d8 at 18th level"]
+				atkAdd : ["if (classes.known.fighter && classes.known.fighter.level > 2 && (/heavy/i).test(fields.Description)) {fields.Description += (fields.Description ? '; ' : '') + '+1d' + (classes.known.fighter.level < 10 ? 4 : classes.known.fighter.level < 18 ? 6 : 8) + ' damage'}; ", "I do +1d4 damage with weapons that have the heavy property. This increases to 1d6 at 10th level and 1d8 at 18th level."]
 			}
 		},
 		"subclassfeature7" : {

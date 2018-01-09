@@ -947,8 +947,8 @@ UpdateHybridForm = function() {
 	//give an alert about what is going on
 	if (BHlevelOld <= 2 && BHlevelNew > 2) {
 		app.alert({
-			cTitle : "Order of thy Lycan's Hybrid form is on the Notes page",
-			cMsg : "You can find the rules for the Hybrid form on the first \"Notes\" page, (page no. " + (tDoc.getField(NotesPrefix + "Notes.Left").page + 1) + ").\n\nThe Hybrid form you gain with the Hybrid Transformation class feature from Blood Hunter (Order of thy Lycan) has a lot of rules attached to it. Because of this, it is not possible to put them in the \"Class Features\". Additionally, all the Blood Curses and Crimson Rites take up all the space of the third page's Notes section. Thus, the rules for this Hybrid form will be put on the first \"Notes\" page and will be updated there.",
+			cTitle : "Order of thy Lycan's Hybrid Form is on the Notes page",
+			cMsg : "You can find the rules for the Hybrid Form on the first \"Notes\" page, (page no. " + (tDoc.getField(NotesPrefix + "Notes.Left").page + 1) + ").\n\nThe Hybrid Form you gain with the Hybrid Transformation class feature from Blood Hunter (Order of thy Lycan) has a lot of rules attached to it. Because of this, it is not possible to put them in the \"Class Features\". Additionally, all the Blood Curses and Crimson Rites take up all the space of the third page's Notes section. Thus, the rules for this Hybrid Form will be put on the first \"Notes\" page and will be updated there.",
 			nIcon : 3
 		});
 	};
