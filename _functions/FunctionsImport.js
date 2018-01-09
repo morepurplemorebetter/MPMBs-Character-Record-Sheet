@@ -2358,7 +2358,7 @@ function ImportUserScriptFile(filePath) {
 	if (!iFileStream) return false;
 	var iFileCont = util.stringFromStream(iFileStream);
 	var iFileName = (/var iFileName ?= ?"([^"]+)";/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?"([^"]+)";/)[1] : (/var iFileName ?= ?'([^']+)';/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?'([^']+)';/)[1] : false;
-	var useFileName = iFileName ? util.printd("yyyy/mm/dd", new Date()) + " - " + iFileName : util.printd("yyyy/mm/dd hh:mm", new Date()) + " - " + "no iFileName";
+	var useFileName = iFileName ? util.printd("yyyy/mm/dd", new Date()) + " - " + iFileName : util.printd("yyyy/mm/dd HH:mm", new Date()) + " - " + "no iFileName";
 	var iFileNameMatch = false;
 	if (iFileName) {
 		for (var aFileName in CurrentScriptFiles) {
@@ -2424,7 +2424,10 @@ function ImportScriptFileDialog(retResDia) {
 		scrF: function(dialog) {
 			var allElem = dialog.store()["scrF"];
 			var remElem = GetPositiveElement(allElem);
-			if (remElem) dialog.load({ bRem : "Delete file '" + remElem + "'"});
+			if (remElem) {
+				var remElemNm = "'" + (remElem.length > 50 ? remElem.substr(0,50) + "..." : remElem) + "'";
+				dialog.load({ bRem : "Delete file " + remElemNm});
+			};
 		},
 		bAdd: function(dialog) {
 			ImportUserScriptFile();
