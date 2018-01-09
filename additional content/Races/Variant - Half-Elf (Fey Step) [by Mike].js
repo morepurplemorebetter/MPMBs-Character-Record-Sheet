@@ -1,18 +1,18 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Race
-	Effect:		This script adds a racial variant for the Half-Elf, called "Half-Eladrin"
-				This is based on the Eladrin race
-	Code by:	Mike (with amendments by MorePurpleMoreBetter)
-	Date:		2017-11-29 (sheet v12.999)
+/*  -INFORMATION-
+  Subject:  Race
+  Effect:   This script adds a racial variant for the Half-Elf, called "Half-Eladrin"
+        This is based on the Eladrin race
+  Code by:  Mike (with amendments by MorePurpleMoreBetter)
+  Date:   2017-11-29 (sheet v12.999)
 */
 
 var iFileName = 'Variant - Half-Elf (Fey Step) [by Mike].js'

@@ -1,17 +1,17 @@
-/*	-WHAT IS THIS?-
-	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
-	To add your own content to the Character Sheet, use the syntax below and save it in a file. You can then import this file directly to the sheet using the "Import" button and "Import/Export" bookmark.
-	There you can either import the file as a whole or just copy the text into a dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+  To add your own content to the Character Sheet, use the syntax below and save it in a file. You can then import this file directly to the sheet using the "Import" button and "Import/Export" bookmark.
+  There you can either import the file as a whole or just copy the text into a dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
-	It is recommended to enter the code in a freshly downloaded or reset sheet before adding any other information so that there won't be any conflicts.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
+  It is recommended to enter the code in a freshly downloaded or reset sheet before adding any other information so that there won't be any conflicts.
 */
 
-/*	-INFORMATION-
-	Subject:	Background and Background Feature
-	Effect:		This is the syntax for adding a new background and the syntax for adding a new background feature below it
-	Sheet:		v12.999 (2017-12-16)
+/*  -INFORMATION-
+  Subject:  Background and Background Feature
+  Effect:   This is the syntax for adding a new background and the syntax for adding a new background feature below it
+  Sheet:    v12.999 (2017-12-16)
 */
 
 var iFileName = 'Homebrew Syntax - BackgroundList & BackgroundFeatureList.js' // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -31,14 +31,14 @@ BackgroundList['where i am from'] = { // Object name; Note the use of only lower
   gold: 15, // required; the amount of gold pieces added to the Equipment section on the second page when selecting "Background's items and gold" from the "Add Equipment" menu.
 
   equipleft: [ // optional; syntax is: ["description", "amount", "weight"]. Put "" if it is nothing, don't put 0
-		['Scroll of pedigree', '', ''],
-		['Skin of fine zzar or wine', '', 5]
+    ['Scroll of pedigree', '', ''],
+    ['Skin of fine zzar or wine', '', 5]
   ], // items as they are added to the left column of the Equipment section on the second page when selecting "Background's items and gold" from the "Add Equipment" menu.
 
   equipright: [ // optional; samy syntax as "equipleft"
-		['Dark, common clothes with hood', '', 3],
-		['Crowbar', '', 5],
-		['Belt pouch (with coins)', '', 1]
+    ['Dark, common clothes with hood', '', 3],
+    ['Crowbar', '', 5],
+    ['Belt pouch (with coins)', '', 1]
   ],
 
   feature: 'Exceptional Quality', // required; the name of the background feature as it will appear on the sheet. The feature is then retrieved from the BackgroundFeatureList, see below

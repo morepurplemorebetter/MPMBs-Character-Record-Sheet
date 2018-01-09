@@ -1,29 +1,29 @@
 /*  -WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
 /*  -INFORMATION-
-	Subject:	Subclass
-	Effect:		This script adds a subclass for the Monk, called "Way of the Four Elements Remastered"
-				This is a homebrewed subclass that tries to fix the PHB subclass "Way of the Four Elements"
-	Code by:	AKA_Sketch & MorePurpleMoreBetter
-	Date:		2017-11-29 (sheet v12.999)
+  Subject:  Subclass
+  Effect:   This script adds a subclass for the Monk, called "Way of the Four Elements Remastered"
+        This is a homebrewed subclass that tries to fix the PHB subclass "Way of the Four Elements"
+  Code by:  AKA_Sketch & MorePurpleMoreBetter
+  Date:   2017-11-29 (sheet v12.999)
 
-	This is a fan-made homebrew to replace the "Way of the Four Elements" subclass.
+  This is a fan-made homebrew to replace the "Way of the Four Elements" subclass.
 
-	This code is based on version 2.0 (2017-02-18) by /u/IrisBandit, found here: https://drive.google.com/file/d/0B5ttoyMfsaC7dzJ2SVdKNXhxVnM/view
+  This code is based on version 2.0 (2017-02-18) by /u/IrisBandit, found here: https://drive.google.com/file/d/0B5ttoyMfsaC7dzJ2SVdKNXhxVnM/view
 
-	IrishBandit's work, in turn, is based on the work of /u/SpiketailDrake, which is found here: https://drive.google.com/file/d/0B1pdYIcfHauwNDM2My1XeWFYSDA/view
+  IrishBandit's work, in turn, is based on the work of /u/SpiketailDrake, which is found here: https://drive.google.com/file/d/0B1pdYIcfHauwNDM2My1XeWFYSDA/view
 
-	-IMPORTANT-
-	You need to first add the PHB code for the Way of the Four Elements before you add the code below, or otherwise it will produce an error
-	By adding this code to your sheet, you will no longer be able to use the PHB version of the "Way of the Four Elements" monk archetype.
-	Please make sure you add this code to a completely empty sheet to avoid complications with a pre-existing character with the "Way of the Four Elements" subclass.
+  -IMPORTANT-
+  You need to first add the PHB code for the Way of the Four Elements before you add the code below, or otherwise it will produce an error
+  By adding this code to your sheet, you will no longer be able to use the PHB version of the "Way of the Four Elements" monk archetype.
+  Please make sure you add this code to a completely empty sheet to avoid complications with a pre-existing character with the "Way of the Four Elements" subclass.
 */
 
 var iFileName = "Monk - Way of the Four Elements, Remastered [SpiketailDrake's work, transcribed by AKA_Sketch & MPMB].js"

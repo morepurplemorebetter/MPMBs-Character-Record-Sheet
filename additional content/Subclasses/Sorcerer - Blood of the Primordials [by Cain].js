@@ -1,20 +1,20 @@
 /*  -WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
 /*  -INFORMATION-
-	Subject:	Subclass
-	Effect:		This script adds a new bloodline for the Sorcerer, called "Blood of the Primordials"
-				This bloodline is a reskin of the "Draconic Bloodline" from the PHB
-				This bloodline is made by Cain
-				For more details, download the full text for this bloodline here: http://bit.ly/2kjur6M
-    Code by:	Cain
-    Date:		2017-11-29 (sheet v12.999)
+  Subject:  Subclass
+  Effect:   This script adds a new bloodline for the Sorcerer, called "Blood of the Primordials"
+        This bloodline is a reskin of the "Draconic Bloodline" from the PHB
+        This bloodline is made by Cain
+        For more details, download the full text for this bloodline here: http://bit.ly/2kjur6M
+    Code by:  Cain
+    Date:   2017-11-29 (sheet v12.999)
 */
 
 var iFileName = 'Sorcerer - Blood of the Primordials [by Cain].js'

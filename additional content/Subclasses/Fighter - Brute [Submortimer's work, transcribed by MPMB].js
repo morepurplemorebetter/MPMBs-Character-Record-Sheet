@@ -1,20 +1,20 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Subclass & Feat
-	Effect:		This script adds a subclass for the fighter, called "Brute"
-				And a feat, called "Combat Brute"
-				These are taken from the Giant in the Playground forums (http://www.giantitp.com/forums/showthread.php?426879) and is the version posted at 10th of July 2015
-				This subclass is made by Submortimer
-	Code by:	MorePurpleMoreBetter
-	Date:		2018-01-02 (sheet v12.999)
+/*  -INFORMATION-
+  Subject:  Subclass & Feat
+  Effect:   This script adds a subclass for the fighter, called "Brute"
+        And a feat, called "Combat Brute"
+        These are taken from the Giant in the Playground forums (http://www.giantitp.com/forums/showthread.php?426879) and is the version posted at 10th of July 2015
+        This subclass is made by Submortimer
+  Code by:  MorePurpleMoreBetter
+  Date:   2018-01-02 (sheet v12.999)
 */
 
 var iFileName = "Fighter - Brute [Submortimer's work, transcribed by MPMB].js"

@@ -1,20 +1,20 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Subclass
-	Effect:		This script adds a subclass for the Monk, called "Way of the Jedi"
-				This subclass has been made by /u/SpiketailDrake
-				This code uses version 2.2 of the subclass from 2016-03-19, found here: https://www.reddit.com/4b41ro/
+/*  -INFORMATION-
+  Subject:  Subclass
+  Effect:   This script adds a subclass for the Monk, called "Way of the Jedi"
+        This subclass has been made by /u/SpiketailDrake
+        This code uses version 2.2 of the subclass from 2016-03-19, found here: https://www.reddit.com/4b41ro/
 
-	Code by:	Lily K. & MorePurpleMoreBetter
-	Date:		2017-11-29 (sheet v12.999)
+  Code by:  Lily K. & MorePurpleMoreBetter
+  Date:   2017-11-29 (sheet v12.999)
 */
 
 var iFileName = "Monk - Way of the Jedi [SpiketailDrake's work, transcribed by Lily K. & MPMB].js"

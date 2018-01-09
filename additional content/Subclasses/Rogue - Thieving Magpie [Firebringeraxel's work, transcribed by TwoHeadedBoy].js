@@ -1,18 +1,18 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Subclass
-	Effect:		This script adds a subclass for the Rogue, called "Thieving Magpie"
-				This is made by Firebringeraxel (http://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison)
-	Code by:	TwoHeadedBoy
-	Date:		2017-11-29 (sheet v12.999)
+/*  -INFORMATION-
+  Subject:  Subclass
+  Effect:   This script adds a subclass for the Rogue, called "Thieving Magpie"
+        This is made by Firebringeraxel (http://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison)
+  Code by:  TwoHeadedBoy
+  Date:   2017-11-29 (sheet v12.999)
 */
 
 var iFileName = "Rogue - Thieving Magpie [Firebringeraxel's work, transcribed by TwoHeadedBoy].js"

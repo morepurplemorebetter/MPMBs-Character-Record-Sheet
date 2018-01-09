@@ -1,22 +1,22 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Subclass
-	Effect:		This script adds a subclass for the Fighter, called "Gunslinger" v1.3
-				This script also adds the weapons and ammo associated with that subclass
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170778/)
-				This subclass is made by Matthew Mercer
-	Code by:	SoilentBrad & MorePurpleMoreBetter
-	Date:		2017-11-29 (sheet v12.999)
+/*  -INFORMATION-
+  Subject:  Subclass
+  Effect:   This script adds a subclass for the Fighter, called "Gunslinger" v1.3
+        This script also adds the weapons and ammo associated with that subclass
+        This is taken from the DMs Guild website (http://www.dmsguild.com/product/170778/)
+        This subclass is made by Matthew Mercer
+  Code by:  SoilentBrad & MorePurpleMoreBetter
+  Date:   2017-11-29 (sheet v12.999)
 
-	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
+  Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 */
 
 var iFileName = "Fighter - Gunslinger [Matthew Mercer's work, transcribed by SoilentBrad & MPMB].js"

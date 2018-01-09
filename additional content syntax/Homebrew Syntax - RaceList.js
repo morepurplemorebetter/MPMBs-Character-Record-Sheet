@@ -1,19 +1,19 @@
-/*	-WHAT IS THIS?-
-	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
-	To add your own content to the Character Sheet, use the syntax below and save it in a file. You can then import this file directly to the sheet using the "Import" button and "Import/Export" bookmark.
-	There you can either import the file as a whole or just copy the text into a dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+  To add your own content to the Character Sheet, use the syntax below and save it in a file. You can then import this file directly to the sheet using the "Import" button and "Import/Export" bookmark.
+  There you can either import the file as a whole or just copy the text into a dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
-	It is recommended to enter the code in a freshly downloaded or reset sheet before adding any other information so that there won't be any conflicts.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
+  It is recommended to enter the code in a freshly downloaded or reset sheet before adding any other information so that there won't be any conflicts.
 */
 
-/*	-INFORMATION-
-	Subject:	Class
-	Effect:		This is the syntax for adding a new race to the sheet
-				Note that you will need to define the race once for every sub-race (i.e. there is a separate entry for High Elf, Wood Elf, and Dark Elf)
-				For races that have variants, like the human, you can define a variant using the RaceSubList. Any variant defined like that will only be selectable through the "Racial Options" button
-	Sheet:		v12.999 (2017-12-19)
+/*  -INFORMATION-
+  Subject:  Class
+  Effect:   This is the syntax for adding a new race to the sheet
+        Note that you will need to define the race once for every sub-race (i.e. there is a separate entry for High Elf, Wood Elf, and Dark Elf)
+        For races that have variants, like the human, you can define a variant using the RaceSubList. Any variant defined like that will only be selectable through the "Racial Options" button
+  Sheet:    v12.999 (2017-12-19)
 */
 
 var iFileName = 'Homebrew Syntax - RaceList.js' // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -35,7 +35,7 @@ RaceList['something catlike'] = { // Object name; Note the use of only lower cas
 
   speed: { // required; This sets a value for one or more speed modes, and/or a value to be added to a specific speed mode or to all speed modes // the attributes of this object can be "walk", "borrow", "climb", "fly", "swim", and "allModes"
 
-		// all of the following attributes are optional and you can add more ("borrow" isn't part of this example!)
+    // all of the following attributes are optional and you can add more ("borrow" isn't part of this example!)
 
     walk: { spd: 30, enc: 20 }, // the objects "walk", "borrow", "climb", "fly", "swim" are all the same, they are an object with two attributes, 'spd' for the speed in feet, and 'enc' for the encumbered speed in feet.
 
@@ -157,25 +157,25 @@ RaceList['something catlike'] = { // Object name; Note the use of only lower cas
 
         atkAdd: ["if (WeaponName.match(/unarmed strike/i)) {fields.Description += 'Counts as magical';}; ", 'My unarmed strikes count as magical for overcoming resistances and immunities.'] // optional; works just like atkDmg, but affects the weapon attributes when they are applied to the sheet. With this you can change the weapon's description, range, damage die, attribute, etc. etc. However, this will only be applied to recognized weapons
 
-					// Note that you need to use two back slashes for things in the eval code here, because it is first added to a string, and then run as code. See the hp for an example, with the \\n
+          // Note that you need to use two back slashes for things in the eval code here, because it is first added to a string, and then run as code. See the hp for an example, with the \\n
 
-					// For the eval strings for the attack calculations ('atkCalc' or 'atkAdd') there are some variables that you can use to test against:
+          // For the eval strings for the attack calculations ('atkCalc' or 'atkAdd') there are some variables that you can use to test against:
 
-						// The variable WeaponName contains the recognized weapon object name as it is used in the WeaponsList object (or "" in atkCalc if the weapon is not a recognized weapon);
+            // The variable WeaponName contains the recognized weapon object name as it is used in the WeaponsList object (or "" in atkCalc if the weapon is not a recognized weapon);
 
-						// The object "theWea" is the WeaponsList[WeaponName] object for the recognized weapon (or 'undefined' in atkCalc if the weapon is not a recognized weapon);
+            // The object "theWea" is the WeaponsList[WeaponName] object for the recognized weapon (or 'undefined' in atkCalc if the weapon is not a recognized weapon);
 
-						// You can use the booleans 'isOffHand', 'isMeleeWeapon', 'isRangedWeapon', 'isSpell' (also true for cantrips), 'isDC'
+            // You can use the booleans 'isOffHand', 'isMeleeWeapon', 'isRangedWeapon', 'isSpell' (also true for cantrips), 'isDC'
 
-						// If the attack is a spell that is found on the SpellList, the variable thisWeapon[3] contains the name of the entry in the SpellList
+            // If the attack is a spell that is found on the SpellList, the variable thisWeapon[3] contains the name of the entry in the SpellList
 
-						// The object "fields" has all the values of the different fields of the attack (fields.Proficiency, fields.Mod, fields.Range, fields.Damage_Type, fields.Description, fields.To_Hit_Bonus, fields.Damage_Bonus, fields.Damage_Die, fields.Weight);
+            // The object "fields" has all the values of the different fields of the attack (fields.Proficiency, fields.Mod, fields.Range, fields.Damage_Type, fields.Description, fields.To_Hit_Bonus, fields.Damage_Bonus, fields.Damage_Die, fields.Weight);
 
-						// You can change the attributes of the "fields" object with the eval-string of atkAdd to affect what is put into the fields.
+            // You can change the attributes of the "fields" object with the eval-string of atkAdd to affect what is put into the fields.
 
-						// You can use the attributes of the "fields" object with the eval-string of atkCalc to check for things, but changing them will have no effect on the sheet.
+            // You can use the attributes of the "fields" object with the eval-string of atkCalc to check for things, but changing them will have no effect on the sheet.
 
-						// With the atkCalc you have to change the "output" object in order to affect the outcome of the calculations. This object has the following attributes: output.prof (wether or not to add the proficiency bonus to the To Hit), output.die (Damage Die to use), output.mod (ability modifier), output.modToDmg (wether or not to add the ability modifier to Damage), output.magic (any magic bonus that's to be added to both To Hit and Damage), output.bHit (the To Hit bonus from the Blue Text/Modifier field), output.bDmg (the Damage bonus from the Blue Text/Modifier field), output.extraHit (a number added to the To Hit that is reserved for this eval), output.extraDmg (a number added to the damage that is reserved for this eval)
+            // With the atkCalc you have to change the "output" object in order to affect the outcome of the calculations. This object has the following attributes: output.prof (wether or not to add the proficiency bonus to the To Hit), output.die (Damage Die to use), output.mod (ability modifier), output.modToDmg (wether or not to add the ability modifier to Damage), output.magic (any magic bonus that's to be added to both To Hit and Damage), output.bHit (the To Hit bonus from the Blue Text/Modifier field), output.bDmg (the Damage bonus from the Blue Text/Modifier field), output.extraHit (a number added to the To Hit that is reserved for this eval), output.extraDmg (a number added to the damage that is reserved for this eval)
       },
 
       dmgres: ['Poison'], // optional; an array of damage types that the racial feature give resistance against. // If the resistance has a condition attached to it, like only being against nonmagical attacks, substitute the entry in the array with an array of 2: [the damage type, the damage type with the condition]. // For example: [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]

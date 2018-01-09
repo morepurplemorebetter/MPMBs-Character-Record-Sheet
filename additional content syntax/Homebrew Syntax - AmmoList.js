@@ -1,18 +1,18 @@
-/*	-WHAT IS THIS?-
-	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
-	To add your own content to the Character Sheet, use the syntax below and save it in a file. You can then import this file directly to the sheet using the "Import" button and "Import/Export" bookmark.
-	There you can either import the file as a whole or just copy the text into a dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+  To add your own content to the Character Sheet, use the syntax below and save it in a file. You can then import this file directly to the sheet using the "Import" button and "Import/Export" bookmark.
+  There you can either import the file as a whole or just copy the text into a dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
-	It is recommended to enter the code in a freshly downloaded or reset sheet before adding any other information so that there won't be any conflicts.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
+  It is recommended to enter the code in a freshly downloaded or reset sheet before adding any other information so that there won't be any conflicts.
 */
 
-/*	-INFORMATION-
-	Subject:	Ammunition
-	Effect:		This is the syntax for adding a new type of ammunition to the sheet
-				Note that if you want this ammunition to be added automatically when selecting a certain weapon, you need to include its object-name as the 'ammo' attribute. Even if you don't do this, the ammo you define will be filled when typed into an ammo box
-	Sheet:		v12.999 (2017-12-16)
+/*  -INFORMATION-
+  Subject:  Ammunition
+  Effect:   This is the syntax for adding a new type of ammunition to the sheet
+        Note that if you want this ammunition to be added automatically when selecting a certain weapon, you need to include its object-name as the 'ammo' attribute. Even if you don't do this, the ammo you define will be filled when typed into an ammo box
+  Sheet:    v12.999 (2017-12-16)
 */
 
 var iFileName = 'Homebrew Syntax - AmmoList.js' // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -40,42 +40,42 @@ AmmoList['distantsting'] = { // Object name; Note the use of only lower case! Al
 /* list of all the different icon options. Copy the three lines (icon, checks, display) into the appropriate place above
 
 //arrows:
-	icon : "Arrows",
-	checks : [".Top", ".Base"],
-	display : 20,
+  icon : "Arrows",
+  checks : [".Top", ".Base"],
+  display : 20,
 
 //axes:
-	icon : "Axes",
-	checks : [".Top.Axe", ".Base.Axe"],
-	display : 8,
+  icon : "Axes",
+  checks : [".Top.Axe", ".Base.Axe"],
+  display : 8,
 
 //bullets:
-	icon : "Bullets",
-	checks : [".Bullet"],
-	display : 50,
+  icon : "Bullets",
+  checks : [".Bullet"],
+  display : 50,
 
 //daggers:
-	icon : "Daggers",
-	checks : [".Top"],
-	display : 10,
+  icon : "Daggers",
+  checks : [".Top"],
+  display : 10,
 
 //flasks:
-	icon : "Flasks",
-	checks : [".Top", ".Base"],
-	display : 20,
+  icon : "Flasks",
+  checks : [".Top", ".Base"],
+  display : 20,
 
 //hammers:
-	icon : "Hammers",
-	checks : [".Top.Axe", ".Base.Axe"],
-	display : 8,
+  icon : "Hammers",
+  checks : [".Top.Axe", ".Base.Axe"],
+  display : 8,
 
 //spears:
-	icon : "Spears",
-	checks : [".Base"],
-	display : 10,
+  icon : "Spears",
+  checks : [".Base"],
+  display : 10,
 
 //vials:
-	icon : "Vials",
-	checks : [".Top", ".Base"],
-	display : 20,
+  icon : "Vials",
+  checks : [".Top", ".Base"],
+  display : 20,
 */
