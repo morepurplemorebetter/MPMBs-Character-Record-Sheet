@@ -17,16 +17,16 @@
 	They will appear in the order you add them.
 */
 
-var iFileName = "Homebrew Syntax - GearList (adventuring gear).js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
-RequiredSheetVersion(12.999); // Optional; This is the minimum required version number of the sheet for the script to work. If the sheet being used to import the script is of an earlier version, the user will be warned
+var iFileName = 'Homebrew Syntax - GearList (adventuring gear).js' // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
+RequiredSheetVersion(12.999) // Optional; This is the minimum required version number of the sheet for the script to work. If the sheet being used to import the script is of an earlier version, the user will be warned
 
-GearList["caltrops"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
-	
-	infoname : "Caltrops [1 gp]", //Required; This is the name as it will appear in the equipment menu
-	
-	name : "Caltrops", //Required; The name as it will be put into the equipment table
-	
-	amount : 20, //Required; The amount as will be put into the equipment table. You can put "" here if you like
-	
-	weight : 0.1 //Required, has to be a number; The weight as will be put into the equipment table. Note that the total weight is calculated as Amount×Weight. You can put "" here if you like
-};
+GearList['caltrops'] = { // Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
+
+  infoname: 'Caltrops [1 gp]', // Required; This is the name as it will appear in the equipment menu
+
+  name: 'Caltrops', // Required; The name as it will be put into the equipment table
+
+  amount: 20, // Required; The amount as will be put into the equipment table. You can put "" here if you like
+
+  weight: 0.1 // Required, has to be a number; The weight as will be put into the equipment table. Note that the total weight is calculated as Amount×Weight. You can put "" here if you like
+}
