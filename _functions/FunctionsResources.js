@@ -2,14 +2,14 @@
 function MergeRecursive (obj1, obj2) {
   for (var p in obj2) {
     try {
-			// Property in destination object set; update its value.
+      // Property in destination object set; update its value.
       if (obj2[p].constructor == Object) {
         obj1[p] = MergeRecursive(obj1[p], obj2[p])
       } else {
         obj1[p] = obj2[p]
       }
     } catch (e) {
-			// Property in destination object not set; create it and set its value.
+      // Property in destination object not set; create it and set its value.
       obj1[p] = obj2[p]
     }
   }
@@ -20,7 +20,7 @@ function MergeRecursive (obj1, obj2) {
 function MergeElement (obj1, elem, obj2) {
   obj2 = SetNegativeElement(obj2)
   for (var p in obj1) {
-		// Property in destination object set; update its value.
+    // Property in destination object set; update its value.
     if (obj1[p].constructor == Object && p !== elem) {
       if (!obj2[p]) obj2[p] = {}
       var newObj = MergeElement(obj1[p], elem, obj2[p])
@@ -116,7 +116,7 @@ function FindActiveElement (obj) {
 
 // ask the user to make a selection from a heirarchical list element, recursively
 function SelectElement_Dialog (theNodes) {
-	// first see if there is more than one node in the object
+  // first see if there is more than one node in the object
   var countNodes = [0, false]
   for (var p in theNodes) {
     if (theNodes[p].constructor == Object) {
@@ -320,10 +320,10 @@ function resourceDecisionDialog (atOpening, atReset, forceDDupdate) {
     },
     commit: function (dialog) {},
     updateLink: function (dialog, ExcInc) {
-			// get the positive element
+      // get the positive element
       var exclNow = dialog.store()[ExcInc]
       var sourceNm = GetPositiveElement(exclNow)
-			// run through the sourcelist and get the name of the source
+      // run through the sourcelist and get the name of the source
       var theSrc = false
       for (var src in SourceList) {
         var srcName = SourceList[src].name.replace(RegExp(SourceList[src].group + ' ?:? ?', 'i'), '') + ' (' + SourceList[src].abbreviation + ')'
@@ -341,9 +341,9 @@ function resourceDecisionDialog (atOpening, atReset, forceDDupdate) {
       };
     },
     updateCS: function (oResultExcL) {
-			// put the excluded element into an array
+      // put the excluded element into an array
       var exclArr = ObjectToArray(oResultExcL, 'elements')
-			// set the CurrentSources variable
+      // set the CurrentSources variable
       CurrentSources.globalExcl = []
       for (var src in SourceList) {
         var srcName = SourceList[src].name.replace(RegExp(SourceList[src].group + ' ?:? ?', 'i'), '') + ' (' + SourceList[src].abbreviation + ')'
@@ -373,7 +373,7 @@ function resourceDecisionDialog (atOpening, atReset, forceDDupdate) {
       this.updateLink(dialog, 'IncL')
     },
     BTRA: function (dialog) {
-			// move all (remaining) items from ExcL to IncL
+      // move all (remaining) items from ExcL to IncL
       var elements = dialog.store()
       var exclNow = elements['ExcL']
       delete exclNow[getMoreCont]
@@ -389,7 +389,7 @@ function resourceDecisionDialog (atOpening, atReset, forceDDupdate) {
       CurrentSources.globalExcl = []
     },
     BTR1: function (dialog) {
-			// move selected (one) item from ExcL to IncL
+      // move selected (one) item from ExcL to IncL
       if (!this.exclActive) return
       var elements = dialog.store()
       var exclNow = elements['ExcL']
@@ -409,7 +409,7 @@ function resourceDecisionDialog (atOpening, atReset, forceDDupdate) {
       this.updateCS(moveThem[0])
     },
     BTL1: function (dialog) {
-			// move selected (one) item from IncL to ExcL
+      // move selected (one) item from IncL to ExcL
       if (!this.inclActive) return
       var elements = dialog.store()
       var exclNow = elements['ExcL']
@@ -427,7 +427,7 @@ function resourceDecisionDialog (atOpening, atReset, forceDDupdate) {
       this.updateCS(moveThem[1])
     },
     BTLA: function (dialog) {
-			// move all items from IncL to ExcL and sort ExcL
+      // move all items from IncL to ExcL and sort ExcL
       var elements = dialog.store()
       var exclNow = elements['ExcL']
       var inclNow = elements['IncL']
@@ -716,7 +716,7 @@ function resourceDecisionDialog (atOpening, atReset, forceDDupdate) {
   } else if (CallDialogue === 'ok' || forceDDupdate) {
     UpdateDropdown('resources')
 
-		// if something changed for the spells make the spell menu again
+    // if something changed for the spells make the spell menu again
     var oldCS = eval(remCS)
     if (forceDDupdate || oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.classExcl !== CurrentSources.classExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
       setSpellVariables(forceDDupdate || oldCS.spellsExcl !== CurrentSources.spellsExcl)
@@ -733,7 +733,7 @@ function resourceSelectionDialog (type) {
     SourceList[aSrc].uniS = toSup(SourceList[aSrc].abbreviation)
   };
 
-	// a way to add the source abbreviation to the string
+  // a way to add the source abbreviation to the string
   var amendSource = function (uString, uObj, altObj) {
     var theSrc = uObj.source ? uObj.source : (altObj && altObj.source ? altObj.source : false)
     theSrc = parseSource(theSrc)
@@ -747,7 +747,7 @@ function resourceSelectionDialog (type) {
   }
 
   switch (type) {
-	 case 'class' :
+   case 'class' :
       var theName = 'Classes or Archetypes'
       inclInArr = 'all'
       var CSatt = 'classExcl'
@@ -771,7 +771,7 @@ function resourceSelectionDialog (type) {
         }
       };
       break
-	 case 'race' :
+   case 'race' :
       var theName = 'Player Races'
       theExtra = ["\nRaces with variants will have all variants listed. The 'basic' version of the race is only listed so that you can exclude all variants except the basic version. Excluding the 'basic' version while still including any variant will have no effect.", 3]
       inclInArr = 'all'
@@ -813,7 +813,7 @@ function resourceSelectionDialog (type) {
         refObj[uGroup] = u
       };
       break
-	 case 'feat' :
+   case 'feat' :
       var theName = 'Feats'
       var CSatt = 'featsExcl'
       for (var u in FeatsList) {
@@ -840,7 +840,7 @@ function resourceSelectionDialog (type) {
         }
       };
       break
-	 case 'spell' :
+   case 'spell' :
       var theName = 'Spells'
       var CSatt = 'spellsExcl'
       for (var u in SpellsList) {
@@ -862,7 +862,7 @@ function resourceSelectionDialog (type) {
         }
       };
       break
-	 case 'background' :
+   case 'background' :
       var theName = 'Backgrounds'
       var CSatt = 'backgrExcl'
       for (var u in BackgroundList) {
@@ -891,7 +891,7 @@ function resourceSelectionDialog (type) {
         }
       };
       break
-	 case 'background feature' :
+   case 'background feature' :
       var theName = 'Background Features'
       var CSatt = 'backFeaExcl'
       for (var u in BackgroundFeatureList) {
@@ -906,7 +906,7 @@ function resourceSelectionDialog (type) {
         }
       };
       break
-	 case 'creature' :
+   case 'creature' :
       var theName = 'Creatures'
       var CSatt = 'creaExcl'
       for (var u in CreatureList) {
@@ -924,7 +924,7 @@ function resourceSelectionDialog (type) {
         }
       };
       break
-	 case 'weapon' :
+   case 'weapon' :
       var theName = 'Weapons/Attacks'
       var CSatt = 'weapExcl'
       for (var u in WeaponsList) {
@@ -943,7 +943,7 @@ function resourceSelectionDialog (type) {
         }
       };
       break
-	 case 'ammo' :
+   case 'ammo' :
       var theName = 'Ammunition'
       var CSatt = 'ammoExcl'
       for (var u in AmmoList) {
@@ -963,7 +963,7 @@ function resourceSelectionDialog (type) {
         }
       };
       break
-	 case 'armor' :
+   case 'armor' :
       var theName = 'Armors'
       var CSatt = 'armorExcl'
       for (var u in ArmourList) {
@@ -1001,7 +1001,7 @@ function resourceSelectionDialog (type) {
       })
     },
     commit: function (dialog) {
-			// put both elements into the arrays
+      // put both elements into the arrays
       var oResult = dialog.store()
       this.exclArr = ObjectToArray(oResult['ExcL'], this.inclInA, this.inclInA === 'all' ? oResult['IncL'] : false)
     },
@@ -1012,7 +1012,7 @@ function resourceSelectionDialog (type) {
       this.inclActive = true
     },
     BTRA: function (dialog) {
-			// move all (remaining) items from ExcL to IncL
+      // move all (remaining) items from ExcL to IncL
       var elements = dialog.store()
       var exclNow = elements['ExcL']
       var inclNow = elements['IncL']
@@ -1025,7 +1025,7 @@ function resourceSelectionDialog (type) {
       this.inclActive = true
     },
     BTR1: function (dialog) {
-			// move selected (one) item from ExcL to IncL
+      // move selected (one) item from ExcL to IncL
       if (!this.exclActive) return
       var elements = dialog.store()
       var exclNow = elements['ExcL']
@@ -1042,7 +1042,7 @@ function resourceSelectionDialog (type) {
       }
     },
     BTL1: function (dialog) {
-			// move selected (one) item from IncL to ExcL
+      // move selected (one) item from IncL to ExcL
       if (!this.inclActive) return
       var elements = dialog.store()
       var exclNow = elements['ExcL']
@@ -1059,7 +1059,7 @@ function resourceSelectionDialog (type) {
       }
     },
     BTLA: function (dialog) {
-			// move all items from IncL to ExcL and sort ExcL
+      // move all items from IncL to ExcL and sort ExcL
       var elements = dialog.store()
       var exclNow = elements['ExcL']
       var inclNow = elements['IncL']
@@ -1160,7 +1160,7 @@ function resourceSelectionDialog (type) {
       var theA = selectionDialogue.exclArr[a]
       CurrentSources[CSatt].push(refObj[theA])
     }
-		// include ammo for weapons now included
+    // include ammo for weapons now included
     if (type === 'weapon') {
       for (var key in WeaponsList) {
         var weaKey = WeaponsList[key]
@@ -1213,7 +1213,7 @@ function parseSource (srcObj) {
         };
       };
     };
- 		if (theSRD.length > 0 && areExcl.length === theRe.length) {
+     if (theSRD.length > 0 && areExcl.length === theRe.length) {
    theRe = theSRD
  } else if (theSRD.length > 0) {
    theRe.push(theSRD[0])

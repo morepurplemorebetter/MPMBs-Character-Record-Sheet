@@ -156,7 +156,7 @@ var Base_ArmourList = {
 }
 
 var Base_WeaponsList = {
-	// Basic weapons
+  // Basic weapons
   'club': {
     regExpSearch: /^(?!.*(great|heavy|big))(?=.*\b(club|bian|tonfa)\b).*$/i,
     name: 'Club',
@@ -667,7 +667,7 @@ var Base_WeaponsList = {
     description: 'Thrown, only 1 attack, up to large creature hit is restrained (PHB 148)',
     abilitytodamage: false
   },
-	// Improvised Weapons
+  // Improvised Weapons
   'improvised weapon': {
     regExpSearch: /improvised/i,
     name: 'Improvised weapon',
@@ -721,7 +721,7 @@ var Base_WeaponsList = {
     abilitytodamage: false,
     ammo: 'holy water'
   },
-	// Cantrips
+  // Cantrips
   'acid splash': {
     regExpSearch: /^(?=.*acid)(?=.*splash).*$/i,
     name: 'Acid Splash',
@@ -908,7 +908,7 @@ var Base_WeaponsList = {
     description: '',
     abilitytodamage: false
   },
-	// Dragonborn breath weapons
+  // Dragonborn breath weapons
   'breath weapon': {
     regExpSearch: /^(?=.*breath)(?=.*weapon).*$/i,
     name: 'Breath Weapon',
@@ -1072,108 +1072,108 @@ var Base_PacksList = {
     name: "Burglar's pack (16 gp)",
     source: [['SRD', 70], ['P', 151]],
     items: [
-			['Backpack, with:', '', 5],
-			['Bag of 1000 ball bearings', 1, 2],
-			['String, feet of', 10, ''],
-			['Bell', '', ''],
-			['Candles', 5, ''],
-			['Crowbar', '', 5],
-			['Hammer', '', 3],
-			['Pitons', 10, 0.25],
-			['Hooded lantern', '', 2],
-			['Oil, flasks of', 2, 1],
-			['Rations, days of', 5, 2],
-			['Tinderbox', '', 1],
-			['Waterskin', '', 5],
-			['Hempen rope, feet of', 50, 0.2]
+      ['Backpack, with:', '', 5],
+      ['Bag of 1000 ball bearings', 1, 2],
+      ['String, feet of', 10, ''],
+      ['Bell', '', ''],
+      ['Candles', 5, ''],
+      ['Crowbar', '', 5],
+      ['Hammer', '', 3],
+      ['Pitons', 10, 0.25],
+      ['Hooded lantern', '', 2],
+      ['Oil, flasks of', 2, 1],
+      ['Rations, days of', 5, 2],
+      ['Tinderbox', '', 1],
+      ['Waterskin', '', 5],
+      ['Hempen rope, feet of', 50, 0.2]
     ]
   },
   diplomat: {
     name: "Diplomat's pack (39 gp)",
     source: [['SRD', 70], ['P', 151]],
     items: [
-			['Chest, with:', '', 25],
-			['Map or scroll case', 2, 1],
-			['Fine clothes', '', 6],
-			['Ink, 1 ounce bottle of', '', ''],
-			['Ink pen', '', ''],
-			['Lamp', '', 1],
-			['Oil, flasks of', 2, 1],
-			['Paper, sheets of', 5, ''],
-			['Perfume, vial of', '', ''],
-			['Sealing Wax', '', ''],
-			['Soap', '', '']
+      ['Chest, with:', '', 25],
+      ['Map or scroll case', 2, 1],
+      ['Fine clothes', '', 6],
+      ['Ink, 1 ounce bottle of', '', ''],
+      ['Ink pen', '', ''],
+      ['Lamp', '', 1],
+      ['Oil, flasks of', 2, 1],
+      ['Paper, sheets of', 5, ''],
+      ['Perfume, vial of', '', ''],
+      ['Sealing Wax', '', ''],
+      ['Soap', '', '']
     ]
   },
   dungeoneer: {
     name: "Dungeoneer's pack (12 gp)",
     source: [['SRD', 70], ['P', 151]],
     items: [
-			['Backpack, with:', '', 5],
-			['Crowbar', '', 5],
-			['Hammer', '', 3],
-			['Pitons', 10, 0.25],
-			['Torches', 10, 1],
-			['Tinderbox', '', 1],
-			['Rations, days of', 10, 2],
-			['Waterskin', '', 5],
-			['Hempen rope, feet of', 50, 0.2]
+      ['Backpack, with:', '', 5],
+      ['Crowbar', '', 5],
+      ['Hammer', '', 3],
+      ['Pitons', 10, 0.25],
+      ['Torches', 10, 1],
+      ['Tinderbox', '', 1],
+      ['Rations, days of', 10, 2],
+      ['Waterskin', '', 5],
+      ['Hempen rope, feet of', 50, 0.2]
     ]
   },
   entertainer: {
     name: "Entertainer's pack (40 gp)",
     source: [['SRD', 70], ['P', 151]],
     items: [
-			['Backpack, with:', '', 5],
-			['Bedroll', '', 7],
-			['Costumes', 2, 4],
-			['Candles', 5, ''],
-			['Rations, days of', 5, 2],
-			['Waterskin', '', 5],
-			['Disguise kit', '', 3]
+      ['Backpack, with:', '', 5],
+      ['Bedroll', '', 7],
+      ['Costumes', 2, 4],
+      ['Candles', 5, ''],
+      ['Rations, days of', 5, 2],
+      ['Waterskin', '', 5],
+      ['Disguise kit', '', 3]
     ]
   },
   explorer: {
     name: "Explorer's pack (10 gp)",
     source: [['SRD', 70], ['P', 151]],
     items: [
-			['Backpack, with:', '', 5],
-			['Bedroll', '', 7],
-			['Mess kit', '', 1],
-			['Tinderbox', '', 1],
-			['Torches', 10, 1],
-			['Rations, days of', 10, 2],
-			['Waterskin', '', 5],
-			['Hempen rope, feet of', 50, 0.2]
+      ['Backpack, with:', '', 5],
+      ['Bedroll', '', 7],
+      ['Mess kit', '', 1],
+      ['Tinderbox', '', 1],
+      ['Torches', 10, 1],
+      ['Rations, days of', 10, 2],
+      ['Waterskin', '', 5],
+      ['Hempen rope, feet of', 50, 0.2]
     ]
   },
   priest: {
     name: "Priest's pack (19 gp)",
     source: [['SRD', 70], ['P', 151]],
     items: [
-			['Backpack, with:', '', 5],
-			['Blanket', '', 3],
-			['Candles', 10, ''],
-			['Tinderbox', '', 1],
-			['Alms box', '', 1],
-			['Incense, blocks of', 2, ''],
-			['Censer', '', 1],
-			['Vestments', '', 4],
-			['Rations, days of', 2, 2],
-			['Waterskin', '', 5]
+      ['Backpack, with:', '', 5],
+      ['Blanket', '', 3],
+      ['Candles', 10, ''],
+      ['Tinderbox', '', 1],
+      ['Alms box', '', 1],
+      ['Incense, blocks of', 2, ''],
+      ['Censer', '', 1],
+      ['Vestments', '', 4],
+      ['Rations, days of', 2, 2],
+      ['Waterskin', '', 5]
     ]
   },
   scholar: {
     name: "Scholar's pack (40 gp)",
     source: [['SRD', 70], ['P', 151]],
     items: [
-			['Backpack, with:', '', 5],
-			['Book of lore', '', 5],
-			['Ink, 1 ounce bottle of', '', ''],
-			['Ink pen', '', ''],
-			['Parchment, sheets of', 10, ''],
-			['Little bag of sand', '', 1],
-			['Small knife', '', 0.25]
+      ['Backpack, with:', '', 5],
+      ['Book of lore', '', 5],
+      ['Ink, 1 ounce bottle of', '', ''],
+      ['Ink pen', '', ''],
+      ['Parchment, sheets of', 10, ''],
+      ['Little bag of sand', '', 1],
+      ['Small knife', '', 0.25]
     ]
   }
 }

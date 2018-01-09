@@ -23,7 +23,7 @@ function SelectClass () {
   var theChar = What('PC Name') ? What('PC Name') : 'Your Character'
   var hasUAranger = false
   var ClassFld = What('Class and Levels')
-	// make an object for each class' list of subclasses
+  // make an object for each class' list of subclasses
   var setClassesToDialog = function () {
     hasUAranger = !testSource('rangerua', ClassList.rangerua, 'classExcl')
     ClassSelection_Dialog.classes = {' ': 1}
@@ -50,13 +50,13 @@ function SelectClass () {
     setDialogName(ClassSelection_Dialog, 'rngr', 'wrap_name', !!hasUAranger)
     setDialogName(ClassSelection_Dialog, 'rngr', 'name', hasUAranger ? dialogTxt.rngr : '')
   }
-	// add the classes to the dialog
+  // add the classes to the dialog
   var loadKnownClassesToDialog = function () {
-		// first add the class field text
+    // first add the class field text
     ClassSelection_Dialog.finalText = ClassFld
-		// then add the total level
+    // then add the total level
     ClassSelection_Dialog.finalLevel = 0
-		// then fill the text for each class
+    // then fill the text for each class
     ClassSelection_Dialog.curSelec = []
     classes.parsed.forEach(function (clP) {
       ClassSelection_Dialog.finalLevel += clP[1]
@@ -73,9 +73,9 @@ function SelectClass () {
       setDialogName(ClassSelection_Dialog, 'lvlu', 'wrap_name', false)
       setDialogName(ClassSelection_Dialog, 'lvlu', 'name', '')
     };
-		// have something to compare the classes.known against for filling in the other variables
+    // have something to compare the classes.known against for filling in the other variables
     var selecCompare = ClassSelection_Dialog.curSelec.reduce(function (acc, val) { return acc.concat(val[1]) }, [])
-		// now fill in the recognized class and subclass, if any
+    // now fill in the recognized class and subclass, if any
     for (var aClass in classes.known) {
       var theCl = classes.known[aClass]
       if (selecCompare.indexOf(theCl.string) !== -1) {
@@ -185,13 +185,13 @@ function SelectClass () {
     textChange: function (dialog, e) {
       var cs = this.curSelec[e]
       var oldLvl = cs[0]
-			// set the new things
+      // set the new things
       cs[1] = dialog.store()['r' + e + 'TX']
       var hasCl = ParseClass(cs[1])
       cs[0] = !hasCl && !cs[1] ? 0 : cs[0] ? cs[0] : Math.max(1, this.currentLevel - this.finalLevel)
       cs[2] = hasCl ? hasCl[0] : ''
       cs[3] = hasCl ? hasCl[1] : ''
-			// change the class and subclass drop-downs of the row
+      // change the class and subclass drop-downs of the row
       var toLoad = {}
       if (oldLvl !== cs[0]) toLoad['r' + e + 'LV'] = cs[0].toString()
 
@@ -208,12 +208,12 @@ function SelectClass () {
       var result = GetPositiveElement(dialog.store()['r' + e + 'CD'])
       var cs = this.curSelec[e]
       var oldLvl = cs[0]
-			// set the new things
+      // set the new things
       cs[0] = !result || result === ' ' ? 0 : cs[0] ? cs[0] : Math.max(1, this.currentLevel - this.finalLevel)
       cs[2] = result && result !== ' ' ? this.classesRef[result] : ''
       cs[3] = ''
       cs[1] = cs[2] ? ClassList[cs[2]].name : ''
-			// change the text and subclass drop-down of the row
+      // change the text and subclass drop-down of the row
       var toLoad = {}
       if (oldLvl !== cs[0]) toLoad['r' + e + 'LV'] = cs[0].toString()
       toLoad['r' + e + 'CS'] = cs[2] ? this.getSrc(ClassList[cs[2]]) : ''
@@ -226,17 +226,17 @@ function SelectClass () {
     subChange: function (dialog, e) {
       var result = GetPositiveElement(dialog.store()['r' + e + 'SD'])
       var cs = this.curSelec[e]
-			// remember some of the old things
+      // remember some of the old things
       var oldSubCl = cs[3]
       var oldSubName = !cs[3] ? '' : ClassSubList[cs[3]].fullname ? ClassSubList[cs[3]].fullname : ' (' + ClassSubList[cs[3]].subname + ')'
       var oldSubNameSrch = RegExp('( ?\\(?)' + oldSubName.RegEscape() + '(\\)?)', 'i')
       var oldNameMatch = (!cs[3] ? ClassList[cs[2]].name : ClassSubList[cs[3]].fullname ? oldSubName : ClassList[cs[2]].name + oldSubName).toLowerCase() == clean(cs[1]).toLowerCase()
-			// set the new things
+      // set the new things
       cs[3] = result && result !== ' ' ? this.subclassesRef[result] : ''
       var newSubName = !cs[3] ? '' : ClassSubList[cs[3]].fullname ? ClassSubList[cs[3]].fullname : ClassSubList[cs[3]].subname
       var newName = !cs[3] ? ClassList[cs[2]].name : ClassSubList[cs[3]].fullname ? newSubName : ClassList[cs[2]].name + ' (' + newSubName + ')'
       cs[1] = !cs[3] ? ClassList[cs[2]].name : oldNameMatch ? newName : !oldSubCl ? cs[1] + ' (' + newSubName + ')' : (oldSubNameSrch).test(cs[1]) ? cs[1].replace(oldSubNameSrch, '$1' + newSubName + '$2') : newName
-			// change the text of the row
+      // change the text of the row
       var toLoad = {}
       toLoad['r' + e + 'TX'] = cs[1]
       toLoad['r' + e + 'SS'] = cs[3] ? this.getSrc(ClassSubList[cs[3]]) : ''
@@ -985,10 +985,10 @@ function SelectClass () {
 
   delete tDoc.getField('Class and Levels').remVal
   if (dia === 'ok') { // apply the changes
-		// update the delimiter
+    // update the delimiter
     Value('Delimiter', ClassSelection_Dialog.delimiter)
 
-		// set the character level and xp
+    // set the character level and xp
     var newLvl = ClassSelection_Dialog.finalLevel > 0 ? ClassSelection_Dialog.finalLevel : ''
     Value('Character Level', newLvl, undefined)
     var curXP = Number(What('Total Experience').replace(',', '.'))
@@ -1005,7 +1005,7 @@ function SelectClass () {
         })
       };
     };
-		// update the class field
+    // update the class field
     if (ClassFld !== ClassSelection_Dialog.finalText) {
       Value('Class and Levels', ClassSelection_Dialog.finalText)
     } else {
@@ -1030,7 +1030,7 @@ function AskMulticlassing () {
     return
   };
   var Multiclassing_Dialog = {
-		// variables to be set by the calling function
+    // variables to be set by the calling function
     Class1: '',
     Class2: '',
     Class3: '',
@@ -1040,7 +1040,7 @@ function AskMulticlassing () {
     LVLchange: 1,
     Selection: 0,
 
-		// when starting the dialog
+    // when starting the dialog
     initialize: function (dialog) {
       var theChar = What('PC Name') ? What('PC Name') : 'your character'
       dialog.load({
@@ -1074,7 +1074,7 @@ function AskMulticlassing () {
       })
     },
 
-		// when pressing the ok button
+    // when pressing the ok button
     commit: function (dialog) {
       var oResult = dialog.store()
       if (oResult['rCl1']) {
@@ -1091,7 +1091,7 @@ function AskMulticlassing () {
       this.All = oResult['cAll']
     },
 
-		// do this whenever a custom text is entered so that the right bullet point is selected
+    // do this whenever a custom text is entered so that the right bullet point is selected
     tClN: function (dialog) {
       dialog.load({
         'rClN': true
@@ -1264,12 +1264,12 @@ function AskMulticlassing () {
     Multiclassing_Dialog.Class4 = Cl4
     Multiclassing_Dialog.LVLchange = parseFloat(toAdd)
 
-		// call the dialog
+    // call the dialog
     app.execDialog(Multiclassing_Dialog)
 
     var dResult = Multiclassing_Dialog.Selection
     var AddAll = Multiclassing_Dialog.All
-		// do something if the result is adding a new class
+    // do something if the result is adding a new class
     if (dResult !== '' && isNaN(dResult)) {
       classes.parsed[Nmbr] = []
       classes.parsed[Nmbr][0] = dResult
@@ -1365,14 +1365,14 @@ function PleaseSubclass (theclass) {
     var SubclassSelect_Dialog = {
       result: -1,
 
-			// when starting the dialog
+      // when starting the dialog
       initialize: function (dialog) {
- 				dialog.load({
+         dialog.load({
    img1: allIcons.classes
  })
       },
 
-			// when pressing the ok button
+      // when pressing the ok button
       commit: function (dialog) {
         var oResult = dialog.store()
         for (var i = 0; i < aclassArray.length; i++) {
@@ -1383,7 +1383,7 @@ function PleaseSubclass (theclass) {
         }
       },
 
-			// when pressing the other button
+      // when pressing the other button
       other: function (dialog) {
         AddString('SubClass Remember', theclass, false)
         dialog.end('other')

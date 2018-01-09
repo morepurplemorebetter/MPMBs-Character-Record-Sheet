@@ -1,20 +1,20 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made	 as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is made   as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Subclass
-	Effect:		This script adds a subclass (for the Cleric, called "Zeal Domain") and a race ("Aven" with 2 subraces) from the Magic: The Gathering plane of Amonkhet
-				This is taken from the Plane Shift: Amonkhet article (https://media.wizards.com/2017/downloads/magic/plane-shift_amonkhet.pdf)
-	Code by:	/u/MILKB0T and MorePurpleMoreBetter
-	Date:		2017-11-29 (sheet v12.999)
+/*  -INFORMATION-
+  Subject:  Subclass
+  Effect:   This script adds a subclass (for the Cleric, called "Zeal Domain") and a race ("Aven" with 2 subraces) from the Magic: The Gathering plane of Amonkhet
+        This is taken from the Plane Shift: Amonkhet article (https://media.wizards.com/2017/downloads/magic/plane-shift_amonkhet.pdf)
+  Code by:  /u/MILKB0T and MorePurpleMoreBetter
+  Date:     2017-11-29 (sheet v12.999)
 
-	Note that this script doesn't add anything else from the Plane Shift: Amonkhet article, just the one subclass
+  Note that this script doesn't add anything else from the Plane Shift: Amonkhet article, just the one subclass
 */
 
 var iFileName = 'Plane Shift Amonkhet - [Subclass & Race; transcribed by MILKB0T & MPMB].js'

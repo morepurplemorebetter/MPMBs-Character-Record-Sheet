@@ -5,7 +5,7 @@ function InitializeEverything (noButtons, noVars) {
   tDoc.calculate = false
   GetStringifieds() // populate some variables stored in fields
 
-	// Define some document level variables before and after running the user scripts
+  // Define some document level variables before and after running the user scripts
   if (!noVars) {
     InitiateLists()
     RunUserScript(true)

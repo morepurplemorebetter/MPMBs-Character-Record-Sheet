@@ -1,20 +1,20 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Races, Subraces, Creatures
-	Effect:		This script adds a number of races and creatures from the Magic: The Gathering plane of Kaladesh
-				This is taken from the Plane Shift: Kaladesh article (http://magic.wizards.com/en/articles/archive/feature/plane-shift-kaladesh-2017-02-16)
-	Code by:	SoilentBrad
-				userZynx_name (additions of Pyromancer, Servo, and feats)
-				tiny corrections by MPMB
-	Date:		2017-11-29 (sheet v12.999)
+/*  -INFORMATION-
+  Subject:  Races, Subraces, Creatures
+  Effect:   This script adds a number of races and creatures from the Magic: The Gathering plane of Kaladesh
+        This is taken from the Plane Shift: Kaladesh article (http://magic.wizards.com/en/articles/archive/feature/plane-shift-kaladesh-2017-02-16)
+  Code by:  SoilentBrad
+        userZynx_name (additions of Pyromancer, Servo, and feats)
+        tiny corrections by MPMB
+  Date:     2017-11-29 (sheet v12.999)
 */
 
 var iFileName = 'Plane Shift Kaladesh - [Races & Creatures; transcribed by SoilentBrad & userZynx_name].js'

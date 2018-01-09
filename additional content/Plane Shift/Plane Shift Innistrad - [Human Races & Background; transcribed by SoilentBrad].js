@@ -1,18 +1,18 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Races, Subraces, Creatures
-	Effect:		This script adds a number of races and creatures from the Magic: The Gathering plane of Innistrad
-				This is taken from the Plane Shift: Innistrad article (http://www.dragonmag.com/5.0/#!/article/106375/102161027)
-	Code by:	SoilentBrad (and tiny corrections by MPMB)
-	Date:		2017-09-22 (sheet v12.998)
+/*  -INFORMATION-
+  Subject:  Races, Subraces, Creatures
+  Effect:   This script adds a number of races and creatures from the Magic: The Gathering plane of Innistrad
+        This is taken from the Plane Shift: Innistrad article (http://www.dragonmag.com/5.0/#!/article/106375/102161027)
+  Code by:  SoilentBrad (and tiny corrections by MPMB)
+  Date:     2017-09-22 (sheet v12.998)
 */
 
 var iFileName = 'Plane Shift Innistrad - [Human Races & Background; transcribed by SoilentBrad].js'
@@ -125,9 +125,9 @@ BackgroundList['inquisitor'] = {
   skills: ['Investigation', 'Religion'],
   gold: 15,
   equipleft: [
-		["Traveler's clothes", '', 3],
-		['Holy symbol', '', ''],
-		['Belt pouch (with coins)', '', 1]
+    ["Traveler's clothes", '', 3],
+    ['Holy symbol', '', ''],
+    ['Belt pouch (with coins)', '', 1]
   ],
   feature: 'Legal Authority',
   trait: [

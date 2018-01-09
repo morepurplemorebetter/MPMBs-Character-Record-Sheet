@@ -6,21 +6,21 @@ function AbilityScores_Button () {
 
   var Header2 = 'Improvements from Race and Feats'
   var MainTxt2 = AbilityScores.improvements.racefeats.replace(/^\n/, '').replace(/^\n/, '')
-	// var Txt2Height = !MainTxt2 ? -1 : 30 + (MainTxt2.match(/\n/g) || []).length * 15;
+  // var Txt2Height = !MainTxt2 ? -1 : 30 + (MainTxt2.match(/\n/g) || []).length * 15;
 
   var Header3 = 'Improvements from Class Levels'
   var MainTxt3 = AbilityScores.improvements.classlvl ? 'Add 2 points to ability scores -or- take 1 feat.\n' + AbilityScores.improvements.classlvl.replace('\n', '') : ''
-	// var Txt3Height = !MainTxt3 ? 0 : 30 + (MainTxt3.match(/\n/g) || []).length * 15;
+  // var Txt3Height = !MainTxt3 ? 0 : 30 + (MainTxt3.match(/\n/g) || []).length * 15;
 
   var Header4 = 'Primary Ability Scores'
   var MainTxt4 = AbilityScores.improvements.classprime.replace(/^\n/, '').replace(/^\n/, '')
-	// var Txt4Height = !MainTxt4 ? 0 : 30 + (MainTxt4.match(/\n/g) || []).length * 15;
+  // var Txt4Height = !MainTxt4 ? 0 : 30 + (MainTxt4.match(/\n/g) || []).length * 15;
 
   var Header5 = 'Multiclassing Requirements'
   var MainTxt5 = AbilityScores.improvements.classmulti.replace(/^\n/, '').replace(/^\n/, '')
-	// var Txt5Height = !MainTxt5 ? 0 : 30 + (MainTxt5.match(/\n/g) || []).length * 15;
+  // var Txt5Height = !MainTxt5 ? 0 : 30 + (MainTxt5.match(/\n/g) || []).length * 15;
 
-	// get the ability score arrays from the fields and parse them into the global variable
+  // get the ability score arrays from the fields and parse them into the global variable
   for (var i = 0; i <= AbilityScores.abbreviations.length; i++) {
     var AbiI = i === AbilityScores.abbreviations.length ? 'HoS' : AbilityScores.abbreviations[i]
     var tempArray = What(AbiI + ' Remember').split(',')
@@ -32,7 +32,7 @@ function AbilityScores_Button () {
     AbilityScores.current[AbiI].feat = tempArray[5] ? tempArray[5] : '0'
   };
 
-	// The dialog for calculating the ability scores
+  // The dialog for calculating the ability scores
   var AbilityScores_Dialog = {
     totalStr: 0,
     totalDex: 0,
@@ -50,7 +50,7 @@ function AbilityScores_Button () {
     arrayHoS: [],
     fieldHoS: What('HoSRememberState'),
 
-		// when pressing the ok button
+    // when pressing the ok button
     commit: function (dialog) {
       var elements = dialog.store()
       this.totalStr = elements['tStr']
@@ -69,7 +69,7 @@ function AbilityScores_Button () {
       this.arrayHoS = [elements['bHoS'], elements['rHoS'], elements['eHoS'], elements['mHoS'], elements['EHoS'], elements['fHoS']]
     },
 
-		// when starting the dialog
+    // when starting the dialog
     initialize: function (dialog) {
       var theHoS = this.fieldHoS
       var enableHoS = theHoS === 'Sanity' || theHoS === 'Honor'
@@ -177,8 +177,8 @@ function AbilityScores_Button () {
       })
     },
 
-		// Strength line commands
-		// fun whenever the base number changes
+    // Strength line commands
+    // fun whenever the base number changes
     bStr: function (dialog) {
       var elements = dialog.store()
       var theBase = ASround(elements['bStr'])
@@ -193,7 +193,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     rStr: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -202,7 +202,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the feat number changes
+    // fun whenever the feat number changes
     fStr: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -211,7 +211,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     eStr: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -220,7 +220,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     EStr: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -229,7 +229,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the magic number changes
+    // fun whenever the magic number changes
     mStr: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -238,8 +238,8 @@ function AbilityScores_Button () {
       })
     },
 
-		// Dexterity line commands
-		// fun whenever the base number changes
+    // Dexterity line commands
+    // fun whenever the base number changes
     bDex: function (dialog) {
       var elements = dialog.store()
       var theBase = ASround(elements['bDex'])
@@ -254,7 +254,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     rDex: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -263,7 +263,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the feat number changes
+    // fun whenever the feat number changes
     fDex: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -272,7 +272,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     eDex: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -281,7 +281,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     EDex: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -290,7 +290,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the magic number changes
+    // fun whenever the magic number changes
     mDex: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -299,8 +299,8 @@ function AbilityScores_Button () {
       })
     },
 
-		// Constitution line commands
-		// fun whenever the base number changes
+    // Constitution line commands
+    // fun whenever the base number changes
     bCon: function (dialog) {
       var elements = dialog.store()
       var theBase = ASround(elements['bCon'])
@@ -315,7 +315,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     rCon: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -324,7 +324,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     fCon: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -333,7 +333,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     eCon: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -342,7 +342,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     ECon: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -351,7 +351,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the magic number changes
+    // fun whenever the magic number changes
     mCon: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -360,8 +360,8 @@ function AbilityScores_Button () {
       })
     },
 
-		// Intelligence line commands
-		// fun whenever the base number changes
+    // Intelligence line commands
+    // fun whenever the base number changes
     bInt: function (dialog) {
       var elements = dialog.store()
       var theBase = ASround(elements['bInt'])
@@ -376,7 +376,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     rInt: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -385,7 +385,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     fInt: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -394,7 +394,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     eInt: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -403,7 +403,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     EInt: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -412,7 +412,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the magic number changes
+    // fun whenever the magic number changes
     mInt: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -421,8 +421,8 @@ function AbilityScores_Button () {
       })
     },
 
-		// Wisdom line commands
-		// fun whenever the base number changes
+    // Wisdom line commands
+    // fun whenever the base number changes
     bWis: function (dialog) {
       var elements = dialog.store()
       var theBase = ASround(elements['bWis'])
@@ -437,7 +437,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     rWis: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -446,7 +446,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     fWis: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -455,7 +455,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     eWis: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -464,7 +464,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     EWis: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -473,7 +473,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the magic number changes
+    // fun whenever the magic number changes
     mWis: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -482,8 +482,8 @@ function AbilityScores_Button () {
       })
     },
 
-		// Charisma line commands
-		// fun whenever the base number changes
+    // Charisma line commands
+    // fun whenever the base number changes
     bCha: function (dialog) {
       var elements = dialog.store()
       var theBase = ASround(elements['bCha'])
@@ -498,7 +498,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     rCha: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -507,7 +507,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     fCha: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -516,7 +516,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     eCha: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -525,7 +525,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     ECha: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -534,7 +534,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the magic number changes
+    // fun whenever the magic number changes
     mCha: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -543,8 +543,8 @@ function AbilityScores_Button () {
       })
     },
 
-		// Honor/Sanity line commands
-		// fun whenever the base number changes
+    // Honor/Sanity line commands
+    // fun whenever the base number changes
     bHoS: function (dialog) {
       var elements = dialog.store()
       var theBase = ASround(elements['bHoS'])
@@ -559,7 +559,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     rHoS: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -568,7 +568,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the race number changes
+    // fun whenever the race number changes
     fHoS: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -577,7 +577,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     eHoS: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -586,7 +586,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the extra number changes
+    // fun whenever the extra number changes
     EHoS: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -595,7 +595,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// fun whenever the magic number changes
+    // fun whenever the magic number changes
     mHoS: function (dialog) {
       var elements = dialog.store()
       dialog.load({
@@ -604,7 +604,7 @@ function AbilityScores_Button () {
       })
     },
 
-		// do something when the value of the HoS drop-down box changes
+    // do something when the value of the HoS drop-down box changes
     aHoS: function (dialog) {
       var popupHoS = dialog.store()['aHoS']
       for (var thing in popupHoS) {
@@ -1340,11 +1340,11 @@ function AbilityScores_Button () {
   }
   var Results = app.execDialog(AbilityScores_Dialog)
 
-	// don't continu with the function if "apply" was not pressed in the dialog
+  // don't continu with the function if "apply" was not pressed in the dialog
   if (Results === 'ok') {
     var remCon = What('Con')
 
-		// start a progress dialog
+    // start a progress dialog
     var therm = app.thermometer
     therm.duration = 6
     therm.begin()
@@ -1353,30 +1353,30 @@ function AbilityScores_Button () {
 
     ShowHonorSanity(AbilityScores_Dialog.fieldHoS)
 
-		// apply the results: make the ability scores display what they are meant to display. Add the various inputs to their various remember fields
+    // apply the results: make the ability scores display what they are meant to display. Add the various inputs to their various remember fields
     for (var i = 0; i <= AbilityScores.abbreviations.length; i++) {
       var AbiI = i === AbilityScores.abbreviations.length ? 'HoS' : AbilityScores.abbreviations[i]
 
-			// if the HoS was not activated, don't do anything with those results
+      // if the HoS was not activated, don't do anything with those results
       if (AbiI === 'HoS' && !AbilityScores_Dialog.fieldHoS) continue
 
-			// amend the progress dialog
+      // amend the progress dialog
       therm.value += 1
 
-			// set the value to be remembered
+      // set the value to be remembered
       Value(AbiI + ' Remember', AbilityScores_Dialog['array' + AbiI])
 
-			// set the value of the display field
+      // set the value of the display field
       var resultScore = AbilityScores_Dialog['total' + AbiI]
       Value(AbiI, isNaN(resultScore) || resultScore < 1 ? '' : resultScore)
     }
 
-		// if Con changed, edit the HPTooltip
+    // if Con changed, edit the HPTooltip
     if (AbilityScores_Dialog['totalCon'] !== remCon) {
       SetHPTooltip()
     }
 
-		// end the progress dialog
+    // end the progress dialog
     therm.end()
   }
 }

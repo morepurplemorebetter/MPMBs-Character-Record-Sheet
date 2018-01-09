@@ -1,5 +1,5 @@
 var Base_CreatureList = {
-	// The four elementals (for Druid Wild Shape)
+  // The four elementals (for Druid Wild Shape)
   'air elemental': {
     name: 'Air Elemental',
     source: [['SRD', 305], ['M', 124]],
@@ -187,7 +187,7 @@ var Base_CreatureList = {
     ],
     wildshapeString: "Darkvision 60 ft| Knows Aquan| Resistant to: acid, and bludg./piercing/slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious|  Water Form: pass through 1\" space without squeezing; move through and stop in another's space| Freeze: if taken cold damage, speed reduced to 20 ft until end of next turn| Whelm: see Monster Manual page 125"
   },
-	// Dinosaurs (which are beasts for Druid Wild Shape)
+  // Dinosaurs (which are beasts for Druid Wild Shape)
   'plesiosaurus': {
     name: 'Plesiosaurus',
     source: [['SRD', 279], ['M', 79]],
@@ -306,7 +306,7 @@ var Base_CreatureList = {
     }
     ]
   },
-	// Exotic mounts and pets
+  // Exotic mounts and pets
   'griffon': {
     name: 'Griffon',
     source: [['SRD', 318], ['M', 174]],
@@ -466,7 +466,7 @@ var Base_CreatureList = {
     }
     ]
   },
-	// Special familiars (find familiar, pact of the chain, DM's rulings)
+  // Special familiars (find familiar, pact of the chain, DM's rulings)
   'homunculus': { // Contains contributions by SoilentBrad
     name: 'Homunculus',
     source: [['SRD', 322], ['M', 188]],
@@ -782,7 +782,7 @@ var Base_CreatureList = {
     }
     ]
   },
-	// Undead minions
+  // Undead minions
   'ghast': {
     name: 'Ghast',
     source: [['SRD', 311], ['M', 148]],
@@ -1206,7 +1206,7 @@ var Base_CreatureList = {
     }
     ]
   },
-	// Fungi
+  // Fungi
   'shrieker': {
     name: 'Shrieker',
     source: [['SRD', 309], ['M', 138]],
@@ -1274,7 +1274,7 @@ var Base_CreatureList = {
     }
     ]
   },
-	// Beasts (familiars, Ranger and general animal companions, and Druid Wild Shapes) [Miscellaneous Creatures Section]
+  // Beasts (familiars, Ranger and general animal companions, and Druid Wild Shapes) [Miscellaneous Creatures Section]
   'ape': {
     name: 'Ape',
     source: [['SRD', 366], ['M', 317]],

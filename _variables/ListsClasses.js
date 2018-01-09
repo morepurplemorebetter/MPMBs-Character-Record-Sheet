@@ -52,12 +52,12 @@ var Base_ClassList = {
     saves: ['Str', 'Con'],
     skills: ['\n\n' + toUni('Barbarian') + ': Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival.'],
     armor: [
-			[true, true, false, true],
-			[false, false, false, true]
+      [true, true, false, true],
+      [false, false, false, true]
     ],
     weapons: [
-			[true, true],
-			[true, true]
+      [true, true],
+      [true, true]
     ],
     equipment: "Barbarian starting equipment:\n \u2022 A greataxe -or- any martial melee weapon;\n \u2022 Two handaxes -or- any simple weapon;\n \u2022 An explorer's pack and four javelins.\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Primal Path', ['barbarian-berserker']],
@@ -184,11 +184,11 @@ var Base_ClassList = {
       secondary: [['Musical instrument', 1]]
     },
     armor: [
-			[true, false, false, false],
-			[true, false, false, false]
+      [true, false, false, false],
+      [true, false, false, false]
     ],
     weapons: [
-			[true, false, ['hand crossbow', 'longsword', 'rapier', 'shortsword']]
+      [true, false, ['hand crossbow', 'longsword', 'rapier', 'shortsword']]
     ],
     equipment: "Bard starting equipment:\n \u2022 A rapier -or- a longsword -or- any simple weapon;\n \u2022 A diplomat's pack -or- an entertainer's pack;\n \u2022 A lute -or- any other musical instrument\n \u2022 Leather armor and a dagger.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Bard College', ['bard-college of lore']],
@@ -292,11 +292,11 @@ var Base_ClassList = {
     saves: ['Wis', 'Cha'],
     skills: ['\n\n' + toUni('Cleric') + ': Choose two from History, Insight, Medicine, Persuasion, and Religion.'],
     armor: [
-			[true, true, false, true],
-			[true, true, false, true]
+      [true, true, false, true],
+      [true, true, false, true]
     ],
     weapons: [
-			[true, false]
+      [true, false]
     ],
     equipment: "Cleric starting equipment:\n \u2022 A mace -or- a warhammer (if proficient);\n \u2022 Scale mail -or- leather armor -or- chain mail (if proficient);\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;\n \u2022 A priest's pack -or- an explorer's pack;\n \u2022 A shield and a holy symbol.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Divine Domain', ['cleric-life domain']],
@@ -376,11 +376,11 @@ var Base_ClassList = {
       primary: ['Herbalism kit']
     },
     armor: [
-			[true, true, false, true],
-			[true, true, false, true]
+      [true, true, false, true],
+      [true, true, false, true]
     ],
     weapons: [
-			[false, false, ['club', 'dagger', 'dart', 'javelin', 'mace', 'quarterstaff', 'scimitar', 'sickle', 'sling', 'spear']]
+      [false, false, ['club', 'dagger', 'dart', 'javelin', 'mace', 'quarterstaff', 'scimitar', 'sickle', 'sling', 'spear']]
     ],
     equipment: "Druid starting equipment:\n \u2022 A wooden shield -or- any simple weapon;\n \u2022 A scimitar -or- any simple melee weapon;\n \u2022 Leather armor, an explorer's pack, and a druidic focus.\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Druid Circle', ['druid-circle of the land']],
@@ -456,12 +456,12 @@ var Base_ClassList = {
     saves: ['Str', 'Con'],
     skills: ['\n\n' + toUni('Fighter') + ': Choose two from Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Perception, and Survival.'],
     armor: [
-			[true, true, true, true],
-			[true, true, false, true]
+      [true, true, true, true],
+      [true, true, false, true]
     ],
     weapons: [
-			[true, true],
-			[true, true]
+      [true, true],
+      [true, true]
     ],
     equipment: "Fighter starting equipment:\n \u2022 Chain mail -or- leather armor, a longbow, and 20 arrows;\n \u2022 A martial weapon and a shield -or- two martial weapons;\n \u2022 A light crossbow and 20 bolts -or- two handaxes;\n \u2022 A dungeoneer's pack -or- an explorer's pack.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Martial Archetype', ['fighter-champion']],
@@ -530,11 +530,11 @@ var Base_ClassList = {
     },
     skills: ['\n\n' + toUni('Monk') + ': Choose two from Acrobatics, Athletics, History, Insight, Religion, and Stealth.'],
     armor: [
-			[false, false, false, false]
+      [false, false, false, false]
     ],
     weapons: [
-			[true, false, ['shortsword']],
-			[true, false, ['shortsword']]
+      [true, false, ['shortsword']],
+      [true, false, ['shortsword']]
     ],
     equipment: "Monk starting equipment:\n \u2022 A shortsword -or- any simple weapon;\n \u2022 A dungeoneer's pack -or- an explorer's pack;\n \u2022 10 darts.\n\nAlternatively, choose 5d4 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Monastic Tradition', ['monk-way of the open hand']],
@@ -717,12 +717,12 @@ var Base_ClassList = {
     saves: ['Wis', 'Cha'],
     skills: ['\n\n' + toUni('Paladin') + ': Choose two from Athletics, Insight, Intimidation, Medicine, Persuasion, and Religion.'],
     armor: [
-			[true, true, true, true],
-			[true, true, false, true]
+      [true, true, true, true],
+      [true, true, false, true]
     ],
     weapons: [
-			[true, true],
-			[true, true]
+      [true, true],
+      [true, true]
     ],
     equipment: "Paladin starting equipment:\n \u2022 A martial weapon and a shield -or- two martial weapons;\n \u2022 Five javelins -or- any simple melee weapon;\n \u2022 A priest's pack -or- an explorer's pack;\n \u2022 Chain mail and a holy symbol.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Sacred Oath', ['paladin-oath of devotion']],
@@ -846,12 +846,12 @@ var Base_ClassList = {
     saves: ['Str', 'Dex'],
     skills: ['\n\n' + toUni('Ranger') + ': Choose three from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival', '\n\n' + toUni('Multiclass Ranger') + ': Choose one from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival'],
     armor: [
-			[true, true, false, true],
-			[true, true, false, true]
+      [true, true, false, true],
+      [true, true, false, true]
     ],
     weapons: [
-			[true, true],
-			[true, true]
+      [true, true],
+      [true, true]
     ],
     equipment: "Ranger starting equipment:\n \u2022 Scale mail -or- leather armor;\n \u2022 Two shortswords -or- two simple melee weapons;\n \u2022 A dungeoneer's pack -or- an explorer's pack;\n \u2022 A longbow and a quiver of 20 arrows.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Ranger Archetype', ['ranger-hunter']],
@@ -1084,11 +1084,11 @@ var Base_ClassList = {
       secondary: [["Thieves' tools", 'Dex']]
     },
     armor: [
-			[true, false, false, false],
-			[true, false, false, false]
+      [true, false, false, false],
+      [true, false, false, false]
     ],
     weapons: [
-			[true, false, ['hand crossbow', 'longsword', 'rapier', 'shortsword']]
+      [true, false, ['hand crossbow', 'longsword', 'rapier', 'shortsword']]
     ],
     equipment: "Rogue starting equipment:\n \u2022 A rapier -or- a shortsword;\n \u2022 A shortbow and a quiver of 20 arrows -or- a shortswords;\n \u2022 A burglar's pack -or- dungeoneer's pack -or- an explorer's pack;\n \u2022 Leather armor, two daggers, and thieves' tools.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Roguish Archetype', ['rogue-thief']],
@@ -1200,10 +1200,10 @@ var Base_ClassList = {
     saves: ['Con', 'Cha'],
     skills: ['\n\n' + toUni('Sorcerer') + ': Choose two from Arcana, Deception, Insight, Intimidation, Persuasion, and Religion.'],
     armor: [
-			[false, false, false, false]
+      [false, false, false, false]
     ],
     weapons: [
-			[false, false, ['dagger', 'dart', 'light crossbow', 'quarterstaff', 'sling']]
+      [false, false, ['dagger', 'dart', 'light crossbow', 'quarterstaff', 'sling']]
     ],
     equipment: "Sorcerer starting equipment:\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;\n \u2022 A component pouch -or- an arcane focus;\n \u2022 A dungeoneer's pack -or- an explorer's pack;\n \u2022 Two daggers.\n\nAlternatively, choose 3d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Sorcerous Origin', ['sorcerer-draconic bloodline']],
@@ -1308,12 +1308,12 @@ var Base_ClassList = {
     saves: ['Wis', 'Cha'],
     skills: ['\n\n' + toUni('Warlock') + ': Choose two from Arcana, Deception, History, Intimidation, Investigation, Nature, and Religion.'],
     armor: [
-			[true, false, false, false],
-			[true, false, false, false]
+      [true, false, false, false],
+      [true, false, false, false]
     ],
     weapons: [
-			[true, false],
-			[true, false]
+      [true, false],
+      [true, false]
     ],
     equipment: "Warlock starting equipment:\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;\n \u2022 A component pouch -or- an arcane focus;\n \u2022 A scholar's pack -or- a dungeoneer's pack\n \u2022 Leather armor, any simple weapon, and two daggers.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Otherworldly Patron', ['warlock-the fiend']],
@@ -1751,10 +1751,10 @@ var Base_ClassList = {
     saves: ['Int', 'Wis'],
     skills: ['\n\n' + toUni('Wizard') + ': Choose two from Arcana, History, Insight, Investigation, Medicine, and Religion.'],
     armor: [
-			[false, false, false, false]
+      [false, false, false, false]
     ],
     weapons: [
-			[false, false, ['dagger', 'dart', 'light crossbow', 'quarterstaff', 'sling']]
+      [false, false, ['dagger', 'dart', 'light crossbow', 'quarterstaff', 'sling']]
     ],
     equipment: "Wizard starting equipment:\n \u2022 A quarterstaff -or- a dagger;\n \u2022 A component pouch -or- an arcane focus;\n \u2022 A scholar's pack -or- an explorer's pack;\n \u2022 A spellbook.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
     subclasses: ['Arcane Tradition', ['wizard-evocation']],

@@ -1,27 +1,27 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
-	You can add the content to the Character Sheet's functionality by adding this file with the "Add Extra Materials" bookmark.
+/*  -WHAT IS THIS?-
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+  You can add the content to the Character Sheet's functionality by adding this file with the "Add Extra Materials" bookmark.
 
-	-KEEP IN MIND-
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Class
-	Effect:		This script adds a class called "Blood Hunter" (v2.0) and the three subclasses for it: "Order of the Ghostslayer", "Order of the Profane Soul", "Order of the Mutant", and "Order of the Lycan" (v1.5)
+/*  -INFORMATION-
+  Subject:  Class
+  Effect:   This script adds a class called "Blood Hunter" (v2.0) and the three subclasses for it: "Order of the Ghostslayer", "Order of the Profane Soul", "Order of the Mutant", and "Order of the Lycan" (v1.5)
 
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170777/)
-				This class and subclasses are made by Matthew Mercer
+        This is taken from the DMs Guild website (http://www.dmsguild.com/product/170777/)
+        This class and subclasses are made by Matthew Mercer
 
-				The script also includes the "Order of the Lycan" (v1.5), which is taken from http://www.dmsguild.com/product/175606/
+        The script also includes the "Order of the Lycan" (v1.5), which is taken from http://www.dmsguild.com/product/175606/
 
-	Code by:	Darryl Cook & MorePurpleMoreBetter
-				Order of the Lycan code by MorePurpleMoreBetter
-	Date:		2018-01-08 (sheet v12.999)
+  Code by:  Darryl Cook & MorePurpleMoreBetter
+        Order of the Lycan code by MorePurpleMoreBetter
+  Date:     2018-01-08 (sheet v12.999)
 
-	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
+  Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 
-	Please take note that multiclassing the "Order of the Profane Soul" subclass with Warlock will result in too many spells/cantrips being asked for in the spell selection dialogues.
+  Please take note that multiclassing the "Order of the Profane Soul" subclass with Warlock will result in too many spells/cantrips being asked for in the spell selection dialogues.
 */
 
 var iFileName = "Blood Hunter [Matthew Mercer's work, transcribed by Darryl & MPMB].js"
@@ -57,12 +57,12 @@ ClassList['blood hunter'] = {
     secondary: ["Alchemist's supplies"]
   },
   armor: [
-		[true, true, false, true],
-		[true, true, false, true]
+    [true, true, false, true],
+    [true, true, false, true]
   ],
   weapons: [
-		[true, true],
-		[true, true]
+    [true, true],
+    [true, true]
   ],
   equipment: "Blood Hunter starting equipment:\n \u2022 Scale mail -or- studded leather armor;\n \u2022 A martial weapon -or- two simple weapons;\n \u2022 A light crossbow and 20 bolts -or- a hand crossbow and 20 bolts;\n \u2022 An explorer's pack.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
   subclasses: ['Blood Hunter Orders', ['blood hunter-order of the ghostslayer', 'blood hunter-order of the lycan', 'blood hunter-order of the mutant', 'blood hunter-order of the profane soul']],
@@ -363,27 +363,27 @@ ClassSubList['blood hunter-order of the profane soul'] = {
   abilitySave: 5,
   spellcastingFactor: 'warlock3',
   spellcastingTable: [
-		[0, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 0
-		[0, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 1
-		[0, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 2
-		[1, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 3
-		[1, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 4
-		[2, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 5
-		[2, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 6
-		[0, 2, 0, 0, 0, 0, 0, 0, 0], // lvl 7
-		[0, 2, 0, 0, 0, 0, 0, 0, 0], // lvl 8
-		[0, 2, 0, 0, 0, 0, 0, 0, 0], // lvl 9
-		[0, 2, 0, 0, 0, 0, 0, 0, 0], // lvl10
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl11
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl12
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl13
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl14
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl15
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl16
-		[0, 0, 0, 2, 0, 0, 0, 0, 0], // lvl17
-		[0, 0, 0, 2, 0, 0, 0, 0, 0], // lvl18
-		[0, 0, 0, 2, 0, 0, 0, 0, 0], // lvl19
-		[0, 0, 0, 2, 0, 0, 0, 0, 0] // lvl20
+    [0, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 0
+    [0, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 1
+    [0, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 2
+    [1, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 3
+    [1, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 4
+    [2, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 5
+    [2, 0, 0, 0, 0, 0, 0, 0, 0], // lvl 6
+    [0, 2, 0, 0, 0, 0, 0, 0, 0], // lvl 7
+    [0, 2, 0, 0, 0, 0, 0, 0, 0], // lvl 8
+    [0, 2, 0, 0, 0, 0, 0, 0, 0], // lvl 9
+    [0, 2, 0, 0, 0, 0, 0, 0, 0], // lvl10
+    [0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl11
+    [0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl12
+    [0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl13
+    [0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl14
+    [0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl15
+    [0, 0, 2, 0, 0, 0, 0, 0, 0], // lvl16
+    [0, 0, 0, 2, 0, 0, 0, 0, 0], // lvl17
+    [0, 0, 0, 2, 0, 0, 0, 0, 0], // lvl18
+    [0, 0, 0, 2, 0, 0, 0, 0, 0], // lvl19
+    [0, 0, 0, 2, 0, 0, 0, 0, 0] // lvl20
   ],
   spellcastingKnown: {
     cantrips: [0, 0, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
@@ -920,7 +920,7 @@ UpdateHybridForm = function () {
   var BHlevelNew = classes.known['blood hunter'] ? classes.known['blood hunter'].level : 0
   if (BHlevelOld <= 2 && BHlevelNew <= 2) return
 
-	// a funtion to create the full text for the hybrid feature
+  // a funtion to create the full text for the hybrid feature
   var makeHybridText = function (lvl) {
     if (lvl < 3) return ''
     var PSdie = lvl >= 18 ? 'd10' : (lvl >= 11 ? 'd8' : 'd6')
@@ -939,12 +939,12 @@ UpdateHybridForm = function () {
     return theText
   }
 
-	// update the hybrid feature on the notes page
+  // update the hybrid feature on the notes page
   var BHstringOld = makeHybridText(BHlevelOld)
   var BHstringNew = makeHybridText(BHlevelNew)
   ReplaceString(NotesPrefix + 'Notes.Left', BHstringNew, false, BHstringOld)
 
-	// give an alert about what is going on
+  // give an alert about what is going on
   if (BHlevelOld <= 2 && BHlevelNew > 2) {
     app.alert({
       cTitle: "Order of thy Lycan's Hybrid form is on the Notes page",

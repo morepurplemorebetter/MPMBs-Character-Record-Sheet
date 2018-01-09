@@ -1,21 +1,21 @@
 /*  -WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
 /*  -INFORMATION-
-	Subject:	Background
-	Effect:		This script adds a background, called "Primitive Tribe Member"
-				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/208784/)
-				This background is made by Damion Meany
-	Code by:	Erik J
-	Date:		2017-09-05 (sheet v12.998)
+  Subject:  Background
+  Effect:   This script adds a background, called "Primitive Tribe Member"
+        This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/208784/)
+        This background is made by Damion Meany
+  Code by:  Erik J
+  Date:     2017-09-05 (sheet v12.998)
 
-	Please support the creator of this content (Damion Meany) and download his material from DM Guild: http://www.dmsguild.com/browse.php?author=Damion%20Meany
+  Please support the creator of this content (Damion Meany) and download his material from DM Guild: http://www.dmsguild.com/browse.php?author=Damion%20Meany
 */
 
 var iFileName = "Primitive Tribal Member [Damion Meany's work, transcribed by Erik J.].js"
@@ -29,12 +29,12 @@ BackgroundList['primitive tribe member'] = {
   skillstxt: 'Nature and choose one from Animal Handling, Athletics, Stealth, or Survival',
   gold: 10,
   equipleft: [
-		['Significant Tribal item', '', ''],
-		['One set of proficient tools', '', '']
+    ['Significant Tribal item', '', ''],
+    ['One set of proficient tools', '', '']
   ],
   equipright: [
-		["Traveler's clothes", '', 4],
-		['Belt pouch (with coins)', '', 1]
+    ["Traveler's clothes", '', 4],
+    ['Belt pouch (with coins)', '', 1]
   ],
   feature: 'At One with Nature',
   trait: [

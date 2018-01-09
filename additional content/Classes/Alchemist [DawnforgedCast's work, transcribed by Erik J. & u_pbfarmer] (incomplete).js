@@ -1,30 +1,30 @@
 /*  -WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
 /*  -INFORMATION-
-	Subject:	Class
-	Effect:		This script adds the class called "Alchemist" and its 3 subclasses known as Research Focuses "Arcane Distiller", "Grenadier", and "Metamorph"
-				This is taken from DawnforgedCast (https://dawnforgedcast.myshopify.com/products/5th-edition-alchemist-class)
-				This content is made by Erik J
-	Original:	Erik
-	Completed:	/u/pbfarmer
-	Date:		2017-09-22 (sheet v12.998)
+  Subject:  Class
+  Effect:   This script adds the class called "Alchemist" and its 3 subclasses known as Research Focuses "Arcane Distiller", "Grenadier", and "Metamorph"
+        This is taken from DawnforgedCast (https://dawnforgedcast.myshopify.com/products/5th-edition-alchemist-class)
+        This content is made by Erik J
+  Original:  Erik
+  Completed: /u/pbfarmer
+  Date:    2017-09-22 (sheet v12.998)
 
-	Code Version:	1.0
+  Code Version:  1.0
 
-	Please support the creator of this content (DawnforgedCast) and download their material from their website: http://dawnforgedcast.org/
+  Please support the creator of this content (DawnforgedCast) and download their material from their website: http://dawnforgedcast.org/
 */
 
-/*	-IMPORTANT NOTICE-
-	This code has not been corrected by MPMB to his usual rigid standards. He only corrected errors in the code, but hasn't compared the content to the original source.
-	Things will not look as polished as with the other pre-written code that you can find in the same folder. For example, descriptions for class features will overflow their allowed space.
-	Also, automation for spell selection isn't fully functional for several of the subclass features.
+/*  -IMPORTANT NOTICE-
+  This code has not been corrected by MPMB to his usual rigid standards. He only corrected errors in the code, but hasn't compared the content to the original source.
+  Things will not look as polished as with the other pre-written code that you can find in the same folder. For example, descriptions for class features will overflow their allowed space.
+  Also, automation for spell selection isn't fully functional for several of the subclass features.
 */
 
 var iFileName = "Alchemist [DawnforgedCast's work, transcribed by Erik J. & u_pbfarmer] (incomplete).js"
@@ -34,25 +34,25 @@ RequiredSheetVersion(12.998);
 [// level 0 (cantrips)
   'blade ward', 'friends', 'guidance', 'light', 'prestidigitation', 'resistance', 'true strike',
 
-	// level 1
+  // level 1
   'absorb elements', 'animal friendship', 'armor of agathys', 'arms of hadar', 'comprehend languages', 'cure wounds', 'detect evil and good', 'detect magic', 'detect poison and disease', 'disguise self', 'expeditious retreat', 'false life', 'feather fall', 'grease', 'identify', 'illusory script', 'jump', 'longstrider', 'mage armor', 'protection from evil and good', 'speak with animals', 'entangle', 'faerie fire', 'fog', 'cloud',
 
-	// level 2
+  // level 2
   'aid', 'alter self', 'barkskin', 'blur', 'darkvision', 'enhance ability', 'enlarge/reduce', 'find traps', 'invisibility', 'lesser restoration', 'levitate', 'locate animals or plants', 'locate object', 'mirror image', 'pass without trace', 'protection from poison', 'see invisibility', 'spider climb', 'web', 'darkness', 'silence', 'spike growth', 'zone of truth',
 
-	// level 3
+  // level 3
   'blink', 'elemental weapon', 'feign death', 'fly', 'gaseous form', 'haste', 'meld into stone', 'nondetection', 'protection from energy', 'remove curse', 'tongues', 'water breathing', 'water walk', 'hungering void', 'sleet storm', 'stinking cloud', 'wind wall',
 
-	// level 4
+  // level 4
   'death ward', 'fire shield', 'freedom of movement', 'greater invisibility', 'locate creature', 'polymorph', 'stoneskin', 'black tentacles', 'hallucinatory terrain', 'storm sphere', 'wall of fire',
 
-	// level 5
+  // level 5
   'greater restoration', 'legend lore', 'telekinesis', 'treestride',
 
-	// level 6
+  // level 6
   'find the path', 'globe of invulnerability', 'heal', 'investiture of flame', 'investiture of ice', 'investiture of stone', 'investiture of wind', 'primordial ward', 'true seeing', 'wind walk',
 
-	// level 7
+  // level 7
   'etherealness', 'plane shift', 'regenerate', 'simulacrum'
 ].forEach(function (alchemistSpells) {
   if (SpellsList[alchemistSpells]) SpellsList[alchemistSpells].classes.push('dawnforgedcast-alchemist')
@@ -74,12 +74,12 @@ ClassList['dawnforgedcast-alchemist'] = {
     secondary: ["Alchemist's supplies", ["Herbalism or poisoner's kit", 1]]
   },
   armor: [
-		[true, false, false, false],
-		[true, false, false, false]
+    [true, false, false, false],
+    [true, false, false, false]
   ],
   weapons: [
-		[true, false],
-		[true, false]
+    [true, false],
+    [true, false]
   ],
   equipment: "Alchemist starting equipment:\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;\n \u2022 A scholar's pack -or- a dungeoneer's pack;\n \u2022 one vial of alchemist fire -or- two vials of acid -or- one healing potion;\n \u2022 Leather armor, Alchemist Supplies, formula book, and a dagger; \n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
   subclasses: ['Research Focus', ['dawnforgedcast-alchemist-arcane distiller', 'dawnforgedcast-alchemist-grenadier', 'dawnforgedcast-alchemist-metamorph']],
@@ -87,27 +87,27 @@ ClassList['dawnforgedcast-alchemist'] = {
   abilitySave: 4,
   spellcastingFactor: 1,
   spellcastingTable: [
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[2, 0, 0, 0, 0, 0, 0, 0, 0],
-		[3, 0, 0, 0, 0, 0, 0, 0, 0],
-		[3, 1, 0, 0, 0, 0, 0, 0, 0],
-		[4, 1, 0, 0, 0, 0, 0, 0, 0],
-		[4, 2, 0, 0, 0, 0, 0, 0, 0],
-		[4, 2, 1, 0, 0, 0, 0, 0, 0],
-		[4, 3, 1, 0, 0, 0, 0, 0, 0],
-		[4, 3, 2, 0, 0, 0, 0, 0, 0],
-		[4, 3, 2, 1, 0, 0, 0, 0, 0],
-		[4, 3, 3, 1, 0, 0, 0, 0, 0],
-		[4, 3, 3, 2, 0, 0, 0, 0, 0],
-		[4, 3, 3, 2, 1, 0, 0, 0, 0],
-		[4, 3, 3, 3, 1, 0, 0, 0, 0],
-		[4, 3, 3, 3, 2, 0, 0, 0, 0],
-		[4, 3, 3, 3, 2, 1, 0, 0, 0],
-		[4, 3, 3, 3, 3, 1, 0, 0, 0],
-		[4, 3, 3, 3, 3, 2, 0, 0, 0],
-		[4, 3, 3, 3, 3, 2, 1, 0, 0],
-		[4, 3, 3, 3, 3, 2, 1, 0, 0],
-		[4, 3, 3, 3, 3, 2, 2, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0],
+    [3, 0, 0, 0, 0, 0, 0, 0, 0],
+    [3, 1, 0, 0, 0, 0, 0, 0, 0],
+    [4, 1, 0, 0, 0, 0, 0, 0, 0],
+    [4, 2, 0, 0, 0, 0, 0, 0, 0],
+    [4, 2, 1, 0, 0, 0, 0, 0, 0],
+    [4, 3, 1, 0, 0, 0, 0, 0, 0],
+    [4, 3, 2, 0, 0, 0, 0, 0, 0],
+    [4, 3, 2, 1, 0, 0, 0, 0, 0],
+    [4, 3, 3, 1, 0, 0, 0, 0, 0],
+    [4, 3, 3, 2, 0, 0, 0, 0, 0],
+    [4, 3, 3, 2, 1, 0, 0, 0, 0],
+    [4, 3, 3, 3, 1, 0, 0, 0, 0],
+    [4, 3, 3, 3, 2, 0, 0, 0, 0],
+    [4, 3, 3, 3, 2, 1, 0, 0, 0],
+    [4, 3, 3, 3, 3, 1, 0, 0, 0],
+    [4, 3, 3, 3, 3, 2, 0, 0, 0],
+    [4, 3, 3, 3, 3, 2, 1, 0, 0],
+    [4, 3, 3, 3, 3, 2, 1, 0, 0],
+    [4, 3, 3, 3, 3, 2, 2, 0, 0]
   ],
   spellcastingKnown: {
     cantrips: [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6],

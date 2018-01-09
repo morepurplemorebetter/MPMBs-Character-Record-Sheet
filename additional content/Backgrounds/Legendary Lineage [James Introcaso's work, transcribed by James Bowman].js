@@ -1,21 +1,21 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Background
-	Effect:		This script adds a background, called "Legendary Lineage"
-				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/171771)
-				This background is made by James Introcaso
-	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
-	Date:		2017-09-05 (sheet v12.998)
+/*  -INFORMATION-
+  Subject:  Background
+  Effect:   This script adds a background, called "Legendary Lineage"
+        This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/171771)
+        This background is made by James Introcaso
+  Code by:  James Bowman (based on work by MorePurpleMoreBetter)
+  Date:     2017-09-05 (sheet v12.998)
 
-	Please support the creator of this content (James Introcaso) and download their material from DM Guild: http://www.dmsguild.com/browse.php?author=James%20Introcaso
+  Please support the creator of this content (James Introcaso) and download their material from DM Guild: http://www.dmsguild.com/browse.php?author=James%20Introcaso
 */
 
 var iFileName = "Legendary Lineage [James Introcaso's work, transcribed by James Bowman].js"
@@ -28,13 +28,13 @@ BackgroundList['legendary lineage'] = {
   skills: ['Athletics', 'History'],
   gold: 15,
   equipleft: [
-			['Wood figure of ancestor', '', ''],
-			['Signet ring', '', ''],
-			['Gaming set', 1, '']
+      ['Wood figure of ancestor', '', ''],
+      ['Signet ring', '', ''],
+      ['Gaming set', 1, '']
   ],
   equipright: [
-			["Traveler's clothes", '', 4],
-			['Belt pouch (with coins)', '', 1]
+      ["Traveler's clothes", '', 4],
+      ['Belt pouch (with coins)', '', 1]
   ],
   feature: 'Good Reputation',
   trait: [

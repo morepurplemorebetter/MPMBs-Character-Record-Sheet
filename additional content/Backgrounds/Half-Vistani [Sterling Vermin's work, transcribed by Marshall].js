@@ -1,21 +1,21 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Background
-	Effect:		This script adds a background, including its seven options, called "Half-Vistani"
-				This is taken from the Sterling Vermin Adventuring Co. website (https://sterlingvermin.files.wordpress.com/2016/03/the-half-vistani.pdf)
-				This background is made by /u/coolgamertagbro
-	Code by:	Marshall
-	Date:		2017-11-29 (sheet v12.999)
+/*  -INFORMATION-
+  Subject:  Background
+  Effect:   This script adds a background, including its seven options, called "Half-Vistani"
+        This is taken from the Sterling Vermin Adventuring Co. website (https://sterlingvermin.files.wordpress.com/2016/03/the-half-vistani.pdf)
+        This background is made by /u/coolgamertagbro
+  Code by:  Marshall
+  Date:     2017-11-29 (sheet v12.999)
 
-	Please support the creator of this content (Sterling Vermin Adventuring Co.) and download this and other material from there: https://sterlingvermin.com/
+  Please support the creator of this content (Sterling Vermin Adventuring Co.) and download this and other material from there: https://sterlingvermin.com/
 */
 
 var iFileName = "Half-Vistani [Sterling Vermin's work, transcribed by Marshall].js"
@@ -28,14 +28,14 @@ BackgroundList['half-vistani'] = {
   skills: ['History', 'Arcana'],
   gold: 15,
   equipleft: [
-		['Backpack, with:', '', 5],
-		['Bedroll', 1, 7],
-		['Mess kit', 1, 1]
+    ['Backpack, with:', '', 5],
+    ['Bedroll', 1, 7],
+    ['Mess kit', 1, 1]
   ],
   equipright: [
-		["Traveler's clothes", '', 3],
-		['Lucky charm', '', 1],
-		['Belt pouch (with coins)', '', 1]
+    ["Traveler's clothes", '', 3],
+    ['Lucky charm', '', 1],
+    ['Belt pouch (with coins)', '', 1]
   ],
   feature: 'Wanderlust',
   trait: [

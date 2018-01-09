@@ -1,21 +1,21 @@
-/*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*  -WHAT IS THIS?-
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
-/*	-INFORMATION-
-	Subject:	Race
-	Effect:		This script adds a background, called "Refugee"
-				This is taken from DriveThruRPG (http://www.drivethrurpg.com/product/132657/)
-				This subrace is made by Goodman Games
-	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
-	Date:		2017-02-12 (sheet v12.81)
+/*  -INFORMATION-
+  Subject:  Race
+  Effect:   This script adds a background, called "Refugee"
+        This is taken from DriveThruRPG (http://www.drivethrurpg.com/product/132657/)
+        This subrace is made by Goodman Games
+  Code by:  James Bowman (based on work by MorePurpleMoreBetter)
+  Date:     2017-02-12 (sheet v12.81)
 
-	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: http://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
+  Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: http://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
 */
 
 var iFileName = "Refugee [Goodman Games' work, transcribed by James Bowman].js"
@@ -28,13 +28,13 @@ BackgroundList['refugee'] = {
   skills: ['Athletics', 'Survival'],
   gold: 10,
   equipleft: [
-			["Set of artisan's tools", '', ''],
-			['Small wood axe', '', 2],
-			['Two-person tent', '', 20]
+      ["Set of artisan's tools", '', ''],
+      ['Small wood axe', '', 2],
+      ['Two-person tent', '', 20]
   ],
   equipright: [
-			['Common clothes', '', 3],
-			['Token reminding you of home', 1, '']
+      ['Common clothes', '', 3],
+      ['Token reminding you of home', 1, '']
   ],
   feature: 'Far-Flung Friends',
   trait: [

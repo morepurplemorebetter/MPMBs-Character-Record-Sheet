@@ -1,22 +1,22 @@
 /*  -WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+  The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
+  You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
 
-	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+  -KEEP IN MIND-
+  Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
+  It is recommended to enter the code in a fresh sheet before adding any other information.
 */
 
 /*  -INFORMATION-
-	Subject:    Class
-	Effect:     This script adds the class called "Shaman" and its 6 subclasses "Speaker of Ancestors", "Speaker of Dreams", "Speaker of Fire", "Speaker of Stone", "Speaker of Water", and "Speaker of Wind"
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170851/) v1.5.4
-				This content is made by Michael Wolf
-	Original:   Derek (with amendments by MorePurpleMoreBetter)
-	Completed:  /u/Fourleafclov (with amendments by MorePurpleMoreBetter)
-	Date:		2017-09-22 (sheet v12.998)
+  Subject:    Class
+  Effect:     This script adds the class called "Shaman" and its 6 subclasses "Speaker of Ancestors", "Speaker of Dreams", "Speaker of Fire", "Speaker of Stone", "Speaker of Water", and "Speaker of Wind"
+        This is taken from the DMs Guild website (http://www.dmsguild.com/product/170851/) v1.5.4
+        This content is made by Michael Wolf
+  Original:   Derek (with amendments by MorePurpleMoreBetter)
+  Completed:  /u/Fourleafclov (with amendments by MorePurpleMoreBetter)
+  Date:       2017-09-22 (sheet v12.998)
 
-	Please support the creator of this content (Michael Wolf) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Michael%20Wolf
+  Please support the creator of this content (Michael Wolf) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Michael%20Wolf
 */
 
 var iFileName = "Shaman [Michael Wolf's work, transcribed by Derek, Fourleafclov, MPMB].js"
@@ -26,31 +26,31 @@ RequiredSheetVersion(12.998);
 [// level 0 (cantrips)
   'create bonfire', 'druidcraft', 'guidance', 'mending', 'message', 'resistance', 'vicious mockery',
 
-	// level 1
+  // level 1
   'absorb elements', 'beast bond', 'charm person', 'command', 'cure wounds', 'detect poison and disease', 'dissonant whispers', 'entangle', 'faerie fire', 'fog cloud', 'heroism', 'hex', 'protection from evil and good',
 
-	// level 2
+  // level 2
   'barkskin', 'darkness', 'enhance ability', 'hold person', 'misty step', 'moonbeam', 'pass without trace', 'protection from poison', 'spider climb', 'spike growth', 'warding bond',
 
-	// level 3
+  // level 3
   'clairvoyance', 'daylight', 'dispel magic', 'elemental weapon', 'gaseous form', 'magic circle', 'plant growth', 'protection from energy', 'remove curse', 'spirit guardians',
 
-	// level 4
+  // level 4
   'dominate beast', 'elemental bane', 'fire shield', 'hallucinatory terrain', 'stoneskin',
 
-	// level 5
+  // level 5
   'hold monster', 'scrying', 'telekinesis', 'tree stride',
 
-	// level 6
+  // level 6
   'bones of the earth', 'chain lightning', 'find the path', "heroes' feast", 'mass suggestion', 'move earth', 'sunbeam', 'transport via plants', 'true seeing', 'wall of ice', 'wind walk',
 
-	// level 7
+  // level 7
   'etherealness', 'mirage arcane', 'plane shift', 'regenerate', 'reverse gravity', 'whirlwind',
 
-	// level 8
+  // level 8
   'animal shapes', 'antipathy/sympathy', 'control weather', 'earthquake',
 
-	// level 9
+  // level 9
   'astral projection', 'foresight', 'shapechange', 'true resurrection'
 ].forEach(function (shamanSpells) {
   if (SpellsList[shamanSpells]) SpellsList[shamanSpells].classes.push('shaman')
@@ -70,11 +70,11 @@ ClassList['shaman'] = {
   skills: ['\n\n' + toUni('Shaman') + ': Choose two from Animal Handling, Arcana, Insight, Medicine, Nature, Perception, Persuasion, Religion, and Survival.'],
   toolProfs: { primay: ['Herbalism kit'] },
   armor: [
-		[true, false, false, true],
-		[true, false, false, true]
+    [true, false, false, true],
+    [true, false, false, true]
   ],
   weapons: [
-		[false, false, ['club', 'dagger', 'javelin', 'mace', 'quarterstaff', 'scimitar', 'sickle', 'sling', 'spear']]
+    [false, false, ['club', 'dagger', 'javelin', 'mace', 'quarterstaff', 'scimitar', 'sickle', 'sling', 'spear']]
   ],
   equipment: "Shaman starting equipment:\n \u2022 A wooden shield -or- any simple weapon;\n \u2022 A scimitar -or- any simple melee weapon;\n \u2022 Leather armor, an explorer's pack and shamanic focus\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
   subclasses: ['Shamanic Calling', ['shaman-speaker of ancestors', 'shaman-speaker of dreams', 'shaman-speaker of flames', 'shaman-speaker of stones', 'shaman-speaker of waters', 'shaman-speaker of winds']],
@@ -86,7 +86,7 @@ ClassList['shaman'] = {
     prepared: true
   },
   spellcastingList: {
-		// 0 - 5th level spells from Shaman spell list.
+    // 0 - 5th level spells from Shaman spell list.
     class: 'shaman',
     level: [0, 5]
   },
