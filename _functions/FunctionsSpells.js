@@ -5406,10 +5406,18 @@ function amendPsionicsToSpellsList() {
 //a way to test is an array of spells is correct
 function testSpellArray(spArr) {
 	var wrongArr = [];
+	var sourceArr = [];
 	spArr.forEach(function (sp) {
-		if (!SpellsList[sp]) wrongArr.push(sp);
+		if (!SpellsList[sp] || !SpellsList[sp].source) {
+			wrongArr.push(sp);
+			return;
+		};
+		var sSrc = stringSource(SpellsList[sp], "first").replace(/ \d+/, "");
+		if (sourceArr.indexOf(sSrc) === -1) {
+			sourceArr.push(sSrc);
+		};
 	})
-	return wrongArr.length ? wrongArr : "All Good";
+	return wrongArr.length ? wrongArr : "All Good, using sources: " + sourceArr;
 };
 
 //a way to add dependencies of spells to an array of spells at the right spot

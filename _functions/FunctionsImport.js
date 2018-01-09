@@ -2357,9 +2357,8 @@ function ImportUserScriptFile(filePath) {
 	var iFileStream = filePath ? util.readFileIntoStream(filePath) : util.readFileIntoStream();
 	if (!iFileStream) return false;
 	var iFileCont = util.stringFromStream(iFileStream);
-	var iFileName = (/var iFileName ?= ?"([^"]+)";/).test(iFileCont) ? 
-		util.printd("yyyy/mm/dd", new Date()) + " - " + iFileCont.match(/var iFileName ?= ?"([^"]+)";/)[1] : 
-		util.printd("yyyy/mm/dd hh:mm", new Date()) + " - " + "no iFileName";
+	var iFileName = (/var iFileName ?= ?"([^"]+)";/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?"([^"]+)";/)[1] : (/var iFileName ?= ?'([^']+)';/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?'([^']+)';/)[1] : false;
+	iFileName = iFileName ? util.printd("yyyy/mm/dd", new Date()) + " - " + iFileName : util.printd("yyyy/mm/dd hh:mm", new Date()) + " - " + "no iFileName";
 	if (CurrentScriptFiles[iFileName]) {
 		var askToOverwrite = {
 			cMsg : "There is already a file by the name \"" + iFileName + "\", do you want to overwrite it?\n\nIf you select 'No', the file will not be changed.",
