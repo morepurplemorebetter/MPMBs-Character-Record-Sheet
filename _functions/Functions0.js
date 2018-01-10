@@ -149,8 +149,9 @@ RegExp.prototype.indexOf = function (searchValue, fromIndex) {
 RegExp.prototype.match = function (regexpObj) {
 	return this.toString().match(regexpObj);
 };
-RegExp.prototype.replace = function (regexp_substr, newSubStr_function) {
-	return this.toString().replace(regexp_substr, newSubStr_function);
+RegExp.prototype.replace = function(oldstr, newstr) {
+	var a = this.toString();
+	return RegExp(a.replace(/^\/|\/\w*$/g, "").replace(oldstr, newstr), a.match(/\/\w*$/)[0].replace("/", ""));
 };
 RegExp.prototype.search = function (regexpObj) {
 	return this.toString().search(regexpObj);

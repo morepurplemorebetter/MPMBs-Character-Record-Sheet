@@ -5412,12 +5412,16 @@ function testSpellArray(spArr) {
 			wrongArr.push(sp);
 			return;
 		};
-		var sSrc = stringSource(SpellsList[sp], "first").replace(/ \d+/, "");
-		if (sourceArr.indexOf(sSrc) === -1) {
-			sourceArr.push(sSrc);
+		var sSrc = stringSource(SpellsList[sp], "").replace(/\d+| /g, "").split(",");
+		if (!sSrc || !sSrc[0]) {
+			sourceArr.push("Source excluded: " + sp + " (" + SpellsList[sp].source + ")");
+		} else {
+			for (var i = 0; i < sSrc.length; i++) {
+				if (sSrc[i] && sourceArr.indexOf(sSrc[i]) === -1) sourceArr.push(sSrc[i]);
+			};
 		};
 	})
-	return wrongArr.length ? wrongArr : "All Good, using sources: " + sourceArr;
+	return wrongArr.length ? "Not good, error with:\n\u2022" + wrongArr.join("\n\u2022") : "All Good, using sources:\n\u2022" + sourceArr.join("\n\u2022");
 };
 
 //a way to add dependencies of spells to an array of spells at the right spot
