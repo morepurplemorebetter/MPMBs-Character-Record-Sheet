@@ -725,6 +725,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		if (forceDDupdate || oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.classExcl !== CurrentSources.classExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
 			setSpellVariables(forceDDupdate || oldCS.spellsExcl !== CurrentSources.spellsExcl);
 		};
+		if (forceDDupdate) SetGearVariables();
 	};
 };
 
