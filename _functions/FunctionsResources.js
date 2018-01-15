@@ -235,11 +235,15 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		};
 	};
 	if (isFirstTime || forceDDupdate) {
-		var exclAllUA = isFirstTime || CurrentSources.globalExcl.toSource().toLowerCase().indexOf('"ua:') !== -1 || CurrentSources.globalKnown.toSource().toLowerCase().indexOf('"ua:') === -1;
+		var uaRegex = /,ua:\w*/ig;
+		var prevUAknown = !isFirstTime && (uaRegex).test(CurrentSources.globalKnown) ? CurrentSources.globalKnown.match(uaRegex).length : 0;
+		var prevUAexcl = isFirstTime || !prevUAknown ? 0 : (uaRegex).test(CurrentSources.globalExcl) ? CurrentSources.globalExcl.match(uaRegex).length : 0;
+		var exclAllUA = isFirstTime || !prevUAknown || prevUAknown === prevUAexcl;
 		var exclDMGfirearms = isFirstTime || CurrentSources.globalKnown.toSource().toLowerCase().indexOf('"D"') === -1;
+		CurrentSources.globalKnown = [];
 		for (var src in SourceList) {
 			if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
-			if (exclAllUA && SourceList[src].group === "Unearthed Arcana") CurrentSources.globalExcl.push(src);
+			if (exclAllUA && CurrentSources.globalExcl.indexOf(src) === - 1 && SourceList[src].group === "Unearthed Arcana") CurrentSources.globalExcl.push(src);
 			CurrentSources.globalKnown.push(src);
 		};
 		if (!minVer && exclDMGfirearms) { // set all the DMG firearms to be excluded the first time they are added
@@ -270,7 +274,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		if (srcGroup !== "Primary Sources") srcGroup = "\u200B" + srcGroup;
 		if (!exclObj[srcGroup]) exclObj[srcGroup] = {};
 		if (!inclObj[srcGroup]) inclObj[srcGroup] = {};
-		if (CurrentSources.globalExcl.indexOf(src) !== -1 || (srcGroup === "\u200BUnearthed Arcana" && CurrentSources.globalKnown.indexOf(src) === -1)) {
+		if (CurrentSources.globalExcl.indexOf(src) !== -1) {
 			exclObj[srcGroup][srcName] = -1;
 		} else {
 			inclObj[srcGroup][srcName] = -1;
