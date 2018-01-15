@@ -1,28 +1,27 @@
 // find the spell in the SpellsList
 function ParseSpell(input) {
 	var result = "";
-	
 	if (input) {
 		input = clean(RemoveZeroWidths(input.replace(/ \(.{1,2}\)/i, "")), false, true);
 		var foundLen = 0;
 
 		for (var key in SpellsList) { //scan string for all creatures
 			if (testSource(key, SpellsList[key], "spellsExcl")) continue; //only testing if the source of the spell isn't excluded
-			if (input.toLowerCase() === key) {
-				result = key;
-				break;
+			if (input.toLowerCase() !== key) {
+				var toSearch = "\\b(" + clean(SpellsList[key].name).replace(/^\W|\W$/g, "").RegEscape();
+				toSearch += SpellsList[key].nameShort ? "|" + clean(SpellsList[key].nameShort).replace(/^\W|\W$/g, "").RegEscape() : "";
+				toSearch += SpellsList[key].nameAlt ? "|" + clean(SpellsList[key].nameAlt).replace(/^\W|\W$/g, "").RegEscape() : "";
+				toSearch += ")\\b";
+				var toTest = RegExp(toSearch, "i");
+			} else {
+				var toTest = /AbCdE/; // something that will never match
 			};
-			var toSearch = "\\b(" + clean(SpellsList[key].name).replace(/^\W|\W$/g, "").RegEscape();
-			toSearch += SpellsList[key].nameShort ? "|" + clean(SpellsList[key].nameShort).replace(/^\W|\W$/g, "").RegEscape() : "";
-			toSearch += SpellsList[key].nameAlt ? "|" + clean(SpellsList[key].nameAlt).replace(/^\W|\W$/g, "").RegEscape() : "";
-			toSearch += ")\\b";
-			var toTest = RegExp(toSearch, "i");
-			if (key.length > foundLen && toTest.test(input)) {
+			if (key.length > foundLen && (input.toLowerCase() === key || toTest.test(input))) {
 				result = key;
 				foundLen = key.length;
 			};
-		}
-	}
+		};
+	};
 	return result;
 };
 
