@@ -1855,7 +1855,7 @@ var BookMarkList = {
 var TemplateNames = {
 	"CSfront" : "Character sheet front",
 	"CSback" : "Character sheet back",
-	"ASfront" : !typePF ? "Conditions and Magic Items sheet" : "Feats and Magic Items sheet",
+	"ASfront" : (!typePF ? "Conditions / Magic Items" : "Feats / Magic Items") + " sheet (3rd page)",
 	"ASoverflow" : "Overflow (magic items, feats, actions, etc.) sheet",
 	"ASbackgr" : "Background and Organization sheet",
 	"AScomp" : "Companion sheet",

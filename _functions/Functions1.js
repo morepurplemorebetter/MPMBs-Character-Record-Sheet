@@ -727,135 +727,130 @@ function ToggleTextSize(Toggle) {
 };
 
 //set the visibility of the layers on the third page. Input is true if a menu is to be created, or false if the remembered setting is to be taken.
-function LayerVisibilityOptions(input) {
+function LayerVisibilityOptions(showMenu, useSelect) {
 	if (typePF) return; //don't do this function in the Printer-Friendly version
-	tDoc.delay = true;
-	tDoc.calculate = false;
 
-	//Undo the MakeMobileReady if it was active
-	if (input && What("MakeMobileReady Remember") !== "") {
-		MakeMobileReady(false);
-	}
+	if (showMenu && What("MakeMobileReady Remember") !== "") MakeMobileReady(false); //Undo the MakeMobileReady if it was active
 	
 	var selection = What("Extra.Layers Remember").split(",");
 	
-	Menus.chooselayers = [{
+	if (!useSelect || useSelect === "justMenu") {
+		Menus.chooselayers = [{
 			cName : "Rules left - Equipment right",
-			cReturn : "rules#equipment",
+			cReturn : "3rdpage#rules#equipment",
 			bMarked : selection[0] === "rules" && selection[1] === "equipment"
 		}, {
 			cName : "Notes left - Equipment right",
-			cReturn : "notes#equipment",
+			cReturn : "3rdpage#notes#equipment",
 			bMarked : selection[0] === "notes" && selection[1] === "equipment"
 		}, {
 			cName : "Notes left - Rules right",
-			cReturn : "notes#rules",
+			cReturn : "3rdpage#notes#rules",
 			bMarked : selection[0] === "notes" && selection[1] === "rules"
-		}, ]
+		}];
+		if (useSelect === "justMenu") return;
+	};
 	
-	if (input) {
-		selection = getMenu("chooselayers");
-		if (selection[0] !== "nothing") {
-			Value("Extra.Layers Remember", selection);
-		}
-	}
+	selection = useSelect ? useSelect : showMenu ? getMenu("chooselayers") : selection;
+	if (selection.shift() !== "3rdpage") return;
 	
-	if (selection[0] !== "nothing") {
-		var LNotesFlds = [
-			"Text.Header.Notes.Left",
-			"Extra.Notes",			
-		];
-		var HideShowLNotesFlds = "Hide";
-		var LRulesFlds = [
-			"Text.Header.Rules.Left",
-			"Image.Rules.Left"
-		];
-		var HideShowLRulesFlds = "Hide";
-		var RRulesFlds = [
-			"Text.Header.Rules.Right",
-			"Image.Header.RightRules",
-			"Image.DragonheadRightRules",
-			"Image.DragonheadshadowRightRules",
-			"Image.Rules.Right"
-		];
-		var HideShowRRulesFlds = "Hide";
-		var REquipFlds = [
-			"Text.Header.Equip.Right",
-			"Image.Equip.Right",
-			"Image.DividerExtraGear",
-			"Image.DragonheadExtraGear",
-			"Display.Weighttxt.LbKgPage3",
-			"Extra.Gear Weight Subtotal Left",
-			"Extra.Gear Weight Subtotal Right",
-			"Extra.Other Holdings"
-		];
-		var HideShowREquipFlds = "Hide";
-		var REquipFldsNP = [];
-		var HideShowREquipFldsNP = "Hide";
-		for (i = 1; i <= FieldNumbers.extragear; i++) {
-			REquipFldsNP.push("Extra.Gear Button " + i);
-			REquipFlds.push("Extra.Gear Row " + i);
-			REquipFlds.push("Extra.Gear Amount " + i);
-			REquipFlds.push("Extra.Gear Weight " + i);
-		};
-		
-		//hide/show the whitout fields on the right and left side depending on the visible layer and the settings of text line visibility
-		if (What("WhiteoutRemember")) {
-			if (selection[0] === "notes") {
-				Show("Extra.Notes Whiteout");
-			} else {
-				Hide("Extra.Notes Whiteout");
-			}
-			if (selection[1] === "equipment") {
-				Show("Extra.Other Holdings Whiteout");
-			} else {
-				Hide("Extra.Other Holdings Whiteout");
-			}
+	tDoc.delay = true;
+	tDoc.calculate = false;
+	Value("Extra.Layers Remember", selection);
+	var LNotesFlds = [
+		"Text.Header.Notes.Left",
+		"Extra.Notes",			
+	];
+	var HideShowLNotesFlds = "Hide";
+	var LRulesFlds = [
+		"Text.Header.Rules.Left",
+		"Image.Rules.Left"
+	];
+	var HideShowLRulesFlds = "Hide";
+	var RRulesFlds = [
+		"Text.Header.Rules.Right",
+		"Image.Header.RightRules",
+		"Image.DragonheadRightRules",
+		"Image.DragonheadshadowRightRules",
+		"Image.Rules.Right"
+	];
+	var HideShowRRulesFlds = "Hide";
+	var REquipFlds = [
+		"Text.Header.Equip.Right",
+		"Image.Equip.Right",
+		"Image.DividerExtraGear",
+		"Image.DragonheadExtraGear",
+		"Display.Weighttxt.LbKgPage3",
+		"Extra.Gear Weight Subtotal Left",
+		"Extra.Gear Weight Subtotal Right",
+		"Extra.Other Holdings"
+	];
+	var HideShowREquipFlds = "Hide";
+	var REquipFldsNP = [];
+	var HideShowREquipFldsNP = "Hide";
+	for (i = 1; i <= FieldNumbers.extragear; i++) {
+		REquipFldsNP.push("Extra.Gear Button " + i);
+		REquipFlds.push("Extra.Gear Row " + i);
+		REquipFlds.push("Extra.Gear Amount " + i);
+		REquipFlds.push("Extra.Gear Weight " + i);
+	};
+	
+	//hide/show the whitout fields on the right and left side depending on the visible layer and the settings of text line visibility
+	if (What("WhiteoutRemember")) {
+		if (selection[0] === "notes") {
+			Show("Extra.Notes Whiteout");
 		} else {
 			Hide("Extra.Notes Whiteout");
+		}
+		if (selection[1] === "equipment") {
+			Show("Extra.Other Holdings Whiteout");
+		} else {
 			Hide("Extra.Other Holdings Whiteout");
 		}
+	} else {
+		Hide("Extra.Notes Whiteout");
+		Hide("Extra.Other Holdings Whiteout");
+	}
 
-		//do something with the input
-		switch (selection[0]) {
-			case "notes":
-				HideShowLNotesFlds = "Show";
-				break;
-			case "rules":
-				HideShowLRulesFlds = "Show";
-				break;
-		}
+	//do something with the input
+	switch (selection[0]) {
+		case "notes":
+			HideShowLNotesFlds = "Show";
+			break;
+		case "rules":
+			HideShowLRulesFlds = "Show";
+			break;
+	}
 
-		switch (selection[1]) {
-			case "rules":
-				HideShowRRulesFlds = "Show";
-				Hide("Extra.Gear Location");
-				break;
-			case "equipment":
-				HideShowREquipFlds = "Show";
-				HideShowREquipFldsNP = "DontPrint";
-				if (What("Gear Location Remember").split(",")[1] === "true") {
-					Show("Extra.Gear Location");
-				}
-				break;
-		}
+	switch (selection[1]) {
+		case "rules":
+			HideShowRRulesFlds = "Show";
+			Hide("Extra.Gear Location");
+			break;
+		case "equipment":
+			HideShowREquipFlds = "Show";
+			HideShowREquipFldsNP = "DontPrint";
+			if (What("Gear Location Remember").split(",")[1] === "true") {
+				Show("Extra.Gear Location");
+			}
+			break;
+	}
 
-		//set the visiblity of the fields
-		for (var L = 0; L < LNotesFlds.length; L++) {
-			tDoc[HideShowLNotesFlds](LNotesFlds[L]);
-		}
-		for (L = 0; L < LRulesFlds.length; L++) {
-			tDoc[HideShowLRulesFlds](LRulesFlds[L]);
-		}
-		for (var R = 0; R < RRulesFlds.length; R++) {
-			tDoc[HideShowRRulesFlds](RRulesFlds[R]);
-		}
-		for (R = 0; R < REquipFlds.length; R++) {
-			tDoc[HideShowREquipFlds](REquipFlds[R]);
-		}
-		for (R = 0; R < REquipFldsNP.length; R++) {
-			tDoc[HideShowREquipFldsNP](REquipFldsNP[R]);
-		}
+	//set the visibility of the fields
+	for (var L = 0; L < LNotesFlds.length; L++) {
+		tDoc[HideShowLNotesFlds](LNotesFlds[L]);
+	}
+	for (L = 0; L < LRulesFlds.length; L++) {
+		tDoc[HideShowLRulesFlds](LRulesFlds[L]);
+	}
+	for (var R = 0; R < RRulesFlds.length; R++) {
+		tDoc[HideShowRRulesFlds](RRulesFlds[R]);
+	}
+	for (R = 0; R < REquipFlds.length; R++) {
+		tDoc[HideShowREquipFlds](REquipFlds[R]);
+	}
+	for (R = 0; R < REquipFldsNP.length; R++) {
+		tDoc[HideShowREquipFldsNP](REquipFldsNP[R]);
 	}
 	
 	tDoc.calculate = IsNotReset;
@@ -3374,9 +3369,9 @@ function MakeInventoryMenu() {
 	//add the other single-level options to the menu	
 	var menuLVL1 = function (item, array) {
 		for (i = 0; i < array.length; i++) {
-			var isMarked = array[i][1] === "attuned" ? What("Adventuring Gear Remember") === false :
-				array[i][1] === "location2" ? What("Gear Location Remember").split(",")[0] === "true" :
-				array[i][1] === "location3" ? What("Gear Location Remember").split(",")[1] === "true" : false;
+			var isMarked = array[i][1] === "attuned" ? What("Adventuring Gear Remember") == false :
+				array[i][1] === "location2" ? What("Gear Location Remember").split(",")[0] == "true" :
+				array[i][1] === "location3" ? What("Gear Location Remember").split(",")[1] == "true" : false;
 			var isEnabled = array[i][1] === "location3" ? isTemplVis("ASfront") : array[i][1].indexOf("background") !== -1 ? backgroundKn !== "Background" : true;
 			item.push({
 				cName : array[i][0],
@@ -3407,8 +3402,8 @@ function MakeInventoryMenu() {
 };
 
 //call the inventory menu ('add equipment' button) and do something with the results
-function InventoryOptions() {
-	var MenuSelection = getMenu("inventory");
+function InventoryOptions(input) {
+	var MenuSelection = input ? input : getMenu("inventory");
 	
 	if (!MenuSelection) return;
 	
@@ -7937,17 +7932,16 @@ function Toggle2ndAbilityDC(ShowHide) {
 	tDoc.delay = true;
 	tDoc.calculate = false;
 	
-	var ToShow = tDoc.getField("ShowHide 2nd DC").buttonGetCaption() === "Hide 2nd DC";
-	var expectedShowHide = ToShow ? "hide" : "show";
+	var isVis2nd = isDisplay("Image.SaveDC" + (typePF ? "" : ".2")) === 0;
 	
-	if (ShowHide && ShowHide.toLowerCase() !== expectedShowHide) {
+	if (ShowHide && (/show/i).test(ShowHide) == isVis2nd) {
 		return; //stop the function, there is nothing to do
 	}
 	
-	var theCaption = ToShow ? "Show 2nd DC" : "Hide 2nd DC";
-	var HiddenVisible = ToShow ? "Hide" : "Show";
-	var VisibleHidden = ToShow ? "Show" : "Hide";
-	var HiddenNoPrint = !ToShow && What("BlueTextRemember") === "Yes" ? "DontPrint" : "Hide";
+	var theCaption = isVis2nd ? "Show 2nd DC" : "Hide 2nd DC";
+	var HiddenVisible = isVis2nd ? "Hide" : "Show";
+	var VisibleHidden = isVis2nd ? "Show" : "Hide";
+	var HiddenNoPrint = !isVis2nd && What("BlueTextRemember") === "Yes" ? "DontPrint" : "Hide";
 		
 	for (var L = 0; L <= 2; L++) {
 		tDoc.getField("ShowHide 2nd DC").buttonSetCaption(theCaption, L);
@@ -7978,7 +7972,7 @@ function Toggle2ndAbilityDC(ShowHide) {
 			"Spell save DC 2"
 		];
 		
-		var toMove = ToShow ? 27 : -27;
+		var toMove = isVis2nd ? 27 : -27;
 		for (var i = 0; i < DC1array.length; i++) {
 			var theFld = tDoc.getField(DC1array[i]);
 			var gRect = theFld.rect; // get the location of the field on the sheet
@@ -8574,8 +8568,8 @@ function MakeColorMenu() {
 };
 
 //call the color menu and do something with the results
-function ColoryOptions() {
-	var MenuSelection = getMenu("colour");
+function ColoryOptions(input) {
+	var MenuSelection = input ? input : getMenu("colour");
 	var tempArray = [];
 	var theColour = ["RGB", 0.8, 0.8431, 1]; //Adobe default form field highlighting colour
 	

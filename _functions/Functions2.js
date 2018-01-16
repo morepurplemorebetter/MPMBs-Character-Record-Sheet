@@ -2632,23 +2632,44 @@ function MakePagesMenu() {
 	//the menu item for the refence sheet, if applicable
 	if (typePF) menuLvl1(pagesMenu, ["PRsheet"]);
 
-	//add the menu for setting the visibility of the D&D logos
-	var cLogoDisplay = tDoc.getField("Image.DnDLogo.long").display;
+	//a function for adding menu items with a submenu
 	var menuLVL2 = function (menu, name, array) {
 		var temp = {
 			cName : name[0],
 			oSubMenu : []
 		};
 		for (var i = 0; i < array.length; i++) {
+			var splitA = array[i][1].split("#");
+			var isMarked = name[1] === "dndlogos" ? splitA[1] == cLogoDisplay :
+				name[1] === "scores" ? array[i][1] == HoSvis || (array[i][1] == "disable" && !HoSvis) :
+				name[1] === "dc" ? splitA[1] == isVis2nd : 
+				name[1] === "equip" ? (
+					splitA[0] == "attuned" ? (splitA[1] == "hide" ? attunedHid : !attunedHid) : 
+					splitA[0] == "location2" ? (splitA[1] == "show" ? locColVis[0] == "true" : locColVis[0] == "false") :
+					splitA[0] == "location3" ? (splitA[1] == "show" ? locColVis[1] == "true" : locColVis[1] == "false") :
+					false) :
+				false;
 			temp.oSubMenu.push({
 				cName : array[i][0],
-				cReturn : name[1] + "#" + array[i][1],
-				bMarked : array[i][1].split("#")[1] == cLogoDisplay
+				cReturn : name[1] + "#" + array[i][1] + "#" + isMarked,
+				bMarked : isMarked
 			});
 		};
 		menu.push(temp);
 	};
+
 	pagesMenu.push({cName : "-", cReturn : "-"}); // add a divider
+	
+	//add a menu item for the color them options
+	if (!typePF) {
+		MakeColorMenu();
+		pagesMenu.push({
+			cName : "Color Theme options",
+			oSubMenu : Menus.colour
+		});
+	};
+	
+	//add the menu for setting the visibility of the D&D logos
 	var cLogoDisplay = tDoc.getField("Image.DnDLogo.long").display;
 	menuLVL2(pagesMenu, ["Visible D&&D logos", "dndlogos"], [
 		["Show the D&&D logos", "show#0"],
@@ -2657,16 +2678,107 @@ function MakePagesMenu() {
 		["Hide, but print the D&&D logos", "onlyprint#3"]
 	]);
 	
-	//add the menu for setting adventurers league stuff
+	//add a menu item for the text fields
+	MakeTextMenu_TextOptions("justMenu");
+	pagesMenu.push({
+		cName : "Text field options",
+		oSubMenu : Menus.texts
+	});
+	
 	pagesMenu.push({cName : "-", cReturn : "-"}); // add a divider
+
+	//add the menu for setting adventurers league stuff
 	MakeAdventureLeagueMenu();
 	pagesMenu.push({ 
 		cName : "Adventurers League options",
 		oSubMenu : Menus.adventureLeague
 	});
+
+	pagesMenu.push({cName : "-", cReturn : "-"}); // add a divider
+	
+	//add a menu item for the first page
+	var pageone = {
+		cName : "1st page options",
+		oSubMenu : []
+	};
+	//1st page: add the menu for the visibility of the 7h ability score
+	var HoSvis = What("HoSRememberState").toLowerCase();
+	menuLVL2(pageone.oSubMenu, ["Ability Scores", "scores"], [
+		["Open the Ability Scores dialogue", "dialog"],
+		["-", "-"],
+		["Disable the 7th ability score", "disable"],
+		["Make the 7th ability score 'Honor'", "honor"],
+		["Make the 7th ability score 'Sanity'", "sanity"]
+	]);
+	//1st page: add the menu for setting hp on the first page
+	MakeHPMenu_HPOptions("justMenu");
+	pageone.oSubMenu.push({ 
+		cName : "Hit Points",
+		oSubMenu : Menus.hp
+	});
+	//1st page: add the menu for setting skill order
+	MakeSkillsMenu_SkillsOptions("justMenu");
+	pageone.oSubMenu.push({ 
+		cName : "Skills",
+		oSubMenu : Menus.skills
+	});
+	//1st page: add the menu for setting 2nd Abilty Save DC visibility
+	var isVis2nd = isDisplay("Image.SaveDC" + (typePF ? "" : ".2"));
+	menuLVL2(pageone.oSubMenu, ["Ability Save DC", "dc"], [
+		["Show only 1 ability save DC", "hide#1"],
+		["Show both ability save DCs", "show#0"]
+	]);
+	//1st page: add the first page menu to the whole menu
+	pagesMenu.push(pageone);
+	
+	//add a menu item for the second page equipment section
+	var locColVis = What("Gear Location Remember").split(",");
+	var attunedHid = What("Adventuring Gear Remember");
+	menuLVL2(pagesMenu, ["2nd page options (equipment section)", "equip"], [
+		["Show 'Attuned Magical Items' subsection", "attuned#show"],
+		["Hide 'Attuned Magical Items' subsection", "attuned#hide"],
+		["-", "-"],
+		["Show location column", "location2#show"],
+		["Hide location column", "location2#hide"],
+		["-", "-"],
+		["Carried Weight options (encumbrance rules)", "weight"],
+	]);
+	
+	//add a menu item for the third page
+	var page3txt = "3rd page options";
+	if (!isTemplVis("ASfront")) {
+		pagesMenu.push({
+			cName : page3txt + " [page not visible]",
+			cReturn : "-",
+			bEnabled : false
+		});
+	} else if (typePF) {
+		//3rd page: add the menu items for the equipment section
+		menuLVL2(pagesMenu, [page3txt + " (equipment section)", "equip"], [
+			["Show location column", "location3#show"],
+			["Hide location column", "location3#hide"]
+		]);
+	} else {
+		var pagethree = {
+			cName : page3txt,
+			oSubMenu : []
+		};
+		//3rd page: add the menu items for the equipment section
+		menuLVL2(pagethree.oSubMenu, ["Equipment section", "equip"], [
+			["Show location column", "location3#show"],
+			["Hide location column", "location3#hide"]
+		]);
+		//3rd page: add the menu items for the visibility of the notes/rules section (CF only)
+		LayerVisibilityOptions(false, "justMenu");
+		pagethree.oSubMenu.push({
+			cName : "Visible sections",
+			oSubMenu : Menus.chooselayers
+		});
+		//3rd page: add the third page menu to the whole menu
+		pagesMenu.push(pagethree);
+	};
 	
 	//add the menu for setting Spell Sheet things
-	pagesMenu.push({cName : "-", cReturn : "-"}); // add a divider
 	MakeSpellMenu();
 	pagesMenu.push({
 		cName : "Spell Sheet options",
@@ -2683,7 +2795,10 @@ function PagesOptions() {
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
 		tDoc.delay = true;
 		tDoc.calculate = false;
-		
+
+		//Undo the MakeMobileReady if it was active
+		if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
+
 		switch (MenuSelection[0]) {
 			case "dndlogos" :
 				DnDlogo(MenuSelection[2]);
@@ -2698,14 +2813,43 @@ function PagesOptions() {
 			case "ssheet" :
 				MakeSpellMenu_SpellOptions(MenuSelection);
 				break;
-		};
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) {
-			tDoc.calculateNow;
+			case "hp" :
+				MakeHPMenu_HPOptions(MenuSelection);
+				break;
+			case "skills" :
+				MakeSkillsMenu_SkillsOptions(MenuSelection);
+				break;
+			case "scores" :
+				if (MenuSelection[1] === "dialog") {
+					AbilityScores_Button();
+					break;
+				};
+				ShowHonorSanity(MenuSelection[1].capitalize());
+				break;
+			case "dc" :
+				Toggle2ndAbilityDC(MenuSelection[1]);
+				break;
+			case "equip" :
+				if (MenuSelection[3] == "false") InventoryOptions([MenuSelection[1]]);
+				if (MenuSelection[1] == "weight") WeightToCalc_Button();
+				break;
+			case "3rdpage" :
+				LayerVisibilityOptions(false, MenuSelection);
+				break;
+			case "text" :
+				MakeTextMenu_TextOptions(MenuSelection);
+				break;
+			default :
+				ColoryOptions(MenuSelection);
+				break;
 		};
 	};
-}
+	tDoc.calculate = IsNotReset;
+	tDoc.delay = !IsNotReset;
+	if (IsNotReset) {
+		tDoc.calculateNow;
+	};
+};
 
 //show or hide the DnD logos. Input is the number for the field display setting (0-3)
 function DnDlogo(input) {
@@ -3753,54 +3897,57 @@ function SetHPTooltip(resetHP) {
 	}
 };
 
-function MakeHPMenu_HPOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
+function MakeHPMenu_HPOptions(preSelect) {
 	
 	//define some variables
-	var theFld = event.target.name.replace("Buttons.", "");
+	var theFld = preSelect ? "HP Max" : event.target.name.replace("Buttons.", "");
 	var theInputs = tDoc.getField(theFld).submitName.split(",");
-	var optionsArray = [
-		["The total average HP (" + theInputs[0] + ")", "average"],
-		["The total HP when using fixed values (" + theInputs[1] + ")", "fixed"],
-		["The total maximum HP (" + theInputs[2] + ")", "max"]
-	]
-	var hpMenu = [];
-	
-	var menuLVL2 = function (menu, name, array) {
-		var temp = {};
-		temp.cName = name[0];
-		temp.oSubMenu = [];
-		for (var i = 0; i < array.length; i++) {
-			var isMarked = name[1] === "auto" && array[i][1] === theInputs[3];
-			temp.oSubMenu.push({
-				cName : array[i][0],
-				cReturn : name[1] + "#" + theInputs[i] + "#" + array[i][1],
-				bMarked : isMarked
-			})
-		}
-		menu.push(temp);
+	if (!preSelect || preSelect == "justMenu") {
+		var optionsArray = [
+			["The total average HP (" + theInputs[0] + ")", "average"],
+			["The total HP when using fixed values (" + theInputs[1] + ")", "fixed"],
+			["The total maximum HP (" + theInputs[2] + ")", "max"]
+		]
+		var hpMenu = [];
+		
+		var menuLVL2 = function (menu, name, array) {
+			var temp = {};
+			temp.cName = name[0];
+			temp.oSubMenu = [];
+			for (var i = 0; i < array.length; i++) {
+				var isMarked = name[1] === "auto" && array[i][1] === theInputs[3];
+				temp.oSubMenu.push({
+					cName : array[i][0],
+					cReturn : "hp#" + name[1] + "#" + theInputs[i] + "#" + array[i][1],
+					bMarked : isMarked
+				})
+			}
+			menu.push(temp);
+		};
+		
+		menuLVL2(hpMenu, ["Change the Max HP to", "change"], optionsArray);
+		optionsArray.push(["Don't change the maximum HP automatically", "nothing"])
+		menuLVL2(hpMenu, ["Set the Max HP to automatically assume", "auto"], optionsArray);
+		
+		//parse it into a global variable
+		Menus.hp = hpMenu;
+		if (preSelect == "justMenu") return;
 	};
-	
-	menuLVL2(hpMenu, ["Change the Max HP to", "change"], optionsArray);
-	optionsArray.push(["Don't change the maximum HP automatically", "nothing"])
-	menuLVL2(hpMenu, ["Set the Max HP to automatically assume", "auto"], optionsArray);
-	
-	//parse it into a global variable
-	Menus.hp = hpMenu;
-	
+	tDoc.delay = true;
+	tDoc.calculate = false;
+
 	//now call the menu
-	var MenuSelection = getMenu("hp");
+	var MenuSelection = preSelect ? preSelect : getMenu("hp");
 	
-	if (MenuSelection !== undefined) {
-		switch (MenuSelection[0]) {
+	if (MenuSelection !== undefined && MenuSelection[0] == "hp") {
+		switch (MenuSelection[1]) {
 		 case "auto" :
-			theInputs[3] = MenuSelection[2];
+			theInputs[3] = MenuSelection[3];
 			tDoc.getField(theFld).submitName = theInputs.join();
 		 case "change" :
-			if (MenuSelection[2] !== "nothing") {
+			if (MenuSelection[3] !== "nothing") {
 				//set the value of the field
-				Value(theFld, MenuSelection[1]);
+				Value(theFld, MenuSelection[2]);
 			}
 		}
 	}
@@ -3886,65 +4033,64 @@ function UpdateFactionSymbols() {
 
 //make a menu for the text fields and text line options
 //after that, do something with the menu and its results
-function MakeTextMenu_TextOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
-
+function MakeTextMenu_TextOptions(input) {
 	var isWhiteout = What("WhiteoutRemember");
 	var isBoxesLines = What("BoxesLinesRemember");
 	
-	Menus.texts = [{
-			cName : "Change the font size and/or font",
-			cReturn : "dodialog"
-		}, {
-			cName : "-",
-			cReturn : "-"
-		}
-	];
-	
-	if (typePF) {
-		Menus.texts.push({
-			cName : "Single-line fields",
-			oSubMenu : [{
-				cName : "Show boxes for single-line fields",
-				cReturn : "calc_boxes",
-				bMarked : isBoxesLines === "calc_boxes"
+	if (!input || input === "justMenu") {
+		Menus.texts = [{
+				cName : "Change the font size and/or font",
+				cReturn : "text#dodialog"
 			}, {
-				cName : "Show lines for single-line fields",
-				cReturn : "calc_lines",
-				bMarked : isBoxesLines === "calc_lines"
+				cName : "-",
+				cReturn : "-"
+			}
+		];
+		
+		if (typePF) {
+			Menus.texts.push({
+				cName : "Single-line fields",
+				oSubMenu : [{
+					cName : "Show boxes for single-line fields",
+					cReturn : "text#calc_boxes",
+					bMarked : isBoxesLines === "calc_boxes"
+				}, {
+					cName : "Show lines for single-line fields",
+					cReturn : "text#calc_lines",
+					bMarked : isBoxesLines === "calc_lines"
+				}]
+			});
+			Menus.texts.push({cName : "-", cReturn : "-"});
+		};
+		
+		Menus.texts.push({
+			cName : "Multi-line fields",
+			oSubMenu : [{
+				cName : "Show lines for multi-line fields",
+				cReturn : "text#show lines",
+				bMarked : !isWhiteout
+			}, {
+				cName : "Hide lines for multi-line fields",
+				cReturn : "text#hide lines",
+				bMarked : isWhiteout
 			}]
 		});
-		Menus.texts.push({
-			cName : "-",
-			cReturn : "-"
-		});
-	}
-	
-	Menus.texts.push({
-		cName : "Multi-line fields",
-		oSubMenu : [{
-			cName : "Show lines for multi-line fields",
-			cReturn : "show lines",
-			bMarked : !isWhiteout
-		}, {
-			cName : "Hide lines for multi-line fields",
-			cReturn : "hide lines",
-			bMarked : isWhiteout
-		}]
-	});
+		if (input === "justMenu") return;
+	};
 	
 	//now call the menu
-	var MenuSelection = getMenu("texts");
+	var MenuSelection = input ? input : getMenu("texts");
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
-		switch (MenuSelection[0]) {
+		tDoc.delay = true;
+		tDoc.calculate = false;
+		switch (MenuSelection[1]) {
 		 case "dodialog" :
 			SetTextOptions_Button();
 			break;
 		 case "calc_boxes" :
 		 case "calc_lines" :
-			ShowCalcBoxesLines(MenuSelection[0]);
+			ShowCalcBoxesLines(MenuSelection[1]);
 			break;
 		 case "show lines" :
 			ToggleWhiteout(false);
@@ -3952,15 +4098,15 @@ function MakeTextMenu_TextOptions() {
 		 case "hide lines" :
 			ToggleWhiteout(true);
 			break;
-		}
-	}
+		};
 	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) {
-		tDoc.calculateNow();
-	};	
-}
+		tDoc.calculate = IsNotReset;
+		tDoc.delay = !IsNotReset;
+		if (IsNotReset) {
+			tDoc.calculateNow();
+		};
+	};
+};
 
 //make the calculation lines or boxes visible
 function ShowCalcBoxesLines(input) {
@@ -4541,6 +4687,27 @@ function CountASIs() {
 //a function to change the sorting of the skills
 function MakeSkillsMenu_SkillsOptions(input) {
 	var sWho = Who("Text.SkillsNames");
+	var sList = Who("SkillsClick").replace(/.*\n\n/, "");
+	var sListA = sList.replace(/.*:/, "") !== "";
+	if (IsNotReset && (!input || input == "justMenu")) {
+		Menus.skills = [{
+			cName : "Sort skills alphabetically",
+			cReturn : "skills#alphabeta",
+			bMarked : sWho === "alphabeta"
+		}, {
+			cName : "Sort skills by ability score",
+			cReturn : "skills#abilities",
+			bMarked : sWho === "abilities"
+		}, {
+			cName : "-"
+		}, {
+			cName : "Show a dialogue with my skill options" + (sListA ? "" : " (nothing to show)"),
+			cReturn : "skills#dialog",
+			bEnabled : sListA
+		}];
+		if (input == "justMenu") return;
+	};
+	
 	var mStr = toUni(" Bonus Modifier") + "\nThe number you type in here will be added to the calculated ";
 	var mStr1 = " value.\n\n" + toUni("Dynamic Modifiers") + "\nYou can also have the field use ability score modifiers. To do this, use the abbreviations of ability scores (Str, Dex, Con, Int, Wis, Cha, HoS), math operators (+, -, /, *), and numbers.\n   For example: '2+Str' or 'Wis+Int'.\nDon't worry if you are only able to write one or two letters of an ability score's abbreviation, the field will auto-complete (e.g. typing 'S+1' will result in 'Str+1').";
 	var mStrC = mStr1.replace(", HoS", "");
@@ -4559,28 +4726,13 @@ function MakeSkillsMenu_SkillsOptions(input) {
 		return;
 	};
 	
-	Menus.skills = [{
-		cName : "Sort skills alphabetically",
-		cReturn : "go#alphabeta",
-		bMarked : sWho === "alphabeta"
-	}, {
-		cName : "Sort skills by ability score",
-		cReturn : "go#abilities",
-		bMarked : sWho === "abilities"
-	}, {
-		cName : "-"
-	}, {
-		cName : "Show a dialogue with my skill options",
-		cReturn : "show#dialog"
-	}];
-	
 	var MenuSelection = input ? input : getMenu("skills");
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
-		if (MenuSelection[0] === "show") {
+		if (MenuSelection[1] === "dialog") {
 			app.alert({
 				cTitle : "Skill selection options",
-				cMsg : Who("SkillsClick").replace(/.*\n\n/, ""),
+				cMsg : sList,
 				nIcon : 3
 			});
 		} else if (MenuSelection[1] !== sWho) {
@@ -5963,7 +6115,7 @@ function MakeSourceMenu_SourceOptions() {
 		SourceMenu[theIndex].oSubMenu.push(srcItem);
 	};
 	
-	for (var entry in SourceMenu) if (SourceMenu[entry].oSubmenu) SourceMenu[entry].oSubmenu.sort();
+	for (var entry in SourceMenu) if (SourceMenu[entry].oSubMenu) SourceMenu[entry].oSubMenu.sort();
 	
 	SourceMenu.push({ cName : "-" });
 	SourceMenu.push({
@@ -6914,5 +7066,4 @@ function AddToNotes(noteStr, alertTxt, oldNoteStr) {
 			nIcon : 3
 		});
 	};
-};
 };
