@@ -19,7 +19,7 @@
 */
 
 var iFileName = "Apprentice Alchemist [Damion Meany's work, transcribed by Erik J.].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
 
 BackgroundList["apprentice alchemist"] = {
 	regExpSearch : /^(?=.*apprentice)(?=.*alchemist).*$/i,

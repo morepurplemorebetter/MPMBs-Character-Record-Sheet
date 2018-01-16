@@ -19,7 +19,7 @@
 */
 
 var iFileName = "Soulbound [Greypilgrim333's work, transcribed by MPMB].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
 
 RaceList["light armor soulbound"] = {
 	regExpSearch : /^(?=.*soulbound)(?=.*light).*$/i,

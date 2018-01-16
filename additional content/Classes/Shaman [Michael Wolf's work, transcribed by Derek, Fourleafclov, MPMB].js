@@ -20,7 +20,7 @@
 */
 
 var iFileName = "Shaman [Michael Wolf's work, transcribed by Derek, Fourleafclov, MPMB].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
 
 //first make the sheet know which spells are shaman spells
 [//level 0 (cantrips)

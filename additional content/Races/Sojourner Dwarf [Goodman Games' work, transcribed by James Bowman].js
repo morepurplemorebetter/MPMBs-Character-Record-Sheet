@@ -19,7 +19,7 @@
 */
 
 var iFileName = "Sojourner Dwarf [Goodman Games' work, transcribed by James Bowman].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
 
 RaceList["sojourner dwarf"] = {
 	regExpSearch : /^(((?=.*\b(dwarfs?|dwarves|dwarfish|dwarvish|dwarven)\b)(?=.*\b(sojourner)\b))).*$/i,

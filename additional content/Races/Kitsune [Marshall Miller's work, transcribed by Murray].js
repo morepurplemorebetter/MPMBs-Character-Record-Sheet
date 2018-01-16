@@ -19,7 +19,7 @@
 */
 
 var iFileName = "Kitsune [Marshall Miller's work, transcribed by Murray].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
 
 RaceList["kitsune"] = {
 	regExpSearch : /kitsune/i,

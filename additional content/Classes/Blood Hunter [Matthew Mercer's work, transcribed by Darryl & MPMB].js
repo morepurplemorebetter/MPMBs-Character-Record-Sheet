@@ -25,7 +25,7 @@
 */
 
 var iFileName = "Blood Hunter [Matthew Mercer's work, transcribed by Darryl & MPMB].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
 
 SourceList["MM:BH"] = {
 	name : "Matthew Mercer: Blood Hunter Class",

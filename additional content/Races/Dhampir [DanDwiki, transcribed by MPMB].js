@@ -17,7 +17,7 @@
 */
 
 var iFileName = "Dhampir [DanDwiki, transcribed by MPMB].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
 
 RaceList["dhampir"] = {
 	regExpSearch : /dhampir/i,

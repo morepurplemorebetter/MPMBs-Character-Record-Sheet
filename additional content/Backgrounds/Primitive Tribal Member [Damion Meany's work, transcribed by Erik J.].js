@@ -19,7 +19,7 @@
 */
 
 var iFileName = "Primitive Tribal Member [Damion Meany's work, transcribed by Erik J.].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
  
 BackgroundList["primitive tribe member"] = {
 	regExpSearch : /^(?=.*primitive)(?=.*tribe)(?=.*member).*$/i,

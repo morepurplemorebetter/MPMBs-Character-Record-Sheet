@@ -19,7 +19,7 @@
 */
 
 var iFileName = "Legendary Lineage [James Introcaso's work, transcribed by James Bowman].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
 
 BackgroundList["legendary lineage"] = {
 		regExpSearch : /^(?=.*(legendary))(?=.*lineage).*$/i,

@@ -20,7 +20,7 @@
 */
 
 var iFileName = "Witch [Zarieth's work, transcribed by MPMB].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
 
 //first make the sheet know which spells are witch spells
 [	// cantrips
