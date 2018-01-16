@@ -43,6 +43,7 @@ var typeA4 = (/a4/i).test(tDoc.info.SheetType);
 var typeLR = (/letter/i).test(tDoc.info.SheetType);
 var minVer = tDoc.info.SpellsOnly || tDoc.info.AdvLogOnly;
 var sheetVersion = parseFloat(tDoc.info.SheetVersion);
+var semVers = nmbrToSemanticVersion(sheetVersion);
 var isWindows = app.platform === "WIN";
 var patreonVersion = tDoc.getField("SaveIMG.Patreon").submitName === "";
 

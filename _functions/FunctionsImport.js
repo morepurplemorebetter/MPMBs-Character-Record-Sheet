@@ -427,6 +427,7 @@ function DirectImport(consoleTrigger) {
 		});
 	} else if (global.docFrom && global.docTo) { try { //we are good to go and import stuff!
 		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
+		if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
 		if (FromVersion < 12.999) { // give a warning about importing from a version that had all materials included automatically
 			var askUserIsSure = {
 				cTitle : "Continue with import?",
@@ -1327,7 +1328,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 	var bothPF = typePF && fromSheetTypePF;
 	var bothCF = !typePF && !fromSheetTypePF;
 	var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
-	if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/b/ig, ""));
+	if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
 	if (FromVersion < 3.7) return true; //the form is of a version before there were any icon fields
 	
 	var IconArray = [
@@ -2160,7 +2161,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 	var runIt = function(aScript, scriptName, isManual) {
 		var RequiredSheetVersion = function(inNumber) {
 			if (atStartup) return;
-			inNumber = parseFloat(inNumber);
+			inNumber = semVersToNmbr(inNumber);
 			if (!isNaN(inNumber) && inNumber > minSheetVersion) minSheetVersion = inNumber;
 		};
 		try {
@@ -2172,7 +2173,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 			if (ScriptAtEnd.length > 0) ScriptsAtEnd = ScriptsAtEnd.concat(ScriptAtEnd);
 			if (minSheetVersion > sheetVersion) {
 				var failedTestMsg = {
-					cMsg : "The script '" + scriptName + "' reports that is was made for a newer version of the sheet (v" + minSheetVersion + "), and might thus not be compatible with this version of the sheet (v" + sheetVersion + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
+					cMsg : "The script '" + scriptName + "' reports that is was made for a newer version of the sheet (v" + nmbrToSemanticVersion(minSheetVersion) + "), and might thus not be compatible with this version of the sheet (v" + semVers + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
 					nIcon : 2,
 					cTitle : "Script was made for newer version!",
 					nType : 2
@@ -2242,10 +2243,10 @@ function RunUserScript(atStartup, manualUserScripts) {
 
 // Define some custom import script functions as document-level functions so custom scripts including these can still be run from console
 function RequiredSheetVersion(versNmbr) {
-	var inNumber = parseFloat(versNmbr);
+	var inNumber = semVersToNmbr(versNmbr);
 	if (!inNumber || isNaN(inNumber) || inNumber <= sheetVersion) return;
 	app.alert({
-		cMsg : "The RequiredSheetVersion() function in your script suggests that the script is made for v" + inNumber + " of MPMB's Character Record Sheets.\nTake not that you are executing this script in a sheet of v" + sheetVersion + " and might thus not work properly.\nOr perhaps you are using the RequiredSheetVersion() function wrongly.",
+		cMsg : "The RequiredSheetVersion() function in your script suggests that the script is made for v" + nmbrToSemanticVersion(inNumber) + " of MPMB's Character Record Sheets.\nTake not that you are executing this script in a sheet of v" + semVers + " and might thus not work properly.\nOr perhaps you are using the RequiredSheetVersion() function wrongly.",
 		nIcon : 2,
 		cTitle : "Script was made for newer version!"
 	});

@@ -1491,6 +1491,7 @@ function SetCompDropdown() {
 function MakeCompMenu() {
 	var prefix = getTemplPre(event.target.name, "AScomp", true);
 	var usingRevisedRanger = ClassList.rangerua && !testSource("rangerua", ClassList.rangerua, "classExcl");
+	var usingArtificer = SourceList["UA:A"] && CurrentSources.globalExcl.indexOf("UA:A") === -1;
 	var menuLVL2 = function (menu, name, array) {
 		var temp = {};
 		var enabled = name[1] === "change" ? What(prefix + "Comp.Race") : true;
@@ -1534,6 +1535,8 @@ function MakeCompMenu() {
 		["Into a mount (Find Steed spell)", "mount"]
 	].concat(!SpellsList["find greater steed"] ? [] : [
 		["Into a greater mount (Find Greater Steed spell)", "steed"]
+	]).concat(!usingArtificer ? [] : [
+		["Into a Mechanical Servant (Artificer feature)", "mechanicalserv"]
 	]).concat([
 		["Into a Ranger's Companion", usingRevisedRanger ? "companionrr" : "companion"],
 		["-", "-"],
@@ -1596,14 +1599,11 @@ function MakeCompMenu() {
 	menuLVL2(CompMenu, ["Create familiar (Warlock Pact of the Chain)", "pact_of_the_chain"], chainPact);
 	menuLVL2(CompMenu, ["Create mount (Find Steed spell)", "mount"], mounts);
 	if (SpellsList["find greater steed"]) menuLVL2(CompMenu, ["Create greater mount (Find Greater Steed spell)", "steed"], steeds);
+	if (usingArtificer) menuLVL2(CompMenu, ["Create Mechanical Servant (Artificer feature)", "mechanicalserv"], mechanicalServs);
 	if (usingRevisedRanger) {
 		menuLVL2(CompMenu, ["Create Revised Ranger's Companion", "companionrr"], companionRR);
 	} else {
 		menuLVL2(CompMenu, ["Create Ranger's Companion", "companion"], companions);
-	};
-	if (CurrentSources["UA:A"] && CurrentSources.globalExcl.indexOf("UA:A") === -1) { // if the artificer source is not excluded
-		menuLVL2(CompMenu, ["Create Artificer Mechanical Servant", "mechanicalserv"], mechanicalServs);
-		change.splice(4, 0, ["Into a Mechanical Servant (Artificer feature)", "mechanicalserv"]);
 	};
 	
 	CompMenu.push({cName : "-"}); //add a divider
@@ -3339,6 +3339,7 @@ function Publish(version) {
 	if (app.viewerType !== "Reader") {
 		tDoc.info.SheetVersion = version;
 		sheetVersion = parseFloat(tDoc.info.SheetVersion);
+		semVers = nmbrToSemanticVersion(sheetVersion);
 		tDoc.info.Title = MakeDocName();
 	};
 	tDoc.resetForm(["Opening Remember", "CurrentSources.Stringified", "User_Imported_Files.Stringified"]);
@@ -5015,7 +5016,7 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 function contactMPMB(medium) {
 	switch (medium.toLowerCase()) {
 	 case "email" :
-		app.launchURL(("mailto:flapkan@gmail.com?subject=MPMBs Character Tools&body=%0D%0A%0D%0A%0D%0ASheet version: MPMB\'s " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + tDoc.info.SheetVersion.toString() + " (" + tDoc.info.SheetType + ")" + " %0D%0APDF viewer: " + app.viewerType + ", v" + app.viewerVersion + "; Language: " + app.language + "; OS: " + app.platform).replace(/ /g, "%20"), true);
+		app.launchURL(("mailto:flapkan@gmail.com?subject=MPMBs Character Tools&body=%0D%0A%0D%0A%0D%0ASheet version: MPMB\'s " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + semVers + " (" + tDoc.info.SheetType + ")" + " %0D%0APDF viewer: " + app.viewerType + ", v" + app.viewerVersion + "; Language: " + app.language + "; OS: " + app.platform).replace(/ /g, "%20"), true);
 		break;
 	 case "twitter" :
 		app.launchURL("https://twitter.com/BetterOfPurple", true);

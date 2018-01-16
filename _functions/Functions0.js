@@ -1009,3 +1009,44 @@ function getTemplPre(tName, templ, rEmpty) {
 	templ = templ + ".";
 	return tName.indexOf(templ) === -1 ? (rEmpty ? "" : true) : tName.substring(0, tName.indexOf(templ)) + templ;
 };
+
+// Change a number to a 2-spaced semantic versioning scheme (13.011 -> 13.1.10)
+function nmbrToSemanticVersion(inNmbr) {
+	inNmbr = parseFloat(inNmbr);
+	if (isNaN(inNmbr)) return 0;
+	var strV = inNmbr.toString().split(".");
+	var versStr = [strV[0]];
+	if (strV[1]) {
+		for (var i = 0; i < strV[1].length; i++) {
+			var partI2 = strV[1][i] + (strV[1][i+1] ? strV[1][i+1] : 0);
+			versStr.push(Number(partI2));
+			i++
+		};
+	};
+	var theSemV = versStr.join(".").toString();
+	if (versStr.length < 3) {
+		for (var i = versStr.length; i < 3; i++) theSemV += ".0";
+	};
+	return theSemV;
+};
+
+// Change a semantic versioning scheme to a number (13.1.10 -> 13.011)
+function semVersToNmbr(inSemV) {
+	if (!isNaN(inSemV)) return Number(inSemV);
+	if (isNaN(parseFloat(inSemV))) {
+		if (!(/\d/).test(inSemV)) return 0;
+		inSemV = inSemV.replace(/.*?(\d.*)/, "$1");
+	};
+	var strV = inSemV.toString().split(".");
+	var nmbrStr = [strV[0], ""];
+	if (strV[1]) {
+		for (var i = 1; i < strV.length; i++) {
+			var nmbrAdd = parseFloat(strV[i]);
+			if (isNaN(nmbrAdd)) continue;
+			nmbrStr[1] += ("0" + nmbrAdd).slice(-2);
+		};
+	};
+	if (strV.length) nmbrStr.push(strV.join(""));
+	var nmbr = parseFloat(nmbrStr.join("."));
+	return isNaN(nmbr) ? 0 : nmbr;
+};

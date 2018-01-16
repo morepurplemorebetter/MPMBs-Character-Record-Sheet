@@ -1,5 +1,5 @@
 function MakeDocName() {
-	return "MorePurpleMoreBetter's D&D 5th edition " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + tDoc.info.SheetVersion.toString() + " (" + tDoc.info.SheetType + ")";
+	return "MorePurpleMoreBetter's D&D 5th edition " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + semVers + " (" + tDoc.info.SheetType + ")";
 };
 
 function MakeButtons() {
@@ -195,7 +195,7 @@ function OpeningStatement() {
 	if (What("Opening Remember") === "No") {
 		this.dirty = false;
 		this.pane = "bookmarks"; //open the bookmarks so that on the first opening people can see its existance
-		var sheetTitle = "MorePurpleMoreBetter's " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " (" + tDoc.info.SheetType + ") v" + tDoc.info.SheetVersion.toString();
+		var sheetTitle = "MorePurpleMoreBetter's " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " (" + tDoc.info.SheetType + ") v" + semVers;
 		var Text = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
 		Text += "Welcome to " + toUni(sheetTitle);
 		Text += " (get the latest version using the bookmark).";
@@ -1410,8 +1410,9 @@ function ApplyArmor(input) {
 //a function to calculate the value of the Dex field in the Armour section (returns a value)
 function calcMaxDexToAC() {
 	var dexMod = What("Dex Mod");
-	if (dexMod === "") {
-	} else if (CurrentArmour.dex !== "") {
+	if (dexMod === "" || isNaN(dexMod)) return "";
+	dexMod = Number(dexMod);
+	if (CurrentArmour.dex !== "" && !isNaN(CurrentArmour.dex)) {
 		dexMod = CurrentArmour.dex == -10 ? 0 : Math.min(dexMod, CurrentArmour.dex);
 	} else if (tDoc.getField("Heavy Armor").isBoxChecked(0)) {
 		dexMod = 0;
@@ -3259,7 +3260,7 @@ function AddToInv(area, column, item, amount, weight, location, searchRegex, Add
 	//as nothing above was found, add the item to the first empty row of the selected column
 	var Container = "";
 	if (!isCorrectUnits && What("Unit System") !== "imperial") weight = RoundTo(weight * UnitsList.metric.mass, 0.001, true);
-	item = clean(item);
+	item = clean(item, [" ", "-", ".", ",", "\\", "/", ";"]);
 	for (var i = startRow; i <= endRow; i++) {
 		var theRow = What(itemRow + i);
 		if (!theRow) {
