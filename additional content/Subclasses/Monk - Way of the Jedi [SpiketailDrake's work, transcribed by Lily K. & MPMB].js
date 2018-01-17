@@ -1,17 +1,16 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
 
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Monk, called "Way of the Jedi"
 				This subclass has been made by /u/SpiketailDrake
-				This code uses version 2.2 of the subclass from 2016-03-19, found here: https://www.reddit.com/4b41ro/
+				This code uses version 2.2 of the subclass from 2016-03-19, found here: https://reddit.com/4b41ro/
 				
 	Code by:	Lily K. & MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
@@ -19,6 +18,14 @@
 
 var iFileName = "Monk - Way of the Jedi [SpiketailDrake's work, transcribed by Lily K. & MPMB].js";
 RequiredSheetVersion(12.999);
+
+SourceList["Jedi-SD"] = {
+	name: "SpiketailDrake: Way of the Jedi (v2.2)",
+	abbreviation: "SD:WotJ",
+	group: "Reddit/r/UnearthedArcana",
+	url: "https://drive.google.com/file/d/0B1pdYIcfHauweWdfcFZNaVF4Zjg/view",
+	date : "2016/03/19"
+};
 
 AddSubClass("monk", "jedi", {
 	regExpSearch: /jedi/i,
@@ -190,11 +197,4 @@ SpellsList["saber throw"] = {
 	save : "Dex",
 	description : "30-ft long 5-ft wide line all creatures 3d8+1d8/SL Radiant dmg; save halves",
 	descriptionFull : "You toss your lightsaber, sending it spinning through the air in a line 30 feet long and 5 feet wide in a direction you choose before. Each creature in the line must make a Dexterity saving throw. A creature takes 3d8 radiant damage on a failed save, or half as much damage on a successful one. The lightsaber then returns back to your hand." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, the damage increases by 1d8 for each slot level above 2nd."
-};
-
-SourceList["Jedi-SD"] = {
-	name: "Way of the Jedi (v2.2, 2016-03-19, by SpiketailDrake)",
-	abbreviation: "SD:WotJ",
-	group: "SpiketailDrake",
-	url: "https://drive.google.com/file/d/0B1pdYIcfHauweWdfcFZNaVF4Zjg/view"
 };

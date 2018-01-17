@@ -1,10 +1,9 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
 
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
@@ -12,7 +11,7 @@
 	Effect:		This script adds a class called the "Witch" and its 5 subclasses
 	
 				This class has been made by /u/Zarieth on the subbreddit /UnearthedArcana 
-				It can be found here: https://www.reddit.com/5dtd1x/
+				It can be found here: https://reddit.com/5dtd1x/
 				This code is based on v0.4 of /u/Zarieth's work (2017-03-06)
 					
 	Code by:	MorePurpleMoreBetter
@@ -21,6 +20,15 @@
 
 var iFileName = "Witch [Zarieth's work, transcribed by MPMB].js";
 RequiredSheetVersion(12.999);
+
+SourceList["Z:W"] = {
+	name : "/u/Zarieth: Witch (v0.4)",
+	abbreviation : "Z:W",
+	group : "Reddit/r/UnearthedArcana",
+	url : "https://reddit.com/5dtd1x/",
+	date : "2017/03/04"
+};
+
 
 //first make the sheet know which spells are witch spells
 [	// cantrips
@@ -476,11 +484,4 @@ ClassSubList["witch (zarieth)-covenant of unity"] = {
 			])
 		}
 	}
-};
-
-SourceList["Z:W"] = {
-	name : "/u/Zarieth: Witch (v0.4, 6 March 2017)",
-	abbreviation : "Z:W",
-	group : "Reddit/r/UnearthedArcana",
-	url : "https://www.reddit.com/5dtd1x/"
 };

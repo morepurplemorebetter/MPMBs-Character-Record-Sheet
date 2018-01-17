@@ -1,10 +1,9 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
@@ -12,7 +11,7 @@
 	Effect:		This script adds a player race and its 3 subraces, called "Soulbound"
 	
 				This class has been made by /u/Greypilgrim333 on the subbreddit /UnearthedArcana 
-				It can be found here: https://www.reddit.com/4wsioc/
+				It can be found here: https://reddit.com/4wsioc/
 				
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-10-25 (sheet v12.998)
@@ -20,6 +19,13 @@
 
 var iFileName = "Soulbound [Greypilgrim333's work, transcribed by MPMB].js";
 RequiredSheetVersion(12.999);
+
+SourceList["GP:S"] = {
+	name : "/u/Greypilgrim333: Soulbound Race",
+	abbreviation : "GP:S",
+	group : "Reddit/r/UnearthedArcana",
+	url : "https://reddit.com/4wsioc/"
+};
 
 RaceList["light armor soulbound"] = {
 	regExpSearch : /^(?=.*soulbound)(?=.*light).*$/i,
@@ -82,11 +88,4 @@ RaceList["heavy armor soulbound"] = {
 	improvements : "Heavy Armor Soulbound: +1 Strength, +2 Constitution;",
 	scores : [1, 0, 2, 0, 0, 0],
 	trait : "Heavy Armor Soulbound (+1 Strength, +2 Constitution) Don't need to eat or breathe. Can't use consumables like potions. Regains only half HP from resting or magical healing. Adv. on death saves. Can restore all my HP with a 4-hour ritual. Need only 4 hours for a long rest. Recover 1 level of exhaustion for every 30 min rest. Has the AC of the armor it is made of +1. Dispel magic causes me to make a Con save or fall unconscious for 1 min. Can be worn as an armor, making both take turns at the same time, give adv. to each other attacks, use each other skill proficiencies, adv. on Str/Con saves and dis. on Dex saves."
-}
-
-SourceList["GP:S"] = {
-	name : "/u/Greypilgrim333: Soulbound Race",
-	abbreviation : "GP:S",
-	group : "Reddit/r/UnearthedArcana",
-	url : "https://www.reddit.com/4wsioc/"
 };
