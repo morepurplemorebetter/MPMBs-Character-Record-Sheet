@@ -12,7 +12,7 @@
 	Subject:	Source
 	Effect:		This is the syntax for adding a new source that can be referenced by other JavaScript Syntax
 				Note that the sheet will ignore any reference to a source that is not defined
-	Sheet:		v12.999 (2017-11-29)
+	Sheet:		v12.999 (2017-12-19)
 */
 
 var iFileName = "Homebrew Syntax - SourceList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -24,9 +24,9 @@ SourceList["UA:LDU"] = { //Object name; This is the way the source is called upo
 	
 	abbreviation : "UA:LDU", //Required; The abbreviation of the source. This can only be letters and a colon! This will be used to refer to the source in the form fields //Note that this doesn't have to be the same as the way the source is called upon, but it can be for convenience
 	
-	group : "Unearthed Arcana" //Optional; Adding this will make the sheet put the source into a group when using the "Sources" function where you can include/exclude sources. // The default options for this are "Unearthed Arcana", "Official Sources", "Official Sources (small)", and "default". // If you enter "default", the source can't be excluded using the "Sources" function
+	group : "Unearthed Arcana", //Optional; Adding this will make the sheet put the source into a group when using the "Sources" function where you can include/exclude sources. // The default options for this are "Unearthed Arcana", "Official Sources", "Official Sources (small)", and "default". // If you enter "default", the source can't be excluded using the "Sources" function
 	
 	url : "http://media.wizards.com/2016/dnd/downloads/UA_Cleric.pdf", //Optional; A link to the source if it can be found on the internet. This link is used in the Source Selection Dialogue
 	
-	date : "2017/09/27" //Optional; the date of the resource, written as year/month/day
+	date : "2017/09/27", //Optional; the date of the resource, written as year/month/day
 }
