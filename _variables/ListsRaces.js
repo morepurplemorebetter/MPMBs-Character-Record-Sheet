@@ -64,7 +64,7 @@ var Base_RaceList = {
 				name : "Dwarven Toughness",
 				minlevel : 1,
 				calcChanges : {
-					hp : "extrahp += totalhd; extrastring += \"\\n + \" + totalhd + \" from Dwarven Toughness\";"
+					hp : "extrahp += totalhd; extrastring += '\\n + ' + totalhd + ' from Dwarven Toughness';"
 				}
 			}
 		}

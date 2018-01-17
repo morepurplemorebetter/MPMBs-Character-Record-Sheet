@@ -1517,7 +1517,7 @@ var SetTextOptions_Dialog = {
 var Highlighting = {
 	initialState : app.runtimeHighlight,
 	initialColor : app.runtimeHighlightColor,
-	rememberState : eval(tDoc.getField("Highlighting").value),
+	rememberState : eval(What("Highlighting")),
 	rememberColor : tDoc.getField("Highlighting").fillColor
 };
 
