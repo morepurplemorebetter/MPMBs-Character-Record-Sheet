@@ -11,13 +11,13 @@
 	Effect:		This script adds a background, called "Apprentice Alchemist"
 				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/208784/)
 				This background is made by Damion Meany
-	Code by:	Erik J
+	Code by:	/u/PbFarmer
 	Date:		2017-09-05 (sheet v12.998)
 
 	Please support the creator of this content (Damion Meany) and download his material from DM Guild: http://www.dmsguild.com/browse.php?author=Damion%20Meany
 */
 
-var iFileName = "Apprentice Alchemist [Damion Meany's work, transcribed by Erik J.].js";
+var iFileName = "Apprentice Alchemist [Damion Meany's work, transcribed by /u/PbFarmer].js";
 RequiredSheetVersion(12.999);
 
 BackgroundList["apprentice alchemist"] = {

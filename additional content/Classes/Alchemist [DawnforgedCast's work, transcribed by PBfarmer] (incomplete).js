@@ -10,9 +10,7 @@
 	Subject:	Class
 	Effect:		This script adds the class called "Alchemist" and its 3 subclasses known as Research Focuses "Arcane Distiller", "Grenadier", and "Metamorph"
 				This is taken from DawnforgedCast (https://dawnforgedcast.myshopify.com/products/5th-edition-alchemist-class)
-				This content is made by Erik J
-	Original:	Erik
-	Completed:	/u/pbfarmer
+	Code by:	/u/PbFarmer
 	Date:		2017-09-22 (sheet v12.998)
  
 	Code Version:	1.0
@@ -26,7 +24,7 @@
 	Also, automation for spell selection isn't fully functional for several of the subclass features.
 */
 
-var iFileName = "Alchemist [DawnforgedCast's work, transcribed by Erik J. & u_pbfarmer] (incomplete).js";
+var iFileName = "Alchemist [DawnforgedCast's work, transcribed by /u/PbFarmer] (incomplete).js";
 RequiredSheetVersion(12.999);
 
 //first make the sheet know which spells are alchemist spells
