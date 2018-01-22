@@ -11,7 +11,7 @@
 /*	-INFORMATION-
 	Subject:	Background variant
 	Effect:		This is the syntax for adding a new variant on an existing background (or one that you made yourself)
-	Sheet:		v12.999 (2017-11-29)
+	Sheet:		v12.999 (2018-01-22)
 */
 
 var iFileName = "Homebrew Syntax - BackgroundSubList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -29,10 +29,10 @@ AddBackgroundVariant( // this is the function you will be calling to add the var
 		
 		name : "What I was Doing", //required; the name of the variant
 		
+		source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js". // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
+		
 		// after defining the above two, you don't need to define anything more, but you can. Defining more stuff will overwrite the entries as they are given in the BackgroundList. So if you do not need something to be different than the basics of the class (for example, you variant uses the same ideals and bonds), then you don't need to define it again.
 		// For the syntax of how to define more stuff, look at the BackgroundList (see "Homebrew Syntax - BackgroundList & BackgroundFeatureList.js"). You can define all the same stuff in the same way. The below are a couple of examples:
-		
-		source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js". // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
 		
 		equipleft : "", //the background has items defined that are to be added to the left equipment column. This variant now erases those entries by overwriting them with nothing
 		
