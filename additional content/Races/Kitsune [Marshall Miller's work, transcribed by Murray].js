@@ -20,10 +20,16 @@
 var iFileName = "Kitsune [Marshall Miller's work, transcribed by Murray].js";
 RequiredSheetVersion(12.999);
 
+SourceList["MM:K"] = {
+	name : "Marshall Miller: Kitsune player race",
+	abbreviation : "MM:K",
+	group : "Dungeon Masters Guild",
+	url : "http://www.dmsguild.com/product/194789/"
+};
+
 RaceList["kitsune"] = {
 	regExpSearch : /kitsune/i,
 	name : "Kitsune",
-	sortname : "Kitsune",
 	source : ["MM:K", 0],
 	plural : "Kitsune",
 	size : 3,
@@ -80,11 +86,4 @@ RaceList["kitsune"] = {
 			}
 		}
 	}
-};
-
-SourceList["MM:K"] = {
-	name : "Marshall Miller: Kitsune player race",
-	abbreviation : "MM:K",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/194789/"
 };

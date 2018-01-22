@@ -19,6 +19,7 @@ RequiredSheetVersion(12.999);
 RaceList["ocean merfolk"] = {
 	regExpSearch : /^(?=.*merfolk)(?=.*ocean|sea).*$/i,
 	name : "Ocean Merfolk",
+	sortname : "Merfolk, Ocean",
 	source : ["HB", 0],
 	plural : "Ocean Merfolk",
 	size : 3,
@@ -70,6 +71,7 @@ RaceList["ocean merfolk"] = {
 RaceList["river merfolk"] = {
 	regExpSearch : /^(?=.*merfolk)(?=.*river).*$/i,
 	name : "River Merfolk",
+	sortname : "Merfolk, River",
 	source : ["HB", 0],
 	plural : "River Merfolk",
 	size : 3,
@@ -114,6 +116,7 @@ RaceList["river merfolk"] = {
 RaceList["deep merfolk"] = {
 	regExpSearch : /^(?=.*merfolk)(?=.*deep).*$/i,
 	name : "Deep Merfolk",
+	sortname : "Merfolk, Deep",
 	source : ["HB", 0],
 	plural : "Deep Merfolk",
 	size : 3,
@@ -159,6 +162,7 @@ RaceList["deep merfolk"] = {
 RaceList["awakened merrow"] = {
 	regExpSearch : /^(?=.*awakened)(?=.*merrow).*$/i,
 	name : "Awakened Merrow",
+	sortname : "Merfolk, Awakened Merrow",
 	source : ["HB", 0],
 	plural : "Awakened Merrow",
 	size : 3,
