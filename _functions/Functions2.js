@@ -5794,8 +5794,8 @@ function EvalBonus(input, notComp, isSpecial) {
 		input = input.replace(RegExp(AbiS, "ig"), Number(What(modStr[0] + AbiS + modStr[1])));
 	});
 	// change Prof with the proficiency bonus
-	var ProfB = notComp === true ? tDoc.getField("Proficiency Bonus").submitName : !isSpecial || isSpecial === "test" ? What(notComp + "Comp.Use.Proficiency Bonus") : What(notComp + "Wildshape." + isSpecial + ".Proficiency Bonus");
-	input = input.replace(/oProf/ig, tDoc.getField("Proficiency Bonus").submitName);
+	var ProfB = notComp === true ? How("Proficiency Bonus") : !isSpecial || isSpecial === "test" ? What(notComp + "Comp.Use.Proficiency Bonus") : What(notComp + "Wildshape." + isSpecial + ".Proficiency Bonus");
+	input = input.replace(/oProf/ig, How("Proficiency Bonus"));
 	input = input.replace(/Prof/ig, ProfB);
 	try {
 		output = eval(input);

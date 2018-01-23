@@ -2331,6 +2331,20 @@ function AddWarlockInvocation(invocName, invocObj) {
 	warInv[useName.toLowerCase()] = invocObj;
 };
 
+// a way to add a warlock pact boon without conflicts; boonName is how it will appear in the menu
+function AddWarlockPactBoon(boonName, boonObj) {
+	var warInv = ClassList.warlock.features["pact boon"];
+	if (!warInv || (warInv.choices.indexOf(boonName) !== -1 && warInv[boonName.toLowerCase()].source && boonObj.source && warInv[boonName.toLowerCase()].source.toSource() === boonObj.source.toSource())) return; // the exact same thing is being added again, so skip it
+	var useName = boonName;
+	var suffix = 1;
+	while (warInv.choices.indexOf(useName) !== -1) {
+		suffix += 1;
+		useName = boonName + " [" + suffix + "]";
+	};
+	warInv.choices.push(useName);
+	warInv[useName.toLowerCase()] = boonObj;
+};
+
 // a way to add fighting styles to multiple classes; fsName is how it will appear in the menu
 function AddFightingStyle(classArr, fsName, fsObj) {
 	var addFSToThis = function(feaObj, feaNm) {

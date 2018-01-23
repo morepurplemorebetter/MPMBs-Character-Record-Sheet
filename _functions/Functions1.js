@@ -4504,7 +4504,7 @@ function CalcSkill() {
 	var ProfBonus = 0;
 	var theProf = Number(What("Proficiency Bonus"));
 	if (tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1 && (event.target.name.indexOf("Passive") !== -1 || event.target.name.indexOf("Initiative") !== -1)) {
-		theProf = tDoc.getField("Proficiency Bonus").submitName;
+		theProf = How("Proficiency Bonus");
 	}
 
 	if (tDoc.getField(Skill + " Prof") && tDoc.getField(Skill + " Prof").isBoxChecked(0) === 1) {
