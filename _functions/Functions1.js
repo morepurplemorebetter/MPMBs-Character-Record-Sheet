@@ -6639,7 +6639,7 @@ function SetToManual_Button() {
 			Hide("Race Features Menu");
 		} else {
 			Value("Manual Race Remember", "No");
-			CurrentRace.known = "";
+			if (CurrentRace.known && What("Racial Traits").indexOf(CurrentRace.name) === -1) CurrentRace.known = "";
 			ApplyRace(What("Race"));
 		}
 	}
