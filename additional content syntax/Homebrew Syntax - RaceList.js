@@ -9,9 +9,11 @@
 */
 
 /*	-INFORMATION-
-	Subject:	Class
-	Effect:		This is the syntax for adding a new race to the sheet
-				Note that you will need to define the race once for every sub-race (i.e. there is a separate entry for High Elf, Wood Elf, and Dark Elf)
+	Subject:	(sub)race
+	Effect:		This is the syntax for adding a new (sub)race to the sheet.
+				Note that you will need to define a race using this syntax once for every sub-race (i.e. there is a separate entry for High Elf, Wood Elf, and Dark Elf)
+				You will use this for a race that doesn't have a subrace, like Dragonborn and also for a subrace of a race, like Hill Dwarf and Mountain Dwarf.
+				You do not make a separate entry for the parent of a subrace. So there is no Dwarf or Elf entry!
 				For races that have variants, like the human, you can define a variant using the RaceSubList. Any variant defined like that will only be selectable through the "Racial Options" button
 	Sheet:		v12.999 (2017-12-19)
 */

@@ -9,7 +9,7 @@
 */
 
 /*	-INFORMATION-
-	Subject:	Pack (for the equipment menu
+	Subject:	Pack (for the equipment menu)
 	Effect:		This is the syntax for adding a new Pack of equipment
 	Sheet:		v12.999 (2017-11-29)
 */

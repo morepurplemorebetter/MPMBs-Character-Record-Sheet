@@ -9,7 +9,7 @@
 */
 
 /*	-INFORMATION-
-	Subject:	Class
+	Subject:	Racial variant (not a subrace!)
 	Effect:		This is the syntax for adding a new racial variant to the sheet
 				If you want to define several subraces, please do so by defining multiple entries of the RaceList (i.e. there is a separate entry for High Elf, Wood Elf, and Dark Elf in the RaceList)
 				For races that have variants, like the human, you can define a variant using the RaceSubList. Any variant defined like this will only be selectable through the "Racial Options" button
