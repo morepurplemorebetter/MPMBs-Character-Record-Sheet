@@ -3431,20 +3431,25 @@ function GenerateSpellSheet(GoOn) {
 		var oncelrArray = spCast.special ? spCast.special.oncelr : [];
 		var oncesrArray = spCast.special ? spCast.special.oncesr : [];
 		var otherObject = spCast.special ? spCast.special.other : {};
-		if (spCast.extra && (spCast.typeList === 4 || spCast.extra[100] === "AddToKnown" || spCast.typeSp === "list")) {
+		var addToFullList = false;
+		if (spCast.extra && (spCast.extra[100] === "AddToKnown" || spCast.typeSp === "list")) {
 			fullSpellList = fullSpellList.concat(spCast.extra); //add the extra spells
 			if (spCast.typeSp === "list") {
 				alwaysPrepared = alwaysPrepared.concat(spCast.extra); //and add them to the always prepared array
 			};
+		} else if (spCast.extra && spCast.typeList === 4) {
+			addToFullList = true;
 		};
 		
 		var knownSpells = fullSpellList; //put the total list of selected spells here for safekeeping before we add more to this list
 		
+		if (addToFullList) fullSpellList = fullSpellList.concat(spCast.extra); //add the extra spells if there are extra to choose from, but not auto known/prepared
+		
 		//now add the general list, if chosen to do the full class list or if this is a 'list' spellcaster that didn't chose to only do the prepared spells
 		if (spCast.typeList === 4 || (spCast.typeSp === "list" && spCast.typeList !== 3)) {
 			var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
-			spCast.list.level = [spCast.typeList === 4 ? 0 : 1, spCast.typeList !== 4 && spListLevel ? spListLevel[1] : 9]; //set the list level to 1 to max set before
-			fullSpellList = fullSpellList.concat(CreateSpellList(spCast.list)); //add the full spell list of the class, excluding cantrips
+			spCast.list.level = [spCast.typeList === 4 ? 0 : 1, spCast.typeList !== 4 && spListLevel ? spListLevel[1] : 9]; //set the list level to generate
+			fullSpellList = fullSpellList.concat(CreateSpellList(spCast.list)); //add the full spell list of the class
 			if (spListLevel) { //put that level list back in the right variable
 				spCast.list.level = spListLevel;
 			} else {
@@ -3458,7 +3463,7 @@ function GenerateSpellSheet(GoOn) {
 			if (isFirst === i) isFirst += 1;
 			continue;
 		};
-		
+
 		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : spCast.typeList === 4 || (/race|feat/i).test(spCast.typeSp) ? "##kn" : "##"; //add "Me" or "Kn" to the name or not?
 		
 		var orderedSpellList = OrderSpells(fullSpellList, "multi", true); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
