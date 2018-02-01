@@ -3431,7 +3431,7 @@ function GenerateSpellSheet(GoOn) {
 		var oncelrArray = spCast.special ? spCast.special.oncelr : [];
 		var oncesrArray = spCast.special ? spCast.special.oncesr : [];
 		var otherObject = spCast.special ? spCast.special.other : {};
-		if (spCast.extra && (spCast.extra[100] === "AddToKnown" || spCast.typeSp === "list")) {
+		if (spCast.extra && (spCast.typeList === 4 || spCast.extra[100] === "AddToKnown" || spCast.typeSp === "list")) {
 			fullSpellList = fullSpellList.concat(spCast.extra); //add the extra spells
 			if (spCast.typeSp === "list") {
 				alwaysPrepared = alwaysPrepared.concat(spCast.extra); //and add them to the always prepared array
