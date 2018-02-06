@@ -1407,7 +1407,7 @@ function calcMaxDexToAC() {
 	var dexMod = What("Dex Mod");
 	if (dexMod === "" || isNaN(dexMod)) return "";
 	dexMod = Number(dexMod);
-	if (CurrentArmour.dex !== "" && !isNaN(CurrentArmour.dex)) {
+	if (CurrentArmour.dex !== "" && CurrentArmour.dex !== undefined && !isNaN(CurrentArmour.dex)) {
 		dexMod = CurrentArmour.dex == -10 ? 0 : Math.min(dexMod, CurrentArmour.dex);
 	} else if (tDoc.getField("Heavy Armor").isBoxChecked(0)) {
 		dexMod = 0;

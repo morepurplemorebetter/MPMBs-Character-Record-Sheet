@@ -260,6 +260,7 @@ var CurrentArmour = {
 	field : "",
 	known : "",
 	mod : "",
+	dex : "",
 	proficiencies : {},
 	magic : 0
 };
