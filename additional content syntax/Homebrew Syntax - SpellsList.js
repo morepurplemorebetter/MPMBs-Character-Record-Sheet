@@ -11,7 +11,7 @@
 /*	-INFORMATION-
 	Subject:	Spell
 	Effect:		This is the syntax for adding a new spell
-	Sheet:		v12.999 (2017-11-29)
+	Sheet:		v12.999 (2018-02-19)
 	
 	Please note that there is no code here to update drop-down boxes because the rop-down boxes in the spell selection dialogues are generated automatically and will include any spells you add correctly
 	
@@ -29,7 +29,7 @@ SpellsList["abi-dalzim's horrid wilting"] = { //Object name; note the use of onl
 	
 	nameAlt : "Horrid Wilting", //Optional; An alternative name that can be used to identify the spell with on the sheet
 	
-	classes : ["bard", "cleric", "druid", "sorcerer", "wizard"], //Required; Array of all the classes that have this spell on their list. Needs at least one entry. Even with one entry you still need to put the brackets around it []. Note the use of only lower case!
+	classes : ["bard", "cleric", "druid", "sorcerer", "wizard"], //Optional; Array of all the classes that have this spell on their list. Even with one entry you still need to put the brackets around it []. Note the use of only lower case as these entries are identical to the CLassList object names! If you omit this attribute, the spell will only be selectable through the dependencies, see below. If you want the spell to be available for subclasses and through the SpellcastingBonus object, just add an empty array, i.e. classes : [],
 	
 	source : ["HB", 0], //Required; the source and the page number. "HB" stands for homebrew. //Note that filling out this incorrectly will prohibit the spell from showing up in the spell selection dialogues. //If you want to add a custom source, see "Homebrew Syntax - SourceList.js" // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
 	
@@ -53,7 +53,7 @@ SpellsList["abi-dalzim's horrid wilting"] = { //Object name; note the use of onl
 	
 	description : "Repair a single broken object no larger than 1 cu ft; can't restore magic to broken magic item", //Required; Short Spell Description as it will show up on the Spell Sheet
 	
-	descriptionMetric : "Repair a single broken object no larger than 1 cu ft; can't restore magic to broken magic item", //Optional; Short Spell Description as it will show up on the Spell Sheet when it is set to use the metric system. If this is ommitted the sheet will automatically try to convert the 'description' to metric
+	descriptionMetric : "Repair a single broken object no larger than 1 cu ft; can't restore magic to broken magic item", //Optional; Short Spell Description as it will show up on the Spell Sheet when it is set to use the metric system. If this is omitted the sheet will automatically try to convert the 'description' to metric
 	
 	descriptionFull : "This spell repairs a single break or tear in an object you touch, such as broken chain link, two halves of a broken key, a torn clack, or a leaking wineskin. As long as the break or tear is no larger than 1 foot in any dimension, you mend it, leaving no trace of the former damage." + "\n   " + "This spell can physically repair a magic item or construct, but the spell can't restore magic to such an object.", //Optional; The full Spell Description. This string will be put in the mouseover text (tooltip) of the description field
 	
