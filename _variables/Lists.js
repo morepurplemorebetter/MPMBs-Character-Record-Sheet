@@ -1587,7 +1587,7 @@ var compString = {
 				"\n\u2022 " + "While my steed is within 1 mile of me, I can communicate with it telepathically" +
 				"\n\u2022 " + "I can dismiss my steed at any time as an action, causing it to disappear" +
 				"\n\u2022 " + "Casting this spell again summons the same steed, restored to its max HP, without conditions" +
-				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond"
+				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond",
 		actions : [["action", "Find Steed (dismiss)"]],
 		actionTooltip : "the Find Steed spell"
 	},
@@ -1605,7 +1605,7 @@ var compString = {
 				"\n\u2022 " + "While my steed is within 1 mile of me, I can communicate with it telepathically" +
 				"\n\u2022 " + "I can dismiss my steed at any time as an action, causing it to disappear" +
 				"\n\u2022 " + "Casting this spell again summons the same steed, restored to its max HP, without conditions" +
-				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond"
+				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond",
 		actions : [["action", "Find Greater Steed (dismiss)"]],
 		actionTooltip : "the Find Greater Steed spell"
 	},
@@ -1627,7 +1627,7 @@ var compString = {
 			"\n\u2022 " + "I can't have more than one familiar bonded at a time; as an action, I can dismiss it forever" +
 			"\n\u2022 " + "When I cast a spell with a range of touch, my familiar can deliver the spell" +
 			"\n   " + "It must be within 100 ft of me and it must use its reaction to deliver the spell when I cast it" +
-			"\n   " + "It acts as if it cast the spells, but it can use my modifiers for any attack rolls the spell requires"
+			"\n   " + "It acts as if it cast the spells, but it can use my modifiers for any attack rolls the spell requires",
 		actions : [["action", "Find Familiar (dismiss/reappear)"], ["action", "Use familiar's senses"]],
 		actionTooltip : "the Find Familiar spell"
 	},
@@ -1651,7 +1651,7 @@ var compString = {
 			"\n\u2022 " + "I can't have more than one familiar bonded at a time; as an action, I can dismiss it forever" +
 			"\n\u2022 " + "When I cast a spell with a range of touch, my familiar can deliver the spell" +
 			"\n   " + "It must be within 100 ft of me and it must use its reaction to deliver the spell when I cast it" +
-			"\n   " + "It acts as if it cast the spells, but it can use my modifiers for any attack rolls the spell requires"
+			"\n   " + "It acts as if it cast the spells, but it can use my modifiers for any attack rolls the spell requires",
 		actions : [["action", "Have familiar attack (part of my Attack action)"], ["action", "Familiar (dismiss/reappear)"], ["action", "Use familiar's senses"]],
 		actionTooltip : "Warlock (Pact of the Chain)"
 	},
@@ -1682,7 +1682,7 @@ var compString = {
 			"\n\u2022 " + "My companion obeys my commands as best it can, or act on its own if I can't command it" +
 			"\n\u2022 " + "My companion rolls for initiative and takes actions as normal, but can't use Multiattack" +
 			"\n\u2022 " + "When moving stealthily together with only my companion, we can move at a normal pace" +
-			"\n\u2022 " + "My companion gains a bonus on damage rolls against my favored enemies just like me"
+			"\n\u2022 " + "My companion gains a bonus on damage rolls against my favored enemies just like me",
 		actions : []
 	},
 	mechanicalserv : {
@@ -1696,7 +1696,7 @@ var compString = {
 			"\n  " + "I can build a new servant by spending 8 hours a day for 7 days and 1000 gp of materials" +
 			"\n\u2022 " + "The servant rolls initiative and takes actions as normal, obeying my commands as best it can" +
 			"\n\u2022 " + "As a reaction when I am attacked in melee and my mechanical servant is within 5 ft of me," +
-			"\n  I can command the servant to use its reaction to make a melee attack against the attacker"
+			"\n  I can command the servant to use its reaction to make a melee attack against the attacker",
 		actions : [["reaction", "Mechanical Servant (if attacked)"]]
 	}
 };
