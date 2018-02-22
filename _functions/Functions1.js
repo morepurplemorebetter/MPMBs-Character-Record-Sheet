@@ -6020,7 +6020,7 @@ function MakeClassMenu() {
 
 	var ClassMenu = [], toTest = "";
 	var toTestE = What("Extra.Notes") + What("Class Features");
-	var hasEldritchBlast = isSpellUsed("eldritch blast").length || (/(eldritch|agonizing) (blast|spear)/i).test(CurrentWeapons.known);
+	var hasEldritchBlast = isSpellUsed("eldritch blast", true) || (/(eldritch|agonizing) (blast|spear)/i).test(CurrentWeapons.known);
 	
 	for (var aClass in classes.known) {
 		var classname = aClass;
