@@ -3716,6 +3716,13 @@ function UpdateRangerCompanions(deleteIt) {
 			};
 			
 			//then look into the hit points
+			// first reset it to not assume a value automatically, if so set
+			var theCompSetting = How(prefix + "Comp.Use.HP.Max").split(",");
+			if (!deleteIt && theCompSetting[3] !== "nothing") {
+				theCompSetting[3] = "nothing";
+				tDoc.getField(prefix + "Comp.Use.HP.Max").submitName = theCompSetting.join();
+			};
+			// then add the new hp value
 			if (thisCrea) {
 				Value(prefix + "Comp.Use.HP.Max", Math.max(thisCrea.hp, RangerLvl * 4));
 			} else {
@@ -3816,7 +3823,7 @@ function SetHPTooltip(resetHP) {
 	AddTooltip("HP Max", hdstring);
 	
 	//now see if the menu setting tells us that we need to change
-	var theSetting = tDoc.getField("HP Max").submitName.split(",");
+	var theSetting = How("HP Max").split(",");
 	theSetting[0] = Number(Math.round(hdaverage + conhp + extrahp));
 	theSetting[1] = Number(hdadvleague + conhp + extrahp);
 	theSetting[2] = Number(hdmax + conhp + extrahp);
@@ -3872,11 +3879,11 @@ function SetHPTooltip(resetHP) {
 		AddTooltip(prefix + "Comp.Use.HP.Max", compHPsting);
 		
 		//now see if the menu setting tells us that we need to change
-		var theCompSetting = tDoc.getField(prefix + "Comp.Use.HP.Max").submitName.split(",");
+		var theCompSetting = How(prefix + "Comp.Use.HP.Max").split(",");
 		theCompSetting[0] = Number(Math.round(CompAverageHD));
 		theCompSetting[1] = Number(CompFixedHD);
 		theCompSetting[2] = Number(CompMaxHD);
-		if (resetHP) theCompSetting[3] = "nothing"; 
+		if (resetHP) theCompSetting[3] = "nothing";
 		var setCompHP = false;
 		switch (theCompSetting[3]) {
 			case "average" :
