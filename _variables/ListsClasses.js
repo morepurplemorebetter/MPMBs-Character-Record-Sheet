@@ -635,7 +635,7 @@ var Base_ClassList = {
 				source : [["SRD", 27], ["P", 78]],
 				minlevel : 4,
 				description : "\n   " + "As a reaction, I can reduce any falling damage I take by five times my monk level",
-				additional : ["", "", "", "20 less falling damage", "25 less falling damage", "30 less falling damage", "35 less falling damage", "40 less falling damage", "45 less falling damage", "50 less falling damage", "55 less falling damage", "60 less falling damage", "65 less falling damage", "70 less falling damage", "75 less falling damage", "80 less falling damage", "85 less falling damage", "90 less falling damage", "95 less falling damage", "100 less falling damage"],
+				additional : levels.map(function (n) { return n < 4 ? "" : (n*5) + " less falling damage" }),
 				action : ["reaction", ""]
 			},
 			"ki-empowered strikes" : {
@@ -2095,14 +2095,19 @@ var Base_ClassSubList = {
 				name : "Hand Technique",
 				source : [["SRD", 28], ["P", 79]],
 				minlevel : 3,
-				description : "\n   " + "When I hit a creature with a Flurry of Blows attack I can do one of the following:" + "\n    - " + "It has to make a Dexterity save or be knocked prone" + "\n    - " + "It has to make a Strength save or I can push it up to 15 ft away from me" + "\n    - " + "It can't take reactions until the end of my next turn"
+				description : desc([
+					"Whenever I hit a creature with a Flurry of Blows attack I can do one of the following:",
+					"\u2022 Have it make a Dexterity save or be knocked prone",
+					"\u2022 Have it make a Strength save or be pushed up to 15 ft away from me",
+					"\u2022 Stop it from taking reactions until the end of my next turn"
+				])
 			},
 			"subclassfeature6" : {
 				name : "Wholeness of Body",
 				source : [["SRD", 28], ["P", 79]],
 				minlevel : 6,
 				description : "\n   " + "As an action, I regain hit points equal to three times my monk level",
-				additional : ["", "", "", "", "", "18 hit points", "21 hit points", "24 hit points", "27 hit points", "30 hit points", "33 hit points", "36 hit points", "39 hit points", "42 hit points", "45 hit points", "48 hit points", "51 hit points", "54 hit points", "57 hit points", "60 hit points"],
+				additional : levels.map(function (n) { return n < 6 ? "" : (n*3) + " hit points" }),
 				usages : 1,
 				recovery : "long rest",
 				action : ["action", ""]
