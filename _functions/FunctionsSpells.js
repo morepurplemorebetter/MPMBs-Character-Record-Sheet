@@ -669,6 +669,22 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 	var spByLvl = {sp0 : [], sp1 : [], sp2 : [], sp3 : [], sp4 : [], sp5 : [], sp6 : [], sp7 : [], sp8 : [], sp9 : [], ps0 : [], ps1: []};
 	var refspObj = {};
 	
+	var removeSp = function(inSp) {
+		var rSpell = SpellsList[inSp];
+		var rSpLevel = (!rSpell.psionic ? "sp" : "ps") + rSpell.level;
+		var rSpName = getSpNm(inSp);
+		if (toDisplay) {
+			spByLvl[rSpLevel].splice(spByLvl[rSpLevel].indexOf(rSpName + (rSpell.ritual ? " (R)" : "")), 1);
+		} else {
+			if (returnOrdered) {
+				spByLvl[rSpLevel].splice(spByLvl[rSpLevel].indexOf(rSpName), 1);
+			} else {
+				returnArray.splice(returnArray.indexOf(inSp), 1);
+			}
+		};
+		delete refspObj[rSpName];
+	};
+	
 	//now go through all the spells in the list and see if they agree with the criteria
 	for (var key in SpellsList) {
 		var aSpell = SpellsList[key];
@@ -711,11 +727,22 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 		if (addSp || (inputObject.extraspells && inputObject.extraspells.indexOf(key) !== -1) || (extraArray && extraArray.indexOf(key) !== -1)) {
 			var SpPs = !aSpell.psionic ? "sp" : "ps";
 			var spName = getSpNm(key);
+			if (refspObj[spName]) { // if another spell with the same name has been added already, see which one the sheet will use
+				var testName = ParseSpell(spName);
+				if (refspObj[spName] == testName) { 
+					continue;
+				} else if (testName == key) {
+					removeSp(refspObj[spName]);
+				} else { // doesn't match any spell yet come across, so just delete it
+					removeSp(refspObj[spName]);
+					continue;
+				};
+			};
+			refspObj[spName] = key;
 			if (toDisplay) {
 				spByLvl[SpPs + aSpell.level].push(spName + (aSpell.ritual ? " (R)" : ""));
 			} else {
 				if (returnOrdered) {
-					refspObj[spName] = key;
 					spByLvl[SpPs + aSpell.level].push(spName);
 				} else {
 					returnArray.push(key);
