@@ -6624,7 +6624,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		var fldSpdW = What(fldSpd).replace(/\n|\r/g, "").replace(/,/g, ".");
 		var fldEnc = "Speed encumbered";
 		var fldEncdW = What(fldEnc).replace(/\n|\r/g, "").replace(/,/g, ".");
-		var spdTypes = ["walk", "borrow", "climb", "fly", "swim"];
+		var spdTypes = ["walk", "burrow", "climb", "fly", "swim"];
 		//create the set object if it doesn't exist already
 		var setKeys = function() {
 			for (var e in set) {return true;};
