@@ -7074,3 +7074,13 @@ function AddToNotes(noteStr, alertTxt, oldNoteStr) {
 		});
 	};
 };
+
+// check if a newer version is available (Acrobat Pro only)
+function checkForUpdates() {
+	if (!(/exchange/i).test(app.viewerType)) return; // using Reader
+	var serv = Net.SOAP.connect("http://update.flapkan.com/mpmb.wsdl");
+	if (!serv || !serv.version) return;
+	var thisType = typeA4 ? "CF-A4" : typeLR ? "CF-L" : (/redesign/i).test(tDoc.info.SheetType) ? "PF-R" : "PF";
+	var lVers = parseFloat(serv.version(thisType));
+	if (!lVers) return;
+}
