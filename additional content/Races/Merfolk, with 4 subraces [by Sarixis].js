@@ -17,7 +17,7 @@ var iFileName = "Merfolk, with 4 subraces [by Sarixis].js";
 RequiredSheetVersion(12.999);
 
 RaceList["ocean merfolk"] = {
-	regExpSearch : /^(?=.*merfolk)(?=.*ocean|sea).*$/i,
+	regExpSearch : /^(?=.*merfolk)(?=.*(ocean|sea)).*$/i,
 	name : "Ocean Merfolk",
 	sortname : "Merfolk, Ocean",
 	source : ["HB", 0],
