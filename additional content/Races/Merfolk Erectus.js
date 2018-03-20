@@ -1,8 +1,8 @@
 var iFileName = "Merfolk Erectus [by Snutze].js";
 RequiredSheetVersion(12.999);
 
-RaceList["Merfolk Erectus"] = {
-	regExpSearch : /^(?=.*merfolk)(?=.*erectus|sea).*$/i,
+RaceList["merfolk erectus"] = {
+	regExpSearch : /^(?=.*merfolk)(?=.*erectus).*$/i,
 	name : "Merfolk Erectus",
 	sortname : "Merfolk, Erectus",
 	source : ["HB", 0],
@@ -10,10 +10,10 @@ RaceList["Merfolk Erectus"] = {
 	size : 3,
 	speed : {
 		walk : { spd : 30, enc : 20 },
-		swim : { spd : 30, enc : 15 }
+		swim : { spd : 30, enc : 20 }
 	},
 	languageProfs : ["Common", "Aquan"],
-	vision : [["Darkvision", 60], ["Underwater", 120]],
+	vision : [["Darkvision", 60], ["Citizen of the Seas (Vision is not affected underwater)", 0]],
 	dmgres : ["Cold"],
 	weaponprofs : [false, false, ["spear", "trident", "net"]],
 	skills : ["Perception", "Performance"],
@@ -22,6 +22,6 @@ RaceList["Merfolk Erectus"] = {
 	weight : " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
 	improvements : "Merfolk Erectus: +1 Dexterity, +1 Constitution, +1 Charisma;",
 	scores : [0, 1, 1, 0, 0, 1],
-	trait : "Merfolk Erectus (+1 Dexterity, +1 Constitution, +1 Charisma)\n   Amphibious: I can breathe air and water\n   Underwater Capability: Underwater combat does not impose any penalties or disadvantages on movement or weapon attacks and while underwater I have darkvision\n   Mask of the Seas: While in or near the water I can attempt to hide even when I am only lightly obscured by foliage, mud clouds, stone or other natural objects\n   Icy Water: I have resistance to Cold damage and vulnerability to Lightning",
-	savetxt : { text : ["Vunerable to Lightning"] }
+	trait : "Merfolk Erectus (+1 Dexterity, +1 Constitution, +1 Charisma)\n   Amphibious: I can breathe air and water\n   Citizen of the Seas: Underwater combat does not impose any penalties or disadvantages on movement or weapon attacks and does not affect my vision\n   Mask of the Seas: While in or near the water I can attempt to hide even when I am only lightly obscured by foliage, mud clouds, stone or other natural objects\n   Icy Water: I have resistance to cold and vulnerability to lightning damage", 
+	savetxt : { text : ["Vulnerable to lightning"] }
 }
