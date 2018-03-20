@@ -13,7 +13,7 @@ RaceList["merfolk erectus"] = {
 		swim : { spd : 30, enc : 20 }
 	},
 	languageProfs : ["Common", "Aquan"],
-	vision : [["Darkvision", 60], ["Citizen of the Seas (Vision is not affected underwater)", 0]],
+	vision : [["Darkvision", 60], ["Watervision (See clearly underwater)", 0]],
 	dmgres : ["Cold"],
 	weaponprofs : [false, false, ["spear", "trident", "net"]],
 	skills : ["Perception", "Performance"],
