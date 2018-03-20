@@ -3787,7 +3787,7 @@ function InventoryLineOptions() {
 		var theNm = (lineNmbr > 1 && (/^.{0,2}-|backpack|\bbag\b|^(?=.*saddle)(?=.*bag).*$|\bsack\b|\bchest\b|, with|, contain/i).test(What(type + "Gear Row " + (lineNmbr - 1))) ? "- " : "") + theGear.name;
 		Value(Fields[0], theNm);
 		Value(Fields[1], theGear.amount);
-		Value(Fields[2], theGear.weight);
+		Value(Fields[2], What("Unit System") === "metric" ? RoundTo(theGear.weight * UnitsList.metric.mass, 0.001, true) : theGear.weight);
 		break;
 	};
 	
