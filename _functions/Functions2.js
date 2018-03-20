@@ -6741,7 +6741,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					var theVal = theSpeeds[aSpeed];
 					if (!theVal) continue;
 					if (theVal === "walk") {
-						theVal = "as walking speed"
+						theVal = "as walking speed";
 					} else {
 						theVal += " ft";
 					};

@@ -8604,7 +8604,6 @@ function ColoryOptions(input) {
 			switch (MenuSelection[2]) {
 				case "turn highlighting off" :
 					highlightsOn = false;
-					break;
 				case "adobe default" :
 					var theColour = ["RGB", 0.8, 0.8431, 1]; //Adobe default form field highlighting colour
 					break;
