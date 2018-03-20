@@ -2839,7 +2839,7 @@ function PagesOptions() {
 			case "text" :
 				MakeTextMenu_TextOptions(MenuSelection);
 				break;
-			default :
+			case "color" :
 				ColoryOptions(MenuSelection);
 				break;
 		};

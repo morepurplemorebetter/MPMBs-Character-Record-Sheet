@@ -7998,9 +7998,7 @@ function ApplyColorScheme(aColour) {
 	if (typePF || (!aColour && What("Color.Theme") === tDoc.getField("Color.Theme").defaultValue)) return; //don't do this function in the Printer-Friendly version or if resetting with the default colour still active
 	var colour = aColour ? aColour.toLowerCase() : What("Color.Theme");
 	//stop the function if the input color is not recognized
-	if (!ColorList[colour]) {
-		return;
-	}
+	if (!ColorList[colour]) return;
 	
 	thermoM("start"); //start a progress dialog
 	thermoM("Applying " + colour + " color scheme..."); //change the progress dialog text
@@ -8280,9 +8278,7 @@ function ApplyDragonColorScheme(aColour) {
 	var theColor = ColorList[colour].CMYK;
 	var theColorDark = DarkColorList[colour];
 	//stop the function if the input color is not recognized
-	if (!ColorList[colour]) {
-		return;
-	}
+	if (!ColorList[colour]) return;
 	
 	thermoM("start"); //start a progress dialog
 	thermoM("Applying " + colour + " Dragon Heads..."); //change the progress dialog text
@@ -8432,37 +8428,37 @@ function ApplyHPDragonColorScheme(aColour) {
 	var colour = aColour ? aColour.toLowerCase() : What("Color.HPDragon");
 	
 	//stop the function if the input color is not recognized
-	if (ColorList[colour]) {
-		thermoM("start"); //start a progress dialog
-		thermoM("Applying " + colour + " HP Dragons..."); //change the progress dialog text
-		
-		//set the chosen color to a place where it can be found again
-		Value("Color.HPDragon", colour);
-		
-		//get any extra prefixes
-		var makeTempArray = function (template) {
-			var tempReturn = [];
-			var temp = What("Template.extras." + template);
-			if (temp) {
-				temp = temp.split(",");
-				temp.splice(temp.indexOf(""), 1);
-				tempReturn = temp;
-			}
-			return tempReturn;
+	if (!ColorList[colour]) return;
+	
+	thermoM("start"); //start a progress dialog
+	thermoM("Applying " + colour + " HP Dragons..."); //change the progress dialog text
+	
+	//set the chosen color to a place where it can be found again
+	Value("Color.HPDragon", colour);
+	
+	//get any extra prefixes
+	var makeTempArray = function (template) {
+		var tempReturn = [];
+		var temp = What("Template.extras." + template);
+		if (temp) {
+			temp = temp.split(",");
+			temp.splice(temp.indexOf(""), 1);
+			tempReturn = temp;
 		}
-		var AScompA = makeTempArray("AScomp");
-		var WSfrontA = makeTempArray("WSfront");
-		var prefixFullA = [""].concat(AScompA).concat(WSfrontA);
-		
-		thermoM(1/2); //increment the progress dialog's progress
-		
-		var theIcon = tDoc.getField("SaveIMG.HPdragonhead" + "." + colour).buttonGetIcon();
-		for (var pA = 0; pA < prefixFullA.length; pA++) {
-			tDoc.getField(prefixFullA[pA] + "Image.HPdragonhead").buttonSetIcon(theIcon);
-		}
-		
-		thermoM("stop"); //stop the top progress dialog
+		return tempReturn;
 	}
+	var AScompA = makeTempArray("AScomp");
+	var WSfrontA = makeTempArray("WSfront");
+	var prefixFullA = [""].concat(AScompA).concat(WSfrontA);
+	
+	thermoM(1/2); //increment the progress dialog's progress
+	
+	var theIcon = tDoc.getField("SaveIMG.HPdragonhead" + "." + colour).buttonGetIcon();
+	for (var pA = 0; pA < prefixFullA.length; pA++) {
+		tDoc.getField(prefixFullA[pA] + "Image.HPdragonhead").buttonSetIcon(theIcon);
+	}
+	
+	thermoM("stop"); //stop the top progress dialog
 }
 
 //Make menu for choosing the color, the 'color' button, and parse it to Menus.color
@@ -8473,7 +8469,7 @@ function MakeColorMenu() {
 
 	//add all the colours to the array, ommitting some if not using the full (bonus) version
 	for (var key in ColorList) {
-		tempArray.push(key);
+		tempArray.push([key.capitalize(), key]);
 	};
 	tempArray.sort();
 	
@@ -8483,85 +8479,103 @@ function MakeColorMenu() {
 			for (i = 0; i < array.length; i++) {
 				item.push({
 					cName : array[i].capitalize(),
-					cReturn : name + "#" + array[i],
+					cReturn : "color#" + name + "#" + array[i],
 					bMarked : lookIt === array[i]
 				});
 			}
 		};
-		tempArray.unshift("turn highlighting off", "-", "sheet default", "adobe default", "-");
-		menuLVL1(ColorMenu, tempArray, "form highlights");
+		tempArray.unshift(
+			["Turn highlighting off", "turn highlighting off"],
+			["-", "-"],
+			["Sheet default", "sheet default"],
+			["Adobe default", "adobe default"],
+			["-", "-"]
+		);
+		menuLVL1(ColorMenu, tempArray, "highlights");
 	} else {
-		var HighlightMenu = [];
-		var DragonMenu = [];
-		var HPDragonMenu = [];
 		var DCMenu = {cName : "Ability Save DCs", oSubMenu : []};
 
-		var menuLVL1 = function (item, array) {
+		var menuLVL1 = function (item, array, name) {
 			var lookIt = What("Color.Theme");
 			for (i = 0; i < array.length; i++) {
 				item.push({
-					cName : array[i].capitalize(),
-					cReturn : array[i],
-					bMarked : lookIt === array[i]
+					cName : array[i][0],
+					cReturn : "color#" + name + "#" + array[i][1],
+					bMarked : lookIt === array[i][1]
 				});
 			}
 		};
 
-		var menuLVL2 = function (menu, name, array) {
-			menu.cName = name;
-			menu.oSubMenu = [];
-			var lookIt = name === "Form Highlights" ? Who("Highlighting") : name === "HP Dragons" ? What("Color.HPDragon") : What("Color.DragonHeads");
+		var menuLVL2 = function (name, array) {
+			var menu = {
+				cName : name[0],
+				oSubMenu : []
+			};
+			var lookIt = name[1] === "highlights" ? Who("Highlighting") : name[1] === "hpdragons" ? What("Color.HPDragon") : name[1] === "dragonheads" ? What("Color.DragonHeads") : false;
 			for (i = 0; i < array.length; i++) {
 				menu.oSubMenu.push({
-					cName : array[i].capitalize(),
-					cReturn : name + "#" + array[i],
-					bMarked : lookIt === array[i]
+					cName : array[i][0],
+					cReturn : "color#" + name[1] + "#" + array[i][1],
+					bMarked : lookIt === array[i][1]
 				})
-			}
+			};
+			return menu;
 		};
 		
 		var menuLVL3 = function (menu, name, array, extraReturn) {
 			var temp = [];
-			var lookIt = What("Color.DC").split(",")[extraReturn.split("#")[1] - 1];
+			var lookIt = What("Color.DC").split(",")[extraReturn - 1];
 			for (i = 0; i < array.length; i++) {
 				temp.push({
-					cName : array[i].capitalize(),
-					cReturn : extraReturn + "#" + array[i],
-					bMarked : lookIt === array[i]
-				})
+					cName : array[i][0],
+					cReturn : "color#" + name[1] + "#" + array[i][1] + "#" + extraReturn,
+					bMarked : lookIt === array[i][1]
+				});
 			}
 			menu.oSubMenu.push({
-				cName : name,
+				cName : name[0],
 				oSubMenu : temp
 			});
 		};
 		
 		var tempArrayExt = tempArray.slice(0);
-		tempArrayExt.unshift("same as headers", "same as dragon heads", "-"); 
+		tempArrayExt.unshift(
+			["Same as Headers", "headers"],
+			["Same as Dragon Heads", "dragons"],
+			["-", "-"]
+		);
 		
 		//make a submenu to set the form field highlight color, or turn highlighting off
 		var HighlightArray = tempArrayExt.slice(0);
-		HighlightArray.unshift("turn highlighting off", "-", "sheet default", "adobe default", "-");
-		menuLVL2(HighlightMenu, "Form Highlights", HighlightArray)
-		ColorMenu.push(HighlightMenu);
+		HighlightArray.unshift(
+			["Turn highlighting off", "turn highlighting off"],
+			["-", "-"],
+			["Sheet default", "sheet default"],
+			["Adobe default", "adobe default"],
+			["-", "-"]
+		);
+		ColorMenu.push(menuLVL2(["Form Highlights", "highlights"], HighlightArray));
 		
 		//make the Dragon Head submenu
-		menuLVL2(DragonMenu, "Dragon Heads", tempArray)
-		ColorMenu.push(DragonMenu);
+		ColorMenu.push(menuLVL2(["Dragon Heads", "dragonheads"], tempArray));
 		
 		//make, if this is not a spell sheet, the Dragon HP and ability save DCs submenu
 		if (!minVer) {
-			menuLVL2(HPDragonMenu, "HP Dragons", tempArray)
-			ColorMenu.push(HPDragonMenu);
-			menuLVL3(DCMenu, "Ability Save DC 1 (left)", tempArrayExt, "abilitydc#1");
-			menuLVL3(DCMenu, "Ability Save DC 2 (right)", tempArrayExt, "abilitydc#2");
+			ColorMenu.push(menuLVL2(["HP Dragons", "hpdragons"], tempArray));
+			menuLVL3(DCMenu, ["Ability Save DC 1 (left)", "abilitydc"], tempArrayExt, 1);
+			menuLVL3(DCMenu, ["Ability Save DC 2 (right)", "abilitydc"], tempArrayExt, 2);
 			ColorMenu.push(DCMenu);
 		}
 		
-		tempArray.unshift("-"); //add a divider at the start for the final menu
+		ColorMenu.push({cName : "-"}); //add a divider
 		
 		//make the color menu
-		menuLVL1(ColorMenu, tempArray);
+		menuLVL1(ColorMenu, tempArray, "theme");
+		
+		ColorMenu.push({cName : "-"}); //add a divider
+		
+		// 'all' option
+		ColorMenu.push(menuLVL2(["All of the above (expect highlighting)", "all"], tempArray));
 	}
 
 	Menus.colour = ColorMenu;
@@ -8570,48 +8584,57 @@ function MakeColorMenu() {
 //call the color menu and do something with the results
 function ColoryOptions(input) {
 	var MenuSelection = input ? input : getMenu("colour");
-	var tempArray = [];
-	var theColour = ["RGB", 0.8, 0.8431, 1]; //Adobe default form field highlighting colour
 	
-	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing" && ColorList[MenuSelection[0]]) {
-		ApplyColorScheme(MenuSelection[0]);
-	} else if (MenuSelection[0] === "dragon heads" && ColorList[MenuSelection[1]]) {
-		ApplyDragonColorScheme(MenuSelection[1]);
-	} else if (MenuSelection[0] === "hp dragons" && ColorList[MenuSelection[1]]) {
-		ApplyHPDragonColorScheme(MenuSelection[1]);
-	} else if (MenuSelection[0] === "form highlights" && ColorList[MenuSelection[1]]) {
-		app.runtimeHighlight = true;
-		theColour = LightColorList[MenuSelection[1]];
-		app.runtimeHighlightColor = theColour;
-		tDoc.getField("Highlighting").fillColor = theColour;
-		Value("Highlighting", "true", MenuSelection[1]);
-	} else if (MenuSelection[0] === "form highlights") {
-		switch (MenuSelection[1]) {
-		 case "turn highlighting off" :
-			app.runtimeHighlight = false;
+	if (MenuSelection === undefined || MenuSelection[0] == "nothing" || MenuSelection[0] !== "color") return;
+	switch (MenuSelection[1]) {
+		case "theme" :
+			ApplyColorScheme(MenuSelection[2]);
 			break;
-		 case "adobe default" :
-			app.runtimeHighlight = true;
+		case "dragonheads" :
+			ApplyDragonColorScheme(MenuSelection[2]);
 			break;
-		 case "sheet default" :
-			app.runtimeHighlight = true;
-			theColour = ["RGB", 0.9, 0.9, 1];
+		case "hpdragons" :
+			ApplyHPDragonColorScheme(MenuSelection[2]);
 			break;
-		 case "same as headers" :
-			app.runtimeHighlight = true;
-			theColour = LightColorList[What("Color.Theme")];
+		case "abilitydc" :
+			ApplyDCColorScheme(MenuSelection[2], MenuSelection[3]);
 			break;
-		 case "same as dragon heads" :
-			app.runtimeHighlight = true;
-			theColour = LightColorList[What("Color.DragonHeads")];
+		case "highlights" :
+			var highlightsOn = true;
+			switch (MenuSelection[2]) {
+				case "turn highlighting off" :
+					highlightsOn = false;
+					break;
+				case "adobe default" :
+					var theColour = ["RGB", 0.8, 0.8431, 1]; //Adobe default form field highlighting colour
+					break;
+				case "sheet default" :
+					var theColour = ["RGB", 0.9, 0.9, 1];
+					break;
+				case "headers" :
+					var theColour = LightColorList[What("Color.Theme")];
+					break;
+				case "dragons" :
+					var theColour = LightColorList[What("Color.DragonHeads")];
+					break;
+				default :
+					if (!LightColorList[MenuSelection[2]]) return;
+					var theColour = LightColorList[MenuSelection[2]];
+					break;
+			};
+			app.runtimeHighlight = highlightsOn;
+			Value("Highlighting", app.runtimeHighlight, MenuSelection[2]);
+			app.runtimeHighlightColor = theColour;
+			tDoc.getField("Highlighting").fillColor = theColour;
 			break;
-		}
-		Value("Highlighting", app.runtimeHighlight, MenuSelection[1]);
-		app.runtimeHighlightColor = theColour;
-		tDoc.getField("Highlighting").fillColor = theColour;
-	} else if (MenuSelection[0] ===  "abilitydc") {
-		ApplyDCColorScheme(MenuSelection[2], MenuSelection[1]);
-	}
+		case "all" :
+			ApplyColorScheme(MenuSelection[2]);
+			ApplyDragonColorScheme(MenuSelection[2]);
+			ApplyHPDragonColorScheme(MenuSelection[2]);
+			ApplyDCColorScheme(MenuSelection[2], 1);
+			ApplyDCColorScheme(MenuSelection[2], 2);
+			break;
+	};
 };
 
 //Add the text of the feature selected
@@ -9447,7 +9470,7 @@ function MakeWeaponMenu() {
 	
 	if (!typePF) {
 		//make the color menu
-		var ColorMenu = [];
+		var ColorMenu = {};
 		var ColorArray = ["black"]; //add a black option
 		
 		//add all the colours to the tempArray, ommitting some if not using the full (bonus) version
