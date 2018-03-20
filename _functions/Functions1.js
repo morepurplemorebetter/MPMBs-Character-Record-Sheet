@@ -8723,6 +8723,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 	if (typeof inputString != 'string' || inputString === "") {return "";};
 	var rounding = rounded ? rounded : 1;
 	var ratio = exact ? "metricExact" : "metric";
+	var fraction;
 	var INtoCM = function (unit) {
 		return unit * UnitsList[ratio].lengthInch;
 	}
@@ -8809,6 +8810,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 	if (typeof inputString != 'string' || inputString === "") {return "";};
 	var ratio = exact ? "metricExact" : "metric";
 	var rounding = rounded ? rounded : 1;
+	var fraction;
 	var INofCM = function (unit) {
 		return unit / UnitsList[ratio].lengthInch;
 	}
@@ -8882,8 +8884,8 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
 			} else if (toshorthand && resulted[1] === "ft" && resulted[0] % 1 != 0) {
-				var theFT = Math.round(resulted[0]);
-				var theINCH = Math.round((resulted[0] - theFT) / (1/12));
+				var theFT = Math.floor(resulted[0]);
+				var theINCH = Math.round(resulted[0] % 1 / (1/12));
 				var theResult = theFT + "'" + theINCH + "\"";
 			} else {
 				var theResult = RoundTo(resulted[0], rounding, false, true) + delimiter + resulted[1];
@@ -8953,8 +8955,8 @@ function SetUnitDecimals_Button() {
 		];
 		//field calculations to update
 		var FldsCalc = [];
-		var AScompA = What("Template.extras.AScomp").split(",").split(1);
-		var WSfrontA = What("Template.extras.WSfront").split(",").split(1);
+		var AScompA = What("Template.extras.AScomp").split(",").slice(1);
+		var WSfrontA = What("Template.extras.WSfront").split(",").slice(1);
 		for (var C = 0; C < AScompA.length; C++) {
 			var prefix = AScompA[C];
 			FldsGameMech.push(prefix + "Comp.Use.Speed");
@@ -8963,6 +8965,9 @@ function SetUnitDecimals_Button() {
 			FldsGameMech.push(prefix + "Comp.Use.Traits");
 			FldsGameMech.push(prefix + "Cnote.Left");
 			FldsGameMech.push(prefix + "Cnote.Right");
+			for (var a = 1; a <= FieldNumbers.compgear; a++) {
+				FldsWeight.push(prefix + "Comp.eqp.Gear Weight " + a);
+			}
 		}
 		for (var i = 1; i <= 77; i++) {
 			if (i <= FieldNumbers.magicitems) FldsGameMech.push("Extra.Magic Item Description " + i);
