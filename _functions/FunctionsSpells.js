@@ -2956,13 +2956,15 @@ function AskUserSpellSheet() {
 		
 		//put some general things in variables
 		if (spCast.level && spCast.factor && (tDoc[spCast.factor[1] + "SpellTable"] || spCast.spellsTable)) {
-			var CasterLevel = Math.ceil(spCast.level / Math.max(1, spCast.spellsTable ? 1 : spCast.factor[0]));
+			var CasterLevel = Math.max(Math.ceil(spCast.level / (spCast.spellsTable ? 1 : spCast.factor[0])), 1);
+			var PrepLevel = Math.max(Math.floor(spCast.level / spCast.factor[0]), 1);
 			var theTable = spCast.spellsTable ? spCast.spellsTable : tDoc[spCast.factor[1] + "SpellTable"];
 			var tableLevel = Math.min(theTable.length - 1, CasterLevel);
 			var maxSpell = theTable[tableLevel].trailingIndexOf(0);
 			maxSpell = Number(maxSpell === -1 ? 9 : maxSpell);
 		} else {
 			var CasterLevel = false;
+			var PrepLevel = false;
 			var maxSpell = false;
 		};
 		spCast.maxSpell = maxSpell;
@@ -3265,7 +3267,7 @@ function AskUserSpellSheet() {
 				diaPrep.fullname = dia.fullname;
 				
 				//determine how many spells can be prepared
-				diaPrep.nmbrPrep = CasterLevel;
+				diaPrep.nmbrPrep = PrepLevel;
 				diaPrep.ability = spCast.ability;
 				
 				//make the array of spells that the preparations can come from
