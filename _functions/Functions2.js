@@ -7083,4 +7083,17 @@ function checkForUpdates() {
 	var thisType = typeA4 ? "CF-A4" : typeLR ? "CF-L" : (/redesign/i).test(tDoc.info.SheetType) ? "PF-R" : "PF";
 	var lVers = parseFloat(serv.version(thisType));
 	if (!lVers) return;
-}
+};
+
+// a function to see if the character has proficiency in a skill; This returns an array of two booleans: [proficiency, expertise]
+function hasSkillProf(theSkill) {
+	var skill = theSkill.substr(0,4).capitalize();
+	if (SkillsList.abbreviations.indexOf(skill) === -1) {
+		skill = skill.substr(0,3);
+		if (SkillsList.abbreviations.indexOf(skill) === -1) return [false, false];
+	};
+	var skillFld = Who('Text.SkillsNames') === 'alphabeta' ? skill : SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(skill)];
+	var hasProf = tDoc.getField(skillFld + ' Prof').isBoxChecked(0) != 0;
+	var hasExp = !hasProf ? false : tDoc.getField(skillFld + ' Exp').isBoxChecked(0) != 0;
+	return [hasProf, hasExp];
+};
