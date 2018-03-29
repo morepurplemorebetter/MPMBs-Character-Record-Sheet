@@ -5231,6 +5231,23 @@ function contactMPMB(medium) {
 	 case "subreddit" :
 		app.launchURL("http://flapkan.com/mpmb/fanforum", true);
 		break;
+	 case "bug" :
+		var sheetType = typePF ? "pf" + ((/redesign/i).test(tDoc.info.SheetType) ? "r" : "") : typeA4 ? "cf-a4" : "cf-lt";
+		var acroType = app.viewerType == "Reader" ? "reader-" : "pro-";
+		var acroVers = app.viewerVersion < 9 ? "other" : acroType + (app.viewerVersion < 10 ? "ix" : app.viewerVersion < 11 ? "x" : app.viewerVersion < 12 ? "xi" : "dc");
+		var bugURL = [
+			"https://flapkan.com/contact/bug_report", //base URL
+			"?edit[field_sheet_type]=",
+			sheetType, // sheet type (cf-a4, cf-lt, pf, pfr)
+			"&edit[field_version_number]=",
+			sheetVersion, // sheet version, as a decimal
+			"&edit[field_operating_system]=",
+			app.platform.toLowerCase(), // OS (win, mac, unix, ios, android, other)
+			"&edit[field_pdf_viewing_software]=",
+			acroVers, // acrobat version (reader-, pro-) + (ix, x, xi, dc)
+		];
+		app.launchURL(bugURL.join(""), true);
+		break;
 	};
 };
 
