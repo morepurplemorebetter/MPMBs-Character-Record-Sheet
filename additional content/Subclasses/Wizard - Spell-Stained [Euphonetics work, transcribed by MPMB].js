@@ -8,7 +8,7 @@
 
 /*  -INFORMATION-
 	Subject:	Subclass
-	Effect:		This script adds a subclass for the Warlock, called "Inner Darkness"
+	Effect:		This script adds a subclass for the Wizard, called "Spell-Stained"
 				This subclass is made by Euphonetics
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-01-05 (sheet v12.999)
