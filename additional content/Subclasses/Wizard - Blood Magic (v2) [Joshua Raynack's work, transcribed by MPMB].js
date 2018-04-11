@@ -15,7 +15,7 @@
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-04-07 (sheet v12.999)
 	
-	Please support the creator of this content (Joshua Raynack) and download their material from DM Guild: http://www.dmsguild.com/browse.php?author=Joshua%20Raynack
+	Please support the creator of this content (Joshua Raynack) and download his material from DM Guild: http://www.dmsguild.com/browse.php?author=Joshua%20Raynack
 */
 
 var iFileName = "Wizard - Blood Magic (v2) [Joshua Raynack's work, transcribed by MPMB].js";
