@@ -434,6 +434,48 @@ var Base_CreatureList = {
 			}
 		]
 	},
+	"owlbear" : {
+		name : "Owlbear",
+		source : [["SRD", 339], ["M", 249]],
+		size : 2, //Large
+		type : "Monstrosity",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 13,
+		hp : 59,
+		hd : [7, 10], //[#, die]
+		speed : "40 ft",
+		scores : [20, 12, 17, 3, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		skills : {
+			"perception" : 3
+		},
+		senses : "Darkvision 60 ft; Adv. on Wis (Perception) checks using sight/smell",
+		passivePerception : 13,
+		languages : "",
+		challengeRating : "3",
+		proficiencyBonus : 2,
+		attacksAction : 2,
+		attacks : [{
+				name : "Beak",
+				ability : 1,
+				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "One beak and one claws attack as an Attack action"
+			}, {
+				name : "Claws",
+				ability : 1,
+				damage : [2, 8, "slashing"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "One claws and one beak attack as an Attack action"
+			}
+		],
+		traits : [{
+				name : "Keen Sight and Smell",
+				description : "The owlbear has advantage on Wisdom (Perception) checks that rely on sight or smell."
+			}
+		]
+	},
 	"pegasus" : {
 		name : "Pegasus",
 		source : [["SRD", 340], ["M", 250]],
