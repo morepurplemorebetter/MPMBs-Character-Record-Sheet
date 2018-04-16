@@ -8,7 +8,7 @@
 
 /*	-INFORMATION-
 	Subject:	Subclass
-	Effect:		This script adds a subclass for the Fighter, called "Gunslinger" v1.3
+	Effect:		This script adds a subclass for the Fighter, called "Gunslinger" v1.2
 				This script also adds the weapons and ammo associated with that subclass
 				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170778/)
 				This subclass is made by Matthew Mercer
@@ -20,6 +20,13 @@
 
 var iFileName = "Fighter - Gunslinger [Matthew Mercer's work, transcribed by SoilentBrad & MPMB].js";
 RequiredSheetVersion(12.999);
+
+SourceList["MM:GMA"] = {
+	name : "Matthew Mercer: Gunslinger Martial Archetype v1.2",
+	abbreviation : "MM:GMA",
+	group : "Dungeon Masters Guild",
+	url : "http://www.dmsguild.com/product/170778/"
+};
 
 AddSubClass("fighter", "gunslinger", {
 	regExpSearch : /gunslinger/i,
@@ -105,14 +112,6 @@ AddSubClass("fighter", "gunslinger", {
 		}
 	}
 });
-
-
-SourceList["MM:GMA"] = {
-	name : "Matthew Mercer: Gunslinger Martial Archetype",
-	abbreviation : "MM:GMA",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/170778/"
-};
 
 WeaponsList["pistol-mm"] = {
 	regExpSearch : /^(?=.*pistol)(?!.*automatic).*$/i,
