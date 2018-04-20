@@ -191,13 +191,13 @@ ClassList["myclass"] = { //Object name; Note the use of only lower case! Also no
 			
 				name : "Arcane Initiate", //required; this is used to identify the object, so must be an unique name
 				
-				class : "wizard", //required; see "spellcastingList" object
+				class : "wizard", //optional but required if not including the "spells" entry; see "spellcastingList" object
 				
 				level : [0, 0], //optional; see "spellcastingList" object
 				
 				school : ["Necro"], //optional; see "spellcastingList" object
 				
-				spells : ["light"], //optional; see "spellcastingList" object
+				spells : ["light"], //optional, but required if not including the "class" entry; see "spellcastingList" object
 				
 				notspells : ["mending"], //optional; see "spellcastingList" object
 				
