@@ -6034,7 +6034,7 @@ function AddToModFld(Fld, Mod, Remove, NameEntity, Explanation) {
 // add a modifier to a skill
 // addMod : {type : "save", field : "all", mod : "Cha", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws."} // this can be an array of objects, all of which will be processed
 function processMods(AddRemove, NameEntity, items) {
-	if (!isArray(items[0])) items = [items];
+	if (!isArray(items)) items = [items];
 	for (var i = 0; i < items.length; i++) {
 		var type = items[i].type.toLowerCase();
 		var Fld = items[i].field;
