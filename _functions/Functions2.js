@@ -5199,7 +5199,7 @@ function contactMPMB(medium) {
 		app.launchURL("http://flapkan.com/mpmb/syntax", true);
 		break;
 	 case "additions" :
-		app.launchURL("http://flapkan.com/mpmb/additions", true);
+		app.launchURL("http://flapkan.com/how-to/import-scripts", true);
 		break;
 	 case "syntaxgit" :
 		app.launchURL("https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/tree/master/additional%20content%20syntax", true);
