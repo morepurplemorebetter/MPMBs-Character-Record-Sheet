@@ -12,7 +12,7 @@
 				This script also adds the weapons and ammo associated with that subclass
 				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170778/)
 				This subclass is made by Matthew Mercer
-	Code by:	SoilentBrad & MorePurpleMoreBetter (update inspired by /u/PBfarmer)
+	Code by:	SoilentBrad & MorePurpleMoreBetter (update to v1.3 inspired by /u/PBfarmer)
 	Date:		2017-11-29 (sheet v12.999)
 	
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
