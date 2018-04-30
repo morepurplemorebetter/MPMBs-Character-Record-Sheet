@@ -1920,7 +1920,7 @@ function ChangeFont(newFont, oldFont) {
 		for (var F = 0; F < tDoc.numFields; F++) {
 			var Fname = tDoc.getNthFieldName(F);
 			var Fld = tDoc.getField(Fname);
-			if (Fname.indexOf("spells.") === -1 && Fld.textFont === oldFont && (Fld.type !== "text" || Fld.richText === false)) {
+			if (!(/spells\.|Template\.extras/).test(Fname) && Fld.textFont === oldFont && (Fld.type !== "text" || Fld.richText === false)) {
 				Fld.textFont = newFont;
 			}
 			
