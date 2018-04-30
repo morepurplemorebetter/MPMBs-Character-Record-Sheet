@@ -2372,6 +2372,14 @@ function ImportUserScriptFile(filePath) {
 	var iFileStream = filePath ? util.readFileIntoStream(filePath) : util.readFileIntoStream();
 	if (!iFileStream) return false;
 	var iFileCont = util.stringFromStream(iFileStream);
+	if ((/<(!DOCTYPE )html/i).test(iFileCont)) { //import is probably a HTML file
+		app.alert({
+			cTitle : "Please select a JavaScript file",
+			cMsg : "The file you imported is a HTML document (a website). Please make sure that the file you select to import is JavaScript.\n\nYou can create a JavaScript file by copying code, pasting it into your favourite plain-text editor (such as Notepad on Windows), and subsequently saving it. You don't necessarily need the .js file extension for the file to be importable into this character sheet." + (!isWindows ? "" : "\n\nNote that you can input an URL into the 'Open file' dialog, but that URL has to point to a JavaScript file. A good example of an URL that points to a JavaScript file is the URL you are send to when you select the 'Raw' option on GitHub: https://raw.githubusercontent.com/") + "\n\nThe file you selected will not be imported.",
+			nIcon : 1
+		});
+		return false;
+	};
 	var iFileName = (/var iFileName ?= ?"([^"]+)";/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?"([^"]+)";/)[1] : (/var iFileName ?= ?'([^']+)';/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?'([^']+)';/)[1] : false;
 	var useFileName = iFileName ? util.printd("yyyy/mm/dd", new Date()) + " - " + iFileName : util.printd("yyyy/mm/dd HH:mm", new Date()) + " - " + "no iFileName";
 	var iFileNameMatch = false;
