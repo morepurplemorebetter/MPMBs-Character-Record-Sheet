@@ -3439,6 +3439,7 @@ function GenerateSpellSheet(GoOn) {
 	};
 	
 	//now use the newly acquired CurrentSpells information to make a Spell Sheet addition for every entry in the included list
+	app.calculate = false;
 	IsNotSpellSheetGenerating = false;
 	var isFirst = 0;
 	for (var i = 0; i < CurrentCasters.incl.length; i++) {
@@ -3598,6 +3599,7 @@ function GenerateSpellSheet(GoOn) {
 	
 	IsNotSpellSheetGenerating = true;
 	
+	app.calculate = true;
 	thermoM(); //stop all the progress dialogs
 	
 	var SSvisible = isTemplVis("SSfront", true);
