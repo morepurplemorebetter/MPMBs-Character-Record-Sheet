@@ -3387,8 +3387,10 @@ function GenerateSpellSheet(GoOn) {
 			nType : 2, //Yes-No
 		}
 		if (app.alert(toAsk) === 4) {
+			calcStop();
 			RemoveSpellSheets();
 			DoTemplate("SSfront", "Add");
+			calcStart();
 		}
 		return; // do not continue with this function for it is pointless
 	} else if (GoOn === "stop" ) {

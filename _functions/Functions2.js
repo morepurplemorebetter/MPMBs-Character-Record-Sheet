@@ -2378,6 +2378,7 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 	
 	thermoM("start"); //start a progress dialog
 	thermoM("Changing the layout of the " + TemplateNames[tempNm] + " pages..."); //change the progress dialog text
+	calcStop();
 	
 	//are we dealing with a template that can have multiple instances or not?
 	var multiTemp = TemplatesWithExtras.indexOf(tempNm) !== -1;
@@ -2516,6 +2517,7 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 		};
 	};
 	
+	calcStart();
 	thermoM(); //stop all the ongoing progress dialogs
 	return theNewPrefix ? theNewPrefix : ""; //if a new template was created with a prefix, return that prefix
 };
