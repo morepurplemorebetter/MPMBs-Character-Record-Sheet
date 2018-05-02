@@ -1243,9 +1243,7 @@ function DirectImport(consoleTrigger) {
 		});
 	}
 	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
+	calcStart(true);
 };
 
 //a function to import a field from the global.docFrom
@@ -1514,12 +1512,9 @@ function Import(type) {
 	};
 	
 	
-	if (app.alert(AskFirst) !== 4) {
-		return;
-	}
+	if (app.alert(AskFirst) !== 4) return;
 	
-	tDoc.delay = true;
-	tDoc.calculate = false;
+	calcStop();
 	
 	//if the sheet is currently flattened, undo that first
 	if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);

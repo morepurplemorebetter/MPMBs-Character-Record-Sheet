@@ -302,12 +302,12 @@ var CurrentProfs = { // Also change field defaultValue!
 	speed : {}
 };
 
+var calcBreak = {};
 var IsNotReset = true;
 var IsNotImport = true;
 var IsNotFeatMenu = true;
 var IsNotWeaponMenu = true;
 var IsSetDropDowns = false;
-var IsNotSpellSheetGenerating = true;
 var IsNotUserScript = true;
 var ignorePrereqs = false;
 

@@ -151,8 +151,7 @@ function ApplyCompRace(newRace) {
 	
 	thermoM("start"); //start a progress dialog
 	thermoM("Applying companion race..."); //change the progress 
-	tDoc.delay = true;
-	tDoc.calculate = false;
+	calcStop();
 	
 	var prefix = getTemplPre(event.target.name, "AScomp", true);
 	
@@ -179,20 +178,12 @@ function ApplyCompRace(newRace) {
 		thermoM(2/3); //increment the progress dialog's progress
 		tDoc.getField(prefix + "Comp.Race").submitName = "";
 		thermoM("stop"); //stop the top progress dialog
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) {
-			tDoc.calculateNow();
-		};
+		calcStart(true);
 		return; //don't do the rest of the function
 	}
 	if (FindCompRace(newRace, prefix)) { //fill the global variable. If the return is true, it means that no (new) race was found, so the function can be stopped
 		thermoM("stop"); //stop the top progress dialog
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) {
-			tDoc.calculateNow();
-		};
+		calcStart(true);
 		return; //don't do the rest of the function
 	}
 	resetCompTypes(prefix); //remove stuff from the companion type (actions, strings, etc.)
@@ -511,11 +502,7 @@ function ApplyCompRace(newRace) {
 	
 	SetHPTooltip();
 	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) {
-		tDoc.calculateNow();
-	};
+	calcStart(true);
 }
 
 //calculate whether the skill bonus equals proficiency, expertise, or something else
@@ -677,8 +664,7 @@ function ApplyWildshape() {
 	
 	thermoM("start"); //start a progress dialog
 	thermoM("Applying wild shape..."); //change the progress 
-	tDoc.delay = true;
-	tDoc.calculate = false;
+	calcStop();
 	
 	var prefix = getTemplPre(event.target.name, "WSfront", true);
 	var Fld = event.target.name.slice(-1);
@@ -698,11 +684,7 @@ function ApplyWildshape() {
 		tDoc.resetForm(resetFlds);
 		thermoM(1/2); //increment the progress dialog's progress
 		resetTooltipsFlds();
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) {
-			tDoc.calculateNow();
-		};
+		calcStart(true);
 		thermoM("stop"); //stop the top progress dialog
 		return; //don't do the rest of the function
 	}
@@ -711,11 +693,7 @@ function ApplyWildshape() {
 
 	var oldCrea = ParseCreature(event.target.value.toLowerCase());	
 	if (newCrea === oldCrea || !newCrea || !What("Character Level") || !What("Int")|| !What("Wis")|| !What("Cha")) { //If this returns true, it means that no (new) race was found; or that the character has not been defined enough yet so the function can be stopped
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) {
-			tDoc.calculateNow();
-		};
+		calcStart(true);
 		thermoM("stop"); //stop the top progress dialog
 		return; //don't do the rest of the function
 	}
@@ -775,7 +753,7 @@ function ApplyWildshape() {
 	for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
 		Value(prefix + "Wildshape." + Fld + ".Ability." + AbilityScores.abbreviations[a] + ".Score", scores[a]);
 	}
-	tDoc.calculate = true; tDoc.calculateNow(); tDoc.calculate = false; //calculate so that the modifiers are usable to query
+	calcStart(true, false, true); calcStop(); //calculate so that the modifiers are usable to query
 	
 	thermoM(2/10); //increment the progress dialog's progress
 	
@@ -1058,14 +1036,8 @@ function ApplyWildshape() {
 	if (What("Unit System") === "metric") {
 		if (What(traitsFld)) Value(traitsFld, ConvertToMetric(What(traitsFld), 0.5));
 	}
-	
+	calcStart(true);
 	thermoM("stop"); //stop the top progress dialog
-	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) {
-		tDoc.calculateNow();
-	};
 }
 
 //add a wild shape to the top most empty place
@@ -1341,8 +1313,7 @@ function WildshapeOptions() {
 	var prefix = getTemplPre(event.target.name, "WSfront", true);
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
-		tDoc.delay = true;
-		tDoc.calculate = false;
+		calcStop();
 		switch (MenuSelection[0]) {
 		 case "recalculate" :
 			WildshapeRecalc();
@@ -1377,9 +1348,7 @@ function WildshapeOptions() {
 			DoTemplate("WSfront", "Remove", prefix);
 			break;
 		}
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) tDoc.calculateNow();
+		calcStart(true);
 	}
 }
 
@@ -1617,12 +1586,11 @@ function MakeCompMenu() {
 
 //call the companion menu and do something with the results
 function CompOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
 	var MenuSelection = getMenu("companion");
 	var prefix = getTemplPre(event.target.name, "AScomp", true);
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
+		calcStop();
 		if (MenuSelection[0] === "reset") {
 			tDoc.resetForm([prefix + "Comp", prefix + "Text.Comp", prefix + "BlueText.Comp", prefix + "Cnote", prefix + "Companion"]); //reset all the fields
 			ApplyAttackColor("", "", "Comp.", prefix); //reset the colour of the attack boxes
@@ -1654,11 +1622,8 @@ function CompOptions() {
 				changeCompType(type, prefix);
 			}
 		}
-	}
-	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();	
+		calcStart(true);
+	}	
 }
 
 //change the creature on the companion page into the chosen form (familiar, mount, or pact of the chain familiar)
@@ -2013,8 +1978,7 @@ function ActionOptions() {
 	var MenuSelection = getMenu("actions");
 	if (!MenuSelection || MenuSelection === undefined) return;
 	
-	tDoc.delay = true;
-	tDoc.calculate = false;
+	calcStop();
 	thermoM("start"); //start a progress dialog
 	thermoM("Action menu option..."); //change the progress
 		
@@ -2075,13 +2039,8 @@ function ActionOptions() {
 			Value(Flds.it, "", "");
 			break;
 	}
+	calcStart(true);
 	thermoM("stop"); //stop the top progress dialog
-
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) {
-		tDoc.calculateNow;
-	};
 }
 
 //insert a Action at the position wanted
@@ -2173,9 +2132,6 @@ function MakeLimFeaMenu() {
 
 //call the Limited Feature menu and do something with the results
 function LimFeaOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
-
 	var MenuSelection = getMenu("limfea");
 	var itemNmbr = parseFloat(event.target.name.slice(-2));
 	var maxNmbr = FieldNumbers.limfea;
@@ -2211,7 +2167,8 @@ function LimFeaOptions() {
 	
 	if (MenuSelection !== undefined) {
 		thermoM("start"); //start a progress dialog
-		thermoM("Limited feature menu option..."); //change the progress 
+		thermoM("Limited feature menu option..."); //change the progress
+		calcStop();		
 		switch (MenuSelection[0]) {
 		 case "move up":
 			thermoM("Moving the limited feature line up..."); //change the progress dialog text
@@ -2255,15 +2212,10 @@ function LimFeaOptions() {
 			}
 			break;
 		}
+		calcStart(true);
 		thermoM("stop"); //stop the top progress dialog
-	}
-
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) {
-		tDoc.calculateNow;
 	};
-}
+};
 
 //insert a Limited Feature at the position wanted
 function LimFeaInsert(itemNmbr) {
@@ -2392,12 +2344,7 @@ function Bookmark_Goto(BookNm) {
 				var newPrefix = DoTemplate(theTemplate[0], "Add");
 				tDoc.getField(newPrefix + BookMarkList[BookNm]).setFocus();
 			} else {
-				tDoc.delay = true;
-				tDoc.calculate = false;
 				GenerateSpellSheet();
-				tDoc.calculate = IsNotReset;
-				tDoc.delay = !IsNotReset;
-				if (IsNotReset) tDoc.calculateNow();
 			};
 		};
 	};
@@ -2793,8 +2740,7 @@ function PagesOptions() {
 	var MenuSelection = getMenu("pages");
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
-		tDoc.delay = true;
-		tDoc.calculate = false;
+		calcStop();
 
 		//Undo the MakeMobileReady if it was active
 		if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
@@ -2843,11 +2789,7 @@ function PagesOptions() {
 				ColoryOptions(MenuSelection);
 				break;
 		};
-	};
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) {
-		tDoc.calculateNow;
+		calcStart(true);
 	};
 };
 
@@ -2960,8 +2902,7 @@ function MakeNotesMenu_NotesOptions() {
 	var MenuSelection = getMenu("notes");
 	
 	if (MenuSelection !== undefined) {
-		tDoc.delay = true;
-		tDoc.calculate = false;
+		calcStop();
 		var toDo = false;
 		switch (MenuSelection[0]) {
 		 case WhiteL.toLowerCase() :
@@ -2992,8 +2933,7 @@ function MakeNotesMenu_NotesOptions() {
 				Show(toDo);
 			}
 		} 
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
+		calcStart();
 	}
 }
 
@@ -3081,8 +3021,6 @@ function UpdateLogsheetNumbering(prefix, prePrefix) {
 //Make menu for the button on the adventurers log page and parse it to Menus.advlog
 //after that, do something with the menu and its results
 function MakeAdvLogMenu_AdvLogOptions(Button) {
-	tDoc.delay = true;
-	tDoc.calculate = false;
 	var prefix = Button ? "P0.AdvLog." : getTemplPre(event.target.name, "ALlog", true);
 	var isFirstPrefix = prefix === What("Template.extras.ALlog").split(",")[1];
 	var cLogoDisplay = minVer && typePF ? tDoc.getField("Image.DnDLogo.AL").display : false;
@@ -3166,6 +3104,7 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 	var MenuSelection = getMenu("advlog");
 	
 	if (MenuSelection !== undefined) {
+		calcStop();
 		switch (MenuSelection[0]) {
 		 case "add page" :
 			DoTemplate("ALlog", "Add");
@@ -3209,11 +3148,8 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 			DnDlogo(MenuSelection[2]);
 			break;
 		}
+		calcStart(true);
 	}
-
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
 };
 
 //get the parent of the bookmark so we can know which template it is on
@@ -3230,9 +3166,6 @@ function getBookmarkTemplate(bookmark) {
 //make menu for the button to (re)set the portrait/organization symbol
 //after that, do something with the menu and its results
 function MakeIconMenu_IconOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
-	
 	var SymbPort = event.target.name;
 	var DoAdvLog = SymbPort.indexOf("AdvLog") !== -1;
 	var DisplayName = SymbPort.indexOf("Comp.") !== -1 ? "Companion's Icon" : (SymbPort.indexOf("HeaderIcon") !== -1 ? "Header Icon" : SymbPort);
@@ -3341,6 +3274,7 @@ function MakeIconMenu_IconOptions() {
 	var MenuSelection = getMenu("icon");
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
+		calcStop();
 		switch (MenuSelection[0]) {
 		 case "set" :
 			tDoc.getField(SymbPort).buttonImportIcon();
@@ -3383,10 +3317,8 @@ function MakeIconMenu_IconOptions() {
 				}
 			}
 		}
+		calcStart();
 	}
-
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
 };
 
 //return the value of the field that this adventurers log header field refers to
@@ -3940,13 +3872,12 @@ function MakeHPMenu_HPOptions(preSelect) {
 		Menus.hp = hpMenu;
 		if (preSelect == "justMenu") return;
 	};
-	tDoc.delay = true;
-	tDoc.calculate = false;
 
 	//now call the menu
 	var MenuSelection = preSelect ? preSelect : getMenu("hp");
 	
 	if (MenuSelection !== undefined && MenuSelection[0] == "hp") {
+		calcStop();
 		switch (MenuSelection[1]) {
 		 case "auto" :
 			theInputs[3] = MenuSelection[3];
@@ -3957,10 +3888,8 @@ function MakeHPMenu_HPOptions(preSelect) {
 				Value(theFld, MenuSelection[2]);
 			}
 		}
+		calcStart();
 	}
-
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
 };
 
 // add the action "Attack (X attacks per action)" to the top of the "actions" fields, if there is room to do so
@@ -4089,8 +4018,7 @@ function MakeTextMenu_TextOptions(input) {
 	var MenuSelection = input ? input : getMenu("texts");
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
-		tDoc.delay = true;
-		tDoc.calculate = false;
+		calcStop();
 		switch (MenuSelection[1]) {
 		 case "dodialog" :
 			SetTextOptions_Button();
@@ -4107,11 +4035,7 @@ function MakeTextMenu_TextOptions(input) {
 			break;
 		};
 	
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) {
-			tDoc.calculateNow();
-		};
+		calcStart(true);
 	};
 };
 
@@ -4743,8 +4667,7 @@ function MakeSkillsMenu_SkillsOptions(input) {
 				nIcon : 3
 			});
 		} else if (MenuSelection[1] !== sWho) {
-			tDoc.delay = true;
-			tDoc.calculate = false;
+			calcStop();
 			
 			//make a list of all the currently selected skills
 			var oSkillProf = [];
@@ -4848,9 +4771,7 @@ function MakeSkillsMenu_SkillsOptions(input) {
 			//set the rich text for the skill names
 			SetRichTextFields(false, true);
 			
-			tDoc.calculate = IsNotReset;
-			tDoc.delay = !IsNotReset;
-			if (IsNotReset) tDoc.calculateNow();
+			calcStart(true);
 		}
 	}
 }
@@ -4970,9 +4891,7 @@ function addALlogEntry() {
 		emptyLog[0] = DoTemplate("ALlog", "Add");
 		emptyLog[1] = 1;
 		emptyLog[2] = ALlogA[ALlogA.length - 1];
-		tDoc.calculate = true;
-		tDoc.calculateNow();
-		tDoc.calculate = false;
+		calcStart(true); calcStop();
 	};
 	
 	var baseFld = emptyLog[0] + "AdvLog." + emptyLog[1] + ".";
@@ -5066,8 +4985,7 @@ function MakeAdvLogLineMenu_AdvLogLineOptions() {
 
 //do with logsheet entry, move up, move down, insert, delete, clear
 function doAdvLogLine(action, lineNmbr, prefix) {
-	tDoc.delay = true;
-	tDoc.calculate = false;
+	calcStop();
 	var ALlogA = What("Template.extras.ALlog").split(",").splice(1);
 	var preNm = prefix + "AdvLog.";
 	var firstPrefix = isTemplVis("ALlog", true)[1];
@@ -5166,9 +5084,7 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 		break;
 	};
 
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
+	calcStart();
 }
 
 //a way to contact morepurplemorebetter
@@ -5426,8 +5342,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	
 	thermoM("start"); //start a progress dialog
 	thermoM("Filling out the weapon's details..."); //change the progress dialog text
-	tDoc.delay = true;
-	tDoc.calculate = false;
+	calcStop();
 	
 	//set a variable to refer to the new weapon
 	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
@@ -5563,10 +5478,8 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	};
 	
 	thermoM("stop"); //stop the top progress dialog
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
 	if (QI && ((event.target && fldName === event.target.name) || Number(fldNmbr) === FieldNumbers.attacks)) SetOffHandAction();
+	calcStart(true);
 };
 
 //calculate the attack damage and to hit, can be called from any of the attack fields (sets the fields)

@@ -28,10 +28,7 @@ function ParseSpell(input) {
 // call this on validation of the hidden spell remember field, to apply something to the spell line
 // "" = reset all the fields; "HideThisLine" = hide all the fields; recognized spell = apply that spell; not recognized spell = don't do anything (assume name change); "setcaptions" or  "setcaptions##Me" = make this a caption line; if followed by "##Me" or "##Kn", change the first line to be either "Me" or "Kn" as the first column, or show or hide the box for checkmark; "___" = put all lines in the fields, making it fillable by hand
 function ApplySpell(FldValue, rememberFldName) {
-	if (IsNotSpellSheetGenerating) {
-		tDoc.delay = true;
-		tDoc.calculate = false;
-	}
+	calcStop();
 	
 	var input = FldValue !== undefined ? FldValue.split("##") : event.value.split("##");
 	var base = rememberFldName ? rememberFldName : event.target.name;
@@ -86,10 +83,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Show(theFld);
 		}
 		
-		if (IsNotSpellSheetGenerating) {
-			tDoc.calculate = IsNotReset;
-			tDoc.delay = !IsNotReset;
-		}
+		calcStart();
 		return; //and don't do the rest of this function
 	} else if (tDoc.getField(base.replace("remember", "description")).readonly) { //if the field has readonly active, but the value is not "setcaptions", the values must be reset
 		for (var i = 0; i < HeaderList.length; i++) {
@@ -118,10 +112,7 @@ function ApplySpell(FldValue, rememberFldName) {
 		
 		if ((/hidethisline/i).test(input[0])) {
 		//and don't do the rest of this function if we are here to hide this line
-			if (IsNotSpellSheetGenerating) {
-				tDoc.calculate = IsNotReset;
-				tDoc.delay = !IsNotReset;
-			}
+			calcStart();
 			return;
 		}
 	} else if (tDoc.getField(base.replace("remember", "name")).display === display.hidden) { //if fields were hidden, but the value has been removed, show them again
@@ -252,10 +243,7 @@ function ApplySpell(FldValue, rememberFldName) {
 		setCheck();
 	}
 
-	if (IsNotSpellSheetGenerating) {
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-	}
+	calcStart();
 }
 
 //on blur, put the value in the remember field, location one (on field blur)
@@ -3412,6 +3400,8 @@ function GenerateSpellSheet(GoOn) {
 	
 	thermoM(1/(CurrentCasters.incl.length + 3)); //increment the progress dialog's progress
 	
+	calcStop("genspellsheet");
+	
 	//then we remove all the existing sheets (if any)
 	RemoveSpellSheets();
 	
@@ -3439,7 +3429,6 @@ function GenerateSpellSheet(GoOn) {
 	};
 	
 	//now use the newly acquired CurrentSpells information to make a Spell Sheet addition for every entry in the included list
-	IsNotSpellSheetGenerating = false;
 	var isFirst = 0;
 	for (var i = 0; i < CurrentCasters.incl.length; i++) {
 		var spCast = CurrentSpells[CurrentCasters.incl[i]];
@@ -3596,7 +3585,7 @@ function GenerateSpellSheet(GoOn) {
 		Value(prefixCurrent + "spells.remember." + lineCurrent, "setglossary");
 	}
 	
-	IsNotSpellSheetGenerating = true;
+	calcStart(true, "genspellsheet");
 	
 	thermoM(); //stop all the progress dialogs
 	
@@ -3807,8 +3796,7 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 		//see if the Spell Sheets are visible
 		var SSvisible = What("Template.extras.SSfront") !== "" || What("Template.extras.SSmore") !== "";
 		var SSmultiple = What("Template.extras.SSmore").split(",").length > 2 || (What("Template.extras.SSfront") !== "" && What("Template.extras.SSmore") !== "");
-		tDoc.delay = true;
-		tDoc.calculate = false;
+		calcStop();
 		switch (MenuSelection[1]) {
 		 case "generate" :
 			GenerateSpellSheet();
@@ -3888,9 +3876,7 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 			ToggleSpellPoints();
 			break;
 		};
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) tDoc.calculateNow();
+		calcStart(true);
 	};
 };
 
@@ -4350,8 +4336,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	
 	//and do something with this menus results
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
-		tDoc.delay = true;
-		tDoc.calculate = false;
+		calcStop();
 		switch (MenuSelection[0]) {
 		 case "move up" :
 			var upValue = What(RemLineUp);
@@ -4418,9 +4403,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			Value(RemLine, RemLineValue.join("##"));
 			break;
 		}
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) tDoc.calculateNow();
+		calcStart(true);
 	};
 };
 
@@ -4905,9 +4888,6 @@ function HideSpellSheetElement(theTarget) {
 
 //a one-item menu to hide the glossay
 function MakeGlossMenu_GlossOptions() {
-	tDoc.delay = true;
-	tDoc.calculate = false;
-	
 	var glossMenu = [{
 		cName : "Remove this glossary",
 		cReturn : "removeglossary"
@@ -4920,12 +4900,10 @@ function MakeGlossMenu_GlossOptions() {
 	
 	//and do something with this menus results
 	if (MenuSelection !== undefined && MenuSelection[0] === "removeglossary") {
+		calcStop();
 		HideSpellSheetElement(event.target.name);
+		calcStart();
 	}
-	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
 }
 
 //check if there are any changes from the last level to the new concerning spells
@@ -4988,9 +4966,7 @@ function CheckForSpellUpdate() {
 function AskForSpellUpdate() {
 	if (eval(What("SpellSheetUpdate.Remember")) || !IsNotReset || !IsNotImport) return;
 	//update the sheet so that users don't think that their previous class/race changes have not been committed
-	tDoc.calculate = true;
-	tDoc.delay = false;
-	tDoc.calculateNow();
+	calcStart(true);
 	var askPopUp = {
 		cMsg : "A change has been detected in the spellcasting abilities of your character that require the Spell Sheet(s) to be updated.\n\nWould you like to generate a (new) Spell Sheet?",
 		cTitle : "Would you like to generate a new Spell Sheet?",
@@ -5004,11 +4980,7 @@ function AskForSpellUpdate() {
 	};
 	var rAskPopUp = app.alert(askPopUp);
 	Value("SpellSheetUpdate.Remember", askPopUp.oCheckbox.bAfterValue);
-	if (rAskPopUp === 4) {
-		tDoc.calculate = false;
-		tDoc.delay = true;
-		GenerateSpellSheet();
-	};
+	if (rAskPopUp === 4) GenerateSpellSheet();
 };
 
 // make all lines on the newly generated empty sheet
@@ -5046,6 +5018,8 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	
 	thermoM(1/7); //increment the progress dialog's progress
 	
+	calcStop("genspellsheet");
+	
 	//then we remove all the existing sheets (if any)
 	RemoveSpellSheets();
 	
@@ -5071,7 +5045,6 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	}
 	
 	//now we add all the spells of this single class into a new set of spell sheets
-	IsNotSpellSheetGenerating = false;
 	
 	//see if this is a prepared or known spell list
 	var isPrep = false;
@@ -5139,7 +5112,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 		Value(prefixCurrent + "spells.remember." + lineCurrent, "setglossary");
 	}
 	
-	IsNotSpellSheetGenerating = true;
+	calcStart(true, "genspellsheet");
 	
 	thermoM(); //stop all the progress dialogs
 	
@@ -5148,10 +5121,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 }
 
 //a way to hide the 'prepared' section on the first page of the spell sheet //if a "target" is given, assume it has to be hidden
-function MakePreparedMenu_PreparedOptions(target) {
-	tDoc.delay = true;
-	tDoc.calculate = false;
-	
+function MakePreparedMenu_PreparedOptions(target) {	
 	Menus.spellsPrepared = [{
 		cName : "Hide this prepared spells section",
 		cReturn : "removepreps"
@@ -5164,15 +5134,14 @@ function MakePreparedMenu_PreparedOptions(target) {
 	
 	//and do something with this menus results
 	if (MenuSelection !== undefined && MenuSelection[0] === "removepreps") {
+		calcStop();
 		Hide(theTarget);
 		Hide(theTarget.replace(".Text.", ".").replace(".Image.", "."));
 		if (!typePF) {
 			Hide(theTarget.replace("Text", "Box"));
 		}
+		calcStart();
 	}
-	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
 }
 
 //revamp the whole sheet to become a "Complete Spell Sheet"
@@ -5503,6 +5472,8 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 	
 	thermoM(1/7); //increment the progress dialog's progress
 	
+	calcStop("genspellsheet");
+	
 	//then we remove all the existing sheets (if any)
 	RemoveSpellSheets(true);
 	
@@ -5528,7 +5499,6 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 	}
 	
 	//now we add all the spells of this single class into a new set of spell sheets
-	IsNotSpellSheetGenerating = false;
 	
 	//get an array of all the spells of the class, divided up in 1 array per spell level
 	var fullSpellList = CreateSpellList("any", false, false, true);
@@ -5591,7 +5561,7 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 		Value(prefixCurrent + "spells.remember." + lineCurrent, "setglossary");
 	};
 	
-	IsNotSpellSheetGenerating = true;
+	calcStart(true, "genspellsheet");
 	
 	thermoM(); //stop all the progress dialogs
 	

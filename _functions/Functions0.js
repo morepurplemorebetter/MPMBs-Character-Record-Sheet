@@ -433,9 +433,7 @@ function thermoM(input) {
 		for (var i = 1; i <= thermoCount.length; i++) { t.end(); };
 		thermoCount = [];
 		thermoDur = {};
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) { tDoc.calculateNow(); };
+		calcStart(true);
 	}
 	if (input === undefined || input === false) {
 		return;
@@ -1049,4 +1047,24 @@ function semVersToNmbr(inSemV) {
 	if (strV.length) nmbrStr.push(strV.join(""));
 	var nmbr = parseFloat(nmbrStr.join("."));
 	return isNaN(nmbr) ? 0 : nmbr;
+};
+
+// function to stop the calculations of the PDF
+// give a namedStop to make sure that it only can be started again with the same namedStop (and if no other namedStops are present)
+function calcStop(namedStop) {
+	app.calculate = false;
+	tDoc.calculate = false;
+	tDoc.delay = true;
+	if (namedStop) calcBreak[namedStop.toLowerCase()] = true;
+};
+
+// function to start the calculations of the PDF again
+function calcStart(calcNow, namedStop, force) {
+	if (namedStop) delete calcBreak[namedStop.toLowerCase()];
+	if (!force && calcBreak.toSource() != "({})") return; // only continue if there is nothing else impeding calculations
+	var wasntCalc = !app.calculate && !tDoc.calculate;
+	app.calculate = true;
+	tDoc.calculate = true;
+	tDoc.delay = false;
+	if (calcNow && wasntCalc) tDoc.calculateNow();
 };
