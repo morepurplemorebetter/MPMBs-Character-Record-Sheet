@@ -8353,9 +8353,9 @@ function MakeColorMenu() {
 			var lookIt = Who("Highlighting");
 			for (i = 0; i < array.length; i++) {
 				item.push({
-					cName : array[i].capitalize(),
-					cReturn : "color#" + name + "#" + array[i],
-					bMarked : lookIt === array[i]
+					cName : array[i][0],
+					cReturn : "color#" + name + "#" + array[i][1],
+					bMarked : lookIt === array[i][1]
 				});
 			}
 		};
