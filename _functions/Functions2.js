@@ -1,4 +1,5 @@
 //find the creature on the companion page
+// UPDATE NEEDED!!!
 function ParseCreature(Inputs) {
 	var result = "";
 	
@@ -579,6 +580,7 @@ function CalcSkillComp() {
 };
 
 //see if the weapon matches one of the companion as a creature
+// UPDATE NEEDED!!!
 function parseCompWeapon(input, prefix) {
 	if (!input || !CurrentCompRace[prefix] || !CurrentCompRace[prefix].attacks) {
 		return "";

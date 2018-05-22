@@ -1068,3 +1068,17 @@ function calcStart(calcNow, namedStop, force) {
 	tDoc.delay = false;
 	if (calcNow && wasntCalc) tDoc.calculateNow();
 };
+
+// function to find the value (date) of a source
+function sourceDate(srcArr) {
+	if (!srcArr) return 0;
+	srcArr = !isArray(srcArr) ? [srcArr] : [].concat.apply([], srcArr);
+	var dateArr = [0];
+	for (var i = 0; i < srcArr.length; i++) {
+		var src = srcArr[i];
+		if (!SourceList[src] || CurrentSources.globalExcl.indexOf(src) !== -1) continue;
+		var srcDate = SourceList[src].date ? Number(SourceList[src].date.replace(/\D/g, "")) : src === "HB" ? 90001231 : 'stop';
+		if (!isNaN(srcDate)) dateArr.push(srcDate);
+	};
+	return Math.max.apply(Math, dateArr);
+};

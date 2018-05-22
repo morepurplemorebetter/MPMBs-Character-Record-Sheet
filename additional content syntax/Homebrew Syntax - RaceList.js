@@ -51,11 +51,11 @@ RaceList["something catlike"] = { //Object name; Note the use of only lower case
 	},
 	
 /* SYNTAX CHANGE v12.998 >> old syntax for 'tools' and 'languages' are no longer supported!! */
-	toolProfs : [["Musical instrument", 3], ["Thieves' tools", "Dex"]], // optional; this is an array with the tool proficiencies gained. Each entry can be its own array of 2 entries. The first entry is the name of the tool and the second entry is either 1) a number if the tool is yet to be chosen, or 2) the 3-letter ability score abbreviation if the tool is to be listed in the skill section and have a bonus calculated
+	toolProfs : [["Musical instrument", 3], ["Thieves' tools", "Dex"], "Tinker's tools"], // optional; this is an array with the tool proficiencies gained. Each entry can be its own array of 2 entries (but doesn't have to be). The first entry is the name of the tool and the second entry is either 1) a number if the tool is yet to be chosen, or 2) the 3-letter ability score abbreviation if the tool is to be listed in the skill section and have a bonus calculated
 	
 	languageProfs : [1, "Elvish"], // optional; this is an array of the language proficiencies gained. An entry can either be 1) a string that represents the language learned or 2) a number which is the number of language gained that can be chosen by the player
 	
-	weapons : ["talons"], //optional; an array of weapons that are added to the attacks section; These weapons need to be identically defined in the WeaponsList
+	weapons : ["talons"], //optional; an array of weapons that are added to the attacks section; This will be the name of the weapon how it appears in the attack section, not necessarily the object name in the WeaponsList
 	
 	addarmor : "Natural Armor", //optional; a string of the name of the armour that is literally put in the Armor Description field when the class feature is applicable, and removed if not
 	
@@ -138,11 +138,11 @@ RaceList["something catlike"] = { //Object name; Note the use of only lower case
 			
 			usages : 1, //optional; number of times it can be used. This can be one value, but can also be an array of 20 values, one for each level
 			
-			recovery : "long rest", //required if "usages" is defined; way of getting the limited feature recharged. If you define either "long rest" or "short rest" (note the lower case), than the feature is also added to the limited features
+			recovery : "long rest", //required if "usages" is defined; way of getting the limited feature recharged. If you can use anything, but use either "long rest" or "short rest" (note the lower case) for best compatibility with the limited features section. This can be one value, but can also be an array of 20 values, one for each level
 			
-			tooltip : " (Celestial Legacy)", //optional; the tooltip added to the entry in the Limited Feature section, this example will read "Lesser Restoration is gainged from Something Catlike (Celestial Legacy)"
+			tooltip : " (Celestial Legacy)", //optional; the tooltip added to the entry in the Limited Feature section, this example will read "Lesser Restoration is gained from Something Catlike (Celestial Legacy)"
 			
-			action : ["action", ""],
+			action : ["action", ""], //optional; adds the name of the feature to the action list when chosen. The options are "action", "bonus action", and "reaction" //the second value in the array is added as a suffix for the "name" of the feature when entered into the action field
 			
 			spellcastingBonus : { //optional; works just like the "spellcastingBonus" object defined above
 				name : "Celestial Legacy (level 3)",

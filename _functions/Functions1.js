@@ -1267,24 +1267,30 @@ function ToggleAdventureLeague(Setting) {
 
 //search the string for possible armour
 function ParseArmor(input, onlyInv) {
-	if (!input) return "";
+	var found = "";
+	if (!input) return found;
+
 	input = removeDiacritics(input);
-	var outputL = 0;
-	var output = "";
-	
-	//scan string for all weapons, including the alternative spellings using regular expression
+	var foundLen = 0;
+	var foundDat = 0;
+
 	for (var key in ArmourList) {
-		if (ArmourList[key].regExpSearch) {
-			if ((onlyInv && ArmourList[key].weight == undefined) || testSource(key, ArmourList[key], "armorExcl")) continue; // test if the armour or its source isn't excluded
-			var wSearch = ArmourList[key].regExpSearch; //use the defined regular expression of the weapon
-			if ((wSearch).test(input) && outputL < key.length) {
-				outputL = key.length;
-				output = key;
-			}
-		}
+		var kObj = ArmourList[key];
+		if ((onlyInv && kObj.weight == undefined) // see if only doing equipable items
+			|| !kObj.regExpSearch || !(kObj.regExpSearch).test(input) // see if the regex matches
+			|| testSource(key, kObj, "armorExcl") // test if the armour or its source isn't excluded
+		) continue;
+		
+		// stop if the source of the previous match is more recent and this new match is not a better match
+		var tempDate = sourceDate(kObj.source);
+		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+		
+		// we have a match, set the values
+		found = key;
+		foundLen = kObj.name.length
+		foundDat = tempDate;
 	}
-	
-	return output;
+	return found;
 };
 
 //Find if the armor is a known armor
@@ -1630,6 +1636,7 @@ function ConditionSet() {
 };
 
 //search the string for possible class and subclass
+// UPDATE NEEDED!!!
 function ParseClass(tempString) {
 	var found = false, tempFound = false, tempFoundL = 0;
 	tempString = removeDiacritics(tempString);
@@ -2370,33 +2377,50 @@ function CalcExperienceLevel(AlsoClass) {
 	calcStart();
 };
 
-function ParseRace(Inputs) {
+function ParseRace(input) {
 	var resultArray = ["", ""];
-	
-	if (Inputs) {
-		Inputs = removeDiacritics(Inputs);
-		var tempFound = 0;
+	if (!input) return resultArray;
 
-		for (var key in RaceList) { //scan string for all races
-			var rSearch = RaceList[key].regExpSearch; //use the defined regular expression of the race
-			if (tempFound < RaceList[key].name.length && (rSearch).test(Inputs)) {
-				if (testSource(key, RaceList[key], "racesExcl")) continue; // test if the race or its source isn't excluded
-				resultArray = [key, ""];
-				tempFound = RaceList[key].name.length;
-				var tempFound2 = 0;
-				if (RaceList[key].variants) {
-					var RaceOpt = RaceList[key].variants;
-					for (var sub = 0; sub < RaceOpt.length; sub++) { //scan string for all variants of the race
-						var theR = key + "-" + RaceOpt[sub];
-						var rVars = RaceSubList[theR];
-						if (testSource(theR, rVars, "racesExcl")) continue; // test if the racial variant or its source isn't excluded
-						var rvSearch = rVars.regExpSearch; //use the defined regular expression of the racial variant
-						if (tempFound2 < theR.length && (rvSearch).test(Inputs)) {
-							resultArray[1] = RaceOpt[sub];
-							tempFound2 = theR.length;
-						}
-					}
-				}
+	input = removeDiacritics(input);
+	var foundLen = 0;
+	var foundDat = 0;
+
+	for (var key in RaceList) {
+		var kObj = RaceList[key];
+
+		if (!(kObj.regExpSearch).test(input) // see if race regex matches
+			|| testSource(key, kObj, "racesExcl") // test if the race or its source isn't excluded
+		) continue;
+
+		// stop if the source of the previous match is more recent and this new match is not a better match
+		var tempDate = sourceDate(kObj.source);
+		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+
+		// we have a match, set the values
+		resultArray = [key, ""];
+		foundLen = kObj.name.length;
+		foundDat = tempDate;
+
+		// now see if we need to look for racial variants
+		if (kObj.variants) {
+			var foundLen2 = 0;
+			var foundDat2 = 0;
+			for (var sub = 0; sub < kObj.variants.length; sub++) { // scan string for all variants of the race
+				var theR = key + "-" + kObj.variants[sub];
+				var rVars = RaceSubList[theR];
+
+				if (!(rVars.regExpSearch).test(input) // see if racial variant regex matches
+					|| testSource(theR, rVars, "racesExcl") // test if the racial variant or its source isn't excluded
+				) continue;
+
+				// stop if the source of the previous match is more recent and this new match is not a better match
+				var tempDate = sourceDate(rVars.source);
+				if (foundDat > tempDate && foundLen2 > rVars.name.length) continue;
+
+				// we have a match, set the values
+				resultArray[1] = kObj.variants[sub];
+				foundLen2 = rVars.name.length;
+				foundDat2 = tempDate;
 			}
 		}
 	}
@@ -2760,26 +2784,32 @@ function UpdateTooltips() {
 	SetHPTooltip(); //HP Max tooltip
 };
 
-//see if a known weapon is in a string, and return the weapon
+//search the string for possible weapon
 function ParseWeapon(input, onlyInv) {
-	if (!input) return "";
-	var outputL = 0;
-	var output = "";
-	var inputS = removeDiacritics(input.replace(/off.{0,3}hand/i, ""));
-	
-	//scan string for all weapons, including the alternative spellings using regular expression
+	var found = "";
+	if (!input) return found;
+
+	input = removeDiacritics(input.replace(/off.{0,3}hand/i, ""));
+	var foundLen = 0;
+	var foundDat = 0;
+
 	for (var key in WeaponsList) {
-		if (WeaponsList[key].regExpSearch) {
-			if ((onlyInv && WeaponsList[key].weight == undefined) || testSource(key, WeaponsList[key], "weapExcl")) continue; // test if the weapon or its source isn't excluded
-			var wSearch = WeaponsList[key].regExpSearch; //use the defined regular expression of the weapon
-			if ((wSearch).test(inputS) && outputL < WeaponsList[key].name.length) {
-				outputL = WeaponsList[key].name.length;
-				output = key;
-			}
-		}
-	};
-	
-	return output;
+		var kObj = WeaponsList[key];
+		if ((onlyInv && kObj.weight == undefined) // see if only doing equipable items
+			|| !kObj.regExpSearch || !(kObj.regExpSearch).test(input) // see if the regex matches
+			|| testSource(key, kObj, "weapExcl") // test if the armour or its source isn't excluded
+		) continue;
+		
+		// stop if the source of the previous match is more recent and this new match is not a better match
+		var tempDate = sourceDate(kObj.source);
+		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+		
+		// we have a match, set the values
+		found = key;
+		foundLen = kObj.name.length
+		foundDat = tempDate;
+	}
+	return found;
 };
 
 //detects weapons entered and put information to global CurrentWeapons variable
@@ -3807,33 +3837,54 @@ function InvDelete(type, slot) {
 /* ---- INVENTORY FUNCTIONS END ---- */
 
 //see if text contains a background
-function ParseBackground(Input) {
+function ParseBackground(input) {
 	var resultArray = ["", ""];
+	if (!input) return resultArray;
 
-	if (Input) {
-		var tempFound = 0;
-		Input = removeDiacritics(Input);
-		for (var key in BackgroundList) { //scan string for all backgrounds
-			var varArr = BackgroundList[key].variant ? BackgroundList[key].variant : [];
-			for (var sub = 0; sub < varArr.length; sub++) { //scan string for all variants of the background
-				var bVars = BackgroundSubList[varArr[sub]];
-				if (testSource(varArr[sub], bVars, "backgrExcl")) continue; // test if the background variant or its source isn't excluded
-				var bvSearch = bVars.regExpSearch; //use the defined regular expression of the background variant
-				if (tempFound < bVars.name.length && (bvSearch).test(Input)) {
-					resultArray[0] = key;
-					resultArray[1] = varArr[sub];
-					tempFound = bVars.name.length;
-				};
-			};
-			if (testSource(key, BackgroundList[key], "backgrExcl")) continue; // test if the background or its source isn't excluded
-			var bSearch = BackgroundList[key].regExpSearch; //use the defined regular expression of the background
-			if (tempFound < BackgroundList[key].name.length && (bSearch).test(Input)) {
-				resultArray[0] = key;
-				tempFound = BackgroundList[key].name.length;
-			};
-		};
-	};
-	
+	input = removeDiacritics(input);
+	var foundLen = 0;
+	var foundDat = 0;
+
+	for (var key in BackgroundList) {
+		var kObj = BackgroundList[key];
+
+		// first we look for background variants
+		if (kObj.variant) {
+			var matchedThisSub = false;
+			var BackOpt = kObj.variant;
+			for (var sub = 0; sub < BackOpt.length; sub++) { // scan string for all variants of the background
+				var bVars = BackgroundSubList[BackOpt[sub]];
+
+				if (!(bVars.regExpSearch).test(input) // see if background variant regex matches
+					|| testSource(BackOpt[sub], bVars, "backgrExcl") // test if the background variant or its source isn't excluded
+				) continue;
+
+				// stop if the source of the previous match is more recent and this new match is not a better match
+				var tempDate = sourceDate(rVars.source);
+				if (foundDat > tempDate && foundLen > bVars.name.length) continue;
+
+				// we have a match, set the values
+				resultArray = [key, BackOpt[sub]];
+				foundLen = bVars.name.length;
+				foundDat = tempDate;
+				matchedThisSub = true;
+			}
+		}
+
+		// continue with the background object, maybe it is a (better) match
+		if (!(kObj.regExpSearch).test(input) // see if regex matches
+			|| testSource(key, kObj, "backgrExcl") // test if the background or its source isn't excluded
+		) continue;
+
+		// stop if the source of the previous match is more recent and this new match is not a better match
+		var tempDate = sourceDate(kObj.source);
+		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+
+		// we have a match, set the values
+		resultArray = [key, matchedThisSub ? resultArray[1] : ""];
+		foundLen = kObj.name.length;
+		foundDat = tempDate;
+	}
 	return resultArray;
 };
 
@@ -4839,19 +4890,32 @@ function LoadLevelsonStartup() {
 }
 
 //lookup the name of a Feat and if it exists in the FeatsList
-function ParseFeat(Inputtxt) {
-	if (!Inputtxt) return "";
-	Inputtxt = removeDiacritics(Inputtxt);
-	var tempFound = 0;
-	var temp = "";
+function ParseFeat(input) {
+	var found = "";
+	if (!input) return found;
+
+	input = removeDiacritics(input).toLowerCase();
+	var foundLen = 0;
+	var foundDat = 0;
+	
+	//scan string for all feats
 	for (var key in FeatsList) {
-		if (testSource(key, FeatsList[key], "featsExcl")) continue; // test if the feat or its source isn't excluded
-		if (tempFound < key.length && Inputtxt.toLowerCase().indexOf(FeatsList[key].name.toLowerCase()) !== -1) {
-			temp = key;
-			tempFound = key.length;
-		}
+		var kObj = FeatsList[key];
+
+		if (input.indexOf(kObj.name.toLowerCase()) === -1 // see if the text matches
+			|| testSource(key, kObj, "featsExcl") // test if the feat or its source isn't excluded
+		) continue;
+		
+		// stop if the source of the previous match is more recent and this new match is not a better match
+		var tempDate = sourceDate(kObj.source);
+		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+		
+		// we have a match, set the values
+		found = key;
+		foundLen = kObj.name.length
+		foundDat = tempDate;
 	}
-	return temp;
+	return found;
 };
 
 //check all Feat fields and parse the once known into the global variable, as well as any proficiencies and tooltiptexts that need to go into global variables
@@ -7600,7 +7664,58 @@ function SetEncumbrance(variant) {
 };
 
 //see if a known ammunition is in a string, and return the ammo name
+// UPDATE NEEDED!!!
 function ParseAmmo(input, onlyInv) {
+	var found = "";
+	if (!input) return found;
+
+	input = removeDiacritics(input).toLowerCase();
+	var foundLen = 0;
+	var foundDat = 0;
+	var keyLen = 0;
+	//scan string for all ammunition, including the alternative spellings
+	for (var key in AmmoList) {
+		if ((onlyInv && AmmoList[key].weight == undefined) // see if only doing equipable items
+			|| testSource(key, AmmoList[key], "ammoExcl") // test if the armour or its source isn't excluded
+		) continue;
+		
+		var tempDate = sourceDate(ArmourList[key].source);
+		if (foundDat > tempDate) continue; // see if the source of the previous match is more recent
+
+		// see if any of the alternatives match
+		if (AmmoList[key].alternatives) {
+			for (var z = 0; z < AmmoList[key].alternatives.length; z++) {
+				var theAlt = AmmoList[key].alternatives[z];
+				var doTest = typeof theAlt != "string";
+				var altLen = theAlt.toString().length;
+				
+				if (foundLen > altLen // see if previous match is a better match
+					|| (doTest ? !theAlt.test(tempString) : tempString.indexOf(theAlt) === -1) // see if string matches
+				) continue;
+				
+				// we have a match, set the values
+				found = key;
+				foundLen = altLen;
+				keyLen = doTest ? key.length : foundLen;
+				foundDat = tempDate;
+			}
+		};
+		
+		// now see if the parent is a (better) match
+		if (foundLen > keyLen // see if previous match is a better match
+			|| tempString.indexOf(key) === -1 // see if string matches
+		) continue;
+				
+		// we have a match, set the values
+		found = key;
+		foundLen = key.length;
+		keyLen = foundLen;
+		foundDat = tempDate;
+	}
+	return onlyInv && found ? [found, keyLen] : found;
+}
+
+/* function ParseAmmo(input, onlyInv) {
 	if (!input) return "";
 	var tempString = removeDiacritics(input.toLowerCase());
 	var output = "";
@@ -7633,7 +7748,7 @@ function ParseAmmo(input, onlyInv) {
 	} else {
 		return output;
 	}
-}
+} */
 
 //Reset the visibility of all the ammo fields of a particular side (input = "Left" or "Right")
 function ResetAmmo(AmmoLeftRight) {

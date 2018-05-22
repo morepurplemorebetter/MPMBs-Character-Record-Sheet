@@ -1,4 +1,5 @@
 // find the spell in the SpellsList
+// UPDATE NEEDED!!!
 function ParseSpell(input) {
 	var result = "";
 	if (input) {

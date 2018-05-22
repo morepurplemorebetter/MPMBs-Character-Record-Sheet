@@ -197,8 +197,7 @@ var Base_RaceList = {
 				name : "Relentless Endurance",
 				minlevel : 1,
 				usages : 1,
-				recovery : "long rest",
-				tooltip : ""
+				recovery : "long rest"
 			},
 			"savage attacks" : {
 				name : "Savage Attacks",
@@ -231,9 +230,9 @@ var Base_RaceList = {
 		
 	},
 	"tiefling" : {
-		regExpSearch : /^((?=.*tiefling)|(?=.*planetouched)(?=.*(hell|abyss|fiend|devil))).*$/i,
+		regExpSearch : /^((?=.*tiefling)|(?=.*planetouched)(?=.*(hell|abyss|fiend|devil|asmodeus))).*$/i,
 		name : "Tiefling",
-		source : [["SRD", 7], ["P", 43]],
+		source : [["SRD", 7], ["P", 43], ["MToF", 21]],
 		plural : "Tieflings",
 		size : 3,
 		speed : {

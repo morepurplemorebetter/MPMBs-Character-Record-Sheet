@@ -899,7 +899,7 @@ var Base_WeaponsList = {
 	},
 	"spell attack" : {
 		regExpSearch : /^(?=.*spell)(?=.*attack).*$/i,
-		name : "Spell Attack",
+		name : "Spell attack",
 		source : [["SRD", 103], ["P", 205]],
 		ability : 0,
 		type : "Spell",
@@ -911,7 +911,7 @@ var Base_WeaponsList = {
 	// Dragonborn breath weapons
 	"breath weapon" : {
 		regExpSearch : /^(?=.*breath)(?=.*weapon).*$/i,
-		name : "Breath Weapon",
+		name : "Breath weapon",
 		source : [["SRD", 5], ["P", 34]],
 		ability : 3,
 		type : "Natural",
