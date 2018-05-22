@@ -6072,12 +6072,7 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 				if (Fea.Use || Fea.UseCalc) AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, CurrentClasses[MenuSelection[0]].fullname, "bonus", Fea.UseCalc);
 
 				//set the extra layers to visible 'notes' field on the left
-				if (!typePF) {
-					var LayersFld = What("Extra.Layers Remember").split(",");
-					LayersFld[0] = "notes";
-					Value("Extra.Layers Remember", LayersFld);
-					LayerVisibilityOptions(false);
-				}
+				if (!typePF) LayerVisibilityOptions(false, ['notes', What('Extra.Layers Remember').split(',')[1]]);
 				
 				//give some information as to where the choice has been written to
 				if (IsNotImport && What("Extra Class Feature Remember").indexOf(theFea.extraname) === -1) {
