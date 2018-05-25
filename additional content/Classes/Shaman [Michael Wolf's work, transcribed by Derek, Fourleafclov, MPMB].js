@@ -21,6 +21,15 @@
 var iFileName = "Shaman [Michael Wolf's work, transcribed by Derek, Fourleafclov, MPMB].js";
 RequiredSheetVersion(12.999);
 
+//add the source
+SourceList["MW:SC"] = {
+	name : "Michael Wolf: Shaman Class",
+	abbreviation : "MW:SC",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/170851/",
+	date : "2017/01/20"
+};
+
 //first make the sheet know which spells are shaman spells
 [//level 0 (cantrips)
 	"create bonfire", "druidcraft", "guidance", "mending", "message", "resistance", "vicious mockery",
@@ -1034,12 +1043,4 @@ SpellsList["touch of madness"] = {
 	duration : "Instantaneous",
 	description : "Spell atk 1 creature, 1d4 Psychic dmg and dis. on next attack roll; +1d4 at CL 5, 11, and 17",
 	descriptionFull : "Maddening whispers and babbling nonsense rush into the mind of a creature I try to touch. Make a melee spell attack against the target. If the attack hits, the creature takes 1d4 psychic damage, and the creature has disadvantage on the next attack roll it makes before the end of its next turn." + "\n   " + "This spell’s damage increases by 1d4 when I reach 5th level (2d4), 11th level (3d4), and 17th level (4d4)"
-};
-
-//add the source
-SourceList["MW:SC"] = {
-	name : "Michael Wolf: Shaman Class",
-	abbreviation : "MW:SC",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/170851/"
 };

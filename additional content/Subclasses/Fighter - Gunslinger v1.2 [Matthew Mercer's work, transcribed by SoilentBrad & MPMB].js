@@ -29,7 +29,7 @@ SourceList["MM:GMA"] = {
 	name : "Matthew Mercer: Gunslinger Martial Archetype v1.2",
 	abbreviation : "MM:GMA",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/170778/",
+	url : "https://www.dmsguild.com/product/170778/",
 	date : "2016/08/01" //estimate, I don't know the actual date v1.2 was published
 };
 

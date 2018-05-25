@@ -18,6 +18,13 @@
 var iFileName = "Dhampir [DanDwiki, transcribed by MPMB].js";
 RequiredSheetVersion(12.999);
 
+SourceList["DanDw"] = {
+	name : "D\u0026D Wiki",
+	abbreviation : "D\u0026Dw",
+	group : "homebrew",
+	url : "http://www.dandwiki.com/wiki/"
+};
+
 RaceList["dhampir"] = {
 	regExpSearch : /dhampir/i,
 	name : "Dhampir",
@@ -74,11 +81,4 @@ WeaponsList["vampire bite"] = {
 	range : "Melee",
 	description : "Finesse; Only on charmed, grappled, incapacitated, or restrained; Can gain temp HP",
 	abilitytodamage : true
-};
-
-SourceList["DanDw"] = {
-	name : "D\u0026D Wiki",
-	abbreviation : "D\u0026Dw",
-	group : "homebrew",
-	url : "http://www.dandwiki.com/wiki/"
 };

@@ -24,7 +24,8 @@ SourceList["GP:S"] = {
 	name : "/u/Greypilgrim333: Soulbound Race",
 	abbreviation : "GP:S",
 	group : "Reddit/r/UnearthedArcana",
-	url : "https://reddit.com/4wsioc/"
+	url : "https://reddit.com/4wsioc/",
+	date : "2017/08/08"
 };
 
 RaceList["light armor soulbound"] = {

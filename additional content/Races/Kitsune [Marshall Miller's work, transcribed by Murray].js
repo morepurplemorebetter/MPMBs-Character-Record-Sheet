@@ -24,7 +24,8 @@ SourceList["MM:K"] = {
 	name : "Marshall Miller: Kitsune player race",
 	abbreviation : "MM:K",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/194789/"
+	url : "https://www.dmsguild.com/product/171361/",
+	date : "2016/01/18"
 };
 
 RaceList["kitsune"] = {

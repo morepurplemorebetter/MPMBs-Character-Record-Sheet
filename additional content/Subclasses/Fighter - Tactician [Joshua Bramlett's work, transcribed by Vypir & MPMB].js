@@ -20,6 +20,14 @@
 var iFileName = "Fighter - Tactician [Joshua Bramlett's work, transcribed by Vypir & MPMB].js";
 RequiredSheetVersion(12.999);
 
+SourceList["JB:TAS"] = {
+	name : "Joshua Bramlett: Martial Archetypes: Tactician and Scoundrel",
+	abbreviation : "JB:TAS",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/216366/",
+	date : "2017/07/13"
+};
+
 AddSubClass("fighter", "tactician", {
 	regExpSearch : /tactician/i,
 	subname : "Tactician",
@@ -127,10 +135,3 @@ AddSubClass("fighter", "tactician", {
 	}
 });
 
-
-SourceList["JB:TAS"] = {
-	name : "Joshua Bramlett: Martial Archetypes: Tactician and Scoundrel",
-	abbreviation : "JB:TAS",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/216366/"
-};

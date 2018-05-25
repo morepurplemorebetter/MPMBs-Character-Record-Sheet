@@ -28,7 +28,7 @@ SourceList["SCC:CD"] = {
 	name : "Stray Chow Chow - Circle of the Deathbloom",
 	abbreviation : "SCC:CD",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/173273",
+	url : "https://www.dmsguild.com/product/173273",
 	date : "2016/08/31"
 };
 

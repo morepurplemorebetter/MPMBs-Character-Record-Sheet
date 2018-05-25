@@ -20,6 +20,14 @@
 var iFileName = "Refugee [Goodman Games' work, transcribed by James Bowman].js";
 RequiredSheetVersion(12.81);
 
+SourceList["FEF1:G"] = {
+	name : "Fifth Edition Fantasy #1: Glitterdoom",
+	abbreviation : "FEF1:G",
+	group : "Goodman Games",
+	url : "https://www.drivethrurpg.com/product/132657/",
+	date : "2014/09/29"
+};
+
 BackgroundList["refugee"] = {
 		regExpSearch : /refugee/i,
 		name : "Refugee",
@@ -90,11 +98,4 @@ BackgroundList["refugee"] = {
 BackgroundFeatureList["far-flung friends"] = {  
 	description : "In communities that are now home to your kith and kin, you can count on housing, food, free advice, and other assistance so long as it doesn’t threaten the lives and well-being of those lending you aid. Your DM will decide whether or not a particular community has fellow refugees amongst its population.",
 	source : ["FEF1:G", 14]
-};
-
-SourceList["FEF1:G"] = {
-	name : "Fifth Edition Fantasy #1: Glitterdoom",
-	abbreviation : "FEF1:G",
-	group : "Goodman Games",
-	url : "http://www.drivethrurpg.com/product/132657/"
 };

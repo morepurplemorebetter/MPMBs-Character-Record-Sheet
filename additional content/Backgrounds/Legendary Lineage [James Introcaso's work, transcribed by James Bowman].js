@@ -20,6 +20,14 @@
 var iFileName = "Legendary Lineage [James Introcaso's work, transcribed by James Bowman].js";
 RequiredSheetVersion(12.999);
 
+SourceList["WBB:15"] = {
+	name : "15 New Backgrounds - World Builder Blog Presents",
+	abbreviation : "WBB:15",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/171771",
+	date : "2016/01/22"
+};
+
 BackgroundList["legendary lineage"] = {
 		regExpSearch : /^(?=.*(legendary))(?=.*lineage).*$/i,
 		name : "Legendary Lineage",
@@ -91,11 +99,4 @@ BackgroundList["legendary lineage"] = {
 BackgroundFeatureList["good reputation"] = {  
 	description : "People in positions of power and privilege are willing to take a meeting with you and grant you favors. The DM decides the extent and effect of these favors, but they should not involve lavish gifts or great personal risk to the granter.",
 	source : ["WBB:15", 10]
-};
-
-SourceList["WBB:15"] = {
-	name : "15 New Backgrounds - World Builder Blog Presents",
-	abbreviation : "WBB:15",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/171771"
 };

@@ -17,6 +17,15 @@
 var iFileName = "Paladin - Oath of Unyielding [BoltNine's work, transcribed by Howard].js";
 RequiredSheetVersion(12.999);
 
+
+SourceList["IB:OotU"] = {
+	name : "BoltNine Homebrew: Oath of the Unyielding",
+	abbreviation : "BN:OotU",
+	group : "BoltNine",
+	url : "https://drive.google.com/drive/folders/0B2UyuHLUuCjxRmlXWExXTGR1eTA",
+	date : "2015/12/17"
+};
+
 AddSubClass("paladin", "unyielding", {
 	regExpSearch : /^(?=.*unyielding)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
 	subname : "Oath of the Unyielding",
@@ -63,11 +72,3 @@ AddSubClass("paladin", "unyielding", {
 		}
 	}
 });
-
-
-SourceList["IB:OotU"] = {
-	name : "BoltNine Homebrew: Oath of the Unyielding",
-	abbreviation : "BN:OotU",
-	group : "BoltNine",
-	url : "https://drive.google.com/drive/folders/0B2UyuHLUuCjxRmlXWExXTGR1eTA"
-};

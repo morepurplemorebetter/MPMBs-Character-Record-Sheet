@@ -24,7 +24,7 @@ SourceList["SCC:CF"] = {
 	name : "Stray Chow Chow - Circle of the Fountain",
 	abbreviation : "SCC:CF",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/173274",
+	url : "https://www.dmsguild.com/product/173274",
 	date : "2016/08/26"
 };
 

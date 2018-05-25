@@ -20,6 +20,14 @@
 var iFileName = "Sojourner Dwarf [Goodman Games' work, transcribed by James Bowman].js";
 RequiredSheetVersion(12.999);
 
+SourceList["FEF1:G"] = {
+	name : "Fifth Edition Fantasy #1: Glitterdoom",
+	abbreviation : "FEF1:G",
+	group : "Goodman Games",
+	url : "https://www.drivethrurpg.com/product/132657/",
+	date : "2014/09/29"
+};
+
 RaceList["sojourner dwarf"] = {
 	regExpSearch : /^(((?=.*\b(dwarfs?|dwarves|dwarfish|dwarvish|dwarven)\b)(?=.*\b(sojourner)\b))).*$/i,
 	name : "Sojourner dwarf",
@@ -44,11 +52,4 @@ RaceList["sojourner dwarf"] = {
 	improvements : "Sojourner Dwarf: +2 Constitution, +1 Intelligence;",
 	scores : [0, 0, 2, 1, 0, 0],
 	trait : "Sojourner Dwarf (+2 Constitution, +1 Intelligence)\n   Stonecunning: Whenever I make an Intelligence (History) check related to the origin of stonework, I am considered proficient in the History skill and add double my proficiency bonus to the check, instead of my normal proficiency bonus.\n   Trailblazer: Whenever I make Wisdom (Survival) checks pertaining to navigation or to avoid becoming lost, I am considered proficient in the Survival skill and add double my proficiency bonus to the check, instead of my normal bonus.",
-};
-
-SourceList["FEF1:G"] = {
-	name : "Fifth Edition Fantasy #1: Glitterdoom",
-	abbreviation : "FEF1:G",
-	group : "Goodman Games",
-	url : "http://www.drivethrurpg.com/product/132657/"
 };

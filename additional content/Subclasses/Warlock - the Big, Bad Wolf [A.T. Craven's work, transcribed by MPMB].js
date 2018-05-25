@@ -21,6 +21,14 @@
 var iFileName = "Warlock - the Big, Bad Wolf [A.T. Craven's work, transcribed by MPMB].js";
 RequiredSheetVersion(12.999);
 
+SourceList["ATC:BBW"] = {
+	abbreviation : "ATC:BBW",
+	name : "A.T. Craven: the Big, Bad Wolf",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/201431/",
+	date : "2016/12/25"
+};
+
 AddSubClass("warlock", "the big bad wolf", {
 	regExpSearch : /^(?=.*\bbig\b)(?=.*\bbad\b)(?=.*\bwolf\b).*$/i,
 	subname : "the Big, Bad Wolf",
@@ -80,13 +88,6 @@ AddSubClass("warlock", "the big bad wolf", {
 		}
 	}
 });
-
-SourceList["ATC:BBW"] = {
-	abbreviation : "ATC:BBW",
-	name : "A.T. Craven: the Big, Bad Wolf",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/201431/"
-};
 
 //set dire wolf and death dog as options for the pact of the chain feature
 CreatureList["dire wolf"].companion = "pact_of_the_chain";

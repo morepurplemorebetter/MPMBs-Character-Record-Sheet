@@ -26,7 +26,7 @@ SourceList["FRA:SS"] = {
 	name : "Forgotten Realms Archetypes: Savagery & Shadow (v1.2)",
 	abbreviation : "FRA:SS",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/208791/",
+	url : "https://www.dmsguild.com/product/208791/",
 	date : "2017/04/14"
 };
 

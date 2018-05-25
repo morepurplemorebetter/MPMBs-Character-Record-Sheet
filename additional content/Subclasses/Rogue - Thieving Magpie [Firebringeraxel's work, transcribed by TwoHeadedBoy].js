@@ -17,6 +17,14 @@
 var iFileName = "Rogue - Thieving Magpie [Firebringeraxel's work, transcribed by TwoHeadedBoy].js";
 RequiredSheetVersion(12.999);
 
+SourceList["FC:TM"] = {
+	name: "Firebringeraxel's Creations: Thieving Magpie",
+	abbreviation: "FC:TM",
+	group: "Homebrew",
+	url: "http://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison",
+	date : "2017/07/11"
+};
+
 AddSubClass("rogue", "thieving magpie", {
 	regExpSearch: /^(?=.*thieving)(?=.*magpie).*$/i,
 	subname: "Thieving Magpie",
@@ -81,10 +89,3 @@ AddSubClass("rogue", "thieving magpie", {
 		}
 	}
 });
-
-SourceList["FC:TM"] = {
-	name: "Firebringeraxel's Creations: Thieving Magpie",
-	abbreviation: "FC:TM",
-	group: "Homebrew",
-	url: "http://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison"
-};

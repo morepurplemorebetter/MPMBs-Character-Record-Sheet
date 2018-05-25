@@ -20,6 +20,7 @@ RequiredSheetVersion(12.999);
 AddSubClass("fighter", "pact knight", {
 	regExpSearch : /^(?=.*pact)(?=.*knight).*$/i,
 	subname : "Pact Knight",
+	source : ["HB", 0],
 	fullname : "Pact Knight",
 	abilitySave : 3,
 	spellcastingFactor : "warlock3",

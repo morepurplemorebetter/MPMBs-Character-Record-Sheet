@@ -25,7 +25,7 @@ SourceList["JR:BM"] = {
 	name : "Joshua Raynack - Blood Magic",
 	abbreviation : "JR:BM",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/170966",
+	url : "https://www.dmsguild.com/product/170966",
 	date : "2016/05/09"
 };
 

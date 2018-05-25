@@ -27,7 +27,7 @@ SourceList["WH:AU"] = {
 	name : "Walrock Homebrew: Awakened Undead v0.4",
 	abbreviation : "WH:AU",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/222229/",
+	url : "https://www.dmsguild.com/product/222229/",
 	date : "2017/09/22"
 };
 

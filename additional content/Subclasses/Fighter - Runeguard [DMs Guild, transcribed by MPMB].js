@@ -21,7 +21,7 @@ SourceList["XLNtEE"] = {
 	name : "Xanathar's Lost Notes to Everything Else",
 	abbreviation : "XLNtEE",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/228484/",
+	url : "https://www.dmsguild.com/product/228484/",
 	date : "2018/01/11"
 };
 

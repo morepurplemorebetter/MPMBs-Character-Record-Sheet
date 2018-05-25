@@ -20,6 +20,14 @@
 var iFileName = "Half-Vistani [Sterling Vermin's work, transcribed by Marshall].js";
 RequiredSheetVersion(12.999);
 
+SourceList["SV:HV"] = {
+	name : "Sterling Vermin: Half-Vistani",
+	abbreviation : "SV:HV",
+	group : "Sterling Vermin Adventuring Co.",
+	url : "https://sterlingvermin.files.wordpress.com/2016/03/the-half-vistani.pdf",
+	date : "2016/03/09"
+};
+
 BackgroundList["half-vistani"] = {
 	regExpSearch : /^(?=.*half)(?=.*vistani)(?=.*canjar).*$/i,
 	name : "Half-Vistani (Canjar)",
@@ -128,11 +136,4 @@ AddBackgroundVariant("half-vistani", "zarovan", {
 BackgroundFeatureList["wanderlust"] = {
 	description : "By leaving the ranks of the vistani you have lost the ability to walk the mists unharmed and without getting lost but you still feel a powerful compulsion to be on the move. You gain advantage on any rolls made to set or follow a course and traveling is considered light activity for the purposes of resting for you.",
 	source : ["SV:HV", 1]
-};
-
-SourceList["SV:HV"] = {
-	name : "Sterling Vermin: Half-Vistani",
-	abbreviation : "SV:HV",
-	group : "Sterling Vermin Adventuring Co.",
-	url : "https://sterlingvermin.files.wordpress.com/2016/03/the-half-vistani.pdf"
 };

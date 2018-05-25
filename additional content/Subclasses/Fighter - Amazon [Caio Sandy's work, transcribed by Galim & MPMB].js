@@ -20,6 +20,14 @@
 var iFileName = "Fighter - Amazon [Caio Sandy's work, transcribed by Galim & MPMB].js";
 RequiredSheetVersion(12.999);
 
+SourceList["CS:A"] = {
+	name : "Caio Sandy: Fighter archetype: Amazon",
+	abbreviation : "CS:A",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/171865/",
+	date : "2016/03/11"
+};
+
 AddSubClass("fighter", "amazon", {
     regExpSearch : /amazon/i,
     subname : "Amazon",
@@ -182,12 +190,6 @@ AddSubClass("fighter", "amazon", {
     }
 });
 
-SourceList["CS:A"] = {
-	name : "Caio Sandy: Fighter archetype: Amazon",
-	abbreviation : "CS:A",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/171865/"
-};
 if (!SourceList["UA:WA"]) {
 	SourceList["UA:WA"] = {
 		name : "Unearthed Arcana: Waterborne Adventures",

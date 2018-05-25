@@ -25,7 +25,8 @@ SourceList["MM:CM"] = {
 	name : "Matthew Mercer: College of the Maestro",
 	abbreviation : "MM:CM",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/183630/"
+	url : "https://www.dmsguild.com/product/183630/",
+	date : "2016/06/21"
 };
 
 AddSubClass("bard", "college of the maestro", {

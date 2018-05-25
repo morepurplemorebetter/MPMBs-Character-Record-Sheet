@@ -29,7 +29,17 @@ var iFileName = "Monk - Way of the Four Elements, Remastered [SpiketailDrake's w
 RequiredSheetVersion(12.999);
 
 var WotFEremastered = function() {
+	
 	if (!ClassSubList["monk-way of the four elements"]) return;
+
+	SourceList["IB:WotFE"] = {
+		name : "Way of the Four Elements Remastered (v2.0, 2017-02-18, by IrisBandit)",
+		abbreviation : "IB:WotFE",
+		group : "IrishBandit",
+		url : "https://drive.google.com/file/d/0B5ttoyMfsaC7dzJ2SVdKNXhxVnM/view",
+		date : "2017/02/18"
+	};
+	
 	ClassSubList["monk-way of the four elements"].source = ["IB:WotFE", 1];
 	ClassSubList["monk-way of the four elements"].spellcastingFactor = "default0";
 	ClassSubList["monk-way of the four elements"].spellcastingKnown = {
@@ -693,12 +703,5 @@ var WotFEremastered = function() {
 				return (n < 11 ? 1 : n < 17 ? 2 : 3) + " extra disciplines";
 			})
 		}	
-	};
-
-	SourceList["IB:WotFE"] = {
-		name : "Way of the Four Elements Remastered (v2.0, 2017-02-18, by IrisBandit)",
-		abbreviation : "IB:WotFE",
-		group : "IrishBandit",
-		url : "https://drive.google.com/file/d/0B5ttoyMfsaC7dzJ2SVdKNXhxVnM/view"
 	};
 }();

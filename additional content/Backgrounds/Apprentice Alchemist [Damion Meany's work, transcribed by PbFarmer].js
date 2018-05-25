@@ -20,6 +20,14 @@
 var iFileName = "Apprentice Alchemist [Damion Meany's work, transcribed by /u/PbFarmer].js";
 RequiredSheetVersion(12.999);
 
+SourceList["DM:IB"] = {
+	name : "Damion Meany's Improved Backgrounds",
+	abbreviation : "DM:IB",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/208784/",
+	date : "2017/04/04"
+};
+
 BackgroundList["apprentice alchemist"] = {
 	regExpSearch : /^(?=.*apprentice)(?=.*alchemist).*$/i,
 	name : "Apprentice Alchemist",
@@ -91,11 +99,4 @@ BackgroundList["apprentice alchemist"] = {
 BackgroundFeatureList["alchemical familiarity"] = {
 	description : "I have an ongoing relationship with my mentor, whom I am able to contact to request advice or assistance, even when far away.  I can often identify potions, salves, oils, and other mundane and magical consumables by sight.  In addition, my familiarity with alchemy enables me to work in an Alchemist's lab or shop to earn a modest living during my down time.",
 	source : ["DM:IB", 11]
-};
-
-SourceList["DM:IB"] = {
-	name : "Damion Meany's Improved Backgrounds",
-	abbreviation : "DM:IB",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/208784/"
 };

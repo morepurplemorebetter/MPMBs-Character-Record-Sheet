@@ -20,6 +20,14 @@
 var iFileName = "Cleric - Fate Domain [Cody Faulk's work, transcribed by MPMB].js";
 RequiredSheetVersion(12.999);
 
+SourceList["CF:FD"] = {
+	name : "Cody Faulk: Fate Domain",
+	abbreviation : "CF:FD",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/194789/",
+	date : "2016/12/08"
+};
+
 AddSubClass("cleric", "fate domain", {
 	regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*fate).*$/i,
 	subname : "Fate Domain",
@@ -72,10 +80,3 @@ AddSubClass("cleric", "fate domain", {
 		}
 	}
 });
-
-SourceList["CF:FD"] = {
-	name : "Cody Faulk: Fate Domain",
-	abbreviation : "CF:FD",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/194789/"
-};
