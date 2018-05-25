@@ -40,9 +40,9 @@ function SelectClass() {
 			var sClCount = -2;
 			CL.subclasses[1].forEach( function(aSubClass) {
 				var sCL = ClassSubList[aSubClass];
-				if (!sCL || testSource(aSubClass, sCL, "classExcl") || (ClassSelection_Dialog.subclassesRef[sCL.subname] && ClassSelection_Dialog.subclassesRef[sCL.subname].length >= aSubClass.length)) return;
+				if (!sCL || testSource(aSubClass, sCL, "classExcl") || (ClassSelection_Dialog.subclassesRef[aClass+"-"+sCL.subname] && ClassSelection_Dialog.subclassesRef[aClass+"-"+sCL.subname].length >= aSubClass.length)) return;
 				ClassSelection_Dialog.subclasses[aClass][sCL.subname] = sClCount;
-				ClassSelection_Dialog.subclassesRef[sCL.subname] = aSubClass;
+				ClassSelection_Dialog.subclassesRef[aClass+"-"+sCL.subname] = aSubClass;
 				sClCount--;
 			});
 			clCount--;
@@ -232,7 +232,7 @@ function SelectClass() {
 			var oldSubNameSrch = RegExp("( ?\\(?)" + oldSubName.RegEscape() + "(\\)?)", "i");
 			var oldNameMatch = (!cs[3] ? ClassList[cs[2]].name : ClassSubList[cs[3]].fullname ? oldSubName : ClassList[cs[2]].name + oldSubName).toLowerCase() == clean(cs[1]).toLowerCase();
 			//set the new things
-			cs[3] = result && result !== " " ? this.subclassesRef[result] : "";
+			cs[3] = result && result !== " " ? this.subclassesRef[cs[2]+"-"+result] : "";
 			var newSubName = !cs[3] ? "" : ClassSubList[cs[3]].fullname ? ClassSubList[cs[3]].fullname : ClassSubList[cs[3]].subname;
 			var newName = !cs[3] ? ClassList[cs[2]].name : ClassSubList[cs[3]].fullname ? newSubName : ClassList[cs[2]].name + " (" + newSubName + ")";
 			cs[1] = !cs[3] ? ClassList[cs[2]].name : oldNameMatch ? newName : !oldSubCl ? cs[1] + " (" + newSubName + ")" : (oldSubNameSrch).test(cs[1]) ? cs[1].replace(oldSubNameSrch, "$1" + newSubName + "$2") : newName;
