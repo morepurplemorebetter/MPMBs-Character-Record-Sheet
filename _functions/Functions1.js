@@ -4,7 +4,6 @@ function MakeDocName() {
 
 function MakeButtons() {
 	CreateIcons();
-	var oIcon = null; // iconstream
 	try {
 		if (!tDoc.info.SpellsOnly) {
 			app.addToolButton({
@@ -512,6 +511,8 @@ function ResetAll(GoOn, noTempl) {
 			DoTemplate(R, "Remove"); //remove all of them
 		};
 	};
+	// Reset the calculation order
+	setCalcOrder();
 	
 	setListsUnitSystem("imperial"); //reset the values of some variables to the right unit system
 	
@@ -6777,6 +6778,22 @@ function SetRichTextFields(onlyAttackTitles, onlySkills) {
 	spans5[2].textColor = themeColor;
 	
 	tDoc.getField("Text.Weapon Proficiencies").richValue = spans5;
+	
+	// the equipment table headers
+	var LbKg = What("Unit System") === "imperial";
+	var spans6 = new Array();
+	spans6[0] = new Object();
+	spans6[0].text = LbKg ? "LB" : "K";
+	spans6[0].textSize = 7;
+	spans6[0].alignment = "center";
+	spans6[1] = new Object();
+	spans6[1].text = LbKg ? "S" : "G";
+	spans6[1].textSize = 4.9;
+	spans6[1].alignment = "center";
+	tDoc.getField("Display.Weighttxt.LbKg").richValue = spans6;
+	tDoc.getField("Display.Weighttxt.LbKgPage3").richValue = spans6;
+	var tpls = What("Template.extras.AScomp").split(",");
+	for (var t = 0; t < tpls.length; t++) tDoc.getField(tpls[i]+"Comp.eqp.Display.Weighttxt").richValue = spans6;
 }
 
 //make all the fields, with some exceptions, read-only (toggle = true) or editable (toggle = false)
@@ -9040,7 +9057,12 @@ function SetUnitDecimals_Button() {
 		Value("Unit System", SetUnitDecimals_Dialog.bSys);
 		Value("Decimal Separator", SetUnitDecimals_Dialog.bDec);
 		if (typePF) {
-			Value("Display.Weighttxt.LbKg", SetUnitDecimals_Dialog.bSys === "imperial" ? "LB" : "KG");
+			var LbKg = What("Unit System") === "imperial" ? "LB" : "KG";
+			Value("Display.Weighttxt.LbKg", LbKg);
+			var tpls = What("Template.extras.AScomp").split(",");
+			for (var t = 0; t < tpls.length; t++) Value(tpls[i]+"Comp.eqp.Display.Weighttxt", LbKg);
+		} else {
+			SetRichTextFields();
 		}
 		
 		if (SetUnitDecimals_Dialog.bSys === "imperial") {

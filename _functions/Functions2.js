@@ -7031,3 +7031,130 @@ function hasSkillProf(theSkill) {
 	var hasExp = !hasProf ? false : tDoc.getField(skillFld + ' Exp').isBoxChecked(0) != 0;
 	return [hasProf, hasExp];
 };
+
+// (Re)set all the calculations in their right order
+function setCalcOrder() {
+	var cFlds = [];
+	var abis = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
+	var skills = ["Acr", "Ani", "Arc", "Ath", "Dec", "His", "Ins", "Inti", "Inv", "Med", "Nat", "Perc", "Perf", "Pers", "Rel", "Sle", "Ste", "Sur"];
+	// ability modifiers
+	for (var i = 0; i < abis.length; i++) cFlds.push(abis[i]+" Mod");
+	// Proficiency bonus
+	cFlds.push("Proficiency Bonus");
+	// saving throws
+	for (var i = 0; i < abis.length; i++) cFlds.push(abis[i]+" ST Mod");
+	// skills & initiative
+	cFlds = cFlds.concat(skills);
+	cFlds = cFlds.concat(["Too", "Passive Perception", "Initiative bonus"]);
+	if (!typePF) cFlds.push("Init Dex Mod");
+	// Spell Saves
+	cFlds = cFlds.concat(["Spell save DC 1", "Spell save DC 2"]);
+	// AC
+	cFlds = cFlds.concat(["AC Armor Bonus", "AC Dexterity Modifier", "AC"]);
+	// HD
+	if (!typePF) for (var i = 1; i <= 3; i++) cFlds.push("HD"+i+" Con Mod");
+	// attacks
+	for (var i = 1; i <= FieldNumbers.attacks; i++) cFlds.push("Attack."+i+".To Hit");
+	// weight information
+	cFlds = cFlds.concat(["Weight Encumbered", "Weight Heavily Encumbered", "Weight Push/Drag/Lift", "Weight Carrying Capacity.Field"]);
+	if (!typePF) cFlds = cFlds.concat(["Weight Encumbered Text", "Display.Speed.Enc", "Weight Heavily Encumbered Text", "Display.Speed.EncH", "Weight Push/Drag/Lift Text", "Display.Speed.Push", "Weight Carrying Capacity.Text"]);
+	// equipment 2nd page
+	cFlds.push("Adventuring Gear Weight Subtotal Right");
+	if (typePF) cFlds.push("Adventuring Gear Weight Subtotal Middle");
+	cFlds.push("Adventuring Gear Weight Subtotal Left");
+	for (var i = 1; i <= (typePF ? 9 : 6); i++) cFlds.push("Adventuring Gear Location.Subtotal "+i);
+	// equipment 3rd page
+	cFlds.push("Extra.Gear Weight Subtotal Right");
+	cFlds.push("Extra.Gear Weight Subtotal Left");
+	for (var i = 1; i <= 6; i++) cFlds.push("Extra.Gear Location.Subtotal "+i);
+	// weight carried
+	cFlds.push("Weight Remember Coins Total");
+	cFlds.push("Weight Remember Magic Items Total");
+	cFlds.push("Weight Carried");
+	// unrelated fields
+	cFlds = cFlds.concat(["Next level", "SheetInformation"]);
+	// companion page
+	var tpls = What("Template.extras.AScomp").split(",");
+	for (var t = 0; t < tpls.length; t++) {
+		var tpl = tpls[t];
+		// companion ability modifiers
+		for (var i = 0; i < (abis.length - 1); i++) cFlds.push(tpl+"Comp.Use.Ability."+abis[i]+".Mod");
+		// companion saving throws
+		for (var i = 0; i < (abis.length - 1); i++) cFlds.push(tpl+"Comp.Use.Ability."+abis[i]+".ST.Mod");
+		// companion skills
+		for (var i = 0; i < skills.length; i++) cFlds.push(tpl+"Comp.Use.Skills."+skills[i]+".Mod");
+		cFlds.push(tpl+"Comp.Use.Skills.Perc.Pass.Mod");
+		// companion initiative
+		cFlds.push(tpl+"Comp.Use.Combat.Init.Mod");
+		if (!typePF) cFlds.push(tpl+"Comp.Use.Combat.Init.Dex");
+		// companion HD
+		if (!typePF) cFlds.push(tpl+"Comp.Use.HD.Con");
+		// companion equipment
+		if (typePF) {
+			cFlds.push(tpl+"Comp.eqp.Gear Weight Subtotal");
+		} else {
+			cFlds = cFlds.concat([tpl+"Comp.eqp.Gear Weight Subtotal Left", tpl+"Comp.eqp.Gear Weight Subtotal Right"]);
+		}
+		// companion notes
+		cFlds.push(tpl+"Comp.eqp.Notes");
+		if (!typePF) cFlds.push(tpl+"Comp.img.Notes");
+		// companion attacks
+		for (var i = 1; i <= 3; i++) cFlds.push(tpl+"Comp.Use.Attack."+i+".To Hit");
+	}
+	// Wild Shape page
+	var tpls = What("Template.extras.WSfront").split(",");
+	for (var t = 0; t < tpls.length; t++) {
+		var tpl = tpls[t];
+		if (tpl) cFlds.push(tpl+"AdvLog.Player Name");
+		for (var w = 1; w <= 4; w++) {
+			for (var i = 0; i < (abis.length - 1); i++) cFlds.push(tpl+"Wildshape."+w+".Ability."+abis[i]+".Mod")
+		}
+	}
+	// spell sheet pages
+	var tpls = (What("Template.extras.SSfront") + "," + What("Template.extras.SSmore")).replace(/,(,)|,$()/, "$1").split(",");
+	for (var t = 0; t < tpls.length; t++) {
+		var tpl = tpls[t];
+		cFlds.push(tpl+"SpellSheetInformation");
+		if (typePF) {
+			cFlds.push(tpl+"zAdvLog.PC Name");
+		} else if (tpl) {
+			cFlds.push(tpl+"AdvLog.PC Name");
+		}
+		if (!typePF && What("Template.extras.SSfront").indexOf(tpl) !== -1) cFlds.push(tpl+"spellshead.Text.prepare.0");
+		for (var i = 0; i <= 3; i++) cFlds = cFlds.concat([tpl+"spellshead.prepare."+i, tpl+"spellshead.dc."+i, tpl+"spellshead.attack."+i]);
+	}
+	// adventurers log page last
+	var advT = [".xp", ".gold", ".downtime", ".renown", ".magicItems"];
+	var tpls = What("Template.extras.ALlog").split(",");
+	for (var t = 0; t < tpls.length; t++) {
+		var tpl = tpls[t];
+		cFlds = cFlds.concat([
+			tpl+"AdvLog.previous",
+			tpl+"AdvLog.DCI.Text",
+			tpl+"AdvLog.Player Name",
+			tpl+"AdvLog.PC Name",
+			tpl+"AdvLog.Class and Levels",
+			tpl+"AdvLog.sheetNumber" // before the numeric fields for correct working of the SetAdvLogCalcOrder() function
+		]);
+		for (var l = 1; l <= FieldNumbers.logs; l++) {
+			for (var i = 0; i < advT.length; i++) {
+				var aLog = tpl+"AdvLog."+l+advT[i];
+				cFlds = cFlds.concat([aLog+".start", aLog+".total"]);
+			}
+		}
+	}
+	
+	// Set the actual calculation order
+	var cOrd = 0;
+	for (var i = 0; i < cFlds.length; i++) {
+		var aFld = tDoc.getField(cFlds[i]);
+		if (!aFld || aFld.calcOrderIndex == undefined) {
+			console.println("Error: "+cFlds[i]); //DEBUGGING!!!
+			continue;
+		}
+		aFld.calcOrderIndex = cOrd;
+		cOrd++;
+	};
+}
+
+listCalcs();
