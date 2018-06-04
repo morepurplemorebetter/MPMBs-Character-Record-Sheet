@@ -1,4 +1,4 @@
-// all the very basic functions and text manupilation funtions
+// all the very basic functions and text manipulation functions
 var tDoc = this;
 
 function Hide(field) {
@@ -375,7 +375,7 @@ function KeystrokeDay() {
 			event.value = "";
 			if (IsNotImport) {
 				app.alert({
-					cMsg : "Please enter a valid date using the date-picker (the little arrow in the field) or enter the date manually using of the form \"Year-Month-Day\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" at the top of each Adventurers Logsheet. Note that the format of the date in the field never changes, but only the way it is displayed.",
+					cMsg : "Please enter a valid date using the date-picker (the little arrow in the field) or enter the date manually using of the form \"Year-Month-Day\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" at the top of each Adventurers Logsheet. Note that the format of the date in the field never changes, only the way it is displayed.",
 					cTitle : "Invalid date format",
 					nIcon : 1
 				});
