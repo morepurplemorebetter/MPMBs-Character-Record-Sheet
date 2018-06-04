@@ -1325,7 +1325,7 @@ var Base_ClassList = {
 		},
 		spellcastingList : {
 			"class" : "warlock",
-			level : [0, 5], //lower and higher limit
+			level : [0, 5] //lower and higher limit
 		},
 		features : {
 			"pact magic" : {

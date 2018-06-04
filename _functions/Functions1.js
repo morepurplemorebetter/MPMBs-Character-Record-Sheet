@@ -2578,7 +2578,7 @@ function ApplyRace(inputracetxt) {
 		//set race's size
 		PickDropdown("Size Category", CurrentRace.size);
 		var theSize = CurrentRace.size === 3 ? "Medium" : "Small";
-		AddTooltip("Size Category", CurrentRace.plural + " size is " + theSize + ".\nSelected size category will effect encumbrance on the second page.");
+		AddTooltip("Size Category", CurrentRace.plural + " size is " + theSize + ".\nSelected size category will affect encumbrance on the second page.");
 
 		//add, if existing, the racial features, proficiencies, vision, etc. etc.
 		if (CurrentRace.vision) processVision(true, CurrentRace.name, CurrentRace.vision);

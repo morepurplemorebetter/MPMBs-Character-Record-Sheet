@@ -1383,7 +1383,7 @@ var Base_SpellsList = {
 	},
 	"etherealness" : {
 		name : "Etherealness",
-		classes : ["bard", "sorcerer", "warlock", "wizard"],
+		classes : ["bard", "cleric", "sorcerer", "warlock", "wizard"],
 		source : [["SRD", 140], ["P", 238]],
 		level : 7,
 		school : "Trans",
