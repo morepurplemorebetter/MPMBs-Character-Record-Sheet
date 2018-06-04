@@ -11,7 +11,7 @@
 /*	-INFORMATION-
 	Subject:	Creature
 	Effect:		This is the syntax for adding a creature that can be used on the Companion and Wild Shape pages
-	Sheet:		v12.999 (2017-12-16)
+	Sheet:		v12.999 (2018-06-04)
 */
 
 var iFileName = "Homebrew Syntax - CreatureList.js"; // Optional; This is how the file will be named in the sheet if you import it as a file and not copy-paste its content. Only the first occurrence of this variable will be used
@@ -29,7 +29,16 @@ CreatureList["big cat"] = { //Object name; Note the use of only lower case! Also
 	
 	subtype : "devil", // Required; the subtype of the creature. Do not delete this line, but it can be just ""
 	
-	companion : "mount", // Optional; whether or not the creature will be added to the menu on the companion page. Options are "mount", "familiar", and "pact_of_the_chain" //note the use of only lower case!
+	companion : "mount", // Optional; whether or not the creature will be added to the menu on the companion page, except the ranger's companion, that is based on other criteria.
+	/* The options are the following within the quotation marks (note the use of only lower case):
+		- "familiar" (Find Familiar spell AND Pact of the Chain warlock feature)
+		- "familiar_not_al" [only available from v13 onwards, same as "familiar" but ignored if the sheet is used for Adventurers League]
+		- "mount" (Find Steed spell)
+		- "steed" (Find Greater Steed spell)
+		- "pact_of_the_chain" (Pact of the Chain warlock feature) 
+		- "companion" (UA: Revised Ranger's Beast Conclave feature)
+	Note that for the creature to be available to the PHB ranger, you don't need to do anything
+	*/
 	
 	alignment : "Unaligned", // Required; the alignment. Always put something here!
 	

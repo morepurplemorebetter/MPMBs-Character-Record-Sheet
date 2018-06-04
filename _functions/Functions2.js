@@ -1529,6 +1529,8 @@ function MakeCompMenu() {
 			mechanicalServs.push([theCrea.name, aCrea]);
 		};
 		switch (theCrea.companion) {
+			case "familiar_not_al" :
+			if (isDisplay("DCI.Text")) break;
 			case "familiar" :
 				familiars.push([theCrea.name, aCrea]);
 			case "pact_of_the_chain" :
