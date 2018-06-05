@@ -771,9 +771,9 @@ var Base_ClassList = {
 			},
 			"divine smite" : {
 				name : "Divine Smite",
-				source : [["SRD", 31], ["P", 84]],
+				source : [["SRD", 31], ["P", 85]],
 				minlevel : 2,
-				description : "\n   " + "When I hit someone in melee, I can expend spell slots to do 2d8 extra radiant damage" + "\n   " + "This increases by +1d8 for each spell slot level above 1st and +1d8 against undead/fiends"
+				description : "\n   " + "When I hit a melee weapon attack, I can expend a spell slot to do +2d8 radiant damage" + "\n   " + "This increases by +1d8 for each spell slot level above 1st and +1d8 against undead/fiends"
 			},
 			"subclassfeature3.0" : {
 				name : "Channel Divinity",
@@ -785,7 +785,7 @@ var Base_ClassList = {
 			},
 			"subclassfeature3" : {
 				name : "Sacred Oath",
-				source : [["SRD", 32], ["P", 84]],
+				source : [["SRD", 32], ["P", 85]],
 				minlevel : 3,
 				description : "\n   " + "Choose a Sacred Oath you swear to and put it in the \"Class\" field on the first page" + "\n   " + "Choose Oath of the Ancients, Crown, Devotion, Vengeance, or become an Oathbreaker"
 			},
