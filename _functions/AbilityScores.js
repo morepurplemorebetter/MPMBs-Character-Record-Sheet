@@ -1340,16 +1340,13 @@ function AbilityScores_Button() {
 	};
 	var Results = app.execDialog(AbilityScores_Dialog);
 
-	//don't continu with the function if "apply" was not pressed in the dialog
+	//don't continue with the function if "apply" was not pressed in the dialog
 	if (Results === "ok") {
+		// Start a progress bar and stop calculations
+		var thermTxt = "Applying ability scores...";
+		thermoM(thermTxt);
+		calcStop();
 		var remCon = What("Con");
-		
-		//start a progress dialog
-		var therm = app.thermometer;
-		therm.duration = 6;
-		therm.begin();
-		therm.text = "Applying ability scores...";
-		therm.value = 0;
 		
 		ShowHonorSanity(AbilityScores_Dialog.fieldHoS);
 		
@@ -1360,8 +1357,7 @@ function AbilityScores_Button() {
 			//if the HoS was not activated, don't do anything with those results
 			if (AbiI === "HoS" && !AbilityScores_Dialog.fieldHoS) continue;
 			
-			//amend the progress dialog
-			therm.value += 1;
+			thermoM((i+2)/(AbilityScores.abbreviations.length+2)); // Increment the progress bar
 			
 			//set the value to be remembered
 			Value(AbiI + " Remember", AbilityScores_Dialog["array" + AbiI]);
@@ -1376,8 +1372,8 @@ function AbilityScores_Button() {
 			SetHPTooltip();
 		}
 		
-		//end the progress dialog
-		therm.end();
+		// End the progress bar
+		thermoM(thermTxt, true);
 	}
 }
 

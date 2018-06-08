@@ -414,9 +414,9 @@ function AddDmgType(Field, Input) {
 
 // Toggle between text lines being visible and whiteout hidden Toggle = false ("Yes") or lines being hidden and whiteout visible Toggle = true ("No")
 function ToggleWhiteout(Toggle) {
-	thermoM("start"); //start a progress dialog
-	thermoM("Changing the visibility of the lines..."); //change the progress dialog text
-	calcStop();
+	var thermoTxt = "Changing the visibility of the lines...";
+	thermoM(thermoTxt); //start the progress dialog
+	
 	//if the sheet is currently flattened, undo that first
 	if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
 	
@@ -450,8 +450,7 @@ function ToggleWhiteout(Toggle) {
 
 	Value("WhiteoutRemember", Toggle);
 
-	calcStart();
-	thermoM("stop"); //stop the top progress dialog
+	thermoM(thermoTxt, false); //stop the top progress dialog
 };
 
 function ResetAll(GoOn, noTempl) {
@@ -1637,7 +1636,67 @@ function ConditionSet() {
 };
 
 //search the string for possible class and subclass
-// UPDATE NEEDED!!!
+function ParseClass(input) {
+	var found = false, tempFound = false, foundLen = 0;
+
+	var classFound = "";
+	var classFoundLen = 0;
+	var foundDat = 0;
+	var subFound = "";
+	var subFoundLen = 0;
+	var foundSubDat = 0;
+	input = removeDiacritics(input);
+	
+	// Loop through all the classes and see if any of them match and then look for its subclasses
+	// If that doesn't yield anything, look if any of the subclasses match regardless of class' names
+	for (var i = 1; i <= 2; i++) {
+		if (i == 2 && classFound) break; // something was already found in round 1, so no need for round 2
+		for (var key in ClassList) { //scan string for all classes, choosing subclasses over classes
+			var kObj = ClassList[key];
+
+			if ((i == 1 && !(kObj.regExpSearch).test(input)) // see if the class regex matches (round 1 only)
+				|| testSource(key, kObj, "classExcl") // test if the class or its source isn't excluded
+				|| (key === "ranger" && !testSource("rangerua", ClassList.rangerua, "classExcl")) // ignore the PHB ranger if the UA ranger is present
+			) continue;
+
+			// stop if the source of the previous class match is more recent and this new match is not a better match (round 1 only)
+			var tempDate = sourceDate(kObj.source);
+			if (i == 1 && foundDat > tempDate && classFoundLen >= kObj.name.length) continue;
+
+			if (i == 1) { // we have a matching class! (round 1 only)
+				classFound = key;
+				classFoundLen = kObj.name.length;
+				foundDat = tempDate;
+			}
+
+			// see if any of the sublasses match
+			for (var sub = 0; sub < kObj.subclasses[1].length; sub++) {
+				var subKey = kObj.subclasses[1][sub];
+				var sObj = ClassSubList[subKey];
+				
+				if (!sObj // skip if the subclass isn't known in the ClassSubList object
+					|| !(sObj.regExpSearch).test(input) // see if the subclass regex matches (round 1 only)
+					|| testSource(subKey, sObj, "classExcl") // test if the subclass or its source isn't excluded
+				) continue;
+
+				// stop if the source of the previous subclass match is more recent and this new match is not a better match
+				var tempSubDate = sourceDate(sObj.source);
+				if (foundSubDat > tempSubDate && subFoundLen >= sObj.subname.length) continue;
+				
+				// we have a match for both the class and the subclass!
+				classFound = key;
+				classFoundLen = kObj.name.length;
+				foundDat = tempDate;
+				subFound = subKey;
+				subFoundLen = sObj.subname.length;
+				foundSubDat = tempSubDate;
+			}
+		}
+	}
+	return classFound ? [classFound, subFound] : false;
+};
+// DEBUGGING!!!
+/*
 function ParseClass(tempString) {
 	var found = false, tempFound = false, tempFoundL = 0;
 	tempString = removeDiacritics(tempString);
@@ -1668,6 +1727,7 @@ function ParseClass(tempString) {
 	};
 	return found;
 };
+*/
 
 //detects classes entered and parses information to global classes variable
 function FindClasses(Event) {
@@ -1982,8 +2042,8 @@ function FindClasses(Event) {
 		
 		//special something for classes that have alternative ability scores that can be used for the DC
 		if (Temps.abilitySave && Temps.abilitySaveAlt) {
-			var as1 = Number(What(AbilityScores.abbreviations[Temps.abilitySave - 1] + " Mod"));
-			var as2 = Number(What(AbilityScores.abbreviations[Temps.abilitySaveAlt - 1] + " Mod"));
+			var as1 = Number(What(AbilityScores.abbreviations[Temps.abilitySave - 1]));
+			var as2 = Number(What(AbilityScores.abbreviations[Temps.abilitySaveAlt - 1]));
 			if (as1 < as2) Temps.abilitySave = Temps.abilitySaveAlt;
 		}
 
@@ -2056,6 +2116,7 @@ function FindClasses(Event) {
 				}
 				var cSpells = CurrentSpells[aClass];
 				cSpells.name = Temps.fullname;
+				cSpells.shortname = classObj.spellcastingFactor ? classObj.name : subClObj.fullname ? subClObj.fullname : subClObj.subname;
 				cSpells.level = classes.known[aClass].level;
 				cSpells.ability = Temps.abilitySave;
 				cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass};
@@ -2379,7 +2440,7 @@ function CalcExperienceLevel(AlsoClass) {
 };
 
 function ParseRace(input) {
-	var resultArray = ["", ""];
+	var resultArray = ["", "", []];
 	if (!input) return resultArray;
 
 	input = removeDiacritics(input);
@@ -2398,7 +2459,7 @@ function ParseRace(input) {
 		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
 
 		// we have a match, set the values
-		resultArray = [key, ""];
+		resultArray = [key, "", []];
 		foundLen = kObj.name.length;
 		foundDat = tempDate;
 
@@ -2410,9 +2471,13 @@ function ParseRace(input) {
 				var theR = key + "-" + kObj.variants[sub];
 				var rVars = RaceSubList[theR];
 
-				if (!(rVars.regExpSearch).test(input) // see if racial variant regex matches
-					|| testSource(theR, rVars, "racesExcl") // test if the racial variant or its source isn't excluded
-				) continue;
+				// test if the racial variant or its source isn't excluded
+				if (testSource(theR, rVars, "racesExcl")) continue;
+
+				resultArray[2].push(kObj.variants[sub]);
+
+				// see if racial variant regex matches
+				if (!(rVars.regExpSearch).test(input)) continue;
 
 				// stop if the source of the previous match is more recent and this new match is not a better match
 				var tempDate = sourceDate(rVars.source);
@@ -2470,6 +2535,32 @@ function FindRace(inputracetxt) {
 		spellcastingBonus : ""
 	};
 	
+	//show the option button if the race has selectable variants
+	if (!tempFound[2].length) {
+		Hide("Race Features Menu");
+	} else {
+		DontPrint("Race Features Menu");
+		// if no variant was found, ask the user if he wants to select one
+		if (inputracetxt && !tempFound[1] && What("Manual Race Remember") !== "Yes") {
+			var aRace = RaceList[tempFound[0]];
+			var rSource = stringSource(aRace, 'first,abbr', "    [", "]");
+			var aBasic = "Basic " + aRace.name.toLowerCase() + rSource;
+			var rVarNames = [aBasic];
+			var rVarObj = {};
+			rVarObj[aBasic] = "";
+			for (var i = 0; i < tempFound[2].length; i++) {
+				var varR = tempFound[2][i];
+				var varRobj = RaceSubList[tempFound[0] + "-" + varR];
+				var varRname = varR.capitalize() + " " + aRace.name.toLowerCase();
+				var varRsrc = varRobj && varRobj.source ? stringSource(varRobj, 'first,abbr', "    [", "]") : rSource;
+				rVarNames.push(varRname + varRsrc);
+				rVarObj[varRname + varRsrc] = varR;
+			}
+			var aResp = AskUserOptions("Select Racial Variant", "The '" + aRace.name + "' race offers a choice of variants. Note that variants are not the same as subraces. If you want to select a different subrace, use the drop-down box in the Race field.\n\nYou can change the selected variant by typing the full name of another variant into the Race field, or with the Racial Options button in the Racial Traits section on the second page.", rVarNames, "radio", true);
+			if (rVarObj[aResp]) CurrentRace.variant = rVarObj[aResp];
+		}
+	}
+	
 	for (var prop in CurrentRace) {
 		if (prop !== "known" && prop !== "variant") {
 			if (CurrentRace.variant && RaceSubList[CurrentRace.known + "-" + CurrentRace.variant][prop] !== undefined) {//select the sub-racial prop
@@ -2478,14 +2569,6 @@ function FindRace(inputracetxt) {
 				CurrentRace[prop] = RaceList[CurrentRace.known][prop];
 			}
 		}
-	}
-	
-	//show the option button if the race has selectable variants
-	MakeRaceMenu();
-	if (Menus.raceoptions[0].cName === "No race options that require a choice") {
-		Hide("Race Features Menu");
-	} else {
-		DontPrint("Race Features Menu");
 	}
 
 	if (CurrentRace.known && What("Manual Race Remember") !== "Yes") {
@@ -5145,6 +5228,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 				});
 				CurrentSpells[NewFeat] = {
 					name : theFeat.name + " (feat)",
+					shortname : theFeat.name,
 					level : spFeatLvl ? What("Character Level") : undefined,
 					ability : spAbility,
 					typeSp : "feat",
@@ -5707,6 +5791,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 						if (!CurrentSpells[aClass]) {
 							CurrentSpells[aClass] = {
 								name : temp.fullname,
+								shortname : ClassList[aClass].spellcastingFactor ? ClassList[aClass].name : ClassSubList[theSubClass].fullname ? ClassSubList[theSubClass].fullname : ClassSubList[theSubClass].subname,
 								level : newClassLvl[aClass],
 								ability : temp.abilitySave ? temp.abilitySave : 0,
 								typeSp : "known",
@@ -6274,8 +6359,10 @@ function ClassFeatureOptions(Input, inputRemove, useLVL) {
 		
 		//add, if defined, spells of the feature, and undo, if defined spells of previous if changed
 		if (!CurrentSpells[MenuSelection[0]] && AddOrRemove !== "remove" && (theSubFea.spellcastingExtra || theSubFea.spellcastingBonus)) { //first see if the entry exists or not, and create it if it doesn't
+			var theSubClass = classes.known[MenuSelection[0]].subclass;
 			CurrentSpells[MenuSelection[0]] = {
 				name : CurrentClasses[MenuSelection[0]].fullname,
+				shortname : ClassList[MenuSelection[0]].spellcastingFactor ? ClassList[MenuSelection[0]].name : ClassSubList[theSubClass].fullname ? ClassSubList[theSubClass].fullname : ClassSubList[theSubClass].subname,
 				level : classes.known[MenuSelection[0]].level,
 				ability : CurrentClasses[MenuSelection[0]].abilitySave ? CurrentClasses[MenuSelection[0]].abilitySave : 0,
 				typeSp : "known",
@@ -6793,7 +6880,7 @@ function SetRichTextFields(onlyAttackTitles, onlySkills) {
 	tDoc.getField("Display.Weighttxt.LbKg").richValue = spans6;
 	tDoc.getField("Display.Weighttxt.LbKgPage3").richValue = spans6;
 	var tpls = What("Template.extras.AScomp").split(",");
-	for (var t = 0; t < tpls.length; t++) tDoc.getField(tpls[i]+"Comp.eqp.Display.Weighttxt").richValue = spans6;
+	for (var t = 0; t < tpls.length; t++) tDoc.getField(tpls[t]+"Comp.eqp.Display.Weighttxt").richValue = spans6;
 }
 
 //make all the fields, with some exceptions, read-only (toggle = true) or editable (toggle = false)
@@ -7676,7 +7763,6 @@ function SetEncumbrance(variant) {
 };
 
 //see if a known ammunition is in a string, and return the ammo name
-// UPDATE NEEDED!!!
 function ParseAmmo(input, onlyInv) {
 	var found = "";
 	if (!input) return found;
@@ -7688,11 +7774,10 @@ function ParseAmmo(input, onlyInv) {
 	//scan string for all ammunition, including the alternative spellings
 	for (var key in AmmoList) {
 		if ((onlyInv && AmmoList[key].weight == undefined) // see if only doing equipable items
-			|| testSource(key, AmmoList[key], "ammoExcl") // test if the armour or its source isn't excluded
+			|| testSource(key, AmmoList[key], "ammoExcl") // test if the ammo or its source isn't excluded
 		) continue;
 		
-		var tempDate = sourceDate(ArmourList[key].source);
-		if (foundDat > tempDate) continue; // see if the source of the previous match is more recent
+		var tempDate = sourceDate(AmmoList[key].source);
 
 		// see if any of the alternatives match
 		if (AmmoList[key].alternatives) {
@@ -7701,9 +7786,10 @@ function ParseAmmo(input, onlyInv) {
 				var doTest = typeof theAlt != "string";
 				var altLen = theAlt.toString().length;
 				
-				if (foundLen > altLen // see if previous match is a better match
-					|| (doTest ? !theAlt.test(tempString) : tempString.indexOf(theAlt) === -1) // see if string matches
+				if ((foundDat > tempDate && foundLen >= altLen) // stop if the source of the previous match is more recent and this new match is not a better match
+					|| (doTest ? !theAlt.test(input) : input.indexOf(theAlt) === -1) // see if string matches
 				) continue;
+
 				
 				// we have a match, set the values
 				found = key;
@@ -7714,8 +7800,9 @@ function ParseAmmo(input, onlyInv) {
 		};
 		
 		// now see if the parent is a (better) match
-		if (foundLen > keyLen // see if previous match is a better match
-			|| tempString.indexOf(key) === -1 // see if string matches
+		if (found == key // stop if one of the alternatives already matched
+			|| (foundDat > tempDate && foundLen >= key.length) // stop if the source of the previous match is more recent and this new match is not a better match
+			|| input.indexOf(key) === -1 // see if string matches
 		) continue;
 				
 		// we have a match, set the values
@@ -7726,41 +7813,6 @@ function ParseAmmo(input, onlyInv) {
 	}
 	return onlyInv && found ? [found, keyLen] : found;
 }
-
-/* function ParseAmmo(input, onlyInv) {
-	if (!input) return "";
-	var tempString = removeDiacritics(input.toLowerCase());
-	var output = "";
-	var tempFound = 0;
-	var keyLen = 0;
-	
-	//scan string for all ammunition, including the alternative spellings
-	for (var key in AmmoList) {
-		if ((onlyInv && AmmoList[key].weight == undefined) || testSource(key, AmmoList[key], "ammoExcl")) continue; // test if the weapon or its source isn't excluded
-		if (AmmoList[key].alternatives) {
-			for (var z = 0; z < AmmoList[key].alternatives.length; z++) {
-				var theAlt = AmmoList[key].alternatives[z];
-				var doTest = typeof theAlt != "string";
-				if (tempFound < theAlt.toString().length && (doTest ? theAlt.test(tempString) : tempString.indexOf(theAlt) !== -1)) {
-					output = key;
-					tempFound = theAlt.toString().length;
-					keyLen = doTest ? key.length : tempFound;
-				}
-			}
-		};
-		if (tempFound < key.length && tempString.indexOf(key) !== -1) {
-			output = key;
-			tempFound = key.length;
-			keyLen = key.length;
-		};
-	}
-	
-	if (onlyInv && output) {
-		return [output, keyLen];
-	} else {
-		return output;
-	}
-} */
 
 //Reset the visibility of all the ammo fields of a particular side (input = "Left" or "Right")
 function ResetAmmo(AmmoLeftRight) {
@@ -8700,9 +8752,12 @@ function MakeRaceMenu() {
 	
 	var menuLVL1R = function (item, array) {
 		var isCurrent = CurrentRace.variant;
+		var raceSrc = stringSource(RaceList[CurrentRace.known], "first,abbr", "\t   [", "]");
 		for (var i = 0; i < array.length; i++) {
+			var varR = RaceSubList[CurrentRace.known + "-" + array[i]];
+			var varSrc = varR && varR.source ? stringSource(varR, "first,abbr", "\t   [", "]") : raceSrc;
 			item.push({
-				cName : array[i].capitalize() + " " + RaceList[CurrentRace.known].name,
+				cName : array[i].capitalize() + " " + RaceList[CurrentRace.known].name + varSrc,
 				cReturn : CurrentRace.known + "#" + array[i],
 				bMarked : (isCurrent === "" && array[i] === "basic") || isCurrent === array[i]
 			});
@@ -9060,7 +9115,7 @@ function SetUnitDecimals_Button() {
 			var LbKg = What("Unit System") === "imperial" ? "LB" : "KG";
 			Value("Display.Weighttxt.LbKg", LbKg);
 			var tpls = What("Template.extras.AScomp").split(",");
-			for (var t = 0; t < tpls.length; t++) Value(tpls[i]+"Comp.eqp.Display.Weighttxt", LbKg);
+			for (var t = 0; t < tpls.length; t++) Value(tpls[t]+"Comp.eqp.Display.Weighttxt", LbKg);
 		} else {
 			SetRichTextFields();
 		}

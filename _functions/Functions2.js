@@ -1315,7 +1315,6 @@ function WildshapeOptions() {
 	var prefix = getTemplPre(event.target.name, "WSfront", true);
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
-		calcStop();
 		switch (MenuSelection[0]) {
 		 case "recalculate" :
 			WildshapeRecalc();
@@ -1324,6 +1323,7 @@ function WildshapeOptions() {
 			WildshapeRecalc("order");
 			break;
 		 case "reset" :
+			calcStop();
 			tDoc.resetForm([prefix + "Wildshape.Race"]);
 			break;
 		 case "add" :
@@ -1349,15 +1349,18 @@ function WildshapeOptions() {
 		 case "remove page" :
 			DoTemplate("WSfront", "Remove", prefix);
 			break;
-		}
-		calcStart(true);
+		};
 	}
 }
 
 //re-calculate all the wild shapes
 function WildshapeRecalc(order) {
-	thermoM("start"); //start a progress dialog
-	thermoM("Re-calculating the wild shapes..."); //change the progress dialog text
+	// first make sure we have the right calculated values (if function is invoked when changes are made after a calcStop)
+	tDoc.calculateNow();
+	
+	// Start progress bar
+	var thermoTxt = "Re-calculating the wild shapes...";
+	thermoM(thermoTxt);
 	
 	var prefixA = What("Template.extras.WSfront").split(",").splice(1);
 	var theFields = [];
@@ -1384,7 +1387,8 @@ function WildshapeRecalc(order) {
 		Value(theFieldsNames[F], theFields[F]);
 		thermoM((F + prefixA.length)/(theFields.length + prefixA.length)); //increment the progress dialog's progress
 	}
-	thermoM("stop"); //stop the top progress dialog
+	// Stop progress bar
+	thermoM(thermoTxt, true);
 }
 
 //set the drop-down menus for wildshape selection fields
@@ -2379,11 +2383,7 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 		};
 		return 2;
 	};
-	
-	thermoM("start"); //start a progress dialog
-	thermoM("Changing the layout of the " + TemplateNames[tempNm] + " pages..."); //change the progress dialog text
-	calcStop();
-	
+
 	//are we dealing with a template that can have multiple instances or not?
 	var multiTemp = TemplatesWithExtras.indexOf(tempNm) !== -1;
 	
@@ -2392,18 +2392,26 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 		if (isTempVisible) {
 			//find the current page of the template
 			var tempPage = Math.max.apply(Math, tDoc.getField(BookMarkList[tempNm]).page);
-			thermoM("Hiding " + TemplateNames[tempNm] + ", from page " + (tempPage + 1) + "..."); //change the progress dialog text
-			thermoM(0.9); //increment the progress dialog's progress
+
+			// Start progress bar
+			var thermoTxt = "Hiding " + TemplateNames[tempNm] + ", from page " + (tempPage + 1) + "...";
+			thermoM(thermoTxt);	thermoM(0.9);
 
 			tDoc.deletePages(tempPage);
-			
+
 			//grey out the appropriate bookmarks
 			amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], false);
+
+			// Stop progress bar
+			thermoM(thermoTxt, true);
 		} else {
 			//the template is invisible, so we have to add it at the right page
 			var tempPage = whatPage(tempNm);
-			thermoM("Revealing " + TemplateNames[tempNm] + ", at page " + (tempPage + 1) + "..."); //change the progress dialog text
-			thermoM(0.75); //increment the progress dialog's progress
+
+			// Start progress bar and stop calculations
+			var thermoTxt = "Revealing " + TemplateNames[tempNm] + ", at page " + (tempPage + 1) + "...";
+			thermoM(thermoTxt); thermoM(0.5);
+			calcStop();
 			
 			//now spawn a new instance of the template with the same fields as the template at the desired page
 			tDoc.getTemplate(tempNm).spawn(tempPage, false, false);
@@ -2420,56 +2428,75 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 				};
 				break;
 			};
-			
+
 			//move focus to this new page
 			if (IsNotImport) tDoc.getField(BookMarkList[tempNm] + ".1").setFocus();
+
+			// Stop progress bar and start calculations
+			thermoM(thermoTxt, true);
+			calcStart();
 		};
 	} else { // add or remove a template that can have multiple instances
 		var isTempVisible = isTemplVis(tempNm);
 		var tempExtras = What("Template.extras." + tempNm).split(",");
 		//removing one or all pages
-		if ((/remove/i).test(AddRemove) && isTempVisible) { //if told to remove a page, also check if there is anything to remove
+		var isSS = tempNm.substring(0, 2) === "SS";
+
+		if ((/remove/i).test(AddRemove) && isTempVisible) { // If told to remove a page and a page exists
 			var newTemplList = What("Template.extras." + tempNm).split(",");
 			var removeWhich = (/removeall/i).test(AddRemove) ? "all" : removePrefix ? tempExtras.indexOf(removePrefix) : "last";
 			tempExtras = isNaN(removeWhich) ? tempExtras.splice(removeWhich === "all" ? 1 : -1) : tempExtras.splice(removeWhich, 1);
+			var pageNr = tempExtras.length > 1 ? false : tDoc.getField(tempExtras[0] + BookMarkList[tempNm]).page + 1;
+			var removeTxt = (removeWhich === "all" ? "all " : "") + TemplateNames[tempNm] + (removeWhich === "all" ? "s that are currently in this document" : " (page "+pageNr+")");
 			
 			var doGoOn = {
-				cMsg: "You are about to remove " + (removeWhich === "all" ? "all" : !isNaN(removeWhich) ? "the page " + (tDoc.getField(tempExtras[0] + BookMarkList[tempNm]).page + 1) : "last") + " " + TemplateNames[tempNm] + (removeWhich === "all" ? "s that are currently in this document" : "") + ".\n\nThis can't be undone!\n\nAre you sure you want to continue?",
-				nIcon: 2,
 				cTitle: "Continue with deleting page(s)?",
+				cMsg: "You are about to remove " + removeTxt + ". All this data will be permanently lost.\n\nThis can't be undone!\nAre you sure you want to continue?",
+				nIcon: 2,
 				nType: 2
 			};
-			thermoM("Deleting the " + TemplateNames[tempNm] + "..."); //change the progress dialog text
+
+			// Start progress bar
+			var thermoTxt = "Deleting " + removeTxt + "...";
+			thermoM(thermoTxt);
+
 			if (GoOn || app.alert(doGoOn) === 4) {
 				for (var i = tempExtras.length - 1; i >= 0; i--) {
 					var tempPage = tDoc.getField(tempExtras[i] + BookMarkList[tempNm]).page;
-					thermoM("Deleting " + TemplateNames[tempNm] + ", from page " + (tempPage + 1) + "..."); //change the progress dialog text
-					thermoM(1 / ((i + 1) / tempExtras.length)); //increment the progress dialog's progress
+					thermoM((i + 1) / tempExtras.length); // Increment the progress bar
 					tDoc.deletePages(tempPage);
 					//remove the deleted entry from the newTemplList
 					newTemplList.splice(newTemplList.indexOf(tempExtras[i]), 1);
 				};
-				
-				//now put the updated array in the field
+
+				// Put the updated array in the field
 				Value("Template.extras." + tempNm, newTemplList);
-				
-				//now amend the bookmarks
+
+				// Amend the bookmarks
 				if (newTemplList.toString() === "") amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], false);
-				//now do some extra actions, depending on the page added
+
+				// Do some extra actions, depending on the page(s) removed
 				switch (tempNm) {
 				 case "ALlog" :
-					if (newTemplList.length) UpdateLogsheetNumbering(newTemplList[1]); //update the header texts for the newly added log page
+					if (newTemplList.length) UpdateLogsheetNumbering(newTemplList[1]); // Update the header texts for the still remaining logsheets
 					break;
 				};
 			};
+
+			// Stop progress bar
+			thermoM(thermoTxt, true);
+
 		} else if ((/add/i).test(AddRemove)) {
 			// find the page where we want to add the new page at
 			var tempPage = !isTempVisible ? whatPage(tempNm) : tDoc.getField(tempExtras.slice(-1)[0] + BookMarkList[tempNm]).page + 1;
-			thermoM(tempNm.substring(0, 2) === "SS" ? "Generating the Spell Sheet(s), Acrobat will be unresponsive for a long time..." : "Adding " + TemplateNames[tempNm] + ", at page " + (tempPage + 1) + "..."); //change the progress dialog text
-			thermoM(0.75); //increment the progress dialog's progress
-			
+
+			// Start progress bar and stop calculations
+			var thermoTxt = isSS ? "Generating the Spell Sheet(s), Acrobat will be unresponsive for a long time..." : "Adding " + TemplateNames[tempNm] + ", at page " + (tempPage + 1) + "...";
+			thermoM(thermoTxt); thermoM(0.35);
+			calcStop();
+
 			var theNewPrefix = "P" + tempPage + "." + tempNm + ".";
-			
+
 			//if this template is already in use, it might already have the exact prefix that we would make. Thus, we will have to add blank pages to increase the number until it is no longer already defined
 			var toDeleteArray = [];
 			if (isTempVisible && tempExtras.indexOf(theNewPrefix) !== -1) {
@@ -2480,34 +2507,31 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 					theNewPrefix = "P" + tempPage + "." + tempNm + ".";
 				};
 			};
-			
-			//add the template, but with changing the field names
+
+			// Add another instance of the template, but with changing the field names
 			tDoc.getTemplate(tempNm).spawn(tempPage, true, false);
-		
+
+			// Put the updated array in the field
 			tempExtras.push(theNewPrefix);
-			//now put the updated array in the field
 			Value("Template.extras." + tempNm, tempExtras.toString());
-			
-			//now delete all the blank pages we added earlier
-			if (toDeleteArray.length) {
-				tDoc.deletePages({nStart: toDeleteArray[0], nEnd: toDeleteArray[0] + toDeleteArray.length - 1});
-			};
-			
-			//now amend the bookmarks
+
+			// Delete all the blank pages we added earlier
+			if (toDeleteArray.length) tDoc.deletePages({nStart: toDeleteArray[0], nEnd: toDeleteArray[0] + toDeleteArray.length - 1});
+
+			// Amend the bookmarks
 			if (!isTempVisible && BookMarkList[tempNm + "_Bookmarks"]) amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], true);
-			
-			//now do some extra actions, depending on the page added
+
+			// Do some extra actions, depending on the page added
 			switch (tempNm) {
-			 case "AScomp" :
-				FindCompRace(undefined, theNewPrefix); //re-find this companion page's races
-				FindCompWeapons(undefined, theNewPrefix); //re-find this companion page's weapons
+			 case "AScomp" : // Re-find the companion pages races and weapons
+				FindCompRace(undefined, theNewPrefix); 
+				FindCompWeapons(undefined, theNewPrefix);
 				break;
-			 case "ALlog" :
-				if (isTempVisible) UpdateLogsheetNumbering(theNewPrefix); //update the header texts for the newly added log page
-				SetAdvLogCalcOrder(theNewPrefix); //update the calculation order of the newly added sheet
+			 case "ALlog" : // Update header text and reset calculation order
+				if (isTempVisible) UpdateLogsheetNumbering(theNewPrefix);
+				SetAdvLogCalcOrder(theNewPrefix);
 				break;
-			 case "SSfront" :
-				// change the tooltips of the top header and diver, as those can't be moved or hidden
+			 case "SSfront" : // change the tooltips of the top header and divider, as those can't be moved or hidden
 				AddTooltip(theNewPrefix + "spellshead.Text.header.0", "Clear the content of this field to make its prepared section visible again, if you had hidden it.");
 				AddTooltip(theNewPrefix + "spellsdiv.Text.0", "");
 				break;
@@ -2515,15 +2539,17 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 				Uneditable(theNewPrefix + "spellshead." + (!typePF? "Text" : "Image") + ".prepare.0");
 				break;
 			};
-			
+
 			//set focus to the new page
 			tDoc.getField(theNewPrefix + BookMarkList[tempNm]).setFocus();
+
+			// Stop progress bar and start calculations
+			thermoM(thermoTxt, true);
+			calcStart();
 		};
 	};
-	
-	calcStart();
-	thermoM(); //stop all the ongoing progress dialogs
-	return theNewPrefix ? theNewPrefix : ""; //if a new template was created with a prefix, return that prefix
+	// If a new template was created with a prefix, return that prefix
+	return theNewPrefix ? theNewPrefix : "";
 };
 
 //Make menu for the options for hiding, adding, and removing templates (i.e. pages)
@@ -5399,7 +5425,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			(/^(simple|martial)$/i).test(theWea.type) ? tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) : false;
 		
 		//add mod
-		var StrDex = What("Str Mod") < What("Dex Mod") ? 2 : 1;
+		var StrDex = What("Str") < What("Dex") ? 2 : 1;
 		fields.Mod = isReCalc && !theWea.ability ? What(fldBase + "Mod") :
 			(/finesse/i).test(theWea.description) ? StrDex : theWea.ability;
 		
@@ -5410,7 +5436,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			});
 			var abiModArr = [];
 			abiArr.forEach(function (abiNmbr) {
-				var thisMod = What(AbilityScores.abbreviations[abiNmbr - 1] + " Mod");
+				var thisMod = What(AbilityScores.abbreviations[abiNmbr - 1]);
 				if (thisMod > Math.max.apply(Math, abiModArr)) fields.Mod = abiNmbr;
 				abiModArr.push(thisMod);
 			});
@@ -6805,7 +6831,8 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods) {
 };
 
 // open a dialogue with a number of lines of choices and return the choices in an array; if knownOpt === "radio", show radio buttons instead, and return the entry selected
-function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
+// if notProficiencies is set to true, the optType will serve as the dialog header, and optSrc will serve as the multline explanatory text
+function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies) {
 	if (!IsNotImport) return optSubj;
 	//first make the entry lines
 	var selectionLines = [];
@@ -6838,6 +6865,8 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 			});
 		};
 	};
+	
+	var diaHeader = notProficiencies ? optType : "Select proficiencies";
 	
 	//make all the known options lowercase for easier testing
 	if (knownOpt && knownOpt !== "radio") { for (var i = 0; i < knownOpt.length; i++) { knownOpt[i] = knownOpt[i].toLowerCase(); }; };
@@ -6884,7 +6913,7 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 			dialog.visible(toShow);
 		},
 		description : {
-			name : "Select proficiencies",
+			name : diaHeader,
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -6896,8 +6925,16 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 					bold : true,
 					wrap_name : true,
 					char_width : 40,
-					name : "Select proficiencies"
-				}, {
+					name : diaHeader
+				}].concat(notProficiencies ? [{
+					type : "static_text",
+					item_id : "txtA",
+					alignment : "align_fill",
+					font : "dialog",
+					wrap_name : true,
+					char_width : 40,
+					name : optSrc
+				}] : [{
 					type : "view",
 					alignment : "align_fill",
 					align_children : "align_row",
@@ -6938,7 +6975,7 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 							name : optSrc
 						}]
 					}]
-				}, {
+				}]).concat([{
 					type : "view",
 					alignment : "align_center",
 					align_children : "align_left",
@@ -6946,13 +6983,13 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt) {
 				}, {
 					type : "static_text",
 					alignment : "align_fill",
-					item_id : "txt1",
+					item_id : "txtL",
 					wrap_name : true,
 					name : "You can always change what you set here at a later time by editing the corresponding field on the sheet. What you select here is not permanent.",
 					char_width : 40
 				}, {
 					type : "ok"
-				}]
+				}])
 			}]
 		}
 	};
@@ -7150,13 +7187,7 @@ function setCalcOrder() {
 	var cOrd = 0;
 	for (var i = 0; i < cFlds.length; i++) {
 		var aFld = tDoc.getField(cFlds[i]);
-		if (!aFld || aFld.calcOrderIndex == undefined) {
-			console.println("Error: "+cFlds[i]); //DEBUGGING!!!
-			continue;
-		}
 		aFld.calcOrderIndex = cOrd;
 		cOrd++;
 	};
-}
-
-listCalcs();
+};

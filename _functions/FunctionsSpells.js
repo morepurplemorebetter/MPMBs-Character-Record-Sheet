@@ -201,33 +201,36 @@ function ApplySpell(FldValue, rememberFldName) {
 			var spTooltip = "";
 			if (aSpell.descriptionFull && (aSpell.school || aSpell.psionic)) {
 				spTooltip += toUni(aSpell.name) + " \u2014 ";
-				spTooltip += aSpell.psionic ? (aSpell.level === 0 ? "Psionic talent" : spellSchoolList[aSpell.school].capitalize() + " discipline") :
-					aSpell.level === 0 ? spellSchoolList[aSpell.school].capitalize() + " cantrip" :
-					spellLevelList[aSpell.level] + " " + spellSchoolList[aSpell.school];
+				spTooltip += aSpell.psionic ? (aSpell.level == 0 ? spellLevelList[aSpell.level + 10].replace(/s\b/, '') : spellSchoolList[aSpell.school].capitalize() + spellLevelList[aSpell.level + 10].replace(/s\b/, '').toLowerCase()) :
+					aSpell.level == 0 ? spellSchoolList[aSpell.school].capitalize() + spellLevelList[aSpell.level].replace(/s\b/, '').toLowerCase() :
+					spellLevelList[aSpell.level].replace(/s\b/, '').toLowerCase() + " " + spellSchoolList[aSpell.school];
 				spTooltip += aSpell.ritual ? " (ritual)" : "";
 				spTooltip += "\n   " + aSpell.descriptionFull;
 			};
+			
+			//set what an empty cell should look like
+			var emptyCell = "\u2014";
 			
 			//set the spell description and the tooltip with the full description
 			Value(base.replace("remember", "description"), spDescr, spTooltip);
 			
 			//set the spell save
-			Value(base.replace("remember", "save"), aSpell.save ? aSpell.save : "\u2014");
+			Value(base.replace("remember", "save"), aSpell.save ? aSpell.save : emptyCell);
 			
 			//set the spell school
-			Value(base.replace("remember", "school"), aSpell.school ? aSpell.school : "\u2014");
+			Value(base.replace("remember", "school"), aSpell.school ? aSpell.school : emptyCell);
 			
 			//set the spell time
-			Value(base.replace("remember", "time"), aSpell.time ? aSpell.time : "\u2014");
+			Value(base.replace("remember", "time"), aSpell.time ? aSpell.time : emptyCell);
 			
 			//set the spell range
-			Value(base.replace("remember", "range"), spRange ? spRange : "\u2014");
+			Value(base.replace("remember", "range"), spRange ? spRange : emptyCell);
 			
 			//set the spell components
-			Value(base.replace("remember", "components"), aSpell.components ? aSpell.components : "\u2014", aSpell.compMaterial ? aSpell.compMaterial : "");
+			Value(base.replace("remember", "components"), aSpell.components ? aSpell.components : emptyCell, aSpell.compMaterial ? aSpell.compMaterial : "");
 			
 			//set the spell duration
-			Value(base.replace("remember", "duration"), aSpell.duration ? aSpell.duration : "\u2014");
+			Value(base.replace("remember", "duration"), aSpell.duration ? aSpell.duration : emptyCell);
 			
 			//set the spell book name and page
 			
@@ -268,36 +271,20 @@ function SetSpell(FldValue, nameFldName) {
 
 //set the text on the spell divider (the level of the spell)
 function SetSpellDividerName(field, level) {
-	var spellLvl = [
-		["Cantrips (", 0, " Level)"],
-		["", 1, "st Level"],
-		["", 2, "nd Level"],
-		["", 3, "rd Level"],
-		["", 4, "th Level"],
-		["", 5, "th Level"],
-		["", 6, "th Level"],
-		["", 7, "th Level"],
-		["", 8, "th Level"],
-		["", 9, "th Level"],
-		["", "", "Psionic Talents"],
-		["", "", "Psionic Disciplines"],
-		["Spells (", "1-9", "th Level)"]
-	];
-	if (level > 11) level = 12;
+	var dName = level > 11 ? "Spells (1-9th Level)" : spellLevelList[level].replace('-l', ' L');
 	if (!typePF) {
-		var spans = [{
-			text : spellLvl[level][0]
-		}, {
-			text : spellLvl[level][1].toString(),
-			fontFamily : ["Pterra"],
-			textSize : 13
-		}, {
-			text : spellLvl[level][2]
-		}];
-		
+		var txts = dName.split(/\d+/);
+		var nums = !/\d/.test(dName) ? [] : dName.match(/\d+/g);
+		var spans = [];
+		for (var i = 0; i < txts.length; i++) {
+			spans.push({ text : txts[i]});
+			if (i < nums.length) {
+				spans.push({ text : nums[i], fontFamily : ["Pterra"], textSize : 13 });
+			}
+		}
 		tDoc.getField(field).richValue = spans;
 	} else {
-		Value(field, spellLvl[level].join(""));
+		Value(field, dName);
 	}
 }
 
@@ -748,7 +735,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 			//if the array has more than 0 entries, make it ready for the drop-down boxes in the dialog
 			if (spA.length > 0) {
 				spA.sort();
-				spA.unshift("", i !== 0 ? ">> " + spellLevelList[i] + " <<" : ">> Cantrips <<");
+				spA.unshift("", ">> " + (i <= 9 ? '' : 'Psionic ') + spellLevelList[i] + " <<");
 				returnArray = returnArray.concat(spA);
 				count += 1;
 			};
@@ -2936,8 +2923,7 @@ function AskUserSpellSheet() {
 	for (var theI = 0; theI < classesArray.length; theI++) {
 		var aCast = classesArray[theI];
 		var spCast = CurrentSpells[aCast];
-		
-		thermoM("start"); //start a progress dialog
+
 		thermoM("Generating the " + spCast.name + " dialog..."); //change the progress dialog text
 		thermoM(1/2); //increment the progress dialog's progress
 		
@@ -2964,10 +2950,10 @@ function AskUserSpellSheet() {
 		var isPsionics = spCast.factor && (/psionic/i).test(spCast.factor[1]);
 		
 		//set all the general parts of the dialog
-		dia.caNm = isPsionics ? "Talents" : "Cantrips";
-		dia.spNm = isPsionics ? "Disciplines" : "Spells";
+		dia.caNm = isPsionics ? spellLevelList[10] : spellLevelList[0].replace(/ \(.*/, '');
+		dia.spNm = isPsionics ? spellLevelList[11] : "Spells";
 		dia.levelSp = maxSpell;
-		dia.header = aCast; //the name in the dialog's header
+		dia.header = spCast.shortname ? spCast.shortname : spCast.name; //the name in the dialog's header
 		dia.fullname = spCast.name + (spCast.level ? ", level " + spCast.level : ""); //the full name of the feature including level
 		if (spCast.list) {
 			var GoAhead = true;
@@ -2994,7 +2980,7 @@ function AskUserSpellSheet() {
 			dia.showSpRadio = !isPsionics && (/list|book|known/i).test(dia.typeSp); //show the spell radio buttons if concerning a level-dependent spellcaster (classes)
 			if (dia.showSpRadio) { // set the name of the radio buttons and set the selection
 				if (spCast.level) {
-					var SpellLevel = maxSpell
+					var SpellLevel = maxSpell;
 					if (aCast === "warlock" && spCast.level >= 11) {
 						SpellLevel = defaultSpellTable[spCast.level].indexOf(0);
 						SpellLevel = Number(SpellLevel === -1 ? 9 : SpellLevel);
@@ -3103,11 +3089,11 @@ function AskUserSpellSheet() {
 		setDialogName(dia, "OKbt", "ok_name", dia.typeSp !== "book" ? "Continue to Next Dialogue >>" : "Add More Spells to the Spellbook");
 
 		thermoM("Opening the " + spCast.name + " dialog..."); //change the progress dialog text
+		thermoM(0.8);
 		
 		//now call the dialog and do something with the results if OK was pressed
 		var diaResult = app.execDialog(dia);
 		if (diaResult == "cancel") {
-			thermoM("stop"); //stop the top progress dialog
 			SetStringifieds("spells");
 			return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 		} else {
@@ -3171,7 +3157,6 @@ function AskUserSpellSheet() {
 			//if the previous button was pressed, go back one iteration
 			if (diaResult == "prev") {
 				theI -= 2;
-				thermoM("stop"); //stop the top progress dialog
 				continue;
 			};
 			
@@ -3238,11 +3223,9 @@ function AskUserSpellSheet() {
 				
 				// now if the spellbook dialogue was cancelled, do not continue with the rest of the function
 				if (diaSBResult == "cancel") {
-					thermoM("stop"); //stop the top progress dialog
 					SetStringifieds("spells");
 					return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 				} else if (diaSBResult == "prev") {
-					thermoM("stop"); //stop the top progress dialog
 					continue;
 				};
 			};
@@ -3282,7 +3265,6 @@ function AskUserSpellSheet() {
 				
 				//call the dialog and do something with the results
 				if (app.execDialog(diaPrep) !== "ok") {
-					thermoM("stop"); //stop the top progress dialog
 					SetStringifieds("spells");
 					return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 				} else {
@@ -3296,10 +3278,15 @@ function AskUserSpellSheet() {
 				}
 			}
 		}
-		thermoM("stop"); //stop the top progress dialog
 	};
 	
-	if (classesArray.length > 0) {		
+	var toReturn = classesArray.length > 0;
+	
+	// If any spellcasting classes exist, open a dialog asking for which of those should be put on the spell sheet pages
+	if (classesArray.length > 0) {
+		// Make the process bar show some text now, because the last thing shown before a dialog is shown is what is left during the spell sheet generation process
+		thermoM("Generating the Spell Sheet(s), Acrobat will be unresponsive for a long time..."); //change the progress dialog text
+		
 		//first see how the lists are doing
 		if (!CurrentCasters.excl && !CurrentCasters.incl) { //no list exists yet, so lets make one
 			CurrentCasters.excl = [];
@@ -3343,8 +3330,7 @@ function AskUserSpellSheet() {
 		SpellSheetOrder_Dialog.bIncL = inclNames;
 		SpellSheetOrder_Dialog.glossary = CurrentCasters.glossary;
 		if (app.execDialog(SpellSheetOrder_Dialog) !== "ok") {
-			SetStringifieds("spells");
-			return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
+			toReturn = "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 		} else {
 			var exclList = SpellSheetOrder_Dialog.bExcL;
 			var inclList = SpellSheetOrder_Dialog.bIncL;
@@ -3366,23 +3352,26 @@ function AskUserSpellSheet() {
 			CurrentCasters.incl = inclList;
 			CurrentCasters.glossary = SpellSheetOrder_Dialog.glossary;
 		}
+		thermoM(0.5); //progress the progress dialog so that it looks like something is happening (don't close it yet)
 	}
 	
 	//now save the updated CurrentSpells and CurrentCasters variables to the field
 	SetStringifieds("spells");
-	
-	//now return true if dialogs were presented, and false if they weren't
-	return classesArray.length > 0;
+	return toReturn;
 }
 
 //generate the spell sheet for all the different classes
-function GenerateSpellSheet(GoOn) {	
+function GenerateSpellSheet(GoOn) {
+	var thermoTxt = "Generating the Spell Sheet(s), Acrobat will be unresponsive for a long time...";
+	
 	//first ask the user for input on what to do with all the spellcasting classes
 	if (!GoOn) var GoOn = AskUserSpellSheet();
-	
+
 	if (!GoOn) {
+		// invoke the progress bar here, so that it is definitely visible
+		thermoM(thermoTxt);
 		var toAsk = {
-			cMsg : "It seems as though your character has no spellcasting abilities. Make sure that there is something to make a Spell Sheet for.\n\nIt could be that they are not yet implemented (racial spellcasting does not work yet) or that they have been overlooked. If you think something is going wrong, please contact MorePurpleMoreBetter (flapkan@gmail.com).\n\nWould you instead like to remove any current Spell Sheet(s) and add an empty one that can be filled manually? You can then add/remove more pages using the \"Spells\" and \"Layout\" buttons in the \"JavaScript Window\" or in the bookmarks.\n\nRemoving the Spell Sheets cannot be undone!",
+			cMsg : "It seems as though your character has no spellcasting abilities. Make sure that there is something to make a Spell Sheet for.\n\nIt could be that they are not yet implemented or that they have been overlooked. If you think something is going wrong, please contact MorePurpleMoreBetter (flapkan@gmail.com).\n\nWould you instead like to remove any current Spell Sheet(s) and add an empty one that can be filled manually? You can then add/remove more pages using the \"Spells\" and \"Layout\" buttons in the \"JavaScript Window\" or in the bookmarks.\n\nRemoving the Spell Sheets cannot be undone!",
 			nIcon : 1,
 			cTitle : "No spellcasting found",
 			nType : 2, //Yes-No
@@ -3394,17 +3383,16 @@ function GenerateSpellSheet(GoOn) {
 			calcStart();
 		}
 		return; // do not continue with this function for it is pointless
-	} else if (GoOn === "stop" ) {
+	} else if (GoOn === "stop") {
 		return; // do not continue with this function if one of the dialogs was cancelled
 	}
-	
-	thermoM("start"); //start a progress dialog
-	thermoM("Generating the Spell Sheet(s), Acrobat will be unresponsive for a long time..."); //change the progress dialog text
+
+	thermoM(thermoTxt); //change the progress dialog text
 	
 	thermoM(1/(CurrentCasters.incl.length + 3)); //increment the progress dialog's progress
-	
-	calcStop("genspellsheet");
-	
+
+	calcStop();
+
 	//then we remove all the existing sheets (if any)
 	RemoveSpellSheets();
 	
@@ -3587,17 +3575,25 @@ function GenerateSpellSheet(GoOn) {
 		//then add the glossary
 		Value(prefixCurrent + "spells.remember." + lineCurrent, "setglossary");
 	}
-	
-	calcStart(true, "genspellsheet");
-	
-	thermoM(); //stop all the progress dialogs
-	
+
 	var SSvisible = isTemplVis("SSfront", true);
 	if (SSvisible[0]) tDoc.getField(SSvisible[1] + "spells.name.0").setFocus(); // set the focus to the top of the Spell Sheet
 }
 
 //remove all visible spell sheets and reset the template remember fields
 function RemoveSpellSheets(noFirst) {
+	if (tDoc.info.SpellsOnly) tDoc.getTemplate("blank").spawn(0, false, false);
+	DoTemplate("SSmore", "removeall", false, true);
+	DoTemplate("SSfront", "removeall", false, true);
+	if (tDoc.info.SpellsOnly) {
+		var forFirst = noFirst ? "SSmore" : "SSfront";
+		tDoc.getTemplate(forFirst).spawn(0, true, false);
+		Value("Template.extras." + forFirst, ",P0." + forFirst + ".");
+		tDoc.deletePages(1);
+	}
+};
+// DEBUGGING!!!
+/* function RemoveSpellSheets(noFirst) {
 	var SSarray = What("Template.extras.SSmore").split(",");
 	SSarray[0] = What("Template.extras.SSfront").split(",")[1];
 	if (!SSarray[0]) SSarray.shift();
@@ -3619,7 +3615,7 @@ function RemoveSpellSheets(noFirst) {
 			tDoc.deletePages(1);
 		};
 	};
-};
+}; */
 
 //make menu for the spell options button
 function MakeSpellMenu() {
@@ -3799,7 +3795,7 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 		//see if the Spell Sheets are visible
 		var SSvisible = What("Template.extras.SSfront") !== "" || What("Template.extras.SSmore") !== "";
 		var SSmultiple = What("Template.extras.SSmore").split(",").length > 2 || (What("Template.extras.SSfront") !== "" && What("Template.extras.SSmore") !== "");
-		calcStop();
+		//calcStop(); //DEBUGGING!!!
 		switch (MenuSelection[1]) {
 		 case "generate" :
 			GenerateSpellSheet();
@@ -3879,7 +3875,7 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 			ToggleSpellPoints();
 			break;
 		};
-		calcStart(true);
+		//calcStart(true); //DEBUGGING!!!
 	};
 };
 
@@ -3938,19 +3934,7 @@ function CalcSpellsheetNumber() {
 function ParseSpellMenu() {
 	//define a function for creating the full set of spells-by-level menu for a class
 	var createMenu = function(menu, className, fullArray) {
-		var nameArray = [
-			"All spells",
-			"Cantrips",
-			"1st-level",
-			"2nd-level",
-			"3rd-level",
-			"4th-level",
-			"5th-level",
-			"6th-level",
-			"7th-level",
-			"8th-level",
-			"9th-level"
-		];
+		var nameArray = ["All spells"].concat(spellLevelList);
 		var classTemp = {cName : className, oSubMenu : []};
 		for (var y = 0; y < fullArray.length; y++) {
 			var spellsArray = fullArray[y];
@@ -4281,7 +4265,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	menuLVL2(spellsLineMenu, ["Empty Printable Line", "___"], lineTypes);
 	
 	//add the options for adding a caption line
-	var captionArray = [["with empty first column", ""], ["with 'Me' as first column", "me"], ["with 'Kn' as first column", "kn"], ["Ask me for the first column", "askuserinput"]];
+	var captionArray = [["with empty first column", ""], ["with 'Me' as first column (memorized)", "me"], ["with 'Kn' as first column (known)", "kn"], ["Ask me for the first column", "askuserinput"]];
 	if (addPsionics) captionArray.splice(3, 0, ["for Psionics", "psionicpp"]);
 	menuLVL2(spellsLineMenu, ["Column Captions", "setcaptions"], captionArray);
 	
@@ -4309,7 +4293,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	var dividersArray = [];
 	var numberArray = [];
 	for (var d = 0; d < spellLevelList.length; d++) {
-		dividersArray.push([d === 0 ? "Cantrips (0 Level)" : spellLevelList[d].replace("-l", " L"), d]);
+		dividersArray.push([d < 10 ? spellLevelList[d].replace("-l", " L") : "Psionic " + spellLevelList[d], d]);
 		numberArray.push([(d + 1) + " empty row" + (d === 0 ? "" : "s"), d + 1]);
 	}
 	if (!addPsionics) dividersArray.splice(-2,2);
@@ -4911,6 +4895,7 @@ function MakeGlossMenu_GlossOptions() {
 
 //check if there are any changes from the last level to the new concerning spells
 function CheckForSpellUpdate() {
+	calcStart(true, false, true); // force to start drawing again so it is clear the race/class changes are there
 	var toAsk = eval(What("SpellSheetUpdate.Remember"));
 	for (var exceptions in IsSubclassException) toAsk = true;
 	if (toAsk || !IsNotImport) return; //we don't need to do this function now

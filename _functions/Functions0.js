@@ -425,44 +425,59 @@ function ObjLength(theObj) {
 	return size;
 };
 
-//start a progress dialog. input can be a value to add, the command "stop" to stop, or a string to display.
-function thermoM(input) {
-	var t = app.thermometer;
-	var dT = 100;
-	if (input === undefined || input === false || t.cancelled === true) {
-		for (var i = 1; i <= thermoCount.length; i++) { t.end(); };
-		thermoCount = [];
-		thermoDur = {};
-		calcStart(true);
+
+
+// start a progress dialog
+// input can be a percentage of the progress or a string to display
+// if remove is set to true, the entry corresponding to the input text is removed
+function thermoM(input, remove) {
+	if (!input || input.toLowerCase() == "stop") {
+		thermoStopSet = app.setTimeOut("thermoStop();", 500);
+		return
 	}
-	if (input === undefined || input === false) {
-		return;
-	} else if (isNaN(input)) {
-		if (input === "start" && t.text !== "Applying changes...") {
+	var t = app.thermometer;
+	var dT = 10;
+	if (remove) { // remove the named entry
+		if (thermoCount.indexOf(input) !== -1) {
+			thermoCount.splice(thermoCount.indexOf(input), 1);
+			delete thermoDur[input];
+			if (thermoCount.length) {
+				t.text = thermoCount[thermoCount.length -1];
+				t.value = thermoDur[t.text];
+			}
+		}
+	} else if (isNaN(input)) { // start new with the input text
+		if (t.text == undefined) {
 			t.begin();
 			t.duration = dT;
+		}
+		t.text = input;
+		if (thermoCount.indexOf(input) !== -1) {
 			t.value = 1;
-			t.text = "Applying changes...";
-			thermoCount.push("Applying changes...");
-			thermoDur["Applying changes..."] = 1;
-		} else if (input === "start" || input === "stop" || (thermoCount.indexOf("Applying changes...") !== thermoCount.length - 1 && thermoCount.indexOf("Applying changes...") !== -1)) {
-			thermoCount.splice(thermoCount.indexOf(t.text), 1);
-			delete thermoDur[t.text];
-			t.end();
-			if (thermoCount.length) {
-				t.text = thermoCount[thermoCount.length - 1];
-				t.value = thermoDur[thermoCount[thermoCount.length - 1]];
-			}
-		} else {
-			thermoCount.splice(thermoCount.indexOf(t.text), 1);
 			thermoCount.push(input);
-			t.text = input;
+			thermoDur[input] = 0;
+		} else {
+			t.value++;
 			thermoDur[input] = t.value;
 		}
-	} else if (!isNaN(input)) {
-		t.value = input * dT;
-		thermoDur[thermoCount[thermoCount.length - 1]] = input * dT;
+	} else if (t.text != undefined) { // update progress with the input number (if there is an active progress bar)
+		t.value = dT * input;
+		thermoDur[thermoCount[thermoCount.length -1]] = t.value;
 	}
+	// close all dialogs half a second after the last bit of code finishes
+	if (!thermoStopSet) thermoStopSet = app.setTimeOut("thermoStop();", 500);
+};
+
+// end all instances of the progress dialog
+function thermoStop() {
+	thermoStopSet = false;
+	thermoCount = [];
+	thermoDur = {};
+	var i = 0;
+	while(i < 1000 && app.thermometer.text != undefined) {
+		app.thermometer.end();
+		i++
+	};
 };
 
 //test if a font works or not
@@ -1049,24 +1064,24 @@ function semVersToNmbr(inSemV) {
 	return isNaN(nmbr) ? 0 : nmbr;
 };
 
-// function to stop the calculations of the PDF
+// Stop calculations and drawing of fields in the whole PDF to speed up changes
 // give a namedStop to make sure that it only can be started again with the same namedStop (and if no other namedStops are present)
-function calcStop(namedStop) {
+function calcStop() {
 	app.calculate = false;
 	tDoc.calculate = false;
 	tDoc.delay = true;
-	if (namedStop) calcBreak[namedStop.toLowerCase()] = true;
+	if (!calcStartSet) calcStartSet = app.setTimeOut("calcCont();", 250);
 };
 
 // function to start the calculations of the PDF again
-function calcStart(calcNow, namedStop, force) {
-	if (namedStop) delete calcBreak[namedStop.toLowerCase()];
-	if (!force && calcBreak.toSource() != "({})") return; // only continue if there is nothing else impeding calculations
-	var wasntCalc = !app.calculate && !tDoc.calculate;
+function calcStart() {};
+function calcCont() {
 	app.calculate = true;
 	tDoc.calculate = true;
 	tDoc.delay = false;
-	if (calcNow && wasntCalc) tDoc.calculateNow();
+	tDoc.calculateNow();
+	calcStartSet = false;
+	thermoStop();
 };
 
 // function to find the value (date) of a source

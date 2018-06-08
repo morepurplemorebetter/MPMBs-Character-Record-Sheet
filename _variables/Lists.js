@@ -302,7 +302,9 @@ var CurrentProfs = { // Also change field defaultValue!
 	speed : {}
 };
 
-var calcBreak = {};
+var thermoCount = [], thermoDur = {};
+var calcStartSet, thermoStopSet;
+var IsSubclassException = {};
 var IsNotReset = true;
 var IsNotImport = true;
 var IsNotFeatMenu = true;
@@ -1889,10 +1891,6 @@ var TemplateResetRanges = {
 	"WSfront" : ["Wildshape.Race"],
 	"ALlog" : ["AdvLog", "Text.AdvLog"]
 };
-
-var thermoCount = [];
-var thermoDur = {};
-var IsSubclassException = {};
 
 var factionRanks = {
 	"emeraldenclave" : [

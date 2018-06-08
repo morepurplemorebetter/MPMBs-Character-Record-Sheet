@@ -709,7 +709,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("All ST Bonus", {notTooltip: true, notSubmitName: true});
 		
 		//now recalculate all the weapons, forcing them to re-do all attributes
-		forceReCalcWeapons = true; ReCalcWeapons();
+		tDoc.calculateNow(); forceReCalcWeapons = true; ReCalcWeapons();
 		
 		//set the ability save DC
 		ImportField("Spell DC 1 Mod", {notTooltip: true}); ImportField("Spell DC 1 Bonus", {notTooltip: true, notSubmitName: true});
@@ -1241,9 +1241,7 @@ function DirectImport(consoleTrigger) {
 			nIcon : 3,
 			cTitle : "Some things to consider about the new sheet"
 		});
-	}
-	
-	calcStart(true);
+	};
 };
 
 //a function to import a field from the global.docFrom
