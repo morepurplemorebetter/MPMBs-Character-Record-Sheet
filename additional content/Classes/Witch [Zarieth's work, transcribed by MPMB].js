@@ -9,11 +9,11 @@
 /*	-INFORMATION-
 	Subject:	Class
 	Effect:		This script adds a class called the "Witch" and its 5 subclasses
-	
-				This class has been made by /u/Zarieth on the subbreddit /UnearthedArcana 
+
+				This class has been made by /u/Zarieth on the subbreddit /r/UnearthedArcana
 				It can be found here: https://reddit.com/5dtd1x/
 				This code is based on v0.4 of /u/Zarieth's work (2017-03-06)
-					
+
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-09-21 (sheet v12.998)
 */
