@@ -176,7 +176,7 @@ ClassList["witch (zarieth)"] = {
 				"\u25C6 Wonder: As an action, I distract all in 30 ft with my wonder: disadv. on Perception check",
 				"   Release when my spell hits or a target fails its save: Target is stunned until my next turn"
 			].join("\n"),
-			eval : "AddString('Extra.Notes', ClassList['witch (zarieth)'].features['binding rites'].spirits, true); AddAction('bonus action', 'Release Spirit Bond', 'Witch (Binding Rites)'); if(!typePF) { var LayersFld = What('Extra.Layers Remember').split(','); LayersFld[0] = 'notes'; Value('Extra.Layers Remember', LayersFld); LayerVisibilityOptions(false); };",
+			eval : "AddString('Extra.Notes', ClassList['witch (zarieth)'].features['binding rites'].spirits, true); AddAction('bonus action', 'Release Spirit Bond', 'Witch (Binding Rites)'); if(sheetVersion < 13) { Value('Extra.Layers Remember', 'notes,' + What('Extra.Layers Remember').split(',')[1]); LayerVisibilityOptions(false); } else { show3rdPageNotes(); };",
 			removeeval : "RemoveString('Extra.Notes', ClassList['witch (zarieth)'].features['binding rites'].spirits); RemoveAction('bonus action', 'Release Spirit Bond');"
 		},
 		"spirit ward" : {

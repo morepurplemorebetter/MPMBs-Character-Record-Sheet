@@ -200,7 +200,7 @@ ClassList["justiciar"] = {
 				if (jTxt == jTxtOld) return;
 				ReplaceString("Extra.Notes", jTxt, false, jTxtOld);
 			},
-			eval : "AddAction('bonus action', 'Binding Cell (dismiss)', 'Justiciar'); Value('Extra.Layers Remember', 'notes,' + What('Extra.Layers Remember').split(',')[1]); LayerVisibilityOptions(false);",
+			eval : "AddAction('bonus action', 'Binding Cell (dismiss)', 'Justiciar'); if(sheetVersion < 13) { Value('Extra.Layers Remember', 'notes,' + What('Extra.Layers Remember').split(',')[1]); LayerVisibilityOptions(false); } else { show3rdPageNotes(); };",
 			removeeval : "RemoveAction('bonus action', 'Binding Cell (dismiss)', 'Justiciar');",
 			changeeval : "ClassList.justiciar.features['binding cell'].fillExtraNotes();"
 		},
