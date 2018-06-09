@@ -43,7 +43,7 @@ var typeA4 = (/a4/i).test(tDoc.info.SheetType);
 var typeLR = (/letter/i).test(tDoc.info.SheetType);
 var minVer = tDoc.info.SpellsOnly || tDoc.info.AdvLogOnly;
 var sheetVersion = parseFloat(tDoc.info.SheetVersion);
-var semVers = nmbrToSemanticVersion(sheetVersion);
+var semVers = nmbrToSemanticVersion(sheetVersion) + (tDoc.info.SheetVersionType ? tDoc.info.SheetVersionType : "");
 var isWindows = app.platform === "WIN";
 var patreonVersion = tDoc.getField("SaveIMG.Patreon").submitName === "";
 
@@ -341,6 +341,7 @@ var CurrentCasters = {};
 var CurrentSources = {firstTime : true, globalExcl : []};
 var CurrentEvals = {};
 var CurrentScriptFiles = {};
+var CurrentVars = {};
 
 var UpdateSpellSheets = {};
 
@@ -1953,6 +1954,15 @@ var cantripDie = levels.map(function (n) {
 	if (n < 17) return 3;
 	return 4;
 });
+
+// A backwards compatible way to call the field content of those that are now part of the CurrentVars object
+var BackwardsCompatible = {
+	'MakeMobileReady Remember' : "!CurrentVars.mobileset ? '' : CurrentVars.mobileset.active ? true : '';",
+	'WhiteoutRemember' : "CurrentVars.whiteout",
+	'FontSize Remember' : "CurrentVars.fontsize",
+	'Extra.Layers Remember' : 'CurrentVars.vislayers.toString()',
+	'BlueTextRemember' : "CurrentVars.bluetxt ? 'Yes' : 'No';"
+}
 
 var license = [
   "OPEN GAME LICENSE Version 1.0a",

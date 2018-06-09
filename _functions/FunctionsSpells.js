@@ -1,29 +1,38 @@
 // find the spell in the SpellsList
-// UPDATE NEEDED!!!
 function ParseSpell(input) {
-	var result = "";
-	if (input) {
-		input = clean(RemoveZeroWidths(input.replace(/ \(.{1,2}\)/i, "")), false, true);
-		var foundLen = 0;
+	var found = "";
+	if (!input) return found;
+	
+	input = clean(RemoveZeroWidths(input.replace(/ \(.{1,2}\)/i, "")), false, true).toLowerCase();
+	var foundLen = 0;
+	var foundDat = 0;
+	
+	for (var key in SpellsList) { //scan string for all creatures
+		var kObj = SpellsList[key];
+		if (testSource(key, kObj, "spellsExcl")) continue; // test if the spell or its source isn't excluded
 
-		for (var key in SpellsList) { //scan string for all creatures
-			if (testSource(key, SpellsList[key], "spellsExcl")) continue; //only testing if the source of the spell isn't excluded
-			if (input.toLowerCase() !== key) {
-				var toSearch = "\\b(" + clean(SpellsList[key].name).replace(/^\W|\W$/g, "").RegEscape();
-				toSearch += SpellsList[key].nameShort ? "|" + clean(SpellsList[key].nameShort).replace(/^\W|\W$/g, "").RegEscape() : "";
-				toSearch += SpellsList[key].nameAlt ? "|" + clean(SpellsList[key].nameAlt).replace(/^\W|\W$/g, "").RegEscape() : "";
-				toSearch += ")\\b";
-				var toTest = RegExp(toSearch, "i");
-			} else {
-				var toTest = /AbCdE/; // something that will never match
-			};
-			if (key.length > foundLen && (input.toLowerCase() === key || toTest.test(input))) {
-				result = key;
-				foundLen = key.length;
-			};
+		var thisOne = input.toLowerCase() == key; // see if the input matches the key exactly
+		if (!thisOne && kObj.regExpSearch) { // if not exact match, see if a regex matches
+			thisOne = toTest.test(kObj.regExpSearch);
+		} else {
+			var toSearch = "\\b(" + clean(kObj.name).replace(/^\W|\W$/g, "").RegEscape();
+			toSearch += kObj.nameShort ? "|" + clean(kObj.nameShort).replace(/^\W|\W$/g, "").RegEscape() : "";
+			toSearch += kObj.nameAlt ? "|" + clean(kObj.nameAlt).replace(/^\W|\W$/g, "").RegEscape() : "";
+			toSearch += ")\\b";
+			thisOne = RegExp(toSearch, "i").test(input);
 		};
-	};
-	return result;
+		if (!thisOne) continue; // no exact or regex match, so skip
+
+		// stop if the source of the previous match is more recent and this new match is not a better match
+		var tempDate = sourceDate(kObj.source);
+		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+
+		// we have a match, set the values
+		found = key;
+		foundLen = kObj.name.length
+		foundDat = tempDate;
+	}
+	return found;
 };
 
 // call this on validation of the hidden spell remember field, to apply something to the spell line
@@ -381,7 +390,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 			gRect[3] += dY; //add dY to the lower-righ y
 			setRect(moveArray[m], gRect); //set the new coordinates
 		}
-		if (What("BlueTextRemember") === "Yes" && moveArray[m].indexOf("BlueText") !== -1) {
+		if (CurrentVars.bluetxt && moveArray[m].indexOf("BlueText") !== -1) {
 			DontPrint(moveArray[m]);
 		} else if (moveArray[m].indexOf("BlueText") === -1 && moveArray[m].indexOf(".class.") === -1) {
 			Show(moveArray[m]);
@@ -5227,7 +5236,7 @@ function CreateBkmrksCompleteSpellSheet() {
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Spells Options", cExpr: "MakeSpellMenu_SpellOptions();", nIndex: 1});
 	tDoc.bookmarkRoot.children[0].children[1].color = ["RGB", 0.2509765625, 0.5176544189453125, 0.67059326171875];
 
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady(What('MakeMobileReady Remember') === '');", nIndex: 2});
+	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady();", nIndex: 2});
 	tDoc.bookmarkRoot.children[0].children[2].color = ["RGB", 0.2823486328125, 0.1921539306640625, 0.478424072265625];
 	
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Unit System", cExpr: "SetUnitDecimals_Button();", nIndex: 3});
@@ -5293,7 +5302,7 @@ function ToggleSpellPoints() {
 	
 	//show/hide the BlueText fields for setting the spell slots
 	var SSfrontA = What("Template.extras.SSfront").split(",")[1];
-	var HideDontPrint = !SPactive && What("BlueTextRemember") === "Yes" ? "DontPrint" : "Hide";
+	var HideDontPrint = !SPactive && CurrentVars.bluetxt ? "DontPrint" : "Hide";
 	tDoc[HideDontPrint]("SpellSlots.CheckboxesSet");
 	if (SSfrontA) tDoc[HideDontPrint](SSfrontA + "SpellSlots.CheckboxesSet");
 	

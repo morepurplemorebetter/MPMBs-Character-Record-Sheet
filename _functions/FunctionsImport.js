@@ -444,17 +444,21 @@ function DirectImport(consoleTrigger) {
 		Value("Opening Remember", "Yes");
 		IsNotImport = false;
 		ignorePrereqs = true;
-		//make sure no pop-up comes up with welcome text
+		// Make sure no pop-up comes up with welcome text
 		if (global.docFrom.getField("Opening Remember")) global.docFrom.Value("Opening Remember", "Yes");
-		
-		//make sure to remove the flatten function
-		if (global.docFrom.getField("MakeMobileReady Remember") && global.docFrom.getField("MakeMobileReady Remember").value !== "") global.docFrom.MakeMobileReady(false);
 		
 		var fromSheetTypePF = global.docFrom.info.SheetType ? (/printer friendly/i).test(global.docFrom.info.SheetType) : false;
 		var fromSheetTypeLR = global.docFrom.info.SheetType ? (/letter/i).test(global.docFrom.info.SheetType) : (global.docFrom.info.Title ? (/letter/i).test(global.docFrom.info.Title) : false);
 		var bothPF = typePF && fromSheetTypePF;
 		var bothCF = !typePF && !fromSheetTypePF;
 		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
+		
+		// Make sure to remove the flattened state from the sheet to import from
+		if (FromVersion < 13) {
+			if (global.docFrom.getField("MakeMobileReady Remember") && global.docFrom.getField("MakeMobileReady Remember").value !== "") global.docFrom.MakeMobileReady(false);
+		} else {
+			global.docFrom.MakeMobileReady(false);
+		}
 		
 		//copy any custom script and run it
 		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : {};
@@ -539,9 +543,21 @@ function DirectImport(consoleTrigger) {
 		ImportField("Decimal Separator"); ImportField("DateFormat_Remember");
 		
 		//set the text options
-		if (ImportField("WhiteoutRemember")) ToggleWhiteout(eval(What("WhiteoutRemember")));
+		if (FromVersion < 13) {
+			if (global.docFrom.getField("WhiteoutRemember")) ToggleWhiteout(eval(global.docFrom.What("WhiteoutRemember")));
+			var FontSize_Remember_field = global.docFrom.getField("FontSize Remember") ? global.docFrom.getField("FontSize Remember").value : undefined;
+			if ((bothPF || bothCF || FontSize_Remember_field === 0) && FontSize_Remember_field != undefined) ToggleTextSize(FontSize_Remember_field);
+			LayerVisibilityOptions(false, global.docFrom.getField("Extra.Layers Remember") ? global.docFrom.getField("Extra.Layers Remember").value : undefined);
+			ToggleBlueText(global.docFrom.getField("Extra.Layers Remember") ? global.docFrom.getField("Extra.Layers Remember").value === "Yes" : false);
+		} else {
+			ToggleWhiteout(global.docFrom.CurrentVars.whiteout);
+			ToggleTextSize(global.docFrom.CurrentVars.fontsize);
+			LayerVisibilityOptions(false, global.docFrom.CurrentVars.vislayers);
+			ToggleBlueText(global.docFrom.CurrentVars.bluetxt);
+		}
+		SetStringifieds("vars");
+
 		if (bothPF && ImportField("BoxesLinesRemember")) ShowCalcBoxesLines(What("BoxesLinesRemember"));
-		if ((bothPF || bothCF || global.docFrom.getField("FontSize Remember").value === 0) && ImportField("FontSize Remember")) ToggleTextSize(What("FontSize Remember"));
 		if ((bothPF || bothCF) && global.docFrom.getField("Player Name").textFont !== global.docTo.getField("Player Name").textFont) ChangeFont(global.docFrom.getField("Player Name").textFont);
 		
 		//set the league remember toggle
@@ -606,9 +622,6 @@ function DirectImport(consoleTrigger) {
 		ImportField("Weight Carrying Capacity", {doVisiblity: true}, "Weight Carrying Capacity.Field"); ImportField("Weight Heavily Encumbered", {doVisiblity: true});
 		//set the weight remember fields
 		ImportField("Weight Remember Ammo Left"); ImportField("Weight Remember Ammo Right"); ImportField("Weight Remember Armor"); ImportField("Weight Remember Coins"); ImportField("Weight Remember Magic Items"); ImportField("Weight Remember Page2 Left"); ImportField("Weight Remember Page2 Middle"); ImportField("Weight Remember Page2 Right"); ImportField("Weight Remember Page3 Left"); ImportField("Weight Remember Page3 Right"); ImportField("Weight Remember Shield"); ImportField("Weight Remember Weapons");
-		
-		//set the visiblity on the third page
-		if (ImportField("Extra.Layers Remember")) LayerVisibilityOptions();
 		
 		//get the page layout of the sheet and copy it
 		var pagesLayout = {};
@@ -1163,10 +1176,7 @@ function DirectImport(consoleTrigger) {
 				}
 			};
 		};
-	//Some settings for the overall sheet
-		//set the bluetextfields
-		if (ImportField("BlueTextRemember")) ToggleBlueText(What("BlueTextRemember") === "Yes" ? "No" : "Yes");
-		
+	//Some settings for the overall sheet		
 		if (ImportField("Manual Attack Remember")) ToggleAttacks(What("Manual Attack Remember") === "Yes" ? "No" : "Yes");
 		ImportField("Manual Class Remember"); ImportField("Manual Race Remember"); ImportField("Manual Background Remember"); ImportField("Manual Feat Remember"); 
 		
@@ -1514,8 +1524,7 @@ function Import(type) {
 	
 	calcStop();
 	
-	//if the sheet is currently flattened, undo that first
-	if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
+	MakeMobileReady(false); // Undo flatten, if needed
 	
 	thermoM("start"); //start a progress dialog
 	thermoM("Importing the data..."); //change the progress dialog text
@@ -1541,6 +1550,8 @@ function Import(type) {
 		ignorePrereqs = false;
 	};
 	
+	GetStringifieds(); // Get the variables
+	
 	//set the values of the templates back
 	for (var i = 0; i < templateA.length; i++) {
 		Value(templateA[i][0], templateA[i][1]);
@@ -1550,32 +1561,28 @@ function Import(type) {
 	thermoM("Getting the sheet ready..."); //change the progress dialog text
 	
 	//set the layer visibility to what the imported field says
-	LayerVisibilityOptions(false);
+	LayerVisibilityOptions();
 	
 	//set the visibility of Honor/Sanity as imported
 	ShowHonorSanity();
 	
 	thermoM(14/25); //increment the progress dialog's progress
-	
-	tDoc.resetForm(["MakeMobileReady Remember"]); //make the sheet believe it is not flattened
+
+	if (CurrentVars.mobileset) CurrentVars.mobileset.active = false;
 	
 	thermoM(15/25); //increment the progress dialog's progress
 
 	//set the visiblity of the text lines as the imported remember field has been set to
-	if (What("WhiteoutRemember") !== false) {
-		ToggleWhiteout(false);
-	}
+	ToggleWhiteout(CurrentVars.whiteout);
 	
 	thermoM(16/25); //increment the progress dialog's progress
 
 	//set the text size for multiline fields as the imported remember field has been set to
-	if (What("FontSize Remember") !== (typePF ? 7 : 5.74)) {
-		ToggleTextSize(What("FontSize Remember"));
-	}
+	ToggleTextSize(CurrentVars.fontsize);
 	
 	thermoM(17/25); //increment the progress dialog's progress
 
-	//set the visiblity of the manual attack fiels the first page as the imported remember field has been set to
+	//set the visiblity of the manual attack fields on the first page as the imported remember field has been set to
 	if (What("Manual Attack Remember") !== "No") {
 		ToggleAttacks("No");
 	}
@@ -1609,9 +1616,7 @@ function Import(type) {
 	thermoM(19/25); //increment the progress dialog's progress
 
 	//set the visiblity of the Blue Text fields as the imported remember field has been set to
-	if (What("BlueTextRemember") !== "No") {
-		ToggleBlueText("No");
-	}
+	ToggleBlueText(CurrentVars.bluetxt);
 	
 	thermoM(20/25); //increment the progress dialog's progress
 

@@ -33,7 +33,7 @@ function Value(field, FldValue, tooltip, submitNm) {
 };
 
 function What(field) {
-	return tDoc.getField(field) ? tDoc.getField(field).value : "";
+	return tDoc.getField(field) ? tDoc.getField(field).value : BackwardsCompatible[field] ? eval(BackwardsCompatible[field]) : "";
 };
 
 function Who(field) {
@@ -431,11 +431,11 @@ function ObjLength(theObj) {
 // input can be a percentage of the progress or a string to display
 // if remove is set to true, the entry corresponding to the input text is removed
 function thermoM(input, remove) {
+	var t = app.thermometer;
 	if (!input || input.toLowerCase() == "stop") {
-		thermoStopSet = app.setTimeOut("thermoStop();", 500);
+		if (!thermoStopSet && t.text != undefined) thermoStopSet = app.setTimeOut("thermoStop();", 500);
 		return
 	}
-	var t = app.thermometer;
 	var dT = 10;
 	if (remove) { // remove the named entry
 		if (thermoCount.indexOf(input) !== -1) {
@@ -465,12 +465,15 @@ function thermoM(input, remove) {
 		thermoDur[thermoCount[thermoCount.length -1]] = t.value;
 	}
 	// close all dialogs half a second after the last bit of code finishes
-	if (!thermoStopSet) thermoStopSet = app.setTimeOut("thermoStop();", 500);
+	if (!thermoStopSet && t.text != undefined) thermoStopSet = app.setTimeOut("thermoStop();", 500);
 };
 
 // end all instances of the progress dialog
 function thermoStop() {
-	thermoStopSet = false;
+	if (thermoStopSet) {
+		app.clearTimeOut(thermoStopSet);
+		thermoStopSet = false;
+	}
 	thermoCount = [];
 	thermoDur = {};
 	var i = 0;
@@ -1076,11 +1079,14 @@ function calcStop() {
 // function to start the calculations of the PDF again
 function calcStart() {};
 function calcCont() {
+	if (calcStartSet) {
+		app.clearTimeOut(calcStartSet);
+		calcStartSet = false;
+	}
 	app.calculate = true;
 	tDoc.calculate = true;
 	tDoc.delay = false;
 	tDoc.calculateNow();
-	calcStartSet = false;
 	thermoStop();
 };
 

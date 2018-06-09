@@ -1,21 +1,29 @@
 //find the creature on the companion page
-// UPDATE NEEDED!!!
-function ParseCreature(Inputs) {
-	var result = "";
-	
-	if (Inputs) {
-		var tempString = removeDiacritics(Inputs.toLowerCase());
-		var foundLen = 0;
+function ParseCreature(input) {
+	var found = "";
+	if (!input) return found;
 
-		for (var key in CreatureList) { //scan string for all creatures
-			if (key.length > foundLen && (tempString.indexOf(key) !== -1 || tempString.indexOf(CreatureList[key].name.toLowerCase()) !== -1)) {
-				if (testSource(key, CreatureList[key], "creaExcl")) continue; // test if the creature or its source isn't excluded
-				result = key;
-				foundLen = key.length;
-			}
-		}
+	input = removeDiacritics(input).toLowerCase();
+	var foundLen = 0;
+	var foundDat = 0;
+
+	for (var key in CreatureList) { //scan string for all creatures
+		var kObj = CreatureList[key];
+
+		if ((input.indexOf(key) == -1 && input.indexOf(kObj.name.toLowerCase()) == -1) // see if the text matches
+			|| testSource(key, kObj, "creaExcl") // test if the creature or its source isn't excluded
+		) continue;
+		
+		// stop if the source of the previous match is more recent and this new match is not a better match
+		var tempDate = sourceDate(kObj.source);
+		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+		
+		// we have a match, set the values
+		found = key;
+		foundLen = kObj.name.length
+		foundDat = tempDate;
 	}
-	return result;
+	return found;
 };
 
 //detects race entered and put information to global CurrentCompRace variable
@@ -580,24 +588,19 @@ function CalcSkillComp() {
 };
 
 //see if the weapon matches one of the companion as a creature
-// UPDATE NEEDED!!!
 function parseCompWeapon(input, prefix) {
-	if (!input || !CurrentCompRace[prefix] || !CurrentCompRace[prefix].attacks) {
-		return "";
-	}
-	var tempString = removeDiacritics(input.toLowerCase());
-	var output = "";
+	if (!input || !CurrentCompRace[prefix] || !CurrentCompRace[prefix].attacks) return "";
+	
+	var input = removeDiacritics(input).toLowerCase();
 	var tempFound = false;
 	
 	//scan string for all attacks
 	for (var n = 0; n < CurrentCompRace[prefix].attacks.length; n++) {
-		if (!tempFound && tempString.indexOf(CurrentCompRace[prefix].attacks[n].name.toLowerCase()) !== -1) {
-			output = n;
-			tempFound = true;
-		}
+		var nAtk = CurrentCompRace[prefix].attacks[n].name.toLowerCase();
+		if (input.indexOf(nAtk) !== -1) return n;
 	}
 	
-	return output;
+	return "";
 }
 
 //detects weapons entered on the companion sheet and put information to global CurrentWeapons variable
@@ -1880,27 +1883,25 @@ function WildshapeUpdate(inputArray) {
 function ChangeFont(newFont, oldFont) {
 	newFont = newFont ? newFont : (!typePF ? "SegoePrint" : "SegoeUI");
 	oldFont = oldFont ? oldFont : tDoc.getField((tDoc.info.AdvLogOnly ? "AdvLog." : "") + "Player Name").textFont;
-	if (newFont === (!typePF ? "SegoePrint" : "SegoeUI")) {
-		var aTest = true;
-	} else {
-		var aTest = testFont(newFont);
-	}
-	if (aTest && newFont !== oldFont) {
-		//start a progress dialog
-		thermoM("start"); //start a progress dialog
-		thermoM("Applying the new font..."); //change the progress dialog text
-		
-		for (var F = 0; F < tDoc.numFields; F++) {
-			var Fname = tDoc.getNthFieldName(F);
-			var Fld = tDoc.getField(Fname);
-			if (!(/spells\.|Template\.extras/).test(Fname) && Fld.textFont === oldFont && (Fld.type !== "text" || Fld.richText === false)) {
-				Fld.textFont = newFont;
-			}
-			
-			thermoM(F/tDoc.numFields); //increment the progress dialog's progress
+	var aTest = newFont === (!typePF ? "SegoePrint" : "SegoeUI") ? true : testFont(newFont);
+	if (!aTest || newFont == oldFont) return;
+
+	// Start progress bar and stop calculations
+	var thermoTxt = "Applying the " + newFont + " font...";
+	thermoM(thermoTxt);
+	calcStop();
+
+	var FldNums = tDoc.numFields;
+	for (var F = 0; F < FldNums; F++) {
+		var Fname = tDoc.getNthFieldName(F);
+		var Fld = tDoc.getField(Fname);
+		if (!(/spells\.|Template\.extras/).test(Fname) && Fld.textFont === oldFont && (Fld.type !== "text" || Fld.richText === false)) {
+			Fld.textFont = newFont;
 		}
-		thermoM("stop"); //stop the top progress dialog
+		thermoM((F+1)/FldNums); //increment the progress dialog's progress
 	}
+
+	thermoM(thermoTxt, true); // Stop progress bar
 }
 
 //change the colorscheme that is used for the Ability Save DC. Choose from: "red", "green", ""; The "DC" can be either 1 or 2.
@@ -2360,8 +2361,7 @@ function Bookmark_Goto(BookNm) {
 
 // show/hide a template (AddRemove == undefined) or add/remove template with multiple instances (AddRemove == "Add" | "Remove" | "RemoveAll")
 function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
-	//if the sheet is currently flattened, undo that first
-	if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
+	MakeMobileReady(false); // Undo flatten, if needed
 	
 	//make a function for determining the next page to add the template
 	var whatPage = function(templN) {
@@ -2371,7 +2371,7 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 			var multiDep = TemplatesWithExtras.indexOf(theDep) !== -1;
 			if (!multiDep) {
 				var DepTypeFld = tDoc.getField(BookMarkList[theDep]);
-				if (DepTypeFld.page !== -1) {
+				if (isArray(DepTypeFld.page)) {
 					return Math.max.apply(Math, DepTypeFld.page) + 1;
 				};
 			} else {
@@ -2774,8 +2774,7 @@ function PagesOptions() {
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
 		calcStop();
 
-		//Undo the MakeMobileReady if it was active
-		if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
+		MakeMobileReady(false); // Undo flatten, if needed
 
 		switch (MenuSelection[0]) {
 			case "dndlogos" :
@@ -3424,6 +3423,7 @@ function GetStringifieds(notSources) {
 	};
 	CurrentEvals = eval(What("CurrentEvals.Stringified"));
 	CurrentProfs = eval(What("CurrentProfs.Stringified"));
+	CurrentVars = eval(What("CurrentVars.Stringified"));
 }
 
 //set all stringified variables into their fields
@@ -3439,16 +3439,22 @@ function SetStringifieds(type) {
 	if (!type || type === "sources") Value("CurrentSources.Stringified", CurrentSources.toSource());
 	if (!type || type === "evals") Value("CurrentEvals.Stringified", CurrentEvals.toSource());
 	if (!type || type === "profs") Value("CurrentProfs.Stringified", CurrentProfs.toSource());
+	if (!type || type === "vars") Value("CurrentVars.Stringified", CurrentVars.toSource());
 	if (type === "scriptfiles") Value("User_Imported_Files.Stringified", CurrentScriptFiles.toSource());
 };
 
 //set the sheet version
-function Publish(version) {
+function Publish(version, extra) {
 	if (app.viewerType !== "Reader") {
 		tDoc.info.SheetVersion = version;
 		sheetVersion = parseFloat(tDoc.info.SheetVersion);
 		semVers = nmbrToSemanticVersion(sheetVersion);
 		tDoc.info.Title = MakeDocName();
+		if (extra) {
+			tDoc.info.SheetVersionType = extra;
+		} else {
+			delete tDoc.info.SheetVersionType;
+		}
 	};
 	tDoc.resetForm(["Opening Remember", "CurrentSources.Stringified", "User_Imported_Files.Stringified"]);
 	tDoc.getField("Opening Remember").submitName = 1;
@@ -3520,7 +3526,7 @@ function ShowHonorSanity(input) {
 		tDoc[HideShow](fieldsArrayHide[i]);
 	}
 	
-	if (ShowHide === "Show" && What("BlueTextRemember") === "Yes") {
+	if (ShowHide === "Show" && CurrentVars.bluetxt) {
 		DontPrint("HoS ST Bonus");
 	} else {
 		Hide("HoS ST Bonus");
@@ -4002,7 +4008,6 @@ function UpdateFactionSymbols() {
 //make a menu for the text fields and text line options
 //after that, do something with the menu and its results
 function MakeTextMenu_TextOptions(input) {
-	var isWhiteout = What("WhiteoutRemember");
 	var isBoxesLines = What("BoxesLinesRemember");
 	
 	if (!input || input === "justMenu") {
@@ -4036,11 +4041,11 @@ function MakeTextMenu_TextOptions(input) {
 			oSubMenu : [{
 				cName : "Show lines for multi-line fields",
 				cReturn : "text#show lines",
-				bMarked : !isWhiteout
+				bMarked : !CurrentVars.whiteout
 			}, {
 				cName : "Hide lines for multi-line fields",
 				cReturn : "text#hide lines",
-				bMarked : isWhiteout
+				bMarked : CurrentVars.whiteout
 			}]
 		});
 		if (input === "justMenu") return;
@@ -4050,7 +4055,6 @@ function MakeTextMenu_TextOptions(input) {
 	var MenuSelection = input ? input : getMenu("texts");
 	
 	if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
-		calcStop();
 		switch (MenuSelection[1]) {
 		 case "dodialog" :
 			SetTextOptions_Button();
@@ -4066,8 +4070,6 @@ function MakeTextMenu_TextOptions(input) {
 			ToggleWhiteout(true);
 			break;
 		};
-	
-		calcStart(true);
 	};
 };
 
@@ -4136,8 +4138,7 @@ function ValidateCompNotes() {
 // show the selected layers on the companion page
 function ShowCompanionLayer(prefix) {
 	
-	//if the sheet is currently flattened, undo that first
-	if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
+	MakeMobileReady(false); // Undo flatten, if needed
 	
 	prefix = prefix ? prefix : "";
 	var notesFld = prefix + (typePF ? "Cnote.Left" : "Cnote.Right");
@@ -4346,7 +4347,7 @@ function CreateBkmrksCompleteAdvLogSheet() {
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Unit System", cExpr: "SetUnitDecimals_Button();", nIndex: 0});
 	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB",0.463,0.192,0.467];
 	
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady(What('MakeMobileReady Remember') === '');", nIndex: 0});
+	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady();", nIndex: 0});
 	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.2823486328125, 0.1921539306640625, 0.478424072265625];
 	
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Text Options", cExpr: "MakeTextMenu_TextOptions();", nIndex: 0});
@@ -7187,7 +7188,9 @@ function setCalcOrder() {
 	var cOrd = 0;
 	for (var i = 0; i < cFlds.length; i++) {
 		var aFld = tDoc.getField(cFlds[i]);
-		aFld.calcOrderIndex = cOrd;
-		cOrd++;
+		if (aFld) {
+			aFld.calcOrderIndex = cOrd;
+			cOrd++;
+		}
 	};
 };
