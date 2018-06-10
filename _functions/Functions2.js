@@ -3432,15 +3432,16 @@ function Publish(version, extra) {
 	if (app.viewerType !== "Reader") {
 		tDoc.info.SheetVersion = version;
 		sheetVersion = parseFloat(tDoc.info.SheetVersion);
-		semVers = nmbrToSemanticVersion(sheetVersion);
-		tDoc.info.Title = MakeDocName();
 		if (extra) {
 			tDoc.info.SheetVersionType = extra;
 		} else {
 			delete tDoc.info.SheetVersionType;
 		}
-	};
-	tDoc.resetForm(["Opening Remember", "CurrentSources.Stringified", "User_Imported_Files.Stringified"]);
+	}
+	semVers = nmbrToSemanticVersion(sheetVersion) + (tDoc.info.SheetVersionType ? tDoc.info.SheetVersionType : "");
+	if (app.viewerType !== "Reader") tDoc.info.Title = MakeDocName();
+	tDoc.getField("SheetInformation").defaultValue = MakeDocName();
+	tDoc.resetForm(["Opening Remember", "CurrentSources.Stringified", "User_Imported_Files.Stringified","SheetInformation"]);
 	tDoc.getField("Opening Remember").submitName = 1;
 	tDoc.getField("SaveIMG.Patreon").submitName = "(new Date(0))";
 	if (!minVer) DontPrint("d20warning");
@@ -4275,7 +4276,7 @@ function ChangeToCompleteAdvLogSheet() {
 	tDoc.removeField("SaveIMG.Spells");
 
 	if (typePF) { //if the Printer Friendly version, update the copyright
-		var newCR = "Based on Wizards of the Coast " + (tDoc.info.SheetType === "Printer Friendly" ? "adventure logsheet" : "character sheet") + "; made by Joost Wijnen - Flapkan@gmail.com";
+		var newCR = "Made by Joost Wijnen (mpmb@flapkan.com); Design inspired by Wizards of the Coast " + (tDoc.info.SheetType === "Printer Friendly" ? "adventure logsheet" : "character sheet");
 		tDoc.getField("CopyrightInformation").defaultValue = newCR;
 		tDoc.getField("P0.ALlog.CopyrightInformation").defaultValue = newCR;
 		tDoc.resetForm(["CopyrightInformation", "P0.ALlog.CopyrightInformation"]);
@@ -4296,11 +4297,11 @@ function ChangeToCompleteAdvLogSheet() {
 		tDoc.removeField("SaveIMG.Sanity");
 	};
 	
-	var keyPF = "This Adventure Logsheet is an extraction from MPMB's Character Record Sheet [Printer Friendly]. It follows the design and uses elements of the official D&D 5e adventure logsheet by Wizards of the Coast, but has been heavily modified by Joost Wijnen [morepurplemorebetter] (flapkan@gmail.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'.";
+	var keyPF = "This Adventure Logsheet is an extraction from MPMB's Character Record Sheet [Printer Friendly]. It follows the design and uses elements of the official D&D 5e adventure logsheet by Wizards of the Coast, but has been heavily modified by Joost Wijnen [morepurplemorebetter] (mpmb@flapkan.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'.";
 
-	var keyPFR = "This Adventure Logsheet is an extraction from MPMB's Character Record Sheet [Printer Friendly - Redesign]. It follows the design idea of the official D&D 5e character sheet by Wizards of the Coast, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (flapkan@gmail.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'.";
+	var keyPFR = "This Adventure Logsheet is an extraction from MPMB's Character Record Sheet [Printer Friendly - Redesign]. It follows the design idea of the official D&D 5e character sheet by Wizards of the Coast, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (mpmb@flapkan.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'.";
 
-	var keyCF = "This Adventure Logsheet is an extraction from MPMB's Character Record Sheet [" + tDoc.info.SheetType + "]. This sheet uses elements designed by Javier Aumente, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (flapkan@gmail.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'."
+	var keyCF = "This Adventure Logsheet is an extraction from MPMB's Character Record Sheet [" + tDoc.info.SheetType + "]. This sheet uses elements designed by Javier Aumente, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (mpmb@flapkan.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'."
 	
 	//move the pages that we want to extract to a new instance, by running code from a console
 	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 3});\n\n";
@@ -4316,7 +4317,7 @@ function ChangeToCompleteAdvLogSheet() {
 	forConsole += " this.info.SheetType = \"" + tDoc.info.SheetType + "\";";
 	forConsole += " this.info.Keywords = \"" + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + "\";";
 	forConsole += " this.info.Subject = \"D&D 5e; Character Sheet; Adventurers League; Adventure Logsheet\";";
-	forConsole += " this.info.ContactEmail = \"Flapkan@gmail.com\";";
+	forConsole += " this.info.ContactEmail = \"mpmb@flapkan.com\";";
 	forConsole += " this.info.Title = MakeDocName();";
 	forConsole += " typePF = (/printer friendly/i).test(this.info.SheetType);";
 	forConsole += " typeA4 = (/a4/i).test(this.info.SheetType);";
@@ -5147,16 +5148,16 @@ function contactMPMB(medium) {
 		app.launchURL("https://github.com/morepurplemorebetter/", true);
 		break;
 	 case "dmsguild" :
-		app.launchURL("http://www.dmsguild.com/browse.php?author=morepurplemorebetter", true);
+		app.launchURL("https://www.dmsguild.com/browse.php?author=morepurplemorebetter", true);
 		break;
 	 case "enworld" :
 		app.launchURL("http://www.enworld.org/forum/rpgdownloads.php?do=download&downloadid=1180", true);
 		break;
 	 case "syntax" :
-		app.launchURL("http://flapkan.com/mpmb/syntax", true);
+		app.launchURL("https://flapkan.com/mpmb/syntax", true);
 		break;
 	 case "additions" :
-		app.launchURL("http://flapkan.com/how-to/import-scripts", true);
+		app.launchURL("https://flapkan.com/how-to/import-scripts", true);
 		break;
 	 case "syntaxgit" :
 		app.launchURL("https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/tree/master/additional%20content%20syntax", true);

@@ -5121,12 +5121,7 @@ function ChangeToCompleteSpellSheet(thisClass) {
 		this.getField("P0.SSfront.spellshead.dc." + i).readonly = false;
 	};
 
-	if (typePF) { //if the Printer Friendly version, update the copyright
-		var newCR = "Inspired by Wizards of the Coast character sheet; made by Joost Wijnen - Flapkan@gmail.com";
-		tDoc.getField("CopyrightInformation").defaultValue = newCR;
-		tDoc.getField("P0.SSfront.CopyrightInformation").defaultValue = newCR;
-		tDoc.resetForm(["CopyrightInformation", "P0.SSfront.CopyrightInformation"]);
-	} else { //if the Colorful version, remove some more useless fields
+	if (!typePF) { //if the Colorful version, remove some more useless fields
 		tDoc.removeField("SaveIMG.Level");
 		tDoc.removeField("SaveIMG.Attack");
 		tDoc.removeField("SaveIMG.Prof");
@@ -5141,11 +5136,11 @@ function ChangeToCompleteSpellSheet(thisClass) {
 		tDoc.removeField("SaveIMG.Sanity");
 	}
 
-	var keyPF = "This Spell Sheet is an extraction from MPMB's Character Record Sheet [Printer Friendly]. It follows the design and uses elements of the official D&D 5e character sheet by Wizards of the Coast, but has been heavily modified by Joost Wijnen [morepurplemorebetter] (flapkan@gmail.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'.";
+	var keyPF = "This Spell Sheet is an extraction from MPMB's Character Record Sheet [Printer Friendly]. It follows the design and uses elements of the official D&D 5e character sheet by Wizards of the Coast, but has been heavily modified by Joost Wijnen [morepurplemorebetter] (mpmb@flapkan.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'.";
 
-	var keyPFR = "This Spell Sheet is an extraction from MPMB's Character Record Sheet [Printer Friendly - Redesign]. It follows the design idea of the official D&D 5e character sheet by Wizards of the Coast, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (flapkan@gmail.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'.";
+	var keyPFR = "This Spell Sheet is an extraction from MPMB's Character Record Sheet [Printer Friendly - Redesign]. It follows the design idea of the official D&D 5e character sheet by Wizards of the Coast, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (mpmb@flapkan.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'.";
 
-	var keyCF = "This Spell Sheet is an extraction from MPMB's Character Record Sheet [" + tDoc.info.SheetType + "]. This sheet uses elements designed by Javier Aumente, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (flapkan@gmail.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'."
+	var keyCF = "This Spell Sheet is an extraction from MPMB's Character Record Sheet [" + tDoc.info.SheetType + "]. This sheet uses elements designed by Javier Aumente, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (mpmb@flapkan.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'."
 	
 	//move the pages that we want to extract to a new instance, by running code from a console
 	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 4});\n\n";
@@ -5162,7 +5157,7 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	forConsole += " this.info.SheetVersion = '" + tDoc.info.SheetVersion + "';";
 	forConsole += " this.info.SheetType = '" + tDoc.info.SheetType + "';";
 	forConsole += " this.info.Keywords = '" + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + "';";
-	forConsole += " this.info.ContactEmail = 'Flapkan@gmail.com';";
+	forConsole += " this.info.ContactEmail = 'mpmb@flapkan.com';";
 	forConsole += " this.info.Subject = 'D&D 5e; Character Sheet; Spell Sheet; Spell Sheet Generator';";
 	forConsole += " this.info.Title = MakeDocName();";
 	forConsole += " typePF = (/printer friendly/i).test(this.info.SheetType);";
