@@ -1521,13 +1521,12 @@ function Import(type) {
 	
 	
 	if (app.alert(AskFirst) !== 4) return;
-	
+
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Importing the data...");
 	calcStop();
 	
 	MakeMobileReady(false); // Undo flatten, if needed
-	
-	thermoM("start"); //start a progress dialog
-	thermoM("Importing the data..."); //change the progress dialog text
 	
 	templateA = [
 		["Template.extras.AScomp", What("Template.extras.AScomp")],
@@ -1558,7 +1557,7 @@ function Import(type) {
 	}
 	
 	thermoM(13/25); //increment the progress dialog's progress
-	thermoM("Getting the sheet ready..."); //change the progress dialog text
+	thermoTxt = thermoM("Getting the sheet ready...", false); //change the progress dialog text
 	
 	//set the layer visibility to what the imported field says
 	LayerVisibilityOptions();
@@ -1661,7 +1660,7 @@ function Import(type) {
 		nType : 0
 	});
 
-	thermoM(); //stop any and all progress dialogs
+	thermoM(thermoTxt, true); // Stop progress bar
 	
 	//re-apply stuff just as when starting the sheet
 	InitializeEverything();

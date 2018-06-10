@@ -33,7 +33,6 @@ function InitializeEverything(noButtons, noVars) {
 	SetHighlighting();
 	if (!noButtons) MakeButtons();
 	tDoc.dirty = false; //reset the dirty status, so the user is not asked to save without there having been any changes made
-	calcCont();
 }
 
 InitializeEverything();

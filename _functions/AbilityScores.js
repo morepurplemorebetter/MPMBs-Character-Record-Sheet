@@ -1343,8 +1343,7 @@ function AbilityScores_Button() {
 	//don't continue with the function if "apply" was not pressed in the dialog
 	if (Results === "ok") {
 		// Start a progress bar and stop calculations
-		var thermTxt = "Applying ability scores...";
-		thermoM(thermTxt);
+		var thermTxt = thermoM("Applying ability scores...");
 		calcStop();
 		var remCon = What("Con");
 		

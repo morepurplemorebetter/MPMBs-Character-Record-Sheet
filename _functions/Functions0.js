@@ -430,42 +430,48 @@ function ObjLength(theObj) {
 // start a progress dialog
 // input can be a percentage of the progress or a string to display
 // if remove is set to true, the entry corresponding to the input text is removed
+// if remove is set to false, overwrite the current entry
 function thermoM(input, remove) {
+	if (input === "start") return "";
 	var t = app.thermometer;
 	if (!input || input.toLowerCase() == "stop") {
 		if (!thermoStopSet && t.text != undefined) thermoStopSet = app.setTimeOut("thermoStop();", 500);
-		return
+		return "";
 	}
 	var dT = 10;
-	if (remove) { // remove the named entry
-		if (thermoCount.indexOf(input) !== -1) {
-			thermoCount.splice(thermoCount.indexOf(input), 1);
-			delete thermoDur[input];
-			if (thermoCount.length) {
+	if (remove !== undefined && isNaN(input)) { // remove the input if remove = true, or the latest entry if remove = false
+		var toRem = remove ? input : thermoCount[thermoCount.length -1];
+		if (thermoCount.indexOf(toRem) !== -1) {
+			thermoCount.splice(thermoCount.indexOf(toRem), 1);
+			if (!remove) thermoDur[input] = thermoDur[toRem];
+			delete thermoDur[toRem];
+			if (remove && thermoCount.length) {
 				t.text = thermoCount[thermoCount.length -1];
 				t.value = thermoDur[t.text];
 			}
 		}
-	} else if (isNaN(input)) { // start new with the input text
+	}
+	if (!remove && isNaN(input)) { // start new with the input text
 		if (t.text == undefined) {
 			t.begin();
 			t.duration = dT;
 		}
 		t.text = input;
-		if (thermoCount.indexOf(input) !== -1) {
-			t.value = 1;
+		if (thermoCount.indexOf(input) == -1) {
 			thermoCount.push(input);
-			thermoDur[input] = 0;
+			t.value = thermoDur[input] ? thermoDur[input] : 1;
+			thermoDur[input] = t.value;
 		} else {
 			t.value++;
 			thermoDur[input] = t.value;
 		}
-	} else if (t.text != undefined) { // update progress with the input number (if there is an active progress bar)
+	} else if (!remove && t.text != undefined) { // update progress with the input number (if there is an active progress bar)
 		t.value = dT * input;
 		thermoDur[thermoCount[thermoCount.length -1]] = t.value;
 	}
 	// close all dialogs half a second after the last bit of code finishes
 	if (!thermoStopSet && t.text != undefined) thermoStopSet = app.setTimeOut("thermoStop();", 500);
+	return t.text != undefined ? t.text : "";
 };
 
 // end all instances of the progress dialog
