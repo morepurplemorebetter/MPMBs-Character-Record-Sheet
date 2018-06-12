@@ -10,7 +10,7 @@
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Rogue, called "Shadowdancer"
 				This subclass has been made by /u/incrediblehulf
-				This code uses the subclass as it was posted on 2016-02-08 here: https://reddit.com/44tph8/
+				This code uses the subclass as it was posted on 2016-02-08 here: https://redd.it/44tph8/
 	Code by:	Layton & MorePurpleMoreBetter
 	Date:		2018-01-17 (sheet v12.999)
 */
@@ -22,7 +22,7 @@ SourceList["IH:SD"] = {
 	name : "/u/incrediblehulf: Shadowdancer",
 	abbreviation : "IH:SD",
 	group : "Reddit/r/UnearthedArcana",
-	url : "https://reddit.com/44tph8/",
+	url : "https://redd.it/44tph8/",
 	date : "2016/02/08"
 };
 

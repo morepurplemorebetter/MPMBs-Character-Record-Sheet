@@ -9,7 +9,7 @@
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the fighter, called "Runeguard"
-				This is taken from the 'Xanathar's Lost Notes to Everything Else' made by Lysa Chen, Will Doyle, James Haeck, James Introcaso, Rich Lescouflair, Shawn Merwin, Cindy Moore, Satine Phoenix, and Ruty Rutenberg (http://www.dmsguild.com/product/228484/)
+				This is taken from the 'Xanathar's Lost Notes to Everything Else' made by Lysa Chen, Will Doyle, James Haeck, James Introcaso, Rich Lescouflair, Shawn Merwin, Cindy Moore, Satine Phoenix, and Ruty Rutenberg (https://www.dmsguild.com/product/228484/)
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-01-23 (sheet v12.999)
 */

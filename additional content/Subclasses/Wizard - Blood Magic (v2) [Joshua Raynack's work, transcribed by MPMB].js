@@ -9,13 +9,13 @@
 /*  -INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Wizard, called "Blood Magic" (version 2)
-				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/170966) and is the version from 9th of May 2016
+				This is taken from Dungeon Masters Guild (https://www.dmsguild.com/product/170966) and is the version from 9th of May 2016
 				That product contains two versions of the arcane tradition called Blood Magic. This code is for version 2
 				This subclass is made by Joshua Raynack
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-04-07 (sheet v12.999)
 	
-	Please support the creator of this content (Joshua Raynack) and download his material from DM Guild: http://www.dmsguild.com/browse.php?author=Joshua%20Raynack
+	Please support the creator of this content (Joshua Raynack) and download his material from DM Guild: https://www.dmsguild.com/browse.php?author=Joshua%20Raynack
 */
 
 var iFileName = "Wizard - Blood Magic (v2) [Joshua Raynack's work, transcribed by MPMB].js";

@@ -9,12 +9,12 @@
 /*	-INFORMATION-
 	Subject:	Race
 	Effect:		This script adds a player race, called "Sojourner Dwarf"
-				This is taken from DriveThruRPG (http://www.drivethrurpg.com/product/132657/)
+				This is taken from DriveThruRPG (https://www.drivethrurpg.com/product/132657/)
 				This subrace is made by Goodman Games
 	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
 	Date:		2017-09-22 (sheet v12.998)
 	
-	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: http://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
+	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: https://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
 */
 
 var iFileName = "Sojourner Dwarf [Goodman Games' work, transcribed by James Bowman].js";

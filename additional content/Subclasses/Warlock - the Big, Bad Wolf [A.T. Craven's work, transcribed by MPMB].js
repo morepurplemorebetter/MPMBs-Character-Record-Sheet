@@ -10,12 +10,12 @@
 	Subject:	Subclass & Warlock's Eldritch Invocations
 	Effect:		This script adds a subclass for the Warlock, called "The Big, Bad Wolf"
 				This script also adds 11 new Eldritch Invocations for the Warlock
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/201431/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/201431/)
 				This subclass is made by A.T. Craven
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
 	
-	Please support the creator of this content (A.T. Craven) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?author=A.%20T.%20Craven
+	Please support the creator of this content (A.T. Craven) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=A.%20T.%20Craven
 */
 
 var iFileName = "Warlock - the Big, Bad Wolf [A.T. Craven's work, transcribed by MPMB].js";

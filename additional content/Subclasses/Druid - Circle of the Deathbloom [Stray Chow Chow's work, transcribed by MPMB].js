@@ -9,13 +9,13 @@
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the druid, called "Circle of the Deathbloom"
-				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/173273) and is the version from 31st of August 2016
+				This is taken from Dungeon Masters Guild (https://www.dmsguild.com/product/173273) and is the version from 31st of August 2016
 				This subclass is made by Stray Chow Chow
 				Note that this is not the latest version of this subclass and the author of it no longer actively supports it on DMs Guild
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-01-02 (sheet v12.999)
 	
-	Please support the creator of this content (Stray Chow Chow) and download their material from DM Guild: http://www.dmsguild.com/browse.php?author=Stray%20Chow%20Chow
+	Please support the creator of this content (Stray Chow Chow) and download their material from DM Guild: https://www.dmsguild.com/browse.php?author=Stray%20Chow%20Chow
 	
 	Note that although the Druid is able to wild shape into blights, those won't appear in the menu. You can use these wild shapes only by typing the name of the creature into the "Make a Selection" drop-down box on the Wild Shape pages.
 	Also, this script doesn't include a way to add the Spore Servant template to wild shapes.
@@ -190,7 +190,7 @@ if (!CreatureList["needle blight"] || !CreatureList["twig blight"] || !CreatureL
 		name : "Monster Manual",
 		abbreviation : "MM",
 		group : "Primary Sources",
-		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/monster-manual",
+		url : "https://dnd.wizards.com/products/tabletop-games/rpg-products/monster-manual",
 		date : "2014/09/30"
 	};
 	if (!CreatureList["needle blight"]) {

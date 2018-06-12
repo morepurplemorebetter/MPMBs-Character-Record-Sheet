@@ -9,7 +9,7 @@
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Rogue, called "Thieving Magpie"
-				This is made by Firebringeraxel (http://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison)
+				This is made by Firebringeraxel (https://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison)
 	Code by:	TwoHeadedBoy
 	Date:		2017-11-29 (sheet v12.999)
 */
@@ -21,7 +21,7 @@ SourceList["FC:TM"] = {
 	name: "Firebringeraxel's Creations: Thieving Magpie",
 	abbreviation: "FC:TM",
 	group: "Homebrew",
-	url: "http://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison",
+	url: "https://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison",
 	date : "2017/07/11"
 };
 

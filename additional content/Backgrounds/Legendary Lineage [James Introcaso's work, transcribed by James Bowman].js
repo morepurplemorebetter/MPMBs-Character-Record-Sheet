@@ -9,12 +9,12 @@
 /*	-INFORMATION-
 	Subject:	Background
 	Effect:		This script adds a background, called "Legendary Lineage"
-				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/171771)
+				This is taken from Dungeon Masters Guild (https://www.dmsguild.com/product/171771)
 				This background is made by James Introcaso
 	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
 	Date:		2017-09-05 (sheet v12.998)
 	
-	Please support the creator of this content (James Introcaso) and download their material from DM Guild: http://www.dmsguild.com/browse.php?author=James%20Introcaso
+	Please support the creator of this content (James Introcaso) and download their material from DM Guild: https://www.dmsguild.com/browse.php?author=James%20Introcaso
 */
 
 var iFileName = "Legendary Lineage [James Introcaso's work, transcribed by James Bowman].js";

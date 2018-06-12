@@ -9,12 +9,12 @@
 /*	-INFORMATION-
 	Subject:	Race
 	Effect:		This script adds a background, called "Refugee"
-				This is taken from DriveThruRPG (http://www.drivethrurpg.com/product/132657/)
+				This is taken from DriveThruRPG (https://www.drivethrurpg.com/product/132657/)
 				This subrace is made by Goodman Games
 	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
 	Date:		2017-02-12 (sheet v12.81)
 	
-	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: http://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
+	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: https://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
 */
 
 var iFileName = "Refugee [Goodman Games' work, transcribed by James Bowman].js";

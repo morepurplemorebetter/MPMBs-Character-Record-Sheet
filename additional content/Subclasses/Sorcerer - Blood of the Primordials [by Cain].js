@@ -11,7 +11,7 @@
 	Effect:		This script adds a new bloodline for the Sorcerer, called "Blood of the Primordials"
 				This bloodline is a reskin of the "Draconic Bloodline" from the PHB
 				This bloodline is made by Cain
-				For more details, download the full text for this bloodline here: http://bit.ly/2kjur6M
+				For more details, download the full text for this bloodline here: https://bit.ly/2kjur6M
     Code by:	Cain
     Date:		2017-11-29 (sheet v12.999)
 */

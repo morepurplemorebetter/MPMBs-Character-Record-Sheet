@@ -9,12 +9,12 @@
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Fighter, called "Amazon" v1.4
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/171865/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/171865/)
 				This subclass is made by Caio Sandy
 	Code by:	Galim & MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
 
-	Please support the creator of this content (Caio Sandy) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Caio%20Sandy
+	Please support the creator of this content (Caio Sandy) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Caio%20Sandy
 */
 
 var iFileName = "Fighter - Amazon [Caio Sandy's work, transcribed by Galim & MPMB].js";

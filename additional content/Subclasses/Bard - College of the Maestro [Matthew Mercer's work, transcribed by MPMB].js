@@ -10,12 +10,12 @@
 	Subject:	Subclass & Feat
 	Effect:		This script adds a subclass for the Bard, called "College of the Maestro" v1.2
 				This script also adds a feat to go with the subclass, called "College of the Maestro" v1.2
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/183630/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/183630/)
 				This subclass is made by Matthew Mercer
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
 	
-	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
+	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 */
 
 var iFileName = "Bard - College of the Maestro [Matthew Mercer's work, transcribed by MPMB].js";

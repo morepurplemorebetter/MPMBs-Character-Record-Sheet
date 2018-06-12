@@ -9,12 +9,12 @@
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the druid, called "Circle of the Fountain"
-				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/173274) and is the version from 26th of August 2016
+				This is taken from Dungeon Masters Guild (https://www.dmsguild.com/product/173274) and is the version from 26th of August 2016
 				This subclass is made by Stray Chow Chow
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-05-23 (sheet v12.999)
 	
-	Please support the creator of this content (Stray Chow Chow) and download their material from DM Guild: http://www.dmsguild.com/browse.php?author=Stray%20Chow%20Chow
+	Please support the creator of this content (Stray Chow Chow) and download their material from DM Guild: https://www.dmsguild.com/browse.php?author=Stray%20Chow%20Chow
 */
 
 var iFileName = "Druid - Circle of the Fountain [Stray Chow Chow's work, transcribed by MPMB].js";

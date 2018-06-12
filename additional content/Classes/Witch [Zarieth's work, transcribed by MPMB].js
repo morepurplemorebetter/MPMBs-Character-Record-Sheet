@@ -11,7 +11,7 @@
 	Effect:		This script adds a class called the "Witch" and its 5 subclasses
 
 				This class has been made by /u/Zarieth on the subbreddit /r/UnearthedArcana
-				It can be found here: https://reddit.com/5dtd1x/
+				It can be found here: https://redd.it/5dtd1x/
 				This code is based on v0.4 of /u/Zarieth's work (2017-03-06)
 
 	Code by:	MorePurpleMoreBetter
@@ -25,7 +25,7 @@ SourceList["Z:W"] = {
 	name : "/u/Zarieth: Witch (v0.4)",
 	abbreviation : "Z:W",
 	group : "Reddit/r/UnearthedArcana",
-	url : "https://reddit.com/5dtd1x/",
+	url : "https://redd.it/5dtd1x/",
 	date : "2017/03/04"
 };
 

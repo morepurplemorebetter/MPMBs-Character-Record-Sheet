@@ -9,12 +9,12 @@
 /*	-INFORMATION-
 	Subject:	Race
 	Effect:		This script adds a player race, called "Kitsune"
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/171361/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/171361/)
 				This subclass is made by Marshall Miller
 	Code by:	Murray (with amendments by MorePurpleMoreBetter)
 	Date:		2017-09-22 (sheet v12.998)
 	
-	Please support the creator of this content (Marshall Miller) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?author=Marshall%20Miller
+	Please support the creator of this content (Marshall Miller) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Marshall%20Miller
 */
 
 var iFileName = "Kitsune [Marshall Miller's work, transcribed by Murray].js";

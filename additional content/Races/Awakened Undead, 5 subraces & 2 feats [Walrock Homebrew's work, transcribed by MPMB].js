@@ -10,12 +10,12 @@
 	Subject:	Race & Feats
 	Effect:		This script adds a player race, Awakened Undead, with 5 subraces: Ghost, Ghoul, Mummy, Revenant, and Skeleton
 				This script also adds the two optional feats for the ghost and mummy subraces
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/222229/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/222229/)
 				This subclass is made by Walrock Homebrew
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-01-22 (sheet v12.999)
 	
-	Please support the creator of this content (Walrock Homebrew) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?author=Walrock%20Homebrew
+	Please support the creator of this content (Walrock Homebrew) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Walrock%20Homebrew
 	
 	Note that these races have an 'original' race. Instead of making 5 versions of every race, this code only provides one variant of each of the 5 subraces, for a medium race with speed 30 ft. If you would like to have another 'base' race, you will have to either modify the code here, or manually change things on the sheet after selecting the race.
 */

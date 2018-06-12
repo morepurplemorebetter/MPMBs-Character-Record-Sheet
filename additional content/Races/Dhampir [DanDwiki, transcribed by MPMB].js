@@ -22,7 +22,7 @@ SourceList["DanDw"] = {
 	name : "D\u0026D Wiki",
 	abbreviation : "D\u0026Dw",
 	group : "homebrew",
-	url : "http://www.dandwiki.com/wiki/"
+	url : "https://www.dandwiki.com/wiki/"
 };
 
 RaceList["dhampir"] = {

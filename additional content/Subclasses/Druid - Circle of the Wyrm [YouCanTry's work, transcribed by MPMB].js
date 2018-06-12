@@ -1,16 +1,15 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the druid, called "Circle of the Wyrm"
-				These are taken from the Giant in the Playground forums (http://www.giantitp.com/forums/showthread.php?512741) and is the version posted at 22nd of January 2017
+				These are taken from the Giant in the Playground forums (https://www.giantitp.com/forums/showthread.php?512741) and is the version posted at 22nd of January 2017
 				This subclass is made by YouCanTry
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-02-26 (sheet v12.999)

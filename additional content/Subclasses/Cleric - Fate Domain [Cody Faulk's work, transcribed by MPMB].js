@@ -9,12 +9,12 @@
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Cleric, called "Fate Domain"
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/194789/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/194789/)
 				This subclass is made by Cody Faulk
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
 	
-	Please support the creator of this content (Cody Faulk) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?author=Cody%20Faulk
+	Please support the creator of this content (Cody Faulk) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Cody%20Faulk
 */
 
 var iFileName = "Cleric - Fate Domain [Cody Faulk's work, transcribed by MPMB].js";

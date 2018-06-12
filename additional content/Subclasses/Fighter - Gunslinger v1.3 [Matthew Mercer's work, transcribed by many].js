@@ -10,12 +10,12 @@
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Fighter, called "Gunslinger" v1.3
 				This script also adds the weapons and ammo associated with that subclass
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170778/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/170778/)
 				This subclass is made by Matthew Mercer
 	Code by:	SoilentBrad & MorePurpleMoreBetter (update to v1.3 inspired by /u/PbFarmer)
 	Date:		2017-11-29 (sheet v12.999)
 	
-	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
+	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 
 	Note that you can't include both the v1.2 and v1.3 of the Gunslinger, because then the sheet will always use the latest version!
 

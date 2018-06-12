@@ -9,13 +9,13 @@
 /*  -INFORMATION-
 	Subject:    Class
 	Effect:     This script adds the class called "Shaman" and its 6 subclasses "Speaker of Ancestors", "Speaker of Dreams", "Speaker of Fire", "Speaker of Stone", "Speaker of Water", and "Speaker of Wind"
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170851/) v1.5.4
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/170851/) v1.5.4
 				This content is made by Michael Wolf
 	Original:   Derek (with amendments by MorePurpleMoreBetter)
 	Completed:  /u/Fourleafclov (with amendments by MorePurpleMoreBetter)
 	Date:		2017-09-22 (sheet v12.998)
 
-	Please support the creator of this content (Michael Wolf) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Michael%20Wolf
+	Please support the creator of this content (Michael Wolf) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Michael%20Wolf
 */
 
 var iFileName = "Shaman [Michael Wolf's work, transcribed by Derek, Fourleafclov, MPMB].js";

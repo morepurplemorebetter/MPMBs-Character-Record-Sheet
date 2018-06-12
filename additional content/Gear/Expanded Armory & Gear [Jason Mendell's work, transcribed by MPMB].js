@@ -9,13 +9,13 @@
 /*  -INFORMATION-
 	Subject:	Weapons and Equipment Packs
 	Effect:		This script adds a number of weapons and equipment packs
-				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/174973) and is the version from 2nd of August 2017
+				This is taken from Dungeon Masters Guild (https://www.dmsguild.com/product/174973) and is the version from 2nd of August 2017
 				This content is made by Jason Mendell
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-04-11 (sheet v13.00.00)
 				The code will work in v12.999 but will require closing and opening the sheet before the packs are available
 	
-	Please support the creator of this content (Jason Mendell) and download his material from DM Guild: http://www.dmsguild.com/browse.php?author=Jason%20Mendell
+	Please support the creator of this content (Jason Mendell) and download his material from DM Guild: https://www.dmsguild.com/browse.php?author=Jason%20Mendell
 	
 	IMPORTANT: adding this script will remove a couple of alternative names for weapons (e.g. longsword will no longer trigger for anything other than just 'longsword')
 	Note that this content is not balanced well for all weapons and the official D&D 5e rules state that you are better off using the weapon stats from the PHB and switching out their names for something else (e.g. the sickle stats fit a kama)
@@ -28,7 +28,7 @@ SourceList["JM:EAG"] = {
 	name : "Jason Mendell - Expanded Armory and Gear",
 	abbreviation : "JM:EAG",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/174973",
+	url : "https://www.dmsguild.com/product/174973",
 	date : "2017/08/02"
 };
 

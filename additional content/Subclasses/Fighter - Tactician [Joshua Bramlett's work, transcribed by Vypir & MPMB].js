@@ -9,12 +9,12 @@
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Fighter, called "Tactician"
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/216366/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/216366/)
 				This subclass is made by Joshua Bramlett
 	Code by:	Bryce C. & MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
 	
-	Please support the creator of this content (Joshua Bramlett) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Joshua%20Bramlett
+	Please support the creator of this content (Joshua Bramlett) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Joshua%20Bramlett
 */
 
 var iFileName = "Fighter - Tactician [Joshua Bramlett's work, transcribed by Vypir & MPMB].js";
