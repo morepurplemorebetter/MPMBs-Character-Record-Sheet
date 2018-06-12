@@ -304,6 +304,8 @@ ClassSubList["blood hunter-order of the ghostslayer"] = {
 			description : "\n   " + "I know the Rite of the Dawn and add my Wis mod to its damage against some creatures",
 			additional : levels.map(function (n) { return n < 3 ? "" : "+Wis mod damage to " + (n < 11 ? "undead" : "all"); }),
 			extraname : "Crimson Rite",
+			extrachoices : ["dawn"],
+			choicesNotInMenu : true,
 			"dawn" : {
 				source : ["MM:BH", 5],
 				name : "Rite of the Dawn",
