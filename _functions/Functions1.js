@@ -10039,26 +10039,9 @@ function ProfBonus() {
 	var lvl = What(QI === true ? "Character Level" : QI + "Comp.Use.HD.Level");
 	var ProfMod = QI === true ? What("Proficiency Bonus Modifier") : 0;
 	var useDice = tDoc.getField(QI === true ? "Proficiency Bonus Dice" : QI + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
-	
-	if (lvl >= 17) {
-		event.target.submitName = 6 + ProfMod;
-	} else if (lvl >= 13) {
-		event.target.submitName = 5 + ProfMod;
-	} else if (lvl >= 9) {
-		event.target.submitName = 4 + ProfMod;
-	} else if (lvl >= 5) {
-		event.target.submitName = 3 + ProfMod;
-	} else if (lvl >= 1) {
-		event.target.submitName = 2 + ProfMod;
-	} else {
-		event.target.submitName = 0 + ProfMod;
-	}
-	
-	if (useDice || !lvl) {
-		event.value = "";
-	} else {
-		event.value = event.target.submitName;
-	}
+	var ProfB = lvl ? ProficiencyBonusList[lvl-1] : 0;
+	event.target.submitName = ProfB + ProfMod;
+	event.value = useDice || !lvl ? "" : event.target.submitName;
 }
 
 //show the proficiency die (field format)
@@ -10066,11 +10049,7 @@ function ProfBonusDisplay(input) {
 	var QI = getTemplPre(event.target.name, "AScomp");
 	var ProfB = QI === true ? event.target.submitName : input;
 	var useDice = tDoc.getField(QI === true ? "Proficiency Bonus Dice" : QI + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
-	if (useDice) {
-		event.value = GetProfDice(ProfB);
-	} else {
-		event.value = !isNaN(event.value) && event.value > 0 ? "+" + event.value : event.value;
-	}
+	event.value = useDice ? GetProfDice(ProfB) : !isNaN(event.value) && event.value > 0 ? "+" + event.value : event.value;
 }
 
 function GetProfDice(ProfB) {
