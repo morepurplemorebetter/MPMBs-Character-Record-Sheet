@@ -8,18 +8,19 @@
 
 /*	-INFORMATION-
 	Subject:	Class
-	Effect:		This script adds a class called "Blood Hunter" (v2.0) and the three subclasses for it: "Order of the Ghostslayer", "Order of the Profane Soul", "Order of the Mutant", and "Order of the Lycan" (v1.5)
-	
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170777/)
+	Effect:		This script adds a class called "Blood Hunter" (v2.1) and the three subclasses for it: "Order of the Ghostslayer", "Order of the Profane Soul", "Order of the Mutant", and "Order of the Lycan" (v1.5)
+
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/170777/)
 				This class and subclasses are made by Matthew Mercer
-				
-				The script also includes the "Order of the Lycan" (v1.5), which is taken from http://www.dmsguild.com/product/175606/
-				
+
+				The script also includes the "Order of the Lycan" (v1.5), which is taken from https://www.dmsguild.com/product/175606/
+
 	Code by:	Darryl Cook & MorePurpleMoreBetter
 				Order of the Lycan code by MorePurpleMoreBetter
-	Date:		2018-01-08 (sheet v12.999)
+				Part of v2.1 update by QuagScoped
+	Date:		2018-06-12 (sheet v12.999)
 
-	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
+	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 	
 	Please take note that multiclassing the "Order of the Profane Soul" subclass with Warlock will result in too many spells/cantrips being asked for in the spell selection dialogues.
 */
@@ -28,17 +29,17 @@ var iFileName = "Blood Hunter [Matthew Mercer's work, transcribed by Darryl & MP
 RequiredSheetVersion(12.999);
 
 SourceList["MM:BH"] = {
-	name : "Matthew Mercer: Blood Hunter Class",
+	name : "Matthew Mercer: Blood Hunter Class v2.1",
 	abbreviation : "MM:BH",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/170777/",
-	date : "2017/12/26"
+	url : "https://www.dmsguild.com/product/170777/",
+	date : "2018/06/07"
 };
 SourceList["MM:OotL"] = {
-	name : "Matthew Mercer: Order of the Lycan for Blood Hunters",
+	name : "Matthew Mercer: Order of the Lycan for Blood Hunters v1.5",
 	abbreviation : "MM:OotL",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/175606/",
+	url : "https://www.dmsguild.com/product/175606/",
 	date : "2017/12/27"
 };
 
@@ -83,14 +84,13 @@ ClassList["blood hunter"] = {
 			source : ["MM:BH", 3],
 			minlevel : 1,
 			description : desc([
-				"Use the \"Choose Features\" button above to add a Crimson Rite to the third page",
-				"As a bonus action, I imbue a weapon with a rite, lasting until my next short/long rest",
-				"A weapon can only hold a single rite at a time; the rite ends if it leaves my hand",
-				"While active, attacks with the weapon add the rite damage die to their damage",
+				"I can imbue my weapons with Crimson Rites; Use the \"Choose Features\" button above",
+				"As a bonus action, I imbue a weapon, which than adds the rite damage to its damage",
+				"It can hold only one rite, lasting until my next short/long rest or it leaves my hand",
 				"When activated, I take my character level in damage and lower my max HP the same"
 			]),
 			additional : levels.map(function (n) {
-				var die = "1d" + (n < 6 ? 4 : n < 11 ? 6 : n < 16 ? 8 : 10);
+				var die = "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
 				var rite = (n < 6 ? 1 : n < 11 ? 2 : 3) + " primal rite" + (n < 6 ? "" : "s") + (n < 14 ? "" : " \u0026 1 esoteric rite") + " known";
 				return die + "; " + rite;
 			}),
@@ -151,7 +151,8 @@ ClassList["blood hunter"] = {
 			minlevel : 2,
 			description : desc([
 				"I can use a Blood Curse on targets with blood; Use the \"Choose Features\" button above",
-				"I can amplify its effect by taking damage equal to my Crimson Rite damage die"
+				"I can amplify its effect by taking damage equal to my Crimson Rite damage die",
+				"Whenever I learn a new Blood Curse, I can replace one I know with a new one as well"
 			]),
 			additional : levels.map(function (n) { return n < 2 ? "" : (n < 5 ? 1 : n < 9 ? 2 : n < 13 ? 3 : n < 17 ? 4 : n < 20 ? 5 : 6) + " curse" + (n < 5 ? "" : "s"); }),
 			usages : levels.map(function (n) { return n < 2 ? "" : n < 6 ? 1 : n < 11 ? 2 : n < 17 ? 3 : 4; }),
@@ -254,7 +255,9 @@ ClassList["blood hunter"] = {
 			description : desc([
 				"I can meditate for 10 minutes on an object to discern details of a lingering evil past",
 				"The DM reveals information based on my Wis check; This only works once on an object"
-			])
+			]),
+			usages : 1,
+			recovery : "short rest"
 		},
 		"dark velocity" : {
 			name : "Dark Velocity",
@@ -304,7 +307,11 @@ ClassSubList["blood hunter-order of the ghostslayer"] = {
 			"dawn" : {
 				source : ["MM:BH", 5],
 				name : "Rite of the Dawn",
-				description : "\n   " + "I can select radiant as the damage type for my crimson rite damage die"
+				description : desc([
+					"I can select radiant as the damage type for my crimson rite damage die",
+					"In addition, I suffer only half my character level in damage when activating it"
+				]),
+				additional : levels.map(function (n) { return n < 3 ? "" : "+Wis mod damage to " + (n < 11 ? "undead" : "all"); })
 			},
 			eval : "ClassFeatureOptions(['blood hunter', 'subclassfeature3', 'dawn', 'extra']);",
 			removeeval : "ClassFeatureOptions(['blood hunter', 'subclassfeature3', 'dawn', 'extra'], 'remove');"
@@ -315,8 +322,7 @@ ClassSubList["blood hunter-order of the ghostslayer"] = {
 			minlevel : 7,
 			description : desc([
 				"My blood curses can now affect any creature, regardless of form or lack of blood",
-				"In addition, undead targeted by my blood curse must make a Wis save (8+Prof+Wis mod)",
-				"If failed, it can't target me with an attack until the end of my next turn"
+				"When I amplify a blood curse, I may reroll the damage I suffer but must use the new roll"
 			])
 		},
 		"subclassfeature11" : {
@@ -324,9 +330,9 @@ ClassSubList["blood hunter-order of the ghostslayer"] = {
 			source : ["MM:BH", 5],
 			minlevel : 11,
 			description : desc([
-				"As a bonus action, I can take on a ghostly form until the end of my next turn",
-				"If taking the attack action in the same turn, I also make an attack with this bonus action",
-				"While active, I can move through objects and creatures as if they were difficult terrain",
+				"If I take the Attack action, I can use this feature to attack 3 times instead of 2 times",
+				"When I do so, or as a bonus action, I can become spectral until the end of my next turn",
+				"While spectral, I can move through objects and creatures as if they were difficult terrain",
 				"If I end my turn inside an object, I take 1d10 force damage; more if my form ends"
 			]),
 			usages : "Wisdom mod per ",
@@ -374,14 +380,14 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 		[0, 2, 0, 0, 0, 0, 0, 0, 0], //lvl 8
 		[0, 2, 0, 0, 0, 0, 0, 0, 0], //lvl 9
 		[0, 2, 0, 0, 0, 0, 0, 0, 0], //lvl10
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl11
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl12
+		[0, 2, 0, 0, 0, 0, 0, 0, 0], //lvl11
+		[0, 2, 0, 0, 0, 0, 0, 0, 0], //lvl12
 		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl13
 		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl14
 		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl15
 		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl16
-		[0, 0, 0, 2, 0, 0, 0, 0, 0], //lvl17
-		[0, 0, 0, 2, 0, 0, 0, 0, 0], //lvl18
+		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl17
+		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl18
 		[0, 0, 0, 2, 0, 0, 0, 0, 0], //lvl19
 		[0, 0, 0, 2, 0, 0, 0, 0, 0] //lvl20
 	],
@@ -548,7 +554,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			choicesNotInMenu : true,
 			"the archfey2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Slow using a profane soul spell slot",
+				description : "\n   " + "Once per long rest, I can cast Slow without using a profane soul spell slot",
 				spellcastingBonus : {
 					name : "Unsealed Arcana",
 					spells : ["slow"],
@@ -558,7 +564,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the fiend2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Fireball using a profane soul spell slot",
+				description : "\n   " + "Once per long rest, I can cast Fireball without using a profane soul spell slot",
 				spellcastingBonus : {
 					name : "Unsealed Arcana",
 					spells : ["fireball"],
@@ -568,7 +574,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the great old one2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Haste using a profane soul spell slot",
+				description : "\n   " + "Once per long rest, I can cast Haste without using a profane soul spell slot",
 				spellcastingBonus : {
 					name : "Unsealed Arcana",
 					spells : ["haste"],
@@ -578,7 +584,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the undying2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Bestow Curse using a profane soul spell slot",
+				description : "\n   " + "Once per long rest, I can cast Bestow Curse without using a profane soul spell slot",
 				spellcastingBonus : {
 					name : "Unsealed Arcana",
 					spells : ["bestow curse"],
@@ -588,7 +594,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the celestial2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Revivify using a profane soul spell slot",
+				description : "\n   " + "Once per long rest, I can cast Revivify without using a profane soul spell slot",
 				spellcastingBonus : {
 					name : "Unsealed Arcana",
 					spells : ["revivify"],
@@ -598,7 +604,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the hexblade2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Blink using a profane soul spell slot",
+				description : "\n   " + "Once per long rest, I can cast Blink without using a profane soul spell slot",
 				spellcastingBonus : {
 					name : "Unsealed Arcana",
 					spells : ["blink"],
@@ -662,7 +668,7 @@ ClassSubList["blood hunter-order of the mutant"] = {
 				source : ["MM:BH", 7],
 				description : desc([
 					"I can make a single weapon attack as a bonus action",
-					"\u2022 Side effect: I have disadvantage on all saving throws"
+					"\u2022 Side effect: I have disadvantage on Intelligence, Wisdom, and Charisma saving throws"
 				])
 			},
 			"impermeable" : {
@@ -694,7 +700,7 @@ ClassSubList["blood hunter-order of the mutant"] = {
 				source : ["MM:BH", 8],
 				description : desc([
 					"My Strength score increases by an amount equal to my mutation score",
-					"\u2022 Side effect: My Dexterity score decreases by an amount equal to my mutation score"
+					"\u2022 Side effect: I have disadvantage on Dexterity saving throws"
 				])
 			},
 			"precision (prereq: level 11 blood hunter)" : {
@@ -764,12 +770,15 @@ ClassSubList["blood hunter-order of the mutant"] = {
 				"I can craft as many mutagen each short rest as listed above, but only one of each",
 				"Taking a mutagen is a bonus action; Mutagens only affect Medium or smaller creatures",
 				"The effects of a mutagen overlap and last until taking a short rest to willingly stop it",
-				"Only I can gain the mutagen's full effect, other only get the side effect"
+				"Only I can gain the mutagen's full effect, other only get the side effect",
+				"As an action, I can end all effects of a single mutagen that is in my system"
 			]),
 			usages : [0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3],
 			recovery : "short rest",
 			additional : levels.map(function (n) { return n < 3 ? "" : "Mutation Score: " + Math.ceil(n/4); }),
-			action : ["bonus action", " (Consume Mutagen)"]
+			action : ["bonus action", " (Consume Mutagen)"],
+			eval : "AddAction('action', 'Mutagen Craft (End Mutagen)', 'Blood Hunter (Order of the Mutant)');",
+			removeeval : "RemoveAction('action', 'Mutagen Craft (End Mutagen)', 'Blood Hunter (Order of the Mutant)');"
 		},
 		"subclassfeature11" : {
 			name : "Strange Metabolism",
