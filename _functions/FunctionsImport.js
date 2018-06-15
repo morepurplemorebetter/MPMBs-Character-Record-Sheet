@@ -1927,9 +1927,11 @@ function AddUserScript(retResDia) {
 				dialog.end("next");
 			},
 			bFAQ: function(dialog) {
-				var results = dialog.store();
-				this.script = results["jscr"];
-				dialog.end("bfaq");
+				if (getFAQ(false, true)) {
+					dialog.end("bfaq");
+					var results = dialog.store();
+					this.script = results["jscr"];
+				}
 			},
 			bPre: function(dialog) {
 				var results = dialog.store();
@@ -2118,7 +2120,7 @@ function AddUserScript(retResDia) {
 		if (askForScripts === "bpre") {
 			diaIteration -= 1;
 		} else if (askForScripts === "bfaq") {
-			tDoc.exportDataObject({ cName: "FAQ.pdf", nLaunch: 2 });
+			getFAQ(["faq", "pdf"]);
 		} else if (askForScripts === "bcon") {
 			console.println("\nYour code has been copied below, but hasn't been commited/saved to the sheet!\nYou can run code here by selecting the appropriate lines and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + ".\n\n" + theUserScripts.join(""));
 			console.show();
@@ -2429,9 +2431,11 @@ function ImportScriptFileDialog(retResDia) {
 		},
 		commit: function(dialog) {},
 		bFAQ: function(dialog) {
-			var results = dialog.store();
-			this.script = results["jscr"];
-			dialog.end("bfaq");
+			if (getFAQ(false, true)) {
+				dialog.end("bfaq");
+				var results = dialog.store();
+				this.script = results["jscr"];
+			}
 		},
 		bWhy: function(dialog) { contactMPMB("additions"); },
 		bCoC: function(dialog) { contactMPMB("subreddit"); },
@@ -2626,7 +2630,7 @@ function ImportScriptFileDialog(retResDia) {
 	do {
 		var scriptFilesDialog = app.execDialog(AddScriptFiles_dialog);
 		if (scriptFilesDialog === "bfaq") {
-			tDoc.exportDataObject({ cName: "FAQ.pdf", nLaunch: 2 });
+			getFAQ(["faq", "pdf"]);
 		} else if (scriptFilesDialog === "bcon") {
 			console.println("\nAny changes you made in the import script files dialogue have not been applied!\nYou can run code here by pasting it in, selecting the appropriate lines and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + ".");
 			console.show();

@@ -5212,7 +5212,7 @@ function CreateBkmrksCompleteSpellSheet() {
 	for (var c = 0; c < tDoc.bookmarkRoot.children[1].children.length; c++) tDoc.bookmarkRoot.children[1].children[c].style = 2;
 
 	//make FAQ bookmark section
-	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "tDoc.exportDataObject({ cName: 'FAQ.pdf', nLaunch: 2 });", nIndex: 2});
+	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "getFAQ();", nIndex: 2});
 	tDoc.bookmarkRoot.children[2].style = 2;
 	
 	//make the contact bookmark section

@@ -10,7 +10,7 @@ function MakeButtons() {
 				cName : "LayoutButton",
 				cExec : minVer ? "MakeAdvLogMenu_AdvLogOptions(true);" : "MakePagesMenu(); PagesOptions();",
 				oIcon : allIcons.layout,
-				cTooltext : toUni("Set Pages Layout") + "\nSelect which pages are visible in the sheet.\n\nYou can also add more instances of the following pages:\n   \u2022  Companion page;\n   \u2022  Notes page;\n   \u2022  Wild Shapes page.\n\nNote that if you add more pages or you hide/show the pages many times, the file size might increase.",
+				cTooltext : toUni("Set Pages Layout") + "\nSelect which pages are visible in the sheet and set the different lay-out options on those pages. Some pages might offer extra options on the page itself.\n\nNote that you can have multiple instances of the following pages:\n   \u2022  Companion page;\n   \u2022  Notes page;\n   \u2022  Wild Shapes page;\n   \u2022  Spell Sheet page.;\n   \u2022  Adventure Logsheet.\n\nIf you add more pages or you hide/show the pages many times, the file size might increase.",
 				nPos : 0,
 				cLabel : "Layout"
 			});
@@ -49,7 +49,7 @@ function MakeButtons() {
 				cName : "SetTextOptionsButton",
 				cExec : "MakeTextMenu_TextOptions();",
 				oIcon : allIcons.textsize,
-				cTooltext : toUni("Text Options") + "\nGives a dialog where you can:\n   \u2022  Set the font of all fillable fields" + "\n   \u2022  Set the font size of fields with multiple lines;\n   \u2022  Hide\/show the text lines on all pages" + (!typePF ? "" : ";\n   \u2022  Switch between boxes or lines for single-line fields."),
+				cTooltext : toUni("Text Options") + "\nWith this button you can:\n   \u2022  Set the font of all fillable fields" + "\n   \u2022  Set the font size of fields with multiple lines;\n   \u2022  Hide\/show the text lines on all pages" + (!typePF ? "" : ";\n   \u2022  Switch between boxes or lines for single-line fields."),
 				nPos : 4,
 				cLabel : "Text"
 			});
@@ -60,7 +60,7 @@ function MakeButtons() {
 				cName : "ClassesButton",
 				cExec : "SelectClass();",
 				oIcon : allIcons.classes,
-				cTooltext : toUni("Set Character Classes") + "\nOpen a pop-up dialogue where you can set the classes, subclasses, and levels the character has.\n\nYou get drop-down boxes for selecting a class and its subclass, and can test what class something you enter is being recognized as.",
+				cTooltext : toUni("Set Character Classes") + "\nOpen a pop-up dialogue where you can set the classes, subclasses, and levels the character has.\n\nYou get drop-down boxes for selecting a class and its subclass, and can test what text you enter is being recognized as what class/subclass.",
 				nPos : 5,
 				cLabel : "Class"
 			});
@@ -156,7 +156,7 @@ function MakeButtons() {
 		});
 		app.addToolButton({
 			cName : "FAQButton",
-			cExec : "tDoc.exportDataObject({ cName: 'FAQ.pdf', nLaunch: 2 });",
+			cExec : "getFAQ();",
 			oIcon : allIcons.faq,
 			cTooltext : toUni("FAQ") + "\nOpen the frequently asked questions pdf.\n\nThere you can find information on how to add custom code to the sheet, like homebrew races\/weapons\/feats\/etc.",
 			nPos : 16,

@@ -18,5 +18,12 @@ var Base_SourceList = {
 		name : "Homebrew",
 		abbreviation : "Homebrew",
 		group : "default"
+	},
+	// Sources for all official WotC backgrounds, so that they are easier to use with the AL +1 rule
+	"ALbackground" : {
+		name : "All official WotC backgrounds",
+		abbreviation : "WotC",
+		group : "Primary Sources",
+		url : "https://flapkan.com/faq#What-is-the-source-All-official-WotC-backgrounds-and-how-does-it-work"
 	}
 };

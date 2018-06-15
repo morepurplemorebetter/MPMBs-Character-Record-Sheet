@@ -3,7 +3,7 @@ var Base_BackgroundList = {
 	"acolyte" : {
 		regExpSearch : /acolyte/i,
 		name : "Acolyte",
-		source : [["SRD", 60], ["P", 127]],
+		source : [["SRD", 60], ["P", 127], ["ALbackground", 0]],
 		skills : ["Insight", "Religion"],
 		gold : 15,
 		equipleft : [
@@ -73,6 +73,6 @@ var Base_BackgroundSubList = {};
 var Base_BackgroundFeatureList = {
 	"shelter of the faithful" : {
 		description : "I command the respect of those who share my faith. I can perform the religious ceremonies of my faith. My companions and I can expect free healing and care at an establishment of my faith, though I must provide any material components needed for spells. Those who share my religion will support me at a modest lifestyle.",
-		source : [["SRD", 61], ["P", 127]]
+		source : [["SRD", 61], ["P", 127], ["ALbackground", 0]]
 	}
 };

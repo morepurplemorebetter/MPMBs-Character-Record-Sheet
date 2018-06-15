@@ -4183,7 +4183,7 @@ function UpdateDropdown(type, weapon) {
 	if (minVer || !IsNotUserScript) return;
 	IsSetDropDowns = true;
 	type = type ? type.toLowerCase() : "all";
-	calcStop;
+	calcStop();
 	switch (type) {
 	 case "resources" :
 		var notAll = true;
@@ -4366,7 +4366,7 @@ function CreateBkmrksCompleteAdvLogSheet() {
 	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB('otherdesign');", nIndex: 2});
 	
 	//make FAQ bookmark section
-	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "tDoc.exportDataObject({ cName: 'FAQ.pdf', nLaunch: 2 });", nIndex: 2});
+	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "getFAQ();", nIndex: 2});
 	
 	//make the contact bookmark section
 	tDoc.bookmarkRoot.createChild({cName: "Contact MPMB", cExpr: "contactMPMB('patreon');", nIndex: 3});
@@ -5703,14 +5703,6 @@ function ShowDialog(hdr, strng) {
 					type : "view",
 					elements : [{
 						type : "static_text",
-						item_id : "txt0",
-						alignment : "align_fill",
-						font : "dialog",
-						wrap_name : true,
-						height : 20,
-						name : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]"
-					}, {
-						type : "static_text",
 						item_id : "head",
 						alignment : "align_fill",
 						font : "heading",
@@ -5718,6 +5710,26 @@ function ShowDialog(hdr, strng) {
 						wrap_name : true,
 						width : 550,
 						name : hdr
+					}, {
+						type : "view",
+						align_children : "align_row",
+						elements : [{
+							type : "static_text",
+							item_id : "txt0",
+							alignment : "align_fill",
+							font : "palette",
+							wrap_name : true,
+							height : 20,
+							name : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]",
+							width : 548
+						}, {
+							type : "edit_text",
+							item_id : "ding",
+							alignment : "align_fill",
+							readonly : true,
+							height : 1,
+							width : 1
+						}]
 					}, {
 						type : "edit_text",
 						item_id : "Eval",
@@ -6020,101 +6032,6 @@ function processMods(AddRemove, NameEntity, items) {
 				if (!tDoc.getField(Fld)) continue;
 		};
 		AddToModFld(Fld, Mod, !AddRemove, NameEntity, Explanation);
-	};
-};
-
-// make a menu off all the sources where clicking on them gets you to their linked URL
-function MakeSourceMenu_SourceOptions() {
-	var SourceMenu = [{
-		cName : "[clicking a source will open a web page]",
-		bEnabled : false
-	}, {
-		cName : "All",
-		oSubMenu : []
-	}, {
-		cName : "Primary Sources",
-		oSubMenu : []
-	}, {
-		cName : "Adventure Books",
-		oSubMenu : []
-	}, {
-		cName : "Adventurers League",
-		oSubMenu : []
-	}, {
-		cName : "Unearthed Arcana",
-		oSubMenu : []
-	}];
-	
-	var menuLoc = {
-		"primary sources" : 2,
-		"adventure books" : 3,
-		"adventurers league" : 4,
-		"unearthed arcana" : 5
-	};
-	
-	var abbrObj = { arr : [], obj : {}, lowObj : {} };
-	for (var aSource in SourceList) {
-		abbrObj.arr.push(SourceList[aSource].abbreviation);
-		abbrObj.obj[SourceList[aSource].abbreviation] = aSource;
-		abbrObj.lowObj[aSource.toLowerCase()] = aSource;
-	};
-	abbrObj.arr.sort();
-	
-	var extraMenuItems = false;
-	for (var i = 0; i < abbrObj.arr.length; i++) {
-		var aSource = abbrObj.obj[abbrObj.arr[i]];
-		if (/^(DMguild|HB)$/.test(aSource)) continue;
-		var src = SourceList[aSource];
-		var theIndex = menuLoc[src.group.toLowerCase()];
-		if (!theIndex) {
-			if (!extraMenuItems) {
-				SourceMenu.push({ cName : "-" });
-				extraMenuItems = true;
-			};
-			theIndex = SourceMenu.length;
-			SourceMenu.push({
-				cName : src.group,
-				oSubMenu : []
-			});
-			menuLoc[src.group.toLowerCase()] = theIndex;
-		};
-		
-		var allItem = {
-			cName : (src.abbreviation + (new Array(10)).join("\u2002")).substr(0, 10) + src.name,
-			cReturn : "sourcelist#" + aSource
-		};
-		if ((/(\d+\/\d+\/\d+)(.*)/).test(allItem.cName)) allItem.cName = allItem.cName.replace(/(\d+\/\d+\/\d+)(.*)/, "$2 ($1)");
-		SourceMenu[1].oSubMenu.push(allItem);
-		var srcItem = {
-			cName : allItem.cName.replace(RegExp(src.group + ":? ?", "i"), ""),
-			cReturn : allItem.cReturn
-		};
-		SourceMenu[theIndex].oSubMenu.push(srcItem);
-	};
-	
-	for (var entry in SourceMenu) if (SourceMenu[entry].oSubMenu) SourceMenu[entry].oSubMenu.sort();
-	
-	SourceMenu.push({ cName : "-" });
-	SourceMenu.push({
-		cName : "Open a dialogue with a list of the sources",
-		cReturn : "sourcelist#dialogue"
-	});
-	
-	//parse it into a global variable
-	Menus.sources = SourceMenu;
-	
-	//now call the menu
-	var MenuSelection = getMenu("sources");
-	
-	if (!MenuSelection || MenuSelection[0] == "nothing") return;
-	if (MenuSelection[1] === "dialogue") {
-		ShowDialog("List of Sources, sorted by abbreviation", "sources");
-		return;
-	};
-	var theSrc = abbrObj.lowObj[MenuSelection[1]];
-	
-	if (SourceList[theSrc].url) {
-		app.launchURL(SourceList[theSrc].url, true);
 	};
 };
 
@@ -7201,4 +7118,25 @@ function setCalcOrder() {
 			cOrd++;
 		}
 	};
+};
+
+// The function called when the FAQ button is pressed
+function getFAQ(input, delay) {
+	var MenuSelection = input ? input : getMenu("faq");
+	if (!MenuSelection || MenuSelection[0] != "faq") return;
+	switch (MenuSelection[1]) {
+		case "online" :
+			app.launchURL("https://flapkan.com/faq", true);
+			break;
+		case "pdf" :
+			if (delay) return true;
+			tDoc.exportDataObject({ cName: 'FAQ.pdf', nLaunch: 2 });
+			break;
+		case "ogl" :
+			ShowDialog("Open Gaming License, for use of the SRD", licenseOGL.join("\n\n"));
+			break;
+		case "gplv3" :
+			ShowDialog("GNU License, for the software by MPMB", licenseGPLV3.join("\n\n"));
+			break;
+	}
 };

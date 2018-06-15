@@ -163,7 +163,7 @@ var Base_ClassList = {
 				name : "Primal Champion",
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 20,
-				description : "\n   " + "+4 to Strength and Constitution; Their maximums increase to 24"
+				description : "\n   " + "I add +4 to both my Strength and Constitution, and their maximums increase to 24"
 			}
 		}
 	},

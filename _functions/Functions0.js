@@ -1083,7 +1083,6 @@ function calcStop() {
 };
 
 // function to start the calculations of the PDF again
-function calcStart() {};
 function calcCont() {
 	if (calcStartSet) {
 		app.clearTimeOut(calcStartSet);
