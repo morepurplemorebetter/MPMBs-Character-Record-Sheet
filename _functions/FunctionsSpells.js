@@ -11,25 +11,26 @@ function ParseSpell(input) {
 		var kObj = SpellsList[key];
 		if (testSource(key, kObj, "spellsExcl")) continue; // test if the spell or its source isn't excluded
 
-		var thisOne = input.toLowerCase() == key; // see if the input matches the key exactly
+		var thisOne = input.toLowerCase() == key ? Math.max(key.length, kObj.name.length, kObj.nameAlt ? kObj.nameAlt.length : 0): 0; // see if the input matches the key exactly
 		if (!thisOne && kObj.regExpSearch) { // if not exact match, see if a regex matches
-			thisOne = toTest.test(kObj.regExpSearch);
+			thisOne = toTest.test(kObj.regExpSearch) ? Math.max(key.length, kObj.name.length, kObj.nameAlt ? kObj.nameAlt.length : 0): 0;
 		} else {
 			var toSearch = "\\b(" + clean(kObj.name).replace(/^\W|\W$/g, "").RegEscape();
 			toSearch += kObj.nameShort ? "|" + clean(kObj.nameShort).replace(/^\W|\W$/g, "").RegEscape() : "";
 			toSearch += kObj.nameAlt ? "|" + clean(kObj.nameAlt).replace(/^\W|\W$/g, "").RegEscape() : "";
 			toSearch += ")\\b";
-			thisOne = RegExp(toSearch, "i").test(input);
+			toSearch = RegExp(toSearch, "i");
+			thisOne = toSearch.test(input) ? input.match(toSearch)[0] : 0;
 		};
 		if (!thisOne) continue; // no exact or regex match, so skip
 
-		// stop if the source of the previous match is more recent and this new match is not a better match
+		// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
 		var tempDate = sourceDate(kObj.source);
-		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+		if (thisOne < foundLen || (thisOne == foundLen && tempDate < foundDat)) continue;
 
 		// we have a match, set the values
 		found = key;
-		foundLen = kObj.name.length
+		foundLen = thisOne;
 		foundDat = tempDate;
 	}
 	return found;

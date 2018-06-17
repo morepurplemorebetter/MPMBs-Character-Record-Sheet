@@ -404,8 +404,8 @@ function DirectImport(consoleTrigger) {
 	var closeAlert = false;
 	try {
 		if (consoleTrigger && !MPMBImportFunctionsInstalled) {
-			global.docFrom = importFromPath[1] ? app.openDoc({cPath: importFromPath[0], oDoc: this}) : app.openDoc(importFromPath[0]);
 			global.docTo = this;
+			global.docFrom = importFromPath[1] ? app.openDoc({cPath: importFromPath[0], oDoc: this}) : app.openDoc(importFromPath[0]);
 			global.docTo.bringToFront();
 		} else {
 			MPMBOpenFile(this, importFromPath[0], importFromPath[1]);
@@ -426,6 +426,8 @@ function DirectImport(consoleTrigger) {
 			cMsg: closeAlert[1]
 		});
 	} else if (global.docFrom && global.docTo) { try { //we are good to go and import stuff!
+		// First we need to reset the prototypes to the current sheet because Acrobat will use the ones from the latest sheet that was opened
+		global.docTo.setPrototypes();
 		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
 		if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
 		if (FromVersion < 12.999) { // give a warning about importing from a version that had all materials included automatically
@@ -461,12 +463,23 @@ function DirectImport(consoleTrigger) {
 		}
 		
 		//copy any custom script and run it
-		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : {};
+		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
 		var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
-		var filesScript = MergeRecursive(filesScriptFrom, filesScriptTo).toSource(); // add the old to the new, preferring the new if both have the same entries
-		global.docTo.getField("User_Imported_Files.Stringified").value = filesScript;
-		GetStringifieds();
-		if (ImportField("User Script") || filesScript !== "({})") {
+
+/* 		var filesScript = MergeRecursive(filesScriptFrom, filesScriptTo).toSource(); // add the old to the new, preferring the new if both have the same entries */
+
+		if (filesScriptFrom) {
+			// add the old to the new, preferring the new if both have the same entries
+			var filesScriptToNms = [];
+			for (var toScr in filesScriptTo) filesScriptToNms.push(toScr.replace(/\d+\/\d+\/\d+ - /, ""));
+			for (var fromScr in filesScriptFrom) {
+				var fromScrNm = fromScr.replace(/\d+\/\d+\/\d+ - /, "");
+				if (filesScriptToNms.indexOf(fromScrNm) == -1) filesScriptTo[fromScr] = filesScriptFrom[fromScr];
+			};
+			global.docTo.getField("User_Imported_Files.Stringified").value = filesScriptTo;
+			GetStringifieds();
+		}
+		if (ImportField("User Script") || filesScriptFrom) {
 			InitiateLists();
 			RunUserScript(true);
 			amendPsionicsToSpellsList();

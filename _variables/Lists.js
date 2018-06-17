@@ -1,3 +1,7 @@
+// First some global variables that can be set by custom scripts (are otherwise never changed)
+var ignorePrereqs = false; // whether or not to consider the prerequisites for class features, feats, and prestige classes
+var ignoreSearchLength = false; // whether or not to consider the length of the names for regExpSearch objects. If set to true, the sheet uses only the date of the source
+
 // A function to create/reset the basic lists for the sheet to use. Things can subsequently be added to the created lists using custom scripts.
 function InitiateLists() {
 	var lists = [
@@ -50,7 +54,7 @@ var patreonVersion = tDoc.getField("SaveIMG.Patreon").submitName === "";
 var UnitsList = {
 	metric : {
 		mass : 0.5,
-		length : 0.3,
+		'length' : 0.3,
 		lengthInch : 2.5,
 		volume : 30,
 		surface : 0.1,
@@ -58,7 +62,7 @@ var UnitsList = {
 	},
 	metricExact : {
 		mass : 0.45359237,
-		length : 0.3048,
+		'length' : 0.3048,
 		lengthInch : 2.54,
 		volume : 28.316846592,
 		surface : 0.09290304,
@@ -68,7 +72,7 @@ var UnitsList = {
 
 var AbilityScores = {
 	abbreviations : ["Str", "Dex", "Con", "Int", "Wis", "Cha"],
-	fields : {str : "Str", dex : "Dex", con : "Con", int : "Int", wis : "Wis", cha : "Cha", hos : "HoS", hon : "HoS", san : "HoS"},
+	fields : {str : "Str", dex : "Dex", con : "Con", 'int' : "Int", wis : "Wis", cha : "Cha", hos : "HoS", hon : "HoS", san : "HoS"},
 	names : ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"],
 	"strength" : {
 		index : 0
@@ -326,7 +330,6 @@ var IsNotFeatMenu = true;
 var IsNotWeaponMenu = true;
 var IsSetDropDowns = false;
 var IsNotUserScript = true;
-var ignorePrereqs = false;
 
 var FieldsRemember = [];
 

@@ -1276,10 +1276,12 @@ function ParseArmor(input, onlyInv) {
 			|| !kObj.regExpSearch || !(kObj.regExpSearch).test(input) // see if the regex matches
 			|| testSource(key, kObj, "armorExcl") // test if the armour or its source isn't excluded
 		) continue;
-		
-		// stop if the source of the previous match is more recent and this new match is not a better match
+
+		// only go on with this entry if:
+		// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
+		// or if we are not using the search length, just look at the newest source date
 		var tempDate = sourceDate(kObj.source);
-		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+		if ((!ignoreSearchLength && kObj.name.length < foundLen) || (!ignoreSearchLength && kObj.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
 		
 		// we have a match, set the values
 		found = key;
@@ -1630,8 +1632,8 @@ function ParseClass(input) {
 	var classFound = "";
 	var classFoundLen = 0;
 	var foundDat = 0;
-	var subFound = "";
 	var subFoundLen = 0;
+	var subFound = "";
 	var foundSubDat = 0;
 	input = removeDiacritics(input);
 	
@@ -1641,15 +1643,24 @@ function ParseClass(input) {
 		if (i == 2 && classFound) break; // something was already found in round 1, so no need for round 2
 		for (var key in ClassList) { //scan string for all classes, choosing subclasses over classes
 			var kObj = ClassList[key];
+			if (i == 1) { // reset the subs for every class we look through if still looking at classes mainly
+				subFoundLen = 0;
+				foundSubDat = 0;
+			}
 
 			if ((i == 1 && !(kObj.regExpSearch).test(input)) // see if the class regex matches (round 1 only)
 				|| testSource(key, kObj, "classExcl") // test if the class or its source isn't excluded
 				|| (key === "ranger" && !testSource("rangerua", ClassList.rangerua, "classExcl")) // ignore the PHB ranger if the UA ranger is present
 			) continue;
 
-			// stop if the source of the previous class match is more recent and this new match is not a better match (round 1 only)
+			// only go on with this entry if:
+			// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
+			// or if we are not using the search length, just look at the newest source date
 			var tempDate = sourceDate(kObj.source);
-			if (i == 1 && foundDat > tempDate && classFoundLen >= kObj.name.length) continue;
+			if (i == 1 && ((!ignoreSearchLength && kObj.name.length < foundLen) || (!ignoreSearchLength && kObj.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat))) continue;
+/* 			// stop if the source of the previous class match is more recent and this new match is not a better match (round 1 only)
+			var tempDate = sourceDate(kObj.source);
+			if (i == 1 && foundDat > tempDate && classFoundLen >= kObj.name.length) continue; */
 
 			if (i == 1) { // we have a matching class! (round 1 only)
 				classFound = key;
@@ -1667,10 +1678,15 @@ function ParseClass(input) {
 					|| testSource(subKey, sObj, "classExcl") // test if the subclass or its source isn't excluded
 				) continue;
 
-				// stop if the source of the previous subclass match is more recent and this new match is not a better match
+				// only go on with this entry if:
+				// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
+				// or if we are not using the search length, just look at the newest source date
 				var tempSubDate = sourceDate(sObj.source);
-				if (foundSubDat > tempSubDate && subFoundLen >= sObj.subname.length) continue;
-				
+				if ((!ignoreSearchLength && sObj.subname.length < subFoundLen) || (!ignoreSearchLength && sObj.subname.length == subFoundLen && tempSubDate < foundSubDat) || (ignoreSearchLength && tempSubDate <= foundSubDat)) continue;
+/* 				// stop if the source of the previous subclass match is more recent and this new match is not a better match
+				var tempSubDate = sourceDate(sObj.source);
+				if (foundSubDat > tempSubDate && subFoundLen >= sObj.subname.length) continue; */
+
 				// we have a match for both the class and the subclass!
 				classFound = key;
 				classFoundLen = kObj.name.length;
@@ -2400,9 +2416,11 @@ function ParseRace(input) {
 			|| testSource(key, kObj, "racesExcl") // test if the race or its source isn't excluded
 		) continue;
 
-		// stop if the source of the previous match is more recent and this new match is not a better match
+		// only go on with this entry if:
+		// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
+		// or if we are not using the search length, just look at the newest source date
 		var tempDate = sourceDate(kObj.source);
-		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+		if ((!ignoreSearchLength && kObj.name.length < foundLen) || (!ignoreSearchLength && kObj.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
 
 		// we have a match, set the values
 		resultArray = [key, "", []];
@@ -2416,6 +2434,7 @@ function ParseRace(input) {
 			for (var sub = 0; sub < kObj.variants.length; sub++) { // scan string for all variants of the race
 				var theR = key + "-" + kObj.variants[sub];
 				var rVars = RaceSubList[theR];
+				var theRname = rVars.name ? rVars.name : kObj.variants[sub];
 
 				// test if the racial variant or its source isn't excluded
 				if (testSource(theR, rVars, "racesExcl")) continue;
@@ -2425,13 +2444,15 @@ function ParseRace(input) {
 				// see if racial variant regex matches
 				if (!(rVars.regExpSearch).test(input)) continue;
 
-				// stop if the source of the previous match is more recent and this new match is not a better match
+				// only go on with this entry if:
+				// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
+				// or if we are not using the search length, just look at the newest source date
 				var tempDate = sourceDate(rVars.source);
-				if (foundDat > tempDate && foundLen2 > rVars.name.length) continue;
+				if ((!ignoreSearchLength && theRname.length < foundLen2) || (!ignoreSearchLength && theRname.length == foundLen2 && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
 
 				// we have a match, set the values
 				resultArray[1] = kObj.variants[sub];
-				foundLen2 = rVars.name.length;
+				foundLen2 = theRname.length;
 				foundDat2 = tempDate;
 			}
 		}
@@ -2487,7 +2508,7 @@ function FindRace(inputracetxt) {
 	} else {
 		DontPrint("Race Features Menu");
 		// if no variant was found, ask the user if he wants to select one
-		if (inputracetxt && !tempFound[1] && What("Manual Race Remember") !== "Yes") {
+		if (IsNotImport && inputracetxt && !tempFound[1] && What("Manual Race Remember") !== "Yes") {
 			var aRace = RaceList[tempFound[0]];
 			var rSource = stringSource(aRace, 'first,abbr', "    [", "]");
 			var aBasic = "Basic " + aRace.name.toLowerCase() + rSource;
@@ -2829,9 +2850,11 @@ function ParseWeapon(input, onlyInv) {
 			|| testSource(key, kObj, "weapExcl") // test if the armour or its source isn't excluded
 		) continue;
 
-		// stop if the source of the previous match is more recent and this new match is not a better match
+		// only go on with this entry if:
+		// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
+		// or if we are not using the search length, just look at the newest source date
 		var tempDate = sourceDate(kObj.source);
-		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+		if ((!ignoreSearchLength && kObj.name.length < foundLen) || (!ignoreSearchLength && kObj.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
 
 		// we have a match, set the values
 		found = key;
@@ -3884,9 +3907,11 @@ function ParseBackground(input) {
 					|| testSource(BackOpt[sub], bVars, "backgrExcl") // test if the background variant or its source isn't excluded
 				) continue;
 
-				// stop if the source of the previous match is more recent and this new match is not a better match
-				var tempDate = sourceDate(rVars.source);
-				if (foundDat > tempDate && foundLen > bVars.name.length) continue;
+				// only go on with this entry if:
+				// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
+				// or if we are not using the search length, just look at the newest source date
+				var tempDate = sourceDate(bVars.source);
+				if ((!ignoreSearchLength && bVars.name.length < foundLen) || (!ignoreSearchLength && bVars.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
 
 				// we have a match, set the values
 				resultArray = [key, BackOpt[sub]];
@@ -3901,9 +3926,11 @@ function ParseBackground(input) {
 			|| testSource(key, kObj, "backgrExcl") // test if the background or its source isn't excluded
 		) continue;
 
-		// stop if the source of the previous match is more recent and this new match is not a better match
+		// only go on with this entry if:
+		// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
+		// or if we are not using the search length, just look at the newest source date
 		var tempDate = sourceDate(kObj.source);
-		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+		if ((!ignoreSearchLength && kObj.name.length < foundLen) || (!ignoreSearchLength && kObj.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
 
 		// we have a match, set the values
 		resultArray = [key, matchedThisSub ? resultArray[1] : ""];
@@ -4848,10 +4875,10 @@ function ParseFeat(input) {
 		if (input.indexOf(kObj.name.toLowerCase()) === -1 // see if the text matches
 			|| testSource(key, kObj, "featsExcl") // test if the feat or its source isn't excluded
 		) continue;
-		
-		// stop if the source of the previous match is more recent and this new match is not a better match
+
+		// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
 		var tempDate = sourceDate(kObj.source);
-		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+		if (kObj.name.length < foundLen || (kObj.name.length == foundLen && tempDate < foundDat)) continue;
 		
 		// we have a match, set the values
 		found = key;
@@ -7608,8 +7635,11 @@ function ParseAmmo(input, onlyInv) {
 				var theAlt = AmmoList[key].alternatives[z];
 				var doTest = typeof theAlt != "string";
 				var altLen = theAlt.toString().length;
-				
-				if ((foundDat > tempDate && foundLen >= altLen) // stop if the source of the previous match is more recent and this new match is not a better match
+
+				// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
+				if (kObj.name.length < foundLen || (kObj.name.length == foundLen && tempDate < foundDat)) continue;
+
+				if (altLen < foundLen || (altLen == foundLen && tempDate <= foundDat) // only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer or same source date. This differs from the regExpSearch objects
 					|| (doTest ? !theAlt.test(input) : input.indexOf(theAlt) === -1) // see if string matches
 				) continue;
 
@@ -7624,10 +7654,10 @@ function ParseAmmo(input, onlyInv) {
 		
 		// now see if the parent is a (better) match
 		if (found == key // stop if one of the alternatives already matched
-			|| (foundDat > tempDate && foundLen >= key.length) // stop if the source of the previous match is more recent and this new match is not a better match
+			|| key.length < foundLen || (key == foundLen && tempDate < foundDat) // only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
 			|| input.indexOf(key) === -1 // see if string matches
 		) continue;
-				
+
 		// we have a match, set the values
 		found = key;
 		foundLen = key.length;

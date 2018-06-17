@@ -1189,7 +1189,7 @@ var Base_ClassList = {
 	},
 
 	"sorcerer" : {
-		regExpSearch : /(sorcerer|witch)/i,
+		regExpSearch : /sorcerer|witch/i,
 		name : "Sorcerer",
 		source : [["SRD", 42], ["P", 99]],
 		primaryAbility : "\n \u2022 Sorcerer: Charisma;",

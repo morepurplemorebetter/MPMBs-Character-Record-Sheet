@@ -77,138 +77,142 @@ function desc(arr) {
 	return "\n   " + arr.join("\n   ");
 };
 
-//adding a way of capitalizing every first letter of every word in a string
-String.prototype.capitalize = function () {
-	var string = this.toLowerCase().replace(/([^']|^)\b\w/g, function (m) {
-		return m.toUpperCase();
-	});
-	
-	// Certain minor words should be left lowercase unless 
-	// they are the first or last words in the string
-	lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At', 
-	'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
-	for (var Ca = 0; Ca < lowers.length; Ca++)
-	string = string.replace(new RegExp('\\W' + lowers[Ca] + '\\W', 'g'), function(txt) {
-		return txt.toLowerCase();
-	});
-	
-	return string;
-};
-Number.prototype.capitalize = function () {
-	return this.toString().capitalize();
-};
-RegExp.prototype.capitalize = function () {
-	return this.toString().capitalize();
-};
+// Call all the prototypes within their own function so we can call it again when importing, forcing the latest version
+function setPrototypes() {
+	//adding a way of capitalizing every first letter of every word in a string
+	String.prototype.capitalize = function () {
+		var string = this.toLowerCase().replace(/([^']|^)\b\w/g, function (m) {
+			return m.toUpperCase();
+		});
+		
+		// Certain minor words should be left lowercase unless 
+		// they are the first or last words in the string
+		lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At', 
+		'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
+		for (var Ca = 0; Ca < lowers.length; Ca++)
+		string = string.replace(new RegExp('\\W' + lowers[Ca] + '\\W', 'g'), function(txt) {
+			return txt.toLowerCase();
+		});
+		
+		return string;
+	};
+	Number.prototype.capitalize = function () {
+		return this.toString().capitalize();
+	};
+	RegExp.prototype.capitalize = function () {
+		return this.toString().capitalize();
+	};
 
-//adding a way to convert a string with special characters into a regular expression
-String.prototype.RegEscape = function () {
-	return this.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-};
-Number.prototype.RegEscape = function () {
-	return this.toString().RegEscape();
-};
-RegExp.prototype.RegEscape = function () {
-	return this.toString().RegEscape();
-};
+	//adding a way to convert a string with special characters into a regular expression
+	String.prototype.RegEscape = function () {
+		return this.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	};
+	Number.prototype.RegEscape = function () {
+		return this.toString().RegEscape();
+	};
+	RegExp.prototype.RegEscape = function () {
+		return this.toString().RegEscape();
+	};
 
-//define a way for numbers and regular expressions to return an indexOf(), match(), replace(), search(), slice(), split(), substring(), substr(), toLowerCase(), or toUpperCase() to avoid errors
-Number.prototype.indexOf = function (searchValue, fromIndex) {
-	return this.toString().indexOf(searchValue, fromIndex);
-};
-Number.prototype.match = function (regexpObj) {
-	return this.toString().match(regexpObj);
-};
-Number.prototype.replace = function (regexp_substr, newSubStr_function) {
-	return this.toString().replace(regexp_substr, newSubStr_function);
-};
-Number.prototype.search = function (regexpObj) {
-	return this.toString().search(regexpObj);
-};
-Number.prototype.slice = function (beginSlice, endSlice) {
-	return this.toString().slice(beginSlice, endSlice);
-};
-Number.prototype.split = function (separator, limit) {
-	return this.toString().split(separator, limit);
-};
-Number.prototype.substring = function (indexStart, indexEnd) {
-	return this.toString().substring(indexStart, indexEnd);
-};
-Number.prototype.substr = function (start, length) {
-	return this.toString().substr(start, length);
-};
-Number.prototype.toLowerCase = function () {
-	return this.toString().toLowerCase();
-};
-Number.prototype.toUpperCase = function () {
-	return this.toString().toUpperCase();
-};
-RegExp.prototype.indexOf = function (searchValue, fromIndex) {
-	return this.toString().indexOf(searchValue, fromIndex);
-};
-RegExp.prototype.match = function (regexpObj) {
-	return this.toString().match(regexpObj);
-};
-RegExp.prototype.replace = function(oldstr, newstr) {
-	var a = this.toString();
-	return RegExp(a.replace(/^\/|\/\w*$/g, "").replace(oldstr, newstr), a.match(/\/\w*$/)[0].replace("/", ""));
-};
-RegExp.prototype.search = function (regexpObj) {
-	return this.toString().search(regexpObj);
-};
-RegExp.prototype.slice = function (beginSlice, endSlice) {
-	return this.toString().slice(beginSlice, endSlice);
-};
-RegExp.prototype.split = function (separator, limit) {
-	return this.toString().split(separator, limit);
-};
-RegExp.prototype.substring = function (indexStart, indexEnd) {
-	return this.toString().substring(indexStart, indexEnd);
-};
-RegExp.prototype.substr = function (start, length) {
-	return this.toString().substr(start, length);
-};
-RegExp.prototype.toLowerCase = function () {
-	return this.toString().toLowerCase();
-};
-RegExp.prototype.toUpperCase = function () {
-	return this.toString().toUpperCase();
-};
-Array.prototype.match = function (regexpObj) {
-	return this.toString().match(regexpObj);
-};
-Array.prototype.replace = function (regexp_substr, newSubStr_function) {
-	return this.toString().replace(regexp_substr, newSubStr_function);
-};
-Array.prototype.search = function (regexpObj) {
-	return this.toString().search(regexpObj);
-};
-Array.prototype.split = function (separator, limit) {
-	return this.toString().split(separator, limit);
-};
-Array.prototype.substring = function (indexStart, indexEnd) {
-	return this.toString().substring(indexStart, indexEnd);
-};
-Array.prototype.substr = function (start, length) {
-	return this.toString().substr(start, length);
-};
-Array.prototype.toLowerCase = function () {
-	return this.toString().toLowerCase();
-};
-Array.prototype.toUpperCase = function () {
-	return this.toString().toUpperCase();
-};
-Array.prototype.trailingIndexOf = function(e) {
-    var index = -1, len = this.length;
-    for (var i = len - 1; i > -1; i--) {
-        if (i in this && e === this[i]) {
-            index = i;
-        } else {
-			break;
+	//define a way for numbers and regular expressions to return an indexOf(), match(), replace(), search(), slice(), split(), substring(), substr(), toLowerCase(), or toUpperCase() to avoid errors
+	Number.prototype.indexOf = function (searchValue, fromIndex) {
+		return this.toString().indexOf(searchValue, fromIndex);
+	};
+	Number.prototype.match = function (regexpObj) {
+		return this.toString().match(regexpObj);
+	};
+	Number.prototype.replace = function (regexp_substr, newSubStr_function) {
+		return this.toString().replace(regexp_substr, newSubStr_function);
+	};
+	Number.prototype.search = function (regexpObj) {
+		return this.toString().search(regexpObj);
+	};
+	Number.prototype.slice = function (beginSlice, endSlice) {
+		return this.toString().slice(beginSlice, endSlice);
+	};
+	Number.prototype.split = function (separator, limit) {
+		return this.toString().split(separator, limit);
+	};
+	Number.prototype.substring = function (indexStart, indexEnd) {
+		return this.toString().substring(indexStart, indexEnd);
+	};
+	Number.prototype.substr = function (start, length) {
+		return this.toString().substr(start, length);
+	};
+	Number.prototype.toLowerCase = function () {
+		return this.toString().toLowerCase();
+	};
+	Number.prototype.toUpperCase = function () {
+		return this.toString().toUpperCase();
+	};
+	RegExp.prototype.indexOf = function (searchValue, fromIndex) {
+		return this.toString().indexOf(searchValue, fromIndex);
+	};
+	RegExp.prototype.match = function (regexpObj) {
+		return this.toString().match(regexpObj);
+	};
+	RegExp.prototype.replace = function(oldstr, newstr) {
+		var a = this.toString();
+		return RegExp(a.replace(/^\/|\/\w*$/g, "").replace(oldstr, newstr), a.match(/\/\w*$/)[0].replace("/", ""));
+	};
+	RegExp.prototype.search = function (regexpObj) {
+		return this.toString().search(regexpObj);
+	};
+	RegExp.prototype.slice = function (beginSlice, endSlice) {
+		return this.toString().slice(beginSlice, endSlice);
+	};
+	RegExp.prototype.split = function (separator, limit) {
+		return this.toString().split(separator, limit);
+	};
+	RegExp.prototype.substring = function (indexStart, indexEnd) {
+		return this.toString().substring(indexStart, indexEnd);
+	};
+	RegExp.prototype.substr = function (start, length) {
+		return this.toString().substr(start, length);
+	};
+	RegExp.prototype.toLowerCase = function () {
+		return this.toString().toLowerCase();
+	};
+	RegExp.prototype.toUpperCase = function () {
+		return this.toString().toUpperCase();
+	};
+	Array.prototype.match = function (regexpObj) {
+		return this.toString().match(regexpObj);
+	};
+	Array.prototype.replace = function (regexp_substr, newSubStr_function) {
+		return this.toString().replace(regexp_substr, newSubStr_function);
+	};
+	Array.prototype.search = function (regexpObj) {
+		return this.toString().search(regexpObj);
+	};
+	Array.prototype.split = function (separator, limit) {
+		return this.toString().split(separator, limit);
+	};
+	Array.prototype.substring = function (indexStart, indexEnd) {
+		return this.toString().substring(indexStart, indexEnd);
+	};
+	Array.prototype.substr = function (start, length) {
+		return this.toString().substr(start, length);
+	};
+	Array.prototype.toLowerCase = function () {
+		return this.toString().toLowerCase();
+	};
+	Array.prototype.toUpperCase = function () {
+		return this.toString().toUpperCase();
+	};
+	Array.prototype.trailingIndexOf = function(e) {
+		var index = -1, len = this.length;
+		for (var i = len - 1; i > -1; i--) {
+			if (i in this && e === this[i]) {
+				index = i;
+			} else {
+				break;
+			}
 		}
-    }
-    return index;
+		return index;
+	};
 };
+setPrototypes();
 
 function ChangeWidth(field, amount) {
 	var Fld = tDoc.getField(field);

@@ -13,10 +13,10 @@ function ParseCreature(input) {
 		if ((input.indexOf(key) == -1 && input.indexOf(kObj.name.toLowerCase()) == -1) // see if the text matches
 			|| testSource(key, kObj, "creaExcl") // test if the creature or its source isn't excluded
 		) continue;
-		
-		// stop if the source of the previous match is more recent and this new match is not a better match
+
+		// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
 		var tempDate = sourceDate(kObj.source);
-		if (foundDat > tempDate && foundLen >= kObj.name.length) continue;
+		if (kObj.name.length < foundLen || (kObj.name.length == foundLen && tempDate < foundDat)) continue;
 		
 		// we have a match, set the values
 		found = key;
