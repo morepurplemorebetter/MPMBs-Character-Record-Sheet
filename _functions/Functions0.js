@@ -436,7 +436,7 @@ function ObjLength(theObj) {
 // if remove is set to true, the entry corresponding to the input text is removed
 // if remove is set to false, overwrite the current entry
 function thermoM(input, remove) {
-	if (input === "start") return "";
+	if (input === "start" || !IsNotImport) return "";
 	var t = app.thermometer;
 	if (!input || input.toLowerCase() == "stop") {
 		if (!thermoStopSet && t.text != undefined) thermoStopSet = app.setTimeOut("thermoStop();", 500);

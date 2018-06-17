@@ -446,6 +446,13 @@ function DirectImport(consoleTrigger) {
 		Value("Opening Remember", "Yes");
 		IsNotImport = false;
 		ignorePrereqs = true;
+
+		// Start a progress bar manually, as now all others being created by thermoM() be ignored
+		app.thermometer.begin();
+		app.thermometer.duration = 10;
+		app.thermometer.text = "Importing from '" + global.docFrom.documentFileName + "'...";
+		app.thermometer.value = 2;
+
 		// Make sure no pop-up comes up with welcome text
 		if (global.docFrom.getField("Opening Remember")) global.docFrom.Value("Opening Remember", "Yes");
 		
@@ -463,10 +470,8 @@ function DirectImport(consoleTrigger) {
 		}
 		
 		//copy any custom script and run it
-		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
+		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && global.docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
 		var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
-
-/* 		var filesScript = MergeRecursive(filesScriptFrom, filesScriptTo).toSource(); // add the old to the new, preferring the new if both have the same entries */
 
 		if (filesScriptFrom) {
 			// add the old to the new, preferring the new if both have the same entries
@@ -476,7 +481,7 @@ function DirectImport(consoleTrigger) {
 				var fromScrNm = fromScr.replace(/\d+\/\d+\/\d+ - /, "");
 				if (filesScriptToNms.indexOf(fromScrNm) == -1) filesScriptTo[fromScr] = filesScriptFrom[fromScr];
 			};
-			global.docTo.getField("User_Imported_Files.Stringified").value = filesScriptTo;
+			global.docTo.getField("User_Imported_Files.Stringified").value = filesScriptTo.toSource();
 			GetStringifieds();
 		}
 		if (ImportField("User Script") || filesScriptFrom) {
@@ -1265,6 +1270,7 @@ function DirectImport(consoleTrigger) {
 			cTitle : "Some things to consider about the new sheet"
 		});
 	};
+	app.thermometer.end();
 };
 
 //a function to import a field from the global.docFrom
