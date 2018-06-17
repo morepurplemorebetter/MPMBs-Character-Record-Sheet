@@ -6,21 +6,28 @@ function ParseCreature(input) {
 	input = removeDiacritics(input).toLowerCase();
 	var foundLen = 0;
 	var foundDat = 0;
+	var testLen = 0;
 
 	for (var key in CreatureList) { //scan string for all creatures
 		var kObj = CreatureList[key];
-
-		if ((input.indexOf(key) == -1 && input.indexOf(kObj.name.toLowerCase()) == -1) // see if the text matches
-			|| testSource(key, kObj, "creaExcl") // test if the creature or its source isn't excluded
-		) continue;
+		
+		if (testSource(key, kObj, "creaExcl")) continue; // test if the creature or its source isn't excluded
+		
+		if (input.indexOf(key) != -1) { // see if the text matches the key
+			testLen = key.length;
+		} else if (input.indexOf(kObj.name.toLowerCase()) != -1) { // see if the text matches the name
+			testLen = kObj.name.length;
+		} else {
+			continue; // no match, so skip this one
+		}
 
 		// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
 		var tempDate = sourceDate(kObj.source);
-		if (kObj.name.length < foundLen || (kObj.name.length == foundLen && tempDate < foundDat)) continue;
+		if (testLen < foundLen || (testLen == foundLen && tempDate < foundDat)) continue;
 		
 		// we have a match, set the values
 		found = key;
-		foundLen = kObj.name.length
+		foundLen = testLen;
 		foundDat = tempDate;
 	}
 	return found;
