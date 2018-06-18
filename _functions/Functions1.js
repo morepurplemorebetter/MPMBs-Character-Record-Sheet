@@ -7636,10 +7636,7 @@ function ParseAmmo(input, onlyInv) {
 				var doTest = typeof theAlt != "string";
 				var altLen = theAlt.toString().length;
 
-				// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
-				if (kObj.name.length < foundLen || (kObj.name.length == foundLen && tempDate < foundDat)) continue;
-
-				if (altLen < foundLen || (altLen == foundLen && tempDate <= foundDat) // only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer or same source date. This differs from the regExpSearch objects
+				if (altLen < foundLen || (altLen == foundLen && tempDate < foundDat) // only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source date. This differs from the regExpSearch objects
 					|| (doTest ? !theAlt.test(input) : input.indexOf(theAlt) === -1) // see if string matches
 				) continue;
 
