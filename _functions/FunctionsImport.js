@@ -739,9 +739,6 @@ function DirectImport(consoleTrigger) {
 		};
 		ImportField("All ST Bonus", {notTooltip: true, notSubmitName: true});
 		
-		//now recalculate all the weapons, forcing them to re-do all attributes
-		tDoc.calculateNow(); forceReCalcWeapons = true; ReCalcWeapons();
-		
 		//set the ability save DC
 		ImportField("Spell DC 1 Mod", {notTooltip: true}); ImportField("Spell DC 1 Bonus", {notTooltip: true, notSubmitName: true});
 		ImportField("Spell DC 2 Bonus", {notTooltip: true, notSubmitName: true});
@@ -1197,6 +1194,9 @@ function DirectImport(consoleTrigger) {
 	//Some settings for the overall sheet		
 		if (ImportField("Manual Attack Remember")) ToggleAttacks(What("Manual Attack Remember") === "Yes" ? "No" : "Yes");
 		ImportField("Manual Class Remember"); ImportField("Manual Race Remember"); ImportField("Manual Background Remember"); ImportField("Manual Feat Remember"); 
+
+	//Recalculate the weapons, for things might have changed since importing them
+		forceReCalcWeapons = true; ReCalcWeapons(true);
 		
 		//now that all the attacks of the first page and companion pages have been imported, set the attack colors
 		if (bothCF) {
