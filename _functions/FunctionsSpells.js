@@ -742,12 +742,17 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 			//if the array has more than 0 entries, make it ready for the drop-down boxes in the dialog
 			if (spA.length > 0) {
 				spA.sort();
-				spA.unshift("", ">> " + (i <= 9 ? '' : 'Psionic ') + spellLevelList[i] + " <<");
-				returnArray = returnArray.concat(spA);
+				if (returnOrdered) {
+					spA.unshift("");
+					returnArray.push(spA);
+				} else {
+					spA.unshift("", ">> " + (i <= 9 ? '' : 'Psionic ') + spellLevelList[i] + " <<");
+					returnArray = returnArray.concat(spA);
+				}
 				count += 1;
 			};
 		};
-		if (count === 1) returnArray.splice(1, 1); //if only one level of spells turned up, we don't need the introductory header
+		if (count === 1 && !returnOrdered) returnArray.splice(1, 1); //if only one level of spells turned up, we don't need the introductory header
 	} else if (returnOrdered) {
 		//now cycle through all the spell level arrays and add them, if not empty, to the returnArray as an array
 		for (var i = 0; i <= 11; i++) {
@@ -2974,9 +2979,9 @@ function AskUserSpellSheet() {
 				dia.selectCa = spCast.selectCa ? spCast.selectCa : []; //set the cantrips already selected
 				
 				//now to create the lists
-				spCast.list.level = [0,0]; //set the list level to 0
-				var listCaRef = CreateSpellList(spCast.list, true); //create an array of all the cantrips
-				dia.listCa = CreateSpellObject(listCaRef); //create the cantrip popup object
+				spCast.list.level = [0, spListLevel && spListLevel[1] ? 1 : 0]; //set the list level to 0 // do it like this so that school restrictions are ignored, if applicable
+				var listCaRef = CreateSpellList(spCast.list, true, false, true)[0]; //create an array of all the cantrips
+				dia.listCa = CreateSpellObject(listCaRef ? listCaRef : []); //create the cantrip popup object
 			} else {
 				dia.showCa = false; //hide the cantrip section
 			}
