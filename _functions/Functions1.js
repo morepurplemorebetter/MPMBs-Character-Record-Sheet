@@ -602,6 +602,7 @@ function ResetAll(GoOn, noTempl) {
 	
 	// Set global variable to reflect end of reset
 	IsNotReset = true;
+	InitializeEverything(true, true);
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
@@ -4954,7 +4955,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		try {
 			var meetsPrereq = eval(theFeat.prereqeval);
 		} catch (e) {
-			console.println("The prereqeval for the feat '" + theFeat.name + "' produces an error and is subsequently ignored. If this is one of the built-in feats, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the feat.");
+			console.println("The 'prereqeval' attribute for the feat '" + theFeat.name + "' produces an error and is subsequently ignored. If this is one of the built-in feats, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the feat.");
 			console.show();
 			var meetsPrereq = true;
 		};
@@ -5865,7 +5866,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 					
 					//add, remove, or update the text in the class features field
 					if (GoAnyway || CheckLVL) {
-						tDoc[SpliceReplaceRemove + "String"]("Class Features", SpliceReplaceRemove === "Remove" ? FeaOldString : FeaNewString, false, SpliceReplaceRemove === "Replace" ? FeaOldString : (LastProp !== "" ? LastProp.slice(-55) : ClassHeaderString));
+						tDoc[SpliceReplaceRemove + "String"]("Class Features", SpliceReplaceRemove === "Remove" ? FeaOldString : FeaNewString, false, SpliceReplaceRemove === "Replace" ? FeaOldString : (LastProp ? LastProp : ClassHeaderString));
 						if (SpliceReplaceRemove === "Remove" && propFea.choices) {
 							RemoveClassFeatureChoice(aClass, prop);
 						}

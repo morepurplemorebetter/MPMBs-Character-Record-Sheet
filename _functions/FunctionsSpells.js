@@ -11,16 +11,18 @@ function ParseSpell(input) {
 		var kObj = SpellsList[key];
 		if (testSource(key, kObj, "spellsExcl")) continue; // test if the spell or its source isn't excluded
 
-		var thisOne = input.toLowerCase() == key ? Math.max(key.length, kObj.name.length, kObj.nameAlt ? kObj.nameAlt.length : 0): 0; // see if the input matches the key exactly
-		if (!thisOne && kObj.regExpSearch) { // if not exact match, see if a regex matches
-			thisOne = toTest.test(kObj.regExpSearch) ? Math.max(key.length, kObj.name.length, kObj.nameAlt ? kObj.nameAlt.length : 0): 0;
+		if (input.toLowerCase() === key) {
+			found = key;
+			break;
+		} else if (kObj.regExpSearch) { // if not exact match, see if a regex matches
+			var thisOne = toTest.test(kObj.regExpSearch) ? Math.max(key.length, kObj.name.length, kObj.nameAlt ? kObj.nameAlt.length : 0): 0;
 		} else {
 			var toSearch = "\\b(" + clean(kObj.name).replace(/^\W|\W$/g, "").RegEscape();
 			toSearch += kObj.nameShort ? "|" + clean(kObj.nameShort).replace(/^\W|\W$/g, "").RegEscape() : "";
 			toSearch += kObj.nameAlt ? "|" + clean(kObj.nameAlt).replace(/^\W|\W$/g, "").RegEscape() : "";
 			toSearch += ")\\b";
 			toSearch = RegExp(toSearch, "i");
-			thisOne = toSearch.test(input) ? input.match(toSearch)[0] : 0;
+			var thisOne = toSearch.test(input) ? input.match(toSearch)[0].length : 0;
 		};
 		if (!thisOne) continue; // no exact or regex match, so skip
 

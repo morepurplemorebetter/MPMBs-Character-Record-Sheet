@@ -1765,11 +1765,13 @@ function changeCompType(inputType, prefix) {
 		UpdateRangerCompanions();
 	} else if (inputType === "companionrr") {
 		UpdateRevisedRangerCompanions();
-		app.alert({
-			cMsg : toUni("Pick Two Skills") + "\nThe Ranger's Animal Companion that you have just added, gains proficiency with two additional skills as those already selected. Because there is no automation for selecting these proficiencies, please do it manually.\n\n" + toUni("Ability Score Improvements") + "\nThe Ranger's Animal Companion gains Ability Score Improvements whenever your character gains them. There is no automation for adding these either, so please don't forget to increase the ability scores for the animal companion when you get the reminder pop-up. Also, remember that any DCs for abilities that the beast possesses are based on ability scores and that they might need to be manually changed when changing the ability scores.\nThe 'Notes' section on the companion page automatically keeps track of how many points you can increase the ability scores and what the base value of those scores are according to the Monster Manual.",
-			nIcon : 3,
-			cTitle : "Don't forget the Skills and Ability Score Improvements!"
-		})
+		if (IsNotImport) {
+			app.alert({
+				cMsg : toUni("Pick Two Skills") + "\nThe Ranger's Animal Companion that you have just added, gains proficiency with two additional skills as those already selected. Because there is no automation for selecting these proficiencies, please do it manually.\n\n" + toUni("Ability Score Improvements") + "\nThe Ranger's Animal Companion gains Ability Score Improvements whenever your character gains them. There is no automation for adding these either, so please don't forget to increase the ability scores for the animal companion when you get the reminder pop-up. Also, remember that any DCs for abilities that the beast possesses are based on ability scores and that they might need to be manually changed when changing the ability scores.\nThe 'Notes' section on the companion page automatically keeps track of how many points you can increase the ability scores and what the base value of those scores are according to the Monster Manual.",
+				nIcon : 3,
+				cTitle : "Don't forget the Skills and Ability Score Improvements!"
+			});
+		}
 	}
 	thermoM(thermoTxt, true); // Stop progress bar
 };
@@ -3667,7 +3669,7 @@ function UpdateRangerCompanions(deleteIt) {
 					};
 				};
 			};
-			
+
 			var NameEntity = "Ranger's Companion";
 			var Explanation = "The Ranger's Companion adds the ranger's proficiency bonus (oProf) to all skills and saving throws it is proficient with, as well as to the to hit and damage of its attacks.";
 			for (var f = 0; f < BlueTextArrayAdd.length; f++) {
@@ -3676,7 +3678,7 @@ function UpdateRangerCompanions(deleteIt) {
 			for (var f = 0; f < BlueTextArrayRemove.length; f++) {
 				AddToModFld(BlueTextArrayRemove[f], "oProf", true, NameEntity, Explanation);
 			};
-			
+
 			//then look into the hit points
 			// first reset it to not assume a value automatically, if so set
 			var theCompSetting = How(prefix + "Comp.Use.HP.Max").split(",");
@@ -3691,21 +3693,21 @@ function UpdateRangerCompanions(deleteIt) {
 				var newHP = Number(What(prefix + "Comp.Use.HP.Max")) + ((RangerLvl - RangerLvlOld) * 4);
 				if (!isNaN(newHP)) Value(prefix + "Comp.Use.HP.Max", newHP);
 			};
-			
+
 			//then look into the AC
 			if (thisCrea) {
 				Value(prefix + "Comp.Use.AC", thisCrea.ac + (deleteIt ? 0 : newLvlProfB));
 			} else if (diff) {
 				Value(prefix + "Comp.Use.AC", What(prefix + "Comp.Use.AC") + diff);
 			};
-			
+
 			//then look into the attacks per action
 			if (thisCrea && deleteIt) {
 				Value(prefix + "Comp.Use.Attack.perAction", thisCrea.attacksAction);
 			} else {
 				Value(prefix + "Comp.Use.Attack.perAction", newLvl >= 11 ? 2 : 1);
 			}
-			
+
 			//then look into the string in the notes field
 			if (deleteIt) {
 				for (var t = 0; t < textArray.length; t++) {

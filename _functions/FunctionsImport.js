@@ -400,8 +400,11 @@ function DirectImport(consoleTrigger) {
 	//ask the user for the file to import from
 	var importFromPath = DirectImport_Dialogue();
 	if (!importFromPath) return; //no reason to go on with this
-	
-	var closeAlert = false;
+
+	// initiate a progress bar, so there is at least something
+	var thermoTxt = thermoM("Importing directly from PDF...");
+
+	var closeAlert = false, IIerror;
 	try {
 		if (consoleTrigger && !MPMBImportFunctionsInstalled) {
 			global.docTo = this;
@@ -426,6 +429,11 @@ function DirectImport(consoleTrigger) {
 			cMsg: closeAlert[1]
 		});
 	} else if (global.docFrom && global.docTo) { try { //we are good to go and import stuff!
+		// Update the progress bar and stop the calculations
+		thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
+		thermoM(0.25);
+		calcStop();
+
 		// First we need to reset the prototypes to the current sheet because Acrobat will use the ones from the latest sheet that was opened
 		global.docTo.setPrototypes();
 		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
@@ -442,16 +450,12 @@ function DirectImport(consoleTrigger) {
 				throw "user stop";
 			};
 		};
+
+		IsNotImport = "no progress bar";
+		ignorePrereqs = true;
 		ResetAll(true, true); //first reset the current sheet to its initial state, but without the extra templates generated
 		Value("Opening Remember", "Yes");
 		IsNotImport = false;
-		ignorePrereqs = true;
-
-		// Start a progress bar manually, as now all others being created by thermoM() be ignored
-		app.thermometer.begin();
-		app.thermometer.duration = 10;
-		app.thermometer.text = "Importing from '" + global.docFrom.documentFileName + "'...";
-		app.thermometer.value = 2;
 
 		// Make sure no pop-up comes up with welcome text
 		if (global.docFrom.getField("Opening Remember")) global.docFrom.Value("Opening Remember", "Yes");
@@ -735,7 +739,7 @@ function DirectImport(consoleTrigger) {
 		
 		//set the ability scores and associated fields
 		for (var abiS in AbilityScores.current) {
-			ImportField(abiS); ImportField(abiS + " Remember"); ImportField(abiS + " ST Prof", {notTooltip: true}); ImportField(abiS + " ST Bonus", {notTooltip: true, notSubmitName: true}); ImportField(abiS + " ST Adv", {doReadOnly: true}); ImportField(abiS + " ST Dis", {doReadOnly: true});
+			ImportField(abiS); ImportField(abiS + " Remember"); ImportField(abiS + " ST Prof", {notTooltip: true}); ImportField(abiS + " ST Bonus", {notTooltip: true, notSubmitName: true}); ImportField(abiS + " ST Adv", {doReadOnly: true}); ImportField(abiS + " ST Dis", {doReadOnly: true}); Value(abiS + " Mod", Math.round((What(abiS) - 10.5) * 0.5));
 		};
 		ImportField("All ST Bonus", {notTooltip: true, notSubmitName: true});
 		
@@ -982,27 +986,34 @@ function DirectImport(consoleTrigger) {
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
-			
+
 			//set the visibility of the different elements
 			if (ImportField(prefixTo + "Companion.Layers.Remember", {notTooltip: true, notSubmitName: true}, prefixFrom + "Companion.Layers.Remember")) ShowCompanionLayer(prefixTo);
 			doChildren("Whiteout.Cnote", prefixFrom, prefixTo, false, true);
-			
+
 			//set the race
 			ImportField(prefixTo + "Comp.Race", {notTooltip: true, notSubmitName: true}, prefixFrom + "Comp.Race");
-			
+
+			//set companion ability scores and modifiers now, for coming automation might require it
+			for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
+				var abiS = AbilityScores.abbreviations[a];
+				ImportField(prefixTo+"Comp.Use.Ability."+abiS+".Score", {notTooltip: true, notSubmitName: true}, prefixFrom+"Comp.Use.Ability."+abiS+".Score");
+				Value(prefixTo+"Comp.Use.Ability."+abiS+".Mod", Math.round((What(prefixTo+"Comp.Use.Ability."+abiS+".Score") - 10.5) * 0.5));
+			}
+
 			//set the type, if any
 			var compTypeFrom = global.docFrom.getField(prefixFrom + "Companion.Remember");
 			if (compTypeFrom && compTypeFrom.value) changeCompType(compTypeFrom.value, prefixTo);
-			
+
 			//Set some one-off fields
 			ImportField(prefixTo + "Comp.Type", {notTooltip: true, notSubmitName: true}, prefixFrom + "Comp.Type");
-			
+
 			//do the description fields
 			doChildren("Comp.Desc", prefixFrom, prefixTo);
-			
+
 			//do the bulk of the fields
-			doChildren("Comp.Use", prefixFrom, prefixTo, /\.Mod|Text|Calculated|Button|Init\.Dex|HD\.Con/i);
-			
+			doChildren("Comp.Use", prefixFrom, prefixTo, /\.Score|\.Mod|Text|Calculated|Button|Init\.Dex|HD\.Con/i);
+
 			//do the BlueText fields
 			doChildren("BlueText.Comp.Use", prefixFrom, prefixTo);
 			
@@ -1205,38 +1216,36 @@ function DirectImport(consoleTrigger) {
 		};
 		
 		//import the icons
-		var IIerror = ImportIcons(pagesLayout, app.viewerType !== "Reader" && importFromPath[2]);
+		IIerror = ImportIcons(pagesLayout, app.viewerType !== "Reader" && importFromPath[2]);
 	
 		// set the focus to the top of the first page
 		tDoc.getField("Player Name").setFocus();
 	} catch (error) {
 		if (error !== "user stop") {
-			var eText = "An error occured during importing:\n " + error + "\n ";
+			var eText = "An error occurred during importing:\n " + error + "\n ";
 			for (var e in error) eText += e + ": " + error[e] + ";\n ";
 			console.println(eText);
 			console.show();
 		};
 	};
-	};
-	
-	//close the document that was opened to import from (if any)
-	if (global.docFrom && global.docFrom.toString() === "[object Doc]") {
-		global.docFrom.dirty = false;
-		global.docFrom.closeDoc();
-	};
-	//remove the global objects so that they don't make a clutter
+	// signal the end of importing
 	IsNotImport = true;
 	ignorePrereqs = false;
-	if (global.docTo) delete global.docTo;
-	if (global.docFrom) delete global.docFrom;
 	if (IIerror && isNaN(IIerror)) app.alert(IIerror);
-	
+
 	// A pop-up to inform the user of the changes
 	if (!closeAlert) {
-		InitializeEverything(consoleTrigger, true);
-		tDoc.dirty = true;
-		
+		global.docTo.InitializeEverything(consoleTrigger, true);
+		global.docTo.dirty = true;
+		global.docTo.calcCont();
+		thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
+		thermoM(0.9);
+
 		var aText = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
+		if (app.viewerType !== "Reader" && importFromPath[2]) { // if icons were imported
+			aText += toUni("IMPORTANT: custom icons");
+			aText += "\nBecause you imported custom icons, the sheet will not work correctly right away. You will have to first save the sheet, close Adobe Acrobat completely, and then open the sheet again. The sheet needs to re-initialize for the import with custom icons to be completed!\n\n";
+		}
 		if (!sameType) {
 			aText += toUni("Sheet Types Differ");
 			aText += "\nYou seem to have imported from another type of sheet (i.e. not \'" + tDoc.info.SheetType + "\'). This will have the unfortunate side-effect that some things might not have been imported, because there aren't an equal amount of entries for all things on all of MPMB's sheet types. For example, there is room for 6 attacks on the 'Colorful-A4' sheet, but for only 5 on the other types.";
@@ -1269,8 +1278,18 @@ function DirectImport(consoleTrigger) {
 			nIcon : 3,
 			cTitle : "Some things to consider about the new sheet"
 		});
+		thermoStop(); // Stop progress bar
 	};
-	app.thermometer.end();
+	};
+	
+	//close the document that was opened to import from (if any)
+	if (global.docFrom && global.docFrom.toString() === "[object Doc]") {
+		global.docFrom.dirty = false;
+		global.docFrom.closeDoc(true);
+	};
+	//remove the global objects so that they don't make a clutter
+	if (global.docTo) delete global.docTo;
+	if (global.docFrom) delete global.docFrom;
 };
 
 //a function to import a field from the global.docFrom

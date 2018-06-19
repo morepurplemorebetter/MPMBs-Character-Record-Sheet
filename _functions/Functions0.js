@@ -360,7 +360,7 @@ function FormatHD() {
 	var theResult = clean(event.value, " ");
 	if (theResult !== "") {
 		var QI = getTemplPre(event.target.name, "AScomp");
-		var theCon = Number(What(QI ? "Con Mod" : QI + "Comp.Use.Ability.Con.Mod"));
+		var theCon = Number(What(QI === true ? "Con Mod" : QI + "Comp.Use.Ability.Con.Mod"));
 		event.value = "d" + theResult + (theCon < 0 ? theCon : "+" + theCon);
 	}
 };
@@ -436,7 +436,7 @@ function ObjLength(theObj) {
 // if remove is set to true, the entry corresponding to the input text is removed
 // if remove is set to false, overwrite the current entry
 function thermoM(input, remove) {
-	if (input === "start" || !IsNotImport) return "";
+	if (input === "start" || !IsNotImport || IsNotImport === "no progress bar") return "";
 	var t = app.thermometer;
 	if (!input || input.toLowerCase() == "stop") {
 		if (!thermoStopSet && t.text != undefined) thermoStopSet = app.setTimeOut("thermoStop();", 500);
