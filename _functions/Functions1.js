@@ -517,6 +517,7 @@ function ResetAll(GoOn, noTempl) {
 	tDoc.getField("AC Misc Mod 1 Description").submitName = "";
 	tDoc.getField("AC Misc Mod 2 Description").submitName = "";
 	tDoc.getField("Opening Remember").submitName = 1;
+	tDoc.getField("Character Level").submitName = 0;
 	tDoc.resetForm();
 	thermoM(4/9); //increment the progress dialog's progress
 	
@@ -2297,12 +2298,14 @@ function ApplyClasses(inputclasstxt, updateall) {
 
 //Check if the level or XP entered matches the XP or level
 function CalcExperienceLevel(AlsoClass) {
-	var oldLevel = Number(tDoc.getField("Character Level").submitName);
-	var Level = What("Character Level");
+	var oldLevel = Number(How("Character Level"));
+	var Level = Number(What("Character Level"));
 	var exp = Number(What("Total Experience").replace(",", "."));
+	tDoc.getField("Character Level").submitName = Level;
+	console.println("Level: "+Level+", oldLevel: "+oldLevel); // DEBUGGING!!!
 	
-	//stop this function if resetting or importing the sheet
-	if (!IsNotImport || !IsNotReset || (!Level && !exp)) return;
+	//stop this function if resetting or importing the sheet or no xp and level is/was present
+	if (!IsNotImport || !IsNotReset || (!oldLevel && !Level && !exp)) return;
 
 	var LVLbyXP = ExperiencePointsList.reduce(function(acc, val) { return acc += exp >= Number(val) ? 1 : 0; }, 0);
 	var XPforLVL = !Level || Level === 1 ? 0 : ExperiencePointsList[Math.min(ExperiencePointsList.length - 1, Level - 1)];
@@ -2375,7 +2378,7 @@ function CalcExperienceLevel(AlsoClass) {
 		}
 	};
 
-	if ((Level < ExperiencePointsList.length || LVLbyXP < (ExperiencePointsList.length - 1)) && Level !== LVLbyXP) {
+	if (Level && (Level < ExperiencePointsList.length || LVLbyXP < (ExperiencePointsList.length - 1)) && Level !== LVLbyXP) {
 		app.execDialog(Experience_Dialog);
 		switch (Experience_Dialog.result) {
 			case "lvl":
@@ -2386,13 +2389,12 @@ function CalcExperienceLevel(AlsoClass) {
 				break;
 		}
 	};
-	if (oldLevel !== Number(What("Character Level"))) {
-		tDoc.getField("Character Level").submitName = What("Character Level");
-		//update features gained from level
+	if (oldLevel !== Level) {
+		//update race features gained from level
 		UpdateLevelFeatures("race");
 		
 		//call the multiclassing function that will ask for what class to add a level to
-		if (AlsoClass) AskMulticlassing();
+		if (AlsoClass && (Level || What("Class and Levels"))) AskMulticlassing();
 		
 		//update level-dependent things for any ranger companions
 		UpdateRangerCompanions();
