@@ -92,7 +92,7 @@ ClassList["myclass"] = { //Object name; Note the use of only lower case! Also no
 		[0, 0, 0, 2, 0, 0, 0, 0, 0], //lvl17
 		[0, 0, 0, 2, 0, 0, 0, 0, 0], //lvl18
 		[0, 0, 0, 2, 0, 0, 0, 0, 0], //lvl19
-		[0, 0, 0, 2, 0, 0, 0, 0, 0], //lvl20
+		[0, 0, 0, 2, 0, 0, 0, 0, 0] //lvl20
 	],
 	
 	spellcastingKnown : { //Optional; Denotes the amount and type of spells the class has access to

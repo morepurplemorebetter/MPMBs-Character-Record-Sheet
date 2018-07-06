@@ -107,7 +107,7 @@ ClassList["justiciar"] = {
 		[true, true],
 		[true, true]
 	],
-	equipment : "Justiciar starting equipment:\n \u2022 Leather armor -or- scale mail -or- chain mail;\n \u2022 A martial weapon and a shield -or- two martial weapons;\n \u2022 A longbow and 20 arrows -or- a hand crossbow and 20 bolts -or- 4 javelins\nA dungeoneer's pack -or- a scholar's pack\nA copy of the Tome of Magical Law\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment as well as a copy of the Tome of Magical Law instead of both the class' and the background's starting equipment.",
+	equipment : "Justiciar starting equipment:\n \u2022 Leather armor -or- scale mail -or- chain mail;\n \u2022 A martial weapon and a shield -or- two martial weapons;\n \u2022 A longbow and 20 arrows -or- a hand crossbow and 20 bolts -or- 4 javelins;\n \u2022 A dungeoneer's pack -or- a scholar's pack;\n \u2022 A copy of the Tome of Magical Law.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment as well as a copy of the Tome of Magical Law instead of both the class' and the background's starting equipment.",
 	subclasses : ["Judiciary Division", []],
 	attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 	spellcastingFactor : "justiciar1",
