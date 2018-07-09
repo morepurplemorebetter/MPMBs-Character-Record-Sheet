@@ -10,7 +10,7 @@
 	Subject:	Race
 	Effect:		This script adds a player race, called "Dhampir"
 				This is taken from DanDwiki (https://www.dandwiki.com/wiki/Dhampir_(5e_Race))
-				Please note that DanDwiki is renowned for having very unbalanced content
+				Please note that DanDwiki is renowned for having very unbalanced content and that it can be edited by anyone at any time
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-09-22 (sheet v12.998)
 */
@@ -20,7 +20,7 @@ RequiredSheetVersion(12.999);
 
 SourceList["DanDw"] = {
 	name : "D\u0026D Wiki",
-	abbreviation : "D\u0026Dw",
+	abbreviation : "D\u0026Dwiki",
 	group : "homebrew",
 	url : "https://www.dandwiki.com/wiki/"
 };
