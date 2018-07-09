@@ -404,6 +404,7 @@ function ApplyCompRace(newRace) {
 		//add ability scores
 		for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
 			Value(prefix + "Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".Score", CurrentCompRace[prefix].scores[a]);
+			Value(prefix + "Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".Mod", Math.round((CurrentCompRace[prefix].scores[a] - 10.5) * 0.5));
 		}
 		
 		thermoM(1/10); //increment the progress dialog's progress
@@ -5444,7 +5445,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			(/^(simple|martial)$/i).test(theWea.type) ? tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) : false;
 		
 		//add mod
-		var StrDex = What("Str") < What("Dex") ? 2 : 1;
+		var StrDex = What(QI ? "Str" : prefix + "Comp.Use.Ability.Str.Score") < What(QI ? "Dex" : prefix + "Comp.Use.Ability.Dex.Score") ? 2 : 1;
 		fields.Mod = isReCalc && !theWea.ability ? What(fldBase + "Mod") :
 			(/finesse/i).test(theWea.description) ? StrDex : theWea.ability;
 		

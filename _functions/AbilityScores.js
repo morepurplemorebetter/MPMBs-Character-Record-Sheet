@@ -1363,13 +1363,18 @@ function AbilityScores_Button() {
 			
 			//set the value of the display field
 			var resultScore = AbilityScores_Dialog["total" + AbiI];
-			Value(AbiI, isNaN(resultScore) || resultScore < 1 ? "" : resultScore);
+			resultScore = isNaN(resultScore) || resultScore < 1 ? "" : resultScore;
+			Value(AbiI, resultScore);
+			Value(AbiI + " Mod", Math.round((Number(resultScore) - 10.5) * 0.5));
 		}
 		
 		//if Con changed, edit the HPTooltip
 		if (AbilityScores_Dialog["totalCon"] !== remCon) {
 			SetHPTooltip();
 		}
+		
+		// Update the weapons to make use of changes in ability scores (Finesse)
+		ReCalcWeapons();
 		
 		// End the progress bar
 		thermoM(thermTxt, true);
