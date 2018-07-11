@@ -551,7 +551,7 @@ var Base_ClassList = {
 				name : "Martial Arts",
 				source : [["SRD", 26], ["P", 78]],
 				minlevel : 1,
-				description : "\n   " + "Monk weapons: shortsword, simple weapon (not two-handed/heavy), unarmed strike" + "\n   " + "With these, I can use Dex instead of Str and use the Martial Arts damage die" + "\n   " + "When taking an Attack action with these, I get one unarmed strike as a bonus action",
+				description : "\n   " + "Monk weapons: shortsword, simple melee weapon (not two-handed/heavy), unarmed strike" + "\n   " + "With these, I can use Dex instead of Str and use the Martial Arts damage die" + "\n   " + "When taking an Attack action with these, I get one unarmed strike as a bonus action",
 				additional : levels.map(function (n) {
 					if (n < 5) return "1d4";
 					if (n < 11) return "1d6";
