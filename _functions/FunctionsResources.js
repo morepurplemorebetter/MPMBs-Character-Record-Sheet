@@ -1205,20 +1205,20 @@ function parseSource(srcObj) {
 		if (SourceList[srcObj]) theRe = [[srcObj, 0]];
 	} else if (srcObj.length === 2 && typeof srcObj[0] == "string" && !isArray(srcObj[1])) {
 		if (SourceList[srcObj[0]]) theRe = [srcObj];
-	} else if (srcObj.length === 1) {
+	} else if (srcObj.length === 1 && !isArray(srcObj[0])) {
 		if (SourceList[srcObj[0]]) theRe = [[srcObj[0], 0]];
 	} else {
 		theRe = [];
 		var theSRD = [];
 		var areExcl = [];
 		for (var i = 0; i < srcObj.length; i++) {
-			if (srcObj[i][0] && SourceList[srcObj[i][0]]) {
-				var theAdd = [srcObj[i][0], isArray(srcObj[i]) && srcObj[i][1] ? srcObj[i][1] : 0];
+			var toUse = !isArray(srcObj[i]) ? [srcObj[i], 0] : srcObj[i].length > 1 ? srcObj[i] : [srcObj[i][0], 0];
+			if (toUse[0] && SourceList[toUse[0]]) {
 				if (srcObj[i][0] === "SRD") {
-					theSRD.push(theAdd);
+					theSRD.push(toUse);
 				} else {
-					if (CurrentSources.globalExcl.indexOf(theAdd[0]) !== -1) areExcl.push(theAdd);
-					theRe.push(theAdd);
+					if (CurrentSources.globalExcl.indexOf(toUse[0]) !== -1) areExcl.push(toUse);
+					theRe.push(toUse);
 				};
 			};
 		};
