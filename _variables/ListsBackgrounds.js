@@ -1,5 +1,4 @@
 var Base_BackgroundList = {
-	//PHB backgrounds
 	"acolyte" : {
 		regExpSearch : /acolyte/i,
 		name : "Acolyte",
@@ -9,12 +8,12 @@ var Base_BackgroundList = {
 		equipleft : [
 			["Prayer book/wheel", "", 5],
 			["Incense, sticks of", 5, ""],
-			["Vestments", "", 4],
+			["Vestments", "", 4]
 		],
 		equipright : [
 			["Common clothes", "", 3],
 			["Holy symbol (type)", "", 1],
-			["Belt pouch (with coins)", "", 1],
+			["Belt pouch (with coins)", "", 1]
 		],
 		feature : "Shelter of the Faithful",
 		trait : [

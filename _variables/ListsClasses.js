@@ -1815,7 +1815,7 @@ var Base_ClassSubList = {
 				name : "Frenzy",
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 3,
-				description : "\n   " + "Melee attack as bonus action each turn while raging; +1 level of exhaustion after rage",
+				description : "\n   " + "As a bonus action each turn while raging, I can make a melee attack" + "\n   " + "After my rage is over, I suffer one level of exhaustion",
 				action : ["bonus action", " attack (while raging)"]
 			},
 			"subclassfeature6" : {
