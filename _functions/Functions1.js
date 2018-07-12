@@ -4374,7 +4374,7 @@ function ReplaceString(field, inputstring, newline, theoldstring, alreadyRegExp)
 		AddString(field, inputstring, multilines);
 		return;
 	};
-	show3rdPageNotes();
+	if (field == "Extra.Notes") show3rdPageNotes();
 };
 
 function SpliceString(field, inputstring, newline, theoldstring) {

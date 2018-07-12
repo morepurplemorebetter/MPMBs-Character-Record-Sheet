@@ -1768,7 +1768,7 @@ function changeCompType(inputType, prefix) {
 		UpdateRevisedRangerCompanions();
 		if (IsNotImport) {
 			app.alert({
-				cMsg : toUni("Pick Two Skills") + "\nThe Ranger's Animal Companion that you have just added, gains proficiency with two additional skills as those already selected. Because there is no automation for selecting these proficiencies, please do it manually.\n\n" + toUni("Ability Score Improvements") + "\nThe Ranger's Animal Companion gains Ability Score Improvements whenever your character gains them. There is no automation for adding these either, so please don't forget to increase the ability scores for the animal companion when you get the reminder pop-up. Also, remember that any DCs for abilities that the beast possesses are based on ability scores and that they might need to be manually changed when changing the ability scores.\nThe 'Notes' section on the companion page automatically keeps track of how many points you can increase the ability scores and what the base value of those scores are according to the Monster Manual.",
+				cMsg : toUni("Pick Two Skills") + "\nThe Ranger's Animal Companion that you have just added, gains proficiency with two additional skills as those already selected. Because there is no automation for selecting these proficiencies, please do so manually.\n\n" + toUni("Ability Score Improvements") + "\nThe Ranger's Animal Companion gains Ability Score Improvements whenever your character gains them. There is no automation for adding these either, so please don't forget to increase the ability scores for the animal companion when you get the reminder pop-up. Also, remember that any DCs for abilities that the beast possesses are based on ability scores and that they might need to be manually changed when changing the ability scores.\nThe 'Notes' section on the companion page automatically keeps track of how many points you can increase the ability scores and what the base value of those scores are according to the Monster Manual.",
 				nIcon : 3,
 				cTitle : "Don't forget the Skills and Ability Score Improvements!"
 			});
@@ -4443,7 +4443,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 		if (input >= 15) {
 			toReturn += "\n" + notesArray[3];
 		}
-		return toReturn;
+		return What("Unit System") === "imperial" ? toReturn : ConvertToMetric(toReturn, 0.5);
 	}
 	
 	var featuresArray = [
@@ -4467,7 +4467,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 		if (input >= 15) {
 			toReturn += "\n" + featuresArray[3];
 		}
-		return toReturn;
+		return What("Unit System") === "imperial" ? toReturn : ConvertToMetric(toReturn, 0.5);
 	}
 	
 	var ASIs = 0;
@@ -4476,14 +4476,8 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 		ASIs += 2 * CurrentClasses[aClass].improvements[classLvL - 1];
 	}
 	var ASIstring = function (aCreat) {
-		var toReturn = "whenever I gain an ASI\r  Currently, there are ";
-		toReturn += ASIs + " points ";
-		
-		if (aCreat.scores) {
-			toReturn += "(default: " + aCreat.scores[0] + " Str, " + aCreat.scores[1] + " Dex, " + aCreat.scores[2] + " Con, " + aCreat.scores[3] + " Int, " + aCreat.scores[4] + " Wis, " + aCreat.scores[5] + " Cha)";
-		} else {
-			toReturn += " to divide among the ability scores"
-		}
+		var toReturn = "whenever I gain an ASI\r   Currently, there are " + ASIs + " points ";
+		toReturn += aCreat && aCreat.scores ? "(default: " + aCreat.scores[0] + " Str, " + aCreat.scores[1] + " Dex, " + aCreat.scores[2] + " Con, " + aCreat.scores[3] + " Int, " + aCreat.scores[4] + " Wis, " + aCreat.scores[5] + " Cha)" : "to divide among the ability scores";
 		return toReturn;
 	}
 	
@@ -4535,7 +4529,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 				var HDincr = oldLvl === 0 ? RangerLvl - 3 : RangerLvl - oldLvl;
 				Value(prefix + "Comp.Use.HD.Level", What(prefix + "Comp.Use.HD.Level") + HDincr);
 			}
-			var theCompSetting = tDoc.getField(prefix + "Comp.Use.HP.Max").submitName.split(",");
+			var theCompSetting = How(prefix + "Comp.Use.HP.Max").split(",");
 			theCompSetting[3] = deleteIt ? "nothing" : "fixed";
 			tDoc.getField(prefix + "Comp.Use.HP.Max").submitName = theCompSetting.join();
 			
@@ -4564,16 +4558,11 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 			}
 			
 			//then look into the AC
-			if (thisCrea) {
-				Value(prefix + "Comp.Use.AC", thisCrea.ac + (deleteIt ? 0 : newLvlProfB));
+			if (deleteIt) {
+				Value(prefix + "Comp.Use.AC", thisCrea ? thisCrea.ac : '');
 			} else if (diff) {
 				Value(prefix + "Comp.Use.AC", What(prefix + "Comp.Use.AC") + diff);
 			};
-			
-			//then look into the AC
-			if (thisCrea) {
-				Value(prefix + "Comp.Use.AC", thisCrea.ac + (deleteIt ? 0 : newLvlProfB));
-			}
 			
 			//then look into the attacks per action
 			if (thisCrea && deleteIt) {
@@ -4581,7 +4570,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 			} else {
 				Value(prefix + "Comp.Use.Attack.perAction", 1);
 			}
-			
+
 			//remove the old ASI line (if any)
 			var ASIregex = /whenever I gain an ASI\r.*Currently.+(scores|Cha\))/;
 			if ((ASIregex).test(What(prefix + "Cnote.Left"))) {
