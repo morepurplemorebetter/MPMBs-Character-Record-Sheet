@@ -112,8 +112,8 @@ warlock_the_dead_king_functions = {
 		if (!typePF) theType.textSize = 0;
 		theType.value = 'Undead Cohort';
 		for (var a = 1; a <= 3; a++) {
-			Value(prefix + 'BlueText.Comp.Use.Attack.' + a + '.To Hit Bonus', 'oProf');
-			Value(prefix + 'BlueText.Comp.Use.Attack.' + a + '.Damage Bonus', 'oProf');
+			AddToModFld(prefix + 'BlueText.Comp.Use.Attack.' + a + '.To Hit Bonus', "oProf", false, "Undead Cohort", "The Undead Cohort adds the warlock's proficiency bonus (oProf) to the to hit bonus of its attacks.");
+			AddToModFld(prefix + 'BlueText.Comp.Use.Attack.' + a + '.Damage Bonus', "oProf", false, "Undead Cohort", "The Undead Cohort adds the warlock's proficiency bonus (oProf) to the damage of its attacks.");
 		}
 		tDoc.getField(prefix + 'Comp.Use.AC').submitName = What(prefix + 'Comp.Use.AC');
 		Value(prefix + 'Cnote.Left', "Undead Cohort (the Dead King 6, D\u0026Dwiki):\n\u2022 Add the warlock's proficiency bonus to AC, attack rolls, and damage rolls\n\u2022 Maximum hit points is equal to four times the warlock level\n\u2022 As a bonus action, the warlock can command the Undead Cohort as per the Animate Dead spell\n\u2022 The warlock can fully restore the Undead Cohort after a long rest, even if it as destroyed");
@@ -140,9 +140,10 @@ warlock_the_dead_king_functions = {
 					break;
 				}
 			}
-			// Update the stats
-			Value(prefix + 'Comp.Use.AC', Number(How(prefix + 'Comp.Use.AC')) + Number(How('Proficiency Bonus')));
-			Value(prefix + "Comp.Use.HP.Max", Math.round(wlvl * 4));
 		}
+		if (!prefix) return;
+		// Update the stats
+		Value(prefix + 'Comp.Use.AC', Number(How(prefix + 'Comp.Use.AC')) + Number(How('Proficiency Bonus')));
+		Value(prefix + "Comp.Use.HP.Max", Math.round(wlvl * 4));
 	}
 }
