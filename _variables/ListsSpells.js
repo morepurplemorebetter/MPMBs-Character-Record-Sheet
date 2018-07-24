@@ -1407,7 +1407,7 @@ var Base_SpellsList = {
 		compMaterial : "A piece of tentacle from a giant octopus or a giant squid",
 		duration : "Conc, 1 min",
 		save : "Dex",
-		description : "All that enter 20-ft rad save or restrained and 3d6 Bludgeoning dmg/rnd; Str/Dex check to escape",
+		description : "All that enter/start 20-ft rad save or restrained \u0026 3d6 Bludgeoning dmg/rnd; Str/Dex check to escape",
 		descriptionFull : "Squirming, ebony tentacles fill a 20-foot square on ground that you can see within range. For the duration, these tentacles turn the ground in the area into difficult terrain." + "\n   " + "When a creature enters the affected area for the first time on a turn or starts its turn there, the creature must succeed on a Dexterity saving throw or take 3d6 bludgeoning damage and be restrained by the tentacles until the spell ends. A creature that starts its turn in the area and is already restrained by the tentacles takes 3d6 bludgeoning damage." + "\n   " + "A creature restrained by the tentacles can use its action to make a Strength or Dexterity check (its choice) against your spell save DC. On a success, it frees itself."
 	},
 	"expeditious retreat" : {
@@ -3149,7 +3149,7 @@ var Base_SpellsList = {
 		compMaterial : "A forked, metal rod worth at least 250 gp, atttuned to a particular plane of existence",
 		duration : "Instantaneous",
 		save : "Cha",
-		description : "You + 8 willing crea teleport to different plane; or spell attack save or transported to random plane",
+		description : "You + 8 willing crea teleport to different plane; or spell attack + save or transported to random plane",
 		descriptionFull : "You and up to eight willing creatures who link hands in a circle are transported to a different plane of existence. You can specify a target destination in general terms, such as the City of Brass on the Elemental Plane of Fire or the palace of Dispater on the second level of the Nine Hells, and you appear in or near that destination. If you are trying to reach the City of Brass, for example, you might arrive in its Street of Steel, before its Gate of Ashes, or looking at the city from across the Sea of Fire, at the DM's discretion." + "\n   " + "Alternatively, if you know the sigil sequence of a teleportation circle on another plane of existence, this spell can take you to that circle. If the teleportation circle is too small to hold all the creatures you transported, they appear in the closest unoccupied spaces next to the circle." + "\n   " + "You can use this spell to banish an unwilling creature to another plane. Choose a creature within your reach and make a melee spell attack against it. On a hit, the creature must make a Charisma saving throw. If the creature fails the save, it is transported to a random location on the plane of existence you specify. A creature so transported must find its own way back to your current plane of existence."
 	},
 	"plant growth" : {
