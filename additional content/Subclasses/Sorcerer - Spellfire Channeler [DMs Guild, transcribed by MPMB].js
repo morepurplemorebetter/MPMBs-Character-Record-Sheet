@@ -28,7 +28,7 @@ SourceList["FRA2"] = {
 	abbreviation : "FRA2",
 	group : "Dungeon Masters Guild",
 	url : "https://www.dmsguild.com/product/211385/",
-	date: "2017/05/07"
+	date : "2017/05/07"
 };
 
 AddSubClass("sorcerer", "spellfire channeler", {
