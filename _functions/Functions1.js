@@ -2464,7 +2464,7 @@ function ParseRace(input) {
 };
 
 //detects race entered and put information to global CurrentRace variable
-function FindRace(inputracetxt) {
+function FindRace(inputracetxt, novardialog) {
 	var tempString = inputracetxt === undefined ? What("Race Remember") : inputracetxt;
 	var tempFound = ParseRace(tempString);
 	
@@ -2511,7 +2511,7 @@ function FindRace(inputracetxt) {
 	} else {
 		DontPrint("Race Features Menu");
 		// if no variant was found, ask the user if he wants to select one
-		if (IsNotImport && inputracetxt && !tempFound[1] && What("Manual Race Remember") !== "Yes") {
+		if (!novardialog && IsNotImport && inputracetxt && !tempFound[1] && What("Manual Race Remember") !== "Yes") {
 			var aRace = RaceList[tempFound[0]];
 			var rSource = stringSource(aRace, 'first,abbr', "    [", "]");
 			var aBasic = "Basic " + aRace.name.toLowerCase() + rSource;
@@ -2572,7 +2572,7 @@ function FindRace(inputracetxt) {
 };
 
 //apply the effect of the player's race
-function ApplyRace(inputracetxt) {
+function ApplyRace(inputracetxt, novardialog) {
 	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	if (event.target && event.target.name === "Race" && inputracetxt.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
 
@@ -8629,7 +8629,7 @@ function RaceFeatureOptions() {
 	var MenuSelection = getMenu("raceoptions");
 	
 	if (MenuSelection && MenuSelection[0] !== "nothing") {
-		ApplyRace(MenuSelection.toString());
+		ApplyRace(MenuSelection.toString(), true);
 	}
 }
 
