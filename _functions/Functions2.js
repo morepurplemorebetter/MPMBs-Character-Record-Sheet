@@ -2724,7 +2724,7 @@ function MakePagesMenu() {
 		["Show location column", "location2#show"],
 		["Hide location column", "location2#hide"],
 		["-", "-"],
-		["Carried Weight options (encumbrance rules)", "weight"],
+		["Carried Weight options (encumbrance rules)", "weight"]
 	]);
 	
 	//add a menu item for the third page

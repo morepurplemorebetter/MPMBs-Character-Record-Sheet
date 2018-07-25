@@ -3635,7 +3635,7 @@ function MakeSpellMenu() {
 	if (CasterClasses.slice(-1)[0][0] !== "-") 	CasterClasses.push("-"); //add a hyphen, if it is not there already
 	CasterClasses = CasterClasses.concat([
 		["with all spells, sorted alphabetically", "alphabetical"],
-		["with all spells, sorted by level", "grouped by level"],
+		["with all spells, sorted by level", "grouped by level"]
 	]);
 	
 	//see if their are any number of spellcasting things

@@ -44,7 +44,7 @@ var Base_BackgroundList = {
 			],
 			["Aspiration",
 				"Aspiration: I aim to demonstrate myself worth my deity's favor by paralleling my actions against their instruction. (Any)"
-			],
+			]
 		],
 		bond : [
 			"I would sacrifice anything to recover a long lost ancient relic of my temple (or faith).",
