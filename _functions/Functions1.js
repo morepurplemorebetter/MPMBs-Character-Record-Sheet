@@ -5422,7 +5422,7 @@ function UpdateLevelFeatures(Typeswitch, raceLvl) {
 				var AddRemove = keyFea.minlevel <= newRaceLvl ? "Add" : "Remove"
 
 				// --- add or remove Limited Features --- //
-				
+
 				// get all the attributes of this feature
 				var Fea = ReturnClassFeatures("race", key, newRaceLvl, false, oldRaceLvl, false);
 				
@@ -10069,7 +10069,7 @@ function ProfBonus() {
 	var lvl = What(QI === true ? "Character Level" : QI + "Comp.Use.HD.Level");
 	var ProfMod = QI === true ? What("Proficiency Bonus Modifier") : 0;
 	var useDice = tDoc.getField(QI === true ? "Proficiency Bonus Dice" : QI + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
-	var ProfB = lvl ? ProficiencyBonusList[lvl-1] : 0;
+	var ProfB = lvl ? ProficiencyBonusList[Math.min(lvl-1,19)] : 0;
 	event.target.submitName = ProfB + ProfMod;
 	event.value = useDice || !lvl ? "" : event.target.submitName;
 }
