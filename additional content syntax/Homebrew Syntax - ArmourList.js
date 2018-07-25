@@ -27,17 +27,17 @@ ArmourList["protectme"] = { //Object name; Note the use of only lower case! Also
 	
 	type : "medium", //Required; the type of the weapon. Options are "medium", "light", "heavy", and ""
 	
-	ac : 10, //Required; the Armor Class (AC) granted by the Armor
+	ac : 10, //Required; the Armour Class (AC) granted by the Armour
 	
-	dex : 2, //Optional; the maximum Dexterity modifier that is allowed in combination with this armor. Just remove this entry if the armour doesn't have a maximum Dex mod allowence or if the Dex mod is determined by the armor type (i.e. 2 for Medium and 0 for Heavy). //This entry will always override any maximum that is determined by the type. // If you set this to -10, no Dex mod will be added to the AC, regardless of the value of the Dex mod (so also not negative values)
+	dex : 2, //Optional; the maximum Dexterity modifier that is allowed in combination with this armour. Just remove this entry if the armour doesn't have a maximum Dex mod allowance or if the Dex mod is determined by the armour type (i.e. 2 for Medium and 0 for Heavy). //This entry will always override any maximum that is determined by the type. // If you set this to -10, no Dex mod will be added to the AC, regardless of the value of the Dex mod (so also not negative values)
 	
-	stealthdis : false, //Required; whether or not the armor gives disadvantage on stealth checks (true or false)
+	stealthdis : false, //Required; whether or not the armour gives disadvantage on stealth checks (true or false)
 	
 	weight : 0, //Optional; the weight in lb. If the armour has no weight, just remove this line. If this line is not present, the item will be ignored when adding armour to the inventory
 	
-	strReq : 10, //Optional; the Strength score required to be able to wear the armor; the sheet doesn't actually do anything with this information (yet)
+	strReq : 10, //Optional; the Strength score required to be able to wear the armour; the sheet doesn't actually do anything with this information (yet)
 	
 	invName : "Protect, Me", //Optional; the name as it will be added to the equipment section if selected to do so in the equipment menu. If you omit this, the sheet will use the above defined 'name' when adding this to the equipment section
 	
-	addMod : true, //Optional; set to true if the armor also allows for the addition of a secondary ability modifier (so in addition to dex), as is the case with the monk's unarmed defense
+	addMod : true, //Optional; set to true if the armour also allows for the addition of a secondary ability modifier (so in addition to Dex), as is the case with the monk's unarmed defence. This secondary ability modifier is taken from the three-letter abbreviation in brackets in the name. So if the name contains "(Str)", it adds the Strength modifier.
 };
