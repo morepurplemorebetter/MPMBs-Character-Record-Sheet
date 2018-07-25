@@ -2595,7 +2595,7 @@ function ApplyRace(inputracetxt, novardialog) {
 			RemoveRace();
 		}
 		thermoTxt = thermoM("Recognizing the entered race...", false); //change the progress dialog text
-		FindRace(inputracetxt);
+		FindRace(inputracetxt, novardialog);
 		Value("Race Remember", CurrentRace.known + (CurrentRace.variant ? "-" + CurrentRace.variant : ""));
 	}
 
