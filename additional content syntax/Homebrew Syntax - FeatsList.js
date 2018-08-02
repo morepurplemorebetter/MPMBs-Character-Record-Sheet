@@ -33,7 +33,7 @@ FeatsList["extra ability"] = { //Object name; note the use of only lower case! T
 	
 	weapons : [true, false, ["hand crossbow"]], //Optional; the 3 entries are for: ["simple", "martial", "other"]. Be sure to always add both statements of true/false!
 	
-	skills : "\n\nSkilled (feat): Choose three skills or tools." //Optional; adds the following text to any display of skills gained. Take note of the leading "\n\n", they are essential. (this line can be removed if not applicable)
+	skills : "\n\nSkilled (feat): Choose three skills or tools.", //Optional; adds the following text to any display of skills gained. Take note of the leading "\n\n", they are essential. (this line can be removed if not applicable)
 	
 	calculate : "event.value = \"I can spend 10 minutes inspiring up to 6 friendly creatures within 30 feet who can see or hear and can understand me. Each gains lvl (\" + What(\"Character Level\") + \") + Cha mod (\" + What(\"Cha Mod\") + \") temporary hit points. One can't gain temporary hit points from this feat again until after a short rest.\"", //Optional; this can be used instead of a description. This will set a calculated value for the feat field instead of a description. Note the use of \" within the syntax instead of just ""
 	
