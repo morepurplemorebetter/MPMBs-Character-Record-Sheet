@@ -432,7 +432,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 					Value(headerArray[9], spCast.blueTxt.dc ? spCast.blueTxt.dc : 0); //set the bluetext for dc
 				};
 				//set the variable to true to later hide the prepared fields if not concerning a list or book
-				if (!spCast.level || (spCast.typeSp !== "list" && spCast.typeSp !== "book") || spCast.typeList === 3) {
+				if (!spCast.level || spCast.typeSp === "known" || !spCast.known || !spCast.known.prepared || spCast.typeList === 3) {
 					hidePrepared = true;
 				}
 			} else if (What(headerArray[1]) === "") {
