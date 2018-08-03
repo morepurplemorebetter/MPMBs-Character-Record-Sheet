@@ -55,8 +55,8 @@ SourceList["OAP:OJ"] = {
 	"banishment", "freedom of movement", "mordenkainen's private sanctum", "otiluke's resilient sphere", "stoneskin",
 	//level 5
 	"dispel evil and good", "geas", "legend lore", "telekinesis", "teleportation circle"
-].forEach(function (jSpell) {
-	if (SpellsList[jSpell]) SpellsList[jSpell].classes.push("justiciar");
+].forEach( function (s) {
+	if(SpellsList[s] && SpellsList[s].classes && SpellsList[s].classes.indexOf("justiciar") === -1) SpellsList[s].classes.push("justiciar");
 });
 
 // Create the custom spell slot progression table

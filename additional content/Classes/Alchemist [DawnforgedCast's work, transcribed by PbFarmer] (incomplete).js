@@ -51,8 +51,8 @@ RequiredSheetVersion(12.999);
 
 	//level 7
 	"etherealness", "plane shift", "regenerate", "simulacrum"
-].forEach(function (alchemistSpells) {
-	if (SpellsList[alchemistSpells]) SpellsList[alchemistSpells].classes.push("dawnforgedcast-alchemist");
+].forEach( function (s) {
+	if(SpellsList[s] && SpellsList[s].classes && SpellsList[s].classes.indexOf("dawnforgedcast-alchemist") === -1) SpellsList[s].classes.push("dawnforgedcast-alchemist");
 });
 
 //now make the alchemist class

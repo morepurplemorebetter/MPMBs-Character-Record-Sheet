@@ -60,8 +60,8 @@ SourceList["MW:SC"] = {
 
 	//level 9
 	"astral projection", "foresight", "shapechange", "true resurrection"
-].forEach(function (shamanSpells) {
-	if (SpellsList[shamanSpells]) SpellsList[shamanSpells].classes.push("shaman");
+].forEach( function (s) {
+	if(SpellsList[s] && SpellsList[s].classes && SpellsList[s].classes.indexOf("shaman") === -1) SpellsList[s].classes.push("shaman");
 });
 
 //now make the shaman class

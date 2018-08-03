@@ -60,8 +60,8 @@ SourceList["Z:W"] = {
 
 	// 9th level
 	"astral projection", "foresight", "shapechange", "true polymorph", "true resurrection"
-].forEach( function (n) {
-	if(SpellsList[n] && SpellsList[n].classes.indexOf("witch (zarieth)") === -1) SpellsList[n].classes.push("witch (zarieth)");
+].forEach( function (s) {
+	if(SpellsList[s] && SpellsList[s].classes && SpellsList[s].classes.indexOf("witch (zarieth)") === -1) SpellsList[s].classes.push("witch (zarieth)");
 });
 
 ClassList["witch (zarieth)"] = {
