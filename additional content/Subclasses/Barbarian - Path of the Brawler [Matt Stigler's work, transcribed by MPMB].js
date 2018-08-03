@@ -28,8 +28,6 @@ SourceList["FBC:PotB"] = {
 	url : "https://fantasybandcamp.blogspot.com/2015/02/d-young-justice-superboy.html"
 	date : "2015/02/17"
 };
-SourceList[""] + {
-}
 
 AddSubClass("barbarian", "path of the brawler", {
 	regExpSearch : /^(?=.*brawler)(?=.*(warrior|fighter|marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n)).*$/i,
