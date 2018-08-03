@@ -25,7 +25,7 @@ SourceList["FBC:PotB"] = {
 	name : "Fantasy Band Camp: Path of the Brawler",
 	abbreviation : "FBC:PotB",
 	group : "Fantasy Band Camp",
-	url : "https://fantasybandcamp.blogspot.com/2015/02/d-young-justice-superboy.html"
+	url : "https://fantasybandcamp.blogspot.com/2015/02/d-young-justice-superboy.html",
 	date : "2015/02/17"
 };
 
