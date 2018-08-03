@@ -1803,7 +1803,7 @@ function FindClasses(Event) {
 		if (tempFound) { //class detected and meets any Prestige Class prereqs it has
 			tempClass = tempFound[0];
 			tempSubClass = tempFound[1];
-			tempDie = ClassList[tempClass].die;
+			tempDie = ClassSubList[tempSubClass].die ? ClassSubList[tempSubClass].die : ClassList[tempClass].die;
 			
 			//see if the found class isn't a prestige class and if all prereqs are met. If not, skip this class
 			var tempPrereq = !ignorePrereqs && ClassList[tempClass].prestigeClassPrereq ? ClassList[tempClass].prestigeClassPrereq : false;
