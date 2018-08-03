@@ -2302,7 +2302,6 @@ function CalcExperienceLevel(AlsoClass) {
 	var Level = Number(What("Character Level"));
 	var exp = Number(What("Total Experience").replace(",", "."));
 	tDoc.getField("Character Level").submitName = Level;
-	console.println("Level: "+Level+", oldLevel: "+oldLevel); // DEBUGGING!!!
 	
 	//stop this function if resetting or importing the sheet or no xp and level is/was present
 	if (!IsNotImport || !IsNotReset || (!oldLevel && !Level && !exp)) return;
