@@ -9,22 +9,36 @@
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Barbarian, called "Path of the Brawler"
-				This subclass was designed by a patron of MPMB's Patreon
+
+				This subclass was designed by Matt Stigler over on his website Fantasy Band Camp
+
+				You can find it here: https://fantasybandcamp.blogspot.com/2015/02/d-young-justice-superboy.html
+
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-08-03 (sheet v12.999)
 */
 
-var iFileName = "Barbarian - Path of the Brawler [homebrew, transcribed by MPMB].js";
+var iFileName = "Barbarian - Path of the Brawler [Matt Stigler's work, transcribed by MPMB].js";
 RequiredSheetVersion(12.999);
+
+SourceList["FBC:PotB"] = {
+	name : "Fantasy Band Camp: Path of the Brawler",
+	abbreviation : "FBC:PotB",
+	group : "Fantasy Band Camp",
+	url : "https://fantasybandcamp.blogspot.com/2015/02/d-young-justice-superboy.html"
+	date : "2015/02/17"
+};
+SourceList[""] + {
+}
 
 AddSubClass("barbarian", "path of the brawler", {
 	regExpSearch : /^(?=.*brawler)(?=.*(warrior|fighter|marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n)).*$/i,
 	subname : "Path of the Brawler",
-	source : ["HB", 0],
+	source : ["FBC:PotB", 0],
 	features : {
 		"subclassfeature3" : {
 			name : "Powerful Blows",
-			source : ["HB", 0],
+			source : ["FBC:PotB", 0],
 			minlevel : 3,
 			description : "\n   " + "My unarmed strikes deal 1d6 damage (1d8 in rage) instead of their usual amount",
 			calcChanges : {
@@ -36,13 +50,13 @@ AddSubClass("barbarian", "path of the brawler", {
 		},
 		"subclassfeature3.1" : {
 			name : "Massive Leap",
-			source : ["HB", 0],
+			source : ["FBC:PotB", 0],
 			minlevel : 3,
 			description : "\n   " + "While raging, my jump distance is doubled and I have adv. on checks related to jumping"
 		},
 		"subclassfeature6" : {
 			name : "Iron Body",
-			source : ["HB", 0],
+			source : ["FBC:PotB", 0],
 			minlevel : 6,
 			description : desc([
 				"My unarmed strikes count as magical for overcoming resistances and immunities",
@@ -54,7 +68,7 @@ AddSubClass("barbarian", "path of the brawler", {
 		},
 		"subclassfeature10" : {
 			name : "Shockwave",
-			source : ["HB", 0],
+			source : ["FBC:PotB", 0],
 			minlevel : 10,
 			description : desc([
 				"As a bonus action when I land from a jump, I can create a powerful shockwave",
@@ -67,7 +81,7 @@ AddSubClass("barbarian", "path of the brawler", {
 		},
 		"subclassfeature14" : {
 			name : "Knockout",
-			source : ["HB", 0],
+			source : ["FBC:PotB", 0],
 			minlevel : 14,
 			description : desc([
 				"As a bonus action after I hit a creature with an unarmed strike, I can knock it prone",
