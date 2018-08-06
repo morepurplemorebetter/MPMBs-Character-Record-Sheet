@@ -467,7 +467,7 @@ ClassSubList["dawnforgedcast-alchemist-grenadier"] = {
 				source : ["DFC:AC", 8],
 				description : "\n   " + "The base splash damage radius for my bombs is now 10 ft",
 			},
-			"high octane cockail" : {
+			"high octane cocktail" : {
 				name : "High Octane Cocktail",
 				source : ["DFC:AC", 8],
 				description : "\n   " + "Instead of base d6 damage, my bombs now deal d8",
