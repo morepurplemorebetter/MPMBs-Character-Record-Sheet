@@ -279,6 +279,14 @@ var WotFEremastered = function() {
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 6"
 			},
+			"Impenetrable Iron Tortoise Shell (prereq: level 6 monk)" : {
+				name : "Impenetrable Iron Tortoise Shell",
+				source : ["IB:WotFE", 2],
+				description : " [2 ki points]" + desc([
+					"As a reaction, I can use 2 ki point to use Deflect Missiles ability against an attack you can see within 30 feet of you",
+					"Any damage not prevented by this ability is taken by the original target of the attack",
+					"If you reduce the damage to 0, you can’t make an attack with it",
+			},
 			"mote of the sun (prereq: level 6 monk)" : {
 				name : "Mote of the Sun",
 				source : ["IB:WotFE", 2],
