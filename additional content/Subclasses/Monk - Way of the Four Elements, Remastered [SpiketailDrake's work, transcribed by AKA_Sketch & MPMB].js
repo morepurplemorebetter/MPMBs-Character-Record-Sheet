@@ -15,7 +15,9 @@
 	
 	This is a fan-made homebrew to replace the "Way of the Four Elements" subclass.
 	
-	This code is based on version 2.0 (2017-02-18) by /u/IrisBandit, found here: https://drive.google.com/file/d/0B5ttoyMfsaC7dzJ2SVdKNXhxVnM/view
+	This code is based on version 2.0 (2017-02-18) by /u/IrisBandit, taken from Reddit here: https://redd.it/5w5hlg
+	The latest iteration of version 2.0 (2017-02-24) can be found here: https://drive.google.com/file/d/0B5ttoyMfsaC7dzJ2SVdKNXhxVnM/view
+	Note that this latest iteration is different than what this code is based on
 	
 	IrishBandit's work, in turn, is based on the work of /u/SpiketailDrake, which is found here: https://drive.google.com/file/d/0B1pdYIcfHauwNDM2My1XeWFYSDA/view
 	
@@ -36,7 +38,7 @@ var WotFEremastered = function() {
 		name : "Way of the Four Elements Remastered (v2.0, 2017-02-18, by IrisBandit)",
 		abbreviation : "IB:WotFE",
 		group : "IrishBandit",
-		url : "https://drive.google.com/file/d/0B5ttoyMfsaC7dzJ2SVdKNXhxVnM/view",
+		url : "https://redd.it/5w5hlg", // this has since been updated, so the document linked to in Reddit is not what the code is based on!
 		date : "2017/02/18"
 	};
 	
