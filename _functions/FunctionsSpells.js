@@ -4974,9 +4974,9 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	//first ask the user if he really wants to wait for an hour
 	var thisClassName = ClassList[thisClass] ? ClassList[thisClass].name : ClassSubList[thisClass] ? ClassSubList[thisClass].subname : thisClass.capitalize();
 	var doGoOn = {
-		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClassName + " (sub)class.\n\nThis will not include any access to spells granted by a subclass, or spells excluded in the Source Selection dialogue.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nThis process will take a very, very long time! For classes with a lot of spells, such as a Wizard, this could be well over an hour (or several hours, depending on your machine).\n\nAre you sure you want to continue?",
+		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClassName + " (sub)class.\n\nThis will not include any access to spells granted by a subclass, or spells excluded in the Source Selection dialogue.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nBe aware that this process can take a very long time!\n\nAre you sure you want to continue?",
 		nIcon: 2,
-		cTitle: "Continue with slow generation of complete spell sheet?",
+		cTitle: "Continue with generation of complete spell sheet?",
 		nType: 2
 	};
 	if (!skipdoGoOn && app.alert(doGoOn) !== 4) {
@@ -5414,12 +5414,12 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 		Value("Opening Remember", "No");
 	};
 	// Start progress bar so we know it will be visible if a dialog is made
-	var thermoTxt = thermoM("Generating the " + thisClassName + " Spell Sheets, Acrobat will be unresponsive for a long time...", false);
+	var thermoTxt = thermoM("Generating Spell Sheets with all spells, Acrobat will be unresponsive for a long time...", false);
 	//first ask the user if he really wants to wait for an hour
 	var doGoOn = {
-		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available " + (alphabetical ? "in alphabetical order" : "grouped by level") + ".\n\nThis will not include any access to spells excluded in the Source Selection dialogue.\n\nThis process will take a very, very long time! This could be well over an hour (or several hours, depending on your machine).\n\nAre you sure you want to continue?",
+		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available " + (alphabetical ? "in alphabetical order" : "grouped by level") + ".\n\nThis will not include any spells excluded in the Source Selection dialogue.\n\nBe aware that this process can take a very long time!\n\nAre you sure you want to continue?",
 		nIcon: 2,
-		cTitle: "Continue with slow generation of complete spell sheet?",
+		cTitle: "Continue with generation of complete spell sheet?",
 		nType: 2
 	};
 	if (!skipdoGoOn && app.alert(doGoOn) !== 4) {
