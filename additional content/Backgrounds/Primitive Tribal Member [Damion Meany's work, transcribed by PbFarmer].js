@@ -94,6 +94,6 @@ BackgroundList["primitive tribe member"] = {
 };
  
 BackgroundFeatureList["at one with nature"] = {  
-    description : "I am intimately familiar with the geography of my home region. I know exactly where water, shelter, and food can be found within several miles of my ome and am good at finding these areas when outside of my home region as well when in a climate much like it.",
+    description : "I am intimately familiar with the geography of my home region. I know exactly where water, shelter, and food can be found within several miles of my home and am good at finding these areas when outside of my home region as well when in a climate much like it.",
     source : ["DM:IB", 63]
 };

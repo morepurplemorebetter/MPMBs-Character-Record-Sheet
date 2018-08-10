@@ -106,7 +106,7 @@ AddSubClass("fighter", "tactician", {
 			}
 		},
 		"subclassfeature7" : {
-			name : "Preperation",
+			name : "Preparation",
 			source : ["JB:TAS", 2],
 			minlevel : 7,
 			description : "\n   " + "By spending at least 1 minute going over battle plans with my allies, they all gain insight" + "\n   " + "That insight gives them adv. on the first roll they make on their first turn in combat"

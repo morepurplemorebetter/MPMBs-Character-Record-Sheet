@@ -132,7 +132,7 @@ AddSubClass("monk", "swordsage", {
 			source : ["HB", 0],
 			minlevel : 3,
 			description : "[martial weapon proficiency]" + "\n   " + "I can select three weapons to count as monk weapons for the martial arts feature",
-			weapons : [false, true],
+			weapons : [false, true]
 		},
 		"subclassfeature6" : {
 			name : "Healing Ki",
