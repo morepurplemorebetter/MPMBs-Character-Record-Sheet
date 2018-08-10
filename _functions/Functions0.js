@@ -598,6 +598,7 @@ function toUni(input) {
 function toSup(inString) {
 	var doChar = function(aChar) {
 		switch(aChar) {
+			case "0" : return "\u2070";
 			case "1" : return "\xB9";
 			case "2" : return "\xB2";
 			case "3" : return "\xB3";
