@@ -6287,7 +6287,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			// if dealing with a tool, we might need to add it to the skill proficiencies section to get a calculated value
 			var toolAbi = ProfType === "tool" && Extra && isNaN(Extra) ? AbilityScores.fields[Extra.substr(0,3).toLowerCase()] : false;
 			if (toolAbi) {
-				var theTooTxt = ProfObj + " (" + toolAbi + ")";
+				var theTooTxt = ProfObj + " (" + (typePF ? toolAbi : toolAbi.toUpperCase()) + ")";
 				if (AddRemove) { // add
 					if (!set.toolSkill) {
 						set.toolSkill = [theTooTxt];

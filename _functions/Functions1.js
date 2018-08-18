@@ -6602,12 +6602,12 @@ function CalcAbilityDC() {
 
 //find the ability score the tool (or custom skill) is keyed off on
 function UpdateTooSkill() {
-	var TooSkillTxt = What("Too Text").toLowerCase();
+	var TooSkillTxt = event.target && event.target.name == "Too Text" ? event.value.toLowerCase() : What("Too Text").toLowerCase();
 	var Ability = "Too";
 	for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
 		if (TooSkillTxt.indexOf("(" + AbilityScores.abbreviations[i].toLowerCase() + ")") !== -1) {
 			Ability = AbilityScores.abbreviations[i];
-			i = AbilityScores.abbreviations.length;
+			break;
 		}
 	}
 	SkillsList.abilityScores[SkillsList.abbreviations.indexOf("Too")] = Ability;

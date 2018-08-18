@@ -23,6 +23,7 @@ function InitializeEverything(noButtons, noVars) {
 		FindBackground();
 		FindFeats();
 		LoadLevelsonStartup();
+		UpdateTooSkill();
 		FindManualOtherWeapons(true);
 		ApplyProficiencies(false);
 		UpdateTooltips();
