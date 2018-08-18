@@ -614,7 +614,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 					oncelr : true
 				}
 			},
-			eval : "if (FeaChoice === '') {var CFrem = What('Class Features Remember'); var tReg = /.*?blood hunter,subclassfeature3,(the (archfey|fiend|great old one|undying|celestial|hexblade)).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, '$1'); AddString('Class Features Remember', 'blood hunter,subclassfeature15,' + FeaChoice + 2, false);};};"
+			eval : "if (FeaChoice === '') {var CFrem = What('Class Features Remember'); var tReg = /.*?blood hunter,subclassfeature3,(the (archfey|fiend|great old one|undying|celestial|hexblade)).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, '$1') + 2; AddString('Class Features Remember', 'blood hunter,subclassfeature15,' + FeaChoice, false);};};"
 		},
 		"subclassfeature18" : {
 			name : "Soul Syphon",
