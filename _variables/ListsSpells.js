@@ -1442,7 +1442,7 @@ var Base_SpellsList = {
 		classes : ["wizard"],
 		source : [["SRD", 141], ["P", 239]],
 		level : 4,
-		school : "Evoc",
+		school : "Trans",
 		time : "10 min",
 		range : "120 ft",
 		components : "V,S",
