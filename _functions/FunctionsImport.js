@@ -829,7 +829,8 @@ function DirectImport(consoleTrigger) {
 		
 		//add the spell boxes
 		for (var i = 1; i <= 9; i++) ImportField("SpellSlots.CheckboxesSet.lvl" + i, {notTooltip: true});
-		
+
+// NOG NAAR TE KIJKEN!!!
 		//set the proficiencies
 		ImportField("Proficiency Armor Other Description", {notTooltip: true});
 		var EqpProfRem = ImportField("Proficiencies Remember");
@@ -1204,10 +1205,11 @@ function DirectImport(consoleTrigger) {
 		};
 	//Some settings for the overall sheet		
 		if (ImportField("Manual Attack Remember")) ToggleAttacks(What("Manual Attack Remember") === "Yes" ? "No" : "Yes");
-		ImportField("Manual Class Remember"); ImportField("Manual Race Remember"); ImportField("Manual Background Remember"); ImportField("Manual Feat Remember"); 
+		if (ImportField("Manual Race Remember")) AddTooltip("Race Remember", undefined, What("Character Level"));
+		ImportField("Manual Class Remember"); ImportField("Manual Background Remember"); ImportField("Manual Feat Remember"); 
 
 	//Recalculate the weapons, for things might have changed since importing them
-		forceReCalcWeapons = true; ReCalcWeapons(true);
+		ReCalcWeapons(false);
 		
 		//now that all the attacks of the first page and companion pages have been imported, set the attack colors
 		if (bothCF) {

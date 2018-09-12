@@ -249,7 +249,8 @@ var Menus = {
 	"texts" : "",
 	"skills" : "",
 	"adventureLeague" : "",
-	"sources" : ""
+	"sources" : "",
+	"unicode" : ""
 };
 Menus.importexport[0].oSubMenu = Menus.importscripts;
 
@@ -273,14 +274,29 @@ var classes = {
 	oldspellcastlvl : {default : 0, warlock : 0}
 };
 
+var CurrentUpdates = {types : [], extras : {}};
 var CurrentClasses = {};
+var CurrentBackground = {};
+var CurrentRace = {};
+var CurrentCompRace = {};
+var CurrentSpells = {};
+var CurrentCasters = {};
+var CurrentSources = {firstTime : true, globalExcl : []};
+var CurrentEvals = {};
+var CurrentScriptFiles = {};
+var CurrentVars = {};
+var UpdateSpellSheets = {};
+var CurrentFeatureChoices = {};
+var CurrentStats = {};
 
 var CurrentArmour = {
 	field : "",
 	known : "",
 	mod : "",
 	dex : "",
+/* UPDATED
 	proficiencies : {},
+*/
 	magic : 0
 };
 
@@ -292,20 +308,23 @@ var CurrentShield = {
 var CurrentWeapons = {
 	field : [],
 	known : [],
+/* UPDATED
 	proficiencies : {},
 	extraproficiencies : [],
 	manualproficiencies : [],
+*/
 	compField : {},
 	compKnown : {},
 	offHands : []
 };
 
-var CurrentBackground = {};
-
 var CurrentFeats = {
 	known : [],
+	level : What("Character Level") ? Number(What("Character Level")) : 1
+/* UPDATED
 	improvements : [],
 	skills : []
+*/
 };
 
 var CurrentProfs = { // Also change field defaultValue!
@@ -349,19 +368,6 @@ var FieldNumbers = {
 	compgear : typePF ? 17 : 24,
 	limfea : 16
 }
-
-var CurrentRace = {};
-
-var CurrentCompRace = {};
-
-var CurrentSpells = {};
-var CurrentCasters = {};
-var CurrentSources = {firstTime : true, globalExcl : []};
-var CurrentEvals = {};
-var CurrentScriptFiles = {};
-var CurrentVars = {};
-
-var UpdateSpellSheets = {};
 
 var ExperiencePointsList = ["", 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000, 1000000000];
 var levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];

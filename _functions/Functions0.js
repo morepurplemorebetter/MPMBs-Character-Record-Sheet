@@ -81,7 +81,7 @@ function desc(arr) {
 function setPrototypes() {
 	//adding a way of capitalizing every first letter of every word in a string
 	String.prototype.capitalize = function () {
-		var string = this.toLowerCase().replace(/([^']|^)\b\w/g, function (m) {
+		var string = this.toLowerCase().replace(/(?:^|\s)\w/g, function (m) {
 			return m.toUpperCase();
 		});
 		
@@ -403,13 +403,11 @@ function RoundTo(inputNmbr, roundNmbr, emptyAtZero, applyDec) {
 			result = Math.round(input * Math.pow(roundNmbr,-1)) / Math.pow(roundNmbr,-1);
 		}
 	}
-	
 	if (emptyAtZero && result === 0) {
 		result = "";
 	} else if (applyDec && result % 1 != 0 && What("Decimal Separator") === "comma") {
 		result = result.replace(".", ",");
 	}
-	
 	return result;
 }
 
@@ -522,6 +520,7 @@ function MakeRegex(inputString, extraRegex) {
 };
 
 function toUni(input) {
+	if (!What("UseUnicode")) return input;
 	input = input.toString();
 	var UniBoldItal = {
 		"0" : "\uD835\uDFCE",
@@ -596,6 +595,7 @@ function toUni(input) {
 };
 
 function toSup(inString) {
+	if (!What("UseUnicode")) return " ["+inString+"]";
 	var doChar = function(aChar) {
 		switch(aChar) {
 			case "0" : return "\u2070";
@@ -1098,6 +1098,7 @@ function calcCont() {
 	tDoc.delay = false;
 	tDoc.calculateNow();
 	thermoStop();
+	UpdateSheetDisplay();
 };
 
 // function to find the value (date) of a source

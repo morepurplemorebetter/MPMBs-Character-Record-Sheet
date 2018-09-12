@@ -211,7 +211,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			if (aSpell.descriptionFull && (aSpell.school || aSpell.psionic)) {
 				spTooltip += toUni(aSpell.name) + " \u2014 ";
 				spTooltip += aSpell.psionic ? (aSpell.level == 0 ? spellLevelList[aSpell.level + 10].replace(/s\b/, '') : spellSchoolList[aSpell.school].capitalize() + spellLevelList[aSpell.level + 10].replace(/s\b/, '').toLowerCase()) :
-					aSpell.level == 0 ? spellSchoolList[aSpell.school].capitalize() + spellLevelList[aSpell.level].replace(/s\b/, '').toLowerCase() :
+					aSpell.level == 0 ? spellSchoolList[aSpell.school].capitalize() + " " + spellLevelList[aSpell.level].replace(/s\b/, '').toLowerCase() :
 					spellLevelList[aSpell.level].replace(/s\b/, '').toLowerCase() + " " + spellSchoolList[aSpell.school];
 				spTooltip += aSpell.ritual ? " (ritual)" : "";
 				spTooltip += "\n   " + aSpell.descriptionFull;
@@ -864,7 +864,7 @@ var SpellSheetSelect_Dialog = {
 		
 		//set the value of various text entries
 		dialog.load({
-			"Hea0" : "Set " + this.header.capitalize() + " " + this.spNm,
+			"Hea0" : "Set " + this.spNm + ": " + this.header.capitalize(),
 			"txt0" : this.txt,
 			"BonK" : ASround(theBo),
 			"CanK" : ASround(theCa),
@@ -1072,7 +1072,7 @@ var SpellSheetSelect_Dialog = {
 						alignment : "align_fill",
 						font : "title",
 						bold : true,
-						height : 21,
+						height : 25,
 						char_width : 39
 					}, {
 						type : "static_text",
@@ -2956,7 +2956,7 @@ function AskUserSpellSheet() {
 		};
 		spCast.maxSpell = maxSpell;
 		
-		if (spCast.typeSp === "feat" && spCast.level !== undefined) spCast.level = What("Character Level"); //set the level if concerning a feat
+		if ((/feat|item/i).test(spCast.typeSp) && spCast.level !== undefined) spCast.level = What("Character Level"); //set the level if concerning a feat/item
 		
 		//see if this is a psionic caster
 		var isPsionics = spCast.factor && (/psionic/i).test(spCast.factor[1]);
@@ -4925,7 +4925,7 @@ function CheckForSpellUpdate() {
 			if (askUserUpdateSS) break;
 		}
 	}
-	
+
 	//now if any of the above was true, ask the user if a new spell sheet should be generated
 	if (askUserUpdateSS) AskForSpellUpdate()
 }
@@ -4934,7 +4934,7 @@ function CheckForSpellUpdate() {
 function AskForSpellUpdate() {
 	if (eval(What("SpellSheetUpdate.Remember")) || !IsNotReset || !IsNotImport) return;
 	var askPopUp = {
-		cMsg : "A change has been detected in the spellcasting abilities of your character that require the Spell Sheet(s) to be updated.\n\nWould you like to generate a (new) Spell Sheet?",
+		cMsg : "A change has been detected in the spellcasting abilities of your character that require the Spell Sheet(s) to be updated.\n\nWould you like to generate a (new) Spell Sheet now?\n\nNote that if you plan to make more changes that might affect spellcasting, you might want to do those first before you end up generating a Spell Sheet again. Generating a Spell Sheet can take a long time.\nYou can always generate a Spell Sheet using the \"Spell Options\" bookmark.",
 		cTitle : "Would you like to generate a new Spell Sheet?",
 		nIcon : 2,
 		nType : 2,

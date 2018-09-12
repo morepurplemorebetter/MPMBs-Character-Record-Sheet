@@ -42,14 +42,12 @@ function MergeElement(obj1, elem, obj2) {
 function CleanObject(obj) {
 	for (var p in obj) {
 		if (obj[p].constructor == Object) {
-			var hasSub = false;
 			for (var q in obj[p]) {
-				hasSub = true;
 				if (obj[p][q].constructor == Object) {
 					CleanObject(obj[p]);
 				}
 			}
-			if (!hasSub) delete obj[p];
+			if (!ObjLength(obj[p])) delete obj[p];
 		}
 	}
 	return obj;

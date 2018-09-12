@@ -514,7 +514,7 @@ function ApplyCompRace(newRace) {
 		}
 	}
 	
-	SetHPTooltip();
+	CurrentUpdates.types.push("hp")
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
@@ -2767,6 +2767,11 @@ function MakePagesMenu() {
 		cName : "Spell Sheet options",
 		oSubMenu : Menus.spells
 	});
+	
+	//add the option to enable or disable use of the unicode functions
+	pagesMenu.push({cName : "-", cReturn : "-"}); // add a divider
+	makeUnicodeMenu();
+	pagesMenu.push(Menus.unicode);
 
 	Menus.pages = pagesMenu;
 };
@@ -2817,6 +2822,9 @@ function PagesOptions() {
 			break;
 		case "color" :
 			ColoryOptions(MenuSelection);
+			break;
+		case "unicode" :
+			setUnicodeUse(MenuSelection[2]);
 			break;
 	};
 };
@@ -3418,6 +3426,8 @@ function GetStringifieds(notSources) {
 	CurrentEvals = eval(What("CurrentEvals.Stringified"));
 	CurrentProfs = eval(What("CurrentProfs.Stringified"));
 	CurrentVars = eval(What("CurrentVars.Stringified"));
+	CurrentFeatureChoices = eval(What("CurrentFeatureChoices.Stringified"));
+	CurrentStats = eval(What("CurrentStats.Stringified"));
 }
 
 //set all stringified variables into their fields
@@ -3434,6 +3444,8 @@ function SetStringifieds(type) {
 	if (!type || type === "evals") Value("CurrentEvals.Stringified", CurrentEvals.toSource());
 	if (!type || type === "profs") Value("CurrentProfs.Stringified", CurrentProfs.toSource());
 	if (!type || type === "vars") Value("CurrentVars.Stringified", CurrentVars.toSource());
+	if (!type || type === "choices") Value("CurrentFeatureChoices.Stringified", CurrentFeatureChoices.toSource());
+	if (!type || type === "stats") Value("CurrentStats.Stringified", CurrentStats.toSource());
 	if (type === "scriptfiles") Value("User_Imported_Files.Stringified", CurrentScriptFiles.toSource());
 };
 
@@ -3773,7 +3785,24 @@ function SetHPTooltip(resetHP) {
 		};
 	};
 	
-	if (CurrentEvals.hp) eval(CurrentEvals.hp);
+	if (CurrentEvals.hp) {
+		for (var hpEval in CurrentEvals.hp) {
+			var evalThing = CurrentEvals.hp[hpEval];
+			try {
+				if (typeof evalThing == 'string') {
+					eval(evalThing);
+				} else if (typeof evalThing == 'function') {
+					var runFunction = eval(evalThing.toSource());
+					runFunction();
+				}
+			} catch (error) {
+				var eText = "The custom hit point calculation addition '" + hpEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				console.println(eText);
+				console.show();
+			}
+		}
+	}
 
 	hdplaceholder = totalhd === 0 ? "level \u00D7 hit dice (0)" : "";
 	totalhd = totalhd === 0 ? "level" : totalhd;
@@ -4040,6 +4069,11 @@ function MakeTextMenu_TextOptions(input) {
 				bMarked : CurrentVars.whiteout
 			}]
 		});
+		if (input !== "justMenu") {
+			makeUnicodeMenu();
+			Menus.texts.push({cName : "-", cReturn : "-"}); // add a divider
+			Menus.texts.push(Menus.unicode);
+		}
 		if (input === "justMenu") return;
 	};
 	
@@ -4061,6 +4095,9 @@ function MakeTextMenu_TextOptions(input) {
 			break;
 		 case "hide lines" :
 			ToggleWhiteout(true);
+			break;
+		 case "unicode" :
+			setUnicodeUse(MenuSelection[2]);
 			break;
 		};
 	};
@@ -4619,7 +4656,6 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 
 //Give a pop-up dialogue when the amount of Ability Score Improvements after changing level
 function CountASIs() {
-	UpdateTooltips();
 	var newASI = 0;
 	for (var nClass in classes.known) {
 		var clLvl = Math.min(CurrentClasses[nClass].improvements.length, classes.known[nClass].level);
@@ -4630,7 +4666,7 @@ function CountASIs() {
 		clLvl = Math.min(CurrentClasses[oClass].improvements.length, classes.old[oClass].classlevel);
 		oldASI += clLvl ? CurrentClasses[oClass].improvements[clLvl - 1] : 0;
 	}
-	if (newASI !== oldASI) {		
+	if (newASI !== oldASI) {	
 		var pTxt = "The change in level has granted your character " + toUni(newASI - oldASI) + " additional " + toUni("Ability Score Improvement") + "(s)!\n\nThe current total of Ability Score Improvements is:" + AbilityScores.improvements.classlvl + "\n\nYou can use these in one of two ways:\n    1. Divide 2 points over ability scores (to max 20);\n        (See the Ability Scores dialogue, i.e. \"Scores\" button.)\n    2. Take 1 feat.\n        (See the Feats section on the sheet.)";
 		if (CurrentClasses.rangerua && CurrentClasses.rangerua.fullname === "Ranger (Beast Conclave)") {
 			pTxt += "\n\nDon't forget that the Ranger's Animal Companion also benefits from Ability Score Improvements (but not feats).";
@@ -4834,39 +4870,38 @@ function RemoveClassFeatureChoice(aClass, feature) {
 }
 
 // returns an object of the different elements to populate the class features or limited features section if olchoice is provided, oldlevel has to be provided as well
-function ReturnClassFeatures(aClass, feature, level, choice, oldlevel, oldchoice, ForceClassList, ForceChoice) {
-	var tRe = {};
-	var aFea = aClass === "race" ? CurrentRace.features[feature] : ForceClassList && !oldchoice && ClassList[aClass].features[feature] && ClassList[aClass].features[feature].name ? ClassList[aClass].features[feature] : CurrentClasses[aClass].features[feature];
+function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceClassList, ForceChoice) {
+	var tRe = { changed : false };	
+ 	var attr = [["Add", "additional"], ["Use", "usages"], ["UseCalc", "usagescalc"], ["Recov", "recovery"], ["UseName", "name"], ["UseName", "limfeaname"], ["Descr", "description"], ["source", "source"]];
 	
-	if (!aFea) {
-		console.println("\nClass/Racial Feature '" + feature + "' for '" + aClass + "' could not be found in the ReturnClassFeatures function.");
-		console.show();
-	};
-	
-	tRe.Add = choice && aFea[choice].additional ? aFea[choice].additional : (aFea.additional && !ForceChoice ? aFea.additional : "");
-	tRe.AddOld = oldchoice && aFea[oldchoice].additional ? aFea[oldchoice].additional : (aFea.additional && !ForceChoice ? aFea.additional : "");
-	
-	tRe.Use = choice && aFea[choice].usages ? aFea[choice].usages : (aFea.usages && !ForceChoice ? aFea.usages : "");
-	tRe.UseOld = oldchoice && aFea[oldchoice].usages ? aFea[oldchoice].usages : (aFea.usages && !ForceChoice ? aFea.usages : "");
-	
-	tRe.UseCalc = choice && aFea[choice].usagescalc ? aFea[choice].usagescalc : (aFea.usagescalc && !ForceChoice ? aFea.usagescalc : "");
-	tRe.UseCalcOld = oldchoice && aFea[oldchoice].usagescalc ? aFea[oldchoice].usagescalc : (aFea.usagescalc && !ForceChoice ? aFea.usagescalc : "");
-	
-	tRe.Recov = choice && aFea[choice].recovery ? aFea[choice].recovery : (aFea.recovery && !ForceChoice ? aFea.recovery : "");
-	tRe.RecovOld = oldchoice && aFea[oldchoice].recovery ? aFea[oldchoice].recovery : (aFea.recovery && !ForceChoice ? aFea.recovery : "");
-	
-	tRe.UseName = choice && aFea[choice].name ? aFea[choice].name : (aFea.name && !ForceChoice ? aFea.name : "");
-	tRe.UseNameOld = oldchoice && aFea[oldchoice].name ? aFea[oldchoice].name : (aFea.name && !ForceChoice ? aFea.name : "");
-	
-	tRe.source = choice && aFea[choice].source ? aFea[choice].source : (aFea.source ? aFea.source : "");
-	
+	for (var a = 0; a < attr.length; a++) {
+		// add the new choice
+		var setA = attr[a][0];
+		var objA = attr[a][1];
+		tRe[setA] = choice && aFea[choice] && aFea[choice][objA] ? aFea[choice][objA] : aFea[objA] && !ForceChoice ? aFea[objA] : tRe[setA] ? tRe[setA] : "";
+		if (setA === "source") continue; // don't do the Old version for source
+		tRe[setA + "Old"] = oldchoice && aFea[oldchoice] && aFea[oldchoice][objA] ? aFea[oldchoice][objA] : aFea[objA] && !ForceChoice ? aFea[objA] : tRe[setA + "Old"] ? tRe[setA + "Old"] : "";
+		if (objA.indexOf("usages") !== -1) {
+			if (level === 0) tRe[setA] = "";
+			if (oldlevel === 0) tRe[setA + "Old"] = "";
+		}
+	}
+
 	for (var aProp in tRe) {
 		if (aProp === "source") continue;
 		var theP = tRe[aProp];
 		if (theP && isArray(theP)) {
 			var lvlUse = aProp.indexOf("Old") !== -1 && (oldlevel || oldlevel === 0) ? oldlevel : level;
-			lvlUse = Math.min(lvlUse, theP.length);
-			tRe[aProp] = theP[lvlUse - 1] ? theP[lvlUse - 1] : "";
+			lvlUse = Math.min(lvlUse, theP.length) - 1;
+			tRe[aProp] = theP[lvlUse] ? theP[lvlUse] : "";
+
+			// now see if anything changed compared to the new
+			if (!tRe.changed && aProp.indexOf("Old") !== -1) {
+				var otherProp = aProp.replace("Old", "");
+				if (tRe[otherProp] !== "" && !isArray(tRe[otherProp])) {
+					tRe.changed = tRe[aProp] != tRe[otherProp];
+				}
+			}
 		}
 	}
 	return tRe;
@@ -5294,12 +5329,53 @@ function PatreonStatement() {
 // Add === true to add something, or Add === false to remove something;
 function addEvals(evalObj, NameEntity, Add) {
 	if (!evalObj) return;
-	
+
+	var atkStr = "";
+	var atkTypes = ["atkAdd", "atkCalc"];
+	for (var i = 0; i < atkTypes.length; i++) {
+		var atkT = atkTypes[i];
+		if (!evalObj[atkT]) continue;
+		// add the descriptive text
+		if (evalObj[atkT][1]) atkStr += "\n - " + evalObj[atkT][1];
+		// set the function
+		if (Add) {
+			if (!CurrentEvals[atkT]) CurrentEvals[atkT] = {};
+			CurrentEvals[atkT][NameEntity] = evalObj[atkT][0];
+		} else if (CurrentEvals[atkT][NameEntity]) {
+			delete CurrentEvals[atkT][NameEntity];
+		}
+	};
+	// set the descriptive text
+	if (atkStr) {
+		if (Add) {
+			if (!CurrentEvals.atkStr) CurrentEvals.atkStr = {};
+			CurrentEvals.atkStr[NameEntity] = atkStr;
+		} else if (CurrentEvals.atkStr[NameEntity]) {
+			delete CurrentEvals.atkStr[NameEntity];
+		}
+	}
+	if (evalObj.atkAdd) CurrentUpdates.types.push("attacksforce");
+
+	//do the stuff for the hp calculations
+	if (evalObj.hp) {
+		if (Add) {
+			if (!CurrentEvals.hp) CurrentEvals.hp = {};
+			CurrentEvals.hp[NameEntity] = evalObj.hp;
+		} else if (CurrentEvals.hp[NameEntity]) {
+			delete CurrentEvals.hp[NameEntity];
+		};
+		CurrentUpdates.types.push("hp");
+	};
+
+	if (!Add) CurrentEvals = CleanObject(CurrentEvals); // remove any remaining empty objects
+	SetStringifieds("evals"); //now set this global variable to its field for safekeeping
+
+/* UPDATED
 	//do the stuff for the attack calculations
 	var atkStr = "";
 	var remAtkAdd = CurrentEvals.atkAdd ? CurrentEvals.atkAdd : "";
 	var atkTypes = ["atkAdd", "atkCalc"];
-	var nameHeader = isArray(NameEntity) ? "\n\n" + toUni(NameEntity[0]) + " [" + NameEntity[1] + "]" : "\n\n" + toUni(NameEntity);
+	var nameHeader = "\n\n" + (isArray(NameEntity) ? toUni(NameEntity[0]) + NameEntity[1] : toUni(NameEntity));
 	for (var i = 0; i < atkTypes.length; i++) {
 		var atkT = atkTypes[i];
 		if (!evalObj[atkT]) continue;
@@ -5334,7 +5410,18 @@ function addEvals(evalObj, NameEntity, Add) {
 	};
 	
 	SetStringifieds("evals"); //now set this global variable to its field for safekeeping
+*/
 };
+
+// show all the things affecting the attack
+function ShowAttackEvals() {
+	if (!CurrentEvals.atkStr) return;
+	var txt = [];
+	for (var str in CurrentEvals.atkStr) {
+		txt.push(toUni(str) + CurrentEvals.atkStr[str]);
+	}
+	ShowDialog("Things Affecting the Attack Calculations", txt.join("\n\n"));
+}
 
 //apply the effect of a weapon with inputText the literal string in the Weapon Selection field and fldName the name of the field (any one of them); If fldName is left blank, use the event.target.name
 function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
@@ -5430,8 +5517,13 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		
 		//add proficiency checkmark
 		fields.Proficiency = !QI ? true : 
-			QI && (/natural|spell|cantrip/i).test(theWea.type) ? true : (RegExp(";" + CurrentWeapons.extraproficiencies.join(";|;").replace(/s;\|/g, "s;?|") + ";", "i")).test(";" + [WeaponName, theWea.type, theWea.list ? theWea.list : " "].join(";") + ";") ? true : 
-			(/^(simple|martial)$/i).test(theWea.type) ? tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) : false;
+			QI && (/natural|spell|cantrip/i).test(theWea.type) ? true :
+			(/^(simple|martial)$/i).test(theWea.type) && tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) ? true :
+			CurrentProfs.weapon.otherWea && RegExp(";(" + CurrentProfs.weapon.otherWea.finalProfs.join("s?|").replace(/ss\?\|/g, "s?|") + ");", "i").test(";" + [WeaponName, theWea.type].concat(theWea.list ? [theWea.list] : []).join(";") + ";") ? true :
+/* UPDATED
+			(RegExp(";" + CurrentWeapons.extraproficiencies.join(";|;").replace(/s;\|/g, "s;?|") + ";", "i")).test(";" + [WeaponName, theWea.type, theWea.list ? theWea.list : " "].join(";") + ";") ? true :
+*/
+			false;
 		
 		//add mod
 		var StrDex = What(QI ? "Str" : prefix + "Comp.Use.Ability.Str.Score") < What(QI ? "Dex" : prefix + "Comp.Use.Ability.Dex.Score") ? 2 : 1;
@@ -5455,7 +5547,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		
 		//now run the code that was added by class/race/feat
 		if (QI && CurrentEvals.atkAdd) {
-			
+
 			// define some variables that we can check against later or with the CurrentEvals
 			var WeaponText = inputText + " " + fields.Description;
 			var isDC = (/dc/i).test(fields.To_Hit_Bonus);
@@ -5463,10 +5555,23 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			var isMeleeWeapon = !isSpell && (/melee/i).test(fields.Range);
 			var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 			var isNaturalWeapon = !isSpell && (/natural/i).test(theWea.type);
-			
-			try {
-				eval(CurrentEvals.atkAdd);
-			} catch (err) {console.println("Custom ApplyWeapon/atkAdd script not working: " + err)};
+
+			for (var addEval in CurrentEvals.atkAdd) {
+				var evalThing = CurrentEvals.atkAdd[addEval];
+				try {
+					if (typeof evalThing == 'string') {
+						eval(evalThing);
+					} else if (typeof evalThing == 'function') {
+						var runFunction = eval(evalThing.toSource());
+						runFunction();
+					}
+				} catch (error) {
+					var eText = "The custom ApplyWeapon/atkAdd script '" + addEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					console.println(eText);
+					console.show();
+				}
+			}
 		};
 	};
 
@@ -5509,13 +5614,23 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			};
 		};
 		if (resetFlds.length) tDoc.resetForm(resetFlds);
-	} else { //if not a known weapon or an empty field, still check if we need to set the checkmark for proficiency
+	} else if (CurrentProfs.weapon.otherWea) { //if not a known weapon or an empty field, still check if we need to set the checkmark for proficiency
+		var matchTxt = CurrentWeapons.field[ArrayNmbr].toLowerCase();
+		for (var i = 0; i < CurrentProfs.weapon.otherWea.length; i++) {
+			var weaProf = CurrentProfs.weapon.otherWea[i];
+			if (!WeaponsList[weaProf] && matchTxt.indexOf(weaProf.toLowerCase()) !== -1) {
+				Checkbox(fldBase + "Proficiency", true);
+				break;
+			};
+		};
+/* UPDATED
 		for (var i = 0; i < CurrentWeapons.manualproficiencies.length; i++) {
 			if (CurrentWeapons.field[ArrayNmbr].toLowerCase().indexOf(CurrentWeapons.manualproficiencies[i].toLowerCase()) !== -1) {
 				Checkbox(fldBase + "Proficiency", true);
 				break;
 			};
 		};
+*/
 	};
 	if (QI && ((event.target && fldName === event.target.name) || Number(fldNmbr) === FieldNumbers.attacks)) SetOffHandAction();
 	thermoM(thermoTxt, true); // Stop progress bar
@@ -5594,9 +5709,22 @@ function CalcAttackDmgHit(fldName) {
 
 		// now run the code that was added by class/race/feat
 		if (CurrentEvals.atkCalc) {
-			try {
-				eval(CurrentEvals.atkCalc);
-			} catch (err) {console.println("Custom CalcAttackDmgHit/atkCalc script not working: " + err)};
+			for (var calcEval in CurrentEvals.atkCalc) {
+				var evalThing = CurrentEvals.atkCalc[calcEval];
+				try {
+					if (typeof evalThing == 'string') {
+						eval(evalThing);
+					} else if (typeof evalThing == 'function') {
+						var runFunction = eval(evalThing.toSource());
+						runFunction();
+					}
+				} catch (error) {
+					var eText = "The custom CalcAttackDmgHit/atkCalc script '" + calcEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					console.println(eText);
+					console.show();
+				}
+			}
 		};
 	};
 	
@@ -6034,6 +6162,20 @@ function processMods(AddRemove, NameEntity, items) {
 	};
 };
 
+// a way to pass an array of action strings or arrays to be processed by the Add/RemoveAction functions
+// ["action", " (with Attac)"] or [["action", " (start)"], ["bonus action", " (end)"]]
+function processActions(AddRemove, srcNm, itemArr, itemNm) {
+	if (!itemArr) return;
+	if (!isArray(itemArr) || (itemArr.length === 2 && !isArray(itemArr[0]) && !isArray(itemArr[1]) && (/^(?!.*action).*$|\(.*\)|\[.*\]/i).test(itemArr[1]))) {
+		itemArr = [itemArr];
+	};
+	for (var i = 0; i < itemArr.length; i++) {
+		var theAct = isArray(itemArr[i]) ? itemArr[i] : [itemArr[i], ""];
+		var actNm = theAct[1] && !(/^( |-|,|\(|\[|\{|'|"|\/)/).test(theAct[1]) ? theAct[1] : itemNm + theAct[1];
+		tDoc[(AddRemove ? "Add" : "Remove") + "Action"](theAct[0], actNm, srcNm);
+	};
+};
+
 // a way to pass an array of tools to be processed by the SetProf function
 // [["Musical instrument", 3], ["Thieves' tools", "Dex"]]
 // "Land vehicles"
@@ -6099,6 +6241,173 @@ function processVision(AddRemove, srcNm, itemArr) {
 	};
 };
 
+// a way to pass an array of damage resistance strings or arrays to be processed by the SetProf function
+// ["Slashing", "Slash. (nonmagical)"] >> Slash. (nonmagical) or Slashing if another doesn't have the nonmagical clause
+function processResistance(AddRemove, srcNm, itemArr) {
+	if (!itemArr) return;
+	if (!isArray(itemArr) || (itemArr.length === 2 && !isArray(itemArr[0]) && !isArray(itemArr[1]) && (/\(.*\)|\[.*\]/).test(itemArr[1]))) {
+		itemArr = [itemArr];
+	};
+	for (var i = 0; i < itemArr.length; i++) {
+		var theDmgres = isArray(itemArr[i]) ? itemArr[i] : [itemArr[i], false];
+		SetProf("resistance", AddRemove, theDmgres[0], srcNm, theDmgres[1]);
+	}
+};
+
+// a way to pass an array of save proficiency strings to be processed by the SetProf function
+// ["Str", "Dex"]
+function processSaves(AddRemove, srcNm, itemArr) {
+	if (!itemArr) return;
+	if (!isArray(itemArr)) itemArr = [itemArr];
+	for (var i = 0; i < itemArr.length; i++) {
+		SetProf("save", AddRemove, itemArr[i], srcNm);
+	}
+};
+
+// a way to pass an array of skill proficiency strings to be processed by the SetProf function
+// ["Str", "Dex"] >> Slash. (nonmagical)
+function processSkills(AddRemove, srcNm, itemArr, descrTxt) {
+	// add or remove the descrTxt
+	var setDescr = false;
+	if (!AddRemove) {
+		if (CurrentProfs.skill.descrTxt && CurrentProfs.skill.descrTxt[srcNm]) {
+			delete CurrentProfs.skill.descrTxt[srcNm];
+		}
+	} else {
+		if (!CurrentProfs.skill.descrTxt) CurrentProfs.skill.descrTxt = {};
+		if (descrTxt) {
+			CurrentProfs.skill.descrTxt[srcNm] = descrTxt;
+		} else {
+			setDescr = true;
+			descrTxt = [];
+		}
+	}
+	if (!itemArr) {
+		if (descrTxt) setSkillTooltips();
+		return; // no items to process, so stop now
+	}
+	var getSkillAbbr = function(inSkill) {
+		return SkillsList.abbreviations.indexOf(inSkill) !== -1 ? inSkill : false;
+	}
+	if (!isArray(itemArr) || (itemArr.length === 2 && !isArray(itemArr[0]) && !isArray(itemArr[1]) && (/full|increment|only/i).test(itemArr[1]))) itemArr = [itemArr];
+	for (var i = 0; i < itemArr.length; i++) {
+		var isArr = isArray(itemArr[i]);
+		var aSkill = isArr ? itemArr[i][0] : itemArr[i];
+		var sExp = isArr ? itemArr[i][1] : false;
+		aSkill = aSkill[0].toUpperCase() + aSkill.substring(1, 4).toLowerCase();
+		if (!getSkillAbbr(aSkill)) {
+			aSkill = getSkillAbbr(aSkill.substring(0, 3));
+			if (!aSkill) continue; // skill not found, so do the next one
+		}
+		SetProf("skill", AddRemove, aSkill, srcNm, sExp);
+		if (setDescr) {
+			var tSkill = SkillsList.names[SkillsList.abbreviations.indexOf(aSkill)];
+			var eSkill = !sExp && !(/full|increment|only/i).test(sExp) ? "" : (/full/i).test(sExp) ? " expertise" : (/increment/i).test(sExp) ? " (expertise if already proficient)" : " expertise (only if already proficient)";
+			descrTxt.push(tSkill + eSkill);
+		}
+	}
+	// if we generated a new descriptive text and none was provided, add it now
+	if (setDescr && descrTxt.length) CurrentProfs.skill.descrTxt[srcNm] = formatLineList(false, descrTxt);
+	// then update the skill tooltips
+	setSkillTooltips();
+};
+// Update the skill tooltips
+function setSkillTooltips() {
+	if (!CurrentProfs.skill.descrTxt) CurrentProfs.skill.descrTxt = {};
+	var iSet = CurrentProfs.skill.descrTxt;
+	var tooltipTxt = "";
+	var tooltipArr = [];
+	for (var aSrc in iSet) tooltipArr.push(toUni(aSrc) + " - " + iSet[aSrc]);
+	if (tooltipArr.length) {
+		tooltipArr.sort();
+		tooltipTxt = formatMultiList("Skill proficiencies gained from:", tooltipArr);
+	}
+	for (i = 0; i < (SkillsList.abbreviations.length); i++) {
+		var theSkill = SkillsList.abbreviations[i];
+		if (theSkill == "Init") continue;
+		AddTooltip(theSkill + " Prof", tooltipTxt);
+		AddTooltip(theSkill + " Exp", tooltipTxt);
+	};
+	CurrentUpdates.types.push("skills");
+	AddTooltip("SkillsClick", "Click here to change the order of the skills. You can select either alphabetic order or ordered by ability score." + (tooltipTxt ? "\n\n" + tooltipTxt : ""));
+}
+
+// a way to pass an array of weapon proficiency booleans to be processed by the SetProf function
+// [true, true, ["dagger", "sling"]] >> [simple, martial, [other array]]
+function processWeaponProfs(AddRemove, srcNm, itemArr) {
+	if (!itemArr) return;
+	var weaponTypes = ["simple", "martial", "other"]
+	for (var i = 0; i < itemArr.length; i++) {
+		if (itemArr[i] && weaponTypes[i]) {
+			SetProf("weapon", AddRemove, weaponTypes[i], srcNm,
+				i != 2 ? false : isArray(itemArr[i]) && itemArr[i].length ? itemArr[i] : itemArr[i] ? [itemArr[i]] : false
+			);
+		}
+	}
+};
+// a way to pass an array of armour proficiency booleans to be processed by the SetProf function
+// [true, true, false, false] >> [light, medium, heavy, shield]
+function processArmourProfs(AddRemove, srcNm, itemArr) {
+	if (!itemArr) return;
+	var armorTypes = ["light", "medium", "heavy", "shields"]
+	for (var i = 0; i < itemArr.length; i++) {
+		if (itemArr[i] && armorTypes[i]) SetProf("armour", AddRemove, armorTypes[i], srcNm);
+	}
+};
+// set the armour/weapon proficiency manually (field action)
+function setCheckboxProfsManual() {
+	var isActive = event.target.isBoxChecked(0) === 1;
+	var sort = (/simple|martial/i).test(event.target.name) ? "weapon" : "armour";
+	var type = event.target.name.replace(/proficiency |armor |weapon /ig, '').toLowerCase();
+	var normalState = CurrentProfs[sort][type] ? true : false;
+	delete CurrentProfs[sort][type+"_manualon"];
+	delete CurrentProfs[sort][type+"_manualoff"];
+	if (normalState != isActive) CurrentProfs[sort][type+"_manual" + (isActive ? "on" : "off")] = true;
+	SetProf(sort, undefined, type, undefined, true);
+}
+// do something with the manually entered 'other' weapon proficiencies (field action)
+function setOtherWeaponProfsManual() {
+	var set = CurrentProfs.weapon;
+	if (!set.otherWea) set.otherWea = { finalProfs : [], finalString : "", finalNamesNotManual : [], finalProfsNotManual : [] };
+	var iSet = set.otherWea;
+	var remString = iSet.finalString;
+	var othWea = What("Proficiency Weapon Other Description");
+	if (remString == othWea) return; // nothing changed
+
+	var othWeaArr = othWea.split(/[/,\\\;\~\|]+ ?/); //split the current list with some commonly used separators
+	var newWea = [];
+	for (var i = 0; i < othWeaArr.length; i++) {
+		var aWea = othWeaArr[i];
+		if (!aWea) continue;
+		// first test if this same name doesn't already exist by the regularly added stuff
+		var testRegExp = RegExp("\\b"+aWea+"\\b", "i");
+		var isKnownProf = iSet.finalNamesNotManual.some(function (wea) { return testRegExp.test(wea) });
+		if (isKnownProf) continue;
+		// then test if the weapon key is not already known
+		var parsedWea = ParseWeapon(aWea);
+		if (parsedWea && iSet.finalProfsNotManual.indexOf(parsedWea) !== -1) continue;
+		// guess it isn't known, so add it
+		var doWea = parsedWea ? parsedWea : aWea;
+		if (newWea.indexOf(doWea) == -1) newWea.push(doWea);
+	}
+
+	var didChange = false;
+	var manualWea = iSet["Manually added"] ? iSet["Manually added"].toString() : "";
+	if (newWea.length) {
+		// we found some manually added things, so add them
+		newWea.sort();
+		if (newWea.toString() != manualWea) {
+			iSet["Manually added"] = newWea;
+			didChange = true;
+		}
+	} else if (iSet["Manually added"]) {
+		// nothing manually added, so remove that entry
+		delete iSet["Manually added"];
+		didChange = true;
+	}
+	if (didChange) SetProf("weapon", undefined, "other");
+}
+
 // ProfType can be: "armour", "weapon", "save", "savetxt", "resistance", "vision", "speed", "language", or "tool"
 // Add: AddRemove = true; Remove: AddRemove = false
 // ProfObj is the proficiency that is gained/removed
@@ -6111,7 +6420,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	var metric = What("Unit System") !== "imperial";
 	if (!set) return;
 	if (!Extra) Extra = false;
-	
+
 	// function for adding all resistances of a single entry
 	var DoResistance = function(keyName, skipA) {
 		var aSet = CurrentProfs.resistance[keyName];
@@ -6126,14 +6435,159 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			};
 		};
 	};
-	
+
  switch (ProfType) {
-	case "armour" : {
-		
+	case "skill" : { // Extra is if the skill should also have expertise ('full'), or only expertise if already proficient from another source, else just proficient ('increment'), or only expertise if already proficient from another source, else nothing ('only')
+		if (AddRemove) { // add
+			// set the proficiency, but not if only adding expertise
+			if (!Extra || !(/only/i).test(Extra)) {
+				if (!set[ProfObj]) set[ProfObj] = [];
+				set[ProfObj].push(ProfSrc);
+			}
+			// add the expertise, if any
+			if (Extra) {
+				if (!set[ProfObj+"_Exp"]) set[ProfObj+"_Exp"] = {};
+				set[ProfObj+"_Exp"][ProfSrc] = Extra;
+			}
+		} else { // remove
+			// delete the proficiency entry
+			if (set[ProfObj] && set[ProfObj].indexOf(ProfSrc) !== -1) {
+				set[ProfObj].splice(set[ProfObj].indexOf(ProfSrc), 1);
+				if (set[ProfObj].length == 0) delete set[ProfObj];
+			}
+			// delete the expertise entry
+			if (set[ProfObj+"_Exp"] && set[ProfObj+"_Exp"][ProfSrc]) {
+				delete set[ProfObj+"_Exp"][ProfSrc];
+				if (ObjLength(set[ProfObj+"_Exp"]) === 0) delete set[ProfObj+"_Exp"];
+			}
+			// also remove the descriptive text if it is still there
+			if (set.descrTxt && set.descrTxt[ProfSrc]) delete set.descrTxt[ProfSrc];
+		}
+		// now determine the new state of the skill
+		var isProf = set[ProfObj] ? true : false;
+		// then see if we need to add exp
+		if (set[ProfObj+"_Exp"]) {
+			for (var expSrc in set[ProfObj+"_Exp"]) {
+				var aExp = set[ProfObj+"_Exp"][expSrc];
+				var isExp = (/full/i).test(aExp) ? true : isProf && (/only/i).test(aExp) ? true : isProf && (/increment/i).test(aExp) && (set[ProfObj].length > 1 || set[ProfObj][0] !== expSrc);
+				if (isExp) break;
+			}
+		} else {
+			var isExp = false;
+		}
+		// now update the fields
+		Checkbox(ProfObj + " Prof", isProf);
+		Checkbox(ProfObj + " Exp", isExp);
 		break;
 	};
-	case "weapon" : {
-		
+	case "weapon" : { // if this is the 'other' weapons do something special. If not, it is Simple/Martial weapons and they can be treated just like armour
+		if (ProfObj == "other") {
+			if (!set.otherWea) set.otherWea = { finalProfs : [], finalString : "", finalNamesNotManual : [], finalProfsNotManual : [] };
+			var iSet = set.otherWea;
+			// Add or remove the new weapons from the objects
+			var toDo = Extra && isArray(Extra) ? Extra : false;
+			if (toDo) {
+				if (AddRemove) { // Add
+					iSet[ProfSrc] = toDo;
+					iSet[ProfSrc].sort();
+				} else { // Remove
+					if (iSet[ProfSrc]) delete iSet[ProfSrc];
+				}
+			}
+			// Make an array of all the weapons that are not covered by another proficiency
+			iSet.finalProfs = [];
+			iSet.finalNamesNotManual = [];
+			iSet.finalProfsNotManual = [];
+			var finalNames = [];
+			var tooltipArr = [];
+			var simpleProf = tDoc.getField("Proficiency Weapon Simple").isBoxChecked(0) === 1;
+			var martialProf = tDoc.getField("Proficiency Weapon Martial").isBoxChecked(0) === 1;
+			for (var key in iSet) {
+				if ((/^final(Names|Profs|String)/).test(key)) continue;
+				var aWea = iSet[key];
+				// create the tooltip
+				var lineTooltip = [];
+				for (var i = 0; i < aWea.length; i++) {
+					// lookup to see if the weapon is a known key
+					var aWeaI = aWea[i].toLowerCase();
+					var theW = WeaponsList[aWeaI];
+					var theWeaKey = theW ? aWeaI : aWea[i];
+					var theName = theW ? theW.name : theWeaKey[0].toUpperCase() + theWeaKey.substr(1);
+					// add the weapon to the tooltip
+					lineTooltip.push(theName);
+					if (theW && theW.type && ((/natural|spell|cantrip/i).test(theW.type) || ((/^simple$/i).test(theW.type) && simpleProf) || ((/^martial$/i).test(theW.type) && martialProf))) continue; // already proficient
+					if (iSet.finalProfs.indexOf(theWeaKey) === -1) {
+						// not yet proficient, so add the weapon to the final arrays
+						iSet.finalProfs.push(theWeaKey);
+						finalNames.push(theName[0].toUpperCase() + theName.substr(1));
+						if (key != "Manually added") {
+							iSet.finalProfsNotManual.push(theWeaKey);
+							iSet.finalNamesNotManual.push(theName);
+						}
+					}
+				}
+				lineTooltip.sort();
+				tooltipArr.push(formatLineList(key + " - ", lineTooltip));
+			}
+			// create the new field text
+			finalNames.sort();
+			iSet.finalString = finalNames.join(", ");
+			// create the new field tooltip
+			var weaProfs = [].concat(simpleProf ? ["simple"] : []).concat(martialProf ? ["martial"] : []).join(" and ");
+			var extraTooltip = !weaProfs ? "" : "\n\nBecause you also have proficiency with " + weaProfs + " weapons, any falling into those categories are not displayed in the field."
+			var otherWeaTooltip = tooltipArr.length == 0 ? "" : formatMultiList("Other weapon proficiencies gained from:", tooltipArr) + extraTooltip;
+			// set the fields
+			Checkbox("Proficiency Weapon Other", iSet.finalString != "");
+			Value("Proficiency Weapon Other Description", iSet.finalString, otherWeaTooltip);
+			// recalculate the attacks with the proficiency changes
+			CurrentUpdates.types.push("attacksprofs");
+			if (!calcStartSet) UpdateSheetDisplay();
+			break;
+		}
+	};
+	case "armour" : { // if (Extra == true) means to not change the field, only the tooltip
+		var sort = ProfType.replace('ou', 'o');
+		var fld = "Proficiency " + ((/shield/i).test(ProfObj) ? "Shields" : (sort + " " + ProfObj).capitalize());
+		var fldState = tDoc.getField(fld).isBoxChecked(0) === 1;
+		if (!tDoc.getField(fld)) return;
+		// set the object
+		if (!Extra && AddRemove) { // add
+			if (!set[ProfObj]) {
+				set[ProfObj] = [ProfSrc];
+			} else if (set[ProfObj].indexOf(ProfSrc) === -1) {
+				set[ProfObj].push(ProfSrc);
+			}
+			delete set[ProfObj+"_manualon"];
+		} else if (!Extra && set[ProfObj] && set[ProfObj].indexOf(ProfSrc) !== -1) { // remove
+			set[ProfObj].splice(set[ProfObj].indexOf(ProfSrc), 1);
+			if (set[ProfObj].length === 0) {
+				delete set[ProfObj];
+				delete set[ProfObj+"_manualoff"];
+			}
+		};
+		// set the field and tooltip
+		var tooltipArr = [].concat(set[ProfObj] ? set[ProfObj] : []);
+		if (set[ProfObj+"_manualoff"]) tooltipArr.push("[Manually disabled]");
+		if (set[ProfObj+"_manualon"]) tooltipArr.push("[Manually enabled]");
+		var TooltipTxt = tooltipArr.length ? formatMultiList(ProfObj.capitalize() + " " + sort + " proficiency gained from:", tooltipArr) : "";
+		var isOn = set[ProfObj+"_manualon"] ? true : set[ProfObj+"_manualoff"] ? false : set[ProfObj] ? true : false;
+		if (Extra || isOn == fldState) {
+			AddTooltip(fld, TooltipTxt);
+		} else {
+			Checkbox(fld, isOn, TooltipTxt);
+		}
+		// if this was weapons, we need to do some more things
+		if (ProfType == "weapon") {
+			if ((Extra || isOn != fldState) && Who("Proficiency Weapon Other Description")) {
+				// redo the other weapon proficiencies, as they might have changed now
+				SetProf("weapon", undefined, "other");
+				return;
+			} else if (Extra || isOn != fldState) {
+				// recalculate the attacks if the proficiency value changed
+				CurrentUpdates.types.push("attacksprofs");
+				if (!calcStartSet) UpdateSheetDisplay();
+			}
+		}
 		break;
 	};
 	case "save" : {
@@ -6153,11 +6607,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		// now update the saving throw checkbox
 		if (set[Abi]) {
 			var AbiNm = AbilityScores.names[AbilityScores.abbreviations.indexOf(Abi)];
-			var TooltipTxt = AbiNm + " saving throws proficiency was gained from:\n \u2022 ";
-			for (var i = 0; i < set[Abi].length; i++) {
-				TooltipTxt += (i ? ";\n \u2022 " : "") + set[Abi][i];
-			};
-			TooltipTxt += ".";
+			var TooltipTxt = formatMultiList(AbiNm + " saving throws proficiency was gained from:", set[Abi]);
 			Checkbox(SvFld, true, TooltipTxt);
 		} else {
 			Checkbox(SvFld, false, "");
@@ -6663,7 +7113,7 @@ function formatMultiList(caption, elements) {
 function formatLineList(caption, elements) {
 	if (isArray(elements) && elements.length === 0) return "";
 	if (!isArray(elements)) elements = [elements];
-	var rStr = caption + " " + elements[0];
+	var rStr = (caption ? caption + " " : "") + elements[0];
 	var EL = elements.length;
 	for (var i = 1; i < EL; i++) {
 		rStr += EL > 2 ? "," : "";
@@ -6789,7 +7239,7 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies) {
 			});
 		};
 	};
-	
+
 	var diaHeader = notProficiencies ? optType : "Select proficiencies";
 	
 	//make all the known options lowercase for easier testing
@@ -7139,3 +7589,31 @@ function getFAQ(input, delay) {
 			break;
 	}
 };
+
+// Make a menu to enable or disable the use of unicode
+function makeUnicodeMenu() {
+	var isEnabled = What("UseUnicode") == "true";
+	Menus.unicode = {
+		cName : "Use Unicode " + (isEnabled ? "(disable if you can't read this: \"" + toUni("This") + "\")" : "[disabled]"),
+		cReturn : "unicode#unicode#" + (isEnabled ? "" : "true"),
+		bMarked : isEnabled
+	}
+}
+
+// Do something with the menu
+function setUnicodeUse(enable) {
+	enable = enable != "";
+	var isEnabled = What("UseUnicode") != "";
+	if (isEnabled !== enable) {
+		Value("UseUnicode", enable ? "true" : "");
+		app.alert({
+			cMsg : "You have changed the use of unicode characters to: " + (enable ? "ENABLED" : "DISABLED") + "\nUnicode characters are those that are bold, italic, or superscript in tooltips and dialogs. Not all systems handle them well.\n\nThese changes will only be applied after saving the sheet and opening it again.\n\nNote that there still might be some tooltips that use unicode and thus might have unreadable characters for you.\n\nYou can already see the result of your change here:\n\"" + toUni("This text is bold and italic if unicode is enabled") + '\".',
+			nIcon : 3,
+			cTitle : "Change will be applied on re-opening"
+		})
+		// update the tooltips that use unicode
+		UpdateDropdown("all");
+		AbilityScores_Button(true);
+		setSkillTooltips();
+	}
+}

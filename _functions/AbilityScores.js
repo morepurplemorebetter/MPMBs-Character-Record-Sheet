@@ -1,642 +1,485 @@
-function AbilityScores_Button() {
-	var MainTxt0 = "Here you can edit the ability scores using the components they are made up off.";
-	MainTxt0 += "\nPlease use the lists below as a reference for what your character can do with its ability scores.";
-	MainTxt0 += "\n\nThe standard array is: 15, 14, 13, 12, 10, and 8. Standard Point Buy is 27 points. You can't go higher than 15 before racial modifiers.";
-	MainTxt0 += "\n\nAbility score improvements gained from class cannot take the total over 20.";
+// a function to set ability scores to the global variable
+function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isOverride) {
+	if (!scoresA) scoresA = [];
+	// initialize some variables
+	var getHighestAttr = function(obj) {
+		var theHighest = 0;
+		for (var a in obj) {
+			if (obj[a] > theHighest) theHighest = obj[a];
+		}
+		return theHighest;
+	}
+	initiateCurrentStats();
+	inType = GetFeatureChoiceType(inType);
+	var type = isOverride ? "override" : inType;
+	var dialogTxt = dialogTxt ? dialogTxt.replace(/^( |\n)*.*: |;$/g, '') : "";
+	var curStat = false;
+	// Get the column object
+	for (var i = 1; i < CurrentStats.cols.length; i++) {
+		if (CurrentStats.cols[i].type == type) {
+			curStat = CurrentStats.cols[i];
+			break;
+		}
+	}
+	if (!curStat) return;
+	var imprTxtArr = [];
+	// Set the ability score changes to the CurrentStats global variable
+	for (var s = 0; s < scoresA.length; s++) {
+		if (type == "race") curStat.scores[s] = 0;
+		if (!scoresA[s]) continue;
+		if (AddRemove && !dialogTxt && s < 7) {
+			var theScoreName = s < 6 ? AbilityScores.names[s] : What("HoSRememberState");
+			var theScore = isOverride ? theScoreName + " is " + scoresA[s]
+				: (scoresA[s] > 0 ? "+" : "") + scoresA[s] + " " + theScoreName;
+			imprTxtArr.push(theScore);
+		}
+		if (isOverride) {
+			if (AddRemove) {
+				CurrentStats.overrides[s][NameEntity] = scoresA[s];
+			} else {
+				delete CurrentStats.overrides[s][NameEntity];
+			}
+			// now set the new highest override
+			curStat.scores[s] += getHighestAttr(CurrentStats.overrides[s]);
+		} else {
+			if (AddRemove) {
+				curStat.scores[s] += scoresA[s];
+			} else if (type != "race") {
+				curStat.scores[s] -= scoresA[s];
+			}
+		}
+	}
+	// Set the descriptive text to the CurrentStats global variable
+	if (!dialogTxt) dialogTxt = formatLineList("", imprTxtArr);
+	if (AddRemove) {
+		CurrentStats.txts[inType][NameEntity] = dialogTxt;
+	} else {
+		delete CurrentStats.txts[inType][NameEntity];
+	}
+	SetStringifieds("stats");
+	CurrentUpdates.types.push("stats" + inType);
+}
 
-	var Header2 = "Improvements from Race and Feats";
-	var MainTxt2 = AbilityScores.improvements.racefeats.replace(/^\n/, "").replace(/^\n/, "");
-	//var Txt2Height = !MainTxt2 ? -1 : 30 + (MainTxt2.match(/\n/g) || []).length * 15;
+// a function to initiate the global variable if it doesn't yet exist
+function initiateCurrentStats(forceIt) {
+	if (!forceIt) for (var entry in CurrentStats) return; // do nothing if the variable already exists
+	CurrentStats = {
+		"cols" : [{
+			type : 'base',
+			name : "Score Base",
+			scores : [8,8,8,8,8,8,8]
+		}, {
+			type : 'race',
+			name : "Racial Bonus",
+			scores : [0,0,0,0,0,0,0]
+		}, {
+			type : 'feats',
+			name : "Feat Bonus",
+			scores : [0,0,0,0,0,0,0]
+		}, {
+			type : 'classes',
+			name : "Class Bonus",
+			scores : [0,0,0,0,0,0,0]
+		}, {
+			type : 'levels',
+			name : "Level Bonus",
+			scores : [0,0,0,0,0,0,0]
+		}, {
+			type : 'items',
+			name : "Magic Bonus",
+			scores : [0,0,0,0,0,0,0]
+		}, {
+			type : 'override',
+			name : "Magical Override",
+			scores : [0,0,0,0,0,0,0]
+		}],
+		"txts" : {
+			"classes" : {},
+			"race" : {},
+			"feats" : {},
+			"items" : {}
+		},
+		"overrides" : [{},{},{},{},{},{},{}]
+	}
+	SetStringifieds("stats");
+}
 
-	var Header3 = "Improvements from Class Levels";
-	var MainTxt3 = AbilityScores.improvements.classlvl ? "Add 2 points to ability scores -or- take 1 feat.\n" + AbilityScores.improvements.classlvl.replace("\n", "") : "";
-	//var Txt3Height = !MainTxt3 ? 0 : 30 + (MainTxt3.match(/\n/g) || []).length * 15;
+// a function to round a number to no decimals and return it as a string
+function ASround(input) {
+	input = parseFloat(input.replace(",", "."));
+	return isNaN(input) ? "0" : Math.round(input).toFixed(0);
+}
 
-	var Header4 = "Primary Ability Scores";
-	var MainTxt4 = AbilityScores.improvements.classprime.replace(/^\n/, "").replace(/^\n/, "");
-	//var Txt4Height = !MainTxt4 ? 0 : 30 + (MainTxt4.match(/\n/g) || []).length * 15;
+// a function to calculate the point buy value of a stat
+function ASCalcPointBuy(theScore) {
+	theScore = parseFloat(theScore.replace(",","."));
+	if (isNaN(theScore) || theScore <= 8) {
+		var toReturn = 0;
+	} else {
+		var toReturn = theScore - 8;
+		if (theScore > 13) toReturn += theScore - 13;
+	}
+	return toReturn.toFixed(0);
+}
 
-	var Header5 = "Multiclassing Requirements";
-	var MainTxt5 = AbilityScores.improvements.classmulti.replace(/^\n/, "").replace(/^\n/, "");
-	//var Txt5Height = !MainTxt5 ? 0 : 30 + (MainTxt5.match(/\n/g) || []).length * 15;
-	
-	//get the ability score arrays from the fields and parse them into the global variable
-	for (var i = 0; i <= AbilityScores.abbreviations.length; i++) {
-		var AbiI = i === AbilityScores.abbreviations.length ? "HoS" : AbilityScores.abbreviations[i];
-		var tempArray = What(AbiI + " Remember").split(",");
-		AbilityScores.current[AbiI].base = tempArray[0];
-		AbilityScores.current[AbiI].race = tempArray[1];
-		AbilityScores.current[AbiI].extra = tempArray[2];
-		AbilityScores.current[AbiI].magic = tempArray[3];
-		AbilityScores.current[AbiI].extra2 = tempArray[4] ? tempArray[4] : "0";
-		AbilityScores.current[AbiI].feat = tempArray[5] ? tempArray[5] : "0";
+// the function to call to start and apply the ability score dialog
+function AbilityScores_Button(onlySetTooltip) {
+	// initialize some variables
+	initiateCurrentStats();
+	var titleTxt = "Ability Scores";
+	var explanatoryTxt = "The standard array is: 15, 14, 13, 12, 10, and 8.";
+	explanatoryTxt += "\nNormal Point Buy is 27 points and you can't have a Score Base over 15.";
+	explanatoryTxt += "\nClass ability score improvements can't take the total over 20.";
+	var curHoS = What("HoSRememberState");
+	var asab2 = ["St", "Dx", "Cn", "In", "Ws", "Ch", "HS"];
+	var asab3 = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
+
+	// set the descriptive text for the dialog
+	var sections = {
+		ref : {
+			title : "Primary class abilities \u0026 Multiclassing prerequisites",
+			loc : "left",
+			txt : ""
+		},
+		race : {
+			title : "Racial ability score improvements",
+			loc : "right",
+			txt : ""
+		},
+		asi : {
+			title : "Class levels ability score improvements",
+			loc : "left",
+			txt : ""
+		},
+		classes : {
+			title : "Class Features ability score improvements",
+			loc : "right",
+			txt : ""
+		},
+		feats : {
+			title : "Feat ability score improvements",
+			loc : "right",
+			txt : ""
+		},
+		items : {
+			title : "Magic Item ability score boosts",
+			loc : "left",
+			txt : ""
+		}
 	};
-	
-	//The dialog for calculating the ability scores
-	var AbilityScores_Dialog = {
-		totalStr : 0,
-		totalDex : 0,
-		totalCon : 0,
-		totalInt : 0,
-		totalWis : 0,
-		totalCha : 0,
-		totalHoS : 0,
-		arrayStr : [],
-		arrayDex : [],
-		arrayCon : [],
-		arrayInt : [],
-		arrayWis : [],
-		arrayCha : [],
-		arrayHoS : [],
-		fieldHoS : What("HoSRememberState"),
 
-		//when pressing the ok button
-		commit : function (dialog) {
-			var elements = dialog.store();
-			this.totalStr = elements["tStr"];
-			this.totalDex = elements["tDex"];
-			this.totalCon = elements["tCon"];
-			this.totalInt = elements["tInt"];
-			this.totalWis = elements["tWis"];
-			this.totalCha = elements["tCha"];
-			this.totalHoS = elements["tHoS"];
-			this.arrayStr = [elements["bStr"], elements["rStr"], elements["eStr"], elements["mStr"], elements["EStr"], elements["fStr"]];
-			this.arrayDex = [elements["bDex"], elements["rDex"], elements["eDex"], elements["mDex"], elements["EDex"], elements["fDex"]];
-			this.arrayCon = [elements["bCon"], elements["rCon"], elements["eCon"], elements["mCon"], elements["ECon"], elements["fCon"]];
-			this.arrayInt = [elements["bInt"], elements["rInt"], elements["eInt"], elements["mInt"], elements["EInt"], elements["fInt"]];
-			this.arrayWis = [elements["bWis"], elements["rWis"], elements["eWis"], elements["mWis"], elements["EWis"], elements["fWis"]];
-			this.arrayCha = [elements["bCha"], elements["rCha"], elements["eCha"], elements["mCha"], elements["ECha"], elements["fCha"]];
-			this.arrayHoS = [elements["bHoS"], elements["rHoS"], elements["eHoS"], elements["mHoS"], elements["EHoS"], elements["fHoS"]];
-		},
+	// Create the strings from the CurrentClasses objects
+	var refTxt = [];
+	var asiTxt = [];
+	var multiClass = ObjLength(CurrentClasses) > 1;
+	for (var aClass in classes.known) {
+		var tClass = CurrentClasses[aClass];
+		var clHead = "\u2022 " + toUni(tClass.name) + ": ";
+		// String for class primary abilities and multiclass prerequisites
+		var primeAbi = multiClass && tClass.prereqs ? tClass.prereqs : tClass.primaryAbility;
+		if (primeAbi) primeAbi = primeAbi.replace(/^( |\n)*.*: |;$/g, '');
+		refTxt.push(clHead + primeAbi);
+		// String for ASI from class level
+		var imprLVL = Math.min(classes.known[aClass].level - 1);
+		if (tClass.improvements[imprLVL]) asiTxt.push(clHead + "\u00D7" + tClass.improvements[imprLVL]);
+	}
+	if (refTxt.length) {
+		refTxt.sort();
+		sections.ref.txt = refTxt.join(";\n") + ".";
+	}
+	if (asiTxt.length) {
+		asiTxt.sort();
+		sections.asi.txt = "Add 2 points to ability scores -or- take 1 feat:\n" + asiTxt.join(";\n") + ".";
+	}
 
-		//when starting the dialog
-		initialize : function (dialog) {
-			var theHoS = this.fieldHoS;
-			var enableHoS = theHoS === "Sanity" || theHoS === "Honor";
-			var popupHoS =  {" " : -1, "Honor" : -1, "Sanity" : -1};
-			for (var thing in popupHoS) {
-				if ((thing === " " && !theHoS) || thing === theHoS) {
-					popupHoS[thing] = 1;
-				}
-			};
-			dialog.visible({
-				"oHoS" : enableHoS,
-				"bHoS" : enableHoS,
-				"pHoS" : enableHoS,
-				"rHoS" : enableHoS,
-				"fHoS" : enableHoS,
-				"eHoS" : enableHoS,
-				"EHoS" : enableHoS,
-				"mHoS" : enableHoS,
-				"tHoS" : enableHoS
-			});			
-			
-			dialog.load({
-				"img1" : allIcons.scores,
-				"oNm0" : "Current Score",
-				"oStr" : ASround(What("Str")),
-				"oDex" : ASround(What("Dex")),
-				"oCon" : ASround(What("Con")),
-				"oInt" : ASround(What("Int")),
-				"oWis" : ASround(What("Wis")),
-				"oCha" : ASround(What("Cha")),
-				"oHoS" : ASround(What("HoS")),
-				"aNm0" : "Ability Name",
-				"aHoS" : popupHoS,
-				"bNm0" : "Score Base",
-				"bStr" : AbilityScores.current.Str.base,
-				"bDex" : AbilityScores.current.Dex.base,
-				"bCon" : AbilityScores.current.Con.base,
-				"bInt" : AbilityScores.current.Int.base,
-				"bWis" : AbilityScores.current.Wis.base,
-				"bCha" : AbilityScores.current.Cha.base,
-				"bHoS" : AbilityScores.current.HoS.base,
-				"pNm0" : "Point Buy",
-				"rNm0" : "Racial Bonus",
-				"rStr" : AbilityScores.current.Str.race,
-				"rDex" : AbilityScores.current.Dex.race,
-				"rCon" : AbilityScores.current.Con.race,
-				"rInt" : AbilityScores.current.Int.race,
-				"rWis" : AbilityScores.current.Wis.race,
-				"rCha" : AbilityScores.current.Cha.race,
-				"rHoS" : AbilityScores.current.HoS.race,
-				"fNm0" : "Feat Bonus",
-				"fStr" : AbilityScores.current.Str.feat,
-				"fDex" : AbilityScores.current.Dex.feat,
-				"fCon" : AbilityScores.current.Con.feat,
-				"fInt" : AbilityScores.current.Int.feat,
-				"fWis" : AbilityScores.current.Wis.feat,
-				"fCha" : AbilityScores.current.Cha.feat,
-				"fHoS" : AbilityScores.current.HoS.feat,
-				"eNm0" : "Level Bonus",
-				"eStr" : AbilityScores.current.Str.extra,
-				"eDex" : AbilityScores.current.Dex.extra,
-				"eCon" : AbilityScores.current.Con.extra,
-				"eInt" : AbilityScores.current.Int.extra,
-				"eWis" : AbilityScores.current.Wis.extra,
-				"eCha" : AbilityScores.current.Cha.extra,
-				"eHoS" : AbilityScores.current.HoS.extra,
-				"ENm0" : "Magic Bonus",
-				"EStr" : AbilityScores.current.Str.extra2,
-				"EDex" : AbilityScores.current.Dex.extra2,
-				"ECon" : AbilityScores.current.Con.extra2,
-				"EInt" : AbilityScores.current.Int.extra2,
-				"EWis" : AbilityScores.current.Wis.extra2,
-				"ECha" : AbilityScores.current.Cha.extra2,
-				"EHoS" : AbilityScores.current.HoS.extra2,
-				"mNm0" : "Magical Override",
-				"mStr" : AbilityScores.current.Str.magic,
-				"mDex" : AbilityScores.current.Dex.magic,
-				"mCon" : AbilityScores.current.Con.magic,
-				"mInt" : AbilityScores.current.Int.magic,
-				"mWis" : AbilityScores.current.Wis.magic,
-				"mCha" : AbilityScores.current.Cha.magic,
-				"mHoS" : AbilityScores.current.HoS.magic,
-				"tNm0" : "New Total"
-			});
-			var elements = dialog.store();
-			dialog.load({
-				"pStr" : ASround(ASCalcPointBuy(elements["bStr"])),
-				"pDex" : ASround(ASCalcPointBuy(elements["bDex"])),
-				"pCon" : ASround(ASCalcPointBuy(elements["bCon"])),
-				"pInt" : ASround(ASCalcPointBuy(elements["bInt"])),
-				"pWis" : ASround(ASCalcPointBuy(elements["bWis"])),
-				"pCha" : ASround(ASCalcPointBuy(elements["bCha"])),
-				"pHoS" : ASround(ASCalcPointBuy(elements["bHoS"])),
-				"tStr" : ASCalcTotal(elements, "Str"),
-				"tDex" : ASCalcTotal(elements, "Dex"),
-				"tCon" : ASCalcTotal(elements, "Con"),
-				"tInt" : ASCalcTotal(elements, "Int"),
-				"tWis" : ASCalcTotal(elements, "Wis"),
-				"tCha" : ASCalcTotal(elements, "Cha"),
-				"tHoS" : ASCalcTotal(elements, "HoS")
-			});
-			elements = dialog.store();
-			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements)
-			});
-		},
+	// Create the strings from the CurrentStats objects
+	for (var sType in CurrentStats.txts) {
+		if (!sections[sType]) continue;
+		var tArr = [];
+		for (var sName in CurrentStats.txts[sType]) {
+			tArr.push("\u2022 " + toUni(sName) + ": " + CurrentStats.txts[sType][sName]);
+		}
+		if (tArr.length) {
+			tArr.sort();
+			sections[sType].txt = tArr.join(";\n") + ".";
+		}
+	}
 
-		//Strength line commands
-		//fun whenever the base number changes
-		bStr : function (dialog) {
-			var elements = dialog.store();
-			var theBase = ASround(elements["bStr"]);
-			dialog.load({
-				"bStr" : theBase,
-				"pStr" : ASround(ASCalcPointBuy(theBase)),
-				"tStr" : ASCalcTotal(elements, "Str")
-			});
-			elements = dialog.store();
-			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements)
-			});
-		},
 
-		//fun whenever the race number changes
-		rStr : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"rStr" : ASround(elements["rStr"]),
-				"tStr" : ASCalcTotal(elements, "Str")
-			});
-		},
+	// Also set the tooltips of the ability score fields
+	var tooltipTxt = [];
+	for (var section in sections) {
+		var sect = sections[section];
+		if (sect.txt) tooltipTxt.push(sect.title + "\n" + sect.txt);
+	}
+	tooltipTxt = tooltipTxt.join("\n\n");
+	var remTooltip = Who("Str");
+	for (i = 0; i < AbilityScores.abbreviations.length; i++) {
+		AddTooltip(AbilityScores.abbreviations[i], tooltipTxt);
+	};
+	if (onlySetTooltip) return remTooltip !== tooltipTxt; // if only doing the tooltips, exit the function now
 
-		//fun whenever the feat number changes
-		fStr : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"fStr" : ASround(elements["fStr"]),
-				"tStr" : ASCalcTotal(elements, "Str")
-			});
-		},
 
-		//fun whenever the extra number changes
-		eStr : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"eStr" : ASround(elements["eStr"]),
-				"tStr" : ASCalcTotal(elements, "Str")
-			});
-		},
-
-		//fun whenever the extra number changes
-		EStr : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"EStr" : ASround(elements["EStr"]),
-				"tStr" : ASCalcTotal(elements, "Str")
-			});
-		},
-
-		//fun whenever the magic number changes
-		mStr : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"mStr" : ASround(elements["mStr"]),
-				"tStr" : ASCalcTotal(elements, "Str")
-			});
-		},
-
-		//Dexterity line commands
-		//fun whenever the base number changes
-		bDex : function (dialog) {
-			var elements = dialog.store();
-			var theBase = ASround(elements["bDex"]);
-			dialog.load({
-				"bDex" : theBase,
-				"pDex" : ASround(ASCalcPointBuy(theBase)),
-				"tDex" : ASCalcTotal(elements, "Dex")
-			});
-			elements = dialog.store();
-			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements)
-			});
-		},
-
-		//fun whenever the race number changes
-		rDex : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"rDex" : ASround(elements["rDex"]),
-				"tDex" : ASCalcTotal(elements, "Dex")
-			});
-		},
-
-		//fun whenever the feat number changes
-		fDex : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"fDex" : ASround(elements["fDex"]),
-				"tDex" : ASCalcTotal(elements, "Dex")
-			});
-		},
-
-		//fun whenever the extra number changes
-		eDex : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"eDex" : ASround(elements["eDex"]),
-				"tDex" : ASCalcTotal(elements, "Dex")
-			});
-		},
-
-		//fun whenever the extra number changes
-		EDex : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"EDex" : ASround(elements["EDex"]),
-				"tDex" : ASCalcTotal(elements, "Dex")
-			});
-		},
-
-		//fun whenever the magic number changes
-		mDex : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"mDex" : ASround(elements["mDex"]),
-				"tDex" : ASCalcTotal(elements, "Dex")
-			});
-		},
-
-		//Constitution line commands
-		//fun whenever the base number changes
-		bCon : function (dialog) {
-			var elements = dialog.store();
-			var theBase = ASround(elements["bCon"]);
-			dialog.load({
-				"bCon" : theBase,
-				"pCon" : ASround(ASCalcPointBuy(theBase)),
-				"tCon" : ASCalcTotal(elements, "Con")
-			});
-			elements = dialog.store();
-			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements)
-			});
-		},
-
-		//fun whenever the race number changes
-		rCon : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"rCon" : ASround(elements["rCon"]),
-				"tCon" : ASCalcTotal(elements, "Con")
-			});
-		},
-
-		//fun whenever the race number changes
-		fCon : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"fCon" : ASround(elements["fCon"]),
-				"tCon" : ASCalcTotal(elements, "Con")
-			});
-		},
-
-		//fun whenever the extra number changes
-		eCon : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"eCon" : ASround(elements["eCon"]),
-				"tCon" : ASCalcTotal(elements, "Con")
-			});
-		},
-
-		//fun whenever the extra number changes
-		ECon : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"ECon" : ASround(elements["ECon"]),
-				"tCon" : ASCalcTotal(elements, "Con")
-			});
-		},
-
-		//fun whenever the magic number changes
-		mCon : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"mCon" : ASround(elements["mCon"]),
-				"tCon" : ASCalcTotal(elements, "Con")
-			});
-		},
-
-		//Intelligence line commands
-		//fun whenever the base number changes
-		bInt : function (dialog) {
-			var elements = dialog.store();
-			var theBase = ASround(elements["bInt"]);
-			dialog.load({
-				"bInt" : theBase,
-				"pInt" : ASround(ASCalcPointBuy(theBase)),
-				"tInt" : ASCalcTotal(elements, "Int")
-			});
-			elements = dialog.store();
-			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements)
-			});
-		},
-
-		//fun whenever the race number changes
-		rInt : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"rInt" : ASround(elements["rInt"]),
-				"tInt" : ASCalcTotal(elements, "Int")
-			});
-		},
-
-		//fun whenever the race number changes
-		fInt : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"fInt" : ASround(elements["fInt"]),
-				"tInt" : ASCalcTotal(elements, "Int")
-			});
-		},
-
-		//fun whenever the extra number changes
-		eInt : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"eInt" : ASround(elements["eInt"]),
-				"tInt" : ASCalcTotal(elements, "Int")
-			});
-		},
-
-		//fun whenever the extra number changes
-		EInt : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"EInt" : ASround(elements["EInt"]),
-				"tInt" : ASCalcTotal(elements, "Int")
-			});
-		},
-
-		//fun whenever the magic number changes
-		mInt : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"mInt" : ASround(elements["mInt"]),
-				"tInt" : ASCalcTotal(elements, "Int")
-			});
-		},
-
-		//Wisdom line commands
-		//fun whenever the base number changes
-		bWis : function (dialog) {
-			var elements = dialog.store();
-			var theBase = ASround(elements["bWis"]);
-			dialog.load({
-				"bWis" : theBase,
-				"pWis" : ASround(ASCalcPointBuy(theBase)),
-				"tWis" : ASCalcTotal(elements, "Wis")
-			});
-			elements = dialog.store();
-			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements)
-			});
-		},
-
-		//fun whenever the race number changes
-		rWis : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"rWis" : ASround(elements["rWis"]),
-				"tWis" : ASCalcTotal(elements, "Wis")
-			});
-		},
-
-		//fun whenever the race number changes
-		fWis : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"fWis" : ASround(elements["fWis"]),
-				"tWis" : ASCalcTotal(elements, "Wis")
-			});
-		},
-
-		//fun whenever the extra number changes
-		eWis : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"eWis" : ASround(elements["eWis"]),
-				"tWis" : ASCalcTotal(elements, "Wis")
-			});
-		},
-
-		//fun whenever the extra number changes
-		EWis : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"EWis" : ASround(elements["EWis"]),
-				"tWis" : ASCalcTotal(elements, "Wis")
-			});
-		},
-
-		//fun whenever the magic number changes
-		mWis : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"mWis" : ASround(elements["mWis"]),
-				"tWis" : ASCalcTotal(elements, "Wis")
-			});
-		},
-
-		//Charisma line commands
-		//fun whenever the base number changes
-		bCha : function (dialog) {
-			var elements = dialog.store();
-			var theBase = ASround(elements["bCha"]);
-			dialog.load({
-				"bCha" : theBase,
-				"pCha" : ASround(ASCalcPointBuy(theBase)),
-				"tCha" : ASCalcTotal(elements, "Cha")
-			});
-			elements = dialog.store();
-			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements)
-			});
-		},
-
-		//fun whenever the race number changes
-		rCha : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"rCha" : ASround(elements["rCha"]),
-				"tCha" : ASCalcTotal(elements, "Cha")
-			});
-		},
-
-		//fun whenever the race number changes
-		fCha : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"fCha" : ASround(elements["fCha"]),
-				"tCha" : ASCalcTotal(elements, "Cha")
-			});
-		},
-
-		//fun whenever the extra number changes
-		eCha : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"eCha" : ASround(elements["eCha"]),
-				"tCha" : ASCalcTotal(elements, "Cha")
-			});
-		},
-
-		//fun whenever the extra number changes
-		ECha : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"ECha" : ASround(elements["ECha"]),
-				"tCha" : ASCalcTotal(elements, "Cha")
-			});
-		},
-
-		//fun whenever the magic number changes
-		mCha : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"mCha" : ASround(elements["mCha"]),
-				"tCha" : ASCalcTotal(elements, "Cha")
-			});
-		},
-
-		//Honor/Sanity line commands
-		//fun whenever the base number changes
-		bHoS : function (dialog) {
-			var elements = dialog.store();
-			var theBase = ASround(elements["bHoS"]);
-			dialog.load({
-				"bHoS" : theBase,
-				"pHoS" : ASround(ASCalcPointBuy(theBase)),
-				"tHoS" : ASCalcTotal(elements, "HoS")
-			});
-			elements = dialog.store();
-			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements)
-			});
-		},
-
-		//fun whenever the race number changes
-		rHoS : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"rHoS" : ASround(elements["rHoS"]),
-				"tHoS" : ASCalcTotal(elements, "HoS")
-			});
-		},
-
-		//fun whenever the race number changes
-		fHoS : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"fHoS" : ASround(elements["fHoS"]),
-				"tHoS" : ASCalcTotal(elements, "HoS")
-			});
-		},
-
-		//fun whenever the extra number changes
-		eHoS : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"eHoS" : ASround(elements["eHoS"]),
-				"tHoS" : ASCalcTotal(elements, "HoS")
-			});
-		},
-
-		//fun whenever the extra number changes
-		EHoS : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"EHoS" : ASround(elements["EHoS"]),
-				"tHoS" : ASCalcTotal(elements, "HoS")
-			});
-		},
-
-		//fun whenever the magic number changes
-		mHoS : function (dialog) {
-			var elements = dialog.store();
-			dialog.load({
-				"mHoS" : ASround(elements["mHoS"]),
-				"tHoS" : ASCalcTotal(elements, "HoS")
-			});
-		},
-		
-		//do something when the value of the HoS drop-down box changes
-		aHoS : function (dialog) {
-			var popupHoS = dialog.store()["aHoS"];
-			for (var thing in popupHoS) {
-				if (popupHoS[thing] > 0) {
-					this.fieldHoS = thing === " " ? "" : thing;
-				}
-			};
-			dialog.visible({
-				"oHoS" : this.fieldHoS !== "",
-				"bHoS" : this.fieldHoS !== "",
-				"pHoS" : this.fieldHoS !== "",
-				"rHoS" : this.fieldHoS !== "",
-				"fHoS" : this.fieldHoS !== "",
-				"eHoS" : this.fieldHoS !== "",
-				"EHoS" : this.fieldHoS !== "",
-				"mHoS" : this.fieldHoS !== "",
-				"tHoS" : this.fieldHoS !== ""
-			});
-			var elements = dialog.store();
-			dialog.load({
-				"tPBT" : ASCalcPointBuyTotal(elements)
-			});
-		},
-
-		description : {
-			name : "Set Ability Scores",
+	// Create the columns for the dialog
+	var leftTxts = [];
+	var rightTxts = [];
+	var halfWidth = CurrentStats.cols.length * 4 + 5;
+	for (var section in sections) {
+		var sect = sections[section];
+		if (!sect.txt) continue;
+		var newCluster = {
+			name : sect.title.replace("\u0026", "\u0026\u0026"),
+			type : "cluster",
+			alignment : "align_" + sect.loc,
+			item_id : "cl" + section.substr(0,2),
+			font : "dialog",
+			bold : true,
 			elements : [{
-				type : "view",
+				name : sect.txt.replace("\u0026", "\u0026\u0026"),
+				type : "static_text",
+				item_id : "tx" + section.substr(0,2),
+				alignment : "align_fill",
+				font : "dialog",
+				wrap_name : true,
+				char_width : halfWidth
+			}]
+		};
+		if (sect.loc == "left") {
+			leftTxts.push(newCluster);
+		} else {
+			rightTxts.push(newCluster);
+		}
+		
+	}
+
+	// a function to create the dialog from the global CurrentStats variable
+	var openStatsDialog = function() {
+		// Create the columns
+		var theColumns = [];
+		// start at 1, because base column is already there
+		for (var i = 1; i < CurrentStats.cols.length; i++) {
+			var theStat = CurrentStats.cols[i];
+			var aNo = ("0" + i).slice(-2);
+			var theCol = {
+				type: "view",
+				elements: [{
+					type : "static_text",
+					item_id : aNo + "Nm",
+					font : "dialog",
+					bold : true,
+					char_width : 5,
+					height : 30,
+					alignment : "align_left",
+					wrap_name : true,
+					name : theStat.name
+				}]
+			};
+			for (var s = 0; s < 7; s++) {
+				theCol.elements.push({
+					type : "edit_text",
+					item_id : aNo + asab2[s],
+					char_width : 3,
+					height : 25,
+					SpinEdit : true,
+					name : "0"
+				})
+			}
+			theColumns.push(theCol);
+		}
+
+		// Create the dialog variable
+		var AbilityScores_Dialog = {
+			fieldHoS : curHoS,
+			
+			initialize : function (dialog) {
+				var popupHoS =  {
+					"*7th ability*" : !curHoS,
+					"Honor" : curHoS == "Honor",
+					"Sanity" : curHoS == "Sanity"
+				};
+				// set the current scores, stat names, and dialog icon
+				var toSet = {
+					"expl" : explanatoryTxt,
+					"img1" : allIcons.scores,
+					"olNm" : "Current Score",
+					"olSt" : ASround(What("Str")),
+					"olDx" : ASround(What("Dex")),
+					"olCn" : ASround(What("Con")),
+					"olIn" : ASround(What("Int")),
+					"olWs" : ASround(What("Wis")),
+					"olCh" : ASround(What("Cha")),
+					"olHS" : ASround(What("HoS")),
+					"nmNm" : "Ability Name",
+					"nmSt" : "Strength",
+					"nmDx" : "Dexterity",
+					"nmCn" : "Constitution",
+					"nmIn" : "Intelligence",
+					"nmWs" : "Wisdom",
+					"nmCh" : "Charisma",
+					"nmHS" : popupHoS,
+					"pbNm" : "Point Buy",
+					"tPNm" : "Point Buy total:",
+					"tNm0" : "New Total",
+					"00Nm" : CurrentStats.cols[0].name,
+					"abNm" : "Ability Abbr.",
+					"abSt" : "Str",
+					"abDx" : "Dex",
+					"abCn" : "Con",
+					"abIn" : "Int",
+					"abWs" : "Wis",
+					"abCh" : "Cha",
+					"abHS" : "HoS",
+					"cAdB" : "Add Column",
+					"cReB" : "Remove Column"
+				};
+				// set the values
+				for (var i = 0; i < CurrentStats.cols.length; i++) {
+					var aNo = ("0" + i).slice(-2);
+					for (var s = 0; s < 7; s++) {
+						if (CurrentStats.cols[i].scores[s]) toSet[aNo + asab2[s]] = CurrentStats.cols[i].scores[s].toString();
+					}
+				}
+				// load these things into the dialog
+				dialog.load(toSet);
+				
+				// disable the 'remove column' button if there are no extra columns
+				if (CurrentStats.cols.length == 7) dialog.enable({ "cReB" : false });
+
+				// now update the totals
+				for (var s = 0; s < 7; s++) {
+					this.updateTotal(dialog, asab2[s]);
+					this.updatePB(dialog, asab2[s]);
+				}
+
+				// now see if we should hide the Honor/Sanity row
+				if (curHoS == "") this.showHoS(dialog, false);
+			},
+
+			commit : function (dialog) {
+				var res = dialog.store();
+				// Save to the global variable
+				this.setCurrentStats(dialog);
+				// Start progress bar and stop calculations
+				var thermoTxt = thermoM("Applying stats...");
+				calcStop();
+				// Set the new ability scores to the fields (and their mods, so functions use the new one)
+				for (var s = 0; s < 7; s++) {
+					var theAbi = res["to"+asab2[s]];
+					Value(asab3[s], theAbi);
+					Value(asab3[s] + " Mod", Math.round((Number(theAbi) - 10.5) * 0.5));
+				}
+				// Update the Honor/Sanity
+				if (this.fieldHoS !== curHoS) ShowHonorSanity(this.fieldHoS);
+				// Apply HP tooltips if Con changed
+				if (res["olCn"] != res["toCn"]) CurrentUpdates.types.push("hp");
+				// Recalculate attack entries, as they might have changed (Finesse)
+				CurrentUpdates.types.push("attacks");
+				thermoM(thermoTxt, true); // Stop progress bar
+			},
+			
+			setCurrentStats : function (dialog) {
+				var res = dialog.store();
+				for (var i = 0; i < CurrentStats.cols.length; i++) {
+					var aNo = ("0" + i).slice(-2);
+					CurrentStats.cols[i].scores = [];
+					for (var s = 0; s < 7; s++) {
+						CurrentStats.cols[i].scores[s] = Number(res[aNo + asab2[s]]);
+					}
+				}
+			},
+			
+			nmHS : function (dialog) {
+				var popupHoS = dialog.store()["nmHS"];
+				for (var thing in popupHoS) {
+					if (popupHoS[thing] > 0) {
+						var isFilled = thing.substr(0,1) !== "*";
+						this.fieldHoS = isFilled ? thing : "";
+						this.showHoS(dialog, isFilled);
+						return;
+					}
+				};
+			},
+
+			showHoS : function (dialog, showIt) {
+				var toShow = {
+					"olHS" : showIt,
+					"pbHS" : showIt,
+					"toHS" : showIt,
+					"abHS" : showIt
+				};
+				for (var i = 0; i < CurrentStats.cols.length; i++) {
+					var aNo = ("0" + i).slice(-2);
+					toShow[aNo + asab2[6]] = showIt;
+				}
+				dialog.visible(toShow);
+			},
+
+			updateVals : function (dialog, fldNm, alsoPB) {
+				// make sure it is a number
+				var res = dialog.store();
+				var newLoad = {};
+				newLoad[fldNm] = ASround(res[fldNm]);
+				dialog.load(newLoad);
+				// update the totals
+				this.updateTotal(dialog, fldNm);
+				// update the point buy
+				if (alsoPB) this.updatePB(dialog, fldNm);
+			},
+			
+			updateTotal : function (dialog, fldNm) {
+				var res = dialog.store();
+				var type = fldNm.slice(-2);
+				var total = [0];
+				for (var i = 0; i < CurrentStats.cols.length; i++) {
+					var aNo = ("0" + i).slice(-2);
+					var itsVal = Number(res[aNo + type]);
+					if (CurrentStats.cols[i].name.toLowerCase().indexOf("override") !== -1) {
+						total.push(itsVal);
+					} else {
+						total[0] += itsVal;
+					}
+				}
+				var totalLoad = {};
+				totalLoad["to"+type] = Math.round(Math.max.apply(Math, total)).toString();
+				dialog.load(totalLoad);
+			},
+			
+			updatePB : function (dialog, fldNm) {
+				var res = dialog.store();
+				var type = fldNm.slice(-2);
+				var PBset = {};
+				PBset["pb"+type] = ASCalcPointBuy(res["00"+type]);
+				dialog.load(PBset);
+				this.updatePBtotal(dialog);
+			},
+			
+			updatePBtotal : function (dialog) {
+				var res = dialog.store();
+				var PBset = { "toPB" : 0 };
+				for (var s = 0; s < 7; s++) {
+					var toAdd = res["pb" + asab2[s]];
+					PBset.toPB += isNaN(toAdd) ? 0 : Number(toAdd);
+				}
+				PBset.toPB = PBset.toPB.toFixed(0);
+				dialog.load(PBset);
+			},
+
+			cAdB : function (dialog) { // add a column
+				this.setCurrentStats(dialog);
+				dialog.end("cadd");
+			},
+
+			cReB : function (dialog) { // remove a column
+				this.setCurrentStats(dialog);
+				dialog.end("crem");
+			},
+
+			description : {
+				name : titleTxt,
 				elements : [{
 					type : "view",
 					elements : [{
-						type : "view",
+						type : "view", // the top row
 						align_children : "align_row",
 						elements : [{
 							type : "image",
@@ -651,338 +494,270 @@ function AbilityScores_Button() {
 							font : "title",
 							bold : true,
 							height : 23,
-							width : 65,
-							name : "Calculate the Ability Scores"
+							width : 100,
+							name : titleTxt
 						}]
 					}, {
-						name : MainTxt0,
-						type : "static_text",
-						item_id : "txt0",
-						alignment : "align_fill",
-						font : "dialog",
-						wrap_name : true,
-						char_width : 65
-					}, {
-						type : "view",
-						char_width : 65,
-						align_children : "align_distribute",
-						elements : [].concat(MainTxt2 || MainTxt4 ? [{
-							type : "view",
-							align_children : "align_left",
-							elements : [].concat(MainTxt2 ? [{
-								name : Header2,
-								type : "cluster",
-								alignment : "align_left",
-								item_id : "Hea2",
-								font : "dialog",
-								bold : true,
-								elements : [{
-									name : MainTxt2,
-									type : "static_text",
-									item_id : "txt2",
-									alignment : "align_fill",
-									font : "dialog",
-									wrap_name : true,
-									char_width : 32
-								}]
-							}] : []).concat(MainTxt4 ? [{
-								name : Header4,
-								type : "cluster",
-								alignment : "align_left",
-								item_id : "Hea4",
-								font : "dialog",
-								bold : true,
-								elements : [{
-									name : MainTxt4,
-									type : "static_text",
-									item_id : "txt4",
-									alignment : "align_fill",
-									font : "dialog",
-									wrap_name : true,
-									char_width : 32
-								}]
-							}] : [])
-						}] : []).concat(MainTxt3 || MainTxt5 ? [{
-							type : "view",
-							align_children : "align_right",
-							elements : [].concat(MainTxt3 ? [{
-								name : Header3,
-								type : "cluster",
-								alignment : "align_right",
-								item_id : "Hea3",
-								font : "dialog",
-								bold : true,
-								elements : [{
-									name : MainTxt3,
-									type : "static_text",
-									item_id : "txt3",
-									alignment : "align_fill",
-									font : "dialog",
-									wrap_name : true,
-									char_width : 32
-								}]
-							}] : []).concat(MainTxt5 ? [{
-								name : Header5,
-								type : "cluster",
-								alignment : "align_right",
-								item_id : "Hea5",
-								font : "dialog",
-								bold : true,
-								elements : [{
-									name : MainTxt5,
-									type : "static_text",
-									item_id : "txt5",
-									alignment : "align_fill",
-									font : "dialog",
-									wrap_name : true,
-									char_width : 32
-								}]
-							}] : [])
-						}] : [])
-					}, {
-						type : "cluster",
+						type : "view", // improvement texts
 						align_children : "align_distribute",
 						elements : [{
-							type : "view",
+							type : "view", // left column of clusters
+							align_children : "align_left",
+							elements : leftTxts
+						}, {
+							type : "view", // right column of clusters
+							align_children : "align_right",
+							elements : rightTxts
+						}]
+					}, {
+						type : "view", // the value columns
+						alignment : "align_fill",
+						align_children : "align_distribute",
+						elements : ([{
+							type : "view", // old scores
 							elements : [{
 								type : "static_text",
-								item_id : "oNm0",
+								item_id : "olNm",
 								font : "dialog",
 								bold : true,
-								char_width : 6,
+								char_width : 5,
 								height : 32,
-								alignment : "align_center"
+								alignment : "align_center",
+								wrap_name : true,
+								name : "Current Score"
 							}, {
 								type : "static_text",
-								item_id : "oStr",
+								item_id : "olSt",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "oDex",
+								item_id : "olDx",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "oCon",
+								item_id : "olCn",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "oInt",
+								item_id : "olIn",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "oWis",
+								item_id : "olWs",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "oCha",
+								item_id : "olCh",
 								name : "0",
 								char_width : 3,
-								height : 29,
+								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "oHoS",
+								item_id : "olHS",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}]
 						}, {
-							type : "view",
+							type : "view", // a combined view for two columns to have the point buy total text
 							elements : [{
 								type : "view",
 								align_children : "align_distribute",
 								elements : [{
-									type : "view",
+									type : "view", // ability score names
 									elements : [{
 										type : "static_text",
-										item_id : "aNm0",
+										item_id : "nmNm",
 										font : "dialog",
 										bold : true,
-										char_width : 6,
+										char_width : 4,
 										height : 32,
-										alignment : "align_left"
+										wrap_name : true,
+										alignment : "align_left",
+										name : "Ability Name"
 									}, {
 										type : "static_text",
-										item_id : "aStr",
+										item_id : "nmSt",
 										height : 25,
 										name : "Strength"
 									}, {
 										type : "static_text",
-										item_id : "aDex",
+										item_id : "nmDx",
 										height : 25,
 										name : "Dexterity"
 									}, {
 										type : "static_text",
-										item_id : "aCon",
+										item_id : "nmCn",
 										height : 25,
 										name : "Constitution"
 									}, {
 										type : "static_text",
-										item_id : "aInt",
+										item_id : "nmIn",
 										height : 25,
 										name : "Intelligence"
 									}, {
 										type : "static_text",
-										item_id : "aWis",
+										item_id : "nmWs",
 										height : 25,
 										name : "Wisdom"
 									}, {
 										type : "static_text",
-										item_id : "aCha",
-										height : 25,
+										item_id : "nmCh",
+										height : 24,
 										name : "Charisma"
 									}, {
 										type : "popup",
-										item_id : "aHoS",
+										item_id : "nmHS",
 										height : 22,
-										char_width : 8
+										char_width : 6
 									}]
 								}, {
-									type : "view",
+									type : "view", // base scores
 									elements : [{
 										type : "static_text",
-										item_id : "bNm0",
+										item_id : "00Nm",
 										font : "dialog",
 										bold : true,
 										char_width : 4,
 										height : 30,
-										alignment : "align_left"
+										alignment : "align_left",
+										wrap_name : true,
+										name : "Base Score"
 									}, {
 										type : "edit_text",
-										item_id : "bStr",
+										item_id : "00St",
 										char_width : 3,
 										height : 25,
 										SpinEdit : true
 									}, {
 										type : "edit_text",
-										item_id : "bDex",
+										item_id : "00Dx",
 										char_width : 3,
 										height : 25,
 										SpinEdit : true
 									}, {
 										type : "edit_text",
-										item_id : "bCon",
+										item_id : "00Cn",
 										char_width : 3,
 										height : 25,
 										SpinEdit : true
 									}, {
 										type : "edit_text",
-										item_id : "bInt",
+										item_id : "00In",
 										char_width : 3,
 										height : 25,
 										SpinEdit : true
 									}, {
 										type : "edit_text",
-										item_id : "bWis",
+										item_id : "00Ws",
 										char_width : 3,
 										height : 25,
 										SpinEdit : true
 									}, {
 										type : "edit_text",
-										item_id : "bCha",
+										item_id : "00Ch",
 										char_width : 3,
 										height : 25,
 										SpinEdit : true
 									}, {
 										type : "edit_text",
-										item_id : "bHoS",
+										item_id : "00HS",
 										char_width : 3,
 										height : 25,
 										SpinEdit : true
 									}]
 								}]
 							}, {
-								type : "view",
-								char_width : 12,
-								align_children : "align_right",
-								elements : [{
-									type : "static_text",
-									item_id : "tPNm",
-									font : "dialog",
-									bold : true,
-									char_height : 3,
-									char_width : 4,
-									name : "Point Buy total:"
-								}]
+								type : "static_text",
+								item_id : "tPNm",
+								font : "dialog",
+								bold : true,
+								height : 25,
+								char_width : 8,
+								alignment : "align_right",
+								name : "Point Buy total:"
 							}]
 						}, {
-							type : "view",
+							type : "view", // point buy values
 							elements : [{
 								type : "static_text",
-								item_id : "pNm0",
+								item_id : "pbNm",
 								font : "dialog",
 								bold : true,
 								char_width : 4,
 								height : 32,
-								alignment : "align_center"
+								wrap_name : true,
+								alignment : "align_center",
+								name : "Point Buy"
 							}, {
 								type : "static_text",
-								item_id : "pStr",
+								item_id : "pbSt",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "pDex",
+								item_id : "pbDx",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "pCon",
+								item_id : "pbCn",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "pInt",
+								item_id : "pbIn",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "pWis",
+								item_id : "pbWs",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "pCha",
+								item_id : "pbCh",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "pHoS",
+								item_id : "pbHS",
 								name : "0",
 								char_width : 3,
-								height : 25,
+								height : 22,
 								alignment : "align_center"
 							}, {
 								type : "static_text",
-								item_id : "tPBT",
+								item_id : "toPB",
 								name : "0",
 								char_width : 3,
 								height : 25,
@@ -990,284 +765,23 @@ function AbilityScores_Button() {
 								bold : true,
 								alignment : "align_center"
 							}]
-						}, {
-							type : "view",
+						}]).concat(
+							theColumns // the columns created above
+						).concat([{
+							type : "view", // the totals
 							elements : [{
 								type : "static_text",
-								item_id : "rNm0",
-								font : "dialog",
-								bold : true,
-								char_width : 4,
-								height : 30,
-								alignment : "align_left"
-							}, {
-								type : "edit_text",
-								item_id : "rStr",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "rDex",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "rCon",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "rInt",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "rWis",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "rCha",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "rHoS",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}]
-						}, {
-							type : "view",
-							elements : [{
-								type : "static_text",
-								item_id : "fNm0",
-								font : "dialog",
-								bold : true,
-								char_width : 4,
-								height : 30,
-								alignment : "align_left"
-							}, {
-								type : "edit_text",
-								item_id : "fStr",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "fDex",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "fCon",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "fInt",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "fWis",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "fCha",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "fHoS",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}]
-						}, {
-							type : "view",
-							elements : [{
-								type : "static_text",
-								item_id : "eNm0",
-								font : "dialog",
-								bold : true,
-								char_width : 4,
-								height : 30,
-								alignment : "align_left"
-							}, {
-								type : "edit_text",
-								item_id : "eStr",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "eDex",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "eCon",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "eInt",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "eWis",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "eCha",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "eHoS",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}]
-						}, {
-							type : "view",
-							elements : [{
-								type : "static_text",
-								item_id : "ENm0",
-								font : "dialog",
-								bold : true,
-								char_width : 4,
-								height : 30,
-								alignment : "align_left"
-							}, {
-								type : "edit_text",
-								item_id : "EStr",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "EDex",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "ECon",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "EInt",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "EWis",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "ECha",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "EHoS",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}]
-						}, {
-							type : "view",
-							elements : [{
-								type : "static_text",
-								item_id : "mNm0",
-								font : "dialog",
-								bold : true,
-								char_width : 6,
-								height : 30,
-								alignment : "align_left"
-							}, {
-								type : "edit_text",
-								item_id : "mStr",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "mDex",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "mCon",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "mInt",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "mWis",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "mCha",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}, {
-								type : "edit_text",
-								item_id : "mHoS",
-								char_width : 3,
-								height : 25,
-								SpinEdit : true
-							}]
-						}, {
-							type : "view",
-							elements : [{
-								type : "static_text",
-								item_id : "tNm0",
+								item_id : "toNm",
 								font : "dialog",
 								bold : true,
 								char_width : 4,
 								height : 32,
-								alignment : "align_center"
+								wrap_name : true,
+								alignment : "align_center",
+								name : "New Total"
 							}, {
 								type : "static_text",
-								item_id : "tStr",
+								item_id : "toSt",
 								name : "0",
 								char_width : 3,
 								height : 25,
@@ -1276,7 +790,7 @@ function AbilityScores_Button() {
 								bold : true
 							}, {
 								type : "static_text",
-								item_id : "tDex",
+								item_id : "toDx",
 								name : "0",
 								char_width : 3,
 								height : 25,
@@ -1285,7 +799,7 @@ function AbilityScores_Button() {
 								bold : true
 							}, {
 								type : "static_text",
-								item_id : "tCon",
+								item_id : "toCn",
 								name : "0",
 								char_width : 3,
 								height : 25,
@@ -1294,7 +808,7 @@ function AbilityScores_Button() {
 								bold : true
 							}, {
 								type : "static_text",
-								item_id : "tInt",
+								item_id : "toIn",
 								name : "0",
 								char_width : 3,
 								height : 25,
@@ -1303,7 +817,7 @@ function AbilityScores_Button() {
 								bold : true
 							}, {
 								type : "static_text",
-								item_id : "tWis",
+								item_id : "toWs",
 								name : "0",
 								char_width : 3,
 								height : 25,
@@ -1312,7 +826,7 @@ function AbilityScores_Button() {
 								bold : true
 							}, {
 								type : "static_text",
-								item_id : "tCha",
+								item_id : "toCh",
 								name : "0",
 								char_width : 3,
 								height : 25,
@@ -1321,100 +835,298 @@ function AbilityScores_Button() {
 								bold : true
 							}, {
 								type : "static_text",
-								item_id : "tHoS",
+								item_id : "toHS",
 								name : "0",
 								char_width : 3,
 								height : 25,
 								alignment : "align_center",
 								font : "dialog",
 								bold : true
+							}]
+						}, {
+							type : "view", // ability score names
+							elements : [{
+								type : "static_text",
+								item_id : "abNm",
+								font : "dialog",
+								bold : true,
+								char_width : 4,
+								height : 32,
+								wrap_name : true,
+								aligabent : "align_left",
+								name : "Ability Abbr."
+							}, {
+								type : "static_text",
+								item_id : "abSt",
+								height : 25,
+								name : "Str"
+							}, {
+								type : "static_text",
+								item_id : "abDx",
+								height : 25,
+								name : "Dex"
+							}, {
+								type : "static_text",
+								item_id : "abCn",
+								height : 25,
+								name : "Con"
+							}, {
+								type : "static_text",
+								item_id : "abIn",
+								height : 25,
+								name : "Int"
+							}, {
+								type : "static_text",
+								item_id : "abWs",
+								height : 25,
+								name : "Wis"
+							}, {
+								type : "static_text",
+								item_id : "abCh",
+								height : 25,
+								name : "Cha"
+							}, {
+								type : "static_text",
+								item_id : "abHS",
+								height : 25,
+								name : "HoS"
+							}]
+						}])
+					}, {
+						type : "view",
+						align_children : "align_distribute",
+						alignment : "align_fill",
+						elements : [{
+							type : "cluster",
+							name : "Don't forget",
+							item_id : "exCl",
+							font : "dialog",
+							bold : true,
+							elements : [{
+								type : "static_text",
+								alignment : "align_left",
+								item_id : "exTx",
+								font : "dialog",
+								wrap_name : true,
+								width : 400,
+								name : explanatoryTxt
+							}]
+						}, {
+							type : "cluster",
+							name : "Add or remove columns",
+							align_children : "align_row",
+							item_id : "coCl",
+							font : "dialog",
+							bold : true,
+							elements : [{
+								type : "button",
+								item_id : "cAdB",
+								name : "Add Column"
+							}, {
+								type : "button",
+								item_id : "cReB",
+								name : "Remove Column"
 							}]
 						}]
 					}, {
+						item_id : "appl",
 						type : "ok_cancel",
 						ok_name : "Apply"
 					}]
 				}]
+			}
+		}
+
+		// Add the functions to the dialog variables
+		var addFldFunction = function (i, fldID) {
+			AbilityScores_Dialog[fldID] = i == 0 ?
+				function(dialog, fldNm = fldID) { this.updateVals(dialog, fldNm, true); }
+				:
+				function(dialog, fldNm = fldID) { this.updateVals(dialog, fldNm, false); };
+		}
+		for (var i = 0; i < CurrentStats.cols.length; i++) {
+			var theStat = CurrentStats.cols[i];
+			var aNo = ("0" + i).slice(-2);
+			for (var s = 0; s < 7; s++) {
+				addFldFunction(i, aNo + asab2[s]);
+			}
+		}
+
+		return app.execDialog(AbilityScores_Dialog);
+	};
+	
+	do {
+		var theDia = openStatsDialog();
+		var reopenDia = theDia !== "ok" && theDia !== "cancel";
+		if (theDia == "cadd") ASaddColumn();
+		if (theDia == "crem") ASremoveColumn();
+	} while (reopenDia);
+	
+	if (theDia == "ok") {
+		SetStringifieds("stats");
+	} else {
+		CurrentStats = eval(What("CurrentStats.Stringified"));
+	}
+}
+
+// a function to ask the user for a new column caption and add that column
+function ASaddColumn() {
+	var diaHead = "Give the new column an unique caption";
+	var diaText = "The field is intentionally small so that you have an idea of how big the caption can be. If something doesn't fit nicely, it will definitely not display correctly in the ability score dialog.\n\nIf you include the word 'override' in the caption, the column will be treated as an overriding column instead of an adding column. This means that a value will be used if higher than the other values added together.";
+	var diaText2 = "If you leave the above field blank, no column will be created.";
+	var theDialog = {
+		initialize : function (dialog) {
+			dialog.load({
+				"img1" : allIcons.scores
+			});
+		},
+		commit : function (dialog) {
+			var res = dialog.store();
+			this.column = res["user"];
+		},
+		description : {
+			name : diaHead,
+			elements : [{
+				type : "view",
+				align_children : "align_left",
+				elements : [{
+					type : "view", // the top row
+					align_children : "align_row",
+					elements : [{
+						type : "image",
+						item_id : "img1",
+						alignment : "align_bottom",
+						width : 20,
+						height : 20
+					}, {
+						type : "static_text",
+						item_id : "head",
+						alignment : "align_fill",
+						font : "heading",
+						bold : true,
+						height : 21,
+						char_width : 25,
+						name : diaHead
+					}]
+				}, {
+					type : "static_text",
+					alignment : "align_fill",
+					item_id : "txt0",
+					wrap_name : true,
+					char_width : 30,
+					name : diaText
+				}, {
+					type : "edit_text",
+					alignment : "align_center",
+					item_id : "user",
+					char_width : 6,
+					height : 35,
+					multiline : true
+				}, {
+					type : "static_text",
+					alignment : "align_fill",
+					item_id : "txt1",
+					wrap_name : true,
+					char_width : 30,
+					font : "dialog",
+					bold : true,
+					name : diaText2
+				}, {
+					type : "ok_cancel",
+					ok_nam : "Add Column"
+				}]
 			}]
 		}
 	};
-	var Results = app.execDialog(AbilityScores_Dialog);
+	if (app.execDialog(theDialog) != "ok" || !theDialog.column) return;
+	CurrentStats.cols.push({
+		type : 'extra',
+		name : theDialog.column,
+		scores : [0,0,0,0,0,0,0]
+	});
+}
 
-	//don't continue with the function if "apply" was not pressed in the dialog
-	if (Results === "ok") {
-		// Start a progress bar and stop calculations
-		var thermTxt = thermoM("Applying ability scores...");
-		calcStop();
-		var remCon = What("Con");
-		
-		ShowHonorSanity(AbilityScores_Dialog.fieldHoS);
-		
-		//apply the results: make the ability scores display what they are meant to display. Add the various inputs to their various remember fields
-		for (var i = 0; i <= AbilityScores.abbreviations.length; i++) {
-			var AbiI = i === AbilityScores.abbreviations.length ? "HoS" : AbilityScores.abbreviations[i];
-			
-			//if the HoS was not activated, don't do anything with those results
-			if (AbiI === "HoS" && !AbilityScores_Dialog.fieldHoS) continue;
-			
-			thermoM((i+2)/(AbilityScores.abbreviations.length+2)); // Increment the progress bar
-			
-			//set the value to be remembered
-			Value(AbiI + " Remember", AbilityScores_Dialog["array" + AbiI]);
-			
-			//set the value of the display field
-			var resultScore = AbilityScores_Dialog["total" + AbiI];
-			resultScore = isNaN(resultScore) || resultScore < 1 ? "" : resultScore;
-			Value(AbiI, resultScore);
-			Value(AbiI + " Mod", Math.round((Number(resultScore) - 10.5) * 0.5));
+// a function to ask for the user which column to remove
+function ASremoveColumn() {
+	var diaHead = "Select the column to remove";
+	var diaText = "Removing a column can't be undone once you press 'Apply' in the ability scores dialog! Any values in the column will then forever be lost.";
+	var diaText2 = "If you leave the selection blank, nothing will be removed.";
+	var diaPopup = { " " : 1 };
+	for (var i = 6; i < CurrentStats.cols.length; i++) {
+		var theCol = CurrentStats.cols[i];
+		if (theCol.type == 'extra') diaPopup[theCol.name] = -1;
+	}
+	var theDialog = {
+		popupObj : diaPopup,
+		initialize : function (dialog) {
+			dialog.load({
+				"img1" : allIcons.scores,
+				"popu" : this.popupObj
+			});
+		},
+		commit : function (dialog) {
+			var res = dialog.store()["popu"];
+			this.column = GetPositiveElement(res);
+		},
+		description : {
+			name : diaHead,
+			elements : [{
+				type : "view",
+				align_children : "align_left",
+				elements : [{
+					type : "view", // the top row
+					align_children : "align_row",
+					elements : [{
+						type : "image",
+						item_id : "img1",
+						alignment : "align_bottom",
+						width : 20,
+						height : 20
+					}, {
+						type : "static_text",
+						item_id : "head",
+						alignment : "align_fill",
+						font : "heading",
+						bold : true,
+						height : 21,
+						char_width : 25,
+						name : diaHead
+					}]
+				}, {
+					type : "static_text",
+					alignment : "align_fill",
+					item_id : "txt1",
+					wrap_name : true,
+					char_width : 30,
+					name : diaText
+				}, {
+					type : "popup",
+					alignment : "align_center",
+					item_id : "popu",
+					char_width : 12,
+					height : 25
+				}, {
+					type : "static_text",
+					alignment : "align_fill",
+					item_id : "txt1",
+					wrap_name : true,
+					char_width : 30,
+					font : "dialog",
+					bold : true,
+					name : diaText2
+				}, {
+					type : "ok_cancel",
+					ok_nam : "Add Column"
+				}]
+			}]
 		}
-		
-		//if Con changed, edit the HPTooltip
-		if (AbilityScores_Dialog["totalCon"] !== remCon) {
-			SetHPTooltip();
+	};
+	if (app.execDialog(theDialog) != "ok" || !theDialog.column || theDialog.column == " ") return;
+	for (var i = 6; i < CurrentStats.cols.length; i++) {
+		var theCol = CurrentStats.cols[i];
+		if (theCol.type == 'extra' && theCol.name == theDialog.column) {
+			CurrentStats.cols.splice(i, 1);
+			break;
 		}
-		
-		// Update the weapons to make use of changes in ability scores (Finesse)
-		ReCalcWeapons();
-		
-		// End the progress bar
-		thermoM(thermTxt, true);
 	}
-}
-
-function ASCalcPointBuy(theScore) {
-	theScore = isNaN(theScore) ? 0 : Number(theScore);
-	if (theScore <= 8) {
-		return 0;
-	} else if (theScore <= 13) {
-		return theScore - 8;
-	} else if (theScore > 13) {
-		return theScore - 8 + (theScore - 13);
-	}
-}
-
-function ASCalcPointBuyTotal(elements) {
-	var TheTotal = 0;
-	for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
-		TheTotal += Number(elements["p" + AbilityScores.abbreviations[i]]);
-	}
-	if (elements.aHoS[" "] < 0) {
-		TheTotal += Number(elements["pHoS"]);
-	}
-	return ASround(TheTotal);
-}
-
-function ASround(input) {
-	input = isNaN(parseFloat(input)) ? 0 : parseFloat(input);
-	return Math.round(Number(input)).toFixed(0);
-}
-
-function ASCalcTotal(elements, AStype) {
-	var Base = Number(elements["b" + AStype]);
-	var Race = Number(elements["r" + AStype]);
-	var Feat = Number(elements["f" + AStype]);
-	var Extra = Number(elements["e" + AStype]);
-	var Extra2 = Number(elements["E" + AStype]);
-	var Magic = ASround(Number(elements["m" + AStype]));
-	var TheTotal = ASround(Base + Race + Feat + Extra + Extra2);
-	return Number(Magic) > Number(TheTotal) ? Magic : TheTotal;
 }

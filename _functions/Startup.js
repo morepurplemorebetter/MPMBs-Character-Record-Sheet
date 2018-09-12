@@ -22,11 +22,13 @@ function InitializeEverything(noButtons, noVars) {
 		FindArmor();
 		FindBackground();
 		FindFeats();
-		LoadLevelsonStartup();
 		UpdateTooSkill();
+/* UPDATED
+		LoadLevelsonStartup();
 		FindManualOtherWeapons(true);
 		ApplyProficiencies(false);
 		UpdateTooltips();
+*/
 		SetRichTextFields();
 		MakeAdventureLeagueMenu();
 	};

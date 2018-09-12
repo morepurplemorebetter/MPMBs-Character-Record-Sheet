@@ -15,21 +15,41 @@ var Base_RaceList = {
 		weight : " weigh around 240 lb (175 + 2d8 \xD7 2d6 lb)",
 		heightMetric : " stand well over 1,8 metres tall (170 + 5d8 cm)",
 		weightMetric : " weigh around 110 kg (80 + 5d8 \xD7 4d6 / 10 kg)",
-		improvements : "Dragonborn: +2 Strength, +1 Charisma;",
+//		improvements : "Dragonborn: +2 Strength, +1 Charisma;", // UPDATED
 		scores : [2, 0, 0, 0, 0, 1],
 		trait : "Dragonborn (+2 Strength, +1 Charisma)\nDraconic Ancestry: Choose one type of dragon using the \"Racial Options\" button. I gain a breath weapon and damage resistance as determined by the dragon type chosen.\nBreath Weapon: Exhale destructive energy as an action with a size, shape, saving throw type, and damage type as found in the table. All in the area must make a saving throw with DC 8 + Con modifier + prof bonus. It does 2d6 (+1d6 at level 6, 11, 16) damage, half as much damage on a successful save. I can use it again after a short rest.",
 		features : {
-			"breath weapon" : {
-				name : "Breath Weapon",
+			"draconic ancestry" : {
+				name : "Draconic Ancestry",
+				limfeaname : "Breath Weapon",
 				minlevel : 1,
 				usages : 1,
 				additional : ["2d6", "2d6", "2d6", "2d6", "2d6", "3d6", "3d6", "3d6", "3d6", "3d6", "4d6", "4d6", "4d6", "4d6", "4d6", "5d6", "5d6", "5d6", "5d6", "5d6"],
 				recovery : "short rest",
+				action : ["action", "Breath Weapon"],
+/* UPDATED
+				name : "Breath Weapon",
 				tooltip : " (Draconic Ancestry)",
 				action : ["action", ""],
+*/
 				calcChanges : {
-					atkAdd : ["if (WeaponName === 'breath weapon' && CurrentRace.known === 'dragonborn' && CurrentRace.variant) { fields.Damage_Type = CurrentRace.dmgres[0]; fields.Description = fields.Description.replace(/(dex|con) save/i, ((/cold|poison/i).test(CurrentRace.dmgres[0]) ? 'Con' : 'Dex') + ' save'); fields.Range = (/black|blue|brass|bronze|copper/i).test(CurrentRace.variant) ? '5-ft \u00D7 30-ft line' : '15-ft cone'; }; ", "As a Dragonborn I have a breath weapon. The damage type, range, and type of saving throw are dependent on which variant of Dragonborn I am. Furthermore, the amount of damage is dependent on my character level."],
-					atkCalc : ["if (WeaponName === 'breath weapon' && CurrentRace.known === 'dragonborn' && CurrentRace.level > 5) { output.die = output.die.replace('2d6', (CurrentRace.level < 11 ? 3 : CurrentRace.level < 16 ? 4 : 5) + 'd6'); }; ", ""]
+					atkAdd : [
+						function () {
+							if (WeaponName === 'breath weapon' && CurrentRace.known === 'dragonborn' && CurrentRace.variant) {
+								fields.Damage_Type = CurrentRace.dmgres[0];
+								fields.Description = fields.Description.replace(/(dex|con) save/i, ((/cold|poison/i).test(CurrentRace.dmgres[0]) ? 'Con' : 'Dex') + ' save');
+								fields.Range = (/black|blue|brass|bronze|copper/i).test(CurrentRace.variant) ? '5-ft \u00D7 30-ft line' : '15-ft cone';
+							};
+						},
+						"As a Dragonborn I have a breath weapon. The damage type, range, and type of saving throw are dependent on which variant of Dragonborn I am. Furthermore, the amount of damage is dependent on my character level."
+					],
+					atkCalc : [
+						function () {
+							if (WeaponName === 'breath weapon' && CurrentRace.known === 'dragonborn' && CurrentRace.level > 5) {
+								output.die = output.die.replace('2d6', (CurrentRace.level < 11 ? 3 : CurrentRace.level < 16 ? 4 : 5) + 'd6');
+							};
+						}
+					]
 				}
 			}
 		},
@@ -56,7 +76,7 @@ var Base_RaceList = {
 		weight : " weigh around 150 lb (115 + 2d4 \xD7 2d6 lb)",
 		heightMetric : " stand between 1,2 and 1,5 metres tall (110 + 5d4 cm)",
 		weightMetric : " weigh around 70 kg (55 + 5d4 \xD7 4d6 / 10 kg)",
-		improvements : "Hill Dwarf: +2 Constitution, +1 Wisdom;",
+//		improvements : "Hill Dwarf: +2 Constitution, +1 Wisdom;", // UPDATED
 		scores : [0, 0, 2, 0, 1, 0],
 		trait : "Hill Dwarf (+2 Constitution, +1 Wisdom)\n\nStonecunning: Whenever I make an Intelligence (History) check related to the origin of stonework, I am considered proficient in the History skill and add double my proficiency bonus to the check, instead of my normal proficiency bonus.\n\nDwarven Toughness: My hit point maximum increases by 1 for every level I have.",
 		features : {
@@ -92,7 +112,7 @@ var Base_RaceList = {
 		weight : " weigh around 115 lb (90 + 2d10 \xD7 1d4 lb)",
 		heightMetric : " range from under 1,5 to over 1,8 metres tall (140 + 5d10 cm)",
 		weightMetric : " weigh around 55 kg (40 + 5d10 \xD7 2d4 / 10 kg)",
-		improvements : "High Elf: +2 Dexterity, +1 Intelligence;",
+//		improvements : "High Elf: +2 Dexterity, +1 Intelligence;", // UPDATED
 		scores : [0, 2, 0, 1, 0, 0],
 		trait : "High Elf (+2 Dexterity, +1 Intelligence)\nTrance: Elves don't need to sleep, but meditate semiconsciously, for 4 hours a day. While meditating, I can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, I gain the same benefit that a human does from 8 hours of sleep, thus needing only 4 hours for a long rest.\nCantrip: I know one cantrip of my choice from the wizard spell list. Intelligence is my spellcasting ability for it.",
 		abilitySave : 4,
@@ -123,7 +143,7 @@ var Base_RaceList = {
 		weight : " weigh around 40 lb (35 + 2d4 lb)",
 		heightMetric : " are 90 to 120 cm tall (2'11\" + 5d4)",
 		weightMetric : " weigh around 18 kg (16 + 5d4 / 10 kg)",
-		improvements : "Rock Gnome: +1 Constitution, +2 Intelligence;",
+//		improvements : "Rock Gnome: +1 Constitution, +2 Intelligence;", // UPDATED
 		scores : [0, 0, 1, 2, 0, 0],
 		trait : "Rock Gnome (+1 Constitution, +2 Intelligence)" + (typePF ? "\n" : " ") + "Artificer's Lore: Add twice my proficiency bonus to Intelligence (History) checks with magic, alchemical, and technological items.\nTinker: Construct a Tiny clockwork device (AC 5, 1 HP) using tinker's tools, 1 hour, and 10 gp of material components, that functions for 24 hours. I can have up to 3 active." + (typePF ? "\n - " : " -") + "Clockwork Toy: animal, monster, or person that can move 5 ft per turn in a random direction, making appropriate noises;" + (typePF ? "\n - " : " -") + "Fire Starter: 1 action to produce miniature flame to light things;" + (typePF ? "\n - " : " -") + "Music Box: plays single song at a moderate volume."
 	},
@@ -144,7 +164,7 @@ var Base_RaceList = {
 		weight : " weigh around 40 lb (35 + 2d4 lb)",
 		heightMetric : " average about 90 cm tall (80 + 5d4)",
 		weightMetric : " weigh around 18 kg (16 + 5d4 / 10 kg)",
-		improvements : "Lightfoot Halfling: +2 Dexterity, +1 Charisma;",
+//		improvements : "Lightfoot Halfling: +2 Dexterity, +1 Charisma;", // UPDATED
 		scores : [0, 2, 0, 0, 0, 1],
 		trait : "Lightfoot Halfling (+2 Dexterity, +1 Charisma)" + (typePF ? "\n" : "") + "\nLucky: When I roll a 1 on an attack roll, ability check, or saving throw, I can reroll the die and must use the new roll." + (typePF ? "\n" : "") + "\nHalfling Nimbleness: I can move through the space of any creature that is of a size larger than me." + (typePF ? "\n" : "") + "\nNaturally Stealthy: I can attempt to hide even when I am obscured only by a creature that is at least one size larger than me."
 	},
@@ -169,7 +189,8 @@ var Base_RaceList = {
 		weight : " weigh around 155 lb (110 + 2d8 \xD7 2d4 lb)",
 		heightMetric : " range from 1,5 to 1,8 metres tall (145 + 5d8 cm)",
 		weightMetric : " weigh around 70 kg (50 + 5d8 \xD7 4d4 / 10 kg)",
-		improvements : "Half-Elf: +2 Charisma and +1 to two other ability scores of my choice;",
+//		improvements : "Half-Elf: +2 Charisma and +1 to two other ability scores of my choice;", // UPDATED
+		scorestxt : "+2 Charisma and +1 to two other ability scores of my choice",
 		scores : [0, 0, 0, 0, 0, 2],
 		trait : "Half-Elf (+2 Charisma and +1 to two other ability scores of my choice)\n\nSkill Versatility: I gain proficiency in two skills of my choice."
 	},
@@ -190,7 +211,7 @@ var Base_RaceList = {
 		weight : " weigh around 215 lb (140 + 2d10 \xD7 2d6 lb)",
 		heightMetric : " range from 1,5 to well over 1,8 metres tall (150 + 5d10 cm)",
 		weightMetric : " weigh around 100 kg (65 + 5d10 \xD7 4d6 / 10 kg)",
-		improvements : "Half-Orc: +2 Strength, +1 Constitution;",
+//		improvements : "Half-Orc: +2 Strength, +1 Constitution;", // UPDATED
 		scores : [2, 0, 1, 0, 0, 0],
 		features : {
 			"relentless endurance" : {
@@ -225,7 +246,8 @@ var Base_RaceList = {
 		heightMetric : " range from barely 1,5 to well over 1,8 metres tall (145 + 5d10 cm)",
 		weightMetric : " weigh around 75 kg (50 + 5d10 \xD7 4d4 / 10 kg)",
 		improvements : "Human: +1 to all ability scores;",
-		scores : [1, 1, 1, 1, 1, 1],
+		scorestxt : "+1 to all ability scores",
+		scores : [1, 1, 1, 1, 1, 1, 1],
 		trait : "Human (+1 to all ability scores)",
 		
 	},
@@ -246,7 +268,7 @@ var Base_RaceList = {
 		weight : " weigh around 155 lb (110 + 2d8 \xD7 2d4 lb)",
 		heightMetric : " range from 1,5 to over 1,8 metres tall (145 + 5d8 cm)",
 		weightMetric : " weigh around 70 kg (50 + 5d8 \xD7 4d4 / 10 kg)",
-		improvements : "Tiefling: +1 Intelligence, +2 Charisma;",
+//		improvements : "Tiefling: +1 Intelligence, +2 Charisma;", // UPDATED
 		scores : [0, 0, 0, 1, 0, 2],
 		trait : "Tiefling (+1 Intelligence, +2 Charisma)\n\nInfernal Legacy:\n   I know the Thaumaturgy cantrip.\n   At 3rd level, I can cast the Hellish Rebuke spell once per long rest as a 2nd-level spell.\n   At 5th level, I can also cast the Darkness spell once per long rest.\n   Charisma is my spellcasting ability for these spells.",
 		abilitySave : 6,
@@ -259,32 +281,42 @@ var Base_RaceList = {
 		},
 		features : {
 			"hellish rebuke" : {
-				name : "Hellish Rebuke",
+				name : "Infernal Legacy (level 3)",
+				limfeaname : "Hellish Rebuke",
 				minlevel : 3,
 				usages : 1,
 				additional : "3d10",
 				recovery : "long rest",
+/* UPDATED
+				name : "Hellish Rebuke",
 				tooltip : " (Infernal Legacy)",
 				action : ["reaction", " (3d10)"],
+*/
 				spellcastingBonus : {
 					name : "Infernal Legacy (level 3)",
 					spells : ["hellish rebuke"],
 					selection : ["hellish rebuke"],
-					oncelr : true
+					firstCol : "oncelr"
+/* UPDATED			oncelr : true */
 				}
 			},
 			"darkness" : {
-				name : "Darkness",
+				name : "Infernal Legacy (level 5)",
+				limfeaname : "Darkness",
 				minlevel : 5,
 				usages : 1,
 				recovery : "long rest",
+/* UPDATED
+				name : "Darkness",
 				tooltip : " (Infernal Legacy)",
 				action : ["action", ""],
+*/
 				spellcastingBonus : {
 					name : "Infernal Legacy (level 5)",
 					spells : ["darkness"],
 					selection : ["darkness"],
-					oncelr : true
+					firstCol : "oncelr"
+/* UPDATED			oncelr : true */
 				}
 			}
 		}

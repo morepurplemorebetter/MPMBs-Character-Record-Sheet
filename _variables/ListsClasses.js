@@ -45,17 +45,17 @@ var Base_ClassList = {
 		regExpSearch : /^((?=.*(marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n))|((?=.*(warrior|fighter))(?=.*(feral|tribal)))).*$/i,
 		name : "Barbarian",
 		source : [["SRD", 8], ["P", 46]],
-		primaryAbility : "\n \u2022 Barbarian: Strength;",
-		prereqs : "\n \u2022 Barbarian: Strength 13;",
+		primaryAbility : "Strength",
+		prereqs : "Strength 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 12,
 		saves : ["Str", "Con"],
-		skills : ["\n\n" + toUni("Barbarian") + ": Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival."],
-		armor : [
+		skillstxt : ["Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival"],
+		armorProfs : [
 			[true, true, false, true],
 			[false, false, false, true]
 		],
-		weapons : [
+		weaponProfs : [
 			[true, true],
 			[true, true]
 		],
@@ -87,7 +87,7 @@ var Base_ClassList = {
 				source : [["SRD", 8], ["P", 48]],
 				minlevel : 1,
 				description : "\n   " + "Without armor, my AC is 10 + Dexterity modifier + Constitution modifier + shield",
-				addarmor : "Unarmored Defense (Con)"
+				addArmor : "Unarmored Defense (Con)"
 			},
 			"reckless attack" : {
 				name : "Reckless Attack",
@@ -163,7 +163,8 @@ var Base_ClassList = {
 				name : "Primal Champion",
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 20,
-				description : "\n   " + "I add +4 to both my Strength and Constitution, and their maximums increase to 24"
+				description : "\n   " + "I add +4 to both my Strength and Constitution, and their maximums increase to 24",
+				scores : [4,0,4,0,0,0]
 			}
 		}
 	},
@@ -172,22 +173,22 @@ var Base_ClassList = {
 		regExpSearch : /(bard|minstrel|troubadour|jongleur)/i,
 		name : "Bard",
 		source : [["SRD", 11], ["P", 51]],
-		primaryAbility : "\n \u2022 Bard: Charisma;",
+		primaryAbility : "Charisma",
 		abilitySave : 6,
-		prereqs : "\n \u2022 Bard: Charisma 13;",
+		prereqs : "Charisma 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 8,
 		saves : ["Dex", "Cha"],
-		skills : ["\n\n" + toUni("Bard") + ": Choose any three skills.", "\n\n" + toUni("Multiclass Bard") + ": Choose any one skill."],
+		skillstxt : ["Choose any three skills", "Choose any one skill"],
 		toolProfs : {
 			primary : [["Musical instrument", 3]],
 			secondary : [["Musical instrument", 1]]
 		},
-		armor : [
+		armorProfs : [
 			[true, false, false, false],
 			[true, false, false, false]
 		],
-		weapons : [
+		weaponProfs : [
 			[true, false, ["hand crossbow", "longsword", "rapier", "shortsword"]]
 		],
 		equipment : "Bard starting equipment:\n \u2022 A rapier -or- a longsword -or- any simple weapon;\n \u2022 A diplomat's pack -or- an entertainer's pack;\n \u2022 A lute -or- any other musical instrument\n \u2022 Leather armor and a dagger.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
@@ -204,7 +205,12 @@ var Base_ClassList = {
 				source : [["SRD", 11], ["P", 52]],
 				minlevel : 1,
 				description : "\n   " + "I can cast bard cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use a musical instrument as a spellcasting focus" + "\n   " + "I can cast my known bard spells as rituals if they have the ritual tag",
-				additional : ["2 cantrips \u0026 4 spells known", "2 cantrips \u0026 5 spells known", "2 cantrips \u0026 6 spells known", "3 cantrips \u0026 7 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 9 spells known", "3 cantrips \u0026 10 spells known", "3 cantrips \u0026 11 spells known", "3 cantrips \u0026 12 spells known", "4 cantrips \u0026 14 spells known", "4 cantrips \u0026 15 spells known", "4 cantrips \u0026 15 spells known", "4 cantrips \u0026 16 spells known", "4 cantrips \u0026 18 spells known", "4 cantrips \u0026 19 spells known", "4 cantrips \u0026 19 spells known", "4 cantrips \u0026 20 spells known", "4 cantrips \u0026 22 spells known", "4 cantrips \u0026 22 spells known", "4 cantrips \u0026 22 spells known"]
+				additional : levels.map(function (n, idx) {
+					var cantr = Base_ClassList.bard.spellcastingKnown.cantrips[idx];
+					var splls = Base_ClassList.bard.spellcastingKnown.spells[idx];
+					splls += n < 10 ? 0 : n < 14 ? 2 : n < 18 ? 4 : 6;
+					return cantr + " cantrips \u0026 " + splls + " spells known";
+				})
 			},
 			"bardic inspiration" : {
 				name : "Bardic Inspiration",
@@ -214,7 +220,9 @@ var Base_ClassList = {
 				additional : ["d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12", "d12", "d12"],
 				usages : "Charisma modifier per ",
 				usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
-				recovery : ["long rest", "long rest", "long rest", "long rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest"],
+				recovery : levels.map(function (n) {
+					return n < 5 ? "long rest" : "short rest";
+				}),
 				action : ["bonus action", ""]
 			},
 			"jack of all trades" : {
@@ -244,7 +252,9 @@ var Base_ClassList = {
 				minlevel : 3,
 				description : "\n   " + "I gain expertise with two skills I am proficient with; two more at 10th level",
 				skillstxt : "\n\n" + toUni("Expertise (Bard 3)") + ": Choose any two skill proficiencies, and two more at 10th level.",
-				additional : ["", "", "with two skills", "with two skills", "with two skills", "with two skills", "with two skills", "with two skills", "with two skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills", "with four skills"]
+				additional : levels.map(function (n) {
+					return n < 3 ? "" : "with " + (n < 10 ? 2 : 4) + " skills";
+				})
 			},
 			"font of inspiration" : {
 				name : "Font of Inspiration",
@@ -264,11 +274,15 @@ var Base_ClassList = {
 				source : [["SRD", 13], ["P", 54]],
 				minlevel : 10,
 				description : "\n   " + "I can add two spells/cantrips from any class to my spells known; +2 at level 14 \u0026 18",
-				additional : ["", "", "", "", "", "", "", "", "", "two spells/cantrips", "two spells/cantrips", "two spells/cantrips", "two spells/cantrips", "four spells/cantrips", "four spells/cantrips", "four spells/cantrips", "four spells/cantrips", "six spells/cantrips", "six spells/cantrips", "six spells/cantrips"],
+				additional : levels.map(function (n) {
+					return n < 10 ? "" : (n < 14 ? 2 : n < 18 ? 4 : 6) + " spells/cantrips";
+				}),
 				spellcastingBonus : {
 					name : "Magical Secret",
 					"class" : "any",
-					times : [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6]
+					times : levels.map(function (n) {
+						return n < 10 ? 0 : n < 14 ? 2 : n < 18 ? 4 : 6;
+					})
 				}
 			},
 			"superior inspiration" : {
@@ -284,18 +298,18 @@ var Base_ClassList = {
 		regExpSearch : /(cleric|priest|clergy|acolyte)/i,
 		name : "Cleric",
 		source : [["SRD", 15], ["P", 56]],
-		primaryAbility : "\n \u2022 Cleric: Wisdom;",
+		primaryAbility : "Wisdom",
 		abilitySave : 5,
-		prereqs : "\n \u2022 Cleric: Wisdom 13;",
+		prereqs : "Wisdom 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 8,
 		saves : ["Wis", "Cha"],
-		skills : ["\n\n" + toUni("Cleric") + ": Choose two from History, Insight, Medicine, Persuasion, and Religion."],
-		armor : [
+		skillstxt : ["Choose two from History, Insight, Medicine, Persuasion, and Religion"],
+		armorProfs : [
 			[true, true, false, true],
 			[true, true, false, true]
 		],
-		weapons : [
+		weaponProfs : [
 			[true, false]
 		],
 		equipment : "Cleric starting equipment:\n \u2022 A mace -or- a warhammer (if proficient);\n \u2022 Scale mail -or- leather armor -or- chain mail (if proficient);\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;\n \u2022 A priest's pack -or- an explorer's pack;\n \u2022 A shield and a holy symbol.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
@@ -365,21 +379,21 @@ var Base_ClassList = {
 		regExpSearch : /(druid|shaman)/i,
 		name : "Druid",
 		source : [["SRD", 19], ["P", 61]],
-		primaryAbility : "\n \u2022 Druid: Wisdom;",
+		primaryAbility : "Wisdom",
 		abilitySave : 5,
-		prereqs : "\n \u2022 Druid: Wisdom 13;",
+		prereqs : "Wisdom 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 8,
 		saves : ["Wis", "Int"],
-		skills : ["\n\n" + toUni("Druid") + ": Choose two from Arcana, Animal Handling, Insight, Medicine, Nature, Perception, Religion, and Survival."],
+		skillstxt : ["Choose two from Arcana, Animal Handling, Insight, Medicine, Nature, Perception, Religion, and Survival"],
 		toolProfs : {
 			primary : ["Herbalism kit"],
 		},
-		armor : [
+		armorProfs : [
 			[true, true, false, true],
 			[true, true, false, true]
 		],
-		weapons : [
+		weaponProfs : [
 			[false, false, ["club", "dagger", "dart", "javelin", "mace", "quarterstaff", "scimitar", "sickle", "sling", "spear"]]
 		],
 		equipment : "Druid starting equipment:\n \u2022 A wooden shield -or- any simple weapon;\n \u2022 A scimitar -or- any simple melee weapon;\n \u2022 Leather armor, an explorer's pack, and a druidic focus.\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
@@ -420,9 +434,11 @@ var Base_ClassList = {
 				usages : [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, "\u221E\u00D7 per "],
 				recovery : "short rest",
 				additional : ["", "CR 1/4, no fly/swim; 1 hour", "CR 1/4, no fly/swim; 1 hour", "CR 1/2, no fly; 2 hours", "CR 1/2, no fly; 2 hours", "CR 1/2, no fly; 3 hours", "CR 1/2, no fly; 3 hours", "CR 1; 4 hours", "CR 1; 4 hours", "CR 1; 5 hours", "CR 1; 5 hours", "CR 1; 6 hours", "CR 1; 6 hours", "CR 1; 7 hours", "CR 1; 7 hours", "CR 1; 8 hours", "CR 1; 8 hours", "CR 1; 9 hours", "CR 1; 9 hours", "CR 1; 10 hours"],
-				action : ["action", " (start)"],
+				action : [["action", " (start)"], ["bonus action", " (end)"]]
+/*  		UPDATED
+ ,
 				eval : "AddAction('bonus action', 'Wild Shape (end)', 'Druid');",
-				removeeval : "RemoveAction('bonus action', 'Wild Shape (end)', 'Druid');"
+				removeeval : "RemoveAction('bonus action', 'Wild Shape (end)', 'Druid');" */
 			},
 			"timeless body" : {
 				name : "Timeless Body",
@@ -449,17 +465,17 @@ var Base_ClassList = {
 		regExpSearch : /^(?!.*(dark|green|fey|horned|totem|spiritual|exalted|sacred|holy|divine|nature|odin|thor|nature|natural|green))(?=.*(fighter|warrior|militant|warlord|phalanx|gladiator|trooper)).*$/i,
 		name : "Fighter",
 		source : [["SRD", 24], ["P", 70]],
-		primaryAbility : "\n \u2022 Fighter: Strength or Dexterity;",
-		prereqs : "\n \u2022 Fighter: Strength 13 or Dexterity 13;",
+		primaryAbility : "Strength or Dexterity",
+		prereqs : "Strength 13 or Dexterity 13",
 		die : 10,
 		improvements : [0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7],
 		saves : ["Str", "Con"],
-		skills : ["\n\n" + toUni("Fighter") + ": Choose two from Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Perception, and Survival."],
-		armor : [
+		skillstxt : ["Choose two from Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Perception, and Survival"],
+		armorProfs : [
 			[true, true, true, true],
 			[true, true, false, true]
 		],
-		weapons : [
+		weaponProfs : [
 			[true, true],
 			[true, true]
 		],
@@ -519,20 +535,20 @@ var Base_ClassList = {
 		regExpSearch : /^((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
 		name : "Monk",
 		source : [["SRD", 26], ["P", 76]],
-		primaryAbility : "\n \u2022 Monk: Dexterity and Wisdom;",
+		primaryAbility : "Dexterity and Wisdom",
 		abilitySave : 5,
-		prereqs : "\n \u2022 Monk: Dexterity 13 and Wisdom 13;",
+		prereqs : "Dexterity 13 and Wisdom 13",
 		die : 8,
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		saves : ["Str", "Dex"],
 		toolProfs : {
 			primary : [["Artisan's tool or musical instrument", 1]]
 		},
-		skills : ["\n\n" + toUni("Monk") + ": Choose two from Acrobatics, Athletics, History, Insight, Religion, and Stealth."],
-		armor : [
+		skillstxt : ["Choose two from Acrobatics, Athletics, History, Insight, Religion, and Stealth"],
+		armorProfs : [
 			[false, false, false, false]
 		],
-		weapons : [
+		weaponProfs : [
 			[true, false, ["shortsword"]],
 			[true, false, ["shortsword"]]
 		],
@@ -545,7 +561,7 @@ var Base_ClassList = {
 				source : [["SRD", 26], ["P", 48]],
 				minlevel : 1,
 				description : "\n   " + "Without armor and no shield, my AC is 10 + Dexterity modifier + Wisdom modifier",
-				addarmor : "Unarmored Defense (Wis)"
+				addArmor : "Unarmored Defense (Wis)"
 			},
 			"martial arts" : {
 				name : "Martial Arts",
@@ -706,18 +722,18 @@ var Base_ClassList = {
 		regExpSearch : /^((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
 		name : "Paladin",
 		source : [["SRD", 30], ["P", 82]],
-		primaryAbility : "\n \u2022 Paladin: Strength and Charisma;",
+		primaryAbility : "Strength and Charisma",
 		abilitySave : 6,
-		prereqs : "\n \u2022 Paladin: Strength 13 and Charisma 13;",
+		prereqs : "Strength 13 and Charisma 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 10,
 		saves : ["Wis", "Cha"],
-		skills : ["\n\n" + toUni("Paladin") + ": Choose two from Athletics, Insight, Intimidation, Medicine, Persuasion, and Religion."],
-		armor : [
+		skillstxt : ["Choose two from Athletics, Insight, Intimidation, Medicine, Persuasion, and Religion"],
+		armorProfs : [
 			[true, true, true, true],
 			[true, true, false, true]
 		],
-		weapons : [
+		weaponProfs : [
 			[true, true],
 			[true, true]
 		],
@@ -835,18 +851,21 @@ var Base_ClassList = {
 		regExpSearch : /^((?=.*(ranger|strider))|((?=.*(nature|natural))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
 		name : "Ranger",
 		source : [["SRD", 35], ["P", 89]],
-		primaryAbility : "\n \u2022 Ranger: Dexterity and Wisdom;",
+		primaryAbility : "Dexterity and Wisdom",
 		abilitySave : 5,
-		prereqs : "\n \u2022 Ranger: Dexterity 13 and Wisdom 13;",
+		prereqs : "Dexterity 13 and Wisdom 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 10,
 		saves : ["Str", "Dex"],
-		skills : ["\n\n" + toUni("Ranger") + ": Choose three from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival", "\n\n" + toUni("Multiclass Ranger") + ": Choose one from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival"],
-		armor : [
+		skillstxt : [
+			"Choose three from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival",
+			"Choose one from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, or Survival"
+		],
+		armorProfs : [
 			[true, true, false, true],
 			[true, true, false, true]
 		],
-		weapons : [
+		weaponProfs : [
 			[true, true],
 			[true, true]
 		],
@@ -1070,21 +1089,24 @@ var Base_ClassList = {
 		regExpSearch : /(rogue|miscreant)/i,
 		name : "Rogue",
 		source : [["SRD", 39], ["P", 94]],
-		primaryAbility : "\n \u2022 Rogue: Dexterity;",
-		prereqs : "\n \u2022 Rogue: Dexterity 13;",
+		primaryAbility : "Rogue: Dexterity",
+		prereqs : "Dexterity 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6],
 		die : 8,
 		saves : ["Int", "Dex"],
-		skills : ["\n\n" + toUni("Rogue") + ": Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth.", "\n\n" + toUni("Multiclass Rogue") + ": Choose one from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth."],
+		skillstxt : [
+			"Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth",
+			"Choose one from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, or Stealth"
+		],
 		toolProfs : {
 			primary : [["Thieves' tools", "Dex"]],
 			secondary : [["Thieves' tools", "Dex"]]
 		},
-		armor : [
+		armorProfs : [
 			[true, false, false, false],
 			[true, false, false, false]
 		],
-		weapons : [
+		weaponProfs : [
 			[true, false, ["hand crossbow", "longsword", "rapier", "shortsword"]]
 		],
 		equipment : "Rogue starting equipment:\n \u2022 A rapier -or- a shortsword;\n \u2022 A shortbow and a quiver of 20 arrows -or- a shortswords;\n \u2022 A burglar's pack -or- dungeoneer's pack -or- an explorer's pack;\n \u2022 Leather armor, two daggers, and thieves' tools.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
@@ -1189,17 +1211,17 @@ var Base_ClassList = {
 		regExpSearch : /sorcerer|witch/i,
 		name : "Sorcerer",
 		source : [["SRD", 42], ["P", 99]],
-		primaryAbility : "\n \u2022 Sorcerer: Charisma;",
+		primaryAbility : "Charisma",
 		abilitySave : 6,
-		prereqs : "\n \u2022 Sorcerer: Charisma 13;",
+		prereqs : "Charisma 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 6,
 		saves : ["Con", "Cha"],
-		skills : ["\n\n" + toUni("Sorcerer") + ": Choose two from Arcana, Deception, Insight, Intimidation, Persuasion, and Religion."],
-		armor : [
+		skillstxt : ["Choose two from Arcana, Deception, Insight, Intimidation, Persuasion, and Religion"],
+		armorProfs : [
 			[false, false, false, false]
 		],
-		weapons : [
+		weaponProfs : [
 			[false, false, ["dagger", "dart", "light crossbow", "quarterstaff", "sling"]]
 		],
 		equipment : "Sorcerer starting equipment:\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;\n \u2022 A component pouch -or- an arcane focus;\n \u2022 A dungeoneer's pack -or- an explorer's pack;\n \u2022 Two daggers.\n\nAlternatively, choose 3d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
@@ -1297,18 +1319,18 @@ var Base_ClassList = {
 		regExpSearch : /warlock/i,
 		name : "Warlock",
 		source : [["SRD", 46], ["P", 105]],
-		primaryAbility : "\n \u2022 Warlock: Charisma;",
+		primaryAbility : "Charisma",
 		abilitySave : 6,
-		prereqs : "\n \u2022 Warlock: Charisma 13;",
+		prereqs : "Charisma 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 8,
 		saves : ["Wis", "Cha"],
-		skills : ["\n\n" + toUni("Warlock") + ": Choose two from Arcana, Deception, History, Intimidation, Investigation, Nature, and Religion."],
-		armor : [
+		skillstxt : ["Choose two from Arcana, Deception, History, Intimidation, Investigation, Nature, and Religion"],
+		armorProfs : [
 			[true, false, false, false],
 			[true, false, false, false]
 		],
-		weapons : [
+		weaponProfs : [
 			[true, false],
 			[true, false]
 		],
@@ -1413,8 +1435,8 @@ var Base_ClassList = {
 					name : "Book of Ancient Secrets",
 					description : "\n   " + "I can add any two 1st-level spells that have the ritual tag to my Book of Shadows" + "\n   " + "If I come across spells with the ritual tag, I can transcribe them into my book, as well" + "\n   " + "I can cast any of these spells in my Book of Shadows as rituals, but not as normal spells" + "\n   " + "I can cast my known warlock spells as rituals if they have the ritual tag",
 					source : [["SRD", 48], ["P", 110]],
-					eval : "CurrentSpells['book of ancient secrets'] = {name : 'Book of Ancient Secrets', ability : 6, list : {class : 'any', ritual : true}, known : {spells : 'book'}}; SetStringifieds();",
-					removeeval : "delete CurrentSpells['book of ancient secrets']; SetStringifieds();",
+					eval : "CurrentSpells['book of ancient secrets'] = {name : 'Book of Ancient Secrets', ability : 6, list : {class : 'any', ritual : true}, known : {spells : 'book'}}; SetStringifieds('spells');",
+					removeeval : "delete CurrentSpells['book of ancient secrets']; SetStringifieds('spells');",
 					prereqeval : "classes.known.warlock.level >= 3 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the tome') !== -1"
 				},
 				"chains of carceri (prereq: level 15 warlock, pact of the chain)" : {
@@ -1633,8 +1655,10 @@ var Base_ClassList = {
 					name : "Thirsting Blade",
 					description : "\n   " + "When taking the attack action, I can attack twice with my pact weapon",
 					source : [["SRD", 50], ["P", 111]],
+					action : ['action', 'Pact Weapon (2 attacks per action)'],
+/*  		UPDATED
 					eval : "AddAction('action', 'Pact Weapon (2 attacks per action)', 'Thirsting Blade (warlock invocation)');",
-					removeeval : "RemoveAction('action', 'Pact Weapon (2 attacks per action)');",
+					removeeval : "RemoveAction('action', 'Pact Weapon (2 attacks per action)');", */
 					prereqeval : "classes.known.warlock.level >= 5 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the blade') !== -1"
 				},
 				"visions of distant realms (prereq: level 15 warlock)" : {
@@ -1740,17 +1764,17 @@ var Base_ClassList = {
 		regExpSearch : /^(?=.*(wizard|mage|magus))(?!.*wild mage).*$/i,
 		name : "Wizard",
 		source : [["SRD", 52], ["P", 112]],
-		primaryAbility : "\n \u2022 Wizard: Intelligence;",
+		primaryAbility : "Intelligence",
 		abilitySave : 4,
-		prereqs : "\n \u2022 Wizard: Intelligence 13;",
+		prereqs : "Intelligence 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 6,
 		saves : ["Int", "Wis"],
-		skills : ["\n\n" + toUni("Wizard") + ": Choose two from Arcana, History, Insight, Investigation, Medicine, and Religion."],
-		armor : [
+		skillstxt : ["Choose two from Arcana, History, Insight, Investigation, Medicine, and Religion"],
+		armorProfs : [
 			[false, false, false, false]
 		],
-		weapons : [
+		weaponProfs : [
 			[false, false, ["dagger", "dart", "light crossbow", "quarterstaff", "sling"]]
 		],
 		equipment : "Wizard starting equipment:\n \u2022 A quarterstaff -or- a dagger;\n \u2022 A component pouch -or- an arcane focus;\n \u2022 A scholar's pack -or- an explorer's pack;\n \u2022 A spellbook.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
@@ -1890,7 +1914,7 @@ var Base_ClassSubList = {
 				source : [["SRD", 17], ["P", 60]],
 				minlevel : 1,
 				description : "\n   " + "I gain proficiency with heavy armor",
-				armor : [false, false, true, false]
+				armorProfs : [false, false, true, false]
 			},
 			"subclassfeature1.1" : {
 				name : "Disciple of Life",
@@ -2380,7 +2404,7 @@ var Base_ClassSubList = {
 				calcChanges : {
 					hp : "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += '\\n + ' + classes.known.sorcerer.level + ' from Draconic Resilience (Sorcerer)'; }; "
 				},
-				addarmor : "Draconic Resilience"
+				addArmor : "Draconic Resilience"
 			},
 			"subclassfeature6" : {
 				name : "Elemental Affinity",

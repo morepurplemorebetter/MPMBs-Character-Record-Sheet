@@ -72,6 +72,7 @@ function SelectClass() {
 		if (!ClassSelection_Dialog.LVLchange) {
 			setDialogName(ClassSelection_Dialog, "lvlu", "wrap_name", false);
 			setDialogName(ClassSelection_Dialog, "lvlu", "name", "");
+			setDialogName(ClassSelection_Dialog, "bOKE", "type", "ok_cancel");
 		};
 		//have something to compare the classes.known against for filling in the other variables
 		var selecCompare = ClassSelection_Dialog.curSelec.reduce(function(acc, val) { return acc.concat(val[1]); }, []);
@@ -130,7 +131,7 @@ function SelectClass() {
 			var toLoad = {
 				img1 : allIcons.classes,
 				full : this.finalText,
-				lvlu : this.LVLchange ? theChar + "'s level has increased by " + ClassSelection_Dialog.LVLchange + ", to a total of " + ClassSelection_Dialog.currentLevel + ". Please change the level of one or more classes accordingly, or add a new class.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level)." : "",
+				lvlu : this.LVLchange ? theChar + "'s level has increased by " + this.LVLchange + ", to a total of " + this.currentLevel + ". Please change the level of one or more classes accordingly, or add a new class.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level)." : "",
 				tLVL : this.finalLevel.toString(),
 				nLVL : "\u03B4-level: " + (this.currentLevel - this.finalLevel),
 				DeLi : this.delimiter,
@@ -938,7 +939,8 @@ function SelectClass() {
 							name : "List Source Abbreviations"
 						}]
 					}, {
-						type : "ok_cancel",
+						type : "ok",
+						item_id : "bOKE",
 						alignment : "align_right",
 						ok_name : "Apply"
 					}]
@@ -991,7 +993,7 @@ function SelectClass() {
 		
 		// set the character level and xp
 		var newLvl = ClassSelection_Dialog.finalLevel > 0 ? ClassSelection_Dialog.finalLevel : "";
-		Value("Character Level", newLvl, undefined);
+		Value("Character Level", newLvl);
 		var curXP = Number(What("Total Experience").replace(",", "."));
 		var curXPlvl = ExperiencePointsList.reduce(function(acc, val) { return acc += curXP >= Number(val) ? 1 : 0; }, 0);
 		if (ClassSelection_Dialog.finalLevel < ExperiencePointsList.length && ClassSelection_Dialog.finalLevel != curXPlvl) {
@@ -1012,6 +1014,8 @@ function SelectClass() {
 		} else {
 			ApplyClasses(ClassSelection_Dialog.finalText, true);
 		};
+		// update the level features of other things than classes
+		CalcExperienceLevel(false);
 	};
 };
 
