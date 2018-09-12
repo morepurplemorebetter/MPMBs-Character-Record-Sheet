@@ -45,7 +45,7 @@ AddSubClass("fighter", "gunslinger", {
 			source : ["MM:GMA", 2],
 			minlevel : 3,
 			description : "\n   " + "I gain proficiency with firearms",
-			weapons : [false, false, ["firearms"]]
+			weapons : [false, false, ["Firearms"]]
 		},
 		"subclassfeature3.1" : {
 			name : "Grit",
