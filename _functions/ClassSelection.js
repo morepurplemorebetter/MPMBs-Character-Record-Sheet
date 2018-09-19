@@ -1049,7 +1049,7 @@ function AskMulticlassing() {
 		initialize : function (dialog) {
 			var theChar = What("PC Name") ? What("PC Name") : "your character";
 			dialog.load({
-				"txt0" : theChar.substring(0,1).toUpperCase() + theChar.substring(1) + "'s level has increased by " + parseFloat(this.LVLchange) + ". Select one of the classes of " + theChar + " that you you want to add this to. Alternatively, you can fill out a new class to add the level to.",
+				"txt0" : theChar.substring(0,1).toUpperCase() + theChar.substring(1) + "'s level has increased by " + parseFloat(this.LVLchange) + ". Select one of the classes of " + theChar + " that you want to add this to. Alternatively, you can fill out a new class to add the level to.",
 				"txt1" : "Because you changed the character level by more than 1, you can choose to either have all levels be added to the selected class, or only 1. If you want only 1 level to be added to the class, uncheck the box below. That way you will be prompted for the next levels with this dialog again.",
 				"tCl1" : this.Class1,
 				"tCl2" : this.Class2,
@@ -1251,7 +1251,7 @@ function AskMulticlassing() {
 			}, ]
 		}
 	};
-	
+
 	var Nmbr = classes.parsed.length;
 	var Cl1 = classes.parsed[0] ? classes.parsed[0][0].capitalize() : "";
 	var Cl2 = classes.parsed[1] ? classes.parsed[1][0].capitalize() : "";
@@ -1260,7 +1260,7 @@ function AskMulticlassing() {
 	var CharLVL = parseFloat(What("Character Level"));
 	var ClassLVL = classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);
 	var toAdd = Number(CharLVL) - Number(ClassLVL);
-	
+
 	if (IsNotImport && toAdd !== 0) {
 		Multiclassing_Dialog.ClassNmbrs = parseFloat(Nmbr);
 		Multiclassing_Dialog.Class1 = Cl1;
@@ -1268,10 +1268,10 @@ function AskMulticlassing() {
 		Multiclassing_Dialog.Class3 = Cl3;
 		Multiclassing_Dialog.Class4 = Cl4;
 		Multiclassing_Dialog.LVLchange = parseFloat(toAdd);
-		
+
 		//call the dialog
 		app.execDialog(Multiclassing_Dialog);
-			
+
 		var dResult = Multiclassing_Dialog.Selection;
 		var AddAll = Multiclassing_Dialog.All;
 		//do something if the result is adding a new class
@@ -1282,7 +1282,7 @@ function AskMulticlassing() {
 		} else if (dResult !== "") { //do something if one of the existing classes was chosen, and do nothing if an empty string was chosen
 			classes.parsed[dResult - 1][1] += AddAll ? toAdd : sign(toAdd);
 		}
-		
+
 		var newClassText = "";
 		if (classes.parsed.length > 1) {
 			for (var i = 0; i < classes.parsed.length; i++) {
@@ -1292,7 +1292,7 @@ function AskMulticlassing() {
 		} else if (classes.parsed.length === 1) {
 			newClassText = classes.parsed[0][0].capitalize();
 		}
-		
+
 		if (!AddAll) {
 			AskMulticlassing();
 		} else if (newClassText) {
@@ -1307,188 +1307,199 @@ function AskMulticlassing() {
 };
 
 //show a dialog when the subclass is not set but the level is high enough to need a subclass
-function PleaseSubclass(theclass) {
-	delete IsSubclassException[theclass];
+function PleaseSubclass(aClass, classString) {
+/* UPDATED
+ 	delete IsSubclassException[aClass];
 	var returnTrue = false;
-	if (IsNotImport && !classes.known[theclass].subclass && What("SubClass Remember").indexOf(theclass) === -1) {
-		var aclass = ClassList[theclass];
-		var aclassObj = {};
-		var aclassArray = [];
-		for (var i = 0; i < aclass.subclasses[1].length; i++) {
-			var aSub = aclass.subclasses[1][i];
-			if (!ClassSubList[aSub]) {
-				console.println("The subclass '" + aSub + "' of the '" + theclass + "' class doesn't exist in the ClassSubList. It has been ignored for now, but it might cause errors with other things in the sheet. So please make sure to remedy this before proceeding!");
-				console.show();
-				continue;
-			};
-			if (testSource(aSub, ClassSubList[aSub], "classExcl") || aclassArray.indexOf(ClassSubList[aSub].subname) !== -1) continue;
-			aclassObj[ClassSubList[aSub].subname] = aSub;
-			aclassArray.push(ClassSubList[aSub].subname);
+*/
+	if (!IsNotImport || What("SubClass Remember").indexOf(aClass) !== -1) return;
+
+	var aclass = ClassList[aClass];
+	var aclassObj = {};
+	var aclassArray = [];
+	for (var i = 0; i < aclass.subclasses[1].length; i++) {
+		var aSub = aclass.subclasses[1][i];
+		if (!ClassSubList[aSub]) {
+			console.println("The subclass '" + aSub + "' of the '" + aClass + "' class doesn't exist in the ClassSubList. It has been ignored for now, but it might cause errors with other things in the sheet. So please make sure to remedy this before proceeding!");
+			console.show();
+			continue;
 		};
-		if (aclassArray.length === 0) return false; //no subclasses got through the test
-		aclassArray.sort();
+		if (testSource(aSub, ClassSubList[aSub], "classExcl") || aclassArray.indexOf(ClassSubList[aSub].subname) !== -1) continue;
+		aclassObj[ClassSubList[aSub].subname] = aSub;
+		aclassArray.push(ClassSubList[aSub].subname);
+	};
+	if (aclassArray.length === 0) return false; //no subclasses got through the test
+	aclassArray.sort();
+	
+	var testSubClass = aclassObj[aclassArray[Math.round(aclassArray.length / 2) - 1]];
+
+	var SubName1 = ClassSubList[testSubClass].subname;
+	var SubName2 = ClassSubList[testSubClass].fullname ? ClassSubList[testSubClass].fullname : ClassSubList[testSubClass].subname;
+
+	classString = classString ? classString : classes.known[aClass].string ? classes.known[aClass].string : aclass.name;
+	var theString = "The " + aclass.name + " class you entered into the Class field on the first page has a high enough level to add a subclass. However, no " + aclass.subclasses[0] + " has been detected."
+	var clusterString = "Select the " + aclass.subclasses[0];
+	var moreString = "Alternatively, you can add a subclass manually by typing it into the Class field on the first page. Just put your chosen " + aclass.subclasses[0] + " next to, or in place of, \"" + classString + "\".\n\nFor example: \"" + classString + " (" + SubName1 + ")\", or just \"" + SubName2 + "\".";
+
+	var SubclassArrayLeft = [];
+	var SubclassArrayRight = [];
+	var isAsterisk = false;
+	for (var i = 0; i < aclassArray.length; i++) {
+		var theSub = ClassSubList[aclassObj[aclassArray[i]]];
 		
-		var testSubClass = aclassObj[aclassArray[Math.round(aclassArray.length / 2) - 1]];
-
-		var SubName1 = ClassSubList[testSubClass].subname;
-		var SubName2 = ClassSubList[testSubClass].fullname ? ClassSubList[testSubClass].fullname : ClassSubList[testSubClass].subname;
-
-		var classString = classes.known[theclass].string ? classes.known[theclass].string : aclass.name;
-		var theString = "The " + aclass.name + " class you entered into the Class field on the first page has a high enough level to add a subclass. However, no " + aclass.subclasses[0] + " has been detected."
-		var clusterString = "Select the " + aclass.subclasses[0];
-		var moreString = "Alternatively, you can add a subclass manually by typing it into the Class field on the first page. Just put your chosen " + aclass.subclasses[0] + " next to, or in place of, \"" + classString + "\".\n\nFor example: \"" + classString + " (" + SubName1 + ")\", or just \"" + SubName2 + "\".";
-
-		var SubclassArrayLeft = [];
-		var SubclassArrayRight = [];
-		var isAsterisk = false;
-		for (var i = 0; i < aclassArray.length; i++) {
-			var theSub = ClassSubList[aclassObj[aclassArray[i]]];
-			
-			if (!isAsterisk && theSub.fullname) isAsterisk = true;
-			
-			if (theSub.fullname && theSub.fullname !== theSub.subname) {
-				var theName = theSub.subname + " (" + theSub.fullname + "*)";
-			} else {
-				var theName = theSub.subname + (theSub.fullname ? "*" : "");
-			}
-
-			var temp = {
-				type : "radio",
-				group_id : "Subs",
-				item_id : "Su" + ("0" + i).slice(-2),
-				name : theName
-			}
-			if ((i + 1) <= Math.ceil((aclassArray.length) / 2)) {
-				SubclassArrayLeft.push(temp);
-			} else {
-				SubclassArrayRight.push(temp);
-			}
+		if (!isAsterisk && theSub.fullname) isAsterisk = true;
+		
+		if (theSub.fullname && theSub.fullname !== theSub.subname) {
+			var theName = theSub.subname + " (" + theSub.fullname + "*)";
+		} else {
+			var theName = theSub.subname + (theSub.fullname ? "*" : "");
 		}
-		
-		var asteriskString = isAsterisk ? "* This name will replace \"" + classString + "\" in the Class field instead of amending to it." : "";
-		
-		var SubclassSelect_Dialog = {
-			result : -1,
 
-			//when starting the dialog
-			initialize : function (dialog) {
- 				dialog.load({
-					img1 : allIcons.classes
-				});
-			},
+		var temp = {
+			type : "radio",
+			group_id : "Subs",
+			item_id : "Su" + ("0" + i).slice(-2),
+			name : theName
+		}
+		if ((i + 1) <= Math.ceil((aclassArray.length) / 2)) {
+			SubclassArrayLeft.push(temp);
+		} else {
+			SubclassArrayRight.push(temp);
+		}
+	}
+	
+	var asteriskString = isAsterisk ? "* This name will replace \"" + classString + "\" in the Class field instead of amending to it." : "";
+	
+	var SubclassSelect_Dialog = {
+		result : -1,
 
-			//when pressing the ok button
-			commit : function (dialog) {
-				var oResult = dialog.store();
-				for (var i = 0; i < aclassArray.length; i++) {
-					if (oResult["Su" + ("0" + i).slice(-2)]) {
-						this.result = i;
-						i = aclassArray.length;
-					}
+		//when starting the dialog
+		initialize : function (dialog) {
+			dialog.load({
+				img1 : allIcons.classes
+			});
+		},
+
+		//when pressing the ok button
+		commit : function (dialog) {
+			var oResult = dialog.store();
+			for (var i = 0; i < aclassArray.length; i++) {
+				if (oResult["Su" + ("0" + i).slice(-2)]) {
+					this.result = i;
+					i = aclassArray.length;
 				}
-			},
+			}
+		},
 
-			//when pressing the other button
-			other : function (dialog) {
-				AddString("SubClass Remember", theclass, false);
-				dialog.end("other");
-			},
+		//when pressing the other button
+		other : function (dialog) {
+			AddString("SubClass Remember", aClass, false);
+			dialog.end("other");
+		},
 
-			description : {
-				name : aclass.name + " has no detectable " + aclass.subclasses[0],
+		description : {
+			name : aclass.name + " has no detectable " + aclass.subclasses[0],
+			elements : [{
+				type : "view",
 				elements : [{
 					type : "view",
 					elements : [{
 						type : "view",
+						align_children : "align_row",
 						elements : [{
-							type : "view",
-							align_children : "align_row",
-							elements : [{
-								type : "image",
-								item_id : "img1",
-								alignment : "align_bottom",
-								width : 20,
-								height : 20
-							}, {
-								type : "static_text",
-								item_id : "titl",
-								alignment : "align_fill",
-								font : "title",
-								bold : true,
-								height : 23,
-								width : 470,
-								name : aclass.name + " has no detectable " + aclass.subclasses[0]
-							}]
+							type : "image",
+							item_id : "img1",
+							alignment : "align_bottom",
+							width : 20,
+							height : 20
 						}, {
 							type : "static_text",
-							item_id : "tex0",
+							item_id : "titl",
 							alignment : "align_fill",
-							font : "dialog",
-							name : theString,
-							wrap_name : true,
-							width : 500
-						}, {
-							type : "cluster",
-							item_id : "clu1",
-							name : clusterString,
-							font : "dialog",
+							font : "title",
 							bold : true,
-							elements : [{
-								type : "view",
-								align_children : "align_distribute",
-								alignment : "align_center",
-								elements : [{
-										type : "view",
-										elements : SubclassArrayLeft
-									}, {
-										type : "gap",
-										width : 5
-									}, {
-										type : "view",
-										elements : SubclassArrayRight
-									}]
-							}, {
-								type : "static_text",
-								item_id : "tex1",
-								alignment : "align_fill",
-								font : "dialog",
-								name : asteriskString,
-								wrap_name : true,
-								char_height : -1,
-								width : 480
-							}]
-						}, {
-							type : "static_text",
-							item_id : "tex2",
-							alignment : "align_fill",
-							font : "dialog",
-							name : moreString,
-							wrap_name : true,
-							width : 500
+							height : 23,
+							width : 470,
+							name : aclass.name + " has no detectable " + aclass.subclasses[0]
 						}]
 					}, {
-						type : "ok_cancel_other",
-						ok_name : "Add " + aclass.subclasses[0],
-						other_name : "I get it, don't show me this again"
+						type : "static_text",
+						item_id : "tex0",
+						alignment : "align_fill",
+						font : "dialog",
+						name : theString,
+						wrap_name : true,
+						width : 500
+					}, {
+						type : "cluster",
+						item_id : "clu1",
+						name : clusterString,
+						font : "dialog",
+						bold : true,
+						elements : [{
+							type : "view",
+							align_children : "align_distribute",
+							alignment : "align_center",
+							elements : [{
+									type : "view",
+									elements : SubclassArrayLeft
+								}, {
+									type : "gap",
+									width : 5
+								}, {
+									type : "view",
+									elements : SubclassArrayRight
+								}]
+						}, {
+							type : "static_text",
+							item_id : "tex1",
+							alignment : "align_fill",
+							font : "dialog",
+							name : asteriskString,
+							wrap_name : true,
+							char_height : -1,
+							width : 480
+						}]
+					}, {
+						type : "static_text",
+						item_id : "tex2",
+						alignment : "align_fill",
+						font : "dialog",
+						name : moreString,
+						wrap_name : true,
+						width : 500
 					}]
+				}, {
+					type : "ok_cancel_other",
+					ok_name : "Add " + aclass.subclasses[0],
+					other_name : "I get it, don't show me this again"
 				}]
-			}
-		};
-
-		if (!isAsterisk) {
-			setDialogName(SubclassSelect_Dialog, "tex1", "wrap_name", false);
-		};
-		
-		var theDialog = app.execDialog(SubclassSelect_Dialog);
-		if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
-			var selection = aclassObj[aclassArray[SubclassSelect_Dialog.result]];
-			var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : aclass.name + " (" + ClassSubList[selection].subname + ")";
-			IsSubclassException[theclass] = true;
-			returnTrue = true;
-			var oldName = classes.known[theclass].string;
-			classes.field = classes.field.replace(oldName, newName);
-			if (!event.target.name || event.target.name !== "Class and Levels") Value("Class and Levels", classes.field);
-		};
+			}]
+		}
 	};
-	return returnTrue;
+
+	if (!isAsterisk) {
+		setDialogName(SubclassSelect_Dialog, "tex1", "wrap_name", false);
+	};
+	
+	var theDialog = app.execDialog(SubclassSelect_Dialog);
+	if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
+		var selection = aclassObj[aclassArray[SubclassSelect_Dialog.result]];
+		var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : aclass.name + " (" + ClassSubList[selection].subname + ")";
+		returnTrue = true;
+		classes.field = classes.field.replace(classString, newName);
+		if ((!event.target || !event.target.name || event.target.name != "Class and Levels") && What("Class and Levels") != classes.field) {
+			tDoc.getField("Class and Levels").remVal = classes.field;
+			Value("Class and Levels", classes.field);
+		}
+		return [selection, newName];
+/* UPDATED
+		IsSubclassException[aClass] = true;
+		if (!event.target.name || event.target.name !== "Class and Levels") Value("Class and Levels", classes.field);
+*/
+	};
+	return false;
+/* UPDATED
+ 	return returnTrue;
+*/
 };

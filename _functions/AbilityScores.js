@@ -10,7 +10,7 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isOverr
 		return theHighest;
 	}
 	initiateCurrentStats();
-	inType = GetFeatureChoiceType(inType);
+	inType = GetFeatureType(inType);
 	var type = isOverride ? "override" : inType;
 	var dialogTxt = dialogTxt ? dialogTxt.replace(/^( |\n)*.*: |;$/g, '') : "";
 	var curStat = false;

@@ -270,6 +270,7 @@ var classes = {
 	attacks : 1,
 	extraskills : [],
 	primary : "",
+	oldprimary : "",
 	spellcastlvl : {default : 0, warlock : 0},
 	oldspellcastlvl : {default : 0, warlock : 0}
 };
@@ -1986,8 +1987,12 @@ var BackwardsCompatible = {
 	'WhiteoutRemember' : "CurrentVars.whiteout",
 	'FontSize Remember' : "CurrentVars.fontsize",
 	'Extra.Layers Remember' : 'CurrentVars.vislayers.toString()',
-	'BlueTextRemember' : "CurrentVars.bluetxt ? 'Yes' : 'No';"
+	'BlueTextRemember' : "CurrentVars.bluetxt ? 'Yes' : 'No';",
+	'Class Features Remember' : "classFeaChoiceBackwardsComp();"
 }
+
+// Define this here (as well) so that it can be used by the Base_ClassList
+var Base_spellLevelList = ["Cantrips (0-level)", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level", "Talents", "Disciplines"];
 
 var licenseOGL = [
   "OPEN GAME LICENSE Version 1.0a",

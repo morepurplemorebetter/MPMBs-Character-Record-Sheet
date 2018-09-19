@@ -1,5 +1,5 @@
 // a function to get the different versions of names used
-function GetFeatureChoiceType(type) {
+function GetFeatureType(type) {
 	var theReturn = "classes";
 	switch (type.toLowerCase()) {
 		case "classes":
@@ -46,11 +46,9 @@ function GetFeatureChoiceType(type) {
 			STRING
 	Examples:
 		ApplyFeatureAttributes("feat", "grappler", [0,1,false], false, false);
-		ApplyFeatureAttributes("class", ["warlock","pact boon"], [4,4,true], ["pact of the blade","pact of the chain","change"], false);
-		ApplyFeatureAttributes("class", ["warlock","eldritch invocations"], [0,1,true], ["","devil's sight","only"], false); // add Devil's Sight
-		ApplyFeatureAttributes("class", ["warlock","eldritch invocations"], [1,0,true], ["","devil's sight","only"], false); // remove Devil's Sight
-
-SetFeatureChoice("class", "warlock", "eldritch invocations", "", "armor of shadows");
+		ApplyFeatureAttributes("class", ["warlock","pact boon"], [4,4,true], ["pact of the blade","pact of the chain","change"], false); // change from Pact of the Blade to Pact of the Chain
+		ApplyFeatureAttributes("class", ["warlock","eldritch invocations"], [0,4,true], ["","devil's sight","only"], false); // add Devil's Sight
+		ApplyFeatureAttributes("class", ["warlock","eldritch invocations"], [15,0,true], ["devil's sight","","only"], false); // remove Devil's Sight
 */
 function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) {
 	// validate input
@@ -148,7 +146,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	};
 
 	// set the main variables, determined by type
-	switch (GetFeatureChoiceType(type)) {
+	switch (GetFeatureType(type)) {
 		case "classes":
 			type = "class";
 			aParent = fObjName[0];
@@ -192,20 +190,20 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		console.show();
 		return false;
 	};
-	
-	if (fObj.minlevel && !choiceA[2] && fObj.minlevel > lvlH) return false; // no reason to continue with this function
+
+	if (fObj.minlevel && fObj.minlevel > lvlH) return false; // no reason to continue with this function
 
 	// Are we to do anything with the feature?
-	var CheckLVL = lvlA[2] || (fObj.minlevel ? fObj.minlevel <= lvlH && fObj.minlevel > lvlL : lvlL == 0);
+	var CheckLVL = lvlA[2] ? true : fObj.minlevel ? fObj.minlevel <= lvlH && fObj.minlevel > lvlL : lvlL == 0;
 	// Add (true) or remove (false) the feature's attributes?
-	var AddFea = fObj.minlevel && !choiceA[2] ? fObj.minlevel <= lvlA[1] : 0 < lvlA[1];
+	var AddFea = fObj.minlevel ? fObj.minlevel <= lvlA[1] : 0 < lvlA[1];
 
 	// Get the choice, if any choices exist, it was selected in the past, and not entered into this function
 	if (!choiceA[1] && !choiceA[2] && fObj.choices) {
 		choiceA[1] = GetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", false);
 		if (choiceA[1] && !choiceA[0]) choiceA[0] = choiceA[1];
 	}
-	
+
 	// First do the (remove)eval attribute of the main object, as it might change things for the choice
 	var evalAddRemove = AddFea ? "eval" : "removeeval";
 	if (!choiceA[2] && CheckLVL && fObj[evalAddRemove]) runEval(fObj[evalAddRemove], evalAddRemove);
@@ -219,30 +217,34 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	var cOldObj = choiceA[0] && fObj[choiceA[0]] ? fObj[choiceA[0]] : false;
 	var cNewObj = choiceA[1] && fObj[choiceA[1]] ? fObj[choiceA[1]] : false;
 	var cJustChange = (/change|update/).test(choiceA[2]) && cOldObj && cNewObj && choiceA[0] != choiceA[1];
-	var cOnly = cNewObj && (/only/).test(choiceA[2]);
+	var cOnly = ((AddFea && cNewObj) || (!AddFea && cOldObj)) && (/only/).test(choiceA[2]);
 
 	// get the level-dependent attributes for the current and old levels
-	var Fea = GetLevelFeatures(fObj, lvlA[1], cNewObj ? choiceA[1] : false, lvlA[0], cOldObj ? choiceA[0] : false, forceNonCurrent, cOnly);
+	var Fea = GetLevelFeatures(fObj, lvlA[1], cNewObj ? choiceA[1] : false, lvlA[0], cOldObj ? choiceA[0] : cOnly ? choiceA[1] : false, cOnly);
 	// add some of the current variables to this object, so it is given in the return
 	Fea.CheckLVL = CheckLVL;
 	Fea.AddFea = AddFea;
+	Fea.Choice = choiceA[1];
+	Fea.ChoiceOld = choiceA[0];
 
 	// now do all the level-independent attributes, only if this is mandated by the level change
 	if (CheckLVL) {
 		// do the main object if not only interested in the choice, but without the eval as we just did that already
 		if (!choiceA[2]) useAttr(fObj, AddFea, true);
 		// if we are are changing the choice or removing the feature, now remove the old choice
-		if (cJustChange || (!AddFea && cOldObj)) {
-			useAttr(cOldObj, false, true);
-			SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", false);
+		//if (cJustChange || (!AddFea && cOldObj)) {
+		if (cOldObj && (cJustChange || !AddFea)) {
+			useAttr(cOldObj, false, false);
+			SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", false, cOnly ? choiceA[0] : "");
 		}
 		// if we are changing the choice or adding the feature, now add the new choice
-		if (cJustChange || cOnly || (AddFea && cNewObj)) {
-			useAttr(cNewObj, AddFea, true);
+		//if (cJustChange || cOnly || (AddFea && cNewObj)) {
+		if (cNewObj && AddFea) {
+			useAttr(cNewObj, true, false);
 			SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", AddFea ? choiceA[1] : "", cOnly ? choiceA[1] : "");
 		}
 	}
-	// next do the level-dependent attributes, if any of them changed or we are forced to do them
+	// next do the level-dependent attributes, if any of them changed or we are supposed to do them
 	if ((CheckLVL || Fea.changed) && (Fea.UseOld || Fea.UseCalcOld || Fea.Use || Fea.UseCalc)) {
 		// remove the limited feature entry if it is no longer applicable
 		if (lvlA[0] && (!AddFea || ((Fea.UseOld || Fea.UseCalcOld) && (Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc) || (/unlimited|\u221E/i).test(Fea.Use))))) {
@@ -259,10 +261,102 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	return Fea;
 }
 
+// a function to apply the first-level attributes of a class object
+// AddRemove - can be boolean (true = add all feature, false = remove all features)
+//		or can be an Array of [oldsubclass, newsubclass]
+function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
+	// declare some variables
+	var fObj = CurrentClasses[aClass];
+	var n = primaryClass ? 0 : 1;
+	var nTool = primaryClass ? "primary" : "secondary";
+
+	// a way to see if we should process the attribute or not
+	var checkIfIn = function(nObj, testObj, attrA) {
+		var testN = attrA[0] == 'toolProfs' ? nTool : attrA[0] == "saves" ? 0 : n;
+		if ((!nObj[attrA[0]] || !nObj[attrA[0]][testN]) && (!attrA[1] || !nObj[attrA[1]] || !nObj[attrA[1]][testN])) return false; // the main object doesn't have this attribute
+		if (!testObj) return true; // there is no test object defined
+		// else see if the test object is also has this attribute
+		return (testObj[attrA[0]] && testObj[attrA[0]][testN]) || (attrA[1] && testObj[attrA[1]] && testObj[attrA[1]][testN]);
+	}
+
+	// loop through the attributes and apply them
+	var processAttributes = function (uObj, addIt, tipNmF, ifInObj) {
+		// saves, if primary class
+		if (primaryClass && checkIfIn(uObj, ifInObj, ['saves'])) processSaves(addIt, tipNmF, uObj.saves);
+
+		// skills
+		if (checkIfIn(uObj, ifInObj, ['skills', 'skillstxt'])) {
+			var skills = uObj.skills && uObj.skills[n] ? uObj.skills[n] : false;
+			var skillsTxt = uObj.skillstxt && uObj.skillstxt[n] ? uObj.skillstxt[n] : false;
+			// --- backwards compatibility --- //
+			// possibly the class has skillstxt as skills attribute (pre v13)
+			if (skills && !isArray(skills) && SkillsList.abbreviations.indexOf(skills) == -1 && SkillsList.names.indexOf(skills) == -1) {
+				skillsTxt = skills.replace(/^( |\n)*.*: |\;$|\.$/g, '');
+				skills = false;
+			}
+			processSkills(addIt, tipNmF, skills, skillsTxt);
+		}
+
+		// weapon proficiencies
+		if (checkIfIn(uObj, ifInObj, ['weaponProfs', 'weapons'])) {
+			// --- backwards compatibility --- //
+			var weaponProf = uObj.weaponProfs && uObj.weaponProfs[n] ? uObj.weaponProfs[n] : uObj.weapons && uObj.weapons[0] ? uObj.weapons[0] : false;
+			if (weaponProf) processWeaponProfs(addIt, tipNmF, weaponProf);
+		}
+
+		// armour proficiencies
+		if (checkIfIn(uObj, ifInObj, ['armorProfs', 'armor'])) {
+			// --- backwards compatibility --- //
+			var armorProf = uObj.armorProfs && uObj.armorProfs[n] ? uObj.armorProfs[n] : uObj.armor && uObj.armor[0] ? uObj.armor[0] : false;
+			if (armorProf) processArmourProfs(addIt, tipNmF, armorProf);
+		}
+
+		// tool proficiencies
+		if (checkIfIn(uObj, ifInObj, ['toolProfs'])) processTools(addIt, tipNmF, uObj.toolProfs[nTool]);
+
+		// spellcasting extra array
+		if (CurrentSpells[aClass] && checkIfIn(uObj, ifInObj, ['spellcastingExtra'])) CurrentSpells[aClass].extra = !addIt ? "" : uObj.spellcastingExtra;
+	}
+
+	if (!isArray(AddRemove)) {
+		// just do the AddRemove for the object
+		processAttributes(fObj, AddRemove, fObj.name, false);
+	} else if (!AddRemove[0] && AddRemove[1]) {
+		// adding a subclass while previously none was there
+		var parentCl = fObj;
+		var newSubCl = ClassSubList[AddRemove[1]];
+		// first remove everything that is in class and also in the subclass
+		processAttributes(parentCl, false, parentCl.name, newSubCl);
+		// then add everything from the subclass
+		processAttributes(newSubCl, true, newSubCl.subname);
+	} else if (AddRemove[0] && !AddRemove[1]) {
+		// removing a subclass, going back to just the class
+		var oldSubCl = ClassSubList[AddRemove[0]];
+		var parentCl = fObj;
+		// first remove everything that is in the subclass
+		processAttributes(oldSubCl, false, oldSubCl.subname);
+		// then add everything from the class that is also in the subclass
+		processAttributes(parentCl, true, parentCl.name, oldSubCl);
+	} else if (AddRemove[0] && AddRemove[1]) {
+		// changing subclasses
+		var parentCl = fObj;
+		var oldSubCl = ClassSubList[AddRemove[0]];
+		var newSubCl = ClassSubList[AddRemove[1]];
+		// first remove everything that is in old subclass
+		processAttributes(oldSubCl, false, oldSubCl.subname);
+		// then add everything from the class that is also in old subclass
+		processAttributes(parentCl, true, parentCl.name, oldSubCl);
+		// next remove everything that is in class and also in new subclass
+		processAttributes(parentCl, false, parentCl.name, newSubCl);
+		// lastly add everything from new subclass
+		processAttributes(newSubCl, true, newSubCl.subname);
+	}
+}
+
 // a function to set the choice for something or remove it
 function SetFeatureChoice(type, objNm, feaNm, choice, extra) {
 	choice = choice ? choice.toLowerCase() : false;
-	type = GetFeatureChoiceType(type);
+	type = GetFeatureType(type);
 	if (!CurrentFeatureChoices[type]) CurrentFeatureChoices[type] = {};
 	if (!choice) { // remove the choice
 		if (!CurrentFeatureChoices[type][objNm]) return;
@@ -283,7 +377,7 @@ function SetFeatureChoice(type, objNm, feaNm, choice, extra) {
 		var touse = feaNm ? CurrentFeatureChoices[type][objNm][feaNm] : CurrentFeatureChoices[type][objNm];
 		if (extra) {
 			if (!touse.extrachoices) touse.extrachoices = [];
-			touse.extrachoices.push(extra);
+			if (touse.extrachoices.indexOf(extra) == -1) touse.extrachoices.push(extra);
 		} else {
 			touse.choice = choice;
 		}
@@ -294,7 +388,7 @@ function SetFeatureChoice(type, objNm, feaNm, choice, extra) {
 // a function to return the feature choice(s); if extra==true, returns array
 function GetFeatureChoice(type, objNm, feaNm, extra) {
 	var theReturn = extra ? [] : "";
-	type = GetFeatureChoiceType(type);
+	type = GetFeatureType(type);
 	if (CurrentFeatureChoices[type] && CurrentFeatureChoices[type][objNm] && (!feaNm || CurrentFeatureChoices[type][objNm][feaNm])) {
 		var useObj = feaNm ? CurrentFeatureChoices[type][objNm][feaNm] : CurrentFeatureChoices[type][objNm];
 		var foundSel = extra ? useObj.extrachoices : useObj.choice;
@@ -303,9 +397,22 @@ function GetFeatureChoice(type, objNm, feaNm, extra) {
 	return theReturn;
 }
 
+// a function to get a string of class feature choices just like how they use to be prior to v13
+function classFeaChoiceBackwardsComp() {
+	var chc = CurrentFeatureChoices.classes;
+	if (!chc) return "";
+	var returnStr = "";
+	for (var aClass in chc) {
+		for (var aFea in chc[aClass]) {
+			var fea = chc[aClass][aFea];
+			if (fea.choice) returnStr += [aClass, aFea, fea.choice].toString();
+		}
+	}
+}
+
 // a function to create the CurrentSpells global variable entry
 function CreateCurrentSpellsEntry(type, fObjName) {
-	type = GetFeatureChoiceType(type);
+	type = GetFeatureType(type);
 	var setCSobj = function(oName) {
 		if (!CurrentSpells[oName]) CurrentSpells[oName] = {bonus : {}};
 		return CurrentSpells[oName];
@@ -349,7 +456,7 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 
 // process a spellcastingBonus feature
 function processSpBonus(AddRemove, srcNm, spBon, type, parentName) {
-	type = GetFeatureChoiceType(type);
+	type = GetFeatureType(type);
 	if (!AddRemove && !CurrentSpells[parentName]) return; // nothing to remove
 	// create the spellcasting object if it doesn't yet exist
 	var sObj = CurrentSpells[parentName] ? CurrentSpells[parentName] : CreateCurrentSpellsEntry(type, parentName);
@@ -400,12 +507,66 @@ function processAddArmour(AddRemove, armour) {
 	}
 }
 
-// set the armour (if more AC than current armour) or remove the armour
+// set attacks or remove the attacks
 function processAddWeapons(AddRemove, weapons) {
 	if (!weapons) return;
 	if (!isArray(weapons)) weapons = [weapons];
 	for (var w = 0; w < weapons.length; w++) {
 		tDoc[(AddRemove ? "Add" : "Remove") + "Weapon"](weapons[w]);
+	}
+}
+
+// add/remove a class feature text, replace the first line of it, or insert it after another
+// the string is assumed to start with "\u25C6\uFEFF" (ParseClassFeature | ParseClassFeatureExtra)
+// for possible values of 'act', see the switch statement
+// each ...TxtA is [firstline, completetext]
+function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxtA) {
+	if (!oldTxtA || !oldTxtA[0]) return; // no oldTxt, so we can't do anything
+
+	// make some regex objects
+	var oldFrstLnEsc = oldTxtA[0].replace(/^(\r|\n)*/, '').RegEscape();
+	var oldRxHead = RegExp(oldFrstLnEsc + ".*", "i");
+	var oldRx = RegExp("\\r?" + oldFrstLnEsc + "(.|\\r  )*", "i"); // everything until the first line that doesn't start with two spaces (e.g. an empty line or a new bullet point)
+
+	// find the field we are supposed to update
+	var fld = fldA[0];
+	if (fldA.length > 1) {
+		for (var i = 0; i < fldA.length; i++) {
+			if (oldRx.test(What(fldA[i]))) {
+				fld = fldA[i];
+				break;
+			}
+		}
+	}
+	var fldTxt = What(fld);
+	if (!fldTxt) return; // empty or non-existing field, so just stop now
+
+	// apply the change
+	switch (act) {
+		case "first" : // update just the first line (usages, recovery, or additional changed)
+			var changeTxt = fldTxt.replace(oldRxHead, newTxtA[0]);
+			break;
+		case "replace" : // replace the oldTxt with the newTxt
+			var changeTxt = fldTxt.replace(oldRx, newTxtA[1]);
+			break;
+		case "insert" : // add the newTxt after the prevTxt
+			if (!prevTxtA || !prevTxtA[0]) return; // no prevTxt, so we can't do anything
+			var prevFrstLnEsc = prevTxtA[0].replace(/^(\r|\n)*/, '').RegEscape();
+			var prevRx = RegExp("\\r?" + prevFrstLnEsc + "(.|\\r  )*", "i");
+			var prevTxtFound = fldTxt.match(prevRx);
+			var changeTxt = prevTxtFound ? fldTxt.replace(prevTxtFound[0], prevTxtFound[0] + newTxtA[1]) : fldTxt;
+			break;
+		case "remove" : // remove the oldTxt
+			var changeTxt = fldTxt.replace(oldRx, '').replace(/^\r+/, '');
+			break;
+		default :
+			return;
+	}
+	if (changeTxt != fldTxt) {
+		Value(fld, changeTxt);
+	} else if (act !== "insert") {
+		// nothing changed, so just insert the whole feature, using this same function
+		applyClassFeatureText("insert", fldA, oldTxtA, newTxtA, prevTxtA);
 	}
 }
 

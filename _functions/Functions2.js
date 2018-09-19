@@ -4839,7 +4839,7 @@ function MakeSkillsMenu_SkillsOptions(input) {
 		thermoM(thermoTxt, true); // Stop progress bar
 	}
 }
-
+/* UPDATED
 // returns the current choice, if any, for a class feature; aClass as in ClassList, feature as in the object in the features object
 function GetClassFeatureChoice(aClass, feature) {
 	var theReturn = "";
@@ -4868,18 +4868,18 @@ function RemoveClassFeatureChoice(aClass, feature) {
 	}
 	return theReturn
 }
+*/
 
 // returns an object of the different elements to populate the class features or limited features section if olchoice is provided, oldlevel has to be provided as well
-function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceClassList, ForceChoice) {
+function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceChoice) {
 	var tRe = { changed : false };	
  	var attr = [["Add", "additional"], ["Use", "usages"], ["UseCalc", "usagescalc"], ["Recov", "recovery"], ["UseName", "name"], ["UseName", "limfeaname"], ["Descr", "description"], ["source", "source"]];
-	
+
 	for (var a = 0; a < attr.length; a++) {
 		// add the new choice
 		var setA = attr[a][0];
 		var objA = attr[a][1];
 		tRe[setA] = choice && aFea[choice] && aFea[choice][objA] ? aFea[choice][objA] : aFea[objA] && !ForceChoice ? aFea[objA] : tRe[setA] ? tRe[setA] : "";
-		if (setA === "source") continue; // don't do the Old version for source
 		tRe[setA + "Old"] = oldchoice && aFea[oldchoice] && aFea[oldchoice][objA] ? aFea[oldchoice][objA] : aFea[objA] && !ForceChoice ? aFea[objA] : tRe[setA + "Old"] ? tRe[setA + "Old"] : "";
 		if (objA.indexOf("usages") !== -1) {
 			if (level === 0) tRe[setA] = "";
@@ -4888,7 +4888,7 @@ function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceClassLi
 	}
 
 	for (var aProp in tRe) {
-		if (aProp === "source") continue;
+		if (aProp.indexOf("source") !== -1) continue;
 		var theP = tRe[aProp];
 		if (theP && isArray(theP)) {
 			var lvlUse = aProp.indexOf("Old") !== -1 && (oldlevel || oldlevel === 0) ? oldlevel : level;
@@ -5361,7 +5361,7 @@ function addEvals(evalObj, NameEntity, Add) {
 		if (Add) {
 			if (!CurrentEvals.hp) CurrentEvals.hp = {};
 			CurrentEvals.hp[NameEntity] = evalObj.hp;
-		} else if (CurrentEvals.hp[NameEntity]) {
+		} else if (CurrentEvals.hp && CurrentEvals.hp[NameEntity]) {
 			delete CurrentEvals.hp[NameEntity];
 		};
 		CurrentUpdates.types.push("hp");

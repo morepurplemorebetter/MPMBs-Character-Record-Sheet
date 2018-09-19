@@ -69,13 +69,11 @@ var Base_ClassList = {
 				minlevel : 1,
 				description : "\n   " + "Start/end as bonus action; add damage to melee weapons that use Str; lasts 1 min" + "\n   " + "Adv. on Strength checks/saves (not attacks); resistance to bludgeoning/piercing/slashing" + "\n   " + "Stops if I end turn without attacking or taking damage since last turn, or unconscious",
 				additional : levels.map(function (n) {
-					if (n < 9) return "+2 melee damage";
-					if (n < 16) return "+3 melee damage";
-					return "+4 melee damage";
+					return "+" + (n < 9 ? 2 : n < 16 ? 3 : 4) + " melee damage";
 				}),
 				usages : [2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, "\u221E\u00D7 per "],
 				recovery : "long rest",
-				action : ["bonus action", " (start/stop)"],
+				action : ["bonus action", " (start/end)"],
 				dmgres : [["Bludgeoning", "Bludgeon. (in rage)"], ["Piercing", "Piercing (in rage)"], ["Slashing", "Slashing (in rage)"]],
 				savetxt : { text : ["Adv. on Str saves in rage"] },
 				calcChanges : {
@@ -129,10 +127,7 @@ var Base_ClassList = {
 				minlevel : 9,
 				description : "\n   " + "I can roll additional dice for the extra damage on a critical hit with a melee attack",
 				additional : levels.map(function (n) {
-					if (n < 9) return "";
-					if (n < 13) return "1 additional die";
-					if (n < 17) return "2 additional die";
-					return "3 additional dice";
+					return n < 9 ? "" : (n < 13 ? 1 : n < 17 ? 2 : 3) + " additional di" + (n < 13 ? "" : "c") + "e"
 				}),
 				calcChanges : {
 					atkAdd : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level > 8 && (/d\\d+/).test(fields.Damage_Die)) {var pExtraCritM = extraCritM ? extraCritM : 0; var extraCritM = pExtraCritM + function(n){return n < 13 ? 1 : n < 17 ? 2 : 3;}(classes.known.barbarian.level); if (pExtraCritM) {fields.Description = fields.Description.replace(pExtraCritM + 'd', extraCritM + 'd'); } else {fields.Description += (fields.Description ? '; ' : '') + extraCritM + fields.Damage_Die.replace(/.*(d\\d+).*/, '$1') + ' extra on a crit in melee'; }; }; ", "My melee attacks roll additional dice on a critical hit."]
@@ -206,9 +201,8 @@ var Base_ClassList = {
 				minlevel : 1,
 				description : "\n   " + "I can cast bard cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use a musical instrument as a spellcasting focus" + "\n   " + "I can cast my known bard spells as rituals if they have the ritual tag",
 				additional : levels.map(function (n, idx) {
-					var cantr = Base_ClassList.bard.spellcastingKnown.cantrips[idx];
-					var splls = Base_ClassList.bard.spellcastingKnown.spells[idx];
-					splls += n < 10 ? 0 : n < 14 ? 2 : n < 18 ? 4 : 6;
+					var cantr = [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4][idx];
+					var splls = [4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 15, 15, 16, 16, 19, 19, 20, 20, 22, 22][idx];
 					return cantr + " cantrips \u0026 " + splls + " spells known";
 				})
 			},
@@ -251,7 +245,7 @@ var Base_ClassList = {
 				source : [["SRD", 13], ["P", 54]],
 				minlevel : 3,
 				description : "\n   " + "I gain expertise with two skills I am proficient with; two more at 10th level",
-				skillstxt : "\n\n" + toUni("Expertise (Bard 3)") + ": Choose any two skill proficiencies, and two more at 10th level.",
+				skillstxt : "Expertise with any two skill proficiencies, and two more at 10th level",
 				additional : levels.map(function (n) {
 					return n < 3 ? "" : "with " + (n < 10 ? 2 : 4) + " skills";
 				})
@@ -327,7 +321,9 @@ var Base_ClassList = {
 				source : [["SRD", 15], ["P", 58]],
 				minlevel : 1,
 				description : "\n   " + "I can cast prepared cleric cantrips/spells, using Wisdom as my spellcasting ability" + "\n   " + "I can use a holy symbol as a spellcasting focus" + "\n   " + "I can cast my prepared cleric spells as rituals if they have the ritual tag",
-				additional : ["3 cantrips known", "3 cantrips known", "3 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known"]
+				additional : levels.map(function (n, idx) {
+					return [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5][idx] + " cantrips known";
+				})
 			},
 			"subclassfeature1" : {
 				name : "Divine Domain",
@@ -418,7 +414,9 @@ var Base_ClassList = {
 				source : [["SRD", 19], ["P", 66]],
 				minlevel : 1,
 				description : "\n   " + "I can cast prepared druid cantrips/spells, using Wisdom as my spellcasting ability" + "\n   " + "I can use a druidic focus as a spellcasting focus" + "\n   " + "I can cast my prepared druid spells as rituals if they have the ritual tag",
-				additional : ["2 cantrips known", "2 cantrips known", "2 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "3 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known"]
+				additional : levels.map(function (n, idx) {
+					return [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4][idx] + " cantrips known";
+				})
 			},
 			"subclassfeature2" : {
 				name : "Druid Circle",
@@ -501,7 +499,9 @@ var Base_ClassList = {
 				source : [["SRD", 24], ["P", 72]],
 				minlevel : 1,
 				description : "\n   " + "As a bonus action, I regain 1d10 + fighter level HP; I can use this once per short rest",
-				additional : ["1d10+1", "1d10+2", "1d10+3", "1d10+4", "1d10+5", "1d10+6", "1d10+7", "1d10+8", "1d10+9", "1d10+10", "1d10+11", "1d10+12", "1d10+13", "1d10+14", "1d10+15", "1d10+16", "1d10+17", "1d10+18", "1d10+19", "1d10+20"],
+				additional : levels.map(function (n) {
+					return "1d10+" + n;
+				}),
 				usages : 1,
 				recovery : "short rest",
 				action : ["bonus action", ""]
@@ -641,7 +641,9 @@ var Base_ClassList = {
 				minlevel : 3,
 				description : "\n   " + "As a reaction, I can reduce ranged weapon attack damage done to me" + "\n   " + "If the damage is negated, I catch and may throw it back (20/60 ft) as a monk weapon",
 				action : ["reaction", ""],
-				additional : ["", "", "1d10 + 3 + Dexterity modifier; 1 ki to throw", "1d10 + 4 + Dexterity modifier; 1 ki to throw", "1d10 + 5 + Dexterity modifier; 1 ki to throw", "1d10 + 6 + Dexterity modifier; 1 ki to throw", "1d10 + 7 + Dexterity modifier; 1 ki to throw", "1d10 + 8 + Dexterity modifier; 1 ki to throw", "1d10 + 9 + Dexterity modifier; 1 ki to throw", "1d10 + 10 + Dexterity modifier; 1 ki to throw", "1d10 + 11 + Dexterity modifier; 1 ki to throw", "1d10 + 12 + Dexterity modifier; 1 ki to throw", "1d10 + 13 + Dexterity modifier; 1 ki to throw", "1d10 + 14 + Dexterity modifier; 1 ki to throw", "1d10 + 15 + Dexterity modifier; 1 ki to throw", "1d10 + 16 + Dexterity modifier; 1 ki to throw", "1d10 + 17 + Dexterity modifier; 1 ki to throw", "1d10 + 18 + Dexterity modifier; 1 ki to throw", "1d10 + 19 + Dexterity modifier; 1 ki to throw", "1d10 + 20 + Dexterity modifier; 1 ki to throw"]
+				additional : levels.map(function (n) {
+					return n < 3 ? "" : "1d10 + " + n + " + Dexterity modifier; 1 ki to throw";
+				})
 			},
 			"slow fall" : {
 				name : "Slow Fall",
@@ -1034,7 +1036,9 @@ var Base_ClassList = {
 				source : [["SRD", 36], ["P", 91]],
 				minlevel : 2,
 				description : "\n   " + "I can cast ranger spells that I know, using Wisdom as my spellcasting ability",
-				additional : ["", "2 spells known", "3 spells known", "3 spells known", "4 spells known", "4 spells known", "5 spells known", "5 spells known", "6 spells known", "6 spells known", "7 spells known", "7 spells known", "8 spells known", "8 spells known", "9 spells known", "9 spells known", "10 spells known", "10 spells known", "11 spells known", "11 spells known"]
+				additional : levels.map(function (n, idx) {
+					return n < 2 ? "" : [0, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11][idx] + " spells known";
+				})
 			},
 			"subclassfeature3" : {
 				name : "Ranger Archetype",
@@ -1074,7 +1078,8 @@ var Base_ClassList = {
 				name : "Feral Senses",
 				source : [["SRD", 37], ["P", 92]],
 				minlevel : 18,
-				description : "\n   " + "When not blinded or deafened, I'm aware of invisible, non-hidden creatures in 30 ft" + "\n   " + "I don't have disadvantage when attacking creatures I am aware of but can't see"
+				description : "\n   " + "When not blinded or deafened, I'm aware of invisible, non-hidden creatures in 30 ft" + "\n   " + "I don't have disadvantage when attacking creatures I am aware of but can't see",
+				vision : [["Feral senses", 30]]
 			},
 			"foe slayer" : {
 				name : "Foe Slayer",
@@ -1118,10 +1123,9 @@ var Base_ClassList = {
 				source : [["SRD", 39], ["P", 96]],
 				minlevel : 1,
 				description : "\n   " + "I gain expertise with two skills/thieves' tools I am proficient with; two more at 6th level",
-				skillstxt : "\n\n" + toUni("Expertise (Rogue 1)") + ": Choose any two skill proficiencies and/or thieves' tools, and two more at 6th level.",
+				skillstxt : "Expertise with any two skill proficiencies and/or thieves' tools, and two more at 6th level",
 				additional : levels.map(function (n) {
-					if (n < 6) return "with two skills";
-					return "with four skills";
+					return "with " + (n < 6 ? 2 : 4) + " skills";
 				})
 			},
 			"sneak attack" : {
@@ -1238,7 +1242,11 @@ var Base_ClassList = {
 				source : [["SRD", 43], ["P", 101]],
 				minlevel : 1,
 				description : "\n   " + "I can cast sorcerer cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus ",
-				additional : ["4 cantrips \u0026 2 spells known", "4 cantrips \u0026 3 spells known", "4 cantrips \u0026 4 spells known", "5 cantrips \u0026 5 spells known", "5 cantrips \u0026 6 spells known", "5 cantrips \u0026 7 spells known", "5 cantrips \u0026 8 spells known", "5 cantrips \u0026 9 spells known", "5 cantrips \u0026 10 spells known", "6 cantrips \u0026 11 spells known", "6 cantrips \u0026 12 spells known", "6 cantrips \u0026 12 spells known", "6 cantrips \u0026 13 spells known", "6 cantrips \u0026 13 spells known", "6 cantrips \u0026 14 spells known", "6 cantrips \u0026 14 spells known", "6 cantrips \u0026 15 spells known", "6 cantrips \u0026 15 spells known", "6 cantrips \u0026 15 spells known", "6 cantrips \u0026 15 spells known"]
+				additional : levels.map(function (n, idx) {
+					var cantr = [4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6][idx];
+					var splls = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15][idx];
+					return cantr + " cantrips \u0026 " + splls + " spells known";
+				})
 			},
 			"subclassfeature1" : {
 				name : "Sorcerous Origin",
@@ -1352,7 +1360,13 @@ var Base_ClassList = {
 				source : [["SRD", 46], ["P", 107]],
 				minlevel : 1,
 				description : "\n   " + "I can cast warlock cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus" + "\n   " + "I regain these spell slots on a short rest",
-				additional : ["2 cantrips \u0026 2 spells known", "2 cantrips \u0026 3 spells known", "2 cantrips \u0026 4 spells known", "3 cantrips \u0026 5 spells known", "3 cantrips \u0026 6 spells known", "3 cantrips \u0026 7 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 9 spells known", "3 cantrips \u0026 10 spells known", "4 cantrips \u0026 10 spells known", "4 cantrips \u0026 11 spells known", "4 cantrips \u0026 11 spells known", "4 cantrips \u0026 12 spells known", "4 cantrips \u0026 12 spells known", "4 cantrips \u0026 13 spells known", "4 cantrips \u0026 13 spells known", "4 cantrips \u0026 14 spells known", "4 cantrips \u0026 14 spells known", "4 cantrips \u0026 15 spells known", "4 cantrips \u0026 15 spells known"]
+				additional : levels.map(function (n, idx) {
+					var cantr = [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4][idx];
+					var splls = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15][idx];
+					var slots = n < 2 ? 1 : n < 11 ? 2 : n < 17 ? 3 : 4;
+					var sllvl = n < 3 ? 1 : n < 5 ? 2 : n < 7 ? 3 : n < 9 ? 4 : 5;
+					return cantr + " cantrips \u0026 " + splls + " spells known; " + slots + "\u00D7 " + Base_spellLevelList[sllvl] + " spell slot";
+				})
 			},
 			"subclassfeature1" : {
 				name : "Otherworldly Patron",
@@ -1414,8 +1428,7 @@ var Base_ClassList = {
 					name : "Beguiling Influence",
 					description : "\n   " + "I gain proficiencies with the Deception and Persuasion skills",
 					source : [["SRD", 48], ["P", 110]],
-					skills : ["Deception", "Persuasion"],
-					skillstxt : "\n\n" + toUni("Warlock (Beguiling Influence)") + ": Deception and Persuasion."
+					skills : ["Deception", "Persuasion"]
 				},
 				"bewitching whispers (prereq: level 7 warlock)" : {
 					name : "Bewitching Whispers",
@@ -1437,7 +1450,7 @@ var Base_ClassList = {
 					source : [["SRD", 48], ["P", 110]],
 					eval : "CurrentSpells['book of ancient secrets'] = {name : 'Book of Ancient Secrets', ability : 6, list : {class : 'any', ritual : true}, known : {spells : 'book'}}; SetStringifieds('spells');",
 					removeeval : "delete CurrentSpells['book of ancient secrets']; SetStringifieds('spells');",
-					prereqeval : "classes.known.warlock.level >= 3 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the tome') !== -1"
+					prereqeval : "classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the tome'"
 				},
 				"chains of carceri (prereq: level 15 warlock, pact of the chain)" : {
 					name : "Chains of Carceri",
@@ -1449,7 +1462,7 @@ var Base_ClassList = {
 						selection : ["hold monster"],
 						oncelr : true
 					},
-					prereqeval : "classes.known.warlock.level >= 15 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the chain') !== -1"
+					prereqeval : "classes.known.warlock.level >= 15 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'"
 				},
 				"devil's sight" : {
 					name : "Devil's Sight",
@@ -1518,7 +1531,7 @@ var Base_ClassList = {
 					calcChanges : {
 						atkCalc : ["if (isMeleeWeapon && (/\\bpact\\b/i).test(WeaponText)) { output.extraDmg += What('Cha Mod'); }; ", "If I include the word 'Pact' in a melee weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."]
 					},
-					prereqeval : "classes.known.warlock.level >= 12 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the blade') !== -1"
+					prereqeval : "classes.known.warlock.level >= 12 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the blade'"
 				},
 				"mask of many faces" : {
 					name : "Mask of Many Faces",
@@ -1659,7 +1672,7 @@ var Base_ClassList = {
 /*  		UPDATED
 					eval : "AddAction('action', 'Pact Weapon (2 attacks per action)', 'Thirsting Blade (warlock invocation)');",
 					removeeval : "RemoveAction('action', 'Pact Weapon (2 attacks per action)');", */
-					prereqeval : "classes.known.warlock.level >= 5 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the blade') !== -1"
+					prereqeval : "classes.known.warlock.level >= 5 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the blade'"
 				},
 				"visions of distant realms (prereq: level 15 warlock)" : {
 					name : "Visions of Distant Realms",
@@ -1677,7 +1690,7 @@ var Base_ClassList = {
 					name : "Voice of the Chain Master",
 					description : "\n   " + "While on the same plane as my familiar, I can communicate telepathically with it" + "\n   " + "Also, I can perceive through its senses and have it speak with my voice while doing so",
 					source : [["SRD", 50], ["P", 111]],
-					prereqeval : "classes.known.warlock.level >= 3 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the chain') !== -1"
+					prereqeval : "classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'"
 				},
 				"whispers of the grave (prereq: level 9 warlock)" : {
 					name : "Whispers of the Grave",
@@ -1792,14 +1805,19 @@ var Base_ClassList = {
 				source : [["SRD", 52], ["P", 114]],
 				minlevel : 1,
 				description : "\n   " + "I can cast prepared wizard cantrips/spells, using Intelligence as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus" + "\n   " + "I can cast all wizard spells in my spellbook as rituals if they have the ritual tag",
-				additional : ["3 cantrips known", "3 cantrips known", "3 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known"]
+				additional : levels.map(function (n, idx) {
+					return [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5][idx] + " cantrips known";
+				})
 			},
 			"arcane recovery" : {
 				name : "Arcane Recovery",
 				source : [["SRD", 53], ["P", 115]],
 				minlevel : 1,
 				description : "\n   " + "Once per day after a short rest, I can recover a number of 5th-level or lower spell slots",
-				additional : ["1 level of spell slots", "1 level of spell slots", "2 levels of spell slots", "2 levels of spell slots", "3 levels of spell slots", "3 levels of spell slots", "4 levels of spell slots", "4 levels of spell slots", "5 levels of spell slots", "5 levels of spell slots", "6 levels of spell slots", "6 levels of spell slots", "7 levels of spell slots", "7 levels of spell slots", "8 levels of spell slots", "8 levels of spell slots", "9 levels of spell slots", "9 levels of spell slots", "10 levels of spell slots", "10 levels of spell slots"],
+				additional : levels.map(function (n) {
+					var lvls = Math.ceil(n / 2);
+					return lvls + " level" + (lvls > 1 ? "s" : "") + " of spell slots";
+				}),
 				usages : 1,
 				recovery : "long rest"
 			},
@@ -1875,7 +1893,7 @@ var Base_ClassSubList = {
 				source : [["SRD", 13], ["P", 54]],
 				minlevel : 3,
 				description : "\n   " + "I gain proficiency with three skills of my choice",
-				skillstxt : "\n\n" + toUni("College of Lore") + ": Choose any three skills."
+				skillstxt : "Choose any three skills"
 			},
 			"subclassfeature3.1" : {
 				name : "Cutting Words",
@@ -2337,61 +2355,61 @@ var Base_ClassSubList = {
 				"black dragon ancestor" : {
 					name : "Black Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with black dragons, which are affiliated with acid damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'acid']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'acid']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "acid"
 				},
 				"blue dragon ancestor" : {
 					name : "Blue Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with blue dragons, which are affiliated with lightning damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'lightning']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'lightning']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "lightning"
 				},
 				"brass dragon ancestor" : {
 					name : "Brass Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with brass dragons, which are affiliated with fire damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "fire"
 				},
 				"bronze dragon ancestor" : {
 					name : "Bronze Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with bronze dragons, which are affiliated with lightning dmg" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'lightning']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'lightning']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "lightning"
 				},
 				"copper dragon ancestor" : {
 					name : "Copper Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with copper dragons, which are affiliated with acid damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'acid']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'acid']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "acid"
 				},
 				"gold dragon ancestor" : {
 					name : "Gold Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with gold dragons, which are affiliated with fire damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "fire"
 				},
 				"green dragon ancestor" : {
 					name : "Green Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with green dragons, which are affiliated with poison damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'poison']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'poison']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "poison"
 				},
 				"red dragon ancestor" : {
 					name : "Red Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with red dragons, which are affiliated with fire damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "fire"
 				},
 				"silver dragon ancestor" : {
 					name : "Silver Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with silver dragons, which are affiliated with cold damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'cold']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'cold']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "cold"
 				},
 				"white dragon ancestor" : {
 					name : "White Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with white dragons, which are affiliated with cold damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'cold']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'cold']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "cold"
 				},
 				languageProfs : ["Draconic"]
@@ -2448,7 +2466,14 @@ var Base_ClassSubList = {
 						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/poison/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."]
 					}
 				},
-				eval : "if (FeaChoice === '') {var CFrem = What('Class Features Remember'); var tReg = /.*?sorcerer,subclassfeature1,((black|blue|brass|bronze|copper|gold|green|red|silver|white) dragon ancestor).*/i; if ((tReg).test(CFrem)) {FeaChoice = CurrentClasses.sorcerer.features.subclassfeature1[CFrem.replace(tReg, '$1')].dragonElement; AddString('Class Features Remember', 'sorcerer,subclassfeature6,' + FeaChoice, false);};};"
+				eval : function () {
+					if (choiceA[1]) return;
+					var ancestor = GetFeatureChoice('class', 'sorcerer', 'subclassfeature1');
+					if (ancestor) choiceA[1] = CurrentClasses.sorcerer.features.subclassfeature1[ancestor].dragonElement;
+				}
+/* UPDATED
+				eval : "if (FeaChoice === '') {var CFrem = What('Class Features Remember'); var tReg = /.*?sorcerer,subclassfeature1,((black|blue|brass|bronze|copper|gold|green|red|silver|white) dragon ancestor).* /i; if ((tReg).test(CFrem)) {FeaChoice = CurrentClasses.sorcerer.features.subclassfeature1[CFrem.replace(tReg, '$1')].dragonElement; AddString('Class Features Remember', 'sorcerer,subclassfeature6,' + FeaChoice, false);};};"
+*/
 			},
 			"subclassfeature14" : {
 				name : "Dragon Wings",
