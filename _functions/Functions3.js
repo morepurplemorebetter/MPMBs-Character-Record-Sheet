@@ -574,30 +574,43 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxtA) {
 // this function is called whenever the calculations are activated again
 function UpdateSheetDisplay() {
 	if (!CurrentUpdates.types.length) return;
-	
-	// initialise some variables
-	var changedStats, changedSpellcasting;
-	var CUflat = CurrentUpdates.types.toString();
 
-	if (CUflat.indexOf("attacks") !== -1) {
+	// initialise some variables
+	var CUflat = CurrentUpdates.types.toString();
+	var changedStats = CUflat.indexOf("stats") !== -1;
+	var changedSpellcasting = CurrentUpdates.types.indexOf("spells") !== -1;
+	var changedSkills = CurrentUpdates.types.indexOf("skills") !== -1;
+
+	if (CUflat.indexOf("attacks") !== -1) { // recalculate the weapons
 		ReCalcWeapons(CurrentUpdates.types.indexOf("attacksprofs") !== -1, CurrentUpdates.types.indexOf("attacksforce") !== -1);
 	};
-	if (CurrentUpdates.types.indexOf("hp") !== -1) {
-		SetHPTooltip();
+	if (CurrentUpdates.types.indexOf("hp") !== -1) SetHPTooltip(); // set tooltip for HP
+	if (changedStats) AbilityScores_Button(true); // set tooltip for stats
+	if (!changedSpellcasting && CurrentUpdates.types.indexOf("spellcastingclass") !== -1) {
+		// see if a spellcasting class changed level and would require a new spell sheet
+/* NOG TE DOEN
+		changedSpellcasting = ??
+		zie CheckForSpellUpdate();
+		en AskForSpellUpdate();
+*/
 	};
-	if (CUflat.indexOf("stats") !== -1) {
-		changedStats = true;
-		AbilityScores_Button(true);
-		// alert that there might be new ability score choices that have to be made
+	if (CurrentUpdates.types.indexOf("testasi") !== -1) { // see if number of ASI changed
+/* NOG TE DOEN
+		changedStats = ??
+		zie CountASIs();
+*/
 	};
-	if (CurrentUpdates.types.indexOf("skills") !== -1) {
-		// alert that there might be new skill proficiency choices that have to be made
-	};
-	if (CurrentUpdates.types.indexOf("spells") !== -1) {
-		// ask to generate a new spell sheet
-		changedSpellcasting = true;
-	};
+
+	// reset the CurrentUpdates variable
 	CurrentUpdates = {types : [], extras : {}};
+	
+	// The alert to the user
+/* NOG TE DOEN
+	if (changedSkills) // alert that there might be new skill proficiency choices that have to be made
+	if (changedSpellcasting) // ask to generate a new spell sheet
+	if (changedStats) // alert that there might be new ability score choices that have to be made
+	// mogelijke opties voor stats: statsoverride, statsclasses, statsrace, statsfeats, statsitems
+*/
 }
 
 /*

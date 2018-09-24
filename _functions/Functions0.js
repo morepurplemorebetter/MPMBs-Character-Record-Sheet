@@ -504,13 +504,9 @@ function testFont(fontTest) {
 };
 
 function clean(input, remove, diacretics) {
-	var charArray = remove ? remove : [" ", "-", ".", ",", "\\", "/", ":", ";"];
-	while (charArray.indexOf(input[0]) !== -1) {
-		input = input.slice(1);
-	}
-	while (charArray.indexOf(input[input.length - 1]) !== -1) {
-		input = input.slice(0, -1);
-	}
+	if (remove && isArray(remove)) remove = remove.join('');
+	var removeRegex = remove ? RegExp("/^[" + remove + "]+|[" + remove + "]+$", "g") : /^[ -\.,\\/:;]+|[ -\.,\\/:;]+$/g;
+	input = input.replace(removeRegex, '');
 	return diacretics ? removeDiacritics(input) : input;
 };
 

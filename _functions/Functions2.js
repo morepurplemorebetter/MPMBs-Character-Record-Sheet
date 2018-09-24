@@ -7239,11 +7239,36 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies) {
 			});
 		};
 	};
+	// split to two columns if radio options and more than 7
+	if (knownOpt === "radio" && optSubj.length > 7) {
+		var leftCol = selectionLines.slice(0,Math.ceil(selectionLines.length/2));
+		var rightCol = selectionLines.slice(Math.ceil(selectionLines.length/2));
+		selectionLines = [{
+			type : "view",
+			alignment : "align_fill",
+			align_children : "align_distribute",
+			elements : [{
+				type : "view",
+				alignment : "align_left",
+				align_children : "align_left",
+				elements : leftCol
+			}, {
+				type : "view",
+				alignment : "align_right",
+				align_children : "align_left",
+				elements : rightCol
+			}]
+		}];
+	}
 
 	var diaHeader = notProficiencies ? optType : "Select proficiencies";
 	
 	//make all the known options lowercase for easier testing
-	if (knownOpt && knownOpt !== "radio") { for (var i = 0; i < knownOpt.length; i++) { knownOpt[i] = knownOpt[i].toLowerCase(); }; };
+	var showOptions = "";
+	if (knownOpt && knownOpt !== "radio") {
+		showOptions = knownOpt.toString();
+		for (var i = 0; i < knownOpt.length; i++) { knownOpt[i] = knownOpt[i].toLowerCase(); };
+	};
 	
 	var theDialog = {
 		choices : [],
@@ -7354,7 +7379,14 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies) {
 					alignment : "align_center",
 					align_children : "align_left",
 					elements : selectionLines
-				}, {
+				}]).concat(!showOptions ? [] : [{
+					type : "static_text",
+					alignment : "align_fill",
+					item_id : "txtO",
+					wrap_name : true,
+					name : "Currently already known: " + showOptions + ".",
+					char_width : 40
+				}]).concat([{
 					type : "static_text",
 					alignment : "align_fill",
 					item_id : "txtL",

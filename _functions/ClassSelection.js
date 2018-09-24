@@ -14,7 +14,7 @@ function SetPositiveElement(objIn, element) {
 };
 
 //a dialogue that allows immediate feedback on what a class' name will look like and create a comprehensive, complete string to put in the class field
-function SelectClass() {
+function SelectClass(charLvlEvent) {
 	if (app.viewerVersion < 15) {
 		FunctionIsNotAvailable();
 		return;
@@ -23,6 +23,7 @@ function SelectClass() {
 	var theChar = What("PC Name") ? What("PC Name") : "Your Character";
 	var hasUAranger = false;
 	var ClassFld = What("Class and Levels");
+	var charLvl = Number(charLvlEvent ? event.value : What("Character Level"));
 	//make an object for each class' list of subclasses
 	var setClassesToDialog = function() {
 		hasUAranger = !testSource("rangerua", ClassList.rangerua, "classExcl");
@@ -62,13 +63,13 @@ function SelectClass() {
 			ClassSelection_Dialog.finalLevel += clP[1];
 			ClassSelection_Dialog.curSelec.push([
 				clP[1], // level
-				ClassFld.substr(ClassFld.toLowerCase().indexOf(clP[0]), clP[0].length), // string as it is in the class field
+				clP[0], // string as it is in the class field
 				"", // recognized class
 				"" // recognized subclass
 			]);
 		});
-		ClassSelection_Dialog.currentLevel = Number(What("Character Level"));
-		ClassSelection_Dialog.LVLchange = ClassSelection_Dialog.currentLevel - ClassSelection_Dialog.finalLevel;
+		ClassSelection_Dialog.currentLevel = charLvl;
+		ClassSelection_Dialog.LVLchange = charLvl - ClassSelection_Dialog.finalLevel;
 		if (!ClassSelection_Dialog.LVLchange) {
 			setDialogName(ClassSelection_Dialog, "lvlu", "wrap_name", false);
 			setDialogName(ClassSelection_Dialog, "lvlu", "name", "");
@@ -952,9 +953,10 @@ function SelectClass() {
 	loadKnownClassesToDialog();
 	setNumberOfLinesInDialog();
 	
-	
+	var dia = "";
 	do {
-		var dia = app.execDialog(ClassSelection_Dialog);
+		// don't open the dialog if this is triggered by the Character Level field being set to 0
+		dia = charLvlEvent && !charLvl && !dia ? "ok" : app.execDialog(ClassSelection_Dialog);
 		if (dia === "bCSS") {
 			var remUArgr = hasUAranger;
 			resourceDecisionDialog();
@@ -986,11 +988,21 @@ function SelectClass() {
 		};
 	} while (dia !== "ok" && dia !== "cancel");
 
-	delete tDoc.getField("Class and Levels").remVal;
 	if (dia === "ok") { // apply the changes
 		// update the delimiter
 		Value("Delimiter", ClassSelection_Dialog.delimiter);
-		
+		// if the final class text doesn't have a number in it, add the total level at the end
+		// this is done so that with only single class that only has its level changed, it is still applied
+		if (!(/\d/).test(ClassSelection_Dialog.finalText)) ClassSelection_Dialog.finalText += " " + ClassSelection_Dialog.finalLevel;
+		// update the class field
+		if (ClassFld !== ClassSelection_Dialog.finalText) { // text changed
+			delete tDoc.getField("Class and Levels").remVal;
+			Value("Class and Levels", ClassSelection_Dialog.finalText);
+		} else { // text stayed the same, so just update the class level
+			classes.totallevel = ClassSelection_Dialog.finalLevel;
+			ApplyClassLevel();
+		}
+/* UPDATED
 		// set the character level and xp
 		var newLvl = ClassSelection_Dialog.finalLevel > 0 ? ClassSelection_Dialog.finalLevel : "";
 		Value("Character Level", newLvl);
@@ -1016,6 +1028,7 @@ function SelectClass() {
 		};
 		// update the level features of other things than classes
 		CalcExperienceLevel(false);
+*/
 	};
 };
 
@@ -1028,10 +1041,10 @@ function ClickClasses() {
 	};
 };
 
-//at level that ends up editing the level field, ask for which class to add a level to, or start multiclassing
-function AskMulticlassing() {
+// After changing the level field, ask which class to add a level to, or start multiclassing
+function AskMulticlassing(charLvlEvent) {
 	if (app.viewerVersion >= 15) {
-		SelectClass();
+		SelectClass(charLvlEvent ? charLvlEvent : false);
 		return;
 	};
 	var Multiclassing_Dialog = {
@@ -1253,16 +1266,15 @@ function AskMulticlassing() {
 	};
 
 	var Nmbr = classes.parsed.length;
-	var Cl1 = classes.parsed[0] ? classes.parsed[0][0].capitalize() : "";
-	var Cl2 = classes.parsed[1] ? classes.parsed[1][0].capitalize() : "";
-	var Cl3 = classes.parsed[2] ? classes.parsed[2][0].capitalize() : "";
-	var Cl4 = classes.parsed[3] ? classes.parsed[3][0].capitalize() : "";
-	var CharLVL = parseFloat(What("Character Level"));
-	var ClassLVL = classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);
-	var toAdd = Number(CharLVL) - Number(ClassLVL);
+	var Cl1 = classes.parsed[0] ? classes.parsed[0][0]: "";
+	var Cl2 = classes.parsed[1] ? classes.parsed[1][0]: "";
+	var Cl3 = classes.parsed[2] ? classes.parsed[2][0]: "";
+	var Cl4 = classes.parsed[3] ? classes.parsed[3][0]: "";
+	var CharLVL = Number(charLvlEvent ? event.value : What("Character Level"));
+	var toAdd = Number(CharLVL) - Number(classes.totallevel);
 
 	if (IsNotImport && toAdd !== 0) {
-		Multiclassing_Dialog.ClassNmbrs = parseFloat(Nmbr);
+		Multiclassing_Dialog.ClassNmbrs = Nmbr;
 		Multiclassing_Dialog.Class1 = Cl1;
 		Multiclassing_Dialog.Class2 = Cl2;
 		Multiclassing_Dialog.Class3 = Cl3;
@@ -1282,28 +1294,48 @@ function AskMulticlassing() {
 		} else if (dResult !== "") { //do something if one of the existing classes was chosen, and do nothing if an empty string was chosen
 			classes.parsed[dResult - 1][1] += AddAll ? toAdd : sign(toAdd);
 		}
-
+/* UPDATED
 		var newClassText = "";
 		if (classes.parsed.length > 1) {
 			for (var i = 0; i < classes.parsed.length; i++) {
 				newClassText += i !== 0 ? ", " : "";
-				newClassText += classes.parsed[i][0].capitalize() + " " + classes.parsed[i][1];
+				newClassText += classes.parsed[i][0] + " " + classes.parsed[i][1];
 			}
 		} else if (classes.parsed.length === 1) {
-			newClassText = classes.parsed[0][0].capitalize();
+			newClassText = classes.parsed[0][0];
 		}
+*/
 
 		if (!AddAll) {
+			// not everything was applied yet, so lets ask what to do for the next level
 			AskMulticlassing();
-		} else if (newClassText) {
-			Value("Character Level", CharLVL);
-			if (What("Class and Levels") === newClassText) {
-				ApplyClasses(newClassText, false);
-			} else {
-				Value("Class and Levels", newClassText);
-			}
+			return;
 		}
-	};
+
+		// Create the new string for the class field
+		// always add the total class level so that even if only single class that only has its level changed, it is still applied
+		var newClassText = "";
+		for (var i = 0; i < Nmbr; i++) {
+			newClassText += i !== 0 ? ", " : "";
+			newClassText += classes.parsed[i][0] + " " + classes.parsed[i][1];
+		}
+		// update the class field
+		if (What("Class and Levels") !== newClassText) { // text changed
+			delete tDoc.getField("Class and Levels").remVal;
+			Value("Class and Levels", ClassSelection_Dialog.finalText);
+		} else { // text stayed the same, so just update the class level
+			classes.totallevel = ClassSelection_Dialog.finalLevel;
+			ApplyClassLevel();
+		}
+/* UPDATED
+		Value("Character Level", CharLVL);
+		if (What("Class and Levels") === newClassText) {
+			ApplyClasses(newClassText, false);
+		} else {
+			Value("Class and Levels", newClassText);
+		}
+*/
+	}
 };
 
 //show a dialog when the subclass is not set but the level is high enough to need a subclass
@@ -1450,16 +1482,15 @@ function PleaseSubclass(aClass, classString) {
 									type : "view",
 									elements : SubclassArrayRight
 								}]
-						}, {
+						}].concat(!asteriskString ? [] : [{
 							type : "static_text",
 							item_id : "tex1",
 							alignment : "align_fill",
 							font : "dialog",
 							name : asteriskString,
 							wrap_name : true,
-							char_height : -1,
 							width : 480
-						}]
+						}])
 					}, {
 						type : "static_text",
 						item_id : "tex2",
@@ -1477,23 +1508,24 @@ function PleaseSubclass(aClass, classString) {
 			}]
 		}
 	};
-
+/* UPDATED
 	if (!isAsterisk) {
 		setDialogName(SubclassSelect_Dialog, "tex1", "wrap_name", false);
 	};
+*/
 	
 	var theDialog = app.execDialog(SubclassSelect_Dialog);
 	if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
 		var selection = aclassObj[aclassArray[SubclassSelect_Dialog.result]];
 		var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : aclass.name + " (" + ClassSubList[selection].subname + ")";
-		returnTrue = true;
+		return [selection, newName];
+/* UPDATED
 		classes.field = classes.field.replace(classString, newName);
 		if ((!event.target || !event.target.name || event.target.name != "Class and Levels") && What("Class and Levels") != classes.field) {
 			tDoc.getField("Class and Levels").remVal = classes.field;
 			Value("Class and Levels", classes.field);
 		}
-		return [selection, newName];
-/* UPDATED
+		returnTrue = true;
 		IsSubclassException[aClass] = true;
 		if (!event.target.name || event.target.name !== "Class and Levels") Value("Class and Levels", classes.field);
 */

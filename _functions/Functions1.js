@@ -515,11 +515,11 @@ function ResetAll(GoOn, noTempl) {
 	CurrentWeapons.extraproficiencies = [];
 	CurrentWeapons.manualproficiencies = [];
 	ApplyProficiencies(true);
+	classes.extraskills = [];
 */
 	CurrentClasses = {};
 	classes.known = {};
 	classes.old = {};
-	classes.extraskills = [];
 	CurrentRace = {};
 	CurrentBackground = {};
 	CurrentCompRace = {};
@@ -1620,14 +1620,11 @@ function classesFieldVal() {
 		event.value = event.target.remVal;
 		delete event.target.remVal;
 	} else {
-		ApplyClasses(event.value, true);
-		if (event.value && event.value !== classes.field) {
-			event.value = classes.field;
-		};
+		ApplyClasses(event.value, true, true);
 	};
 }
 
-//search the string for possible class and subclass
+// search the string for possible class and subclass
 function ParseClass(input) {
 	var found = false, tempFound = false, foundLen = 0;
 
@@ -1660,9 +1657,11 @@ function ParseClass(input) {
 			// or if we are not using the search length, just look at the newest source date
 			var tempDate = sourceDate(kObj.source);
 			if (i == 1 && ((!ignoreSearchLength && kObj.name.length < foundLen) || (!ignoreSearchLength && kObj.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat))) continue;
-/* 			// stop if the source of the previous class match is more recent and this new match is not a better match (round 1 only)
+/* UPDATED
+ 			// stop if the source of the previous class match is more recent and this new match is not a better match (round 1 only)
 			var tempDate = sourceDate(kObj.source);
-			if (i == 1 && foundDat > tempDate && classFoundLen >= kObj.name.length) continue; */
+			if (i == 1 && foundDat > tempDate && classFoundLen >= kObj.name.length) continue;
+*/
 
 			if (i == 1) { // we have a matching class! (round 1 only)
 				classFound = key;
@@ -1685,9 +1684,11 @@ function ParseClass(input) {
 				// or if we are not using the search length, just look at the newest source date
 				var tempSubDate = sourceDate(sObj.source);
 				if ((!ignoreSearchLength && sObj.subname.length < subFoundLen) || (!ignoreSearchLength && sObj.subname.length == subFoundLen && tempSubDate < foundSubDat) || (ignoreSearchLength && tempSubDate <= foundSubDat)) continue;
-/* 				// stop if the source of the previous subclass match is more recent and this new match is not a better match
+/* UPDATED
+				// stop if the source of the previous subclass match is more recent and this new match is not a better match
 				var tempSubDate = sourceDate(sObj.source);
-				if (foundSubDat > tempSubDate && subFoundLen >= sObj.subname.length) continue; */
+				if (foundSubDat > tempSubDate && subFoundLen >= sObj.subname.length) continue;
+*/
 
 				// we have a match for both the class and the subclass!
 				classFound = key;
@@ -1702,27 +1703,28 @@ function ParseClass(input) {
 	return classFound ? [classFound, subFound] : false;
 };
 
-//detects classes entered and parses information to global classes variable
-function FindClasses(Event, isFieldVal) {
-	if (Event === undefined) {
-		classes.field = What("Class and Levels");
-	};
-	var temp = clean(classes.field.replace(/^\d+/, "")) === "" ? "" : classes.field.replace(/^\d+/, "").toLowerCase();
-	var tempArray = [];
-	var tempPosition = 0;
-	var tempChar = "";
-	var tempType = 0;
-	var tempString;
+// detects classes entered and parses information to global classes variable
+function FindClasses(NotAtStartup, isFieldVal) {
+	if (!NotAtStartup) classes.field = What("Class and Levels"); // called from startup
+
+	// Remove starting numbers and clean the start/end of the string
+	classes.field = classes.field.replace(/^[ -\.,\\/:;\d]+|[ -\.,\\/:;]+$/g, '');
+	classes.totallevel = 0;
+
+	// Initialize some variables
 	var primeClass = "";
 
-	//put the old classes.known in classes.old so the differences in level can be queried
+	// Put the old classes.known in classes.old so the differences in level can be queried later
 	var oldClasses = eval(classes.old.toSource());
 	classes.old = {};
 	classes.oldprimary = classes.primary;
 	classes.oldspellcastlvl = classes.spellcastlvl;
 	for (var aClass in classes.known) {
 		classes.old[aClass] = {
+/* UPDATED
 			classlevel : IsSubclassException[aClass] && oldClasses[aClass] && oldClasses[aClass].classlevel ? oldClasses[aClass].classlevel : IsSubclassException[aClass] ? 0 : classes.known[aClass].level,
+*/
+			classlevel : classes.known[aClass].level,
 			subclass : classes.known[aClass].subclass,
 			fullname : CurrentClasses[aClass].fullname
 		}
@@ -1733,13 +1735,34 @@ function FindClasses(Event, isFieldVal) {
 */
 	}
 
-	//split raw string at string-number divides and push parts into temp array
+	// Get the different classes from the class field string
+	classes.parsed = [];
+	if (classes.field != "") {
+		var ClDelimiter = clean(What("Delimiter"));
+		var fieldRem = classes.field;
+		var fieldSplit = fieldRem.match(/\D+|(\d+(\.|,))?\d+/g);
+		var tempLevel = fieldSplit.length > 2 ? 1 : Number(What("Character Level"));
+		// now loop through the found elements and add them to the classes.parsed array
+		for (var i = 0; i < fieldSplit.length; i = i+2) {
+			if (ClDelimiter) fieldSplit[i].replace(RegExp("^" + ClDelimiter.RegEscape(), "i"), '');
+			var fieldLevel = fieldSplit[i+1] !== undefined ? parseFloat(fieldSplit[i+1]) : tempLevel
+			classes.parsed.push([clean(fieldSplit[i]), fieldLevel]);
+			classes.totallevel += fieldLevel;
+		}
+	}
+/* UPDATED
+	// Split raw string at string-number divides and push parts into temp array
+	var temp = clean(classes.field.replace(/^\d+/, "")) === "" ? "" : classes.field.replace(/^\d+/, "").toLowerCase();
+	var tempArray = [];
+	var tempPosition = 0;
+	var tempChar = "";
+	var tempType = 0;
 	for (var i = 0; i < temp.length; i++) {
-		tempChar = parseInt(temp.charAt(i), 10);
+		var tempChar = parseInt(temp.charAt(i), 10);
 		if (isNaN(tempChar)) {
 			if (tempType === 2) {
 				tempArray.push(Number(temp.substring(tempPosition, i)));
-				tempPosition = i;
+				var tempPosition = i;
 			}
 			if (i === temp.length - 1) {
 				tempArray.push(String(temp.substring(tempPosition, i + 1)));
@@ -1777,87 +1800,111 @@ function FindClasses(Event, isFieldVal) {
 			temp[temp.length - 1][1] = temp.length - 1 === 0 && What("Character Level") ? What("Character Level") : 1;
 		}
 	}
-	
-	//reset the global classes variables
+
+	classes.parsed = temp;
+
+	//determine the character level
+	var level = classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);
+*/
+
+	// Reset the global classes variables
 	classes.hd = [];
 	classes.hp = 0;
 
-	classes.parsed = temp;
-	classesTemp = {};
-	
-	//determine the character level
-	var level = classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);
-
 	//find known classes and push them into known array, add hd
+	var classesTemp = {};
 	for (i = 0; i < classes.parsed.length; i++) {
-		tempString = classes.parsed[i][0];
 		var tempLevel = classes.parsed[i][1];
-		var tempFound = ParseClass(tempString);
+		var tempFound = ParseClass(classes.parsed[i][0]);
 
-		if (tempFound) { //class detected and meets any Prestige Class prereqs it has
-			var tempClass = tempFound[0];
-			var tempSubClass = tempFound[1];
-			var tempClObj = ClassList[tempClass];
-			var tempDie = tempSubClass && ClassSubList[tempSubClass].die ? ClassSubList[tempSubClass].die : tempClObj.die;
+		if (!tempFound) continue; // class not detected
+		var tempClass = tempFound[0];
+		var tempSubClass = tempFound[1];
+		var tempSubClassOld = classes.old[aClass] && classes.old[aClass].subclass ? classes.old[aClass].subclass : false;
+		var tempClObj = ClassList[tempClass];
+		var tempDie = tempSubClass && ClassSubList[tempSubClass].die ? ClassSubList[tempSubClass].die : tempClObj.die;
 
-			//see if the found class isn't a prestige class and if all prereqs are met. If not, skip this class
-			var tempPrereq = !ignorePrereqs && tempClObj.prestigeClassPrereq ? tempClObj.prestigeClassPrereq : false;
-			if (tempPrereq) {
-				if (!isNaN(tempPrereq)) {
-					if (tempPrereq > level - tempLevel) continue;
-				} else {
-					try {
-						tempPrereq = eval(tempPrereq);
-					} catch (err) {
-						tempPrereq = true;
-					}
-					if (tempPrereq === false) continue;
-				}
-			}
-
-			if (primeClass === "" && !tempClObj.prestigeClassPrereq) {
-				primeClass = tempClass;
-			};
-			classesTemp[tempClass] = {
-				name : tempClass,
-				level : tempLevel,
-				subclass : tempSubClass,
-				string : classes.field.match(RegExp(clean(tempString, " ").RegEscape(), "i"))[0]
-			};
-
-			// Ask for subclass if none is defined and this is not a reset or a sheet startup event
-			if (IsNotReset && Event != undefined && !tempSubClass && tempClObj.subclasses[1].length) {
-				// first check at what level this class gets it subclass and if we are at that level yet
-				var enoughLevel = false;
-				for (var propKey in tempClObj.features) {
-					var tempProp = tempClObj.features[propKey];
-					if (propKey.indexOf("subclassfeature") == -1 || !tempProp.minlevel || tempProp.minlevel > tempLevel) continue;
-					enoughLevel = true;
-					break;
-				}
-				if (enoughLevel) {
-					var newSubClass = PleaseSubclass(tempClass, classesTemp[tempClass].string);
-					if (newSubClass) {
-						classesTemp[tempClass].subclass = newSubClass[0];
-						classesTemp[tempClass].string = newSubClass[1];
-						classes.parsed[i][0] = newSubClass[1].toLowerCase();
-					}
-				}
-			}
-
-			if (classes.hd[tempDie] === undefined) { //add hd
-				classes.hd[tempDie] = [tempDie, tempLevel];
+		// see if the found class isn't a prestige class and if all prereqs are met. If not, skip this class
+		var tempPrereq = !ignorePrereqs && tempClObj.prestigeClassPrereq ? tempClObj.prestigeClassPrereq : false;
+		if (tempPrereq) {
+			if (!isNaN(tempPrereq)) {
+				tempPrereq = Number(tempPrereq) <= (level - tempLevel);
 			} else {
-				classes.hd[tempDie][1] += tempLevel;
-			};
+				try {
+					tempPrereq = eval(tempPrereq);
+				} catch (err) {
+					tempPrereq = true;
+				}
+			}
+			// ask the user if we should apply this prestige class (only if not a reset, import, or load on startup)
+			if (tempPrereq === false && IsNotReset && IsNotImport && NotAtStartup) {
+				var prestClMsg = app.alert({
+					nType : 2, // Yes,No
+					nIcon : 1, // Warning
+					cTitle : "Prestige class prerequisites not met!",
+					cMsg : "The prestige class '" + tempClObj.name + "' has a prerequisite which wasn't met. Apply this prestige class anyway?\n\nIf you select 'No', the " + tempLevel + " level(s) of this prestige class will be counted towards the total character level, but none of its features will be added."
+				});
+				if (prestClMsg == 3) continue; // user decided not to apply the prestige class
+			}
+		}
 
-			if (classes.hp === 0) { //add first level hp
-				classes.hp = tempDie;
-			};
+		// set the primary class if not yet defined and this is not a prestige class
+		if (primeClass === "" && !tempClObj.prestigeClassPrereq) primeClass = tempClass;
+
+		// set the object for this class (later to be set to classes.known)
+		classesTemp[tempClass] = {
+			name : tempClass,
+			level : tempLevel,
+			subclass : tempSubClass,
+			string : classes.parsed[i][0]
+		};
+
+		// Ask for subclass if none is defined and this is not a reset, import, or a sheet startup event and not after just removing a subclass
+		if (IsNotReset && IsNotImport && NotAtStartup && !tempSubClass && tempClObj.subclasses[1].length && !tempSubClassOld) {
+			// first check at what level this class gets it subclass and if we are at that level yet
+			var enoughLevel = false;
+			for (var propKey in tempClObj.features) {
+				var tempProp = tempClObj.features[propKey];
+				if (propKey.indexOf("subclassfeature") == -1 || !tempProp.minlevel || tempProp.minlevel > tempLevel) continue;
+				enoughLevel = true;
+				break;
+			}
+			if (enoughLevel) {
+				var newSubClass = PleaseSubclass(tempClass, classesTemp[tempClass].string);
+				if (newSubClass) {
+					classesTemp[tempClass].subclass = newSubClass[0];
+					classesTemp[tempClass].string = newSubClass[1];
+					classes.field = classes.field.replace(classes.parsed[i][0], newSubClass[1]);
+					classes.parsed[i][0] = newSubClass[1];
+				}
+			}
+		}
+
+		if (classes.hd[tempDie] === undefined) { //add hd
+			classes.hd[tempDie] = [tempDie, tempLevel];
+		} else {
+			classes.hd[tempDie][1] += tempLevel;
+		};
+
+		if (classes.hp === 0) { //add first level hp
+			classes.hp = tempDie;
 		};
 	};
 
-	//if the found classes are the exact same as the classes.known, don't do anything
+	// if there is only a single class, remove the level from the classes.field (if present)
+	if (classes.parsed.length == 1 && classes.field.indexOf(classes.parsed[0][1]) !== -1) {
+		classes.field = clean(classes.field.replace(classes.parsed[0][1], ''));
+	}
+
+	// if any of the above changed the classes.field set it
+	if (NotAtStartup && !isFieldVal && What("Class and Levels") != classes.field) {
+		tDoc.getField("Class and Levels").remVal = classes.field;
+		Value("Class and Levels", classes.field);
+	} else if (NotAtStartup && isFieldVal && event.value != classes.field) {
+		event.value = classes.field;
+	}
+
+	// if the found classes are the exact same as the classes.known, don't do anything
 	var isChange = primeClass !== classes.primary;
 	if (!isChange) {
 		var testArray = [];
@@ -1867,7 +1914,7 @@ function FindClasses(Event, isFieldVal) {
 			var theKcl = classes.known[testArray[t]];
 			var theNcl = classesTemp[testArray[t]];
 			if (theKcl && theNcl && theNcl.name === theKcl.name && theNcl.level === theKcl.level && theNcl.subclass === theKcl.subclass) {
-				theKcl.string = theNcl.string; //because otherwise we skip this change, if it is the only thing that changes
+				theKcl.string = theNcl.string; // because otherwise we skip this change, if it is the only thing that changes
 				continue;
 			}
 			isChange = true;
@@ -1875,16 +1922,17 @@ function FindClasses(Event, isFieldVal) {
 		};
 	};
 	if (!isChange) {
+/* UPDATED
 		// only update the character level field, as it might still have changed from unrecognised classes
-		if (What("Character Level") != level) {
-			Value("Character Level", level);
-			CalcExperienceLevel();
-		};
+		if (Number(What("Character Level")) != classes.totallevel) Value("Character Level", classes.totallevel);
+		CalcExperienceLevel();
+*/
+		ApplyClassLevel(true);
 		return true;
 	};
 
 	// Check every class in classes old and if they are not in classesTemp, remove their features
-	for (var oClass in classes.old) {
+	if (NotAtStartup) { for (var oClass in classes.old) {
 		var tempCl = CurrentClasses[oClass];
 
 		// if this class exists, was the primary class, and is no longer, change things up
@@ -2004,7 +2052,7 @@ function FindClasses(Event, isFieldVal) {
 			}
 		}
 */
-	}
+	} }
 
 	classes.known = classesTemp;
 	classes.primary = primeClass;
@@ -2226,8 +2274,7 @@ function FindClasses(Event, isFieldVal) {
 */
 	}
 
-	//add the current classes.known into classes.old on startup of the sheet
-	if (Event == undefined) {
+	if (!NotAtStartup) { // add the current classes.known into classes.old on startup of the sheet
 		for (var aClass in classes.known) {
 			classes.old[aClass] = {
 				classlevel : classes.known[aClass].level,
@@ -2237,47 +2284,35 @@ function FindClasses(Event, isFieldVal) {
 		}
 		classes.oldspellcastlvl = classes.spellcastlvl;
 		classes.oldprimary = classes.primary;
+	} else { // if not a startup event, update the field with the CurrentSpells variable
+		SetStringifieds("spells");
 	}
+
+	return false;
 };
 
-//apply the effect of the classes
+// apply the effect of the classes
 function ApplyClasses(inputclasstxt, updateall, isFieldVal) {
 	updateall = updateall !== undefined ? updateall : true;
 	isFieldVal = isFieldVal ? isFieldVal : false;
 	classes.field = inputclasstxt;
 
-	//only update the tooltips if class is set to manual
-	//detects classes entered and parses information to global classes variable, if nothing has changed, it returns true and we can stop this function
-	if (What("Manual Class Remember") === "Yes" || FindClasses(classes.field, isFieldVal)) return; //don't do the rest of this function
+	// Stop if class is set to manual or if the entered classes are the same as classes.known
+	if (What("Manual Class Remember") === "Yes" || FindClasses(true, isFieldVal)) return; 
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying the class(es)...");
 	calcStop();
 	thermoM(1/6); // Increment the progress bar
 	
-	//put hit dice on sheet
-	var n = 1;
-	if (classes.hd.length > 0) {
-		classes.hd.sort(function (a, b) {
-			return a - b;
-		});
+	// Put hit dice on sheet
+	if (classes.hd.length > 0) classes.hd.sort(function (a, b) { return a - b; }); // sort by biggest HD
+	for (var i = 0; i < 3; i++) { // loop through the 3 HD fields
+		Value("HD" + (i+1) + " Level", classes.hd[i] ? Math.min(classes.hd[i][1], 999) : "");
+		Value("HD" + (i+1) + " Die", classes.hd[i] ? classes.hd[i][0] : "");
 	}
-	for (var i = 0; i < classes.hd.length; i++) {
-		if (classes.hd[i] !== undefined && n < 4) {
-			Value("HD" + n + " Level", Math.min(classes.hd[i][1], 999));
-			Value("HD" + n + " Die", classes.hd[i][0]);
-			n++;
-		}
-	}
-	while (n < 4) {
-		Value("HD" + n + " Level", "");
-		Value("HD" + n + " Die", "");
-		n++;
-	};
-	CurrentUpdates.types.push("hp");
 	
 	thermoM(2/6); // Increment the progress bar
-	thermoTxt = thermoM("Adding saves and proficiencies...", false); // Change the progress bar text
 	
 	// Add attributes of each class, if we didn't do so already
 	var primaryChange = !classes.oldprimary || classes.oldprimary !== classes.primary;
@@ -2291,6 +2326,46 @@ function ApplyClasses(inputclasstxt, updateall, isFieldVal) {
 			AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.\n\n" + CurrentClasses[classes.primary].equipment);
 		}
 	}
+	
+	thermoM(3/6); // Increment the progress bar
+
+	// Set some things dependent on class-levels
+	SetTheAbilitySaveDCs();
+	AddAttacksPerAction();
+	if (MakeClassMenu()) { // Show the option button if a class has features that offers a choice
+		DontPrint("Class Features Menu");
+	} else {
+		Hide("Class Features Menu");
+	}
+	
+	// Register some things to prompt the user about
+	CurrentUpdates.types.push("hp");	
+	CurrentUpdates.types.push("spellcastingclass");
+	CurrentUpdates.types.push("testasi");
+
+	// Set the spell slots of the class' levels
+	thermoTxt = thermoM("Setting spell slots...", false); //change the progress dialog text
+	thermoM(4/6); //increment the progress dialog's progress
+	for (var ss = 0; ss <= 8; ss++) {
+		var SpellSlotsName = "SpellSlots.CheckboxesSet.lvl" + (ss + 1);
+		var SpellSlotsField = Number(What(SpellSlotsName));
+		var SpellSlotsTotal = SpellSlotsField;
+		if (classes.spellcastlvl.otherTables) SpellSlotsTotal += classes.spellcastlvl.otherTables[ss]; // add new slots
+		if (classes.oldspellcastlvl.otherTables) SpellSlotsTotal -= classes.oldspellcastlvl.otherTables[ss]; // remove old slots
+		for (var casterType in classes.spellcastlvl) {
+			var spTable = tDoc[casterType + "SpellTable"];
+			if (casterType == "otherTables" || !spTable) continue;
+			SpellSlotsTotal += spTable[Math.min(spTable.length - 1, classes.spellcastlvl[casterType])][ss]; // add new slots
+			if (classes.oldspellcastlvl[casterType]) {
+				SpellSlotsTotal -= spTable[Math.min(spTable.length - 1, classes.oldspellcastlvl[casterType])][ss]; // remove old slots
+			}
+		}
+		if (SpellSlotsField != SpellSlotsTotal) Value(SpellSlotsName, SpellSlotsTotal);
+	}
+
+	thermoM(thermoTxt, true); // Stop progress bar
+
+	ApplyClassLevel(); // Lastly, update the level (or just the class features if level didn't change)
 
 /* UPDATED
 	//add saves and tools of the primary class
@@ -2314,11 +2389,16 @@ function ApplyClasses(inputclasstxt, updateall, isFieldVal) {
 			processTools(true, CurrentClasses[aClass].name, classTools.secondary);
 		};
 	};
-*/
-	thermoM(3/6); //increment the progress dialog's progress
-	thermoTxt = thermoM("Setting the spell slots...", false); //change the progress dialog text
+
+	thermoTxt = thermoM("Setting the total character level...", false); //change the progress dialog text
+	thermoM(4/6); //increment the progress dialog's progress
+
+
 	
-	//set the spell slots of the class' levels
+	thermoTxt = thermoM("Setting spell slots...", false); //change the progress dialog text
+	thermoM(3/6); //increment the progress dialog's progress
+
+	// Set the spell slots of the class' levels
 	for (var ss = 0; ss <= 8; ss++) {
 		var SpellSlotsName = "SpellSlots.CheckboxesSet.lvl" + (ss + 1);
 		var SpellSlotsField = Number(What(SpellSlotsName));
@@ -2336,12 +2416,6 @@ function ApplyClasses(inputclasstxt, updateall, isFieldVal) {
 		if (SpellSlotsField != SpellSlotsTotal) Value(SpellSlotsName, SpellSlotsTotal);
 	}
 	if (What("SpellSlotsRemember") === "[false,false]") SpellPointsLimFea("Add");
-
-	thermoM(4/6); //increment the progress dialog's progress
-	thermoTxt = thermoM("Setting the total character level...", false); //change the progress dialog text
-
-	//put the ability save DC right
-	SetTheAbilitySaveDCs();
 
 	//add all levels and set character level
 	if (updateall) {
@@ -2363,10 +2437,8 @@ function ApplyClasses(inputclasstxt, updateall, isFieldVal) {
 	if (noSubClExc) {
 		thermoTxt = thermoM("Finalizing the changes of the class(es)...", false); //change the progress dialog text
 		AddAttacksPerAction(); //update number of attacks
-/* UPDATED
 		ApplyProficiencies(true); //call to update armor, shield and weapon proficiencies
 		UpdateTooltips(); //skills tooltip, ability score tooltip
-*/
 
 		//show the option button if the class has features that offers a choice
 		if (MakeClassMenu()) {
@@ -2380,7 +2452,52 @@ function ApplyClasses(inputclasstxt, updateall, isFieldVal) {
 		CheckForSpellUpdate(); //see if there is a reason to update the spells sheets
 	}
 	thermoM(thermoTxt, true); // Stop progress bar
+*/
 };
+
+// a function to apply the class level depending on how it was changed
+function ApplyClassLevel(noChange) {
+	if (IsCharLvlVal !== false) { // called during a level field change event
+		IsCharLvlVal = classes.totallevel;
+	} else if (Number(What("Character Level")) != classes.totallevel) {
+		Value("Character Level", classes.totallevel);
+	} else if (!noChange) { // the classes changed, but the total level didn't, so only call to update the class features
+		UpdateLevelFeatures("class");
+	}
+}
+
+// what to do when something is entered in the Character Level field (field keystroke)
+function levelFieldKeystroke() {
+	// only allow numbers, without decimals, and no negative numbers
+	keystroke1(false, false);
+	// when applying the value, empty the field if level equals zero
+	if (event.willCommit) {
+		event.value = event.value == 0 ? '' : Number(event.value);
+	}
+}
+
+// apply the Character Level field change (field validation)
+function levelFieldVal() {
+	var lvlOld = Number(What(event.target.name));
+	var lvl = Number(event.value);
+	IsCharLvlVal = lvl;
+
+	if (lvl != classes.totallevel && IsNotReset && IsNotImport) { // new level not the same as total level for found classes, so ask how to allocate this level to a (new) class
+		AskMulticlassing(true);
+	}
+
+	if (IsCharLvlVal != lvl) { // the above might have changed the total level, so correct that
+		lvl = IsCharLvlVal;
+		event.value = lvl > 0 ? lvl : '';
+	}
+
+	UpdateLevelFeatures("all", Math.max(1,lvl)); // update all level features and use the set level
+
+	// the following should change to be part UpdateLevelFeatures() once custom companions can be imported
+	UpdateRangerCompanions(); // update level-dependent things for any ranger companions
+
+	IsCharLvlVal = false;
+}
 
 //Check if the level or XP entered matches the XP or level
 function CalcExperienceLevel(AlsoClass) {
@@ -5590,7 +5707,7 @@ function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld
 	var FeaOtherLines = FeaPost + Fea["Descr" + old];
 	if (What("Unit System") == "metric") FeaOtherLines = ConvertToMetric(FeaOtherLines, 0.5);
 	
-	return [FeaFirstLine + (Fea.extFirst ? FeaPost : ""), "\r" + FeaFirstLine + FeaOtherLines];
+	return [FeaFirstLine + (ForceOld ? "" : FeaPost), "\r" + FeaFirstLine + FeaOtherLines];
 };
 
 //change all the level-variables gained from classes and races
@@ -5722,7 +5839,10 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				var oldHeaderString = cl.fullname + ", level " + oldClassLvl[aClass] + ":";
 				if (What("Class Features").indexOf("\r\r" + oldHeaderString) !== -1) oldHeaderString = "\r\r" + oldHeaderString;
 				RemoveString("Class Features", oldHeaderString, false);
+/* UPDATED
 			} else if (oldClassLvl[aClass] == 0 && !IsSubclassException[aClass]) { // add the header
+*/
+			} else if (oldClassLvl[aClass] == 0) { // add the header
 				var newHeaderString = cl.fullname + ", level " + newClassLvl[aClass] + ":";
 				if (What("Class Features")) newHeaderString = "\r\r" + newHeaderString;
 				AddString("Class Features", newHeaderString, false);

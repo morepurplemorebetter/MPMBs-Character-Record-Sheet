@@ -268,11 +268,14 @@ var classes = {
 	hd : [],
 	hp : 0,
 	attacks : 1,
-	extraskills : [],
+	totallevel : 0, // classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);
 	primary : "",
 	oldprimary : "",
 	spellcastlvl : {default : 0, warlock : 0},
 	oldspellcastlvl : {default : 0, warlock : 0}
+/* UPDATED
+	extraskills : []
+*/
 };
 
 var CurrentUpdates = {types : [], extras : {}};
@@ -350,6 +353,7 @@ var IsNotFeatMenu = true;
 var IsNotWeaponMenu = true;
 var IsSetDropDowns = false;
 var IsNotUserScript = true;
+var IsCharLvlVal = false;
 
 var FieldsRemember = [];
 
