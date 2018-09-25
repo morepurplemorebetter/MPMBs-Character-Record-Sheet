@@ -600,6 +600,12 @@ function UpdateSheetDisplay() {
 		zie CountASIs();
 */
 	};
+	if (CurrentUpdates.types.indexOf("xp") !== -1) { // set the xp (or similar) to the right amount by level
+/* NOG TE DOEN
+		changedXP = ??
+		zie CalcExperienceLevel();
+*/
+	};
 
 	// reset the CurrentUpdates variable
 	CurrentUpdates = {types : [], extras : {}};

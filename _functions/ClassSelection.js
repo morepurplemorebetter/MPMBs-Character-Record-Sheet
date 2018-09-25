@@ -14,7 +14,7 @@ function SetPositiveElement(objIn, element) {
 };
 
 //a dialogue that allows immediate feedback on what a class' name will look like and create a comprehensive, complete string to put in the class field
-function SelectClass(charLvlEvent) {
+function SelectClass() {
 	if (app.viewerVersion < 15) {
 		FunctionIsNotAvailable();
 		return;
@@ -23,7 +23,7 @@ function SelectClass(charLvlEvent) {
 	var theChar = What("PC Name") ? What("PC Name") : "Your Character";
 	var hasUAranger = false;
 	var ClassFld = What("Class and Levels");
-	var charLvl = Number(charLvlEvent ? event.value : What("Character Level"));
+	var charLvl = IsCharLvlVal !== false ? IsCharLvlVal : Number(What("Character Level"));
 	//make an object for each class' list of subclasses
 	var setClassesToDialog = function() {
 		hasUAranger = !testSource("rangerua", ClassList.rangerua, "classExcl");
@@ -952,11 +952,19 @@ function SelectClass(charLvlEvent) {
 	setClassesToDialog();
 	loadKnownClassesToDialog();
 	setNumberOfLinesInDialog();
-	
-	var dia = "";
+
+	var dia, txtFinal, lvlFinal;
 	do {
 		// don't open the dialog if this is triggered by the Character Level field being set to 0
-		dia = charLvlEvent && !charLvl && !dia ? "ok" : app.execDialog(ClassSelection_Dialog);
+		if (IsCharLvlVal == 0 && !dia) {
+			var dia = "ok";
+			txtFinal = "";
+			lvlFinal = 0;
+		} else {
+			var dia = app.execDialog(ClassSelection_Dialog);
+			txtFinal = ClassSelection_Dialog.finalText;
+			lvlFinal = ClassSelection_Dialog.finalLevel;
+		}
 		if (dia === "bCSS") {
 			var remUArgr = hasUAranger;
 			resourceDecisionDialog();
@@ -977,11 +985,11 @@ function SelectClass(charLvlEvent) {
 			};
 		} else if (dia === "bAdR") {
 			setNumberOfLinesInDialog(true);
-		} else if (dia === "ok" && ClassFld && (!ClassSelection_Dialog.finalText || !ClassSelection_Dialog.finalLevel)) {
+		} else if (dia === "ok" && ClassFld && (!txtFinal || !lvlFinal)) {
 			var askSure = app.alert({
 				nIcon : 2,
 				cTitle : "Are You Sure? - Remove All Classes & Levels",
-				cMsg : "You are about to remove all levels and classes from your character!\nAre you sure you want to continue?\n\nNote that you have to use the first line in the Class Selection dialogue, for that is the class your character took at 1st level. If the first line if left empty or its level is set to zero, the sheet will assume you want to delete all the character's classes and levels.\n\nClick 'No' to go back to the Class Selection dialogue.",
+				cMsg : "You are about to remove all levels and classes from your character!\nAre you sure you want to continue?" + (IsCharLvlVal == 0 && !dia ? "" : "\n\nNote that you have to use the first line in the Class Selection dialogue, for that is the class your character took at 1st level. If the first line if left empty or its level is set to zero, the sheet will assume you want to delete all the character's classes and levels.") + "\n\nClick 'No' to go back to the Class Selection dialog.",
 				nType : 2
 			});
 			if (askSure !== 4) dia = "Go Again!";
@@ -993,13 +1001,13 @@ function SelectClass(charLvlEvent) {
 		Value("Delimiter", ClassSelection_Dialog.delimiter);
 		// if the final class text doesn't have a number in it, add the total level at the end
 		// this is done so that with only single class that only has its level changed, it is still applied
-		if (!(/\d/).test(ClassSelection_Dialog.finalText)) ClassSelection_Dialog.finalText += " " + ClassSelection_Dialog.finalLevel;
+		if (!(/\d/).test(txtFinal)) txtFinal += " " + lvlFinal;
 		// update the class field
-		if (ClassFld !== ClassSelection_Dialog.finalText) { // text changed
+		if (ClassFld !== txtFinal) { // text changed
 			delete tDoc.getField("Class and Levels").remVal;
-			Value("Class and Levels", ClassSelection_Dialog.finalText);
+			Value("Class and Levels", txtFinal);
 		} else { // text stayed the same, so just update the class level
-			classes.totallevel = ClassSelection_Dialog.finalLevel;
+			classes.totallevel = lvlFinal;
 			ApplyClassLevel();
 		}
 /* UPDATED
@@ -1042,9 +1050,9 @@ function ClickClasses() {
 };
 
 // After changing the level field, ask which class to add a level to, or start multiclassing
-function AskMulticlassing(charLvlEvent) {
+function AskMulticlassing() {
 	if (app.viewerVersion >= 15) {
-		SelectClass(charLvlEvent ? charLvlEvent : false);
+		SelectClass();
 		return;
 	};
 	var Multiclassing_Dialog = {
@@ -1270,8 +1278,8 @@ function AskMulticlassing(charLvlEvent) {
 	var Cl2 = classes.parsed[1] ? classes.parsed[1][0]: "";
 	var Cl3 = classes.parsed[2] ? classes.parsed[2][0]: "";
 	var Cl4 = classes.parsed[3] ? classes.parsed[3][0]: "";
-	var CharLVL = Number(charLvlEvent ? event.value : What("Character Level"));
-	var toAdd = Number(CharLVL) - Number(classes.totallevel);
+	var CharLVL = IsCharLvlVal !== false ? IsCharLvlVal : Number(What("Character Level"));
+	var toAdd = CharLVL - Number(classes.totallevel);
 
 	if (IsNotImport && toAdd !== 0) {
 		Multiclassing_Dialog.ClassNmbrs = Nmbr;

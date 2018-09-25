@@ -1708,7 +1708,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	if (!NotAtStartup) classes.field = What("Class and Levels"); // called from startup
 
 	// Remove starting numbers and clean the start/end of the string
-	classes.field = classes.field.replace(/^[ -\.,\\/:;\d]+|[ -\.,\\/:;]+$/g, '');
+	classes.field = classes.field.replace(/^[ \-.,\\/:;\d]+|[ \-.,\\/:;]+$/g, '');
 	classes.totallevel = 0;
 
 	// Initialize some variables
@@ -2298,7 +2298,7 @@ function ApplyClasses(inputclasstxt, updateall, isFieldVal) {
 	classes.field = inputclasstxt;
 
 	// Stop if class is set to manual or if the entered classes are the same as classes.known
-	if (What("Manual Class Remember") === "Yes" || FindClasses(true, isFieldVal)) return; 
+	if (What("Manual Class Remember") === "Yes" || FindClasses(true, isFieldVal)) return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying the class(es)...");
@@ -2466,29 +2466,25 @@ function ApplyClassLevel(noChange) {
 	}
 }
 
-// what to do when something is entered in the Character Level field (field keystroke)
-function levelFieldKeystroke() {
-	// only allow numbers, without decimals, and no negative numbers
-	keystroke1(false, false);
-	// when applying the value, empty the field if level equals zero
-	if (event.willCommit) {
-		event.value = event.value == 0 ? '' : Number(event.value);
-	}
-}
-
 // apply the Character Level field change (field validation)
 function levelFieldVal() {
 	var lvlOld = Number(What(event.target.name));
 	var lvl = Number(event.value);
-	IsCharLvlVal = lvl;
+	if (lvlOld == lvl) { // no level change, but it could be an empty string changed to '0' or vice versa
+		event.value = lvl > 0 ? lvl : '';
+		return;
+	}
 
+	IsCharLvlVal = lvl; // save level to global variable
+
+	console.println("IsCharLvlVal:"+IsCharLvlVal); // DEBUGGING!!!
 	if (lvl != classes.totallevel && IsNotReset && IsNotImport) { // new level not the same as total level for found classes, so ask how to allocate this level to a (new) class
 		AskMulticlassing(true);
 	}
 
 	if (IsCharLvlVal != lvl) { // the above might have changed the total level, so correct that
+	console.println("IsCharLvlVal != lvl: "+IsCharLvlVal); // DEBUGGING!!!
 		lvl = IsCharLvlVal;
-		event.value = lvl > 0 ? lvl : '';
 	}
 
 	UpdateLevelFeatures("all", Math.max(1,lvl)); // update all level features and use the set level
@@ -2496,7 +2492,12 @@ function levelFieldVal() {
 	// the following should change to be part UpdateLevelFeatures() once custom companions can be imported
 	UpdateRangerCompanions(); // update level-dependent things for any ranger companions
 
-	IsCharLvlVal = false;
+	IsCharLvlVal = false; // reset global variable
+	
+	// make sure to update the experience points (or similar system) and alert the user
+	CurrentUpdates.types.indexOf("xp");
+
+	event.value = lvl > 0 ? lvl : '';
 }
 
 //Check if the level or XP entered matches the XP or level
@@ -5848,7 +5849,10 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				AddString("Class Features", newHeaderString, false);
 			} else { // update the header
 				var newHeaderString = cl.fullname + ", level " + newClassLvl[aClass] + ":";
+				var oldHeaderString = !classes.old[aClass] ? "" : classes.old[aClass].fullname.RegEscape() + ".*, level \\d+:";
+/* UPDATED
 				var oldHeaderString = !classes.old[aClass] ? "" : (newSubClass === oldSubClass ? cl.fullname : ClassSubList[oldSubClass] && ClassSubList[oldSubClass].fullname ? ClassSubList[oldSubClass].fullname : cl.name).RegEscape() + ".*, level \\d+:";
+*/
 				ReplaceString("Class Features", newHeaderString, false, oldHeaderString, true);
 			}
 
@@ -6505,7 +6509,7 @@ function MakeClassMenu() {
 			var removeStop = !isActive ? "add" : extrareturn ? "remove" : "stop";
 
 			// now see if we should disable this because of prerequisites
-			var isEnabled = feaObjA.prereqeval && !ignorePreregs && !isActive ? testPrereqs(feaObjA.prereqeval, feaObjNm, featureNm) : true;
+			var isEnabled = feaObjA.prereqeval && !ignorePrereqs && !isActive ? testPrereqs(feaObjA.prereqeval, feaObjNm, featureNm) : true;
 /* UPDATED
  			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name + stringSource(feaObjA, "first,abbr", ", ") : array[i].toLowerCase();
 			var theTest = (extrareturn === "extra" ? toTestE : toTest).indexOf(testWith) !== -1;
