@@ -18,7 +18,16 @@ function SelectClass() {
 	if (app.viewerVersion < 15) {
 		FunctionIsNotAvailable();
 		return;
-	};
+	} else if (What("Manual Class Remember") !== "No") {
+		var openManualDia = app.alert({
+			cTitle : "Class processing is set to manual",
+			nType : 2,
+			nIcon : 1,
+			cMsg : "Class processing has been turned off. Because of that, the class selection dialog won't work.\n\nWould you like to open the dialog to turn class processing back on?"
+		});
+		if (openManualDia == 4) SetToManual_Button();
+		if (What("Manual Class Remember") !== "No") return;
+	}
 	if (CurrentSources.firstTime) OpeningStatement();
 	var theChar = What("PC Name") ? What("PC Name") : "Your Character";
 	var hasUAranger = false;
@@ -956,7 +965,7 @@ function SelectClass() {
 	var dia, txtFinal, lvlFinal;
 	do {
 		// don't open the dialog if this is triggered by the Character Level field being set to 0
-		if (IsCharLvlVal == 0 && !dia) {
+		if (IsCharLvlVal === 0 && !dia) {
 			var dia = "ok";
 			txtFinal = "";
 			lvlFinal = 0;
@@ -1010,39 +1019,12 @@ function SelectClass() {
 			classes.totallevel = lvlFinal;
 			ApplyClassLevel();
 		}
-/* UPDATED
-		// set the character level and xp
-		var newLvl = ClassSelection_Dialog.finalLevel > 0 ? ClassSelection_Dialog.finalLevel : "";
-		Value("Character Level", newLvl);
-		var curXP = Number(What("Total Experience").replace(",", "."));
-		var curXPlvl = ExperiencePointsList.reduce(function(acc, val) { return acc += curXP >= Number(val) ? 1 : 0; }, 0);
-		if (ClassSelection_Dialog.finalLevel < ExperiencePointsList.length && ClassSelection_Dialog.finalLevel != curXPlvl) {
-			var newXP = ClassSelection_Dialog.finalLevel ? ExperiencePointsList[Math.min(ClassSelection_Dialog.finalLevel - 1, ExperiencePointsList.length - 1)] : "";
-			Value("Total Experience", newXP);
-			if (curXP) {
-				Value("Add Experience", Number(What("Add Experience").replace(",", ".")) + curXP - newXP);
-				app.alert({
-					nIcon : 2,
-					cTitle : "Experience Points have been updated",
-					cMsg : "As you changed the total character level to " + ClassSelection_Dialog.finalLevel + ", the total experience points field has been updated from " + curXP + " to " + newXP + ".\n\nThe difference of " + (newXP - curXP) + " has been subtracted from the blue-text field next to the 'Add' button. This way you can easily correct the XP total again. You can also just delete the content of that field if you want to keep the new total of " + newXP + ".\n\nPlease know that any fields with blue-colored text won't print."
-				});
-			};
-		};
-		// update the class field
-		if (ClassFld !== ClassSelection_Dialog.finalText) {
-			Value("Class and Levels", ClassSelection_Dialog.finalText);
-		} else {
-			ApplyClasses(ClassSelection_Dialog.finalText, true);
-		};
-		// update the level features of other things than classes
-		CalcExperienceLevel(false);
-*/
 	};
 };
 
 //and On Click function for the Class and Levels field
 function ClickClasses() {
-	if (app.viewerVersion >= 15 && (!event.target.value || event.modifier || event.shift)) {
+	if (What("Manual Class Remember") == "No" && app.viewerVersion >= 15 && (!event.target.value || event.modifier || event.shift)) {
 		event.target.remVal = event.target.value;
 		tDoc.getField("Player Name").setFocus();
 		SelectClass();
@@ -1050,7 +1032,7 @@ function ClickClasses() {
 };
 
 // After changing the level field, ask which class to add a level to, or start multiclassing
-function AskMulticlassing() {
+function AskMulticlassing(lvlAlreadyAdded) {
 	if (app.viewerVersion >= 15) {
 		SelectClass();
 		return;
@@ -1089,7 +1071,7 @@ function AskMulticlassing() {
 				"rCl2" : parseFloat(this.ClassNmbrs) >= 2,
 				"rCl3" : parseFloat(this.ClassNmbrs) >= 3,
 				"rCl4" : parseFloat(this.ClassNmbrs) >= 4,
-				"cAll" : Math.abs(this.LVLchange) > 1
+				"cAll" : true
 			});
 			dialog.visible({
 				"vCl1" : parseFloat(this.ClassNmbrs) >= 1,
@@ -1273,85 +1255,54 @@ function AskMulticlassing() {
 		}
 	};
 
-	var Nmbr = classes.parsed.length;
-	var Cl1 = classes.parsed[0] ? classes.parsed[0][0]: "";
-	var Cl2 = classes.parsed[1] ? classes.parsed[1][0]: "";
-	var Cl3 = classes.parsed[2] ? classes.parsed[2][0]: "";
-	var Cl4 = classes.parsed[3] ? classes.parsed[3][0]: "";
 	var CharLVL = IsCharLvlVal !== false ? IsCharLvlVal : Number(What("Character Level"));
-	var toAdd = CharLVL - Number(classes.totallevel);
+	var toAdd = CharLVL - Number(classes.totallevel) - (lvlAlreadyAdded ? lvlAlreadyAdded : 0);
 
-	if (IsNotImport && toAdd !== 0) {
-		Multiclassing_Dialog.ClassNmbrs = Nmbr;
-		Multiclassing_Dialog.Class1 = Cl1;
-		Multiclassing_Dialog.Class2 = Cl2;
-		Multiclassing_Dialog.Class3 = Cl3;
-		Multiclassing_Dialog.Class4 = Cl4;
-		Multiclassing_Dialog.LVLchange = parseFloat(toAdd);
+	if (!IsNotReset || !IsNotImport || !toAdd) return;
 
-		//call the dialog
-		app.execDialog(Multiclassing_Dialog);
+	Multiclassing_Dialog.ClassNmbrs = classes.parsed.length;
+	Multiclassing_Dialog.Class1 = classes.parsed[0] ? classes.parsed[0][0]: "";
+	Multiclassing_Dialog.Class2 = classes.parsed[1] ? classes.parsed[1][0]: "";
+	Multiclassing_Dialog.Class3 = classes.parsed[2] ? classes.parsed[2][0]: "";
+	Multiclassing_Dialog.Class4 = classes.parsed[3] ? classes.parsed[3][0]: "";
+	Multiclassing_Dialog.LVLchange = toAdd;
 
-		var dResult = Multiclassing_Dialog.Selection;
-		var AddAll = Multiclassing_Dialog.All;
-		//do something if the result is adding a new class
-		if (dResult !== "" && isNaN(dResult)) {
-			classes.parsed[Nmbr] = [];
-			classes.parsed[Nmbr][0] = dResult;
-			classes.parsed[Nmbr][1] = AddAll ? toAdd : sign(toAdd);
-		} else if (dResult !== "") { //do something if one of the existing classes was chosen, and do nothing if an empty string was chosen
-			classes.parsed[dResult - 1][1] += AddAll ? toAdd : sign(toAdd);
-		}
-/* UPDATED
-		var newClassText = "";
-		if (classes.parsed.length > 1) {
-			for (var i = 0; i < classes.parsed.length; i++) {
-				newClassText += i !== 0 ? ", " : "";
-				newClassText += classes.parsed[i][0] + " " + classes.parsed[i][1];
-			}
-		} else if (classes.parsed.length === 1) {
-			newClassText = classes.parsed[0][0];
-		}
-*/
+	//call the dialog
+	app.execDialog(Multiclassing_Dialog);
 
-		if (!AddAll) {
-			// not everything was applied yet, so lets ask what to do for the next level
-			AskMulticlassing();
-			return;
-		}
+	var dResult = Multiclassing_Dialog.Selection;
+	var AddAll = Multiclassing_Dialog.All;
+	//do something if the result is adding a new class
+	if (dResult !== "" && isNaN(dResult)) {
+		classes.parsed[classes.parsed.length] = [
+			dResult,
+			AddAll ? toAdd : sign(toAdd)
+		];
+	} else if (dResult !== "") { //do something if one of the existing classes was chosen, and do nothing if an empty string was chosen
+		classes.parsed[dResult - 1][1] += AddAll ? toAdd : sign(toAdd);
+	}
 
-		// Create the new string for the class field
-		// always add the total class level so that even if only single class that only has its level changed, it is still applied
-		var newClassText = "";
-		for (var i = 0; i < Nmbr; i++) {
-			newClassText += i !== 0 ? ", " : "";
-			newClassText += classes.parsed[i][0] + " " + classes.parsed[i][1];
-		}
-		// update the class field
-		if (What("Class and Levels") !== newClassText) { // text changed
-			delete tDoc.getField("Class and Levels").remVal;
-			Value("Class and Levels", ClassSelection_Dialog.finalText);
-		} else { // text stayed the same, so just update the class level
-			classes.totallevel = ClassSelection_Dialog.finalLevel;
-			ApplyClassLevel();
-		}
-/* UPDATED
-		Value("Character Level", CharLVL);
-		if (What("Class and Levels") === newClassText) {
-			ApplyClasses(newClassText, false);
-		} else {
-			Value("Class and Levels", newClassText);
-		}
-*/
+	if (!AddAll || dResult === "") {
+		// not everything was applied yet, so lets ask what to do for the next level
+		AskMulticlassing(dResult === "" ? 0 : lvlAlreadyAdded? lvlAlreadyAdded + 1 : 1);
+		return;
+	}
+
+	// Create the new string for the class field
+	// always add the total class level so that even if only single class that only has its level changed, it is still applied
+	var newClassText = classes.parsed.map( function (n) { return n.join(" ") }).join(", ")
+	// update the class field
+	if (What("Class and Levels") !== newClassText) { // text changed
+		delete tDoc.getField("Class and Levels").remVal;
+		Value("Class and Levels", newClassText);
+	} else { // text stayed the same, so just update the class level
+		classes.totallevel = CharLVL;
+		ApplyClassLevel();
 	}
 };
 
 //show a dialog when the subclass is not set but the level is high enough to need a subclass
 function PleaseSubclass(aClass, classString) {
-/* UPDATED
- 	delete IsSubclassException[aClass];
-	var returnTrue = false;
-*/
 	if (!IsNotImport || What("SubClass Remember").indexOf(aClass) !== -1) return;
 
 	var aclass = ClassList[aClass];
@@ -1516,30 +1467,12 @@ function PleaseSubclass(aClass, classString) {
 			}]
 		}
 	};
-/* UPDATED
-	if (!isAsterisk) {
-		setDialogName(SubclassSelect_Dialog, "tex1", "wrap_name", false);
-	};
-*/
 	
 	var theDialog = app.execDialog(SubclassSelect_Dialog);
 	if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
 		var selection = aclassObj[aclassArray[SubclassSelect_Dialog.result]];
 		var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : aclass.name + " (" + ClassSubList[selection].subname + ")";
 		return [selection, newName];
-/* UPDATED
-		classes.field = classes.field.replace(classString, newName);
-		if ((!event.target || !event.target.name || event.target.name != "Class and Levels") && What("Class and Levels") != classes.field) {
-			tDoc.getField("Class and Levels").remVal = classes.field;
-			Value("Class and Levels", classes.field);
-		}
-		returnTrue = true;
-		IsSubclassException[aClass] = true;
-		if (!event.target.name || event.target.name !== "Class and Levels") Value("Class and Levels", classes.field);
-*/
 	};
 	return false;
-/* UPDATED
- 	return returnTrue;
-*/
 };

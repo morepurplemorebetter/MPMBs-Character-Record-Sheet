@@ -555,6 +555,39 @@ var DamageTypes = {
 	}
 };
 
+var Lifestyles = {
+	types : [
+		"",
+		"wretched",
+		"squalid",
+		"poor",
+		"modest",
+		"comfortable",
+		"wealthy",
+		"aristocratic"
+	],
+	expenses : [
+		"",
+		"\u2014",
+		"1 sp",
+		"2 sp",
+		"1 gp",
+		"2 gp",
+		"4 gp",
+		"10 gp min."
+	],
+	names : [
+		"",
+		(typePF ? " " : "") + "Wretched",
+		(typePF ? "  " : "") + "Squalid",
+		(typePF ? "     " : "") + "Poor",
+		(typePF ? "   " : "") + "Modest",
+		(typePF ? " " : "") + "Comfortable",
+		(typePF ? "   " : "") + "Healthy",
+		"Aristocratic",
+	]
+};
+
 //The dialog for setting the pages to print
 var SetPrintPages_Dialog = {
 	//variables to be set by the calling function
@@ -828,12 +861,6 @@ var SetToManual_Dialog = {
 		this.mBac = oResult["Back"];
 		this.mCla = oResult["Clas"];
 		this.mFea = oResult["Feat"];
-	},
-
-	//fun whenever the Attack checkbox is clicked
-	Atta : function (dialog) {
-		this.mAtt = !this.mAtt;
-		ToggleAttacks(this.mAtt ? "No" : "Yes");
 	},
 
 	description : {

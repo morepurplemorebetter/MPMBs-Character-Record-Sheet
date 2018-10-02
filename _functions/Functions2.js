@@ -57,7 +57,20 @@ function FindCompRace(inputcreatxt, aPrefix) {
 				CurrentCompRace[prefix].known = newRaceFound[0],
 				CurrentCompRace[prefix].variant = newRaceFound[1],
 				CurrentCompRace[prefix].typeFound = "race";
-				
+
+				// set the properties of the CurrentCompRace[prefix] object
+				for (var prop in RaceList[newRaceFound[0]]) { // the properties of the main race
+					if ((/^(known|variant|level)$/i).test(prop)) continue;
+					CurrentCompRace[prefix][prop] = RaceList[newRaceFound[0]][prop];
+				}
+				if (newRaceFound[1]) { // the properties of the variant (overriding anything from the main)
+					var subrace = newRaceFound[0] + "-" + newRaceFound[1];
+					for (var prop in RaceSubList[subrace]) {
+						if ((/^(known|variants?|level)$/i).test(prop)) continue;
+						CurrentCompRace[prefix][prop] = RaceSubList[subrace][prop];
+					}
+				}
+/* UPDATED
 				//check if a the this is just after a reset. If so, run the FindRace() function so that CurrentRace has attributes that can be used
 				if (!CurrentRace.size) FindRace()
 				for (var prop in CurrentRace) {
@@ -71,11 +84,12 @@ function FindCompRace(inputcreatxt, aPrefix) {
 						}
 					}
 				}
+*/
 			}
 		}
 		if (inputcreatxt) { //if there was an input, return if it was different from the previously known or not
 			if (CurrentCompRace[prefix] && CurrentCompRace[prefix].known && oldKnown !== CurrentCompRace[prefix].known) tDoc.getField(prefix + "Comp.Race").submitName = inputcreatxt;
-			return CurrentCompRace[prefix] ? (oldKnown === CurrentCompRace[prefix].known || !CurrentCompRace[prefix].known) : true;
+			return !CurrentCompRace[prefix] || oldKnown === CurrentCompRace[prefix].known || !CurrentCompRace[prefix].known;
 		}
 	}
 }
@@ -171,15 +185,18 @@ function ApplyCompRace(newRace) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying companion race...");
 	calcStop();
-	
+
 	var prefix = getTemplPre(event.target.name, "AScomp", true);
-	
+
 	var resetDescTooltips = function() {
 		AddTooltip(prefix + "Comp.Desc.Height", "");
 		AddTooltip(prefix + "Comp.Desc.Weight", "");
 		AddTooltip(prefix + "Comp.Desc.Age", "");
+		// remove submitName from modifier fields
+		var clearSubmitNames = [prefix + "Comp.Use.Combat.Init.Bonus"].concat(tDoc.getField(prefix + "BlueText.Comp.Use.Ability").getArray()).concat(tDoc.getField(prefix + "BlueText.Comp.Use.Skills").getArray());
+		for (var c = 0; c < clearSubmitNames.length; c++) AddTooltip(clearSubmitNames[c], undefined, "");
 	}
-	
+
 	var compFields = [
 		prefix + "Comp.Use",
 		prefix + "Text.Comp.Use",
@@ -207,14 +224,14 @@ function ApplyCompRace(newRace) {
 	if (CurrentCompRace[prefix].typeFound === "race") {// do the following if a race was found
 		tDoc.resetForm(compFields); //reset all the fields
 		thermoTxt = thermoM("Adding the companion's player race...", false); //change the progress dialog text
-		
+
 		//set descriptive tooltips
 		var theHeight = What("Unit System") === "imperial" ? CurrentCompRace[prefix].height : CurrentCompRace[prefix].heightMetric ? CurrentCompRace[prefix].heightMetric : CurrentCompRace[prefix].height;
 		var theWeight = What("Unit System") === "imperial" ? CurrentCompRace[prefix].weight : CurrentCompRace[prefix].weightMetric ? CurrentCompRace[prefix].weightMetric : CurrentCompRace[prefix].weight;
 		AddTooltip(prefix + "Comp.Desc.Height", CurrentCompRace[prefix].plural + theHeight);
 		AddTooltip(prefix + "Comp.Desc.Weight", CurrentCompRace[prefix].plural + theWeight);
 		AddTooltip(prefix + "Comp.Desc.Age", CurrentCompRace[prefix].plural + CurrentCompRace[prefix].age);
-		
+
 		thermoM(1/11); //increment the progress dialog's progress
 		
 		//set race's size
@@ -222,13 +239,13 @@ function ApplyCompRace(newRace) {
 
 		//set race's type
 		Value(prefix + "Comp.Desc.MonsterType", "Humanoid");
-		
+
 		//set racial traits
 		var theTraits = What("Unit System") === "imperial" ? CurrentCompRace[prefix].trait : ConvertToMetric(CurrentCompRace[prefix].trait, 0.5);
 		Value(prefix + "Comp.Use.Traits", theTraits);
-		
+
 		thermoM(2/11); //increment the progress dialog's progress
-		
+
 		//set speed
 		var raceSpeed = CurrentCompRace[prefix].speed;
 		if (isArray(raceSpeed)) { //legacy
@@ -245,7 +262,7 @@ function ApplyCompRace(newRace) {
 		Value(prefix + "Comp.Use.Speed", theSpeed);
 		
 		thermoM(3/11); //increment the progress dialog's progress
-		
+
 		//set senses
 		if (CurrentCompRace[prefix].vision) {
 			var theSenseStr = "";
@@ -264,9 +281,9 @@ function ApplyCompRace(newRace) {
 			if (What("Unit System") !== "imperial") theSenseStr = ConvertToMetric(theSenseStr, 0.5);
 			Value(prefix + "Comp.Use.Senses", theSenseStr);
 		};
-		
+
 		thermoM(4/11); //increment the progress dialog's progress
-		
+
 		//add a string of the languages known to the features
 		if (CurrentCompRace[prefix].languageProfs) {
 			var theLangs = [];
@@ -279,20 +296,20 @@ function ApplyCompRace(newRace) {
 				};
 			};
 			var languageString = formatLineList("\u25C6 Languages:", theLangs);
-			AddString(prefix + "Comp.Use.Features", languageString, true);
+			if (languageString) AddString(prefix + "Comp.Use.Features", languageString + ".", true);
 		};
-		
+
 		thermoM(5/11); //increment the progress dialog's progress
 		
 		//add a string of the saveText to the features
 		if (CurrentCompRace[prefix].savetxt) {
 			if (typeof CurrentCompRace[prefix].savetxt === "string") {
-				var svString = "\u25C6 Saving Throws:" + CurrentCompRace[prefix].savetxt + ".";
+				var svString = "\u25C6 Saving Throws: " + CurrentCompRace[prefix].savetxt + ".";
 			} else {
 				var svObj = CurrentCompRace[prefix].savetxt;
 				var svString = "";
 				if (svObj.text) {
-					svString += svString ? "; " : "\u25C6 Saving Throws:";
+					svString += svString ? "; " : "\u25C6 Saving Throws: ";
 					svString += svObj.text.join("; ");
 				};
 				if (svObj.adv_vs) {
@@ -305,41 +322,55 @@ function ApplyCompRace(newRace) {
 			};
 			AddString(prefix + "Comp.Use.Features", svString, true);
 		};
-		
+
 		thermoM(6/11); //increment the progress dialog's progress
-		
+
+		//add saving throw proficiencies
+		if (CurrentCompRace[prefix].saves) {
+			for (var s = 0; s < CurrentCompRace[prefix].saves.length; s++) {
+				var Abi = AbilityScores.fields[CurrentCompRace[prefix].saves[s].substr(0,3)];
+				if (Abi) Checkbox(prefix + "Comp.Use.Ability." + Abi + ".ST.Prof");
+			}
+		}
+
+		//add modifiers
+		if (CurrentCompRace[prefix].addMod) {
+			processMods(true, CurrentCompRace[prefix].name, CurrentCompRace[prefix].addMod);
+		}
+
 		//add a string of any resistances to the features
 		if (CurrentCompRace[prefix].dmgres) {
-			var dmgresString = "\u25C6 " + "Damage Resistances: ";
-			theEnd = CurrentCompRace[prefix].dmgres.length - 1;
-			for (var l = 0; l <= theEnd; l++) {
-				var divider = l === 0 ? "" : l === theEnd ? " and " : ", ";
-				dmgresString += divider + CurrentCompRace[prefix].dmgres[l];
-				dmgresString += l === theEnd ? "." : "";
-			}
-			AddString(prefix + "Comp.Use.Features", dmgresString, true);
+			var dmgresString = formatLineList("\u25C6 Damage Resistances:", CurrentCompRace[prefix].dmgres);
+			if (dmgresString) AddString(prefix + "Comp.Use.Features", dmgresString + ".", true);
 		};
-		
+
 		thermoM(7/11); //increment the progress dialog's progress
-		
+
 		//add a string of any weapon proficiencies to the features
-		if (CurrentCompRace[prefix].weaponprofs) {
-			var weaponString = "\u25C6 " + "Weapon Proficiencies: ";
+		var weaponProf = CurrentCompRace[prefix].weaponProfs ? CurrentCompRace[prefix].weaponProfs : CurrentCompRace[prefix].weaponprofs ? CurrentCompRace[prefix].weaponprofs : false;
+		if (weaponProf) {
 			var theWeaponArray = [];
-			if (CurrentCompRace[prefix].weaponprofs[0]) theWeaponArray.push("simple weapons");
-			if (CurrentCompRace[prefix].weaponprofs[1]) theWeaponArray.push("martial weapons");
-			theWeaponArray = theWeaponArray.concat(CurrentCompRace[prefix].weaponprofs[2]);
-			theEnd = theWeaponArray.length - 1;
-			for (var l = 0; l <= theEnd; l++) {
-				var divider = l === 0 ? "" : l === theEnd ? " and " : ", ";
-				weaponString += divider + theWeaponArray[l];
-				weaponString += l === theEnd ? "." : "";
-			}
-			AddString(prefix + "Comp.Use.Features", weaponString, true);
+			if (weaponProf[0]) theWeaponArray.push("simple weapons");
+			if (weaponProf[1]) theWeaponArray.push("martial weapons");
+			if (weaponProf[2]) theWeaponArray = theWeaponArray.concat(weaponProf[2]);
+			var weaponString = formatLineList("\u25C6 Weapon Proficiencies:", theWeaponArray);
+			if (weaponString) AddString(prefix + "Comp.Use.Features", weaponString + ".", true);
 		};
-		
+
+		//add a string of any armour proficiencies to the features
+		var armorProf = CurrentCompRace[prefix].armorProfs ? CurrentCompRace[prefix].armorProfs : CurrentCompRace[prefix].armor ? CurrentCompRace[prefix].armor : false;
+		if (armorProf) {
+			var theArmourArray = [];
+			if (armorProf[0]) theArmourArray.push("light armor");
+			if (armorProf[1]) theArmourArray.push("medium armor");
+			if (armorProf[2]) theArmourArray.push("heavy armor");
+			if (armorProf[3]) theArmourArray.push("shields");
+			var armourString = formatLineList("\u25C6 Armor Proficiencies:", theArmourArray);
+			if (armourString) AddString(prefix + "Comp.Use.Features", armourString + ".", true);
+		};
+
 		thermoM(8/11); //increment the progress dialog's progress
-		
+
 		//add a string of any tool proficiencies to the features
 		if (CurrentCompRace[prefix].toolProfs) {
 			var theTools = [];
@@ -356,27 +387,48 @@ function ApplyCompRace(newRace) {
 				};
 			};
 			var toolString = formatLineList("\u25C6 Tool Proficiencies:", theTools);
-			AddString(prefix + "Comp.Use.Features", toolString, true);
+			if (toolString) AddString(prefix + "Comp.Use.Features", toolString + ".", true);
 		};
-		
+
 		thermoM(9/11); //increment the progress dialog's progress
-		
-		//add skill proficiencies
+
+		//add skill proficiencies and feature text
+		var skillsTxt;
 		if (CurrentCompRace[prefix].skills) {
+			var skillsNameArr = [];
 			for (var i = 0; i < CurrentCompRace[prefix].skills.length; i++) {
-				AddSkillProf(CurrentCompRace[prefix].skills[i]);
+				var skillName = AddSkillProf(CurrentCompRace[prefix].skills[i], undefined, undefined, true);
+				if (skillName) skillsNameArr.push(skillName);
 			}
+			skillsTxt = formatLineList("\u25C6 Skill Proficiencies:", skillsNameArr);
 		};
-		
+		if (CurrentCompRace[prefix].skillstxt) {
+			skillsTxt = "\u25C6 Skill Proficiencies: " + CurrentCompRace[prefix].skillstxt.replace(/^( |\n)*.*: |\;$|\.$/g, '');
+		}
+		if (skillsTxt) AddString(prefix + "Comp.Use.Features", skillsTxt + ".", true);
+
 		thermoM(10/11); //increment the progress dialog's progress
-		
-		//add weapons and armor
-		if (CurrentCompRace[prefix].weapons) {
-			for (i = 0; i < CurrentCompRace[prefix].weapons.length; i++) {
-				AddWeapon(CurrentCompRace[prefix].weapons[i]);
-			}
-		};
-		if (CurrentCompRace[prefix].addarmor) AddArmor(CurrentCompRace[prefix].addarmor, true, prefix);
+
+		//add weapons
+		var weaponAdd = CurrentCompRace[prefix].addWeapons ? CurrentCompRace[prefix].addWeapons : CurrentCompRace[prefix].weapons ? CurrentCompRace[prefix].weapons : [];
+		if (!isArray(weaponAdd)) weaponAdd = [weaponAdd];
+		for (i = 0; i < weaponAdd.length; i++) {
+			AddWeapon(weaponAdd[i]);
+		}
+
+		//add armour
+		var armorAdd = CurrentCompRace[prefix].addArmor ? CurrentCompRace[prefix].addArmor : CurrentCompRace[prefix].addarmor ? CurrentCompRace[prefix].addarmor : false;
+		if (armorAdd) AddArmor(armorAdd, true, prefix);
+
+		// If the race has any other features that aren't applied here
+		if (CurrentCompRace[prefix].eval || CurrentCompRace[prefix].features || CurrentCompRace[prefix].scores || CurrentCompRace[prefix].action) {
+			app.alert({
+				cTitle : "Player race not fully compatible with companion page",
+				nIcon : 3,
+				cMsg : "The companion page is not fully compatible with all the possible features of races that are designed to be used as a player race (i.e. normally used to create a character with levels).\n\nThe sheet has tried its best to add the '" + CurrentCompRace[prefix].name + "' race to the companion page, but some aspects will be missing:\n\u2022 Anything gained from level-dependent features;\n\u2022 Limited features;\n\u2022 Racial spellcasting;\n\u2022 Additional actions, bonus actions, and reactions;\n\u2022 Automated attack calculation changes;\n\u2022 Anything added using the 'eval' or 'changeeval' attributes."
+			})
+		}
+
 	} else if (CurrentCompRace[prefix].typeFound === "creature") {// do the following if a creature was found
 		thermoTxt = thermoM("Adding the companion creature...", false); //change the progress dialog text
 		resetDescTooltips(); //remove descriptive tooltips
@@ -3543,29 +3595,9 @@ function ShowHonorSanity(input) {
 
 //set the lifestyle
 function setLifeStyle(input) {
-	input = clean(input, " ");
-	var LifestyleArray = [
-		"wretched",
-		"squalid",
-		"poor",
-		"modest",
-		"comfortable",
-		"wealthy",
-		"aristocratic"
-	];
-	var ExpensesArray = [
-		"\u2014",
-		"1 sp",
-		"2 sp",
-		"1 gp",
-		"2 gp",
-		"4 gp",
-		"10 gp min."
-	];
-	var theStyle = LifestyleArray.indexOf(input.toLowerCase());
-	if (theStyle !== -1) {
-		Value("Lifestyle daily cost", ExpensesArray[theStyle]);
-	}
+	var isSelection = Lifestyles.names.indexOf(input);
+	if (isSelection == -1) isSelection = Lifestyles.types.indexOf(clean(input.toLowerCase()));
+	if (isSelection !== -1) Value("Lifestyle daily cost", Lifestyles.expenses[isSelection]);
 }
 
 // update all the level-dependent features for the ranger companions on the companion pages
@@ -5437,7 +5469,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	
 	//set the input as the submitName for reference and set the non-automated field with the same value as well
 	tDoc.getField(fldBase + "Weapon Selection").submitName = inputText;
-	if (!IsNotWeaponMenu || What("Manual Attack Remember") === "Yes" || (!isReCalc && inputText === (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]))) return; //don't do the rest of this function if only moving weapons around or weapons are set to manual or the CurrentWeapons.field didn't change
+	if (!IsNotWeaponMenu || What("Manual Attack Remember") !== "No" || (!isReCalc && inputText === (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]))) return; //don't do the rest of this function if only moving weapons around or weapons are set to manual or the CurrentWeapons.field didn't change
 	
 	if (What(fldBase + "Weapon") !== inputText) Value(fldBase + "Weapon", inputText);
 	
@@ -5638,7 +5670,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 
 //calculate the attack damage and to hit, can be called from any of the attack fields (sets the fields)
 function CalcAttackDmgHit(fldName) {
-	if (What("Manual Attack Remember") === "Yes") return; //if the attack calculation is set to manual, don't do anything
+	if (What("Manual Attack Remember") !== "No") return; //if the attack calculation is set to manual, don't do anything
 	
 	fldName = fldName ? fldName : event.target.name;
 	var QI = fldName.indexOf("Comp.") === -1;
@@ -5900,19 +5932,25 @@ function EvalBonus(input, notComp, isSpecial) {
 		return Number(input);
 	};
 	var modStr = notComp === true ? ["", " Mod"] : !isSpecial || isSpecial === "test" ? [notComp + "Comp.Use.Ability.", ".Mod"] : [notComp + "Wildshape." + isSpecial + ".Ability.", ".Mod"];
-	// first remove "dc", add a "+" between abbreviations, and removing double or trailing operators
-	input = input.replace(/,/g, ".").replace(/dc/ig, "").replace(/o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof)o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof)/ig, "$1+$2").replace(/(\+|\-|\/|\*)(\+|\-|\/|\*)/g, "$2").replace(/(^(\+|\/|\*))|((\+|\-|\/|\*)$)/g, "");
+	var ProfB = notComp === true ? How("Proficiency Bonus") : !isSpecial || isSpecial === "test" ? What(notComp + "Comp.Use.Proficiency Bonus") : What(notComp + "Wildshape." + isSpecial + ".Proficiency Bonus");
+	var abbrRegex = /(o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof))(o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof))/ig;
+	// remove 'dc' and convert commas to dots for decimal handling
+	input = input.replace(/,/g, ".").replace(/dc/ig, "");
+	// add a "+" between abbreviations that have no operator. Do this twice, so we also catch uneven groups
+	input = input.replace(abbrRegex, "$1+$3");
+	input = input.replace(abbrRegex, "$1+$3");
+	// removing double or trailing operators and replace double minus with a plus
+	input = input.replace(/[+\-/*]+([+/*])/g, "$1").replace(/--/g, "+").replace(/^[+/*]+|[+\-/*]+$/g, "");
 	// change ability score abbreviations with their modifier
-	["oStr", "oDex", "oCon", "oInt", "oWis", "oCha", "oHoS"].forEach(function(AbiS) {
-		input = input.replace(RegExp(AbiS, "ig"), Number(What(AbiS.substr(1) + " Mod")));
-	});
 	["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"].forEach(function(AbiS) {
+		input = input.replace(RegExp("o" + AbiS, "ig"), Number(What(AbiS + " Mod")));
 		input = input.replace(RegExp(AbiS, "ig"), Number(What(modStr[0] + AbiS + modStr[1])));
 	});
 	// change Prof with the proficiency bonus
-	var ProfB = notComp === true ? How("Proficiency Bonus") : !isSpecial || isSpecial === "test" ? What(notComp + "Comp.Use.Proficiency Bonus") : What(notComp + "Wildshape." + isSpecial + ".Proficiency Bonus");
 	input = input.replace(/oProf/ig, How("Proficiency Bonus"));
 	input = input.replace(/Prof/ig, ProfB);
+	// double negative to positive
+	input = input.replace(/--/g, "+");
 	try {
 		output = eval(input);
 		return !isNaN(output) ? Math.round(Number(output)) : 0;
@@ -6126,6 +6164,8 @@ function AddToModFld(Fld, Mod, Remove, NameEntity, Explanation) {
 // add a modifier to a skill
 // addMod : {type : "save", field : "all", mod : "Cha", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws."} // this can be an array of objects, all of which will be processed
 function processMods(AddRemove, NameEntity, items) {
+	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
+	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	if (!isArray(items)) items = [items];
 	for (var i = 0; i < items.length; i++) {
 		var type = items[i].type.toLowerCase();
@@ -6133,27 +6173,30 @@ function processMods(AddRemove, NameEntity, items) {
 		var Mod = items[i].mod;
 		var Explanation = items[i].text;
 		switch (type) {
+			case "initiative" :
+				Fld = QI ? "Init Bonus" : prefix + "Comp.Use.Combat.Init.Bonus";
 			case "skill" :
 				if ((/all/i).test(Fld)) {
-					Fld = "All Skills Bonus";
+					Fld = QI ? "All Skills Bonus" : prefix + "BlueText.Comp.Use.Skills.All.Bonus";
 				} else if ((/pass/i).test(Fld)) {
-					Fld = "Passive Perception Bonus";
+					Fld = QI ? "Passive Perception Bonus" : prefix + "BlueText.Comp.Use.Skills.Perc.Pass.Bonus";
 				} else {
 					var skill = Fld.substr(0,4).capitalize();
 					if (SkillsList.abbreviations.indexOf(skill) === -1) {
 						skill = skill.substr(0,3);
 						if (SkillsList.abbreviations.indexOf(skill) === -1) continue;
 					};
-					var skillOrder = Who("Text.SkillsNames") === "alphabeta" ? "abbreviations" : "abbreviationsByAS";
-					Fld = SkillsList.abbreviations[SkillsList[skillOrder].indexOf(skill)] + " Bonus";
+					var skillOrder = Who("Text.SkillsNames") === "alphabeta" || (!QI && !typePF) ? "abbreviations" : "abbreviationsByAS";
+					var skillAbbr = SkillsList.abbreviations[SkillsList[skillOrder].indexOf(skill)];
+					Fld = QI ? skillAbbr + " Bonus" : skillAbbr == "Init" ? prefix + "Comp.Use.Combat.Init.Bonus" : prefix + "BlueText.Comp.Use.Skills." + skillAbbr + ".Bonus";
 				};
 				break;
 			case "save" :
-				var matchSv = /.*(Str|Dex|Con|Int|Wis|Cha|HoS|All).*/i;
+				var matchSv = QI ? /.*(Str|Dex|Con|Int|Wis|Cha|HoS|All).*/i : /.*(Str|Dex|Con|Int|Wis|Cha|All).*/i;
 				if (!(matchSv).test(Fld)) continue;
 				var save = Fld.replace(matchSv, "$1").capitalize();
 				if (save === "Hos") save = "HoS";
-				Fld = save + " ST Bonus";
+				Fld = QI ? save + " ST Bonus" : prefix + "BlueText.Comp.Use.Ability." + save + ".ST.Bonus";
 				break;
 			default :
 				if (!tDoc.getField(Fld)) continue;

@@ -6,6 +6,10 @@ function GetFeatureType(type) {
 		case "class":
 			theReturn = "classes";
 			break;
+		case "backgrounds":
+		case "background":
+			theReturn = "background";
+			break;
 		case "races":
 		case "race":
 			theReturn = "race";
@@ -170,6 +174,11 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 				forceNonCurrent && RaceList[aParent].features[fObjName] && !choiceA[0] ?
 					RaceList[aParent].features[fObjName] : CurrentRace.features[fObjName];
 			var displName = CurrentRace.name;
+			break;
+		case "background":
+			type = "background";
+			var fObj = forceNonCurrent && BackgroundList[fObjName] ? BackgroundList[fObjName] : CurrentBackground;
+			var displName = fObj.name;
 			break;
 		case "feats":
 			type = "feat";

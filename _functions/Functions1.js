@@ -983,7 +983,7 @@ function ToggleBlueText(toggle) {
 	}
 	
 	//undo the showing of certain blue text fields depending on the manual settings
-	if (What("Manual Attack Remember") === "Yes") {
+	if (What("Manual Attack Remember") !== "No") {
 		Hide("BlueText.Attack");
 		Hide("BlueText.Comp.Use.Attack");
 		for (var T = 0; T < compTemps.length; T++) {
@@ -1620,7 +1620,7 @@ function classesFieldVal() {
 		event.value = event.target.remVal;
 		delete event.target.remVal;
 	} else {
-		ApplyClasses(event.value, true, true);
+		ApplyClasses(event.value, true);
 	};
 }
 
@@ -2292,13 +2292,12 @@ function FindClasses(NotAtStartup, isFieldVal) {
 };
 
 // apply the effect of the classes
-function ApplyClasses(inputclasstxt, updateall, isFieldVal) {
-	updateall = updateall !== undefined ? updateall : true;
+function ApplyClasses(inputclasstxt, isFieldVal) {
 	isFieldVal = isFieldVal ? isFieldVal : false;
 	classes.field = inputclasstxt;
 
 	// Stop if class is set to manual or if the entered classes are the same as classes.known
-	if (What("Manual Class Remember") === "Yes" || FindClasses(true, isFieldVal)) return;
+	if (What("Manual Class Remember") !== "No" || FindClasses(true, isFieldVal)) return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying the class(es)...");
@@ -2477,13 +2476,11 @@ function levelFieldVal() {
 
 	IsCharLvlVal = lvl; // save level to global variable
 
-	console.println("IsCharLvlVal:"+IsCharLvlVal); // DEBUGGING!!!
 	if (lvl != classes.totallevel && IsNotReset && IsNotImport) { // new level not the same as total level for found classes, so ask how to allocate this level to a (new) class
-		AskMulticlassing(true);
+		AskMulticlassing();
 	}
 
 	if (IsCharLvlVal != lvl) { // the above might have changed the total level, so correct that
-	console.println("IsCharLvlVal != lvl: "+IsCharLvlVal); // DEBUGGING!!!
 		lvl = IsCharLvlVal;
 	}
 
@@ -2709,7 +2706,7 @@ function FindRace(inputracetxt, novardialog) {
 		spellcastingBonus : "" */
 	};
 
-	if (What("Manual Race Remember") == "Yes") return; // don't do the rest of this function
+	if (inputracetxt === undefined && What("Manual Race Remember") !== "No") return; // don't do the rest of this function if race is set to manual and this is not a startup event
 
 	//show the option button if the race has selectable variants
 	if (!tempFound[2].length) {
@@ -2741,12 +2738,12 @@ function FindRace(inputracetxt, novardialog) {
 	if (CurrentRace.known) {
 		// the properties of the main race
 		for (var prop in RaceList[CurrentRace.known]) {
-			if ((/^(known|variant|level)$/i).test(prop)) continue;
+			if ((/^(known|variants?|level)$/i).test(prop)) continue;
 			CurrentRace[prop] = RaceList[CurrentRace.known][prop];
 		}
 		// the properties of the variant (overriding anything from the main)
 		if (CurrentRace.variant) {
-			var subrace = CurrentRace.variant ? CurrentRace.known + "-" + CurrentRace.variant : false;
+			var subrace = CurrentRace.known + "-" + CurrentRace.variant;
 			for (var prop in RaceSubList[subrace]) {
 				if ((/^(known|variants?|level)$/i).test(prop)) continue;
 				CurrentRace[prop] = RaceSubList[subrace][prop];
@@ -2800,11 +2797,13 @@ function FindRace(inputracetxt, novardialog) {
 
 //apply the effect of the player's race
 function ApplyRace(inputracetxt, novardialog) {
-	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
-	if (event.target && event.target.name === "Race" && inputracetxt.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+	if (IsSetDropDowns) return; // when just changing the dropdowns or race is set to manual, don't do anything
 
-	//only update the tooltips and CurrentRace.known if race is set to manual
-	if (What("Manual Race Remember") === "Yes") return; //don't do the rest of this function
+	if (What("Manual Race Remember") !== "No") { // if race is set to manual, just put the text in the Race Remember
+		var newRace = ParseRace(inputracetxt);
+		Value("Race Remember", newRace[0] + (newRace[1] ? "-" + newRace[1]  : ""));
+		return;
+	}
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying race...");
@@ -2812,7 +2811,7 @@ function ApplyRace(inputracetxt, novardialog) {
 	
 	var newRace = ParseRace(inputracetxt);
 	var oldRace = [CurrentRace.known, CurrentRace.variant];
-	if (newRace[0] !== oldRace[0] || (newRace[0] === oldRace[0] && newRace[1] !== oldRace[1])) {
+	if (newRace[0] !== oldRace[0] || newRace[1] !== oldRace[1]) {
 		if (CurrentRace.known) {// remove the old race if one was detected
 			thermoTxt = thermoM("Removing the " + CurrentRace.name + " features...", false); //change the progress dialog text
 			
@@ -2826,13 +2825,7 @@ function ApplyRace(inputracetxt, novardialog) {
 
 			// Remove the common attributes from the CurrentRace object and remove the CurrentRace features
 			UpdateLevelFeatures("race", 0);
-
-			// Remove the CurrentRace features
-/* 		UPDATED
-			RemoveRace();
-*/
 		}
-		thermoTxt = thermoM("Recognizing the entered race...", false); //change the progress dialog text
 		FindRace(inputracetxt, novardialog);
 		Value("Race Remember", CurrentRace.known + (CurrentRace.variant ? "-" + CurrentRace.variant : ""));
 	}
@@ -4192,126 +4185,109 @@ function ParseBackground(input) {
 };
 
 //detects background entered and put information to global CurrentBackground variable
-function FindBackground(Event) {
-	var tempString = Event === undefined ? What("Background").toLowerCase() : Event;
+function FindBackground(input) {
+	var tempString = input === undefined ? What("Background").toLowerCase() : input;
 	var tempFound = ParseBackground(tempString);
 	CurrentBackground = {
 		known : tempFound[0],
 		variant : tempFound[1],
-		name : "",
-		skills : [],
-		skillstxt : "",
-		gold : 0,
-		equipleft : "",
-		equipright : "",
-		feature : "",
-		trait : [],
-		ideal : [],
-		bond : [],
-		flaw : [],
-		extra : "",
-		languageProfs : "",
-		toolProfs : "",
-		source : [],
-		lifestyle : ""
+		name : "", //must exist
+		source : [], //must exist
+		trait : [], //must exist
+		ideal : [], //must exist
+		bond : [], //must exist
+		flaw : [] //must exist
 	};
 
-	for (var prop in CurrentBackground) {
-		if (prop !== "known" && prop !== "variant") {
-			if (CurrentBackground.variant && BackgroundSubList[CurrentBackground.variant][prop] !== undefined) {
-				CurrentBackground[prop] = BackgroundSubList[CurrentBackground.variant][prop]
-			} else if (CurrentBackground.known && BackgroundList[CurrentBackground.known][prop] !== undefined) {
-				CurrentBackground[prop] = BackgroundList[CurrentBackground.known][prop];
+	// set the properties of the CurrentBackground object
+	if (tempFound[0]) {
+		// the properties of the main background
+		for (var prop in BackgroundList[tempFound[0]]) {
+			if ((/^(known|variants?|level)$/i).test(prop)) continue;
+			CurrentBackground[prop] = BackgroundList[tempFound[0]][prop];
+		}
+		// the properties of the variant (overriding anything from the main)
+		if (tempFound[1]) {
+			for (var prop in BackgroundSubList[tempFound[1]]) {
+				if ((/^(known|variants?|level)$/i).test(prop)) continue;
+				CurrentBackground[prop] = BackgroundSubList[tempFound[1]][prop];
 			}
 		}
-	};
+	}
 };
 
 //apply the various attributes of the background
 function ApplyBackground(input) {
-	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
-	if (event.target && event.target.name === "Background" && input.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
-
-	//only update the tooltips and background known field if backgrounds are set to manual
-	if (What("Manual Background Remember") === "Yes") {
-		FindBackground(input.toLowerCase());
-		UpdateTooltips();
-		return; //don't do the rest of this function
-	}
+	if (IsSetDropDowns || What("Manual Background Remember") !== "No") return; // when just changing the dropdowns or background is set to manual, don't do anything
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying background...");
 	calcStop();
-	
-	var newBackground = ParseBackground(input.toLowerCase());
-	if (IsNotReset && (newBackground[0] !== CurrentBackground.known || newBackground[1] !== CurrentBackground.variant)) {
-		thermoTxt = thermoM("Removing the old background features...", false); //change the progress dialog text
-		RemoveBackground();
-	};
-	var tempField = tDoc.getField("Background Extra");
-	var tempArray = [""];
-	thermoTxt = thermoM("Recognizing the entered background...", false); //change the progress dialog text
-	FindBackground(input.toLowerCase());
 
-	if (CurrentBackground.known) {
-		thermoTxt = thermoM("Applying the background's features...", false); //change the progress dialog text
-		thermoM(1/5); //increment the progress dialog's progress
-		
-		Value("Background Feature", CurrentBackground.feature);
-		
-		if (isArray(CurrentBackground.skills)) {
-			for (var i = 0; i < CurrentBackground.skills.length; i++) {
-				AddSkillProf(CurrentBackground.skills[i]);
-			}
-		}
-		
-		thermoM(2/5); //increment the progress dialog's progress
-		
-		if (CurrentBackground.extra) {
-			for (i = 1; i < CurrentBackground.extra.length; i++) {
-				tempArray.push(CurrentBackground.extra[i]);
-			};
-			tempField.setItems(tempArray);
-			tempField.userName = CurrentBackground.extra[0] + " of your " + CurrentBackground.name + " background.";
-		} else {
-			tempField.clearItems();
-			tempField.userName = "There are no extra choices defined for your " + CurrentBackground.name + " background.\nThus, this drop-down box is empty.";
+	var xtrFld = tDoc.getField("Background Extra");
+	var newBackground = ParseBackground(input);
+	var oldBackground = [CurrentBackground.known, CurrentBackground.variant];
+	if (newBackground[0] !== oldBackground[0] || newBackground[1] !== oldBackground[1]) {
+		if (CurrentBackground.known) {
+			thermoTxt = thermoM("Removing the " + CurrentBackground.name + " background features...", false); //change the progress dialog text
+
+			// remove the background common attributes
+			var Fea = ApplyFeatureAttributes(
+				"background", // type
+				CurrentBackground.known, // fObjName [aParent, fObjName]
+				[1, 0, false], // lvlA [old-level, new-level, force-apply]
+				false, // choiceA [old-choice, new-choice, "only"|"change"]
+				false // forceNonCurrent
+			);
+
+			// reset the background feature
+			if (CurrentBackground.feature) Value("Background Feature", "");
+
+			// reset the background extra field
+			xtrFld.clearItems();
+			xtrFld.userName = "First fill out a background in the field " + (typePF ? "above" : "to the left") + '.\n\nOnce a background is recognized that offers additional options (e.g. the "Origin" of the "Outlander" background), those additional options will be available here.';
+
+			// reset the lifestyle
+			if (CurrentBackground.lifestyle && What("Lifestyle") === CurrentBackground.lifestyle) Value("Lifestyle", "");
+
+			thermoM(2/5); //increment the progress dialog's progress
 		};
-		
-		thermoM(3/5); //increment the progress dialog's progress
-		
-		if (CurrentBackground.toolProfs) processTools(true, CurrentBackground.name, CurrentBackground.toolProfs);
-		if (CurrentBackground.languageProfs) processLanguages(true, CurrentBackground.name, CurrentBackground.languageProfs);
-		
-		//add the lifestyle, if defined
-		if (CurrentBackground.lifestyle) {
-			var LifestyleArray = [
-				"empty",
-				"wretched",
-				"squalid",
-				"poor",
-				"modest",
-				"comfortable",
-				"wealthy",
-				"aristocratic"
-			];
-			var styleIndex = LifestyleArray.indexOf(CurrentBackground.lifestyle);
-			if (styleIndex !== -1) PickDropdown("Lifestyle", styleIndex);
-		}
-		
-		thermoM(4/5); //increment the progress dialog's progress
-	} else {
-		tempField.clearItems();
-		tempField.userName = "First fill out a background in the field to the left.\n\nOnce a background is recognized that offers additional options, those additional options will be displayed here. For example, the \"Origin\" for the \"Outlander\" background.";
-		if (input === "") {
-			Value("Background Feature", "");
-		}
+		FindBackground(input);
 	}
 
-	UpdateTooltips(); //skills tooltip, ability score tooltip
+	if (CurrentBackground.known && (CurrentBackground.known !== oldBackground[0] || CurrentBackground.variant !== oldBackground[1])) {
+		thermoTxt = thermoM("Applying the " + CurrentBackground.name + " background features...", false); //change the progress dialog text
+
+		// Apply the background feature
+		if (CurrentBackground.feature) Value("Background Feature", CurrentBackground.feature);
+
+		// Apply the background extra
+		if (CurrentBackground.extra) {
+			xtrFld.setItems([""].concat(CurrentBackground.extra.slice(1)));
+			xtrFld.userName = CurrentBackground.extra[0] + "\n(" + CurrentBackground.name + " background)";
+		} else {
+			xtrFld.userName = "There are no extra choices defined for your " + CurrentBackground.name + " background.\nThus, this drop-down box is empty.\n\nFeel free to use it for additional background comments.";
+		};
+
+		// Apply the lifestyle, if defined
+		if (CurrentBackground.lifestyle) Value("Lifestyle", CurrentBackground.lifestyle);
+
+		thermoM(3/5); //increment the progress dialog's progress
+
+		// Apply the background common attributes
+		var Fea = ApplyFeatureAttributes(
+			"background", // type
+			CurrentBackground.known, // fObjName [aParent, fObjName]
+			[0, 1, false], // lvlA [old-level, new-level, force-apply]
+			false, // choiceA [old-choice, new-choice, "only"|"change"]
+			false // forceNonCurrent
+		);
+	}
+
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
+/* UPDATED
 //apply the various attributes of the background
 function RemoveBackground() {
 	var tempField = tDoc.getField("Background Extra");
@@ -4336,6 +4312,7 @@ function RemoveBackground() {
 		}
 	};
 };
+*/
 
 //Make menu for 'background traits' button and parse it to Menus.background
 function MakeBackgroundMenu() {
@@ -4643,7 +4620,7 @@ function SpliceString(field, inputstring, newline, theoldstring) {
 */
 
 // add (change === true) or remove (change === false) a skill proficiency with or without expertise; If expertise === "only", only add/remove the expertise, considering the skill already has proficiency; If expertise === "increment", only add/remove the expertise, considering the skill already has proficiency, otherwise add proficiency
-function AddSkillProf(SkillName, change, expertise) {
+function AddSkillProf(SkillName, change, expertise, returnSkillName) {
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var tempString = SkillName;
@@ -4673,6 +4650,8 @@ function AddSkillProf(SkillName, change, expertise) {
 		change = change === false ? "nothing" : expertise && (change || expertise !== "only") ? "expertise" : "proficient";
 		Value(prefix + "Text.Comp.Use.Skills." + tempString + ".Prof", change);
 	}
+	// return the skill name if concerning a companion page
+	if (returnSkillName) return SkillsList.names[SkillsList.abbreviations.indexOf(tempString)];
 };
 
 //make sure field is a number or the abbreviation of an ability score (field validation)
@@ -5178,14 +5157,14 @@ function FindFeats(ArrayNmbr) {
 
 //add the text and features of a Feat
 function ApplyFeat(InputFeat, FldNmbr) {
-	if (IsSetDropDowns || What("Manual Feat Remember") === "Yes") return; // when just changing the dropdowns or feats are set to manual, so don't do anything
+	if (IsSetDropDowns || What("Manual Feat Remember") !== "No") return; // when just changing the dropdowns or feats are set to manual, so don't do anything
 	var FeatFlds = [
 		"Feat Name " + FldNmbr,
 		"Feat Note " + FldNmbr,
 		"Feat Description " + FldNmbr
 	];
 	// not called from a field? Then just set the field and let this function be called anew
-	if (!event.target || event.target.name !== FeatFlds[0]) {
+	if ((!event.target || event.target.name !== FeatFlds[0]) && What(FeatFlds[0]) !== InputFeat) {
 		Value(FeatFlds[0], InputFeat);
 		return;
 	};
@@ -5199,7 +5178,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	var setSpellVars = false;
 
 	//only update the tooltips if feats are set to manual
-	if (What("Manual Feat Remember") === "Yes") {
+	if (What("Manual Feat Remember") !== "No") {
 		UpdateTooltips();
 		return; //don't do the rest of this function
 	}
@@ -5210,7 +5189,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	thermoM(1/6); // Increment the progress bar
 
 	//first test if the feat has a prerequisite and if it meets that
-	if (IsNotFeatMenu && IsNotReset && theFeat && theFeat.prereqeval && !ignorePrereqs) {
+	if (IsNotFeatMenu && IsNotReset && theFeat && theFeat.prereqeval && !ignorePrereqs && event.target.name == FeatFlds[0]) {
 		try {
 			var meetsPrereq = eval(theFeat.prereqeval);
 		} catch (e) {
@@ -7153,11 +7132,11 @@ function CalcAC() {
 };
 
 function SetToManual_Button() {
-	var AttackFld = What("Manual Attack Remember") === "Yes";
-	var BackgroundFld = What("Manual Background Remember") === "Yes";
-	var ClassFld = What("Manual Class Remember") === "Yes";
-	var FeatFld = What("Manual Feat Remember") === "Yes";
-	var RaceFld = What("Manual Race Remember") === "Yes";
+	var AttackFld = What("Manual Attack Remember") !== "No";
+	var BackgroundFld = What("Manual Background Remember") !== "No";
+	var ClassFld = What("Manual Class Remember") !== "No";
+	var FeatFld = What("Manual Feat Remember") !== "No";
+	var RaceFld = What("Manual Race Remember") !== "No";
 
 	//set the checkboxes in the dialog to starting position
 	SetToManual_Dialog.mAtt = AttackFld;
@@ -7169,13 +7148,18 @@ function SetToManual_Button() {
 	//call the dialog and proceed if Apply is pressed
 	if (app.execDialog(SetToManual_Dialog) != "ok") return
 
+	//do something with the results of attacks checkbox
+	if (SetToManual_Dialog.mAtt !== AttackFld) ToggleAttacks(AttackFld ? "Yes" : "No");
+
 	//do something with the results of background checkbox
 	if (SetToManual_Dialog.mBac !== BackgroundFld) {
 		if (SetToManual_Dialog.mBac) {
-			Value("Manual Background Remember", "Yes");
+			Value("Manual Background Remember", What("Background"));
+			Hide("Background Menu");
 		} else {
+			FindBackground(What("Manual Background Remember"));
 			Value("Manual Background Remember", "No");
-			CurrentBackground.known = "";
+			DontPrint("Background Menu");
 			ApplyBackground(What("Background"));
 		}
 	}
@@ -7183,35 +7167,58 @@ function SetToManual_Button() {
 	//do something with the results of class checkbox
 	if (SetToManual_Dialog.mCla !== ClassFld) {
 		if (SetToManual_Dialog.mCla) {
-			Value("Manual Class Remember", "Yes");
+			Value("Manual Class Remember", What("Class and Levels"));
 			Hide("Class Features Menu");
 		} else {
+			var newClassValue = What("Class and Levels");
+			// restore the old class value so that we have a working classes.old
+			var oldClassValue = What("Manual Class Remember");
+			tDoc.getField("Class and Levels").remVal = oldClassValue;
+			Value("Class and Levels", oldClassValue);
+			// now set class processing back to automatic and apply the new value
 			Value("Manual Class Remember", "No");
-			classes.known = {};
-			ApplyClasses(What("Class and Levels"));
+			Value("Class and Levels", newClassValue);
 		}
 	}
 
 	//do something with the results of feat checkbox
 	if (SetToManual_Dialog.mFea !== FeatFld) {
 		if (SetToManual_Dialog.mFea) {
-			Value("Manual Feat Remember", "Yes");
-			for (var i = 1; i <= FieldNumbers.feats; i++) {
-				tDoc.getField("Feat Description " + i).setAction("Calculate", "");
-			}
+			Value("Manual Feat Remember", CurrentFeats.known.toSource(), CurrentFeats.level);
+			// remove the auto-calculations from feat fields
+			for (var i = 1; i <= FieldNumbers.feats; i++) tDoc.getField("Feat Description " + i).setAction("Calculate", "");
 		} else {
-			Value("Manual Feat Remember", "No");
-			var CurrentFeats = {
-				known : [],
-				improvements : [],
-				skills : []
-			};
+			// set the old known feats back and apply the current ones
+			var oldKnowns = eval(What("Manual Feat Remember"));
+			CurrentFeats.level = Who("Manual Feat Remember")
+			Value("Manual Feat Remember", "No", "");
+			for (var i = 1; i <= FieldNumbers.feats; i++) {
+				CurrentFeats.known[i - 1] = oldKnowns[i - 1];
+				ApplyFeat(What("Feat Name " + i), i);
+			}
+			// loop through the known feats and if any are still the same as before and have a calculated field value, apply the calculation again
 			for (var i = 0; i < FieldNumbers.feats; i++) {
-				ApplyFeat(What("Feat Name " + (i + 1)), (i + 1));
+				if (oldKnowns[i] && CurrentFeats.known[i] == oldKnowns[i] && FeatsList[oldKnowns[i]].calculate) {
+					var theCalc = What("Unit System") === "imperial" ? FeatsList[oldKnowns[i]].calculate : ConvertToMetric(FeatsList[oldKnowns[i]].calculate, 0.5);
+					tDoc.getField("Feat Name " + (1+i)).setAction("Calculate", theCalc);
+				}
 			}
 		}
 	}
 
+	//do something with the results of race checkbox
+	if (SetToManual_Dialog.mRac !== RaceFld) {
+		if (SetToManual_Dialog.mRac) {
+			Value("Manual Race Remember", What("Race Remember"), CurrentRace.level);
+			Hide("Race Features Menu");
+		} else {
+			FindRace(What("Manual Race Remember"), true);
+			if (CurrentRace.known) CurrentRace.level = Who("Manual Race Remember");
+			Value("Manual Race Remember", "No", "");
+			ApplyRace(What("Race Remember"));
+		}
+	}
+/* UPDATED
 	//do something with the results of race checkbox
 	if (SetToManual_Dialog.mRac !== RaceFld) {
 		var remRaceFld = What("Race Remember");
@@ -7235,6 +7242,7 @@ function SetToManual_Button() {
 			}
 		}
 	}
+*/
 }
 
 //calculate how much experience points are needed for the next level (field calculation)
@@ -7484,7 +7492,7 @@ function MakeMobileReady(toggle) {
 
 			// Check if field is not in one of the exceptionlists, but continue if it is in the tooMuchExceptionRegex
 			var isException = !tooMuchExceptionRegex.test(Fname) && (exceptionArray.indexOf(Fname) !== -1 || (/^(Bonus |Re)?action \d+/i).test(Fname) || exceptionRegex.test(Fname));
-			if (What("Manual Attack Remember") === "Yes") isException = isException ? isException : (/Attack\./).test(Fname);
+			if (What("Manual Attack Remember") !== "No") isException = isException ? isException : (/Attack\./).test(Fname);
 			if (isException) continue;
 
 			//add fields that are visible and not read-only to array and make them read-only
@@ -9999,7 +10007,7 @@ function MakeWeaponMenu() {
 	var theField = What("Manual Attack Remember") === "No" ? What(prefix + Q + "Attack." + itemNmbr + ".Weapon Selection") : What(prefix + Q + "Attack." + itemNmbr + ".Weapon");
 	var theWea = CurrentWeapons.known[itemNmbr - 1];
 	var isWeapon = QI && ((!theWea[0] && CurrentWeapons.field[itemNmbr - 1]) || (theWea[0] && WeaponsList[theWea[0]].weight));
-	var isEquipment = QI && What("BlueText.Attack." + itemNmbr + ".Weight") && (What("Manual Attack Remember") === "Yes" || isWeapon) ? true : false;
+	var isEquipment = QI && What("BlueText.Attack." + itemNmbr + ".Weight") && (What("Manual Attack Remember") !== "No" || isWeapon) ? true : false;
 	
 	//decide what items to put on there
 	var menuItems = [["Move up", "Move down"], ["-", "Copy to Adventuring Gear (page 2)"], ["-", "Insert empty attack", "Delete attack", "Clear attack"]];

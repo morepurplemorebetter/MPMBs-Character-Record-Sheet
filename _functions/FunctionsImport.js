@@ -450,6 +450,14 @@ function DirectImport(consoleTrigger) {
 				throw "user stop";
 			};
 		};
+		if (global.docFrom.info.SheetVersionType && (/beta/i).test(global.docFrom.info.SheetVersionType) && global.docTo.semVers != global.docFrom.semVers) { // say that importing from an (other) beta version is not supported
+			app.alert({
+				cTitle : "Unable to import from beta version",
+				cMsg : "You are trying to import from a beta version of MPMB's Character Record Sheet (" + global.docFrom.semVers + "), which is not supported. The version of the sheet you are importing to is " + global.docTo.semVers + ". You can only import from a beta version if both versions are identical.\n\nThe importing process will now be cancelled."
+			});
+			closeAlert = true;
+			throw "user stop";
+		};
 
 		IsNotImport = "no progress bar";
 		ignorePrereqs = true;
@@ -1203,10 +1211,24 @@ function DirectImport(consoleTrigger) {
 				}
 			};
 		};
-	//Some settings for the overall sheet		
-		if (ImportField("Manual Attack Remember")) ToggleAttacks(What("Manual Attack Remember") === "Yes" ? "No" : "Yes");
-		if (ImportField("Manual Race Remember")) AddTooltip("Race Remember", undefined, What("Character Level"));
-		ImportField("Manual Class Remember"); ImportField("Manual Background Remember"); ImportField("Manual Feat Remember"); 
+	//Some settings for the overall sheet
+		if (ImportField("Manual Attack Remember")) ToggleAttacks(What("Manual Attack Remember") !== "No" ? "No" : "Yes");
+		if (ImportField("Manual Background Remember") && What("Manual Background Remember") !== "No") {
+			if (FromVersion < 13) Value("Manual Background Remember", What("Background"));
+			Hide("Background Menu");
+		};
+		if (ImportField("Manual Class Remember") && What("Manual Class Remember") !== "No") {
+			if (FromVersion < 13) Value("Manual Class Remember", What("Class and Levels"));
+			Hide("Class Features Menu");
+		};
+		if (ImportField("Manual Feat Remember") && What("Manual Feat Remember") !== "No") {
+			if (FromVersion < 13) Value("Manual Feat Remember", CurrentFeats.known.toSource());
+			for (var i = 1; i <= FieldNumbers.feats; i++) tDoc.getField("Feat Description " + i).setAction("Calculate", "");
+		};
+		if (ImportField("Manual Race Remember") && What("Manual Race Remember") !== "No") {
+			if (FromVersion < 13) Value("Manual Race Remember", What("Race Remember"));
+			Hide("Race Features Menu");
+		};
 
 	//Recalculate the weapons, for things might have changed since importing them
 		ReCalcWeapons(false);
@@ -1622,9 +1644,7 @@ function Import(type) {
 	thermoM(17/25); //increment the progress dialog's progress
 
 	//set the visiblity of the manual attack fields on the first page as the imported remember field has been set to
-	if (What("Manual Attack Remember") !== "No") {
-		ToggleAttacks("No");
-	}
+	if (What("Manual Attack Remember") !== "No") ToggleAttacks("No");
 	
 	thermoM(18/25); //increment the progress dialog's progress
 	
