@@ -610,8 +610,11 @@ var Base_ClassList = {
 					description : " [1 ki point]" + "\n   " + "After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
 				},
 				eval : "ClassFeatureOptions(['monk', 'ki', 'flurry of blows', 'extra']); ClassFeatureOptions(['monk', 'ki', 'patient defense', 'extra']); ClassFeatureOptions(['monk', 'ki', 'step of the wind', 'extra']);",
+				changeeval : "if (lvlH >= 5 && lvlL < 5) { ClassFeatureOptions(['monk', 'ki', 'stunning strike', 'extra'], lvlA[1] < 5 ? 'remove' : false); }; "
+/* UPDATED
 				removeeval : "ClassFeatureOptions(['monk', 'ki', 'flurry of blows', 'extra'], 'remove'); ClassFeatureOptions(['monk', 'ki', 'patient defense', 'extra'], 'remove'); ClassFeatureOptions(['monk', 'ki', 'step of the wind', 'extra'], 'remove');",
 				changeeval : "if (newClassLvl.monk >= 5 && (What('Extra.Notes') + What('Class Features')).toLowerCase().indexOf('stunning strike') === -1) {ClassFeatureOptions(['monk', 'ki', 'stunning strike', 'extra'])} else if (newClassLvl.monk < 5 && oldClassLvl.monk >= 5) {ClassFeatureOptions(['monk', 'ki', 'stunning strike', 'extra'], 'remove');};"
+*/
 			},
 			"unarmored movement" : {
 				name : "Unarmored Movement",
@@ -620,14 +623,11 @@ var Base_ClassList = {
 				description : "\n   " + "Speed increases and eventually lets me traverse some surfaces without falling as I move",
 				additional : levels.map(function (n) {
 					if (n < 2) return "";
-					if (n < 6) return "+10 ft";
-					if (n < 9) return "+15 ft";
-					if (n < 10) return "+15 ft; Vertical surfaces and liquids";
-					if (n < 14) return "+20 ft; Vertical surfaces and liquids";
-					if (n < 18) return "+25 ft; Vertical surfaces and liquids";
-					return "+30 ft; Vertical surfaces and liquids";
+					var spd = "+" + (n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30) + " ft";
+					var xtr = n < 9 ? "" : "; Vertical surfaces and liquids";
+					return spd + xtr;
 				}),
-				changeeval : "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level); SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, profDisplNm);"
+				changeeval : "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level); SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, displName);"
 			},
 			"subclassfeature3" : {
 				name : "Monastic Tradition",

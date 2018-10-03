@@ -144,9 +144,6 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (skillsTxt) skillsTxt = skillsTxt.replace(/^( |\n)*.*: |\;$|\.$/g, '');
 		var skills = uObj.skills && (type != "feat" || (type == "feat" && isArray(uObj.skills))) ? uObj.skills : false;
 		if (skills || skillsTxt) processSkills(addIt, tipNmF, skills, skillsTxt);
-
-		// changeeval always at the end
-		if (uObj.changeeval) runEval(uObj.changeeval, 'changeeval');
 	};
 
 	// set the main variables, determined by type
@@ -266,6 +263,12 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, tooltipName, Fea.UseOld, Fea.UseCalc);
 		}
 	}
+
+	// changeeval always at the end and regardless of AddFea or CheckLVL
+	if (!cOnly && fObj.changeeval) runEval(fObj.changeeval, 'changeeval');
+	if (cOldObj && cOldObj.changeeval) runEval(cOldObj.changeeval, 'changeeval');
+	if (cNewObj && cNewObj.changeeval) runEval(cNewObj.changeeval, 'changeeval');
+
 	// return the level-dependent attributes so it doesn't have to be queried again
 	return Fea;
 }
@@ -362,9 +365,11 @@ function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 	}
 }
 
-// a function to set the choice for something or remove it
+// a function to set the choice for something (choice = objectname) or remove it (choice = false)
+// put the objectname in extra for extrachoices (both when adding and when removing)
 function SetFeatureChoice(type, objNm, feaNm, choice, extra) {
 	choice = choice ? choice.toLowerCase() : false;
+	extra = extra ? extra.toLowerCase() : false;
 	type = GetFeatureType(type);
 	if (!CurrentFeatureChoices[type]) CurrentFeatureChoices[type] = {};
 	if (!choice) { // remove the choice
@@ -401,12 +406,12 @@ function GetFeatureChoice(type, objNm, feaNm, extra) {
 	if (CurrentFeatureChoices[type] && CurrentFeatureChoices[type][objNm] && (!feaNm || CurrentFeatureChoices[type][objNm][feaNm])) {
 		var useObj = feaNm ? CurrentFeatureChoices[type][objNm][feaNm] : CurrentFeatureChoices[type][objNm];
 		var foundSel = extra ? useObj.extrachoices : useObj.choice;
-		if (foundSel) theReturn = foundSel;
+		if (foundSel) theReturn = foundSel.slice();
 	}
 	return theReturn;
 }
 
-// a function to get a string of class feature choices just like how they use to be prior to v13
+// a function to get a string of class feature choices just like how they use to be prior to v13 with the "Class Feature Remember" field
 function classFeaChoiceBackwardsComp() {
 	var chc = CurrentFeatureChoices.classes;
 	if (!chc) return "";

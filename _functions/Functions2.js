@@ -1444,7 +1444,12 @@ function WildshapeRecalc(order) {
 }
 
 //set the drop-down menus for wildshape selection fields
-function SetWildshapeDropdown() {
+function SetWildshapeDropdown(forceTooltips) {
+	var tempString = "Type (or select) the name of the creature you want to calculate a Wild Shape for.";
+	tempString += "\n\n" + toUni("Not auto-updated") + "\nThe generated stats will not auto-update once you change something on the first page! They will only update when your druid level changes. You can have them re-calculated using the \"Wild Shape Options\" button at the top of this page.";
+	tempString += "\n\n" + toUni("First create the character") + "\nNote that nothing will happen if no character is defined on the 1st page.";
+	tempString += "\n\n" + toUni("Calculation is wrong") + "\nThe Wild Shape rules are open for interpertation and your DM might not approve with the way it is done here. You can change the calculation of proficiencies using the \"Wild Shape Options\" button at the top of this page.\nYou can always change the outcome yourself, because all of the fields are editable.";
+
 	var theList = [];
 
 	for (var key in CreatureList) {
@@ -1458,27 +1463,31 @@ function SetWildshapeDropdown() {
 	theList.unshift("");
 	if (!typePF) theList.unshift("Make a Selection");
 
-	if (tDoc.getField("Wildshapes.Settings").submitName === theList.toSource()) return; //no changes, so no reason to do this
-	tDoc.getField("Wildshapes.Settings").submitName = theList.toSource();
-
-	var theString = "Type (or select) the name of the creature you want to calculate a Wild Shape for.";
-	theString += "\n\n" + toUni("Not auto-updated") + "\nThe generated stats will not auto-update once you change something on the first page! They will only update when your druid level changes. You can have them re-calculated using the \"Wild Shape Options\" button at the top of this page.";
-	theString += "\n\n" + toUni("First create the character") + "\nNote that nothing will happen if no character is defined on the 1st page.";
-	theString += "\n\n" + toUni("Calculation is wrong") + "\nThe Wild Shape rules are open for interpertation and your DM might not approve with the way it is done here. You can change the calculation of proficiencies using the \"Wild Shape Options\" button at the top of this page.\nYou can always change the outcome yourself, because all of the fields are editable.";
+	var applyItems = tDoc.getField("Wildshapes.Settings").submitName !== theList.toSource();
+	if (applyItems) tDoc.getField("Wildshapes.Settings").submitName = theList.toSource();
 	
 	var WSfrontA = What("Template.extras.WSfront").split(",");
 	for (var A = 0; A < WSfrontA.length; A++) {
 		for (var i = 1; i <= 4; i++) {
 			var theFld = WSfrontA[A] + "Wildshape.Race." + i;
 			var theFldVal = What(theFld);
-			tDoc.getField(theFld).setItems(theList);
-			Value(theFld, theFldVal, theString);
+			if (applyItems) {
+				tDoc.getField(theFld).setItems(theList);
+				Value(theFld, theFldVal, tempString);
+			} else if (forceTooltips) {
+				AddTooltip(theFld, tempString);
+			}
 		}
 	}
 }
 
 //set the drop-down menus for companion race
-function SetCompDropdown() {
+function SetCompDropdown(forceTooltips) {
+	var tempString = "Type (or select) the name of the race you want to have on this page. Note that first a list of player races is given, followed by an alphabetical list of creatures. You are not limited by the names in the list. Just typing \"Drow\" will also be recognized, for example.";
+	tempString += "\n\n" + toUni("Selecting a creature") + "\nAll information of the creature will automatically be added. This includes ability scores, proficiencies, senses, weapons, etc. You can change the things afterwards.\nBecause not all creatures need the same amount of space for all their feature text,some fields may overflow. You can manually edit these fields so that everything is visible when printed (e.g. move things to the \"Noted\" below).";
+	tempString += "\n\n" + toUni("Selecting a player race") + "\nAll the same things as selecting a player race on the first page will happen, with the exception that no limited feature or ability DC is added as there is no room for that."
+	tempString += "\n\n" + toUni("Changing the race") + "\nIf you entered a race that was recognized and then change the entry to something that is not recognized, all the features and abilities of the recognized race will remain in place. This way, you can change the name of the race to something, while keeping the stats of something else. For example, you can choose \"Frog\" and then change it to \"Toad\", creating a toad with the stats of a frog.";
+
 	var theList = [""];
 	
 	for (var key in RaceList) {
@@ -1497,20 +1506,19 @@ function SetCompDropdown() {
 	
 	theList = theList.concat(theListC);
 
-	if (tDoc.getField("Companion.Remember").submitName === theList.toSource()) return; //no changes, so no reason to do this
-	tDoc.getField("Companion.Remember").submitName = theList.toSource();
-	
-	var theString = "Type (or select) the name of the race you want to have on this page. Note that first a list of player races is given, followed by an alphabetical list of creatures. You are not limited by the names in the list. Just typing \"Drow\" will also be recognized, for example.";
-	theString += "\n\n" + toUni("Selecting a creature") + "\nAll information of the creature will automatically be added. This includes ability scores, proficiencies, senses, weapons, etc. You can change the things afterwards.\nBecause not all creatures need the same amount of space for all their feature text,some fields may overflow. You can manually edit these fields so that everything is visible when printed (e.g. move things to the \"Noted\" below).";
-	theString += "\n\n" + toUni("Selecting a player race") + "\nAll the same things as selecting a player race on the first page will happen, with the exception that no limited feature or ability DC is added as there is no room for that."
-	theString += "\n\n" + toUni("Changing the race") + "\nIf you entered a race that was recognized and then change the entry to something that is not recognized, all the features and abilities of the recognized race will remain in place. This way, you can change the name of the race to something, while keeping the stats of something else. For example, you can choose \"Frog\" and then change it to \"Toad\", creating a toad with the stats of a frog.";
+	var applyItems = tDoc.getField("Companion.Remember").submitName !== theList.toSource(); 
+	if (applyItems) tDoc.getField("Companion.Remember").submitName = theList.toSource();
 	
 	var AScompA = What("Template.extras.AScomp").split(",");
 	for (var A = 0; A < AScompA.length; A++) {
 		var theFld = AScompA[A] + "Comp.Race";
 		var theFldVal = What(theFld);
-		tDoc.getField(theFld).setItems(theList);
-		Value(theFld, theFldVal, theString);
+		if (applyItems) {
+			tDoc.getField(theFld).setItems(theList);
+			Value(theFld, theFldVal, tempString);
+		} else if (forceTooltips) {
+			AddTooltip(theFld, tempString);
+		}
 	}
 };
 
@@ -4262,21 +4270,24 @@ function UpdateDropdown(type, weapon) {
 	if (minVer || !IsNotUserScript) return;
 	IsSetDropDowns = true;
 	type = type ? type.toLowerCase() : "all";
+	var notAll, forceTT = false;
 	calcStop();
 	switch (type) {
+	 case "tooltips" :
+		forceTT = true;
 	 case "resources" :
-		var notAll = true;
+		notAll = true;
 	 case "all" :
-		SetRacesdropdown();
-		SetBackgrounddropdown();
-		SetBackgroundFeaturesdropdown();
-		SetFeatsdropdown();
-		SetCompDropdown();
-		SetWildshapeDropdown();
-		SetArmordropdown();
-		SetAmmosdropdown();
+		SetRacesdropdown(forceTT);
+		SetBackgrounddropdown(forceTT);
+		SetBackgroundFeaturesdropdown(forceTT);
+		SetFeatsdropdown(forceTT);
+		SetCompDropdown(forceTT);
+		SetWildshapeDropdown(forceTT);
+		SetArmordropdown(forceTT);
+		SetAmmosdropdown(forceTT);
 		if (notAll) {
-			SetWeaponsdropdown();
+			SetWeaponsdropdown(forceTT);
 			break;
 		}
 	 case "attack" :
@@ -4712,7 +4723,7 @@ function CountASIs() {
 }
 
 //a function to change the sorting of the skills
-function MakeSkillsMenu_SkillsOptions(input) {
+function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 	var sWho = Who("Text.SkillsNames");
 	var sList = Who("SkillsClick").replace(/.*\n\n/, "");
 	var sListA = sList.replace(/.*:/, "") !== "";
@@ -4744,7 +4755,7 @@ function MakeSkillsMenu_SkillsOptions(input) {
 		return toUni(aSkill) + mStr + aSkill + (isCom ? mStrC : mStr1) + (isCom ? "" : mStr2) + mStr3;
 	};
 	
-	if (IsNotReset === false) {//on a reset only re-do the bonus modifier tooltips
+	if (!IsNotReset || onlyTooltips) { //on a reset only re-do the bonus modifier tooltips
 		for (var S = 0; S < (SkillsList.abbreviations.length - 2); S++) {
 			var newSkill = SkillsList.names[S];
 			AddTooltip(SkillsList.abbreviations[S] + " Bonus", getStr(newSkill));
@@ -6398,10 +6409,11 @@ function processArmourProfs(AddRemove, srcNm, itemArr) {
 	}
 };
 // set the armour/weapon proficiency manually (field action)
-function setCheckboxProfsManual() {
-	var isActive = event.target.isBoxChecked(0) === 1;
-	var sort = (/simple|martial/i).test(event.target.name) ? "weapon" : "armour";
-	var type = event.target.name.replace(/proficiency |armor |weapon /ig, '').toLowerCase();
+function setCheckboxProfsManual(theField) {
+	var fld = theField ? tDoc.getField(theField) : event.target;
+	var isActive = fld.isBoxChecked(0) === 1;
+	var sort = (/simple|martial/i).test(fld.name) ? "weapon" : "armour";
+	var type = fld.name.replace(/proficiency |armor |weapon /ig, '').toLowerCase();
 	var normalState = CurrentProfs[sort][type] ? true : false;
 	delete CurrentProfs[sort][type+"_manualon"];
 	delete CurrentProfs[sort][type+"_manualoff"];
@@ -7667,7 +7679,7 @@ function getFAQ(input, delay) {
 
 // Make a menu to enable or disable the use of unicode
 function makeUnicodeMenu() {
-	var isEnabled = What("UseUnicode") == "true";
+	var isEnabled = What("UseUnicode") != "";
 	Menus.unicode = {
 		cName : "Use Unicode " + (isEnabled ? "(disable if you can't read this: \"" + toUni("This") + "\")" : "[disabled]"),
 		cReturn : "unicode#unicode#" + (isEnabled ? "" : "true"),
@@ -7676,19 +7688,22 @@ function makeUnicodeMenu() {
 }
 
 // Do something with the menu
-function setUnicodeUse(enable) {
+function setUnicodeUse(enable, force) {
 	enable = enable != "";
 	var isEnabled = What("UseUnicode") != "";
-	if (isEnabled !== enable) {
+	if (isEnabled !== enable || force) {
 		Value("UseUnicode", enable ? "true" : "");
-		app.alert({
-			cMsg : "You have changed the use of unicode characters to: " + (enable ? "ENABLED" : "DISABLED") + "\nUnicode characters are those that are bold, italic, or superscript in tooltips and dialogs. Not all systems handle them well.\n\nThese changes will only be applied after saving the sheet and opening it again.\n\nNote that there still might be some tooltips that use unicode and thus might have unreadable characters for you.\n\nYou can already see the result of your change here:\n\"" + toUni("This text is bold and italic if unicode is enabled") + '\".',
-			nIcon : 3,
-			cTitle : "Change will be applied on re-opening"
-		})
+		if (!force) { 
+			app.alert({
+				cMsg : "You have changed the use of unicode characters to: " + (enable ? "ENABLED" : "DISABLED") + "\nUnicode characters are those that are bold, italic, or superscript in tooltips and dialogs. Not all systems handle them well.\n\nThese changes will only be applied after saving the sheet and opening it again.\n\nNote that there still might be some tooltips that use unicode and thus might have unreadable characters for you.\n\nYou can already see the result of your change here:\n\"" + toUni("This text is bold and italic if unicode is enabled") + '\".',
+				nIcon : 3,
+				cTitle : "Change will be applied on re-opening"
+			});
+		}
 		// update the tooltips that use unicode
-		UpdateDropdown("all");
+		UpdateDropdown("tooltips");
 		AbilityScores_Button(true);
 		setSkillTooltips();
+		MakeSkillsMenu_SkillsOptions(true, true);
 	}
 }

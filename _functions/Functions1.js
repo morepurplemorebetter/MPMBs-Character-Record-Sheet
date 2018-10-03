@@ -3169,14 +3169,14 @@ function ReCalcWeapons(justProfs, force) {
 	};
 };
 
-function SetWeaponsdropdown() {
-	var string = "Type in the name of the attack (or select it from the drop-down menu) and all its attributes will be filled out automatically, provided that its a recognized attack.";
-	string += "\n\n" + toUni("Magic bonus") + "\nAny magical bonus you type in this field is added to both the to hit and damage (e.g. type \"Longsword +2\").";
-	string += "\n\n" + toUni("Off-hand weapons") + "\nIf the name or description fields include the word \"off-hand\", \"secondary\", \"spell\", or \"cantrip\", the ability modifier will only be added to the to hit bonus, and not to the damage.";
-	string += "\n\n" + toUni("Damage Die") + "\nThis is determined by the value in the \"modifier\" field, see below.";
-	string += "\n\n" + toUni("To Hit and Damage calculations") + "\nThese are calculated using the proficiency bonus, the selected ability modifier and any bonus added in the \"modifier\" fields, see below.";
-	string += "\n\n" + toUni("Context-aware calculations") + "\nSome class features, racial features, and feats can affect the attack to hit and damage calculations. You can read what these are by clicking the button in this line.";
-	string += "\n\n" + toUni("Modifier or blue text fields") + "\nThese are hidden by default. You can toggle their visibility with the \"Mods\" button in the \'JavaScript Window\' or the \"Modifiers\" bookmark.";
+function SetWeaponsdropdown(forceTooltips) {
+	var tempString = "Type in the name of the attack (or select it from the drop-down menu) and all its attributes will be filled out automatically, provided that its a recognized attack.";
+	tempString += "\n\n" + toUni("Magic bonus") + "\nAny magical bonus you type in this field is added to both the to hit and damage (e.g. type \"Longsword +2\").";
+	tempString += "\n\n" + toUni("Off-hand weapons") + "\nIf the name or description fields include the word \"off-hand\", \"secondary\", \"spell\", or \"cantrip\", the ability modifier will only be added to the to hit bonus, and not to the damage.";
+	tempString += "\n\n" + toUni("Damage Die") + "\nThis is determined by the value in the \"modifier\" field, see below.";
+	tempString += "\n\n" + toUni("To Hit and Damage calculations") + "\nThese are calculated using the proficiency bonus, the selected ability modifier and any bonus added in the \"modifier\" fields, see below.";
+	tempString += "\n\n" + toUni("Context-aware calculations") + "\nSome class features, racial features, and feats can affect the attack to hit and damage calculations. You can read what these are by clicking the button in this line.";
+	tempString += "\n\n" + toUni("Modifier or blue text fields") + "\nThese are hidden by default. You can toggle their visibility with the \"Mods\" button in the \'JavaScript Window\' or the \"Modifiers\" bookmark.";
 	
 	var weaponlists = {
 		endlist : [
@@ -3216,8 +3216,10 @@ function SetWeaponsdropdown() {
 	var addWeaList = function (weArr, addFirst, noSort) {
 		if (!noSort) weArr.sort();
 		if (addFirst) weArr.unshift(addFirst);
-		weArr.unshift("");
-		setweapons = setweapons.concat(weArr);
+		if (weArr.length) {
+			weArr.unshift("");
+			setweapons = setweapons.concat(weArr);
+		}
 	};
 	addWeaList(weaponlists.melee.concat(weaponlists.ranged), "Unarmed Strike"); //add the natural weapons
 	addWeaList(weaponlists.improvised, "Improvised Weapon"); //add the improvised weapons
@@ -3234,32 +3236,38 @@ function SetWeaponsdropdown() {
 	for (var i = 1; i <= FieldNumbers.attacks; i++) {
 		var theFld = "Attack." + i + ".Weapon Selection";
 		var theFldSuNm = "Attack." + i + ".Proficiency";
-		if (tDoc.getField(theFldSuNm).submitName === setweapons.toSource()) continue; //no changes, so no reason to set this field
+		if (tDoc.getField(theFldSuNm).submitName === setweapons.toSource()) {
+			if (forceTooltips) AddTooltip(theFld, tempString);
+			continue; //no changes, so no reason to set this field
+		}
 		tDoc.getField(theFldSuNm).submitName = setweapons.toSource();
 		var theFldVal = What(theFld);
 		IsNotWeaponMenu = false;
 		tDoc.getField(theFld).setItems(setweapons);
 		IsNotWeaponMenu = true;
-		if (theFldVal !== What(theFld)) Value(theFld, theFldVal, string);
+		if (theFldVal !== What(theFld)) Value(theFld, theFldVal, tempString);
 	};
 	for (var c = 1; c <= 3; c++) {
 		theFld = "Comp.Use.Attack." + c + ".Weapon Selection";
 		theFldSuNm = "Comp.Use.Attack." + c + ".Proficiency";
-		if (tDoc.getField(theFldSuNm).submitName === setweapons.toSource()) continue; //no changes, so no reason to set this field
+		if (tDoc.getField(theFldSuNm).submitName === setweapons.toSource()) {
+			if (forceTooltips) AddTooltip(theFld, tempString);
+			continue; //no changes, so no reason to set this field
+		}
 		tDoc.getField(theFldSuNm).submitName = setweapons.toSource();
 		theFldVal = What(theFld);
 		IsNotWeaponMenu = false;
 		tDoc.getField(theFld).setItems(setweapons);
 		IsNotWeaponMenu = true;
-		if (theFldVal !== What(theFld)) Value(theFld, theFldVal, string);
+		if (theFldVal !== What(theFld)) Value(theFld, theFldVal, tempString);
 	};
 };
 
-function SetArmordropdown() {
-	var string = toUni("Armor AC") + "\nType the name of the armor (or select it from the drop-down menu) and its AC and features will be filled out automatically, provided that its a recognized armor.";
-	string += "\n\n" + toUni("Alternative spelling") + "\nYou can use alternative spellings, descriptions and embellishments. For example: \"Golden Plate of Lathander\" will result in the AC and attributes of a \"Plate\".";
-	string += "\n\n" + toUni("Unarmored Defense") + "\nUsing either \"unarmored\", \"naked\", \"nothing\", or \"no armor\" combined with an abbreviation of one of the six ability scores will result in the armor being calculated with that ability score. For example: \"Unarmored Defense (Int)\".\nIf you do not include the abbreviation, the sheet will auto-fill an armor AC of 10.";
-	string += "\n\n" + toUni("Magic bonus") + "\nAny magical bonus you type in this field is added to the AC of the armor type. For example: \"Chain mail +1\" or \"Plate -2\".";
+function SetArmordropdown(forceTooltips) {
+	var tempString = toUni("Armor AC") + "\nType the name of the armor (or select it from the drop-down menu) and its AC and features will be filled out automatically, provided that its a recognized armor.";
+	tempString += "\n\n" + toUni("Alternative spelling") + "\nYou can use alternative spellings, descriptions and embellishments. For example: \"Golden Plate of Lathander\" will result in the AC and attributes of a \"Plate\".";
+	tempString += "\n\n" + toUni("Unarmored Defense") + "\nUsing either \"unarmored\", \"naked\", \"nothing\", or \"no armor\" combined with an abbreviation of one of the six ability scores will result in the armor being calculated with that ability score. For example: \"Unarmored Defense (Int)\".\nIf you do not include the abbreviation, the sheet will auto-fill an armor AC of 10.";
+	tempString += "\n\n" + toUni("Magic bonus") + "\nAny magical bonus you type in this field is added to the AC of the armor type. For example: \"Chain mail +1\" or \"Plate -2\".";
 	
 	var TheList = [
 		"",
@@ -3289,15 +3297,18 @@ function SetArmordropdown() {
 		TheList = TheList.concat(armAno);
 	};
 	
-	if (tDoc.getField("AC Armor Description").submitName === TheList.toSource()) return; //no changes, so no reason to do this
+	if (tDoc.getField("AC Armor Description").submitName === TheList.toSource()) {
+		if (forceTooltips) AddTooltip("AC Armor Description", tempString);
+		return; //no changes, so no reason to do this
+	}
 	tDoc.getField("AC Armor Description").submitName = TheList.toSource();
 
 	var theFldVal = What("AC Armor Description");
 	tDoc.getField("AC Armor Description").setItems(TheList);
-	Value("AC Armor Description", theFldVal, string);
+	Value("AC Armor Description", theFldVal, tempString);
 };
 
-function SetBackgrounddropdown() {
+function SetBackgrounddropdown(forceTooltips) {
 	var ArrayDing = [""];
 	var tempString = "";
 	tempString += toUni("Background") + "\nType in the name of the background (or select it from the drop-down menu) and its features and proficiencies will be filled out automatically, provided that its a recognized background.";
@@ -3315,14 +3326,17 @@ function SetBackgrounddropdown() {
 		}
 	};
 	ArrayDing.sort();
-	if (tDoc.getField("Background").submitName === ArrayDing.toSource()) return; //no changes, so no reason to do this
+	if (tDoc.getField("Background").submitName === ArrayDing.toSource()) {
+		if (forceTooltips) AddTooltip("Background", tempString);
+		return; //no changes, so no reason to do this
+	}
 	tDoc.getField("Background").submitName = ArrayDing.toSource();
 	var theFldVal = What("Background");
 	tDoc.getField("Background").setItems(ArrayDing);
 	Value("Background", theFldVal, tempString);
 };
 
-function SetRacesdropdown() {
+function SetRacesdropdown(forceTooltips) {
 	var tempString = "";
 	var ArrayDing = [""];
 	tempString += toUni("Race") + "\nType in the name of the race (or select it from the drop-down menu) and its traits and features will be filled out automatically, provided that its a recognized race. You are not limited by the names in the list. Just typing \"Drow\" will also be recognized, for example.";
@@ -3335,7 +3349,10 @@ function SetRacesdropdown() {
 		if (ArrayDing.indexOf(raceNm) === -1) ArrayDing.push(raceNm);
 	}
 	ArrayDing.sort();
-	if (tDoc.getField("Race").submitName === ArrayDing.toSource()) return; //no changes, so no reason to do this
+	if (tDoc.getField("Race").submitName === ArrayDing.toSource()) {
+		if (forceTooltips) AddTooltip("Race", tempString);
+		return; //no changes, so no reason to do this
+	}
 	tDoc.getField("Race").submitName = ArrayDing.toSource();
 	var theFldVal = What("Race");
 	tDoc.getField("Race").setItems(ArrayDing);
@@ -5469,8 +5486,9 @@ function ApplyFeat(InputFeat, FldNmbr) {
 */
 };
 
-function SetFeatsdropdown() {
+function SetFeatsdropdown(forceTooltips) {
 	var ArrayDing = [""];
+	var tempString = "Type in the name of the feat (or select it from the drop-down menu) and its text and features will be filled out automatically, provided it is a recognized feat. Ability scores will not be altered other than their tool tips (mouseover texts).\n\nUpon changing to another feat, all features of the previous feat will be undone.";
 	for (var key in FeatsList) {
 		if (testSource(key, FeatsList[key], "featsExcl")) continue;
 		var feaNm = FeatsList[key].name;
@@ -5478,14 +5496,18 @@ function SetFeatsdropdown() {
 	}
 	ArrayDing.sort();
 	
-	if (tDoc.getField("Feat Name 1").submitName === ArrayDing.toSource()) return; //no changes, so no reason to do this
-	tDoc.getField("Feat Name 1").submitName = ArrayDing.toSource();
+	var applyItems = tDoc.getField("Feat Name 1").submitName !== ArrayDing.toSource();
+	if (applyItems) tDoc.getField("Feat Name 1").submitName = ArrayDing.toSource();
 	
 	for (var i = 1; i <= FieldNumbers.feats; i++) {
 		var theFeatFld = "Feat Name " + i;
 		var theFeati = What(theFeatFld);
-		tDoc.getField(theFeatFld).setItems(ArrayDing);
-		Value(theFeatFld, theFeati, "Type in the name of the feat (or select it from the drop-down menu) and its text and features will be filled out automatically, provided it is a recognized feat. Ability scores will not be altered other than their tool tips (mouseover texts).\n\nUpon changing to another feat, all features of the previous feat will be undone.");
+		if (applyItems) {
+			tDoc.getField(theFeatFld).setItems(ArrayDing);
+			Value(theFeatFld, theFeati, tempString);
+		} else if (forceTooltips) {
+			AddTooltip(theFeatFld, tempString);
+		}
 	}
 }
 
@@ -5749,7 +5771,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 	
 	// apply feat level changes
 	var oldFeatLvl = CurrentFeats.level;
-	var newFeatLvl = newLvlForce !== undefined ? newLvlForce : What("Character Level") ? Number(What("Character Level")) : 1;
+	var newFeatLvl = newRaceLvl; // would otherwise be identical to how to determine the race level
 	if ((/feat|all|notclass/i).test(Typeswitch) && oldFeatLvl != newFeatLvl) {
 		for (var f = 0; f < CurrentFeats.known.length; f++) {
 			var aFeat = CurrentFeats.known[f];
@@ -5844,7 +5866,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				var propFea = cl.features[prop];
 				var isSubClassProp = newSubClass && ClassSubList[newSubClass].features[prop] ? true : false;
 				var isClassProp = ClassList[aClass].features[prop] ? true : false;
-/* TESTING
+/* UPDATED
 				// if this feature is only available to a subclass, but no subclass is defined, ask to add a subclass
 				var subClFeaKey = prop.indexOf("subclassfeature") !== -1;
 				if (subClFeaKey && propFea.minlevel <= ClassLevelUp[aClass][2] && !newSubClass && IsNotReset && oldClassLvl[aClass] <= newClassLvl[aClass]) {
@@ -5899,30 +5921,38 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				// see if this is a wild shape feature
 				if (prop.indexOf("wild shape") !== -1 && Fea.changed) WSinUse = [newClassLvl[aClass], Fea.Use, Fea.Recov, Fea.Add];
 
-				// loop through the feature's selected extrachoices, if the feature meets the level requirement or if removing the feature
-				if (propFea.extrachoices && (Fea.AddFea || (Fea.CheckLVL && !Fea.AddFea))) {
+				/* loop through the feature's selected extra options, but only:
+					- during import to set the feature for the first time (!IsNotImport && Fea.AddFea)
+					- if removing the feature (Fea.CheckLVL && !Fea.AddFea)
+					- if level-dependent things might have changed (!Fea.CheckLVL && Fea.AddFea)
+				*/
+				if ((!IsNotImport && propFea.extrachoices && Fea.AddFea) || (IsNotImport && Fea.CheckLVL !== Fea.AddFea)) {
 					var xtrSel = GetFeatureChoice("classes", aClass, prop, true);
 					for (var x = 0; x < xtrSel.length; x++) {
 						var xtrProp = xtrSel[x];
-						if (!propFea[xtrProp]) continue; // feature not found, so skip it
+						if (!propFea[xtrProp] || (!IsNotImport && propFea.extrachoices.join("##").toLowerCase().indexOf(xtrProp) == -1)) continue; // skip this feature if not found OR this is an import event and the feature is not in the extrachoices array
 						// apply the common attributes of the feature extra choice
 						var xtrFea = ApplyFeatureAttributes(
 							"class", // type
 							[aClass, prop], // fObjName [aParent, fObjName]
 							[oldClassLvl[aClass], newClassLvl[aClass], false], // lvlA [old-level, new-level, force-apply]
-							["", xtrProp, "only"], // choiceA [old-choice, new-choice, "only"|"change"]
+							Fea.AddFea ? ["", xtrProp, "only"] : [xtrProp, "", "only"], // choiceA [old-choice, new-choice, "only"|"change"]
 							false // forceNonCurrent
 						);
 						// add/remove/update the feature text on the third/second page
 						var xtrFeaOldString = ParseClassFeatureExtra(aClass, prop, xtrProp, xtrFea, true);
 						var xtrFeaNewString = ParseClassFeatureExtra(aClass, prop, xtrProp, xtrFea, false);
 						// see what type of change we have to do
-						var xtrTextAction = textAction == "remove" ? "remove" : // level dropped below minlevel
+						var xtrTextAction = Fea.CheckLVL && !Fea.AddFea ? "remove" : // level dropped below minlevel
 							xtrFea.AddFea && xtrFea.changed && xtrFea.Descr !== xtrFea.DescrOld ? "replace" : // update the whole text after a description change
 							xtrFea.AddFea && xtrFea.changed && xtrFea.Descr === xtrFea.DescrOld ? "first" : // update just header after a usages/recovery/additional change
 							false;
 						// do the text change, if any
-						if (textAction) applyClassFeatureText(textAction, ["Extra.Notes", "Class Features"], xtrFeaOldString, xtrFeaNewString, false);
+						if (IsNotImport && xtrTextAction) {
+							applyClassFeatureText(xtrTextAction, ["Extra.Notes", "Class Features"], xtrFeaOldString, xtrFeaNewString, false);
+						} else if (propFea.extrachoices && !IsNotImport) {
+							AddString("Extra.Notes", xtrFeaNewString[1].replace(/^(\r|\n)*/, ''), true);
+						}
 					}
 				}
 			}
@@ -6578,6 +6608,13 @@ function ClassFeatureOptions(Input, AddRemove) {
 	var clLvlOld = !triggerIsMenu && Input && classes.old[aClass] ? classes.old[aClass].classlevel : clLvl;
 
 	if (extra) { // an extra choice for the third page
+
+		// if removing, first check if it actually exists
+		if (!addIt && GetFeatureChoice("classes", aClass, prop, true).indexOf(choice) == -1) {
+			thermoM(thermoTxt, true); // Stop progress bar
+			return;
+		};
+
 		// apply the common attributes of the feature
 		var Fea = ApplyFeatureAttributes(
 			"class", // type
@@ -6586,7 +6623,9 @@ function ClassFeatureOptions(Input, AddRemove) {
 			addIt ? ["", choice, "only"] : [choice, "", "only"], // choiceA [old-choice, new-choice, "only"|"change"]
 			false // forceNonCurrent
 		);
+
 		thermoM(3/5); //increment the progress dialog's progress
+
 		// do something with the text of the feature
 		var feaString = ParseClassFeatureExtra(aClass, prop, choice, Fea, !addIt);
 
@@ -7131,22 +7170,24 @@ function CalcAC() {
 	event.value = !ACbase ? "" : ACbase + ACshield + ACdex + ACmagic + ACmisc1 + ACmisc2;
 };
 
-function SetToManual_Button() {
+function SetToManual_Button(noDialog) {
 	var AttackFld = What("Manual Attack Remember") !== "No";
 	var BackgroundFld = What("Manual Background Remember") !== "No";
 	var ClassFld = What("Manual Class Remember") !== "No";
 	var FeatFld = What("Manual Feat Remember") !== "No";
 	var RaceFld = What("Manual Race Remember") !== "No";
 
-	//set the checkboxes in the dialog to starting position
-	SetToManual_Dialog.mAtt = AttackFld;
-	SetToManual_Dialog.mBac = BackgroundFld;
-	SetToManual_Dialog.mCla = ClassFld;
-	SetToManual_Dialog.mFea = FeatFld;
-	SetToManual_Dialog.mRac = RaceFld;
+	if (!noDialog) {
+		//set the checkboxes in the dialog to starting position
+		SetToManual_Dialog.mAtt = AttackFld;
+		SetToManual_Dialog.mBac = BackgroundFld;
+		SetToManual_Dialog.mCla = ClassFld;
+		SetToManual_Dialog.mFea = FeatFld;
+		SetToManual_Dialog.mRac = RaceFld;
 
-	//call the dialog and proceed if Apply is pressed
-	if (app.execDialog(SetToManual_Dialog) != "ok") return
+		//call the dialog and proceed if Apply is pressed
+		if (app.execDialog(SetToManual_Dialog) != "ok") return;
+	}
 
 	//do something with the results of attacks checkbox
 	if (SetToManual_Dialog.mAtt !== AttackFld) ToggleAttacks(AttackFld ? "Yes" : "No");
@@ -7167,6 +7208,8 @@ function SetToManual_Button() {
 	//do something with the results of class checkbox
 	if (SetToManual_Dialog.mCla !== ClassFld) {
 		if (SetToManual_Dialog.mCla) {
+			var classString = What("Class and Levels");
+			if (classes.parsed.length == 1 && classString.indexOf(classes.totallevel) == -1) classString += classes.totallevel;
 			Value("Manual Class Remember", What("Class and Levels"));
 			Hide("Class Features Menu");
 		} else {
@@ -7190,7 +7233,7 @@ function SetToManual_Button() {
 		} else {
 			// set the old known feats back and apply the current ones
 			var oldKnowns = eval(What("Manual Feat Remember"));
-			CurrentFeats.level = Who("Manual Feat Remember")
+			CurrentFeats.level = Number(Who("Manual Feat Remember"));
 			Value("Manual Feat Remember", "No", "");
 			for (var i = 1; i <= FieldNumbers.feats; i++) {
 				CurrentFeats.known[i - 1] = oldKnowns[i - 1];
@@ -7203,6 +7246,8 @@ function SetToManual_Button() {
 					tDoc.getField("Feat Name " + (1+i)).setAction("Calculate", theCalc);
 				}
 			}
+			// update the feat level to the current level
+			UpdateLevelFeatures("feat");
 		}
 	}
 
@@ -7213,9 +7258,10 @@ function SetToManual_Button() {
 			Hide("Race Features Menu");
 		} else {
 			FindRace(What("Manual Race Remember"), true);
-			if (CurrentRace.known) CurrentRace.level = Who("Manual Race Remember");
+			if (CurrentRace.known) CurrentRace.level = Number(Who("Manual Race Remember"));
 			Value("Manual Race Remember", "No", "");
 			ApplyRace(What("Race Remember"));
+			if (CurrentRace.known) UpdateLevelFeatures("race");
 		}
 	}
 /* UPDATED
@@ -8469,11 +8515,11 @@ function LoadAmmo(Amount, Fld) {
 }
 
 //set the dropdown menus for ammo
-function SetAmmosdropdown() {
-	var string = "Select or type in the ammunition you want to use and all its attributes will be filled out automatically.";
-	string += "\n\n" + toUni("Ammunition weight") + "\nThe weight of the ammo can be added to the total weight carried on the 2nd page. In order to do this you have to push the \"Weight\" button in the \"JavaScript Window\".";
-	string += "\nYou can change the weight of the ammunition in the \"override section\" (a.k.a. the \"blue text fields\").";
-	string += "\n\n" + toUni("Blue text fields") + "\nIn order to see these you first need to push the \"Mods\" button in the \"JavaScript Window\".";
+function SetAmmosdropdown(forceTooltips) {
+	var tempString = "Select or type in the ammunition you want to use and all its attributes will be filled out automatically.";
+	tempString += "\n\n" + toUni("Ammunition weight") + "\nThe weight of the ammo can be added to the total weight carried on the 2nd page. In order to do this you have to push the \"Weight\" button in the \"JavaScript Window\".";
+	tempString += "\nYou can change the weight of the ammunition in the \"override section\" (a.k.a. the \"blue text fields\").";
+	tempString += "\n\n" + toUni("Blue text fields") + "\nIn order to see these you first need to push the \"Mods\" button in the \"JavaScript Window\".";
 	var theDropList = [""];
 	
 	for (ammo in AmmoList) {
@@ -8483,18 +8529,22 @@ function SetAmmosdropdown() {
 	}
 	theDropList.sort();
 	
-	if (tDoc.getField("AmmoLeftDisplay.Name").submitName === theDropList.toSource()) return;
+	if (tDoc.getField("AmmoLeftDisplay.Name").submitName === theDropList.toSource()) {
+		if (forceTooltips) {
+			AddTooltip("AmmoLeftDisplay.Name", tempString);
+			AddTooltip("AmmoRightDisplay.Name", tempString);
+		}
+		return; //no changes, so no reason to do this
+	}
 	tDoc.getField("AmmoLeftDisplay.Name").submitName = theDropList.toSource();
 	
 	var remAmmo = What("AmmoLeftDisplay.Name");
 	tDoc.getField("AmmoLeftDisplay.Name").setItems(theDropList);
-	tDoc.getField("AmmoLeftDisplay.Name").userName = string;
-	Value("AmmoLeftDisplay.Name", remAmmo);
+	Value("AmmoLeftDisplay.Name", remAmmo, tempString);
 	
 	remAmmo = What("AmmoRightDisplay.Name");
 	tDoc.getField("AmmoRightDisplay.Name").setItems(theDropList);
-	tDoc.getField("AmmoRightDisplay.Name").userName = string;
-	Value("AmmoRightDisplay.Name", remAmmo);
+	Value("AmmoRightDisplay.Name", remAmmo, tempString);
 }
 
 //Toggle the visibility of the secondary ability save DC. ShowHide = "show" or "hide".
@@ -9230,9 +9280,9 @@ function ApplyBackgroundFeature(input) {
 };
 
 //set the dropdown box options for the background features
-function SetBackgroundFeaturesdropdown() {
+function SetBackgroundFeaturesdropdown(forceTooltips) {
 	var tempArray = [""];
-	var string = "Select or type in the background feature you want to use and its text will be filled out below automatically.\n\n" + toUni("Background selection") + "\nThe relevant background feature is automatically selected upon selecting a background on the first page. Doing that will always override whatever you wrote here. So, please first fill out a background before you select a alternative feature here.";
+	var tempString = "Select or type in the background feature you want to use and its text will be filled out below automatically.\n\n" + toUni("Background selection") + "\nThe relevant background feature is automatically selected upon selecting a background on the first page. Doing that will always override whatever you wrote here. So, please first fill out a background before you select a alternative feature here.";
 	
 	for (var feature in BackgroundFeatureList) {
 		if (testSource(feature, BackgroundFeatureList[feature], "backFeaExcl")) continue;
@@ -9241,12 +9291,15 @@ function SetBackgroundFeaturesdropdown() {
 	};
 	tempArray.sort();
 
-	if (tDoc.getField("Background Feature").submitName === tempArray.toSource()) return; //no changes, so no reason to do this
+	if (tDoc.getField("Background Feature").submitName === tempArray.toSource()) {
+		if (forceTooltips) AddTooltip("Background Feature", tempString);
+		return; //no changes, so no reason to do this
+	}
 	tDoc.getField("Background Feature").submitName = tempArray.toSource();
 	
 	var theFldVal = What("Background Feature");
 	tDoc.getField("Background Feature").setItems(tempArray);
-	Value("Background Feature", theFldVal, string);
+	Value("Background Feature", theFldVal, tempString);
 }
 
 //Make menu for 'choose race feature' button and parse it to Menus.raceoptions

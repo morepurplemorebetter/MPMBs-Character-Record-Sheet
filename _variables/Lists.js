@@ -92,6 +92,7 @@ var AbilityScores = {
 	"charisma" : {
 		index : 5
 	},
+/* UPDATED
 	"current" : {
 		"Str" : {
 			base : 8,
@@ -150,6 +151,7 @@ var AbilityScores = {
 			feat : 0
 		}
 	},
+*/
 	"improvements" : {
 		"classlvl" : "",
 		"classprime" : "",
