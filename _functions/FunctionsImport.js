@@ -450,10 +450,10 @@ function DirectImport(consoleTrigger) {
 				throw "user stop";
 			};
 		};
-		if (global.docFrom.info.SheetVersionType && (/beta/i).test(global.docFrom.info.SheetVersionType) && global.docTo.semVers != global.docFrom.semVers) { // say that importing from an (other) beta version is not supported
+		if (global.docFrom.info.SheetVersionType && (/beta/i).test(global.docFrom.info.SheetVersionType) && global.docFrom.semVers && global.docTo.semVers != global.docFrom.semVers) { // say that importing from an (other) beta version is not supported
 			app.alert({
 				cTitle : "Unable to import from beta version",
-				cMsg : "You are trying to import from a beta version of MPMB's Character Record Sheet (" + global.docFrom.semVers + "), which is not supported. The version of the sheet you are importing to is " + global.docTo.semVers + ". You can only import from a beta version if both versions are identical.\n\nThe importing process will now be cancelled."
+				cMsg : "You are trying to import from a beta version of MPMB's Character Record Sheet (" + global.docFrom.semVers + "), which is not supported. The version of the sheet you are importing to is " + global.docTo.semVers + ". You can only import from a beta version if both versions are identical.\n\nThe importing process will now be canceled."
 			});
 			closeAlert = true;
 			throw "user stop";

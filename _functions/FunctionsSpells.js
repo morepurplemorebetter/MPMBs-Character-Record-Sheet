@@ -533,25 +533,54 @@ function CalcSpellScores() {
 }
 
 //set the blueText field bonus to the global CurrentSpells object for spells to memorize, attack modifier, and DC (field blur)
-function SetSpellBluetext() {
+function SetSpellBluetext(aClass, type, newValue) {
 	if (tDoc.info.SpellsOnly) return;
-	var type = event.target.name.replace(/.*spellshead\.(\w+).*/, "$1");
-	//find the associated class
-	var aClass = What(event.target.name.replace("BlueText.spellshead." + type, "spellshead.class"));
-	
-	//if that class is known in the CurrentSpells object, set the associated bluetext variable
-	if (CurrentSpells[aClass]) {
-		var cSpells = CurrentSpells[aClass];
-		if (!cSpells.blueTxt) {
-			cSpells.blueTxt = {
-				prep : 0,
-				atk : 0,
-				dc : 0
-			};
+
+	// get what type we are changing
+	type = type ? type : event.target.name.replace(/.*spellshead\.(\w+).*/, "$1");
+	type = type === "dc" ? "dc" : type === "attack" || type === "atk" ? "atk" : "prep";
+	var typeFull = type === "dc" ? "dc" : type === "atk" ? "attack" : "prepare";
+	// find the associated class
+	aClass = aClass ? aClass : What(event.target.name.replace("BlueText.spellshead." + typeFull, "spellshead.class"));
+
+	// if there is no class or no CurrentSpells object for it, stop this function
+	if (!aClass || !CurrentSpells[aClass]) return;
+
+	// get the value we are changing it to
+	newValue = newValue !== undefined ? newValue : event.value;
+
+	// set the associated bluetext variable
+	var cSpells = CurrentSpells[aClass];
+	if (!cSpells.blueTxt) {
+		cSpells.blueTxt = {
+			prep : 0,
+			atk : 0,
+			dc : 0
 		};
-		cSpells.blueTxt[type === "dc" ? "dc" : type === "attack" ? "atk" : "prep"] = event.value;
 	};
-	tDoc.calculateNow();
+	// now see if something changed, otherwise don't continue
+	if (cSpells.blueTxt[type] == newValue) return;
+
+	// set the new value to the global variable
+	cSpells.blueTxt[type] = newValue;
+
+	// stop calculation
+	calcStop();
+
+	// now update any other header on the spell sheets for the same class
+	var prefixArray = What("Template.extras.SSmore").split(",");
+	prefixArray[0] = What("Template.extras.SSfront").split(",")[1];
+	if (!prefixArray[0]) prefixArray.shift();
+	var currentField = event.target ? event.target.name : "";
+	for (var i = 0; i < prefixArray.length; i++) {
+		var prefix = prefixArray[i];
+		for (var s = 0; s <= 3; s++) {
+			var fld = prefix + "spellshead.class." + s;
+			if (fld != currentField && What(fld) == aClass) {
+				Value(prefix + "BlueText.spellshead." + typeFull + "." + s, newValue);
+			}
+		}
+	}
 }
 
 //change the icon of the checkbox based on the value of this field (field validation)
@@ -3902,7 +3931,7 @@ function OrderSpells(inputArray, outputFormat, sepPsionics) {
 	return returnArray;
 };
 
-//return the value of a logsheet's number (field calculation)
+//return the value of a spellsheet's number (field calculation)
 function CalcSpellsheetNumber() {
 	var prefix = event.target.name.substring(0, event.target.name.indexOf("SpellSheet"));
 	var SSmoreA = What("Template.extras.SSmore").split(",");
