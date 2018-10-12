@@ -589,16 +589,142 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxtA) {
 function UpdateSheetDisplay() {
 	if (!CurrentUpdates.types.length) return;
 
-	// initialise some variables
+	// initialize some variables
+	var dialogParts = [];
 	var CUflat = CurrentUpdates.types.toString();
+
+	// recalculate the attacks if necessary
+	if (CUflat.indexOf("attacks") !== -1) { // recalculate the weapons
+		ReCalcWeapons(CurrentUpdates.types.indexOf("attacksprofs") !== -1, CurrentUpdates.types.indexOf("attacksforce") !== -1);
+	};
+
+	// create the dialog
+	var titleTxt = "Changes Requiring Your Attention";
+	var explTxt = "The changes you just made have effected the things listed below. This dialog is just a reminder and you don't need it to update the sheet. (Note that there are two 'Close' buttons intentionally, they work the same.)";
+	var Changes_Dialog = {
+		//when starting the dialog
+		initialize : function (dialog) {
+			dialog.load({ "img1" : allIcons.automanual });
+		},
+		description : {
+			name : titleTxt,
+			elements : [{
+				type : "view",
+				elements : [{
+					type : "view", // the top row
+					align_children : "align_row",
+					elements : [{
+						type : "image",
+						item_id : "img1",
+						alignment : "align_bottom",
+						width : 20,
+						height : 20
+					}, {
+						type : "static_text",
+						item_id : "Hea0",
+						alignment : "align_fill",
+						font : "title",
+						bold : true,
+						height : 23,
+						width : 250,
+						name : titleTxt
+					}]
+				}, {
+					type : "static_text", // explanatory text
+					item_id : "txt0",
+					alignment : "align_fill",
+					font : "palette",
+					name : explTxt,
+					wrap_name : true,
+					width : 500
+				}, {
+					type : "view", // the top row
+					item_id : "sect",
+					align_children : "align_left",
+					elements : []
+				}, {
+					type : "ok_cancel",
+					ok_name : "Close",
+					cancel_name : "Close"
+				}]
+			}]
+		}
+	};
+
+	// if the HP changed (of the main character)
+	if (CurrentUpdates.types.indexOf("hp") !== -1) {
+		// save the current HP
+		var settingsHP = How("HP Max").split(",");
+		var autoHP = settingsHP[3] && (/average|fixed|max/).test(olsettingsHPdHP[3]);
+		var oldHPmax = What("HP Max");
+		Changes_Dialog.oldHPtt = Who("HP Max");
+		// update the HP of the main character
+		SetHPTooltip(false, false);
+		// make the HP dialog insert
+		var strHP = "The hit die and/or hit point maximum of the character have changed.";
+		if (autoHP) strHP += " As HP has been set to update automatically, the Maximum Hit Points have been changed from " + oldHPmax + " to " + What("HP Max") + ".";
+		dialogParts.push({
+			type : "cluster",
+			align_children : "align_row",
+			alignment : "align_fill",
+			width : 500,
+			font : "heading",
+			name : "Hit Points",
+			elements : [{
+				type : "static_text",
+				width : 375,
+				alignment : "align_fill",
+				font : "dialog",
+				wrap_name : true,
+				name : strHP
+			}, {
+				type : "button",
+				item_id : "bHPc",
+				name : "See Changes"
+			}]
+		});
+		Changes_Dialog.bHPc = function (dialog) {
+			ShowCompareDialog("Hit Points changes", [["Old HP calculation", this.oldHPtt], ["New HP calculation", Who("HP Max")]]);
+		};
+	}
+
+	// if the attack calculations / populating changed
+	if (CurrentUpdates.types.indexOf("atkstr")) {
+		// get the previous atkCalc/stkAdd string
+		Changes_Dialog.oldAtkStr = CurrentUpdates.atkStrOld ? CurrentUpdates.atkStrOld : "";
+		// make the attack dialog insert
+		dialogParts.push({
+			type : "cluster",
+			align_children : "align_row",
+			alignment : "align_fill",
+			width : 500,
+			font : "heading",
+			name : "Attack Calculations",
+			elements : [{
+				type : "static_text",
+				width : 375,
+				alignment : "align_fill",
+				font : "dialog",
+				wrap_name : true,
+				name : "The things that affect attack calculations have changed. These can, for example, add a bonus to damage (Potent Spellcasting), add a bonus if the name is included in the attack entry (Rage), or add to the description (Great Weapon Fighting Style). You can always see what these are using the small buttons in front of each attack entry on the first page."
+			}, {
+				type : "button",
+				item_id : "bAtk",
+				alignment : "align_right",
+				name : "See Changes"
+			}]
+		});
+		Changes_Dialog.bAtk = function (dialog) {
+			ShowCompareDialog("Things affecting attack calculations", [["Old attack manipulations", this.oldAtkStr], ["New attack manipulations", StringAttackEvals()]);
+		};
+	}
+	
 	var changedStats = CUflat.indexOf("stats") !== -1;
 	var changedSpellcasting = CurrentUpdates.types.indexOf("spells") !== -1;
 	var changedSkills = CurrentUpdates.types.indexOf("skills") !== -1;
 
-	if (CUflat.indexOf("attacks") !== -1) { // recalculate the weapons
-		ReCalcWeapons(CurrentUpdates.types.indexOf("attacksprofs") !== -1, CurrentUpdates.types.indexOf("attacksforce") !== -1);
-	};
-	if (CurrentUpdates.types.indexOf("hp") !== -1) SetHPTooltip(); // set tooltip for HP
+
+
 	if (changedStats) AbilityScores_Button(true); // set tooltip for stats
 	if (!changedSpellcasting && CurrentUpdates.types.indexOf("spellcastingclass") !== -1) {
 		// see if a spellcasting class changed level and would require a new spell sheet
@@ -621,9 +747,7 @@ function UpdateSheetDisplay() {
 */
 	};
 
-	// reset the CurrentUpdates variable
-	CurrentUpdates = {types : [], extras : {}};
-	
+
 	// The alert to the user
 /* NOG TE DOEN
 	if (changedSkills) // alert that there might be new skill proficiency choices that have to be made
@@ -631,6 +755,59 @@ function UpdateSheetDisplay() {
 	if (changedStats) // alert that there might be new ability score choices that have to be made
 	// mogelijke opties voor stats: statsoverride, statsclasses, statsrace, statsfeats, statsitems
 */
+
+	// if there is nothing to show, stop the function now
+	if (dialogParts.length !== 0) {
+		// add the sections to the dialog
+		setDialogName(Changes_Dialog, "sect", "elements", dialogParts);
+		// open the dialog
+		var dia = app.execDialog(Changes_Dialog);
+	}
+
+	// reset the CurrentUpdates variable
+	CurrentUpdates = {types : [], extras : {}};
+}
+
+
+//a way to show a dialog that compares multiple things
+//arr is an array of arrays with two entries each [cluster title, cluster text]
+function ShowCompareDialog(hdr, arr) {
+	var clusterArr = [];
+	
+	for (var i = 0; i < arr.length; i++) {
+		clusterArr.push({
+			type : "cluster",
+			alignment : "align_fill",
+			font : "heading",
+			name : arr[i][0],
+			elements : [{
+				type : "static_text",
+				width : 300,
+				alignment : "align_fill",
+				font : "dialog",
+				wrap_name : true,
+				name : arr[i][1].replace(/^(\r|\n)*/, "")
+			}]
+		});
+	}
+	
+	var ShowCompare_Dialog = {
+		description : {
+			name : hdr,
+			elements : [{
+				type : "view",
+				align_children : "align_left",
+				elements : [{
+					type : "view",
+					align_children : "align_row",
+					elements : clusterArr
+				}, {
+					type : "ok"
+				}]
+			}]
+		}
+	}
+	var dia = app.execDialog(ShowCompare_Dialog);
 }
 
 /*

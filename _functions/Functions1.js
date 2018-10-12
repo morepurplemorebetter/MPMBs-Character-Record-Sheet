@@ -1238,7 +1238,7 @@ function ToggleAdventureLeague(Setting) {
 		var theHP = tDoc.getField("HP Max").submitName.split(",");
 		theHP[3] = Setting.hp ? "fixed" : "nothing";
 		tDoc.getField("HP Max").submitName = theHP.join();
-		SetHPTooltip();
+		if (Setting.hp) CurrentUpdates.types.push("hp");
 	};
 
 	//Set the encumbrance rules to using fixed value
@@ -10201,7 +10201,8 @@ function WeaponOptions() {
 		ApplyAttackColor(itemNmbr, MenuSelection[1]);
 		break;
 	 case "show what things are affecting the attack calculations":
-		ShowAttackEvals();
+		var atkCalcStr = StringAttackEvals();
+		if (atkCalcStr) ShowDialog("Things Affecting the Attack Calculations", atkCalcStr);
 		break;
 	}
 	

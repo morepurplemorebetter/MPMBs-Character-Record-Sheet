@@ -566,7 +566,7 @@ function ApplyCompRace(newRace) {
 		}
 	}
 	
-	CurrentUpdates.types.push("hp")
+	SetHPTooltip(false, true);
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
@@ -1668,7 +1668,7 @@ function CompOptions() {
 		thermoM(0.5); // Increment the progress bar
 
 		ApplyAttackColor("", "", "Comp.", prefix); //reset the colour of the attack boxes
-		SetHPTooltip();
+		SetHPTooltip("reset", true);
 		ShowCompanionLayer(prefix);
 		ClearIcons(prefix + "Comp.img.Portrait", true); //reset the appearance image
 
@@ -3779,108 +3779,114 @@ function UpdateRangerCompanions(deleteIt) {
 }
 
 //update the tooltip for the Max HP field
-function SetHPTooltip(resetHP) {
-	var HDLVL = [
-		Math.floor(What("HD1 Level")),
-		Math.floor(What("HD2 Level")),
-		Math.floor(What("HD3 Level"))
-	];
-	var HD = [
-		Math.floor(What("HD1 Die")),
-		Math.floor(What("HD2 Die")),
-		Math.floor(What("HD3 Die"))
-	];
-	var ConMod = Number(What("Con Mod"));
-	var hdstring = "The total hit points (with averages and max for 1st level)\n = ";
-	var hdaverage = 0;
-	var conhp = 0;
-	var totalhd = 0;
-	var extrastring = "";
-	var hdadvleague = 0;
-	var hdmax = 0;
-	var extrahp = 0;
+function SetHPTooltip(resetHP, onlyComp) {
+	// do the main character HP, if not set to only do the companion page(s)
+	if (onlyComp == undefined || onlyComp === false) {
+		var HDLVL = [
+			Math.floor(What("HD1 Level")),
+			Math.floor(What("HD2 Level")),
+			Math.floor(What("HD3 Level"))
+		];
+		var HD = [
+			Math.floor(What("HD1 Die")),
+			Math.floor(What("HD2 Die")),
+			Math.floor(What("HD3 Die"))
+		];
+		var ConMod = Number(What("Con Mod"));
+		var hdstring = "The total hit points (with averages and max for 1st level)\n = ";
+		var hdaverage = 0;
+		var conhp = 0;
+		var totalhd = 0;
+		var extrastring = "";
+		var hdadvleague = 0;
+		var hdmax = 0;
+		var extrahp = 0;
 
-	for (var j = 0; j < HDLVL.length; j++) {
-		HDLVL[j] = HDLVL[j] < 1 ? 1 : HDLVL[j];
-	};
-
-	for (var i = 0; i < HD.length; i++) {
-		if (HD[i] !== 0) {
-			if ((i === 0 && classes.hp === 0) || classes.hp === HD[i]) {
-				hdcalc = HD[i] + (HDLVL[i] - 1) * ((HD[i] + 1) / 2);
-				hdcalc2 = HD[i] + (HDLVL[i] - 1) * Math.ceil((HD[i] + 1) / 2);
-				hdcalc3 = HDLVL[i] * HD[i];
-			} else {
-				hdcalc = HDLVL[i] * ((HD[i] + 1) / 2);
-				hdcalc2 = HDLVL[i] * Math.ceil((HD[i] + 1) / 2);
-				hdcalc3 = HDLVL[i] * HD[i];
-			}
-			hdstring += HDLVL[i] + "d" + HD[i] + " (" + hdcalc + ")";
-			hdstring += (i === 2 || HD[i + 1] === 0) ? "" : " + ";
-			hdaverage += hdcalc;
-			hdadvleague += hdcalc2;
-			hdmax += hdcalc3;
-			totalhd += HDLVL[i];
-			conhp += HDLVL[i] * ConMod;
+		for (var j = 0; j < HDLVL.length; j++) {
+			HDLVL[j] = HDLVL[j] < 1 ? 1 : HDLVL[j];
 		};
-	};
-	
-	if (CurrentEvals.hp) {
-		for (var hpEval in CurrentEvals.hp) {
-			var evalThing = CurrentEvals.hp[hpEval];
-			try {
-				if (typeof evalThing == 'string') {
-					eval(evalThing);
-				} else if (typeof evalThing == 'function') {
-					var runFunction = eval(evalThing.toSource());
-					runFunction();
+
+		for (var i = 0; i < HD.length; i++) {
+			if (HD[i] !== 0) {
+				if ((i === 0 && classes.hp === 0) || classes.hp === HD[i]) {
+					hdcalc = HD[i] + (HDLVL[i] - 1) * ((HD[i] + 1) / 2);
+					hdcalc2 = HD[i] + (HDLVL[i] - 1) * Math.ceil((HD[i] + 1) / 2);
+					hdcalc3 = HDLVL[i] * HD[i];
+				} else {
+					hdcalc = HDLVL[i] * ((HD[i] + 1) / 2);
+					hdcalc2 = HDLVL[i] * Math.ceil((HD[i] + 1) / 2);
+					hdcalc3 = HDLVL[i] * HD[i];
 				}
-			} catch (error) {
-				var eText = "The custom hit point calculation addition '" + hpEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
-				for (var e in error) eText += e + ": " + error[e] + ";\n ";
-				console.println(eText);
-				console.show();
+				hdstring += HDLVL[i] + "d" + HD[i] + " (" + hdcalc + ")";
+				hdstring += (i === 2 || HD[i + 1] === 0) ? "" : " + ";
+				hdaverage += hdcalc;
+				hdadvleague += hdcalc2;
+				hdmax += hdcalc3;
+				totalhd += HDLVL[i];
+				conhp += HDLVL[i] * ConMod;
+			};
+		};
+		
+		if (CurrentEvals.hp) {
+			for (var hpEval in CurrentEvals.hp) {
+				var evalThing = CurrentEvals.hp[hpEval];
+				try {
+					if (typeof evalThing == 'string') {
+						eval(evalThing);
+					} else if (typeof evalThing == 'function') {
+						var runFunction = eval(evalThing.toSource());
+						runFunction();
+					}
+				} catch (error) {
+					var eText = "The custom hit point calculation addition '" + hpEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					console.println(eText);
+					console.show();
+				}
 			}
 		}
-	}
 
-	hdplaceholder = totalhd === 0 ? "level \u00D7 hit dice (0)" : "";
-	totalhd = totalhd === 0 ? "level" : totalhd;
-	conhp = conhp === 0 ? ConMod : conhp;
-	hdstring += hdplaceholder + "\n + " + totalhd + " \u00D7 " + ConMod + " from Constitution (" + conhp + ")";
-	hdstring += extrastring;
-	hdstring += "\n\n \u2022 " + toUni(hdaverage + conhp + extrahp) + " is the total average HP";
-	hdstring += "\n \u2022 " + toUni(hdadvleague + conhp + extrahp) + " is the total HP when using fixed values";
-	hdstring += "\n \u2022 " + toUni(hdmax + conhp + extrahp) + " is the total maximum HP";
-	
-	//now add this tooltip
-	AddTooltip("HP Max", hdstring);
-	
-	//now see if the menu setting tells us that we need to change
-	var theSetting = How("HP Max").split(",");
-	theSetting[0] = Number(Math.round(hdaverage + conhp + extrahp));
-	theSetting[1] = Number(hdadvleague + conhp + extrahp);
-	theSetting[2] = Number(hdmax + conhp + extrahp);
-	var setHP = false;
-	switch (theSetting[3]) {
-		case "average" :
-			setHP = theSetting[0];
-			break;
-		case "fixed" :
-			setHP = theSetting[1];
-			break;
-		case "max" :
-			setHP = theSetting[2];
-			break;
+		hdplaceholder = totalhd === 0 ? "level \u00D7 hit dice (0)" : "";
+		totalhd = totalhd === 0 ? "level" : totalhd;
+		conhp = conhp === 0 ? ConMod : conhp;
+		hdstring += hdplaceholder + "\n + " + totalhd + " \u00D7 " + ConMod + " from Constitution (" + conhp + ")";
+		hdstring += extrastring;
+		hdstring += "\n\n \u2022 " + toUni(hdaverage + conhp + extrahp) + " is the total average HP";
+		hdstring += "\n \u2022 " + toUni(hdadvleague + conhp + extrahp) + " is the total HP when using fixed values";
+		hdstring += "\n \u2022 " + toUni(hdmax + conhp + extrahp) + " is the total maximum HP";
+		
+		//now add this tooltip
+		AddTooltip("HP Max", hdstring);
+		
+		//now see if the menu setting tells us that we need to change
+		var theSetting = How("HP Max").split(",");
+		theSetting[0] = Number(Math.round(hdaverage + conhp + extrahp));
+		theSetting[1] = Number(hdadvleague + conhp + extrahp);
+		theSetting[2] = Number(hdmax + conhp + extrahp);
+		var setHP = false;
+		switch (theSetting[3]) {
+			case "average" :
+				setHP = theSetting[0];
+				break;
+			case "fixed" :
+				setHP = theSetting[1];
+				break;
+			case "max" :
+				setHP = theSetting[2];
+				break;
+		}
+		if (setHP !== false) Value("HP Max", setHP);
+		
+		tDoc.getField("HP Max").submitName = theSetting.join();
+		
+		Value("HD1 Die", What("HD1 Die"));
+		Value("HD2 Die", What("HD2 Die"));
+		Value("HD3 Die", What("HD3 Die"));
 	}
-	if (setHP !== false) Value("HP Max", setHP);
 	
-	tDoc.getField("HP Max").submitName = theSetting.join();
-	
-	Value("HD1 Die", What("HD1 Die"));
-	Value("HD2 Die", What("HD2 Die"));
-	Value("HD3 Die", What("HD3 Die"));
-	
+	// if it was set to only do the main character, stop now
+	if (onlyComp !== undefined && onlyComp === false) return;
+
 	// now do the same for every companion page
 	var tempExtras = What("Template.extras.AScomp").split(",").splice(1);
 	for (var tE = 0; tE < tempExtras.length; tE++) {
@@ -3934,7 +3940,7 @@ function SetHPTooltip(resetHP) {
 		
 		tDoc.getField(prefix + "Comp.Use.HP.Max").submitName = theCompSetting.join();
 		
-		Value(prefix + "Comp.Use.HD.Die", What(prefix + "Comp.Use.HD.Die"))
+		Value(prefix + "Comp.Use.HD.Die", What(prefix + "Comp.Use.HD.Die"));
 	}
 };
 
@@ -4693,7 +4699,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 			}
 		}
 	}
-	SetHPTooltip();
+	SetHPTooltip(false, true);
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
@@ -5397,7 +5403,12 @@ function addEvals(evalObj, NameEntity, Add) {
 			delete CurrentEvals.atkStr[NameEntity];
 		}
 	}
-	if (evalObj.atkAdd) CurrentUpdates.types.push("attacksforce");
+	// set the CurrentUpdates object
+	if ((evalObj.atkCalc || evalObj.atkAdd) && CurrentUpdates.atkStrOld == undefined) {
+		if (evalObj.atkAdd) CurrentUpdates.types.push("attacksforce");
+		CurrentUpdates.types.push("atkstr");
+		CurrentUpdates.atkStrOld = StringAttackEvals();
+	}
 
 	//do the stuff for the hp calculations
 	if (evalObj.hp) {
@@ -5456,14 +5467,14 @@ function addEvals(evalObj, NameEntity, Add) {
 */
 };
 
-// show all the things affecting the attack
-function ShowAttackEvals() {
-	if (!CurrentEvals.atkStr) return;
+// make a string of all the things affecting the attack calculations
+function StringAttackEvals() {
+	if (!CurrentEvals.atkStr) return "";
 	var txt = [];
 	for (var str in CurrentEvals.atkStr) {
 		txt.push(toUni(str) + CurrentEvals.atkStr[str]);
 	}
-	ShowDialog("Things Affecting the Attack Calculations", txt.join("\n\n"));
+	return txt.join("\n\n");
 }
 
 //apply the effect of a weapon with inputText the literal string in the Weapon Selection field and fldName the name of the field (any one of them); If fldName is left blank, use the event.target.name
@@ -5861,7 +5872,7 @@ function ShowDialog(hdr, strng) {
 	var ShowString_dialog = {
 		initialize : function(dialog) {
 			dialog.load({
-				"Eval" : strng.replace(/^\n*/, "")
+				"Eval" : strng.replace(/^(\r|\n)*/, "")
 			});
 		},
 		description : {
@@ -7695,9 +7706,9 @@ function setUnicodeUse(enable, force) {
 		Value("UseUnicode", enable ? "true" : "");
 		if (!force) { 
 			app.alert({
-				cMsg : "You have changed the use of unicode characters to: " + (enable ? "ENABLED" : "DISABLED") + "\nUnicode characters are those that are bold, italic, or superscript in tooltips and dialogs. Not all systems handle them well.\n\nThese changes will only be applied after saving the sheet and opening it again.\n\nNote that there still might be some tooltips that use unicode and thus might have unreadable characters for you.\n\nYou can already see the result of your change here:\n\"" + toUni("This text is bold and italic if unicode is enabled") + '\".',
+				cMsg : "You have changed the use of unicode characters to: " + (enable ? "ENABLED" : "DISABLED") + "\nUnicode characters are those that are bold, italic, or superscript in tooltips and dialogs. Not all systems handle them well.\n\nNote that there still will be some static tooltips that use unicode and thus might have unreadable characters for you.\n\nYou can already see the result of your change here:\n\"" + toUni("This text is bold and italic if unicode is enabled") + '\".',
 				nIcon : 3,
-				cTitle : "Change will be applied on re-opening"
+				cTitle : "Unicode has been " + (enable ? "ENABLED" : "DISABLED")
 			});
 		}
 		// update the tooltips that use unicode
@@ -7705,5 +7716,6 @@ function setUnicodeUse(enable, force) {
 		AbilityScores_Button(true);
 		setSkillTooltips();
 		MakeSkillsMenu_SkillsOptions(true, true);
+		SetHPTooltip();
 	}
 }
