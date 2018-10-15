@@ -581,6 +581,9 @@ function SetSpellBluetext(aClass, type, newValue) {
 			}
 		}
 	}
+	
+	// save the global variable to the field
+	SetStringifieds("spells");
 }
 
 //change the icon of the checkbox based on the value of this field (field validation)

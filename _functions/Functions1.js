@@ -2589,6 +2589,7 @@ function CalcExperienceLevel(AlsoClass) {
 				break;
 		}
 	};
+/* UPDATED
 	if (oldLevel !== Level) {
 		//update features gained from level, but not from classes
 		UpdateLevelFeatures("notclass");
@@ -2602,6 +2603,7 @@ function CalcExperienceLevel(AlsoClass) {
 		//show a dialogue about ASI
 		CountASIs();
 	};
+*/
 };
 
 function ParseRace(input) {

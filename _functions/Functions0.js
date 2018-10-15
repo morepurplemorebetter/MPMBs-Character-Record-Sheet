@@ -583,7 +583,7 @@ function toUni(input) {
 		"z" : "\uD835\uDE6F"
 	};
 	var output = "";
-	for (i = 0; i < input.length; i++) {
+	for (var i = 0; i < input.length; i++) {
 		var tempChar = input.charAt(i);
 		output += UniBoldItal[tempChar] ? UniBoldItal[tempChar] : tempChar;
 	}

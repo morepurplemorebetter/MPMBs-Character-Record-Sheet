@@ -600,7 +600,7 @@ function UpdateSheetDisplay() {
 
 	// create the dialog
 	var titleTxt = "Changes Requiring Your Attention";
-	var explTxt = "The changes you just made have effected the things listed below. This dialog is just a reminder and you don't need it to update the sheet. (Note that there are two 'Close' buttons intentionally, they work the same.)";
+	var explTxt = "The changes you just made have effected the things listed below. This dialog is just a reminder and you don't need it to update the sheet. (Note that there are two 'Close' buttons intentionally, it is not a bug. Both buttons work the same.)";
 	var Changes_Dialog = {
 		//when starting the dialog
 		initialize : function (dialog) {
@@ -651,18 +651,91 @@ function UpdateSheetDisplay() {
 		}
 	};
 
+	// if something affecting the stats changed
+	// possible options for stats: statsoverride, statsclasses, statsrace, statsfeats, statsitems
+	if (CUflat.indexOf("stats") !== -1 || CurrentUpdates.types.indexOf("testasi") !== -1) {
+		Changes_Dialog.oldStats = Who("Str");
+		if (AbilityScores_Button(true)) { // sets tooltip for stats and returns true if anything changed
+			var strStats = ;
+			// ability score improvements
+			if (CurrentUpdates.types.indexOf("testasi") !== -1) {
+				var newASI = 0;
+				for (var nClass in classes.known) {
+					var clLvl = Math.min(CurrentClasses[nClass].improvements.length, classes.known[nClass].level);
+					newASI += clLvl ? CurrentClasses[nClass].improvements[clLvl - 1] : 0;
+				}
+				var oldASI = 0;
+				for (var oClass in classes.old) {
+					var useObj = CurrentClasses[oClass] ? CurrentClasses[oClass] : ClassList[oClass];
+					clLvl = Math.min(oseObj.improvements.length, classes.old[oClass].classlevel);
+					oldASI += clLvl ? useObj.improvements[clLvl - 1] : 0;
+				}
+				if (newASI !== oldASI) {
+					strStats += "\nThe change in level has granted " + toUni((newASI - oldASI) + " new Ability Score Improvement");
+				}
+			}
+			// other stat changes
+			if (CUflat.indexOf("stats") !== -1) {
+				var statChanges = [];
+				if (CurrentUpdates.types.indexOf("statsrace") !== -1) statChanges.push("Race");
+				if (CurrentUpdates.types.indexOf("statsclasses") !== -1) statChanges.push("Class Feature(s)");
+				if (CurrentUpdates.types.indexOf("statsfeats") !== -1) statChanges.push("Feat(s)");
+				if (CurrentUpdates.types.indexOf("statsoverride") !== -1 || CurrentUpdates.types.indexOf("statsitems") !== -1) statChanges.push("Magic Item(s)");
+				strStats += formatLineList("\nThe following changed one or more ability score:", statChanges);
+			}
+			// make the Stats dialog insert
+			dialogParts.push({
+				type : "cluster",
+				align_children : "align_bottom",
+				alignment : "align_fill",
+				width : 500,
+				font : "heading",
+				name : "Hit Points",
+				elements : [{
+					type : "static_text",
+					width : 375,
+					alignment : "align_fill",
+					font : "dialog",
+					wrap_name : true,
+					name : "A change to ability score has been detected. This change will not be applied automatically. Please use the Ability Score Dialog for this." + strStats
+				}, {
+					type : "view",
+					align_children : "align_right",
+					elements : [{
+						type : "button",
+						item_id : "bSTc",
+						name : "See Changes"
+					}, {
+						type : "button",
+						item_id : "bSTo",
+						name : "Open Ability Score Dialog"
+					}]
+				}]
+			});
+			Changes_Dialog.bSTc = function (dialog) {
+				ShowCompareDialog("Ability Score changes", [["Old Ability Score modifiers", this.oldStats], ["New Ability Score modifiers", Who("Str")]]);
+			};
+			Changes_Dialog.bSTo = function (dialog) {
+				AbilityScores_Button{);
+				// this dialog might have just updated the stats, prompting for some other updates
+				if (CurrentUpdates.types.indexOf("attacks") !== -1) ReCalcWeapons();
+				if (CurrentUpdates.types.indexOf("hp") !== -1) SetHPTooltip(false, false);
+			};
+		}
+	}
+
 	// if the HP changed (of the main character)
 	if (CurrentUpdates.types.indexOf("hp") !== -1) {
 		// save the current HP
 		var settingsHP = How("HP Max").split(",");
-		var autoHP = settingsHP[3] && (/average|fixed|max/).test(olsettingsHPdHP[3]);
+		var autoHP = settingsHP[3] && (/average|fixed|max/).test(settingsHP[3]);
 		var oldHPmax = What("HP Max");
 		Changes_Dialog.oldHPtt = Who("HP Max");
 		// update the HP of the main character
 		SetHPTooltip(false, false);
 		// make the HP dialog insert
 		var strHP = "The hit die and/or hit point maximum of the character have changed.";
-		if (autoHP) strHP += " As HP has been set to update automatically, the Maximum Hit Points have been changed from " + oldHPmax + " to " + What("HP Max") + ".";
+		if (autoHP) strHP += "\nAs HP has been set to update automatically, the Maximum Hit Points have been changed from " + oldHPmax + " to " + What("HP Max") + ".";
 		dialogParts.push({
 			type : "cluster",
 			align_children : "align_row",
@@ -689,7 +762,7 @@ function UpdateSheetDisplay() {
 	}
 
 	// if the attack calculations / populating changed
-	if (CurrentUpdates.types.indexOf("atkstr")) {
+	if (CurrentUpdates.types.indexOf("atkstr") !== -1) {
 		// get the previous atkCalc/stkAdd string
 		Changes_Dialog.oldAtkStr = CurrentUpdates.atkStrOld ? CurrentUpdates.atkStrOld : "";
 		// make the attack dialog insert
@@ -706,20 +779,18 @@ function UpdateSheetDisplay() {
 				alignment : "align_fill",
 				font : "dialog",
 				wrap_name : true,
-				name : "The things that affect attack calculations have changed. These can, for example, add a bonus to damage (Potent Spellcasting), add a bonus if the name is included in the attack entry (Rage), or add to the description (Great Weapon Fighting Style). You can always see what these are using the small buttons in front of each attack entry on the first page."
+				name : "The things that affect attack calculations have changed.\nYou can always see what these are using the small buttons in front of each attack entry on the first page."
 			}, {
 				type : "button",
 				item_id : "bAtk",
-				alignment : "align_right",
 				name : "See Changes"
 			}]
 		});
 		Changes_Dialog.bAtk = function (dialog) {
-			ShowCompareDialog("Things affecting attack calculations", [["Old attack manipulations", this.oldAtkStr], ["New attack manipulations", StringAttackEvals()]);
+			ShowCompareDialog("Things affecting attack calculations", [["Old attack manipulations", this.oldAtkStr], ["New attack manipulations", StringAttackEvals()]], true);
 		};
 	}
 	
-	var changedStats = CUflat.indexOf("stats") !== -1;
 	var changedSpellcasting = CurrentUpdates.types.indexOf("spells") !== -1;
 	var changedSkills = CurrentUpdates.types.indexOf("skills") !== -1;
 
@@ -734,12 +805,6 @@ function UpdateSheetDisplay() {
 		en AskForSpellUpdate();
 */
 	};
-	if (CurrentUpdates.types.indexOf("testasi") !== -1) { // see if number of ASI changed
-/* NOG TE DOEN
-		changedStats = ??
-		zie CountASIs();
-*/
-	};
 	if (CurrentUpdates.types.indexOf("xp") !== -1) { // set the xp (or similar) to the right amount by level
 /* NOG TE DOEN
 		changedXP = ??
@@ -752,12 +817,12 @@ function UpdateSheetDisplay() {
 /* NOG TE DOEN
 	if (changedSkills) // alert that there might be new skill proficiency choices that have to be made
 	if (changedSpellcasting) // ask to generate a new spell sheet
-	if (changedStats) // alert that there might be new ability score choices that have to be made
-	// mogelijke opties voor stats: statsoverride, statsclasses, statsrace, statsfeats, statsitems
 */
 
 	// if there is nothing to show, stop the function now
 	if (dialogParts.length !== 0) {
+		// reset the CurrentUpdates variable
+		CurrentUpdates = {types : [], extras : {}};
 		// add the sections to the dialog
 		setDialogName(Changes_Dialog, "sect", "elements", dialogParts);
 		// open the dialog
@@ -768,30 +833,46 @@ function UpdateSheetDisplay() {
 	CurrentUpdates = {types : [], extras : {}};
 }
 
-
 //a way to show a dialog that compares multiple things
 //arr is an array of arrays with two entries each [cluster title, cluster text]
-function ShowCompareDialog(hdr, arr) {
+function ShowCompareDialog(hdr, arr, canBeLong) {
 	var clusterArr = [];
 	
 	for (var i = 0; i < arr.length; i++) {
-		clusterArr.push({
+		var nextElem = {
 			type : "cluster",
-			alignment : "align_fill",
+			alignment : "align_top",
 			font : "heading",
 			name : arr[i][0],
 			elements : [{
-				type : "static_text",
+				item_id : "tx" + ("0" + i).slice(-2),
 				width : 300,
 				alignment : "align_fill",
-				font : "dialog",
-				wrap_name : true,
-				name : arr[i][1].replace(/^(\r|\n)*/, "")
+				font : "dialog"
 			}]
-		});
+		};
+		if (canBeLong) {
+			nextElem.elements[0].type = "edit_text";
+			nextElem.elements[0].readonly = true;
+			nextElem.elements[0].multiline = true;
+			nextElem.elements[0].height = 350;
+		} else {
+			nextElem.elements[0].type = "static_text";
+			nextElem.elements[0].wrap_name = true;
+			nextElem.elements[0].name = arr[i][1].replace(/^(\r|\n)*/, "");
+		}
+		clusterArr.push(nextElem);
 	}
 	
 	var ShowCompare_Dialog = {
+		initialize : function (dialog) {
+			if (!canBeLong) return;
+			var toLoad = {};
+			for (var i = 0; i < arr.length; i++) {
+				toLoad["tx" + ("0" + i).slice(-2)] = arr[i][1].replace(/^(\r|\n)*/, "");
+			}
+			dialog.load(toLoad);
+		},
 		description : {
 			name : hdr,
 			elements : [{
@@ -800,6 +881,26 @@ function ShowCompareDialog(hdr, arr) {
 				elements : [{
 					type : "view",
 					align_children : "align_row",
+					elements : [{
+						type : "static_text",
+						item_id : "txt0",
+						alignment : "align_fill",
+						font : "palette",
+						wrap_name : true,
+						height : 20,
+						name : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]",
+						width : 548
+					}, {
+						type : "edit_text",
+						item_id : "ding",
+						alignment : "align_fill",
+						readonly : true,
+						height : 1,
+						width : 1
+					}]
+				}, {
+					type : "view",
+					align_children : "align_top",
 					elements : clusterArr
 				}, {
 					type : "ok"

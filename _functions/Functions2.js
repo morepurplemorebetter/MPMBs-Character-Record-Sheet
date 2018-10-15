@@ -5379,6 +5379,14 @@ function PatreonStatement() {
 function addEvals(evalObj, NameEntity, Add) {
 	if (!evalObj) return;
 
+	// set the CurrentUpdates object
+	if ((evalObj.atkCalc || evalObj.atkAdd) && CurrentUpdates.atkStrOld == undefined) {
+		if (evalObj.atkAdd) CurrentUpdates.types.push("attacksforce");
+		CurrentUpdates.types.push("atkstr");
+		CurrentUpdates.atkStrOld = StringAttackEvals();
+	}
+
+	// make the changes to the CurrentEvals object
 	var atkStr = "";
 	var atkTypes = ["atkAdd", "atkCalc"];
 	for (var i = 0; i < atkTypes.length; i++) {
@@ -5402,12 +5410,6 @@ function addEvals(evalObj, NameEntity, Add) {
 		} else if (CurrentEvals.atkStr[NameEntity]) {
 			delete CurrentEvals.atkStr[NameEntity];
 		}
-	}
-	// set the CurrentUpdates object
-	if ((evalObj.atkCalc || evalObj.atkAdd) && CurrentUpdates.atkStrOld == undefined) {
-		if (evalObj.atkAdd) CurrentUpdates.types.push("attacksforce");
-		CurrentUpdates.types.push("atkstr");
-		CurrentUpdates.atkStrOld = StringAttackEvals();
 	}
 
 	//do the stuff for the hp calculations
@@ -5862,7 +5864,7 @@ function ShowDialog(hdr, strng) {
 		for (var group in srcArr) srcArr[group].sort();
 		for (var i = 0; i < srcGroups.length; i++) {
 			strng += "\n\n" + srcGroups[i].replace(/\u200B/g, "") + ":";
-			tArr = srcArr[srcGroups[i]];
+			var tArr = srcArr[srcGroups[i]];
 			for (var j = 0; j < tArr.length; j++) {
 				var theSrc = srcRef[tArr[j]];
 				strng += "\n\u2022 " + (SourceList[theSrc].abbreviation + "            ").substr(0,12) + "\t" + SourceList[theSrc].name;

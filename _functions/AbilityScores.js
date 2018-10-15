@@ -205,7 +205,6 @@ function AbilityScores_Button(onlySetTooltip) {
 		}
 	}
 
-
 	// Also set the tooltips of the ability score fields
 	var tooltipTxt = [];
 	for (var section in sections) {
