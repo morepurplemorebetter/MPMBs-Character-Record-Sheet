@@ -427,8 +427,6 @@ function ObjLength(theObj) {
 	return size;
 };
 
-
-
 // start a progress dialog
 // input can be a percentage of the progress or a string to display
 // if remove is set to true, the entry corresponding to the input text is removed
@@ -1080,11 +1078,12 @@ function calcStop() {
 	app.calculate = false;
 	tDoc.calculate = false;
 	tDoc.delay = true;
-	if (!calcStartSet) calcStartSet = app.setTimeOut("calcCont();", 250);
+	if (calcStartSet === false) calcStartSet = app.setTimeOut("calcCont();", 250);
 };
 
 // function to start the calculations of the PDF again
-function calcCont() {
+function calcCont(noSheetUpdate) {
+	if (!noSheetUpdate) UpdateSheetWeapons(); // first recalculate the weapons if set to do so, before restarting any calculations
 	if (calcStartSet) {
 		app.clearTimeOut(calcStartSet);
 		calcStartSet = false;
@@ -1093,8 +1092,8 @@ function calcCont() {
 	tDoc.calculate = true;
 	tDoc.delay = false;
 	tDoc.calculateNow();
+	if (!noSheetUpdate) UpdateSheetDisplay();
 	thermoStop();
-	UpdateSheetDisplay();
 };
 
 // function to find the value (date) of a source

@@ -423,12 +423,13 @@ function DirectImport(consoleTrigger) {
 	}
 	
 	//if opening the doc failed, or it is not one of MPMB's Character Record Sheets (according)
-	if (closeAlert) {
-		app.alert({
-			cTitle: closeAlert[0],
-			cMsg: closeAlert[1]
-		});
-	} else if (global.docFrom && global.docTo) { try { //we are good to go and import stuff!
+  if (closeAlert) {
+	app.alert({
+		cTitle: closeAlert[0],
+		cMsg: closeAlert[1]
+	});
+  } else if (global.docFrom && global.docTo) { //we are good to go and import stuff!
+	try {
 		// Update the progress bar and stop the calculations
 		thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
 		thermoM(0.25);
@@ -1350,10 +1351,6 @@ function DirectImport(consoleTrigger) {
 			console.show();
 		};
 	};
-	// signal the end of importing
-	IsNotImport = true;
-	ignorePrereqs = false;
-	if (IIerror && isNaN(IIerror)) app.alert(IIerror);
 
 	// A pop-up to inform the user of the changes
 	if (!closeAlert) {
@@ -1403,7 +1400,13 @@ function DirectImport(consoleTrigger) {
 		});
 		thermoStop(); // Stop progress bar, forcibly
 	};
-	};
+
+	// signal the end of importing
+	IsNotImport = true;
+	ignorePrereqs = false;
+	if (IIerror && isNaN(IIerror)) app.alert(IIerror);
+
+  };
 	
 	//close the document that was opened to import from (if any)
 	if (global.docFrom && global.docFrom.toString() === "[object Doc]") {

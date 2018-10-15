@@ -557,7 +557,7 @@ function ResetAll(GoOn, noTempl) {
 	if (locColumns[1] === "true") HideInvLocationColumn("Extra.Gear ", true);
 	SetHighlighting();
 	SetHPTooltip("reset");
-	setSkillTooltips();
+	setSkillTooltips(true);
 	UpdateALdateFormat();
 	DnDlogo();
 	thermoM(7/9); //increment the progress dialog's progress
@@ -1741,11 +1741,11 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		var ClDelimiter = clean(What("Delimiter"));
 		var fieldRem = classes.field;
 		var fieldSplit = fieldRem.match(/\D+|(\d+(\.|,))?\d+/g);
-		var tempLevel = fieldSplit.length > 2 ? 1 : Number(What("Character Level"));
+		var tempLevel = fieldSplit.length > 2 ? 1 : Math.max(Number(What("Character Level")), 1);
 		// now loop through the found elements and add them to the classes.parsed array
 		for (var i = 0; i < fieldSplit.length; i = i+2) {
 			if (ClDelimiter) fieldSplit[i].replace(RegExp("^" + ClDelimiter.RegEscape(), "i"), '');
-			var fieldLevel = fieldSplit[i+1] !== undefined ? parseFloat(fieldSplit[i+1]) : tempLevel
+			var fieldLevel = fieldSplit[i+1] !== undefined ? parseFloat(fieldSplit[i+1]) : tempLevel;
 			classes.parsed.push([clean(fieldSplit[i]), fieldLevel]);
 			classes.totallevel += fieldLevel;
 		}
@@ -2302,16 +2302,22 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying the class(es)...");
 	calcStop();
-	thermoM(1/6); // Increment the progress bar
+	thermoM(1/5); // Increment the progress bar
 	
 	// Put hit dice on sheet
+	var hdChanged = false;
 	if (classes.hd.length > 0) classes.hd.sort(function (a, b) { return a - b; }); // sort by biggest HD
 	for (var i = 0; i < 3; i++) { // loop through the 3 HD fields
-		Value("HD" + (i+1) + " Level", classes.hd[i] ? Math.min(classes.hd[i][1], 999) : "");
-		Value("HD" + (i+1) + " Die", classes.hd[i] ? classes.hd[i][0] : "");
+		var hdLvl = classes.hd[i] ? Math.min(classes.hd[i][1], 999) : "";
+		var hdDie = classes.hd[i] ? classes.hd[i][0] : "";
+		if (!hdChanged) hdChanged = What("HD" + (i+1) + " Level") != hdLvl || What("HD" + (i+1) + " Die") != hdDie;
+		Value("HD" + (i+1) + " Level", hdLvl);
+		Value("HD" + (i+1) + " Die", hdDie);
 	}
-	
-	thermoM(2/6); // Increment the progress bar
+	// If the HD changed, prompt the user about this
+	if (hdChanged) CurrentUpdates.types.push("hp");
+
+	thermoM(2/5); // Increment the progress bar
 	
 	// Add attributes of each class, if we didn't do so already
 	var primaryChange = !classes.oldprimary || classes.oldprimary !== classes.primary;
@@ -2326,7 +2332,7 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 		}
 	}
 	
-	thermoM(3/6); // Increment the progress bar
+	thermoM(3/5); // Increment the progress bar
 
 	// Set some things dependent on class-levels
 	SetTheAbilitySaveDCs();
@@ -2337,35 +2343,38 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 		Hide("Class Features Menu");
 	}
 	
-	// Register some things to prompt the user about
-	CurrentUpdates.types.push("hp");	
-	CurrentUpdates.types.push("spellcastingclass");
+	// Have the prompt check if something changed in Ability Score Increases gained form levels
 	CurrentUpdates.types.push("testasi");
 
-	// Set the spell slots of the class' levels
-	thermoTxt = thermoM("Setting spell slots...", false); //change the progress dialog text
-	thermoM(4/6); //increment the progress dialog's progress
-	for (var ss = 0; ss <= 8; ss++) {
-		var SpellSlotsName = "SpellSlots.CheckboxesSet.lvl" + (ss + 1);
-		var SpellSlotsField = Number(What(SpellSlotsName));
-		var SpellSlotsTotal = SpellSlotsField;
-		if (classes.spellcastlvl.otherTables) SpellSlotsTotal += classes.spellcastlvl.otherTables[ss]; // add new slots
-		if (classes.oldspellcastlvl.otherTables) SpellSlotsTotal -= classes.oldspellcastlvl.otherTables[ss]; // remove old slots
-		for (var casterType in classes.spellcastlvl) {
-			var spTable = tDoc[casterType + "SpellTable"];
-			if (casterType == "otherTables" || !spTable) continue;
-			SpellSlotsTotal += spTable[Math.min(spTable.length - 1, classes.spellcastlvl[casterType])][ss]; // add new slots
-			if (classes.oldspellcastlvl[casterType]) {
-				SpellSlotsTotal -= spTable[Math.min(spTable.length - 1, classes.oldspellcastlvl[casterType])][ss]; // remove old slots
+	thermoM(4/5); //increment the progress dialog's progress
+
+	// If something changed in spellcasting
+	if (classes.oldspellcastlvl.toSource() != classes.spellcastlvl.toSource()) {
+		thermoTxt = thermoM("Setting spell slots...", false); //change the progress dialog text
+		// Set the spell slots of the class' levels
+		for (var ss = 0; ss <= 8; ss++) {
+			var SpellSlotsName = "SpellSlots.CheckboxesSet.lvl" + (ss + 1);
+			var SpellSlotsField = Number(What(SpellSlotsName));
+			var SpellSlotsTotal = SpellSlotsField;
+			for (var casterType in classes.spellcastlvl) {
+				var spTable = tDoc[casterType + "SpellTable"];
+				if (casterType == "otherTables") {
+					SpellSlotsTotal += classes.spellcastlvl.otherTables[ss];
+					SpellSlotsTotal -= classes.oldspellcastlvl.otherTables[ss];
+				} else if (spTable) {
+					SpellSlotsTotal += spTable[Math.min(spTable.length - 1, classes.spellcastlvl[casterType])][ss];
+					SpellSlotsTotal -= classes.oldspellcastlvl[casterType] ? spTable[Math.min(spTable.length - 1, classes.oldspellcastlvl[casterType])][ss] : 0;
+				}
 			}
+			if (SpellSlotsField != SpellSlotsTotal) Value(SpellSlotsName, SpellSlotsTotal);
 		}
-		if (SpellSlotsField != SpellSlotsTotal) Value(SpellSlotsName, SpellSlotsTotal);
+		// Have the prompt check if something changed to warrant generating new spell sheets
+		CurrentUpdates.types.push("testclassspellcasting");
 	}
 
 	thermoM(thermoTxt, true); // Stop progress bar
 
-	ApplyClassLevel(); // Lastly, update the level (or just the class features if level didn't change)
-
+	ApplyClassLevel(); // Lastly, update the level and level-dependent features (or just the class features if level didn't change)
 /* UPDATED
 	//add saves and tools of the primary class
 	if (classes.primary && (!classes.oldprimary || classes.oldprimary !== classes.primary)) {
@@ -2456,7 +2465,7 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 
 // a function to apply the class level depending on how it was changed
 function ApplyClassLevel(noChange) {
-	if (IsCharLvlVal !== false) { // called during a level field change event
+	if (IsCharLvlVal !== false) { // called during a Level field change event
 		IsCharLvlVal = classes.totallevel;
 	} else if (Number(What("Character Level")) != classes.totallevel) {
 		Value("Character Level", classes.totallevel);
@@ -7140,7 +7149,7 @@ function HideShowEverything(toggle) {
 	};
 	// Stop the progress bar and force calculations to start again because this is function is called while a dialog is displayed
 	thermoM(thermoTxt, true);
-	calcCont();
+	calcCont(true);
 };
 
 //calculate the AC (field calculation)

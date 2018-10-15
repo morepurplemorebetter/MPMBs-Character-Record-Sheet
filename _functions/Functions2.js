@@ -4703,6 +4703,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
+/*
 //Give a pop-up dialogue when the amount of Ability Score Improvements after changing level
 function CountASIs() {
 	var newASI = 0;
@@ -4727,6 +4728,7 @@ function CountASIs() {
 		})
 	}	
 }
+*/
 
 //a function to change the sorting of the skills
 function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
@@ -6379,7 +6381,8 @@ function processSkills(AddRemove, srcNm, itemArr, descrTxt) {
 	setSkillTooltips();
 };
 // Update the skill tooltips
-function setSkillTooltips() {
+function setSkillTooltips(noPopUp) {
+	var oldTooltipTxt = Who("Acr Prof");
 	if (!CurrentProfs.skill.descrTxt) CurrentProfs.skill.descrTxt = {};
 	var iSet = CurrentProfs.skill.descrTxt;
 	var tooltipTxt = "";
@@ -6389,13 +6392,19 @@ function setSkillTooltips() {
 		tooltipArr.sort();
 		tooltipTxt = formatMultiList("Skill proficiencies gained from:", tooltipArr);
 	}
+
+	if (tooltipTxt == oldTooltipTxt) return; // nothing changed, so stop here
+
 	for (i = 0; i < (SkillsList.abbreviations.length); i++) {
 		var theSkill = SkillsList.abbreviations[i];
 		if (theSkill == "Init") continue;
 		AddTooltip(theSkill + " Prof", tooltipTxt);
 		AddTooltip(theSkill + " Exp", tooltipTxt);
-	};
-	CurrentUpdates.types.push("skills");
+	}
+	if (!noPopUp && CurrentUpdates.types.indexOf("skills") === -1) {
+		CurrentUpdates.types.push("skills");
+		CurrentUpdates.skillStrOld = oldTooltipTxt.replace(/.+(\r|\n)*/, '');
+	}
 	AddTooltip("SkillsClick", "Click here to change the order of the skills. You can select either alphabetic order or ordered by ability score." + (tooltipTxt ? "\n\n" + tooltipTxt : ""));
 }
 
@@ -6423,6 +6432,7 @@ function processArmourProfs(AddRemove, srcNm, itemArr) {
 };
 // set the armour/weapon proficiency manually (field action)
 function setCheckboxProfsManual(theField) {
+	calcStop();
 	var fld = theField ? tDoc.getField(theField) : event.target;
 	var isActive = fld.isBoxChecked(0) === 1;
 	var sort = (/simple|martial/i).test(fld.name) ? "weapon" : "armour";
@@ -6435,6 +6445,7 @@ function setCheckboxProfsManual(theField) {
 }
 // do something with the manually entered 'other' weapon proficiencies (field action)
 function setOtherWeaponProfsManual() {
+	calcStop();
 	var set = CurrentProfs.weapon;
 	if (!set.otherWea) set.otherWea = { finalProfs : [], finalString : "", finalNamesNotManual : [], finalProfsNotManual : [] };
 	var iSet = set.otherWea;
@@ -6609,7 +6620,6 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			Value("Proficiency Weapon Other Description", iSet.finalString, otherWeaTooltip);
 			// recalculate the attacks with the proficiency changes
 			CurrentUpdates.types.push("attacksprofs");
-			if (!calcStartSet) UpdateSheetDisplay();
 			break;
 		}
 	};
@@ -6653,7 +6663,6 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			} else if (Extra || isOn != fldState) {
 				// recalculate the attacks if the proficiency value changed
 				CurrentUpdates.types.push("attacksprofs");
-				if (!calcStartSet) UpdateSheetDisplay();
 			}
 		}
 		break;
@@ -7716,7 +7725,7 @@ function setUnicodeUse(enable, force) {
 		// update the tooltips that use unicode
 		UpdateDropdown("tooltips");
 		AbilityScores_Button(true);
-		setSkillTooltips();
+		setSkillTooltips(true);
 		MakeSkillsMenu_SkillsOptions(true, true);
 		SetHPTooltip();
 	}

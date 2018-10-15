@@ -4905,6 +4905,7 @@ function MakeGlossMenu_GlossOptions() {
 	HideSpellSheetElement(event.target.name);
 }
 
+/* UPDATED
 //check if there are any changes from the last level to the new concerning spells
 function CheckForSpellUpdate() {
 	calcCont(); // Update the sheet so that users don't think that their previous class/race changes have not been committed
@@ -4980,6 +4981,7 @@ function AskForSpellUpdate() {
 	Value("SpellSheetUpdate.Remember", askPopUp.oCheckbox.bAfterValue);
 	if (rAskPopUp === 4) GenerateSpellSheet();
 };
+*/
 
 // make all lines on the newly generated empty sheet
 function AddSpellSheetTextLines(prefix, boxes, maxLine) {

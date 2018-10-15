@@ -511,7 +511,7 @@ function processAddArmour(AddRemove, armour) {
 		if (remCurArm && remAC) { // there was a previous armor, so check if this new armor is better or not
 			// calculate all the field values, or the AC field will not be updated
 			var isStoppedCalc = calcStartSet != false;
-			if (isStoppedCalc) calcCont();
+			if (isStoppedCalc) calcCont(true);
 			if (remAC > Number(What("AC"))) {
 				Value("AC Armor Description", remCurArm);
 			} else if (isStoppedCalc) {
@@ -584,23 +584,32 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxtA) {
 	}
 }
 
+// a function to recalculate the weapon entries after a change in weapon proficiencies or CurrentEvals
+function UpdateSheetWeapons() {
+	var CUflat = CurrentUpdates.types.toString();
+	if (!CurrentUpdates.types.length || !IsNotReset || !IsNotImport || CUflat.indexOf("attacks") == -1) return;
+	ReCalcWeapons(CurrentUpdates.types.indexOf("attacksprofs") !== -1, CurrentUpdates.types.indexOf("attacksforce") !== -1);
+}
+
 // a function to do all the default things after a change in level, class, race, feat, magic item, or companion
 // this function is called whenever the calculations are activated again
 function UpdateSheetDisplay() {
-	if (!CurrentUpdates.types.length) return;
+	if (!CurrentUpdates.types.length || !IsNotReset || !IsNotImport) {
+		CurrentUpdates = {types : [], extras : {}}; // reset the CurrentUpdates variable
+		return;
+	}
+	
+	// Show the progress dialog
+	var thermoTxt = thermoM("Finalizing changes...", false);
+	thermoM(4/5); // Increment the progress bar
 
 	// initialize some variables
 	var dialogParts = [];
 	var CUflat = CurrentUpdates.types.toString();
 
-	// recalculate the attacks if necessary
-	if (CUflat.indexOf("attacks") !== -1) { // recalculate the weapons
-		ReCalcWeapons(CurrentUpdates.types.indexOf("attacksprofs") !== -1, CurrentUpdates.types.indexOf("attacksforce") !== -1);
-	};
-
 	// create the dialog
 	var titleTxt = "Changes Requiring Your Attention";
-	var explTxt = "The changes you just made have effected the things listed below. This dialog is just a reminder and you don't need it to update the sheet. (Note that there are two 'Close' buttons intentionally, it is not a bug. Both buttons work the same.)";
+	var explTxt = "The things you just changed has effected the things listed below.\nNote that this dialog is just a reminder and you can find all the things listed below in their respective sections of the sheet and/or its functions.";
 	var Changes_Dialog = {
 		//when starting the dialog
 		initialize : function (dialog) {
@@ -638,14 +647,26 @@ function UpdateSheetDisplay() {
 					wrap_name : true,
 					width : 500
 				}, {
-					type : "view", // the top row
+					type : "view",
 					item_id : "sect",
 					align_children : "align_left",
 					elements : []
 				}, {
-					type : "ok_cancel",
-					ok_name : "Close",
-					cancel_name : "Close"
+					type : "view",
+					alignment : "align_fill",
+					align_children : "align_center",
+					elements : [{
+						type : "ok",
+						alignment : "align_center",
+						ok_name : "Close" 
+					}, {
+						type : "ok_cancel",
+						alignment : "align_offscreen",
+						item_id : "CNCL",
+						ok_name : "Close",
+						cancel_name : "Close",
+						height : 0
+					}]
 				}]
 			}]
 		}
@@ -656,7 +677,7 @@ function UpdateSheetDisplay() {
 	if (CUflat.indexOf("stats") !== -1 || CurrentUpdates.types.indexOf("testasi") !== -1) {
 		Changes_Dialog.oldStats = Who("Str");
 		if (AbilityScores_Button(true)) { // sets tooltip for stats and returns true if anything changed
-			var strStats = ;
+			var strStats = "";
 			// ability score improvements
 			if (CurrentUpdates.types.indexOf("testasi") !== -1) {
 				var newASI = 0;
@@ -667,60 +688,64 @@ function UpdateSheetDisplay() {
 				var oldASI = 0;
 				for (var oClass in classes.old) {
 					var useObj = CurrentClasses[oClass] ? CurrentClasses[oClass] : ClassList[oClass];
-					clLvl = Math.min(oseObj.improvements.length, classes.old[oClass].classlevel);
+					clLvl = Math.min(useObj.improvements.length, classes.old[oClass].classlevel);
 					oldASI += clLvl ? useObj.improvements[clLvl - 1] : 0;
 				}
 				if (newASI !== oldASI) {
-					strStats += "\nThe change in level has granted " + toUni((newASI - oldASI) + " new Ability Score Improvement");
+					var totalASI = newASI - oldASI;
+					var ASItxt = " Ability Score Improvement" + (Math.abs(totalASI) != 1 ? "s" : "");
+					strStats += "\nThe change in level has granted " + toUni(totalASI) + " new" + ASItxt + ".\nThis bring the new total to " + toUni(newASI) + ".";
 				}
 			}
 			// other stat changes
 			if (CUflat.indexOf("stats") !== -1) {
 				var statChanges = [];
-				if (CurrentUpdates.types.indexOf("statsrace") !== -1) statChanges.push("Race");
-				if (CurrentUpdates.types.indexOf("statsclasses") !== -1) statChanges.push("Class Feature(s)");
-				if (CurrentUpdates.types.indexOf("statsfeats") !== -1) statChanges.push("Feat(s)");
-				if (CurrentUpdates.types.indexOf("statsoverride") !== -1 || CurrentUpdates.types.indexOf("statsitems") !== -1) statChanges.push("Magic Item(s)");
+				if (CurrentUpdates.types.indexOf("statsrace") !== -1) statChanges.push(toUni("Race"));
+				if (CurrentUpdates.types.indexOf("statsclasses") !== -1) statChanges.push(toUni("Class Feature(s)"));
+				if (CurrentUpdates.types.indexOf("statsfeats") !== -1) statChanges.push(toUni("Feat(s)"));
+				if (CurrentUpdates.types.indexOf("statsoverride") !== -1 || CurrentUpdates.types.indexOf("statsitems") !== -1) statChanges.push(toUni("Magic Item(s)"));
 				strStats += formatLineList("\nThe following changed one or more ability score:", statChanges);
 			}
-			// make the Stats dialog insert
-			dialogParts.push({
-				type : "cluster",
-				align_children : "align_bottom",
-				alignment : "align_fill",
-				width : 500,
-				font : "heading",
-				name : "Hit Points",
-				elements : [{
-					type : "static_text",
-					width : 375,
+			if (strStats) {
+				// make the Stats dialog insert
+				dialogParts.push({
+					type : "cluster",
+					align_children : "align_distribute",
 					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					name : "A change to ability score has been detected. This change will not be applied automatically. Please use the Ability Score Dialog for this." + strStats
-				}, {
-					type : "view",
-					align_children : "align_right",
+					width : 500,
+					font : "heading",
+					name : "Ability Scores",
 					elements : [{
-						type : "button",
-						item_id : "bSTc",
-						name : "See Changes"
+						type : "static_text",
+						width : 375,
+						alignment : "align_fill",
+						font : "dialog",
+						wrap_name : true,
+						name : "A change to ability scores has been detected. This is not applied automatically, but you can use the Ability Scores Dialog for that." + strStats
 					}, {
-						type : "button",
-						item_id : "bSTo",
-						name : "Open Ability Score Dialog"
+						type : "view",
+						align_children : "align_right",
+						elements : [{
+							type : "button",
+							item_id : "bSTc",
+							name : "See Changes"
+						}, {
+							type : "button",
+							item_id : "bSTo",
+							name : "Open Ability Scores Dialog"
+						}]
 					}]
-				}]
-			});
-			Changes_Dialog.bSTc = function (dialog) {
-				ShowCompareDialog("Ability Score changes", [["Old Ability Score modifiers", this.oldStats], ["New Ability Score modifiers", Who("Str")]]);
-			};
-			Changes_Dialog.bSTo = function (dialog) {
-				AbilityScores_Button{);
-				// this dialog might have just updated the stats, prompting for some other updates
-				if (CurrentUpdates.types.indexOf("attacks") !== -1) ReCalcWeapons();
-				if (CurrentUpdates.types.indexOf("hp") !== -1) SetHPTooltip(false, false);
-			};
+				});
+				Changes_Dialog.bSTc = function (dialog) {
+					ShowCompareDialog("Ability Score changes", [["Old ability score modifiers", this.oldStats], ["New ability score modifiers", Who("Str")]], true);
+				};
+				Changes_Dialog.bSTo = function (dialog) {
+					AbilityScores_Button();
+					// this dialog might have just updated the stats, prompting for some other updates
+					if (CurrentUpdates.types.indexOf("attacks") !== -1) ReCalcWeapons();
+					if (CurrentUpdates.types.indexOf("hp") !== -1) SetHPTooltip(false, false);
+				};
+			}
 		}
 	}
 
@@ -735,10 +760,10 @@ function UpdateSheetDisplay() {
 		SetHPTooltip(false, false);
 		// make the HP dialog insert
 		var strHP = "The hit die and/or hit point maximum of the character have changed.";
-		if (autoHP) strHP += "\nAs HP has been set to update automatically, the Maximum Hit Points have been changed from " + oldHPmax + " to " + What("HP Max") + ".";
+		if (autoHP) strHP += "\nAs HP has been set to update automatically, the Maximum Hit Points have been changed from " + toUni(oldHPmax) + " to " + toUni(What("HP Max")) + ".";
 		dialogParts.push({
 			type : "cluster",
-			align_children : "align_row",
+			align_children : "align_distribute",
 			alignment : "align_fill",
 			width : 500,
 			font : "heading",
@@ -761,6 +786,105 @@ function UpdateSheetDisplay() {
 		};
 	}
 
+	// if the spellcasting changed
+	var CurrentSpellsLen = ObjLength(CurrentSpells);
+	var changedSpellcasting = CurrentUpdates.types.indexOf("spells") !== -1 || (!CurrentSpellsLen && CurrentUpdates.types.indexOf("testclassspellcasting") !== -1);
+	// if there is no spellcastingBonus added, but change in spellcasting level was detected, see if a spellcasting class changed level and would require a new spell sheet
+	if (!changedSpellcasting && CurrentUpdates.types.indexOf("testclassspellcasting") !== -1) {
+		for (var theCaster in CurrentSpells) {
+			var aCast = CurrentSpells[theCaster];
+			// skip this entry if this is not a class, or not a class with spells known, or there is already a spell sheet made of all cantrips & spells
+			if (!classes.known[theCaster] || !aCast.known || (aCast.typeList && aCast.typeList == 4)) continue;
+			var newClass = !classes.old[theCaster];
+			var lvlOld = newClass ? 0 : classes.old[theCaster].classlevel - 1;
+			var lvlNew = classes.known[theCaster].level - 1;
+			// see if there is a cantrips array in the known section and the amount of known
+			if (isArray(aCast.known.cantrips)) {
+				var oldCaLvl = Math.min(aCast.known.cantrips.length - 1, lvlOld);
+				var newCaLvl = Math.min(aCast.known.cantrips.length - 1, lvlNew);
+				changedSpellcasting = (newClass && aCast.known.cantrips[newCaLvl]) || (aCast.known.cantrips[oldCaLvl] !== aCast.known.cantrips[newCaLvl]);
+			}
+			// stop if there is already a reason to update
+			if (changedSpellcasting) break;
+			// see if there is a spells array in the known section and the amount of known
+			if (aCast.known.spells && isArray(aCast.known.spells)) {
+				var oldSpLvl = Math.min(aCast.known.spells.length - 1, lvlOld);
+				var newSpLvl = Math.min(aCast.known.spells.length - 1, lvlNew);
+				changedSpellcasting = (newClass && aCast.known.spells[newSpLvl]) || (aCast.known.spells[oldSpLvl] !== aCast.known.spells[newSpLvl]);
+			} else if (aCast.known.spells && aCast.typeSp && (aCast.typeSp === "book" || (aCast.typeSp === "list" && aCast.typeList !== 2))) { // if this is a list/book, test if the caster just got access to a new spell slot level
+				var theTable = aCast.spellsTable ? aCast.spellsTable : aCast.factor && aCast.factor[0] ? tDoc[aCast.factor[1] + "SpellTable"] : false;
+				if (theTable) {
+					var oldTableLvl = Math.min(theTable.length - 1, lvlOld + 1);
+					var newTableLvl = Math.min(theTable.length - 1, lvlNew + 1);
+					changedSpellcasting = (newClass && aCast.known.spells[newSpLvl]) || (theTable[oldTableLvl].trailingIndexOf(0) !== theTable[newTableLvl].trailingIndexOf(0));
+				};
+			}
+			// stop if there is already a reason to update
+			if (changedSpellcasting) break;
+		}
+	};
+	if (changedSpellcasting) {
+		// see if not all spellcasting stuff has been removed
+		var strSpells = CurrentSpellsLen ?
+			"A change to spellcasting has been detected that require the Spell Sheets to be updated. Note that if you plan to make more changes affecting spellcasting, you will want to do those first before you end up generating Spell Sheets twice." :
+			"All spellcasting has been removed from the character. You might want to remove any Spell Sheets as well";
+		var buttonSpells = CurrentSpellsLen ? "Generate New Spell Sheets" : "Remove All Spell Sheets";
+		var buttonSpellsID = CurrentSpellsLen ? "bSPg" : "bSPr";
+		// make the Spells dialog insert
+		dialogParts.push({
+			type : "cluster",
+			align_children : "align_distribute",
+			alignment : "align_fill",
+			width : 500,
+			font : "heading",
+			name : "Spellcasting",
+			elements : [{
+				type : "static_text",
+				width : 375,
+				alignment : "align_fill",
+				font : "dialog",
+				wrap_name : true,
+				name : strSpells
+			}, {
+				type : "button",
+				item_id : buttonSpellsID,
+				name : buttonSpells
+			}]
+		});
+		Changes_Dialog.bSPg = function (dialog) { GenerateSpellSheet(); };
+		Changes_Dialog.bSPr = function (dialog) { RemoveSpellSheets(); };
+	}
+
+	// if skill proficiencies changed
+	if (CurrentUpdates.types.indexOf("skills") !== -1) {
+		// get the previous atkCalc/stkAdd string
+		Changes_Dialog.oldSkillStr = CurrentUpdates.skillStrOld ? CurrentUpdates.skillStrOld : "";
+		// make the attack dialog insert
+		dialogParts.push({
+			type : "cluster",
+			align_children : "align_distribute",
+			alignment : "align_fill",
+			width : 500,
+			font : "heading",
+			name : "Skill Proficiencies",
+			elements : [{
+				type : "static_text",
+				width : 375,
+				alignment : "align_fill",
+				font : "dialog",
+				wrap_name : true,
+				name : "The things that affect attack calculations have changed.\nYou can always see what these are using the small buttons in front of each attack entry on the first page."
+			}, {
+				type : "button",
+				item_id : "bSKc",
+				name : "See Changes"
+			}]
+		});
+		Changes_Dialog.bSKc = function (dialog) {
+			ShowCompareDialog("Skill proficiencies", [["Old skill proficiencies", this.oldSkillStr], ["New skill proficiencies", Who("Acr Prof").replace(/.+(\r|\n)*/, '')]], true);
+		};
+	}
+
 	// if the attack calculations / populating changed
 	if (CurrentUpdates.types.indexOf("atkstr") !== -1) {
 		// get the previous atkCalc/stkAdd string
@@ -768,7 +892,7 @@ function UpdateSheetDisplay() {
 		// make the attack dialog insert
 		dialogParts.push({
 			type : "cluster",
-			align_children : "align_row",
+			align_children : "align_distribute",
 			alignment : "align_fill",
 			width : 500,
 			font : "heading",
@@ -790,34 +914,13 @@ function UpdateSheetDisplay() {
 			ShowCompareDialog("Things affecting attack calculations", [["Old attack manipulations", this.oldAtkStr], ["New attack manipulations", StringAttackEvals()]], true);
 		};
 	}
-	
-	var changedSpellcasting = CurrentUpdates.types.indexOf("spells") !== -1;
-	var changedSkills = CurrentUpdates.types.indexOf("skills") !== -1;
 
-
-
-	if (changedStats) AbilityScores_Button(true); // set tooltip for stats
-	if (!changedSpellcasting && CurrentUpdates.types.indexOf("spellcastingclass") !== -1) {
-		// see if a spellcasting class changed level and would require a new spell sheet
-/* NOG TE DOEN
-		changedSpellcasting = ??
-		zie CheckForSpellUpdate();
-		en AskForSpellUpdate();
-*/
-	};
 	if (CurrentUpdates.types.indexOf("xp") !== -1) { // set the xp (or similar) to the right amount by level
 /* NOG TE DOEN
 		changedXP = ??
 		zie CalcExperienceLevel();
 */
 	};
-
-
-	// The alert to the user
-/* NOG TE DOEN
-	if (changedSkills) // alert that there might be new skill proficiency choices that have to be made
-	if (changedSpellcasting) // ask to generate a new spell sheet
-*/
 
 	// if there is nothing to show, stop the function now
 	if (dialogParts.length !== 0) {
@@ -831,6 +934,9 @@ function UpdateSheetDisplay() {
 
 	// reset the CurrentUpdates variable
 	CurrentUpdates = {types : [], extras : {}};
+
+	// Stop progress bar
+	thermoM(thermoTxt, true);
 }
 
 //a way to show a dialog that compares multiple things
