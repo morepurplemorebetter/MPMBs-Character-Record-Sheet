@@ -347,7 +347,7 @@ var CurrentProfs = { // Also change field defaultValue!
 };
 
 var thermoCount = [], thermoDur = {};
-var calcStartSet, thermoStopSet;
+var calcStartSet = false, thermoStopSet = false, ChangesDialogSkip;
 var IsSubclassException = {};
 var IsNotReset = true;
 var IsNotImport = true;

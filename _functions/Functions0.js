@@ -1078,7 +1078,7 @@ function calcStop() {
 	app.calculate = false;
 	tDoc.calculate = false;
 	tDoc.delay = true;
-	if (calcStartSet === false) calcStartSet = app.setTimeOut("calcCont();", 250);
+	if (!calcStartSet) calcStartSet = app.setTimeOut("calcCont();", 250);
 };
 
 // function to start the calculations of the PDF again
@@ -1092,8 +1092,11 @@ function calcCont(noSheetUpdate) {
 	tDoc.calculate = true;
 	tDoc.delay = false;
 	tDoc.calculateNow();
-	if (!noSheetUpdate) UpdateSheetDisplay();
 	thermoStop();
+	if (!noSheetUpdate) {
+		UpdateSheetDisplay();
+		thermoStop();
+	}
 };
 
 // function to find the value (date) of a source

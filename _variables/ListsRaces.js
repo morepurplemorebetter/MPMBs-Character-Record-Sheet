@@ -9,7 +9,7 @@ var Base_RaceList = {
 			walk : { spd : 30, enc : 20 }
 		},
 		languageProfs : ["Common", "Draconic"],
-		weapons : ["Breath Weapon"],
+		addWeapons : ["Breath Weapon"],
 		age : " reach adulthood by 15 and live around 80 years",
 		height : " stand well over 6 feet tall (5'6\" + 2d8\")",
 		weight : " weigh around 240 lb (175 + 2d8 \xD7 2d6 lb)",
@@ -69,7 +69,7 @@ var Base_RaceList = {
 		vision : [["Darkvision", 60]],
 		savetxt : { adv_vs : ["poison"] },
 		dmgres : ["Poison"],
-		weaponprofs : [false, false, ["battleaxe", "handaxe", "warhammer", "light hammer"]],
+		weaponProfs : [false, false, ["battleaxe", "handaxe", "warhammer", "light hammer"]],
 		toolProfs : [["Smith, brewer, or mason tools", 1]],
 		age : " are considered young until they are 50 and live about 350 years",
 		height : " stand between 4 and 5 feet tall (3'8\" + 2d4\")",
@@ -105,7 +105,7 @@ var Base_RaceList = {
 			text : ["Magic can't put me to sleep"],
 			adv_vs : ["charmed"]
 		},
-		weaponprofs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
+		weaponProfs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
 		skills : ["Perception"],
 		age : " typically claim adulthood around age 100 and can live to be 750 years old",
 		height : " range from under 5 to over 6 feet tall (4'6\" + 2d10\")",
@@ -245,7 +245,7 @@ var Base_RaceList = {
 		weight : " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
 		heightMetric : " range from barely 1,5 to well over 1,8 metres tall (145 + 5d10 cm)",
 		weightMetric : " weigh around 75 kg (50 + 5d10 \xD7 4d4 / 10 kg)",
-		improvements : "Human: +1 to all ability scores;",
+//		improvements : "Human: +1 to all ability scores;", // UPDATED
 		scorestxt : "+1 to all ability scores",
 		scores : [1, 1, 1, 1, 1, 1, 1],
 		trait : "Human (+1 to all ability scores)",

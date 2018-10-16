@@ -35,7 +35,7 @@ var FightingStyles = {
 		name : "Two-Weapon Fighting Style",
 		description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
 		calcChanges : {
-			atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."]
+			atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks. If a melee weapon includes 'off-hand' or 'secondary' in its name or description, it is considered an off-hand attack."]
 		}
 	}
 };

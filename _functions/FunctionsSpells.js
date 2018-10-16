@@ -3406,7 +3406,7 @@ function AskUserSpellSheet() {
 }
 
 //generate the spell sheet for all the different classes
-function GenerateSpellSheet(GoOn) {	
+function GenerateSpellSheet(GoOn) {
 	//first ask the user for input on what to do with all the spellcasting classes
 	if (!GoOn) var GoOn = AskUserSpellSheet();
 
@@ -3423,7 +3423,7 @@ function GenerateSpellSheet(GoOn) {
 		}
 		return; // do not continue with this function for it is pointless
 	} else if (GoOn === "stop") {
-		return; // do not continue with this function if one of the dialogs was cancelled
+		return false; // do not continue with this function if one of the dialogs was cancelled
 	}
 
 	// Start progress bar and stop calculations
@@ -3617,6 +3617,8 @@ function GenerateSpellSheet(GoOn) {
 	var SSvisible = isTemplVis("SSfront", true);
 	if (SSvisible[0]) tDoc.getField(SSvisible[1] + "spells.name.0").setFocus(); // set the focus to the top of the Spell Sheet
 	thermoM(thermoTxt, true); // Stop progress bar
+
+	return true;
 }
 
 //remove all visible spell sheets and reset the template remember fields

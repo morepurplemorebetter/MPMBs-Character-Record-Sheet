@@ -2501,118 +2501,98 @@ function levelFieldVal() {
 	IsCharLvlVal = false; // reset global variable
 	
 	// make sure to update the experience points (or similar system) and alert the user
-	CurrentUpdates.types.indexOf("xp");
+	CurrentUpdates.types.push("xp");
 
 	event.value = lvl > 0 ? lvl : '';
 }
 
-//Check if the level or XP entered matches the XP or level
-function CalcExperienceLevel(AlsoClass) {
-	var oldLevel = Number(How("Character Level"));
-	var Level = Number(What("Character Level"));
-	var exp = Number(What("Total Experience").replace(",", "."));
-	AddTooltip("Character Level", undefined, Level);
-	
-	//stop this function if resetting or importing the sheet or no xp and level is/was present
-	if (!IsNotImport || !IsNotReset || (!oldLevel && !Level && !exp)) return;
-
+function getCurrentLevelByXP(level, exp) {
+	level = Number(level);
+	exp = Number(exp.replace(",", "."));
 	var LVLbyXP = ExperiencePointsList.reduce(function(acc, val) { return acc += exp >= Number(val) ? 1 : 0; }, 0);
-	var XPforLVL = !Level || Level === 1 ? 0 : ExperiencePointsList[Math.min(ExperiencePointsList.length - 1, Level - 1)];
-	if (!XPforLVL) XPforLVL = 0;
+	var XPforLVL = !level || isNaN(level) || level < 2 ? 0 : ExperiencePointsList[Math.min(ExperiencePointsList.length - 1, level - 1)];
+	return [LVLbyXP, XPforLVL];
+}
+
+//Check if the level or XP entered matches the XP or level
+function CalcExperienceLevel() {
+	// initialise some variables
+	var Level = Number(What("Character Level"));
+	var exp = What("Total Experience");
+	var getLvlXp = getCurrentLevelByXP(Level, exp);
+	var LVLbyXP = getLvlXp[0];
+	var XPforLVL = getLvlXp[1];
+
+	// if the level and experience points match or both are 0, stop this function
+	// also stop this function if the level is higher than the xp table allows (> 20)
+	// also stop this function if the experience points are more than the xp table allows (> 1000000000)
+	if (Level === LVLbyXP || (!Level && !exp) || Level >= ExperiencePointsList.length || LVLbyXP >= (ExperiencePointsList.length - 1)) return;
+
+	// create the strings for the dialog
 	var LVLtxt = Level >= ExperiencePointsList.length ? "a level higher than 20" : "level " + Level;
 	var XPtxt = !exp ? "no" : "only " + exp;
-
-	var StringHigherLvl = "This character has " + XPtxt + " experience points. This is not enough to attain the level that has been entered (" + Level + "). You need at least " + XPforLVL + " experience points for " + LVLtxt + ".\n\nYou can upgrade the experience points to " + XPforLVL + ", downgrade the level to " + LVLbyXP + ", or leave it as it is.";
-
+	var StringHigherLvl = "This character has " + XPtxt + " experience points. This is not enough to attain the level is currently has (" + Level + "). You need at least " + XPforLVL + " experience points for " + LVLtxt + ".\n\nYou can upgrade the experience points to " + XPforLVL + ", downgrade the level to " + LVLbyXP + ", or leave it as it is.";
 	var StringHigherXP = "This character is level " + Level + ", but already has " + exp + " experience points. This amount is enough to attain level " + LVLbyXP + ".\n\nYou can upgrade the level to " + LVLbyXP + ", downgrade the experience points to " + XPforLVL + ", or leave it as it is.";
 
-	if (Level && (Level < ExperiencePointsList.length || LVLbyXP < (ExperiencePointsList.length - 1)) && Level !== LVLbyXP) {
-		if (Level > LVLbyXP) {
-			var theText = StringHigherLvl;
-			var okReturn = "xp";
-			var otherReturn = "lvl";
-			var okButton = "Upgrade XP to " + XPforLVL;
-			var otherButton = "Downgrade level to " + LVLbyXP;
-		} else if (Level < LVLbyXP) {
-			var theText = StringHigherXP;
-			var okReturn = "lvl";
-			var otherReturn = "xp";
-			var okButton = "Upgrade level to " + LVLbyXP;
-			var otherButton = "Downgrade XP to " + XPforLVL;
-		};
-
-		var Experience_Dialog = {
-			result : false,
-
-			//when starting the dialog
-			initialize : function (dialog) { },
-
-			//when pressing the ok button
-			commit : function (dialog) {
-				this.result = okReturn;
-			},
-
-			//when pressing the cancel button
-			other : function (dialog) {
-				this.result = otherReturn;
-				dialog.end("other");
-			},
-
-			description : {
-				name : "Level and Experience Points do not match!",
+	var Experience_Dialog = {
+		result : false,
+		//when pressing the ok button
+		commit : function (dialog) {
+			this.result = Level > LVLbyXP ? "XPre" : "LVLr";
+		},
+		//when pressing the other button
+		other : function (dialog) {
+			this.result = Level > LVLbyXP ? "LVLr" : "XPre";
+			dialog.end("ok");
+		},
+		description : {
+			name : "Level and Experience Points do not match!",
+			elements : [{
+				type : "view",
 				elements : [{
-					type : "view",
-					elements : [{
-						type : "static_text",
-						name : "Level and Experience Points do not match!",
-						item_id : "head",
-						alignment : "align_top",
-						font : "heading",
-						bold : true,
-						height : 21,
-						char_width : 45
-					}, {
-						type : "static_text",
-						item_id : "text",
-						alignment : "align_fill",
-						font : "dialog",
-						char_width : 45,
-						wrap_name : true,
-						name : theText
-					}, {
-						type : "ok_cancel_other",
-						ok_name : okButton,
-						other_name : otherButton
-					}]
+					type : "static_text",
+					name : "Level and Experience Points do not match!",
+					item_id : "head",
+					alignment : "align_top",
+					font : "heading",
+					bold : true,
+					height : 21,
+					char_width : 45
+				}, {
+					type : "static_text",
+					item_id : "text",
+					alignment : "align_fill",
+					font : "dialog",
+					char_width : 45,
+					wrap_name : true,
+					name : Level > LVLbyXP ? StringHigherLvl : StringHigherXP
+				}, {
+					type : "ok_cancel_other",
+					ok_name : Level > LVLbyXP ? "Upgrade XP to " + XPforLVL : "Upgrade level to " + LVLbyXP,
+					other_name : Level > LVLbyXP ? "Downgrade level to " + LVLbyXP : "Downgrade XP to " + XPforLVL,
 				}]
-			}
-		};
-		app.execDialog(Experience_Dialog);
-		switch (Experience_Dialog.result) {
-			case "lvl":
-				Value("Character Level", LVLbyXP);
-				Level = LVLbyXP;
-				break;
-			case "xp":
-				Value("Total Experience", XPforLVL);
-				break;
+			}]
 		}
 	};
-/* UPDATED
-	if (oldLevel !== Level) {
-		//update features gained from level, but not from classes
-		UpdateLevelFeatures("notclass");
-
-		//call the multiclassing function that will ask for what class to add a level to
-		if (AlsoClass && (Level || What("Class and Levels"))) AskMulticlassing();
-
-		//update level-dependent things for any ranger companions
-		UpdateRangerCompanions();
-
-		//show a dialogue about ASI
-		CountASIs();
+	
+	var dia = app.execDialog(Experience_Dialog);
+	switch (Experience_Dialog.result) {
+		case "LVLr":
+			Value("Character Level", LVLbyXP);
+			break;
+		case "XPre":
+			Value("Total Experience", XPforLVL);
+			break;
 	};
-*/
+};
+
+function AddExperiencePoints() {	
+	if (!What("Add Experience")) return;
+	var XPS = Number(What("Total Experience").replace(/,/g, "."));
+	var AddXP = Number(What("Add Experience").replace(/,/g, "."));
+	Value("Total Experience", RoundTo(XPS + AddXP, 0.01));
+	Value("Add Experience", "");
+	CalcExperienceLevel(true);
 };
 
 function ParseRace(input) {
@@ -5614,16 +5594,6 @@ function HealItNow() {
 			Value(prefix + "Comp.Use.HD.Used", HD1 - toHeal);
 		}
 	}
-};
-
-function AddExperiencePoints() {	
-	if (What("Add Experience")) {
-		var XPS = Number(What("Total Experience").replace(/,/g, "."));
-		var AddXP = Number(What("Add Experience").replace(/,/g, "."));
-		Value("Total Experience", RoundTo(XPS + AddXP, 0.01));
-		Value("Add Experience", "");
-	};
-	CalcExperienceLevel(true);
 };
 
 //calculate the encumbrance (field calculation)
@@ -10035,9 +10005,9 @@ function MakeWeaponMenu() {
 	var Q = QI ? "" : "Comp.Use.";
 	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 
-	var menuLVL1 = function (item, array) {
+	var menuLVL1 = function (item, array, setDisabled) {
 		for (var i = 0; i < array.length; i++) {
-			var disable = false;
+			var disable = setDisabled;
 			if ((array[i] === "Move up" && itemNmbr === 1) || (array[i] === "Move down" && itemNmbr === maxItems) || (array[i] === "Insert empty attack" && (!theField || itemNmbr === maxItems))) {
 				disable = true;
 			} else if (!theField && !isEquipment && array[i] === "Copy to Adventuring Gear (page 2)") {
@@ -10096,9 +10066,7 @@ function MakeWeaponMenu() {
 		attackMenu.push(ColorMenu);
 	}
 	
-	if (QI && CurrentEvals.atkStr) {
-		menuLVL1(attackMenu, ["-", "Show what things are affecting the attack calculations"]);
-	}
+	if (QI) menuLVL1(attackMenu, ["-", "Show what things are affecting the attack calculations"], true);
 	
 	//set the complete menu as the global variable
 	Menus.attacks = attackMenu;

@@ -4733,8 +4733,7 @@ function CountASIs() {
 //a function to change the sorting of the skills
 function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 	var sWho = Who("Text.SkillsNames");
-	var sList = Who("SkillsClick").replace(/.*\n\n/, "");
-	var sListA = sList.replace(/.*:/, "") !== "";
+	var sList = Who("Acr Prof").replace(/^.*(\n|\r)*/, "");
 	if (IsNotReset && (!input || input == "justMenu")) {
 		Menus.skills = [{
 			cName : "Sort skills alphabetically",
@@ -4747,9 +4746,9 @@ function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 		}, {
 			cName : "-"
 		}, {
-			cName : "Show a dialogue with my skill options" + (sListA ? "" : " (nothing to show)"),
+			cName : "Show a dialog with my skill options" + (sList ? "" : " (nothing to show)"),
 			cReturn : "skills#dialog",
-			bEnabled : sListA
+			bEnabled : sList !== ""
 		}];
 		if (input == "justMenu") return;
 	};
@@ -4776,11 +4775,7 @@ function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 	if (!MenuSelection || MenuSelection[0] == "nothing") return;
 
 	if (MenuSelection[1] === "dialog") {
-		app.alert({
-			cTitle : "Skill selection options",
-			cMsg : sList,
-			nIcon : 3
-		});
+		ShowDialog("Skill proficiency origins and options", sList);
 	} else if (MenuSelection[1] !== sWho) {
 		// Start progress bar and stop calculations
 		var thermoTxt = thermoM("Changing the order of the skills...");

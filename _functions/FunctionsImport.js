@@ -1035,8 +1035,8 @@ function DirectImport(consoleTrigger) {
 				AddToInv("extra", "ronly", fromFld.value, global.docFrom.getField("Extra.Gear Amount " + i).value, global.docFrom.getField("Extra.Gear Weight " + i).value, global.docFrom.getField("Extra.Gear Location.Row " + i).value, false, false, false, true);
 			}
 		}
-		
-	
+
+
 	//the background page
 		//set the all the organisation/faction texts and other Adventure League fields
 		if (ImportField("Background_Faction.Text")) SetFactionSymbol("Background_Faction.Text", What("Background_Faction.Text"), true);
@@ -1053,11 +1053,11 @@ function DirectImport(consoleTrigger) {
 			ImportField("Background_Organisation", false, "Background_Organisation.Left");
 		}
 		ImportField("Lifestyle", {cleanValue: true});
-		
+
 		//some hidden fields that we should do now
-		ImportField("SpellSheetUpdate.Remember"); ImportField("Print Remember"); ImportField("SubClass Remember"); ImportField("Wildshapes.Remember");
-		
-		
+		ImportField("ChangesDialogSkip.Stringified"); ImportField("Print Remember"); ImportField("SubClass Remember"); ImportField("Wildshapes.Remember");
+
+
 	//>> make a function to do all children of a parent field
 		var doChildren = function(parentFld, fromPre, toPre, excludeRegEx, inclVisibility, actionsObj) {
 			var parentA = global.docTo.getField(toPre + parentFld);
