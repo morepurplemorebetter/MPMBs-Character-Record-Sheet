@@ -455,7 +455,7 @@ function ResetAll(GoOn, noTempl) {
 	};
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Resetting the sheet" + (GoOn ? ' "' + tDoc.documentFileName + '"' : '') + "...");
-	calcStop();
+	calcStop(true);
 	IsNotReset = false;
 	
 	//make a variable of the current state of location columns in the equipment sections
@@ -2662,6 +2662,7 @@ function FindRace(inputracetxt, novardialog) {
 	CurrentRace = {
 		known : tempFound[0],
 		variant : tempFound[1],
+		variants : tempFound[2],
 		level : 0,
 		name : "", //must exist
 		source : "", //must exist
@@ -2671,7 +2672,6 @@ function FindRace(inputracetxt, novardialog) {
 		height : "", //must exist
 		weight : "", //must exist
 		trait : "", //must exist
-		variants : "", //must exist
 		features : "", //must exist
 /* UPDATED
  		speed : "",
@@ -2739,6 +2739,14 @@ function FindRace(inputracetxt, novardialog) {
 				if ((/^(known|variants?|level)$/i).test(prop)) continue;
 				CurrentRace[prop] = RaceSubList[subrace][prop];
 			}
+			// --- backwards compatibility --- //
+			// if an old attribute exists in the racial variant, but the RaceList object uses the new attribute name, make sure the variant's version is used
+			var backwardsAttr = [["improvements", "scorestxt"], ["armor", "armorProfs"], ["addarmor", "addArmor"], ["weaponprofs", "weaponProfs"], ["weapons", "addWeapons"]];
+			for (var i = 0; i < backwardsAttr.length; i++) {
+				var aBW = backwardsAttr[i];
+				if (RaceSubList[subrace][aBW[0]] && RaceSubList[subrace][aBW[1]] == undefined && RaceList[CurrentRace.known][aBW[1]]) delete CurrentRace[aBW[1]];
+			}
+			
 		}
 	}
 
@@ -6522,7 +6530,7 @@ function MakeClassMenu() {
 
 	var ClassMenu = [], toTest;
 	var hasEldritchBlast = isSpellUsed("eldritch blast", true) || (/(eldritch|agonizing) (blast|spear)/i).test(CurrentWeapons.known);
-	
+
 	for (var aClass in classes.known) {
 		var clLvl = classes.known[aClass].level;
 		var cl = CurrentClasses[aClass];

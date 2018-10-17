@@ -1,7 +1,7 @@
 //functions to call at startup (in the right order)
 function InitializeEverything(noButtons, noVars) {
 	if (!minVer) Hide("d20warning");
-	calcStop();
+	calcStop(true);
 	GetStringifieds(); //populate some variables stored in fields
 
 	// Define some document level variables before and after running the user scripts

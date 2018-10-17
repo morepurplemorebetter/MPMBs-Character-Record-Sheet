@@ -1074,15 +1074,16 @@ function semVersToNmbr(inSemV) {
 
 // Stop calculations and drawing of fields in the whole PDF to speed up changes
 // give a namedStop to make sure that it only can be started again with the same namedStop (and if no other namedStops are present)
-function calcStop() {
+function calcStop(noSheetUpdate) {
+	noSheetUpdate = noSheetUpdate !== undefined ? noSheetUpdate : !IsNotReset || !IsNotImport;
 	app.calculate = false;
 	tDoc.calculate = false;
 	tDoc.delay = true;
-	if (!calcStartSet) calcStartSet = app.setTimeOut("calcCont();", 250);
+	if (!calcStartSet) calcStartSet = app.setTimeOut("calcCont(" + noSheetUpdate + ", true);", 250);
 };
 
 // function to start the calculations of the PDF again
-function calcCont(noSheetUpdate) {
+function calcCont(noSheetUpdate, viaTimeOut) {
 	if (!noSheetUpdate) UpdateSheetWeapons(); // first recalculate the weapons if set to do so, before restarting any calculations
 	if (calcStartSet) {
 		app.clearTimeOut(calcStartSet);
@@ -1096,6 +1097,8 @@ function calcCont(noSheetUpdate) {
 	if (!noSheetUpdate) {
 		UpdateSheetDisplay();
 		thermoStop();
+	} else if (viaTimeOut) {
+		CurrentUpdates = {types : [], extras : {}};
 	}
 };
 

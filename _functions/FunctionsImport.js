@@ -433,7 +433,7 @@ function DirectImport(consoleTrigger) {
 		// Update the progress bar and stop the calculations
 		thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
 		thermoM(0.25);
-		calcStop();
+		calcStop(true);
 
 		// First we need to reset the prototypes to the current sheet because Acrobat will use the ones from the latest sheet that was opened
 		global.docTo.setPrototypes();

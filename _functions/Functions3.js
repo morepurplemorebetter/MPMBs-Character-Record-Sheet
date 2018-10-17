@@ -93,7 +93,8 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 
 	// the function to run all regular level-independent attributes
 	// addIt = true to add things and addIt = false to remove things
-	var useAttr = function(uObj, addIt, skipEval) {
+	var useAttr = function(uObj, addIt, skipEval, objNm) {
+		objNm = objNm == undefined ? fObjName : fObjName + objNm; // has to be unique
 		var tipNm = displName == uObj.name ? displName : displName + ": " + uObj.name;
 		var tipNmF = tipNm + (tipNmExtra ? " " + tipNmExtra : "");
 
@@ -110,7 +111,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.languageProfs) processLanguages(addIt, tipNmF, uObj.languageProfs);
 		if (uObj.vision) processVision(addIt, tipNmF, uObj.vision);
 		if (uObj.dmgres) processResistance(addIt, tipNmF, uObj.dmgres);
-		if (uObj.action) processActions(addIt, tipNmF, uObj.action, uObj.name);
+		if (uObj.action) processActions(addIt, tipNmF, uObj.action, uObj.limfeaname ? uObj.limfeaname : uObj.name);
 
 		// --- backwards compatibility --- //
 		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false;
@@ -118,7 +119,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.scoresOverride) processStats(addIt, type, tipNm, uObj.scoresOverride, abiScoresTxt, true);
 
 		// spellcasting
-		if (uObj.spellcastingBonus) processSpBonus(addIt, uObj.name, uObj.spellcastingBonus, type, aParent);
+		if (uObj.spellcastingBonus) processSpBonus(addIt, objNm, uObj.spellcastingBonus, type, aParent);
 		if (CurrentSpells[aParent]) {
 			if (uObj.spellFirstColTitle) CurrentSpells[aParent].firstCol = addIt ? uObj.spellFirstColTitle : false;
 			if (uObj.spellcastingExtra) CurrentSpells[aParent].extra = addIt ? uObj.spellcastingExtra : false;
@@ -240,13 +241,13 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		// if we are are changing the choice or removing the feature, now remove the old choice
 		//if (cJustChange || (!AddFea && cOldObj)) {
 		if (cOldObj && (cJustChange || !AddFea)) {
-			useAttr(cOldObj, false, false);
+			useAttr(cOldObj, false, false, choiceA[0]);
 			SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", false, cOnly ? choiceA[0] : "");
 		}
 		// if we are changing the choice or adding the feature, now add the new choice
 		//if (cJustChange || cOnly || (AddFea && cNewObj)) {
 		if (cNewObj && AddFea) {
-			useAttr(cNewObj, true, false);
+			useAttr(cNewObj, true, false, choiceA[1]);
 			SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", AddFea ? choiceA[1] : "", cOnly ? choiceA[1] : "");
 		}
 	}
@@ -422,6 +423,7 @@ function classFeaChoiceBackwardsComp() {
 			if (fea.choice) returnStr += [aClass, aFea, fea.choice].toString();
 		}
 	}
+	return returnStr;
 }
 
 // a function to create the CurrentSpells global variable entry
@@ -435,7 +437,7 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 		case "classes":
 			var fObj = CurrentClasses[fObjName];
 			var aClass = classes.known[fObjName].name;
-			var aSubClass = classes.known[fObjName].subname;
+			var aSubClass = classes.known[fObjName].subclass;
 			var sObj = setCSobj(fObjName);
 			sObj.name = fObj.fullname;
 			sObj.shortname = ClassList[aClass].spellcastingFactor ? ClassList[aClass].name : ClassSubList[aSubClass].fullname ? ClassSubList[aSubClass].fullname : ClassSubList[aSubClass].subname;
@@ -1208,7 +1210,7 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 
 /*
 NEW ATTRIBUTES
-	limfeaname // Optional; If defined it is used for populating the limited feature section instead of `name`
+	limfeaname // Optional; If defined it is used for populating the limited feature section and the action section instead of `name`
 	scorestxt // Optional; String; If defined it is used for the text in the Ability Score dialog and tooltips. If not defined, but 'scores' is defined, 'scores' will be used to generate a text
 	scoresOverride // Optional; Array; works same as scores, but are used to populate the "Magical Override" column; If you are providing both 'scores' and 'scoresOverride' you should also give a 'scorestxt', as the auto-generated tooltip text doesn't work if you have both 'scores' and 'scoresOverride'
 
@@ -1219,13 +1221,14 @@ CHANGED ATTRIBUTES
 	addWeapons // Optional; Array; names of the weapons to put in the attack section (if there is space) [previous 'weapons']
 
 CHANGES TO IMPLEMENT IN LIST SCRIPTS
-	'Class Features Remember' field references
 
 	'improvements' for RACE/FEAT replaced with 'scorestxt' (but without name or trailing semicolon)
 	'improvements' for RACE/FEAT no longer needed if identical to changes by 'scores'
 
 	'skills' can now be an array of arrays with 2 elements each, the first element being the skill name and the second element being the application of expertise "full", "increment", or "only"
 	'skills' for FEATS is no longer used and should be replaced by 'skillstxt'
+
+	'skillstxt' no longer need line breaks, name, or trailing semicolon/period
 	'skillstxt' no longer needed if identical to changes by 'skills'
 
 	'action' can now be an array, so no need for 'AddAction' in eval
@@ -1241,6 +1244,19 @@ CHANGES TO IMPLEMENT IN LIST SCRIPTS
 	'weapons' for CLASS/FEAT: replace with 'weaponProfs'
 	'weaponprofs' for RACE: replace with 'weaponProfs'
 	'weapons' for RACE: replace with 'addWeapons'
+	
+	eval changes :
+	- Class Features Remember
+	- AddAction
+	- AddWeapon
+	- ClassFeatureOptions (no longer needed in removeeval if to be removed at that level)
+	
+	spellcastingBonus.firstCol (options: 'atwill', 'oncesr', 'oncelr', 'markedbox', 'checkbox', 'checkedbox')
+	REPLACE			WITH
+	atwill : true	firstCol : 'atwill'
+	oncesr : true	firstCol : 'oncesr'
+	oncelr : true	firstCol : 'oncelr'
+	prepared : true	firstCol : 'markedbox'
 
 OVERWRITTEN BY CHOICES (NOT EXTRACHOICES):
 	name

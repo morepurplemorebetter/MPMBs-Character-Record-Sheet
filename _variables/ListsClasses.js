@@ -1392,36 +1392,36 @@ var Base_ClassList = {
 				},
 				"armor of shadows" : {
 					name : "Armor of Shadows",
-					description : "\n   " + "I can cast Mage Armor on myself at will, without spell slots or material comp. (PHB 256)",
+					description : "\n   " + "I can cast Mage Armor on myself at will, without using a spell slot or material components",
 					source : [["SRD", 48], ["P", 110]],
 					spellcastingBonus : {
 						name : "Armor of Shadows",
 						spells : ["mage armor"],
 						selection : ["mage armor"],
-						atwill : true
+						firstCol : "atwill"
 					}
 				},
 				"ascendant step (prereq: level 9 warlock)" : {
 					name : "Ascendant Step",
-					description : "\n   " + "I can cast Levitate on myself at will, without spell slots or material comp. (PHB 255)",
+					description : "\n   " + "I can cast Levitate on myself at will, without using a spell slot or material components",
 					source : [["SRD", 48], ["P", 110]],
 					spellcastingBonus : {
 						name : "Ascendant Step",
 						spells : ["levitate"],
 						selection : ["levitate"],
-						atwill : true
+						firstCol : "atwill"
 					},
 					prereqeval : "classes.known.warlock.level >= 9"
 				},
 				"beast speech" : {
 					name : "Beast Speech",
-					description : "\n   " + "I can cast Speak with Animals at will, without using spell slots (PHB 277)",
+					description : "\n   " + "I can cast Speak with Animals at will, without using a spell slots",
 					source : [["SRD", 48], ["P", 110]],
 					spellcastingBonus : {
 						name : "Beast Speech",
 						spells : ["speak with animals"],
 						selection : ["speak with animals"],
-						atwill : true
+						firstCol : "atwill"
 					}
 				},
 				"beguiling influence" : {
@@ -1432,7 +1432,7 @@ var Base_ClassList = {
 				},
 				"bewitching whispers (prereq: level 7 warlock)" : {
 					name : "Bewitching Whispers",
-					description : "\n   " + "Once per long rest, I can cast Compulsion using a warlock spell slot (PHB 224)",
+					description : "\n   " + "Once per long rest, I can cast Compulsion using a warlock spell slot",
 					source : [["SRD", 48], ["P", 110]],
 					usages : 1,
 					recovery : "long rest",
@@ -1440,7 +1440,7 @@ var Base_ClassList = {
 						name : "Bewitching Whispers",
 						spells : ["compulsion"],
 						selection : ["compulsion"],
-						oncelr : true
+						firstCol : "oncelr"
 					},
 					prereqeval : "classes.known.warlock.level >= 7"
 				},
@@ -1454,13 +1454,13 @@ var Base_ClassList = {
 				},
 				"chains of carceri (prereq: level 15 warlock, pact of the chain)" : {
 					name : "Chains of Carceri",
-					description : "\n   " + "I can cast Hold Monster at will if the target is a celestial, fiend, or elemental (PHB 251)" + "\n   " + "This uses no spell slots/material comp.; I can only target an individual once per long rest",
+					description : "\n   " + "I can cast Hold Monster at will if the target is a celestial, fiend, or elemental" + "\n   " + "This uses no spell slots/material comp.; I can only target an individual once per long rest",
 					source : [["SRD", 49], ["P", 110]],
 					spellcastingBonus : {
 						name : "Chains of Carceri",
 						spells : ["hold monster"],
 						selection : ["hold monster"],
-						oncelr : true
+						firstCol : "atwill"
 					},
 					prereqeval : "classes.known.warlock.level >= 15 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'"
 				},
@@ -1472,7 +1472,7 @@ var Base_ClassList = {
 				},
 				"dreadful word (prereq: level 7 warlock)" : {
 					name : "Dreadful Word",
-					description : "\n   " + "Once per long rest, I can cast Confusion using a warlock spell slot (PHB 224)",
+					description : "\n   " + "Once per long rest, I can cast Confusion using a warlock spell slot",
 					source : [["SRD", 49], ["P", 110]],
 					usages : 1,
 					recovery : "long rest",
@@ -1480,19 +1480,19 @@ var Base_ClassList = {
 						name : "Dreadful Word",
 						spells : ["confusion"],
 						selection : ["confusion"],
-						oncelr : true
+						firstCol : "oncelr"
 					},
 					prereqeval : "classes.known.warlock.level >= 7"
 				},
 				"eldritch sight" : {
 					name : "Eldritch Sight",
-					description : "\n   " + "I can cast Detect Magic at will, without using spell slots (PHB 231)",
+					description : "\n   " + "I can cast Detect Magic at will, without using a spell slot",
 					source : [["SRD", 49], ["P", 110]],
 					spellcastingBonus : {
 						name : "Eldritch Sight",
 						spells : ["detect magic"],
 						selection : ["detect magic"],
-						atwill : true
+						firstCol : "atwill"
 					}
 				},
 				"eldritch spear (prereq: eldritch blast cantrip)" : {
@@ -1510,13 +1510,13 @@ var Base_ClassList = {
 				},
 				"fiendish vigor" : {
 					name : "Fiendish Vigor",
-					description : "\n   " + "I can cast False Life on myself at will, without spell slots or material comp. (PHB 239)",
+					description : "\n   " + "I can cast False Life on myself at will, without using a spell slot or material components",
 					source : [["SRD", 49], ["P", 111]],
 					spellcastingBonus : {
 						name : "Fiendish Vigor",
 						spells : ["false life"],
 						selection : ["false life"],
-						atwill : true
+						firstCol : "atwill"
 					}
 				},
 				"gaze of two minds" : {
@@ -1535,30 +1535,30 @@ var Base_ClassList = {
 				},
 				"mask of many faces" : {
 					name : "Mask of Many Faces",
-					description : "\n   " + "I can cast Disguise Self on myself at will, without using spell slots (PHB 233)",
+					description : "\n   " + "I can cast Disguise Self on myself at will, without using a spell slot",
 					source : [["SRD", 49], ["P", 111]],
 					spellcastingBonus : {
 						name : "Mask of Many Faces",
 						spells : ["disguise self"],
 						selection : ["disguise self"],
-						atwill : true
+						firstCol : "atwill"
 					}
 				},
 				"master of myriad forms (prereq: level 15 warlock)" : {
 					name : "Master of Myriad Forms",
-					description : "\n   " + "I can cast Alter Self on myself at will, without using spell slots (PHB 211)",
+					description : "\n   " + "I can cast Alter Self at will, without using a spell slot",
 					source : [["SRD", 49], ["P", 111]],
 					spellcastingBonus : {
 						name : "Mask of Myriad Forms",
 						spells : ["alter self"],
 						selection : ["alter self"],
-						atwill : true
+						firstCol : "atwill"
 					},
 					prereqeval : "classes.known.warlock.level >= 15"
 				},
 				"minions of chaos (prereq: level 9 warlock)" : {
 					name : "Minions of Chaos",
-					description : "\n   " + "Once per long rest, I can cast Conjure Elemental using a warlock spell slot (PHB 225)",
+					description : "\n   " + "Once per long rest, I can cast Conjure Elemental using a warlock spell slot",
 					source : [["SRD", 49], ["P", 111]],
 					usages : 1,
 					recovery : "long rest",
@@ -1566,13 +1566,13 @@ var Base_ClassList = {
 						name : "Minions of Chaos",
 						spells : ["conjure elemental"],
 						selection : ["conjure elemental"],
-						oncelr : true
+						firstCol : "oncelr"
 					},
 					prereqeval : "classes.known.warlock.level >= 9"
 				},
 				"mire the mind (prereq: level 5 warlock)" : {
 					name : "Mire the Mind",
-					description : "\n   " + "Once per long rest, I can cast Slow using a warlock spell slot (PHB 277)",
+					description : "\n   " + "Once per long rest, I can cast Slow using a warlock spell slot",
 					source : [["SRD", 49], ["P", 111]],
 					usages : 1,
 					recovery : "long rest",
@@ -1580,19 +1580,19 @@ var Base_ClassList = {
 						name : "Mire the Mind",
 						spells : ["slow"],
 						selection : ["slow"],
-						oncelr : true
+						firstCol : "oncelr"
 					},
 					prereqeval : "classes.known.warlock.level >= 5"
 				},
 				"misty visions" : {
 					name : "Misty Visions",
-					description : "\n   " + "I can cast Silent Image at will, without using spell slots or material comp. (PHB 276)",
+					description : "\n   " + "I can cast Silent Image at will, without using a spell slot or material components",
 					source : [["SRD", 49], ["P", 111]],
 					spellcastingBonus : {
 						name : "Misty Visions",
 						spells : ["silent image"],
 						selection : ["silent image"],
-						atwill : true
+						firstCol : "atwill"
 					}
 				},
 				"one with shadows (prereq: level 5 warlock)" : {
@@ -1604,13 +1604,13 @@ var Base_ClassList = {
 				},
 				"otherworldly leap (prereq: level 9 warlock)" : {
 					name : "Otherworldly Leap",
-					description : "\n   " + "I can cast Jump on myself at will, without using spell slots or material comp. (PHB 254)",
+					description : "\n   " + "I can cast Jump on myself at will, without using a spell slot or material components",
 					source : [["SRD", 49], ["P", 111]],
 					spellcastingBonus : {
 						name : "Otherworldly Leap",
 						spells : ["jump"],
 						selection : ["jump"],
-						atwill : true
+						firstCol : "atwill"
 					},
 					prereqeval : "classes.known.warlock.level >= 9"
 				},
@@ -1625,7 +1625,7 @@ var Base_ClassList = {
 				},
 				"sculptor of flesh (prereq: level 7 warlock)" : {
 					name : "Sculptor of Flesh",
-					description : "\n   " + "Once per long rest, I can cast Polymorph using a warlock spell slot (PHB 266)",
+					description : "\n   " + "Once per long rest, I can cast Polymorph using a warlock spell slot",
 					source : [["SRD", 50], ["P", 111]],
 					usages : 1,
 					recovery : "long rest",
@@ -1633,13 +1633,13 @@ var Base_ClassList = {
 						name : "Sculptor of Flesh",
 						spells : ["polymorph"],
 						selection : ["polymorph"],
-						oncelr : true
+						firstCol : "oncelr"
 					},
 					prereqeval : "classes.known.warlock.level >= 7"
 				},
 				"sign of ill omen (prereq: level 5 warlock)" : {
 					name : "Sign of Ill Omen",
-					description : "\n   " + "Once per long rest, I can cast Bestow Curse using a warlock spell slot (PHB 218)",
+					description : "\n   " + "Once per long rest, I can cast Bestow Curse using a warlock spell slot",
 					source : [["SRD", 50], ["P", 111]],
 					usages : 1,
 					recovery : "long rest",
@@ -1647,13 +1647,13 @@ var Base_ClassList = {
 						name : "Sign of Ill Omen",
 						spells : ["bestow curse"],
 						selection : ["bestow curse"],
-						oncelr : true
+						firstCol : "oncelr"
 					},
 					prereqeval : "classes.known.warlock.level >= 5"
 				},
 				"thief of five fates" : {
 					name : "Thief of Five Fates",
-					description : "\n   " + "Once per long rest, I can cast Bane using a warlock spell slot (PHB 216)",
+					description : "\n   " + "Once per long rest, I can cast Bane using a warlock spell slot",
 					source : [["SRD", 50], ["P", 111]],
 					usages : 1,
 					recovery : "long rest",
@@ -1661,7 +1661,7 @@ var Base_ClassList = {
 						name : "Thief of Five Fates",
 						spells : ["bane"],
 						selection : ["bane"],
-						oncelr : true
+						firstCol : "oncelr"
 					}
 				},
 				"thirsting blade (prereq: level 5 warlock, pact of the blade)" : {
@@ -1676,13 +1676,13 @@ var Base_ClassList = {
 				},
 				"visions of distant realms (prereq: level 15 warlock)" : {
 					name : "Visions of Distant Realms",
-					description : "\n   " + "I can cast Arcane Eye at will, without using spell slots (PHB 214)",
+					description : "\n   " + "I can cast Arcane Eye at will, without using a spell slot",
 					source : [["SRD", 50], ["P", 111]],
 					spellcastingBonus : {
 						name : "Visions of Distant Realms",
 						spells : ["arcane eye"],
 						selection : ["arcane eye"],
-						atwill : true
+						firstCol : "atwill"
 					},
 					prereqeval : "classes.known.warlock.level >= 15"
 				},
@@ -1694,13 +1694,13 @@ var Base_ClassList = {
 				},
 				"whispers of the grave (prereq: level 9 warlock)" : {
 					name : "Whispers of the Grave",
-					description : "\n   " + "I can cast Speak with Dead at will, without using spell slots (PHB 277)",
+					description : "\n   " + "I can cast Speak with Dead at will, without using a spell slot",
 					source : [["SRD", 50], ["P", 111]],
 					spellcastingBonus : {
 						name : "Whispers of the Grave",
 						spells : ["speak with dead"],
 						selection : ["speak with dead"],
-						atwill : true
+						firstCol : "atwill"
 					},
 					prereqeval : "classes.known.warlock.level >= 9"
 				},
@@ -1728,7 +1728,7 @@ var Base_ClassList = {
 				},
 				"pact of the chain" : {
 					name : "Pact of the Chain",
-					description : "\n   " + "I can cast Find Familiar as a ritual (PHB 240); Also Imp/Pseudodragon/Quasit/Sprite" + "\n   " + "When taking the attack action, I can forgo 1 attack to have my familiar attack instead" + "\n   " + "It makes this 1 attack by using its reaction",
+					description : "\n   " + "I can cast Find Familiar as a ritual and it can be a Pseudodragon, Imp, Quasit, or Sprite" + "\n   " + "When taking the attack action, I can forgo 1 attack to have my familiar attack instead" + "\n   " + "It makes this 1 attack by using its reaction",
 					spellcastingBonus : {
 						name : "Pact of the Chain",
 						spells : ["find familiar"],
@@ -1758,9 +1758,9 @@ var Base_ClassList = {
 					name : "Mystic Arcanum (6)",
 					"class" : "warlock",
 					level : [6, 6],
-					oncelr : true
+					firstCol : "oncelr"
 				},
-				changeeval : "if (classes.known.warlock.level < 13) {delete CurrentSpells.warlock.bonus['mystic arcanum (7)']} else {if (!CurrentSpells.warlock.bonus['mystic arcanum (7)']) {CurrentSpells.warlock.bonus['mystic arcanum (7)'] = {name : 'Mystic Arcanum (7)', class : 'warlock', level : [7, 7], oncelr : true}}}; if (classes.known.warlock.level < 15) {delete CurrentSpells.warlock.bonus['mystic arcanum (8)']} else {if (!CurrentSpells.warlock.bonus['mystic arcanum (8)']) {CurrentSpells.warlock.bonus['mystic arcanum (8)'] = {name : 'Mystic Arcanum (8)', class : 'warlock', level : [8, 8], oncelr : true}}}; if (classes.known.warlock.level < 17) {delete CurrentSpells.warlock.bonus['mystic arcanum (9)']} else {if (!CurrentSpells.warlock.bonus['mystic arcanum (9)']) {CurrentSpells.warlock.bonus['mystic arcanum (9)'] = {name : 'Mystic Arcanum (9)', class : 'warlock', level : [9, 9], oncelr : true}}}"
+				changeeval : "if (classes.known.warlock.level < 13) {delete CurrentSpells.warlock.bonus['mystic arcanum (7)']} else {if (!CurrentSpells.warlock.bonus['mystic arcanum (7)']) {CurrentSpells.warlock.bonus['mystic arcanum (7)'] = {name : 'Mystic Arcanum (7)', class : 'warlock', level : [7, 7], firstCol : 'oncelr'}}}; if (classes.known.warlock.level < 15) {delete CurrentSpells.warlock.bonus['mystic arcanum (8)']} else {if (!CurrentSpells.warlock.bonus['mystic arcanum (8)']) {CurrentSpells.warlock.bonus['mystic arcanum (8)'] = {name : 'Mystic Arcanum (8)', class : 'warlock', level : [8, 8], firstCol : 'oncelr'}}}; if (classes.known.warlock.level < 17) {delete CurrentSpells.warlock.bonus['mystic arcanum (9)']} else {if (!CurrentSpells.warlock.bonus['mystic arcanum (9)']) {CurrentSpells.warlock.bonus['mystic arcanum (9)'] = {name : 'Mystic Arcanum (9)', class : 'warlock', level : [9, 9], firstCol : 'oncelr'}}}"
 			},
 			"eldritch master" : {
 				name : "Eldritch Master",
@@ -2155,7 +2155,7 @@ var Base_ClassSubList = {
 				name : "Tranquility",
 				source : [["SRD", 29], ["P", 80]],
 				minlevel : 11,
-				description : "\n   " + "After a long rest, I gain the effect of a Sanctuary spell until a next long rest (PHB 272)",
+				description : "\n   " + "After a long rest, I gain the effect of a Sanctuary spell until a next long rest",
 				extraname : "Way of the Open Hand 17",
 				changeeval : "if (newClassLvl.monk >= 17 && (What('Extra.Notes') + What('Class Features')).toLowerCase().indexOf('quivering palm') === -1) {ClassFeatureOptions(['monk', 'subclassfeature11', 'quivering palm', 'extra'])} else if (newClassLvl.monk < 17 && oldClassLvl.monk >= 17) {ClassFeatureOptions(['monk', 'subclassfeature11', 'quivering palm', 'extra'], 'remove')};",
 				"quivering palm" : {
@@ -2201,7 +2201,7 @@ var Base_ClassSubList = {
 				name : "Purity of Spirit",
 				source : [["SRD", 33], ["P", 86]],
 				minlevel : 15,
-				description : "\n   " + "I am always under the effect of a Protection from Evil and Good spell (PHB 270)"
+				description : "\n   " + "I am always under the effect of a Protection from Evil and Good spell"
 			},
 			"subclassfeature20" : {
 				name : "Holy Nimbus",

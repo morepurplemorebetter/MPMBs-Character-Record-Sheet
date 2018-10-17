@@ -3614,9 +3614,7 @@ function UpdateRangerCompanions(deleteIt) {
 		UpdateRevisedRangerCompanions(deleteIt);
 		return;
 	}
-	// Start progress bar and stop calculations
-	var thermoTxt = thermoM("Updating Ranger's Companion(s)...");
-	calcStop();
+	var thermoTxt;
 
 	var theProfB = function (input) {
 		var toReturn = 0;
@@ -3665,9 +3663,16 @@ function UpdateRangerCompanions(deleteIt) {
 	var AScompA = What("Template.extras.AScomp").split(",").splice(1);
 	
 	for (var i = 0; i < AScompA.length; i++) {
-		thermoM((i+2)/(AScompA.length+2)); //increment the progress dialog's progress
 		var prefix = AScompA[i];
 		if (What(prefix + "Companion.Remember") === "companion") { //only do something if the creature is set to "companion"
+
+			if (!thermoTxt) { // Start progress bar and stop calculations
+				thermoTxt = thermoM("Updating Ranger's Companion(s)...");
+				calcStop();
+			}
+
+			thermoM((i+2)/(AScompA.length+2)); //increment the progress dialog's progress
+
 			var thisCrea = CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound === "creature" ? CurrentCompRace[prefix] : false;
 			//first look into adding the proficiency bonus to AC, attacks, proficiencies
 			var remLvl = Who(prefix + "Companion.Remember").split(",");
@@ -3775,7 +3780,7 @@ function UpdateRangerCompanions(deleteIt) {
 			if (!deleteIt) AddTooltip(prefix + "Companion.Remember", newLvl + "," + RangerLvl);
 		}
 	}
-	thermoM(thermoTxt, true); // Stop progress bar
+	if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
 }
 
 //update the tooltip for the Max HP field
@@ -4488,9 +4493,7 @@ function CreateBkmrksCompleteAdvLogSheet() {
 
 // update all the level-dependent features for the UA's revised ranger companions on the companion pages
 function UpdateRevisedRangerCompanions(deleteIt) {
-	// Start progress bar and stop calculations
-	var thermoTxt = thermoM("Updating Revised Ranger's Companion(s)...");
-	calcStop();
+	var thermoTxt;
 	
 	var theProfB = function (input) {
 		var toReturn = 0;
@@ -4575,9 +4578,16 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 	var AScompA = What("Template.extras.AScomp").split(",").splice(1);
 	
 	for (var i = 0; i < AScompA.length; i++) {
-		thermoM((i+2)/(AScompA.length+2)); //increment the progress dialog's progress
 		var prefix = AScompA[i];
 		if (What(prefix + "Companion.Remember") === "companionrr") { //only do something if the creature is set to "companionrr"
+
+			if (!thermoTxt) { // Start progress bar and stop calculations
+				thermoTxt = thermoM("Updating Revised Ranger's Companion(s)...");
+				calcStop();
+			}
+
+			thermoM((i+2)/(AScompA.length+2)); //increment the progress dialog's progress
+
 			var thisCrea = CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound === "creature" ? CurrentCompRace[prefix] : false;
 			
 			//first update the proficiency bonus
@@ -4699,8 +4709,10 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 			}
 		}
 	}
-	SetHPTooltip(false, true);
-	thermoM(thermoTxt, true); // Stop progress bar
+	if (thermoTxt) {
+		SetHPTooltip(false, true);
+		thermoM(thermoTxt, true); // Stop progress bar
+	}
 }
 
 /*
@@ -6329,7 +6341,7 @@ function processSaves(AddRemove, srcNm, itemArr) {
 };
 
 // a way to pass an array of skill proficiency strings to be processed by the SetProf function
-// ["Str", "Dex"] >> Slash. (nonmagical)
+// ["Persuasion", "full"]
 function processSkills(AddRemove, srcNm, itemArr, descrTxt) {
 	// add or remove the descrTxt
 	var setDescr = false;
@@ -6382,7 +6394,7 @@ function setSkillTooltips(noPopUp) {
 	var iSet = CurrentProfs.skill.descrTxt;
 	var tooltipTxt = "";
 	var tooltipArr = [];
-	for (var aSrc in iSet) tooltipArr.push(toUni(aSrc) + " - " + iSet[aSrc]);
+	for (var aSrc in iSet) tooltipArr.push(toUni(aSrc) + ": " + iSet[aSrc]);
 	if (tooltipArr.length) {
 		tooltipArr.sort();
 		tooltipTxt = formatMultiList("Skill proficiencies gained from:", tooltipArr);
