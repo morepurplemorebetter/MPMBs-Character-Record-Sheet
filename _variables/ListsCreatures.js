@@ -1104,7 +1104,7 @@ var Base_CreatureList = {
 		languages : "all languages it knew in life, but can't speak",
 		challengeRating : "1",
 		proficiencyBonus : 2,
-		attacksAction : 2,
+		attacksAction : 1,
 		attacks : [{
 				name : "Life Drain",
 				ability : 2,
