@@ -2065,14 +2065,20 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	
 		//define new global variable based on the known classes
 		CurrentClasses[aClass] = {
-			name : "",
-			source : "",
-			primaryAbility : "",
-			abilitySave : 0,
-			abilitySaveAlt : 0,
-			prereqs : "",
-			improvements : [0],
+			name : "", //must exist
+			subname : "", //must exist
+			fullname : "", //must exist
+			source : "", //must exist
+			attacks : [1], //must exist
+			features : {}, //must exist
+			equipment : "", //must exist
+			prereqs : "", //must exist
+			primaryAbility : "", //must exist
+			improvements : [0] //must exist
+/* UPDATED
 			saves : "",
+			abilitySave : 0, //must exist
+			abilitySaveAlt : 0,
 			skills : "",
 			skillstxt : "",
 			toolProfs : "",
@@ -2080,16 +2086,12 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			weapons : "",
 			armorProfs : "",
 			weaponProfs : "",
-			equipment : "",
-			attacks : [1],
-			features : {},
-			subname : "",
-			fullname : "",
 			spellcastingFactor : 0,
+			spellcastingKnown : "",
 			spellcastingTable : "",
 			spellcastingList : "",
-			spellcastingKnown : "",
-			spellcastingExtra : ""
+			spellcastingExtra : "",
+*/
 		};
 
 		var Temps = CurrentClasses[aClass];
@@ -2181,7 +2183,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				// then update this base object so that it is a spellcasting class with options
 				var cSpells = CurrentSpells[aClass];
 				cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass};
-				cSpells.known = Temps.spellcastingKnown;
+				cSpells.known = Temps.spellcastingKnown ? Temps.spellcastingKnown : "";
 				cSpells.typeSp = !cSpells.known || cSpells.known.spells === undefined ? "known" :
 					isArray(cSpells.known.spells) ? cSpells.known.spells[Math.min(cSpells.known.spells.length, cSpells.level) - 1] :
 					cSpells.known.spells === "" ? "" :

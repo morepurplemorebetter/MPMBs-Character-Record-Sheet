@@ -1222,11 +1222,15 @@ CHANGED ATTRIBUTES
 
 CHANGES TO IMPLEMENT IN LIST SCRIPTS
 
+	'primaryAbility' for CLASS(main) no longer needs line-break, bullet point, name, or trailing semicolon
+	'prereqs' for CLASS(main) no longer needs line-break, bullet point, name, or trailing semicolon
+	
+
 	'improvements' for RACE/FEAT replaced with 'scorestxt' (but without name or trailing semicolon)
 	'improvements' for RACE/FEAT no longer needed if identical to changes by 'scores'
 
 	'skills' can now be an array of arrays with 2 elements each, the first element being the skill name and the second element being the application of expertise "full", "increment", or "only"
-	'skills' for FEATS is no longer used and should be replaced by 'skillstxt'
+	'skills' for FEATS/CLASS(main) is no longer used and should be replaced by 'skillstxt'
 
 	'skillstxt' no longer need line breaks, name, or trailing semicolon/period
 	'skillstxt' no longer needed if identical to changes by 'skills'
