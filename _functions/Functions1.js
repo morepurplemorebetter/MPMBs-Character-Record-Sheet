@@ -1938,9 +1938,9 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		// if this class exists, was the primary class, and is no longer, change things up
 		if (classesTemp[oClass] && classes.primary === oClass && primeClass !== classes.primary) {
 			// first remove its primary class attributes
-			ApplyClassBaseAttributes(false, oClass, true, false);
+			ApplyClassBaseAttributes(false, oClass, true);
 			// then add its non-primary class attributes
-			ApplyClassBaseAttributes(true, oClass, false, false);
+			ApplyClassBaseAttributes(true, oClass, false);
 		}
 
 		if (!classesTemp[oClass]) {
@@ -2098,7 +2098,25 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		var classObj = ClassList[aClass];
 		var subClObj = classes.known[aClass].subclass && ClassSubList[classes.known[aClass].subclass] ? ClassSubList[classes.known[aClass].subclass] : false;
 
-		//fill in the properties of this newly defined global variable and prefer subclass attributes over class attributes
+		// Fill in the properties of this newly defined global variable and prefer subclass attributes over class attributes
+		for (var prop in classObj) { // the class
+			if ((/^(subname|features)$/i).test(prop)) continue;
+			Temps[prop] = classObj[prop];
+		}
+		if (subClObj) { // the subclass, if it exists
+			for (var prop in subClObj) {
+				if ((/^(name|features|prereqs|primaryAbility)$/i).test(prop)) continue;
+				Temps[prop] = subClObj[prop];
+			}
+			// --- backwards compatibility --- //
+			// if an old attribute exists in the subclass, but the ClassList object uses the new attribute name, make sure the subclass's version is used
+			var backwardsAttr = [["armor", "armorProfs"], ["weapons", "weaponProfs"]];
+			for (var i = 0; i < backwardsAttr.length; i++) {
+				var aBW = backwardsAttr[i];
+				if (subClObj[aBW[0]] && subClObj[aBW[1]] == undefined && classObj[aBW[1]]) delete Temps[aBW[1]];
+			}
+		}
+/* UPDATED
 		for (var prop in Temps) {
 			if (prop == "features") continue;
 			if (prop != "name" && subClObj && subClObj[prop] !== undefined) {
@@ -2107,6 +2125,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				Temps[prop] = classObj[prop];
 			}
 		}
+*/
 		
 		//special something for classes that have alternative ability scores that can be used for the DC
 		if (Temps.abilitySave && Temps.abilitySaveAlt) {

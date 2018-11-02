@@ -106,7 +106,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.savetxt) SetProf("savetxt", addIt, uObj.savetxt, tipNmF);
 		if (uObj.speed) SetProf("speed", addIt, uObj.speed, tipNmF);
 		if (uObj.addMod) processMods(addIt, tipNmF, uObj.addMod);
-		if (uObj.saves) processSaves(addIt, tipNmF, uObj.addMod);
+		if (uObj.saves) processSaves(addIt, tipNmF, uObj.saves);
 		if (uObj.toolProfs) processTools(addIt, tipNmF, uObj.toolProfs);
 		if (uObj.languageProfs) processLanguages(addIt, tipNmF, uObj.languageProfs);
 		if (uObj.vision) processVision(addIt, tipNmF, uObj.vision);
