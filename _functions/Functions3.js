@@ -1261,6 +1261,8 @@ CHANGES TO IMPLEMENT IN LIST SCRIPTS
 	oncesr : true	firstCol : 'oncesr'
 	oncelr : true	firstCol : 'oncelr'
 	prepared : true	firstCol : 'markedbox'
+	
+	(atwill|oncesr|oncelr) : true		firstCol : '\1'
 
 OVERWRITTEN BY CHOICES (NOT EXTRACHOICES):
 	name

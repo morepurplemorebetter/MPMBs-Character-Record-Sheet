@@ -720,9 +720,13 @@ function LayerVisibilityOptions(showMenu, useSelect) {
 	};
 
 	var selection = useSelect ? useSelect : showMenu ? getMenu("chooselayers") : CurrentVars.vislayers;
+	if (!selection || selection[0] == "nothing") return;
+
 	if (selection[0] === "3rdpage") selection.shift();
 	if (!selection[0] || possibleOptions.indexOf(selection[0]) == -1) selection[0] = CurrentVars.vislayers[0];
 	if (!selection[1] || possibleOptions.indexOf(selection[1]) == -1) selection[1] = CurrentVars.vislayers[1];
+
+	if (selection[0] == CurrentVars.vislayers[0] && selection[1] == CurrentVars.vislayers[1]) return; // nothing changed
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Show the 3rd page " + selection[0] + " and " + selection[1] + " sections...");
@@ -10095,7 +10099,7 @@ function MakeWeaponMenu() {
 		attackMenu.push(ColorMenu);
 	}
 	
-	if (QI) menuLVL1(attackMenu, ["-", "Show what things are affecting the attack calculations"], true);
+	if (QI) menuLVL1(attackMenu, ["-", "Show what things are affecting the attack calculations"], CurrentEvals.atkAdd || CurrentEvals.atkCalc ? false : true);
 	
 	//set the complete menu as the global variable
 	Menus.attacks = attackMenu;
