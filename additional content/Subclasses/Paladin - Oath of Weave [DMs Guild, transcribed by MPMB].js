@@ -44,7 +44,7 @@ AddSubClass("paladin", "paladin-weave", {
 			description : desc([
 				"As a bonus action, I can infuse my weapon with arcane energy for 1 minute",
 				"My first hit with it as part of an action to cast a cantrip, it deals extra radiant damage",
-				"Als, the next time the target tries to cast a spell, it must first make a concentration save"
+				"Also, the next time the target tries to cast a spell, it must succeed a concentration save"
 			]),
 			action : ["bonus action", ""],
 			additional : levels.map(function (n) {
