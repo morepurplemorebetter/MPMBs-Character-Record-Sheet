@@ -9,8 +9,8 @@ var FightingStyles = {
 	defense : {
 		name : "Defense Fighting Style",
 		description : "\n   " + "+1 bonus to AC when I'm wearing armor",
-		eval : "AddACMisc(1, 'Defense Fighting Style', 'When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC', 'CurrentArmour.known && !ArmourList[CurrentArmour.known].type')",
-		removeeval : "AddACMisc(0, 'Defense Fighting Style', 'When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC')"
+		eval : "AddACMisc(1, 'Defense Fighting Style', 'When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC', 'CurrentArmour.known && !ArmourList[CurrentArmour.known].type');",
+		removeeval : "AddACMisc(0, 'Defense Fighting Style', 'When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC');"
 	},
 	dueling : {
 		name : "Dueling Fighting Style",
@@ -1446,7 +1446,12 @@ var Base_ClassList = {
 				},
 				"book of ancient secrets (prereq: pact of the tome)" : {
 					name : "Book of Ancient Secrets",
-					description : "\n   " + "I can add any two 1st-level spells that have the ritual tag to my Book of Shadows" + "\n   " + "If I come across spells with the ritual tag, I can transcribe them into my book, as well" + "\n   " + "I can cast any of these spells in my Book of Shadows as rituals, but not as normal spells" + "\n   " + "I can cast my known warlock spells as rituals if they have the ritual tag",
+					description : desc([
+						"I can add any two 1st-level spells that have the ritual tag to my Book of Shadows",
+						"If I come across spells with the ritual tag, I can transcribe them into my book, as well",
+						"I can cast any of these spells in my Book of Shadows as rituals, but not as normal spells",
+						"I can cast my known warlock spells as rituals if they have the ritual tag"
+					]),
 					source : [["SRD", 48], ["P", 110]],
 					eval : "CurrentSpells['book of ancient secrets'] = {name : 'Book of Ancient Secrets', ability : 6, list : {class : 'any', ritual : true}, known : {spells : 'book'}}; SetStringifieds('spells');",
 					removeeval : "delete CurrentSpells['book of ancient secrets']; SetStringifieds('spells');",

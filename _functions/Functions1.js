@@ -1671,6 +1671,9 @@ function ParseClass(input) {
 				classFound = key;
 				classFoundLen = kObj.name.length;
 				foundDat = tempDate;
+				subFound = "";
+				subFoundLen = 0;
+				foundSubDat = 0;
 			}
 
 			// see if any of the sublasses match

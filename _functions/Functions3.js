@@ -625,7 +625,7 @@ function UpdateSheetDisplay() {
 
 	// create the dialog
 	var titleTxt = "Changes Requiring Your Attention";
-	var explTxt = "The things you just changed has effected the things listed below.\nNote that this dialog is just a reminder and you can find all the things listed below in their respective sections of the sheet and/or its functions.";
+	var explTxt = "The things you just changed has effected the things listed below.\nNote that this dialog is just a reminder and you can find all the things listed below in their respective sections of the sheet and/or its functions.\nYou can always use the [ESC] key to close this dialog.";
 	var checkboxTxt = "Don't alert me about these changes (unless there is another change I do want to be alerted about).";
 	var Changes_Dialog = {
 		// when starting the dialog
@@ -650,6 +650,7 @@ function UpdateSheetDisplay() {
 				type : "view",
 				elements : [{
 					type : "view", // the top row
+					alignment : "align_fill",
 					align_children : "align_row",
 					elements : [{
 						type : "image",
