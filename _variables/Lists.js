@@ -585,7 +585,7 @@ var Lifestyles = {
 		(typePF ? "     " : "") + "Poor",
 		(typePF ? "   " : "") + "Modest",
 		(typePF ? " " : "") + "Comfortable",
-		(typePF ? "   " : "") + "Healthy",
+		(typePF ? "   " : "") + "Wealthy",
 		"Aristocratic",
 	]
 };

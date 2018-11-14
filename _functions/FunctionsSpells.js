@@ -2020,7 +2020,7 @@ var SpellSheetOrder_Dialog = {
 				item_id : "txt0",
 				wrap_name : true,
 				width : 680,
-				name : "Please select which of your spellcasting sources you want to include in the Spell Sheet and in which order they should appear.\n\nNote that generating a new Spell Sheet deletes any current Spell Sheet(s) in this pdf.\n\nPlease be patient, generating a Spell Sheet can take a long time, often more than ten minutes, and sometimes up to an hour (yes, even on your new gaming rig). During this time Adobe Acrobat will appear unresponsive (but will still be working)."
+				name : "Please select which of your spellcasting sources you want to include in the Spell Sheet and in which order they should appear.\n\nNote that generating a new Spell Sheet deletes any current Spell Sheet(s) in this pdf.\n\nPlease be patient, generating a Spell Sheet can take a long time, sometimes more than ten minutes and possibly over an hour. During this time Adobe Acrobat will appear unresponsive (but will still be working)."
 			}, {
 				type : "check_box",
 				item_id : "Glos",
