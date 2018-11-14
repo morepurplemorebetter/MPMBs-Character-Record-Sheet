@@ -62,7 +62,7 @@ ClassList["warmage"] = {
 	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 	die : 8,
 	saves : ["Con", "Int"],
-	skills : [
+	skillstxt : [
 		"Choose two from Animal Handling, Arcana, Athletics, Acrobatics, History, Investigation, Medicine, Perception, and Survival"
 	],
 	toolProfs : {
