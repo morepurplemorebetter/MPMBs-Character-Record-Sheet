@@ -131,7 +131,7 @@ ClassList["blood hunter"] = {
 				prereqeval : "classes.known['blood hunter'].level >= 14"
 			},
 			calcChanges : {
-				atkAdd : ["if (classes.known['blood hunter'] && isMeleeWeapon && (/\\brite\\b/i).test(inputText)) {fields.Description += (fields.Description ? '; ' : '') + '+1d' + (classes.known['blood hunter'].level < 6 ? 4 : classes.known['blood hunter'].level < 11 ? 6 : classes.known['blood hunter'].level < 16 ? 8 : 10) + ' rite damage'; }; ", "If I include the word 'Rite' in a melee weapon's name, it gets my crimson rite damage die added in its description."]
+				atkAdd : ["if (classes.known['blood hunter'] && !isSpell && (/\\brite\\b/i).test(inputText)) {fields.Description += (fields.Description ? '; ' : '') + '+1d' + (classes.known['blood hunter'].level < 6 ? 4 : classes.known['blood hunter'].level < 11 ? 6 : classes.known['blood hunter'].level < 16 ? 8 : 10) + ' rite damage'; }; ", "If I include the word 'Rite' in a weapon's name, it gets my crimson rite damage die added in its description."]
 			}
 		},
 		"fighting style" : {
