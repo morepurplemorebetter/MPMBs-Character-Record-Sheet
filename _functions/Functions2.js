@@ -3925,7 +3925,7 @@ function SetHPTooltip(resetHP, onlyComp) {
 		
 		//now see if the menu setting tells us that we need to change
 		var theCompSetting = How(prefix + "Comp.Use.HP.Max").split(",");
-		theCompSetting[0] = Number(Math.round(CompAverageHD));
+		theCompSetting[0] = Number(Math.round(CompAverageHD + Compconhp));
 		theCompSetting[1] = Number(CompFixedHD);
 		theCompSetting[2] = Number(CompMaxHD);
 		if (resetHP) theCompSetting[3] = "nothing";
@@ -5748,7 +5748,7 @@ function CalcAttackDmgHit(fldName) {
 		extraDmg : 0,
 		extraHit : 0
 	};
-	
+
 	// define some variables that we can check against later or with the CurrentEvals
 	var isDC = (/dc/i).test(fields.To_Hit_Bonus);
 	if (QI) {
@@ -7729,6 +7729,10 @@ function setUnicodeUse(enable, force) {
 				cTitle : "Unicode has been " + (enable ? "ENABLED" : "DISABLED")
 			});
 		}
+		// update the sourcelist superscript
+		for (var aSrc in SourceList) {
+			SourceList[aSrc].uniS = toSup(SourceList[aSrc].abbreviation);
+		};
 		// update the tooltips that use unicode
 		UpdateDropdown("tooltips");
 		AbilityScores_Button(true);
