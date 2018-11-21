@@ -776,7 +776,7 @@ ClassList["improved artificer"] = {
 			]),
 			extraname : "Mechanical Limb",
 			extrachoices : [
-				"Arcane Scent (1 invention point)", "Arcane Scent: Increase Range  (1 invention point)", "Arcane Scent: Know School of Magic (1 invention point)",
+				"Arcane Scent (1 invention point)", "Arcane Scent: Increase Range (1 invention point)", "Arcane Scent: Know School of Magic (1 invention point)",
 				"Mechanical Sense (1 invention point)", "Mechanical Sense: Translate 2 Languages (1 invention point)", "Mechanical Sense: Can't Be Surprised (1 invention point)",
 				"Robotic Eye (1 invention point)", "Robotic Eye: +2 on Ranged Attacks (2 invention points)", "Robotic Eye: See Invisible (3 invention points)",
 				"Grappling Hook Hand (2 invention points)", "Grappling Hook Hand: Rope of Entanglement (1 invention point)",
