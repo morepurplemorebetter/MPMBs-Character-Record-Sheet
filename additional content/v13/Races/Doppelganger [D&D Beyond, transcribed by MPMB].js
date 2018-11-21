@@ -23,7 +23,7 @@ SourceList["DnD-B:D"] = {
 	abbreviation : "DnD-B:D",
 	group : "D&D Beyond",
 	url : "https://www.dndbeyond.com/characters/races/622-doppelganger",
-	date : "2018/04/21"
+	date : "2018/01/20"
 };
 
 RaceList["doppelganger"] = {
