@@ -84,16 +84,16 @@ function setPrototypes() {
 		var string = this.toLowerCase().replace(/(?:^|\s)\w/g, function (m) {
 			return m.toUpperCase();
 		});
-		
-		// Certain minor words should be left lowercase unless 
+
+		// Certain minor words should be left lowercase unless
 		// they are the first or last words in the string
-		lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At', 
+		lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At',
 		'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
 		for (var Ca = 0; Ca < lowers.length; Ca++)
 		string = string.replace(new RegExp('\\W' + lowers[Ca] + '\\W', 'g'), function(txt) {
 			return txt.toLowerCase();
 		});
-		
+
 		return string;
 	};
 	Number.prototype.capitalize = function () {
@@ -272,14 +272,14 @@ function format1(extraDec, fixedDec, unit) {
 	AFNumber_Format(2 + plusDec, 1, 0, 0, "", false);
 	var decLoc = event.value.indexOf(".");
 	var decSep = What("Decimal Separator");
-	
+
 	decShow = (3 + plusDec) - decLoc;
 	decShow = decShow < 0 ? 0 : decShow;
-	
+
 	if (fixedDec !== undefined && !isNaN(fixedDec) && fixedDec !== "") {
 		decShow = fixedDec;
 	}
-	
+
 	if (decSep === "dot") {
 		AFNumber_Format(decShow, 0, 0, 0, "", false);
 		if (decShow) {
@@ -297,7 +297,7 @@ function format1(extraDec, fixedDec, unit) {
 			event.value = event.value.replace(/,$/, "");
 		}
 	}
-	
+
 	if (event.value !== "" && unit && unit === "mass") {
 		var UnitSystem = What("Unit System");
 		if (UnitSystem === "imperial") {
@@ -390,12 +390,12 @@ function KeystrokeDay() {
 
 //a field "format" function to add a space at the start and end of the field, to make sure it looks better on the sheet
 function addWhitespace() {
-	event.value = " " + event.value + " ";	
+	event.value = " " + event.value + " ";
 };
 
 function RoundTo(inputNmbr, roundNmbr, emptyAtZero, applyDec) {
 	var input = isNaN(inputNmbr) ? Number(inputNmbr.replace(/,/g,".")) : inputNmbr, result = inputNmbr;
-	
+
 	if (roundNmbr && !isNaN(roundNmbr)) {
 		if (roundNmbr >= 1) {
 			result = Math.round(input / roundNmbr) * roundNmbr;

@@ -666,7 +666,7 @@ var Base_WeaponsList = {
 		weight : 3,
 		description : "Thrown, only 1 attack, up to large creature hit is restrained (PHB 148)",
 		abilitytodamage : false
-	},	
+	},
 	// Improvised Weapons
 	"improvised weapon" : {
 		regExpSearch : /improvised/i,
@@ -907,7 +907,7 @@ var Base_WeaponsList = {
 		range : "",
 		description : "",
 		abilitytodamage : false
-	},	
+	},
 	// Dragonborn breath weapons
 	"breath weapon" : {
 		regExpSearch : /^(?=.*breath)(?=.*weapon).*$/i,

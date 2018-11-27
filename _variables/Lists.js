@@ -35,7 +35,7 @@ function InitiateLists() {
 	};
 };
 
-// A function to generate the spell variables after running imported scripts 
+// A function to generate the spell variables after running imported scripts
 function spellsAfterUserScripts(reDoAllSpells) {
 	if (tDoc.info.AdvLogOnly) return;
 	amendPsionicsToSpellsList();
@@ -636,7 +636,7 @@ var SetPrintPages_Dialog = {
 			"Pa10" : this.bASoverflow,
 			"Hide" : this.bHide
 		});
-		
+
 		if (this.bDupl) {
 			dialog.load({
 				"dupl" : true
@@ -646,11 +646,11 @@ var SetPrintPages_Dialog = {
 				"sing" : true
 			});
 		}
-		
+
 		dialog.visible({
 			"Pag0" : this.bshowPR
 		})
-		
+
 		dialog.enable({
 			"Pag1" : this.aCSfront,
 			"Pag2" : this.aCSback,
@@ -842,7 +842,7 @@ var SetToManual_Dialog = {
 	mCla : false,
 	mFea : false,
 	mRac : false,
-	
+
 	//when starting the dialog
 	initialize : function (dialog) {
 		dialog.load({
@@ -1208,7 +1208,7 @@ var SetTextOptions_Dialog = {
 	bDefFont : "SegoePrint",
 
 	//when starting the dialog
-	initialize : function (dialog) {	
+	initialize : function (dialog) {
 		dialog.load({
 			"img1" : allIcons.textsize,
 			"StSz" : this.bDefSize.toString(),
@@ -1216,12 +1216,12 @@ var SetTextOptions_Dialog = {
 			"fAlS" : this.bFontsArray,
 			"fStS" : this.bDefFont
 		});
-		
+
 		dialog.enable({
 			"fStS" : false,
 			"StSz" : false
 		});
-		
+
 		if (Number(this.bSize) === this.bDefSize) {
 			dialog.load({
 				"sSta" : true
@@ -1233,9 +1233,9 @@ var SetTextOptions_Dialog = {
 		} else {
 			dialog.load({
 				"sOth" : true
-			});			
+			});
 		}
-		
+
 		if (this.bFont === this.bDefFont) {
 			dialog.load({
 				"fSta" : true
@@ -1248,22 +1248,22 @@ var SetTextOptions_Dialog = {
 			dialog.load({
 				"fOth" : true,
 				"fOtS" : this.bFont
-			});			
+			});
 		}
 	},
 
 	//when pressing the ok button
 	commit : function (dialog) {
 		var oResult = dialog.store();
-		
+
 		if (oResult["sSta"]) {
 			this.bSize = oResult["StSz"];
 		} else if (oResult["sAut"]) {
-			this.bSize = 0;			
+			this.bSize = 0;
 		} else if (oResult["sOth"]) {
-			this.bSize = oResult["sOSi"];			
+			this.bSize = oResult["sOSi"];
 		}
-		
+
 		if (oResult["fSta"]) {
 			this.bFont = this.bDefFont;
 		} else if (oResult["fAlt"]) {
@@ -1283,7 +1283,7 @@ var SetTextOptions_Dialog = {
 			}
 		}
 	},
-	
+
 	//do this whenever a number is entered to make sure it has a dot as decimal separator and not trailing zeroes
 	sOSi : function (dialog) {
 		var cResult = dialog.store()["sOSi"];
@@ -1292,20 +1292,20 @@ var SetTextOptions_Dialog = {
 		} else {
 			var Parsed = parseFloat(cResult);
 		}
-		
+
 		dialog.load({
 			"sOth" : true,
 			"sOSi" : Parsed.toString()
 		});
 	},
-	
+
 	fSta : function (dialog) {
 		this.bDefSize = this.bDefSizeSheet;
 		dialog.load({
 			"StSz" : this.bDefSize.toString()
 		});
 	},
-	
+
 	fAlt : function (dialog) {
 		var fontResult = dialog.store()["fAlS"];
 		var cResult = "";
@@ -1322,7 +1322,7 @@ var SetTextOptions_Dialog = {
 			});
 		}
 	},
-	
+
 	fAlS : function (dialog) {
 		var fontResult = dialog.store()["fAlS"];
 		var cResult = "";
@@ -1357,7 +1357,7 @@ var SetTextOptions_Dialog = {
 	},
 	fOth : function (dialog) {
 		var cResult = dialog.store()["fOtS"];
-		
+
 		if (cResult === "") {
 			this.bDefSize = this.bDefSizeSheet;
 			this.fOthTest = false;
@@ -1384,10 +1384,10 @@ var SetTextOptions_Dialog = {
 			});
 		}
 	},
-	
+
 	fOtS : function (dialog) {
 		var cResult = dialog.store()["fOtS"].replace(/\s+/g, "");
-		
+
 		if (cResult === "") {
 			this.bDefSize = this.bDefSizeSheet;
 			this.fOthTest = false;
@@ -1787,7 +1787,7 @@ var BookMarkList = {
 	"SSfront" : "spells.name.0",
 	"SSmore" : "spells.name.0",
 	"PRsheet" : "PRsheet.toFocus",
-	
+
 	"CSfront_Bookmarks" : tDoc.bookmarkRoot.children[0].children[0],
 	"CSback_Bookmarks" : tDoc.bookmarkRoot.children[0].children[1],
 	"ASfront_Bookmarks" : tDoc.bookmarkRoot.children[0].children[2],
@@ -1800,7 +1800,7 @@ var BookMarkList = {
 	"SSmore_Bookmarks" : tDoc.bookmarkRoot.children[0].children[8],
 	"ALlog_Bookmarks" : tDoc.bookmarkRoot.children[0].children[9],
 	"PRsheet_Bookmarks" : tDoc.bookmarkRoot.children[0].children[10],
-	
+
 	"Character sheet front" : !typePF ? "Text.Level" : "Show Buttons",
 	"Level / Character Attributes" : "Character Level",
 	"Character Information" : "PC Name.0",
@@ -1821,7 +1821,7 @@ var BookMarkList = {
 	"Attacks / Actions" : "Attack.1.Weapon Selection",
 	"Actions" : "Action 1",
 	"Attacks " : "Attack.1.Weapon Selection",
-	
+
 	"Character sheet back" : !typePF ? "Text.Header.Features" : "Background Menu",
 	"Features " : "Text.Header.Features",
 	"Racial Traits" : "Racial Traits",
@@ -1837,7 +1837,7 @@ var BookMarkList = {
 	"Feats" : !typePF ? "Feat Name 1" : "Feat Name 1.1",
 	"Equipment" : "Adventuring Gear Row 1",
 	"Coins, Gems, and other Valuables" : "Valuables1",
-	
+
 	"Additional sheet" : !typePF ? "Text.Header.Status.1" : "Extra.Notes.1",
 	"Additional sheet_template" : "ASfront",
 	"Status" : "Text.Header.Status.1",
@@ -1849,7 +1849,7 @@ var BookMarkList = {
 	"Magic Items" : "Extra.Magic Item 1.1",
 	"Extra Equipment" : "Extra.Gear Row 1.1",
 	"Other Holdings" : "Extra.Other Holdings.1",
-	
+
 	"Overflow sheet" : "Extra.Magic Item " + (FieldNumbers.magicitemsD + 1) + ".1",
 	"Overflow sheet_template" : "ASoverflow",
 	"Magic Items " : "Extra.Magic Item " + (FieldNumbers.magicitemsD + 1) + ".1",
@@ -1857,7 +1857,7 @@ var BookMarkList = {
 	"Limited Features " : "Limited Feature 9.1",
 	"Actions " : "Action " + (FieldNumbers.trueactions - 5) + ".1",
 	"Proficiencies " : "MoreProficiencies.1",
-	
+
 	"Background sheet" :  !typePF ? "Text.Header.Background2.1" : "Sex.1",
 	"Background sheet_template" : "ASbackgr",
 	"Character Description" : "Sex.1",
@@ -1869,7 +1869,7 @@ var BookMarkList = {
 	"Allies & Organizations" :  !typePF ? "Symbol.1" : "Background_Organisation.Left.1",
 	"Organization Symbol" : "Symbol.1",
 	"Lifestyle" : "Lifestyle.1",
-	
+
 	"Companion sheet" : "Companion.Options",
 	"Companion sheet_template" : "AScomp",
 	"Descriptive Header" : "Comp.Type",
@@ -1886,21 +1886,21 @@ var BookMarkList = {
 	"Proficiency Bonus" : "Comp.Use.Proficiency Bonus",
 	"Traits" : "Comp.Use.Traits",
 	"Notes " : "Cnote.Left",
-	
+
 	"Notes sheet" : "Notes.Left",
 	"Notes sheet_template" : "ASnotes",
 	"Notes" : "Notes.Left",
-	
+
 	"Wild Shapes" : "Wildshapes.Settings",
 	"Wild Shapes_template" : "WSfront",
 	"Wild Shape 1" : "Wildshape.Race.1",
 	"Wild Shape 2" : "Wildshape.Race.2",
 	"Wild Shape 3" : "Wildshape.Race.3",
 	"Wild Shape 4" : "Wildshape.Race.4",
-	
+
 	"Spell Sheets" : "spells.name.0",
 	"Spell Sheets_template" : "SSfront",
-	
+
 	"Adventurers Logsheet" : "AdvLog.Options",
 	"Adventurers Logsheet_template" : "ALlog",
 	"Logsheet Entry 1" : "Text.AdvLog.1",
@@ -1910,7 +1910,7 @@ var BookMarkList = {
 	"Logsheet Entry 5" : "Text.AdvLog.5",
 	"Logsheet Entry 6" : "Text.AdvLog.6",
 	"Logsheet Entry 7" : "Text.AdvLog.7",
-	
+
 	"Reference Sheet" : "PRsheet.toFocus.1",
 	"Reference Sheet_template" : "PRsheet"
 };
@@ -1952,47 +1952,176 @@ var TemplateResetRanges = {
 	"ALlog" : ["AdvLog", "Text.AdvLog"]
 };
 
-var factionRanks = {
-	"emeraldenclave" : [
-		"",
-		"Springwarden (rank 1)",
-		"Summerstrider (rank 2)",
-		"Autumnreaver (rank 3)",
-		"Winterstalker (rank 4)",
-		"Master of the Wild (rank 5)"
-	],
-	"harpers" : [
-		"",
-		"Watcher (rank 1)",
-		"Harpshadow (rank 2)",
-		"Brightcandle (rank 3)",
-		"Wise Owl (rank 4)",
-		"High Harper (rank 5)"
-	],
-	"lordsalliance" : [
-		"",
-		"Cloak (rank 1)",
-		"Redknife (rank 2)",
-		"Stingblade (rank 3)",
-		"Warduke (rank 4)",
-		"Lioncrown (rank 5)"
-	],
-	"ordergauntlet" : [
-		"",
-		"Chevall (rank 1)",
-		"Marcheon (rank 2)",
-		"Whitehawk (rank 3)",
-		"Vindicator (rank 4)",
-		"Righteous Hand (rank 5)"
-	],
-	"zhentarim" : [
-		"",
-		"Fang (rank 1)",
-		"Wolf (rank 2)",
-		"Viper (rank 3)",
-		"Ardragon (rank 4)",
-		"Dread Lord (rank 5)"
-	]
+var factions = {
+	"emeraldenclave" : {
+		name : "The Emerald Enclave",
+		type : "Forgotten Realms",
+		ranks : [
+			"Springwarden (rank 1)",
+			"Summerstrider (rank 2)",
+			"Autumnreaver (rank 3)",
+			"Winterstalker (rank 4)",
+			"Master of the Wild (rank 5)"
+		]
+	},
+	"harpers" : {
+		name : "The Harpers",
+		type : "Forgotten Realms",
+		ranks : [
+			"Watcher (rank 1)",
+			"Harpshadow (rank 2)",
+			"Brightcandle (rank 3)",
+			"Wise Owl (rank 4)",
+			"High Harper (rank 5)"
+		]
+	},
+	"lordsalliance" : {
+		name : "The Lord's Alliance",
+		type : "Forgotten Realms",
+		ranks : [
+			"Cloak (rank 1)",
+			"Redknife (rank 2)",
+			"Stingblade (rank 3)",
+			"Warduke (rank 4)",
+			"Lioncrown (rank 5)"
+		]
+	},
+	"ordergauntlet" : {
+		name : "The Order of the Gauntlet",
+		type : "Forgotten Realms",
+		ranks : [
+			"Chevall (rank 1)",
+			"Marcheon (rank 2)",
+			"Whitehawk (rank 3)",
+			"Vindicator (rank 4)",
+			"Righteous Hand (rank 5)"
+		]
+	},
+	"zhentarim" : {
+		name : "The Zhentarim",
+		type : "Forgotten Realms",
+		ranks : [
+			"Fang (rank 1)",
+			"Wolf (rank 2)",
+			"Viper (rank 3)",
+			"Ardragon (rank 4)",
+			"Dread Lord (rank 5)"
+		]
+	},
+	"azorius" : {
+		name : "Azorius Senate",
+		type : "Ravnica",
+		ranks : [
+			"Official (rank 1)",
+			"Authority (rank 2)",
+			"Minister, Judge, or Senator (rank 3)",
+			"Arbiter (rank 4)"
+		]
+	},
+	"boros" : {
+		name : "Boros Legion",
+		type : "Ravnica",
+		ranks : [
+			"Sergeant (rank 1)",
+			"Skyknight (special)",
+			"Wojek (special)",
+			"Brigadier (rank 2)",
+			"Sunhome Guard (special)",
+			"Captain (rank 3)",
+			"Commander (rank 4)"
+		]
+	},
+	"dimir" : {
+		name : "House Dimir",
+		type : "Ravnica",
+		ranks : [
+			"Independent Agent",
+			"Collector of Secrets",
+			"Inner Circle",
+			"Guildmaster's Confidant"
+		]
+	},
+	"golgari" : {
+		name : "Golgari Swarm",
+		type : "Ravnica",
+		ranks : [
+			"Agent",
+			"Monstrous Favors",
+			"Ochran (special)",
+			"Adviser",
+			"High Chancellor",
+			"Matka (special)"
+		]
+	},
+	"gruul" : {
+		name : "Gruul Clans",
+		type : "Ravnica",
+		ranks : [
+			"Proven",
+			"Beast-Friend",
+			"Celebrated",
+			"Chieftan"
+		]
+	},
+	"izzet" : {
+		name : "Izzet League",
+		type : "Ravnica",
+		ranks : [
+			"Researcher (rank 1)",
+			"Scorchbringer (special)",
+			"Supervisor (rank 2)",
+			"Independent Researcher (special)",
+			"Director (rank 3)",
+			"Advisor (rank 4)"
+		]
+	},
+	"orzhov" : {
+		name : "Orzhov Syndicate",
+		type : "Ravnica",
+		ranks : [
+			"Syndic (rank 1)",
+			"Knight (rank 2)",
+			"Ministrant (rank 3)",
+			"Pontiff (rank 4)"
+		]
+	},
+	"rakdos" : {
+		name : "Cult of Rakdos",
+		type : "Ravnica",
+		ranks : [
+			"Extra",
+			"Sideshow Act",
+			"Blood Witch (special)",
+			"Star Performer",
+			"Ringmaster"
+		]
+	},
+	"selesnya" : {
+		name : "Selesnya Conclave",
+		type : "Ravnica",
+		ranks : [
+			"Evangel (special)",
+			"Votary (special)",
+			"Sagittar (special)",
+			"Selesnya Charm",
+			"Equenaut (special)",
+			"Hierarch (special)",
+			"Ledev Guardian (special)",
+			"Dignitary (special)"
+		]
+	},
+	"simic" : {
+		name : "Simic Combine",
+		type : "Ravnica",
+		ranks : [
+			"Technician (rank 1)",
+			"Researcher (rank 2)",
+			"Luminary (special)",
+			"Project Leader (rank 3)",
+			"Clade Leader (rank 4)",
+			"Speaker (special)"
+		]
+	}
 }
 
 var LinksLatest = {

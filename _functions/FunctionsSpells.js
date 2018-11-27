@@ -2,11 +2,11 @@
 function ParseSpell(input) {
 	var found = "";
 	if (!input) return found;
-	
+
 	input = clean(RemoveZeroWidths(input.replace(/ \(.{1,2}\)/i, "")), false, true).toLowerCase();
 	var foundLen = 0;
 	var foundDat = 0;
-	
+
 	for (var key in SpellsList) { //scan string for all creatures
 		var kObj = SpellsList[key];
 		if (testSource(key, kObj, "spellsExcl")) continue; // test if the spell or its source isn't excluded
@@ -47,7 +47,7 @@ function ApplySpell(FldValue, rememberFldName) {
 	var base = rememberFldName ? rememberFldName : event.target.name;
 	var isPF = typePF;
 	var isPsionics = (/psionic/i).test(input[0]);
-	
+
 	var HeaderList = [
 		["", "check", ""], //0
 		[isPsionics ? "PSIONIC POWER" : "SPELL", "name", Array(21 + (isPF ? 6 : 0)).join("_")], //1
@@ -61,11 +61,11 @@ function ApplySpell(FldValue, rememberFldName) {
 		["B", "book", Array(2 + (isPF ? 1 : 0)).join("_")], //9
 		["PG.", "page", Array(4).join("_")], //10
 	]
-	
+
 	//make this a header line if the input is "setcaptions"
 	if ((/setcaptions/i).test(input[0])) {
 		HeaderList[0][0] = input[1] ? input[1].substring(0, (/\(.\)|\d-\d/).test(input[1]) ? 3 : 2).toUpperCase() : "";
-		
+
 		//have a function to create rich text span
 		var createSpan = function(input) {
 			var toCap = input.substring(0, input.indexOf(" ") === 0 ? 2 : 1)
@@ -79,7 +79,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			}];
 			return spans;
 		}
-		
+
 		//set the headers values
 		for (var i = 0; i < HeaderList.length; i++) {
 			var theFld = base.replace("remember", HeaderList[i][1]);
@@ -111,7 +111,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			}
 		}
 	}
-	
+
 	// Now test if the fields should be hidden, or revealed
 	if ((/hidethisline|setheader|setdivider|setglossary/i).test(input[0])) {
 		//reset all the field's values and hide them
@@ -120,7 +120,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(theFld, i !== 0 ? "" : "hide", "");
 			Hide(theFld);
 		}
-		
+
 		if ((/hidethisline/i).test(input[0])) {
 		//and don't do the rest of this function if we are here to hide this line
 			return;
@@ -131,7 +131,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Show(theFld);
 		}
 	}
-	
+
 	//set the icon of the first field
 	var setCheck = function() {
 		var theCheck = base.replace("remember", "check");
@@ -144,7 +144,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(theCheck, input[1].toLowerCase());
 		}
 	}
-	
+
 	if (input[0] === "") { //reset all the fields
 		if (What(base.replace("remember", HeaderList[1][1])) !== "") {//if going from a spell to nothing, reset all the field's values and tooltips
 			for (var i = 0; i < HeaderList.length; i++) {
@@ -185,7 +185,7 @@ function ApplySpell(FldValue, rememberFldName) {
 		//now only do something if a spell was found, otherwise assume the spell's details shouldn't be changed
 		if (theSpl !== "") {
 			var aSpell = SpellsList[theSpl];
-			
+
 			//set the spell name (if it wasn't provided as part of this function and not the same as the remember field)
 			// if the name used is a shortened version, set the full name as a tooltip
 			var NameFld = base.replace("remember", "name");
@@ -196,16 +196,16 @@ function ApplySpell(FldValue, rememberFldName) {
 				spName[0] += aSpell.ritual ? " (R)" : "";
 				Value(NameFld, spName[0], spName[1]);
 			}
-			
+
 			//put in some things into metric if so set
 			var spDescr = aSpell.description;
 			var spRange = aSpell.range;
-			
+
 			if (What("Unit System") === "metric") {
 				spDescr = aSpell.descriptionMetric ? aSpell.descriptionMetric : ConvertToMetric(spDescr, 0.5);
 				spRange = ConvertToMetric(spRange, 0.5);
 			}
-			
+
 			//make the tooltip for the description field
 			var spTooltip = "";
 			if (aSpell.descriptionFull && (aSpell.school || aSpell.psionic)) {
@@ -216,33 +216,33 @@ function ApplySpell(FldValue, rememberFldName) {
 				spTooltip += aSpell.ritual ? " (ritual)" : "";
 				spTooltip += "\n   " + aSpell.descriptionFull;
 			};
-			
+
 			//set what an empty cell should look like
 			var emptyCell = "\u2014";
-			
+
 			//set the spell description and the tooltip with the full description
 			Value(base.replace("remember", "description"), spDescr, spTooltip);
-			
+
 			//set the spell save
 			Value(base.replace("remember", "save"), aSpell.save ? aSpell.save : emptyCell);
-			
+
 			//set the spell school
 			Value(base.replace("remember", "school"), aSpell.school ? aSpell.school : emptyCell);
-			
+
 			//set the spell time
 			Value(base.replace("remember", "time"), aSpell.time ? aSpell.time : emptyCell);
-			
+
 			//set the spell range
 			Value(base.replace("remember", "range"), spRange ? spRange : emptyCell);
-			
+
 			//set the spell components
 			Value(base.replace("remember", "components"), aSpell.components ? aSpell.components : emptyCell, aSpell.compMaterial ? aSpell.compMaterial : "");
-			
+
 			//set the spell duration
 			Value(base.replace("remember", "duration"), aSpell.duration ? aSpell.duration : emptyCell);
-			
+
 			//set the spell book name and page
-			
+
 			var parseSrc = parseSource(aSpell.source);
 			var spBook = parseSrc ? parseSrc[0][0] : "";
 			if (spBook === "SRD") spBook = "R";
@@ -250,7 +250,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			var spBookFull = stringSource(aSpell, "full,page,multi");
 			Value(base.replace("remember", "book"), spBook.substr(0,1), spBookFull);
 			Value(base.replace("remember", "page"), spPage, spBookFull);
-			
+
 			if (aSpell.firstCol !== undefined && !input[1]) input[1] = aSpell.firstCol;
 		}
 		setCheck();
@@ -351,7 +351,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 	var glossaryArray = [
 		prefix + "spellsgloss.Image" + suffix, //0
 	];
-	
+
 	switch(type) {
 	 case "header" :
 		var moveArray = headerArray;
@@ -366,7 +366,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 		var maxFld = 11;
 		break;
 	}
-	
+
 	//define functions for returning and setting the coordinates of a field
 	var isRect = function(Fld) {
 		return tDoc.getField(Fld).rect;
@@ -374,11 +374,11 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 	var setRect = function(Fld, Rct) {
 		tDoc.getField(Fld).rect = Rct;
 	}
-	
+
 	var tRect = isRect(target); // get the location of the target field on the sheet
 	var sRect = isRect(moveArray[0]); // get the location of the first field that has to be moved
 	var dY = tRect[1] - sRect[1]; // see how much the fields have to be moved by comparing upper-left y coordinates
-	
+
 	//now move each of the fields in the moveArray by dY
 	for (var m = 0; m < moveArray.length; m++) {
 		if (suffix === 0 && prefix.indexOf(".SSfront.") !== -1) { //don't move the top row of the first page, they are already where they should be
@@ -396,7 +396,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 			Hide(moveArray[m]);
 		}
 	}
-	
+
 	//now hide the fields that are overlayed
 	if (suffix === 0 && prefix.indexOf(".SSfront.") !== -1) { //don't do this for the top row of the first page, they are already where they should be
 	} else {
@@ -406,7 +406,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 			Value(target.replace("." + hideFldNmbr, "." + h), "hidethisline");
 		}
 	}
-	
+
 	//now set the values of the fields
 	if (type === "divider") {
 		var divTextFld = dividerArray[!typePF ? 0 : 1]
@@ -416,7 +416,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 		var submitNameFld = divTextFld;
 	} else if (type === "header") {
 		var testLength = !typePF ? 10 : 36;
-		
+
 		if (caster && CurrentSpells[caster]) {
 			var spCast = CurrentSpells[caster];
 			var isPsionics = spCast.factor && (/psionic/i).test(spCast.factor[1]);
@@ -454,7 +454,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 			}
 			Value(headerArray[1], casterName);
 		}
-		
+
 		//hide the prepared fields
 		if (hidePrepared) {
 			Hide(headerArray[4]);
@@ -468,7 +468,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 				Hide(headerArray[10]);
 			}
 		}
-		
+
 		//make the ability score drop-down box editable if this is a complete spell sheet; also add a tooltip
 		//also make the three 'calculated' fields editable
 		if (tDoc.info.SpellsOnly) {
@@ -478,7 +478,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 			tDoc.getField(headerArray[5]).readonly = false;
 			tDoc.getField(headerArray[6]).readonly = false;
 		}
-		
+
 		//set the submitName to remember the line where this header is at
 		var submitNameFld = headerArray[1];
 	} else if (type === "glossary") {
@@ -495,16 +495,16 @@ function CalcSpellScores() {
 	var type = event.target.name.replace(/.*spellshead\.(\w+).*/, "$1");
 	var Fld = event.target.name.replace("spellshead." + type, "spellshead.DINGDONG");
 	var theMod = What(Fld.replace("DINGDONG", "ability"));
-	
+
 	var theResult = "";
 	//now only continue with a calculation if a ability was chosen in the drop-down menu
 	if (theMod !== "nothing") {
 		//the ability score modifier
 		theResult = Number(What(theMod));
-		
+
 		//damage added manually in the bluetext field
 		theResult += EvalBonus(What(event.target.name.replace("spellshead", "BlueText.spellshead")), true);
-		
+
 		switch (type) {
 		 case "dc" :
 			//add a base of 8 and then add the proficiency bonus
@@ -528,7 +528,7 @@ function CalcSpellScores() {
 			break;
 		}
 	}
-	
+
 	event.value = theResult;
 }
 
@@ -581,7 +581,7 @@ function SetSpellBluetext(aClass, type, newValue) {
 			}
 		}
 	}
-	
+
 	// save the global variable to the field
 	SetStringifieds("spells");
 }
@@ -683,7 +683,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 	var returnArray = [];
 	var spByLvl = {sp0 : [], sp1 : [], sp2 : [], sp3 : [], sp4 : [], sp5 : [], sp6 : [], sp7 : [], sp8 : [], sp9 : [], ps0 : [], ps1: []};
 	var refspObj = {};
-	
+
 	var removeSp = function(inSp) {
 		var rSpell = SpellsList[inSp];
 		var rSpLevel = (!rSpell.psionic ? "sp" : "ps") + rSpell.level;
@@ -699,7 +699,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 		};
 		delete refspObj[rSpName];
 	};
-	
+
 	//now go through all the spells in the list and see if they agree with the criteria
 	for (var key in SpellsList) {
 		var aSpell = SpellsList[key];
@@ -744,7 +744,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 			var spName = getSpNm(key);
 			if (refspObj[spName]) { // if another spell with the same name has been added already, see which one the sheet will use
 				var testName = ParseSpell(spName);
-				if (refspObj[spName] == testName) { 
+				if (refspObj[spName] == testName) {
 					continue;
 				} else if (testName == key) {
 					removeSp(refspObj[spName]);
@@ -765,7 +765,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 			}
 		}
 	}
-	
+
 	if (toDisplay) {
 		var count = 0;
 		//now cycle through all the spell level arrays and add them, if not empty, to the returnArray
@@ -796,7 +796,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 			returnArray.push(spA);
 		};
 	};
-	
+
 	return returnArray;
 };
 
@@ -823,7 +823,7 @@ function RemoveZeroWidths(input) {
 //create an object of a spell list array to be used in the dialog
 function CreateSpellObject(inputArray) {
 	var returnObject = {};
-	
+
 	for (var i = 0; i < inputArray.length; i++) {
 		var theObject = GetZeroWidths(i) + inputArray[i];
 		returnObject[theObject] = (i + 1) * -1;
@@ -833,7 +833,7 @@ function CreateSpellObject(inputArray) {
 
 //a dialog for user input on spells
 var SpellSheetSelect_Dialog = {
-	
+
 	listBo : [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}], //array of 16 lists
 	namesBo : [], //always 16 long!
 	keysBo : [], //always 16 long!
@@ -865,14 +865,14 @@ var SpellSheetSelect_Dialog = {
 	levelSp : 1,
 	nameAd : "[always prepared]",
 	prevBtn : false,
-	
+
 	//when starting the dialog
 	initialize : function (dialog) {
 		this.SpBook = false;
 		this.txt = "Please set the " + this.spNm.toLowerCase() + "/" + this.caNm.toLowerCase() + " you want to have on the Spell Sheet.\nNote that some things might not be available in this dialog, because what you are editing has no access to it.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.";
-		
+
 		var psiSpells = this.spNm === "Spells" ? "Spells" : "Psionics";
-		
+
 		//make a string for the information
 		var info = "";
 		if (this.showCa) info += this.caNm + " known:\t" + toUni(this.nmbrCa) + "\n";
@@ -889,11 +889,11 @@ var SpellSheetSelect_Dialog = {
 		}
 		if (this.levelSp) info += "of Spell Level:\t" + toUni(spellLevelList[this.levelSp]) + (this.levelSp > 1 ? " (and lower)" : "") + "\n";
 		if (this.showBo) info += "Extra " + psiSpells + ":\t" + toUni(this.nmbrBo);
-		
+
 		var theBo = this.nmbrBo + this.offsetBo;
 		var theCa = this.nmbrCa + this.offsetCa;
 		var theSp = this.nmbrSp + this.offsetSp;
-		
+
 		//set the value of various text entries
 		dialog.load({
 			"Hea0" : "Set " + this.spNm + ": " + this.header.capitalize(),
@@ -909,7 +909,7 @@ var SpellSheetSelect_Dialog = {
 			"SplT" : this.typeSp === "book" ? "Spellbook" : this.spNm,
 			"AdET" : this.nameAd
 		});
-		
+
 		//set the visibility of the clusters
 		dialog.visible({
 			"BoCL" : this.showBo,
@@ -922,7 +922,7 @@ var SpellSheetSelect_Dialog = {
 			SpR3 : this.levelSp && this.typeSp !== "known",
 			"bPre" : this.prevBtn
 		});
-		
+
 		//enable the various entries or disable them and load their values
 		var toEnable = {
 			AdET : false,
@@ -968,7 +968,7 @@ var SpellSheetSelect_Dialog = {
 			};
 			return aObj; //if nothing was found
 		};
-		
+
 		//set the various entries to the right values
 		var iResult = dialog.store();
 		var toSet = {};
@@ -994,14 +994,14 @@ var SpellSheetSelect_Dialog = {
 		}
 		dialog.load(toSet);
 	},
-	
+
 	saveIt : function (dialog) {
 		var oResult = dialog.store();
-		
+
 		this.offsetBo = oResult["BonK"] - this.nmbrBo;
 		this.offsetCa = oResult["CanK"] - this.nmbrCa;
 		this.offsetSp = oResult["SplK"] - this.nmbrSp;
-		
+
 		//a function to return the right one in the list
 		var findSpell = function(aObj) {
 			for (var a in aObj) {
@@ -1009,7 +1009,7 @@ var SpellSheetSelect_Dialog = {
 			}
 			return ""; //if nothing was found
 		}
-		
+
 		this.selectCa = [];
 		this.selectSp = [];
 		this.selectBo = [];
@@ -1017,7 +1017,7 @@ var SpellSheetSelect_Dialog = {
 			var Bo = "BS" + ("0" + i).slice(-2);
 			var Ca = "Ca" + ("0" + i).slice(-2);
 			var Sp = "Sp" + ("0" + i).slice(-2);
-			
+
 			var resultSp = i <= oResult["SplK"] ? findSpell(oResult[Sp]) : "";
 			if (resultSp) this.selectSp.push(resultSp);
 			if (i <= 16) this.selectBo.push(i <= oResult["BonK"] ? findSpell(oResult[Bo]) : "");
@@ -1026,11 +1026,11 @@ var SpellSheetSelect_Dialog = {
 				if (resultCa) this.selectCa.push(resultCa);
 			}
 		}
-		
+
 		//set the results of the radio button
 		this.selectSpRadio = oResult["SpR1"] ? 1 : oResult["SpR2"] ? 2 : oResult["SpR3"] ? 3 : 4;
 	},
-	
+
 	BonK : function (dialog) {
 		var elements = dialog.store();
 		var theBo = ASround(elements["BonK"]);
@@ -1044,7 +1044,7 @@ var SpellSheetSelect_Dialog = {
 		}
 		dialog.enable(allBo);
 	},
-	
+
 	CanK : function (dialog) {
 		var elements = dialog.store();
 		var theCa = ASround(elements["CanK"]);
@@ -1057,7 +1057,7 @@ var SpellSheetSelect_Dialog = {
 		}
 		dialog.enable(allCa);
 	},
-	
+
 	SplK : function (dialog) {
 		var elements = dialog.store();
 		var theSp = ASround(elements["SplK"]);
@@ -1070,22 +1070,22 @@ var SpellSheetSelect_Dialog = {
 		}
 		dialog.enable(allSp);
 	},
-	
+
 	ok : function (dialog) {
 		if (this.typeSp === "book") this.SpBook = true;
 		this.saveIt(dialog);
 	},
-	
+
 	other : function (dialog) {
 		this.saveIt(dialog);
 		dialog.end("ok");
 	},
-	
+
 	bPre : function (dialog) {
 		this.saveIt(dialog);
 		dialog.end("prev");
 	},
-	
+
 	description : {
 		name : "Set Spells",
 		elements : [{
@@ -1447,7 +1447,7 @@ var SpellSheetSelect_Dialog = {
 							type : "gap",
 							height : 1
 						}]
-					}]		
+					}]
 				}, {
 					type : "view", //middle view (cantrip & added spells)
 					align_children : "align_left",
@@ -1781,11 +1781,11 @@ var SpellSheetSelect_Dialog = {
 };
 
 var SpellSheetOrder_Dialog = {
-	
+
 	bExcL : [],
 	bIncL : [],
 	glossary : false,
-	
+
 	initialize : function (dialog) {
 		//set the ExcLuded list
 		var ExcObj = {};
@@ -1798,27 +1798,27 @@ var SpellSheetOrder_Dialog = {
 			"IncL" : {},
 			"Glos" : this.glossary
 		});
-		
+
 		//set the IncLuded list
 		for (var In = 0; In < this.bIncL.length; In++) {
 			var loadObject = {};
 			loadObject[this.bIncL[In]] = -1 * [1 + In];
 			dialog.insertEntryInList({"IncL" : loadObject});
 		}
-		
+
 	},
-	
+
 	commit : function (dialog) {
 		//put both elements into the arrays
 		var oResult = dialog.store();
 		var aExcL = oResult["ExcL"];
 		var aIncL = oResult["IncL"];
 		this.glossary = oResult["Glos"];
-		
+
 		//make the ExcLuded array
 		this.bExcL = [];
 		for (var Ex in aExcL) this.bExcL.push(Ex);
-		
+
 		//make the IncLuded array in the right order
 		var tempIncL = [];
 		for (var In in aIncL) {
@@ -1831,7 +1831,7 @@ var SpellSheetOrder_Dialog = {
 			if (tempIncL[i]) this.bIncL.push(tempIncL[i]);
 		}
 	},
-	
+
 	BTRA : function (dialog) {
 		// move all (remaining) items from ExcL to IncL
 		var elements = dialog.store()["ExcL"];
@@ -1846,7 +1846,7 @@ var SpellSheetOrder_Dialog = {
 		dialog.removeAllEntriesFromList("ExcL");
 		dialog.focus("IncL");
 	},
-	
+
 	BTR1 : function (dialog) {
 		// move selected (one) item from ExcL to IncL
 		var refresh = false;
@@ -1869,7 +1869,7 @@ var SpellSheetOrder_Dialog = {
 			dialog.focus("ExcL");
 		}
 	},
-	
+
 	BTL1 : function (dialog) {
 		// move selected (one) item from IncL to ExcL, without changing the IncL order
 		var refresh = false;
@@ -1902,7 +1902,7 @@ var SpellSheetOrder_Dialog = {
 			dialog.focus("IncL");
 		}
 	},
-	
+
 	BTLA : function (dialog) {
 		// move all items from IncL to ExcL and sort ExcL
 		var elements = dialog.store()["IncL"];
@@ -1914,7 +1914,7 @@ var SpellSheetOrder_Dialog = {
 		dialog.load({"ExcL" : isLST1});
 		dialog.focus("ExcL");
 	},
-	
+
 	BTNU : function (dialog) {
 		//move the selected, if any, up
 		//first make an array in the right order
@@ -1939,7 +1939,7 @@ var SpellSheetOrder_Dialog = {
 				var temp = tempIncL2[toMove];
 				tempIncL2[toMove] = tempIncL2[toMove - 1];
 				tempIncL2[toMove - 1] = temp;
-				
+
 				dialog.removeAllEntriesFromList("IncL");
 				var n = 0;
 				for (var i = 0; i < tempIncL2.length; i++) {
@@ -1952,7 +1952,7 @@ var SpellSheetOrder_Dialog = {
 		}
 		dialog.focus("IncL");
 	},
-	
+
 	BTND : function (dialog) {
 		//move the selected, if any, down
 		//first make an array in the right order
@@ -1977,7 +1977,7 @@ var SpellSheetOrder_Dialog = {
 				var temp = tempIncL2[toMove];
 				tempIncL2[toMove] = tempIncL2[toMove + 1];
 				tempIncL2[toMove + 1] = temp;
-				
+
 				dialog.removeAllEntriesFromList("IncL");
 				var n = 0;
 				for (var i = 0; i < tempIncL2.length; i++) {
@@ -1990,7 +1990,7 @@ var SpellSheetOrder_Dialog = {
 		}
 		dialog.focus("IncL");
 	},
-	
+
 	description : {
 		name : "Pick which are excluded and included",
 		elements : [{
@@ -2096,15 +2096,15 @@ var SpellBookSelect_Dialog = {
 	selectSp : [],
 	fullname : "",
 	iteration : "1/1",
-	
+
 	//when starting the dialog
-	initialize : function (dialog) {		
+	initialize : function (dialog) {
 		//set the value of various text entries
 		dialog.load({
 			"Hea0" : "Additional Spellbook Spells for " + this.fullname,
 			"iter" : this.iteration
 		});
-		
+
 		//enable the various entries or disable them and load their values
 		var toLoad = {};
 		for (var i = 1; i <= 80; i++) {
@@ -2112,7 +2112,7 @@ var SpellBookSelect_Dialog = {
 			toLoad[Sp] = this.listSp;
 		}
 		dialog.load(toLoad);
-		
+
 		//a function to set the right object to positive
 		var setSpell = function(aObj, aSpell) {
 			for (var a in aObj) {
@@ -2123,7 +2123,7 @@ var SpellBookSelect_Dialog = {
 			};
 			return aObj; //if nothing was found
 		};
-		
+
 		//set the various entries to the right values
 		var iResult = dialog.store();
 		var toSet = {};
@@ -2137,10 +2137,10 @@ var SpellBookSelect_Dialog = {
 		}
 		dialog.load(toSet);
 	},
-	
+
 	saveIt : function (dialog) {
 		var oResult = dialog.store();
-		
+
 		//a function to return the right one in the list
 		var findSpell = function(aObj) {
 			for (var a in aObj) {
@@ -2155,21 +2155,21 @@ var SpellBookSelect_Dialog = {
 			if (resultSp) this.selectSp.push(resultSp);
 		}
 	},
-	
+
 	ok : function (dialog) {
 		this.saveIt(dialog);
 	},
-	
+
 	other : function (dialog) {
 		this.saveIt(dialog);
 		dialog.end("book");
 	},
-	
+
 	bPre : function (dialog) {
 		this.saveIt(dialog);
 		dialog.end("prev");
 	},
-	
+
 	description : {
 		name : "Set Spells",
 		elements : [{
@@ -2660,7 +2660,7 @@ var SpellsPrepared_Dialog = {
 	fullname : "Paladin (Oath of the Ancients)",
 	ability : 4,
 	nmbrPrep : 20,
-	
+
 	//when starting the dialog
 	initialize : function (dialog) {
 		//get the ability modifier and ability name
@@ -2668,16 +2668,16 @@ var SpellsPrepared_Dialog = {
 		var abiMod = What(AbilityScores.abbreviations[this.ability - 1] + " Mod");
 		//set the amount of spells that can be prepared
 		this.nmbrSp = Number(this.nmbrPrep) + Number(abiMod);
-		
+
 		var theSp = this.nmbrSp + this.offsetSp;
-		
+
 		//set the value of various text entries
 		dialog.load({
 			"Hea0" : "Prepared spells for " + this.fullname,
 			"txt0" : "The number of spells to prepare is:\t" + toUni(this.nmbrPrep) + "  (level)\t\t" + (abiMod < 0 ? "- " : "+ ") + toUni(Math.abs(abiMod)) + "  (" + abiNm + " modifier)",
 			"SplK" : ASround(theSp)
 		});
-		
+
 		//enable the various entries or disable them and load their values
 		var toEnable = {};
 		var toLoad = {};
@@ -2689,7 +2689,7 @@ var SpellsPrepared_Dialog = {
 		}
 		dialog.enable(toEnable);
 		dialog.load(toLoad);
-		
+
 		//a function to set the right object to positive
 		var setSpell = function(aObj, aSpell) {
 			for (var a in aObj) {
@@ -2700,7 +2700,7 @@ var SpellsPrepared_Dialog = {
 			};
 			return aObj; //if nothing was found
 		};
-		
+
 		//set the various entries to the right values
 		var iResult = dialog.store();
 		var toSet = {};
@@ -2713,12 +2713,12 @@ var SpellsPrepared_Dialog = {
 		}
 		dialog.load(toSet);
 	},
-	
+
 	commit : function (dialog) {
 		var oResult = dialog.store();
-		
+
 		this.offsetSp = oResult["SplK"] - this.nmbrSp;
-		
+
 		//a function to return the right one in the list
 		var findSpell = function(aObj) {
 			for (var a in aObj) {
@@ -2726,7 +2726,7 @@ var SpellsPrepared_Dialog = {
 			}
 			return ""; //if nothing was found
 		}
-		
+
 		this.selectSp = [];
 		for (var i = 1; i <= 30; i++) {
 			var Sp = "Sp" + ("0" + i).slice(-2);
@@ -2734,7 +2734,7 @@ var SpellsPrepared_Dialog = {
 			if (resultSp) this.selectSp.push(resultSp);
 		}
 	},
-	
+
 	SplK : function (dialog) {
 		var elements = dialog.store();
 		var theSp = ASround(elements["SplK"]);
@@ -2747,7 +2747,7 @@ var SpellsPrepared_Dialog = {
 		}
 		dialog.enable(allSp);
 	},
-	
+
 	description : {
 		name : "Set Prepared Spells",
 		elements : [{
@@ -2962,7 +2962,7 @@ function AskUserSpellSheet() {
 	for (var aC in CurrentSpells) {
 		classesArray.push(aC);
 	};
-	
+
 	// go through all the entries in CurrentSpells and ask the user for input that we then store back in that same variable
 	for (var theI = 0; theI < classesArray.length; theI++) {
 		var aCast = classesArray[theI];
@@ -2970,9 +2970,9 @@ function AskUserSpellSheet() {
 
 		var thermoTxt = thermoM("Generating the " + spCast.name + " dialog..."); //change the progress dialog text
 		thermoM(1/2); //increment the progress dialog's progress
-		
+
 		dia.prevBtn = theI !== 0;
-		
+
 		//put some general things in variables
 		if (spCast.level && spCast.factor && (tDoc[spCast.factor[1] + "SpellTable"] || spCast.spellsTable)) {
 			var CasterLevel = Math.max(Math.ceil(spCast.level / (spCast.spellsTable ? 1 : spCast.factor[0])), 1);
@@ -2987,12 +2987,12 @@ function AskUserSpellSheet() {
 			var maxSpell = false;
 		};
 		spCast.maxSpell = maxSpell;
-		
+
 		if ((/feat|item/i).test(spCast.typeSp) && spCast.level !== undefined) spCast.level = What("Character Level"); //set the level if concerning a feat/item
-		
+
 		//see if this is a psionic caster
 		var isPsionics = spCast.factor && (/psionic/i).test(spCast.factor[1]);
-		
+
 		//set all the general parts of the dialog
 		dia.caNm = isPsionics ? spellLevelList[10] : spellLevelList[0].replace(/ \(.*/, '');
 		dia.spNm = isPsionics ? spellLevelList[11] : "Spells";
@@ -3009,7 +3009,7 @@ function AskUserSpellSheet() {
 				dia.nmbrCa = isArray(spCast.known.cantrips) ? spCast.known.cantrips[Math.min(spCast.known.cantrips.length, spCast.level) - 1] : spCast.known.cantrips; //set the amount of cantrips
 				dia.offsetCa = spCast.offsetCa ? spCast.offsetCa : 0; //set the manually added cantrips
 				dia.selectCa = spCast.selectCa ? spCast.selectCa : []; //set the cantrips already selected
-				
+
 				//now to create the lists
 				spCast.list.level = [0, spListLevel && spListLevel[1] ? 1 : 0]; //set the list level to 0 // do it like this so that school restrictions are ignored, if applicable
 				var listCaRef = CreateSpellList(spCast.list, true, false, true)[0]; //create an array of all the cantrips
@@ -3061,7 +3061,7 @@ function AskUserSpellSheet() {
 			dia.showSpRadio = false;
 			var GoAhead = false;
 		}
-		
+
 		if (spCast.extra) {
 			dia.showAd = true; //show the subclass spells section
 			dia.selectAd = spCast.extra; //set the array of known subclass spells
@@ -3069,7 +3069,7 @@ function AskUserSpellSheet() {
 		} else {
 			dia.showAd = false; //hide the subclass spell section
 		};
-		
+
 		//set the bonus spell things to their basic value
 		dia.nmbrBo = 0;
 		dia.offsetBo = spCast.offsetBo ? spCast.offsetBo : 0; //manually added bonus spells
@@ -3094,7 +3094,7 @@ function AskUserSpellSheet() {
 				var spBonusi = loop ? spCast.bonus[bKey][i] : spCast.bonus[bKey];
 				var theBonusArray = CreateSpellList(spBonusi, true);
 				var theBonusObject = CreateSpellObject(theBonusArray);
-				
+
 				var iterate = !spBonusi.times ? 1 : isArray(spBonusi.times) ? spBonusi.times[Math.min(spBonusi.times.length, spCast.level) - 1] : spBonusi.times; //if we have to apply this thing multiple times, do so
 				for (var y = 1; y <= iterate; y++) {
 					dia.nmbrBo += 1; //count the number of bonus things
@@ -3125,16 +3125,16 @@ function AskUserSpellSheet() {
 			dia.namesBo.push("");
 			if (spCast.extraBo) dia.selectBo[i] = spCast.extraBo[i - dia.nmbrBo];
 		}
-		
+
 		if (!GoAhead) continue; //not a single spellcasting attribute was found, so skip over this entry in the CurrentSpells variable
-		
+
 		//now set the ok buttons at the bottom of the dialog
 		setDialogName(dia, "OKbt", "type", dia.typeSp !== "book" ? "ok_cancel" : "ok_cancel_other");
 		setDialogName(dia, "OKbt", "ok_name", dia.typeSp !== "book" ? "Continue to Next Dialogue >>" : "Add More Spells to the Spellbook");
 
 		thermoTxt = thermoM("Opening the " + spCast.name + " dialog...", false); //change the progress dialog text
 		thermoM(0.8);
-		
+
 		//now call the dialog and do something with the results if OK was pressed
 		var diaResult = app.execDialog(dia);
 		if (diaResult == "cancel") {
@@ -3142,7 +3142,7 @@ function AskUserSpellSheet() {
 			return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 		} else {
 			thermoTxt = thermoM("Processing the " + spCast.name + " dialog...", false); //change the progress dialog text
-			
+
 			spCast.typeSp = dia.typeSp;
 			if (dia.showCa) {
 				spCast.selectCa = dia.selectCa;
@@ -3173,7 +3173,7 @@ function AskUserSpellSheet() {
 				for (var i = 0; i < loopEnd; i++) {
 					var spBonusi = loop ? spCast.bonus[bKey][i] : spCast.bonus[bKey];
 					spBonusi.selection = [];
-					
+
 					var iterate = !spBonusi.times ? 1 : isArray(spBonusi.times) ? spBonusi.times[Math.min(spBonusi.times.length, spCast.level) - 1] : spBonusi.times; //if we have to apply this thing multiple times, do so
 					for (var y = 1; y <= iterate; y++) {
 						if (BonusSpecialActions.prepared[boNmr]) spCast.special.prepared.push(dia.selectBo[boNmr]); //those that are autoprepared for referencing it later
@@ -3197,17 +3197,17 @@ function AskUserSpellSheet() {
 			} else {
 				delete spCast.extraBo;
 			};
-			
+
 			//if the previous button was pressed, go back one iteration
 			if (diaResult == "prev") {
 				theI -= 2;
 				continue;
 			};
-			
+
 			//if it was selected to go set more spells in the spellbook or there are already more spells in the spellbook, open the spellbook dialog now
 			if (dia.SpBook || spCast.selectSpSB) {
 				thermoTxt = thermoM("Opening the " + spCast.name + " Spellbook dialog...", false); //change the progress dialog text
-				
+
 				// cut the extra spellbook spells into different chunks of 80
 				var SBextras = [];
 				if (spCast.selectSpSB) {
@@ -3215,12 +3215,12 @@ function AskUserSpellSheet() {
 						SBextras.push(spCast.selectSpSB.slice(si, si + 80));
 					};
 				};
-				
+
 				var diaSB = SpellBookSelect_Dialog;
 				diaSB.listSp = dia.listSp;
 				diaSB.fullname = dia.fullname;
 				var diaSBi = 0;
-				
+
 				// call the dialogue, and keep on calling more if more spells need to be added to the spellbook
 				do {
 					diaSB.iteration = (diaSBi + 1) + "/" + Math.max(diaSBi + 1, SBextras.length, 1);
@@ -3229,7 +3229,7 @@ function AskUserSpellSheet() {
 					var diaSBResult = app.execDialog(diaSB);
 					// now replace the SBextras entry with the new diaSB.selectSp
 					SBextras[diaSBi] = diaSB.selectSp;
-					
+
 					switch (diaSBResult) {
 						case "cancel" :
 							var contDiaSB = false;
@@ -3254,7 +3254,7 @@ function AskUserSpellSheet() {
 					};
 				}
 				while (contDiaSB);
-				
+
 				// now add all the spells selected in the spellbook dialogues to a single array, together with the spells selected in the original dialogue, sort them, and add them back into the proper places
 				SBextras = [].concat.apply([], SBextras);
 				var totalSelectSp = OrderSpells(spCast.selectSp.concat(SBextras), "single");
@@ -3264,7 +3264,7 @@ function AskUserSpellSheet() {
 				} else {
 					delete spCast.selectSpSB;
 				};
-				
+
 				// now if the spellbook dialogue was cancelled, do not continue with the rest of the function
 				if (diaSBResult == "cancel") {
 					SetStringifieds("spells");
@@ -3273,19 +3273,19 @@ function AskUserSpellSheet() {
 					continue;
 				};
 			};
-			
+
 			//now ask for the spells to prepare, if so selected in the radio buttons
 			if (spCast.typeList && spCast.typeList === 3) {
 				thermoTxt = thermoM("Opening the " + spCast.name + " prepared spell selection dialog...", false); //change the progress dialog text
-				
+
 				//make a new object for this
 				var diaPrep = SpellsPrepared_Dialog;
 				diaPrep.fullname = dia.fullname;
-				
+
 				//determine how many spells can be prepared
 				diaPrep.nmbrPrep = PrepLevel;
 				diaPrep.ability = spCast.ability;
-				
+
 				//make the array of spells that the preparations can come from
 				if (spCast.selectSp) {
 					var selectedSpells = spCast.selectSp;
@@ -3302,11 +3302,11 @@ function AskUserSpellSheet() {
 					}
 				};
 				diaPrep.listSp = CreateSpellObject(listPrepRef); //create the spells popup object
-				
+
 				//set the previously selected spells and the offset, if any was defined
 				diaPrep.selectSp = spCast.selectPrep ? spCast.selectPrep : [];
 				diaPrep.offsetSp = spCast.blueTxt && spCast.blueTxt.prep ? spCast.blueTxt.prep : 0;
-				
+
 				//call the dialog and do something with the results
 				if (app.execDialog(diaPrep) !== "ok") {
 					SetStringifieds("spells");
@@ -3330,7 +3330,7 @@ function AskUserSpellSheet() {
 	if (classesArray.length > 0) {
 		// Make the process bar show some text now, because the last thing shown before a dialog is shown is what is left during the spell sheet generation process
 		var thermoTxt = thermoM("Generating the Spell Sheet(s), Acrobat will be unresponsive for a long time..."); //change the progress dialog text
-		
+
 		//first see how the lists are doing
 		if (!CurrentCasters.excl && !CurrentCasters.incl) { //no list exists yet, so lets make one
 			CurrentCasters.excl = [];
@@ -3348,7 +3348,7 @@ function AskUserSpellSheet() {
 					i = i - 1;
 				}
 			}
-			
+
 			//now see if all of the ones we know are accounted for; if not found, add it to the included array
 			for (var i = 0; i < classesArray.length; i++) {
 				if (CurrentCasters.incl.indexOf(classesArray[i]) === -1 && CurrentCasters.excl.indexOf(classesArray[i]) === -1) CurrentCasters.incl.push(classesArray[i]);
@@ -3358,7 +3358,7 @@ function AskUserSpellSheet() {
 		if (CurrentCasters.glossary === undefined) {
 			CurrentCasters.glossary = false;
 		}
-		
+
 		//convert the incl and excl CurrentSpells arrays to their named counterparts
 		var exclNames = [];
 		var inclNames = [];
@@ -3368,7 +3368,7 @@ function AskUserSpellSheet() {
 		for (var i = 0; i < CurrentCasters.incl.length; i++) {
 			inclNames.push(CurrentSpells[CurrentCasters.incl[i]].name);
 		}
-		
+
 		//now add them to the dialog and let the user make a decision
 		SpellSheetOrder_Dialog.bExcL = exclNames;
 		SpellSheetOrder_Dialog.bIncL = inclNames;
@@ -3378,7 +3378,7 @@ function AskUserSpellSheet() {
 		} else {
 			var exclList = SpellSheetOrder_Dialog.bExcL;
 			var inclList = SpellSheetOrder_Dialog.bIncL;
-			
+
 			//now convert the IncL and ExcL SpellSheetOrder_Dialog array to their keyed counterparts
 			for (var aCast in CurrentSpells) {
 				var CSname = CurrentSpells[aCast].name;
@@ -3390,7 +3390,7 @@ function AskUserSpellSheet() {
 					inclList[inIncl] = aCast;
 				}
 			}
-			
+
 			//and put the two arrays back into the document level variable CurrentSpells
 			CurrentCasters.excl = exclList;
 			CurrentCasters.incl = inclList;
@@ -3433,16 +3433,16 @@ function GenerateSpellSheet(GoOn) {
 
 	//then we remove all the existing sheets (if any)
 	RemoveSpellSheets();
-	
+
 	thermoM(2/(CurrentCasters.incl.length + 3)); //increment the progress dialog's progress
-	
+
 	var lineMax = FieldNumbers.spells[0]; //set the maximum we can go on this sheet
 	var lineCurrent = 0; //set the current line on the Spell Sheet
 	var headerCurrent = 0; //set the current header on the Spell Sheet
 	var dividerCurrent = 0; //set the current divider on the Spell Sheet
 	var prefixCurrent = ""; //set the current prefix on the Spell Sheet
 	var SSfront = false; //set the state of on which Spell Sheet we are working
-	
+
 	//define a function for adding a new page
 	var SpellPages = 1;
 	var AddPage = function() {
@@ -3456,12 +3456,12 @@ function GenerateSpellSheet(GoOn) {
 		dividerCurrent = 0;
 		SSfront = false;
 	};
-	
+
 	//now use the newly acquired CurrentSpells information to make a Spell Sheet addition for every entry in the included list
 	var isFirst = 0;
 	for (var i = 0; i < CurrentCasters.incl.length; i++) {
 		var spCast = CurrentSpells[CurrentCasters.incl[i]];
-		
+
 		//get a list of all the spells to put on the Spell Sheet
 		var fullSpellList = [];
 		if (spCast.selectCa) fullSpellList = fullSpellList.concat(spCast.selectCa); //add the cantrips
@@ -3472,7 +3472,7 @@ function GenerateSpellSheet(GoOn) {
 			if (spCast.selectSpSB) fullSpellList = fullSpellList.concat(spCast.selectSpSB); //add the spells from the extra spellbook dialog
 		}
 		if (spCast.selectBo) fullSpellList = fullSpellList.concat(spCast.selectBo); //add the bonus spells
-		
+
 		var alwaysPrepared = spCast.special ? spCast.special.prepared : []; //make an array of spells that are considered always prepared, starting with the bonus spells that have that flag
 		var atwillArray = spCast.special ? spCast.special.atwill : [];
 		var oncelrArray = spCast.special ? spCast.special.oncelr : [];
@@ -3487,11 +3487,11 @@ function GenerateSpellSheet(GoOn) {
 		} else if (spCast.extra && spCast.typeList === 4) {
 			addToFullList = true;
 		};
-		
+
 		var knownSpells = fullSpellList; //put the total list of selected spells here for safekeeping before we add more to this list
-		
+
 		if (addToFullList) fullSpellList = fullSpellList.concat(spCast.extra); //add the extra spells if there are extra to choose from, but not auto known/prepared
-		
+
 		//now add the general list, if chosen to do the full class list or if this is a 'list' spellcaster that didn't chose to only do the prepared spells
 		if (spCast.typeList === 4 || (spCast.typeSp === "list" && spCast.typeList !== 3)) {
 			var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
@@ -3503,7 +3503,7 @@ function GenerateSpellSheet(GoOn) {
 				delete spCast.list.level;
 			}
 		};
-		
+
 		//now see if we have any spells to add to the spell sheet for this class. If not, skip this class
 		var testArray = removeEmptyValues(fullSpellList);
 		if (testArray.length === 0) {
@@ -3512,9 +3512,9 @@ function GenerateSpellSheet(GoOn) {
 		};
 
 		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : spCast.typeList === 4 || (/race|feat/i).test(spCast.typeSp) ? "##kn" : "##"; //add "Me" or "Kn" to the name or not?
-		
+
 		var orderedSpellList = OrderSpells(fullSpellList, "multi", true); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
-		
+
 		//see if we need to stop short of doing all the spells
 		var maxLvl = 9;
 		if (spCast.level && spCast.typeList !== 2 && spCast.typeList !== 4) {
@@ -3528,12 +3528,12 @@ function GenerateSpellSheet(GoOn) {
 				maxLvl = Number(maxSpell === -1 ? 9 : maxSpell);
 			};
 		};
-		
+
 		if (i === isFirst) {
 			SSfront = true;
 			prefixCurrent = DoTemplate("SSfront", "Add"); //for the first entry we need to make the template
 		};
-		
+
 		//now sort each of those new arrays and put them on the sheet
 		var start = true;
 		var isPsionics = "";
@@ -3547,7 +3547,7 @@ function GenerateSpellSheet(GoOn) {
 				// so 3 (divider + title line) + 4 (header, if applicable) + lowest of [10, arrayLength]
 				var needSpace = 3 + (start ? 4 : 0) + Math.min(10, spArray.length);
 				if (needSpace > (lineMax - lineCurrent + 1)) AddPage();
-				
+
 				//the first spells to add needs a header in front of it
 				if (start) {
 					if (lineCurrent === 0 && SSfront) {
@@ -3559,7 +3559,7 @@ function GenerateSpellSheet(GoOn) {
 					headerCurrent += 1;
 					start = false;
 				}
-				
+
 				//then add the divider
 				if (lineCurrent === 0 && SSfront) {
 					SetSpellSheetElement(prefixCurrent + "spells.remember.0", "divider", 0, lvl, false);
@@ -3568,11 +3568,11 @@ function GenerateSpellSheet(GoOn) {
 					lineCurrent += 2;
 				}
 				dividerCurrent += 1;
-				
+
 				//then add the title line
 				Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + ((lvl === 0 || lvl === 10) && spCast.typeList === 4 ? "##kn" : MeKn));
 				lineCurrent += 1;
-				
+
 				for (var y = 0; y < spArray.length; y++) {
 					aSpell = spArray[y];
 					//check if not at the end of the page and, if so, create a new page
@@ -3603,10 +3603,10 @@ function GenerateSpellSheet(GoOn) {
 				MeKn = spCast.firstCol ? "##" + spCast.firstCol : "##pp";
 			}
 		}
-		
+
 		thermoM((2 + 1)/(CurrentCasters.incl.length + 3)); //increment the progress dialog's progress
 	}
-		
+
 	//after the end of the last run, add a glossary, if so selected
 	if (CurrentCasters.glossary) {
 		if ((lineCurrent + 11) > lineMax) AddPage();
@@ -3639,7 +3639,7 @@ function MakeSpellMenu() {
 	//see if the Spell Sheets are visible
 	var SSvisible = What("Template.extras.SSfront") !== "" || What("Template.extras.SSmore") !== "";
 	var SSmultiple = What("Template.extras.SSmore").split(",").length > 2 || (What("Template.extras.SSfront") !== "" && What("Template.extras.SSmore") !== "");
-	
+
 	//make a list of all the spell sources
 	var SpellSourcesArray = [];
 	var SpellSourcesCheck = [];
@@ -3651,7 +3651,7 @@ function MakeSpellMenu() {
 			SpellSourcesArray.push([SourceList[aSpellSource].name, aSpellSource]);
 		}
 	}
-	
+
 	//use the global variable of all spellcasting and psionic classes
 	var CasterClasses = [];
 	for (var i = 2; i < AllCasterClasses.length; i++) {
@@ -3671,14 +3671,14 @@ function MakeSpellMenu() {
 		["with all spells, sorted alphabetically", "alphabetical"],
 		["with all spells, sorted by level", "grouped by level"]
 	]);
-	
+
 	//see if their are any number of spellcasting things
 	var anyCasters = false;
 	for (var key in CurrentSpells) {
 		anyCasters = true;
 		break;
 	};
-	
+
 	var menuLVL2 = function (menu, name, array) {
 		var temp = [];
 		temp.cName = name[0];
@@ -3698,7 +3698,7 @@ function MakeSpellMenu() {
 		}
 		menu.push(temp);
 	};
-	
+
 	var spellsMenu = [];
 	//an option to generate a (new) spell sheet automatically
 	if (!tDoc.info.SpellsOnly) {
@@ -3708,10 +3708,10 @@ function MakeSpellMenu() {
 			bEnabled : anyCasters
 		});
 	}
-	
+
 	//an option to generate a 'complete' spell sheet
 	menuLVL2(spellsMenu, [SSvisible ? "Replace Spell Sheets with 'Complete' Spell Sheet" : "Make a 'Complete' Spell Sheet", "complete"], CasterClasses);
-	
+
 	//an option to make an empty spell sheet
 	if (!tDoc.info.SpellsOnly) {
 		spellsMenu.push({
@@ -3728,7 +3728,7 @@ function MakeSpellMenu() {
 			}]
 		});
 	}
-	
+
 	//an option to add an extra empty page
 	if (SSvisible) {
 		spellsMenu.push({
@@ -3745,7 +3745,7 @@ function MakeSpellMenu() {
 			}]
 		});
 	}
-	
+
 	//options to delete the current pages
 	spellsMenu = spellsMenu.concat([{
 		cName : "-"
@@ -3765,16 +3765,16 @@ function MakeSpellMenu() {
 	}, {
 		cName : "-"
 	}]);
-	
+
 	//get the current state of where to show the Spell Slots
 	var RememberSlots = What("SpellSlotsRemember");
-	
+
 	if (!typePF && !tDoc.info.SpellsOnly) {
 		menuLVL2(spellsMenu, ["Where to show Spell Slots (Spell Points)", "slots"], [["On Spell Sheet", "[false,true]"], ["On first page (in Limited Features)", "[true,false]"], ["On both Spell Sheet and first page", "[true,true]"], ["-", "-"], ["Use Spell Points instead of Spell Slots", "[false,false]"]]);
 	} else if (tDoc.info.SpellsOnly) {
 		var slotsVisible = What("Template.extras.SSfront") ? isDisplay("P0.SSfront.SpellSlots.CheckboxesSet.lvl1") > 1 : false;
 		var spellPointsVis = What("Template.extras.SSfront") ? RememberSlots === "[false,false]" : false;
-		
+
 		//options to show/hide spell slot modifier fields
 		spellsMenu = spellsMenu.concat([{
 			cName : "Change the number of Spell Slot checkboxes",
@@ -3795,7 +3795,7 @@ function MakeSpellMenu() {
 			bMarked : RememberSlots === "[false,false]"
 		}]);
 	}
-	
+
 	Menus.spells = spellsMenu;
 };
 
@@ -3806,10 +3806,10 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 		//now call the menu
 		MenuSelection = getMenu("spells");
 	};
-	
+
 	//and do something with this menus results
 	if (!MenuSelection || MenuSelection[0] == "nothing") return;
-	
+
 	//see if the Spell Sheets are visible
 	var SSvisible = What("Template.extras.SSfront") !== "" || What("Template.extras.SSmore") !== "";
 	var SSmultiple = What("Template.extras.SSmore").split(",").length > 2 || (What("Template.extras.SSfront") !== "" && What("Template.extras.SSmore") !== "");
@@ -3829,7 +3829,7 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 		} else {
 			var goThrough = 4;
 		}
-		
+
 		if (goThrough === 4) {
 			if (SSvisible) RemoveSpellSheets();
 			var thePrefix = DoTemplate("SSfront", "Add");
@@ -3966,7 +3966,7 @@ function ParseSpellMenu() {
 		}
 		menu.oSubMenu.push(classTemp);
 	}
-	
+
 	var amendMenu = function(theMenu, nameChange, extraReturn) {
 		theMenu.cName = nameChange;
 		for (var a = 0; a < theMenu.oSubMenu.length; a++) {
@@ -3980,7 +3980,7 @@ function ParseSpellMenu() {
 			}
 		}
 	}
-	
+
 	var allSpellCasters = [
 		"any",
 		"-",
@@ -3994,7 +3994,7 @@ function ParseSpellMenu() {
 		"wizard",
 		"-"
 	];
-	
+
 	var moreSpellCasters = [];
 	for (var aClass in ClassList) {
 		if (aClass === "rangerua") continue;
@@ -4008,17 +4008,17 @@ function ParseSpellMenu() {
 			}
 		}
 	};
-	
+
 	moreSpellCasters.sort();
 	allSpellCasters = allSpellCasters.concat(moreSpellCasters);
-	
+
 	//now see if this newly created list matches the known caster classes
 	if (AllCasterClasses && AllCasterClasses.toSource() === allSpellCasters.toSource()) {
 		return AddSpellsMenu;
 	} else {
 		AllCasterClasses = allSpellCasters;
 	};
-	
+
 	var AllSpellsMenu = {cName : "without first column", oSubMenu : []};
 	for (var s = 0; s < allSpellCasters.length; s++) {
 		var aCast = allSpellCasters[s];
@@ -4029,26 +4029,26 @@ function ParseSpellMenu() {
 		}
 		var aCastClass = aObj && aObj.spellcastingList ? aObj.spellcastingList : {class : aCast, psionic : false};
 		var aCastName = aCast === "any" ? "All spells" : (aObj.fullname ? aObj.fullname : aObj.subname ? aObj.subname : aObj.name) + " spells";
-		
+
 		//get a list of all the spells in the class' spell list and sort it
 		var allSpells = CreateSpellList(aCastClass, false);
 		allSpells.sort();
-		
+
 		//now make an array with one array for each spell level
 		var spellsByLvl = OrderSpells(allSpells, "multi");
 		//and add the complete list to as the first of the by level array
 		spellsByLvl.unshift(allSpells);
-		
+
 		//now create amenu for this class and add it to the submenu array of AllSpellsMenu
 		createMenu(AllSpellsMenu, aCastName, spellsByLvl);
 	};
-	
+
 	//start an array of the different menus
 	var spellsMenuArray = [AllSpellsMenu];
-	
+
 	//now to do something that makes it possible to copy this object multiple times
 	var menuString = AllSpellsMenu.toSource();
-	
+
 	var menuExtraTypes = [
 		["with a Checkbox", "checkbox"],
 		["with an 'Always Prepared' Checkbox", "markedbox"],
@@ -4057,13 +4057,13 @@ function ParseSpellMenu() {
 		["with '1\u00D7 Short Rest'", "oncesr"],
 		["Ask me for the first column", "askuserinput"]
 	]
-	//add a menu with a changed name 
+	//add a menu with a changed name
 	for (var e = 0; e < menuExtraTypes.length; e++) {
 		var aMenu = eval(menuString);
 		amendMenu(aMenu, menuExtraTypes[e][0], menuExtraTypes[e][1]);
 		spellsMenuArray.push(aMenu);
 	}
-	
+
 	//return the newly formed array
 	return spellsMenuArray;
 }
@@ -4093,12 +4093,12 @@ function ParsePsionicsMenu() {
 		}
 		AllPsionicsMenu.push(classTemp);
 	}
-	
+
 	var allPsionicists = [
 		"any",
 		"-"
 	];
-	
+
 	var morePsionicists = [];
 	for (var aClass in ClassList) {
 		if (ClassList[aClass].spellcastingFactor && (/psionic/i).test(ClassList[aClass].spellcastingFactor)) {
@@ -4111,17 +4111,17 @@ function ParsePsionicsMenu() {
 			}
 		}
 	};
-	
+
 	morePsionicists.sort();
 	allPsionicists = allPsionicists.concat(morePsionicists);
-	
+
 	//now see if this newly created list matches the known caster classes
 	if (AllPsionicClasses && AllPsionicClasses.toSource() === allPsionicists.toSource()) {
 		return AddPsionicsMenu;
 	} else {
 		AllPsionicClasses = allPsionicists;
 	};
-	
+
 	var AllPsionicsMenu = [];
 	for (var s = 0; s < allPsionicists.length; s++) {
 		var aCast = allPsionicists[s];
@@ -4132,20 +4132,20 @@ function ParsePsionicsMenu() {
 		}
 		var aCastClass = aObj && aObj.spellcastingList ? aObj.spellcastingList : {class : aCast, psionic : true};
 		var aCastName = aCast === "any" ? "All psionic powers" : aObj.name + " psionic powers";
-		
+
 		//get a list of all the spells in the class' spell list and sort it
 		var allSpells = CreateSpellList(aCastClass, false);
 		allSpells.sort();
-		
+
 		//now make an array with one array for each spell level
 		var spellsByLvl = OrderSpells(allSpells, "multi");
 		//and add the complete list to as the first of the by level array
 		spellsByLvl.unshift(allSpells);
-		
+
 		//now create amenu for this class and add it to the submenu array of AllPsionicsMenu
 		createMenu(aCastName, spellsByLvl);
 	};
-	
+
 	//return the newly formed array
 	return AllPsionicsMenu;
 }
@@ -4183,7 +4183,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	var suffixHeader = findNextHeaderDivider(prefix, "header");
 	var suffixDivider = findNextHeaderDivider(prefix, "divider");
 	var addPsionics = AllPsionicsArray.length > 0;
-	
+
 	var menuLVL1 = function (menu, array) {
 		for (i = 0; i < array.length; i++) {
 			var isEnabled = true;
@@ -4211,7 +4211,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			});
 		}
 	};
-	
+
 	var menuLVL2 = function (menu, name, array) {
 		var isMarked = false;
 		var isEnabled = true;
@@ -4245,7 +4245,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		}
 		menu.push(temp);
 	};
-	
+
 	//make an array of the default options for lines
 	var lineTypes = [
 		["without first column", ""],
@@ -4266,29 +4266,29 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		["to '1\u00D7 Short Rest'", "oncesr"],
 		["Ask me for the first column", "askuserinput"]
 	];
-	
+
 	//now make the menu
 	var spellsLineMenu = [];
-	
+
 	//add the options for adding a spell
 	spellsLineMenu.push({cName : "Spell", oSubMenu : AddSpellsMenu});
 	if (addPsionics) spellsLineMenu.push({cName : "Psionic", oSubMenu : AddPsionicsMenu});
-	
+
 	//add an option to just set underscores
 	menuLVL2(spellsLineMenu, ["Empty Printable Line", "___"], lineTypes);
-	
+
 	//add the options for adding a caption line
 	var captionArray = [["with empty first column", ""], ["with 'Me' as first column (memorized)", "me"], ["with 'Kn' as first column (known)", "kn"], ["Ask me for the first column", "askuserinput"]];
 	if (addPsionics) captionArray.splice(3, 0, ["for Psionics", "psionicpp"]);
 	menuLVL2(spellsLineMenu, ["Column Captions", "setcaptions"], captionArray);
-	
+
 	spellsLineMenu.push({cName : "-"}); //add a divider
-	
+
 	//an option to only change the first column
 	menuLVL2(spellsLineMenu, ["Change the first column", "firstcolumn"], lineTypesTo);
-	
+
 	spellsLineMenu.push({cName : "-"}); //add a divider
-	
+
 	//add the options to adding a header
 	//make an array of all the 'classes' to choose from
 	var classHeaders = [];
@@ -4300,7 +4300,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	classHeaders.unshift(["Empty header without 'to prepare'", "nopreps"]); //add an option to add an empty one
 	classHeaders.unshift(["Empty header", ""]); //add an option to add an empty one
 	menuLVL2(spellsLineMenu, ["Class Header", "setheader"], classHeaders);
-	
+
 	//add the options for adding a divider
 	//make an array of all the spell levels to choose from
 	var dividersArray = [];
@@ -4311,30 +4311,30 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	}
 	if (!addPsionics) dividersArray.splice(-2,2);
 	menuLVL2(spellsLineMenu, ["Spell Level Divider", "setdivider"], dividersArray);
-	
+
 	//add the options for adding a glossary
 	menuLVL1(spellsLineMenu, [["Glossary of Abbreviations", "setglossary"]]);
-	
+
 	spellsLineMenu.push({cName : "-"}); //add a divider
-	
+
 	//add the options to move the line up or down
 	menuLVL1(spellsLineMenu, [["Move row up", "move up"], ["Move row down", "move down"]]);
 
 	spellsLineMenu.push({cName : "-"}); //add a divider
-	
+
 	//add the options to clear or delete the row
 	menuLVL1(spellsLineMenu, [["Clear row", "clear"], ["Delete row [slow]", "delete"]]);
-	
+
 	//add the options to insert empty row(s)
 	numberArray.push(["Ask me", "askuserinput"]);
 	menuLVL2(spellsLineMenu, ["Insert empty rows [slow]", "insert"], numberArray);
-	
+
 	Menus.spellsLine = spellsLineMenu;
-	
+
 	//now call the menu
 	var MenuSelection = getMenu("spellsLine");
 	if (!MenuSelection || MenuSelection[0] == "nothing") return;
-	
+
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying the spell line menu option...");
 	thermoM(0.5); // Increment the progress bar
@@ -4514,7 +4514,7 @@ function AskUserNumber(caption) {
 function deleteSpellRow(prefix, lineNmbr) {
 	//remove the content of the current row
 	tDoc.resetForm([prefix + "spells.remember." + lineNmbr]);
-	
+
 	//make an array of all the rows below this one on the sheet
 	var SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
@@ -4649,7 +4649,7 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 				emptyCount += 1;
 				if (emptyCount === toCheck) {
 					valuesArray.splice(-1 * emptyCount, emptyCount); //remove the last empty items
-					
+
 					resultRow = [SSmoreA[SS], L - emptyCount];
 					L = endRow + 1;
 					SS = SSmoreA.length;
@@ -4703,7 +4703,7 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 			}
 		}
 	}
-	
+
 	//remove all the empty values at the end of the array
 	var removeEmpties = function(array) {
 		if (array[array.length - 1] === "") {
@@ -4714,21 +4714,21 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 		};
 	};
 	removeEmpties(valuesArray);
-	
+
 	//see how many lines of values we need to add and if we need to add any pages for that
 	var theLastRow = resultRow ? resultRow : [SSmoreA[SSmoreA.length - 1], (SSmoreA.length === 1 ? FieldNumbers.spells[0] : FieldNumbers.spells[1]) - emptyCount];
 	if ((theLastRow[1] + toCheck) > (theLastRow[0].indexOf(".SSfront.") !== -1 ? FieldNumbers.spells[0] : FieldNumbers.spells[1])) {
 		extraPages += 1;
 	};
-	
+
 	//add the amount of extra pages that we need
 	for (var page = 1; page <= extraPages; page++) {
 		DoTemplate("SSmore", "Add");
 	};
-	
+
 	//if no values to any of the rows, just stop now
 	if (!valuesArray.length) return;
-	
+
 	//calculate at which page we start
 	var totalInserts = lineNmbr + toMove + valuesArray.length - 1;
 	var jumpPages = 0;
@@ -4745,18 +4745,18 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 		jumpPages += amountPages;
 		totalInserts -= amountPages; //compensate for the fact that a page starts at 0
 	};
-	
+
 	var startLine = totalInserts;
 	var startPage = thisSheet + jumpPages;
-	
+
 	//now update the array of spell pages
 	SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
 	if (!SSmoreA[0]) SSmoreA.shift();
-	
+
 	//then put all the values back, starting with the bottom row
 	var valuesCountdown = valuesArray.length - 1;
-	
+
 	for (var P = startPage; P >= thisSheet; P--) {
 		var nowPage = SSmoreA[P];
 		var nowStartLine = P === startPage ? startLine : (P === 0 ? FieldNumbers.spells[0] : FieldNumbers.spells[1]);
@@ -4835,7 +4835,7 @@ function HideSpellSheetElement(theTarget) {
 		var lineBase = tDoc.getField(base).submitName;
 		var startLine = parseFloat(lineBase.slice(-2)[0] === "." ? lineBase.slice(-1) : lineBase.slice(-2));
 		var endLine = startLine;
-		
+
 		switch(type) {
 		 case "header" :
 			var hideArray = headerArray;
@@ -4859,7 +4859,7 @@ function HideSpellSheetElement(theTarget) {
 		}
 		tDoc.resetForm(resetArray);
 		tDoc.getField(base).submitName = "";
-		
+
 	} else if (base === SSfrontPrefix + "spellshead.Text.header.0") {
 		//search the entry if it matches any of the CurrentSpells entries
 		var toSearch = What(base).toLowerCase();
@@ -4882,7 +4882,7 @@ function HideSpellSheetElement(theTarget) {
 		} else if (!toPrep) {
 			HideShow = "Hide";
 		}
-		
+
 		//show the prepared section or hide it, depending on the above
 		if (HideShow) {
 			tDoc[HideShow](headerArray[4]);
@@ -5022,18 +5022,18 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 
 	thermoM(0.1); //increment the progress dialog's progress
 	calcStop();
-	
+
 	thermoM(1/7); //increment the progress dialog's progress
-	
+
 	//then we remove all the existing sheets (if any)
 	RemoveSpellSheets();
-	
+
 	var lineMax = FieldNumbers.spells[0]; //set the maximum we can go on this sheet
 	var lineCurrent = 0; //set the current line on the Spell Sheet
 	var headerCurrent = 0; //set the current header on the Spell Sheet
 	var dividerCurrent = 0; //set the current divider on the Spell Sheet
 	var SSfront = true; //set the state of on which Spell Sheet we are working
-	
+
 	//define a function for adding a new page
 	var SpellPages = 1;
 	var AddPage = function() {
@@ -5048,9 +5048,9 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 		dividerCurrent = 0;
 		SSfront = false;
 	}
-	
+
 	//now we add all the spells of this single class into a new set of spell sheets
-	
+
 	//see if this is a prepared or known spell list
 	var isPrep = false;
 	if (ClassList[thisClass] && ClassList[thisClass].spellcastingKnown) {
@@ -5075,19 +5075,19 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 			spArray = addSpellDependencies(spArray);
 			spArray = spArray.concat(["___", "___", "___"]); //add three empty lines to the end of the level-array
 			var MeKn = isPsionics ? "##pp" : lvl === 0 ? "##Kn" : (isPrep ? "##Me" : "##Kn");
-			
+
 			//first test if there is enough space left on the current page to add what we need to
 			//assume that we need to add at least 10 of the spells, the total of this level of spells, whichever is less
 			// so 3 (divider + title line) + 4 (header, if applicable) + lowest of [10, arrayLength]
 			var needSpace = 3 + (start ? 4 : 0) + Math.min(10, spArray.length);
 			if (needSpace > (lineMax - lineCurrent + 1)) AddPage();
-			
+
 			//the first spells to add needs a header in front of it
 			if (start) {
 				SetSpellSheetElement(prefixCurrent + "spells.remember.0", "header", 0, thisClass, !isPrep);
 				start = false;
 			}
-			
+
 			//then add the divider
 			if (lineCurrent === 0 && SSfront) {
 				SetSpellSheetElement(prefixCurrent + "spells.remember.0", "divider", 0, lvl, false);
@@ -5096,11 +5096,11 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 				lineCurrent += 2;
 			}
 			dividerCurrent += 1;
-			
+
 			//then add the title line
 			Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + MeKn);
 			lineCurrent += 1;
-			
+
 			for (var y = 0; y < spArray.length; y++) {
 				aSpell = spArray[y];
 				//check if not at the end of the page and, if so, create a new page
@@ -5122,7 +5122,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 }
 
 //a way to hide the 'prepared' section on the first page of the spell sheet //if a "target" is given, assume it has to be hidden
-function MakePreparedMenu_PreparedOptions(target) {	
+function MakePreparedMenu_PreparedOptions(target) {
 	Menus.spellsPrepared = [{
 		cName : "Hide this prepared spells section",
 		cReturn : "removepreps"
@@ -5150,12 +5150,12 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	tDoc.getTemplate("remember").hidden = false;
 	tDoc.getTemplate("blank").hidden = false;
 	Value("Template.extras.SSfront", ",P0.SSfront.");
-	
+
 	//remove the saveIMG fields that are now useless
 	tDoc.removeField("SaveIMG.Faction");
 	tDoc.removeField("SaveIMG.ClassIcon");
 	tDoc.removeField("SaveIMG.ALicon");
-	
+
 	for (var i = 0; i <= 3; i++) {
 		this.getField("spellshead.prepare." + i).readonly = false;
 		this.getField("spellshead.attack." + i).readonly = false;
@@ -5185,7 +5185,7 @@ function ChangeToCompleteSpellSheet(thisClass) {
 	var keyPFR = "This Spell Sheet is an extraction from MPMB's Character Record Sheet [Printer Friendly - Redesign]. It follows the design idea of the official D&D 5e character sheet by Wizards of the Coast, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (mpmb@flapkan.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'.";
 
 	var keyCF = "This Spell Sheet is an extraction from MPMB's Character Record Sheet [" + tDoc.info.SheetType + "]. This sheet uses elements designed by Javier Aumente, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (mpmb@flapkan.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'."
-	
+
 	//move the pages that we want to extract to a new instance, by running code from a console
 	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 4});\n\n";
 	forConsole += "this.info.SpellsOnly = '" + thisClass + "';";
@@ -5230,27 +5230,27 @@ function CreateBkmrksCompleteSpellSheet() {
 
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady();", nIndex: 2});
 	tDoc.bookmarkRoot.children[0].children[2].color = ["RGB", 0.2823486328125, 0.1921539306640625, 0.478424072265625];
-	
+
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Unit System", cExpr: "SetUnitDecimals_Button();", nIndex: 3});
 	tDoc.bookmarkRoot.children[0].children[3].color = ["RGB",0.463,0.192,0.467];
-	
+
 	var NameBm = typePF ? "Set Highlight Color" : "Set Color Theme";
 	tDoc.bookmarkRoot.children[0].createChild({cName: NameBm, cExpr: "MakeColorMenu(); ColoryOptions();", nIndex: 4});
 	tDoc.bookmarkRoot.children[0].children[4].color = ["RGB", 0.5, 0.5, 0.5];
-	
+
 	tDoc.bookmarkRoot.children[0].createChild({cName: "Add Extra Materials", cExpr: "ImportScriptOptions();", nIndex: 5});
 
-	//make links bookmark section	
+	//make links bookmark section
 	tDoc.bookmarkRoot.createChild({cName: "Links", cExpr: "", nIndex: 1});
 	tDoc.bookmarkRoot.children[1].style = 2;
-	
+
 	tDoc.bookmarkRoot.children[1].createChild({cName: "Get Additional Content (Custom Scripts)", cExpr: "contactMPMB('additions');", nIndex: 0});
-	
+
 	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "contactMPMB('fullversion');", nIndex: 1});
-	
+
 	var NameLink = tDoc.info.SheetType === "Printer Friendly" ? "Get the Printer Friendly Redesign" : "Get the Latest Version";
 	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB('latestversion');", nIndex: 2});
-	
+
 	NameLink = typePF ? "Get the Colorful Design" : "Get the Printer Friendly Design";
 	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB('otherdesign');", nIndex: 3});
 	for (var c = 0; c < tDoc.bookmarkRoot.children[1].children.length; c++) tDoc.bookmarkRoot.children[1].children[c].style = 2;
@@ -5258,7 +5258,7 @@ function CreateBkmrksCompleteSpellSheet() {
 	//make FAQ bookmark section
 	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "getFAQ();", nIndex: 2});
 	tDoc.bookmarkRoot.children[2].style = 2;
-	
+
 	//make the contact bookmark section
 	tDoc.bookmarkRoot.createChild({cName: "Contact MPMB", cExpr: "contactMPMB('patreon');", nIndex: 3});
 	tDoc.bookmarkRoot.children[3].style = 2;
@@ -5269,7 +5269,7 @@ function CreateBkmrksCompleteSpellSheet() {
 	tDoc.bookmarkRoot.children[3].createChild({cName: "on Reddit", cExpr: "contactMPMB('reddit');", nIndex: 0});
 	tDoc.bookmarkRoot.children[3].createChild({cName: "on Twitter", cExpr: "contactMPMB('twitter');", nIndex: 0});
 	tDoc.bookmarkRoot.children[3].createChild({cName: "on Patreon", cExpr: "contactMPMB('patreon');", nIndex: 0});
-	
+
 	//make all bookmarks bold
 	for (var p = 0; p < tDoc.bookmarkRoot.children.length; p++) {
 		tDoc.bookmarkRoot.children[p].style = 2;
@@ -5293,13 +5293,13 @@ function ToggleSpellPoints() {
 		var ssNR = SPactive ? 0 : What("SpellSlots.CheckboxesSet.lvl" + i);
 		SetSpellSlotsCheckboxes(i, ssNR, true);
 	}
-	
+
 	//show/hide the BlueText fields for setting the spell slots
 	var SSfrontA = What("Template.extras.SSfront").split(",")[1];
 	var HideDontPrint = !SPactive && CurrentVars.bluetxt ? "DontPrint" : "Hide";
 	tDoc[HideDontPrint]("SpellSlots.CheckboxesSet");
 	if (SSfrontA) tDoc[HideDontPrint](SSfrontA + "SpellSlots.CheckboxesSet");
-	
+
 	//show/hide the spell points image and checkboxes
 	var ShowHide = SPactive ? "Show" : "Hide";
 	tDoc[ShowHide]("Image.SpellPoints");
@@ -5308,12 +5308,12 @@ function ToggleSpellPoints() {
 		tDoc[ShowHide](SSfrontA + "Image.SpellPoints");
 		tDoc[ShowHide](SSfrontA + "SpellSlots.Checkboxes.SpellPoints");
 	}
-	
+
 	// add or remove the limited feature
 	SpellPointsLimFea(SPactive ? "Add" : "Remove");
-	
+
 	Value("SpellSlotsRemember", SPactive ? "[false,false]" : "[true,true]");
-	
+
 	if (SPactive) ShowSpellPointInfo();
 };
 
@@ -5465,18 +5465,18 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 
 	thermoM(0.1); //increment the progress dialog's progress
 	calcStop();
-	
+
 	thermoM(1/7); //increment the progress dialog's progress
 
 	//then we remove all the existing sheets (if any)
 	RemoveSpellSheets(true);
-	
+
 	var lineMax = FieldNumbers.spells[1]; //set the maximum we can go on this sheet
 	var lineCurrent = 0; //set the current line on the Spell Sheet
 	var headerCurrent = 0; //set the current header on the Spell Sheet
 	var dividerCurrent = 0; //set the current divider on the Spell Sheet
 	var SSfront = true; //set the state of on which Spell Sheet we are working
-	
+
 	//define a function for adding a new page
 	var SpellPages = 1;
 	var AddPage = function() {
@@ -5491,12 +5491,12 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 		dividerCurrent = 0;
 		SSfront = false;
 	}
-	
+
 	//now we add all the spells of this single class into a new set of spell sheets
-	
+
 	//get an array of all the spells of the class, divided up in 1 array per spell level
 	var fullSpellList = CreateSpellList("any", false, false, true);
-	
+
 	//now if this is an alphabetical list, we want to combine the arrays 1-9 into a single array
 	if (alphabetical) {
 		var orderedSpellList = new Array(12);
@@ -5507,12 +5507,12 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 	} else {
 		var orderedSpellList = fullSpellList;
 	}
-		
+
 	//for the first entry we need to make the template SSfront appear
 	var prefixCurrent = tDoc.info.SpellsOnly ? "P0.SSmore." : DoTemplate("SSmore", "Add"); //set the current prefix on the Spell Sheet
-	
+
 	thermoTxt = thermoM("Filling out page 1 of the Spell Sheet...", false); //change the progress dialog text
-	
+
 	//now sort each of those new arrays and put them on the sheet
 	for (var lvl = 0; lvl < orderedSpellList.length; lvl++) {
 		var spArray = orderedSpellList[lvl];
@@ -5520,25 +5520,25 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 		if (spArray && spArray.length > 0) {
 			//add spell dependencies to fill out the array
 			spArray = addSpellDependencies(spArray);
-			
+
 			//first test if there is enough space left on the current page to add what we need to
 			//assume that we need to add at least 5 of the spells, the total of this level of spells, whichever is less
 			// so 3 (divider + title line) + lowest of [5, arrayLength]
 			var needSpace = 3 + Math.min(5, spArray.length);
 			if (needSpace > (lineMax - lineCurrent + 1)) AddPage();
-			
+
 			//then add the divider
 			//if this is an alphabetical list, we want only four headers: "cantrips", "spells", "talents", "disciplines"
 			var divLevel = !alphabetical || isPsionics || !lvl ? lvl : 12;
 			Value(prefixCurrent + "spells.remember." + lineCurrent, "setdivider##" + divLevel + "##" + dividerCurrent);
 			lineCurrent += 2;
 			dividerCurrent += 1;
-			
+
 			//then add the title line
 			var firstCol = isPsionics && lvl === 11 ? "##pp" : !isPsionics && alphabetical && lvl ? "##lv" : "";
 			Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + firstCol);
 			lineCurrent += 1;
-			
+
 			for (var y = 0; y < spArray.length; y++) {
 				aSpell = spArray[y];
 				//check if not at the end of the page and, if so, create a new page
@@ -5555,7 +5555,7 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 		Value(prefixCurrent + "spells.remember." + lineCurrent, "setglossary");
 	};
 	//set the focus to the top of the spell sheets
-	tDoc.getField(What("Template.extras.SSmore").split(",")[1] + BookMarkList["SSmore"]).setFocus(); 
+	tDoc.getField(What("Template.extras.SSmore").split(",")[1] + BookMarkList["SSmore"]).setFocus();
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 

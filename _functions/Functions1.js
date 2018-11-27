@@ -54,7 +54,7 @@ function MakeButtons() {
 				cLabel : "Text"
 			});
 		}
-		
+
 		if (!minVer) {
 			app.addToolButton({
 				cName : "ClassesButton",
@@ -109,7 +109,7 @@ function MakeButtons() {
 				cLabel : "Spells"
 			});
 		}
-		
+
 		if (!minVer) {
 			app.addToolButton({
 				cName : "AdventureLeagueButton",
@@ -289,7 +289,7 @@ function RemoveTooltips() {
 	};
 	AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
 	AddTooltip("Background Extra", "First fill out a background in the field to the left.\n\nOnce a background is recognized that offers additional options, those additional options will be displayed here. For example, the \"Origin\" for the \"Outlander\" background.");
-	
+
 /* UPDATED
  	// now call to update the tooltips with the new empty global variables
 	UpdateTooltips();
@@ -405,9 +405,9 @@ function ToggleWhiteout(toggle) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM((nowWhat ? "Hide" : "Show") + " the text lines for mult-line fields...");
 	calcStop();
-	
+
 	MakeMobileReady(false); // Undo flatten, if needed
-	
+
 	// Add the fields for all the template pages into an array
 	var compTemps = What("Template.extras.AScomp").split(","); // so include the ""
 	var noteTemps = What("Template.extras.ASnotes").split(",").splice(1);
@@ -457,14 +457,14 @@ function ResetAll(GoOn, noTempl) {
 	var thermoTxt = thermoM("Resetting the sheet" + (GoOn ? ' "' + tDoc.documentFileName + '"' : '') + "...");
 	calcStop(true);
 	IsNotReset = false;
-	
+
 	//make a variable of the current state of location columns in the equipment sections
 	var locColumns = What("Gear Location Remember").split(",");
 
 	MakeMobileReady(false); // Undo flatten, if needed
-	
+
 	thermoM(1/9); //increment the progress dialog's progress
-	
+
 	//delete any extra templates and make any template that is invisible, visible
 	RemoveSpellSheets(); //first do all the Spell Sheets
 	var defaultShowTempl = ["ASfront", "ASbackgr", "PRsheet"];
@@ -473,7 +473,7 @@ function ResetAll(GoOn, noTempl) {
 		//first see if the template is visible
 		var isTempVisible = isTemplVis(R);
 		var tempExtras = What("Template.extras." + R);
-		
+
 		//if invisible, and one of the defaultShowTempl, make it visible
 		if (!isTempVisible && defaultShowTempl.indexOf(R) !== -1) {
 			DoTemplate(R, "Add");
@@ -485,11 +485,11 @@ function ResetAll(GoOn, noTempl) {
 	};
 	// Reset the calculation order
 	setCalcOrder();
-	
+
 	setListsUnitSystem("imperial"); //reset the values of some variables to the right unit system
-	
+
 	thermoM(2/9); //increment the progress dialog's progress
-	
+
 	//reset of all the form field values
 	tDoc.resetForm(["Wildshape.Race", "Race", "Class and Levels", "Background", "Comp.Race"]);
 	thermoM(3/9); //increment the progress dialog's progress
@@ -503,7 +503,7 @@ function ResetAll(GoOn, noTempl) {
 	tDoc.getField("Character Level").submitName = 0;
 	tDoc.resetForm();
 	thermoM(4/9); //increment the progress dialog's progress
-	
+
 	//Reset the color scheme to red
 	setColorThemes();
 	thermoM(5/9); //increment the progress dialog's progress
@@ -524,7 +524,7 @@ function ResetAll(GoOn, noTempl) {
 	CurrentBackground = {};
 	CurrentCompRace = {};
 	GetStringifieds(keepImports);
-	
+
 	if (keepImports) { // remove the imports and reset the sources
 		SetStringifieds("sources");
 		SetStringifieds("scriptfiles");
@@ -561,24 +561,24 @@ function ResetAll(GoOn, noTempl) {
 	UpdateALdateFormat();
 	DnDlogo();
 	thermoM(7/9); //increment the progress dialog's progress
-	
+
 	//Reset portrait & symbol to original blank
 	ClearIcons("HeaderIcon", true);
 	ClearIcons("AdvLog.HeaderIcon", true);
 	ClearIcons("Portrait", true);
 	ClearIcons("Symbol", true);
 	ClearIcons("Comp.img.Portrait", true);
-	
+
 	//re-apply the rich text (deleted because of resetting the form fields)
 	MakeSkillsMenu_SkillsOptions(["go", "alphabeta"]);
 	AddTooltip("Text.SkillsNames", "alphabeta");
 	SetRichTextFields();
-	
+
 	//Set the initial state of the Ability Save DC number 2
 	Toggle2ndAbilityDC("hide");
-	
+
 	thermoM(8/9); //increment the progress dialog's progress
-	
+
 	//generate an instance of the AScomp and ASnotes templates
 	if (!noTempl) {
 		DoTemplate("AScomp", "Add");
@@ -586,7 +586,7 @@ function ResetAll(GoOn, noTempl) {
 	};
 	// now move the focus to the first page
 	tDoc.getField(BookMarkList["CSfront"]).setFocus();
-	
+
 	// Set global variable to reflect end of reset
 	IsNotReset = true;
 	InitializeEverything(true, true);
@@ -645,7 +645,7 @@ function ToggleTextSize(size) {
 				prefix + "Cnote.Right"
 			]);
 		}
-		
+
 		//add the lines for all the notes pages
 		var noteTemps = What("Template.extras.ASnotes").split(",");
 		for (var T = 0; T < noteTemps.length; T++) {
@@ -655,7 +655,7 @@ function ToggleTextSize(size) {
 				prefix + "Notes.Right"
 			]);
 		}
-		
+
 		//add the lines for all the wild shapes pages
 		var wildTemps = What("Template.extras.WSfront").split(",");
 		for (var T = 0; T < wildTemps.length; T++) {
@@ -670,7 +670,7 @@ function ToggleTextSize(size) {
 	} else {
 		var LinesFld = []
 	}
-		
+
 	//add the lines for all the logsheet pages
 	var logTemps = What("Template.extras.ALlog").split(",");
 	for (var T = 0; T < logTemps.length; T++) {
@@ -679,7 +679,7 @@ function ToggleTextSize(size) {
 			LinesFld.push(prefix + "AdvLog." + L + ".notes");
 		}
 	}
-		
+
 	for (var i = 0; i < LinesFld.length; i++) {
 		tDoc.getField(LinesFld[i]).textSize = fontSize;
 		thermoM((i+1)/LinesFld.length); // Increment the progress bar
@@ -735,7 +735,7 @@ function LayerVisibilityOptions(showMenu, useSelect) {
 	Value("Extra.Layers Remember", selection);
 	var LNotesFlds = [
 		"Text.Header.Notes.Left",
-		"Extra.Notes",			
+		"Extra.Notes",
 	];
 	var HideShowLNotesFlds = "Hide";
 	var LRulesFlds = [
@@ -770,7 +770,7 @@ function LayerVisibilityOptions(showMenu, useSelect) {
 		REquipFlds.push("Extra.Gear Amount " + i);
 		REquipFlds.push("Extra.Gear Weight " + i);
 	};
-	
+
 	// Hide/show the whiteout fields on the right and left side depending on the visible layer and the settings of text line visibility
 	if (CurrentVars.whiteout && selection[0] === "notes") {
 		Show("Extra.Notes Whiteout");
@@ -854,7 +854,7 @@ function ToggleAttacks(Toggle) {
 		tDoc[VisibleHidden]("Attack." + i + ".Mod");
 		thermoM(i/incr); //increment the progress dialog's progress
 	}
-	
+
 	for (var T = 0; T < compTemps.length; T++) {
 		for (var i = 1; i <= 3; i++) {
 			var prefix = compTemps[T];
@@ -868,7 +868,7 @@ function ToggleAttacks(Toggle) {
 		}
 		tDoc[VisibleHidden](prefix + "Attack.Titles");
 	}
-	
+
 	if (CurrentVars.bluetxt) {
 		tDoc[NoPrintHidden]("BlueText.Attack");
 		for (var T = 0; T < compTemps.length; T++) {
@@ -958,14 +958,14 @@ function ToggleBlueText(toggle) {
 		"AmmoRightDisplay.WeightText",
 		"AmmoRightDisplay.Weight"
 	];
-	
+
 	if (typePF) {
 		BlueTxt.push("Init Bonus");
 		BlueTxt.push("Comp.Use.Combat.Init.Bonus");
 		BlueTxt.push("AC Stealth Disadvantage");
 		BlueTxt.push("AC Stealth Disadvantage Title");
 	}
-	
+
 	//add the fields for all the companion template pages into the array
 	var compTemps = What("Template.extras.AScomp").split(",");
 	compTemps.splice(compTemps.indexOf(""), 1);
@@ -975,17 +975,17 @@ function ToggleBlueText(toggle) {
 			BlueTxt.push(compTemps[T] + "Comp.Use.Combat.Init.Bonus");
 		}
 	}
-	
+
 	for (var i = 0; i < BlueTxt.length; i++) {
 		tDoc[HiddenNoPrint](BlueTxt[i]);
 		thermoM(i/(BlueTxt.length + 7)); //increment the progress dialog's progress
 	};
-	
+
 	//only show the modifier "Spell DC 2 Bonus" if the second spell DC is actually visible
 	if (HiddenNoPrint === "Hide" || tDoc.getField("ShowHide 2nd DC").buttonGetCaption() === "Hide 2nd DC") {
 		tDoc[HiddenNoPrint]("Spell DC 2 Bonus");
 	}
-	
+
 	//undo the showing of certain blue text fields depending on the manual settings
 	if (What("Manual Attack Remember") !== "No") {
 		Hide("BlueText.Attack");
@@ -994,13 +994,13 @@ function ToggleBlueText(toggle) {
 			Hide(compTemps[T] + "BlueText.Comp.Use.Attack");
 		}
 	};
-	
+
 	//because of the above, some fields may be hidden even though they should be visible
 	for (var i = 1; i <= FieldNumbers.attacks; i++) {
 		tDoc[HiddenNoPrint]("BlueText.Attack." + i + ".Weight Title");
 		tDoc[HiddenNoPrint]("BlueText.Attack." + i + ".Weight");
 	};
-	
+
 	//show the spellslots bluetext fields or hide them
 	var SSarray = What("Template.extras.SSfront").split(",");
 	var SSvisible = SSarray.length > 1;
@@ -1019,7 +1019,7 @@ function ToggleBlueText(toggle) {
 			tDoc[HiddenNoPrint](SSpresuffix[e][0] + "SpellSlots.CheckboxesSet.lvl" + i + SSpresuffix[e][1]);
 		};
 	};
-	
+
 	for (var i = 1; i <= FieldNumbers.magicitems; i++) {
 		if (!typePF) {
 			tDoc[HiddenNoPrint]("Extra.Magic Item Weight Title " + i);
@@ -1030,7 +1030,7 @@ function ToggleBlueText(toggle) {
 	if (typePF) {
 		tDoc[HiddenNoPrint]("Extra.Magic Item Weight Title");
 	};
-	
+
 	//now go through all the spell sheets and show the correct blueText fields
 	SSarray = SSarray.concat(What("Template.extras.SSmore").split(","));
 	if (HiddenNoPrint === "DontPrint") Hide("BlueText.spellshead"); //first hide all the bluetext fields of the spell sheet templates
@@ -1079,12 +1079,12 @@ function MakeAdventureLeagueMenu() {
 	var submenuItems = [
 		["Set the HP on the 1st page to automatically use fixed values", "hp", tDoc.getField("HP Max").submitName.split(",")[3] === "fixed"], // 0
 		["Show DCI field on 1st page", "dci", isDisplay("DCI.Text") === display.visible] // 1
-	].concat(typePF ? 
+	].concat(typePF ?
 		[["Show Renown on the Background page", "renown", isDisplay("Background_Renown.Text") === display.visible]] : // 2
 		[["Remove DMG actions from 1st page (not legal in AL play)", "actions", true]] // 2
 	).concat([
 		[typePF ? "Show space for Faction Rank on the Background page" : "Show space for Faction, Faction Rank, and Renown on the Background page", "factionrank", isDisplay("Background_FactionRank.Text") === display.visible], // 3
-	]).concat(typePF ? 
+	]).concat(typePF ?
 		[["Mark actions on the Player Reference page that are not legal in AL play", "asterisks", isDisplay("Text.PRsheet.AL.asterisk") === display.visible]] : //4
 		[]
 	).concat([
@@ -1095,7 +1095,7 @@ function MakeAdventureLeagueMenu() {
 		["Prepare the sheet for Adventurers League play (i.e. do all of the above)", "all#1", false], // 9
 		["Undo all of those marked above", "all#0", false] // 10
 	]);
-	
+
 	if (!typePF) {
 		for (var i = 1; i <= FieldNumbers.trueactions; i++) {
 			if ((/^(?=.*overrun)(?=.*tumble).*$/i).test(What("Action " + i))) {
@@ -1104,7 +1104,7 @@ function MakeAdventureLeagueMenu() {
 			};
 		};
 	};
-	
+
 	var AdvLeagueMenu = [];
 	for (i = 0; i < submenuItems.length; i++) {
 		AdvLeagueMenu.push({
@@ -1113,9 +1113,9 @@ function MakeAdventureLeagueMenu() {
 			bMarked : submenuItems[i][2]
 		});
 	};
-	
+
 	Menus.adventureLeague = AdvLeagueMenu;
-	
+
 	tDoc.getField("League Remember").submitName = submenuItems.slice(0,4).every(function(theN) { return theN[2]; }) ? 1 : 0;
 };
 
@@ -1167,7 +1167,7 @@ function ToggleAdventureLeague(Setting) {
 	var isBackgrVisible = isTemplVis("ASbackgr");
 
 	MakeMobileReady(false); // Undo flatten, if needed
-	
+
 	//Show the adventurers log, if not already visible
 	if (Setting.allog !== undefined) {
 		if (isTemplVis("ALlog")) {
@@ -1176,7 +1176,7 @@ function ToggleAdventureLeague(Setting) {
 			DoTemplate("ALlog", "Add");
 		};
 	};
-	
+
 	//Show the DCI field
 	if (Setting.dci !== undefined) {
 		tDoc[Setting.dci ? "Show" : "Hide"]("DCI.Title");
@@ -1186,7 +1186,7 @@ function ToggleAdventureLeague(Setting) {
 			tDoc[Setting.dci ? "Show" : "Hide"]("Class and Levels.1");
 		};
 	};
-	
+
 	//Show the Faction and Renown fields
 	if (Setting.factionrank !== undefined) {
 		var VisibleHidden = Setting.factionrank ? "Show" : "Hide";
@@ -1214,18 +1214,18 @@ function ToggleAdventureLeague(Setting) {
 			tDoc[HiddenVisible]("Background_Organisation.Right");
 		};
 	};
-	
+
 	//Show the Renown field
 	if (typePF && Setting.renown !== undefined) {
 		tDoc[Setting.renown ? "Show" : "Hide"]("Background_Renown.Title");
 		tDoc[Setting.renown ? "Show" : "Hide"]("Background_Renown.Text");
 	};
-	
+
 	//Show the asterisks on the reference sheet field
 	if (typePF && Setting.asterisks !== undefined) {
 		tDoc[Setting.asterisks ? "Show" : "Hide"]("Text.PRsheet.AL");
 	};
-	
+
 	//Remove the DMG actions on the 1st page
 	if (!typePF && Setting.actions !== undefined) {
 		if (Setting.actions) {
@@ -1274,7 +1274,7 @@ function ParseArmor(input, onlyInv) {
 		// or if we are not using the search length, just look at the newest source date
 		var tempDate = sourceDate(kObj.source);
 		if ((!ignoreSearchLength && kObj.name.length < foundLen) || (!ignoreSearchLength && kObj.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
-		
+
 		// we have a match, set the values
 		found = key;
 		foundLen = kObj.name.length
@@ -1292,7 +1292,7 @@ function FindArmor(input) {
 	var temp = "";
 	var tempFound = false;
 	CurrentArmour.known = ParseArmor(tempString);
-	
+
 	CurrentArmour.dex = "";
 	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].dex !== undefined && !isNaN(ArmourList[CurrentArmour.known].dex)) {
 		CurrentArmour.dex = ArmourList[CurrentArmour.known].dex;
@@ -1301,7 +1301,7 @@ function FindArmor(input) {
 	//add magical bonus, denoted by a "+"
 	var magicBonus = parseFloat(tempString.match(/(^|\s|\(|\[)[\+|-]\d+/));
 	CurrentArmour.magic = !isNaN(magicBonus) ? Number(magicBonus) : 0;
-	
+
 	CurrentArmour.mod = "";
 	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].addMod) {
 		for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
@@ -1340,7 +1340,7 @@ function ApplyArmor(input) {
 		Checkbox(ArmorFields[1], ArmourList[CurrentArmour.known].type === "medium");
 		Checkbox(ArmorFields[2], ArmourList[CurrentArmour.known].type === "heavy");
 		thermoM(1/3); //increment the progress dialog's progress
-		
+
 		if (CurrentArmour.mod) {
 			var theCalc = "event.value = " + ArmourList[CurrentArmour.known].ac + " + Number(What(\"" + CurrentArmour.mod + "\")) + " + CurrentArmour.magic;
 			tDoc.getField(ArmorFields[0]).setAction("Calculate", theCalc);
@@ -1348,7 +1348,7 @@ function ApplyArmor(input) {
 			Value(ArmorFields[0], ArmourList[CurrentArmour.known].ac + CurrentArmour.magic);
 		}
 		thermoM(2/3); //increment the progress dialog's progress
-		
+
 		//add weight of the armor
 		if (ArmourList[CurrentArmour.known].weight) {
 			var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
@@ -1461,7 +1461,7 @@ function ConditionSet() {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying the conditions...");
 	calcStop();
-	
+
 	var Exh1 = tDoc.getField("Extra.Exhaustion Level 1");
 	var Exh2 = tDoc.getField("Extra.Exhaustion Level 2");
 	var Exh3 = tDoc.getField("Extra.Exhaustion Level 3");
@@ -1480,13 +1480,13 @@ function ConditionSet() {
 	var Stunned = tDoc.getField("Extra.Condition 13");
 	var Unconscious = tDoc.getField("Extra.Condition 14");
 	var ArmDis = tDoc.getField("AC Stealth Disadvantage");
-	
+
 	//check if by (un)checking this field, another field needs to be (un)checked as well
 	var theField = (event.target && event.target.name && !(/ac|reset|import/i).test(event.target.name)) ? event.target.name : "reset";
 	var FieldNmbr = Number(theField.slice(-2));
 	var FieldChecked = theField !== "reset" && event.target.type === "checkbox" ? event.target.isBoxChecked(0) : "reset";
 	var CheckItAlso = FieldChecked === 1;
-	
+
 	//Do something with other fields dependent on the selection
 	if (theField.indexOf("Extra.Exhaustion Level ") !== -1) {
 		//if checking the box, check the lower ones as well
@@ -1524,13 +1524,13 @@ function ConditionSet() {
 		}
 	}
 	thermoM(1/10); //increment the progress dialog's progress
-	
+
 	//keep incapacitated checked if one of the conditions requires it
 	if (Paralyzed.isBoxChecked(0) === 1 || Petrified.isBoxChecked(0) === 1  || Stunned.isBoxChecked(0) === 1 || Unconscious.isBoxChecked(0) === 1) {
 		Checkbox("Extra.Condition 6", true); //Incapacitated
 	}
 	thermoM(2/10); //increment the progress dialog's progress
-	
+
 	//Add string to saving throw advantages / disadvantages
 	if (Paralyzed.isBoxChecked(0) === 1 || Stunned.isBoxChecked(0) === 1 || Unconscious.isBoxChecked(0) === 1) {
 		AddString("Saving Throw advantages \/ disadvantages", "Fail Str/Dex saves", "; ");
@@ -1538,9 +1538,9 @@ function ConditionSet() {
 		RemoveString("Saving Throw advantages \/ disadvantages", "Fail Str/Dex saves");
 	}
 	thermoM(3/10); //increment the progress dialog's progress
-	
+
 	// No longer checking for half or 0 speed because of the changes to how speed is set (and the limited usefuleness of it in the first place)
-	
+
 	//see if checks have disadvantage or not
 	if (Exh1.isBoxChecked(0) === 1 || Frightened.isBoxChecked(0) === 1 || Poisoned.isBoxChecked(0) === 1) {
 		for (var S = 0; S < SkillsList.abbreviations.length; S++) {
@@ -1562,7 +1562,7 @@ function ConditionSet() {
 		};
 	};
 	thermoM(6/10); //increment the progress dialog's progress
-	
+
 	//see if attacks have advantage, disadvantage or nothing
 	var AttDis = (Exh3.isBoxChecked(0) === 1 || (Blinded.isBoxChecked(0) === 1 && What("Class Features").toLowerCase().indexOf("feral senses") === -1) || Frightened.isBoxChecked(0) === 1 || Poisoned.isBoxChecked(0) === 1 || Prone.isBoxChecked(0) === 1 || Restrained.isBoxChecked(0) === 1);
 	var AttAdv = Invisible.isBoxChecked(0) === 1;
@@ -1583,7 +1583,7 @@ function ConditionSet() {
 		Editable("Att Dis");
 	};
 	thermoM(7/10); //increment the progress dialog's progress
-	
+
 	//See if saves have disadvantage
 	if (Exh3.isBoxChecked(0) === 1) {
 		for (var B = 0; B < AbilityScores.abbreviations.length; B++) {
@@ -1604,7 +1604,7 @@ function ConditionSet() {
 		}
 	}
 	thermoM(8/10); //increment the progress dialog's progress
-	
+
 	//halve the Current Max Hit points
 	if (theField.indexOf("Extra.Exhaustion Level ") !== -1) {
 		if (Exh4.isBoxChecked(0) === 1 && What("HP Max Current") === "") {
@@ -1639,7 +1639,7 @@ function ParseClass(input) {
 	var subFound = "";
 	var foundSubDat = 0;
 	input = removeDiacritics(input);
-	
+
 	// Loop through all the classes and see if any of them match and then look for its subclasses
 	// If that doesn't yield anything, look if any of the subclasses match regardless of class' names
 	for (var i = 1; i <= 2; i++) {
@@ -1680,7 +1680,7 @@ function ParseClass(input) {
 			for (var sub = 0; sub < kObj.subclasses[1].length; sub++) {
 				var subKey = kObj.subclasses[1][sub];
 				var sObj = ClassSubList[subKey];
-				
+
 				if (!sObj // skip if the subclass isn't known in the ClassSubList object
 					|| !(sObj.regExpSearch).test(input) // see if the subclass regex matches (round 1 only)
 					|| testSource(subKey, sObj, "classExcl") // test if the subclass or its source isn't excluded
@@ -1973,10 +1973,10 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			}
 			// Remove all the features of the class (remember, new level is set to 0 above)
 			UpdateLevelFeatures("class");
-			
+
 			// If changing subclass, set the class' old level to 0 so all features are added again in full
 			if (classesTemp[oClass]) classes.old[oClass].classlevel = 0;
-			
+
 			// If removing the (sub)class, also remove the class from the SubClass Remember field
 			if (!classesTemp[oClass] || !classesTemp[oClass].subclass) {
 				RemoveString("SubClass Remember", oClass, false);
@@ -2004,7 +2004,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			//delete armor and weapon proficiencies gained from class features
 			delete CurrentArmour.proficiencies[tempCl.fullname];
 			delete CurrentWeapons.proficiencies[tempCl.fullname];
-			
+
 			if (tempCl.toolProfs && tempCl.toolProfs.secondary && classes.primary !== oClass) {
 				processTools(false, tempCl.name, tempCl.toolProfs.secondary);
 			};
@@ -2015,40 +2015,40 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				ClassHeaderString = "\r\r"+ ClassHeaderString;
 			}
 			RemoveString("Class Features", ClassHeaderString, false);
-			
+
 			//delete stuff from features using the function with the class switch
 			UpdateLevelFeatures("class");
-			
+
 			//remove the class from the SubClass Remember field
 			RemoveString("SubClass Remember", oClass, false);
-			
+
 			//remove the class from the CurrentSpells variable
 			delete CurrentSpells[oClass];
-			
+
 		} else if (classes.old[oClass].subclass && classesTemp[oClass].subclass !== classes.old[oClass].subclass) {//when only changing the subclass, do the following
-			
+
 			//delete class header string
 			var ClassHeaderString = tempCl.fullname + ", level " + oClassLvl + ":";
 			if (What("Class Features").indexOf("\r\r"+ ClassHeaderString) !== -1) {
 				ClassHeaderString = "\r\r"+ ClassHeaderString;
 			}
 			RemoveString("Class Features", ClassHeaderString, false);
-			
+
 			//delete armor and weapon proficiencies gained from class features
 			delete CurrentArmour.proficiencies[tempCl.fullname];
 			delete CurrentWeapons.proficiencies[tempCl.fullname];
-			
+
 			//delete stuff from features using the function with the class switch
 			UpdateLevelFeatures("class");
-			
+
 			//set the class' old level to 0 so all features are added again
 			classes.old[oClass].classlevel = 0;
-			
+
 			//if removing the subclass, also remove the class from the SubClass Remember field
 			if (!classesTemp[oClass].subclass) {
 				RemoveString("SubClass Remember", oClass, false);
 			}
-			
+
 			//remove certain aspects from the CurrentSpells variable if they belonged to the (sub)class, if the subclass was a spellcaster
 			if (CurrentSpells[oClass] && tempCl.spellcastingFactor) {
 				var ocSpells = CurrentSpells[oClass];
@@ -2063,13 +2063,13 @@ function FindClasses(NotAtStartup, isFieldVal) {
 
 	classes.known = classesTemp;
 	classes.primary = primeClass;
-	
+
 	var multiCaster = {default : 0, warlock : 0};
-	
+
 	temp = [1];
 	//lookup classes and subclasses and put their attributes in CurrentClasses global variable
 	for (var aClass in classes.known) {
-	
+
 		//define new global variable based on the known classes
 		CurrentClasses[aClass] = {
 			name : "", //must exist
@@ -2133,7 +2133,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			}
 		}
 */
-		
+
 		//special something for classes that have alternative ability scores that can be used for the DC
 		if (Temps.abilitySave && Temps.abilitySaveAlt) {
 			var as1 = Number(What(AbilityScores.abbreviations[Temps.abilitySave - 1]));
@@ -2234,10 +2234,10 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				cSpells.typeSp = cSpells.typeSp === "" ? "" : isNaN(cSpells.typeSp) ? cSpells.typeSp : "known";
 				cSpells.factor = [casterFactor, casterType];
 				cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
-				
+
 				//spells from subclass that are auto-prepared (cleric/druid/paladin) or added to class list to choose from (warlock)
 				cSpells.extra = Temps.spellcastingExtra ? Temps.spellcastingExtra : cSpells.extra ? cSpells.extra : "";
-				
+
 				//spells from a (sub)class feature that allow the addition of non-standard spells to the spell list (either known list or otherwise), with certain conditions (i.e. a cantrip from the wizard spell list)
 				if (Temps.spellcastingBonus && !cSpells.bonus[Temps.name]) {
 					cSpells.bonus[Temps.name] = Temps.spellcastingBonus;
@@ -2247,7 +2247,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		}
 
 		//add number of attacks to temp array
-		temp.push(CurrentClasses[aClass].attacks[Math.min(classes.known[aClass].level, CurrentClasses[aClass].attacks.length) - 1]);		
+		temp.push(CurrentClasses[aClass].attacks[Math.min(classes.known[aClass].level, CurrentClasses[aClass].attacks.length) - 1]);
 	}
 	//pick highest number of attacks in temp array and put that into global classes variable
 	classes.attacks = Math.max.apply(Math, temp);
@@ -2331,7 +2331,7 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	var thermoTxt = thermoM("Applying the class(es)...");
 	calcStop();
 	thermoM(1/5); // Increment the progress bar
-	
+
 	// Put hit dice on sheet
 	var hdChanged = false;
 	if (classes.hd.length > 0) classes.hd.sort(function (a, b) { return a - b; }); // sort by biggest HD
@@ -2346,7 +2346,7 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	if (hdChanged) CurrentUpdates.types.push("hp");
 
 	thermoM(2/5); // Increment the progress bar
-	
+
 	// Add attributes of each class, if we didn't do so already
 	var primaryChange = !classes.oldprimary || classes.oldprimary !== classes.primary;
 	for (var aClass in classes.known) {
@@ -2359,7 +2359,7 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 			AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.\n\n" + CurrentClasses[classes.primary].equipment);
 		}
 	}
-	
+
 	thermoM(3/5); // Increment the progress bar
 
 	// Set some things dependent on class-levels
@@ -2370,7 +2370,7 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	} else {
 		Hide("Class Features Menu");
 	}
-	
+
 	// Have the prompt check if something changed in Ability Score Increases gained form levels
 	CurrentUpdates.types.push("testasi");
 
@@ -2409,14 +2409,14 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 
 		var primeClass = CurrentClasses[classes.primary];
 		if (primeClass.saves) processSaves(true, primeClass.name, primeClass.saves);
-		
+
 		if (primeClass.toolProfs && primeClass.toolProfs.primary) {
 			processTools(true, primeClass.name, primeClass.toolProfs.primary);
 		};
-		
+
 		AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.\n\n" + CurrentClasses[classes.primary].equipment);
 	};
-	
+
 	//add tool proficiencies
 	for (var aClass in classes.known) {
 		if (aClass === classes.primary || classes.old[aClass]) continue; //skip the primary class or classes known in classes.old, we already did those
@@ -2430,7 +2430,7 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	thermoM(4/6); //increment the progress dialog's progress
 
 
-	
+
 	thermoTxt = thermoM("Setting spell slots...", false); //change the progress dialog text
 	thermoM(3/6); //increment the progress dialog's progress
 
@@ -2469,7 +2469,7 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 
 	// if a subclass was just selected, run applyclasses again
 	if (IsSubclassException.toSource() !== "({})" && event.target.name && event.target.name === "Class and Levels" && event.value !== classes.field) ApplyClasses(classes.field);
-	
+
 	if (noSubClExc) {
 		thermoTxt = thermoM("Finalizing the changes of the class(es)...", false); //change the progress dialog text
 		AddAttacksPerAction(); //update number of attacks
@@ -2482,7 +2482,7 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 		} else {
 			Hide("Class Features Menu");
 		}
-		
+
 		SetStringifieds(); //set the global variables to their fields for future reference
 		thermoTxt = thermoM("Checking if spell sheet needs to be updated...", false); //change the progress dialog text
 		CheckForSpellUpdate(); //see if there is a reason to update the spells sheets
@@ -2527,7 +2527,7 @@ function levelFieldVal() {
 	UpdateRangerCompanions(); // update level-dependent things for any ranger companions
 
 	IsCharLvlVal = false; // reset global variable
-	
+
 	// make sure to update the experience points (or similar system) and alert the user
 	CurrentUpdates.types.push("xp");
 
@@ -2602,7 +2602,7 @@ function CalcExperienceLevel() {
 			}]
 		}
 	};
-	
+
 	var dia = app.execDialog(Experience_Dialog);
 	switch (Experience_Dialog.result) {
 		case "LVLr":
@@ -2614,7 +2614,7 @@ function CalcExperienceLevel() {
 	};
 };
 
-function AddExperiencePoints() {	
+function AddExperiencePoints() {
 	if (!What("Add Experience")) return;
 	var XPS = Number(What("Total Experience").replace(/,/g, "."));
 	var AddXP = Number(What("Add Experience").replace(/,/g, "."));
@@ -2774,7 +2774,7 @@ function FindRace(inputracetxt, novardialog) {
 				var aBW = backwardsAttr[i];
 				if (RaceSubList[subrace][aBW[0]] && RaceSubList[subrace][aBW[1]] == undefined && RaceList[CurrentRace.known][aBW[1]]) delete CurrentRace[aBW[1]];
 			}
-			
+
 		}
 	}
 
@@ -2813,7 +2813,7 @@ function FindRace(inputracetxt, novardialog) {
 		rSpells.level = What("Character Level") !== "" ? What("Character Level") : 1;
 		rSpells.ability = CurrentRace.spellcastingAbility;
 		rSpells.typeSp = "race";
-		
+
 		//spells from a (sub)class feature that allow the addition of non-standard spells to the spell list (either known list or otherwise), with certain conditions (i.e. a cantrip from the wizard spell list)
 		if (CurrentRace.spellcastingBonus && !rSpells.bonus[CurrentRace.known]) {
 			rSpells.bonus[CurrentRace.known] = CurrentRace.spellcastingBonus;
@@ -2835,13 +2835,13 @@ function ApplyRace(inputracetxt, novardialog) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying race...");
 	calcStop();
-	
+
 	var newRace = ParseRace(inputracetxt);
 	var oldRace = [CurrentRace.known, CurrentRace.variant];
 	if (newRace[0] !== oldRace[0] || newRace[1] !== oldRace[1]) {
 		if (CurrentRace.known) {// remove the old race if one was detected
 			thermoTxt = thermoM("Removing the " + CurrentRace.name + " features...", false); //change the progress dialog text
-			
+
 			// Remove tooltips from some fields
 			var tooltipRemove = ["Height", "Weight", "Age"];
 			for (i = 0; i < tooltipRemove.length; i++) {
@@ -2860,7 +2860,7 @@ function ApplyRace(inputracetxt, novardialog) {
 	if (CurrentRace.known && (CurrentRace.known !== oldRace[0] || CurrentRace.variant !== oldRace[1])) {
 		thermoTxt = thermoM("Applying the " + CurrentRace.name + " features...", false); //change the progress dialog text
 		thermoM(1/10); //increment the progress dialog's progress
-		
+
 		// Add race height
 		var theHeight = What("Unit System") === "metric" && CurrentRace.heightMetric ? CurrentRace.heightMetric : CurrentRace.height;
 		AddTooltip("Height", CurrentRace.plural + theHeight);
@@ -2877,7 +2877,7 @@ function ApplyRace(inputracetxt, novardialog) {
 		var tempString = stringSource(CurrentRace, "full,page", CurrentRace.name + " is found in ", ".");
 		var theTraits = What("Unit System") === "imperial" ? CurrentRace.trait : ConvertToMetric(CurrentRace.trait, 0.5);
 		Value("Racial Traits", theTraits, tempString);
-		
+
 		thermoM(2/6); //increment the progress dialog's progress
 
 		// Process the common attributes from the CurrentRace object and its features
@@ -2897,7 +2897,7 @@ function ApplyRace(inputracetxt, novardialog) {
 
 		thermoM(3/6); //increment the progress dialog's progress
 
-		
+
 		//add, if existing, the racial features, proficiencies, vision, etc. etc.
 		if (CurrentRace.vision) processVision(true, CurrentRace.name, CurrentRace.vision);
 		if (CurrentRace.savetxt) SetProf("savetxt", true, CurrentRace.savetxt, CurrentRace.name);
@@ -2921,7 +2921,7 @@ function ApplyRace(inputracetxt, novardialog) {
 				AddSkillProf(CurrentRace.skills[i]);
 			}
 		};
-		
+
 		thermoM(4/6); //increment the progress dialog's progress
 
 		//get the ability score arrays from the fields, implement the racial bonuses, and put them back in the field
@@ -2944,7 +2944,7 @@ function ApplyRace(inputracetxt, novardialog) {
 	UpdateTooltips(); // tooltips for: skills, ability scores, HP
 */
 	SetStringifieds(); // set the global variables to their fields for future reference
-	
+
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 /* UPDATED
@@ -2999,7 +2999,7 @@ function RemoveRace() {
 			}
 		};
 		if (CurrentRace.addarmor) RemoveArmor(CurrentRace.addarmor);
-		
+
 		//get the ability score arrays from the fields, set the racial bonuses to 0, and put them back in the field
 		for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
 			var tempArray = What(AbilityScores.abbreviations[i] + " Remember").split(",");
@@ -3012,7 +3012,7 @@ function RemoveRace() {
 			var theRemoveeval = What("Unit System") === "metric" && CurrentRace.removeeval.indexOf("String") !== -1 ? ConvertToMetric(CurrentRace.removeeval, 0.5) : CurrentRace.removeeval;
 			eval(theRemoveeval);
 		};
-		
+
 		//remove the race from the CurrentSpells variable
 		delete CurrentSpells[CurrentRace.known];
 
@@ -3079,7 +3079,7 @@ function UpdateTooltips() {
 			AbilityScores.improvements.classlvl += "\n \u2022 " + CurrentClasses[aClass].name + ": \u00D7" + temp + ";";
 		}
 	}
-	
+
 	for (var i = 0; i < classes.extraskills.length; i++) {
 		stringSkills += classes.extraskills[i];
 	}
@@ -3142,7 +3142,7 @@ function FindWeapons(ArrayNmbr) {
 	var tempArray = [];
 	var startArray = ArrayNmbr;
 	var endArray = ArrayNmbr + 1;
-	
+
 	//do all the weapons, if no ArrayNmbr has been entered
 	if (ArrayNmbr === undefined) {
 		for (var i = 0; i < FieldNumbers.attacks; i++) {
@@ -3151,7 +3151,7 @@ function FindWeapons(ArrayNmbr) {
 		var startArray = 0;
 		var endArray = CurrentWeapons.field.length;
 	}
-	
+
 	//parse the weapons into tempArray
 	for (var j = startArray; j < endArray; j++) {
 		var tempString = CurrentWeapons.field[j];
@@ -3162,14 +3162,14 @@ function FindWeapons(ArrayNmbr) {
 			"", // the spell/cantrip this attack refers to
 			[] // if a spell/cantrip, this will be an array of the classes on which spell list this attack is
 		];
-		
+
 		//add magical bonus, denoted by a "+" or "-"
 		var magicBonus = parseFloat(tempString.match(/(^|\s|\(|\[)[\+|-]\d+/));
 		tempArray[j][1] = !isNaN(magicBonus) ? magicBonus : 0;
-	
+
 		//add the true/false switch for adding ability score to damage or not
 		tempArray[j][2] = tempArray[j][0] ? WeaponsList[tempArray[j][0]].abilitytodamage : true;
-	
+
 		//if this is a spell or a cantrip, see if we can link it to an object in the CurrentCasters variable
 		var isSpell = !tempArray[j][0] ? ParseSpell(tempString) : WeaponsList[tempArray[j][0]].SpellsList ? WeaponsList[tempArray[j][0]].SpellsList : SpellsList[tempArray[j][0]] ? tempArray[j][0] : ParseSpell(tempArray[j][0]);
 		if ((!tempArray[j][0] || (/spell|cantrip/i).test(WeaponsList[tempArray[j][0]].type)) && isSpell) {
@@ -3177,7 +3177,7 @@ function FindWeapons(ArrayNmbr) {
 			if (!tempArray[j][0]) tempArray[j][2] = false;
 			tempArray[j][4] = isSpellUsed(isSpell);
 		};
-		
+
 		//put tempArray in known
 		CurrentWeapons.known[j] = tempArray[j];
 	};
@@ -3204,7 +3204,7 @@ function SetWeaponsdropdown(forceTooltips) {
 	tempString += "\n\n" + toUni("To Hit and Damage calculations") + "\nThese are calculated using the proficiency bonus, the selected ability modifier and any bonus added in the \"modifier\" fields, see below.";
 	tempString += "\n\n" + toUni("Context-aware calculations") + "\nSome class features, racial features, and feats can affect the attack to hit and damage calculations. You can read what these are by clicking the button in this line.";
 	tempString += "\n\n" + toUni("Modifier or blue text fields") + "\nThese are hidden by default. You can toggle their visibility with the \"Mods\" button in the \'JavaScript Window\' or the \"Modifiers\" bookmark.";
-	
+
 	var weaponlists = {
 		endlist : [
 			"Axe, Hand",
@@ -3229,7 +3229,7 @@ function SetWeaponsdropdown(forceTooltips) {
 		"spell specific" : []
 	};
 	var knownweaponlists = ["endlist", "melee", "ranged", "improvised", "spell", "spell specific"];
-	
+
 	for (var key in WeaponsList) {
 		var weaKey = WeaponsList[key];
 		if (!weaKey.list || testSource(key, weaKey, "weapExcl")) continue; // test if the weapon or its source is set to be included
@@ -3237,7 +3237,7 @@ function SetWeaponsdropdown(forceTooltips) {
 		var weaName = WeaponsList[key].name.capitalize();
 		if (weaponlists[weaKey.list].indexOf(weaName) === -1) weaponlists[weaKey.list].push(weaName);
 	};
-	
+
 	//make the definitive list of weapons for the dropdown box
 	var setweapons = [];
 	var addWeaList = function (weArr, addFirst, noSort) {
@@ -3259,7 +3259,7 @@ function SetWeaponsdropdown(forceTooltips) {
 			addWeaList(weaponlists[listW]);
 		};
 	};
-	
+
 	for (var i = 1; i <= FieldNumbers.attacks; i++) {
 		var theFld = "Attack." + i + ".Weapon Selection";
 		var theFldSuNm = "Attack." + i + ".Proficiency";
@@ -3295,7 +3295,7 @@ function SetArmordropdown(forceTooltips) {
 	tempString += "\n\n" + toUni("Alternative spelling") + "\nYou can use alternative spellings, descriptions and embellishments. For example: \"Golden Plate of Lathander\" will result in the AC and attributes of a \"Plate\".";
 	tempString += "\n\n" + toUni("Unarmored Defense") + "\nUsing either \"unarmored\", \"naked\", \"nothing\", or \"no armor\" combined with an abbreviation of one of the six ability scores will result in the armor being calculated with that ability score. For example: \"Unarmored Defense (Int)\".\nIf you do not include the abbreviation, the sheet will auto-fill an armor AC of 10.";
 	tempString += "\n\n" + toUni("Magic bonus") + "\nAny magical bonus you type in this field is added to the AC of the armor type. For example: \"Chain mail +1\" or \"Plate -2\".";
-	
+
 	var TheList = [
 		"",
 		"Unarmored",
@@ -3323,7 +3323,7 @@ function SetArmordropdown(forceTooltips) {
 		TheList.push("");
 		TheList = TheList.concat(armAno);
 	};
-	
+
 	if (tDoc.getField("AC Armor Description").submitName === TheList.toSource()) {
 		if (forceTooltips) AddTooltip("AC Armor Description", tempString);
 		return; //no changes, so no reason to do this
@@ -3340,7 +3340,7 @@ function SetBackgrounddropdown(forceTooltips) {
 	var tempString = "";
 	tempString += toUni("Background") + "\nType in the name of the background (or select it from the drop-down menu) and its features and proficiencies will be filled out automatically, provided that its a recognized background.";
 	tempString += "\n\n" + toUni("Changing background") + "\nIf you change the background, all the features of the previous background will be removed and the features of the new background will be applied.";
-	
+
 	for (var key in BackgroundList) {
 		if (testSource(key, BackgroundList[key], "backgrExcl")) continue;
 		ArrayDing.push(BackgroundList[key].name);
@@ -3369,7 +3369,7 @@ function SetRacesdropdown(forceTooltips) {
 	tempString += toUni("Race") + "\nType in the name of the race (or select it from the drop-down menu) and its traits and features will be filled out automatically, provided that its a recognized race. You are not limited by the names in the list. Just typing \"Drow\" will also be recognized, for example.";
 	tempString += "\n\n" + toUni("Alternative spelling") + "\nDifferent, setting-dependent race names are recognized as well. For example, typing \"Moon Elf\" will result in all the traits and features of the \"High Elf\" from the Player's Handbook.";
 	tempString += "\n\n" + toUni("Changing race") + "\nIf you change the race, all the features of the previous race will be removed and the features of the new race will be applied.";
-	
+
 	for (var key in RaceList) {
 		if (testSource(key, RaceList[key], "racesExcl")) continue;
 		var raceNm = RaceList[key].sortname ? RaceList[key].sortname : RaceList[key].name.capitalize();
@@ -3410,7 +3410,7 @@ function RememberGearTempOnFocus() {
 function SetGearWeightOnBlur() {
 	var theValue = event.target.value;
 	var weightFld = event.target.name.replace("Row", "Weight");
-	
+
 	if (!theValue) {
 		tDoc.resetForm([weightFld, event.target.name.replace("Row", "Amount")])
 	} else if (event.target.temp && event.target.temp === theValue) {
@@ -3431,7 +3431,7 @@ function SetGearWeightOnBlur() {
 			if (setWeight) Value(weightFld, theWeight);
 		}
 	}
-	
+
 	//now reset the temp
 	delete event.target.temp;
 };
@@ -3442,7 +3442,7 @@ function ParseGear(input) {
 	var foundLen = 0;
 	var result = false;
 	var tempString = removeDiacritics(input.toLowerCase());
-	
+
 	//see if it is an armour
 	var findArmor = ParseArmor(tempString, true);
 	if (findArmor) {
@@ -3450,7 +3450,7 @@ function ParseGear(input) {
 		if (foundLen === tempString.length) foundLen = findArmor.length;
 		result = ["ArmourList", findArmor];
 	};
-	
+
 	//see if it is a weapon
 	var findWeapon = ParseWeapon(tempString, true);
 	if (findWeapon) {
@@ -3461,7 +3461,7 @@ function ParseGear(input) {
 			result = ["WeaponsList", findWeapon];
 		};
 	};
-	
+
 	//see if it is an ammunition weapon
 	var findAmmo = ParseAmmo(tempString, true);
 	if (findAmmo) {
@@ -3471,7 +3471,7 @@ function ParseGear(input) {
 			result = ["AmmoList", findAmmo[0]];
 		};
 	};
-	
+
 	//see if it is gear
 	for (var key in GearList) { //scan string for all gear
 		var aList = GearList[key];
@@ -3485,7 +3485,7 @@ function ParseGear(input) {
 			};
 		};
 	};
-	
+
 	//see if it is a tool
 	for (var key in ToolsList) { //scan string for all tools
 		var aList = ToolsList[key];
@@ -3499,7 +3499,7 @@ function ParseGear(input) {
 			};
 		};
 	};
-	
+
 	return result;
 };
 
@@ -3514,7 +3514,7 @@ function AddToInv(area, column, item, amount, weight, location, searchRegex, Add
 	if (!checkKey) {
 		var isItem = ParseGear(item);
 		if (isItem) checkKey = isItem[1]
-	}; 
+	};
 	//set start and end row
 	var maxRow = FieldNumbers[(/adventuring|gear|magic/).test(area) ? "gear" : area.indexOf("extra") !== -1 ? "extragear" : area.indexOf("comp") !== -1 ? "compgear" : false];
 	if (!maxRow) return;
@@ -3522,22 +3522,22 @@ function AddToInv(area, column, item, amount, weight, location, searchRegex, Add
 	var columnCalc = !column ? false : typePF && (/adventuring|gear/).test(area) ? (column.indexOf("r") !== -1 ? 1.5 : column.indexOf("m") !== -1 ? 3 : false) : (column.indexOf("r") !== -1 ? 2 : false);
 	var startRow = area.indexOf("magic") !== -1 ? FieldNumbers.gearMIrow + 1 : columnCalc ? Math.round(maxRow / columnCalc + 1) : 1;
 	var endRow = (/adventuring|gear/).test(area) && !What("Adventuring Gear Remember") ? maxRow - 4 : maxRow;
-	
+
 	//set start and end row for searching
 	var startSearch = column.indexOf("only") !== -1 ? startRow : 1;
 	var endSearch = column.indexOf("only") === -1 ? endRow : typePF && (/adventuring|gear/).test(area) ? (!columnCalc ? Math.round(maxRow / 3) : columnCalc === 3 ? Math.round(maxRow / 1.5) : endRow) : (columnCalc ? endRow : Math.round(maxRow / 2));
-	
+
 	//define the names
 	var rowNm = prefix + (area.indexOf("extra") !== -1 ? "Extra.Gear " :  area.indexOf("comp") !== -1 ? "Comp.eqp.Gear " : "Adventuring Gear ");
 	var itemRow = rowNm + "Row ";
 	var amountRow = rowNm + "Amount ";
 	var weightRow = rowNm + "Weight ";
 	var locationRow = rowNm + "Location.Row ";
-	
+
 	//prepare the item name for searching
 	var searchItem = clean(item, false, true);
 	searchRegex = searchRegex ? searchRegex : MakeRegex(searchItem.replace(/\uFEFF|\,[^\,]+$/g, (/(\+|-)\d+/).test(searchItem) ? "" : "(?!.*(\\+|-)\\d+)"));
-	
+
 	//search through the items and do something if it is found
 	for (var i = startSearch; i <= endSearch; i++) {
 		var theRow = clean(What(itemRow + i), false, true);
@@ -3558,7 +3558,7 @@ function AddToInv(area, column, item, amount, weight, location, searchRegex, Add
 			return;
 		};
 	};
-	
+
 	//as nothing above was found, add the item to the first empty row of the selected column
 	var Container = "";
 	if (!isCorrectUnits && What("Unit System") !== "imperial") weight = RoundTo(weight * UnitsList.metric.mass, 0.001, true);
@@ -3641,9 +3641,9 @@ function SetGearVariables() {
 //Make menu for 'add equipment' button and parse it to Menus.inventory
 function MakeInventoryMenu() {
 	var InvMenu = [];
-	
+
 	var backgroundKn = CurrentBackground.name ? CurrentBackground.name : "Background";
-	
+
 	//first make the top three entries (Pack, Gear, Tool)
 	var itemMenu = function(menu, name, array, object) {
 		var temp = {
@@ -3662,7 +3662,7 @@ function MakeInventoryMenu() {
 		};
 		menu.push(temp);
 	};
-	
+
 	var menuExtraTypes = [
 		["To left column", "lonly"],
 		["To middle column", "monly"],
@@ -3673,7 +3673,7 @@ function MakeInventoryMenu() {
 	itemMenu(InvMenu, "Gear", menuExtraTypes, GearMenus.gear);
 	itemMenu(InvMenu, "Tool", menuExtraTypes, GearMenus.tools);
 
-	//add the other single-level options to the menu	
+	//add the other single-level options to the menu
 	var menuLVL1 = function (item, array) {
 		for (i = 0; i < array.length; i++) {
 			var isMarked = array[i][1] === "attuned" ? What("Adventuring Gear Remember") == false :
@@ -3688,7 +3688,7 @@ function MakeInventoryMenu() {
 			});
 		}
 	};
-	
+
 	menuLVL1(InvMenu, [
 		["-", "-"],
 		[backgroundKn + "'s items and gold", "background"],
@@ -3711,14 +3711,14 @@ function MakeInventoryMenu() {
 //call the inventory menu ('add equipment' button) and do something with the results
 function InventoryOptions(input) {
 	var MenuSelection = input ? input : getMenu("inventory");
-	
+
 	if (!MenuSelection || MenuSelection[0] == "nothing") return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying the inventory menu option...");
 	thermoM(0.5); // Increment the progress bar
 	calcStop();
-	
+
 	if (MenuSelection[0] === "pack") {
 		var thePack = PacksList[MenuSelection[1]];
 		thermoTxt = thermoM("Adding pack " + thePack.name + "...", false); //change the progress dialog text
@@ -3768,7 +3768,7 @@ function InventoryOptions(input) {
 		thermoTxt = thermoM("Adding/updating weapons and ammunition in equipment section...", false);
 		AddInvWeaponsAmmo();
 	};
-	
+
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
@@ -3784,7 +3784,7 @@ function AddInvBackgroundItems() {
 	if (CurrentBackground.equipright) addEquip(CurrentBackground.equipright, "r");
 };
 
-function AddInvArmorShield() {	
+function AddInvArmorShield() {
 	//add the armour
 	var theArm = What("AC Armor Description");
 	var theArmWght = What("AC Armor Weight");
@@ -3794,10 +3794,10 @@ function AddInvArmorShield() {
 		var hasInvName = theArmKn && theArmKn.invName ? theArmKn.invName.replace(regexArmNm, "") : false;
 		var theTxt = hasInvName && !(RegExp(hasInvName.RegEscape(), "i")).test(theArm) && (regexArmNm).test(theArm) && similarLen(theArmKn.name, theArm) ? theArm.replace(regexArmNm, "$1" + hasInvName) : theArm;
 		var searchRegex = MakeRegex(theTxt.replace(/ ?\([^\)]\)| ?\[[^\]]\]/g, ""), theArmKn.magic ? "" : "(?!.*(\\+|-)\\d+)");
-		
+
 		AddToInv("gear", "r", theTxt, "", theArmWght, "", searchRegex, "replace", false, true);
 	};
-	
+
 
 	//add the shield
 	var theShi = What("AC Shield Bonus Description");
@@ -3805,7 +3805,7 @@ function AddInvArmorShield() {
 	if (theShi && theShiWght) {
 		var theTxt = theShi + (theShi.length < 6 && !(/shield/i).test(theShi) ? " shield" : "");
 		var searchRegex = MakeRegex(theTxt.replace(/ ?\([^\)]\)| ?\[[^\]]\]/g, ""), CurrentShield.magic ? "" : "(?!.*(\\+|-)\\d+)");
-		
+
 		AddToInv("gear", "r", theTxt, "", theShiWght, "", searchRegex, "replace", false, true);
 	}
 };
@@ -3825,7 +3825,7 @@ function AddInvWeaponsAmmo() {
 		};
 		return isSpecial;
 	};
-	
+
 	//make an array of the weapons to add; only those with weight and not alternative attack entries
 	var testArray = [];
 	var items = {};
@@ -3865,7 +3865,7 @@ function AddInvWeaponsAmmo() {
 			testArray.push(theTxt);
 		};
 	};
-	
+
 	//then do the ammo
 	var addAmmo = function(aNm, aNr, aWght) {
 		var theAmmo = ParseAmmo(aNm);
@@ -3895,7 +3895,7 @@ function AddInvWeaponsAmmo() {
 	};
 	if (What("AmmoLeftDisplay.Weight") && What("AmmoLeftDisplay.Amount")) addAmmo(What("AmmoLeftDisplay.Name"), What("AmmoLeftDisplay.Amount"), What("AmmoLeftDisplay.Weight"));
 	if (What("AmmoRightDisplay.Weight") && What("AmmoRightDisplay.Amount")) addAmmo(What("AmmoRightDisplay.Name"), What("AmmoRightDisplay.Amount"), What("AmmoRightDisplay.Weight"));
-	
+
 	// loop through the items and add them to the adventuring gear
 	for (var it in items) {
 		var aItem = items[it];
@@ -3906,8 +3906,8 @@ function AddInvWeaponsAmmo() {
 
 //Make menu for the button on each equipment line and parse it to Menus.gearline
 function MakeInventoryLineMenu() {
-	var type = event.target.name.indexOf("Adventuring") !== -1 ? "Adventuring " : 
-		event.target.name.indexOf("Extra.") !== -1 ? "Extra." : 
+	var type = event.target.name.indexOf("Adventuring") !== -1 ? "Adventuring " :
+		event.target.name.indexOf("Extra.") !== -1 ? "Extra." :
 		event.target.name.substring(0, event.target.name.indexOf("Comp.") + 8) + ".";
 	var lineNmbr = Number(event.target.name.slice(-2));
 	var theField = What(type + "Gear Row " + lineNmbr);
@@ -3916,12 +3916,12 @@ function MakeInventoryLineMenu() {
 	var maxRow = FieldNumbers[type === "Adventuring " ? "gear" : type === "Extra." ? "extragear" : "compgear"];
 	var upRow = lineNmbr === 1 ? false : magic ? lineNmbr !== FieldNumbers.gearMIrow + 1 : true;
 	var downRow = lineNmbr === maxRow ? false : hasMagic ? lineNmbr !== FieldNumbers.gearMIrow - 1 : true;
-	
+
 	var numColumns = typePF && type === "Adventuring " ? 3 : 2;
 	var curCol = typePF && type.indexOf("Comp.") !== -1 ? 1 : Math.ceil(lineNmbr / Math.round(maxRow / numColumns));
 	var moveCol = curCol > 1 ? "left" : numColumns === 3 ? "middle" : "right";
 	var moveCol2 = numColumns !== 3 ? false : curCol === 3 ? "middle" : "right";
-	
+
 	var amendMenu = function(inputArray) {
 		var array = eval(inputArray.toSource());
 		for (var i = 0; i < array.length; i++) {
@@ -3929,7 +3929,7 @@ function MakeInventoryLineMenu() {
 		};
 		return array;
 	};
-	
+
 	var gearMenu = [{
 		cName : "Put item on this line" + (theField ? " (overwrites current)" : ""),
 		oSubMenu : [{
@@ -3942,7 +3942,7 @@ function MakeInventoryLineMenu() {
 	}, {
 		cName : "-"
 	}];
-	
+
 	var menuLVL1 = function (menu, array) {
 		for (var i = 0; i < array.length; i++) {
 			var isEnabled = (array[i][1] === "up" && !upRow) || (array[i][1] === "down" && !downRow) || (!theField && (/move|insert/i).test(array[i][1])) ? false : true;
@@ -3953,7 +3953,7 @@ function MakeInventoryLineMenu() {
 			});
 		};
 	};
-	
+
 	var AddCompOptions = function(menu) {
 		if (!theField) {
 			menu.push({
@@ -3981,7 +3981,7 @@ function MakeInventoryLineMenu() {
 		};
 		menu.push(temp);
 	};
-	
+
 	menuLVL1(gearMenu, [
 		["Move up", "up"],
 		["Move down", "down"],
@@ -3989,23 +3989,23 @@ function MakeInventoryLineMenu() {
 	]);
 	if (!typePF || type.indexOf("Comp.") === -1) menuLVL1(gearMenu, [["Move to " + moveCol + " column", "movecol#" + moveCol.substr(0, 1) + "only"]]);
 	if (moveCol2) menuLVL1(gearMenu, [["Move to " + moveCol2 + " column", "movecol#" + moveCol2.substr(0, 1) + "only"]]);
-	
+
 	gearMenu.push({cName : "-"});
-	
+
 	if (type !== "Adventuring ") menuLVL1(gearMenu, [["Move to Equipment (page 2)", "movepage#gear"]]);
 	if (type !== "Extra.") menuLVL1(gearMenu, [["Move to Extra Equipment (page 3)", "movepage#extra"]]);
 	AddCompOptions(gearMenu);
-	
+
 	gearMenu.push({cName : "-"});
-	
+
 	if (magic) menuLVL1(gearMenu, [["Copy to Magic Items (page 3)", "copy#magic"], ["-", "-"]]);
-		
+
 	menuLVL1(gearMenu, [
 		["Insert line", "insert"],
 		["Delete line", "delete"],
 		["Clear line", "clear"]
 	]);
-	
+
 	Menus.gearline = gearMenu;
 };
 
@@ -4013,7 +4013,7 @@ function MakeInventoryLineMenu() {
 function InventoryLineOptions() {
 
 	var MenuSelection = getMenu("gearline");
-	
+
 	if (!MenuSelection || MenuSelection[0] == "nothing") return;
 
 	// Start progress bar and stop calculations
@@ -4035,7 +4035,7 @@ function InventoryLineOptions() {
 		What(Fields[2]),
 		What(Fields[3])
 	];
-	
+
 	switch (MenuSelection[2]) {
 	 case "up" :
 	 case "down" :
@@ -4097,7 +4097,7 @@ function InventoryLineOptions() {
 		Value(Fields[2], What("Unit System") === "metric" ? RoundTo(theGear.weight * UnitsList.metric.mass, 0.001, true) : theGear.weight);
 		break;
 	};
-	
+
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
@@ -4107,7 +4107,7 @@ function InvInsert(type, slot, extraPre) {
 	if (What(type + "Gear Row " + slot) === "") {
 		return;
 	}
-	
+
 	var isComp = type.indexOf("Comp.") !== -1;
 	var totalslots = isComp ? FieldNumbers.compgear : (type === "Extra." ? FieldNumbers.extragear : (What("Adventuring Gear Remember") === false && slot <= FieldNumbers.gearMIrow ? FieldNumbers.gearMIrow : FieldNumbers.gear));
 
@@ -4361,62 +4361,44 @@ function RemoveBackground() {
 //Make menu for 'background traits' button and parse it to Menus.background
 function MakeBackgroundMenu() {
 	var backMenu = [];
-	var traitMenu = {};
-	var idealMenu = {};
-	var bondMenu = {};
-	var flawMenu = {};
 
 	var menuLVL1 = function (item, array) {
 		for (i = 0; i < array.length; i++) {
 			item.push({
-				cName : array[i],
-				cReturn : item + "#" + array[i],
-				bEnabled : array[i] !== "No background entry has been detected on the first page"
+				cName : array[i][0],
+				cReturn : item + "#" + array[i][1],
+				bEnabled : array[i][1] !== "nothing"
 			});
 		}
 	};
 
 	var menuLVL2 = function (menu, name, array) {
-		menu.cName = name;
-		menu.oSubMenu = [];
+		var temp = {
+			cName : name + (name == "Personality Trait" ? " (select 2)" : ""),
+			oSubMenu : []
+		};
 		var theEntry = What(name);
 		for (i = 0; i < array.length; i++) {
-			menu.oSubMenu.push({
-				cName : array[i],
+			var toUse = isArray(array[i]) ? array[i][1] : array[i];
+			temp.oSubMenu.push({
+				cName : toUse,
 				cReturn : name + "#" + i,
-				bMarked : (RegExp(array[i].RegEscape(), "i")).test(theEntry)
+				bMarked : (RegExp(toUse.RegEscape(), "i")).test(theEntry)
 			})
 		}
-	};
-
-	var menuLVL2plus = function (menu, name, array) {
-		menu.cName = name;
-		menu.oSubMenu = [];
-		var theEntry = What(name);
-		for (i = 0; i < array.length; i++) {
-			menu.oSubMenu.push({
-				cName : array[i][0],
-				cReturn : name + "#" + i,
-				bMarked : (RegExp(array[i][1].RegEscape(), "i")).test(theEntry)
-			})
-		}
+		menu.push(temp);
 	};
 
 	if (CurrentBackground.known) {
-		menuLVL2(traitMenu, "Personality Trait", CurrentBackground.trait);
-		menuLVL2plus(idealMenu, "Ideal", CurrentBackground.ideal);
-		menuLVL2(bondMenu, "Bond", CurrentBackground.bond);
-		menuLVL2(flawMenu, "Flaw", CurrentBackground.flaw);
-
-		backMenu.push(traitMenu);
-		backMenu.push(idealMenu);
-		backMenu.push(bondMenu);
-		backMenu.push(flawMenu);
+		menuLVL2(backMenu, "Personality Trait", CurrentBackground.trait);
+		menuLVL2(backMenu, "Ideal", CurrentBackground.ideal);
+		menuLVL2(backMenu, "Bond", CurrentBackground.bond);
+		menuLVL2(backMenu, "Flaw", CurrentBackground.flaw);
 	} else {
-		menuLVL1(backMenu, ["No background entry has been detected on the first page"]);
+		menuLVL1(backMenu, [["No background entry has been detected on the first page", "nothing"]]);
 	};
 
-	menuLVL1(backMenu, ["-", "Reset the four fields"]);
+	menuLVL1(backMenu, ["-", ["Reset the four fields", "reset"]]);
 
 	Menus.background = backMenu;
 };
@@ -4433,7 +4415,7 @@ function BackgroundOptions() {
 		Value("Bond", CurrentBackground.bond[MenuSelection[1]]);
 	} else if (MenuSelection[0] === "flaw") {
 		Value("Flaw", CurrentBackground.flaw[MenuSelection[1]]);
-	} else if (MenuSelection[1] === "reset the four fields") {
+	} else if (MenuSelection[1] === "reset") {
 		tDoc.resetForm(["Personality Trait", "Ideal", "Bond", "Flaw"]);
 	}
 };
@@ -4449,7 +4431,7 @@ function AddLangTool(typeLT, input, tooltip, uniqueID, replaceThis, replaceMatch
 			var fld = "Tool ";
 			var type = "tool";
 			break;
-		default : 
+		default :
 			return;
 	};
 	var inputCl = clean(input, false, true);
@@ -4499,7 +4481,7 @@ function RemoveLangTool(typeLT, input, uniqueID, choice) {
 			var fld = "Tool ";
 			var type = "tool";
 			break;
-		default : 
+		default :
 			return;
 	};
 	var useStr = clean(input, false, true);
@@ -4518,7 +4500,7 @@ function RemoveLangTool(typeLT, input, uniqueID, choice) {
 	var choiceCl = choice ? clean(choice, false, true) : useStr;
 	RemoveString("MoreProficiencies", choiceCl + " (" + type + ")");
 	RemoveString("MoreProficiencies", choiceCl);
-	
+
 };
 
 // redirect the old function names for legacy support
@@ -4763,12 +4745,12 @@ function CalcSave() {
 	var Sabi = QI ? 4 : 21 + prefix.length;
 	var Ability = Save.substring(0, Sabi - 1).slice(-3);
 	var Mod = What(Save.substring(0, Sabi) + "Mod");
-	
+
 	//get the proficiency bonus if applicable
 	var Sprof = tDoc.getField(Save.replace("Mod", "Prof")).isBoxChecked(0) === 1;
 	var useDice = QI ? tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1 : tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
 	var ProfBonus = useDice || !Sprof ? 0 : What(prefix + Q + "Proficiency Bonus");
-		
+
 	//get the variable entered into the bonus field
 	var ExtraBonus = EvalBonus(What(Save.replace("Comp.", "BlueText.Comp.").replace("Mod", "Bonus")), QI ? true : prefix);
 
@@ -4777,12 +4759,12 @@ function CalcSave() {
 
 	//calculate the total
 	var theResult = Mod === "" ? "" : Number(Mod) + Number(ProfBonus) + Number(ExtraBonus) + Number(AllBonus);
-	
+
 	//change the total to fail if some condition dictates it
 	if (!typePF && QI && (Ability === "Str" || Ability === "Dex") && (tDoc.getField("Extra.Condition 8").isBoxChecked(0) === 1 || tDoc.getField("Extra.Condition 13").isBoxChecked(0) === 1 || tDoc.getField("Extra.Condition 14").isBoxChecked(0) === 1)) {
 		theResult = "fail";
 	}
-	
+
 	event.value = theResult;
 };
 
@@ -4927,7 +4909,7 @@ function ApplyProficiencies(updatefields) {
 		Checkbox("Proficiency Armor Heavy", ArmorHeavy, ArmorHeavyTip);
 		Checkbox("Proficiency Shields", Shields, ShieldsTip);
 	};
-	
+
 	//parse the weapon proficiencies
 	for (var key in CurrentWeapons.proficiencies) {
 		var theProf = CurrentWeapons.proficiencies[key];
@@ -4961,7 +4943,7 @@ function ApplyProficiencies(updatefields) {
 			}
 		}
 	}
-	
+
 	//do nothing on startup (updatefields = false)
 	if (updatefields) {
 		// now check if the weapon proficiencies have been manually turned on or off, and use this to override previous setting
@@ -4998,7 +4980,7 @@ function ApplyProficiencies(updatefields) {
 		WeaponSimpleTip += WeaponSimpleTip !== "" ? "." : "";
 		WeaponMartialTip += WeaponMartialTip !== "" ? "." : "";
 		WeaponOtherTip += WeaponOtherTip !== "" ? "." : "";
-	
+
 		//check boxes and at tooltips for Simple and Martial weapon proficiencies, but not on startup (updatefields = false)
 		Checkbox("Proficiency Weapon Simple", WeaponSimple, WeaponSimpleTip);
 		Checkbox("Proficiency Weapon Martial", WeaponMartial, WeaponMartialTip);
@@ -5016,7 +4998,7 @@ function ApplyProficiencies(updatefields) {
 			WeaponOtherArray.push(tempArray[j]);
 		}
 	}
-	
+
 	WeaponOtherArray.sort();
 	CurrentWeapons.extraproficiencies = WeaponOtherArray;
 
@@ -5145,7 +5127,7 @@ function ParseFeat(input) {
 	input = removeDiacritics(input).toLowerCase();
 	var foundLen = 0;
 	var foundDat = 0;
-	
+
 	//scan string for all feats
 	for (var key in FeatsList) {
 		var kObj = FeatsList[key];
@@ -5157,7 +5139,7 @@ function ParseFeat(input) {
 		// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
 		var tempDate = sourceDate(kObj.source);
 		if (kObj.name.length < foundLen || (kObj.name.length == foundLen && tempDate < foundDat)) continue;
-		
+
 		// we have a match, set the values
 		found = key;
 		foundLen = kObj.name.length
@@ -5216,7 +5198,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	var theFeat = FeatsList[NewFeat];
 	var ArrayNmbr = FldNmbr - 1;
 	var OldFeat = CurrentFeats.known[ArrayNmbr];
-	
+
 	if (OldFeat === NewFeat) return; //no changes were made
 /* UPDATED
 	var setSpellVars = false;
@@ -5244,14 +5226,14 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		if (!meetsPrereq) {
 			thermoTxt = thermoM("The feat '" + theFeat.name + "' has prerequisites that have not been met...", false); //change the progress dialog text
 			thermoM(1/5); //increment the progress dialog's progress
-			
+
 			var askUserFeat = app.alert({
 				cTitle : "The prerequisites for '" + theFeat.name + "' have not been met",
 				cMsg : "The feat that you have selected, '" + theFeat.name + "' has a prerequisite listed" + (theFeat.prerequisite ? " as: \n\t\"" + theFeat.prerequisite + "\"" : ".") + "\n\nYour character does not meet this requirement. Are you sure you want to apply this feat?",
 				nIcon : 1,
 				nType : 2
 			});
-			
+
 			if (askUserFeat !== 4) { // pressed "NO", so do not continue and revert the field back to its previous state
 				if (event.target && event.target.name === FeatFlds[0]) {
 					event.rc = false;
@@ -5262,7 +5244,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			};
 		};
 	};
-	
+
 	calcStop();
 
 	// Remove previous feat at the same field
@@ -5288,7 +5270,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			if (sourceStringOld) RemoveString(FeatFlds[1], sourceStringOld);
 		}
 	}
-	
+
 	// Update the CurrentFeats.known variable
 	CurrentFeats.known = [];
 	CurrentFeats.known[ArrayNmbr] = NewFeat;
@@ -5305,7 +5287,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			if (typePF) theCalc.replace("\n", " ");
 			tDoc.getField(FeatFlds[2]).setAction("Calculate", theCalc);
 		}
-		
+
 		// Set the tooltip
 		var tooltipStr = stringSource(theFeat, "full,page", "The \"" + theFeat.name + "\" feat is taken from: ", ".");
 		if (theFeat.prerequisite) tooltipStr += (tooltipStr ? "\n\n" : "") + "The prerequisite for it is: " + theFeat.prerequisite;
@@ -5331,7 +5313,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	}
 
 	thermoM(thermoTxt, true); // Stop progress bar
-	
+
 /* UPDATED
 	if (OldFeat && OldFeat !== NewFeat) {
 		thermoTxt = thermoM("Removing the old feat...", false); //change the progress dialog text
@@ -5342,15 +5324,15 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		//only remove things if not merely moving the feat
 		if (IsNotFeatMenu) {
 			tDoc.resetForm([FeatFlds[2]]);
-			
+
 			if (theFeat.armor) delete CurrentArmour.proficiencies[theFeat.name + " feat"];
 			if (theFeat.weapons) delete CurrentWeapons.proficiencies[theFeat.name + " feat"];
 			if (theFeat.addarmor) RemoveArmor(theFeat.addarmor);
 			var sourceStringOld = stringSource(theFeat, "first,page");
 			if (sourceStringOld) RemoveString(FeatFlds[1], sourceStringOld);
-			
+
 			if (theFeat.calcChanges) addEvals(theFeat.calcChanges, [theFeat.name, "feat"], false);
-			
+
 			if (theFeat.scores) {
 				//get the ability score arrays from the fields, remove the feat bonuses, and put them back in the field
 				for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
@@ -5359,34 +5341,34 @@ function ApplyFeat(InputFeat, FldNmbr) {
 					Value(AbilityScores.abbreviations[i] + " Remember", tempArray);
 				};
 			};
-			
+
 			if (theFeat.spellcastingBonus) {
 				delete CurrentSpells[CurrentFeats.known[ArrayNmbr]];
 				setSpellVars = true;
 			};
-			
+
 			if (theFeat.action) {
 				var FeatAct = What("Unit System") === "metric" ? ConvertToMetric(theFeat.action[1], 0.5) : theFeat.action[1];
 				RemoveAction(theFeat.action[0], theFeat.name + FeatAct);
 			};
-			
+
 			if (theFeat.dmgres) {
 				for (var i = 0; i < theFeat.dmgres.length; i++) {
 					var theDmgres = isArray(theFeat.dmgres[i]) ? theFeat.dmgres[i] : [theFeat.dmgres[i], false];
 					SetProf("resistance", false, theDmgres[0], theFeat.name, theDmgres[1]);
 				};
 			};
-			
+
 			if (theFeat.saves) {
 				for (var i = 0; i < theFeat.saves.length; i++) {
 					SetProf("save", false, theFeat.saves[i], theFeat.name);
 				};
 			};
-			
+
 			if (theFeat.savetxt) SetProf("savetxt", false, theFeat.savetxt, theFeat.name);
-			
+
 			if (theFeat.speed) SetProf("speed", false, theFeat.speed, theFeat.name);
-			
+
 			if (theFeat.toolProfs) processTools(false, theFeat.name, theFeat.toolProfs);
 			if (theFeat.languageProfs) processLanguages(false, theFeat.name, theFeat.languageProfs);
 			if (theFeat.vision) processVision(false, theFeat.name, theFeat.vision);
@@ -5401,7 +5383,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			};
 		};
 	};
-	
+
 	CurrentFeats.known = [];
 	CurrentFeats.known[ArrayNmbr] = NewFeat;
 	FindFeats(ArrayNmbr);
@@ -5420,9 +5402,9 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			if (typePF) theCalc.replace("\n", " ");
 			tDoc.getField(FeatFlds[2]).setAction("Calculate", theCalc);
 		}
-		
+
 		thermoM(2/3); //increment the progress dialog's progress
-		
+
 		var tempString = stringSource(theFeat, "full,page", "The \"" + theFeat.name + "\" feat is taken from: ", ".");
 		if (theFeat.prerequisite) {
 			tempString += tempString === "" ? "" : "\n\n";
@@ -5434,7 +5416,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			//add the source to the secondary field
 			var sourceString = stringSource(theFeat, "first,page");
 			if (sourceString) AddString(FeatFlds[1], sourceString, "; ");
-			
+
 			// firstly do the eval for adding
 			if (theFeat.eval) {
 				var TheEval = What("Unit System") === "metric" && theFeat.eval.indexOf("String") !== -1 ? ConvertToMetric(theFeat.eval, 0.5) : theFeat.eval;
@@ -5443,7 +5425,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			if (theFeat.calcChanges) {
 				addEvals(theFeat.calcChanges, [theFeat.name, "feat"], true);
 			};
-			
+
 			if (theFeat.scores) {
 				//get the ability score arrays from the fields, add the feat bonuses, and put them back in the field
 				for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
@@ -5452,7 +5434,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 					Value(AbilityScores.abbreviations[i] + " Remember", tempArray);
 				};
 			};
-			
+
 			if (theFeat.spellcastingBonus) {
 				var spFeatArr = isArray(theFeat.spellcastingBonus);
 				var spFeatLvl = false;
@@ -5473,19 +5455,19 @@ function ApplyFeat(InputFeat, FldNmbr) {
 				};
 				setSpellVars = true;
 			};
-			
+
 			if (theFeat.action) {
 				var FeatAct = What("Unit System") === "metric" ? ConvertToMetric(theFeat.action[1], 0.5) : theFeat.action[1];
 				AddAction(theFeat.action[0], theFeat.name + FeatAct, "the " + theFeat.name + " feat");
 			};
-			
+
 			if (theFeat.dmgres) {
 				for (var i = 0; i < theFeat.dmgres.length; i++) {
 					var theDmgres = isArray(theFeat.dmgres[i]) ? theFeat.dmgres[i] : [theFeat.dmgres[i], false];
 					SetProf("resistance", true, theDmgres[0], theFeat.name, theDmgres[1]);
 				};
 			};
-			
+
 			if (theFeat.saves) {
 				for (var i = 0; i < theFeat.saves.length; i++) {
 					SetProf("save", true, theFeat.saves[i], theFeat.name);
@@ -5493,16 +5475,16 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			};
 
 			if (theFeat.addarmor) AddArmor(theFeat.addarmor);
-			
+
 			if (theFeat.savetxt) SetProf("savetxt", true, theFeat.savetxt, theFeat.name);
-			
+
 			if (theFeat.speed) SetProf("speed", true, theFeat.speed, theFeat.name);
-			
+
 			if (theFeat.toolProfs) processTools(true, theFeat.name, theFeat.toolProfs);
 			if (theFeat.languageProfs) processLanguages(true, theFeat.name, theFeat.languageProfs);
 			if (theFeat.vision) processVision(true, theFeat.name, theFeat.vision);
 			if (theFeat.addMod) processMods(true, theFeat.name, theFeat.addMod);
-			
+
 			if (theFeat.recovery && (theFeat.usages || theFeat.usagescalc)) AddFeature(theFeat.name, theFeat.usages ? theFeat.usages : 0, theFeat.additional ? " (" + theFeat.additional + ")" : "", theFeat.recovery, "the " + theFeat.name + " feat", theFeat.UpdateOrReplace, theFeat.usagescalc);
 		};
 	};
@@ -5522,10 +5504,10 @@ function SetFeatsdropdown(forceTooltips) {
 		if (ArrayDing.indexOf(feaNm) === -1) ArrayDing.push(feaNm);
 	}
 	ArrayDing.sort();
-	
+
 	var applyItems = tDoc.getField("Feat Name 1").submitName !== ArrayDing.toSource();
 	if (applyItems) tDoc.getField("Feat Name 1").submitName = ArrayDing.toSource();
-	
+
 	for (var i = 1; i <= FieldNumbers.feats; i++) {
 		var theFeatFld = "Feat Name " + i;
 		var theFeati = What(theFeatFld);
@@ -5582,7 +5564,7 @@ function HealItNow() {
 	calcStop();
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
-	
+
 	var fields = [
 		"HP Current",
 		"HP Temp",
@@ -5606,7 +5588,7 @@ function HealItNow() {
 		var HD2 = Number(What("HD2 Used"));
 		var HD3 = Number(What("HD3 Used"));
 		var toHeal = Math.max(1, Math.floor((Number(What("HD1 Level")) + Number(What("HD2 Level")) + Number(What("HD3 Level"))) / 2));
-		
+
 		//now go through the HD and recover theMenu
 		if (toHeal > 0 && HD1) {
 			Value("HD1 Used", HD1 - toHeal <= 0 ? "" : Math.max(1, HD1 - toHeal));
@@ -5652,7 +5634,7 @@ function CalcEncumbrance() {
 		var UnitMult = UnitsList.metric.mass;
 		var pushSep = "-";
 	}
-	
+
 	var BasicMult = Number(Size) * Number(CarMult);
 	var TotalMult = Number(Str) * Number(Size) * Number(CarMult);
 	if (CarMult === 0 || (!Str && FldName.indexOf("Text") === -1)) {
@@ -5701,7 +5683,7 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice, Fe
 	var FeaFirstLine = "\u25C6 " + FeaName + FeaRef;
 	var FeaOtherLines = FeaPost + Fea["Descr" + old];
 	if (What("Unit System") == "metric") FeaOtherLines = ConvertToMetric(FeaOtherLines, 0.5);
-	
+
 	return [FeaFirstLine + (Fea.extFirst ? FeaPost : ""), "\r" + FeaFirstLine + FeaOtherLines];
 };
 
@@ -5725,7 +5707,7 @@ function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld
 	var FeaFirstLine = "\u25C6 " + FeaKey.name + FeaRef;
 	var FeaOtherLines = FeaPost + Fea["Descr" + old];
 	if (What("Unit System") == "metric") FeaOtherLines = ConvertToMetric(FeaOtherLines, 0.5);
-	
+
 	return [FeaFirstLine + (ForceOld ? "" : FeaPost), "\r" + FeaFirstLine + FeaOtherLines];
 };
 
@@ -5785,7 +5767,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 		CurrentRace.level = newRaceLvl;
 		if (CurrentSpells[CurrentRace.known]) CurrentSpells[CurrentRace.known].level = newRaceLvl;
 	}
-	
+
 	// apply feat level changes
 	var oldFeatLvl = CurrentFeats.level;
 	var newFeatLvl = newRaceLvl; // would otherwise be identical to how to determine the race level
@@ -5976,7 +5958,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 		}
 
 		// (re-)apply and re-calculate all the wild shapes as something might have changed after going level up
-		if (WSinUse) WildshapeUpdate(WSinUse != true ? WSinUse : false); 
+		if (WSinUse) WildshapeUpdate(WSinUse != true ? WSinUse : false);
 	}
 
 	thermoM(thermoTxt, true); // Stop progress bar
@@ -5994,10 +5976,10 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				// now we know whether to add or remove features
 				var keyFea = CurrentRace.features[key];
 				thermoTxt = thermoM("Updating " + CurrentRace.name + "'s " + keyFea.name + "...", false); //change the progress dialog text
-				
+
 				//make a check to see if level-dependent features should be dealt with
 				var checkLVL = keyFea.minlevel <= RaceLevelUp[2] && keyFea.minlevel > RaceLevelUp[1];
-				
+
 				//see if we are going to add or remove a feature
 				var AddRemove = keyFea.minlevel <= newRaceLvl ? "Add" : "Remove";
 
@@ -6005,11 +5987,11 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 
 				// get all the attributes of this feature
 				var Fea = GetLevelFeatures(keyFea, newRaceLvl, false, oldRaceLvl, false);
-				
+
 				//see if we need to force updating the limited feature section
 				var GoAnyway = newRaceLvl > 0 && keyFea.minlevel <= oldRaceLvl && (Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld);
 				var FeaTooltip = CurrentRace.name + (keyFea.tooltip ? keyFea.tooltip : "");
-					
+
 				//remove the limited feature if it should be removed because of downgrading the level --or-- the old feature was defined, but the new isn't --or-- if the old has a different name than the new --or-- if the new amount of usages is unlimited
 				if (((Fea.UseOld || Fea.UseCalcOld) && keyFea.minlevel > newRaceLvl && keyFea.minlevel <= oldRaceLvl) || (((!Fea.Use && !Fea.UseCalc) || (Fea.Recov !== Fea.RecovOld)) && (Fea.UseOld || Fea.UseCalcOld)) || (/unlimited|\u221E/i).test(Fea.Use)) {
 					RemoveFeature(Fea.UseName, newRaceLvl === 0 ? "" : Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
@@ -6019,7 +6001,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				if ((Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use) && (GoAnyway || (keyFea.minlevel <= newRaceLvl && keyFea.minlevel > oldRaceLvl))) {
 					AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, FeaTooltip, Fea.UseOld, Fea.UseCalc);
 				};
-				
+
 				thermoM(1/2); //increment the progress dialog's progress
 
 				// --- add or remove action, if defined --- //
@@ -6062,12 +6044,12 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					}
 					UpdateSpellSheets.race = true;
 				}
-				
+
 				// --- add or remove custom calculations to the CurrentEvals variable --- //
 				if (checkLVL && keyFea.calcChanges) {
 					addEvals(keyFea.calcChanges, [CurrentRace.name, keyFea.name], keyFea.minlevel <= newRaceLvl);
 				}
-				
+
 				// --- add or remove damage resistances --- //
 				if (checkLVL && keyFea.dmgres) {
 					for (var i = 0; i < CurrentRace.dmgres.length; i++) {
@@ -6104,7 +6086,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			ClassLevelUp[aClass][0] = "stop";
 		}
 	}
-	
+
 	//make a list of the current wild shapes entered
 	var WSinUse = false;
 	var prefixA = What("Template.extras.WSfront").split(",").slice(1);
@@ -6120,7 +6102,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			}
 		}
 	}
-	
+
 	var ClassFeaFld = tDoc.getField("Class Features");
 	//add or remove proficiencies, features, and others gained from level-dependent class features
 	if (Typeswitch === "all" || Typeswitch === "class" || Typeswitch === "proficiencies") {
@@ -6129,7 +6111,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			var temp = CurrentClasses[aClass];
 			var LastProp = "";
 			if (thermoTxt) thermoTxt = thermoM("Updating " + temp.fullname + "'s features...", false); //change the progress dialog text
-			
+
 			//add or update class header if not only updating proficiencies
 			if (Typeswitch !== "proficiencies" && Typeswitch !== "stop") {
 				var ClassHeaderString = "";
@@ -6142,7 +6124,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				//make the string for the classheader
 				ClassHeaderString += temp.fullname + ", level " + newClassLvl[aClass] + ":";
 				var oldHeaderString = classes.old[aClass] ? classes.known[aClass].subclass !== classes.old[aClass].subclass ? ClassList[aClass].name.RegEscape() + ".*:" : temp.fullname.RegEscape() + ".*:" : "";
-				
+
 				//apply the string for the classheader, if the class has a level other than 0
 				if (newClassLvl[aClass] !== 0) {
 					ReplaceString("Class Features", ClassHeaderString, false, oldHeaderString, true);
@@ -6150,13 +6132,13 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			}
 			for (var prop in temp.features) {
 				var propFea = temp.features[prop];
-				
+
 				if (thermoTxt) thermoTxt = thermoM("Updating " + temp.fullname + "'s " + propFea.name + "...", false); //change the progress dialog text
-				
+
 				//find if there is a choice that has been made for this class feature
 				var FeaChoice = GetClassFeatureChoice(aClass, prop);
 				var FeaOldChoice = FeaChoice; // just here so the FeaChoice can be set by the eval property if needed
-				
+
 				if (propFea.minlevel <= newClassLvl[aClass]) {
 					if (propFea.armor) {
 						CurrentArmour.proficiencies[temp.fullname] = propFea.armor;
@@ -6178,11 +6160,11 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						delete CurrentWeapons.proficiencies[temp.fullname];
 					}
 				}
-					
+
 				// add features, and others, gained from level-dependent class features only if not calling for proficiencies
 				if (Typeswitch !== "proficiencies" && ClassLevelUp[aClass][0] !== "stop") {
 					thermoM(1/8); //increment the progress dialog's progress
-					
+
 					//if this is about a feature only available to a subclass, but no subclass is defined, ask to add a subclass
 					var theSubClass = classes.known[aClass].subclass;
 					if (prop.indexOf("subclassfeature") !== -1 && propFea.minlevel <= ClassLevelUp[aClass][2] && !theSubClass && IsNotReset) {
@@ -6200,10 +6182,10 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						continue; //an exception has been put in place for this class, so ignore all the entries before another subclassfeature, but do keep updating the LastProp variable
 					}
 					thermoTxt = thermoM("Updating " + temp.fullname + "'s " + propFea.name + "...", false); //change the progress dialog text
-					
+
 					//make a check to see if level-dependent features should be dealt with
 					var CheckLVL = propFea.minlevel <= ClassLevelUp[aClass][2] && propFea.minlevel > ClassLevelUp[aClass][1];
-					
+
 					var ForceAll = false;
 					var ForceSpecial = false;
 					//if this is the first time adding in a subclass, its features must be forced. But only if the feature meets the level requirement both before and after the level change
@@ -6213,12 +6195,12 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						ForceSpecial = prop.indexOf("subclassfeature") === -1 && CheckLVL;
 						//// >>>> lvlA[2] = true; // force to update even with equal level
 					};
-					
+
 					thermoM(2/8); //increment the progress dialog's progress
 
 					//check for features that are not level-dependent
 					var CheckFea = ForceAll || CheckLVL;
-					
+
 					// get all the attributes of this feature
 					var Fea = GetLevelFeatures(propFea, newClassLvl[aClass], FeaChoice, oldClassLvl[aClass], FeaOldChoice);
 
@@ -6238,13 +6220,13 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						var thePropFeaChoiceeval = What("Unit System") === "metric" && propFea[FeaChoice][evalAddRemove].indexOf("String") !== -1 ? ConvertToMetric(propFea[FeaChoice][evalAddRemove], 0.5) : propFea[FeaChoice][evalAddRemove];
 						eval(thePropFeaChoiceeval);
 					}
-					
+
 					// --- if the eval changed the choice, do some things with this new choice --- //
 					if (FeaChoice !== FeaOldChoice) {
 						Fea = GetLevelFeatures(propFea, newClassLvl[aClass], FeaChoice, oldClassLvl[aClass], FeaOldChoice);
 						if (propFea[FeaChoice].skillstxt) classes.extraskills.push(propFea[FeaChoice].skillstxt);
 					}
-					
+
 					// --- add or remove bonus spells in the CurrentSpells variable, if defined --- //
 					var feaChoiceSpellBonus = FeaChoice && propFea[FeaChoice].spellcastingBonus;
 					var spellBonus = !CheckFea ? false : propFea.spellcastingBonus ? propFea.spellcastingBonus : feaChoiceSpellBonus ? propFea[FeaChoice].spellcastingBonus : false;
@@ -6279,13 +6261,13 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						}
 						UpdateSpellSheets.class = true;
 					}
-					
+
 					// --- if a change was detected, do something via custom script, if defined --- //
 					if (propFea.changeeval) {
 						var theChangeeval = What("Unit System") === "metric" && propFea.changeeval.indexOf("String") !== -1 ? ConvertToMetric(propFea.changeeval, 0.5) : propFea.changeeval;
 						eval(theChangeeval);
 					}
-					
+
 					thermoM(3/8); //increment the progress dialog's progress
 
 					// --- add or remove action, if defined --- //
@@ -6298,11 +6280,11 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						var thePropFeaChoiceAct = What("Unit System") === "metric" ? ConvertToMetric(propFea[FeaChoice].action[1], 0.5) : propFea[FeaChoice].action[1];
 						tDoc[ActionAddRemove + "Action"](propFea[FeaChoice].action[0], propFea[FeaChoice].name + thePropFeaChoiceAct, temp.fullname);
 					};
-					
+
 					thermoM(4/8); //increment the progress dialog's progress
-					
+
 					// PROFICIENCIES //
-					
+
 					// --- add or remove custom calculations to the CurrentEvals variable --- //
 					if (CheckFea && propFea.calcChanges) {
 						addEvals(propFea.calcChanges, profDisplNm, propFea.minlevel <= newClassLvl[aClass]);
@@ -6310,7 +6292,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					if (CheckFea && FeaChoice && propFea[FeaChoice].calcChanges) {
 						addEvals(propFea[FeaChoice].calcChanges, profChoiceDisplNm, propFea.minlevel <= newClassLvl[aClass]);
 					}
-					
+
 					// --- add or remove skill proficiencies, if defined --- //
 					if (propFea.skills && CheckFea) {
 						for (var sk = 0; sk < propFea.skills.length; sk++) {
@@ -6322,7 +6304,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 							AddSkillProf(propFea[FeaChoice].skills[sk], profAddRemove);
 						}
 					};
-					
+
 					// --- add or remove damage resistances --- //
 					if (propFea.dmgres && CheckFea) {
 						for (var dr = 0; dr < propFea.dmgres.length; dr++) {
@@ -6368,7 +6350,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					if (CheckFea && FeaChoice && propFea[FeaChoice].addMod) {
 						processMods(profAddRemove, profChoiceDisplNm, propFea[FeaChoice].addMod);
 					};
-					
+
 					// --- add or remove saving throw proficiencies --- //
 					if (propFea.saves && CheckFea) {
 						for (var sa = 0; sa < propFea.saves.length; sa++) {
@@ -6388,7 +6370,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					if (CheckFea && FeaChoice && propFea[FeaChoice].savetxt) {
 						SetProf("savetxt", profAddRemove, propFea[FeaChoice].savetxt, profChoiceDisplNm);
 					};
-					
+
 					// --- add or remove armor string, if defined --- //
 					if (propFea.addarmor && CheckFea) {
 						tDoc[(profAddRemove ? "Add" : "Remove") + "Armor"](propFea.addarmor);
@@ -6396,7 +6378,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					if (CheckFea && FeaChoice && propFea[FeaChoice].addarmor) {
 						tDoc[(profAddRemove ? "Add" : "Remove") + "Armor"](propFea[FeaChoice].addarmor);
 					};
-					
+
 					thermoM(5/8); //increment the progress dialog's progress
 
 					// --- add or remove speed, if defined --- //
@@ -6414,14 +6396,14 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					} else if (spellExtra) {//if losing the level
 						CurrentSpells[aClass].extra = "";
 					};
-					
+
 					thermoM(6/8); //increment the progress dialog's progress
 
 					// --- add or remove Limited Features --- //
-					
+
 					//check if feature needs to be forcibly replaced because there is a change in any one of them
 					GoAnyway = ForceAll || (newClassLvl[aClass] > 0 && propFea.minlevel <= oldClassLvl[aClass] && (Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld || Fea.UseName !== Fea.UseNameOld));
-					
+
 					//remove the limited feature if it should be removed because of downgrading the level --or-- the old feature was defined, but the new isn't --or-- if the old has a different name than the new --or-- if the new amount of usages is unlimited
 					if ((Fea.UseOld || Fea.UseCalcOld)
 					 && (
@@ -6434,20 +6416,20 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					if ((Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use) && (GoAnyway || (propFea.minlevel <= newClassLvl[aClass] && propFea.minlevel > oldClassLvl[aClass]))) {
 						AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, temp.fullname, Fea.UseOld, Fea.UseCalc);
 					};
-					
+
 					thermoM(7/8); //increment the progress dialog's progress
 
 					//--- get the new and old string of the class features
 					var FeaOldString = ParseClassFeature(aClass, prop, /*ForceSpecial ? newClassLvl[aClass] : * / oldClassLvl[aClass], ForceAll, FeaOldChoice);
 					var FeaNewString = ParseClassFeature(aClass, prop, newClassLvl[aClass], false, FeaChoice);
-					
+
 					//make variables for the text in the class features field
 					var SpliceReplaceRemove = GoAnyway && !ForceAll && propFea.minlevel <= newClassLvl[aClass] ? "Replace" : (propFea.minlevel <= newClassLvl[aClass] ? "Splice" : "Remove");
 
 					if (ForceAll) { //if adding a feature for previous levels because of a subclass change, first remove the old version
 						RemoveString("Class Features", FeaOldString, false);
 					}
-					
+
 					//add, remove, or update the text in the class features field
 					if (GoAnyway || CheckLVL) {
 						tDoc[SpliceReplaceRemove + "String"]("Class Features", SpliceReplaceRemove === "Remove" ? FeaOldString : FeaNewString, false, SpliceReplaceRemove === "Replace" ? FeaOldString : (LastProp ? LastProp : ClassHeaderString));
@@ -6459,7 +6441,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						isWildShape = [newClassLvl[aClass], Fea.Use, Fea.Recov, Fea.Add];
 						WSinUse = true;
 					}
-					
+
 					//if the feature has extrachoices and old- or newlevel meets minlevel of the feature, go over them one by one to see if they changed with level
 					if (propFea.extrachoices && propFea.minlevel <= ClassLevelUp[aClass][2]) {
 						var addRemoveEC = propFea.minlevel > newClassLvl[aClass] && propFea.minlevel <= oldClassLvl[aClass] ? "remove" : propFea.minlevel < newClassLvl[aClass] ? "update" : false;
@@ -6499,7 +6481,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 		thermoTxt = thermoM("Finalizing updating level features...", false); //change the progress dialog text
 		thermoM(thermoTxt, true); // Stop progress bar
 	}
-	
+
 */
 };
 
@@ -6583,7 +6565,7 @@ function MakeClassMenu() {
 			ClassMenu.push(tempItem);
 		};
 	};
-	
+
 
 	// if no options were found, set the menu to something else and make the return false
 	if (ClassMenu.length === 0) {
@@ -6700,25 +6682,25 @@ function ClassFeatureOptions(Input, AddRemove) {
 		var theFeaExtra = theFea[MenuSelection[2]];
 		var Fea = GetLevelFeatures(theFea, classlevel, MenuSelection[2], classlevel, MenuSelection[2], false, true);
 		var FeaString = ParseClassFeatureExtra(MenuSelection[0], MenuSelection[1], MenuSelection[2], Fea, false);
-		
+
 		//if the feature is already present in the Extra.Notes, it must now be removed
 		if (AddOrRemove === "remove") {
 			thermoTxt = thermoM("Removing the feature from the notes on page 3...", false); //change the progress dialog text
 			RemoveString("Extra.Notes", FeaString, true);
 			RemoveString("Class Features", FeaString, true);
-			
+
 			//remove any entry in the Limited Feature section, if appropriate
 			if (Fea.Use || Fea.UseCalc) RemoveFeature(Fea.UseName, Fea.Use, "", "", "", "", Fea.UseCalc);
 		} else {
 			thermoTxt = thermoM("Adding the feature to the notes on page 3...", false); //change the progress dialog text
 			AddString("Extra.Notes", FeaString, true);
-			
+
 			//add an entry in the Limited Feature section, if appropriate
 			if (Fea.Use || Fea.UseCalc) AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, CurrentClasses[MenuSelection[0]].fullname, "bonus", Fea.UseCalc);
 
 			//set the extra layers to visible 'notes' field on the left
 			show3rdPageNotes();
-			
+
 			//give some information as to where the choice has been written to
 			if (IsNotImport && What("Extra Class Feature Remember").indexOf(theFea.extraname) === -1) {
 				var oCk = {
@@ -6754,13 +6736,13 @@ function ClassFeatureOptions(Input, AddRemove) {
 
 		//replace the old string with the new string
 		ReplaceString("Class Features", FeaNewString, false, FeaOldString);
-		
+
 		//get the variables for making the limited feature section
 		var Fea = GetLevelFeatures(theFea, classlevel, MenuSelection[2], classlevel, FeaOldChoice);
-		
+
 		//continue if anything changed
 		var DoLimFea = Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld || Fea.UseName !== Fea.UseNameOld;
-		
+
 		//if something changed and the old has a limited feature, remove it
 		if (DoLimFea && (Fea.UseOld || Fea.UseCalcOld)) {
 			RemoveFeature(Fea.UseNameOld, Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
@@ -6772,7 +6754,7 @@ function ClassFeatureOptions(Input, AddRemove) {
 	}
 	var theSubFea = theFea[MenuSelection[2]];
 	var theOldSubFea = AddOrRemove === "remove" ? theSubFea : theFea[FeaOldChoice];
-	
+
 	//add, if defined, skill text of the feature, and undo, if defined skill text of previous if changed
 	var updateTheTxt = false;
 	if (theSubFea.skillstxt && AddOrRemove !== "remove") {
@@ -6789,9 +6771,9 @@ function ClassFeatureOptions(Input, AddRemove) {
 	if (updateTheTxt) {
 		UpdateTooltips();
 	}
-	
+
 	thermoM(2/6); //increment the progress dialog's progress
-	
+
 	//do any possible eval of the feature, and undo eval of previous if changed
 	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.removeeval) {
 		var theRemoveeval = What("Unit System") === "metric" && theOldSubFea.removeeval.indexOf("String") !== -1 ? ConvertToMetric(theOldSubFea.removeeval, 0.5) : theOldSubFea.removeeval;
@@ -6813,15 +6795,15 @@ function ClassFeatureOptions(Input, AddRemove) {
 			AddSkillProf(theSubFea.skills[sk], true);
 		}
 	}
-	
+
 	thermoM(3/6); //increment the progress dialog's progress
-	
+
 	var temp = CurrentClasses[MenuSelection[0]];
 	var theOldSubFeaNm = AddOrRemove === "remove" ? MenuSelection[2] : FeaOldChoice;
 	var profDisplCl = MenuSelection[1].indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name;
 	var profDisplNmOld = !FeaOldChoice ? "" : profDisplCl + ": " + theOldSubFea.name;
 	var profDisplNm = profDisplCl + ": " + theSubFea.name;
-	
+
 	//add or remove custom calculations to the CurrentEvals variable, and undo any of a previous choice, if changed
 	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.calcChanges) {
 		addEvals(theOldSubFea.calcChanges, profDisplNmOld, false);
@@ -6829,7 +6811,7 @@ function ClassFeatureOptions(Input, AddRemove) {
 	if (theSubFea.calcChanges && AddOrRemove !== "remove") {
 		addEvals(theSubFea.calcChanges, profDisplNm, true);
 	}
-	
+
 	// --- add or remove damage resistances --- //
 	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.dmgres) {
 		for (var dr = 0; dr < theOldSubFea.dmgres.length; dr++) {
@@ -6843,7 +6825,7 @@ function ClassFeatureOptions(Input, AddRemove) {
 			SetProf("resistance", true, theDmgres[0], profDisplNm, theDmgres[1]);
 		};
 	};
-	
+
 	// --- add or remove saving throw proficiencies --- //
 	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.saves) {
 		for (var sa = 0; sa < theOldSubFea.saves.length; sa++) {
@@ -6903,7 +6885,7 @@ function ClassFeatureOptions(Input, AddRemove) {
 	if (theSubFea.addarmor && AddOrRemove !== "remove") {
 		AddArmor(theSubFea.addarmor);
 	};
-	
+
 	thermoM(4/6); //increment the progress dialog's progress
 
 	// --- add or remove speed, if defined --- //
@@ -6913,7 +6895,7 @@ function ClassFeatureOptions(Input, AddRemove) {
 	if (theSubFea.speed && AddOrRemove !== "remove") {
 		SetProf("speed", true, theSubFea.speed, profDisplNm);
 	};
-	
+
 	//add, if defined, spells of the feature, and undo, if defined spells of previous if changed
 	if (!CurrentSpells[MenuSelection[0]] && AddOrRemove !== "remove" && (theSubFea.spellcastingExtra || theSubFea.spellcastingBonus)) { //first see if the entry exists or not, and create it if it doesn't
 		var theSubClass = classes.known[MenuSelection[0]].subclass;
@@ -6933,7 +6915,7 @@ function ClassFeatureOptions(Input, AddRemove) {
 	if (theSubFea.spellcastingExtra && AddOrRemove !== "remove") {
 		cSpells.extra = theSubFea.spellcastingExtra;
 	}
-	
+
 	//add, if defined, bonus spells of the feature, and undo, if defined bonus spells of previous if changed
 	var checkSpellObj = false;
 	if (FeaOldChoice && theOldSubFea.spellcastingBonus) {
@@ -6949,7 +6931,7 @@ function ClassFeatureOptions(Input, AddRemove) {
 			cSpells.firstCol = theSubFea.spellFirstColTitle;
 		}
 	}
-	
+
 	if (checkSpellObj && !CurrentClasses[MenuSelection[0]].spellcastingFactor) { //if some things were deleted from an otherwise empty object, check it and delete it
 		var bonusTest = true;
 		for (var tester in CurrentSpells[MenuSelection[0]].bonus) {
@@ -6959,7 +6941,7 @@ function ClassFeatureOptions(Input, AddRemove) {
 			delete CurrentSpells[MenuSelection[0]];
 		}
 	}
-	
+
 	thermoM(5/6); //increment the progress dialog's progress
 
 	//add, if defined, action of the feature, and undo, if defined action of previous if changed
@@ -7022,25 +7004,25 @@ function PrintButton() {
 		thePageOptions.push("PRsheet");
 		SetPrintPages_Dialog.bshowPR = true;
 	}
-	
+
 	var PrintFld = What("Print Remember").split("!#TheListSeparator#!");
 	var PageArray = PrintFld[1] !== "0" ? PrintFld[1].split(",") : null;
-	
+
 	for (var x = 0; x < thePageOptions.length; x++) {
 		//set the check marks in the dialog, depending on previous settings
 		SetPrintPages_Dialog["b" + thePageOptions[x]] = PageArray.indexOf(thePageOptions[x]) !== -1;
-		
+
 		//set whether or not the fields are editable in the dialog (not editable if page is hidden)
 		var isVisible = isTemplVis(thePageOptions[x]);
 		SetPrintPages_Dialog["a" + thePageOptions[x]] = isVisible;
 	}
-	
+
 	if (PrintFld[0] === "true") {
 		SetPrintPages_Dialog["bDupl"] = true;
 	} else {
 		SetPrintPages_Dialog["bDupl"] = false;
 	}
-	
+
 	var theDialog = app.execDialog(SetPrintPages_Dialog);
 
 	var Proceed = false;
@@ -7099,7 +7081,7 @@ function PrintTheSheet() {
 	}
 	var GoPrint = tDoc.getPrintParams();
 	GoPrint.interactive = GoPrint.constants.interactionLevel.full;
-	
+
 	if (PrintFld[0] === "true") {
 		GoPrint.DuplexType = GoPrint.constants.duplexTypes.DuplexFlipLongEdge;
 	} else {
@@ -7117,12 +7099,12 @@ function HideShowEverything(toggle) {
 		// Start progress bar and stop calculations
 		var thermoTxt = thermoM("Hiding all the fields...");
 		calcStop();
-		
+
 		//first undo the visibility of the blue-text fields, if visible
 		ToggleBlueText(false);
 
 		if (FieldsRemember.length) HideShowEverything(false);
-		
+
 		var exceptionRegex = /(Sheet|Copyright)Information|(Whiteout|Title|^(?!Too).* Text)$|(Whiteout|Image|Text|Line|Display)\.|Circle|Location\.Line|Medium Armor Max Mod|Comp\.Type|Ammo(Right|Left)\.Icon|spellshead\.Box/;
 		for (var F = 0; F < tDoc.numFields; F++) {
 			thermoM(F/tDoc.numFields); //increment the progress dialog's progress
@@ -7174,16 +7156,16 @@ function CalcAC() {
 		}
 		return theRe;
 	}
-	
+
 	var ACbase = Number(What("AC Armor Bonus"));
 	var ACshield = Number(What("AC Shield Bonus"));
 	var ACdex = Number(What("AC Dexterity Modifier"));
 
 	var ACmagic = EvalBonus(What("AC Magic"), true);
-	
+
 	var ACmisc1 = getMiscAC(1);
 	var ACmisc2 = getMiscAC(2);
-	
+
 	event.value = !ACbase ? "" : ACbase + ACshield + ACdex + ACmagic + ACmisc1 + ACmisc2;
 };
 
@@ -7402,7 +7384,7 @@ function createSmallCaps(input, fontSize, extraObj) {
 }
 function SetRichTextFields(onlyAttackTitles, onlySkills) {
 	var AScompA = What("Template.extras.AScomp").split(",");
-	
+
 	//set the skills
 	var alphaB = Who("Text.SkillsNames") === "alphabeta";
 	var skillTXT = [];
@@ -7442,7 +7424,7 @@ function SetRichTextFields(onlyAttackTitles, onlySkills) {
 	var themeColor = ColorList[What("Color.Theme")].RGB;
 	tDoc.getField("Text.Armor Proficiencies").richValue = createSmallCaps("Armor:", 8, {textColor : themeColor});
 	tDoc.getField("Text.Weapon Proficiencies").richValue = createSmallCaps("Weapons:", 8, {textColor : themeColor});
-	
+
 	// the equipment table headers
 	var LbKg = What("Unit System") === "imperial";
 	rtSpans = createSmallCaps(What("Unit System") === "imperial" ? "LBs" : "Kg", 7, {alignment : "center"});
@@ -7585,7 +7567,7 @@ function MakeMobileReady(toggle) {
 			}
 		}
 
-		
+
 
 		// Hide the D20 warning in the corner so that it won't interfere with the bug in Acrobat Reader for iOS/Android
 		tDoc.getField("d20warning").rect = [0,0,0,0];
@@ -7649,7 +7631,7 @@ function MakeMagicItemMenu() {
 		"-",
 		"Insert empty item",
 		"Delete item",
-		"Clear item",	
+		"Clear item",
 	]
 	magicArray = theArray.concat(theArray2);
 	menuLVL1(magicMenu, magicArray);
@@ -7708,7 +7690,7 @@ function MagicItemOptions() {
 			What(FieldsDown[3])
 		];
 	}
-	
+
 	switch (MenuSelection[0]) {
 		case "move up" :
 			thermoTxt = thermoM("Moving the magic item up...", false); //change the progress dialog text
@@ -7855,10 +7837,10 @@ function FindManualOtherWeapons(startup) {
 		var OtherWeapons = What("Proficiency Weapon Other Description");
 		var tempArray = [];
 		var extraArray = [];
-		
+
 		if (OtherWeapons) {
 			var OWarray = OtherWeapons.split(/[/,\\\;\~]+/); //split the current list with some commonly used separators
-			
+
 			for (var ow = 0; ow < OWarray.length; ow++) {
 				var OWfound = ParseWeapon(OWarray[ow]);
 				if (OWfound) {
@@ -7876,7 +7858,7 @@ function FindManualOtherWeapons(startup) {
 				}
 			}
 		}
-			
+
 		//put the arrays into the global variables
 		CurrentWeapons.proficiencies["Manually added"] = [false, false, tempArray.sort()];
 		CurrentWeapons.manualproficiencies = extraArray.sort();
@@ -7885,7 +7867,7 @@ function FindManualOtherWeapons(startup) {
 	} else {
 		//get the arrays from the remember field
 		var tempArray = What("Other Weapon Proficiencies Remember").split("!#TheListSeparator#!");
-		
+
 		//put the arrays into the global variables
 		if (tempArray[0]) {
 			CurrentWeapons.proficiencies["Manually added"] = [false, false, tempArray[0].split(",")];
@@ -7906,13 +7888,13 @@ function CalcWeightSubtotal() {
 	var divisionHalf = typePF && type === "Adventuring Gear " ? 1.5 : 2;
 	var total = column === "Right" ? allGear : Math.round(column === "Left" ? allGear / division : allGear / divisionHalf);
 	var start = column === "Left" ? 1 : Math.round(column === "Right" ? allGear / divisionHalf : allGear / division) + 1;
-	
+
 	if (column === "Middle" && event.target.name.indexOf("Middle") === -1) {
 		column = "All";
 		start = 1;
 		total = allGear;
 	}
-	
+
 	var totalweight = 0;
 	for (var i = start; i <= total; i++) {
 		var amount = What(type + "Amount " + i);
@@ -7923,7 +7905,7 @@ function CalcWeightSubtotal() {
 		if (weight && isNaN(weight) && weight.indexOf(",") !== -1) {
 			weight = parseFloat(weight.replace(",", "."));
 		}
-		
+
 		if (weight) {
 			if (amount === "" || isNaN(amount)) {
 				totalweight += weight;
@@ -7949,78 +7931,78 @@ function CalcWeightCarried() {
 	var Page3Left = 0;
 	var Page3Right = 0;
 	var MagicItems = 0;
-	
-	
+
+
 	//The weight of Armor
 	var ArmorFld = What("AC Armor Weight");
 	if (ArmorFld && What("Weight Remember Armor") !== "No") {
 		ArmorW = Number(ArmorFld.replace(/,/, "."));
 	}
-	
+
 	//The weight of the Shield
 	var ShieldFld = What("AC Shield Weight");
 	if (ShieldFld && What("Weight Remember Shield") !== "No") {
 		ShieldW = Number(ShieldFld.replace(/,/, "."));
 	}
-	
+
 	//The weight of the Weapons
 	if (What("Weight Remember Weapons") !== "No") {
 		for (var w = 1; w <= FieldNumbers.attacks; w++) {
 			WeaponsW += Number(What("BlueText.Attack." + w + ".Weight").replace(/,/, "."));
 		}
 	}
-	
+
 	//The weight of ammo left column
 	var AmmoLeftFld = What("AmmoLeftDisplay.Weight");
 	if (AmmoLeftFld && What("Weight Remember Ammo Left") !== "No") {
-		AmmoLeftFld = Number(AmmoLeftFld.replace(/,/, "."));	
+		AmmoLeftFld = Number(AmmoLeftFld.replace(/,/, "."));
 		AmmoLeftW = AmmoLeftFld * Number(What("AmmoLeftDisplay.Amount"));
 	}
-	
+
 	//The weight of ammo right column
 	var AmmoRightFld = What("AmmoRightDisplay.Weight");
 	if (AmmoRightFld && What("Weight Remember Ammo Right") !== "No") {
 		AmmoRightFld = Number(AmmoRightFld.replace(/,/, "."));
 		AmmoRightW = AmmoRightFld * Number(What("AmmoRightDisplay.Amount"));
 	}
-	
+
 	var coinMod = What("Unit System") === "imperial" ? 50 : 100;
-	
+
 	//The weight of coins
 	if (What("Weight Remember Coins") !== "No") {
 		CoinsW = Math.floor(Number(What("Weight Remember Coins Total")) / coinMod * 10) / 10;
 	}
-	
+
 	//The weight of the left column of page 2
 	if (What("Weight Remember Page2 Left") !== "No") {
 		Page2Left = Number(What("Adventuring Gear Weight Subtotal Left"));
 	}
-	
+
 	//The weight of the left column of page 2
 	if (What("Weight Remember Page2 Middle") === "Yes") {
 		Page2Middle = Number(What("Adventuring Gear Weight Subtotal Middle"));
 	}
-	
+
 	//The weight of the right column of page 2
 	if (What("Weight Remember Page2 Right") !== "No") {
 		Page2Right = Number(What("Adventuring Gear Weight Subtotal Right"));
 	}
-	
+
 	//The weight of the left column of page 3
 	if (What("Weight Remember Page3 Left") !== "No") {
 		Page3Left = Number(What("Extra.Gear Weight Subtotal Left"));
 	}
-	
+
 	//The weight of the right column of page 3
 	if (What("Weight Remember Page3 Right") !== "No") {
 		Page3Right = Number(What("Extra.Gear Weight Subtotal Right"));
 	}
-	
+
 	//The weight of the Magic Items of page 3
 	if (What("Weight Remember Magic Items") !== "No") {
 		MagicItems = Number(What("Weight Remember Magic Items Total"));
 	}
-	
+
 	var TotalWeight = ArmorW + ShieldW + WeaponsW + AmmoLeftW + AmmoRightW + CoinsW + Page2Left + Page2Middle + Page2Right + Page3Left + Page3Right + MagicItems;
 	event.value = TotalWeight === 0 ? "" : TotalWeight;
 }
@@ -8050,7 +8032,7 @@ function WeightToCalc_Button() {
 				"rEnc" : this.UseEnc,
 				"rCar" : !this.UseEnc
 			});
-			
+
 			if (typePF) {
 				dialog.load({
 					"cP2M" : What("Weight Remember Page2 Middle") !== "No"
@@ -8327,12 +8309,12 @@ function WeightToCalc_Button() {
 			} ]
 		}
 	};
-	
+
 	var isEnc = tDoc.getField("Weight Carrying Capacity.Field").display === display.hidden;
 	WeightToCalc_Dialog.UseEnc = isEnc;
-	
+
 	app.execDialog(WeightToCalc_Dialog);
-	
+
 	if (WeightToCalc_Dialog.UseEnc !== isEnc) SetEncumbrance(WeightToCalc_Dialog.UseEnc);
 };
 
@@ -8358,7 +8340,7 @@ function ParseAmmo(input, onlyInv) {
 		if ((onlyInv && AmmoList[key].weight == undefined) // see if only doing equipable items
 			|| testSource(key, AmmoList[key], "ammoExcl") // test if the ammo or its source isn't excluded
 		) continue;
-		
+
 		var tempDate = sourceDate(AmmoList[key].source);
 
 		// see if any of the alternatives match
@@ -8372,7 +8354,7 @@ function ParseAmmo(input, onlyInv) {
 					|| (doTest ? !theAlt.test(input) : input.indexOf(theAlt) === -1) // see if string matches
 				) continue;
 
-				
+
 				// we have a match, set the values
 				found = key;
 				foundLen = altLen;
@@ -8380,7 +8362,7 @@ function ParseAmmo(input, onlyInv) {
 				foundDat = tempDate;
 			}
 		};
-		
+
 		// now see if the parent is a (better) match
 		if (found == key // stop if one of the alternatives already matched
 			|| key.length < foundLen || (key == foundLen && tempDate < foundDat) // only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
@@ -8409,12 +8391,12 @@ function ResetAmmo(AmmoLeftRight) {
 //Set the Ammo fields upon filling out the Ammo name
 function ApplyAmmo(inputtxt, Fld) {
 	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
-	
+
 	var LeftRight = !event.target || !event.target.name || event.target.name.substring(0, 8) === "AmmoLeft" ? "AmmoLeft" : event.target.name.substring(0, 9) === "AmmoRight" ? "AmmoRight" : "Ammo" + Fld;
 	var theAmmo = ParseAmmo(inputtxt);
 	var parseAsWeapon = theAmmo ? false : ParseWeapon(inputtxt);
 	if (parseAsWeapon && AmmoList[parseAsWeapon]) theAmmo = parseAsWeapon;
-	
+
 	if (theAmmo) {
 		var aList = AmmoList[theAmmo];
 		Hide(LeftRight);
@@ -8432,7 +8414,7 @@ function ApplyAmmo(inputtxt, Fld) {
 			tDoc.resetForm([LeftRight + "Display.Amount"]);
 		}
 	}
-	
+
 	LoadAmmo();
 }
 
@@ -8475,18 +8457,18 @@ function RemoveAmmo(inputtxt) {
 //Set the 'quiver' to correspond with the amount of ammo
 function LoadAmmo(Amount, Fld) {
 	calcStop();
-	
+
 	var LeftRight = event.target.name.substring(0, 8) === "AmmoLeft" ? "AmmoLeft" : event.target.name.substring(0, 9) === "AmmoRight" ? "AmmoRight" : "Ammo" + Fld;
 	var Units = Amount !== undefined ? Amount : Number(What(LeftRight + "Display.Amount"));
 	var Counter = 0;
 	var NextFld = "";
 	var NextFldVis = 0;
-	
+
 	if (event.target.name.slice(-6) === "Amount" || event.target.name.slice(-5) === "Reset" || event.target.name.slice(-4) === "Name") {
 		Value(LeftRight + "Display.SaveAmount", Units);
 		Value(LeftRight + "Display.CurrentAmount", Math.min(Units, What(LeftRight + "Display.MaxAmount")));
 	}
-	
+
 	//stop the function if Units are 0
 	if (Number(Units) === 0) {
 		if (event.target.name.indexOf("Display") !== -1) {
@@ -8494,7 +8476,7 @@ function LoadAmmo(Amount, Fld) {
 		}
 		return;
 	}
-	
+
 	//go through evey ammo field and see if they are visible. If visible, update counter and check if the field should be checked (ammo unavailable), or uncheck (ammo available)
 	if (tDoc.getField(LeftRight + ".Bullet.1").display === display.visible) { //only look at the bullet fields
 		for (var i = 1; i <= 50; i++) {
@@ -8538,14 +8520,14 @@ function SetAmmosdropdown(forceTooltips) {
 	tempString += "\nYou can change the weight of the ammunition in the \"override section\" (a.k.a. the \"blue text fields\").";
 	tempString += "\n\n" + toUni("Blue text fields") + "\nIn order to see these you first need to push the \"Mods\" button in the \"JavaScript Window\".";
 	var theDropList = [""];
-	
+
 	for (ammo in AmmoList) {
 		var theAmmo = AmmoList[ammo];
 		if (testSource(ammo, theAmmo, "ammoExcl")) continue; // test if the weapon or its source is set to be included
 		if (theDropList.indexOf(theAmmo.name) === -1) theDropList.push(theAmmo.name);
 	}
 	theDropList.sort();
-	
+
 	if (tDoc.getField("AmmoLeftDisplay.Name").submitName === theDropList.toSource()) {
 		if (forceTooltips) {
 			AddTooltip("AmmoLeftDisplay.Name", tempString);
@@ -8554,11 +8536,11 @@ function SetAmmosdropdown(forceTooltips) {
 		return; //no changes, so no reason to do this
 	}
 	tDoc.getField("AmmoLeftDisplay.Name").submitName = theDropList.toSource();
-	
+
 	var remAmmo = What("AmmoLeftDisplay.Name");
 	tDoc.getField("AmmoLeftDisplay.Name").setItems(theDropList);
 	Value("AmmoLeftDisplay.Name", remAmmo, tempString);
-	
+
 	remAmmo = What("AmmoRightDisplay.Name");
 	tDoc.getField("AmmoRightDisplay.Name").setItems(theDropList);
 	Value("AmmoRightDisplay.Name", remAmmo, tempString);
@@ -8567,20 +8549,20 @@ function SetAmmosdropdown(forceTooltips) {
 //Toggle the visibility of the secondary ability save DC. ShowHide = "show" or "hide".
 function Toggle2ndAbilityDC(ShowHide) {
 	var isVis2nd = isDisplay("Image.SaveDC" + (typePF ? "" : ".2")) === 0;
-	
+
 	if (ShowHide && (/show/i).test(ShowHide) == isVis2nd) {
 		return; //stop the function, there is nothing to do
 	}
-	
+
 	var theCaption = isVis2nd ? "Show 2nd DC" : "Hide 2nd DC";
 	var HiddenVisible = isVis2nd ? "Hide" : "Show";
 	var VisibleHidden = isVis2nd ? "Show" : "Hide";
 	var HiddenNoPrint = !isVis2nd && CurrentVars.bluetxt ? "DontPrint" : "Hide";
-		
+
 	for (var L = 0; L <= 2; L++) {
 		tDoc.getField("ShowHide 2nd DC").buttonSetCaption(theCaption, L);
 	}
-	
+
 	if (typePF) {
 		var DC2array = [
 			"Image.SaveDC",
@@ -8605,7 +8587,7 @@ function Toggle2ndAbilityDC(ShowHide) {
 			"Spell DC 2 Mod",
 			"Spell save DC 2"
 		];
-		
+
 		var toMove = isVis2nd ? 27 : -27;
 		for (var i = 0; i < DC1array.length; i++) {
 			var theFld = tDoc.getField(DC1array[i]);
@@ -8616,7 +8598,7 @@ function Toggle2ndAbilityDC(ShowHide) {
 			theFld.value = theFld.value; //re-input the value as to counteract the changing of font
 		}
 	}
-	
+
 	for (var j = 0; j < DC2array.length; j++) {
 		tDoc[HiddenVisible](DC2array[j]);
 	}
@@ -8633,16 +8615,16 @@ function ApplyColorScheme(aColour) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying " + colour + " color theme...");
 	calcStop();
-	
+
 	//set the chosen color to a place it can be found again
 	Value("Color.Theme", colour);
-	
+
 	//set the highlighting color if it has been coupled to the headers
 	if (Who("Highlighting") === "headers") {
 		app.runtimeHighlightColor = LightColorList[colour];
 		tDoc.getField("Highlighting").fillColor = LightColorList[colour];
 	}
-	
+
 	if (tDoc.info.AdvLogOnly) {
 		var ALlogA = What("Template.extras.ALlog").split(",");
 		var theIconH = tDoc.getField("SaveIMG.Header.Left." + colour).buttonGetIcon();
@@ -8656,7 +8638,7 @@ function ApplyColorScheme(aColour) {
 		thermoM(thermoTxt, true); // Stop progress bar
 		return; // do not continue any further with this function
 	}
-	
+
 	//get any extra prefixes
 	var makeTempArray = function (template) {
 		var tempReturn = [];
@@ -8672,11 +8654,11 @@ function ApplyColorScheme(aColour) {
 	var ASnotesA = makeTempArray("ASnotes");
 	var WSfrontA = makeTempArray("WSfront");
 	var ALlogA = makeTempArray("ALlog");
-	
+
 	var SSmoreA = What("Template.extras.SSmore").split(","); //here we do include the first "" value
 	var SSfrontA = What("Template.extras.SSfront") ? What("Template.extras.SSfront").split(",")[1] : false;
 	if (SSfrontA) SSmoreA.push(SSfrontA);
-	
+
 	// set the fill colours of the spellsheet boxes
 	var fillListIfDontPrint = [];
 	for (var SS = 0; SS < SSmoreA.length; SS++) {
@@ -8691,7 +8673,7 @@ function ApplyColorScheme(aColour) {
 			thefLdp.fillColor = ColorList[colour].CMYK;
 		}
 	}
-	
+
 	//first do the Spell Sheets, which have their very peculiar way of naming
 	var SSimgFields = [
 		"Title",
@@ -8711,12 +8693,12 @@ function ApplyColorScheme(aColour) {
 			}
 		}}
 	}
-	
+
 	if (tDoc.info.SpellsOnly) { // if this pdf is only filled with spell sheets, we don't need to go on
 		thermoM(thermoTxt, true); // Stop progress bar
 		return; // do not continue any further with this function
 	}
-	
+
 	//create the lists of the borders, fill, and text of the following fields
 	var borderList = [
 		"Circle",
@@ -8736,7 +8718,7 @@ function ApplyColorScheme(aColour) {
 		"Text.Armor Proficiencies",
 		"Text.Weapon Proficiencies"
 	];
-	
+
 	//add any possible other template prefixes to the list
 	if (AScompA[0]) {
 		for (tA = 0; tA < AScompA.length; tA++) {
@@ -8757,7 +8739,7 @@ function ApplyColorScheme(aColour) {
 			fillList.push(ALlogA[tA] + "Line");
 		}
 	}
-	
+
 	//add more fields to the list; fields that are not part of the templates
 	for (var i = 1; i <= FieldNumbers.gear; i++) {
 		borderList.push("Adventuring Gear Button " + i);
@@ -8773,9 +8755,9 @@ function ApplyColorScheme(aColour) {
 		borderList.push("Feat Button " + i);
 		textList.push("Feat Name " + i);
 	}
-	
+
 	thermoM(2/7); //increment the progress dialog's progress
-	
+
 	//change the colors of the borders, fill, and text
 	for (bL = 0; bL < borderList.length; bL++) {
 		tDoc.getField(borderList[bL]).strokeColor = ColorList[colour].CMYK;
@@ -8786,23 +8768,23 @@ function ApplyColorScheme(aColour) {
 	for (tL = 0; tL < textList.length; tL++) {
 		tDoc.getField(textList[tL]).textColor = ColorList[colour].RGB;
 	}
-	
+
 	//change the color of the text "Weapons:" and "Armor:" on the second page
 	var armorProfArray = tDoc.getField("Text.Armor Proficiencies").richValue;
 	var weaponProfArray = tDoc.getField("Text.Weapon Proficiencies").richValue;
-	
+
 	for (var aP = 0; aP < armorProfArray.length; aP++) {
 		armorProfArray[aP].textColor = ColorList[colour].RGB;
 	}
 	for (var wP = 0; wP < weaponProfArray.length; wP++) {
 		weaponProfArray[wP].textColor = ColorList[colour].RGB;
 	}
-	
+
 	tDoc.getField("Text.Armor Proficiencies").richValue = armorProfArray;
 	tDoc.getField("Text.Weapon Proficiencies").richValue = weaponProfArray;
-	
+
 	thermoM(3/7); //increment the progress dialog's progress
-	
+
 	//get a list of the image fields
 	var imgFields = [
 		"Level",
@@ -8815,13 +8797,13 @@ function ApplyColorScheme(aColour) {
 		"Arrow",
 		"IntArrow"
 	];
-	
+
 	//set the colored icons
 	for (var i = 0; i < imgFields.length; i++) {
 		var theIcon = tDoc.getField("SaveIMG." + imgFields[i] + "." + colour).buttonGetIcon();
-		
+
 		temp = [""];
-		
+
 		if (imgFields[i] === "Divider") {
 			//also set it for the divider that can be hidden on the third page
 			tDoc.getField("Image.DividerExtraGear").buttonSetIcon(theIcon);
@@ -8831,7 +8813,7 @@ function ApplyColorScheme(aColour) {
 			//also set it for the header that can be hidden on the third page
 			tDoc.getField("Image.Header.RightRules").buttonSetIcon(theIcon);
 		}
-		
+
 		//if anything but level or title, also do something with the extra template pages
 		if (imgFields[i] !== "Level" && imgFields[i] !== "Title" && imgFields[i] !== "Header.Right") {
 			//also set it for the companion and wild shape templates names
@@ -8845,7 +8827,7 @@ function ApplyColorScheme(aColour) {
 		if (imgFields[i] === "Header.Left") {
 			temp = temp.concat(ASnotesA).concat(ALlogA);
 		}
-		
+
 		for (var te = 0; te < temp.length; te++) {
 			tDoc.getField(temp[te] + "Image." + imgFields[i]).buttonSetIcon(theIcon);
 			if ((te === 0 || temp[te].indexOf("AScomp") !== -1) && imgFields[i] === "Divider") {
@@ -8853,12 +8835,12 @@ function ApplyColorScheme(aColour) {
 			}
 		}
 	}
-	
+
 	thermoM(4/7); //increment the progress dialog's progress
-	
+
 	//make an array of the extra companion templates with an empty value at the start (so it is never empty)
 	var prefixAScomp = [""].concat(AScompA);
-	
+
 	//set the attack field color for any of them that is set to change together with the headers
 	theIcon = tDoc.getField("SaveIMG.Attack." + colour).buttonGetIcon();
 	for (var a = 1; a <= FieldNumbers.attacks; a++) {
@@ -8871,12 +8853,12 @@ function ApplyColorScheme(aColour) {
 			}
 		}}
 	}
-	
+
 	thermoM(5/7); //increment the progress dialog's progress
-	
+
 	//make an array of the extra wildshape templates with an empty value at the start (so it is never empty)
 	var prefixWSfront = [""].concat(WSfrontA);
-	
+
 	//re-do all the skill proficiencies of the companion and wild shape pages
 	for (var s = 0; s < (SkillsList.abbreviations.length - 2); s++) {
 		var theSkill = SkillsList.abbreviations[s];
@@ -8884,7 +8866,7 @@ function ApplyColorScheme(aColour) {
 			var compSkill = prefixAScomp[pAS] + "Text.Comp.Use.Skills." + theSkill + ".Prof";
 			if (What(compSkill) !== "nothing") Value(compSkill, What(compSkill));
 		}
-		
+
 		for (pWS = 0; pWS < prefixWSfront.length; pWS++) {
 			for (var w = 1; w <= 4; w++) {
 				var wildSkill = prefixWSfront[pWS] + "Text.Wildshape." + w + ".Skills." + theSkill + ".Prof";
@@ -8892,12 +8874,12 @@ function ApplyColorScheme(aColour) {
 			}
 		}
 	}
-	
+
 	thermoM(6/7); //increment the progress dialog's progress
-	
+
 	//see if any of the Ability Save DC's have the color connected to this
 	ApplyDCColorScheme();
-	
+
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
@@ -8922,10 +8904,10 @@ function ApplyDragonColorScheme(aColour) {
 		app.runtimeHighlightColor = LightColorList[colour];
 		tDoc.getField("Highlighting").fillColor = LightColorList[colour];
 	}
-	
+
 	//change the dragonheads
 	var theIcon = tDoc.getField("SaveIMG.Dragonhead." + colour).buttonGetIcon();
-	
+
 	if (tDoc.info.AdvLogOnly) {
 		var ALlogA = What("Template.extras.ALlog").split(",");
 		var buttons = [];
@@ -8943,7 +8925,7 @@ function ApplyDragonColorScheme(aColour) {
 		thermoM(thermoTxt, true); // Stop progress bar
 		return; // do not continue any further with this function
 	}
-	
+
 	//first do the Spell Sheets, which have their very peculiar way of naming
 	var SSmoreA = What("Template.extras.SSmore").split(",");
 	var SSfrontA = What("Template.extras.SSfront") ? What("Template.extras.SSfront").split(",")[1] : false;
@@ -8960,39 +8942,39 @@ function ApplyDragonColorScheme(aColour) {
 			}
 		}
 	}
-	
+
 	thermoM(1/6); //increment the progress dialog's progress
-	
+
 	if (tDoc.info.SpellsOnly) { // if this pdf is only filled with spell sheets, we don't need to go on
 		thermoM(thermoTxt, true); // Stop progress bar
 		return; // do not continue any further with this function
 	}
-	
+
 	//get any extra prefixes
 	var AScompA = What("Template.extras.AScomp").split(",");
 	var ASnotesA = What("Template.extras.ASnotes").split(",");
 	var WSfrontA = What("Template.extras.WSfront").split(",");
 	var ALlogA = What("Template.extras.ALlog").split(",");
 	var prefixFullA = [""].concat(AScompA).concat(ASnotesA).concat(WSfrontA).concat(ALlogA);
-	
+
 	thermoM(2/6); //increment the progress dialog's progress
-	
+
 	tDoc.getField("Image.DragonheadExtraGear").buttonSetIcon(theIcon);
 	tDoc.getField("Image.DragonheadRightRules").buttonSetIcon(theIcon);
 	for (var pA = 0; pA < prefixFullA.length; pA++) {
 		if (pA > 0 && !prefixFullA[pA]) continue; //ignore anything but the first "" in the array
 		tDoc.getField(prefixFullA[pA] + "Image.Dragonhead").buttonSetIcon(theIcon);
 	}
-	for (tA = 0; tA < AScompA.length; tA++) { //also do the dragonhead that can be hidden on the Companion page 
+	for (tA = 0; tA < AScompA.length; tA++) { //also do the dragonhead that can be hidden on the Companion page
 		tDoc.getField(AScompA[tA] + "Comp.eqp.Image.Dragonhead").buttonSetIcon(theIcon);
 	}
-	
+
 	//set the color of the D&D logo on the third page
 	theIcon = tDoc.getField("SaveIMG.DnDLogo." + colour).buttonGetIcon();
 	tDoc.getField("Image.DnDLogo.long").buttonSetIcon(theIcon);
-	
+
 	thermoM(3/6); //increment the progress dialog's progress
-	
+
 	var buttons = [
 		"Show Buttons",
 		"ShowHide 2nd DC",
@@ -9003,7 +8985,7 @@ function ApplyDragonColorScheme(aColour) {
 		"Extra.Layers Button",
 		"Buttons"
 	];
-	
+
 	//add the buttons names of the extra templates to buttons array
 	for (tA = 0; tA < AScompA.length; tA++) {
 		buttons.push(AScompA[tA] + "Companion.Options");
@@ -9026,12 +9008,12 @@ function ApplyDragonColorScheme(aColour) {
 			tDoc.getField(buttons[b]).strokeColor = theColorDark;
 		}
 	}
-	
+
 	//make an array of the extra companion templates with an empty value at the start (so it is never empty)
 	var prefixA = [""].concat(AScompA);
-	
+
 	thermoM(4/6); //increment the progress dialog's progress
-	
+
 	//set the attack field color for any of them that is set to change together with the dragon heads
 	theIcon = tDoc.getField("SaveIMG.Attack" + "." + colour).buttonGetIcon();
 	for (var a = 1; a <= FieldNumbers.attacks; a++) {
@@ -9044,12 +9026,12 @@ function ApplyDragonColorScheme(aColour) {
 			}
 		}}
 	}
-	
+
 	thermoM(5/6); //increment the progress dialog's progress
-	
+
 	//see if any of the Ability Save DC's have the color connected to this
 	ApplyDCColorScheme();
-	
+
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
@@ -9057,7 +9039,7 @@ function ApplyDragonColorScheme(aColour) {
 function ApplyHPDragonColorScheme(aColour) {
 	if (typePF || (!aColour && What("Color.HPDragon") === tDoc.getField("Color.HPDragon").defaultValue)) return; //don't do this function in the Printer-Friendly version or if resetting with the default colour still active
 	var colour = aColour ? aColour.toLowerCase() : What("Color.HPDragon");
-	
+
 	//stop the function if the input color is not recognized
 	if (!ColorList[colour]) return;
 
@@ -9067,7 +9049,7 @@ function ApplyHPDragonColorScheme(aColour) {
 
 	//set the chosen color to a place where it can be found again
 	Value("Color.HPDragon", colour);
-	
+
 	//get any extra prefixes
 	var makeTempArray = function (template) {
 		var tempReturn = [];
@@ -9082,20 +9064,20 @@ function ApplyHPDragonColorScheme(aColour) {
 	var AScompA = makeTempArray("AScomp");
 	var WSfrontA = makeTempArray("WSfront");
 	var prefixFullA = [""].concat(AScompA).concat(WSfrontA);
-	
+
 	thermoM(1/2); //increment the progress dialog's progress
-	
+
 	var theIcon = tDoc.getField("SaveIMG.HPdragonhead" + "." + colour).buttonGetIcon();
 	for (var pA = 0; pA < prefixFullA.length; pA++) {
 		tDoc.getField(prefixFullA[pA] + "Image.HPdragonhead").buttonSetIcon(theIcon);
 	}
-	
+
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
 //Make menu for choosing the color, the 'color' button, and parse it to Menus.color
 function MakeColorMenu() {
-	
+
 	var ColorMenu = [];
 	var tempArray = [];
 
@@ -9104,7 +9086,7 @@ function MakeColorMenu() {
 		tempArray.push([key.capitalize(), key]);
 	};
 	tempArray.sort();
-	
+
 	if (typePF) {
 		var menuLVL1 = function (item, array, name) {
 			var lookIt = Who("Highlighting");
@@ -9153,7 +9135,7 @@ function MakeColorMenu() {
 			};
 			return menu;
 		};
-		
+
 		var menuLVL3 = function (menu, name, array, extraReturn) {
 			var temp = [];
 			var lookIt = What("Color.DC").split(",")[extraReturn - 1];
@@ -9169,14 +9151,14 @@ function MakeColorMenu() {
 				oSubMenu : temp
 			});
 		};
-		
+
 		var tempArrayExt = tempArray.slice(0);
 		tempArrayExt.unshift(
 			["Same as Headers", "headers"],
 			["Same as Dragon Heads", "dragons"],
 			["-", "-"]
 		);
-		
+
 		//make a submenu to set the form field highlight color, or turn highlighting off
 		var HighlightArray = tempArrayExt.slice(0);
 		HighlightArray.unshift(
@@ -9187,10 +9169,10 @@ function MakeColorMenu() {
 			["-", "-"]
 		);
 		ColorMenu.push(menuLVL2(["Form Highlights", "highlights"], HighlightArray));
-		
+
 		//make the Dragon Head submenu
 		ColorMenu.push(menuLVL2(["Dragon Heads", "dragonheads"], tempArray));
-		
+
 		//make, if this is not a spell sheet, the Dragon HP and ability save DCs submenu
 		if (!minVer) {
 			ColorMenu.push(menuLVL2(["HP Dragons", "hpdragons"], tempArray));
@@ -9198,14 +9180,14 @@ function MakeColorMenu() {
 			menuLVL3(DCMenu, ["Ability Save DC 2 (right)", "abilitydc"], tempArrayExt, 2);
 			ColorMenu.push(DCMenu);
 		}
-		
+
 		ColorMenu.push({cName : "-"}); //add a divider
-		
+
 		//make the color menu
 		menuLVL1(ColorMenu, tempArray, "theme");
-		
+
 		ColorMenu.push({cName : "-"}); //add a divider
-		
+
 		// 'all' option
 		ColorMenu.push(menuLVL2(["All of the above (expect highlighting)", "all"], tempArray));
 	}
@@ -9216,7 +9198,7 @@ function MakeColorMenu() {
 //call the color menu and do something with the results
 function ColoryOptions(input) {
 	var MenuSelection = input ? input : getMenu("colour");
-	
+
 	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] !== "color") return;
 	switch (MenuSelection[1]) {
 		case "theme" :
@@ -9272,11 +9254,11 @@ function ColoryOptions(input) {
 function ApplyBackgroundFeature(input) {
 	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	if (event.target && event.target.name === "Background Feature" && input.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
-	
+
 	var TheInput = input.toLowerCase();
 	var TempFound = false;
 	var tempString = stringSource(CurrentBackground, "full,page", "The \"" + CurrentBackground.name + "\" background is found in ", ".\n");
-	
+
 	if (input === "") {
 		Value("Background Feature Description", "", "");
 	} else {
@@ -9286,10 +9268,10 @@ function ApplyBackgroundFeature(input) {
 				var FeaName = feature.capitalize();
 				var theBfea = BackgroundFeatureList[feature];
 				tempString += stringSource(theBfea, "full,page", "The \"" + FeaName + "\" background is found in ", ".");
-				
+
 				var theDesc = What("Unit System") === "imperial" ? BackgroundFeatureList[feature].description : ConvertToMetric(BackgroundFeatureList[feature].description, 0.5);
 				Value("Background Feature Description", theDesc, tempString);
-				
+
 				return;
 			};
 		};
@@ -9300,7 +9282,7 @@ function ApplyBackgroundFeature(input) {
 function SetBackgroundFeaturesdropdown(forceTooltips) {
 	var tempArray = [""];
 	var tempString = "Select or type in the background feature you want to use and its text will be filled out below automatically.\n\n" + toUni("Background selection") + "\nThe relevant background feature is automatically selected upon selecting a background on the first page. Doing that will always override whatever you wrote here. So, please first fill out a background before you select a alternative feature here.";
-	
+
 	for (var feature in BackgroundFeatureList) {
 		if (testSource(feature, BackgroundFeatureList[feature], "backFeaExcl")) continue;
 		var feaNm = feature.capitalize();
@@ -9313,7 +9295,7 @@ function SetBackgroundFeaturesdropdown(forceTooltips) {
 		return; //no changes, so no reason to do this
 	}
 	tDoc.getField("Background Feature").submitName = tempArray.toSource();
-	
+
 	var theFldVal = What("Background Feature");
 	tDoc.getField("Background Feature").setItems(tempArray);
 	Value("Background Feature", theFldVal, tempString);
@@ -9330,7 +9312,7 @@ function MakeRaceMenu() {
 			racialVarArr.push(CurrentRace.variants[r]);
 		}
 	};
-	
+
 	var menuLVL1R = function (item, array) {
 		var isCurrent = CurrentRace.variant;
 		var raceSrc = stringSource(RaceList[CurrentRace.known], "first,abbr", "\t   [", "]");
@@ -9346,7 +9328,7 @@ function MakeRaceMenu() {
 	};
 
 	var RaceMenu = [];
-	
+
 	if (racialVarArr.length === 1) {
 		RaceMenu = [{
 			cName : "No race options that require a choice",
@@ -9363,7 +9345,7 @@ function MakeRaceMenu() {
 //call the Race Features menu and do something with the results
 function RaceFeatureOptions() {
 	var MenuSelection = getMenu("raceoptions");
-	
+
 	if (MenuSelection && MenuSelection[0] !== "nothing") {
 		ApplyRace(MenuSelection.toString(), true);
 	}
@@ -9392,7 +9374,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 	var LBtoKG = function (unit) {
 		return unit * UnitsList[ratio].mass;
 	}
-	
+
 	var theConvert = function (amount, units) {
 		switch (units){
 		 case "mile" : case "miles" :
@@ -9422,7 +9404,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 		}
 		return [total, unit];
 	}
-	
+
 	// find all labeled measurements in string
 	var measurements = inputString.match(/\b\d+(,|\.|\/)?\d*\/?(\d+?(,|\.|\/)?\d*)?\s?-?((in|inch|inches|miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?)\b|('($|\s)|'\d+\w?"))/ig);
 
@@ -9435,16 +9417,16 @@ function ConvertToMetric(inputString, rounded, exact) {
 			} else {
 				var org = measurements[i].replace(/,/g, ".");
 				var orgUnit = org.match(/([a-z]+|')$/)[0], fraction;
-				
+
 				if (fraction = org.match(/(\d+\.?\d*)\/(\d+\.?\d*)/) ){
 					var resulted = [theConvert(fraction[1], orgUnit), theConvert(fraction[2], orgUnit)];
 				} else {
 					var resulted = theConvert(parseFloat(org), orgUnit);
 				}
 			}
-			
+
 			var delimiter = (/-/).test(measurements[i]) ? "-" : " ";
-			
+
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
 			} else {
@@ -9479,7 +9461,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 	var LBofKG = function (unit) {
 		return unit / UnitsList[ratio].mass;
 	}
-	
+
 	var theConvert = function (amount, units) {
 		switch (units){
 		 case "cm" :
@@ -9514,23 +9496,23 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 		}
 		return [total, unit];
 	}
-	
+
 	// find all labeled measurements in string
 	var measurements = inputString.match(/\b\d+(,|\.|\/)?\d*\/?(\d+?(,|\.|\/)?\d*)?\s?-?(square meter|square metre|m2|cm|km|m|meter|metre|l|liter|litre|kg|g|kilos?)\b/ig);
-	
+
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
 			var org = measurements[i].replace(/,/g, ".");
 			var orgUnit = org.match(/([a-z]+)$/)[0], fraction;
-			
+
 			if (fraction = org.match(/(\d+\.?\d*)\/(\d+\.?\d*)/)){
 				var resulted = [theConvert(fraction[1], orgUnit), theConvert(fraction[2], orgUnit)];
 			} else {
 				var resulted = theConvert(parseFloat(org), orgUnit);
 			}
-			
+
 			var delimiter = (/-/).test(measurements[i]) ? "-" : " ";
-			
+
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
 			} else if (toshorthand && resulted[1] === "ft" && resulted[0] % 1 != 0) {
@@ -9550,7 +9532,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 function UpdateDecimals(inputString) {
 	var theDec = What("Decimal Separator");
 	var theInput = inputString.toString();
-	
+
 	if (theDec === "dot") {
 		var measurements = theInput.match(/\b\d+,\d+/g);
 		if (measurements) {
@@ -9575,18 +9557,18 @@ function UpdateDecimals(inputString) {
 function SetUnitDecimals_Button() {
 	var unitSys = What("Unit System");
 	var decSep = What("Decimal Separator");
-	
+
 	//set the dialog to represent current settings
 	SetUnitDecimals_Dialog.bSys = unitSys;
 	SetUnitDecimals_Dialog.bDec = decSep;
-	
+
 	//call the dialog and do something if ok is pressed
 	if (app.execDialog(SetUnitDecimals_Dialog) != "ok") return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Set units and decimals...");
 	calcStop();
-	
+
 	if (!minVer) {
 		//fields to update the string from
 		var FldsGameMech = [
@@ -9696,7 +9678,7 @@ function SetUnitDecimals_Button() {
 		} else {
 			SetRichTextFields();
 		}
-		
+
 		if (SetUnitDecimals_Dialog.bSys === "imperial") {
 			var conStr = "ConvertToImperial";
 			var weightConv = function (amount) {
@@ -9712,9 +9694,9 @@ function SetUnitDecimals_Button() {
 			var raceHeight = "heightMetric";
 			var raceWeight = "weightMetric";
 		}
-		
+
 		var totalInc = FldsGameMech.length + FldsWeight.length + FldsCalc.length + 2;
-		
+
 		for (var C = 0; C < FldsGameMech.length; C++) {
 			var theValue = What(FldsGameMech[C]);
 			if (theValue) {
@@ -9756,7 +9738,7 @@ function SetUnitDecimals_Button() {
 			}
 		}
 		thermoM((totalInc - 1)/totalInc); //increment the progress dialog's progress
-		
+
 		for (var p = 0; p < AScompA.length; p++) {
 			prefix = AScompA[p];
 			if (What(prefix + "Comp.Desc.Height")) {
@@ -9774,17 +9756,17 @@ function SetUnitDecimals_Button() {
 				}
 			}
 		}
-		
+
 		//run through all the spells fields with a description and re-do the description
 		for (var Sa = 0; Sa < spellsArray.length; Sa++) {
 			ApplySpell(spellsArray[Sa][0], spellsArray[Sa][1]);
 		}
-		
+
 	} else if (!minVer && SetUnitDecimals_Dialog.bDec !== decSep) { //or if only the decimal separator has been changed
 		thermoTxt = thermoM("Converting to " + SetUnitDecimals_Dialog.bDec + " decimal separator...", false); //change the progress dialog text
 		setListsUnitSystem(unitSys); //update some variables
 		Value("Decimal Separator", SetUnitDecimals_Dialog.bDec);
-		
+
 		FldsWeight.push("Total Experience");
 		FldsWeight.push("Add Experience");
 		FldsWeight.push("Platinum Pieces");
@@ -9794,15 +9776,15 @@ function SetUnitDecimals_Button() {
 		FldsWeight.push("Copper Pieces");
 		FldsGameMech.push("Height");
 		FldsGameMech.push("Weight");
-		
+
 		for (var p = 0; p < AScompA.length; p++) {
 			prefix = AScompA[p];
 			FldsGameMech.push(prefix + "Comp.Desc.Height");
 			FldsGameMech.push(prefix + "Comp.Desc.Weight");
 		}
-		
+
 		var totalInc = FldsGameMech.length + FldsWeight.length;
-		
+
 		for (var D = 0; D < FldsGameMech.length; D++) {
 			var theValue = What(FldsGameMech[D]);
 			if (theValue) {
@@ -9810,7 +9792,7 @@ function SetUnitDecimals_Button() {
 			}
 			thermoM(D/totalInc); //increment the progress dialog's progress
 		}
-		
+
 		for (D = 0; D < FldsWeight.length; D++) {
 			Value(FldsWeight[D], What(FldsWeight[D]));
 			thermoM((FldsGameMech.length + D)/totalInc); //increment the progress dialog's progress
@@ -9819,7 +9801,7 @@ function SetUnitDecimals_Button() {
 		thermoTxt = thermoM("Converting to " + SetUnitDecimals_Dialog.bSys + "...", false); //change the progress dialog text
 		Value("Unit System", SetUnitDecimals_Dialog.bSys);
 		Value("Decimal Separator", SetUnitDecimals_Dialog.bDec);
-		//run through all the spells fields with a description and re-do the 
+		//run through all the spells fields with a description and re-do the
 		for (var Sa = 0; Sa < spellsArray.length; Sa++) {
 			ApplySpell(spellsArray[Sa][0], spellsArray[Sa][1]);
 		}
@@ -9836,7 +9818,7 @@ function SetTextOptions_Button() {
 	var FontDef = typePF ? "SegoeUI" : "SegoePrint";
 	var FontDefSize = typePF ? 7 : 5.74;
 	if (FontList[nowFont]) FontDefSize = FontList[nowFont];
-	
+
 	var fontArray = {};
 	for (var fo in FontList) {
 		if (fo !== nowFont) {
@@ -9851,8 +9833,8 @@ function SetTextOptions_Button() {
 	SetTextOptions_Dialog.bDefSizeSheet = FontList[FontDef];
 	SetTextOptions_Dialog.bFont = nowFont;
 	SetTextOptions_Dialog.bFontsArray = fontArray;
-	
-	// Call the dialog and do something if ok is pressed	
+
+	// Call the dialog and do something if ok is pressed
 	if (app.execDialog(SetTextOptions_Dialog) === "ok") {
 		if (SetTextOptions_Dialog.bSize !== FontSize) {
 			ToggleTextSize(SetTextOptions_Dialog.bSize);
@@ -9975,7 +9957,7 @@ function FeatInsert(itemNmbr) {
 			i = (FieldNumbers.feats + 1);
 		}
 	}
-	
+
 	var FieldNames = [
 		"Feat Name ",
 		"Feat Note ",
@@ -9995,10 +9977,10 @@ function FeatInsert(itemNmbr) {
 				Value(FieldNames[H] + i, What(FieldNames[H] + (i - 1)));
 			}
 		}
-		
+
 		//empty the selected slot
 		tDoc.resetForm(Fields);
-		
+
 		IsNotFeatMenu = true;
 	}
 }
@@ -10018,10 +10000,10 @@ function FeatDelete(itemNmbr) {
 		Fields.push(FieldNames[F] + itemNmbr);
 		EndFields.push(FieldNames[F] + maxNmbr);
 	}
-	
+
 	//delete the currently selected line so that the feats code is removed as well
 	tDoc.resetForm(Fields);
-	
+
 	//move every line up one space, starting with the selected line
 	IsNotFeatMenu = false;
 	for (var i = itemNmbr; i < maxNmbr; i++) {
@@ -10030,7 +10012,7 @@ function FeatDelete(itemNmbr) {
 		};
 	}
 	IsNotFeatMenu = true;
-	
+
 	//delete the contents of the final line
 	tDoc.resetForm(EndFields);
 }
@@ -10078,17 +10060,17 @@ function MakeWeaponMenu() {
 	var theWea = CurrentWeapons.known[itemNmbr - 1];
 	var isWeapon = QI && ((!theWea[0] && CurrentWeapons.field[itemNmbr - 1]) || (theWea[0] && WeaponsList[theWea[0]].weight));
 	var isEquipment = QI && What("BlueText.Attack." + itemNmbr + ".Weight") && (What("Manual Attack Remember") !== "No" || isWeapon) ? true : false;
-	
+
 	//decide what items to put on there
 	var menuItems = [["Move up", "Move down"], ["-", "Copy to Adventuring Gear (page 2)"], ["-", "Insert empty attack", "Delete attack", "Clear attack"]];
 	var attackMenuItems = QI ? menuItems[0].concat(menuItems[1]).concat(menuItems[2]) : menuItems[0].concat(menuItems[2]);
 	menuLVL1(attackMenu, attackMenuItems);
-	
+
 	if (!typePF) {
 		//make the color menu
 		var ColorMenu = {};
 		var ColorArray = ["black"]; //add a black option
-		
+
 		//add all the colours to the tempArray, ommitting some if not using the full (bonus) version
 		for (var key in ColorList) {
 			ColorArray.push(key);
@@ -10096,14 +10078,14 @@ function MakeWeaponMenu() {
 		ColorArray.sort();
 		ColorArray.unshift("same as headers", "same as dragon heads", "-");
 		menuLVL2(ColorMenu, "Outline Color", ColorArray);
-		
+
 		//add the colormenu to the attack menu
 		attackMenu.push({cName : "-"});
 		attackMenu.push(ColorMenu);
 	}
-	
+
 	if (QI) menuLVL1(attackMenu, ["-", "Show what things are affecting the attack calculations"], CurrentEvals.atkAdd || CurrentEvals.atkCalc ? false : true);
-	
+
 	//set the complete menu as the global variable
 	Menus.attacks = attackMenu;
 };
@@ -10111,7 +10093,7 @@ function MakeWeaponMenu() {
 //call the weapon menu and do something with the results
 function WeaponOptions() {
 	var MenuSelection = getMenu("attacks");
-	
+
 	if (!MenuSelection || MenuSelection[0] == "nothing") return;
 
 	// Start progress bar and stop calculations
@@ -10220,7 +10202,7 @@ function WeaponOptions() {
 		if (atkCalcStr) ShowDialog("Things Affecting the Attack Calculations", atkCalcStr);
 		break;
 	}
-	
+
 	//re-populate the CurrentWeapons variable because of the thing that just changed
 	if (findWeaps && QI) {
 		FindWeapons();
@@ -10252,7 +10234,7 @@ function WeaponInsert(itemNmbr) {
 			i = (maxItems + 1);
 		}
 	}
-	
+
 	var FieldNames = [
 		["", ".Weapon"], //0
 		["", ".To Hit"], //1
@@ -10289,12 +10271,12 @@ function WeaponInsert(itemNmbr) {
 				tDoc.getField(prefix + "Image." + Q + "Attack." + i).buttonSetIcon(theIcon);
 			}
 		}
-		
+
 		//empty the selected slot
 		tDoc.resetForm(Fields);
 		if (!QI) AddTooltip(Fields[12], "Description and notes");
 		IsNotWeaponMenu = true;
-		
+
 		//re-populate the CurrentWeapons variable because of the thing that just changed
 		if (QI) {
 			FindWeapons();
@@ -10310,7 +10292,7 @@ function WeaponDelete(itemNmbr) {
 	var Q = QI ? "" : "Comp.Use.";
 	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var maxItems = QI ? FieldNumbers.attacks : 3;
-	
+
 	var FieldNames = [
 		["", ".Weapon"], //0
 		["", ".To Hit"], //1
@@ -10333,10 +10315,10 @@ function WeaponDelete(itemNmbr) {
 		Fields.push(prefix + FieldNames[F][0] + Q + "Attack." + itemNmbr + FieldNames[F][1]);
 		EndFields.push(prefix + FieldNames[F][0] + Q + "Attack." + maxItems + FieldNames[F][1]);
 	}
-	
+
 	//delete the currently selected line so that the weapons code is removed as well
 	tDoc.resetForm(Fields);
-	
+
 	//move every line up one space, starting with the selected line
 	IsNotWeaponMenu = false;
 	for (var i = itemNmbr; i < maxItems; i++) {
@@ -10348,22 +10330,22 @@ function WeaponDelete(itemNmbr) {
 				tDoc.getField(prefix + "Image." + Q + "Attack." + i).buttonSetIcon(theIcon);
 			}
 		}
-		
+
 		//move the values
-		for (var H = 0; H < FieldNames.length; H++) {			
+		for (var H = 0; H < FieldNames.length; H++) {
 			var fromFld = prefix + FieldNames[H][0] + Q + "Attack." + (i + 1) + FieldNames[H][1];
 			Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(fromFld), !QI && (/description/i).test(FieldNames[H][1]) ? Who(fromFld) : undefined);
 		};
 	}
-	
+
 	//delete the contents of the final line
 	tDoc.resetForm(EndFields);
 	if (!QI) AddTooltip(EndFields[12], "Description and notes");
-	
+
 	//reset the final line's image to the default
 	ApplyAttackColor(maxItems, "");
 	IsNotWeaponMenu = true;
-		
+
 	//re-populate the CurrentWeapons variable because of the thing that just changed
 	if (QI) {
 		FindWeapons();
@@ -10440,7 +10422,7 @@ function HideInvLocationColumn(type, currentstate) {
 //put the ability save DC right, and show both if more than one race/class with ability save DC
 function SetTheAbilitySaveDCs() {
 	var AbilitySaveArray = [];
-	
+
 	//check all the classes
 	for (var aClass in classes.known) {
 		var CurrentAbilitySave = CurrentClasses[aClass].abilitySave;
@@ -10448,20 +10430,20 @@ function SetTheAbilitySaveDCs() {
 			AbilitySaveArray.push(CurrentAbilitySave);
 		}
 	}
-	
+
 	//check the race
 	var CurrentAbilitySave = CurrentRace.abilitySave;
 	if (CurrentAbilitySave && AbilitySaveArray.indexOf(CurrentAbilitySave) === -1) {
 		AbilitySaveArray.push(CurrentAbilitySave);
 	}
-	
+
 	//put the ability save DC right, and show both if more than one class with ability save DC
 	if (AbilitySaveArray[0]) {
 		PickDropdown("Spell DC 1 Mod", AbilitySaveArray[0]);
 	} else {
 		PickDropdown("Spell DC 1 Mod", 0);
 	}
-	
+
 	if (AbilitySaveArray[1]) {
 		Toggle2ndAbilityDC("show");
 		PickDropdown("Spell DC 2 Mod", AbilitySaveArray[1]);
@@ -10477,7 +10459,7 @@ function DeleteItemType(Type, Line, Total) {
 	for (var D = Line; D < Total; D++) {
 		Value(Type + D, What(Type + (D + 1)), Who(Type + (D + 1)), How(Type + (D + 1)));
 	};
-	
+
 	//delete the contents of the final line
 	tDoc.resetForm([Type + Total]);
 	//set the tooltip of the final line to nothing
@@ -10502,7 +10484,7 @@ var ignoreSetSpellSlotsCheckboxes = false;
 function SetSpellSlotsCheckboxes(SpellLVL, theSlots, onlyDisplay) {
 	if (ignoreSetSpellSlotsCheckboxes) return;
 	var tempNr = What("Template.extras.SSfront").split(",").length;
-	
+
 	//now set the fields of the prefix type, or non-prefix type, depending on which one was just set
 	if (!onlyDisplay && tempNr > 1) {
 		var otherPrefix = event.target && event.target.name.indexOf("SpellSlots") !== 0 ? "" : What("Template.extras.SSfront").split(",")[1];
@@ -10510,9 +10492,9 @@ function SetSpellSlotsCheckboxes(SpellLVL, theSlots, onlyDisplay) {
 		Value(otherPrefix + "SpellSlots.CheckboxesSet.lvl" + SpellLVL, theSlots);
 		ignoreSetSpellSlotsCheckboxes = false;
 	}
-	
+
 	if (!onlyDisplay && What("SpellSlotsRemember") === "[false,false]") return;
-	
+
 	var startTry = minVer && !typePF ? 2 : 1;
 	var maxTries = tempNr + (typePF || minVer ? 0 : 1);
 	for (var s = startTry; s <= maxTries; s++) {
@@ -10527,7 +10509,7 @@ function SetSpellSlotsCheckboxes(SpellLVL, theSlots, onlyDisplay) {
 			Value(ExtraFld, "");
 			Slots = parseFloat(theSlots);
 		}
-		
+
 		var BoxesFld = [
 			prefix + "SpellSlots" + suffix + ".Checkboxes.lvl" + SpellLVL + ".mid", //0
 			prefix + "SpellSlots" + suffix + ".Checkboxes.lvl" + SpellLVL + ".top1", //1
@@ -10537,14 +10519,14 @@ function SetSpellSlotsCheckboxes(SpellLVL, theSlots, onlyDisplay) {
 			prefix + "SpellSlots" + suffix + ".Checkboxes.lvl" + SpellLVL + ".bottom2.1", //5
 			prefix + "SpellSlots" + suffix + ".Checkboxes.lvl" + SpellLVL + ".bottom2.2", //6
 		];
-		
+
 		//reset the checkboxes form fields so all are empty and hidden
 		tDoc.resetForm(BoxesFld);
 		for (var i = 0; i < BoxesFld.length; i++) {
 			Hide(BoxesFld[i]);
 		}
 		ClearIcons(prefix + "Image.SpellSlots" + suffix + ".Checkboxes." + SpellLVL);
-		
+
 		//set the right image and show form fields depending on the number entered and whether or not the field is even visible
 		if (isDisplayed && Slots > 0) { //only go ahead if there are more than 0 slots to be done
 			var theIcon = tDoc.getField("SaveIMG.SpellSlots." + Slots).buttonGetIcon();
@@ -10581,21 +10563,21 @@ function SetSpellSlotsVisibility() {
 	}
 	if (typePF) return; //don't do this function in the Printer-Friendly version
 	calcStop();
-	
+
 	MakeMobileReady(false); // Undo flatten, if needed
-	
+
 	var toShow = eval(What("SpellSlotsRemember"));
-	
+
 	//define a function to show (showOrHide = true) or hide (showOrHide = false) all the spellslots; suffix is "" or "2"
 	var doSpellSlots = function(showOrHide, suffix, prefix) {
 		var HiddenVisible = showOrHide ? "Hide" : "Show";
-		var VisibleHidden = showOrHide ? "Show" : "Hide"; 
+		var VisibleHidden = showOrHide ? "Show" : "Hide";
 		var NoPrintHidden = showOrHide && CurrentVars.bluetxt ? "DontPrint" : "Hide";
 		var HiddenNoPrint = showOrHide ? "Hide" : "DontPrint";
-		
+
 		//the ones that only apply to the first page
 		if (suffix !== 2) {
-			var SpellSlotsFields0 = [ 
+			var SpellSlotsFields0 = [
 				"Text.Header.SpellSlots",
 				"Line.SpellSlots"
 			]
@@ -10611,7 +10593,7 @@ function SetSpellSlotsVisibility() {
 				LimitedFeatureFields.push("Limited Feature Used " + i);
 				LimitedFeatureButtons.push("Button.Limited Feature " + i);
 			};
-		
+
 			//show or hide the fields of the bottom 3 limited features
 			for (var i = 0; i < LimitedFeatureFields.length; i++) {
 				tDoc[HiddenVisible](LimitedFeatureFields[i]);
@@ -10625,25 +10607,25 @@ function SetSpellSlotsVisibility() {
 				tDoc[VisibleHidden](SpellSlotsFields0[i]);
 			};
 		}
-		
+
 		var SpellSlotFields = [
 			prefix + "Image.SpellSlots" + suffix,
 			prefix + "SpellSlots" + suffix + ".Extra"
 		];
-		
+
 		//show or hide the fields of the spell slots
 		for (var i = 0; i < SpellSlotFields.length; i++) {
 			tDoc[VisibleHidden](SpellSlotFields[i]);
 		};
-		
+
 		var extrasuffix = minVer ? "" : (suffix !== 2 ? ".0" : (prefix ? "" : ".1"));
-		
+
 		//show the bluetext fields, if appropriate
 		for (var i = 1; i <= 9; i++) {
 			tDoc[NoPrintHidden](prefix + "SpellSlots.CheckboxesSet.lvl" + i + extrasuffix);
 		}
 	}
-	
+
 	//see if we need to hide or show the Spell Slots on the first page
 	if (!minVer) {
 		var display1 = tDoc.getField("Image.SpellSlots.List").display === display.visible;
@@ -10651,7 +10633,7 @@ function SetSpellSlotsVisibility() {
 	} else {
 		var display1 = toShow[0];
 	}
-	
+
 	//see if we need to hide or show the Spell Slots on the spell sheet page
 	var prefix = What("Template.extras.SSfront").split(",")[1];
 	var display2 = tDoc.getField("Image.SpellSlots2.List").display === display.visible;
@@ -10659,7 +10641,7 @@ function SetSpellSlotsVisibility() {
 		doSpellSlots(toShow[1], 2, "");
 		if (prefix) doSpellSlots(toShow[1], 2, prefix);
 	}
-	
+
 	//update the checkbox fields of the spell slots if any changes have been made
 	if (display1 !== toShow[0] || display2 !== toShow[1]) {
 		for (var i = 1; i <= 9; i++) {
@@ -10715,7 +10697,7 @@ function CalcCarriedLocation() {
 				if (weight && isNaN(weight) && weight.indexOf(",") !== -1) {
 					weight = parseFloat(weight.replace(",", "."));
 				}
-				
+
 				if (weight) {
 					if (amount === "" || isNaN(amount)) {
 						totalweight += weight;
@@ -10743,13 +10725,13 @@ function ApplyAttackColor(attackNmbr, aColour, type, prefix) {
 	} else if (!QI && !prefix) {
 		prefixA = What("Template.extras.AScomp").split(",");
 	}
-	var Q = QI ? "" : "Comp.Use."; 
+	var Q = QI ? "" : "Comp.Use.";
 	var maxItems = QI ? FieldNumbers.attacks : 3;
-	
+
 	startNmbr = attackNmbr ? attackNmbr : 1;
 	endNmbr = attackNmbr ? attackNmbr : maxItems;
 	for (var pA = 0; pA < prefixA.length; pA++) {
-		for (var a = startNmbr; a <= endNmbr; a++) { 
+		for (var a = startNmbr; a <= endNmbr; a++) {
 			var colour = aColour ? aColour.toLowerCase() : What(prefixA[pA] + "BlueText." + Q + "Attack." + a + ".Weight Title");
 			switch (colour) {
 				case "same as headers" :
@@ -10761,7 +10743,7 @@ function ApplyAttackColor(attackNmbr, aColour, type, prefix) {
 			}
 			if (colour !== "black" && !ColorList[colour]) break;
 			var theIcon = tDoc.getField("SaveIMG.Attack." + colour).buttonGetIcon();
-			
+
 			tDoc.getField(prefixA[pA] + "Image." + Q + "Attack." + a).buttonSetIcon(theIcon);
 			if (aColour) Value(prefixA[pA] + "BlueText." + Q + "Attack." + a + ".Weight Title", aColour.toLowerCase());
 		}

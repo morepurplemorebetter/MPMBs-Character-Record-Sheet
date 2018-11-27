@@ -161,11 +161,11 @@ function SelectClass() {
 				};
 				toLoad["r" + i + "LV"] = !isNaN(cs[0]) ? cs[0].toString() : (0).toString();
 				toLoad["r" + i + "TX"] = cs[1];
-				
+
 				var theClass = cs[2] && ClassList[cs[2]] ? ClassList[cs[2]].name : false;
 				toLoad["r" + i + "CD"] = theClass ? SetPositiveElement(this.classes, theClass) : this.classes;
 				toLoad["r" + i + "CS"] = cs[2] ? this.getSrc(ClassList[cs[2]]) : "";
-				
+
 				var theSubClass = theClass && this.subclasses[cs[2]] && cs[3] && ClassSubList[cs[3]] ? ClassSubList[cs[3]].subname : false;
 				toLoad["r" + i + "SD"] = theClass ? SetPositiveElement(this.subclasses[cs[2]], theSubClass) : {};
 				toLoad["r" + i + "SS"] = cs[3] ? this.getSrc(ClassSubList[cs[3]]) : "";
@@ -205,10 +205,10 @@ function SelectClass() {
 			//change the class and subclass drop-downs of the row
 			var toLoad = {};
 			if (oldLvl !== cs[0]) toLoad["r" + e + "LV"] = cs[0].toString();
-			
+
 			toLoad["r" + e + "CD"] = hasCl ? SetPositiveElement(this.classes, ClassList[cs[2]].name) : this.classes;
 			toLoad["r" + e + "SD"] = !hasCl ? {} : SetPositiveElement(this.subclasses[cs[2]], cs[3] ? ClassSubList[cs[3]].subname : false);
-			
+
 			toLoad["r" + e + "CS"] = cs[2] ? this.getSrc(ClassList[cs[2]]) : "";
 			toLoad["r" + e + "SS"] = cs[3] ? this.getSrc(ClassSubList[cs[3]]) : "";
 
@@ -227,7 +227,7 @@ function SelectClass() {
 			//change the text and subclass drop-down of the row
 			var toLoad = {};
 			if (oldLvl !== cs[0]) toLoad["r" + e + "LV"] = cs[0].toString();
-			toLoad["r" + e + "CS"] = cs[2] ? this.getSrc(ClassList[cs[2]]) : "";			
+			toLoad["r" + e + "CS"] = cs[2] ? this.getSrc(ClassList[cs[2]]) : "";
 			toLoad["r" + e + "SD"] = cs[2] ? this.subclasses[cs[2]] : {};
 			toLoad["r" + e + "SS"] = "";
 			toLoad["r" + e + "TX"] = cs[1];
@@ -1105,7 +1105,7 @@ function AskMulticlassing(lvlAlreadyAdded) {
 				"rClN" : true
 			});
 		},
-		
+
 		description : {
 			name : "Choose Which Class to Level Up",
 			elements : [{
@@ -1321,7 +1321,7 @@ function PleaseSubclass(aClass, classString) {
 	};
 	if (aclassArray.length === 0) return false; //no subclasses got through the test
 	aclassArray.sort();
-	
+
 	var testSubClass = aclassObj[aclassArray[Math.round(aclassArray.length / 2) - 1]];
 
 	var SubName1 = ClassSubList[testSubClass].subname;
@@ -1337,9 +1337,9 @@ function PleaseSubclass(aClass, classString) {
 	var isAsterisk = false;
 	for (var i = 0; i < aclassArray.length; i++) {
 		var theSub = ClassSubList[aclassObj[aclassArray[i]]];
-		
+
 		if (!isAsterisk && theSub.fullname) isAsterisk = true;
-		
+
 		if (theSub.fullname && theSub.fullname !== theSub.subname) {
 			var theName = theSub.subname + " (" + theSub.fullname + "*)";
 		} else {
@@ -1358,9 +1358,9 @@ function PleaseSubclass(aClass, classString) {
 			SubclassArrayRight.push(temp);
 		}
 	}
-	
+
 	var asteriskString = isAsterisk ? "* This name will replace \"" + classString + "\" in the Class field instead of amending to it." : "";
-	
+
 	var SubclassSelect_Dialog = {
 		result : -1,
 
@@ -1467,7 +1467,7 @@ function PleaseSubclass(aClass, classString) {
 			}]
 		}
 	};
-	
+
 	var theDialog = app.execDialog(SubclassSelect_Dialog);
 	if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
 		var selection = aclassObj[aclassArray[SubclassSelect_Dialog.result]];

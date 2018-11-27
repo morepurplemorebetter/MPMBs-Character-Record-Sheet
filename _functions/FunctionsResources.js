@@ -65,7 +65,7 @@ function ReduceObject(obj) {
 				emptyObj = false;
 				break;
 			}
-			if (emptyObj) obj[p] = -1; 
+			if (emptyObj) obj[p] = -1;
 		} else {
 			delete obj[p];
 		}
@@ -169,7 +169,7 @@ function SelectElement_Dialog(theNodes) {
 			}]
 		}
 	}
-	
+
 	if (!theElem && app.execDialog(dialogue) === "ok") {
 		theElem = dialogue.selection;
 	}
@@ -221,7 +221,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			};
 		};
 	};
-	
+
 	var exclObj = {}, inclObj = {};
 	if (isFirstTime) {
 		CurrentSources = {
@@ -259,7 +259,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		CurrentSources.firstTime = false;
 		isFirstTime = true;
 	};
-	
+
 	var remCS = What("CurrentSources.Stringified");
 	var onlySRD = [];
 	for (var src in SourceList) {
@@ -279,11 +279,11 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		};
 	};
 	onlySRD = onlySRD.length === 1 && onlySRD[0] === "SRD";
-	
+
 	var getMoreCont = "\u200B\u200B>> click this line to get more content <<";
 	exclObj[getMoreCont] = -1;
 	exclObj = CleanObject(exclObj); inclObj = CleanObject(inclObj);
-	
+
 	var tries = 0;
 	var selBoxHeight = 250;
 	do {
@@ -296,11 +296,11 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			tries += 1;
 		}
 	} while (tries < 5);
-	
+
 	var Text0 = (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon), or the \"Source Material\" bookmark, and change it.\n" : "") + "You can include or exclude entire sourcebooks (top section) and exclude just elements of the sourcebooks set to be included (section below).\nNote that you can also add more resources using the \"Add Custom Script\" bookmark.\nIf multiple things with the same name are included, like the Ranger from the PHB and the Ranger from UA:RR, the newest source will be used.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.";
 	var Text1 = "With the buttons below, you open another dialogue where you can exclude and include parts of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up at all with the buttons below!";
 	var Text2 = toUni("Warning:") + " If your changes affect any drop-down boxes on the sheet, those will be updated. " + (isFirstTime ? "If a lot of drop-down boxes are affected, this can take several minutes." : "Options that are being removed/added to drop-downs will not affect those already filled out. What is selectable will change, but not what is currently selected or its effects.");
-	
+
 	var selectionDialogue = {
 		exclActive : false,
 		inclActive : false,
@@ -706,7 +706,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			}]
 		}
 	};
-	
+
 	var CallDialogue = app.execDialog(selectionDialogue);
 	if (CallDialogue === "ok" || CallDialogue === "scrp" || (CallDialogue === "cancel" && forceDDupdate)) {
 		SetStringifieds("sources");
@@ -720,7 +720,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		var thermoTxt = thermoM("Applying the changes to the sources...");
 		calcStop();
 		UpdateDropdown("resources");
-		
+
 		//if something changed for the spells make the spell menu again
 		var oldCS = eval(remCS);
 		if (forceDDupdate || oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.classExcl !== CurrentSources.classExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
@@ -739,7 +739,7 @@ function resourceSelectionDialog(type) {
 		if (SourceList[aSrc].uniS) continue;
 		SourceList[aSrc].uniS = toSup(SourceList[aSrc].abbreviation);
 	};
-	
+
 	//a way to add the source abbreviation to the string
 	var amendSource = function(uString, uObj, altObj) {
 		var theSrc = uObj.source ? uObj.source : (altObj && altObj.source ? altObj.source : false);
@@ -752,7 +752,7 @@ function resourceSelectionDialog(type) {
 		};
 		return uString;
 	};
-	
+
 	switch (type) {
 	 case "class" :
 		var theName = "Classes or Archetypes";
@@ -946,7 +946,7 @@ function resourceSelectionDialog(type) {
 			var uName = amendSource(WeaponsList[u].name, WeaponsList[u]);
 			var uTest = testSource(u, WeaponsList[u], CSatt, true);
 			if (uTest === "source") continue;
-			
+
 			var uGroup = !(/martial|simple/i).test(WeaponsList[u].type) ? WeaponsList[u].type : !WeaponsList[u].list ? "Other" : WeaponsList[u].type + " - " + WeaponsList[u].list;
 			refObj[uName] = u;
 			if (!exclObj[uGroup]) exclObj[uGroup] = {};
@@ -965,7 +965,7 @@ function resourceSelectionDialog(type) {
 			var uName = AmmoList[u].name;
 			var uTest = testSource(u, AmmoList[u], CSatt, true);
 			if (uTest === "source") continue;
-			
+
 			var ammSource = parseSource(AmmoList[u].source);
 			var uGroup = ammSource ? SourceList[ammSource[0][0]].name : "Homebrew";
 			refObj[uName] = u;
@@ -997,11 +997,11 @@ function resourceSelectionDialog(type) {
 		};
 		break;
 	};
-	
+
 	exclObj = CleanObject(exclObj); inclObj = CleanObject(inclObj);
-	
+
 	var Text0 = "Please select which " + theName + " you want to exclude or include from being used by the sheet." + theExtra[0] + "\n\nNote that " + theName + " from sourcebooks that you excluded in the previous dialogue are not shown here at all.";
-	
+
 	var selectionDialogue = {
 		inclInA : inclInArr,
 		exclActive : true,
@@ -1168,7 +1168,7 @@ function resourceSelectionDialog(type) {
 			}]
 		}
 	};
-	
+
 	if (app.execDialog(selectionDialogue) === "ok") {
 		CurrentSources[CSatt] = [];
 		for (var a = 0; a < selectionDialogue.exclArr.length; a++) {
@@ -1281,14 +1281,14 @@ function MakeSourceMenu_SourceOptions() {
 		cName : "Unearthed Arcana",
 		oSubMenu : []
 	}];
-	
+
 	var menuLoc = {
 		"primary sources" : 2,
 		"adventure books" : 3,
 		"adventurers league" : 4,
 		"unearthed arcana" : 5
 	};
-	
+
 	var abbrObj = { arr : [], obj : {}, lowObj : {} };
 	for (var aSource in SourceList) {
 		abbrObj.arr.push(SourceList[aSource].abbreviation);
@@ -1296,7 +1296,7 @@ function MakeSourceMenu_SourceOptions() {
 		abbrObj.lowObj[aSource.toLowerCase()] = aSource;
 	};
 	abbrObj.arr.sort();
-	
+
 	var extraMenuItems = false;
 	for (var i = 0; i < abbrObj.arr.length; i++) {
 		var aSource = abbrObj.obj[abbrObj.arr[i]];
@@ -1315,7 +1315,7 @@ function MakeSourceMenu_SourceOptions() {
 			});
 			menuLoc[src.group.toLowerCase()] = theIndex;
 		};
-		
+
 		var allItem = {
 			cName : (src.abbreviation + (new Array(10)).join("\u2002")).substr(0, 10) + src.name,
 			cReturn : "sourcelist#" + aSource
@@ -1328,7 +1328,7 @@ function MakeSourceMenu_SourceOptions() {
 		};
 		SourceMenu[theIndex].oSubMenu.push(srcItem);
 	};
-	
+
 	for (var entry in SourceMenu) {
 		if (SourceMenu[entry].oSubMenu) {
 			if (!SourceMenu[entry].oSubMenu.length) {
@@ -1338,26 +1338,26 @@ function MakeSourceMenu_SourceOptions() {
 			SourceMenu[entry].oSubMenu.sort();
 		}
 	}
-	
+
 	SourceMenu.push({ cName : "-" });
 	SourceMenu.push({
 		cName : "Open a dialogue with a list of the sources",
 		cReturn : "sourcelist#dialogue"
 	});
-	
+
 	//parse it into a global variable
 	Menus.sources = SourceMenu;
-	
+
 	//now call the menu
 	var MenuSelection = getMenu("sources");
-	
+
 	if (!MenuSelection || MenuSelection[0] == "nothing") return;
 	if (MenuSelection[1] === "dialogue") {
 		ShowDialog("List of Sources, sorted by abbreviation", "sources");
 		return;
 	};
 	var theSrc = abbrObj.lowObj[MenuSelection[1]];
-	
+
 	if (SourceList[theSrc].url) {
 		app.launchURL(SourceList[theSrc].url, true);
 	};

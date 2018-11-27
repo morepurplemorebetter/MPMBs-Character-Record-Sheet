@@ -248,7 +248,7 @@ function AbilityScores_Button(onlySetTooltip) {
 		} else {
 			rightTxts.push(newCluster);
 		}
-		
+
 	}
 
 	// a function to create the dialog from the global CurrentStats variable
@@ -289,7 +289,7 @@ function AbilityScores_Button(onlySetTooltip) {
 		// Create the dialog variable
 		var AbilityScores_Dialog = {
 			fieldHoS : curHoS,
-			
+
 			initialize : function (dialog) {
 				var popupHoS =  {
 					"*7th ability*" : !curHoS,
@@ -340,7 +340,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				}
 				// load these things into the dialog
 				dialog.load(toSet);
-				
+
 				// disable the 'remove column' button if there are no extra columns
 				if (CurrentStats.cols.length == 7) dialog.enable({ "cReB" : false });
 
@@ -375,7 +375,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				CurrentUpdates.types.push("attacks");
 				thermoM(thermoTxt, true); // Stop progress bar
 			},
-			
+
 			setCurrentStats : function (dialog) {
 				var res = dialog.store();
 				for (var i = 0; i < CurrentStats.cols.length; i++) {
@@ -386,7 +386,7 @@ function AbilityScores_Button(onlySetTooltip) {
 					}
 				}
 			},
-			
+
 			nmHS : function (dialog) {
 				var popupHoS = dialog.store()["nmHS"];
 				for (var thing in popupHoS) {
@@ -424,7 +424,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				// update the point buy
 				if (alsoPB) this.updatePB(dialog, fldNm);
 			},
-			
+
 			updateTotal : function (dialog, fldNm) {
 				var res = dialog.store();
 				var type = fldNm.slice(-2);
@@ -442,7 +442,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				totalLoad["to"+type] = Math.round(Math.max.apply(Math, total)).toString();
 				dialog.load(totalLoad);
 			},
-			
+
 			updatePB : function (dialog, fldNm) {
 				var res = dialog.store();
 				var type = fldNm.slice(-2);
@@ -451,7 +451,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				dialog.load(PBset);
 				this.updatePBtotal(dialog);
 			},
-			
+
 			updatePBtotal : function (dialog) {
 				var res = dialog.store();
 				var PBset = { "toPB" : 0 };
@@ -953,14 +953,14 @@ function AbilityScores_Button(onlySetTooltip) {
 
 		return app.execDialog(AbilityScores_Dialog);
 	};
-	
+
 	do {
 		var theDia = openStatsDialog();
 		var reopenDia = theDia !== "ok" && theDia !== "cancel";
 		if (theDia == "cadd") ASaddColumn();
 		if (theDia == "crem") ASremoveColumn();
 	} while (reopenDia);
-	
+
 	if (theDia == "ok") {
 		SetStringifieds("stats");
 	} else {

@@ -167,7 +167,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			type = "race";
 			aParent = fObjName[0];
 			fObjName = fObjName[1];
-			var fObj = aParent == fObjName && !CurrentRace.features[fObjName] ? 
+			var fObj = aParent == fObjName && !CurrentRace.features[fObjName] ?
 					(forceNonCurrent ? RaceList[aParent] : CurrentRace) :
 				forceNonCurrent && RaceList[aParent].features[fObjName] && !choiceA[0] ?
 					RaceList[aParent].features[fObjName] : CurrentRace.features[fObjName];
@@ -689,7 +689,7 @@ function UpdateSheetDisplay() {
 						type : "ok",
 						item_id : "CLOS",
 						alignment : "align_center",
-						ok_name : "Close" 
+						ok_name : "Close"
 					}, {
 						type : "ok_cancel",
 						alignment : "align_offscreen",
@@ -1153,7 +1153,7 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 		}
 		clusterArr.push(nextElem);
 	}
-	
+
 	var ShowCompare_Dialog = {
 		initialize : function (dialog) {
 			if (!canBeLong) return;
@@ -1225,7 +1225,7 @@ CHANGES TO IMPLEMENT IN LIST SCRIPTS
 
 	'primaryAbility' for CLASS(main) no longer needs line-break, bullet point, name, or trailing semicolon
 	'prereqs' for CLASS(main) no longer needs line-break, bullet point, name, or trailing semicolon
-	
+
 
 	'improvements' for RACE/FEAT replaced with 'scorestxt' (but without name or trailing semicolon)
 	'improvements' for RACE/FEAT no longer needed if identical to changes by 'scores'
@@ -1249,20 +1249,20 @@ CHANGES TO IMPLEMENT IN LIST SCRIPTS
 	'weapons' for CLASS/FEAT: replace with 'weaponProfs'
 	'weaponprofs' for RACE: replace with 'weaponProfs'
 	'weapons' for RACE: replace with 'addWeapons'
-	
+
 	eval changes :
 	- Class Features Remember
 	- AddAction
 	- AddWeapon
 	- ClassFeatureOptions (no longer needed in removeeval if to be removed at that level)
-	
+
 	spellcastingBonus.firstCol (options: 'atwill', 'oncesr', 'oncelr', 'markedbox', 'checkbox', 'checkedbox')
 	REPLACE			WITH
 	atwill : true	firstCol : 'atwill'
 	oncesr : true	firstCol : 'oncesr'
 	oncelr : true	firstCol : 'oncelr'
 	prepared : true	firstCol : 'markedbox'
-	
+
 	(atwill|oncesr|oncelr) : true		firstCol : '\1'
 
 OVERWRITTEN BY CHOICES (NOT EXTRACHOICES):

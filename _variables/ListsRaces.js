@@ -235,7 +235,7 @@ var Base_RaceList = {
 		scorestxt : "+1 to all ability scores",
 		scores : [1, 1, 1, 1, 1, 1, 1],
 		trait : "Human (+1 to all ability scores)",
-		
+
 	},
 	"tiefling" : {
 		regExpSearch : /^((?=.*tiefling)|(?=.*planetouched)(?=.*(hell|abyss|fiend|devil|asmodeus))).*$/i,

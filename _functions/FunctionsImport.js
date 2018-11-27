@@ -11,7 +11,7 @@ function ImportExport_Button() {
 		return;
 	};
 	var theMenu = getMenu("importexport");
-	
+
 	if (theMenu !== undefined && theMenu[0] !== "nothing") {
 		switch (theMenu[1]) {
 			case "script" :
@@ -63,7 +63,7 @@ function AddFolderJavaScript(justConsole) {
 	var Text2 = "The directory where you have to put this file depends on your version of Adobe Acrobat and your operating system. The path shown here is an estimated guess for your installation. It is possible that this folder doesn't exist yet, or that it is hidden.\n" + toUni("Note that you can't save the file directly to this location!");
 	var Text3 = "Open the console (a.k.a. \"JavaScript Debugger\") and run the code that is printed there. Running the code is done by selecting the line it is on and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + " (or the numpad Enter).";
 	var LocJS = isWindows ? locWin : locMac;
-	
+
 	var AddJS_dialog = {
 		initialize : function(dialog) {
 			dialog.load({
@@ -206,9 +206,9 @@ function AddFolderJavaScript(justConsole) {
 			}, ]
 		}
 	};
-	
+
 	if (justConsole) delete AddJS_dialog.description.elements[0].elements[0].elements[4];
-	
+
 	var theDialog = app.execDialog(AddJS_dialog);
 
 	if (theDialog === "cons") {
@@ -216,7 +216,7 @@ function AddFolderJavaScript(justConsole) {
 		console.println("Select the line below that says \"StartDirectImport();\" and press " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + "\n\nStartDirectImport();");
 		console.show();
 	}
-	
+
 	return theDialog === "ok";
 }
 
@@ -380,9 +380,9 @@ function DirectImport_Dialogue() {
 			}, ]
 		}
 	};
-	
+
 	var theDialog = app.execDialog(DirectImport_dialog);
-	
+
 	var goII = false;
 	if (DirectImport_dialog.importIcons) {
 		if (MPMBImportFunctionsInstalled) {
@@ -391,7 +391,7 @@ function DirectImport_Dialogue() {
 			if (AddFolderJavaScript(true)) theDialog = "cancel"; //if the addJS dialog is cancelled (selected to go on without the user icons), it returns false
 		}
 	}
-	
+
 	return theDialog === "ok" ? [DirectImport_dialog.fileLoc, DirectImport_dialog.relPath, goII] : false;
 };
 
@@ -417,11 +417,11 @@ function DirectImport(consoleTrigger) {
 	} catch (errorCode) {
 		closeAlert = ["File not found", "Invalid file location or file type \"" + (importFromPath[1] ? tDoc.path.replace(tDoc.documentFileName, "") : "") + importFromPath[0] + "\".\n\nPlease try again and don't forget that the path must include the file extension (.pdf)."];
 	};
-	
+
 	if (!closeAlert && (!global.docFrom || global.docFrom.toString() !== "[object Doc]")) {
 		closeAlert = ["An error occurred", "An unknown error occurred. Importing failed.\n\nPlease make sure the file you want to import is not currently open in any application."];
 	}
-	
+
 	//if opening the doc failed, or it is not one of MPMB's Character Record Sheets (according)
   if (closeAlert) {
 	app.alert({
@@ -468,20 +468,20 @@ function DirectImport(consoleTrigger) {
 
 		// Make sure no pop-up comes up with welcome text
 		if (global.docFrom.getField("Opening Remember")) global.docFrom.Value("Opening Remember", "Yes");
-		
+
 		var fromSheetTypePF = global.docFrom.info.SheetType ? (/printer friendly/i).test(global.docFrom.info.SheetType) : false;
 		var fromSheetTypeLR = global.docFrom.info.SheetType ? (/letter/i).test(global.docFrom.info.SheetType) : (global.docFrom.info.Title ? (/letter/i).test(global.docFrom.info.Title) : false);
 		var bothPF = typePF && fromSheetTypePF;
 		var bothCF = !typePF && !fromSheetTypePF;
 		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
-		
+
 		// Make sure to remove the flattened state from the sheet to import from
 		if (FromVersion < 13) {
 			if (global.docFrom.getField("MakeMobileReady Remember") && global.docFrom.getField("MakeMobileReady Remember").value !== "") global.docFrom.MakeMobileReady(false);
 		} else {
 			global.docFrom.MakeMobileReady(false);
 		}
-		
+
 		//copy any custom script and run it
 		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && global.docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
 		var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
@@ -536,7 +536,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("UseUnicode")
 		setUnicodeUse(What("UseUnicode") != "", true); // also sets the dropdowns
 		setSpellVariables(true);
-		
+
 		//reset conditions
 		if (!fromSheetTypePF && global.docFrom.ConditionSet) {
 			var conResets = [];
@@ -554,7 +554,7 @@ function DirectImport(consoleTrigger) {
 				global.docFrom.ConditionSet();
 			}
 		}
-		
+
 		//set the colours
 		if (bothCF) {
 			if (ImportField("Color.Theme")) ApplyColorScheme();
@@ -562,18 +562,18 @@ function DirectImport(consoleTrigger) {
 			if (ImportField("Color.HPDragon")) ApplyHPDragonColorScheme();
 			if (ImportField("Color.DC")) ApplyDCColorScheme();
 		};
-		
+
 		//set the highlighting
 		if (ImportField("Highlighting")) {
 			global.docTo.getField("Highlighting").fillColor = global.docFrom.getField("Highlighting").fillColor;
 			app.runtimeHighlight = eval(What("Highlighting"));
 			app.runtimeHighlightColor = global.docTo.getField("Highlighting").fillColor;
 		};
-		
+
 		//set some remember fields that might impact new page generation
 		if (ImportField("Unit System") && typePF) Value("Display.Weighttxt.LbKg", What("Unit System") === "imperial" ? "LB" : "KG");
 		ImportField("Decimal Separator"); ImportField("DateFormat_Remember");
-		
+
 		//set the text options
 		if (FromVersion < 13) {
 			if (global.docFrom.getField("WhiteoutRemember")) ToggleWhiteout(eval(global.docFrom.What("WhiteoutRemember")));
@@ -591,7 +591,7 @@ function DirectImport(consoleTrigger) {
 
 		if (bothPF && ImportField("BoxesLinesRemember")) ShowCalcBoxesLines(What("BoxesLinesRemember"));
 		if ((bothPF || bothCF) && global.docFrom.getField("Player Name").textFont !== global.docTo.getField("Player Name").textFont) ChangeFont(global.docFrom.getField("Player Name").textFont);
-		
+
 		//set the league remember toggle
 		if (ImportField("League Remember")) {
 			if (FromVersion < 12.99) {
@@ -621,10 +621,10 @@ function DirectImport(consoleTrigger) {
 				};
 			};
 		};
-		
+
 		//set the D&D logos visiblity
 		if (global.docFrom.getField("Image.DnDLogo.long") && global.docFrom.getField("Image.DnDLogo.long").display !== global.docTo.getField("Image.DnDLogo.long").display) global.docTo.getField("Image.DnDLogo").display = global.docFrom.getField("Image.DnDLogo.long").display;
-		
+
 		//set the spell slots visiblity
 		if (ImportField("SpellSlotsRemember")) {
 			SetSpellSlotsVisibility();
@@ -634,13 +634,13 @@ function DirectImport(consoleTrigger) {
 				Show("SpellSlots.Checkboxes.SpellPoints");
 			}
 		}
-		
+
 		//set the order of the skills
 		if (global.docFrom.getField("Text.SkillsNames")) MakeSkillsMenu_SkillsOptions(["go", global.docFrom.Who("Text.SkillsNames")]);
-		
+
 		//set the visiblity of Honor/Sanity
 		if (ImportField("HoSRememberState")) ShowHonorSanity();
-		
+
 		//set the location columns in the equipment sections
 		if (ImportField("Gear Location Remember")) {
 			var defState = global.docTo.getField("Gear Location Remember").defaultValue.split(",");
@@ -654,7 +654,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("Weight Carrying Capacity", {doVisiblity: true}, "Weight Carrying Capacity.Field"); ImportField("Weight Heavily Encumbered", {doVisiblity: true});
 		//set the weight remember fields
 		ImportField("Weight Remember Ammo Left"); ImportField("Weight Remember Ammo Right"); ImportField("Weight Remember Armor"); ImportField("Weight Remember Coins"); ImportField("Weight Remember Magic Items"); ImportField("Weight Remember Page2 Left"); ImportField("Weight Remember Page2 Middle"); ImportField("Weight Remember Page2 Right"); ImportField("Weight Remember Page3 Left"); ImportField("Weight Remember Page3 Right"); ImportField("Weight Remember Shield"); ImportField("Weight Remember Weapons");
-		
+
 		//get the page layout of the sheet and copy it
 		var pagesLayout = {};
 		var onlySpawnsFrom = FromVersion >= 12.995;
@@ -692,7 +692,7 @@ function DirectImport(consoleTrigger) {
 				};
 			};
 		};
-		
+
 	//do the fields for the main automations
 		//add the weapons (before the rest so weapons added by any new automation are still added)
 		for (var i = 1; i <= FieldNumbers.attacks; i++) {
@@ -712,13 +712,13 @@ function DirectImport(consoleTrigger) {
 		//the ammo
 		ImportField("AmmoLeftDisplay.Amount", {notTooltip: true}); ImportField("AmmoLeftDisplay.Name", {notTooltip: true}); ImportField("AmmoLeftDisplay.Weight", {notTooltip: true});
 		ImportField("AmmoRightDisplay.Amount", {notTooltip: true}); ImportField("AmmoRightDisplay.Name", {notTooltip: true}); ImportField("AmmoRightDisplay.Weight", {notTooltip: true});
-		
+
 		//set the more proficiencies overflow field before the automation
 		ImportField("MoreProficiencies");
 
 		//set the feature choices
 		if (ImportField("CurrentFeatureChoices.Stringified")) CurrentFeatureChoices = eval(What("CurrentFeatureChoices.Stringified"));
-		
+
 		//set the level and xp
 		ImportField("Character Level", {notTooltip: true}); ImportField("Total Experience", {notTooltip: true}); ImportField("Add Experience", {notTooltip: true});
 
@@ -800,7 +800,7 @@ function DirectImport(consoleTrigger) {
 
 		//set the description fields
 		ImportField("PC Name"); ImportField("Player Name"); ImportField("Size Category", {notTooltip: true}); ImportField("Height", {notTooltip: true}); ImportField("Weight", {notTooltip: true}); ImportField("Sex"); ImportField("Hair colour", {notTooltip: true}); ImportField("Eyes colour", {notTooltip: true}); ImportField("Skin colour", {notTooltip: true}); ImportField("Age", {notTooltip: true}); ImportField("Alignment", {notTooltip: true}); ImportField("Faith/Deity", {notTooltip: true}); ImportField("Speed", {notTooltip: true}); ImportField("Speed encumbered", {notTooltip: true});
-		
+
 		//add the content from the saving throw and vision field, but not if importing from an older version
 		if (FromVersion >= 12.998) {
 			//First make sure the "Immune to" and "Adv. on saves vs." match with the import
@@ -857,7 +857,7 @@ function DirectImport(consoleTrigger) {
 			};
 			addConsolidatedEntries("Vision"); addConsolidatedEntries("Saving Throw advantages / disadvantages");
 		};
-		
+
 		//add limited features that are not yet defined (all those without a tooltip)
 		for (var i = 1; i < FieldNumbers.limfea; i++) {
 			var limFeaFrom = global.docFrom.getField("Limited Feature " + i);
@@ -866,7 +866,7 @@ function DirectImport(consoleTrigger) {
 			var lFFrec = global.docFrom.getField("Limited Feature Recovery " + i).value;
 			AddFeature(limFeaFrom.value, lFFusa, "", lFFrec);
 		};
-		
+
 		//add the spell boxes
 		for (var i = 1; i <= 9; i++) ImportField("SpellSlots.CheckboxesSet.lvl" + i, {notTooltip: true});
 
@@ -933,7 +933,7 @@ function DirectImport(consoleTrigger) {
 				SetProf("weapon", undefined, "other");
 			}
 		}
-		
+
 		//a function to add the 'new' languages, tools, resistances, actions
 		var addNotDefined = function(typeFlds, iterations) {
 			var fromOldVersion = FromVersion < 12.998;
@@ -968,7 +968,7 @@ function DirectImport(consoleTrigger) {
 				};
 			};
 		};
-		
+
 		//languages and tools
 		var nmbrFlds = global.docFrom.FieldNumbers.langstools ? global.docFrom.FieldNumbers.langstools : FieldNumbers.langstools;
 		addNotDefined("Language ", nmbrFlds); addNotDefined("Tool ", nmbrFlds);
@@ -977,7 +977,7 @@ function DirectImport(consoleTrigger) {
 		nmbrFlds = global.docFrom.FieldNumbers.trueactions ? global.docFrom.FieldNumbers.trueactions : FieldNumbers.trueactions;
 		addNotDefined("Action ", nmbrFlds);
 		addNotDefined("Resistance Damage Type ", 6);
-		
+
 		//armor
 		ImportField("AC Armor Description", {notTooltip: true}); ImportField("AC Armor Bonus", {notTooltip: true}); ImportField("AC Armor Weight", {notTooltip: true}); ImportField("AC during Rest");
 		ImportField("AC Shield Bonus Description", {notTooltip: true}); ImportField("AC Shield Bonus", {notTooltip: true}); ImportField("AC Shield Weight", {notTooltip: true});
@@ -986,21 +986,21 @@ function DirectImport(consoleTrigger) {
 		if (ImportField("AC Stealth Disadvantage", {notTooltip: true})) ShowHideStealthDisadv(); ConditionSet();
 		ImportField("AC Misc Mod 1", {notTooltip: true}); ImportField("AC Misc Mod 1 Description", {notTooltip: true});
 		ImportField("AC Misc Mod 2", {notTooltip: true}); ImportField("AC Misc Mod 2 Description", {notTooltip: true});
-		
+
 		//hit points, hit die
 		ImportField("HP Max", {notTooltip: true}); ImportField("HP Max Current", {notTooltip: true}); ImportField("HP Temp", {notTooltip: true}); ImportField("HP Current", {notTooltip: true});
 		ImportField("HD1 Level"); ImportField("HD1 Die"); ImportField("HD2 Level"); ImportField("HD2 Die"); ImportField("HD3 Level"); ImportField("HD3 Die");
-		
+
 		//do the second page
 		ImportField("Personality Trait"); ImportField("Ideal"); ImportField("Bond"); ImportField("Flaw");
 		ImportField("Background Feature", {notTooltip: true, notSubmitName: true}); ImportField("Background Feature Description", {notTooltip: true, compareNoSpaces: true});
 		ImportField("Racial Traits", {notTooltip: true, compareNoSpaces: true});
-		
+
 		//do the adventure gear sections
 		ImportField("Platinum Pieces"); ImportField("Gold Pieces"); ImportField("Electrum Pieces"); ImportField("Silver Pieces"); ImportField("Copper Pieces");
 		ImportField("Valuables1"); ImportField("Valuables2"); ImportField("Valuables3"); ImportField("Valuables4");
 		ImportField("Carrying Capacity Multiplier", {notTooltip: true});
-		
+
 		nmbrFlds = global.docFrom.FieldNumbers.gear ? global.docFrom.FieldNumbers.gear : FieldNumbers.gear;
 		for (var i = 1; i <= nmbrFlds; i++) {
 			var fromFld = global.docFrom.getField("Adventuring Gear Row " + i);
@@ -1010,10 +1010,10 @@ function DirectImport(consoleTrigger) {
 				AddToInv("gear", "ronly", fromFld.value, global.docFrom.getField("Adventuring Gear Amount " + i).value, global.docFrom.getField("Adventuring Gear Weight " + i).value, global.docFrom.getField("Adventuring Gear Location.Row " + i).value, false, false, false, true);
 			}
 		}
-		
+
 	//the third page
 		ImportField("Extra.Other Holdings");
-		
+
 		//magic items
 		nmbrFlds = global.docFrom.FieldNumbers.magicitems ? global.docFrom.FieldNumbers.magicitems : FieldNumbers.magicitems;
 		for (var i = 1; i <= nmbrFlds; i++) {
@@ -1024,7 +1024,7 @@ function DirectImport(consoleTrigger) {
 				AddMagicItem(fromFld.value, global.docFrom.getField("Extra.Magic Item Attuned " + i).isBoxChecked(0), global.docFrom.getField("Extra.Magic Item Description " + i).value, global.docFrom.getField("Extra.Magic Item Weight " + i).value)
 			}
 		}
-		
+
 		//extra equipment
 		nmbrFlds = global.docFrom.FieldNumbers.extragear ? global.docFrom.FieldNumbers.extragear : FieldNumbers.extragear;
 		for (var i = 1; i <= nmbrFlds; i++) {
@@ -1046,7 +1046,7 @@ function DirectImport(consoleTrigger) {
 		if (bothPF) {
 			ImportField("Background_Organisation.Left"); ImportField("Background_Organisation.Right");
 		} else if (bothCF) {
-			ImportField("Background_Organisation"); 
+			ImportField("Background_Organisation");
 		} else if (typePF && !fromSheetTypePF) {
 			ImportField("Background_Organisation.Left", false, "Background_Organisation");
 		} else if (!typePF && fromSheetTypePF) {
@@ -1074,7 +1074,7 @@ function DirectImport(consoleTrigger) {
 				ImportField(pAnameTo, actionsObj ? actionsObj : {notTooltip: true, doVisiblity: inclVisibility}, pAnameFrom);
 			}
 		}
-		
+
 	// do the companion pages
 		//run through each one in the array
 		var prefixA = pagesLayout && pagesLayout.AScompExtras ? [pagesLayout.AScompExtraNmFrom, pagesLayout.AScompExtraNmTo] : [[], []];
@@ -1111,13 +1111,13 @@ function DirectImport(consoleTrigger) {
 
 			//do the BlueText fields
 			doChildren("BlueText.Comp.Use", prefixFrom, prefixTo);
-			
+
 			//do the equipment fields
 			doChildren("Comp.eqp", prefixFrom, prefixTo, /Display|Image|Subtotal|Notes|Whiteout|Text/i);
-			
+
 			//do the notes fields
 			doChildren("Cnote", prefixFrom, prefixTo);
-			
+
 			//if importing from Colourful to Colourful, do skills (from Printer Friendly to Printer Friendly is already included above)
 			if (bothCF) {
 				doChildren("Text.Comp.Use.Skills", prefixFrom, prefixTo, /Name/i);
@@ -1134,7 +1134,7 @@ function DirectImport(consoleTrigger) {
 						Checkbox(skillToExp, skillFrom.value === "expertise");
 					}
 				};
-				
+
 				//companion equipment secion is bigger on the Colourful than on the Printer Friendly
 				nmbrFlds = global.docFrom.FieldNumbers.compgear ? global.docFrom.FieldNumbers.compgear : FieldNumbers.compgear;
 				for (var i = FieldNumbers.compgear + 1; i <= nmbrFlds; i++) {
@@ -1161,7 +1161,7 @@ function DirectImport(consoleTrigger) {
 				};
 			}
 		}
-		
+
 	//do the notes pages
 		prefixA = pagesLayout && pagesLayout.ASnotesExtras ? [pagesLayout.ASnotesExtraNmFrom, pagesLayout.ASnotesExtraNmTo] : [[], []];
 		for (var i = 0; i < prefixA[0].length; i++) {
@@ -1170,7 +1170,7 @@ function DirectImport(consoleTrigger) {
 			doChildren("Whiteout.Notes", prefixFrom, prefixTo, false, true);
 			doChildren("Notes", prefixFrom, prefixTo);
 		}
-		
+
 	//do the wildshape pages
 		prefixA = pagesLayout && pagesLayout.WSfrontExtras ? [pagesLayout.WSfrontExtraNmFrom, pagesLayout.WSfrontExtraNmTo] : [[], []];
 		for (var i = 0; i < prefixA[0].length; i++) {
@@ -1179,7 +1179,7 @@ function DirectImport(consoleTrigger) {
 			doChildren("Wildshapes.Info", prefixFrom, prefixTo); //the info values
 			doChildren("Wildshape.Race", prefixFrom, prefixTo);
 		}
-		
+
 	//do the adventure logsheet pages
 		prefixA = pagesLayout && pagesLayout.ALlogExtras ? [pagesLayout.ALlogExtraNmFrom, pagesLayout.ALlogExtraNmTo] : [[], []];
 		var advLogRegChl = FromVersion < 12.994 ? /^(?!.*\d)|(?=.*(start|total|date)).*$/i : /^(?!.*\d)|(?=.*(start|total)).*$/i;
@@ -1199,7 +1199,7 @@ function DirectImport(consoleTrigger) {
 			};
 			doChildren("AdvLog", prefixFrom, prefixTo, advLogRegChl);
 		}
-		
+
 	//do the spell sheet pages
 		//first update the CurrentSpells variable
 		if (global.docFrom.CurrentSpells) {
@@ -1255,7 +1255,7 @@ function DirectImport(consoleTrigger) {
 				}
 			}
 			SetStringifieds();
-			
+
 			//now do the spell rows, but only if the sheet type is the same or only the first page was visible
 			if (pagesLayout && pagesLayout.SSfrontExtras && (sameType || !pagesLayout.SSmoreExtras)) {
 				prefixA = [[pagesLayout.SSfrontExtraNmFrom], [pagesLayout.SSfrontExtraNmTo]];
@@ -1304,9 +1304,9 @@ function DirectImport(consoleTrigger) {
 		SetToManual_Dialog.mFea = global.docFrom.getField("Manual Feat Remember") ? global.docFrom.getField("Manual Feat Remember").value !== "No" : false;
 		SetToManual_Dialog.mRac = global.docFrom.getField("Manual Race Remember") ? global.docFrom.getField("Manual Race Remember").value !== "No" : false;
 		SetToManual_Button(true);
-		
+
 /*
-		if (ImportField("Manual Attack Remember")) ToggleAttacks(What("Manual Attack Remember") !== "No" ? "No" : "Yes");	
+		if (ImportField("Manual Attack Remember")) ToggleAttacks(What("Manual Attack Remember") !== "No" ? "No" : "Yes");
 		if (ImportField("Manual Background Remember") && What("Manual Background Remember") !== "No") {
 			if (FromVersion < 13) Value("Manual Background Remember", What("Background"));
 			Hide("Background Menu");
@@ -1331,16 +1331,16 @@ function DirectImport(consoleTrigger) {
 
 	//Recalculate the weapons, for things might have changed since importing them
 		ReCalcWeapons(false);
-		
+
 		//now that all the attacks of the first page and companion pages have been imported, set the attack colors
 		if (bothCF) {
 			ApplyAttackColor("", "", "Default");
 			ApplyAttackColor("", "", "Comp.");
 		};
-		
+
 		//import the icons
 		IIerror = ImportIcons(pagesLayout, app.viewerType !== "Reader" && importFromPath[2]);
-	
+
 		// set the focus to the top of the first page
 		tDoc.getField("Player Name").setFocus();
 	} catch (error) {
@@ -1407,7 +1407,7 @@ function DirectImport(consoleTrigger) {
 	if (IIerror && isNaN(IIerror)) app.alert(IIerror);
 
   };
-	
+
 	//close the document that was opened to import from (if any)
 	if (global.docFrom && global.docFrom.toString() === "[object Doc]") {
 		global.docFrom.dirty = false;
@@ -1428,11 +1428,11 @@ function ImportField(fldNm, actionsObj, fromFldNm) {
 	var didChange = false;
 	var toFld = global.docTo.getField(fldNm);
 	var fromFld = global.docFrom.getField(fromFldNm ? fromFldNm : fldNm);
-	
+
 	//check if the types of the fields match enough to proceed
 	var combiTypes = ["button", "checkbox", "listbox", "radiobutton", "signature"];
 	if ((combiTypes.indexOf(toFld.type) !== -1 || combiTypes.indexOf(fromFld.type) !== -1) && toFld.type !== fromFld.type) return false;
-	
+
 	//copy the value
 	if (fromFld.value !== fromFld.defaultValue) {
 		var testValFrom = fromFld.value.toString();
@@ -1459,7 +1459,7 @@ function ImportField(fldNm, actionsObj, fromFldNm) {
 			}
 		}
 	}
-	
+
 	//set the submitName and calculation
 	if (actionsObj.SubmitCalc && fromFld.submitName && toFld.submitName !== fromFld.submitName) { //we need to set a calculation of the fields and copy the submitname
 		toFld.setAction("Calculate", fromFld.submitName);
@@ -1469,16 +1469,16 @@ function ImportField(fldNm, actionsObj, fromFldNm) {
 		toFld.submitName = fromFld.submitName;
 		didChange = true;
 	}
-	
+
 	//copy the tooltip
 	if (!actionsObj.notTooltip && fromFld.userName && toFld.userName !== fromFld.userName) {
 		toFld.userName = fromFld.userName;
 		didChange = true;
 	}
-	
+
 	//copy the readonly status
 	if (actionsObj.doReadOnly && fromFld.readonly) toFld.readonly = true;
-	
+
 	if (actionsObj.doVisiblity) {
 		var toFldVisCheck = toFld.getArray().length === 1 ? toFld : global.docTo.getField(fromFldNm);
 		if (toFldVisCheck.display !== fromFld.display) {
@@ -1486,21 +1486,21 @@ function ImportField(fldNm, actionsObj, fromFldNm) {
 			didChange = true;
 		}
 	}
-	
+
 	return didChange;
 };
 
 //import the icons
 function ImportIcons(pagesLayout, viaSaving) {
 	if (!global.docTo || !global.docFrom) return true; //either of the documents or fields doesn't exist
-	
+
 	var fromSheetTypePF = global.docFrom.info.SheetType ? (/printer friendly/i).test(global.docFrom.info.SheetType) : false;
 	var bothPF = typePF && fromSheetTypePF;
 	var bothCF = !typePF && !fromSheetTypePF;
 	var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
 	if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
 	if (FromVersion < 3.7) return true; //the form is of a version before there were any icon fields
-	
+
 	var IconArray = [
 		["Portrait", "Portrait"],
 		["Symbol", "Symbol"],
@@ -1527,7 +1527,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 			FldsArray.push([global.docFrom.getField(IconArray[iA][0]), IconArray[iA][1]]);
 		}
 	}
-	
+
 	//see if the icons match one of the prematched ones (only from v10.6 or later)
 	var skipArray = [];
 	if (FromVersion >= 10.6) {
@@ -1556,7 +1556,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 				if (docFromIcon) KnownIcons.push([docFromIcon.buttonGetIcon(), IconList[iL].buttonGetIcon()]);
 			}
 		}
-		
+
 		//now set the icons of fields to be the same as from the imported sheet, if recognized
 		for (var fA = 0; fA < FldsArray.length; fA++) {
 			var fromIcon = FldsArray[fA][0].buttonGetIcon();
@@ -1572,7 +1572,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 			}
 		}
 	}
-	
+
 	//now if selected and possible, see if we can transfer the icons for the remaining fields
 	//for the sheets before v3.0, there is no way of making an empty page. Chances are very slim that anybody is still using those
 	var goodImport = 1;
@@ -1581,7 +1581,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 		var ClickIMG = global.docFrom.getField("SaveIMG.ClickMeIcon") ? global.docFrom.getField("SaveIMG.ClickMeIcon").buttonGetIcon() : false;
 		var EmptyIMG = global.docFrom.getField("SaveIMG.EmptyIcon") ? global.docFrom.getField("SaveIMG.EmptyIcon").buttonGetIcon() : (global.docFrom.getField("Portrait_Blank") ? global.docFrom.getField("Portrait_Blank").buttonGetIcon() : false);
 		var fromPagT = global.docFrom.numPages;
-		
+
 		//add a blank template page as first page
 		if (global.docFrom.getTemplate("blank")) {
 			global.docFrom.getTemplate("blank").spawn(fromPagT, true, false);
@@ -1604,7 +1604,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 				}
 			}
 		}
-		
+
 		//now add fields on this new page with the icons to import
 		if (goodImport) {
 			var fldIncr = 0;
@@ -1625,12 +1625,12 @@ function ImportIcons(pagesLayout, viaSaving) {
 				var madeFlds = true;
 			}};
 		};
-		
+
 		//now save this document and import this newly made page into the new document, as the last page
 		if (madeFlds) {
 		try {
 			if (!MPMBImportPage(global.docTo, global.docFrom.path, usePage)) throw "Unable to import the user-defined icons-page."; //import the page as the last page
-			
+
 			//now continue with the newly added page
 			var newFields = global.docTo.getField("tempIconImports").getArray();
 			for (var nF = 0; nF < newFields.length; nF++) {
@@ -1638,14 +1638,14 @@ function ImportIcons(pagesLayout, viaSaving) {
 				setFld.buttonSetIcon(newFields[nF].buttonGetIcon());
 				setFld.display = display.visible;
 			}
-			
+
 			global.docTo.deletePages(global.docTo.numPages - 1); //remove the newly added page again
 		} catch (e) {
 			goodImport = "An error occured during importing the user-defined icons.";
 		}
 		}
 	} else if (viaSaving && !MPMBImportFunctionsInstalled) {goodImport = "JavaScript file not installed";};
-	
+
 	return goodImport;
 };
 
@@ -1689,7 +1689,7 @@ function ImportExtraChoices() {
 
 /* ---- the old, depreciated import function ---- */
 function Import(type) {
-	
+
 	//first ask if this sheet is already set-up the right way before importing and if we can continue
 	var AskFirst = {
 		cMsg : "This method is no longer supported and will result in your character only being partially imported. If you want to be guaranteed of a good import, use the option \"Import Directly from a MPMB's PDF\" instead!"+"\n\nBefore you import anything into this sheet, please make sure that the following things are set correctly. If you don't do this, not everything will import. You will have to make the following things identical to the sheet you exported the data from:" + "\n  \u2022  The unit and decimal system;" + "\n  \u2022  The layout of the pages.\n      In order to do this, you will have to hide and/or add pages in the same order as you did in the sheet you are importing from. This is because the moment you add an extra page (so after the first of its type), that page gets a name based on the location of that page in the document. That location is based solely on the pages that are visible at the time of itscreation.\n      For example, if the sheet you are importing from has two Adventurers Logsheet pages, and these were added after generating a Spell Sheet of three pages long, while all of the other pages were visible as well, the second Adventurers Logsheet page would have been generated as page number 12. In order for this sheet to properly receive the import for that page, you will first need to generate an Adventurers Logsheet page at page number 12." + "\n\n\nDo you want to continue importing?",
@@ -1697,16 +1697,16 @@ function Import(type) {
 		cTitle : "Is everything ready for importing?",
 		nType : 2
 	};
-	
-	
+
+
 	if (app.alert(AskFirst) !== 4) return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Importing the data...");
 	calcStop();
-	
+
 	MakeMobileReady(false); // Undo flatten, if needed
-	
+
 	templateA = [
 		["Template.extras.AScomp", What("Template.extras.AScomp")],
 		["Template.extras.ASnotes", What("Template.extras.ASnotes")],
@@ -1714,7 +1714,7 @@ function Import(type) {
 		["Template.extras.ALlog", What("Template.extras.ALlog")]
 	];
 	var locStateOld = What("Gear Location Remember").split(",");
-	
+
 	if (typeof ProcResponse === "undefined") {
 		IsNotImport = false;
 		ignorePrereqs = true;
@@ -1727,44 +1727,44 @@ function Import(type) {
 		IsNotImport = true;
 		ignorePrereqs = false;
 	};
-	
+
 	GetStringifieds(); // Get the variables
-	
+
 	//set the values of the templates back
 	for (var i = 0; i < templateA.length; i++) {
 		Value(templateA[i][0], templateA[i][1]);
 	}
-	
+
 	thermoM(13/25); //increment the progress dialog's progress
 	thermoTxt = thermoM("Getting the sheet ready...", false); //change the progress dialog text
-	
+
 	//set the layer visibility to what the imported field says
 	LayerVisibilityOptions();
-	
+
 	//set the visibility of Honor/Sanity as imported
 	ShowHonorSanity();
-	
+
 	thermoM(14/25); //increment the progress dialog's progress
 
 	if (CurrentVars.mobileset) CurrentVars.mobileset.active = false;
-	
+
 	thermoM(15/25); //increment the progress dialog's progress
 
 	//set the visiblity of the text lines as the imported remember field has been set to
 	ToggleWhiteout(CurrentVars.whiteout);
-	
+
 	thermoM(16/25); //increment the progress dialog's progress
 
 	//set the text size for multiline fields as the imported remember field has been set to
 	ToggleTextSize(CurrentVars.fontsize);
-	
+
 	thermoM(17/25); //increment the progress dialog's progress
 
 	//set the visiblity of the manual attack fields on the first page as the imported remember field has been set to
 	if (What("Manual Attack Remember") !== "No") ToggleAttacks("No");
-	
+
 	thermoM(18/25); //increment the progress dialog's progress
-	
+
 	//set the visiblity of the adventure league as the imported field has been set to
 	if (What("League Remember") === "On") {
 		ToggleAdventureLeague({
@@ -1788,21 +1788,21 @@ function Import(type) {
 			global.docTo.resetForm(["League Remember"]);
 		};
 	};
-	
+
 	thermoM(19/25); //increment the progress dialog's progress
 
 	//set the visiblity of the Blue Text fields as the imported remember field has been set to
 	ToggleBlueText(CurrentVars.bluetxt);
-	
+
 	thermoM(20/25); //increment the progress dialog's progress
 
 	//set the visiblity of the spell slots on the first page as the imported remember field has been set to
 	SetSpellSlotsVisibility();
-	
+
 	thermoM(21/25); //increment the progress dialog's progress
-	
+
 	//set the visiblity of the location columns as the imported remember field has been set to
-	
+
 	var locStateNew = What("Gear Location Remember").split(",");
 	if (locStateNew[0] !== locStateOld[0]) { //only do something if current visiblity (locStateOld) is not what was imported
 		HideInvLocationColumn("Adventuring Gear ", locStateOld[0] === "true");
@@ -1819,12 +1819,12 @@ function Import(type) {
 	}
 
 	thermoM(23/25); //increment the progress dialog's progress
-	
+
 	//set all the color schemes as the newly imported fields dictate
 	setColorThemes();
 
 	thermoM(24/25); //increment the progress dialog's progress
-	
+
 	//set the weight carried multiplier back one if a race with powerful build was added
 	if (CurrentRace.known && (/powerful build/i).test(CurrentRace.trait) && What("Carrying Capacity Multiplier") === 3) {
 		tDoc.getField("Carrying Capacity Multiplier").value -= 1;
@@ -1838,10 +1838,10 @@ function Import(type) {
 	});
 
 	thermoM(thermoTxt, true); // Stop progress bar
-	
+
 	//re-apply stuff just as when starting the sheet
 	InitializeEverything();
-	
+
 	tDoc.dirty = true;
 };
 
@@ -1983,12 +1983,12 @@ function MakeXFDFExport(partial) {
 		tDoc.exportAsXFDF(theSettings);
 	} catch (err) {
 		var toExport = tDoc.exportAsXFDFStr(theSettings);
-	
+
 		var explainTXT = "This is a work-around for Acrobat Reader. It requires a little bit more work, but otherwise you will have to get Acrobat Pro in order to do this more easily. You will be able to import the file you create into MPMB's Character Sheet version 10.2 or later.\nThe field below contains all the exported data in a XML format. All you have to do is copy this data and save it as an .xfdf file with UTF-8 encoding.";
 		var explainTXT2 = app.platform === "WIN" ? "If you don't know how to do this, just follow the steps below:\n\nOn Windows:\n  1 - Open Notepad and copy the complete content of the field below into it;\n  2 - On the Notepad menu bar, select File -- Save;\n  3 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  4 - At Encoding, choose \"UTF-8\";\n  5 - Press Save." : " If you don't know how to do this, just follow the steps below:\n\nOn Mac:\n  1 - Open TextEdit and copy the complete content of the field below into it;\n  2 - On the TextEdit menu bar, select Format -- Make Plain Text;\n  3 - Then, on the TextEdit menu bar, select File -- Save As;\n  4 - Change the file name to anything you like, as long as it ends with \".xfdf\" (instead of \".txt\");\n  5 - At Plain Text Encoding, choose \"UTF-8\";\n  6 - Press Save.";
-		
+
 		var DisplayExport_dialog = {
-			
+
 			initialize: function(dialog) {
 				dialog.load({
 					"expo": toExport
@@ -2059,7 +2059,7 @@ function AddUserScript(retResDia) {
 	var getTxt2 = toUni("Using the proper JavaScript syntax") + ", you can add homebrew classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has information and links to resources about creating your own additions, as does the \"I don't get it?\" button.";
 	var getTxt3 = toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JavaScript Console\" button).";
 	var diaIteration = 1;
-	
+
 	var tries = 0;
 	var selBoxHeight = 340;
 	do {
@@ -2072,7 +2072,7 @@ function AddUserScript(retResDia) {
 			tries += 1;
 		}
 	} while (tries < 5);
-	
+
 	var getDialog = function() {
 		var diaMax = Math.max(theUserScripts.length, diaIteration);
 		var moreDialogues = diaMax > diaIteration;
@@ -2596,7 +2596,7 @@ function ImportScriptFileDialog(retResDia) {
 	for (var scriptFile in CurrentScriptFiles) {
 		dialogObj[scriptFile] = -1;
 	};
-		
+
 	var AddScriptFiles_dialog = {
 		initialize: function(dialog) {
 			dialog.load({
@@ -2802,7 +2802,7 @@ function ImportScriptFileDialog(retResDia) {
 			}]
 		}
 	};
-	
+
 
 	do {
 		var scriptFilesDialog = app.execDialog(AddScriptFiles_dialog);
@@ -2813,7 +2813,7 @@ function ImportScriptFileDialog(retResDia) {
 			console.show();
 		};
 	} while (scriptFilesDialog !== "ok" && scriptFilesDialog !== "bCon" && scriptFilesDialog !== "cancel");
-	
+
 	if (scriptFilesDialog === "ok") {
 		if (filesScriptRem !== What("User_Imported_Files.Stringified")) { // only do something if anything changed!
 			InitiateLists();
