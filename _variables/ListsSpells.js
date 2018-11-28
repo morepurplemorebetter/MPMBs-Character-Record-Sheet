@@ -2150,8 +2150,8 @@ var Base_SpellsList = {
 		components : "V,S,M\u2020",
 		compMaterial : "A gem-encrusted bowl worth at least 1,000 gp, which the spell consumes",
 		duration : "Instantaneous",
-		description : "You+12 crea; 1h to consume; for 24h: disease/poison immune, +2d10 max hp, see B (1000gp cons.)",
-		descriptionFull : "You bring forth a great feast, including magnificent food and drink. The feast takes 1 hour to consume and disappears at the end of that time, and the beneficial effects don't set in until this hour is over. Up to twelve other creatures can partake of the feast." + "\n   " + "A creature that partakes of the feast gains several benefits. The creature is cured of all diseases and poison, becomes immune to poison and being frightened, and makes all Wisdom saving throws with advantage. Its hit point maximum also increases by 2d10, and it gains the same number of hit points. These benefits last for 24 hours."
+		description : "12 crea; 1h to consume; for 24h: disease/poison immune, +2d10 max hp, see B (1000gp cons.)",
+		descriptionFull : "You bring forth a great feast, including magnificent food and drink. The feast takes 1 hour to consume and disappears at the end of that time, and the beneficial effects don't set in until this hour is over. Up to twelve creatures can partake of the feast." + "\n   " + "A creature that partakes of the feast gains several benefits. The creature is cured of all diseases and poison, becomes immune to poison and being frightened, and makes all Wisdom saving throws with advantage. Its hit point maximum also increases by 2d10, and it gains the same number of hit points. These benefits last for 24 hours."
 	},
 	"heroism" : {
 		name : "Heroism",
@@ -4228,7 +4228,7 @@ var Base_SpellsList = {
 		compMaterial : "A sprinkle of holy water and diamonds worth at least 25,000 gp, which the spell consumes",
 		duration : "Instantaneous",
 		description : "Resurrects a creature, that has died in last 200 years, with new body; see book (25000gp cons.)",
-		descriptionFull : "You touch a creature that has been dead for no longer than 200 years and that died for any reason except old age. If the creature's soul is free and willing, the creature is restored to life with all its hit points." + "\n   " + "This spell closes all wounds, neutralizes any poison, cures all diseases, and lifts any curses affecting the creature when it died. The spell replaces damaged or missing organs or limbs." + "\n   " + "The spell can even provide a new body if the original no longer exists, in which case you must speak the creature's name. The creature then appears in an unoccupied space you choose within 10 feet of you."
+		descriptionFull : "You touch a creature that has been dead for no longer than 200 years and that died for any reason except old age. If the creature's soul is free and willing, the creature is restored to life with all its hit points." + "\n   " + "This spell closes all wounds, neutralizes any poison, cures all diseases, and lifts any curses affecting the creature when it died. The spell replaces damaged or missing organs or limbs. If the creature was undead, it is restored to its non-undead form." + "\n   " + "The spell can even provide a new body if the original no longer exists, in which case you must speak the creature's name. The creature then appears in an unoccupied space you choose within 10 feet of you."
 	},
 	"true seeing" : {
 		name : "True Seeing",
@@ -4270,7 +4270,7 @@ var Base_SpellsList = {
 		compMaterial : "A piece of string and a bit of wood",
 		duration : "1 h",
 		description : "Create an invisible, mindless, shapeless servant for simple tasks; bns a to mentally command it",
-		descriptionFull : "This spell creates an invisible, mindless, shapeless force that performs simple tasks at your command until the spell ends. The servant springs into existence in an unoccupied space on the ground within range. It has AC 10, 1 hit point, and a Strength of 2, and it can't attack. If it drops to 0 hit points, the spell ends." + "\n   " + "Once on each of your turns as a bonus action, you can mentally command the servant to move up to 15 feet and interact with an object. The servant can perform simple tasks that a human servant could do, such as fetching things, cleaning, mending, folding clothes, lighting fires, serving food, and pouring wine. Once you give the command, the servant performs the task to the best of its ability until it completes the task, then waits for your next command." + "\n   " + "If you command the servant to perform a task that would move it more than 60 feet away from you, the spell ends."
+		descriptionFull : "This spell creates an invisible, mindless, shapeless, Medium force that performs simple tasks at your command until the spell ends. The servant springs into existence in an unoccupied space on the ground within range. It has AC 10, 1 hit point, and a Strength of 2, and it can't attack. If it drops to 0 hit points, the spell ends." + "\n   " + "Once on each of your turns as a bonus action, you can mentally command the servant to move up to 15 feet and interact with an object. The servant can perform simple tasks that a human servant could do, such as fetching things, cleaning, mending, folding clothes, lighting fires, serving food, and pouring wine. Once you give the command, the servant performs the task to the best of its ability until it completes the task, then waits for your next command." + "\n   " + "If you command the servant to perform a task that would move it more than 60 feet away from you, the spell ends."
 	},
 	"vampiric touch" : {
 		name : "Vampiric Touch",
