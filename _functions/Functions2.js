@@ -70,21 +70,6 @@ function FindCompRace(inputcreatxt, aPrefix) {
 						CurrentCompRace[prefix][prop] = RaceSubList[subrace][prop];
 					}
 				}
-/* UPDATED
-				//check if a the this is just after a reset. If so, run the FindRace() function so that CurrentRace has attributes that can be used
-				if (!CurrentRace.size) FindRace()
-				for (var prop in CurrentRace) {
-					if (prop !== "known" && prop !== "variant") {
-						if (CurrentCompRace[prefix].variant && RaceSubList[CurrentCompRace[prefix].known + "-" + CurrentCompRace[prefix].variant][prop] !== undefined) {//select the sub-racial prop
-							CurrentCompRace[prefix][prop] = RaceSubList[CurrentCompRace[prefix].known + "-" + CurrentCompRace[prefix].variant][prop];
-						} else if (CurrentCompRace[prefix].known && RaceList[CurrentCompRace[prefix].known][prop] !== undefined) {//select the racial prop
-							CurrentCompRace[prefix][prop] = RaceList[CurrentCompRace[prefix].known][prop];
-						} else {//empty the prop
-							CurrentCompRace[prefix][prop] = "";
-						}
-					}
-				}
-*/
 			}
 		}
 		if (inputcreatxt) { //if there was an input, return if it was different from the previously known or not
@@ -142,9 +127,9 @@ function resetCompTypes(prefix) {
 			AddWeapon(CurrentCompRace[prefix].attacks[a].name);
 		}
 	} else if (theType === "companion") {
-		UpdateRangerCompanions("delete");
+		UpdateRangerCompanions(0);
 	} else if (theType === "companionrr") {
-		UpdateRevisedRangerCompanions("delete");
+		UpdateRevisedRangerCompanions(0);
 	} else if (theType === "mechanicalserv") {
 		if (CurrentCompRace[prefix] && CurrentCompRace[prefix].known) {
 			Value(prefix + "Comp.Desc.MonsterType", CurrentCompRace[prefix].type);
@@ -3609,38 +3594,23 @@ function setLifeStyle(input) {
 }
 
 // update all the level-dependent features for the ranger companions on the companion pages
-function UpdateRangerCompanions(deleteIt) {
+function UpdateRangerCompanions(newLvl) {
+	console.println("UpdateRangerCompanions was called..."); // DEBUGGING!!!
 	if (ClassList.rangerua && !testSource("rangerua", ClassList.rangerua, "classExcl")) {
-		UpdateRevisedRangerCompanions(deleteIt);
+		UpdateRevisedRangerCompanions(newLvl);
 		return;
 	}
 	var thermoTxt;
 
-	var theProfB = function (input) {
-		var toReturn = 0;
-		if (input >= 17) {
-			toReturn = 6;
-		} else if (input >= 13) {
-			toReturn = 5;
-		} else if (input >= 9) {
-			toReturn = 4;
-		} else if (input >= 5) {
-			toReturn = 3;
-		} else if (input >= 1) {
-			toReturn = 2;
-		}
-		return toReturn;
-	}
-
 	var textArray = [
 		"\u2022 " + "If the beast takes the Attack action, I can use my Extra Attack feature to attack once myself", //add at level 5
-		"\u2022 " + "As a bonus action, I can have the beast do an Dash/Disengage/Dodge/Help action on its turn", //add at level 7
-		"\u2022 " + "The beast can make two attacks when I command it to take an Attack action", //add at level 11
+		"\u2022 " + "The beast's attacks count as magical for the purpose of overcoming resistances and immunities" + "\n\u2022 " + "As a bonus action, I can command the beast to take the Dash/Disengage/Help action on its turn", //add at level 7
+		"\u2022 " + "The beast can make two attacks (or multiattack) when I command it to take an Attack action", //add at level 11
 		"\u2022 " + "When I cast a spell on myself, I can have it also affect the beast if it is within 30 ft of me", //add at level 15
 	]
 
 	var theText = function (input) {
-		var toReturn = "As an action, I can have the beast do an Attack/Dash/Disengage/Dodge/Help action on its turn";
+		var toReturn = "If I don't command it to take an action, it takes the Dodge action instead";
 		if (input >= 5) {
 			toReturn += "\n" + textArray[0];
 		}
@@ -3656,8 +3626,9 @@ function UpdateRangerCompanions(deleteIt) {
 		return toReturn;
 	}
 
-	var newLvl = deleteIt ? 0 : Number(What("Character Level"));
-	var newLvlProfB = theProfB(newLvl);
+	newLvl = newLvl !== undefined ? newLvl : Number(What("Character Level"));
+	var deleteIt = newLvl === 0;
+	var newLvlProfB = newLvl ? ProficiencyBonusList[Math.min(newLvl-1,ProficiencyBonusList.length-1)] : 0;
 	var RangerLvl = deleteIt || (!classes.known.ranger && !classes.known["spell-less ranger"]) ? newLvl : (classes.known.ranger ? classes.known.ranger.level : 0) + (classes.known["spell-less ranger"] ? classes.known["spell-less ranger"].level : 0);
 	var newLvlText = theText(RangerLvl);
 	var AScompA = What("Template.extras.AScomp").split(",").splice(1);
@@ -3678,7 +3649,7 @@ function UpdateRangerCompanions(deleteIt) {
 			var remLvl = Who(prefix + "Companion.Remember").split(",");
 			var oldLvl = Number(remLvl[0]);
 			var RangerLvlOld = remLvl[1] !== undefined ? Number(remLvl[1]) : 0;
-			var oldLvlProfB = theProfB(oldLvl);
+			var oldLvlProfB = oldLvl ? ProficiencyBonusList[Math.min(oldLvl-1,ProficiencyBonusList.length-1)] : 0;
 			var diff = newLvlProfB - oldLvlProfB;
 			var BlueTextArrayAdd = [];
 			var BlueTextArrayRemove = [];
@@ -3708,7 +3679,7 @@ function UpdateRangerCompanions(deleteIt) {
 				};
 			};
 
-			//add attacks damage and to hit bonus fields
+			//add attacks damage and to hit bonus fields, as well as count as magical to description
 			for (var A = 1; A <= 3; A++) {
 				if (What(prefix + "Comp.Use.Attack." + A + ".Weapon Selection")) {
 					var weaHit = prefix + "BlueText.Comp.Use.Attack." + A + ".To Hit Bonus";
@@ -3725,6 +3696,13 @@ function UpdateRangerCompanions(deleteIt) {
 					} else if (hasProfAdded) {
 						BlueTextArrayRemove.push(weaDmg);
 					};
+					var weaDescr = prefix + "Comp.Use.Attack." + A + ".Description";
+					var countMagic = (/(,|;)? ?counts as magical/i).test(What(weaDescr));
+					if (newLvl >= 7 && oldLvl < 7 && !countMagic) {
+						AddString(weaDescr, "Counts as magical", "; ");
+					} else if (newLvl < 7 && oldLvl >= 7 && countMagic) {
+						Value(weaDescr, What(weaDescr).replace(/(,|;)? ?counts as magical/i, ''));
+					}
 				};
 			};
 
@@ -4491,24 +4469,8 @@ function CreateBkmrksCompleteAdvLogSheet() {
 }
 
 // update all the level-dependent features for the UA's revised ranger companions on the companion pages
-function UpdateRevisedRangerCompanions(deleteIt) {
+function UpdateRevisedRangerCompanions(newLvl) {
 	var thermoTxt;
-
-	var theProfB = function (input) {
-		var toReturn = 0;
-		if (input >= 17) {
-			toReturn = 6;
-		} else if (input >= 13) {
-			toReturn = 5;
-		} else if (input >= 9) {
-			toReturn = 4;
-		} else if (input >= 5) {
-			toReturn = 3;
-		} else if (input >= 1) {
-			toReturn = 2;
-		}
-		return toReturn;
-	}
 
 	var notesArray = [
 		"\u2022 " + "When I take the Attack action, my companion can use its reaction to make one melee attack", //add at level 5
@@ -4569,8 +4531,9 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 		return toReturn;
 	}
 
-	var newLvl = deleteIt ? 0 : Number(What("Character Level"));
-	var newLvlProfB = theProfB(newLvl);
+	newLvl = newLvl !== undefined ? newLvl : Number(What("Character Level"));
+	var deleteIt = newLvl === 0;
+	var newLvlProfB = newLvl ? ProficiencyBonusList[Math.min(newLvl-1,ProficiencyBonusList.length-1)] : 0;
 	var RangerLvl = deleteIt || !classes.known.rangerua ? newLvl : classes.known.rangerua.level;
 	var newLvlText = theText(RangerLvl);
 	var newLvlFea = theFeature(RangerLvl);
@@ -4596,7 +4559,7 @@ function UpdateRevisedRangerCompanions(deleteIt) {
 			var remLvl = Who(prefix + "Companion.Remember").split(",");
 			var oldLvl = Number(remLvl[0]);
 			var RangerLvlOld = remLvl[1] !== undefined ? Number(remLvl[1]) : 0;
-			var oldLvlProfB = theProfB(oldLvl);
+			var oldLvlProfB = oldLvl ? ProficiencyBonusList[Math.min(oldLvl-1,ProficiencyBonusList.length-1)] : 0;
 			var diff = newLvlProfB - oldLvlProfB;
 
 			//add ranger's prof to attacks damage fields
@@ -4896,36 +4859,6 @@ function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 		thermoM(thermoTxt, true); // Stop progress bar
 	}
 }
-/* UPDATED
-// returns the current choice, if any, for a class feature; aClass as in ClassList, feature as in the object in the features object
-function GetClassFeatureChoice(aClass, feature) {
-	var theReturn = "";
-	if (CurrentClasses[aClass] && CurrentClasses[aClass].features[feature] && CurrentClasses[aClass].features[feature].choices) {
-		var theProp = CurrentClasses[aClass].features[feature].choices;
-		for (var u = 0; u < theProp.length; u++) {
-			var ChoiceString = aClass.toLowerCase() + "," + feature.toLowerCase() + "," + theProp[u].toLowerCase();
-			if (What("Class Features Remember").toLowerCase().indexOf(ChoiceString) !== -1) {
-				theReturn = theProp[u].toLowerCase();
-				u = theProp.length;
-			}
-		}
-	}
-	return theReturn
-}
-
-// removes any and all choices from the selected class feature choice options
-function RemoveClassFeatureChoice(aClass, feature) {
-	var theReturn = "";
-	if (CurrentClasses[aClass] && CurrentClasses[aClass].features[feature] && CurrentClasses[aClass].features[feature].choices) {
-		var theProp = CurrentClasses[aClass].features[feature].choices;
-		for (var u = 0; u < theProp.length; u++) {
-			var ChoiceString = aClass.toLowerCase() + "," + feature.toLowerCase() + "," + theProp[u].toLowerCase();
-			RemoveString("Class Features Remember", ChoiceString, false);
-		}
-	}
-	return theReturn
-}
-*/
 
 // returns an object of the different elements to populate the class features or limited features section if olchoice is provided, oldlevel has to be provided as well
 function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceChoice) {
@@ -5433,48 +5366,6 @@ function addEvals(evalObj, NameEntity, Add) {
 
 	if (!Add) CurrentEvals = CleanObject(CurrentEvals); // remove any remaining empty objects
 	SetStringifieds("evals"); //now set this global variable to its field for safekeeping
-
-/* UPDATED
-	//do the stuff for the attack calculations
-	var atkStr = "";
-	var remAtkAdd = CurrentEvals.atkAdd ? CurrentEvals.atkAdd : "";
-	var atkTypes = ["atkAdd", "atkCalc"];
-	var nameHeader = "\n\n" + (isArray(NameEntity) ? toUni(NameEntity[0]) + NameEntity[1] : toUni(NameEntity));
-	for (var i = 0; i < atkTypes.length; i++) {
-		var atkT = atkTypes[i];
-		if (!evalObj[atkT]) continue;
-		if (!atkStr && evalObj[atkT][1]) atkStr = nameHeader;
-		if (evalObj[atkT][1]) atkStr += "\n - " + evalObj[atkT][1];
-		if (Add) {
-			if (!CurrentEvals[atkT]) CurrentEvals[atkT] = "";
-			if (CurrentEvals[atkT].indexOf(evalObj[atkT][0]) === -1) CurrentEvals[atkT] += evalObj[atkT][0];
-		} else if (CurrentEvals[atkT]) {
-			CurrentEvals[atkT] = CurrentEvals[atkT].replace(evalObj[atkT][0], "");
-		}
-	};
-	if (atkStr) {
-		if (Add) {
-			if (!CurrentEvals.atkStr) CurrentEvals.atkStr = "";
-			if (CurrentEvals.atkStr.indexOf(atkStr) === -1) CurrentEvals.atkStr += atkStr;
-		} else if (atkStr && CurrentEvals.atkStr) {
-			CurrentEvals.atkStr = CurrentEvals.atkStr.replace(atkStr, "");
-		}
-	};
-	if (remAtkAdd !== CurrentEvals.atkAdd) forceReCalcWeapons = true;
-
-	//do the stuff for the hp calculations
-	if (evalObj.hp) {
-		if (Add) {
-			if (!CurrentEvals.hp) CurrentEvals.hp = "";
-			if (CurrentEvals.hp.indexOf(evalObj.hp) === -1) CurrentEvals.hp += evalObj.hp;
-		} else if (CurrentEvals.hp) {
-			CurrentEvals.hp = CurrentEvals.hp.replace(evalObj.hp, "");
-		};
-		SetHPTooltip();
-	};
-
-	SetStringifieds("evals"); //now set this global variable to its field for safekeeping
-*/
 };
 
 // make a string of all the things affecting the attack calculations
@@ -5584,9 +5475,6 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			QI && (/natural|spell|cantrip/i).test(theWea.type) ? true :
 			(/^(simple|martial)$/i).test(theWea.type) && tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) ? true :
 			CurrentProfs.weapon.otherWea && RegExp(";(" + CurrentProfs.weapon.otherWea.finalProfs.join("s?|").replace(/ss\?\|/g, "s?|") + ");", "i").test(";" + [WeaponName, theWea.type].concat(theWea.list ? [theWea.list] : []).join(";") + ";") ? true :
-/* UPDATED
-			(RegExp(";" + CurrentWeapons.extraproficiencies.join(";|;").replace(/s;\|/g, "s;?|") + ";", "i")).test(";" + [WeaponName, theWea.type, theWea.list ? theWea.list : " "].join(";") + ";") ? true :
-*/
 			false;
 
 		//add mod
@@ -5687,14 +5575,6 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 				break;
 			};
 		};
-/* UPDATED
-		for (var i = 0; i < CurrentWeapons.manualproficiencies.length; i++) {
-			if (CurrentWeapons.field[ArrayNmbr].toLowerCase().indexOf(CurrentWeapons.manualproficiencies[i].toLowerCase()) !== -1) {
-				Checkbox(fldBase + "Proficiency", true);
-				break;
-			};
-		};
-*/
 	};
 	if (QI && ((event.target && fldName === event.target.name) || Number(fldNmbr) === FieldNumbers.attacks)) SetOffHandAction();
 	thermoM(thermoTxt, true); // Stop progress bar

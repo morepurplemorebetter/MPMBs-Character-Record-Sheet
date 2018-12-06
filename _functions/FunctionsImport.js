@@ -1668,9 +1668,6 @@ function ImportExtraChoices() {
 					var propOpt = propFea[opt];
 					if (toTestE.indexOf(propOpt.name + " (" + propFea.extraname) !== -1) {
 						global.docTo.SetFeatureChoice("classes", aClass, prop, opt, opt);
-/* UPDATED
-						global.docTo.ClassFeatureOptions([aClass, prop, opt.toLowerCase(), "extra", false]);
-*/
 					};
 				});
 			}

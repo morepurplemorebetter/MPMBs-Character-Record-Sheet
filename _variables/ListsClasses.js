@@ -611,10 +611,6 @@ var Base_ClassList = {
 				},
 				eval : "ClassFeatureOptions(['monk', 'ki', 'flurry of blows', 'extra']); ClassFeatureOptions(['monk', 'ki', 'patient defense', 'extra']); ClassFeatureOptions(['monk', 'ki', 'step of the wind', 'extra']);",
 				changeeval : "if (lvlH >= 5 && lvlL < 5) { ClassFeatureOptions(['monk', 'ki', 'stunning strike', 'extra'], lvlA[1] < 5 ? 'remove' : false); }; "
-/* UPDATED
-				removeeval : "ClassFeatureOptions(['monk', 'ki', 'flurry of blows', 'extra'], 'remove'); ClassFeatureOptions(['monk', 'ki', 'patient defense', 'extra'], 'remove'); ClassFeatureOptions(['monk', 'ki', 'step of the wind', 'extra'], 'remove');",
-				changeeval : "if (newClassLvl.monk >= 5 && (What('Extra.Notes') + What('Class Features')).toLowerCase().indexOf('stunning strike') === -1) {ClassFeatureOptions(['monk', 'ki', 'stunning strike', 'extra'])} else if (newClassLvl.monk < 5 && oldClassLvl.monk >= 5) {ClassFeatureOptions(['monk', 'ki', 'stunning strike', 'extra'], 'remove');};"
-*/
 			},
 			"unarmored movement" : {
 				name : "Unarmored Movement",
@@ -2476,9 +2472,6 @@ var Base_ClassSubList = {
 					var ancestor = GetFeatureChoice('class', 'sorcerer', 'subclassfeature1');
 					if (ancestor) choiceA[1] = CurrentClasses.sorcerer.features.subclassfeature1[ancestor].dragonElement;
 				}
-/* UPDATED
-				eval : "if (FeaChoice === '') {var CFrem = What('Class Features Remember'); var tReg = /.*?sorcerer,subclassfeature1,((black|blue|brass|bronze|copper|gold|green|red|silver|white) dragon ancestor).* /i; if ((tReg).test(CFrem)) {FeaChoice = CurrentClasses.sorcerer.features.subclassfeature1[CFrem.replace(tReg, '$1')].dragonElement; AddString('Class Features Remember', 'sorcerer,subclassfeature6,' + FeaChoice, false);};};"
-*/
 			},
 			"subclassfeature14" : {
 				name : "Dragon Wings",

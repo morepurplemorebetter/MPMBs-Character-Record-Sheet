@@ -289,11 +289,6 @@ function RemoveTooltips() {
 	};
 	AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
 	AddTooltip("Background Extra", "First fill out a background in the field to the left.\n\nOnce a background is recognized that offers additional options, those additional options will be displayed here. For example, the \"Origin\" for the \"Outlander\" background.");
-
-/* UPDATED
- 	// now call to update the tooltips with the new empty global variables
-	UpdateTooltips();
-*/
 };
 
 function AddAction(actiontype, action, actiontooltip, replaceThis, replaceMatch) {
@@ -509,14 +504,6 @@ function ResetAll(GoOn, noTempl) {
 	thermoM(5/9); //increment the progress dialog's progress
 
 	//reset some global variables
-/* UPDATED
- 	CurrentArmour.proficiencies = {};
-	CurrentWeapons.proficiencies = {};
-	CurrentWeapons.extraproficiencies = [];
-	CurrentWeapons.manualproficiencies = [];
-	ApplyProficiencies(true);
-	classes.extraskills = [];
-*/
 	CurrentClasses = {};
 	classes.known = {};
 	classes.old = {};
@@ -1661,11 +1648,6 @@ function ParseClass(input) {
 			// or if we are not using the search length, just look at the newest source date
 			var tempDate = sourceDate(kObj.source);
 			if (i == 1 && ((!ignoreSearchLength && kObj.name.length < foundLen) || (!ignoreSearchLength && kObj.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat))) continue;
-/* UPDATED
- 			// stop if the source of the previous class match is more recent and this new match is not a better match (round 1 only)
-			var tempDate = sourceDate(kObj.source);
-			if (i == 1 && foundDat > tempDate && classFoundLen >= kObj.name.length) continue;
-*/
 
 			if (i == 1) { // we have a matching class! (round 1 only)
 				classFound = key;
@@ -1691,11 +1673,6 @@ function ParseClass(input) {
 				// or if we are not using the search length, just look at the newest source date
 				var tempSubDate = sourceDate(sObj.source);
 				if ((!ignoreSearchLength && sObj.subname.length < subFoundLen) || (!ignoreSearchLength && sObj.subname.length == subFoundLen && tempSubDate < foundSubDat) || (ignoreSearchLength && tempSubDate <= foundSubDat)) continue;
-/* UPDATED
-				// stop if the source of the previous subclass match is more recent and this new match is not a better match
-				var tempSubDate = sourceDate(sObj.source);
-				if (foundSubDat > tempSubDate && subFoundLen >= sObj.subname.length) continue;
-*/
 
 				// we have a match for both the class and the subclass!
 				classFound = key;
@@ -1728,18 +1705,10 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	classes.oldspellcastlvl = classes.spellcastlvl;
 	for (var aClass in classes.known) {
 		classes.old[aClass] = {
-/* UPDATED
-			classlevel : IsSubclassException[aClass] && oldClasses[aClass] && oldClasses[aClass].classlevel ? oldClasses[aClass].classlevel : IsSubclassException[aClass] ? 0 : classes.known[aClass].level,
-*/
 			classlevel : classes.known[aClass].level,
 			subclass : classes.known[aClass].subclass,
 			fullname : CurrentClasses[aClass].fullname
 		}
-/* UPDATED
-		delete CurrentArmour.proficiencies[CurrentClasses[aClass].name];
-		delete CurrentWeapons.proficiencies[CurrentClasses[aClass].name];
-		if (IsSubclassException[aClass]) goDeleteUSS = false;
-*/
 	}
 
 	// Get the different classes from the class field string
@@ -1757,62 +1726,6 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			classes.totallevel += fieldLevel;
 		}
 	}
-/* UPDATED
-	// Split raw string at string-number divides and push parts into temp array
-	var temp = clean(classes.field.replace(/^\d+/, "")) === "" ? "" : classes.field.replace(/^\d+/, "").toLowerCase();
-	var tempArray = [];
-	var tempPosition = 0;
-	var tempChar = "";
-	var tempType = 0;
-	for (var i = 0; i < temp.length; i++) {
-		var tempChar = parseInt(temp.charAt(i), 10);
-		if (isNaN(tempChar)) {
-			if (tempType === 2) {
-				tempArray.push(Number(temp.substring(tempPosition, i)));
-				var tempPosition = i;
-			}
-			if (i === temp.length - 1) {
-				tempArray.push(String(temp.substring(tempPosition, i + 1)));
-			}
-			tempType = 1;
-		} else {
-			if (tempType === 1) {
-				tempArray.push(String(temp.substring(tempPosition, i)));
-				tempPosition = i;
-			}
-			if (i === temp.length - 1) {
-				tempArray.push(Number(temp.substring(tempPosition, i + 1)));
-			}
-			tempType = 2;
-		}
-	}
-
-	//move elements from tempArray into parsed array
-	temp = [];
-	var ClDelimiter = RegExp("^" + What("Delimiter").RegEscape(), "i");
-	for (i = 0; i < tempArray.length; i++) {
-		if (typeof tempArray[i] === "string") {
-			tempString = clean(tempArray[i].replace(ClDelimiter, ""));
-			if (tempString.length > 0) {
-				temp[temp.length] = [];
-				temp[temp.length - 1][0] = tempString;
-				if (i === tempArray.length - 1) {
-					temp[temp.length - 1][1] = 0; //set class level to 0 if none given
-				}
-			}
-		} else if (typeof tempArray[i] === "number" && temp.length > 0) {
-			temp[temp.length - 1][1] = Math.min(Math.max(tempArray[i], 1), 999);
-		}
-		if (temp[temp.length - 1][1] === 0) { //set class level to Character Level field if only 1 class, or 1 if multiclassing
-			temp[temp.length - 1][1] = temp.length - 1 === 0 && What("Character Level") ? What("Character Level") : 1;
-		}
-	}
-
-	classes.parsed = temp;
-
-	//determine the character level
-	var level = classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);
-*/
 
 	// Reset the global classes variables
 	classes.hd = [];
@@ -1929,11 +1842,6 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		};
 	};
 	if (!isChange) {
-/* UPDATED
-		// only update the character level field, as it might still have changed from unrecognised classes
-		if (Number(What("Character Level")) != classes.totallevel) Value("Character Level", classes.totallevel);
-		CalcExperienceLevel();
-*/
 		ApplyClassLevel(true);
 		return true;
 	};
@@ -1982,83 +1890,6 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				RemoveString("SubClass Remember", oClass, false);
 			}
 		}
-/* UPDATED
-		//remove saving throw and tool proficiencies and reset equipment button tooltip, if it was primary class but no longer is
-		if (primeClass !== classes.primary && classes.primary === oClass) {
-
-			//delete armor and weapon proficiencies gained from class features
-			delete CurrentArmour.proficiencies[tempCl.fullname];
-			delete CurrentWeapons.proficiencies[tempCl.fullname];
-
-			if (tempCl.saves) processSaves(false, tempCl.name, tempCl.saves);
-
-			if (tempCl.toolProfs && tempCl.toolProfs.primary) {
-				processTools(false, tempCl.name, tempCl.toolProfs.primary);
-			};
-
-			AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
-		};
-
-		if (!classesTemp[oClass]) { //when removing a class, do the following
-
-			//delete armor and weapon proficiencies gained from class features
-			delete CurrentArmour.proficiencies[tempCl.fullname];
-			delete CurrentWeapons.proficiencies[tempCl.fullname];
-
-			if (tempCl.toolProfs && tempCl.toolProfs.secondary && classes.primary !== oClass) {
-				processTools(false, tempCl.name, tempCl.toolProfs.secondary);
-			};
-
-			//delete class header string
-			var ClassHeaderString = tempCl.fullname + ", level " + oClassLvl + ":";
-			if (What("Class Features").indexOf("\r\r"+ ClassHeaderString) !== -1) {
-				ClassHeaderString = "\r\r"+ ClassHeaderString;
-			}
-			RemoveString("Class Features", ClassHeaderString, false);
-
-			//delete stuff from features using the function with the class switch
-			UpdateLevelFeatures("class");
-
-			//remove the class from the SubClass Remember field
-			RemoveString("SubClass Remember", oClass, false);
-
-			//remove the class from the CurrentSpells variable
-			delete CurrentSpells[oClass];
-
-		} else if (classes.old[oClass].subclass && classesTemp[oClass].subclass !== classes.old[oClass].subclass) {//when only changing the subclass, do the following
-
-			//delete class header string
-			var ClassHeaderString = tempCl.fullname + ", level " + oClassLvl + ":";
-			if (What("Class Features").indexOf("\r\r"+ ClassHeaderString) !== -1) {
-				ClassHeaderString = "\r\r"+ ClassHeaderString;
-			}
-			RemoveString("Class Features", ClassHeaderString, false);
-
-			//delete armor and weapon proficiencies gained from class features
-			delete CurrentArmour.proficiencies[tempCl.fullname];
-			delete CurrentWeapons.proficiencies[tempCl.fullname];
-
-			//delete stuff from features using the function with the class switch
-			UpdateLevelFeatures("class");
-
-			//set the class' old level to 0 so all features are added again
-			classes.old[oClass].classlevel = 0;
-
-			//if removing the subclass, also remove the class from the SubClass Remember field
-			if (!classesTemp[oClass].subclass) {
-				RemoveString("SubClass Remember", oClass, false);
-			}
-
-			//remove certain aspects from the CurrentSpells variable if they belonged to the (sub)class, if the subclass was a spellcaster
-			if (CurrentSpells[oClass] && tempCl.spellcastingFactor) {
-				var ocSpells = CurrentSpells[oClass];
-				ocSpells.extra = tempCl.spellcastingExtra ? "" : ocSpells.extra ? ocSpells.extra : "";
-				if (tempCl.spellcastingBonus) {
-					delete ocSpells.bonus[tempCl.name];
-				}
-			}
-		}
-*/
 	} }
 
 	classes.known = classesTemp;
@@ -2082,23 +1913,6 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			prereqs : "", //must exist
 			primaryAbility : "", //must exist
 			improvements : [0] //must exist
-/* UPDATED
-			saves : "",
-			abilitySave : 0, //must exist
-			abilitySaveAlt : 0,
-			skills : "",
-			skillstxt : "",
-			toolProfs : "",
-			armor : "",
-			weapons : "",
-			armorProfs : "",
-			weaponProfs : "",
-			spellcastingFactor : 0,
-			spellcastingKnown : "",
-			spellcastingTable : "",
-			spellcastingList : "",
-			spellcastingExtra : "",
-*/
 		};
 
 		var Temps = CurrentClasses[aClass];
@@ -2123,16 +1937,6 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				if (subClObj[aBW[0]] && subClObj[aBW[1]] == undefined && classObj[aBW[1]]) delete Temps[aBW[1]];
 			}
 		}
-/* UPDATED
-		for (var prop in Temps) {
-			if (prop == "features") continue;
-			if (prop != "name" && subClObj && subClObj[prop] !== undefined) {
-				Temps[prop] = subClObj[prop];
-			} else if (classObj[prop] !== undefined) {
-				Temps[prop] = classObj[prop];
-			}
-		}
-*/
 
 		//special something for classes that have alternative ability scores that can be used for the DC
 		if (Temps.abilitySave && Temps.abilitySaveAlt) {
@@ -2179,19 +1983,6 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			Temps.fullname = Temps.name + (Temps.subname ? " (" + Temps.subname + ")" : "");
 		}
 
-/* UPDATED
-		//add class weapon and armor proficiencies to global variables (only if classes are not set to manual)
-		if (What("Manual Class Remember") !== "Yes") {
-			n = aClass === classes.primary ? 0 : 1;
-			if (Temps.armor[n] !== undefined) {
-				CurrentArmour.proficiencies[Temps.name] = Temps.armor[n];
-			}
-			if (Temps.weapons[n] !== undefined) {
-				CurrentWeapons.proficiencies[Temps.name] = Temps.weapons[n];
-			}
-		}
-*/
-
 		//see if this class is a spellcaster and what we need to do with that
 		if (Temps.spellcastingFactor) {
 			var casterType = !isNaN(Temps.spellcastingFactor) ? "default" : Temps.spellcastingFactor.replace(/\d/g, "");
@@ -2217,32 +2008,6 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				cSpells.factor = [casterFactor, casterType];
 				cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
 				if (Temps.spellcastingExtra) cSpells.extra = Temps.spellcastingExtra;
-/* UPDATED
-			// now update the entry in the CurrentSpells variable so that it is a spellcasting class with options
-				//first see if the entry exists or not, and create it if it doesn't
-				if (!CurrentSpells[aClass]) {
-					CurrentSpells[aClass] = {bonus : {}};
-				}
-				var cSpells = CurrentSpells[aClass];
-				cSpells.name = Temps.fullname;
-				cSpells.shortname = classObj.spellcastingFactor ? classObj.name : subClObj.fullname ? subClObj.fullname : subClObj.subname;
-				cSpells.level = classes.known[aClass].level;
-				cSpells.ability = Temps.abilitySave;
-				cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass};
-				cSpells.known = Temps.spellcastingKnown;
-				cSpells.typeSp = !cSpells.known || cSpells.known.spells === undefined ? false : isArray(cSpells.known.spells) ? cSpells.known.spells[Math.min(cSpells.known.spells.length, cSpells.level) - 1] : cSpells.known.spells;
-				cSpells.typeSp = cSpells.typeSp === "" ? "" : isNaN(cSpells.typeSp) ? cSpells.typeSp : "known";
-				cSpells.factor = [casterFactor, casterType];
-				cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
-
-				//spells from subclass that are auto-prepared (cleric/druid/paladin) or added to class list to choose from (warlock)
-				cSpells.extra = Temps.spellcastingExtra ? Temps.spellcastingExtra : cSpells.extra ? cSpells.extra : "";
-
-				//spells from a (sub)class feature that allow the addition of non-standard spells to the spell list (either known list or otherwise), with certain conditions (i.e. a cantrip from the wizard spell list)
-				if (Temps.spellcastingBonus && !cSpells.bonus[Temps.name]) {
-					cSpells.bonus[Temps.name] = Temps.spellcastingBonus;
-				}
-*/
 			}
 		}
 
@@ -2272,34 +2037,6 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			if (classes.spellcastlvl[casterType] == undefined) classes.spellcastlvl[casterType] = 0;
 			classes.spellcastlvl[casterType] += Math[multiCaster[casterType] > 1 ? "floor" : "ceil"](cSpells.level / casterFactor);
 		}
-/* UPDATED
-		var Temps = CurrentClasses[aClass];
-		//add the spellcasting level to the classes.spellcastlvl global variable
-		if (Temps.spellcastingFactor) {
-			var casterType = !isNaN(Temps.spellcastingFactor) ? "default" : Temps.spellcastingFactor.replace(/\d/g, "");
-			var casterFactor = (/\d/g).test(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
-			//now add this class' levels to the global variable when using the known tables and are of sufficient level
-			if (casterFactor && classes.known[aClass].level >= casterFactor) {
-				if (multiCaster[casterType] > 1 || !Temps.spellcastingTable) {
-					var casterLvl = multiCaster[casterType] > 1 ? Math.floor(classes.known[aClass].level / casterFactor) : Math.ceil(classes.known[aClass].level / casterFactor);
-					if (classes.spellcastlvl[casterType]) {
-						classes.spellcastlvl[casterType] += casterLvl;
-					} else {
-						classes.spellcastlvl[casterType] = casterLvl;
-					}
-				} else if (Temps.spellcastingTable && multiCaster[casterType] === 1) {
-					var casterLvl = Math.min(Temps.spellcastingTable.length - 1, classes.known[aClass].level);
-					if (!classes.spellcastlvl.otherTables) {
-						classes.spellcastlvl.otherTables = Temps.spellcastingTable[casterLvl]
-					} else {
-						classes.spellcastlvl.otherTables = classes.spellcastlvl.otherTables.map(function (num, idx) {
-						  return num + Temps.spellcastingTable[casterLvl][idx];
-						});
-					}
-				}
-			}
-		}
-*/
 	}
 
 	if (!NotAtStartup) { // add the current classes.known into classes.old on startup of the sheet
@@ -2403,92 +2140,6 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	thermoM(thermoTxt, true); // Stop progress bar
 
 	ApplyClassLevel(); // Lastly, update the level and level-dependent features (or just the class features if level didn't change)
-/* UPDATED
-	//add saves and tools of the primary class
-	if (classes.primary && (!classes.oldprimary || classes.oldprimary !== classes.primary)) {
-
-		var primeClass = CurrentClasses[classes.primary];
-		if (primeClass.saves) processSaves(true, primeClass.name, primeClass.saves);
-
-		if (primeClass.toolProfs && primeClass.toolProfs.primary) {
-			processTools(true, primeClass.name, primeClass.toolProfs.primary);
-		};
-
-		AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.\n\n" + CurrentClasses[classes.primary].equipment);
-	};
-
-	//add tool proficiencies
-	for (var aClass in classes.known) {
-		if (aClass === classes.primary || classes.old[aClass]) continue; //skip the primary class or classes known in classes.old, we already did those
-		var classTools = CurrentClasses[aClass].toolProfs;
-		if (classTools && classTools.secondary) {
-			processTools(true, CurrentClasses[aClass].name, classTools.secondary);
-		};
-	};
-
-	thermoTxt = thermoM("Setting the total character level...", false); //change the progress dialog text
-	thermoM(4/6); //increment the progress dialog's progress
-
-
-
-	thermoTxt = thermoM("Setting spell slots...", false); //change the progress dialog text
-	thermoM(3/6); //increment the progress dialog's progress
-
-	// Set the spell slots of the class' levels
-	for (var ss = 0; ss <= 8; ss++) {
-		var SpellSlotsName = "SpellSlots.CheckboxesSet.lvl" + (ss + 1);
-		var SpellSlotsField = Number(What(SpellSlotsName));
-		var SpellSlotsTotal = SpellSlotsField;
-		if (classes.spellcastlvl.otherTables) SpellSlotsTotal += classes.spellcastlvl.otherTables[ss]; //add the old slots
-		if (classes.oldspellcastlvl.otherTables) SpellSlotsTotal -= classes.oldspellcastlvl.otherTables[ss]; //remove the old slots
-		for (var casterType in classes.spellcastlvl) {
-			var spTable = tDoc[casterType + "SpellTable"];
-			if (casterType == "otherTables" || !spTable) continue;
-			SpellSlotsTotal += spTable[Math.min(spTable.length - 1, classes.spellcastlvl[casterType])][ss]; //add the new slots
-			if (classes.oldspellcastlvl[casterType]) {
-				SpellSlotsTotal -= spTable[Math.min(spTable.length - 1, classes.oldspellcastlvl[casterType])][ss]; //remove the old slots
-			}
-		}
-		if (SpellSlotsField != SpellSlotsTotal) Value(SpellSlotsName, SpellSlotsTotal);
-	}
-	if (What("SpellSlotsRemember") === "[false,false]") SpellPointsLimFea("Add");
-
-	//add all levels and set character level
-	if (updateall) {
-		var level = classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);
-		Value("Character Level", level);
-		CalcExperienceLevel();
-	};
-
-	thermoM(5/6); //increment the progress dialog's progress
-	thermoTxt = thermoM("Applying level-dependent class features...", false); //change the progress dialog text
-
-	// add all the classes' features
-	var noSubClExc = IsSubclassException.toSource() === "({})";
-	UpdateLevelFeatures("class");
-
-	// if a subclass was just selected, run applyclasses again
-	if (IsSubclassException.toSource() !== "({})" && event.target.name && event.target.name === "Class and Levels" && event.value !== classes.field) ApplyClasses(classes.field);
-
-	if (noSubClExc) {
-		thermoTxt = thermoM("Finalizing the changes of the class(es)...", false); //change the progress dialog text
-		AddAttacksPerAction(); //update number of attacks
-		ApplyProficiencies(true); //call to update armor, shield and weapon proficiencies
-		UpdateTooltips(); //skills tooltip, ability score tooltip
-
-		//show the option button if the class has features that offers a choice
-		if (MakeClassMenu()) {
-			DontPrint("Class Features Menu");
-		} else {
-			Hide("Class Features Menu");
-		}
-
-		SetStringifieds(); //set the global variables to their fields for future reference
-		thermoTxt = thermoM("Checking if spell sheet needs to be updated...", false); //change the progress dialog text
-		CheckForSpellUpdate(); //see if there is a reason to update the spells sheets
-	}
-	thermoM(thermoTxt, true); // Stop progress bar
-*/
 };
 
 // a function to apply the class level depending on how it was changed
@@ -2524,7 +2175,7 @@ function levelFieldVal() {
 	UpdateLevelFeatures("all", Math.max(1,lvl)); // update all level features and use the set level
 
 	// the following should change to be part UpdateLevelFeatures() once custom companions can be imported
-	UpdateRangerCompanions(); // update level-dependent things for any ranger companions
+	UpdateRangerCompanions(lvl); // update level-dependent things for any ranger companions
 
 	IsCharLvlVal = false; // reset global variable
 
@@ -2700,29 +2351,7 @@ function FindRace(inputracetxt, novardialog) {
 		height : "", //must exist
 		weight : "", //must exist
 		trait : "", //must exist
-		features : "", //must exist
-/* UPDATED
- 		speed : "",
-		languageProfs : "",
-		vision : "",
-		savetxt : "",
-		dmgres : "",
-		weaponprofs : "",
-		weapons : "",
-		armor : "",
-		addarmor : "",
-		toolProfs : "",
-		skills : "",
-		skillstxt : "",
-		heightMetric : "",
-		weightMetric : "",
-		improvements : "",
-		scores : [0,0,0,0,0,0],
-		eval : "",
-		removeeval : "",
-		abilitySave : 0,
-		spellcastingAbility : 0,
-		spellcastingBonus : "" */
+		features : "" //must exist
 	};
 
 	if (inputracetxt === undefined && What("Manual Race Remember") !== "No") return; // don't do the rest of this function if race is set to manual and this is not a startup event
@@ -2780,46 +2409,6 @@ function FindRace(inputracetxt, novardialog) {
 
 	// set the current race level when loading the sheet
 	if (!inputracetxt && CurrentRace.known) CurrentRace.level = What("Character Level") ? Number(What("Character Level")) : 1;
-
-/* UPDATED
-	for (var prop in CurrentRace) {
-		if (prop !== "known" && prop !== "variant") {
-			if (CurrentRace.variant && RaceSubList[CurrentRace.known + "-" + CurrentRace.variant][prop] !== undefined) {//select the sub-racial prop
-				CurrentRace[prop] = RaceSubList[CurrentRace.known + "-" + CurrentRace.variant][prop];
-			} else if (CurrentRace.known && RaceList[CurrentRace.known][prop] !== undefined) {//select the racial prop
-				CurrentRace[prop] = RaceList[CurrentRace.known][prop];
-			}
-		}
-	}
-	if (CurrentRace.known) {
-		//add, if existing, the racial armor and weapon proficiencies to the global variable
-		if (CurrentRace.armor) {
-			CurrentArmour.proficiencies[CurrentRace.name] = CurrentRace.armor;
-		};
-		if (CurrentRace.weaponprofs) {
-			CurrentWeapons.proficiencies[CurrentRace.name] = CurrentRace.weaponprofs;
-		};
-	}
-
-	//if a spellcaster, update the entry in the SpellsClassList
-	if (CurrentRace.spellcastingBonus) {
-		//first see if the entry exists or not, and create it if it doesn't
-		if (!CurrentSpells[CurrentRace.known]) {
-			CurrentSpells[CurrentRace.known] = {};
-			CurrentSpells[CurrentRace.known].bonus = {};
-		}
-		var rSpells = CurrentSpells[CurrentRace.known];
-		rSpells.name = CurrentRace.name;
-		rSpells.level = What("Character Level") !== "" ? What("Character Level") : 1;
-		rSpells.ability = CurrentRace.spellcastingAbility;
-		rSpells.typeSp = "race";
-
-		//spells from a (sub)class feature that allow the addition of non-standard spells to the spell list (either known list or otherwise), with certain conditions (i.e. a cantrip from the wizard spell list)
-		if (CurrentRace.spellcastingBonus && !rSpells.bonus[CurrentRace.known]) {
-			rSpells.bonus[CurrentRace.known] = CurrentRace.spellcastingBonus;
-		}
-	}
-*/
 };
 
 //apply the effect of the player's race
@@ -2884,228 +2473,15 @@ function ApplyRace(inputracetxt, novardialog) {
 		UpdateLevelFeatures("race");
 
 		thermoM(3/4); //increment the progress dialog's progress
-
-/* 		UPDATED
-		//add the Race's speed
-		if (CurrentRace.speed) SetProf("speed", true, CurrentRace.speed, CurrentRace.name);
-
-		//run custom code included in race
-		if (CurrentRace.eval) {
-			var theEval = What("Unit System") === "metric" && CurrentRace.eval.indexOf("String") !== -1 ? ConvertToMetric(CurrentRace.eval, 0.5) : CurrentRace.eval;
-			eval(theEval);
-		};
-
-		thermoM(3/6); //increment the progress dialog's progress
-
-
-		//add, if existing, the racial features, proficiencies, vision, etc. etc.
-		if (CurrentRace.vision) processVision(true, CurrentRace.name, CurrentRace.vision);
-		if (CurrentRace.savetxt) SetProf("savetxt", true, CurrentRace.savetxt, CurrentRace.name);
-		if (CurrentRace.dmgres) {
-			for (var i = 0; i < CurrentRace.dmgres.length; i++) {
-				var theDmgres = isArray(CurrentRace.dmgres[i]) ? CurrentRace.dmgres[i] : [CurrentRace.dmgres[i], false];
-				SetProf("resistance", true, theDmgres[0], CurrentRace.name, theDmgres[1]);
-			}
-		};
-		if (CurrentRace.weapons) {
-			for (i = 0; i < CurrentRace.weapons.length; i++) {
-				AddWeapon(CurrentRace.weapons[i]);
-			}
-		};
-		if (CurrentRace.addarmor) AddArmor(CurrentRace.addarmor);
-		if (CurrentRace.toolProfs) processTools(true, CurrentRace.name, CurrentRace.toolProfs);
-		if (CurrentRace.languageProfs) processLanguages(true, CurrentRace.name, CurrentRace.languageProfs);
-
-		if (CurrentRace.skills) {
-			for (i = 0; i < CurrentRace.skills.length; i++) {
-				AddSkillProf(CurrentRace.skills[i]);
-			}
-		};
-
-		thermoM(4/6); //increment the progress dialog's progress
-
-		//get the ability score arrays from the fields, implement the racial bonuses, and put them back in the field
-		for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
-			var tempArray = What(AbilityScores.abbreviations[i] + " Remember").split(",");
-			tempArray[1] = CurrentRace.scores[i];
-			Value(AbilityScores.abbreviations[i] + " Remember", tempArray);
-		}
-
-		thermoM(5/6); //increment the progress dialog's progress
-
-		UpdateLevelFeatures("race");
-*/
 	};
 
 	thermoTxt = thermoM("Finalizing the changes of the race...", false); //change the progress dialog text
 	SetTheAbilitySaveDCs();
-/* UPDATED
-	ApplyProficiencies(true); //call to update armor, shield and weapon proficiencies
-	UpdateTooltips(); // tooltips for: skills, ability scores, HP
-*/
+
 	SetStringifieds(); // set the global variables to their fields for future reference
 
 	thermoM(thermoTxt, true); // Stop progress bar
 };
-/* UPDATED
-//remove the effect of the player's race
-function RemoveRace() {
-	//stop this function if resetting the sheet
-	if (!IsNotReset) {
-		if (CurrentRace.removeeval) {
-			var theRemoveeval = What("Unit System") === "metric" && CurrentRace.removeeval.indexOf("String") !== -1 ? ConvertToMetric(CurrentRace.removeeval, 0.5) : CurrentRace.removeeval;
-			eval(theRemoveeval);
-		};
-		UpdateLevelFeatures("race", 0);
-		return;
-	} else if (CurrentRace.known) {
-		//remove necessary race information such as height, weight, age, traits, languages
-		AddTooltip("Height", "");
-		AddTooltip("Weight", "");
-		AddTooltip("Age", "");
-
-		//remove the race's speed
-		if (CurrentRace.speed) SetProf("speed", false, CurrentRace.speed, CurrentRace.name);
-
-		//remove the racial traits
-		Value("Racial Traits", "", "");
-
-		//remove, if existed, the racial features, proficiencies, vision, etc. etc.
-		if (CurrentRace.vision) processVision(false, CurrentRace.name, CurrentRace.vision);
-		if (CurrentRace.savetxt) SetProf("savetxt", false, CurrentRace.savetxt, CurrentRace.name);
-		if (CurrentRace.dmgres) {
-			for (var i = 0; i < CurrentRace.dmgres.length; i++) {
-				var theDmgres = isArray(CurrentRace.dmgres[i]) ? CurrentRace.dmgres[i] : [CurrentRace.dmgres[i], false];
-				SetProf("resistance", false, theDmgres[0], CurrentRace.name, theDmgres[1]);
-			};
-		};
-		if (CurrentRace.toolProfs) processTools(false, CurrentRace.name, CurrentRace.toolProfs);
-		if (CurrentRace.languageProfs) processLanguages(false, CurrentRace.name, CurrentRace.languageProfs);
-
-		if (CurrentRace.skills) {
-			for (i = 0; i < CurrentRace.skills.length; i++) {
-				AddSkillProf(CurrentRace.skills[i], false);
-			}
-		};
-		if (CurrentRace.armor) {
-			delete CurrentArmour.proficiencies[CurrentRace.name];
-		};
-		if (CurrentRace.weaponprofs) {
-			delete CurrentWeapons.proficiencies[CurrentRace.name];
-		};
-		if (CurrentRace.weapons) {
-			for (i = 0; i < CurrentRace.weapons.length; i++) {
-				RemoveWeapon(CurrentRace.weapons[i]);
-			}
-		};
-		if (CurrentRace.addarmor) RemoveArmor(CurrentRace.addarmor);
-
-		//get the ability score arrays from the fields, set the racial bonuses to 0, and put them back in the field
-		for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
-			var tempArray = What(AbilityScores.abbreviations[i] + " Remember").split(",");
-			tempArray[1] = 0;
-			Value(AbilityScores.abbreviations[i] + " Remember", tempArray);
-		};
-
-		//run custom code included in race
-		if (CurrentRace.removeeval) {
-			var theRemoveeval = What("Unit System") === "metric" && CurrentRace.removeeval.indexOf("String") !== -1 ? ConvertToMetric(CurrentRace.removeeval, 0.5) : CurrentRace.removeeval;
-			eval(theRemoveeval);
-		};
-
-		//remove the race from the CurrentSpells variable
-		delete CurrentSpells[CurrentRace.known];
-
-		UpdateLevelFeatures("race", 0);
-		ApplyProficiencies(true); //call to update the armor, shield and weapon proficiencies
-		UpdateTooltips(); //skills tooltip, ability score tooltip
-	};
-};
-*/
-/* UPDATED
-//add the tooltips to the skills tooltips, and ability score tooltips
-function UpdateTooltips() {
-	var stringAbilities = "Ability scores\n(Improvements cannot take an ability score over 20)";
-	stringAbilities += "\n\nAbility score improvements from race and feats:";
-	AbilityScores.improvements.racefeats = "";
-	var stringAbiImpr = "";
-	AbilityScores.improvements.classlvl = "";
-	var stringAbiPrimair = "";
-	AbilityScores.improvements.classprime = "";
-	var stringAbiMulti = "";
-	AbilityScores.improvements.classmulti = "";
-	var stringSkills = "Skill proficiencies gained from:";
-	var temp = "";
-
-	if (CurrentRace.known) {
-		if (CurrentRace.skills || CurrentRace.skillstxt) {
-			stringSkills += formatLineList("\n\n" + toUni(CurrentRace.name) + ":", CurrentRace.skillstxt ? CurrentRace.skillstxt : CurrentRace.skills) + ".";
-		};
-		AbilityScores.improvements.racefeats += "\n \u2022 " + CurrentRace.improvements;
-	};
-
-	for (var i = 0; i < CurrentFeats.improvements.length; i++) {
-		AbilityScores.improvements.racefeats += "\n \u2022 " + CurrentFeats.improvements[i];
-	}
-
-	stringAbilities += AbilityScores.improvements.racefeats;
-
-	if (CurrentBackground.known) {
-		if (CurrentBackground.skills || CurrentBackground.skillstxt) {
-			stringSkills += "\n\n" + toUni(CurrentBackground.name) + ": "
-			temp = CurrentBackground.skillstxt ? 1 : CurrentBackground.skills.length;
-			for (var i = 0; i < temp; i++) {
-				stringSkills += (i === 0 || temp === 2) ? "" : ", ";
-				stringSkills += (i === 1 && temp === 2) ? " and " : "";
-				stringSkills += (i === (temp - 1) && temp > 2) ? "and " : "";
-				stringSkills += CurrentBackground.skillstxt ? CurrentBackground.skillstxt : CurrentBackground.skills[i];
-			};
-			stringSkills += ".";
-		};
-	};
-	var multiClass = ObjLength(classes.known) > 1;
-	for (var aClass in classes.known) {
-		n = aClass === classes.primary ? 0 : 1;
-		if (CurrentClasses[aClass].skills[n] !== undefined) {
-			stringSkills += CurrentClasses[aClass].skills[n];
-		};
-		stringAbiPrimair += n === 0 ? "\n\nClasses primary ability scores:" : "";
-		AbilityScores.improvements.classprime += CurrentClasses[aClass].primaryAbility;
-		stringAbiMulti += (n === 0 && multiClass) ? "\n\nMulticlassing required ability scores:" : "";
-		AbilityScores.improvements.classmulti += multiClass ? CurrentClasses[aClass].prereqs : "";
-		temp = CurrentClasses[aClass].improvements[Math.min(CurrentClasses[aClass].improvements.length, classes.known[aClass].level) - 1];
-		if (temp > 0) {
-			stringAbiImpr += AbilityScores.improvements.classlvl === "" ? "\n\nAbility score improvements from classes:\n(either add 2 points to ability scores or take 1 feat)" : "";
-			AbilityScores.improvements.classlvl += "\n \u2022 " + CurrentClasses[aClass].name + ": \u00D7" + temp + ";";
-		}
-	}
-
-	for (var i = 0; i < classes.extraskills.length; i++) {
-		stringSkills += classes.extraskills[i];
-	}
-
-	for (var i = 0; i < CurrentFeats.skills.length; i++) {
-		stringSkills += CurrentFeats.skills[i];
-	}
-
-	for (i = 0; i < (SkillsList.abbreviations.length); i++) {
-		if (SkillsList.abbreviations[i] !== "Init") {
-			AddTooltip(SkillsList.abbreviations[i] + " Prof", stringSkills);
-			AddTooltip(SkillsList.abbreviations[i] + " Exp", stringSkills);
-		}
-	};
-	AddTooltip("SkillsClick", "Click here to change the order of the skills. You can select either alphabetic order or ordered by ability score.\n\n" + stringSkills);
-
-	stringAbilities += stringAbiImpr + AbilityScores.improvements.classlvl;
-	stringAbilities += stringAbiPrimair + AbilityScores.improvements.classprime;
-	stringAbilities += stringAbiMulti + AbilityScores.improvements.classmulti;
-	for (i = 0; i < AbilityScores.abbreviations.length; i++) {
-		AddTooltip(AbilityScores.abbreviations[i], stringAbilities);
-	};
-	AbilityScores_Button(true); // Ability Scores tooltip
-	SetHPTooltip(); // HP Max tooltip
-};
-*/
 
 //search the string for possible weapon
 function ParseWeapon(input, onlyInv) {
@@ -4331,33 +3707,6 @@ function ApplyBackground(input) {
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
-/* UPDATED
-//apply the various attributes of the background
-function RemoveBackground() {
-	var tempField = tDoc.getField("Background Extra");
-	tempField.clearItems();
-	tempField.userName = "First fill out a background in the field to the left.\n\nOnce a background is recognized that offers additional options, those additional options will be displayed here. For example, the \"Origin\" for the \"Outlander\" background.";
-
-	Value("Background Feature", "");
-
-	if (CurrentBackground.known) {
-		if (isArray(CurrentBackground.skills)) {
-			for (var i = 0; i < CurrentBackground.skills.length; i++) {
-				AddSkillProf(CurrentBackground.skills[i], false);
-			}
-		};
-		if (CurrentBackground.toolProfs) processTools(false, CurrentBackground.name, CurrentBackground.toolProfs);
-		if (CurrentBackground.languageProfs) processLanguages(false, CurrentBackground.name, CurrentBackground.languageProfs);
-
-		//remove the lifestyle, if defined
-		if (CurrentBackground.lifestyle && CurrentBackground.lifestyle === clean(What("Lifestyle").toLowerCase(), " ")) {
-			Value("Lifestyle", "");
-			Value("Lifestyle daily cost", "");
-		}
-	};
-};
-*/
-
 //Make menu for 'background traits' button and parse it to Menus.background
 function MakeBackgroundMenu() {
 	var backMenu = [];
@@ -4625,26 +3974,6 @@ function ReplaceString(field, inputstring, newline, theoldstring, alreadyRegExp)
 	if (field == "Extra.Notes") show3rdPageNotes();
 };
 
-/* UPDATED
-function SpliceString(field, inputstring, newline, theoldstring) {
-	var thefield = tDoc.getField(field);
-	if (!thefield) return;
-	var thestring = theoldstring.replace(/\n/g, "\r");
-	var regExString = thestring.RegEscape();
-	var theinputstring = inputstring.replace(/\n/g, "\r");
-	var regExinputString = theinputstring.RegEscape();
-	var multilines = newline !== undefined ? newline : thefield.multiline;
-	var startChr = thefield.value.search(RegExp(regExString, "i"));
-	startChr = startChr === -1 ? thefield.value.indexOf(thestring) : startChr;
-	if (!(RegExp(regExinputString, "i")).test(thefield.value) && thefield.value.indexOf(theinputstring) === -1 && startChr !== -1 && theoldstring) {
-		startChr += thestring.length;
-		thefield.value = thefield.value.slice(0, startChr) + inputstring + thefield.value.slice(startChr);
-	} else {
-		AddString(field, inputstring, multilines);
-	}
-};
-*/
-
 // add (change === true) or remove (change === false) a skill proficiency with or without expertise; If expertise === "only", only add/remove the expertise, considering the skill already has proficiency; If expertise === "increment", only add/remove the expertise, considering the skill already has proficiency, otherwise add proficiency
 function AddSkillProf(SkillName, change, expertise, returnSkillName) {
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
@@ -4775,257 +4104,6 @@ function CalcMod() {
 	var theScore = What(AbiNm);
 	event.value = theScore ? (Math.round((theScore - 10.5) * 0.5)) : "";
 }
-/* UPDATED
-//update the proficiencies for armor and weapons
-function ApplyProficiencies(updatefields) {
-	var ProfFields = [
-		"Proficiency Armor Light", //0
-		"Proficiency Armor Medium", //1
-		"Proficiency Armor Heavy", //2
-		"Proficiency Shields", //3
-		"Proficiency Weapon Simple", //4
-		"Proficiency Weapon Martial", //5
-		"Proficiency Weapon Other", //6
-		"Proficiency Weapon Other Description" //7
-	];
-	var ProfRem = What("Proficiencies Remember");
-	var ArmorLight = false;
-	var ArmorLightTip = "";
-	var ArmorMedium = false;
-	var ArmorMediumTip = "";
-	var ArmorHeavy = false;
-	var ArmorHeavyTip = "";
-	var Shields = false;
-	var ShieldsTip = "";
-	var WeaponSimple = false;
-	var WeaponSimpleTip = "";
-	var WeaponMartial = false;
-	var WeaponMartialTip = "";
-	var WeaponOther = false;
-	var WeaponOtherTip = "";
-	var WeaponOtherString = "";
-	var WeaponOtherArray = [];
-	var tempArray = [];
-	var TypeProf = 0;
-	var WeaponType = "";
-
-	//do nothing on startup (updatefields = false)
-	if (updatefields) {
-		tDoc.resetForm(ProfFields);
-
-		//parse the armor and shield proficiencies
-		for (var key in CurrentArmour.proficiencies) {
-			if (CurrentArmour.proficiencies[key][0]) {
-				ArmorLight = true;
-				ArmorLightTip += ArmorLightTip === "" ? "Light armor proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-				ArmorLightTip += key;
-			}
-			if (CurrentArmour.proficiencies[key][1]) {
-				ArmorMedium = true;
-				ArmorMediumTip += ArmorMediumTip === "" ? "Medium armor proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-				ArmorMediumTip += key;
-			}
-			if (CurrentArmour.proficiencies[key][2]) {
-				ArmorHeavy = true;
-				ArmorHeavyTip += ArmorHeavyTip === "" ? "Heavy armor proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-				ArmorHeavyTip += key;
-			}
-			if (CurrentArmour.proficiencies[key][3]) {
-				Shields = true;
-				ShieldsTip += ShieldsTip === "" ? "Shields proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-				ShieldsTip += key;
-			}
-		}
-
-		// now check if the armor proficiencies have been manually turned on or off, and use this to override previous setting
-		if (ProfRem.indexOf("lighton") !== -1) {
-			if (ArmorLight) {
-				RemoveString("Proficiencies Remember", "lighton");
-			} else {
-				ArmorLight = true;
-				ArmorLightTip = "Light armor proficiency gained from:\n \u2022 Manually enabled";
-			};
-		} else if (ProfRem.indexOf("lightoff") !== -1) {
-			if (!ArmorLight) {
-				RemoveString("Proficiencies Remember", "lightoff");
-			} else {
-				ArmorLight = false;
-				ArmorLightTip += ";\n \u2022 Manually disabled";
-			};
-		};
-		if (ProfRem.indexOf("mediumon") !== -1) {
-			if (ArmorMedium) {
-				RemoveString("Proficiencies Remember", "mediumon");
-			} else {
-				ArmorMedium = true;
-				ArmorMediumTip = "Medium armor proficiency gained from:\n \u2022 Manually enabled";
-			};
-		} else if (ProfRem.indexOf("mediumoff") !== -1) {
-			if (!ArmorMedium) {
-				RemoveString("Proficiencies Remember", "mediumoff");
-			} else {
-				ArmorMedium = false;
-				ArmorMediumTip += ";\n \u2022 Manually disabled";
-			};
-		};
-		if (ProfRem.indexOf("heavyon") !== -1) {
-			if (ArmorHeavy) {
-				RemoveString("Proficiencies Remember", "heavyon");
-			} else {
-				ArmorHeavy = true;
-				ArmorHeavyTip = "Heavy armor proficiency gained from:\n \u2022 Manually enabled";
-			};
-		} else if (ProfRem.indexOf("heavyoff") !== -1) {
-			if (!ArmorHeavy) {
-				RemoveString("Proficiencies Remember", "heavyoff");
-			} else {
-				ArmorHeavy = false;
-				ArmorHeavyTip += ";\n \u2022 Manually disabled";
-			};
-		};
-		if (ProfRem.indexOf("shieldson") !== -1) {
-			if (Shields) {
-				RemoveString("Proficiencies Remember", "shieldson");
-			} else {
-				Shields = true;
-				ShieldsTip = "Shields proficiency gained from:\n \u2022 Manually enabled";
-			};
-		} else if (ProfRem.indexOf("shieldsoff") !== -1) {
-			if (!Shields) {
-				RemoveString("Proficiencies Remember", "shieldsoff");
-			} else {
-				Shields = false;
-				ShieldsTip += ";\n \u2022 Manually disabled";
-			};
-		};
-		ArmorLightTip += ArmorLightTip !== "" ? "." : "";
-		ArmorMediumTip += ArmorMediumTip !== "" ? "." : "";
-		ArmorHeavyTip += ArmorHeavyTip !== "" ? "." : "";
-		ShieldsTip += ShieldsTip !== "" ? "." : "";
-
-		//check boxes and at tooltips for armor and shield proficiencies
-		Checkbox("Proficiency Armor Light", ArmorLight, ArmorLightTip);
-		Checkbox("Proficiency Armor Medium", ArmorMedium, ArmorMediumTip);
-		Checkbox("Proficiency Armor Heavy", ArmorHeavy, ArmorHeavyTip);
-		Checkbox("Proficiency Shields", Shields, ShieldsTip);
-	};
-
-	//parse the weapon proficiencies
-	for (var key in CurrentWeapons.proficiencies) {
-		var theProf = CurrentWeapons.proficiencies[key];
-		//do this for the manually added other weapons
-		if (key === "Manually added") {
-			var theProf = [
-				theProf[0],
-				theProf[1],
-				theProf[2].concat(CurrentWeapons.manualproficiencies)
-			];
-		}
-		if (theProf[0]) {
-			WeaponSimple = true;
-			WeaponSimpleTip += WeaponSimpleTip === "" ? "Simple weapon proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			WeaponSimpleTip += key;
-		}
-		if (theProf[1]) {
-			WeaponMartial = true;
-			WeaponMartialTip += WeaponMartialTip === "" ? "Martial weapon proficiency gained from:\n \u2022 " : ";\n \u2022 ";
-			WeaponMartialTip += key;
-		}
-		if (theProf[2] && theProf[2].length > 0) {
-			WeaponOtherTip += WeaponOtherTip === "" ? "Other weapon proficiencies gained from:\n \u2022 " : ";\n \u2022 ";
-			WeaponOtherTip += key + ": ";
-			for (var i = 0; i < theProf[2].length; i++) {
-				if (CurrentWeapons.proficiencies[key][2][i]) { //to make sure that no CurrentWeapons.manualproficiencies are added to the tempArray
-					tempArray.push(CurrentWeapons.proficiencies[key][2][i]);
-				}
-				WeaponOtherTip += i === 0 ? "" : ", ";
-				WeaponOtherTip += theProf[2][i];
-			}
-		}
-	}
-
-	//do nothing on startup (updatefields = false)
-	if (updatefields) {
-		// now check if the weapon proficiencies have been manually turned on or off, and use this to override previous setting
-		if (ProfRem.indexOf("simpleon") !== -1) {
-			if (WeaponSimple) {
-				RemoveString("Proficiencies Remember", "simpleon");
-			} else {
-				WeaponSimple = true;
-				WeaponSimpleTip = "Simple weapon proficiency gained from:\n \u2022 Manually enabled";
-			};
-		} else if (ProfRem.indexOf("simpleoff") !== -1) {
-			if (!WeaponSimple) {
-				RemoveString("Proficiencies Remember", "simpleoff");
-			} else {
-				WeaponSimple = false;
-				WeaponSimpleTip += ";\n \u2022 Manually disabled";
-			};
-		};
-		if (ProfRem.indexOf("martialon") !== -1) {
-			if (WeaponMartial) {
-				RemoveString("Proficiencies Remember", "martialon");
-			} else {
-				WeaponMartial = true;
-				WeaponMartialTip = "Martial weapon proficiency gained from:\n \u2022 Manually enabled";
-			};
-		} else if (ProfRem.indexOf("martialoff") !== -1) {
-			if (!WeaponMartial) {
-				RemoveString("Proficiencies Remember", "martialoff");
-			} else {
-				WeaponMartial = false;
-				WeaponMartialTip += ";\n \u2022 Manually disabled";
-			};
-		};
-		WeaponSimpleTip += WeaponSimpleTip !== "" ? "." : "";
-		WeaponMartialTip += WeaponMartialTip !== "" ? "." : "";
-		WeaponOtherTip += WeaponOtherTip !== "" ? "." : "";
-
-		//check boxes and at tooltips for Simple and Martial weapon proficiencies, but not on startup (updatefields = false)
-		Checkbox("Proficiency Weapon Simple", WeaponSimple, WeaponSimpleTip);
-		Checkbox("Proficiency Weapon Martial", WeaponMartial, WeaponMartialTip);
-	}
-
-	//check each weapon in the other list of weapon proficiencies if proficiency isn't gained in another way. If not, add to array
-	for (var j = 0; j < tempArray.length; j++) {
-		if (WeaponsList[tempArray[j]]) {
-			WeaponType = WeaponsList[tempArray[j]].type;
-			TypeProf = (WeaponType === "Simple" || WeaponType === "Martial") ? tDoc.getField("Proficiency Weapon " + WeaponType).isBoxChecked(0) : 0;
-		} else {
-			TypeProf = 0;
-		}
-		if (TypeProf === 0 && WeaponOtherArray.indexOf(tempArray[j]) === -1) {
-			WeaponOtherArray.push(tempArray[j]);
-		}
-	}
-
-	WeaponOtherArray.sort();
-	CurrentWeapons.extraproficiencies = WeaponOtherArray;
-
-	//add the extraArray to the WeaponOtherArray
-	if (CurrentWeapons.manualproficiencies.length > 0) {
-		for (var ew = 0; ew < CurrentWeapons.manualproficiencies.length; ew++) {
-			WeaponOtherArray.push(CurrentWeapons.manualproficiencies[ew]);
-		}
-		WeaponOtherArray.sort();
-	}
-
-	//do nothing on startup (updatefields = false)
-	if (updatefields) {
-		for (i = 0; i < WeaponOtherArray.length; i++) {
-			WeaponOtherString += i === 0 ? "" : ", ";
-			WeaponOtherString += WeaponOtherArray[i].capitalize();
-		}
-
-		//check box, add string and add tooltips for other weapon proficiencies
-		Checkbox("Proficiency Weapon Other", (WeaponOtherString.length > 0) ? true : false, WeaponOtherTip);
-		Value("Proficiency Weapon Other Description", WeaponOtherString, WeaponOtherTip);
-
-		//update the weapons to reflect the new proficiencies
-		ReCalcWeapons(true);
-	}
-};
-*/
 
 //limited feature: add (UpdateOrReplace = "replace"), or only update the text (UpdateOrReplace = "update"), or update both the text and the usages (UpdateOrReplace = number of previous usages), or just add the number of usages (UpdateOrReplace = "bonus")
 function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, UpdateOrReplace, Calc) {
@@ -5108,17 +4186,6 @@ function RemoveFeature(identifier, usages, additionaltxt, recovery, tooltip, Upd
 	}
 }
 
-/* UPDATED
-//set the global CurrentRace.level variables when initializing sheet
-function LoadLevelsonStartup() {
-	if (CurrentRace.known) {
-		CurrentRace.level = What("Character Level");
-	}
-	//add the proficiencies gained from class features
-	UpdateLevelFeatures("proficiencies");
-}
-*/
-
 //lookup the name of a Feat and if it exists in the FeatsList
 function ParseFeat(input) {
 	var found = "";
@@ -5159,26 +4226,6 @@ function FindFeats(ArrayNmbr) {
 			CurrentFeats.known[i] = ParseFeat(FeatFld);
 		}
 	}
-/* UPDATED
-	for (i = 0; i < CurrentFeats.known.length; i++) {
-		if (CurrentFeats.known[i]) {
-			var theFeat = FeatsList[CurrentFeats.known[i]];
-			//only add the armor proficiencies to global variables if feats are not set to manual
-			if (theFeat.armor && What("Manual Feat Remember") !== "Yes") {
-				CurrentArmour.proficiencies[theFeat.name + " feat"] = theFeat.armor;
-			}
-			if (theFeat.weapons && What("Manual Feat Remember") !== "Yes") {
-				CurrentWeapons.proficiencies[theFeat.name + " feat"] = theFeat.weapons;
-			}
-			if (theFeat.improvements) {
-				CurrentFeats.improvements.push(theFeat.improvements);
-			}
-			if (theFeat.skills) {
-				CurrentFeats.skills.push(theFeat.skills);
-			}
-		}
-	}
-*/
 }
 
 //add the text and features of a Feat
@@ -5200,15 +4247,6 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	var OldFeat = CurrentFeats.known[ArrayNmbr];
 
 	if (OldFeat === NewFeat) return; //no changes were made
-/* UPDATED
-	var setSpellVars = false;
-
-	//only update the tooltips if feats are set to manual
-	if (What("Manual Feat Remember") !== "No") {
-		UpdateTooltips();
-		return; //don't do the rest of this function
-	}
-*/
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying feat...");
@@ -5313,8 +4351,6 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	}
 
 	thermoM(thermoTxt, true); // Stop progress bar
-
-/* UPDATED
 	if (OldFeat && OldFeat !== NewFeat) {
 		thermoTxt = thermoM("Removing the old feat...", false); //change the progress dialog text
 		thermoM(1/4); //increment the progress dialog's progress
@@ -5840,9 +4876,6 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				var oldHeaderString = cl.fullname + ", level " + oldClassLvl[aClass] + ":";
 				if (What("Class Features").indexOf("\r\r" + oldHeaderString) !== -1) oldHeaderString = "\r\r" + oldHeaderString;
 				RemoveString("Class Features", oldHeaderString, false);
-/* UPDATED
-			} else if (oldClassLvl[aClass] == 0 && !IsSubclassException[aClass]) { // add the header
-*/
 			} else if (oldClassLvl[aClass] == 0) { // add the header
 				var newHeaderString = cl.fullname + ", level " + newClassLvl[aClass] + ":";
 				if (What("Class Features")) newHeaderString = "\r\r" + newHeaderString;
@@ -5850,9 +4883,6 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			} else { // update the header
 				var newHeaderString = cl.fullname + ", level " + newClassLvl[aClass] + ":";
 				var oldHeaderString = !classes.old[aClass] ? "" : classes.old[aClass].fullname.RegEscape() + ".*, level \\d+:";
-/* UPDATED
-				var oldHeaderString = !classes.old[aClass] ? "" : (newSubClass === oldSubClass ? cl.fullname : ClassSubList[oldSubClass] && ClassSubList[oldSubClass].fullname ? ClassSubList[oldSubClass].fullname : cl.name).RegEscape() + ".*, level \\d+:";
-*/
 				ReplaceString("Class Features", newHeaderString, false, oldHeaderString, true);
 			}
 
@@ -5865,25 +4895,6 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				var propFea = cl.features[prop];
 				var isSubClassProp = newSubClass && ClassSubList[newSubClass].features[prop] ? true : false;
 				var isClassProp = ClassList[aClass].features[prop] ? true : false;
-/* UPDATED
-				// if this feature is only available to a subclass, but no subclass is defined, ask to add a subclass
-				var subClFeaKey = prop.indexOf("subclassfeature") !== -1;
-				if (subClFeaKey && propFea.minlevel <= ClassLevelUp[aClass][2] && !newSubClass && IsNotReset && oldClassLvl[aClass] <= newClassLvl[aClass]) {
-					// ask for a subclass and stop processing features for this class if any is selected
-					var stopNow = PleaseSubclass(aClass);
-					if (stopNow) break;
-				} else if (!isSubClassProp && !subClFeaKey && IsSubclassException[aClass]) {
-					// an exception was set, but this is not a subclass feature, so ignore all the entries until the first subclassfeature, but do keep updating the LastProp variable
-					if (propFea.minlevel <= ClassLevelUp[aClass][2]) {
-						var FeaChoice = propFea.choices ? GetFeatureChoice("classes", aClass, prop, false) : "";
-						LastProp = ParseClassFeature(aClass, prop, newClassLvl[aClass], false, FeaChoice);
-					}
-					continue;
-				} else if (IsSubclassException[aClass] && oldClassLvl[aClass] <= newClassLvl[aClass]) {
-					// delete the exception if one was set and this is a subclass feature that we are adding
-					delete IsSubclassException[aClass];
-				}
-*/
 
 				// update the progress dialog
 				thermoTxt = thermoM("Updating " + cl.fullname + ": " + propFea.name + "...", false);
@@ -5962,527 +4973,6 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 	}
 
 	thermoM(thermoTxt, true); // Stop progress bar
-/* UPDATED
-	//check if race level went up (RaceLevelUp[0] = true) down (RaceLevelUp[0] = false), or nothing has changed (RaceLevelUp[0] = "stop"); RaceLevelUp[1] = lowest lvl, RaceLevelUp[2] = highest lvl
-	var RaceLevelUp = [
-		newRaceLvl > oldRaceLvl,
-		Math.min(oldRaceLvl, newRaceLvl), // lowest level
-		Math.min(oldRaceLvl, newRaceLvl) // highest level
-	];
-	if ((Typeswitch === "all" || Typeswitch === "race") && RaceLevelUp[0] !== "stop" && CurrentRace.known) {
-		delete UpdateSpellSheets.race;
-		if (CurrentRace.features) {
-			for (var key in CurrentRace.features) {
-				// now we know whether to add or remove features
-				var keyFea = CurrentRace.features[key];
-				thermoTxt = thermoM("Updating " + CurrentRace.name + "'s " + keyFea.name + "...", false); //change the progress dialog text
-
-				//make a check to see if level-dependent features should be dealt with
-				var checkLVL = keyFea.minlevel <= RaceLevelUp[2] && keyFea.minlevel > RaceLevelUp[1];
-
-				//see if we are going to add or remove a feature
-				var AddRemove = keyFea.minlevel <= newRaceLvl ? "Add" : "Remove";
-
-				// --- add or remove Limited Features --- //
-
-				// get all the attributes of this feature
-				var Fea = GetLevelFeatures(keyFea, newRaceLvl, false, oldRaceLvl, false);
-
-				//see if we need to force updating the limited feature section
-				var GoAnyway = newRaceLvl > 0 && keyFea.minlevel <= oldRaceLvl && (Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld);
-				var FeaTooltip = CurrentRace.name + (keyFea.tooltip ? keyFea.tooltip : "");
-
-				//remove the limited feature if it should be removed because of downgrading the level --or-- the old feature was defined, but the new isn't --or-- if the old has a different name than the new --or-- if the new amount of usages is unlimited
-				if (((Fea.UseOld || Fea.UseCalcOld) && keyFea.minlevel > newRaceLvl && keyFea.minlevel <= oldRaceLvl) || (((!Fea.Use && !Fea.UseCalc) || (Fea.Recov !== Fea.RecovOld)) && (Fea.UseOld || Fea.UseCalcOld)) || (/unlimited|\u221E/i).test(Fea.Use)) {
-					RemoveFeature(Fea.UseName, newRaceLvl === 0 ? "" : Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
-					Fea.UseOld = 0;
-				};
-				// now add the limited feature depending on the changes of the level or changes of something else or if it is being forced, as long as the usages have been defined
-				if ((Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use) && (GoAnyway || (keyFea.minlevel <= newRaceLvl && keyFea.minlevel > oldRaceLvl))) {
-					AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, FeaTooltip, Fea.UseOld, Fea.UseCalc);
-				};
-
-				thermoM(1/2); //increment the progress dialog's progress
-
-				// --- add or remove action, if defined --- //
-				if (keyFea.action && checkLVL) {
-					tDoc[AddRemove + "Action"](keyFea.action[0], keyFea.name + keyFea.action[1], "being a " + CurrentRace.name);
-				}
-
-				// --- add or remove something via custom script, if defined --- //
-				if (AddRemove === "Add" && keyFea.eval && checkLVL) {
-					eval(keyFea.eval);
-				} else if (AddRemove === "Remove" && keyFea.removeeval && checkLVL) {
-					eval(keyFea.removeeval);
-				}
-
-				// --- add or remove bonus spells in the CurrentSpells variable, if defined --- //
-				var raceSpellBonus = !checkLVL ? false : (keyFea.spellcastingBonus ? keyFea.spellcastingBonus : false);
-				if (raceSpellBonus && keyFea.minlevel <= newRaceLvl) {//if gaining the level
-					//first see if the entry exists or not, and create it if it doesn't
-					if (!CurrentSpells[CurrentRace.known]) {
-						CurrentSpells[CurrentRace.known] = {
-							name : CurrentRace.name,
-							level : newRaceLvl,
-							ability : CurrentRace.spellcastingAbility,
-							typeSp : "race",
-							bonus : {}
-						};
-					}
-					CurrentSpells[CurrentRace.known].bonus[key] = raceSpellBonus;
-					UpdateSpellSheets.race = true;
-				} else if (raceSpellBonus && CurrentSpells[CurrentRace.known] && CurrentSpells[CurrentRace.known].bonus[key]) {//if losing the level and the thing is defined
-					delete CurrentSpells[CurrentRace.known].bonus[key];
-					if (!CurrentRace.spellcastingBonus) { //the race has no level 1 spell ability, so maybe delete more than just this bonus entry
-						var bonusTest = true;
-						for (var tester in CurrentSpells[CurrentRace.known].bonus) {
-							bonusTest = false;
-						}
-						if (bonusTest) { //no additional bonus entries were found, so delete the entire CurrentSpells entry
-							delete CurrentSpells[CurrentRace.known];
-						}
-					}
-					UpdateSpellSheets.race = true;
-				}
-
-				// --- add or remove custom calculations to the CurrentEvals variable --- //
-				if (checkLVL && keyFea.calcChanges) {
-					addEvals(keyFea.calcChanges, [CurrentRace.name, keyFea.name], keyFea.minlevel <= newRaceLvl);
-				}
-
-				// --- add or remove damage resistances --- //
-				if (checkLVL && keyFea.dmgres) {
-					for (var i = 0; i < CurrentRace.dmgres.length; i++) {
-						var theDmgres = isArray(CurrentRace.dmgres[i]) ? CurrentRace.dmgres[i] : [CurrentRace.dmgres[i], false];
-						SetProf("resistance", keyFea.minlevel <= newRaceLvl, theDmgres[0], CurrentRace.name, theDmgres[1]);
-					}
-				}
-
-				// --- add or remove modifiers from fields, if defined --- //
-				if (checkLVL && keyFea.addMod) {
-					processMods(keyFea.minlevel <= newRaceLvl, CurrentRace.name, keyFea.addMod);
-				};
-			}
-		}
-		//update the racial level
-		CurrentRace.level = newRaceLvl;
-		if (CurrentSpells[CurrentRace.known]) {
-			CurrentSpells[CurrentRace.known].level = newRaceLvl;
-		}
-	}
-
-	var oldClassLvl = {}, newClassLvl = {}, ClassLevelUp = {};
-	// Define level change per class
-	for (var aClass in classes.known) {
-		oldClassLvl[aClass] = classes.old[aClass] ? classes.old[aClass].classlevel : 0;
-		newClassLvl[aClass] = classes.known[aClass].level;
-		ClassLevelUp[aClass] = [
-			newClassLvl[aClass] >= oldClassLvl[aClass], // true if going level up/same, false if going down
-			Math.min(oldClassLvl[aClass], newClassLvl[aClass]), // lowest level
-			Math.max(oldClassLvl[aClass], newClassLvl[aClass]) // highest level
-		];
-		// stop if the old and new levels are the same and the subclass hasn't changed
-		if (newClassLvl[aClass] === oldClassLvl[aClass] && classes.old[aClass] && classes.known[aClass].subclass === classes.old[aClass].subclass) {
-			ClassLevelUp[aClass][0] = "stop";
-		}
-	}
-
-	//make a list of the current wild shapes entered
-	var WSinUse = false;
-	var prefixA = What("Template.extras.WSfront").split(",").slice(1);
-	for (var p = 0; p < prefixA.length; p++) {
-		for (var i = 1; i <= 4; i++) {
-			var theFld = What(prefixA[p] + "Wildshape.Race." + i);
-			if (!theFld || theFld.toLowerCase() === "make a selection") continue;
-			var theShape = ParseCreature(theFld);
-			if (theShape) {
-				WSinUse = true;
-				i = 5;
-				p = prefixA.length;
-			}
-		}
-	}
-
-	var ClassFeaFld = tDoc.getField("Class Features");
-	//add or remove proficiencies, features, and others gained from level-dependent class features
-	if (Typeswitch === "all" || Typeswitch === "class" || Typeswitch === "proficiencies") {
-		classes.extraskills = [];
-		for (var aClass in classes.known) {
-			var temp = CurrentClasses[aClass];
-			var LastProp = "";
-			if (thermoTxt) thermoTxt = thermoM("Updating " + temp.fullname + "'s features...", false); //change the progress dialog text
-
-			//add or update class header if not only updating proficiencies
-			if (Typeswitch !== "proficiencies" && Typeswitch !== "stop") {
-				var ClassHeaderString = "";
-
-				//See if the class already exists and if the field is empty
-				if (!(RegExp(temp.name.RegEscape())).test(ClassFeaFld.value) && ClassFeaFld.value) {
-					ClassHeaderString += "\n\n";
-				}
-
-				//make the string for the classheader
-				ClassHeaderString += temp.fullname + ", level " + newClassLvl[aClass] + ":";
-				var oldHeaderString = classes.old[aClass] ? classes.known[aClass].subclass !== classes.old[aClass].subclass ? ClassList[aClass].name.RegEscape() + ".*:" : temp.fullname.RegEscape() + ".*:" : "";
-
-				//apply the string for the classheader, if the class has a level other than 0
-				if (newClassLvl[aClass] !== 0) {
-					ReplaceString("Class Features", ClassHeaderString, false, oldHeaderString, true);
-				}
-			}
-			for (var prop in temp.features) {
-				var propFea = temp.features[prop];
-
-				if (thermoTxt) thermoTxt = thermoM("Updating " + temp.fullname + "'s " + propFea.name + "...", false); //change the progress dialog text
-
-				//find if there is a choice that has been made for this class feature
-				var FeaChoice = GetClassFeatureChoice(aClass, prop);
-				var FeaOldChoice = FeaChoice; // just here so the FeaChoice can be set by the eval property if needed
-
-				if (propFea.minlevel <= newClassLvl[aClass]) {
-					if (propFea.armor) {
-						CurrentArmour.proficiencies[temp.fullname] = propFea.armor;
-					}
-					if (propFea.weapons) {
-						CurrentWeapons.proficiencies[temp.fullname] = propFea.weapons;
-					}
-					if (propFea.skillstxt) {
-						classes.extraskills.push(propFea.skillstxt);
-					}
-					if (FeaChoice && propFea[FeaChoice].skillstxt) {
-						classes.extraskills.push(propFea[FeaChoice].skillstxt);
-					}
-				} else if (oldClassLvl[aClass] > newClassLvl[aClass] && propFea.minlevel > newClassLvl[aClass]) {
-					if (propFea.armor && CurrentArmour.proficiencies[temp.fullname]) {
-						delete CurrentArmour.proficiencies[temp.fullname];
-					}
-					if (propFea.weapons && CurrentWeapons.proficiencies[temp.fullname]) {
-						delete CurrentWeapons.proficiencies[temp.fullname];
-					}
-				}
-
-				// add features, and others, gained from level-dependent class features only if not calling for proficiencies
-				if (Typeswitch !== "proficiencies" && ClassLevelUp[aClass][0] !== "stop") {
-					thermoM(1/8); //increment the progress dialog's progress
-
-					//if this is about a feature only available to a subclass, but no subclass is defined, ask to add a subclass
-					var theSubClass = classes.known[aClass].subclass;
-					if (prop.indexOf("subclassfeature") !== -1 && propFea.minlevel <= ClassLevelUp[aClass][2] && !theSubClass && IsNotReset) {
-						thermoTxt = thermoM("No subclass known, asking for subclass to add...", false); //change the progress dialog text
-						var stopNow = PleaseSubclass(aClass); //ask to add a subclass
-						if (stopNow) {
-							thermoM(thermoTxt, true); // Stop progress bar
-							break; //this function is going to run again, so stop it now for this class
-						};
-					} else if (IsSubclassException[aClass] && (prop.indexOf("subclassfeature") !== -1 || (theSubClass && ClassSubList[theSubClass].features[prop]))) {
-						delete IsSubclassException[aClass];
-					} else if (IsSubclassException[aClass]) {
-						var FeaNewString = ParseClassFeature(aClass, prop, newClassLvl[aClass], false, FeaChoice);
-						LastProp = propFea.minlevel <= ClassLevelUp[aClass][2] ? FeaNewString : LastProp;
-						continue; //an exception has been put in place for this class, so ignore all the entries before another subclassfeature, but do keep updating the LastProp variable
-					}
-					thermoTxt = thermoM("Updating " + temp.fullname + "'s " + propFea.name + "...", false); //change the progress dialog text
-
-					//make a check to see if level-dependent features should be dealt with
-					var CheckLVL = propFea.minlevel <= ClassLevelUp[aClass][2] && propFea.minlevel > ClassLevelUp[aClass][1];
-
-					var ForceAll = false;
-					var ForceSpecial = false;
-					//if this is the first time adding in a subclass, its features must be forced. But only if the feature meets the level requirement both before and after the level change
-					//if (theSubClass && ClassSubList[theSubClass].features[prop] && classes.old[aClass] && theSubClass !== classes.old[aClass].subclass && ((prop.indexOf("subclassfeature") === -1 && CheckLVL) || (propFea.minlevel <= ClassLevelUp[aClass][2] && propFea.minlevel <= ClassLevelUp[aClass][1]))) {
-					if (theSubClass && ClassSubList[theSubClass].features[prop] && classes.old[aClass] && theSubClass !== classes.old[aClass].subclass && propFea.minlevel <= oldClassLvl[aClass] && propFea.minlevel <= newClassLvl[aClass]) {
-						ForceAll = true;
-						ForceSpecial = prop.indexOf("subclassfeature") === -1 && CheckLVL;
-						//// >>>> lvlA[2] = true; // force to update even with equal level
-					};
-
-					thermoM(2/8); //increment the progress dialog's progress
-
-					//check for features that are not level-dependent
-					var CheckFea = ForceAll || CheckLVL;
-
-					// get all the attributes of this feature
-					var Fea = GetLevelFeatures(propFea, newClassLvl[aClass], FeaChoice, oldClassLvl[aClass], FeaOldChoice);
-
-					// --- add or remove something via custom script, if defined --- //
-					var evalAddRemove = CheckFea && propFea.minlevel <= newClassLvl[aClass] ? "eval" : "removeeval";
-
-					// --- define some variables --- //
-					var profAddRemove = propFea.minlevel <= newClassLvl[aClass];
-					var profDisplNm = (prop.indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name) + ": " + propFea.name;
-					var profChoiceDisplNm = FeaChoice ? (prop.indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name) + ": " + propFea[FeaChoice].name : "";
-
-					if (propFea[evalAddRemove] && CheckFea) {
-						var thePropFeaeval = What("Unit System") === "metric" && propFea[evalAddRemove].indexOf("String") !== -1 ? ConvertToMetric(propFea[evalAddRemove], 0.5) : propFea[evalAddRemove];
-						eval(thePropFeaeval);
-					}
-					if (CheckFea && FeaChoice && propFea[FeaChoice][evalAddRemove]) {
-						var thePropFeaChoiceeval = What("Unit System") === "metric" && propFea[FeaChoice][evalAddRemove].indexOf("String") !== -1 ? ConvertToMetric(propFea[FeaChoice][evalAddRemove], 0.5) : propFea[FeaChoice][evalAddRemove];
-						eval(thePropFeaChoiceeval);
-					}
-
-					// --- if the eval changed the choice, do some things with this new choice --- //
-					if (FeaChoice !== FeaOldChoice) {
-						Fea = GetLevelFeatures(propFea, newClassLvl[aClass], FeaChoice, oldClassLvl[aClass], FeaOldChoice);
-						if (propFea[FeaChoice].skillstxt) classes.extraskills.push(propFea[FeaChoice].skillstxt);
-					}
-
-					// --- add or remove bonus spells in the CurrentSpells variable, if defined --- //
-					var feaChoiceSpellBonus = FeaChoice && propFea[FeaChoice].spellcastingBonus;
-					var spellBonus = !CheckFea ? false : propFea.spellcastingBonus ? propFea.spellcastingBonus : feaChoiceSpellBonus ? propFea[FeaChoice].spellcastingBonus : false;
-					var spellProp = prop + (feaChoiceSpellBonus ? "-" + FeaChoice : "");
-					if (spellBonus && propFea.minlevel <= newClassLvl[aClass]) {//if gaining the level
-						//first see if the entry exists or not, and create it if it doesn't
-						if (!CurrentSpells[aClass]) {
-							CurrentSpells[aClass] = {
-								name : temp.fullname,
-								shortname : ClassList[aClass].spellcastingFactor ? ClassList[aClass].name : ClassSubList[theSubClass].fullname ? ClassSubList[theSubClass].fullname : ClassSubList[theSubClass].subname,
-								level : newClassLvl[aClass],
-								ability : temp.abilitySave ? temp.abilitySave : 0,
-								typeSp : "known",
-								bonus : {}
-							};
-							if (propFea.spellFirstColTitle) {
-								CurrentSpells[aClass].firstCol = propFea.spellFirstColTitle;
-							}
-						}
-						CurrentSpells[aClass].bonus[spellProp] = spellBonus;
-						UpdateSpellSheets.class = true;
-					} else if (spellBonus && CurrentSpells[aClass].bonus[spellProp]) {//if losing the level and the thing is defined
-						delete CurrentSpells[aClass].bonus[spellProp];
-						if (!temp.spellcastingFactor) { //the class has no spellcasting other than these bonus things, so check if there is any left after deleting this one
-							var bonusTest = true;
-							for (var tester in CurrentSpells[aClass].bonus) {
-								bonusTest = false;
-							}
-							if (bonusTest) { //no additional bonus entries were found, so delete the entire CurrentSpells entry
-								delete CurrentSpells[aClass];
-							}
-						}
-						UpdateSpellSheets.class = true;
-					}
-
-					// --- if a change was detected, do something via custom script, if defined --- //
-					if (propFea.changeeval) {
-						var theChangeeval = What("Unit System") === "metric" && propFea.changeeval.indexOf("String") !== -1 ? ConvertToMetric(propFea.changeeval, 0.5) : propFea.changeeval;
-						eval(theChangeeval);
-					}
-
-					thermoM(3/8); //increment the progress dialog's progress
-
-					// --- add or remove action, if defined --- //
-					var ActionAddRemove = propFea.minlevel <= newClassLvl[aClass] ? "Add" : "Remove";
-					if (propFea.action && CheckFea) {
-						var thePropFeaAct = What("Unit System") === "metric" && propFea.action[1] ? ConvertToMetric(propFea.action[1], 0.5) : propFea.action[1];
-						tDoc[ActionAddRemove + "Action"](propFea.action[0], propFea.name + thePropFeaAct, temp.fullname);
-					}
-					if (CheckFea && FeaChoice && propFea[FeaChoice].action) {
-						var thePropFeaChoiceAct = What("Unit System") === "metric" ? ConvertToMetric(propFea[FeaChoice].action[1], 0.5) : propFea[FeaChoice].action[1];
-						tDoc[ActionAddRemove + "Action"](propFea[FeaChoice].action[0], propFea[FeaChoice].name + thePropFeaChoiceAct, temp.fullname);
-					};
-
-					thermoM(4/8); //increment the progress dialog's progress
-
-					// PROFICIENCIES //
-
-					// --- add or remove custom calculations to the CurrentEvals variable --- //
-					if (CheckFea && propFea.calcChanges) {
-						addEvals(propFea.calcChanges, profDisplNm, propFea.minlevel <= newClassLvl[aClass]);
-					}
-					if (CheckFea && FeaChoice && propFea[FeaChoice].calcChanges) {
-						addEvals(propFea[FeaChoice].calcChanges, profChoiceDisplNm, propFea.minlevel <= newClassLvl[aClass]);
-					}
-
-					// --- add or remove skill proficiencies, if defined --- //
-					if (propFea.skills && CheckFea) {
-						for (var sk = 0; sk < propFea.skills.length; sk++) {
-							AddSkillProf(propFea.skills[sk], profAddRemove);
-						}
-					};
-					if (CheckFea && FeaChoice && propFea[FeaChoice].skills) {
-						for (var sk = 0; sk < propFea[FeaChoice].skills.length; sk++) {
-							AddSkillProf(propFea[FeaChoice].skills[sk], profAddRemove);
-						}
-					};
-
-					// --- add or remove damage resistances --- //
-					if (propFea.dmgres && CheckFea) {
-						for (var dr = 0; dr < propFea.dmgres.length; dr++) {
-							var theDmgres = isArray(propFea.dmgres[dr]) ? propFea.dmgres[dr] : [propFea.dmgres[dr], false];
-							SetProf("resistance", profAddRemove, theDmgres[0], profDisplNm, theDmgres[1]);
-						}
-					};
-					if (CheckFea && FeaChoice && propFea[FeaChoice].dmgres) {
-						for (var dr = 0; dr < propFea[FeaChoice].dmgres.length; dr++) {
-							var theDmgres = isArray(propFea[FeaChoice].dmgres[dr]) ? propFea[FeaChoice].dmgres[dr] : [propFea[FeaChoice].dmgres[dr], false];
-							SetProf("resistance", profAddRemove, theDmgres[0], profChoiceDisplNm, theDmgres[1]);
-						}
-					};
-
-					// --- add or remove tool proficiencies, if defined --- //
-					if (propFea.toolProfs && CheckFea) {
-						processTools(profAddRemove, profDisplNm, propFea.toolProfs);
-					};
-					if (CheckFea && FeaChoice && propFea[FeaChoice].toolProfs) {
-						processTools(profAddRemove, profChoiceDisplNm, propFea[FeaChoice].toolProfs);
-					};
-
-					// --- add or remove language proficiencies, if defined --- //
-					if (propFea.languageProfs && CheckFea) {
-						processLanguages(profAddRemove, profDisplNm, propFea.languageProfs);
-					};
-					if (CheckFea && FeaChoice && propFea[FeaChoice].languageProfs) {
-						processLanguages(profAddRemove, profChoiceDisplNm, propFea[FeaChoice].languageProfs);
-					};
-
-					// --- add or remove vision text, if defined --- //
-					if (propFea.vision && CheckFea) {
-						processVision(profAddRemove, profDisplNm, propFea.vision);
-					};
-					if (CheckFea && FeaChoice && propFea[FeaChoice].vision) {
-						processVision(profAddRemove, profChoiceDisplNm, propFea[FeaChoice].vision);
-					};
-
-					// --- add or remove modifiers from fields, if defined --- //
-					if (propFea.addMod && CheckFea) {
-						processMods(profAddRemove, profDisplNm, propFea.addMod);
-					};
-					if (CheckFea && FeaChoice && propFea[FeaChoice].addMod) {
-						processMods(profAddRemove, profChoiceDisplNm, propFea[FeaChoice].addMod);
-					};
-
-					// --- add or remove saving throw proficiencies --- //
-					if (propFea.saves && CheckFea) {
-						for (var sa = 0; sa < propFea.saves.length; sa++) {
-							SetProf("save", profAddRemove, propFea.saves[sa], profDisplNm);
-						};
-					};
-					if (CheckFea && FeaChoice && propFea[FeaChoice].saves) {
-						for (var sa = 0; sa < propFea[FeaChoice].saves.length; sa++) {
-							SetProf("save", profAddRemove, propFea[FeaChoice].saves[sa], profChoiceDisplNm);
-						};
-					};
-
-					// --- add or remove save text, if defined --- //
-					if (propFea.savetxt && CheckFea) {
-						SetProf("savetxt", profAddRemove, propFea.savetxt, profDisplNm);
-					};
-					if (CheckFea && FeaChoice && propFea[FeaChoice].savetxt) {
-						SetProf("savetxt", profAddRemove, propFea[FeaChoice].savetxt, profChoiceDisplNm);
-					};
-
-					// --- add or remove armor string, if defined --- //
-					if (propFea.addarmor && CheckFea) {
-						tDoc[(profAddRemove ? "Add" : "Remove") + "Armor"](propFea.addarmor);
-					};
-					if (CheckFea && FeaChoice && propFea[FeaChoice].addarmor) {
-						tDoc[(profAddRemove ? "Add" : "Remove") + "Armor"](propFea[FeaChoice].addarmor);
-					};
-
-					thermoM(5/8); //increment the progress dialog's progress
-
-					// --- add or remove speed, if defined --- //
-					if (propFea.speed && CheckFea) {
-						SetProf("speed", profAddRemove, propFea.speed, profDisplNm);
-					};
-					if (CheckFea && FeaChoice && propFea[FeaChoice].speed) {
-						SetProf("speed", profAddRemove, propFea[FeaChoice].speed, profChoiceDisplNm);
-					};
-
-					// --- add or remove extra spells in the CurrentSpells variable, if defined --- //
-					var spellExtra = !CheckFea ? false : (propFea.spellcastingExtra ? propFea.spellcastingExtra : (FeaChoice && propFea[FeaChoice].spellcastingExtra ? propFea[FeaChoice].spellcastingExtra : false));
-					if (spellExtra && propFea.minlevel <= newClassLvl[aClass]) {//if gaining the level
-						CurrentSpells[aClass].extra = spellExtra;
-					} else if (spellExtra) {//if losing the level
-						CurrentSpells[aClass].extra = "";
-					};
-
-					thermoM(6/8); //increment the progress dialog's progress
-
-					// --- add or remove Limited Features --- //
-
-					//check if feature needs to be forcibly replaced because there is a change in any one of them
-					GoAnyway = ForceAll || (newClassLvl[aClass] > 0 && propFea.minlevel <= oldClassLvl[aClass] && (Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld || Fea.UseName !== Fea.UseNameOld));
-
-					//remove the limited feature if it should be removed because of downgrading the level --or-- the old feature was defined, but the new isn't --or-- if the old has a different name than the new --or-- if the new amount of usages is unlimited
-					if ((Fea.UseOld || Fea.UseCalcOld)
-					 && (
-						(propFea.minlevel > newClassLvl[aClass] && propFea.minlevel <= oldClassLvl[aClass]) || Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc) || Fea.Recov !== Fea.RecovOld || (/unlimited|\u221E/i).test(Fea.Use)
-					)) {
-						RemoveFeature(Fea.UseNameOld ? Fea.UseNameOld : Fea.UseName, newClassLvl[aClass] === 0 ? "" : Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
-						Fea.UseOld = 0;
-					};
-					// now add the limited feature depending on the changes of the level or changes of something else or if it is being forced, as long as the usages have been defined
-					if ((Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use) && (GoAnyway || (propFea.minlevel <= newClassLvl[aClass] && propFea.minlevel > oldClassLvl[aClass]))) {
-						AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, temp.fullname, Fea.UseOld, Fea.UseCalc);
-					};
-
-					thermoM(7/8); //increment the progress dialog's progress
-
-					//--- get the new and old string of the class features
-					var FeaOldString = ParseClassFeature(aClass, prop, /*ForceSpecial ? newClassLvl[aClass] : * / oldClassLvl[aClass], ForceAll, FeaOldChoice);
-					var FeaNewString = ParseClassFeature(aClass, prop, newClassLvl[aClass], false, FeaChoice);
-
-					//make variables for the text in the class features field
-					var SpliceReplaceRemove = GoAnyway && !ForceAll && propFea.minlevel <= newClassLvl[aClass] ? "Replace" : (propFea.minlevel <= newClassLvl[aClass] ? "Splice" : "Remove");
-
-					if (ForceAll) { //if adding a feature for previous levels because of a subclass change, first remove the old version
-						RemoveString("Class Features", FeaOldString, false);
-					}
-
-					//add, remove, or update the text in the class features field
-					if (GoAnyway || CheckLVL) {
-						tDoc[SpliceReplaceRemove + "String"]("Class Features", SpliceReplaceRemove === "Remove" ? FeaOldString : FeaNewString, false, SpliceReplaceRemove === "Replace" ? FeaOldString : (LastProp ? LastProp : ClassHeaderString));
-						if (SpliceReplaceRemove === "Remove" && propFea.choices) {
-							RemoveClassFeatureChoice(aClass, prop);
-						}
-					}
-					if (prop.indexOf("wild shape") !== -1) {
-						isWildShape = [newClassLvl[aClass], Fea.Use, Fea.Recov, Fea.Add];
-						WSinUse = true;
-					}
-
-					//if the feature has extrachoices and old- or newlevel meets minlevel of the feature, go over them one by one to see if they changed with level
-					if (propFea.extrachoices && propFea.minlevel <= ClassLevelUp[aClass][2]) {
-						var addRemoveEC = propFea.minlevel > newClassLvl[aClass] && propFea.minlevel <= oldClassLvl[aClass] ? "remove" : propFea.minlevel < newClassLvl[aClass] ? "update" : false;
-						if (addRemoveEC) {propFea.extrachoices.forEach( function(extraF) {
-							extraF = extraF.toLowerCase();
-							var feaExtra = propFea[extraF];
-							var textFlds = [What("Extra.Notes"), What("Class Features")];
-							var testTxt = feaExtra.name + " (" + propFea.extraname;
-							if (!feaExtra || textFlds.join("").indexOf(testTxt) === -1 || (addRemoveEC === "Update" && !isArray(feaExtra.recovery) && !isArray(feaExtra.usages) && !isArray(feaExtra.additional))) return; //no need to do this feature
-							if (addRemoveEC === "remove") { //remove the feature
-								ClassFeatureOptions([aClass, prop, extraF, "extra"], addRemoveEC, oldClassLvl[aClass]);
-							} else if (addRemoveEC === "update") {
-								var ecFea = GetLevelFeatures(propFea, newClassLvl[aClass], extraF, oldClassLvl[aClass], extraF, false, true);
-								var ecFeaNewString = ParseClassFeatureExtra(aClass, prop, extraF, ecFea, false);
-								var ecFeaOldString = ParseClassFeatureExtra(aClass, prop, extraF, ecFea, true);
-								if (ecFeaOldString !== ecFeaNewString) {
-									ReplaceString(textFlds[0].indexOf(testTxt) !== -1 ? "Extra.Notes" : "Class Features", ecFeaNewString, false, ecFeaOldString);
-									if ((ecFea.Use || ecFea.UseCalc) && !(/unlimited|\u221E/i).test(ecFea.Use)) {
-										AddFeature(ecFea.UseName, ecFea.Use, ecFea.Add ? " (" + ecFea.Add + ")" : "", ecFea.Recov, CurrentClasses[aClass].fullname, ecFea.UseOld, ecFea.UseCalc);
-									} else if ((/unlimited|\u221E/i).test(ecFea.Use) || (ecFea.UseOld || ecFea.UseCalcOld)) {
-										RemoveFeature(ecFea.UseNameOld, ecFea.UseOld, "", "", "", "", ecFea.UseCalcOld);
-									};
-								};
-							};
-						}); };
-					};
-				}
-				LastProp = propFea.minlevel <= ClassLevelUp[aClass][2] ? FeaNewString : LastProp;
-			}
-		}
-		//now update the wild shapes on the seventh page, if appropriate
-		if (WSinUse && Typeswitch !== "proficiencies") {
-			WildshapeUpdate(isWildShape); //(re-)apply and re-calculate all the wild shapes as something might have changed after going level up
-		}
-	}
-	if (thermoTxt) {
-		thermoTxt = thermoM("Finalizing updating level features...", false); //change the progress dialog text
-		thermoM(thermoTxt, true); // Stop progress bar
-	}
-
-*/
 };
 
 //Make menu for 'choose class feature' button and parse it to Menus.classfeatures
@@ -6518,12 +5008,7 @@ function MakeClassMenu() {
 
 			// now see if we should disable this because of prerequisites
 			var isEnabled = feaObjA.prereqeval && !ignorePrereqs && !isActive ? testPrereqs(feaObjA.prereqeval, feaObjNm, featureNm) : true;
-/* UPDATED
- 			var testWith = extrareturn === "extra" ? feaObjA.name + " (" + name + stringSource(feaObjA, "first,abbr", ", ") : array[i].toLowerCase();
-			var theTest = (extrareturn === "extra" ? toTestE : toTest).indexOf(testWith) !== -1;
-			var removeStop = extrareturn === "extra" ? (theTest ? "remove" : false) : (theTest ? "stop" : false);
-			var isEnabled = ignorePrereqs || theTest || !feaObjA.prereqeval ? true : eval(feaObjA.prereqeval);
-*/
+
 			// now make the menu entry
 			temp.push({
 				cName : array[i] + stringSource(feaObjA, "first,abbr", "\t   [", "]"),
@@ -6670,291 +5155,6 @@ function ClassFeatureOptions(Input, AddRemove) {
 		applyClassFeatureText("replace", ["Class Features"], feaStringOld, feaString, false);
 	}
 	thermoM(thermoTxt, true); // Stop progress bar
-/* UPDATED
-	var classlevel = inputRemove === "remove" && classes.old[MenuSelection[0]] ? classes.old[MenuSelection[0]].classlevel : classes.known[MenuSelection[0]].level;
-
-
-	var theFea = CurrentClasses[MenuSelection[0]].features[MenuSelection[1]];
-	var FeaOldChoice = MenuSelection[3] === "extra" ? "" : GetClassFeatureChoice(MenuSelection[0], MenuSelection[1]);
-
-	if (MenuSelection[3] === "extra") {
-		//get a string for the feature
-		var theFeaExtra = theFea[MenuSelection[2]];
-		var Fea = GetLevelFeatures(theFea, classlevel, MenuSelection[2], classlevel, MenuSelection[2], false, true);
-		var FeaString = ParseClassFeatureExtra(MenuSelection[0], MenuSelection[1], MenuSelection[2], Fea, false);
-
-		//if the feature is already present in the Extra.Notes, it must now be removed
-		if (AddOrRemove === "remove") {
-			thermoTxt = thermoM("Removing the feature from the notes on page 3...", false); //change the progress dialog text
-			RemoveString("Extra.Notes", FeaString, true);
-			RemoveString("Class Features", FeaString, true);
-
-			//remove any entry in the Limited Feature section, if appropriate
-			if (Fea.Use || Fea.UseCalc) RemoveFeature(Fea.UseName, Fea.Use, "", "", "", "", Fea.UseCalc);
-		} else {
-			thermoTxt = thermoM("Adding the feature to the notes on page 3...", false); //change the progress dialog text
-			AddString("Extra.Notes", FeaString, true);
-
-			//add an entry in the Limited Feature section, if appropriate
-			if (Fea.Use || Fea.UseCalc) AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, CurrentClasses[MenuSelection[0]].fullname, "bonus", Fea.UseCalc);
-
-			//set the extra layers to visible 'notes' field on the left
-			show3rdPageNotes();
-
-			//give some information as to where the choice has been written to
-			if (IsNotImport && What("Extra Class Feature Remember").indexOf(theFea.extraname) === -1) {
-				var oCk = {
-					bInitialValue : true,
-					bAfterValue : false
-				};
-				app.alert({
-					cMsg : "The " + theFea.extraname + " \"" + theFeaExtra.name + "\" has been added to the \"Notes\" section on the third page" + (!typePF ? ", while the \"Rules\" section on the third page has been hidden" : "") + ".\n\nAdding this to the \"Class Features\" on the second page would not leave enough room for other class features at level 20.\n\nYou can copy the text to the class features if you want" + (!typePF ? " (and even bring back the \"Rules\" section)" : "") + ". This will not interfere with any of the sheets automation, and will even allow you to remove the feature again with the same menu. However, future " + theFea.extraname + "s you add will still be added to the third page notes section.",
-					nIcon : 3,
-					cTitle : theFea.name + " has been added to the third page",
-					oCheckbox : oCk
-				});
-				if (oCk.bAfterValue) {
-					if (!CurrentFeatureChoices.excludePopUp) CurrentFeatureChoices.excludePopUp = [];
-					CurrentFeatureChoices.excludePopUp.push(theFea.extraname);
-				};
-			};
-		};
-	} else if (MenuSelection[2] === FeaOldChoice) { // the selection is the same as it was, so don't do anything
-		thermoM(thermoTxt, true); // Stop progress bar
-		return;
-	} else {
-		thermoTxt = thermoM("Changing the feature on page 2...", false); //change the progress dialog text
-
-		//if any, remove the old selection from the remember field
-		if (FeaOldChoice) RemoveString("Class Features Remember", [MenuSelection[0], MenuSelection[1], FeaOldChoice].toString(), false);
-		//add this selection to the remember field
-		AddString("Class Features Remember", MenuSelection.slice(0, 3).toString(), false);
-
-		//get the old string and the new string
-		var FeaOldString = ParseClassFeature(MenuSelection[0], MenuSelection[1], classes.known[MenuSelection[0]].level, false, FeaOldChoice);
-		var FeaNewString = ParseClassFeature(MenuSelection[0], MenuSelection[1], classes.known[MenuSelection[0]].level, false, MenuSelection[2]);
-
-		//replace the old string with the new string
-		ReplaceString("Class Features", FeaNewString, false, FeaOldString);
-
-		//get the variables for making the limited feature section
-		var Fea = GetLevelFeatures(theFea, classlevel, MenuSelection[2], classlevel, FeaOldChoice);
-
-		//continue if anything changed
-		var DoLimFea = Fea.Add !== Fea.AddOld || Fea.Use !== Fea.UseOld || Fea.UseCalc !== Fea.UseCalcOld || Fea.Recov !== Fea.RecovOld || Fea.UseName !== Fea.UseNameOld;
-
-		//if something changed and the old has a limited feature, remove it
-		if (DoLimFea && (Fea.UseOld || Fea.UseCalcOld)) {
-			RemoveFeature(Fea.UseNameOld, Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
-		}
-		//if something changed and the new has a limited feature, add it
-		if (DoLimFea && (Fea.Use || Fea.UseCalc) && !(/unlimited|\u221E/i).test(Fea.Use)) {
-			AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, CurrentClasses[MenuSelection[0]].fullname, 0, Fea.UseCalc);
-		}
-	}
-	var theSubFea = theFea[MenuSelection[2]];
-	var theOldSubFea = AddOrRemove === "remove" ? theSubFea : theFea[FeaOldChoice];
-
-	//add, if defined, skill text of the feature, and undo, if defined skill text of previous if changed
-	var updateTheTxt = false;
-	if (theSubFea.skillstxt && AddOrRemove !== "remove") {
-		classes.extraskills.push(theSubFea.skillstxt);
-		updateTheTxt = true;
-	}
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.skillstxt) {
-		var skillsIndex = classes.extraskills.indexOf(theOldSubFea.skillstxt);
-		if (skillsIndex !== -1) {
-			classes.extraskills.splice(skillsIndex, 1);
-			updateTheTxt = true;
-		}
-	}
-	if (updateTheTxt) {
-		UpdateTooltips();
-	}
-
-	thermoM(2/6); //increment the progress dialog's progress
-
-	//do any possible eval of the feature, and undo eval of previous if changed
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.removeeval) {
-		var theRemoveeval = What("Unit System") === "metric" && theOldSubFea.removeeval.indexOf("String") !== -1 ? ConvertToMetric(theOldSubFea.removeeval, 0.5) : theOldSubFea.removeeval;
-		eval(theRemoveeval);
-	}
-	if (theSubFea.eval && AddOrRemove !== "remove") {
-		var theEval = What("Unit System") === "metric" && theSubFea.eval.indexOf("String") !== -1 ? ConvertToMetric(theSubFea.eval, 0.5) : theSubFea.eval;
-		eval(theEval);
-	}
-
-	//add, if defined, skill proficiencies of the feature, and undo, if defined skill proficiencies of previous if changed
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.skills) {
-		for (var sk = 0; sk < theOldSubFea.skills.length; sk++) {
-			AddSkillProf(theOldSubFea.skills[sk], false);
-		}
-	}
-	if (theSubFea.skills && AddOrRemove !== "remove") {
-		for (var sk = 0; sk < theSubFea.skills.length; sk++) {
-			AddSkillProf(theSubFea.skills[sk], true);
-		}
-	}
-
-	thermoM(3/6); //increment the progress dialog's progress
-
-	var temp = CurrentClasses[MenuSelection[0]];
-	var theOldSubFeaNm = AddOrRemove === "remove" ? MenuSelection[2] : FeaOldChoice;
-	var profDisplCl = MenuSelection[1].indexOf("subclassfeature") !== -1 ? temp.fullname : temp.name;
-	var profDisplNmOld = !FeaOldChoice ? "" : profDisplCl + ": " + theOldSubFea.name;
-	var profDisplNm = profDisplCl + ": " + theSubFea.name;
-
-	//add or remove custom calculations to the CurrentEvals variable, and undo any of a previous choice, if changed
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.calcChanges) {
-		addEvals(theOldSubFea.calcChanges, profDisplNmOld, false);
-	}
-	if (theSubFea.calcChanges && AddOrRemove !== "remove") {
-		addEvals(theSubFea.calcChanges, profDisplNm, true);
-	}
-
-	// --- add or remove damage resistances --- //
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.dmgres) {
-		for (var dr = 0; dr < theOldSubFea.dmgres.length; dr++) {
-			var theDmgres = isArray(theOldSubFea.dmgres[dr]) ? theOldSubFea.dmgres[dr] : [theOldSubFea.dmgres[dr], false];
-			SetProf("resistance", false, theDmgres[0], profDisplNmOld, theDmgres[1]);
-		};
-	};
-	if (theSubFea.dmgres && AddOrRemove !== "remove") {
-		for (var dr = 0; dr < theSubFea.dmgres.length; dr++) {
-			var theDmgres = isArray(theSubFea.dmgres[dr]) ? theSubFea.dmgres[dr] : [theSubFea.dmgres[dr], false];
-			SetProf("resistance", true, theDmgres[0], profDisplNm, theDmgres[1]);
-		};
-	};
-
-	// --- add or remove saving throw proficiencies --- //
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.saves) {
-		for (var sa = 0; sa < theOldSubFea.saves.length; sa++) {
-			SetProf("save", false, theOldSubFea.saves[sa], profDisplNmOld);
-		};
-	};
-	if (theSubFea.saves && AddOrRemove !== "remove") {
-		for (var sa = 0; sa < theSubFea.saves.length; sa++) {
-			SetProf("save", true, theSubFea.saves[sa], profDisplNm);
-		};
-	};
-
-	// --- add or remove tool proficiencies --- //
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.toolProfs) {
-		processTools(false, profDisplNmOld, theOldSubFea.toolProfs);
-	};
-	if (theSubFea.toolProfs && AddOrRemove !== "remove") {
-		processTools(true, profDisplNm, theSubFea.toolProfs);
-	};
-
-	// --- add or remove language proficiencies --- //
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.languageProfs) {
-		processLanguages(false, profDisplNmOld, theOldSubFea.languageProfs);
-	};
-	if (theSubFea.languageProfs && AddOrRemove !== "remove") {
-		processLanguages(true, profDisplNm, theSubFea.languageProfs);
-	};
-
-	// --- add or remove text for saves, and immunities --- //
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.savetxt) {
-		SetProf("savetxt", false, theOldSubFea.savetxt, profDisplNmOld);
-	};
-	if (theSubFea.savetxt && AddOrRemove !== "remove") {
-		SetProf("savetxt", true, theSubFea.savetxt, profDisplNm);
-	};
-
-	// --- add or remove vision text --- //
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.vision) {
-		processVision(false, profDisplNmOld, theOldSubFea.vision);
-	};
-	if (theSubFea.vision && AddOrRemove !== "remove") {
-		processVision(true, profDisplNm, theSubFea.vision);
-	};
-
-	// --- add or remove modifiers from fields --- //
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.addMod) {
-		processMods(false, profDisplNmOld, theOldSubFea.addMod);
-	};
-	if (theSubFea.addMod && AddOrRemove !== "remove") {
-		processMods(true, profDisplNm, theSubFea.addMod);
-	};
-
-	// --- add or remove armor string, if defined --- //
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.addarmor) {
-		RemoveArmor(theOldSubFea.addarmor);
-	};
-	if (theSubFea.addarmor && AddOrRemove !== "remove") {
-		AddArmor(theSubFea.addarmor);
-	};
-
-	thermoM(4/6); //increment the progress dialog's progress
-
-	// --- add or remove speed, if defined --- //
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.speed) {
-		SetProf("speed", false, theOldSubFea.speed, profDisplNmOld);
-	};
-	if (theSubFea.speed && AddOrRemove !== "remove") {
-		SetProf("speed", true, theSubFea.speed, profDisplNm);
-	};
-
-	//add, if defined, spells of the feature, and undo, if defined spells of previous if changed
-	if (!CurrentSpells[MenuSelection[0]] && AddOrRemove !== "remove" && (theSubFea.spellcastingExtra || theSubFea.spellcastingBonus)) { //first see if the entry exists or not, and create it if it doesn't
-		var theSubClass = classes.known[MenuSelection[0]].subclass;
-		CurrentSpells[MenuSelection[0]] = {
-			name : CurrentClasses[MenuSelection[0]].fullname,
-			shortname : ClassList[MenuSelection[0]].spellcastingFactor ? ClassList[MenuSelection[0]].name : ClassSubList[theSubClass].fullname ? ClassSubList[theSubClass].fullname : ClassSubList[theSubClass].subname,
-			level : classes.known[MenuSelection[0]].level,
-			ability : CurrentClasses[MenuSelection[0]].abilitySave ? CurrentClasses[MenuSelection[0]].abilitySave : 0,
-			typeSp : "known",
-			bonus : {}
-		};
-	}
-	var cSpells = CurrentSpells[MenuSelection[0]];
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.spellcastingExtra) {
-		cSpells.extra = "";
-	}
-	if (theSubFea.spellcastingExtra && AddOrRemove !== "remove") {
-		cSpells.extra = theSubFea.spellcastingExtra;
-	}
-
-	//add, if defined, bonus spells of the feature, and undo, if defined bonus spells of previous if changed
-	var checkSpellObj = false;
-	if (FeaOldChoice && theOldSubFea.spellcastingBonus) {
-		delete cSpells.bonus[MenuSelection[1] + "-" + FeaOldChoice];
-		checkSpellObj = true;
-	} else if (AddOrRemove === "remove" && theOldSubFea.spellcastingBonus) {
-		delete cSpells.bonus[MenuSelection[1] + "-" + MenuSelection[2]];
-		checkSpellObj = true;
-	}
-	if (theSubFea.spellcastingBonus && AddOrRemove !== "remove") {
-		cSpells.bonus[MenuSelection[1] + "-" + MenuSelection[2]] = theSubFea.spellcastingBonus;
-		if (theSubFea.spellFirstColTitle) {
-			cSpells.firstCol = theSubFea.spellFirstColTitle;
-		}
-	}
-
-	if (checkSpellObj && !CurrentClasses[MenuSelection[0]].spellcastingFactor) { //if some things were deleted from an otherwise empty object, check it and delete it
-		var bonusTest = true;
-		for (var tester in CurrentSpells[MenuSelection[0]].bonus) {
-			bonusTest = false;
-		}
-		if (bonusTest) { //no additional bonus entries were found, so delete the entire CurrentSpells entry of this class
-			delete CurrentSpells[MenuSelection[0]];
-		}
-	}
-
-	thermoM(5/6); //increment the progress dialog's progress
-
-	//add, if defined, action of the feature, and undo, if defined action of previous if changed
-	if ((FeaOldChoice || AddOrRemove === "remove") && theOldSubFea.action) {
-		RemoveAction(theOldSubFea.action[0], theOldSubFea.name + theOldSubFea.action[1]);
-	}
-	if (theSubFea.action && AddOrRemove !== "remove") {
-		AddAction(isArray(theSubFea.action) ? theSubFea.action[0] : theSubFea.action, theSubFea.name + (isArray(theSubFea.action) && theSubFea.action[1] ? theSubFea.action[1] : ""), CurrentClasses[MenuSelection[0]].fullname);
-	}
-
-	SetStringifieds(); //set the global variables to their fields for future reference
-	thermoM(thermoTxt, true); // Stop progress bar
-*/
 }
 
 //add a miscellaneous AC bonus. Filling in a 0 for ACbonus will remove the ability
@@ -7263,31 +5463,6 @@ function SetToManual_Button(noDialog) {
 			if (CurrentRace.known) UpdateLevelFeatures("race");
 		}
 	}
-/* UPDATED
-	//do something with the results of race checkbox
-	if (SetToManual_Dialog.mRac !== RaceFld) {
-		var remRaceFld = What("Race Remember");
-		if (SetToManual_Dialog.mRac) {
-			Value("Manual Race Remember", "Yes");
-			AddTooltip("Race Remember", undefined, CurrentRace.level);
-			Hide("Race Features Menu");
-		} else {
-			Value("Manual Race Remember", "No");
-			// find the old race
-			FindRace(What("Race Remember"), true);
-			// set the level for this old race, as remembered and then delete the remembrance
-			CurrentRace.level = How("Race Remember");
-			delete tDoc.getField("Race Remember").submitName;
-			// now apply the race as present in the Race field (if not the same as was remembered)
-			var tempFound = ParseRace(What("Race"));
-			if (tempFound[0] !== CurrentRace.known && (!tempFound[1] || tempFound[1] == CurrentRace.variant)) {
-				ApplyRace(What("Race Remember"));
-			} else { // the same race is still present, so only update the level features
-				UpdateLevelFeatures("race");
-			}
-		}
-	}
-*/
 }
 
 //calculate how much experience points are needed for the next level (field calculation)
@@ -7830,54 +6005,6 @@ function MagicItemDelete(itemNmbr) {
 		"Extra.Magic Item Description " + maxItem
 	])
 }
-/* UPDATED
-//see if any manually added weapons in the other field exist, and add them to the tempArray if recognized as a weapon, or to extraArray if not
-function FindManualOtherWeapons(startup) {
-	if (!startup) {
-		var OtherWeapons = What("Proficiency Weapon Other Description");
-		var tempArray = [];
-		var extraArray = [];
-
-		if (OtherWeapons) {
-			var OWarray = OtherWeapons.split(/[/,\\\;\~]+/); //split the current list with some commonly used separators
-
-			for (var ow = 0; ow < OWarray.length; ow++) {
-				var OWfound = ParseWeapon(OWarray[ow]);
-				if (OWfound) {
-					var tempFound = false;
-					for (var key in CurrentWeapons.proficiencies) {
-						if (key !== "Manually added" && CurrentWeapons.proficiencies[key][2] && CurrentWeapons.proficiencies[key][2].indexOf(OWfound) !== -1) {
-							tempFound = true;
-						}
-					}
-					if (!tempFound) {
-						tempArray.push(OWfound);
-					}
-				} else if (OWarray[ow]) { //if not a known weapon, but there is some custom text there
-					extraArray.push(OWarray[ow].toLowerCase().replace(/^\s+|\s+$/g, "")); //add it, but only after removing leading and trailing white spaces, or otherwise it will look ugly
-				}
-			}
-		}
-
-		//put the arrays into the global variables
-		CurrentWeapons.proficiencies["Manually added"] = [false, false, tempArray.sort()];
-		CurrentWeapons.manualproficiencies = extraArray.sort();
-		//put the arrays in the remember field
-		Value("Other Weapon Proficiencies Remember", tempArray.sort() +  "!#TheListSeparator#!" + extraArray.sort());
-	} else {
-		//get the arrays from the remember field
-		var tempArray = What("Other Weapon Proficiencies Remember").split("!#TheListSeparator#!");
-
-		//put the arrays into the global variables
-		if (tempArray[0]) {
-			CurrentWeapons.proficiencies["Manually added"] = [false, false, tempArray[0].split(",")];
-		}
-		if (tempArray[1]) {
-			CurrentWeapons.manualproficiencies = tempArray[1].split(",");
-		}
-	}
-}
-*/
 
 //Calculate the weight of a column of items in the equipment section [field calculation]
 function CalcWeightSubtotal() {
@@ -10786,7 +8913,7 @@ function ProfBonus() {
 	var lvl = What(QI === true ? "Character Level" : QI + "Comp.Use.HD.Level");
 	var ProfMod = QI === true ? What("Proficiency Bonus Modifier") : 0;
 	var useDice = tDoc.getField(QI === true ? "Proficiency Bonus Dice" : QI + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
-	var ProfB = lvl ? ProficiencyBonusList[Math.min(lvl-1,19)] : 0;
+	var ProfB = lvl ? ProficiencyBonusList[Math.min(lvl-1,ProficiencyBonusList.length-1)] : 0;
 	event.target.submitName = ProfB + ProfMod;
 	event.value = useDice || !lvl ? "" : event.target.submitName;
 }

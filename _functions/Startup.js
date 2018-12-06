@@ -23,12 +23,6 @@ function InitializeEverything(noButtons, noVars) {
 		FindBackground();
 		FindFeats();
 		UpdateTooSkill();
-/* UPDATED
-		LoadLevelsonStartup();
-		FindManualOtherWeapons(true);
-		ApplyProficiencies(false);
-		UpdateTooltips();
-*/
 		SetRichTextFields();
 		MakeAdventureLeagueMenu();
 	};

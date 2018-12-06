@@ -92,66 +92,6 @@ var AbilityScores = {
 	"charisma" : {
 		index : 5
 	},
-/* UPDATED
-	"current" : {
-		"Str" : {
-			base : 8,
-			race : 0,
-			extra : 0,
-			extra2 : 0,
-			magic : 0,
-			feat : 0
-		},
-		"Dex" : {
-			base : 8,
-			race : 0,
-			extra : 0,
-			extra2 : 0,
-			magic : 0,
-			feat : 0
-		},
-		"Con" : {
-			base : 8,
-			race : 0,
-			extra : 0,
-			extra2 : 0,
-			magic : 0,
-			feat : 0
-		},
-		"Int" : {
-			base : 8,
-			race : 0,
-			extra : 0,
-			extra2 : 0,
-			magic : 0,
-			feat : 0
-		},
-		"Wis" : {
-			base : 8,
-			race : 0,
-			extra : 0,
-			extra2 : 0,
-			magic : 0,
-			feat : 0
-		},
-		"Cha" : {
-			base : 8,
-			race : 0,
-			extra : 0,
-			extra2 : 0,
-			magic : 0,
-			feat : 0
-		},
-		"HoS" : {
-			base : 8,
-			race : 0,
-			extra : 0,
-			extra2 : 0,
-			magic : 0,
-			feat : 0
-		}
-	},
-*/
 	"improvements" : {
 		"classlvl" : "",
 		"classprime" : "",
@@ -275,9 +215,6 @@ var classes = {
 	oldprimary : "",
 	spellcastlvl : {default : 0, warlock : 0},
 	oldspellcastlvl : {default : 0, warlock : 0}
-/* UPDATED
-	extraskills : []
-*/
 };
 
 var CurrentUpdates = {types : [], extras : {}};
@@ -300,9 +237,6 @@ var CurrentArmour = {
 	known : "",
 	mod : "",
 	dex : "",
-/* UPDATED
-	proficiencies : {},
-*/
 	magic : 0
 };
 
@@ -314,11 +248,6 @@ var CurrentShield = {
 var CurrentWeapons = {
 	field : [],
 	known : [],
-/* UPDATED
-	proficiencies : {},
-	extraproficiencies : [],
-	manualproficiencies : [],
-*/
 	compField : {},
 	compKnown : {},
 	offHands : []
@@ -327,10 +256,6 @@ var CurrentWeapons = {
 var CurrentFeats = {
 	known : [],
 	level : What("Character Level") ? Number(What("Character Level")) : 1
-/* UPDATED
-	improvements : [],
-	skills : []
-*/
 };
 
 var CurrentProfs = { // Also change field defaultValue!
@@ -1646,7 +1571,7 @@ var compString = {
 				"\n   " + "When the steed drops to 0 hit points, it disappears, leaving behind no physical form" +
 				"\n\u2022 " + "The steed serves me as a mount. I have a bond with it that allows us to fight as a seamless unit" +
 				"\n\u2022 " + "While mounted on my steed, I can make any spell I cast that targets only me also target it" +
-				"\n\u2022 " + "While my steed is within 1 mile of me, I can communicate with it telepathically" +
+				"\n\u2022 " + "While my steed is within 1 mile of me, we can communicate with each other telepathically" +
 				"\n\u2022 " + "I can dismiss my steed at any time as an action, causing it to disappear" +
 				"\n\u2022 " + "Casting this spell again summons the same steed, restored to its max HP, without conditions" +
 				"\n\u2022 " + "I can't have more than one steed bonded at a time; as an action, I can release it from its bond",
@@ -1726,9 +1651,10 @@ var compString = {
 			"\n\u2022 " + "The beast adds my proficiency bonus to its AC, attack rolls, damage rolls," +
 			"\n   " + "as well as to any saving throws and skills it is proficient with." +
 			"\n\u2022 " + "The beast's Hit Point maximum equals four times my ranger level if higher than its normal HP" +
-			"\n\u2022 " + "The beast takes a turn on my initiative, but only takes an action if commanded to" +
+			"\n\u2022 " + "The beast takes its turn on my initiative" +
 			"\n\u2022 " + "I can verbally command the beast where to move (no action)" +
-			"\n\u2022 " + "As an action, I can have the beast do an Attack/Dash/Disengage/Dodge/Help action on its turn",
+			"\n\u2022 " + "As an action, I can have the beast do an Attack, Dash, Disengage, or Help action on its turn" +
+			"\n\u2022 " + "If I don't command it to take an action, it takes the Dodge action instead",
 		actions : []
 	},
 	companionrr : {

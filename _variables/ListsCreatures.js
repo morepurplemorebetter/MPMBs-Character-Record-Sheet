@@ -9,10 +9,10 @@ var Base_CreatureList = {
 		alignment : "Neutral",
 		ac : 15,
 		hp : 90,
-		hd : [12, 10], //[#, die]
+		hd : [12, 10],
 		speed : "fly 90 ft (hover)",
-		scores : [14, 20, 14, 6, 10, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [14, 20, 14, 6, 10, 6],
+		saves : ["", "", "", "", "", ""],
 		damage_resistances : "lightning; thunder; bludgeoning, piercing, and slashing from nonmagical weapons",
 		damage_immunities : "poison",
 		condition_immunities : "exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious",
@@ -25,13 +25,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Slam",
 				ability : 2,
-				damage : [2, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Two slam attacks as an Attack action"
 			}, {
 				name : "Whirlwind (Recharge 4-6)",
 				ability : 1,
-				damage : [3, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [3, 8, "bludgeoning"],
 				range : "All in shared area",
 				dc : true,
 				description : "Str save; fail\u2015 flung 20 ft random direction, prone; success\u2015 half damage",
@@ -59,10 +59,10 @@ var Base_CreatureList = {
 		alignment : "Neutral",
 		ac : 17,
 		hp : 126,
-		hd : [12, 10], //[#, die]
+		hd : [12, 10],
 		speed : "30 ft, burrow 30 ft",
-		scores : [20, 8, 20, 5, 10, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [20, 8, 20, 5, 10, 5],
+		saves : ["", "", "", "", "", ""],
 		damage_vulnerabilities : "thunder",
 		damage_resistances : "bludgeoning, piercing, and slashing from nonmagical weapons",
 		damage_immunities : "poison",
@@ -76,7 +76,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Slam",
 				ability : 1,
-				damage : [2, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "bludgeoning"],
 				range : "Melee (10 ft)",
 				description : "Two slam attacks as an Attack action"
 			}
@@ -100,10 +100,10 @@ var Base_CreatureList = {
 		alignment : "Neutral",
 		ac : 13,
 		hp : 102,
-		hd : [12, 10], //[#, die]
+		hd : [12, 10],
 		speed : "50 ft",
-		scores : [10, 17, 16, 6, 10, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [10, 17, 16, 6, 10, 7],
+		saves : ["", "", "", "", "", ""],
 		damage_resistances : "bludgeoning, piercing, and slashing from nonmagical weapons",
 		damage_immunities : "fire, poison",
 		condition_immunities : "exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious",
@@ -116,7 +116,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Touch",
 				ability : 2,
-				damage : [2, 6, "fire"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "fire"],
 				range : "Melee (5 ft)",
 				description : "2 per Attack; Ignites flammable; Until action to douse, target 1d10 fire damage at start of its turn"
 			}
@@ -143,10 +143,10 @@ var Base_CreatureList = {
 		alignment : "Neutral",
 		ac : 14,
 		hp : 114,
-		hd : [12, 10], //[#, die]
+		hd : [12, 10],
 		speed : "30 ft, swim 90 ft",
-		scores : [18, 14, 18, 5, 10, 8], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [18, 14, 18, 5, 10, 8],
+		saves : ["", "", "", "", "", ""],
 		damage_resistances : "acid; bludgeoning, piercing, and slashing from nonmagical weapons",
 		damage_immunities : "poison",
 		condition_immunities : "exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious",
@@ -159,14 +159,14 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Slam",
 				ability : 1,
-				damage : [2, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Two slam attacks as an Attack action"
 			}, {
 				name : "Whelm (Recharge 4-6)",
 				ability : 1,
 				dc : true,
-				damage : [2, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "bludgeoning"],
 				range : "All in shared area",
 				description : "Str save; fail\u2015 dmg/grappled/restrained/can't breathe until grapple ends (escape DC 14); success\u2015 no dmg/pushed out",
 				tooltip : "Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 feet of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding."
@@ -197,10 +197,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 68,
-		hd : [8, 10], //[#, die]
+		hd : [8, 10],
 		speed : "20 ft, swim 40 ft",
-		scores : [18, 15, 16, 2, 12, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [18, 15, 16, 2, 12, 5],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
@@ -214,7 +214,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [3, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [3, 6, "piercing"],
 				range : "Melee (10 ft)",
 				description : ""
 			}
@@ -234,10 +234,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 95,
-		hd : [10, 12], //[#, die]
+		hd : [10, 12],
 		speed : "50 ft",
-		scores : [22, 9, 17, 2, 11, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [22, 9, 17, 2, 11, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -247,13 +247,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Gore",
 				ability : 1,
-				damage : [4, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [4, 8, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
 			}, {
 				name : "Stomp",
 				ability : 1,
-				damage : [3, 10, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [3, 10, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Can only be used on prone creatures (also see Trampling Charge trait)"
 			}
@@ -273,10 +273,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 136,
-		hd : [13, 12], //[#, die]
+		hd : [13, 12],
 		speed : "50 ft",
-		scores : [25, 10, 19, 2, 12, 9], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [25, 10, 19, 2, 12, 9],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
@@ -289,13 +289,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [4, 12, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [4, 12, "piercing"],
 				range : "Melee (10 ft)",
 				description : "Medium or smaller target is grappled and restrained (escape DC 17); Can't use bite again until grapple ends"
 			}, {
 				name : "Tail",
 				ability : 1,
-				damage : [3, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [3, 8, "bludgeoning"],
 				range : "Melee (10 ft)",
 				description : "One bite and one tail attack to different targets as an Attack action"
 			}
@@ -317,10 +317,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 59,
-		hd : [7, 10], //[#, die]
+		hd : [7, 10],
 		speed : "30 ft, fly 80 ft",
-		scores : [18, 15, 16, 2, 13, 8], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [18, 15, 16, 2, 13, 8],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 5
 		},
@@ -333,13 +333,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Beak",
 				ability : 1,
-				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One beak and one claws attack as an Attack action"
 			}, {
 				name : "Claws",
 				ability : 1,
-				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One claws and one beak attack as an Attack action"
 			}
@@ -359,10 +359,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 19,
-		hd : [3, 10], //[#, die]
+		hd : [3, 10],
 		speed : "40 ft, fly 60 ft",
-		scores : [17, 13, 13, 2, 12, 8], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [17, 13, 13, 2, 12, 8],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 5
 		},
@@ -375,13 +375,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Beak",
 				ability : 1,
-				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 10, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One beak and one claws attack as an Attack action"
 			}, {
 				name : "Claws",
 				ability : 1,
-				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One claws and one beak attack as an Attack action"
 			}
@@ -401,10 +401,10 @@ var Base_CreatureList = {
 		alignment : "Neutral Evil",
 		ac : 13,
 		hp : 68,
-		hd : [8, 10], //[#, die]
+		hd : [8, 10],
 		speed : "60 ft, fly 90 ft",
-		scores : [18, 15, 16, 10, 13, 15], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [18, 15, 16, 10, 13, 15],
+		saves : ["", "", "", "", "", ""],
 		damage_immunities : "fire",
 		senses : "",
 		passivePerception : 11,
@@ -415,7 +415,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Hooves",
 				ability : 1,
-				damage : [2, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Target also takes 2d6 fire damage upon a hit"
 			}
@@ -443,10 +443,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 59,
-		hd : [7, 10], //[#, die]
+		hd : [7, 10],
 		speed : "40 ft",
-		scores : [20, 12, 17, 3, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [20, 12, 17, 3, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -459,13 +459,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Beak",
 				ability : 1,
-				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 10, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One beak and one claws attack as an Attack action"
 			}, {
 				name : "Claws",
 				ability : 1,
-				damage : [2, 8, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One claws and one beak attack as an Attack action"
 			}
@@ -486,10 +486,10 @@ var Base_CreatureList = {
 		alignment : "Chaotic Good",
 		ac : 12,
 		hp : 59,
-		hd : [7, 10], //[#, die]
+		hd : [7, 10],
 		speed : "60 ft, fly 90 ft",
-		scores : [18, 15, 16, 10, 15, 13], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", 4, "", "", 4, 3], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [18, 15, 16, 10, 15, 13],
+		saves : ["", 4, "", "", 4, 3],
 		skills : {
 			"perception" : 6
 		},
@@ -502,7 +502,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Hooves",
 				ability : 1,
-				damage : [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -558,17 +558,17 @@ var Base_CreatureList = {
 		alignment : "Lawful Evil",
 		ac : 13,
 		hp : 10,
-		hd : [3, 4], //[#, die]
+		hd : [3, 4],
 		speed : "20 ft, fly 40 ft",
-		scores : [6, 17, 13, 11, 12, 14], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [6, 17, 13, 11, 12, 14],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"deception" : 4,
 			"insight" : 3,
 			"persuasion" : 4,
 			"stealth" : 5
 		},
-		damage_resistances : "cold; bludgeoning, piercing, and slashing from nonmagical/nonsilver weapons",
+		damage_resistances : "cold; bludgeoning, piercing, and slashing from nonmagical attacks that aren't silver weapons",
 		damage_immunities : "fire, poison",
 		condition_immunities : "poisoned",
 		senses : "Darkvision 120 ft; Devil's Sight (Magical darkness doesn't impede the imp's Darkvision)",
@@ -580,7 +580,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Sting (Bite in Beast Form)",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target also takes 3d6 poison damage, half on a DC 11 Constitution saving throw"
 			}
@@ -614,10 +614,10 @@ var Base_CreatureList = {
 		alignment : "Neutral Good",
 		ac : 13,
 		hp : 7,
-		hd : [2, 4], //[#, die]
+		hd : [2, 4],
 		speed : "15 ft, fly 60 ft",
-		scores : [6, 15, 13, 10, 12, 10], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [6, 15, 13, 10, 12, 10],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
@@ -631,13 +631,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}, {
 				name : "Sting",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : "DC 11 Con save or poisoned 1 hour; fail by 5 or more: unconscious 1 hour, until damaged or awakened",
 				tooltip : "The target hit must succeed on a DC 11 Constitution saving throw or become poisoned for 1 hour. If the saving throw fails by 5 or more, the target falls unconscious for the same duration, or until it takes damage or another creature uses an action to shake it awake."
@@ -670,14 +670,14 @@ var Base_CreatureList = {
 		alignment : "Chaotic Evil",
 		ac : 13,
 		hp : 7,
-		hd : [3, 4], //[#, die]
+		hd : [3, 4],
 		speed : "40 ft",
-		scores : [5, 17, 10, 7, 10, 10], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [5, 17, 10, 7, 10, 10],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 5
 		},
-		damage_resistances : "cold; fire; lightning; bludgeoning, piercing, and slashing from nonmagical weapons",
+		damage_resistances : "cold; fire; lightning; bludgeoning, piercing, and slashing from nonmagical attacks",
 		damage_immunities : "poison",
 		condition_immunities : "poisoned",
 		senses : "Darkvision 120 ft",
@@ -689,17 +689,17 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Claws (Bite in Beast Form)",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target makes DC 10 Con save or takes 2d4 poison damage and poisoned for 1 min (can save each turn)",
-				modifiers : [-1, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-1, "", ""]
 			}, {
 				name : "Scare (1/day)",
 				ability : 6,
-				damage : ["Frightened", "", ""], //[#, die, type] "" for die is allowed
+				damage : ["Frightened", "", ""],
 				range : "20 ft",
 				description : "Wis save or frightened for 1 min (can save at end of each turn, disadv. if quasit is in sight)",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false],
 				dc : true
 			}
 		],
@@ -731,10 +731,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 17,
 		hp : 142,
-		hd : [15, 10], //[#, die]
+		hd : [15, 10],
 		speed : "30 ft",
-		scores : [18, 8, 18, 7, 10, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [18, 8, 18, 7, 10, 3],
+		saves : ["", "", "", "", "", ""],
 		damage_immunities : "poison",
 		condition_immunities : "charmed, exhaustion, frightened, paralyzed, poisoned",
 		senses : "Blindsight 10 ft; Darkvision 60 ft",
@@ -746,7 +746,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Fist",
 				ability : 1,
-				damage : [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Two fist attacks as an Attack action"
 			}
@@ -780,10 +780,10 @@ var Base_CreatureList = {
 		alignment : "Neutral Good",
 		ac : 15,
 		hp : 2,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "10 ft, fly 40 ft",
-		scores : [3, 18, 10, 14, 13, 11], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [3, 18, 10, 14, 13, 11],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 8
@@ -797,26 +797,26 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Longsword",
 				ability : 2,
-				damage : [1, "", "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "slashing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["Str", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["Str", "", false]
 			}, {
 				name : "Shortbow",
 				ability : 2,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "40/160 ft",
 				description : "",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false],
 				description : "DC 10 Con save or poisoned 1 min; fail by 5 or more: also unconscious 1 min, until damaged or awakened",
 				tooltip : "The target hit must succeed on a DC 10 Constitution saving throw or become poisoned for 1 minute. If its saving throw result is 5 or lower, the poisoned target falls unconscious for the same duration, or until it takes damage or another creature takes an action to shake it awake."
 			}, {
 				name : "Heart Sight",
 				ability : 6,
-				damage : ["Reveal", "", ""], //[#, die, type] "" for die is allowed
+				damage : ["Reveal", "", ""],
 				range : "Touch (5 ft)",
 				description : "Cha save or sprite knows emotional state and alignment (celestial/fiend/undead auto fail the save)",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false],
 				dc : true
 			}
 		],
@@ -836,10 +836,10 @@ var Base_CreatureList = {
 		alignment : "Chaotic Evil",
 		ac : 12,
 		hp : 36,
-		hd : [5, 8], //[#, die]
+		hd : [5, 8],
 		speed : "30 ft",
-		scores : [16, 17, 10, 11, 10, 8], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [16, 17, 10, 11, 10, 8],
+		saves : ["", "", "", "", "", ""],
 		damage_resistances : "necrotic",
 		damage_immunities : "poison",
 		condition_immunities : "charmed, exhaustion, poisoned",
@@ -852,14 +852,14 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [2, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : [-2, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-2, "", ""]
 			}, {
 				name : "Claws",
 				ability : 1,
-				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "DC 10 Con save or 1 min paralyzed; Save end of each turn (elf/undead immune)",
 				tooltip : "If the target is a creature other than an elf or undead, it must succeed on a DC 10 Constitution saving throw or be paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
@@ -883,10 +883,10 @@ var Base_CreatureList = {
 		alignment : "Chaotic Evil",
 		ac : 12,
 		hp : 22,
-		hd : [5, 8], //[#, die]
+		hd : [5, 8],
 		speed : "30 ft",
-		scores : [13, 15, 10, 7, 10, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [13, 15, 10, 7, 10, 6],
+		saves : ["", "", "", "", "", ""],
 		damage_immunities : "poison",
 		condition_immunities : "charmed, exhaustion, poisoned",
 		senses : "Darkvision 60 ft",
@@ -898,14 +898,14 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [2, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : [-2, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-2, "", ""]
 			}, {
 				name : "Claws",
 				ability : 1,
-				damage : [2, 4, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 4, "slashing"],
 				range : "Melee (5 ft)",
 				description : "DC 10 Con save or 1 min paralyzed; Save end of each turn (elf/undead immune)",
 				tooltip : "If the target is a creature other than an elf or undead, it must succeed on a DC 10 Constitution saving throw or be paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
@@ -921,10 +921,10 @@ var Base_CreatureList = {
 		alignment : "Lawful Evil",
 		ac : 11,
 		hp : 58,
-		hd : [9, 8], //[#, die]
+		hd : [9, 8],
 		speed : "20 ft",
-		scores : [16, 8, 15, 6, 10, 12], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", 2, ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [16, 8, 15, 6, 10, 12],
+		saves : ["", "", "", "", 2, ""],
 		damage_vulnerabilities : "fire",
 		damage_resistances : "bludgeoning, piercing, and slashing from nonmagical weapons",
 		damage_immunities : "necrotic, poison",
@@ -938,18 +938,18 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Rotting Fist",
 				ability : 1,
-				damage : [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "+3d6 necrotic damage; DC 12 Constitution save or cursed with Mummy Rot",
 				tooltip : "Multiattack\nAs part of one Attack action, the mummy can use its Dreadful Glare and makes one attack with its rotting fist.\n\nRotting Fist\nIf the target is a creature, it must succeed on a DC 12 Constitution saving throw or be cursed with mummy rot. The cursed target can't regain hit points, and its hit point maximum decreases by 10 (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic."
 			}, {
 				name : "Dreadful Glare",
 				ability : 6,
-				damage : ["Frightened", "", ""], //[#, die, type] "" for die is allowed
+				damage : ["Frightened", "", ""],
 				range : "60 ft",
 				description : "Wis save or frightened for 1 round; If failed by 5 or more, paralyzed as well",
 				tooltip : "Multiattack\nAs part of one Attack action, the mummy can use its Dreadful Glare and makes one attack with its rotting fist.\n\nDreadful Glare\nThe mummy targets one creature it can see within 60 ft of it. If the target can see the mummy, it must succeed on a DC 11 Wisdom saving throw against this magic or become frightened until the end of the mummy's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies (but not mummy lords) for the next 24 hours.",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false],
 				dc : true
 			}
 		],
@@ -1024,10 +1024,10 @@ var Base_CreatureList = {
 		alignment : "lawful evil",
 		ac : 13,
 		hp : 13,
-		hd : [2, 8], //[#, die]
+		hd : [2, 8],
 		speed : "30 ft",
-		scores : [10, 14, 15, 6, 8, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [10, 14, 15, 6, 8, 5],
+		saves : ["", "", "", "", "", ""],
 		damage_vulnerabilities : "bludgeoning",
 		damage_immunities : "poison",
 		condition_immunities : "exhaustion, poisoned",
@@ -1040,13 +1040,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Shortsword",
 				ability : 2,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Finesse, light"
 			}, {
 				name : "Shortbow",
 				ability : 2,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "80/320 ft",
 				description : "Ammunition, two-handed"
 			}
@@ -1061,10 +1061,10 @@ var Base_CreatureList = {
 		alignment : "Lawful Evil",
 		ac : 13,
 		hp : 22,
-		hd : [3, 10], //[#, die]
+		hd : [3, 10],
 		speed : "60 ft",
-		scores : [18, 12, 15, 2, 8, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [18, 12, 15, 2, 8, 5],
+		saves : ["", "", "", "", "", ""],
 		damage_vulnerabilities : "bludgeoning",
 		damage_immunities : "poison",
 		condition_immunities : "exhaustion, poisoned",
@@ -1077,7 +1077,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Hooves",
 				ability : 1,
-				damage : [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -1092,10 +1092,10 @@ var Base_CreatureList = {
 		alignment : "Chaotic Evil",
 		ac : 12,
 		hp : 22,
-		hd : [5, 8], //[#, die]
+		hd : [5, 8],
 		speed : "fly 50 ft (hover)",
-		scores : [1, 14, 11, 10, 10, 12], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [1, 14, 11, 10, 10, 12],
+		saves : ["", "", "", "", "", ""],
 		damage_resistances : "acid; cold; fire; lightning; thunder; bludgeoning, piercing, and slashing from nonmagical weapons",
 		damage_immunities : "necrotic, poison",
 		condition_immunities : "charmed, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious",
@@ -1108,10 +1108,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Life Drain",
 				ability : 2,
-				damage : [3, 6, "necrotic"], //[#, die, type] "" for die is allowed
+				damage : [3, 6, "necrotic"],
 				range : "Melee (5 ft)",
 				description : "DC 10 Con save or HP max reduced by same as damage taken until a long rest",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false],
 				tooltip : "A target of the specter's life drain must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0."
 			}
 		],
@@ -1136,10 +1136,10 @@ var Base_CreatureList = {
 		alignment : "Neutral Evil",
 		ac : 14,
 		hp : 45,
-		hd : [6, 8], //[#, die]
+		hd : [6, 8],
 		speed : "30 ft",
-		scores : [15, 14, 16, 10, 13, 15], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [15, 14, 16, 10, 13, 15],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
@@ -1153,20 +1153,20 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Life Drain",
 				ability : 1,
-				damage : [1, 6, "necrotic"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "necrotic"],
 				range : "Melee (5 ft)",
 				description : "DC 13 Con save or HP max reduced by damage amount until long rest",
 				tooltip : "The target must succeed on a DC 13 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the target finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.\nA humanoid slain by this attack rises 24 hours later as a zombie under the wight's control, unless the humanoid is restored to life or its body is destroyed. The wight can have no more than twelve zombies under its control at one time."
 			}, {
 				name : "Longsword",
 				ability : 1,
-				damage : [1, 8, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "slashing"],
 				range : "Melee (5 ft)",
 				description : "Versatile (1d10)"
 			}, {
 				name : "Longbow",
 				ability : 2,
-				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "piercing"],
 				range : "150/600 ft",
 				description : "Ammunition, heavy, two-handed)"
 			}
@@ -1189,10 +1189,10 @@ var Base_CreatureList = {
 		alignment : "Neutral Evil",
 		ac : 8,
 		hp : 22,
-		hd : [3, 8], //[#, die]
+		hd : [3, 8],
 		speed : "20 ft",
-		scores : [13, 6, 16, 3, 6, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", 0, ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [13, 6, 16, 3, 6, 5],
+		saves : ["", "", "", "", 0, ""],
 		damage_immunities : "poison",
 		condition_immunities : "poisoned",
 		senses : "Darkvision 60 ft",
@@ -1204,7 +1204,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Slam",
 				ability : 1,
-				damage : [1, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -1224,10 +1224,10 @@ var Base_CreatureList = {
 		alignment : "Neutral Evil",
 		ac : 8,
 		hp : 85,
-		hd : [9, 10], //[#, die]
+		hd : [9, 10],
 		speed : "30 ft",
-		scores : [19, 6, 18, 3, 6, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", 0, ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [19, 6, 18, 3, 6, 5],
+		saves : ["", "", "", "", 0, ""],
 		damage_immunities : "poison",
 		condition_immunities : "poisoned",
 		senses : "Darkvision 60 ft",
@@ -1239,7 +1239,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Morningstar",
 				ability : 1,
-				damage : [2, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -1260,10 +1260,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 5,
 		hp : 13,
-		hd : [3, 8], //[#, die]
+		hd : [3, 8],
 		speed : "0 ft",
-		scores : [1, 1, 10, 1, 3, 1], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [1, 1, 10, 1, 3, 1],
+		saves : ["", "", "", "", "", ""],
 		condition_immunities : "blinded, deafened, frightened",
 		senses : "Blindsight 30 ft (blind beyond this radius).",
 		passivePerception : 6,
@@ -1293,10 +1293,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 5,
 		hp : 18,
-		hd : [4, 8], //[#, die]
+		hd : [4, 8],
 		speed : "5 ft",
-		scores : [3, 1, 10, 1, 3, 1], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [3, 1, 10, 1, 3, 1],
+		saves : ["", "", "", "", "", ""],
 		condition_immunities : "blinded, deafened, frightened",
 		senses : "Blindsight 30 ft (blind beyond this radius).",
 		passivePerception : 6,
@@ -1307,7 +1307,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Rotting Touch",
 				ability : 3,
-				damage : [1, 8, "necrotic"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "necrotic"],
 				range : "Melee (10 ft)",
 				description : "1d4 rotting touch attacks as an Attack action"
 			}
@@ -1329,10 +1329,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 19,
-		hd : [3, 8], //[#, die]
+		hd : [3, 8],
 		speed : "30 ft, climb 30 ft",
-		scores : [16, 14, 14, 6, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [16, 14, 14, 6, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"athletics" : 5,
 			"perception" : 3
@@ -1346,13 +1346,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Fist",
 				ability : 1,
-				damage : [1, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Two fist attacks as an Attack action"
 			}, {
 				name : "Rock",
 				ability : 1,
-				damage : [1, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "bludgeoning"],
 				range : "25/50 ft",
 				description : "One rock attack as an Attack action"
 			}
@@ -1367,10 +1367,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 19,
-		hd : [3, 10], //[#, die]
+		hd : [3, 10],
 		speed : "50 ft",
-		scores : [14, 12, 12, 2, 10, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [14, 12, 12, 2, 10, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -1380,7 +1380,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Beak",
 				ability : 1,
-				damage : [1, 8, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "slashing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -1395,10 +1395,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 3,
-		hd : [1, 6], //[#, die]
+		hd : [1, 6],
 		speed : "30 ft, climb 30 ft",
-		scores : [8, 14, 11, 4, 12, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [8, 14, 11, 4, 12, 6],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 11,
 		languages : "",
@@ -1408,7 +1408,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -1428,10 +1428,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 3,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "20 ft, burrow 5 ft",
-		scores : [4, 11, 12, 2, 12, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [4, 11, 12, 2, 12, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft; Adv. on Wis (Perception) checks using smell",
 		passivePerception : 11,
 		languages : "",
@@ -1441,7 +1441,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -1462,10 +1462,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 1,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "5 ft, fly 30 ft",
-		scores : [2, 15, 8, 2, 12, 4], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [2, 15, 8, 2, 12, 4],
+		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 60 ft; Adv. on Wis (Perception) checks using hearing",
 		passivePerception : 11,
 		languages : "",
@@ -1475,10 +1475,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["Str", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["Str", "", false]
 			}
 		],
 		traits : [{
@@ -1500,10 +1500,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 19,
-		hd : [3, 8], //[#, die]
+		hd : [3, 8],
 		speed : "40 ft, climb 30 ft",
-		scores : [15, 10, 14, 2, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [15, 10, 14, 2, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -1516,13 +1516,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One bite and one claw attack as an Attack action"
 			}, {
 				name : "Claw",
 				ability : 1,
-				damage : [2, 4, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 4, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One claw and one bite attack as an Attack action"
 			}
@@ -1542,10 +1542,10 @@ var Base_CreatureList = {
 		alignment : "Lawful Good",
 		ac : 13,
 		hp : 22,
-		hd : [4, 8], //[#, die]
+		hd : [4, 8],
 		speed : "40 ft",
-		scores : [12, 17, 12, 10, 13, 11], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [12, 17, 12, 10, 13, 11],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 5
@@ -1559,7 +1559,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -1584,10 +1584,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 7,
-		hd : [2, 6], //[#, die]
+		hd : [2, 6],
 		speed : "10 ft, fly 60 ft",
-		scores : [6, 14, 10, 3, 14, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [6, 14, 10, 3, 14, 5],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
@@ -1600,7 +1600,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Beak",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -1624,10 +1624,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 11,
-		hd : [2, 8], //[#, die]
+		hd : [2, 8],
 		speed : "40 ft",
-		scores : [13, 11, 12, 2, 9, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [13, 11, 12, 2, 9, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 9,
 		languages : "",
@@ -1637,7 +1637,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Tusk",
 				ability : 1,
-				damage : [1, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Charge trait"
 			}
@@ -1660,10 +1660,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 34,
-		hd : [4, 10], //[#, die]
+		hd : [4, 10],
 		speed : "40 ft, climb 30 ft",
-		scores : [19, 10, 16, 2, 13, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [19, 10, 16, 2, 13, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -1676,13 +1676,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One bite and one claw attack as an Attack action"
 			}, {
 				name : "Claw",
 				ability : 1,
-				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One claw and one bite attack as an Attack action"
 			}
@@ -1703,10 +1703,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 9,
 		hp : 15,
-		hd : [2, 10], //[#, die]
+		hd : [2, 10],
 		speed : "50 ft",
-		scores : [16, 8, 14, 2, 8, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [16, 8, 14, 2, 8, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 9,
 		languages : "",
@@ -1716,10 +1716,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 4, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false]
 			}
 		]
 	},
@@ -1733,10 +1733,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 2,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "40 ft, climb 30 ft",
-		scores : [3, 15, 10, 3, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [3, 15, 10, 3, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
@@ -1750,10 +1750,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Claws",
 				ability : 2,
-				damage : [1, "", "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "slashing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["Str", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["Str", "", false]
 			}
 		],
 		traits : [{
@@ -1771,10 +1771,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 42,
-		hd : [5, 10], //[#, die]
+		hd : [5, 10],
 		speed : "40 ft, swim 30 ft",
-		scores : [20, 10, 16, 2, 13, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [20, 10, 16, 2, 13, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -1787,13 +1787,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One bite and one claw attack as an Attack action"
 			}, {
 				name : "Claw",
 				ability : 1,
-				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One claw and one bite attack as an Attack action"
 			}
@@ -1813,10 +1813,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 13,
-		hd : [2, 10], //[#, die]
+		hd : [2, 10],
 		speed : "30 ft, swim 30 ft",
-		scores : [15, 14, 12, 1, 10, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [15, 14, 12, 1, 10, 3],
+		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 10 ft",
 		passivePerception : 10,
 		languages : "",
@@ -1826,13 +1826,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			},{
 				name : "Constrict",
 				ability : 1,
-				damage : [1, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Target is grappled and restrained (escape DC 14); Can't use constrict again until grapple ends"
 			}
@@ -1848,10 +1848,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 2,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "20 ft, swim 20 ft",
-		scores : [2, 11, 10, 1, 8, 2], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [2, 11, 10, 1, 8, 2],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 2
 		},
@@ -1864,10 +1864,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Claw",
 				ability : 1,
-				damage : [1, "", "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : [2, "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [2, "", false]
 			}
 		],
 		traits : [{
@@ -1885,10 +1885,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 19,
-		hd : [3, 10], //[#, die]
+		hd : [3, 10],
 		speed : "20 ft, swim 20 ft",
-		scores : [15, 10, 13, 2, 10, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [15, 10, 13, 2, 10, 5],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 2
 		},
@@ -1901,7 +1901,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 10, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target is grappled and restrained (escape DC 12); Can't use bite again until grapple ends"
 			}
@@ -1921,10 +1921,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 39,
-		hd : [6, 8], //[#, die]
+		hd : [6, 8],
 		speed : "40 ft",
-		scores : [15, 14, 14, 3, 13, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [15, 14, 14, 3, 13, 6],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 5,
 			"stealth" : 4
@@ -1938,7 +1938,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Two bite attacks as an Attack action; Target DC 12 Con save or diseased and poisoned",
 				tooltip : "If the target of the death dog's bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 5 (1d10) on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0."
@@ -1962,10 +1962,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 4,
-		hd : [1, 8], //[#, die]
+		hd : [1, 8],
 		speed : "50 ft",
-		scores : [11, 16, 11, 2, 14, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [11, 16, 11, 2, 14, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 12,
 		languages : "",
@@ -1975,7 +1975,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -1991,10 +1991,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 37,
-		hd : [5, 10], //[#, die]
+		hd : [5, 10],
 		speed : "50 ft",
-		scores : [17, 15, 15, 3, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [17, 15, 15, 3, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
@@ -2008,7 +2008,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [2, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target must succeed on a DC 13 Strength saving throw or be knocked prone"
 			}
@@ -2031,10 +2031,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 19,
-		hd : [3, 10], //[#, die]
+		hd : [3, 10],
 		speed : "40 ft",
-		scores : [18, 10, 12, 2, 11, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [18, 10, 12, 2, 11, 7],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -2044,7 +2044,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Hooves",
 				ability : 1,
-				damage : [2, 4, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 4, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -2059,10 +2059,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 3,
-		hd : [1, 6], //[#, die]
+		hd : [1, 6],
 		speed : "10 ft, fly 60 ft",
-		scores : [6, 15, 10, 2, 14, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [6, 15, 10, 2, 14, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
@@ -2075,7 +2075,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Talons",
 				ability : 2,
-				damage : [1, 4, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "slashing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -2095,10 +2095,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 76,
-		hd : [8, 12], //[#, die]
+		hd : [8, 12],
 		speed : "40 ft",
-		scores : [22, 9, 17, 3, 11, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [22, 9, 17, 3, 11, 6],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -2108,13 +2108,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Gore",
 				ability : 1,
-				damage : [3, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [3, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
 			}, {
 				name : "Stomp",
 				ability : 1,
-				damage : [3, 10, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [3, 10, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Can only be used on prone creatures (also see Trampling Charge trait)"
 			}
@@ -2135,10 +2135,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 13,
-		hd : [2, 10], //[#, die]
+		hd : [2, 10],
 		speed : "50 ft",
-		scores : [16, 10, 12, 2, 10, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [16, 10, 12, 2, 10, 6],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -2148,13 +2148,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Ram",
 				ability : 1,
-				damage : [1, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Charge trait"
 			}, {
 				name : "Hooves",
 				ability : 1,
-				damage : [2, 4, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 4, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Can only be used on prone creatures"
 			}
@@ -2174,10 +2174,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 5,
-		hd : [2, 4], //[#, die]
+		hd : [2, 4],
 		speed : "30 ft, fly 60 ft, swim 30 ft",
-		scores : [4, 18, 11, 2, 12, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [4, 18, 11, 2, 12, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 10 ft",
 		passivePerception : 11,
 		languages : "",
@@ -2187,10 +2187,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target also takes 3d4 poison damage",
-				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false]
 			}
 		],
 		traits : [{
@@ -2209,10 +2209,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 1,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "20 ft, swim 20 ft",
-		scores : [1, 13, 8, 1, 8, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [1, 13, 8, 1, 8, 3],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 1,
 			"stealth" : 3
@@ -2242,10 +2242,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 157,
-		hd : [15, 12], //[#, die]
+		hd : [15, 12],
 		speed : "40 ft, climb 40 ft",
-		scores : [23, 14, 18, 7, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [23, 14, 18, 7, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"athletics" : 9,
 			"perception" : 4
@@ -2259,13 +2259,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Fist",
 				ability : 1,
-				damage : [3, 10, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [3, 10, "bludgeoning"],
 				range : "Melee (10 ft)",
 				description : "Two fist attacks as an Attack action"
 			}, {
 				name : "Rock",
 				ability : 1,
-				damage : [7, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [7, 6, "bludgeoning"],
 				range : "50/100 ft",
 				description : "One rock attack as an Attack action"
 			}
@@ -2281,10 +2281,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 13,
-		hd : [2, 8], //[#, die]
+		hd : [2, 8],
 		speed : "30 ft, burrow 10 ft",
-		scores : [13, 10, 15, 2, 12, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [13, 10, 15, 2, 12, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft; Adv. on Wis (Perception) checks using smell",
 		passivePerception : 11,
 		languages : "",
@@ -2294,13 +2294,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One bite and one claws attack as an Attack action"
 			}, {
 				name : "Claws",
 				ability : 1,
-				damage : [2, 4, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 4, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One claws and one bite attack as an Attack action"
 			}
@@ -2320,10 +2320,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 22,
-		hd : [4, 10], //[#, die]
+		hd : [4, 10],
 		speed : "10 ft, fly 60 ft",
-		scores : [15, 16, 11, 2, 12, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [15, 16, 11, 2, 12, 6],
+		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 60 ft; Adv. on Wis (Perception) checks using hearing",
 		passivePerception : 11,
 		languages : "",
@@ -2333,7 +2333,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -2356,10 +2356,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 42,
-		hd : [5, 10], //[#, die]
+		hd : [5, 10],
 		speed : "40 ft",
-		scores : [17, 10, 16, 2, 7, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [17, 10, 16, 2, 7, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 8,
 		languages : "",
@@ -2369,7 +2369,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Tusk",
 				ability : 1,
-				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Charge trait"
 			}
@@ -2392,10 +2392,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 4,
-		hd : [1, 6], //[#, die]
+		hd : [1, 6],
 		speed : "30 ft, climb 30 ft",
-		scores : [5, 14, 12, 1, 7, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [5, 14, 12, 1, 7, 3],
+		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 30 ft",
 		passivePerception : 8,
 		languages : "",
@@ -2405,7 +2405,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target must succeed on a DC 11 Constitution saving throw or take 3d6 poison damage"
 			}
@@ -2425,10 +2425,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 60,
-		hd : [8, 12], //[#, die]
+		hd : [8, 12],
 		speed : "30 ft, swim 30 ft",
-		scores : [19, 14, 12, 1, 10, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [19, 14, 12, 1, 10, 3],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2
 		},
@@ -2441,13 +2441,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [2, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "piercing"],
 				range : "Melee (10 ft)",
 				description : ""
 			},{
 				name : "Constrict",
 				ability : 1,
-				damage : [2, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Target is grappled and restrained (escape DC 16); Can't use constrict again until grapple ends"
 			}
@@ -2462,10 +2462,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 15,
 		hp : 13,
-		hd : [3, 8], //[#, die]
+		hd : [3, 8],
 		speed : "30 ft, swim 30 ft",
-		scores : [13, 15, 11, 1, 9, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [13, 15, 11, 1, 9, 3],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 4
 		},
@@ -2478,7 +2478,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Claw",
 				ability : 1,
-				damage : [1, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Target is grappled (escape DC 11); Can't use a claw again until grapple ends"
 			}
@@ -2498,10 +2498,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 85,
-		hd : [9, 12], //[#, die]
+		hd : [9, 12],
 		speed : "30 ft, swim 50 ft",
-		scores : [21, 9, 17, 2, 10, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [21, 9, 17, 2, 10, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 5
 		},
@@ -2514,13 +2514,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [3, 10, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [3, 10, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target is grappled and restrained (escape DC 16); Can't use bite again until grapple ends"
 			}, {
 				name : "Tail",
 				ability : 1,
-				damage : [2, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "bludgeoning"],
 				range : "Melee (10 ft)",
 				description : "Target must succeed on a DC 16 Strength saving throw or be knocked prone"
 			}
@@ -2543,10 +2543,10 @@ var Base_CreatureList = {
 		alignment : "Neutral Good",
 		ac : 13,
 		hp : 26,
-		hd : [4, 10], //[#, die]
+		hd : [4, 10],
 		speed : "10 ft, fly 80 ft",
-		scores : [16, 17, 13, 8, 14, 10], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [16, 17, 13, 8, 14, 10],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
@@ -2559,13 +2559,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Beak",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One beak and one talons attack as an Attack action"
 			}, {
 				name : "Talons",
 				ability : 1,
-				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One talons and one beak attack as an Attack action"
 			}
@@ -2585,10 +2585,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 15,
 		hp : 42,
-		hd : [5, 12], //[#, die]
+		hd : [5, 12],
 		speed : "60 ft",
-		scores : [19, 16, 14, 7, 14, 10], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [19, 16, 14, 7, 14, 10],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
@@ -2601,13 +2601,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Ram",
 				ability : 1,
-				damage : [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "bludgeoning"],
 				range : "Melee (10 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Charge trait"
 			}, {
 				name : "Hooves",
 				ability : 1,
-				damage : [4, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [4, 8, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Can only be used on prone creatures"
 			}
@@ -2627,10 +2627,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 4,
-		hd : [1, 6], //[#, die]
+		hd : [1, 6],
 		speed : "30 ft",
-		scores : [8, 10, 12, 1, 7, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [8, 10, 12, 1, 7, 3],
+		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 30 ft",
 		passivePerception : 8,
 		languages : "",
@@ -2640,7 +2640,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -2660,10 +2660,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 18,
-		hd : [4, 8], //[#, die]
+		hd : [4, 8],
 		speed : "30 ft, swim 30 ft",
-		scores : [12, 13, 11, 2, 10, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [12, 13, 11, 2, 10, 3],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2,
 			"stealth" : 3
@@ -2677,7 +2677,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target is grappled and restrained (escape DC 11); Can't use bite again until grapple ends"
 			}
@@ -2704,10 +2704,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 19,
-		hd : [3, 10], //[#, die]
+		hd : [3, 10],
 		speed : "40 ft",
-		scores : [17, 11, 12, 3, 12, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [17, 11, 12, 3, 12, 6],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 11,
 		languages : "",
@@ -2717,7 +2717,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Ram",
 				ability : 1,
-				damage : [2, 4, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 4, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Charge trait"
 			}
@@ -2740,10 +2740,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 45,
-		hd : [6, 10], //[#, die]
+		hd : [6, 10],
 		speed : "50 ft",
-		scores : [16, 14, 14, 2, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [16, 14, 14, 2, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -2756,7 +2756,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [2, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "After reducing opponent to 0 HP, take bonus action to move and attack (see Rampage trait)"
 			}
@@ -2776,10 +2776,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 19,
-		hd : [3, 10], //[#, die]
+		hd : [3, 10],
 		speed : "30 ft, climb 30 ft",
-		scores : [15, 12, 13, 2, 10, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [15, 12, 13, 2, 10, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft",
 		passivePerception : 10,
 		languages : "",
@@ -2789,7 +2789,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -2812,10 +2812,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 52,
-		hd : [8, 10], //[#, die]
+		hd : [8, 10],
 		speed : "10 ft, swim 60 ft",
-		scores : [17, 13, 13, 4, 10, 4], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [17, 13, 13, 4, 10, 4],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4,
 			"stealth" : 5
@@ -2829,7 +2829,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Tentacles",
 				ability : 1,
-				damage : [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "bludgeoning"],
 				range : "Melee (15 ft)",
 				description : "Target is grappled and restrained (escape DC 16); Can't use tentacles again until grapple ends"
 			}
@@ -2861,10 +2861,10 @@ var Base_CreatureList = {
 		alignment : "Neutral",
 		ac : 12,
 		hp : 19,
-		hd : [3, 10], //[#, die]
+		hd : [3, 10],
 		speed : "5 ft, fly 60 ft",
-		scores : [13, 15, 12, 8, 13, 10], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [13, 15, 12, 8, 13, 10],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 5,
 			"stealth" : 4
@@ -2878,7 +2878,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Talons",
 				ability : 1,
-				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -2901,10 +2901,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 11,
-		hd : [2, 8], //[#, die]
+		hd : [2, 8],
 		speed : "30 ft, swim 30 ft",
-		scores : [10, 18, 13, 2, 10, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [10, 18, 13, 2, 10, 3],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2
 		},
@@ -2917,7 +2917,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (10 ft)",
 				description : "Target also takes 3d6 poison damage, half on a DC 11 Constitution saving throw"
 			}
@@ -2932,10 +2932,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 7,
-		hd : [2, 6], //[#, die]
+		hd : [2, 6],
 		speed : "30 ft",
-		scores : [7, 15, 11, 2, 10, 4], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [7, 15, 11, 2, 10, 4],
+		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 60 ft; Adv. on Wis (Perception) checks using smell",
 		passivePerception : 10,
 		languages : "",
@@ -2945,7 +2945,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -2968,10 +2968,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 7,
-		hd : [2, 6], //[#, die]
+		hd : [2, 6],
 		speed : "30 ft",
-		scores : [7, 15, 11, 2, 10, 4], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [7, 15, 11, 2, 10, 4],
+		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 60 ft",
 		passivePerception : 10,
 		languages : "",
@@ -2981,7 +2981,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target must succeed on a DC 10 Constitution saving throw or contract a disease"
 			}
@@ -3001,10 +3001,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 15,
 		hp : 52,
-		hd : [7, 10], //[#, die]
+		hd : [7, 10],
 		speed : "40 ft",
-		scores : [15, 13, 15, 1, 9, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [15, 13, 15, 1, 9, 3],
+		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 60 ft",
 		passivePerception : 9,
 		languages : "",
@@ -3014,13 +3014,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Claw",
 				ability : 1,
-				damage : [1, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Target is grappled (escape DC 12); Can't use a claw again until grapple ends"
 			}, {
 				name : "Sting",
 				ability : 1,
-				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 10, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target also takes 4d10 poison damage, half on a DC 12 Constitution saving throw"
 			}
@@ -3040,10 +3040,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 16,
-		hd : [3, 10], //[#, die]
+		hd : [3, 10],
 		speed : "0 ft, swim 40 ft",
-		scores : [12, 15, 11, 2, 12, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [12, 15, 11, 2, 12, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 11,
 		languages : "",
@@ -3053,7 +3053,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Ram",
 				ability : 1,
-				damage : [1, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Charge trait"
 			}
@@ -3076,10 +3076,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 126,
-		hd : [11, 12], //[#, die]
+		hd : [11, 12],
 		speed : "swim 50 ft",
-		scores : [23, 11, 21, 1, 10, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [23, 11, 21, 1, 10, 5],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -3092,7 +3092,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [3, 10, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [3, 10, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -3115,10 +3115,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 26,
-		hd : [4, 10], //[#, die]
+		hd : [4, 10],
 		speed : "30 ft, climb 30 ft",
-		scores : [14, 16, 12, 2, 11, 4], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [14, 16, 12, 2, 11, 4],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 7
 		},
@@ -3131,16 +3131,16 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target also takes 2d8 poison damage, half on a DC 11 Constitution saving throw"
 			}, {
 				name : "Web (Recharge 5-6)",
 				ability : 2,
-				damage : ["Restrained", "", ""], //[#, die, type] "" for die is allowed
+				damage : ["Restrained", "", ""],
 				range : "30/60 ft",
 				description : "Target can escape as an action with a DC 12 Strength check, or by destroying the webbing (AC 10; 5 HP)",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false],
 				tooltip : "On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)."
 			}
 		],
@@ -3174,10 +3174,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 39,
-		hd : [6, 10], //[#, die]
+		hd : [6, 10],
 		speed : "20 ft, swim 40 ft",
-		scores : [15, 13, 13, 2, 10, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [15, 13, 13, 2, 10, 3],
+		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft",
 		passivePerception : 10,
 		languages : "",
@@ -3187,7 +3187,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 10, "piercing"],
 				range : "Melee (5 ft)",
 				description : "+1d10 poison damage; target is grappled and restrained (escape DC 13); Can't use bite again until grapple ends"
 			}
@@ -3214,10 +3214,10 @@ var Base_CreatureList = {
 		alignment : "Neutral Evil",
 		ac : 10,
 		hp : 22,
-		hd : [3, 10], //[#, die]
+		hd : [3, 10],
 		speed : "10 ft, fly 60 ft",
-		scores : [15, 10, 15, 6, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [15, 10, 15, 6, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -3230,17 +3230,17 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Beak",
 				ability : 1,
-				damage : [2, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [2, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One beak and one talons attack as an Attack action",
-				modifiers : [-1, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-1, "", ""]
 			}, {
 				name : "Talons",
 				ability : 1,
-				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One talons and one beak attack as an Attack action",
-				modifiers : [-1, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-1, "", ""]
 			}
 		],
 		traits : [{
@@ -3261,10 +3261,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 13,
-		hd : [3, 8], //[#, die]
+		hd : [3, 8],
 		speed : "10 ft, fly 50 ft, swim 50 ft",
-		scores : [10, 14, 10, 1, 10, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [10, 14, 10, 1, 10, 3],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -3274,7 +3274,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Sting",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target also takes 3d6 poison damage, half on a DC 11 Constitution saving throw"
 			}
@@ -3295,10 +3295,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 9,
-		hd : [2, 8], //[#, die]
+		hd : [2, 8],
 		speed : "40 ft",
-		scores : [11, 16, 10, 4, 12, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [11, 16, 10, 4, 12, 5],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 5
@@ -3312,7 +3312,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -3332,10 +3332,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 11,
-		hd : [2, 8], //[#, die]
+		hd : [2, 8],
 		speed : "40 ft, climb 40 ft",
-		scores : [12, 16, 13, 3, 12, 4], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [12, 16, 13, 3, 12, 4],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 7
@@ -3349,7 +3349,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target also takes 2d6 poison damage, half on a DC 11 Constitution saving throw"
 			}
@@ -3379,10 +3379,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 4,
-		hd : [1, 8], //[#, die]
+		hd : [1, 8],
 		speed : "40 ft",
-		scores : [12, 10, 11, 2, 10, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [12, 10, 11, 2, 10, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -3392,7 +3392,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Ram",
 				ability : 1,
-				damage : [1, 4, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Charge trait"
 			}
@@ -3416,10 +3416,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 1,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "10 ft, fly 60 ft",
-		scores : [5, 16, 8, 2, 14, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [5, 16, 8, 2, 14, 6],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
@@ -3432,10 +3432,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Talons",
 				ability : 2,
-				damage : [1, "", "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "slashing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false]
 			}
 		],
 		traits : [{
@@ -3453,10 +3453,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 45,
-		hd : [6, 10], //[#, die]
+		hd : [6, 10],
 		speed : "swim 40 ft",
-		scores : [18, 13, 15, 1, 10, 4], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [18, 13, 15, 1, 10, 4],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2
 		},
@@ -3469,7 +3469,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [2, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -3492,10 +3492,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 5,
-		hd : [1, 8], //[#, die]
+		hd : [1, 8],
 		speed : "50 ft",
-		scores : [11, 13, 12, 2, 12, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [11, 13, 12, 2, 12, 5],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -3508,7 +3508,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -3528,10 +3528,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 3,
-		hd : [1, 6], //[#, die]
+		hd : [1, 6],
 		speed : "40 ft",
-		scores : [8, 15, 11, 3, 12, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [8, 15, 11, 3, 12, 6],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -3544,7 +3544,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -3567,10 +3567,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 90,
-		hd : [12, 12], //[#, die]
+		hd : [12, 12],
 		speed : "swim 60 ft",
-		scores : [19, 10, 13, 3, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [19, 10, 13, 3, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -3583,7 +3583,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [5, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [5, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -3609,10 +3609,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 26,
-		hd : [4, 10], //[#, die]
+		hd : [4, 10],
 		speed : "50 ft",
-		scores : [17, 15, 13, 3, 12, 8], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [17, 15, 13, 3, 12, 8],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 6
@@ -3626,13 +3626,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Claw",
 				ability : 1,
-				damage : [1, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Pounce trait"
 			}, {
 				name : "Bite",
 				ability : 1,
-				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Can be used in combination with claw while pouncing (see Pounce trait)"
 			}
@@ -3663,10 +3663,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 2,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "20 ft, climb 20 ft",
-		scores : [2, 11, 10, 1, 8, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [2, 11, 10, 1, 8, 3],
+		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft",
 		passivePerception : 9,
 		languages : "",
@@ -3676,10 +3676,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : [-2, "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-2, "", false]
 			}
 		]
 	},
@@ -3692,10 +3692,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 126,
-		hd : [11, 12], //[#, die]
+		hd : [11, 12],
 		speed : "40 ft",
-		scores : [24, 9, 21, 3, 11, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [24, 9, 21, 3, 11, 6],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -3705,13 +3705,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Gore",
 				ability : 1,
-				damage : [4, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [4, 8, "bludgeoning"],
 				range : "Melee (10 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
 			}, {
 				name : "Stomp",
 				ability : 1,
-				damage : [4, 10, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [4, 10, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Can only be used on prone creatures (also see Trampling Charge trait)"
 			}
@@ -3732,10 +3732,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 5,
-		hd : [1, 8], //[#, die]
+		hd : [1, 8],
 		speed : "40 ft",
-		scores : [13, 14, 12, 3, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [13, 14, 12, 3, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -3748,7 +3748,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target must succeed on a DC 11 Strength saving throw or be knocked prone"
 			}
@@ -3769,10 +3769,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 11,
-		hd : [2, 8], //[#, die]
+		hd : [2, 8],
 		speed : "40 ft",
-		scores : [14, 10, 13, 2, 10, 5], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [14, 10, 13, 2, 10, 5],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -3782,7 +3782,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Hooves",
 				ability : 1,
-				damage : [1, 4, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -3806,10 +3806,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 3,
-		hd : [1, 6], //[#, die]
+		hd : [1, 6],
 		speed : "5 ft, swim 30 ft",
-		scores : [4, 15, 11, 3, 10, 4], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [4, 15, 11, 3, 10, 4],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2,
 			"stealth" : 4
@@ -3823,10 +3823,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Tentacles",
 				ability : 2,
-				damage : [1, "", "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "Target is grappled (escape DC 10); Can't use tentacles again until grapple ends",
-				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false]
 			}
 		],
 		traits : [{
@@ -3852,10 +3852,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 1,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "5 ft, fly 60 ft",
-		scores : [3, 13, 8, 2, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [3, 13, 8, 2, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 3
@@ -3869,10 +3869,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Talons",
 				ability : 2,
-				damage : [1, "", "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "slashing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false]
 			}
 		],
 		traits : [{
@@ -3894,10 +3894,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 13,
-		hd : [3, 8], //[#, die]
+		hd : [3, 8],
 		speed : "50 ft, climb 40 ft",
-		scores : [14, 15, 10, 3, 14, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [14, 15, 10, 3, 14, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4,
 			"stealth" : 6
@@ -3911,13 +3911,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Claw",
 				ability : 1,
-				damage : [1, 4, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "slashing"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Pounce trait"
 			}, {
 				name : "Bite",
 				ability : 1,
-				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Can be used in combination with claw while pouncing (see Pounce trait)"
 			}
@@ -3941,10 +3941,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 2,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "30 ft, swim 30 ft",
-		scores : [2, 16, 11, 1, 10, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [2, 16, 11, 1, 10, 3],
+		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 10 ft",
 		passivePerception : 10,
 		languages : "",
@@ -3954,10 +3954,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target also takes 2d4 poison damage, half on a DC 10 Constitution saving throw",
-				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false]
 			}
 		]
 	},
@@ -3970,10 +3970,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 42,
-		hd : [5, 10], //[#, die]
+		hd : [5, 10],
 		speed : "40 ft, swim 30 ft",
-		scores : [20, 10, 16, 2, 13, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [20, 10, 16, 2, 13, 7],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -3986,13 +3986,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One bite and one claw attack as an Attack action"
 			}, {
 				name : "Claw",
 				ability : 1,
-				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One claw and one bite attack as an Attack action"
 			}
@@ -4013,10 +4013,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 11,
-		hd : [2, 8], //[#, die]
+		hd : [2, 8],
 		speed : "40 ft",
-		scores : [15, 10, 13, 2, 11, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [15, 10, 13, 2, 11, 7],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -4026,7 +4026,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Hooves",
 				ability : 1,
-				damage : [2, 4, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 4, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -4042,10 +4042,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 1,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "swim 40 ft",
-		scores : [2, 16, 9, 1, 7, 2], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [2, 16, 9, 1, 7, 2],
+		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 60 ft",
 		passivePerception : 8,
 		languages : "",
@@ -4055,10 +4055,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false]
 			}
 		],
 		traits : [{
@@ -4080,10 +4080,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 1,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "20 ft",
-		scores : [2, 11, 9, 2, 10, 4], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [2, 11, 9, 2, 10, 4],
+		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft; Adv. on Wis (Perception) checks using smell",
 		passivePerception : 10,
 		languages : "",
@@ -4093,10 +4093,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : [-2, "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-2, "", false]
 			}
 		],
 		traits : [{
@@ -4115,10 +4115,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 1,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "10 ft, fly 50 ft",
-		scores : [2, 14, 8, 2, 12, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [2, 14, 8, 2, 12, 6],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -4131,10 +4131,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Beak",
 				ability : 2,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false]
 			}
 		],
 		traits : [{
@@ -4152,10 +4152,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 22,
-		hd : [4, 8], //[#, die]
+		hd : [4, 8],
 		speed : "swim 40 ft",
-		scores : [14, 13, 13, 1, 10, 4], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [14, 13, 13, 1, 10, 4],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2
 		},
@@ -4168,7 +4168,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -4192,10 +4192,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 45,
-		hd : [6, 10], //[#, die]
+		hd : [6, 10],
 		speed : "40 ft",
-		scores : [21, 8, 15, 2, 12, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [21, 8, 15, 2, 12, 6],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 11,
 		languages : "",
@@ -4205,7 +4205,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Gore",
 				ability : 1,
-				damage : [2, 8, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 8, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Charge trait"
 			}
@@ -4225,10 +4225,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 13,
-		hd : [2, 10], //[#, die]
+		hd : [2, 10],
 		speed : "60 ft",
-		scores : [16, 10, 12, 2, 11, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [16, 10, 12, 2, 11, 7],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -4238,7 +4238,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Hooves",
 				ability : 1,
-				damage : [2, 4, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 4, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -4254,10 +4254,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 52,
-		hd : [7, 10], //[#, die]
+		hd : [7, 10],
 		speed : "40 ft",
-		scores : [18, 14, 15, 3, 12, 8], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [18, 14, 15, 3, 12, 8],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 6
@@ -4271,17 +4271,17 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Claw",
 				ability : 1,
-				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Pounce trait",
-				modifiers : ["", 1, ""] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", 1, ""]
 			}, {
 				name : "Bite",
 				ability : 1,
-				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 10, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Can be used in combination with claw while pouncing (see Pounce trait)",
-				modifiers : ["", 1, ""] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", 1, ""]
 			}
 		],
 		traits : [{
@@ -4302,10 +4302,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 1,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "10 ft",
-		scores : [2, 11, 8, 1, 8, 2], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [2, 11, 8, 1, 8, 2],
+		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 10 ft",
 		passivePerception : 9,
 		languages : "",
@@ -4315,7 +4315,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Sting",
 				ability : 2,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target also takes 1d8 poison damage, half on a DC 9 Constitution saving throw"
 			}
@@ -4331,10 +4331,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 1,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "swim 20 ft",
-		scores : [1, 12, 8, 1, 10, 2], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [1, 12, 8, 1, 10, 2],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
 		languages : "",
@@ -4358,10 +4358,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 1,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "20 ft, climb 20 ft",
-		scores : [2, 14, 8, 1, 10, 2], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [2, 14, 8, 1, 10, 2],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 4
 		},
@@ -4374,10 +4374,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target also takes 1d4 poison damage, half on a DC 9 Constitution saving throw",
-				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false]
 			}
 		],
 		traits : [{
@@ -4402,10 +4402,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 2,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "10 ft, fly 40 ft",
-		scores : [4, 16, 11, 2, 8, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [4, 16, 11, 2, 8, 6],
+		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 60 ft",
 		passivePerception : 9,
 		languages : "",
@@ -4415,7 +4415,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Blood Drain",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : "The stirge attaches itself to the target, see Blood Drain trait"
 			}
@@ -4435,10 +4435,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 37,
-		hd : [5, 10], //[#, die]
+		hd : [5, 10],
 		speed : "40 ft",
-		scores : [17, 15, 14, 3, 12, 8], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [17, 15, 14, 3, 12, 8],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 6
@@ -4452,13 +4452,13 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Claw",
 				ability : 1,
-				damage : [1, 8, "slashing"], //[#, die, type] "" for die is allowed
+				damage : [1, 8, "slashing"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Pounce trait"
 			}, {
 				name : "Bite",
 				ability : 1,
-				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 10, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Can be used in combination with claw while pouncing (see Pounce trait)"
 			}
@@ -4481,10 +4481,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 5,
-		hd : [1, 8], //[#, die]
+		hd : [1, 8],
 		speed : "10 ft, fly 50 ft",
-		scores : [7, 10, 13, 2, 12, 4], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [7, 10, 13, 2, 12, 4],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -4497,7 +4497,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Beak",
 				ability : 2,
-				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : ""
 			}
@@ -4521,10 +4521,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 19,
-		hd : [3, 10], //[#, die]
+		hd : [3, 10],
 		speed : "60 ft",
-		scores : [18, 12, 13, 2, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [18, 12, 13, 2, 12, 7],
+		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 11,
 		languages : "",
@@ -4534,7 +4534,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Hooves",
 				ability : 1,
-				damage : [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "bludgeoning"],
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
 			}
@@ -4555,10 +4555,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 1,
-		hd : [1, 4], //[#, die]
+		hd : [1, 4],
 		speed : "30 ft",
-		scores : [3, 16, 8, 2, 12, 3], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [3, 16, 8, 2, 12, 3],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 5
@@ -4572,10 +4572,10 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
+				damage : [1, "", "piercing"],
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false]
 			}
 		],
 		traits : [{
@@ -4594,10 +4594,10 @@ var Base_CreatureList = {
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 11,
-		hd : [2, 8], //[#, die]
+		hd : [2, 8],
 		speed : "40 ft",
-		scores : [12, 15, 12, 3, 12, 6], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [12, 15, 12, 3, 12, 6],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
@@ -4611,7 +4611,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 2,
-				damage : [2, 4, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [2, 4, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target must succeed on a DC 11 Strength saving throw or be knocked prone"
 			}
@@ -4634,10 +4634,10 @@ var Base_CreatureList = {
 		alignment : "Neutral Evil",
 		ac : 13,
 		hp : 26,
-		hd : [4, 10], //[#, die]
+		hd : [4, 10],
 		speed : "50 ft",
-		scores : [16, 13, 13, 7, 11, 8], //[Str, Dex, Con, Int, Wis, Cha]
-		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		scores : [16, 13, 13, 7, 11, 8],
+		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
@@ -4650,7 +4650,7 @@ var Base_CreatureList = {
 		attacks : [{
 				name : "Bite",
 				ability : 1,
-				damage : [2, 6, "piercing"], //[#, die, type] "" for die is allowed
+				damage : [2, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "Target must succeed on a DC 13 Strength saving throw or be knocked prone"
 			}
