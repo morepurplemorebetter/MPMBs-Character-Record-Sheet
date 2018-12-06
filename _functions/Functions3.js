@@ -60,7 +60,9 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	if (!choiceA) choiceA = ["","",false];
 	type = type.toLowerCase();
 	// base variables
-	var FeaChoice, FeaOldChoice, tipNmExtra;
+	var FeaChoice = "";
+	var FeaOldChoice = "";
+	var tipNmExtra = "";
 	var aParent = fObjName;
 	var lvlH = Math.max(lvlA[0], lvlA[1]), lvlL = Math.min(lvlA[0], lvlA[1]);
 	var defaultUnits = What("Unit System") === "imperial";
@@ -588,9 +590,23 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxtA) {
 
 // a function to recalculate the weapon entries after a change in weapon proficiencies or CurrentEvals
 function UpdateSheetWeapons() {
+	// some atkAdd eval might be level-dependent, so force updating the weapons when changing level and such an eval is present
+	var isLvlDepAtkAdd = false;
+	// iterate through all the atkAdd evals to see if any are level-dependent, but only when changing level
+	if (CurrentUpdates.types.indexOf("xp") !== -1 && CurrentEvals.atkAdd) {
+		for (addEval in CurrentEvals.atkAdd) {
+			var evalThing = CurrentEvals.atkAdd[addEval];
+			if (typeof evalThing == 'function') evalThing = evalThing.toSource();
+			if ((/\.level/).test(evalThing)) {
+				isLvlDepAtkAdd = true;
+				break;
+			}
+		}
+	}
+
 	var CUflat = CurrentUpdates.types.toString();
-	if (!CurrentUpdates.types.length || !IsNotReset || !IsNotImport || CUflat.indexOf("attacks") == -1) return;
-	ReCalcWeapons(CurrentUpdates.types.indexOf("attacksprofs") !== -1, CurrentUpdates.types.indexOf("attacksforce") !== -1);
+	if (!isLvlDepAtkAdd && (!CurrentUpdates.types.length || !IsNotReset || !IsNotImport || CUflat.indexOf("attacks") == -1)) return;
+	ReCalcWeapons(CurrentUpdates.types.indexOf("attacksprofs") !== -1, isLvlDepAtkAdd || CurrentUpdates.types.indexOf("attacksforce") !== -1);
 }
 
 // a function to do all the default things after a change in level, class, race, feat, magic item, or companion
@@ -999,7 +1015,7 @@ function UpdateSheetDisplay() {
 	if (CurrentUpdates.types.indexOf("skills") !== -1) {
 		// get the previous skill string
 		Changes_Dialog.oldSkillStr = CurrentUpdates.skillStrOld ? CurrentUpdates.skillStrOld : "";
-		// make the attack dialog insert
+		// make the skills dialog insert
 		dialogParts.push({
 			skipType : "chSK",
 			type : "cluster",

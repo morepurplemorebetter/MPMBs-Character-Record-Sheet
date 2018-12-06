@@ -1258,7 +1258,7 @@ var Base_ClassList = {
 				name : "Font of Magic",
 				source : [["SRD", 43], ["P", 101]],
 				minlevel : 2,
-				description : "\n   " + "As a bonus action, I can use sorcery points to create spell slots and vice versa" + "\n   " + "I can convert spell slots to sorcery points at a rate of 1 point per spell slot level" + "\n   " + "I can convert sorcery points to spell slots at the following rate:" + "\n   " + "Level 1 for 2 sorcery points;   level 2 for 3 sorcery points;   level 3 for 5 sorcery points" + "\n   " + "Level 4 for 6 sorcery points;   level 5 for 7 sorcery points",
+				description : "\n   " + "As a bonus action, I can use sorcery points to create spell slots and vice versa" + "\n   " + "I can convert spell slots to sorcery points at a rate of 1 point per spell slot level" + "\n   " + "I can convert sorcery points to spell slots, which last until I finish a long rest, as follows:" + "\n   " + "Level 1 for 2 sorcery points;   level 2 for 3 sorcery points;   level 3 for 5 sorcery points" + "\n   " + "Level 4 for 6 sorcery points;   level 5 for 7 sorcery points",
 				usages : [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
 				recovery : "long rest",
 				action : ["bonus action", ""],

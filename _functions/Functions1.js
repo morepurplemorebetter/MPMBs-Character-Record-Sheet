@@ -1835,7 +1835,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		var tempPrereq = !ignorePrereqs && tempClObj.prestigeClassPrereq ? tempClObj.prestigeClassPrereq : false;
 		if (tempPrereq) {
 			if (!isNaN(tempPrereq)) {
-				tempPrereq = Number(tempPrereq) <= (level - tempLevel);
+				tempPrereq = Number(tempPrereq) <= (classes.totallevel - tempLevel);
 			} else {
 				try {
 					tempPrereq = eval(tempPrereq);
