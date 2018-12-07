@@ -3,7 +3,12 @@ var FightingStyles = {
 		name : "Archery Fighting Style",
 		description : "\n   " + "+2 bonus to attack rolls I make with ranged weapons",
 		calcChanges : {
-			atkCalc : ["if (isRangedWeapon) {output.extraHit += 2; }; ", "My ranged weapons get a +2 bonus on the To Hit."]
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isRangedWeapon) output.extraHit += 2;
+				},
+				"My ranged weapons get a +2 bonus on the To Hit."
+			]
 		}
 	},
 	defense : {
@@ -16,14 +21,29 @@ var FightingStyles = {
 		name : "Dueling Fighting Style",
 		description : "\n   " + "+2 to damage rolls when wielding a melee weapon in one hand and no other weapons",
 		calcChanges : {
-			atkCalc : ["var areOffHands = function(n){for(var i=1;i<=n;i++){if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) {return true; }; }; }(FieldNumbers.actions); if (!areOffHands && isMeleeWeapon && !isNaturalWeapon && !(/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description)) {output.extraDmg += 2; }; ", "When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."]
+			atkCalc : [
+				function (fields, v, output) {
+					for (var i = 1; i <= FieldNumbers.actions; i++) {
+						if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) return;
+					};
+					if (v.isMeleeWeapon && !v.isNaturalWeapon && !(/\b(2|two).?hand(ed)?s?\b/i).test(v.theWea.description)) output.extraDmg += 2;
+				},
+				"When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."
+			]
 		}
 	},
 	great_weapon : {
 		name : "Great Weapon Fighting Style",
 		description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands",
 		calcChanges : {
-			atkAdd : ["if (isMeleeWeapon && (/\\b(versatile|(2|two).?hand(ed)?s?)\\b/i).test(theWea.description)) {fields.Description += (fields.Description ? '; ' : '') + 'Re-roll 1 or 2 on damage die' + ((/versatile/i).test(fields.Description) ? ' when two-handed' : ''); }; ", "While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."]
+			atkAdd : [
+				function (fields, v) {
+					if (v.isMeleeWeapon && (/\b(versatile|(2|two).?hand(ed)?s?)\b/i).test(v.theWea.description)) {
+						fields.Description += (fields.Description ? '; ' : '') + 'Re-roll 1 or 2 on damage die' + ((/versatile/i).test(fields.Description) ? ' when two-handed' : '');
+					}
+				},
+				"While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."
+			]
 		}
 	},
 	protection : {
@@ -35,7 +55,12 @@ var FightingStyles = {
 		name : "Two-Weapon Fighting Style",
 		description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
 		calcChanges : {
-			atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks. If a melee weapon includes 'off-hand' or 'secondary' in its name or description, it is considered an off-hand attack."]
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isOffHand) output.modToDmg = true;
+				},
+				"When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks. If a melee weapon includes 'off-hand' or 'secondary' in its name or description, it is considered an off-hand attack."
+			]
 		}
 	}
 };
@@ -59,7 +84,11 @@ var Base_ClassList = {
 			[true, true],
 			[true, true]
 		],
-		equipment : "Barbarian starting equipment:\n \u2022 A greataxe -or- any martial melee weapon;\n \u2022 Two handaxes -or- any simple weapon;\n \u2022 An explorer's pack and four javelins.\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Barbarian starting equipment:" +
+			"\n \u2022 A greataxe -or- any martial melee weapon;" +
+			"\n \u2022 Two handaxes -or- any simple weapon;" +
+			"\n \u2022 An explorer's pack and four javelins." +
+			"\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Primal Path", ["barbarian-berserker"]],
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		features : {
@@ -77,7 +106,14 @@ var Base_ClassList = {
 				dmgres : [["Bludgeoning", "Bludgeon. (in rage)"], ["Piercing", "Piercing (in rage)"], ["Slashing", "Slashing (in rage)"]],
 				savetxt : { text : ["Adv. on Str saves in rage"] },
 				calcChanges : {
-					atkCalc : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level && (/\\brage\\b/i).test(WeaponText)) {output.extraDmg += function(n){return n < 9 ? 2 : n < 16 ? 3 : 4;}(classes.known.barbarian.level); }; ", "If I include the word 'Rage' in a melee weapon's name or description, the calculation will add my Rage's bonus damage to it."]
+					atkCalc : [
+						function (fields, v, output) {
+							if (v.isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level && (/\brage\b/i).test(v.WeaponText)) {
+								output.extraDmg += classes.known.barbarian.level < 9 ? 2 : classes.known.barbarian.level < 16 ? 3 : 4;
+							}
+						},
+						"If I include the word 'Rage' in a melee weapon's name or description, the calculation will add my Rage's bonus damage to it."
+					]
 				}
 			},
 			"unarmored defense" : {
@@ -130,7 +166,22 @@ var Base_ClassList = {
 					return n < 9 ? "" : (n < 13 ? 1 : n < 17 ? 2 : 3) + " additional di" + (n < 13 ? "" : "c") + "e"
 				}),
 				calcChanges : {
-					atkAdd : ["if (isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level > 8 && (/d\\d+/).test(fields.Damage_Die)) {var pExtraCritM = extraCritM ? extraCritM : 0; var extraCritM = pExtraCritM + function(n){return n < 13 ? 1 : n < 17 ? 2 : 3;}(classes.known.barbarian.level); if (pExtraCritM) {fields.Description = fields.Description.replace(pExtraCritM + 'd', extraCritM + 'd'); } else {fields.Description += (fields.Description ? '; ' : '') + extraCritM + fields.Damage_Die.replace(/.*(d\\d+).*/, '$1') + ' extra on a crit in melee'; }; }; ", "My melee attacks roll additional dice on a critical hit."]
+					atkAdd : [
+						function (fields, v) {
+							if (v.isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level > 8 && (/d\d+/).test(fields.Damage_Die)) {
+								var pExtraCritM = classes.known.barbarian.level < 13 ? 1 : classes.known.barbarian.level < 17 ? 2 : 3;
+								if (v.extraCritM) {
+									v.extraCritM += pExtraCritM;
+									var extraCritRegex = /\d+(d\d+ extra on a crit(ical)?( hit)? in melee)/i;
+									fields.Description = fields.Description.replace(extraCritRegex, extraCritM + '$1');
+								} else {
+									v.extraCritM = pExtraCritM;
+									fields.Description += (fields.Description ? '; ' : '') + v.extraCritM + fields.Damage_Die.replace(/.*(d\d+).*/, '$1') + ' extra on a crit in melee';
+								}
+							}
+						},
+						"My melee attacks roll additional dice on a critical hit."
+					]
 				}
 			},
 			"relentless rage" : {
@@ -186,7 +237,12 @@ var Base_ClassList = {
 		weaponProfs : [
 			[true, false, ["hand crossbow", "longsword", "rapier", "shortsword"]]
 		],
-		equipment : "Bard starting equipment:\n \u2022 A rapier -or- a longsword -or- any simple weapon;\n \u2022 A diplomat's pack -or- an entertainer's pack;\n \u2022 A lute -or- any other musical instrument\n \u2022 Leather armor and a dagger.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Bard starting equipment:" +
+			"\n \u2022 A rapier -or- a longsword -or- any simple weapon;" +
+			"\n \u2022 A diplomat's pack -or- an entertainer's pack;" +
+			"\n \u2022 A lute -or- any other musical instrument;" +
+			"\n \u2022 Leather armor and a dagger." +
+			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Bard College", ["bard-college of lore"]],
 		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : 1,
@@ -306,7 +362,13 @@ var Base_ClassList = {
 		weaponProfs : [
 			[true, false]
 		],
-		equipment : "Cleric starting equipment:\n \u2022 A mace -or- a warhammer (if proficient);\n \u2022 Scale mail -or- leather armor -or- chain mail (if proficient);\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;\n \u2022 A priest's pack -or- an explorer's pack;\n \u2022 A shield and a holy symbol.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Cleric starting equipment:" +
+			"\n \u2022 A mace -or- a warhammer (if proficient);" +
+			"\n \u2022 Scale mail -or- leather armor -or- chain mail (if proficient);" +
+			"\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;" +
+			"\n \u2022 A priest's pack -or- an explorer's pack;" +
+			"\n \u2022 A shield and a holy symbol." +
+			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Divine Domain", ["cleric-life domain"]],
 		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : 1,
@@ -392,7 +454,11 @@ var Base_ClassList = {
 		weaponProfs : [
 			[false, false, ["club", "dagger", "dart", "javelin", "mace", "quarterstaff", "scimitar", "sickle", "sling", "spear"]]
 		],
-		equipment : "Druid starting equipment:\n \u2022 A wooden shield -or- any simple weapon;\n \u2022 A scimitar -or- any simple melee weapon;\n \u2022 Leather armor, an explorer's pack, and a druidic focus.\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Druid starting equipment:" +
+			"\n \u2022 A wooden shield -or- any simple weapon;" +
+			"\n \u2022 A scimitar -or- any simple melee weapon;" +
+			"\n \u2022 Leather armor, an explorer's pack, and a druidic focus." +
+			"\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Druid Circle", ["druid-circle of the land"]],
 		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : 1,
@@ -477,7 +543,12 @@ var Base_ClassList = {
 			[true, true],
 			[true, true]
 		],
-		equipment : "Fighter starting equipment:\n \u2022 Chain mail -or- leather armor, a longbow, and 20 arrows;\n \u2022 A martial weapon and a shield -or- two martial weapons;\n \u2022 A light crossbow and 20 bolts -or- two handaxes;\n \u2022 A dungeoneer's pack -or- an explorer's pack.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Fighter starting equipment:" +
+			"\n \u2022 Chain mail -or- leather armor, a longbow, and 20 arrows;" +
+			"\n \u2022 A martial weapon and a shield -or- two martial weapons;" +
+			"\n \u2022 A light crossbow and 20 bolts -or- two handaxes;" +
+			"\n \u2022 A dungeoneer's pack -or- an explorer's pack." +
+			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Martial Archetype", ["fighter-champion"]],
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4],
 		features : {
@@ -552,7 +623,11 @@ var Base_ClassList = {
 			[true, false, ["shortsword"]],
 			[true, false, ["shortsword"]]
 		],
-		equipment : "Monk starting equipment:\n \u2022 A shortsword -or- any simple weapon;\n \u2022 A dungeoneer's pack -or- an explorer's pack;\n \u2022 10 darts.\n\nAlternatively, choose 5d4 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Monk starting equipment:" +
+			"\n \u2022 A shortsword -or- any simple weapon;" +
+			"\n \u2022 A dungeoneer's pack -or- an explorer's pack;" +
+			"\n \u2022 10 darts." +
+			"\n\nAlternatively, choose 5d4 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Monastic Tradition", ["monk-way of the open hand"]],
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		features : {
@@ -575,7 +650,23 @@ var Base_ClassList = {
 				eval : "AddString('Extra.Notes', 'Monk features:\\n\\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor\/shields', true);",
 				removeeval : "RemoveString('Extra.Notes', 'Monk features:\\n\\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor\/shields', true);",
 				calcChanges : {
-					atkAdd : ["var monkDie = function(n) {return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10;}; if (classes.known.monk && classes.known.monk.level && theWea && (theWea.monkweapon || (/shortsword/i).test(theWea.name) || (isMeleeWeapon && (/simple/i).test(theWea.type) && !(/\\b(heavy|(2|two).?hand(ed)?s?)\\b/i).test(theWea.description)))) {var aMonkDie = monkDie(classes.known.monk.level); try {var curDie = eval(fields.Damage_Die.replace('d', '*'));} catch (e) {var curDie = 'x';}; if (isNaN(curDie) || curDie < aMonkDie) {fields.Damage_Die = '1d' + aMonkDie;}; fields.Mod = StrDex;}; ", "I can use either Strength or Dexterity and my Martial Arts damage die in place of the normal damage die for any 'Monk Weapons', which include unarmed strike, shortsword, and any simple melee weapon that is not two-handed or heavy."]
+					atkAdd : [
+						function (fields, v) {
+							if (classes.known.monk && classes.known.monk.level && v.theWea && (v.theWea.monkweapon || (/shortsword/i).test(v.theWea.name) || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/\b(heavy|(2|two).?hand(ed)?s?)\b/i).test(v.theWea.description)))) {
+								var aMonkDie = function (n) { return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10; }(classes.known.monk.level);
+								try {
+									var curDie = eval(fields.Damage_Die.replace('d', '*'));
+								} catch (e) {
+									var curDie = 'x';
+								};
+								if (isNaN(curDie) || curDie < aMonkDie) {
+									fields.Damage_Die = '1d' + aMonkDie;
+								};
+								fields.Mod = v.StrDex;
+							};
+						},
+						"I can use either Strength or Dexterity and my Martial Arts damage die in place of the normal damage die for any 'Monk Weapons', which include unarmed strike, shortsword, and any simple melee weapon that is not two-handed or heavy."
+					]
 				}
 			},
 			"ki" : {
@@ -655,7 +746,14 @@ var Base_ClassList = {
 				minlevel : 6,
 				description : "\n   " + "My unarmed strikes count as magical for overcoming resistances and immunities",
 				calcChanges : {
-					atkAdd : ["if ((/unarmed strike/i).test(WeaponName)) {fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';}; ", "My unarmed strikes count as magical for overcoming resistances and immunities."]
+					atkAdd : [
+						function (fields, v) {
+							if ((/unarmed strike/i).test(v.WeaponName)) {
+								fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
+							};
+						},
+						"My unarmed strikes count as magical for overcoming resistances and immunities."
+					]
 				}
 			},
 			"evasion" : {
@@ -735,7 +833,12 @@ var Base_ClassList = {
 			[true, true],
 			[true, true]
 		],
-		equipment : "Paladin starting equipment:\n \u2022 A martial weapon and a shield -or- two martial weapons;\n \u2022 Five javelins -or- any simple melee weapon;\n \u2022 A priest's pack -or- an explorer's pack;\n \u2022 Chain mail and a holy symbol.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Paladin starting equipment:" +
+			"\n \u2022 A martial weapon and a shield -or- two martial weapons;" +
+			"\n \u2022 Five javelins -or- any simple melee weapon;" +
+			"\n \u2022 A priest's pack -or- an explorer's pack;" +
+			"\n \u2022 Chain mail and a holy symbol." +
+			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Sacred Oath", ["paladin-oath of devotion"]],
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		spellcastingFactor : 2,
@@ -829,7 +932,12 @@ var Base_ClassList = {
 				minlevel : 11,
 				description : "\n   " + "Whenever I hit a creature with a melee weapon, I do an extra 1d8 radiant damage",
 				calcChanges : {
-					atkAdd : ["if (isMeleeWeapon) {fields.Description += (fields.Description ? '; ' : '') + '+1d8 Radiant damage'; }; ", "With my melee weapon attacks I deal an extra 1d8 radiant damage."]
+					atkAdd : [
+						function (fields, v) {
+							if (v.isMeleeWeapon) fields.Description += (fields.Description ? '; ' : '') + '+1d8 Radiant damage';
+						},
+						"With my melee weapon attacks I deal an extra 1d8 radiant damage."
+					]
 				}
 			},
 			"cleansing touch" : {
@@ -867,7 +975,12 @@ var Base_ClassList = {
 			[true, true],
 			[true, true]
 		],
-		equipment : "Ranger starting equipment:\n \u2022 Scale mail -or- leather armor;\n \u2022 Two shortswords -or- two simple melee weapons;\n \u2022 A dungeoneer's pack -or- an explorer's pack;\n \u2022 A longbow and a quiver of 20 arrows.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Ranger starting equipment:" +
+			"\n \u2022 Scale mail -or- leather armor;" +
+			"\n \u2022 Two shortswords -or- two simple melee weapons;" +
+			"\n \u2022 A dungeoneer's pack -or- an explorer's pack;" +
+			"\n \u2022 A longbow and a quiver of 20 arrows." +
+			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Ranger Archetype", ["ranger-hunter"]],
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		spellcastingFactor : 2,
@@ -1110,7 +1223,12 @@ var Base_ClassList = {
 		weaponProfs : [
 			[true, false, ["hand crossbow", "longsword", "rapier", "shortsword"]]
 		],
-		equipment : "Rogue starting equipment:\n \u2022 A rapier -or- a shortsword;\n \u2022 A shortbow and a quiver of 20 arrows -or- a shortswords;\n \u2022 A burglar's pack -or- dungeoneer's pack -or- an explorer's pack;\n \u2022 Leather armor, two daggers, and thieves' tools.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Rogue starting equipment:" +
+			"\n \u2022 A rapier -or- a shortsword;" +
+			"\n \u2022 A shortbow and a quiver of 20 arrows -or- a shortswords;" +
+			"\n \u2022 A burglar's pack -or- dungeoneer's pack -or- an explorer's pack;" +
+			"\n \u2022 Leather armor, two daggers, and thieves' tools." +
+			"\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Roguish Archetype", ["rogue-thief"]],
 		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		features : {
@@ -1133,7 +1251,15 @@ var Base_ClassList = {
 					return Math.ceil(n / 2) + "d6";
 				}),
 				calcChanges : {
-					atkAdd : ["if (classes.known.rogue && classes.known.rogue.level && !isSpell && ((/\\bfinesse\\b/i).test(fields.Description) || isRangedWeapon)) {var sneakAtk = Math.ceil(classes.known.rogue.level / 2); fields.Description += (fields.Description ? '; ' : '') + 'Sneak attack ' + sneakAtk + 'd6'; }; ", "Once per turn, when I attack with a ranged or finesse weapon while I have advantage or an conscious ally is within 5 ft of the target, I can add my sneak attack damage to the attack."]
+					atkAdd : [
+						function (fields, v) {
+							if (classes.known.rogue && classes.known.rogue.level && !v.isSpell && (v.isRangedWeapon || (/\bfinesse\b/i).test(fields.Description))) {
+								v.sneakAtk = Math.ceil(classes.known.rogue.level / 2);
+								fields.Description += (fields.Description ? '; ' : '') + 'Sneak attack ' + v.sneakAtk + 'd6';
+							};
+						},
+						"Once per turn, when I attack with a ranged or finesse weapon while I have advantage or an conscious ally is within 5 ft of the target, I can add my sneak attack damage to the attack."
+					]
 				}
 			},
 			"thieves cant" : {
@@ -1224,7 +1350,12 @@ var Base_ClassList = {
 		weaponProfs : [
 			[false, false, ["dagger", "dart", "light crossbow", "quarterstaff", "sling"]]
 		],
-		equipment : "Sorcerer starting equipment:\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;\n \u2022 A component pouch -or- an arcane focus;\n \u2022 A dungeoneer's pack -or- an explorer's pack;\n \u2022 Two daggers.\n\nAlternatively, choose 3d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Sorcerer starting equipment:" +
+			"\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;" +
+			"\n \u2022 A component pouch -or- an arcane focus;" +
+			"\n \u2022 A dungeoneer's pack -or- an explorer's pack;" +
+			"\n \u2022 Two daggers." +
+			"\n\nAlternatively, choose 3d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Sorcerous Origin", ["sorcerer-draconic bloodline"]],
 		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : 1,
@@ -1338,7 +1469,12 @@ var Base_ClassList = {
 			[true, false],
 			[true, false]
 		],
-		equipment : "Warlock starting equipment:\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;\n \u2022 A component pouch -or- an arcane focus;\n \u2022 A scholar's pack -or- a dungeoneer's pack\n \u2022 Leather armor, any simple weapon, and two daggers.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Warlock starting equipment:" +
+			"\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;" +
+			"\n \u2022 A component pouch -or- an arcane focus;" +
+			"\n \u2022 A scholar's pack -or- a dungeoneer's pack;" +
+			"\n \u2022 Leather armor, any simple weapon, and two daggers." +
+			"\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Otherworldly Patron", ["warlock-the fiend"]],
 		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : "warlock1",
@@ -1380,10 +1516,16 @@ var Base_ClassList = {
 				extrachoices : ["Agonizing Blast (prereq: Eldritch Blast cantrip)", "Armor of Shadows", "Ascendant Step (prereq: level 9 warlock)", "Beast Speech", "Beguiling Influence", "Bewitching Whispers (prereq: level 7 warlock)", "Book of Ancient Secrets (prereq: Pact of the Tome)", "Chains of Carceri (prereq: level 15 warlock, Pact of the Chain)", "Devil's Sight", "Dreadful Word (prereq: level 7 warlock)", "Eldritch Sight", "Eldritch Spear (prereq: Eldritch Blast cantrip)", "Eyes of the Rune Keeper", "Fiendish Vigor", "Gaze of Two Minds", "Lifedrinker (prereq: level 12 warlock, Pact of the Blade)", "Mask of Many Faces", "Master of Myriad Forms (prereq: level 15 warlock)", "Minions of Chaos (prereq: level 9 warlock)", "Mire the Mind (prereq: level 5 warlock)", "Misty Visions", "One with Shadows (prereq: level 5 warlock)", "Otherworldly Leap (prereq: level 9 warlock)", "Repelling Blast (prereq: Eldritch Blast cantrip)", "Sculptor of Flesh (prereq: level 7 warlock)", "Sign of Ill Omen (prereq: level 5 warlock)", "Thief of Five Fates", "Thirsting Blade (prereq: level 5 warlock, Pact of the Blade)", "Visions of Distant Realms (prereq: level 15 warlock)", "Voice of the Chain Master (prereq: Pact of the Chain)", "Whispers of the Grave (prereq: level 9 warlock)", "Witch Sight (prereq: level 15 warlock)"],
 				"agonizing blast (prereq: eldritch blast cantrip)" : {
 					name : "Agonizing Blast",
-					description : "\n   " + "I can add my Charisma modifier to the damage of my Eldritch Blast cantrip",
+					description : "\n   " + "I can add my Charisma modifier to every hit with my Eldritch Blast cantrip",
 					source : [["SRD", 48], ["P", 110]],
-					eval : "var ES = (/eldritch spear/i).test(What('Extra.Notes') + What('Class Features')); RemoveWeapon('eldritch blast'); RemoveWeapon('eldritch spear'); RemoveWeapon('agonizing blast'); if (ES) {AddWeapon('Agonizing Spear')} else {AddWeapon('Agonizing Blast')}",
-					removeeval : "RemoveWeapon('agonizing blast'); RemoveWeapon('agonizing spear'); var ES = (/eldritch spear/i).test(What('Extra.Notes') + What('Class Features')); if (ES) {AddWeapon('Eldritch Spear')} else {AddWeapon('Eldritch Blast')}",
+					calcChanges : {
+						atkCalc : [
+							function (fields, v, output) {
+								if (v.WeaponName == 'eldritch blast') output.extraDmg += What('Cha Mod');
+							},
+							"I add my Charisma modifier to the damage of every beam of my Eldritch Blast cantrip."
+						]
+					},
 					prereqeval : "hasEldritchBlast"
 				},
 				"armor of shadows" : {
@@ -1500,8 +1642,14 @@ var Base_ClassList = {
 					name : "Eldritch Spear",
 					description : "\n   " + "My Eldritch Blast cantrip has a range of 300 ft",
 					source : [["SRD", 49], ["P", 111]],
-					eval : "var AB = (/agonizing blast/i).test(What('Extra.Notes') + What('Class Features')); RemoveWeapon('eldritch blast'); RemoveWeapon('eldritch spear'); RemoveWeapon('agonizing blast'); if (AB) {AddWeapon('Agonizing Spear')} else {AddWeapon('Eldritch Spear')}",
-					removeeval : "RemoveWeapon('eldritch spear'); RemoveWeapon('agonizing spear'); var AB = (/agonizing blast/i).test(What('Extra.Notes') + What('Class Features')); RemoveWeapon('eldritch blast'); if (AB) {AddWeapon('Agonizing Blast')} else {AddWeapon('Eldritch Blast')}",
+					calcChanges : {
+						atkAdd : [
+							function (fields, v) {
+								if (v.WeaponName == 'eldritch blast') fields.Range = 300 * (v.rangeM ? v.rangeM : 1) + ' ft';
+							},
+							"My Eldritch Blast cantrip has a range of 300 ft."
+						]
+					},
 					prereqeval : "hasEldritchBlast"
 				},
 				"eyes of the rune keeper" : {
@@ -1530,7 +1678,12 @@ var Base_ClassList = {
 					description : "\n   " + "My pact weapon does extra necrotic damage equal to my Charisma modifier",
 					source : [["SRD", 49], ["P", 111]],
 					calcChanges : {
-						atkCalc : ["if (isMeleeWeapon && (/\\bpact\\b/i).test(WeaponText)) { output.extraDmg += What('Cha Mod'); }; ", "If I include the word 'Pact' in a melee weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."]
+						atkCalc : [
+							function (fields, v, output) {
+								if (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText)) output.extraDmg += What('Cha Mod');
+							},
+							"If I include the word 'Pact' in a melee weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."
+						]
 					},
 					prereqeval : "classes.known.warlock.level >= 12 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the blade'"
 				},
@@ -1620,7 +1773,12 @@ var Base_ClassList = {
 					description : "\n   " + "I can have creatures hit by my Eldritch Blast cantrip be pushed 10 ft away from me",
 					source : [["SRD", 49], ["P", 111]],
 					calcChanges : {
-						atkAdd : ["if (theWea && (/eldritch blast/i).test(theWea.name)) {fields.Description += '; Target pushed back 10 ft'; }; ", "When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."]
+						atkAdd : [
+							function (fields, v) {
+								if (v.WeaponName == 'eldritch blast') fields.Description += '; Target pushed back 10 ft';
+							},
+							"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
+						]
 					},
 					prereqeval : "hasEldritchBlast"
 				},
@@ -1721,10 +1879,25 @@ var Base_ClassList = {
 				choices : ["Pact of the Blade", "Pact of the Chain", "Pact of the Tome"],
 				"pact of the blade" : {
 					name : "Pact of the Blade",
-					description : "\n   " + "As an action, I can create a pact weapon in my empty hand; I'm proficient in its use" + "\n   " + "I can choose the type of melee weapon every time I create it, and it has those statistics" + "\n   " + "The weapon disappears if it is more than 5 ft away from me for 1 minute" + "\n   " + "The weapon counts as magical; I can transform a magic weapon into my pact weapon" + "\n   " + "This occurs over an hour-long ritual that I can perform during a short rest" + "\n   " + "I can use an action to re-summon it in any form and can dismiss it as no action",
+					description : desc([
+						"As an action, I can create a pact weapon in my empty hand; I'm proficient in its use",
+						"I can choose the type of melee weapon every time I create it, and it has those statistics",
+						"The weapon disappears if it is more than 5 ft away from me for 1 minute",
+						"The weapon counts as magical; I can transform a magic weapon into my pact weapon",
+						"This occurs over an hour-long ritual that I can perform during a short rest",
+						"I can use an action to re-summon it in any form and can dismiss it as no action"
+					]),
 					action : ["action", ""],
 					calcChanges : {
-						atkAdd : ["if (WeaponName === 'moon bow' || (isMeleeWeapon && (/\\bpact\\b/i).test(WeaponText))) {fields.Proficiency = true; fields.Description += thisWeapon[1] ? '' : (fields.Description ? '; ' : '') + 'Counts as magical'; }; ", "If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."]
+						atkAdd : [
+							function (fields, v) {
+								if (v.WeaponName === 'moon bow' || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) {
+									fields.Proficiency = true;
+									if (!v.thisWeapon[1]) fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
+								};
+							},
+							"If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."
+						]
 					}
 				},
 				"pact of the chain" : {
@@ -1791,7 +1964,12 @@ var Base_ClassList = {
 		weaponProfs : [
 			[false, false, ["dagger", "dart", "light crossbow", "quarterstaff", "sling"]]
 		],
-		equipment : "Wizard starting equipment:\n \u2022 A quarterstaff -or- a dagger;\n \u2022 A component pouch -or- an arcane focus;\n \u2022 A scholar's pack -or- an explorer's pack;\n \u2022 A spellbook.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		equipment : "Wizard starting equipment:" +
+			"\n \u2022 A quarterstaff -or- a dagger;" +
+			"\n \u2022 A component pouch -or- an arcane focus;" +
+			"\n \u2022 A scholar's pack -or- an explorer's pack;" +
+			"\n \u2022 A spellbook." +
+			"\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Arcane Tradition", ["wizard-evocation"]],
 		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : 1,
@@ -1965,7 +2143,14 @@ var Base_ClassSubList = {
 					return "+" + (n < 14 ? 1 : 2) + "d8 radiant damage";
 				}),
 				calcChanges : {
-					atkAdd : ["if (classes.known.cleric && classes.known.cleric.level > 7 && !isSpell) {fields.Description += (fields.Description ? '; ' : '') + 'Once per turn +' + (classes.known.cleric.level < 14 ? 1 : 2) + 'd8 radiant damage'; }; ", "Once per turn, I can have one of my weapon attacks that hit do extra radiant damage."]
+					atkAdd : [
+						function (fields, v) {
+							if (classes.known.cleric && classes.known.cleric.level > 7 && !v.isSpell) {
+								fields.Description += (fields.Description ? '; ' : '') + 'Once per turn +' + (classes.known.cleric.level < 14 ? 1 : 2) + 'd8 radiant damage';
+							}
+						},
+						"Once per turn, I can have one of my weapon attacks that hit do extra radiant damage."
+					]
 				}
 			},
 			"subclassfeature17" : {
@@ -2090,7 +2275,15 @@ var Base_ClassSubList = {
 				minlevel : 3,
 				description : "\n   " + "I score a critical hit with my weapon attacks on a roll of 19 and 20",
 				calcChanges : {
-					atkAdd : ["if (!isSpell && classes.known.fighter && classes.known.fighter.level > 2 && classes.known.fighter.level < 15 && !CritChance) {var CritChance = 19; fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20'; }; ", "My weapon attacks score a critical on a to hit roll of both 19 and 20."]
+					atkAdd : [
+						function (fields, v) {
+							if (!v.isSpell && !v.CritChance && classes.known.fighter && classes.known.fighter.level < 15) {
+								fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20';
+								v.CritChance = 19;
+							};
+						},
+						"My weapon attacks score a critical on a to hit roll of both 19 and 20."
+					]
 				}
 			},
 			"subclassfeature7" : {
@@ -2115,7 +2308,19 @@ var Base_ClassSubList = {
 				minlevel : 15,
 				description : "\n   " + "I score a critical hit with my weapon attacks on a roll of 18, 19, and 20",
 				calcChanges : {
-					atkAdd : ["if (!isSpell && classes.known.fighter && classes.known.fighter.level > 14) {if (CritChance) {fields.Description = CritChance <= 18 ? fields.Description : fields.Description.replace('Crit on ' + CritChance + '-20', 'Crit on 18-20'); } else {fields.Description += (fields.Description ? '; ' : '') + 'Crit on 18-20'; }; var CritChance = 18; }; ", "My weapon attacks also score a critical on a to hit roll of 18."]
+					atkAdd : [
+						function (fields, v) {
+							if (v.isSpell) return;
+							if (v.CritChance && v.CritChance > 18) {
+								fields.Description = fields.Description.replace('Crit on ' + CritChance + '-20', 'Crit on 18-20');
+								v.CritChance = 18;
+							} else if (!v.CritChance) {
+								fields.Description += (fields.Description ? '; ' : '') + 'Crit on 18-20';
+								v.CritChance = 18;
+							};
+						},
+						"My weapon attacks also score a critical on a to hit roll of 18."
+					]
 				}
 			},
 			"subclassfeature18" : {
@@ -2180,7 +2385,13 @@ var Base_ClassSubList = {
 				description : "\n   " + "As an action, for 1 minute, I add my Cha modifier to hit for one weapon I'm holding" + "\n   " + "It also counts as magical and emits bright light in a 20-ft radius and equal dim light",
 				action : ["action", ""],
 				calcChanges : {
-					atkCalc : ["if (classes.known.paladin && classes.known.paladin.level > 2 && !isSpell && (/^(?=.*sacred)(?=.*weapon).*$/i).test(WeaponText)) { output.extraHit += What('Cha Mod'); }; ", "If I include the words 'Sacred Weapon' in the name or description of a weapon, it gets my Charisma modifier added to its To Hit."]
+						function (fields, v, output) {
+							if (classes.known.paladin && classes.known.paladin.level > 2 && !v.isSpell && (/^(?=.*sacred)(?=.*weapon).*$/i).test(v.WeaponText)) {
+								output.extraHit += What('Cha Mod');
+							};
+						},
+						"If I include the words 'Sacred Weapon' in the name or description of a weapon, it gets my Charisma modifier added to its To Hit."
+					]
 				}
 			},
 			"subclassfeature3.1" : {
@@ -2436,35 +2647,70 @@ var Base_ClassSubList = {
 					name : "Acid Elemental Affinity",
 					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does acid damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain acid resistance for 1 hour",
 					calcChanges : {
-						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/acid/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage."]
+						atkCalc : [
+							function (fields, v, output) {
+								if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && v.isSpell && (/acid/i).test(fields.Damage_Type)) {
+									output.extraDmg += What('Cha Mod');
+								};
+							},
+							"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage."
+						]
 					}
 				},
 				"cold" : {
 					name : "Cold Elemental Affinity",
 					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does cold damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain cold resistance for 1 hour",
 					calcChanges : {
-						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/cold/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal cold damage get my Charisma modifier added to their Damage."]
+						atkCalc : [
+							function (fields, v, output) {
+								if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && v.isSpell && (/cold/i).test(fields.Damage_Type)) {
+									output.extraDmg += What('Cha Mod');
+								};
+							},
+							"Cantrips and spell that deal cold damage get my Charisma modifier added to their Damage."
+						]
 					}
 				},
 				"fire" : {
 					name : "Fire Elemental Affinity",
 					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does fire damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain fire resistance for 1 hour",
 					calcChanges : {
-						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/fire/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal fire damage get my Charisma modifier added to their Damage."]
+						atkCalc : [
+							function (fields, v, output) {
+								if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && v.isSpell && (/fire/i).test(fields.Damage_Type)) {
+									output.extraDmg += What('Cha Mod');
+								};
+							},
+							"Cantrips and spell that deal fire damage get my Charisma modifier added to their Damage."
+						]
 					}
 				},
 				"lightning" : {
 					name : "Lightning Elemental Affinity",
 					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does lightning damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain lightning resistance for 1 hour",
 					calcChanges : {
-						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/lightning/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal lightning damage get my Charisma modifier added to their Damage."]
+						atkCalc : [
+							function (fields, v, output) {
+								if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && v.isSpell && (/lightning/i).test(fields.Damage_Type)) {
+									output.extraDmg += What('Cha Mod');
+								};
+							},
+							"Cantrips and spell that deal lightning damage get my Charisma modifier added to their Damage."
+						]
 					}
 				},
 				"poison" : {
 					name : "Poison Elemental Affinity",
 					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does poison damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain poison resistance for 1 hour",
 					calcChanges : {
-						atkCalc : ["if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/poison/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); }; ", "Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."]
+						atkCalc : [
+							function (fields, v, output) {
+								if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && v.isSpell && (/poison/i).test(fields.Damage_Type)) {
+									output.extraDmg += What('Cha Mod');
+								};
+							},
+							"Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."
+						]
 					}
 				},
 				eval : function () {

@@ -744,37 +744,11 @@ var Base_WeaponsList = {
 		type : "Cantrip",
 		damage : ["C", 8, "necrotic"],
 		range : "120 ft",
-		description : "Target can't regain HP and undead dis. on attacks vs. me, until my next turn (PHB 221)",
+		description : "Target can't regain HP; Undead dis. on attacks vs. me until my next turn (PHB 221)",
 		abilitytodamage : false
 	},
-	"agonizing blast" : { //Eldritch Blast (Agonizing Blast)
-		regExpSearch : /^(?!.*spear)(?=.*agonizing)(?=.*blast).*$/i,
-		name : "Agonizing Blast",
-		source : [["SRD", 139], ["P", 237]],
-		list : "spell specific",
-		ability : 6,
-		type : "Cantrip",
-		damage : ["C\u00D7" + 1, 10, "force"],
-		range : "120 ft",
-		description : "Each d10 is a separate beam requiring separate rolls (PHB 237)",
-		abilitytodamage : true,
-		SpellsList : "eldritch blast"
-	},
-	"agonizing spear" : { //Eldritch Blast (Agonizing Blast & Eldritch Spear)
-		regExpSearch : /^(?=.*agonizing)(?=.*spear).*$/i,
-		name : "Agonizing Spear",
-		source : [["SRD", 139], ["P", 237]],
-		list : "spell specific",
-		ability : 6,
-		type : "Cantrip",
-		damage : ["C\u00D7" + 1, 10, "force"],
-		range : "300 ft",
-		description : "Each d10 is a separate beam requiring separate rolls (PHB 237)",
-		abilitytodamage : true,
-		SpellsList : "eldritch blast"
-	},
 	"eldritch blast" : {
-		regExpSearch : /^(?!.*agonizing)(?!.*spear)(?=.*eldritch)(?=.*blast).*$/i,
+		regExpSearch : /(agonizing|eldritch|repelling).(spear|blast)/i,
 		name : "Eldritch Blast",
 		source : [["SRD", 139], ["P", 237]],
 		list : "spell",
@@ -784,19 +758,6 @@ var Base_WeaponsList = {
 		range : "120 ft",
 		description : "Each d10 is a separate beam requiring separate rolls (PHB 237)",
 		abilitytodamage : false
-	},
-	"eldritch spear" : { //Eldritch Blast (Eldritch Spear)
-		regExpSearch : /^(?!.*agonizing)(?=.*eldritch)(?=.*spear).*$/i,
-		name : "Eldritch Spear",
-		source : [["SRD", 139], ["P", 237]],
-		list : "spell specific",
-		ability : 6,
-		type : "Cantrip",
-		damage : ["C\u00D7" + 1, 10, "force"],
-		range : "300 ft",
-		description : "Each d10 is a separate beam requiring separate rolls (PHB 237)",
-		abilitytodamage : false,
-		SpellsList : "eldritch blast"
 	},
 	"fire bolt" : {
 		regExpSearch : /^(?=.*fire)(?=.*bolt).*$/i,

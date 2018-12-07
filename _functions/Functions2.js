@@ -3595,7 +3595,6 @@ function setLifeStyle(input) {
 
 // update all the level-dependent features for the ranger companions on the companion pages
 function UpdateRangerCompanions(newLvl) {
-	console.println("UpdateRangerCompanions was called..."); // DEBUGGING!!!
 	if (ClassList.rangerua && !testSource("rangerua", ClassList.rangerua, "classExcl")) {
 		UpdateRevisedRangerCompanions(newLvl);
 		return;
@@ -3628,7 +3627,8 @@ function UpdateRangerCompanions(newLvl) {
 
 	newLvl = newLvl !== undefined ? newLvl : Number(What("Character Level"));
 	var deleteIt = newLvl === 0;
-	var newLvlProfB = newLvl ? ProficiencyBonusList[Math.min(newLvl-1,ProficiencyBonusList.length-1)] : 0;
+
+	var newLvlProfB = newLvl ? ProficiencyBonusList[Math.min(newLvl, ProficiencyBonusList.length) - 1] : 0;
 	var RangerLvl = deleteIt || (!classes.known.ranger && !classes.known["spell-less ranger"]) ? newLvl : (classes.known.ranger ? classes.known.ranger.level : 0) + (classes.known["spell-less ranger"] ? classes.known["spell-less ranger"].level : 0);
 	var newLvlText = theText(RangerLvl);
 	var AScompA = What("Template.extras.AScomp").split(",").splice(1);
@@ -3649,7 +3649,7 @@ function UpdateRangerCompanions(newLvl) {
 			var remLvl = Who(prefix + "Companion.Remember").split(",");
 			var oldLvl = Number(remLvl[0]);
 			var RangerLvlOld = remLvl[1] !== undefined ? Number(remLvl[1]) : 0;
-			var oldLvlProfB = oldLvl ? ProficiencyBonusList[Math.min(oldLvl-1,ProficiencyBonusList.length-1)] : 0;
+			var oldLvlProfB = oldLvl ? ProficiencyBonusList[Math.min(oldLvl, ProficiencyBonusList.length) - 1] : 0;
 			var diff = newLvlProfB - oldLvlProfB;
 			var BlueTextArrayAdd = [];
 			var BlueTextArrayRemove = [];
@@ -4533,7 +4533,7 @@ function UpdateRevisedRangerCompanions(newLvl) {
 
 	newLvl = newLvl !== undefined ? newLvl : Number(What("Character Level"));
 	var deleteIt = newLvl === 0;
-	var newLvlProfB = newLvl ? ProficiencyBonusList[Math.min(newLvl-1,ProficiencyBonusList.length-1)] : 0;
+	var newLvlProfB = newLvl ? ProficiencyBonusList[Math.min(newLvl, ProficiencyBonusList.length) - 1] : 0;
 	var RangerLvl = deleteIt || !classes.known.rangerua ? newLvl : classes.known.rangerua.level;
 	var newLvlText = theText(RangerLvl);
 	var newLvlFea = theFeature(RangerLvl);
@@ -4559,7 +4559,7 @@ function UpdateRevisedRangerCompanions(newLvl) {
 			var remLvl = Who(prefix + "Companion.Remember").split(",");
 			var oldLvl = Number(remLvl[0]);
 			var RangerLvlOld = remLvl[1] !== undefined ? Number(remLvl[1]) : 0;
-			var oldLvlProfB = oldLvl ? ProficiencyBonusList[Math.min(oldLvl-1,ProficiencyBonusList.length-1)] : 0;
+			var oldLvlProfB = oldLvl ? ProficiencyBonusList[Math.min(oldLvl, ProficiencyBonusList.length) - 1] : 0;
 			var diff = newLvlProfB - oldLvlProfB;
 
 			//add ranger's prof to attacks damage fields
@@ -5320,12 +5320,9 @@ function PatreonStatement() {
 function addEvals(evalObj, NameEntity, Add) {
 	if (!evalObj) return;
 
-	// set the CurrentUpdates object
-	if ((evalObj.atkCalc || evalObj.atkAdd) && CurrentUpdates.atkStrOld == undefined) {
-		if (evalObj.atkAdd) CurrentUpdates.types.push("attacksforce");
-		CurrentUpdates.types.push("atkstr");
-		CurrentUpdates.atkStrOld = StringAttackEvals();
-	}
+	// set the CurrentUpdates object for the attack Evals
+	if ((evalObj.atkAdd || evalObj.atkCalc) && CurrentUpdates.atkStrOld == undefined) CurrentUpdates.atkStrOld = StringEvals("atkStr");
+	if (evalObj.atkAdd) CurrentUpdates.types.push("attacksforce");
 
 	// make the changes to the CurrentEvals object
 	var atkStr = "";
@@ -5333,13 +5330,14 @@ function addEvals(evalObj, NameEntity, Add) {
 	for (var i = 0; i < atkTypes.length; i++) {
 		var atkT = atkTypes[i];
 		if (!evalObj[atkT]) continue;
+		var atkIsArray = isArray(evalObj[atkT]);
 		// add the descriptive text
-		if (evalObj[atkT][1]) atkStr += "\n - " + evalObj[atkT][1];
+		if (atkIsArray && evalObj[atkT][1]) atkStr += "\n - " + evalObj[atkT][1];
 		// set the function
 		if (Add) {
 			if (!CurrentEvals[atkT]) CurrentEvals[atkT] = {};
-			CurrentEvals[atkT][NameEntity] = evalObj[atkT][0];
-		} else if (CurrentEvals[atkT][NameEntity]) {
+			CurrentEvals[atkT][NameEntity] = atkIsArray ? evalObj[atkT][0] : evalObj[atkT];
+		} else if (CurrentEvals[atkT] && CurrentEvals[atkT][NameEntity]) {
 			delete CurrentEvals[atkT][NameEntity];
 		}
 	};
@@ -5348,12 +5346,14 @@ function addEvals(evalObj, NameEntity, Add) {
 		if (Add) {
 			if (!CurrentEvals.atkStr) CurrentEvals.atkStr = {};
 			CurrentEvals.atkStr[NameEntity] = atkStr;
-		} else if (CurrentEvals.atkStr[NameEntity]) {
+		} else if (CurrentEvals.atkStr && CurrentEvals.atkStr[NameEntity]) {
 			delete CurrentEvals.atkStr[NameEntity];
 		}
+		// as the descriptive text changed, show it in the changes dialog
+		CurrentUpdates.types.push("atkstr");
 	}
 
-	//do the stuff for the hp calculations
+	// do the stuff for the hp calculations
 	if (evalObj.hp) {
 		if (Add) {
 			if (!CurrentEvals.hp) CurrentEvals.hp = {};
@@ -5364,16 +5364,45 @@ function addEvals(evalObj, NameEntity, Add) {
 		CurrentUpdates.types.push("hp");
 	};
 
+
+	// add a spell list change function
+	if (evalObj.spellList) {
+		// first save the current string to the CurrentUpdates
+		if (CurrentUpdates.spellListStrOld == undefined) CurrentUpdates.spellListStrOld = StringEvals("spellListStr");
+		// change the CurrentEvals object
+		var spIsArray = isArray(evalObj.spellList);
+		var stringChange = false;
+		if (Add) {
+			if (!CurrentEvals.spellList) CurrentEvals.spellList = { };
+			CurrentEvals.spellList[NameEntity] = spIsArray ? evalObj.spellList[0] : evalObj.spellList;
+			if (spIsArray && evalObj.spellList[1]) {
+				if (!CurrentEvals.spellListStr) CurrentEvals.spellListStr = {};
+				CurrentEvals.spellListStr[NameEntity] = "\n" + evalObj.spellList[1];
+				stringChange = true;
+			}
+		} else {
+			if (CurrentEvals.spellList && CurrentEvals.spellList[NameEntity]) {
+				delete CurrentEvals.spellList[NameEntity];
+			}
+			if (CurrentEvals.spellListStr && CurrentEvals.spellListStr[NameEntity]) {
+				delete CurrentEvals.spellListStr[NameEntity];
+				stringChange = true;
+			}
+		}
+		// If the descriptive text changed, show it in the changes dialog
+		if (stringChange) CurrentUpdates.types.push("spellliststr");
+	}
+
 	if (!Add) CurrentEvals = CleanObject(CurrentEvals); // remove any remaining empty objects
 	SetStringifieds("evals"); //now set this global variable to its field for safekeeping
 };
 
 // make a string of all the things affecting the attack calculations
-function StringAttackEvals() {
-	if (!CurrentEvals.atkStr) return "";
+function StringEvals(type) {
+	if (!type || !CurrentEvals[type]) return "";
 	var txt = [];
-	for (var str in CurrentEvals.atkStr) {
-		txt.push(toUni(str) + CurrentEvals.atkStr[str]);
+	for (var str in CurrentEvals[type]) {
+		txt.push(toUni(str) + CurrentEvals[type][str]);
 	}
 	return txt.join("\n\n");
 }
@@ -5437,7 +5466,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		var theOldAmmo = WeaponsList[oldWea].ammo;
 		var tempFound = false;
 		for (var j = 0; j < CurrentWeapons.known.length; j++) {
-			jWeapon = WeaponsList[CurrentWeapons.known[j][0]];
+			var jWeapon = WeaponsList[CurrentWeapons.known[j][0]];
 			if (jWeapon && jWeapon.ammo && jWeapon.ammo === theOldAmmo) {
 				tempFound = true;
 				break;
@@ -5483,17 +5512,28 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			(/finesse/i).test(theWea.description) ? StrDex : theWea.ability;
 
 		//change mod if this is concerning a spell/cantrip
-		if (thisWeapon[3] && thisWeapon[4].length) {
-			var abiArr = thisWeapon[4].map( function(sClass) {
-				return CurrentSpells[sClass] && CurrentSpells[sClass].ability ? CurrentSpells[sClass].ability : 0;
-			});
+		if (thisWeapon[3]) {
+			if (thisWeapon[4].length) {
+				var abiArr = thisWeapon[4].map( function(sClass) {
+					return CurrentSpells[sClass] && CurrentSpells[sClass].ability ? CurrentSpells[sClass].ability : 0;
+				});
+			} else {
+				// the spell is not known by any class, so just gather the ability scores from all spellcasting entries so we can select the highest
+				var abiArr = [];
+				for (var aCast in CurrentSpells) {
+					if (CurrentSpells[aCast].ability) abiArr.push(CurrentSpells[aCast].ability);
+				}
+			}
+			var abiDone = [];
 			var abiModArr = [];
-			abiArr.forEach(function (abiNmbr) {
-				var thisMod = What(AbilityScores.abbreviations[abiNmbr - 1]);
-				if (thisMod > Math.max.apply(Math, abiModArr)) fields.Mod = abiNmbr;
+			for (var i = 0; i < abiArr.length; i++) {
+				if (!abiArr[i] || abiDone.indexOf(abiArr[i]) !== -1) continue;
+				abiDone.push(abiArr[i]);
+				var thisMod = What(AbilityScores.abbreviations[abiArr[i] - 1]);
+				if (thisMod > Math.max.apply(Math, abiModArr)) fields.Mod = abiArr[i];
 				abiModArr.push(thisMod);
-			});
-		};
+			}
+		}
 
 		if (theWea.ammo) fields.Ammo = theWea.ammo; //add ammo
 
@@ -5508,14 +5548,26 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 			var isNaturalWeapon = !isSpell && (/natural/i).test(theWea.type);
 
+			var gatherVars = {
+				WeaponText : WeaponText,
+				isDC : isDC,
+				isSpell : isSpell,
+				isMeleeWeapon : isMeleeWeapon,
+				isRangedWeapon : isRangedWeapon,
+				isNaturalWeapon : isNaturalWeapon,
+				theWea : theWea,
+				StrDex : StrDex,
+				WeaponName : WeaponName,
+				thisWeapon : thisWeapon
+			}
+
 			for (var addEval in CurrentEvals.atkAdd) {
 				var evalThing = CurrentEvals.atkAdd[addEval];
 				try {
 					if (typeof evalThing == 'string') {
 						eval(evalThing);
 					} else if (typeof evalThing == 'function') {
-						var runFunction = eval(evalThing.toSource());
-						runFunction();
+						evalThing(fields, gatherVars);
 					}
 				} catch (error) {
 					var eText = "The custom ApplyWeapon/atkAdd script '" + addEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
@@ -5526,7 +5578,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			}
 		};
 	};
-
+	
 	// apply the values to the fields only if we need to either reset the fields or a weapon was found
 	if (onlyProf) {
 		Checkbox(fldBase + "Proficiency", fields.Proficiency);
@@ -5576,7 +5628,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			};
 		};
 	};
-	if (QI && ((event.target && fldName === event.target.name) || Number(fldNmbr) === FieldNumbers.attacks)) SetOffHandAction();
+	//if (QI && ((event.target && fldName == event.target.name) || Number(fldNmbr) === FieldNumbers.attacks)) SetOffHandAction();
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
@@ -5638,7 +5690,10 @@ function CalcAttackDmgHit(fldName) {
 
 		// see if this is a off-hand attack and the modToDmg shouldn't be use
 		var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText);
-		CurrentWeapons.offHands[ArrayNmbr] = isOffHand;
+		if (CurrentWeapons.offHands[ArrayNmbr] !== isOffHand) {
+			CurrentWeapons.offHands[ArrayNmbr] = isOffHand;
+			SetOffHandAction();
+		}
 		if (isOffHand) output.modToDmg = output.mod < 0;
 
 		//add the BlueText field value of the corresponding spellcasting class
@@ -5653,14 +5708,27 @@ function CalcAttackDmgHit(fldName) {
 
 		// now run the code that was added by class/race/feat
 		if (CurrentEvals.atkCalc) {
+
+			var gatherVars = {
+				WeaponText : WeaponText,
+				isDC : isDC,
+				isSpell : isSpell,
+				isMeleeWeapon : isMeleeWeapon,
+				isRangedWeapon : isRangedWeapon,
+				isNaturalWeapon : isNaturalWeapon,
+				theWea : theWea,
+				WeaponName : WeaponName,
+				thisWeapon : thisWeapon,
+				isOffHand : isOffHand
+			}
+
 			for (var calcEval in CurrentEvals.atkCalc) {
 				var evalThing = CurrentEvals.atkCalc[calcEval];
 				try {
 					if (typeof evalThing == 'string') {
 						eval(evalThing);
 					} else if (typeof evalThing == 'function') {
-						var runFunction = eval(evalThing.toSource());
-						runFunction();
+						evalThing(fields, gatherVars, output);
 					}
 				} catch (error) {
 					var eText = "The custom CalcAttackDmgHit/atkCalc script '" + calcEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";

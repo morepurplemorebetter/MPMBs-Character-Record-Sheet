@@ -921,7 +921,8 @@ function UpdateSheetDisplay() {
 	// if the spellcasting changed
 	var CurrentSpellsLen = ObjLength(CurrentSpells);
 	var hasSpellSheets = isTemplVis("SSfront", false) || isTemplVis("SSmore", false);
-	var changedSpellcasting = CurrentUpdates.types.indexOf("spells") !== -1 || (!CurrentSpellsLen && CurrentUpdates.types.indexOf("testclassspellcasting") !== -1);
+	var changedSpellList = CurrentUpdates.types.indexOf("spellliststr") !== -1;
+	var changedSpellcasting = CurrentUpdates.types.indexOf("spells") !== -1 || (CurrentSpellsLen && changedSpellList) || (!CurrentSpellsLen && CurrentUpdates.types.indexOf("testclassspellcasting") !== -1);
 	// if there is no spellcastingBonus added, but change in spellcasting level was detected, see if a spellcasting class changed level and would require a new spell sheet
 	if (!changedSpellcasting && CurrentUpdates.types.indexOf("testclassspellcasting") !== -1) {
 		for (var theCaster in CurrentSpells) {
@@ -958,10 +959,13 @@ function UpdateSheetDisplay() {
 	};
 	if (changedSpellcasting && ((!CurrentSpellsLen && hasSpellSheets) || CurrentSpellsLen)) {
 		// see if not all spellcasting stuff has been removed
-		var strSpells = CurrentSpellsLen ?
-			"A change to spellcasting has been detected that require the Spell Sheets to be updated.\nTIP: if you plan to make more changes affecting spellcasting, do those first before generating Spell Sheets, because creating them takes very long." :
-			"All spellcasting abilities have been removed from the character.\nYou might want to remove any Spell Sheets as well.";
+		var strSpells = !CurrentSpellsLen ?
+			"All spellcasting abilities have been removed from the character.\nYou might want to remove any Spell Sheets as well." :
+			"A change to spellcasting" +
+			(changedSpellList ? " and how spell lists are generated" : "") +
+			" has been detected that require the Spell Sheets to be updated.\nTIP: if you plan to make more changes affecting spellcasting, do those first before generating Spell Sheets, because creating them takes very long.";
 		var buttonSpells = !CurrentSpellsLen ? "Remove Spell Sheets" : (hasSpellSheets ? "Update" : "Create") + " Spell Sheets";
+		var buttonSpellListStr = changedSpellList ? "Spell List(s) Changes" : "Affecting Spell List(s)";
 		// make the Spells dialog insert
 		dialogParts.push({
 			skipType : "chSP",
@@ -983,9 +987,17 @@ function UpdateSheetDisplay() {
 					wrap_name : true,
 					name : strSpells
 				}, {
-					type : "button",
-					item_id : "bSPo",
-					name : buttonSpells
+					type : "view",
+					align_children : "align_right",
+					elements : (changedSpellList || CurrentEvals.spellListStr ? [{
+						type : "button",
+						item_id : "bSPs",
+						name : buttonSpellListStr
+					}] : []).concat([{
+						type : "button",
+						item_id : "bSPo",
+						name : buttonSpells
+					}])
 				}]
 			}, {
 				type : "check_box",
@@ -1009,6 +1021,23 @@ function UpdateSheetDisplay() {
 				RemoveSpellSheets();
 			}
 		};
+		if (changedSpellList || CurrentEvals.spellListStr) {
+			Changes_Dialog.oldSpellListStr = CurrentUpdates.spellListStrOld ? CurrentUpdates.spellListStrOld : "";
+			Changes_Dialog.spellListStrChange = changedSpellList;
+			Changes_Dialog.bSPs = function (dialog) {
+				ShowCompareDialog(
+					["Things affecting spell list generation", "Some things might affect how a spell list for a spellcasting class or feature is generated, by adding extra spells to choose from for example."],
+					this.spellListStrChange ?
+					[
+						["Old spell list manipulations", this.oldSpellListStr],
+						["New spell list manipulations", StringEvals("spellListStr")]
+					] : [
+						["Spell list manipulations", StringEvals("spellListStr")]
+					],
+					true
+				);
+			};
+		}
 	}
 
 	// if skill proficiencies changed
@@ -1102,7 +1131,7 @@ function UpdateSheetDisplay() {
 				["Things affecting attack calculations", "You can always see what things are affecting the attack calculations with the small buttons in front of each attack entry on the first page."],
 				[
 					["Old attack manipulations", this.oldAtkStr],
-					["New attack manipulations", StringAttackEvals()]
+					["New attack manipulations", StringEvals("atkStr")]
 				],
 				true
 			);
@@ -1230,6 +1259,8 @@ NEW ATTRIBUTES
 	limfeaname // Optional; If defined it is used for populating the limited feature section and the action section instead of `name`
 	scorestxt // Optional; String; If defined it is used for the text in the Ability Score dialog and tooltips. If not defined, but 'scores' is defined, 'scores' will be used to generate a text
 	scoresOverride // Optional; Array; works same as scores, but are used to populate the "Magical Override" column; If you are providing both 'scores' and 'scoresOverride' you should also give a 'scorestxt', as the auto-generated tooltip text doesn't work if you have both 'scores' and 'scoresOverride'
+	
+	calcChanges.spellList // Optional; an array with the first entry being a function, and the second entry being a descriptive text. This attribute can change the spell list created for a class / race / feat
 
 CHANGED ATTRIBUTES
 	armorProfs // Optional; Array; armor proficiencies to add [previous just 'armor']
@@ -1300,8 +1331,8 @@ CHANGED ATTRIBUTES
 	eval // can now be a function
 	removeeval // can now be a function
 	changeeval // can now be a function
-	calcChanges.atkAdd[0] // the first entry of the array can now be a function
-	calcChanges.atkCalc[0] // the first entry of the array can now be a function
+	calcChanges.atkAdd[0] // the first entry of the array can now be a function (but has parameters!)
+	calcChanges.atkCalc[0] // the first entry of the array can now be a function (but has parameters!)
 	calcChanges.hp // can now be a function
 
 	armor // replaced with armorProfs (so it is more clear)

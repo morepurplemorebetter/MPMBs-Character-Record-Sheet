@@ -669,7 +669,7 @@ function SetSpellCheckbox() {
 }
 
 //generate a list of all the spells; if toDisplay = true it means this is meant for the drop-down boxes
-function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
+function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objName, objType) {
 	if (typeof inputObject === "string") {
 		if (ClassList[inputObject] && ClassList[inputObject].spellcastingList) {
 			inputObject = ClassList[inputObject].spellcastingList;
@@ -678,7 +678,31 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 		} else {
 			inputObject = {class : inputObject};
 		};
-	};
+	} else {
+		inputObject = eval(inputObject.toSource());
+	}
+	if (!inputObject.extraspells) inputObject.extraspells = [];
+	if (extraArray) inputObject.extraspells = inputObject.extraspells.concat(extraArray);
+
+	//first run the custom code injected by a feature
+	if (CurrentEvals.spellList && objName  !== undefined && objType !== undefined) {
+		for (var spellListEval in CurrentEvals.spellList) {
+			var evalThing = CurrentEvals.spellList[spellListEval];
+			try {
+				if (typeof evalThing == 'function') {
+					evalThing(inputObject, objName, objType);
+				} else {
+					throw "Not a function";
+				}
+			} catch (error) {
+				var eText = "The custom ApplyWeapon/atkAdd script '" + addEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				console.println(eText);
+				console.show();
+			}
+		}
+	}
+	
 	//define some arrays
 	var returnArray = [];
 	var spByLvl = {sp0 : [], sp1 : [], sp2 : [], sp3 : [], sp4 : [], sp5 : [], sp6 : [], sp7 : [], sp8 : [], sp9 : [], ps0 : [], ps1: []};
@@ -739,7 +763,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered) {
 		if (addSp && inputObject.psionic !== undefined) {
 			addSp = aSpell.psionic ? aSpell.psionic == inputObject.psionic : !inputObject.psionic;
 		}
-		if (addSp || (inputObject.extraspells && inputObject.extraspells.indexOf(key) !== -1) || (extraArray && extraArray.indexOf(key) !== -1)) {
+		if (addSp || inputObject.extraspells.indexOf(key) !== -1) {
 			var SpPs = !aSpell.psionic ? "sp" : "ps";
 			var spName = getSpNm(key);
 			if (refspObj[spName]) { // if another spell with the same name has been added already, see which one the sheet will use
@@ -2999,29 +3023,39 @@ function AskUserSpellSheet() {
 		dia.levelSp = maxSpell;
 		dia.header = spCast.shortname ? spCast.shortname : spCast.name; //the name in the dialog's header
 		dia.fullname = spCast.name + (spCast.level ? ", level " + spCast.level : ""); //the full name of the feature including level
-		if (spCast.list) {
+		if (spCast.list && spCast.known) {
 			var GoAhead = true;
 			var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
 
 			//see what spell section to activate
+			dia.nmbrSp = !spCast.known.spells ? 0 : isArray(spCast.known.spells) ? spCast.known.spells[Math.min(spCast.known.spells.length, spCast.level) - 1] : isNaN(spCast.known.spells) ? 0 : Number(spCast.known.spells); //set the amount of spells
+			dia.nmbrSp = !isNaN(dia.nmbrSp) ? dia.nmbrSp : 18; //if spells known is not a number, set the dialog to the max of 18
+			dia.typeSp = spCast.typeSp ? spCast.typeSp : "known"; //set the type of spells (book, list, known)
+			dia.showSp = dia.nmbrSp !== 0; //show the spells section
+			dia.offsetSp = spCast.offsetSp ? spCast.offsetSp : 0; //set the manually added spells
+			dia.selectSp = spCast.selectSp ? spCast.selectSp : []; //set the spells already selected
+
+			//now also do this for the cantrips
 			if (spCast.known.cantrips) {
 				dia.showCa = true; //show the cantrips section
 				dia.nmbrCa = isArray(spCast.known.cantrips) ? spCast.known.cantrips[Math.min(spCast.known.cantrips.length, spCast.level) - 1] : spCast.known.cantrips; //set the amount of cantrips
 				dia.offsetCa = spCast.offsetCa ? spCast.offsetCa : 0; //set the manually added cantrips
 				dia.selectCa = spCast.selectCa ? spCast.selectCa : []; //set the cantrips already selected
 
-				//now to create the lists
-				spCast.list.level = [0, spListLevel && spListLevel[1] ? 1 : 0]; //set the list level to 0 // do it like this so that school restrictions are ignored, if applicable
-				var listCaRef = CreateSpellList(spCast.list, true, false, true)[0]; //create an array of all the cantrips
-				dia.listCa = CreateSpellObject(listCaRef ? listCaRef : []); //create the cantrip popup object
+				// Create the lists
+				// Set the list level to 0 so that school restrictions are ignored, if applicable
+				spCast.list.level = [0, spListLevel && spListLevel[1] ? 1 : 0]; 
+				// Create an array of all the cantrips, and only cantrips
+				var listCaRef = CreateSpellList(spCast.list, true, false, true, aCast, spCast.typeSp)[0];
+				// Create the cantrip popup object
+				dia.listCa = CreateSpellObject(listCaRef ? listCaRef : []);
 			} else {
 				dia.showCa = false; //hide the cantrip section
 			}
-			//now also do this for the spells
-			dia.nmbrSp = spCast.known.spells === undefined ? "" : isArray(spCast.known.spells) ? spCast.known.spells[Math.min(spCast.known.spells.length, spCast.level) - 1] : spCast.known.spells; //set the amount of spells
-			dia.typeSp = dia.nmbrSp === "" ? "" : isNaN(dia.nmbrSp) ? dia.nmbrSp : "known"; //set the type of spells (book, list, known)
-			dia.nmbrSp = !isNaN(dia.nmbrSp) ? dia.nmbrSp : 18; //if spells known is not a number, set the dialog to the max of 18
-			dia.showSpRadio = !isPsionics && (/list|book|known/i).test(dia.typeSp); //show the spell radio buttons if concerning a level-dependent spellcaster (classes)
+
+			//show the spell radio buttons if concerning a level-dependent spellcaster (classes)
+			dia.showSpRadio = !isPsionics && (/list|book|known/i).test(dia.typeSp);
+
 			if (dia.showSpRadio) { // set the name of the radio buttons and set the selection
 				if (spCast.level) {
 					var SpellLevel = maxSpell;
@@ -3038,16 +3072,19 @@ function AskUserSpellSheet() {
 				};
 				dia.selectSpRadio = spCast.typeList ? spCast.typeList : spCast.level ? 1 : 2;
 			};
-			dia.showSp = dia.typeSp !== "list" && dia.typeSp !== ""; //show the spells section
-			dia.offsetSp = spCast.offsetSp ? spCast.offsetSp : 0; //set the manually added spells
-			dia.selectSp = spCast.selectSp ? spCast.selectSp : []; //set the spells already selected
+
+			//now to create the lists to select spells from, if not a caster that knows all spells on its list
 			if (dia.typeSp !== "list") {
-				//now to create the lists to select spells from
-				spCast.list.level = [1, spListLevel ? spListLevel[1] : 9]; //set the list level to 1 to max set before
-				var listSpRef = CreateSpellList(spCast.list, true, spCast.extra && spCast.extra[100] !== "AddToKnown" ? spCast.extra : false); //create an array of all the spells
-				dia.listSp = CreateSpellObject(listSpRef); //create the spell popup object
+				//set the list level to 1 to max set before
+				spCast.list.level = [1, spListLevel ? spListLevel[1] : 9];
+				// create an array of all the spells
+				var listSpRef = CreateSpellList(spCast.list, true, spCast.extra && spCast.extra[100] !== "AddToKnown" ? spCast.extra : false, false, aCast, spCast.typeSp);
+				// Create the spell popup object
+				dia.listSp = CreateSpellObject(listSpRef);
 			}
-			if (spListLevel) { //put that level list back in the right variable
+			
+			// put that level list back in the right variable
+			if (spListLevel) {
 				spCast.list.level = spListLevel;
 			} else {
 				delete spCast.list.level;
@@ -3290,11 +3327,11 @@ function AskUserSpellSheet() {
 				if (spCast.selectSp) {
 					var selectedSpells = spCast.selectSp;
 					if (spCast.selectSpSB) selectedSpells = selectedSpells.concat(spCast.selectSpSB); //add the spells from the extra spellbook dialog
-					var listPrepRef = CreateSpellList({spells : selectedSpells}, true); //create an array of all the spells that can be prepared at this level
+					var listPrepRef = CreateSpellList({spells : selectedSpells}, true); //create an array of all the spells that can be prepared from the spells selected in the previous dialog
 				} else {
 					var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
 					spCast.list.level = [1, maxSpell]; //set the list level to 1 to max level able to cast
-					var listPrepRef = CreateSpellList(spCast.list, true); //create an array of all the spells that can be prepared at this level
+					var listPrepRef = CreateSpellList(spCast.list, true, false, false, aCast, spCast.typeSp); //create an array of all the spells that can be prepared at this level
 					if (spListLevel) { //put that list level back in the right variable
 						spCast.list.level = spListLevel;
 					} else {
@@ -3496,7 +3533,11 @@ function GenerateSpellSheet(GoOn) {
 		if (spCast.typeList === 4 || (spCast.typeSp === "list" && spCast.typeList !== 3)) {
 			var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
 			spCast.list.level = [spCast.typeList === 4 ? 0 : 1, spCast.typeList !== 4 && spListLevel ? spListLevel[1] : 9]; //set the list level to generate
-			fullSpellList = fullSpellList.concat(CreateSpellList(spCast.list)); //add the full spell list of the class
+
+			//add the full spell list of the class
+			var fullClassSpellList = CreateSpellList(spCast.list, false, false, false, CurrentCasters.incl[i], spCast.typeSp);
+			fullSpellList = fullSpellList.concat(fullClassSpellList);
+
 			if (spListLevel) { //put that level list back in the right variable
 				spCast.list.level = spListLevel;
 			} else {
@@ -3511,7 +3552,7 @@ function GenerateSpellSheet(GoOn) {
 			continue;
 		};
 
-		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : spCast.typeList === 4 || (/race|feat/i).test(spCast.typeSp) ? "##kn" : "##"; //add "Me" or "Kn" to the name or not?
+		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : spCast.typeList === 4 || (/race|feat|item/i).test(spCast.typeSp) ? "##kn" : "##"; //add "Me" or "Kn" to the name or not?
 
 		var orderedSpellList = OrderSpells(fullSpellList, "multi", true); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
 
@@ -4981,7 +5022,8 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 		isPrep = ClassSubList[thisClass].spellcastingKnown.prepared;
 	};
 
-	var orderedSpellList = CreateSpellList(thisClass, false, false, true); //get an array of all the spells of the class, divided up in 1 array per spell level
+	//get an array of all the spells of the class, divided up in 1 array per spell level
+	var orderedSpellList = CreateSpellList(thisClass, false, false, true);
 
 	//for the first entry we need to make the template SSfront appear
 	var prefixCurrent = tDoc.info.SpellsOnly ? "P0.SSfront." : DoTemplate("SSfront", "Add"); //set the current prefix on the Spell Sheet
@@ -5292,7 +5334,7 @@ function isSpellUsed(spll, returnBoolean) {
 			if (rtrnA.indexOf(aClass) === -1 && SpellsList[spll].level && (/list/i).test(sClass.typeSp)) {
 				var spObj = eval(sClass.list.toSource());
 				spObj.level = [1, 9];
-				var theSpList = CreateSpellList(spObj);
+				var theSpList = CreateSpellList(spObj, false, spCast.extra, false, aClass, spCast.typeSp);
 				if (theSpList.indexOf(spll) !== -1) rtrnA.push(aClass);
 			}
 		}
@@ -5416,7 +5458,7 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 
 	//now we add all the spells of this single class into a new set of spell sheets
 
-	//get an array of all the spells of the class, divided up in 1 array per spell level
+	//get an array of all the spells, divided up in 1 array per spell level
 	var fullSpellList = CreateSpellList("any", false, false, true);
 
 	//now if this is an alphabetical list, we want to combine the arrays 1-9 into a single array

@@ -28,18 +28,17 @@ var Base_RaceList = {
 				action : ["action", ""],
 				calcChanges : {
 					atkAdd : [
-						function () {
-							if (WeaponName === 'breath weapon' && CurrentRace.known === 'dragonborn' && CurrentRace.variant) {
+						function (fields, v) {
+							if (v.WeaponName === 'breath weapon' && CurrentRace.known === 'dragonborn' && CurrentRace.variant) {
 								fields.Damage_Type = CurrentRace.dmgres[0];
 								fields.Description = fields.Description.replace(/(dex|con) save/i, ((/cold|poison/i).test(CurrentRace.dmgres[0]) ? 'Con' : 'Dex') + ' save');
 								fields.Range = (/black|blue|brass|bronze|copper/i).test(CurrentRace.variant) ? '5-ft \u00D7 30-ft line' : '15-ft cone';
 							};
-						},
-						"As a Dragonborn I have a breath weapon. The damage type, range, and type of saving throw are dependent on which variant of Dragonborn I am. Furthermore, the amount of damage is dependent on my character level."
+						}
 					],
 					atkCalc : [
-						function () {
-							if (WeaponName === 'breath weapon' && CurrentRace.known === 'dragonborn' && CurrentRace.level > 5) {
+						function (fields, v, output) {
+							if (v.WeaponName === 'breath weapon' && CurrentRace.known === 'dragonborn' && CurrentRace.level > 5) {
 								output.die = output.die.replace('2d6', (CurrentRace.level < 11 ? 3 : CurrentRace.level < 16 ? 4 : 5) + 'd6');
 							};
 						}
@@ -211,7 +210,21 @@ var Base_RaceList = {
 				name : "Savage Attacks",
 				minlevel : 1,
 				calcChanges : {
-					atkAdd : ["if (isMeleeWeapon && (/d\\d+/).test(fields.Damage_Die)) {var pExtraCritM = extraCritM ? extraCritM : 0; var extraCritM = pExtraCritM + 1; if (pExtraCritM) {fields.Description = fields.Description.replace(pExtraCritM + 'd', extraCritM + 'd'); } else {fields.Description += (fields.Description ? '; ' : '') + extraCritM + fields.Damage_Die.replace(/.*(d\\d+).*/, '$1') + ' extra on a crit in melee'; }; }; ", "My melee weapon attacks roll 1 additional dice on a critical hit."]
+					atkAdd : [
+						function (fields, v) {
+							if (v.isMeleeWeapon && (/d\d+/).test(fields.Damage_Die)) {
+								if (v.extraCritM) {
+									v.extraCritM += 1;
+									var extraCritRegex = /\d+(d\d+ extra on a crit(ical)?( hit)? in melee)/i;
+									fields.Description = fields.Description.replace(extraCritRegex, extraCritM + '$1');
+								} else {
+									v.extraCritM = 1;
+									fields.Description += (fields.Description ? '; ' : '') + v.extraCritM + fields.Damage_Die.replace(/.*(d\d+).*/, '$1') + ' extra on a crit in melee';
+								}
+							}
+						},
+						"My melee weapon attacks roll 1 additional dice on a critical hit."
+					]
 				}
 			}
 		},

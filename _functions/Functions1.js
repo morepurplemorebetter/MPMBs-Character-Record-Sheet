@@ -2001,10 +2001,13 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				var cSpells = CurrentSpells[aClass];
 				cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass};
 				cSpells.known = Temps.spellcastingKnown ? Temps.spellcastingKnown : "";
-				cSpells.typeSp = !cSpells.known || cSpells.known.spells === undefined ? "known" :
+				cSpells.typeSp = !cSpells.known || cSpells.known.spells === undefined || isArray(cSpells.known.spells) ? "known" :
+					isNaN(cSpells.known.spells) || cSpells.known.spells === "" ? cSpells.known.spells :
+					"known";
+/* UPDATED
 					isArray(cSpells.known.spells) ? cSpells.known.spells[Math.min(cSpells.known.spells.length, cSpells.level) - 1] :
 					cSpells.known.spells === "" ? "" :
-					isNaN(cSpells.known.spells) ? cSpells.known.spells : "known";
+					isNaN(cSpells.known.spells) ? cSpells.known.spells : "known"; */
 				cSpells.factor = [casterFactor, casterType];
 				cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
 				if (Temps.spellcastingExtra) cSpells.extra = Temps.spellcastingExtra;
@@ -4351,184 +4354,6 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	}
 
 	thermoM(thermoTxt, true); // Stop progress bar
-	if (OldFeat && OldFeat !== NewFeat) {
-		thermoTxt = thermoM("Removing the old feat...", false); //change the progress dialog text
-		thermoM(1/4); //increment the progress dialog's progress
-		var theFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
-		tDoc.getField(FeatFlds[2]).setAction("Calculate", "");
-		AddTooltip(FeatFlds[2], "");
-		//only remove things if not merely moving the feat
-		if (IsNotFeatMenu) {
-			tDoc.resetForm([FeatFlds[2]]);
-
-			if (theFeat.armor) delete CurrentArmour.proficiencies[theFeat.name + " feat"];
-			if (theFeat.weapons) delete CurrentWeapons.proficiencies[theFeat.name + " feat"];
-			if (theFeat.addarmor) RemoveArmor(theFeat.addarmor);
-			var sourceStringOld = stringSource(theFeat, "first,page");
-			if (sourceStringOld) RemoveString(FeatFlds[1], sourceStringOld);
-
-			if (theFeat.calcChanges) addEvals(theFeat.calcChanges, [theFeat.name, "feat"], false);
-
-			if (theFeat.scores) {
-				//get the ability score arrays from the fields, remove the feat bonuses, and put them back in the field
-				for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
-					var tempArray = What(AbilityScores.abbreviations[i] + " Remember").split(",");
-					tempArray[5] = (tempArray[5] ? Number(tempArray[5]) : 0) - theFeat.scores[i];
-					Value(AbilityScores.abbreviations[i] + " Remember", tempArray);
-				};
-			};
-
-			if (theFeat.spellcastingBonus) {
-				delete CurrentSpells[CurrentFeats.known[ArrayNmbr]];
-				setSpellVars = true;
-			};
-
-			if (theFeat.action) {
-				var FeatAct = What("Unit System") === "metric" ? ConvertToMetric(theFeat.action[1], 0.5) : theFeat.action[1];
-				RemoveAction(theFeat.action[0], theFeat.name + FeatAct);
-			};
-
-			if (theFeat.dmgres) {
-				for (var i = 0; i < theFeat.dmgres.length; i++) {
-					var theDmgres = isArray(theFeat.dmgres[i]) ? theFeat.dmgres[i] : [theFeat.dmgres[i], false];
-					SetProf("resistance", false, theDmgres[0], theFeat.name, theDmgres[1]);
-				};
-			};
-
-			if (theFeat.saves) {
-				for (var i = 0; i < theFeat.saves.length; i++) {
-					SetProf("save", false, theFeat.saves[i], theFeat.name);
-				};
-			};
-
-			if (theFeat.savetxt) SetProf("savetxt", false, theFeat.savetxt, theFeat.name);
-
-			if (theFeat.speed) SetProf("speed", false, theFeat.speed, theFeat.name);
-
-			if (theFeat.toolProfs) processTools(false, theFeat.name, theFeat.toolProfs);
-			if (theFeat.languageProfs) processLanguages(false, theFeat.name, theFeat.languageProfs);
-			if (theFeat.vision) processVision(false, theFeat.name, theFeat.vision);
-			if (theFeat.addMod) processMods(false, theFeat.name, theFeat.addMod);
-
-			if (theFeat.recovery && (theFeat.usages || theFeat.usagescalc)) RemoveFeature(theFeat.name, theFeat.usages ? theFeat.usages : 0);
-
-			// lastly do the eval for removal
-			if (theFeat.removeeval) {
-				var TheRemoveEval = What("Unit System") === "metric" && theFeat.removeeval.indexOf("String") !== -1 ? ConvertToMetric(theFeat.removeeval, 0.5) : theFeat.removeeval;
-				eval(TheRemoveEval);
-			};
-		};
-	};
-
-	CurrentFeats.known = [];
-	CurrentFeats.known[ArrayNmbr] = NewFeat;
-	FindFeats(ArrayNmbr);
-
-	if (CurrentFeats.known[ArrayNmbr]) {
-		var theFeat = FeatsList[NewFeat];
-		thermoTxt = thermoM("Applying the feat's features...", false); //change the progress dialog text
-		thermoM(1/3); //increment the progress dialog's progress
-
-		if (IsNotFeatMenu && theFeat.description) {
-			var theDesc = What("Unit System") === "imperial" ? theFeat.description : ConvertToMetric(theFeat.description, 0.5);
-			if (typePF) theDesc.replace("\n", " ");
-			Value(FeatFlds[2], theDesc);
-		} else if (theFeat.calculate) {
-			var theCalc = What("Unit System") === "imperial" ? theFeat.calculate : ConvertToMetric(theFeat.calculate, 0.5);
-			if (typePF) theCalc.replace("\n", " ");
-			tDoc.getField(FeatFlds[2]).setAction("Calculate", theCalc);
-		}
-
-		thermoM(2/3); //increment the progress dialog's progress
-
-		var tempString = stringSource(theFeat, "full,page", "The \"" + theFeat.name + "\" feat is taken from: ", ".");
-		if (theFeat.prerequisite) {
-			tempString += tempString === "" ? "" : "\n\n";
-			tempString += "Prerequisite for the \"" + theFeat.name + "\" feat is: " + theFeat.prerequisite;
-		}
-		AddTooltip(FeatFlds[2], tempString);
-		//only add things if not merely moving the feat
-		if (IsNotFeatMenu) {
-			//add the source to the secondary field
-			var sourceString = stringSource(theFeat, "first,page");
-			if (sourceString) AddString(FeatFlds[1], sourceString, "; ");
-
-			// firstly do the eval for adding
-			if (theFeat.eval) {
-				var TheEval = What("Unit System") === "metric" && theFeat.eval.indexOf("String") !== -1 ? ConvertToMetric(theFeat.eval, 0.5) : theFeat.eval;
-				eval(TheEval);
-			}
-			if (theFeat.calcChanges) {
-				addEvals(theFeat.calcChanges, [theFeat.name, "feat"], true);
-			};
-
-			if (theFeat.scores) {
-				//get the ability score arrays from the fields, add the feat bonuses, and put them back in the field
-				for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
-					var tempArray = What(AbilityScores.abbreviations[i] + " Remember").split(",");
-					tempArray[5] = (tempArray[5] ? Number(tempArray[5]) : 0) + theFeat.scores[i];
-					Value(AbilityScores.abbreviations[i] + " Remember", tempArray);
-				};
-			};
-
-			if (theFeat.spellcastingBonus) {
-				var spFeatArr = isArray(theFeat.spellcastingBonus);
-				var spFeatLvl = false;
-				var spAbility = 6;
-				(!spFeatArr ? [theFeat.spellcastingBonus] : theFeat.spellcastingBonus).forEach(function(spB) {
-					if (!spFeatLvl && spB.times && isArray(spB.times)) spFeatLvl = true;
-					if (spB.spellcastingAbility) spAbility = spB.spellcastingAbility;
-				});
-				CurrentSpells[NewFeat] = {
-					name : theFeat.name + " (feat)",
-					shortname : theFeat.name,
-					level : spFeatLvl ? What("Character Level") : undefined,
-					ability : spAbility,
-					typeSp : "feat",
-					bonus : {
-						"someFeat" : theFeat.spellcastingBonus
-					}
-				};
-				setSpellVars = true;
-			};
-
-			if (theFeat.action) {
-				var FeatAct = What("Unit System") === "metric" ? ConvertToMetric(theFeat.action[1], 0.5) : theFeat.action[1];
-				AddAction(theFeat.action[0], theFeat.name + FeatAct, "the " + theFeat.name + " feat");
-			};
-
-			if (theFeat.dmgres) {
-				for (var i = 0; i < theFeat.dmgres.length; i++) {
-					var theDmgres = isArray(theFeat.dmgres[i]) ? theFeat.dmgres[i] : [theFeat.dmgres[i], false];
-					SetProf("resistance", true, theDmgres[0], theFeat.name, theDmgres[1]);
-				};
-			};
-
-			if (theFeat.saves) {
-				for (var i = 0; i < theFeat.saves.length; i++) {
-					SetProf("save", true, theFeat.saves[i], theFeat.name);
-				};
-			};
-
-			if (theFeat.addarmor) AddArmor(theFeat.addarmor);
-
-			if (theFeat.savetxt) SetProf("savetxt", true, theFeat.savetxt, theFeat.name);
-
-			if (theFeat.speed) SetProf("speed", true, theFeat.speed, theFeat.name);
-
-			if (theFeat.toolProfs) processTools(true, theFeat.name, theFeat.toolProfs);
-			if (theFeat.languageProfs) processLanguages(true, theFeat.name, theFeat.languageProfs);
-			if (theFeat.vision) processVision(true, theFeat.name, theFeat.vision);
-			if (theFeat.addMod) processMods(true, theFeat.name, theFeat.addMod);
-
-			if (theFeat.recovery && (theFeat.usages || theFeat.usagescalc)) AddFeature(theFeat.name, theFeat.usages ? theFeat.usages : 0, theFeat.additional ? " (" + theFeat.additional + ")" : "", theFeat.recovery, "the " + theFeat.name + " feat", theFeat.UpdateOrReplace, theFeat.usagescalc);
-		};
-	};
-	if (setSpellVars) SetStringifieds("spells"); //set the global variables to their fields for future reference
-	ApplyProficiencies(true); //call to update armor, shield and weapon proficiencies
-	UpdateTooltips(); //skills tooltip, ability score tooltip
-	thermoM(thermoTxt, true); // Stop progress bar
-*/
 };
 
 function SetFeatsdropdown(forceTooltips) {
@@ -8325,7 +8150,7 @@ function WeaponOptions() {
 		ApplyAttackColor(itemNmbr, MenuSelection[1]);
 		break;
 	 case "show what things are affecting the attack calculations":
-		var atkCalcStr = StringAttackEvals();
+		var atkCalcStr = StringEvals("atkStr");
 		if (atkCalcStr) ShowDialog("Things Affecting the Attack Calculations", atkCalcStr);
 		break;
 	}
@@ -8913,7 +8738,7 @@ function ProfBonus() {
 	var lvl = What(QI === true ? "Character Level" : QI + "Comp.Use.HD.Level");
 	var ProfMod = QI === true ? What("Proficiency Bonus Modifier") : 0;
 	var useDice = tDoc.getField(QI === true ? "Proficiency Bonus Dice" : QI + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
-	var ProfB = lvl ? ProficiencyBonusList[Math.min(lvl-1,ProficiencyBonusList.length-1)] : 0;
+	var ProfB = lvl ? ProficiencyBonusList[Math.min(lvl, ProficiencyBonusList.length) - 1] : 0;
 	event.target.submitName = ProfB + ProfMod;
 	event.value = useDice || !lvl ? "" : event.target.submitName;
 }
