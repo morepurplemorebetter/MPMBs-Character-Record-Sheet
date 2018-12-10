@@ -685,7 +685,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 	if (extraArray) inputObject.extraspells = inputObject.extraspells.concat(extraArray);
 
 	//first run the custom code injected by a feature
-	if (CurrentEvals.spellList && objName  !== undefined && objType !== undefined) {
+	if (CurrentEvals.spellList && objName !== undefined && objType !== undefined) {
 		for (var spellListEval in CurrentEvals.spellList) {
 			var evalThing = CurrentEvals.spellList[spellListEval];
 			try {
@@ -726,22 +726,23 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 
 	//now go through all the spells in the list and see if they agree with the criteria
 	for (var key in SpellsList) {
+		var isExtraSpell = inputObject.extraspells.indexOf(key) !== -1;
 		var aSpell = SpellsList[key];
 		//first test if the spell's source is on the list of sources to use
 		var addSp = !testSource(key, aSpell, "spellsExcl");
 		//now test if the spell meets all the criteria set in the inputObject
-		if (addSp && inputObject.spells) {
+		if (addSp && inputObject.spells && !isExtraSpell) {
 			addSp = inputObject.spells.indexOf(key) !== -1;
 		}
 		if (addSp && inputObject.notspells) {
 			addSp = inputObject.notspells.indexOf(key) === -1;
 		}
-		if (addSp && inputObject.class) {
+		if (addSp && inputObject.class && !isExtraSpell) {
 			if (!aSpell.classes) {
 				continue;
 			} else if (isArray(inputObject.class)) {
 				addSp = inputObject.class.some(function (v) {
-					return aSpell.classes.indexOf(v) !== -1;
+					return v === "any" || aSpell.classes.indexOf(v) !== -1;
 				});
 			} else {
 				addSp = inputObject.class === "any" || aSpell.classes.indexOf(inputObject.class) !== -1;
@@ -750,7 +751,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 		if (addSp && inputObject.level) {
 			addSp = aSpell.level >= inputObject.level[0] && aSpell.level <= inputObject.level[1];
 		}
-		if (addSp && inputObject.school && !(inputObject.level && inputObject.level[1] > 0 && aSpell.level === 0)) {
+		if (addSp && inputObject.school && !(inputObject.level && inputObject.level[1] > 0 && aSpell.level === 0) && !isExtraSpell) {
 			//only check for school if not a cantrip and not only looking for cantrips
 			addSp = inputObject.school.indexOf(aSpell.school) !== -1;
 		}
@@ -763,7 +764,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 		if (addSp && inputObject.psionic !== undefined) {
 			addSp = aSpell.psionic ? aSpell.psionic == inputObject.psionic : !inputObject.psionic;
 		}
-		if (addSp || inputObject.extraspells.indexOf(key) !== -1) {
+		if (addSp) {
 			var SpPs = !aSpell.psionic ? "sp" : "ps";
 			var spName = getSpNm(key);
 			if (refspObj[spName]) { // if another spell with the same name has been added already, see which one the sheet will use
@@ -3129,7 +3130,7 @@ function AskUserSpellSheet() {
 			var loopEnd = loop ? spBonus.length : 1;
 			for (var i = 0; i < loopEnd; i++) {
 				var spBonusi = loop ? spCast.bonus[bKey][i] : spCast.bonus[bKey];
-				var theBonusArray = CreateSpellList(spBonusi, true);
+				var theBonusArray = CreateSpellList(spBonusi, true, false, false, aCast, spCast.typeSp + "-bonus");
 				var theBonusObject = CreateSpellObject(theBonusArray);
 
 				var iterate = !spBonusi.times ? 1 : isArray(spBonusi.times) ? spBonusi.times[Math.min(spBonusi.times.length, spCast.level) - 1] : spBonusi.times; //if we have to apply this thing multiple times, do so
