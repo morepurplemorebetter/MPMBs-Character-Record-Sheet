@@ -5478,6 +5478,8 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	// if a weapon was found, set the variables
 	if (theWea) {
 		thermoTxt = thermoM("Applying the weapon's features...", false); //change the progress dialog text
+		var curDescr = What(fldBase + "Description");
+		var curRange = What(fldBase + "Range");
 		fields.Description = theWea.description; //add description
 		fields.Description_Tooltip = theWea.tooltip ? theWea.tooltip : ""; //add the tooltip for the description
 		fields.Range = theWea.range; //add range
@@ -5501,7 +5503,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 
 		//add proficiency checkmark
 		fields.Proficiency = !QI ? true :
-			QI && (/natural|spell|cantrip/i).test(theWea.type) ? true :
+			QI && (/natural|spell|cantrip|alwaysprof/i).test(theWea.type) ? true :
 			(/^(simple|martial)$/i).test(theWea.type) && tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) ? true :
 			CurrentProfs.weapon.otherWea && RegExp(";(" + CurrentProfs.weapon.otherWea.finalProfs.join("s?|").replace(/ss\?\|/g, "s?|") + ");", "i").test(";" + [WeaponName, theWea.type].concat(theWea.list ? [theWea.list] : []).join(";") + ";") ? true :
 			false;
@@ -5577,6 +5579,11 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 				}
 			}
 		};
+		// if this is a field recalculation and no custom eval changed the description or range, just use the one from the field so that manual changes are preserved
+		if (isReCalc) {
+			if (fields.Description === theWea.description) fields.Description = curDescr;
+			if (fields.Range === theWea.range) fields.Range = curRange;
+		}
 	};
 	
 	// apply the values to the fields only if we need to either reset the fields or a weapon was found

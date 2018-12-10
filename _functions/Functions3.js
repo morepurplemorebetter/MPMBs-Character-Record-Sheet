@@ -114,6 +114,8 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.vision) processVision(addIt, tipNmF, uObj.vision);
 		if (uObj.dmgres) processResistance(addIt, tipNmF, uObj.dmgres);
 		if (uObj.action) processActions(addIt, tipNmF, uObj.action, uObj.limfeaname ? uObj.limfeaname : uObj.name);
+		if (uObj.armorOptions) processArmorOptions(addIt, tipNm, uObj.armorOptions);
+		if (uObj.weaponOptions) processWeaponOptions(addIt, tipNm, uObj.weaponOptions);
 
 		// --- backwards compatibility --- //
 		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false;
@@ -532,6 +534,62 @@ function processAddWeapons(AddRemove, weapons) {
 	for (var w = 0; w < weapons.length; w++) {
 		tDoc[(AddRemove ? "Add" : "Remove") + "Weapon"](weapons[w]);
 	}
+}
+
+// set or remove armour options
+function processArmorOptions(AddRemove, srcNm, itemArr) {
+	if (!itemArr) return;
+	if (!isArray(itemArr)) itemArr = [itemArr];
+
+	// if adding things but the variable doesn't exist
+	if (AddRemove && !CurrentVars.extraArmour) CurrentVars.extraArmour = {};
+
+	srcNm = srcNm.toLowerCase();
+	for (var i = 0; i < itemArr.length; i++) {
+		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
+		if (AddRemove) {
+			itemArr[i].list = "startlist";
+			CurrentVars.extraArmour[newName] = itemArr[i];
+			ArmourList[newName] = itemArr[i];
+		} else {
+			// remove the entries if they exist
+			if (CurrentVars.extraArmour[newName]) delete CurrentVars.extraArmour[newName];
+			if (ArmourList[newName]) delete ArmourList[newName];
+		}
+	}
+
+	// if removing things and the variable is now empty
+	if (!AddRemove && !ObjLength(CurrentVars.extraArmour)) delete CurrentVars.extraArmour;
+	UpdateDropdown("armour"); // update the armour dropdown
+	SetStringifieds("vars"); // Save the new settings to a field
+}
+
+// set or remove attack options
+function processWeaponOptions(AddRemove, srcNm, itemArr) {
+	if (!itemArr) return;
+	if (!isArray(itemArr)) itemArr = [itemArr];
+
+	// if adding things but the variable doesn't exist
+	if (AddRemove && !CurrentVars.extraWeapons) CurrentVars.extraWeapons = {};
+
+	srcNm = srcNm.toLowerCase();
+	for (var i = 0; i < itemArr.length; i++) {
+		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
+		if (AddRemove) {
+			itemArr[i].list = "startlist";
+			CurrentVars.extraWeapons[newName] = itemArr[i];
+			WeaponsList[newName] = itemArr[i];
+		} else {
+			// remove the entries if they exist
+			if (CurrentVars.extraWeapons[newName]) delete CurrentVars.extraWeapons[newName];
+			if (WeaponsList[newName]) delete WeaponsList[newName];
+		}
+	}
+
+	// if removing things and the variable is now empty
+	if (!AddRemove && !ObjLength(CurrentVars.extraWeapons)) delete CurrentVars.extraWeapons;
+	UpdateDropdown("weapons"); // update the weapons dropdown
+	SetStringifieds("vars"); // Save the new settings to a field
 }
 
 // add/remove a class feature text, replace the first line of it, or insert it after another
@@ -1259,14 +1317,16 @@ NEW ATTRIBUTES
 	limfeaname // Optional; If defined it is used for populating the limited feature section and the action section instead of `name`
 	scorestxt // Optional; String; If defined it is used for the text in the Ability Score dialog and tooltips. If not defined, but 'scores' is defined, 'scores' will be used to generate a text
 	scoresOverride // Optional; Array; works same as scores, but are used to populate the "Magical Override" column; If you are providing both 'scores' and 'scoresOverride' you should also give a 'scorestxt', as the auto-generated tooltip text doesn't work if you have both 'scores' and 'scoresOverride'
-	
 	calcChanges.spellList // Optional; an array with the first entry being a function, and the second entry being a descriptive text. This attribute can change the spell list created for a class / race / feat
+	weaponOptions // Optional; an array of WeaponList objects to be added to the WeaponList (can also be a single object if only wanting to add a single weapon)
+	armorOptions // Optional; an array of ArmourList objects to be added to the ArmourList (can also be a single object if only wanting to add a single armour)
 
 CHANGED ATTRIBUTES
 	armorProfs // Optional; Array; armor proficiencies to add [previous just 'armor']
 	weaponProfs // Optional; Array; weapon proficiencies to add [previous just 'weapons' or 'weaponprofs' depending on List]
 	addArmor // Optional; String; name of the armor to put in the armor section (if results in higher AC) [previous 'addarmor']
 	addWeapons // Optional; Array; names of the weapons to put in the attack section (if there is space) [previous 'weapons']
+	
 
 CHANGES TO IMPLEMENT IN LIST SCRIPTS
 

@@ -121,6 +121,13 @@ var Base_ClassList = {
 				source : [["SRD", 8], ["P", 48]],
 				minlevel : 1,
 				description : "\n   " + "Without armor, my AC is 10 + Dexterity modifier + Constitution modifier + shield",
+				armorOptions : {
+					regExpSearch : /justToAddToDropDown/,
+					name : "Unarmored Defense (Con)",
+					source : [["SRD", 8], ["P", 48]],
+					ac : 10,
+					addMod : true
+				},
 				addArmor : "Unarmored Defense (Con)"
 			},
 			"reckless attack" : {
@@ -633,9 +640,16 @@ var Base_ClassList = {
 		features : {
 			"unarmored defense" : {
 				name : "Unarmored Defense",
-				source : [["SRD", 26], ["P", 48]],
+				source : [["SRD", 26], ["P", 78]],
 				minlevel : 1,
 				description : "\n   " + "Without armor and no shield, my AC is 10 + Dexterity modifier + Wisdom modifier",
+				armorOptions : {
+					regExpSearch : /justToAddToDropDown/,
+					name : "Unarmored Defense (Wis)",
+					source : [["SRD", 26], ["P", 78]],
+					ac : 10,
+					addMod : true
+				},
 				addArmor : "Unarmored Defense (Wis)"
 			},
 			"martial arts" : {
@@ -1934,7 +1948,7 @@ var Base_ClassList = {
 					level : [6, 6],
 					firstCol : "oncelr"
 				},
-				changeeval : "if (classes.known.warlock.level < 13) {delete CurrentSpells.warlock.bonus['mystic arcanum (7)']} else {if (!CurrentSpells.warlock.bonus['mystic arcanum (7)']) {CurrentSpells.warlock.bonus['mystic arcanum (7)'] = {name : 'Mystic Arcanum (7)', class : 'warlock', level : [7, 7], firstCol : 'oncelr'}}}; if (classes.known.warlock.level < 15) {delete CurrentSpells.warlock.bonus['mystic arcanum (8)']} else {if (!CurrentSpells.warlock.bonus['mystic arcanum (8)']) {CurrentSpells.warlock.bonus['mystic arcanum (8)'] = {name : 'Mystic Arcanum (8)', class : 'warlock', level : [8, 8], firstCol : 'oncelr'}}}; if (classes.known.warlock.level < 17) {delete CurrentSpells.warlock.bonus['mystic arcanum (9)']} else {if (!CurrentSpells.warlock.bonus['mystic arcanum (9)']) {CurrentSpells.warlock.bonus['mystic arcanum (9)'] = {name : 'Mystic Arcanum (9)', class : 'warlock', level : [9, 9], firstCol : 'oncelr'}}}"
+				changeeval : "if (classes.known.warlock.level < 13 && CurrentSpells.warlock) { delete CurrentSpells.warlock.bonus['mystic arcanum (7)']; } else if (classes.known.warlock.level > 12 && !CurrentSpells.warlock.bonus['mystic arcanum (7)']) { CurrentSpells.warlock.bonus['mystic arcanum (7)'] = { name: 'Mystic Arcanum (7)', class: 'warlock', level: [7, 7], firstCol: 'oncelr' } }; if (classes.known.warlock.level < 15 && CurrentSpells.warlock) { delete CurrentSpells.warlock.bonus['mystic arcanum (8)']; } else if (classes.known.warlock.level > 14 && !CurrentSpells.warlock.bonus['mystic arcanum (8)']) { CurrentSpells.warlock.bonus['mystic arcanum (8)'] = { name: 'Mystic Arcanum (8)', class: 'warlock', level: [8, 8], firstCol: 'oncelr' } }; if (classes.known.warlock.level < 17 && CurrentSpells.warlock) { delete CurrentSpells.warlock.bonus['mystic arcanum (9)']; } else if (classes.known.warlock.level > 16 && !CurrentSpells.warlock.bonus['mystic arcanum (9)']) { CurrentSpells.warlock.bonus['mystic arcanum (9)'] = { name: 'Mystic Arcanum (9)', class: 'warlock', level: [9, 9], firstCol: 'oncelr' } } "
 			},
 			"eldritch master" : {
 				name : "Eldritch Master",
@@ -2385,6 +2399,7 @@ var Base_ClassSubList = {
 				description : "\n   " + "As an action, for 1 minute, I add my Cha modifier to hit for one weapon I'm holding" + "\n   " + "It also counts as magical and emits bright light in a 20-ft radius and equal dim light",
 				action : ["action", ""],
 				calcChanges : {
+					atkCalc : [
 						function (fields, v, output) {
 							if (classes.known.paladin && classes.known.paladin.level > 2 && !v.isSpell && (/^(?=.*sacred)(?=.*weapon).*$/i).test(v.WeaponText)) {
 								output.extraHit += What('Cha Mod');
@@ -2633,6 +2648,12 @@ var Base_ClassSubList = {
 				description : "\n   " + "When I am not wearing armor, my AC is 13 + Dexterity modifier" + "\n   " + "My hit point maximum increases by an amount equal to my sorcerer level",
 				calcChanges : {
 					hp : "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += '\\n + ' + classes.known.sorcerer.level + ' from Draconic Resilience (Sorcerer)'; }; "
+				},
+				armorOptions : {
+					regExpSearch : /^(?=.*(dragon|draconic))(?=.*(hide|skin|scales|resilience)).*$/i,
+					name : "Draconic Resilience",
+					source : [["SRD", 45], ["P", 102]],
+					ac : 13
 				},
 				addArmor : "Draconic Resilience"
 			},

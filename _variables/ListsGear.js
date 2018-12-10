@@ -3,29 +3,22 @@ var Base_ArmourList = {
 		regExpSearch : /(unarmou?red|naked|nothing|bare|no.?armou?r)/i,
 		name : "Unarmored",
 		source : [["SRD", 62], ["P", 14]],
-		type : "",
 		ac : 10,
-		stealthdis : false,
-		strReq : 0,
 		addMod : true
 	},
-	"natural armor" : {
+/* 	"natural armor" : {
 		regExpSearch : /^((?=.*natural)(?=.*armou?r)|(?=.*(dragon|draconic|scaly))(?=.*(hide|skin|scales|resilience))).*$/i,
 		name : "Natural Armor",
 		source : [["SRD", 45], ["P", 102], ["V", 112], ["X", 74]],
 		type : "",
-		ac : 13,
-		stealthdis : false,
-		strReq : 0
-	},
+		ac : 13
+	}, */
 	"mage armor" : {
 		regExpSearch : /^(?=.*(mage|magic))(?=.*armou?r).*$/i,
 		name : "Mage armor",
 		source : [["SRD", 160], ["P", 256]],
-		type : "",
-		ac : 13,
-		stealthdis : false,
-		strReq : 0
+		list : "magic",
+		ac : 13
 	},
 	"padded" : {
 		regExpSearch : /^(?!.*(plate|hide))(?=.*(padding|padded)).*$/i,
@@ -44,9 +37,7 @@ var Base_ArmourList = {
 		source : [["SRD", 63], ["P", 145]],
 		type : "light",
 		ac : 11,
-		stealthdis : false,
 		weight : 10,
-		strReq : 0,
 		invName : "Leather armor"
 	},
 	"studded leather" : {
@@ -55,9 +46,7 @@ var Base_ArmourList = {
 		source : [["SRD", 63], ["P", 145]],
 		type : "light",
 		ac : 12,
-		stealthdis : false,
 		weight : 13,
-		strReq : 0,
 		invName : "Studded leather armor"
 	},
 	"hide" : {
@@ -66,9 +55,7 @@ var Base_ArmourList = {
 		source : [["SRD", 63], ["P", 145]],
 		type : "medium",
 		ac : 12,
-		stealthdis : false,
 		weight : 12,
-		strReq : 0,
 		invName : "Hide armor"
 	},
 	"chain shirt" : {
@@ -77,9 +64,7 @@ var Base_ArmourList = {
 		source : [["SRD", 63], ["P", 145]],
 		type : "medium",
 		ac : 13,
-		stealthdis : false,
-		weight : 20,
-		strReq : 0
+		weight : 20
 	},
 	"scale mail" : {
 		regExpSearch : /^(?=.*scale)(?=.*mail).*$/i,
@@ -88,8 +73,7 @@ var Base_ArmourList = {
 		type : "medium",
 		ac : 14,
 		stealthdis : true,
-		weight : 45,
-		strReq : 0
+		weight : 45
 	},
 	"breastplate" : {
 		regExpSearch : /^(?=.*breast)(?=.*plate).*$/i,
@@ -97,9 +81,7 @@ var Base_ArmourList = {
 		source : [["SRD", 63], ["P", 145]],
 		type : "medium",
 		ac : 14,
-		stealthdis : false,
-		weight : 20,
-		strReq : 0
+		weight : 20
 	},
 	"half plate" : {
 		regExpSearch : /^(?=.*half)(?=.*plate).*$/i,
@@ -108,8 +90,7 @@ var Base_ArmourList = {
 		type : "medium",
 		ac : 15,
 		stealthdis : true,
-		weight : 40,
-		strReq : 0
+		weight : 40
 	},
 	"ring mail" : {
 		regExpSearch : /^(?=.*ring)(?=.*mail).*$/i,
@@ -118,8 +99,7 @@ var Base_ArmourList = {
 		type : "heavy",
 		ac : 14,
 		stealthdis : true,
-		weight : 40,
-		strReq : 0
+		weight : 40
 	},
 	"chain mail" : {
 		regExpSearch : /^(?!.*(scale|plate|ring|shirt))(?=.*(chain|mail)).*$/i,
@@ -157,6 +137,18 @@ var Base_ArmourList = {
 
 var Base_WeaponsList = {
 	// Basic weapons
+	"unarmed strike" : {
+		regExpSearch : /^((?=.*\b(unarmed|fists?|arms?|legs?|foot|feet|razorclaws?|talons?)\b)|((?=.*martial)(?=.*arts))|((?=.*tavern)(?=.*brawler))).*$/i,
+		name : "Unarmed strike",
+		source : [["SRD", 66], ["P", 149]],
+		ability : 1,
+		type : "Natural",
+		damage : [1, "", "bludgeoning"],
+		range : "Melee",
+		description : "",
+		monkweapon : true,
+		abilitytodamage : true
+	},
 	"club" : {
 		regExpSearch : /^(?!.*(great|heavy|big))(?=.*\b(club|bian|tonfa)s?\b).*$/i,
 		name : "Club",
@@ -293,18 +285,6 @@ var Base_WeaponsList = {
 		range : "Melee, 20/60 ft",
 		weight : 3,
 		description : "Thrown, versatile (1d8)",
-		monkweapon : true,
-		abilitytodamage : true
-	},
-	"unarmed strike" : {
-		regExpSearch : /^((?=.*\b(unarmed|fists?|arms?|legs?|foot|feet|razorclaws?|talons?)\b)|((?=.*martial)(?=.*arts))|((?=.*tavern)(?=.*brawler))).*$/i,
-		name : "Unarmed strike",
-		source : [["SRD", 66], ["P", 149]],
-		ability : 1,
-		type : "Natural",
-		damage : [1, "", "bludgeoning"],
-		range : "Melee",
-		description : "",
 		monkweapon : true,
 		abilitytodamage : true
 	},
@@ -722,6 +702,17 @@ var Base_WeaponsList = {
 		ammo : "holy water"
 	},
 	// Cantrips
+	"spell attack" : {
+		regExpSearch : /^(?=.*spell)(?=.*attack).*$/i,
+		name : "Spell attack",
+		source : [["SRD", 103], ["P", 205]],
+		ability : 0,
+		type : "Spell",
+		damage : ["", "", ""],
+		range : "",
+		description : "",
+		abilitytodamage : false
+	},
 	"acid splash" : {
 		regExpSearch : /^(?=.*acid)(?=.*splash).*$/i,
 		name : "Acid Splash",
@@ -855,30 +846,6 @@ var Base_WeaponsList = {
 		damage : ["C", 4, "psychic"],
 		range : "60 ft",
 		description : "Wis save, success - no damage, fail - also disadv. on next attack roll in next turn; 1 creature (PHB 285)",
-		abilitytodamage : false,
-		dc : true
-	},
-	"spell attack" : {
-		regExpSearch : /^(?=.*spell)(?=.*attack).*$/i,
-		name : "Spell attack",
-		source : [["SRD", 103], ["P", 205]],
-		ability : 0,
-		type : "Spell",
-		damage : ["", "", ""],
-		range : "",
-		description : "",
-		abilitytodamage : false
-	},
-	// Dragonborn breath weapons
-	"breath weapon" : {
-		regExpSearch : /^(?=.*breath)(?=.*weapon).*$/i,
-		name : "Breath weapon",
-		source : [["SRD", 5], ["P", 34]],
-		ability : 3,
-		type : "Natural",
-		damage : [2, 6, "fire"],
-		range : "15-ft cone",
-		description : "Hits all in area; Dex save, success - half damage; Usable only once per short rest",
 		abilitytodamage : false,
 		dc : true
 	}

@@ -1322,10 +1322,11 @@ function ApplyArmor(input) {
 	tDoc.getField(ArmorFields[0]).setAction("Calculate", "var placeholder = \"just to keep the calculation from being done too late\";");
 
 	if (CurrentArmour.known !== undefined && ArmourList[CurrentArmour.known] !== undefined) {
-		var ArmorStealth = (ArmourList[CurrentArmour.known].type === "medium" && What("Medium Armor Max Mod") === 3) || (/mithral/i).test(CurrentArmour.field) ? false : ArmourList[CurrentArmour.known].stealthdis;
+		var ArmorType = ArmourList[CurrentArmour.known].type ? ArmourList[CurrentArmour.known].type.toLowerCase() : "";
+		var ArmorStealth = (ArmorType === "medium" && What("Medium Armor Max Mod") === 3) || (/mithral/i).test(CurrentArmour.field) ? false : ArmourList[CurrentArmour.known].stealthdis ? ArmourList[CurrentArmour.known].stealthdis : false;
 		Checkbox(ArmorFields[3], ArmorStealth);
-		Checkbox(ArmorFields[1], ArmourList[CurrentArmour.known].type === "medium");
-		Checkbox(ArmorFields[2], ArmourList[CurrentArmour.known].type === "heavy");
+		Checkbox(ArmorFields[1], ArmorType === "medium");
+		Checkbox(ArmorFields[2], ArmorType === "heavy");
 		thermoM(1/3); //increment the progress dialog's progress
 
 		if (CurrentArmour.mod) {
@@ -1405,11 +1406,10 @@ function RemoveArmor(armour, comp) {
 	var ACfld = prefix ? prefix + "Comp.Use.AC" : "AC Armor Description";
 	var curAC = What(ACfld);
 	var armKey = ParseArmor(armour);
-	if (!armKey) return;
-	if (prefix) { // calculate what the value would be
+	if (armKey && prefix) { // calculate what the value would be
 		var newAC = ArmourList[armKey].ac + calcCompMaxDexToAC(prefix, armKey);
 		if (curAC == newAC) tDoc.resetForm([ACfld]); // remove it if it's the same
-	} else if (CurrentArmour.known === armKey) {
+	} else if (!prefix && (CurrentArmour.known === armKey || (!armKey && curAC.indexOf(armour) !== -1))) {
 		tDoc.resetForm([ACfld]);
 	};
 };
@@ -2584,7 +2584,9 @@ function SetWeaponsdropdown(forceTooltips) {
 	tempString += "\n\n" + toUni("Context-aware calculations") + "\nSome class features, racial features, and feats can affect the attack to hit and damage calculations. You can read what these are by clicking the button in this line.";
 	tempString += "\n\n" + toUni("Modifier or blue text fields") + "\nThese are hidden by default. You can toggle their visibility with the \"Mods\" button in the \'JavaScript Window\' or the \"Modifiers\" bookmark.";
 
+	var added = [], otherLists = [];
 	var weaponlists = {
+		startlist : [],
 		endlist : [
 			"Axe, Hand",
 			"Axe, Battle",
@@ -2604,64 +2606,77 @@ function SetWeaponsdropdown(forceTooltips) {
 		melee : [],
 		ranged : [],
 		improvised : [],
-		spell : [],
-		"spell specific" : []
+		spell : []
 	};
-	var knownweaponlists = ["endlist", "melee", "ranged", "improvised", "spell", "spell specific"];
 
 	for (var key in WeaponsList) {
 		var weaKey = WeaponsList[key];
-		if (!weaKey.list || testSource(key, weaKey, "weapExcl")) continue; // test if the weapon or its source is set to be included
-		if (!weaponlists[weaKey.list]) weaponlists[weaKey.list] = [];
+		var weaList = weaKey.list ? weaKey.list.toLowerCase() : "";
+		if (!weaList || testSource(key, weaKey, "weapExcl")) continue; // test if the weapon or its source is set to be included
+		if (!weaponlists[weaList]) {
+			otherLists.push(weaList);
+			weaponlists[weaList] = [];
+		}
 		var weaName = WeaponsList[key].name.capitalize();
-		if (weaponlists[weaKey.list].indexOf(weaName) === -1) weaponlists[weaKey.list].push(weaName);
+		if (added.indexOf(weaName) === -1) {
+			added.push(weaName);
+			weaponlists[weaList].push(weaName);
+		}
 	};
 
-	//make the definitive list of weapons for the dropdown box
+	// make the definitive list of weapons for the dropdown box
 	var setweapons = [];
-	var addWeaList = function (weArr, addFirst, noSort) {
+	var addWeaList = function (weArr, addFirst, noSort, addAtStart) {
 		if (!noSort) weArr.sort();
 		if (addFirst) weArr.unshift(addFirst);
 		if (weArr.length) {
 			weArr.unshift("");
-			setweapons = setweapons.concat(weArr);
+			setweapons = !addAtStart ? setweapons.concat(weArr) : weArr.concat(setweapons);
 		}
 	};
-	addWeaList(weaponlists.melee.concat(weaponlists.ranged), "Unarmed Strike"); //add the natural weapons
-	addWeaList(weaponlists.improvised, "Improvised Weapon"); //add the improvised weapons
-	addWeaList(weaponlists.spell, "Spell Attack"); //add the spells
-	addWeaList(weaponlists["spell specific"]); //add the specific spells
-	addWeaList(weaponlists.endlist, false, true); //add the endlist weapons
-	//now add any lists that are not known
-	for (var listW in weaponlists) {
-		if (knownweaponlists.indexOf(listW) === -1) {
-			addWeaList(weaponlists[listW]);
-		};
-	};
+	addWeaList(weaponlists.melee.concat(weaponlists.ranged), "Unarmed Strike"); // add the natural weapons
+	addWeaList(weaponlists.improvised, "Improvised Weapon"); // add the improvised weapons
+	addWeaList(weaponlists.spell, "Spell Attack"); // add the spells/cantrips
+	addWeaList(weaponlists.endlist, false, true); // add the endlist weapons
+	// now add any lists that are not preset
+	otherLists.sort();
+	for (var i = 0; i < otherLists.length; i++) addWeaList(weaponlists[otherLists[i]]);
 
+	// first set the companion sheets attack dropdowns
+	var AScompA = What("Template.extras.AScomp").split(",");
+	var listToSource = setweapons.toSource();
+	for (var i = 0; i < AScompA.length; i++) {
+		var prefix = AScompA[i];
+		for (var c = 1; c <= 3; c++) {
+			var theFld = prefix + "Comp.Use.Attack." + c + ".Weapon Selection";
+			var theFldSuNm = prefix + "Comp.Use.Attack." + c + ".Proficiency";
+			if (tDoc.getField(theFldSuNm).submitName === listToSource) {
+				if (forceTooltips) AddTooltip(theFld, tempString);
+				continue; // no changes, so no reason to set this field
+			}
+			tDoc.getField(theFldSuNm).submitName = listToSource;
+			var theFldVal = What(theFld);
+			IsNotWeaponMenu = false;
+			tDoc.getField(theFld).setItems(setweapons);
+			IsNotWeaponMenu = true;
+			if (theFldVal !== What(theFld)) Value(theFld, theFldVal, tempString);
+		};
+	}
+
+	// now add the special weapons added by features, as we only want those on the first page
+	addWeaList(weaponlists.startlist, false, false, true);
+	listToSource = setweapons.toSource();
+
+	// lastly set this array for the attack dropdowns on the first page
 	for (var i = 1; i <= FieldNumbers.attacks; i++) {
 		var theFld = "Attack." + i + ".Weapon Selection";
 		var theFldSuNm = "Attack." + i + ".Proficiency";
-		if (tDoc.getField(theFldSuNm).submitName === setweapons.toSource()) {
+		if (tDoc.getField(theFldSuNm).submitName === listToSource) {
 			if (forceTooltips) AddTooltip(theFld, tempString);
-			continue; //no changes, so no reason to set this field
+			continue; // no changes, so no reason to set this field
 		}
-		tDoc.getField(theFldSuNm).submitName = setweapons.toSource();
+		tDoc.getField(theFldSuNm).submitName = listToSource;
 		var theFldVal = What(theFld);
-		IsNotWeaponMenu = false;
-		tDoc.getField(theFld).setItems(setweapons);
-		IsNotWeaponMenu = true;
-		if (theFldVal !== What(theFld)) Value(theFld, theFldVal, tempString);
-	};
-	for (var c = 1; c <= 3; c++) {
-		theFld = "Comp.Use.Attack." + c + ".Weapon Selection";
-		theFldSuNm = "Comp.Use.Attack." + c + ".Proficiency";
-		if (tDoc.getField(theFldSuNm).submitName === setweapons.toSource()) {
-			if (forceTooltips) AddTooltip(theFld, tempString);
-			continue; //no changes, so no reason to set this field
-		}
-		tDoc.getField(theFldSuNm).submitName = setweapons.toSource();
-		theFldVal = What(theFld);
 		IsNotWeaponMenu = false;
 		tDoc.getField(theFld).setItems(setweapons);
 		IsNotWeaponMenu = true;
@@ -2671,46 +2686,59 @@ function SetWeaponsdropdown(forceTooltips) {
 
 function SetArmordropdown(forceTooltips) {
 	var tempString = toUni("Armor AC") + "\nType the name of the armor (or select it from the drop-down menu) and its AC and features will be filled out automatically, provided that its a recognized armor.";
-	tempString += "\n\n" + toUni("Alternative spelling") + "\nYou can use alternative spellings, descriptions and embellishments. For example: \"Golden Plate of Lathander\" will result in the AC and attributes of a \"Plate\".";
-	tempString += "\n\n" + toUni("Unarmored Defense") + "\nUsing either \"unarmored\", \"naked\", \"nothing\", or \"no armor\" combined with an abbreviation of one of the six ability scores will result in the armor being calculated with that ability score. For example: \"Unarmored Defense (Int)\".\nIf you do not include the abbreviation, the sheet will auto-fill an armor AC of 10.";
-	tempString += "\n\n" + toUni("Magic bonus") + "\nAny magical bonus you type in this field is added to the AC of the armor type. For example: \"Chain mail +1\" or \"Plate -2\".";
+	tempString += "\n\n" + toUni("Alternative spelling") + '\nYou can use alternative spellings, descriptions and embellishments. For example: "Golden Breastplate of Lathander" will result in the AC and attributes of a "Breastplate".';
+	tempString += "\n\n" + toUni("Unarmored Defense") + '\nUsing either "unarmored", "naked", "nothing", or "no armor" combined with an abbreviation of one of the six ability scores will result in the armor being calculated with that ability score. For example: "Unarmored Defense (Int)".\nIf you do not include the abbreviation, the sheet will auto-fill an armor AC of 10.';
+	tempString += "\n\n" + toUni("Magic bonus") + '\nAny magical bonus you type in this field is added to the AC of the armor type. For example: "Chain mail +1" or "Plate -2".';
 
-	var TheList = [
-		"",
-		"Unarmored",
-		"Unarmored Defense (Con)",
-		"Unarmored Defense (Wis)",
-		"Natural Armor",
-		""
-	];
-	var armNm = "", armAno = [], added = [];
-	var armAtype = { light : [], medium : [], heavy : [] };
+	var added = [], otherLists = [];
+	var presetLists = ["firstlist", "light", "medium", "heavy"];
+	var aLists = { startlist : [], firstlist : ["", "Unarmored"], light : [], medium : [], heavy : [], magic : [] };
 	for (var key in ArmourList) {
-		if ((/^(unarmored|natural armor)$/).test(key) || testSource(key, ArmourList[key], "armorExcl")) continue; // test if the armour or its source isn't excluded
-		armNm = ArmourList[key].name.capitalize();
-		if (added.indexOf(armNm) !== -1) continue; // test if the armour is not already listed
+		var theArm = ArmourList[key]
+		// first test if the armour or its source isn't excluded
+		if (testSource(key, theArm, "armorExcl")) continue;
+		var armNm = theArm.name.capitalize();
+		var armList = theArm.list ? theArm.list.toLowerCase() : theArm.type ? theArm.type.toLowerCase() : "";
+		// test if the armour should be excluded (no list/type) or is already listed
+		if (!armList || added.indexOf(armNm) !== -1) continue;
 		added.push(armNm);
-		if (ArmourList[key].type && armAtype[ArmourList[key].type]) {
-			armAtype[ArmourList[key].type].push(armNm);
+
+		if (!aLists[armList]) {
+			otherLists.push(armList);
+			aLists[armList] = [armNm];
 		} else {
-			armAno.push(armNm);
-		};
-	};
-	for (var aType in armAtype) { TheList = TheList.concat(armAtype[aType]); };
-	if (armAno.length > 0) {
-		armAno.sort;
-		TheList.push("");
-		TheList = TheList.concat(armAno);
+			aLists[armList].push(armNm);
+		}
 	};
 
-	if (tDoc.getField("AC Armor Description").submitName === TheList.toSource()) {
-		if (forceTooltips) AddTooltip("AC Armor Description", tempString);
-		return; //no changes, so no reason to do this
+	// now create the final array element to set to the armour field
+	var setarmours = [];
+
+	// first add the startlist if it has any members
+	if (aLists.startlist.length) {
+		aLists.startlist.sort();
+		aLists.startlist.unshift("");
+		setarmours = aLists.startlist;
 	}
-	tDoc.getField("AC Armor Description").submitName = TheList.toSource();
+	// then add the presetLists
+	for (var i = 0; i < presetLists.length; i++) setarmours = setarmours.concat(aLists[presetLists[i]]);
+	// then add the newly added otherLists
+	otherLists.sort();
+	for (var i = 0; i < otherLists.length; i++) {
+		aLists[otherLists[i]].sort();
+		aLists[otherLists[i]].unshift("");
+		setarmours = setarmours.concat(aLists[otherLists[i]]);
+	}
+
+	var listToSource = setarmours.toSource();
+	if (tDoc.getField("AC Armor Description").submitName === listToSource) {
+		if (forceTooltips) AddTooltip("AC Armor Description", tempString);
+		return; // no changes, so no reason to do any more
+	}
+	tDoc.getField("AC Armor Description").submitName = listToSource;
 
 	var theFldVal = What("AC Armor Description");
-	tDoc.getField("AC Armor Description").setItems(TheList);
+	tDoc.getField("AC Armor Description").setItems(setarmours);
 	Value("AC Armor Description", theFldVal, tempString);
 };
 
@@ -4336,7 +4364,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		// Only continue with the rest if this is not a change done by moving the feat
 		if (IsNotFeatMenu) {
 			// Set the description
-			var theDesc = What("Unit System") === "imperial" ? theFeat.description : ConvertToMetric(theFeat.description, 0.5);
+			var theDesc = !theFeat.description ? "" : What("Unit System") === "imperial" ? theFeat.description : ConvertToMetric(theFeat.description, 0.5);
 			if (typePF) theDesc.replace("\n", " ");
 			Value(FeatFlds[2], theDesc);
 			// Set the notes field
@@ -5487,46 +5515,6 @@ function MakeMobileReady(toggle) {
 			"AmmoRightDisplay.Amount",
 			"Reaction Used This Round"
 		];
-		/* var exceptionPartsArray = [
-			"Comp.Use.HD.Used",
-			"Comp.Use.HP",
-			"Cnote.Left",
-			"Cnote.Right",
-			"Comp.eqp.Notes",
-			"Comp.img.Notes",
-			"Notes.Left",
-			"Notes.Right",
-			"HP Max",
-			"HP Max Current",
-			"HP Temp",
-			"HP Current",
-			"Limited Feature Used ",
-			" Adv",
-			" Dis",
-			"AmmoLeft.",
-			"AmmoRight.",
-			"Death Save ",
-			".DeathSave.",
-			"Resistance Damage Type ",
-			"Adventuring Gear Row ",
-			"Adventuring Gear Location.Row ",
-			"Adventuring Gear Amount ",
-			"Adventuring Gear Weight ",
-			"Language ",
-			"Tool ",
-			"Valuables",
-			"Extra.Exhaustion Level ",
-			"Extra.Condition ",
-			"Extra.Magic Item ",
-			"Extra.Gear Row ",
-			"Extra.Gear Location.Row ",
-			"Extra.Gear Amount ",
-			"Extra.Gear Weight ",
-			"Extra.Notes",
-			"Background_",
-			"SpellSlots.Checkboxes.",
-			"SpellSlots2.Checkboxes."
-		]; */
 		var exceptionRegex = /Comp\.Use\.HD\.Used|Comp\.Use\.HP|Cnote\.Left|Cnote\.Right|Comp\.eqp\.Notes|Comp\.img\.Notes|Notes\.Left|Notes\.Right|HP Max|HP Max Current|HP Temp|HP Current|Limited Feature Used | Adv| Dis|AmmoLeft\.|AmmoRight\.|Death Save |\.DeathSave\.|Resistance Damage Type |Adventuring Gear Row |Adventuring Gear Location\.Row |Adventuring Gear Amount |Adventuring Gear Weight |Language |Tool |Valuables|Extra\.Exhaustion Level |Extra\.Condition |Extra\.Magic Item |Extra\.Gear Row |Extra\.Gear Location\.Row |Extra\.Gear Amount |Extra\.Gear Weight |Extra\.Notes|Background_|SpellSlots\.Checkboxes\.|SpellSlots2\.Checkboxes\./;
 		var tooMuchExceptionRegex = /AC Stealth Disadvantage|button|Attack\.\d+\.Weapon$/i;
 		var totLen = tDoc.numFields;

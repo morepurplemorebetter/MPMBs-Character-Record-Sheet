@@ -33,6 +33,17 @@ function InitiateLists() {
 			tDoc[lists[i]] = {};
 		};
 	};
+	// now add the armours/weapons added by features
+	if (CurrentVars.extraArmour) {
+		for (var anArmour in CurrentVars.extraArmour) {
+			ArmourList[anArmour] = CurrentVars.extraArmour[anArmour];
+		}
+	}
+	if (CurrentVars.extraWeapons) {
+		for (var anWeapon in CurrentVars.extraWeapons) {
+			WeaponsList[anWeapon] = CurrentVars.extraWeapons[anWeapon];
+		}
+	}
 };
 
 // A function to generate the spell variables after running imported scripts

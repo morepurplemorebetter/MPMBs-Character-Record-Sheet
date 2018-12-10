@@ -81,7 +81,7 @@ function desc(arr) {
 function setPrototypes() {
 	//adding a way of capitalizing every first letter of every word in a string
 	String.prototype.capitalize = function () {
-		var string = this.toLowerCase().replace(/(?:^|\s)\w/g, function (m) {
+		var string = this.toLowerCase().replace(/(?:^|\s|\(|\[)\w/g, function (m) {
 			return m.toUpperCase();
 		});
 
