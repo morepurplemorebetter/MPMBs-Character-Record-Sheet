@@ -5421,7 +5421,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 
 	//set the input as the submitName for reference and set the non-automated field with the same value as well
 	tDoc.getField(fldBase + "Weapon Selection").submitName = inputText;
-	if (!IsNotWeaponMenu || What("Manual Attack Remember") !== "No" || (!isReCalc && inputText === (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]))) return; //don't do the rest of this function if only moving weapons around or weapons are set to manual or the CurrentWeapons.field didn't change
+	if (!IsNotWeaponMenu || CurrentVars.manual.attacks || (!isReCalc && inputText === (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]))) return; //don't do the rest of this function if only moving weapons around or weapons are set to manual or the CurrentWeapons.field didn't change
 
 	if (What(fldBase + "Weapon") !== inputText) Value(fldBase + "Weapon", inputText);
 
@@ -5641,7 +5641,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 
 //calculate the attack damage and to hit, can be called from any of the attack fields (sets the fields)
 function CalcAttackDmgHit(fldName) {
-	if (What("Manual Attack Remember") !== "No") return; //if the attack calculation is set to manual, don't do anything
+	if (CurrentVars.manual.attacks) return; //if the attack calculation is set to manual, don't do anything
 
 	fldName = fldName ? fldName : event.target.name;
 	var QI = fldName.indexOf("Comp.") === -1;

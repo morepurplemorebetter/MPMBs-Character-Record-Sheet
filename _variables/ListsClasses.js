@@ -762,7 +762,7 @@ var Base_ClassList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if ((/unarmed strike/i).test(v.WeaponName)) {
+							if ((/unarmed strike/i).test(v.WeaponName) && !v.thisWeapon[1]) {
 								fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
 							};
 						},

@@ -61,16 +61,15 @@ function SwapTooltip(field1, field2) {
 	AddTooltip(field2, tt1);
 };
 
-function Checkbox(field, FldValue, tooltip) {
+function Checkbox(field, FldValue, tooltip, submitNm) {
 	if (!tDoc.getField(field)) return false;
 	var Checkit = (FldValue === undefined) ? true : FldValue;
 	var checkNo = isArray(tDoc.getField(field).page) ? tDoc.getField(field).page.length : 1;
 	for (var c = 0; c < checkNo; c++) {
 		tDoc.getField(field).checkThisBox(c, Checkit);
-		if (tooltip !== undefined) {
-			tDoc.getField(field).userName = tooltip;
-		}
 	}
+	if (tooltip !== undefined) tDoc.getField(field).userName = tooltip;
+	if (submitNm !== undefined) tDoc.getField(field).submitName = submitNm;
 };
 
 function desc(arr) {

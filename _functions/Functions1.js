@@ -523,12 +523,13 @@ function ResetAll(GoOn, noTempl) {
 		spellsAfterUserScripts(true);
 	};
 
-	//call upon some functions to reset other stuff than field values
+	// Call upon some functions to reset other stuff than field values
 	ShowCalcBoxesLines();
 	ToggleWhiteout(false);
 	ChangeFont();
 	ToggleTextSize();
-	ToggleAttacks("Yes");
+	ToggleAttacks(false);
+	CurrentVars.manual = {};
 	ToggleBlueText(false);
 	ShowHideStealthDisadv();
 	AdventureLeagueOptions("advleague#all#0");
@@ -816,7 +817,7 @@ function LayerVisibilityOptions(showMenu, useSelect) {
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
-// Toggle between calculated (Yes) and manual (No) attack fields
+// Toggle between calculated (Toggle = false) and manual (Toggle = true) attack fields
 function ToggleAttacks(Toggle) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Changing the attacks to " + (Toggle === "Yes" ? "calculated" : "manual") + "...");
@@ -824,11 +825,11 @@ function ToggleAttacks(Toggle) {
 
 	MakeMobileReady(false); // Undo flatten, if needed
 
-	var YesNo = Toggle === "Yes" ? "No" : "Yes";
-	var VisibleHidden = Toggle === "Yes" ? "Show" : "Hide";
-	var HiddenVisible = Toggle === "Yes" ? "Hide" : "Show";
-	var NoPrintHidden = Toggle === "Yes" ? "DontPrint" : "Hide";
-	var ReadOnly = Toggle === "Yes" ? "Uneditable" : "Editable";
+	CurrentVars.manual.attacks = Toggle;
+	var VisibleHidden = !Toggle ? "Show" : "Hide";
+	var HiddenVisible = !Toggle ? "Hide" : "Show";
+	var NoPrintHidden = !Toggle ? "DontPrint" : "Hide";
+	var ReadOnly = !Toggle ? "Uneditable" : "Editable";
 	var compTemps = What("Template.extras.AScomp").split(",");
 	var incr = compTemps.length * 4 + FieldNumbers.attacks * 2;
 
@@ -869,8 +870,6 @@ function ToggleAttacks(Toggle) {
 			thermoM((i + FieldNumbers.attacks + compTemps.length * 4)/incr); //increment the progress dialog's progress
 		};
 	}
-
-	Value("Manual Attack Remember", YesNo);
 
 	thermoM(thermoTxt, true); // Stop progress bar
 };
@@ -974,7 +973,7 @@ function ToggleBlueText(toggle) {
 	}
 
 	//undo the showing of certain blue text fields depending on the manual settings
-	if (What("Manual Attack Remember") !== "No") {
+	if (CurrentVars.manual.attacks) {
 		Hide("BlueText.Attack");
 		Hide("BlueText.Comp.Use.Attack");
 		for (var T = 0; T < compTemps.length; T++) {
@@ -2065,7 +2064,7 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	classes.field = inputclasstxt;
 
 	// Stop if class is set to manual or if the entered classes are the same as classes.known
-	if (What("Manual Class Remember") !== "No" || FindClasses(true, isFieldVal)) return;
+	if (CurrentVars.manual.classes || FindClasses(true, isFieldVal)) return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying the class(es)...");
@@ -2357,7 +2356,7 @@ function FindRace(inputracetxt, novardialog) {
 		features : "" //must exist
 	};
 
-	if (inputracetxt === undefined && What("Manual Race Remember") !== "No") return; // don't do the rest of this function if race is set to manual and this is not a startup event
+	if (inputracetxt === undefined && CurrentVars.manual.race) return; // don't do the rest of this function if race is set to manual and this is not a startup event
 
 	//show the option button if the race has selectable variants
 	if (!tempFound[2].length) {
@@ -2365,7 +2364,7 @@ function FindRace(inputracetxt, novardialog) {
 	} else {
 		DontPrint("Race Features Menu");
 		// if no variant was found, ask the user if he wants to select one
-		if (!novardialog && IsNotImport && inputracetxt && !tempFound[1] && What("Manual Race Remember") !== "Yes") {
+		if (!novardialog && IsNotImport && inputracetxt && !tempFound[1] && !CurrentVars.manual.race) {
 			var aRace = RaceList[tempFound[0]];
 			var rSource = stringSource(aRace, 'first,abbr', "    [", "]");
 			var aBasic = "Basic " + aRace.name.toLowerCase() + rSource;
@@ -2418,7 +2417,7 @@ function FindRace(inputracetxt, novardialog) {
 function ApplyRace(inputracetxt, novardialog) {
 	if (IsSetDropDowns) return; // when just changing the dropdowns or race is set to manual, don't do anything
 
-	if (What("Manual Race Remember") !== "No") { // if race is set to manual, just put the text in the Race Remember
+	if (CurrentVars.manual.race) { // if race is set to manual, just put the text in the Race Remember
 		var newRace = ParseRace(inputracetxt);
 		Value("Race Remember", newRace[0] + (newRace[1] ? "-" + newRace[1]  : ""));
 		return;
@@ -3669,7 +3668,7 @@ function FindBackground(input) {
 
 //apply the various attributes of the background
 function ApplyBackground(input) {
-	if (IsSetDropDowns || What("Manual Background Remember") !== "No") return; // when just changing the dropdowns or background is set to manual, don't do anything
+	if (IsSetDropDowns || CurrentVars.manual.background) return; // when just changing the dropdowns or background is set to manual, don't do anything
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying background...");
@@ -4217,7 +4216,7 @@ function RemoveFeature(identifier, usages, additionaltxt, recovery, tooltip, Upd
 	}
 }
 
-//lookup the name of a Feat and if it exists in the FeatsList
+// Lookup the name of a Feat and if it exists in the FeatsList
 function ParseFeat(input) {
 	var found = "";
 	if (!input) return found;
@@ -4246,28 +4245,23 @@ function ParseFeat(input) {
 	return found;
 };
 
-//check all Feat fields and parse the once known into the global variable, as well as any proficiencies and tooltiptexts that need to go into global variables
-function FindFeats(ArrayNmbr) {
-	CurrentFeats.improvements = [];
-	CurrentFeats.skills = [];
-
-	for (var i = 0; i < FieldNumbers.feats; i++) {
-		if (i !== ArrayNmbr) {
-			var FeatFld = What("Feat Name " + (i + 1));
-			CurrentFeats.known[i] = ParseFeat(FeatFld);
-		}
+// Check all Feat fields and parse the once known into the global variable
+function FindFeats() {
+	CurrentFeats.known = [];
+	for (var i = 1; i <= FieldNumbers.feats; i++) {
+		CurrentFeats.known.push( ParseFeat( What("Feat Name " + i) ) );
 	}
 }
 
-//add the text and features of a Feat
+// Add the text and features of a Feat
 function ApplyFeat(InputFeat, FldNmbr) {
-	if (IsSetDropDowns || What("Manual Feat Remember") !== "No") return; // when just changing the dropdowns or feats are set to manual, so don't do anything
+	if (IsSetDropDowns || CurrentVars.manual.feats) return; // when just changing the dropdowns or feats are set to manual, so don't do anything
 	var FeatFlds = [
 		"Feat Name " + FldNmbr,
 		"Feat Note " + FldNmbr,
 		"Feat Description " + FldNmbr
 	];
-	// not called from a field? Then just set the field and let this function be called anew
+	// Not called from a field? Then just set the field and let this function be called anew
 	if ((!event.target || event.target.name !== FeatFlds[0]) && What(FeatFlds[0]) !== InputFeat) {
 		Value(FeatFlds[0], InputFeat);
 		return;
@@ -4277,14 +4271,14 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	var ArrayNmbr = FldNmbr - 1;
 	var OldFeat = CurrentFeats.known[ArrayNmbr];
 
-	if (OldFeat === NewFeat) return; //no changes were made
+	if (OldFeat === NewFeat) return; // No changes were made
 
-	// Start progress bar and stop calculations
+	// Start progress bar
 	var thermoTxt = thermoM("Applying feat...");
 	thermoM(1/6); // Increment the progress bar
 
-	//first test if the feat has a prerequisite and if it meets that
-	if (IsNotFeatMenu && IsNotReset && theFeat && theFeat.prereqeval && !ignorePrereqs && event.target.name == FeatFlds[0]) {
+	// Before stopping the calculations, first test if the feat has a prerequisite and if it meets that
+	if (IsNotFeatMenu && IsNotReset && theFeat && theFeat.prereqeval && !ignorePrereqs && event.target && event.target.name == FeatFlds[0]) {
 		try {
 			var meetsPrereq = eval(theFeat.prereqeval);
 		} catch (e) {
@@ -4304,21 +4298,18 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			});
 
 			if (askUserFeat !== 4) { // pressed "NO", so do not continue and revert the field back to its previous state
-				if (event.target && event.target.name === FeatFlds[0]) {
-					event.rc = false;
-					if (isArray(tDoc.getField(event.target.name).page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + ".1').setFocus();", 10);
-				};
+				event.rc = false;
+				if (isArray(tDoc.getField(event.target.name).page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + ".1').setFocus();", 10);
 				thermoM(thermoTxt, true); // Stop progress bar
 				return;
 			};
 		};
 	};
 
-	calcStop();
+	calcStop(); // Now stop the calculations
 
 	// Remove previous feat at the same field
 	if (OldFeat && OldFeat !== NewFeat) {
-		var oFeat = FeatsList[OldFeat];
 		// remove the calculation and tooltip
 		tDoc.getField(FeatFlds[2]).setAction("Calculate", "");
 		AddTooltip(FeatFlds[2], "");
@@ -4335,15 +4326,13 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			// reset the description field
 			tDoc.resetForm([FeatFlds[2]]);
 			// remove the source from the notes field
-			var sourceStringOld = stringSource(oFeat, "first,page");
+			var sourceStringOld = stringSource(theFeat, "first", "[", "]");
 			if (sourceStringOld) RemoveString(FeatFlds[1], sourceStringOld);
 		}
 	}
 
 	// Update the CurrentFeats.known variable
-	CurrentFeats.known = [];
 	CurrentFeats.known[ArrayNmbr] = NewFeat;
-	FindFeats(ArrayNmbr);
 
 	// Do something if there is a new feat to apply
 	if (theFeat) {
@@ -4368,7 +4357,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 			if (typePF) theDesc.replace("\n", " ");
 			Value(FeatFlds[2], theDesc);
 			// Set the notes field
-			var sourceString = stringSource(theFeat, "first,page");
+			var sourceString = stringSource(theFeat, "first", "[", "]");
 			if (sourceString) AddString(FeatFlds[1], sourceString, "; ");
 			// Apply the rest of its attributes
 			var Fea = ApplyFeatureAttributes(
@@ -4678,6 +4667,32 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			);
 		}
 		CurrentFeats.level = newFeatLvl;
+	}
+
+	// apply magic item level changes
+	var oldItemLvl = CurrentMagicItems.level;
+	var newItemLvl = newRaceLvl; // would otherwise be identical to how to determine the race level
+	if ((/item|all|notclass/i).test(Typeswitch) && oldItemLvl != newItemLvl) {
+		for (var f = 0; f < CurrentMagicItems.known.length; f++) {
+			var anItem = CurrentMagicItems.known[f];
+			var theItem = MagicItemsList[aFeat];
+
+			// if the item requires attunement, but the checkbox is not checked, skip it
+			var attuneChecked = tDoc.getField("Extra.Magic Item Attuned " + (i+1)).isBoxChecked(0);
+			if (!theItem || (theItem.attunement && !attuneChecked)) continue;
+
+			thermoTxt = thermoM("Updating " + theItem.name + " features...", false);
+			thermoM((f+1)/CurrentMagicItems.known.length); //increment the progress dialog's progress
+
+			Fea = ApplyFeatureAttributes(
+				"item", // type
+				anItem, // fObjName
+				[oldItemLvl, newItemLvl, false], // lvlA [old-level, new-level, force-apply]
+				false, // choiceA [old-choice, new-choice, "only"|"change"]
+				false // forceNonCurrent
+			);
+		}
+		CurrentMagicItems.level = newItemLvl;
 	}
 
 	// apply class level changes
@@ -5223,18 +5238,19 @@ function CalcAC() {
 };
 
 function SetToManual_Button(noDialog) {
-	var AttackFld = What("Manual Attack Remember") !== "No";
-	var BackgroundFld = What("Manual Background Remember") !== "No";
-	var ClassFld = What("Manual Class Remember") !== "No";
-	var FeatFld = What("Manual Feat Remember") !== "No";
-	var RaceFld = What("Manual Race Remember") !== "No";
+	var BackgroundFld = !CurrentVars.manual.background ? false : true;
+	var ClassFld = !CurrentVars.manual.classes ? false : true;
+	var FeatFld = !CurrentVars.manual.feats ? false : true;
+	var ItemFld = !CurrentVars.manual.items ? false : true;
+	var RaceFld = !CurrentVars.manual.race ? false : true;
 
 	if (!noDialog) {
 		//set the checkboxes in the dialog to starting position
-		SetToManual_Dialog.mAtt = AttackFld;
+		SetToManual_Dialog.mAtt = CurrentVars.manual.attacks;
 		SetToManual_Dialog.mBac = BackgroundFld;
 		SetToManual_Dialog.mCla = ClassFld;
 		SetToManual_Dialog.mFea = FeatFld;
+		SetToManual_Dialog.mMag = ItemFld;
 		SetToManual_Dialog.mRac = RaceFld;
 
 		//call the dialog and proceed if Apply is pressed
@@ -5242,16 +5258,16 @@ function SetToManual_Button(noDialog) {
 	}
 
 	//do something with the results of attacks checkbox
-	if (SetToManual_Dialog.mAtt !== AttackFld) ToggleAttacks(AttackFld ? "Yes" : "No");
+	if (SetToManual_Dialog.mAtt !== CurrentVars.manual.attacks) ToggleAttacks(SetToManual_Dialog.mAtt);
 
 	//do something with the results of background checkbox
 	if (SetToManual_Dialog.mBac !== BackgroundFld) {
 		if (SetToManual_Dialog.mBac) {
-			Value("Manual Background Remember", What("Background"));
+			CurrentVars.manual.background = What("Background");
 			Hide("Background Menu");
 		} else {
-			FindBackground(What("Manual Background Remember"));
-			Value("Manual Background Remember", "No");
+			FindBackground(CurrentVars.manual.background);
+			CurrentVars.manual.background = false;
 			DontPrint("Background Menu");
 			ApplyBackground(What("Background"));
 		}
@@ -5262,16 +5278,16 @@ function SetToManual_Button(noDialog) {
 		if (SetToManual_Dialog.mCla) {
 			var classString = What("Class and Levels");
 			if (classes.parsed.length == 1 && classString.indexOf(classes.totallevel) == -1) classString += classes.totallevel;
-			Value("Manual Class Remember", What("Class and Levels"));
+			CurrentVars.manual.classes = What("Class and Levels");
 			Hide("Class Features Menu");
 		} else {
 			var newClassValue = What("Class and Levels");
 			// restore the old class value so that we have a working classes.old
-			var oldClassValue = What("Manual Class Remember");
+			var oldClassValue = CurrentVars.manual.classes;
 			tDoc.getField("Class and Levels").remVal = oldClassValue;
 			Value("Class and Levels", oldClassValue);
 			// now set class processing back to automatic and apply the new value
-			Value("Manual Class Remember", "No");
+			CurrentVars.manual.classes = false;
 			Value("Class and Levels", newClassValue);
 		}
 	}
@@ -5279,14 +5295,14 @@ function SetToManual_Button(noDialog) {
 	//do something with the results of feat checkbox
 	if (SetToManual_Dialog.mFea !== FeatFld) {
 		if (SetToManual_Dialog.mFea) {
-			Value("Manual Feat Remember", CurrentFeats.known.toSource(), CurrentFeats.level);
+			CurrentVars.manual.feats = [CurrentFeats.known.toSource(), CurrentFeats.level];
 			// remove the auto-calculations from feat fields
 			for (var i = 1; i <= FieldNumbers.feats; i++) tDoc.getField("Feat Description " + i).setAction("Calculate", "");
 		} else {
 			// set the old known feats back and apply the current ones
-			var oldKnowns = eval(What("Manual Feat Remember"));
-			CurrentFeats.level = Number(Who("Manual Feat Remember"));
-			Value("Manual Feat Remember", "No", "");
+			var oldKnowns = eval(CurrentVars.manual.feats[0]);
+			CurrentFeats.level = CurrentVars.manual.feats[1];
+			CurrentVars.manual.feats = false;
 			for (var i = 1; i <= FieldNumbers.feats; i++) {
 				CurrentFeats.known[i - 1] = oldKnowns[i - 1];
 				ApplyFeat(What("Feat Name " + i), i);
@@ -5295,23 +5311,55 @@ function SetToManual_Button(noDialog) {
 			for (var i = 0; i < FieldNumbers.feats; i++) {
 				if (oldKnowns[i] && CurrentFeats.known[i] == oldKnowns[i] && FeatsList[oldKnowns[i]].calculate) {
 					var theCalc = What("Unit System") === "imperial" ? FeatsList[oldKnowns[i]].calculate : ConvertToMetric(FeatsList[oldKnowns[i]].calculate, 0.5);
-					tDoc.getField("Feat Name " + (1+i)).setAction("Calculate", theCalc);
+					tDoc.getField("Feat Name " + (i+1)).setAction("Calculate", theCalc);
 				}
 			}
 			// update the feat level to the current level
 			UpdateLevelFeatures("feat");
 		}
 	}
+	//do something with the results of magic item checkbox
+	if (SetToManual_Dialog.mMag !== ItemFld) {
+		if (SetToManual_Dialog.mMag) {
+			CurrentVars.manual.items = [CurrentMagicItems.known.toSource(), CurrentMagicItems.level];
+			// remove the auto-calculations from magic item fields
+			for (var i = 1; i <= FieldNumbers.magicitems; i++) tDoc.getField("Extra.Magic Item Description " + i).setAction("Calculate", "");
+		} else {
+			// set the old known magic items back and apply the current ones
+			var oldKnowns = eval(CurrentVars.manual.items[0]);
+			CurrentMagicItems.level = CurrentVars.manual.items[1];
+			CurrentVars.manual.items = false;
+			for (var i = 1; i <= FieldNumbers.magicitems; i++) {
+				CurrentMagicItems.known[i - 1] = oldKnowns[i - 1];
+				ApplyMagicItem(What("Extra.Magic Item " + i), i);
+			}
+			// loop through the known magic items and if any are still the same as before and have a calculated field value, apply the calculation again
+			for (var i = 0; i < FieldNumbers.magicitems; i++) {
+				if (oldKnowns[i] && CurrentMagicItems.known[i] == oldKnowns[i] && MagicItemsList[oldKnowns[i]].calculate) {
+					var theCalc = What("Unit System") === "imperial" ? MagicItemsList[oldKnowns[i]].calculate : ConvertToMetric(MagicItemsList[oldKnowns[i]].calculate, 0.5);
+					tDoc.getField("Extra.Magic Item " + (i+1)).setAction("Calculate", theCalc);
+					// and check the attunement box if the item requires attunement
+					if (MagicItemsList[oldKnowns[i]].attunement) {
+						Checkbox("Extra.Magic Attuned " + (i+1));
+					}
+				}
+				// and correct the visibility of the attuned checkbox
+				setMIattunedVisibility(i+1);
+			}
+			// update the magic item level to the current level
+			UpdateLevelFeatures("item");
+		}
+	}
 
 	//do something with the results of race checkbox
 	if (SetToManual_Dialog.mRac !== RaceFld) {
 		if (SetToManual_Dialog.mRac) {
-			Value("Manual Race Remember", What("Race Remember"), CurrentRace.level);
+			CurrentVars.manual.race = [What("Race Remember"), CurrentRace.level];
 			Hide("Race Features Menu");
 		} else {
-			FindRace(What("Manual Race Remember"), true);
-			if (CurrentRace.known) CurrentRace.level = Number(Who("Manual Race Remember"));
-			Value("Manual Race Remember", "No", "");
+			FindRace(CurrentVars.manual.race[0], true);
+			if (CurrentRace.known) CurrentRace.level = CurrentVars.manual.race[1];
+			CurrentVars.manual.race = false;
 			ApplyRace(What("Race Remember"));
 			if (CurrentRace.known) UpdateLevelFeatures("race");
 		}
@@ -5525,7 +5573,7 @@ function MakeMobileReady(toggle) {
 
 			// Check if field is not in one of the exceptionlists, but continue if it is in the tooMuchExceptionRegex
 			var isException = !tooMuchExceptionRegex.test(Fname) && (exceptionArray.indexOf(Fname) !== -1 || (/^(Bonus |Re)?action \d+/i).test(Fname) || exceptionRegex.test(Fname));
-			if (What("Manual Attack Remember") !== "No") isException = isException ? isException : (/Attack\./).test(Fname);
+			if (CurrentVars.manual.attacks) isException = isException ? isException : (/Attack\./).test(Fname);
 			if (isException) continue;
 
 			//add fields that are visible and not read-only to array and make them read-only
@@ -6468,14 +6516,15 @@ function SetAmmosdropdown(forceTooltips) {
 	}
 	theDropList.sort();
 
-	if (tDoc.getField("AmmoLeftDisplay.Name").submitName === theDropList.toSource()) {
+	var listToSource = theDropList.toSource();
+	if (tDoc.getField("AmmoLeftDisplay.Name").submitName === listToSource) {
 		if (forceTooltips) {
 			AddTooltip("AmmoLeftDisplay.Name", tempString);
 			AddTooltip("AmmoRightDisplay.Name", tempString);
 		}
 		return; //no changes, so no reason to do this
 	}
-	tDoc.getField("AmmoLeftDisplay.Name").submitName = theDropList.toSource();
+	tDoc.getField("AmmoLeftDisplay.Name").submitName = listToSource;
 
 	var remAmmo = What("AmmoLeftDisplay.Name");
 	tDoc.getField("AmmoLeftDisplay.Name").setItems(theDropList);
@@ -7530,7 +7579,7 @@ function SetUnitDecimals_Button() {
 			"AmmoRightDisplay.Weight"
 		];
 		//field calculations to update
-		var FldsCalc = [];
+		var FldsCalc = [], MIfldsCalc = [];
 		var AScompA = What("Template.extras.AScomp").split(",").slice(1);
 		var WSfrontA = What("Template.extras.WSfront").split(",").slice(1);
 		for (var C = 0; C < AScompA.length; C++) {
@@ -7551,6 +7600,11 @@ function SetUnitDecimals_Button() {
 			if (i <= FieldNumbers.feats) {
 				FldsGameMech.push("Feat Description " + i);
 				FldsCalc.push("Feat Description " + i);
+			}
+			if (i <= FieldNumbers.magicitems) {
+				FldsGameMech.push("Extra.Magic Item Description " + i);
+				MIfldsCalc.push("Extra.Magic Item Description " + i);
+				FldsWeight.push("Extra.Magic Item Weight " + i);
 			}
 			if (i <= FieldNumbers.actions) {
 				FldsGameMech.push("Bonus Action " + i);
@@ -7635,7 +7689,7 @@ function SetUnitDecimals_Button() {
 			var raceWeight = "weightMetric";
 		}
 
-		var totalInc = FldsGameMech.length + FldsWeight.length + FldsCalc.length + 2;
+		var totalInc = FldsGameMech.length + FldsWeight.length + FldsCalc.length + MIfldsCalc.length + 2;
 
 		for (var C = 0; C < FldsGameMech.length; C++) {
 			var theValue = What(FldsGameMech[C]);
@@ -7656,6 +7710,13 @@ function SetUnitDecimals_Button() {
 				var theCalc = FeatsList[CurrentFeats.known[C]].calculate;
 				tDoc.getField(FldsCalc[C]).setAction("Calculate", tDoc[conStr](theCalc, 0.5));
 				thermoM((FldsGameMech.length + FldsWeight.length + C)/totalInc); //increment the progress dialog's progress
+			}
+		}
+		for (C = 0; C < MIfldsCalc.length; C++) {
+			if (CurrentMagicItems.known[C] && MagicItemsList[CurrentMagicItems.known[C]].calculate) {
+				var theCalc = MagicItemsList[CurrentMagicItems.known[C]].calculate;
+				tDoc.getField(MIfldsCalc[C]).setAction("Calculate", tDoc[conStr](theCalc, 0.5));
+				thermoM((FldsGameMech.length + FldsWeight.length + FldsCalc.length + C)/totalInc); //increment the progress dialog's progress
 			}
 		}
 		if (What("Height")) {
@@ -7996,10 +8057,10 @@ function MakeWeaponMenu() {
 	var attackMenu = [];
 	var itemNmbr = Number(event.target.name.slice(-1));
 	var maxItems = QI ? FieldNumbers.attacks : 3;
-	var theField = What("Manual Attack Remember") === "No" ? What(prefix + Q + "Attack." + itemNmbr + ".Weapon Selection") : What(prefix + Q + "Attack." + itemNmbr + ".Weapon");
+	var theField = !CurrentVars.manual.attacks ? What(prefix + Q + "Attack." + itemNmbr + ".Weapon Selection") : What(prefix + Q + "Attack." + itemNmbr + ".Weapon");
 	var theWea = CurrentWeapons.known[itemNmbr - 1];
 	var isWeapon = QI && ((!theWea[0] && CurrentWeapons.field[itemNmbr - 1]) || (theWea[0] && WeaponsList[theWea[0]].weight));
-	var isEquipment = QI && What("BlueText.Attack." + itemNmbr + ".Weight") && (What("Manual Attack Remember") !== "No" || isWeapon) ? true : false;
+	var isEquipment = QI && What("BlueText.Attack." + itemNmbr + ".Weight") && (CurrentVars.manual.attacks || isWeapon) ? true : false;
 
 	//decide what items to put on there
 	var menuItems = [["Move up", "Move down"], ["-", "Copy to Adventuring Gear (page 2)"], ["-", "Insert empty attack", "Delete attack", "Clear attack"]];
@@ -8159,7 +8220,7 @@ function WeaponInsert(itemNmbr) {
 	var Q = QI ? "" : "Comp.Use.";
 	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var maxItems = QI ? FieldNumbers.attacks : 3;
-	var theField = What("Manual Attack Remember") === "No" ? ".Weapon Selection" : ".Weapon";
+	var theField = !CurrentVars.manual.attacks ? ".Weapon Selection" : ".Weapon";
 
 	//stop the function if the selected slot is already empty
 	if (What(prefix + Q + "Attack." + itemNmbr + theField) === "") {

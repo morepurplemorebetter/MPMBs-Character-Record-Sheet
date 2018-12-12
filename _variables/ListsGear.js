@@ -6,13 +6,6 @@ var Base_ArmourList = {
 		ac : 10,
 		addMod : true
 	},
-/* 	"natural armor" : {
-		regExpSearch : /^((?=.*natural)(?=.*armou?r)|(?=.*(dragon|draconic|scaly))(?=.*(hide|skin|scales|resilience))).*$/i,
-		name : "Natural Armor",
-		source : [["SRD", 45], ["P", 102], ["V", 112], ["X", 74]],
-		type : "",
-		ac : 13
-	}, */
 	"mage armor" : {
 		regExpSearch : /^(?=.*(mage|magic))(?=.*armou?r).*$/i,
 		name : "Mage armor",

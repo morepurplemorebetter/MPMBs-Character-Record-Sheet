@@ -100,6 +100,14 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		var tipNm = displName == uObj.name ? displName : displName + ": " + uObj.name;
 		var tipNmF = tipNm + (tipNmExtra ? " " + tipNmExtra : "");
 
+		// we should add the options for weapons/armours/ammos before adding the item itself
+		// but we should be removing them only after removing the item itself
+		var addListOptions = function() {
+			if (uObj.armorOptions) processArmorOptions(addIt, tipNm, uObj.armorOptions);
+			if (uObj.ammoOptions) processAmmoOptions(addIt, tipNm, uObj.ammoOptions);
+			if (uObj.weaponOptions) processWeaponOptions(addIt, tipNm, uObj.weaponOptions);
+		}
+		
 		// eval or removeeval
 		var a = addIt ? "eval" : "removeeval";
 		if (uObj[a] && !skipEval) runEval(uObj[a], a);
@@ -114,8 +122,6 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.vision) processVision(addIt, tipNmF, uObj.vision);
 		if (uObj.dmgres) processResistance(addIt, tipNmF, uObj.dmgres);
 		if (uObj.action) processActions(addIt, tipNmF, uObj.action, uObj.limfeaname ? uObj.limfeaname : uObj.name);
-		if (uObj.armorOptions) processArmorOptions(addIt, tipNm, uObj.armorOptions);
-		if (uObj.weaponOptions) processWeaponOptions(addIt, tipNm, uObj.weaponOptions);
 
 		// --- backwards compatibility --- //
 		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false;
@@ -128,6 +134,8 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			if (uObj.spellFirstColTitle) CurrentSpells[aParent].firstCol = addIt ? uObj.spellFirstColTitle : false;
 			if (uObj.spellcastingExtra) CurrentSpells[aParent].extra = addIt ? uObj.spellcastingExtra : false;
 		}
+
+		if (addIt) addListOptions(); // add weapon/armour/ammo option(s)
 
 		// --- backwards compatibility --- //
 		// armor and weapon proficiencies
@@ -149,6 +157,8 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (skillsTxt) skillsTxt = skillsTxt.replace(/^( |\n)*.*: |\;$|\.$/g, '');
 		var skills = uObj.skills && (type != "feat" || (type == "feat" && isArray(uObj.skills))) ? uObj.skills : false;
 		if (skills || skillsTxt) processSkills(addIt, tipNmF, skills, skillsTxt);
+
+		if (!addIt) addListOptions(); // remove weapon/armour/ammo option(s)
 	};
 
 	// set the main variables, determined by type
@@ -589,6 +599,33 @@ function processWeaponOptions(AddRemove, srcNm, itemArr) {
 	// if removing things and the variable is now empty
 	if (!AddRemove && !ObjLength(CurrentVars.extraWeapons)) delete CurrentVars.extraWeapons;
 	UpdateDropdown("weapons"); // update the weapons dropdown
+	SetStringifieds("vars"); // Save the new settings to a field
+}
+
+// set or remove ammo options
+function processAmmoOptions(AddRemove, srcNm, itemArr) {
+	if (!itemArr) return;
+	if (!isArray(itemArr)) itemArr = [itemArr];
+
+	// if adding things but the variable doesn't exist
+	if (AddRemove && !CurrentVars.extraAmmo) CurrentVars.extraAmmo = {};
+
+	srcNm = srcNm.toLowerCase();
+	for (var i = 0; i < itemArr.length; i++) {
+		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
+		if (AddRemove) {
+			CurrentVars.extraAmmo[newName] = itemArr[i];
+			AmmoList[newName] = itemArr[i];
+		} else {
+			// remove the entries if they exist
+			if (CurrentVars.extraAmmo[newName]) delete CurrentVars.extraAmmo[newName];
+			if (AmmoList[newName]) delete AmmoList[newName];
+		}
+	}
+
+	// if removing things and the variable is now empty
+	if (!AddRemove && !ObjLength(CurrentVars.extraAmmo)) delete CurrentVars.extraAmmo;
+	UpdateDropdown("ammo"); // update the ammunition dropdown
 	SetStringifieds("vars"); // Save the new settings to a field
 }
 
@@ -1312,6 +1349,291 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 	var dia = app.execDialog(ShowCompare_Dialog);
 }
 
+// >>>> Magic Item functions <<<< \\
+
+// Lookup the name of a Magic Item and if it exists in the MagicItemsList
+function ParseMagicItem(input) {
+	var found = "";
+	if (!input) return found;
+
+	input = removeDiacritics(input).toLowerCase();
+	var foundLen = 0;
+	var foundDat = 0;
+
+	// Scan string for all magic items
+	for (var key in MagicItemsList) {
+		var kObj = MagicItemsList[key];
+
+		if (input.indexOf(kObj.name.toLowerCase()) === -1 // see if the text matches
+			|| testSource(key, kObj, "magicitemExcl") // test if the magic item or its source isn't excluded
+		) continue;
+
+		// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
+		var tempDate = sourceDate(kObj.source);
+		if (kObj.name.length < foundLen || (kObj.name.length == foundLen && tempDate < foundDat)) continue;
+
+		// we have a match, set the values
+		found = key;
+		foundLen = kObj.name.length
+		foundDat = tempDate;
+	}
+	return found;
+};
+
+// Check all Magic Items fields and parse the once known into the global variable
+function FindMagicItems() {
+	CurrentMagicItems.known = [];
+	for (var i = 1; i <= FieldNumbers.magicitems; i++) {
+		CurrentMagicItems.known.push( ParseMagicItem( What("Extra.Magic Item " + i) ) );
+	}
+}
+
+// Add the text and features of a Magic Items
+function ApplyMagicItem(input, FldNmbr) {
+	if (IsSetDropDowns || CurrentVars.manual.items) return; // When just changing the dropdowns or magic items are set to manual, so don't do anything
+	var MIflds = [
+		"Extra.Magic Item " + FldNmbr,				// 0
+		"Extra.Magic Item Note " + FldNmbr,			// 1
+		"Extra.Magic Item Description " + FldNmbr,	// 2
+		"Extra.Magic Item Weight " + FldNmbr,		// 3
+		"Extra.Magic Item Attuned " + FldNmbr,		// 4
+		"Image.MagicItemAttuned." + FldNmbr			// 5
+	];
+	// Not called from a field? Then just set the field and let this function be called anew
+	if ((!event.target || event.target.name !== MIflds[0]) && What(MIflds[0]) !== input) {
+		Value(MIflds[0], input);
+		return;
+	};
+	var newMI = ParseMagicItem(input);
+	var theMI = MagicItemsList[newMI];
+	var ArrayNmbr = FldNmbr - 1;
+	var oldMI = CurrentMagicItems.known[ArrayNmbr];
+
+	if (oldMI === newMI) return; // No changes were made
+
+	// Start progress bar
+	var thermoTxt = thermoM("Applying magic item...");
+	thermoM(1/6); // Increment the progress bar
+
+	// Before stopping the calculations, first test if the magic item has a prerequisite and if it meets that
+	if (IsNotMagicItemMenu && IsNotReset && theMI && theMI.prereqeval && !ignorePrereqs && event.target && event.target.name == MIflds[0]) {
+		try {
+			var meetsPrereq = eval(theMI.prereqeval);
+		} catch (e) {
+			console.println("The 'prereqeval' attribute for the magic item '" + theMI.name + "' produces an error and is subsequently ignored. If this is one of the built-in magic items, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the magic item.");
+			console.show();
+			var meetsPrereq = true;
+		};
+		if (!meetsPrereq) {
+			thermoTxt = thermoM("The magic item '" + theMI.name + "' has prerequisites that have not been met...", false); //change the progress dialog text
+			thermoM(1/5); //increment the progress dialog's progress
+
+			var askUserMI = app.alert({
+				cTitle : "The prerequisites for '" + theMI.name + "' have not been met",
+				cMsg : "The magic item that you have selected, '" + theMI.name + "' has a prerequisite listed" + (theMI.prerequisite ? " as: \n\t\"" + theMI.prerequisite + "\"" : ".") + "\n\nYour character does not meet this requirement. Are you sure you want to apply this magic item?",
+				nIcon : 1,
+				nType : 2
+			});
+
+			if (askUserMI !== 4) { // pressed "NO", so do not continue and revert the field back to its previous state
+				event.rc = false;
+				if (isArray(tDoc.getField(event.target.name).page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + ".1').setFocus();", 10);
+				thermoM(thermoTxt, true); // Stop progress bar
+				return;
+			};
+		};
+	};
+
+	calcStop(); // Now stop the calculations
+
+	// Remove previous magic item at the same field
+	if (oldMI && oldMI !== newMI) {
+		var oMI = MagicItemsList[oldMI];
+		// remove the calculation and tooltip
+		tDoc.getField(MIflds[2]).setAction("Calculate", "");
+		AddTooltip(MIflds[2], "");
+		// now if this is not a change done by moving the magic item, also remove everything about it
+		if (IsNotMagicItemMenu) {
+			// remove its attributes
+			var Fea = ApplyFeatureAttributes(
+				"item", // type
+				oldMI, // fObjName
+				[CurrentMagicItems.level, 0, false], // lvlA [old-level, new-level, force-apply]
+				false, // choiceA [old-choice, new-choice, "only"|"change"]
+				false // forceNonCurrent
+			);
+			// reset the description, attuned, and weight fields
+			tDoc.resetForm([MIflds[2], MIflds[3], MIflds[4]]);
+			tDoc.getField(MIflds[4]).submitName = "";
+			// remove the source from the notes field
+			var sourceStringOld = stringSource(theMI, "first", "[", "]");
+			if (sourceStringOld) RemoveString(MIflds[1], sourceStringOld);
+		}
+	}
+
+	// Update the CurrentMagicItems.known variable
+	CurrentMagicItems.known[ArrayNmbr] = newMI;
+
+	// Do something if there is a new magic item to apply
+	if (theMI) {
+		thermoTxt = thermoM("Applying '" + theMI.name + "' magic item...", false); //change the progress dialog text
+		thermoM(1/3); //increment the progress dialog's progress
+
+		// Set the field description/calculation
+		if (theMI.calculate) {
+			var theCalc = What("Unit System") === "imperial" ? theMI.calculate : ConvertToMetric(theMI.calculate, 0.5);
+			if (typePF) theCalc.replace("\n", " ");
+			tDoc.getField(MIflds[2]).setAction("Calculate", theCalc);
+		}
+
+		// Set the tooltip
+		var tooltipStr = (theMI.type ? theMI.type + ", " : "") + (theMI.rarity ? theMI.rarity : "");
+		if (theMI.attunement) tooltipStr += tooltipStr ? " (requires attunement)" : "requires attunement";
+		if (tooltipStr) tooltipStr = tooltipStr[0].toUpperCase() + tooltipStr.substr(1) + "\n";
+		if (theMI.prerequisite) tooltipStr += "Prerequisite: " + theMI.prerequisite + "\n";
+		tooltipStr = toUni(theMI.name) + "\n" + tooltipStr + "   ";
+		if (theMI.descriptionFull) tooltipStr += theMI.descriptionFull + "\n";
+		tooltipStr += stringSource(theMI, "full,page", "\nSource(s): ", ".");
+		AddTooltip(MIflds[2], tooltipStr);
+		// Only continue with the rest if this is not a change done by moving the magic item
+		if (IsNotMagicItemMenu) {
+			// Set the description
+			var theDesc = !theMI.description ? "" : What("Unit System") === "imperial" ? theMI.description : ConvertToMetric(theMI.description, 0.5);
+			if (typePF) theDesc.replace("\n", " ");
+			Value(MIflds[2], theDesc);
+			// Set the notes field
+			var sourceString = stringSource(theMI, "first", "[", "]");
+			if (sourceString) AddString(MIflds[1], sourceString, "; ");
+			// Set the attunement
+			Checkbox(MIflds[4], theMI.attunement, undefined, theMI.attunement ? "hide" : "");
+			// Set the weight
+			if (theMI.weight) {
+				var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
+				Value(MIflds[3], RoundTo(theMI.weight * massMod, 0.001, true));
+			} else {
+				Value(MIflds[3], 0);
+			}
+			// Apply the rest of its attributes
+			var Fea = ApplyFeatureAttributes(
+				"item", // type
+				newMI, // fObjName
+				[0, CurrentMagicItems.level, false], // lvlA [old-level, new-level, force-apply]
+				false, // choiceA [old-choice, new-choice, "only"|"change"]
+				false // forceNonCurrent
+			);
+		}
+	}
+
+	// Set the visibility of the attuned checkbox
+	setMIattunedVisibility(fldNmbr);
+
+	thermoM(thermoTxt, true); // Stop progress bar
+};
+
+function ApplyAttunementMI(FldNmbr) {
+	var ArrayNmbr = FldNmbr - 1;
+	var aMI = CurrentMagicItems.known[ArrayNmbr];
+	if (!aMI || !MagicItemsList[aMI].attunement) return; // no magic item recognized that requires attunement, so do nothing
+
+	var theFld = event.target && event.target.name.indexOf("Extra.Magic Item Attuned ") !== -1 ? event.target : tDoc.getField("Extra.Magic Item Attuned " + FldNmbr);
+	var isChecked = theFld.isBoxChecked(0);
+	var fromLvl = isChecked ? 0 : CurrentMagicItems.level;
+	var toLvl = isChecked ? CurrentMagicItems.level : 0;
+
+	// Start progress bar and stop calculation
+	var thermoTxt = thermoM((isChecked ? "Applying" : "Removing") + " magic item features...");
+	calcStop();
+	thermoM(1/2); // Increment the progress bar
+
+	// now apply or remove the magic item's features
+	var Fea = ApplyFeatureAttributes(
+		"item", // type
+		aMI, // fObjName
+		[fromLvl, toLvl, false], // lvlA [old-level, new-level, force-apply]
+		false, // choiceA [old-choice, new-choice, "only"|"change"]
+		false // forceNonCurrent
+	);
+}
+
+// Hide/show the attuned checkbox for a magic item entry
+function setMIattunedVisibility(FldNmbr) {
+	var MIflds = [
+		"Extra.Magic Item " + FldNmbr,				// 0
+		"Extra.Magic Item Note " + FldNmbr,			// 1
+		"Extra.Magic Item Attuned " + FldNmbr,		// 2
+		"Image.MagicItemAttuned." + FldNmbr			// 3
+	];
+	var isOF = FldNmbr > FieldNumbers.magicitemsD;
+
+	// Define some constants
+	var noteWidth = typePF ? 25 : 35;
+	var fullWidth = !typePF ? 216 : isOF ? 243.45 : 164.3;
+	var nameRect = tDoc.getField(MIflds[0]).rect;
+	var noteRect = tDoc.getField(MIflds[1]).rect;
+	var startCount = nameRect[0];
+	var smallWidth = !typePF ? tDoc.getField(MIflds[2]).rect[0] - 1 - startCount : isOF ? 211.27 : 132.15;
+
+	if (How(MIflds[2])) {
+		// hide it, uncheck it, and set the rect for the Name and Note fields
+		Hide(MIflds[2]);
+		Hide(MIflds[3]);
+		Checkbox(MIflds[2], false);
+		nameRect[2] = nameRect[0] + fullWidth - noteWidth;
+	} else {
+		// show it and set the rect for the Name and Note fields
+		Show(MIflds[2]);
+		Show(MIflds[3]);
+		nameRect[2] = nameRect[0] + smallWidth - noteWidth;
+	}
+	// Apply the new positions of the Name and Note fields
+	noteRect[0] = nameRect[2];
+	noteRect[2] = noteRect[0] + noteWidth;
+	tDoc.getField(MIflds[1]).rect = noteRect;
+	tDoc.getField(MIflds[0]).rect = nameRect;
+}
+
+// Copy all the attributes of a field to another field (or even swap between the two)
+function copyField(fldFromName, fldToName, excl, swap) {
+	var fldTo = tDoc.getField(fldToName);
+	var fldFrom = tDoc.getField(fldFromName);
+	if (!fldTo || !fldFrom || fldTo.type !== fldFrom.type) return;
+
+	if (!excl) excl = {};
+	var fldType = fldTo.type;
+
+	// a function to do the actual copying
+	var copy = function(fromObj, toObj, justObj) {
+		if (fldType == "checkbox") {
+			if (justObj) {
+				toObj.isBoxCheckVal = fromObj.isBoxChecked(0);
+				toObj.isBoxChecked = function() { return saveTo.isBoxCheckVal; };
+			} else {
+				toObj.checkThisBox(0, fromObj.isBoxChecked(0));
+			}
+		} else {
+			toObj.value = fromObj.value;
+		}
+		if (!excl.userName) toObj.userName = fromObj.userName;
+		if (!excl.submitName) toObj.submitName = fromObj.submitName;
+		if (fldType !== "checkbox" && !excl.noCalc && !justObj) {
+			toObj.setAction("Calculate", toObj.submitName);
+		}
+	}
+
+	// If swapping the fields, first save the fldTo attributes to a separate object
+	if (swap) {
+		var saveTo = {};
+		copy(fldTo, saveTo, true);
+	}
+
+	// Apply the attributes to the fldTo
+	copy(fldFrom, fldTo);
+
+	// If swapping the fields, now apply the fldTo attributes to the fldFrom from the object
+	if (swap) copy(saveTo, fldFrom);
+}
+
+
 /*
 NEW ATTRIBUTES
 	limfeaname // Optional; If defined it is used for populating the limited feature section and the action section instead of `name`
@@ -1320,6 +1642,7 @@ NEW ATTRIBUTES
 	calcChanges.spellList // Optional; an array with the first entry being a function, and the second entry being a descriptive text. This attribute can change the spell list created for a class / race / feat
 	weaponOptions // Optional; an array of WeaponList objects to be added to the WeaponList (can also be a single object if only wanting to add a single weapon)
 	armorOptions // Optional; an array of ArmourList objects to be added to the ArmourList (can also be a single object if only wanting to add a single armour)
+	ammoOptions // Optional; an array of AmmoList objects to be added to the AmmoList (can also be a single object if only wanting to add a single armour)
 
 CHANGED ATTRIBUTES
 	armorProfs // Optional; Array; armor proficiencies to add [previous just 'armor']

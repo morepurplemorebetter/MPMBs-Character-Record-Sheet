@@ -12,6 +12,7 @@ function InitiateLists() {
 		"ClassSubList",
 		"CreatureList",
 		"FeatsList",
+		"MagicItemsList",
 		"ArmourList",
 		"WeaponsList",
 		"AmmoList",
@@ -33,7 +34,7 @@ function InitiateLists() {
 			tDoc[lists[i]] = {};
 		};
 	};
-	// now add the armours/weapons added by features
+	// now add the armours/weapons/ammunitions added by features
 	if (CurrentVars.extraArmour) {
 		for (var anArmour in CurrentVars.extraArmour) {
 			ArmourList[anArmour] = CurrentVars.extraArmour[anArmour];
@@ -42,6 +43,11 @@ function InitiateLists() {
 	if (CurrentVars.extraWeapons) {
 		for (var anWeapon in CurrentVars.extraWeapons) {
 			WeaponsList[anWeapon] = CurrentVars.extraWeapons[anWeapon];
+		}
+	}
+	if (CurrentVars.extraAmmo) {
+		for (var anAmmo in CurrentVars.extraAmmo) {
+			AmmoList[anAmmo] = CurrentVars.extraAmmo[anAmmo];
 		}
 	}
 };
@@ -238,7 +244,7 @@ var CurrentCasters = {};
 var CurrentSources = {firstTime : true, globalExcl : []};
 var CurrentEvals = {};
 var CurrentScriptFiles = {};
-var CurrentVars = {};
+var CurrentVars = { manual : {} };
 var UpdateSpellSheets = {};
 var CurrentFeatureChoices = {};
 var CurrentStats = {};
@@ -269,6 +275,11 @@ var CurrentFeats = {
 	level : What("Character Level") ? Number(What("Character Level")) : 1
 };
 
+var CurrentMagicItems = {
+	known : [],
+	level : What("Character Level") ? Number(What("Character Level")) : 1
+};
+
 var CurrentProfs = { // Also change field defaultValue!
 	skill : {},
 	armour : {},
@@ -288,6 +299,7 @@ var IsSubclassException = {};
 var IsNotReset = true;
 var IsNotImport = true;
 var IsNotFeatMenu = true;
+var IsNotMagicItemMenu = true;
 var IsNotWeaponMenu = true;
 var IsSetDropDowns = false;
 var IsNotUserScript = true;
@@ -778,6 +790,7 @@ var SetToManual_Dialog = {
 	mCla : false,
 	mFea : false,
 	mRac : false,
+	mMag : false,
 
 	//when starting the dialog
 	initialize : function (dialog) {
@@ -787,6 +800,7 @@ var SetToManual_Dialog = {
 			"Back" : this.mBac,
 			"Clas" : this.mCla,
 			"Feat" : this.mFea,
+			"Item" : this.mMag,
 			"Race" : this.mRac
 		});
 	},
@@ -799,6 +813,7 @@ var SetToManual_Dialog = {
 		this.mBac = oResult["Back"];
 		this.mCla = oResult["Clas"];
 		this.mFea = oResult["Feat"];
+		this.mMag = oResult["Item"];
 	},
 
 	description : {
@@ -892,12 +907,27 @@ var SetToManual_Dialog = {
 							elements : [{
 								type : "check_box",
 								item_id : "Feat",
-								name : "Feat",
+								name : "Feats",
 								char_width : 12
 							}, {
 								type : "static_text",
 								item_id : "tFea",
-								name : "Stop auto-calculation and auto-fill for feats"
+								name : "Disable auto-calculation and auto-fill for feats"
+							}]
+						}, {
+							type : "view",
+							align_children : "align_row",
+							char_height : 2,
+							char_width : 38,
+							elements : [{
+								type : "check_box",
+								item_id : "Item",
+								name : "Magic Items",
+								char_width : 12
+							}, {
+								type : "static_text",
+								item_id : "tFea",
+								name : "Disable auto-calculation and auto-fill for magic items"
 							}]
 						}, {
 							type : "view",
@@ -2087,7 +2117,12 @@ var BackwardsCompatible = {
 	'FontSize Remember' : "CurrentVars.fontsize",
 	'Extra.Layers Remember' : 'CurrentVars.vislayers.toString()',
 	'BlueTextRemember' : "CurrentVars.bluetxt ? 'Yes' : 'No';",
-	'Class Features Remember' : "classFeaChoiceBackwardsComp();"
+	'Class Features Remember' : "classFeaChoiceBackwardsComp();",
+	'Manual Attack Remember' : "CurrentVars.manual.attacks ? 'No' : 'Yes';",
+	'Manual Background Remember' : "CurrentVars.manual.background ? 'No' : 'Yes';",
+	'Manual Class Remember' : "CurrentVars.manual.classes ? 'No' : 'Yes';",
+	'Manual Feat Remember' : "CurrentVars.manual.feats ? 'No' : 'Yes';",
+	'Manual Race Remember' : "CurrentVars.manual.race ? 'No' : 'Yes';"
 }
 
 // Define this here (as well) so that it can be used by the Base_ClassList

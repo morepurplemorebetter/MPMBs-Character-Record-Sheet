@@ -18,7 +18,7 @@ function SelectClass() {
 	if (app.viewerVersion < 15) {
 		FunctionIsNotAvailable();
 		return;
-	} else if (What("Manual Class Remember") !== "No") {
+	} else if (CurrentVars.manual.classes) {
 		var openManualDia = app.alert({
 			cTitle : "Class processing is set to manual",
 			nType : 2,
@@ -26,7 +26,7 @@ function SelectClass() {
 			cMsg : "Class processing has been turned off. Because of that, the class selection dialog won't work.\n\nWould you like to open the dialog to turn class processing back on?"
 		});
 		if (openManualDia == 4) SetToManual_Button();
-		if (What("Manual Class Remember") !== "No") return;
+		if (CurrentVars.manual.classes) return;
 	}
 	if (CurrentSources.firstTime) OpeningStatement();
 	var theChar = What("PC Name") ? What("PC Name") : "Your Character";
@@ -1024,7 +1024,7 @@ function SelectClass() {
 
 //and On Click function for the Class and Levels field
 function ClickClasses() {
-	if (What("Manual Class Remember") == "No" && app.viewerVersion >= 15 && (!event.target.value || event.modifier || event.shift)) {
+	if (!CurrentVars.manual.classes && app.viewerVersion >= 15 && (!event.target.value || event.modifier || event.shift)) {
 		event.target.remVal = event.target.value;
 		tDoc.getField("Player Name").setFocus();
 		SelectClass();

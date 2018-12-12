@@ -453,6 +453,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		bAtk : function (dialog) {resourceSelectionDialog("weapon");},
 		bArm : function (dialog) {resourceSelectionDialog("armor");},
 		bAmm : function (dialog) {resourceSelectionDialog("ammo");},
+		bMag : function (dialog) {resourceSelectionDialog("magic item");},
 		bLin : function (dialog) {if (this.sourceLink) app.launchURL(this.sourceLink, true)},
 		bSrc : function (dialog) { MakeSourceMenu_SourceOptions(); },
 		bMor : function (dialog) {
@@ -674,6 +675,12 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 							type : "button",
 							font : "dialog",
 							bold : true,
+							item_id : "bMag",
+							name : "Magic Items"
+						}, {
+							type : "button",
+							font : "dialog",
+							bold : true,
 							item_id : "bSpe",
 							name : "Spells/Psionics"
 						}, {
@@ -839,6 +846,33 @@ function resourceSelectionDialog(type) {
 			refObj[uName] = u;
 			if (uGroup) {
 				uGroup = amendSource(uGroup, FeatsList[u]);
+				if (!exclObj[uGroup]) exclObj[uGroup] = {};
+				if (!inclObj[uGroup]) inclObj[uGroup] = {};
+				if (uTest) {
+					exclObj[uGroup][uName] = -1;
+				} else {
+					inclObj[uGroup][uName] = -1;
+				}
+			} else {
+				if (uTest) {
+					exclObj[uName] = -1;
+				} else {
+					inclObj[uName] = -1;
+				}
+			}
+		};
+		break;
+	 case "magic item" :
+		var theName = "Magic Items";
+		var CSatt = "magicitemExcl";
+		for (var u in MagicItemsList) {
+			var uName = amendSource(MagicItemsList[u].name, MagicItemsList[u]);
+			var uTest = testSource(u, MagicItemsList[u], CSatt, true);
+			if (uTest === "source") continue;
+			var uGroup = (/\[.+\]/).test(u) ? u.replace(/( ?\[.+\])/, "").capitalize() : false;
+			refObj[uName] = u;
+			if (uGroup) {
+				uGroup = amendSource(uGroup, MagicItemsList[u]);
 				if (!exclObj[uGroup]) exclObj[uGroup] = {};
 				if (!inclObj[uGroup]) inclObj[uGroup] = {};
 				if (uTest) {

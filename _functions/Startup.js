@@ -22,6 +22,7 @@ function InitializeEverything(noButtons, noVars) {
 		FindArmor();
 		FindBackground();
 		FindFeats();
+		FindMagicItems();
 		UpdateTooSkill();
 		SetRichTextFields();
 		MakeAdventureLeagueMenu();

@@ -1298,36 +1298,20 @@ function DirectImport(consoleTrigger) {
 			};
 		};
 	//Change calculations to manual
-		SetToManual_Dialog.mAtt = global.docFrom.getField("Manual Attack Remember") ? global.docFrom.getField("Manual Attack Remember").value !== "No" : false;
-		SetToManual_Dialog.mBac = global.docFrom.getField("Manual Background Remember") ? global.docFrom.getField("Manual Background Remember").value !== "No" : false;
-		SetToManual_Dialog.mCla = global.docFrom.getField("Manual Class Remember") ? global.docFrom.getField("Manual Class Remember").value !== "No" : false;
-		SetToManual_Dialog.mFea = global.docFrom.getField("Manual Feat Remember") ? global.docFrom.getField("Manual Feat Remember").value !== "No" : false;
-		SetToManual_Dialog.mRac = global.docFrom.getField("Manual Race Remember") ? global.docFrom.getField("Manual Race Remember").value !== "No" : false;
+		if (FromVersion < 13) {
+			SetToManual_Dialog.mAtt = global.docFrom.getField("Manual Attack Remember") ? global.docFrom.What("Manual Attack Remember") !== "No" : false;
+			SetToManual_Dialog.mBac = global.docFrom.getField("Manual Background Remember") ? global.docFrom.What("Manual Background Remember") !== "No" : false;
+			SetToManual_Dialog.mCla = global.docFrom.getField("Manual Class Remember") ? global.docFrom.What("Manual Class Remember") !== "No" : false;
+			SetToManual_Dialog.mFea = global.docFrom.getField("Manual Feat Remember") ? global.docFrom.What("Manual Feat Remember") !== "No" : false;
+			SetToManual_Dialog.mRac = global.docFrom.getField("Manual Race Remember") ? global.docFrom.What("Manual Race Remember") !== "No" : false;
+		} else {
+			SetToManual_Dialog.mAtt = global.docFrom.CurrentVars.manual.attacks;
+			SetToManual_Dialog.mBac = global.docFrom.CurrentVars.manual.background;
+			SetToManual_Dialog.mCla = global.docFrom.CurrentVars.manual.classes;
+			SetToManual_Dialog.mFea = global.docFrom.CurrentVars.manual.feats;
+			SetToManual_Dialog.mRac = global.docFrom.CurrentVars.manual.race;
+		}
 		SetToManual_Button(true);
-
-/*
-		if (ImportField("Manual Attack Remember")) ToggleAttacks(What("Manual Attack Remember") !== "No" ? "No" : "Yes");
-		if (ImportField("Manual Background Remember") && What("Manual Background Remember") !== "No") {
-			if (FromVersion < 13) Value("Manual Background Remember", What("Background"));
-			Hide("Background Menu");
-		};
-		if (ImportField("Manual Class Remember") && What("Manual Class Remember") !== "No") {
-			if (FromVersion < 13) {
-				var classString = What("Class and Levels");
-				if (classes.parsed.length == 1 && classString.indexOf(classes.totallevel) == -1) classString += classes.totallevel;
-				Value("Manual Class Remember", classString);
-			}
-			Hide("Class Features Menu");
-		};
-		if (ImportField("Manual Feat Remember") && What("Manual Feat Remember") !== "No") {
-			if (FromVersion < 13) Value("Manual Feat Remember", CurrentFeats.known.toSource(), CurrentFeats.level);
-			for (var i = 1; i <= FieldNumbers.feats; i++) tDoc.getField("Feat Description " + i).setAction("Calculate", "");
-		};
-		if (ImportField("Manual Race Remember") && What("Manual Race Remember") !== "No") {
-			if (FromVersion < 13) Value("Manual Race Remember", What("Race Remember"), CurrentRace.level);
-			Hide("Race Features Menu");
-		};
-*/
 
 	//Recalculate the weapons, for things might have changed since importing them
 		ReCalcWeapons(false);
@@ -1758,7 +1742,7 @@ function Import(type) {
 	thermoM(17/25); //increment the progress dialog's progress
 
 	//set the visiblity of the manual attack fields on the first page as the imported remember field has been set to
-	if (What("Manual Attack Remember") !== "No") ToggleAttacks("No");
+	if (CurrentVars.manual.attacks) ToggleAttacks(true);
 
 	thermoM(18/25); //increment the progress dialog's progress
 
