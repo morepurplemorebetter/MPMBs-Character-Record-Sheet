@@ -11,13 +11,13 @@
 	Effect:		This script adds a subclass for the Paladin, called "Oath of the Hammer"
 				This was made by Middle Finger of Vecna (Mage Hand Press) and can be found on their website (http://mfov.magehandpress.com/2016/04/hammer-of-moradin.html)
 	Code by:	MorePurpleMoreBetter
-	Date:		2018-11-06 (sheet v13.0.0beta6)
+	Date:		2018-12-11 (sheet v13.0.0beta7)
 	
 	Please support the creators of this content (Middle Finger of Vecna) on their Patreon (https://www.patreon.com/mfov) or through their webstore (https://store.magehandpress.com/collections/all)
 */
 
 var iFileName = "Paladin - Hammer of Moradin [MFoV, transcribed by MPMB].js";
-RequiredSheetVersion(12.999);
+RequiredSheetVersion(13);
 
 SourceList["MFoV:HM"] = {
 	name : "Middle Finger of Vecna: Hammer of Moradin",
@@ -62,7 +62,15 @@ AddSubClass("paladin", "hammer", {
 				"Hammers I throw return to my hand at the end of my turn"
 			]),
 			calcChanges : {
-				atkAdd : ["if ((/hammer|maul/).test(WeaponName)) {fields.Description += (fields.Description ? '; ' : '') + 'Thrown, Returning, Magical'; fields.Range = 'Melee, 30/60 ft'; }; ", "Any hammer I wield, including light hammers, mauls, and warhammers, becomes magical and gains the Thrown property with a range of 30/60 feet."],
+				atkAdd : [
+					function (fields, v) {
+						if ((/hammer|maul/).test(v.WeaponName)) {
+							fields.Description += (fields.Description ? '; ' : '') + 'Thrown, Returning, Magical';
+							fields.Range = 'Melee, 30/60 ft';
+						};
+					},
+					"Any hammer I wield, including light hammers, mauls, and warhammers, becomes magical and gains the Thrown property with a range of 30/60 feet."
+				]
 			}
 		},
 		"subclassfeature15" : {

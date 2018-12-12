@@ -14,7 +14,7 @@
 				The Improved Artificer was made by XP or Level 3 and can be found on their Patreon (https://www.patreon.com/posts/improved-class-20621279)
 
 	Code by:	MorePurpleMoreBetter
-	Date:		2018-11-21 (sheet v13.0.0beta6)
+	Date:		2018-12-11 (sheet v13.0.0beta7)
 
 	Please support the creators of this content (XP or Level 3) on their Patreon (https://www.patreon.com/xptolevel3)
 
@@ -154,23 +154,6 @@ ClassList["improved artificer"] = {
 			]),
 			extraname : "Alchemical Invention",
 			extrachoices : ["Alchemical Acid (2 invention points)", "Alchemical Fire (2 invention points)", "Healing Draught (2 invention points)", "Smoke Stick (2 invention points)", "Swift Step Draught (2 invention points)", "Tanglefoot Bag (2 invention points)", "Thunderstone (2 invention points)"],
-			"alchemical fire (2 invention points)" : {
-				name : "Alchemical Fire",
-				source : ["XPtL3:IA", 4],
-				minlevel : 1,
-				description : desc([
-					"As an action, I can hurl a vial of volatile liquid at a creature/object/surface within 30 ft",
-					"It explodes and all within a 5-ft radius must succeed on a Dex save or take fire damage"
-				]),
-				additional : levels.map(function (n) {
-					return "2 points; " + Math.ceil(n / 3) + "d6 fire damage";
-				}),
-				action : ["action", ""],
-				addWeapons : ['Alchemical Fire'],
-				calcChanges : {
-					atkAdd : ["if (WeaponName === 'alchemical fire-xptl3' && classes.known['improved artificer'] && classes.known['improved artificer'].level) {fields.Proficiency = true; fields.Damage_Die = function(n){return Math.ceil(n / 3) + 'd6';}(classes.known['improved artificer'].level); }; ", ""]
-				}
-			},
 			"alchemical acid (2 invention points)" : {
 				name : "Alchemical Acid",
 				source : ["XPtL3:IA", 4],
@@ -183,9 +166,68 @@ ClassList["improved artificer"] = {
 					return "2 points; " + Math.ceil(n / 2) + "d6 acid damage";
 				}),
 				action : ["action", ""],
+				weaponOptions : {
+					regExpSearch : /^(?=.*alchemical)(?=.*acid).*$/i,
+					name : "Alchemical Acid",
+					source : ["XPtL3:IA", 4],
+					list : "improved artificer",
+					ability : 4,
+					type : "Alchemical Invention",
+					damage : [1, 6, "acid"],
+					range : "30 ft",
+					weight : 0,
+					description : "Dex save, success - no damage",
+					abilitytodamage : false,
+					dc : true,
+					artAlcAcid : true
+				},
 				addWeapons : ['Alchemical Acid'],
 				calcChanges : {
-					atkAdd : ["if (WeaponName === 'alchemical acid-xptl3' && classes.known['improved artificer'] && classes.known['improved artificer'].level) {fields.Proficiency = true; fields.Damage_Die = function(n){return Math.ceil(n / 2) + 'd6';}(classes.known['improved artificer'].level); }; ", ""]
+					atkAdd : [
+						function (fields, v) {
+							if (v.theWea.artAlcAcid && classes.known['improved artificer'] && classes.known['improved artificer'].level) {
+								fields.Proficiency = true;
+								fields.Damage_Die = Math.ceil(classes.known['improved artificer'].level / 2) + 'd6';
+							};
+						}, ""]
+				}
+			},
+			"alchemical fire (2 invention points)" : {
+				name : "Alchemical Fire",
+				source : ["XPtL3:IA", 4],
+				minlevel : 1,
+				description : desc([
+					"As an action, I can hurl a vial of volatile liquid at a creature/object/surface within 30 ft",
+					"It explodes and all within a 5-ft radius must succeed on a Dex save or take fire damage"
+				]),
+				additional : levels.map(function (n) {
+					return "2 points; " + Math.ceil(n / 3) + "d6 fire damage";
+				}),
+				action : ["action", ""],
+				weaponOptions : {
+					regExpSearch : /^(?=.*alchemical)(?=.*fire).*$/i,
+					name : "Alchemical Fire",
+					source : ["XPtL3:IA", 4],
+					list : "improved artificer",
+					ability : 4,
+					type : "Alchemical Invention",
+					damage : [1, 6, "fire"],
+					range : "30 ft",
+					weight : 0,
+					description : "Dex save, success - no damage; All creatures within 5-ft of the point of impact have to save",
+					abilitytodamage : false,
+					dc : true,
+					artAlcFire : true
+				},
+				addWeapons : ['Alchemical Fire'],
+				calcChanges : {
+					atkAdd : [
+						function (fields, v) {
+							if (v.theWea.artAlcFire && classes.known['improved artificer'] && classes.known['improved artificer'].level) {
+								fields.Proficiency = true;
+								fields.Damage_Die = Math.ceil(classes.known['improved artificer'].level / 3) + 'd6';
+							};
+						}, ""]
 				}
 			},
 			"healing draught (2 invention points)" : {
@@ -273,12 +315,30 @@ ClassList["improved artificer"] = {
 					"To hit is Dex mod + Proficiency Bonus; Damage is 1d4 piercing + Intelligence modifier",
 					"They have to be reloaded after every 3 shots, taking 1 action to reload both"
 				]),
+				weaponOptions : {
+					regExpSearch : /^(?=.*dual)(?=.*pistols).*$/i,
+					name : "Dual Pistols",
+					source : ["XPtL3:IA", 5],
+					list : "improved artificer",
+					ability : 2,
+					type : "Arcanic Firearm",
+					damage : [1, 4, "piercing"],
+					range : "50/100 ft",
+					weight : 3,
+					description : "Ammunition, loading, 3 shots magazine",
+					abilitytodamage : false,
+					ammo : "arcane magazine",
+					modifiers : ["", "Int"],
+					artDualPistols : true
+				},
 				addWeapons : ['Dual Pistols'],
 				additional : "2 points",
 				action : ["bonus action", "off-hand"],
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'dual pistols-xptl3') { fields.Proficiency = true; }; ",
+						function (fields, v) {
+							if (v.theWea.artDualPistols) fields.Proficiency = true;
+						},
 						""
 					]
 				}
@@ -289,7 +349,11 @@ ClassList["improved artificer"] = {
 				description : " [1 point]\n   I can now fire a pistol 5 times before needing to reload",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'dual pistols-xptl3') { fields.Description = fields.Description.replace(/\\d+ shots magazine/i, '5 shots magazine'); }; ",
+						function (fields, v) {
+							if (v.theWea.artDualPistols) {
+								fields.Description = fields.Description.replace(/\d+ shots magazine/i, '5 shots magazine');
+							}
+						},
 						"My dual pistols can be shot 5 times before needing to reload."
 					]
 				},
@@ -301,7 +365,11 @@ ClassList["improved artificer"] = {
 				description : " [2 points]",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'dual pistols-xptl3' && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols: increase damage to 1d8 (3 invention points; prereq: increase damage to 1d6)') == -1) { fields.Damage_Die = '1d6'; }; ",
+						function (fields, v) {
+							if (v.theWea.artDualPistols && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols: increase damage to 1d8 (3 invention points; prereq: increase damage to 1d6)') == -1) {
+								fields.Damage_Die = '1d6';
+							}
+						},
 						"My dual pistols deal 1d6 damage instead of 1d4."
 					]
 				},
@@ -313,7 +381,9 @@ ClassList["improved artificer"] = {
 				description : " [3 points]",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'dual pistols-xptl3') { fields.Damage_Die = '1d8'; }; ",
+						function (fields, v) {
+							if (v.theWea.artDualPistols) fields.Damage_Die = '1d8';
+						},
 						"My dual pistols deal 1d8 damage instead of 1d6."
 					]
 				},
@@ -325,7 +395,9 @@ ClassList["improved artificer"] = {
 				description : " [2 points; counts as magical]",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'dual pistols-xptl3') { fields.Description += '; Counts as magical'; }; ",
+						function (fields, v) {
+							if (v.theWea.artDualPistols) fields.Description += '; Counts as magical';
+						},
 						"My dual pistols attacks count as magical for overcoming resistances and damage reduction."
 					]
 				},
@@ -337,7 +409,9 @@ ClassList["improved artificer"] = {
 				description : " [3 points]\n   I now only require a bonus action to reload both pistols",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'dual pistols-xptl3') { fields.Description += '; Bonus action to reload'); }; ",
+						function (fields, v) {
+							if (v.theWea.artDualPistols) fields.Description += '; Bonus action to reload';
+						},
 						"My dual pistols can be reloaded as a bonus action instead of an action."
 					]
 				},
@@ -361,11 +435,28 @@ ClassList["improved artificer"] = {
 					"This firearm does increased damage at short range, but adds no ability mod to damage",
 					"It has to be reloaded after every 2 shots, taking 1 action to reload"
 				]),
+				weaponOptions : {
+					regExpSearch : /blunderbuss/i,
+					name : "Blunderbuss",
+					source : ["XPtL3:IA", 6],
+					list : "improved artificer",
+					ability : 2,
+					type : "Arcanic Firearm",
+					damage : [1, 6, "piercing"],
+					range : "30/60 ft",
+					weight : 8,
+					description : "Ammunition, loading, 2 shots magazine, two-handed; +1d6 damage in 20 ft or +2d6 in 10 ft",
+					abilitytodamage : false,
+					ammo : "arcane magazine",
+					artBlunderbuss : true
+				},
 				addWeapons : ['Blunderbuss'],
 				additional : "2 points",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'blunderbuss-xptl3') { fields.Proficiency = true; }; ",
+						function (fields, v) {
+							if (v.theWea.artBlunderbuss) fields.Proficiency = true;
+						},
 						""
 					]
 				}
@@ -376,7 +467,11 @@ ClassList["improved artificer"] = {
 				description : " [2 points]\n   I can now fire a blunderbuss 4 times before needing to reload",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'blunderbuss-xptl3' && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss: increase rate of fire to 6 (2 invention points; prereq: increase rate of fire to 4)') == -1) { fields.Description = fields.Description.replace(/\\d+ shots magazine/i, '4 shots magazine'); }; ",
+						function (fields, v) {
+							if (v.theWea.artBlunderbuss && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss: increase rate of fire to 6 (2 invention points; prereq: increase rate of fire to 4)') == -1) {
+								fields.Description = fields.Description.replace(/\d+ shots magazine/i, '4 shots magazine');
+							}
+						},
 						"My blunderbuss can be shot 4 times before needing to reload."
 					]
 				},
@@ -388,7 +483,11 @@ ClassList["improved artificer"] = {
 				description : " [2 points]\n   I can now fire a blunderbuss 6 times before needing to reload",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'blunderbuss-xptl3') { fields.Description = fields.Description.replace(/\\d+ shots magazine/i, '6 shots magazine'); }; ",
+						function (fields, v) {
+							if (v.theWea.artBlunderbuss) {
+								fields.Description = fields.Description.replace(/\d+ shots magazine/i, '6 shots magazine');
+							}
+						},
 						"My blunderbuss can be shot 6 times before needing to reload."
 					]
 				},
@@ -400,7 +499,9 @@ ClassList["improved artificer"] = {
 				description : " [2 points; counts as magical]",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'blunderbuss-xptl3') { fields.Description += '; Counts as magical'; }; ",
+						function (fields, v) {
+							if (v.theWea.artBlunderbuss) fields.Description += '; Counts as magical';
+						},
 						"My blunderbuss attacks count as magical for overcoming resistances and damage reduction."
 					]
 				},
@@ -412,7 +513,12 @@ ClassList["improved artificer"] = {
 				description : " [2 points]",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'blunderbuss-xptl3' && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss: increase damage to d10 (3 invention points; prereq: increase damage to d8)') == -1) { fields.Damage_Die = '1d8'; fields.Description = fields.Description.replace(/\\+(1|2)d6/ig, '+$1d8'); }; ",
+						function (fields, v) {
+							if (v.theWea.artBlunderbuss && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss: increase damage to d10 (3 invention points; prereq: increase damage to d8)') == -1) {
+								fields.Damage_Die = '1d8';
+								fields.Description = fields.Description.replace(/\+(1|2)d6/ig, '+$1d8');
+							}
+						},
 						"My blunderbuss deals d8 damage instead of d6."
 					]
 				},
@@ -424,7 +530,12 @@ ClassList["improved artificer"] = {
 				description : " [3 points]",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'blunderbuss-xptl3') { fields.Damage_Die = '1d10'; fields.Description = fields.Description.replace(/\\+(1|2)d(6|8)/ig, '+$1d10'); }; ",
+						function (fields, v) {
+							if (v.theWea.artBlunderbuss) {
+								fields.Damage_Die = '1d10';
+								fields.Description = fields.Description.replace(/\+(1|2)d(6|8)/ig, '+$1d10');
+							}
+						},
 						"My blunderbuss deals d10 damage instead of d8."
 					]
 				},
@@ -447,11 +558,29 @@ ClassList["improved artificer"] = {
 					"To hit is Dex mod + Proficiency Bonus; Damage is 1d10 piercing + Intelligence modifier",
 					"It has to be reloaded after every 3 shots, taking 1 action to reload"
 				]),
+				weaponOptions : {
+					regExpSearch : /^(?=.*sniper)(?=.*rifle).*$/i,
+					name : "Sniper Rifle",
+					source : ["XPtL3:IA", 6],
+					list : "improved artificer",
+					ability : 2,
+					type : "Arcanic Firearm",
+					damage : [1, 10, "piercing"],
+					range : "150/300 ft",
+					weight : 10,
+					description : "Ammunition, loading, 3 shots magazine, two-handed",
+					abilitytodamage : false,
+					ammo : "arcane magazine",
+					modifiers : ["", "Int"],
+					artSniperRifle : true
+				},
 				addWeapons : ['Sniper Rifle'],
 				additional : "2 points",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'sniper rifle-xptl3') { fields.Proficiency = true; }; ",
+						function (fields, v) {
+							if (v.theWea.artSniperRifle) fields.Proficiency = true;
+						},
 						""
 					]
 				}
@@ -462,7 +591,11 @@ ClassList["improved artificer"] = {
 				description : " [2 points]\n   I can now fire a sniper rifle 5 times before needing to reload",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'sniper rifle-xptl3') { fields.Description = fields.Description.replace(/\\d+ shots magazine/i, '5 shots magazine'); }; ",
+						function (fields, v) {
+							if (v.theWea.artSniperRifle) {
+								fields.Description = fields.Description.replace(/\d+ shots magazine/i, '5 shots magazine');
+							}
+						},
 						"My sniper rifle can be shot 5 times before needing to reload."
 					]
 				},
@@ -474,7 +607,9 @@ ClassList["improved artificer"] = {
 				description : " [2 points]\n   The range of my sniper rifle increases to 300/450 ft",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'sniper rifle-xptl3') { fields.Range = '300/450 ft'); }; ",
+						function (fields, v) {
+							if (v.theWea.artSniperRifle) fields.Range = '300/450 ft');
+						},
 						"The range of my sniper rifle is now 300/450 ft."
 					]
 				},
@@ -486,7 +621,9 @@ ClassList["improved artificer"] = {
 				description : " [2 points; counts as magical]",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'sniper rifle-xptl3') { fields.Description += '; Counts as magical'; }; ",
+						function (fields, v) {
+							if (v.theWea.artSniperRifle) fields.Description += '; Counts as magical';
+						},
 						"My sniper rifle attacks count as magical for overcoming resistances and damage reduction."
 					]
 				},
@@ -498,7 +635,11 @@ ClassList["improved artificer"] = {
 				description : " [2 points]",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'sniper rifle-xptl3' && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle: increase damage to 3d10 (3 invention points; prereq: increase damage to 2d10)') == -1) { fields.Damage_Die = '2d10'; }; ",
+						function (fields, v) {
+							if (v.theWea.artSniperRifle && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle: increase damage to 3d10 (3 invention points; prereq: increase damage to 2d10)') == -1) {
+								fields.Damage_Die = '2d10';
+							}
+						},
 						"My sniper rifle deals 2d10 damage instead of 1d10."
 					]
 				},
@@ -510,7 +651,9 @@ ClassList["improved artificer"] = {
 				description : " [3 points]",
 				calcChanges : {
 					atkAdd : [
-						"if (WeaponName === 'sniper rifle-xptl3') { fields.Damage_Die = '3d10'; }; ",
+						function (fields, v) {
+							if (v.theWea.artSniperRifle) fields.Damage_Die = '3d10';
+						},
 						"My sniper rifle deals 3d10 damage instead of 2d10."
 					]
 				},
@@ -840,7 +983,12 @@ ClassList["improved artificer"] = {
 				source : ["XPtL3:IA", 8],
 				description : " [2 points]",
 				calcChanges : {
-					atkCalc : ["if ((/^(?!.*melee).*\d+.*$/i).test(fields.Range)) {output.extraHit += 2; }; ", "My ranged attacks get a +2 bonus on the To Hit."]
+					atkCalc : [
+						function (fields, v, output) {
+							if ((/^(?!.*melee).*\d+.*$/i).test(fields.Range)) output.extraHit += 2;
+						},
+						"My ranged attacks get a +2 bonus on the To Hit."
+					]
 				},
 				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('robotic eye (1 invention point)') != -1"
 			},
@@ -1125,81 +1273,6 @@ ClassList["improved artificer"] = {
 		}
 	}
 };
-
-// Artificer inventions that act as weapons
-WeaponsList["alchemical acid-xptl3"] = {
-	regExpSearch : /^(?=.*alchemical)(?=.*acid).*$/i,
-	name : "Alchemical Acid",
-	source : ["XPtL3:IA", 4],
-	list : "improved artificer",
-	ability : 4,
-	type : "Alchemical Invention",
-	damage : [1, 6, "acid"],
-	range : "30 ft",
-	weight : 0,
-	description : "Dex save, success - no damage",
-	abilitytodamage : false,
-	dc : true
-};
-WeaponsList["alchemical fire-xptl3"] = {
-	regExpSearch : /^(?=.*alchemical)(?=.*fire).*$/i,
-	name : "Alchemical Fire",
-	source : ["XPtL3:IA", 4],
-	list : "improved artificer",
-	ability : 4,
-	type : "Alchemical Invention",
-	damage : [1, 6, "fire"],
-	range : "30 ft",
-	weight : 0,
-	description : "Dex save, success - no damage; All creatures within 5-ft of the point of impact have to save",
-	abilitytodamage : false,
-	dc : true
-};
-WeaponsList["dual pistols-xptl3"] = {
-	regExpSearch : /^(?=.*dual)(?=.*pistols).*$/i,
-	name : "Dual Pistols",
-	source : ["XPtL3:IA", 5],
-	list : "improved artificer",
-	ability : 2,
-	type : "Arcanic Firearm",
-	damage : [1, 4, "piercing"],
-	range : "50/100 ft",
-	weight : 3,
-	description : "Ammunition, loading, 3 shots magazine",
-	abilitytodamage : false,
-	ammo : "arcane magazine",
-	modifiers : ["", "Int"]
-};
-WeaponsList["blunderbuss-xptl3"] = {
-	regExpSearch : /blunderbuss/i,
-	name : "Blunderbuss",
-	source : ["XPtL3:IA", 6],
-	list : "improved artificer",
-	ability : 2,
-	type : "Arcanic Firearm",
-	damage : [1, 6, "piercing"],
-	range : "30/60 ft",
-	weight : 8,
-	description : "Ammunition, loading, 2 shots magazine, two-handed; +1d6 damage in 20 ft or +2d6 in 10 ft",
-	abilitytodamage : false,
-	ammo : "arcane magazine"
-};
-WeaponsList["sniper rifle-xptl3"] = {
-	regExpSearch : /^(?=.*sniper)(?=.*rifle).*$/i,
-	name : "Sniper Rifle",
-	source : ["XPtL3:IA", 6],
-	list : "improved artificer",
-	ability : 2,
-	type : "Arcanic Firearm",
-	damage : [1, 10, "piercing"],
-	range : "150/300 ft",
-	weight : 10,
-	description : "Ammunition, loading, 3 shots magazine, two-handed",
-	abilitytodamage : false,
-	ammo : "arcane magazine",
-	modifiers : ["", "Int"]
-};
-
 
 // Artificer ammo
 AmmoList["arcanic firearm rounds"] = {

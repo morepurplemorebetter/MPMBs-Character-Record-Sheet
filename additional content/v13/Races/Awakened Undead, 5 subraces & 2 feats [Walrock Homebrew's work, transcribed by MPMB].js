@@ -13,7 +13,7 @@
 				This is taken from the DMs Guild website (https://www.dmsguild.com/product/222229/)
 				This subclass is made by Walrock Homebrew
 	Code by:	MorePurpleMoreBetter
-	Date:		2018-01-22 (sheet v12.999)
+	Date:		2018-12-11 (sheet v13.0.0beta7)
 	
 	Please support the creator of this content (Walrock Homebrew) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Walrock%20Homebrew
 	
@@ -61,7 +61,12 @@ RaceList["ghost-au"] = {
 			name : "Withering Touch",
 			minlevel : 1,
 			calcChanges : {
-				atkAdd : ["if (WeaponName === 'unarmed strike') { fields.Damage_Type = 'Necrotic'; }; ", "As a Ghost, my unarmed strikes do necrotic damage instead of bludgeoning."]
+				atkAdd : [
+					function (fields, v) {
+						if (v.WeaponName === 'unarmed strike') fields.Damage_Type = 'Necrotic';
+					},
+					"As a Ghost, my unarmed strikes do necrotic damage instead of bludgeoning."
+				]
 			}
 		}
 	},
@@ -177,7 +182,15 @@ RaceList["mummy-au"] = {
 			name : "Mummy Rot",
 			minlevel : 1,
 			calcChanges : {
-				atkAdd : ["if (WeaponName === 'unarmed strike') { fields.Damage_Type = 'Necrotic'; fields.Description += (fields.Description ? '; ' : '') + 'Target gains curse: unable to regain HP for 24 hours'; }; ", "As a Mummy, I can have my unarmed strikes do necrotic damage instead of bludgeoning. Targets of my unarmed strikes are cursed and can't regain HP for 24 hours or until they are the subject of a Remove Curse spell."]
+				atkAdd : [
+					function (fields, v) {
+						if (v.WeaponName === 'unarmed strike') {
+							fields.Damage_Type = 'Necrotic';
+							fields.Description += (fields.Description ? '; ' : '') + 'Target gains curse: unable to regain HP for 24 hours';
+						};
+					},
+					"As a Mummy, I can have my unarmed strikes do necrotic damage instead of bludgeoning. Targets of my unarmed strikes are cursed and can't regain HP for 24 hours or until they are the subject of a Remove Curse spell."
+				]
 			}
 		},
 		"dreadful glare" : {

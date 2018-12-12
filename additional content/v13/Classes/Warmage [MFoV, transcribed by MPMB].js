@@ -20,7 +20,7 @@
 				Note that the MFoV Warmage has gone through several iterations. The code here is based on the version from 2018/06/29.
 
 	Code by:	MorePurpleMoreBetter
-	Date:		2018-11-07 (sheet v13.0.0beta6)
+	Date:		2018-12-11 (sheet v13.0.0beta7)
 
 	Please support the creators of this content (Middle Finger of Vecna) on their Patreon (https://www.patreon.com/mfov) or through their webstore (https://store.magehandpress.com/collections/all)
 */
@@ -190,7 +190,14 @@ ClassList["warmage"] = {
 				name : "Arcane Sniper Fighting Style",
 				description : "\n   " + "I gain +2 bonus to attack rolls I make with ranged spell attacks",
 				calcChanges : {
-					atkCalc : ["if (isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range)) {output.extraHit += 2; }; ", "My ranged spell attacks get a +2 bonus on the To Hit."]
+					atkCalc : [
+						function (fields, v, output) {
+							if (v.isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range)) {
+								output.extraHit += 2;
+							};
+						},
+						"My ranged spell attacks get a +2 bonus on the To Hit."
+					]
 				}
 			},
 			"striker" : {
@@ -257,7 +264,22 @@ ClassList["warmage"] = {
 					"I double the range of my warmage cantrips that require a ranged spell attack"
 				]),
 				calcChanges : {
-					atkAdd : ["if (!isDC && isSpell && isSpellUsed(WeaponName)[0] == 'warmage' && (/\\d+ ?(f.{0,2}t|m)/i).test(fields.Range)) {var rangeNmbr = fields.Range.match(/\\d+/); rangeNmbr.forEach(function(dR) {fields.Range = fields.Range.replace(dR, Number(dR) * 2);});}; ", "My warmage cantrips that require a ranged attack roll, have their range doubled."]
+					atkAdd : [
+						function (fields, v) {
+							if (!v.isDC && v.isSpell && v.thisWeapon[4].indexOf('warmage') !== -1 && (/\d+ ?(f.{0,2}t|m)/i).test(fields.Range)) {
+								var rangeNmbr = fields.Range.match(/\d+(\.\d+|,\d+)?/g);
+								var notNmbrs = fields.Range.split(RegExp(rangeNmbr.join('|')));
+								fields.Range = '';
+								rangeNmbr.forEach(function (dR, idx) {
+									fields.Range += (notNmbrs[idx] ? notNmbrs[idx] : '') + (parseFloat(dR.toString().replace(',', '.') * 2));
+								});
+								if (notNmbrs.length > rangeNmbr.length) {
+									fields.Range += notNmbrs[notNmbrs.length - 1];
+								};
+							};
+						},
+						"My warmage cantrips that require a ranged attack roll, have their range doubled."
+					]
 				}
 			},
 			"flexible range" : {
@@ -268,7 +290,18 @@ ClassList["warmage"] = {
 					"Similarly, those that are normally only melee can now be used with a range of 30 ft"
 				]),
 				calcChanges : {
-					atkAdd : ["if (!isDC && isSpell && isSpellUsed(WeaponName)[0] == 'warmage') { if ((/^(?!.*melee).*\\d+ ?(f.{0,2}t|m).*$/i).test(fields.Range))) { fields.Range = 'Melee, ' + fields.Range; } else if ((/^(?!.*\d)(?=.*melee).*$/i).test(fields.Range))) { fields.Range = fields.Range + ', 30 ft'; } };", "My warmage cantrips that require a ranged spell attack roll, can also be used with as a melee spell attack. warmage cantrips that require a melee spell attack roll, can also be used with as a ranged spell attack with a range of 30 ft."]
+					atkAdd : [
+						function (fields, v) {
+							if (!v.isDC && v.isSpell && v.thisWeapon[4].indexOf('warmage') !== -1) {
+								if ((/^(?!.*melee).*\d+ ?(f.{0,2}t|m).*$/i).test(fields.Range))) {
+									fields.Range = 'Melee, ' + fields.Range;
+								} else if ((/^(?!.*\d)(?=.*melee).*$/i).test(fields.Range))) {
+									fields.Range = fields.Range + ', 30 ft';
+								}
+							};
+						},
+						"My warmage cantrips that require a ranged spell attack roll, can also be used with as a melee spell attack. warmage cantrips that require a melee spell attack roll, can also be used with as a ranged spell attack with a range of 30 ft."
+					]
 				}
 			},
 			"mystical armor" : {
