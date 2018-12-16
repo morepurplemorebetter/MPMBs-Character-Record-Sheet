@@ -4270,6 +4270,7 @@ function UpdateDropdown(type, weapon) {
 		SetBackgrounddropdown(forceTT);
 		SetBackgroundFeaturesdropdown(forceTT);
 		SetFeatsdropdown(forceTT);
+		SetMagicItemsDropdown(forceTT);
 		SetCompDropdown(forceTT);
 		SetWildshapeDropdown(forceTT);
 		SetArmordropdown(forceTT);
@@ -4314,6 +4315,13 @@ function UpdateDropdown(type, weapon) {
 	 case "feat" :
 	 case "feats" :
 		SetFeatsdropdown();
+		break;
+	 case "item" :
+	 case "items" :
+	 case "magic" :
+	 case "magic item" :
+	 case "magic items" :
+		SetMagicItemsDropdown();
 		break;
 	 case "ammo" :
 	 case "ammunition" :
