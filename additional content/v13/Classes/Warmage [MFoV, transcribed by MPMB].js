@@ -293,9 +293,9 @@ ClassList["warmage"] = {
 					atkAdd : [
 						function (fields, v) {
 							if (!v.isDC && v.isSpell && v.thisWeapon[4].indexOf('warmage') !== -1) {
-								if ((/^(?!.*melee).*\d+ ?(f.{0,2}t|m).*$/i).test(fields.Range))) {
+								if ((/^(?!.*melee).*\d+ ?(f.{0,2}t|m).*$/i).test(fields.Range)) {
 									fields.Range = 'Melee, ' + fields.Range;
-								} else if ((/^(?!.*\d)(?=.*melee).*$/i).test(fields.Range))) {
+								} else if ((/^(?!.*\d)(?=.*melee).*$/i).test(fields.Range)) {
 									fields.Range = fields.Range + ', 30 ft';
 								}
 							};
