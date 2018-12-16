@@ -444,7 +444,10 @@ function classFeaChoiceBackwardsComp() {
 function CreateCurrentSpellsEntry(type, fObjName) {
 	type = GetFeatureType(type);
 	var setCSobj = function(oName) {
-		if (!CurrentSpells[oName]) CurrentSpells[oName] = {bonus : {}};
+		if (!CurrentSpells[oName]) {
+			CurrentSpells[oName] = {bonus : {}};
+			CurrentUpdates.types.indexOf("spells");
+		}
 		return CurrentSpells[oName];
 	};
 	switch (type.toLowerCase()) {

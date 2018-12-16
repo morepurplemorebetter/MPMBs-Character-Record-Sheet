@@ -1290,6 +1290,7 @@ function FindArmor(input) {
 
 	CurrentArmour.mod = "";
 	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].addMod) {
+		// check if it is an ability score
 		for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
 			temp = AbilityScores.abbreviations[i];
 			if (tempString.indexOf(temp.toLowerCase()) !== -1) {
@@ -1297,6 +1298,8 @@ function FindArmor(input) {
 				i = AbilityScores.abbreviations.length;
 			}
 		}
+		// or perhaps it wants to add the proficiency bonus
+		if (!CurrentArmour.mod && tempString.indexOf("prof") !== -1) CurrentArmour.mod = "Proficiency Bonus";
 	}
 };
 
@@ -1329,7 +1332,7 @@ function ApplyArmor(input) {
 		thermoM(1/3); //increment the progress dialog's progress
 
 		if (CurrentArmour.mod) {
-			var theCalc = "event.value = " + ArmourList[CurrentArmour.known].ac + " + Number(What(\"" + CurrentArmour.mod + "\")) + " + CurrentArmour.magic;
+			var theCalc = "event.value = " + ArmourList[CurrentArmour.known].ac + ' + Number(' + (CurrentArmour.mod ? 'How("Proficiency Bonus")' : 'What("' + CurrentArmour.mod + '")') + ') + ' + CurrentArmour.magic;
 			tDoc.getField(ArmorFields[0]).setAction("Calculate", theCalc);
 		} else {
 			Value(ArmorFields[0], ArmourList[CurrentArmour.known].ac + CurrentArmour.magic);

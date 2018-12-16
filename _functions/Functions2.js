@@ -4659,7 +4659,7 @@ function UpdateRevisedRangerCompanions(newLvl) {
 			if (!deleteIt) {
 				//set the new level to the tooltip text of the remember field for later use
 				AddTooltip(prefix + "Companion.Remember", newLvl + "," + RangerLvl + ",");
-			} else if (thisCrea) {
+			} else if (thisCrea && thisCrea.traits) {
 				//bring back the multiattack trait, if applicable
 				for (var t = 0; t < thisCrea.traits.length; t++) {
 					var tName = thisCrea.traits[t].name;
