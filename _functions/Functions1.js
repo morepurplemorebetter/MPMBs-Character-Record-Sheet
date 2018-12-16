@@ -2013,6 +2013,10 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				cSpells.factor = [casterFactor, casterType];
 				cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
 				if (Temps.spellcastingExtra) cSpells.extra = Temps.spellcastingExtra;
+			} else if (CurrentSpells[aClass]) {
+				// not high enough level to be a spellcaster anymore, so remove the object if it exists
+				delete CurrentSpells[aClass];
+				CurrentUpdates.types.push("spells");
 			}
 		}
 

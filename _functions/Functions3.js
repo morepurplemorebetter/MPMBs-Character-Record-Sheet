@@ -446,7 +446,7 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 	var setCSobj = function(oName) {
 		if (!CurrentSpells[oName]) {
 			CurrentSpells[oName] = {bonus : {}};
-			CurrentUpdates.types.indexOf("spells");
+			CurrentUpdates.types.push("spells");
 		}
 		return CurrentSpells[oName];
 	};
