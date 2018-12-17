@@ -1088,10 +1088,12 @@ function calcCont(noSheetUpdate, viaTimeOut) {
 		app.clearTimeOut(calcStartSet);
 		calcStartSet = false;
 	}
+	var currentDirty = tDoc.dirty;
 	app.calculate = true;
 	tDoc.calculate = true;
 	tDoc.delay = false;
 	tDoc.calculateNow();
+	tDoc.dirty = currentDirty;
 	thermoStop();
 	if (!noSheetUpdate) {
 		UpdateSheetDisplay();

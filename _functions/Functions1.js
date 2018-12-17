@@ -4284,6 +4284,24 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	var thermoTxt = thermoM("Applying feat...");
 	thermoM(1/6); // Increment the progress bar
 
+	var doNotCommit = function() {
+		if (event.target && event.target.name == MIflds[0]) {
+			event.rc = false;
+			if (isArray(tDoc.getField(event.target.name).page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + ".1').setFocus();", 10);
+		}
+		if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
+	}
+
+	// Check if the feat doesn't already exist
+	if (!ignoreDuplicates && theFeat && CurrentFeats.known.indexOf(NewFeat) !== -1 && !theFeat.allowDuplicates) {
+		app.alert({
+			cTitle : "Can only have one instance of a feat.",
+			cMsg : "The feat that you have selected, '" + theFeat.name + "' is already present on the sheet and you can't have duplicates of it."
+		});
+		doNotCommit();
+		return;
+	}
+
 	// Before stopping the calculations, first test if the feat has a prerequisite and if it meets that
 	if (IsNotFeatMenu && IsNotReset && theFeat && theFeat.prereqeval && !ignorePrereqs && event.target && event.target.name == FeatFlds[0]) {
 		try {
@@ -4304,12 +4322,10 @@ function ApplyFeat(InputFeat, FldNmbr) {
 				nType : 2
 			});
 
-			if (askUserFeat !== 4) { // pressed "NO", so do not continue and revert the field back to its previous state
-				event.rc = false;
-				if (isArray(tDoc.getField(event.target.name).page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + ".1').setFocus();", 10);
-				thermoM(thermoTxt, true); // Stop progress bar
+			if (askUserFeat !== 4) { // If "NO" was pressed
+				doNotCommit();
 				return;
-			};
+			}
 		};
 	};
 
@@ -5303,25 +5319,28 @@ function SetToManual_Button(noDialog) {
 	//do something with the results of feat checkbox
 	if (SetToManual_Dialog.mFea !== FeatFld) {
 		if (SetToManual_Dialog.mFea) {
-			CurrentVars.manual.feats = [CurrentFeats.known.toSource(), CurrentFeats.level];
+			CurrentVars.manual.feats = [CurrentFeats.known.slice(0), CurrentFeats.level];
 			// remove the auto-calculations from feat fields
 			for (var i = 1; i <= FieldNumbers.feats; i++) tDoc.getField("Feat Description " + i).setAction("Calculate", "");
-		} else {
+		} else if (CurrentVars.manual.feats) {
 			// set the old known feats back and apply the current ones
-			var oldKnowns = eval(CurrentVars.manual.feats[0]);
+			var oldKnowns = CurrentVars.manual.feats[0];
 			CurrentFeats.level = CurrentVars.manual.feats[1];
 			CurrentVars.manual.feats = false;
+			var remIgnoreDuplicates = ignoreDuplicates;
+			ignoreDuplicates = true;
 			for (var i = 1; i <= FieldNumbers.feats; i++) {
 				CurrentFeats.known[i - 1] = oldKnowns[i - 1];
 				ApplyFeat(What("Feat Name " + i), i);
 			}
-			// loop through the known feats and if any are still the same as before and have a calculated field value, apply the calculation again
+			// loop through the known feats and if any are still the same as before, first delete it and then apply it again
 			for (var i = 0; i < FieldNumbers.feats; i++) {
-				if (oldKnowns[i] && CurrentFeats.known[i] == oldKnowns[i] && FeatsList[oldKnowns[i]].calculate) {
-					var theCalc = What("Unit System") === "imperial" ? FeatsList[oldKnowns[i]].calculate : ConvertToMetric(FeatsList[oldKnowns[i]].calculate, 0.5);
-					tDoc.getField("Feat Name " + (i+1)).setAction("Calculate", theCalc);
+				if (oldKnowns[i] && CurrentFeats.known[i] == oldKnowns[i]) {
+					Value("Feat Name " + (i+1), "");
+					Value("Feat Name " + (i+1), FeatsList[oldKnowns[i]].name);
 				}
 			}
+			ignoreDuplicates = remIgnoreDuplicates;
 			// update the feat level to the current level
 			UpdateLevelFeatures("feat");
 		}
@@ -5329,31 +5348,43 @@ function SetToManual_Button(noDialog) {
 	//do something with the results of magic item checkbox
 	if (SetToManual_Dialog.mMag !== ItemFld) {
 		if (SetToManual_Dialog.mMag) {
-			CurrentVars.manual.items = [CurrentMagicItems.known.toSource(), CurrentMagicItems.level];
+			// make an array of the attunement status of the magic items
+			var attuneArray = [];
+			for (var i = 0; i < CurrentMagicItems.known.length; i++) {
+				var theMI = MagicItemsList[CurrentMagicItems.known[i]];
+				if (!theMI || !theMI.attunement) {
+					attuneArray.push(undefined);
+				} else {
+					attuneArray.push(tDoc.getField("Extra.Magic Item Attuned " + (i + 1)).isBoxChecked(0));
+				}
+			}
+			CurrentVars.manual.items = [CurrentMagicItems.known.slice(0), attuneArray, CurrentMagicItems.level];
 			// remove the auto-calculations from magic item fields
-			for (var i = 1; i <= FieldNumbers.magicitems; i++) tDoc.getField("Extra.Magic Item Description " + i).setAction("Calculate", "");
-		} else {
+			for (var i = 1; i <= FieldNumbers.magicitems; i++) {
+				var descFld = "Extra.Magic Item Description " + i;
+				tDoc.getField(descFld).setAction("Calculate", "");
+				AddTooltip(descFld, undefined, "");
+			}
+		} else if (CurrentVars.manual.items) {
 			// set the old known magic items back and apply the current ones
-			var oldKnowns = eval(CurrentVars.manual.items[0]);
-			CurrentMagicItems.level = CurrentVars.manual.items[1];
+			var oldKnowns = CurrentVars.manual.items[0];
+			var oldAttuned = CurrentVars.manual.items[1];
+			CurrentMagicItems.level = CurrentVars.manual.items[2];
 			CurrentVars.manual.items = false;
+			var remIgnoreDuplicates = ignoreDuplicates;
+			ignoreDuplicates = true;
 			for (var i = 1; i <= FieldNumbers.magicitems; i++) {
 				CurrentMagicItems.known[i - 1] = oldKnowns[i - 1];
 				ApplyMagicItem(What("Extra.Magic Item " + i), i);
 			}
-			// loop through the known magic items and if any are still the same as before and have a calculated field value, apply the calculation again
+			// loop through the known magic items and if any are still the same as before, first delete it and then apply it again
 			for (var i = 0; i < FieldNumbers.magicitems; i++) {
-				if (oldKnowns[i] && CurrentMagicItems.known[i] == oldKnowns[i] && MagicItemsList[oldKnowns[i]].calculate) {
-					var theCalc = What("Unit System") === "imperial" ? MagicItemsList[oldKnowns[i]].calculate : ConvertToMetric(MagicItemsList[oldKnowns[i]].calculate, 0.5);
-					tDoc.getField("Extra.Magic Item " + (i+1)).setAction("Calculate", theCalc);
-					// and check the attunement box if the item requires attunement
-					if (MagicItemsList[oldKnowns[i]].attunement) {
-						Checkbox("Extra.Magic Attuned " + (i+1));
-					}
+				if (oldKnowns[i] && CurrentMagicItems.known[i] == oldKnowns[i]) {
+					Value("Extra.Magic Item " + (i+1), "");
+					Value("Extra.Magic Item " + (i+1), MagicItemsList[oldKnowns[i]].name);
 				}
-				// and correct the visibility of the attuned checkbox
-				setMIattunedVisibility(i+1);
 			}
+			ignoreDuplicates = remIgnoreDuplicates;
 			// update the magic item level to the current level
 			UpdateLevelFeatures("item");
 		}
@@ -5372,6 +5403,8 @@ function SetToManual_Button(noDialog) {
 			if (CurrentRace.known) UpdateLevelFeatures("race");
 		}
 	}
+
+	SetStringifieds("vars");
 }
 
 //calculate how much experience points are needed for the next level (field calculation)
@@ -5571,7 +5604,7 @@ function MakeMobileReady(toggle) {
 			"AmmoRightDisplay.Amount",
 			"Reaction Used This Round"
 		];
-		var exceptionRegex = /Comp\.Use\.HD\.Used|Comp\.Use\.HP|Cnote\.Left|Cnote\.Right|Comp\.eqp\.Notes|Comp\.img\.Notes|Notes\.Left|Notes\.Right|HP Max|HP Max Current|HP Temp|HP Current|Limited Feature Used | Adv| Dis|AmmoLeft\.|AmmoRight\.|Death Save |\.DeathSave\.|Resistance Damage Type |Adventuring Gear Row |Adventuring Gear Location\.Row |Adventuring Gear Amount |Adventuring Gear Weight |Language |Tool |Valuables|Extra\.Exhaustion Level |Extra\.Condition |Extra\.Magic Item |Extra\.Gear Row |Extra\.Gear Location\.Row |Extra\.Gear Amount |Extra\.Gear Weight |Extra\.Notes|Background_|SpellSlots\.Checkboxes\.|SpellSlots2\.Checkboxes\./;
+		var exceptionRegex = /Comp\.Use\.HD\.Used|Comp\.Use\.HP|Cnote\.Left|Cnote\.Right|Comp\.eqp\.Notes|Comp\.img\.Notes|Notes\.Left|Notes\.Right|HP Max|HP Max Current|HP Temp|HP Current|Limited Feature Used | Adv| Dis|AmmoLeft\.|AmmoRight\.|Death Save |\.DeathSave\.|Resistance Damage Type |Adventuring Gear Row |Adventuring Gear Location\.Row |Adventuring Gear Amount |Adventuring Gear Weight |Language |Tool |Valuables|Extra\.Exhaustion Level |Extra\.Condition |Extra\.Gear Row |Extra\.Gear Location\.Row |Extra\.Gear Amount |Extra\.Gear Weight |Extra\.Notes|Background_|SpellSlots\.Checkboxes\.|SpellSlots2\.Checkboxes\./;
 		var tooMuchExceptionRegex = /AC Stealth Disadvantage|button|Attack\.\d+\.Weapon$/i;
 		var totLen = tDoc.numFields;
 		for (var F = 0; F < totLen; F++) {
@@ -5581,7 +5614,9 @@ function MakeMobileReady(toggle) {
 
 			// Check if field is not in one of the exceptionlists, but continue if it is in the tooMuchExceptionRegex
 			var isException = !tooMuchExceptionRegex.test(Fname) && (exceptionArray.indexOf(Fname) !== -1 || (/^(Bonus |Re)?action \d+/i).test(Fname) || exceptionRegex.test(Fname));
-			if (CurrentVars.manual.attacks) isException = isException ? isException : (/Attack\./).test(Fname);
+			if (CurrentVars.manual.attacks && !isException) isException = (/Attack\./).test(Fname);
+			if (CurrentVars.manual.feats && !isException) isException = (/^(?!.*Button)Feat .+\d+$/).test(Fname);
+			if (CurrentVars.manual.items && !isException) isException = (/^(?!.*Button)Extra\.Magic Item .*\d+$/).test(Fname);
 			if (isException) continue;
 
 			//add fields that are visible and not read-only to array and make them read-only
@@ -6348,11 +6383,11 @@ function Toggle2ndAbilityDC(ShowHide) {
 		var toMove = isVis2nd ? 27 : -27;
 		for (var i = 0; i < DC1array.length; i++) {
 			var theFld = tDoc.getField(DC1array[i]);
-			var gRect = theFld.rect; // get the location of the field on the sheet
-			gRect[0] += toMove; // add the widen amount to the upper left x-coordinate
-			gRect[2] += toMove; // add the widen amount to the lower right x-coordinate
+			var gRect = theFld.rect; // Get the location of the field on the sheet
+			gRect[0] += toMove; // Add the widen amount to the upper left x-coordinate
+			gRect[2] += toMove; // Add the widen amount to the lower right x-coordinate
 			theFld.rect = gRect; // Update the value of b.rect
-			theFld.value = theFld.value; //re-input the value as to counteract the changing of font
+			theFld.value = theFld.value; // Re-input the value as to counteract the changing of font rendering
 		}
 	}
 

@@ -1,6 +1,7 @@
 // First some global variables that can be set by custom scripts (are otherwise never changed)
 var ignorePrereqs = false; // whether or not to consider the prerequisites for class features, feats, and prestige classes
 var ignoreSearchLength = false; // whether or not to consider the length of the names for regExpSearch objects. If set to true, the sheet uses only the date of the source
+var ignoreDuplicates = false; // whether or not to allow duplicates of feats and magic items
 
 // A function to create/reset the basic lists for the sheet to use. Things can subsequently be added to the created lists using custom scripts.
 function InitiateLists() {
