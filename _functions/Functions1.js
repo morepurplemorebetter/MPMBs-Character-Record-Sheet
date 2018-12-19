@@ -540,6 +540,7 @@ function ResetAll(GoOn, noTempl) {
 	ShowCompanionLayer();
 	ConditionSet();
 	RemoveTooltips();
+	ResetMagicItems();
 	ShowAttunedMagicalItems(true);
 	if (locColumns[0] === "true") HideInvLocationColumn("Adventuring Gear ", true);
 	if (locColumns[1] === "true") HideInvLocationColumn("Extra.Gear ", true);
@@ -4142,7 +4143,7 @@ function CalcMod() {
 	event.value = theScore ? (Math.round((theScore - 10.5) * 0.5)) : "";
 }
 
-//limited feature: add (UpdateOrReplace = "replace"), or only update the text (UpdateOrReplace = "update"), or update both the text and the usages (UpdateOrReplace = number of previous usages), or just add the number of usages (UpdateOrReplace = "bonus")
+// Add a limited feature: add (UpdateOrReplace = "replace"), or only update the text (UpdateOrReplace = "update"), or update both the text and the usages (UpdateOrReplace = number of previous usages), or just add the number of usages (UpdateOrReplace = "bonus")
 function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, UpdateOrReplace, Calc) {
 	tooltip = tooltip ? tooltip : "";
 	var additionaltxt = additionaltxt && What("Unit System") === "metric" ? ConvertToMetric(additionaltxt, 0.5) : additionaltxt;
@@ -4193,7 +4194,7 @@ function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, Update
 	}
 };
 
-//remove a feature
+// Remove a limited feature
 function RemoveFeature(identifier, usages, additionaltxt, recovery, tooltip, UpdateOrReplace, Calc) {
 	var theFlds = [
 		"Limited Feature ",
@@ -4221,6 +4222,18 @@ function RemoveFeature(identifier, usages, additionaltxt, recovery, tooltip, Upd
 			i = FieldNumbers.limfea + 1;
 		}
 	}
+}
+
+// >>>> Feat functions <<<< \\
+
+// Make an array of all feat fields of that field number
+function ReturnFeatFieldsArray(FldNmbr) {
+	fldsArray = [
+		"Feat Name " + FldNmbr,			// 0
+		"Feat Note " + FldNmbr,			// 1
+		"Feat Description " + FldNmbr	// 2
+	];
+	return fldsArray;
 }
 
 // Lookup the name of a Feat and if it exists in the FeatsList
@@ -4261,24 +4274,20 @@ function FindFeats() {
 }
 
 // Add the text and features of a Feat
-function ApplyFeat(InputFeat, FldNmbr) {
-	if (IsSetDropDowns || CurrentVars.manual.feats) return; // when just changing the dropdowns or feats are set to manual, so don't do anything
-	var FeatFlds = [
-		"Feat Name " + FldNmbr,
-		"Feat Note " + FldNmbr,
-		"Feat Description " + FldNmbr
-	];
+function ApplyFeat(input, FldNmbr) {
+	if (IsSetDropDowns || CurrentVars.manual.feats || !IsNotFeatMenu) return; // When just changing the dropdowns or feats are set to manual or this is a menu action, don't do anything
+	var Fflds = ReturnFeatFieldsArray(FldNmbr);
 	// Not called from a field? Then just set the field and let this function be called anew
-	if ((!event.target || event.target.name !== FeatFlds[0]) && What(FeatFlds[0]) !== InputFeat) {
-		Value(FeatFlds[0], InputFeat);
+	if ((!event.target || event.target.name !== Fflds[0]) && What(Fflds[0]) !== input) {
+		Value(Fflds[0], input);
 		return;
 	};
-	var NewFeat = ParseFeat(InputFeat);
-	var theFeat = FeatsList[NewFeat];
+	var newFeat = ParseFeat(input);
+	var theFeat = FeatsList[newFeat];
 	var ArrayNmbr = FldNmbr - 1;
-	var OldFeat = CurrentFeats.known[ArrayNmbr];
+	var oldFeat = CurrentFeats.known[ArrayNmbr];
 
-	if (OldFeat === NewFeat) return; // No changes were made
+	if (oldFeat === newFeat) return; // No changes were made
 
 	// Start progress bar
 	var thermoTxt = thermoM("Applying feat...");
@@ -4287,13 +4296,14 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	var doNotCommit = function() {
 		if (event.target && event.target.name == MIflds[0]) {
 			event.rc = false;
-			if (isArray(tDoc.getField(event.target.name).page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + ".1').setFocus();", 10);
+			var isTempl = typePF || FldNmbr > FieldNumbers.featsD ? ".1" : "";
+			if (isArray(tDoc.getField(event.target.name).page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + isTempl + "').setFocus();", 10);
 		}
 		if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
 	}
 
 	// Check if the feat doesn't already exist
-	if (!ignoreDuplicates && theFeat && CurrentFeats.known.indexOf(NewFeat) !== -1 && !theFeat.allowDuplicates) {
+	if (!ignoreDuplicates && theFeat && CurrentFeats.known.indexOf(newFeat) !== -1 && !theFeat.allowDuplicates) {
 		app.alert({
 			cTitle : "Can only have one instance of a feat.",
 			cMsg : "The feat that you have selected, '" + theFeat.name + "' is already present on the sheet and you can't have duplicates of it."
@@ -4303,7 +4313,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	}
 
 	// Before stopping the calculations, first test if the feat has a prerequisite and if it meets that
-	if (IsNotFeatMenu && IsNotReset && theFeat && theFeat.prereqeval && !ignorePrereqs && event.target && event.target.name == FeatFlds[0]) {
+	if (IsNotReset && theFeat && theFeat.prereqeval && !ignorePrereqs && event.target && event.target.name == Fflds[0]) {
 		try {
 			var meetsPrereq = eval(theFeat.prereqeval);
 		} catch (e) {
@@ -4317,7 +4327,7 @@ function ApplyFeat(InputFeat, FldNmbr) {
 
 			var askUserFeat = app.alert({
 				cTitle : "The prerequisites for '" + theFeat.name + "' have not been met",
-				cMsg : "The feat that you have selected, '" + theFeat.name + "' has a prerequisite listed" + (theFeat.prerequisite ? " as: \n\t\"" + theFeat.prerequisite + "\"" : ".") + "\n\nYour character does not meet this requirement. Are you sure you want to apply this feat?",
+				cMsg : "The feat that you have selected, '" + theFeat.name + "' has a prerequisite listed" + (theFeat.prerequisite ? ' as: \n\t"' + theFeat.prerequisite + '"' : ".") + "\n\nYour character does not meet this requirement. Are you sure you want to apply this feat?",
 				nIcon : 1,
 				nType : 2
 			});
@@ -4332,30 +4342,27 @@ function ApplyFeat(InputFeat, FldNmbr) {
 	calcStop(); // Now stop the calculations
 
 	// Remove previous feat at the same field
-	if (OldFeat && OldFeat !== NewFeat) {
-		// remove the calculation and tooltip
-		tDoc.getField(FeatFlds[2]).setAction("Calculate", "");
-		AddTooltip(FeatFlds[2], "");
-		// now if this is not a change done by moving the feat, also remove everything about it
-		if (IsNotFeatMenu) {
-			// remove its attributes
+	if (oldFeat !== newFeat) {
+		// Remove everything from the description field, value, calculation, tooltip, submitname
+		tDoc.getField(Fflds[2]).setAction("Calculate", "");
+		Value(Fflds[2], "", "", "");
+		if (oldFeat) {
+			// Remove its attributes
 			var Fea = ApplyFeatureAttributes(
 				"feat", // type
-				OldFeat, // fObjName
+				oldFeat, // fObjName
 				[CurrentFeats.level, 0, false], // lvlA [old-level, new-level, force-apply]
 				false, // choiceA [old-choice, new-choice, "only"|"change"]
 				false // forceNonCurrent
 			);
-			// reset the description field
-			tDoc.resetForm([FeatFlds[2]]);
 			// remove the source from the notes field
-			var sourceStringOld = stringSource(theFeat, "first", "[", "]");
-			if (sourceStringOld) RemoveString(FeatFlds[1], sourceStringOld);
+			var sourceStringOld = stringSource(FeatsList[oldFeat], "first", "[", "]");
+			if (sourceStringOld) RemoveString(Fflds[1], sourceStringOld);
 		}
 	}
 
 	// Update the CurrentFeats.known variable
-	CurrentFeats.known[ArrayNmbr] = NewFeat;
+	CurrentFeats.known[ArrayNmbr] = newFeat;
 
 	// Do something if there is a new feat to apply
 	if (theFeat) {
@@ -4365,32 +4372,31 @@ function ApplyFeat(InputFeat, FldNmbr) {
 		// Set the field description/calculation
 		if (theFeat.calculate) {
 			var theCalc = What("Unit System") === "imperial" ? theFeat.calculate : ConvertToMetric(theFeat.calculate, 0.5);
-			if (typePF) theCalc.replace("\n", " ");
-			tDoc.getField(FeatFlds[2]).setAction("Calculate", theCalc);
+			if (typePF) theCalc = theCalc.replace("\n", " ");
+			tDoc.getField(Fflds[2]).setAction("Calculate", theCalc);
 		}
 
-		// Set the tooltip
-		var tooltipStr = stringSource(theFeat, "full,page", "The \"" + theFeat.name + "\" feat is taken from: ", ".");
+		// Create the tooltip
+		var tooltipStr = stringSource(theFeat, "full,page", 'The "' + theFeat.name + '" feat is taken from: ', ".");
 		if (theFeat.prerequisite) tooltipStr += (tooltipStr ? "\n\n" : "") + "The prerequisite for it is: " + theFeat.prerequisite;
-		AddTooltip(FeatFlds[2], tooltipStr);
-		// Only continue with the rest if this is not a change done by moving the feat
-		if (IsNotFeatMenu) {
-			// Set the description
-			var theDesc = !theFeat.description ? "" : What("Unit System") === "imperial" ? theFeat.description : ConvertToMetric(theFeat.description, 0.5);
-			if (typePF) theDesc.replace("\n", " ");
-			Value(FeatFlds[2], theDesc);
-			// Set the notes field
-			var sourceString = stringSource(theFeat, "first", "[", "]");
-			if (sourceString) AddString(FeatFlds[1], sourceString, "; ");
-			// Apply the rest of its attributes
-			var Fea = ApplyFeatureAttributes(
-				"feat", // type
-				NewFeat, // fObjName
-				[0, CurrentFeats.level, false], // lvlA [old-level, new-level, force-apply]
-				false, // choiceA [old-choice, new-choice, "only"|"change"]
-				false // forceNonCurrent
-			);
-		}
+		// Get the description
+		var theDesc = !theFeat.description ? "" : What("Unit System") === "imperial" ? theFeat.description : ConvertToMetric(theFeat.description, 0.5);
+		if (typePF) theDesc = theDesc.replace("\n", " ");
+		// Set it all to the appropriate field
+		Value(Fflds[2], theDesc, tooltipStr, theFeat.calculate ? theCalc : "");
+
+		// Set the notes field
+		var sourceString = stringSource(theFeat, "first", "[", "]");
+		if (sourceString) AddString(Fflds[1], sourceString, " ");
+
+		// Apply the rest of its attributes
+		var Fea = ApplyFeatureAttributes(
+			"feat", // type
+			NewFeat, // fObjName
+			[0, CurrentFeats.level, false], // lvlA [old-level, new-level, force-apply]
+			false, // choiceA [old-choice, new-choice, "only"|"change"]
+			false // forceNonCurrent
+		);
 	}
 
 	thermoM(thermoTxt, true); // Stop progress bar
@@ -4419,6 +4425,167 @@ function SetFeatsdropdown(forceTooltips) {
 		} else if (forceTooltips) {
 			AddTooltip(theFeatFld, tempString);
 		}
+	}
+}
+
+//Make menu for the button on each Feat line and parse it to Menus.feats
+function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
+	var featMenu = [];
+	if (!itemNmbr) itemNmbr = parseFloat(event.target.name.slice(-2));
+	var Fflds = ReturnFeatFieldsArray(itemNmbr);
+	var theField = What(Fflds[0]) != "";
+	var noUp = itemNmbr === 1;
+	var noDown = itemNmbr === FieldNumbers.feats;
+	var upToOtherPage = itemNmbr !== (FieldNumbers.featsD + 1) ? "" : typePF ? " (to third page)" : " (to second page)";
+	var downToOtherPage = itemNmbr === FieldNumbers.featsD ? " (to overflow page)" : "";
+
+	if (!MenuSelection || MenuSelection === "justMenu") {
+		var menuLVL1 = function (array) {
+			for (i = 0; i < array.length; i++) {
+				featMenu.push({
+					cName : array[i][0],
+					cReturn : "feat#" + array[i][1],
+					bEnabled : array[i][2] !== undefined ? array[i][2] : true
+				});
+			}
+		};
+		menuLVL1([
+			["Move up" + upToOtherPage, "up", !noUp],
+			["Move down" + downToOtherPage, "down", !noDown],
+			["-", "-"],
+			["Insert empty feat", "insert", noDown || !theField ? false : true],
+			["Delete feat", "delete"],
+			["Clear feat", "clear"],
+		]);
+		Menus.feats = featMenu;
+		MenuSelection = getMenu("magicitems");
+	}
+	if (MenuSelection == "justMenu" || !MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "feat") return;
+
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Apply feat menu option...");
+	calcStop();
+
+	switch (MenuSelection[1]) {
+		case "up" :
+			if (noUp) return;
+		case "down" :
+			if (MenuSelection[1] == "down" && noDown) return;
+			IsNotFeatMenu = false;
+			thermoTxt = thermoM("Moving the magic item " + MenuSelection[1] + "...", false);
+			// Get the other fields
+			var otherNmbr = MenuSelection[1] == "down" ? itemNmbr + 1 : itemNmbr - 1;
+			var FfldsO = ReturnFeatFieldsArray(otherNmbr);
+			// Now swap all the fields
+			for (var i = 0; i < Fflds.length; i++) {
+				var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
+				copyField(Fflds[i], FfldsO[i], exclObj, true);
+				thermoM(i/Fflds.length); //increment the progress dialog's progress
+			}
+			IsNotFeatMenu = true;
+			break;
+		case "insert" :
+			FeatInsert(itemNmbr);
+			break;
+		case "delete" :
+			FeatDelete(itemNmbr);
+			break;
+		case "clear" :
+			thermoTxt = thermoM("Clearing feat...", false);
+			FeatClear(itemNmbr, true);
+			break;
+	}
+	thermoM(thermoTxt, true); // Stop progress bar
+}
+
+//insert a feat at the position wanted
+function FeatInsert(itemNmbr) {
+	// Stop the function if the selected slot is already empty
+	if (!What("Feat Name " + itemNmbr)) return;
+
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Inserting empty feat...");
+	calcStop();
+	IsNotFeatMenu = false;
+
+	// Look for the first empty slot below the slot
+	var endslot = false;
+	for (var i = itemNmbr + 1; i <= FieldNumbers.feats; i++) {
+		if (What("Feat Name " + i) === "") {
+			endslot = i;
+			break;
+		}
+	}
+
+	//only continue if an empty slot was found in the fields
+	if (endslot) {
+		// Cycle through the slots starting with the found empty one and add the values of the one above
+		for (var f = endslot; f > itemNmbr; f--) {
+			// Copy all the fields
+			var FfldsFrom = ReturnFeatFieldsArray(f - 1);
+			var FfldsTo = ReturnFeatFieldsArray(f);
+			for (var i = 0; i < FfldsFrom.length - 1; i++) {
+				var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
+				copyField(FfldsFrom[i], FfldsTo[i], exclObj);
+			}
+			// Correct the known array
+			if (!CurrentVars.manual.feats) CurrentFeats.known[f - 1] = CurrentFeats.known[f - 2];
+		}
+
+		// Empty the selected slot
+		FeatClear(itemNmbr)
+	}
+
+	IsNotFeatMenu = true;
+	thermoM(thermoTxt, true); // Stop progress bar
+}
+
+//delete a feat at the position wanted and move the rest up
+function FeatDelete(itemNmbr) {
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Deleting feat...");
+	calcStop();
+
+	var maxNmbr = FieldNumbers.feats;
+	// Stop at the end of the first page if last one on first page is empty
+	if (itemNmbr <= FieldNumbers.featsD && !What("Feat Name " + FieldNumbers.featsD)) maxItem = FieldNumbers.featsD;
+
+	// First clear the current feat so that it's automation is run
+	FeatClear(itemNmbr, true);
+	IsNotFeatMenu = false;
+
+	// Make every line identical to the one below, starting with the selected line
+	for (var f = itemNmbr; f < maxItem; f++) {
+		// Copy all the fields
+		var FfldsFrom = ReturnFeatFieldsArray(f + 1);
+		var FfldsTo = ReturnFeatFieldsArray(f);
+		for (var i = 0; i < FfldsFrom.length - 1; i++) {
+			var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
+			copyField(FfldsFrom[i], FfldsTo[i], exclObj);
+		}
+		// Correct the known array
+		if (!CurrentVars.manual.feats) CurrentFeats.known[f - 1] = CurrentFeats.known[f];
+	}
+
+	// Clear the final line
+	FeatClear(maxItem);
+
+	IsNotFeatMenu = true;
+	thermoM(thermoTxt, true); // Stop progress bar
+}
+
+// Clear a feat at the position given
+function FeatClear(itemNmbr, doAutomation) {
+	var Fflds = ReturnFeatFieldsArray(itemNmbr);
+	if (doAutomation && !CurrentVars.manual.feats && CurrentFeats.known[itemNmbr - 1]) {
+		IsNotFeatMenu = true;
+		Value("Feat Name " + itemNmbr, "");
+		tDoc.resetForm(Fflds[1]);
+	} else {
+		if (!CurrentVars.manual.feats) CurrentFeats.known[itemNmbr - 1] = "";
+		AddTooltip(Fflds[2], "", "");
+		tDoc.getField(Fflds[2]).setAction("Calculate", "");
+		if (IsNotReset) tDoc.resetForm(Fflds);
 	}
 }
 
@@ -5873,7 +6040,7 @@ function WeightToCalc_Button() {
 							font : "heading",
 							bold : true,
 							height : 21,
-							name : "What to count towards the Total Weight on the second page"
+							name : "What to count towards the Total Weight on the second page?"
 						}]
 					}, {
 						type : "cluster",
@@ -5894,7 +6061,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tArm",
-									name : (typePF ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page."
+									name : (typePF ? '"Armor' : '"Defense') + '" section on the 1st page.'
 								} ]
 							}, {
 								type : "view",
@@ -5909,7 +6076,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tShi",
-									name : (typePF ? "\"Armor\"" : "\"Defense\"") + " section on the 1st page."
+									name : (typePF ? '"Armor' : '"Defense') + '" section on the 1st page.'
 								} ]
 							}, {
 								type : "view",
@@ -5924,7 +6091,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tWea",
-									name : "\"Attacks\" section on the 1st page."
+									name : '"Attacks" section on the 1st page.'
 								} ]
 							}, {
 								type : "view",
@@ -5939,7 +6106,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tAmL",
-									name : "\"Attacks\" section on the 1st page."
+									name : '"Attacks" section on the 1st page.'
 								} ]
 							}, {
 								type : "view",
@@ -5954,7 +6121,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tAmR",
-									name : "\"Attacks\" section on the 1st page."
+									name : '"Attacks" section on the 1st page.'
 								} ]
 							}, {
 								type : "view",
@@ -5969,7 +6136,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tCoi",
-									name : "\"Equipment\" section on the 2nd page (1 lb per 50)."
+									name : '"Equipment" section on the 2nd page (1 lb per 50).'
 								} ]
 							}, {
 								type : "view",
@@ -5984,7 +6151,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tP2L",
-									name : "\"Equipment\" section on the 2nd page."
+									name : '"Equipment" section on the 2nd page.'
 								} ]
 							}].concat(typePF ? [{
 								type : "view",
@@ -5999,7 +6166,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tP2M",
-									name : "\"Equipment\" section on the 2nd page."
+									name : '"Equipment" section on the 2nd page.'
 								} ]
 							}] : []).concat([{
 								type : "view",
@@ -6014,7 +6181,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tP2R",
-									name : "\"Equipment\" section on the 2nd page."
+									name : '"Equipment" section on the 2nd page.'
 								} ]
 							}, {
 								type : "view",
@@ -6029,7 +6196,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tP3L",
-									name : "\"Extra Equipment\" section on the 3rd page."
+									name : '"Extra Equipment" section on the 3rd page.'
 								} ]
 							}, {
 								type : "view",
@@ -6044,7 +6211,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tP3R",
-									name : "\"Extra Equipment\" section on the 3rd page."
+									name : '"Extra Equipment" section on the 3rd page.'
 								} ]
 							}, {
 								type : "view",
@@ -6059,7 +6226,7 @@ function WeightToCalc_Button() {
 								}, {
 									type : "static_text",
 									item_id : "tMaI",
-									name : "\"Magic Items\" section on the 3rd page."
+									name : '"Magic Items" section on the 3rd (and overflow) page.'
 								} ]
 							} ])
 						} ]
@@ -7648,178 +7815,6 @@ function SetTextOptions_Button() {
 		}
 	}
 };
-
-//Make menu for the button on each Feat line and parse it to Menus.feats
-function MakeFeatMenu() {
-	var featMenu = [];
-	var itemNmbr = parseFloat(event.target.name.slice(-2));
-	var theField = What("Feat Name " + itemNmbr);
-
-	var menuLVL1 = function (item, array) {
-		for (i = 0; i < array.length; i++) {
-			var disable = true
-			if ((array[i] === "Move up" && itemNmbr === 1) || (array[i] === "Move down" && itemNmbr === FieldNumbers.feats) || (array[i] === "Insert empty feat" && (!theField || itemNmbr === FieldNumbers.feats))) {
-				disable = false;
-			}
-			var extraName = "";
-			if (array[i] === "Move down" && itemNmbr === (FieldNumbers.feats - 4)) {
-				extraName = " (to overflow page)";
-			} else if (array[i] === "Move up" && itemNmbr === (FieldNumbers.feats - 3)) {
-				extraName = !typePF ? " (to second page)" : " (to third page)";
-			}
-			item.push({
-				cName : array[i] + extraName,
-				cReturn : array[i],
-				bEnabled : disable
-			});
-		}
-	};
-
-	menuLVL1(featMenu, ["Move up", "Move down", "-", "Insert empty feat", "Delete feat", "Clear feat"]);
-
-	Menus.feats = featMenu;
-};
-
-//call the Feat menu and do something with the results
-function FeatOptions() {
-	var MenuSelection = getMenu("feats");
-	if (!MenuSelection || MenuSelection[0] == "nothing") return;
-
-	// Start progress bar and stop calculations
-	var thermoTxt = thermoM("Apply feat menu option...");
-	calcStop();
-
-	var itemNmbr = parseFloat(event.target.name.slice(-2));
-	var FieldNames = [
-		"Feat Name ",
-		"Feat Note ",
-		"Feat Description "
-	];
-	var Fields = [], FieldsValue = [], FieldsUp = [], FieldsUpValue = [], FieldsDown = [], FieldsDownValue = [];
-
-	for (var F = 0; F < FieldNames.length; F++) {
-		Fields.push(FieldNames[F] + itemNmbr);
-		FieldsValue.push(What(Fields[F]));
-		if (itemNmbr !== 1) {
-			FieldsUp.push(FieldNames[F] + (itemNmbr - 1));
-			FieldsUpValue.push(What(FieldsUp[F]));
-		}
-		if (itemNmbr !== FieldNumbers.feats) {
-			FieldsDown.push(FieldNames[F] + (itemNmbr + 1));
-			FieldsDownValue.push(What(FieldsDown[F]));
-		}
-	}
-	switch (MenuSelection[0]) {
-	 case "move up":
-		thermoTxt = thermoM("Moving the feat up...", false); //change the progress dialog text
-		IsNotFeatMenu = false;
-		for (var H = 0; H < FieldNames.length; H++) {
-			Value(FieldsUp[H], FieldsValue[H]);
-			Value(Fields[H], FieldsUpValue[H]);
-			thermoM(H/FieldNames.length); //increment the progress dialog's progress
-		};
-		IsNotFeatMenu = true;
-		break;
-	 case "move down":
-		thermoTxt = thermoM("Moving the feat down...", false); //change the progress dialog text
-		IsNotFeatMenu = false;
-		for (var H = 0; H < FieldNames.length; H++) {
-			Value(FieldsDown[H], FieldsValue[H]);
-			Value(Fields[H], FieldsDownValue[H]);
-			thermoM(H/FieldNames.length); //increment the progress dialog's progress
-		};
-		IsNotFeatMenu = true;
-		break;
-	 case "insert empty feat":
-		thermoTxt = thermoM("Inserting empty feat...", false); //change the progress dialog text
-		FeatInsert(itemNmbr);
-		break;
-	 case "delete feat":
-		thermoTxt = thermoM("Deleting feat...", false); //change the progress dialog text
-		FeatDelete(itemNmbr);
-		break;
-	 case "clear feat":
-		thermoTxt = thermoM("Clearing feat...", false); //change the progress dialog text
-		tDoc.resetForm(Fields);
-		break;
-	}
-	thermoM(thermoTxt, true); // Stop progress bar
-}
-
-//insert a feat at the position wanted
-function FeatInsert(itemNmbr) {
-	//stop the function if the selected slot is already empty
-	if (What("Feat Name " + itemNmbr) === "") {
-		return;
-	}
-
-	//look for the first empty slot below the slot
-	var endslot = "";
-	for (var i = itemNmbr + 1; i <= FieldNumbers.feats; i++) {
-		if (What("Feat Name " + i) === "") {
-			endslot = i;
-			i = (FieldNumbers.feats + 1);
-		}
-	}
-
-	var FieldNames = [
-		"Feat Name ",
-		"Feat Note ",
-		"Feat Description "
-	];
-	var Fields = [];
-	for (var F = 0; F < FieldNames.length; F++) {
-		Fields.push(FieldNames[F] + itemNmbr);
-	}
-
-	//only continue if an empty slot was found in the fields
-	if (endslot) {
-		//cycle to the slots starting with the empty one and add the values of the one above
-		IsNotFeatMenu = false;
-		for (var i = endslot; i > itemNmbr; i--) {
-			for (var H = 0; H < FieldNames.length; H++) {
-				Value(FieldNames[H] + i, What(FieldNames[H] + (i - 1)));
-			}
-		}
-
-		//empty the selected slot
-		tDoc.resetForm(Fields);
-
-		IsNotFeatMenu = true;
-	}
-}
-
-//delete a feat at the position wanted and move the rest up
-function FeatDelete(itemNmbr) {
-	var maxNmbr = FieldNumbers.feats;
-	maxNmbr = itemNmbr > (maxNmbr - 4) || What("Feat Name " + (maxNmbr - 4)) ? maxNmbr : maxNmbr - 4;//stop at the end of the first page if last one on first page is empty
-	var FieldNames = [
-		"Feat Name ",
-		"Feat Note ",
-		"Feat Description "
-	];
-	var Fields = [];
-	var EndFields = [];
-	for (var F = 0; F < FieldNames.length; F++) {
-		Fields.push(FieldNames[F] + itemNmbr);
-		EndFields.push(FieldNames[F] + maxNmbr);
-	}
-
-	//delete the currently selected line so that the feats code is removed as well
-	tDoc.resetForm(Fields);
-
-	//move every line up one space, starting with the selected line
-	IsNotFeatMenu = false;
-	for (var i = itemNmbr; i < maxNmbr; i++) {
-		for (var H = 0; H < FieldNames.length; H++) {
-			Value(FieldNames[H] + i, What(FieldNames[H] + (i + 1)));
-		};
-	}
-	IsNotFeatMenu = true;
-
-	//delete the contents of the final line
-	tDoc.resetForm(EndFields);
-}
 
 //Make menu for the button on each Attack line and parse it to Menus.attacks
 function MakeWeaponMenu() {

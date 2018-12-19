@@ -517,7 +517,7 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 			sObj.typeSp = "feat";
 			break;
 		case "items":
-			var fObj = MagicItemsListList[fObjName];
+			var fObj = MagicItemsList[fObjName];
 			var sObj = setCSobj(fObjName);
 			sObj.name = fObj.name + " (item)";
 			sObj.typeSp = "item";
@@ -1499,7 +1499,7 @@ function ApplyMagicItem(input, FldNmbr) {
 
 			var askUserMI = app.alert({
 				cTitle : "The prerequisites for '" + theMI.name + "' have not been met",
-				cMsg : "The magic item that you have selected, '" + theMI.name + "' has a prerequisite listed" + (theMI.prerequisite ? " as: \n\t\"" + theMI.prerequisite + "\"" : ".") + "\n\nYour character does not meet this requirement. Are you sure you want to apply this magic item?",
+				cMsg : "The magic item that you have selected, '" + theMI.name + "' has a prerequisite listed" + (theMI.prerequisite ? ' as: \n\t"' + theMI.prerequisite + '"' : ".") + "\n\nYour character does not meet this requirement. Are you sure you want to apply this magic item?",
 				nIcon : 1,
 				nType : 2
 			});
@@ -1515,11 +1515,11 @@ function ApplyMagicItem(input, FldNmbr) {
 
 	// Remove previous magic item at the same field
 	if (oldMI !== newMI) {
-		// remove the calculation and tooltip
+		// Remove everything from the description field, value, calculation, tooltip, submitname
 		tDoc.getField(MIflds[2]).setAction("Calculate", "");
-		AddTooltip(MIflds[2], "", "");
+		Value(MIflds[2], "", "", "");
 		if (oldMI) {
-			// remove its attributes
+			// Remove its attributes
 			var Fea = ApplyFeatureAttributes(
 				"item", // type
 				oldMI, // fObjName
@@ -1527,12 +1527,12 @@ function ApplyMagicItem(input, FldNmbr) {
 				false, // choiceA [old-choice, new-choice, "only"|"change"]
 				false // forceNonCurrent
 			);
-			// remove the source from the notes field
+			// Remove the source from the notes field
 			var sourceStringOld = stringSource(MagicItemsList[oldMI], "first", "[", "]");
 			if (sourceStringOld) RemoveString(MIflds[1], sourceStringOld);
 		}
-		// reset the description, attuned, and weight fields
-		tDoc.resetForm([MIflds[2], MIflds[3], MIflds[4]]);
+		// Reset the attuned and weight fields
+		tDoc.resetForm([MIflds[3], MIflds[4]]);
 		AddTooltip(MIflds[4], undefined, "");
 	}
 
@@ -1544,31 +1544,40 @@ function ApplyMagicItem(input, FldNmbr) {
 		thermoTxt = thermoM("Applying '" + theMI.name + "' magic item...", false); //change the progress dialog text
 		thermoM(1/3); //increment the progress dialog's progress
 
-		// Set the field description/calculation
+		// Set the field calculation
 		if (theMI.calculate) {
 			var theCalc = What("Unit System") === "imperial" ? theMI.calculate : ConvertToMetric(theMI.calculate, 0.5);
-			if (typePF) theCalc.replace("\n", " ");
+			if (typePF) theCalc = theCalc.replace("\n", " ");
 			tDoc.getField(MIflds[2]).setAction("Calculate", theCalc);
 		}
 
-		// Set the tooltip
+		// Create the tooltip
 		var tooltipStr = (theMI.type ? theMI.type + ", " : "") + (theMI.rarity ? theMI.rarity : "");
 		if (theMI.attunement) tooltipStr += tooltipStr ? " (requires attunement)" : "requires attunement";
 		if (tooltipStr) tooltipStr = tooltipStr[0].toUpperCase() + tooltipStr.substr(1) + "\n";
 		if (theMI.prerequisite) tooltipStr += "Prerequisite: " + theMI.prerequisite + "\n";
 		tooltipStr = toUni(theMI.name) + "\n" + tooltipStr + "   ";
 		if (theMI.descriptionFull) tooltipStr += theMI.descriptionFull + "\n";
-		tooltipStr += stringSource(theMI, "first,full,page", "\nSource(s): ", ".");
-		AddTooltip(MIflds[2], tooltipStr, theMI.calculate ? theCalc : "");
-		// Set the description
-		var theDesc = !theMI.description ? "" : What("Unit System") === "imperial" ? theMI.description : ConvertToMetric(theMI.description, 0.5);
-		if (typePF) theDesc.replace("\n", " ");
-		Value(MIflds[2], theDesc);
+		tooltipStr += stringSource(theMI, "full,page", "\nSource(s): ", ".");
+
+		// Get the description
+		var theDesc = "";
+		if (!theMI.calculate) {
+			theDesc = FldNmbr > FieldNumbers.magicitemsD && theMI.descriptionLong ? theMI.descriptionLong : theMI.description ? theMI.description : "";
+			if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
+			if (typePF) theDesc = theDesc.replace("\n", " ");
+		}
+
+		// Set it all to the appropriate field
+		Value(MIflds[2], theDesc, tooltipStr, theMI.calculate ? theCalc : "");
+
 		// Set the notes field
 		var sourceString = stringSource(theMI, "first", "[", "]");
-		if (sourceString) AddString(MIflds[1], sourceString, "; ");
+		if (sourceString) AddString(MIflds[1], sourceString, " ");
+
 		// Set the attunement
 		Checkbox(MIflds[4], theMI.attunement ? true : false, undefined, theMI.attunement ? "" : "hide");
+
 		// Set the weight
 		if (theMI.weight) {
 			var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
@@ -1576,6 +1585,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		} else {
 			Value(MIflds[3], 0);
 		}
+
 		// Apply the rest of its attributes
 		var Fea = ApplyFeatureAttributes(
 			"item", // type
@@ -1591,6 +1601,20 @@ function ApplyMagicItem(input, FldNmbr) {
 
 	thermoM(thermoTxt, true); // Stop progress bar
 };
+
+function correctMIdescriptionLong(FldNmbr) {
+	if (CurrentVars.manual.items) return;
+	var ArrayNmbr = FldNmbr - 1;
+	var theMI = MagicItemsList[CurrentMagicItems.known[ArrayNmbr]];
+
+	// Now only do something if a magic item is recognized, doesn't have a calculation, or doesn't have two different description options (normal & long)
+	if (!theMI || theMI.calculate || !theMI.descriptionLong) return;
+
+	var theDesc = FldNmbr > FieldNumbers.magicitemsD && theMI.descriptionLong ? theMI.descriptionLong : theMI.description ? theMI.description : "";
+	if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
+	if (typePF) theDesc = theDesc.replace("\n", " ");
+	Value("Extra.Magic Item Description " + FldNmbr, theDesc);
+}
 
 function ApplyAttunementMI(FldNmbr) {
 	if (CurrentVars.manual.items) return;
@@ -1619,12 +1643,13 @@ function ApplyAttunementMI(FldNmbr) {
 }
 
 // Hide/show the attuned checkbox for a magic item entry
-function setMIattunedVisibility(FldNmbr) {
+function setMIattunedVisibility(FldNmbr, force) {
 	var MIflds = ReturnMagicItemFieldsArray(FldNmbr);
 	var hideIt = How(MIflds[4]) != "";
-	if (hideIt == isDisplay(MIflds[4])) return; // already the right display
+	if (!force && hideIt == isDisplay(MIflds[4])) return; // already the right display
 	
 	var isOF = FldNmbr > FieldNumbers.magicitemsD;
+	if (isOF && !isTemplVis("ASoverflow")) return; // overflow, but overflow is not visible
 
 	// Define some constants
 	var noteWidth = typePF ? 25 : 35;
@@ -1657,6 +1682,16 @@ function setMIattunedVisibility(FldNmbr) {
 	}
 }
 
+// Correct the visibility of the Magic Item attuned checkboxes when showing the 3rd/overflow page
+function correctMIattunedVisibility(pageType) {
+	var startNo = pageType == "ASoverflow" ? FieldNumbers.magicitemsD + 1 : 1;
+	var endNo = pageType == "ASoverflow" ? FieldNumbers.magicitems : FieldNumbers.magicitemsD;
+	for (var i = startNo; i <= endNo; i++) {
+		setMIattunedVisibility(i, true);
+	}
+}
+
+// Set the options of the dropdown of magic items
 function SetMagicItemsDropdown(forceTooltips) {
 	var ArrayDing = [""];
 	var tempString = "Type in the name of the magic item (or select it from the drop-down menu) and its text and features will be filled out automatically, provided it is a recognized magic item.\n\nAbility scores will not be automatically altered other than their tool tips (mouseover texts) and in the Scores dialog.";
@@ -1684,9 +1719,9 @@ function SetMagicItemsDropdown(forceTooltips) {
 }
 
 //Make menu for the button on each Magic Item line and parse it to Menus.magicitems
-function MakeMagicItemMenu_MagicItemOptions(MenuSelection) {
+function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 	var magicMenu = [];
-	var itemNmbr = parseFloat(event.target.name.slice(-2));
+	if (!itemNmbr) itemNmbr = parseFloat(event.target.name.slice(-2));
 	var MIflds = ReturnMagicItemFieldsArray(itemNmbr);
 	var theField = What(MIflds[0]) != "";
 	var noUp = itemNmbr === 1;
@@ -1723,12 +1758,10 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection) {
 			["Copy to Extra Equipment (page 3)", "equipment#extra#", theField]
 		]);
 		menuLVL1(magicArray);
-
 		Menus.magicitems = magicMenu;
-		
 		MenuSelection = getMenu("magicitems");
 	}
-	if (MenuSelection == "justMenu" || !MenuSelection || MenuSelection[0] == "nothing") return;
+	if (MenuSelection == "justMenu" || !MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "item") return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Magic item menu option...");
@@ -1748,6 +1781,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection) {
 			for (var i = 0; i < MIflds.length - 1; i++) {
 				var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
 				copyField(MIflds[i], MIfldsO[i], exclObj, true);
+				thermoM(i/(MIflds.length - 1)); //increment the progress dialog's progress
 			}
 			// Correct the visibility of the attuned fields
 			setMIattunedVisibility(itemNmbr);
@@ -1757,6 +1791,11 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection) {
 				var thisKnown = CurrentMagicItems.known[itemNmbr - 1];
 				CurrentMagicItems.known[itemNmbr - 1] = CurrentMagicItems.known[otherNmbr - 1];
 				CurrentMagicItems.known[otherNmbr - 1] = thisKnown;
+			}
+			// Correct the description if moving between 3rd and overflow page
+			if ((upToOtherPage && MenuSelection[1] == "up") || (downToOtherPage && MenuSelection[1] == "down")) {
+				correctMIdescriptionLong(itemNmbr);
+				correctMIdescriptionLong(otherNmbr);
 			}
 			IsNotMagicItemMenu = true;
 			break;
@@ -1801,7 +1840,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection) {
 }
 
 // Add a magic item to the third page or overflow page
-function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow) {
+function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow, forceAttunedVisible) {
 	item = item.substring(0, 2) === "- " ? item.substring(2) : item;
 	var itemLower = item.toLowerCase();
 	var RegExItem = "\\b" + item.RegEscape() + "\\b";
@@ -1822,6 +1861,21 @@ function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow) {
 					if (itemDescr !== undefined) Value(MIflds[4], itemDescr);
 					if (itemWeight !== undefined) Value(MIflds[3], itemWeight);
 					if (attuned !== undefined) Checkbox(MIflds[4], attuned ? true : false);
+				} else if (forceAttunedVisible === undefined && attuned !== undefined && !attuned && MagicItemsList[recognizedItem].attunement) {
+					// This is an item that requires attunement, but attunement is explicitly set to none, so undo the automation of the magic item
+					Checkbox(MIflds[4], false);
+					ApplyAttunementMI(i);
+				}
+				var isAttuneVisible = How("Extra.Magic Item Attuned " + i) == "";
+				if (forceAttunedVisible !== undefined && forceAttunedVisible !== isAttuneVisible) {
+					AddTooltip("Extra.Magic Item Attuned " + i, undefined, forceAttunedVisible ? "" : "hide");
+					setMIattunedVisibility(i);
+					if (attuned === undefined) {
+						Checkbox(MIflds[4], forceAttunedVisible);
+					} else if (!attuned && forceAttunedVisible) {
+						Checkbox(MIflds[4], false);
+						ApplyAttunementMI(i);
+					}
 				}
 				return;
 			}
@@ -1875,10 +1929,12 @@ function MagicItemInsert(itemNmbr) {
 				var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
 				copyField(MIfldsFrom[i], MIfldsTo[i], exclObj);
 			}
-			// Correct the attuned checkbox visibility
-			setMIattunedVisibility(it);
 			// Correct the known array
 			if (!CurrentVars.manual.items) CurrentMagicItems.known[it - 1] = CurrentMagicItems.known[it - 2];
+			// Correct the attuned checkbox visibility
+			setMIattunedVisibility(it);
+			// Correct the description (normal/long)
+			if (it == FieldNumbers.magicitemsD + 1) correctMIdescriptionLong(it);
 		}
 
 		// Clear the selected slot
@@ -1894,14 +1950,14 @@ function MagicItemDelete(itemNmbr) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Deleting magic item...");
 	calcStop();
-	
-	// First clear the current item so that it's automation is run
-	Value("Extra.Magic Item " + itemNmbr, "");
-	IsNotMagicItemMenu = false;
 
 	var maxItem = FieldNumbers.magicitems;
 	// Stop at the end of the first page if last one on first page is empty
 	if (itemNmbr <= FieldNumbers.magicitemsD && !What("Extra.Magic Item " + FieldNumbers.magicitemsD)) maxItem = FieldNumbers.magicitemsD;
+
+	// First clear the current item so that it's automation is run
+	MagicItemClear(itemNmbr, true);
+	IsNotMagicItemMenu = false;
 
 	// Make every line identical to the one below, starting with the selected line
 	for (var it = itemNmbr; it < maxItem; it++) {
@@ -1912,10 +1968,12 @@ function MagicItemDelete(itemNmbr) {
 			var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
 			copyField(MIfldsFrom[i], MIfldsTo[i], exclObj);
 		}
-		// Correct the attuned checkbox visibility
-		setMIattunedVisibility(it);
 		// Correct the known array
 		if (!CurrentVars.manual.items) CurrentMagicItems.known[it - 1] = CurrentMagicItems.known[it];
+		// Correct the attuned checkbox visibility
+		setMIattunedVisibility(it);
+		// Correct the description (normal/long)
+		if (it == FieldNumbers.magicitemsD) correctMIdescriptionLong(it);
 	}
 
 	// Clear the final line
@@ -1937,9 +1995,14 @@ function MagicItemClear(itemNmbr, doAutomation) {
 		AddTooltip(MIflds[2], "", "");
 		tDoc.getField(MIflds[2]).setAction("Calculate", "");
 		AddTooltip(MIflds[4], undefined, "");
-		tDoc.resetForm(MIflds);
+		if (IsNotReset) tDoc.resetForm(MIflds);
 		setMIattunedVisibility(itemNmbr);
 	}
+}
+
+// Reset all the magic items to their default
+function ResetMagicItems() {
+	for (var i = 1; i <= FieldNumbers.magicitems; i++) MagicItemClear(i, false);
 }
 
 /*

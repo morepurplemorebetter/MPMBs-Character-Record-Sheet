@@ -2478,6 +2478,9 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 				if (What("Gear Location Remember").split(",")[1] === "true") {
 					HideInvLocationColumn("Extra.Gear ", false);
 				};
+			 case "ASoverflow" :
+				// Correct the visibility of attuned checkboxes of the magic items
+				correctMIattunedVisibility(tempNm);
 				break;
 			};
 

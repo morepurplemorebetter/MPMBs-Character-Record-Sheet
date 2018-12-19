@@ -737,15 +737,23 @@ function DirectImport(consoleTrigger) {
 		var feaNrFrom = global.docFrom.FieldNumbers.feats ? global.docFrom.FieldNumbers.feats : FieldNumbers.feats;
 		for (var i = 1; i <= feaNrFrom; i++) {
 			if (i <= FieldNumbers.feats) {
-				if (ImportField("Feat Name " + i, {notTooltip: true}) && !What("Feat Description " + i)) {
+				var impFeat = ImportField("Feat Name " + i, {notTooltip: true});
+				if (impFeat && !CurrentFeats.known[i - 1]) {
+					ImportField("Feat Note " + i);
 					ImportField("Feat Description " + i);
 				}
 			}
 			if (i > FieldNumbers.feats) {
 				var feaFldFrom = global.docFrom.getField("Feat Name " + i);
-				if (feaFldFrom && feaFldFrom.value) {
-					for (var feaNr = 1; feaNr <= FieldNumbers.feats; feaNr++) {
-						if (What("Feat Name " + i) === "") Value("Feat Name " + i, feaFldFrom.value);
+				if (!feaFldFrom || !feaFldFrom.value) continue;
+				for (var feaNr = 1; feaNr <= FieldNumbers.feats; feaNr++) {
+					if (What("Feat Name " + feaNr) === "") {
+						Value("Feat Name " + feaNr, feaFldFrom.value);
+						if (!CurrentFeats.known[feaNr - 1]) {
+							Value("Feat Note " + feaNr, global.docFrom.What("Feat Note " + i));
+							Value("Feat Description " + feaNr, global.docFrom.What("Feat Description " + i));
+						}
+						break;
 					}
 				}
 			}
@@ -1016,13 +1024,17 @@ function DirectImport(consoleTrigger) {
 
 		//magic items
 		nmbrFlds = global.docFrom.FieldNumbers.magicitems ? global.docFrom.FieldNumbers.magicitems : FieldNumbers.magicitems;
+		var exclObj = {notTooltip: true, notSubmitName: true};
 		for (var i = 1; i <= nmbrFlds; i++) {
 			var fromFld = global.docFrom.getField("Extra.Magic Item " + i);
-			if (i <= FieldNumbers.magicitems) {
-				ImportField("Extra.Magic Item " + i, {notTooltip: true}); ImportField("Extra.Magic Item Attuned " + i, {notTooltip: true}); ImportField("Extra.Magic Item Description " + i, {notTooltip: true}); ImportField("Extra.Magic Item Weight " + i, {notTooltip: true});
-			} else if (fromFld && fromFld.value) {
-				AddMagicItem(fromFld.value, global.docFrom.getField("Extra.Magic Item Attuned " + i).isBoxChecked(0), global.docFrom.getField("Extra.Magic Item Description " + i).value, global.docFrom.getField("Extra.Magic Item Weight " + i).value)
-			}
+			if (!fromFld || !fromFld.value) return;
+			AddMagicItem(
+				fromFld.value,
+				global.docFrom.getField("Extra.Magic Item Attuned " + i).isBoxChecked(0),
+				global.docFrom.getField("Extra.Magic Item Description " + i).value,
+				global.docFrom.getField("Extra.Magic Item Weight " + i).value,
+				FromVersion < 13 ? undefined : global.docFrom.getField("Extra.Magic Item Attuned " + i).submitName == ""
+			);
 		}
 
 		//extra equipment
@@ -1445,7 +1457,7 @@ function ImportField(fldNm, actionsObj, fromFldNm) {
 	}
 
 	//set the submitName and calculation
-	if (actionsObj.SubmitCalc && fromFld.submitName && toFld.submitName !== fromFld.submitName) { //we need to set a calculation of the fields and copy the submitname
+	if (actionsObj.SubmitCalc && fromFld.submitName && toFld.submitName !== fromFld.submitName) { //we need to set a calculation of the fields and copy the submitName
 		toFld.setAction("Calculate", fromFld.submitName);
 		actionsObj.notSubmitName = false;
 	}
