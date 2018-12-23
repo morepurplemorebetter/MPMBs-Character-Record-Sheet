@@ -506,10 +506,6 @@ var Base_ClassList = {
 				recovery : "short rest",
 				additional : ["", "CR 1/4, no fly/swim; 1 hour", "CR 1/4, no fly/swim; 1 hour", "CR 1/2, no fly; 2 hours", "CR 1/2, no fly; 2 hours", "CR 1/2, no fly; 3 hours", "CR 1/2, no fly; 3 hours", "CR 1; 4 hours", "CR 1; 4 hours", "CR 1; 5 hours", "CR 1; 5 hours", "CR 1; 6 hours", "CR 1; 6 hours", "CR 1; 7 hours", "CR 1; 7 hours", "CR 1; 8 hours", "CR 1; 8 hours", "CR 1; 9 hours", "CR 1; 9 hours", "CR 1; 10 hours"],
 				action : [["action", " (start)"], ["bonus action", " (end)"]]
-/*  		UPDATED
- ,
-				eval : "AddAction('bonus action', 'Wild Shape (end)', 'Druid');",
-				removeeval : "RemoveAction('bonus action', 'Wild Shape (end)', 'Druid');" */
 			},
 			"timeless body" : {
 				name : "Timeless Body",
@@ -656,7 +652,11 @@ var Base_ClassList = {
 				name : "Martial Arts",
 				source : [["SRD", 26], ["P", 78]],
 				minlevel : 1,
-				description : "\n   " + "Monk weapons: any simple melee (not two-handed/heavy), unarmed strike, shortsword" + "\n   " + "With monk weapons, I can use Dex instead of Str and use the Martial Arts damage die" + "\n   " + "When taking an Attack action with these, I get one unarmed strike as a bonus action",
+				description : desc([
+					"Monk weapons: any simple melee (not two-handed/heavy), unarmed strike, shortsword",
+					"With monk weapons, I can use Dex instead of Str and use the Martial Arts damage die",
+					"When taking an Attack action with these, I get one unarmed strike as a bonus action"
+				]),
 				additional : levels.map(function (n) {
 					return "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
 				}),
@@ -901,7 +901,10 @@ var Base_ClassList = {
 				name : "Divine Smite",
 				source : [["SRD", 31], ["P", 85]],
 				minlevel : 2,
-				description : "\n   " + "When I hit a melee weapon attack, I can expend a spell slot to do +2d8 radiant damage" + "\n   " + "This increases by +1d8 for each spell slot level above 1st and +1d8 against undead/fiends"
+				description : desc([
+					"When I hit a melee weapon attack, I can expend a spell slot to do +2d8 radiant damage",
+					"This increases by +1d8 for each spell slot level above 1st and +1d8 against undead/fiends"
+				])
 			},
 			"subclassfeature3.0" : {
 				name : "Channel Divinity",
@@ -1399,7 +1402,13 @@ var Base_ClassList = {
 				name : "Font of Magic",
 				source : [["SRD", 43], ["P", 101]],
 				minlevel : 2,
-				description : "\n   " + "As a bonus action, I can use sorcery points to create spell slots and vice versa" + "\n   " + "I can convert spell slots to sorcery points at a rate of 1 point per spell slot level" + "\n   " + "I can convert sorcery points to spell slots, which last until I finish a long rest, as follows:" + "\n   " + "Level 1 for 2 sorcery points;   level 2 for 3 sorcery points;   level 3 for 5 sorcery points" + "\n   " + "Level 4 for 6 sorcery points;   level 5 for 7 sorcery points",
+				description : desc([
+					"As a bonus action, I can use sorcery points to create spell slots and vice versa",
+					"I can convert spell slots to sorcery points at a rate of 1 point per spell slot level",
+					"I can convert sorcery points to spell slots, which last until I finish a long rest, as follows:",
+					"Level 1 for 2 sorcery points;   level 2 for 3 sorcery points;   level 3 for 5 sorcery points",
+					"Level 4 for 6 sorcery points;   level 5 for 7 sorcery points"
+				]),
 				usages : [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
 				recovery : "long rest",
 				action : ["bonus action", ""],
@@ -2050,7 +2059,10 @@ var Base_ClassSubList = {
 				name : "Frenzy",
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 3,
-				description : "\n   " + "As a bonus action each turn while raging, I can make a melee attack" + "\n   " + "After my rage is over, I suffer one level of exhaustion",
+				description : desc([
+					"As a bonus action each turn while raging, I can make a melee attack",
+					"After my rage is over, I suffer one level of exhaustion"
+				]),
 				action : ["bonus action", " attack (while raging)"]
 			},
 			"subclassfeature6" : {

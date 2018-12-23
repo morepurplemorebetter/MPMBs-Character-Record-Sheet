@@ -582,10 +582,10 @@ function DirectImport(consoleTrigger) {
 			LayerVisibilityOptions(false, global.docFrom.getField("Extra.Layers Remember") ? global.docFrom.getField("Extra.Layers Remember").value : undefined);
 			ToggleBlueText(global.docFrom.getField("Extra.Layers Remember") ? global.docFrom.getField("Extra.Layers Remember").value === "Yes" : false);
 		} else {
-			ToggleWhiteout(global.docFrom.CurrentVars.whiteout);
+			ToggleWhiteout(!!global.docFrom.CurrentVars.whiteout);
 			ToggleTextSize(global.docFrom.CurrentVars.fontsize);
 			LayerVisibilityOptions(false, global.docFrom.CurrentVars.vislayers);
-			ToggleBlueText(global.docFrom.CurrentVars.bluetxt);
+			ToggleBlueText(!!global.docFrom.CurrentVars.bluetxt);
 		}
 		SetStringifieds("vars");
 
@@ -698,7 +698,7 @@ function DirectImport(consoleTrigger) {
 		for (var i = 1; i <= FieldNumbers.attacks; i++) {
 			if (ImportField("Attack." + i + ".Weapon Selection", {notTooltip: true})) ImportField("Attack." + i + ".Description", {notTooltip: true});
 		}
-		var weaNrFrom = global.docFrom.FieldNumbers.attacks ? global.docFrom.FieldNumbers.attacks : 5;
+		var weaNrFrom = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.attacks ? global.docFrom.FieldNumbers.attacks : 5;
 		if (weaNrFrom > FieldNumbers.attacks) {
 			for (var i = FieldNumbers.attacks + 1; i <= weaNrFrom; i++) {
 				var weaFldFrom = global.docFrom.getField("Attack." + i + ".Weapons Selection");
@@ -734,7 +734,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("Class and Levels", {notTooltip: true});
 
 		//set the feats
-		var feaNrFrom = global.docFrom.FieldNumbers.feats ? global.docFrom.FieldNumbers.feats : FieldNumbers.feats;
+		var feaNrFrom = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.feats ? global.docFrom.FieldNumbers.feats : FieldNumbers.feats;
 		for (var i = 1; i <= feaNrFrom; i++) {
 			if (i <= FieldNumbers.feats) {
 				var impFeat = ImportField("Feat Name " + i, {notTooltip: true});
@@ -978,11 +978,11 @@ function DirectImport(consoleTrigger) {
 		};
 
 		//languages and tools
-		var nmbrFlds = global.docFrom.FieldNumbers.langstools ? global.docFrom.FieldNumbers.langstools : FieldNumbers.langstools;
+		var nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.langstools ? global.docFrom.FieldNumbers.langstools : FieldNumbers.langstools;
 		addNotDefined("Language ", nmbrFlds); addNotDefined("Tool ", nmbrFlds);
 		nmbrFlds = global.docFrom.FieldNumbers.actions ? global.docFrom.FieldNumbers.actions : FieldNumbers.actions;
 		addNotDefined("Reaction ", nmbrFlds); addNotDefined("Bonus Action ", nmbrFlds);
-		nmbrFlds = global.docFrom.FieldNumbers.trueactions ? global.docFrom.FieldNumbers.trueactions : FieldNumbers.trueactions;
+		nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.trueactions ? global.docFrom.FieldNumbers.trueactions : FieldNumbers.trueactions;
 		addNotDefined("Action ", nmbrFlds);
 		addNotDefined("Resistance Damage Type ", 6);
 
@@ -1009,7 +1009,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("Valuables1"); ImportField("Valuables2"); ImportField("Valuables3"); ImportField("Valuables4");
 		ImportField("Carrying Capacity Multiplier", {notTooltip: true});
 
-		nmbrFlds = global.docFrom.FieldNumbers.gear ? global.docFrom.FieldNumbers.gear : FieldNumbers.gear;
+		nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.gear ? global.docFrom.FieldNumbers.gear : FieldNumbers.gear;
 		for (var i = 1; i <= nmbrFlds; i++) {
 			var fromFld = global.docFrom.getField("Adventuring Gear Row " + i);
 			if (i <= FieldNumbers.gear) {
@@ -1023,22 +1023,21 @@ function DirectImport(consoleTrigger) {
 		ImportField("Extra.Other Holdings");
 
 		//magic items
-		nmbrFlds = global.docFrom.FieldNumbers.magicitems ? global.docFrom.FieldNumbers.magicitems : FieldNumbers.magicitems;
-		var exclObj = {notTooltip: true, notSubmitName: true};
+		nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.magicitems ? global.docFrom.FieldNumbers.magicitems : FieldNumbers.magicitems;
 		for (var i = 1; i <= nmbrFlds; i++) {
 			var fromFld = global.docFrom.getField("Extra.Magic Item " + i);
-			if (!fromFld || !fromFld.value) return;
+			if (!fromFld || !fromFld.value) continue;
 			AddMagicItem(
 				fromFld.value,
 				global.docFrom.getField("Extra.Magic Item Attuned " + i).isBoxChecked(0),
-				global.docFrom.getField("Extra.Magic Item Description " + i).value,
-				global.docFrom.getField("Extra.Magic Item Weight " + i).value,
-				FromVersion < 13 ? undefined : global.docFrom.getField("Extra.Magic Item Attuned " + i).submitName == ""
+				global.docFrom.What("Extra.Magic Item Description " + i),
+				global.docFrom.What("Extra.Magic Item Weight " + i),
+				FromVersion < 13 ? undefined : global.docFrom.How("Extra.Magic Item Attuned " + i) == ""
 			);
 		}
 
 		//extra equipment
-		nmbrFlds = global.docFrom.FieldNumbers.extragear ? global.docFrom.FieldNumbers.extragear : FieldNumbers.extragear;
+		nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.extragear ? global.docFrom.FieldNumbers.extragear : FieldNumbers.extragear;
 		for (var i = 1; i <= nmbrFlds; i++) {
 			var fromFld = global.docFrom.getField("Extra.Gear Row " + i);
 			if (i <= FieldNumbers.extragear) {
@@ -1148,7 +1147,7 @@ function DirectImport(consoleTrigger) {
 				};
 
 				//companion equipment secion is bigger on the Colourful than on the Printer Friendly
-				nmbrFlds = global.docFrom.FieldNumbers.compgear ? global.docFrom.FieldNumbers.compgear : FieldNumbers.compgear;
+				nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.compgear ? global.docFrom.FieldNumbers.compgear : FieldNumbers.compgear;
 				for (var i = FieldNumbers.compgear + 1; i <= nmbrFlds; i++) {
 					var fromFld = global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Row " + i);
 					if (fromFld && fromFld.value) {
@@ -1278,7 +1277,7 @@ function DirectImport(consoleTrigger) {
 				for (var i = 0; i < prefixA[0].length; i++) {
 					var prefixFrom = prefixA[0][i];
 					var prefixTo = prefixA[1][i];
-					nmbrFlds = global.docFrom.FieldNumbers.spells ? global.docFrom.FieldNumbers.spells : FieldNumbers.spells;
+					nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.spells ? global.docFrom.FieldNumbers.spells : FieldNumbers.spells;
 					nmbrFlds = nmbrFlds[i < 1 ? 0 : 1];
 					if (i === 0) { //set the first class header on SSfront
 						var tClassFld = global.docFrom.getField(prefixFrom + "spellshead.class.0");
@@ -1317,11 +1316,11 @@ function DirectImport(consoleTrigger) {
 			SetToManual_Dialog.mFea = global.docFrom.getField("Manual Feat Remember") ? global.docFrom.What("Manual Feat Remember") !== "No" : false;
 			SetToManual_Dialog.mRac = global.docFrom.getField("Manual Race Remember") ? global.docFrom.What("Manual Race Remember") !== "No" : false;
 		} else {
-			SetToManual_Dialog.mAtt = global.docFrom.CurrentVars.manual.attacks;
-			SetToManual_Dialog.mBac = global.docFrom.CurrentVars.manual.background;
-			SetToManual_Dialog.mCla = global.docFrom.CurrentVars.manual.classes;
-			SetToManual_Dialog.mFea = global.docFrom.CurrentVars.manual.feats;
-			SetToManual_Dialog.mRac = global.docFrom.CurrentVars.manual.race;
+			SetToManual_Dialog.mAtt = !!global.docFrom.CurrentVars.manual.attacks;
+			SetToManual_Dialog.mBac = !!global.docFrom.CurrentVars.manual.background;
+			SetToManual_Dialog.mCla = !!global.docFrom.CurrentVars.manual.classes;
+			SetToManual_Dialog.mFea = !!global.docFrom.CurrentVars.manual.feats;
+			SetToManual_Dialog.mRac = !!global.docFrom.CurrentVars.manual.race;
 		}
 		SetToManual_Button(true);
 
@@ -1379,6 +1378,7 @@ function DirectImport(consoleTrigger) {
 		aText += "\n  > The 'Class Features' text is now solely what the automation added;";
 		aText += "\n  > The 'Notes' section on the 3rd page is now solely what the automation added;";
 		aText += "\n  > Attack and Ammunition attributes are now solely what the automation set;";
+		aText += "\n  > Feat and Magic Item descriptions are now solely what the automation set;";
 		aText += "\n  > Companion pages have been copied exactly, not using any updates in automation;";
 		aText += "\n  > Wild Shapes have been re-calculated, manual changes have been ignored;";
 		aText += "\n  > Ability Score dialog has been duplicated from the old version, changes by newer automation have been ignored. Read that dialog's text carefully to see if you are missing anything;";

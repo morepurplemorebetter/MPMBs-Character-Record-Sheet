@@ -5429,11 +5429,11 @@ function CalcAC() {
 };
 
 function SetToManual_Button(noDialog) {
-	var BackgroundFld = !CurrentVars.manual.background ? false : true;
-	var ClassFld = !CurrentVars.manual.classes ? false : true;
-	var FeatFld = !CurrentVars.manual.feats ? false : true;
-	var ItemFld = !CurrentVars.manual.items ? false : true;
-	var RaceFld = !CurrentVars.manual.race ? false : true;
+	var BackgroundFld = !!CurrentVars.manual.background;
+	var ClassFld = !!CurrentVars.manual.classes;
+	var FeatFld = !!CurrentVars.manual.feats;
+	var ItemFld = !!CurrentVars.manual.items;
+	var RaceFld = !!CurrentVars.manual.race;
 
 	if (!noDialog) {
 		//set the checkboxes in the dialog to starting position
