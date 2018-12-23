@@ -30,20 +30,23 @@
 
 /*	-INFORMATION-
 
-	Subject:	Class
+	Subject:	Common attributes
 
-	Effect:		This is the syntax for adding a new class to the sheet.
+	Effect:		This is the syntax for common attributes that are shared by multiple things.
+				The syntax here does not stand on its own.
+				You will need another syntax file to use alongside this file.
 
-	Remarks:	You will also need the syntax for creating a feature if you want the class to have any level-dependent features.
-				You will also need the syntax for common attributes if you want the level-dependent features to do anything more than have a description.
-				You will also need the syntax for adding a subclass if you want the class to have any choices for subclasses.
-				You will also need the syntax for adding a source if you want the class to have a source that doesn't yet exist in the sheet.
+	Applies to:	Class features (and subclass features)
+				Race main attributes
+				Racial features
+				Background main attributes
+				Feat main attributes
+				Magic Item main attributes
 
 	Sheet:		v13.0.0 (2018-??-??)
-
 */
 
-var iFileName = "Homebrew Syntax - ClassList.js";
+var iFileName = "_common attributes.js";
 /* 	iFileName // OPTIONAL //
 	This is how the file will be named in the sheet if you import it as a file.
 	Only the first occurrence of this variable will be used.
