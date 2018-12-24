@@ -4869,7 +4869,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			var theItem = MagicItemsList[aFeat];
 
 			// if the item requires attunement, but the checkbox is not checked, skip it
-			var attuneChecked = tDoc.getField("Extra.Magic Item Attuned " + (i+1)).isBoxChecked(0);
+			var attuneChecked = tDoc.getField("Extra.Magic Item Attuned " + (f+1)).isBoxChecked(0);
 			if (!theItem || (theItem.attunement && !attuneChecked)) continue;
 
 			thermoTxt = thermoM("Updating " + theItem.name + " features...", false);
