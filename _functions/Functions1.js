@@ -4392,7 +4392,7 @@ function ApplyFeat(input, FldNmbr) {
 		// Apply the rest of its attributes
 		var Fea = ApplyFeatureAttributes(
 			"feat", // type
-			NewFeat, // fObjName
+			newFeat, // fObjName
 			[0, CurrentFeats.level, false], // lvlA [old-level, new-level, force-apply]
 			false, // choiceA [old-choice, new-choice, "only"|"change"]
 			false // forceNonCurrent

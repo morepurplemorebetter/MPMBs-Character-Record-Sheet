@@ -1851,9 +1851,6 @@ var Base_ClassList = {
 					description : "\n   " + "When taking the attack action, I can attack twice with my pact weapon",
 					source : [["SRD", 50], ["P", 111]],
 					action : ['action', 'Pact Weapon (2 attacks per action)'],
-/*  		UPDATED
-					eval : "AddAction('action', 'Pact Weapon (2 attacks per action)', 'Thirsting Blade (warlock invocation)');",
-					removeeval : "RemoveAction('action', 'Pact Weapon (2 attacks per action)');", */
 					prereqeval : "classes.known.warlock.level >= 5 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the blade'"
 				},
 				"visions of distant realms (prereq: level 15 warlock)" : {
