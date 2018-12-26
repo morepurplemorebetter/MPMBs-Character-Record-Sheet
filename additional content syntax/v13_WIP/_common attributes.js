@@ -2,10 +2,10 @@
 	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
 	To add your own content to the Character Sheet, use the syntax below and save it in a file.
 	You can then import this file directly to the sheet using the "Import" button and "Import/Export" bookmark.
-	There you can either import the file as a whole or just copy the text into a dialogue.
+	There you can either import the file as a whole or just copy the text into a dialog.
 
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
+	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialog.
 	It is recommended to enter the code in a freshly downloaded sheet or to first reset sheet.
 	Thus you don't run the risk of things being filled out causing conflicts.
 
@@ -36,7 +36,7 @@
 				The syntax here does not stand on its own.
 				You will need another syntax file to use alongside this file.
 
-	Applies to:	Class features (and subclass features)
+	Works with:	Class features (and subclass features)
 				Race main attributes
 				Racial features
 				Background main attributes
@@ -45,6 +45,259 @@
 
 	Sheet:		v13.0.0 (2018-??-??)
 */
+
+toolProfs : [
+	"Herbalism kit",
+	["Thieves' tools", "Dex"],
+	["Musical instrument", 3]
+],
+/*	toolProfs // OPTIONAL //
+	TYPE:	array (variable length)
+	USE:	add tool proficiencies
+
+	This array can have three type of entries:
+	1.	A string, the name of the tool proficiency to add (i.e. no choice).
+	2.	An array with 2 strings:
+		2.1	The first string is the name of the tool proficiency to add (i.e. no choice).
+		2.2 The second string is the abbreviation of the ability score the tool proficiency works with.
+			Only add this if you want the tool to appear in the skill section on the 1st page.
+	3.	An array with a string and a number:
+		3.1 The first entry is a string, a description of the type of tool proficiency that can be chosen.
+		3.2	The second entry is a number, representing how many times this type of tool proficiency is to be added.
+*/
+
+languageProfs : [
+	"Common",
+	2,
+	["Elvish or Vedalken", 1]
+],
+/*	languageProfs // OPTIONAL //
+	TYPE:	array (variable length)
+	USE:	add language proficiencies
+
+	This array can have three type of entries:
+	1.	A string, the name of the language proficiency to add (i.e. no choice).
+	2.	A number, how many language proficiency are to be added with each a free choice for which language.
+	3.	An array with a string and a number:
+		3.1 The first entry is a string, a description of the type of language proficiency that can be chosen.
+		3.2	The second entry is a number, representing how many this type of language proficiency is to be added.
+*/
+
+saves : ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"],
+/*	saves // OPTIONAL //
+	TYPE:	array (variable length)
+	USE:	set saving throw proficiencies on the 1st page
+
+	This is an array of strings.
+	Each entry gives proficiency with the saving throw of a certain ability score.
+	Only use the strings shown in the example, the 3-letter abbreviation with the first letter capitalized (or "HoS" for Honour/Sanity).
+*/
+
+action : [
+	["reaction", " (start)"],
+	["bonus action", "Shove"]
+],
+/*	action // OPTIONAL //
+	TYPE:	array (variable length)
+	USE:	add entry to the "Actions", "Bonus Actions", or "Reactions" section on the 1st page
+	
+	The entries in this array must always be arrays with 2 strings each:
+	1. The first string in each sub-array is the type of action, written in lowercase.
+		The options are "action", "bonus action", or "reaction".
+	2. The second string can be one of two things:
+		2.1	When the first character of the string is non-alphabetic (e.g. a space or a hyphen), it is amended to the name of the feature.
+			This amended total is then added as an action.
+		2.2 When the first character of the string is an alphabetic character (e.g. everything from a-Z), it is not amended to the name of the feature.
+			The string is taken as-is and added as an action.
+*/
+
+dmgres : [
+	"Fire",
+	["Bludgeoning", "Bludgeon. (in rage)"],
+	["Slashing", "Slash. (nonmagical)"]
+],
+/*	dmgres // OPTIONAL //
+	TYPE:	array (variable length)
+	USE:	add entry to the "Resistances" section on the 1st page
+	
+	This array can have two type of entries:
+	1. A string of the damage type that resistance is gained against.
+	2. An array of 2 strings:
+		2.1	The first string is the damage type that resistance is gained against.
+		2.2	The second string is the condition that the resistance works with.
+			If the same resistance is gained from multiple sources,
+			but one source has a condition and another doesn't,
+			only the version without a condition is shown.
+*/
+
+vision : [
+	["Darkvision", 60],
+	["Sunlight Sensitivity", 0],
+	["Darkvision", "+30"],
+	["Darkvision", "fixed 60"]
+],
+/*	vision // OPTIONAL //
+	TYPE:	array (variable length)
+	USE:	add string to the "Senses" field on the 1st page
+
+	This array can have three type of entries, each of which is its own array with a length of 2
+	1.	An array with a string and a number:
+		1.1 The first entry is a string, the name of the thing to add to the "Senses" section on the 1st page.
+		1.2	The second entry is a number, representing the distance in feet that this vision works on.
+			You can also enter a 0 for something that doesn't have a range (e.g. Keen Smell).
+	2.	An array with two strings:
+		2.1 The first string is the name of the thing to add to the "Senses" section on the 1st page.
+		2.2	The second entry is a string consisting of a logical operator ('+', '-', or '*') followed by a number.
+			This will add the modifier in feet to the vision if present from another source.
+	3.	An array with two strings:
+		3.1 The first string is the name of the thing to add to the "Senses" section on the 1st page.
+		3.2	The second entry is a string, the word "fixed" followed by a space and then a number.
+			This will add the vision with the specified range, but won't let it be modified (e.g. gained from a magic item).
+*/
+
+speed : {
+/*	speed // OPTIONAL //
+	TYPE:	object (optional attributes)
+	USE:	add or edit speed mode(s) to the 1st page
+
+	The attributes of this object can be "walk", "burrow", "climb", "fly", "swim", and "allModes"
+*/
+	walk : { spd : 30, enc : 20 },
+	burrow : { spd : 15, enc : 15 },
+	/*	walk, burrow, climb, fly, or swim // OPTIONAL //
+		TYPE:	object with two attributes, "spd" and "enc".
+		USE:	add movement mode of the object's name
+		
+		"spd" is the speed in feet
+		"enc" is the encumbered speed in feet
+		
+		Note that both "spd" and "enc" have to be present.
+		If "spd" or "enc" is set to zero it is ignored (i.e. "enc : 0" means no encumbered speed).
+
+		Both "spd" and "enc" can also be a string to perform special functions:
+		1. "walk": If the entry is "walk" the number will be identical to the walking speed.
+		2. "_walk": Using an underscore as the first character means
+				the value is only added if the value would otherwise be non-zero.
+		3. "+30" "-20": If the string starts with a + or - followed by a number.
+				This will add the modifier in feet to the movement mode if present from another source.
+		4. "fixed 60": If the string starts with "fixed" followed by a space and then a number,
+				it will gain a speed of the number in feet, regardless of modifiers from other features.
+	*/
+
+	// example of using "walk":
+	fly : { spd : "walk", enc : 0 },
+
+	// example of using a modifier:
+	climb : { spd : "+50", enc : 0 },
+
+	// example of using "fixed":
+	swim : { spd : "fixed 60", enc : "fixed 60" },
+	
+	allModes : "+10",
+	/*	allModes // OPTIONAL //
+		TYPE:	string
+		USE:	add a modifier to all movement modes, if present
+
+		The 'allModes' attribute can only consist of a modifier-string.
+		It has to be a logical operator ("+" or "-") followed by a number.
+		Every movement mode of the character, both normal and encumbered, will be subjected to the modifier in feet.
+		This will only work on movement modes that are non-zero.
+		It won't give the character a burrow speed if it would otherwise have none, for example.
+	*/
+},
+
+savetxt : {
+/*	savetxt // OPTIONAL //
+	TYPE:	object (optional attributes)
+	USE:	add text to the 1st page
+				("Saving Throws" section for Printer Friendly,
+				"Saving Throw Advantages/Disadvantages" section for Colourful)
+
+	The attributes of this object can be "text", "immune", or "adv_vs"
+*/
+
+	text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg", "Magic can't put me to sleep"],
+	/*	text // OPTIONAL //
+		TYPE:	array of strings
+		USE:	add a text to the 1st page
+
+		Each string in the array is added to the 1st page, exactly as given here.
+	*/
+
+	immune : ["poison", "disease"],
+	/*	immune // OPTIONAL //
+		TYPE:	array of strings
+		USE:	add strings to the "Immune to" text on the 1st page
+
+		Each string in the array is added to the list of "Immune to" things in the 1st page "Saving Throws" section.
+		Immunities from all sources are combined and listed alphabetically.
+		In this example it would result in "Immune to disease and poison".
+		If a damage resistance is present while immunity for the same is also present,
+		then the damage resistance will be hidden as long as the immunity is present.
+	*/
+
+	adv_vs : ["traps", "charmed"]
+	/*	adv_vs // OPTIONAL //
+		TYPE:	array of strings
+		USE:	add strings to the "Adv. on saves vs." text on the 1st page
+
+		Each string in the array is added to the list of "Adv. on saves vs." things in the 1st page "Saving Throws" section.
+		Saving throw advantages from all sources are combined and listed alphabetically.
+		In this example it would result in "Adv. on saves vs. charmed and traps".
+	*/
+},
+
+
+calcChanges
+
+addMod
+
+
+
+
+scores
+
+scoresOverride
+
+scorestxt
+
+spellcastingBonus
+
+spellcastingExtra
+
+spellFirstColTitle
+
+armorOptions
+
+ammoOptions
+
+weaponOptions
+
+weaponProfs
+
+armorProfs
+
+weaponAdd
+
+armorAdd
+
+skills
+
+skillstxt
+
+eval
+
+removeeval
+
+changeeval
+
+
+usages
+usagescalc
+recovery
+additional
+limfeaname
+
 
 var iFileName = "_common attributes.js";
 /* 	iFileName // OPTIONAL //
@@ -382,29 +635,6 @@ ClassList["purplemancer"] = {
 				immune : ["poison", "disease"], // Optional; this is an array of strings that the character is immune to. This is put in the field after the text "Immune to ", so in this example it would result in "Immune to poison and disease"
 				
 				adv_vs : ["traps", "charmed"] // Optional; this is an array of things that the character has advantage on saves against. This is put in the field after the text "Adv. on saves vs. ", so in this example it would result in "Adv. on saves vs. traps and charmed"
-			},
-			
-			dmgres : ["Poison"], //optional; an array of damage types that the class gets resistance against. // If the resistance has a condition attached to it, like only being against nonmagical attacks, substitute the entry in the array with an array of 2: [the damage type, the damage type with the condition]. // For example: [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
-			
-			saves : ["Con"], //optional; an array of the ability scores with which the class feature grants proficiency in saving throws
-	
-			toolProfs : [["Musical instrument", 3], ["Thieves' tools", "Dex"]], // optional; this is an array with the tool proficiencies gained. Each entry can be its own array of 2 entries. The first entry is the name of the tool and the second entry is either 1) a number if the tool is yet to be chosen, or 2) the 3-letter ability score abbreviation if the tool is to be listed in the skill section and have a bonus calculated
-			
-			languageProfs : [1, "Elvish"], // optional; this is an array of the language proficiencies gained. An entry can either be 1) a string that represents the language learned or 2) a number which is the number of language gained that can be chosen by the player
-			
-			speed : { //required; This sets a value for one or more speed modes, and/or a value to be added to a specific speed mode or to all speed modes // the attributes of this object can be "walk", "burrow", "climb", "fly", "swim", and "allModes"
-					
-				// all of the following attributes are optional and you can add more ("burrow" isn't part of this example!)
-				
-				walk : { spd : 30, enc : 20 }, // the objects "walk", "burrow", "climb", "fly", "swim" are all the same, they are an object with two attributes, 'spd' for the speed in feet, and 'enc' for the encumbered speed in feet.
-				
-				climb : { spd : "+50", enc : 0 }, // instead of numbers, you can also have modifiers. Modifiers are a string, starting with a mathematical operator, followed by a number (e.g. "-10", "+20"). // a value that is zero is ignored
-				
-				fly : { spd : "walk", enc : 0 }, // instead of a number/modifier, you can also set the attribute to "walk". This makes the speed mode assume the walking speed // Using an underscore as the first character means the value is only added if the value would be non-zero
-				
-				swim : { spd : "fixed 60", enc : "fixed 60" }, // if you include the word "fixed" together with a number, the movement mode will be that number, without any modifiers from other sources (like the Monk's speed bonus). However, if another entry that isn't 'fixed' does end up with a higher total while including any modifiers, that speed is used instead
-				
-				allModes : "+10" // the 'allModes' attribute can only consist of a modifier. This modifier is applied to all speed modes, both normal and encumbered. It is only applied if the speed mode exists, it won't give the character a burrow speed if it would otherwise have none, for example
 			},
 		},
 	}
