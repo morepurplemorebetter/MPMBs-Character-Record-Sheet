@@ -501,7 +501,7 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 			sObj.name = fObj.fullname;
 			sObj.shortname = ClassList[aClass].spellcastingFactor ? ClassList[aClass].name : ClassSubList[aSubClass].fullname ? ClassSubList[aSubClass].fullname : ClassSubList[aSubClass].subname;
 			sObj.level = classes.known[fObjName].level;
-			if (sObj.typeSp == undefined) sObj.typeSp = "known";
+			if (sObj.typeSp == undefined) sObj.typeSp = "";
 			break;
 		case "race":
 			var fObj = CurrentRace;
@@ -1812,7 +1812,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 		case "equipment" :
 			thermoTxt = thermoM("Copying the item to equipment section...", false);
 			var itemWeight = What(MIflds[3]);
-			if (itemWeight <= 0) itemWeight = "";
+			if (isNaN(itemWeight) || itemWeight <= 0) itemWeight = "";
 			AddToInv(MenuSelection[2], MenuSelection[3], What(MIflds[0]), "", itemWeight, "", false, false, false, true);
 			break;
 		case "attunement" :

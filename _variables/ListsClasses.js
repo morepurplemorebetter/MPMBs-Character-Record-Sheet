@@ -1614,8 +1614,8 @@ var Base_ClassList = {
 						"I can cast my known warlock spells as rituals if they have the ritual tag"
 					]),
 					source : [["SRD", 48], ["P", 110]],
-					eval : "CurrentSpells['book of ancient secrets'] = {name : 'Book of Ancient Secrets', ability : 6, list : {class : 'any', ritual : true}, known : {spells : 'book'}}; SetStringifieds('spells');",
-					removeeval : "delete CurrentSpells['book of ancient secrets']; SetStringifieds('spells');",
+					eval : "CurrentSpells['book of ancient secrets'] = {name : 'Book of Ancient Secrets', ability : 6, list : {class : 'any', ritual : true}, known : {spells : 'book'}}; SetStringifieds('spells'); CurrentUpdates.types.push('spells');",
+					removeeval : "delete CurrentSpells['book of ancient secrets']; SetStringifieds('spells'); CurrentUpdates.types.push('spells');",
 					prereqeval : "classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the tome'"
 				},
 				"chains of carceri (prereq: level 15 warlock, pact of the chain)" : {

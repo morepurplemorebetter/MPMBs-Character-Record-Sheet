@@ -2004,13 +2004,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				var cSpells = CurrentSpells[aClass];
 				cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass};
 				cSpells.known = Temps.spellcastingKnown ? Temps.spellcastingKnown : "";
-				cSpells.typeSp = !cSpells.known || cSpells.known.spells === undefined || isArray(cSpells.known.spells) ? "known" :
-					isNaN(cSpells.known.spells) || cSpells.known.spells === "" ? cSpells.known.spells :
-					"known";
-/* UPDATED
-					isArray(cSpells.known.spells) ? cSpells.known.spells[Math.min(cSpells.known.spells.length, cSpells.level) - 1] :
-					cSpells.known.spells === "" ? "" :
-					isNaN(cSpells.known.spells) ? cSpells.known.spells : "known"; */
+				cSpells.typeSp = !cSpells.known || !cSpells.known.spells || isArray(cSpells.known.spells) || !isNaN(cSpells.known.spells) ? "known" : cSpells.known.spells;
 				cSpells.factor = [casterFactor, casterType];
 				cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
 				if (Temps.spellcastingExtra) cSpells.extra = Temps.spellcastingExtra;

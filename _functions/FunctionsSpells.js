@@ -702,7 +702,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 			}
 		}
 	}
-	
+
 	//define some arrays
 	var returnArray = [];
 	var spByLvl = {sp0 : [], sp1 : [], sp2 : [], sp3 : [], sp4 : [], sp5 : [], sp6 : [], sp7 : [], sp8 : [], sp9 : [], ps0 : [], ps1: []};
@@ -3028,10 +3028,18 @@ function AskUserSpellSheet() {
 			var GoAhead = true;
 			var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
 
+			// Create the typeSp if none is defined
+			if (spCast.typeSp === undefined) {
+				spCast.typeSp = !spCast.known.spells || isArray(spCast.known.spells) || !isNaN(spCast.known.spells) ? "known" : spCast.known.spells;
+			}
 			//see what spell section to activate
-			dia.nmbrSp = !spCast.known.spells ? 0 : isArray(spCast.known.spells) ? spCast.known.spells[Math.min(spCast.known.spells.length, spCast.level) - 1] : isNaN(spCast.known.spells) ? 0 : Number(spCast.known.spells); //set the amount of spells
-			dia.nmbrSp = !isNaN(dia.nmbrSp) ? dia.nmbrSp : 18; //if spells known is not a number, set the dialog to the max of 18
-			dia.typeSp = spCast.typeSp ? spCast.typeSp : "known"; //set the type of spells (book, list, known)
+
+			dia.typeSp = spCast.typeSp; //set the type of spells (book, list, known)
+			dia.nmbrSp = spCast.typeSp == "book" ? 18 :
+				!spCast.known.spells ? 0 :
+				isArray(spCast.known.spells) ? spCast.known.spells[Math.min(spCast.known.spells.length, spCast.level) - 1] :
+				isNaN(spCast.known.spells) ? 0 : Number(spCast.known.spells); //set the amount of spells
+			if (isNaN(dia.nmbrSp)) dia.nmbrSp = 18; //if spells known is not a number, set the dialog to the max of 18
 			dia.showSp = dia.nmbrSp !== 0; //show the spells section
 			dia.offsetSp = spCast.offsetSp ? spCast.offsetSp : 0; //set the manually added spells
 			dia.selectSp = spCast.selectSp ? spCast.selectSp : []; //set the spells already selected
@@ -3045,7 +3053,7 @@ function AskUserSpellSheet() {
 
 				// Create the lists
 				// Set the list level to 0 so that school restrictions are ignored, if applicable
-				spCast.list.level = [0, spListLevel && spListLevel[1] ? 1 : 0]; 
+				spCast.list.level = [0, spListLevel && spListLevel[1] ? 1 : 0];
 				// Create an array of all the cantrips, and only cantrips
 				var listCaRef = CreateSpellList(spCast.list, true, false, true, aCast, spCast.typeSp)[0];
 				// Create the cantrip popup object
@@ -3083,7 +3091,7 @@ function AskUserSpellSheet() {
 				// Create the spell popup object
 				dia.listSp = CreateSpellObject(listSpRef);
 			}
-			
+
 			// put that level list back in the right variable
 			if (spListLevel) {
 				spCast.list.level = spListLevel;
@@ -3181,7 +3189,6 @@ function AskUserSpellSheet() {
 		} else {
 			thermoTxt = thermoM("Processing the " + spCast.name + " dialog...", false); //change the progress dialog text
 
-			spCast.typeSp = dia.typeSp;
 			if (dia.showCa) {
 				spCast.selectCa = dia.selectCa;
 				spCast.selectCa.sort();
