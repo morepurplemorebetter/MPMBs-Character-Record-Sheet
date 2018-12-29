@@ -1286,8 +1286,11 @@ function FindArmor(input) {
 	}
 
 	//add magical bonus, denoted by a "+"
-	var magicBonus = parseFloat(tempString.match(/(^|\s|\(|\[)[\+|-]\d+/));
-	CurrentArmour.magic = !isNaN(magicBonus) ? Number(magicBonus) : 0;
+	CurrentArmour.magic = 0;
+	var magicRegex = /(?:^|\s|\(|\[)([\+-]\d+)/;
+	if (magicRegex.test(tempString)) {
+		CurrentArmour.magic = parseFloat(tempString.match(magicRegex)[1]);
+	}
 
 	CurrentArmour.mod = "";
 	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].addMod) {
@@ -1300,7 +1303,9 @@ function FindArmor(input) {
 			}
 		}
 		// or perhaps it wants to add the proficiency bonus
-		if (!CurrentArmour.mod && tempString.indexOf("prof") !== -1) CurrentArmour.mod = "Proficiency Bonus";
+		if (!CurrentArmour.mod && tempString.indexOf("prof") !== -1) {
+			CurrentArmour.mod = "Proficiency Bonus";
+		}
 	}
 };
 
@@ -1333,7 +1338,7 @@ function ApplyArmor(input) {
 		thermoM(1/3); //increment the progress dialog's progress
 
 		if (CurrentArmour.mod) {
-			var theCalc = "event.value = " + ArmourList[CurrentArmour.known].ac + ' + Number(' + (CurrentArmour.mod ? 'How("Proficiency Bonus")' : 'What("' + CurrentArmour.mod + '")') + ') + ' + CurrentArmour.magic;
+			var theCalc = "event.value = " + ArmourList[CurrentArmour.known].ac + ' + Number(' + (!CurrentArmour.mod ? 0 : CurrentArmour.mod == "Proficiency Bonus" ? 'How("Proficiency Bonus")' : 'What("' + CurrentArmour.mod + '")') + ') + ' + CurrentArmour.magic;
 			tDoc.getField(ArmorFields[0]).setAction("Calculate", theCalc);
 		} else {
 			Value(ArmorFields[0], ArmourList[CurrentArmour.known].ac + CurrentArmour.magic);
@@ -1426,8 +1431,11 @@ function FindShield(input) {
 	var temp = "";
 
 	//add magical bonus, denoted by a "+"
-	var magicBonus = parseFloat(tempString.match(/(^|\s|\(|\[)[\+|-]\d+/));
-	CurrentShield.magic = !isNaN(magicBonus) ? Number(magicBonus) : 0;
+	CurrentShield.magic = 0;
+	var magicRegex = /(?:^|\s|\(|\[)([\+-]\d+)/;
+	if (magicRegex.test(tempString)) {
+		CurrentShield.magic = parseFloat(tempString.match(magicRegex)[1]);
+	}
 }
 
 // Change the armor features
@@ -2544,8 +2552,10 @@ function FindWeapons(ArrayNmbr) {
 		];
 
 		//add magical bonus, denoted by a "+" or "-"
-		var magicBonus = parseFloat(tempString.match(/(^|\s|\(|\[)[\+|-]\d+/));
-		tempArray[j][1] = !isNaN(magicBonus) ? magicBonus : 0;
+		var magicRegex = /(?:^|\s|\(|\[)([\+-]\d+)/;
+		if (magicRegex.test(tempString)) {
+			tempArray[j][1] = parseFloat(tempString.match(magicRegex)[1]);
+		}
 
 		//add the true/false switch for adding ability score to damage or not
 		tempArray[j][2] = tempArray[j][0] ? WeaponsList[tempArray[j][0]].abilitytodamage : true;
@@ -3277,7 +3287,11 @@ function AddInvWeaponsAmmo() {
 	//then do the ammo
 	var addAmmo = function(aNm, aNr, aWght) {
 		var theAmmo = ParseAmmo(aNm);
-		var magicBonus = parseFloat(aNm.match(/(^|\s)[\+|-]\d+/i));
+		var magicBonus = 0;
+		var magicRegex = /(?:^|\s|\(|\[)([\+-]\d+)/;
+		if (magicRegex.test(aNm)) {
+			magicBonus = parseFloat(aNm.match(magicRegex)[1])
+		};
 		if (isNaN(magicBonus)) magicBonus = 0;
 		for (var it in items) {
 			var aItem = items[it];

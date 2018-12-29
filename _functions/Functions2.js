@@ -687,8 +687,11 @@ function FindCompWeapons(ArrayNmbr, aPrefix) {
 			}
 
 			//add magical bonus, denoted by a "+" or "-"
-			var magicBonus = parseFloat(tempString.match(/(^|\s)[\+|-]\d+/i));
-			tempArray[j][1] = !isNaN(magicBonus) ? magicBonus : 0;
+			tempArray[j][1] = 0;
+			var magicRegex = /(?:^|\s|\(|\[)([\+-]\d+)/;
+			if (magicRegex.test(tempString)) {
+				tempArray[j][1] = parseFloat(tempString.match(magicRegex)[1]);
+			}
 
 			//add the true/false switch for adding ability score to damage or not
 			if (!compAttackFound && tempArray[j][0]) {
