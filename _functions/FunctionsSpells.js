@@ -751,7 +751,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 		if (addSp && inputObject.level) {
 			addSp = aSpell.level >= inputObject.level[0] && aSpell.level <= inputObject.level[1];
 		}
-		if (addSp && inputObject.school && !(inputObject.level && inputObject.level[1] > 0 && aSpell.level === 0) && !isExtraSpell) {
+		if (addSp && inputObject.school && !(inputObject.level && (inputObject.level[1] > 0 || inputObject.level[2]) && aSpell.level === 0) && !isExtraSpell) {
 			//only check for school if not a cantrip and not only looking for cantrips
 			addSp = inputObject.school.indexOf(aSpell.school) !== -1;
 		}
@@ -3053,9 +3053,9 @@ function AskUserSpellSheet() {
 
 				// Create the lists
 				// Set the list level to 0 so that school restrictions are ignored, if applicable
-				spCast.list.level = [0, spListLevel && spListLevel[1] ? 1 : 0];
+				spCast.list.level = [0, 0, spListLevel && spListLevel[1] ? 1 : 0];
 				// Create an array of all the cantrips, and only cantrips
-				var listCaRef = CreateSpellList(spCast.list, true, false, true, aCast, spCast.typeSp)[0];
+				var listCaRef = CreateSpellList(spCast.list, true, false, false, aCast, spCast.typeSp);
 				// Create the cantrip popup object
 				dia.listCa = CreateSpellObject(listCaRef ? listCaRef : []);
 			} else {

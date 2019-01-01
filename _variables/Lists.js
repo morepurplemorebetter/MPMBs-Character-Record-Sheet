@@ -1945,7 +1945,7 @@ var factions = {
 		]
 	},
 	"lordsalliance" : {
-		name : "The Lord's Alliance",
+		name : "The Lords' Alliance",
 		type : "Forgotten Realms",
 		ranks : [
 			"Cloak (rank 1)",

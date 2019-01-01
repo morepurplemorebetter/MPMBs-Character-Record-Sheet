@@ -3296,7 +3296,7 @@ function MakeIconMenu_IconOptions() {
 		var faction = [
 			["Emerald Enclave", "emeraldenclave"],
 			["Harpers", "harpers"],
-			["Lord's Alliance", "lordsalliance"],
+			["Lords' Alliance", "lordsalliance"],
 			["Order of the Gauntlet", "ordergauntlet"],
 			["Zhentarim", "zhentarim"]
 		];
@@ -3339,7 +3339,7 @@ function MakeIconMenu_IconOptions() {
 			["3 Rage of Demons", "rod"],
 			["4 Curse of Strahd", "cos"],
 			["5 Storm King's Thunder", "skt"],
-			["6 Tales of the Yawning Portal", "totyp"],
+			["6 Tales from the Yawning Portal", "totyp"],
 			["7 Tomb of Annihilation", "toa"]
 		];
 		IconMenu.push({cName : "-", cReturn : "-"}); // add a divider
