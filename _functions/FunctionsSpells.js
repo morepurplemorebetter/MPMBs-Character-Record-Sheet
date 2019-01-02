@@ -695,7 +695,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 					throw "Not a function";
 				}
 			} catch (error) {
-				var eText = "The custom ApplyWeapon/atkAdd script '" + addEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+				var eText = "The custom calcChange.spellList function '" + spellListEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
 				for (var e in error) eText += e + ": " + error[e] + ";\n ";
 				console.println(eText);
 				console.show();
@@ -3111,7 +3111,7 @@ function AskUserSpellSheet() {
 		if (spCast.extra) {
 			dia.showAd = true; //show the subclass spells section
 			dia.selectAd = spCast.extra; //set the array of known subclass spells
-			dia.nameAd = dia.typeSp === "list" ? "[always prepared]" : dia.typeSp === "book" ? "[added to spellbook]" : spCast.extra[100] === "AddToKnown" ? "[added to spells known]" : "[extra options for spells known]";
+			dia.nameAd = dia.typeSp === "list" ? "[always prepared]" : dia.typeSp === "book" ? "[extra options for spellbook]" : spCast.extra[100] === "AddToKnown" ? "[added to spells known]" : "[extra options for spells known]";
 		} else {
 			dia.showAd = false; //hide the subclass spell section
 		};
