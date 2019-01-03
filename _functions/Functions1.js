@@ -2702,8 +2702,8 @@ function SetArmordropdown(forceTooltips) {
 	tempString += "\n\n" + toUni("Magic bonus") + '\nAny magical bonus you type in this field is added to the AC of the armor type. For example: "Chain mail +1" or "Plate -2".';
 
 	var added = [], otherLists = [];
-	var presetLists = ["firstlist", "light", "medium", "heavy"];
-	var aLists = { startlist : [], firstlist : ["", "Unarmored"], light : [], medium : [], heavy : [], magic : [] };
+	var presetLists = ["firstlist", "magic", "light", "medium", "heavy"];
+	var aLists = { startlist : [], firstlist : [""], light : [""], medium : [], heavy : [], magic : [] };
 	for (var key in ArmourList) {
 		var theArm = ArmourList[key]
 		// first test if the armour or its source isn't excluded

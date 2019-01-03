@@ -4,14 +4,15 @@ var Base_ArmourList = {
 		name : "Unarmored",
 		source : [["SRD", 62], ["P", 14]],
 		ac : 10,
-		addMod : true
+		addMod : true,
+		list : "firstlist"
 	},
 	"mage armor" : {
 		regExpSearch : /^(?=.*(mage|magic))(?=.*armou?r).*$/i,
 		name : "Mage armor",
 		source : [["SRD", 160], ["P", 256]],
-		list : "magic",
-		ac : 13
+		ac : 13,
+		list : "magic"
 	},
 	"padded" : {
 		regExpSearch : /^(?!.*(plate|hide))(?=.*(padding|padded)).*$/i,
