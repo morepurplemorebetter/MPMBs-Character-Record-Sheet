@@ -174,7 +174,10 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.spellcastingBonus) processSpBonus(addIt, objNm, uObj.spellcastingBonus, type, aParent);
 		if (CurrentSpells[aParent]) {
 			if (uObj.spellFirstColTitle) CurrentSpells[aParent].firstCol = addIt ? uObj.spellFirstColTitle : false;
-			if (uObj.spellcastingExtra) CurrentSpells[aParent].extra = addIt ? uObj.spellcastingExtra : false;
+			if (uObj.spellcastingExtra) {
+				CurrentSpells[aParent].extra = addIt ? uObj.spellcastingExtra : false;
+				CurrentUpdates.types.push("spells");
+			}
 		}
 
 		if (addIt) addListOptions(); // add weapon/armour/ammo option(s)
@@ -384,7 +387,10 @@ function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 		if (checkIfIn(uObj, ifInObj, ['toolProfs'])) processTools(addIt, tipNmF, uObj.toolProfs[nTool]);
 
 		// spellcasting extra array
-		if (CurrentSpells[aClass] && checkIfIn(uObj, ifInObj, ['spellcastingExtra'])) CurrentSpells[aClass].extra = !addIt ? "" : uObj.spellcastingExtra;
+		if (CurrentSpells[aClass] && checkIfIn(uObj, ifInObj, ['spellcastingExtra'])) {
+			CurrentSpells[aClass].extra = !addIt ? "" : uObj.spellcastingExtra;
+			CurrentUpdates.types.push("spells");
+		}
 	}
 
 	if (!isArray(AddRemove)) {
