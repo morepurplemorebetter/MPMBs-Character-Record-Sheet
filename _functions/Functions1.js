@@ -4758,7 +4758,9 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice, Fe
 
 	var FeaName = SubChoice && FeaKey[SubChoice] ? FeaKey[SubChoice].name : FeaKey.name;
 	var FeaFirstLine = "\u25C6 " + FeaName + FeaRef;
-	var FeaOtherLines = FeaPost + Fea["Descr" + old];
+	var FeaDescr = Fea["Descr" + old];
+	if (isArray(FeaDescr)) FeaDescr = desc(FeaDescr);
+	var FeaOtherLines = FeaPost + FeaDescr;
 	if (What("Unit System") == "metric") FeaOtherLines = ConvertToMetric(FeaOtherLines, 0.5);
 
 	return [FeaFirstLine + (Fea.extFirst ? FeaPost : ""), "\r" + FeaFirstLine + FeaOtherLines];
@@ -4782,7 +4784,9 @@ function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld
 	};
 
 	var FeaFirstLine = "\u25C6 " + FeaKey.name + FeaRef;
-	var FeaOtherLines = FeaPost + Fea["Descr" + old];
+	var FeaDescr = Fea["Descr" + old];
+	if (isArray(FeaDescr)) FeaDescr = desc(FeaDescr);
+	var FeaOtherLines = FeaPost + FeaDescr;
 	if (What("Unit System") == "metric") FeaOtherLines = ConvertToMetric(FeaOtherLines, 0.5);
 
 	return [FeaFirstLine + (ForceOld ? "" : FeaPost), "\r" + FeaFirstLine + FeaOtherLines];

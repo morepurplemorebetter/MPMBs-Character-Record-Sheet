@@ -1560,11 +1560,11 @@ function ApplyMagicItem(input, FldNmbr) {
 		// Create the tooltip
 		var tooltipStr = (theMI.type ? theMI.type + ", " : "") + (theMI.rarity ? theMI.rarity : "");
 		if (theMI.attunement) tooltipStr += tooltipStr ? " (requires attunement)" : "requires attunement";
-		if (tooltipStr) tooltipStr = tooltipStr[0].toUpperCase() + tooltipStr.substr(1) + "\n";
-		if (theMI.prerequisite) tooltipStr += "Prerequisite: " + theMI.prerequisite + "\n";
-		tooltipStr = toUni(theMI.name) + "\n" + tooltipStr + "   ";
-		if (theMI.descriptionFull) tooltipStr += theMI.descriptionFull + "\n";
-		tooltipStr += stringSource(theMI, "full,page", "\nSource(s): ", ".");
+		if (tooltipStr) tooltipStr = tooltipStr[0].toUpperCase() + tooltipStr.substr(1);
+		if (theMI.prerequisite) tooltipStr += (tooltipStr ? "\n" : "") + "Prerequisite: " + theMI.prerequisite;
+		tooltipStr = toUni(theMI.name) + "\n" + tooltipStr;
+		if (theMI.descriptionFull) tooltipStr += isArray(theMI.descriptionFull) ? desc(theMI.descriptionFull) : "\n   " + theMI.descriptionFull;
+		tooltipStr += stringSource(theMI, "full,page", "\n\nSource(s): ", ".");
 
 		// Get the description
 		var theDesc = "";
