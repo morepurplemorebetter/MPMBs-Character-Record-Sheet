@@ -755,8 +755,9 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 			//only check for school if not a cantrip and not only looking for cantrips
 			addSp = inputObject.school.indexOf(aSpell.school) !== -1;
 		}
-		if (addSp && inputObject.attackOnly) {
-			addSp = !aSpell.save && aSpell.description.toLowerCase().indexOf("spell attack") !== -1;
+		if (addSp && inputObject.attackOnly !== undefined) {
+			var isAttackSpell = !aSpell.save && (/spell attack/i).test(aSpell.descriptionFull ? aSpell.descriptionFull : aSpell.description);
+			addSp = isAttackSpell == inputObject.attackOnly;
 		}
 		if (addSp && inputObject.ritual !== undefined) {
 			addSp = aSpell.ritual ? aSpell.ritual == inputObject.ritual : !inputObject.ritual;

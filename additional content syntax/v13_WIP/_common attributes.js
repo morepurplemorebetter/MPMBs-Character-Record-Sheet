@@ -35,6 +35,7 @@
 	Effect:		This is the syntax for common attributes that are shared by multiple things.
 				The syntax here does not stand on its own.
 				You will need another syntax file to use alongside this file.
+				Use one of the syntax files not starting with an underscore and use this file when referred to.
 
 	Works with:	Class features (and subclass features)
 				Race main attributes
@@ -192,7 +193,7 @@ speed : {
 
 	// example of using "fixed":
 	swim : { spd : "fixed 60", enc : "fixed 60" },
-	
+
 	allModes : "+10",
 	/*	allModes // OPTIONAL //
 		TYPE:	string
@@ -211,9 +212,9 @@ savetxt : {
 	TYPE:	object (optional attributes)
 	USE:	add text to the 1st page
 				("Saving Throws" section for Printer Friendly,
-				"Saving Throw Advantages/Disadvantages" section for Colourful)
+				 "Saving Throw Advantages/Disadvantages" section for Colourful)
 
-	The attributes of this object can be "text", "immune", or "adv_vs"
+	The attributes of this object can be "text", "immune", and "adv_vs"
 */
 
 	text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg", "Magic can't put me to sleep"],
@@ -248,18 +249,291 @@ savetxt : {
 },
 
 
-calcChanges
+calcChanges : {
+/*	calcChanges // OPTIONAL //
+	TYPE:	object (optional attributes)
+	USE:	change how certain automation works: attacks, hit points, and spell list
+			This will only affect attacks and hit points for the main character, not for its companions or wild shapes
+
+	The attributes of this object can be "hp", "atkCalc", "atkAdd", and "spellList"
+*/
+
+	hp : function () {
+		if (classes.known.sorcerer) {
+			extrahp += classes.known.sorcerer.level;
+			extrastring += '\n + ' + classes.known.sorcerer.level + ' from Draconic Resilience (Sorcerer)';
+		};
+	},
+	hp : "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += '\\n + ' + classes.known.sorcerer.level + ' from Draconic Resilience (Sorcerer)'; }; ",
+	/*	hp // OPTIONAL //
+		TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
+		USE:	change how Hit Points are calculated and what the Hit Points tooltip says
+
+		Both examples do the exact same thing, just one is a string and the other is a function.
+		Writing a function is better as it is easier to avoid syntax errors.
+		The string option is there for backwards-compatibility.
+
+		Both the function and the string will be evaluated using eval() to make it possible to use local variables.
+
+		Generally you will want to add bonus hit points to the 'extrahp' variable, which is a number.
+		If you want to add text to the tooltip, you will have to add it to the 'extrastring' variable, which is a string.
+	*/
+
+	atkAdd : [
+		function (fields, v) {
+			if (v.WeaponName == 'eldritch blast') fields.Description += '; Target pushed back 10 ft';
+		},
+		"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
+	],
+	atkAdd : [
+		"if (WeaponName == 'eldritch blast') fields.Description += '; Target pushed back 10 ft';",
+		"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
+	],
+	/*	atkAdd // OPTIONAL //
+		TYPE:	array with two entries:
+				1st entry:	function or, for backwards-compatibility, string that is evaluated using eval()
+				2nd entry:	string that is used to give an explanation of what the 1st entry does
+		USE:	dynamically change what is put in the fields of an attack entry
+				Note that this is only run for attacks that are recognized, not manually added
+
+		// 1st array entry //
+		Both examples do the exact same thing, just one is a string and the other is a function.
+		Writing a function is better as it is easier to avoid syntax errors and will run faster.
+		The string option is there for backwards-compatibility and this explanation assumes you are writing a function.
+
+		The function will not be evaluated but is fed two variables:
+		1)	fields, an object with all the different fields for an attack entry
+			You can change this object to affect what is added to the fields
+			For example, you can change which ability score is used by 
+
+			A list of the different attributes of this variable:
+			var fields = {
+				Proficiency, // boolean, whether to check the proficiency box (true) or not (false)
+				Mod, // number, the ability score to select from the drop-down (0 = none, 1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
+				Range, // string, the text to put in the Range field
+				Damage_Type, // string, the text to put in the Damge Type drop-down
+				Description, // string, the text to put in the Description field
+				Description_Tooltip, // string, the text to put in the Description field's tooltip
+				To_Hit_Bonus, // string, the text to put in the modifier field for To Hit
+				Damage_Bonus, // string, the text to put in the modifier field for Damage
+				Damage_Die, // string, the text to put in the modifier field for Damage Die
+				Weight // number, the weight in lb to put in the weight field
+			};
+
+			These values will be set by what the recognized weapon
+
+		2)	v, an object with some information about the attack
+			Changing this object will do nothing, but you can use its input to test things
+
+			An explanation of the different attributes of this variable:
+			var v = {
+				WeaponText, // string, both the name and description
+				isDC, // boolean, whether or not this attack has a To Hit (false) or a DC (true)
+				isSpell, // boolean, whether (true) or not (false) this attack is a cantrip or spell or has the word 'cantrip' or 'spell' in its name or description
+				isMeleeWeapon, // boolean, whether (true) or not (false) this attack has a range of 'melee' and is not a spell
+				isRangedWeapon, // boolean, whether (true) or not (false) this attack has a range that doesn't include 'melee' and is not a spell
+				isNaturalWeapon, // boolean, whether (true) or not (false) this attack has the type 'natural'
+				theWea, // object, the entry as it appears in the WeaponsList object
+				StrDex, // number, either 1 (Str) or 2 (Dex) depending on which of the two ability scores is higher
+				WeaponName, // string, the name of the entry in the WeaponsList object
+				thisWeapon // array, the entry in the CurrentWeapons.known array
+			}
+
+		// 2nd array entry //
+		This has to be a string and will be used to populate the "Things affecting the attack calculations" dialog.
+		If you have both atkAdd and atkCalc in the same feature,
+		it is better to fill only one of the second entries and leaving the other at "".
+		Filling only one of the explanation strings will result in only a single entry
+		for the feature in the "Things affecting the attack calculations" dialog instead of two.
+	*/
+
+	atkCalc : [
+		function (fields, v, output) {
+			if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && v.isSpell && (/acid/i).test(fields.Damage_Type)) {
+				output.extraDmg += What('Cha Mod');
+			};
+		},
+		"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage."
+	],
+	atkCalc : [
+		"if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && (/acid/i).test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); };",
+		"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage."
+	],
+	/*	atkCalc // OPTIONAL //
+		TYPE:	array with two entries
+				1st entry:	function or, for backwards-compatibility, string that is evaluated using eval()
+				2nd entry:	string that is used to give an explanation of what the 1st entry does
+		USE:	dynamically change how the To Hit and Damage of attacks are calculated based
+				Note that this is only run for attacks that are recognized, not manually added
+
+		// 1st array entry //
+		Both examples do the exact same thing, just one is a string and the other is a function.
+		Writing a function is better as it is easier to avoid syntax errors and will run faster.
+		The string option is there for backwards-compatibility and this explanation assumes you are writing a function.
+
+		The function will not be evaluated but is fed three variables:
+		1)	fields, an object with all the different fields for an attack entry
+			Changing this object will do nothing, but you can use its input to test things
+			For example, you can test if the character is proficient with the attack with 'fields.Proficiency'
+
+			A list of the different attributes of this variable,
+			see atkAdd above for a more in-depth explanation of each attribute:
+			var fields = { Proficiency, Mod, Range, Damage_Type, Description, Description_Tooltip, To_Hit_Bonus, Damage_Bonus, Damage_Die, Weight };
+
+		2)	v, an object with some information about the attack
+			Changing this object will do nothing, but you can use its input to test things
+
+			An explanation of the different attributes of this variable:
+			var v = {
+				WeaponText, // string, both the name and description
+				isDC, // boolean, whether or not this attack has a To Hit (false) or a DC (true)
+				isSpell, // boolean, whether (true) or not (false) this attack is a cantrip or spell or has the word 'cantrip' or 'spell' in its name or description
+				isMeleeWeapon, // boolean, whether (true) or not (false) this attack has a range of 'melee' and is not a spell
+				isRangedWeapon, // boolean, whether (true) or not (false) this attack has a range that doesn't include 'melee' and is not a spell
+				isNaturalWeapon, // boolean, whether (true) or not (false) this attack has the type 'natural'
+				isOffHand, // boolean, whether (true) or not (false) this attack is both a melee weapon and an off-hand attack
+				theWea, // object, the entry as it appears in the WeaponsList object
+				WeaponName, // string, the name of the entry in the WeaponsList object
+				thisWeapon // array, the entry in the CurrentWeapons.known array
+			}
+		
+		3)	output, an object with the information used to calculate the attack's To Hit & Damage
+			You can change this object to affect the calculation
+			For example, you can add a number to output.extraDmg to add more damage
+	
+			var output = {
+				prof, // number, the proficiency bonus to use or 0 if not proficient
+				die, // string, the damage die to use, identical to the fields.Damage_Die
+				modToDmg, // boolean, whether to add the ability score modifier to damage (true) or not (false)
+				mod, // number, the ability score to use (0 = none, 1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
+				magic, // number, the magical bonus to add to both To Hit and Damage (0 if nothing to add)
+				bHit, // string, the value of the modifier field for To Hit, identical to fields.To_Hit_Bonus
+				bDmg, // string, the value of the modifier field for Damage, identical to fields.Damage_Bonus
+				extraDmg, // number, amount of bonus damage to add
+				extraHit // number, amount of bonus damage to add
+			};
+
+			Note that this variable, output, can be changed by consecutive calcChanges.atkCalc functions
+			You can even save new attributes to it that you can use by calcChanges.atkCalc functions gained from other features
+
+		// 2nd array entry //
+		This has to be a string and will be used to populate the "Things affecting the attack calculations" dialog.
+		If you have both atkAdd and atkCalc in the same feature,
+		it is better to fill only one of the second entries and leaving the other at "".
+		Filling only one of the explanation strings will result in only a single entry
+		for the feature in the "Things affecting the attack calculations" dialog instead of two.
+	*/
+
+	spellList : [
+		function(spList, spName, spType) {
+			// don't add if this is not a class or a list of spells is already given
+			if (!ClassList[spName] || spList.spells || spList.psionic) return;
+			// if this is an 'extra spell', also test if it uses the class' spell list or not
+			if (spType.indexOf("bonus") !== -1 && (spList.school || !spList["class"] || (spList["class"].indexOf(spName) === -1 && spName !== "fighter"))) return;
+			// now add the array of bonus spells to the list
+			spList.extraspells = spList.extraspells.concat(["acid splash", "druidcraft", "detect poison and disease", "expeditious retreat", "jump", "alter self", "enhance ability", "enlarge/reduce", "gaseous form", "water breathing", "wind wall", "freedom of movement", "polymorph", "creation"]);
+		},
+		"My background adds extra spells to the spell list(s) of my spellcasting class(es): Acid Splash, Druidcraft, Detect Poison and Disease, Expeditious Retreat, Jump, Alter Self, Enhance Ability, Enlarge/reduce, Gaseous Form, Water Breathing, Wind Wall, Freedom of Movement, Polymorph, and Creation."
+	],
+	/*	spellList // OPTIONAL //
+		TYPE:	array with two entries
+				1st entry:	function
+				2nd entry:	string that is used to give an explanation of what the 1st entry does
+		USE:	dynamically change what is included and excluded from the spell list of a class (or other spellcasting source)
+				Note that this is only run for spell sheets generated using the spell selection dialog,
+				it isn't used for 'complete' spell sheets.
+
+		// 1st array entry //
+		The function is fed three variables:
+		1)	spList, an object that determines how the spell list will be generated.
+			You can change this object to affect which spells are available.
+			Note that this object determines the list of spells to choose from in the spell selection dialog,
+			it does not determine what spells are selected, only what options are given to select spells from.
+
+			The object will look as the 'common spell list object' explained in the file "_common spell list object.js".
+
+			It will always contain the attribute 'extraspells', possibly as an empty array.
+			The presence of all other attributes depends on what spell list is being generated.
+
+			What you can do, for example, is limit the schools a class has access to by
+			changing or adding the spList.school attribute.
+			Or you can add spells to the list by adding them to the spList.extraspells array.
+			Or you can remove spells from the list by changing or adding the spList.notspells attribute.
+
+		2)	spName, a string that is the entry in the CurrentSpells object
+			This string will be identical to whatever added the spellcasting feature.
+			For example, this will be "wizard" for the wizard class spell list,
+			"fighter" for the eldritch knight spell list,
+			or "drow" for the racial spells gained from being a dark elf.
+		
+		3)	spType, a string that shows what type of spell list this is
+			This can be one of multiple things:
+			"book"	spellcasting class uses a spellbook (e.g. the wizard)
+			"list"	spellcasting class prepares spells from a list (e.g. the cleric)
+			"known"	spellcasting class has to select the spells it knows from a list (e.g. the bard)
+			"feat"	spellcasting source is a feat and only gains spells from the spellcastingBonus feature
+			"race"	spellcasting source is a race and only gains spells from the spellcastingBonus feature
+			"item"	spellcasting source is a magic item and only gains spells from the spellcastingBonus feature
+			
+			It can also have de suffix "-bonus" added to one of the above if generating the list for
+			something gained through the spellcastingBonus attribute.
+
+		// 2nd array entry //
+		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
+		This explanation will also be available any time a change requires the re-generation of spell sheets.
+	*/
+},
 
 addMod
 
 
 
 
-scores
 
-scoresOverride
+scorestxt : "+2 Charisma and +1 to two other ability scores of my choice",
+/*	scores // OPTIONAL //
+	TYPE:	string
+	USE:	description of ability score improvements to use in the Ability Scores dialog and tooltips
 
-scorestxt
+	You do not need this attribute if the ability score improvement does not offer a choice,
+	then you can just use the 'scores' attribute, see below.
+	You can have both this and the 'scores' attribute, they are not mutually exclusive.
+*/
+
+scores : [0, 1, 0, 0, 2, 0],
+/*	scores // OPTIONAL //
+	TYPE:	array of six numbers
+	USE:	add ability score improvements to the Ability Scores dialog
+
+	This array requires exactly six entries, each being a number.
+	The entries are: [Str, Dex, Con, Int, Wis, Cha].
+	You should put a 0 for an ability score that gets no improvement.
+	You can use negative numbers.
+
+	Where exactly the numbers will be added in the Ability Scores dialog depends on the parent feature.
+
+	The array will also be used to generate a textual description of the improvement for the dialog and tooltips,
+	but only if the attribute 'scorestxt' is not present in the same feature.
+
+	Note that if a feature gives you a choice in which ability score to improve,
+	you should put that information in the 'scorestxt' attribute and not include the improvement here.
+*/
+
+scoresOverride : [0, 0, 0, 19, 0, 0],
+/*	scores // OPTIONAL //
+	TYPE:	array of six numbers
+	USE:	add ability score overrides to the Ability Scores dialog
+
+	This array requires exactly six entries, each being a number.
+	The entries are: [Str, Dex, Con, Int, Wis, Cha].
+	You should put a 0 for an ability score that gets no override.
+
+	An override will be used for the ability score if it would otherwise be less.
+
+	The array will also be used to generate a textual description of the improvement for the dialog and tooltips,
+	but only if the attribute 'scorestxt' is not present in the same feature.
+*/
+
 
 spellcastingBonus
 
@@ -453,7 +727,7 @@ ClassList["purplemancer"] = {
 	
 	},
 	
-	spellcastingList : { //Optional; Only needed if the class doesn't have its own spell list. This object denotes what spells the class has access to. All things in this object constrain the selection of spells that will be available. The contstraints are cumulative.
+	spellcastingList : { //Optional; Only needed if the class doesn't have its own spell list. This object denotes what spells the class has access to. All things in this object constrain the selection of spells that will be available. The constraints are cumulative.
 		
 		class : "wizard", //Required; The name of the class from whose spell list the spells come from. This can be "any" if the spells are not limited by a spell list of just one class. The entry has to match the name of the class in the SpellsList
 		
