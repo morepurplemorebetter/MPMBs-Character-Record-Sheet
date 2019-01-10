@@ -17,10 +17,10 @@
 	The imports scripts work by creating a new entry inside an existing object or by calling functions.
 	You can create new or overwrite existing global variables by omitting 'var'.
 	You will need to understand the basics of JavaScript variables: strings, arrays, and JSON objects.
-	Note that every opening symbol must have its closing counterpart: {}, [], "".
+	Note that every opening symbol must have its closing counterpart: (), {}, [], "", ''.
 	If these are not present, the code will give an error when imported.
 	Use proper editing software for code (like Notepad++). Text processors like Microsoft Word will screw up your code.
-	To help finding syntax errors, use software 
+	To help finding syntax errors, use (online) code checking software like https://jshint.com
 
 	-COMMENTS IN THE EXAMPLE-
 	Anything on a line after two forward slashes is a comment and will be ignored when running the code.

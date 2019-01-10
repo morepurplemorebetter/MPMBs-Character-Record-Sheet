@@ -17,10 +17,10 @@
 	The imports scripts work by creating a new entry inside an existing object or by calling functions.
 	You can create new or overwrite existing global variables by omitting 'var'.
 	You will need to understand the basics of JavaScript variables: strings, arrays, and JSON objects.
-	Note that every opening symbol must have its closing counterpart: {}, [], "".
+	Note that every opening symbol must have its closing counterpart: (), {}, [], "", ''.
 	If these are not present, the code will give an error when imported.
 	Use proper editing software for code (like Notepad++). Text processors like Microsoft Word will screw up your code.
-	To help finding syntax errors, use software 
+	To help finding syntax errors, use (online) code checking software like https://jshint.com
 
 	-COMMENTS IN THE EXAMPLE-
 	Anything on a line after two forward slashes is a comment and will be ignored when running the code.
@@ -45,14 +45,23 @@
 
 var iFileName = "Homebrew Syntax - ClassList.js";
 /* 	iFileName // OPTIONAL //
-	This is how the file will be named in the sheet if you import it as a file.
+	TYPE:	string
+	USE:	how the file will be named in the sheet if you import it as a file
+	
+	Note that this is a variable called 'iFileName'.
+	Variables invoked inside an import script will not be available after importing.
+	However, if you invoke the variable without the 'var', it will be available after importing.
+
+	This doesn't actually have to be the same as the name of the file.
 	Only the first occurrence of this variable will be used.
 */
 
 RequiredSheetVersion(13);
 /*	RequiredSheetVersion // OPTIONAL //
-	This is the minimum required version number of the sheet for the script to work.
-	If the sheet being used to import the script is of an earlier version, the user will be given a warning.
+	TYPE:	function call with a number
+	USE:	the minimum required version number of the sheet for the script to work
+
+	If the sheet where you import this script into is of an earlier version, the user will be given a warning.
 	Input a number, not a string (so don't enclose the number in quotation marks)!
 	Although the sheet uses semantic versioning, you have to input a number here.
 	To find this number of a sheet, open its Document Properties in Adobe Acrobat (Ctrl + D) and look in the 'Custom' tab.
@@ -60,17 +69,24 @@ RequiredSheetVersion(13);
 
 ClassList["purplemancer"] = {
 /* 	ClassList object name // REQUIRED //
+	TYPE:	string
+	USE:	object name of the class as it will be used by the sheet
+
 	By adding a new object to the existing ClassList object, we create a new class.
-	The object name here is 'myclass'. You can use any object name as long as it is not already in use.
+	The object name here is 'purplemancer'. You can use any object name as long as it is not already in use.
+	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
 	name : "Purplemancer",
 /*	name // REQUIRED //
-	String of the name of the class as it will be used by the sheet.
+	TYPE:	string
+	USE:	name of the class as it will be used by the sheet
 */
 	regExpSearch : /^(?=.*purple)(?=.*mancer).*$/i,
 /*	regExpSearch // REQUIRED //
-	Regular expression of how the class is recognized by the sheet.
+	TYPE:	regular expression
+	USE:	used to match the text in the class field to see if this class is present
+
 	This has to be a match for the name given earlier, or the class will never by recognized.
 	Now it looks for any entry that has both the words "purple" and "mancer" in it,
 	 disregarding capitalization or word order.
@@ -79,34 +95,51 @@ ClassList["purplemancer"] = {
 */
 	source : ["SRD", 30],
 /*	source // REQUIRED //
-	Array of the SourceList entry (a string) and the page number.
-	See the file for adding a source to learn how to add a custom source.
+	TYPE:	array with two entries (or array of these arrays)
+	USE:	define where the class is found
 
-	This can be an array of arrays to indicate it appears in multiple sources.
+	This attribute is used by the sheet to determine if the class should be available depending on the sources included and excluded.
+
+	This array has two entries, a string followed by a number
+	1. string
+		The first entry has to be the object name of a SourceList object.
+	2. number
+		The second entry is the page number to find the class at.
+		This can be any number and is ignored if it is a 0.
+
+	See the "source (SourceList).js" file for learning how to add a custom source.
+
+	Alternatively, this can be an array of arrays to indicate it appears in multiple sources.
 	For example, if something appears on both page 7 of the Elemental Evil Player's Companion
 	 and on page 115 of the Sword Coast Adventure Guide, use the following:
 		source : [["E", 7], ["S", 115]],
 
 	If a class is completely homebrew, or you don't want to make a custom source, just put the following:
 		source : ["HB", 0],
-	"HB" refers to 'homebrew' source.
+	"HB" refers to the'homebrew' source.
 */
 	primaryAbility : "Strength or Dexterity",
 /*	primaryAbility // REQUIRED //
-	String of the abilities that are essential to the class.
+	TYPE:	string
+	USE:	abilities that are essential to the class to be displayed in the Ability Scores dialog
+
 	If there are no essential abilities, just put an empty string:
 		primaryAbility : "",
 */	
 	prereqs : "Strength 13 or Dexterity 13",
-/*	primaryAbility // REQUIRED //
-	String of the prerequisite abilities for the class when multiclassing.
+/*	prereqs // REQUIRED //
+	TYPE:	string
+	USE:	prerequisite abilities to multiclass in the class, to be displayed in the Ability Scores dialog when multiclassing
+
 	If there are no prerequisite abilities, just put an empty string:
 		prereqs : "",
 */
 	die : 10,
 /*	die // REQUIRED //
-	Number of the type of hit die the class has (i.e. 10 means d10).
-	No, you can't have multiple HD for a class (2d6 per level is not possible).
+	TYPE:	number
+	USE:	number of the type of hit die the class has (i.e. 10 means d10)
+
+	You can't have multiple HD for a class (2d6 per level is not possible).
 */
 	improvements : [0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7],
 /*	improvements // REQUIRED //
