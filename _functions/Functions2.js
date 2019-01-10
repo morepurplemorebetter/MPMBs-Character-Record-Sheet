@@ -6529,9 +6529,11 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		} else {
 			var isExp = false;
 		}
+		// get the name of the skill field
+		var skillFld = Who('Text.SkillsNames') === 'alphabeta' ? ProfObj : SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(ProfObj)];
 		// now update the fields
-		Checkbox(ProfObj + " Prof", isProf);
-		Checkbox(ProfObj + " Exp", isExp);
+		Checkbox(skillFld + " Prof", isProf);
+		Checkbox(skillFld + " Exp", isExp);
 		break;
 	};
 	case "weapon" : { // if this is the 'other' weapons do something special. If not, it is Simple/Martial weapons and they can be treated just like armour
