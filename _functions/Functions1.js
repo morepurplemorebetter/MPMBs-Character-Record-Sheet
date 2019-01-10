@@ -500,7 +500,7 @@ function ResetAll(GoOn, noTempl) {
 	thermoM(4/9); //increment the progress dialog's progress
 
 	//Reset the color scheme to red
-	setColorThemes();
+	setColorThemes(true);
 	thermoM(5/9); //increment the progress dialog's progress
 
 	//reset some global variables
@@ -6576,7 +6576,7 @@ function Toggle2ndAbilityDC(ShowHide) {
 	tDoc[HiddenNoPrint]("Spell DC 2 Bonus");
 }
 
-//change the colorscheme that is used for the entire sheet. Choose from: "red", "green", ""
+//change the colorscheme that is used for the entire sheet
 function ApplyColorScheme(aColour) {
 	if (typePF || (!aColour && What("Color.Theme") === tDoc.getField("Color.Theme").defaultValue)) return; //don't do this function in the Printer-Friendly version or if resetting with the default colour still active
 	var colour = aColour ? aColour.toLowerCase() : What("Color.Theme");
@@ -8582,11 +8582,14 @@ function ApplySkillProf() {
 }
 
 //set all the color schemes as the fields dictate
-function setColorThemes() {
+function setColorThemes(reset) {
 	if (typePF) return; //don't do this function in the Printer-Friendly version
-	ApplyColorScheme();
-	ApplyDragonColorScheme();
-	ApplyHPDragonColorScheme();
+	ApplyColorScheme(reset ? tDoc.getField("Color.Theme").defaultValue : false);
+	ApplyDragonColorScheme(reset ? tDoc.getField("Color.DragonHeads").defaultValue : false);
+	ApplyHPDragonColorScheme(reset ? tDoc.getField("Color.HPDragon").defaultValue : false);
+	var DCdefaultClrs = tDoc.getField("Color.DC").defaultValue.split(",");
+	ApplyDCColorScheme(reset ? DCdefaultClrs[0] : false, 1);
+	ApplyDCColorScheme(reset ? DCdefaultClrs[1] : false, 2);
 	ApplyAttackColor("", "", "Default");
 	ApplyAttackColor("", "", "Comp.");
 }

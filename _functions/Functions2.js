@@ -1965,7 +1965,7 @@ function ChangeFont(newFont, oldFont) {
 function ApplyDCColorScheme(colour, DC) {
 	if (typePF || (!colour && What("Color.DC") === tDoc.getField("Color.DC").defaultValue)) return; //don't do this function in the Printer-Friendly version or if resetting with the default colour
 	//stop the function if the input color is not recognized
-	colour = colour && isNaN(colour) ? colour.toLowerCase() : false;
+	colour = colour && isNaN(colour) ? colour.toLowerCase() : What("Color.DC").split(",")[DC - 1];
 	if (colour && colour !== "same as headers" && colour !== "same as dragon heads" && !ColorList[colour]) {
 		return;
 	}
