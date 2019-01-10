@@ -47,6 +47,156 @@
 	Sheet:		v13.0.0 (2018-??-??)
 */
 
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Actions & Limited Features >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+
+action : [
+	["reaction", " (start)"],
+	["bonus action", "Shove"]
+],
+/*	action // OPTIONAL //
+	TYPE:	array (variable length)
+	USE:	add entry to the "Actions", "Bonus Actions", or "Reactions" section on the 1st page
+
+	The entries in this array must always be arrays with 2 strings each:
+	1. The first string in each sub-array is the type of action, written in lowercase.
+		The options are "action", "bonus action", or "reaction".
+	2. The second string can be one of two things:
+		2.1	When the first character of the string is non-alphabetic (e.g. a space or a hyphen), it is amended to the name of the feature.
+			This amended total is then added as an action.
+		2.2 When the first character of the string is an alphabetic character (e.g. everything from a-Z), it is not amended to the name of the feature.
+			The string is taken as-is and added as an action.
+*/
+
+usages : 1,
+usages : "Charisma modifier per ",
+usages : [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2],
+/*	usages // OPTIONAL //
+	TYPE:	number, string, or array with 20 entries
+	USE:	value to add in the "Usages" column in the "Limited Features" section
+
+	This will only add an entry to "Limited Features" section, if 'recovery' is also present in the same feature.
+
+	This attribute can have three type of values:
+	1. Number
+		For class features, this value is used to write the text in the "Class Features" section.
+		A number will be followed by a multiplication sign and 'per', followed by the recovery method.
+		For example-
+			usages : 3,
+			recovery : "long rest",
+		Will result in-
+			"3× per long rest"
+	2. String
+		Works similar to the 1. Number option, except for class features.
+		For class features the string is used in the "Class Features" section without changes.
+		For example-
+			usages : "Charisma modifier per ",
+			recovery : "short rest",
+		Will result in-
+			"Charisma modifier per short rest"
+	3. Array
+		An array signals that the usages vary depending on level.
+		Each entry is a level, so you will most likely want to add 20 entries.
+		Each entry can be a number or string, see option 1. Number and 2. String for how those work.
+		IMPORTANT! Set the value to 0 for levels that the feature is not present.
+*/
+
+recovery : "short rest",
+recovery : ["", "", "long rest", "long rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest"],
+/*	recovery // OPTIONAL //
+	TYPE:	string, or array with 20 strings
+	USE:	value to add in the "Recovery" column in the "Limited Features" section
+
+	This will only add an entry to "Limited Features" section, if 'usages' is also present in the same feature.
+
+	This attribute can have two type of values:
+	1. String
+		For class features, this value is used to write the text in the "Class Features" section.
+		It will be combined with the 'usages' attribute to create a string of how the class feature works.
+		For example-
+			usages : 3,
+			recovery : "long rest",
+		Will result in-
+			"3× per long rest"
+	2. Array
+		An array signals that the recovery method varies depending on level.
+		Each entry is a level, so you will most likely want to add 20 entries.
+		Each entry has to be a string, see option 1. String for how those work.
+		IMPORTANT! Set the value to "" for levels that the feature is not present.
+
+	Common values are:
+		"short rest"
+		"long rest"
+		"dawn"
+		"day"
+*/
+
+usagescalc : "event.value = Math.max(1, What('Wis Mod'));",
+usagescalc : ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 6;", "event.value = What('Wis Mod') + 6;", "event.value = What('Wis Mod') + 6;"],
+/*	usagescalc // OPTIONAL //
+	TYPE:	string, or array with 20 strings
+	USE:	this string is set as the field calculation method for the "Usages" field in the "Limited Features" section
+
+	This attribute can have two type of values:
+	1. String
+		The string is evaluated as JavaScript code whenever anything changes on the sheet.
+		To change the value of the field, you will have to set the 'event.value' to something.
+		The example above sets the field to the Wisdom Modifier, or 1, whichever is higher.
+	2. Array
+		An array signals that the usages calculation method varies depending on level.
+		Each entry is a level, so you will most likely want to add 20 entries.
+		Each entry has to be a string, see option 1. String for how those work.
+		IMPORTANT! Set the value to "" for levels that the feature is not present.
+	
+	This attribute will do nothing if not both the 'usages' and 'recovery' attributes are present in the same feature.
+*/
+
+limfeaname : "Hellish Rebuke (3d10)",
+/*	limfeaname // OPTIONAL //
+	TYPE:	string
+	USE:	value to add in the "Name" column in the "Limited Features" section instead of the feature's name
+
+	Use this attribute only if you do not want to use the feature's name in the "Limited Features" section.
+
+	This attribute will do nothing if not both the 'usages' and 'recovery' attributes are present in the same feature.
+*/
+
+additional : "10% chance",
+additional : ["", "d6", "d6", "d6", "d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12"],
+/*	recovery // OPTIONAL //
+	TYPE:	string, or array with 20 strings
+	USE:	value to add in brackets to the name in the "Limited Features" section
+
+	This attribute will do nothing if not a class feature and neither the 'usages' or 'recovery' attribute is present in the same feature.
+
+	This attribute can have two type of values:
+	1. String
+		This will be added in brackets to the name when adding something to the "Limited Features" section.
+		For example, if the name of the feature is "featureName", and the 'additional' is "10% chance", it would be-
+			"featureName (10% chance)"
+
+		For class features, this value is used to write the text in the "Class Features" section.
+		It will be combined with the 'usages' and 'recovery' attributes to create a string of how the class feature works.
+		For example-
+			usages : 3,
+			recovery : "long rest",
+			additional : "10% chance",
+		Will result in-
+			"10% chance; 3× per long rest"
+	2. Array
+		An array signals that the recovery method varies depending on level.
+		Each entry is a level, so you will most likely want to add 20 entries.
+		Each entry has to be a string, see option 1. String for how those work.
+		IMPORTANT! Set the value to "" for levels that the feature is not present.
+*/
+
+
+// >>>>>>>>>>>>>>>>>>>>> //
+// >>> Proficiencies >>> //
+// >>>>>>>>>>>>>>>>>>>>> //
+
 toolProfs : [
 	"Herbalism kit",
 	["Thieves' tools", "Dex"],
@@ -94,23 +244,158 @@ saves : ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"],
 	Only use the strings shown in the example, the 3-letter abbreviation with the first letter capitalized (or "HoS" for Honour/Sanity).
 */
 
-action : [
-	["reaction", " (start)"],
-	["bonus action", "Shove"]
+skills : [
+	"Acrobatics",
+	["Deception", "full"],
+	["History", "only"],
+	["Religion", "increment"]
 ],
-/*	action // OPTIONAL //
+/*	skills // OPTIONAL //
 	TYPE:	array (variable length)
-	USE:	add entry to the "Actions", "Bonus Actions", or "Reactions" section on the 1st page
-	
-	The entries in this array must always be arrays with 2 strings each:
-	1. The first string in each sub-array is the type of action, written in lowercase.
-		The options are "action", "bonus action", or "reaction".
-	2. The second string can be one of two things:
-		2.1	When the first character of the string is non-alphabetic (e.g. a space or a hyphen), it is amended to the name of the feature.
-			This amended total is then added as an action.
-		2.2 When the first character of the string is an alphabetic character (e.g. everything from a-Z), it is not amended to the name of the feature.
-			The string is taken as-is and added as an action.
+	USE:	add skill proficiency and expertise on the 1st page
+
+	This array can have two type of entries:
+	1.	A string, the name of the skill proficiency to add (i.e. no expertise).
+	2.	An array with two strings, only needed if you want to add expertise as well:
+		2.1	The first entry is a string, the name of the skill proficiency.
+		2.2	The second entry is a string, a command what to do with expertise for the skill.
+			This can be one of three options:
+			a) "full"		// Add both proficiency and expertise
+			b) "only"		// Add expertise, but only if already proficient with the skill
+			c) "increment"	// Add proficiency if not yet proficient, or add expertise if already proficient with the skill
+
+	The array will also be used to generate a textual description of the improvement for the dialog and tooltips,
+	but only if the attribute 'skillstxt' is not present in the same feature, see below.
 */
+
+skillstxt : "Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival",
+/*	skillstxt // OPTIONAL //
+	TYPE:	string
+	USE:	description of skill proficiencies and skill proficiency choices gained, to use in the tooltips of skills
+
+	You do not need this attribute if their is no choice for the skill proficiencies gained,
+	then you can just use the 'skills' attribute, see above.
+	You can have both this and the 'skills' attribute, they are not mutually exclusive.
+*/
+
+weaponProfs : [
+/*	weaponProfs // OPTIONAL //
+	TYPE:	array with two or three entries
+	USE:	adds weapon proficiencies
+*/
+
+	true,
+	/* weaponProfs 1st entry // REQUIRED //
+		TYPE:	boolean
+		USE:	add simple weapon proficiency
+
+		Set this to true to add proficiency with simple weapons or
+		set this to false to not add proficiency with simple weapons.
+		Note that the weaponProfs array requires this entry!
+	*/
+
+	false,
+	/* weaponProfs 2nd entry // REQUIRED //
+		TYPE:	boolean
+		USE:	add martial weapon proficiency
+
+		Set this to true to add proficiency with martial weapons or
+		set this to false to not add proficiency with martial weapons.
+		Note that the weaponProfs array requires this entry!
+	*/
+
+	["dagger", "longsword", "firearm", "Improvised Weapons"]
+	/* weaponProfs 3rd entry // OPTIONAL //
+		TYPE:	array (variable length)
+		USE:	add weapon proficiency with the weapons or weapon-types listed
+
+		Add the names of weapons as they appear in the WeaponsList object.
+		Alternatively, you can use a grouping of weapons, as their 'list' attribute says, for example 'firearm'.
+		Alternatively, you can use types of weapons, as their 'type' attribute says, for example 'Improvised Weapons'.
+	
+		For example the High Elf weapon proficiency looks like this:
+		weaponProfs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
+	*/
+],
+
+armorProfs : [true, true, false, true],
+/*	armorProfs // OPTIONAL //
+	TYPE:	array with four entries
+	USE:	adds armour and shield proficiencies
+
+	This array must have exactly four entries, all of which are booleans.
+	These are to add proficiencies in:
+	["light armour", "medium armour", "heavy armour", "shields"]
+
+	Note that a proficiency will only be set if the value is 'true'.
+	If you set it to 'false' it will do nothing, the proficiency will not be removed.
+*/
+
+
+// >>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Weapons & Armour >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>> //
+
+weaponAdd : ["Bite", "Longsword +2"],
+/*	weaponAdd // OPTIONAL //
+	TYPE:	array (variable length)
+	USE:	adds each string in the array to one of the attack drop-downs on the 1st page
+
+	This is an array of strings. Each string will be added to the attack section.
+	An entry will only be added if there is space left in the attack section and it isn't already present.
+	The strings will be added exactly as you write them here, capitalisation and all.
+*/
+
+armorAdd : "Natural Armor",
+/*	armorAdd // OPTIONAL //
+	TYPE:	string
+	USE:	sets the string as the value for the armour drop-down on the 1st page
+
+	The armour will only be set if there is currently no armour selected on the 1st page, or
+	if the currently selected armour gives a lower AC total than this armour.
+	The string will be added exactly as you write it here, capitalisation and all.
+*/
+
+ammoOptions : [{ /* AmmoList object, see AmmoList syntax */ }],
+/*	ammoOptions // OPTIONAL //
+	TYPE:	array of objects (variable length)
+	USE:	adds each object in the array to the AmmoList variable
+
+	The syntax of the objects is not explained here, but in the AmmoList syntax file.
+
+	This way you can have a feature add a type of ammunition to the automation.
+	It will also be added to the options in each ammunition field drop-down.
+	This will result in having the ammunition only available if the feature is present.
+*/
+
+armorOptions : [{ /* ArmourList object, see ArmourList syntax */ }],
+/*	armorOptions // OPTIONAL //
+	TYPE:	array of objects (variable length)
+	USE:	adds each object in the array to the ArmourList variable
+
+	The syntax of the objects is not explained here, but in the ArmourList syntax file.
+
+	This way you can have a feature add a type of armour to the automation.
+	It will also be added at the top of options in the armour field drop-down.
+	This will result in having the armour only available if the feature is present.
+*/
+
+weaponOptions : [{ /* WeaponsList object, see WeaponsList syntax */ }],
+/*	weaponOptions // OPTIONAL //
+	TYPE:	array of objects (variable length)
+	USE:	adds each object in the array to the WeaponsList variable
+
+	The syntax of the objects is not explained here, but in the WeaponsList syntax file.
+
+	This way you can have a feature add a type of weapon/attack to the automation.
+	It will also be added at the top of options in each attack field drop-down.
+	This will result in having the weapon/attack only available if the feature is present.
+*/
+
+
+// >>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Weapons & Armour >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>> //
 
 dmgres : [
 	"Fire",
@@ -130,6 +415,47 @@ dmgres : [
 			but one source has a condition and another doesn't,
 			only the version without a condition is shown.
 */
+
+savetxt : {
+/*	savetxt // OPTIONAL //
+	TYPE:	object (optional attributes)
+	USE:	add text to the 1st page "Saving Throws" section
+				("Saving Throws" section for Printer Friendly,
+				 "Saving Throw Advantages/Disadvantages" section for Colourful)
+
+	The attributes of this object can be "text", "immune", and "adv_vs"
+*/
+
+	text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg", "Magic can't put me to sleep"],
+	/*	text // OPTIONAL //
+		TYPE:	array of strings
+		USE:	add a text to the 1st page
+
+		Each string in the array is added to the 1st page, exactly as given here.
+	*/
+
+	immune : ["poison", "disease"],
+	/*	immune // OPTIONAL //
+		TYPE:	array of strings
+		USE:	add strings to the "Immune to" text on the 1st page
+
+		Each string in the array is added to the list of "Immune to" things in the 1st page "Saving Throws" section.
+		Immunities from all sources are combined and listed alphabetically.
+		In this example it would result in "Immune to disease and poison".
+		If a damage resistance is present while immunity for the same is also present,
+		then the damage resistance will be hidden as long as the immunity is present.
+	*/
+
+	adv_vs : ["traps", "charmed"]
+	/*	adv_vs // OPTIONAL //
+		TYPE:	array of strings
+		USE:	add strings to the "Adv. on saves vs." text on the 1st page
+
+		Each string in the array is added to the list of "Adv. on saves vs." things in the 1st page "Saving Throws" section.
+		Saving throw advantages from all sources are combined and listed alphabetically.
+		In this example it would result in "Adv. on saves vs. charmed and traps".
+	*/
+},
 
 vision : [
 	["Darkvision", 60],
@@ -207,47 +533,174 @@ speed : {
 	*/
 },
 
-savetxt : {
-/*	savetxt // OPTIONAL //
-	TYPE:	object (optional attributes)
-	USE:	add text to the 1st page
-				("Saving Throws" section for Printer Friendly,
-				 "Saving Throw Advantages/Disadvantages" section for Colourful)
 
-	The attributes of this object can be "text", "immune", and "adv_vs"
+// >>>>>>>>>>>>>>>>>>>>>> //
+// >>> Ability Scores >>> //
+// >>>>>>>>>>>>>>>>>>>>>> //
+
+scores : [0, 1, 0, 0, 2, 0],
+/*	scores // OPTIONAL //
+	TYPE:	array of six numbers
+	USE:	add ability score improvements to the Ability Scores dialog
+
+	This array requires exactly six entries, each being a number.
+	The entries are: [Str, Dex, Con, Int, Wis, Cha].
+	You should put a 0 for an ability score that gets no improvement.
+	You can use negative numbers.
+
+	Where exactly the numbers will be added in the Ability Scores dialog depends on the parent feature.
+
+	The array will also be used to generate a textual description of the improvement for the dialog and tooltips,
+	but only if the attribute 'scorestxt' is not present in the same feature, see below.
+
+	Note that if a feature gives you a choice in which ability score to improve,
+	you should put that information in the 'scorestxt' attribute and not include the improvement here.
 */
 
-	text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg", "Magic can't put me to sleep"],
-	/*	text // OPTIONAL //
-		TYPE:	array of strings
-		USE:	add a text to the 1st page
+scorestxt : "+2 Charisma and +1 to two other ability scores of my choice",
+/*	scores // OPTIONAL //
+	TYPE:	string
+	USE:	description of ability score improvements to use in the Ability Scores dialog and tooltips
 
-		Each string in the array is added to the 1st page, exactly as given here.
+	You do not need this attribute if the ability score improvement does not offer a choice,
+	then you can just use the 'scores' attribute, see above.
+	You can have both this and the 'scores' attribute, they are not mutually exclusive.
+*/
+
+scoresOverride : [0, 0, 0, 19, 0, 0],
+/*	scores // OPTIONAL //
+	TYPE:	array of six numbers
+	USE:	add ability score overrides to the Ability Scores dialog
+
+	This array requires exactly six entries, each being a number.
+	The entries are: [Str, Dex, Con, Int, Wis, Cha].
+	You should put a 0 for an ability score that gets no override.
+
+	An override will be used for the ability score if it would otherwise be less.
+
+	The array will also be used to generate a textual description of the improvement for the dialog and tooltips,
+	but only if the attribute 'scorestxt' is not present in the same feature.
+*/
+
+
+// >>>>>>>>>>>>>>>>>>>> //
+// >>> Spellcasting >>> //
+// >>>>>>>>>>>>>>>>>>>> //
+
+spellcastingBonus : [{
+/*	spellcastingBonus // OPTIONAL //
+	TYPE:	array of objects (or just a single object)
+	USE:	adds entries to the "Bonus Spells" section of the spell selection dialog
+
+	If the parent attribute doesn't otherwise have spellcasting, the 'spellcastingBonus'
+	attribute will add it.
+
+	This object has three functions:
+	1. Make a selection of spells to show in the drop-down in the spell selection dialog (same as a 'common spell list object').
+	2. Determine how often and with what name the drop-down of spells is present in the "Bonus Spells" section.
+	3. Determine how the first column of the spell will look on the spell sheet.
+	
+	For the first function, this object can have all the same attributes as a 'common spell list object'.
+	For an explanation of those attributes see the file "_common spell list object.js".
+	
+	For the second and third functions, this object has some specific attributes, which are in addition to a 'common spell list object'.
+	For those objects, see their individual explanations below.
+*/
+
+	// example of use of a 'common spell list object' attribute:
+	spells : ["light"],
+
+	name : "Arcane Initiate",
+	/*	name // REQUIRED //
+		TYPE:	string
+		USE:	the name as it appears in the "Bonus Spells" section of the spell selection dialog
 	*/
 
-	immune : ["poison", "disease"],
-	/*	immune // OPTIONAL //
-		TYPE:	array of strings
-		USE:	add strings to the "Immune to" text on the 1st page
+	times : 2,
+	/*	name // OPTIONAL //
+		TYPE:	number or array of numbers with 20 entries
+		USE:	how many times this entry should appear in the "Bonus Spells" section of the spell selection dialog
 
-		Each string in the array is added to the list of "Immune to" things in the 1st page "Saving Throws" section.
-		Immunities from all sources are combined and listed alphabetically.
-		In this example it would result in "Immune to disease and poison".
-		If a damage resistance is present while immunity for the same is also present,
-		then the damage resistance will be hidden as long as the immunity is present.
+		Setting this attribute to 1 is the same as omitting it.
+
+		Setting this attribute to an array signals that it varies depending on level.
+		Each entry in that array is a level, so you will most likely want to add 20 entries.
+		IMPORTANT! Set the value to 0 for levels that the feature is not present.
+		This attribute can have two type of values:
 	*/
 
-	adv_vs : ["traps", "charmed"]
-	/*	adv_vs // OPTIONAL //
-		TYPE:	array of strings
-		USE:	add strings to the "Adv. on saves vs." text on the 1st page
+	selection : ["light"],
+	/*	selection // OPTIONAL //
+		TYPE:	array (variable length)
+		USE:	select which of the spells from the drop-down to select
 
-		Each string in the array is added to the list of "Adv. on saves vs." things in the 1st page "Saving Throws" section.
-		Saving throw advantages from all sources are combined and listed alphabetically.
-		In this example it would result in "Adv. on saves vs. charmed and traps".
+		Adding more than one entry to the array is only useful if the attribute 'times' is present.
+		Each entry in the array is used for one of the times this 'spellcastingBonus' is added to the "Bonus Spells" section of the spell selection dialog.
+
+		Note that each entry must be a spell's object name as in the SpellsList object.
+
+		In this example the spell "Light" is selected.
+		This is useful as the attribute 'spells' will make sure that only "Light" is an option in the drop-down, but won't actually select that option.
 	*/
-},
 
+	firstCol : "8",
+	/*	name // OPTIONAL //
+		TYPE:	string
+		USE:	set the first column of the spell line on the spell sheet
+
+		This can be a string of one or two characters, or one character enclosed in brackets.
+		Anything more than that will be cut off, as it won't fit in the field.
+
+		Alternatively, you can set the first column to be something special:
+		"checkbox"		// an empty checkbox
+		"checkedbox"	// a checked checkbox
+		"markedbox"		// a checked checkbox indicating that this spell is always prepared
+		"atwill"		// the 'At will' graphic
+		"oncesr"		// the 'One time per short rest' graphic (1× SR)
+		"oncelr"		// the 'One time per long rest' graphic (1× LR)
+
+		If you don't set anything for the first column the sheet will determine what is most logical.
+	*/
+}],
+
+spellcastingExtra : ["cure wounds", "guiding bolt", "flaming sphere", "lesser restoration", "daylight", "revivify", "guardian of faith", "wall of fire", "flame strike", "greater restoration"],
+spellcastingExtra : ["disguise self", "rope trick", "fear", "greater invisibility", "seeming"].concat(new Array(95)).concat("AddToKnown"),
+/*	spellcastingExtra // OPTIONAL //
+	TYPE:	array (variable length)
+	USE:	adds the spells in the array to the list of spells to choose from
+
+	Each entry must be a spell object name as used in the SpellsList object.
+
+	How these spells are added to the spell list depends on the type of spellcasting class:
+	a) spell list or spellbook (cleric, druid, paladin, wizard)
+		The spells are added to the generated spell sheet and marked as "always prepared".
+	b) spells known (bard, ranger, sorcerer, warlock)
+		The spells are added to the list of spells that the known spells can be selected from
+		
+		You can also have the spells be automatically added to the known spells, without counting to the maximum spells known.
+		To do so, make sure the 101th entry in the array reads "AddToKnown", see example above.
+		(e.g. spellcastingExtra[100] = "AddToKnown")
+
+	This attribute will do nothing if the parent object does not grant spellcasting like a spellcasting class.
+*/
+
+spellFirstColTitle : "Ki",
+/*	spellFirstColTitle // OPTIONAL //
+	TYPE:	string
+	USE:	set the title of the first column of the header on the spell sheet page(s)
+
+	When generating a spell sheet for this attribute's parent object, it will have a header for each column.
+	Setting the 'spellFirstColTitle' will cause the first title of the column titles to be exactly what you enter here.
+
+	Note that there is only space for 2 characters in the header's first column.
+	One character enclosed in brackets will also fit, for example: "(R)".
+
+	This attribute will do nothing if the parent object does not grant spellcasting in one way or another.
+*/
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Dynamic Automation Changes >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 
 calcChanges : {
 /*	calcChanges // OPTIONAL //
@@ -484,440 +937,67 @@ calcChanges : {
 	*/
 },
 
-addMod
+addMod : [
+	{ type : "skill", field : "Init", mod : "Int", text : "I can add my Intelligence modifier to initiative rolls." },
+	{ type : "save", field : "all", mod : "Cha", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." },
+],
+/*	addMod // OPTIONAL //
+	TYPE:	array of objects (variable length)
+	USE:	add value to a modifier field
 
+	You can have any number of objects in this array, each object must have the same four attributes, all of which are strings:
+	1. type
+		Can be "skill" or "save", but can also be left empty "".
+	2. field
+		What to add here depends on the type-
+		a)	for "skill" it can be the name of a skill, or "Init" for initiative,
+			or "All" for the all skills modifier.
+		b)	for "save" it can be the three-letter abbreviation of an ability score,
+			or "All" for the all saves modifier.
+		c)	for "" it has to be the exact name of the field as used in the PDF.
+	3. mod
+		This can be any combination of numbers, mathematical operators,
+		and three-letter ability score abbreviations for ability score modifiers,
+		or 'Prof' for the proficiency bonus.
 
+		For example, to add the proficiency bonus, Constitution modifier, and subtract 2, it would look like this:
+		mod : "Prof+Con-2",
+	4. text
+		This is an explanation of why the modifier was added and is used in the modifier change dialog.
 
-
-
-scorestxt : "+2 Charisma and +1 to two other ability scores of my choice",
-/*	scores // OPTIONAL //
-	TYPE:	string
-	USE:	description of ability score improvements to use in the Ability Scores dialog and tooltips
-
-	You do not need this attribute if the ability score improvement does not offer a choice,
-	then you can just use the 'scores' attribute, see below.
-	You can have both this and the 'scores' attribute, they are not mutually exclusive.
+	NOTE: for modifiers to attacks, use calcChanges.
 */
 
-scores : [0, 1, 0, 0, 2, 0],
-/*	scores // OPTIONAL //
-	TYPE:	array of six numbers
-	USE:	add ability score improvements to the Ability Scores dialog
+eval : "Checkbox('Jack of All Trades', true);",
+eval : function() {
+	AddString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
+};
+/*	eval // OPTIONAL //
+	TYPE:	string or function
+	USE:	the function is run or the string is evaluated using eval() when the feature is added
 
-	This array requires exactly six entries, each being a number.
-	The entries are: [Str, Dex, Con, Int, Wis, Cha].
-	You should put a 0 for an ability score that gets no improvement.
-	You can use negative numbers.
-
-	Where exactly the numbers will be added in the Ability Scores dialog depends on the parent feature.
-
-	The array will also be used to generate a textual description of the improvement for the dialog and tooltips,
-	but only if the attribute 'scorestxt' is not present in the same feature.
-
-	Note that if a feature gives you a choice in which ability score to improve,
-	you should put that information in the 'scorestxt' attribute and not include the improvement here.
+	This can be any JavaScript you want to have run whenever the feature is added.
 */
 
-scoresOverride : [0, 0, 0, 19, 0, 0],
-/*	scores // OPTIONAL //
-	TYPE:	array of six numbers
-	USE:	add ability score overrides to the Ability Scores dialog
+removeeval : "Checkbox('Jack of All Trades', false);",
+removeeval : function() {
+	RemoveString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
+};
+/*	removeeval // OPTIONAL //
+	TYPE:	string or function
+	USE:	the function is run or the string is evaluated using eval() when the feature is removed
 
-	This array requires exactly six entries, each being a number.
-	The entries are: [Str, Dex, Con, Int, Wis, Cha].
-	You should put a 0 for an ability score that gets no override.
-
-	An override will be used for the ability score if it would otherwise be less.
-
-	The array will also be used to generate a textual description of the improvement for the dialog and tooltips,
-	but only if the attribute 'scorestxt' is not present in the same feature.
+	This can be any JavaScript you want to have run whenever the feature is removed.
 */
 
+changeeval : "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level); SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, displName);",
+changeeval : function() {
+	var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level);
+	SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, displName);
+};
+/*	changeeval // OPTIONAL //
+	TYPE:	string or function
+	USE:	the function is run or the string is evaluated using eval() when the feature is present and the character's level changes
 
-spellcastingBonus
-
-spellcastingExtra
-
-spellFirstColTitle
-
-armorOptions
-
-ammoOptions
-
-weaponOptions
-
-weaponProfs
-
-armorProfs
-
-weaponAdd
-
-armorAdd
-
-skills
-
-skillstxt
-
-eval
-
-removeeval
-
-changeeval
-
-
-usages
-usagescalc
-recovery
-additional
-limfeaname
-
-
-var iFileName = "_common attributes.js";
-/* 	iFileName // OPTIONAL //
-	This is how the file will be named in the sheet if you import it as a file.
-	Only the first occurrence of this variable will be used.
-*/
-
-RequiredSheetVersion(13);
-/*	RequiredSheetVersion // OPTIONAL //
-	This is the minimum required version number of the sheet for the script to work.
-	If the sheet being used to import the script is of an earlier version, the user will be given a warning.
-	Input a number, not a string (so don't enclose the number in quotation marks)!
-	Although the sheet uses semantic versioning, you have to input a number here.
-	To find this number of a sheet, open its Document Properties in Adobe Acrobat (Ctrl + D) and look in the 'Custom' tab.
-*/
-
-ClassList["purplemancer"] = {
-/* 	ClassList object name // REQUIRED //
-	By adding a new object to the existing ClassList object, we create a new class.
-	The object name here is 'myclass'. You can use any object name as long as it is not already in use.
-	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
-*/
-	name : "Purplemancer",
-/*	name // REQUIRED //
-	String of the name of the class as it will be used by the sheet.
-*/
-	regExpSearch : /^(?=.*purple)(?=.*mancer).*$/i,
-/*	regExpSearch // REQUIRED //
-	Regular expression of how the class is recognized by the sheet.
-	This has to be a match for the name given earlier, or the class will never by recognized.
-	Now it looks for any entry that has both the words "purple" and "mancer" in it,
-	 disregarding capitalization or word order.
-	If this looks to complicated, or you want to match only a single word, just write:
-		regExpSearch : /purplemancer/i,
-*/
-	source : ["SRD", 30],
-/*	source // REQUIRED //
-	Array of the SourceList entry (a string) and the page number.
-	See the file for adding a source to learn how to add a custom source.
-
-	This can be an array of arrays to indicate it appears in multiple sources.
-	For example, if something appears on both page 7 of the Elemental Evil Player's Companion
-	 and on page 115 of the Sword Coast Adventure Guide, use the following:
-		source : [["E", 7], ["S", 115]],
-
-	If a class is completely homebrew, or you don't want to make a custom source, just put the following:
-		source : ["HB", 0],
-	"HB" stands for homebrew.
-*/
-	primaryAbility : "Strength or Dexterity",
-/*	primaryAbility // REQUIRED //
-	String of the abilities that are essential to the class.
-	If there are no essental abilities, just put an empty string:
-		primaryAbility : "",
-*/	
-	prereqs : "Strength 13 or Dexterity 13",
-/*	primaryAbility // REQUIRED //
-	String of the prerequisite abilities for the class when multiclassing.
-	If there are no prerequisite abilities, just put an empty string:
-		prereqs : "",
-*/
-	die : 10,
-/*	die // REQUIRED //
-	Number of the type of hit die the class has (i.e. 10 means d10).
-	No, you can't have multiple HD for a class (2d6 per level is not possible).
-*/
-	improvements : [0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7],
-/*	improvements // REQUIRED //
-	Array of the amount of ability score improvements the class has at each level.
-	Normally this is an array of 20 entries, one for each level, but you can have more or less.
-	Note that this is not cumulative, the number is the amount of ASI at that level.
-	This example uses the Fighter's progression.
-	If the class doesn't get any improvements, just put the following:
-		improvements : [0],
-*/
-	saves : ["Str", "Con"],
-/*	improvements // REQUIRED //
-	Array of the saving throw proficiencies the class gets, using the name of an ability.
-	You have to include at least the first three-letters of an ability, and capitalization doesn't matter.
-	Thus, an array entry can be "Str", "Dex", "Con", "Int", "Wis, or "Cha".
-	If the class doesn't get any saving throw proficiencies, just put the following:
-	
-*/
-
-// EVERYTHING BELOW THIS LINE IS NOT UPDATED TO v13 YET!
-
-	skills : ["\n\n" + toUni("MyClass") + ": Choose two from Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Perception, and Survival.", "\n\n" + toUni("MyClass") + ": Choose one from Athletics, Intimidation, Perception, and Survival."], //required; the text to display for skill proficiencies. Note the \n\n at the start, they are important! The first entry is for when the class is the primary class, the second entry is for when the class is taken later as part of a multiclass
-
-/* SYNTAX CHANGE v12.998 >> old syntax for 'tools' and 'languages' are no longer supported!! */
-	toolProfs : { // optional; this is an object with arrays with the tool proficiencies gained. Each entry in an array can be its own array of 2 entries. The first entry is the name of the tool and the second entry is either 1) a number if the tool is yet to be chosen, or 2) the 3-letter ability score abbreviation if the tool is to be listed in the skill section and have a bonus calculated
-		primary : [["Musical instrument", 3], ["Thieves' tools", "Dex"]], // optional; the tool proficiencies gained if the class is the primary class (i.e. taken at 1st level)
-		secondary : [["Musical instrument", 1]] // optional; the tool proficiencies gained if the class is not the primary class (i.e. taken at a later level)
-	},
-	
-	armor : [ //required; the 4 entries are for: ["light", "medium", "heavy", "shields"]
-		[true, true, true, true], //required; the armor proficiencies if this is the first or only class
-		[true, true, false, true] //required; the armor proficiencies if this class is multiclassed with (so not taken at level 1, but later)
-	],
-	
-	weapons : [ //required; the 3 entries are for: ["simple", "martial", "other"]
-		[true, false, ["hand crossbow", "longsword", "rapier", "shortsword"]], //required; the weapon proficiencies if this is the first or only class
-		[true, false, ["hand crossbow"]] //required; the weapon proficiencies if this class is multiclassed with (so not taken at level 1, but later)
-	],
-	
-	equipment : "MyClass starting equipment:\n \u2022 Chain mail -or- leather armor, a longbow, and 20 arrows;\n \u2022 A martial weapon and a shield -or- two martial weapons;\n \u2022 A light crossbow and 20 bolts -or- two handaxes;\n \u2022 A dungeoneer's pack -or- an explorer's pack.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.", //required; the text to display when citing the starting equipment
-	
-	subclasses : ["Martial Archetype", ["champion", "battle master", "eldritch knight", "purple dragon knight"]], //required; the names of the subclasses. The first entry is the overall name that is given to the subclasses, the second entry is a list of the subclass, using the exact names of the entry of the subclasses in the ClassSubList. //Note that if one of the entries in the array of subclasses doesn't exist in the ClassSubList, the sheet will throw an error as soon as you make a character with levels in this class
-	//IMPORTANT: for any subclass you add using the AddSubClass() function, don't list them here! The AddSubClass() function makes its own entry in this array! If you have entries here that don't exist (because you didn't add any ClassSubList entry, or added it using the AddSubClass() function, then the sheet will throw strange errors)!
-	
-	prestigeClassPrereq : 5, //optional; if you include this attribute, the sheet will consider the class a prestige class // You can make this attribute a number, which represents the levels the character must have before being able to gain the prestige class. Alternatively, you can make this attribute a string, which can be evaluated with eval() and returns either true (prereqs met) or false (prereqs not met).
-	
-	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3], //required; the amount of attacks at each level. Note that there are 20 entries, one for each level.
-	
-	abilitySave : 4, //optional, but required for a spellcaster; the ability score to use for the Ability Saving Throws. Remove this line if your class has no Ability that requires Saving Throws. (Str=1, Dex=2, Con=3, Int=4, Wis=5, Cha=6)
-	
-	abilitySaveAlt : 2,//optional; if the class offers a choice between two ability scores to be used to determine the DC, you can put that secondary one here (Str=1, Dex=2, Con=3, Int=4, Wis=5, Cha=6)
-	
-	spellcastingFactor : 3, //required for a spellcaster; the speed with which spell progression works type 1 for full spellcasting (Cleric), 2 for half spellcasting (Paladin), and 3 for one-third spellcasting (Arcane Trickster). This can be any positive number other than 0. Remove this line if your class has no spellcasting. If your character uses the Warlock way of spellcasting, write "warlock1" here. The 1 indicates the spell progression factor. You can change it to a 2 or 3 to have half or one-third spell progression (or to any other factor you like).
-		// You can also have this refer to a Spell Slot progression you define yourself, as a separate variable (see "Homebrew Syntax - SpellTable.js"). In order to do this the name of that variable and the spellcastingFactor must match. Using the name "purplemancer" for example would mean that here you put [spellcastingFactor : "purplemancer1"] (the 1 is the factor, this can be any positive number other than 0) while for the variable containing the table you use "purplemancerSpellTable". Note that the name is all lower case!
-		
-	spellcastingTable : [ //optional, only if you want to use a non-standard table for spell slot progression and just for this one (sub)class. You can either use the spellcastingTable attribute, or define a new SpellTable in a separate variable (see "Homebrew Syntax - SpellTable.js"). If you are adding multiple classes that use the same table, please add it as a separate variable, for otherwise the spell slots will be added up per individual class level instead of adding the class levels together to find the total amount of spell slots
-	// if you add this variable, the number in the spellcastingFactor will be only be used when multiclassing. Note that you still need to enter something in the spellcastingFactor to tell the sheet that its dealing with a spellcaster.
-		[0, 0, 0, 0, 0, 0, 0, 0, 0], //lvl 0
-		[0, 0, 0, 0, 0, 0, 0, 0, 0], //lvl 1
-		[0, 0, 0, 0, 0, 0, 0, 0, 0], //lvl 2
-		[1, 0, 0, 0, 0, 0, 0, 0, 0], //lvl 3
-		[1, 0, 0, 0, 0, 0, 0, 0, 0], //lvl 4
-		[2, 0, 0, 0, 0, 0, 0, 0, 0], //lvl 5
-		[2, 0, 0, 0, 0, 0, 0, 0, 0], //lvl 6
-		[0, 2, 0, 0, 0, 0, 0, 0, 0], //lvl 7
-		[0, 2, 0, 0, 0, 0, 0, 0, 0], //lvl 8
-		[0, 2, 0, 0, 0, 0, 0, 0, 0], //lvl 9
-		[0, 2, 0, 0, 0, 0, 0, 0, 0], //lvl10
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl11
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl12
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl13
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl14
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl15
-		[0, 0, 2, 0, 0, 0, 0, 0, 0], //lvl16
-		[0, 0, 0, 2, 0, 0, 0, 0, 0], //lvl17
-		[0, 0, 0, 2, 0, 0, 0, 0, 0], //lvl18
-		[0, 0, 0, 2, 0, 0, 0, 0, 0], //lvl19
-		[0, 0, 0, 2, 0, 0, 0, 0, 0] //lvl20
-	],
-	
-	spellcastingKnown : { //Optional; Denotes the amount and type of spells the class has access to
-	
-		cantrips : [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], //Optional; This can either be one number, an array of 20 numbers, or be omitted for a class that doesn't have access to cantrips. The numbers reflect the amount of cantrips known
-		
-		spells : [4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 13, 13, 13, 14, 14, 15, 16, 16, 16],//Optional; This can either be one number, an array of 20 numbers, or be omitted for a class that doesn't have access to spells. The numbers reflect the amount of spells known. For a class that doesn't know spells, but prepares them from a list, you should put "list" here. For a class that uses a spellbook, you should put "book" here.
-		
-		prepared : true, //Optional; This indicates that the class has to prepare spells like a cleric/druid/paladin/wizard
-	
-	},
-	
-	spellcastingList : { //Optional; Only needed if the class doesn't have its own spell list. This object denotes what spells the class has access to. All things in this object constrain the selection of spells that will be available. The constraints are cumulative.
-		
-		class : "wizard", //Required; The name of the class from whose spell list the spells come from. This can be "any" if the spells are not limited by a spell list of just one class. The entry has to match the name of the class in the SpellsList
-		
-		school : ["Evoc", "Abjur"], //Optional; An array of abbreviations of spell school names (see SpellsList). These have to be in an array, even if it is just one value. Each entry has to match the name of the spell school in the SpellsList
-		
-		level : [0, 4], //Optional; The lower and upper limit of spell levels that the class has access to.
-		
-		ritual : false, //Optional; Denotes if only ritual (true) or only non-ritual (false) spells should be included in the list
-		
-		spells : ["light", "mending"], //Optional; If a "spells" array is present, all other objects will be ignored and only this list of spells will populate the list of available spells. each entry has to match the name of the spell in the SpellsList
-		
-		notspells : ["antipathy/sympathy", "tsunami"], //Optional; Any spells listed in this array will be excluded from the list
-	},
-	
-	spellcastingExtra : ["detect magic", "magic missile", "magic weapon", "nystul's magic aura", "dispel magic", "magic circle", "arcane eye", "leomund's secret chest", "planar binding", "teleportation circle"], //Optional; An array of spells that are added to the spell list from which the class can choose. If the class prepares spells, than this list of spells are always considered prepared. Each entry has to match the name of the entry of the spell in the SpellsList exactly
-	//You can also have the list be added to the known spells of a class by making the 101th entry in the array read "AddToKnown" (i.e. spellcastingExtra[100] = "AddToKnown");
-	
-	features : { //required;  the class features. Each works the same way, so only a couple of example are given. You can add as many as you want
-	
-		"fighting style" : { //note the use of lower case characters
-			name : "Fighting Style", //required; the name of the class feature
-			source : ["P", 72], //required; the source of the class feature
-			minlevel : 1, //required; the level at which the feature is gained
-			description : "\n   " + "Choose a Fighting Style using the \"Choose Feature\" button above", //required; the text to put in the "Class Features" field
-			choices : ["Great Weapon Fighting", "Protection", "Two-Weapon Fighting"], //optional; choices the feature offers, if any.
-			choicesNotInMenu : true, //optional: this tells the sheet not to put the choices into the "Choose Options" menu on the second page. Use this is you want to have the choices selected through another class feature. See for an example of this the "Draconic Bloodline" sorcerer archetype. // Note that you always want to have the choices listed in the choices attribute, because otherwise they won't be updated if they have level-dependent features
-			"great weapon fighting" : { //required if "choices" is defined; has to be exactly the same as how it is written in the "choices" entry. Note the use of lower case!
-				name : "Great Weapon Fighting Style", //required;
-				description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands" //required;
-			},
-			
-			"protection" : { //has to be exactly the same as how it is written in the "choices" entry. Note the use of lower case!
-				name : "Protection Fighting Style",
-				description : "\n   " + "As a reaction, I can give disadv. on an attack made vs. someone within 5 ft of me" + "\n   " + "I need to be wielding a shield and be able to see the attacker to do this",
-				action : ["reaction", ""] //optional; adds the name of this choice to the reaction list when chosen. The options are "action", "bonus action", and "reaction" //the second value in the array is added as a suffix for the "name" of the feature when entered into the action field
-			},
-			
-			"two-weapon fighting" : { //has to be exactly the same as how it is written in the "choices" entry. Note the use of lower case!
-				name : "Two-Weapon Fighting Style",
-				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
-				
-				calcChanges : { //optional; adds stuff to the calculation of attacks and/or HP
-					
-					hp : "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += \"\\n + \" + classes.known.sorcerer.level + \" from Draconic Resilience (Sorcerer)\";};", //optional; string to be run using eval() when calculating the number of HP in the HP tooltip and automation
-					
-					atkCalc : ["if (isOffHand) {output.modToDmg = true; }; ", "When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks."], //optional; ["eval string", "explanation string"]; change something in the calculation of the Damage and To Hit of attacks; The first value in the array is stringified code that is run using eval(), the second entry is an explanation of what is being altered so that it can be displayed in a dialogue. This second entry can be left empty, as ""
-					
-					atkAdd : ["if (WeaponName.match(/unarmed strike/i)) {fields.Description += 'Counts as magical';}; ", "My unarmed strikes count as magical for overcoming resistances and immunities."], //optional;  ["eval string", "explanation string"]; works just like atkDmg, but affects the weapon attributes when they are applied to the sheet. With this you can change the weapon's description, range, damage die, attribute, etc. etc. However, this will only be applied to recognized weapons
-					
-						// Note that you need to use two back slashes for things in the eval code here, because it is first added to a string, and then run as code. See the hp for an example, with the \\n
-						
-						// For the eval strings for the attack calculations ('atkCalc' or 'atkAdd') there are some variables that you can use to test against:
-							
-							// The variable WeaponName contains the recognized weapon object name as it is used in the WeaponsList object (or "" in atkCalc if the weapon is not a recognized weapon);
-						
-							// The object "theWea" is the WeaponsList[WeaponName] object for the recognized weapon (or 'undefined' in atkCalc if the weapon is not a recognized weapon);
-							
-							// You can use the booleans 'isOffHand', 'isMeleeWeapon', 'isRangedWeapon', 'isSpell' (also true for cantrips), 'isDC'
-							
-							// If the attack is a spell that is found on the SpellList, the variable thisWeapon[3] contains the name of the entry in the SpellList
-						
-							// The object "fields" has all the values of the different fields of the attack (fields.Proficiency, fields.Mod, fields.Range, fields.Damage_Type, fields.Description, fields.To_Hit_Bonus, fields.Damage_Bonus, fields.Damage_Die, fields.Weight);
-						
-							// You can change the attributes of the "fields" object with the eval-string of atkAdd to affect what is put into the fields.
-						
-							// You can use the attributes of the "fields" object with the eval-string of atkCalc to check for things, but changing them will have no effect on the sheet.
-						
-							// With the atkCalc you have to change the "output" object in order to affect the outcome of the calculations. This object has the following attributes: output.prof (wether or not to add the proficiency bonus to the To Hit), output.die (Damage Die to use), output.mod (ability modifier), output.modToDmg (whether or not to add the ability modifier to Damage), output.magic (any magic bonus that's to be added to both To Hit and Damage), output.bHit (the To Hit bonus from the Blue Text/Modifier field), output.bDmg (the Damage bonus from the Blue Text/Modifier field), output.extraHit (a number added to the To Hit that is reserved for this eval), output.extraDmg (a number added to the damage that is reserved for this eval)
-				}
-			},
-		},
-					
-		"arcane initiate" : {
-			name : "Arcane Initiate",
-			source : ["S", 125],
-			minlevel : 1,
-			description : "\n   " + "I gain proficiency with Arcana and two wizard cantrips that count as cleric cantrips",
-			
-			skills : ["Arcana"], //optional; an array of skills with which proficiency is gained
-			
-			skillstxt : "\n\n" + toUni("Arcane Domain") + ": Arcana.", //optional; the text that has to be added to the skill tooltips
-			
-			spellcastingBonus : { //optional; an object that adds something to the "Bonus Spells" section of the spell selection dialog //this object can have all the same attributes as the "spellcastingList" object, but must also have a "name" defined" //the other things that can be defined in this that are not in the "spellcastingList" object, are the "selection", "times" and "prepared" values
-			
-				name : "Arcane Initiate", //required; this is used to identify the object, so must be an unique name
-				
-				class : "wizard", //optional but required if not including the "spells" entry; see "spellcastingList" object
-				
-				level : [0, 0], //optional; see "spellcastingList" object
-				
-				school : ["Necro"], //optional; see "spellcastingList" object
-				
-				spells : ["light"], //optional, but required if not including the "class" entry; see "spellcastingList" object
-				
-				notspells : ["mending"], //optional; see "spellcastingList" object
-				
-				selection : ["light"], //optional if "spells" is defined; this is the default selection for the array specified in "spells"
-				
-				times : 2, //optional; this is the number of times the bonus spells should be added. //This can also be an array of 20 values. That way the number of times are level-dependent
-				
-				prepared : true, //optional; if set to 'true', this makes the spell selected for this/these bonus spells to automatically get a checked off checkbox in the first column, similar to domain spells for a cleric
-				
-				atwill : true, //optional; if set to 'true', this makes the spell selected for this/these bonus spells to get "At Will" in the first column
-				
-				oncesr : true, //optional; if set to 'true', this makes the spell selected for this/these bonus spells to get "1×SR" in the first column
-				
-				oncelr : true, //optional; if set to 'true', this makes the spell selected for this/these bonus spells to get "1×LR" in the first column
-				
-				firstCol : "8", //optional; if set to any value, this makes the spell selected for this/these bonus spells to get the first two letters/numbers of that value in the first column
-			},
-			
-			spellFirstColTitle : "Ki", //optional, only works if spellcastingBonus exists; if set to any value, this makes the first column of the captions on the spell sheet be set to the first two letters/numbers of that value
-			
-			vision : [["Darkvision", 60], ["Sunlight Sensitivity", 0]], //optional; An array of arrays that each have a length of 2; This adds the first value of each array to the Senses field. The second value is the range in feet. If no range is needed, put a 0 there. You can also add a modifier like "+30" or "*2" to have the appropriate calculation done with the range of sense
-		},
-		
-		"spellcasting" : {
-			name : "Spellcasting",
-			source : ["P", 114],
-			minlevel : 1,
-			description : "\n   " + "I can cast prepared wizard cantrips/spells, using Intelligence as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus" + "\n   " + "I can cast all wizard spells in my spellbook as rituals if they have the ritual tag",
-			additional : ["3 cantrips known", "3 cantrips known", "3 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known"], //optional; text to display in the header of the feature. This can be one value, but can also be an array of 20 values, one for each level.
-		},
-		
-		"second wind" : {
-			name : "Second Wind",
-			source : ["P", 72],
-			minlevel : 1,
-			description : "\n   " + "As a bonus action, I regain 1d10 + fighter level HP; I can use this once per short rest",
-			additional : ["1d10+1", "1d10+2", "1d10+3", "1d10+4", "1d10+5", "1d10+6", "1d10+7", "1d10+8", "1d10+9", "1d10+10", "1d10+11", "1d10+12", "1d10+13", "1d10+14", "1d10+15", "1d10+16", "1d10+17", "1d10+18", "1d10+19", "1d10+20"],
-			usages : 1, //optional; number of times it can be used. This can be one value, but can also be an array of 20 values, one for each level. It is recommended to use a numerical value, but if you use a string, include " per " at the end, like "1d10 per "
-			recovery : "short rest", //required if "usages" is defined; way of getting the limited feature recharged. Only if you define both the 'usages' and 'recovery' will the feature be added to the limited features
-			action : ["bonus action", ""] //optional; adds the name of this feature to the bonus action list when chosen. The options are "action", "bonus action", and "reaction"
-		},
-		
-		"action surge" : {
-			name : "Action Surge",
-			source : ["P", 72],
-			minlevel : 2,
-			description : "\n   " + "I can take one additional action on my turn on top of my normally allowed actions",
-			usages : [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2], //example of usages varying per level
-			recovery : "short rest",
-			
-			armor : [false, false, true, false], //optional; the 4 entries are for proficiency in: ["light", "medium", "heavy", "shields"]. Be sure to always add all four statements of true/false!
-
-			weapons : [true, false, ["hand crossbow"]], //optional; the 3 entries are for: ["simple", "martial", "other"]. Be sure to always add both statements of true/false!
-			
-			addMod : { type : "skill", field : "Init", mod : "Int", text : "I can add my Intelligence modifier to initiative rolls." }, //optional; This is an object, or an array of similar objects, for adding a modifier to a modifier field. Using this will make it so that the modifier is added to any value that is already there. // The 'mod' attribute can be any combination of numbers, mathematical operators, and three-letter ability score abbreviations // The 'type' attribute can be "skill" or "save", but can also be left empty "" // The 'field' attribute depends on the type, for "skill" it can be the name of a skill, or "Init" for initiative, or "All" for the all skills modifier; for "save" it can be the three-letter abbreviation of an ability score, or "All" for the all saves modifier. // If the 'type' attribute is left empty, the 'field' attribute has to be the exact name of the field the modifier has to be added to // The 'text' attribute is an explanation of why the modifier was added //NOTE: for modifiers to attacks, use calcChanges
-			
-			addarmor : "Stone's Durability", //optional; a string of the name of the armour that is literally put in the Armor Description field when the class feature is applicable, and removed if not
-		},
-		
-		"subclassfeature3" : { //You need at least one entry named "subclassfeatureX". It signals the sheet to ask the user for which subclass he would like to have. The level of this feature should match the level the class needs to select a subclass. Once a subclass is selected, any feature with "subclassfeature" in the object name in the class entry will be ignored.
-			name : "Martial Archetype",
-			source : ["P", 72],
-			minlevel : 3,
-			description : "\n   " + "Choose a Martial Archetype you strive to emulate and put it in the \"Class\" field" + "\n   " + "Choose either Champion, Battle Master, Eldritch Knight, or Purple Dragon Knight",
-		},
-		
-		"subclassfeature3.1" : {
-			name : "", //any feature who's name is empty like this one is, will be ignored. Since v12.5 of the sheet, an entry like this serves no function
-			minlevel : 3,
-		},
-		
-		"natural antivenom" : {
-			name : "Natural Antivenom",
-			source : ["UA:MC", 7],
-			minlevel : 9,
-			description : desc([
-				"I have advantage on saves vs. poison and resistance to poison damage",
-				"When I use a poultice, in addition to healing, I cure one poison effect on the creature",
-				"I gain proficiency with Constitution saving throws"
-			]),
-		
-			savetxt : { // Optional; this attribute defines entries to add to the field for "Saving Throw Advantages / Disadvantages"
-			
-				text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg", "Magic can't put me to sleep"], // Optional; this is an array of strings, and each of those strings is added to the field exactly as presented here
-				
-				immune : ["poison", "disease"], // Optional; this is an array of strings that the character is immune to. This is put in the field after the text "Immune to ", so in this example it would result in "Immune to poison and disease"
-				
-				adv_vs : ["traps", "charmed"] // Optional; this is an array of things that the character has advantage on saves against. This is put in the field after the text "Adv. on saves vs. ", so in this example it would result in "Adv. on saves vs. traps and charmed"
-			},
-		},
-	}
-}
-
-
-/* CHANGES SINCE V12.999:
-	1. 'armor' attribute has been replaced with 'armorProfs', but is otherwise identical.
-	2. 'weapons' attribute has been replaced with 'weaponProfs', but is otherwise identical.
-	3. 'primaryAbility' should no longer have the class' name in it, nor a line break at the start, a bullet point, or a semicolon at the end.
-	4. 'prereqs' should no longer have the class' name in it, nor a line break at the start, a bullet point, or a semicolon at the end.
+	This can be any JavaScript you want to have run whenever the level changes.
 */

@@ -89,12 +89,12 @@ ClassList["purplemancer"] = {
 
 	If a class is completely homebrew, or you don't want to make a custom source, just put the following:
 		source : ["HB", 0],
-	"HB" stands for homebrew.
+	"HB" refers to 'homebrew' source.
 */
 	primaryAbility : "Strength or Dexterity",
 /*	primaryAbility // REQUIRED //
 	String of the abilities that are essential to the class.
-	If there are no essental abilities, just put an empty string:
+	If there are no essential abilities, just put an empty string:
 		primaryAbility : "",
 */	
 	prereqs : "Strength 13 or Dexterity 13",
@@ -118,12 +118,10 @@ ClassList["purplemancer"] = {
 		improvements : [0],
 */
 	saves : ["Str", "Con"],
-/*	improvements // REQUIRED //
+/*	improvements // OPTIONAL //
 	Array of the saving throw proficiencies the class gets, using the name of an ability.
 	You have to include at least the first three-letters of an ability, and capitalization doesn't matter.
 	Thus, an array entry can be "Str", "Dex", "Con", "Int", "Wis, or "Cha".
-	If the class doesn't get any saving throw proficiencies, just put the following:
-	
 */
 
 // EVERYTHING BELOW THIS LINE IS NOT UPDATED TO v13 YET!
