@@ -40,7 +40,7 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isOverr
 				delete CurrentStats.overrides[s][NameEntity];
 			}
 			// now set the new highest override
-			curStat.scores[s] += getHighestAttr(CurrentStats.overrides[s]);
+			curStat.scores[s] = getHighestAttr(CurrentStats.overrides[s]);
 		} else {
 			if (AddRemove) {
 				curStat.scores[s] += scoresA[s];
