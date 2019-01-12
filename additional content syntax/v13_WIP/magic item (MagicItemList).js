@@ -41,7 +41,7 @@
 
 */
 
-var iFileName = "Homebrew Syntax - MagicItemList.js";
+var iFileName = "Homebrew Syntax - MagicItemsList.js";
 /* 	iFileName // OPTIONAL //
 	TYPE:	string
 	USE:	how the file will be named in the sheet if you import it as a file
@@ -65,7 +65,7 @@ RequiredSheetVersion(13);
 	To find this number of a sheet, open its Document Properties in Adobe Acrobat (Ctrl + D) and look in the 'Custom' tab.
 */
 
-MagicItemList["staff of purple"] = {
+MagicItemsList["staff of purple"] = {
 /* 	MagicItemList object name // REQUIRED //
 	TYPE:	string
 	USE:	object name of the magic item as it will be used by the sheet
