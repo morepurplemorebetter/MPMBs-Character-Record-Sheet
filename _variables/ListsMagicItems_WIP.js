@@ -15,7 +15,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 207], ["D", 150]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "While wearing this amulet, you are hidden from Divination magic. You can't be targeted by such magic or perceived through magical scrying sensors.",
 		descriptionFull: "While wearing this amulet, you are hidden from Divination magic. You can't be targeted by such magic or perceived through magical scrying sensors.",
 		attunement: true,
 		weight: 1
@@ -25,7 +25,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 207], ["D", 150]],
 		type: "wondrous item",
 		rarity: "very rare",
-		description: "",
+		description: "You can use an action to select a familiar location on another plane of existence. Make a DC 15 Int check. On a success, cast Plane Shift. If you fail, roll a d100. 1-60, you travel to a random location on the plane you named. 61-100, you travel to a randomly determined plane of existence.",
 		descriptionFull: "While wearing this amulet, you can use an action to name a location that you are familiar with on another plane of existence. Then make a DC 15 Intelligence check. On a successful check, you cast the Plane Shift spell. On a failure, you and each creature and object within 15 feet of you travel to a random destination. Roll a d100. On a 1-60, you travel to a random location on the plane you named. On a 61-100, you travel to a randomly determined plane of existence.",
 		attunement: true,
 		weight: 1
@@ -35,7 +35,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 208], ["D", 183]],
 		type: "Shield",
 		rarity: "very rare",
-		description: "",
+		description: "While holding this shield, you can speak its command word as a bonus action. The shield hovers in front of you, leaving your hands free. It lasts for 1 minute, until you use a bonus action to end the effect, or you are incapacitated or die, at which point the shield falls to the ground or into your hand if you have one free.",
 		descriptionFull: "While holding this shield, you can speak its command word as a bonus action to cause it to animate. The shield leaps into the air and hovers in your space to protect you as if you were wielding it, leaving your hands free. The shield remains animated for 1 minute, until you use a bonus action to end this effect, or until you are incapacitated or die, at which point the shield falls to the ground or into your hand if you have one free.",
 		attunement: true,
 		weight: 6
@@ -54,7 +54,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 208], ["D", 152]],
 		type: "Heavy Armor",
 		rarity: "legendary",
-		description: "",
+		description: "You have resistance to nonmagical damage while you wear this armor. Additionally, you can use an action to make yourself immune to nonmagical damage for 10 minutes or until you are no longer wearing the armor. Once this special action is used, it can't be used again until the next dawn.",
 		descriptionFull: "You have resistance to nonmagical damage while you wear this armor. Additionally, you can use an action to make yourself immune to nonmagical damage for 10 minutes or until you are no longer wearing the armor. Once this special action is used, it can't be used again until the next dawn.",
 		attunement: true,
 		weight: 65
@@ -65,7 +65,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 209], ["D", 152]],
 		type: "Heavy Armor",
 		rarity: "rare",
-		description: "",
+		description: "You resist bludgeoning damage. This armor is cursed, a fact only revealed when Identify is cast on the armor or you attune to it. Attuning curses you until targeted by Remove Curse or similar magic; removing the armor doesn't end the curse. While cursed you have vulnerability to piercing and slashing damage.",
 		descriptionFull: "While wearing this armor, you have resistance to bludgeoning damage.\n   " + toUni("Curse") + ". This armor is cursed, a fact that is revealed only when an Identify spell is cast on the armor or you attune to it. Attuning to the armor curses you until you are targeted by the Remove Curse spell or similar magic; removing the armor fails to end the curse. While cursed you have vulnerability to piercing and slashing damage.",
 		attunement: true,
 		weight: 65,
@@ -76,7 +76,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 209], ["D", 152]],
 		type: "Heavy Armor",
 		rarity: "rare",
-		description: "",
+		description: "You resist piercing damage. This armor is cursed, a fact only revealed when Identify is cast on the armor or you attune to it. Attuning curses you until targeted by Remove Curse or similar magic; removing the armor doesn't end the curse. While cursed you have vulnerability to bludgeoning and slashing damage.",
 		descriptionFull: "While wearing this armor, you have resistance to piercing damage.\n   " + toUni("Curse") + ". This armor is cursed, a fact that is revealed only when an Identify spell is cast on the armor or you attune to it. Attuning to the armor curses you until you are targeted by the Remove Curse spell or similar magic; removing the armor fails to end the curse. While cursed you have vulnerability to bludgeoning and slashing damage.",
 		attunement: true,
 		weight: 65,
@@ -87,7 +87,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 209], ["D", 152]],
 		type: "Heavy Armor",
 		rarity: "rare",
-		description: "",
+		description: "You resist slashing damage. This armor is cursed, a fact only revealed when Identify is cast on the armor or you attune to it. Attuning curses you until targeted by Remove Curse or similar magic; removing the armor doesn't end the curse. While cursed you have vulnerability to bludgeoning and piercing damage.",
 		descriptionFull: "While wearing this armor, you have resistance to slashing damage.\n   " + toUni("Curse") + ". This armor is cursed, a fact that is revealed only when an Identify spell is cast on the armor or you attune to it. Attuning to the armor curses you until you are targeted by the Remove Curse spell or similar magic; removing the armor fails to end the curse. While cursed you have vulnerability to bludgeoning and piercing damage.",
 		attunement: true,
 		weight: 65,
@@ -98,7 +98,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 209], ["D", 152]],
 		type: "Shield",
 		rarity: "rare",
-		description: "",
+		description: "You gain a +2 bonus to AC against ranged attacks while you wield this shield. This bonus is in addition to the shield's normal bonus to AC. In addition, whenever an attacker makes a ranged attack against a target within 5 feet of you, you can use your reaction to become the target of the attack instead.",
 		descriptionFull: "You gain a +2 bonus to AC against ranged attacks while you wield this shield. This bonus is in addition to the shield's normal bonus to AC. In addition, whenever an attacker makes a ranged attack against a target within 5 feet of you, you can use your reaction to become the target of the attack instead.",
 		attunement: true,
 		weight: 6
@@ -242,7 +242,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 212], ["D", 155]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "While you wear these boots, your steps make no sound, regardless of the surface you are moving across. You also have advantage on Dexterity (Stealth) checks that rely on moving silently.",
 		descriptionFull: "While you wear these boots, your steps make no sound, regardless of the surface you are moving across. You also have advantage on Dexterity (Stealth) checks that rely on moving silently."
 	},
 	'boots of levitation': {
@@ -250,7 +250,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 212], ["D", 155]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "While you wear these boots, you can use an action to cast the Levitate spell on yourself at will.",
 		descriptionFull: "While you wear these boots, you can use an action to cast the Levitate spell on yourself at will.",
 		attunement: true
 	},
@@ -259,7 +259,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 212], ["D", 155]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "You can use a bonus action and click the boots' heels together to double your walking speed, and opportunity attacks against you have disadvantage. If you click your heels together again, you end the effect. When the boots' property has been used for a total of 10 minutes, it won't work until you finish a long rest.",
 		descriptionFull: "While you wear these boots, you can use a bonus action and click the boots' heels together. If you do, the boots double your walking speed, and any creature that makes an opportunity attack against you has disadvantage on the attack roll. If you click your heels together again, you end the effect.\n   When the boots' property has been used for a total of 10 minutes, the magic ceases to function until you finish a long rest.",
 		attunement: true
 	},
@@ -268,7 +268,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "Your walking speed becomes 30 feet, unless your walking speed is higher, and your speed isn't reduced if you are encumbered or wearing heavy armor. In addition, you can jump three times the normal distance, though you can't jump farther than your remaining movement would allow.",
 		descriptionFull: "While you wear these boots, your walking speed becomes 30 feet, unless your walking speed is higher, and your speed isn't reduced if you are encumbered or wearing heavy armor. In addition, you can jump three times the normal distance, though you can't jump farther than your remaining movement would allow.",
 		attunement: true
 	},
@@ -286,7 +286,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "While this bowl is filled with water, you can speak the bowl's command word as an action and summon a water elemental, as if you had cast Conjure Elemental. The bowl can't be used again until the next dawn. The bowl is about 1 foot in diameter and half as deep. It weighs 3lbs and holds about 3 gallons.",
 		descriptionFull: "While this bowl is filled with water, you can use an action to speak the bowl's command word and summon a water elemental, as if you had cast the Conjure Elemental spell. The bowl can't be used this way again until the next dawn.\n   The bowl is about 1 foot in diameter and half as deep. It weighs 3 pounds and holds about 3 gallons.",
 		weight: 3
 	},
@@ -295,7 +295,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "While wearing these bracers, you have proficiency with the longbow and shortbow, and you gain a +2 bonus to damage rolls on ranged attacks made with such weapons.",
 		descriptionFull: "While wearing these bracers, you have proficiency with the longbow and shortbow, and you gain a +2 bonus to damage rolls on ranged attacks made with such weapons.",
 		attunement: true
 	},
@@ -304,7 +304,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "While wearing these bracers, you gain a +2 bonus to AC if you are wearing no armor and using no shield.",
 		descriptionFull: "While wearing these bracers, you gain a +2 bonus to AC if you are wearing no armor and using no shield.",
 		attunement: true
 	},
@@ -313,7 +313,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "While a fire burns in this brass brazier, you can use an action to speak the brazier's command word and summon a fire elemental, as if you had cast the Conjure Elemental spell. The brazier can't be used this way again until the next dawn. The brazier weighs 5 pounds.",
 		descriptionFull: "While a fire burns in this brass brazier, you can use an action to speak the brazier's command word and summon a fire elemental, as if you had cast the Conjure Elemental spell. The brazier can't be used this way again until the next dawn.\n   The brazier weighs 5 pounds.",
 		weight: 5
 	},
@@ -322,7 +322,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "While wearing this brooch, you have resistance to force damage, and you have immunity to damage from the Magic Missile spell.",
 		descriptionFull: "While wearing this brooch, you have resistance to force damage, and you have immunity to damage from the Magic Missile spell.",
 		attunement: true
 	},
@@ -349,7 +349,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 213], ["D", 157]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "You can use it to cast Dimension Door as an action. This property of the cape can't be used again until the next dawn. When you disappear, you leave behind a cloud of smoke, and you appear in a similar cloud of smoke at your destination.",
 		descriptionFull: "This cape smells faintly of brimstone. While wearing it, you can use it to cast the Dimension Door spell as an action. This property of the cape can't be used again until the next dawn.\n   When you disappear, you leave behind a cloud of smoke, and you appear in a similar cloud of smoke at your destination. The smoke lightly obscures the space you left and the space you appear in, and it dissipates at the end of your next turn. A light or stronger wind disperses the smoke."
 	},
 	'carpet of flying, 3 ft. \xD7 5 ft.': {
@@ -357,7 +357,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 213], ["D", 157]],
 		type: "wondrous item",
 		rarity: "very rare",
-		description: "",
+		description: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions if you are within 30 feet of it. A 3 x 5 ft. carpet can carry up to 200lbs at a fly speed of 80 feet. A carpet can carry up to twice its weight, but flies at half speed if it carries >200lbs.",
 		descriptionFull: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   A 3 ft. \xD7 5 ft. carpet can carry up to 200 lb. at a fly speed of 80 feet. A carpet can carry up to twice this weight, but it flies at half speed if it carries more than its normal capacity."
 	},
 	'carpet of flying, 4 ft. \xD7 6 ft.': {
@@ -365,7 +365,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 213], ["D", 157]],
 		type: "wondrous item",
 		rarity: "very rare",
-		description: "",
+		description: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions if you are within 30 feet of it. A 4 x 6 ft. carpet can carry up to 400 lb. at a fly speed of 60 feet. A carpet can carry up to twice this weight, but flies at half speed if it carries >400lbs.",
 		descriptionFull: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   A 4 ft. \xD7 6 ft. carpet can carry up to 400 lb. at a fly speed of 60 feet. A carpet can carry up to twice this weight, but it flies at half speed if it carries more than its normal capacity."
 	},
 	'carpet of flying, 5 ft. \xD7 7 ft.': {
@@ -373,7 +373,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 213], ["D", 157]],
 		type: "wondrous item",
 		rarity: "very rare",
-		description: "",
+		description: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions if you are within 30 feet of it. A 5 x 7 ft. carpet can carry up to 600lbs at a fly speed of 40 feet. A carpet can carry up to twice this weight, but flies at half speed if it carries >600lbs.",
 		descriptionFull: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   A 5 ft. \xD7 7 ft. carpet can carry up to 600 lb. at a fly speed of 40 feet. A carpet can carry up to twice this weight, but it flies at half speed if it carries more than its normal capacity."
 	},
 	'carpet of flying, 6 ft. \xD7 9 ft.': {
@@ -381,7 +381,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 213], ["D", 157]],
 		type: "wondrous item",
 		rarity: "very rare",
-		description: "",
+		description: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions if you are within 30 feet of it. A 6 x 9 ft. carpet can carry up to 800lbs at a fly speed of 30 feet. A carpet can carry up to twice this weight, but flies at half speed if it carries >800lbs.",
 		descriptionFull: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   A 6 ft. \xD7 9 ft. carpet can carry up to 800 lb. at a fly speed of 30 feet. A carpet can carry up to twice this weight, but it flies at half speed if it carries more than its normal capacity."
 	},
 	'censer of controlling air elementals': {
@@ -389,7 +389,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 213], ["D", 158]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "While incense is burning in this censer, you can speak the censer's command word as an action and summon an air elemental, as if you had cast Conjure Elemental. The censer can't be used this way again until the next dawn. This 6\" wide, 1' high vessel resembles a chalice with a decorated lid. It weighs 1 lb.",
 		descriptionFull: "While incense is burning in this censer, you can use an action to speak the censer's command word and summon an air elemental, as if you had cast the Conjure Elemental spell. The censer can't be used this way again until the next dawn.\n   This 6-inch-wide, 1-foot-high vessel resembles a chalice with a decorated lid. It weighs 1 pound.",
 		weight: 1
 	},
@@ -398,7 +398,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 213], ["D", 158]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "You can strike this as an action, pointing it at an object within 120 ft of you that can be opened (i.e. door, lid, lock). One lock or latch on it opens unless the sound can't reach it. If no locks or latches remain, the object itself opens. The chime can be used ten times. After the tenth time it cracks and becomes useless.",
 		descriptionFull: "This hollow metal tube measures about 1 foot long and weighs 1 pound. You can strike it as an action, pointing it at an object within 120 feet of you that can be opened, such as a door, lid, or lock. The chime issues a clear tone, and one lock or latch on the object opens unless the sound can't reach the object. If no locks or latches remain, the object itself opens.\n   The chime can be used ten times. After the tenth time it cracks and becomes useless.",
 		weight: 1
 	},
@@ -407,7 +407,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 214], ["D", 158]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "While wearing this circlet, you can use an action to cast the Scorching Ray spell with it. When you make the spell's attacks, you do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn.",
 		descriptionFull: "While wearing this circlet, you can use an action to cast the Scorching Ray spell with it. When you make the spell's attacks, you do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn."
 	},
 	'cloak of arachnida': {
@@ -424,7 +424,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 214], ["D", 158]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "This cloak makes you appear to be standing in a place near your actual location, causing any creature to have disadvantage on attack rolls against you. If you take damage, the cloak ceases to function until the start of your next turn. The cloak doesn't work if you are incapacitated, restrained, or otherwise unable to move.",
 		descriptionFull: "While you wear this cloak, it projects an illusion that makes you appear to be standing in a place near your actual location, causing any creature to have disadvantage on attack rolls against you. If you take damage, the property ceases to function until the start of your next turn. This property is suppressed while you are incapacitated, restrained, or otherwise unable to move.",
 		attunement: true
 	},
@@ -433,7 +433,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 214], ["D", 158]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "While you wear this cloak with its hood up, Wisdom (Perception) checks made to see you have disadvantage. and you have advantage on Dexterity (Stealth) checks made to hide, as the cloak's color shifts to camouflage you. Pulling the hood up or down requires an action.",
 		descriptionFull: "While you wear this cloak with its hood up, Wisdom (Perception) checks made to see you have disadvantage. and you have advantage on Dexterity (Stealth) checks made to hide, as the cloak's color shifts to camouflage you. Pulling the hood up or down requires an action.",
 		attunement: true
 	},
@@ -442,7 +442,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 214], ["D", 159]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "You gain a +1 bonus to AC and saving throws while you wear this cloak.",
 		descriptionFull: "You gain a +1 bonus to AC and saving throws while you wear this cloak.",
 		attunement: true
 	},
@@ -460,7 +460,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 214], ["D", 159]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "While wearing this cloak with its hood up, you can breathe underwater, and you have a swimming speed of 60 feet. Pulling the hood up or down requires an action.",
 		descriptionFull: "While wearing this cloak with its hood up, you can breathe underwater, and you have a swimming speed of 60 feet. Pulling the hood up or down requires an action."
 	},
 	'crystal ball': {
