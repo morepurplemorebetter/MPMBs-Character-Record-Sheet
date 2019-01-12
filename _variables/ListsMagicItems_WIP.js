@@ -525,7 +525,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 226], ["D", 160]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "You can use an action to place this 1\" metal cube on the ground and say its command word. It rapidly grows into a fortress that remains until you use an action to speak the command word that dismisses it, which works only if the fortress is empty. See full description for information about the tower.",
 		descriptionFull: "You can use an action to place this 1-inch metal cube on the ground and speak its command word. The cube rapidly grows into a fortress that remains until you use an action to speak the command word that dismisses it, which works only if the fortress is empty.\n   The fortress is a square tower, 20 feet on a side and 30 feet high, with arrow slits on all sides and a battlement atop it. Its interior is divided into two floors. with a ladder running along one wall to connect them. The ladder ends at a trapdoor leading to the roof. When activated, the tower has a small door on the side facing you. The door opens only at your command, which you can speak as a bonus action. It is immune to the Knock spell and similar magic, such as that of a chime of opening.\n   Each creature in the area where the fortress appears must make a DC 15 Dexterity saving throw, taking 10d10 bludgeoning damage on a failed save, or half as much damage on a successful one. In either case, the creature is pushed to an unoccupied space outside but next to the fortress. Objects in the area that aren't being worn or carried take this damage and are pushed automatically.\n   The tower is made of adamantine, and its magic prevents it from being tipped over. The roof, the door, and the walls each have 100 hit points, immunity to damage from nonmagical weapons excluding siege weapons, and resistance to all other damage. Only a Wish spell can repair the fortress (this use of the spell counts as replicating a spell of 8th level or lower). Each casting of Wish causes the roof, the door, or one wall to regain 50 hit points."
 	},
 	'dagger of venom': {
@@ -533,7 +533,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 215], ["D", 161]],
 		type: "Melee Weapon",
 		rarity: "rare",
-		description: "",
+		description: "It has +1 to attack and damage rolls. You can poison the blade as an action. The poison remains for 1 minute or until an attack with this weapon hits a creature. That creature must pass a DC 15 Con save or take 2d10 poison damage and become poisoned for 1 minute. It can't be poisoned again until the next dawn.",
 		descriptionFull: "You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n   You can use an action to cause thick, black poison to coat the blade. The poison remains for 1 minute or until an attack using this weapon hits a creature. That creature must succeed on a DC 15 Constitution saving throw or take 2d10 poison damage and become poisoned for 1 minute. The dagger can't be used this way again until the next dawn.",
 		weight: 1
 	},
@@ -560,7 +560,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 216], ["D", 162]],
 		type: "wondrous item",
 		rarity: "legendary",
-		description: "",
+		description: "Before you draw a card, you must declare how many cards you intend to draw and then draw them randomly. As soon as you draw a card, its magic takes effect. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice. See description for cards.",
 		descriptionFull: "Usually found in a box or pouch, this deck contains a number of cards made of ivory or vellum. Most (75 percent) of these decks have only thirteen cards, but the rest have twenty-two.\n   Before you draw a card, you must declare how many cards you intend to draw and then draw them randomly (you can use an altered deck of playing cards to simulate the deck). Any cards drawn in excess of this number have no effect. Otherwise, as soon as you draw a card from the deck, its magic takes effect. You must draw each card no more than 1 hour after the previous draw. If you fail to draw the chosen number, the remaining number of cards fly from the deck on their own and take effect all at once.\n   Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.\n   " + toUni("A Question of Enmity") + ". Two of the cards in a deck of many things can earn a character the enmity of another being. With the Flames card, the enmity is overt. The character should experience the devil's malevolent efforts on multiple occasions. Seeking out the fiend shouldn't be a simple task, and the adventurer should clash with the devil's allies and followers a few times before being able to confront the devil itself.\n   In the case of the Rogue card, the enmity is secret and should come from someone thought to be a friend or an ally. As Dungeon Master, you should wait for a dramatically appropriate moment to reveal this enmity, leaving the adventurer guessing who is likely to become a betrayer.\n\n" + toUni("1d22") + "\t" + toUni("Playing Card") + "\t" + toUni("Card") + "\n1\tAce of diamonds\tVizier*\n2\tKing of diamonds\tSun\n3\tQueen of diamonds\tMoon\n4\tJack of diamonds\tStar\n5\tTwo of diamonds\tComet*\n6\tAce of hearts\tThe Fates*\n7\tKing of hearts\tThrone\n8\tQueen of hearts\tKey\n9\tJack of hearts\tKnight\n10\tTwo of hearts\tGem*\n11\tAce of clubs\tTalons*\n12\tKing of clubs\tThe Void\n13\tQueen of clubs\tFlames\n14\tJack of clubs\tSkull\n15\tTwo of clubs\tIdiot*\n16\tAce of spades\tDonjon*\n17\tKing of spades\tRuin\n18\tQueen of spades\tEuryale\n19\tJack of spades\tRogue\n20\tTwo of spades\tBalance*\n21\tJoker (with TM)\tFool*\n22\tJoker (no TM)\tJester\n\n\n   " + toUni("Vizier") + ". At any time you choose within one year of drawing this card, you can ask a question in meditation and mentally receive a truthful answer to that question. Besides information, the answer helps you solve a puzzling problem or other dilemma. In other words, the knowledge comes with wisdom on how to apply it.\n   " + toUni("Sun") + ". You gain 50,000 XP, and a wondrous item (which the DM determines randomly) appears in your hands.\n   " + toUni("Moon") + ". You are granted the ability to cast the Wish spell 1d3 times.\n   " + toUni("Star") + ". Increase one of your ability scores by 2. The score can exceed 20 but can't exceed 24.\n   " + toUni("Comet") + ". If you single-handedly defeat the next hostile monster or group of monsters you encounter, you gain experience points enough to gain one level. Otherwise, this card has no effect.\n   " + toUni("The Fates*") + ". Reality's fabric unravels and spins anew, allowing you to avoid or erase one event as if it never happened. You can use the card's magic as soon as you draw the card or at any other time before you die.\n   " + toUni("Throne") + ". You gain proficiency in the Persuasion skill, and you double your proficiency bonus on checks made with that skill. In addition, you gain rightful ownership of a small keep somewhere in the world. However, the keep is currently in the hands of monsters, which you must clear out before you can claim the keep as yours.\n   " + toUni("Key") + ". A rare or rarer magic weapon with which you are proficient appears in your hands. The DM chooses the weapon.\n   " + toUni("Knight") + ". You gain the service of a 4th-level fighter who appears in a space you choose within 30 feet of you. The fighter is of the same race as you and serves you loyally until death, believing the fates have drawn him or her to you. You control this character.\n   " + toUni("Gem") + ". Twenty-five pieces of jewelry worth 2,000 gp each or fifty gems worth 1,000 gp each appear at your feet.\n   " + toUni("Talons") + ". Every magic item you wear or carry disintegrates. Artifacts in your possession aren't destroyed but do vanish.\n   " + toUni("The Void") + ". This black card spells disaster. Your soul is drawn from your body and contained in an object in a place of the DM's choice. One or more powerful beings guard the place. While your soul is trapped in this way, your body is incapacitated. A Wish spell can't restore your soul, but the spell reveals the location of the object that holds it. You draw no more cards.\n   " + toUni("Flames") + ". A powerful devil becomes your enemy. The devil seeks your ruin and plagues your life, savoring your suffering before attempting to slay you. This enmity lasts until either you or the devil dies.\n   " + toUni("Skull") + ". You summon an avatar of death-a ghostly humanoid skeleton clad in a tattered black robe and carrying a spectral scythe. It appears in a space of the DM's choice within 10 feet of you and attacks you, warning all others that you must win the battle alone. The avatar fights until you die or it drops to 0 hit points, whereupon it disappears. If anyone tries to help you, the helper summons its own avatar of death. A creature slain by an avatar of death can't be restored to life.\n   " + toUni("Idiot") + ". Permanently reduce your Intelligence by 1d4+1 (to a minimum score of 1). You can draw one additional card beyond your declared draws.\n   " + toUni("Donjon*") + ". You disappear and become entombed in a state of suspended animation in an extradimensional sphere. Everything you were wearing and carrying stays behind in the space you occupied when you disappeared. You remain imprisoned until you are found and removed from the sphere. You can't be located by any divination magic, but a Wish spell can reveal the location of your prison. You draw no more cards.\n   " + toUni("Ruin") + ". All forms of wealth that you carry or own, other than magic items, are lost to you. Portable property vanishes. Businesses, buildings, and land you own are lost in a way that alters reality the least. Any documentation that proves you should own something lost to this card also disappears.\n   " + toUni("Euryale") + ". The card's medusa-like visage curses you. You take a -2 penalty on saving throws while cursed in this way. Only a god or the magic of The Fates card can end this curse.\n   " + toUni("Rogue") + ". A nonplayer character of the DM's choice becomes hostile toward you. The identity of your new enemy isn't known until the NPC or someone else reveals it. Nothing less than a Wish spell or divine intervention can end the NPC's hostility toward you.\n   " + toUni("Balance") + ". Your mind suffers a wrenching alteration, causing your alignment to change. Lawful becomes chaotic, good becomes evil, and vice versa. If you are true neutral or unaligned, this card has no effect on you.\n   " + toUni("Fool") + ". You lose 10,000 XP, discard this card, and draw from the deck again, counting both draws as one of your declared draws. If losing that much XP would cause you to lose a level, you instead lose an amount that leaves you with just enough XP to keep your level.\n   " + toUni("Jester") + ". You gain 10,000 XP, or you can draw two additional cards beyond your declared draws.\n   * Found only in a deck with twenty-two cards"
 	},
 	// Defender (composite item, still to do)
@@ -569,7 +569,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 218], ["D", 165]],
 		type: "Heavy Armor",
 		rarity: "very rare",
-		description: "",
+		description: "You gain +1 to AC, and you can speak Abyssal. Unarmed strikes with your hands deal 1d8 magical slashing damage with a +1 to attack and damage rolls. You can't doff it unless hit by Remove Curse or similar magic. You have disadv on attack rolls against demons and on saves against their spells and special abilities.",
 		descriptionFull: "While wearing this armor, you gain a +1 bonus to AC, and you can understand and speak Abyssal. In addition, the armor's clawed gauntlets turn unarmed strikes with your hands into magic weapons that deal slashing damage, with a +1 bonus to attack and damage rolls and a damage die of 1d8.\n   " + toUni("Curse") + ". Once you don this cursed armor, you can't doff it unless you are targeted by the Remove Curse spell or similar magic. While wearing the armor, you have disadvantage on attack rolls against demons and on saving throws against their spells and special abilities.",
 		attunement: true,
 		weight: 65,
@@ -580,7 +580,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 165]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "You can place these shackles on an incapacitated creature as an action. The shackles prevent a creature bound by them from using extradimensional movement, including teleportation or travel to a different plane of existence. They don't prevent the creature from passing-through an interdimensional portal.",
 		descriptionFull: "You can use an action to place these shackles on an incapacitated creature. The shackles adjust to fit a creature of Small to Large size. In addition to serving as mundane manacles, the shackles prevent a creature bound by them from using any method of extradimensional movement, including teleportation or travel to a different plane of existence. They don't prevent the creature from passing-through an interdimensional portal.\n   You and any creature you designate when you use the shackles can use an action to remove them. Once every 30 days, the bound creature can make a DC 30 Strength (Athletics) check. On a success, the creature breaks free and destroys the shackles."
 	},
 	'dragon scale mail, black': {
@@ -588,7 +588,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 165]],
 		type: "Medium Armor",
 		rarity: "very rare",
-		description: "",
+		description: "You gain +1 to AC, you have adv on saves against the Frightful Presence and breath weapons of dragons, and you resist acid damage. You can use an action to magically discern the distance and direction to the closest black dragon within 30 miles of you. This action can't be used again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to acid damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest black dragon within 30 miles of you. This special action can't be used again until the next dawn.",
 		attunement: true,
 		weight: 45
@@ -598,7 +598,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 165]],
 		type: "Medium Armor",
 		rarity: "very rare",
-		description: "",
+		description: "You gain +1 to AC, you have adv on saves against the Frightful Presence and breath weapons of dragons, and you resist lightning damage. You can use an action to magically discern the distance and direction to the closest blue dragon within 30 miles of you. This action can't be used again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to lightning damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest blue dragon within 30 miles of you. This special action can't be used again until the next dawn.",
 		attunement: true,
 		weight: 45
@@ -608,7 +608,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 165]],
 		type: "Medium Armor",
 		rarity: "very rare",
-		description: "",
+		description: "You gain +1 to AC, you have adv on saves against the Frightful Presence and breath weapons of dragons, and you resist fire damage. You can use an action to magically discern the distance and direction to the closest brass dragon within 30 miles of you. This action can't be used again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to fire damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest brass dragon within 30 miles of you. This special action can't be used again until the next dawn.",
 		attunement: true,
 		weight: 45
@@ -618,7 +618,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 165]],
 		type: "Medium Armor",
 		rarity: "very rare",
-		description: "",
+		description: "You gain +1 to AC, you have adv on saves against the Frightful Presence and breath weapons of dragons, and you resist lightning damage. You can use an action to magically discern the distance and direction to the closest bronze dragon within 30 miles. This action can't be used again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to lightning damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest bronze dragon within 30 miles of you. This special action can't be used again until the next dawn.",
 		attunement: true,
 		weight: 45
@@ -628,7 +628,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 165]],
 		type: "Medium Armor",
 		rarity: "very rare",
-		description: "",
+		description: "You gain +1 to AC, you have adv on saves against the Frightful Presence and breath weapons of dragons, and you resist acid damage. You can use an action to magically discern the distance and direction to the closest copper dragon within 30 miles of you. This action can't be used again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to acid damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest copper dragon within 30 miles of you. This special action can't be used again until the next dawn.",
 		attunement: true,
 		weight: 45
@@ -638,7 +638,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 165]],
 		type: "Medium Armor",
 		rarity: "very rare",
-		description: "",
+		description: "You gain +1 to AC, you have adv on saves against the Frightful Presence and breath weapons of dragons, and you resist fire damage. You can use an action to magically discern the distance and direction to the closest gold dragon within 30 miles of you. This action can't be used again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to fire damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest gold dragon within 30 miles of you. This special action can't be used again until the next dawn.",
 		attunement: true,
 		weight: 45
@@ -648,7 +648,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 165]],
 		type: "Medium Armor",
 		rarity: "very rare",
-		description: "",
+		description: "You gain +1 to AC, you have adv on saves against the Frightful Presence and breath weapons of dragons, and you resist poison damage. You can use an action to magically discern the distance and direction to the closest green dragon within 30 miles of you. This action can't be used again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to poison damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest green dragon within 30 miles of you. This special action can't be used again until the next dawn.",
 		attunement: true,
 		weight: 45
@@ -658,7 +658,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 165]],
 		type: "Medium Armor",
 		rarity: "very rare",
-		description: "",
+		description: "You gain +1 to AC, you have adv on saves against the Frightful Presence and breath weapons of dragons, and you resist fire damage. You can use an action to magically discern the distance and direction to the closest red dragon within 30 miles of you. This action can't be used again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to fire damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest red dragon within 30 miles of you. This special action can't be used again until the next dawn.",
 		attunement: true,
 		weight: 45
@@ -668,7 +668,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 165]],
 		type: "Medium Armor",
 		rarity: "very rare",
-		description: "",
+		description: "You gain +1 to AC, you have adv on saves against the Frightful Presence and breath weapons of dragons, and you resist cold damage. You can use an action to magically discern the distance and direction to the closest silver dragon within 30 miles of you. This action can't be used again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to cold damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest silver dragon within 30 miles of you. This special action can't be used again until the next dawn.",
 		attunement: true,
 		weight: 45
@@ -678,7 +678,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 165]],
 		type: "Medium Armor",
 		rarity: "very rare",
-		description: "",
+		description: "You gain +1 to AC, you have adv on saves against the Frightful Presence and breath weapons of dragons, and you resist cold damage. You can use an action to magically discern the distance and direction to the closest white dragon within 30 miles of you. This action can't be used again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to cold damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest white dragon within 30 miles of you. This special action can't be used again until the next dawn.",
 		attunement: true,
 		weight: 45
@@ -689,7 +689,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 219], ["D", 166]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "There is enough of this for one use. When you throw the dust into the air as action, you and each creature and object within 10 feet of you become invisible for 2d4 minutes. The duration is the same for all subjects. If a creature affected by the dust attacks or casts a spell, the invisibility ends for that creature.",
 		descriptionFull: "Found in a small packet, this powder resembles very fine sand. There is enough of it for one use. When you use an action to throw the dust into the air, you and each creature and object within 10 feet of you become invisible for 2d4 minutes. The duration is the same for all subjects, and the dust is consumed when its magic takes effect. If a creature affected by the dust attacks or casts a spell, the invisibility ends for that creature."
 	},
 	'dust of dryness': {
@@ -713,7 +713,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 220], ["D", 167]],
 		type: "Heavy Armor",
 		rarity: "very rare",
-		description: "",
+		description: "While wearing this armor, you gain a +2 bonus to AC. In addition, if an effect moves you against your will along the ground, you can use your reaction to reduce the distance you are moved by up to 10 feet.",
 		descriptionFull: "While wearing this armor, you gain a +2 bonus to AC. In addition, if an effect moves you against your will along the ground, you can use your reaction to reduce the distance you are moved by up to 10 feet.",
 		weight: 65
 	},
@@ -749,7 +749,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 220], ["D", 167]],
 		type: "wondrous item",
 		rarity: "very rare",
-		description: "",
+		description: "When you use an action to remove the stopper, a cloud of thick smoke flows out of the bottle. At the end of your turn, an efreeti appears in an unoccupied space within 30 feet of you. The first time the bottle is opened, the DM rolls to determine what happens.",
 		descriptionFull: "This painted brass bottle weighs 1 pound. When you use an action to remove the stopper, a cloud of thick smoke flows out of the bottle. At the end of your turn, the smoke disappears with a flash of harmless fire, and an efreeti appears in an unoccupied space within 30 feet of you.\n   The first time the bottle is opened, the DM rolls to determine what happens.\n\n" + toUni("d100") + "\t" + toUni("Effect") + "\n01-10\tThe efreeti attacks you. After fighting for 5 rounds, the efreeti disappears, and the bottle loses its magic.\n11-90\tThe efreeti serves you for 1 hour, doing as you command. Then the efreeti returns to the bottle, and a new stopper contains it. The stopper can't be removed for 24 hours. The next two times the bottle is opened, the same effect occurs. If the bottle is opened a fourth time, the efreeti escapes and disappears, and the bottle loses its magic.\n91-00\tThe efreeti can cast the Wish spell three times for you. It disappears when it grants the final wish or after 1 hour, and the bottle loses its magic.",
 		weight: 1
 	},
@@ -758,7 +758,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 220], ["D", 167]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "This gem contains a mote of elemental energy. When you use an action to break the gem, an air elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
 		descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, an air elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost."
 	},
 	'elemental gem, emerald': {
@@ -766,7 +766,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 220], ["D", 167]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "This gem contains a mote of elemental energy. When you use an action to break the gem, a water elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
 		descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, a water elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost."
 	},
 	'elemental gem, red corundum': {
@@ -774,7 +774,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 220], ["D", 167]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "This gem contains a mote of elemental energy. When you use an action to break the gem, a fire elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
 		descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, a fire elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost."
 	},
 	'elemental gem, yellow diamond': {
@@ -782,7 +782,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 220], ["D", 167]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "This gem contains a mote of elemental energy. When you use an action to break the gem, an earth elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
 		descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, an earth elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost."
 	},
 	'elven chain': {
@@ -790,7 +790,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 220], ["D", 168]],
 		type: "Medium Armor",
 		rarity: "rare",
-		description: "",
+		description: "You gain a +1 bonus to AC while you wear this armor. You are considered proficient with this armor even if you lack proficiency with medium armor.",
 		descriptionFull: "You gain a +1 bonus to AC while you wear this armor. You are considered proficient with this armor even if you lack proficiency with medium armor.",
 		weight: 20
 	},
@@ -808,7 +808,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 220], ["D", 168]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "These crystal lenses fit over the eyes. They have 3 charges. While wearing them, you can expend 1 charge as an action to cast the Charm Person spell (save DC 13) on a humanoid within 30 feet of you, provided that you and the target can see each other. The lenses regain all expended charges daily at dawn.",
 		descriptionFull: "These crystal lenses fit over the eyes. They have 3 charges. While wearing them, you can expend 1 charge as an action to cast the Charm Person spell (save DC 13) on a humanoid within 30 feet of you, provided that you and the target can see each other. The lenses regain all expended charges daily at dawn.",
 		attunement: true
 	},
@@ -817,7 +817,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 221], ["D", 168]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "These crystal lenses fit over the eyes. While wearing them, you can see much better than normal out to a range of 1 foot. You have advantage on Intelligence (Investigation) checks that rely on sight while searching an area or studying an object within that range.",
 		descriptionFull: "These crystal lenses fit over the eyes. While wearing them, you can see much better than normal out to a range of 1 foot. You have advantage on Intelligence (Investigation) checks that rely on sight while searching an area or studying an object within that range."
 	},
 	'eyes of the eagle': {
@@ -825,7 +825,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 221], ["D", 168]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "These crystal lenses fit over the eyes. While wearing them, you have advantage on Wisdom (Perception) checks that rely on sight. In conditions of clear visibility, you can make out details of even extremely distant creatures and objects as small as 2 feet across.",
 		descriptionFull: "These crystal lenses fit over the eyes. While wearing them, you have advantage on Wisdom (Perception) checks that rely on sight. In conditions of clear visibility, you can make out details of even extremely distant creatures and objects as small as 2 feet across.",
 		attunement: true
 	},
@@ -936,7 +936,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 223], ["D", 172]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "This gem has 3 charges. As an action, you can speak the gem's command word and expend 1 charge. For the next 10 minutes, you have truesight out to 120 feet when you peer through the gem. The gem regains 1d3 expended charges daily at dawn.",
 		descriptionFull: "This gem has 3 charges. As an action, you can speak the gem's command word and expend 1 charge. For the next 10 minutes, you have truesight out to 120 feet when you peer through the gem.\n   The gem regains 1d3 expended charges daily at dawn.",
 		attunement: true,
 		weight: 1
@@ -967,7 +967,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 224], ["D", 172]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "When a ranged weapon attack hits you while you're wearing them, you can use your reaction to reduce the damage by 1d10 + your Dexterity modifier, provided that you have a free hand. If you reduce the damage to 0, you can catch the missile if it is small enough for you to hold in that hand.",
 		descriptionFull: "These gloves seem to almost meld into your hands when you don them. When a ranged weapon attack hits you while you're wearing them, you can use your reaction to reduce the damage by 1d10 + your Dexterity modifier, provided that you have a free hand. If you reduce the damage to 0, you can catch the missile if it is small enough for you to hold in that hand.",
 		attunement: true
 	},
@@ -976,7 +976,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 224], ["D", 172]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "While wearing these gloves, climbing and swimming don't cost you extra movement, and you gain a +5 bonus to Strength (Athletics) checks made to climb or swim.",
 		descriptionFull: "While wearing these gloves, climbing and swimming don't cost you extra movement, and you gain a +5 bonus to Strength (Athletics) checks made to climb or swim.",
 		attunement: true
 	},
@@ -985,7 +985,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 224], ["D", 172]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "While wearing these dark lenses, you have darkvision out to a range of 60 feet. If you already have darkvision. wearing the goggles increases its range by 60 feet.",
 		descriptionFull: "While wearing these dark lenses, you have darkvision out to a range of 60 feet. If you already have darkvision. wearing the goggles increases its range by 60 feet."
 	},
 	'hammer of thunderbolts': {
@@ -1002,7 +1002,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 225], ["D", 173]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "While wearing this hat, you can use an action to cast the Disguise Self spell from it at will. The spell ends if the hat is removed.",
 		descriptionFull: "While wearing this hat, you can use an action to cast the Disguise Self spell from it at will. The spell ends if the hat is removed.",
 		attunement: true
 	},
@@ -1030,7 +1030,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 225], ["D", 173]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "While wearing this helm, you can use an action to cast the Comprehend Languages spell from it at will.",
 		descriptionFull: "While wearing this helm, you can use an action to cast the Comprehend Languages spell from it at will."
 	},
 	'helm of telepathy': {
@@ -1038,7 +1038,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 225], ["D", 174]],
 		type: "wondrous item",
 		rarity: "uncommon",
-		description: "",
+		description: "You can cast Detect Thoughts (save DC 13) as an action. You can send a mental message to the target as a bns action. It can reply as a bns action. While focusing on a creature with Detect Thoughts, you can cast Suggestion (save DC 13) on it as an action. Suggestion can't be used again until the next dawn.",
 		descriptionFull: "While wearing this helm, you can use an action to cast the Detect Thoughts spell (save DC 13) from it. As long as you maintain concentration on the spell, you can use a bonus action to send a telepathic message to a creature you are focused on. It can reply\u2014using a bonus action to do so\u2014while your focus on it continues.\n   While focusing on a creature with Detect Thoughts, you can use an action to cast the Suggestion spell (save DC 13) from the helm on that creature. Once used, the suggestion property can't be used again until the next dawn.",
 		attunement: true
 	},
@@ -1047,7 +1047,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 225], ["D", 174]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "This helm has 3 charges. While wearing it, you can use an action and expend 1 charge to cast the Teleport spell from it. The helm regains 1d3 expended charges daily at dawn.",
 		descriptionFull: "This helm has 3 charges. While wearing it, you can use an action and expend 1 charge to cast the Teleport spell from it. The helm regains 1d3 expended charges daily at dawn.",
 		attunement: true
 	},
@@ -1066,7 +1066,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 226], ["D", 174]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "You can blow the horn as an action, emitting a loud blast in a 30 ft cone. All hit creatures must make a DC 15 Con save. A creature takes 5d6 thunder dmg and is deafened for 1 min on a failure; it takes half dmg and isn't deafened on a success. Glass or crystal targets have disadv on the save and take double damage.",
 		descriptionFull: "You can use an action to speak the horn's command word and then blow the horn, which emits a thunderous blast in a 30-foot cone that is audible 600 feet away. Each creature in the cone must make a DC 15 Constitution saving throw. On a failed save, a creature takes 5d6 thunder damage and is deafened for 1 minute. On a successful save, a creature takes half as much damage and isn't deafened. Creatures and objects made of glass or crystal have disadvantage on the saving throw and take 10d6 thunder damage instead of 5d6.\n   Each use of the horn's magic has a 20% chance of causing the horn to explode. The explosion deals 10d6 fire damage to the blower and destroys the horn.",
 		weight: 2
 	},
@@ -1111,7 +1111,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 226], ["D", 175]],
 		type: "wondrous item",
 		rarity: "very rare",
-		description: "",
+		description: "A horse or similar creature can move normally while floating 4\" above the ground. The creature can cross nonsolid or unstable surfaces. The creature leaves no tracks and ignores difficult terrain. The creature can move at normal speed for up to 12 hours a day without suffering exhaustion from a forced march.",
 		descriptionFull: "These iron horseshoes come in a set of four. While all four shoes are affixed to the hooves of a horse or similar creature, they allow the creature to move normally while floating 4 inches above the ground. This effect means the creature can cross or stand above nonsolid or unstable surfaces, such as water or lava. The creature leaves no tracks and ignores difficult terrain. In addition, the creature can move at normal speed for up to 12 hours a day without suffering exhaustion from a forced march."
 	},
 	'horseshoes of speed': {
@@ -1119,7 +1119,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 226], ["D", 175]],
 		type: "wondrous item",
 		rarity: "rare",
-		description: "",
+		description: "These iron horseshoes come in a set of four. While all four shoes are affixed to the hooves of a horse or similar creature, they increase the creature's walking speed by 30 feet.",
 		descriptionFull: "These iron horseshoes come in a set of four. While all four shoes are affixed to the hooves of a horse or similar creature, they increase the creature's walking speed by 30 feet."
 	},
 	'immovable rod': {
