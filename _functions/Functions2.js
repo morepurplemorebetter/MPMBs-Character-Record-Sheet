@@ -5378,7 +5378,6 @@ function addEvals(evalObj, NameEntity, Add) {
 		CurrentUpdates.types.push("hp");
 	};
 
-
 	// add a spell list change function
 	if (evalObj.spellList) {
 		// first save the current string to the CurrentUpdates
@@ -5473,7 +5472,15 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	//set a variable to refer to the new weapon
 	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
 	var WeaponName = thisWeapon[0];
-	var theWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] ? CurrentCompRace[prefix].attacks[WeaponName] : false;
+	var aWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] ? CurrentCompRace[prefix].attacks[WeaponName] : false;
+
+	if (aWea.baseWeapon && WeaponsList[aWea.baseWeapon]) {
+		var theWea = {};
+		for (var attr in aWea) theWea[attr] = aWea[attr];
+		for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
+	} else {
+		var theWea = aWea;
+	}
 
 	//if there is a new weapon entered and the old weapon had ammo that is not used by any of the current weapons, remove that ammo from the ammo section.
 	if (QI && oldWea && WeaponsList[oldWea].ammo) {
@@ -5574,6 +5581,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 				theWea : theWea,
 				StrDex : StrDex,
 				WeaponName : WeaponName,
+				baseWeaponName : theWea.baseWeapon ? theWea.baseWeapon : WeaponName,
 				thisWeapon : thisWeapon
 			}
 
@@ -5678,7 +5686,7 @@ function CalcAttackDmgHit(fldName) {
 
 	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
 	var WeaponName = thisWeapon[0];
-	var theWea = WeaponsList[WeaponName];
+	var aWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] ? CurrentCompRace[prefix].attacks[WeaponName] : false;
 	var WeaponText = (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]) + (fields.Description ? " " + fields.Description : "");
 
 	if (!WeaponText || (/^(| |empty)$/).test(fields.Mod)) {
@@ -5704,6 +5712,13 @@ function CalcAttackDmgHit(fldName) {
 	// define some variables that we can check against later or with the CurrentEvals
 	var isDC = (/dc/i).test(fields.To_Hit_Bonus);
 	if (QI) {
+		if (aWea && aWea.baseWeapon && WeaponsList[aWea.baseWeapon]) {
+			var theWea = {};
+			for (var attr in aWea) theWea[attr] = aWea[attr];
+			for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
+		} else {
+			var theWea = aWea;
+		}
 		var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (/\b(cantrip|spell)\b/i).test(WeaponText);
 		var isMeleeWeapon = (!isSpell || thisWeapon[0] === "shillelagh") && (/melee/i).test(fields.Range);
 		var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
@@ -5739,6 +5754,7 @@ function CalcAttackDmgHit(fldName) {
 				isNaturalWeapon : isNaturalWeapon,
 				theWea : theWea,
 				WeaponName : WeaponName,
+				baseWeaponName : theWea && theWea.baseWeapon ? theWea.baseWeapon : WeaponName,
 				thisWeapon : thisWeapon,
 				isOffHand : isOffHand
 			}
