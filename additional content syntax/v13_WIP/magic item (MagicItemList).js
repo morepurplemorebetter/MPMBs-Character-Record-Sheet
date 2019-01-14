@@ -45,7 +45,7 @@ var iFileName = "Homebrew Syntax - MagicItemList.js";
 /* 	iFileName // OPTIONAL //
 	TYPE:	string
 	USE:	how the file will be named in the sheet if you import it as a file
-	
+
 	Note that this is a variable called 'iFileName'.
 	Variables invoked inside an import script will not be available after importing.
 	However, if you invoke the variable without the 'var', it will be available after importing.
@@ -123,7 +123,7 @@ MagicItemList["staff of purple"] = {
 		"wand"
 		"potion"
 		"scroll"
-*/	
+*/
 	rarity : "rare",
 /*	rarity // REQUIRED //
 	TYPE:	string
@@ -136,6 +136,18 @@ MagicItemList["staff of purple"] = {
 		"very rare"
 		"legendary"
 		"artifact"
+*/
+	magicItemTable : "H",
+	magicItemTable : ["B", "E"],
+/*	magicItemTable // OPTIONAL //
+	TYPE:	string or array of strings (variable length)
+	USE:	define what table(s) in the DMG that the magic item appears on (or as listed in the AL Content Catalog)
+
+	This attribute is used for sorting the items and for the magic item trading rules in the Adventurers League.
+
+	The string (or each string in the array) contains just a single letter indicating the table.
+	For most items this will be a string,
+	but you can have an array with multiple entries for items that appear on multiple tables.
 */
 	attunement : true,
 /*	attunement // OPTIONAL //

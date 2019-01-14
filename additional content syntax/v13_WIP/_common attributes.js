@@ -149,7 +149,7 @@ usagescalc : ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "event.val
 		Each entry is a level, so you will most likely want to add 20 entries.
 		Each entry has to be a string, see option 1. String for how those work.
 		IMPORTANT! Set the value to "" for levels that the feature is not present.
-	
+
 	This attribute will do nothing if not both the 'usages' and 'recovery' attributes are present in the same feature.
 */
 
@@ -312,7 +312,7 @@ weaponProfs : [
 		Add the names of weapons as they appear in the WeaponsList object.
 		Alternatively, you can use a grouping of weapons, as their 'list' attribute says, for example 'firearm'.
 		Alternatively, you can use types of weapons, as their 'type' attribute says, for example 'Improvised Weapons'.
-	
+
 		For example the High Elf weapon proficiency looks like this:
 		weaponProfs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
 	*/
@@ -405,7 +405,7 @@ dmgres : [
 /*	dmgres // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add entry to the "Resistances" section on the 1st page
-	
+
 	This array can have two type of entries:
 	1. A string of the damage type that resistance is gained against.
 	2. An array of 2 strings:
@@ -494,10 +494,10 @@ speed : {
 	/*	walk, burrow, climb, fly, or swim // OPTIONAL //
 		TYPE:	object with two attributes, "spd" and "enc".
 		USE:	add movement mode of the object's name
-		
+
 		"spd" is the speed in feet
 		"enc" is the encumbered speed in feet
-		
+
 		Note that both "spd" and "enc" have to be present.
 		If "spd" or "enc" is set to zero it is ignored (i.e. "enc : 0" means no encumbered speed).
 
@@ -599,10 +599,10 @@ spellcastingBonus : [{
 	1. Make a selection of spells to show in the drop-down in the spell selection dialog (same as a 'common spell list object').
 	2. Determine how often and with what name the drop-down of spells is present in the "Bonus Spells" section.
 	3. Determine how the first column of the spell will look on the spell sheet.
-	
+
 	For the first function, this object can have all the same attributes as a 'common spell list object'.
 	For an explanation of those attributes see the file "_common spell list object.js".
-	
+
 	For the second and third functions, this object has some specific attributes, which are in addition to a 'common spell list object'.
 	For those objects, see their individual explanations below.
 */
@@ -661,6 +661,45 @@ spellcastingBonus : [{
 
 		If you don't set anything for the first column the sheet will determine what is most logical.
 	*/
+
+	spellcastingAbility : 6,
+	/*	spellcastingAbility // OPTIONAL //
+		TYPE:	number corresponding to the ability score (1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
+		USE:	set the ability score used for spellcasting abilities
+
+		Only include this attribute in a single object in the array.
+		If you include it in multiple objects in the array, only the last one will be used.
+		
+		IMPORTANT
+		This attribute will overwrite the spellcasting ability score used for the parent object (if any).
+		Only use this attribute if the parent object (i.e. class/race) does not have spellcasting abilities
+		and its default ability save DC uses a different ability score than its spellcasting.
+		For example, if you include this in a class feature for a cleric subclass and set it to `1`,
+		the cleric will be casting spells using Strength.
+		
+		Setting this to 0 or false is the same as not including this attribute.
+	*/
+
+	fixedDC : 13,
+	/*	fixedDC // OPTIONAL //
+		TYPE:	number
+		USE:	set the DC and spell attack to a fixed value, not dependent on ability score
+
+		This attribute will stop the calculation of the DC and attack on the spell sheet and instead
+		use this value or this value minus 8 for the spell attack.
+		This attribute is mostly used by magic items.
+
+		Only include this attribute in a single object in the array.
+		If you include it in multiple objects in the array, only the last one will be used.
+
+		IMPORTANT
+		This attribute will overwrite the spellcasting ability score used for calculating DC/attack (if any).
+		Only use this attribute if the parent object (i.e. class/race) does not have spellcasting abilities.
+		For example, if you include this in a class feature for a wizard subclass and set it to `12`,
+		the wizard will be casting spells using DC 12 regardless of its intelligence modifier.
+
+		Setting this to 0 or false is the same as not including this attribute.
+	*/
 }],
 
 spellcastingExtra : ["cure wounds", "guiding bolt", "flaming sphere", "lesser restoration", "daylight", "revivify", "guardian of faith", "wall of fire", "flame strike", "greater restoration"],
@@ -676,7 +715,7 @@ spellcastingExtra : ["disguise self", "rope trick", "fear", "greater invisibilit
 		The spells are added to the generated spell sheet and marked as "always prepared".
 	b) spells known (bard, ranger, sorcerer, warlock)
 		The spells are added to the list of spells that the known spells can be selected from
-		
+
 		You can also have the spells be automatically added to the known spells, without counting to the maximum spells known.
 		To do so, make sure the 101th entry in the array reads "AddToKnown", see example above.
 		(e.g. spellcastingExtra[100] = "AddToKnown")
@@ -757,7 +796,7 @@ calcChanges : {
 		The function will not be evaluated but is fed two variables:
 		1)	fields, an object with all the different fields for an attack entry
 			You can change this object to affect what is added to the fields
-			For example, you can change which ability score is used by 
+			For example, you can change which ability score is used by
 
 			A list of the different attributes of this variable:
 			var fields = {
@@ -849,11 +888,11 @@ calcChanges : {
 				WeaponName, // string, the name of the entry in the WeaponsList object
 				thisWeapon // array, the entry in the CurrentWeapons.known array
 			}
-		
+
 		3)	output, an object with the information used to calculate the attack's To Hit & Damage
 			You can change this object to affect the calculation
 			For example, you can add a number to output.extraDmg to add more damage
-	
+
 			var output = {
 				prof, // number, the proficiency bonus to use or 0 if not proficient
 				die, // string, the damage die to use, identical to the fields.Damage_Die
@@ -918,7 +957,7 @@ calcChanges : {
 			For example, this will be "wizard" for the wizard class spell list,
 			"fighter" for the eldritch knight spell list,
 			or "drow" for the racial spells gained from being a dark elf.
-		
+
 		3)	spType, a string that shows what type of spell list this is
 			This can be one of multiple things:
 			"book"	spellcasting class uses a spellbook (e.g. the wizard)
@@ -927,7 +966,7 @@ calcChanges : {
 			"feat"	spellcasting source is a feat and only gains spells from the spellcastingBonus feature
 			"race"	spellcasting source is a race and only gains spells from the spellcastingBonus feature
 			"item"	spellcasting source is a magic item and only gains spells from the spellcastingBonus feature
-			
+
 			It can also have de suffix "-bonus" added to one of the above if generating the list for
 			something gained through the spellcastingBonus attribute.
 
