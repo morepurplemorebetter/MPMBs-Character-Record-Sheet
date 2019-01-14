@@ -532,6 +532,7 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 			return false;
 	};
 	if (!sObj.ability) sObj.ability = fObj.spellcastingAbility ? fObj.spellcastingAbility : fObj.abilitySave ? fObj.abilitySave : 0;
+	if (!sObj.fixedDC && fObj.fixedDC) sObj.fixedDC = Number(fObj.fixedDC);
 	return sObj;
 }
 
@@ -551,13 +552,16 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName) {
 		// see if this wants to change the spellcasting ability
 		var spFeatItemLvl = false;
 		var spAbility = !isArray(spBon) ? spBon.ability : false;
+		var spFixedDC = !isArray(spBon) ? spBon.fixedDC : false;
 		if (isArray(spBon)) {
 			for (var i = 0; i < spBon.length; i++) {
 				if (!spFeatItemLvl && spBon[i].times && isArray(spBon[i].times)) spFeatItemLvl = true;
 				if (spBon[i].spellcastingAbility) spAbility = spBon[i].spellcastingAbility;
+				if (spBon[i].fixedDC) spFixedDC = spBon[i].fixedDC;
 			}
 		}
 		if (spAbility) sObj.ability = spAbility;
+		if (spFixedDC) sObj.fixedDC = spFixedDC;
 		// if concerning a feat or item, set the level only if the spellcastingBonus needs it
 		if ((/feat|item/i).test(sObj.typeSp) && spFeatItemLvl) sObj.level = Math.max(Number(What("Character Level")), 1);
 	}
@@ -1560,11 +1564,13 @@ function ApplyMagicItem(input, FldNmbr) {
 		// Create the tooltip
 		var tooltipStr = (theMI.type ? theMI.type + ", " : "") + (theMI.rarity ? theMI.rarity : "");
 		if (theMI.attunement) tooltipStr += tooltipStr ? " (requires attunement)" : "requires attunement";
-		if (tooltipStr) tooltipStr = tooltipStr[0].toUpperCase() + tooltipStr.substr(1);
-		if (theMI.prerequisite) tooltipStr += (tooltipStr ? "\n" : "") + "Prerequisite: " + theMI.prerequisite;
-		tooltipStr = toUni(theMI.name) + "\n" + tooltipStr;
-		if (theMI.descriptionFull) tooltipStr += isArray(theMI.descriptionFull) ? desc(theMI.descriptionFull) : "\n   " + theMI.descriptionFull;
-		tooltipStr += stringSource(theMI, "full,page", "\n\nSource(s): ", ".");
+		tooltipStr = toUni(theMI.name) + (tooltipStr ? "\n" + tooltipStr[0].toUpperCase() + tooltipStr.substr(1) : "");
+
+		if (theMI.magicItemTable) tooltipStr += formatLineList("\n \u2022 Table: ", theMI.magicItemTable) + ".";
+		if (theMI.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theMI.prerequisite;
+		tooltipStr += stringSource(theMI, "full,page", "\n \u2022 Source: ", ".");
+
+		if (theMI.descriptionFull) tooltipStr += (isArray(theMI.descriptionFull) ? desc(theMI.descriptionFull).replace(/^\n   /i, "\n\n") : "\n\n" + theMI.descriptionFull;
 
 		// Get the description
 		var theDesc = "";

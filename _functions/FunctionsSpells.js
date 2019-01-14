@@ -426,6 +426,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 				Value(headerArray[1], casterName); //set the name of the header
 				Value(headerArray[2], caster); //set the name of the class
 				PickDropdown(headerArray[3], spCast.ability); //set the ability score to use
+				AddTooltip(headerArray[3], undefined, spCast.fixedDC ? "fixed" : ""); //set fixed DC to use, if any
 				if (spCast.blueTxt) { //set the remembered bluetext values, if at all present
 					Value(headerArray[7], spCast.blueTxt.prep ? spCast.blueTxt.prep : 0); //set the bluetext for preparing
 					Value(headerArray[8], spCast.blueTxt.atk ? spCast.blueTxt.atk : 0); //set the bluetext for attack
@@ -494,31 +495,31 @@ function CalcSpellScores() {
 	if (tDoc.info.SpellsOnly) return;
 	var type = event.target.name.replace(/.*spellshead\.(\w+).*/, "$1");
 	var Fld = event.target.name.replace("spellshead." + type, "spellshead.DINGDONG");
-	var theMod = What(Fld.replace("DINGDONG", "ability"));
+	var modFld = Fld.replace("DINGDONG", "ability");
+	var theMod = How(modFld) == "fixed" ? "fixed" : What(Fld.replace("DINGDONG", "ability"));
+	var aClass = What(Fld.replace("DINGDONG", "class")); //find the associated class
+	var cSpells = CurrentSpells[aClass] ? CurrentSpells[aClass] : false;
+	var fixedDC = cSpells && cSpells.fixedDC ? cSpells.fixedDC : false;
 
 	var theResult = "";
-	//now only continue with a calculation if a ability was chosen in the drop-down menu
-	if (theMod !== "nothing") {
-		//the ability score modifier
-		theResult = Number(What(theMod));
 
-		//damage added manually in the bluetext field
-		theResult += EvalBonus(What(event.target.name.replace("spellshead", "BlueText.spellshead")), true);
+	//now only continue with a calculation if a ability was chosen in the drop-down menu or this has a fixed DC
+	if (theMod !== "nothing" || fixedDC) {
+		//the ability score modifier
+		theResult = fixedDC && type !== "prepare" ? fixedDC - 8 : Number(What(theMod));
 
 		switch (type) {
 		 case "dc" :
 			//add a base of 8 and then add the proficiency bonus
 			theResult += 8;
 		 case "attack" :
+			if (fixedDC) break; // no proficiency bonus if a fixed DC
 			//add the proficiency bonus
-			theResult += Number(What("Proficiency Bonus"));
+			theResult += fixedDC ? 0 : Number(What("Proficiency Bonus"));
 			break;
 		 case "prepare" :
-			//find the associated class
-			var aClass = What(Fld.replace("DINGDONG", "class"));
 			//add the class level
-			if (CurrentSpells[aClass]) {
-				var cSpells = CurrentSpells[aClass];
+			if (cSpells) {
 				if (cSpells.factor && cSpells.factor[0]) {
 					theResult += Math.max(Math.floor(cSpells.level / cSpells.factor[0]), 1);
 				} else {
@@ -527,6 +528,9 @@ function CalcSpellScores() {
 			}
 			break;
 		}
+
+		//stuff added manually in the bluetext field
+		theResult += EvalBonus(What(event.target.name.replace("spellshead", "BlueText.spellshead")), true);
 	}
 
 	event.value = theResult;

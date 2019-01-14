@@ -33,7 +33,7 @@ var Base_MagicItemsList = {
 	'animated shield': {
 		name: "Animated Shield",
 		source: [["SRD", 208], ["D", 183]],
-		type: "Shield",
+		type : "shield",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "While holding this shield, you can speak its command word as a bonus action to cause it to animate. The shield leaps into the air and hovers in your space to protect you as if you were wielding it, leaving your hands free. The shield remains animated for 1 minute, until you use a bonus action to end this effect, or until you are incapacitated or die, at which point the shield falls to the ground or into your hand if you have one free.",
@@ -52,7 +52,7 @@ var Base_MagicItemsList = {
 	'armor of invulnerability': {
 		name: "Armor of Invulnerability",
 		source: [["SRD", 208], ["D", 152]],
-		type: "Heavy Armor",
+		type : "armor (plate)",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "You have resistance to nonmagical damage while you wear this armor. Additionally, you can use an action to make yourself immune to nonmagical damage for 10 minutes or until you are no longer wearing the armor. Once this special action is used, it can't be used again until the next dawn.",
@@ -63,7 +63,7 @@ var Base_MagicItemsList = {
 	'armor of vulnerability (bludgeoning)': {
 		name: "Armor of Vulnerability (Bludgeoning)",
 		source: [["SRD", 209], ["D", 152]],
-		type: "Heavy Armor",
+		type : "armor (plate)",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "While wearing this armor, you have resistance to bludgeoning damage.\n   " + toUni("Curse") + ". This armor is cursed, a fact that is revealed only when an Identify spell is cast on the armor or you attune to it. Attuning to the armor curses you until you are targeted by the Remove Curse spell or similar magic; removing the armor fails to end the curse. While cursed you have vulnerability to piercing and slashing damage.",
@@ -74,7 +74,7 @@ var Base_MagicItemsList = {
 	'armor of vulnerability (piercing)': {
 		name: "Armor of Vulnerability (Piercing)",
 		source: [["SRD", 209], ["D", 152]],
-		type: "Heavy Armor",
+		type : "armor (plate)",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "While wearing this armor, you have resistance to piercing damage.\n   " + toUni("Curse") + ". This armor is cursed, a fact that is revealed only when an Identify spell is cast on the armor or you attune to it. Attuning to the armor curses you until you are targeted by the Remove Curse spell or similar magic; removing the armor fails to end the curse. While cursed you have vulnerability to bludgeoning and slashing damage.",
@@ -85,7 +85,7 @@ var Base_MagicItemsList = {
 	'armor of vulnerability (slashing)': {
 		name: "Armor of Vulnerability (Slashing)",
 		source: [["SRD", 209], ["D", 152]],
-		type: "Heavy Armor",
+		type : "armor (plate)",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "While wearing this armor, you have resistance to slashing damage.\n   " + toUni("Curse") + ". This armor is cursed, a fact that is revealed only when an Identify spell is cast on the armor or you attune to it. Attuning to the armor curses you until you are targeted by the Remove Curse spell or similar magic; removing the armor fails to end the curse. While cursed you have vulnerability to bludgeoning and piercing damage.",
@@ -96,7 +96,7 @@ var Base_MagicItemsList = {
 	'arrow-catching shield': {
 		name: "Arrow-Catching Shield",
 		source: [["SRD", 209], ["D", 152]],
-		type: "Shield",
+		type : "shield",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "You gain a +2 bonus to AC against ranged attacks while you wield this shield. This bonus is in addition to the shield's normal bonus to AC. In addition, whenever an attacker makes a ranged attack against a target within 5 feet of you, you can use your reaction to become the target of the attack instead.",
@@ -531,7 +531,7 @@ var Base_MagicItemsList = {
 	'dagger of venom': {
 		name: "Dagger of Venom",
 		source: [["SRD", 215], ["D", 161]],
-		type: "Melee Weapon",
+		type: "weapon (dagger)",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n   You can use an action to cause thick, black poison to coat the blade. The poison remains for 1 minute or until an attack using this weapon hits a creature. That creature must succeed on a DC 15 Constitution saving throw or take 2d10 poison damage and become poisoned for 1 minute. The dagger can't be used this way again until the next dawn.",
@@ -567,7 +567,7 @@ var Base_MagicItemsList = {
 	'demon armor': {
 		name: "Demon Armor",
 		source: [["SRD", 218], ["D", 165]],
-		type: "Heavy Armor",
+		type : "armor (plate)",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "While wearing this armor, you gain a +1 bonus to AC, and you can understand and speak Abyssal. In addition, the armor's clawed gauntlets turn unarmed strikes with your hands into magic weapons that deal slashing damage, with a +1 bonus to attack and damage rolls and a damage die of 1d8.\n   " + toUni("Curse") + ". Once you don this cursed armor, you can't doff it unless you are targeted by the Remove Curse spell or similar magic. While wearing the armor, you have disadvantage on attack rolls against demons and on saving throws against their spells and special abilities.",
@@ -586,7 +586,7 @@ var Base_MagicItemsList = {
 	'dragon scale mail, black': {
 		name: "Dragon Scale Mail, Black",
 		source: [["SRD", 219], ["D", 165]],
-		type: "Medium Armor",
+		type : "armor (scale mail)",
 		rarity: "very rare",
 		description: "This scale mail gives +1 to AC, adv. on saves against the Frightful Presence and breath weapons of dragons, and resistance to acid damage. As an action, I can magically discern the distance and direction to the closest black dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to acid damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest black dragon within 30 miles of you. This special action can't be used again until the next dawn.",
@@ -596,7 +596,7 @@ var Base_MagicItemsList = {
 	'dragon scale mail, blue': {
 		name: "Dragon Scale Mail, Blue",
 		source: [["SRD", 219], ["D", 165]],
-		type: "Medium Armor",
+		type : "armor (scale mail)",
 		rarity: "very rare",
 		description: "This scale mail gives +1 to AC, adv. on saves against the Frightful Presence and breath weapons of dragons, and resistance to lightning damage. As an action, I can magically discern the distance and direction to the closest blue dragon in 30 miles. Once I use this action, I can't use it again until the next dawn..",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to lightning damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest blue dragon within 30 miles of you. This special action can't be used again until the next dawn.",
@@ -606,7 +606,7 @@ var Base_MagicItemsList = {
 	'dragon scale mail, brass': {
 		name: "Dragon Scale Mail, Brass",
 		source: [["SRD", 219], ["D", 165]],
-		type: "Medium Armor",
+		type : "armor (scale mail)",
 		rarity: "very rare",
 		description: "This scale mail gives +1 to AC, adv. on saves against the Frightful Presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest brass dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to fire damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest brass dragon within 30 miles of you. This special action can't be used again until the next dawn.",
@@ -616,7 +616,7 @@ var Base_MagicItemsList = {
 	'dragon scale mail, bronze': {
 		name: "Dragon Scale Mail, Bronze",
 		source: [["SRD", 219], ["D", 165]],
-		type: "Medium Armor",
+		type : "armor (scale mail)",
 		rarity: "very rare",
 		description: "This scale mail gives +1 to AC, adv. on saves against the Frightful Presence and breath weapons of dragons, and resistance to lightning damage. As an action, I can magically discern the distance and direction to the closest bronze dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to lightning damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest bronze dragon within 30 miles of you. This special action can't be used again until the next dawn.",
@@ -626,7 +626,7 @@ var Base_MagicItemsList = {
 	'dragon scale mail, copper': {
 		name: "Dragon Scale Mail, Copper",
 		source: [["SRD", 219], ["D", 165]],
-		type: "Medium Armor",
+		type : "armor (scale mail)",
 		rarity: "very rare",
 		description: "This scale mail gives +1 to AC, adv. on saves against the Frightful Presence and breath weapons of dragons, and resistance to acid damage. As an action, I can magically discern the distance and direction to the closest copper dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to acid damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest copper dragon within 30 miles of you. This special action can't be used again until the next dawn.",
@@ -636,7 +636,7 @@ var Base_MagicItemsList = {
 	'dragon scale mail, gold': {
 		name: "Dragon Scale Mail, Gold",
 		source: [["SRD", 219], ["D", 165]],
-		type: "Medium Armor",
+		type : "armor (scale mail)",
 		rarity: "very rare",
 		description: "This scale mail gives +1 to AC, adv. on saves against the Frightful Presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest gold dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to fire damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest gold dragon within 30 miles of you. This special action can't be used again until the next dawn.",
@@ -646,7 +646,7 @@ var Base_MagicItemsList = {
 	'dragon scale mail, green': {
 		name: "Dragon Scale Mail, Green",
 		source: [["SRD", 219], ["D", 165]],
-		type: "Medium Armor",
+		type : "armor (scale mail)",
 		rarity: "very rare",
 		description: "This scale mail gives +1 to AC, adv. on saves against the Frightful Presence and breath weapons of dragons, and resistance to poison damage. As an action, I can magically discern the distance and direction to the closest green dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to poison damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest green dragon within 30 miles of you. This special action can't be used again until the next dawn.",
@@ -656,7 +656,7 @@ var Base_MagicItemsList = {
 	'dragon scale mail, red': {
 		name: "Dragon Scale Mail, Red",
 		source: [["SRD", 219], ["D", 165]],
-		type: "Medium Armor",
+		type : "armor (scale mail)",
 		rarity: "very rare",
 		description: "This scale mail gives +1 to AC, adv. on saves against the Frightful Presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest red dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to fire damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest red dragon within 30 miles of you. This special action can't be used again until the next dawn.",
@@ -666,7 +666,7 @@ var Base_MagicItemsList = {
 	'dragon scale mail, silver': {
 		name: "Dragon Scale Mail, Silver",
 		source: [["SRD", 219], ["D", 165]],
-		type: "Medium Armor",
+		type : "armor (scale mail)",
 		rarity: "very rare",
 		description: "This scale mail gives +1 to AC, adv. on saves against the Frightful Presence and breath weapons of dragons, and resistance to cold damage. As an action, I can magically discern the distance and direction to the closest silver dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to cold damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest silver dragon within 30 miles of you. This special action can't be used again until the next dawn.",
@@ -676,7 +676,7 @@ var Base_MagicItemsList = {
 	'dragon scale mail, white': {
 		name: "Dragon Scale Mail, White",
 		source: [["SRD", 219], ["D", 165]],
-		type: "Medium Armor",
+		type : "armor (scale mail)",
 		rarity: "very rare",
 		description: "This scale mail gives +1 to AC, adv. on saves against the Frightful Presence and breath weapons of dragons, and resistance to cold damage. As an action, I can magically discern the distance and direction to the closest white dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued. While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to cold damage.\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest white dragon within 30 miles of you. This special action can't be used again until the next dawn.",
@@ -711,7 +711,7 @@ var Base_MagicItemsList = {
 	'dwarven plate': {
 		name: "Dwarven Plate",
 		source: [["SRD", 220], ["D", 167]],
-		type: "Heavy Armor",
+		type : "armor (plate)",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "While wearing this armor, you gain a +2 bonus to AC. In addition, if an effect moves you against your will along the ground, you can use your reaction to reduce the distance you are moved by up to 10 feet.",
@@ -788,7 +788,7 @@ var Base_MagicItemsList = {
 	'elven chain': {
 		name: "Elven Chain",
 		source: [["SRD", 220], ["D", 168]],
-		type: "Medium Armor",
+		type : "armor (chain shirt)",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "You gain a +1 bonus to AC while you wear this armor. You are considered proficient with this armor even if you lack proficiency with medium armor.",
@@ -991,7 +991,7 @@ var Base_MagicItemsList = {
 	'hammer of thunderbolts': {
 		name: "Hammer of Thunderbolts",
 		source: [["SRD", 224], ["D", 173]],
-		type: "Melee Weapon",
+		type: "weapon (maul)",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n   " + toUni("Giant's Bane (Requires Attunement)") + ". You must be wearing a belt of giant strength (any variety) and gauntlets of ogre power to attune to this weapon. The attunement ends if you take off either of those items. While you are attuned to this weapon and holding it, your Strength score increases by 4 and can exceed 20, but not 30. When you roll a 20 on an attack roll made with this weapon against a giant, the giant must succeed on a DC 17 Constitution saving throw or die.\n   The hammer also has 5 charges. While attuned to it, you can expend 1 charge and make a ranged weapon attack with the hammer, hurling it as if it had the thrown property with a normal range of 20 feet and a long range of 60 feet. If the attack hits, the hammer unleashes a thunderclap audible out to 300 feet. The target and every creature within 30 feet of it must succeed on a DC 17 Constitution saving throw or be stunned until the end of your next turn. The hammer regains 1d4+1 expended charges daily at dawn.",
@@ -1125,7 +1125,7 @@ var Base_MagicItemsList = {
 	'immovable rod': {
 		name: "Immovable Rod",
 		source: [["SRD", 226], ["D", 175]],
-		type: "Rod",
+		type : "rod",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "This flat iron rod has a button on one end. You can use an action to press the button, which causes the rod to become magically fixed in place. Until you or another creature uses an action to push the button again, the rod doesn't move, even if it is defying gravity. The rod can hold up to 8,000 pounds of weight. More weight causes the rod to deactivate and fall. A creature can use an action to make a DC 30 Strength check, moving the fixed rod up to 10 feet on a success",
@@ -1278,7 +1278,7 @@ var Base_MagicItemsList = {
 	'javelin of lightning': {
 		name: "Javelin of Lightning",
 		source: [["SRD", 228], ["D", 178]],
-		type: "Melee Weapon",
+		type : "weapon (javelin)",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "This javelin is a magic weapon. When you hurl it and speak its command word, it transforms into a bolt of lightning, forming a line 5 feet wide that extends out from you to a target within 120 feet. Each creature in the line excluding you and the target must make a DC 13 Dexterity saving throw, taking 4d6 lightning damage on a failed save, and half as much damage on a successful one. The lightning bolt turns back into a javelin when it reaches the target. Make a ranged weapon attack against the target. On a hit, the target takes damage from the javelin plus 4d6 lightning damage.\n   The javelin's property can't be used again until the next dawn. In the meantime, the javelin can still be used as a magic weapon.",
@@ -1305,7 +1305,7 @@ var Base_MagicItemsList = {
 	'mace of disruption': {
 		name: "Mace of Disruption",
 		source: [["SRD", 229], ["D", 179]],
-		type: "Melee Weapon",
+		type : "weapon (mace)",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "When you hit a fiend or an undead with this magic weapon, that creature takes an extra 2d6 radiant damage. If the target has 25 hit points or fewer after taking this damage, it must succeed on a DC 15 Wisdom saving throw or be destroyed. On a successful save, the creature becomes frightened of you until the end of your next turn.\n   While you hold this weapon, it sheds bright light in a 20-foot radius and dim light for an additional 20 feet.",
@@ -1315,7 +1315,7 @@ var Base_MagicItemsList = {
 	'mace of smiting': {
 		name: "Mace of Smiting",
 		source: [["SRD", 229], ["D", 179]],
-		type: "Melee Weapon",
+		type : "weapon (mace)",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "You gain a +1 bonus to attack and damage rolls made with this magic weapon. The bonus increases to +3 when you use the mace to attack a construct.\n   When you roll a 20 on an attack roll made with this weapon, the target takes an extra 7 bludgeoning damage, or an extra 14 bludgeoning damage if it's a construct. If a construct has 25 hit points or fewer after taking this damage, it is destroyed.",
@@ -1324,7 +1324,7 @@ var Base_MagicItemsList = {
 	'mace of terror': {
 		name: "Mace of Terror",
 		source: [["SRD", 229], ["D", 180]],
-		type: "Melee Weapon",
+		type : "weapon (mace)",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "This magic weapon has 3 charges. While holding it, you can use an action and expend 1 charge to release a wave of terror. Each creature of your choice in a 30-foot radius extending from you must succeed on a DC 15 Wisdom saving throw or become frightened of you for 1 minute. While it is frightened in this way, a creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action it can use only the Dash action or try to escape from an effect that prevents it from moving. If it has nowhere it can move, the creature can use the Dodge action. At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.\n   The mace regains 1d3 expended charges daily at dawn.",
@@ -1464,7 +1464,7 @@ var Base_MagicItemsList = {
 	oathbow: {
 		name: "Oathbow",
 		source: [["SRD", 231], ["D", 183]],
-		type: "Ranged Weapon",
+		type : "weapon (longbow)",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "When you nock an arrow on this bow, it whispers in Elvish, \"Swift defeat to my enemies.\" When you use this weapon to make a ranged attack, you can, as a command phrase, say, \"Swift death to you who have wronged me.\" The target of your attack becomes your sworn enemy until it dies or until dawn seven days later. You can have only one such sworn enemy at a time. When your sworn enemy dies, you can choose a new one after the next dawn.\n   When you make a ranged attack roll with this weapon against your sworn enemy, you have advantage on the roll. In addition, your target gains no benefit from cover, other than total cover, and you suffer no disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 piercing damage.\n   While your sworn enemy lives, you have disadvantage on attack rolls with all other weapons.",
@@ -1474,7 +1474,7 @@ var Base_MagicItemsList = {
 	'oil of etherealness': {
 		name: "Oil of Etherealness",
 		source: [["SRD", 231], ["D", 183]],
-		type: "Potion",
+		type : "potion",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "Beads of this cloudy gray oil form on the outside of its container and quickly evaporate. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of the Etherealness spell for 1 hour.",
@@ -1483,7 +1483,7 @@ var Base_MagicItemsList = {
 	'oil of sharpness': {
 		name: "Oil of Sharpness",
 		source: [["SRD", 232], ["D", 184]],
-		type: "Potion",
+		type : "potion",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "This clear, gelatinous oil sparkles with tiny, ultrathin silver shards. The oil can coat one slashing or piercing weapon or up to 5 pieces of slashing or piercing ammunition. Applying the oil takes 1 minute. For 1 hour, the coated item is magical and has a +3 bonus to attack and damage rolls.",
@@ -1492,7 +1492,7 @@ var Base_MagicItemsList = {
 	'oil of slipperiness': {
 		name: "Oil of Slipperiness",
 		source: [["SRD", 232], ["D", 184]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "This sticky black unguent is thick and heavy in the container, but it flows quickly when poured. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of a Freedom of Movement spell for 8 hours.\n   Alternatively, the oil can be poured on the ground as an action, where it covers a 10-foot square, duplicating the effect of the Grease spell in that area for 8 hours.",
@@ -1538,7 +1538,7 @@ var Base_MagicItemsList = {
 	'philter of love': {
 		name: "Philter of Love",
 		source: [["SRD", 232], ["D", 184]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "The next time you see a creature within 10 minutes after drinking this philter, you become charmed by that creature for 1 hour. If the creature is of a species and gender you are normally attracted to, you regard it as your true love while you are charmed. This potion's rose-hued, effervescent liquid contains one easy-to-miss bubble shaped like a heart.",
@@ -1566,7 +1566,7 @@ var Base_MagicItemsList = {
 	'plate armor of etherealness': {
 		name: "Plate Armor of Etherealness",
 		source: [["SRD", 233], ["D", 185]],
-		type: "Heavy Armor",
+		type : "armor (plate)",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "While you're wearing this armor, you can speak its command word as an action to gain the effect of the Etherealness spell, which lasts for 10 minutes or until you remove the armor or use an action to speak the command word again. This property of the armor can't be used again until the next dawn.",
@@ -1584,7 +1584,7 @@ var Base_MagicItemsList = {
 	'potion of animal friendship': {
 		name: "Potion of Animal Friendship",
 		source: [["SRD", 233], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "When you drink this potion, you can cast the Animal Friendship spell (save DC 13) for 1 hour at will. Agitating this muddy liquid brings little bits into view: a fish scale, a hummingbird tongue, a cat claw, or a squirrel hair.",
@@ -1593,7 +1593,7 @@ var Base_MagicItemsList = {
 	'potion of clairvoyance': {
 		name: "Potion of Clairvoyance",
 		source: [["SRD", 233], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "When you drink this potion, you gain the effect of the Clairvoyance spell. An eyeball bobs in this yellowish liquid but vanishes when the potion is opened.",
@@ -1602,7 +1602,7 @@ var Base_MagicItemsList = {
 	'potion of climbing': {
 		name: "Potion of Climbing",
 		source: [["SRD", 233], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "common",
 		description: "",
 		descriptionFull: "When you drink this potion, you gain a climbing speed equal to your walking speed for 1 hour. During this time, you have advantage on Strength (Athletics) checks you make to climb. The potion is separated into brown, silver, and gray layers resembling bands of stone. Shaking the bottle fails to mix the colors.",
@@ -1611,7 +1611,7 @@ var Base_MagicItemsList = {
 	'potion of diminution': {
 		name: "Potion of Diminution",
 		source: [["SRD", 233], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "When you drink this potion, you gain the \"reduce\" effect of the Enlarge/Reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it. Shaking the bottle fails to interrupt this process.",
@@ -1620,7 +1620,7 @@ var Base_MagicItemsList = {
 	'potion of flying': {
 		name: "Potion of Flying",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "When you drink this potion, you gain a flying speed equal to your walking speed for 1 hour and can hover. If you're in the air when the potion wears off, you fall unless you have some other means of staying aloft. This potion's clear liquid floats at the top of its container and has cloudy white impurities drifting in it.",
@@ -1629,7 +1629,7 @@ var Base_MagicItemsList = {
 	'potion of gaseous form': {
 		name: "Potion of Gaseous Form",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "When you drink this potion, you gain the effect of the Gaseous Form spell for 1 hour (no concentration required) or until you end the effect as a bonus action. This potion's container seems to hold fog that moves and pours like water.",
@@ -1638,7 +1638,7 @@ var Base_MagicItemsList = {
 	'potion of giant strength, cloud': {
 		name: "Potion of Giant Strength, Cloud",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "When you drink this potion, your Strength score changes to 27 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a cloud giant.",
@@ -1647,7 +1647,7 @@ var Base_MagicItemsList = {
 	'potion of giant strength, fire': {
 		name: "Potion of Giant Strength, Fire",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "When you drink this potion, your Strength score changes to 25 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a fire giant.",
@@ -1656,7 +1656,7 @@ var Base_MagicItemsList = {
 	'potion of giant strength, frost': {
 		name: "Potion of Giant Strength, Frost",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "When you drink this potion, your Strength score changes to 23 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a frost giant.",
@@ -1665,7 +1665,7 @@ var Base_MagicItemsList = {
 	'potion of giant strength, hill': {
 		name: "Potion of Giant Strength, Hill",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "When you drink this potion, your Strength score changes to 21 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a hill giant.",
@@ -1674,7 +1674,7 @@ var Base_MagicItemsList = {
 	'potion of giant strength, stone': {
 		name: "Potion of Giant Strength, Stone",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "When you drink this potion, your Strength score changes to 23 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a stone giant.",
@@ -1683,7 +1683,7 @@ var Base_MagicItemsList = {
 	'potion of giant strength, storm': {
 		name: "Potion of Giant Strength, Storm",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "When you drink this potion, your Strength score changes to 29 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a storm giant.",
@@ -1692,7 +1692,7 @@ var Base_MagicItemsList = {
 	'potion of growth': {
 		name: "Potion of Growth",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "When you drink this potion, you gain the \"enlarge\" effect of the Enlarge/Reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts. Shaking the bottle fails to interrupt this process.",
@@ -1701,7 +1701,7 @@ var Base_MagicItemsList = {
 	'potion of healing': {
 		name: "Potion of Healing",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "common",
 		description: "",
 		descriptionFull: "You regain 2d4+2 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
@@ -1710,7 +1710,7 @@ var Base_MagicItemsList = {
 	'potion of greater healing': {
 		name: "Potion of Greater Healing",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "You regain 4d4+4 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
@@ -1719,7 +1719,7 @@ var Base_MagicItemsList = {
 	'potion of superior healing': {
 		name: "Potion of Superior Healing",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "You regain 8d4+8 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
@@ -1728,7 +1728,7 @@ var Base_MagicItemsList = {
 	'potion of supreme healing': {
 		name: "Potion of Supreme Healing",
 		source: [["SRD", 234], ["D", 187]],
-		type: "Potion",
+		type : "potion",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "You regain 10d4+20 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
@@ -1737,7 +1737,7 @@ var Base_MagicItemsList = {
 	'potion of heroism': {
 		name: "Potion of Heroism",
 		source: [["SRD", 234], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "For 1 hour after drinking it, you gain 10 temporary hit points that last for 1 hour. For the same duration, you are under the effect of the Bless spell (no concentration required). This blue potion bubbles and steams as if boiling.",
@@ -1746,7 +1746,7 @@ var Base_MagicItemsList = {
 	'potion of invisibility': {
 		name: "Potion of Invisibility",
 		source: [["SRD", 234], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "This potion's container looks empty but feels as though it holds liquid. When you drink it, you become invisible for 1 hour. Anything you wear or carry is invisible with you. The effect ends early if you attack or cast a spell.",
@@ -1755,7 +1755,7 @@ var Base_MagicItemsList = {
 	'potion of mind reading': {
 		name: "Potion of Mind Reading",
 		source: [["SRD", 234], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "When you drink this potion, you gain the effect of the Detect Thoughts spell (save DC 13). The potion's dense, purple liquid has an ovoid cloud of pink floating in it.",
@@ -1764,7 +1764,7 @@ var Base_MagicItemsList = {
 	'potion of poison': {
 		name: "Potion of Poison",
 		source: [["SRD", 234], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "This concoction looks, smells, and tastes like a potion of healing or other beneficial potion. However, it is actually poison masked by illusion magic. An Identify spell reveals its true nature.\n   If you drink it, you take 3d6 poison damage, and you must succeed on a DC 13 Constitution saving throw or be poisoned. At the start of each of your turns while you are poisoned in this way, you take 3d6 poison damage. At the end of each of your turns, you can repeat the saving throw. On a successful save, the poison damage you take on your subsequent turns decreases by 1d6. The poison ends when the damage decreases to 0.",
@@ -1773,7 +1773,7 @@ var Base_MagicItemsList = {
 	'potion of resistance, acid': {
 		name: "Potion of Resistance, Acid",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "",
@@ -1782,7 +1782,7 @@ var Base_MagicItemsList = {
 	'potion of resistance, cold': {
 		name: "Potion of Resistance, Cold",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "",
@@ -1791,7 +1791,7 @@ var Base_MagicItemsList = {
 	'potion of resistance, fire': {
 		name: "Potion of Resistance, Fire",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "",
@@ -1800,7 +1800,7 @@ var Base_MagicItemsList = {
 	'potion of resistance, force': {
 		name: "Potion of Resistance, Force",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "",
@@ -1809,7 +1809,7 @@ var Base_MagicItemsList = {
 	'potion of resistance, lightning': {
 		name: "Potion of Resistance, Lightning",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "",
@@ -1818,7 +1818,7 @@ var Base_MagicItemsList = {
 	'potion of resistance, necrotic': {
 		name: "Potion of Resistance, Necrotic",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "",
@@ -1827,7 +1827,7 @@ var Base_MagicItemsList = {
 	'potion of resistance, poison': {
 		name: "Potion of Resistance, Poison",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "",
@@ -1836,7 +1836,7 @@ var Base_MagicItemsList = {
 	'potion of resistance, psychic': {
 		name: "Potion of Resistance, Psychic",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "",
@@ -1845,7 +1845,7 @@ var Base_MagicItemsList = {
 	'potion of resistance, radiant': {
 		name: "Potion of Resistance, Radiant",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "",
@@ -1854,7 +1854,7 @@ var Base_MagicItemsList = {
 	'potion of resistance, thunder': {
 		name: "Potion of Resistance, Thunder",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "",
@@ -1863,7 +1863,7 @@ var Base_MagicItemsList = {
 	'potion of speed': {
 		name: "Potion of Speed",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirl on its own.",
@@ -1872,7 +1872,7 @@ var Base_MagicItemsList = {
 	'potion of water breathing': {
 		name: "Potion of Water Breathing",
 		source: [["SRD", 235], ["D", 188]],
-		type: "Potion",
+		type : "potion",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "You can breathe underwater for 1 hour after drinking this potion. Its cloudy green fluid smells of the sea and has a jellyfish-like bubble floating in it.",
@@ -2286,7 +2286,7 @@ var Base_MagicItemsList = {
 	'rod of absorption': {
 		name: "Rod of Absorption",
 		source: [["SRD", 239], ["D", 195]],
-		type: "Rod",
+		type : "rod",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "While holding this rod, you can use your reaction to absorb a spell that is targeting only you and not with an area of effect. The absorbed spell's effect is canceled, and the spell's energy\u2014not the spell itself\u2014is stored in the rod. The energy has the same level as the spell when it was cast. The rod can absorb and store up to 50 levels of energy over the course of its existence. Once the rod absorbs 50 levels of energy, it can't absorb more. If you are targeted by a spell that the rod can't store, the rod has no effect on that spell.\n   When you become attuned to the rod, you know how many levels of energy the rod has absorbed over the course of its existence, and how many levels of spell energy it currently has stored.\n   If you are a spellcaster holding the rod, you can convert energy stored in it into spell slots to cast spells you have prepared or know. You can create spell slots only of a level equal to or lower than your own spell slots, up to a maximum of 5th level. You use the stored levels in place of your slots, but otherwise cast the spell as normal. For example, you can use 3 levels stored in the rod as a 3rd-level spell slot.\n   A newly found rod has 1d10 levels of spell energy stored in it already. A rod that can no longer absorb spell energy and has no energy remaining becomes nonmagical.",
@@ -2296,7 +2296,7 @@ var Base_MagicItemsList = {
 	'rod of alertness': {
 		name: "Rod of Alertness",
 		source: [["SRD", 240], ["D", 196]],
-		type: "Rod",
+		type : "rod",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "This rod has a flanged head and the following properties.\n   " + toUni("Alertness") + ". While holding the rod, you have advantage on Wisdom (Perception) checks and on rolls for initiative.\n   " + toUni("Spells") + ". While holding the rod, you can use an action to cast one of the following spells from it: Detect Evil and Good, Detect Magic, Detect Poison and Disease, or See Invisibility.\n   " + toUni("Protective Aura") + ". As an action, you can plant the haft end of the rod in the ground, whereupon the rod's head sheds bright light in a 60-foot radius and dim light for an additional 60 feet. While in that bright light, you and any creature that is friendly to you gain a +1 bonus to AC and saving throws and can sense the location of any invisible hostile creature that is also in the bright light.\n   The rod's head stops glowing and the effect ends after 10 minutes, or when a creature uses an action to pull the rod from the ground. This property can't be used again until the next dawn.",
@@ -2306,7 +2306,7 @@ var Base_MagicItemsList = {
 	'rod of lordly might': {
 		name: "Rod of Lordly Might",
 		source: [["SRD", 240], ["D", 196]],
-		type: "Rod",
+		type : "rod",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "This rod has a flanged head, and it functions as a magic mace that grants a +3 bonus to attack and damage roll made with it. The rod has properties associated with six different buttons that are set in a row along the haft. It has three other properties as well, detailed below.\n   " + toUni("Six Buttons") + ". You can press one of the rod's six buttons as a bonus action. A button's effect lasts until you push a different button or until you push the same button again, which causes the rod to revert to its normal form.\n   If you press button 1, the rod becomes a flame tongue as a fiery blade sprouts from the end opposite the rod's flanged head (you choose the type of sword).\n   If you press button 2, the rod's flanged head folds down and two crescent-shaped blades spring out, transforming the rod into a magic battleaxe that grants a +3 bonus to attack and damage rolls made with it.\n   If you press button 3, the rod's flanged head folds down, a spear point springs from the rod's tip, and the rod's handle lengthens into a 6-foot haft, transforming the rod into a magic spear that grants a+3 bonus to attack and damage rolls made with it.\n   If you press button 4, the rod transforms into a climbing pole up to 50 feet long, as you specify. In surfaces as hard as granite, a spike at the bottom and three hooks at the top anchor the pole. Horizontal bars 3 inches long fold out from the sides, 1 foot apart, forming a ladder. The pole can bear up to 4,000 pounds. More weight or lack of solid anchoring causes the rod to revert to its normal form.\n   If you press button 5, the rod transforms into a handheld battering ram and gram its user a +10 bonus to Strength checks made to break through doors, barricades, and other barriers.\n   If you press button 6, the rod assumes or remains in its normal form and indicates magnetic north. (Nothing happens if this function of the rod is used in a location that has no magnetic north.) The rod also gives you knowledge of your approximate depth beneath the ground or your height above it.\n   " + toUni("Drain Life") + ". When you hit a creature with a melee attack using the rod, you can force the target to make a DC 17 Constitution saving throw. On a failure, the target rakes an extra 4d6 necrotic damage, and you regain a number of hit points equal to half that necrotic damage. This property can't be used again until the next dawn.\n   " + toUni("Paralyze") + ". When you hit a creature with a melee attack using the rod, you can force the target to make a DC 17 Strength saving throw. On a failure, the target is paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on a success. This property can't be used again until the next dawn.\n   " + toUni("Terrify") + ". While holding the rod, you can use an action to force each creature you can see within 30 feet of you to make a DC 17 Wisdom saving throw. On a failure, a target is frightened of you for 1 minute. A frightened target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. This property can't be used again until the next dawn.",
@@ -2316,7 +2316,7 @@ var Base_MagicItemsList = {
 	'rod of rulership': {
 		name: "Rod of Rulership",
 		source: [["SRD", 240], ["D", 197]],
-		type: "Rod",
+		type : "rod",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "You can use an action to present the rod and command obedience from each creature of your choice that you can see within 120 feet of you. Each target must succeed on a DC 15 Wisdom saving throw or be charmed by you for 8 hours. While charmed in this way, the creature regards you as its trusted leader. If harmed by you or your companions, or commanded to do something contrary to its nature, a target ceases to be charmed in this way. The rod can't be used again until the next dawn.",
@@ -2326,7 +2326,7 @@ var Base_MagicItemsList = {
 	'rod of security': {
 		name: "Rod of Security",
 		source: [["SRD", 241], ["D", 197]],
-		type: "Rod",
+		type : "rod",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "While holding this rod, you can use an action to activate it. The rod then instantly transports you and up to 199 other willing creatures you can see to a paradise that exists in an extraplanar space. You choose the form that the paradise takes. It could be a tranquil garden, lovely glade, cheery tavern, immense palace, tropical island, fantastic carnival, or whatever else you can imagine. Regardless of its nature, the paradise contains enough water and food to sustain its visitors. Everything else that can be interacted with inside the extraplanar space can exist only there. For example, a flower picked from a garden in the paradise disappears if it is taken outside the extraplanar space.\n   For each hour spent in the paradise, a visitor regains hit points as if it had spent 1 Hit Die. Also, creatures don't age while in the paradise, although time passes normally. Visitors can remain in the paradise for up to 200 days divided by the number of creatures present (round down).\n   When the time runs out or you use an action to end it, all visitors reappear in the location they occupied when you activated the rod, or an unoccupied space nearest that location. The rod can't be used again until ten days have passed.",
@@ -2362,7 +2362,7 @@ var Base_MagicItemsList = {
 	'scimitar of speed': {
 		name: "Scimitar of Speed",
 		source: [["SRD", 241], ["D", 199]],
-		type: "Melee Weapon",
+		type : "weapon (scimitar)",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "You gain a +2 bonus to attack and damage rolls made with this magic weapon. In addition, you can make one attack with it as a bonus action on each of your turns.",
@@ -2372,7 +2372,7 @@ var Base_MagicItemsList = {
 	'shield of missile attraction': {
 		name: "Shield of Missile Attraction",
 		source: [["SRD", 242], ["D", 200]],
-		type: "Shield",
+		type : "shield",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "While holding this shield, you have resistance to damage from ranged weapon attacks.\n   " + toUni("Curse") + ". This shield is cursed. Attuning to it curses you until you are targeted by the Remove Curse spell or similar magic. Removing the shield fails to end the curse on you. Whenever a ranged weapon attack is made against a target within 10 feet of you, the curse causes you to become the target instead.",
@@ -2400,7 +2400,7 @@ var Base_MagicItemsList = {
 	'spell scroll (1st level)': {
 		name: "Spell Scroll (1st Level)",
 		source: [["SRD", 242], ["D", 200]],
-		type: "Scroll",
+		type : "scroll",
 		rarity: "common",
 		description: "",
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 11. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 11 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
@@ -2408,7 +2408,7 @@ var Base_MagicItemsList = {
 	'spell scroll (2nd level)': {
 		name: "Spell Scroll (2nd Level)",
 		source: [["SRD", 242], ["D", 201]],
-		type: "Scroll",
+		type : "scroll",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 12. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 12 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
@@ -2416,7 +2416,7 @@ var Base_MagicItemsList = {
 	'spell scroll (3rd level)': {
 		name: "Spell Scroll (3rd Level)",
 		source: [["SRD", 242], ["D", 202]],
-		type: "Scroll",
+		type : "scroll",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 13. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 13 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
@@ -2424,7 +2424,7 @@ var Base_MagicItemsList = {
 	'spell scroll (4th level)': {
 		name: "Spell Scroll (4th Level)",
 		source: [["SRD", 242], ["D", 203]],
-		type: "Scroll",
+		type : "scroll",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 14. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 14 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
@@ -2432,7 +2432,7 @@ var Base_MagicItemsList = {
 	'spell scroll (5th level)': {
 		name: "Spell Scroll (5th Level)",
 		source: [["SRD", 242], ["D", 204]],
-		type: "Scroll",
+		type : "scroll",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 15. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 15 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
@@ -2440,7 +2440,7 @@ var Base_MagicItemsList = {
 	'spell scroll (6th level)': {
 		name: "Spell Scroll (6th Level)",
 		source: [["SRD", 242], ["D", 205]],
-		type: "Scroll",
+		type : "scroll",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 16. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 16 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
@@ -2448,7 +2448,7 @@ var Base_MagicItemsList = {
 	'spell scroll (7th level)': {
 		name: "Spell Scroll (7th Level)",
 		source: [["SRD", 242], ["D", 206]],
-		type: "Scroll",
+		type : "scroll",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 17. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 17 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
@@ -2456,7 +2456,7 @@ var Base_MagicItemsList = {
 	'spell scroll (8th level)': {
 		name: "Spell Scroll (8th Level)",
 		source: [["SRD", 242], ["D", 207]],
-		type: "Scroll",
+		type : "scroll",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 18. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 18 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
@@ -2464,7 +2464,7 @@ var Base_MagicItemsList = {
 	'spell scroll (9th level)': {
 		name: "Spell Scroll (9th Level)",
 		source: [["SRD", 242], ["D", 208]],
-		type: "Scroll",
+		type : "scroll",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 19. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 19 and an attack bonus of +11.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 19 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
@@ -2472,7 +2472,7 @@ var Base_MagicItemsList = {
 	'spell scroll (cantrip)': {
 		name: "Spell Scroll (Cantrip)",
 		source: [["SRD", 242], ["D", 199]],
-		type: "Scroll",
+		type : "scroll",
 		rarity: "common",
 		description: "",
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5."
@@ -2480,7 +2480,7 @@ var Base_MagicItemsList = {
 	'spellguard shield': {
 		name: "Spellguard Shield",
 		source: [["SRD", 242], ["D", 201]],
-		type: "Shield",
+		type : "shield",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "While holding this shield, you have advantage on saving throws against spells and other magical effects, and spell attacks have disadvantage against you",
@@ -2498,7 +2498,7 @@ var Base_MagicItemsList = {
 	'staff of charming': {
 		name: "Staff of Charming",
 		source: [["SRD", 243], ["D", 201]],
-		type: "",
+		type : "staff",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "While holding this staff, you can use an action to expend 1 of its 10 charges to cast Charm Person, Command, or Comprehend Languages from it using your spell save DC. The staff can also be used as a magic quarterstaff.\n   If you are holding the staff and fail a saving throw against an enchantment spell that targets only you, you can turn your failed save into a successful one. You can't use this property of the staff again until the next dawn. If you succeed on a save against an enchantment spell that targets only you, with or without the staff's intervention, you can use your reaction to expend 1 charge from the staff and turn the spell back on its caster as if you had cast the spell.\n   The staff regains 1d8+2 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff becomes a nonmagical quarterstaff.",
@@ -2508,7 +2508,7 @@ var Base_MagicItemsList = {
 	'staff of fire': {
 		name: "Staff of Fire",
 		source: [["SRD", 243], ["D", 201]],
-		type: "",
+		type : "staff",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "You have resistance to fire damage while you hold this staff.\n   The staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC: Burning Hands (1 charge), Fireball (3 charges), or Wall of Fire (4 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff blackens, crumbles into cinders, and is destroyed.",
@@ -2518,7 +2518,7 @@ var Base_MagicItemsList = {
 	'staff of frost': {
 		name: "Staff of Frost",
 		source: [["SRD", 243], ["D", 202]],
-		type: "",
+		type : "staff",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "You have resistance to cold damage while you hold this staff.\n   The staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC: Cone of Cold (5 charges), Fog Cloud (1 charge), Ice Storm (4 charges), or Wall of Ice (4 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1. the staff turns to water and is destroyed.",
@@ -2528,7 +2528,7 @@ var Base_MagicItemsList = {
 	'staff of healing': {
 		name: "Staff of Healing",
 		source: [["SRD", 243], ["D", 202]],
-		type: "",
+		type : "staff",
 		rarity: "rare",
 		description: "",
 		descriptionFull: " This staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC and spellcasting ability modifier: Cure Wounds (1 charge per spell level, up to 4th), Lesser Restoration (2 charges). or Mass Cure Wounds (5 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1. the staff vanishes in a flash of light, lost forever.",
@@ -2538,7 +2538,7 @@ var Base_MagicItemsList = {
 	'staff of power': {
 		name: "Staff of Power",
 		source: [["SRD", 243], ["D", 202]],
-		type: "",
+		type : "staff",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While holding it, you gain a +2 bonus to Armor Class, saving throws, and spell attack rolls.\n   The staff has 20 charges for the following properties. The staff regains 2d8+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff retains its +2 bonus to attack and damage roll but loses all other properties. On a 20, the staff regain 1d8+2 charges.\n   " + toUni("Power Strike") + ". When you hit with a melee attack using the staff, you can expend 1 charge to deal an extra 1d6 force damage to the target.\n   " + toUni("Spells") + ". While holding this staff, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC and spell attack bonus: Cone of Cold (5 charges), Fireball (5th-level version, 5 charges), Globe of Invulnerability (6 charges), Hold Monster (5 charges), Levitate (2 charges). Lightning Bolt (5th-level version, 5 charges), Magic Missile (1 charge), Ray of Enfeeblement (1 charge), or Wall of Force (5 charges).\n   " + toUni("Retributive Strike") + ". You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.\n   You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.\n\n" + toUni("Distance from Origin") + "\t" + toUni("Effect") + "\n10 ft. away or closer\t8 \xD7 the number of charges in the staff\n11 to 20 ft. away\t6 \xD7 the number of charges in the staff\n21 to 30 ft. away\t4 \xD7 the number of charges in the staff",
@@ -2548,7 +2548,7 @@ var Base_MagicItemsList = {
 	'staff of striking': {
 		name: "Staff of Striking",
 		source: [["SRD", 0], ["D", 203]],
-		type: "",
+		type : "staff",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +3 bonus to attack and damage rolls made with it.\n   The staff has 10 charges. When you hit with a melee attack using it, you can expend up to 3 of its charges. For each charge you expend, the target takes an extra 1d6 force damage. The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff becomes a nonmagical quarterstaff.",
@@ -2558,7 +2558,7 @@ var Base_MagicItemsList = {
 	'staff of swarming insects': {
 		name: "Staff of Swarming Insects",
 		source: [["SRD", 244], ["D", 203]],
-		type: "",
+		type : "staff",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "This staff has 10 charges and regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, a swarm of insects consumes and destroys the staff, then disperses.\n   " + toUni("Spells") + ". While holding the staff, you can use an action to expend some of its charges to cast one of the following spells from it, using your spell save DC: Giant Insect (4 charges) or Insect Plague (5 charges).\n   " + toUni("Insect Cloud") + ". While holding the staff, you can use an action and expend 1 charge to cause a swarm of harmless flying insects to spread out in a 30-foot radius from you. The insects remain for 10 minutes, making the area heavily obscured for creatures other than you. The swarm moves with you, remaining centered on you. A wind of at least 10 miles per hour disperses the swarm and ends the effect.",
@@ -2568,7 +2568,7 @@ var Base_MagicItemsList = {
 	'staff of the magi': {
 		name: "Staff of the Magi",
 		source: [["SRD", 244], ["D", 203]],
-		type: "",
+		type : "staff",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While you hold it, you gain a +2 bonus to spell attack rolls.\n   The staff has 50 charges for the following properties. It regains 4d6+2 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 20, the staff regains 1d12+1 charges.\n   " + toUni("Spell Absorption") + ". While holding the staff, you have advantage on saving throws against spells. In addition, you can use your reaction when another creature casts a spell that targets only you. If you do, the staff absorbs the magic of the spell, canceling its effect and gaining a number of charges equal to the absorbed spell's level. However, if doing so brings the staff's total number of charges above 50, the staff explodes as if you activated its retributive strike (see below).\n   " + toUni("Spells") + ". While holding the staff, you can use an action to expend some of its charges to cast one of the following spells from it, using your spell save DC and spellcasting ability: Conjure Elemental (7 charges), Dispel Magic (3 charges), Fireball (7th-level version, 7 charges), Flaming Sphere (2 charges), Ice Storm (4 charges), Invisibility (2 charges), Knock (2 charges), Lightning Bolt (7th-level version, 7 charges), Passwall (5 charges), Plane Shift (7 charges), Telekinesis (5 charges), Wall of Fire (4 charges), or Web (2 charges).\n   You can also use an action to cast one of the following spells from the staff without using any charges: Arcane Lock, Detect Magic, Enlarge/Reduce, Light, Mage Hand, or Protection from Evil and Good.\n   " + toUni("Retributive Strike") + ". You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.\n   You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.\n\n" + toUni("Distance from Origin") + "\t" + toUni("Damage") + "\n10 ft. away or closer\t8 \xD7 the number of charges in the staff\n11 to 20 ft. away\t6 \xD7 the number of charges in the staff\n21 to 30 ft. away\t4 \xD7 the number of charges in the staff",
@@ -2578,7 +2578,7 @@ var Base_MagicItemsList = {
 	'staff of the python': {
 		name: "Staff of the Python",
 		source: [["SRD", 245], ["D", 204]],
-		type: "",
+		type : "staff",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "You can use an action to speak this staff's command word and throw the staff on the ground within 10 feet of you. The staff becomes a giant constrictor snake under your control and acts on its own initiative count. By using a bonus action to speak the command word again, you return the staff to its normal form in a space formerly occupied by the snake.\n   On your turn, you can mentally command the snake if it is within 60 feet of you and you aren't incapacitated. You decide what action the snake takes and where it moves during its next turn, or you can issue it a general command, such as to attack your enemies or guard a location.\n   If the snake is reduced to 0 hit points, it dies and reverts to its staff form. The staff then shatters and is destroyed. If the snake reverts to staff form before losing all its hit points, it regains all of them.",
@@ -2588,7 +2588,7 @@ var Base_MagicItemsList = {
 	'staff of the woodlands': {
 		name: "Staff of the Woodlands",
 		source: [["SRD", 245], ["D", 204]],
-		type: "",
+		type : "staff",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While holding it, you have a +2 bonus to spell attack rolls.\n   The staff has 10 charges for the following properties. It regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff loses its properties and becomes a nonmagical quarterstaff.\n   " + toUni("Spells") + ". You can use an action to expend 1 or more of the staff's charges to cast one of the following spells from it, using your spell save DC: Animal Friendship (1 charge), Awaken (5 charges), Barkskin (2 charges), Locate Animals or Plants} (2 charges), Speak with Animals (1 charge), Speak with Plants (3 charges), or Wall of Thorns (6 charges).\n   You can also use an action to cast the Pass Without Trace spell from the staff without using any charges.\n   " + toUni("Tree Form") + ". You can use an action to plant one end of the staff in fertile earth and expend 1 charge to transform the staff into a healthy tree. The tree is 60 feet tall and has a 5-foot-diameter trunk, and its branches at the top spread out in a 20-foot radius. The tree appears ordinary but radiates a faint aura of transmutation magic if targeted by Detect Magic. While touching the tree and using another action to speak its command word, you return the staff to its normal form. Any creature in the tree falls when it reverts to a staff.",
@@ -2598,7 +2598,7 @@ var Base_MagicItemsList = {
 	'staff of thunder and lightning': {
 		name: "Staff of Thunder and Lightning",
 		source: [["SRD", 245], ["D", 204]],
-		type: "",
+		type : "staff",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. It also has the following additional properties. When one of these properties is used, it can't be used again until the next dawn.\n   " + toUni("Lightning") + ". When you hit with a melee attack using the staff, you can cause the target to take an extra 2d6 lightning damage.\n   " + toUni("Thunder") + ". When you hit with a melee attack using the staff, you can cause the staff to emit a crack of thunder, audible out to 300 feet. The target you hit must succeed on a DC 17 Constitution saving throw or become stunned until the end of your next turn.\n   " + toUni("Lightning Strike") + ". You can use an action to cause a bolt of lightning to leap from the staff's tip in a line that is 5 feet wide and 120 feet long. Each creature in that line must make a DC 17 Dexterity saving throw, taking 9d6 lightning damage on a failed save, or half as much damage on a successful one.\n   " + toUni("Thunderclap") + ". You can use an action to cause the staff to issue a deafening thunderclap, audible out to 600 feet. Each creature within 60 feet of you (not including you) must make a DC 17 Constitution saving throw. On a failed save, a creature takes 2d6 thunder damage and becomes deafened for 1 minute. On a successful save, a creature takes half damage and isn't deafened.\n   " + toUni("Thunder and Lightning") + ". You can use an action to use the Lightning Strike and Thunderclap properties at the same time. Doing so doesn't expend the daily use of those properties, only the use of this one.",
@@ -2608,7 +2608,7 @@ var Base_MagicItemsList = {
 	'staff of withering': {
 		name: "Staff of Withering",
 		source: [["SRD", 0], ["D", 205]],
-		type: "",
+		type : "staff",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "This staff has 3 charges and regains 1d3 expended charges daily at dawn.\n   The staff can be wielded as a magic quarterstaff. On a hit, it deals damage as a normal quarterstaff, and you can expend 1 charge to deal an extra 2d10 necrotic damage to the target. In addition, the target must succeed on a DC 15 Constitution saving throw or have disadvantage for 1 hour on any ability check or saving throw that uses Strength or Constitution.",
@@ -2636,7 +2636,7 @@ var Base_MagicItemsList = {
 	'sun blade': {
 		name: "Sun Blade",
 		source: [["SRD", 246], ["D", 205]],
-		type: "Melee Weapon",
+		type : "weapon (longsword)",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "This item appears to be a longsword hilt. While grasping the hilt, you can use a bonus action to cause a blade of pure radiance to spring into existence, or make the blade disappear. While the blade exists, this magic longsword has the finesse property. If you are proficient with shortswords or longswords, you are proficient with the sun blade.\n   You gain a +2 bonus to attack and damage rolls made with this weapon, which deals radiant damage instead of slashing damage. When you hit an undead with it, that target takes an extra 1d8 radiant damage.\n   The sword's luminous blade emits bright light in a 15-foot radius and dim light for an additional 15 feet. The light is sunlight. While the blade persists, you can use an action to expand or reduce its radius of bright and dim light by 5 feet each, to a maximum of 30 feet each or a minimum of 10 feet each.",
@@ -2706,7 +2706,7 @@ var Base_MagicItemsList = {
 	'trident of fish command': {
 		name: "Trident of Fish Command",
 		source: [["SRD", 247], ["D", 209]],
-		type: "Melee Weapon",
+		type : "weapon (trident)",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "This trident is a magic weapon. It has 3 charges. While you carry it, you can use an action and expend 1 charge to cast Dominate Beast (save DC 15) from it on a beast that has an innate swimming speed. The trident regains 1d3 expended charges daily at dawn.",
@@ -2726,7 +2726,7 @@ var Base_MagicItemsList = {
 	'wand of binding': {
 		name: "Wand of Binding",
 		source: [["SRD", 0], ["D", 209]],
-		type: "Wand",
+		type : "wand",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "This wand has 7 charges for the following properties. It regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.\n   " + toUni("Spells") + ". While holding the wand, you can use an action to expend some of its charges to cast one of the following spells (save DC 17): Hold Monster (5 charges) or Hold Person (2 charges).\n   " + toUni("Assisted Escape") + ". While holding the wand, you can use your reaction to expend 1 charge and gain advantage on a saving throw you make to avoid being paralyzed or restrained, or you can expend 1 charge and gain advantage on any check you make to escape a grapple.",
@@ -2736,7 +2736,7 @@ var Base_MagicItemsList = {
 	'wand of enemy detection': {
 		name: "Wand of Enemy Detection",
 		source: [["SRD", 248], ["D", 210]],
-		type: "Wand",
+		type : "wand",
 		rarity: "rare",
 		description: "",
 		descriptionFull: " This wand has 7 charges. While holding it, you can use an action and expend 1 charge to speak its command word. For the next minute, you know the direction of the nearest creature hostile to you within 60 feet, but not its distance from you. The wand can sense the presence of hostile creatures that are ethereal, invisible, disguised, or hidden, as well as those in plain sight. The effect ends if you stop holding the wand.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
@@ -2746,7 +2746,7 @@ var Base_MagicItemsList = {
 	'wand of fear': {
 		name: "Wand of Fear",
 		source: [["SRD", 248], ["D", 210]],
-		type: "Wand",
+		type : "wand",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "This wand has 7 charges for the following properties. It regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.\n   " + toUni("Command") + ". While holding the wand, you can use an action to expend 1 charge and command another creature to flee or grovel, as with the Command spell (save DC 15).\n   " + toUni("Cone of Fear") + ". While holding the wand, you can use an action to expend 2 charges, causing the wand's tip to emit a 60-foot cone of amber light. Each creature in the cone must succeed on a DC 15 Wisdom saving throw or become frightened of you for 1 minute. While it is frightened in this way, a creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevent it from moving. If it has nowhere it can move, the creature can use the Dodge action. At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.",
@@ -2756,7 +2756,7 @@ var Base_MagicItemsList = {
 	'wand of fireballs': {
 		name: "Wand of Fireballs",
 		source: [["SRD", 248], ["D", 210]],
-		type: "Wand",
+		type : "wand",
 		rarity: "rare",
 		description: "",
 		descriptionFull: " This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the Fireball spell (save DC 15) from it. For 1 charge, you cast the 3rd-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed",
@@ -2766,7 +2766,7 @@ var Base_MagicItemsList = {
 	'wand of lightning bolts': {
 		name: "Wand of Lightning Bolts",
 		source: [["SRD", 249], ["D", 211]],
-		type: "Wand",
+		type : "wand",
 		rarity: "rare",
 		description: "",
 		descriptionFull: " This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the Lightning Bolt spell (save DC 15) from it. For 1 charge, you cast the 3rd-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
@@ -2776,7 +2776,7 @@ var Base_MagicItemsList = {
 	'wand of magic detection': {
 		name: "Wand of Magic Detection",
 		source: [["SRD", 249], ["D", 211]],
-		type: "Wand",
+		type : "wand",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: " This wand has 3 charges. While holding it, you can expend 1 charge as an action to cast the Detect Magic spell from it. The wand regains 1d3 expended charges daily at dawn.",
@@ -2785,7 +2785,7 @@ var Base_MagicItemsList = {
 	'wand of magic missiles': {
 		name: "Wand of Magic Missiles",
 		source: [["SRD", 249], ["D", 211]],
-		type: "Wand",
+		type : "wand",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: " This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the Magic Missile spell from it. For 1 charge, you cast the 1st-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
@@ -2794,7 +2794,7 @@ var Base_MagicItemsList = {
 	'wand of paralysis': {
 		name: "Wand of Paralysis",
 		source: [["SRD", 249], ["D", 211]],
-		type: "Wand",
+		type : "wand",
 		rarity: "rare",
 		description: "",
 		descriptionFull: " This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges to cause a thin blue ray to streak from the tip toward a creature you can see within 60 feet of you. The target must succeed on a DC 15 Constitution saving throw or be paralyzed for 1 minute. At the end of each of the target's turns, it can repeat the saving throw, ending the effect on itself on a success.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
@@ -2804,7 +2804,7 @@ var Base_MagicItemsList = {
 	'wand of polymorph': {
 		name: "Wand of Polymorph",
 		source: [["SRD", 249], ["D", 211]],
-		type: "Wand",
+		type : "wand",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: " This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges to cast the Polymorph spell (save DC 15) from it.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
@@ -2814,7 +2814,7 @@ var Base_MagicItemsList = {
 	'wand of secrets': {
 		name: "Wand of Secrets",
 		source: [["SRD", 249], ["D", 211]],
-		type: "Wand",
+		type : "wand",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "The wand has 3 charges. While holding it. you can use an action to expend 1 of its charges, and if a secret door or trap is within 30 feet of you, the wand pulses and points at the one nearest to you. The wand regains 1d3 expended charges daily at dawn.",
@@ -2823,7 +2823,7 @@ var Base_MagicItemsList = {
 	'wand of the war mage, +1': {
 		name: "Wand of the War Mage, +1",
 		source: [["SRD", 249], ["D", 212]],
-		type: "Wand",
+		type : "wand",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "While you are holding this wand, you gain a +1 bonus to spell attack rolls. In addition, you ignore half cover when making a spell attack.",
@@ -2833,7 +2833,7 @@ var Base_MagicItemsList = {
 	'wand of the war mage, +2': {
 		name: "Wand of the War Mage, +2",
 		source: [["SRD", 249], ["D", 212]],
-		type: "Wand",
+		type : "wand",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "While you are holding this wand, you gain a +2 bonus to spell attack rolls. In addition, you ignore half cover when making a spell attack.",
@@ -2843,7 +2843,7 @@ var Base_MagicItemsList = {
 	'wand of the war mage, +3': {
 		name: "Wand of the War Mage, +3",
 		source: [["SRD", 249], ["D", 212]],
-		type: "Wand",
+		type : "wand",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "While you are holding this wand, you gain a +3 bonus to spell attack rolls. In addition, you ignore half cover when making a spell attack.",
@@ -2853,7 +2853,7 @@ var Base_MagicItemsList = {
 	'wand of web': {
 		name: "Wand of Web",
 		source: [["SRD", 249], ["D", 212]],
-		type: "Wand",
+		type : "wand",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: " This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges to cast the Web spell (save DC 15) from it.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
@@ -2863,7 +2863,7 @@ var Base_MagicItemsList = {
 	'wand of wonder': {
 		name: "Wand of Wonder",
 		source: [["SRD", 249], ["D", 212]],
-		type: "Wand",
+		type : "wand",
 		rarity: "rare",
 		description: "",
 		descriptionFull: " This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges and choose a target within 120 feet of you. The target can be a creature, an object, or a point in space. Roll d100 and consult the following table to discover what happens.\n   If the effect causes you to cast a spell from the wand, the spell's save DC is 15. If the spell normally has a range expressed in feet, its range becomes 120 feet if it isn't already.\n   If an effect covers an area, you must center the spell on and include the target. If an effect has multiple possible subjects, the DM randomly determines which ones are affected.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into dust and is destroyed.\n\n" + toUni("d100") + "\t" + toUni("Effect") + "\n01-05\tYou cast Slow.\n06-10\tYou cast Faerie Fire.\n11-15\tYou are stunned until the start of your next turn, believing something awesome just happened.\n16-20\tYou cast Gust of Wind.\n21-25\tYou cast Detect Thoughts on the target you chose. If you didn't target a creature, you instead take 1d6 psychic damage.\n26-30\tYou cast Stinking Cloud.\n31-33\tHeavy rain falls in a 60-foot radius centered on the target. The area becomes lightly obscured. The rain falls until the start of your next turn.\n34-36\tAn animal appears in the unoccupied space nearest the target. The animal isn't under your control and acts as it normally would. Roll a d100 to determine which animal appears. On a 01-25, a rhinoceros appears; on a 26-50, an elephant appears; and on a 51-100, a rat appears.\n37-46\tYou cast Lightning Bolt.\n47-49\tA cloud of 600 oversized butterflies fills a 30-foot radius centered on the target. The area becomes heavily obscured. The butterflies remain for 10 minutes.\n50-53\tYou enlarge the target as if you had cast Enlarge/Reduce. If the target can't be affected by that spell or if you didn't target a creature, you become the target.\n54-58\tYou cast Darkness.\n59-62\tGrass grows on the ground in a 60-foot radius centered on the target. If grass is already there, it grows to ten times its normal size and remains overgrown for 1 minute.\n63-65\tAn object of the DM 's choice disappears into the Ethereal Plane. The object must be neither worn nor carried, within 120 feet of the target, and no larger than 10 feet in any dimension.\n66-69\tYou shrink yourself as if you had cast Enlarge/Reduce on yourself.\n70-79\tYou cast Fireball.\n80-84\tYou cast Invisibility.\n85-87\tLeaves grow from the target. If you chose a point in space as the target, leaves sprout from the creature nearest to that point. Unless they are picked off, the leaves turn brown and fall off after 24 hours.\n88-90\tA stream of 1d4 \xD7 10 gems, each worth 1 gp, shoots from the wand 's tip in a line 30 feet long and 5 feet wide. Each gem deals 1 bludgeoning damage, and the total damage of the gems is divided equally among all creatures in the line.\n91-95\tA burst of colorful shimmering light extends from you in a 30-foot radius. You and each creature in the area that can see must succeed on a DC 15 Constitution saving throw or become blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.\n96-97\tThe target's skin turns bright blue for 1d10 days. If you chose a point in space, the creature nearest to that point is affected.\n98-00\tIf you targeted a creature, it must make a DC 15 Constitution saving throw. If you didn't target a creature, you become the target and must make the saving throw. If the saving throw fails by 5 or more, the target is instantly petrified. On any other failed save, the target is restrained and begins to turn to stone. While restrained in this way, the target must repeat the saving throw at the end of its next turn, becoming petrified on a failure or ending the effect on a success. The petrification lasts until the target is freed by the Greater Restoration spell or similar magic.",

@@ -7172,7 +7172,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 
 //a way of creating a formatted list with multiple lines or on a single line
 function formatMultiList(caption, elements) {
-	if (isArray(elements) && elements.length === 0) return "";
+	if (!elements || (isArray(elements) && elements.length === 0)) return "";
 	if (!isArray(elements)) elements = [elements];
 	var rStr = caption + "\n \u2022 " + elements[0];
 	for (var i = 1; i < elements.length; i++) {
@@ -7181,7 +7181,7 @@ function formatMultiList(caption, elements) {
 	return rStr + ".";
 };
 function formatLineList(caption, elements) {
-	if (isArray(elements) && elements.length === 0) return "";
+	if (!elements || (isArray(elements) && elements.length === 0)) return "";
 	if (!isArray(elements)) elements = [elements];
 	var rStr = (caption ? caption + " " : "") + elements[0];
 	var EL = elements.length;
