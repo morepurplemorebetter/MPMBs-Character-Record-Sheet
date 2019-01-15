@@ -989,11 +989,16 @@ addMod : [
 		Can be "skill" or "save", but can also be left empty "".
 	2. field
 		What to add here depends on the type-
-		a)	for "skill" it can be the name of a skill, or "Init" for initiative,
+		a)	for "skill" it can be the name of a skill (e.g. "Acrobatics"),
+			or "Init" for initiative,
+			or "Too" for the optional tool/skill for which you can change the name,
 			or "All" for the all skills modifier.
 		b)	for "save" it can be the three-letter abbreviation of an ability score,
 			or "All" for the all saves modifier.
 		c)	for "" it has to be the exact name of the field as used in the PDF.
+			common ones include:
+			"Proficiency Bonus Modifier",	// modifier field for proficiency bonus
+			"Passive Perception Bonus",		// modifier field for passive perception (not normal perception)
 	3. mod
 		This can be any combination of numbers, mathematical operators,
 		and three-letter ability score abbreviations for ability score modifiers,

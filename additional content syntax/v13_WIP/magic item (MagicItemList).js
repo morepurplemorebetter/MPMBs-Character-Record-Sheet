@@ -165,6 +165,26 @@ MagicItemsList["staff of purple"] = {
 	If the magic item doesn't have a listed weight, you can just leave this attribute out.
 	Setting this to 0 is the same as not including this attribute.
 */
+	prerequisite : "Requires attunement by a dwarf",
+/*	weight // OPTIONAL //
+	TYPE:	string
+	USE:	textual explanation of a prerequisite the item has
+
+	If the magic item doesn't have a prerequisite, you can just leave this attribute out.
+	Setting this to "" is the same as not including this attribute.
+*/
+	prereqeval : "CurrentRace.known.indexOf('dwarf') !== -1",
+/*	eval // OPTIONAL //
+	TYPE:	string
+	USE:	this string is evaluated using eval() and should result in 'true' if the prerequisite is met or 'false' otherwise
+
+	This can be any JavaScript you want to use to test if the prerequisite for the item is met.
+	Common usage examples:
+	"CurrentRace.known.indexOf('dwarf') !== -1", // Test if race is a dwarf
+	"classes.known.cleric", // Test if character has any levels in the cleric class
+	"CurrentSpells.toSource() !== '({})'", // Test if character has any spellcasting abilities (including from race/feat/magic item)
+	 "What('Dex') >= 13", // Test if character has a Dexterity score of 13 or more
+*/
 	allowDuplicates : true,
 /*	allowDuplicates // OPTIONAL //
 	TYPE:	boolean
