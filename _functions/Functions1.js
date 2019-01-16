@@ -2551,18 +2551,22 @@ function FindWeapons(ArrayNmbr) {
 			[] // if a spell/cantrip, this will be an array of the classes on which spell list this attack is
 		];
 
+		var theWea = WeaponsList[tempArray[j][0]];
+
 		//add magical bonus, denoted by a "+" or "-"
 		var magicRegex = /(?:^|\s|\(|\[)([\+-]\d+)/;
 		if (magicRegex.test(tempString)) {
 			tempArray[j][1] = parseFloat(tempString.match(magicRegex)[1]);
+		} else if (theWea && theWea.isMagicWeapon) {
+			tempArray[j][1] = "magic item";
 		}
 
 		//add the true/false switch for adding ability score to damage or not
-		tempArray[j][2] = tempArray[j][0] ? WeaponsList[tempArray[j][0]].abilitytodamage : true;
+		tempArray[j][2] = theWea ? theWea.abilitytodamage : true;
 
 		//if this is a spell or a cantrip, see if we can link it to an object in the CurrentCasters variable
-		var isSpell = !tempArray[j][0] ? ParseSpell(tempString) : WeaponsList[tempArray[j][0]].SpellsList ? WeaponsList[tempArray[j][0]].SpellsList : SpellsList[tempArray[j][0]] ? tempArray[j][0] : ParseSpell(tempArray[j][0]);
-		if ((!tempArray[j][0] || (/spell|cantrip/i).test(WeaponsList[tempArray[j][0]].type)) && isSpell) {
+		var isSpell = !theWea ? ParseSpell(tempString) : theWea.SpellsList ? theWea.SpellsList : SpellsList[tempArray[j][0]] ? tempArray[j][0] : ParseSpell(tempArray[j][0]);
+		if ((!theWea || (/spell|cantrip/i).test(theWea.type)) && isSpell) {
 			tempArray[j][3] = isSpell;
 			if (!tempArray[j][0]) tempArray[j][2] = false;
 			tempArray[j][4] = isSpellUsed(isSpell);
@@ -4247,37 +4251,83 @@ function ReturnFeatFieldsArray(FldNmbr) {
 // Lookup the name of a Feat and if it exists in the FeatsList
 function ParseFeat(input) {
 	var found = "";
-	if (!input) return found;
+	var subFound = "";
+	if (!input) return [found, subFound, []];
 
 	input = removeDiacritics(input).toLowerCase();
 	var foundLen = 0;
 	var foundDat = 0;
+	var subFoundLen = 0;
+	var subFoundDat = 0;
+	var subOptionArr = [];
+	var isMatch, isMatchSub, tempDate, tempDateSub, tempNameLen;
+	var varArr;
 
-	//scan string for all feats
+	// Scan string for all magic items
 	for (var key in FeatsList) {
 		var kObj = FeatsList[key];
 
-		if (input.indexOf(kObj.name.toLowerCase()) === -1 // see if the text matches
-			|| testSource(key, kObj, "featsExcl") // test if the feat or its source isn't excluded
-		) continue;
+		// test if the magic item or its source isn't excluded
+		if (testSource(key, kObj, "featsExcl")) continue;
+
+		isMatch = input.indexOf(kObj.name.toLowerCase()) !== -1;
+		tempDate = sourceDate(kObj.source);
+		subFoundLen = 0;
+		subFoundDat = 0;
+		isMatchSub = "";
+		varArr = [];
+
+		if (kObj.choices) {
+			for (var i = 0; i < kObj.choices.length; i++) {
+				var keySub = kObj.choices[i].toLowerCase();
+				var sObj = kObj[keySub];
+				if (!sObj || (sObj.source && testSource(keySub, sObj, "featsExcl"))) continue;
+				varArr.push(kObj.choices[i]);
+				var isMatchSub = false;
+				if (sObj.name) {
+					isMatchSub = input.indexOf(sObj.name.toLowerCase()) !== -1;
+				} else if (isMatch) {
+					isMatchSub = input.indexOf(keySub) !== -1;
+				}
+				if (isMatchSub) {
+					// the choice matched, but only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source than the other choices
+					tempDateSub = sObj.source ? sourceDate(sObj.source) : tempDate;
+					tempNameLen = (sObj.name ? sObj.name : keySub).length
+					if (tempNameLen < subFoundLen || (tempNameLen == subFoundLen && tempDateSub < subFoundDat)) continue;
+					// we have a match for a choice, so set the values
+					subFoundLen = tempNameLen;
+					subFoundDat = tempDateSub;
+					foundLen = kObj.name.length;
+					foundDat = tempDate;
+					found = key;
+					subFound = keySub;
+					subOptionArr = varArr;
+				}
+			}
+		}
+		if (!isMatch || subFoundLen) continue; // no match or sub already matched
 
 		// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
-		var tempDate = sourceDate(kObj.source);
 		if (kObj.name.length < foundLen || (kObj.name.length == foundLen && tempDate < foundDat)) continue;
 
 		// we have a match, set the values
 		found = key;
+		subFound = "";
+		subOptionArr = varArr;
 		foundLen = kObj.name.length
 		foundDat = tempDate;
 	}
-	return found;
+	return [found, subFound, subOptionArr];
 };
 
 // Check all Feat fields and parse the once known into the global variable
 function FindFeats() {
 	CurrentFeats.known = [];
+	CurrentFeats.choices = [];
 	for (var i = 1; i <= FieldNumbers.feats; i++) {
-		CurrentFeats.known.push( ParseFeat( What("Feat Name " + i) ) );
+		var parsedFeat = ParseFeat( What("Feat Name " + i) );
+		CurrentFeats.known.push(parsedFeat[0]);
+		CurrentFeats.choices.push(parsedFeat[1]);
 	}
 }
 
@@ -4290,16 +4340,16 @@ function ApplyFeat(input, FldNmbr) {
 		Value(Fflds[0], input);
 		return;
 	};
-	var newFeat = ParseFeat(input);
-	var theFeat = FeatsList[newFeat];
+
+	var parseResult = ParseFeat(input);
+	var newFeat = parseResult[0];
+	var newFeatVar = parseResult[1];
+	var aFeat = FeatsList[newFeat];
+	var aFeatVar = aFeat && newFeatVar ? aFeat[newFeatVar] : false;
 	var ArrayNmbr = FldNmbr - 1;
 	var oldFeat = CurrentFeats.known[ArrayNmbr];
-
-	if (oldFeat === newFeat) return; // No changes were made
-
-	// Start progress bar
-	var thermoTxt = thermoM("Applying feat...");
-	thermoM(1/6); // Increment the progress bar
+	var oldFeatVar = CurrentFeats.choices[ArrayNmbr];
+	var setFieldValueTo;
 
 	var doNotCommit = function() {
 		if (event.target && event.target.name == MIflds[0]) {
@@ -4310,18 +4360,75 @@ function ApplyFeat(input, FldNmbr) {
 		if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
 	}
 
-	// Check if the feat doesn't already exist
-	if (!ignoreDuplicates && theFeat && CurrentFeats.known.indexOf(newFeat) !== -1 && !theFeat.allowDuplicates) {
-		app.alert({
-			cTitle : "Can only have one instance of a feat.",
-			cMsg : "The feat that you have selected, '" + theFeat.name + "' is already present on the sheet and you can't have duplicates of it."
-		});
-		doNotCommit();
-		return;
+	// If no variant was found, but there is a choice, ask it now
+	if (IsNotImport && aFeat && aFeat.choices && !newFeatVar) {
+		if (parseResult[2].length) {
+			var selectFeatVar = parseResult[2].length == 1 ? parseResult[2][0] : AskUserOptions("Select " + aFeat.name + " Type", "The '" + aFeat.name + "' feat has several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the feat line that this feat is in.", parseResult[2], "radio", true);
+			newFeatVar = selectFeatVar.toLowerCase();
+			aFeatVar = aFeat[newFeatVar];
+			setFieldValueTo = aFeatVar.name ? aFeatVar.name : aFeat.name + " [" + selectFeatVar + "]";
+		} else {
+			app.alert({
+				cTitle : "Error processing options for " + aFeat.name,
+				cMsg : "The feat that you have selected, '" + aFeat.name + "' offers a choice for the form it comes in. Unfortunately, the sheet has run into an issue where there are no forms to choose from because of resources being excluded. Use the \"Source Material\" bookmark to correct this.\n\nThis could also be an issue with the imported script containing the feat not being written correctly. If so, please contact the author of that import script."
+			});
+			doNotCommit();
+			return;
+		}
+	}
+
+	if (oldFeat === newFeat && oldFeatVar === newFeatVar) return; // No changes were made
+
+	// Start progress bar
+	var thermoTxt = thermoM("Applying feat...");
+	thermoM(1/6); // Increment the progress bar
+
+	// Create the object to use (merge parent and choice)
+	if (!aFeatVar) {
+		var theFeat = aFeat;
+		aFeatVar = "";
+	} else {
+		var theFeat = {
+			name : aFeatVar.name ? aFeatVar.name : setFieldValueTo ? setFieldValueTo : input
+		}
+		var FeatAttr = ["source", "description", "calculate", "prerequisite", "prereqeval"];
+		for (var a = 0; a < FeatAttr.length; a++) {
+			var aKey = FeatAttr[a];
+			if (aFeatVar[aKey]) {
+				theFeat[aKey] = aFeatVar[aKey];
+			} else if (aFeat[aKey]) {
+				theFeat[aKey] = aFeat[aKey];
+			}
+		}
+	}
+
+	// Check if the feat doesn't already exist (with the same choice, if any)
+	if (IsNotImport && !ignoreDuplicates && aFeat) {
+		// count occurrence of parent & choice
+		var parentDupl = 0;
+		var choiceDupl = aFeatVar && !aFeatVar.allowDuplicates ? 0 : undefined;
+		for (var i = 0; i < CurrentFeats.known.length; i++) {
+			if (CurrentFeats.known[i] == newFeat) {
+				parentDupl++;
+				if (choiceDupl !== undefined && CurrentFeats.choices[i] == newFeatVar) choiceDupl++;
+			}
+		}
+		if ((parentDupl && !aFeatVar.allowDuplicates) || choiceDupl) {
+			var stopFunct = app.alert({
+				cTitle : "Can only have one instance of a magic item",
+				cMsg : "The magic item that you have selected, '" + (choiceDupl ? theFeat.name : aFeatVar.name) + "' is already present on the sheet and you can't have duplicates of it.\n\nIf you want to show that your character has multiples of this item, consider adding \"(2)\" after its name. You can also list it in one of the equipment sections, where you can denote the number you have." + (!choiceDupl ? "\n\nHowever, as this is a composite item that exists in different forms, and you don't have '" + theFeat.name + "' yet, the sheet can allow you to add it regardless of the rules. Do you want to continue adding this item?" : ""),
+				nIcon : choiceDupl ? 0 : 1,
+				nType : choiceDupl ? 0 : 2
+			});
+			if (stopFunct === 1 || stopFunct === 3) {
+				doNotCommit();
+				return;
+			}
+		}
 	}
 
 	// Before stopping the calculations, first test if the feat has a prerequisite and if it meets that
-	if (IsNotReset && theFeat && theFeat.prereqeval && !ignorePrereqs && event.target && event.target.name == Fflds[0]) {
+	if (IsNotImport && IsNotReset && theFeat && theFeat.prereqeval && !ignorePrereqs && event.target && event.target.name == Fflds[0]) {
 		try {
 			var meetsPrereq = eval(theFeat.prereqeval);
 		} catch (e) {
@@ -4347,33 +4454,40 @@ function ApplyFeat(input, FldNmbr) {
 		};
 	};
 
+	// if a feat variant was chosen, make sure this field will show that selection, now that it can't be cancelled anymore due to not meeting a prerequisite
+	if (setFieldValueTo) event.target.setVal = setFieldValueTo;
+
 	calcStop(); // Now stop the calculations
 
 	// Remove previous feat at the same field
-	if (oldFeat !== newFeat) {
+	if (oldFeat !== newFeat || oldFeatVar !== newFeatVar) {
 		// Remove everything from the description field, value, calculation, tooltip, submitname
 		tDoc.getField(Fflds[2]).setAction("Calculate", "");
 		Value(Fflds[2], "", "", "");
 		if (oldFeat) {
-			// Remove its attributes
-			var Fea = ApplyFeatureAttributes(
-				"feat", // type
-				oldFeat, // fObjName
-				[CurrentFeats.level, 0, false], // lvlA [old-level, new-level, force-apply]
-				false, // choiceA [old-choice, new-choice, "only"|"change"]
-				false // forceNonCurrent
-			);
+			if (oldFeatVar !== newFeatVar) {
+				// Remove its attributes
+				var Fea = ApplyFeatureAttributes(
+					"feat", // type
+					oldFeat, // fObjName
+					[CurrentFeats.level, 0, false], // lvlA [old-level, new-level, force-apply]
+					[oldFeatVar, "", false], // choiceA [old-choice, new-choice, "only"|"change"]
+					false // forceNonCurrent
+				);
+			}
 			// remove the source from the notes field
-			var sourceStringOld = stringSource(FeatsList[oldFeat], "first", "[", "]");
+			var oldSource = oldFeatVar && FeatsList[oldFeat][oldFeatVar].source ? FeatsList[oldFeat][oldFeatVar] : FeatsList[oldFeat];
+			var sourceStringOld = stringSource(oldSource, "first", "[", "]");
 			if (sourceStringOld) RemoveString(Fflds[1], sourceStringOld);
 		}
 	}
 
 	// Update the CurrentFeats.known variable
 	CurrentFeats.known[ArrayNmbr] = newFeat;
+	CurrentFeats.choices[ArrayNmbr] = newFeatVar;
 
 	// Do something if there is a new feat to apply
-	if (theFeat) {
+	if (aFeat) {
 		thermoTxt = thermoM("Applying '" + theFeat.name + "' feat...", false); //change the progress dialog text
 		thermoM(1/3); //increment the progress dialog's progress
 
@@ -4398,11 +4512,12 @@ function ApplyFeat(input, FldNmbr) {
 		if (sourceString) AddString(Fflds[1], sourceString, " ");
 
 		// Apply the rest of its attributes
+		var justChange = oldFeat == newFeat && oldFeatVar !== newFeatVar;
 		var Fea = ApplyFeatureAttributes(
 			"feat", // type
 			newFeat, // fObjName
-			[0, CurrentFeats.level, false], // lvlA [old-level, new-level, force-apply]
-			false, // choiceA [old-choice, new-choice, "only"|"change"]
+			[justChange ? CurrentFeats.level : 0, CurrentFeats.level, justChange], // lvlA [old-level, new-level, force-apply]
+			justChange ? [oldFeatVar, newFeatVar, "change"] : ["", newFeatVar, false], // choiceA [old-choice, new-choice, "only"|"change"]
 			false // forceNonCurrent
 		);
 	}
@@ -4448,6 +4563,29 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 	var downToOtherPage = itemNmbr === FieldNumbers.featsD ? " (to overflow page)" : "";
 
 	if (!MenuSelection || MenuSelection === "justMenu") {
+		// if this feat allows for a choice, add that option as the first thing in the menu
+		if (CurrentFeats.known[ArrayNmbr] && FeatsList[CurrentFeats.known[ArrayNmbr]].choices) {
+			aFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
+			var aFeatOpts = aFeat.choices;
+			var choiceMenu = {
+				cName : "Change " + aFeat.name + " type",
+				oSubMenu : []
+			};
+			for (var i = 0; i < aFeatOpts.length; i++) {
+				var aCh = aFeatOpts[i];
+				var aChL = aCh.toLowerCase();
+				if (!aFeat[aChL] || (aFeat[aChL].source && testSource(aChL, aFeat[aChL], "featsExcl"))) continue;
+				choiceMenu.oSubMenu.push({
+					cName : aCh + stringSource(aFeat[aChL].source ? aFeat[aChL] : aFeat, "first,abbr", "\t   [", "]"),
+					cReturn : "feat#choice#" + aChL,
+					bMarked : CurrentFeats.choices[ArrayNmbr] == aChL
+				});
+			}
+			if (choiceMenu.oSubMenu.length) {
+				featMenu.push(choiceMenu);
+				featMenu.push({cName : "-"});
+			}
+		}
 		var menuLVL1 = function (array) {
 			for (i = 0; i < array.length; i++) {
 				featMenu.push({
@@ -4466,9 +4604,10 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 			["Clear feat", "clear"],
 		]);
 		Menus.feats = featMenu;
-		MenuSelection = getMenu("magicitems");
+		if (MenuSelection == "justMenu") return;
 	}
-	if (MenuSelection == "justMenu" || !MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "feat") return;
+	MenuSelection = getMenu("feats");
+	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "feat") return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Apply feat menu option...");
@@ -4865,7 +5004,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				"feat", // type
 				aFeat, // fObjName
 				[oldFeatLvl, newFeatLvl, false], // lvlA [old-level, new-level, force-apply]
-				false, // choiceA [old-choice, new-choice, "only"|"change"]
+				["", CurrentFeats.choices[f], false], // choiceA [old-choice, new-choice, "only"|"change"]
 				false // forceNonCurrent
 			);
 		}
@@ -4878,11 +5017,12 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 	if ((/item|all|notclass/i).test(Typeswitch) && oldItemLvl != newItemLvl) {
 		for (var f = 0; f < CurrentMagicItems.known.length; f++) {
 			var anItem = CurrentMagicItems.known[f];
-			var theItem = MagicItemsList[aFeat];
+			var anItemVar = CurrentMagicItems.known[f];
+			var theItem = MagicItemsList[anItem];
 
-			// if the item requires attunement, but the checkbox is not checked, skip it
-			var attuneChecked = tDoc.getField("Extra.Magic Item Attuned " + (f+1)).isBoxChecked(0);
-			if (!theItem || (theItem.attunement && !attuneChecked)) continue;
+			// if the attunement field is visible, but the checkbox is not checked, skip it
+			var attuneFld = tDoc.getField("Extra.Magic Item Attuned " + (f+1));
+			if (!theItem || (attuneFld.display == display.visible && !attuneFld.isBoxChecked(0))) continue;
 
 			thermoTxt = thermoM("Updating " + theItem.name + " features...", false);
 			thermoM((f+1)/CurrentMagicItems.known.length); //increment the progress dialog's progress
@@ -4891,7 +5031,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				"item", // type
 				anItem, // fObjName
 				[oldItemLvl, newItemLvl, false], // lvlA [old-level, new-level, force-apply]
-				false, // choiceA [old-choice, new-choice, "only"|"change"]
+				["", CurrentMagicItems.choices[f], false], // choiceA [old-choice, new-choice, "only"|"change"]
 				false // forceNonCurrent
 			);
 		}

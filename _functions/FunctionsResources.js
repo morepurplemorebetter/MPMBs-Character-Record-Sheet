@@ -768,15 +768,16 @@ function resourceSelectionDialog(type) {
 		for (var u in ClassList) {
 			var uGroup = amendSource(ClassList[u].name, ClassList[u]);
 			refObj[uGroup] = u;
+			var uTest = testSource(u, ClassList[u], CSatt, true);
+			if (uTest === "source") continue;
 			if (!exclObj[uGroup]) exclObj[uGroup] = {};
 			if (!inclObj[uGroup]) inclObj[uGroup] = {};
-			var uTest = testSource(u, ClassList[u], CSatt, true);
 			for (var z = 0; z < ClassList[u].subclasses[1].length; z++) {
 				var uSub = ClassList[u].subclasses[1][z];
+				uSubTest = testSource(uSub, ClassSubList[uSub], CSatt, true);
+				if (uSubTest === "source") continue;
 				var uName = amendSource(ClassSubList[uSub].subname, ClassSubList[uSub], ClassList[u]);
 				refObj[uName] = uSub;
-				uSubTest = testSource(uSub, ClassSubList[uSub], CSatt, true);
-				if (uTest === "source" || uSubTest === "source") continue;
 				if (uTest || uSubTest) {
 					exclObj[uGroup][uName] = -1;
 				} else {
@@ -838,7 +839,46 @@ function resourceSelectionDialog(type) {
 	 case "feat" :
 		var theName = "Feats";
 		var CSatt = "featsExcl";
-		for (var u in FeatsList) {
+		var parObj = FeatsList;
+	 case "magic item" :
+		if (type === "magic item") {
+			var theName = "Magic Items";
+			var CSatt = "magicitemExcl";
+			var parObj = MagicItemsList;
+		}
+		for (var u in parObj) {
+			var uGroup = amendSource(parObj[u].name, parObj[u]);
+			var uTest = testSource(u, parObj[u], CSatt, true);
+			if (uTest === "source") continue;
+			if (parObj[u].choices) {
+				if (!exclObj[uGroup]) exclObj[uGroup] = {};
+				if (!inclObj[uGroup]) inclObj[uGroup] = {};
+				var rLen = parObj[u].choices.length;
+				for (var z = 0; z < rLen; z++) {
+					var uSub = parObj[u].choices[z];
+					var uSubL = uSub.toLowerCase();
+					var uSubVar = parObj[u][uSubL];
+					var uSubTest = testSource(uSubL, uSubVar.source ? uSubVar : parObj[u], CSatt, true);
+					if (uSubTest === "source") continue;
+					var uName = amendSource(uSubVar.name ? uSubVar.name : uSub, uSubVar, parObj[u]);
+					if (uSubTest) {
+						exclObj[uGroup][uName] = -1;
+					} else {
+						inclObj[uGroup][uName] = -1;
+					}
+					refObj[uName] = uSubL;
+				}
+			} else {
+				if (uTest) {
+					exclObj[uGroup] = -1;
+				} else {
+					inclObj[uGroup] = -1;
+				}
+			}
+			refObj[uGroup] = u;
+		};
+		break;
+/* UPDATED
 			var uName = amendSource(FeatsList[u].name, FeatsList[u]);
 			var uTest = testSource(u, FeatsList[u], CSatt, true);
 			if (uTest === "source") continue;
@@ -860,15 +900,6 @@ function resourceSelectionDialog(type) {
 					inclObj[uName] = -1;
 				}
 			}
-		};
-		break;
-	 case "magic item" :
-		var theName = "Magic Items";
-		var CSatt = "magicitemExcl";
-		for (var u in MagicItemsList) {
-			var uName = amendSource(MagicItemsList[u].name, MagicItemsList[u]);
-			var uTest = testSource(u, MagicItemsList[u], CSatt, true);
-			if (uTest === "source") continue;
 			var uGroup = (/\[.+\]/).test(u) ? u.replace(/( ?\[.+\])/, "").capitalize() : false;
 			refObj[uName] = u;
 			if (uGroup) {
@@ -887,8 +918,7 @@ function resourceSelectionDialog(type) {
 					inclObj[uName] = -1;
 				}
 			}
-		};
-		break;
+*/
 	 case "spell" :
 		var theName = "Spells";
 		var CSatt = "spellsExcl";
@@ -979,9 +1009,8 @@ function resourceSelectionDialog(type) {
 		for (var u in WeaponsList) {
 			var uName = amendSource(WeaponsList[u].name, WeaponsList[u]);
 			var uTest = testSource(u, WeaponsList[u], CSatt, true);
-			if (uTest === "source") continue;
-
-			var uGroup = !(/martial|simple/i).test(WeaponsList[u].type) ? WeaponsList[u].type : !WeaponsList[u].list ? "Other" : WeaponsList[u].type + " - " + WeaponsList[u].list;
+			if (uTest === "source" || WeaponsList[u].list == "startlist") continue;
+			var uGroup = !(/martial|simple/i).test(WeaponsList[u].type) ? WeaponsList[u].type : WeaponsList[u].list ? WeaponsList[u].type + " - " + WeaponsList[u].list : WeaponsList[u].baseWeapon ? WeaponsList[u].baseWeapon + " - variants" : "Other";
 			refObj[uName] = u;
 			if (!exclObj[uGroup]) exclObj[uGroup] = {};
 			if (!inclObj[uGroup]) inclObj[uGroup] = {};
@@ -998,7 +1027,7 @@ function resourceSelectionDialog(type) {
 		for (var u in AmmoList) {
 			var uName = AmmoList[u].name;
 			var uTest = testSource(u, AmmoList[u], CSatt, true);
-			if (uTest === "source") continue;
+			if (uTest === "source" || AmmoList[u].list == "startlist") continue;
 
 			var ammSource = parseSource(AmmoList[u].source);
 			var uGroup = ammSource ? SourceList[ammSource[0][0]].name : "Homebrew";
@@ -1018,7 +1047,7 @@ function resourceSelectionDialog(type) {
 		for (var u in ArmourList) {
 			var uName = amendSource(ArmourList[u].name, ArmourList[u]);
 			var uTest = testSource(u, ArmourList[u], CSatt, true);
-			if (uTest === "source") continue;
+			if (uTest === "source" || ArmourList[u].list == "startlist") continue;
 			var uGroup = ArmourList[u].type ? ArmourList[u].type.capitalize() : "Other";
 			refObj[uName] = u;
 			if (!exclObj[uGroup]) exclObj[uGroup] = {};

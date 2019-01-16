@@ -666,7 +666,7 @@ var Base_ClassList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (classes.known.monk && classes.known.monk.level && v.theWea && (v.theWea.monkweapon || (/shortsword/i).test(v.theWea.name) || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/\b(heavy|(2|two).?hand(ed)?s?)\b/i).test(v.theWea.description)))) {
+							if (classes.known.monk && classes.known.monk.level && (v.theWea.monkweapon || v.baseWeaponName == "shortsword" || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/\b(heavy|(2|two).?hand(ed)?s?)\b/i).test(v.theWea.description)))) {
 								var aMonkDie = function (n) { return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10; }(classes.known.monk.level);
 								try {
 									var curDie = eval(fields.Damage_Die.replace('d', '*'));
@@ -762,7 +762,7 @@ var Base_ClassList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if ((/unarmed strike/i).test(v.WeaponName) && !v.thisWeapon[1]) {
+							if (v.baseWeaponName == "unarmed strike" && !v.thisWeapon[1]) {
 								fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
 							};
 						},
@@ -1544,7 +1544,7 @@ var Base_ClassList = {
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
-								if (v.WeaponName == 'eldritch blast') output.extraDmg += What('Cha Mod');
+								if (v.baseWeaponName == 'eldritch blast') output.extraDmg += What('Cha Mod');
 							},
 							"I add my Charisma modifier to the damage of every beam of my Eldritch Blast cantrip."
 						]
@@ -1668,7 +1668,7 @@ var Base_ClassList = {
 					calcChanges : {
 						atkAdd : [
 							function (fields, v) {
-								if (v.WeaponName == 'eldritch blast') fields.Range = 300 * (v.rangeM ? v.rangeM : 1) + ' ft';
+								if (v.baseWeaponName == 'eldritch blast') fields.Range = 300 * (v.rangeM ? v.rangeM : 1) + ' ft';
 							},
 							"My Eldritch Blast cantrip has a range of 300 ft."
 						]
@@ -1703,7 +1703,7 @@ var Base_ClassList = {
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
-								if (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText)) output.extraDmg += What('Cha Mod');
+								if (v.pactWeapon || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) output.extraDmg += What('Cha Mod');
 							},
 							"If I include the word 'Pact' in a melee weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."
 						]
@@ -1798,7 +1798,7 @@ var Base_ClassList = {
 					calcChanges : {
 						atkAdd : [
 							function (fields, v) {
-								if (v.WeaponName == 'eldritch blast') fields.Description += '; Target pushed back 10 ft';
+								if (v.baseWeaponName == 'eldritch blast') fields.Description += '; Target pushed back 10 ft';
 							},
 							"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
 						]
@@ -1911,7 +1911,8 @@ var Base_ClassList = {
 					calcChanges : {
 						atkAdd : [
 							function (fields, v) {
-								if (v.WeaponName === 'moon bow' || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) {
+								if (v.pactWeapon || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) {
+									v.pactWeapon = true;
 									fields.Proficiency = true;
 									if (!v.thisWeapon[1]) fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
 								};

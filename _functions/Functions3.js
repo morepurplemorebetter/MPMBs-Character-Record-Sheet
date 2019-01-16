@@ -139,7 +139,23 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	// addIt = true to add things and addIt = false to remove things
 	var useAttr = function(uObj, addIt, skipEval, objNm) {
 		objNm = objNm == undefined ? fObjName : fObjName + objNm; // has to be unique
-		var tipNm = displName == uObj.name ? displName : displName + ": " + uObj.name;
+		var tipNm = displName + (cnt > 1 ? " (" + cnt + ")" : "");
+		if (displName !== uObj.name) {
+			if (type === "feat" || type === "magic item") {
+				if (uObj.name) {
+					tipNm = uObj.name;
+				} else if (objNm && fObj.choices) {
+					for (var j = 0; j < fObj.choices.length; j++) {
+						if (fObj.choices[j].toLowerCase() == objNm) {
+							tipNm += " [" + fObj.choices[j] + "]";
+							brea;
+						}
+					}
+				}
+			} else if (uObj.name) {
+				tipNm = displName + ": " + uObj.name;
+			}
+		}
 		var tipNmF = tipNm + (tipNmExtra ? " " + tipNmExtra : "");
 
 		// we should add the options for weapons/armours/ammos before adding the item itself
@@ -147,9 +163,9 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		var addListOptions = function() {
 			if (uObj.armorOptions) processArmorOptions(addIt, tipNm, uObj.armorOptions);
 			if (uObj.ammoOptions) processAmmoOptions(addIt, tipNm, uObj.ammoOptions);
-			if (uObj.weaponOptions) processWeaponOptions(addIt, tipNm, uObj.weaponOptions);
+			if (uObj.weaponOptions) processWeaponOptions(addIt, tipNm, uObj.weaponOptions, type === "magic item");
 		}
-		
+
 		// eval or removeeval
 		var a = addIt ? "eval" : "removeeval";
 		if (uObj[a] && !skipEval) runEval(uObj[a], a);
@@ -190,11 +206,12 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (armorProf) processArmourProfs(addIt, tipNmF, armorProf);
 
 		// --- backwards compatibility --- //
-		// armor and weapon additions
+		// armor, shield, and weapon additions
 		var weaponAdd = uObj.addWeapons ? uObj.addWeapons : type == "race" && uObj.weapons ? uObj.weapons : false;
 		if (weaponAdd) processAddWeapons(addIt, weaponAdd);
 		var armorAdd = uObj.addArmor ? uObj.addArmor : uObj.addarmor ? uObj.addarmor : false;
 		if (armorAdd) processAddArmour(addIt, armorAdd);
+		if (uObj.addShield) processAddShield(addIt, uObj.addShield, uObj.weight);
 
 		// --- backwards compatibility --- //
 		// skills additions
@@ -284,6 +301,15 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	var cNewObj = choiceA[1] && fObj[choiceA[1]] ? fObj[choiceA[1]] : false;
 	var cJustChange = (/change|update/).test(choiceA[2]) && cOldObj && cNewObj && choiceA[0] != choiceA[1];
 	var cOnly = ((AddFea && cNewObj) || (!AddFea && cOldObj)) && (/only/).test(choiceA[2]);
+
+	// Now if there was a choice, and this is a feat or an item, check for duplicates
+	var cnt = 0;
+	if ((choiceA[0] || choiceA[1]) && (type === "feat" || type === "magic item")) {
+		var checkObj = type === "feat" ? CurrentFeats : CurrentMagicItems;
+		for (var i = 0; i < checkObj.known.length; i++) {
+			if (checkObj.known[i] == fObjName) cnt++;
+		}
+	}
 
 	// get the level-dependent attributes for the current and old levels
 	var Fea = GetLevelFeatures(fObj, lvlA[1], cNewObj ? choiceA[1] : false, lvlA[0], cOldObj ? choiceA[0] : cOnly ? choiceA[1] : false, cOnly);
@@ -551,7 +577,7 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName) {
 		sObj.bonus[srcNm] = spBon;
 		// see if this wants to change the spellcasting ability
 		var spFeatItemLvl = false;
-		var spAbility = !isArray(spBon) ? spBon.ability : false;
+		var spAbility = !isArray(spBon) ? spBon.spellcastingAbility : false;
 		var spFixedDC = !isArray(spBon) ? spBon.fixedDC : false;
 		if (isArray(spBon)) {
 			for (var i = 0; i < spBon.length; i++) {
@@ -589,6 +615,40 @@ function processAddArmour(AddRemove, armour) {
 				calcStop();
 			}
 		}
+	}
+}
+
+// set the shield (if more AC than current shield) or remove the shield
+function processAddShield(AddRemove, shield, weight) {
+	if (!shield) return;
+	if (isArray(shield)) {
+		if (!shield.length) return;
+		if ((shield[2] == undefined || isNaN(shield[2])) && weight !== undefined && !isNaN(weight)) shield[2] = weight;
+	} else {
+		var shield = [shield];
+		if (weight !== undefined && !isNaN(weight)) shield[2] = weight;
+	}
+
+	// grab current fields
+	var shieldFld = What("AC Shield Bonus Description");
+	if (AddRemove) { // add
+		// see what the new AC will be
+		var newACdefined = shield[1] !== undefined && !isNaN(shield[1]) ? shield[1] : undefined;
+		if (newACdefined !== undefined) {
+			var newAC = newACdefined;
+		} else {
+			var magicRegex = /(?:^|\s|\(|\[)([\+-]\d+)/;
+			var newAC = 2 + (magicRegex.test(shield[0]) ? parseFloat(shield[0].match(magicRegex)[1]) : 0);
+		}
+		if (newAC < What("AC Shield Bonus")) return; // do not continue if new AC would not be equal or more
+
+		// set the value of the fields
+		Value("AC Shield Bonus Description", shield[0]);
+		if (newACdefined !== undefined) Value("AC Shield Bonus", shield[1]);
+		if (shield[2] !== undefined && !isNaN(shield[2])) Value("AC Shield Weight", shield[2]);
+
+	} else if (CurrentShield.field.indexOf(shield[0].toLowerCase()) !== -1) { // remove
+		Value("AC Shield Bonus Description", "");
 	}
 }
 
@@ -630,7 +690,7 @@ function processArmorOptions(AddRemove, srcNm, itemArr) {
 }
 
 // set or remove attack options
-function processWeaponOptions(AddRemove, srcNm, itemArr) {
+function processWeaponOptions(AddRemove, srcNm, itemArr, magical) {
 	if (!itemArr) return;
 	if (!isArray(itemArr)) itemArr = [itemArr];
 
@@ -642,6 +702,7 @@ function processWeaponOptions(AddRemove, srcNm, itemArr) {
 		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
 		if (AddRemove) {
 			itemArr[i].list = "startlist";
+			if (magical) itemArr[i].isMagicWeapon = true;
 			CurrentVars.extraWeapons[newName] = itemArr[i];
 			WeaponsList[newName] = itemArr[i];
 		} else {
@@ -669,6 +730,7 @@ function processAmmoOptions(AddRemove, srcNm, itemArr) {
 	for (var i = 0; i < itemArr.length; i++) {
 		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
 		if (AddRemove) {
+			itemArr[i].list = "startlist";
 			CurrentVars.extraAmmo[newName] = itemArr[i];
 			AmmoList[newName] = itemArr[i];
 		} else {
@@ -1406,6 +1468,33 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 
 // >>>> Magic Item functions <<<< \\
 
+function doDropDownValCalcWithChoices() {
+	if (!event.target || event.type != "Field") return;
+	switch (event.name) {
+		case "Calculate":
+			if (event.target.setVal) {
+				event.value = event.target.setVal;
+			}
+			break;
+		case "Validate":
+			if (event.target.setVal) {
+				delete event.target.setVal;
+				return;
+			}
+			// only in case of a validation event and not changing the value
+			var fldName = event.target.name;
+			var fldNmbr = parseFloat(fldName.slice(-2));
+			if (fldName.toLowerCase().indexOf("magic item") !== -1) {
+				ApplyMagicItem(event.value, fldNmbr);
+			} else if (fldName.toLowerCase().indexOf("feat") !== -1) {
+				ApplyFeat(event.value, fldNmbr);
+			}
+			break;
+		default:
+			break;
+	}
+}
+
 // Make an array of all magic item fields of that fieldnumber
 function ReturnMagicItemFieldsArray(fldNmbr) {
 	fldsArray = [
@@ -1422,37 +1511,83 @@ function ReturnMagicItemFieldsArray(fldNmbr) {
 // Lookup the name of a Magic Item and if it exists in the MagicItemsList
 function ParseMagicItem(input) {
 	var found = "";
-	if (!input) return found;
+	var subFound = "";
+	if (!input) return [found, subFound, []];
 
 	input = removeDiacritics(input).toLowerCase();
 	var foundLen = 0;
 	var foundDat = 0;
+	var subFoundLen = 0;
+	var subFoundDat = 0;
+	var subOptionArr = [];
+	var isMatch, isMatchSub, tempDate, tempDateSub, tempNameLen;
+	var varArr;
 
 	// Scan string for all magic items
 	for (var key in MagicItemsList) {
 		var kObj = MagicItemsList[key];
 
-		if (input.indexOf(kObj.name.toLowerCase()) === -1 // see if the text matches
-			|| testSource(key, kObj, "magicitemExcl") // test if the magic item or its source isn't excluded
-		) continue;
+		// test if the magic item or its source isn't excluded
+		if (testSource(key, kObj, "magicitemExcl")) continue;
+
+		isMatch = input.indexOf(kObj.name.toLowerCase()) !== -1;
+		tempDate = sourceDate(kObj.source);
+		subFoundLen = 0;
+		subFoundDat = 0;
+		isMatchSub = "";
+		varArr = [];
+
+		if (kObj.choices) {
+			for (var i = 0; i < kObj.choices.length; i++) {
+				var keySub = kObj.choices[i].toLowerCase();
+				var sObj = kObj[keySub];
+				if (!sObj || (sObj.source && testSource(keySub, sObj, "magicitemExcl"))) continue;
+				varArr.push(kObj.choices[i]);
+				var isMatchSub = false;
+				if (sObj.name) {
+					isMatchSub = input.indexOf(sObj.name.toLowerCase()) !== -1;
+				} else if (isMatch) {
+					isMatchSub = input.indexOf(keySub) !== -1;
+				}
+				if (isMatchSub) {
+					// the choice matched, but only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source than the other choices
+					tempDateSub = sObj.source ? sourceDate(sObj.source) : tempDate;
+					tempNameLen = (sObj.name ? sObj.name : keySub).length
+					if (tempNameLen < subFoundLen || (tempNameLen == subFoundLen && tempDateSub < subFoundDat)) continue;
+					// we have a match for a choice, so set the values
+					subFoundLen = tempNameLen;
+					subFoundDat = tempDateSub;
+					foundLen = kObj.name.length;
+					foundDat = tempDate;
+					found = key;
+					subFound = keySub;
+					subOptionArr = varArr;
+				}
+			}
+		}
+		if (!isMatch || subFoundLen) continue; // no match or sub already matched
 
 		// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
-		var tempDate = sourceDate(kObj.source);
 		if (kObj.name.length < foundLen || (kObj.name.length == foundLen && tempDate < foundDat)) continue;
 
 		// we have a match, set the values
 		found = key;
+		subFound = "";
+		subOptionArr = varArr;
 		foundLen = kObj.name.length
 		foundDat = tempDate;
 	}
-	return found;
+	return [found, subFound, subOptionArr];
 };
 
 // Check all Magic Items fields and parse the once known into the global variable
 function FindMagicItems() {
 	CurrentMagicItems.known = [];
+	CurrentMagicItems.choices = [];
 	for (var i = 1; i <= FieldNumbers.magicitems; i++) {
-		CurrentMagicItems.known.push( ParseMagicItem( What("Extra.Magic Item " + i) ) );
+		var parsedItem = ParseMagicItem( What("Extra.Magic Item " + i) );
+		CurrentMagicItems.known.push(parsedItem[0]);
+		CurrentMagicItems.choices.push(parsedItem[1]);
 	}
 }
 
@@ -1465,16 +1600,16 @@ function ApplyMagicItem(input, FldNmbr) {
 		Value(MIflds[0], input);
 		return;
 	};
-	var newMI = ParseMagicItem(input);
-	var theMI = MagicItemsList[newMI];
+
+	var parseResult = ParseMagicItem(input);
+	var newMI = parseResult[0];
+	var newMIvar = parseResult[1];
+	var aMI = MagicItemsList[newMI];
+	var aMIvar = aMI && newMIvar ? aMI[newMIvar] : false;
 	var ArrayNmbr = FldNmbr - 1;
 	var oldMI = CurrentMagicItems.known[ArrayNmbr];
-
-	if (oldMI === newMI) return; // No changes were made
-
-	// Start progress bar
-	var thermoTxt = thermoM("Applying magic item...");
-	thermoM(1/6); // Increment the progress bar
+	var oldMIvar = CurrentMagicItems.choices[ArrayNmbr];
+	var setFieldValueTo;
 
 	var doNotCommit = function() {
 		if (event.target && event.target.name == MIflds[0]) {
@@ -1484,18 +1619,75 @@ function ApplyMagicItem(input, FldNmbr) {
 		if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
 	}
 
-	// Check if the magic item doesn't already exist
-	if (!ignoreDuplicates && newMI && CurrentMagicItems.known.indexOf(newMI) !== -1 && !theMI.allowDuplicates) {
-		app.alert({
-			cTitle : "Can only have one instance of a magic item.",
-			cMsg : "The magic item that you have selected, '" + theMI.name + "' is already present on the sheet and you can't have duplicates of it.\n\nIf you want to show that your character has multiples of this item, consider adding \"(2)\" after its name. You can also list it in one of the equipment sections, where you can denote the number you have."
-		});
-		doNotCommit();
-		return;
+	// If no variant was found, but there is a choice, ask it now
+	if (IsNotImport && aMI && aMI.choices && !newMIvar) {
+		if (parseResult[2].length) {
+			var selectMIvar = parseResult[2].length == 1 ? parseResult[2][0] : AskUserOptions("Select " + aMI.name + " Type", "The '" + aMI.name + "' magic item exists in several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the magic item line that this item is in.", parseResult[2], "radio", true);
+			newMIvar = selectMIvar.toLowerCase();
+			aMIvar = aMI[newMIvar];
+			setFieldValueTo = aMIvar.name ? aMIvar.name : aMI.name + " [" + selectMIvar + "]";
+		} else {
+			app.alert({
+				cTitle : "Error processing options for " + aMI.name,
+				cMsg : "The magic item that you have selected, '" + aMI.name + "' offers a choice for the form it comes in. Unfortunately, the sheet has run into an issue where there are no forms to choose from because of resources being excluded. Use the \"Source Material\" bookmark to correct this.\n\nThis could also be an issue with the imported script containing the item not being written correctly. If so, please contact the author of that import script."
+			});
+			doNotCommit();
+			return;
+		}
+	}
+
+	if (oldMI === newMI && oldMIvar === newMIvar) return; // No changes were made
+
+	// Start progress bar
+	var thermoTxt = thermoM("Applying magic item...");
+	thermoM(1/6); // Increment the progress bar
+
+	// Create the object to use (merge parent and choice)
+	if (!aMIvar) {
+		var theMI = aMI;
+		newMIvar = "";
+	} else {
+		var theMI = {
+			name : aMIvar.name ? aMIvar.name : setFieldValueTo ? setFieldValueTo : input
+		}
+		var MIattr = ["source", "type", "rarity", "attunement", "magicItemTable", "weight", "description", "descriptionLong", "descriptionFull", "calculate", "prerequisite", "prereqeval"];
+		for (var a = 0; a < MIattr.length; a++) {
+			var aKey = MIattr[a];
+			if (aMIvar[aKey]) {
+				theMI[aKey] = aMIvar[aKey];
+			} else if (aMI[aKey]) {
+				theMI[aKey] = aMI[aKey];
+			}
+		}
+	}
+
+	// Check if the magic item doesn't already exist (with the same choice, if any)
+	if (IsNotImport && !ignoreDuplicates && aMI) {
+		// count occurrence of parent & choice
+		var parentDupl = 0;
+		var choiceDupl = aMIvar && !aMIvar.allowDuplicates ? 0 : undefined;
+		for (var i = 0; i < CurrentMagicItems.known.length; i++) {
+			if (CurrentMagicItems.known[i] == newMI) {
+				parentDupl++;
+				if (choiceDupl !== undefined && CurrentMagicItems.choices[i] == newMIvar) choiceDupl++;
+			}
+		}
+		if ((parentDupl && !aMI.allowDuplicates) || choiceDupl) {
+			var stopFunct = app.alert({
+				cTitle : "Can only have one instance of a magic item",
+				cMsg : "The magic item that you have selected, '" + (choiceDupl ? theMI.name : aMI.name) + "' is already present on the sheet and you can't have duplicates of it.\n\nIf you want to show that your character has multiples of this item, consider adding \"(2)\" after its name. You can also list it in one of the equipment sections, where you can denote the number you have." + (!choiceDupl ? "\n\nHowever, as this is a composite item that exists in different forms, and you don't have '" + theMI.name + "' yet, the sheet can allow you to add it regardless of the rules. Do you want to continue adding this item?" : ""),
+				nIcon : choiceDupl ? 0 : 1,
+				nType : choiceDupl ? 0 : 2
+			});
+			if (stopFunct === 1 || stopFunct === 3) {
+				doNotCommit();
+				return;
+			}
+		}
 	}
 
 	// Before stopping the calculations, first test if the magic item has a prerequisite and if it meets that
-	if (IsNotReset && theMI && theMI.prereqeval && !ignorePrereqs && event.target && event.target.name == MIflds[0]) {
+	if (IsNotImport && IsNotReset && theMI && theMI.prereqeval && !ignorePrereqs && event.target && event.target.name == MIflds[0]) {
 		try {
 			var meetsPrereq = eval(theMI.prereqeval);
 		} catch (e) {
@@ -1521,24 +1713,30 @@ function ApplyMagicItem(input, FldNmbr) {
 		};
 	};
 
+	// if a magic item variant was chosen, make sure this field will show that selection, now that it can't be cancelled anymore due to not meeting a prerequisite
+	if (setFieldValueTo) event.target.setVal = setFieldValueTo;
+
 	calcStop(); // Now stop the calculations
 
 	// Remove previous magic item at the same field
-	if (oldMI !== newMI) {
+	if (oldMI !== newMI || oldMIvar !== newMIvar) {
 		// Remove everything from the description field, value, calculation, tooltip, submitname
 		tDoc.getField(MIflds[2]).setAction("Calculate", "");
 		Value(MIflds[2], "", "", "");
 		if (oldMI) {
-			// Remove its attributes
-			var Fea = ApplyFeatureAttributes(
-				"item", // type
-				oldMI, // fObjName
-				[CurrentMagicItems.level, 0, false], // lvlA [old-level, new-level, force-apply]
-				false, // choiceA [old-choice, new-choice, "only"|"change"]
-				false // forceNonCurrent
-			);
+			if (oldMI !== newMI) {
+				// Remove its attributes
+				var Fea = ApplyFeatureAttributes(
+					"item", // type
+					oldMI, // fObjName
+					[CurrentMagicItems.level, 0, false], // lvlA [old-level, new-level, force-apply]
+					[oldMIvar, "", false], // choiceA [old-choice, new-choice, "only"|"change"]
+					false // forceNonCurrent
+				);
+			}
 			// Remove the source from the notes field
-			var sourceStringOld = stringSource(MagicItemsList[oldMI], "first", "[", "]");
+			var oldSource = oldMIvar && MagicItemsList[oldMI][oldMIvar].source ? MagicItemsList[oldMI][oldMIvar] : MagicItemsList[oldMI];
+			var sourceStringOld = stringSource(oldSource, "first", "[", "]");
 			if (sourceStringOld) RemoveString(MIflds[1], sourceStringOld);
 		}
 		// Reset the attuned and weight fields
@@ -1548,9 +1746,10 @@ function ApplyMagicItem(input, FldNmbr) {
 
 	// Update the CurrentMagicItems.known variable
 	CurrentMagicItems.known[ArrayNmbr] = newMI;
+	CurrentMagicItems.choices[ArrayNmbr] = newMIvar;
 
 	// Do something if there is a new magic item to apply
-	if (theMI) {
+	if (aMI) {
 		thermoTxt = thermoM("Applying '" + theMI.name + "' magic item...", false); //change the progress dialog text
 		thermoM(1/3); //increment the progress dialog's progress
 
@@ -1570,7 +1769,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		if (theMI.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theMI.prerequisite;
 		tooltipStr += stringSource(theMI, "full,page", "\n \u2022 Source: ", ".");
 
-		if (theMI.descriptionFull) tooltipStr += (isArray(theMI.descriptionFull) ? desc(theMI.descriptionFull).replace(/^\n   /i, "\n\n") : "\n\n" + theMI.descriptionFull;
+		if (theMI.descriptionFull) tooltipStr += isArray(theMI.descriptionFull) ? desc(theMI.descriptionFull).replace(/^\n   /i, "\n\n") : "\n\n" + theMI.descriptionFull;
 
 		// Get the description
 		var theDesc = "";
@@ -1599,11 +1798,12 @@ function ApplyMagicItem(input, FldNmbr) {
 		}
 
 		// Apply the rest of its attributes
+		var justChange = oldMI == newMI && oldMIvar !== newMIvar;
 		var Fea = ApplyFeatureAttributes(
 			"item", // type
 			newMI, // fObjName
-			[0, CurrentMagicItems.level, false], // lvlA [old-level, new-level, force-apply]
-			false, // choiceA [old-choice, new-choice, "only"|"change"]
+			[justChange ? CurrentMagicItems.level : 0, CurrentMagicItems.level, justChange], // lvlA [old-level, new-level, force-apply]
+			justChange ? [oldMIvar, newMIvar, "change"] : ["", newMIvar, false], // choiceA [old-choice, new-choice, "only"|"change"]
 			false // forceNonCurrent
 		);
 	}
@@ -1617,10 +1817,27 @@ function ApplyMagicItem(input, FldNmbr) {
 function correctMIdescriptionLong(FldNmbr) {
 	if (CurrentVars.manual.items) return;
 	var ArrayNmbr = FldNmbr - 1;
-	var theMI = MagicItemsList[CurrentMagicItems.known[ArrayNmbr]];
+	var aMI = MagicItemsList[CurrentMagicItems.known[ArrayNmbr]];
+	var aMIvar = aMI && CurrentMagicItems.choices[ArrayNmbr] ? aMI[CurrentMagicItems.choices[ArrayNmbr]] : false;
+
+	// Create the object to use (merge parent and choice)
+	if (!aMIvar) {
+		var theMI = aMI;
+	} else {
+		var theMI = {}
+		var MIattr = ["description", "descriptionLong", "calculate"];
+		for (var a = 0; a < MIattr.length; a++) {
+			var aKey = MIattr[a];
+			if (aMIvar[aKey]) {
+				theMI[aKey] = aMIvar[aKey];
+			} else if (aMI[aKey]) {
+				theMI[aKey] = aMI[aKey];
+			}
+		}
+	}
 
 	// Now only do something if a magic item is recognized, doesn't have a calculation, or doesn't have two different description options (normal & long)
-	if (!theMI || theMI.calculate || !theMI.descriptionLong) return;
+	if (!aMI || theMI.calculate || !theMI.descriptionLong) return;
 
 	var theDesc = FldNmbr > FieldNumbers.magicitemsD && theMI.descriptionLong ? theMI.descriptionLong : theMI.description ? theMI.description : "";
 	if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
@@ -1734,6 +1951,7 @@ function SetMagicItemsDropdown(forceTooltips) {
 function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 	var magicMenu = [];
 	if (!itemNmbr) itemNmbr = parseFloat(event.target.name.slice(-2));
+	var ArrayNmbr = itemNmbr - 1;
 	var MIflds = ReturnMagicItemFieldsArray(itemNmbr);
 	var theField = What(MIflds[0]) != "";
 	var noUp = itemNmbr === 1;
@@ -1741,8 +1959,33 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 	var upToOtherPage = itemNmbr === (FieldNumbers.magicitemsD + 1) ? " (to third page)" : "";
 	var downToOtherPage = itemNmbr === FieldNumbers.magicitemsD ? " (to overflow page)" : "";
 	var visibleAttunement = How(MIflds[4]) == "";
+	var aMI;
 
 	if (!MenuSelection || MenuSelection === "justMenu") {
+		// if this magic item allows for a choice, add that option as the first thing in the menu
+		if (CurrentMagicItems.known[ArrayNmbr] && MagicItemsList[CurrentMagicItems.known[ArrayNmbr]].choices) {
+			aMI = MagicItemsList[CurrentMagicItems.known[ArrayNmbr]];
+			var aMIopts = aMI.choices;
+			var choiceMenu = {
+				cName : "Change " + aMI.name + " type",
+				oSubMenu : []
+			};
+			for (var i = 0; i < aMIopts.length; i++) {
+				var aCh = aMIopts[i];
+				var aChL = aCh.toLowerCase();
+				if (!aMI[aChL] || (aMI[aChL].source && testSource(aChL, aMI[aChL], "magicitemExcl"))) continue;
+				choiceMenu.oSubMenu.push({
+					cName : aCh + stringSource(aMI[aChL].source ? aMI[aChL] : aMI, "first,abbr", "\t   [", "]"),
+					cReturn : "item#choice#" + aChL,
+					bMarked : CurrentMagicItems.choices[ArrayNmbr] == aChL
+				});
+			}
+			if (choiceMenu.oSubMenu.length) {
+				magicMenu.push(choiceMenu);
+				magicMenu.push({cName : "-"});
+			}
+		}
+		// now at the default options
 		var menuLVL1 = function (array) {
 			for (i = 0; i < array.length; i++) {
 				magicMenu.push({
@@ -1771,15 +2014,31 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 		]);
 		menuLVL1(magicArray);
 		Menus.magicitems = magicMenu;
-		MenuSelection = getMenu("magicitems");
+		if (MenuSelection == "justMenu") return;
 	}
-	if (MenuSelection == "justMenu" || !MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "item") return;
+	MenuSelection = getMenu("magicitems");
+	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "item") return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Magic item menu option...");
 	calcStop();
 
 	switch (MenuSelection[1]) {
+		case "choice" :
+			if (MenuSelection[2] && aMI && aMI[MenuSelection[2]]) {
+				var aMIvar = aMI[MenuSelection[2]];
+				if (aMIvar.name) {
+					Value(MIflds[0], aMIvar.name);
+				} else {
+					for (var i = 0; i < aMI.choices.length; i++) {
+						if (aMI.choices[i].toLowerCase() == MenuSelection[2]) {
+							Value(MIflds[0], aMI.name + " [" + aMI.choices[i] + "]");
+							break;
+						}
+					}
+				}
+			}
+			break;
 		case "up" :
 			if (noUp) return;
 		case "down" :

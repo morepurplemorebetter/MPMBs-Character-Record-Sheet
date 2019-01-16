@@ -5474,14 +5474,6 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	var WeaponName = thisWeapon[0];
 	var aWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] ? CurrentCompRace[prefix].attacks[WeaponName] : false;
 
-	if (aWea.baseWeapon && WeaponsList[aWea.baseWeapon]) {
-		var theWea = {};
-		for (var attr in aWea) theWea[attr] = aWea[attr];
-		for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
-	} else {
-		var theWea = aWea;
-	}
-
 	//if there is a new weapon entered and the old weapon had ammo that is not used by any of the current weapons, remove that ammo from the ammo section.
 	if (QI && oldWea && WeaponsList[oldWea].ammo) {
 		var theOldAmmo = WeaponsList[oldWea].ammo;
@@ -5497,7 +5489,16 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	};
 
 	// if a weapon was found, set the variables
-	if (theWea) {
+	if (aWea) {
+		// create the variable from the baseWeapon
+		if (aWea.baseWeapon && WeaponsList[aWea.baseWeapon]) {
+			var theWea = {};
+			for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
+			for (var attr in aWea) theWea[attr] = aWea[attr];
+		} else {
+			var theWea = aWea;
+		}
+		
 		thermoTxt = thermoM("Applying the weapon's features...", false); //change the progress dialog text
 		var curDescr = What(fldBase + "Description");
 		var curRange = What(fldBase + "Range");
@@ -5526,7 +5527,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		fields.Proficiency = !QI ? true :
 			QI && (/natural|spell|cantrip|alwaysprof/i).test(theWea.type) ? true :
 			(/^(simple|martial)$/i).test(theWea.type) && tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) ? true :
-			CurrentProfs.weapon.otherWea && RegExp(";(" + CurrentProfs.weapon.otherWea.finalProfs.join("s?|").replace(/ss\?\|/g, "s?|") + ");", "i").test(";" + [WeaponName, theWea.type].concat(theWea.list ? [theWea.list] : []).join(";") + ";") ? true :
+			CurrentProfs.weapon.otherWea && RegExp(";(" + CurrentProfs.weapon.otherWea.finalProfs.join("s?|").replace(/ss\?\|/g, "s?|") + ");", "i").test(";" + [WeaponName, theWea.type].concat(theWea.list ? [theWea.list] : []).concat(theWea.baseWeapon ? [theWea.baseWeapon] : []).join(";") + ";") ? true :
 			false;
 
 		//add mod
@@ -5611,7 +5612,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	// apply the values to the fields only if we need to either reset the fields or a weapon was found
 	if (onlyProf) {
 		Checkbox(fldBase + "Proficiency", fields.Proficiency);
-	} else if (theWea || !inputText) {
+	} else if (aWea || !inputText) {
 		var resetFlds = [];
 		for (var weaKey in fields) {
 			var keyFld = (BTflds.indexOf(weaKey) !== -1 ? fldBaseBT : fldBase) + weaKey.replace(/_/g, " ");
@@ -5712,12 +5713,10 @@ function CalcAttackDmgHit(fldName) {
 	// define some variables that we can check against later or with the CurrentEvals
 	var isDC = (/dc/i).test(fields.To_Hit_Bonus);
 	if (QI) {
+		var theWea = {};
 		if (aWea && aWea.baseWeapon && WeaponsList[aWea.baseWeapon]) {
-			var theWea = {};
-			for (var attr in aWea) theWea[attr] = aWea[attr];
 			for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
-		} else {
-			var theWea = aWea;
+			for (var attr in aWea) theWea[attr] = aWea[attr];
 		}
 		var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (/\b(cantrip|spell)\b/i).test(WeaponText);
 		var isMeleeWeapon = (!isSpell || thisWeapon[0] === "shillelagh") && (/melee/i).test(fields.Range);
@@ -5781,9 +5780,10 @@ function CalcAttackDmgHit(fldName) {
 	var dmgNum = 0;
 	var hitNum = 0;
 	var addNum = function(inP, DmgHit) {
-		if (isNaN(inP)) inP = isNaN(Number(inP)) ? 0 : Number(inP);
-		if (!DmgHit || (/dmg/i).test(DmgHit)) dmgNum += Number(inP);
-		if (!DmgHit || (/hit/i).test(DmgHit)) hitNum += Number(inP);
+		inP = Number(inP);
+		if (isNaN(inP)) inP = 0;
+		if (!DmgHit || (/dmg/i).test(DmgHit)) dmgNum += inP;
+		if (!DmgHit || (/hit/i).test(DmgHit)) hitNum += inP;
 	};
 
 	for (var out in output) {

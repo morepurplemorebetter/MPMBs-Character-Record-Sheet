@@ -1,9 +1,10 @@
 var Base_MagicItemsList = {
-	'amulet of health': {
+	'amulet of health': { // finished
 		name: "Amulet of Health",
 		source: [["SRD", 207], ["D", 150]],
 		type: "wondrous item",
 		rarity: "rare",
+		magicItemTable : "G",
 		description: "My Constitution score is 19 while I'm wearing this amulet, provided that my Constitution is not already 19 or higher.",
 		descriptionFull: "Your Constitution score is 19 while you wear this amulet. It has no effect on you if your Constitution score is already 19 or higher without it.",
 		attunement: true,
@@ -176,65 +177,59 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing this belt, you gain the following benefits:\n \u2022 Your Constitution score increases by 2, to a maximum of 20.\n \u2022 You have advantage on Charisma (Persuasion) checks made to interact with dwarves.\n\nIn addition, while attuned to the belt, you have a 50% chance each day at dawn of growing a full beard if you're capable of growing one, or a visibly thicker beard if you already have one.\n\nIf you aren't a dwarf, you gain the following additional benefits while wearing the belt:\n \u2022 You have advantage on saving throws against poison, and you have resistance against poison damage.\n \u2022 You have darkvision out to a range of 60 feet.\n \u2022 You can speak, read, and write Dwarvish.",
 		attunement: true
 	},
-	'belt of giant strength, cloud': {
-		name: "Belt of Giant Strength, Cloud",
+	'belt of giant strength': { // finished
+		name: "Belt of Giant Strength",
 		source: [["SRD", 211], ["D", 155]],
 		type: "wondrous item",
-		rarity: "legendary",
-		description: "My Strength score is 27 while I'm wearing this amulet, provided that my Strength is not already 27 or higher.",
-		descriptionFull: "While wearing this belt, your Strength score changes to 27. The item has no effect on you if your Strength without the belt is equal to or greater than the belt's score.",
+		rarity: "varies",
+		description: "Set the type of giant using the button in this line. While wearing this belt, my Strength score changes to a certain number depending on the type of giant the belt is associated with, provided that my Strength is not already that amount or higher.",
+		descriptionFull: "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt’s score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The belt of stone giant strength and the belt of frost giant strength look different, but they have the same effect.\n\n" + toUni("Type") + "\t\t" + toUni("Str") + "\t" + toUni("Rarity") + "\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant\t\t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
 		attunement: true,
-		scoresOverride : [27, 0, 0, 0, 0, 0]
-	},
-	'belt of giant strength, fire': {
-		name: "Belt of Giant Strength, Fire",
-		source: [["SRD", 211], ["D", 155]],
-		type: "wondrous item",
-		rarity: "very rare",
-		description: "My Strength score is 25 while I'm wearing this amulet, provided that my Strength is not already 25 or higher.",
-		descriptionFull: "While wearing this belt, your Strength score changes to 25. The item has no effect on you if your Strength without the belt is equal to or greater than the belt's score.",
-		attunement: true,
-		scoresOverride : [25, 0, 0, 0, 0, 0]
-	},
-	'belt of giant strength, frost': {
-		name: "Belt of Giant Strength, Frost",
-		source: [["SRD", 211], ["D", 155]],
-		type: "wondrous item",
-		rarity: "very rare",
-		description: "My Strength score is 23 while I'm wearing this amulet, provided that my Strength is not already 23 or higher.",
-		descriptionFull: "While wearing this belt, your Strength score changes to 23. The item has no effect on you if your Strength without the belt is equal to or greater than the belt's score.",
-		attunement: true,
-		scoresOverride : [23, 0, 0, 0, 0, 0]
-	},
-	'belt of giant strength, hill': {
-		name: "Belt of Giant Strength, Hill",
-		source: [["SRD", 211], ["D", 155]],
-		type: "wondrous item",
-		rarity: "rare",
-		description: "My Strength score is 21 while I'm wearing this amulet, provided that my Strength is not already 21 or higher.",
-		descriptionFull: "While wearing this belt, your Strength score changes to 21. The item has no effect on you if your Strength without the belt is equal to or greater than the belt's score.",
-		attunement: true,
-		scoresOverride : [21, 0, 0, 0, 0, 0]
-	},
-	'belt of giant strength, stone': {
-		name: "Belt of Giant Strength, Stone",
-		source: [["SRD", 211], ["D", 155]],
-		type: "wondrous item",
-		rarity: "very rare",
-		description: "My Strength score is 23 while I'm wearing this amulet, provided that my Strength is not already 23 or higher.",
-		descriptionFull: "While wearing this belt, your Strength score changes to 23. The item has no effect on you if your Strength without the belt is equal to or greater than the belt's score.",
-		attunement: true,
-		scoresOverride : [23, 0, 0, 0, 0, 0]
-	},
-	'belt of giant strength, storm': {
-		name: "Belt of Giant Strength, Storm",
-		source: [["SRD", 211], ["D", 155]],
-		type: "wondrous item",
-		rarity: "legendary",
-		description: "My Strength score is 29 while I'm wearing this amulet, provided that my Strength is not already 29 or higher.",
-		descriptionFull: "While wearing this belt, your Strength score changes to 29. The item has no effect on you if your Strength without the belt is equal to or greater than the belt's score.",
-		attunement: true,
-		scoresOverride : [29, 0, 0, 0, 0, 0]
+		allowDuplicates : true,
+		dmgres : ["Test"],
+		choices : ["Hill (Str 21, rare)", "Stone (Str 23, very rare)", "Frost (Str 23, very rare)", "Fire (Str 25, very rare)", "Cloud (Str 27, legendary)", "Storm (Str 29, legendary)"],
+		"hill (str 21, rare)" : {
+			name : "Belt of Hill Giant Strength",
+			rarity: "rare",
+			magicItemTable : "G",
+			description : "My Strength score is 21 while I'm wearing this belt, provided that my Strength is not already 21 or higher.",
+			scoresOverride : [21, 0, 0, 0, 0, 0]
+		},
+		"stone (str 23, very rare)" : {
+			name : "Belt of Stone Giant Strength",
+			rarity: "very rare",
+			magicItemTable : "H",
+			description : "My Strength score is 23 while I'm wearing this belt, provided that my Strength is not already 23 or higher.",
+			scoresOverride : [23, 0, 0, 0, 0, 0]
+		},
+		"frost (str 23, very rare)" : {
+			name : "Belt of Frost Giant Strength",
+			rarity: "very rare",
+			magicItemTable : "H",
+			description : "My Strength score is 23 while I'm wearing this belt, provided that my Strength is not already 23 or higher.",
+			scoresOverride : [23, 0, 0, 0, 0, 0]
+		},
+		"fire (str 25, very rare)" : {
+			name : "Belt of Fire Giant Strength",
+			rarity: "very rare",
+			magicItemTable : "H",
+			description : "My Strength score is 25 while I'm wearing this belt, provided that my Strength is not already 25 or higher.",
+			scoresOverride : [25, 0, 0, 0, 0, 0]
+		},
+		"cloud (str 27, legendary)" : {
+			name : "Belt of Cloud Giant Strength",
+			rarity: "legendary",
+			magicItemTable : "I",
+			description : "My Strength score is 27 while I'm wearing this belt, provided that my Strength is not already 27 or higher.",
+			scoresOverride : [27, 0, 0, 0, 0, 0]
+		},
+		"storm (str 29, legendary)" : {
+			name : "Belt of Storm Giant Strength",
+			rarity: "legendary",
+			magicItemTable : "I",
+			description : "My Strength score is 29 while I'm wearing this belt, provided that my Strength is not already 29 or higher.",
+			scoresOverride : [29, 0, 0, 0, 0, 0]
+		}
 	},
 	// Berserker Axe (composite item, still to do)
 	'boots of elvenkind': {
@@ -463,15 +458,23 @@ var Base_MagicItemsList = {
 		description: "",
 		descriptionFull: "While wearing this cloak with its hood up, you can breathe underwater, and you have a swimming speed of 60 feet. Pulling the hood up or down requires an action."
 	},
-	'crystal ball': {
-		name: "Crystal Ball",
-		source: [["SRD", 214], ["D", 159]],
-		type: "wondrous item",
-		rarity: "very rare",
-		description: "",
-		descriptionFull: "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.",
-		attunement: true,
-		weight: 3
+	'crystal ball' : { // finished
+		name : "Crystal Ball",
+		source : [["SRD", 214], ["D", 159]],
+		type : "wondrous item",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "I can cast Scrying (DC 17) while touching this ball of about 6 inches in diameter.",
+		descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.",
+		attunement : true,
+		weight : 3,
+		fixedDC : 17,
+		spellcastingBonus : {
+			name : "DC 17",
+			spells : ["scrying"],
+			selection : ["scrying"],
+			firstCol : "atwill"
+		}
 	},
 	'crystal ball of mind reading': {
 		name: "Crystal Ball of Mind Reading",
@@ -717,7 +720,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing this armor, you gain a +2 bonus to AC. In addition, if an effect moves you against your will along the ground, you can use your reaction to reduce the distance you are moved by up to 10 feet.",
 		weight: 65
 	},
-	"dwarven thrower" : {
+	"dwarven thrower" : { // finished
 		name : "Dwarven Thrower",
 		source : [["SRD", 220], ["D", 167]],
 		type : "weapon (warhammer)",
@@ -739,7 +742,7 @@ var Base_MagicItemsList = {
 			damage : [1, 8, "bludgeoning"],
 			range : "Melee, 20/60 ft",
 			weight : 2,
-			description : "Thrown, versatile (1d10); +1d8 damage when thrown (2d8 vs. giant) and returns immediately",
+			description : "Thrown, versatile (1d10); +1d8 damage when thrown (2d8 vs. giants) and returns immediately",
 			abilitytodamage : true,
 			modifiers : [3, 3] // add 3 to each to hit and damage because of the magical bonus
 		}
@@ -912,11 +915,12 @@ var Base_MagicItemsList = {
 		weight: 4
 	},
 	// Frost Brand (composite item, still to do)
-	'gauntlets of ogre power': {
+	'gauntlets of ogre power': { // finished
 		name: "Gauntlets of Ogre Power",
 		source: [["SRD", 223], ["D", 171]],
 		type: "wondrous item",
 		rarity: "uncommon",
+		magicItemTable : "F",
 		description: "My Strength score is 19 while I'm wearing these gauntlets, provided that my Strength is not already 19 or higher.",
 		descriptionFull: "Your Strength score is 19 while you wear these gauntlets. They have no effect on you if your Strength is already 19 or higher without them.",
 		attunement: true,
@@ -942,12 +946,12 @@ var Base_MagicItemsList = {
 		weight: 1
 	},
 	// Giant Slayer (composite item, still to do)
-	"glamoured studded leather" : {
+	"glamoured studded leather" : { // finished
 		name : "Glamoured Studded Leather",
 		source : [["SRD", 224], ["D", 172]],
 		type : "armor (studded leather)",
 		rarity : "rare",
-		attunement : false,
+		magicItemTable : "G",
 		description : "Studded leather with +1 AC. As a bonus action, I can speak its command word and have it assume the appearance of a normal set of clothing or another armor. I decide what it looks like: style, color, and accessories, but the armor retains its bulk and weight. The illusion lasts until I use this again or remove the armor.",
 		weight : 13,
 		descriptionFull : "While wearing this armor, you gain a +1 bonus to AC. You can also use a bonus action to speak the armor's command word and cause the armor to assume the appearance of a normal set of clothing or some other kind of armor. You decide what it looks like, including color, style, and accessories, but the armor retains its normal bulk and weight. The illusory appearance last until you use this property again or remove the armor.",
@@ -957,7 +961,7 @@ var Base_MagicItemsList = {
 			name : "Glamoured studded Leather",
 			source : [["SRD", 224], ["D", 172]],
 			type : "light",
-			ac : 13, // 1 more AC than normal studded leather because of the +1 magical bonus
+			ac : 13,
 			weight : 13
 		},
 		action : [["bonus action", ""]]
@@ -1011,6 +1015,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 225], ["D", 173]],
 		type: "wondrous item",
 		rarity: "uncommon",
+		magicItemTable : "F",
 		description: "My Intelligence score is 19 while I'm wearing this headband, provided that my Intelligence is not already 19 or higher.",
 		descriptionFull: "Your Intelligence score is 19 while you wear this headband. It has no effect on you if your Intelligence is already 19 or higher without it.",
 		attunement: true,
@@ -1860,13 +1865,14 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		weight: 0.5
 	},
-	'potion of speed': {
+	'potion of speed' : { // finished
 		name: "Potion of Speed",
 		source: [["SRD", 235], ["D", 188]],
 		type : "potion",
 		rarity: "very rare",
-		description: "",
-		descriptionFull: "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirl on its own.",
+		magicItemTable : "D",
+		description: "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\rThe potion's yellow fluid is streaked with black and swirls on its own.",
+		descriptionFull: "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
 		weight: 0.5
 	},
 	'potion of water breathing': {
@@ -1938,7 +1944,7 @@ var Base_MagicItemsList = {
 	'ring of animal influence': {
 		name: "Ring of Animal Influence",
 		source: [["SRD", 235], ["D", 189]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. While wearing the ring, you can use an action to expend 1 of its charges to cast one of the following spells:\n \u2022 Animal Friendship (save DC 13)\n \u2022 Fear (save DC 13), targeting only beasts that have an Intelligence of 3 or lower\n \u2022 Speak with Animals"
@@ -1946,7 +1952,7 @@ var Base_MagicItemsList = {
 	'ring of djinni summoning': {
 		name: "Ring of Djinni Summoning",
 		source: [["SRD", 235], ["D", 190]],
-		type: "Ring",
+		type : "ring",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "While wearing this ring, you can speak its command word as an action to summon a particular djinni from the Elemental Plane of Air. The djinni appears in an unoccupied space you choose within 120 feet of you. It remains as long as you concentrate (as if concentrating on a spell), to a maximum of 1 hour, or until it drops to 0 hit points. It then returns to its home plane.\n   While summoned, the djinni is friendly to you and your companions. It obeys any commands you give it, no matter what language you use. If you fail to command it, the djinni defends itself against attackers but takes no other actions.\n   After the djinni departs, it can't be summoned again for 24 hours, and the ring becomes nonmagical if the djinni dies.",
@@ -1955,7 +1961,7 @@ var Base_MagicItemsList = {
 	'ring of elemental command, air': {
 		name: "Ring of Elemental Command, Air",
 		source: [["SRD", 235], ["D", 190]],
-		type: "Ring",
+		type : "ring",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Air, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Air.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an air elemental. In addition, when you fall, you descend 60 feet per round and take no damage from falling. You can also speak and understand Auran.\n   If you help slay an air elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to lightning damage.\n \u2022 You have a flying speed equal to your walking speed and can hover.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Chain Lightning (3 charges), Gust of Wind (2 charges), or Wind Wall (1 charge).",
@@ -1964,7 +1970,7 @@ var Base_MagicItemsList = {
 	'ring of elemental command, earth': {
 		name: "Ring of Elemental Command, Earth",
 		source: [["SRD", 235], ["D", 190]],
-		type: "Ring",
+		type : "ring",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Earth and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Earth.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an earth elemental. In addition, you can move in difficult terrain that is composed of rubble, rocks, or dirt as if it were normal terrain. You can also speak and understand Terran.\n   If you help slay an earth elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to acid damage.\n \u2022 You can move through solid earth or rock as if those areas were difficult terrain. If you end your turn there, you are shunted out to the nearest unoccupied space you last occupied.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Stone Shape (2 charges), Stoneskin (3 charges), or Wall of Stone (3 charges).",
@@ -1973,7 +1979,7 @@ var Base_MagicItemsList = {
 	'ring of elemental command, fire': {
 		name: "Ring of Elemental Command, Fire",
 		source: [["SRD", 236], ["D", 190]],
-		type: "Ring",
+		type : "ring",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Fire and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Fire.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a fire elemental. In addition, you have resistance to fire damage. You can also speak and understand Ignan.\n   If you help slay a fire elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You are immune to fire damage.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Burning Hands (1 charge), Fireball (2 charges), and Wall of Fire (3 charges).",
@@ -1982,7 +1988,7 @@ var Base_MagicItemsList = {
 	'ring of elemental command, water': {
 		name: "Ring of Elemental Command, Water",
 		source: [["SRD", 236], ["D", 190]],
-		type: "Ring",
+		type : "ring",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Water and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Water.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a water elemental. In addition, you can stand on and walk across liquid surfaces as if they were solid ground. You can also speak and understand Aquan.\n   If you help slay a water elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You can breathe underwater and have a swimming speed equal to your walking speed.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Create or Destroy Water} (1 charge), Control Water (3 charges), Ice Storm (2 charges), or Wall of Ice (3 charges).",
@@ -1991,7 +1997,7 @@ var Base_MagicItemsList = {
 	'ring of evasion': {
 		name: "Ring of Evasion",
 		source: [["SRD", 236], ["D", 191]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. When you fail a Dexterity saving throw while wearing it, you can use your reaction to expend 1 of its charges to succeed on that saving throw instead.",
@@ -2000,7 +2006,7 @@ var Base_MagicItemsList = {
 	'ring of feather falling': {
 		name: "Ring of Feather Falling",
 		source: [["SRD", 236], ["D", 191]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "When you fall while wearing this ring, you descend 60 feet per round and take no damage from falling.",
@@ -2009,7 +2015,7 @@ var Base_MagicItemsList = {
 	'ring of free action': {
 		name: "Ring of Free Action",
 		source: [["SRD", 236], ["D", 191]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "While you wear this ring, difficult terrain doesn't cost you extra movement. In addition, magic can neither reduce your speed nor cause you to be paralyzed or restrained.",
@@ -2018,25 +2024,33 @@ var Base_MagicItemsList = {
 	'ring of invisibility': {
 		name: "Ring of Invisibility",
 		source: [["SRD", 236], ["D", 191]],
-		type: "Ring",
+		type : "ring",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "While wearing this ring, you can turn invisible as an action. Anything you are wearing or carrying is invisible with you. You remain invisible until the ring is removed, until you attack or cast a spell, or until you use a bonus action to become visible again.",
 		attunement: true
 	},
-	'ring of jumping': {
-		name: "Ring of Jumping",
-		source: [["SRD", 236], ["D", 191]],
-		type: "Ring",
-		rarity: "uncommon",
-		description: "",
-		descriptionFull: "While wearing this ring, you can cast the Jump spell from it as a bonus action at will, but can target only yourself when you do so.",
-		attunement: true
+	'ring of jumping' : { // finished
+		name : "Ring of Jumping",
+		source : [["SRD", 236], ["D", 191]],
+		type : "ring",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "As a bonus action, I can use this ring to cast Jump on myself. That spell causes my jump distance to triple for 1 minute.",
+		descriptionFull : "While wearing this ring, you can cast the Jump spell from it as a bonus action at will, but can target only yourself when you do so.",
+		attunement : true,
+		action : ["bonus", ""],
+		spellcastingBonus : {
+			name : "Self Only",
+			spells : ["jump"],
+			selection : ["jump"],
+			firstCol : "atwill"
+		}
 	},
 	'ring of mind shielding': {
 		name: "Ring of Mind Shielding",
 		source: [["SRD", 236], ["D", 191]],
-		type: "Ring",
+		type : "ring",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "While wearing this ring, you are immune to magic that allows other creatures to read your thoughts, determine whether you are lying, know your alignment, or know your creature type. Creatures can telepathically communicate with you only if you allow it.\n   You can use an action to cause the ring to become invisible until you use another action to make it visible, until you remove the ring, or until you die.\n   If you die while wearing the ring, your soul enters it, unless it already houses a soul. You can remain in the ring or depart for the afterlife. As long as your soul is in the ring, you can telepathically communicate with any creature wearing it. A wearer can't prevent this telepathic communication.",
@@ -2045,7 +2059,7 @@ var Base_MagicItemsList = {
 	'ring of protection': {
 		name: "Ring of Protection",
 		source: [["SRD", 237], ["D", 191]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "You gain a +1 bonus to AC and saving throws while wearing this ring.",
@@ -2054,7 +2068,7 @@ var Base_MagicItemsList = {
 	'ring of regeneration': {
 		name: "Ring of Regeneration",
 		source: [["SRD", 237], ["D", 191]],
-		type: "Ring",
+		type : "ring",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "While wearing this ring, you regain 1d6 hit points every 10 minutes, provided that you have at least 1 hit point. If you lose a body part, the ring causes the missing part to regrow and return to full functionality after 1d6+1 days if you have at least 1 hit point the whole time.",
@@ -2063,7 +2077,7 @@ var Base_MagicItemsList = {
 	'ring of resistance, acid': {
 		name: "Ring of Resistance, Acid",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "",
@@ -2072,7 +2086,7 @@ var Base_MagicItemsList = {
 	'ring of resistance, cold': {
 		name: "Ring of Resistance, Cold",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "",
@@ -2081,7 +2095,7 @@ var Base_MagicItemsList = {
 	'ring of resistance, fire': {
 		name: "Ring of Resistance, Fire",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "",
@@ -2090,7 +2104,7 @@ var Base_MagicItemsList = {
 	'ring of resistance, force': {
 		name: "Ring of Resistance, Force",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "",
@@ -2099,7 +2113,7 @@ var Base_MagicItemsList = {
 	'ring of resistance, lightning': {
 		name: "Ring of Resistance, Lightning",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "",
@@ -2108,7 +2122,7 @@ var Base_MagicItemsList = {
 	'ring of resistance, necrotic': {
 		name: "Ring of Resistance, Necrotic",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "",
@@ -2117,7 +2131,7 @@ var Base_MagicItemsList = {
 	'ring of resistance, poison': {
 		name: "Ring of Resistance, Poison",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "",
@@ -2126,7 +2140,7 @@ var Base_MagicItemsList = {
 	'ring of resistance, psychic': {
 		name: "Ring of Resistance, Psychic",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "",
@@ -2135,7 +2149,7 @@ var Base_MagicItemsList = {
 	'ring of resistance, radiant': {
 		name: "Ring of Resistance, Radiant",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "",
@@ -2144,7 +2158,7 @@ var Base_MagicItemsList = {
 	'ring of resistance, thunder': {
 		name: "Ring of Resistance, Thunder",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "",
@@ -2153,7 +2167,7 @@ var Base_MagicItemsList = {
 	'ring of shooting stars': {
 		name: "Ring of Shooting Stars",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "While wearing this ring in dim light or darkness, you can cast Dancing Lights and Light from the ring at will. Casting either spell from the ring requires an action.\n   The ring has 6 charges for the following other properties. The ring regains 1d6 expended charges daily at dawn.\n   " + toUni("Faerie Fire") + ". You can expend 1 charge as an action to cast Faerie Fire from the ring.\n   " + toUni("Ball Lightning") + ". You can expend 2 charges as an action to create one to four 3-foot-diameter spheres of lightning. The more spheres you create, the less powerful each sphere is individually.\n   Each sphere appears in an unoccupied space you can see within 120 feet of you. The spheres last as long as you concentrate (as if concentrating on a spell), up to 1 minute. Each sphere sheds dim light in a 30-foot radius.\n   As a bonus action, you can move each sphere up to 30 feet, but no farther than 120 feet away from you. When a creature other than you comes within 5 feet of a sphere, the sphere discharges lightning at that creature and disappears. That creature must make a DC 15 Dexterity saving throw. On a failed save, the creature takes lightning damage based on the number of spheres you created. (4 spheres = 2d4, 3 spheres = 2d6, 2 spheres = 5d4, 1 sphere = 4d12)\n   " + toUni("Shooting Stars") + ". \n   You can expend 1 to 3 charges as an action. For every charge you expend, you launch a glowing mote of light from the ring at a point you can see within 60 feet of you. Each creature within a 15-foot cube originating from that point is showered in sparks and must make a DC 15 Dexterity saving throw. taking 5d4 fire damage on a failed save, or half as much damage on a successful one.",
@@ -2162,7 +2176,7 @@ var Base_MagicItemsList = {
 	'ring of spell storing': {
 		name: "Ring of Spell Storing",
 		source: [["SRD", 237], ["D", 192]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "This ring stores spells cast into it, holding them until the attuned wearer uses them. The ring can store up to 5 levels worth of spells at a time. When found, it contains 1d6-1 levels of stored spells chosen by the DM.\n   Any creature can cast a spell of 1st through 5th level into the ring by touching the ring as the spell is cast. The spell has no effect, other than to be stored in the ring. If the ring can't hold the spell, the spell is expended without effect. The level of the slot used to cast the spell determines how much space it uses.\n   While wearing this ring, you can cast any spell stored in it. The spell uses the slot level, spell save DC, spell attack bonus, and spellcasting ability of the original caster, but is otherwise treated as if you cast the spell. The spell cast from the ring is no longer stored in it, freeing up space.",
@@ -2171,18 +2185,18 @@ var Base_MagicItemsList = {
 	'ring of spell turning': {
 		name: "Ring of Spell Turning",
 		source: [["SRD", 237], ["D", 193]],
-		type: "Ring",
+		type : "ring",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "While wearing this ring, you have advantage on saving throws against any spell that targets only you (not in an area of effect). In addition, if you roll a 20 for the save and the spell is 7th level or lower, the spell has no effect on you and instead targets the caster, using the slot level, spell save DC, attack bonus, and spellcasting ability of the caster.",
 		attunement: true
 	},
-	"ring of swimming" : {
+	"ring of swimming" : { // finished
 		name : "Ring of Swimming",
 		source : [["SRD", 238], ["D", 193]],
 		type : "ring",
 		rarity : "uncommon",
-		attunement : false,
+		magicItemTable : "B",
 		description : "I have a swimming speed of 40 feet while wearing this ring.",
 		descriptionFull : "You have a swimming speed of 40 feet while wearing this ring.",
 		speed : { swim : { spd : 40, enc : 30 } }
@@ -2190,7 +2204,7 @@ var Base_MagicItemsList = {
 	'ring of telekinesis': {
 		name: "Ring of Telekinesis",
 		source: [["SRD", 238], ["D", 193]],
-		type: "Ring",
+		type : "ring",
 		rarity: "very rare",
 		description: "",
 		descriptionFull: "While wearing this ring, you can cast the Telekinesis spell at will, but you can target only objects that aren't being worn or carried.",
@@ -2199,7 +2213,7 @@ var Base_MagicItemsList = {
 	'ring of the ram': {
 		name: "Ring of the Ram",
 		source: [["SRD", 238], ["D", 193]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. While wearing the ring, you can use an action to expend 1 to 3 of its charges to attack one creature you can see within 60 feet of you. The ring produces a spectral ram's head and makes its attack roll with a +7 bonus. On a hit, for each charge you spend, the target takes 2d10 force damage and is pushed 5 feet away from you.\n   Alternatively, you can expend 1 to 3 of the ring's charges as an action to try to break an object you can see within 60 feet of you that isn't being worn or carried. The ring makes a Strength check with a +5 bonus for each charge you spend.",
@@ -2208,7 +2222,7 @@ var Base_MagicItemsList = {
 	'ring of three wishes': {
 		name: "Ring of Three Wishes",
 		source: [["SRD", 238], ["D", 193]],
-		type: "Ring",
+		type : "ring",
 		rarity: "legendary",
 		description: "",
 		descriptionFull: "While wearing this ring, you can use an action to expend 1 of its 3 charges to cast the Wish spell from it. The ring becomes nonmagical when you use the last charge."
@@ -2216,7 +2230,7 @@ var Base_MagicItemsList = {
 	'ring of warmth': {
 		name: "Ring of Warmth",
 		source: [["SRD", 238], ["D", 193]],
-		type: "Ring",
+		type : "ring",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "While wearing this ring, you have resistance to cold damage. In addition, you and everything you wear and carry are unharmed by temperatures as low as -50 degrees Fahrenheit.",
@@ -2225,7 +2239,7 @@ var Base_MagicItemsList = {
 	'ring of water walking': {
 		name: "Ring of Water Walking",
 		source: [["SRD", 238], ["D", 193]],
-		type: "Ring",
+		type : "ring",
 		rarity: "uncommon",
 		description: "",
 		descriptionFull: "While wearing this ring, you can stand on and move across any liquid surface as if it were solid ground."
@@ -2233,7 +2247,7 @@ var Base_MagicItemsList = {
 	'ring of x-ray vision': {
 		name: "Ring of X-ray Vision",
 		source: [["SRD", 238], ["D", 193]],
-		type: "Ring",
+		type : "ring",
 		rarity: "rare",
 		description: "",
 		descriptionFull: "While wearing this ring, you can use an action to speak its command word. When you do so, you can see into and through solid matter for 1 minute. This vision has a radius of 30 feet. To you, solid objects within that radius appear transparent and don't prevent light from passing through them. The vision can penetrate 1 foot of stone, 1 inch of common metal, or up to 3 feet of wood or dirt. Thicker substances block the vision, as does a thin sheet of lead.\n   Whenever you use the ring again before taking a long rest, you must succeed on a DC 15 Constitution saving throw or gain one level of exhaustion.",

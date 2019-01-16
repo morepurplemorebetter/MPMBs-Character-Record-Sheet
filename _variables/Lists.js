@@ -273,12 +273,14 @@ var CurrentWeapons = {
 
 var CurrentFeats = {
 	known : [],
+	choices : [],
 	level : What("Character Level") ? Number(What("Character Level")) : 1
 };
 
 var CurrentMagicItems = {
 	known : [],
-	level : What("Character Level") ? Number(What("Character Level")) : 1
+	choices : [],
+	level : CurrentFeats.level
 };
 
 var CurrentProfs = { // Also change field defaultValue!
