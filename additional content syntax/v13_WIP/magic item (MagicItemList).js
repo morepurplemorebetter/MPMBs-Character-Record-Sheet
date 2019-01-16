@@ -82,7 +82,8 @@ MagicItemsList["staff of purple"] = {
 
 	This name will also be used to recognize what is selected in the magic item drop-down.
 */
-	source : ["SRD", 170],
+	source : ["SRD", 204],
+	source : [["E", 7], ["S", 115]],
 /*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the magic item is found
@@ -99,13 +100,12 @@ MagicItemsList["staff of purple"] = {
 	See the "source (SourceList).js" file for learning how to add a custom source.
 
 	Alternatively, this can be an array of arrays to indicate it appears in multiple sources.
-	For example, if something appears on both page 7 of the Elemental Evil Player's Companion
-	 and on page 115 of the Sword Coast Adventure Guide, use the following:
-		source : [["E", 7], ["S", 115]],
+	The example above says something appears on both page 7 of the Elemental Evil Player's Companion and
+	on page 115 of the Sword Coast Adventure Guide.
 
 	If a magic item is completely homebrew, or you don't want to make a custom source, just put the following:
 		source : ["HB", 0],
-	"HB" refers to the'homebrew' source.
+	"HB" refers to the 'homebrew' source.
 */
 	type : "wondrous item",
 /*	type // REQUIRED //
@@ -188,10 +188,16 @@ MagicItemsList["staff of purple"] = {
 	allowDuplicates : true,
 /*	allowDuplicates // OPTIONAL //
 	TYPE:	boolean
-	USE:	set to true if multiples can exist of this magic item (e.g. a potion)
+	USE:	set to true if multiples can exist of this magic item (e.g. a potion or using 'choices' attribute)
 
 	If the magic item doesn't allow duplicates, you can just leave this attribute out.
 	Setting this to false is the same as not including this attribute.
+
+	IMPORTANT NOTE IF USING 'choices' ATTRIBUTE
+	When this item has multiple forms and uses the 'choices' attribute,
+	you probably want to set the 'allowDuplicates' attribute to true.
+	If you don't set this attribute to true, the sheet will only allow this item to exist once,
+	regardless if another instance has another form (choices) selected.
 */
 	description : "As an action, command the jug to produce liquid; or an action to uncorked it and pour 2 gal/min. After producing, it only makes the same up to its max, until next dawn. Oil (1 qt), acid (8 fl oz), basic poison (1/2 fl oz), beer (4 gal), honey/wine (1 gal), fresh water (8 gal), mayonnaise/vinegar (2 gal), salt water (12 gal).",
 /*	description // REQUIRED //
@@ -231,6 +237,20 @@ MagicItemsList["staff of purple"] = {
 	There is no limit to how big this description can be,
 	but very long descriptions will not always display correctly.
 */
+	calculate : "event.value = 'I can spend 10 minutes inspiring up to 6 friendly creatures within 30 feet who can see or hear and can understand me. Each gains lvl (' + What('Character Level') + ') + Cha mod (' + What('Cha Mod') + \") temporary hit points. One can't gain temporary hit points from this item again until after a short rest.\";",
+/*	calculate // OPTIONAL //
+	TYPE:	string
+	USE:	this string is set as the field calculation method for the description field of the magic item
+
+	The string is evaluated as JavaScript code whenever anything changes on the sheet.
+	To change the value of the field, you will have to set the 'event.value' to something.
+	The example above sets the field to a text with calculated numbers in the text,
+	the character level and Charisma Modifier.
+
+	If this attribute is present, the 'description' and 'descriptionLong' attributes will both be useless.
+	Remember that the 'description' attribute is still requires, so you might just want to set it to an empty string:
+		description : "",
+*/
 
 /*
 	>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -244,4 +264,102 @@ MagicItemsList["staff of purple"] = {
 	All attributes in there can directly be added in this object.
 */
 
+
+/*
+	>>>>>>>>>>>>>>>>>>>>>>>
+	>>> Composite Items >>>
+	>>>>>>>>>>>>>>>>>>>>>>>
+
+	The next part is about the use of the 'choices' attribute, which is optional.
+	The 'choices' attribute will allow the magic item to have a subset of options.
+	The user will be forced to select one of those options, the item will note be usable without a selection.
+
+	To set up a choice, add the 'choices' attribute, see below, and add an object for each of those choices.
+	The object name has to be exactly the same as the string in the 'choices' array, but has to be all lowercase.
+*/
+	choices : ['Fire', 'Ice'],
+/*	choices // OPTIONAL //
+	TYPE:	array (variable length)
+	USE:	options for the magic item
+
+	The text in the array is presented to the user as options to choose from for what form of the magic item to use.
+	The order of this array is used exactly as you write it.
+	If you include this attribute, an option will have to be chosen.
+
+	You will have to make a 'choice' object for each item you include in this array.
+	To make a choice object, use the exact name of the entry in this array, but lowercase.
+	See the below example "fire" for more information.
+*/
+
+	"fire" : {
+	/*	Choice Object Name
+		TYPE:	object name
+		USE:	this has to be identical to the entry in the 'choices' array that this refers to, but all lowercase
+
+		This is an object within the main MagicItemsList object.
+		This object wil be referred to as 'choice' from here on in.
+		The parent MagicItemsList object wil be referred to as 'parent' from here on in.
+	*/
+
+		name : "Staff of Purple Flame",
+	/*	name (inside choice) // OPTIONAL //
+		TYPE:	string
+		USE:	name of the magic item option as it will be used by the sheet
+
+		If present, this name will be used instead of the name of the parent.
+		This name will also be used to recognize what is typed in the magic item drop-down.
+
+		If no name is given, the name of an option will be dynamically generated from
+		the parent and this 'choices' entry the choice refers to.
+		In this example that would be "Staff of Purple [Fire]"
+
+		IMPORTANT
+		The name of an option should be unique, it can't be the same as the parent item.
+	*/
+
+		description : "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\rThe potion's yellow fluid is streaked with black and swirls on its own.",
+	/*
+		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		>>> MagicItemsList Attributes (inside choice) >>>
+		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+		All the attributes described above can also be used inside a choice object,
+		with the exception of 'choices' (you can't have options inside options).
+		The sheet will look in both choice and parent to determine what attribute to use,
+		with the choice being preferred over the parent.
+
+		Most of the time you will want to at least set the description of the choice to
+		something different than the parent.
+
+		For example, if the parent has:
+			attunement : true,
+		but the choice has:
+			attunement : false,
+		the sheet will not show the attunement checkbox when this choice is selected.
+
+		Another example, if the parent has:
+			weight : 1,
+		but the choice has no 'weight' defined,
+		the sheet will use the weight of 1 lb for the choice.
+	*/
+
+	/*
+		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		>>> Common Attributes (inside choice) >>>
+		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+		You can have the magic item sub-choice affect different parts of the sheet as well,
+		separate from the main magic item.
+
+		See the "_common attributes.js" file for documentation on how to do those things and more.
+		All attributes in there can directly be added in this object.
+
+		Note that all common attributes in the choice object will be in addition to those in the parent object,
+		with the exception of things pertaining to the limited features.
+
+		LIMITED FEATURES
+		'usages', 'additional', 'recovery', 'usagesCalc', and 'limfeaname' will all be
+		merged from the choice object into the parent to generate a single limited feature.
+	*/
+	}
 }

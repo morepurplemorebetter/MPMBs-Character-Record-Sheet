@@ -662,45 +662,56 @@ spellcastingBonus : [{
 		If you don't set anything for the first column the sheet will determine what is most logical.
 	*/
 
-	spellcastingAbility : 6,
-	/*	spellcastingAbility // OPTIONAL //
-		TYPE:	number corresponding to the ability score (1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
-		USE:	set the ability score used for spellcasting abilities
+	spellcastingAbility : 4,
+	fixedDC : 17,
+	/*	spellcastingAbility & fixedDC // OPTIONAL //
+		Both these are explained in detail below.
 
-		Only include this attribute in a single object in the array.
-		If you include it in multiple objects in the array, only the last one will be used.
-		
-		IMPORTANT
-		This attribute will overwrite the spellcasting ability score used for the parent object (if any).
-		Only use this attribute if the parent object (i.e. class/race) does not have spellcasting abilities
-		and its default ability save DC uses a different ability score than its spellcasting.
-		For example, if you include this in a class feature for a cleric subclass and set it to `1`,
-		the cleric will be casting spells using Strength.
-		
-		Setting this to 0 or false is the same as not including this attribute.
-	*/
-
-	fixedDC : 13,
-	/*	fixedDC // OPTIONAL //
-		TYPE:	number
-		USE:	set the DC and spell attack to a fixed value, not dependent on ability score
-
-		This attribute will stop the calculation of the DC and attack on the spell sheet and instead
-		use this value or this value minus 8 for the spell attack.
-		This attribute is mostly used by magic items.
-
-		Only include this attribute in a single object in the array.
-		If you include it in multiple objects in the array, only the last one will be used.
-
-		IMPORTANT
-		This attribute will overwrite the spellcasting ability score used for calculating DC/attack (if any).
-		Only use this attribute if the parent object (i.e. class/race) does not have spellcasting abilities.
-		For example, if you include this in a class feature for a wizard subclass and set it to `12`,
-		the wizard will be casting spells using DC 12 regardless of its intelligence modifier.
-
-		Setting this to 0 or false is the same as not including this attribute.
+		You can include either in a spellcastingBonus object to do the exact same thing.
+		Only do this if the spellcastingBonus object is not part of the parent,
+		for example if the spellcastingBonus object is part of a (feat/item) choice or (class/race) feature.
 	*/
 }],
+
+spellcastingAbility : 6,
+/*	spellcastingAbility // OPTIONAL //
+	TYPE:	number corresponding to the ability score (1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
+	USE:	set the ability score used for spellcasting abilities
+	
+	Setting this to 0 or false is the same as not including this attribute.
+
+	NOTE FOR CLASS AND RACIAL FEATURES
+	This attribute will do nothing when included in a class or racial feature.
+	The reason for this is that the class/race sets its spellcasting ability in the parent object (for race that uses this same attribute).
+
+	If for some reason the parent class/race object didn't set the spellcasting ability or you need to change it,
+	you can still set it by including this attribute in one of the spellcastingBonus objects.
+	If you do that, this attribute will overwrite the spellcasting ability score used for the parent object (if any).
+	For example, if you include this in a class feature for a cleric subclass and set it to `1`,
+	the cleric will be casting spells using Strength from then on out.
+*/
+
+fixedDC : 13,
+/*	fixedDC // OPTIONAL //
+	TYPE:	number
+	USE:	set the DC and spell attack to a fixed value, not dependent on ability score
+
+	This attribute will stop the calculation of the DC and attack on the spell sheet and instead
+	use this value or this value minus 8 for the spell attack.
+	This attribute is mostly used by magic items.
+
+	Setting this to 0 or false is the same as not including this attribute.
+
+	NOTE FOR CLASS AND RACIAL FEATURES
+	This attribute will do nothing when included in a class or racial feature.
+	The reason for this is that the class/race sets its spellcasting ability in the parent object (for race that uses this same attribute).
+
+	If for some reason the parent class/race object didn't set the spellcasting ability or you need to change it to a fixed DC,
+	you can still set it by including this attribute in one of the spellcastingBonus objects.
+	This attribute will overwrite the spellcasting ability score used for calculating DC/attack (if any).
+	For example, if you include this in a class feature for a wizard subclass and set it to `12`,
+	the wizard will be casting spells using DC 12 regardless of its intelligence modifier.
+*/
 
 spellcastingExtra : ["cure wounds", "guiding bolt", "flaming sphere", "lesser restoration", "daylight", "revivify", "guardian of faith", "wall of fire", "flame strike", "greater restoration"],
 spellcastingExtra : ["disguise self", "rope trick", "fear", "greater invisibility", "seeming"].concat(new Array(95)).concat("AddToKnown"),
@@ -828,6 +839,7 @@ calcChanges : {
 				theWea, // object, the entry as it appears in the WeaponsList object
 				StrDex, // number, either 1 (Str) or 2 (Dex) depending on which of the two ability scores is higher
 				WeaponName, // string, the name of the entry in the WeaponsList object
+				baseWeaponName, // string, the name of the entry in the WeaponsList object that the weapon is based on (or its own name if it is not based on anything)
 				thisWeapon // array, the entry in the CurrentWeapons.known array
 			}
 
@@ -886,6 +898,7 @@ calcChanges : {
 				isOffHand, // boolean, whether (true) or not (false) this attack is both a melee weapon and an off-hand attack
 				theWea, // object, the entry as it appears in the WeaponsList object
 				WeaponName, // string, the name of the entry in the WeaponsList object
+				baseWeaponName, // string, the name of the entry in the WeaponsList object that the weapon is based on (or its own name if it is not based on anything)
 				thisWeapon // array, the entry in the CurrentWeapons.known array
 			}
 
