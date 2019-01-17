@@ -290,6 +290,25 @@ MagicItemsList["staff of purple"] = {
 	To make a choice object, use the exact name of the entry in this array, but lowercase.
 	See the below example "fire" for more information.
 */
+	selfChoosing : function () {
+		return classes.known.cleric ? "fire" : "";
+	}
+/*	choices // OPTIONAL //
+	TYPE:	function
+	USE:	select the 'choice' automatically when the item is added
+
+	If the magic item has the 'choices' attribute, the function in this attribute will be run
+	before the user is presented with the choice dialog.
+	If this function returns a valid 'choice', that choice will be used and the users will not be prompted.
+	A valid choice is any entry from the 'choices' array.
+
+	The above example selects 'fire' if the character has levels in the cleric class,
+	but will otherwise leave it up to the user (i.e. it selects nothing).
+
+	This function doesn't get passed any variables.
+	This attribute will be ignored if the 'choices' attribute is not present.
+	Even with this attribute present, the user can always change the 'choice' using the button on the sheet.
+*/
 
 	"fire" : {
 	/*	Choice Object Name

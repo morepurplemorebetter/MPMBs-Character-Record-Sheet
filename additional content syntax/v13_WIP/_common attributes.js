@@ -66,6 +66,8 @@ action : [
 	2. The second string can be one of two things:
 		2.1	When the first character of the string is non-alphabetic (e.g. a space or a hyphen), it is amended to the name of the feature.
 			This amended total is then added as an action.
+			If you are also using the 'limfeaname' attribute, that string will be used instead of the feature's name.
+			So this entry will be added to 'limfeaname' string.
 		2.2 When the first character of the string is an alphabetic character (e.g. everything from a-Z), it is not amended to the name of the feature.
 			The string is taken as-is and added as an action.
 */
@@ -159,8 +161,11 @@ limfeaname : "Hellish Rebuke (3d10)",
 	USE:	value to add in the "Name" column in the "Limited Features" section instead of the feature's name
 
 	Use this attribute only if you do not want to use the feature's name in the "Limited Features" section.
+	If this attribute is present and the 'action' attribute is also present,
+	the 'limfeaname' attribute will be used instead of the feature's name for actions.
 
-	This attribute will do nothing if not both the 'usages' and 'recovery' attributes are present in the same feature.
+	This attribute will do nothing if not both the 'usages' and 'recovery' attributes or the 'action' attribute
+	are present in the same feature.
 */
 
 additional : "10% chance",
@@ -676,8 +681,16 @@ spellcastingBonus : [{
 spellcastingAbility : 6,
 /*	spellcastingAbility // OPTIONAL //
 	TYPE:	number corresponding to the ability score (1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
+			or "class" or "race"
 	USE:	set the ability score used for spellcasting abilities
-	
+
+	If you set this to "class", the sheet will use the highest spellcasting ability score of
+	the spellcasting class(es) the character has.
+	If you set this to "race", the sheet will use the spellcasting ability of the race, if any.
+
+	When set to "class" or "race", but nothing is found (i.e. no spellcasting class/race),
+	the sheet will assume there is a +0 bonus (spell DC 8, spell attack +0).
+
 	Setting this to 0 or false is the same as not including this attribute.
 
 	NOTE FOR CLASS AND RACIAL FEATURES
