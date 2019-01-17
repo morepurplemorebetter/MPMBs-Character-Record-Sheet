@@ -666,7 +666,7 @@ var Base_ClassList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (classes.known.monk && classes.known.monk.level && (v.theWea.monkweapon || v.baseWeaponName == "shortsword" || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/\b(heavy|(2|two).?hand(ed)?s?)\b/i).test(v.theWea.description)))) {
+							if (classes.known.monk && classes.known.monk.level && (v.theWea.monkweapon || v.baseWeaponName == "unarmed strike" || v.baseWeaponName == "shortsword" || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/\b(heavy|(2|two).?hand(ed)?s?)\b/i).test(v.theWea.description)))) {
 								var aMonkDie = function (n) { return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10; }(classes.known.monk.level);
 								try {
 									var curDie = eval(fields.Damage_Die.replace('d', '*'));
@@ -1911,7 +1911,7 @@ var Base_ClassList = {
 					calcChanges : {
 						atkAdd : [
 							function (fields, v) {
-								if (v.pactWeapon || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) {
+								if (v.pactWeapon || v.theWea.pactWeapon || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) {
 									v.pactWeapon = true;
 									fields.Proficiency = true;
 									if (!v.thisWeapon[1]) fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';

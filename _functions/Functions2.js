@@ -5539,13 +5539,13 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		if (thisWeapon[3]) {
 			if (thisWeapon[4].length) {
 				var abiArr = thisWeapon[4].map( function(sClass) {
-					return CurrentSpells[sClass] && CurrentSpells[sClass].ability ? CurrentSpells[sClass].ability : 0;
+					return CurrentSpells[sClass] && CurrentSpells[sClass].ability && isNaN(CurrentSpells[sClass].ability) ? CurrentSpells[sClass].ability : 0;
 				});
 			} else {
 				// the spell is not known by any class, so just gather the ability scores from all spellcasting entries so we can select the highest
 				var abiArr = [];
 				for (var aCast in CurrentSpells) {
-					if (CurrentSpells[aCast].ability) abiArr.push(CurrentSpells[aCast].ability);
+					if (!isNaN(CurrentSpells[aCast].ability)) abiArr.push(CurrentSpells[aCast].ability);
 				}
 			}
 			var abiDone = [];
@@ -5732,13 +5732,22 @@ function CalcAttackDmgHit(fldName) {
 		if (isOffHand) output.modToDmg = output.mod < 0;
 
 		//add the BlueText field value of the corresponding spellcasting class
+		var spCaster = false;
+		var abiScoreNo = tDoc.getField(fldBase + "Mod").currentValueIndices;
 		if (thisWeapon[3] && thisWeapon[4].length) {
 			var DCorHit = isDC ? "dc" : "atk";
 			var abiBonArr = thisWeapon[4].map( function(sClass) {
-				var ExtraBonus = CurrentSpells[sClass] && CurrentSpells[sClass].blueTxt && CurrentSpells[sClass].blueTxt[DCorHit] ? CurrentSpells[sClass].blueTxt[DCorHit] : 0;
+				var ExtraBonus = CurrentSpells[sClass] && CurrentSpells[sClass].ability == abiScoreNo && CurrentSpells[sClass].blueTxt && CurrentSpells[sClass].blueTxt[DCorHit] ? CurrentSpells[sClass].blueTxt[DCorHit] : 0;
 				return EvalBonus(ExtraBonus, true);
 			});
-			output.extraHit += Math.max.apply(Math, abiBonArr);
+			var highestBon = Math.max.apply(Math, abiBonArr);
+			if (highestBon) {
+				spCaster = [];
+				for (var i = 0; i < abiBonArr.length; i++) {
+					if (abiBonArr[i] == highestBon) spCaster.push(thisWeapon[4][i]);
+				}
+				output.extraHit += highestBon;
+			}
 		};
 
 		// now run the code that was added by class/race/feat
@@ -5774,6 +5783,28 @@ function CalcAttackDmgHit(fldName) {
 				}
 			}
 		};
+		if (isSpell && CurrentEvals.spellCalc) {
+			// get the variables we need to pass to the function
+			var spType = isDC ? "dc" : "attack";
+			var spCasters = spCaster ? spCaster : !thisWeapon[4] ? [] : thisWeapon[4].map( function(sClass) {
+				return CurrentSpells[sClass] && CurrentSpells[sClass].ability == abiScoreNo ? sClass : "";
+			});
+
+			for (var spCalc in CurrentEvals.spellCalc) {
+				var evalThing = CurrentEvals.spellCalc[spCalc];
+				try {
+					if (typeof evalThing == 'function') {
+						var addSpellNo = evalThing(spType, spCasters, abiScoreNo);
+						if (!isNaN(addSpellNo)) output.extraHit += addSpellNo;
+					}
+				} catch (error) {
+					var eText = "The custom spell attack/DC (spellCalc) script '" + spCalc + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					console.println(eText);
+					console.show();
+				}
+			}
+		}
 	};
 
 	var dmgDie = "";

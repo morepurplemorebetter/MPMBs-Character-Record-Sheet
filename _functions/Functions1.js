@@ -2024,7 +2024,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		}
 
 		//add number of attacks to temp array
-		temp.push(CurrentClasses[aClass].attacks[Math.min(classes.known[aClass].level, CurrentClasses[aClass].attacks.length) - 1]);
+		temp.push(Temps.attacks[Math.min(classes.known[aClass].level, Temps.attacks.length) - 1]);
 	}
 	//pick highest number of attacks in temp array and put that into global classes variable
 	classes.attacks = Math.max.apply(Math, temp);
@@ -4363,7 +4363,21 @@ function ApplyFeat(input, FldNmbr) {
 	// If no variant was found, but there is a choice, ask it now
 	if (IsNotImport && aFeat && aFeat.choices && !newFeatVar) {
 		if (parseResult[2].length) {
-			var selectFeatVar = parseResult[2].length == 1 ? parseResult[2][0] : AskUserOptions("Select " + aFeat.name + " Type", "The '" + aFeat.name + "' feat has several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the feat line that this feat is in.", parseResult[2], "radio", true);
+			var selectFeatVar = false;
+			if (parseResult[2].length == 1) {
+				selectFeatVar = parseResult[2][0];
+			} else if (aFeat.selfChoosing && typeof aFeat.selfChoosing == "function") {
+				try {
+					selectFeatVar = aFeat.selfChoosing();
+				} catch (error) {
+					var eText = "The function in the 'selfChoosing' attribute of '" + newFeat + "' produced an error! Please contact the author of the feat code to correct this issue:\n " + error + "\n ";
+					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					console.println(eText);
+					console.show();
+				}
+				selectFeatVar = selectFeatVar && typeof selectFeatVar == "string" && aFeat[selectFeatVar.toLowerCase()] ? selectFeatVar : false;
+			}
+			if (!selectFeatVar) selectFeatVar = AskUserOptions("Select " + aFeat.name + " Type", "The '" + aFeat.name + "' feat has several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the feat line that this feat is in.", parseResult[2], "radio", true);
 			newFeatVar = selectFeatVar.toLowerCase();
 			aFeatVar = aFeat[newFeatVar];
 			setFieldValueTo = aFeatVar.name ? aFeatVar.name : aFeat.name + " [" + selectFeatVar + "]";
@@ -4619,7 +4633,7 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 		case "down" :
 			if (MenuSelection[1] == "down" && noDown) return;
 			IsNotFeatMenu = false;
-			thermoTxt = thermoM("Moving the magic item " + MenuSelection[1] + "...", false);
+			thermoTxt = thermoM("Moving the feat " + MenuSelection[1] + "...", false);
 			// Get the other fields
 			var otherNmbr = MenuSelection[1] == "down" ? itemNmbr + 1 : itemNmbr - 1;
 			var FfldsO = ReturnFeatFieldsArray(otherNmbr);
@@ -4628,6 +4642,15 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 				var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
 				copyField(Fflds[i], FfldsO[i], exclObj, true);
 				thermoM(i/Fflds.length); //increment the progress dialog's progress
+			}
+			// Correct the entry in the CurrentMagicItems.known array
+			if (!CurrentVars.manual.feats) {
+				var thisKnown = CurrentFeats.known[itemNmbr - 1];
+				var thisChoice = CurrentFeats.choices[itemNmbr - 1];
+				CurrentFeats.known[itemNmbr - 1] = CurrentFeats.known[otherNmbr - 1];
+				CurrentFeats.known[otherNmbr - 1] = thisKnown;
+				CurrentFeats.choices[itemNmbr - 1] = CurrentFeats.choices[otherNmbr - 1];
+				CurrentFeats.choices[otherNmbr - 1] = thisChoice;
 			}
 			IsNotFeatMenu = true;
 			break;
@@ -4675,8 +4698,11 @@ function FeatInsert(itemNmbr) {
 				var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
 				copyField(FfldsFrom[i], FfldsTo[i], exclObj);
 			}
-			// Correct the known array
-			if (!CurrentVars.manual.feats) CurrentFeats.known[f - 1] = CurrentFeats.known[f - 2];
+			// Correct the known array & choices arrays
+			if (!CurrentVars.manual.feats) {
+				CurrentFeats.known[f - 1] = CurrentFeats.known[f - 2];
+				CurrentFeats.choices[f - 1] = CurrentFeats.choices[f - 2];
+			}
 		}
 
 		// Empty the selected slot
@@ -4710,8 +4736,11 @@ function FeatDelete(itemNmbr) {
 			var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
 			copyField(FfldsFrom[i], FfldsTo[i], exclObj);
 		}
-		// Correct the known array
-		if (!CurrentVars.manual.feats) CurrentFeats.known[f - 1] = CurrentFeats.known[f];
+		// Correct the known array & choices arrays
+		if (!CurrentVars.manual.feats) {
+			CurrentFeats.known[f - 1] = CurrentFeats.known[f];
+			CurrentFeats.choices[f - 1] = CurrentFeats.choices[f];
+		}
 	}
 
 	// Clear the final line
@@ -5004,7 +5033,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				"feat", // type
 				aFeat, // fObjName
 				[oldFeatLvl, newFeatLvl, false], // lvlA [old-level, new-level, force-apply]
-				["", CurrentFeats.choices[f], false], // choiceA [old-choice, new-choice, "only"|"change"]
+				[CurrentFeats.choices[f], CurrentFeats.choices[f], false], // choiceA [old-choice, new-choice, "only"|"change"]
 				false // forceNonCurrent
 			);
 		}
@@ -5031,7 +5060,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				"item", // type
 				anItem, // fObjName
 				[oldItemLvl, newItemLvl, false], // lvlA [old-level, new-level, force-apply]
-				["", CurrentMagicItems.choices[f], false], // choiceA [old-choice, new-choice, "only"|"change"]
+				[CurrentMagicItems.choices[f], CurrentMagicItems.choices[f], false], // choiceA [old-choice, new-choice, "only"|"change"]
 				false // forceNonCurrent
 			);
 		}

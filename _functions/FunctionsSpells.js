@@ -425,7 +425,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 			if (What(headerArray[2]) !== caster) { //if the header was not already set to the class
 				Value(headerArray[1], casterName); //set the name of the header
 				Value(headerArray[2], caster); //set the name of the class
-				PickDropdown(headerArray[3], spCast.ability); //set the ability score to use
+				PickDropdown(headerArray[3], getSpellcastingAbility(caster)); //set the ability score to use
 				AddTooltip(headerArray[3], undefined, spCast.fixedDC ? "fixed" : ""); //set fixed DC to use, if any
 				if (spCast.blueTxt) { //set the remembered bluetext values, if at all present
 					Value(headerArray[7], spCast.blueTxt.prep ? spCast.blueTxt.prep : 0); //set the bluetext for preparing
@@ -496,7 +496,7 @@ function CalcSpellScores() {
 	var type = event.target.name.replace(/.*spellshead\.(\w+).*/, "$1");
 	var Fld = event.target.name.replace("spellshead." + type, "spellshead.DINGDONG");
 	var modFld = Fld.replace("DINGDONG", "ability");
-	var theMod = How(modFld) == "fixed" ? "fixed" : What(Fld.replace("DINGDONG", "ability"));
+	var theMod =  What(modFld);
 	var aClass = What(Fld.replace("DINGDONG", "class")); //find the associated class
 	var cSpells = CurrentSpells[aClass] ? CurrentSpells[aClass] : false;
 	var fixedDC = cSpells && cSpells.fixedDC ? cSpells.fixedDC : false;
@@ -531,6 +531,26 @@ function CalcSpellScores() {
 
 		//stuff added manually in the bluetext field
 		theResult += EvalBonus(What(event.target.name.replace("spellshead", "BlueText.spellshead")), true);
+
+		// now do custom calculations, if any
+		if ((!fixedDC || type == "prepare") && CurrentEvals.spellCalc) {
+			var abiScoreNo = tDoc.getField(modFld).currentValueIndices;
+
+			for (var spCalc in CurrentEvals.spellCalc) {
+				var evalThing = CurrentEvals.spellCalc[spCalc];
+				try {
+					if (typeof evalThing == 'function') {
+						var addSpellNo = evalThing(type, cSpells ? [aClass] : [], abiScoreNo);
+						if (!isNaN(addSpellNo)) theResult += addSpellNo;
+					}
+				} catch (error) {
+					var eText = "The custom spell attack/DC (spellCalc) script '" + spCalc + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					console.println(eText);
+					console.show();
+				}
+			}
+		}
 	}
 
 	event.value = theResult;
@@ -3334,7 +3354,7 @@ function AskUserSpellSheet() {
 
 				//determine how many spells can be prepared
 				diaPrep.nmbrPrep = PrepLevel;
-				diaPrep.ability = spCast.ability;
+				diaPrep.ability = getSpellcastingAbility(aCast);
 
 				//make the array of spells that the preparations can come from
 				if (spCast.selectSp) {
@@ -4924,7 +4944,7 @@ function HideSpellSheetElement(theTarget) {
 			if (toSearch.indexOf(key) !== -1 || toSearch.indexOf(CurrentSpells[key].name.toLowerCase()) !== -1) {
 				var spCast = CurrentSpells[key];
 				Value(headerArray[2], key);
-				PickDropdown(headerArray[3], spCast.ability);
+				PickDropdown(headerArray[3], getSpellcastingAbility(key));
 				if (!spCast.level || (spCast.typeSp !== "list" && spCast.typeSp !== "book") || spCast.typeList === 3) toPrep = false;
 				toTest = true;
 				break;
@@ -5334,6 +5354,7 @@ function ShowSpellPointInfo() {
 // a way to test is a certain spell is set as known/on a list in the CurrentCasters variable, returning an array of CurrentCaster object names in which it exists
 function isSpellUsed(spll, returnBoolean) {
 	var rtrnA = [];
+	var addAllSpClasses = false;
 	if (SpellsList[spll]) {
 		for (var aClass in CurrentSpells) {
 			var sClass = CurrentSpells[aClass];
@@ -5341,6 +5362,7 @@ function isSpellUsed(spll, returnBoolean) {
 			for (var i = 0; i < csAttr.length; i++) {
 				if (sClass[csAttr[i]] && sClass[csAttr[i]].indexOf(spll) !== -1) {
 					rtrnA.push(aClass);
+					if (sClass.ability == "class") addAllSpClasses = aClass;
 					break;
 				};
 			};
@@ -5349,9 +5371,13 @@ function isSpellUsed(spll, returnBoolean) {
 				spObj.level = [1, 9];
 				var theSpList = CreateSpellList(spObj, false, spCast.extra, false, aClass, spCast.typeSp);
 				if (theSpList.indexOf(spll) !== -1) rtrnA.push(aClass);
+				if (sClass.ability == "class") addAllSpClasses = aClass;
 			}
 		}
 	};
+	if (!returnBoolean && addAllSpClasses) {
+		rtrnA = rtrnA.concat(getSpellcastingAbility(addAllSpClasses, true));
+	}
 	return returnBoolean ? rtrnA.length > 0 : rtrnA;
 };
 
@@ -5543,4 +5569,49 @@ function getSpNm(spellKey, getShort) {
 	var theRe = getShort && spell.nameShort ? [spell.nameShort, spell.name] : getShort ? [spell.name, ""] : spell.name;
 	if (spell.nameAlt && !SourceList.P && (!spell.nameShort || spell.nameAlt.length >= spell.nameShort.length)) theRe = getShort ? [spell.nameAlt, spell.name] : spell.nameAlt;
 	return theRe;
+};
+
+// A function to return the spellcasting ability
+function getSpellcastingAbility(theCast, returnCasterArray) {
+	var spAbility = 0;
+	var curAbiScore = 0;
+	var spObj = CurrentSpells[theCast];
+	var casterArray = [];
+	var testFixedDC = false;
+	if (spObj && spObj.ability && !isNaN(spObj.ability)) {
+		spAbility = Number(spObj.ability);
+	} else if (spObj && spObj.ability == "class") {
+		var abiModArr = ["", "Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
+		for (aCast in CurrentSpells) {
+			// Test if this CurrentSpells entry is a class with spellcasting abilities
+			if (aCast == theCast || !CurrentSpells[aCast].ability || isNaN(CurrentSpells[aCast].ability) || !CurrentClasses[aCast] || !CurrentClasses[aCast].spellcastingFactor) continue;
+			var aCastAbility = Number(CurrentSpells[aCast].ability);
+			if (spAbility == aCastAbility) {
+				casterArray.push(aCast);
+				continue;
+			}
+			var tempAbiScore = Number(What(abiModArr[aCastAbility]));
+			if (tempAbiScore > curAbiScore) {
+				spAbility = aCastAbility;
+				curAbiScore = tempAbiScore;
+				casterArray = [aCast];
+			}
+		}
+		testFixedDC = true;
+	} else if (spObj && spObj.ability == "race") {
+		if (CurrentRace.known && CurrentSpells[CurrentRace.known] && CurrentSpells[CurrentRace.known].ability && !isNaN(CurrentSpells[CurrentRace.known].ability)) {
+			spAbility = Number(CurrentSpells[CurrentRace.known].ability);
+			casterArray = [CurrentRace.known];
+		}
+		testFixedDC = true;
+	}
+	// if the spellcasting ability is still 0 after testing class/race, set a fixed DC (nothing)
+	if (testFixedDC) {
+		if (spAbility == 0) {
+			spObj.fixedDC = 8;
+		} else {
+			delete spObj.fixedDC;
+		}
+	}
+	return returnCasterArray ? casterArray : spAbility;
 };

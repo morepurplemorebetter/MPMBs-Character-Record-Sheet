@@ -1622,7 +1622,22 @@ function ApplyMagicItem(input, FldNmbr) {
 	// If no variant was found, but there is a choice, ask it now
 	if (IsNotImport && aMI && aMI.choices && !newMIvar) {
 		if (parseResult[2].length) {
-			var selectMIvar = parseResult[2].length == 1 ? parseResult[2][0] : AskUserOptions("Select " + aMI.name + " Type", "The '" + aMI.name + "' magic item exists in several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the magic item line that this item is in.", parseResult[2], "radio", true);
+			var selectMIvar = false;
+			if (parseResult[2].length == 1) {
+				selectMIvar = parseResult[2][0];
+			} else if (aMI.selfChoosing && typeof aMI.selfChoosing == "function") {
+				try {
+					selectMIvar = aMI.selfChoosing();
+				} catch (error) {
+					var eText = "The function in the 'selfChoosing' attribute of '" + newMI + "' produced an error! Please contact the author of the magic item code to correct this issue:\n " + error + "\n ";
+					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					console.println(eText);
+					console.show();
+				}
+				selectMIvar = selectMIvar && typeof selectMIvar == "string" && aMI[selectMIvar.toLowerCase()] ? selectMIvar : false;
+			}
+			// none of the above selected a choice, ask the user!
+			if (!selectMIvar) selectMIvar = AskUserOptions("Select " + aMI.name + " Type", "The '" + aMI.name + "' magic item exists in several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the magic item line that this item is in.", parseResult[2], "radio", true);
 			newMIvar = selectMIvar.toLowerCase();
 			aMIvar = aMI[newMIvar];
 			setFieldValueTo = aMIvar.name ? aMIvar.name : aMI.name + " [" + selectMIvar + "]";
@@ -2060,8 +2075,11 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			// Correct the entry in the CurrentMagicItems.known array
 			if (!CurrentVars.manual.items) {
 				var thisKnown = CurrentMagicItems.known[itemNmbr - 1];
+				var thisChoice = CurrentMagicItems.choices[itemNmbr - 1];
 				CurrentMagicItems.known[itemNmbr - 1] = CurrentMagicItems.known[otherNmbr - 1];
 				CurrentMagicItems.known[otherNmbr - 1] = thisKnown;
+				CurrentMagicItems.choices[itemNmbr - 1] = CurrentMagicItems.choices[otherNmbr - 1];
+				CurrentMagicItems.choices[otherNmbr - 1] = thisChoice;
 			}
 			// Correct the description if moving between 3rd and overflow page
 			if ((upToOtherPage && MenuSelection[1] == "up") || (downToOtherPage && MenuSelection[1] == "down")) {
@@ -2200,8 +2218,11 @@ function MagicItemInsert(itemNmbr) {
 				var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
 				copyField(MIfldsFrom[i], MIfldsTo[i], exclObj);
 			}
-			// Correct the known array
-			if (!CurrentVars.manual.items) CurrentMagicItems.known[it - 1] = CurrentMagicItems.known[it - 2];
+			// Correct the known array & choices arrays
+			if (!CurrentVars.manual.items) {
+				CurrentMagicItems.known[it - 1] = CurrentMagicItems.known[it - 2];
+				CurrentMagicItems.choices[it - 1] = CurrentMagicItems.choices[it - 2];
+			}
 			// Correct the attuned checkbox visibility
 			setMIattunedVisibility(it);
 			// Correct the description (normal/long)
@@ -2239,8 +2260,11 @@ function MagicItemDelete(itemNmbr) {
 			var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
 			copyField(MIfldsFrom[i], MIfldsTo[i], exclObj);
 		}
-		// Correct the known array
-		if (!CurrentVars.manual.items) CurrentMagicItems.known[it - 1] = CurrentMagicItems.known[it];
+		// Correct the known & choices arrays
+		if (!CurrentVars.manual.items) {
+			CurrentMagicItems.known[it - 1] = CurrentMagicItems.known[it];
+			CurrentMagicItems.choices[it - 1] = CurrentMagicItems.choices[it];
+		}
 		// Correct the attuned checkbox visibility
 		setMIattunedVisibility(it);
 		// Correct the description (normal/long)
