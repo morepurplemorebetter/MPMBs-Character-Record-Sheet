@@ -170,7 +170,7 @@ limfeaname : "Hellish Rebuke (3d10)",
 
 additional : "10% chance",
 additional : ["", "d6", "d6", "d6", "d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12"],
-/*	recovery // OPTIONAL //
+/*	additional // OPTIONAL //
 	TYPE:	string, or array with 20 strings
 	USE:	value to add in brackets to the name in the "Limited Features" section
 
@@ -195,6 +195,28 @@ additional : ["", "d6", "d6", "d6", "d6", "d6", "d6", "d6", "d8", "d8", "d8", "d
 		Each entry is a level, so you will most likely want to add 20 entries.
 		Each entry has to be a string, see option 1. String for how those work.
 		IMPORTANT! Set the value to "" for levels that the feature is not present.
+*/
+
+extraLimitedFeatures : [{
+	name : "Another Limited Feature", // REQUIRED //
+	usages : 8, // REQUIRED //
+	recovery : "long rest", // REQUIRED //
+	usagescalc : "event.value = Math.max(1, What('Cha Mod'));", // OPTIONAL //
+	additional : "2d8" // OPTIONAL //
+}]
+/*	extraLimitedFeatures // OPTIONAL //
+	TYPE:	array of objects (variable length)
+	USE:	entries to add to the "Limited Features" section which are not level-dependent
+
+	Use this attribute only if you have more than one limited feature to add and you already
+	used the default usages/recovery method described above.
+	Each object has to contain at least the 'name', 'usages', and 'recovery' attributes.
+	The 'usagescalc' and 'additional' attributes are optional.
+
+	For an explanation of how the different attributes work, see the attributes by the same names above.
+	The only exception is that the ones in this object can never be an array, they are always level-independent.
+
+	The 'name' attribute can only be a string.
 */
 
 
@@ -359,6 +381,32 @@ armorAdd : "Natural Armor",
 	The armour will only be set if there is currently no armour selected on the 1st page, or
 	if the currently selected armour gives a lower AC total than this armour.
 	The string will be added exactly as you write it here, capitalisation and all.
+*/
+
+shieldAdd : "Wooden Buckler",
+shieldAdd : ["Magical Buckler", 1, 2],
+/*	shieldAdd // OPTIONAL //
+	TYPE:	string or array with three entries
+	USE:	set the shield on the 1st page as well as its bonus to AC and weight 
+
+	This attribute can be one of two type of entries:
+	1)	string
+		This string is put in the 'Shield' description field just like you would manually type in something.
+		It is then used to calculate the shield's AC bonus (2 + any magic modifiers you include in the string).
+		For example, 'Shield +2' will give an AC of 4.
+		The weight of the shield will be set at 6 lb.
+	2)	array
+		This array must have 3 entries:
+		2.1	string
+			This string is set in the 'Shield' description field.
+			It can contain a magical modifier (i.e. any number following a + or -).
+		2.2	number
+			This is used to fill out the AC of the shield, regardless of any magical modifiers.
+		2.3	number
+			This is used to fill the weight of the shield in lb.
+		
+	
+	The shield will only be added if the AC bonus is more or equal to that of the current shield.
 */
 
 ammoOptions : [{ /* AmmoList object, see AmmoList syntax */ }],
@@ -712,6 +760,7 @@ fixedDC : 13,
 	This attribute will stop the calculation of the DC and attack on the spell sheet and instead
 	use this value or this value minus 8 for the spell attack.
 	This attribute is mostly used by magic items.
+	This attribute has no affect on cantrips/spells in the attack section.
 
 	Setting this to 0 or false is the same as not including this attribute.
 
@@ -858,8 +907,8 @@ calcChanges : {
 
 		// 2nd array entry //
 		This has to be a string and will be used to populate the "Things affecting the attack calculations" dialog.
-		If you have both atkAdd and atkCalc in the same feature,
-		it is better to fill only one of the second entries and leaving the other at "".
+		It you already have either atkCalc or spellCalc in the same feature,
+		it is better to fill only one of the second entries and leaving the others at "".
 		Filling only one of the explanation strings will result in only a single entry
 		for the feature in the "Things affecting the attack calculations" dialog instead of two.
 	*/
@@ -880,7 +929,7 @@ calcChanges : {
 		TYPE:	array with two entries
 				1st entry:	function or, for backwards-compatibility, string that is evaluated using eval()
 				2nd entry:	string that is used to give an explanation of what the 1st entry does
-		USE:	dynamically change how the To Hit and Damage of attacks are calculated based
+		USE:	dynamically change how the To Hit and Damage of attacks are calculated
 				Note that this is only run for attacks that are recognized, not manually added
 
 		// 1st array entry //
@@ -936,8 +985,64 @@ calcChanges : {
 
 		// 2nd array entry //
 		This has to be a string and will be used to populate the "Things affecting the attack calculations" dialog.
-		If you have both atkAdd and atkCalc in the same feature,
-		it is better to fill only one of the second entries and leaving the other at "".
+		It you already have either atkAdd or spellCalc in the same feature,
+		it is better to fill only one of the second entries and leaving the others at "".
+		Filling only one of the explanation strings will result in only a single entry
+		for the feature in the "Things affecting the attack calculations" dialog instead of two.
+	*/
+
+	spellCalc : [
+		function (type, spellcasters, ability) {
+			if (type == "dc") return 1;
+		},
+		"I add +1 to all the saving throw DCs of my spells."
+	],
+	/*	spellCalc // OPTIONAL //
+		TYPE:	array with two entries
+				1st entry:	function
+				2nd entry:	string that is used to give an explanation of what the 1st entry does
+		USE:	dynamically change how spell attacks, spell save DC, and/or number of spells prepared are calculated
+
+		This attribute is used both in the attacks section and on spell sheet pages,
+		but not for the 'Ability Save DC' on the 1st page.
+		For the attacks section, this is only run for cantrips/spells that are recognized, not manually added.
+
+		This attribute is not used for 
+
+		// 1st array entry //
+		The function should return the number it wishes to add/remove as a number.
+		The function will not be evaluated but is fed three variables:
+		1)	type, a string with the type of the thing being processed.
+			This can be one of three things:
+				"dc"
+				"attack"
+				"prepare"
+
+			Check against this to see if you are adding a number to the correct thing.
+			For example, if you want to add 2 to the DC, but not to the spell attack
+			or number of prepared spells, do the following:
+				if (type == "dc") return 2;
+
+		2)	spellcasters, an array of CurrentSpells object entry names.
+			These entry names are identical to the source of the spellcasting.
+			For example, it will be ["wizard"] if the thing to calculate is the wizard's spell DC/attack bonus/spells to prepare;
+
+			Check against this if you only want to add a number to the spell save DC if a certain spellcasting class is present.
+			For example, if you only want the spell DC of the cleric to be 3 higher:
+				if (type == "dc" && spellcasters.indexOf("cleric") != -1) return 3;
+
+		3)	ability, a number of the ability score being used.
+			This can be one of seven numbers:
+				0 = none, 1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha
+
+			Check against this if you only want to change something if it is with a certain ability score.
+			For example, if you want to add 1 to the spell attacks done with Charisma:
+				if (type == "attack" && ability == 6) return 1;
+
+		// 2nd array entry //
+		This has to be a string and will be used to populate the "Things affecting the attack calculations" dialog.
+		It you already have either atkAdd or atkCalc in the same feature,
+		it is better to fill only one of the second entries and leaving the others at "".
 		Filling only one of the explanation strings will result in only a single entry
 		for the feature in the "Things affecting the attack calculations" dialog instead of two.
 	*/

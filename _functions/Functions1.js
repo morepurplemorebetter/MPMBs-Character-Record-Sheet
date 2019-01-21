@@ -4352,7 +4352,7 @@ function ApplyFeat(input, FldNmbr) {
 	var setFieldValueTo;
 
 	var doNotCommit = function() {
-		if (event.target && event.target.name == MIflds[0]) {
+		if (event.target && event.target.name == Fflds[0]) {
 			event.rc = false;
 			var isTempl = typePF || FldNmbr > FieldNumbers.featsD ? ".1" : "";
 			if (isArray(tDoc.getField(event.target.name).page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + isTempl + "').setFocus();", 10);
@@ -4405,7 +4405,7 @@ function ApplyFeat(input, FldNmbr) {
 		var theFeat = {
 			name : aFeatVar.name ? aFeatVar.name : setFieldValueTo ? setFieldValueTo : input
 		}
-		var FeatAttr = ["source", "description", "calculate", "prerequisite", "prereqeval"];
+		var FeatAttr = ["source", "description", "descriptionFull", "calculate", "prerequisite", "prereqeval"];
 		for (var a = 0; a < FeatAttr.length; a++) {
 			var aKey = FeatAttr[a];
 			if (aFeatVar[aKey]) {
@@ -4422,6 +4422,7 @@ function ApplyFeat(input, FldNmbr) {
 		var parentDupl = 0;
 		var choiceDupl = aFeatVar && !aFeatVar.allowDuplicates ? 0 : undefined;
 		for (var i = 0; i < CurrentFeats.known.length; i++) {
+			if (i == ArrayNmbr) continue;
 			if (CurrentFeats.known[i] == newFeat) {
 				parentDupl++;
 				if (choiceDupl !== undefined && CurrentFeats.choices[i] == newFeatVar) choiceDupl++;
@@ -4429,8 +4430,8 @@ function ApplyFeat(input, FldNmbr) {
 		}
 		if ((parentDupl && !aFeatVar.allowDuplicates) || choiceDupl) {
 			var stopFunct = app.alert({
-				cTitle : "Can only have one instance of a magic item",
-				cMsg : "The magic item that you have selected, '" + (choiceDupl ? theFeat.name : aFeatVar.name) + "' is already present on the sheet and you can't have duplicates of it.\n\nIf you want to show that your character has multiples of this item, consider adding \"(2)\" after its name. You can also list it in one of the equipment sections, where you can denote the number you have." + (!choiceDupl ? "\n\nHowever, as this is a composite item that exists in different forms, and you don't have '" + theFeat.name + "' yet, the sheet can allow you to add it regardless of the rules. Do you want to continue adding this item?" : ""),
+				cTitle : "Can only have one instance of a feat",
+				cMsg : "The feat that you have selected, '" + (choiceDupl ? theFeat.name : aFeat.name) + "' is already present on the sheet and you can't have duplicates of it." + (!choiceDupl ? "\n\nHowever, as this is a composite feat that exists in different forms, and you don't have '" + theFeat.name + "' yet, the sheet can allow you to add it regardless of the rules. Do you want to continue adding this feat?" : ""),
 				nIcon : choiceDupl ? 0 : 1,
 				nType : choiceDupl ? 0 : 2
 			});
@@ -4513,8 +4514,11 @@ function ApplyFeat(input, FldNmbr) {
 		}
 
 		// Create the tooltip
-		var tooltipStr = stringSource(theFeat, "full,page", 'The "' + theFeat.name + '" feat is taken from: ', ".");
-		if (theFeat.prerequisite) tooltipStr += (tooltipStr ? "\n\n" : "") + "The prerequisite for it is: " + theFeat.prerequisite;
+		var tooltipStr = toUni(theFeat.name);
+		if (theFeat.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theFeat.prerequisite;
+		tooltipStr += stringSource(theFeat, "full,page", "\n \u2022 Source: ", ".");
+		if (theFeat.descriptionFull) tooltipStr += isArray(theFeat.descriptionFull) ? desc(theFeat.descriptionFull).replace(/^\n   /i, "\n\n") : "\n\n" + theFeat.descriptionFull;		
+
 		// Get the description
 		var theDesc = !theFeat.description ? "" : What("Unit System") === "imperial" ? theFeat.description : ConvertToMetric(theFeat.description, 0.5);
 		if (typePF) theDesc = theDesc.replace("\n", " ");
@@ -4569,37 +4573,17 @@ function SetFeatsdropdown(forceTooltips) {
 function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 	var featMenu = [];
 	if (!itemNmbr) itemNmbr = parseFloat(event.target.name.slice(-2));
+	var ArrayNmbr = itemNmbr - 1;
 	var Fflds = ReturnFeatFieldsArray(itemNmbr);
 	var theField = What(Fflds[0]) != "";
 	var noUp = itemNmbr === 1;
 	var noDown = itemNmbr === FieldNumbers.feats;
 	var upToOtherPage = itemNmbr !== (FieldNumbers.featsD + 1) ? "" : typePF ? " (to third page)" : " (to second page)";
 	var downToOtherPage = itemNmbr === FieldNumbers.featsD ? " (to overflow page)" : "";
+	var aFeat;
 
 	if (!MenuSelection || MenuSelection === "justMenu") {
-		// if this feat allows for a choice, add that option as the first thing in the menu
-		if (CurrentFeats.known[ArrayNmbr] && FeatsList[CurrentFeats.known[ArrayNmbr]].choices) {
-			aFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
-			var aFeatOpts = aFeat.choices;
-			var choiceMenu = {
-				cName : "Change " + aFeat.name + " type",
-				oSubMenu : []
-			};
-			for (var i = 0; i < aFeatOpts.length; i++) {
-				var aCh = aFeatOpts[i];
-				var aChL = aCh.toLowerCase();
-				if (!aFeat[aChL] || (aFeat[aChL].source && testSource(aChL, aFeat[aChL], "featsExcl"))) continue;
-				choiceMenu.oSubMenu.push({
-					cName : aCh + stringSource(aFeat[aChL].source ? aFeat[aChL] : aFeat, "first,abbr", "\t   [", "]"),
-					cReturn : "feat#choice#" + aChL,
-					bMarked : CurrentFeats.choices[ArrayNmbr] == aChL
-				});
-			}
-			if (choiceMenu.oSubMenu.length) {
-				featMenu.push(choiceMenu);
-				featMenu.push({cName : "-"});
-			}
-		}
+		// a function to add the other items
 		var menuLVL1 = function (array) {
 			for (i = 0; i < array.length; i++) {
 				featMenu.push({
@@ -4609,6 +4593,32 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 				});
 			}
 		};
+		// if this feat allows for a choice, add that option as the first thing in the menu
+		if (CurrentFeats.known[ArrayNmbr]) {
+			aFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
+			if (FeatsList[CurrentFeats.known[ArrayNmbr]].choices) {
+				var aFeatOpts = aFeat.choices;
+				var choiceMenu = {
+					cName : "Change type of " + aFeat.name,
+					oSubMenu : []
+				};
+				for (var i = 0; i < aFeatOpts.length; i++) {
+					var aCh = aFeatOpts[i];
+					var aChL = aCh.toLowerCase();
+					if (!aFeat[aChL] || (aFeat[aChL].source && testSource(aChL, aFeat[aChL], "featsExcl"))) continue;
+					choiceMenu.oSubMenu.push({
+						cName : aCh + stringSource(aFeat[aChL].source ? aFeat[aChL] : aFeat, "first,abbr", "\t   [", "]"),
+						cReturn : "feat#choice#" + aChL,
+						bMarked : CurrentFeats.choices[ArrayNmbr] == aChL
+					});
+				}
+				if (choiceMenu.oSubMenu.length) featMenu.push(choiceMenu);
+			}
+			// an option to read the whole description
+			if (Who(Fflds[2])) menuLVL1([["Show full text of " + aFeat.name, "popup"]]);
+			// add a separator if we have any items in the menu so far
+			if (featMenu.length) featMenu.push({cName : "-"});
+		}
 		menuLVL1([
 			["Move up" + upToOtherPage, "up", !noUp],
 			["Move down" + downToOtherPage, "down", !noDown],
@@ -4628,6 +4638,25 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 	calcStop();
 
 	switch (MenuSelection[1]) {
+		case "popup" :
+			ShowDialog("Feat's full description", Who(Fflds[2]));
+			break;
+		case "choice" :
+			aFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
+			if (MenuSelection[2] && aFeat && aFeat[MenuSelection[2]]) {
+				var aFeatVar = aFeat[MenuSelection[2]];
+				if (aFeatVar.name) {
+					Value(Fflds[0], aFeatVar.name);
+				} else {
+					for (var i = 0; i < aFeat.choices.length; i++) {
+						if (aFeat.choices[i].toLowerCase() == MenuSelection[2]) {
+							Value(Fflds[0], aFeat.name + " [" + aFeat.choices[i] + "]");
+							break;
+						}
+					}
+				}
+			}
+			break;
 		case "up" :
 			if (noUp) return;
 		case "down" :

@@ -180,6 +180,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.vision) processVision(addIt, tipNmF, uObj.vision);
 		if (uObj.dmgres) processResistance(addIt, tipNmF, uObj.dmgres);
 		if (uObj.action) processActions(addIt, tipNmF, uObj.action, uObj.limfeaname ? uObj.limfeaname : uObj.name);
+		if (uObj.extraLimitedFeatures) processExtraLimitedFeatures(addIt, tipNmF, uObj.extraLimitedFeatures);
 
 		// --- backwards compatibility --- //
 		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false;
@@ -211,7 +212,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (weaponAdd) processAddWeapons(addIt, weaponAdd);
 		var armorAdd = uObj.addArmor ? uObj.addArmor : uObj.addarmor ? uObj.addarmor : false;
 		if (armorAdd) processAddArmour(addIt, armorAdd);
-		if (uObj.addShield) processAddShield(addIt, uObj.addShield, uObj.weight);
+		if (uObj.shieldAdd) processAddShield(addIt, uObj.shieldAdd, uObj.weight);
 
 		// --- backwards compatibility --- //
 		// skills additions
@@ -744,6 +745,21 @@ function processAmmoOptions(AddRemove, srcNm, itemArr) {
 	if (!AddRemove && !ObjLength(CurrentVars.extraAmmo)) delete CurrentVars.extraAmmo;
 	UpdateDropdown("ammo"); // update the ammunition dropdown
 	SetStringifieds("vars"); // Save the new settings to a field
+}
+
+// set or remove extra limited feature options
+function processExtraLimitedFeatures(AddRemove, srcNm, objArr) {
+	if (!objArr) return;
+	if (!isArray(objArr)) objArr = [objArr];
+
+	for (var i = 0; i < objArr.length; i++) {
+		var aObj = objArr[i];
+		if (AddRemove) {
+			AddFeature(aObj.name, aObj.usages ? aObj.usages : 0, aObj.additional ? " (" + aObj.additional + ")" : "", aObj.recovery ? aObj.recovery : "", srcNm, false, aObj.usagescalc);
+		} else {
+			RemoveFeature(aObj.name, aObj.usages ? aObj.usages : 0, "", "", "", "", aObj.usagescalc);
+		}
+	}
 }
 
 // add/remove a class feature text, replace the first line of it, or insert it after another
@@ -1313,7 +1329,7 @@ function UpdateSheetDisplay() {
 			alignment : "align_fill",
 			width : 500,
 			font : "heading",
-			name : "Attack Calculations",
+			name : "Attack Calculations (possibly including spellcasting DC)",
 			elements : [{
 				type : "view",
 				align_children : "align_row",
@@ -1324,7 +1340,7 @@ function UpdateSheetDisplay() {
 					alignment : "align_fill",
 					font : "dialog",
 					wrap_name : true,
-					name : "A change was detected in the things that affect how attacks are calculated."
+					name : "A change was detected in the things that affect how (spell) attacks and/or how spell save DCs are calculated."
 				}, {
 					type : "button",
 					item_id : "bAtk",
@@ -1340,10 +1356,10 @@ function UpdateSheetDisplay() {
 		});
 		Changes_Dialog.bAtk = function (dialog) {
 			ShowCompareDialog(
-				["Things affecting attack calculations", "You can always see what things are affecting the attack calculations with the small buttons in front of each attack entry on the first page."],
+				["Things affecting attack calculations", "You can always see what things are affecting the attack calculations with the small buttons in front of each attack entry on the first page.\n\nNote that things affecting spell attacks and spell save DCs are also applied on the spell sheet pages, but not to the 'Ability Save DC' on the first page."],
 				[
-					["Old attack manipulations", this.oldAtkStr],
-					["New attack manipulations", StringEvals("atkStr")]
+					["Old attack/DC manipulations", this.oldAtkStr],
+					["New attack/DC manipulations", StringEvals("atkStr")]
 				],
 				true
 			);
@@ -1682,6 +1698,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		var parentDupl = 0;
 		var choiceDupl = aMIvar && !aMIvar.allowDuplicates ? 0 : undefined;
 		for (var i = 0; i < CurrentMagicItems.known.length; i++) {
+			if (i == ArrayNmbr) continue;
 			if (CurrentMagicItems.known[i] == newMI) {
 				parentDupl++;
 				if (choiceDupl !== undefined && CurrentMagicItems.choices[i] == newMIvar) choiceDupl++;
@@ -1977,30 +1994,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 	var aMI;
 
 	if (!MenuSelection || MenuSelection === "justMenu") {
-		// if this magic item allows for a choice, add that option as the first thing in the menu
-		if (CurrentMagicItems.known[ArrayNmbr] && MagicItemsList[CurrentMagicItems.known[ArrayNmbr]].choices) {
-			aMI = MagicItemsList[CurrentMagicItems.known[ArrayNmbr]];
-			var aMIopts = aMI.choices;
-			var choiceMenu = {
-				cName : "Change " + aMI.name + " type",
-				oSubMenu : []
-			};
-			for (var i = 0; i < aMIopts.length; i++) {
-				var aCh = aMIopts[i];
-				var aChL = aCh.toLowerCase();
-				if (!aMI[aChL] || (aMI[aChL].source && testSource(aChL, aMI[aChL], "magicitemExcl"))) continue;
-				choiceMenu.oSubMenu.push({
-					cName : aCh + stringSource(aMI[aChL].source ? aMI[aChL] : aMI, "first,abbr", "\t   [", "]"),
-					cReturn : "item#choice#" + aChL,
-					bMarked : CurrentMagicItems.choices[ArrayNmbr] == aChL
-				});
-			}
-			if (choiceMenu.oSubMenu.length) {
-				magicMenu.push(choiceMenu);
-				magicMenu.push({cName : "-"});
-			}
-		}
-		// now at the default options
+		// a function to add the other items
 		var menuLVL1 = function (array) {
 			for (i = 0; i < array.length; i++) {
 				magicMenu.push({
@@ -2011,6 +2005,33 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 				});
 			}
 		};
+		// if this magic item allows for a choice, add that option as the first thing in the menu
+		if (CurrentMagicItems.known[ArrayNmbr]) {
+			aMI = MagicItemsList[CurrentMagicItems.known[ArrayNmbr]];
+			if (MagicItemsList[CurrentMagicItems.known[ArrayNmbr]].choices) {
+				var aMIopts = aMI.choices;
+				var choiceMenu = {
+					cName : "Change type of " + aMI.name,
+					oSubMenu : []
+				};
+				for (var i = 0; i < aMIopts.length; i++) {
+					var aCh = aMIopts[i];
+					var aChL = aCh.toLowerCase();
+					if (!aMI[aChL] || (aMI[aChL].source && testSource(aChL, aMI[aChL], "magicitemExcl"))) continue;
+					choiceMenu.oSubMenu.push({
+						cName : aCh + stringSource(aMI[aChL].source ? aMI[aChL] : aMI, "first,abbr", "\t   [", "]"),
+						cReturn : "item#choice#" + aChL,
+						bMarked : CurrentMagicItems.choices[ArrayNmbr] == aChL
+					});
+				}
+				if (choiceMenu.oSubMenu.length) magicMenu.push(choiceMenu);
+			}
+			// an option to read the whole description
+			if (Who(MIflds[2])) menuLVL1([["Show full text of " + aMI.name, "popup"]]);
+			// add a separator if we have any items in the menu so far
+			if (magicMenu.length) magicMenu.push({cName : "-"});
+		}
+		// now at the default options
 		var magicArray = [
 			["Move up" + upToOtherPage, "up", !noUp],
 			["Move down" + downToOtherPage, "down", !noDown],
@@ -2028,6 +2049,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			["Copy to Extra Equipment (page 3)", "equipment#extra#", theField]
 		]);
 		menuLVL1(magicArray);
+		// set it to the global variable
 		Menus.magicitems = magicMenu;
 		if (MenuSelection == "justMenu") return;
 	}
@@ -2039,7 +2061,11 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 	calcStop();
 
 	switch (MenuSelection[1]) {
+		case "popup" :
+			ShowDialog("Magic item's full description", Who(MIflds[2]));
+			break;
 		case "choice" :
+			aMI = MagicItemsList[CurrentMagicItems.known[ArrayNmbr]];
 			if (MenuSelection[2] && aMI && aMI[MenuSelection[2]]) {
 				var aMIvar = aMI[MenuSelection[2]];
 				if (aMIvar.name) {

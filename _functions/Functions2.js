@@ -3827,10 +3827,11 @@ function SetHPTooltip(resetHP, onlyComp) {
 						runFunction();
 					}
 				} catch (error) {
-					var eText = "The custom hit point calculation addition '" + hpEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+					var eText = "The custom hit point calculation addition '" + hpEval + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 					for (var e in error) eText += e + ": " + error[e] + ";\n ";
 					console.println(eText);
 					console.show();
+					delete CurrentEvals.hp[hpEval];
 				}
 			}
 		}
@@ -5340,7 +5341,7 @@ function addEvals(evalObj, NameEntity, Add) {
 
 	// make the changes to the CurrentEvals object
 	var atkStr = "";
-	var atkTypes = ["atkAdd", "atkCalc"];
+	var atkTypes = ["atkAdd", "atkCalc", "spellCalc"];
 	for (var i = 0; i < atkTypes.length; i++) {
 		var atkT = atkTypes[i];
 		if (!evalObj[atkT]) continue;
@@ -5355,7 +5356,7 @@ function addEvals(evalObj, NameEntity, Add) {
 			delete CurrentEvals[atkT][NameEntity];
 		}
 	};
-	// set the descriptive text
+	// set the descriptive text for the attack calculations
 	if (atkStr) {
 		if (Add) {
 			if (!CurrentEvals.atkStr) CurrentEvals.atkStr = {};
@@ -5386,7 +5387,7 @@ function addEvals(evalObj, NameEntity, Add) {
 		var spIsArray = isArray(evalObj.spellList);
 		var stringChange = false;
 		if (Add) {
-			if (!CurrentEvals.spellList) CurrentEvals.spellList = { };
+			if (!CurrentEvals.spellList) CurrentEvals.spellList = {};
 			CurrentEvals.spellList[NameEntity] = spIsArray ? evalObj.spellList[0] : evalObj.spellList;
 			if (spIsArray && evalObj.spellList[1]) {
 				if (!CurrentEvals.spellListStr) CurrentEvals.spellListStr = {};
@@ -5595,10 +5596,11 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 						evalThing(fields, gatherVars);
 					}
 				} catch (error) {
-					var eText = "The custom ApplyWeapon/atkAdd script '" + addEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+					var eText = "The custom ApplyWeapon/atkAdd script '" + addEval + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 					for (var e in error) eText += e + ": " + error[e] + ";\n ";
 					console.println(eText);
 					console.show();
+					delete CurrentEvals.atkAdd[addEval];
 				}
 			}
 		};
@@ -5688,14 +5690,18 @@ function CalcAttackDmgHit(fldName) {
 	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
 	var WeaponName = thisWeapon[0];
 	var aWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] ? CurrentCompRace[prefix].attacks[WeaponName] : false;
-	var WeaponText = (QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr]) + (fields.Description ? " " + fields.Description : "");
+	var WeaponText = QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr];
+	var aWeaAbi = aWea && aWea.ability !== undefined ? aWea.ability : aWea && aWea.baseWeapon && WeaponsList[aWea.baseWeapon] && WeaponsList[aWea.baseWeapon].ability !== undefined ? WeaponsList[aWea.baseWeapon].ability : false;
 
-	if (!WeaponText || (/^(| |empty)$/).test(fields.Mod)) {
+	if (!WeaponText || ((/^(| |empty)$/).test(fields.Mod) && aWeaAbi !== 0)) {
 		Value(fldBase + "Damage", "");
 		Value(fldBase + "To Hit", "");
 		if (QI) CurrentWeapons.offHands[ArrayNmbr] = false;
 		return;
 	};
+
+	// only add the description part now, so we don't test against it above
+	if (fields.Description) WeaponText += " " + fields.Description;
 
 	// get the damage bonuses from the selected modifier, magic, and the blueText field
 	var output = {
@@ -5776,17 +5782,18 @@ function CalcAttackDmgHit(fldName) {
 						evalThing(fields, gatherVars, output);
 					}
 				} catch (error) {
-					var eText = "The custom CalcAttackDmgHit/atkCalc script '" + calcEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+					var eText = "The custom CalcAttackDmgHit/atkCalc script '" + calcEval + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 					for (var e in error) eText += e + ": " + error[e] + ";\n ";
 					console.println(eText);
 					console.show();
+					delete CurrentEvals.atkCalc[calcEval];
 				}
 			}
 		};
 		if (isSpell && CurrentEvals.spellCalc) {
 			// get the variables we need to pass to the function
 			var spType = isDC ? "dc" : "attack";
-			var spCasters = spCaster ? spCaster : !thisWeapon[4] ? [] : thisWeapon[4].map( function(sClass) {
+			var spCasters = spCaster ? spCaster : !thisWeapon[4].length ? [] : thisWeapon[4].map( function(sClass) {
 				return CurrentSpells[sClass] && CurrentSpells[sClass].ability == abiScoreNo ? sClass : "";
 			});
 
@@ -5795,13 +5802,14 @@ function CalcAttackDmgHit(fldName) {
 				try {
 					if (typeof evalThing == 'function') {
 						var addSpellNo = evalThing(spType, spCasters, abiScoreNo);
-						if (!isNaN(addSpellNo)) output.extraHit += addSpellNo;
+						if (!isNaN(addSpellNo)) output.extraHit += Number(addSpellNo);
 					}
 				} catch (error) {
-					var eText = "The custom spell attack/DC (spellCalc) script '" + spCalc + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+					var eText = "The custom spell attack/DC (spellCalc) script '" + spCalc + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 					for (var e in error) eText += e + ": " + error[e] + ";\n ";
 					console.println(eText);
 					console.show();
+					delete CurrentEvals.spellCalc[spCalc];
 				}
 			}
 		}

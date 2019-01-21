@@ -147,7 +147,6 @@ var Base_MagicItemsList = {
 			source : [["SRD", 220], ["D", 167]],
 			range : "Melee, 20/60 ft",
 			description : "Thrown, versatile (1d10); +1d8 damage when thrown (2d8 vs. giants) and returns immediately",
-			abilitytodamage : true,
 			modifiers : [3, 3] // add 3 to each to hit and damage because of the magical bonus
 		}
 	},

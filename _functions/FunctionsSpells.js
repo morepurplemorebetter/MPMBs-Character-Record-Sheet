@@ -425,7 +425,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 			if (What(headerArray[2]) !== caster) { //if the header was not already set to the class
 				Value(headerArray[1], casterName); //set the name of the header
 				Value(headerArray[2], caster); //set the name of the class
-				PickDropdown(headerArray[3], getSpellcastingAbility(caster)); //set the ability score to use
+				PickDropdown(headerArray[3], spCast.abilityToUse[0]); //set the ability score to use
 				AddTooltip(headerArray[3], undefined, spCast.fixedDC ? "fixed" : ""); //set fixed DC to use, if any
 				if (spCast.blueTxt) { //set the remembered bluetext values, if at all present
 					Value(headerArray[7], spCast.blueTxt.prep ? spCast.blueTxt.prep : 0); //set the bluetext for preparing
@@ -493,67 +493,79 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 //calculate the number of spells to memorize, attack modifier, and DC (field calculation)
 function CalcSpellScores() {
 	if (tDoc.info.SpellsOnly) return;
-	var type = event.target.name.replace(/.*spellshead\.(\w+).*/, "$1");
-	var Fld = event.target.name.replace("spellshead." + type, "spellshead.DINGDONG");
-	var modFld = Fld.replace("DINGDONG", "ability");
-	var theMod =  What(modFld);
+	var fldType = event.target.name.replace(/.*spellshead\.(\w+).*/, "$1");
+	var Fld = event.target.name.replace("spellshead." + fldType, "spellshead.DINGDONG");
+	var modFldName = Fld.replace("DINGDONG", "ability");
+	var modFld = What(modFldName);
+	var theMod = Number(What(modFld));
 	var aClass = What(Fld.replace("DINGDONG", "class")); //find the associated class
 	var cSpells = CurrentSpells[aClass] ? CurrentSpells[aClass] : false;
 	var fixedDC = cSpells && cSpells.fixedDC ? cSpells.fixedDC : false;
 
-	var theResult = "";
+	var theResult = {
+		dc : 0,
+		attack : 0,
+		prepare : 0
+	};
 
-	//now only continue with a calculation if a ability was chosen in the drop-down menu or this has a fixed DC
-	if (theMod !== "nothing" || fixedDC) {
-		//the ability score modifier
-		theResult = fixedDC && type !== "prepare" ? fixedDC - 8 : Number(What(theMod));
-
-		switch (type) {
-		 case "dc" :
-			//add a base of 8 and then add the proficiency bonus
-			theResult += 8;
-		 case "attack" :
-			if (fixedDC) break; // no proficiency bonus if a fixed DC
-			//add the proficiency bonus
-			theResult += fixedDC ? 0 : Number(What("Proficiency Bonus"));
-			break;
-		 case "prepare" :
-			//add the class level
-			if (cSpells) {
-				if (cSpells.factor && cSpells.factor[0]) {
-					theResult += Math.max(Math.floor(cSpells.level / cSpells.factor[0]), 1);
-				} else {
-					theResult += cSpells.level;
-				}
-			}
-			break;
-		}
-
-		//stuff added manually in the bluetext field
-		theResult += EvalBonus(What(event.target.name.replace("spellshead", "BlueText.spellshead")), true);
-
-		// now do custom calculations, if any
-		if ((!fixedDC || type == "prepare") && CurrentEvals.spellCalc) {
-			var abiScoreNo = tDoc.getField(modFld).currentValueIndices;
-
-			for (var spCalc in CurrentEvals.spellCalc) {
-				var evalThing = CurrentEvals.spellCalc[spCalc];
-				try {
-					if (typeof evalThing == 'function') {
-						var addSpellNo = evalThing(type, cSpells ? [aClass] : [], abiScoreNo);
-						if (!isNaN(addSpellNo)) theResult += addSpellNo;
-					}
-				} catch (error) {
-					var eText = "The custom spell attack/DC (spellCalc) script '" + spCalc + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
-					for (var e in error) eText += e + ": " + error[e] + ";\n ";
-					console.println(eText);
-					console.show();
-				}
+	var setResults = function() {
+		for (var aType in theResult) {
+			if (aType == fldType) {
+				event.value = theResult[aType] ? theResult[aType] : "";
+			} else {
+				Value(Fld.replace("DINGDONG", aType), theResult[aType] ? theResult[aType] : "");
 			}
 		}
 	}
 
-	event.value = theResult;
+	if (modFld == "nothing" && !fixedDC) {
+		setResults();
+		return;
+	}
+
+	var profBonus = Number(What("Proficiency Bonus"));
+	// the DC
+	theResult.dc = fixedDC ? fixedDC : profBonus + theMod + 8;
+	// the spell attack
+	theResult.attack = profBonus + (fixedDC ? fixedDC - 8 : theMod);
+	// the number of prepared spells
+	var isPrepareVis = isDisplay(Fld.replace("DINGDONG", "prepare")) == display.visible;
+	if (isPrepareVis) {
+		theResult.prepare = theMod;
+		if (cSpells && cSpells.factor && cSpells.factor[0]) {
+			theResult.prepare += Math.max(Math.floor(cSpells.level / cSpells.factor[0]), 1);
+		} else if (cSpells) {
+			theResult.prepare += cSpells.level;
+		}
+	}
+
+	// add custom calculations
+	if (CurrentEvals.spellCalc) {
+		var abiScoreNo = tDoc.getField(modFldName).currentValueIndices;
+		var classArray = cSpells ? [aClass] : [];
+
+		for (var spCalc in CurrentEvals.spellCalc) {
+			var evalThing = CurrentEvals.spellCalc[spCalc];
+			try {
+				if (typeof evalThing == 'function') {
+					for (var aType in theResult) {
+						if ((fixedDC && aType != "prepare") || (aType == "prepare" && !isPrepareVis)) continue;
+						var addSpellNo = evalThing(aType, classArray, abiScoreNo);
+						if (!isNaN(addSpellNo)) theResult[aType] += Number(addSpellNo);
+					}
+				}
+			} catch (error) {
+				var eText = "The custom spell attack/DC (spellCalc) script '" + spCalc + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
+				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				console.println(eText);
+				console.show();
+				delete CurrentEvals.spellCalc[spCalc];
+			}
+		}
+	}
+
+	// finally set the results to the field
+	setResults();
 }
 
 //set the blueText field bonus to the global CurrentSpells object for spells to memorize, attack modifier, and DC (field blur)
@@ -719,10 +731,11 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 					throw "Not a function";
 				}
 			} catch (error) {
-				var eText = "The custom calcChange.spellList function '" + spellListEval + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+				var eText = "The custom calcChange.spellList function '" + spellListEval + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 				for (var e in error) eText += e + ": " + error[e] + ";\n ";
 				console.println(eText);
 				console.show();
+				delete CurrentEvals.spellList[spellListEval];
 			}
 		}
 	}
@@ -3023,6 +3036,9 @@ function AskUserSpellSheet() {
 
 		dia.prevBtn = theI !== 0;
 
+		// get the ability score to use for save DCs/spell attacks/prepared
+		spCast.abilityToUse = getSpellcastingAbility(aCast);
+
 		//put some general things in variables
 		if (spCast.level && spCast.factor && (tDoc[spCast.factor[1] + "SpellTable"] || spCast.spellsTable)) {
 			var CasterLevel = Math.max(Math.ceil(spCast.level / (spCast.spellsTable ? 1 : spCast.factor[0])), 1);
@@ -3354,7 +3370,7 @@ function AskUserSpellSheet() {
 
 				//determine how many spells can be prepared
 				diaPrep.nmbrPrep = PrepLevel;
-				diaPrep.ability = getSpellcastingAbility(aCast);
+				diaPrep.ability = spCast.abilityToUse[0];
 
 				//make the array of spells that the preparations can come from
 				if (spCast.selectSp) {
@@ -4344,6 +4360,13 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	//now make the menu
 	var spellsLineMenu = [];
 
+	// add a way to see the spell's full description in a dialog
+	var fullDescr = Who(base.replace("checkbox", "description"));
+	if (fullDescr) {
+		menuLVL1(spellsLineMenu, [["Show full text of " + What(base.replace("checkbox", "name")), "popup"]])
+		spellsLineMenu.push({cName : "-"});
+	}
+
 	//add the options for adding a spell
 	spellsLineMenu.push({cName : "Spell", oSubMenu : AddSpellsMenu});
 	if (addPsionics) spellsLineMenu.push({cName : "Psionic", oSubMenu : AddPsionicsMenu});
@@ -4415,6 +4438,11 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	calcStop();
 
 	switch (MenuSelection[0]) {
+	 case "popup" :
+		var sourceString = Who(base.replace("checkbox", "book"));
+		if (sourceString) fullDescr += "\n\n" + toUni("Source(s)") + "\n \u2022 " + sourceString.replace(/\n/g, "\n \u2022 ");
+		ShowDialog("Spell's full description", fullDescr);
+		break;
 	 case "move up" :
 		thermoTxt = thermoM("Moving the spell up one row...", false);
 		var upValue = What(RemLineUp);
@@ -4944,7 +4972,7 @@ function HideSpellSheetElement(theTarget) {
 			if (toSearch.indexOf(key) !== -1 || toSearch.indexOf(CurrentSpells[key].name.toLowerCase()) !== -1) {
 				var spCast = CurrentSpells[key];
 				Value(headerArray[2], key);
-				PickDropdown(headerArray[3], getSpellcastingAbility(key));
+				PickDropdown(headerArray[3], spCast.abilityToUse[0]);
 				if (!spCast.level || (spCast.typeSp !== "list" && spCast.typeSp !== "book") || spCast.typeList === 3) toPrep = false;
 				toTest = true;
 				break;
@@ -5354,7 +5382,14 @@ function ShowSpellPointInfo() {
 // a way to test is a certain spell is set as known/on a list in the CurrentCasters variable, returning an array of CurrentCaster object names in which it exists
 function isSpellUsed(spll, returnBoolean) {
 	var rtrnA = [];
-	var addAllSpClasses = false;
+	var addAllSpClasses = function(spClass) {
+		if (returnBoolean) return;
+		var spClassObj = CurrentSpells[spClass];
+		if (spClassObj.ability == "class") {
+			rtrnA = rtrnA.concat(spClassObj.abilityToUse ? spClassObj.abilityToUse[1] : getSpellcastingAbility(spClass)[1]);
+		}
+	}
+
 	if (SpellsList[spll]) {
 		for (var aClass in CurrentSpells) {
 			var sClass = CurrentSpells[aClass];
@@ -5362,7 +5397,7 @@ function isSpellUsed(spll, returnBoolean) {
 			for (var i = 0; i < csAttr.length; i++) {
 				if (sClass[csAttr[i]] && sClass[csAttr[i]].indexOf(spll) !== -1) {
 					rtrnA.push(aClass);
-					if (sClass.ability == "class") addAllSpClasses = aClass;
+					addAllSpClasses(aClass);
 					break;
 				};
 			};
@@ -5370,14 +5405,14 @@ function isSpellUsed(spll, returnBoolean) {
 				var spObj = eval(sClass.list.toSource());
 				spObj.level = [1, 9];
 				var theSpList = CreateSpellList(spObj, false, spCast.extra, false, aClass, spCast.typeSp);
-				if (theSpList.indexOf(spll) !== -1) rtrnA.push(aClass);
-				if (sClass.ability == "class") addAllSpClasses = aClass;
+				if (theSpList.indexOf(spll) !== -1) {
+					rtrnA.push(aClass);
+					addAllSpClasses(aClass);
+				}
 			}
 		}
 	};
-	if (!returnBoolean && addAllSpClasses) {
-		rtrnA = rtrnA.concat(getSpellcastingAbility(addAllSpClasses, true));
-	}
+
 	return returnBoolean ? rtrnA.length > 0 : rtrnA;
 };
 
@@ -5572,7 +5607,7 @@ function getSpNm(spellKey, getShort) {
 };
 
 // A function to return the spellcasting ability
-function getSpellcastingAbility(theCast, returnCasterArray) {
+function getSpellcastingAbility(theCast) {
 	var spAbility = 0;
 	var curAbiScore = 0;
 	var spObj = CurrentSpells[theCast];
@@ -5613,5 +5648,5 @@ function getSpellcastingAbility(theCast, returnCasterArray) {
 			delete spObj.fixedDC;
 		}
 	}
-	return returnCasterArray ? casterArray : spAbility;
+	return [spAbility, casterArray];
 };

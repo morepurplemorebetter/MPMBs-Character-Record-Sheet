@@ -878,47 +878,6 @@ function resourceSelectionDialog(type) {
 			refObj[uGroup] = u;
 		};
 		break;
-/* UPDATED
-			var uName = amendSource(FeatsList[u].name, FeatsList[u]);
-			var uTest = testSource(u, FeatsList[u], CSatt, true);
-			if (uTest === "source") continue;
-			var uGroup = (/\[.+\]/).test(u) ? u.replace(/( ?\[.+\])/, "").capitalize() : false;
-			refObj[uName] = u;
-			if (uGroup) {
-				uGroup = amendSource(uGroup, FeatsList[u]);
-				if (!exclObj[uGroup]) exclObj[uGroup] = {};
-				if (!inclObj[uGroup]) inclObj[uGroup] = {};
-				if (uTest) {
-					exclObj[uGroup][uName] = -1;
-				} else {
-					inclObj[uGroup][uName] = -1;
-				}
-			} else {
-				if (uTest) {
-					exclObj[uName] = -1;
-				} else {
-					inclObj[uName] = -1;
-				}
-			}
-			var uGroup = (/\[.+\]/).test(u) ? u.replace(/( ?\[.+\])/, "").capitalize() : false;
-			refObj[uName] = u;
-			if (uGroup) {
-				uGroup = amendSource(uGroup, MagicItemsList[u]);
-				if (!exclObj[uGroup]) exclObj[uGroup] = {};
-				if (!inclObj[uGroup]) inclObj[uGroup] = {};
-				if (uTest) {
-					exclObj[uGroup][uName] = -1;
-				} else {
-					inclObj[uGroup][uName] = -1;
-				}
-			} else {
-				if (uTest) {
-					exclObj[uName] = -1;
-				} else {
-					inclObj[uName] = -1;
-				}
-			}
-*/
 	 case "spell" :
 		var theName = "Spells";
 		var CSatt = "spellsExcl";
