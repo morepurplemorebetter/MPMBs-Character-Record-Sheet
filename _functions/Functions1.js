@@ -4480,7 +4480,7 @@ function ApplyFeat(input, FldNmbr) {
 		tDoc.getField(Fflds[2]).setAction("Calculate", "");
 		Value(Fflds[2], "", "", "");
 		if (oldFeat) {
-			if (oldFeatVar !== newFeatVar) {
+			if (oldFeat !== newFeat) {
 				// Remove its attributes
 				var Fea = ApplyFeatureAttributes(
 					"feat", // type
@@ -5426,35 +5426,6 @@ function ClassFeatureOptions(Input, AddRemove) {
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
-//add a miscellaneous AC bonus. Filling in a 0 for ACbonus will remove the ability
-//submitNm is a string that can be run as eval in an if statement. If this returns True, the armor bonus is not added to the total
-function AddACMisc(ACbonus, Name, Tooltip, submitNm) {
-	ACMiscFlds = [["AC Misc Mod 1", "AC Misc Mod 1 Description"], ["AC Misc Mod 2", "AC Misc Mod 2 Description"]];
-	for (var i = 0; i < ACMiscFlds.length; i++) {
-		var Mod = tDoc.getField(ACMiscFlds[i][0]);
-		var Desc = tDoc.getField(ACMiscFlds[i][1]);
-		if (ACbonus !== 0) { //if adding something
-			if (Desc.value.toLowerCase() === Name.toLowerCase() || Desc.userName === Tooltip) {
-				break;
-			} else if (!Mod.value) {
-				Mod.value = ACbonus;
-				Desc.value = Name;
-				Desc.userName = Tooltip;
-				Desc.submitName = submitNm ? submitNm : "";
-				break;
-			};
-		} else { //if removing something
-			if (Desc.value.toLowerCase() === Name.toLowerCase() || Desc.userName === Tooltip) {
-				Mod.value = "";
-				Desc.value = "";
-				Desc.userName = "";
-				Desc.submitName = "";
-				break;
-			}
-		}
-	}
-}
-
 // The print feature button
 function PrintButton() {
 	var thePageOptions = [
@@ -5609,34 +5580,70 @@ function HideShowEverything(toggle) {
 	calcCont(true);
 };
 
-//calculate the AC (field calculation)
+// Calculate the AC (field calculation)
 function CalcAC() {
-	var getMiscAC = function(miscNo) {
-		var theRe = EvalBonus(What("AC Misc Mod " + miscNo), true);
-		var theFld = "AC Misc Mod " + miscNo + " Description";
-		var hasCheck = How(theFld);
-		try {
-			if (eval(hasCheck)) theRe = 0;
-		} catch (error) {
-			var eText = "The miscellaneous AC bonus '" + What(theFld) + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
-			for (var e in error) eText += e + ": " + error[e] + ";\n ";
-			console.println(eText);
-			console.show();
-		}
-		return theRe;
+	// Check if the armour's AC is filled, otherwise just return nothing
+	var AC = Number(What("AC Armor Bonus"));
+	if (!AC) {
+		event.value = "";
+		return;
 	}
 
-	var ACbase = Number(What("AC Armor Bonus"));
-	var ACshield = Number(What("AC Shield Bonus"));
-	var ACdex = Number(What("AC Dexterity Modifier"));
+	// Add all the other elements
+	AC += Number(What("AC Shield Bonus"));
+	AC += Number(What("AC Dexterity Modifier"));
+	AC += EvalBonus(What("AC Magic"), true);
+	AC += EvalBonus(What("AC Misc Mod 1"), true);
+	AC += EvalBonus(What("AC Misc Mod 2"), true);
 
-	var ACmagic = EvalBonus(What("AC Magic"), true);
+	// It is possible that some of the modifiers (magic / misc) should not be added if some conditions aren't met
+	var theArmor = CurrentArmour.known ? ArmourList[CurrentArmour.known] : false;
+	// First gather some variables that the evals can test against
+	var gatherVars = {
+		theArmor : theArmor ? theArmor : {},
+		usingShield : What("AC Shield Bonus Description") != "",
+		// wearingArmor is only true for made armor, as natural/magic doesn't have a 'type'
+		wearingArmor : !theArmor ? What("AC Armor Description") != "" : !!theArmor.type,
+		mediumArmor : tDoc.getField('Medium Armor').isBoxChecked(0),
+		heavyArmor : tDoc.getField('Heavy Armor').isBoxChecked(0),
+		shieldProf : tDoc.getField("Proficiency Shields").isBoxChecked(0),
+		lightProf : tDoc.getField("Proficiency Armor Light").isBoxChecked(0),
+		mediumProf : tDoc.getField("Proficiency Armor Medium").isBoxChecked(0),
+		heavyProf : tDoc.getField("Proficiency Armor Heavy").isBoxChecked(0)
+	}
+	// Now run through those conditions and remove the ones from the total that weren't met
+	for (var entry in CurrentProfs.specialarmour) {
+		var aMod = CurrentProfs.specialarmour[entry];
+		if (aMod.stopeval) {
+			try {
+				var removeMod = false;
+				if (typeof aMod.stopeval == 'string') {
+					removeMod = eval(aMod.stopeval);
+				} else if (typeof aMod.stopeval == 'function') {
+					removeMod = aMod.stopeval(gatherVars);
+				}
+				if (removeMod) AC -= EvalBonus(aMod.mod, true);
+			} catch (error) {
+				var eText = "The check if the AC bonus from '" + aMod.name + "' should be added or not produced an error! This check will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
+				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				console.println(eText);
+				console.show();
+				delete aMod.stopeval;
+			}
+		}
+	}
 
-	var ACmisc1 = getMiscAC(1);
-	var ACmisc2 = getMiscAC(2);
-
-	event.value = !ACbase ? "" : ACbase + ACshield + ACdex + ACmagic + ACmisc1 + ACmisc2;
+	event.value = AC;
 };
+
+// Make sure the magic/miscellaneous AC fields have a proper description (and don't overflow)
+function formatACdescr() {
+	var isMagic = event.target.name.indexOf("Magic") !== -1;
+	var testLen = typePF ? 40 : 35;
+	if (event.value.length > testLen) {
+		event.value = "Various" + (isMagic ? " magic" : "") + " bonuses"
+	}
+}
 
 function SetToManual_Button(noDialog) {
 	var BackgroundFld = !!CurrentVars.manual.background;

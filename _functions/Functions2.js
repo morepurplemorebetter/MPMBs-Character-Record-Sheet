@@ -6157,7 +6157,7 @@ function SetThisFldVal() {
 					}].concat(theExpl ? [{
 						type : "cluster",
 						alignment : "align_fill",
-						name : "Modifiers set by class features, race, or feats",
+						name : "Modifiers set by class features, race, feats, or magic items",
 						font : "dialog",
 						bold : true,
 						elements : [{
@@ -6187,29 +6187,36 @@ function AddToModFld(Fld, Mod, Remove, NameEntity, Explanation) {
 	var aFld = What(Fld);
 	var setFld = "";
 	if (!isNaN(Mod)) {
-		Mod = Remove ? -1 * Mod : Mod;
+		Mod = Remove ? -1 * Mod : Number(Mod);
+		var noRegEx = /((^|\+|[^*/]-)\d+)(?:($|\+|-))/;
 		if (!isNaN(aFld)) {
-			setFld = aFld + Mod;
-		} else if ((/\d+/).test(aFld)) {
-			var FldNum = Number(aFld.match(/-?\d+/)[0]);
+			setFld = Number(aFld) + Mod;
+		} else if ((noRegEx).test(aFld)) {
+			var FldNum = Number(aFld.match(noRegEx)[1]);
 			var FldNumNew = FldNum + Mod;
-			setFld = aFld.replace(RegExp("\\+?" + FldNum.toString(), "i"), (FldNumNew < 0 ? "" : "+") + FldNumNew);
+			setFld = aFld.replace(noRegEx, (FldNumNew < 0 ? "" : "+") + FldNumNew + "$3");
 		} else {
 			setFld = aFld + (Mod < 0 ? "" : "+") + Mod;
 		};
-	} else {
-		if (Remove) {
-			setFld = aFld.replace(RegExp("\\+?" + Mod, "i"), "");
-		} else {
-			setFld = (aFld ? aFld : "") + (Mod.substr(0, 1) === "-" ? "" : "+") + Mod
-		};
+	} else if (Remove) { // remove string
+		setFld = aFld.replace(RegExp("\\+?" + Mod, "i"), "");
+	} else { // add string
+		setFld = (aFld ? aFld : "") + (Mod.substr(0, 1) === "-" ? "" : "+") + Mod
 	};
-	setFld = setFld.replace(/^\+|(\+|-)0/g, "");
+	// remove zeroes
+	setFld = setFld.replace(/[\+-/*]0([\+-/*]|$)/g, "$1");
+	// remove useless leading things
+	while (isNaN(setFld) && (/[+*/0]/).test(setFld[0])) {
+		setFld = setFld.substr(1);
+	}
+	if (setFld == 0) setFld = "";
 	var theSubmit = How(Fld);
 	if (NameEntity && Explanation) {
 		var theAdd = "\n\n" + toUni(NameEntity) + "\n" + Explanation;
 		if (Remove) {
 			theSubmit = theSubmit.replace(theAdd, "");
+			// in case unicode use has changed between adding and removing
+			theSubmit = theSubmit.replace("\n\n" + NameEntity + "\n" + Explanation, "");
 		} else {
 			theSubmit += theAdd;
 		};
@@ -6517,6 +6524,31 @@ function setOtherWeaponProfsManual() {
 	if (didChange) SetProf("weapon", undefined, "other");
 }
 
+// A way to set the extra AC lines for magic / miscellaneous
+function processExtraAC(AddRemove, srcNm, itemArr, parentName) {
+	if (!itemArr) return;
+	if (!isArray(itemArr)) itemArr = [itemArr];
+	for (var i = 0; i < itemArr.length; i++) {
+		if (!itemArr[i].name) itemArr[i].name = parentName ? parentName : "Undefined";
+		SetProf("specialarmour", AddRemove, itemArr[i], srcNm, i.toString());
+	}
+}
+// Function is still present for backwards-compatibility. If 'useMod' == 0, remove
+function AddACMisc(useMod, useName, useText, useStopeval) {
+	var makeObject = {
+		name : useName,
+		mod : useMod,
+		text : useText,
+		stopeval : useStopeval
+	};
+	var extra = "-addacmisc";
+	// if we are removing something, we first have to fint the mod that was previously used
+	if (!useMod && CurrentProfs.specialarmour[useName + extra]) {
+		makeObject.mod = CurrentProfs.specialarmour[useName + extra].mod;
+	}
+	SetProf("specialarmour", !!useMod, makeObject, useName, extra);
+}
+
 // ProfType can be: "armour", "weapon", "save", "savetxt", "resistance", "vision", "speed", "language", or "tool"
 // Add: AddRemove = true; Remove: AddRemove = false
 // ProfObj is the proficiency that is gained/removed
@@ -6529,7 +6561,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	var metric = What("Unit System") !== "imperial";
 	if (!set) return;
 	if (!Extra) Extra = false;
-
+	
 	// function for adding all resistances of a single entry
 	var DoResistance = function(keyName, skipA) {
 		var aSet = CurrentProfs.resistance[keyName];
@@ -7204,6 +7236,62 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		Value(fldSpd, spdString, ttips.spd);
 		Value(fldEnc, encString, ttips.enc);
 		break;
+	};
+	case "specialarmour" : { // Extra is to make the entry unique (the array index)
+		if (!ProfObj.mod) return;
+		var fldNms = {
+			magic : ["AC Magic", "AC Magic Description"],
+			misc1 : ["AC Misc Mod 1", "AC Misc Mod 1 Description"],
+			misc2 : ["AC Misc Mod 2", "AC Misc Mod 2 Description"]
+		};
+		var objName = ProfSrc + "-" + Extra;
+		if (AddRemove) { // add
+			var tObj = {
+				name : ProfObj.name,
+				mod : ProfObj.mod,
+				text : ProfObj.text,
+				stopeval : ProfObj.stopeval,
+				source : ProfSrc
+			};
+			if (ProfObj.magic) {
+				tObj.type = "magic";
+			} else {
+				// count how many of each misc we got, and add to the fewest
+				var tCount = { misc1 : 0, misc2 : 0 };
+				for (var key in set) if (set[key].type != "magic") tCount[set[key].type] += 1;
+				tObj.type = tCount.misc1 <= tCount.misc2 ? "misc1" : "misc2";
+			}
+			set[objName] = tObj;
+			// update the description
+			AddString(fldNms[tObj.type][1], tObj.name, ", ");
+		} else { // remove
+			var tObj = set[objName];
+			if (!tObj) return; // nothing to do so stop now
+			// only remove this if the name isn't used for another in the same field
+			var removeName = true;
+			for (var key in set) {
+				if (key !== objName && set[key].name == tObj.name && set[key].type == tObj.type) {
+					removeName = false;
+					break;
+				}
+			}
+			// update the description
+			if (removeName) RemoveString(fldNms[tObj.type][1], tObj.name);
+		}
+		// update the modifier field
+		AddToModFld(fldNms[tObj.type][0], tObj.mod, !AddRemove, tObj.name, tObj.text);
+		// now set the tooltip
+		var tooltipArr = [];
+		for (var key in set) {
+			if (!AddRemove && key == objName) continue;
+			if (set[key].type == tObj.type) {
+				var srcStr = set[key].source.indexOf(set[key].name) == -1 ? set[key].source + " (" + set[key].name + ")" : set[key].source;
+				tooltipArr.push(srcStr);
+			};
+		}
+		var tooltipStr = formatMultiList("This line of " + (tObj.type == "magic" ? "magic" : "miscellaneous") + " AC bonuses contains:\n(tip: click on the number field in this line for more info)", tooltipArr);
+		AddTooltip(fldNms[tObj.type][1], tooltipStr);
+		if (!AddRemove) delete set[objName]; // now delete the object
 	};
  };
 	SetStringifieds("profs");

@@ -1136,12 +1136,91 @@ addMod : [
 		or 'Prof' for the proficiency bonus.
 
 		For example, to add the proficiency bonus, Constitution modifier, and subtract 2, it would look like this:
-		mod : "Prof+Con-2",
+			mod : "Prof+Con-2",
+		Or, another example, to add 1, it would look like this:
+			mod : 1,
 	4. text
 		This is an explanation of why the modifier was added and is used in the modifier change dialog.
 
 	NOTE: for modifiers to attacks, use calcChanges.
+	NOTE: for modifiers to AC, use extraAC.
 */
+
+extraAC : [{
+/*	extraAC // OPTIONAL //
+	TYPE:	array of objects (variable length) or just a single object
+	USE:	add modifier and description to AC magic/misc fields
+	
+	The 'mod' attribute has to be present in each object.
+	All other attributes are optional.
+	See below for an explanation of each attribute.
+*/
+	mod : 2,
+	/*	mod // REQUIRED //
+		TYPE:	string or number
+		USE:	the modifier to add to the AC
+
+		This can be any combination of numbers, mathematical operators,
+		and three-letter ability score abbreviations for ability score modifiers,
+		or 'Prof' for the proficiency bonus.
+
+		For example, to add the proficiency bonus, Constitution modifier, and subtract 2, it would look like this:
+			mod : "Prof+Con-2",
+		Or, another example, to add 1 to the AC, it would look like this:
+			mod : 1,
+	*/
+	name : "Bracers of Defense",
+	/*	name // OPTIONAL //
+		TYPE:	string
+		USE:	name how this modifier will be referred to
+
+		If you do not include this attribute, the name will be taken from the parent object.
+		If the parent object doesn't have a 'name' attribute, the name "Undefined" will be used.
+	*/
+	magic : true,
+	/*	magic // OPTIONAL //
+		TYPE:	boolean
+		USE:	set this to true if this should be added to the Magic line in the AC/Defense section
+
+		Setting this attribute to false is the same as not including this attribute.
+	*/
+	text : "I gain a +2 bonus to AC while I'm not wearing any armor or using a shield.",
+	/*	text // OPTIONAL //
+		TYPE:	string
+		USE:	the explanation of what is added to the AC and its criteria (if any)
+
+		If you do not include this attribute, there will be no explanation visible for this entry
+		in the modifiers dialog that appears when clicking on the modifier field.
+	*/
+	stopeval : function (v) {
+		return v.wearingArmor;
+	}
+	/*	stopeval // OPTIONAL //
+		TYPE:	function
+		USE:	return 'true' if the modifier is NOT to be added
+
+		With this function you can dynamically determine if the modifier should be added or not,
+		by testing against certain criteria.
+
+		The function is fed one variable, an object with attributes you can use:
+		var v = {
+			theArmor,		// the ArmourList object, if the current armour is recognized
+			usingShield,	// boolean, if the shield field has any text in it (true) or not (false)
+			wearingArmor,	// boolean, if the current armour is light/medium/heavy (true) or not (false)
+							// 'wearingArmor' is false for unarmoured, unarmoured defense, natural armor, and spells (e.g. Mage Armor)
+			mediumArmor,	// if the 'Medium Armor' checkbox is checked (true) or not (false)
+			heavyArmor,		// if the 'Heavy Armor' checkbox is checked (true) or not (false)
+			shieldProf,		// if the 'Shield' proficiency checkbox is checked (true) or not (false)
+			lightProf,		// if the 'Light' armour proficiency checkbox is checked (true) or not (false)
+			mediumProf,		// if the 'Medium' armour proficiency checkbox is checked (true) or not (false)
+			heavyProf		// if the 'Heavy' armour proficiency checkbox is checked (true) or not (false)
+		}
+
+		The above example returns true when the character is wearing armour,
+		and if so the sheet will not add the modifier to the total AC.
+	*/
+}],
+
 
 eval : "Checkbox('Jack of All Trades', true);",
 eval : function() {

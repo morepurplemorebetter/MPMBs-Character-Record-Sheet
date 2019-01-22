@@ -14,8 +14,11 @@ var FightingStyles = {
 	defense : {
 		name : "Defense Fighting Style",
 		description : "\n   " + "+1 bonus to AC when I'm wearing armor",
-		eval : "AddACMisc(1, 'Defense Fighting Style', 'When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC', 'CurrentArmour.known && !ArmourList[CurrentArmour.known].type');",
-		removeeval : "AddACMisc(0, 'Defense Fighting Style', 'When wearing armor, the class feature Defense Fighting Style gives a +1 bonus to AC');"
+		extraAC : {
+			mod : 1,
+			text : "I gain a +1 bonus to AC while wearing armor.",
+			stopeval : function (v) { return !v.wearingArmor; }
+		}
 	},
 	dueling : {
 		name : "Dueling Fighting Style",

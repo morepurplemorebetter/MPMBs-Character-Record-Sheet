@@ -294,14 +294,21 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing these bracers, you have proficiency with the longbow and shortbow, and you gain a +2 bonus to damage rolls on ranged attacks made with such weapons.",
 		attunement: true
 	},
-	'bracers of defense': {
-		name: "Bracers of Defense",
-		source: [["SRD", 212], ["D", 156]],
-		type: "wondrous item",
-		rarity: "rare",
-		description: "",
-		descriptionFull: "While wearing these bracers, you gain a +2 bonus to AC if you are wearing no armor and using no shield.",
-		attunement: true
+	'bracers of defense' : { // finished
+		name : "Bracers of Defense",
+		source : [["SRD", 212], ["D", 156]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "These bracers give me a +2 bonus to AC, but only if I'm not wearing armor or using a shield.",
+		descriptionFull : "While wearing these bracers, you gain a +2 bonus to AC if you are wearing no armor and using no shield.",
+		attunement : true,
+		extraAC : {
+			mod : 2,
+			magic : true,
+			text : "I gain a +2 bonus to AC while not wearing armor or using any shield.",
+			stopeval : function (v) { return v.wearingArmor || v.usingShield; }
+		}
 	},
 	'brazier of commanding fire elementals': {
 		name: "Brazier of Commanding Fire Elementals",

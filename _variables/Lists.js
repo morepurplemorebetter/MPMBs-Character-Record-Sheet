@@ -293,7 +293,8 @@ var CurrentProfs = { // Also change field defaultValue!
 	tool : {},
 	savetxt : {},
 	vision : {},
-	speed : {}
+	speed : {},
+	specialarmour : {}
 };
 
 var thermoCount = [], thermoDur = {};

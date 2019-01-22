@@ -148,7 +148,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 					for (var j = 0; j < fObj.choices.length; j++) {
 						if (fObj.choices[j].toLowerCase() == objNm) {
 							tipNm += " [" + fObj.choices[j] + "]";
-							brea;
+							break;
 						}
 					}
 				}
@@ -181,6 +181,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.dmgres) processResistance(addIt, tipNmF, uObj.dmgres);
 		if (uObj.action) processActions(addIt, tipNmF, uObj.action, uObj.limfeaname ? uObj.limfeaname : uObj.name);
 		if (uObj.extraLimitedFeatures) processExtraLimitedFeatures(addIt, tipNmF, uObj.extraLimitedFeatures);
+		if (uObj.extraAC) processExtraAC(addIt, tipNmF, uObj.extraAC, uObj.name);
 
 		// --- backwards compatibility --- //
 		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false;
