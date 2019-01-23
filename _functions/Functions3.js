@@ -2027,7 +2027,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 						bMarked : CurrentMagicItems.choices[ArrayNmbr] == aChL
 					});
 				}
-				if (choiceMenu.oSubMenu.length) magicMenu.push(choiceMenu);
+				if (choiceMenu.oSubMenu.length > 1) magicMenu.push(choiceMenu);
 			}
 			// an option to read the whole description
 			if (Who(MIflds[2])) menuLVL1([["Show full text of " + aMI.name, "popup"]]);

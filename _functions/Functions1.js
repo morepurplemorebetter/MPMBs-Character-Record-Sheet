@@ -4612,7 +4612,7 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 						bMarked : CurrentFeats.choices[ArrayNmbr] == aChL
 					});
 				}
-				if (choiceMenu.oSubMenu.length) featMenu.push(choiceMenu);
+				if (choiceMenu.oSubMenu.length > 1) featMenu.push(choiceMenu);
 			}
 			// an option to read the whole description
 			if (Who(Fflds[2])) menuLVL1([["Show full text of " + aFeat.name, "popup"]]);
