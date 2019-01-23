@@ -990,10 +990,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("AC Armor Description", {notTooltip: true}); ImportField("AC Armor Bonus", {notTooltip: true}); ImportField("AC Armor Weight", {notTooltip: true}); ImportField("AC during Rest");
 		ImportField("AC Shield Bonus Description", {notTooltip: true}); ImportField("AC Shield Bonus", {notTooltip: true}); ImportField("AC Shield Weight", {notTooltip: true});
 		ImportField("Medium Armor", {notTooltip: true}); ImportField("Heavy Armor", {notTooltip: true});
-		ImportField("AC Magic", {notTooltip: true, notSubmitName: true}); ImportField("AC Magic Description", {notTooltip: true});
 		if (ImportField("AC Stealth Disadvantage", {notTooltip: true})) ShowHideStealthDisadv(); ConditionSet();
-		ImportField("AC Misc Mod 1", {notTooltip: true}); ImportField("AC Misc Mod 1 Description", {notTooltip: true});
-		ImportField("AC Misc Mod 2", {notTooltip: true}); ImportField("AC Misc Mod 2 Description", {notTooltip: true});
 
 		//hit points, hit die
 		ImportField("HP Max", {notTooltip: true}); ImportField("HP Max Current", {notTooltip: true}); ImportField("HP Temp", {notTooltip: true}); ImportField("HP Current", {notTooltip: true});
@@ -1378,6 +1375,7 @@ function DirectImport(consoleTrigger) {
 		aText += "\n  > The 'Class Features' text is now solely what the automation added;";
 		aText += "\n  > The 'Notes' section on the 3rd page is now solely what the automation added;";
 		aText += "\n  > Attack and Ammunition attributes are now solely what the automation set;";
+		aText += "\n  > Magic and Misc AC bonuses are now solely what the automation set;";
 		aText += "\n  > Feat and Magic Item descriptions are now solely what the automation set;";
 		aText += "\n  > Companion pages have been copied exactly, not using any updates in automation;";
 		aText += "\n  > Wild Shapes have been re-calculated, manual changes have been ignored;";
