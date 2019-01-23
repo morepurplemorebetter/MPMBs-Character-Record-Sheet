@@ -161,8 +161,8 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		// we should add the options for weapons/armours/ammos before adding the item itself
 		// but we should be removing them only after removing the item itself
 		var addListOptions = function() {
-			if (uObj.armorOptions) processArmorOptions(addIt, tipNm, uObj.armorOptions);
-			if (uObj.ammoOptions) processAmmoOptions(addIt, tipNm, uObj.ammoOptions);
+			if (uObj.armorOptions) processArmorOptions(addIt, tipNm, uObj.armorOptions, type === "magic item");
+			if (uObj.ammoOptions) processAmmoOptions(addIt, tipNm, uObj.ammoOptions, type === "magic item");
 			if (uObj.weaponOptions) processWeaponOptions(addIt, tipNm, uObj.weaponOptions, type === "magic item");
 		}
 
@@ -462,6 +462,7 @@ function SetFeatureChoice(type, objNm, feaNm, choice, extra) {
 	choice = choice ? choice.toLowerCase() : false;
 	extra = extra ? extra.toLowerCase() : false;
 	type = GetFeatureType(type);
+	if (type == "items" || type == "feats") return;
 	if (!CurrentFeatureChoices[type]) CurrentFeatureChoices[type] = {};
 	if (!choice) { // remove the choice
 		if (!CurrentFeatureChoices[type][objNm]) return;
@@ -664,7 +665,7 @@ function processAddWeapons(AddRemove, weapons) {
 }
 
 // set or remove armour options
-function processArmorOptions(AddRemove, srcNm, itemArr) {
+function processArmorOptions(AddRemove, srcNm, itemArr, magical) {
 	if (!itemArr) return;
 	if (!isArray(itemArr)) itemArr = [itemArr];
 
@@ -676,6 +677,7 @@ function processArmorOptions(AddRemove, srcNm, itemArr) {
 		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
 		if (AddRemove) {
 			itemArr[i].list = "startlist";
+			if (magical) itemArr[i].isMagicArmor = true;
 			CurrentVars.extraArmour[newName] = itemArr[i];
 			ArmourList[newName] = itemArr[i];
 		} else {
@@ -721,7 +723,7 @@ function processWeaponOptions(AddRemove, srcNm, itemArr, magical) {
 }
 
 // set or remove ammo options
-function processAmmoOptions(AddRemove, srcNm, itemArr) {
+function processAmmoOptions(AddRemove, srcNm, itemArr, magical) {
 	if (!itemArr) return;
 	if (!isArray(itemArr)) itemArr = [itemArr];
 
@@ -733,6 +735,7 @@ function processAmmoOptions(AddRemove, srcNm, itemArr) {
 		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
 		if (AddRemove) {
 			itemArr[i].list = "startlist";
+			if (magical) itemArr[i].isMagicAmmo = true;
 			CurrentVars.extraAmmo[newName] = itemArr[i];
 			AmmoList[newName] = itemArr[i];
 		} else {
@@ -1883,11 +1886,10 @@ function ApplyAttunementMI(FldNmbr) {
 	var ArrayNmbr = FldNmbr - 1;
 	var aMI = CurrentMagicItems.known[ArrayNmbr];
 	if (!aMI) return; // no magic item recognized, so do nothing
+	var aMIvar = CurrentMagicItems.choices[ArrayNmbr];
 
 	var theFld = event.target && event.target.name.indexOf("Extra.Magic Item Attuned ") !== -1 ? event.target : tDoc.getField("Extra.Magic Item Attuned " + FldNmbr);
 	var isChecked = theFld.isBoxChecked(0);
-	var fromLvl = isChecked ? 0 : CurrentMagicItems.level;
-	var toLvl = isChecked ? CurrentMagicItems.level : 0;
 
 	// Start progress bar and stop calculation
 	var thermoTxt = thermoM((isChecked ? "Applying" : "Removing") + " magic item features...");
@@ -1898,8 +1900,8 @@ function ApplyAttunementMI(FldNmbr) {
 	var Fea = ApplyFeatureAttributes(
 		"item", // type
 		aMI, // fObjName
-		[fromLvl, toLvl, false], // lvlA [old-level, new-level, force-apply]
-		false, // choiceA [old-choice, new-choice, "only"|"change"]
+		isChecked ? [0, CurrentMagicItems.level, false] : [CurrentMagicItems.level, 0, false], // lvlA [old-level, new-level, force-apply]
+		isChecked ? ["", aMIvar, false] : [aMIvar, "", false], // choiceA [old-choice, new-choice, "only"|"change"]
 		false // forceNonCurrent
 	);
 }
