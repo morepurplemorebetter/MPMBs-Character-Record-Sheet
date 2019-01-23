@@ -1,4 +1,20 @@
 var Base_MagicItemsList = {
+	"adamantine armor" : { // finished
+		name : "Adamantine Armor",
+		source : [["SRD", 207], ["D", 150]],
+		type : "armor (medium, or heavy)",
+		rarity: "uncommon",
+		description : "This armor is reinforced with adamantine, one of the hardest substances in existence. While I'm wearing it, any critical hit against me becomes a normal hit.",
+		descriptionFull : "This suit of armor is reinforced with adamantine, one of the hardest substances in existence. While you're wearing it, any critical hit against you becomes a normal hit.",
+		allowDuplicates : true,
+		choices : ["Adamantine"],
+		"adamantine" : {
+			name : "Adamantine",
+			allowDuplicates : true,
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType('!(/medium|heavy/i).test(kObj.type) || (/hide/i).test(kObj.name)', true);",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		}
+	},
 	'amulet of health': { // finished
 		name: "Amulet of Health",
 		source: [["SRD", 207], ["D", 150]],
@@ -54,6 +70,40 @@ var Base_MagicItemsList = {
 		weight: 500,
 		magicItemTable: "I"
 	},
+	"armor (+1, +2, or +3)" : { // finished
+		name : "Armor (+1, +2, or +3)",
+		source : [["SRD", 208], ["D", 152]],
+		type : "armor (light, medium, or heavy)",
+		rarity: "varies",
+		description : "I have a bonus to AC while wearing this armor. The bonus is determined by the rarity of the magic item: rare (+1), very rare (+2), legendary (+3). Select the bonus using the little square button in this magic item line.",
+		descriptionFull : "You have a bonus to AC while wearing this armor. The bonus is determined by its rarity: rare (+1), very rare (+2), legendary (+3).\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and magic bonus, with not all types of combinations listed. See below for the table per type of armor and bonus:\n\n" + toUni("Table\tBonus\tArmor Types") + "\n  G\t  +1\tChain Mail, Chain Shirt, Leather, Scale Mail\n  H\t  +1\tBreastplate, Splint, Studded Leather\n  H\t  +2\tChain Mail, Chain Shirt, Leather, Scale Mail\n  I\t  +1\tHalf Plate, Plate, Scale Mail\n  I\t  +2\tBreastplate, Half Plate, Plate, Scale Mail, Splint, Studded Leather\n  I\t  +3\tBreastplate, Chain Mail, Chain Shirt, Half Plate\n  I\t  +3\tLeather, Plate, Splint, Studded Leather",
+		allowDuplicates : true,
+		choices : ["+1 AC bonus (rare)", "+2 AC bonus (very rare)", "+3 AC bonus (legendary)"],
+		"+1 ac bonus (rare)" : {
+			name : "Armor +1",
+			rarity: "rare",
+			description : "I have a +1 bonus to AC while wearing this armor.",
+			allowDuplicates : true,
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		"+2 ac bonus (very rare)" : {
+			name : "Armor +2",
+			rarity: "very rare",
+			description : "I have a +2 bonus to AC while wearing this armor.",
+			allowDuplicates : true,
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		"+3 ac bonus (legendary)" : {
+			name : "Armor +3",
+			rarity: "legendary",
+			description : "I have a +3 bonus to AC while wearing this armor.",
+			allowDuplicates : true,
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		}
+	},
 	'armor of invulnerability': {
 		name: "Armor of Invulnerability",
 		source: [["SRD", 208], ["D", 152]],
@@ -71,7 +121,7 @@ var Base_MagicItemsList = {
 		type : "armor (light, medium, or heavy)",
 		rarity : "rare",
 		description : "Select the damage type that this armor gives resistance to using the square button in this line. While I'm wearing this armor and attuned to it, I gain resistance to one type of damage.",
-		descriptionFull : "You have resistance to one type of damage while you wear this armor. The DM chooses the type or determines it randomly from the options below:\n\n" + toUni("d10\tType\t\td10\tType") + "\n 1\tAcid\t\t 6\tNecrotic\n 2\tCold\t\t 7\tPoison\n 3\tFire\t\t 8\tPsychic\n 4\tForce\t\t 9\tRadiant\n 5\tLightning\t\t 10\tThunder\n\nThe magic item table in the Dungeon Masters Guide where this item appears on varies per type of armor, and not all types of armor are listed. See below for the table per type of armor of resistance:\n\n" + toUni("Table\tArmor") + "\n G\tChain Mail\n G\tChain Shirt\n G\tLeather\n G\tScale Mail\n H\tBreastplate\n H\tSplint\n H\tStudded Leather\n I\tHalf Plate\n I\tPlate",
+		descriptionFull : "You have resistance to one type of damage while you wear this armor. The DM chooses the type or determines it randomly from the options below:\n\n" + toUni("d10\tType\t\td10\tType") + "\n 1\tAcid\t\t 6\tNecrotic\n 2\tCold\t\t 7\tPoison\n 3\tFire\t\t 8\tPsychic\n 4\tForce\t\t 9\tRadiant\n 5\tLightning\t\t 10\tThunder\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor, and not all types of armor are listed. See below for the table per type of armor or resistance:\n\n" + toUni("Table\tArmor") + "\n G\tChain Mail\n G\tChain Shirt\n G\tLeather\n G\tScale Mail\n H\tBreastplate\n H\tSplint\n H\tStudded Leather\n I\tHalf Plate\n I\tPlate",
 		attunement : true,
 		allowDuplicates : true,
 		choices : ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
@@ -79,80 +129,84 @@ var Base_MagicItemsList = {
 			name : "Armor of Acid Resistance",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to acid damage.",
 			dmgres : ["Acid"],
-			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
-			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+			eval : "fObj.chooseArmorType();",
+			removeeval : "fObj.removeArmor();"
 		},
 		"cold" : {
 			name : "Armor of Cold Resistance",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to cold damage.",
 			dmgres : ["Cold"],
-			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
-			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+			eval : "fObj.chooseArmorType();",
+			removeeval : "fObj.removeArmor();"
 		},
 		"fire" : {
 			name : "Armor of Fire Resistance",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to fire damage.",
 			dmgres : ["Fire"],
-			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
-			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+			eval : "fObj.chooseArmorType();",
+			removeeval : "fObj.removeArmor();"
 		},
 		"force" : {
 			name : "Armor of Force Resistance",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to force damage.",
 			dmgres : ["Force"],
-			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
-			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+			eval : "fObj.chooseArmorType();",
+			removeeval : "fObj.removeArmor();"
 		},
 		"lightning" : {
 			name : "Armor of Lightning Resistance",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to lightning damage.",
 			dmgres : ["Lightning"],
-			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
-			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+			eval : "fObj.chooseArmorType();",
+			removeeval : "fObj.removeArmor();"
 		},
 		"necrotic" : {
 			name : "Armor of Necrotic Resistance",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to necrotic damage.",
 			dmgres : ["Necrotic"],
-			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
-			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+			eval : "fObj.chooseArmorType();",
+			removeeval : "fObj.removeArmor();"
 		},
 		"poison" : {
 			name : "Armor of Poison Resistance",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to poison damage.",
 			dmgres : ["Poison"],
-			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
-			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+			eval : "fObj.chooseArmorType();",
+			removeeval : "fObj.removeArmor();"
 		},
 		"psychic" : {
 			name : "Armor of Psychic Resistance",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to psychic damage.",
 			dmgres : ["Psychic"],
-			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
-			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+			eval : "fObj.chooseArmorType();",
+			removeeval : "fObj.removeArmor();"
 		},
 		"radiant" : {
 			name : "Armor of Radiant Resistance",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to radiant damage.",
 			dmgres : ["Radiant"],
-			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
-			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+			eval : "fObj.chooseArmorType();",
+			removeeval : "fObj.removeArmor();"
 		},
 		"thunder" : {
 			name : "Armor of Thunder Resistance",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to thunder damage.",
 			dmgres : ["Thunder"],
-			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
-			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+			eval : "fObj.chooseArmorType();",
+			removeeval : "fObj.removeArmor();"
 		},
-		chooseArmorType : function() {
+		chooseArmorType : function(selectCriteria, reverse) {
+			// stop this if not called from the right field
 			if (!event.target || !event.target.name || event.target.name.indexOf("Extra.Magic Item ") == -1) return;
+			// get the item and choice
 			var fldNmbr = parseFloat(event.target.name.slice(-2));
 			var ArrayNmbr = fldNmbr - 1;
+			var curItem = CurrentMagicItems.known[ArrayNmbr];
 			var curChoice = CurrentMagicItems.choices[ArrayNmbr];
-			if (!curChoice || !MagicItemsList["armor of resistance"][curChoice]) return;
-			var curName = MagicItemsList["armor of resistance"][curChoice].name;
+			var curName = curChoice ? MagicItemsList[curItem][curChoice].name : MagicItemsList[curChoice].name;
+			// get the value of the magic item name field
 			var useVal = event.target.name.indexOf("Attuned") == -1 ? event.value : What(event.target.name.replace("Attuned ", ""));
+			// see if an armor is not already present
 			var isArmor = ParseArmor(useVal);
 			if (!isArmor) {
 				// collect all types of armor that could be 'of resistance'
@@ -160,15 +214,16 @@ var Base_MagicItemsList = {
 				for (var key in ArmourList) {
 					var kObj = ArmourList[key];
 					if (testSource(key, kObj, "armorExcl") || !kObj.type || kObj.isMagicArmor) continue;
+					if (selectCriteria && eval(selectCriteria)) continue;
 					armorChoices.push(kObj.name.capitalize());
 				}
 				// ask user to make a choice between the types of armor
-				var selectArmor = AskUserOptions("Select Type of Armor", "Choose to which armor type this '" + curName + "' is.\n\nYou will not be prompted again to select the armor type if you only change the damage type. To see this prompt again, remove the armor of resistance completely and add it again.", armorChoices, "radio", true);
+				var selectArmor = AskUserOptions("Select Type of Armor", "Choose which armor type this '" + curName + "' is.\n\nWhen you change the choice of this magic item using the button in its line, you will be prompted again to select the armor type.\nIf you only want to change the armor type, you can do so by manually changing the text in the magic item's name field.", armorChoices, "radio", true);
 			}
 			// now set the new name to the magic item field and add the armor to the AC section
 			var theArmorName = (isArmor ? ArmourList[isArmor].name : selectArmor).toLowerCase();
-			var newName = isArmor ? useVal : selectArmor + " " + curName;
-			processAddArmour(true, newName);
+			var newName = isArmor ? useVal : reverse ? curName + " " + selectArmor : selectArmor + " " + curName;
+			processAddArmour(true, (/^armor \+\d/i).test(curName) ? newName.replace(/ armor( \+\d)/i, "$1") : newName);
 			Value("Extra.Magic Item Description " + fldNmbr, What("Extra.Magic Item Description " + fldNmbr).replace("armor", theArmorName + " armor"));
 			if (event.target.name.indexOf("Attuned") == -1) event.target.setVal = newName; // set this last
 		},
