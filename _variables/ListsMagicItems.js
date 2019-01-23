@@ -77,7 +77,7 @@ var Base_MagicItemsList = {
 		extraAC : {
 			mod : 2,
 			magic : true,
-			text : "I gain a +2 bonus to AC while not wearing armor or using any shield.",
+			text : "I gain a +2 bonus to AC while I'm not wearing armor or using a shield.",
 			stopeval : function (v) { return v.wearingArmor || v.usingShield; }
 		}
 	},

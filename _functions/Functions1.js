@@ -2562,7 +2562,7 @@ function FindWeapons(ArrayNmbr) {
 		}
 
 		//add the true/false switch for adding ability score to damage or not
-		tempArray[j][2] = theWea ? theWea.abilitytodamage : true;
+		tempArray[j][2] = theWea && theWea.abilitytodamage !== undefined ? theWea.abilitytodamage : true;
 
 		//if this is a spell or a cantrip, see if we can link it to an object in the CurrentCasters variable
 		var isSpell = !theWea ? ParseSpell(tempString) : theWea.SpellsList ? theWea.SpellsList : SpellsList[tempArray[j][0]] ? tempArray[j][0] : ParseSpell(tempArray[j][0]);
