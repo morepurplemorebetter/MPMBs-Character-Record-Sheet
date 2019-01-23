@@ -152,7 +152,8 @@ var Base_MagicItemsList = {
 			var curChoice = CurrentMagicItems.choices[ArrayNmbr];
 			if (!curChoice || !MagicItemsList["armor of resistance"][curChoice]) return;
 			var curName = MagicItemsList["armor of resistance"][curChoice].name;
-			var isArmor = ParseArmor(event.value);
+			var useVal = event.target.name.indexOf("Attuned") == -1 ? event.value : What(event.target.name.replace("Attuned ", ""));
+			var isArmor = ParseArmor(useVal);
 			if (!isArmor) {
 				// collect all types of armor that could be 'of resistance'
 				var armorChoices = [];
@@ -166,13 +167,15 @@ var Base_MagicItemsList = {
 			}
 			// now set the new name to the magic item field and add the armor to the AC section
 			var theArmorName = (isArmor ? ArmourList[isArmor].name : selectArmor).toLowerCase();
-			var newName = isArmor ? event.value : selectArmor + " " + curName;
+			var newName = isArmor ? useVal : selectArmor + " " + curName;
 			processAddArmour(true, newName);
 			Value("Extra.Magic Item Description " + fldNmbr, What("Extra.Magic Item Description " + fldNmbr).replace("armor", theArmorName + " armor"));
-			event.target.setVal = newName; // set this last
+			if (event.target.name.indexOf("Attuned") == -1) event.target.setVal = newName; // set this last
 		},
 		removeArmor : function() {
-			var isArmor = ParseArmor(event.target.value);
+			if (!event.target || !event.target.name || event.target.name.indexOf("Extra.Magic Item ") == -1) return;
+			var useVal = event.target.name.indexOf("Attuned") == -1 ? event.target.value : What(event.target.name.replace("Attuned ", ""));
+			var isArmor = ParseArmor(useVal);
 			if (isArmor) processAddArmour(false, ArmourList[isArmor].name);
 		}
 	},

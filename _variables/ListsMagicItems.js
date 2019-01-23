@@ -109,7 +109,7 @@ var Base_MagicItemsList = {
 					armorChoices.push(kObj.name.capitalize());
 				}
 				// ask user to make a choice between the types of armor
-				var selectArmor = AskUserOptions("Select Type of Armor", "Choose to which armor type this '" + curName + "' is.\n\nWhen you change the resistance type of the armor, you will be prompted again to select the armor type. If you only want to change the armor type, you can do so by manually changing the text in the magic item's name field.", armorChoices, "radio", true);
+				var selectArmor = AskUserOptions("Select Type of Armor", "Choose to which armor type this '" + curName + "' is.\n\nYou will not be prompted again to select the armor type if you only change the damage type. To see this prompt again, remove the armor of resistance completely and add it again.", armorChoices, "radio", true);
 			}
 			// now set the new name to the magic item field and add the armor to the AC section
 			var theArmorName = (isArmor ? ArmourList[isArmor].name : selectArmor).toLowerCase();
@@ -119,9 +119,7 @@ var Base_MagicItemsList = {
 			if (event.target.name.indexOf("Attuned") == -1) event.target.setVal = newName; // set this last
 		},
 		removeArmor : function() {
-			console.println("aanroepstart!");
 			if (!event.target || !event.target.name || event.target.name.indexOf("Extra.Magic Item ") == -1) return;
-			console.println("aanroep!");
 			var useVal = event.target.name.indexOf("Attuned") == -1 ? event.target.value : What(event.target.name.replace("Attuned ", ""));
 			var isArmor = ParseArmor(useVal);
 			if (isArmor) processAddArmour(false, ArmourList[isArmor].name);
