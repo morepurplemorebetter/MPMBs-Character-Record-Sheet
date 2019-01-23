@@ -11,6 +11,122 @@ var Base_MagicItemsList = {
 		weight: 1,
 		scoresOverride : [0, 0, 19, 0, 0, 0]
 	},
+	"armor of resistance" : { // finished
+		name : "Armor of Resistance",
+		source : [["SRD", 208], ["D", 152]],
+		type : "armor (light, medium, or heavy)",
+		rarity : "rare",
+		description : "Select the damage type that this armor gives resistance to using the square button in this line. While I'm wearing this armor and attuned to it, I gain resistance to one type of damage.",
+		descriptionFull : "You have resistance to one type of damage while you wear this armor. The DM chooses the type or determines it randomly from the options below:\n\n" + toUni("d10\tType\t\td10\tType") + "\n 1\tAcid\t\t 6\tNecrotic\n 2\tCold\t\t 7\tPoison\n 3\tFire\t\t 8\tPsychic\n 4\tForce\t\t 9\tRadiant\n 5\tLightning\t\t 10\tThunder\n\nThe magic item table in the Dungeon Masters Guide where this item appears on varies per type of armor, and not all types of armor are listed. See below for the table per type of armor of resistance:\n\n" + toUni("Table\tArmor") + "\n G\tChain Mail\n G\tChain Shirt\n G\tLeather\n G\tScale Mail\n H\tBreastplate\n H\tSplint\n H\tStudded Leather\n I\tHalf Plate\n I\tPlate",
+		attunement : true,
+		allowDuplicates : true,
+		choices : ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
+		"acid" : {
+			name : "Armor of Acid Resistance",
+			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to acid damage.",
+			dmgres : ["Acid"],
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		"cold" : {
+			name : "Armor of Cold Resistance",
+			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to cold damage.",
+			dmgres : ["Cold"],
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		"fire" : {
+			name : "Armor of Fire Resistance",
+			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to fire damage.",
+			dmgres : ["Fire"],
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		"force" : {
+			name : "Armor of Force Resistance",
+			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to force damage.",
+			dmgres : ["Force"],
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		"lightning" : {
+			name : "Armor of Lightning Resistance",
+			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to lightning damage.",
+			dmgres : ["Lightning"],
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		"necrotic" : {
+			name : "Armor of Necrotic Resistance",
+			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to necrotic damage.",
+			dmgres : ["Necrotic"],
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		"poison" : {
+			name : "Armor of Poison Resistance",
+			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to poison damage.",
+			dmgres : ["Poison"],
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		"psychic" : {
+			name : "Armor of Psychic Resistance",
+			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to psychic damage.",
+			dmgres : ["Psychic"],
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		"radiant" : {
+			name : "Armor of Radiant Resistance",
+			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to radiant damage.",
+			dmgres : ["Radiant"],
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		"thunder" : {
+			name : "Armor of Thunder Resistance",
+			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to thunder damage.",
+			dmgres : ["Thunder"],
+			eval : "MagicItemsList['armor of resistance'].chooseArmorType();",
+			removeeval : "MagicItemsList['armor of resistance'].removeArmor();"
+		},
+		chooseArmorType : function() {
+			if (!event.target || !event.target.name || event.target.name.indexOf("Extra.Magic Item ") == -1) return;
+			var fldNmbr = parseFloat(event.target.name.slice(-2));
+			var ArrayNmbr = fldNmbr - 1;
+			var curChoice = CurrentMagicItems.choices[ArrayNmbr];
+			if (!curChoice || !MagicItemsList["armor of resistance"][curChoice]) return;
+			var curName = MagicItemsList["armor of resistance"][curChoice].name;
+			var useVal = event.target.name.indexOf("Attuned") == -1 ? event.value : What(event.target.name.replace("Attuned ", ""));
+			var isArmor = ParseArmor(useVal);
+			if (!isArmor) {
+				// collect all types of armor that could be 'of resistance'
+				var armorChoices = [];
+				for (var key in ArmourList) {
+					var kObj = ArmourList[key];
+					if (testSource(key, kObj, "armorExcl") || !kObj.type || kObj.isMagicArmor) continue;
+					armorChoices.push(kObj.name.capitalize());
+				}
+				// ask user to make a choice between the types of armor
+				var selectArmor = AskUserOptions("Select Type of Armor", "Choose to which armor type this '" + curName + "' is.\n\nWhen you change the resistance type of the armor, you will be prompted again to select the armor type. If you only want to change the armor type, you can do so by manually changing the text in the magic item's name field.", armorChoices, "radio", true);
+			}
+			// now set the new name to the magic item field and add the armor to the AC section
+			var theArmorName = (isArmor ? ArmourList[isArmor].name : selectArmor).toLowerCase();
+			var newName = isArmor ? useVal : selectArmor + " " + curName;
+			processAddArmour(true, newName);
+			Value("Extra.Magic Item Description " + fldNmbr, What("Extra.Magic Item Description " + fldNmbr).replace("armor", theArmorName + " armor"));
+			if (event.target.name.indexOf("Attuned") == -1) event.target.setVal = newName; // set this last
+		},
+		removeArmor : function() {
+			console.println("aanroepstart!");
+			if (!event.target || !event.target.name || event.target.name.indexOf("Extra.Magic Item ") == -1) return;
+			console.println("aanroep!");
+			var useVal = event.target.name.indexOf("Attuned") == -1 ? event.target.value : What(event.target.name.replace("Attuned ", ""));
+			var isArmor = ParseArmor(useVal);
+			if (isArmor) processAddArmour(false, ArmourList[isArmor].name);
+		}
+	},
 	'belt of giant strength': {
 		name: "Belt of Giant Strength",
 		source: [["SRD", 211], ["D", 155]],
@@ -20,7 +136,6 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt’s score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The belt of stone giant strength and the belt of frost giant strength look different, but they have the same effect.\n\n" + toUni("Type") + "\t\t" + toUni("Str") + "\t" + toUni("Rarity") + "\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant\t\t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
 		attunement: true,
 		allowDuplicates : true,
-		dmgres : ["Test"],
 		choices : ["Hill (Str 21, rare)", "Stone (Str 23, very rare)", "Frost (Str 23, very rare)", "Fire (Str 25, very rare)", "Cloud (Str 27, legendary)", "Storm (Str 29, legendary)"],
 		"hill (str 21, rare)" : {
 			name : "Belt of Hill Giant Strength",
