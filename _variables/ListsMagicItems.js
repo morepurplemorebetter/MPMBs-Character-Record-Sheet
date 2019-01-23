@@ -121,7 +121,6 @@ var Base_MagicItemsList = {
 		attunement: true,
 		scoresOverride : [0, 0, 0, 19, 0, 0]
 	},
-	// example magical armour
 	"glamoured studded leather" : {
 		name : "Glamoured Studded Leather",
 		source : [["SRD", 224], ["D", 172]],
@@ -142,7 +141,6 @@ var Base_MagicItemsList = {
 		},
 		action : [["bonus action", ""]]
 	},
-	// example magical weapon
 	"dwarven thrower" : {
 		name : "Dwarven Thrower",
 		source : [["SRD", 220], ["D", 167]],
