@@ -30,20 +30,20 @@
 
 /*	-INFORMATION-
 
-	Subject:	Magic Item
+	Subject:	Feat
 
-	Effect:		This is the syntax for adding a new magic item to the sheet.
+	Effect:		This is the syntax for adding a new feat to the sheet.
 
-	Remarks:	You will also need the syntax for common attributes if you want the magic item
+	Remarks:	You will also need the syntax for common attributes if you want the feat
 				to do anything besides populating its description field.
-				You will also need the syntax for adding a source if you want the magic item
+				You will also need the syntax for adding a source if you want the feat
 				to have a source that doesn't yet exist in the sheet.
 
 	Sheet:		v13.0.0 (2018-??-??)
 
 */
 
-var iFileName = "Homebrew Syntax - MagicItemsList.js";
+var iFileName = "Homebrew Syntax - FeatsList.js";
 /* 	iFileName // OPTIONAL //
 	TYPE:	string
 	USE:	how the file will be named in the sheet if you import it as a file
@@ -67,36 +67,36 @@ RequiredSheetVersion(13);
 	To find this number of a sheet, open its Document Properties in Adobe Acrobat (Ctrl + D) and look in the 'Custom' tab.
 */
 
-MagicItemsList["staff of purple"] = {
-/* 	MagicItemList object name // REQUIRED //
+FeatsList["purple power"] = {
+/* 	FeatsList object name // REQUIRED //
 	TYPE:	string
-	USE:	object name of the magic item as it will be used by the sheet
+	USE:	object name of the feat as it will be used by the sheet
 
-	By adding a new object to the existing MagicItemList object, we create a new magic item.
-	The object name here is 'staff of purple'. You can use any object name as long as it is not already in use.
+	By adding a new object to the existing FeatsList object, we create a new feat.
+	The object name here is 'purple power'. You can use any object name as long as it is not already in use.
 	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
-	name : "Staff of Purple",
+	name : "Purple Power",
 /*	name // REQUIRED //
 	TYPE:	string
-	USE:	name of the magic item as it will be used by the sheet
+	USE:	name of the feat as it will be used by the sheet
 
-	This name will also be used to recognize what is selected in the magic item drop-down.
+	This name will also be used to recognize what is selected in the feat drop-down.
 */
 	source : ["SRD", 204],
 	source : [["E", 7], ["S", 115]],
 /*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
-	USE:	define where the magic item is found
+	USE:	define where the feat is found
 
-	This attribute is used by the sheet to determine if the magic item should be available depending on the sources included and excluded.
+	This attribute is used by the sheet to determine if the feat should be available depending on the sources included and excluded.
 
 	This array has two entries, a string followed by a number
 	1. string
 		The first entry has to be the object name of a SourceList object.
 	2. number
-		The second entry is the page number to find the magic item at.
+		The second entry is the page number to find the feat at.
 		This can be any number and is ignored if it is a 0.
 
 	See the "source (SourceList).js" file for learning how to add a custom source.
@@ -105,152 +105,75 @@ MagicItemsList["staff of purple"] = {
 	The example above says something appears on both page 7 of the Elemental Evil Player's Companion and
 	on page 115 of the Sword Coast Adventure Guide.
 
-	If a magic item is completely homebrew, or you don't want to make a custom source, just put the following:
+	If a feat is completely homebrew, or you don't want to make a custom source, just put the following:
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
-	type : "wondrous item",
-/*	type // REQUIRED //
-	TYPE:	string
-	USE:	define what type the magic item is, to be used in the tooltip and to sort the item
-
-	Common entries include:
-		"wondrous item"
-		"armor"
-		"shield"
-		"weapon"
-		"ring"
-		"rod"
-		"staff"
-		"wand"
-		"potion"
-		"scroll"
-*/
-	rarity : "rare",
-/*	rarity // REQUIRED //
-	TYPE:	string
-	USE:	define what rarity the magic item is, to be used in the tooltip and to sort the item
-
-	Common entries include:
-		"common"
-		"uncommon"
-		"rare"
-		"very rare"
-		"legendary"
-		"artifact"
-*/
-	magicItemTable : "H",
-	magicItemTable : ["B", "E"],
-/*	magicItemTable // OPTIONAL //
-	TYPE:	string or array of strings (variable length)
-	USE:	define what table(s) in the DMG that the magic item appears on (or as listed in the AL Content Catalog)
-
-	This attribute is used for sorting the items and for the magic item trading rules in the Adventurers League.
-
-	The string (or each string in the array) contains just a single letter indicating the table.
-	For most items this will be a string,
-	but you can have an array with multiple entries for items that appear on multiple tables.
-*/
-	attunement : true,
-/*	attunement // OPTIONAL //
-	TYPE:	boolean
-	USE:	set to true if the magic item requires attunement
-
-	If the magic item doesn't require attunement, you can just leave this attribute out.
-	Setting this to false is the same as not including this attribute.
-*/
-	weight : 12,
-/*	weight // OPTIONAL //
-	TYPE:	number
-	USE:	the weight of the magic item in lb
-
-	If the magic item doesn't have a listed weight, you can just leave this attribute out.
-	Setting this to 0 is the same as not including this attribute.
-*/
-	prerequisite : "Requires attunement by a dwarf",
+	prerequisite : "Dexterity 13 or higher",
 /*	weight // OPTIONAL //
 	TYPE:	string
-	USE:	textual explanation of a prerequisite the item has
+	USE:	textual explanation of a prerequisite the feat has
 
-	If the magic item doesn't have a prerequisite, you can just leave this attribute out.
+	If the feat doesn't have a prerequisite, you can just leave this attribute out.
 	Setting this to "" is the same as not including this attribute.
 */
-	prereqeval : "CurrentRace.known.indexOf('dwarf') !== -1",
+	prereqeval : "What('Dex') >= 13",
 /*	eval // OPTIONAL //
 	TYPE:	string
 	USE:	this string is evaluated using eval() and should result in 'true' if the prerequisite is met or 'false' otherwise
 
-	This can be any JavaScript you want to use to test if the prerequisite for the item is met.
+	This can be any JavaScript you want to use to test if the prerequisite for the feat is met.
 	Common usage examples:
 	"CurrentRace.known.indexOf('dwarf') !== -1", // Test if race is a dwarf
 	"classes.known.cleric", // Test if character has any levels in the cleric class
-	"CurrentSpells.toSource() !== '({})'", // Test if character has any spellcasting abilities (including from race/feat/magic item)
+	"CurrentSpells.toSource() !== '({})'", // Test if character has any spellcasting abilities (including from race/feat/feat)
 	"What('Dex') >= 13", // Test if character has a Dexterity score of 13 or more
 */
 	allowDuplicates : true,
 /*	allowDuplicates // OPTIONAL //
 	TYPE:	boolean
-	USE:	set to true if multiples can exist of this magic item (e.g. a potion or using 'choices' attribute)
+	USE:	set to true if multiples can exist of this feat (e.g. Elemental Adept using the 'choices' attribute)
 
-	If the magic item doesn't allow duplicates, you can just leave this attribute out.
+	If the feat doesn't allow duplicates, you can just leave this attribute out.
 	Setting this to false is the same as not including this attribute.
 
 	IMPORTANT NOTE IF USING 'choices' ATTRIBUTE
-	When this item has multiple forms and uses the 'choices' attribute,
+	When this feat has multiple forms and uses the 'choices' attribute,
 	you probably want to set the 'allowDuplicates' attribute to true.
-	If you don't set this attribute to true, the sheet will only allow this item to exist once,
+	If you don't set this attribute to true, the sheet will only allow this feat to exist once,
 	regardless if another instance has another form (choices) selected.
 */
-	description : "As an action, command the jug to produce liquid; or an action to uncorked it and pour 2 gal/min. After producing, it only makes the same up to its max, until next dawn. Oil (1 qt), acid (8 fl oz), basic poison (1/2 fl oz), beer (4 gal), honey/wine (1 gal), fresh water (8 gal), mayonnaise/vinegar (2 gal), salt water (12 gal).",
+	description : "Advantage on Charisma (Deception) and (Performance) if wearing something purple. I can mimic casting any spell perfectly, even producing a purple haze while doing so. Wisdom (Insight) vs. Charisma (Deception) to determine there is no spell being cast. [+1 Charisma]",
 /*	description // REQUIRED //
 	TYPE:	string
-	USE:	the text to be filled in the description field of the magic item
+	USE:	the text to be filled in the description field of the feat
 
 	Note that the sheet normally uses the first person for this.
-	Make sure that this description is not too long and fits on the small description field on the 3rd page.
-	The Printer Friendly sheets have less space for Magic Item descriptions than the Colourful versions,
-	so use the Printer Friendly sheets to test if the description fits.
-
-	Note that the space for magic item descriptions on the overflow is much larger than on the 3rd page, however
-	this description needs to fit in the description section on the 3rd page.
-*/
-	descriptionLong : "A heavy ceramic jug. As an action, the jug can be commanded to hold a chosen liquid. With another action, I can uncork the jug and pour the liquid out at 2 gallons per minute. Once commanded to produce a liquid, it can't produce a different one or more than the maximum of one, until the next dawn.\nLiquids (with maximum): acid (8 fl. oz.), basic poison (1/2 fl. oz.), beer (4 gallons), honey (1 gallon), mayonnaise (2 gallons), oil (1 quart), vinegar (2 gallons), fresh water (8 gallons), salt water (12 gallons), wine (1 gallon).",
-/*	descriptionLong // OPTIONAL //
-	TYPE:	string
-	USE:	the text to be filled in the description field of the magic item, but only on the overflow page
-
-	Use this attribute in addition to the 'description' attribute.
-	This attribute will only be used when the magic item is added on the overflow page,
-	for the third page the 'description' attribute will be used.
-	Only use this attribute if a longer description on the overflow page makes sense.
-	There is no reason in having the 'description' and 'descriptionLong' be the same.
-
-	Note that the sheet normally uses the first person for this.
-	Make sure that this description is not too long and fits on the description field on the overflow page.
-	The Printer Friendly sheets have less space for Magic Item descriptions than the Colourful versions,
-	so use the Printer Friendly sheets to test if the description fits.
+	Make sure that this description is not too long and fits in the description field.
+	The Colourful sheets have less space for feat descriptions than the Printer Friendly versions,
+	so use the Colourful sheets to test if the description fits.
 */
 	descriptionFull : "You have a swimming speed of 40 feet while wearing this ring.",
 /*	descriptionFull // OPTIONAL //
 	TYPE:	string
-	USE:	description of the magic item as it appears in its source
+	USE:	description of the feat as it appears in its source
 
-	This text is used to populate the tooltip of the magic items so that the original description can be read.
-	This description will also be available in a pop-up by using the button in the item's line.
+	This text is used to populate the tooltip of the feats so that the original description can be read.
+	This description will also be available in a pop-up by using the button in the feat's line.
 	There is no limit to how big this description can be,
 	but very long descriptions will not always display correctly.
 */
-	calculate : "event.value = 'I can spend 10 minutes inspiring up to 6 friendly creatures within 30 feet who can see or hear and can understand me. Each gains lvl (' + What('Character Level') + ') + Cha mod (' + What('Cha Mod') + \") temporary hit points. One can't gain temporary hit points from this item again until after a short rest.\";",
+	calculate : "event.value = \"I can spend 10 minutes inspiring up to 6 friendly creatures within 30 feet who can see or hear and can understand me. Each gains lvl (\" + What(\"Character Level\") + \") + Cha mod (\" + What(\"Cha Mod\") + \") temporary hit points. One can't gain temporary hit points from this feat again until after a short rest.\";",
 /*	calculate // OPTIONAL //
 	TYPE:	string
-	USE:	this string is set as the field calculation method for the description field of the magic item
+	USE:	this string is set as the field calculation method for the description field of the feat
 
 	The string is evaluated as JavaScript code whenever anything changes on the sheet.
 	To change the value of the field, you will have to set the 'event.value' to something.
 	The example above sets the field to a text with calculated numbers in the text,
 	the character level and Charisma Modifier.
 
-	If this attribute is present, the 'description' and 'descriptionLong' attributes will both be useless.
+	If this attribute is present, the 'description' attribute will be useless.
 	Remember that the 'description' attribute is still requires, so you might just want to set it to an empty string:
 		description : "",
 */
@@ -260,7 +183,7 @@ MagicItemsList["staff of purple"] = {
 	>>> Common Attributes >>>
 	>>>>>>>>>>>>>>>>>>>>>>>>>
 
-	You can have the magic item affect different parts of the sheet like adding proficiencies,
+	You can have the feat affect different parts of the sheet like adding proficiencies,
 	adding spellcasting abilities, actions, limited features, etc. etc.
 
 	See the "_common attributes.js" file for documentation on how to do those things and more.
@@ -270,12 +193,12 @@ MagicItemsList["staff of purple"] = {
 
 /*
 	>>>>>>>>>>>>>>>>>>>>>>>
-	>>> Composite Items >>>
+	>>> Composite Feats >>>
 	>>>>>>>>>>>>>>>>>>>>>>>
 
 	The next part is about the use of the 'choices' attribute, which is optional.
-	The 'choices' attribute will allow the magic item to have a subset of options.
-	The user will be forced to select one of those options, the item will not be usable without a selection.
+	The 'choices' attribute will allow the feat to have a subset of options.
+	The user will be forced to select one of those options, the feat will not be usable without a selection.
 
 	To set up a choice, add the 'choices' attribute, see below, and add an object for each of those choices.
 	The object name has to be exactly the same as the string in the 'choices' array, but need to be all lowercase.
@@ -283,9 +206,9 @@ MagicItemsList["staff of purple"] = {
 	choices : ['Fire', 'Ice'],
 /*	choices // OPTIONAL //
 	TYPE:	array (variable length)
-	USE:	options for the magic item
+	USE:	options for the feat
 
-	The text in the array is presented to the user as options to choose from for what form of the magic item to use.
+	The text in the array is presented to the user as options to choose from for what form of the feat to use.
 	The order of this array is used exactly as you write it.
 	If you include this attribute, an option will have to be chosen.
 
@@ -298,9 +221,9 @@ MagicItemsList["staff of purple"] = {
 	}
 /*	choices // OPTIONAL //
 	TYPE:	function
-	USE:	select the 'choice' automatically when the item is added
+	USE:	select the 'choice' automatically when the feat is added
 
-	If the magic item has the 'choices' attribute, the function in this attribute will be run
+	If the feat has the 'choices' attribute, the function in this attribute will be run
 	before the user is presented with the choice dialog.
 	If this function returns a valid 'choice', that choice will be used and the users will not be prompted.
 	A valid choice is any entry from the 'choices' array.
@@ -318,32 +241,32 @@ MagicItemsList["staff of purple"] = {
 		TYPE:	object name
 		USE:	this has to be identical to the entry in the 'choices' array that this refers to, but all lowercase
 
-		This is an object within the main MagicItemsList object.
+		This is an object within the main FeatsList object.
 		This object wil be referred to as 'choice' from here on in.
-		The parent MagicItemsList object wil be referred to as 'parent' from here on in.
+		The parent FeatsList object wil be referred to as 'parent' from here on in.
 	*/
 
-		name : "Staff of Purple Flame",
+		name : "Purple Fire Power",
 	/*	name (inside choice) // OPTIONAL //
 		TYPE:	string
-		USE:	name of the magic item option as it will be used by the sheet
+		USE:	name of the feat option as it will be used by the sheet
 
 		If present, this name will be used instead of the name of the parent.
-		This name will also be used to recognize what is typed in the magic item drop-down.
+		This name will also be used to recognize what is typed in the feat drop-down.
 
 		If no name is given, the name of an option will be dynamically generated from
 		the parent and this 'choices' entry the choice refers to.
-		In this example that would be "Staff of Purple [Fire]"
+		In this example that would be "Purple Power [Fire]"
 
 		IMPORTANT
-		The name of an option should be unique, it can't be the same as the parent item.
+		The name of an option should be unique, it can't be the same as the parent feat.
 	*/
 
 		description : "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\rThe potion's yellow fluid is streaked with black and swirls on its own.",
 	/*
-		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-		>>> MagicItemsList Attributes (inside choice) >>>
-		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		>>> FeatsList Attributes (inside choice) >>>
+		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 		All the attributes described above can also be used inside a choice object,
 		with the exception of 'choices' (you can't have options inside options).
@@ -354,15 +277,15 @@ MagicItemsList["staff of purple"] = {
 		something different than the parent.
 
 		For example, if the parent has:
-			attunement : true,
+			source : ["SRD", 204],
 		but the choice has:
-			attunement : false,
-		the sheet will not show the attunement checkbox when this choice is selected.
+			source : ["P", 115],
+		the sheet will show the source as being the Player's Handbook, page 115.
 
 		Another example, if the parent has:
-			weight : 1,
-		but the choice has no 'weight' defined,
-		the sheet will use the weight of 1 lb for the choice.
+			prerequisite : "Dexterity 13 or higher",
+		but the choice has no 'prerequisite' defined,
+		the sheet will use the prerequisite of "Dexterity 13 or higher" for the choice.
 	*/
 
 	/*
@@ -370,8 +293,8 @@ MagicItemsList["staff of purple"] = {
 		>>> Common Attributes (inside choice) >>>
 		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-		You can have the magic item sub-choice affect different parts of the sheet as well,
-		separate from the main magic item.
+		You can have the feat sub-choice affect different parts of the sheet as well,
+		separate from the main feat.
 
 		See the "_common attributes.js" file for documentation on how to do those things and more.
 		All attributes in there can directly be added in this object.

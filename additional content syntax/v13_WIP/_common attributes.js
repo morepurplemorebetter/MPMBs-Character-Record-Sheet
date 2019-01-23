@@ -38,11 +38,15 @@
 				Use one of the syntax files not starting with an underscore and use this file when referred to.
 
 	Works with:	Class features (and subclass features)
+				Class feature choices (and subclass feature choices)
+				Class feature extrachoices (and subclass feature extrachoices)
 				Race main attributes
-				Racial features
+				Race features
 				Background main attributes
 				Feat main attributes
+				Feat choices
 				Magic Item main attributes
+				Magic Item choices
 
 	Sheet:		v13.0.0 (2018-??-??)
 */
