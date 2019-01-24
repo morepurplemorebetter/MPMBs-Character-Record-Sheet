@@ -131,7 +131,7 @@ var Base_ClassList = {
 					ac : 10,
 					addMod : true
 				},
-				addArmor : "Unarmored Defense (Con)"
+				armorAdd : "Unarmored Defense (Con)"
 			},
 			"reckless attack" : {
 				name : "Reckless Attack",
@@ -649,7 +649,7 @@ var Base_ClassList = {
 					ac : 10,
 					addMod : true
 				},
-				addArmor : "Unarmored Defense (Wis)"
+				armorAdd : "Unarmored Defense (Wis)"
 			},
 			"martial arts" : {
 				name : "Martial Arts",
@@ -2660,7 +2660,7 @@ var Base_ClassSubList = {
 					source : [["SRD", 45], ["P", 102]],
 					ac : 13
 				},
-				addArmor : "Draconic Resilience"
+				armorAdd : "Draconic Resilience"
 			},
 			"subclassfeature6" : {
 				name : "Elemental Affinity",

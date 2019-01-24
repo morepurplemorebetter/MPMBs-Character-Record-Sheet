@@ -395,15 +395,15 @@ function ApplyCompRace(newRace) {
 		thermoM(10/11); //increment the progress dialog's progress
 
 		//add weapons
-		var weaponAdd = CurrentCompRace[prefix].addWeapons ? CurrentCompRace[prefix].addWeapons : CurrentCompRace[prefix].weapons ? CurrentCompRace[prefix].weapons : [];
+		var weaponAdd = CurrentCompRace[prefix].weaponsAdd ? CurrentCompRace[prefix].weaponsAdd : CurrentCompRace[prefix].weapons ? CurrentCompRace[prefix].weapons : [];
 		if (!isArray(weaponAdd)) weaponAdd = [weaponAdd];
 		for (i = 0; i < weaponAdd.length; i++) {
 			AddWeapon(weaponAdd[i]);
 		}
 
 		//add armour
-		var armorAdd = CurrentCompRace[prefix].addArmor ? CurrentCompRace[prefix].addArmor : CurrentCompRace[prefix].addarmor ? CurrentCompRace[prefix].addarmor : false;
-		if (armorAdd) AddArmor(armorAdd, true, prefix);
+		var anArmorAdd = CurrentCompRace[prefix].armorAdd ? CurrentCompRace[prefix].armorAdd : CurrentCompRace[prefix].addarmor ? CurrentCompRace[prefix].addarmor : false;
+		if (anArmorAdd) AddArmor(anArmorAdd, true, prefix);
 
 		// If the race has any other features that aren't applied here
 		if (CurrentCompRace[prefix].eval || CurrentCompRace[prefix].features || CurrentCompRace[prefix].scores || CurrentCompRace[prefix].action) {

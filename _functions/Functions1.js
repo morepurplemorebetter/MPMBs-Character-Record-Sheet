@@ -2410,7 +2410,7 @@ function FindRace(inputracetxt, novardialog) {
 			}
 			// --- backwards compatibility --- //
 			// if an old attribute exists in the racial variant, but the RaceList object uses the new attribute name, make sure the variant's version is used
-			var backwardsAttr = [["improvements", "scorestxt"], ["armor", "armorProfs"], ["addarmor", "addArmor"], ["weaponprofs", "weaponProfs"], ["weapons", "addWeapons"]];
+			var backwardsAttr = [["improvements", "scorestxt"], ["armor", "armorProfs"], ["addarmor", "armorAdd"], ["weaponprofs", "weaponProfs"], ["weapons", "weaponsAdd"]];
 			for (var i = 0; i < backwardsAttr.length; i++) {
 				var aBW = backwardsAttr[i];
 				if (RaceSubList[subrace][aBW[0]] && RaceSubList[subrace][aBW[1]] == undefined && RaceList[CurrentRace.known][aBW[1]]) delete CurrentRace[aBW[1]];

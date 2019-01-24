@@ -22,7 +22,7 @@ var Base_RaceList = {
 			dc : true,
 			dbBreathWeapon : true
 		},
-		addWeapons : ["Breath Weapon"],
+		weaponsAdd : ["Breath Weapon"],
 		age : " reach adulthood by 15 and live around 80 years",
 		height : " stand well over 6 feet tall (5'6\" + 2d8\")",
 		weight : " weigh around 240 lb (175 + 2d8 \xD7 2d6 lb)",
