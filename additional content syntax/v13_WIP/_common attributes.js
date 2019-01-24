@@ -367,8 +367,8 @@ armorProfs : [true, true, false, true],
 // >>> Weapons & Armour >>> //
 // >>>>>>>>>>>>>>>>>>>>>>>> //
 
-weaponAdd : ["Bite", "Longsword +2"],
-/*	weaponAdd // OPTIONAL //
+weaponsAdd : ["Bite", "Longsword +2"],
+/*	weaponsAdd // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	adds each string in the array to one of the attack drop-downs on the 1st page
 

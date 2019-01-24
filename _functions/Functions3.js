@@ -209,10 +209,10 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 
 		// --- backwards compatibility --- //
 		// armor, shield, and weapon additions
-		var weaponAdd = uObj.addWeapons ? uObj.addWeapons : type == "race" && uObj.weapons ? uObj.weapons : false;
-		if (weaponAdd) processAddWeapons(addIt, weaponAdd);
-		var armorAdd = uObj.addArmor ? uObj.addArmor : uObj.addarmor ? uObj.addarmor : false;
-		if (armorAdd) processAddArmour(addIt, armorAdd);
+		var aWeaponsAdd = uObj.weaponsAdd ? uObj.weaponsAdd : type == "race" && uObj.weapons ? uObj.weapons : false;
+		if (aWeaponsAdd) processAddWeapons(addIt, aWeaponsAdd);
+		var anArmorAdd = uObj.armorAdd ? uObj.armorAdd : uObj.addarmor ? uObj.addarmor : false;
+		if (anArmorAdd) processAddArmour(addIt, anArmorAdd);
 		if (uObj.shieldAdd) processAddShield(addIt, uObj.shieldAdd, uObj.weight);
 
 		// --- backwards compatibility --- //
@@ -2342,8 +2342,8 @@ NEW ATTRIBUTES
 CHANGED ATTRIBUTES
 	armorProfs // Optional; Array; armor proficiencies to add [previous just 'armor']
 	weaponProfs // Optional; Array; weapon proficiencies to add [previous just 'weapons' or 'weaponprofs' depending on List]
-	addArmor // Optional; String; name of the armor to put in the armor section (if results in higher AC) [previous 'addarmor']
-	addWeapons // Optional; Array; names of the weapons to put in the attack section (if there is space) [previous 'weapons']
+	armorAdd // Optional; String; name of the armor to put in the armor section (if results in higher AC) [previous 'addarmor']
+	weaponsAdd // Optional; Array; names of the weapons to put in the attack section (if there is space) [previous 'weapons']
 	
 
 CHANGES TO IMPLEMENT IN LIST SCRIPTS
@@ -2370,10 +2370,10 @@ CHANGES TO IMPLEMENT IN LIST SCRIPTS
 	'atkAdd[0]' & 'atkCalc[0]' can now be a function
 
 	'armor' replace with 'armorProfs'
-	'addarmor' replace with 'addArmor'
+	'addarmor' replace with 'armorAdd'
 	'weapons' for CLASS/FEAT: replace with 'weaponProfs'
 	'weaponprofs' for RACE: replace with 'weaponProfs'
-	'weapons' for RACE: replace with 'addWeapons'
+	'weapons' for RACE: replace with 'weaponsAdd'
 
 	eval changes :
 	- Class Features Remember
@@ -2414,10 +2414,10 @@ CHANGED ATTRIBUTES
 	calcChanges.hp // can now be a function
 
 	armor // replaced with armorProfs (so it is more clear)
-	addarmor // replaced with addArmor (notice difference in capitalisation)
+	addarmor // replaced with armorAdd (notice difference in capitalisation)
 	weapons // for CLASS/FEAT: replaced with weaponProfs (so it is more clear)
 	weaponprofs // for RACE: replace with weaponProfs
-	weapons // for RACE: replace with addWeapons
+	weapons // for RACE: replace with weaponsAdd
 
 
 */
