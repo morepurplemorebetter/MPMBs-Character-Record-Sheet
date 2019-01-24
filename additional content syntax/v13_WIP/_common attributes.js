@@ -309,6 +309,19 @@ skillstxt : "Choose two from Animal Handling, Athletics, Intimidation, Nature, P
 	You can have both this and the 'skills' attribute, they are not mutually exclusive.
 */
 
+armorProfs : [true, true, false, true],
+/*	armorProfs // OPTIONAL //
+	TYPE:	array with four entries
+	USE:	adds armour and shield proficiencies
+
+	This array must have exactly four entries, all of which are booleans.
+	These are to add proficiencies in:
+	["light armour", "medium armour", "heavy armour", "shields"]
+
+	Note that a proficiency will only be set if the value is 'true'.
+	If you set it to 'false' it will do nothing, the proficiency will not be removed.
+*/
+
 weaponProfs : [
 /*	weaponProfs // OPTIONAL //
 	TYPE:	array with two or three entries
@@ -348,19 +361,6 @@ weaponProfs : [
 		weaponProfs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
 	*/
 ],
-
-armorProfs : [true, true, false, true],
-/*	armorProfs // OPTIONAL //
-	TYPE:	array with four entries
-	USE:	adds armour and shield proficiencies
-
-	This array must have exactly four entries, all of which are booleans.
-	These are to add proficiencies in:
-	["light armour", "medium armour", "heavy armour", "shields"]
-
-	Note that a proficiency will only be set if the value is 'true'.
-	If you set it to 'false' it will do nothing, the proficiency will not be removed.
-*/
 
 
 // >>>>>>>>>>>>>>>>>>>>>>>> //
@@ -450,9 +450,9 @@ weaponOptions : [{ /* WeaponsList object, see WeaponsList syntax */ }],
 */
 
 
-// >>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Weapons & Armour >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Other Fields on the 1st Page >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 
 dmgres : [
 	"Fire",
@@ -813,6 +813,7 @@ spellFirstColTitle : "Ki",
 
 	This attribute will do nothing if the parent object does not grant spellcasting in one way or another.
 */
+
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 // >>> Dynamic Automation Changes >>> //
@@ -1225,6 +1226,10 @@ extraAC : [{
 	*/
 }],
 
+
+// >>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Run Custom Code >>> //
+// >>>>>>>>>>>>>>>>>>>>>>> //
 
 eval : "Checkbox('Jack of All Trades', true);",
 eval : function() {
