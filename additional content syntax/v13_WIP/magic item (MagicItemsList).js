@@ -61,7 +61,7 @@ RequiredSheetVersion(13);
 	TYPE:	function call with a number
 	USE:	the minimum required version number of the sheet for the script to work
 
-	If the sheet where you import this script into is of an earlier version, the user will be given a warning.
+	If the sheet where you import this script into is of an earlier version, the player will be given a warning.
 	Input a number, not a string (so don't enclose the number in quotation marks)!
 	Although the sheet uses semantic versioning, you have to input a number here.
 	To find this number of a sheet, open its Document Properties in Adobe Acrobat (Ctrl + D) and look in the 'Custom' tab.
@@ -82,7 +82,29 @@ MagicItemsList["staff of purple"] = {
 	TYPE:	string
 	USE:	name of the magic item as it will be used by the sheet
 
-	This name will also be used to recognize what is selected in the magic item drop-down.
+	This name will be used to recognize what is selected in the magic item drop-down.
+	If you want more options for the magic item to be recognized as, see 'nameAlt' and 'nameTest' below.
+*/
+	nameAlt : "Staff of Colour Magic",
+/*	nameAlt // OPTIONAL //
+	TYPE:	string
+	USE:	alternative setting-independent name with which the sheet can recognize the magic item
+
+	This attribute is intended for magic items that have a name that is bound to a specific setting,
+	to allow a name that is setting-neutral.
+	For example, the "Apparatus of Kwalish" (DMG 151) is named after the legendary wizard "Kwalish" of the Greyhawk setting.
+	As not everybody wants to use the Greyhawk name, the name as given in the SRD page 208 "Apparatus of the Crab" is good to provide as the 'nameAlt'
+
+	This name will also be used to recognize what is typed into the magic item drop-down.
+	The shortest of the 'name', 'nameAlt', and 'nameTest' attributes will be used for the 'chooseGear' attribute, see below.
+*/
+	nameTest : "Purple Staff",
+/*	nameTest // OPTIONAL //
+	TYPE:	string
+	USE:	alternative name with which the sheet can recognize the magic item
+
+	This name will also be used to recognize what is typed into the magic item drop-down.
+	The shortest of the 'name', 'nameAlt', and 'nameTest' attributes will be used for the 'chooseGear' attribute, see below.
 */
 	source : ["SRD", 204],
 	source : [["E", 7], ["S", 115]],
@@ -254,7 +276,111 @@ MagicItemsList["staff of purple"] = {
 	Remember that the 'description' attribute is still requires, so you might just want to set it to an empty string:
 		description : "",
 */
+	chooseGear : {
+/*	chooseGear // OPTIONAL //
+	TYPE:	object
+	USE:	ask the player what type of gear (weapon, armor, ammunition) the item should be
 
+	This attribute will show a pop-up dialog for the player to make a selection for a type of gear (weapon, armor, or ammunition).
+	Not all gear will be present in the pop-up, it will only include the following:
+		- Armours that are light, medium, or heavy (so no natural or magical armours)
+		- Weapons that are not listed as being natural, cantrips, or spells
+		- Ammunition that is not also listed in the WeaponsList (e.g. no spear, hand axe, or trident)
+
+	The name of the selected gear will be added to the name of the magic item, and
+	it will be put in the appropriate field on the 1st place (barring space).
+
+	This object must have at least the 'type' attribute.
+	All other attributes for this object are optional.
+	Each attribute is described separately below.
+*/
+		type : "armor",
+	/*	type // REQUIRED //
+		TYPE:	string
+		USE:	the type of gear (weapon, armor, ammunition) this concerns
+
+		This attribute can be one of three options:
+			"armor"
+			"weapon"
+			"ammo"
+	*/
+		excludeCheck : function (inObjKey, inObj) {
+			return inObjKey == "hide";
+		},
+	/*	excludeCheck // OPTIONAL //
+		TYPE:	function
+		USE:	filter things from the list of weapon, armor, or ammunition from the options
+
+		This function is called for each entry in the WeaponsList, ArmourList, or AmmoList (depending on 'type', see above).
+		If the function returns `true` for an entry, that entry will be omitted from the pop-up dialog.
+		This function is passed two variables:
+		1)	inObjKey
+				A string of the name of the entry in the list variable (WeaponsList, ArmourList, or AmmoList)
+		2)	inObj
+				The object of the entry (e.g. WeaponsList[inObjKey])
+
+		The above example returns true for the ArmourList 'hide' entry, making sure that the Hide armour is not part of the pop-up.
+	*/
+		prefixOrSuffix : "suffix",
+	/*	prefixOrSuffix // OPTIONAL //
+		TYPE:	string
+		USE:	determine how the name of the selected gear is added to the name of the magic item
+
+		This attribute can be one of three options:
+		1. "prefix" 	// Add the name of selected gear before the name of the magic item
+		2. "suffix" 	// Add the name of selected gear after the name of the magic item
+		3. "brackets"	// Add the name of selected gear in brackets after the name of the magic item
+		If this attribute is not present, the sheet will use the option "prefix".
+
+		Examples with the magic item "Armor of Resistance" and the armor "Breastplate":
+		1. "prefix" 	- would result in: "Breastplate Armor of Resistance"
+		2. "suffix" 	- would result in: "Armor of Resistance Breastplate"
+		3. "brackets"	- would result in: "Armor of Resistance (Breastplate)"
+
+		Unless the 'itemName1stPage' attribute is present, see below, the resulting name is also used to populate the 1st page.
+	*/
+		descriptionString : ["prefix", "armor"],
+	/*	descriptionString // OPTIONAL //
+		TYPE:	array
+		USE:	what part of the magic item's description to add the name of the selected gear to
+
+		This array must always have 2 entries, each of which is a strings:
+		1. The first string determines how the name of the selected gear is added to the magic item's description.
+			This can be one of four options:
+			1.1 "replace"	// Replace the 2nd array entry with the name of the selected gear
+			1.2 "prefix"	// Add the name of selected gear before the 2nd array entry
+			1.3 "suffix"	// Add the name of selected gear after the 2nd array entry
+			1.4 "brackets"	// Add the name of selected gear in brackets after the 2nd array entry
+		2. The second string is the string that selected gear will be replaced/amended to.
+			Common uses include "armor", "weapon", and "ammunition".
+			Only the first instance of the 2nd array entry in the magic item's description will be replaced.
+
+
+		If this attribute is not present, the sheet will determine it automatically:
+		1. How the selected name will be amended will be identical to the 'prefixOrSuffix' attribute.
+			If the 'prefixOrSuffix' attribute is not present, it will use "prefix".
+		2. The string to amend the name of the selected gear to is determined by type:
+			"armor", "weapon", or "ammunition".
+	*/
+		itemName1stPage : ["prefix", "of Purple"],
+	/*	itemName1stPage // OPTIONAL //
+		TYPE:	array
+		USE:	how the name added to the 1st page should look like
+
+		The resulting name is used to populate the 1st page.
+		If this attribute is not present, the sheet will use the name as it
+		resulted from the 'prefixOrSuffix' attribute, see above.
+
+		This array must always have 2 entries, each of which is a strings:
+		1. The first string determines how the name of the selected gear is added the 2nd array entry.
+			This can be one of three options:
+			1.1 "prefix"	// Add the name of selected gear before the 2nd array entry
+			1.2 "suffix"	// Add the name of selected gear after the 2nd array entry
+			1.3 "brackets"	// Add the name of selected gear in brackets after the 2nd array entry
+		2. The second string is the string that selected gear will be amended to.
+			Use something that makes clear what magic item this concerns.
+	*/
+	},
 /*
 	>>>>>>>>>>>>>>>>>>>>>>>>>
 	>>> Common Attributes >>>
@@ -275,7 +401,7 @@ MagicItemsList["staff of purple"] = {
 
 	The next part is about the use of the 'choices' attribute, which is optional.
 	The 'choices' attribute will allow the magic item to have a subset of options.
-	The user will be forced to select one of those options, the item will not be usable without a selection.
+	The player will be forced to select one of those options, the item will not be usable without a selection.
 
 	To set up a choice, add the 'choices' attribute, see below, and add an object for each of those choices.
 	The object name has to be exactly the same as the string in the 'choices' array, but need to be all lowercase.
@@ -285,7 +411,7 @@ MagicItemsList["staff of purple"] = {
 	TYPE:	array (variable length)
 	USE:	options for the magic item
 
-	The text in the array is presented to the user as options to choose from for what form of the magic item to use.
+	The text in the array is presented to the player as options to choose from for what form of the magic item to use.
 	The order of this array is used exactly as you write it.
 	If you include this attribute, an option will have to be chosen.
 
@@ -295,22 +421,22 @@ MagicItemsList["staff of purple"] = {
 */
 	selfChoosing : function () {
 		return classes.known.cleric ? "fire" : "";
-	}
-/*	choices // OPTIONAL //
+	},
+/*	selfChoosing // OPTIONAL //
 	TYPE:	function
 	USE:	select the 'choice' automatically when the item is added
 
 	If the magic item has the 'choices' attribute, the function in this attribute will be run
-	before the user is presented with the choice dialog.
-	If this function returns a valid 'choice', that choice will be used and the users will not be prompted.
+	before the player is presented with the choice dialog.
+	If this function returns a valid 'choice', that choice will be used and the player will not be prompted.
 	A valid choice is any entry from the 'choices' array.
 
 	The above example selects 'fire' if the character has levels in the cleric class,
-	but will otherwise leave it up to the user (i.e. it selects nothing).
+	but will otherwise leave it up to the player (i.e. it selects nothing).
 
 	This function doesn't get passed any variables.
 	This attribute will be ignored if the 'choices' attribute is not present.
-	Even with this attribute present, the user can always change the 'choice' using the button on the sheet.
+	Even with this attribute present, the player can always change the 'choice' using the button on the sheet.
 */
 
 	"fire" : {
@@ -346,7 +472,8 @@ MagicItemsList["staff of purple"] = {
 		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 		All the attributes described above can also be used inside a choice object,
-		with the exception of 'choices' (you can't have options inside options).
+		with the exception of 'choices' (you can't have options inside options),
+		and 'chooseGear' (as it will already be applied to the choice as well).
 		The sheet will look in both choice and parent to determine what attribute to use,
 		with the choice being preferred over the parent.
 

@@ -218,7 +218,6 @@ function AbilityScores_Button(onlySetTooltip) {
 	};
 	if (onlySetTooltip) return remTooltip !== tooltipTxt; // if only doing the tooltips, exit the function now
 
-
 	// Create the columns for the dialog
 	var leftTxts = [];
 	var rightTxts = [];
@@ -266,7 +265,7 @@ function AbilityScores_Button(onlySetTooltip) {
 					item_id : aNo + "Nm",
 					font : "dialog",
 					bold : true,
-					char_width : 5,
+					char_width : theStat.name.indexOf("Override") == -1 ? 5 : 6,
 					height : 30,
 					alignment : "align_left",
 					wrap_name : true,

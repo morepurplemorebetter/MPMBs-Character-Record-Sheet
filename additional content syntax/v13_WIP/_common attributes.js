@@ -1227,6 +1227,101 @@ extraAC : [{
 }],
 
 
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Fields on Other Pages >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+
+toNotesPage : [{
+/*	toNotesPage // OPTIONAL //
+	TYPE:	array of objects (or just a single object)
+	USE:	adds entries to the Notes section on either the 3rd page or a separate Notes page
+
+	Each object in the array must have two attributes, the 'name' and 'note' attributes.
+	All other attributes for these objects are optional.
+	Each attribute is described separately below.
+
+	If adding something to a notes page, things will not be added to existing text, but
+	the automation will always select a completely empty field on a Notes page or will
+	add a new empty Notes page if no empty fields were found.
+	Alternatively, you can have this entry be added to the 3rd page's Notes section using the 'page3notes' attribute, see below.
+*/
+	name : "Wild Magic Surge Table",
+	/*	name // REQUIRED //
+		TYPE:	string
+		USE:	the name of the feature to add to the notes section
+
+		This string will be preceded by a diamond-shaped bullet.
+		If no 'popupName' attribute is present, see below, the name will also be used for the informational pop-up dialog.
+	*/
+	note : "\n   Various strange things can happen whenever I cast a spell.",
+	note : [
+		"d10  Effect",
+		"01-02 Roll on this table at the start of each of your turns for the next minute, ignoring this result on subsequent rolls.",
+		"03-04 For the next minute, you can see any invisible creature if you have line of sight to it.",
+		"05-06 A modron chosen and controlled by the DM appears in an unoccupied space within 5 ft of you, then disappears 1 minute later.",
+		"07-08 You cast fireball as a 3rd-level spell centered on yourself.",
+		"09-10 You cast magic missile as a 5th-level spell."
+	],
+	/*	note // REQUIRED //
+		TYPE:	string or array
+		USE:	the text of the feature to add to the notes section
+
+		The string will be put on the notes section exactly as presented here, after the 'name' attribute.
+		If you are writing this as a string, it is recommended to start with a line break (\r or \n).
+
+		If this attribute is an array, it will be joined using the desc() function, meaning that
+		each entry in the array will be each own line preceded by three spaces.
+	*/
+	page3notes : true,
+	/*	page3notes // OPTIONAL //
+		TYPE:	boolean
+		USE:	whether to add this to the 3rd page's Notes section (true) or on a Notes page (false)
+
+		Setting this to 0 or false is the same as not including this attribute.
+	*/
+	popupName : "Wild Mage's Wild Magic Surge Table, part 1",
+	/*	popupName // OPTIONAL //
+		TYPE:	string
+		USE:	the text used in the informational pop-up dialog to show the player on what page the text was added
+
+		If this attribute is not present, the 'name' attribute will also be used for the informational pop-up dialog.
+	*/
+	source : ["P", 104],
+	/*	source // OPTIONAL //
+		TYPE:	array with two entries (or array of these arrays)
+		USE:	define where the feature is found
+
+		This feature is used to generate the first line of the text, together with the 'name' attribute.
+		If this feature is not present, the 'source' attribute of the parent object will be used (the parent to the 'toNotesPage' attribute).
+
+		This array has two entries, a string followed by a number
+		1. string
+			The first entry has to be the object name of a SourceList object.
+		2. number
+			The second entry is the page number to find the magic item at.
+			This can be any number and is ignored if it is a 0.
+
+		See the "source (SourceList).js" file for learning how to add a custom source.
+
+		Alternatively, this can be an array of arrays to indicate it appears in multiple sources.
+		The example above says something appears on both page 7 of the Elemental Evil Player's Companion and
+		on page 115 of the Sword Coast Adventure Guide.
+
+		If a magic item is completely homebrew, or you don't want to make a custom source, just put the following:
+			source : ["HB", 0],
+		"HB" refers to the 'homebrew' source.
+	*/
+	additional : "results 01-50",
+	/*	additional // OPTIONAL //
+		TYPE:	string
+		USE:	this string is amended to the first line of the feature text
+
+		This will be added, in square brackets, to the first line of text.
+		In this example the first line would be: "Wild Magic Surge Table (Wild Magic 1, PHB 104) [results 01-50]"
+	*/
+}],
+
+
 // >>>>>>>>>>>>>>>>>>>>>>> //
 // >>> Run Custom Code >>> //
 // >>>>>>>>>>>>>>>>>>>>>>> //

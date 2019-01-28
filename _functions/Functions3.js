@@ -182,6 +182,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.action) processActions(addIt, tipNmF, uObj.action, uObj.limfeaname ? uObj.limfeaname : uObj.name);
 		if (uObj.extraLimitedFeatures) processExtraLimitedFeatures(addIt, tipNmF, uObj.extraLimitedFeatures);
 		if (uObj.extraAC) processExtraAC(addIt, tipNmF, uObj.extraAC, uObj.name);
+		if (uObj.toNotesPage) processToNotesPage(addIt, uObj.toNotesPage, type, uObj, fObj, [tipNm, displName, fObjName, aParent]);
 
 		// --- backwards compatibility --- //
 		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false;
@@ -328,14 +329,14 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		// if we are are changing the choice or removing the feature, now remove the old choice
 		//if (cJustChange || (!AddFea && cOldObj)) {
 		if (cOldObj && (cJustChange || !AddFea)) {
-			useAttr(cOldObj, false, false, choiceA[0]);
 			SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", false, cOnly ? choiceA[0] : "");
+			useAttr(cOldObj, false, false, choiceA[0]);
 		}
 		// if we are changing the choice or adding the feature, now add the new choice
 		//if (cJustChange || cOnly || (AddFea && cNewObj)) {
 		if (cNewObj && AddFea) {
-			useAttr(cNewObj, true, false, choiceA[1]);
 			SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", AddFea ? choiceA[1] : "", cOnly ? choiceA[1] : "");
+			useAttr(cNewObj, true, false, choiceA[1]);
 		}
 	}
 	// next do the level-dependent attributes, if any of them changed or we are supposed to do them
@@ -562,6 +563,7 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 	};
 	if (!sObj.ability) sObj.ability = fObj.spellcastingAbility ? fObj.spellcastingAbility : fObj.abilitySave ? fObj.abilitySave : 0;
 	if (!sObj.fixedDC && fObj.fixedDC) sObj.fixedDC = Number(fObj.fixedDC);
+	sObj.abilityToUse = getSpellcastingAbility(fObjName);
 	return sObj;
 }
 
@@ -1540,7 +1542,7 @@ function ParseMagicItem(input) {
 	var subFoundLen = 0;
 	var subFoundDat = 0;
 	var subOptionArr = [];
-	var isMatch, isMatchSub, tempDate, tempDateSub, tempNameLen;
+	var isMatch, isMatchLen, isMatchSub, tempDate, tempDateSub, tempNameLen;
 	var varArr;
 
 	// Scan string for all magic items
@@ -1550,7 +1552,17 @@ function ParseMagicItem(input) {
 		// test if the magic item or its source isn't excluded
 		if (testSource(key, kObj, "magicitemExcl")) continue;
 
-		isMatch = input.indexOf(kObj.name.toLowerCase()) !== -1;
+		isMatch = false;
+		if (input.indexOf(kObj.name.toLowerCase()) !== -1) {
+			isMatch = true;
+			isMatchLen = kObj.name.length;
+		} else if (kObj.nameAlt && input.indexOf(kObj.nameAlt.toLowerCase()) !== -1) {
+			isMatch = true;
+			isMatchLen = kObj.nameAlt.length;
+		} else if (kObj.nameTest && input.indexOf(kObj.nameTest.toLowerCase()) !== -1) {
+			isMatch = true;
+			isMatchLen = kObj.nameTest.length;
+		}
 		tempDate = sourceDate(kObj.source);
 		subFoundLen = 0;
 		subFoundDat = 0;
@@ -1563,21 +1575,30 @@ function ParseMagicItem(input) {
 				var sObj = kObj[keySub];
 				if (!sObj || (sObj.source && testSource(keySub, sObj, "magicitemExcl"))) continue;
 				varArr.push(kObj.choices[i]);
-				var isMatchSub = false;
+				isMatchSub = false;
 				if (sObj.name) {
-					isMatchSub = input.indexOf(sObj.name.toLowerCase()) !== -1;
-				} else if (isMatch) {
-					isMatchSub = input.indexOf(keySub) !== -1;
+					if (input.indexOf(sObj.name.toLowerCase()) !== -1) {
+						isMatchSub = true;
+						tempNameLen = sObj.name.length;
+					} else if (sObj.nameAlt && input.indexOf(sObj.nameAlt.toLowerCase()) !== -1) {
+						isMatchSub = true;
+						tempNameLen = sObj.nameAlt.length;
+					} else if (sObj.nameTest && input.indexOf(sObj.nameTest.toLowerCase()) !== -1) {
+						isMatchSub = true;
+						tempNameLen = sObj.nameTest.length;
+					}
+				} else if (isMatch && input.indexOf(keySub) !== -1) {
+					isMatchSub = true;
+					tempNameLen = keySub.length;
 				}
 				if (isMatchSub) {
 					// the choice matched, but only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source than the other choices
 					tempDateSub = sObj.source ? sourceDate(sObj.source) : tempDate;
-					tempNameLen = (sObj.name ? sObj.name : keySub).length
 					if (tempNameLen < subFoundLen || (tempNameLen == subFoundLen && tempDateSub < subFoundDat)) continue;
 					// we have a match for a choice, so set the values
 					subFoundLen = tempNameLen;
 					subFoundDat = tempDateSub;
-					foundLen = kObj.name.length;
+					foundLen = isMatchLen;
 					foundDat = tempDate;
 					found = key;
 					subFound = keySub;
@@ -1588,13 +1609,13 @@ function ParseMagicItem(input) {
 		if (!isMatch || subFoundLen) continue; // no match or sub already matched
 
 		// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
-		if (kObj.name.length < foundLen || (kObj.name.length == foundLen && tempDate < foundDat)) continue;
+		if (isMatchLen < foundLen || (isMatchLen == foundLen && tempDate < foundDat)) continue;
 
 		// we have a match, set the values
 		found = key;
 		subFound = "";
 		subOptionArr = varArr;
-		foundLen = kObj.name.length
+		foundLen = isMatchLen;
 		foundDat = tempDate;
 	}
 	return [found, subFound, subOptionArr];
@@ -1761,6 +1782,9 @@ function ApplyMagicItem(input, FldNmbr) {
 		Value(MIflds[2], "", "", "");
 		if (oldMI) {
 			if (oldMI !== newMI) {
+				// Undo the selection of a weapon, ammo, or armor if defined
+				if (MagicItemsList[oldMI].chooseGear) selectMagicItemGearType(false, FldNmbr, MagicItemsList[oldMI].chooseGear);
+
 				// Remove its attributes
 				var Fea = ApplyFeatureAttributes(
 					"item", // type
@@ -1842,6 +1866,10 @@ function ApplyMagicItem(input, FldNmbr) {
 			justChange ? [oldMIvar, newMIvar, "change"] : ["", newMIvar, false], // choiceA [old-choice, new-choice, "only"|"change"]
 			false // forceNonCurrent
 		);
+
+		// Do the selection of a weapon, ammo, or armor if defined
+		if (justChange && aMI.chooseGear) selectMagicItemGearType(false, FldNmbr, aMI.chooseGear); // undo the previous
+		if (aMI.chooseGear) selectMagicItemGearType(true, FldNmbr, aMI.chooseGear);
 	}
 
 	// Set the visibility of the attuned checkbox
@@ -1904,6 +1932,9 @@ function ApplyAttunementMI(FldNmbr) {
 		isChecked ? ["", aMIvar, false] : [aMIvar, "", false], // choiceA [old-choice, new-choice, "only"|"change"]
 		false // forceNonCurrent
 	);
+
+	// Do the selection of a weapon, ammo, armor if defined
+	if (MagicItemsList[aMI].chooseGear) selectMagicItemGearType(isChecked, FldNmbr, MagicItemsList[aMI].chooseGear);
 }
 
 // Hide/show the attuned checkbox for a magic item entry
@@ -2329,13 +2360,159 @@ function ResetMagicItems() {
 	for (var i = 1; i <= FieldNumbers.magicitems; i++) MagicItemClear(i, false);
 }
 
+// Change the magic item to include a selected weapon, armor, or ammunition
+/* chooseGear : {
+	type : "weapon", "armor", or "ammo"
+	prefixOrSuffix : "prefix", "suffix", or "brackets"
+	replaceOrAmend : "replace", or "amend" // only in magic item's description
+	descriptionChange : "" // string in the MI description to amend the choice to (or replace, see 'replaceOrAmend' attribute)
+	itemName1stPage : [("prefix", "suffix", or "brackets"), ""]
+	excludeCheck : function (inObjKey, inObj) {
+		return true;
+	}
+} */
+function selectMagicItemGearType(AddRemove, FldNmbr, typeObj) {
+	if (!event.target || !event.target.name || event.target.name.indexOf("Extra.Magic Item ") == -1 || !typeObj.type) return;
+	if (typeObj.excludeCheck && typeof typeObj.excludeCheck != "function") delete typeObj.excludeCheck;
+	// see what type of thing we are dealing with or return if none is recognized
+	switch (typeObj.type.toLowerCase()) {
+		case "ammo":
+		case "ammos":
+		case "ammunition":
+		case "ammunitions":
+			var typeNm = "ammunition";
+			var typeNmC = "Ammunition";
+			var parseFnct = "ParseAmmo";
+			var baseList = AmmoList;
+			var exclObj = "weapExcl";
+			break;
+		case "wea":
+		case "weapon":
+		case "weapons":
+			var typeNm = "weapon";
+			var typeNmC = "Weapon";
+			var parseFnct = "ParseWeapon"
+			var baseList = WeaponsList;
+			var exclObj = "ammoExcl";
+			break;
+		case "armor":
+		case "armors":
+		case "armour":
+		case "armours":
+			var typeNm = "armor";
+			var typeNmC = "Armor";
+			var parseFnct = "ParseArmor";
+			var baseList = ArmourList;
+			var exclObj = "armorExcl";
+			break;
+		default:
+			return;
+	}
+
+	var createString = function(type, addition, fixed) {
+		switch (type ? type.toLowerCase() : "") {
+			default:
+			case "prefix":
+				return addition + " " + fixed;
+			case "suffix":
+				return newMIname = fixed + " " + addition;
+			case "brackets":
+				return newMIname = fixed + " (" + addition + ")";
+		}
+	}
+	var MIflds = ReturnMagicItemFieldsArray(FldNmbr);
+	var isApplyFld = event.target.name == MIflds[0];
+	var ArrayNmbr = FldNmbr - 1;
+	var curItem = CurrentMagicItems.known[ArrayNmbr];
+	var curChoice = CurrentMagicItems.choices[ArrayNmbr];
+	var aMI = MagicItemsList[curItem];
+	var aMIvar = curChoice && aMI[curChoice] ? aMI[curChoice] : false;
+	var curName = curChoice ? MagicItemsList[curItem][curChoice].name : MagicItemsList[curItem].name;
+	var itemToProcess, selectedItem;
+
+	// use the name of the choice object (if any) or the shortest of the name, nameAlt, and nameTest of the parent object
+	var nameObj = aMIvar && aMIvar.name ? aMIvar : aMI;
+	var curName = nameObj.name;
+	var useName = [nameObj.name].concat(nameObj.nameAlt ? [nameObj.nameAlt] : []).concat(nameObj.nameTest ? [nameObj.nameTest] : []).reduce(function(a, b) { return a.length <= b.length ? a : b; });
+
+	// get the value of the magic item name field
+	var useVal = isApplyFld && AddRemove ? event.value : isApplyFld ? event.target.value : What(MIflds[0]);
+	var parseVal = typeNm == "weapon" ? useVal.replace(/\b(axe|hammer|sword|bow)\b/g, '') : useVal;
+	// see if the item is not already present in the string
+	var isItem = tDoc[parseFnct](parseVal, typeNm == "ammunition");
+	// if removing this item
+	if (!AddRemove) {
+		if (isItem) {
+			selectedItem = baseList[isItem].name;
+		} else {
+			return; // nothing more to do if we are just removing this item and no item is found
+		}
+	} else if (!isItem) {
+		// collect all types of items
+		var itemChoices = [];
+		for (var key in baseList) {
+			var kObj = baseList[key];
+			if (testSource(key, kObj, exclObj)) continue;
+			// some type-dependent filters
+			if (typeNm == "armor" && (!kObj.type || kObj.isMagicArmor)) {
+				continue;
+			} else if (typeNm == "weapon" && ((/natural|spell|cantrip/i).test(kObj.type) || kObj.isMagicWeapon)) {
+				continue;
+			} else if (typeNm == "ammunition" && (kObj.isMagicAmmo || WeaponsList[key])) {
+				continue;
+			}
+			if (typeObj.excludeCheck && typeObj.excludeCheck(key, kObj)) continue;
+			itemChoices.push(kObj.name.capitalize());
+		}
+		selectedItem = AskUserOptions("Select Type of " + typeNmC, "Choose which " + typeNm + " type this '" + curName + "' is.\n" + (aMI.choices ? "\nWhen you change the choice of this magic item using the button in its line, you will be prompted again to select the " + typeNm + " type." : "") + "\nIf you only want to change the " + typeNm + " type, remove the magic item and select it again from the drop-down.", itemChoices, "radio", true);
+
+		var theItemName = selectedItem.toLowerCase();
+	} else {
+		var theItemName = baseList[isItem].name.toLowerCase();
+	}
+	// get the new name of the magic item
+	var newMIname = selectedItem ? createString(typeObj.prefixOrSuffix, selectedItem, useName) : useVal;
+	// See if there is a special string set for how the item should appear on the 1st page
+	if (typeObj.itemName1stPage && selectedItem) {
+		itemToProcess = createString(typeObj.itemName1stPage[0], selectedItem, typeObj.itemName1stPage[1]);
+	}
+	// Apply the item to the sheet
+	switch (typeNm) {
+		case "ammunition":
+			tDoc[AddRemove ? 'AddAmmo' : 'RemoveAmmo'](itemToProcess ? itemToProcess : newMIname.replace(/ammunition (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"));
+			break;
+		case "weapon":
+			processAddWeapons(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/weapon (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"));
+			break;
+		case "armor":
+			processAddArmour(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/armou?r (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"));
+			break;
+	}
+	if (AddRemove && isApplyFld) {
+		// Update the description of the magic item to reflect the choice
+		var descrWrd = typeObj.descriptionChange ? typeObj.descriptionChange[1] : typeNm;
+		var desrcStr = What(MIflds[2]).replace(
+			descrWrd,
+			typeObj.descriptionChange && typeObj.descriptionChange[0].toLowerCase() == "replace" ? theItemName :
+				createString(
+					typeObj.descriptionChange ? typeObj.descriptionChange[0] : typeObj.prefixOrSuffix,
+					theItemName,
+					descrWrd
+				)
+		);
+		Value(MIflds[2], desrcStr);
+		// set the changed name of the magic item (always do this last!)
+		event.target.setVal = newMIname;
+	}
+}
+
 /*
 NEW ATTRIBUTES
 	limfeaname // Optional; If defined it is used for populating the limited feature section and the action section instead of `name`
 	scorestxt // Optional; String; If defined it is used for the text in the Ability Score dialog and tooltips. If not defined, but 'scores' is defined, 'scores' will be used to generate a text
 	scoresOverride // Optional; Array; works same as scores, but are used to populate the "Magical Override" column; If you are providing both 'scores' and 'scoresOverride' you should also give a 'scorestxt', as the auto-generated tooltip text doesn't work if you have both 'scores' and 'scoresOverride'
 	calcChanges.spellList // Optional; an array with the first entry being a function, and the second entry being a descriptive text. This attribute can change the spell list created for a class / race / feat
-	weaponOptions // Optional; an array of WeaponList objects to be added to the WeaponList (can also be a single object if only wanting to add a single weapon)
+	weaponOptions // Optional; an array of WeaponsList objects to be added to the WeaponsList (can also be a single object if only wanting to add a single weapon)
 	armorOptions // Optional; an array of ArmourList objects to be added to the ArmourList (can also be a single object if only wanting to add a single armour)
 	ammoOptions // Optional; an array of AmmoList objects to be added to the AmmoList (can also be a single object if only wanting to add a single armour)
 

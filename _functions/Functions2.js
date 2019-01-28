@@ -7603,16 +7603,82 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies) {
 	return theDialog.choices;
 };
 
-// A way to add a string to a notes page, or generate a notes page if it didn't exist yet
-function AddToNotes(noteStr, alertTxt, oldNoteStr) {
-	if (What("Unit System") === "metric") {
-		noteStr = ConvertToMetric(noteStr, 0.5);
-		if (oldNoteStr) oldNoteStr = ConvertToMetric(oldNoteStr, 0.5);
+// Process a feature attribute through the AddToNotes function
+// namesArr = [tipNm, displName, fObjName, aParent]
+function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr) {
+	if (!isArray(items)) items = [items];
+	// set the alertType, determined by type
+	var fallback = {
+		alertType : "Class Features section",
+		noteOrig : namesArr[1],
+		noteSrc : mainObj.source ? stringSource(mainObj, "first,abbr", ", ") : parentObj && parentObj.source ? stringSource(parentObj, "first,abbr", ", ") : ""
+	}
+	switch (GetFeatureType(type)) {
+		case "classes":
+			fallback.alertType = "Class Features section";
+			fallback.noteOrig = namesArr[2].indexOf("subclassfeature") !== -1 ? CurrentClasses[namesArr[3]].subname : CurrentClasses[namesArr[3]].name;
+			fallback.noteOrig += mainObj.minlevel ? " " + mainObj.minlevel : parentObj && parentObj.minlevel ? " " + parentObj.minlevel : "";
+			break;
+		case "race":
+			fallback.alertType = "Racial Traits section";
+			fallback.noteOrig = namesArr[1];
+			break;
+		case "background":
+			fallback.alertType = "Background Feature description";
+			fallback.noteOrig = namesArr[1];
+			break;
+		case "feats":
+			fallback.alertType = "Feat description";
+			fallback.noteOrig = namesArr[0];
+			break;
+		case "items":
+			fallback.alertType = "Magic Item description";
+			fallback.noteOrig = namesArr[0];
+			break;
 	};
-	noteStr = noteStr.replace(/\n/g, "\r");
-	if (oldNoteStr) oldNoteStr = oldNoteStr.replace(/\n/g, "\r");
+	for (var i = 0; i < items.length; i++) {
+		var noteObj = items[i];
+		var alertTxt = noteObj.popupName ? noteObj.popupName : noteObj.name;
+		var noteSrc = noteObj.source ? stringSource(noteObj, "first,abbr", ", ") : fallback.noteSrc;
+		var noteDesc = (isArray(noteObj.note) ? desc(noteObj.note) : noteObj.note).replace(/\n/g, "\r");
+		if (What("Unit System") === "metric") noteDesc = ConvertToMetric(noteDesc, 0.5);
+		var noteStr = "\u25C6 " + noteObj.name + " (" + fallback.noteOrig + noteSrc + ")" + (noteObj.additional ? " [" + noteObj.additional + "]" : "") + noteDesc;
+		if (noteObj.page3notes) { // add to 3rd page notes section
+			if (AddRemove) {
+				AddString('Extra.Notes', noteStr, true);
+				show3rdPageNotes(); // for a Colourful sheet, show the notes section on the third page
+				app.alert({
+					cTitle : propFea.name + " has been added to the third page",
+					cMsg : 'You can find the rules for "' + alertTxt + '" in the "Notes" section on the third page' + (!typePF ? ', while the\"Rules" section on the third page has been hidden' : "") + '.\n\nThese rules are simply to much to fit in the "' + fallback.alertType + '".\n\nYou can copy the text to another location if you want' + (!typePF ? ' (and even bring back the "Rules" section).' : "."),
+					nIcon : 3
+				});
+			} else {
+				RemoveString('Extra.Notes', noteStr, true);
+			}
+		} else { // add to its own section on a notes page
+			if (AddRemove) {
+				AddToNotes(noteStr, alertTxt, false, fallback.alertType, true);
+			} else {
+				AddToNotes("", false, noteStr, false, true);
+			}
+		}
+	}
+}
+
+// A way to add a string to a notes page, or generate a notes page if it didn't exist yet
+function AddToNotes(noteStr, alertTxt, oldNoteStr, alertType, isProcessed) {
+	if (!noteStr && !oldNoteStr) return;
+	var prefix = false;
+	if (!isProcessed) {
+		if (What("Unit System") === "metric") {
+			if (noteStr) noteStr = ConvertToMetric(noteStr, 0.5);
+			if (oldNoteStr) oldNoteStr = ConvertToMetric(oldNoteStr, 0.5);
+		}
+		if (noteStr) noteStr = noteStr.replace(/\n/g, "\r");
+		if (oldNoteStr) oldNoteStr = oldNoteStr.replace(/\n/g, "\r");
+	};
 	var replaceOldNote = false;
-	if (!isTemplVis("ASnotes")) {
+	if (noteStr && !isTemplVis("ASnotes")) {
 		var noteFld = DoTemplate("ASnotes", "Add");
 		noteFld += "Notes.Left";
 	} else {
@@ -7626,6 +7692,7 @@ function AddToNotes(noteStr, alertTxt, oldNoteStr) {
 				if (noteStr && inFld.toLowerCase().indexOf(noteStr.toLowerCase()) !== -1) {
 					return;
 				} else if (oldNoteStr && inFld.toLowerCase().indexOf(oldNoteStr.toLowerCase()) !== -1) {
+					prefix = notesPrefix[i];
 					noteFld = aFld;
 					replaceOldNote = true;
 					i = noteFlds.length;
@@ -7637,18 +7704,23 @@ function AddToNotes(noteStr, alertTxt, oldNoteStr) {
 		};
 		if (!noteFld && noteStr) {
 			noteFld = DoTemplate("ASnotes", "Add");
-		} else if (!noteStr && !oldNoteStr) {
+			noteFld += "Notes.Left";
+		} else if (!noteFld && oldNoteStr) {
 			return;
 		};
 	};
 	ReplaceString(noteFld, noteStr, false, oldNoteStr ? oldNoteStr : "");
 	if (!replaceOldNote && noteStr && alertTxt) {
+		if (!alertType) alertType = "Class Features section";
 		app.alert({
-			cTitle : alertTxt + " is added on the Notes page",
-			cMsg : "You can find the rules for " + alertTxt + " on the \"Notes\" page at page no. " + (tDoc.getField(noteFld).page + 1) + ".\n\nThese rules are simply to much for the Class Features section and do not fit with the rest that needs to go in the third page's Notes section. Thus, these rules will be put on a Notes page and will be updated there.",
+			cTitle : alertTxt + " has been added on the Notes page",
+			cMsg : 'You can find the rules for "' + alertTxt + '" on the "Notes" page at page no. ' + (tDoc.getField(noteFld).page + 1) + ".\n\nThese rules are simply to much fit in the " + alertType + " and do not fit with the other stuff that needs to go in the third page's Notes section. Thus, these rules have been put on a Notes page of there own.",
 			nIcon : 3
 		});
-	};
+	} else if (replaceOldNote && oldNoteStr && prefix && !What(prefix + "Notes.Left") && !What(prefix + "Notes.Right")) {
+		// if the notes page is now completely empty, remove it completely
+		DoTemplate("ASnotes", "Remove", prefix, true);
+	}
 };
 
 // check if a newer version is available (Acrobat Pro only)

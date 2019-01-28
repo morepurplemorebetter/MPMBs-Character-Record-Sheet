@@ -61,7 +61,7 @@ RequiredSheetVersion(13);
 	TYPE:	function call with a number
 	USE:	the minimum required version number of the sheet for the script to work
 
-	If the sheet where you import this script into is of an earlier version, the user will be given a warning.
+	If the sheet where you import this script into is of an earlier version, the player will be given a warning.
 	Input a number, not a string (so don't enclose the number in quotation marks)!
 	Although the sheet uses semantic versioning, you have to input a number here.
 	To find this number of a sheet, open its Document Properties in Adobe Acrobat (Ctrl + D) and look in the 'Custom' tab.
@@ -198,7 +198,7 @@ FeatsList["purple power"] = {
 
 	The next part is about the use of the 'choices' attribute, which is optional.
 	The 'choices' attribute will allow the feat to have a subset of options.
-	The user will be forced to select one of those options, the feat will not be usable without a selection.
+	The player will be forced to select one of those options, the feat will not be usable without a selection.
 
 	To set up a choice, add the 'choices' attribute, see below, and add an object for each of those choices.
 	The object name has to be exactly the same as the string in the 'choices' array, but need to be all lowercase.
@@ -208,7 +208,7 @@ FeatsList["purple power"] = {
 	TYPE:	array (variable length)
 	USE:	options for the feat
 
-	The text in the array is presented to the user as options to choose from for what form of the feat to use.
+	The text in the array is presented to the player as options to choose from for what form of the feat to use.
 	The order of this array is used exactly as you write it.
 	If you include this attribute, an option will have to be chosen.
 
@@ -224,16 +224,16 @@ FeatsList["purple power"] = {
 	USE:	select the 'choice' automatically when the feat is added
 
 	If the feat has the 'choices' attribute, the function in this attribute will be run
-	before the user is presented with the choice dialog.
-	If this function returns a valid 'choice', that choice will be used and the users will not be prompted.
+	before the player is presented with the choice dialog.
+	If this function returns a valid 'choice', that choice will be used and the player will not be prompted.
 	A valid choice is any entry from the 'choices' array.
 
 	The above example selects 'fire' if the character has levels in the cleric class,
-	but will otherwise leave it up to the user (i.e. it selects nothing).
+	but will otherwise leave it up to the player (i.e. it selects nothing).
 
 	This function doesn't get passed any variables.
 	This attribute will be ignored if the 'choices' attribute is not present.
-	Even with this attribute present, the user can always change the 'choice' using the button on the sheet.
+	Even with this attribute present, the player can always change the 'choice' using the button on the sheet.
 */
 
 	"fire" : {
