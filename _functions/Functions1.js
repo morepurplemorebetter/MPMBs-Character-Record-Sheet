@@ -4452,8 +4452,10 @@ function ApplyFeat(input, FldNmbr) {
 				gatherVars.choice = newFeatVar;
 				var meetsPrereq = theFeat.prereqeval(gatherVars);
 			}
-		} catch (e) {
-			console.println("The 'prereqeval' attribute for the feat '" + theFeat.name + "' produces an error and is subsequently ignored. If this is one of the built-in feats, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the feat.");
+		} catch (error) {
+			var eText = "The 'prereqeval' attribute for the feat '" + theFeat.name + "' produces an error and is subsequently ignored. If this is one of the built-in feats, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the feat.\nThe sheet reports the error as\n " + error + "\n ";
+			for (var e in error) eText += e + ": " + error[e] + ";\n ";
+			console.println(eText);
 			console.show();
 			var meetsPrereq = true;
 		};
@@ -5209,7 +5211,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				/* loop through the feature's selected extra options, but only:
 					- during import to set the feature for the first time (!IsNotImport && Fea.AddFea)
 					- if removing the feature (Fea.CheckLVL && !Fea.AddFea)
-					- if level-dependent things might have changed (!Fea.CheckLVL && Fea.AddFea)
+					- if level-dependent things might have changed for existing extrachoices (!Fea.CheckLVL && Fea.AddFea)
 				*/
 				if ((!IsNotImport && propFea.extrachoices && Fea.AddFea) || (IsNotImport && Fea.CheckLVL !== Fea.AddFea)) {
 					var xtrSel = GetFeatureChoice("classes", aClass, prop, true);
@@ -5426,6 +5428,57 @@ function ClassFeatureOptions(Input, AddRemove) {
 		applyClassFeatureText("replace", ["Class Features"], feaStringOld, feaString, false);
 	}
 	thermoM(thermoTxt, true); // Stop progress bar
+}
+
+// Set the choice for other class features dependent on the choice of this class feature
+/* choiceDependencies : [{
+	feature : "subclassfeature6",
+	choiceAttribute : true // OPTIONAL //
+}] */
+function processClassFeatureChoiceDependencies(lvlA, aClass, aFeature, fChoice) {
+	var lvlOld = lvlA[0], lvlNew = lvlA[1];
+	var pObj = CurrentClasses[aClass].features;
+	var fObj = pObj[aFeature];
+	var theDep = fObj.choiceDependencies;
+	if (!isArray(theDep)) theDep = [theDep];
+	for (var i = 0; i < theDep.length; i++) {
+		var aDep = theDep[i];
+		var tObj = pObj[aDep.feature];
+		if (!tObj || lvlNew < tObj.minlevel) continue;
+		var newChoice = aDep.choiceAttribute && fObj[fChoice].dependentChoices ? fObj[fChoice].dependentChoices : fChoice;
+		var curChoice = GetFeatureChoice('class', aClass, aDep.feature);
+		if (!tObj[newChoice] || newChoice == curChoice) continue;
+		if (lvlOld >= tObj.minlevel) {
+			// the feature is already present on the sheet, so parse it through ClassFeatureOptions
+			ClassFeatureOptions([aClass, aDep.feature, newChoice]);
+		} else {
+			// the feature will be added during this same UpdateLevelFeatures call, so just set it to be remembered
+			SetFeatureChoice("class", aClass, aDep.feature, newChoice);
+		}
+	}
+}
+
+// A way for a class feature to add an extra choice (from its own object) at a specific level
+/* autoSelectExtrachoices : [{
+	extrachoice : "flurry of blows",
+	minlevel : 5 // OPTIONAL //
+}] */
+function processClassFeatureExtraChoiceDependencies(lvlA, aClass, aFeature, fObj) {
+	var lvlH = Math.max(lvlA[0], lvlA[1]), lvlL = Math.min(lvlA[0], lvlA[1]);
+	var lvlOld = lvlA[0], lvlNew = lvlA[1];
+	var theDep = fObj.autoSelectExtrachoices;
+	if (!isArray(theDep)) theDep = [theDep];
+	for (var i = 0; i < theDep.length; i++) {
+		var aDep = theDep[i];
+		var minLvl = aDep.minlevel ? aDep.minlevel : fObj.minlevel;
+		// stop if nothing found or there was no level change that affected this feature
+		if (!aDep.extrachoice || !fObj[aDep.extrachoice] || !(lvlH >= minLvl && lvlL < minLvl)) continue;
+		// set or remove the class feature, depending on its level
+		ClassFeatureOptions(
+			[aClass, aFeature, aDep.extrachoice, 'extra'],
+			lvlA[1] < minLvl ? 'remove' : false
+		);
+	}
 }
 
 // The print feature button

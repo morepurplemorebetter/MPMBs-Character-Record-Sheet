@@ -102,9 +102,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	if (!choiceA) choiceA = ["","",false];
 	type = type.toLowerCase();
 	// base variables
-	var FeaChoice = "";
-	var FeaOldChoice = "";
-	var tipNmExtra = "";
+	var FeaChoice = "", FeaOldChoice = "", tipNmExtra = "";
 	var aParent = fObjName;
 	var lvlH = Math.max(lvlA[0], lvlA[1]), lvlL = Math.min(lvlA[0], lvlA[1]);
 	var defaultUnits = What("Unit System") === "imperial";
@@ -290,14 +288,16 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (choiceA[1] && !choiceA[0]) choiceA[0] = choiceA[1];
 	}
 
-	// First do the (remove)eval attribute of the main object, as it might change things for the choice
-	var evalAddRemove = AddFea ? "eval" : "removeeval";
-	if (!choiceA[2] && CheckLVL && fObj[evalAddRemove]) runEval(fObj[evalAddRemove], evalAddRemove);
-
 	// --- backwards compatibility --- //
-	// redo the choice array, as the eval might have changed it
-	if (FeaOldChoice) choiceA[0] = FeaOldChoice;
-	if (FeaChoice) choiceA[1] = FeaChoice;
+	// First do the eval attribute of the main object, as it might change things for the choice
+	var skipMainEval = false;
+ 	if (!choiceA[2] && CheckLVL && AddFea && fObj.eval && (typeof fObj.eval == "string") && (/Fea(Old)?Choice/).test(fObj.eval)) {
+		runEval(fObj.eval, "eval");
+		skipMainEval = true;
+		// redo the choice array, as the eval might have changed it
+		if (FeaOldChoice) choiceA[0] = FeaOldChoice;
+		if (FeaChoice) choiceA[1] = FeaChoice;
+	}
 
 	// set the choice objects, if any
 	var cOldObj = choiceA[0] && fObj[choiceA[0]] ? fObj[choiceA[0]] : false;
@@ -325,7 +325,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	// now do all the level-independent attributes, only if this is mandated by the level change
 	if (CheckLVL) {
 		// do the main object if not only interested in the choice, but without the eval as we just did that already
-		if (!choiceA[2]) useAttr(fObj, AddFea, true);
+		if (!choiceA[2]) useAttr(fObj, AddFea, skipMainEval);
 		// if we are are changing the choice or removing the feature, now remove the old choice
 		//if (cJustChange || (!AddFea && cOldObj)) {
 		if (cOldObj && (cJustChange || !AddFea)) {
@@ -357,6 +357,12 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	if (!cOnly && fObj.changeeval) runEval(fObj.changeeval, 'changeeval');
 	if (cOldObj && cOldObj.changeeval) runEval(cOldObj.changeeval, 'changeeval');
 	if (cNewObj && cNewObj.changeeval) runEval(cNewObj.changeeval, 'changeeval');
+
+	// if this is a class feature (and not doing an extrachoice), always check if we need to update the dependencies
+	if (type == "class" && !cOnly) {
+		if (choiceA[1] && fObj.choiceDependencies) processClassFeatureChoiceDependencies(lvlA, aParent, fObjName, choiceA[1]);
+		if (fObj.autoSelectExtrachoices) processClassFeatureExtraChoiceDependencies(lvlA, aParent, fObjName, fObj);
+	}
 
 	// return the level-dependent attributes so it doesn't have to be queried again
 	return Fea;
@@ -1826,8 +1832,10 @@ function ApplyMagicItem(input, FldNmbr) {
 				gatherVars.choice = newMIvar;
 				var meetsPrereq = theMI.prereqeval(gatherVars);
 			}
-		} catch (e) {
-			console.println("The 'prereqeval' attribute for the magic item '" + theMI.name + "' produces an error and is subsequently ignored. If this is one of the built-in magic items, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the magic item.");
+		} catch (error) {
+			var eText = "The 'prereqeval' attribute for the magic item '" + theMI.name + "' produces an error and is subsequently ignored. If this is one of the built-in magic items, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the magic item.\nThe sheet reports the error as\n " + error + "\n ";
+			for (var e in error) eText += e + ": " + error[e] + ";\n ";
+			console.println(eText);
 			console.show();
 			var meetsPrereq = true;
 		};

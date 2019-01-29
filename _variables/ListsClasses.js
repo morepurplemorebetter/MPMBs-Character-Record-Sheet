@@ -717,8 +717,16 @@ var Base_ClassList = {
 					source : [["SRD", 27], ["P", 79]],
 					description : " [1 ki point]" + "\n   " + "After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
 				},
-				eval : "ClassFeatureOptions(['monk', 'ki', 'flurry of blows', 'extra']); ClassFeatureOptions(['monk', 'ki', 'patient defense', 'extra']); ClassFeatureOptions(['monk', 'ki', 'step of the wind', 'extra']);",
-				changeeval : "if (lvlH >= 5 && lvlL < 5) { ClassFeatureOptions(['monk', 'ki', 'stunning strike', 'extra'], lvlA[1] < 5 ? 'remove' : false); }; "
+				autoSelectExtrachoices : [{
+					extrachoice : "flurry of blows"
+				}, {
+					extrachoice : "patient defense"
+				}, {
+					extrachoice : "step of the wind"
+				}, {
+					extrachoice : "stunning strike",
+					minlevel : 5
+				}]
 			},
 			"unarmored movement" : {
 				name : "Unarmored Movement",
@@ -2382,12 +2390,17 @@ var Base_ClassSubList = {
 				minlevel : 11,
 				description : "\n   " + "After a long rest, I gain the effect of a Sanctuary spell until a next long rest",
 				extraname : "Way of the Open Hand 17",
-				changeeval : "if (newClassLvl.monk >= 17 && (What('Extra.Notes') + What('Class Features')).toLowerCase().indexOf('quivering palm') === -1) {ClassFeatureOptions(['monk', 'subclassfeature11', 'quivering palm', 'extra'])} else if (newClassLvl.monk < 17 && oldClassLvl.monk >= 17) {ClassFeatureOptions(['monk', 'subclassfeature11', 'quivering palm', 'extra'], 'remove')};",
 				"quivering palm" : {
 					name : "Quivering Palm",
 					source : [["SRD", 29], ["P", 80]],
 					description : " [3 ki points]" + "\n   " + "When I hit a creature with an unarmed strike, I can start imperceptible vibrations" + "\n   " + "Within my monk level in days, I can use an action to have the creature make a Con save" + "\n   " + "If it fails, it is reduced to 0 hit points; If it succeeds, it takes 10d10 necrotic damage"
-				}
+				},
+				autoSelectExtrachoices : [{
+					extrachoice : "quivering palm",
+					minlevel : 17
+				}]
+/* UPDATED
+				changeeval : "if (newClassLvl.monk >= 17 && (What('Extra.Notes') + What('Class Features')).toLowerCase().indexOf('quivering palm') === -1) {ClassFeatureOptions(['monk', 'subclassfeature11', 'quivering palm', 'extra'])} else if (newClassLvl.monk < 17 && oldClassLvl.monk >= 17) {ClassFeatureOptions(['monk', 'subclassfeature11', 'quivering palm', 'extra'], 'remove')};" */
 			}
 		}
 	},
@@ -2587,64 +2600,58 @@ var Base_ClassSubList = {
 				"black dragon ancestor" : {
 					name : "Black Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with black dragons, which are affiliated with acid damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'acid']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
-					dragonElement : "acid"
+					dependentChoices : "acid"
 				},
 				"blue dragon ancestor" : {
 					name : "Blue Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with blue dragons, which are affiliated with lightning damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'lightning']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
-					dragonElement : "lightning"
+					dependentChoices : "lightning"
 				},
 				"brass dragon ancestor" : {
 					name : "Brass Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with brass dragons, which are affiliated with fire damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
-					dragonElement : "fire"
+					dependentChoices : "fire"
 				},
 				"bronze dragon ancestor" : {
 					name : "Bronze Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with bronze dragons, which are affiliated with lightning dmg" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'lightning']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
-					dragonElement : "lightning"
+					dependentChoices : "lightning"
 				},
 				"copper dragon ancestor" : {
 					name : "Copper Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with copper dragons, which are affiliated with acid damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'acid']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
-					dragonElement : "acid"
+					dependentChoices : "acid"
 				},
 				"gold dragon ancestor" : {
 					name : "Gold Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with gold dragons, which are affiliated with fire damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
-					dragonElement : "fire"
+					dependentChoices : "fire"
 				},
 				"green dragon ancestor" : {
 					name : "Green Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with green dragons, which are affiliated with poison damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'poison']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
-					dragonElement : "poison"
+					dependentChoices : "poison"
 				},
 				"red dragon ancestor" : {
 					name : "Red Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with red dragons, which are affiliated with fire damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
-					dragonElement : "fire"
+					dependentChoices : "fire"
 				},
 				"silver dragon ancestor" : {
 					name : "Silver Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with silver dragons, which are affiliated with cold damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'cold']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
-					dragonElement : "cold"
+					dependentChoices : "cold"
 				},
 				"white dragon ancestor" : {
 					name : "White Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with white dragons, which are affiliated with cold damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'cold']; if (choiceA[2] && lvlH >= 6 && GetFeatureChoice('class',ToAdd[0],ToAdd[1]) != ToAdd[2]) {ClassFeatureOptions(ToAdd)};",
-					dragonElement : "cold"
+					dependentChoices : "cold"
 				},
-				languageProfs : ["Draconic"]
+				languageProfs : ["Draconic"],
+				choiceDependencies : [{
+					feature : "subclassfeature6",
+					choiceAttribute : true
+				}]
 			},
 			"subclassfeature1.1" : {
 				name : "Draconic Resilience",
@@ -2667,11 +2674,12 @@ var Base_ClassSubList = {
 				source : [["SRD", 45], ["P", 102]],
 				minlevel : 6,
 				description : "\n   " + "Choose a Dragon Ancestor using the \"Choose Feature\" button above" + "\n   " + "I add Cha mod for spell damage if matching my dragon ancestor's affiliated type" + "\n   " + "I can spend 1 sorcery point to gain resistance to my dragon ancestor's affiliated type",
+				additional : "optional: 1 sorcery point",
 				choices : ["acid", "cold", "fire", "lightning", "poison"],
 				choicesNotInMenu : true,
 				"acid" : {
 					name : "Acid Elemental Affinity",
-					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does acid damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain acid resistance for 1 hour",
+					description : "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does acid damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain acid resistance for 1 hour",
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
@@ -2685,7 +2693,7 @@ var Base_ClassSubList = {
 				},
 				"cold" : {
 					name : "Cold Elemental Affinity",
-					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does cold damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain cold resistance for 1 hour",
+					description : "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does cold damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain cold resistance for 1 hour",
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
@@ -2699,7 +2707,7 @@ var Base_ClassSubList = {
 				},
 				"fire" : {
 					name : "Fire Elemental Affinity",
-					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does fire damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain fire resistance for 1 hour",
+					description : "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does fire damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain fire resistance for 1 hour",
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
@@ -2713,7 +2721,7 @@ var Base_ClassSubList = {
 				},
 				"lightning" : {
 					name : "Lightning Elemental Affinity",
-					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does lightning damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain lightning resistance for 1 hour",
+					description : "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does lightning damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain lightning resistance for 1 hour",
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
@@ -2727,7 +2735,7 @@ var Base_ClassSubList = {
 				},
 				"poison" : {
 					name : "Poison Elemental Affinity",
-					description : " [1 sorcery point]" + "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does poison damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain poison resistance for 1 hour",
+					description : "\n   " + "I add my Charisma modifier to one damage roll of a spell if it does poison damage" + "\n   " + "When I do this, I can spend 1 sorcery point to gain poison resistance for 1 hour",
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
@@ -2738,11 +2746,6 @@ var Base_ClassSubList = {
 							"Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."
 						]
 					}
-				},
-				eval : function () {
-					if (choiceA[1]) return;
-					var ancestor = GetFeatureChoice('class', 'sorcerer', 'subclassfeature1');
-					if (ancestor) choiceA[1] = CurrentClasses.sorcerer.features.subclassfeature1[ancestor].dragonElement;
 				}
 			},
 			"subclassfeature14" : {
