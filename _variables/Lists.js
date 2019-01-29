@@ -235,7 +235,7 @@ var classes = {
 	oldspellcastlvl : {default : 0, warlock : 0}
 };
 
-var CurrentUpdates = {types : [], extras : {}};
+var CurrentUpdates = {types : []};
 var CurrentClasses = {};
 var CurrentBackground = {};
 var CurrentRace = {};

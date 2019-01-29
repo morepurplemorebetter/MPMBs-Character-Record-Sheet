@@ -4445,7 +4445,13 @@ function ApplyFeat(input, FldNmbr) {
 	// Before stopping the calculations, first test if the feat has a prerequisite and if it meets that
 	if (IsNotImport && IsNotReset && theFeat && theFeat.prereqeval && !ignorePrereqs && event.target && event.target.name == Fflds[0]) {
 		try {
-			var meetsPrereq = eval(theFeat.prereqeval);
+			if (typeof theFeat.prereqeval == 'string') {
+				var meetsPrereq = eval(theFeat.prereqeval);
+			} else if (typeof theFeat.prereqeval == 'function') {
+				var gatherVars = gatherPrereqevalVars();
+				gatherVars.choice = newFeatVar;
+				var meetsPrereq = theFeat.prereqeval(gatherVars);
+			}
 		} catch (e) {
 			console.println("The 'prereqeval' attribute for the feat '" + theFeat.name + "' produces an error and is subsequently ignored. If this is one of the built-in feats, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the feat.");
 			console.show();
@@ -5246,10 +5252,19 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 
 //Make menu for 'choose class feature' button and parse it to Menus.classfeatures
 function MakeClassMenu() {
+	var gatherVars, hasEldritchBlast;
 	var testPrereqs = function(toEval, objNm, feaNm) {
+		if (!gatherVars) {
+			gatherVars = gatherPrereqevalVars();
+			hasEldritchBlast = gatherVars.hasEldritchBlast;
+		}
 		var theRe = true;
 		try {
-			theRe = eval(toEval);
+			if (typeof toEval == 'string') {
+				theRe = eval(toEval);
+			} else if (typeof toEval == 'function') {
+				theRe = toEval(gatherVars);
+			}
 		} catch (error) {
 			var eText = "The prerequisite check code (prereqeval) for '" + objNm + "' of the '" + feaNm + "' feature produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
 			for (var e in error) eText += e + ": " + error[e] + ";\n ";
@@ -5293,7 +5308,6 @@ function MakeClassMenu() {
 	};
 
 	var ClassMenu = [], toTest;
-	var hasEldritchBlast = isSpellUsed("eldritch blast", true) || (/(eldritch|agonizing) (blast|spear)/i).test(CurrentWeapons.known);
 
 	for (var aClass in classes.known) {
 		var clLvl = classes.known[aClass].level;
@@ -5385,25 +5399,13 @@ function ClassFeatureOptions(Input, AddRemove) {
 		if (addIt) { // add the string to the third page
 			AddString("Extra.Notes", feaString[1].replace(/^(\r|\n)*/, ''), true);
 			show3rdPageNotes(); // for a Colourful sheet, show the notes section on the third page
-
-			//give some information as to where the choice has been written to
-			var skipPopUp = !CurrentFeatureChoices.excludePopUp ? false : CurrentFeatureChoices.excludePopUp.indexOf(propFea.extraname) !== -1;
-			if (IsNotImport && !skipPopUp) {
-				var oCk = {
-					bInitialValue : true,
-					bAfterValue : false
-				};
-				app.alert({
-					cMsg : "The " + propFea.extraname + ' "' + propFeaCs.name + '" has been added to the "Notes" section on the third page' + (!typePF ? ', while the\"Rules" section on the third page has been hidden' : "") + '.\n\nAdding this to the "Class Features" on the second page would not leave enough room for other class features at level 20.\n\nYou can copy the text to the class features if you want' + (!typePF ? ' (and even bring back the "Rules" section)' : "") + ". This will not interfere with any of the sheets automation, and will even allow you to remove the feature again with the same menu. However, future " + propFea.extraname + ' you add will still be added to the Notes" section on the third page.',
-					nIcon : 3,
-					cTitle : propFea.name + " has been added to the third page",
-					oCheckbox : oCk
-				});
-				if (oCk.bAfterValue) { // do not show the dialog for these type of features again
-					if (!CurrentFeatureChoices.excludePopUp) CurrentFeatureChoices.excludePopUp = [];
-					CurrentFeatureChoices.excludePopUp.push(propFea.extraname);
-				};
-			};
+			var changeMsg = "The " + propFea.extraname + ' "' + propFeaCs.name + '" has been added to the Notes section on the third page' + (!typePF ? ", while the Rules section on the third page has been hidden" : "") + ". They wouldn't fit in the Class Features section if the class is taken to level 20.";
+			CurrentUpdates.types.push("notes");
+			if (!CurrentUpdates.notesChanges) {
+				CurrentUpdates.notesChanges = [changeMsg];
+			} else {
+				CurrentUpdates.notesChanges.push(changeMsg);
+			}
 		} else { // remove the string from the third (or second) page
 			applyClassFeatureText("remove", ["Extra.Notes", "Class Features"], feaString, "", false);
 		}

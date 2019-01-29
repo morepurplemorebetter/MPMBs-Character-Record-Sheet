@@ -890,7 +890,7 @@ calcChanges : {
 				Weight // number, the weight in lb to put in the weight field
 			};
 
-			These values will be set by what the recognized weapon
+			These values will be set by the recognized weapon.
 
 		2)	v, an object with some information about the attack
 			Changing this object will do nothing, but you can use its input to test things

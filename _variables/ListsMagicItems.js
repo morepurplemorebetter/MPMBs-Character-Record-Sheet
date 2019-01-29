@@ -263,7 +263,7 @@ var Base_MagicItemsList = {
 		attunement : true,
 		description : "This magical warhammer adds a +3 bonus to attack and damage rolls made with it. It has the thrown property with a normal range of 20 ft and a long range of 60 ft. It deals an extra 1d8 damage (or 2d8 if the target is a giant) when thrown. Immediately after the attack, the weapon flies back to my hand.",
 		prerequisite : "Requires attunement by a dwarf",
-		prereqeval : "CurrentRace.known.indexOf('dwarf') !== -1",
+		prereqeval : function(v) { return CurrentRace.known.indexOf('dwarf') !== -1; },
 		weight : 2,
 		descriptionFull : "You gain a +3 bonus to attack and damage rolls made with this magic weapon. It has the thrown property with a normal range of 20 feet and a long range of 60 feet. When you hit with a ranged attack using this weapon, it deals an extra 1d8 damage or, if the target is a giant, 2d8 damage. Immediately after the attack, the weapon flies back to your hand.",
 		addWeapons : ["Dwarven Thrower"],

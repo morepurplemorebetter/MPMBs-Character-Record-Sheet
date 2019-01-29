@@ -7647,11 +7647,13 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 			if (AddRemove) {
 				AddString('Extra.Notes', noteStr, true);
 				show3rdPageNotes(); // for a Colourful sheet, show the notes section on the third page
-				app.alert({
-					cTitle : propFea.name + " has been added to the third page",
-					cMsg : 'You can find the rules for "' + alertTxt + '" in the "Notes" section on the third page' + (!typePF ? ', while the\"Rules" section on the third page has been hidden' : "") + '.\n\nThese rules are simply to much to fit in the "' + fallback.alertType + '".\n\nYou can copy the text to another location if you want' + (!typePF ? ' (and even bring back the "Rules" section).' : "."),
-					nIcon : 3
-				});
+				var changeMsg = alertTxt + " has been added to the Notes section on the third page" + (!typePF ? ", while the Rules section on the third page has been hidden" : "") + ". They wouldn't fit in the " + fallback.alertType + ".";
+				CurrentUpdates.types.push("notes");
+				if (!CurrentUpdates.notesChanges) {
+					CurrentUpdates.notesChanges = [changeMsg];
+				} else {
+					CurrentUpdates.notesChanges.push(changeMsg);
+				}
 			} else {
 				RemoveString('Extra.Notes', noteStr, true);
 			}
@@ -7712,11 +7714,13 @@ function AddToNotes(noteStr, alertTxt, oldNoteStr, alertType, isProcessed) {
 	ReplaceString(noteFld, noteStr, false, oldNoteStr ? oldNoteStr : "");
 	if (!replaceOldNote && noteStr && alertTxt) {
 		if (!alertType) alertType = "Class Features section";
-		app.alert({
-			cTitle : alertTxt + " has been added on the Notes page",
-			cMsg : 'You can find the rules for "' + alertTxt + '" on the "Notes" page at page no. ' + (tDoc.getField(noteFld).page + 1) + ".\n\nThese rules are simply to much fit in the " + alertType + " and do not fit with the other stuff that needs to go in the third page's Notes section. Thus, these rules have been put on a Notes page of there own.",
-			nIcon : 3
-		});
+		var changeMsg = alertTxt + ' has been added to the Notes page at page number ' + (tDoc.getField(noteFld).page + 1) + ". They wouldn't fit in the " + alertType + " or the third page's Notes section.";
+		CurrentUpdates.types.push("notes");
+		if (!CurrentUpdates.notesChanges) {
+			CurrentUpdates.notesChanges = [changeMsg];
+		} else {
+			CurrentUpdates.notesChanges.push(changeMsg);
+		}
 	} else if (replaceOldNote && oldNoteStr && prefix && !What(prefix + "Notes.Left") && !What(prefix + "Notes.Right")) {
 		// if the notes page is now completely empty, remove it completely
 		DoTemplate("ASnotes", "Remove", prefix, true);

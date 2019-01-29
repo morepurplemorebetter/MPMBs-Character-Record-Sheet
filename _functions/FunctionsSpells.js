@@ -5416,6 +5416,14 @@ function isSpellUsed(spll, returnBoolean) {
 	return returnBoolean ? rtrnA.length > 0 : rtrnA;
 };
 
+// a way to test if the character has inherit spellcasting abilities (and if they don't just stem from magic items)
+function isSpellcaster() {
+	for (var aCast in CurrentSpells) {
+		if (!MagicItemsList[aCast]) return true;
+	}
+	return false;
+}
+
 function amendPsionicsToSpellsList() {
 	//Add the psionics to the SpellsList object
 	if (PsionicsList) {

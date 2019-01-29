@@ -563,7 +563,7 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 	};
 	if (!sObj.ability) sObj.ability = fObj.spellcastingAbility ? fObj.spellcastingAbility : fObj.abilitySave ? fObj.abilitySave : 0;
 	if (!sObj.fixedDC && fObj.fixedDC) sObj.fixedDC = Number(fObj.fixedDC);
-	sObj.abilityToUse = getSpellcastingAbility(fObjName);
+	if (!sObj.abilityToUse) sObj.abilityToUse = getSpellcastingAbility(fObjName);
 	return sObj;
 }
 
@@ -843,11 +843,13 @@ function UpdateSheetWeapons() {
 	ReCalcWeapons(CurrentUpdates.types.indexOf("attacksprofs") !== -1, isLvlDepAtkAdd || CurrentUpdates.types.indexOf("attacksforce") !== -1);
 }
 
+// >>>> Changes Dialog functions <<<< \\
+
 // a function to do all the default things after a change in level, class, race, feat, magic item, or companion
 // this function is called whenever the calculations are activated again
 function UpdateSheetDisplay() {
 	if (!CurrentUpdates.types.length || !IsNotReset || !IsNotImport) {
-		CurrentUpdates = {types : [], extras : {}}; // reset the CurrentUpdates variable
+		CurrentUpdates = {types : []}; // reset the CurrentUpdates variable
 		return;
 	}
 
@@ -859,7 +861,8 @@ function UpdateSheetDisplay() {
 			chHP : false, // hit points
 			chSP : false, // spells
 			chSK : false, // skills
-			chAT : false // attack calculations
+			chAT : false, // attack calculations
+			chNO : false // notes additions
 		};
 		if (!cDialogFld) Value("ChangesDialogSkip.Stringified", ChangesDialogSkip.toSource());
 	}
@@ -1362,10 +1365,58 @@ function UpdateSheetDisplay() {
 		});
 		Changes_Dialog.bAtk = function (dialog) {
 			ShowCompareDialog(
-				["Things affecting attack calculations", "You can always see what things are affecting the attack calculations with the small buttons in front of each attack entry on the first page.\n\nNote that things affecting spell attacks and spell save DCs are also applied on the spell sheet pages, but not to the 'Ability Save DC' on the first page."],
+				["Things affecting attack/DC calculations", "You can always see what things are affecting the attack calculations with the small buttons in front of each attack entry on the first page.", "Be aware that things affecting spell attacks and spell save DCs are applied in the attack section and on the spell sheet pages, but not to the 'Ability Save DC' on the first page."],
 				[
 					["Old attack/DC manipulations", this.oldAtkStr],
 					["New attack/DC manipulations", StringEvals("atkStr")]
+				],
+				true
+			);
+		};
+	}
+
+	// if an addition was done to the 3rd page Notes section or to a Notes page
+	if (CurrentUpdates.notesChanges) {
+		// get the previous atkCalc/stkAdd string
+		Changes_Dialog.notesChange = "\u2022 " + CurrentUpdates.notesChanges.join("\n\u2022 ");
+		// make the attack dialog insert
+		dialogParts.push({
+			skipType : "chNO",
+			type : "cluster",
+			align_children : "align_left",
+			alignment : "align_fill",
+			width : 500,
+			font : "heading",
+			name : "Notes Addition",
+			elements : [{
+				type : "view",
+				align_children : "align_row",
+				alignment : "align_fill",
+				elements : [{
+					type : "static_text",
+					width : 400,
+					alignment : "align_fill",
+					font : "dialog",
+					wrap_name : true,
+					name : "A text was added to the Notes section on the 3rd page and/or a separate Notes page because it didn't fit into the space originally meant for it."
+				}, {
+					type : "button",
+					item_id : "bNot",
+					name : "See Addition(s)"
+				}]
+			}, {
+				type : "check_box",
+				item_id : "chNO",
+				alignment : "align_fill",
+				font : "palette",
+				name : checkboxTxt
+			}]
+		});
+		Changes_Dialog.bNot = function (dialog) {
+			ShowCompareDialog(
+				["Things added to the Notes section/page", "You can always edit the text in the Notes section or Notes pages, you don't have to keep it as set by the automation.", 'Class features added to the third page can always be moved to the Class Features section on the second page, it will not interfere with the sheet\'s automation. You will still be able to remove them using the "Choose Feature" button.'],
+				[
+					["", this.notesChange]
 				],
 				true
 			);
@@ -1385,7 +1436,7 @@ function UpdateSheetDisplay() {
 	// if there is nothing to show, stop the function now
 	if (!cancelDia) {
 		// reset the CurrentUpdates variable
-		CurrentUpdates = {types : [], extras : {}};
+		CurrentUpdates = {types : []};
 		// add the sections to the dialog
 		setDialogName(Changes_Dialog, "sect", "elements", dialogParts);
 		// open the dialog
@@ -1393,7 +1444,7 @@ function UpdateSheetDisplay() {
 	}
 
 	// reset the CurrentUpdates variable
-	CurrentUpdates = {types : [], extras : {}};
+	CurrentUpdates = {types : []};
 
 	// Stop progress bar
 	thermoM(thermoTxt, true);
@@ -1405,7 +1456,8 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 	var clusterArr = [];
 	var isTxtA = isArray(txtA);
 	var hdr = isTxtA ? txtA[0] : txtA;
-	var extraTxt = isTxtA ? txtA[1] : "";
+	var extraTxt = isTxtA && txtA[1] ? txtA[1] : "";
+	var headTxt = isTxtA && txtA[2] ? txtA[2] : "";
 
 	for (var i = 0; i < arr.length; i++) {
 		var nextElem = {
@@ -1433,6 +1485,11 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 		clusterArr.push(nextElem);
 	}
 
+	var otherWidths = clusterArr.length * 300;
+	if (clusterArr.length == 1) {
+		otherWidths = 400;
+		clusterArr[0].elements[0].width = 400;
+	}
 	var ShowCompare_Dialog = {
 		initialize : function (dialog) {
 			if (!canBeLong) return;
@@ -1447,7 +1504,23 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 			elements : [{
 				type : "view",
 				align_children : "align_left",
-				elements : [{
+				elements : (headTxt ? [{
+					type : "static_text",
+					item_id : "head",
+					alignment : "align_fill",
+					font : "heading",
+					wrap_name : true,
+					width : otherWidths,
+					name : txtA[0]
+				}, {
+					type : "static_text",
+					item_id : "txt2",
+					alignment : "align_fill",
+					font : "dialog",
+					wrap_name : true,
+					width : otherWidths,
+					name : headTxt
+				}] : []).concat([{
 					type : "view",
 					align_children : "align_row",
 					elements : [{
@@ -1458,7 +1531,7 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 						wrap_name : true,
 						height : 20,
 						name : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]",
-						width : 548
+						width : otherWidths
 					}, {
 						type : "edit_text",
 						item_id : "ding",
@@ -1471,13 +1544,13 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 					type : "view",
 					align_children : "align_top",
 					elements : clusterArr
-				}].concat(extraTxt ? [{
+				}]).concat(extraTxt ? [{
 					type : "static_text",
 					item_id : "txt1",
 					alignment : "align_fill",
 					font : "dialog",
 					wrap_name : true,
-					width : 548,
+					width : otherWidths,
 					name : extraTxt
 				}] : []).concat([{
 					type : "ok"
@@ -1488,7 +1561,7 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 	var dia = app.execDialog(ShowCompare_Dialog);
 }
 
-// >>>> Magic Item functions <<<< \\
+// >>>> Magic Items functions <<<< \\
 
 function doDropDownValCalcWithChoices() {
 	if (!event.target || event.type != "Field") return;
@@ -1706,7 +1779,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		var theMI = {
 			name : aMIvar.name ? aMIvar.name : setFieldValueTo ? setFieldValueTo : input
 		}
-		var MIattr = ["source", "type", "rarity", "attunement", "magicItemTable", "weight", "description", "descriptionLong", "descriptionFull", "calculate", "prerequisite", "prereqeval"];
+		var MIattr = ["source", "type", "rarity", "attunement", "magicItemTable", "weight", "description", "descriptionLong", "descriptionFull", "calculate", "prerequisite", "prereqeval", "chooseGear"];
 		for (var a = 0; a < MIattr.length; a++) {
 			var aKey = MIattr[a];
 			if (aMIvar[aKey]) {
@@ -1746,7 +1819,13 @@ function ApplyMagicItem(input, FldNmbr) {
 	// Before stopping the calculations, first test if the magic item has a prerequisite and if it meets that
 	if (IsNotImport && IsNotReset && theMI && theMI.prereqeval && !ignorePrereqs && event.target && event.target.name == MIflds[0]) {
 		try {
-			var meetsPrereq = eval(theMI.prereqeval);
+			if (typeof theMI.prereqeval == 'string') {
+				var meetsPrereq = eval(theMI.prereqeval);
+			} else if (typeof theMI.prereqeval == 'function') {
+				var gatherVars = gatherPrereqevalVars();
+				gatherVars.choice = newMIvar;
+				var meetsPrereq = theMI.prereqeval(gatherVars);
+			}
 		} catch (e) {
 			console.println("The 'prereqeval' attribute for the magic item '" + theMI.name + "' produces an error and is subsequently ignored. If this is one of the built-in magic items, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the magic item.");
 			console.show();
@@ -1868,8 +1947,11 @@ function ApplyMagicItem(input, FldNmbr) {
 		);
 
 		// Do the selection of a weapon, ammo, or armor if defined
-		if (justChange && aMI.chooseGear) selectMagicItemGearType(false, FldNmbr, aMI.chooseGear); // undo the previous
-		if (aMI.chooseGear) selectMagicItemGearType(true, FldNmbr, aMI.chooseGear);
+		if (justChange && (aMI.chooseGear || aMI[oldMIvar].chooseGear)) {
+			// undo the previous
+			selectMagicItemGearType(false, FldNmbr, aMI[oldMIvar].chooseGear ? aMI[oldMIvar].chooseGear : aMI.chooseGear);
+		}
+		if (theMI.chooseGear) selectMagicItemGearType(true, FldNmbr, theMI.chooseGear);
 	}
 
 	// Set the visibility of the attuned checkbox
@@ -1934,7 +2016,8 @@ function ApplyAttunementMI(FldNmbr) {
 	);
 
 	// Do the selection of a weapon, ammo, armor if defined
-	if (MagicItemsList[aMI].chooseGear) selectMagicItemGearType(isChecked, FldNmbr, MagicItemsList[aMI].chooseGear);
+	var useChooseGear = aMIvar && MagicItemsList[aMI][aMIvar].chooseGear ? MagicItemsList[aMI][aMIvar].chooseGear : MagicItemsList[aMI].chooseGear ? MagicItemsList[aMI].chooseGear : false;
+	if (useChooseGear) selectMagicItemGearType(isChecked, FldNmbr, useChooseGear);
 }
 
 // Hide/show the attuned checkbox for a magic item entry
@@ -2361,16 +2444,6 @@ function ResetMagicItems() {
 }
 
 // Change the magic item to include a selected weapon, armor, or ammunition
-/* chooseGear : {
-	type : "weapon", "armor", or "ammo"
-	prefixOrSuffix : "prefix", "suffix", or "brackets"
-	replaceOrAmend : "replace", or "amend" // only in magic item's description
-	descriptionChange : "" // string in the MI description to amend the choice to (or replace, see 'replaceOrAmend' attribute)
-	itemName1stPage : [("prefix", "suffix", or "brackets"), ""]
-	excludeCheck : function (inObjKey, inObj) {
-		return true;
-	}
-} */
 function selectMagicItemGearType(AddRemove, FldNmbr, typeObj) {
 	if (!event.target || !event.target.name || event.target.name.indexOf("Extra.Magic Item ") == -1 || !typeObj.type) return;
 	if (typeObj.excludeCheck && typeof typeObj.excludeCheck != "function") delete typeObj.excludeCheck;
@@ -2506,15 +2579,57 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj) {
 	}
 }
 
+// Gather some variables to pass to a prereqeval function
+function gatherPrereqevalVars() {
+	var moreProfs = What("MoreProficiencies");
+	var gObj = {
+		// general character abilities
+		isSpellcaster : isSpellcaster(),
+		characterLevel : Number(What("Character Level")),
+		// armour proficiencies
+		shieldProf : tDoc.getField("Proficiency Shields").isBoxChecked(0),
+		lightArmorProf : tDoc.getField("Proficiency Armor Light").isBoxChecked(0),
+		mediumArmorProf : tDoc.getField("Proficiency Armor Medium").isBoxChecked(0),
+		heavyArmorProf : tDoc.getField("Proficiency Armor Heavy").isBoxChecked(0),
+		// weapon proficiencies
+		simpleWeaponsProf : tDoc.getField("Proficiency Weapon Simple").isBoxChecked(0),
+		martialWeaponsProf : tDoc.getField("Proficiency Weapon Martial").isBoxChecked(0),
+		otherWeaponsProf : What("Proficiency Weapon Other Description"),
+		// other proficiencies
+		toolProfs : [moreProfs],
+		languageProfs : [moreProfs],
+		skillProfs : [],
+		// specifics
+		hasEldritchBlast : (/,eldritch blast,/i).test(CurrentWeapons.known) || isSpellUsed("eldritch blast", true)
+	};
+
+	// fill the arrays for tool, language, and skill proficiencies
+	for (var i = 1; i <= FieldNumbers.langstools; i++) {
+		var aLang = What("Language " + i);
+		if (aLang) gObj.languageProfs.push(aLang);
+		var aTool = What("Tool " + i);
+		if (aTool) gObj.toolProfs.push(aTool);
+	}
+	var skillsAlphaBeta = Who('Text.SkillsNames') === 'alphabeta';
+	for (var i = 0; i < SkillsList.abbreviations.length - 2; i++) {
+		var isProf = tDoc.getField(SkillsList.abbreviations[i] + " Prof").isBoxChecked(0);
+		if (isProf) gObj.skillProfs.push(SkillsList[skillsAlphaBeta ? "names" : "namesByAS"][i]);
+	}
+	return gObj;
+}
+
 /*
 NEW ATTRIBUTES
 	limfeaname // Optional; If defined it is used for populating the limited feature section and the action section instead of `name`
 	scorestxt // Optional; String; If defined it is used for the text in the Ability Score dialog and tooltips. If not defined, but 'scores' is defined, 'scores' will be used to generate a text
 	scoresOverride // Optional; Array; works same as scores, but are used to populate the "Magical Override" column; If you are providing both 'scores' and 'scoresOverride' you should also give a 'scorestxt', as the auto-generated tooltip text doesn't work if you have both 'scores' and 'scoresOverride'
 	calcChanges.spellList // Optional; an array with the first entry being a function, and the second entry being a descriptive text. This attribute can change the spell list created for a class / race / feat
+	calcChanges.spellCalc // Optional; an array with the first entry being a function, and the second entry being a descriptive text. This attribute can change the DC, spell attack, and number of spells to memorize
 	weaponOptions // Optional; an array of WeaponsList objects to be added to the WeaponsList (can also be a single object if only wanting to add a single weapon)
 	armorOptions // Optional; an array of ArmourList objects to be added to the ArmourList (can also be a single object if only wanting to add a single armour)
 	ammoOptions // Optional; an array of AmmoList objects to be added to the AmmoList (can also be a single object if only wanting to add a single armour)
+	extraAC // replaces AddACMisc() in eval
+	extraLimitedFeatures // replaces AddFeature() in eval
 
 CHANGED ATTRIBUTES
 	armorProfs // Optional; Array; armor proficiencies to add [previous just 'armor']
@@ -2556,6 +2671,8 @@ CHANGES TO IMPLEMENT IN LIST SCRIPTS
 	- Class Features Remember
 	- AddAction
 	- AddWeapon
+	- AddFeature
+	- AddACMisc
 	- ClassFeatureOptions (no longer needed in removeeval if to be removed at that level)
 
 	spellcastingBonus.firstCol (options: 'atwill', 'oncesr', 'oncelr', 'markedbox', 'checkbox', 'checkedbox')

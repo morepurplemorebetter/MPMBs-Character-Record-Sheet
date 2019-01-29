@@ -1552,7 +1552,7 @@ var Base_ClassList = {
 							"I add my Charisma modifier to the damage of every beam of my Eldritch Blast cantrip."
 						]
 					},
-					prereqeval : "hasEldritchBlast"
+					prereqeval : function(v) { return v.hasEldritchBlast; }
 				},
 				"armor of shadows" : {
 					name : "Armor of Shadows",
@@ -1575,7 +1575,7 @@ var Base_ClassList = {
 						selection : ["levitate"],
 						firstCol : "atwill"
 					},
-					prereqeval : "classes.known.warlock.level >= 9"
+					prereqeval : function(v) { return classes.known.warlock.level >= 9; }
 				},
 				"beast speech" : {
 					name : "Beast Speech",
@@ -1606,7 +1606,7 @@ var Base_ClassList = {
 						selection : ["compulsion"],
 						firstCol : "oncelr"
 					},
-					prereqeval : "classes.known.warlock.level >= 7"
+					prereqeval : function(v) { return classes.known.warlock.level >= 7; }
 				},
 				"book of ancient secrets (prereq: pact of the tome)" : {
 					name : "Book of Ancient Secrets",
@@ -1619,7 +1619,7 @@ var Base_ClassList = {
 					source : [["SRD", 48], ["P", 110]],
 					eval : "CurrentSpells['book of ancient secrets'] = {name : 'Book of Ancient Secrets', ability : 6, list : {class : 'any', ritual : true}, known : {spells : 'book'}}; SetStringifieds('spells'); CurrentUpdates.types.push('spells');",
 					removeeval : "delete CurrentSpells['book of ancient secrets']; SetStringifieds('spells'); CurrentUpdates.types.push('spells');",
-					prereqeval : "classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the tome'"
+					prereqeval : function(v) { return classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the tome'; }
 				},
 				"chains of carceri (prereq: level 15 warlock, pact of the chain)" : {
 					name : "Chains of Carceri",
@@ -1631,7 +1631,7 @@ var Base_ClassList = {
 						selection : ["hold monster"],
 						firstCol : "atwill"
 					},
-					prereqeval : "classes.known.warlock.level >= 15 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'"
+					prereqeval : function(v) { return classes.known.warlock.level >= 15 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'; }
 				},
 				"devil's sight" : {
 					name : "Devil's Sight",
@@ -1651,7 +1651,7 @@ var Base_ClassList = {
 						selection : ["confusion"],
 						firstCol : "oncelr"
 					},
-					prereqeval : "classes.known.warlock.level >= 7"
+					prereqeval : function(v) { return classes.known.warlock.level >= 7; }
 				},
 				"eldritch sight" : {
 					name : "Eldritch Sight",
@@ -1676,7 +1676,7 @@ var Base_ClassList = {
 							"My Eldritch Blast cantrip has a range of 300 ft."
 						]
 					},
-					prereqeval : "hasEldritchBlast"
+					prereqeval : function(v) { return v.hasEldritchBlast; }
 				},
 				"eyes of the rune keeper" : {
 					name : "Eyes of the Rune Keeper",
@@ -1711,7 +1711,7 @@ var Base_ClassList = {
 							"If I include the word 'Pact' in a melee weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."
 						]
 					},
-					prereqeval : "classes.known.warlock.level >= 12 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the blade'"
+					prereqeval : function(v) { return classes.known.warlock.level >= 12 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the blade'; }
 				},
 				"mask of many faces" : {
 					name : "Mask of Many Faces",
@@ -1734,7 +1734,7 @@ var Base_ClassList = {
 						selection : ["alter self"],
 						firstCol : "atwill"
 					},
-					prereqeval : "classes.known.warlock.level >= 15"
+					prereqeval : function(v) { return classes.known.warlock.level >= 15; }
 				},
 				"minions of chaos (prereq: level 9 warlock)" : {
 					name : "Minions of Chaos",
@@ -1748,7 +1748,7 @@ var Base_ClassList = {
 						selection : ["conjure elemental"],
 						firstCol : "oncelr"
 					},
-					prereqeval : "classes.known.warlock.level >= 9"
+					prereqeval : function(v) { return classes.known.warlock.level >= 9; }
 				},
 				"mire the mind (prereq: level 5 warlock)" : {
 					name : "Mire the Mind",
@@ -1762,7 +1762,7 @@ var Base_ClassList = {
 						selection : ["slow"],
 						firstCol : "oncelr"
 					},
-					prereqeval : "classes.known.warlock.level >= 5"
+					prereqeval : function(v) { return classes.known.warlock.level >= 5; }
 				},
 				"misty visions" : {
 					name : "Misty Visions",
@@ -1780,7 +1780,7 @@ var Base_ClassList = {
 					description : "\n   " + "As an action, when I'm in an area of dim light or darkness, I can become invisible" + "\n   " + "I become visible again when I move or take an action or reaction",
 					source : [["SRD", 49], ["P", 111]],
 					action : ["action", ""],
-					prereqeval : "classes.known.warlock.level >= 5"
+					prereqeval : function(v) { return classes.known.warlock.level >= 5; }
 				},
 				"otherworldly leap (prereq: level 9 warlock)" : {
 					name : "Otherworldly Leap",
@@ -1792,7 +1792,7 @@ var Base_ClassList = {
 						selection : ["jump"],
 						firstCol : "atwill"
 					},
-					prereqeval : "classes.known.warlock.level >= 9"
+					prereqeval : function(v) { return classes.known.warlock.level >= 9; }
 				},
 				"repelling blast (prereq: eldritch blast cantrip)" : {
 					name : "Repelling Blast",
@@ -1806,7 +1806,7 @@ var Base_ClassList = {
 							"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
 						]
 					},
-					prereqeval : "hasEldritchBlast"
+					prereqeval : function(v) { return v.hasEldritchBlast; }
 				},
 				"sculptor of flesh (prereq: level 7 warlock)" : {
 					name : "Sculptor of Flesh",
@@ -1820,7 +1820,7 @@ var Base_ClassList = {
 						selection : ["polymorph"],
 						firstCol : "oncelr"
 					},
-					prereqeval : "classes.known.warlock.level >= 7"
+					prereqeval : function(v) { return classes.known.warlock.level >= 7; }
 				},
 				"sign of ill omen (prereq: level 5 warlock)" : {
 					name : "Sign of Ill Omen",
@@ -1834,7 +1834,7 @@ var Base_ClassList = {
 						selection : ["bestow curse"],
 						firstCol : "oncelr"
 					},
-					prereqeval : "classes.known.warlock.level >= 5"
+					prereqeval : function(v) { return classes.known.warlock.level >= 5; }
 				},
 				"thief of five fates" : {
 					name : "Thief of Five Fates",
@@ -1854,7 +1854,7 @@ var Base_ClassList = {
 					description : "\n   " + "When taking the attack action, I can attack twice with my pact weapon",
 					source : [["SRD", 50], ["P", 111]],
 					action : ['action', 'Pact Weapon (2 attacks per action)'],
-					prereqeval : "classes.known.warlock.level >= 5 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the blade'"
+					prereqeval : function(v) { return classes.known.warlock.level >= 5 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the blade'; }
 				},
 				"visions of distant realms (prereq: level 15 warlock)" : {
 					name : "Visions of Distant Realms",
@@ -1866,13 +1866,13 @@ var Base_ClassList = {
 						selection : ["arcane eye"],
 						firstCol : "atwill"
 					},
-					prereqeval : "classes.known.warlock.level >= 15"
+					prereqeval : function(v) { return classes.known.warlock.level >= 15; }
 				},
 				"voice of the chain master (prereq: pact of the chain)" : {
 					name : "Voice of the Chain Master",
 					description : "\n   " + "While on the same plane as my familiar, I can communicate telepathically with it" + "\n   " + "Also, I can perceive through its senses and have it speak with my voice while doing so",
 					source : [["SRD", 50], ["P", 111]],
-					prereqeval : "classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'"
+					prereqeval : function(v) { return classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'; }
 				},
 				"whispers of the grave (prereq: level 9 warlock)" : {
 					name : "Whispers of the Grave",
@@ -1884,14 +1884,14 @@ var Base_ClassList = {
 						selection : ["speak with dead"],
 						firstCol : "atwill"
 					},
-					prereqeval : "classes.known.warlock.level >= 9"
+					prereqeval : function(v) { return classes.known.warlock.level >= 9; }
 				},
 				"witch sight (prereq: level 15 warlock)" : {
 					name : "Witch Sight",
 					description : "\n   " + "I can see the true form of creatures (shapechangers/illusions/transmutations) within 30 ft",
 					source : [["SRD", 50], ["P", 111]],
 					vision : [["Witch sight", 30]],
-					prereqeval : "classes.known.warlock.level >= 15"
+					prereqeval : function(v) { return classes.known.warlock.level >= 15; }
 				}
 			},
 			"pact boon" : {

@@ -197,17 +197,45 @@ MagicItemsList["staff of purple"] = {
 	If the magic item doesn't have a prerequisite, you can just leave this attribute out.
 	Setting this to "" is the same as not including this attribute.
 */
-	prereqeval : "CurrentRace.known.indexOf('dwarf') !== -1",
-/*	eval // OPTIONAL //
-	TYPE:	string
-	USE:	this string is evaluated using eval() and should result in 'true' if the prerequisite is met or 'false' otherwise
+	prereqeval : function(v) {
+		return v.isSpellcaster && CurrentRace.known.indexOf('dwarf') !== -1;
+	},
+	prereqeval : "CurrentSpells.toSource() !== '({})' && CurrentRace.known.indexOf('dwarf') !== -1",
+/*	prereqeval // OPTIONAL //
+	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
+	USE:	this should return 'true' if the prerequisite is met or 'false' otherwise
 
-	This can be any JavaScript you want to use to test if the prerequisite for the item is met.
+	Both examples do the exact same thing, just one is a string and the other is a function.
+	Writing a function is better as it is easier to avoid syntax errors and will run faster.
+	The string option is there for backwards-compatibility and this explanation assumes you are writing a function.
+
+	The function is fed one variable, v, an object containing attributes with information about the character.
+	Changing these attributes does nothing, but you can use them to test if the character meets the requirements.
+
+	An explanation of the different attributes of this variable:
+	var v = {
+		isSpellcaster,  	// boolean; true if the character has spellcasting from a source other than magic items
+		characterLevel, 	// number; the total character level
+		shieldProf,     	// boolean; true if the checkbox for shield proficiency is checked
+		lightArmorProf, 	// boolean; true if the checkbox for light armour proficiency is checked
+		mediumArmorProf,	// boolean; true if the checkbox for medium armour proficiency is checked
+		heavyArmorProf, 	// boolean; true if the checkbox for heavy armour proficiency is checked
+		simpleWeaponsProf,	// boolean; true if the checkbox for simple weapon proficiency is checked
+		martialWeaponsProf,	// boolean; true if the checkbox for martial weapon proficiency is checked
+		otherWeaponsProf,	// string; the content of the other weapon proficiencies field
+		toolProfs,   		// array; the contents of the tool fields, one field per array entry
+		languageProfs,   	// array; the contents of the language fields, one field per array entry
+		skillProfs,     	// array; the skills the character is proficient in, one skill name per array entry
+		hasEldritchBlast,	// boolean; true if the character has the Eldritch Blast cantrips
+		choice,      		// string; the sub-choice of this magic item (empty string if no choice)
+	}
+	N.B. The first entry of both the toolProfs and languageProfs arrays is the contents of the 'More Proficiency' field
+
+	Other than using the 'v' variable, this function can be any JavaScript you want.
 	Common usage examples:
-	"CurrentRace.known.indexOf('dwarf') !== -1", // Test if race is a dwarf
-	"classes.known.cleric", // Test if character has any levels in the cleric class
-	"CurrentSpells.toSource() !== '({})'", // Test if character has any spellcasting abilities (including from race/feat/magic item)
-	"What('Dex') >= 13", // Test if character has a Dexterity score of 13 or more
+		"return CurrentRace.known.indexOf('dwarf') !== -1;" // Test if race is a dwarf
+		"return classes.known.cleric;" // Test if character has any levels in the cleric class
+		"return What('Dex') >= 13;" // Test if character has a Dexterity score of 13 or more
 */
 	allowDuplicates : true,
 /*	allowDuplicates // OPTIONAL //
@@ -471,9 +499,9 @@ MagicItemsList["staff of purple"] = {
 		>>> MagicItemsList Attributes (inside choice) >>>
 		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-		All the attributes described above can also be used inside a choice object,
-		with the exception of 'choices' (you can't have options inside options),
-		and 'chooseGear' (as it will already be applied to the choice as well).
+		All the attributes described above can also be used inside a choice object, except:
+			'choices'	- you can't have options inside options
+
 		The sheet will look in both choice and parent to determine what attribute to use,
 		with the choice being preferred over the parent.
 
