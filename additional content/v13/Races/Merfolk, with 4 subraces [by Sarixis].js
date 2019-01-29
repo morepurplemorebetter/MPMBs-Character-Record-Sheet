@@ -172,8 +172,11 @@ RaceList["awakened merrow"] = {
 	weight : " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
 	scores : [2, 0, 0, 0, 2, 0],
 	trait : "Awakened Merrow (+2 Strength, +2 Wisdom)\nAmphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nDevout: I have advantage on Intelligence (Religion) checks regarding human and oceanic deities",
-	eval : "AddACMisc(1, \"Tough Scales\", \"Tough Scales was gained from being an Awakened Merrow\")",
-	removeeval : "AddACMisc(0, \"Tough Scales\", \"Tough Scales was gained from being an Awakened Merrow\")",
+	extraAC : [{
+		mod : 1,
+		name : "Tough Scales",
+		text : "As an Awakened Merrow, I gain a +1 bonus to AC from my scales.",
+	}],
 	spellcastingAbility : 5,
 	spellcastingBonus : {
 		name : "Aquitect (level 1)",
@@ -193,7 +196,7 @@ RaceList["awakened merrow"] = {
 				spells : ["create or destroy water"],
 				selection : ["create or destroy water"],
 				firstCol : 'oncelr'
-			},
+			}
 		}
 	}
 };

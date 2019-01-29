@@ -357,7 +357,7 @@ ClassList["improved artificer"] = {
 						"My dual pistols can be shot 5 times before needing to reload."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1; }
 			},
 			"dual pistols: increase damage to 1d6 (2 invention points)" : {
 				name : "Dual Pistols: Increase Damage to 1d6",
@@ -373,7 +373,7 @@ ClassList["improved artificer"] = {
 						"My dual pistols deal 1d6 damage instead of 1d4."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1; }
 			},
 			"dual pistols: increase damage to 1d8 (3 invention points; prereq: increase damage to 1d6)" : {
 				name : "Dual Pistols: Increase Damage to 1d8",
@@ -387,7 +387,7 @@ ClassList["improved artificer"] = {
 						"My dual pistols deal 1d8 damage instead of 1d6."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1 && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols: increase damage to 1d6 (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1 && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols: increase damage to 1d6 (2 invention points)') != -1; }
 			},
 			"dual pistols: magical attacks (2 invention points)" : {
 				name : "Dual Pistols: Magical Attacks",
@@ -401,7 +401,7 @@ ClassList["improved artificer"] = {
 						"My dual pistols attacks count as magical for overcoming resistances and damage reduction."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1; }
 			},
 			"dual pistols: increase reload speed (3 invention points)" : {
 				name : "Dual Pistols: Increase Reload Speed",
@@ -415,7 +415,7 @@ ClassList["improved artificer"] = {
 						"My dual pistols can be reloaded as a bonus action instead of an action."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1; }
 			},
 			"dual pistols: rapid fire (3 invention points)" : {
 				name : "Dual Pistols: Rapid Fire",
@@ -426,7 +426,7 @@ ClassList["improved artificer"] = {
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
 				recovery: "long rest",
 				action : ["action", ""],
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1; }
 			},
 			"blunderbuss (2 invention points)" : {
 				name : "Blunderbuss",
@@ -475,7 +475,7 @@ ClassList["improved artificer"] = {
 						"My blunderbuss can be shot 4 times before needing to reload."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1; }
 			},
 			"blunderbuss: increase rate of fire to 6 (2 invention points; prereq: increase rate of fire to 4)" : {
 				name : "Blunderbuss: Increase Rate of Fire to 6",
@@ -491,7 +491,7 @@ ClassList["improved artificer"] = {
 						"My blunderbuss can be shot 6 times before needing to reload."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1 && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss: increase rate of fire to 4 (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1 && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss: increase rate of fire to 4 (2 invention points)') != -1; }
 			},
 			"blunderbuss: magical attacks (2 invention points)" : {
 				name : "Blunderbuss: Magical Attacks",
@@ -505,7 +505,7 @@ ClassList["improved artificer"] = {
 						"My blunderbuss attacks count as magical for overcoming resistances and damage reduction."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1; }
 			},
 			"blunderbuss: increase damage to d8 (2 invention points)" : {
 				name : "Blunderbuss: Increase Damage to d8",
@@ -522,7 +522,7 @@ ClassList["improved artificer"] = {
 						"My blunderbuss deals d8 damage instead of d6."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1; }
 			},
 			"blunderbuss: increase damage to d10 (3 invention points; prereq: increase damage to d8)" : {
 				name : "Blunderbuss: Increase Damage to d10",
@@ -539,7 +539,7 @@ ClassList["improved artificer"] = {
 						"My blunderbuss deals d10 damage instead of d8."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1 && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss: increase damage to 1d8 (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1 && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss: increase damage to 1d8 (2 invention points)') != -1; }
 			},
 			"blunderbuss: knockdown (2 invention points)" : {
 				name : "Blunderbuss: Knockdown",
@@ -549,7 +549,7 @@ ClassList["improved artificer"] = {
 				usages: "Int mod per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
 				recovery: "long rest",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('blunderbuss (2 invention points)') != -1; }
 			},
 			"sniper rifle (2 invention points)" : {
 				name : "Sniper Rifle",
@@ -599,7 +599,7 @@ ClassList["improved artificer"] = {
 						"My sniper rifle can be shot 5 times before needing to reload."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1; }
 			},
 			"sniper rifle: increase range (2 invention points)" : {
 				name : "Sniper Rifle: Increase Range",
@@ -613,7 +613,7 @@ ClassList["improved artificer"] = {
 						"The range of my sniper rifle is now 300/450 ft."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1; }
 			},
 			"sniper rifle: magical attacks (2 invention points)" : {
 				name : "Sniper Rifle: Magical Attacks",
@@ -627,7 +627,7 @@ ClassList["improved artificer"] = {
 						"My sniper rifle attacks count as magical for overcoming resistances and damage reduction."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1; }
 			},
 			"sniper rifle: increase damage to 2d10 (2 invention points)" : {
 				name : "Sniper Rifle: Increase Damage to 1d10",
@@ -643,7 +643,7 @@ ClassList["improved artificer"] = {
 						"My sniper rifle deals 2d10 damage instead of 1d10."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1; }
 			},
 			"sniper rifle: increase damage to 3d10 (3 invention points; prereq: increase damage to 2d10)" : {
 				name : "Sniper Rifle: Increase Damage to 3d10",
@@ -657,7 +657,7 @@ ClassList["improved artificer"] = {
 						"My sniper rifle deals 3d10 damage instead of 2d10."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1 && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle: increase damage to 2d10 (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1 && GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle: increase damage to 2d10 (2 invention points)') != -1; }
 			},
 			"sniper rifle: aimed fire (4 invention points)" : {
 				name : "Sniper Rifle: Aimed Fire",
@@ -667,7 +667,7 @@ ClassList["improved artificer"] = {
 				usages: "Int mod per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
 				recovery: "long rest",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('sniper rifle (2 invention points)') != -1; }
 			}
 		},
 		"inventions: clockwork constructs" : {
@@ -707,7 +707,7 @@ ClassList["improved artificer"] = {
 				description : " [2 points]\n   This upgrade can be selected up to 6 times even though the automation doesn't allow for it",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', true, [['Comp.Use.AC', 1], ['Cnote.Left', ' \\u2022 Upgrade: it gains +1 AC (can be taken up to 6 times)']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', false, [['Comp.Use.AC', 1], ['Cnote.Left', ' \\u2022 Upgrade: it gains +1 AC (can be taken up to 6 times)']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1; }
 			},
 			"drone: increase carrying capacity by 50 lb (2 invention points)" : {
 				name : "Clockwork Drone: Increase Carrying Capacity by 50 lb",
@@ -715,7 +715,7 @@ ClassList["improved artificer"] = {
 				description : " [2 points]\n   This upgrade can be selected up to 4 times even though the automation doesn't allow for it",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', true, [['Comp.Use.Traits', 'Claw Grab: The drone has a claw that can grab and pick up things weighing up to 110 lb.', /claw grab:.*?\\d+ (lb|kg)\\.?/i], ['Cnote.Left', ' \\u2022 Upgrade: its claw grab carrying capacity is increased by 50 lb (can be taken up to 4 times)']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', false, [['Comp.Use.Traits', 'Claw Grab: The drone has a claw that can grab and pick up things weighing up to 60 lb.', /claw grab:.*?\\d+ (lb|kg)\\.?/i], ['Cnote.Left', ' \\u2022 Upgrade: its claw grab carrying capacity is increased by 50 lb (can be taken up to 4 times)']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1; }
 			},
 			"drone: increase hit points by 10 (1 invention point)" : {
 				name : "Clockwork Drone: Increase Hit Points by 10",
@@ -723,7 +723,7 @@ ClassList["improved artificer"] = {
 				description : " [1 point]\n   This upgrade can be selected multiple times even though the automation doesn't allow for it",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', true, [['Comp.Use.HP.Max', 10], ['Cnote.Left', ' \\u2022 Upgrade: its max HP increases by 10 (can be taken multiple times)']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', false, [['Comp.Use.HP.Max', 10], ['Cnote.Left', ' \\u2022 Upgrade: its max HP increases by 10 (can be taken multiple times)']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1; }
 			},
 			"drone: lockpick (2 invention points)" : {
 				name : "Clockwork Drone: Lockpick",
@@ -734,7 +734,7 @@ ClassList["improved artificer"] = {
 				recovery: "long rest",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', true, [['Comp.Use.Traits', '\\u25C6 Lockpick: The drone has built-in lockpicking tools with which it can open any nonmagical lock automatically. It can do this as many times as its master\\'s Int mod per long rest.'], ['Cnote.Left', ' \\u2022 Lockpick: it can open any nonmagical lock; But only my Intelligence modifier per my long rests']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', false, [['Comp.Use.Traits', '\\u25C6 Lockpick: The drone has built-in lockpicking tools with which it can open any nonmagical lock automatically. It can do this as many times as its master\\'s Int mod per long rest.'], ['Cnote.Left', ' \\u2022 Lockpick: it can open any nonmagical lock; But only my Intelligence modifier per my long rests']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1; }
 			},
 			"drone: remote detonation (1 invention point)" : {
 				name : "Clockwork Drone: Remote Detonation",
@@ -742,7 +742,7 @@ ClassList["improved artificer"] = {
 				description : " [1 point]",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', true, [['Comp.Use.Traits', '\\u25C6 Remote Detonation: As an action, the drone can explode, causing each creature within 10 ft to take 10d10 fire damage, Dexterity save for half. Once detonated, the drone can\\'t be brought back to life by any means.'], ['Cnote.Left', ' \\u2022 Remote Detonation: it can detonate as an action; After which, I have to rebuild the drone']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', false, [['Comp.Use.Traits', '\\u25C6 Remote Detonation: As an action, the drone can explode, causing each creature within 10 ft to take 10d10 fire damage, Dexterity save for half. Once detonated, the drone can\\'t be brought back to life by any means.'], ['Cnote.Left', ' \\u2022 Remote Detonation: it can detonate as an action; After which, I have to rebuild the drone']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1; }
 			},
 			"drone: shrink (3 invention points)" : {
 				name : "Clockwork Drone: Shrink",
@@ -750,7 +750,7 @@ ClassList["improved artificer"] = {
 				description : " [3 points]",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', true, [['Comp.Use.Traits', '\\u25C6 Shrink: As a bonus action, the drone can shrink down to the size of a few inches. It continues to operate as normal. It can return to its original size as a bonus action.'], ['Cnote.Left', ' \\u2022 Shrink: it can shrink down to the size of a few inches or back to normal as a bonus action']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', false, [['Comp.Use.Traits', '\\u25C6 Shrink: As a bonus action, the drone can shrink down to the size of a few inches. It continues to operate as normal. It can return to its original size as a bonus action.'], ['Cnote.Left', ' \\u2022 Shrink: it can shrink down to the size of a few inches or back to normal as a bonus action']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1; }
 			},
 			"drone: stealth field (2 invention points)" : {
 				name : "Clockwork Drone: Stealth Field",
@@ -761,7 +761,7 @@ ClassList["improved artificer"] = {
 				recovery: "long rest",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', true, [['Comp.Use.Traits', '\\u25C6 Stealth Field: As an action, the drone can turn invisible for 1 hour. The drone can use this feature as many times as half its master\\'s Intelligence modifier rounded down per long rest.'], ['Cnote.Left', ' \\u2022 Stealth Field: it can turn invisible as an action; But only half my Int mod per my long rests']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Drone', false, [['Comp.Use.Traits', '\\u25C6 Stealth Field: As an action, the drone can turn invisible for 1 hour. The drone can use this feature as many times as half its master\\'s Intelligence modifier rounded down per long rest.'], ['Cnote.Left', ' \\u2022 Stealth Field: it can turn invisible as an action; But only half my Int mod per my long rests']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('drone (2 invention points)') != -1; }
 			},
 			"fighter (2 invention points)" : {
 				name : "Clockwork Fighter",
@@ -776,7 +776,7 @@ ClassList["improved artificer"] = {
 				description : " [2 points]\n   This upgrade can be selected up to 6 times even though the automation doesn't allow for it",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', true, [['Comp.Use.AC', 1], ['Cnote.Left', ' \\u2022 Upgrade: it gains +1 AC (can be taken up to 6 times)']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', false, [['Comp.Use.AC', 1], ['Cnote.Left', ' \\u2022 Upgrade: it gains +1 AC (can be taken up to 6 times)']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1; }
 			},
 			"fighter: increase attack bonus by 1 (1 invention point)" : {
 				name : "Clockwork Fighter: Increase Attack Bonus by 1",
@@ -784,7 +784,7 @@ ClassList["improved artificer"] = {
 				description : " [1 point]\n   This upgrade can be selected up to 3 times even though the automation doesn't allow for it", // this is an interpretation by MPMB, the original document says nothing about a maximum amount of times
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', true, [['Cnote.Left', ' \\u2022 Upgrade: its attack rolls gain a +1 bonus (can be taken up to 3 times)'], ['BlueText.Comp.Use.Attack.1.To Hit Bonus', 1]]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', false, [['Cnote.Left', ' \\u2022 Upgrade: its attack rolls gain a +1 bonus (can be taken up to 3 times)'], ['BlueText.Comp.Use.Attack.1.To Hit Bonus', 1]]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1; }
 			},
 			"fighter: increase damage dice to d10 (3 invention points)" : {
 				name : "Clockwork Fighter: Increase Damage Dice to d10",
@@ -792,7 +792,7 @@ ClassList["improved artificer"] = {
 				description : " [3 points]",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', true, [['Cnote.Left', ' \\u2022 Upgrade: its punch attacks do 2d10 damage instead of 2d6'], ['BlueText.Comp.Use.Attack.1.Damage Die', '2d10', /.*/i]]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', false, [['Cnote.Left', ' \\u2022 Upgrade: its punch attacks do 2d10 damage instead of 2d6'], ['BlueText.Comp.Use.Attack.1.Damage Die', '2d6', /.*/i]]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1; }
 			},
 			"fighter: increase hit points by 10 (1 invention point)" : {
 				name : "Clockwork Fighter: Increase Hit Points by 10",
@@ -800,7 +800,7 @@ ClassList["improved artificer"] = {
 				description : " [1 point]\n   This upgrade can be selected multiple times even though the automation doesn't allow for it",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', true, [['Comp.Use.HP.Max', 10], ['Cnote.Left', ' \\u2022 Upgrade: its max HP increases by 10 (can be taken multiple times)']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', false, [['Comp.Use.HP.Max', 10], ['Cnote.Left', ' \\u2022 Upgrade: its max HP increases by 10 (can be taken multiple times)']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1; }
 			},
 			"fighter: multiattack (2 invention points)" : {
 				name : "Clockwork Fighter: Multiattack",
@@ -808,7 +808,7 @@ ClassList["improved artificer"] = {
 				description : " [2 points]",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', true, [['Comp.Use.Attack.perAction', 1], ['Cnote.Left', ' \\u2022 Upgrade: it gains multiattack; Two punch attacks as part of one attack action'], ['Comp.Use.Attack.1.Description', 'Two punch attacks as an Attack action']]); ", // the fact that it is two attacks with punch is an interpretation by MPMB, the original document says nothing about how the multiattack would work
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', false, [['Comp.Use.Attack.perAction', 1], ['Cnote.Left', ' \\u2022 Upgrade: it gains multiattack; Two punch attacks as part of one attack action'], ['Comp.Use.Attack.1.Description', 'Two punch attacks as an Attack action']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1; }
 			},
 			"fighter: grapple hands (3 invention points)" : {
 				name : "Clockwork Fighter: Grapple Hands",
@@ -816,7 +816,7 @@ ClassList["improved artificer"] = {
 				description : " [3 points]",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', true, [['Comp.Use.Traits', '\\u25C6 Grapple Hands: The fighter\\'s hands are attached to ropes and can fire up to 60 ft away. They can be used to grab things for away, pull things, pull itself up, hang from ceilings, etc.'], ['Cnote.Left', ' \\u2022 Grapple Hands: its hands can be fired up to 60 ft away and are attached to it with ropes']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', false, [['Comp.Use.Traits', '\\u25C6 Grapple Hands: The fighter\\'s hands are attached to ropes and can fire up to 60 ft away. They can be used to grab things for away, pull things, pull itself up, hang from ceilings, etc.'], ['Cnote.Left', ' \\u2022 Grapple Hands: its hands can be fired up to 60 ft away and are attached to it with ropes']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1; }
 			},
 			"fighter: head bomb (1 invention point)" : {
 				name : "Clockwork Fighter: Head Bomb",
@@ -824,7 +824,7 @@ ClassList["improved artificer"] = {
 				description : " [1 point]",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', true, [['Comp.Use.Traits', '\\u25C6 Head Bomb: As an action, the fighter can screw off its head and make a ranged attack with +10 to hit. If it hits, the head explodes and the target takes 5d10 fire damage and 5d10 bludgeoning damage. While the fighter is missing its head, it moves in a random direction (roll a d8). It costs 200 gp to craft a new head.'], ['Cnote.Left', ' \\u2022 Head Bomb: it can throw its head as a bomb; After which, I have to craft it a new head']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', false, [['Comp.Use.Traits', '\\u25C6 Head Bomb: As an action, the fighter can screw off its head and make a ranged attack with +10 to hit. If it hits, the head explodes and the target takes 5d10 fire damage and 5d10 bludgeoning damage. While the fighter is missing its head, it moves in a random direction (roll a d8). It costs 200 gp to craft a new head.'], ['Cnote.Left', ' \\u2022 Head Bomb: it can throw its head as a bomb; After which, I have to craft it a new head']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1; }
 			},
 			"fighter: shrink (3 invention points)" : {
 				name : "Clockwork Fighter: Shrink",
@@ -832,7 +832,7 @@ ClassList["improved artificer"] = {
 				description : " [3 points]",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', true, [['Comp.Use.Traits', '\\u25C6 Shrink: As a bonus action, the fighter can shrink down to the size of a few inches. It continues to operate as normal. It can return to its original size as a bonus action.'], ['Cnote.Left', ' \\u2022 Shrink: it can shrink down to the size of a few inches or back to normal as a bonus action']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Fighter', false, [['Comp.Use.Traits', '\\u25C6 Shrink: As a bonus action, the fighter can shrink down to the size of a few inches. It continues to operate as normal. It can return to its original size as a bonus action.'], ['Cnote.Left', ' \\u2022 Shrink: it can shrink down to the size of a few inches or back to normal as a bonus action']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('fighter (2 invention points)') != -1; }
 			},
 			"mount (2 invention points)" : {
 				name : "Clockwork Mount",
@@ -846,8 +846,8 @@ ClassList["improved artificer"] = {
 				source : ["XPtL3:IA", 8],
 				description : " [2 points]\n   This upgrade can be added up to 10 times even though the automation doesn't allow for it",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', true, [['Comp.Use.Features', '\\u25C6 Carrying Capacity: The mount can carry up to 590 lb.'], ['Cnote.Left', ' \\u2022 Upgrade: its carrying capacity is increased by 50 lb (can be taken up to 10 times)']]); ",
-				remove : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', false, [['Comp.Use.Features', '', /\\r?\\\u25C6 Carrying Capacity:.*?\\d+ (lb|kg)\\.?/i], ['Cnote.Left', ' \\u2022 Upgrade: its carrying capacity is increased by 50 lb (can be taken up to 10 times)']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1"
+				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', false, [['Comp.Use.Features', '', /\\r?\\\u25C6 Carrying Capacity:.*?\\d+ (lb|kg)\\.?/i], ['Cnote.Left', ' \\u2022 Upgrade: its carrying capacity is increased by 50 lb (can be taken up to 10 times)']]); ",
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1; }
 			},
 			"mount: increase ac by 1 (2 invention points)" : {
 				name : "Clockwork Mount: Increase AC by 1",
@@ -855,7 +855,7 @@ ClassList["improved artificer"] = {
 				description : " [2 points]\n   This upgrade can be selected up to 6 times even though the automation doesn't allow for it",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', true, [['Comp.Use.AC', 1], ['Cnote.Left', ' \\u2022 Upgrade: it gains +1 AC (can be taken up to 6 times)']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', false, [['Comp.Use.AC', 1], ['Cnote.Left', ' \\u2022 Upgrade: it gains +1 AC (can be taken up to 6 times)']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1; }
 			},
 			"mount: increase hit points by 10 (1 invention point)" : {
 				name : "Clockwork Mount: Increase Hit Points by 10",
@@ -863,7 +863,7 @@ ClassList["improved artificer"] = {
 				description : " [1 point]\n   This upgrade can be selected multiple times even though the automation doesn't allow for it",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', true, [['Comp.Use.HP.Max', 10], ['Cnote.Left', ' \\u2022 Upgrade: its max HP increases by 10 (can be taken multiple times)']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', false, [['Comp.Use.HP.Max', 10], ['Cnote.Left', ' \\u2022 Upgrade: its max HP increases by 10 (can be taken multiple times)']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1; }
 			},
 			"mount: auto mobile mount (4 invention points)" : {
 				name : "Clockwork Mount: Auto Mobile Mount",
@@ -871,7 +871,7 @@ ClassList["improved artificer"] = {
 				description : " [4 points]",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', true, [['Comp.Use.Traits', '\\u25C6 Auto Mobile Mount: The mount has magical motorized wheels instead of legs, granting it 80 ft speed and a trample attack.'], ['Cnote.Left', ' \\u2022 Auto Mobile Mount: its speed increases to 80 ft and it gains a trample attack'], ['Comp.Use.Speed', '80 ft', /.*/i], ['Comp.Use.Attack.2.Weapon Selection', 'Trample', /.*/i], ['Comp.Use.Attack.2.Proficiency', 'True', /.*/i], ['Comp.Use.Attack.2.Mod', 'Comp.Use.Ability.Con.Mod', /.*/i], ['Comp.Use.Attack.2.Range', 'Melee (5 ft)', /.*/i], ['Comp.Use.Attack.2.Damage Type', 'Bludgeoning', /.*/i], ['BlueText.Comp.Use.Attack.2.To Hit Bonus', 'dc', /.*/i], ['BlueText.Comp.Use.Attack.2.Damage Die', '2d10', /.*/i]]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', false, [['Comp.Use.Traits', '\\u25C6 Auto Mobile Mount: The mount has magical motorized wheels instead of legs, granting it 80 ft speed and a trample attack.'], ['Cnote.Left', ' \\u2022 Auto Mobile Mount: its speed increases to 80 ft and it gains a trample attack'], ['Comp.Use.Speed', '50 ft', /.*/i], ['Comp.Use.Attack.2.Weapon Selection', '', /.*/i]]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1; }
 			},
 			"mount: shielding seat (3 invention points)" : {
 				name : "Clockwork Mount: Shielding Seat",
@@ -879,7 +879,7 @@ ClassList["improved artificer"] = {
 				description : " [3 points]",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', true, [['Comp.Use.Traits', '\\u25C6 Shielding Seat: The mount has interior seating for its master which still allows to see outside. While inside the mount, the rider can\\'t be targeted by attack or spells, but also can\\'t target anything outside the mount. It is a bonus action to embark or disembark the mount.'], ['Cnote.Left', ' \\u2022 Shielding Seat: it has a space inside for me to sit where I\\'m shielded but can still see outside']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', false, [['Comp.Use.Traits', '\\u25C6 Shielding Seat: The mount has interior seating for its master which still allows to see outside. While inside the mount, the rider can\\'t be targeted by attack or spells, but also can\\'t target anything outside the mount.'], ['Cnote.Left', ' \\u2022 Shielding Seat: it has a space inside for me to sit where I\\'m shielded but can still see outside']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1; }
 			},
 			"mount: shrink (3 invention points)" : {
 				name : "Clockwork Mount: Shrink",
@@ -887,7 +887,7 @@ ClassList["improved artificer"] = {
 				description : " [3 points]",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', true, [['Comp.Use.Traits', '\\u25C6 Shrink: As a bonus action, the mount can shrink down to the size of a few inches. It continues to operate as normal. It can return to its original size as a bonus action.'], ['Cnote.Left', ' \\u2022 Shrink: it can shrink down to the size of a few inches or back to normal as a bonus action']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', false, [['Comp.Use.Traits', '\\u25C6 Shrink: As a bonus action, the mount can shrink down to the size of a few inches. It continues to operate as normal. It can return to its original size as a bonus action.'], ['Cnote.Left', ' \\u2022 Shrink: it can shrink down to the size of a few inches or back to normal as a bonus action']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1; }
 			},
 			"mount: air horn (1 invention point)" : {
 				name : "Clockwork Mount: Air Horn",
@@ -895,7 +895,7 @@ ClassList["improved artificer"] = {
 				description : " [1 points]",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', true, [['Comp.Use.Traits', '\\u25C6 Air Horn: The mount has an air horn with a sound of its master\\'s choosing.'], ['Cnote.Left', ' \\u2022 Air Horn: it has an air horn with a sound of my choosing']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', false, [['Comp.Use.Traits', '\\u25C6 Air Horn: The mount has an air horn with a sound of its master\\'s choosing.'], ['Cnote.Left', ' \\u2022 Air Horn: it has an air horn with a sound of my choosing']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1; }
 			},
 			"mount: call button (1 invention point)" : {
 				name : "Clockwork Mount: Call Button",
@@ -903,7 +903,7 @@ ClassList["improved artificer"] = {
 				description : " [1 points]\n   I have a remote with one button that, when pressed, makes the mount come to me\n   The mount moves to me as quickly as it can as long as it is on the same plane of existence",
 				eval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', true, [['Comp.Use.Traits', '\\u25C6 Call Button: The mount\\'s master has a remote with a single button that calls the mount when pressed. As long as the mount is on the same plane of existence as the master, it will move as quickly as it can to the remote when the buttons is pressed.'], ['Cnote.Left', ' \\u2022 Call Button: I have a remote with which I can call the mount to come to me']]); ",
 				removeeval : "improvedArtificerClockworkConstructsFunctions.text('Clockwork Mount', false, [['Comp.Use.Traits', '\\u25C6 Call Button: The mount\\'s master has a remote with a single button that calls the mount when pressed. As long as the mount is on the same plane of existence as the master, it will move as quickly as it can to the remote when the buttons is pressed.'], ['Cnote.Left', ' \\u2022 Call Button: I have a remote with which I can call the mount to come to me']]); ",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: clockwork constructs', true).indexOf('mount (2 invention points)') != -1; }
 			}
 		},
 		"inventions: mechanical limbs" : {
@@ -938,13 +938,13 @@ ClassList["improved artificer"] = {
 				name : "Arcane Scent: Increase Range to 30 ft",
 				source : ["XPtL3:IA", 8],
 				description : " [1 point]",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane scent (1 invention point)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane scent (1 invention point)') != -1; }
 			},
 			"arcane scent: know school of magic (1 invention point)" : {
 				name : "Arcane Scent: Know School of Magic",
 				source : ["XPtL3:IA", 8],
 				description : " [1 point]",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane scent (1 invention point)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane scent (1 invention point)') != -1; }
 			},
 			"mechanical sense (1 invention point)" : {
 				name : "Mechanical Sense",
@@ -958,7 +958,7 @@ ClassList["improved artificer"] = {
 				source : ["XPtL3:IA", 8],
 				description : " [1 point]",
 				languageProfs : [2],
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('mechanical sense (1 invention point)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('mechanical sense (1 invention point)') != -1; }
 			},
 			"mechanical sense: can't be surprised (1 invention point)" : {
 				name : "Mechanical Sense: Perimeter Sense",
@@ -969,7 +969,7 @@ ClassList["improved artificer"] = {
 				usages: "Int mod/",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
 				recovery: "long rest",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('mechanical sense (1 invention point)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('mechanical sense (1 invention point)') != -1; }
 			},
 			"robotic eye (1 invention point)" : {
 				name : "Robotic Eye",
@@ -990,7 +990,7 @@ ClassList["improved artificer"] = {
 						"My ranged attacks get a +2 bonus on the To Hit."
 					]
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('robotic eye (1 invention point)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('robotic eye (1 invention point)') != -1; }
 			},
 			"robotic eye: see invisible (3 invention points)" : {
 				name : "Robotic Eye: See Invisible",
@@ -1001,7 +1001,7 @@ ClassList["improved artificer"] = {
 				usages: "Int mod per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
 				recovery: "long rest",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('robotic eye (1 invention point)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('robotic eye (1 invention point)') != -1; }
 			},
 			"grappling hook hand (2 invention points)" : {
 				name : "Grappling Hook Hand",
@@ -1012,7 +1012,7 @@ ClassList["improved artificer"] = {
 				name : "Grappling Hook Hand: Rope of Entanglement",
 				source : ["XPtL3:IA", 9],
 				description : " [1 point]\n   The rope of my grappling hook hand becomes a Rope of Entanglement",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('grappling hook hand (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('grappling hook hand (2 invention points)') != -1; }
 			},
 			"arcane hand (2 invention points)" : {
 				name : "Arcane Hand",
@@ -1037,7 +1037,7 @@ ClassList["improved artificer"] = {
 					firstCol : "oncelr",
 					times : 2
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane hand (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane hand (2 invention points)') != -1; }
 			},
 			"arcane hand: 3rd-level spells (2 invention points)" : {
 				name : "Arcane Hand: 3rd-level spells",
@@ -1050,7 +1050,7 @@ ClassList["improved artificer"] = {
 					firstCol : "oncelr",
 					times : 2
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane hand: 2nd-level spells (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane hand: 2nd-level spells (2 invention points)') != -1; }
 			},
 			"arcane hand: 4th-level spells (2 invention points)" : {
 				name : "Arcane Hand: 4th-level spells",
@@ -1063,7 +1063,7 @@ ClassList["improved artificer"] = {
 					firstCol : "oncelr",
 					times : 2
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane hand: 3rd-level spells (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane hand: 3rd-level spells (2 invention points)') != -1; }
 			},
 			"arm guard (2 invention points)" : {
 				name : "Arm Guard",
@@ -1075,7 +1075,7 @@ ClassList["improved artificer"] = {
 				name : "Arm Guard: Amplify",
 				source : ["XPtL3:IA", 9],
 				description : " [1 point]\n   For every spell slot level above 1st I to activate my arm guard, it gains +1 AC and +10 HP",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arm guard (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arm guard (2 invention points)') != -1; }
 			},
 			"calibrated legs (2 invention points)" : {
 				name : "Calibrated Legs",
@@ -1087,20 +1087,20 @@ ClassList["improved artificer"] = {
 				name : "Calibrated Legs: Extra +25 lb Carrying Capacity",
 				source : ["XPtL3:IA", 9],
 				description : " [1 point]",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('calibrated legs (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('calibrated legs (2 invention points)') != -1; }
 			},
 			"calibrated legs: +10 ft walking speed (2 invention points)" : {
 				name : "Calibrated Legs: +10 ft Walking Speed",
 				source : ["XPtL3:IA", 9],
 				description : " [2 points]",
 				speed : { walk : {spd : "+10", enc : "+10" } },
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('calibrated legs (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('calibrated legs (2 invention points)') != -1; }
 			},
 			"calibrated legs: double jump height (2 invention points)" : {
 				name : "Calibrated Legs: Double Jump Height",
 				source : ["XPtL3:IA", 9],
 				description : " [2 points]",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('calibrated legs (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('calibrated legs (2 invention points)') != -1; }
 			},
 			"calibrated legs: tremorsense (3 invention points)" : {
 				name : "Calibrated Legs: Tremorsense",
@@ -1111,14 +1111,17 @@ ClassList["improved artificer"] = {
 				usages: "Int mod per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
 				recovery: "long rest",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('calibrated legs (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('calibrated legs (2 invention points)') != -1; }
 			},
 			"armored torso (2 invention points)" : {
 				name : "Armored Torso",
 				source : ["XPtL3:IA", 9],
 				description : " [2 points; +2 AC]",
-				eval : "AddACMisc(2, 'Armored Torso', 'Armored Torso was gained from replacing pieces of my flesh with metal and armor.');",
-				removeeval : "AddACMisc(0, 'Armored Torso', 'Armored Torso was gained from replacing pieces of my flesh with metal and armor.');"
+				extraAC : [{
+					mod : 2,
+					name : "Armored Torso",
+					text : "I gain a +2 bonus to AC from replacing pieces of my flesh with metal and armor."
+				}]
 			},
 			"armored torso: increase hp by 10 (2 invention points)" : {
 				name : "Armored Torso: +10 HP",
@@ -1127,7 +1130,7 @@ ClassList["improved artificer"] = {
 				calcChanges : {
 					hp : "extrahp += 10; extrastring += '\\n + 10 from Armored Torso';"
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso (2 invention points)') != -1; }
 			},
 			"armored torso: increase hp by 20 (2 invention points)" : {
 				name : "Armored Torso: +20 HP",
@@ -1136,7 +1139,7 @@ ClassList["improved artificer"] = {
 				calcChanges : {
 					hp : "extrahp += 10; extrastring = extrastring.replace(/\\d+ from Armored Torso/i, '20 from Armored Torso');"
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso: increase hp by 10 (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso: increase hp by 10 (2 invention points)') != -1; }
 			},
 			"armored torso: increase hp by 30 (2 invention points)" : {
 				name : "Armored Torso: +30 HP",
@@ -1145,7 +1148,7 @@ ClassList["improved artificer"] = {
 				calcChanges : {
 					hp : "extrahp += 10; extrastring = extrastring.replace(/\\d+ from Armored Torso/i, '30 from Armored Torso');"
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso: increase hp by 20 (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso: increase hp by 20 (2 invention points)') != -1; }
 			},
 			"armored torso: increase hp by 40 (2 invention points)" : {
 				name : "Armored Torso: +40 HP",
@@ -1154,7 +1157,7 @@ ClassList["improved artificer"] = {
 				calcChanges : {
 					hp : "extrahp += 10; extrastring = extrastring.replace(/\\d+ from Armored Torso/i, '40 from Armored Torso');"
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso: increase hp by 30 (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso: increase hp by 30 (2 invention points)') != -1; }
 			},
 			"armored torso: increase hp by 50 (2 invention points)" : {
 				name : "Armored Torso: +50 HP",
@@ -1163,34 +1166,37 @@ ClassList["improved artificer"] = {
 				calcChanges : {
 					hp : "extrahp += 10; extrastring = extrastring.replace(/\\d+ from Armored Torso/i, '50 from Armored Torso');"
 				},
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso: increase hp by 40 (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso: increase hp by 40 (2 invention points)') != -1; }
 			},
 			"armored torso: extra +2 ac (3 invention points)" : {
 				name : "Armored Torso: Extra +2 AC",
 				source : ["XPtL3:IA", 9],
 				description : " [3 points]",
-				eval : "var acMiscFld = (/armou?red torso/i).test(Who('AC Misc Mod 1 Description')) ? 1 : (/armou?red torso/i).test(Who('AC Misc Mod 2 Description')) ? 2 : false; if (acMiscFld) { Value('AC Misc Mod ' + acMiscFld, 4); };",
-				removeeval : "var acMiscFld = (/armou?red torso/i).test(Who('AC Misc Mod 1 Description')) ? 1 : (/armou?red torso/i).test(Who('AC Misc Mod 2 Description')) ? 2 : false; if (acMiscFld) { Value('AC Misc Mod ' + acMiscFld, 2); };",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso (2 invention points)') != -1"
+				extraAC : [{
+					mod : 2,
+					name : "Armored Torso",
+					text : "I gain an extra +2 bonus to AC from improving my armored torso."
+				}],
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso (2 invention points)') != -1; }
 			},
 			"armored torso: magical blood (3 invention points)" : {
 				name : "Armored Torso: Magical Blood",
 				source : ["XPtL3:IA", 9],
 				description : " [3 points]\n   I am immune to poison damage and the poisoned condition",
 				savetxt : { immune : ["poison"] },
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso (2 invention points)') != -1; }
 			},
 			"armored torso: magical digestive system (3 invention points)" : {
 				name : "Armored Torso: Magical Digestive System",
 				source : ["XPtL3:IA", 9],
 				description : " [3 points]\n   I no longer need to eat or drink, nor have I the ability to do so anymore",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso (2 invention points)') != -1; }
 			},
 			"armored torso: magical lungs (3 invention points)" : {
 				name : "Armored Torso: Magical Lungs",
 				source : ["XPtL3:IA", 9],
 				description : " [3 points]\n   I no longer need to breathe air as my magical respirators oxidize my blood from any source",
-				prereqeval : "GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso (2 invention points)') != -1"
+				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('armored torso (2 invention points)') != -1; }
 			}
 		},
 		"magic item analysis" : {
@@ -1686,7 +1692,7 @@ ClassList["improved artificer"].features["wondrous invention"].extrachoices.forE
 			source : ["XPtL3:IA", 3],
 			eval : "var maI = ArtMagicItemsList[\"" + theItem.toLowerCase() + "\"]; AddMagicItem(maI.name, maI.attunement, maI.description, maI.weight, maI.descriptionLong);",
 			removeeval : "RemoveMagicItem(\"" + theItem.toLowerCase() + "\");",
-			prereqeval : isNaN(minLevel) ? "" : "classes.known['improved artificer'].level >= " + minLevel
+			prereqeval : isNaN(minLevel) ? false : "classes.known['improved artificer'].level >= " + minLevel
 		};
 	};
 });

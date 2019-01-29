@@ -76,7 +76,7 @@ FeatsList["ghostly magic-au"] = {
 	name : "Ghostly Magic",
 	source : ["WH:AU", 4],
 	prerequisite : "Being a Ghost (Awakened Undead)",
-	prereqeval : "CurrentRace.known.indexOf('ghost-au') !== -1",
+	prereqeval : function(v) { return CurrentRace.known.indexOf('ghost-au') !== -1; },
 	description : "Three times per long rest, I can cast one of the following spells: Blink, Catapult, Charm Person, Fear, or Invisibility (self only). They are cast at their lowest possible level. Either Wisdom or Charisma is my spellcasting ability for these, chosen when I take this feat.",
 	usages : 3,
 	recovery : "long rest",
@@ -102,7 +102,9 @@ FeatsList["ghostly magic-au"] = {
 		spells : ["invisibility"],
 		selection : ["invisibility"]
 	}],
-	eval : "FeatsList['ghostly magic-au'].spellcastingBonus[0].spellcastingAbility = Number(What('Wis')) > Number(What('Cha')) ? 5 : 6;"
+	eval : function() {
+		FeatsList['ghostly magic-au'].spellcastingBonus[0].spellcastingAbility = Number(What('Wis')) > Number(What('Cha')) ? 5 : 6;
+	}
 };
 
 RaceList["ghoul-au"] = {
@@ -220,7 +222,7 @@ FeatsList["tomb magic-au"] = {
 	name : "Tomb Magic",
 	source : ["WH:AU", 5],
 	prerequisite : "Being a Mummy (Awakened Undead)",
-	prereqeval : "CurrentRace.known.indexOf('mummy-au') !== -1",
+	prereqeval : function(v) { return CurrentRace.known.indexOf('mummy-au') !== -1; },
 	description : "I can cast Bestow Curse, Dust Devil, and Inflict Wounds each once per long rest. They are cast at their lowest possible level. Either Wisdom or Charisma is my spellcasting ability for these, chosen when I take this feat.",
 	usages : 3,
 	recovery : "long rest",
@@ -241,7 +243,9 @@ FeatsList["tomb magic-au"] = {
 		selection : ["inflict wounds"],
 		firstCol : 'oncelr'
 	}],
-	eval : "FeatsList['tomb magic-au'].spellcastingBonus[0].spellcastingAbility = Number(What('Wis')) > Number(What('Cha')) ? 5 : 6;"
+	eval : function() {
+		FeatsList['tomb magic-au'].spellcastingBonus[0].spellcastingAbility = Number(What('Wis')) > Number(What('Cha')) ? 5 : 6;
+	}
 };
 
 RaceList["revenant-au"] = {
