@@ -188,7 +188,7 @@ ClassList["improved artificer"] = {
 							if (v.theWea.artAlcAcid && classes.known['improved artificer'] && classes.known['improved artificer'].level) {
 								fields.Proficiency = true;
 								fields.Damage_Die = Math.ceil(classes.known['improved artificer'].level / 2) + 'd6';
-							};
+							}
 						}, ""]
 				}
 			},
@@ -226,7 +226,7 @@ ClassList["improved artificer"] = {
 							if (v.theWea.artAlcFire && classes.known['improved artificer'] && classes.known['improved artificer'].level) {
 								fields.Proficiency = true;
 								fields.Damage_Die = Math.ceil(classes.known['improved artificer'].level / 3) + 'd6';
-							};
+							}
 						}, ""]
 				}
 			},
@@ -608,7 +608,7 @@ ClassList["improved artificer"] = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (v.theWea.artSniperRifle) fields.Range = '300/450 ft');
+							if (v.theWea.artSniperRifle) fields.Range = '300/450 ft';
 						},
 						"The range of my sniper rifle is now 300/450 ft."
 					]
@@ -1694,7 +1694,7 @@ ClassList["improved artificer"].features["wondrous invention"].extrachoices.forE
 			removeeval : "RemoveMagicItem(\"" + theItem.toLowerCase() + "\");",
 			prereqeval : isNaN(minLevel) ? false : "classes.known['improved artificer'].level >= " + minLevel
 		};
-	};
+	}
 });
 
 // A function to add/remove points from "Used" column of the "Intention Points" limited feature
