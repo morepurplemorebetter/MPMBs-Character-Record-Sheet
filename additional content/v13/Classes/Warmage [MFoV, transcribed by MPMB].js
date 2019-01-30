@@ -157,11 +157,11 @@ ClassList["warmage"] = {
 						list : {class : 'any', ritual : true},
 						known : {spells : 'book'}
 					};
-					SetStringifieds('spells');
+					SetStringifieds('spells'); CurrentUpdates.types.push('spells');
 				},
 				removeeval : function() {
 					delete CurrentSpells['ritual spellbook'];
-					SetStringifieds('spells');
+					SetStringifieds('spells'); CurrentUpdates.types.push('spells');
 				},
 				spellcastingBonus : {
 					name : "Arcane Initiation: Scholar",
