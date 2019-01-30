@@ -6278,7 +6278,13 @@ function processActions(AddRemove, srcNm, itemArr, itemNm) {
 	for (var i = 0; i < itemArr.length; i++) {
 		var theAct = isArray(itemArr[i]) ? itemArr[i] : [itemArr[i], ""];
 		var actNm = theAct[1] && !(/^( |-|,|\(|\[|\{|'|"|\/)/).test(theAct[1]) ? theAct[1] : itemNm + theAct[1];
-		tDoc[(AddRemove ? "Add" : "Remove") + "Action"](theAct[0], actNm, srcNm);
+		if (AddRemove) {
+			AddAction(theAct[0], actNm, [srcNm], theAct[2] ? theAct[2] : false);
+		} else if (theAct[2]) {
+			AddAction(theAct[0], theAct[2], [srcNm], actNm, true);
+		} else {
+			RemoveAction(theAct[0], actNm);
+		}
 	};
 };
 

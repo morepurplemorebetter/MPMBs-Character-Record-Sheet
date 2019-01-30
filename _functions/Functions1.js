@@ -295,25 +295,34 @@ function AddAction(actiontype, action, actiontooltip, replaceThis, replaceMatch)
 	var field = (/bonus/i).test(actiontype) ? "Bonus Action " : (/reaction/i).test(actiontype) ? "Reaction " : "Action ";
 	var numberOfFields = field === "Action " ? FieldNumbers.trueactions : FieldNumbers.actions;
 	var tempString = actiontooltip ? formatMultiList("The \"" + action + "\" " + field.toLowerCase() + "was gained from:", actiontooltip) : "";
+	// first loop through all to see if it isn't already known
+	for (var i = 1; i <= numberOfFields; i++) {
+		var next = tDoc.getField(field + i);
+		if ((replaceThis && next.value == action) || (!replaceThis && next.value.toLowerCase().indexOf(action.toLowerCase()) !== -1) || (!replaceThis && next.submitName == action)) return;
+	}
+	// first loop through all to see if it isn't already known
 	var doReplace = false;
-	for (var n = 1; n <= 3; n++) {
+	if (replaceThis) {
 		for (var i = 1; i <= numberOfFields; i++) {
 			var next = tDoc.getField(field + i);
-			if (n === 1 && (next.value.toLowerCase().indexOf(action.toLowerCase()) !== -1 || next.submitName === action)) {
-				return;
-			} else if (n === 2 && replaceThis && (next.submitName == replaceThis || next.value == replaceThis || (replaceMatch && replaceThis.toLowerCase().indexOf(next.value.toLowerCase()) !== -1))) {
+			if (next.submitName == replaceThis || next.value == replaceThis || (replaceMatch && next.value.toLowerCase().indexOf(replaceThis.toLowerCase()) !== -1)) {
 				doReplace = i;
 				break;
-			} else if (n === 3 && ((doReplace && doReplace === i) || (!doReplace && next.value === ""))) {
-				next.value = action;
-				if (!replaceThis) {
-					next.userName = tempString;
-					next.submitName = action;
-				};
-				return;
+			}
+		}
+	}
+	// set the new action to its field
+	for (var i = 1; i <= numberOfFields; i++) {
+		var next = tDoc.getField(field + i);
+		if ((doReplace && doReplace === i) || (!doReplace && next.value === "")) {
+			next.value = action;
+			if (!doReplace) {
+				next.userName = tempString;
+				next.submitName = action;
 			};
-		};
-	};
+			return;
+		}
+	}
 };
 
 function RemoveAction(actiontype, action) {

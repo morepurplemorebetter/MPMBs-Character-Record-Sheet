@@ -508,18 +508,19 @@ function CalcSpellScores() {
 		prepare : 0
 	};
 
-	var setResults = function() {
+	var setResults = function(showTheResult) {
 		for (var aType in theResult) {
+			var theR = showTheResult ? theResult[aType] : "";
 			if (aType == fldType) {
-				event.value = theResult[aType] ? theResult[aType] : "";
+				event.value = theR
 			} else {
-				Value(Fld.replace("DINGDONG", aType), theResult[aType] ? theResult[aType] : "");
+				Value(Fld.replace("DINGDONG", aType), theR);
 			}
 		}
 	}
 
 	if (modFld == "nothing" && !fixedDC) {
-		setResults();
+		setResults(false);
 		return;
 	}
 
@@ -565,7 +566,7 @@ function CalcSpellScores() {
 	}
 
 	// finally set the results to the field
-	setResults();
+	setResults(true);
 }
 
 //set the blueText field bonus to the global CurrentSpells object for spells to memorize, attack modifier, and DC (field blur)
