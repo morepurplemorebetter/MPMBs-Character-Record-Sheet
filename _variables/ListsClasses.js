@@ -2399,8 +2399,6 @@ var Base_ClassSubList = {
 					extrachoice : "quivering palm",
 					minlevel : 17
 				}]
-/* UPDATED
-				changeeval : "if (newClassLvl.monk >= 17 && (What('Extra.Notes') + What('Class Features')).toLowerCase().indexOf('quivering palm') === -1) {ClassFeatureOptions(['monk', 'subclassfeature11', 'quivering palm', 'extra'])} else if (newClassLvl.monk < 17 && oldClassLvl.monk >= 17) {ClassFeatureOptions(['monk', 'subclassfeature11', 'quivering palm', 'extra'], 'remove')};" */
 			}
 		}
 	},

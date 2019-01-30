@@ -181,6 +181,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.extraLimitedFeatures) processExtraLimitedFeatures(addIt, tipNmF, uObj.extraLimitedFeatures);
 		if (uObj.extraAC) processExtraAC(addIt, tipNmF, uObj.extraAC, uObj.name);
 		if (uObj.toNotesPage) processToNotesPage(addIt, uObj.toNotesPage, type, uObj, fObj, [tipNm, displName, fObjName, aParent]);
+		if (uObj.carryingCapacity) SetProf("carryingcapacity", addIt, uObj.carryingCapacity, tipNmF);
 
 		// --- backwards compatibility --- //
 		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false;
@@ -2638,6 +2639,7 @@ NEW ATTRIBUTES
 	ammoOptions // Optional; an array of AmmoList objects to be added to the AmmoList (can also be a single object if only wanting to add a single armour)
 	extraAC // replaces AddACMisc() in eval
 	extraLimitedFeatures // replaces AddFeature() in eval
+	carryingCapacity // multiply the Carrying Capacity Multiplier with this number
 
 CHANGED ATTRIBUTES
 	armorProfs // Optional; Array; armor proficiencies to add [previous just 'armor']

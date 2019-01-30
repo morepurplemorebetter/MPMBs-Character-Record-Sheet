@@ -450,9 +450,9 @@ weaponOptions : [{ /* WeaponsList object, see WeaponsList syntax */ }],
 */
 
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Other Fields on the 1st Page >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Other Fields on the 1st or 2nd Page >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 
 dmgres : [
 	"Fire",
@@ -589,6 +589,20 @@ speed : {
 		It won't give the character a burrow speed if it would otherwise have none, for example.
 	*/
 },
+
+carryingCapacity : 2,
+/*	carryingCapacity // OPTIONAL //
+	TYPE:	whole number
+	USE:	multiply the carrying capacity (encumbrance) with this number
+
+	This number is used to multiple the carrying capacity multiplier with.
+	You can find the carrying capacity multiplier in the 'mods' field in the Equipment section on the second page.
+	The number in that field is used to multiply the carrying capacity (encumbrance) with.
+	By default it is "1".
+	The carrying capacity multiplier field can only be a positive number (0 or more), thus
+	if this attribute would bring it below 0, it is set to 0.
+	The carrying capacity multiplier will always be rounded to the closest multiple of 0.25.
+*/
 
 
 // >>>>>>>>>>>>>>>>>>>>>> //

@@ -7293,6 +7293,31 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		AddTooltip(fldNms[tObj.type][1], tooltipStr);
 		if (!AddRemove) delete set[objName]; // now delete the object
 	};
+	case "carryingcapacity" : {
+		ProfObj = parseFloat(ProfObj);
+		if (isNaN(ProfObj)) return; // nothing to do
+		var cFld = "Carrying Capacity Multiplier";
+		var curFactor = Number(What(cFld));
+		if (isNaN(curFactor)) { // recreate the total from the attributes
+			curFactor = 1;
+			for (var srcs in set) curFactor *= set[srcs];
+		}
+		if (AddRemove) { // add
+			set[ProfSrc] = ProfObj;
+			curFactor *= ProfObj;
+		} else if (set[ProfSrc]) { // remove
+			curFactor /= set[ProfSrc];
+			delete set[ProfSrc];
+		}
+		// Make the new tooltip
+		var sourcesArray = [];
+		for (var srcs in set) {
+			sourcesArray.push(srcs + ": \u00D7" + set[srcs]);
+		}
+		var ttText = toUni("Carrying Capacity Multiplier") + "\nThe number you type in here will be used to multiply the carrying capacity with. This must be a positive number.\n\nWhen you set this value to zero, all the encumbrance calculations will be halted and the encumbrance fields will be left empty." + formatMultiList("\n\nThe following features have changed this multiplier:", sourcesArray);
+		// Set the new field value
+		Value("Carrying Capacity Multiplier", Math.max(0, RoundTo(curFactor, 0.25)), ttText);
+	};
  };
 	SetStringifieds("profs");
 };
