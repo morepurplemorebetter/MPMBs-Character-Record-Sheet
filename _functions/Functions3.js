@@ -117,8 +117,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 				if (convertUnits) evalThing = ConvertToMetric(evalThing, 0.5);
 				eval(evalThing);
 			} else if (typeof evalThing == 'function') {
-				var runFunction = eval(evalThing.toSource());
-				runFunction(lvlA);
+				evalThing(lvlA, choiceA);
 			}
 		} catch (error) {
 			// the error could be caused by the ConvertToMetric function, so try it without to see if that works
@@ -164,9 +163,9 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			if (uObj.weaponOptions) processWeaponOptions(addIt, tipNm, uObj.weaponOptions, type === "magic item");
 		}
 
-		// eval or removeeval
-		var a = addIt ? "eval" : "removeeval";
-		if (uObj[a] && !skipEval) runEval(uObj[a], a);
+		// run eval or removeeval first
+		var evalType = addIt ? "eval" : "removeeval";
+		if (!skipEval && uObj[evalType]) runEval(uObj[evalType], evalType);
 
 		if (uObj.calcChanges) addEvals(uObj.calcChanges, tipNmF, addIt);
 		if (uObj.savetxt) SetProf("savetxt", addIt, uObj.savetxt, tipNmF);
@@ -2333,8 +2332,8 @@ function RemoveMagicItem(item) {
 	RegExItem = RegExp(RegExItem, "i");
 	for (var i = 1; i <= FieldNumbers.magicitems; i++) {
 		var curItem = What("Extra.Magic Item " + i);
-		if ((RegExItem.test(curItem) && !RegExItemNo.test(curItem)) || curItem.toLowerCase() === itemLower()) {
-			tDoc.resetForm(ReturnMagicItemFieldsArray(i));
+		if ((RegExItem.test(curItem) && !RegExItemNo.test(curItem)) || curItem.toLowerCase() === itemLower) {
+			MagicItemClear(i, true);
 			break;
 		}
 	}

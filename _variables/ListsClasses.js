@@ -164,8 +164,10 @@ var Base_ClassList = {
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 7,
 				description : "\n   " + "Adv. on Initiative; I can enter rage to act normally on the first turn when surprised",
-				eval : "Checkbox('Init Adv', true, 'Advantage to Initiative checks was gained from Barbarian (Feral Instinct)');",
-				removeeval : "Checkbox('Init Adv', false, '');"
+				eval : function() {
+					Checkbox('Init Adv', true, 'Advantage to Initiative checks was gained from Barbarian (Feral Instinct)');
+				},
+				removeeval : function() { Checkbox('Init Adv', false, ''); }
 			},
 			"brutal critical" : {
 				name : "Brutal Critical",
@@ -290,8 +292,8 @@ var Base_ClassList = {
 				source : [["SRD", 12], ["P", 54]],
 				minlevel : 2,
 				description : "\n   " + "I can add half my proficiency bonus to any ability check that doesn't already include it",
-				eval : "Checkbox('Jack of All Trades', true);",
-				removeeval : "Checkbox('Jack of All Trades', false);"
+				eval : function() { Checkbox('Jack of All Trades', true); },
+				removeeval : function() { Checkbox('Jack of All Trades', false); }
 			},
 			"song of rest" : {
 				name : "Song of Rest",
@@ -664,8 +666,12 @@ var Base_ClassList = {
 					return "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
 				}),
 				action : ["bonus action", " (with Attack action)"],
-				eval : "AddString('Extra.Notes', 'Monk features:\\n\\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor\/shields', true);",
-				removeeval : "RemoveString('Extra.Notes', 'Monk features:\\n\\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor\/shields', true);",
+				eval : function() {
+					AddString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
+				},
+				removeeval : function() {
+					RemoveString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
+				},
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
@@ -739,7 +745,10 @@ var Base_ClassList = {
 					var xtr = n < 9 ? "" : "; Vertical surfaces and liquids";
 					return spd + xtr;
 				}),
-				changeeval : "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level); SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, displName);"
+				changeeval : function (v) {
+					var monkSpd = '+' + (v[1] < 2 ? 0 : v[1] < 6 ? 10 : v[1] < 10 ? 15 : v[1] < 14 ? 20 : v[1] < 18 ? 25 : 30);
+					SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, "Monk: Unarmored Movement");
+				}
 			},
 			"subclassfeature3" : {
 				name : "Monastic Tradition",
@@ -1625,8 +1634,19 @@ var Base_ClassList = {
 						"I can cast my known warlock spells as rituals if they have the ritual tag"
 					]),
 					source : [["SRD", 48], ["P", 110]],
-					eval : "CurrentSpells['book of ancient secrets'] = {name : 'Book of Ancient Secrets', ability : 6, list : {class : 'any', ritual : true}, known : {spells : 'book'}}; SetStringifieds('spells'); CurrentUpdates.types.push('spells');",
-					removeeval : "delete CurrentSpells['book of ancient secrets']; SetStringifieds('spells'); CurrentUpdates.types.push('spells');",
+					eval : function() {
+						CurrentSpells['book of ancient secrets'] = {
+							name : 'Book of Ancient Secrets',
+							ability : 6,
+							list : {class : 'any', ritual : true},
+							known : {spells : 'book'}
+						};
+						SetStringifieds('spells'); CurrentUpdates.types.push('spells');
+					},
+					removeeval : function() {
+						delete CurrentSpells['book of ancient secrets'];
+						SetStringifieds('spells'); CurrentUpdates.types.push('spells');
+					},
 					prereqeval : function(v) { return classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the tome'; }
 				},
 				"chains of carceri (prereq: level 15 warlock, pact of the chain)" : {
@@ -1960,13 +1980,30 @@ var Base_ClassList = {
 				minlevel : 11,
 				description : "\n   " + "I can choose one spell from the warlock spell list of each level mentioned above" + "\n   " + "I can cast these spells each once per long rest without needing to use a spell slot",
 				additional : ["", "", "", "", "", "", "", "", "", "", "6th level", "6th level", "6th and 7th level", "6th and 7th level", "6th, 7th, and 8th level", "6th, 7th, and 8th level", "6th, 7th, 8th, and 9th level", "6th, 7th, 8th, and 9th level", "6th, 7th, 8th, and 9th level", "6th, 7th, 8th, and 9th level"],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Mystic Arcanum (6)",
 					"class" : "warlock",
 					level : [6, 6],
 					firstCol : "oncelr"
-				},
-				changeeval : "if (classes.known.warlock.level < 13 && CurrentSpells.warlock) { delete CurrentSpells.warlock.bonus['mystic arcanum (7)']; } else if (classes.known.warlock.level > 12 && !CurrentSpells.warlock.bonus['mystic arcanum (7)']) { CurrentSpells.warlock.bonus['mystic arcanum (7)'] = { name: 'Mystic Arcanum (7)', class: 'warlock', level: [7, 7], firstCol: 'oncelr' } }; if (classes.known.warlock.level < 15 && CurrentSpells.warlock) { delete CurrentSpells.warlock.bonus['mystic arcanum (8)']; } else if (classes.known.warlock.level > 14 && !CurrentSpells.warlock.bonus['mystic arcanum (8)']) { CurrentSpells.warlock.bonus['mystic arcanum (8)'] = { name: 'Mystic Arcanum (8)', class: 'warlock', level: [8, 8], firstCol: 'oncelr' } }; if (classes.known.warlock.level < 17 && CurrentSpells.warlock) { delete CurrentSpells.warlock.bonus['mystic arcanum (9)']; } else if (classes.known.warlock.level > 16 && !CurrentSpells.warlock.bonus['mystic arcanum (9)']) { CurrentSpells.warlock.bonus['mystic arcanum (9)'] = { name: 'Mystic Arcanum (9)', class: 'warlock', level: [9, 9], firstCol: 'oncelr' } } "
+				}, {
+					name : "Mystic Arcanum (7)",
+					"class" : "warlock",
+					level : [7, 7],
+					firstCol : "oncelr",
+					times : levels.map(function (n) { return n < 13 ? 0 : 1; })
+				}, {
+					name : "Mystic Arcanum (8)",
+					"class" : "warlock",
+					level : [8, 8],
+					firstCol : "oncelr",
+					times : levels.map(function (n) { return n < 15 ? 0 : 1; })
+				}, {
+					name : "Mystic Arcanum (9)",
+					"class" : "warlock",
+					level : [9, 9],
+					firstCol : "oncelr",
+					times : levels.map(function (n) { return n < 17 ? 0 : 1; })
+				}]
 			},
 			"eldritch master" : {
 				name : "Eldritch Master",
@@ -2318,8 +2355,8 @@ var Base_ClassSubList = {
 				source : [["SRD", 25], ["P", 72]],
 				minlevel : 7,
 				description : "\n   " + "I add half my proficiency bonus to Str/Dex/Con checks if I would otherwise add none" + "\n   " + "When making running jumps, I add my Strength modifier to the distance in feet",
-				eval : "Checkbox('Remarkable Athlete', true)",
-				removeeval : "Checkbox('Remarkable Athlete', false)"
+				eval : function() { Checkbox('Remarkable Athlete', true); },
+				removeeval : function() { Checkbox('Remarkable Athlete', false); }
 			},
 			"subclassfeature10" : function () {
 				var FSfea = newObj(Base_ClassList.fighter.features["fighting style"]);

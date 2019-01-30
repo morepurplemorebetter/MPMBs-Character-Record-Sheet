@@ -1341,35 +1341,113 @@ toNotesPage : [{
 // >>>>>>>>>>>>>>>>>>>>>>> //
 
 eval : "Checkbox('Jack of All Trades', true);",
-eval : function() {
+eval : function(lvl, chc) {
 	AddString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
 };
 /*	eval // OPTIONAL //
-	TYPE:	string or function
-	USE:	the function is run or the string is evaluated using eval() when the feature is added
+	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
+	USE:	runs a piece of code when the feature is added
+
+	Both examples do the exact same thing, just one is a string and the other is a function.
+	Writing a function is better as it is easier to avoid syntax errors and will run faster.
+	The string option is there for backwards-compatibility and this explanation assumes you are writing a function.
+
+	The function is passed two variables:
+	1) The first variable is an array containing the level up/down information
+		var lvl = [
+			"oldLvl",	// number; will be 0 when adding something for the first time
+			"newLvl"	// number; will be 0 when removing something completely
+		]
+		oldLvl and newLvl will not be 0 when adding/removing a class feature, then
+		it will be the previous/new level for that class.
+	2) The second variable is an array containing the name of the old/new choice (if any)
+		var chc = [
+			"oldChoice", // string; the previous (extra)choice object name when removing the
+			                feature or switching to another (extra)choice
+			"newChoice", // string; the new (extra)choice object name when adding the
+			                feature or switching to another (extra)choice
+			"choiceAct"  // string; what type of change this is:
+			                "change" if switching choice,
+							"only" if adding an extrachoice, or
+							"" otherwise
+		]
+
 
 	This can be any JavaScript you want to have run whenever the feature is added.
+	This attribute is processed first, before all other attributes are processed.
 */
 
 removeeval : "Checkbox('Jack of All Trades', false);",
-removeeval : function() {
+removeeval : function(v) {
 	RemoveString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
 };
 /*	removeeval // OPTIONAL //
-	TYPE:	string or function
-	USE:	the function is run or the string is evaluated using eval() when the feature is removed
+	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
+	USE:	runs a piece of code when the feature is removed
+
+	Both examples do the exact same thing, just one is a string and the other is a function.
+	Writing a function is better as it is easier to avoid syntax errors and will run faster.
+	The string option is there for backwards-compatibility and this explanation assumes you are writing a function.
+
+	The function is passed two variables:
+	1) The first variable is an array containing the level up/down information
+		var lvl = [
+			"oldLvl",	// number; will be 0 when adding something for the first time
+			"newLvl"	// number; will be 0 when removing something completely
+		]
+		oldLvl and newLvl will not be 0 when adding/removing a class feature, then
+		it will be the previous/new level for that class.
+	2) The second variable is an array containing the name of the old/new choice (if any)
+		var chc = [
+			"oldChoice", // string; the previous (extra)choice object name when removing the
+			                feature or switching to another (extra)choice
+			"newChoice", // string; the new (extra)choice object name when adding the
+			                feature or switching to another (extra)choice
+			"choiceAct"  // string; what type of change this is:
+			                "change" if switching choice,
+							"only" if adding an extrachoice, or
+							"" otherwise
+		]
+
 
 	This can be any JavaScript you want to have run whenever the feature is removed.
+	This attribute is processed first, before all other attributes are processed.
 */
 
 changeeval : "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level); SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, displName);",
-changeeval : function() {
-	var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level);
-	SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, displName);
+changeeval : function(v) {
+	var monkSpd = '+' + (v[1] < 2 ? 0 : v[1] < 6 ? 10 : v[1] < 10 ? 15 : v[1] < 14 ? 20 : v[1] < 18 ? 25 : 30);
+	SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, "Monk: Unarmored Movement");
 };
 /*	changeeval // OPTIONAL //
-	TYPE:	string or function
-	USE:	the function is run or the string is evaluated using eval() when the feature is present and the character's level changes
+	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
+	USE:	runs a piece of code every time the character's level changes
+
+	Both examples do the exact same thing, just one is a string and the other is a function.
+	Writing a function is better as it is easier to avoid syntax errors and will run faster.
+	The string option is there for backwards-compatibility and this explanation assumes you are writing a function.
+
+	The function is passed two variables:
+	1) The first variable is an array containing the level up/down information
+		var lvl = [
+			"oldLvl",	// number; will be 0 when adding something for the first time
+			"newLvl"	// number; will be 0 when removing something completely
+		]
+		oldLvl and newLvl will not be 0 when adding/removing a class feature, then
+		it will be the previous/new level for that class.
+	2) The second variable is an array containing the name of the old/new choice (if any)
+		var chc = [
+			"oldChoice", // string; the previous (extra)choice object name when removing the
+			                feature or switching to another (extra)choice
+			"newChoice", // string; the new (extra)choice object name when adding the
+			                feature or switching to another (extra)choice
+			"choiceAct"  // string; what type of change this is:
+			                "change" if switching choice,
+							"only" if adding an extrachoice, or
+							"" otherwise
+		]
+
 
 	This can be any JavaScript you want to have run whenever the level changes.
+	This attribute is processed last, after all other attributes have been processed.
 */
