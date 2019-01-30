@@ -20,7 +20,7 @@
 				Note that the MFoV Warmage has gone through several iterations. The code here is based on the version from 2018/06/29.
 
 	Code by:	MorePurpleMoreBetter
-	Date:		2018-12-11 (sheet v13.0.0beta7)
+	Date:		2019-01-30 (sheet v13.0.0beta11)
 
 	Please support the creators of this content (Middle Finger of Vecna) on their Patreon (https://www.patreon.com/mfov) or through their webstore (https://store.magehandpress.com/collections/all)
 */

@@ -15,7 +15,7 @@
 				Please support the creators of this content on their Patreon: https://www.patreon.com/ensider
 
 	Code by:	MorePurpleMoreBetter
-	Date:		2018-08-13 (sheet v12.999)
+	Date:		2019-01-30 (sheet v13.0.0beta11)
 */
 var iFileName = "Greatest Secrets [EN World EN5ider, transcribed by MPMB].js";
 RequiredSheetVersion(13);

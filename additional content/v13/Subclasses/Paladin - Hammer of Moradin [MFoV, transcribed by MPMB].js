@@ -11,7 +11,7 @@
 	Effect:		This script adds a subclass for the Paladin, called "Oath of the Hammer"
 				This was made by Middle Finger of Vecna (Mage Hand Press) and can be found on their website (http://mfov.magehandpress.com/2016/04/hammer-of-moradin.html)
 	Code by:	MorePurpleMoreBetter
-	Date:		2018-12-11 (sheet v13.0.0beta7)
+	Date:		2019-01-30 (sheet v13.0.0beta11)
 	
 	Please support the creators of this content (Middle Finger of Vecna) on their Patreon (https://www.patreon.com/mfov) or through their webstore (https://store.magehandpress.com/collections/all)
 */
