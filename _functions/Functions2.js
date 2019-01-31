@@ -5492,13 +5492,11 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	// if a weapon was found, set the variables
 	if (aWea) {
 		// create the variable from the baseWeapon
+		var theWea = {};
 		if (aWea.baseWeapon && WeaponsList[aWea.baseWeapon]) {
-			var theWea = {};
 			for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
-			for (var attr in aWea) theWea[attr] = aWea[attr];
-		} else {
-			var theWea = aWea;
 		}
+		for (var attr in aWea) theWea[attr] = aWea[attr];
 		
 		thermoTxt = thermoM("Applying the weapon's features...", false); //change the progress dialog text
 		var curDescr = What(fldBase + "Description");
@@ -5722,8 +5720,9 @@ function CalcAttackDmgHit(fldName) {
 		var theWea = {};
 		if (aWea && aWea.baseWeapon && WeaponsList[aWea.baseWeapon]) {
 			for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
-			for (var attr in aWea) theWea[attr] = aWea[attr];
 		}
+		if (aWea) for (var attr in aWea) theWea[attr] = aWea[attr];
+
 		var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (/\b(cantrip|spell)\b/i).test(WeaponText);
 		var isMeleeWeapon = (!isSpell || thisWeapon[0] === "shillelagh") && (/melee/i).test(fields.Range);
 		var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
@@ -5768,7 +5767,7 @@ function CalcAttackDmgHit(fldName) {
 				isNaturalWeapon : isNaturalWeapon,
 				theWea : theWea,
 				WeaponName : WeaponName,
-				baseWeaponName : theWea && theWea.baseWeapon ? theWea.baseWeapon : WeaponName,
+				baseWeaponName : theWea.baseWeapon ? theWea.baseWeapon : WeaponName,
 				thisWeapon : thisWeapon,
 				isOffHand : isOffHand
 			}

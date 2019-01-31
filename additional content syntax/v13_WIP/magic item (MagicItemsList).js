@@ -367,8 +367,8 @@ MagicItemsList["staff of purple"] = {
 
 		Unless the 'itemName1stPage' attribute is present, see below, the resulting name is also used to populate the 1st page.
 	*/
-		descriptionString : ["prefix", "armor"],
-	/*	descriptionString // OPTIONAL //
+		descriptionChange : ["prefix", "armor"],
+	/*	descriptionChange // OPTIONAL //
 		TYPE:	array
 		USE:	what part of the magic item's description to add the name of the selected gear to
 
@@ -381,7 +381,7 @@ MagicItemsList["staff of purple"] = {
 			1.4 "brackets"	// Add the name of selected gear in brackets after the 2nd array entry
 		2. The second string is the string that selected gear will be replaced/amended to.
 			Common uses include "armor", "weapon", and "ammunition".
-			Only the first instance of the 2nd array entry in the magic item's description will be replaced.
+			Only the first instance of the 2nd array entry in the magic item's description will be replaced/amended.
 
 
 		If this attribute is not present, the sheet will determine it automatically:

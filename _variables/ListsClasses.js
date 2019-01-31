@@ -782,7 +782,7 @@ var Base_ClassList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (v.baseWeaponName == "unarmed strike" && !v.thisWeapon[1]) {
+							if (v.baseWeaponName == "unarmed strike" && !v.thisWeapon[1] && !v.theWea.isMagicWeapon && !(/counts as magical/i).test(fields.Description)) {
 								fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
 							};
 						},
@@ -1945,7 +1945,7 @@ var Base_ClassList = {
 								if (v.pactWeapon || v.theWea.pactWeapon || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) {
 									v.pactWeapon = true;
 									fields.Proficiency = true;
-									if (!v.thisWeapon[1]) fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
+									if (!v.theWea.isMagicWeapon && !(/counts as magical/i).test(fields.Description)) fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
 								};
 							},
 							"If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."

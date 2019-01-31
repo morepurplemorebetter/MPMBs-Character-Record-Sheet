@@ -2566,8 +2566,6 @@ function FindWeapons(ArrayNmbr) {
 		var magicRegex = /(?:^|\s|\(|\[)([\+-]\d+)/;
 		if (magicRegex.test(tempString)) {
 			tempArray[j][1] = parseFloat(tempString.match(magicRegex)[1]);
-		} else if (theWea && theWea.isMagicWeapon) {
-			tempArray[j][1] = "magic item";
 		}
 
 		//add the true/false switch for adding ability score to damage or not
@@ -2601,12 +2599,12 @@ function ReCalcWeapons(justProfs, force) {
 
 function SetWeaponsdropdown(forceTooltips) {
 	var tempString = "Type in the name of the attack (or select it from the drop-down menu) and all its attributes will be filled out automatically, provided that its a recognized attack.";
-	tempString += "\n\n" + toUni("Magic bonus") + "\nAny magical bonus you type in this field is added to both the to hit and damage (e.g. type \"Longsword +2\").";
-	tempString += "\n\n" + toUni("Off-hand weapons") + "\nIf the name or description fields include the word \"off-hand\", \"secondary\", \"spell\", or \"cantrip\", the ability modifier will only be added to the to hit bonus, and not to the damage.";
-	tempString += "\n\n" + toUni("Damage Die") + "\nThis is determined by the value in the \"modifier\" field, see below.";
-	tempString += "\n\n" + toUni("To Hit and Damage calculations") + "\nThese are calculated using the proficiency bonus, the selected ability modifier and any bonus added in the \"modifier\" fields, see below.";
+	tempString += "\n\n" + toUni("Magic bonus") + '\nAny magical bonus you type in this field is added to both the to hit and damage (e.g. type " +2Longsword").';
+	tempString += "\n\n" + toUni("Off-hand weapons") + '\nIf the name or description fields include the word "off-hand", "secondary", "spell", or "cantrip", the ability modifier will only be added to the to hit bonus, and not to the damage.';
+	tempString += "\n\n" + toUni("Damage Die") + '\nThis is determined by the value in the "modifier" field, see below.';
+	tempString += "\n\n" + toUni("To Hit and Damage calculations") + '\nThese are calculated using the proficiency bonus, the selected ability modifier and any bonus added in the "modifier" fields, see below.';
 	tempString += "\n\n" + toUni("Context-aware calculations") + "\nSome class features, racial features, and feats can affect the attack to hit and damage calculations. You can read what these are by clicking the button in this line.";
-	tempString += "\n\n" + toUni("Modifier or blue text fields") + "\nThese are hidden by default. You can toggle their visibility with the \"Mods\" button in the \'JavaScript Window\' or the \"Modifiers\" bookmark.";
+	tempString += "\n\n" + toUni("Modifier or blue text fields") + '\nThese are hidden by default. You can toggle their visibility with the "Mods" button in the \'JavaScript Window\' or the "Modifiers" bookmark.';
 
 	var added = [], otherLists = [];
 	var weaponlists = {
@@ -4400,14 +4398,17 @@ function ApplyFeat(input, FldNmbr) {
 		}
 	}
 
-	if (oldFeat === newFeat && oldFeatVar === newFeatVar) return; // No changes were made
+	if (oldFeat === newFeat && oldFeatVar === newFeatVar) {
+		if (setFieldValueTo) event.target.setVal = setFieldValueTo;
+		return; // No changes were made
+	}
 
 	// Start progress bar
 	var thermoTxt = thermoM("Applying feat...");
 	thermoM(1/6); // Increment the progress bar
 
 	// Create the object to use (merge parent and choice)
-	if (!aFeatVar) {
+	if (!newFeatVar) {
 		var theFeat = aFeat;
 		aFeatVar = "";
 	} else {
@@ -4429,20 +4430,20 @@ function ApplyFeat(input, FldNmbr) {
 	if (IsNotImport && !ignoreDuplicates && aFeat) {
 		// count occurrence of parent & choice
 		var parentDupl = 0;
-		var choiceDupl = aFeatVar && !aFeatVar.allowDuplicates ? 0 : undefined;
+		var choiceDupl = 0;
 		for (var i = 0; i < CurrentFeats.known.length; i++) {
 			if (i == ArrayNmbr) continue;
 			if (CurrentFeats.known[i] == newFeat) {
 				parentDupl++;
-				if (choiceDupl !== undefined && CurrentFeats.choices[i] == newFeatVar) choiceDupl++;
+				if (newFeatVar && CurrentFeats.choices[i] == newFeatVar) choiceDupl++;
 			}
 		}
-		if ((parentDupl && !aFeatVar.allowDuplicates) || choiceDupl) {
+		if ((parentDupl && !aFeat.allowDuplicates) || (choiceDupl && !aFeatVar.allowDuplicates)) {
 			var stopFunct = app.alert({
 				cTitle : "Can only have one instance of a feat",
-				cMsg : "The feat that you have selected, '" + (choiceDupl ? theFeat.name : aFeat.name) + "' is already present on the sheet and you can't have duplicates of it." + (!choiceDupl ? "\n\nHowever, as this is a composite feat that exists in different forms, and you don't have '" + theFeat.name + "' yet, the sheet can allow you to add it regardless of the rules. Do you want to continue adding this feat?" : ""),
-				nIcon : choiceDupl ? 0 : 1,
-				nType : choiceDupl ? 0 : 2
+				cMsg : "The feat that you have selected, '" + (choiceDupl ? theFeat.name : aFeat.name) + "' is already present on the sheet and you can't have duplicates of it." + (newFeatVar && !choiceDupl ? "\n\nHowever, as this is a composite feat that exists in different forms, and you don't have '" + theFeat.name + "' yet, the sheet can allow you to add it regardless of the rules. Do you want to continue adding this feat?" : ""),
+				nIcon : !newFeatVar || choiceDupl ? 0 : 1,
+				nType : !newFeatVar || choiceDupl ? 0 : 2
 			});
 			if (stopFunct === 1 || stopFunct === 3) {
 				doNotCommit();
@@ -6658,21 +6659,20 @@ function ApplyAmmo(inputtxt, Fld) {
 }
 
 //Add the ammunition to one of the ammo fields. Inputtxt must be a known AmmoList entry
-function AddAmmo(inputtxt) {
-	var AmmoFlds = [
-		"AmmoLeftDisplay.Name",
-		"AmmoRightDisplay.Name"
-	]
+function AddAmmo(inputtxt, amount) {
+	var AmmoFlds = [ "AmmoLeftDisplay.Name", "AmmoRightDisplay.Name" ];
+	var AmountFlds = [ "AmmoLeftDisplay.Amount", "AmmoRightDisplay.Amount" ];
+	amount = amount && !isNaN(Number(amount)) ? Number(amount) : 0;
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 0; i < AmmoFlds.length; i++) {
 			var next = tDoc.getField(AmmoFlds[i]);
-			if (n === 1 && ((RegExp(inputtxt.RegEscape(), "i")).test(next.value) || next.value.toLowerCase().indexOf(inputtxt) !== -1)) {
-				i = AmmoFlds.length;
-				n = 3;
+			if (n === 1 && ((RegExp(inputtxt.RegEscape(), "i")).test(next.value) || next.value.toLowerCase().indexOf(inputtxt.toLowerCase()) !== -1)) {
+				if (amount) tDoc.getField(AmountFlds[i]).value += amount;
+				return;
 			} else if (n === 2 && next.value === "") {
 				next.value = AmmoList[inputtxt] ? AmmoList[inputtxt].name : inputtxt;
-				i = AmmoFlds.length;
-				n = 3;
+				if (amount) Value(AmountFlds[i], amount);
+				return;
 			}
 		}
 	}
@@ -6680,15 +6680,12 @@ function AddAmmo(inputtxt) {
 
 //Remove the ammunition if it exists in one of the ammo fields
 function RemoveAmmo(inputtxt) {
-	var AmmoFlds = [
-		"AmmoLeftDisplay.Name",
-		"AmmoRightDisplay.Name"
-	]
+	var AmmoFlds = [ "AmmoLeftDisplay.Name", "AmmoRightDisplay.Name" ];
 	for (var i = 0; i < AmmoFlds.length; i++) {
 		var next = tDoc.getField(AmmoFlds[i]);
-		if (next.value.toLowerCase().indexOf(inputtxt) !== -1) {
+		if (next.value.toLowerCase().indexOf(inputtxt.toLowerCase()) !== -1) {
 			next.value = "";
-			i = AmmoFlds.length;
+			break;
 		}
 	}
 }

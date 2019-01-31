@@ -1771,7 +1771,10 @@ function ApplyMagicItem(input, FldNmbr) {
 		}
 	}
 
-	if (oldMI === newMI && oldMIvar === newMIvar) return; // No changes were made
+	if (oldMI === newMI && oldMIvar === newMIvar && (!aMI || !aMI.chooseGear) && (!aMIvar || !aMIvar.chooseGear)) {
+		if (setFieldValueTo) event.target.setVal = setFieldValueTo;
+		return; // No changes were made
+	}
 
 	// Start progress bar
 	var thermoTxt = thermoM("Applying magic item...");
@@ -1800,20 +1803,20 @@ function ApplyMagicItem(input, FldNmbr) {
 	if (IsNotImport && !ignoreDuplicates && aMI) {
 		// count occurrence of parent & choice
 		var parentDupl = 0;
-		var choiceDupl = aMIvar && !aMIvar.allowDuplicates ? 0 : undefined;
+		var choiceDupl = 0;
 		for (var i = 0; i < CurrentMagicItems.known.length; i++) {
 			if (i == ArrayNmbr) continue;
 			if (CurrentMagicItems.known[i] == newMI) {
 				parentDupl++;
-				if (choiceDupl !== undefined && CurrentMagicItems.choices[i] == newMIvar) choiceDupl++;
+				if (newMIvar && CurrentMagicItems.choices[i] == newMIvar) choiceDupl++;
 			}
 		}
-		if ((parentDupl && !aMI.allowDuplicates) || choiceDupl) {
+		if ((parentDupl && !aMI.allowDuplicates) || (choiceDupl && !aMIvar.allowDuplicates)) {
 			var stopFunct = app.alert({
 				cTitle : "Can only have one instance of a magic item",
-				cMsg : "The magic item that you have selected, '" + (choiceDupl ? theMI.name : aMI.name) + "' is already present on the sheet and you can't have duplicates of it.\n\nIf you want to show that your character has multiples of this item, consider adding \"(2)\" after its name. You can also list it in one of the equipment sections, where you can denote the number you have." + (!choiceDupl ? "\n\nHowever, as this is a composite item that exists in different forms, and you don't have '" + theMI.name + "' yet, the sheet can allow you to add it regardless of the rules. Do you want to continue adding this item?" : ""),
-				nIcon : choiceDupl ? 0 : 1,
-				nType : choiceDupl ? 0 : 2
+				cMsg : "The magic item that you have selected, '" + (choiceDupl ? theMI.name : aMI.name) + "' is already present on the sheet and you can't have duplicates of it.\n\nIf you want to show that your character has multiples of this item, consider adding \"(2)\" after its name. You can also list it in one of the equipment sections, where you can denote the number you have." + (newMIvar && !choiceDupl ? "\n\nHowever, as this is a composite item that exists in different forms, and you don't have '" + theMI.name + "' yet, the sheet can allow you to add it regardless of the rules. Do you want to continue adding this item?" : ""),
+				nIcon : !newMIvar || choiceDupl ? 0 : 1,
+				nType : !newMIvar || choiceDupl ? 0 : 2
 			});
 			if (stopFunct === 1 || stopFunct === 3) {
 				doNotCommit();
@@ -1945,19 +1948,21 @@ function ApplyMagicItem(input, FldNmbr) {
 		}
 
 		// Apply the rest of its attributes
-		var justChange = oldMI == newMI && oldMIvar !== newMIvar;
-		var Fea = ApplyFeatureAttributes(
-			"item", // type
-			newMI, // fObjName
-			[justChange ? CurrentMagicItems.level : 0, CurrentMagicItems.level, justChange], // lvlA [old-level, new-level, force-apply]
-			justChange ? [oldMIvar, newMIvar, "change"] : ["", newMIvar, false], // choiceA [old-choice, new-choice, "only"|"change"]
-			false // forceNonCurrent
-		);
+		if (oldMI !== newMI || oldMIvar !== newMIvar) {
+			var justChange = oldMI == newMI && oldMIvar !== newMIvar;
+			var Fea = ApplyFeatureAttributes(
+				"item", // type
+				newMI, // fObjName
+				[justChange ? CurrentMagicItems.level : 0, CurrentMagicItems.level, justChange], // lvlA [old-level, new-level, force-apply]
+				justChange ? [oldMIvar, newMIvar, "change"] : ["", newMIvar, false], // choiceA [old-choice, new-choice, "only"|"change"]
+				false // forceNonCurrent
+			);
+		}
 
 		// Do the selection of a weapon, ammo, or armor if defined
-		if (justChange && (aMI.chooseGear || aMI[oldMIvar].chooseGear)) {
+		if (oldMI == newMI && (aMI.chooseGear || (oldMIvar && aMI[oldMIvar].chooseGear))) {
 			// undo the previous
-			selectMagicItemGearType(false, FldNmbr, aMI[oldMIvar].chooseGear ? aMI[oldMIvar].chooseGear : aMI.chooseGear);
+			selectMagicItemGearType(false, FldNmbr, oldMIvar && aMI[oldMIvar].chooseGear ? aMI[oldMIvar].chooseGear : aMI.chooseGear, oldMIvar);
 		}
 		if (theMI.chooseGear) selectMagicItemGearType(true, FldNmbr, theMI.chooseGear);
 	}
@@ -1997,6 +2002,9 @@ function correctMIdescriptionLong(FldNmbr) {
 	if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
 	if (typePF) theDesc = theDesc.replace("\n", " ");
 	Value("Extra.Magic Item Description " + FldNmbr, theDesc);
+	// Apply the chooseGear item again to the description
+	var hasChooseGear = aMIvar && aMIvar.chooseGear ? aMIvar.chooseGear : aMI.chooseGear;
+	if (hasChooseGear) selectMagicItemGearType(true, FldNmbr, hasChooseGear, false, true);
 }
 
 function ApplyAttunementMI(FldNmbr) {
@@ -2452,7 +2460,7 @@ function ResetMagicItems() {
 }
 
 // Change the magic item to include a selected weapon, armor, or ammunition
-function selectMagicItemGearType(AddRemove, FldNmbr, typeObj) {
+function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correctingDescrLong) {
 	if (!event.target || !event.target.name || event.target.name.indexOf("Extra.Magic Item ") == -1 || !typeObj.type) return;
 	if (typeObj.excludeCheck && typeof typeObj.excludeCheck != "function") delete typeObj.excludeCheck;
 	// see what type of thing we are dealing with or return if none is recognized
@@ -2465,7 +2473,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj) {
 			var typeNmC = "Ammunition";
 			var parseFnct = "ParseAmmo";
 			var baseList = AmmoList;
-			var exclObj = "weapExcl";
+			var exclObj = "ammoExcl";
 			break;
 		case "wea":
 		case "weapon":
@@ -2474,7 +2482,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj) {
 			var typeNmC = "Weapon";
 			var parseFnct = "ParseWeapon"
 			var baseList = WeaponsList;
-			var exclObj = "ammoExcl";
+			var exclObj = "weapExcl";
 			break;
 		case "armor":
 		case "armors":
@@ -2496,16 +2504,16 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj) {
 			case "prefix":
 				return addition + " " + fixed;
 			case "suffix":
-				return newMIname = fixed + " " + addition;
+				return fixed + " " + addition;
 			case "brackets":
-				return newMIname = fixed + " (" + addition + ")";
+				return fixed + " (" + addition.replace(/ ?\(.+\)/, '') + ")";
 		}
 	}
 	var MIflds = ReturnMagicItemFieldsArray(FldNmbr);
 	var isApplyFld = event.target.name == MIflds[0];
 	var ArrayNmbr = FldNmbr - 1;
 	var curItem = CurrentMagicItems.known[ArrayNmbr];
-	var curChoice = CurrentMagicItems.choices[ArrayNmbr];
+	var curChoice = oldChoice ? oldChoice : CurrentMagicItems.choices[ArrayNmbr];
 	var aMI = MagicItemsList[curItem];
 	var aMIvar = curChoice && aMI[curChoice] ? aMI[curChoice] : false;
 	var curName = curChoice ? MagicItemsList[curItem][curChoice].name : MagicItemsList[curItem].name;
@@ -2518,9 +2526,19 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj) {
 
 	// get the value of the magic item name field
 	var useVal = isApplyFld && AddRemove ? event.value : isApplyFld ? event.target.value : What(MIflds[0]);
-	var parseVal = typeNm == "weapon" ? useVal.replace(/\b(axe|hammer|sword|bow)\b/g, '') : useVal;
 	// see if the item is not already present in the string
-	var isItem = tDoc[parseFnct](parseVal, typeNm == "ammunition");
+	var isItem = tDoc[parseFnct](useVal);
+	// if this is recognized as a weapon, make sure we are not just triggering on the default words (axe, sword, hammer, bow, crossbow)
+	var defaultItems = {
+		"battleaxe" : [/\baxes?\b/i, /battle/i],
+		"longsword" : [/\bswords?\b/i, /long/i],
+		"warhammer" : [/\bhammers?\b/i, /war/i],
+		"shortbow" : [/\bbows?\b/i, /short/i],
+		"light crossbow" : [/\bcrossbows?\b/i, /light/i]
+	}
+	if (typeNm == "weapon" && defaultItems[isItem] && (defaultItems[isItem][0]).test(useVal) && !(defaultItems[isItem][1]).test(useVal)) {
+		isItem = ParseWeapon(useVal.replace(defaultItems[isItem][0], ''));
+	}
 	// if removing this item
 	if (!AddRemove) {
 		if (isItem) {
@@ -2529,25 +2547,31 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj) {
 			return; // nothing more to do if we are just removing this item and no item is found
 		}
 	} else if (!isItem) {
+		if (!IsNotImport) return;
 		// collect all types of items
 		var itemChoices = [];
+		var itemRefs = {};
 		for (var key in baseList) {
 			var kObj = baseList[key];
 			if (testSource(key, kObj, exclObj)) continue;
 			// some type-dependent filters
 			if (typeNm == "armor" && (!kObj.type || kObj.isMagicArmor)) {
 				continue;
-			} else if (typeNm == "weapon" && ((/natural|spell|cantrip/i).test(kObj.type) || kObj.isMagicWeapon)) {
+			} else if (typeNm == "weapon" && ((/natural|spell|cantrip|improvised/i).test(kObj.type) || kObj.isMagicWeapon)) {
 				continue;
 			} else if (typeNm == "ammunition" && (kObj.isMagicAmmo || WeaponsList[key])) {
 				continue;
 			}
 			if (typeObj.excludeCheck && typeObj.excludeCheck(key, kObj)) continue;
-			itemChoices.push(kObj.name.capitalize());
+			var capName = kObj.name.capitalize();
+			itemChoices.push(capName);
+			itemRefs[capName] = key;
 		}
-		selectedItem = AskUserOptions("Select Type of " + typeNmC, "Choose which " + typeNm + " type this '" + curName + "' is.\n" + (aMI.choices ? "\nWhen you change the choice of this magic item using the button in its line, you will be prompted again to select the " + typeNm + " type." : "") + "\nIf you only want to change the " + typeNm + " type, remove the magic item and select it again from the drop-down.", itemChoices, "radio", true);
+		if (typeNm != "armor") itemChoices.sort();
+		selectedItem = AskUserOptions("Select Type of " + typeNmC, "Choose which " + typeNm + " type this '" + curName + "' is.\nIf you want to change the " + typeNm + " type at a later time, select the magic item again from the drop-down box." + (aMI.choices ? "\nYou will also be prompted to select the " + typeNm + " type again when you select a choice using the button in this magic item line," + (aMIvar ? " even when selecting '" + aMIvar.name + "' again." : ".") : ""), itemChoices, "radio", true);
 
 		var theItemName = selectedItem.toLowerCase();
+		isItem = itemRefs[selectedItem];
 	} else {
 		var theItemName = baseList[isItem].name.toLowerCase();
 	}
@@ -2558,18 +2582,20 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj) {
 		itemToProcess = createString(typeObj.itemName1stPage[0], selectedItem, typeObj.itemName1stPage[1]);
 	}
 	// Apply the item to the sheet
-	switch (typeNm) {
-		case "ammunition":
-			tDoc[AddRemove ? 'AddAmmo' : 'RemoveAmmo'](itemToProcess ? itemToProcess : newMIname.replace(/ammunition (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"));
-			break;
-		case "weapon":
-			processAddWeapons(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/weapon (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"));
-			break;
-		case "armor":
-			processAddArmour(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/armou?r (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"));
-			break;
+	if (!correctingDescrLong) {
+		switch (typeNm) {
+			case "ammunition":
+				tDoc[AddRemove ? 'AddAmmo' : 'RemoveAmmo'](itemToProcess ? itemToProcess : newMIname.replace(/ammunition (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"), 1);
+				break;
+			case "weapon":
+				processAddWeapons(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/weapon (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"));
+				break;
+			case "armor":
+				processAddArmour(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/armou?r (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"));
+				break;
+		}
 	}
-	if (AddRemove && isApplyFld) {
+	if (AddRemove && (isApplyFld || correctingDescrLong)) {
 		// Update the description of the magic item to reflect the choice
 		var descrWrd = typeObj.descriptionChange ? typeObj.descriptionChange[1] : typeNm;
 		var desrcStr = What(MIflds[2]).replace(
@@ -2582,8 +2608,15 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj) {
 				)
 		);
 		Value(MIflds[2], desrcStr);
+	}
+	if (AddRemove && isApplyFld) {
+		// set the weight of the item, if any
+		if (baseList[isItem].weight) {
+			var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
+			Value(MIflds[3], RoundTo(baseList[isItem].weight * massMod, 0.001, true));
+		}
 		// set the changed name of the magic item (always do this last!)
-		event.target.setVal = newMIname;
+		if (newMIname !== event.value) event.target.setVal = newMIname;
 	}
 }
 
