@@ -500,7 +500,7 @@ function CalcSpellScores() {
 	var theMod = Number(What(modFld));
 	var aClass = What(Fld.replace("DINGDONG", "class")); //find the associated class
 	var cSpells = CurrentSpells[aClass] ? CurrentSpells[aClass] : false;
-	var fixedDC = cSpells && cSpells.fixedDC ? cSpells.fixedDC : false;
+	var fixedDC = cSpells && cSpells.fixedDC ? Number(cSpells.fixedDC) : false;
 
 	var theResult = {
 		dc : 0,
@@ -528,7 +528,7 @@ function CalcSpellScores() {
 	// the DC
 	theResult.dc = fixedDC ? fixedDC : profBonus + theMod + 8;
 	// the spell attack
-	theResult.attack = profBonus + (fixedDC ? fixedDC - 8 : theMod);
+	theResult.attack = fixedDC ? fixedDC - 8 : profBonus + theMod;
 	// the number of prepared spells
 	var isPrepareVis = isDisplay(Fld.replace("DINGDONG", "prepare")) == display.visible;
 	if (isPrepareVis) {

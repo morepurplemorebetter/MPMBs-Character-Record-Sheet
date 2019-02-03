@@ -3046,7 +3046,8 @@ function SetGearVariables() {
 		var theGear = GearList[gearArray[i]];
 		GearMenus.gear.push({
 			cName : theGear.infoname,
-			cReturn : !theGear.name || theGear.name === "-" ? null : "gear#" + gearArray[i]
+			cReturn : "gear#" + gearArray[i],
+			bEnabled : theGear.name && theGear.name !== "-"
 		});
 	};
 
@@ -3062,7 +3063,8 @@ function SetGearVariables() {
 		var theTool = ToolsList[toolsArray[i]];
 		GearMenus.tools.push({
 			cName : theTool.infoname,
-			cReturn : !theTool.name || theTool.name === "-" ? null : "tool#" + toolsArray[i]
+			cReturn : "tool#" + toolsArray[i],
+			bEnabled : theTool.name && theTool.name !== "-"
 		});
 	};
 };
@@ -3405,7 +3407,7 @@ function MakeInventoryLineMenu() {
 		for (var i = 0; i < AScompA.length; i++) {
 			if (type.indexOf("Comp.") !== -1 && prefix === AScompA[i]) continue;
 			var CompNm = What(AScompA[i] + "Comp.Desc.Name");
-			var CompPg = tDoc.getField(AScompA[i] + "Comp.Desc.Name").page;
+			var CompPg = tDoc.getField(AScompA[i] + "Comp.Desc.Name").page + 1;
 			var eqpVis = eval(What(AScompA[i] + "Companion.Layers.Remember"))[1];
 			temp.oSubMenu.push({
 				cName : (CompNm ? CompNm : "NAME") + "'s Equipment Section " + (eqpVis ? "" : "\[not visible currently\] ") + "(page " + CompPg + ")",
@@ -3453,7 +3455,7 @@ function InventoryLineOptions() {
 	var thermoTxt = thermoM("Applying inventory line menu option...");
 	calcStop();
 
-	var type = MenuSelection[0].capitalize().replace("Ascomp", "AScomp").replace("Eqp", "eqp");
+	var type = MenuSelection[0].capitalize().replace("ascomp", "AScomp").replace(".comp", ".Comp").replace("Eqp", "eqp");
 	var lineNmbr = Number(MenuSelection[1]);
 
 	var Fields = [
@@ -3501,7 +3503,8 @@ function InventoryLineOptions() {
 	 case "movepage" :
 		thermoTxt = thermoM("Moving the gear to another page...", false); //change the progress dialog text
 		InvDelete(type, lineNmbr);
-		var toPageType = MenuSelection[3].capitalize().replace("Ascomp", "AScomp").replace("Eqp", "eqp");
+		var toPageType = MenuSelection[3].capitalize().replace("ascomp", "AScomp").replace("Eqp", "eqp");
+		console.println("MenuSelection: "+MenuSelection.toSource()+"\n\ntoPageType: "+toPageType); //DEBUGGING!!!
 		AddToInv(toPageType, "l", FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3], false, false, false, true);
 		break;
 	 case "copy" :
