@@ -19,7 +19,7 @@ var Base_MagicItemsList = {
 	"ammunition, +1, +2, or +3" : {
 		name : "Ammunition, +1, +2, or +3",
 		source : [["SRD", 207], ["D", 150]],
-		type : "weapon (any)",
+		type : "weapon (any ammunition)",
 		rarity: "varies",
 		description : "I have a bonus to attack and damage rolls made with this piece of magic ammunition. The bonus is determined by the rarity of the magic item: uncommon (+1), rare (+2), or very rare (+3). Once it hits a target, the ammunition is no longer magical. Select the bonus using the little square button in this magic item line.",
 		descriptionFull : "You have a bonus to attack and damage rolls made with this piece of magic ammunition. The bonus is determined by the rarity of the ammunition: uncommon (+1), rare (+2), or very rare (+3). Once it hits a target, the ammunition is no longer magical.",
@@ -34,25 +34,25 @@ var Base_MagicItemsList = {
 			name : "Ammunition +1",
 			rarity: "uncommon",
 			magicItemTable : "B",
-			description : "I have a +1 bonus to attack and damage rolls made with the magic ammunition. Once it hits a target, the ammunition is no longer magical.",
+			description : "I have a +1 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
 			allowDuplicates : true
 		},
 		"+2 ammunition (rare)" : {
 			name : "Ammunition +2",
 			rarity: "rare",
 			magicItemTable : "C",
-			description : "I have a +2 bonus to attack and damage rolls made with the magic ammunition. Once it hits a target, the ammunition is no longer magical.",
+			description : "I have a +2 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
 			allowDuplicates : true
 		},
 		"+3 ammunition (very rare)" : {
 			name : "Ammunition +3",
 			rarity: "very rare",
 			magicItemTable : "D",
-			description : "I have a +3 bonus to attack and damage rolls made with the magic ammunition. Once it hits a target, the ammunition is no longer magical.",
+			description : "I have a +3 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
 			allowDuplicates : true
 		}
 	},
-	'amulet of health': {
+	"amulet of health": {
 		name: "Amulet of Health",
 		source: [["SRD", 207], ["D", 150]],
 		type: "wondrous item",
@@ -162,7 +162,23 @@ var Base_MagicItemsList = {
 			dmgres : ["Thunder"]
 		}
 	},
-	'belt of giant strength' : {
+	"arrow of slaying" : {
+		name : "Arro\u200Aw of Slaying",
+		nameTest : "of Slaying",
+		source : [["SRD", 209], ["D", 152]],
+		type : "weapon (any ammunition)",
+		rarity: "very rare",
+		magicItemTable : "E",
+		description : "This magic ammunition is meant to hurt a particular race, type, or group of creatures. Its specificity varies. If an associated target is hit by this ammunition, it takes +6d10 piercing damage. It can then make a DC 17 Con save to half this extra damage. After dealing its extra damage, the ammunition becomes nonmagical.",
+		descriptionFull : "An arrow of slaying is a magic weapon meant to slay a particular kind of creature. Some are more focused than others; for example, there are both arrows of dragon slaying and arrows of blue dragon slaying. If a creature belonging to the type, race, or group associated with an arrow of slaying takes damage from the arrow, the creature must make a DC 17 Constitution saving throw, taking an extra 6d10 piercing damage on a failed save, or half as much extra damage on a successful one.\n   Once an arrow of slaying deals its extra damage to a creature, it becomes a nonmagical arrow.\n   Other types of magic ammunition of this kind exist, such as bolts of slaying meant for a crossbow, though arrows are most common.",
+		allowDuplicates : true,
+		chooseGear : {
+			type : "ammo",
+			prefixOrSuffix : "prefix",
+			descriptionChange : ["replace", "ammunition"]
+		}
+	},
+	"belt of giant strength" : {
 		name: "Belt of Giant Strength",
 		source: [["SRD", 211], ["D", 155]],
 		type: "wondrous item",
@@ -215,7 +231,73 @@ var Base_MagicItemsList = {
 			scoresOverride : [29, 0, 0, 0, 0, 0]
 		}
 	},
-	'bracers of defense' : {
+	"berserker axe" : {
+		name : "Berserker Axe",
+		nameTest : "Berserker",
+		source : [["SRD", 211], ["D", 155]],
+		type : "weapon (any axe)",
+		rarity : "rare",
+		magicItemTable : "G",
+		attunement : true,
+		description : "This axe gives +1 to hit and damage, +1 HP per level, and is cursed. I can't part with it and have disadv. using other weapons. Whenever I'm damaged by a hostile, I must make a DC 15 Wis save or go berserk, using my action each round to attack the closest creature with the axe until none remain within 60 ft.",
+		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon. In addition, while you are attuned to this weapon, your hit point maximum increases by 1 for each level you have attained.\n   " + toUni("Curse") + ". This axe is cursed, and becoming attuned to it extends the curse to you. As long as you remain cursed, you are unwilling to part with the axe, keeping it within reach at all times. You also have disadvantage on attack rolls with weapons other than this one, unless no foe is within 60 feet of you that you can see or hear.\n   Whenever a hostile creature damages you while the axe is in your possession, you must succeed on a DC 15 Wisdom saving throw or go berserk. While berserk, you must use your action each round to attack the creature nearest to you with the axe. If you can make extra attacks as part of the Attack action, you use those extra attacks, moving to attack the next nearest creature after you fell your current target. If you have multiple possible targets, you attack one at random. You are berserk until you start your turn with no creatures within 60 feet of you that you can see or hear.",
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "suffix",
+			descriptionChange : ["replace", "axe"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /axe/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/axe/i).test(v.baseWeaponName) && (/berserker/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + 'Cursed';
+					}
+				},
+				'If I include the word "Berserker" in a the name of an axe, it will be treated as the magic weapon Berserker Axe. It has +1 to hit and damage, but also bears a curse.'
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/axe/i).test(v.baseWeaponName) && (/berserker/i).test(v.WeaponText)) {
+						output.magic = v.thisWeapon[1] + 1;
+					}
+				}, ''
+			],
+			hp : "extrahp += Number(What('Character Level')); extrastring += '\\n + ' + What('Character Level') + ' from Berserker Axe (magic item)'; "
+		}
+	},
+	"boots of elvenkind" : { // contributed by AelarTheElfRogue
+		name : "Boots of Elvenkind",
+		source : [["SRD", 212], ["D", 155]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While I wear these boots, my steps make no sound, regardless of the surface I am moving across. I also have advantage on Dexterity (Stealth) checks that rely on moving silently.",
+		descriptionFull : "While you wear these boots, your steps make no sound, regardless of the surface you are moving across. You also have advantage on Dexterity (Stealth) checks that rely on moving silently."
+	},
+	"boots of levitation" : { // contributed by AelarTheElfRogue
+		name : "Boots of Levitation",
+		source : [["SRD", 212], ["D", 155]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		attunement : true,
+		description : "While I wear these boots, I can use an action to cast the levitate spell on myself at will.",
+		descriptionFull : "While you wear these boots, you can use an action to cast the Levitate spell on yourself at will.",
+		action: [["action", ""]],
+		spellcastingBonus : {
+			name: "Self Only",
+			spells: ["levitate"],
+			selection: ["levitate"],
+			atwill : true
+		}
+	},
+	"bracers of defense" : {
 		name : "Bracers of Defense",
 		source : [["SRD", 212], ["D", 156]],
 		type : "wondrous item",
@@ -231,7 +313,7 @@ var Base_MagicItemsList = {
 			stopeval : function (v) { return v.wearingArmor || v.usingShield; }
 		}
 	},
-	'crystal ball' : {
+	"crystal ball" : {
 		name : "Crystal Ball",
 		source : [["SRD", 214], ["D", 159]],
 		type : "wondrous item",
@@ -247,6 +329,115 @@ var Base_MagicItemsList = {
 			spells : ["scrying"],
 			selection : ["scrying"],
 			firstCol : "atwill"
+		}
+	},
+	"dancing sword" : {
+		name : "Dancing Sword",
+		nameTest : "Dancing",
+		source : [["SRD", 215], ["D", 161]],
+		type : "weapon (any sword)",
+		rarity : "very rare",
+		magicItemTable : "H",
+		attunement : true,
+		description : "As a bonus action, I can toss this sword into the air and use the command to make it hover, fly up to 30 ft and attack a target of my choice (as if I'm using it).\nI can command it to move/attack again as a bonus action while it hovers and is in 30 ft.\nAfter the 4th attack, it moves 30 ft to return to my hand.",
+		descriptionLong : "As a bonus action, I can toss this magic sword into the air and use the command word to make it hover, fly up to 30 ft and attack a target of my choice within 5 ft of it.\nThe attack uses my attack roll and ability score for damage as if I would be using the sword.\nI can command it to move and attack again as a bonus action while it hovers.\nAfter the 4th attack, it moves 30 ft to try and return to my hand.\nIf it can't reach me or my hands are full, it falls to the ground after moving.\nIt also ceases to hover if I grasp it or move more than 30 ft away from it.",
+		descriptionFull : "You can use a bonus action to toss this magic sword into the air and speak the command word. When you do so, the sword begins to hover, flies up to 30 feet, and attacks one creature of your choice within 5 feet of it. The sword uses your attack roll and ability score modifier to damage rolls.\n   While the sword hovers, you can use a bonus action to cause it to fly up to 30 feet to another spot within 30 feet of you. As part of the same bonus action, you can cause the sword to attack one creature within 5 feet of it.\n   After the hovering sword attacks for the fourth time, it flies up to 30 feet and tries to return to your hand. If you have no hand free, it falls to the ground at your feet. If the sword has no unobstructed path to you, it moves as close to you as it can and then falls to the ground. It also ceases to hover if you grasp it or move more than 30 feet away from it.",
+		action : [["bonus action", ""]],
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "suffix",
+			descriptionChange : ["replace", "sword"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/dancing/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + 'Attacks on its own as a bonus action';
+					}
+				},
+				'If I include the word "Dancing" in a the name of a sword, it will be treated as the magic weapon Dancing Sword. The sword can be made to attack on its own as a bonus action.'
+			]
+		}
+	},
+	"defender" : {
+		name : "Defender",
+		source : [["SRD", 218], ["D", 164]],
+		type : "weapon (any sword)",
+		rarity : "legendary",
+		magicItemTable : "I",
+		attunement : true,
+		description : "I have a +3 bonus to attack and damage rolls made with this magic sword. The first time I attack with it on each of my turns, I can transfer (part of) the bonus to AC instead. This adjustment remains in affect until the start of my next turn, although I must be holding the sword to gain its bonus to AC.",
+		descriptionFull : "You gain a +3 bonus to attack and damage rolls made with this magic weapon.\n   The first time you attack with the sword on each of your turns, you can transfer some or all of the sword's bonus to your Armor Class, instead of using the bonus on any attacks that turn. For example, you could reduce the bonus to your attack and damage rolls to +1 and gain a +2 bonus to AC. The adjusted bonuses remain in effect until the start of your next turn, although you must hold the sword to gain a bonus to AC from it.",
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "brackets",
+			descriptionChange : ["replace", "sword"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/defender/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + '+3 bonus can be used for AC instead';
+					}
+				},
+				'If I include the word "Defender" in a the name of a sword, it will be treated as the magic weapon Defender. It has +3 to hit and damage, but this bonus can be lowered and added to AC instead. Decide to do so with the first attack on your turn.'
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/defender/i).test(v.WeaponText)) {
+						output.magic = v.thisWeapon[1] + 3;
+					}
+				}, ''
+			]
+		}
+	},
+	"dragon slayer" : {
+		name : "Dragon Slayer",
+		source : [["SRD", 219], ["D", 166]],
+		type : "weapon (any sword)",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "I have a +1 bonus to attack and damage rolls made with this magic sword. When I hit a creature with the dragon type with this sword, it does 3d6 extra damage of the weapon's damage type.",
+		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n   When you hit a dragon with this weapon, the dragon takes an extra 3d6 damage of the weapon's type. For the purpose of this weapon, \"dragon\" refers to any creature with the dragon type, including dragon turtles and wyverns.",
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "brackets",
+			descriptionChange : ["replace", "sword"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*dragon)(?=.*slayer).*$/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + '+3d6 damage vs. dragons';
+					}
+				},
+				'If I include the words "Dragon Slayer" in a the name of a sword, it will be treated as the magic weapon Dragon Slayer. It has +1 to hit and damage and deals +3d6 damage to creatures with the dragon type.'
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*dragon)(?=.*slayer).*$/i).test(v.WeaponText)) {
+						output.magic = v.thisWeapon[1] + 1;
+					}
+				}, ''
+			]
 		}
 	},
 	"dwarven thrower" : {
@@ -272,7 +463,74 @@ var Base_MagicItemsList = {
 			modifiers : [3, 3] // add 3 to each to hit and damage because of the magical bonus
 		}
 	},
-	'gauntlets of ogre power': {
+	"flame tongue" : {
+		name : "Flame Tongue",
+		source : [["SRD", 223], ["D", 170]],
+		type : "weapon (any sword)",
+		rarity : "rare",
+		magicItemTable : "G",
+		attunement : true,
+		description : "As a bonus action, I can speak the command word of this magic sword, causing flames to erupt from it. These flames add +2d6 fire damage and shine bright light in a 40-ft radius and dim light for an additional 40 ft. The flames last until I speak the command word again as a bonus action or sheathe it.",
+		descriptionFull : "You can use a bonus action to speak this magic sword's command word, causing flames to erupt from the blade. These flames shed bright light in a 40-foot radius and dim light for an additional 40 feet. While the sword is ablaze, it deals an extra 2d6 fire damage to any target it hits. The flames last until you use a bonus action to speak the command word again or until you drop or sheathe the sword.",
+		action : [["bonus action", " (activate/end)"]],
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "brackets",
+			descriptionChange : ["replace", "sword"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*flame)(?=.*tongue).*$/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + 'While active, +2d6 fire damage';
+					}
+				},
+				'If I include the words "Flame Tongue" in a the name of a sword, it will be treated as the magic weapon Flame Tongue. When the command word is spoken, the blade erupts with flames, adding +2d6 fire damage on a hit and shining light.'
+			]
+		}
+	},
+	"frost brand" : {
+		name : "Frost Brand",
+		source : [["SRD", 223], ["D", 171]],
+		type : "weapon (any sword)",
+		rarity : "very rare",
+		magicItemTable : "H",
+		attunement : true,
+		description : "This magic sword adds +1d6 cold damage to its damage and grants me resistance to fire. In freezing temperatures, it sheds bright light in a 10-ft radius and dim light for an additional 10 ft. Once per hour when I draw the blade, I can extinguish all nonmagical flames within 30 ft of me.",
+		descriptionFull : "When you hit with an attack using this magic sword, the target takes an extra 1d6 cold damage. In addition, while you hold the sword, you have resistance to fire damage.\n   In freezing temperatures, the blade sheds bright light in a 10-foot radius and dim light for an additional 10 feet.\n   When you draw this weapon, you can extinguish all nonmagical flames within 30 feet of you. This property can be used no more than once per hour.",
+		usages : 1,
+		recovery : "Hour",
+		additional : "extinguish flames",
+		dmgres : ["Fire"],
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "brackets",
+			descriptionChange : ["replace", "sword"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*frost)(?=.*brand).*$/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + '+1d6 cold damage';
+					}
+				},
+				'If I include the words "Frost Brand" in a the name of a sword, it will be treated as the magic weapon Frost Brand. It does +1d6 cold damage.'
+			]
+		}
+	},
+	"gauntlets of ogre power": {
 		name: "Gauntlets of Ogre Power",
 		source: [["SRD", 223], ["D", 171]],
 		type: "wondrous item",
@@ -283,16 +541,42 @@ var Base_MagicItemsList = {
 		attunement: true,
 		scoresOverride : [19, 0, 0, 0, 0, 0]
 	},
-	'headband of intellect': {
-		name: "Headband of Intellect",
-		source: [["SRD", 225], ["D", 173]],
-		type: "wondrous item",
-		rarity: "uncommon",
-		magicItemTable : "F",
-		description: "My Intelligence score is 19 while I'm wearing this headband, provided that my Intelligence is not already 19 or higher.",
-		descriptionFull: "Your Intelligence score is 19 while you wear this headband. It has no effect on you if your Intelligence is already 19 or higher without it.",
-		attunement: true,
-		scoresOverride : [0, 0, 0, 19, 0, 0]
+	"giant slayer" : {
+		name : "Giant Slayer",
+		source : [["SRD", 224], ["D", 172]],
+		type : "weapon (any axe or sword)",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "I have a +1 bonus to attack and damage rolls made with this magic weapon. When I hit a creature with the giant type with this weapon, it does 2d6 extra damage of the weapon's damage type and the giant has to make a DC 15 Strength save or be knocked prone.",
+		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n   When you hit a giant with it, the giant takes an extra 2d6 damage of the weapon's type and must succeed on a DC 15 Strength saving throw or fall prone. For the purpose of this weapon, \"giant\" refers to any creature with the giant type, including ettins and trolls.",
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "brackets",
+			descriptionChange : ["replace", "weapon"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier|axe/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier|axe/i).test(v.baseWeaponName) && (/^(?=.*giant)(?=.*slayer).*$/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + '+2d6 damage vs. giants; Giants DC 15 Str save or prone';
+					}
+				},
+				'If I include the words "Giant Slayer" in a the name of a sword, it will be treated as the magic weapon Giant Slayer. It has +1 to hit and damage and when hitting a creatures with the giant type, it does +2d6 damage and the target has to make a DC 15 Strength save or be knocked prone.'
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/sword|scimitar|rapier|axe/i).test(v.baseWeaponName) && (/^(?=.*giant)(?=.*slayer).*$/i).test(v.WeaponText)) {
+						output.magic = v.thisWeapon[1] + 1;
+					}
+				}, ''
+			]
+		}
 	},
 	"glamoured studded leather" : {
 		name : "Glamoured Studded Leather",
@@ -309,12 +593,124 @@ var Base_MagicItemsList = {
 			name : "Glamoured studded Leather",
 			source : [["SRD", 224], ["D", 172]],
 			type : "light",
-			ac : 13, // 1 more AC than normal studded leather because of the +1 magical bonus
+			ac : 13,
 			weight : 13
 		},
 		action : [["bonus action", ""]]
 	},
-	'potion of speed' : {
+	"headband of intellect": {
+		name: "Headband of Intellect",
+		source: [["SRD", 225], ["D", 173]],
+		type: "wondrous item",
+		rarity: "uncommon",
+		magicItemTable : "F",
+		description: "My Intelligence score is 19 while I'm wearing this headband, provided that my Intelligence is not already 19 or higher.",
+		descriptionFull: "Your Intelligence score is 19 while you wear this headband. It has no effect on you if your Intelligence is already 19 or higher without it.",
+		attunement: true,
+		scoresOverride : [0, 0, 0, 19, 0, 0]
+	},
+	"luck blade" : {
+		name : "Luck Blade",
+		source : [["SRD", 229], ["D", 179]],
+		type : "weapon (any sword)",
+		rarity : "legendary",
+		magicItemTable : "I",
+		attunement: true,
+		description : "This magic sword has a +1 bonus to attack and damage rolls made with it, and grants me +1 to all saves. Once per dawn, I can use its luck to reroll one attack, ability check, or save, but I must use the second result. As an action, I can use one of its 1d4-1 charges to cast Wish. Charges can't be regained.",
+		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon. While the sword is on your person, you also gain a +1 bonus to saving throws.\n   " + toUni("Luck") + ". If the sword is on your person, you can call on its luck (no action required) to reroll one attack roll, ability check, or saving throw you dislike. You must use the second roll. This property can't be used again until the next dawn.\n   " + toUni("Wish") + ". The sword has 1d4-1 charges. While holding it, you can use an action to expend 1 charge and cast the wish spell from it. This property can't be used again until the next dawn. The sword loses this property if it has no charges.",
+		extraLimitedFeatures : [{
+			name : "Luck Blade - luck reroll",
+			usages : 1,
+			recovery : "Dawn"
+		}, {
+			name : "Luck Blade - cast Wish",
+			usages : "1d4-1",
+			recovery : "Never"
+		}],
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "brackets",
+			descriptionChange : ["replace", "sword"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		addMod : [{ type : "save", field : "all", mod : 1, text : "While the Luck Blade is on my person, I gain a +1 to all my saving throws." }],
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+					}
+				},
+				'If I include the words "Luck Blade" in a the name of a sword, it will be treated as the magic weapon Luck Blade. It has +1 to hit and damage.'
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponText)) {
+						output.magic = v.thisWeapon[1] + 1;
+					}
+				}, ''
+			]
+		}
+	},
+	"holy avenger" : {
+		name : "Holy Avenger",
+		source : [["SRD", 225], ["D", 174]],
+		type : "weapon (any sword)",
+		rarity : "legendary",
+		magicItemTable : "I",
+		attunement: true,
+		description : "I have a +3 bonus to attack and damage rolls made with this magic sword. It does +2d10 radiant damage against fiends and undead. While holding the drawn sword, I have a 10-ft radius aura (30-ft if level 17 paladin) that grants me and my allies adv. on saves against spells and magical effects.",
+		descriptionFull : "You gain a +3 bonus to attack and damage rolls made with this magic weapon. When you hit a fiend or an undead with it, that creature takes an extra 2d10 radiant damage.\n   While you hold the drawn sword, it creates an aura in a 10-foot radius around you. You and all creatures friendly to you in the aura have advantage on saving throws against spells and other magical effects. If you have 17 or more levels in the paladin class, the radius of the aura increases to 30 feet.",
+		prerequisite : "Requires attunement by a paladin",
+		prereqeval : function (v) { return classes.known.paladin ? true : false; },
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "brackets",
+			descriptionChange : ["replace", "sword"],
+			itemName1stPage : ["brackets", "Holy Avenger"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*holy)(?=.*avenger).*$/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + '+2d10 radiant damage vs. fiends and undead';
+					}
+				},
+				'If I include the words "Holy Avenger" in a the name of a sword, it will be treated as the magic weapon Holy Avenger. It has +3 to hit and damage and does +2d10 radiant damage to fiends and undead.'
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*holy)(?=.*avenger).*$/i).test(v.WeaponText)) {
+						output.magic = v.thisWeapon[1] + 3;
+					}
+				}, ''
+			]
+		},
+		savetxt : { adv_vs : ["spells", "magical effects"] },
+		choices : ["Paladin level 1-16 (10-ft aura)", "Paladin level 17+ (30-ft aura)"],
+		selfChoosing : function () {
+			return !classes.known.paladin ? "" : classes.known.paladin.level < 17 ? "paladin level 1-16 (10-ft aura)" : "paladin level 17+ (30-ft aura)";
+		},
+		"paladin level 1-16 (10-ft aura)" : {
+			name : "Holy\u200A Avenger",
+			description : "I have a +3 bonus to attack and damage rolls made with this magic sword. It does +2d10 radiant damage against fiends and undead. While holding the drawn sword, I have a 10-ft radius aura that grants me and my allies advantage on saving throws against spells and magical effects."
+		},
+		"paladin level 17+ (30-ft aura)" : {
+			name : "Holy\u200A\u200A Avenger",
+			description : "I have a +3 bonus to attack and damage rolls made with this magic sword. It does +2d10 radiant damage against fiends and undead. While holding the drawn sword, I have a 30-ft radius aura that grants me and my allies advantage on saving throws against spells and magical effects."
+		}
+	},
+	"potion of speed" : {
 		name: "Potion of Speed",
 		source: [["SRD", 235], ["D", 188]],
 		type : "potion",
@@ -324,7 +720,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
 		weight: 0.5
 	},
-	'ring of jumping' : {
+	"ring of jumping" : {
 		name : "Ring of Jumping",
 		source : [["SRD", 236], ["D", 191]],
 		type : "ring",
@@ -477,7 +873,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'Damage can only be healed by resting; Once per turn, wound target';
 					}
 				},
-				'If I include the words "of Wounding" in a the name of a sword, it will be treated as the magic weapon Sword of Wounding. ????'
+				'If I include the words "of Wounding" in a the name of a sword, it will be treated as the magic weapon Sword of Wounding. Damage by the sword can only be regained with a short or long rest. Once per turn when I hit with the sword, I can inflict a lingering wound on a target, causing it pain every turn thereafter.'
 			]
 		}
 	},

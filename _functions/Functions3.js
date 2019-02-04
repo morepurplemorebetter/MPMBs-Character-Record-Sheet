@@ -1871,9 +1871,13 @@ function ApplyMagicItem(input, FldNmbr) {
 		tDoc.getField(MIflds[2]).setAction("Calculate", "");
 		Value(MIflds[2], "", "", "");
 		if (oldMI) {
-			if (oldMI !== newMI) {
+			var anOldMI = MagicItemsList[oldMI];
+			var skipNoAttunement = isDisplay(MIflds[4]) == display.visible && !tDoc.getField(MIflds[4]).isBoxChecked(0);
+			if (oldMI !== newMI && !skipNoAttunement) {
 				// Undo the selection of a weapon, ammo, or armor if defined
-				if (MagicItemsList[oldMI].chooseGear) selectMagicItemGearType(false, FldNmbr, MagicItemsList[oldMI].chooseGear);
+				if (anOldMI.chooseGear || (oldMIvar && anOldMI[oldMIvar].chooseGear)) {
+					selectMagicItemGearType(false, FldNmbr, oldMIvar && anOldMI[oldMIvar].chooseGear ? anOldMI[oldMIvar].chooseGear : anOldMI.chooseGear);
+				}
 
 				// Remove its attributes
 				var Fea = ApplyFeatureAttributes(
@@ -1885,8 +1889,7 @@ function ApplyMagicItem(input, FldNmbr) {
 				);
 			}
 			// Remove the source from the notes field
-			var oldSource = oldMIvar && MagicItemsList[oldMI][oldMIvar].source ? MagicItemsList[oldMI][oldMIvar] : MagicItemsList[oldMI];
-			var sourceStringOld = stringSource(oldSource, "first", "[", "]");
+			var sourceStringOld = stringSource(oldMIvar && anOldMI[oldMIvar].source ? anOldMI[oldMIvar] : anOldMI, "first", "[", "]");
 			if (sourceStringOld) RemoveString(MIflds[1], sourceStringOld);
 		}
 		// Reset the attuned and weight fields
@@ -1936,9 +1939,6 @@ function ApplyMagicItem(input, FldNmbr) {
 		var sourceString = stringSource(theMI, "first", "[", "]");
 		if (sourceString) AddString(MIflds[1], sourceString, " ");
 
-		// Set the attunement
-		Checkbox(MIflds[4], theMI.attunement ? true : false, undefined, theMI.attunement ? "" : "hide");
-
 		// Set the weight
 		if (theMI.weight) {
 			var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
@@ -1949,6 +1949,8 @@ function ApplyMagicItem(input, FldNmbr) {
 
 		// Apply the rest of its attributes
 		if (oldMI !== newMI || oldMIvar !== newMIvar) {
+			// Set the attunement
+			Checkbox(MIflds[4], theMI.attunement ? true : false, undefined, theMI.attunement ? "" : "hide");
 			var justChange = oldMI == newMI && oldMIvar !== newMIvar;
 			var Fea = ApplyFeatureAttributes(
 				"item", // type
@@ -1960,11 +1962,12 @@ function ApplyMagicItem(input, FldNmbr) {
 		}
 
 		// Do the selection of a weapon, ammo, or armor if defined
-		if (oldMI == newMI && (aMI.chooseGear || (oldMIvar && aMI[oldMIvar].chooseGear))) {
+		var skipNoAttunement = isDisplay(MIflds[4]) == display.visible && !tDoc.getField(MIflds[4]).isBoxChecked(0);
+		if (!skipNoAttunement && oldMI == newMI && (aMI.chooseGear || (oldMIvar && aMI[oldMIvar].chooseGear))) {
 			// undo the previous
 			selectMagicItemGearType(false, FldNmbr, oldMIvar && aMI[oldMIvar].chooseGear ? aMI[oldMIvar].chooseGear : aMI.chooseGear, oldMIvar);
 		}
-		if (theMI.chooseGear) selectMagicItemGearType(true, FldNmbr, theMI.chooseGear);
+		if ((oldMI !== newMI || oldMIvar !== newMIvar) && theMI.chooseGear) selectMagicItemGearType(true, FldNmbr, theMI.chooseGear);
 	}
 
 	// Set the visibility of the attuned checkbox
@@ -2543,6 +2546,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	if (!AddRemove) {
 		if (isItem) {
 			selectedItem = baseList[isItem].name;
+			var theItemName = selectedItem.toLowerCase();
 		} else {
 			return; // nothing more to do if we are just removing this item and no item is found
 		}
@@ -2568,18 +2572,25 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			itemRefs[capName] = key;
 		}
 		if (typeNm != "armor") itemChoices.sort();
-		selectedItem = AskUserOptions("Select Type of " + typeNmC, "Choose which " + typeNm + " type this '" + curName + "' is.\nIf you want to change the " + typeNm + " type at a later time, select the magic item again from the drop-down box." + (aMI.choices ? "\nYou will also be prompted to select the " + typeNm + " type again when you select a choice using the button in this magic item line," + (aMIvar ? " even when selecting '" + aMIvar.name + "' again." : ".") : ""), itemChoices, "radio", true);
+		var userSelected = AskUserOptions("Select Type of " + typeNmC, "Choose which " + typeNm + " type this '" + curName + "' is.\nIf you want to change the " + typeNm + " type at a later time, select the magic item again from the drop-down box." + (aMI.choices ? "\nYou will also be prompted to select the " + typeNm + " type again when you select a choice using the button in this magic item line," + (aMIvar ? " even when selecting '" + aMIvar.name + "' again." : ".") : ""), itemChoices, "radio", true);
 
-		var theItemName = selectedItem.toLowerCase();
-		isItem = itemRefs[selectedItem];
+		var theItemName = userSelected.toLowerCase();
+		isItem = itemRefs[userSelected];
+		selectedItem = baseList[isItem].name;
 	} else {
+		if (isApplyFld && event.target.setVal) selectedItem = baseList[isItem].name;
 		var theItemName = baseList[isItem].name.toLowerCase();
+	}
+	// ammunitions are often written as plural, but we don't want that here
+	if (typeNm == "ammunition" && theItemName.substr(-1) == "s") {
+		theItemName = theItemName.substr(0, theItemName.length - 1);
+		if (selectedItem) selectedItem = selectedItem.substr(0, selectedItem.length - 1);
 	}
 	// get the new name of the magic item
 	var newMIname = selectedItem ? createString(typeObj.prefixOrSuffix, selectedItem, useName) : useVal;
 	// See if there is a special string set for how the item should appear on the 1st page
-	if (typeObj.itemName1stPage && selectedItem) {
-		itemToProcess = createString(typeObj.itemName1stPage[0], selectedItem, typeObj.itemName1stPage[1]);
+	if (typeObj.itemName1stPage) {
+		itemToProcess = createString(typeObj.itemName1stPage[0], baseList[isItem].name, typeObj.itemName1stPage[1]);
 	}
 	// Apply the item to the sheet
 	if (!correctingDescrLong) {
