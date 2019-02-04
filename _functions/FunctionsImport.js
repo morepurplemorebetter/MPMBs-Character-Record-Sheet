@@ -653,7 +653,33 @@ function DirectImport(consoleTrigger) {
 		//set the carrying capacity type
 		ImportField("Weight Carrying Capacity", {doVisiblity: true}, "Weight Carrying Capacity.Field"); ImportField("Weight Heavily Encumbered", {doVisiblity: true});
 		//set the weight remember fields
-		ImportField("Weight Remember Ammo Left"); ImportField("Weight Remember Ammo Right"); ImportField("Weight Remember Armor"); ImportField("Weight Remember Coins"); ImportField("Weight Remember Magic Items"); ImportField("Weight Remember Page2 Left"); ImportField("Weight Remember Page2 Middle"); ImportField("Weight Remember Page2 Right"); ImportField("Weight Remember Page3 Left"); ImportField("Weight Remember Page3 Right"); ImportField("Weight Remember Shield"); ImportField("Weight Remember Weapons");
+		if (FromVersion < 13) {
+			global.docTo.CurrentVars.weight = [];
+			var weightTypes = {
+				cArm : "Weight Remember Armor",
+				cShi : "Weight Remember Shield",
+				cWea : "Weight Remember Weapons",
+				cAmL : "Weight Remember Ammo Left",
+				cAmR : "Weight Remember Ammo Right",
+				cCoi : "Weight Remember Coins",
+				cP2L : "Weight Remember Page2 Left",
+				cP2M : "Weight Remember Page2 Middle",
+				cP2R : "Weight Remember Page2 Right",
+				cP3L : "Weight Remember Page3 Left",
+				cP3R : "Weight Remember Page3 Right",
+				cMaI : "Weight Remember Magic Items"
+			}
+			for (var weightType in weightTypes) {
+				var aWeightFld = global.docFrom.getField(weightTypes[weightType]);
+				if (aWeightFld && aWeightFld.value !== "No") global.docTo.CurrentVars.weight.push(weightType);
+			}
+			global.docTo.SetStringifieds("vars");
+		} else {
+			if (global.docFrom.CurrentVars.weight) {
+				global.docTo.CurrentVars.weight = global.docFrom.CurrentVars.weight;
+				global.docTo.SetStringifieds("vars");
+			}
+		}
 
 		//get the page layout of the sheet and copy it
 		var pagesLayout = {};

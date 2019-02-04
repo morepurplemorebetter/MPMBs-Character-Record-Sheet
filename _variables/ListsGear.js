@@ -1119,35 +1119,33 @@ var Base_GearList = {
 		amount : "",
 		weight : 1
 	},
-	"ammunition:" : {
-		infoname : "Ammunition:",
-		name : "-",
-		amount : "",
-		weight : ""
-	},
-	"ammunition: arrows (20)" : {
-		infoname : "   Arrows (20) [1 gp]",
+	"arrows (20)" : {
+		infoname : "Arrows (20) [1 gp]",
 		name : "Arrows",
 		amount : 20,
-		weight : 0.05
+		weight : 0.05,
+		type : "ammunition"
 	},
-	"ammunition: blowgun needles (50)" : {
-		infoname : "   Blowgun needles (50) [1 gp]",
+	"blowgun needles (50)" : {
+		infoname : "Blowgun needles (50) [1 gp]",
 		name : "Blowgun needles",
 		amount : 50,
-		weight : 0.02
+		weight : 0.02,
+		type : "ammunition"
 	},
-	"ammunition: crossbow bolts (20)" : {
-		infoname : "   Crossbow bolts (20) [1 gp]",
+	"crossbow bolts (20)" : {
+		infoname : "Crossbow bolts (20) [1 gp]",
 		name : "Crossbow bolts",
 		amount : 20,
-		weight : 0.075
+		weight : 0.075,
+		type : "ammunition"
 	},
-	"ammunition: sling bullets (20)" : {
-		infoname : "   Sling bullets (20) [4 cp]",
+	"sling bullets (20)" : {
+		infoname : "Sling bullets (20) [4 cp]",
 		name : "Sling bullets",
 		amount : 20,
-		weight : 0.075
+		weight : 0.075,
+		type : "ammunition"
 	},
 	"antitoxin (vial)" : {
 		infoname : "Antitoxin (vial) [50 gp]",
@@ -1155,41 +1153,40 @@ var Base_GearList = {
 		amount : "",
 		weight : ""
 	},
-	"arcane focus:" : {
-		infoname : "Arcane focus:",
-		name : "-",
-		amount : "",
-		weight : ""
-	},
-	"arcane focus: crystal" : {
-		infoname : "   Crystal [10 gp]",
+	"crystal" : {
+		infoname : "Crystal [10 gp]",
 		name : "Crystal arcane focus",
 		amount : "",
-		weight : 1
+		weight : 1,
+		type : "arcane focus"
 	},
-	"arcane focus: orb" : {
-		infoname : "   Orb [20 gp]",
+	"orb" : {
+		infoname : "Orb [20 gp]",
 		name : "Orb arcane focus",
 		amount : "",
-		weight : 3
+		weight : 3,
+		type : "arcane focus"
 	},
-	"arcane focus: rod" : {
-		infoname : "   Rod [10 gp]",
+	"rod" : {
+		infoname : "Rod [10 gp]",
 		name : "Rod arcane focus",
 		amount : "",
-		weight : 2
+		weight : 2,
+		type : "arcane focus"
 	},
-	"arcane focus: staff" : {
-		infoname : "   Staff [5 gp]",
+	"staff" : {
+		infoname : "Staff [5 gp]",
 		name : "Staff arcane focus",
 		amount : "",
-		weight : 4
+		weight : 4,
+		type : "arcane focus"
 	},
-	"arcane focus: wand" : {
-		infoname : "   Wand [10 gp]",
+	"wand" : {
+		infoname : "Wand [10 gp]",
 		name : "Wand arcane focus",
 		amount : "",
-		weight : 1
+		weight : 1,
+		type : "arcane focus"
 	},
 	"backpack" : {
 		infoname : "Backpack [2 gp]",
@@ -1311,35 +1308,33 @@ var Base_GearList = {
 		amount : "",
 		weight : 12
 	},
-	"clothes:" : {
-		infoname : "Clothes:",
-		name : "-",
-		amount : "",
-		weight : ""
-	},
-	"clothes: common" : {
-		infoname : "   Common [5 sp]",
+	"common" : {
+		infoname : "Common [5 sp]",
 		name : "Common clothes",
 		amount : "",
-		weight : 3
+		weight : 3,
+		type : "clothes"
 	},
-	"clothes: costume" : {
-		infoname : "   Costume [5 gp]",
+	"costume" : {
+		infoname : "Costume [5 gp]",
 		name : "Costume clothes",
 		amount : "",
-		weight : 4
+		weight : 4,
+		type : "clothes"
 	},
-	"clothes: fine" : {
-		infoname : "   Fine [15 gp]",
+	"fine" : {
+		infoname : "Fine [15 gp]",
 		name : "Fine clothes",
 		amount : "",
-		weight : 6
+		weight : 6,
+		type : "clothes"
 	},
-	"clothes: traveler's" : {
-		infoname : "   Traveler's [2 gp]",
+	"traveler's" : {
+		infoname : "Traveler's [2 gp]",
 		name : "Traveler's clothes",
 		amount : "",
-		weight : 4
+		weight : 4,
+		type : "clothes"
 	},
 	"component pouch" : {
 		infoname : "Component pouch [25 gp]",
@@ -1353,35 +1348,33 @@ var Base_GearList = {
 		amount : "",
 		weight : 5
 	},
-	"druidic focus:" : {
-		infoname : "Druidic focus:",
-		name : "-",
-		amount : "",
-		weight : ""
-	},
-	"druidic focus: sprig of mistletoe" : {
-		infoname : "   Sprig of mistletoe [1 gp]",
+	"sprig of mistletoe" : {
+		infoname : "Sprig of mistletoe [1 gp]",
 		name : "Sprig of mistletoe druidic focus",
 		amount : "",
-		weight : ""
+		weight : "",
+		type : "druidic focus"
 	},
-	"druidic focus: totem" : {
-		infoname : "   Totem [1 gp]",
+	"totem" : {
+		infoname : "Totem [1 gp]",
 		name : "Totem druidic focus",
 		amount : "",
-		weight : ""
+		weight : "",
+		type : "druidic focus"
 	},
-	"druidic focus: wooden staff" : {
-		infoname : "   Wooden staff [5 gp]",
+	"wooden staff" : {
+		infoname : "Wooden staff [5 gp]",
 		name : "Wooden staff druidic focus",
 		amount : "",
-		weight : 4
+		weight : 4,
+		type : "druidic focus"
 	},
-	"druidic focus: yew wand " : {
-		infoname : "   Yew wand  [10 gp]",
+	"yew wand " : {
+		infoname : "Yew wand  [10 gp]",
 		name : "Yew wand druidic focus",
 		amount : "",
-		weight : 1
+		weight : 1,
+		type : "druidic focus"
 	},
 	"fishing tackle" : {
 		infoname : "Fishing tackle [1 gp]",
@@ -1419,29 +1412,26 @@ var Base_GearList = {
 		amount : "",
 		weight : 3
 	},
-	"holy symbol:" : {
-		infoname : "Holy symbol:",
-		name : "-",
-		amount : "",
-		weight : ""
-	},
-	"holy symbol: amulet" : {
-		infoname : "   Amulet [5 gp]",
+	"amulet" : {
+		infoname : "Amulet [5 gp]",
 		name : "Amulet holy symbol",
 		amount : "",
-		weight : 1
+		weight : 1,
+		type : "holy symbol"
 	},
-	"holy symbol: emblem" : {
-		infoname : "   Emblem [5 gp]",
+	"emblem" : {
+		infoname : "Emblem [5 gp]",
 		name : "Emblem holy symbol",
 		amount : "",
-		weight : ""
+		weight : "",
+		type : "holy symbol"
 	},
-	"holy symbol: reliquary" : {
-		infoname : "   Reliquary [5 gp]",
+	"reliquary" : {
+		infoname : "Reliquary [5 gp]",
 		name : "Reliquary holy symbol",
 		amount : "",
-		weight : 2
+		weight : 2,
+		type : "holy symbol"
 	},
 	"holy water (flask)" : {
 		infoname : "Holy water (flask) [25 gp]",
@@ -1647,35 +1637,33 @@ var Base_GearList = {
 		amount : "",
 		weight : 0.5
 	},
-	"saddle:" : {
-		infoname : "Saddle:",
-		name : "-",
-		amount : "",
-		weight : ""
-	},
-	"saddle: exotic" : {
-		infoname : "   Exotic [60 gp]",
+	"exotic" : {
+		infoname : "Exotic [60 gp]",
 		name : "Exotic saddle",
 		amount : "",
-		weight : 40
+		weight : 40,
+		type : "saddle"
 	},
-	"saddle: military" : {
-		infoname : "   Military [20 gp]",
+	"military" : {
+		infoname : "Military [20 gp]",
 		name : "Military saddle",
 		amount : "",
-		weight : 30
+		weight : 30,
+		type : "saddle"
 	},
-	"saddle: pack" : {
-		infoname : "   Pack [5 gp]",
+	"pack" : {
+		infoname : "Pack [5 gp]",
 		name : "Pack saddle",
 		amount : "",
-		weight : 15
+		weight : 15,
+		type : "saddle"
 	},
-	"saddle: riding" : {
-		infoname : "   Riding [25 gp]",
+	"riding" : {
+		infoname : "Riding [25 gp]",
 		name : "Riding saddle",
 		amount : "",
-		weight : 10
+		weight : 10,
+		type : "saddle"
 	},
 	"saddlebags" : {
 		infoname : "Saddlebags [4 gp]",
@@ -1776,113 +1764,124 @@ var Base_GearList = {
 };
 
 var Base_ToolsList = {
-	"artisan's tools:" : {
-		infoname : "Artisan's tools:",
-		name : "-",
-		amount : "",
-		weight : ""
-	},
-	"artisan's tools: alchemist's supplies" : {
-		infoname : "   Alchemist's supplies [50 gp]",
+	"alchemist's supplies" : {
+		infoname : "Alchemist's supplies [50 gp]",
 		name : "Alchemist's supplies",
 		amount : "",
-		weight : 8
+		weight : 8,
+		type : "artisan's tools"
 	},
-	"artisan's tools: brewer's supplies" : {
-		infoname : "   Brewer's supplies [20 gp]",
+	"brewer's supplies" : {
+		infoname : "Brewer's supplies [20 gp]",
 		name : "Brewer's supplies",
 		amount : "",
-		weight : 9
+		weight : 9,
+		type : "artisan's tools"
 	},
-	"artisan's tools: calligrapher's supplies" : {
-		infoname : "   Calligrapher's supplies [10 gp]",
+	"calligrapher's supplies" : {
+		infoname : "Calligrapher's supplies [10 gp]",
 		name : "Calligrapher's supplies",
 		amount : "",
-		weight : 5
+		weight : 5,
+		type : "artisan's tools"
 	},
-	"artisan's tools: carpenter's tools" : {
-		infoname : "   Carpenter's tools [8 gp]",
+	"carpenter's tools" : {
+		infoname : "Carpenter's tools [8 gp]",
 		name : "Carpenter's tools",
 		amount : "",
-		weight : 6
+		weight : 6,
+		type : "artisan's tools"
 	},
-	"artisan's tools: cartographer's tools" : {
-		infoname : "   Cartographer's tools [15 gp]",
+	"cartographer's tools" : {
+		infoname : "Cartographer's tools [15 gp]",
 		name : "Cartographer's tools",
 		amount : "",
-		weight : 6
+		weight : 6,
+		type : "artisan's tools"
 	},
-	"artisan's tools: cobbler's tools" : {
-		infoname : "   Cobbler's tools [5 gp]",
+	"cobbler's tools" : {
+		infoname : "Cobbler's tools [5 gp]",
 		name : "Cobbler's tools",
 		amount : "",
-		weight : 5
+		weight : 5,
+		type : "artisan's tools"
 	},
-	"artisan's tools: cook's utensils" : {
-		infoname : "   Cook's utensils [1 gp]",
+	"cook's utensils" : {
+		infoname : "Cook's utensils [1 gp]",
 		name : "Cook's utensils",
 		amount : "",
-		weight : 8
+		weight : 8,
+		type : "artisan's tools"
 	},
-	"artisan's tools: glassblower's tools" : {
-		infoname : "   Glassblower's tools [30 gp]",
+	"glassblower's tools" : {
+		infoname : "Glassblower's tools [30 gp]",
 		name : "Glassblower's tools",
 		amount : "",
-		weight : 5
+		weight : 5,
+		type : "artisan's tools"
 	},
-	"artisan's tools: jeweler's tools" : {
-		infoname : "   Jeweler's tools [25 gp]",
+	"jeweler's tools" : {
+		infoname : "Jeweler's tools [25 gp]",
 		name : "Jeweler's tools",
 		amount : "",
-		weight : 2
+		weight : 2,
+		type : "artisan's tools"
 	},
-	"artisan's tools: leatherworker's tools" : {
-		infoname : "   Leatherworker's tools [5 gp]",
+	"leatherworker's tools" : {
+		infoname : "Leatherworker's tools [5 gp]",
 		name : "Leatherworker's tools",
 		amount : "",
-		weight : 5
+		weight : 5,
+		type : "artisan's tools"
 	},
-	"artisan's tools: mason's tools" : {
-		infoname : "   Mason's tools [10 gp]",
+	"mason's tools" : {
+		infoname : "Mason's tools [10 gp]",
 		name : "Mason's tools",
 		amount : "",
-		weight : 8
+		weight : 8,
+		type : "artisan's tools"
 	},
-	"artisan's tools: painter's supplies" : {
-		infoname : "   Painter's supplies [10 gp]",
+	"painter's supplies" : {
+		infoname : "Painter's supplies [10 gp]",
 		name : "Painter's supplies",
 		amount : "",
-		weight : 5
+		weight : 5,
+		type : "artisan's tools"
 	},
-	"artisan's tools: potter's tools" : {
-		infoname : "   Potter's tools [10 gp]",
+	"potter's tools" : {
+		infoname : "Potter's tools [10 gp]",
 		name : "Potter's tools",
 		amount : "",
-		weight : 3
+		weight : 3,
+		type : "artisan's tools"
 	},
-	"artisan's tools: smith's tools" : {
-		infoname : "   Smith's tools [20 gp]",
+	"smith's tools" : {
+		infoname : "Smith's tools [20 gp]",
 		name : "Smith's tools",
 		amount : "",
-		weight : 8
+		weight : 8,
+		type : "artisan's tools"
 	},
-	"artisan's tools: tinker's tools" : {
-		infoname : "   Tinker's tools [50 gp]",
+	"tinker's tools" : {
+		infoname : "Tinker's tools [50 gp]",
 		name : "Tinker's tools",
 		amount : "",
-		weight : 10
+		weight : 10,
+		type : "artisan's tools"
 	},
-	"artisan's tools: weaver's tools" : {
-		infoname : "   Weaver's tools [1 gp]",
+	"weaver's tools" : {
+		infoname : "Weaver's tools [1 gp]",
 		name : "Weaver's tools",
 		amount : "",
-		weight : 5
+		weight : 5,
+		type : "artisan's tools"
 	},
-	"artisan's tools: woodcarver's tools" : {
-		infoname : "   Woodcarver's tools [1 gp]",
+	"woodcarver's tools" : {
+		infoname : "Woodcarver's tools [1 gp]",
 		name : "Woodcarver's tools",
 		amount : "",
-		weight : 5
+		weight : 5,
+		type : "artisan's tools"
 	},
 	"disguise kit" : {
 		infoname : "Disguise kit [25 gp]",
@@ -1896,35 +1895,33 @@ var Base_ToolsList = {
 		amount : "",
 		weight : 5
 	},
-	"gaming set:" : {
-		infoname : "Gaming set:",
-		name : "-",
-		amount : "",
-		weight : ""
-	},
-	"gaming set: dice set" : {
-		infoname : "   Dice set [1 sp]",
+	"dice set" : {
+		infoname : "Dice set [1 sp]",
 		name : "Dice set",
 		amount : "",
-		weight : ""
+		weight : "",
+		type : "gaming set"
 	},
-	"gaming set: dragonchess set" : {
-		infoname : "   Dragonchess set [1 gp]",
+	"dragonchess set" : {
+		infoname : "Dragonchess set [1 gp]",
 		name : "Dragonchess set",
 		amount : "",
-		weight : 0.5
+		weight : 0.5,
+		type : "gaming set"
 	},
-	"gaming set: playing card set" : {
-		infoname : "   Playing card set [5 sp]",
+	"playing card set" : {
+		infoname : "Playing card set [5 sp]",
 		name : "Playing card set",
 		amount : "",
-		weight : ""
+		weight : "",
+		type : "gaming set"
 	},
-	"gaming set: three-dragon ante set" : {
-		infoname : "   Three-Dragon Ante set [1 gp]",
+	"three-dragon ante set" : {
+		infoname : "Three-Dragon Ante set [1 gp]",
 		name : "Three-Dragon Ante set",
 		amount : "",
-		weight : ""
+		weight : "",
+		type : "gaming set"
 	},
 	"herbalism kit" : {
 		infoname : "Herbalism kit [5 gp]",
@@ -1932,71 +1929,75 @@ var Base_ToolsList = {
 		amount : "",
 		weight : 3
 	},
-	"musical instrument:" : {
-		infoname : "Musical instrument:",
-		name : "-",
-		amount : "",
-		weight : ""
-	},
-	"musical instrument: bagpipes" : {
-		infoname : "   Bagpipes [30 gp]",
+	"bagpipes" : {
+		infoname : "Bagpipes [30 gp]",
 		name : "Bagpipes",
 		amount : "",
-		weight : 6
+		weight : 6,
+		type : "musical instrument"
 	},
-	"musical instrument: drum" : {
-		infoname : "   Drum [6 gp]",
+	"drum" : {
+		infoname : "Drum [6 gp]",
 		name : "Drum",
 		amount : "",
-		weight : 3
+		weight : 3,
+		type : "musical instrument"
 	},
-	"musical instrument: dulcimer" : {
-		infoname : "   Dulcimer [25 gp]",
+	"dulcimer" : {
+		infoname : "Dulcimer [25 gp]",
 		name : "Dulcimer",
 		amount : "",
-		weight : 10
+		weight : 10,
+		type : "musical instrument"
 	},
-	"musical instrument: flute" : {
-		infoname : "   Flute [2 gp]",
+	"flute" : {
+		infoname : "Flute [2 gp]",
 		name : "Flute",
 		amount : "",
-		weight : 1
+		weight : 1,
+		type : "musical instrument"
 	},
-	"musical instrument: horn" : {
-		infoname : "   Horn [3 gp]",
+	"horn" : {
+		infoname : "Horn [3 gp]",
 		name : "Horn",
 		amount : "",
-		weight : 2
+		weight : 2,
+		type : "musical instrument"
 	},
-	"musical instrument: lute" : {
-		infoname : "   Lute [35 gp]",
+	"lute" : {
+		infoname : "Lute [35 gp]",
 		name : "Lute",
 		amount : "",
-		weight : 2
+		weight : 2,
+		type : "musical instrument"
 	},
-	"musical instrument: lyre" : {
-		infoname : "   Lyre [30 gp]",
+	"lyre" : {
+		infoname : "Lyre [30 gp]",
 		name : "Lyre",
 		amount : "",
-		weight : 2
+		weight : 2,
+		type : "musical instrument"
 	},
-	"musical instrument: pan flute" : {
-		infoname : "   Pan flute [12 gp]",
+	"pan flute" : {
+		infoname : "Pan flute [12 gp]",
 		name : "Pan flute",
 		amount : "",
-		weight : 2
+		weight : 2,
+		type : "musical instrument"
 	},
-	"musical instrument: shawm" : {
-		infoname : "   Shawm [2 gp]",
+	"shawm" : {
+		infoname : "Shawm [2 gp]",
 		name : "Shawm",
 		amount : "",
-		weight : 1
+		weight : 1,
+		type : "musical instrument"
 	},
-	"musical instrument: viol" : {
-		infoname : "   Viol [30 gp]",
+	"viol" : {
+		infoname : "Viol [30 gp]",
 		name : "Viol",
 		amount : "",
-		weight : 1
+		weight : 1,
+		type : "musical instrument"
 	},
 	"navigator's tools" : {
 		infoname : "Navigator's tools [25 gp]",

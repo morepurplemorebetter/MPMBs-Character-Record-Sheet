@@ -7817,8 +7817,6 @@ function setCalcOrder() {
 	cFlds.push("Extra.Gear Weight Subtotal Left");
 	for (var i = 1; i <= 6; i++) cFlds.push("Extra.Gear Location.Subtotal "+i);
 	// weight carried
-	cFlds.push("Weight Remember Coins Total");
-	cFlds.push("Weight Remember Magic Items Total");
 	cFlds.push("Weight Carried");
 	// unrelated fields
 	cFlds = cFlds.concat(["Next level", "SheetInformation"]);

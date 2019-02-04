@@ -3036,36 +3036,85 @@ function SetGearVariables() {
 
 	//make a menu array for all the gear
 	GearMenus.gear = [];
+	var gearTypes = {};
 	var gearArray = [];
 	for (var key in GearList) {
 		if (testSource(key, GearList[key], "gearExcl")) continue;
-		gearArray.push(key);
+		if (!GearList[key].type) {
+			gearArray.push(key);
+		} else {
+			var aType = GearList[key].type.toLowerCase();
+			if (gearArray.indexOf(aType) == -1) {
+				gearArray.push(aType);
+				gearTypes[aType] = [];
+			}
+			gearTypes[aType].push(key);
+		}
 	};
 	gearArray.sort();
 	for (var i = 0; i < gearArray.length; i++) {
-		var theGear = GearList[gearArray[i]];
-		GearMenus.gear.push({
-			cName : theGear.infoname,
-			cReturn : "gear#" + gearArray[i],
-			bEnabled : theGear.name && theGear.name !== "-"
-		});
+		var aGear = gearArray[i];
+		if (gearTypes[aGear]) {
+			gearTypes[aGear].sort();
+			var theSub = gearTypes[aGear].map( function (n) {
+				return {
+					cName : GearList[n].infoname,
+					cReturn : "gear#" + n
+				}
+			});
+			GearMenus.gear.push({
+				cName : aGear.capitalize(),
+				oSubMenu : theSub
+			});
+		} else {
+			var theGear = GearList[aGear];
+			GearMenus.gear.push({
+				cName : theGear.infoname,
+				cReturn : "gear#" + aGear
+			});
+		}
 	};
 
 	//make a menu array for all the tools
 	GearMenus.tools = [];
+	var toolsTypes = {};
 	var toolsArray = [];
 	for (var key in ToolsList) {
 		if (testSource(key, ToolsList[key], "gearExcl")) continue;
-		toolsArray.push(key);
+		if (!ToolsList[key].type) {
+			toolsArray.push(key);
+		} else {
+			var aType = ToolsList[key].type.toLowerCase();
+			if (toolsArray.indexOf(aType) == -1) {
+				toolsArray.push(aType);
+				toolsTypes[aType] = [];
+			}
+			toolsTypes[aType].push(key);
+		}
+		
 	};
 	toolsArray.sort();
 	for (var i = 0; i < toolsArray.length; i++) {
-		var theTool = ToolsList[toolsArray[i]];
-		GearMenus.tools.push({
-			cName : theTool.infoname,
-			cReturn : "tool#" + toolsArray[i],
-			bEnabled : theTool.name && theTool.name !== "-"
-		});
+		var aTool = toolsArray[i];
+		if (toolsTypes[aTool]) {
+			toolsTypes[aTool].sort();
+			var theSub = toolsTypes[aTool].map( function (n) {
+				return {
+					cName : ToolsList[n].infoname,
+					cReturn : "tool#" + n
+				}
+			});
+			GearMenus.tools.push({
+				cName : aTool.capitalize(),
+				oSubMenu : theSub
+			});
+		} else {
+			var theTool = ToolsList[aTool];
+			GearMenus.tools.push({
+				cName : theTool.infoname,
+				cReturn : "tool#" + aTool
+			});
+		}
 	};
 };
 
@@ -3089,6 +3138,12 @@ function MakeInventoryMenu() {
 			for (var j = 0; j < temp.oSubMenu[i].oSubMenu.length; j++) {
 				var tempObject = temp.oSubMenu[i].oSubMenu[j];
 				if (tempObject.cReturn) tempObject.cReturn += "#" + array[i][1];
+				if (tempObject.oSubMenu) {
+					for (var k = 0; k < tempObject.oSubMenu.length; k++) {
+						var tempObjectK = tempObject.oSubMenu[k];
+						if (tempObjectK.cReturn) tempObjectK.cReturn += "#" + array[i][1];
+					}
+				}
 			};
 		};
 		menu.push(temp);
@@ -3360,7 +3415,14 @@ function MakeInventoryLineMenu() {
 	var amendMenu = function(inputArray) {
 		var array = eval(inputArray.toSource());
 		for (var i = 0; i < array.length; i++) {
-			array[i].cReturn = type + "#" + lineNmbr + "#" + array[i].cReturn;
+			if (array[i].oSubMenu) {
+				var theSub = array[i].oSubMenu;
+				for (var j = 0; j < theSub.length; j++) {
+					if (theSub[j].cReturn) theSub[j].cReturn = type + "#" + lineNmbr + "#" + theSub[j].cReturn;
+				}
+			} else {
+				array[i].cReturn = type + "#" + lineNmbr + "#" + array[i].cReturn;
+			}
 		};
 		return array;
 	};
@@ -3390,22 +3452,22 @@ function MakeInventoryLineMenu() {
 	};
 
 	var AddCompOptions = function(menu) {
-		if (!theField) {
+		var AScompA = What("Template.extras.AScomp").split(",").splice(1);
+		var prefix = type.substring(0, type.indexOf("Comp."));
+		if (type.indexOf("Comp.") !== -1) AScompA.splice(AScompA.indexOf(prefix), 1);
+		if (!theField || !AScompA.length) {
 			menu.push({
 				cName : "Move to a Companion's Equipment",
 				bEnabled : false
 			})
 			return;
 		};
-		var AScompA = What("Template.extras.AScomp").split(",").splice(1);
-		var prefix = type.substring(0, type.indexOf("Comp."));
-		if (type.indexOf("Comp.") !== -1) AScompA.splice(AScompA.indexOf(prefix), 1);
 		var temp = {
 			cName : "Move to a Companion's Equipment",
 			oSubMenu : []
 		};
 		for (var i = 0; i < AScompA.length; i++) {
-			if (type.indexOf("Comp.") !== -1 && prefix === AScompA[i]) continue;
+			//if (type.indexOf("Comp.") !== -1 && prefix === AScompA[i]) continue;
 			var CompNm = What(AScompA[i] + "Comp.Desc.Name");
 			var CompPg = tDoc.getField(AScompA[i] + "Comp.Desc.Name").page + 1;
 			var eqpVis = eval(What(AScompA[i] + "Companion.Layers.Remember"))[1];
@@ -3455,7 +3517,12 @@ function InventoryLineOptions() {
 	var thermoTxt = thermoM("Applying inventory line menu option...");
 	calcStop();
 
-	var type = MenuSelection[0].capitalize().replace("ascomp", "AScomp").replace(".comp", ".Comp").replace("Eqp", "eqp");
+	var toRightCase = function (intxt) {
+		return intxt.split(".").map(function (n) {
+			return n == "eqp" ? n : n == "ascomp" ? "AScomp" : n.substr(0,1).toUpperCase() + n.substr(1);
+		}).join(".");
+	}
+	var type = toRightCase(MenuSelection[0]);
 	var lineNmbr = Number(MenuSelection[1]);
 
 	var Fields = [
@@ -3503,8 +3570,7 @@ function InventoryLineOptions() {
 	 case "movepage" :
 		thermoTxt = thermoM("Moving the gear to another page...", false); //change the progress dialog text
 		InvDelete(type, lineNmbr);
-		var toPageType = MenuSelection[3].capitalize().replace("ascomp", "AScomp").replace("Eqp", "eqp");
-		console.println("MenuSelection: "+MenuSelection.toSource()+"\n\ntoPageType: "+toPageType); //DEBUGGING!!!
+		var toPageType = toRightCase(MenuSelection[3]);
 		AddToInv(toPageType, "l", FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3], false, false, false, true);
 		break;
 	 case "copy" :
@@ -6161,150 +6227,93 @@ function CalcWeightSubtotal() {
 }
 
 //Calculate the total weight carried, based on the value of the remember fields (field calculation)
-function CalcWeightCarried() {
-	var ArmorW = 0;
-	var ShieldW = 0;
-	var WeaponsW = 0;
-	var AmmoLeftW = 0;
-	var AmmoRightW = 0;
-	var CoinsW = 0;
-	var Page2Left = 0;
-	var Page2Middle = 0;
-	var Page2Right = 0;
-	var Page3Left = 0;
-	var Page3Right = 0;
-	var MagicItems = 0;
-
-
-	//The weight of Armor
-	var ArmorFld = What("AC Armor Weight");
-	if (ArmorFld && What("Weight Remember Armor") !== "No") {
-		ArmorW = Number(ArmorFld.replace(/,/, "."));
+function CalcWeightCarried(manualTrigger) {
+	if (!CurrentVars.weight) {
+		CurrentVars.weight = ["cCoi", "cP2L", "cP2R"];
+		if (typePF) CurrentVars.weight.push("cP2M");
+		SetStringifieds("vars");
 	}
-
-	//The weight of the Shield
-	var ShieldFld = What("AC Shield Weight");
-	if (ShieldFld && What("Weight Remember Shield") !== "No") {
-		ShieldW = Number(ShieldFld.replace(/,/, "."));
-	}
-
-	//The weight of the Weapons
-	if (What("Weight Remember Weapons") !== "No") {
-		for (var w = 1; w <= FieldNumbers.attacks; w++) {
-			WeaponsW += Number(What("BlueText.Attack." + w + ".Weight").replace(/,/, "."));
-		}
-	}
-
-	//The weight of ammo left column
-	var AmmoLeftFld = What("AmmoLeftDisplay.Weight");
-	if (AmmoLeftFld && What("Weight Remember Ammo Left") !== "No") {
-		AmmoLeftFld = Number(AmmoLeftFld.replace(/,/, "."));
-		AmmoLeftW = AmmoLeftFld * Number(What("AmmoLeftDisplay.Amount"));
-	}
-
-	//The weight of ammo right column
-	var AmmoRightFld = What("AmmoRightDisplay.Weight");
-	if (AmmoRightFld && What("Weight Remember Ammo Right") !== "No") {
-		AmmoRightFld = Number(AmmoRightFld.replace(/,/, "."));
-		AmmoRightW = AmmoRightFld * Number(What("AmmoRightDisplay.Amount"));
-	}
-
+	
 	var coinMod = What("Unit System") === "imperial" ? 50 : 100;
-
-	//The weight of coins
-	if (What("Weight Remember Coins") !== "No") {
-		CoinsW = Math.floor(Number(What("Weight Remember Coins Total")) / coinMod * 10) / 10;
+	var weightTypes = {
+		cArm : "AC Armor Weight",
+		cShi : "AC Shield Weight",
+		cWea : Array.apply(null, Array(FieldNumbers.attacks)).map(function (n, idx) {
+			return "BlueText.Attack." + (idx+1) + ".Weight";
+		}),
+		cAmL : "AmmoLeftDisplay.Weight",
+		cAmR : "AmmoRightDisplay.Weight",
+		cCoi : ["Platinum Pieces", "Gold Pieces", "Electrum Pieces", "Silver Pieces", "Copper Pieces"],
+		cP2L : "Adventuring Gear Weight Subtotal Left",
+		cP2M : "Adventuring Gear Weight Subtotal Middle",
+		cP2R : "Adventuring Gear Weight Subtotal Right",
+		cP3L : "Extra.Gear Weight Subtotal Left",
+		cP3R : "Extra.Gear Weight Subtotal Right",
+		cMaI : Array.apply(null, Array(FieldNumbers.magicitems)).map(function (n, idx) {
+			return "Extra.Magic Item Weight " + (idx+1);
+		})
 	}
-
-	//The weight of the left column of page 2
-	if (What("Weight Remember Page2 Left") !== "No") {
-		Page2Left = Number(What("Adventuring Gear Weight Subtotal Left"));
+	var totalWeight = 0;
+	for (var i = 0; i < CurrentVars.weight.length; i++) {
+		var useFld = weightTypes[CurrentVars.weight[i]];
+		if (!useFld) continue;
+		if (isArray(useFld)) {
+			var aWeight = 0;
+			for (var j = 0; j < useFld.length; j++) {
+				aWeight += Number(What(useFld[j]).replace(/,/, "."));
+			}
+		} else {
+			var aWeight = Number(What(useFld).replace(/,/, "."));
+		}
+		if (CurrentVars.weight[i] == "cCoi") {
+			aWeight = Math.floor(aWeight / coinMod * 10) / 10;
+		} else if (CurrentVars.weight[i] == "cAmL") {
+			aWeight *= Number(What("AmmoLeftDisplay.Amount"));
+		} else if (CurrentVars.weight[i] == "cAmR") {
+			aWeight *= Number(What("AmmoRightDisplay.Amount"));
+		}
+		if (!isNaN(aWeight)) totalWeight += aWeight;
 	}
-
-	//The weight of the left column of page 2
-	if (What("Weight Remember Page2 Middle") === "Yes") {
-		Page2Middle = Number(What("Adventuring Gear Weight Subtotal Middle"));
+	if (manualTrigger) {
+		Value("Weight Carried", totalWeight === 0 ? "" : totalWeight);
+	} else {
+		event.value = totalWeight === 0 ? "" : totalWeight;
 	}
-
-	//The weight of the right column of page 2
-	if (What("Weight Remember Page2 Right") !== "No") {
-		Page2Right = Number(What("Adventuring Gear Weight Subtotal Right"));
-	}
-
-	//The weight of the left column of page 3
-	if (What("Weight Remember Page3 Left") !== "No") {
-		Page3Left = Number(What("Extra.Gear Weight Subtotal Left"));
-	}
-
-	//The weight of the right column of page 3
-	if (What("Weight Remember Page3 Right") !== "No") {
-		Page3Right = Number(What("Extra.Gear Weight Subtotal Right"));
-	}
-
-	//The weight of the Magic Items of page 3
-	if (What("Weight Remember Magic Items") !== "No") {
-		MagicItems = Number(What("Weight Remember Magic Items Total"));
-	}
-
-	var TotalWeight = ArmorW + ShieldW + WeaponsW + AmmoLeftW + AmmoRightW + CoinsW + Page2Left + Page2Middle + Page2Right + Page3Left + Page3Right + MagicItems;
-	event.value = TotalWeight === 0 ? "" : TotalWeight;
 }
 
 //call this to choose which weights to add to the "Total Carried", and which weights not to add
 function WeightToCalc_Button() {
 	//The dialog for setting what things are added to the total weight carried on page 2
-	var explTxt = "Note that you can change the weight of the armor, shield, weapons, and ammunition on the 1st page and the magic items on the 3rd page by using the 'Modifier' that appear when you press the \"Mods\" button or the \"Modifiers\" bookmark.\nFor the ammunition, only the number listed under \"total\" is counted as that already includes the unchecked ammo icons.";
+	var explTxt = 'Note that you can change the weight of the armor, shield, weapons, and ammunition on the 1st page and the magic items on the 3rd page by using the "Modifier" fields that appear when you press the "Mods" button or the "Modifiers" bookmark.\nFor the ammunition, only the listed "total" is counted as that already includes the unchecked ammo icons.';
+	var weightOptions = ["cArm", "cShi", "cWea", "cAmL", "cAmR", "cCoi", "cP2L", "cP2R", "cP3L", "cP3R", "cMaI"];
+	if (typePF) weightOptions.push("cP2M");
 	var WeightToCalc_Dialog = {
 		UseEnc : true,
 
 		//when starting the dialog
 		initialize : function (dialog) {
-			dialog.load({
-				"img1" : allIcons.weight,
-				"cArm" : What("Weight Remember Armor") !== "No",
-				"cShi" : What("Weight Remember Shield") !== "No",
-				"cWea" : What("Weight Remember Weapons") !== "No",
-				"cAmL" : What("Weight Remember Ammo Left") !== "No",
-				"cAmR" : What("Weight Remember Ammo Right") !== "No",
-				"cCoi" : What("Weight Remember Coins") !== "No",
-				"cP2L" : What("Weight Remember Page2 Left") !== "No",
-				"cP2R" : What("Weight Remember Page2 Right") !== "No",
-				"cP3L" : What("Weight Remember Page3 Left") !== "No",
-				"cP3R" : What("Weight Remember Page3 Right") !== "No",
-				"cMaI" : What("Weight Remember Magic Items") !== "No",
+			var toLoad = {
 				"rEnc" : this.UseEnc,
 				"rCar" : !this.UseEnc
-			});
-
-			if (typePF) {
-				dialog.load({
-					"cP2M" : What("Weight Remember Page2 Middle") !== "No"
-				})
+			};
+			for (var i = 0; i < weightOptions.length; i++) {
+				toLoad[weightOptions[i]] = CurrentVars.weight.indexOf(weightOptions[i]) !== -1
 			}
+			dialog.load(toLoad);
 		},
 
 		//when pressing the ok button
 		commit : function (dialog) {
 			var oResult = dialog.store();
-			Value("Weight Remember Armor", oResult["cArm"] ? "Yes" : "No");
-			Value("Weight Remember Shield", oResult["cShi"] ? "Yes" : "No");
-			Value("Weight Remember Weapons", oResult["cWea"] ? "Yes" : "No");
-			Value("Weight Remember Ammo Left", oResult["cAmL"] ? "Yes" : "No");
-			Value("Weight Remember Ammo Right", oResult["cAmR"] ? "Yes" : "No");
-			Value("Weight Remember Coins", oResult["cCoi"] ? "Yes" : "No");
-			Value("Weight Remember Page2 Left", oResult["cP2L"] ? "Yes" : "No");
-			Value("Weight Remember Page2 Right", oResult["cP2R"] ? "Yes" : "No");
-			Value("Weight Remember Page3 Left", oResult["cP3L"] ? "Yes" : "No");
-			Value("Weight Remember Page3 Right", oResult["cP3R"] ? "Yes" : "No");
-			Value("Weight Remember Magic Items", oResult["cMaI"] ? "Yes" : "No");
-			this.UseEnc = oResult["rEnc"];
-			if (typePF) {
-				Value("Weight Remember Page2 Middle", oResult["cP2M"] ? "Yes" : "No");
+			CurrentVars.weight = [];
+			for (var i = 0; i < weightOptions.length; i++) {
+				if (oResult[weightOptions[i]]) CurrentVars.weight.push(weightOptions[i]);
 			}
+			this.UseEnc = oResult["rEnc"];
 		},
 
 		description : {
-			name : "Choose the things you want to count to Total Weight",
+			name : "Choose the things you want to count to Carried Weight",
 			elements : [{
 				type : "view",
 				elements : [{
@@ -6325,7 +6334,7 @@ function WeightToCalc_Button() {
 							font : "heading",
 							bold : true,
 							height : 21,
-							name : "What to count towards the Total Weight on the second page?"
+							name : "What to count towards the Carried Weight on the second page?"
 						}]
 					}, {
 						type : "cluster",
@@ -6559,6 +6568,8 @@ function WeightToCalc_Button() {
 	app.execDialog(WeightToCalc_Dialog);
 
 	if (WeightToCalc_Dialog.UseEnc !== isEnc) SetEncumbrance(WeightToCalc_Dialog.UseEnc);
+
+	CalcWeightCarried(true); // manual trigger the field calculation for the total field
 };
 
 //set the type of encumbrance rules to use (if variant = true, use the variant rules)
