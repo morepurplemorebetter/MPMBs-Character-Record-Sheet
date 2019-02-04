@@ -52,7 +52,7 @@ var Base_MagicItemsList = {
 			allowDuplicates : true
 		}
 	},
-	'amulet of health': { // finished
+	"amulet of health": { // finished
 		name: "Amulet of Health",
 		source: [["SRD", 207], ["D", 150]],
 		type: "wondrous item",
@@ -64,7 +64,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		scoresOverride : [0, 0, 19, 0, 0, 0]
 	},
-	'amulet of proof against detection and location': {
+	"amulet of proof against detection and location": {
 		name: "Amulet of Proof against Detection and Location",
 		source: [["SRD", 207], ["D", 150]],
 		type: "wondrous item",
@@ -75,7 +75,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "F"
 	},
-	'amulet of the planes': {
+	"amulet of the planes": {
 		name: "Amulet of the Planes",
 		source: [["SRD", 207], ["D", 150]],
 		type: "wondrous item",
@@ -86,7 +86,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "H"
 	},
-	'animated shield': {
+	"animated shield": {
 		name: "Animated Shield",
 		source: [["SRD", 208], ["D", 183]],
 		type: "shield",
@@ -97,7 +97,7 @@ var Base_MagicItemsList = {
 		weight: 6,
 		magicItemTable: "H"
 	},
-	'apparatus of kwalish': {
+	"apparatus of kwalish": {
 		name: "Apparatus of Kwalish",
 		source: [["SRD", 208], ["D", 151]],
 		type: "wondrous item",
@@ -140,7 +140,7 @@ var Base_MagicItemsList = {
 			allowDuplicates : true
 		}
 	},
-	'armor of invulnerability': {
+	"armor of invulnerability": {
 		name: "Armor of Invulnerability",
 		source: [["SRD", 208], ["D", 152]],
 		type: "armor (plate)",
@@ -216,7 +216,7 @@ var Base_MagicItemsList = {
 			dmgres : ["Thunder"]
 		}
 	},
-	'armor of vulnerability (bludgeoning)': {
+	"armor of vulnerability (bludgeoning)": {
 		name: "Armor of Vulnerability (Bludgeoning)",
 		source: [["SRD", 209], ["D", 152]],
 		type: "armor (plate)",
@@ -227,7 +227,7 @@ var Base_MagicItemsList = {
 		weight: 65,
 		cursed: true
 	},
-	'armor of vulnerability (piercing)': {
+	"armor of vulnerability (piercing)": {
 		name: "Armor of Vulnerability (Piercing)",
 		source: [["SRD", 209], ["D", 152]],
 		type: "armor (plate)",
@@ -238,7 +238,7 @@ var Base_MagicItemsList = {
 		weight: 65,
 		cursed: true
 	},
-	'armor of vulnerability (slashing)': {
+	"armor of vulnerability (slashing)": {
 		name: "Armor of Vulnerability (Slashing)",
 		source: [["SRD", 209], ["D", 152]],
 		type: "armor (plate)",
@@ -249,7 +249,7 @@ var Base_MagicItemsList = {
 		weight: 65,
 		cursed: true
 	},
-	'arrow-catching shield': {
+	"arrow-catching shield": {
 		name: "Arrow-Catching Shield",
 		source: [["SRD", 209], ["D", 152]],
 		type: "shield",
@@ -261,7 +261,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "G"
 	},
 	// arrow of slaying (composite item, still to do)
-	'bag of beans': {
+	"bag of beans": {
 		name: "Bag of Beans",
 		source: [["SRD", 209], ["D", 152]],
 		type: "wondrous item",
@@ -271,7 +271,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "C"
 	},
-	'bag of devouring': {
+	"bag of devouring": {
 		name: "Bag of Devouring",
 		source: [["SRD", 210], ["D", 153]],
 		type: "wondrous item",
@@ -281,7 +281,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "D"
 	},
-	'bag of holding': {
+	"bag of holding": {
 		name: "Bag of Holding",
 		source: [["SRD", 210], ["D", 153]],
 		type: "wondrous item",
@@ -291,7 +291,7 @@ var Base_MagicItemsList = {
 		weight: 15,
 		magicItemTable: ["A", "B"]
 	},
-	'bag of tricks, gray': {
+	"bag of tricks, gray": {
 		name: "Bag of Tricks, Gray",
 		source: [["SRD", 210], ["D", 154]],
 		type: "wondrous item",
@@ -301,7 +301,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "F"
 	},
-	'bag of tricks, rust': {
+	"bag of tricks, rust": {
 		name: "Bag of Tricks, Rust",
 		source: [["SRD", 210], ["D", 154]],
 		type: "wondrous item",
@@ -311,7 +311,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "F"
 	},
-	'bag of tricks, tan': {
+	"bag of tricks, tan": {
 		name: "Bag of Tricks, Tan",
 		source: [["SRD", 210], ["D", 154]],
 		type: "wondrous item",
@@ -321,7 +321,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "F"
 	},
-	'bead of force': {
+	"bead of force": {
 		name: "Bead of Force",
 		source: [["SRD", 211], ["D", 154]],
 		type: "wondrous item",
@@ -331,7 +331,7 @@ var Base_MagicItemsList = {
 		weight: 0.0625,
 		magicItemTable: "C"
 	},
-	'belt of dwarvenkind': {
+	"belt of dwarvenkind": {
 		name: "Belt of Dwarvenkind",
 		source: [["SRD", 212], ["D", 155]],
 		type: "wondrous item",
@@ -341,7 +341,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'belt of giant strength' : { // finished
+	"belt of giant strength": { // finished
 		name: "Belt of Giant Strength",
 		source: [["SRD", 211], ["D", 155]],
 		type: "wondrous item",
@@ -395,7 +395,7 @@ var Base_MagicItemsList = {
 		}
 	},
 	// Berserker Axe (composite item, still to do)
-	'boots of elvenkind': {
+	"boots of elvenkind": {
 		name: "Boots of Elvenkind",
 		source: [["SRD", 212], ["D", 155]],
 		type: "wondrous item",
@@ -404,7 +404,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "While you wear these boots, your steps make no sound, regardless of the surface you are moving across. You also have advantage on Dexterity (Stealth) checks that rely on moving silently.",
 		magicItemTable: "F"
 	},
-	'boots of levitation': {
+	"boots of levitation": {
 		name: "Boots of Levitation",
 		source: [["SRD", 212], ["D", 155]],
 		type: "wondrous item",
@@ -414,7 +414,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'boots of speed': {
+	"boots of speed": {
 		name: "Boots of Speed",
 		source: [["SRD", 212], ["D", 155]],
 		type: "wondrous item",
@@ -424,7 +424,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'boots of striding and springing': {
+	"boots of striding and springing": {
 		name: "Boots of Striding and Springing",
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
@@ -434,7 +434,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'boots of the winterlands': {
+	"boots of the winterlands": {
 		name: "Boots of the Winterlands",
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
@@ -444,7 +444,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'bowl of commanding water elementals': {
+	"bowl of commanding water elementals": {
 		name: "Bowl of Commanding Water Elementals",
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
@@ -454,7 +454,7 @@ var Base_MagicItemsList = {
 		weight: 3,
 		magicItemTable: "G"
 	},
-	'bracers of archery': {
+	"bracers of archery": {
 		name: "Bracers of Archery",
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
@@ -464,7 +464,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'bracers of defense' : { // finished
+	"bracers of defense": { // finished
 		name : "Bracers of Defense",
 		source : [["SRD", 212], ["D", 156]],
 		type : "wondrous item",
@@ -480,7 +480,7 @@ var Base_MagicItemsList = {
 			stopeval : function (v) { return v.wearingArmor || v.usingShield; }
 		}
 	},
-	'brazier of commanding fire elementals': {
+	"brazier of commanding fire elementals": {
 		name: "Brazier of Commanding Fire Elementals",
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
@@ -490,7 +490,7 @@ var Base_MagicItemsList = {
 		weight: 5,
 		magicItemTable: "G"
 	},
-	'brooch of shielding': {
+	"brooch of shielding": {
 		name: "Brooch of Shielding",
 		source: [["SRD", 212], ["D", 156]],
 		type: "wondrous item",
@@ -500,7 +500,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'broom of flying': {
+	"broom of flying": {
 		name: "Broom of Flying",
 		source: [["SRD", 213], ["D", 156]],
 		type: "wondrous item",
@@ -510,7 +510,7 @@ var Base_MagicItemsList = {
 		weight: 3,
 		magicItemTable: "F"
 	},
-	'candle of invocation': {
+	"candle of invocation": {
 		name: "Candle of Invocation",
 		source: [["SRD", 213], ["D", 157]],
 		type: "wondrous item",
@@ -520,7 +520,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'cape of the mountebank': {
+	"cape of the mountebank": {
 		name: "Cape of the Mountebank",
 		source: [["SRD", 213], ["D", 157]],
 		type: "wondrous item",
@@ -529,7 +529,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This cape smells faintly of brimstone. While wearing it, you can use it to cast the Dimension Door spell as an action. This property of the cape can't be used again until the next dawn.\n   When you disappear, you leave behind a cloud of smoke, and you appear in a similar cloud of smoke at your destination. The smoke lightly obscures the space you left and the space you appear in, and it dissipates at the end of your next turn. A light or stronger wind disperses the smoke.",
 		magicItemTable: "G"
 	},
-	'carpet of flying, 3 ft. \xD7 5 ft.': {
+	"carpet of flying, 3 ft. \xD7 5 ft.": {
 		name: "Carpet of Flying, 3 ft. \xD7 5 ft.",
 		source: [["SRD", 213], ["D", 157]],
 		type: "wondrous item",
@@ -537,7 +537,7 @@ var Base_MagicItemsList = {
 		description: "",
 		descriptionFull: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   A 3 ft. \xD7 5 ft. carpet can carry up to 200 lb. at a fly speed of 80 feet. A carpet can carry up to twice this weight, but it flies at half speed if it carries more than its normal capacity."
 	},
-	'carpet of flying, 4 ft. \xD7 6 ft.': {
+	"carpet of flying, 4 ft. \xD7 6 ft.": {
 		name: "Carpet of Flying, 4 ft. \xD7 6 ft.",
 		source: [["SRD", 213], ["D", 157]],
 		type: "wondrous item",
@@ -545,7 +545,7 @@ var Base_MagicItemsList = {
 		description: "",
 		descriptionFull: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   A 4 ft. \xD7 6 ft. carpet can carry up to 400 lb. at a fly speed of 60 feet. A carpet can carry up to twice this weight, but it flies at half speed if it carries more than its normal capacity."
 	},
-	'carpet of flying, 5 ft. \xD7 7 ft.': {
+	"carpet of flying, 5 ft. \xD7 7 ft.": {
 		name: "Carpet of Flying, 5 ft. \xD7 7 ft.",
 		source: [["SRD", 213], ["D", 157]],
 		type: "wondrous item",
@@ -553,7 +553,7 @@ var Base_MagicItemsList = {
 		description: "",
 		descriptionFull: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   A 5 ft. \xD7 7 ft. carpet can carry up to 600 lb. at a fly speed of 40 feet. A carpet can carry up to twice this weight, but it flies at half speed if it carries more than its normal capacity."
 	},
-	'carpet of flying, 6 ft. \xD7 9 ft.': {
+	"carpet of flying, 6 ft. \xD7 9 ft.": {
 		name: "Carpet of Flying, 6 ft. \xD7 9 ft.",
 		source: [["SRD", 213], ["D", 157]],
 		type: "wondrous item",
@@ -561,7 +561,7 @@ var Base_MagicItemsList = {
 		description: "",
 		descriptionFull: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   A 6 ft. \xD7 9 ft. carpet can carry up to 800 lb. at a fly speed of 30 feet. A carpet can carry up to twice this weight, but it flies at half speed if it carries more than its normal capacity."
 	},
-	'censer of controlling air elementals': {
+	"censer of controlling air elementals": {
 		name: "Censer of Controlling Air Elementals",
 		source: [["SRD", 213], ["D", 158]],
 		type: "wondrous item",
@@ -571,7 +571,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "G"
 	},
-	'chime of opening': {
+	"chime of opening": {
 		name: "Chime of Opening",
 		source: [["SRD", 213], ["D", 158]],
 		type: "wondrous item",
@@ -581,7 +581,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "C"
 	},
-	'circlet of blasting': {
+	"circlet of blasting": {
 		name: "Circlet of Blasting",
 		source: [["SRD", 214], ["D", 158]],
 		type: "wondrous item",
@@ -590,7 +590,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing this circlet, you can use an action to cast the Scorching Ray spell with it. When you make the spell's attacks, you do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn.",
 		magicItemTable: "F"
 	},
-	'cloak of arachnida': {
+	"cloak of arachnida": {
 		name: "Cloak of Arachnida",
 		source: [["SRD", 214], ["D", 158]],
 		type: "wondrous item",
@@ -600,7 +600,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'cloak of displacement': {
+	"cloak of displacement": {
 		name: "Cloak of Displacement",
 		source: [["SRD", 214], ["D", 158]],
 		type: "wondrous item",
@@ -610,7 +610,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'cloak of elvenkind': {
+	"cloak of elvenkind": {
 		name: "Cloak of Elvenkind",
 		source: [["SRD", 214], ["D", 158]],
 		type: "wondrous item",
@@ -620,7 +620,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'cloak of protection': {
+	"cloak of protection": {
 		name: "Cloak of Protection",
 		source: [["SRD", 214], ["D", 159]],
 		type: "wondrous item",
@@ -630,7 +630,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'cloak of the bat': {
+	"cloak of the bat": {
 		name: "Cloak of the Bat",
 		source: [["SRD", 214], ["D", 159]],
 		type: "wondrous item",
@@ -640,7 +640,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'cloak of the manta ray': {
+	"cloak of the manta ray": {
 		name: "Cloak of the Manta Ray",
 		source: [["SRD", 214], ["D", 159]],
 		type: "wondrous item",
@@ -649,7 +649,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing this cloak with its hood up, you can breathe underwater, and you have a swimming speed of 60 feet. Pulling the hood up or down requires an action.",
 		magicItemTable: "B"
 	},
-	'crystal ball' : { // finished
+	"crystal ball": { // finished
 		name : "Crystal Ball",
 		source : [["SRD", 214], ["D", 159]],
 		type : "wondrous item",
@@ -667,7 +667,7 @@ var Base_MagicItemsList = {
 			firstCol : "atwill"
 		}
 	},
-	'crystal ball of mind reading': {
+	"crystal ball of mind reading": {
 		name: "Crystal Ball of Mind Reading",
 		source: [["SRD", 214], ["D", 159]],
 		type: "wondrous item",
@@ -677,7 +677,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 3
 	},
-	'crystal ball of telepathy': {
+	"crystal ball of telepathy": {
 		name: "Crystal Ball of Telepathy",
 		source: [["SRD", 214], ["D", 159]],
 		type: "wondrous item",
@@ -687,7 +687,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 3
 	},
-	'crystal ball of true seeing': {
+	"crystal ball of true seeing": {
 		name: "Crystal Ball of True Seeing",
 		source: [["SRD", 215], ["D", 159]],
 		type: "wondrous item",
@@ -697,7 +697,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 3
 	},
-	'cube of force': {
+	"cube of force": {
 		name: "Cube of Force",
 		source: [["SRD", 215], ["D", 159]],
 		type: "wondrous item",
@@ -707,7 +707,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'cubic gate': {
+	"cubic gate": {
 		name: "Cubic Gate",
 		source: [["SRD", 215], ["D", 160]],
 		type: "wondrous item",
@@ -725,7 +725,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "You can use an action to place this 1-inch metal cube on the ground and speak its command word. The cube rapidly grows into a fortress that remains until you use an action to speak the command word that dismisses it, which works only if the fortress is empty.\n   The fortress is a square tower, 20 feet on a side and 30 feet high, with arrow slits on all sides and a battlement atop it. Its interior is divided into two floors. with a ladder running along one wall to connect them. The ladder ends at a trapdoor leading to the roof. When activated, the tower has a small door on the side facing you. The door opens only at your command, which you can speak as a bonus action. It is immune to the Knock spell and similar magic, such as that of a chime of opening.\n   Each creature in the area where the fortress appears must make a DC 15 Dexterity saving throw, taking 10d10 bludgeoning damage on a failed save, or half as much damage on a successful one. In either case, the creature is pushed to an unoccupied space outside but next to the fortress. Objects in the area that aren't being worn or carried take this damage and are pushed automatically.\n   The tower is made of adamantine, and its magic prevents it from being tipped over. The roof, the door, and the walls each have 100 hit points, immunity to damage from nonmagical weapons excluding siege weapons, and resistance to all other damage. Only a Wish spell can repair the fortress (this use of the spell counts as replicating a spell of 8th level or lower). Each casting of Wish causes the roof, the door, or one wall to regain 50 hit points.",
 		magicItemTable: "G"
 	},
-	'dagger of venom': {
+	"dagger of venom": {
 		name: "Dagger of Venom",
 		source: [["SRD", 215], ["D", 161]],
 		type: "weapon (dagger)",
@@ -736,7 +736,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "G"
 	},
 	// Dancing Sword (composite item, still to do)
-	'decanter of endless water': {
+	"decanter of endless water": {
 		name: "Decanter of Endless Water",
 		source: [["SRD", 216], ["D", 161]],
 		type: "wondrous item",
@@ -746,7 +746,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "C"
 	},
-	'deck of illusions': {
+	"deck of illusions": {
 		name: "Deck of Illusions",
 		source: [["SRD", 216], ["D", 161]],
 		type: "wondrous item",
@@ -755,7 +755,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This box contains a set of parchment cards. A full deck has 34 cards. A deck found as treasure is usually missing 1d20-1 cards.\n   The magic of the deck functions only if cards are drawn at random (you can use an altered deck of playing cards to simulate the deck). You can use an action to draw a card at random from the deck and throw it to the ground at a point within 30 feet of you.\n   An illusion of one or more creatures forms over the thrown card and remains until dispelled. An illusory creature appears real, of the appropriate size, and behaves as if it were a real creature, except that it can do no harm. While you are within 120 feet of the illusory creature and can see it, you can use an action to move it magically anywhere within 30 feet of its card. Any physical interaction with the illusory creature reveals it to be an illusion, because objects pass through it. Someone who uses an action to visually inspect the creature identifies it as illusory with a successful DC 15 Intelligence (Investigation) check. The creature then appears translucent.\n   The illusion lasts until its card is moved or the illusion is dispelled. When the illusion ends, the image on its card disappears, and that card can't be used again.\n\n" + toUni("1d33") + "\t" + toUni("Playing Card") + "\t" + toUni("Illusion") + "\n1\tAce of hearts\tRed dragon\n2\tKing of hearts\tKnight and four guards\n3\tQueen of hearts\tSuccubus/Incubus\n4\tJack of hearts\tDruid\n5\tTen of hearts\tCloud giant\n6\tNine of hearts\tEttin\n7\tEight of hearts\tBugbear\n8\tTwo of hearts\tGoblin\n9\tAce of diamonds\tBeholder\n10\tKing of diamonds\tArchmage and mage apprentice\n11\tQueen of diamonds\tNight hag\n12\tJack of diamonds\tAssassin\n13\tTen of diamonds\tFire giant\n14\tNine of diamonds\tOgre mage\n15\tEight of diamonds\tGnoll\n16\tTwo of diamonds\tKobold\n17\tAce of spades\tLich\n18\tKing of spades\tPriest and two acolytes\n19\tQueen of spades\tMedusa\n20\tJack of spades\tVeteran\n21\tTen of spades\tFrost giant\n22\tNine of spades\tTroll\n23\tEight of spades\tHobgoblin\n24\tTwo of spades\tGoblin\n25\tAce of clubs\tIron golem\n26\tKing of clubs\tBandit captain and three bandits\n27\tQueen of clubs\tErinyes\n28\tJack of clubs\tBerserker\n29\tTen of clubs\tHill giant\n30\tNine of clubs\tOgre\n31\tEight of clubs\tOrc\n32\tTwo of clubs\tKobold\n33\tjokers (2)\tYou (the deck's owner)",
 		magicItemTable: "F"
 	},
-	'deck of many things': {
+	"deck of many things": {
 		name: "Deck of Many Things",
 		source: [["SRD", 216], ["D", 162]],
 		type: "wondrous item",
@@ -765,7 +765,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "I"
 	},
 	// Defender (composite item, still to do)
-	'demon armor': {
+	"demon armor": {
 		name: "Demon Armor",
 		source: [["SRD", 218], ["D", 165]],
 		type: "armor (plate)",
@@ -777,7 +777,7 @@ var Base_MagicItemsList = {
 		cursed: true,
 		magicItemTable: "H"
 	},
-	'dimensional shackles': {
+	"dimensional shackles": {
 		name: "Dimensional Shackles",
 		source: [["SRD", 219], ["D", 165]],
 		type: "wondrous item",
@@ -786,7 +786,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "You can use an action to place these shackles on an incapacitated creature. The shackles adjust to fit a creature of Small to Large size. In addition to serving as mundane manacles, the shackles prevent a creature bound by them from using any method of extradimensional movement, including teleportation or travel to a different plane of existence. They don't prevent the creature from passing-through an interdimensional portal.\n   You and any creature you designate when you use the shackles can use an action to remove them. Once every 30 days, the bound creature can make a DC 30 Strength (Athletics) check. On a success, the creature breaks free and destroys the shackles.",
 		magicItemTable: "G"
 	},
-	'dragon scale mail, black': {
+	"dragon scale mail, black": {
 		name: "Dragon Scale Mail, Black",
 		source: [["SRD", 219], ["D", 165]],
 		type: "armor (scale mail)",
@@ -796,7 +796,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 45
 	},
-	'dragon scale mail, blue': {
+	"dragon scale mail, blue": {
 		name: "Dragon Scale Mail, Blue",
 		source: [["SRD", 219], ["D", 165]],
 		type: "armor (scale mail)",
@@ -806,7 +806,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 45
 	},
-	'dragon scale mail, brass': {
+	"dragon scale mail, brass": {
 		name: "Dragon Scale Mail, Brass",
 		source: [["SRD", 219], ["D", 165]],
 		type: "armor (scale mail)",
@@ -816,7 +816,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 45
 	},
-	'dragon scale mail, bronze': {
+	"dragon scale mail, bronze": {
 		name: "Dragon Scale Mail, Bronze",
 		source: [["SRD", 219], ["D", 165]],
 		type: "armor (scale mail)",
@@ -826,7 +826,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 45
 	},
-	'dragon scale mail, copper': {
+	"dragon scale mail, copper": {
 		name: "Dragon Scale Mail, Copper",
 		source: [["SRD", 219], ["D", 165]],
 		type: "armor (scale mail)",
@@ -836,7 +836,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 45
 	},
-	'dragon scale mail, gold': {
+	"dragon scale mail, gold": {
 		name: "Dragon Scale Mail, Gold",
 		source: [["SRD", 219], ["D", 165]],
 		type: "armor (scale mail)",
@@ -846,7 +846,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 45
 	},
-	'dragon scale mail, green': {
+	"dragon scale mail, green": {
 		name: "Dragon Scale Mail, Green",
 		source: [["SRD", 219], ["D", 165]],
 		type: "armor (scale mail)",
@@ -856,7 +856,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 45
 	},
-	'dragon scale mail, red': {
+	"dragon scale mail, red": {
 		name: "Dragon Scale Mail, Red",
 		source: [["SRD", 219], ["D", 165]],
 		type: "armor (scale mail)",
@@ -866,7 +866,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 45
 	},
-	'dragon scale mail, silver': {
+	"dragon scale mail, silver": {
 		name: "Dragon Scale Mail, Silver",
 		source: [["SRD", 219], ["D", 165]],
 		type: "armor (scale mail)",
@@ -876,7 +876,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 45
 	},
-	'dragon scale mail, white': {
+	"dragon scale mail, white": {
 		name: "Dragon Scale Mail, White",
 		source: [["SRD", 219], ["D", 165]],
 		type: "armor (scale mail)",
@@ -887,7 +887,7 @@ var Base_MagicItemsList = {
 		weight: 45
 	},
 	// Dragon Slayer (composite item, still to do)
-	'dust of disappearance': {
+	"dust of disappearance": {
 		name: "Dust of Disappearance",
 		source: [["SRD", 219], ["D", 166]],
 		type: "wondrous item",
@@ -896,7 +896,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "Found in a small packet, this powder resembles very fine sand. There is enough of it for one use. When you use an action to throw the dust into the air, you and each creature and object within 10 feet of you become invisible for 2d4 minutes. The duration is the same for all subjects, and the dust is consumed when its magic takes effect. If a creature affected by the dust attacks or casts a spell, the invisibility ends for that creature.",
 		magicItemTable: "B"
 	},
-	'dust of dryness': {
+	"dust of dryness": {
 		name: "Dust of Dryness",
 		source: [["SRD", 219], ["D", 166]],
 		type: "wondrous item",
@@ -905,7 +905,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This small packet contains 1d6+4 pinches of dust. You can use an action to sprinkle a pinch of it over water. The dust turns a cube of water 15 feet on a side into one marble-sized pellet, which floats or rests near where the dust was sprinkled. The pellet's weight is negligible.\n   Someone can use an action to smash the pellet against a hard surface, causing the pellet to shatter and release the water the dust absorbed. Doing so ends that pellet's magic.\n   An elemental composed mostly of water that is exposed to a pinch of the dust must make a DC 13 Constitution saving throw, taking 10d6 necrotic damage on a failed save, or half as much damage on a successful one.",
 		magicItemTable: "B"
 	},
-	'dust of sneezing and choking': {
+	"dust of sneezing and choking": {
 		name: "Dust of Sneezing and Choking",
 		source: [["SRD", 219], ["D", 166]],
 		type: "wondrous item",
@@ -914,7 +914,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "Found in a small container, this powder resembles very fine sand. It appears to be dust of disappearance, and an Identify spell reveals it to be such. There is enough of it for one use.\n   When you use an action to throw a handful of the dust into the air, you and each creature that needs to breathe within 30 feet of you must succeed on a DC 15 Constitution saving throw or become unable to breathe while sneezing uncontrollably. A creature affected in this way is incapacitated and suffocating. As long as it is conscious, a creature can repeat the saving throw at the end of each of its turns, ending the effect on it on a success. The Lesser Restoration spell can also end the effect on a creature.",
 		magicItemTable: "B"
 	},
-	'dwarven plate': {
+	"dwarven plate": {
 		name: "Dwarven Plate",
 		source: [["SRD", 220], ["D", 167]],
 		type: "armor (plate)",
@@ -947,7 +947,7 @@ var Base_MagicItemsList = {
 			modifiers : [3, 3] // add 3 to each to hit and damage because of the magical bonus
 		}
 	},
-	'efreeti bottle': {
+	"efreeti bottle": {
 		name: "Efreeti Bottle",
 		source: [["SRD", 220], ["D", 167]],
 		type: "wondrous item",
@@ -957,7 +957,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "H"
 	},
-	'elemental gem, blue sapphire': {
+	"elemental gem, blue sapphire": {
 		name: "Elemental Gem, Blue Sapphire",
 		source: [["SRD", 220], ["D", 167]],
 		type: "wondrous item",
@@ -965,7 +965,7 @@ var Base_MagicItemsList = {
 		description: "",
 		descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, an air elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost."
 	},
-	'elemental gem, emerald': {
+	"elemental gem, emerald": {
 		name: "Elemental Gem, Emerald",
 		source: [["SRD", 220], ["D", 167]],
 		type: "wondrous item",
@@ -973,7 +973,7 @@ var Base_MagicItemsList = {
 		description: "",
 		descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, a water elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost."
 	},
-	'elemental gem, red corundum': {
+	"elemental gem, red corundum": {
 		name: "Elemental Gem, Red Corundum",
 		source: [["SRD", 220], ["D", 167]],
 		type: "wondrous item",
@@ -981,7 +981,7 @@ var Base_MagicItemsList = {
 		description: "",
 		descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, a fire elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost."
 	},
-	'elemental gem, yellow diamond': {
+	"elemental gem, yellow diamond": {
 		name: "Elemental Gem, Yellow Diamond",
 		source: [["SRD", 220], ["D", 167]],
 		type: "wondrous item",
@@ -989,7 +989,7 @@ var Base_MagicItemsList = {
 		description: "",
 		descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, an earth elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost."
 	},
-	'elven chain': {
+	"elven chain": {
 		name: "Elven Chain",
 		source: [["SRD", 220], ["D", 168]],
 		type: "armor (chain shirt)",
@@ -999,7 +999,7 @@ var Base_MagicItemsList = {
 		weight: 20,
 		magicItemTable: "G"
 	},
-	'eversmoking bottle': {
+	"eversmoking bottle": {
 		name: "Eversmoking Bottle",
 		source: [["SRD", 220], ["D", 168]],
 		type: "wondrous item",
@@ -1009,7 +1009,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "F"
 	},
-	'eyes of charming': {
+	"eyes of charming": {
 		name: "Eyes of Charming",
 		source: [["SRD", 220], ["D", 168]],
 		type: "wondrous item",
@@ -1019,7 +1019,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'eyes of minute seeing': {
+	"eyes of minute seeing": {
 		name: "Eyes of Minute Seeing",
 		source: [["SRD", 221], ["D", 168]],
 		type: "wondrous item",
@@ -1028,7 +1028,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "These crystal lenses fit over the eyes. While wearing them, you can see much better than normal out to a range of 1 foot. You have advantage on Intelligence (Investigation) checks that rely on sight while searching an area or studying an object within that range.",
 		magicItemTable: "C"
 	},
-	'eyes of the eagle': {
+	"eyes of the eagle": {
 		name: "Eyes of the Eagle",
 		source: [["SRD", 221], ["D", 168]],
 		type: "wondrous item",
@@ -1038,7 +1038,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'figurine of wondrous power, bronze griffon': {
+	"figurine of wondrous power, bronze griffon": {
 		name: "Figurine of Wondrous Power, Bronze Griffon",
 		source: [["SRD", 222], ["D", 169]],
 		type: "wondrous item",
@@ -1047,7 +1047,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Bronze Griffon.\n   This bronze statuette is of a griffon rampant. It can become a griffon for up to 6 hours. Once it has been used, it can't be used again until 5 days have passed.",
 		magicItemTable: "G"
 	},
-	'figurine of wondrous power, ebony fly': {
+	"figurine of wondrous power, ebony fly": {
 		name: "Figurine of Wondrous Power, Ebony Fly",
 		source: [["SRD", 222], ["D", 169]],
 		type: "wondrous item",
@@ -1056,7 +1056,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   giant Ebony Fly.\n   This ebony statuette is carved in the likeness of a horsefly. It can become a giant fly for up to 12 hours and can be ridden as a mount. Once it has been used, it can't be used again until 2 days have passed.",
 		magicItemTable: "G"
 	},
-	'figurine of wondrous power, golden lions': {
+	"figurine of wondrous power, golden lions": {
 		name: "Figurine of Wondrous Power, Golden Lions",
 		source: [["SRD", 222], ["D", 169]],
 		type: "wondrous item",
@@ -1065,7 +1065,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Golden Lions.\n   These gold statuettes of lions are always created in pairs. You can use one figurine or both simultaneously. Each can become a lion for up to 1 hour. Once a lion has been used, it can't be used again until 7 days have passed.",
 		magicItemTable: "G"
 	},
-	'figurine of wondrous power, ivory goats': {
+	"figurine of wondrous power, ivory goats": {
 		name: "Figurine of Wondrous Power, Ivory Goats",
 		source: [["SRD", 222], ["D", 169]],
 		type: "wondrous item",
@@ -1074,7 +1074,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Ivory Goats.\n   These ivory statuettes of goats are always created in sets of three. Each goat looks unique and functions differently from the others. Their properties are as follows:\n \u2022 The goat of traveling can become a Large goat with the same statistics as a riding horse. It has 24 charges, and each hour or portion thereof it spends in beast form costs 1 charge. While it has charges, you can use it as often as you wish. When it runs out of charges, it reverts to a figurine and can't be used again until 7 days have passed, when it regains all its charges.\n \u2022 The goat of travail becomes a giant goat for up to 3 hours. Once it has been used, it can't be used again until 30 days have passed.\n \u2022 The goat of terror becomes a giant goat for up to 3 hours. The goat can't attack, but you can remove its horns and use them as weapons. One horn becomes a +1 lance, and the other becomes a +2 longsword. Removing a horn requires an action, and the weapons disappear and the horns return when the goat reverts to figurine form. In addition, the goat radiates a 30-foot-radius aura of terror while you are riding it. Any creature hostile to you that starts its turn in the aura must succeed on a DC 15 Wisdom saving throw or be frightened of the goat for 1 minute, or until the goat reverts to figurine form. The frightened creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. Once it successfully saves against the effect, a creature is immune to the goat's aura for the next 24 hours. Once the figurine has been used, it can't be used again until 15 days have passed.",
 		magicItemTable: "G"
 	},
-	'figurine of wondrous power, marble elephant': {
+	"figurine of wondrous power, marble elephant": {
 		name: "Figurine of Wondrous Power, Marble Elephant",
 		source: [["SRD", 222], ["D", 170]],
 		type: "wondrous item",
@@ -1083,7 +1083,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Marble Elephant.\n   This marble statuette is about 4 inches high and long. It can become an elephant for up to 24 hours. Once it has been used, it can't be used again until 7 days have passed.",
 		magicItemTable: "G"
 	},
-	'figurine of wondrous power, obsidian steed': {
+	"figurine of wondrous power, obsidian steed": {
 		name: "Figurine of Wondrous Power, Obsidian Steed",
 		source: [["SRD", 222], ["D", 170]],
 		type: "wondrous item",
@@ -1092,7 +1092,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Obsidian Steed.\n   This polished obsidian horse can become a nightmare for up to 24 hours. The nightmare fights only to defend itself. Once it has been used, it can't be used again until 5 days have passed.\n   If you have a good alignment, the figurine has a 10% chance each time you use it to ignore your orders, including a command to revert to figurine form. If you mount the nightmare while it is ignoring your orders, you and the nightmare are instantly transported to a random location on the plane of Hades, where the nightmare reverts to figurine form.",
 		magicItemTable: "H"
 	},
-	'figurine of wondrous power, onyx dog': {
+	"figurine of wondrous power, onyx dog": {
 		name: "Figurine of Wondrous Power, Onyx Dog",
 		source: [["SRD", 222], ["D", 170]],
 		type: "wondrous item",
@@ -1101,7 +1101,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Onyx Dog.\n   This onyx statuette of a dog can become a mastiff for up to 6 hours. The mastiff has an Intelligence of 8 and can speak Common. It also has dark vision out to a range of 60 feet and can see invisible creatures and objects within that range. Once it has been used, it can't be used again until 7 days have passed.",
 		magicItemTable: "G"
 	},
-	'figurine of wondrous power, serpentine owl': {
+	"figurine of wondrous power, serpentine owl": {
 		name: "Figurine of Wondrous Power, Serpentine Owl",
 		source: [["SRD", 222], ["D", 170]],
 		type: "wondrous item",
@@ -1110,7 +1110,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Serpentine Owl.\n   This serpentine statuette of an owl can become a giant owl for up to 8 hours. Once it has been used, it can't be used again until 2 days have passed. The owl can telepathically communicate with you at any range if you and it are on the same plane of existence.",
 		magicItemTable: "G"
 	},
-	'figurine of wondrous power, silver raven': {
+	"figurine of wondrous power, silver raven": {
 		name: "Figurine of Wondrous Power, Silver Raven",
 		source: [["SRD", 222], ["D", 170]],
 		type: "wondrous item",
@@ -1120,7 +1120,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "F"
 	},
 	// Flame Tongue (composite item, still to do)
-	'folding boat': {
+	"folding boat": {
 		name: "Folding Boat",
 		source: [["SRD", 223], ["D", 170]],
 		type: "wondrous item",
@@ -1131,7 +1131,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "C"
 	},
 	// Frost Brand (composite item, still to do)
-	'gauntlets of ogre power': { // finished
+	"gauntlets of ogre power": { // finished
 		name: "Gauntlets of Ogre Power",
 		source: [["SRD", 223], ["D", 171]],
 		type: "wondrous item",
@@ -1142,7 +1142,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		scoresOverride : [19, 0, 0, 0, 0, 0]
 	},
-	'gem of brightness': {
+	"gem of brightness": {
 		name: "Gem of Brightness",
 		source: [["SRD", 223], ["D", 171]],
 		type: "wondrous item",
@@ -1152,7 +1152,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "F"
 	},
-	'gem of seeing': {
+	"gem of seeing": {
 		name: "Gem of Seeing",
 		source: [["SRD", 223], ["D", 172]],
 		type: "wondrous item",
@@ -1184,7 +1184,7 @@ var Base_MagicItemsList = {
 		},
 		action : [["bonus action", ""]]
 	},
-	'gloves of missile snaring': {
+	"gloves of missile snaring": {
 		name: "Gloves of Missile Snaring",
 		source: [["SRD", 224], ["D", 172]],
 		type: "wondrous item",
@@ -1194,7 +1194,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'gloves of swimming and climbing': {
+	"gloves of swimming and climbing": {
 		name: "Gloves of Swimming and Climbing",
 		source: [["SRD", 224], ["D", 172]],
 		type: "wondrous item",
@@ -1204,7 +1204,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'goggles of night': {
+	"goggles of night": {
 		name: "Goggles of Night",
 		source: [["SRD", 224], ["D", 172]],
 		type: "wondrous item",
@@ -1213,7 +1213,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing these dark lenses, you have darkvision out to a range of 60 feet. If you already have darkvision. wearing the goggles increases its range by 60 feet.",
 		magicItemTable: "B"
 	},
-	'hammer of thunderbolts': {
+	"hammer of thunderbolts": {
 		name: "Hammer of Thunderbolts",
 		source: [["SRD", 224], ["D", 173]],
 		type: "weapon (maul)",
@@ -1223,7 +1223,7 @@ var Base_MagicItemsList = {
 		weight: 10,
 		magicItemTable: "I"
 	},
-	'hat of disguise': {
+	"hat of disguise": {
 		name: "Hat of Disguise",
 		source: [["SRD", 225], ["D", 173]],
 		type: "wondrous item",
@@ -1233,7 +1233,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'headband of intellect': { // finished
+	"headband of intellect": { // finished
 		name: "Headband of Intellect",
 		source: [["SRD", 225], ["D", 173]],
 		type: "wondrous item",
@@ -1244,7 +1244,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		scoresOverride : [0, 0, 0, 19, 0, 0]
 	},
-	'helm of brilliance': {
+	"helm of brilliance": {
 		name: "Helm of Brilliance",
 		source: [["SRD", 225], ["D", 173]],
 		type: "wondrous item",
@@ -1254,7 +1254,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'helm of comprehending languages': {
+	"helm of comprehending languages": {
 		name: "Helm of Comprehending Languages",
 		source: [["SRD", 225], ["D", 173]],
 		type: "wondrous item",
@@ -1263,7 +1263,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing this helm, you can use an action to cast the Comprehend Languages spell from it at will.",
 		magicItemTable: "B"
 	},
-	'helm of telepathy': {
+	"helm of telepathy": {
 		name: "Helm of Telepathy",
 		source: [["SRD", 225], ["D", 174]],
 		type: "wondrous item",
@@ -1273,7 +1273,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'helm of teleportation': {
+	"helm of teleportation": {
 		name: "Helm of Teleportation",
 		source: [["SRD", 225], ["D", 174]],
 		type: "wondrous item",
@@ -1294,7 +1294,7 @@ var Base_MagicItemsList = {
 		weight: 5,
 		magicItemTable: "C"
 	},
-	'horn of blasting': {
+	"horn of blasting": {
 		name: "Horn of Blasting",
 		source: [["SRD", 226], ["D", 174]],
 		type: "wondrous item",
@@ -1304,7 +1304,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "G"
 	},
-	'horn of valhalla, brass': {
+	"horn of valhalla, brass": {
 		name: "Horn of Valhalla, Brass",
 		source: [["SRD", 226], ["D", 175]],
 		type: "wondrous item",
@@ -1313,7 +1313,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   A brass horn summons 3d4+3 berserkers. To use the brass horn, you must be proficient with all simple weapons.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands.",
 		weight: 2
 	},
-	'horn of valhalla, bronze': {
+	"horn of valhalla, bronze": {
 		name: "Horn of Valhalla, Bronze",
 		source: [["SRD", 226], ["D", 175]],
 		type: "wondrous item",
@@ -1323,7 +1323,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "H"
 	},
-	'horn of valhalla, iron': {
+	"horn of valhalla, iron": {
 		name: "Horn of Valhalla, Iron",
 		source: [["SRD", 226], ["D", 175]],
 		type: "wondrous item",
@@ -1333,7 +1333,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "I"
 	},
-	'horn of valhalla, silver': {
+	"horn of valhalla, silver": {
 		name: "Horn of Valhalla, Silver",
 		source: [["SRD", 226], ["D", 175]],
 		type: "wondrous item",
@@ -1342,7 +1342,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   The silver horn summons 2d4+2 berserkers.\n   The berserkers are friendly to you and your companions and follow your commands.",
 		weight: 2
 	},
-	'horseshoes of a zephyr': {
+	"horseshoes of a zephyr": {
 		name: "Horseshoes of a Zephyr",
 		source: [["SRD", 226], ["D", 175]],
 		type: "wondrous item",
@@ -1351,7 +1351,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "These iron horseshoes come in a set of four. While all four shoes are affixed to the hooves of a horse or similar creature, they allow the creature to move normally while floating 4 inches above the ground. This effect means the creature can cross or stand above nonsolid or unstable surfaces, such as water or lava. The creature leaves no tracks and ignores difficult terrain. In addition, the creature can move at normal speed for up to 12 hours a day without suffering exhaustion from a forced march.",
 		magicItemTable: "D"
 	},
-	'horseshoes of speed': {
+	"horseshoes of speed": {
 		name: "Horseshoes of Speed",
 		source: [["SRD", 226], ["D", 175]],
 		type: "wondrous item",
@@ -1360,7 +1360,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "These iron horseshoes come in a set of four. While all four shoes are affixed to the hooves of a horse or similar creature, they increase the creature's walking speed by 30 feet.",
 		magicItemTable: "C"
 	},
-	'immovable rod': {
+	"immovable rod": {
 		name: "Immovable Rod",
 		source: [["SRD", 226], ["D", 175]],
 		type: "rod",
@@ -1370,7 +1370,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "B"
 	},
-	'ioun stone, absorption': {
+	"ioun stone, absorption": {
 		name: "Ioun Stone, Absorption",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1379,7 +1379,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   While this pale lavender ellipsoid orbits your head, you can use your reaction to cancel a spell of 4th level or lower cast by a creature you can see and targeting only you.\n   Once the stone has canceled 20 levels of spells, it burns out and turns dull gray, losing its magic. If you are targeted by a spell whose level is higher than the number of spell levels the stone has left, the stone can't cancel it.",
 		attunement: true
 	},
-	'ioun stone, agility': {
+	"ioun stone, agility": {
 		name: "Ioun Stone, Agility",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1388,7 +1388,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Dexterity score increases by 2, to a maximum of 20, while this deep red sphere orbits your head.",
 		attunement: true
 	},
-	'ioun stone, awareness': {
+	"ioun stone, awareness": {
 		name: "Ioun Stone, Awareness",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1398,7 +1398,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'ioun stone, fortitude': {
+	"ioun stone, fortitude": {
 		name: "Ioun Stone, Fortitude",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1407,7 +1407,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Constitution score increases by 2, to a maximum of 20, while this pink rhomboid orbits your head.",
 		attunement: true
 	},
-	'ioun stone, greater absorption': {
+	"ioun stone, greater absorption": {
 		name: "Ioun Stone, Greater Absorption",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1417,7 +1417,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "I"
 	},
-	'ioun stone, insight': {
+	"ioun stone, insight": {
 		name: "Ioun Stone, Insight",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1427,7 +1427,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'ioun stone, intellect': {
+	"ioun stone, intellect": {
 		name: "Ioun Stone, Intellect",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1437,7 +1437,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'ioun stone, leadership': {
+	"ioun stone, leadership": {
 		name: "Ioun Stone, Leadership",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1447,7 +1447,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'ioun stone, mastery': {
+	"ioun stone, mastery": {
 		name: "Ioun Stone, Mastery",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1457,7 +1457,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "I"
 	},
-	'ioun stone, protection': {
+	"ioun stone, protection": {
 		name: "Ioun Stone, Protection",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1467,7 +1467,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'ioun stone, regeneration': {
+	"ioun stone, regeneration": {
 		name: "Ioun Stone, Regeneration",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1477,7 +1477,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "I"
 	},
-	'ioun stone, reserve': {
+	"ioun stone, reserve": {
 		name: "Ioun Stone, Reserve",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1487,7 +1487,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'ioun stone, strength': {
+	"ioun stone, strength": {
 		name: "Ioun Stone, Strength",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1497,7 +1497,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'ioun stone, sustenance': {
+	"ioun stone, sustenance": {
 		name: "Ioun Stone, Sustenance",
 		source: [["SRD", 227], ["D", 176]],
 		type: "wondrous item",
@@ -1507,7 +1507,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'iron bands of bilarro': {
+	"iron bands of bilarro": {
 		name: "Iron Bands of Bilarro",
 		source: [["SRD", 228], ["D", 177]],
 		type: "wondrous item",
@@ -1517,7 +1517,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "G"
 	},
-	'iron flask': {
+	"iron flask": {
 		name: "Iron Flask",
 		source: [["SRD", 228], ["D", 178]],
 		type: "wondrous item",
@@ -1527,7 +1527,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "I"
 	},
-	'javelin of lightning': {
+	"javelin of lightning": {
 		name: "Javelin of Lightning",
 		source: [["SRD", 228], ["D", 178]],
 		type: "weapon (javelin)",
@@ -1546,7 +1546,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This glass jar, 3 inches in diameter, contains 1d4+1 doses of a thick mixture that smells faintly of aloe. The jar and its contents weigh \xBD pound.\n   As an action, one dose of the ointment can be swallowed or applied to the skin. The creature that receives it regains 2d8+2 hit points, ceases to be poisoned, and is cured of any disease.",
 		magicItemTable: "B"
 	},
-	'lantern of revealing': {
+	"lantern of revealing": {
 		name: "Lantern of Revealing",
 		source: [["SRD", 228], ["D", 179]],
 		type: "wondrous item",
@@ -1557,7 +1557,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "B"
 	},
 	// Luck Blade (composite item, still to do)
-	'mace of disruption': {
+	"mace of disruption": {
 		name: "Mace of Disruption",
 		source: [["SRD", 229], ["D", 179]],
 		type: "weapon (mace)",
@@ -1568,7 +1568,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "G"
 	},
-	'mace of smiting': {
+	"mace of smiting": {
 		name: "Mace of Smiting",
 		source: [["SRD", 229], ["D", 179]],
 		type: "weapon (mace)",
@@ -1578,7 +1578,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "G"
 	},
-	'mace of terror': {
+	"mace of terror": {
 		name: "Mace of Terror",
 		source: [["SRD", 229], ["D", 180]],
 		type: "weapon (mace)",
@@ -1589,7 +1589,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "G"
 	},
-	'mantle of spell resistance': {
+	"mantle of spell resistance": {
 		name: "Mantle of Spell Resistance",
 		source: [["SRD", 229], ["D", 180]],
 		type: "wondrous item",
@@ -1599,7 +1599,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'manual of bodily health': {
+	"manual of bodily health": {
 		name: "Manual of Bodily Health",
 		source: [["SRD", 229], ["D", 180]],
 		type: "wondrous item",
@@ -1609,7 +1609,7 @@ var Base_MagicItemsList = {
 		weight: 5,
 		magicItemTable: "H"
 	},
-	'manual of gainful exercise': {
+	"manual of gainful exercise": {
 		name: "Manual of Gainful Exercise",
 		source: [["SRD", 229], ["D", 180]],
 		type: "wondrous item",
@@ -1619,7 +1619,7 @@ var Base_MagicItemsList = {
 		weight: 5,
 		magicItemTable: "H"
 	},
-	'manual of golems, clay': {
+	"manual of golems, clay": {
 		name: "Manual of Golems, Clay",
 		source: [["SRD", 229], ["D", 180]],
 		type: "wondrous item",
@@ -1628,7 +1628,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a clay golem, you must spend 30 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 65,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
 		weight: 5
 	},
-	'manual of golems, flesh': {
+	"manual of golems, flesh": {
 		name: "Manual of Golems, Flesh",
 		source: [["SRD", 229], ["D", 180]],
 		type: "wondrous item",
@@ -1637,7 +1637,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a flesh golem, you must spend 60 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 50,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
 		weight: 5
 	},
-	'manual of golems, iron': {
+	"manual of golems, iron": {
 		name: "Manual of Golems, Iron",
 		source: [["SRD", 229], ["D", 180]],
 		type: "wondrous item",
@@ -1646,7 +1646,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create an iron golem, you must spend 120 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 100,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
 		weight: 5
 	},
-	'manual of golems, stone': {
+	"manual of golems, stone": {
 		name: "Manual of Golems, Stone",
 		source: [["SRD", 229], ["D", 180]],
 		type: "wondrous item",
@@ -1655,7 +1655,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a stone golem, you must spend 90 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 80,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
 		weight: 5
 	},
-	'manual of quickness of action': {
+	"manual of quickness of action": {
 		name: "Manual of Quickness of Action",
 		source: [["SRD", 230], ["D", 181]],
 		type: "wondrous item",
@@ -1665,7 +1665,7 @@ var Base_MagicItemsList = {
 		weight: 5,
 		magicItemTable: "H"
 	},
-	'medallion of thoughts': {
+	"medallion of thoughts": {
 		name: "Medallion of Thoughts",
 		source: [["SRD", 230], ["D", 181]],
 		type: "wondrous item",
@@ -1676,7 +1676,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "F"
 	},
-	'mirror of life trapping': {
+	"mirror of life trapping": {
 		name: "Mirror of Life Trapping",
 		source: [["SRD", 230], ["D", 181]],
 		type: "wondrous item",
@@ -1686,7 +1686,7 @@ var Base_MagicItemsList = {
 		weight: 50,
 		magicItemTable: "H"
 	},
-	'necklace of adaptation': {
+	"necklace of adaptation": {
 		name: "Necklace of Adaptation",
 		source: [["SRD", 231], ["D", 182]],
 		type: "wondrous item",
@@ -1697,7 +1697,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "F"
 	},
-	'necklace of fireballs': {
+	"necklace of fireballs": {
 		name: "Necklace of Fireballs",
 		source: [["SRD", 231], ["D", 182]],
 		type: "wondrous item",
@@ -1707,7 +1707,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "C"
 	},
-	'necklace of prayer beads': {
+	"necklace of prayer beads": {
 		name: "Necklace of Prayer Beads",
 		source: [["SRD", 231], ["D", 182]],
 		type: "wondrous item",
@@ -1729,7 +1729,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "D"
 	},
 	// Nine Lives Stealer (composite item, still to do)
-	oathbow: {
+	"oathbow": {
 		name: "Oathbow",
 		source: [["SRD", 231], ["D", 183]],
 		type: "weapon (longbow)",
@@ -1740,7 +1740,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "H"
 	},
-	'oil of etherealness': {
+	"oil of etherealness": {
 		name: "Oil of Etherealness",
 		source: [["SRD", 231], ["D", 183]],
 		type: "potion",
@@ -1750,7 +1750,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "C"
 	},
-	'oil of sharpness': {
+	"oil of sharpness": {
 		name: "Oil of Sharpness",
 		source: [["SRD", 232], ["D", 184]],
 		type: "potion",
@@ -1760,7 +1760,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "D"
 	},
-	'oil of slipperiness': {
+	"oil of slipperiness": {
 		name: "Oil of Slipperiness",
 		source: [["SRD", 232], ["D", 184]],
 		type: "potion",
@@ -1770,7 +1770,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "B"
 	},
-	'pearl of power': {
+	"pearl of power": {
 		name: "Pearl of Power",
 		source: [["SRD", 232], ["D", 184]],
 		type: "wondrous item",
@@ -1780,7 +1780,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'periapt of health': {
+	"periapt of health": {
 		name: "Periapt of Health",
 		source: [["SRD", 232], ["D", 184]],
 		type: "wondrous item",
@@ -1790,7 +1790,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "C"
 	},
-	'periapt of proof against poison': {
+	"periapt of proof against poison": {
 		name: "Periapt of Proof Against Poison",
 		source: [["SRD", 232], ["D", 184]],
 		type: "wondrous item",
@@ -1800,7 +1800,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "G"
 	},
-	'periapt of wound closure': {
+	"periapt of wound closure": {
 		name: "Periapt of Wound Closure",
 		source: [["SRD", 232], ["D", 184]],
 		type: "wondrous item",
@@ -1811,7 +1811,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "F"
 	},
-	'philter of love': {
+	"philter of love": {
 		name: "Philter of Love",
 		source: [["SRD", 232], ["D", 184]],
 		type: "potion",
@@ -1821,7 +1821,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "B"
 	},
-	'pipes of haunting': {
+	"pipes of haunting": {
 		name: "Pipes of Haunting",
 		source: [["SRD", 232], ["D", 185]],
 		type: "Instrument",
@@ -1831,7 +1831,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "F"
 	},
-	'pipes of the sewers': {
+	"pipes of the sewers": {
 		name: "Pipes of the Sewers",
 		source: [["SRD", 232], ["D", 185]],
 		type: "Instrument",
@@ -1842,7 +1842,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "F"
 	},
-	'plate armor of etherealness': {
+	"plate armor of etherealness": {
 		name: "Plate Armor of Etherealness",
 		source: [["SRD", 233], ["D", 185]],
 		type: "armor (plate)",
@@ -1853,7 +1853,7 @@ var Base_MagicItemsList = {
 		weight: 65,
 		magicItemTable: "I"
 	},
-	'portable hole': {
+	"portable hole": {
 		name: "Portable Hole",
 		source: [["SRD", 233], ["D", 185]],
 		type: "wondrous item",
@@ -1862,7 +1862,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This fine black cloth, soft as silk, is folded up to the dimensions of a handkerchief. It unfolds into a circular sheet 6 feet in diameter.\n   You can use an action to unfold a portable hole and place it on or against a solid surface, whereupon the portable hole creates an extradimensional hole 10 feet deep. The cylindrical space within the hole exists on a different plane, so it can't be used to create open passages. Any creature inside an open portable hole can exit the hole by climbing out of it.\n   You can use an action to close a portable hole by taking hold of the edges of the cloth and folding it up. Folding the cloth closes the hole, and any creatures or objects within remain in the extradimensional space. No matter what's in it, the hole weighs next to nothing.\n   If the hole is folded up, a creature within the hole's extradimensional space can use an action to make a DC 10 Strength check. On a successful check, the creature forces its way out and appears within 5 feet of the portable hole or the creature carrying it. A breathing creature within a closed portable hole can survive for up to 10 minutes, after which time it begins to suffocate.\n   Placing a portable hole inside an extradimensional space created by a bag of holding, Heward's handy haversack, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10 feet of the gate is sucked through it and deposited in a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
 		magicItemTable: "D"
 	},
-	'potion of animal friendship': {
+	"potion of animal friendship": {
 		name: "Potion of Animal Friendship",
 		source: [["SRD", 233], ["D", 187]],
 		type: "potion",
@@ -1872,7 +1872,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "B"
 	},
-	'potion of clairvoyance': {
+	"potion of clairvoyance": {
 		name: "Potion of Clairvoyance",
 		source: [["SRD", 233], ["D", 187]],
 		type: "potion",
@@ -1882,7 +1882,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "C"
 	},
-	'potion of climbing': {
+	"potion of climbing": {
 		name: "Potion of Climbing",
 		source: [["SRD", 233], ["D", 187]],
 		type: "potion",
@@ -1892,7 +1892,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "A"
 	},
-	'potion of diminution': {
+	"potion of diminution": {
 		name: "Potion of Diminution",
 		source: [["SRD", 233], ["D", 187]],
 		type: "potion",
@@ -1902,7 +1902,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "C"
 	},
-	'potion of flying': {
+	"potion of flying": {
 		name: "Potion of Flying",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -1912,7 +1912,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "D"
 	},
-	'potion of gaseous form': {
+	"potion of gaseous form": {
 		name: "Potion of Gaseous Form",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -1922,7 +1922,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "C"
 	},
-	'potion of giant strength, cloud': {
+	"potion of giant strength, cloud": {
 		name: "Potion of Giant Strength, Cloud",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -1931,7 +1931,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "When you drink this potion, your Strength score changes to 27 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a cloud giant.",
 		weight: 0.5
 	},
-	'potion of giant strength, fire': {
+	"potion of giant strength, fire": {
 		name: "Potion of Giant Strength, Fire",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -1940,7 +1940,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "When you drink this potion, your Strength score changes to 25 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a fire giant.",
 		weight: 0.5
 	},
-	'potion of giant strength, frost': {
+	"potion of giant strength, frost": {
 		name: "Potion of Giant Strength, Frost",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -1950,7 +1950,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "C"
 	},
-	'potion of giant strength, hill': {
+	"potion of giant strength, hill": {
 		name: "Potion of Giant Strength, Hill",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -1959,7 +1959,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "When you drink this potion, your Strength score changes to 21 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a hill giant.",
 		weight: 0.5
 	},
-	'potion of giant strength, stone': {
+	"potion of giant strength, stone": {
 		name: "Potion of Giant Strength, Stone",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -1968,7 +1968,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "When you drink this potion, your Strength score changes to 23 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a stone giant.",
 		weight: 0.5
 	},
-	'potion of giant strength, storm': {
+	"potion of giant strength, storm": {
 		name: "Potion of Giant Strength, Storm",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -1977,7 +1977,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "When you drink this potion, your Strength score changes to 29 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a storm giant.",
 		weight: 0.5
 	},
-	'potion of growth': {
+	"potion of growth": {
 		name: "Potion of Growth",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -1987,7 +1987,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "B"
 	},
-	'potion of healing': {
+	"potion of healing": {
 		name: "Potion of Healing",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -1997,7 +1997,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "A"
 	},
-	'potion of greater healing': {
+	"potion of greater healing": {
 		name: "Potion of Greater Healing",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -2007,7 +2007,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: ["A", "B"]
 	},
-	'potion of superior healing': {
+	"potion of superior healing": {
 		name: "Potion of Superior Healing",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -2017,7 +2017,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "C"
 	},
-	'potion of supreme healing': {
+	"potion of supreme healing": {
 		name: "Potion of Supreme Healing",
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
@@ -2027,7 +2027,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: ["D", "E"]
 	},
-	'potion of heroism': {
+	"potion of heroism": {
 		name: "Potion of Heroism",
 		source: [["SRD", 234], ["D", 188]],
 		type: "potion",
@@ -2037,7 +2037,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "C"
 	},
-	'potion of invisibility': {
+	"potion of invisibility": {
 		name: "Potion of Invisibility",
 		source: [["SRD", 234], ["D", 188]],
 		type: "potion",
@@ -2047,7 +2047,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "D"
 	},
-	'potion of mind reading': {
+	"potion of mind reading": {
 		name: "Potion of Mind Reading",
 		source: [["SRD", 234], ["D", 188]],
 		type: "potion",
@@ -2057,7 +2057,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "C"
 	},
-	'potion of poison': {
+	"potion of poison": {
 		name: "Potion of Poison",
 		source: [["SRD", 234], ["D", 188]],
 		type: "potion",
@@ -2067,7 +2067,7 @@ var Base_MagicItemsList = {
 		weight: 0.5,
 		magicItemTable: "B"
 	},
-	'potion of resistance, acid': {
+	"potion of resistance, acid": {
 		name: "Potion of Resistance, Acid",
 		source: [["SRD", 235], ["D", 188]],
 		type: "potion",
@@ -2076,7 +2076,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		weight: 0.5
 	},
-	'potion of resistance, cold': {
+	"potion of resistance, cold": {
 		name: "Potion of Resistance, Cold",
 		source: [["SRD", 235], ["D", 188]],
 		type: "potion",
@@ -2085,7 +2085,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		weight: 0.5
 	},
-	'potion of resistance, fire': {
+	"potion of resistance, fire": {
 		name: "Potion of Resistance, Fire",
 		source: [["SRD", 235], ["D", 188]],
 		type: "potion",
@@ -2094,7 +2094,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		weight: 0.5
 	},
-	'potion of resistance, force': {
+	"potion of resistance, force": {
 		name: "Potion of Resistance, Force",
 		source: [["SRD", 235], ["D", 188]],
 		type: "potion",
@@ -2103,7 +2103,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		weight: 0.5
 	},
-	'potion of resistance, lightning': {
+	"potion of resistance, lightning": {
 		name: "Potion of Resistance, Lightning",
 		source: [["SRD", 235], ["D", 188]],
 		type: "potion",
@@ -2112,7 +2112,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		weight: 0.5
 	},
-	'potion of resistance, necrotic': {
+	"potion of resistance, necrotic": {
 		name: "Potion of Resistance, Necrotic",
 		source: [["SRD", 235], ["D", 188]],
 		type: "potion",
@@ -2121,7 +2121,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		weight: 0.5
 	},
-	'potion of resistance, poison': {
+	"potion of resistance, poison": {
 		name: "Potion of Resistance, Poison",
 		source: [["SRD", 235], ["D", 188]],
 		type: "potion",
@@ -2130,7 +2130,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		weight: 0.5
 	},
-	'potion of resistance, psychic': {
+	"potion of resistance, psychic": {
 		name: "Potion of Resistance, Psychic",
 		source: [["SRD", 235], ["D", 188]],
 		type: "potion",
@@ -2139,7 +2139,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		weight: 0.5
 	},
-	'potion of resistance, radiant': {
+	"potion of resistance, radiant": {
 		name: "Potion of Resistance, Radiant",
 		source: [["SRD", 235], ["D", 188]],
 		type: "potion",
@@ -2148,7 +2148,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		weight: 0.5
 	},
-	'potion of resistance, thunder': {
+	"potion of resistance, thunder": {
 		name: "Potion of Resistance, Thunder",
 		source: [["SRD", 235], ["D", 188]],
 		type: "potion",
@@ -2157,7 +2157,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		weight: 0.5
 	},
-	'potion of speed' : { // finished
+	"potion of speed": { // finished
 		name: "Potion of Speed",
 		source: [["SRD", 235], ["D", 188]],
 		type : "potion",
@@ -2167,7 +2167,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
 		weight: 0.5
 	},
-	'potion of water breathing': {
+	"potion of water breathing": {
 		name: "Potion of Water Breathing",
 		source: [["SRD", 235], ["D", 188]],
 		type: "potion",
@@ -2225,7 +2225,7 @@ var Base_MagicItemsList = {
 		description: "",
 		descriptionFull: "This tiny object looks like a feather.\n   " + toUni("Whip") + ". You can use an action to throw the token to a point within 10 feet of you. The token disappears, and a floating whip takes its place. You can then use a bonus action to make a melee spell attack against a creature within 10 feet of the whip, with an attack bonus of +9. On a hit, the target takes 1d6+5 force damage.\n   As a bonus action on your turn, you can direct the whip to fly up to 20 feet and repeat the attack against a creature within 10 feet of it. The whip disappears after 1 hour, when you use an action to dismiss it, or when you are incapacitated or die."
 	},
-	'quiver of ehlonna': {
+	"quiver of ehlonna": {
 		name: "Quiver of Ehlonna",
 		source: [["SRD", 220], ["D", 189]],
 		type: "wondrous item",
@@ -2235,7 +2235,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "F"
 	},
-	'ring of animal influence': {
+	"ring of animal influence": {
 		name: "Ring of Animal Influence",
 		source: [["SRD", 235], ["D", 189]],
 		type: "ring",
@@ -2244,7 +2244,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. While wearing the ring, you can use an action to expend 1 of its charges to cast one of the following spells:\n \u2022 Animal Friendship (save DC 13)\n \u2022 Fear (save DC 13), targeting only beasts that have an Intelligence of 3 or lower\n \u2022 Speak with Animals",
 		magicItemTable: "G"
 	},
-	'ring of djinni summoning': {
+	"ring of djinni summoning": {
 		name: "Ring of Djinni Summoning",
 		source: [["SRD", 235], ["D", 190]],
 		type: "ring",
@@ -2254,7 +2254,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "I"
 	},
-	'ring of elemental command, air': {
+	"ring of elemental command, air": {
 		name: "Ring of Elemental Command, Air",
 		source: [["SRD", 235], ["D", 190]],
 		type: "ring",
@@ -2264,7 +2264,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "I"
 	},
-	'ring of elemental command, earth': {
+	"ring of elemental command, earth": {
 		name: "Ring of Elemental Command, Earth",
 		source: [["SRD", 235], ["D", 190]],
 		type: "ring",
@@ -2274,7 +2274,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "I"
 	},
-	'ring of elemental command, fire': {
+	"ring of elemental command, fire": {
 		name: "Ring of Elemental Command, Fire",
 		source: [["SRD", 236], ["D", 190]],
 		type: "ring",
@@ -2284,7 +2284,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "I"
 	},
-	'ring of elemental command, water': {
+	"ring of elemental command, water": {
 		name: "Ring of Elemental Command, Water",
 		source: [["SRD", 236], ["D", 190]],
 		type: "ring",
@@ -2294,7 +2294,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "I"
 	},
-	'ring of evasion': {
+	"ring of evasion": {
 		name: "Ring of Evasion",
 		source: [["SRD", 236], ["D", 191]],
 		type: "ring",
@@ -2304,7 +2304,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'ring of feather falling': {
+	"ring of feather falling": {
 		name: "Ring of Feather Falling",
 		source: [["SRD", 236], ["D", 191]],
 		type: "ring",
@@ -2314,7 +2314,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'ring of free action': {
+	"ring of free action": {
 		name: "Ring of Free Action",
 		source: [["SRD", 236], ["D", 191]],
 		type: "ring",
@@ -2324,7 +2324,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'ring of invisibility': {
+	"ring of invisibility": {
 		name: "Ring of Invisibility",
 		source: [["SRD", 236], ["D", 191]],
 		type: "ring",
@@ -2334,7 +2334,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "I"
 	},
-	'ring of jumping' : { // finished
+	"ring of jumping": { // finished
 		name : "Ring of Jumping",
 		source : [["SRD", 236], ["D", 191]],
 		type : "ring",
@@ -2351,7 +2351,7 @@ var Base_MagicItemsList = {
 			firstCol : "atwill"
 		}
 	},
-	'ring of mind shielding': {
+	"ring of mind shielding": {
 		name: "Ring of Mind Shielding",
 		source: [["SRD", 236], ["D", 191]],
 		type: "ring",
@@ -2361,7 +2361,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'ring of protection': {
+	"ring of protection": {
 		name: "Ring of Protection",
 		source: [["SRD", 237], ["D", 191]],
 		type: "ring",
@@ -2371,7 +2371,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'ring of regeneration': {
+	"ring of regeneration": {
 		name: "Ring of Regeneration",
 		source: [["SRD", 237], ["D", 191]],
 		type: "ring",
@@ -2381,7 +2381,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'ring of resistance, acid': {
+	"ring of resistance, acid": {
 		name: "Ring of Resistance, Acid",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2390,7 +2390,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		attunement: true
 	},
-	'ring of resistance, cold': {
+	"ring of resistance, cold": {
 		name: "Ring of Resistance, Cold",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2399,7 +2399,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		attunement: true
 	},
-	'ring of resistance, fire': {
+	"ring of resistance, fire": {
 		name: "Ring of Resistance, Fire",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2408,7 +2408,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		attunement: true
 	},
-	'ring of resistance, force': {
+	"ring of resistance, force": {
 		name: "Ring of Resistance, Force",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2417,7 +2417,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		attunement: true
 	},
-	'ring of resistance, lightning': {
+	"ring of resistance, lightning": {
 		name: "Ring of Resistance, Lightning",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2426,7 +2426,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		attunement: true
 	},
-	'ring of resistance, necrotic': {
+	"ring of resistance, necrotic": {
 		name: "Ring of Resistance, Necrotic",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2435,7 +2435,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		attunement: true
 	},
-	'ring of resistance, poison': {
+	"ring of resistance, poison": {
 		name: "Ring of Resistance, Poison",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2444,7 +2444,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		attunement: true
 	},
-	'ring of resistance, psychic': {
+	"ring of resistance, psychic": {
 		name: "Ring of Resistance, Psychic",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2453,7 +2453,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		attunement: true
 	},
-	'ring of resistance, radiant': {
+	"ring of resistance, radiant": {
 		name: "Ring of Resistance, Radiant",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2462,7 +2462,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		attunement: true
 	},
-	'ring of resistance, thunder': {
+	"ring of resistance, thunder": {
 		name: "Ring of Resistance, Thunder",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2471,7 +2471,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "",
 		attunement: true
 	},
-	'ring of shooting stars': {
+	"ring of shooting stars": {
 		name: "Ring of Shooting Stars",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2481,7 +2481,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'ring of spell storing': {
+	"ring of spell storing": {
 		name: "Ring of Spell Storing",
 		source: [["SRD", 237], ["D", 192]],
 		type: "ring",
@@ -2491,7 +2491,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'ring of spell turning': {
+	"ring of spell turning": {
 		name: "Ring of Spell Turning",
 		source: [["SRD", 237], ["D", 193]],
 		type: "ring",
@@ -2511,7 +2511,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "You have a swimming speed of 40 feet while wearing this ring.",
 		speed : { swim : { spd : 40, enc : 30 } }
 	},
-	'ring of telekinesis': {
+	"ring of telekinesis": {
 		name: "Ring of Telekinesis",
 		source: [["SRD", 238], ["D", 193]],
 		type: "ring",
@@ -2521,7 +2521,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'ring of the ram': {
+	"ring of the ram": {
 		name: "Ring of the Ram",
 		source: [["SRD", 238], ["D", 193]],
 		type: "ring",
@@ -2531,7 +2531,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'ring of three wishes': {
+	"ring of three wishes": {
 		name: "Ring of Three Wishes",
 		source: [["SRD", 238], ["D", 193]],
 		type: "ring",
@@ -2540,7 +2540,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing this ring, you can use an action to expend 1 of its 3 charges to cast the Wish spell from it. The ring becomes nonmagical when you use the last charge.",
 		magicItemTable: "I"
 	},
-	'ring of warmth': {
+	"ring of warmth": {
 		name: "Ring of Warmth",
 		source: [["SRD", 238], ["D", 193]],
 		type: "ring",
@@ -2550,7 +2550,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'ring of water walking': {
+	"ring of water walking": {
 		name: "Ring of Water Walking",
 		source: [["SRD", 238], ["D", 193]],
 		type: "ring",
@@ -2559,7 +2559,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing this ring, you can stand on and move across any liquid surface as if it were solid ground.",
 		magicItemTable: "F"
 	},
-	'ring of x-ray vision': {
+	"ring of x-ray vision": {
 		name: "Ring of X-ray Vision",
 		source: [["SRD", 238], ["D", 193]],
 		type: "ring",
@@ -2569,7 +2569,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'robe of eyes': {
+	"robe of eyes": {
 		name: "Robe of Eyes",
 		source: [["SRD", 238], ["D", 193]],
 		type: "wondrous item",
@@ -2579,7 +2579,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'robe of scintillating colors': {
+	"robe of scintillating colors": {
 		name: "Robe of Scintillating Colors",
 		source: [["SRD", 238], ["D", 194]],
 		type: "wondrous item",
@@ -2589,7 +2589,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'robe of stars': {
+	"robe of stars": {
 		name: "Robe of Stars",
 		source: [["SRD", 239], ["D", 194]],
 		type: "wondrous item",
@@ -2599,7 +2599,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "H"
 	},
-	'robe of the archmagi': {
+	"robe of the archmagi": {
 		name: "Robe of the Archmagi",
 		source: [["SRD", 239], ["D", 194]],
 		type: "wondrous item",
@@ -2609,7 +2609,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "I"
 	},
-	'robe of useful items': {
+	"robe of useful items": {
 		name: "Robe of Useful Items",
 		source: [["SRD", 239], ["D", 195]],
 		type: "wondrous item",
@@ -2618,7 +2618,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This robe has cloth patches of various shapes and colors covering it. While wearing the robe. you can use an action to detach one of the patches, causing it to become the object or creature it represents. Once the last patch is removed, the robe becomes an ordinary garment.\n   The robe has two of each of the following patches:\n \u2022 Dagger\n \u2022 Bullseye lantern (filled and lit)\n \u2022 Steel mirror\n \u2022 10-foot pole\n \u2022 Hempen rope (50 feet, coiled)\n \u2022 Sack\n\nIn addition, the robe has 4d4 other patches. The DM chooses the patches or determines them randomly.\n\n" + toUni("d100") + "\t" + toUni("Patch") + "\n01-08\tBag of 100 gp\n09-15\tSilver coffer (1 foot long, 6 inches wide and deep) worth 500 gp\n16-22\tIron door (up to 10 feet wide and 10 feet high, barred on one side of your choice), which you can place in an opening you can reach; it conforms to fit the opening, attaching and hinging itself\n23-30\t10 gems worth 100 gp each\n31-44\tWooden ladder (24 feet long)\n45-51\tA riding horse with saddle bags\n52-59\tPit (a cube 10 feet on a side), which you can place on the ground within 10 feet of you\n60-68\t4 potions of healing\n69-75\tRowboat (12 feet long)\n76-83\tSpell scroll containing one spell of 1st to 3rd level\n84-90\t2 mastiffs\n91-96\tWindow (2 feet by 4 feet, up to 2 feet deep), which you can place on a vertical surface you can reach\n97-00\tPortable ram",
 		magicItemTable: "B"
 	},
-	'rod of absorption': {
+	"rod of absorption": {
 		name: "Rod of Absorption",
 		source: [["SRD", 239], ["D", 195]],
 		type: "rod",
@@ -2629,7 +2629,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "H"
 	},
-	'rod of alertness': {
+	"rod of alertness": {
 		name: "Rod of Alertness",
 		source: [["SRD", 240], ["D", 196]],
 		type: "rod",
@@ -2640,7 +2640,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "H"
 	},
-	'rod of lordly might': {
+	"rod of lordly might": {
 		name: "Rod of Lordly Might",
 		source: [["SRD", 240], ["D", 196]],
 		type: "rod",
@@ -2651,7 +2651,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "I"
 	},
-	'rod of rulership': {
+	"rod of rulership": {
 		name: "Rod of Rulership",
 		source: [["SRD", 240], ["D", 197]],
 		type: "rod",
@@ -2662,7 +2662,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "G"
 	},
-	'rod of security': {
+	"rod of security": {
 		name: "Rod of Security",
 		source: [["SRD", 241], ["D", 197]],
 		type: "rod",
@@ -2672,7 +2672,7 @@ var Base_MagicItemsList = {
 		weight: 2,
 		magicItemTable: "H"
 	},
-	'rope of climbing': {
+	"rope of climbing": {
 		name: "Rope of Climbing",
 		source: [["SRD", 241], ["D", 197]],
 		type: "wondrous item",
@@ -2682,7 +2682,7 @@ var Base_MagicItemsList = {
 		weight: 3,
 		magicItemTable: "B"
 	},
-	'rope of entanglement': {
+	"rope of entanglement": {
 		name: "Rope of Entanglement",
 		source: [["SRD", 241], ["D", 197]],
 		type: "wondrous item",
@@ -2692,7 +2692,7 @@ var Base_MagicItemsList = {
 		weight: 3,
 		magicItemTable: "G"
 	},
-	'scarab of protection': {
+	"scarab of protection": {
 		name: "Scarab of Protection",
 		source: [["SRD", 241], ["D", 199]],
 		type: "wondrous item",
@@ -2702,7 +2702,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "I"
 	},
-	'scimitar of speed': {
+	"scimitar of speed": {
 		name: "Scimitar of Speed",
 		source: [["SRD", 241], ["D", 199]],
 		type: "weapon (scimitar)",
@@ -2713,7 +2713,7 @@ var Base_MagicItemsList = {
 		weight: 3,
 		magicItemTable: "H"
 	},
-	'shield of missile attraction': {
+	"shield of missile attraction": {
 		name: "Shield of Missile Attraction",
 		source: [["SRD", 242], ["D", 200]],
 		type: "shield",
@@ -2725,7 +2725,7 @@ var Base_MagicItemsList = {
 		cursed: true,
 		magicItemTable: "G"
 	},
-	'slippers of spider climbing': {
+	"slippers of spider climbing": {
 		name: "Slippers of Spider Climbing",
 		source: [["SRD", 242], ["D", 200]],
 		type: "wondrous item",
@@ -2735,7 +2735,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'sovereign glue': {
+	"sovereign glue": {
 		name: "Sovereign Glue",
 		source: [["SRD", 242], ["D", 200]],
 		type: "wondrous item",
@@ -2744,7 +2744,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This viscous, milky-white substance can form a permanent adhesive bond between any two objects. It must be stored in a jar or flask that has been coated inside with oil of slipperiness. When found, a container contains 1d6+1 ounces.\n   One ounce of the glue can cover a 1-foot square surface. The glue takes 1 minute to set. Once it has done so, the bond it creates can be broken only by the application of universal solvent or oil of etherealness, or with a Wish spell.",
 		magicItemTable: "E"
 	},
-	'spell scroll (1st level)': {
+	"spell scroll (1st level)": {
 		name: "Spell Scroll (1st Level)",
 		source: [["SRD", 242], ["D", 200]],
 		type: "scroll",
@@ -2753,7 +2753,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 11. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 11 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		magicItemTable: "A"
 	},
-	'spell scroll (2nd level)': {
+	"spell scroll (2nd level)": {
 		name: "Spell Scroll (2nd Level)",
 		source: [["SRD", 242], ["D", 201]],
 		type: "scroll",
@@ -2762,7 +2762,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 12. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 12 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		magicItemTable: ["A", "B"]
 	},
-	'spell scroll (3rd level)': {
+	"spell scroll (3rd level)": {
 		name: "Spell Scroll (3rd Level)",
 		source: [["SRD", 242], ["D", 202]],
 		type: "scroll",
@@ -2771,7 +2771,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 13. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 13 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		magicItemTable: "B"
 	},
-	'spell scroll (4th level)': {
+	"spell scroll (4th level)": {
 		name: "Spell Scroll (4th Level)",
 		source: [["SRD", 242], ["D", 203]],
 		type: "scroll",
@@ -2780,7 +2780,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 14. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 14 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		magicItemTable: "C"
 	},
-	'spell scroll (5th level)': {
+	"spell scroll (5th level)": {
 		name: "Spell Scroll (5th Level)",
 		source: [["SRD", 242], ["D", 204]],
 		type: "scroll",
@@ -2789,7 +2789,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 15. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 15 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		magicItemTable: "C"
 	},
-	'spell scroll (6th level)': {
+	"spell scroll (6th level)": {
 		name: "Spell Scroll (6th Level)",
 		source: [["SRD", 242], ["D", 205]],
 		type: "scroll",
@@ -2798,7 +2798,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 16. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 16 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		magicItemTable: "D"
 	},
-	'spell scroll (7th level)': {
+	"spell scroll (7th level)": {
 		name: "Spell Scroll (7th Level)",
 		source: [["SRD", 242], ["D", 206]],
 		type: "scroll",
@@ -2807,7 +2807,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 17. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 17 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		magicItemTable: "D"
 	},
-	'spell scroll (8th level)': {
+	"spell scroll (8th level)": {
 		name: "Spell Scroll (8th Level)",
 		source: [["SRD", 242], ["D", 207]],
 		type: "scroll",
@@ -2816,7 +2816,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 18. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 18 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		magicItemTable: ["D", "E"]
 	},
-	'spell scroll (9th level)': {
+	"spell scroll (9th level)": {
 		name: "Spell Scroll (9th Level)",
 		source: [["SRD", 242], ["D", 208]],
 		type: "scroll",
@@ -2825,7 +2825,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 19. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 19 and an attack bonus of +11.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 19 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		magicItemTable: "E"
 	},
-	'spell scroll (cantrip)': {
+	"spell scroll (cantrip)": {
 		name: "Spell Scroll (Cantrip)",
 		source: [["SRD", 242], ["D", 199]],
 		type: "scroll",
@@ -2834,7 +2834,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.",
 		magicItemTable: "A"
 	},
-	'spellguard shield': {
+	"spellguard shield": {
 		name: "Spellguard Shield",
 		source: [["SRD", 242], ["D", 201]],
 		type: "shield",
@@ -2845,7 +2845,7 @@ var Base_MagicItemsList = {
 		weight: 6,
 		magicItemTable: "H"
 	},
-	'sphere of annihilation': {
+	"sphere of annihilation": {
 		name: "Sphere of Annihilation",
 		source: [["SRD", 242], ["D", 201]],
 		type: "wondrous item",
@@ -2854,7 +2854,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This 2-foot-diameter black sphere is a hole in the multiverse, hovering in space and stabilized by a magical field surrounding it.\n   The sphere obliterates all matter it passes through and all matter that passes through it. Artifacts are the exception. Unless an artifact is susceptible to damage from a sphere of annihilation, it passes through the sphere unscathed. Anything else that touches the sphere but isn't wholly engulfed and obliterated by it takes 4d10 force damage.\n   The sphere is stationary until someone controls it. If you are within 60 feet of an uncontrolled sphere, you can use an action to make a DC 25 Intelligence (Arcana) check. On a success, the sphere levitates in one direction of your choice, up to a number of feet equal to 5 \xD7 your Intelligence modifier (minimum 5 feet). On a failure, the sphere moves 10 feet toward you. A creature whose space the sphere enters must succeed on a DC 13 Dexterity saving throw or be touched by it, taking 4d10 force damage.\n   If you attempt to control a sphere that is under another creature's control, you make an Intelligence (Arcana) check contested by the other creature's Intelligence (Arcana) check. The winner of the contest gains control of the sphere and can levitate it as normal.\n   If the sphere comes into contact with a planar portal, such as that created by the Gate spell, or an extradimensional space, such as that within a portable hole, the DM determines randomly what happens, using the following table.\n\n" + toUni("d100") + "\t" + toUni("Result") + "\n01-50\tThe sphere is destroyed.\n51-85\tThe sphere moves through the portal or into the extradimensional space.\n86-00\tA spatial rift sends each creature and object within 180 feet of the sphere, including the sphere, to a random plane of existence.",
 		magicItemTable: "I"
 	},
-	'staff of charming': {
+	"staff of charming": {
 		name: "Staff of Charming",
 		source: [["SRD", 243], ["D", 201]],
 		type: "staff",
@@ -2865,7 +2865,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "G"
 	},
-	'staff of fire': {
+	"staff of fire": {
 		name: "Staff of Fire",
 		source: [["SRD", 243], ["D", 201]],
 		type: "staff",
@@ -2876,7 +2876,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "H"
 	},
-	'staff of frost': {
+	"staff of frost": {
 		name: "Staff of Frost",
 		source: [["SRD", 243], ["D", 202]],
 		type: "staff",
@@ -2887,7 +2887,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "H"
 	},
-	'staff of healing': {
+	"staff of healing": {
 		name: "Staff of Healing",
 		source: [["SRD", 243], ["D", 202]],
 		type: "staff",
@@ -2898,7 +2898,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "G"
 	},
-	'staff of power': {
+	"staff of power": {
 		name: "Staff of Power",
 		source: [["SRD", 243], ["D", 202]],
 		type: "staff",
@@ -2909,7 +2909,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "H"
 	},
-	'staff of striking': {
+	"staff of striking": {
 		name: "Staff of Striking",
 		source: [["SRD", 0], ["D", 203]],
 		type: "staff",
@@ -2920,7 +2920,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "H"
 	},
-	'staff of swarming insects': {
+	"staff of swarming insects": {
 		name: "Staff of Swarming Insects",
 		source: [["SRD", 244], ["D", 203]],
 		type: "staff",
@@ -2931,7 +2931,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "G"
 	},
-	'staff of the magi': {
+	"staff of the magi": {
 		name: "Staff of the Magi",
 		source: [["SRD", 244], ["D", 203]],
 		type: "staff",
@@ -2942,7 +2942,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "I"
 	},
-	'staff of the python': {
+	"staff of the python": {
 		name: "Staff of the Python",
 		source: [["SRD", 245], ["D", 204]],
 		type: "staff",
@@ -2953,7 +2953,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "F"
 	},
-	'staff of the woodlands': {
+	"staff of the woodlands": {
 		name: "Staff of the Woodlands",
 		source: [["SRD", 245], ["D", 204]],
 		type: "staff",
@@ -2964,7 +2964,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "G"
 	},
-	'staff of thunder and lightning': {
+	"staff of thunder and lightning": {
 		name: "Staff of Thunder and Lightning",
 		source: [["SRD", 245], ["D", 204]],
 		type: "staff",
@@ -2975,7 +2975,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "H"
 	},
-	'staff of withering': {
+	"staff of withering": {
 		name: "Staff of Withering",
 		source: [["SRD", 0], ["D", 205]],
 		type: "staff",
@@ -2986,7 +2986,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "G"
 	},
-	'stone of controlling earth elementals': {
+	"stone of controlling earth elementals": {
 		name: "Stone of Controlling Earth Elementals",
 		source: [["SRD", 0], ["D", 205]],
 		type: "wondrous item",
@@ -2996,7 +2996,7 @@ var Base_MagicItemsList = {
 		weight: 5,
 		magicItemTable: "G"
 	},
-	'stone of good luck': {
+	"stone of good luck": {
 		name: "Stone of Good Luck",
 		source: [["SRD", 246], ["D", 205]],
 		type: "wondrous item",
@@ -3136,7 +3136,7 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
-	'talisman of pure good': {
+	"talisman of pure good": {
 		name: "Talisman of Pure Good",
 		source: [["SRD", 247], ["D", 207]],
 		type: "wondrous item",
@@ -3147,7 +3147,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "I"
 	},
-	'talisman of the sphere': {
+	"talisman of the sphere": {
 		name: "Talisman of the Sphere",
 		source: [["SRD", 247], ["D", 207]],
 		type: "wondrous item",
@@ -3158,7 +3158,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "I"
 	},
-	'talisman of ultimate evil': {
+	"talisman of ultimate evil": {
 		name: "Talisman of Ultimate Evil",
 		source: [["SRD", 247], ["D", 207]],
 		type: "wondrous item",
@@ -3169,7 +3169,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "I"
 	},
-	'tome of clear thought': {
+	"tome of clear thought": {
 		name: "Tome of Clear Thought",
 		source: [["SRD", 247], ["D", 208]],
 		type: "wondrous item",
@@ -3179,7 +3179,7 @@ var Base_MagicItemsList = {
 		weight: 5,
 		magicItemTable: "H"
 	},
-	'tome of leadership and influence': {
+	"tome of leadership and influence": {
 		name: "Tome of Leadership and Influence",
 		source: [["SRD", 247], ["D", 208]],
 		type: "wondrous item",
@@ -3189,7 +3189,7 @@ var Base_MagicItemsList = {
 		weight: 5,
 		magicItemTable: "H"
 	},
-	'tome of understanding': {
+	"tome of understanding": {
 		name: "Tome of Understanding",
 		source: [["SRD", 247], ["D", 209]],
 		type: "wondrous item",
@@ -3199,7 +3199,7 @@ var Base_MagicItemsList = {
 		weight: 5,
 		magicItemTable: "H"
 	},
-	'trident of fish command': {
+	"trident of fish command": {
 		name: "Trident of Fish Command",
 		source: [["SRD", 247], ["D", 209]],
 		type: "weapon (trident)",
@@ -3210,7 +3210,7 @@ var Base_MagicItemsList = {
 		weight: 4,
 		magicItemTable: "F"
 	},
-	'universal solvent': {
+	"universal solvent": {
 		name: "Universal Solvent",
 		source: [["SRD", 248], ["D", 209]],
 		type: "wondrous item",
@@ -3221,7 +3221,7 @@ var Base_MagicItemsList = {
 	},
 	// Vicious Weapon (composite item, still to do)
 	// Vorpal Sword (composite item, still to do)
-	'wand of binding': {
+	"wand of binding": {
 		name: "Wand of Binding",
 		source: [["SRD", 0], ["D", 209]],
 		type: "wand",
@@ -3232,7 +3232,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "G"
 	},
-	'wand of enemy detection': {
+	"wand of enemy detection": {
 		name: "Wand of Enemy Detection",
 		source: [["SRD", 248], ["D", 210]],
 		type: "wand",
@@ -3243,7 +3243,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "G"
 	},
-	'wand of fear': {
+	"wand of fear": {
 		name: "Wand of Fear",
 		source: [["SRD", 248], ["D", 210]],
 		type: "wand",
@@ -3254,7 +3254,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "G"
 	},
-	'wand of fireballs': {
+	"wand of fireballs": {
 		name: "Wand of Fireballs",
 		source: [["SRD", 248], ["D", 210]],
 		type: "wand",
@@ -3265,7 +3265,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "G"
 	},
-	'wand of lightning bolts': {
+	"wand of lightning bolts": {
 		name: "Wand of Lightning Bolts",
 		source: [["SRD", 249], ["D", 211]],
 		type: "wand",
@@ -3276,7 +3276,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "G"
 	},
-	'wand of magic detection': {
+	"wand of magic detection": {
 		name: "Wand of Magic Detection",
 		source: [["SRD", 249], ["D", 211]],
 		type: "wand",
@@ -3286,7 +3286,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "B"
 	},
-	'wand of magic missiles': {
+	"wand of magic missiles": {
 		name: "Wand of Magic Missiles",
 		source: [["SRD", 249], ["D", 211]],
 		type: "wand",
@@ -3296,7 +3296,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "F"
 	},
-	'wand of paralysis': {
+	"wand of paralysis": {
 		name: "Wand of Paralysis",
 		source: [["SRD", 249], ["D", 211]],
 		type: "wand",
@@ -3307,7 +3307,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "G"
 	},
-	'wand of polymorph': {
+	"wand of polymorph": {
 		name: "Wand of Polymorph",
 		source: [["SRD", 249], ["D", 211]],
 		type: "wand",
@@ -3318,7 +3318,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "H"
 	},
-	'wand of secrets': {
+	"wand of secrets": {
 		name: "Wand of Secrets",
 		source: [["SRD", 249], ["D", 211]],
 		type: "wand",
@@ -3328,7 +3328,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "B"
 	},
-	'wand of the war mage, +1': {
+	"wand of the war mage, +1": {
 		name: "Wand of the War Mage, +1",
 		source: [["SRD", 249], ["D", 212]],
 		type: "wand",
@@ -3339,7 +3339,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "F"
 	},
-	'wand of the war mage, +2': {
+	"wand of the war mage, +2": {
 		name: "Wand of the War Mage, +2",
 		source: [["SRD", 249], ["D", 212]],
 		type: "wand",
@@ -3350,7 +3350,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "G"
 	},
-	'wand of the war mage, +3': {
+	"wand of the war mage, +3": {
 		name: "Wand of the War Mage, +3",
 		source: [["SRD", 249], ["D", 212]],
 		type: "wand",
@@ -3361,7 +3361,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "H"
 	},
-	'wand of web': {
+	"wand of web": {
 		name: "Wand of Web",
 		source: [["SRD", 249], ["D", 212]],
 		type: "wand",
@@ -3372,7 +3372,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "F"
 	},
-	'wand of wonder': {
+	"wand of wonder": {
 		name: "Wand of Wonder",
 		source: [["SRD", 249], ["D", 212]],
 		type: "wand",
@@ -3419,7 +3419,7 @@ var Base_MagicItemsList = {
 			allowDuplicates : true
 		}
 	},
-	'well of many worlds': {
+	"well of many worlds": {
 		name: "Well of Many Worlds",
 		source: [["SRD", 250], ["D", 213]],
 		type: "wondrous item",
@@ -3428,7 +3428,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This fine black cloth, soft as silk, is folded up to the dimensions of a handkerchief. It unfolds into a circular sheet 6 feet in diameter.\n   You can use an action to unfold and place the well of many worlds on a solid surface, whereupon it creates a two-way portal to another world or plane of existence. Each time the item opens a portal, the DM decides where it leads. You can use an action to close an open portal by taking hold of the edges of the cloth and folding it up. Once well of many worlds has opened a portal, it can't do so again for 1d8 hours.",
 		magicItemTable: "I"
 	},
-	'wind fan': {
+	"wind fan": {
 		name: "Wind Fan",
 		source: [["SRD", 250], ["D", 213]],
 		type: "wondrous item",
@@ -3437,7 +3437,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "While holding this fan, you can use an action to cast the Gust of Wind spell (save DC 13) from it. Once used, the fan shouldn't be used again until the next dawn. Each time it is used again before then, it has a cumulative 20% chance of not working and tearing into useless, nonmagical tatters.",
 		magicItemTable: "F"
 	},
-	'winged boots': {
+	"winged boots": {
 		name: "Winged Boots",
 		source: [["SRD", 250], ["D", 214]],
 		type: "wondrous item",
@@ -3447,7 +3447,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "F"
 	},
-	'wings of flying': {
+	"wings of flying": {
 		name: "Wings of Flying",
 		source: [["SRD", 250], ["D", 214]],
 		type: "wondrous item",
@@ -3457,7 +3457,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		magicItemTable: "G"
 	},
-	'orb of dragonkind': {
+	"orb of dragonkind": {
 		name: "Orb of Dragonkind",
 		source: [["SRD", 252], ["D", 225]],
 		type: "wondrous item",
