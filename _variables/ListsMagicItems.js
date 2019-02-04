@@ -52,7 +52,7 @@ var Base_MagicItemsList = {
 			allowDuplicates : true
 		}
 	},
-	'amulet of health': {
+	"amulet of health": {
 		name: "Amulet of Health",
 		source: [["SRD", 207], ["D", 150]],
 		type: "wondrous item",
@@ -162,7 +162,7 @@ var Base_MagicItemsList = {
 			dmgres : ["Thunder"]
 		}
 	},
-	'belt of giant strength' : {
+	"belt of giant strength" : {
 		name: "Belt of Giant Strength",
 		source: [["SRD", 211], ["D", 155]],
 		type: "wondrous item",
@@ -215,7 +215,7 @@ var Base_MagicItemsList = {
 			scoresOverride : [29, 0, 0, 0, 0, 0]
 		}
 	},
-	'bracers of defense' : {
+	"bracers of defense" : {
 		name : "Bracers of Defense",
 		source : [["SRD", 212], ["D", 156]],
 		type : "wondrous item",
@@ -231,7 +231,7 @@ var Base_MagicItemsList = {
 			stopeval : function (v) { return v.wearingArmor || v.usingShield; }
 		}
 	},
-	'crystal ball' : {
+	"crystal ball" : {
 		name : "Crystal Ball",
 		source : [["SRD", 214], ["D", 159]],
 		type : "wondrous item",
@@ -272,7 +272,7 @@ var Base_MagicItemsList = {
 			modifiers : [3, 3] // add 3 to each to hit and damage because of the magical bonus
 		}
 	},
-	'gauntlets of ogre power': {
+	"gauntlets of ogre power": {
 		name: "Gauntlets of Ogre Power",
 		source: [["SRD", 223], ["D", 171]],
 		type: "wondrous item",
@@ -283,7 +283,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		scoresOverride : [19, 0, 0, 0, 0, 0]
 	},
-	'headband of intellect': {
+	"headband of intellect": {
 		name: "Headband of Intellect",
 		source: [["SRD", 225], ["D", 173]],
 		type: "wondrous item",
@@ -314,7 +314,7 @@ var Base_MagicItemsList = {
 		},
 		action : [["bonus action", ""]]
 	},
-	'potion of speed' : {
+	"potion of speed" : {
 		name: "Potion of Speed",
 		source: [["SRD", 235], ["D", 188]],
 		type : "potion",
@@ -324,7 +324,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
 		weight: 0.5
 	},
-	'ring of jumping' : {
+	"ring of jumping" : {
 		name : "Ring of Jumping",
 		source : [["SRD", 236], ["D", 191]],
 		type : "ring",
