@@ -231,6 +231,46 @@ var Base_MagicItemsList = {
 			stopeval : function (v) { return v.wearingArmor || v.usingShield; }
 		}
 	},
+	"brooch of shielding": {
+		// Transcribed by Smashman
+		name: "Brooch of Shielding",
+		source: [["SRD", 212], ["D", 156]],
+		type: "wondrous item",
+		rarity: "uncommon",
+		description: "While wearing this brooch, I have resistance to force damage, and have immunity to damage from the Magic Missile spell.",
+		descriptionFull: "While wearing this brooch, you have resistance to force damage, and you have immunity to damage from the Magic Missile spell.",
+		attunement: true,
+		dmgres: ["Force"],
+		savetxt: {
+			immune: ["damage from the Magic Missile spell"]
+		}
+	},
+	"cape of the mountebank": {
+		// Transcribed by Smashman
+		name: "Cape of the Mountebank",
+		source: [["SRD", 213], ["D", 157]],
+		type: "wondrous item",
+		rarity: "rare",
+		description: "While wearing this cape, I can use it to cast the Dimension Door spell as an action. This property of the cape can't be used again until the next dawn. The cape smells faintly of brimstone. When I disappear, smoke lightly obscures the place that I left and the place that I appear, which dissipates at the end of my next turn.",
+		descriptionFull: "This cape smells faintly of brimstone. While wearing it, you can use it to cast the Dimension Door spell as an action. This property of the cape can't be used again until the next dawn.\n   When you disappear, you leave behind a cloud of smoke, and you appear in a similar cloud of smoke at your destination. The smoke lightly obscures the space you left and the space you appear in, and it dissipates at the end of your next turn. A light or stronger wind disperses the smoke.",
+		action: [["action", " (Dimension Door)"]],
+		usages: 1,
+		spellcastingBonus : [{
+			name: "Cape of the Mountebank",
+			spells: ["dimension door"],
+			selection: ["dimension door"]
+		}]
+	},
+	"cloak of displacement": {
+		// Transcribed by Smashman
+		name: "Cloak of Displacement",
+		source: [["SRD", 214], ["D", 158]],
+		type: "wondrous item",
+		rarity: "rare",
+		description: "While I wear this cloak, creatures have disadvantage on attack rolls against me. If I take damage the property ceases to function until the start of my next turn. The property is suppressed while I am incapacitated, restrained or otherwise unable to move.",
+		descriptionFull: "While you wear this cloak, it projects an illusion that makes you appear to be standing in a place near your actual location, causing any creature to have disadvantage on attack rolls against you. If you take damage, the property ceases to function until the start of your next turn. This property is suppressed while you are incapacitated, restrained, or otherwise unable to move.",
+		attunement: true
+	},
 	"crystal ball" : {
 		name : "Crystal Ball",
 		source : [["SRD", 214], ["D", 159]],
