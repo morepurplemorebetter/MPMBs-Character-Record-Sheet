@@ -609,53 +609,6 @@ var Base_MagicItemsList = {
 		attunement: true,
 		scoresOverride : [0, 0, 0, 19, 0, 0]
 	},
-	"luck blade" : {
-		name : "Luck Blade",
-		source : [["SRD", 229], ["D", 179]],
-		type : "weapon (any sword)",
-		rarity : "legendary",
-		magicItemTable : "I",
-		attunement: true,
-		description : "This magic sword has a +1 bonus to attack and damage rolls made with it, and grants me +1 to all saves. Once per dawn, I can use its luck to reroll one attack, ability check, or save, but I must use the second result. As an action, I can use one of its 1d4-1 charges to cast Wish. Charges can't be regained.",
-		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon. While the sword is on your person, you also gain a +1 bonus to saving throws.\n   " + toUni("Luck") + ". If the sword is on your person, you can call on its luck (no action required) to reroll one attack roll, ability check, or saving throw you dislike. You must use the second roll. This property can't be used again until the next dawn.\n   " + toUni("Wish") + ". The sword has 1d4-1 charges. While holding it, you can use an action to expend 1 charge and cast the wish spell from it. This property can't be used again until the next dawn. The sword loses this property if it has no charges.",
-		extraLimitedFeatures : [{
-			name : "Luck Blade - luck reroll",
-			usages : 1,
-			recovery : "Dawn"
-		}, {
-			name : "Luck Blade - cast Wish",
-			usages : "1d4-1",
-			recovery : "Never"
-		}],
-		chooseGear : {
-			type : "weapon",
-			prefixOrSuffix : "brackets",
-			descriptionChange : ["replace", "sword"],
-			excludeCheck : function (inObjKey, inObj) {
-				var testRegex = /sword|scimitar|rapier/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
-			}
-		},
-		addMod : [{ type : "save", field : "all", mod : 1, text : "While the Luck Blade is on my person, I gain a +1 to all my saving throws." }],
-		calcChanges : {
-			atkAdd : [
-				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponText)) {
-						v.theWea.isMagicWeapon = true;
-						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
-					}
-				},
-				'If I include the words "Luck Blade" in a the name of a sword, it will be treated as the magic weapon Luck Blade. It has +1 to hit and damage.'
-			],
-			atkCalc : [
-				function (fields, v, output) {
-					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponText)) {
-						output.magic = v.thisWeapon[1] + 1;
-					}
-				}, ''
-			]
-		}
-	},
 	"holy avenger" : {
 		name : "Holy Avenger",
 		source : [["SRD", 225], ["D", 174]],
@@ -708,6 +661,93 @@ var Base_MagicItemsList = {
 		"paladin level 17+ (30-ft aura)" : {
 			name : "Holy\u200A\u200A Avenger",
 			description : "I have a +3 bonus to attack and damage rolls made with this magic sword. It does +2d10 radiant damage against fiends and undead. While holding the drawn sword, I have a 30-ft radius aura that grants me and my allies advantage on saving throws against spells and magical effects."
+		}
+	},
+	"luck blade" : {
+		name : "Luck Blade",
+		source : [["SRD", 229], ["D", 179]],
+		type : "weapon (any sword)",
+		rarity : "legendary",
+		magicItemTable : "I",
+		attunement: true,
+		description : "This magic sword has a +1 bonus to attack and damage rolls made with it, and grants me +1 to all saves. Once per dawn, I can use its luck to reroll one attack, ability check, or save, but I must use the second result. As an action, I can use one of its 1d4-1 charges to cast Wish. Charges can't be regained.",
+		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon. While the sword is on your person, you also gain a +1 bonus to saving throws.\n   " + toUni("Luck") + ". If the sword is on your person, you can call on its luck (no action required) to reroll one attack roll, ability check, or saving throw you dislike. You must use the second roll. This property can't be used again until the next dawn.\n   " + toUni("Wish") + ". The sword has 1d4-1 charges. While holding it, you can use an action to expend 1 charge and cast the wish spell from it. This property can't be used again until the next dawn. The sword loses this property if it has no charges.",
+		extraLimitedFeatures : [{
+			name : "Luck Blade - luck reroll",
+			usages : 1,
+			recovery : "Dawn"
+		}, {
+			name : "Luck Blade - cast Wish",
+			usages : "1d4-1",
+			recovery : "Never"
+		}],
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "brackets",
+			descriptionChange : ["replace", "sword"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		addMod : [{ type : "save", field : "all", mod : 1, text : "While the Luck Blade is on my person, I gain a +1 to all my saving throws." }],
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+					}
+				},
+				'If I include the words "Luck Blade" in a the name of a sword, it will be treated as the magic weapon Luck Blade. It has +1 to hit and damage.'
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponText)) {
+						output.magic = v.thisWeapon[1] + 1;
+					}
+				}, ''
+			]
+		}
+	},
+	"nine lives stealer" : {
+		name : "Nine Lives Stealer",
+		source : [["SRD", 231], ["D", 183]],
+		type : "weapon (any sword)",
+		rarity : "very rare",
+		magicItemTable : "H",
+		attunement: true,
+		description : "I have a +2 bonus to attack and damage rolls with this magic sword. It has 1d8+1 charges and if it inflicts a critical hit while it has charges left on a creature with fewer than 100 HP (and that is not a construct or undead, the target must make a DC 15 Con save or die. If it dies, the sword uses a charge.",
+		descriptionFull : "You gain a +2 bonus to attack and damage rolls made with this magic weapon.\n   The sword has 1d8+1 charges. If you score a critical hit against a creature that has fewer than 100 hit points, it must succeed on a DC 15 Constitution saving throw or be slain instantly as the sword tears its life force from its body (a construct or an undead is immune). The sword loses 1 charge if the creature is slain. When the sword has no charges remaining, it loses this property.",
+		usages : "1d8+1",
+		recovery : "Never",
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "brackets",
+			descriptionChange : ["replace", "sword"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*(9|nine))(?=.*(lives|life))(?=.*stealer).*$/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + 'On crit to target <100 HP, DC 15 Con save or die';
+					}
+				},
+				'If I include the words "Nine Lives Stealer" in a the name of a sword, it will be treated as the magic weapon Nine Lives Stealer. It has +2 to hit and damage. Also, as long as it has charges left, when it does a critical hit against a creature with fewer than 100 HP, that creature must make a DC 15 Constitution saving throw or die.'
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponText)) {
+						output.magic = v.thisWeapon[1] + 2;
+					}
+				}, ''
+			]
 		}
 	},
 	"potion of speed" : {
@@ -874,6 +914,72 @@ var Base_MagicItemsList = {
 					}
 				},
 				'If I include the words "of Wounding" in a the name of a sword, it will be treated as the magic weapon Sword of Wounding. Damage by the sword can only be regained with a short or long rest. Once per turn when I hit with the sword, I can inflict a lingering wound on a target, causing it pain every turn thereafter.'
+			]
+		}
+	},
+	"vicious weapon" : {
+		name : "Vicious Weapon",
+		nameTest : "Vicious",
+		source : [["SRD", 248], ["D", 209]],
+		type : "weapon (any)",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "When I roll a 20 on my attack roll with this magic weapon, the target takes an extra 7 damage of the weapon's type.",
+		descriptionFull : "When you roll a 20 on your attack roll with this magic weapon, the target takes an extra 7 damage of the weapon's type.",
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "suffix",
+			descriptionChange : ["replace", "weapon"]
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && (/vicious/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +7 damage';
+					}
+				},
+				'If I include the word "Vicious" in a the name of a weapon, it will be treated as the magic weapon Vicious Weapon. On a roll of 20 to hit, it does +7 damage of the weapons type.'
+			]
+		}
+	},
+	"vorpal sword" : {
+		name : "Vorpal Sword",
+		nameTest : "Vorpal",
+		source : [["SRD", 248], ["D", 209]],
+		type : "weapon (any sword that deals slashing damage)",
+		rarity : "legendary",
+		magicItemTable : "I",
+		attunement : true,
+		description : "I have a +3 bonus to attack and damage rolls with this magic sword. It ignores slashing damage resistance. On a roll of 20 to hit, it cuts of one head" + (typePF ? "" : ", possibly killing it instantly") + ". If the target has no head, is immune to slashing damage, has legendary actions, or its neck is too big, it takes +6d8 slashing damage instead.",
+		descriptionFull : "You gain a +3 bonus to attack and damage rolls made with this magic weapon. In addition, the weapon ignores resistance to slashing damage.\n   When you attack a creature that has at least one head with this weapon and roll a 20 on the attack roll, you cut off one of the creature's heads. The creature dies if it can't survive without the lost head. A creature is immune to this effect if it is immune to slashing damage, doesn't have or need a head, has legendary actions, or the DM decides that the creature is too big for its head to be cut off with this weapon. Such a creature instead takes an extra 6d8 slashing damage from the hit.",
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "suffix",
+			descriptionChange : ["replace", "sword"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return (!(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon))) || (inObj.baseWeapon && !inObj.damage ? WeaponsList[inObj.baseWeapon].damage : inObj.damage)[2] !== "slashing";
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/vorpal/i).test(v.WeaponText) && v.theWea.damage[2] == "slashing") {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + 'Ignores slashing resistance; On 20 to hit: cut of head';
+					}
+				},
+				'If I include the word "Vorpal" in a the name of a sword that deals slashing damage, it will be treated as the magic weapon Vorpal Sword. It has +3 to hit and damage and on a roll of 20 on the attack roll, it cuts of a head of the target.'
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/vorpal/i).test(v.WeaponText) && v.theWea.damage[2] == "slashing") {
+						output.magic = v.thisWeapon[1] + 3;
+					}
+				}, ''
 			]
 		}
 	},

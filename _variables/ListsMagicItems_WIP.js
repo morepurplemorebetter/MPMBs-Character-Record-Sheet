@@ -2095,7 +2095,46 @@ var Base_MagicItemsList = {
 		weight: 1,
 		magicItemTable: "D"
 	},
-	// Nine Lives Stealer (composite item, still to do)
+	"nine lives stealer" : { // finished
+		name : "Nine Lives Stealer",
+		source : [["SRD", 231], ["D", 183]],
+		type : "weapon (any sword)",
+		rarity : "very rare",
+		magicItemTable : "H",
+		attunement: true,
+		description : "I have a +2 bonus to attack and damage rolls with this magic sword. It has 1d8+1 charges and if it inflicts a critical hit while it has charges left on a creature with fewer than 100 HP (and that is not a construct or undead, the target must make a DC 15 Con save or die. If it dies, the sword uses a charge.",
+		descriptionFull : "You gain a +2 bonus to attack and damage rolls made with this magic weapon.\n   The sword has 1d8+1 charges. If you score a critical hit against a creature that has fewer than 100 hit points, it must succeed on a DC 15 Constitution saving throw or be slain instantly as the sword tears its life force from its body (a construct or an undead is immune). The sword loses 1 charge if the creature is slain. When the sword has no charges remaining, it loses this property.",
+		usages : "1d8+1",
+		recovery : "Never",
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "brackets",
+			descriptionChange : ["replace", "sword"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*(9|nine))(?=.*(lives|life))(?=.*stealer).*$/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + 'On crit to target <100 HP, DC 15 Con save or die';
+					}
+				},
+				'If I include the words "Nine Lives Stealer" in a the name of a sword, it will be treated as the magic weapon Nine Lives Stealer. It has +2 to hit and damage. Also, as long as it has charges left, when it does a critical hit against a creature with fewer than 100 HP, that creature must make a DC 15 Constitution saving throw or die.'
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponText)) {
+						output.magic = v.thisWeapon[1] + 2;
+					}
+				}, ''
+			]
+		}
+	},
 	oathbow: {
 		name: "Oathbow",
 		source: [["SRD", 231], ["D", 183]],
@@ -3586,8 +3625,72 @@ var Base_MagicItemsList = {
 		descriptionFull: "This tube holds milky liquid with a strong alcohol smell. You can use an action to pour the contents of the tube onto a surface within reach. The liquid instantly dissolves up to 1 square foot of adhesive it touches, including sovereign glue.",
 		magicItemTable: "E"
 	},
-	// Vicious Weapon (composite item, still to do)
-	// Vorpal Sword (composite item, still to do)
+	"vicious weapon" : { // finished
+		name : "Vicious Weapon",
+		nameTest : "Vicious",
+		source : [["SRD", 248], ["D", 209]],
+		type : "weapon (any)",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "When I roll a 20 on my attack roll with this magic weapon, the target takes an extra 7 damage of the weapon's type.",
+		descriptionFull : "When you roll a 20 on your attack roll with this magic weapon, the target takes an extra 7 damage of the weapon's type.",
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "suffix",
+			descriptionChange : ["replace", "weapon"]
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && (/vicious/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +7 damage';
+					}
+				},
+				'If I include the word "Vicious" in a the name of a weapon, it will be treated as the magic weapon Vicious Weapon. On a roll of 20 to hit, it does +7 damage of the weapons type.'
+			]
+		}
+	},
+	"vorpal sword" : { // finished
+		name : "Vorpal Sword",
+		nameTest : "Vorpal",
+		source : [["SRD", 248], ["D", 209]],
+		type : "weapon (any sword that deals slashing damage)",
+		rarity : "legendary",
+		magicItemTable : "I",
+		attunement : true,
+		description : "I have a +3 bonus to attack and damage rolls with this magic sword. It ignores slashing damage resistance. On a roll of 20 to hit, it cuts of one head" + (typePF ? "" : ", possibly killing it instantly") + ". If the target has no head, is immune to slashing damage, has legendary actions, or its neck is too big, it takes +6d8 slashing damage instead.",
+		descriptionFull : "You gain a +3 bonus to attack and damage rolls made with this magic weapon. In addition, the weapon ignores resistance to slashing damage.\n   When you attack a creature that has at least one head with this weapon and roll a 20 on the attack roll, you cut off one of the creature's heads. The creature dies if it can't survive without the lost head. A creature is immune to this effect if it is immune to slashing damage, doesn't have or need a head, has legendary actions, or the DM decides that the creature is too big for its head to be cut off with this weapon. Such a creature instead takes an extra 6d8 slashing damage from the hit.",
+		chooseGear : {
+			type : "weapon",
+			prefixOrSuffix : "suffix",
+			descriptionChange : ["replace", "sword"],
+			excludeCheck : function (inObjKey, inObj) {
+				var testRegex = /sword|scimitar|rapier/i;
+				return (!(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon))) || (inObj.baseWeapon && !inObj.damage ? WeaponsList[inObj.baseWeapon].damage : inObj.damage)[2] !== "slashing";
+			}
+		},
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/vorpal/i).test(v.WeaponText) && v.theWea.damage[2] == "slashing") {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + 'Ignores slashing resistance; On 20 to hit: cut of head';
+					}
+				},
+				'If I include the word "Vorpal" in a the name of a sword that deals slashing damage, it will be treated as the magic weapon Vorpal Sword. It has +3 to hit and damage and on a roll of 20 on the attack roll, it cuts of a head of the target.'
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/vorpal/i).test(v.WeaponText) && v.theWea.damage[2] == "slashing") {
+						output.magic = v.thisWeapon[1] + 3;
+					}
+				}, ''
+			]
+		}
+	},
 	"wand of binding": {
 		name: "Wand of Binding",
 		source: [["SRD", 0], ["D", 209]],
