@@ -4,7 +4,7 @@ var Base_MagicItemsList = {
 		nameTest : "Adamantine",
 		source : [["SRD", 207], ["D", 150]],
 		type : "armor (medium, or heavy)",
-		rarity: "uncommon",
+		rarity : "uncommon",
 		description : "This armor is reinforced with adamantine, one of the hardest substances in existence. While I'm wearing it, any critical hit against me becomes a normal hit.",
 		descriptionFull : "This suit of armor is reinforced with adamantine, one of the hardest substances in existence. While you're wearing it, any critical hit against you becomes a normal hit.",
 		allowDuplicates : true,
@@ -20,7 +20,7 @@ var Base_MagicItemsList = {
 		name : "Ammunition, +1, +2, or +3",
 		source : [["SRD", 207], ["D", 150]],
 		type : "weapon (any ammunition)",
-		rarity: "varies",
+		rarity : "varies",
 		description : "I have a bonus to attack and damage rolls made with this piece of magic ammunition. The bonus is determined by the rarity of the magic item: uncommon (+1), rare (+2), or very rare (+3). Once it hits a target, the ammunition is no longer magical. Select the bonus using the little square button in this magic item line.",
 		descriptionFull : "You have a bonus to attack and damage rolls made with this piece of magic ammunition. The bonus is determined by the rarity of the ammunition: uncommon (+1), rare (+2), or very rare (+3). Once it hits a target, the ammunition is no longer magical.",
 		allowDuplicates : true,
@@ -32,43 +32,43 @@ var Base_MagicItemsList = {
 		choices : ["+1 Ammunition (uncommon)", "+2 Ammunition (rare)", "+3 Ammunition (very rare)"],
 		"+1 ammunition (uncommon)" : {
 			name : "Ammunition +1",
-			rarity: "uncommon",
+			rarity : "uncommon",
 			magicItemTable : "B",
 			description : "I have a +1 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
 			allowDuplicates : true
 		},
 		"+2 ammunition (rare)" : {
 			name : "Ammunition +2",
-			rarity: "rare",
+			rarity : "rare",
 			magicItemTable : "C",
 			description : "I have a +2 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
 			allowDuplicates : true
 		},
 		"+3 ammunition (very rare)" : {
 			name : "Ammunition +3",
-			rarity: "very rare",
+			rarity : "very rare",
 			magicItemTable : "D",
 			description : "I have a +3 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
 			allowDuplicates : true
 		}
 	},
-	"amulet of health": {
-		name: "Amulet of Health",
-		source: [["SRD", 207], ["D", 150]],
-		type: "wondrous item",
-		rarity: "rare",
+	"amulet of health" : {
+		name : "Amulet of Health",
+		source : [["SRD", 207], ["D", 150]],
+		type : "wondrous item",
+		rarity : "rare",
 		magicItemTable : "G",
-		description: "My Constitution score is 19 while I'm wearing this amulet, provided that my Constitution is not already 19 or higher.",
-		descriptionFull: "Your Constitution score is 19 while you wear this amulet. It has no effect on you if your Constitution score is already 19 or higher without it.",
-		attunement: true,
-		weight: 1,
+		description : "My Constitution score is 19 while I'm wearing this amulet, provided that my Constitution is not already 19 or higher.",
+		descriptionFull : "Your Constitution score is 19 while you wear this amulet. It has no effect on you if your Constitution score is already 19 or higher without it.",
+		attunement : true,
+		weight : 1,
 		scoresOverride : [0, 0, 19, 0, 0, 0]
 	},
 	"armor, +1, +2, or +3" : {
 		name : "Armor, +1, +2, or +3",
 		source : [["SRD", 208], ["D", 152]],
 		type : "armor (light, medium, or heavy)",
-		rarity: "varies",
+		rarity : "varies",
 		description : "I have a bonus to AC while wearing this armor. The bonus is determined by the rarity of the magic item: rare (+1), very rare (+2), or legendary (+3). Select the bonus using the little square button in this magic item line.",
 		descriptionFull : "You have a bonus to AC while wearing this armor. The bonus is determined by its rarity: rare (+1), very rare (+2), or legendary (+3).\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and magic bonus, with not all types of combinations listed. See below for the table per type of armor and bonus:\n\n" + toUni("Table\tBonus\tArmor Types") + "\n  G\t  +1\tChain Mail, Chain Shirt, Leather, Scale Mail\n  H\t  +1\tBreastplate, Splint, Studded Leather\n  H\t  +2\tChain Mail, Chain Shirt, Leather, Scale Mail\n  I\t  +1\tHalf Plate, Plate, Scale Mail\n  I\t  +2\tBreastplate, Half Plate, Plate, Scale Mail, Splint, Studded Leather\n  I\t  +3\tBreastplate, Chain Mail, Chain Shirt, Half Plate\n  I\t  +3\tLeather, Plate, Splint, Studded Leather",
 		allowDuplicates : true,
@@ -80,19 +80,19 @@ var Base_MagicItemsList = {
 		choices : ["+1 AC bonus (rare)", "+2 AC bonus (very rare)", "+3 AC bonus (legendary)"],
 		"+1 ac bonus (rare)" : {
 			name : "Armor +1",
-			rarity: "rare",
+			rarity : "rare",
 			description : "I have a +1 bonus to AC while wearing this armor.",
 			allowDuplicates : true
 		},
 		"+2 ac bonus (very rare)" : {
 			name : "Armor +2",
-			rarity: "very rare",
+			rarity : "very rare",
 			description : "I have a +2 bonus to AC while wearing this armor.",
 			allowDuplicates : true
 		},
 		"+3 ac bonus (legendary)" : {
 			name : "Armor +3",
-			rarity: "legendary",
+			rarity : "legendary",
 			description : "I have a +3 bonus to AC while wearing this armor.",
 			allowDuplicates : true
 		}
@@ -167,7 +167,7 @@ var Base_MagicItemsList = {
 		nameTest : "of Slaying",
 		source : [["SRD", 209], ["D", 152]],
 		type : "weapon (any ammunition)",
-		rarity: "very rare",
+		rarity : "very rare",
 		magicItemTable : "E",
 		description : "This magic ammunition is meant to hurt a particular race, type, or group of creatures. Its specificity varies. If an associated target is hit by this ammunition, it takes +6d10 piercing damage. It can then make a DC 17 Con save to half this extra damage. After dealing its extra damage, the ammunition becomes nonmagical.",
 		descriptionFull : "An arrow of slaying is a magic weapon meant to slay a particular kind of creature. Some are more focused than others; for example, there are both arrows of dragon slaying and arrows of blue dragon slaying. If a creature belonging to the type, race, or group associated with an arrow of slaying takes damage from the arrow, the creature must make a DC 17 Constitution saving throw, taking an extra 6d10 piercing damage on a failed save, or half as much extra damage on a successful one.\n   Once an arrow of slaying deals its extra damage to a creature, it becomes a nonmagical arrow.\n   Other types of magic ammunition of this kind exist, such as bolts of slaying meant for a crossbow, though arrows are most common.",
@@ -179,53 +179,53 @@ var Base_MagicItemsList = {
 		}
 	},
 	"belt of giant strength" : {
-		name: "Belt of Giant Strength",
-		source: [["SRD", 211], ["D", 155]],
-		type: "wondrous item",
-		rarity: "varies",
-		description: "Set the type of giant using the button in this line. While wearing this belt, my Strength score changes to a certain number depending on the type of giant the belt is associated with, provided that my Strength is not already that amount or higher.",
-		descriptionFull: "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt’s score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The belt of stone giant strength and the belt of frost giant strength look different, but they have the same effect.\n\n" + toUni("Type") + "\t\t" + toUni("Str") + "\t" + toUni("Rarity") + "\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant\t\t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
-		attunement: true,
+		name : "Belt of Giant Strength",
+		source : [["SRD", 211], ["D", 155]],
+		type : "wondrous item",
+		rarity : "varies",
+		description : "Set the type of giant using the button in this line. While wearing this belt, my Strength score changes to a certain number depending on the type of giant the belt is associated with, provided that my Strength is not already that amount or higher.",
+		descriptionFull : "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt’s score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The belt of stone giant strength and the belt of frost giant strength look different, but they have the same effect.\n\n" + toUni("Type") + "\t\t" + toUni("Str") + "\t" + toUni("Rarity") + "\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant\t\t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
+		attunement : true,
 		allowDuplicates : true,
 		choices : ["Hill (Str 21, rare)", "Stone (Str 23, very rare)", "Frost (Str 23, very rare)", "Fire (Str 25, very rare)", "Cloud (Str 27, legendary)", "Storm (Str 29, legendary)"],
 		"hill (str 21, rare)" : {
 			name : "Belt of Hill Giant Strength",
-			rarity: "rare",
+			rarity : "rare",
 			magicItemTable : "G",
 			description : "My Strength score is 21 while I'm wearing this belt, provided that my Strength is not already 21 or higher.",
 			scoresOverride : [21, 0, 0, 0, 0, 0]
 		},
 		"stone (str 23, very rare)" : {
 			name : "Belt of Stone Giant Strength",
-			rarity: "very rare",
+			rarity : "very rare",
 			magicItemTable : "H",
 			description : "My Strength score is 23 while I'm wearing this belt, provided that my Strength is not already 23 or higher.",
 			scoresOverride : [23, 0, 0, 0, 0, 0]
 		},
 		"frost (str 23, very rare)" : {
 			name : "Belt of Frost Giant Strength",
-			rarity: "very rare",
+			rarity : "very rare",
 			magicItemTable : "H",
 			description : "My Strength score is 23 while I'm wearing this belt, provided that my Strength is not already 23 or higher.",
 			scoresOverride : [23, 0, 0, 0, 0, 0]
 		},
 		"fire (str 25, very rare)" : {
 			name : "Belt of Fire Giant Strength",
-			rarity: "very rare",
+			rarity : "very rare",
 			magicItemTable : "H",
 			description : "My Strength score is 25 while I'm wearing this belt, provided that my Strength is not already 25 or higher.",
 			scoresOverride : [25, 0, 0, 0, 0, 0]
 		},
 		"cloud (str 27, legendary)" : {
 			name : "Belt of Cloud Giant Strength",
-			rarity: "legendary",
+			rarity : "legendary",
 			magicItemTable : "I",
 			description : "My Strength score is 27 while I'm wearing this belt, provided that my Strength is not already 27 or higher.",
 			scoresOverride : [27, 0, 0, 0, 0, 0]
 		},
 		"storm (str 29, legendary)" : {
 			name : "Belt of Storm Giant Strength",
-			rarity: "legendary",
+			rarity : "legendary",
 			magicItemTable : "I",
 			description : "My Strength score is 29 while I'm wearing this belt, provided that my Strength is not already 29 or higher.",
 			scoresOverride : [29, 0, 0, 0, 0, 0]
@@ -289,13 +289,49 @@ var Base_MagicItemsList = {
 		attunement : true,
 		description : "While I wear these boots, I can use an action to cast the levitate spell on myself at will.",
 		descriptionFull : "While you wear these boots, you can use an action to cast the Levitate spell on yourself at will.",
-		action: [["action", ""]],
+		action : [["action", ""]],
 		spellcastingBonus : {
-			name: "Self Only",
-			spells: ["levitate"],
-			selection: ["levitate"],
+			name : "Self Only",
+			spells : ["levitate"],
+			selection : ["levitate"],
 			atwill : true
 		}
+	},
+	"boots of speed" : {
+		name : "Boots of Speed",
+		source : [["SRD", 212], ["D", 155]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		attunement : true,
+		description : "As a bonus action, I can click the heels of these boots together to double my walking speed and make opportunity attacks against me have disadvantage. I can end this effect with another bonus action. After the boots' magic has been used for a total of 10 minutes, they lose their power until I finish a long rest.",
+		descriptionFull : "While you wear these boots, you can use a bonus action and click the boots' heels together. If you do, the boots double your walking speed, and any creature that makes an opportunity attack against you has disadvantage on the attack roll. If you click your heels together again, you end the effect.\n   When the boots' property has been used for a total of 10 minutes, the magic ceases to function until you finish a long rest.",
+		action : [["bonus action", " (start/stop)"]],
+		usages : 10,
+		recovery : "long rest",
+		additional : "minutes"
+	},
+	"boots of striding and springing" : { // contributed by AelarTheElfRogue
+		name : "Boots of Striding and Springing",
+		source : [["SRD", 212], ["D", 156]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		attunement : true,
+		description : "While I wear these boots, my walking speed becomes 30 feet, unless my walking speed is higher, and my speed isn't reduced if I am encumbered or wearing heavy armor. In addition, I can jump three times the normal distance, though I can't jump farther than my remaining movement would allow.",
+		descriptionFull : "While you wear these boots, your walking speed becomes 30 feet, unless your walking speed is higher, and your speed isn't reduced if you are encumbered or wearing heavy armor. In addition, you can jump three times the normal distance, though you can't jump farther than your remaining movement would allow.",
+		speed : { walk : { spd : "fixed30", enc : "fixed30" } }
+	},
+	"boots of the winterlands" : {
+		name : "Boots of the Winterlands",
+		source : [["SRD", 212], ["D", 156]],
+		type : "wondrous item",
+		rarity : "uncommon"
+		attunement : true,
+		magicItemTable : "F",
+		description : "While wearing these boots, I have resistance to cold damage and I ignore difficult terrain created by ice or snow. I can tolerate temperatures as low as -50 \u00B0F without any additional protection. If I wear heavy clothes, I can tolerate temperatures as low as -100 \u00B0F.",
+		descriptionFull : "These furred boots are snug and feel quite warm. While you wear them, you gain the following benefits:\n \u2022 You have resistance to cold damage.\n \u2022 You ignore difficult terrain created by ice or snow.\n \u2022 You can tolerate temperatures as low as -50 degrees Fahrenheit without any additional protection. If you wear heavy clothes, you can tolerate temperatures as low as -100 degrees Fahrenheit.",
+		dmgres : ["Cold"]
 	},
 	"bracers of defense" : {
 		name : "Bracers of Defense",
@@ -530,15 +566,15 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
-	"gauntlets of ogre power": {
-		name: "Gauntlets of Ogre Power",
-		source: [["SRD", 223], ["D", 171]],
-		type: "wondrous item",
-		rarity: "uncommon",
+	"gauntlets of ogre power" : {
+		name : "Gauntlets of Ogre Power",
+		source : [["SRD", 223], ["D", 171]],
+		type : "wondrous item",
+		rarity : "uncommon",
 		magicItemTable : "F",
-		description: "My Strength score is 19 while I'm wearing these gauntlets, provided that my Strength is not already 19 or higher.",
-		descriptionFull: "Your Strength score is 19 while you wear these gauntlets. They have no effect on you if your Strength is already 19 or higher without them.",
-		attunement: true,
+		description : "My Strength score is 19 while I'm wearing these gauntlets, provided that my Strength is not already 19 or higher.",
+		descriptionFull : "Your Strength score is 19 while you wear these gauntlets. They have no effect on you if your Strength is already 19 or higher without them.",
+		attunement : true,
 		scoresOverride : [19, 0, 0, 0, 0, 0]
 	},
 	"giant slayer" : {
@@ -598,15 +634,15 @@ var Base_MagicItemsList = {
 		},
 		action : [["bonus action", ""]]
 	},
-	"headband of intellect": {
-		name: "Headband of Intellect",
-		source: [["SRD", 225], ["D", 173]],
-		type: "wondrous item",
-		rarity: "uncommon",
+	"headband of intellect" : {
+		name : "Headband of Intellect",
+		source : [["SRD", 225], ["D", 173]],
+		type : "wondrous item",
+		rarity : "uncommon",
 		magicItemTable : "F",
-		description: "My Intelligence score is 19 while I'm wearing this headband, provided that my Intelligence is not already 19 or higher.",
-		descriptionFull: "Your Intelligence score is 19 while you wear this headband. It has no effect on you if your Intelligence is already 19 or higher without it.",
-		attunement: true,
+		description : "My Intelligence score is 19 while I'm wearing this headband, provided that my Intelligence is not already 19 or higher.",
+		descriptionFull : "Your Intelligence score is 19 while you wear this headband. It has no effect on you if your Intelligence is already 19 or higher without it.",
+		attunement : true,
 		scoresOverride : [0, 0, 0, 19, 0, 0]
 	},
 	"holy avenger" : {
@@ -615,7 +651,7 @@ var Base_MagicItemsList = {
 		type : "weapon (any sword)",
 		rarity : "legendary",
 		magicItemTable : "I",
-		attunement: true,
+		attunement : true,
 		description : "I have a +3 bonus to attack and damage rolls made with this magic sword. It does +2d10 radiant damage against fiends and undead. While holding the drawn sword, I have a 10-ft radius aura (30-ft if level 17 paladin) that grants me and my allies adv. on saves against spells and magical effects.",
 		descriptionFull : "You gain a +3 bonus to attack and damage rolls made with this magic weapon. When you hit a fiend or an undead with it, that creature takes an extra 2d10 radiant damage.\n   While you hold the drawn sword, it creates an aura in a 10-foot radius around you. You and all creatures friendly to you in the aura have advantage on saving throws against spells and other magical effects. If you have 17 or more levels in the paladin class, the radius of the aura increases to 30 feet.",
 		prerequisite : "Requires attunement by a paladin",
@@ -669,7 +705,7 @@ var Base_MagicItemsList = {
 		type : "weapon (any sword)",
 		rarity : "legendary",
 		magicItemTable : "I",
-		attunement: true,
+		attunement : true,
 		description : "This magic sword has a +1 bonus to attack and damage rolls made with it, and grants me +1 to all saves. Once per dawn, I can use its luck to reroll one attack, ability check, or save, but I must use the second result. As an action, I can use one of its 1d4-1 charges to cast Wish. Charges can't be regained.",
 		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon. While the sword is on your person, you also gain a +1 bonus to saving throws.\n   " + toUni("Luck") + ". If the sword is on your person, you can call on its luck (no action required) to reroll one attack roll, ability check, or saving throw you dislike. You must use the second roll. This property can't be used again until the next dawn.\n   " + toUni("Wish") + ". The sword has 1d4-1 charges. While holding it, you can use an action to expend 1 charge and cast the wish spell from it. This property can't be used again until the next dawn. The sword loses this property if it has no charges.",
 		extraLimitedFeatures : [{
@@ -716,7 +752,7 @@ var Base_MagicItemsList = {
 		type : "weapon (any sword)",
 		rarity : "very rare",
 		magicItemTable : "H",
-		attunement: true,
+		attunement : true,
 		description : "I have a +2 bonus to attack and damage rolls with this magic sword. It has 1d8+1 charges and if it inflicts a critical hit while it has charges left on a creature with fewer than 100 HP (and that is not a construct or undead, the target must make a DC 15 Con save or die. If it dies, the sword uses a charge.",
 		descriptionFull : "You gain a +2 bonus to attack and damage rolls made with this magic weapon.\n   The sword has 1d8+1 charges. If you score a critical hit against a creature that has fewer than 100 hit points, it must succeed on a DC 15 Constitution saving throw or be slain instantly as the sword tears its life force from its body (a construct or an undead is immune). The sword loses 1 charge if the creature is slain. When the sword has no charges remaining, it loses this property.",
 		usages : "1d8+1",
@@ -751,14 +787,14 @@ var Base_MagicItemsList = {
 		}
 	},
 	"potion of speed" : {
-		name: "Potion of Speed",
-		source: [["SRD", 235], ["D", 188]],
+		name : "Potion of Speed",
+		source : [["SRD", 235], ["D", 188]],
 		type : "potion",
-		rarity: "very rare",
+		rarity : "very rare",
 		magicItemTable : "D",
-		description: "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\rThe potion's yellow fluid is streaked with black and swirls on its own.",
-		descriptionFull: "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
-		weight: 0.5
+		description : "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\rThe potion's yellow fluid is streaked with black and swirls on its own.",
+		descriptionFull : "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
+		weight : 0.5
 	},
 	"ring of jumping" : {
 		name : "Ring of Jumping",
@@ -796,8 +832,8 @@ var Base_MagicItemsList = {
 		attunement : true,
 		description : "As a bonus action, I can have this hilt create a blade of radiance. While the blade exists, it acts like a longsword that does +2 to attack and damage rolls, radiant damage (+1d8 to undead), has finesse, emits bright sunlight in a 15-ft radius and dim light in another 15 ft. As an action, I can change the light's radius by 5 ft.",
 		descriptionLong : "As a bonus action, I can have this longsword hilt create or dismiss a blade of pure radiance. While the blade exists, it acts like a longsword that grants a +2 bonus to attack and damage rolls, does radiant damage and has the finesse property. It also deals +1d8 radiant damage to undead and emits sunlight, bright light in a 15-ft radius and dim light in an additional 15-ft radius. As an action, I can expand or reduce both the bright and dim light's radius by 5 ft each, to a maximum of 30 feet each or a minimum of 10 feet each. I am proficient with this weapon if I'm proficient with either longswords or shortswords.",
-		descriptionFull: "This item appears to be a longsword hilt. While grasping the hilt, you can use a bonus action to cause a blade of pure radiance to spring into existence, or make the blade disappear. While the blade exists, this magic longsword has the finesse property. If you are proficient with shortswords or longswords, you are proficient with the sun blade.\n   You gain a +2 bonus to attack and damage rolls made with this weapon, which deals radiant damage instead of slashing damage. When you hit an undead with it, that target takes an extra 1d8 radiant damage.\n   The sword's luminous blade emits bright light in a 15-foot radius and dim light for an additional 15 feet. The light is sunlight. While the blade persists, you can use an action to expand or reduce its radius of bright and dim light by 5 feet each, to a maximum of 30 feet each or a minimum of 10 feet each.",
-		weight: 3,
+		descriptionFull : "This item appears to be a longsword hilt. While grasping the hilt, you can use a bonus action to cause a blade of pure radiance to spring into existence, or make the blade disappear. While the blade exists, this magic longsword has the finesse property. If you are proficient with shortswords or longswords, you are proficient with the sun blade.\n   You gain a +2 bonus to attack and damage rolls made with this weapon, which deals radiant damage instead of slashing damage. When you hit an undead with it, that target takes an extra 1d8 radiant damage.\n   The sword's luminous blade emits bright light in a 15-foot radius and dim light for an additional 15 feet. The light is sunlight. While the blade persists, you can use an action to expand or reduce its radius of bright and dim light by 5 feet each, to a maximum of 30 feet each or a minimum of 10 feet each.",
+		weight : 3,
 		action : [["bonus action", " (start/stop)"], ["action", " (change light)"]],
 		addWeapons : ["Sun Blade"],
 		weaponOptions : {
@@ -952,7 +988,7 @@ var Base_MagicItemsList = {
 		rarity : "legendary",
 		magicItemTable : "I",
 		attunement : true,
-		description : "I have a +3 bonus to attack and damage rolls with this magic sword. It ignores slashing damage resistance. On a roll of 20 to hit, it cuts of one head" + (typePF ? "" : ", possibly killing it instantly") + ". If the target has no head, is immune to slashing damage, has legendary actions, or its neck is too big, it takes +6d8 slashing damage instead.",
+		description : "I have a +3 bonus to attack and damage rolls with this magic sword. It ignores slashing damage resistance. On a roll of 20 to hit, it cuts of one head" + (typePF ? "" : ", possibly killing it instantly") + ". If the target has no head, is immune to slashing damage, has legendary actions, or its neck is too wide, it takes +6d8 slashing damage instead.",
 		descriptionFull : "You gain a +3 bonus to attack and damage rolls made with this magic weapon. In addition, the weapon ignores resistance to slashing damage.\n   When you attack a creature that has at least one head with this weapon and roll a 20 on the attack roll, you cut off one of the creature's heads. The creature dies if it can't survive without the lost head. A creature is immune to this effect if it is immune to slashing damage, doesn't have or need a head, has legendary actions, or the DM decides that the creature is too big for its head to be cut off with this weapon. Such a creature instead takes an extra 6d8 slashing damage from the hit.",
 		chooseGear : {
 			type : "weapon",
@@ -987,7 +1023,7 @@ var Base_MagicItemsList = {
 		name : "Weapon, +1, +2, or +3",
 		source : [["SRD", 250], ["D", 213]],
 		type : "weapon (any)",
-		rarity: "varies",
+		rarity : "varies",
 		description : "I have a bonus to attack and damage rolls made with this magic weapon. The bonus is determined by the rarity of the magic item: uncommon (+1), rare (+2), or very rare (+3). Select the bonus using the little square button in this magic item line.",
 		descriptionFull : "You have a bonus to attack and damage rolls made with this magic weapon. The bonus is determined by the weapon's rarity: uncommon (+1), rare (+2), or very rare (+3).",
 		allowDuplicates : true,
@@ -999,21 +1035,21 @@ var Base_MagicItemsList = {
 		choices : ["+1 Weapon (uncommon)", "+2 Weapon (rare)", "+3 Weapon (very rare)"],
 		"+1 weapon (uncommon)" : {
 			name : "Weapon +1",
-			rarity: "uncommon",
+			rarity : "uncommon",
 			magicItemTable : "F",
 			description : "I have a +1 bonus to attack and damage rolls made with this magic weapon.",
 			allowDuplicates : true
 		},
 		"+2 weapon (rare)" : {
 			name : "Weapon +2",
-			rarity: "rare",
+			rarity : "rare",
 			magicItemTable : "F",
 			description : "I have a +2 bonus to attack and damage rolls made with this magic weapon.",
 			allowDuplicates : true
 		},
 		"+3 weapon (very rare)" : {
 			name : "Weapon +3",
-			rarity: "very rare",
+			rarity : "very rare",
 			magicItemTable : "H",
 			description : "I have a +3 bonus to attack and damage rolls made with this magic weapon.",
 			allowDuplicates : true
