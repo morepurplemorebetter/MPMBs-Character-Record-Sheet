@@ -7625,39 +7625,56 @@ function ConvertToMetric(inputString, rounded, exact) {
 	var LBtoKG = function (unit) {
 		return unit * UnitsList[ratio].mass;
 	}
+	var GALtoL = function (unit) {
+		return unit * UnitsList[ratio].liquid;
+	}
+	var FtoC = function (unit) {
+		return (unit - 32) * 5/9;
+	}
 
 	var theConvert = function (amount, units) {
+		amount = Number(amount);
+		var total, unit, rounded;
 		switch (units){
 		 case "mile" : case "miles" :
-			var total = MILEtoKM(Number(amount));
-			var unit = "km";
+			total = MILEtoKM(amount);
+			unit = "km";
 			break;
 		 case "ft" : case "foot" : case "feet" : case "'" :
-			var total = FTtoM(Number(amount));
-			var unit = "m";
+			total = FTtoM(amount);
+			unit = "m";
 			break;
 		 case "in" : case "inch" : case "inches" :
-			var total = INtoCM(Number(amount));
-			var unit = "cm";
+			total = INtoCM(amount);
+			unit = "cm";
 			break;
 		 case "cu ft" : case "cubic foot" : case "cubic feet" :
-			var total = CUFTtoM(Number(amount));
-			var unit = "l";
+			total = CUFTtoM(amount);
+			unit = "m3";
 			break;
 		 case "sq ft" : case "square foot" : case "square feet" :
-			var total = SQFTtoM(Number(amount));
-			var unit = "m2";
+			total = SQFTtoM(amount);
+			unit = "m2";
 			break;
 		 case "lb" : case "lbs" : case "pound" : case "pounds" :
-			var total = LBtoKG(Number(amount));
-			var unit = "kg";
+			total = LBtoKG(amount);
+			unit = "kg";
+			break;
+		 case "gal" : case "gallon" : case "gallons" :
+			total = GALtoL(amount);
+			unit = "L";
+			break;
+		 case "\u00B0 f" : case "\u00B0f" : case "degree fahrenheit" : case "degrees fahrenheit" : case "fahrenheit" :
+			total = RoundTo(FtoC(amount), exact ? 0.01 : 1, false, true);
+			unit = "\u00B0C";
+			rounded = true;
 			break;
 		}
-		return [total, unit];
+		return [total, unit, rounded];
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/\b\d+(,|\.|\/)?\d*\/?(\d+?(,|\.|\/)?\d*)?\s?-?((in|inch|inches|miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?)\b|('($|\s)|'\d+\w?"))/ig);
+	var measurements = inputString.match(/(\b|-)\d+(,|\.|\/)?\d*\/?(-?\d+?(,|\.|\/)?\d*)?\s?-?((in|inch|inches|miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?|gal|gallons?|\u00B0 ?f|degrees? fahrenheit|fahrenheit)\b|('($|\s)|'\d+\w?"))/ig);
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
@@ -7667,21 +7684,22 @@ function ConvertToMetric(inputString, rounded, exact) {
 				var resulted = theConvert(parseFloat(orgIN/12) + parseFloat(orgFT), "ft");
 			} else {
 				var org = measurements[i].replace(/,/g, ".");
-				var orgUnit = org.match(/([a-z]+|')$/)[0], fraction;
+				var orgUnit = org.match(/[-\s]*([\u00B0 A-z']+)$/)[1].toLowerCase();
+				var fraction;
 
-				if (fraction = org.match(/(\d+\.?\d*)\/(\d+\.?\d*)/) ){
+				if (fraction = org.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/) ){
 					var resulted = [theConvert(fraction[1], orgUnit), theConvert(fraction[2], orgUnit)];
 				} else {
 					var resulted = theConvert(parseFloat(org), orgUnit);
 				}
 			}
 
-			var delimiter = (/-/).test(measurements[i]) ? "-" : " ";
+			var delimiter = (/-[^\d]/).test(measurements[i]) ? "-" : " ";
 
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
 			} else {
-				var theResult = RoundTo(resulted[0], rounding, false, true) + delimiter + resulted[1];
+				var theResult = (resulted[2] ? resulted[0] : RoundTo(resulted[0], rounding, false, true)) + delimiter + resulted[1];
 			}
 			inputString = inputString.replace(measurements[i], theResult);
 		}
@@ -7712,57 +7730,75 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 	var LBofKG = function (unit) {
 		return unit / UnitsList[ratio].mass;
 	}
+	var LofGAL = function (unit) {
+		return unit / UnitsList[ratio].liquid;
+	}
+	var CofF = function (unit) {
+		return (unit * 9/5) + 32;
+	}
 
 	var theConvert = function (amount, units) {
+		amount = Number(amount);
+		var total, unit, rounded;
 		switch (units){
 		 case "cm" :
 			if (amount < 30) {
-				var total = INofCM(Number(amount));
-				var unit = "in";
+				total = INofCM(amount);
+				unit = "in";
 				break;
 			}
 			amount = amount / 100;
-		 case "m" : case "meter" :  case "metre" :
-			var total = FTofM(Number(amount));
-			var unit = "ft";
+		 case "m" : case "meter" : case "meters" : case "metre" : case "metres" :
+			total = FTofM(amount);
+			unit = "ft";
 			break;
 		 case "km" :
-			var total = MILEofKM(Number(amount));
-			var unit = total === 1 ? "mile" : "miles";
+			total = MILEofKM(amount);
+			unit = total === 1 ? "mile" : "miles";
 			break;
-		 case "l" : case "liter" : case "litre" :
-			var total = CUFTofM(Number(amount));
-			var unit = "cu ft";
+		 case "m3" : case "cubic meter" : case "cubic meters" : case "cubic metre" : case "cubic metres" :
+			total = CUFTofM(amount);
+			unit = "cu ft";
 			break;
-		 case "m2" : case "square metre" : case "square meter" :
-			var total = SQFTofM(Number(amount));
-			var unit = "sq ft";
+		 case "m2" : case "square metre" : case "square metres" : case "square meter" : case "square meters" :
+			total = SQFTofM(amount);
+			unit = "sq ft";
 			break;
 		 case "g" :
 			amount = amount / 1000;
-		 case "kg" : case "kilos" : case "kilo" :
-			var total = LBofKG(Number(amount));
-			var unit = "lb";
+		 case "kg" : case "kilo" : case "kilos" :
+			total = LBofKG(amount);
+			unit = "lb";
+			break;
+		 case "l" : case "liter" : case "liters" : case "litre" : case "litres" :
+			total = LofGAL(amount);
+			unit = "gal";
+			break;
+		 case "\u00B0 c" : case "\u00B0c" : case "degree celcius" : case "degrees celcius" : case "celcius" :
+			total = RoundTo(CofF(amount), exact ? 0.01 : 1, false, true);
+			unit = "\u00B0F";
+			rounded = true;
 			break;
 		}
-		return [total, unit];
+		return [total, unit, rounded];
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/\b\d+(,|\.|\/)?\d*\/?(\d+?(,|\.|\/)?\d*)?\s?-?(square meter|square metre|m2|cm|km|m|meter|metre|l|liter|litre|kg|g|kilos?)\b/ig);
+	var measurements = inputString.match(/(\b|-)\d+(,|\.|\/)?\d*\/?(-?\d+?(,|\.|\/)?\d*)?\s?-?(m2|square meters?|square metres?|m3|cubic meters?|cubic metres?|cm|km|m|meters?|metres?|l|liters?|litres?|kg|g|kilos?|\u00B0 ?c|degrees? celcius|celcius)\b/ig);
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
 			var org = measurements[i].replace(/,/g, ".");
-			var orgUnit = org.match(/([a-z]+)$/)[0], fraction;
+			var orgUnit = org.match(/[-\s]*([\u00B0 A-z']+)$/)[1].toLowerCase();
+			var fraction;
 
-			if (fraction = org.match(/(\d+\.?\d*)\/(\d+\.?\d*)/)){
+			if (fraction = org.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/)){
 				var resulted = [theConvert(fraction[1], orgUnit), theConvert(fraction[2], orgUnit)];
 			} else {
 				var resulted = theConvert(parseFloat(org), orgUnit);
 			}
 
-			var delimiter = (/-/).test(measurements[i]) ? "-" : " ";
+			var delimiter = (/-[^\d]/).test(measurements[i]) ? "-" : " ";
 
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
@@ -7771,7 +7807,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 				var theINCH = Math.round(resulted[0] % 1 / (1/12));
 				var theResult = theFT + "'" + theINCH + "\"";
 			} else {
-				var theResult = RoundTo(resulted[0], rounding, false, true) + delimiter + resulted[1];
+				var theResult = (resulted[2] ? resulted[0] : RoundTo(resulted[0], rounding, false, true)) + delimiter + resulted[1];
 			}
 			inputString = inputString.replace(measurements[i], theResult);
 		}

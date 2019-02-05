@@ -74,17 +74,19 @@ var UnitsList = {
 		mass : 0.5,
 		'length' : 0.3,
 		lengthInch : 2.5,
-		volume : 30,
+		volume : 0.03,
 		surface : 0.1,
-		distance : 1.6
+		distance : 1.6,
+		liquid : 4
 	},
 	metricExact : {
 		mass : 0.45359237,
 		'length' : 0.3048,
 		lengthInch : 2.54,
-		volume : 28.316846592,
+		volume : 0.028316846592,
 		surface : 0.09290304,
-		distance : 1.609344
+		distance : 1.609344,
+		liquid : 3.785411784
 	}
 }
 
@@ -1105,7 +1107,7 @@ var SetUnitDecimals_Dialog = {
 					font : "dialog",
 					wrap_name : true,
 					width : 480,
-					name : " \u2022 Distances in game mechanics are converted by assuming 1 ft is 30 cm;\n \u2022 Weights used in game mechanics are converted by assuming 2 lb is 1 kg;\n \u2022 All converted units used in game mechanics are rounded to the nearest half;\n \u2022 Equipment weight is calculated to three decimals accuracy;\n \u2022 The Character's Height and Weight fields are converted with more accuracy;\n \u2022 Units you added manually might not be converted as not all unit conversions are supported."
+					name : " \u2022 Distances in game mechanics are converted by assuming 1 ft is 30 cm;\n \u2022 Weights used in game mechanics are converted by assuming 2 lb is 1 kg;\n \u2022 Liquid volumes used in game mechanics are converted by assuming 1 gallon is 4 liters;\n \u2022 All converted units used in game mechanics are rounded to the nearest half;\n \u2022 Equipment weight is calculated to three decimals accuracy;\n \u2022 The Character's Height and Weight fields are converted with more accuracy;\n \u2022 Units you added manually might not be converted as not all unit conversions are supported."
 				}, {
 					type : "static_text",
 					item_id : "txt2",
