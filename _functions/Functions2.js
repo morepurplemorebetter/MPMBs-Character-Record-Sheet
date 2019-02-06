@@ -5335,11 +5335,11 @@ function PatreonStatement() {
 function addEvals(evalObj, NameEntity, Add) {
 	if (!evalObj) return;
 
-	// set the CurrentUpdates object for the attack Evals
-	if ((evalObj.atkAdd || evalObj.atkCalc) && CurrentUpdates.atkStrOld == undefined) CurrentUpdates.atkStrOld = StringEvals("atkStr");
+	// remember the old attack changing strings
+	if ((evalObj.atkAdd || evalObj.atkCalc || evalObj.spellCalc) && CurrentUpdates.atkStrOld == undefined) CurrentUpdates.atkStrOld = StringEvals("atkStr");
 	if (evalObj.atkAdd) CurrentUpdates.types.push("attacksforce");
 
-	// make the changes to the CurrentEvals object
+	// make the changes to the CurrentEvals object for attack changes
 	var atkStr = "";
 	var atkTypes = ["atkAdd", "atkCalc", "spellCalc"];
 	for (var i = 0; i < atkTypes.length; i++) {
@@ -5379,32 +5379,36 @@ function addEvals(evalObj, NameEntity, Add) {
 		CurrentUpdates.types.push("hp");
 	};
 
-	// add a spell list change function
-	if (evalObj.spellList) {
-		// first save the current string to the CurrentUpdates
-		if (CurrentUpdates.spellListStrOld == undefined) CurrentUpdates.spellListStrOld = StringEvals("spellListStr");
-		// change the CurrentEvals object
-		var spIsArray = isArray(evalObj.spellList);
-		var stringChange = false;
+	// remember the old spell changing strings
+	if ((evalObj.spellList || evalObj.spellAdd) && CurrentUpdates.spellStrOld == undefined) CurrentUpdates.spellStrOld = StringEvals("spellStr");
+
+	// make the changes to the CurrentEvals object for spell changes
+	var spellStr = "";
+	var spellTypes = ["spellList", "spellAdd"];
+	for (var i = 0; i < spellTypes.length; i++) {
+		var spellT = spellTypes[i];
+		if (!evalObj[spellT]) continue;
+		var spellIsArray = isArray(evalObj[spellT]);
+		// add the descriptive text
+		if (spellIsArray && evalObj[spellT][1]) spellStr += "\n - " + evalObj[spellT][1];
+		// set the function
 		if (Add) {
-			if (!CurrentEvals.spellList) CurrentEvals.spellList = {};
-			CurrentEvals.spellList[NameEntity] = spIsArray ? evalObj.spellList[0] : evalObj.spellList;
-			if (spIsArray && evalObj.spellList[1]) {
-				if (!CurrentEvals.spellListStr) CurrentEvals.spellListStr = {};
-				CurrentEvals.spellListStr[NameEntity] = "\n" + evalObj.spellList[1];
-				stringChange = true;
-			}
-		} else {
-			if (CurrentEvals.spellList && CurrentEvals.spellList[NameEntity]) {
-				delete CurrentEvals.spellList[NameEntity];
-			}
-			if (CurrentEvals.spellListStr && CurrentEvals.spellListStr[NameEntity]) {
-				delete CurrentEvals.spellListStr[NameEntity];
-				stringChange = true;
-			}
+			if (!CurrentEvals[spellT]) CurrentEvals[spellT] = {};
+			CurrentEvals[spellT][NameEntity] = spellIsArray ? evalObj[spellT][0] : evalObj[spellT];
+		} else if (CurrentEvals[spellT] && CurrentEvals[spellT][NameEntity]) {
+			delete CurrentEvals[spellT][NameEntity];
 		}
-		// If the descriptive text changed, show it in the changes dialog
-		if (stringChange) CurrentUpdates.types.push("spellliststr");
+	};
+	// set the descriptive text for the attack calculations
+	if (spellStr) {
+		if (Add) {
+			if (!CurrentEvals.spellStr) CurrentEvals.spellStr = {};
+			CurrentEvals.spellStr[NameEntity] = spellStr;
+		} else if (CurrentEvals.spellStr && CurrentEvals.spellStr[NameEntity]) {
+			delete CurrentEvals.spellStr[NameEntity];
+		}
+		// as the descriptive text changed, show it in the changes dialog
+		CurrentUpdates.types.push("spellstr");
 	}
 
 	if (!Add) CurrentEvals = CleanObject(CurrentEvals); // remove any remaining empty objects

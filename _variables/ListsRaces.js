@@ -303,6 +303,12 @@ var Base_RaceList = {
 					spells : ["hellish rebuke"],
 					selection : ["hellish rebuke"],
 					firstCol : "oncelr"
+				},
+				spellChanges : {
+					"hellish rebuke" : {
+						description : "Cast when taking damage, creature that dealt damage takes 3d10 Fire damage; save halves",
+						changes : "Using Infernal Legacy, I cast Hellish Rebuke as if I'm using a 2nd-level spell slot, doing 3d10 damage."
+					}
 				}
 			},
 			"darkness" : {

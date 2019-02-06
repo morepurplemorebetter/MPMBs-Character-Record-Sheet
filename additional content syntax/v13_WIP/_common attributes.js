@@ -827,6 +827,49 @@ spellFirstColTitle : "Ki",
 
 	This attribute will do nothing if the parent object does not grant spellcasting in one way or another.
 */
+spellChanges : {
+	"spare the dying" : {
+		time : "1 bns",
+		range : "Touch",
+		changes : "I can cast spare the dying as a bonus action instead of an action, and it has a range of 30 ft instead of touch." // REQUIRED // string
+	}
+},
+/*	spellChanges // OPTIONAL //
+	TYPE:	object with objects
+	USE:	change aspects of spells when generating a spell sheet of the parent object
+
+	The object names in this must correspond with the object names of the spells as they appear in the SpellsList.
+	The possible attributes in that sub-object are the same as those for a SpellsList entry, see the syntax file "spells (SpellsList).js".
+	Any attributes you add there will override the ones found in the SpellsList object.
+
+	// IMPORTANT: 'changes' attribute (string) //
+	Each sub-object must have a 'changes' attribute, a string, explaining what was changed.
+	This 'changes' attribute is amended to the full spell description in the tooltip.
+	Use it to make clear how the spell now differs from the original version.
+	
+	// NOT ALL SpellsList ATTRIBUTES SUPPORTED //
+	As these attributes are only looked into when the fields on the sheet are filled with the spell's attributes,
+	there is no point in using this to change the 'classes', 'level', or 'source' attribute of a SpellsList entry.
+
+	// MAGIC ITEMS & SPELL COMPONENTS //
+	Normally, spells cast through magic items don't require any components.
+	Because of that, spells gained from magic items always have their 'components' and 'compMaterial' attributes removed.
+	If the magic items still requires components, you will have to manually set the 'components' and
+	'compMaterial' attributes using this 'spellChanges' object.
+
+	For example, you can use this attribute in a cleric class feature to change the casting time and range
+	of the Spare the Dying cantrip. This is what the above example does.
+	This change will then only be visible on the part of the spell sheet generated for the cleric class,
+	and not for another spellcasting source, even if that also has the Spare the Dying cantrip.
+
+	If you want to affect all spells, not just of the parent class/race/magic item/feat,
+	then use the calcChanges.spellAdd attribute, see below.
+
+	Note that these changes will never be applied when manually adding a spell to a spell sheet.
+	They will only be applied when generating a spell sheet for the character.
+
+	This attribute will do nothing if the parent object does not grant spellcasting in one way or another.
+*/
 
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
@@ -1123,6 +1166,57 @@ calcChanges : {
 		// 2nd array entry //
 		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
 		This explanation will also be available any time a change requires the re-generation of spell sheets.
+	*/
+
+	spellAdd : [
+		function (spellKey, spellObj, spName) {
+			var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? poison (dmg|damage))/i;
+			if ((testRegex).test(spellObj.description)) {
+				spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
+				return true;
+			};
+		},
+		"Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."
+	],
+	/*	spellAdd // OPTIONAL //
+		TYPE:	array with two entries
+				1st entry:	function
+				2nd entry:	string that is used to give an explanation of what the 1st entry does
+		USE:	dynamically change aspects of spells when it is added on the spell sheet
+
+		// 1st array entry //
+		This function is called whenever a spell is added to the spell sheet,
+		both when added manually and during spell sheet generation.
+		You can use it to dynamically change something about a spell like its description, range, or school.
+		This function is passed three variables:
+		1)	spellKey, a string of the name of the entry in the SpellsList variable.
+			Thus, you can find the original SpellsList entry with SpellsList[spellKey].
+
+		2)	spellObj, the object of the entry which you can edit.
+			This has the same attributes as a SpellsList entry, see the syntax file "spells (SpellsList).js".
+			The only exception is that when using the metric system, both the 'description' and 'range' attribute
+			will already have been converted into their metric versions.
+
+		3)	spName, a string that is the entry in the CurrentSpells object
+			This string will be identical to whatever added the spellcasting feature.
+			For example, this will be "wizard" for the wizard class spell list,
+			"fighter" for the eldritch knight spell list,
+			or "drow" for the racial spells gained from being a dark elf.
+			This will be an empty string when the spell is added manually.
+
+		By changing the attributes of the spellObj, you change what is put in the fields.
+		Changing that object has no affect on the original SpellsList entry.
+
+		This function is processed after the 'spellChanges' attribute.
+		If you need to change only spells for one spellcasting source, use the 'spellChanges' attribute above.
+
+		// 2nd array entry //
+		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
+		This explanation will also be available any time a change requires the re-generation of spell sheets.
+
+		// return //
+		If you want to inform the player that this function changed something for a specific spell,
+		make sure that it returns true;
 	*/
 },
 

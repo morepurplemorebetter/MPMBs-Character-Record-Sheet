@@ -189,12 +189,11 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 
 		// spellcasting
 		if (uObj.spellcastingBonus) processSpBonus(addIt, objNm, uObj.spellcastingBonus, type, aParent);
-		if (CurrentSpells[aParent]) {
+		if (CurrentSpells[aParent] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges)) {
+			CurrentUpdates.types.push("spells");
 			if (uObj.spellFirstColTitle) CurrentSpells[aParent].firstCol = addIt ? uObj.spellFirstColTitle : false;
-			if (uObj.spellcastingExtra) {
-				CurrentSpells[aParent].extra = addIt ? uObj.spellcastingExtra : false;
-				CurrentUpdates.types.push("spells");
-			}
+			if (uObj.spellcastingExtra) CurrentSpells[aParent].extra = addIt ? uObj.spellcastingExtra : false;
+			if (uObj.spellChanges) processSpChanges(addIt, tipNmF, uObj.spellChanges, aParent);
 		}
 
 		if (addIt) addListOptions(); // add weapon/armour/ammo option(s)
@@ -544,6 +543,7 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 			sObj.shortname = ClassList[aClass].spellcastingFactor ? ClassList[aClass].name : ClassSubList[aSubClass].fullname ? ClassSubList[aSubClass].fullname : ClassSubList[aSubClass].subname;
 			sObj.level = classes.known[fObjName].level;
 			if (sObj.typeSp == undefined) sObj.typeSp = "";
+			sObj.refType = "class";
 			break;
 		case "race":
 			var fObj = CurrentRace;
@@ -551,18 +551,21 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 			sObj.name = fObj.name;
 			sObj.typeSp = "race";
 			sObj.level = fObj.level;
+			sObj.refType = "race";
 			break;
 		case "feats":
 			var fObj = FeatsList[fObjName];
 			var sObj = setCSobj(fObjName);
 			sObj.name = fObj.name + " (feat)";
 			sObj.typeSp = "feat";
+			sObj.refType = "feat";
 			break;
 		case "items":
 			var fObj = MagicItemsList[fObjName];
 			var sObj = setCSobj(fObjName);
 			sObj.name = fObj.name + " (item)";
 			sObj.typeSp = "item";
+			sObj.refType = "item";
 			break;
 		default:
 			return false;
@@ -604,6 +607,39 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName) {
 	}
 	SetStringifieds('spells');
 	CurrentUpdates.types.push("spells");
+}
+
+// process the spellChanges attribute
+function processSpChanges(AddRemove, srcNm, spChng, parentName) {
+	var spCast = CurrentSpells[parentName];
+	var changeHead = "Changes by " + srcNm;
+	if (!spCast || (!AddRemove && !spCast.spellAttrOverride)) return; // nothing to do
+	if (AddRemove) { // adding
+		if (!spCast.spellAttrOverride) spCast.spellAttrOverride = {};
+		for (var aSpell in spChng) {
+			if (!spCast.spellAttrOverride[aSpell]) spCast.spellAttrOverride[aSpell] = { changesObj : {} };
+			var spObj = spCast.spellAttrOverride[aSpell];
+			spObj.changesObj[changeHead] = spChng[aSpell].changes ? "\n - " + spChng[aSpell].changes : "";
+			for (var key in spChng[aSpell]) {
+				if (key == "changes") continue;
+				spObj[key] = spChng[aSpell][key];
+			}
+		}
+	} else { // removing
+		for (var aSpell in spChng) {
+			var spObj = spCast.spellAttrOverride[aSpell];
+			if (!spObj || spObj.changesBy.indexOf(srcNm) == -1) continue;
+			for (var key in spChng[aSpell]) {
+				if (key == "changes") continue;
+				delete spObj[key];
+			}
+			delete spObj.changesObj[changeHead];
+			// now maybe delete this spellAttrOverride entry if its changesObj is empty
+			if (!ObjLength(spObj.changesObj)) delete spCast.spellAttrOverride;
+		}
+		// now maybe delete the whole spellAttrOverride if it is empty
+		if (!ObjLength(spCast.spellAttrOverride)) delete spCast.spellAttrOverride[aSpell];
+	}
 }
 
 // set the armour (if more AC than current armour) or remove the armour
@@ -1164,8 +1200,8 @@ function UpdateSheetDisplay() {
 	// if the spellcasting changed
 	var CurrentSpellsLen = ObjLength(CurrentSpells);
 	var hasSpellSheets = isTemplVis("SSfront", false) || isTemplVis("SSmore", false);
-	var changedSpellList = CurrentUpdates.types.indexOf("spellliststr") !== -1;
-	var changedSpellcasting = CurrentUpdates.types.indexOf("spells") !== -1 || (CurrentSpellsLen && changedSpellList) || (!CurrentSpellsLen && CurrentUpdates.types.indexOf("testclassspellcasting") !== -1);
+	var changedSpellEval = CurrentUpdates.types.indexOf("spellstr") !== -1;
+	var changedSpellcasting = CurrentUpdates.types.indexOf("spells") !== -1 || (CurrentSpellsLen && changedSpellEval) || (!CurrentSpellsLen && CurrentUpdates.types.indexOf("testclassspellcasting") !== -1);
 	// if there is no spellcastingBonus added, but change in spellcasting level was detected, see if a spellcasting class changed level and would require a new spell sheet
 	if (!changedSpellcasting && CurrentUpdates.types.indexOf("testclassspellcasting") !== -1) {
 		for (var theCaster in CurrentSpells) {
@@ -1205,10 +1241,10 @@ function UpdateSheetDisplay() {
 		var strSpells = !CurrentSpellsLen ?
 			"All spellcasting abilities have been removed from the character.\nYou might want to remove any Spell Sheets as well." :
 			"A change to spellcasting" +
-			(changedSpellList ? " and how spell lists are generated" : "") +
+			(changedSpellEval ? " and how spells are displayed or spell lists are generated" : "") +
 			" has been detected that require the Spell Sheets to be updated.\nTIP: if you plan to make more changes affecting spellcasting, do those first before generating Spell Sheets, because creating them takes very long.";
 		var buttonSpells = !CurrentSpellsLen ? "Remove Spell Sheets" : (hasSpellSheets ? "Update" : "Create") + " Spell Sheets";
-		var buttonSpellListStr = changedSpellList ? "Spell List(s) Changes" : "Affecting Spell List(s)";
+		var buttonSpellStr = changedSpellEval ? "Spells \u0026\u0026 -List Changes" : "Affecting Spells \u0026\u0026 -Lists";
 		// make the Spells dialog insert
 		dialogParts.push({
 			skipType : "chSP",
@@ -1232,10 +1268,10 @@ function UpdateSheetDisplay() {
 				}, {
 					type : "view",
 					align_children : "align_right",
-					elements : (changedSpellList || CurrentEvals.spellListStr ? [{
+					elements : (changedSpellEval || CurrentEvals.spellStr ? [{
 						type : "button",
 						item_id : "bSPs",
-						name : buttonSpellListStr
+						name : buttonSpellStr
 					}] : []).concat([{
 						type : "button",
 						item_id : "bSPo",
@@ -1264,18 +1300,18 @@ function UpdateSheetDisplay() {
 				RemoveSpellSheets();
 			}
 		};
-		if (changedSpellList || CurrentEvals.spellListStr) {
-			Changes_Dialog.oldSpellListStr = CurrentUpdates.spellListStrOld ? CurrentUpdates.spellListStrOld : "";
-			Changes_Dialog.spellListStrChange = changedSpellList;
+		if (changedSpellEval || CurrentEvals.spellStr) {
+			Changes_Dialog.oldSpellStr = CurrentUpdates.spellStrOld ? CurrentUpdates.spellStrOld : "";
+			Changes_Dialog.spellStrChange = changedSpellEval;
 			Changes_Dialog.bSPs = function (dialog) {
 				ShowCompareDialog(
-					["Things affecting spell list generation", "Some things might affect how a spell list for a spellcasting class or feature is generated, by adding extra spells to choose from for example."],
-					this.spellListStrChange ?
+					["Things affecting spells, spell properties and/or spell list generation", "Some features might affect how spells are displayed on the spell sheet, by adding more range for example.\n\nOthers might affect how a spell list for a spellcasting class or feature is generated, by adding extra spells to choose from for example."],
+					this.spellStrChange ?
 					[
-						["Old spell list manipulations", this.oldSpellListStr],
-						["New spell list manipulations", StringEvals("spellListStr")]
+						["Old spell list/attribute manipulations", this.oldSpellStr],
+						["New spell list/attribute manipulations", StringEvals("spellStr")]
 					] : [
-						["Spell list manipulations", StringEvals("spellListStr")]
+						["Spell list/attribute manipulations", StringEvals("spellStr")]
 					],
 					true
 				);

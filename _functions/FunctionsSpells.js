@@ -184,9 +184,55 @@ function ApplySpell(FldValue, rememberFldName) {
 		var theSpl = ParseSpell(input[0]);
 		//now only do something if a spell was found, otherwise assume the spell's details shouldn't be changed
 		if (theSpl !== "") {
-			var aSpell = SpellsList[theSpl];
+			var foundSpell = SpellsList[theSpl];
+			var aSpell = { changesObj : {} };
+			for (var key in foundSpell) aSpell[key] = foundSpell[key];
+			var aCast = input[2] && CurrentSpells[input[2]] ? CurrentSpells[input[2]] : "";
+			if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
+				aSpell.components = "";
+				aSpell.compMaterial = "Spells cast by magic items don't require any components.";
+			}
+			if (aCast && aCast.spellAttrOverride && aCast.spellAttrOverride[theSpl]) {
+				var theOver = aCast.spellAttrOverride[theSpl];
+				for (var key in theOver) {
+					if ((/^(classes|level|source)$/).test(key)) continue;
+					aSpell[key] = theOver[key];
+				}
+			}
 
-			//set the spell name (if it wasn't provided as part of this function and not the same as the remember field)
+			//put in some things into metric if so set
+			if (What("Unit System") === "metric") {
+				aSpell.description = aSpell.descriptionMetric ? aSpell.descriptionMetric : ConvertToMetric(aSpell.description, 0.5);
+				aSpell.range = ConvertToMetric(aSpell.range, 0.5);
+			}
+
+			if (CurrentEvals.spellAdd) {
+				for (var aFunct in CurrentEvals.spellAdd) {
+					var theFunct = CurrentEvals.spellAdd[aFunct];
+					if (typeof theFunct !== 'function') continue;
+					var didChange = false;
+					var changeHead = "Changes by " + aFunct;
+					try {
+						didChange = theFunct(theSpl, aSpell, aCast);
+					} catch (error) {
+						var eText = "The custom function for changing spell attributes from '" + aFunct + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
+						for (var e in error) eText += e + ": " + error[e] + ";\n ";
+						console.println(eText);
+						console.show();
+						delete CurrentEvals.spellAdd[aFunct];
+						didChange = false;
+					}
+					if (didChange && CurrentEvals.spellStr[aFunct]) {
+						if (!aSpell.changesObj[changeHead]) {
+							aSpell.changesObj[changeHead] = CurrentEvals.spellStr[aFunct];
+						} else {
+							aSpell.changesObj[changeHead] += CurrentEvals.spellStr[aFunct];
+						}
+					}
+				}
+			}
+
+			// set the spell name (if it wasn't provided as part of this function and not the same as the remember field)
 			// if the name used is a shortened version, set the full name as a tooltip
 			var NameFld = base.replace("remember", "name");
 			var NameFldValue = What(NameFld);
@@ -197,31 +243,31 @@ function ApplySpell(FldValue, rememberFldName) {
 				Value(NameFld, spName[0], spName[1]);
 			}
 
-			//put in some things into metric if so set
-			var spDescr = aSpell.description;
-			var spRange = aSpell.range;
-
-			if (What("Unit System") === "metric") {
-				spDescr = aSpell.descriptionMetric ? aSpell.descriptionMetric : ConvertToMetric(spDescr, 0.5);
-				spRange = ConvertToMetric(spRange, 0.5);
-			}
-
 			//make the tooltip for the description field
 			var spTooltip = "";
-			if (aSpell.descriptionFull && (aSpell.school || aSpell.psionic)) {
-				spTooltip += toUni(aSpell.name) + " \u2014 ";
-				spTooltip += aSpell.psionic ? (aSpell.level == 0 ? spellLevelList[aSpell.level + 10].replace(/s\b/, '') : spellSchoolList[aSpell.school].capitalize() + spellLevelList[aSpell.level + 10].replace(/s\b/, '').toLowerCase()) :
-					aSpell.level == 0 ? spellSchoolList[aSpell.school].capitalize() + " " + spellLevelList[aSpell.level].replace(/s\b/, '').toLowerCase() :
-					spellLevelList[aSpell.level].replace(/s\b/, '').toLowerCase() + " " + spellSchoolList[aSpell.school];
-				spTooltip += aSpell.ritual ? " (ritual)" : "";
-				spTooltip += "\n   " + aSpell.descriptionFull;
+			if (foundSpell.descriptionFull && (foundSpell.school || foundSpell.psionic)) {
+				spTooltip += toUni(foundSpell.name) + " \u2014 ";
+				spTooltip += foundSpell.psionic ? (foundSpell.level == 0 ? spellLevelList[foundSpell.level + 10].replace(/s\b/, '') : spellSchoolList[foundSpell.school].capitalize() + spellLevelList[foundSpell.level + 10].replace(/s\b/, '').toLowerCase()) :
+					foundSpell.level == 0 ? spellSchoolList[foundSpell.school].capitalize() + " " + spellLevelList[foundSpell.level].replace(/s\b/, '').toLowerCase() :
+					spellLevelList[foundSpell.level].replace(/s\b/, '').toLowerCase() + " " + spellSchoolList[foundSpell.school];
+				spTooltip += foundSpell.ritual ? " (ritual)" : "";
+				if (foundSpell.time) spTooltip += "\n  Casting Time:  " + foundSpell.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
+				if (foundSpell.range) spTooltip += "\n  Range:  " + foundSpell.range;
+				if (foundSpell.components) spTooltip += "\n  Components:  " + foundSpell.components + (foundSpell.compMaterial ? " (" + foundSpell.compMaterial.substr(0,1).toLowerCase() + foundSpell.compMaterial.substr(1) + ")" : "");
+				if (foundSpell.duration) spTooltip += "\n  Duration:  " + foundSpell.duration.replace(/\b(conc), \b/i, '$1entration, up to ').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours').replace(/\(d\)/i, "(dismiss as 1 action)").replace(/(instant)\./i, "$1aneous");
+				spTooltip += "\n\n" + foundSpell.descriptionFull;
+				if (ObjLength(aSpell.changesObj)) {
+					var txt = [];
+					for (var str in aSpell.changesObj) txt.push(toUni(str) + aSpell.changesObj[str]);
+					spTooltip += "\n\n>>  CHANGES BY FEATURES  <<\nThe above original has been changed as follows:\n\n" + txt.join("\n\n");
+				}
 			};
 
 			//set what an empty cell should look like
-			var emptyCell = "\u2014";
+			var emptyCell = CurrentCasters.emptyFields ? "" : "\u2014";
 
 			//set the spell description and the tooltip with the full description
-			Value(base.replace("remember", "description"), spDescr, spTooltip);
+			Value(base.replace("remember", "description"), aSpell.description, spTooltip);
 
 			//set the spell save
 			Value(base.replace("remember", "save"), aSpell.save ? aSpell.save : emptyCell);
@@ -233,7 +279,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "time"), aSpell.time ? aSpell.time : emptyCell);
 
 			//set the spell range
-			Value(base.replace("remember", "range"), spRange ? spRange : emptyCell);
+			Value(base.replace("remember", "range"), aSpell.range ? aSpell.range : emptyCell);
 
 			//set the spell components
 			Value(base.replace("remember", "components"), aSpell.components ? aSpell.components : emptyCell, aSpell.compMaterial ? aSpell.compMaterial : "");
@@ -794,7 +840,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 			addSp = inputObject.school.indexOf(aSpell.school) !== -1;
 		}
 		if (addSp && inputObject.attackOnly !== undefined) {
-			var isAttackSpell = !aSpell.save && (/spell attack/i).test(aSpell.descriptionFull ? aSpell.descriptionFull : aSpell.description);
+			var isAttackSpell = (/spell attack/i).test(aSpell.description + aSpell.descriptionFull);
 			addSp = isAttackSpell == inputObject.attackOnly;
 		}
 		if (addSp && inputObject.ritual !== undefined) {
@@ -1849,6 +1895,7 @@ var SpellSheetOrder_Dialog = {
 	bExcL : [],
 	bIncL : [],
 	glossary : false,
+	dashEmptyFields : true,
 
 	initialize : function (dialog) {
 		//set the ExcLuded list
@@ -1860,7 +1907,8 @@ var SpellSheetOrder_Dialog = {
 			"img1" : allIcons.spells,
 			"ExcL" : ExcObj,
 			"IncL" : {},
-			"Glos" : this.glossary
+			"Glos" : this.glossary,
+			"Dash" : this.dashEmptyFields
 		});
 
 		//set the IncLuded list
@@ -1869,7 +1917,6 @@ var SpellSheetOrder_Dialog = {
 			loadObject[this.bIncL[In]] = -1 * [1 + In];
 			dialog.insertEntryInList({"IncL" : loadObject});
 		}
-
 	},
 
 	commit : function (dialog) {
@@ -1894,6 +1941,7 @@ var SpellSheetOrder_Dialog = {
 		for (var i = 0; i < tempIncL.length; i++) {
 			if (tempIncL[i]) this.bIncL.push(tempIncL[i]);
 		}
+		this.dashEmptyFields = oResult["Dash"];
 	},
 
 	BTRA : function (dialog) {
@@ -2086,10 +2134,6 @@ var SpellSheetOrder_Dialog = {
 				width : 680,
 				name : "Please select which of your spellcasting sources you want to include in the Spell Sheet and in which order they should appear.\n\nNote that generating a new Spell Sheet deletes any current Spell Sheet(s) in this pdf.\n\nPlease be patient, generating a Spell Sheet can take a long time, sometimes more than ten minutes and possibly over an hour. During this time Adobe Acrobat will appear unresponsive (but will still be working)."
 			}, {
-				type : "check_box",
-				item_id : "Glos",
-				name : "Add a Glossary of Abbreviations to the end of the Spell Sheet(s)"
-			}, {
 				type : "view",
 				align_children : "align_row",
 				elements : [{
@@ -2145,12 +2189,20 @@ var SpellSheetOrder_Dialog = {
 					}]
 				}]
 			}, {
+				type : "check_box",
+				item_id : "Dash",
+				name : "Put a line in empty fields to increase readability"
+			}, {
+				type : "check_box",
+				item_id : "Glos",
+				name : "Add a Glossary of Abbreviations to the end of the Spell Sheet(s)"
+			}, {
 				type : "ok_cancel",
 				ok_name : "Generate the Spell Sheet (takes extremely long)",
 				cancel_name : "Don't generate a Spell Sheet"
 			}]
 		}]
-	},
+	}
 }
 
 //a dialog for spellbooks, adding 80 places to add spells
@@ -3442,9 +3494,9 @@ function AskUserSpellSheet() {
 			}
 		}
 		//now see if anything has been defined for adding a glossary or not
-		if (CurrentCasters.glossary === undefined) {
-			CurrentCasters.glossary = false;
-		}
+		if (CurrentCasters.glossary === undefined) CurrentCasters.glossary = false;
+		//now see if anything has been defined for putting a EM dash in empty fields or not
+		if (CurrentCasters.emptyFields === undefined) CurrentCasters.emptyFields = false;
 
 		//convert the incl and excl CurrentSpells arrays to their named counterparts
 		var exclNames = [];
@@ -3460,6 +3512,7 @@ function AskUserSpellSheet() {
 		SpellSheetOrder_Dialog.bExcL = exclNames;
 		SpellSheetOrder_Dialog.bIncL = inclNames;
 		SpellSheetOrder_Dialog.glossary = CurrentCasters.glossary;
+		SpellSheetOrder_Dialog.dashEmptyFields = CurrentCasters.emptyFields ? false : true;
 		if (app.execDialog(SpellSheetOrder_Dialog) !== "ok") {
 			toReturn = "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 		} else {
@@ -3482,6 +3535,7 @@ function AskUserSpellSheet() {
 			CurrentCasters.excl = exclList;
 			CurrentCasters.incl = inclList;
 			CurrentCasters.glossary = SpellSheetOrder_Dialog.glossary;
+			CurrentCasters.emptyFields = !SpellSheetOrder_Dialog.dashEmptyFields;
 		}
 		thermoM(0.5); //progress the progress dialog so that it looks like something is happening (don't close it yet)
 	}
@@ -3668,7 +3722,7 @@ function GenerateSpellSheet(GoOn) {
 					aSpell = spArray[y];
 					//check if not at the end of the page and, if so, create a new page
 					if (lineCurrent > lineMax) AddPage();
-					var toCheck = "";
+					var toCheck = "##";
 					if (atwillArray.indexOf(aSpell) !== -1) {
 						toCheck = "##atwill";
 					} else if (oncelrArray.indexOf(aSpell) !== -1) {
@@ -3682,7 +3736,7 @@ function GenerateSpellSheet(GoOn) {
 					} else if (SpellsList[aSpell] && SpellsList[aSpell].firstCol === undefined && (isPsionics || spCast.typeList === 4 || (spCast.known && spCast.known.prepared && spCast.typeList !== 3))) {
 						toCheck = spCast.typeList === 4 ? (knownSpells.indexOf(aSpell) !== -1 ? "##checkedbox" : "##checkbox") : SpellsList[aSpell].level === 0 ? "##atwill" : "##checkbox";
 					}
-					Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck);
+					Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + CurrentCasters.incl[i]);
 					lineCurrent += 1;
 				}
 			}
@@ -4442,7 +4496,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	 case "popup" :
 		var sourceString = Who(base.replace("checkbox", "book"));
 		if (sourceString) fullDescr += "\n\n" + toUni("Source(s)") + "\n \u2022 " + sourceString.replace(/\n/g, "\n \u2022 ");
-		ShowDialog("Spell's full description", fullDescr);
+		ShowDialog("Full spell description", fullDescr);
 		break;
 	 case "move up" :
 		thermoTxt = thermoM("Moving the spell up one row...", false);
@@ -5131,8 +5185,8 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 				aSpell = spArray[y];
 				//check if not at the end of the page and, if so, create a new page
 				if (lineCurrent > lineMax) AddPage();
-				var toCheck = SpellsList[aSpell] && SpellsList[aSpell].firstCol !== undefined ? "" : "##checkbox";
-				Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck);
+				var toCheck = SpellsList[aSpell] && SpellsList[aSpell].firstCol !== undefined ? "##" : "##checkbox";
+				Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + thisClass);
 				lineCurrent += 1;
 			}
 		}

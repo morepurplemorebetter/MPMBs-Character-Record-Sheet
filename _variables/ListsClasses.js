@@ -1561,15 +1561,24 @@ var Base_ClassList = {
 					name : "Agonizing Blast",
 					description : "\n   " + "I can add my Charisma modifier to every hit with my Eldritch Blast cantrip",
 					source : [["SRD", 48], ["P", 110]],
+					prereqeval : function(v) { return v.hasEldritchBlast; },
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
 								if (v.baseWeaponName == 'eldritch blast') output.extraDmg += What('Cha Mod');
 							},
 							"I add my Charisma modifier to the damage of every beam of my Eldritch Blast cantrip."
+						],
+						spellAdd : [
+							function (spellKey, spellObj, spName) {
+								if (spellKey == "eldritch blast") {
+									spellObj.description = spellObj.description.replace("1d10 Force damage", "1d10+" + What("Cha Mod") + " Force dmg");
+									return true;
+								};
+							},
+							"I add my Charisma modifier to the damage of every beam of my Eldritch Blast cantrip."
 						]
-					},
-					prereqeval : function(v) { return v.hasEldritchBlast; }
+					}
 				},
 				"armor of shadows" : {
 					name : "Armor of Shadows",
@@ -1580,6 +1589,14 @@ var Base_ClassList = {
 						spells : ["mage armor"],
 						selection : ["mage armor"],
 						firstCol : "atwill"
+					},
+					spellChanges : {
+						"mage armor" : {
+							range : "Self",
+							components : "V,S",
+							compMaterial : "",
+							changes : "With the Armor of Shadows invocation I can cast Mage Armor without a material component, but only on myself."
+						}
 					}
 				},
 				"ascendant step (prereq: level 9 warlock)" : {
@@ -1592,7 +1609,15 @@ var Base_ClassList = {
 						selection : ["levitate"],
 						firstCol : "atwill"
 					},
-					prereqeval : function(v) { return classes.known.warlock.level >= 9; }
+					prereqeval : function(v) { return classes.known.warlock.level >= 9; },
+					spellChanges : {
+						"levitate" : {
+							range : "Self",
+							components : "V,S",
+							compMaterial : "",
+							changes : "With the Ascendant Step invocation I can cast Levitate without a material component, but only on myself."
+						}
+					}
 				},
 				"beast speech" : {
 					name : "Beast Speech",
@@ -1659,7 +1684,15 @@ var Base_ClassList = {
 						selection : ["hold monster"],
 						firstCol : "atwill"
 					},
-					prereqeval : function(v) { return classes.known.warlock.level >= 15 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'; }
+					prereqeval : function(v) { return classes.known.warlock.level >= 15 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'; },
+					spellChanges : {
+						"speak with animals" : {
+							components : "V,S",
+							compMaterial : "",
+							description : "1 celestial, fiend, or elemental, save or paralyzed; extra save at end of each turn",
+							changes : "With the Chains of Carceri invocation I can cast Hold Monster without a material component, but only on a celestial, fiend, or elemental."
+						}
+					}
 				},
 				"devil's sight" : {
 					name : "Devil's Sight",
@@ -1696,6 +1729,7 @@ var Base_ClassList = {
 					name : "Eldritch Spear",
 					description : "\n   " + "My Eldritch Blast cantrip has a range of 300 ft",
 					source : [["SRD", 49], ["P", 111]],
+					prereqeval : function(v) { return v.hasEldritchBlast; },
 					calcChanges : {
 						atkAdd : [
 							function (fields, v) {
@@ -1704,7 +1738,12 @@ var Base_ClassList = {
 							"My Eldritch Blast cantrip has a range of 300 ft."
 						]
 					},
-					prereqeval : function(v) { return v.hasEldritchBlast; }
+					spellChanges : {
+						"eldritch blast" : {
+							range : "300 ft",
+							changes : "My Eldritch Blast cantrip has a range of 300 ft."
+						}
+					}
 				},
 				"eyes of the rune keeper" : {
 					name : "Eyes of the Rune Keeper",
@@ -1720,6 +1759,13 @@ var Base_ClassList = {
 						spells : ["false life"],
 						selection : ["false life"],
 						firstCol : "atwill"
+					},
+					spellChanges : {
+						"false life" : {
+							components : "V,S",
+							compMaterial : "",
+							changes : "With the Fiendish Vigor invocation I can cast False Life without a material component."
+						}
 					}
 				},
 				"gaze of two minds" : {
@@ -1801,6 +1847,13 @@ var Base_ClassList = {
 						spells : ["silent image"],
 						selection : ["silent image"],
 						firstCol : "atwill"
+					},
+					spellChanges : {
+						"silent image" : {
+							components : "V,S",
+							compMaterial : "",
+							changes : "With the Misty Visions invocation I can cast Silent Image without a material component."
+						}
 					}
 				},
 				"one with shadows (prereq: level 5 warlock)" : {
@@ -1820,12 +1873,21 @@ var Base_ClassList = {
 						selection : ["jump"],
 						firstCol : "atwill"
 					},
-					prereqeval : function(v) { return classes.known.warlock.level >= 9; }
+					prereqeval : function(v) { return classes.known.warlock.level >= 9; },
+					spellChanges : {
+						"jump" : {
+							range : "Self",
+							components : "V,S",
+							compMaterial : "",
+							changes : "With the Otherworldly Leap invocation I can cast Jump without a material component, but only on myself."
+						}
+					}
 				},
 				"repelling blast (prereq: eldritch blast cantrip)" : {
 					name : "Repelling Blast",
 					description : "\n   " + "I can have creatures hit by my Eldritch Blast cantrip be pushed 10 ft away from me",
 					source : [["SRD", 49], ["P", 111]],
+					prereqeval : function(v) { return v.hasEldritchBlast; },
 					calcChanges : {
 						atkAdd : [
 							function (fields, v) {
@@ -1834,7 +1896,12 @@ var Base_ClassList = {
 							"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
 						]
 					},
-					prereqeval : function(v) { return v.hasEldritchBlast; }
+					spellChanges : {
+						"eldritch blast" : {
+							description : "Spell attack beam 1d10 Force damage \u0026 push 10 ft; beams can be combined; +1 beam at CL5,11,17",
+							changes : "When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
+						}
+					}
 				},
 				"sculptor of flesh (prereq: level 7 warlock)" : {
 					name : "Sculptor of Flesh",
@@ -2189,7 +2256,21 @@ var Base_ClassSubList = {
 				name : "Disciple of Life",
 				source : [["SRD", 17], ["P", 60]],
 				minlevel : 1,
-				description : "\n   " + "When I use a spell that restores hit points, it restores an additional 2 + spell level"
+				description : "\n   " + "When I use a spell that restores hit points, it restores an additional 2 + spell level",
+/* STILL TO DO!!!!
+				calcChanges : {
+					spellAdd : [
+						function (spellKey, spellObj, spName) {
+							var toAdd = spellObj.level + 2;
+							var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? poison (dmg|damage))/i;
+							if ((testRegex).test(spellObj.description)) {
+								spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
+								return true;
+							};
+						},
+						"When I use a spell that restores hit points, it restores an additional 2 + spell level."
+					]
+				} */
 			},
 			"subclassfeature2" : {
 				name : "Channel Divinity: Preserve Life",
@@ -2229,8 +2310,21 @@ var Base_ClassSubList = {
 				name : "Supreme Healing",
 				source : [["SRD", 17], ["P", 60]],
 				minlevel : 17,
-				description : "\n   " + "When I restore HP with a spell, I heal the maximum amount instead of rolling the dice"
-			}
+				description : "\n   " + "When I restore HP with a spell, I heal the maximum amount instead of rolling the dice",
+/* STILL TO DO!!!!
+				calcChanges : {
+					spellAdd : [
+						function (spellKey, spellObj, spName) {
+							var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? poison (dmg|damage))/i;
+							if ((testRegex).test(spellObj.description)) {
+								spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
+								return true;
+							};
+						},
+						"When I restore HP with a spell, I heal the maximum amount instead of rolling the dice."
+					]
+				} */
+			},
 		}
 	},
 	"druid-circle of the land" : {
@@ -2723,6 +2817,16 @@ var Base_ClassSubList = {
 								};
 							},
 							"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage."
+						],
+						spellAdd : [
+							function (spellKey, spellObj, spName) {
+								var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? acid (dmg|damage))/i;
+								if ((testRegex).test(spellObj.description)) {
+									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
+									return true;
+								};
+							},
+							"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage."
 						]
 					}
 				},
@@ -2734,6 +2838,20 @@ var Base_ClassSubList = {
 							function (fields, v, output) {
 								if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && v.isSpell && (/cold/i).test(fields.Damage_Type)) {
 									output.extraDmg += What('Cha Mod');
+								};
+							},
+							"Cantrips and spell that deal cold damage get my Charisma modifier added to their Damage."
+						],
+						spellAdd : [
+							function (spellKey, spellObj, spName) {
+								if (spellKey == "armor of agathys") {
+									spellObj.description = spellObj.description.replace("5+5/SL Cold dmg", 5 + What("Cha Mod") + "+5/SL Cold dmg");
+									return true;
+								}
+								var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? cold (dmg|damage))/i;
+								if ((testRegex).test(spellObj.description)) {
+									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
+									return true;
 								};
 							},
 							"Cantrips and spell that deal cold damage get my Charisma modifier added to their Damage."
@@ -2751,6 +2869,20 @@ var Base_ClassSubList = {
 								};
 							},
 							"Cantrips and spell that deal fire damage get my Charisma modifier added to their Damage."
+						],
+						spellAdd : [
+							function (spellKey, spellObj, spName) {
+								if (spellKey == "green-flame blade") {
+									spellObj.description = spellObj.description.replace("0d8", "0d8+" + What("Cha Mod"));
+									return true;
+								}
+								var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? fire (dmg|damage))/i;
+								if ((testRegex).test(spellObj.description)) {
+									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
+									return true;
+								};
+							},
+							"Cantrips and spell that deal fire damage get my Charisma modifier added to their Damage."
 						]
 					}
 				},
@@ -2762,6 +2894,16 @@ var Base_ClassSubList = {
 							function (fields, v, output) {
 								if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && v.isSpell && (/lightning/i).test(fields.Damage_Type)) {
 									output.extraDmg += What('Cha Mod');
+								};
+							},
+							"Cantrips and spell that deal lightning damage get my Charisma modifier added to their Damage."
+						],
+						spellAdd : [
+							function (spellKey, spellObj, spName) {
+								var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? (lightning|lightn\.) (dmg|damage))/i;
+								if ((testRegex).test(spellObj.description)) {
+									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
+									return true;
 								};
 							},
 							"Cantrips and spell that deal lightning damage get my Charisma modifier added to their Damage."
@@ -2779,6 +2921,16 @@ var Base_ClassSubList = {
 								};
 							},
 							"Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."
+						],
+						spellAdd : [
+							function (spellKey, spellObj, spName) {
+								var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? poison (dmg|damage))/i;
+								if ((testRegex).test(spellObj.description)) {
+									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
+									return true;
+								};
+							},
+							"Cantrips and spell that deal lightning damage get my Charisma modifier added to their Damage."
 						]
 					}
 				}

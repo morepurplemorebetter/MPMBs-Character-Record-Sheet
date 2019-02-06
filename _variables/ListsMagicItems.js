@@ -289,12 +289,17 @@ var Base_MagicItemsList = {
 		attunement : true,
 		description : "While I wear these boots, I can use an action to cast the levitate spell on myself at will.",
 		descriptionFull : "While you wear these boots, you can use an action to cast the Levitate spell on yourself at will.",
-		action : [["action", ""]],
 		spellcastingBonus : {
 			name : "Self Only",
 			spells : ["levitate"],
 			selection : ["levitate"],
 			atwill : true
+		},
+		spellChanges : {
+			"levitate" : {
+				range : "Self",
+				changes : "The spell can only affect the wearer."
+			}
 		}
 	},
 	"boots of speed" : {
@@ -326,12 +331,58 @@ var Base_MagicItemsList = {
 		name : "Boots of the Winterlands",
 		source : [["SRD", 212], ["D", 156]],
 		type : "wondrous item",
-		rarity : "uncommon"
+		rarity : "uncommon",
 		attunement : true,
 		magicItemTable : "F",
 		description : "While wearing these boots, I have resistance to cold damage and I ignore difficult terrain created by ice or snow. I can tolerate temperatures as low as -50 \u00B0F without any additional protection. If I wear heavy clothes, I can tolerate temperatures as low as -100 \u00B0F.",
 		descriptionFull : "These furred boots are snug and feel quite warm. While you wear them, you gain the following benefits:\n \u2022 You have resistance to cold damage.\n \u2022 You ignore difficult terrain created by ice or snow.\n \u2022 You can tolerate temperatures as low as -50 degrees Fahrenheit without any additional protection. If you wear heavy clothes, you can tolerate temperatures as low as -100 degrees Fahrenheit.",
 		dmgres : ["Cold"]
+	},
+	"bowl of commanding water elementals" : {
+		name : "Bowl of Commanding Water Elementals",
+		source : [["SRD", 212], ["D", 156]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "While this bowl is filled with water, I can speak the bowl's command word as an action and summon a water elemental, as if I had cast Conjure Elemental. The bowl can't be used again until the next dawn. The bowl is about 1 foot in diameter and half as deep, and holds about 3 gallons of water.",
+		descriptionFull : "While this bowl is filled with water, you can use an action to speak the bowl's command word and summon a water elemental, as if you had cast the Conjure Elemental spell. The bowl can't be used this way again until the next dawn.\n   The bowl is about 1 foot in diameter and half as deep. It weighs 3 pounds and holds about 3 gallons.",
+		weight : 3,
+		spellcastingBonus : {
+			name : "Water Elemental",
+			spells : ["conjure elemental"],
+			selection : ["conjure elemental"],
+			firstCol : "oncelr"
+		},
+		usages : 1, 
+		recovery : "dawn",
+		spellChanges : {
+			"conjure elemental" : {
+				time : "1 a",
+				description : "CR 5 water elemental that obeys your verbal commands; on broken conc. elemental breaks free",
+				changes : "Using the Bowl of Commanding Water Elementals, the spell only takes 1 action instead of 10 minutes, but can only bring forth a water elemental."
+			}
+		}
+	},
+	"bracers of archery" : {
+		name : "Bracers of Archery",
+		source : [["SRD", 212], ["D", 156]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While wearing these bracers, I have proficiency with the longbow and shortbow, and I gain a +2 bonus to damage rolls on ranged attacks made with such weapons.",
+		descriptionFull : "While wearing these bracers, you have proficiency with the longbow and shortbow, and you gain a +2 bonus to damage rolls on ranged attacks made with such weapons.",
+		attunement : true,
+		weaponProfs : [false, false, ["longbow", "shortbow"]],
+		calcChanges : {
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.baseWeaponName == "shortbow" || v.baseWeaponName == "longbow") {
+						output.extraDmg += 2;
+					}
+				},
+				'I add +2 to the damage of attacks I make with shortbows and longbows.'
+			],
+		}
 	},
 	"bracers of defense" : {
 		name : "Bracers of Defense",
@@ -349,13 +400,69 @@ var Base_MagicItemsList = {
 			stopeval : function (v) { return v.wearingArmor || v.usingShield; }
 		}
 	},
+	"brazier of commanding fire elementals" : {
+		name : "Brazier of Commanding Fire Elementals",
+		source : [["SRD", 212], ["D", 156]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "While a fire burns in this brass brazier, I can use an action to speak the brazier's command word and summon a fire elemental, as if I had cast the Conjure Elemental spell. The brazier can't be used this way again until the next dawn.",
+		descriptionFull : "While a fire burns in this brass brazier, you can use an action to speak the brazier's command word and summon a fire elemental, as if you had cast the Conjure Elemental spell. The brazier can't be used this way again until the next dawn.\n   The brazier weighs 5 pounds.",
+		weight : 5,
+		spellcastingBonus : {
+			name : "Fire Elemental",
+			spells : ["conjure elemental"],
+			selection : ["conjure elemental"],
+			firstCol : "oncelr"
+		},
+		usages : 1, 
+		recovery : "dawn",
+		spellChanges : {
+			"conjure elemental" : {
+				time : "1 a",
+				description : "CR 5 fire elemental that obeys your verbal commands; on broken conc. elemental breaks free",
+				changes : "Using the Brazier of Commanding Fire Elementals, the spell only takes 1 action instead of 10 minutes, but can only bring forth a fire elemental."
+			}
+		}
+	},
+	"brooch of shielding" : { // contributed by Smashman
+		name : "Brooch of Shielding",
+		source : [["SRD", 212], ["D", 156]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While wearing this brooch, I have resistance to force damage, and have immunity to damage from the Magic Missile spell.",
+		descriptionFull : "While wearing this brooch, you have resistance to force damage, and you have immunity to damage from the Magic Missile spell.",
+		attunement : true,
+		dmgres: ["Force"],
+		savetxt: {
+			immune: ["Magic Missile spell"]
+		}
+	},
+	"cape of the mountebank" : { // contributed by Smashman
+		name : "Cape of the Mountebank",
+		source : [["SRD", 213], ["D", 157]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "While wearing this cape, I can use it to cast the Dimension Door spell as an action. This property of the cape can't be used again until the next dawn. The cape smells faintly of brimstone. When I disappear, smoke lightly obscures the place that I left and the place that I appear, which dissipates at the end of my next turn.",
+		descriptionFull : "This cape smells faintly of brimstone. While wearing it, you can use it to cast the Dimension Door spell as an action. This property of the cape can't be used again until the next dawn.\n   When you disappear, you leave behind a cloud of smoke, and you appear in a similar cloud of smoke at your destination. The smoke lightly obscures the space you left and the space you appear in, and it dissipates at the end of your next turn. A light or stronger wind disperses the smoke.",
+		usages : 1,
+		recovery : "dawn",
+		spellcastingBonus : {
+			name: "Cape of the Mountebank",
+			spells: ["dimension door"],
+			selection: ["dimension door"],
+			firstCol : "oncelr"
+		}
+	},
 	"crystal ball" : {
 		name : "Crystal Ball",
 		source : [["SRD", 214], ["D", 159]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "I can cast Scrying (DC 17) while touching this ball of about 6 inches in diameter.",
+		description : "I can cast Scrying (save DC 17) while touching this ball of about 6 inches in diameter.",
 		descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.",
 		attunement : true,
 		weight : 3,
@@ -805,12 +912,19 @@ var Base_MagicItemsList = {
 		description : "As a bonus action, I can use this ring to cast Jump on myself. That spell causes my jump distance to triple for 1 minute.",
 		descriptionFull : "While wearing this ring, you can cast the Jump spell from it as a bonus action at will, but can target only yourself when you do so.",
 		attunement : true,
-		action : ["bonus", ""],
+		action : [["bonus action", ""]],
 		spellcastingBonus : {
 			name : "Self Only",
 			spells : ["jump"],
 			selection : ["jump"],
 			firstCol : "atwill"
+		},
+		spellChanges : {
+			"jump" : {
+				time : "1 bns",
+				range : "Self",
+				changes : "The casting time is only a bonus action instead of an action and it can only affect the wearer."
+			}
 		}
 	},
 	"ring of swimming" : {
