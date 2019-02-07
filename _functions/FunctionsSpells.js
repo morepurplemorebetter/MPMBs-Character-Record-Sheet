@@ -238,7 +238,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			var NameFldValue = What(NameFld);
 			var NameFldRitual = NameFldValue.indexOf("(R)") !== -1;
 			if (input[0] !== NameFldValue || (aSpell.ritual && !NameFldRitual)) {
-				var spName = getSpNm(theSpl, true);
+				var spName = getSpNm(theSpl, true, aSpell);
 				spName[0] += aSpell.ritual ? " (R)" : "";
 				Value(NameFld, spName[0], spName[1]);
 			}
@@ -5661,11 +5661,19 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 };
 
 // a function to get the right name of the spell object (i.e. non-SRD name if PHB is included)
-function getSpNm(spellKey, getShort) {
-	var spell = SpellsList[spellKey];
+function getSpNm(spellKey, getShort, spObj) {
+	var spell = spObj ? spObj : SpellsList[spellKey];
 	if (!spell || !spell.name) return getShort ? ["", ""] : "";
-	var theRe = getShort && spell.nameShort ? [spell.nameShort, spell.name] : getShort ? [spell.name, ""] : spell.name;
-	if (spell.nameAlt && !SourceList.P && (!spell.nameShort || spell.nameAlt.length >= spell.nameShort.length)) theRe = getShort ? [spell.nameAlt, spell.name] : spell.nameAlt;
+	var mainName = spell.name;
+	var shortName = getShort && spell.nameShort ? spell.nameShort : getShort ? spell.name : "";
+	if (spell.nameAlt && !SourceList.P) {
+		if (spell.nameAlt.length <= shortName.length) {
+			shortName = spell.nameAlt;
+		} else {
+			mainName = spell.nameAlt;
+		}
+	}
+	return getShort ? [shortName, mainName != shortName ? mainName : ""] : mainName;
 	return theRe;
 };
 
