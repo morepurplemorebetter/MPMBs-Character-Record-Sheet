@@ -619,7 +619,7 @@ function processSpChanges(AddRemove, srcNm, spChng, parentName) {
 		for (var aSpell in spChng) {
 			if (!spCast.spellAttrOverride[aSpell]) spCast.spellAttrOverride[aSpell] = { changesObj : {} };
 			var spObj = spCast.spellAttrOverride[aSpell];
-			spObj.changesObj[changeHead] = spChng[aSpell].changes ? "\n - " + spChng[aSpell].changes : "";
+			if (spChng[aSpell].changes) spObj.changesObj[changeHead] = "\n - " + spChng[aSpell].changes;
 			for (var key in spChng[aSpell]) {
 				if (key == "changes") continue;
 				spObj[key] = spChng[aSpell][key];
@@ -1609,12 +1609,12 @@ function doDropDownValCalcWithChoices() {
 	if (!event.target || event.type != "Field") return;
 	switch (event.name) {
 		case "Calculate":
-			if (event.target.setVal) {
+			if (event.target.setVal !== undefined) {
 				event.value = event.target.setVal;
 			}
 			break;
 		case "Validate":
-			if (event.target.setVal) {
+			if (event.target.setVal !== undefined) {
 				delete event.target.setVal;
 				return;
 			}
@@ -1766,17 +1766,17 @@ function ApplyMagicItem(input, FldNmbr) {
 	var oldMI = CurrentMagicItems.known[ArrayNmbr];
 	var oldMIvar = CurrentMagicItems.choices[ArrayNmbr];
 	var setFieldValueTo;
+	var failedChoice = false;
 
-	var doNotCommit = function() {
-		if (event.target && event.target.name == MIflds[0]) {
-			event.rc = false;
-			if (isArray(tDoc.getField(event.target.name).page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + ".1').setFocus();", 10);
-		}
+	var doNotCommit = function(toSetVal) {
 		if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
+		if (!IsNotImport) return;
+		event.rc = false;
+		if (isArray(event.target.page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + ".1').setFocus();", 10);
 	}
 
 	// If no variant was found, but there is a choice, ask it now
-	if (IsNotImport && aMI && aMI.choices && !newMIvar) {
+	if (aMI && aMI.choices && !newMIvar) {
 		if (parseResult[2].length) {
 			var selectMIvar = false;
 			if (parseResult[2].length == 1) {
@@ -1792,11 +1792,17 @@ function ApplyMagicItem(input, FldNmbr) {
 				}
 				selectMIvar = selectMIvar && typeof selectMIvar == "string" && aMI[selectMIvar.toLowerCase()] ? selectMIvar : false;
 			}
-			// none of the above selected a choice, ask the user!
-			if (!selectMIvar) selectMIvar = AskUserOptions("Select " + aMI.name + " Type", "The '" + aMI.name + "' magic item exists in several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the magic item line that this item is in.", parseResult[2], "radio", true);
-			newMIvar = selectMIvar.toLowerCase();
-			aMIvar = aMI[newMIvar];
-			setFieldValueTo = aMIvar.name ? aMIvar.name : aMI.name + " [" + selectMIvar + "]";
+			if (!selectMIvar && !IsNotImport) {
+				failedChoice = true;
+			} else {
+				// if none of the above selected a choice, ask the user!
+				if (!selectMIvar) selectMIvar = AskUserOptions("Select " + aMI.name + " Type", "The '" + aMI.name + "' magic item exists in several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the magic item line that this item is in.", parseResult[2], "radio", true);
+				newMIvar = selectMIvar.toLowerCase();
+				aMIvar = aMI[newMIvar];
+				setFieldValueTo = aMIvar.name ? aMIvar.name : aMI.name + " [" + selectMIvar + "]";
+			}
+		} else if (!IsNotImport) {
+			failedChoice = true;
 		} else {
 			app.alert({
 				cTitle : "Error processing options for " + aMI.name,
@@ -1805,6 +1811,18 @@ function ApplyMagicItem(input, FldNmbr) {
 			doNotCommit();
 			return;
 		}
+	}
+
+	// if there was a choice but none was selected for whatever reason (importing), do not apply anything and warn the user
+	if (failedChoice) {
+		Value(MIflds[2], 'ERROR, please reapply "' + aMI.name + '" above.');
+		if (!IsNotImport) {
+			console.println("The magic item '" + aMI.name + "' requires you to make a selection of a sub-choice. However, because this item was added during importing from another MPMB's Character Record Sheet, no pop-up dialog could be displayed to allow you to make a selection. Please reapply this magic item to show the pop-up dialog and make a selection for its sub-choice.");
+			console.show();
+		}
+		if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
+		event.target.setVal = "ERROR, please reapply: " + (aMI.name.substr(0,2) + "\u200A" + aMI.name.substr(2)).split(" ").join("\u200A ");
+		return;
 	}
 
 	if (oldMI === newMI && oldMIvar === newMIvar && (!aMI || !aMI.chooseGear) && (!aMIvar || !aMIvar.chooseGear)) {
@@ -1954,7 +1972,21 @@ function ApplyMagicItem(input, FldNmbr) {
 		if (theMI.attunement) tooltipStr += tooltipStr ? " (requires attunement)" : "requires attunement";
 		tooltipStr = toUni(theMI.name) + (tooltipStr ? "\n" + tooltipStr[0].toUpperCase() + tooltipStr.substr(1) : "");
 
-		if (theMI.magicItemTable) tooltipStr += formatLineList("\n \u2022 Table: ", theMI.magicItemTable) + ".";
+		if (theMI.magicItemTable) {
+			if (isArray(theMI.magicItemTable)) {
+				theMI.magicItemTable.sort();
+				tooltipStr += formatLineList("\n \u2022 Table: ", theMI.magicItemTable);
+				var lowestTable = theMI.magicItemTable[0];
+			} else {
+				var lowestTable = theMI.magicItemTable;
+				tooltipStr += "\n \u2022 Table: " + theMI.magicItemTable;
+			}
+			if (TreasureCheckpointsTable[lowestTable]) {
+				var aTC = TreasureCheckpointsTable[lowestTable];
+				tooltipStr += " (Tier " + aTC.tier + "+; " + aTC.points + " Treasure Checkpoints)";
+			}
+			tooltipStr += ".";
+		}
 		if (theMI.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theMI.prerequisite;
 		tooltipStr += stringSource(theMI, "full,page", "\n \u2022 Source: ", ".");
 
@@ -2307,7 +2339,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			var currentlyChecked = tDoc.getField(MIflds[4]).isBoxChecked(0);
 			Checkbox(MIflds[4], !visibleAttunement && What(MIflds[0]), undefined, visibleAttunement ? "hide" : "");
 			setMIattunedVisibility(itemNmbr);
-			// Now if attunement was visible and it was unchecked, we have to re-apply the magic item's properties
+			// Now if attunement was visible and it was unchecked, we have to reapply the magic item's properties
 			if (!CurrentVars.manual.items) {
 				var curMI = CurrentMagicItems.known[itemNmbr - 1];
 				if (curMI && visibleAttunement && !currentlyChecked) {
@@ -2587,7 +2619,6 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			return; // nothing more to do if we are just removing this item and no item is found
 		}
 	} else if (!isItem) {
-		if (!IsNotImport) return;
 		// collect all types of items
 		var itemChoices = [];
 		var itemRefs = {};
@@ -2608,7 +2639,13 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			itemRefs[capName] = key;
 		}
 		if (typeNm != "armor") itemChoices.sort();
-		var userSelected = AskUserOptions("Select Type of " + typeNmC, "Choose which " + typeNm + " type this '" + curName + "' is.\nIf you want to change the " + typeNm + " type at a later time, select the magic item again from the drop-down box." + (aMI.choices ? "\nYou will also be prompted to select the " + typeNm + " type again when you select a choice using the button in this magic item line," + (aMIvar ? " even when selecting '" + aMIvar.name + "' again." : ".") : ""), itemChoices, "radio", true);
+		if (!IsNotImport) {
+			userSelected = itemChoices[0];
+			console.println("During importing from another MPMB's Character Record Sheet, the sheet was unable to show a pop-up dialog to let you choose what type of " + typeNm + " the '" + curName + "' is. As a result, '" + userSelected + "' was chosen for you automatically. If you wish to change this, reapply the '" + curName + "'.");
+			console.show();
+		} else {
+			var userSelected = AskUserOptions("Select Type of " + typeNmC, "Choose which " + typeNm + " type this '" + curName + "' is.\nIf you want to change the " + typeNm + " type at a later time, select the magic item again from the drop-down box." + (aMI.choices ? "\nYou will also be prompted to select the " + typeNm + " type again when you select a choice using the button in this magic item line," + (aMIvar ? " even when selecting '" + aMIvar.name + "' again." : ".") : ""), itemChoices, "radio", true);
+		}
 
 		var theItemName = userSelected.toLowerCase();
 		isItem = itemRefs[userSelected];

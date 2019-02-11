@@ -537,7 +537,7 @@ var Base_MagicItemsList = {
 			"conjure elemental" : {
 				time : "1 a",
 				description : "CR 5 water elemental that obeys your verbal commands; on broken conc. elemental breaks free",
-				changes : "Using the Bowl of Commanding Water Elementals, the spell only takes 1 action instead of 10 minutes, but can only bring forth a water elemental."
+				changes : "Using the Bowl of Commanding Water Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth a water elemental."
 			}
 		}
 	},
@@ -599,7 +599,7 @@ var Base_MagicItemsList = {
 			"conjure elemental" : {
 				time : "1 a",
 				description : "CR 5 fire elemental that obeys your verbal commands; on broken conc. elemental breaks free",
-				changes : "Using the Brazier of Commanding Fire Elementals, the spell only takes 1 action instead of 10 minutes, but can only bring forth a fire elemental."
+				changes : "Using the Brazier of Commanding Fire Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth a fire elemental."
 			}
 		}
 	},
@@ -1167,7 +1167,7 @@ var Base_MagicItemsList = {
 		prereqeval : function(v) { return CurrentRace.known.indexOf('dwarf') !== -1; },
 		weight : 2,
 		descriptionFull : "You gain a +3 bonus to attack and damage rolls made with this magic weapon. It has the thrown property with a normal range of 20 feet and a long range of 60 feet. When you hit with a ranged attack using this weapon, it deals an extra 1d8 damage or, if the target is a giant, 2d8 damage. Immediately after the attack, the weapon flies back to your hand.",
-		addWeapons : ["Dwarven Thrower"],
+		weaponsAdd : ["Dwarven Thrower"],
 		weaponOptions : {
 			baseWeapon : "warhammer",
 			regExpSearch : /^(?=.*dwarven)(?=.*thrower).*$/i,
@@ -3495,7 +3495,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "This item appears to be a longsword hilt. While grasping the hilt, you can use a bonus action to cause a blade of pure radiance to spring into existence, or make the blade disappear. While the blade exists, this magic longsword has the finesse property. If you are proficient with shortswords or longswords, you are proficient with the sun blade.\n   You gain a +2 bonus to attack and damage rolls made with this weapon, which deals radiant damage instead of slashing damage. When you hit an undead with it, that target takes an extra 1d8 radiant damage.\n   The sword's luminous blade emits bright light in a 15-foot radius and dim light for an additional 15 feet. The light is sunlight. While the blade persists, you can use an action to expand or reduce its radius of bright and dim light by 5 feet each, to a maximum of 30 feet each or a minimum of 10 feet each.",
 		weight : 3,
 		action : [["bonus action", " (start/stop)"], ["action", " (change light)"]],
-		addWeapons : ["Sun Blade"],
+		weaponsAdd : ["Sun Blade"],
 		weaponOptions : {
 			baseWeapon : "longsword",
 			regExpSearch : /^(?=.*sun)(?=.*blade).*$/i,
@@ -3508,8 +3508,8 @@ var Base_MagicItemsList = {
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (v.theWea.name == "Sun Blade" && !fields.prof) {
-						fields.prof = CurrentProfs.weapon.otherWea.finalProfs.indexOf("shortsword") !== -1;
+					if (v.theWea.name == "Sun Blade" && !fields.Proficiency) {
+						fields.Proficiency = CurrentProfs.weapon.otherWea && CurrentProfs.weapon.otherWea.finalProfs.indexOf("shortsword") !== -1;
 					}
 				}, ''
 			]

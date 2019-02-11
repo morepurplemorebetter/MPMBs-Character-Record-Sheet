@@ -1,3 +1,15 @@
+var TreasureCheckpointsTable = {
+	A : { tier : 1, points : 8 },
+	B : { tier : 1, points : 8 },
+	C : { tier : 1, points : 8 },
+	D : { tier : 2, points : 16 },
+	E : { tier : 3, points : 16 },
+	F : { tier : 1, points : 16 },
+	G : { tier : 2, points : 20 },
+	H : { tier : 3, points : 20 },
+	I : { tier : 3, points : 24 }
+}
+
 var Base_MagicItemsList = {
 	"adamantine armor" : {
 		name : "Adamantine Armor",
@@ -32,6 +44,7 @@ var Base_MagicItemsList = {
 		choices : ["+1 Ammunition (uncommon)", "+2 Ammunition (rare)", "+3 Ammunition (very rare)"],
 		"+1 ammunition (uncommon)" : {
 			name : "Ammunition +1",
+			nameTest : "+1 Ammunition",
 			rarity : "uncommon",
 			magicItemTable : "B",
 			description : "I have a +1 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
@@ -39,6 +52,7 @@ var Base_MagicItemsList = {
 		},
 		"+2 ammunition (rare)" : {
 			name : "Ammunition +2",
+			nameTest : "+2 Ammunition",
 			rarity : "rare",
 			magicItemTable : "C",
 			description : "I have a +2 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
@@ -46,6 +60,7 @@ var Base_MagicItemsList = {
 		},
 		"+3 ammunition (very rare)" : {
 			name : "Ammunition +3",
+			nameTest : "+3 Ammunition",
 			rarity : "very rare",
 			magicItemTable : "D",
 			description : "I have a +3 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
@@ -80,18 +95,21 @@ var Base_MagicItemsList = {
 		choices : ["+1 AC bonus (rare)", "+2 AC bonus (very rare)", "+3 AC bonus (legendary)"],
 		"+1 ac bonus (rare)" : {
 			name : "Armor +1",
+			nameTest : "+1 Armor",
 			rarity : "rare",
 			description : "I have a +1 bonus to AC while wearing this armor.",
 			allowDuplicates : true
 		},
 		"+2 ac bonus (very rare)" : {
 			name : "Armor +2",
+			nameTest : "+2 Armor",
 			rarity : "very rare",
 			description : "I have a +2 bonus to AC while wearing this armor.",
 			allowDuplicates : true
 		},
 		"+3 ac bonus (legendary)" : {
 			name : "Armor +3",
+			nameTest : "+3 Armor",
 			rarity : "legendary",
 			description : "I have a +3 bonus to AC while wearing this armor.",
 			allowDuplicates : true
@@ -359,7 +377,7 @@ var Base_MagicItemsList = {
 			"conjure elemental" : {
 				time : "1 a",
 				description : "CR 5 water elemental that obeys your verbal commands; on broken conc. elemental breaks free",
-				changes : "Using the Bowl of Commanding Water Elementals, the spell only takes 1 action instead of 10 minutes, but can only bring forth a water elemental."
+				changes : "Using the Bowl of Commanding Water Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth a water elemental."
 			}
 		}
 	},
@@ -421,7 +439,7 @@ var Base_MagicItemsList = {
 			"conjure elemental" : {
 				time : "1 a",
 				description : "CR 5 fire elemental that obeys your verbal commands; on broken conc. elemental breaks free",
-				changes : "Using the Brazier of Commanding Fire Elementals, the spell only takes 1 action instead of 10 minutes, but can only bring forth a fire elemental."
+				changes : "Using the Brazier of Commanding Fire Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth a fire elemental."
 			}
 		}
 	},
@@ -595,7 +613,7 @@ var Base_MagicItemsList = {
 		prereqeval : function(v) { return CurrentRace.known.indexOf('dwarf') !== -1; },
 		weight : 2,
 		descriptionFull : "You gain a +3 bonus to attack and damage rolls made with this magic weapon. It has the thrown property with a normal range of 20 feet and a long range of 60 feet. When you hit with a ranged attack using this weapon, it deals an extra 1d8 damage or, if the target is a giant, 2d8 damage. Immediately after the attack, the weapon flies back to your hand.",
-		addWeapons : ["Dwarven Thrower"],
+		weaponsAdd : ["Dwarven Thrower"],
 		weaponOptions : {
 			baseWeapon : "warhammer",
 			regExpSearch : /^(?=.*dwarven)(?=.*thrower).*$/i,
@@ -937,6 +955,172 @@ var Base_MagicItemsList = {
 		descriptionFull : "You have a swimming speed of 40 feet while wearing this ring.",
 		speed : { swim : { spd : 40, enc : 30 } }
 	},
+	"staff of the magi" : { // contributed by Pengsloth
+		name : "Staff of the Magi",
+		source : [["SRD", 244], ["D", 203]],
+		type : "staff",
+		rarity : "legendary",
+		magicItemTable : "I",
+		description : "", // NOT YET FINISHED!
+		descriptionFull : "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While you hold it, you gain a +2 bonus to spell attack rolls.\n   The staff has 50 charges for the following properties. It regains 4d6+2 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 20, the staff regains 1d12+1 charges.\n   " + toUni("Spell Absorption") + ". While holding the staff, you have advantage on saving throws against spells. In addition, you can use your reaction when another creature casts a spell that targets only you. If you do, the staff absorbs the magic of the spell, canceling its effect and gaining a number of charges equal to the absorbed spell's level. However, if doing so brings the staff's total number of charges above 50, the staff explodes as if you activated its retributive strike (see below).\n   " + toUni("Spells") + ". While holding the staff, you can use an action to expend some of its charges to cast one of the following spells from it, using your spell save DC and spellcasting ability: Conjure Elemental (7 charges), Dispel Magic (3 charges), Fireball (7th-level version, 7 charges), Flaming Sphere (2 charges), Ice Storm (4 charges), Invisibility (2 charges), Knock (2 charges), Lightning Bolt (7th-level version, 7 charges), Passwall (5 charges), Plane Shift (7 charges), Telekinesis (5 charges), Wall of Fire (4 charges), or Web (2 charges).\n   You can also use an action to cast one of the following spells from the staff without using any charges: Arcane Lock, Detect Magic, Enlarge/Reduce, Light, Mage Hand, or Protection from Evil and Good.\n   " + toUni("Retributive Strike") + ". You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.\n   You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.\n\n" + toUni("Distance from Origin\tDamage") + "\n10 ft. away or closer\t8 \xD7 the number of charges in the staff\n11 to 20 ft. away\t\t6 \xD7 the number of charges in the staff\n21 to 30 ft. away\t\t4 \xD7 the number of charges in the staff",
+		attunement : true,
+		weight : 4,
+		weaponsAdd : ["Staff of the Magi"],
+		weaponOptions : {
+			baseWeapon : "quarterstaff",
+			regExpSearch : /^(?=.*staff)(?=.*magi).*$/i,
+			name : "Staff of the Magi",
+			source : [["SRD", 245], ["D", 204]],
+			modifiers : [2, 2]
+		},
+		calcChanges : {
+			spellCalc : [
+				function (type, spellcasters, ability) {
+					if (type == "attack") return 2;
+				},
+				"While holding the Staff of the Magi I have a +2 bonus to spell attack rolls."
+			]
+		},
+		usages : 50,
+		recovery : "dawn",
+		additional : "regain 4d6+2",
+		savetxt : { adv_vs : ["spells"] },
+		action : [
+			["reaction", " (Spell Absorption)"],
+			["action", " (Retributive Strike)"]
+		],
+		spellcastingAbility : "class",
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : [{
+			name : "7 Charges",
+			spells : ["conjure elemental"],
+			selection : ["conjure elemental"],
+			firstCol : "7"
+		}, {
+			name : "7 Charges; 7th level",
+			spells : ["fireball"],
+			selection : ["fireball"],
+			firstCol : "7"
+		}, {
+			name : "7 Charges; 7th level",
+			spells : ["lightning bolt"],
+			selection : ["lightning bolt"],
+			firstCol : "7"
+		}, {
+			name : "7 Charges",
+			spells : ["plane shift"],
+			selection : ["plane shift"],
+			firstCol : "7"
+		}, {
+			name : "5 Charges",
+			spells : ["passwall"],
+			selection : ["passwall"],
+			firstCol : "5"
+		}, {
+			name : "5 Charges",
+			spells : ["telekinesis"],
+			selection : ["telekinesis"],
+			firstCol : "5"
+		}, {
+			name : "4 Charges",
+			spells : ["ice storm"],
+			selection : ["ice storm"],
+			firstCol : "4"
+		}, {
+			name : "4 Charges",
+			spells : ["wall of fire"],
+			selection : ["wall of fire"],
+			firstCol : "4"
+		}, {
+			name : "3 Charges",
+			spells : ["dispel magic"],
+			selection : ["dispel magic"],
+			firstCol : "3"
+		}, {
+			name : "2 Charges",
+			spells : ["flaming sphere"],
+			selection : ["flaming sphere"],
+			firstCol : "2"
+		}, {
+			name : "2 Charges",
+			spells : ["invisibility"],
+			selection : ["invisibility"],
+			firstCol : "2"
+		}, {
+			name : "2 Charges",
+			spells : ["knock"],
+			selection : ["knock"],
+			firstCol : "2"
+		}, {
+			name : "2 Charges",
+			spells : ["web"],
+			selection : ["web"],
+			firstCol : "2"
+		}, {
+			name : "At Will",
+			spells : ["arcane lock"],
+			selection : ["arcane lock"],
+			firstCol : "atwill"
+		}, {
+			name : "At Will",
+			spells : ["enlarge/reduce"],
+			selection : ["enlarge/reduce"],
+			firstCol : "atwill"
+		}, {
+			name : "At Will",
+			spells : ["protection from evil and good"],
+			selection : ["protection from evil and good"],
+			firstCol : "atwill"
+		}],
+		eval : function () {
+			// get the CurrentSpells object or create it if it didn't exists yet.
+			var spObj = CreateCurrentSpellsEntry("items", "staff of the magi");
+			// now set some of the attributes for it, adding the 3 spells that didn't fit as spellcastingBonus
+			spObj.typeSp = "known";
+			spObj.known = { cantrips : 2, spells : 1 };
+			spObj.list = { spells : ["light", "mage hand", "detect magic"] };
+			spObj.selectCa = ["light", "mage hand"];
+			spObj.selectSp = ["detect magic"];
+			spObj.typeList = 2;
+		},
+		removeeval : function () {
+			if (CurrentSpells["staff of the magi"]) {
+				// delete the CurrentSpells object
+				delete CurrentSpells["staff of the magi"];
+				SetStringifieds('spells');
+				CurrentUpdates.types.push("spells");
+			}
+		},
+		spellChanges : {
+			"light" : { firstCol : "atwill" },
+			"mage hand" : { firstCol : "atwill" },
+			"detect magic" : { firstCol : "atwill" },
+			"fireball" : {
+				nameShort : "Fireball (7th level)",
+				description : "20-ft rad all crea 12d6 Fire dmg; save halves; unattended flammable objects ignite",
+				changes : "Cast as if using a 7th-level spell slot"
+			},
+			"lightning bolt" : {
+				nameShort : "Lightning Bolt (7th level)",
+				description : "100-ft long 5-ft wide all 12d6 Lightning dmg; save halves; unattended flammable obj ignite",
+				changes : "Cast as if using a 7th-level spell slot"
+			},
+			"conjure elemental" : {
+				time : "1 a",
+				changes : "Casting time is only 1 action instead of 1 minute"
+			}
+		},
+		calcChanges : {
+			spellAdd : [
+				function (spellKey, spellObj, spName) {
+					if (spName == "staff of the magi" && (/\+(\d+d)?\d+\/SL|SL used/i).test(spellObj.description)) {
+						spellObj.description = spellObj.description.replace(/\+(\d+d)?\d+\/SL/ig, '').replace("SL used", "level 3");
+						return true;
+					}
+				}, "Cast as if using a spell slot of the spell's level"
+			]
+		}
+	}
 	"sun blade" : {
 		name : "Sun Blade",
 		source : [["SRD", 246], ["D", 205]],
@@ -949,7 +1133,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "This item appears to be a longsword hilt. While grasping the hilt, you can use a bonus action to cause a blade of pure radiance to spring into existence, or make the blade disappear. While the blade exists, this magic longsword has the finesse property. If you are proficient with shortswords or longswords, you are proficient with the sun blade.\n   You gain a +2 bonus to attack and damage rolls made with this weapon, which deals radiant damage instead of slashing damage. When you hit an undead with it, that target takes an extra 1d8 radiant damage.\n   The sword's luminous blade emits bright light in a 15-foot radius and dim light for an additional 15 feet. The light is sunlight. While the blade persists, you can use an action to expand or reduce its radius of bright and dim light by 5 feet each, to a maximum of 30 feet each or a minimum of 10 feet each.",
 		weight : 3,
 		action : [["bonus action", " (start/stop)"], ["action", " (change light)"]],
-		addWeapons : ["Sun Blade"],
+		weaponsAdd : ["Sun Blade"],
 		weaponOptions : {
 			baseWeapon : "longsword",
 			regExpSearch : /^(?=.*sun)(?=.*blade).*$/i,
@@ -962,8 +1146,8 @@ var Base_MagicItemsList = {
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (v.theWea.name == "Sun Blade" && !fields.prof) {
-						fields.prof = CurrentProfs.weapon.otherWea.finalProfs.indexOf("shortsword") !== -1;
+					if (v.theWea.name == "Sun Blade" && !fields.Proficiency) {
+						fields.Proficiency = CurrentProfs.weapon.otherWea && CurrentProfs.weapon.otherWea.finalProfs.indexOf("shortsword") !== -1;
 					}
 				}, ''
 			]
@@ -1149,6 +1333,7 @@ var Base_MagicItemsList = {
 		choices : ["+1 Weapon (uncommon)", "+2 Weapon (rare)", "+3 Weapon (very rare)"],
 		"+1 weapon (uncommon)" : {
 			name : "Weapon +1",
+			nameTest : "+1 Weapon",
 			rarity : "uncommon",
 			magicItemTable : "F",
 			description : "I have a +1 bonus to attack and damage rolls made with this magic weapon.",
@@ -1156,6 +1341,7 @@ var Base_MagicItemsList = {
 		},
 		"+2 weapon (rare)" : {
 			name : "Weapon +2",
+			nameTest : "+2 Weapon",
 			rarity : "rare",
 			magicItemTable : "F",
 			description : "I have a +2 bonus to attack and damage rolls made with this magic weapon.",
@@ -1163,6 +1349,7 @@ var Base_MagicItemsList = {
 		},
 		"+3 weapon (very rare)" : {
 			name : "Weapon +3",
+			nameTest : "+3 Weapon",
 			rarity : "very rare",
 			magicItemTable : "H",
 			description : "I have a +3 bonus to attack and damage rolls made with this magic weapon.",

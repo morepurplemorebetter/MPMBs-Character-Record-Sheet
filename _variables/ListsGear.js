@@ -695,6 +695,19 @@ var Base_WeaponsList = {
 		abilitytodamage : false,
 		ammo : "holy water"
 	},
+	"burning torch" : {
+		regExpSearch : /^(?=.*torch)(?=.*burning).*$/i,
+		name : "Torch, Burning",
+		source : [["SRD", 68], ["P", 153]],
+		list : "improvised",
+		ability : 1,
+		type : "Improvised Weapons",
+		damage : [1, "", "fire"],
+		range : "Melee",
+		weight : 1,
+		description : "Only does damage while burning",
+		abilitytodamage : false
+	},
 	// Cantrips
 	"spell attack" : {
 		regExpSearch : /^(?=.*spell)(?=.*attack).*$/i,

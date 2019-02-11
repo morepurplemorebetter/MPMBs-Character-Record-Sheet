@@ -213,7 +213,7 @@ function ApplySpell(FldValue, rememberFldName) {
 					var didChange = false;
 					var changeHead = "Changes by " + aFunct;
 					try {
-						didChange = theFunct(theSpl, aSpell, aCast);
+						didChange = theFunct(theSpl, aSpell, aCast ? input[2] : "");
 					} catch (error) {
 						var eText = "The custom function for changing spell attributes from '" + aFunct + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 						for (var e in error) eText += e + ": " + error[e] + ";\n ";
@@ -222,7 +222,7 @@ function ApplySpell(FldValue, rememberFldName) {
 						delete CurrentEvals.spellAdd[aFunct];
 						didChange = false;
 					}
-					if (didChange && CurrentEvals.spellStr[aFunct]) {
+					if (didChange && CurrentEvals.spellStr && CurrentEvals.spellStr[aFunct]) {
 						if (!aSpell.changesObj[changeHead]) {
 							aSpell.changesObj[changeHead] = CurrentEvals.spellStr[aFunct];
 						} else {
@@ -471,6 +471,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 			if (What(headerArray[2]) !== caster) { //if the header was not already set to the class
 				Value(headerArray[1], casterName); //set the name of the header
 				Value(headerArray[2], caster); //set the name of the class
+				if (!spCast.abilityToUse) spCast.abilityToUse = getSpellcastingAbility(caster);
 				PickDropdown(headerArray[3], spCast.abilityToUse[0]); //set the ability score to use
 				AddTooltip(headerArray[3], undefined, spCast.fixedDC ? "fixed" : ""); //set fixed DC to use, if any
 				if (spCast.blueTxt) { //set the remembered bluetext values, if at all present
@@ -546,7 +547,7 @@ function CalcSpellScores() {
 	var theMod = Number(What(modFld));
 	var aClass = What(Fld.replace("DINGDONG", "class")); //find the associated class
 	var cSpells = CurrentSpells[aClass] ? CurrentSpells[aClass] : false;
-	var fixedDC = cSpells && cSpells.fixedDC ? Number(cSpells.fixedDC) : false;
+	var fixedDC = cSpells && !isNaN(cSpells.fixedDC) ? Number(cSpells.fixedDC) : false;
 
 	var theResult = {
 		dc : 0,
@@ -557,8 +558,11 @@ function CalcSpellScores() {
 	var setResults = function(showTheResult) {
 		for (var aType in theResult) {
 			var theR = showTheResult ? theResult[aType] : "";
+			if (showTheResult && (aType !== "prepare" || isPrepareVis)) { // add the modifier field value
+				theR += EvalBonus(What(Fld.replace("spellshead.DINGDONG", "BlueText.spellshead." + aType)), true);
+			}
 			if (aType == fldType) {
-				event.value = theR
+				event.value = theR;
 			} else {
 				Value(Fld.replace("DINGDONG", aType), theR);
 			}
@@ -602,7 +606,7 @@ function CalcSpellScores() {
 					}
 				}
 			} catch (error) {
-				var eText = "The custom spell attack/DC (spellCalc) script '" + spCalc + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
+				var eText = "The custom spell attack/DC (spellCalc) script from '" + spCalc + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 				for (var e in error) eText += e + ": " + error[e] + ";\n ";
 				console.println(eText);
 				console.show();
@@ -5027,6 +5031,7 @@ function HideSpellSheetElement(theTarget) {
 			if (toSearch.indexOf(key) !== -1 || toSearch.indexOf(CurrentSpells[key].name.toLowerCase()) !== -1) {
 				var spCast = CurrentSpells[key];
 				Value(headerArray[2], key);
+				if (!spCast.abilityToUse) spCast.abilityToUse = getSpellcastingAbility(caster);
 				PickDropdown(headerArray[3], spCast.abilityToUse[0]);
 				if (!spCast.level || (spCast.typeSp !== "list" && spCast.typeSp !== "book") || spCast.typeList === 3) toPrep = false;
 				toTest = true;

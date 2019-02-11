@@ -770,9 +770,9 @@ function ApplyWildshape() {
 
 	//get the proficiency bonuses
 	var creaProfBcalc = theCrea.proficiencyBonus;
-	var charProfBcalc = What("Proficiency Bonus");
+	var charProfBcalc = Number(What("Proficiency Bonus"));
 	var creaProfBfix = theCrea.proficiencyBonus;
-	var charProfBfix = What("Proficiency Bonus");
+	var charProfBfix = Number(What("Proficiency Bonus"));
 
 	//get the setting field
 	var setting = What("Wildshapes.Remember").split("!#TheListSeparator#!");
@@ -5707,7 +5707,7 @@ function CalcAttackDmgHit(fldName) {
 
 	// get the damage bonuses from the selected modifier, magic, and the blueText field
 	var output = {
-		prof : !fields.Proficiency ? 0 : (QI ? (tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) ? 0 : What("Proficiency Bonus")) : (tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) ? 0 : What(prefix + "Comp.Use.Proficiency Bonus"))),
+		prof : !fields.Proficiency ? 0 : (QI ? (tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) ? 0 : Number(How("Proficiency Bonus"))) : (tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) ? 0 : What(prefix + "Comp.Use.Proficiency Bonus"))),
 		die : fields.Damage_Die,
 		modToDmg : thisWeapon[2],
 		mod : !fields.Mod || fields.Mod === "empty" ? 0 : What(prefix + fields.Mod),
@@ -5991,7 +5991,7 @@ function EvalBonus(input, notComp, isSpecial) {
 		return Number(input);
 	};
 	var modStr = notComp === true ? ["", " Mod"] : !isSpecial || isSpecial === "test" ? [notComp + "Comp.Use.Ability.", ".Mod"] : [notComp + "Wildshape." + isSpecial + ".Ability.", ".Mod"];
-	var ProfB = notComp === true ? How("Proficiency Bonus") : !isSpecial || isSpecial === "test" ? What(notComp + "Comp.Use.Proficiency Bonus") : What(notComp + "Wildshape." + isSpecial + ".Proficiency Bonus");
+	var ProfB = notComp === true ? Number(How("Proficiency Bonus")) : !isSpecial || isSpecial === "test" ? What(notComp + "Comp.Use.Proficiency Bonus") : What(notComp + "Wildshape." + isSpecial + ".Proficiency Bonus");
 	var abbrRegex = /(o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof))(o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof))/ig;
 	// remove 'dc' and convert commas to dots for decimal handling
 	input = input.replace(/,/g, ".").replace(/dc/ig, "");

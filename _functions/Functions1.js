@@ -4167,7 +4167,7 @@ function CalcSkill() {
 	var ProfBonus = 0;
 	var theProf = Number(What("Proficiency Bonus"));
 	if (tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1 && (event.target.name.indexOf("Passive") !== -1 || event.target.name.indexOf("Initiative") !== -1)) {
-		theProf = How("Proficiency Bonus");
+		theProf = Number(How("Proficiency Bonus"));
 	}
 
 	if (tDoc.getField(Skill + " Prof") && tDoc.getField(Skill + " Prof").isBoxChecked(0) === 1) {
@@ -4426,18 +4426,17 @@ function ApplyFeat(input, FldNmbr) {
 	var oldFeat = CurrentFeats.known[ArrayNmbr];
 	var oldFeatVar = CurrentFeats.choices[ArrayNmbr];
 	var setFieldValueTo;
+	var failedChoice = false;
 
-	var doNotCommit = function() {
-		if (event.target && event.target.name == Fflds[0]) {
-			event.rc = false;
-			var isTempl = typePF || FldNmbr > FieldNumbers.featsD ? ".1" : "";
-			if (isArray(tDoc.getField(event.target.name).page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + isTempl + "').setFocus();", 10);
-		}
+	var doNotCommit = function(toSetVal) {
 		if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
+		if (!IsNotImport) return;
+		event.rc = false;
+		if (isArray(event.target.page)) OpeningStatementVar = app.setTimeOut("tDoc.getField('" + event.target.name + ".1').setFocus();", 10);
 	}
 
 	// If no variant was found, but there is a choice, ask it now
-	if (IsNotImport && aFeat && aFeat.choices && !newFeatVar) {
+	if (aFeat && aFeat.choices && !newFeatVar) {
 		if (parseResult[2].length) {
 			var selectFeatVar = false;
 			if (parseResult[2].length == 1) {
@@ -4453,10 +4452,16 @@ function ApplyFeat(input, FldNmbr) {
 				}
 				selectFeatVar = selectFeatVar && typeof selectFeatVar == "string" && aFeat[selectFeatVar.toLowerCase()] ? selectFeatVar : false;
 			}
-			if (!selectFeatVar) selectFeatVar = AskUserOptions("Select " + aFeat.name + " Type", "The '" + aFeat.name + "' feat has several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the feat line that this feat is in.", parseResult[2], "radio", true);
-			newFeatVar = selectFeatVar.toLowerCase();
-			aFeatVar = aFeat[newFeatVar];
-			setFieldValueTo = aFeatVar.name ? aFeatVar.name : aFeat.name + " [" + selectFeatVar + "]";
+			if (!newFeatVar && !IsNotImport) {
+				failedChoice = true;
+			} else {
+				if (!selectFeatVar) selectFeatVar = AskUserOptions("Select " + aFeat.name + " Type", "The '" + aFeat.name + "' feat has several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the feat line that this feat is in.", parseResult[2], "radio", true);
+				newFeatVar = selectFeatVar.toLowerCase();
+				aFeatVar = aFeat[newFeatVar];
+				setFieldValueTo = aFeatVar.name ? aFeatVar.name : aFeat.name + " [" + selectFeatVar + "]";
+			}
+		} else if (!IsNotImport) {
+			failedChoice = true;
 		} else {
 			app.alert({
 				cTitle : "Error processing options for " + aFeat.name,
@@ -4465,6 +4470,18 @@ function ApplyFeat(input, FldNmbr) {
 			doNotCommit();
 			return;
 		}
+	}
+
+	// if there was a choice but none was selected for whatever reason (importing), do not apply anything and warn the user
+	if (failedChoice) {
+		Value(Fflds[2], 'ERROR, please reapply "' + aFeat.name + '" above.');
+		if (!IsNotImport) {
+			console.println("The feat '" + aFeat.name + "' requires you to make a selection of a sub-choice. However, because this feat was added during importing from another MPMB's Character Record Sheet, no pop-up dialog could be displayed to allow you to make a selection. Please reapply this feat to show the pop-up dialog and make a selection for its sub-choice.");
+			console.show();
+		}
+		if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
+		event.target.setVal = "ERROR, please reapply: " + (aFeat.name.substr(0,2) + "\u200A" + aFeat.name.substr(2)).split(" ").join("\u200A ");
+		return;
 	}
 
 	if (oldFeat === newFeat && oldFeatVar === newFeatVar) {

@@ -1304,7 +1304,7 @@ function DirectImport(consoleTrigger) {
 					nmbrFlds = nmbrFlds[i < 1 ? 0 : 1];
 					if (i === 0) { //set the first class header on SSfront
 						var tClassFld = global.docFrom.getField(prefixFrom + "spellshead.class.0");
-						if (tClassFld && tClassFld.value) SetSpellSheetElement(prefixTo + "spells.remember.0", "header", 0, tClassFld.value);
+						if (tClassFld && tClassFld.value && CurrentSpells[tClassFld.value]) SetSpellSheetElement(prefixTo + "spells.remember.0", "header", 0, tClassFld.value);
 						//hide the prepared section if not visible
 						var tPrepFldFrom = global.docFrom.getField(prefixFrom + "spellshead." + (fromSheetTypePF ? "Image" : "Text") + ".prepare.0");
 						var tPrepFldToNm = prefixTo + "spellshead." + (typePF ? "Image" : "Text") + ".prepare.0";
