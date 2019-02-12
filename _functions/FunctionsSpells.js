@@ -191,6 +191,8 @@ function ApplySpell(FldValue, rememberFldName) {
 			if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
 				aSpell.components = "";
 				aSpell.compMaterial = "Spells cast by magic items don't require any components.";
+				aSpell.description = aSpell.description.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
+				if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
 			}
 			if (aCast && aCast.spellAttrOverride && aCast.spellAttrOverride[theSpl]) {
 				var theOver = aCast.spellAttrOverride[theSpl];
@@ -251,10 +253,15 @@ function ApplySpell(FldValue, rememberFldName) {
 					foundSpell.level == 0 ? spellSchoolList[foundSpell.school].capitalize() + " " + spellLevelList[foundSpell.level].replace(/s\b/, '').toLowerCase() :
 					spellLevelList[foundSpell.level].replace(/s\b/, '').toLowerCase() + " " + spellSchoolList[foundSpell.school];
 				spTooltip += foundSpell.ritual ? " (ritual)" : "";
+
 				if (foundSpell.time) spTooltip += "\n  Casting Time:  " + foundSpell.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
+
 				if (foundSpell.range) spTooltip += "\n  Range:  " + foundSpell.range;
+
 				if (foundSpell.components) spTooltip += "\n  Components:  " + foundSpell.components + (foundSpell.compMaterial ? " (" + foundSpell.compMaterial.substr(0,1).toLowerCase() + foundSpell.compMaterial.substr(1) + ")" : "");
+
 				if (foundSpell.duration) spTooltip += "\n  Duration:  " + foundSpell.duration.replace(/\b(conc), \b/i, '$1entration, up to ').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours').replace(/\(d\)/i, "(dismiss as 1 action)").replace(/(instant)\./i, "$1aneous");
+
 				spTooltip += "\n\n" + foundSpell.descriptionFull;
 				if (ObjLength(aSpell.changesObj)) {
 					var txt = [];
@@ -546,7 +553,7 @@ function CalcSpellScores() {
 	var modFld = What(modFldName);
 	var theMod = Number(What(modFld));
 	var aClass = What(Fld.replace("DINGDONG", "class")); //find the associated class
-	var cSpells = CurrentSpells[aClass] ? CurrentSpells[aClass] : false;
+	var cSpells = aClass && CurrentSpells[aClass] ? CurrentSpells[aClass] : false;
 	var fixedDC = cSpells && !isNaN(cSpells.fixedDC) ? Number(cSpells.fixedDC) : false;
 
 	var theResult = {

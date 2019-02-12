@@ -366,7 +366,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "While this bowl is filled with water, you can use an action to speak the bowl's command word and summon a water elemental, as if you had cast the Conjure Elemental spell. The bowl can't be used this way again until the next dawn.\n   The bowl is about 1 foot in diameter and half as deep. It weighs 3 pounds and holds about 3 gallons.",
 		weight : 3,
 		spellcastingBonus : {
-			name : "Water Elemental",
+			name : "Water Elemental only",
 			spells : ["conjure elemental"],
 			selection : ["conjure elemental"],
 			firstCol : "oncelr"
@@ -428,7 +428,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "While a fire burns in this brass brazier, you can use an action to speak the brazier's command word and summon a fire elemental, as if you had cast the Conjure Elemental spell. The brazier can't be used this way again until the next dawn.\n   The brazier weighs 5 pounds.",
 		weight : 5,
 		spellcastingBonus : {
-			name : "Fire Elemental",
+			name : "Fire Elemental only",
 			spells : ["conjure elemental"],
 			selection : ["conjure elemental"],
 			firstCol : "oncelr"
@@ -457,6 +457,16 @@ var Base_MagicItemsList = {
 			immune: ["Magic Missile spell"]
 		}
 	},
+	"broom of flying" : {
+		name : "Broom of Flying",
+		source : [["SRD", 213], ["D", 156]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "With the command word, this broom hovers and can either be ridden in the air or send alone up to 1 mile by naming a familiar location. It has a flying speed of 50 ft, holds up to 400 lb, but only has 30 ft speed if over 200 lb. It stops hovering when I land. With another command word, it flies to me if within 1 mile.",
+		descriptionFull : "This wooden broom, which weighs 3 pounds, functions like a mundane broom until you stand astride it and speak its command word. It then hovers beneath you and can be ridden in the air. It has a flying speed of 50 feet. It can carry up to 400 pounds, but its flying speed becomes 30 feet while carrying over 200 pounds. The broom stops hovering when you land.\n   You can send the broom to travel alone to a destination within 1 mile of you if you speak the command word, name the location, and are familiar with that place. The broom comes back to you when you speak another command word, provided that the broom is still within 1 mile of you.",
+		weight : 3
+	},
 	"cape of the mountebank" : { // contributed by Smashman
 		name : "Cape of the Mountebank",
 		source : [["SRD", 213], ["D", 157]],
@@ -474,22 +484,164 @@ var Base_MagicItemsList = {
 			firstCol : "oncelr"
 		}
 	},
+	"carpet of flying" : {
+		name : "Carpet of Flying",
+		source : [["SRD", 213], ["D", 157]],
+		type : "wondrous item",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "I can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to my spoken directions if I am within 30 feet of it. A carpet can carry up to twice the weight for its type, but it flies at half speed if it carries more than its normal capacity.",
+		descriptionFull : "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   Four sizes of carpet of flying exist. The DM chooses the size of a given carpet or determines it randomly.\n\n" + toUni("d100\tSize\tCapacity\tFlying Speed") + "\n01-20\t3 \xD7 5 ft.\t  200 lb.\t  80 feet\n21-55\t4 \xD7 6 ft.\t  400 lb.\t  60 feet\n56-80\t5 \xD7 7 ft.\t  600 lb.\t  40 feet\n81-100\t6 \xD7 9 ft.\t  800 lb.\t  30 feet\n\nA carpet can carry up to twice the weight shown on the table, but it flies at half speed if it carries more than its normal capacity.",
+		action : [["action", ""]],
+		choices : ["3 \xD7 5 ft (fly 80 ft, 200 lb)", "4 \xD7 6 ft (fly 60 ft, 400 lb)", "5 \xD7 7 ft (fly 40 ft, 600 lb)", "6 \xD7 9 ft (fly 30 ft, 800 lb)"],
+		"3 \xD7 5 ft (fly 80 ft, 200 lb)" : {
+			name : "Carpet of Flying, 3 ft \xD7 5 ft",
+			nameTest : "Carpet of Flying, 1 m \xD7 1,5 m",
+			description : "I can speak the carpet's command word as an action to make the 3 ft × 5 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 80 ft and can carry up to 400 lb. If it carries more than 200 lb its flying speed is reduced to only 40 ft."
+		},
+		"4 \xD7 6 ft (fly 60 ft, 400 lb)" : {
+			name : "Carpet of Flying, 4 ft \xD7 6 ft",
+			nameTest : "Carpet of Flying, 1,2 m \xD7 2 m",
+			description : "I can speak the carpet's command word as an action to make the 4 ft × 6 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 60 ft and can carry up to 800 lb. If it carries more than 400 lb its flying speed is reduced to only 30 ft."
+		},
+		"5 \xD7 7 ft (fly 40 ft, 600 lb)" : {
+			name : "Carpet of Flying, 5 ft \xD7 7 ft",
+			nameTest : "Carpet of Flying, 1,5 m \xD7 2,1 m",
+			description : "I can speak the carpet's command word as an action to make the 5 ft × 7 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 40 ft and can carry up to 1200 lb. If it carries more than 600 lb its flying speed is reduced to only 20 ft."
+		},
+		"6 \xD7 9 ft (fly 30 ft, 800 lb)" : {
+			name : "Carpet of Flying, 6 ft \xD7 9 ft",
+			nameTest : "Carpet of Flying, 1,8 m \xD7 2,7 m",
+			description : "I can speak the carpet's command word as an action to make the 6 ft × 9 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 30 ft and can carry up to 1600 lb. If it carries more than 800 lb its flying speed is reduced to only 15 ft."
+		}
+	},
+	"censer of controlling air elementals" : {
+		name : "Censer of Controlling Air Elementals",
+		source : [["SRD", 213], ["D", 158]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "While incense is burning in this censer, I can use an action to speak the censer's command word and summon an air elemental, as if I had cast Conjure Elemental. The censer can't be used this way again until the next dawn. This 6\" wide, 1' high vessel resembles a chalice with a decorated lid.",
+		descriptionFull : "While incense is burning in this censer, you can use an action to speak the censer's command word and summon an air elemental, as if you had cast the Conjure Elemental spell. The censer can't be used this way again until the next dawn.\n   This 6-inch-wide, 1-foot-high vessel resembles a chalice with a decorated lid. It weighs 1 pound.",
+		weight : 1,
+		spellcastingBonus : {
+			name : "Air Elemental only",
+			spells : ["conjure elemental"],
+			selection : ["conjure elemental"],
+			firstCol : "oncelr"
+		},
+		usages : 1, 
+		recovery : "dawn",
+		spellChanges : {
+			"conjure elemental" : {
+				time : "1 a",
+				description : "CR 5 air elemental that obeys your verbal commands; on broken conc. elemental breaks free",
+				changes : "Using the Censer of Controlling Air Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth an air elemental."
+			}
+		}
+	},
+	"chime of opening" : { // contributed by AelarTheElfRogue
+		name : "Chime of Opening",
+		source : [["SRD", 213], ["D", 158]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "C",
+		description : "I can strike this as an action, pointing it at an object within 120 ft of me that can be opened (i.e. door, lid, lock). One lock or latch on it opens unless the sound can't reach it. If no locks or latches remain, the object itself opens. The chime can be used ten times. After the tenth time it cracks and becomes useless.",
+		descriptionFull : "This hollow metal tube measures about 1 foot long and weighs 1 pound. You can strike it as an action, pointing it at an object within 120 feet of you that can be opened, such as a door, lid, or lock. The chime issues a clear tone, and one lock or latch on the object opens unless the sound can't reach the object. If no locks or latches remain, the object itself opens.\n   The chime can be used ten times. After the tenth time it cracks and becomes useless.",
+		weight : 1,
+		action : [["action", ""]],
+		usages : 10,
+		recovery : "Never"
+	},
+	"cloak of displacement" : { // contributed by Smashman
+		name : "Cloak of Displacement",
+		source : [["SRD", 214], ["D", 158]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "While I wear this cloak, creatures have disadvantage on attack rolls against me as I appear to be standing in a slightly different location. If I take damage, this property ceases to function until the start of my next turn. The property is suppressed while I am incapacitated, restrained, or otherwise unable to move.",
+		descriptionFull : "While you wear this cloak, it projects an illusion that makes you appear to be standing in a place near your actual location, causing any creature to have disadvantage on attack rolls against you. If you take damage, the property ceases to function until the start of your next turn. This property is suppressed while you are incapacitated, restrained, or otherwise unable to move.",
+		attunement : true
+	},
 	"crystal ball" : {
 		name : "Crystal Ball",
 		source : [["SRD", 214], ["D", 159]],
 		type : "wondrous item",
-		rarity : "very rare",
-		magicItemTable : "H",
 		description : "I can cast Scrying (save DC 17) while touching this ball of about 6 inches in diameter.",
 		descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.",
 		attunement : true,
 		weight : 3,
+		allowDuplicates : true,
 		fixedDC : 17,
 		spellcastingBonus : {
 			name : "DC 17",
 			spells : ["scrying"],
 			selection : ["scrying"],
 			firstCol : "atwill"
+		},
+		choices : ["Crystal Ball  ", "Crystal Ball of Mind Reading", "Crystal Ball of Telepathy", "Crystal Ball of True Seeing"],
+		"crystal ball  " : {
+			name : "Crystal Ball  ",
+			rarity : "very rare",
+			magicItemTable : "H"
+		},
+		"crystal ball of mind reading" : {
+			name : "Crystal Ball of Mind Reading",
+			rarity : "legendary",
+			magicItemTable : "I",
+			description : "I can cast Scrying (DC 17) while touching this crystal ball of 6\" diameter. While scrying, I can cast Detect Thoughts (DC 17) to target creatures I can see within 30 ft of the spell's sensor. I don't need to concentrate on this Detect Thoughts, but it ends when the scrying ends.",
+			descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   You can use an action to cast the Detect Thoughts spell (save DC 17) while you are Scrying with the crystal ball, targeting creatures you can see within 30 feet of the spell's sensor. You don't need to concentrate on this Detect Thoughts to maintain it during its duration, but it ends if Scrying ends.",
+			spellcastingBonus : {
+				name : "DC 17",
+				spells : ["detect thoughts"],
+				selection : ["detect thoughts"],
+				firstCol : "atwill"
+			},
+			spellChanges : {
+				"detect thoughts" : {
+					duration : "1 min",
+					changes : "Detect Thoughts only works through the spell sensor of the Scrying spell and doesn't require concentration. It ends when the Scrying spell ends."
+				}
+			}
+		},
+		"crystal ball of telepathy" : {
+			name : "Crystal Ball of Telepathy",
+			rarity : "legendary",
+			magicItemTable : "I",
+			description : "I can cast Scrying (DC 17) while touching this 6\" crystal ball. While scrying, I can communicate telepathically with creatures within 30 ft of the spell's sensor and can cast Suggestion (DC 17) once per dawn on one of them. I don't need to concentrate on this Suggestion, but it ends when the scrying ends.",
+			descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   While Scrying with the crystal ball, you can communicate telepathically with creatures you can see within 30 feet of the spell's sensor. You can also use an action to cast the Suggestion spell (save DC 17) through the sensor on one of those creatures. You don't need to concentrate on this suggestion to maintain it during its duration, but it ends if Scrying ends. Once used, the suggestion power of the crystal ball can't be used again until the next dawn.",
+			spellcastingBonus : {
+				name : "DC 17",
+				spells : ["suggestion"],
+				selection : ["suggestion"],
+				firstCol : "oncelr"
+			},
+			limfeaname : "Suggestion through Crystal Ball",
+			usages : 1,
+			recovery : "dawn",
+			spellChanges : {
+				"suggestion" : {
+					duration : "8 h (scrying)",
+					changes : "Suggestion only works through the spell sensor of the Scrying spell and doesn't require concentration. It ends when the Scrying spell ends."
+				},
+				"scrying" : {
+					description : "1 crea save or sensor follows it around; or sensor in familiar location; telepathy 30 ft on sensor; see B",
+					changes : "I can communicate telepathically with creatures within 30 ft of the scrying sensor."
+				}
+			}
+		},
+		"crystal ball of true seeing" : {
+			name : "Crystal Ball of True Seeing",
+			rarity : "legendary",
+			magicItemTable : "I",
+			description : "I can cast Scrying (save DC 17) while touching this ball of about 6 inches in diameter. While scrying, I can see out from the spell's sensor with truesight out to 120 ft.",
+			descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   While Scrying with the crystal ball, you have truesight with a radius of 120 feet centered on the spell's sensor.",
+			spellChanges : {
+				"scrying" : {
+					description : "1 crea save or sensor follows it around; or sensor in familiar location; truesight 120 ft on sensor; see B",
+					changes : "I have truesight out to 120 ft from the scrying sensor."
+				}
+			}
 		}
 	},
 	"dancing sword" : {
@@ -562,6 +714,113 @@ var Base_MagicItemsList = {
 					}
 				}, ''
 			]
+		}
+	},
+	"dragon scale mail" : {
+		name : "Dragon Scale Mail",
+		source : [["SRD", 219], ["D", 165]],
+		type : "armor (scale mail)",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "While wearing this armor, I gain a resistance to a damage type, +1 AC and advantage on saving throws against the frightful presence and breath weapons of dragons. Once per dawn as an action, I can magically discern the distance and direction to the closest dragon of the armor's type within 30 miles of me.",
+		descriptionFull : "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued.\n   While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to one damage type that is determined by the kind of dragon that provided the scales (see the table).\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest dragon within 30 miles of you that is of the same type as the armor. This special action can't be used again until the next dawn.\n\n" + toUni("Dragon\tResistance\tDragon\tResistance") + "\nBlack\tAcid\t\tGold\tFire\nBlue\tLightning  \tGreen\tPoison\nBrass\tFire\t\tRed\tFire\nBronze\tLightning  \tSilver\tCold\nCopper\tAcid\t\tWhite\tCold",
+		attunement : true,
+		weight : 45,
+		allowDuplicates : true,
+		usages : 1,
+		recovery : "dawn",
+		savetxt : {
+			adv_vs : ["Dragon Frightful Presence", "Dragon Breath Weapons"],
+		},
+		armorOptions : {
+			regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
+			name : "Dragon Scale Mail",
+			source : [["SRD", 219], ["D", 165]],
+			type : "medium",
+			ac : 15,
+			stealthdis : true,
+			weight : 45
+		},
+		choices : ["Black (acid)", "Blue (lightning)", "Brass (fire)", "Bronze (lightning)", "Copper (acid)", "Gold (fire)", "Green (poison)", "Red (fire)", "Silver (cold)", "White (cold)"],
+		"black (acid)" : {
+			name : "Black Dragon Scale Mail",
+			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to acid damage. As an action, I can magically discern the distance and direction to the closest black dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
+			armorAdd : "Black Dragon Scale Mail",
+			dmgres: ["Acid"],
+			limfeaname : "Detect Black Dragon",
+			action : [["action", "Detect Black Dragon"]]
+		},
+		"blue (lightning)" : {
+			name : "Blue Dragon Scale Mail",
+			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to lightning damage. As an action, I can magically discern the distance and direction to the closest blue dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
+			armorAdd : "Blue Dragon Scale Mail",
+			dmgres: ["Lightning"],
+			limfeaname : "Detect Blue Dragon",
+			action : [["action", "Detect Blue Dragon"]]
+		},
+		"brass (fire)" : {
+			name : "Brass Dragon Scale Mail",
+			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest brass dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
+			armorAdd : "Brass Dragon Scale Mail",
+			dmgres: ["Fire"],
+			limfeaname : "Detect Brass Dragon",
+			action : [["action", "Detect Brass Dragon"]]
+		},
+		"bronze (lightning)" : {
+			name : "Bronze Dragon Scale Mail",
+			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to lightning damage. As an action, I can magically discern the distance and direction to the closest bronze dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
+			armorAdd : "Bronze Dragon Scale Mail",
+			dmgres: ["Lightning"],
+			limfeaname : "Detect Bronze Dragon",
+			action : [["action", "Detect Bronze Dragon"]]
+		},
+		"copper (acid)" : {
+			name : "Copper Dragon Scale Mail",
+			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to acid damage. As an action, I can magically discern the distance and direction to the closest copper dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
+			armorAdd : "Copper Dragon Scale Mail",
+			dmgres: ["Acid"],
+			limfeaname : "Detect Copper Dragon",
+			action : [["action", "Detect Copper Dragon"]]
+		},
+		"gold (fire)" : {
+			name : "Gold Dragon Scale Mail",
+			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest gold dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
+			armorAdd : "Gold Dragon Scale Mail",
+			dmgres: ["Fire"],
+			limfeaname : "Detect Gold Dragon",
+			action : [["action", "Detect Gold Dragon"]]
+		},
+		"green (poison)" : {
+			name : "Green Dragon Scale Mail",
+			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to poison damage. As an action, I can magically discern the distance and direction to the closest green dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
+			armorAdd : "Green Dragon Scale Mail",
+			dmgres: ["Poison"],
+			limfeaname : "Detect Green Dragon",
+			action : [["action", "Detect Green Dragon"]]
+		},
+		"red (fire)" : {
+			name : "Red Dragon Scale Mail",
+			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest red dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
+			armorAdd : "Red Dragon Scale Mail",
+			dmgres: ["Fire"],
+			limfeaname : "Detect Red Dragon",
+			action : [["action", "Detect Red Dragon"]]
+		},
+		"silver (cold)" : {
+			name : "Silver Dragon Scale Mail",
+			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to cold damage. As an action, I can magically discern the distance and direction to the closest silver dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
+			armorAdd : "Silver Dragon Scale Mail",
+			dmgres: ["Cold"],
+			limfeaname : "Detect Silver Dragon",
+			action : [["action", "Detect Silver Dragon"]]
+		},
+		"white (cold)" : {
+			name : "White Dragon Scale Mail",
+			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to cold damage. As an action, I can magically discern the distance and direction to the closest white dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
+			armorAdd : "White Dragon Scale Mail",
+			dmgres: ["Cold"],
+			limfeaname : "Detect White Dragon",
+			action : [["action", "Detect White Dragon"]]
 		}
 	},
 	"dragon slayer" : {
@@ -748,7 +1007,7 @@ var Base_MagicItemsList = {
 		description : "Studded leather with +1 AC. As a bonus action, I can speak its command word and have it assume the appearance of a normal set of clothing or another armor. I decide what it looks like: style, color, and accessories, but the armor retains its bulk and weight. The illusion lasts until I use this again or remove the armor.",
 		weight : 13,
 		descriptionFull : "While wearing this armor, you gain a +1 bonus to AC. You can also use a bonus action to speak the armor's command word and cause the armor to assume the appearance of a normal set of clothing or some other kind of armor. You decide what it looks like, including color, style, and accessories, but the armor retains its normal bulk and weight. The illusory appearance last until you use this property again or remove the armor.",
-		addArmor : "Glamoured Studded Leather",
+		armorAdd : "Glamoured Studded Leather",
 		armorOptions : {
 			regExpSearch : /^(?=.*glamou?r)(?=.*(studded|studs))(?=.*leather).*$/i,
 			name : "Glamoured studded Leather",
@@ -1098,16 +1357,16 @@ var Base_MagicItemsList = {
 			"fireball" : {
 				nameShort : "Fireball (7th level)",
 				description : "20-ft rad all crea 12d6 Fire dmg; save halves; unattended flammable objects ignite",
-				changes : "Cast as if using a 7th-level spell slot"
+				changes : "Cast as if using a 7th-level spell slot."
 			},
 			"lightning bolt" : {
 				nameShort : "Lightning Bolt (7th level)",
 				description : "100-ft long 5-ft wide all 12d6 Lightning dmg; save halves; unattended flammable obj ignite",
-				changes : "Cast as if using a 7th-level spell slot"
+				changes : "Cast as if using a 7th-level spell slot."
 			},
 			"conjure elemental" : {
 				time : "1 a",
-				changes : "Casting time is only 1 action instead of 1 minute"
+				changes : "Casting time is only 1 action instead of 1 minute."
 			}
 		},
 		calcChanges : {
@@ -1120,7 +1379,32 @@ var Base_MagicItemsList = {
 				}, "Cast as if using a spell slot of the spell's level"
 			]
 		}
-	}
+	},
+	"stone of controlling earth elementals" : {
+		name : "Stone of Controlling Earth Elementals",
+		source : [["SRD", 246], ["D", 205]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "While the stone is touching the ground, I can use an action to speak its command word and summon an earth elemental, as if I had cast the Conjure Elemental spell. The stone can't be used this way again until the next dawn.",
+		descriptionFull : "If the stone is touching the ground, you can use an action to speak its command word and summon an earth elemental, as if you had cast the Conjure Elemental spell. The stone can't be used this way again until the next dawn. The stone weighs 5 pounds.",
+		weight : 5,
+		spellcastingBonus : {
+			name : "Earth Elemental only",
+			spells : ["conjure elemental"],
+			selection : ["conjure elemental"],
+			firstCol : "oncelr"
+		},
+		usages : 1, 
+		recovery : "dawn",
+		spellChanges : {
+			"conjure elemental" : {
+				time : "1 a",
+				description : "CR 5 earth elemental that obeys your verbal commands; on broken conc. elemental breaks free",
+				changes : "Using the Stone of Controlling Earth Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth an earth elemental."
+			}
+		}
+	},
 	"sun blade" : {
 		name : "Sun Blade",
 		source : [["SRD", 246], ["D", 205]],
@@ -1193,7 +1477,7 @@ var Base_MagicItemsList = {
 		rarity : "rare",
 		magicItemTable : "H",
 		attunement : true,
-		description : "When I roll a 20 to hit with this magic sword vs. a creature, it takes +14 slashing damage and I have a 5% chance of lobbing off one of its limbs. It does maximum damage vs. objects. With the command word, the blade gives bright light in a 10-ft radius & dim light in another 10 ft. " + (typePF ? "This stops if sheathed." : "The light stops when commanded again or sheathed."),
+		description : "When I roll a 20 to hit with this magic sword vs. a creature, it takes +14 slashing damage and I have a 5% chance of lobbing off one of its limbs. It does maximum damage vs. objects. With the command word, the blade gives bright light in a 10-ft radius \u0026 dim light in another 10 ft. " + (typePF ? "This stops if sheathed." : "The light stops when commanded again or sheathed."),
 		descriptionLong : "When I attack a creature with this magic sword and roll a 20 on the attack roll, that target takes an extra 14 slashing damage and I roll another d20. If that turns op 20 as well, I lob off one of the target's limbs. If the creature has no limb to sever, you lop off a portion of its body instead. When used against an object, the damage dice are maximized. In addition, I can speak the sword's command word to cause the blade to shed bright light in a 10-foot radius and dim light for an additional 10 feet. Speaking the command word again or sheathing the sword puts out the light.",
 		descriptionFull : "When you attack an object with this magic sword and hit, maximize your weapon damage dice against the target.\n   When you attack a creature with this weapon and roll a 20 on the attack roll, that target takes an extra 14 slashing damage. Then roll another d20. If you roll a 20, you lop off one of the target's limbs, with the effect of such loss determined by the DM. If the creature has no limb to sever, you lop off a portion of its body instead.\n   In addition, you can speak the sword's command word to cause the blade to shed bright light in a 10-foot radius and dim light for an additional 10 feet. Speaking the command word again or sheathing the sword puts out the light.", // the SRD says 4d6 but that is incorrect
 		chooseGear : {

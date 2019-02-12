@@ -1888,6 +1888,9 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		} else if (classesTemp[oClass].subclass !== classes.old[oClass].subclass) {
 			// when only changing the subclass, or adding a new one, remove the base features of the subclass and add those of the new class
 			ApplyClassBaseAttributes([classes.old[oClass].subclass, classesTemp[oClass].subclass], oClass, classes.primary == oClass);
+			// if the class doesn't have spellcasting, but the old subclass did, remove it from the CurrentSpells variable
+			var oldSubClass = classes.old[oClass].subclass ? ClassSubList[classes.old[oClass].subclass] : false;
+			if (oldSubClass && oldSubClass.spellcastingFactor && !ClassList[oClass].spellcastingFactor) delete CurrentSpells[oClass];
 		}
 
 		// update things when removing a whole class or when removing a subclass
@@ -7651,7 +7654,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 
 	var theConvert = function (amount, units) {
 		amount = Number(amount);
-		var total, unit, rounded;
+		var total, unit, isRounded;
 		switch (units){
 		 case "mile" : case "miles" :
 			total = MILEtoKM(amount);
@@ -7661,7 +7664,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 			total = FTtoM(amount);
 			unit = "m";
 			break;
-		 case "in" : case "inch" : case "inches" :
+		 case "in" : case "inch" : case "inches" : case '"' :
 			total = INtoCM(amount);
 			unit = "cm";
 			break;
@@ -7684,24 +7687,30 @@ function ConvertToMetric(inputString, rounded, exact) {
 		 case "\u00B0 f" : case "\u00B0f" : case "degree fahrenheit" : case "degrees fahrenheit" : case "fahrenheit" :
 			total = RoundTo(FtoC(amount), exact ? 0.01 : 1, false, true);
 			unit = "\u00B0C";
-			rounded = true;
+			isRounded = true;
 			break;
 		}
-		return [total, unit, rounded];
+		return [total, unit, isRounded];
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/(\b|-)\d+(,|\.|\/)?\d*\/?(-?\d+?(,|\.|\/)?\d*)?\s?-?((in|inch|inches|miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?|gal|gallons?|\u00B0 ?f|degrees? fahrenheit|fahrenheit)\b|('($|\s)|'\d+\w?"))/ig);
+	var measurements = inputString.match(/(\b|-)\d+(,|\.|\/)?\d*\/?(-?\d+?(,|\.|\/)?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|(in|inch|inches|miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?|gal|gallons?|\u00B0 ?f|degrees? fahrenheit|fahrenheit)\b)/ig);
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
-			if ((/'/).test(measurements[i]) && (/\"/).test(measurements[i])) {
+			if ((/'.+"/).test(measurements[i])) {
+				if ((/'.+"\W/).test(measurements[i])) {
+					measurements[i] = measurements[i].substr(0, measurements[i].length - 1);
+				}
 				var orgFT = parseFloat(measurements[i].substring(0,measurements[i].indexOf("'")));
-				var orgIN = parseFloat(measurements[i].substring(measurements[i].indexOf("'") + 1, measurements[i].indexOf("\"")));
+				var orgIN = parseFloat(measurements[i].substring(measurements[i].indexOf("'") + 1, measurements[i].indexOf('"')));
 				var resulted = theConvert(parseFloat(orgIN/12) + parseFloat(orgFT), "ft");
 			} else {
+				if ((/\d+('|")\W/).test(measurements[i])) {
+					measurements[i] = measurements[i].substr(0, measurements[i].length - 1);
+				}
 				var org = measurements[i].replace(/,/g, ".");
-				var orgUnit = org.match(/[-\s]*([\u00B0 A-z']+)$/)[1].toLowerCase();
+				var orgUnit = org.match(/[-\s]*([\u00B0 A-z'"]+)$/)[1].toLowerCase();
 				var fraction;
 
 				if (fraction = org.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/) ){
@@ -7756,7 +7765,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 
 	var theConvert = function (amount, units) {
 		amount = Number(amount);
-		var total, unit, rounded;
+		var total, unit, isRounded;
 		switch (units){
 		 case "cm" :
 			if (amount < 30) {
@@ -7794,10 +7803,10 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 		 case "\u00B0 c" : case "\u00B0c" : case "degree celcius" : case "degrees celcius" : case "celcius" :
 			total = RoundTo(CofF(amount), exact ? 0.01 : 1, false, true);
 			unit = "\u00B0F";
-			rounded = true;
+			isRounded = true;
 			break;
 		}
-		return [total, unit, rounded];
+		return [total, unit, isRounded];
 	}
 
 	// find all labeled measurements in string
