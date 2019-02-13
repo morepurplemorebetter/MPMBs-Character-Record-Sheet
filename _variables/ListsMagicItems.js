@@ -860,6 +860,15 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
+	"dust of disappearance" : {
+		name : "Dust of Disappearance",
+		source : [["SRD", 219], ["D", 166]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "Once as an action, I can throw this dust into the air. By doing so, me and all creatures within 10 ft of me become invisible for 2d4 minutes. The duration is the same for all subjects. If a creature affected by the dust attacks or casts a spell, the invisibility ends for that creature.",
+		descriptionFull : "Found in a small packet, this powder resembles very fine sand. There is enough of it for one use. When you use an action to throw the dust into the air, you and each creature and object within 10 feet of you become invisible for 2d4 minutes. The duration is the same for all subjects, and the dust is consumed when its magic takes effect. If a creature affected by the dust attacks or casts a spell, the invisibility ends for that creature."
+	},
 	"dwarven thrower" : {
 		name : "Dwarven Thrower",
 		source : [["SRD", 220], ["D", 167]],
@@ -1176,7 +1185,8 @@ var Base_MagicItemsList = {
 		type : "potion",
 		rarity : "very rare",
 		magicItemTable : "D",
-		description : "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\rThe potion's yellow fluid is streaked with black and swirls on its own.",
+		description : "Once as an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
+		descriptionLong : "Once as an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own. Haste doubles its speed, gives a +2 bonus to AC, gives advantage on Dex saves, and gives an additional action on each turn. That action can be used only to take the Attack (one weapon attack only), Dash, Disengage, Hide, or Use an Object action. When the spell ends, the target can't move or take actions until after its next turn, as a wave of lethargy sweeps over it.",
 		descriptionFull : "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
 		weight : 0.5
 	},

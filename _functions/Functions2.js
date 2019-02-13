@@ -1013,9 +1013,10 @@ function ApplyWildshape() {
 		//set to hit
 		var tohitProfB = setting[1].indexOf("attacks") !== -1 ? charProfBfix : creaProfBfix;
 		tohitProfB = tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1 ? 0 : tohitProfB;
-		var tohitString = atk.dc ? "DC " + (8 + tohitProfB + atkMod) : tohitProfB + atkMod;
-		tohitString += atk.tohit ? "" : (!atkAlt[0] ? 0 : (!isNaN(atkAlt[0]) ? atkAlt[0] : mods[AbilityScores.abbreviations.indexOf(atkAlt[0])])); //add a modifier, if defined
-		tohitString = !isNaN(tohitString) && tohitString > 0 ? "+" + tohitString : tohitString;
+		var tohitString = atk.dc ? 8 + tohitProfB + atkMod : tohitProfB + atkMod;
+		if (atkAlt[0]) tohitString += !isNaN(atkAlt[0]) ? atkAlt[0] : AbilityScores.abbreviations.indexOf(atkAlt[0]) !== -1 ? mods[AbilityScores.abbreviations.indexOf(atkAlt[0])] : 0; //add a modifier, if defined
+		if (atk.dc) tohitString = "DC " + tohitString;
+		if (!isNaN(tohitString) && tohitString > 0) tohitString = "+" + tohitString;
 		Value(atkStr + ".To Hit", tohitString); //set to hit string
 
 		//set damage
