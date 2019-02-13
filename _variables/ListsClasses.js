@@ -2258,10 +2258,27 @@ var Base_ClassSubList = {
 				minlevel : 1,
 				description : "\n   " + "When I use a spell that restores hit points, it restores an additional 2 + spell level",
 /* STILL TO DO!!!!
+Aura of Life
+Aura of Vitality
+Cure Wounds
+Enervation // no Blessed Healer or Supreme Healing
+Heal
+Healing Spirit
+Healing Word
+Heroes' Feast // Not Sure
+Life Transference
+Mass Cure Wounds
+Mass Heal
+Mass Healing Word
+Power Word Heal // heals full already
+Prayer of Healing
+Regenerate // also each turn
+Vampiric Touch // no Blessed Healer or Supreme Healing
+
 				calcChanges : {
 					spellAdd : [
 						function (spellKey, spellObj, spName) {
-							var toAdd = spellObj.level + 2;
+							var toAdd = "+SpellLevel+2";
 							var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? poison (dmg|damage))/i;
 							if ((testRegex).test(spellObj.description)) {
 								spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
