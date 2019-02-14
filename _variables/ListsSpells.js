@@ -710,7 +710,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Conc, 1 h",
-		description : "Summon 2+2/2SL CR of beasts that obey your verbal commands",
+		description : "Summon 2+2/2SL CR of beasts; obey your verbal commands",
 		descriptionFull : "You summon fey spirits that take the form of beasts and appear in unoccupied spaces that you can see within range. Choose one of the following options for what appears." + "\n " + "\u2022 One beast of challenge rating 2 or lower" + "\n " + "\u2022 Two beasts of challenge rating 1 or lower" + "\n " + "\u2022 Four beasts of challenge rating 1/2 or lower" + "\n " + "\u2022 Eight beasts of challenge rating 1/4 or lower" + "\n\n" + "Each beast is also considered fey, and it disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The summoned creatures are friendly to you and your companions. Roll initiative for the summoned creatures as a group, which has its own turns. They obey any verbal commands that you issue to them (no action required by you). If you don't issue any commands to them, they defend themselves from hostile creatures, but otherwise take no actions. The DM has the creatures' statistics." + AtHigherLevels + "When you cast this spell using certain higher-level spell slots, you choose one of the summoning options above, and more creatures appear - twice as many with a 5th-level slot, three times as many with a 7th-level slot, and four times as many with a 9th-level slot."
 	},
 	"conjure celestial" : {
@@ -723,7 +723,7 @@ var Base_SpellsList = {
 		range : "90 ft",
 		components : "V,S",
 		duration : "Conc, 1 h",
-		description : "CR 4+1/2SL celestial that obeys your verbal commands if they do not go against its alignment",
+		description : "CR 4+1/2SL celestial; obeys your verbal commands if they do not go against its alignment",
 		descriptionFull : "You summon a celestial of challenge rating 4 or lower, which appears in an unoccupied space that you can see within range. The celestial disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The celestial is friendly to you and your companions for the duration. Roll initiative for the celestial, which has its own turns. It obeys any verbal commands that you issue to it (no action required by you), as long as they don't violate its alignment. If you don't issue any commands to the celestial, it defends itself from hostile creatures but otherwise takes no actions The DM has the celestial's statistics. At Higher Levels:" + "\n   " + "When you cast this spell using a 9th-level spell slot, you summon a celestial of challenge rating 5 or lower."
 	},
 	"conjure elemental" : {
@@ -737,7 +737,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "Burning incense for air, soft clay for earth, sulfur and phosphorus for fire, or water and sand for water",
 		duration : "Conc, 1 h",
-		description : "CR 5+1/SL elemental that obeys your verbal commands; on broken conc. elemental breaks free",
+		description : "CR 5+1/SL elemental; obeys your verbal commands; breaks free on broken conc.",
 		descriptionFull : "You call forth an elemental servant. Choose an area of air, earth, fire, or water that fills a 10-foot cube within range. An elemental of challenge rating 5 or lower appropriate to the area you chose appears in an unoccupied space within 10 feet of it. For example, a fire elemental emerges from a bonfire, and an earth elemental rises up from the ground. The elemental disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The elemental is friendly to you and your companions for the duration. Roll initiative for the elemental, which has its own turns. It obeys any verbal commands that you issue to it (no action required by you). If you don't issue any commands to the elemental, it defends itself from hostile creatures but otherwise takes no actions." + "\n   " + "If your concentration is broken, the elemental doesn't disappear. Instead, you lose control of the elemental, it becomes hostile toward you and your companions, and it might attack. An uncontrolled elemental can't be dismissed by you, and it disappears 1 hour after you summoned it. The DM has the elemental's statistics." + AtHigherLevels + "When you cast this spell using a spell slot of 6th level or higher, the challenge rating increases by 1 for each slot level above 5th."
 	},
 	"conjure fey" : {
@@ -750,7 +750,7 @@ var Base_SpellsList = {
 		range : "90 ft",
 		components : "V,S",
 		duration : "Conc, 1 h",
-		description : "CR 6+1/SL fey that obeys your verbal commands not against its align.; on broken conc. fey breaks free",
+		description : "CR 6+1/SL fey; obeys your verbal commands not against its align.; breaks free on broken conc.",
 		descriptionFull : "You summon a fey creature of challenge rating 6 or lower, or a fey spirit that takes the form of a beast of challenge rating 6 or lower. It appears in an unoccupied space that you can see within range. The fey creature disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The fey creature is friendly to you and your companions for the duration. Roll initiative for the creature, which has its own turns. It obeys any verbal commands that you issue to it (no action required by you), as long as they don't violate its alignment. If you don't issue any commands to the fey creature, it defends itself from hostile creatures but otherwise takes no actions." + "\n   " + "If your concentration is broken, the fey creature doesn't disappear. Instead, you lose control of the fey creature, it becomes hostile toward you and your companions, and it might attack. An uncontrolled fey creature can't be dismissed by you, and it disappears 1 hour after you summoned it. The DM has the fey creature's statistics." + AtHigherLevels + "When you cast this spell using a spell slot of 7th level or higher, the challenge rating increases by 1 for each slot level above 6th."
 	},
 	"conjure minor elementals" : {
@@ -764,7 +764,7 @@ var Base_SpellsList = {
 		range : "90 ft",
 		components : "V,S",
 		duration : "Conc, 1 h",
-		description : "Summon 2+2/2SL CR of elementals that obey your verbal commands",
+		description : "Summon 2+2/2SL CR of elementals; obey your verbal commands",
 		descriptionFull : "You summon elementals that appear in unoccupied spaces that you can see within range. You choose one the following options for what appears." + "\n " + "\u2022 One elemental of challenge rating 2 or lower" + "\n " + "\u2022 Two elementals of challenge rating 1 or lower" + "\n " + "\u2022 Four elementals of challenge rating 1/2 or lower" + "\n " + "\u2022 Eight elementals of challenge rating 1/4 or lower." + "\n\n" + "An elemental summoned by this spell disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The summoned creatures are friendly to you and your companions. Roll initiative for the summoned creatures as a group, which has its own turns. They obey any verbal commands that you issue to them (no action required by you). If you don't issue any commands to them, they defend themselves from hostile creatures, but otherwise take no actions. The DM has the creatures' statistics." + AtHigherLevels + "When you cast this spell using certain higher-level spell slots, you choose one of the summoning options above, and more creatures appear - twice as many with a 6th-level slot and three times as many with an 8th-level slot."
 	},
 	"conjure woodland beings" : {
@@ -779,7 +779,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "One holly berry per creature summoned",
 		duration : "Conc, 1 h",
-		description : "Summon 2+2/2SL CR of fey that obey your verbal commands",
+		description : "Summon 2+2/2SL CR of fey; obey your verbal commands",
 		descriptionFull : "You summon fey creatures that appear in unoccupied spaces that you can see within range. Choose one of the following options for what appears." + "\n " + "\u2022 One fey creature of challenge rating 2 or lower" + "\n " + "\u2022 Two fey creatures of challenge rating 1 or lower" + "\n " + "\u2022 Four fey creatures of challenge rating 1/2 or lower" + "\n " + "\u2022 Eight fey creatures of challenge rating 1/4 or lower" + "\n\n" + "A summoned creature disappears when it drops to 0 hit points or when the spell ends. The summoned creatures are friendly to you and your companions. Roll initiative for the summoned creatures as a group, which have their own turns. They obey any verbal commands that you issue to them (no action required by you). If you don't issue any commands to them, they defend themselves from hostile creatures, but otherwise take no actions. The DM has the creatures' statistics." + AtHigherLevels + "When you cast this spell using certain higher-level spell slots, you choose one of the summoning options above, and more creatures appear - twice as many with a 6th-level slot and three times as many with an 8th-level slot."
 	},
 	"contact other plane" : {
@@ -1860,7 +1860,7 @@ var Base_SpellsList = {
 		range : "30 ft",
 		components : "V,S",
 		duration : "Conc, 10 min",
-		description : "Transform centipedes, spiders, wasps, or scorpions into giant versions that obey your verbal commands",
+		description : "Transform centipedes, spiders, wasps, or scorpions into giant versions; obey your verbal commands",
 		descriptionFull : "You transform up to ten centipedes, three spiders, five wasps, or one scorpion within range into giant versions of their natural forms for the duration. A centipede becomes a giant centipede, a spider becomes a giant spider, a wasp becomes a giant wasp, and a scorpion becomes a giant scorpion." + "\n   " + "Each creature obeys your verbal commands, and in combat, they act on your turn each round. The DM has the statistics for these creatures and resolves their actions and movement." + "\n   " + "A creature remains in its giant size for the duration, until it drops to 0 hit points, or until you use an action to dismiss the effect on it." + "\n   " + "The DM might allow you to choose different targets. For example, if you transform a bee, its giant version might have the same statistics as a giant wasp."
 	},
 	"glibness" : {
@@ -3339,7 +3339,7 @@ var Base_SpellsList = {
 		school : "Abjur",
 		time : "1 a",
 		range : "Touch",
-		components : "V,S,M",
+		components : "V,S,M\u2020",
 		compMaterial : "Holy water or powdered silver and iron, which the spell consumes",
 		duration : "Conc, 10 min",
 		description : "1 crea immune fear/charm/possess by abber./celest./elem./fey/fiends/undead, they also dis. on atks",

@@ -529,6 +529,18 @@ var Base_ClassList = {
 				source : [["SRD", 21], ["P", 67]],
 				minlevel : 20,
 				description : "\n   " + "I can use Wild Shape an unlimited number of times" + "\n   " + "My druid spells don't require verbal, somatic, or free material components"
+			},
+			calcChanges : {
+				spellAdd : [
+					function (spellKey, spellObj, spName) {
+						if (spName.indexOf("druid") !== -1) {
+							if (spellObj.compMaterial && !(/M[\u0192\u2020]/i).test(spellObj.components)) spellObj.compMaterial = "";
+							spellObj.components = spellObj.components.replace(/V,?|S,?|M$/ig, '');
+							return true;
+						};
+					},
+					"My druid spells don't require verbal, somatic, or material components."
+				]
 			}
 		}
 	},
@@ -837,7 +849,22 @@ var Base_ClassList = {
 				minlevel : 18,
 				description : "\n   " + "Be invisible and resist non-force damage for 1 min or cast Astral Projection on self",
 				additional : "Invisible: 4 ki point; Astral Projection: 8 ki points",
-				action : ["action", ""]
+				action : ["action", ""],
+				spellcastingBonus : {
+					name : "Empty Body",
+					spells : ["astral projection"],
+					selection : ["astral projection"],
+					firstCol : 8
+				},
+				spellFirstColTitle : "Ki",
+				spellChanges : {
+					"astral projection" : {
+						components : "V,S",
+						compMaterial : "",
+						description : "You project yourself to Astral Plane with identical statistics, see book",
+						changes : "I can spend 8 ki points to cast Astral Projection without requiring material components, although I can't bring other creatures with me."
+					}
+				}
 			},
 			"perfect self" : {
 				name : "Perfect Self",
@@ -1672,7 +1699,19 @@ var Base_ClassList = {
 						delete CurrentSpells['book of ancient secrets'];
 						SetStringifieds('spells'); CurrentUpdates.types.push('spells');
 					},
-					prereqeval : function(v) { return classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the tome'; }
+					prereqeval : function(v) { return classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the tome'; },
+					calcChanges : {
+						spellAdd : [
+							function (spellKey, spellObj, spName) {
+								if (spName == "book of ancient secrets") {
+									spellObj.firstCol = "(R)";
+									if (!(/(\d+ ?h\b|conc|special|see b)/i).test(spellObj.time)) spellObj.time = "10 min";
+									return true;
+								};
+							},
+							"By the Book of Ancient Secrets invocation, I can cast ritual spells from my Book of Shadows. Ritual spell always have a casting time of 10 minutes or more."
+						]
+					}
 				},
 				"chains of carceri (prereq: level 15 warlock, pact of the chain)" : {
 					name : "Chains of Carceri",
@@ -2256,8 +2295,40 @@ var Base_ClassSubList = {
 				name : "Disciple of Life",
 				source : [["SRD", 17], ["P", 60]],
 				minlevel : 1,
-				description : "\n   " + "When I use a spell that restores hit points, it restores an additional 2 + spell level",
+				description : desc([
+					"Whenever a 1st-level or higher spell I cast restores HP to a creature, it heals more",
+					"The creature regains an additional 2 + spell (slot) level worth of hit points"
+				]),
+				calcChanges : {
+					spellAdd : [
+						function (spellKey, spellObj, spName) {
+							if ((/heal|cure/i).test(spellKey) && spellObj.level >= 1) {
+								var startDescr = spellObj.description;
+								switch (spellKey) {
+									case "cure wounds" :
+									default :
+										spellObj.description = spellObj.description.replace("", "");
+								}
+								return startDescr !== spellObj.description;
+							};
+						},
+						"When I use a spell that restores hit points, it restores an additional 2 + the level of the spell slot (or spell slot equivalent) used to cast the spell."
+					]
+				}
 /* STILL TO DO!!!!
+var prefix = "P6.SSfront.";
+var s = 0;
+var tSp = ["aura of life", "aura of vitality", "cure wounds", "enervation", "heal", "healing spirit", "healing word", "heroes' feast", "life transference", "mass cure wounds", "mass heal", "mass healing word", "power word heal", "prayer of healing", "regenerate", "vampiric touch"];
+for (var i = 0; i < tSp.length; i++) {
+	Value(prefix + "spells.remember." + s, tSp[i]);
+	s++
+	Value(prefix + "spells.remember." + s, tSp[i]);
+	s++
+}
+
+
+(2 + spellObj.level) + "+SL"
+
 Aura of Life
 Aura of Vitality
 Cure Wounds
@@ -2274,20 +2345,7 @@ Power Word Heal // heals full already
 Prayer of Healing
 Regenerate // also each turn
 Vampiric Touch // no Blessed Healer or Supreme Healing
-
-				calcChanges : {
-					spellAdd : [
-						function (spellKey, spellObj, spName) {
-							var toAdd = "+SpellLevel+2";
-							var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? poison (dmg|damage))/i;
-							if ((testRegex).test(spellObj.description)) {
-								spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
-								return true;
-							};
-						},
-						"When I use a spell that restores hit points, it restores an additional 2 + spell level."
-					]
-				} */
+*/
 			},
 			"subclassfeature2" : {
 				name : "Channel Divinity: Preserve Life",
@@ -3029,12 +3087,14 @@ Vampiric Touch // no Blessed Healer or Supreme Healing
 				source : [["SRD", 54], ["P", 117]],
 				minlevel : 6,
 				description : "\n   " + "Any cantrips I cast still deal half damage on a successful save"
+// SPELL CHANGES!!!
 			},
 			"subclassfeature10" : {
 				name : "Empowered Evocation",
 				source : [["SRD", 54], ["P", 117]],
 				minlevel : 10,
 				description : "\n   " + "I can add my Int modifier to a single damage roll of any wizard evocation spell I cast"
+// SPELL CHANGES!!!
 			},
 			"subclassfeature14" : {
 				name : "Overchannel",
