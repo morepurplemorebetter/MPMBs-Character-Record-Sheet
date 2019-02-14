@@ -123,7 +123,7 @@ RaceList["ghoul-au"] = {
 	savetxt : { immune : ["poison", "disease"] },
 	scorestxt : "+1 Constitution, and +2 Strength or Dexterity",
 	scores : [0, 0, 1, 0, 0, 0],
-	addWeapons : ["Ghoul Fangs", "Ghoul Claws"],
+	weaponsAdd : ["Ghoul Fangs", "Ghoul Claws"],
 	features : {
 		"feeding" : {
 			name : "Feeding",
@@ -178,7 +178,7 @@ RaceList["mummy-au"] = {
 	savetxt : { immune : ["poison", "disease"] },
 	scorestxt : "+1 Constitution, and +2 Strength, Wisdom, or Charisma",
 	scores : [0, 0, 1, 0, 0, 0],
-	addWeapons : ["Dreadful Glare"],
+	weaponsAdd : ["Dreadful Glare"],
 	features : {
 		"mummy rot" : {
 			name : "Mummy Rot",
@@ -292,7 +292,7 @@ RaceList["skeleton-au"] = {
 	savetxt : { immune : ["poison", "disease"] },
 	scorestxt : "Skeleton: +1 Constitution, and +2 Dexterity or Intelligence;",
 	scores : [0, 0, 1, 0, 0, 0],
-	addWeapons : ["Skeleton Detached Arm"],
+	weaponsAdd : ["Skeleton Detached Arm"],
 	features : {
 		"bone pile" : {
 			name : "Bone Pile",

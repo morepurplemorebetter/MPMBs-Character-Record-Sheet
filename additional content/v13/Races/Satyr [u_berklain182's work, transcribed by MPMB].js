@@ -42,7 +42,7 @@ RaceList["satyr"] = {
 		adv_vs : ["charmed"]
 	},
 	toolProfs : ["Flute"],
-	addWeapons : ["Satyr Headbutt"],
+	weaponsAdd : ["Satyr Headbutt"],
 	age : " mature at the rate of humans, but live up to 500 years",
 	height : " stand between 5 and 5.5 feet tall",
 	weight : " weigh around 155 lb",

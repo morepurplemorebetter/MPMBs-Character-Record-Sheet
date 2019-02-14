@@ -181,7 +181,7 @@ ClassList["improved artificer"] = {
 					dc : true,
 					artAlcAcid : true
 				},
-				addWeapons : ['Alchemical Acid'],
+				weaponsAdd : ['Alchemical Acid'],
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
@@ -219,7 +219,7 @@ ClassList["improved artificer"] = {
 					dc : true,
 					artAlcFire : true
 				},
-				addWeapons : ['Alchemical Fire'],
+				weaponsAdd : ['Alchemical Fire'],
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
@@ -331,7 +331,7 @@ ClassList["improved artificer"] = {
 					modifiers : ["", "Int"],
 					artDualPistols : true
 				},
-				addWeapons : ['Dual Pistols'],
+				weaponsAdd : ['Dual Pistols'],
 				additional : "2 points",
 				action : ["bonus action", "off-hand"],
 				calcChanges : {
@@ -450,7 +450,7 @@ ClassList["improved artificer"] = {
 					ammo : "arcane magazine",
 					artBlunderbuss : true
 				},
-				addWeapons : ['Blunderbuss'],
+				weaponsAdd : ['Blunderbuss'],
 				additional : "2 points",
 				calcChanges : {
 					atkAdd : [
@@ -574,7 +574,7 @@ ClassList["improved artificer"] = {
 					modifiers : ["", "Int"],
 					artSniperRifle : true
 				},
-				addWeapons : ['Sniper Rifle'],
+				weaponsAdd : ['Sniper Rifle'],
 				additional : "2 points",
 				calcChanges : {
 					atkAdd : [

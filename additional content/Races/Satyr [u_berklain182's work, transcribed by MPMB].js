@@ -48,7 +48,7 @@ RaceList["satyr"] = {
 	weight : " weigh around 155 lb",
 	heightMetric : " stand between 1,5 and 1,65 metres tall",
 	weightMetric : " weigh around 70 kg",
-	improvements : "Satyr: +1 Dexterity, +2 Charisma;"
+	improvements : "Satyr: +1 Dexterity, +2 Charisma;",
 	scores : [0, 1, 0, 0, 0, 2],
 	trait : "Satyr (+1 Dexterity, +2 Charisma)\nHeadbutt: I can use my head to make an attack, dealing 1d4 damage of a type determined by my horns.\nFlute: I know the Vicious Mockery cantrip.\n   At 3rd level, I can cast the Spell spell once per long rest as a 2nd-level spell.\n   At 5th level, I can also cast the Charm Person spell once per long rest.\n   Charisma is my spellcasting ability for these spells",
 	spellcastingAbility : 6,

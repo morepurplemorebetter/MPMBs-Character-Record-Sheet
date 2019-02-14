@@ -278,7 +278,7 @@ ClassList["warmage"] = {
 					"Without armor and no shield, my AC is 10 + Dexterity modifier + Intelligence modifier"
 				]),
 				prereqeval : function(v) { return (/rooks/i).test(classes.known.warmage.subclass); },
-				addArmor : "Unarmored Defense (Int)"
+				armorAdd : "Unarmored Defense (Int)"
 			}, */
 			"extended range" : {
 				name : "Extended Range",
