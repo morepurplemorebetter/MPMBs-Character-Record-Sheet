@@ -5543,7 +5543,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 		if (thisWeapon[3]) {
 			if (thisWeapon[4].length) {
 				var abiArr = thisWeapon[4].map( function(sClass) {
-					return CurrentSpells[sClass] && CurrentSpells[sClass].ability && isNaN(CurrentSpells[sClass].ability) ? CurrentSpells[sClass].ability : 0;
+					return CurrentSpells[sClass] && CurrentSpells[sClass].ability && !isNaN(CurrentSpells[sClass].ability) ? CurrentSpells[sClass].ability : 0;
 				});
 			} else {
 				// the spell is not known by any class, so just gather the ability scores from all spellcasting entries so we can select the highest
