@@ -861,7 +861,7 @@ var Base_ClassList = {
 					"astral projection" : {
 						components : "V,S",
 						compMaterial : "",
-						description : "You project yourself to Astral Plane with identical statistics, see book",
+						description : "I project myself to the Astral Plane with identical statistics, see book",
 						changes : "I can spend 8 ki points to cast Astral Projection without requiring material components, although I can't bring other creatures with me."
 					}
 				}
@@ -2297,55 +2297,46 @@ var Base_ClassSubList = {
 				minlevel : 1,
 				description : desc([
 					"Whenever a 1st-level or higher spell I cast restores HP to a creature, it heals more",
-					"The creature regains an additional 2 + spell (slot) level worth of hit points"
+					"The creature regains an additional 2 + spell level (SL) worth of hit points",
+					'Note that "X/SL" on the spell page means per spell slot level above the spell\'s normal level'
 				]),
 				calcChanges : {
 					spellAdd : [
-						function (spellKey, spellObj, spName) {
-							if ((/heal|cure/i).test(spellKey) && spellObj.level >= 1) {
-								var startDescr = spellObj.description;
-								switch (spellKey) {
-									case "cure wounds" :
-									default :
-										spellObj.description = spellObj.description.replace("", "");
-								}
-								return startDescr !== spellObj.description;
-							};
+						// note that Heroes' Feast is omitted from the below because there is not enough space to amend its short description
+						function (spellKey, spellObj, spName) {							
+							var startDescr = spellObj.description;
+							switch (spellKey) {
+								case "goodberry" :
+									spellObj.description = spellObj.description.replace("Create ", "").replace("1 hp", "3+SL hp");
+									break;
+								case "enervation" :
+									spellObj.description = spellObj.description.replace("action to repeat", "1 a to repeat").replace("see book", "see B");
+								case "life transference" :
+								case "vampiric touch" :
+									spellObj.description = spellObj.description.replace(/(heals? (half|twice)( the damage dealt| that)?)( in hp)?/, "$1+2+SL");
+									break;
+								case "mass heal" :
+									spellObj.description = spellObj.description.replace("creatures in range;", "crea in range, each then +11 hp;").replace("cured of", "cures").replace("and all diseases", "diseases");
+									break;
+								case "regenerate" :
+									spellObj.description = spellObj.description.replace("1 hp/rnd", "3+SL hp/rnd");
+								default :
+									var supremeTestRegex = /(.*?)(\d+d\d+\+?\d*)(\+\d+d?\d*\/\d?SL)?((\+spellcasting ability mod(ifier)?)? hp.*)/i;
+									if (classes.known.cleric.level > 16 && supremeTestRegex.test(spellObj.description)) return false; // has supreme healer
+									var testRegex = /(.*?)([1-9]\d*d?\d*)((\+\d+d?\d*\/\d?SL)?((\+spellcasting ability mod(ifier)?)? hp.*))/i;
+									var theMatch = spellObj.description.match(testRegex);
+									if (!theMatch) return false;
+									var perLvl = theMatch[4] ? theMatch[4].replace(/.*(\/\d?SL).*/i, '$1') : "";
+									theMatch[4] = theMatch[4] ? Number(theMatch[4].replace(/\/\d?SL/i, '')) + 1 : NaN;
+									var repl2 = spellObj.level > 8 ? "$3" : isNaN(theMatch[4]) ? "+SL$3" : "+" + theMatch[4] + perLvl + "$5";
+									var repl1 = isNaN(theMatch[2]) ? "$1$2+2" : isNaN(theMatch[4]) ? "$1" + (Number(theMatch[2]) + 2) : "$1" + (Number(theMatch[2]) + 2 + spellObj.level);
+									spellObj.description = spellObj.description.replace(testRegex, repl1 + repl2);
+							}
+							return startDescr !== spellObj.description;
 						},
 						"When I use a spell that restores hit points, it restores an additional 2 + the level of the spell slot (or spell slot equivalent) used to cast the spell."
 					]
 				}
-/* STILL TO DO!!!!
-var prefix = "P6.SSfront.";
-var s = 0;
-var tSp = ["aura of life", "aura of vitality", "cure wounds", "enervation", "heal", "healing spirit", "healing word", "heroes' feast", "life transference", "mass cure wounds", "mass heal", "mass healing word", "power word heal", "prayer of healing", "regenerate", "vampiric touch"];
-for (var i = 0; i < tSp.length; i++) {
-	Value(prefix + "spells.remember." + s, tSp[i]);
-	s++
-	Value(prefix + "spells.remember." + s, tSp[i]);
-	s++
-}
-
-
-(2 + spellObj.level) + "+SL"
-
-Aura of Life
-Aura of Vitality
-Cure Wounds
-Enervation // no Blessed Healer or Supreme Healing
-Heal
-Healing Spirit
-Healing Word
-Heroes' Feast // Not Sure
-Life Transference
-Mass Cure Wounds
-Mass Heal
-Mass Healing Word
-Power Word Heal // heals full already
-Prayer of Healing
-Regenerate // also each turn
-Vampiric Touch // no Blessed Healer or Supreme Healing
-*/
 			},
 			"subclassfeature2" : {
 				name : "Channel Divinity: Preserve Life",
@@ -2359,7 +2350,38 @@ Vampiric Touch // no Blessed Healer or Supreme Healing
 				name : "Blessed Healer",
 				source : [["SRD", 17], ["P", 60]],
 				minlevel : 6,
-				description : "\n   " + "When I restore HP to another with a spell, I regain 2 + the spell's level in HP"
+				description : "\n   " + "When I restore HP to another with a spell, I regain 2 + the spell (slot) level in HP",
+				calcChanges : {
+					spellAdd : [
+						// note that several healing spells are not present here because they don't restore hp at casting (only later)
+						function (spellKey, spellObj, spName) {							
+							var startDescr = spellObj.description;
+							switch (spellKey) {
+								case "life transference" :
+									spellObj.description = spellObj.description.replace("Necrotic", "Necro").replace(", and", ",") + "; I then regain 2+SL hp";
+									break;
+								case "mass heal" :
+									spellObj.description = "Heal 700 hp, split over crea in range, each then +11 hp; also cures blind, deaf, diseases; I heal +11 hp";
+									break;
+								case "power word heal" :
+									spellObj.description = spellObj.description.replace(/heals all.*/i, "full hp; not charmed, frightened, paralyzed, stunned; can stand up as rea; if other, I heal 2+SL");
+									break;
+								case "regenerate" :
+									spellObj.description = spellObj.description.replace(" for rest of duration", "");
+								case "heal" :
+									spellObj.description = spellObj.description.replace("all diseases", "diseases");
+								case "cure wounds" :
+								case "healing word" :
+								case "mass cure wounds" :
+								case "mass healing word" :
+								case "prayer of healing" :
+									spellObj.description = spellObj.description.replace(/creatures?/i, "crea").replace("within", "in").replace("spellcasting ability modifier", "spellcasting ability mod") + "; if other, I heal 2+SL";
+							}
+							return startDescr !== spellObj.description;
+						},
+						"When I cast a spell that restores hit points to another creature than myself at the moment of casting, I also heal 2 + the level of the spell slot (or spell slot equivalent) hit points."
+					]
+				}
 			},
 			"subclassfeature8" : {
 				name : "Divine Strike",
@@ -2386,20 +2408,25 @@ Vampiric Touch // no Blessed Healer or Supreme Healing
 				source : [["SRD", 17], ["P", 60]],
 				minlevel : 17,
 				description : "\n   " + "When I restore HP with a spell, I heal the maximum amount instead of rolling the dice",
-/* STILL TO DO!!!!
 				calcChanges : {
 					spellAdd : [
 						function (spellKey, spellObj, spName) {
-							var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? poison (dmg|damage))/i;
-							if ((testRegex).test(spellObj.description)) {
-								spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
-								return true;
-							};
+							var startDescr = spellObj.description;
+							var testRegex = /(.*?)(\d+d\d+\+?\d*)(\+\d+d?\d*\/\d?SL)?((\+spellcasting ability mod(ifier)?)? hp.*)/i;
+							var theMatch = spellObj.description.match(testRegex);
+							if (!theMatch) return false;
+							var lvl9 = spellObj.level > 8;
+							var perLvl = theMatch[3] ? theMatch[3].replace(/.*(\/\d?SL).*/i, '$1') : "";
+							theMatch[2] = Number(theMatch[2].replace(/(\d+).*/, '$1')) * Number(theMatch[2].replace(/\d+d(\d+).*/, '$1')) + ((/\d+d\d+\+(\d+)/).test(theMatch[2]) ? Number(theMatch[2].replace(/\d+d\d+\+(\d+)/, '$1')) : 0) + 2 + (perLvl || lvl9 ? spellObj.level : "+SL");
+							theMatch[3] = theMatch[3] ? Number(theMatch[3].replace(/\+(\d+).*/, '$1')) * ((/\+\d+d(\d+).*/).test(theMatch[3]) ? Number(theMatch[3].replace(/\+\d+d(\d+).*/, '$1')) : 1) + 1 : NaN;
+							var repl = isNaN(theMatch[3]) ? "$1" + theMatch[2] + "$4" : "$1" + theMatch[2] + "+" + theMatch[3] + perLvl + "$4";
+							spellObj.description = spellObj.description.replace(testRegex, repl);
+							return startDescr !== spellObj.description;
 						},
-						"When I restore HP with a spell, I heal the maximum amount instead of rolling the dice."
+						"When I use a spell that restores hit points, it restores the maximum of the dice rolled and an additional 2 + the level of the spell slot (or spell slot equivalent) used to cast the spell."
 					]
-				} */
-			},
+				}
+			}
 		}
 	},
 	"druid-circle of the land" : {

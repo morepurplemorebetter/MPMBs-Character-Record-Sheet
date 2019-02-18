@@ -536,7 +536,7 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"conjure elemental" : {
 				time : "1 a",
-				description : "CR 5 water elemental that obeys your verbal commands; on broken conc. elemental breaks free",
+				description : "CR 5 water elemental that obeys my verbal commands; on broken conc. elemental breaks free",
 				changes : "Using the Bowl of Commanding Water Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth a water elemental."
 			}
 		}
@@ -598,7 +598,7 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"conjure elemental" : {
 				time : "1 a",
-				description : "CR 5 fire elemental that obeys your verbal commands; on broken conc. elemental breaks free",
+				description : "CR 5 fire elemental that obeys my verbal commands; on broken conc. elemental breaks free",
 				changes : "Using the Brazier of Commanding Fire Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth a fire elemental."
 			}
 		}
@@ -705,7 +705,7 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"conjure elemental" : {
 				time : "1 a",
-				description : "CR 5 air elemental that obeys your verbal commands; on broken conc. elemental breaks free",
+				description : "CR 5 air elemental that obeys my verbal commands; on broken conc. elemental breaks free",
 				changes : "Using the Censer of Controlling Air Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth an air elemental."
 			}
 		}
@@ -3552,7 +3552,7 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"conjure elemental" : {
 				time : "1 a",
-				description : "CR 5 earth elemental that obeys your verbal commands; on broken conc. elemental breaks free",
+				description : "CR 5 earth elemental that obeys my verbal commands; on broken conc. elemental breaks free",
 				changes : "Using the Stone of Controlling Earth Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth an earth elemental."
 			}
 		}
@@ -3815,7 +3815,7 @@ var Base_MagicItemsList = {
 		rarity : "legendary",
 		magicItemTable : "I",
 		attunement : true,
-		description : "I have a +3 bonus to attack and damage rolls with this magic sword. It ignores slashing damage resistance. On a roll of 20 to hit, it cuts of one head" + (typePF ? "" : ", possibly killing it instantly") + ". If the target has no head, is immune to slashing damage, has legendary actions, or its neck is too wide, it takes +6d8 slashing damage instead.",
+		description : "I have a +3 bonus to attack and damage rolls with this magic sword. It ignores slashing damage resistance. On a roll of 20 to hit, it cuts off one head" + (typePF ? "" : ", possibly killing it instantly") + ". If the target has no head, is immune to slashing damage, has legendary actions, or its neck is too wide, it takes +6d8 slashing damage instead.",
 		descriptionFull : "You gain a +3 bonus to attack and damage rolls made with this magic weapon. In addition, the weapon ignores resistance to slashing damage.\n   When you attack a creature that has at least one head with this weapon and roll a 20 on the attack roll, you cut off one of the creature's heads. The creature dies if it can't survive without the lost head. A creature is immune to this effect if it is immune to slashing damage, doesn't have or need a head, has legendary actions, or the DM decides that the creature is too big for its head to be cut off with this weapon. Such a creature instead takes an extra 6d8 slashing damage from the hit.",
 		chooseGear : {
 			type : "weapon",
@@ -3832,10 +3832,10 @@ var Base_MagicItemsList = {
 					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/vorpal/i).test(v.WeaponText) && v.theWea.damage[2] == "slashing") {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
-						fields.Description += (fields.Description ? '; ' : '') + 'Ignores slashing resistance; On 20 to hit: cut of head';
+						fields.Description += (fields.Description ? '; ' : '') + 'Ignores slashing resistance; On 20 to hit: cut off head';
 					}
 				},
-				'If I include the word "Vorpal" in a the name of a sword that deals slashing damage, it will be treated as the magic weapon Vorpal Sword. It has +3 to hit and damage and on a roll of 20 on the attack roll, it cuts of a head of the target.'
+				'If I include the word "Vorpal" in a the name of a sword that deals slashing damage, it will be treated as the magic weapon Vorpal Sword. It has +3 to hit and damage and on a roll of 20 on the attack roll, it cuts off a head of the target.'
 			],
 			atkCalc : [
 				function (fields, v, output) {

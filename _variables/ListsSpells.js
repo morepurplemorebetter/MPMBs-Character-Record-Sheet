@@ -198,8 +198,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A bit of bat fur",
 		duration : "Conc, 1 h",
-		description : "Create invisible, moving (unlimited range, 30ft/rnd) 1\" magic eye with darkvision you see through",
-		description : "Create invisible, moving (unlimited range, 10m/rnd) 2,5cm magic eye /w darkvision you see through",
+		description : "Create invisible, moving (unlimited range, 30 ft/rnd) 1\" magic eye with darkvision I see through",
 		descriptionFull : "You create an invisible, magical eye within range that hovers in the air for the duration." + "\n   " + "You mentally receive visual information from the eye, which has normal vision and darkvision out to 30 feet. The eye can look in every direction." + "\n   " + "As an action, you can move the eye up to 30 feet in any direction. There is no limit to how far away from you the eye can move, but it can't enter another plane of existence. A solid barrier blocks the eye's movement, but the eye can pass through an opening as small as 1 inch in diameter."
 	},
 	"arcane lock" : {
@@ -227,7 +226,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u2020",
 		compMaterial : "For each creature you affect with this spell, you must provide one jacinth worth at least 1,000 gp and one ornately carved bar of silver worth at least 100 gp, all of which the spell consumes",
 		duration : "Special (D)",
-		description : "You + 8 willing crea projected to Astral Plane with identical statistics (per crea 1100gp cons.)",
+		description : "Me + 8 willing crea projected to Astral Plane with identical statistics (per crea 1100gp cons.)",
 		descriptionFull : "You and up to eight willing creatures within range project your astral bodies into the Astral Plane (the spell fails and the casting is wasted if you are already on that plane). The material body you leave behind is unconscious and in a state of suspended animation, it doesn't need food or air and doesn't age." + "\n   " + "Your astral body resembles your mortal form in almost every way, replicating your game statistics and possessions. The principal difference is the addition of a silvery cord that extends from between your shoulder blades and trails behind you, fading to invisibility after 1 foot. This cord is your tether to your material body. As long as the tether remains intact, you can find your way home. If the cord is cut-something that can happen only when an effect specifically states that it does-your soul and body are separated, killing you instantly." + "\n   " + "Your astral form can freely travel through the Astral Plane and can pass through portals there leading to any other plane. If you enter a new plane or return to the plane you were on when casting this spell, your body and possessions are transported along the silver cord, allowing you to re-enter your body as you enter the new plane. Your astral form is a separate incarnation. Any damage or other effects that apply to it have no effect on your physical body, nor do they persist when you return to it." + "\n   " + "The spell ends for you and your companions when you use your action to dismiss it. When the spell ends, the affected creature returns to its physical body, and it awakens." + "\n   " + "The spell might also end early for you or one of your companions. A successful dispel magic spell used against an astral or physical body ends the spell for that creature. If a creature's original body or its astral form drops to 0 hit points, the spell ends for that creature. If the spell ends and the silver cord is intact, the cord pulls the creature's astral form back to its body, ending its state of suspended animation." + "\n   " + "If you are returned to your body prematurely, your companions remain in their astral forms and must find their own way back to their bodies, usually by dropping to 0 hit points."
 	},
 	"augury" : {
@@ -242,7 +241,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u0192",
 		compMaterial : "Specially marked sticks, bones, or similar tokens worth at least 25 gp",
 		duration : "Instantaneous",
-		description : "Omen about specific course of action you plan to take in the next 30 min (25gp)",
+		description : "Omen about specific course of action I plan to take in the next 30 min (25gp)",
 		descriptionFull : "By casting gem-inlaid sticks, rolling dragon bones, laying out ornate cards, or employing some other divining tool, you receive an omen from an otherworldly entity about the results of a specific course of action that you plan to take within the next 30 minutes. The DM chooses from the following possible omens." + "\n " + "\u2022 Weal, for good results" + "\n " + "\u2022 Woe, for bad results" + "\n " + "\u2022 Weal and woe, for both good and bad results" + "\n " + "\u2022 Nothing, for results that aren't especially good or bad" + "\n\n" + "The spell doesn't take into account any possible circumstances that might change the outcome, such as the casting of additional spells or the loss or gain of a companion." + "\n   " + "If you cast the spell two or more times before completing your next long rest, there is a cumulative 25 percent chance for each casting after the first that you get a random reading. The DM makes this roll in secret."
 	},
 	"awaken" : {
@@ -342,7 +341,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "An eggshell and a snakeskin glove",
 		duration : "Conc, 1 min",
-		description : "Large hand attacks, pushes, grapples or shields, see book; AC 20, your max hp; bns a move 60 ft",
+		description : "Large hand attacks, pushes, grapples or shields, see book; AC 20, my max hp; bns a move 60 ft",
 		descriptionFull : "You create a Large hand of shimmering, translucent force in an unoccupied space that you can see within range. The hand lasts for the spell's duration, and it moves at your command, mimicking the movements of your own hand." + "\n   " + "The hand is an object that has AC 20 and hit points equal to your hit point maximum. If it drops to 0 hit points, the spell ends. It has a Strength of 26 (+8) and a Dexterity of 10 (+0). The hand doesn't fill its space." + "\n   " + "When you cast the spell and as a bonus action on your subsequent turns, you can move the hand up to 60 feet and then cause one of the following effects with it." + "\n   " + "Clenched Fist. The hand strikes one creature or object within 5 feet of it. Make a melee spell attack for the hand using your game statistics. On a hit, the target takes 4d8 force damage." + "\n   " + "Forceful Hand. The hand attempts to push a creature within 5 feet of it in a direction you choose. Make a check with the hand's Strength contested by the Strength (Athletics) check of the target. If the target is Medium or smaller, you have advantage on the check. If you succeed, the hand pushes the target up to 5 feet plus a number of feet equal to five times your spellcasting ability modifier. The hand moves with the target to remain within 5 feet of it." + "\n   " + "Grasping Hand. The hand attempts to grapple a Huge or smaller creature within 5 feet of it. You use the hand's Strength score to resolve the grapple. If the target is Medium or smaller, you have advantage on the check. While the hand is grappling the target, you can use a bonus action to have the hand crush it. When you do so, the target takes bludgeoning damage equal to 2d6 + your spellcasting ability modifier." + "\n   " + "Interposing Hand. The hand interposes itself between you and a creature you choose until you give the hand a different command. The hand moves to stay between you and the target, providing you with half cover against the target. The target can't move through the hand's space if its Strength score is less than or equal to the hand's Strength score. If its Strength score is higher than the hand's Strength score, the target can move toward you through the hand's space, but that space is difficult terrain for the target." + AtHigherLevels + "When you cast this spell using a spell slot of 6th level or higher, the damage from the clenched fist option increases by 2d8 and the damage from the grasping hand increases by 2d6 for each slot level above 5th."
 	},
 	"blade barrier" : {
@@ -425,7 +424,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V",
 		duration : "Conc, 1 min",
-		description : "Enemies have dis. on attacks vs. you; no effect against crea without vision or immune to illus.",
+		description : "Enemies have dis. on attacks vs. me; no effect against crea without vision or immune to illus.",
 		descriptionFull : "Your body becomes blurred, shifting and wavering to all who can see you. For the duration, any creature has disadvantage on attack rolls against you. An attacker is immune to this effect if it doesn't rely on sight, as with blindsight, or can see through illusions, as with truesight."
 	},
 	"branding smite" : {
@@ -480,7 +479,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Conc, 1 min",
 		save : "Cha",
-		description : "20-ft rad all humanoids save or you suppress either charm/fear effects or hostility ",
+		description : "20-ft rad all humanoids save or I suppress either charm/fear effects or hostility ",
 		descriptionFull : "You attempt to suppress strong emotions in a group of people. Each humanoid in a 20-foot-radius sphere centered on a point you choose within range must make a Charisma saving throw a creature can choose to fail this saving throw if it wishes. If a creature fails its saving throw, choose one of the following two effects." + "\n   " + "You can suppress any effect causing a target to be charmed or frightened. When this spell ends, any suppressed effect resumes, provided that its duration has not expired in the meantime." + "\n   " + "Alternatively, you can make a target indifferent about creatures of your choice that it is hostile toward. This indifference ends if the target is attacked or harmed by a spell or if it witnesses any of its friends being harmed. When the spell ends, the creature becomes hostile again, unless the DM rules otherwise."
 	},
 	"chain lightning" : {
@@ -509,7 +508,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "1 h",
 		save : "Wis",
-		description : "1+1/SL humanoids, each max 30 ft apart, save or charmed; adv. on save if you/allies are fighting it",
+		description : "1+1/SL humanoids, each max 30 ft apart, save or charmed; adv. on save if me/allies are fighting it",
 		descriptionFull : "You attempt to charm a humanoid you can see within range. It must make a Wisdom saving throw, and does so with advantage if you or your companions are fighting it. If it fails the saving throw, it is charmed by you until the spell ends or until you or your companions do anything harmful to it. The charmed creature regards you as a friendly acquaintance. When the spell ends, the creature knows it was charmed by you." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, you can target one additional creature for each slot level above 1st. The creatures must be within 30 feet of each other when you target them."
 	},
 	"chill touch" : {
@@ -622,7 +621,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "Incense and a vial of holy or unholy water",
 		duration : "1 min",
-		description : "Ask up to three yes/no questions to your deity or a divine proxy (25gp)",
+		description : "Ask up to three yes/no questions to my deity or a divine proxy (25gp)",
 		descriptionFull : "You contact your deity or a divine proxy and ask up to three questions that can be answered with a yes or no. You must ask your questions before the spell ends. You receive a correct answer for each question." + "\n   " + "Divine beings aren't necessarily omniscient, so you might receive \"unclear\" as an answer if a question pertains to information that lies beyond the deity's knowledge. In a case where a one-word answer could be misleading or contrary to the deity's interests, the DM might offer a short phrase as an answer instead." + "\n   " + "If you cast the spell two or more times before finishing your next long rest, there is a cumulative 25 percent chance for each casting after the first that you get no answer. The DM makes this roll in secret."
 	},
 	"commune with nature" : {
@@ -667,7 +666,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Conc, 1 min",
 		save : "Wis",
-		description : "Any crea in range save or you use bns a to have them use all movement in one direction",
+		description : "Any crea that hear me save or I can, as bns, have it move fully in one direction; save again after move",
 		descriptionFull : "Creatures of your choice that you can see within range and that can hear you must make a Wisdom saving throw. A target automatically succeeds on this saving throw if it can't be charmed. On a failed save, a target is affected by this spell. Until the spell ends, you can use a bonus action on each of your turns to designate a direction that is horizontal to you. Each affected target must use as much of its movement as possible to move in that direction on its next turn. It can take its action before it moves. After moving in this way, it can make another Wisdom saving throw to try to end the effect." + "\n   " + "A target isn't compelled to move into an obviously deadly hazard, such as a fire pit, but it will provoke opportunity attacks to move in the designated direction."
 	},
 	"cone of cold" : {
@@ -710,7 +709,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Conc, 1 h",
-		description : "Summon 2+2/2SL CR of beasts; obey your verbal commands",
+		description : "Summon 2+2/2SL CR of beasts; obey my verbal commands",
 		descriptionFull : "You summon fey spirits that take the form of beasts and appear in unoccupied spaces that you can see within range. Choose one of the following options for what appears." + "\n " + "\u2022 One beast of challenge rating 2 or lower" + "\n " + "\u2022 Two beasts of challenge rating 1 or lower" + "\n " + "\u2022 Four beasts of challenge rating 1/2 or lower" + "\n " + "\u2022 Eight beasts of challenge rating 1/4 or lower" + "\n\n" + "Each beast is also considered fey, and it disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The summoned creatures are friendly to you and your companions. Roll initiative for the summoned creatures as a group, which has its own turns. They obey any verbal commands that you issue to them (no action required by you). If you don't issue any commands to them, they defend themselves from hostile creatures, but otherwise take no actions. The DM has the creatures' statistics." + AtHigherLevels + "When you cast this spell using certain higher-level spell slots, you choose one of the summoning options above, and more creatures appear - twice as many with a 5th-level slot, three times as many with a 7th-level slot, and four times as many with a 9th-level slot."
 	},
 	"conjure celestial" : {
@@ -723,7 +722,7 @@ var Base_SpellsList = {
 		range : "90 ft",
 		components : "V,S",
 		duration : "Conc, 1 h",
-		description : "CR 4+1/2SL celestial; obeys your verbal commands if they do not go against its alignment",
+		description : "CR 4+1/2SL celestial; obeys my verbal commands if they do not go against its alignment",
 		descriptionFull : "You summon a celestial of challenge rating 4 or lower, which appears in an unoccupied space that you can see within range. The celestial disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The celestial is friendly to you and your companions for the duration. Roll initiative for the celestial, which has its own turns. It obeys any verbal commands that you issue to it (no action required by you), as long as they don't violate its alignment. If you don't issue any commands to the celestial, it defends itself from hostile creatures but otherwise takes no actions The DM has the celestial's statistics. At Higher Levels:" + "\n   " + "When you cast this spell using a 9th-level spell slot, you summon a celestial of challenge rating 5 or lower."
 	},
 	"conjure elemental" : {
@@ -737,7 +736,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "Burning incense for air, soft clay for earth, sulfur and phosphorus for fire, or water and sand for water",
 		duration : "Conc, 1 h",
-		description : "CR 5+1/SL elemental; obeys your verbal commands; breaks free on broken conc.",
+		description : "CR 5+1/SL elemental; obeys my verbal commands; breaks free on broken conc.",
 		descriptionFull : "You call forth an elemental servant. Choose an area of air, earth, fire, or water that fills a 10-foot cube within range. An elemental of challenge rating 5 or lower appropriate to the area you chose appears in an unoccupied space within 10 feet of it. For example, a fire elemental emerges from a bonfire, and an earth elemental rises up from the ground. The elemental disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The elemental is friendly to you and your companions for the duration. Roll initiative for the elemental, which has its own turns. It obeys any verbal commands that you issue to it (no action required by you). If you don't issue any commands to the elemental, it defends itself from hostile creatures but otherwise takes no actions." + "\n   " + "If your concentration is broken, the elemental doesn't disappear. Instead, you lose control of the elemental, it becomes hostile toward you and your companions, and it might attack. An uncontrolled elemental can't be dismissed by you, and it disappears 1 hour after you summoned it. The DM has the elemental's statistics." + AtHigherLevels + "When you cast this spell using a spell slot of 6th level or higher, the challenge rating increases by 1 for each slot level above 5th."
 	},
 	"conjure fey" : {
@@ -750,7 +749,7 @@ var Base_SpellsList = {
 		range : "90 ft",
 		components : "V,S",
 		duration : "Conc, 1 h",
-		description : "CR 6+1/SL fey; obeys your verbal commands not against its align.; breaks free on broken conc.",
+		description : "CR 6+1/SL fey; obeys my verbal commands not against its align.; breaks free on broken conc.",
 		descriptionFull : "You summon a fey creature of challenge rating 6 or lower, or a fey spirit that takes the form of a beast of challenge rating 6 or lower. It appears in an unoccupied space that you can see within range. The fey creature disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The fey creature is friendly to you and your companions for the duration. Roll initiative for the creature, which has its own turns. It obeys any verbal commands that you issue to it (no action required by you), as long as they don't violate its alignment. If you don't issue any commands to the fey creature, it defends itself from hostile creatures but otherwise takes no actions." + "\n   " + "If your concentration is broken, the fey creature doesn't disappear. Instead, you lose control of the fey creature, it becomes hostile toward you and your companions, and it might attack. An uncontrolled fey creature can't be dismissed by you, and it disappears 1 hour after you summoned it. The DM has the fey creature's statistics." + AtHigherLevels + "When you cast this spell using a spell slot of 7th level or higher, the challenge rating increases by 1 for each slot level above 6th."
 	},
 	"conjure minor elementals" : {
@@ -764,7 +763,7 @@ var Base_SpellsList = {
 		range : "90 ft",
 		components : "V,S",
 		duration : "Conc, 1 h",
-		description : "Summon 2+2/2SL CR of elementals; obey your verbal commands",
+		description : "Summon 2+2/2SL CR of elementals; obey my verbal commands",
 		descriptionFull : "You summon elementals that appear in unoccupied spaces that you can see within range. You choose one the following options for what appears." + "\n " + "\u2022 One elemental of challenge rating 2 or lower" + "\n " + "\u2022 Two elementals of challenge rating 1 or lower" + "\n " + "\u2022 Four elementals of challenge rating 1/2 or lower" + "\n " + "\u2022 Eight elementals of challenge rating 1/4 or lower." + "\n\n" + "An elemental summoned by this spell disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The summoned creatures are friendly to you and your companions. Roll initiative for the summoned creatures as a group, which has its own turns. They obey any verbal commands that you issue to them (no action required by you). If you don't issue any commands to them, they defend themselves from hostile creatures, but otherwise take no actions. The DM has the creatures' statistics." + AtHigherLevels + "When you cast this spell using certain higher-level spell slots, you choose one of the summoning options above, and more creatures appear - twice as many with a 6th-level slot and three times as many with an 8th-level slot."
 	},
 	"conjure woodland beings" : {
@@ -779,7 +778,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "One holly berry per creature summoned",
 		duration : "Conc, 1 h",
-		description : "Summon 2+2/2SL CR of fey; obey your verbal commands",
+		description : "Summon 2+2/2SL CR of fey; obey my verbal commands",
 		descriptionFull : "You summon fey creatures that appear in unoccupied spaces that you can see within range. Choose one of the following options for what appears." + "\n " + "\u2022 One fey creature of challenge rating 2 or lower" + "\n " + "\u2022 Two fey creatures of challenge rating 1 or lower" + "\n " + "\u2022 Four fey creatures of challenge rating 1/2 or lower" + "\n " + "\u2022 Eight fey creatures of challenge rating 1/4 or lower" + "\n\n" + "A summoned creature disappears when it drops to 0 hit points or when the spell ends. The summoned creatures are friendly to you and your companions. Roll initiative for the summoned creatures as a group, which have their own turns. They obey any verbal commands that you issue to them (no action required by you). If you don't issue any commands to them, they defend themselves from hostile creatures, but otherwise take no actions. The DM has the creatures' statistics." + AtHigherLevels + "When you cast this spell using certain higher-level spell slots, you choose one of the summoning options above, and more creatures appear - twice as many with a 6th-level slot and three times as many with an 8th-level slot."
 	},
 	"contact other plane" : {
@@ -794,7 +793,7 @@ var Base_SpellsList = {
 		components : "V",
 		duration : "1 min",
 		save : "Int",
-		description : "You make DC 15 save to ask extraplanar entity 5 questions with one word answers; insane on fail",
+		description : "I make DC 15 save to ask extraplanar entity 5 questions with one word answers; insane on fail",
 		descriptionFull : "You mentally contact a demigod, the spirit of a long-dead sage, or some other mysterious entity from another plane. Contacting this extraplanar intelligence can strain or even break your mind. When you cast this spell, make a DC 15 Intelligence saving throw. On a failure, you take 6d6 psychic damage and are insane until you finish a long rest. While insane, you can't take actions, can't understand what other creatures say, can't read, and speak only in gibberish. A greater restoration spell cast on you ends this effect." + "\n   " + "On a successful save, you can ask the entity up to five questions. You must ask your questions before the spell ends. The DM answers each question with one word, such as yes, no, maybe, never, irrelevant, unclear (if the entity doesn't know the answer to the question). If a one-word answer would be misleading, the DM might instead offer a short phrase as an answer."
 	},
 	"contagion" : {
@@ -822,7 +821,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u0192",
 		compMaterial : "A statuette of yourself carved from ivory and decorated with gems worth at least 1,500 gp",
 		duration : "10 days",
-		description : "Prepare another SL<6 spell you can cast to activate when some condition is met (1500gp)",
+		description : "Prepare another SL<6 spell I can cast to activate when some condition is met (1500gp)",
 		descriptionFull : "Choose a spell of or lower that you can cast, that has a casting time of 1 action, and that can target you. You cast that spell, called the contingent spell, as part of casting contingency, expending spell slots for both, but the contingent spell doesn't come into effect. Instead, it takes effect when a certain circumstance occurs. You describe that circumstance when you cast the two spells. For example, a contingency cast with water breathing might stipulate that water breathing comes into effect when you are engulfed in water or a similar liquid." + "\n   " + "The contingent spell takes effect immediately after the circumstance is met for the first time, whether or not you want it to, and then contingency ends." + "\n   " + "The contingent spell takes effect only on you, even if it can normally target others. You can use only one contingency spell at a time. If you cast this spell again, the effect of another contingency spell on you ends. Also, contingency ends on you if its material component is ever not on your person."
 	},
 	"continual flame" : {
@@ -945,7 +944,7 @@ var Base_SpellsList = {
 		range : "Touch",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "1 creature is healed for 1d8+1d8/SL+spellcasting ability modifier hp",
+		description : "1 living creature heals 1d8+1d8/SL+spellcasting ability modifier hp",
 		descriptionFull : "A creature you touch regains a number of hit points equal to 1d8 + your spellcasting ability modifier. This spell has no effect on undead or constructs." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, the healing increases by 1d8 for each slot level above 1st."
 	},
 	"dancing lights" : {
@@ -1112,7 +1111,7 @@ var Base_SpellsList = {
 		range : "500 ft",
 		components : "V",
 		duration : "Instantaneous",
-		description : "Teleport yourself and 1 willing crea within 5 ft, up to 500 ft to a place you see, specify, or describe",
+		description : "Teleport myself and 1 willing crea within 5 ft, up to 500 ft to a place I can see, specify, or describe",
 		descriptionFull : "You teleport yourself from your current location to any other spot within range. You arrive at exactly the spot desired. It can be a place you can see, one you can visualize, or one you can describe by stating distance and direction, such as 200 feet straight downward or upward to the northwest at a 45-degree angle, 300 feet." + "\n   " + "You can bring along objects as long as their weight doesn't exceed what you can carry. You can also bring one willing creature of your size or smaller who is carrying gear up to its carrying capacity. The creature must be within 5 feet of you when you cast this spell." + "\n   " + "If you would arrive in a place already occupied by an object or a creature, you and any creature traveling with you each take 4d6 force damage, and the spell fails to teleport you."
 	},
 	"disguise self" : {
@@ -1154,7 +1153,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "Holy water or powdered silver and iron",
 		duration : "Conc, 1 min",
-		description : "Cele., elem., fey, fiends, and undead dis. on attacks vs. you; end early for dismissal/break enchantment",
+		description : "Cele., elem., fey, fiends, and undead dis. on attacks vs. me; end early for dismissal/break enchantment",
 		descriptionFull : "Shimmering energy surrounds and protects you from fey, undead, and creatures originating from beyond the Material Plane. For the duration, celestials, elementals, fey, fiends, and undead have disadvantage on attack rolls against you. You can end the spell early by using either of the following special functions." + "\n   " + toUni("Break Enchantment") + ": As your action, you touch a creature you can reach that is charmed, frightened, or possessed by a celestial, an elemental, a fey, a fiend, or an undead. The creature you touch is no longer charmed, frightened, or possessed by such creatures." + "\n   " + toUni("Dismissal") + ": As your action, make a melee spell attack against a celestial, an elemental, a fey, a fiend, or an undead you can reach. On a hit, you attempt to drive the creature back to its home plane. The creature must succeed on a Charisma saving throw or be sent back to its home plane (if it isn't there already). If they aren't on their home plane, undead are sent to the Shadowfell, and fey are sent to the Feywild."
 	},
 	"dispel magic" : {
@@ -1195,7 +1194,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V,S",
 		duration : "Conc, 1 min",
-		description : "Your weapon attacks deal an +1d4 Radiant damage for the duration",
+		description : "My weapon attacks deal an +1d4 Radiant damage for the duration",
 		descriptionFull : "Your prayer empowers you with divine radiance. Until the spell ends, your weapon attacks deal and extra 1d4 radiant damage on a hit."
 	},
 	"divine word" : {
@@ -1282,7 +1281,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A handful of sand, a dab of ink, and a writing quill plucked from a sleeping bird",
 		duration : "8 h",
-		description : "You or willing crea enters a crea's dreams, manifesting as a messenger with whom it can communicate",
+		description : "Me or willing crea enters a crea's dreams, manifesting as a messenger with whom it can communicate",
 		descriptionFull : "This spell shapes a creature's dreams. Choose a creature known to you as the target of this spell. The target must be on the same plane of existence as you. Creatures that don't sleep, such as elves, can't be contacted by this spell. You, or a willing creature you touch, enters a trance state, acting as a messenger. While in the trance, the messenger is aware of his or her surroundings, but can't take actions or move." + "\n   " + "If the target is asleep, the messenger appears in the target's dreams and can converse with the target as long as it remains asleep, through the duration of the spell. The messenger can also shape the environment of the dream, creating landscapes, objects, and other images. The messenger can emerge from the trance at any time, ending the effect of the spell early. The target recalls the dream perfectly upon waking. If the target is awake when you cast the spell, the messenger knows it, and can either end the trance (and the spell) or wait for the target to fall asleep, at which point the messenger appears in the target's dreams." + "\n   " + "You can make the messenger appear monstrous and terrifying to the target. If you do, the messenger can deliver a message of no more than ten words and then the target must make a Wisdom saving throw. On a failed save, echoes of the phantasmal monstrosity spawn a nightmare that lasts the duration of the target's sleep and prevents the target from gaining any benefit from that rest. In addition, when the target wakes up, it takes 3d6 psychic damage." + "\n   " + "If you have a body part, lock of hair, clipping from a nail, or similar portion of the target's body, the target makes its saving throw with disadvantage."
 	},
 	"druidcraft" : {
@@ -1379,7 +1378,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "1 min",
 		save : "Wis",
-		description : "As you speak any crea save (adv. if fighting) or dis. on Wis(Perception) for any other than you",
+		description : "While I speak, any crea save (adv. if fighting) or dis. on Wis(Perception) for any other than me",
 		descriptionFull : "You weave a distracting string of words, causing creatures of your choice that you can see within range and that can hear you to make a Wisdom saving throw. Any creature that can't be charmed succeeds on this saving throw automatically, and if you or your companions are fighting a creature, it has advantage on the save. On a failed save, the target has disadvantage on Wisdom (Perception) checks made to perceive any creature other than you until the spell ends or until the target can no longer hear you. The spell ends if you are incapacitated or can no longer speak."
 	},
 	"etherealness" : {
@@ -1421,7 +1420,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V,S",
 		duration : "Conc, 10 min",
-		description : "You can take Dash action now, and as a bonus action for the duration",
+		description : "I can take Dash action now, and as a bonus action for the duration",
 		descriptionFull : "This spell allows you to move at an incredible pace. When you cast this spell, and then as a bonus action on each of your turns until the spell ends, you can take the Dash action."
 	},
 	"eyebite" : {
@@ -1435,7 +1434,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Conc, 1 min",
 		save : "Wis",
-		description : "1 crea/rnd within 60 ft save or either fall asleep, panicked, or sickened, your choice",
+		description : "1 crea/rnd within 60 ft save or either fall asleep, panicked, or sickened, my choice",
 		descriptionFull : "For the spell's duration, your eyes become an inky void imbued with dread power. One creature of your choice within 60 feet of you that you can see must succeed on a Wisdom saving throw or be affected by one of the following effects of your choice for the duration. On each of your turns until the spell ends, you can use your action to target another creature but can't target a creature again if it has succeeded on a saving throw against this casting of Eyebite." + "\n   " + toUni("Asleep") + ": The target falls unconscious. It wakes up if it takes any damage or if another creature uses its action to shake the sleeper awake." + "\n   " + toUni("Panicked") + ": The target is frightened of you. On each of its turns, the frightened creature must take the Dash action and move away from you by the safest and shortest available route, unless there is nowhere to move. If the target moves to a place at least 60 feet away from you where it can no longer see you, this effect ends." + "\n   " + toUni("Sickened") + ": The target has disadvantage on attack rolls and ability checks. At the end of each of its turns, it can make another Wisdom saving throw. If it succeeds, the effect ends."
 	},
 	"fabricate" : {
@@ -1476,7 +1475,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A small amount of alcohol or distilled spirits",
 		duration : "1 h",
-		description : "You gain 1d4+4+5/SL temporary hit points for the duration",
+		description : "I gain 1d4+4+5/SL temporary hit points for the duration",
 		descriptionFull : "Bolstering yourself with a necromantic facsimile of life, you gain 1d4+4 temporary hit points for the duration." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, you gain 5 additional temporary hit points for each slot level above 1st."
 	},
 	"fear" : {
@@ -1562,7 +1561,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u0192",
 		compMaterial : "A set of divinatory tools - such as bones, ivory sticks, cards, teeth, or carved runes - worth 100 gp and an object from the location you wish to find",
 		duration : "Conc, 1 day",
-		description : "Know the shortest route to a location you are familiar with and are on the same plane with (100gp)",
+		description : "Know the shortest route to a location I am familiar with and are on the same plane with (100gp)",
 		descriptionFull : "This spell allows you to find the shortest, most direct physical route to a specific fixed location that you are familiar with on the same plane of existence. If you name a destination on another plan of existence, a destination that moves (such as a mobile fortress), or a destination that isn't specific (such as a green dragon's lair), the spell fails." + "\n   " + "For the duration, as long as you are on the same plane of existence as the destination, you know how far it is and in what direction it lies. While you are traveling there, whenever you are presented with a choice of paths along the way, you automatically determine which path is the shortest and most direct route (but not necessarily the safest route) to the destination."
 	},
 	"find traps" : {
@@ -1589,7 +1588,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Instantaneous",
 		save : "Con",
-		description : "1 crea 7d8+30 Necrotic dmg; save halves; crea killed becomes zombie under your command",
+		description : "1 crea 7d8+30 Necrotic dmg; save halves; crea killed becomes zombie under my command",
 		descriptionFull : "You send negative energy coursing through a creature that you can see within range, causing it searing pain. The target must make a Constitution saving throw. It takes 7d8+30 necrotic damage on a failed save, or half as much damage on a successful one." + "\n   " + "A humanoid killed by this spell rises at the start of your next turn as a zombie that is permanently under your command, following your verbal orders to the best of its ability."
 	},
 	"fire bolt" : {
@@ -1818,7 +1817,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u0192",
 		compMaterial : "A diamond worth at least 5,000 gp",
 		duration : "Conc, 1 min",
-		description : "Create a portal to a precise location on a different plane; can transport named crea to you (5000gp)",
+		description : "Create a portal to a precise location on a different plane; can transport named crea to me (5000gp)",
 		descriptionFull : "You conjure a portal linking an unoccupied space you can see within range to a precise location on a different plane of existence. The portal is a circular opening, which you can make 5 to 20 feet in diameter. You can orient the portal in any direction you choose. The portal lasts for the duration." + "\n   " + "The portal has a front and a back on each plane where it appears. Travel through the portal is possible only by moving through its front. Anything that does so is instantly transported to the other plane, appearing in the unoccupied space nearest to the portal." + "\n   " + "Deities and other planar rulers can prevent portals created by this spell from opening in their presence or anywhere within their domains." + "\n   " + "When you cast this spell, you can speak the name of a specific creature (a pseudonym, title, or nickname doesn't work). If that creature is on a plane other than the one you are on, the portal opens in the named creature's immediate vicinity and draws the creature through it to the nearest unoccupied space on your side of the portal. You gain no special power over the creature, and it is free to act as the DM deems appropriate. It might leave, attack you, or help you."
 	},
 	"geas" : {
@@ -1860,7 +1859,7 @@ var Base_SpellsList = {
 		range : "30 ft",
 		components : "V,S",
 		duration : "Conc, 10 min",
-		description : "Transform centipedes, spiders, wasps, or scorpions into giant versions; obey your verbal commands",
+		description : "Transform centipedes, spiders, wasps, or scorpions into giant versions; obey my verbal commands",
 		descriptionFull : "You transform up to ten centipedes, three spiders, five wasps, or one scorpion within range into giant versions of their natural forms for the duration. A centipede becomes a giant centipede, a spider becomes a giant spider, a wasp becomes a giant wasp, and a scorpion becomes a giant scorpion." + "\n   " + "Each creature obeys your verbal commands, and in combat, they act on your turn each round. The DM has the statistics for these creatures and resolves their actions and movement." + "\n   " + "A creature remains in its giant size for the duration, until it drops to 0 hit points, or until you use an action to dismiss the effect on it." + "\n   " + "The DM might allow you to choose different targets. For example, if you transform a bee, its giant version might have the same statistics as a giant wasp."
 	},
 	"glibness" : {
@@ -1873,7 +1872,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V",
 		duration : "1 h",
-		description : "You can choose to roll a 15 on any Charisma check; magic cannot detect if you are lying",
+		description : "I can choose to roll a 15 on any Charisma check; magic cannot detect if I am lying",
 		descriptionFull : "Until the spell ends, when you make a Charisma check, you can replace the number you roll with a 15. Additionally, no matter what you say, magic that would determine if you are telling the truth indicates that you are being truthful."
 	},
 	"globe of invulnerability" : {
@@ -2095,7 +2094,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "1 creature heals 70+10/SL hp and is cured of blindness, deafness, and all diseases",
+		description : "1 living creature heals 70+10/SL hp and is cured of blindness, deafness, and all diseases",
 		descriptionFull : "Choose a creature that you can see within range. A surge of positive energy washes through the creature, causing it to regain 70 hit points. The spell also ends blindness, deafness, and any diseases affecting the target. This spell has no effect on constructs or undead." + AtHigherLevels + "When you cast this spell using a spell slot of 7th level or higher, the amount of healing increases by 10 for each slot level above 6th."
 	},
 	"healing word" : {
@@ -2108,7 +2107,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V",
 		duration : "Instantaneous",
-		description : "Heals 1 living creature 1d4+1d4/SL+spellcasting ability modifier",
+		description : "1 living creature heals 1d4+1d4/SL+spellcasting ability modifier hp",
 		descriptionFull : "A creature of your choice that you can see within range regains hit points equal to 1d4 + your spellcasting ability modifier. This spell has no effect on undead or constructs." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, the healing increases by 1d4 for each slot level above 1st."
 	},
 	"heat metal" : {
@@ -2222,7 +2221,7 @@ var Base_SpellsList = {
 		range : "90 ft",
 		components : "V",
 		duration : "Conc, 1 h",
-		description : "1 crea +1d6 dmg from your weapon atks; adv. Wis (Perception/Survival) vs. target; SL3: 8h; SL5: 24h",
+		description : "1 crea +1d6 dmg from my weapon atks; adv. Wis (Perception/Survival) vs. target; SL3: 8h; SL5: 24h",
 		descriptionFull : "You choose a creature you can see within range and mystically mark it as your quarry. Until the spell ends, you deal an extra 1d6 damage to the target whenever you hit it with a weapon attack, and you have advantage on any Wisdom (Perception) or Wisdom (Survival) check you make to find it. If the target drops to 0 hit points before this spell ends, you can use a bonus action on a subsequent turn of yours to mark a new creature." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd or 4th level, you can maintain your concentration on the spell for up to 8 hours. When you use a spell slot of 5th level or higher, you can maintain your concentration on the spell for up to 24 hours."
 	},
 	"hypnotic pattern" : {
@@ -2282,7 +2281,7 @@ var Base_SpellsList = {
 		components : "S,M\u2020",
 		compMaterial : "A lead-based ink worth at least 10 gp, which the spell consumes",
 		duration : "10 days",
-		description : "Write a message that only you, designated crea, and any with truesight can understand (10gp cons.)",
+		description : "Write a message that only I, designated crea, and any with truesight can understand (10gp cons.)",
 		descriptionFull : "You write on parchment, paper, or some other suitable writing material and imbue it with a potent illusion that lasts for the duration." + "\n   " + "To you and any creatures you designate when you cast the spell, the writing appears normal, written in your hand, and conveys whatever meaning you intended when you wrote the text. To all others, the writing appears as if it were written in an unknown or magical script that is unintelligible. Alternatively, you can cause the writing to appear to be an entirely different message, written in a different hand and language, though the language must be one you know." + "\n   " + "Should the spell be dispelled, the original script and the illusion both disappear." + "\n   " + "A creature with truesight can read the hidden message."
 	},
 	"imprisonment" : {
@@ -2425,7 +2424,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A small crystal bead",
 		duration : "8 h",
-		description : "10-ft rad immobile dome of force holds 9 Medium crea; blocks magic; ends if you leave; see book",
+		description : "10-ft rad immobile dome of force holds 9 Medium crea; blocks magic; ends if I leave; see book",
 		descriptionFull : "A 10-foot-radius immobile dome of force springs into existence around and above you and remains stationary for the duration. The spell ends if you leave its area." + "\n   " + "Nine creatures of Medium size or smaller can fit inside the dome with you. The spell fails if its area includes a larger creature or more than nine creatures. Creatures and objects within the dome when you cast this spell can move through it freely. All other creatures and objects are barred from passing through it. Spells and other magical effects can't extend through the dome or be cast through it. The atmosphere inside the space is comfortable and dry, regardless of the weather outside." + "\n   " + "Until the spell ends, you can command the interior to become dimly lit or dark. The dome is opaque from the outside, of any color you choose, but it is transparent from the inside."
 	},
 	"lesser restoration" : {
@@ -2595,7 +2594,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u0192",
 		compMaterial : "A gem, crystal, reliquary, or some other ornamental container worth at least 500 gp",
 		duration : "Till dispelled",
-		description : "Transport your soul into container from which you can attempt to possess humanoids; see B (500gp)",
+		description : "Transport my soul into container from which I can attempt to possess humanoids; see B (500gp)",
 		descriptionFull : "Your body falls into a catatonic state as your soul leaves it and enters the container you used for the spell's material component. While your soul inhabits the container, you are aware of your surroundings as if you were in the container's space. You can't move or use reactions. The only action you can take is to project your soul up to 100 feet out of the container, either returning to your living body (and ending the spell) or attempting to possess a humanoids body." + "\n   " + "You can attempt to possess any humanoid within 100 feet of you that you can see (creatures warded by a protection from evil and good or magic circle spells can't be possessed). The target must make a Charisma saving throw. On a failure, your soul moves into the target's body, and the target's soul becomes trapped in the container. On a success, the target resists your efforts to possess it, and you can't attempt to possess it again for 24 hours." + "\n   " + "Once you possess a creature's body, you control it. Your game statistics are replaced by the statistics of the creature though you retain your alignment and your Intelligence, Wisdom, and Charisma scores. You retain the benefit of your own class feature. If the target has any class levels, you can't use any of its class features." + "\n   " + "Meanwhile, the possessed creature's soul can perceive from the container using its own senses, but it can't move or take actions at all." + "\n   " + "While possessing a body, you can use your action to return from the host body to the container if it is within 100 feet of you, returning the host creature's soul to its body. If the host body dies while you're in it, the creature dies, and you must make a Charisma saving throw against your own spellcasting DC. On a success, you return to the container if it is within 100 feet of you. Otherwise, you die." + "\n   " + "If the container is destroyed or the spell ends, your soul immediately returns to your body. If your body is more than 100 feet away from you, or if your body is dead when you attempt to return to it, you die. If another creature's soul is in the container when it is destroyed, the creature's soul returns to its body if the body is alive and within 100 feet. Otherwise, that creature dies." + "\n   " + "When the spell ends, the container is destroyed."
 	},
 	"magic missile" : {
@@ -2608,7 +2607,7 @@ var Base_SpellsList = {
 		range : "120 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "3+1/SL darts hit creature(s) you can see for 1d4+1 Force dmg per dart",
+		description : "3+1/SL darts hit creature(s) I can see for 1d4+1 Force dmg per dart",
 		descriptionFull : "You create three glowing darts of magical force. Each dart hits a creature of your choice that you can see within range. A dart deals 1d4+1 force damage to its target. The darts all strike simultaneously and you can direct them to hit one creature or several." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, the spell creates one more dart for each slot above 1st."
 	},
 	"magic mouth" : {
@@ -2663,7 +2662,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "6 crea within 30-ft rad heal 3d8+1d8/SL+spellcasting ability modifier in hp",
+		description : "6 living creatures within 30-ft rad heal 3d8+1d8/SL+spellcasting ability modifier hp",
 		descriptionFull : "A wave of healing energy washes out from a point of your choice within range. Choose up to six creatures in a 30-foot-radius sphere centered on that point. Each target regains hit points equal to 3d8 + your spellcasting ability modifier. This spell has no effect on undead or constructs." + AtHigherLevels + "When you cast this spell using a spell slot of 6th level or higher, the healing increases by 1d8 for each slot level above 5th."
 	},
 	"mass heal" : {
@@ -2676,7 +2675,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "Heal up to 700 hp to any creatures in range; also cured of all diseases, blindness and deafness",
+		description : "Split 700 hp of healing over creatures in range; also cured of blindness, deafness, and all diseases",
 		descriptionFull : "A flood of healing energy flows from you into injured creatures around you. You restore up to 700 hit points, divided as you choose among any number of creatures that you can see within range. Creatures healed by this spell are also cured of all diseases and any effect making them blinded or deafened. This spell has no effect on undead or constructs."
 	},
 	"mass healing word" : {
@@ -2689,7 +2688,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V",
 		duration : "Instantaneous",
-		description : "6 crea heal 1d4+1d4/SL+spellcasting ability modifier in hp ",
+		description : "6 living creatures heal 1d4+1d4/SL+spellcasting ability modifier hp",
 		descriptionFull : "As you call out words of restoration, up to six creatures of your choice that you can see within range regain hit points equal to 1d4 + your spellcasting ability modifier. This spell has no effect on undead or constructs." + AtHigherLevels + "When you cast this spell using a spell slot of 4th level or higher, the healing increases by 1d4 for each slot level above 3rd."
 	},
 	"mass suggestion" : {
@@ -2732,7 +2731,7 @@ var Base_SpellsList = {
 		range : "Touch",
 		components : "V,S",
 		duration : "8 h",
-		description : "You merge into a stone object large enough to contain you; can't see through the stone; see book",
+		description : "I merge into a stone object large enough to contain me; can't see through the stone; see book",
 		descriptionFull : "You step into a stone object or surface large enough to fully contain your body, melding yourself and all the equipment you carry with the stone for the duration. Using your movement, you step into the stone at a point you can touch. Nothing of your presence remains visible or otherwise detectable by nonmagical senses." + "\n   " + "While merged with the stone, you can't see what occurs outside it, and any Wisdom (Perception) checks you make to hear sounds outside it are made with disadvantage. You remain aware of the passage of time and can cast spells on yourself while merged in the stone. You can use your movement to leave the stone where you entered it, which ends the spell. You otherwise can't move." + "\n   " + "Minor physical damage to the stone doesn't harm you, but its partial destruction or a change in its shape (to the extent that you no longer fit within it) expels you and deals 6d6 bludgeoning damage to you. The stone's complete destruction (or transmutation into a different substance) expels you and deals 50 bludgeoning damage to you. If expelled, you fall prone in an unoccupied space closest to where you first entered."
 	},
 	"melf's acid arrow" : {
@@ -2775,7 +2774,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A short piece of copper wire",
 		duration : "1 rnd",
-		description : "1 crea you point to hears whispered message and can reply with a whisper; nobody can overhear",
+		description : "1 crea I point to hears whispered message and can reply with a whisper; nobody can overhear",
 		descriptionFull : "You point your finger toward a creature within range and whisper a message. The target (and only the target) hears the message and can reply in a whisper that only you can hear." + "\n   " + "You can cast this spell through solid objects if you are familiar with the target and know it is beyond the barrier. Magical silence, 1 foot of stone, 1 inch of common metal, a thin sheet of lead, or 3 feet of wood blocks the spell. The spell doesn't have to follow a straight line and can travel freely around corners or through openings."
 	},
 	"meteor swarm" : {
@@ -2843,7 +2842,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V,S",
 		duration : "1 min (D)",
-		description : "Create three illusionary duplicates of you; destroyed if hit; randomize attacks; AC 10 + your Dex mod.",
+		description : "Create three illusionary duplicates of me; destroyed if hit; randomize attacks; AC 10 + my Dex mod",
 		descriptionFull : "Three illusory duplicates of yourself appear in your space. Until the spell ends, the duplicates move with you and mimic your actions, shifting position so it's impossible to track which image is real. You can use your action to dismiss the illusory duplicates." + "\n   " + "Each time a creature targets you with an attack during the spell's duration, roll a d20 to determine whether the attack instead targets one of your duplicates." + "\n   " + "If you have three duplicates, you must roll a 6 or higher to change the attack's target to a duplicate. With two duplicates, you must roll an 8 or higher. With one duplicate, you must roll an 11 or higher." + "\n   " + "A duplicate's AC equals 10 + your Dexterity modifier. If an attack hits a duplicate, the duplicate is destroyed. A duplicate can be destroyed only by an attack that hits it. It ignores all other damage and effects. The spell ends when all three duplicates are destroyed." + "\n   " + "A creature is unaffected by this spell if it can't see, if it relies on senses other than sight, such as blindsight, or if it can perceive illusions as false, as with truesight."
 	},
 	"mislead" : {
@@ -2856,7 +2855,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "S",
 		duration : "Conc, 1 h",
-		description : "You invisible and illusionary duplicate of you; 1 a move it; bns a switch between its senses and yours",
+		description : "I go invisible; create illusionary duplicate of me, 1 a move it, bns a switch between its senses and mine",
 		descriptionFull : "You become invisible at the same time that an illusory double of you appears where you are standing. The double lasts for the duration, but the invisibility ends if you attack or cast a spell." + "\n   " + "You can use your action to move your illusory double up to twice your speed and make it gesture, speak, and behave in whatever way you choose. You can see through its eyes and hear through its ears as if you were located where it is. On each of your turns as a bonus action, you can switch from using its senses to using your own, or back again. While you are using its senses, you are blinded and deafened in regard to your own surroundings."
 	},
 	"misty step" : {
@@ -2869,7 +2868,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V",
 		duration : "Instantaneous",
-		description : "You teleport 30 feet to a unoccupied space you can see",
+		description : "I teleport 30 feet to a unoccupied space I can see",
 		descriptionFull : "Briefly surrounded by silvery mist, you teleport up to 30 feet to an unoccupied space that you can see."
 	},
 	"modify memory" : {
@@ -3107,7 +3106,7 @@ var Base_SpellsList = {
 		range : "30 ft",
 		components : "V,S",
 		duration : "1 h (D)",
-		description : "Summon quasi-real steed with 100 ft speed (10 mph); you designate rider; spells ends if it takes dmg",
+		description : "Summon quasi-real steed with 100 ft speed (10 mph); I designate rider; spells ends if it takes dmg",
 		descriptionFull : "A Large quasi-real, horse-like creature appears on the ground in an unoccupied space of your choice within range. You decide the creature's appearance, but it is equipped with a saddle, bit, and bridle. Any of the equipment created by the spell vanishes in a puff of smoke if it is carried more than 10 feet away from the steed." + "\n   " + "For the duration, you or a creature you choose can ride the steed. The creature uses the statistics for a riding horse, except it has a speed of 100 feet and can travel 10 miles in an hour, or 13 miles at a fast pace. When the spell ends, the steed gradually fades, giving the rider 1 minute to dismount. The spell ends if you use an action to dismiss it or if the steed takes any damage."
 	},
 	"planar ally" : {
@@ -3120,7 +3119,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "Otherwordly entity sends celestial, elemental or fiend to a location near you; see book",
+		description : "Otherwordly entity sends celestial, elemental or fiend to a location near me; see book",
 		descriptionFull : "You beseech an otherworldly entity for aid. The being must be known to you - a god, a primordial, a demon prince, or some other being of cosmic power. That entity sends a celestial, an elemental, or a fiend loyal to it to aid you, making the creature appear in an unoccupied space within range. If you know a specific creature's name, you can speak that name when you cast this spell to request that creature, though you might get a different creature anyway (DM's choice)." + "\n   " + "When the creature appears, it is under no compulsion to behave in any particular way. You can ask the creature to perform a service in exchange for payment, but it isn't obliged to do so. The requested task could range from simple (fly us across the chasm, or help us fight a battle) to complex (spy on our enemies, or protect us during our foray into the dungeon). You must be able to communicate with the creature to bargain for its services." + "\n   " + "Payment can take a variety of forms. A celestial might require a sizable donation of gold or magic items to an allied temple, while a fiend might demand a living sacrifice or a gift of treasure. Some creatures might exchange their service for a quest undertaken by you." + "\n   " + "As a rule of thumb, a task that can be measured in minutes requires a payment worth 100 gp per minute. A task measured in hours requires 1,000 gp per hour. And a task measured in days (up to 10 days) requires 10,000 gp per day. The DM can adjust these payments based on the circumstances under which you cast the spell. If the task is aligned with the creature's ethos, the payment might be halved or even waived. Nonhazardous tasks typically require only half the suggested payment, while especially dangerous tasks might require a greater gift. Creatures rarely accept tasks that seem suicidal." + "\n   " + "After the creature completes the task, or when the agreed-upon duration of service expires, the creature returns to its home plane after reporting back to you, if appropriate to the task and if possible. If you are unable to agree on a price for the creature's service, the creature immediately returns to its home plane." + "\n   " + "A creature enlisted to join your group counts as a member of it, receiving a full share of experience points awarded."
 	},
 	"planar binding" : {
@@ -3150,7 +3149,7 @@ var Base_SpellsList = {
 		compMaterial : "A forked, metal rod worth at least 250 gp, atttuned to a particular plane of existence",
 		duration : "Instantaneous",
 		save : "Cha",
-		description : "You + 8 willing crea teleport to different plane; or spell attack + save or transported to random plane",
+		description : "Me + 8 willing crea teleport to different plane; or spell attack + save or transported to random plane",
 		descriptionFull : "You and up to eight willing creatures who link hands in a circle are transported to a different plane of existence. You can specify a target destination in general terms, such as the City of Brass on the Elemental Plane of Fire or the palace of Dispater on the second level of the Nine Hells, and you appear in or near that destination. If you are trying to reach the City of Brass, for example, you might arrive in its Street of Steel, before its Gate of Ashes, or looking at the city from across the Sea of Fire, at the DM's discretion." + "\n   " + "Alternatively, if you know the sigil sequence of a teleportation circle on another plane of existence, this spell can take you to that circle. If the teleportation circle is too small to hold all the creatures you transported, they appear in the closest unoccupied spaces next to the circle." + "\n   " + "You can use this spell to banish an unwilling creature to another plane. Choose a creature within your reach and make a melee spell attack against it. On a hit, the creature must make a Charisma saving throw. If the creature fails the save, it is transported to a random location on the plane of existence you specify. A creature so transported must find its own way back to your current plane of existence."
 	},
 	"plant growth" : {
@@ -3232,7 +3231,7 @@ var Base_SpellsList = {
 		range : "30 ft",
 		components : "V",
 		duration : "Instantaneous",
-		description : "6 creatures heal 2d8+1d8/SL+spellcasting ability modifier hp",
+		description : "6 living creatures heal 2d8+1d8/SL+spellcasting ability modifier hp",
 		descriptionFull : "Up to six creatures of your choice that you can see within range each regain hit points equal to 2d8 + your spellcasting ability modifier. This spell has no effect on undead or constructs." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, the healing increases by 1d8 for each slot level above 2nd."
 	},
 	"prestidigitation" : {
@@ -3314,7 +3313,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u0192",
 		compMaterial : "A small replica of you made from materials worth at least 5 gp",
 		duration : "Conc, 1 day",
-		description : "Project image of you to familiar place; 1 a manipulate; bns a switch between its senses and yours (5gp)",
+		description : "Project image of me to familiar place; 1 a manipulate; bns a switch between its senses and mine (5gp)",
 		descriptionFull : "You create an illusory copy of yourself that lasts for the duration. The copy can appear at any location within range that you have seen before, regardless of intervening obstacles. The illusion looks and sounds like you but is intangible. If the illusion takes any damage, it disappears, and the spell ends." + "\n   " + "You can use your action to move this illusion up to twice your speed, and make it gesture, speak, and behave in whatever way you choose. It mimics your mannerisms perfectly." + "\n   " + "You can see through its eyes and hear through its ears as if you were in its space. On your turn as a bonus action, you can switch from using its senses to using your own, or back again. While you are using its senses, you are blinded and deafened in regard to your own surroundings." + "\n   " + "Physical interaction with the image reveals it to be an illusion, because things can pass through it. A creature that uses its action to examine the image can determine that it is an illusion with a successful Intelligence (Investigation) check against your spell save DC. If a creature discerns the illusion for what it is, the creature can see through the image, and any noise it makes sounds hollow to the creature."
 	},
 	"protection from energy" : {
@@ -3427,7 +3426,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "Spell attack for 1d8 Cold dmg and -10 ft speed until start of your next turn; +1d8 at CL 5, 11, and 17",
+		description : "Spell attack for 1d8 Cold dmg and -10 ft speed until start of my next turn; +1d8 at CL 5, 11, and 17",
 		descriptionFull : "A frigid beam of blue-white light streaks toward a creature within range. Make a ranged spell attack against the target. On a hit, it takes 1d8 cold damage, and its speed is reduced by 10 feet until the start of your next turn." + "\n   " + "The spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8)."
 	},
 	"regenerate" : {
@@ -3638,7 +3637,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A short piece of fine copper wire",
 		duration : "1 rnd",
-		description : "Send a 25 word message to a familiar creature; it recognizes you and can respond with 25 words",
+		description : "Send a 25 word message to a familiar creature; it recognizes me and can respond with 25 words",
 		descriptionFull : "You send a short message of twenty-five words or less to a creature with you are familiar. The creature hears the message in its mind, recognizes you as the sender if it knows you, and can answer in a like manner immediately. The spell enables creatures with Intelligence scores of at least 1 to understand the meaning of your message." + "\n   " + "You can send the message across any distance and even to other planes of existence, but if the target is on a different plane than you, there is a 5 percent chance that the message doesn't arrive."
 	},
 	"sequester" : {
@@ -3694,7 +3693,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V,S",
 		duration : "1 rnd",
-		description : "If hit by attack +5 AC until start of next turn; or stop Magic Missile spell from doing any dmg to you",
+		description : "If hit by attack +5 AC until start of next turn; or stop Magic Missile spell from doing any dmg to me",
 		descriptionFull : "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile."
 	},
 	"shield of faith" : {
@@ -3722,7 +3721,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "Mistletoe, a shamrock leaf, and a club or quarterstaff",
 		duration : "1 min",
-		description : "Club/quarterstaff you hold does 1d8 dmg and you use your spellcasting ability modifier instead of Str",
+		description : "Club/quarterstaff I hold does 1d8 dmg and uses my spellcasting ability modifier instead of Str",
 		descriptionFull : "The wood of a club or quarterstaff you are holding is imbued with nature's power. For the duration, you can use your spellcasting ability instead of Strength for the attack and damage rolls of melee attacks using that weapon, and the weapon's damage die becomes a d8. The weapon also becomes magical, if it isn't already. The spell ends if you cast it again or if you let go of the weapon."
 	},
 	"shocking grasp" : {
@@ -3777,7 +3776,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u2020",
 		compMaterial : "Snow or ice in quantities sufficient to made a life-size copy of the duplicated creature; some hair, fingernail clippings, or other piece of that creature's body placed inside the snow or ice; and powdered ruby worth 1,500 gp, sprinkled over the duplicate and consumed by the spell",
 		duration : "Till dispelled",
-		description : "Create snow/ice duplicate of humanoid/beast; follows your verbal commands; see B (1500gp cons.)",
+		description : "Create snow/ice duplicate of humanoid/beast; follows my verbal commands; see B (1500gp cons.)",
 		descriptionFull : "You shape an illusory duplicate of one beast or humanoid that is within range for the entire casting time of the spell. The duplicate is a creature, partially real and formed from ice or snow, and it can take actions and otherwise be affected as a normal creature. It appears to be the same as the original, but it has half the creature's hit point maximum and is formed without any equipment. Otherwise, the illusion uses all the statistics of the creature it duplicates, except that it is a construct." + "\n   " + "The simulacrum is friendly to you and creatures you designate. It obeys your spoken commands, moving and acting in accordance with your wishes and acting on your turn in combat. The simulacrum lacks the ability to learn or become more powerful, so it never increases its level or other abilities, nor can it regain expended spell slots." + "\n   " + "If the simulacrum is damaged, you can repair it in an alchemical laboratory, using rare herbs and minerals worth 100 gp per hit point it regains. The simulacrum lasts until it drops to 0 hit points, at which point it reverts to snow and melts instantly." + "\n   " + "If you cast this spell again, any currently active duplicates you created with this spell are instantly destroyed."
 	},
 	"sleep" : {
@@ -4003,7 +4002,7 @@ var Base_SpellsList = {
 		compMaterial : "A snake's tongue and either a bit of honeycomb or a drop of sweet oil",
 		duration : "Conc, 8 h",
 		save : "Wis",
-		description : "1 crea save or follow understood reasonable stated course of action; ends if you or allies harm target",
+		description : "1 crea save or follow understood reasonable stated course of action; ends if I or allies harm target",
 		descriptionFull : "You suggest a course of activity (limited to a sentence or two) and magically influence a creature you can see within range that can hear and understand you. Creatures that can't be charmed are immune to this effect. The suggestion must be worded in such a manner as to make the course of action sound reasonable. Asking the creature to stab itself, throw itself onto a spear, immolate itself, or do some other obviously harmful act ends the spell." + "\n   " + "The target must make a Wisdom saving throw. On a failed save, it pursues the course of action you described to the best of its ability. The suggested course of action can continue for the entire duration. If the suggested activity can be completed in a shorter time, the spell ends when the subject finishes what it was asked to do." + "\n   " + "You can also specify conditions that will trigger a special activity during the duration. For example, you might suggest that a knight give her warhorse to the first beggar she meets. If the condition isn't met before the spell expires, the activity isn't performed." + "\n   " + "If you or any of your companions damage the target, the spell ends."
 	},
 	"sunbeam" : {
@@ -4089,7 +4088,7 @@ var Base_SpellsList = {
 		range : "10 ft",
 		components : "V",
 		duration : "Instantaneous",
-		description : "You, 8 willing crea, or an object teleport to a place you know, have seen, or can describe; see book",
+		description : "I, 8 willing crea, or an object teleport to a place I know, have seen, or can describe; see book",
 		descriptionFull : "This spell instantly transports you and up to eight willing creatures of your choice that you can see within range, or a single object that you can see within range, to a destination you select. If you target an object, it must be able to fit entirely inside a 10-foot cube, and it can't be held or carried by an unwilling creature. The destination you choose must be known to you, and it must be on the same plane of existence as you. Your familiarity with the destination determines whether you arrive there successfully. The DM rolls d100 and consults the table." + "\n\n" + toUni("Familiarity") + "\t" + toUni("Mishap") + "\t" + toUni("Similar") + "\t  " + toUni("Off") + "\t   " + toUni("On") + "\n\t\t\t  " + toUni("Area") + "\t" + toUni("Target") + "\t" + toUni("Target") + "\nPermanent Circle\t    -\t    -\t    -\t01-100\nAssociated Object\t    -\t    -\t    -\t01-100\nVery Familiar\t01-05\t06-13\t14-24\t25-100\nSeen Casually\t01-33\t34-43\t44-53\t54-100\nViewed Once\t01-43\t44-53\t54-73\t74-100\nDescription\t01-43\t44-53\t54-73\t74-100\nFalse Description\t01-50\t51-100\t    -\t    -" + "\n\n" + toUni("Familiarity") + ": \"Permanent Circle\" means a permanent teleportation circle whose sigil sequence you know. \"Associated Object\" means that you possess an object taken from the desired destination within the last six months, such as a book from a wizard's library, bed linen from a royal suite, or a chunk of marble from a Lich's secret tomb." + "\n   " + "\"Very Familiar\" is a place you have been very often, a place you have carefully studied, or a place you can see when you cast the spell. \"Seen Casually\" is some place you have seen more than once but with which you aren't very familiar. \"Viewed Once\" is a place you have seen once, possibly using magic. \"Description\" is a place whose location and appearance you know through someone else's description, perhaps from a map." + "\n   " + "\"False Description\" is a place that doesn't exist. Perhaps you tried to scry an enemy's sanctum but instead viewed an illusion, or you are attempting to teleport to a familiar location that no longer exists." + "\n   " + toUni("On Target") + ": You and your group (or the target object) appear where you want to go." + "\n   " + toUni("Off Target") + ": You and your group (or the target object) appear a random distance away from the destination in a random direction. Distance off target is 1d10 \u00D7 1d10 percent of the distance that was to be travelled. For example, if you tried to travel 120 miles, landed off target, and rolled a 5 and 3 on the two d10s, then you would be off target by 15 percent, or 18 miles. The DM determines the direction off target randomly by rolling a d8 and designating 1 as north, 2 as north-east, 3 as east, and so on around the points of the compass. If you were teleporting to a coastal city and wound up 18 miles out at sea, you could be in trouble." + "\n   " + toUni("Similar Area") + ": You and your group (or the target object) wind up in a different area that's visually or thematically similar to the target area. If you are heading for your home laboratory, for example, you might wind up in another wizard's laboratory or in an alchemical supply shop that has many of the same tools and implements as your laboratory. Generally, you appear in the closest similar place, but since the spell has no range limit, you could conceivably wind up anywhere on the plane." + "\n   " + toUni("Mishap") + ": The spell's unpredictable magic results in a difficult journey. Each teleporting creature (or the target object) takes 3d10 force damage and the DM rerolls on the table to see where you wind up (multiple mishaps can occur, dealing damage each time)."
 	},
 	"teleportation circle" : {
@@ -4119,7 +4118,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A drop of mercury",
 		duration : "1 h",
-		description : "Create a 3 ft diameter disk that carries 500 lb and follows you if you move more than 20 ft away",
+		description : "Create a 3 ft diameter disk that carries 500 lb and follows me if I move more than 20 ft away",
 		descriptionFull : "This spell creates a circular, horizontal plane of force, 3 feet in diameter and 1 inch thick, that floats 3 feet above the ground in an unoccupied space of your choice that you can see within range. The disk remains for the duration, and can hold up to 500 pounds. If more weight is placed on it, the spell ends, and everything on the disk falls to the ground." + "\n   " + "The disk is immobile while you are within 20 feet of it. If you move more than 20 feet away from it, the disk follows you so that it remains within 20 feet of you. It can more across uneven terrain, up or down stairs, slopes and the like, but it can't cross an elevation change of 10 feet or more. For example, the disk can't move across a 10-foot-deep pit, nor could it leave such a pit if it was created at the bottom." + "\n   " + "If you move more than 100 feet from the disk (typically because it can't move around an obstacle to follow you), the spell ends."
 	},
 	"thaumaturgy" : {
@@ -4132,7 +4131,7 @@ var Base_SpellsList = {
 		range : "30 ft",
 		components : "V",
 		duration : "1 min (D)",
-		description : "Minor wonder; your voice booms, flames flicker, tremors in the ground, ominous sounds, etc.",
+		description : "Minor wonder; my voice booms, flames flicker, tremors in the ground, ominous sounds, etc.",
 		descriptionFull : "You manifest a minor wonder, a sign of supernatural power, within range. You create one of the following magical effects within range." + "\n " + "\u2022 Your voice booms up to three times as loud as normal for 1 minute." + "\n " + "\u2022 You cause flames to flicker, brighten, dim, or change color for 1 minute." + "\n " + "\u2022 You cause harmless tremors in the ground for 1 minute." + "\n " + "\u2022 You create an instantaneous sound that originates from a point of your choice within range, such as a rumble of thunder, the cry of a raven, or ominous whispers." + "\n " + "\u2022 You instantaneously cause an unlocked door or window to fly open or slam shut." + "\n " + "\u2022 You alter the appearance of your eyes for 1 minute." + "\n\n" + "If you cast this spell multiple times, you can have up to three of its 1-minute effects active at a time, and you can dismiss such an effect as an action."
 	},
 	"thunderwave" : {
@@ -4159,7 +4158,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V",
 		duration : "Instantaneous",
-		description : "You instantly take 1d4+1 turns; if affecting other creatures or worn or carried object the spell ends",
+		description : "I instantly take 1d4+1 turns; if affecting other creatures or worn or carried object the spell ends",
 		descriptionFull : "You briefly stop the flow of time for everyone but yourself. No time passes for other creatures, while you take 1d4+1 turns in a row, during which you can use actions and move as normal." + "\n   " + "This spell ends if one of the actions you use during this period, or any effects that you create during this period, affects a creature other than you or an object being worn or carried by someone other than you. In addition, the spell ends if you move to a place more than 1,000 feet from the location where you cast it."
 	},
 	"tongues" : {
@@ -4186,7 +4185,7 @@ var Base_SpellsList = {
 		range : "10 ft",
 		components : "V,S",
 		duration : "1 rnd",
-		description : "For duration all can transport from a Large plant to a plant on the same plane that you have touched",
+		description : "For duration all can transport from a Large plant to a plant on the same plane that I have touched",
 		descriptionFull : "This spell creates a magical link between a Large or larger inanimate plant within range and another plant, at any distance, on the same plane of existence. You must have seen or touched the destination plant at least once before. For the duration, any creature can step into the target plant and exit from the destination plant by using 5 feet of movement."
 	},
 	"tree stride" : {
@@ -4199,7 +4198,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V,S",
 		duration : "Conc, 1 min",
-		description : "You can teleport 1/rnd for 5 ft move through a tree to another tree of the same kind within 500 ft",
+		description : "I can teleport 1/rnd for 5 ft move through a tree to another tree of the same kind within 500 ft",
 		descriptionFull : "You gain the ability to enter a tree and move from inside it to inside another tree of the same kind within 500 feet. Both trees must be living and at least the same size as you. You must use 5 feet of movement to enter a tree. You instantly know the location of all other trees of the same kind within 500 feet and, as part of the move used to enter the tree, can either pass into one of those trees or step out of the tree you're in. You appear in a spot of your choice within 5 feet of the destination tree, using another 5 feet of movement. If you have no movement left, you appear within 5 feet of the tree you entered." + "\n   " + "You can use this transportation ability once per round for the duration. You must end each turn outside a tree."
 	},
 	"true polymorph" : {
@@ -4255,7 +4254,7 @@ var Base_SpellsList = {
 		range : "30 ft",
 		components : "S",
 		duration : "Conc, 1 rnd",
-		description : "1 creature against whom you gain advantage on your next attack roll",
+		description : "1 creature against whom I gain advantage on my next attack roll",
 		descriptionFull : "You extend your hand and point a finger at a target in range. Your magic grants you a brief insight into the target's defenses. On your next turn, you gain advantage on your first attack roll against the target, provided that this spell hasn't ended."
 	},
 	"unseen servant" : {
@@ -4283,7 +4282,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V,S",
 		duration : "Conc, 1 min",
-		description : "Spell attack each turn as 1 a for 3d6+1d6/SL Necrotic dmg; you heal half the damage dealt",
+		description : "Spell attack each turn as 1 a for 3d6+1d6/SL Necrotic dmg; I heal half the damage dealt",
 		descriptionFull : "The touch of your shadow-wreathed hand can siphon force from others to heal your wounds. Make a melee spell attack against a creature within your reach. On a hit, the target takes 3d6 necrotic damage, and you regain hit points equal to half the amount of necrotic damage dealt. Until the spell ends, you can make the attack again on each of your turns as an action." + AtHigherLevels + "When you cast this spell using a spell slot of 4th level or higher, the damage increases by 1d6 for each slot level above 3rd."
 	},
 	"vicious mockery" : {
@@ -4387,7 +4386,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u0192",
 		compMaterial : "A pair of platinum rings worth at least 50 gp each, which you and target must wear for the duration",
 		duration : "1 h (D)",
-		description : "1 crea +1 AC, +1 saves, resistance all dmg; if it takes dmg you take same dmg; ends if >60 ft away",
+		description : "1 crea +1 AC, +1 saves, resistance all dmg; if it takes dmg I take same dmg; ends if >60 ft away",
 		descriptionFull : "This spell wards a willing creature you touch and creates a mystic connection between you and the target until the spell ends. While the target is within 60 feet of you, it gains a +1 bonus to AC and saving throws, and it has resistance to all damage. Also, each time it takes damage, you take the same amount of damage." + "\n   " + "The spell ends if you drop to 0 hit points or if you and the target become separated by more than 60 feet. It also ends if the spell is cast again on either of the connected creatures. You can also dismiss the spell as an action."
 	},
 	"water breathing" : {
@@ -4460,7 +4459,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "Fire and holy water",
 		duration : "8 h",
-		description : "You + 10 willing creatures assume gaseous form with fly 300 ft, resist. to nonmagical dmg; see book",
+		description : "Me + 10 willing creatures assume gaseous form with fly 300 ft, resist. to nonmagical dmg; see book",
 		descriptionFull : "You and up to ten willing creatures you can see within range assume a gaseous form for the duration, appearing as wisps of cloud. While in this cloud form, a creature has a flying speed of 300 feet and has resistance to damage from nonmagical weapons. The only actions a creature can take in this form are the Dash action or to revert to its normal form. Reverting takes 1 minute, during which time a creature is incapacitated and can't move. Until the spell ends, a creature can revert to cloud form, which also requires the 1-minute transformation." + "\n   " + "If a creature is in cloud form and flying when the effect ends, the creature descends 60 feet per round for 1 minute until it lands, which it does safely. If it can't land after 1 minute, the creature falls the remaining distance."
 	},
 	"wind wall" : {
@@ -4502,7 +4501,7 @@ var Base_SpellsList = {
 		range : "5 ft",
 		components : "V",
 		duration : "Instantaneous",
-		description : "You + 5 willing crea teleport to sanctuary of your deity, designated as such by casting this spell there",
+		description : "Me + 5 willing crea teleport to sanctuary of my deity, designated as such by casting this spell there",
 		descriptionFull : "You and up to five willing creatures within 5 feet of you instantly teleport to a previously designated sanctuary. You and any creatures that teleport with you appear in the nearest unoccupied space to the spot you designated when you prepared your sanctuary (see below). If you cast this spell without first preparing a sanctuary, the spell has no effect." + "\n   " + "You must designate a sanctuary by casting this spell within a location, such as a temple, dedicated to or strongly linked to your deity. If you attempt to cast the spell in this manner in an area that isn't dedicated to your deity, the spell has no effect."
 	},
 	"zone of truth" : {
@@ -4516,7 +4515,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "10 min",
 		save : "Cha",
-		description : "15-ft rad all in or enter save or unable to lie; you aware if saved or not; crea aware it cannot lie",
+		description : "15-ft rad all in or enter save or unable to lie; I'm aware if saved or not; crea aware it cannot lie",
 		descriptionFull : "You create a magical zone that guards against deception in a 15-foot-radius sphere centered on a point of your choice within range. Until the spell ends, a creature that enters the spell's area for the first time on a turn or starts its turn there must make a Charisma saving throw. On a failed save, a creature can't speak a deliberate lie while in the radius. You know whether each creature succeeds or fails on its saving throw." + "\n   " + "An affected creature is aware of the spell and can thus avoid answering questions to which it would normally respond with a lie. Such creatures can be evasive in its answers as long as it remains within the boundaries of the truth."
 	}
 };

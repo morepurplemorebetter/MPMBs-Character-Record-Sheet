@@ -14,7 +14,7 @@ function InitializeEverything(noButtons, noVars) {
 	if (!minVer) {
 		SetGearVariables();
 		setListsUnitSystem(false, true);
-		FindClasses(true);
+		FindClasses();
 		FindRace();
 		FindCompRace();
 		FindWeapons();

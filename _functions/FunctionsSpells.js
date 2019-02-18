@@ -190,14 +190,23 @@ function ApplySpell(FldValue, rememberFldName) {
 			var aCast = input[2] && CurrentSpells[input[2]] ? CurrentSpells[input[2]] : "";
 			if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
 				aSpell.components = "";
-				aSpell.compMaterial = "Spells cast by magic items don't require any components.";
-				aSpell.description = aSpell.description.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
-				if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
+				aSpell.compMaterial = "";
+				aSpell.changesObj["Magic Item"] = "\n - Spells cast by magic items don't require any components.";
+				var removeRegex = / \(\d+ ?gp( cons\.?)?\)|\+(\d+d)?\d+\/SL\b|\bSL used/i
+				if (removeRegex.test(aSpell.description + aSpell.descriptionMetric)) {
+					aSpell.description = aSpell.description.replace("SL used", "level " + aSpell.level).replace(removeRegex, '');
+					if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace("SL used", "level " + aSpell.level).replace(removeRegex, '');
+					aSpell.changesObj["Magic Item"] += "\n - They can only be cast at the spell's level, not with higher level spell slots.";
+				}
 			}
 			if (aCast && aCast.spellAttrOverride && aCast.spellAttrOverride[theSpl]) {
 				var theOver = aCast.spellAttrOverride[theSpl];
 				for (var key in theOver) {
-					if ((/^(classes|level|source)$/).test(key)) continue;
+					if (key == "changesObj") {
+						for (var changeO in theOver[key]) {
+							aSpell.changesObj[changeO] = theOver.changesObj[changeO];
+						}
+					} else if ((/^(classes|level|source)$/).test(key)) continue;
 					aSpell[key] = theOver[key];
 				}
 			}
