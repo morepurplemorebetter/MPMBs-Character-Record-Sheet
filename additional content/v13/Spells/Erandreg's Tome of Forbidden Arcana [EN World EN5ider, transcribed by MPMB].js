@@ -18,7 +18,7 @@
 	Date:		2018-08-13 (sheet v12.999)
 */
 var iFileName = "Erandreg's Tome of Forbidden Arcana [EN World EN5ider, transcribed by MPMB].js";
-RequiredSheetVersion(12.999);
+RequiredSheetVersion(13);
 
 // The source (EN5ider 108)
 SourceList["EN5:108"] = {
@@ -144,7 +144,7 @@ SpellsList["soul delve"] = {
 	components : "V,S,M\u0192",
 	compMaterial : "A set of rune sticks made from dragonbone, worth 100 gold pieces",
 	duration : "Instantaneous",
-	description : "Learn about willing, helpless, or recently dead (24h) creature; unwilling learns about you too (100gp)",
+	description : "Learn about willing, helpless, or recently dead (24h) creature; unwilling learns about me too (100gp)",
 	descriptionFull : "Choose a sentient target that is willing, helpless, or has been dead for less than 24 hours. You examine any and all souls currently or recently connected to that person. This reveals:" + "\n \u2022 " + "Whether the target has ever died before, and if so how they were returned to life" + "\n \u2022 " + "The target's Type" + "\n \u2022 " + "The target's character class or classes, if any" + "\n \u2022 " + "Whether the target's Hit Dice are greater than, equal to, or less than yours" + "\n \u2022 " + "Whether the target has a Patron from any class or subclass feature" + "\n \u2022 " + "Whether the target is or has been under the effects of possession by a ghost or similar creature" + "\n \u2022 " + "What status conditions are affecting the target, or affected it at its time of death" + "\n \u2022 " + "One Ideal, Bond, or Flaw" + "\n \u2022 " + "General descriptions of any magic items to which they are currently attuned" + "\n   " + "An unwilling living target may learn 1d4 of these things about you, as well."
 };
 SpellsList["soul shackle"] = {
@@ -158,6 +158,6 @@ SpellsList["soul shackle"] = {
 	components : "V,S",
 	duration : "Conc, 1 h",
 	save : "Cha",
-	description : "1 crea save or you use 1 rea so it takes dmg/effect instead; SL6: 8h; SL7: 24h; SL8: no conc; SL9: perm.",
+	description : "1 crea save or I use 1 rea so it takes dmg/effect instead; SL6: 8h; SL7: 24h; SL8: no conc; SL9: perm.",
 	descriptionFull : "This spell shackles another target's soul to yours, so that the target suffers in your place. Choose a creature that you can see or name. If it succeeds a Charisma saving throw, this spell has no effect. Otherwise, as a reaction when you receive damage, a spell effect, or a condition, you force the target to suffer it instead. After you do so, the target can make a Charisma saving throw. On a success, the effect ends." + "\n   " + "A remove curse cast on the target ends the spell early." + AtHigherLevels + "When you cast this spell with a spell slot of 6th level, the spell's duration is concentration, up to 8 hours. When you cast this spell with a spell slot of 7th level, the spell's duration is concentration, up to 24 hours. When you cast this spell with a spell slot of 8th level, the spell no longer requires concentration. When you cast this spell with a spell slot of 9th level, the spell is permanent."
 };

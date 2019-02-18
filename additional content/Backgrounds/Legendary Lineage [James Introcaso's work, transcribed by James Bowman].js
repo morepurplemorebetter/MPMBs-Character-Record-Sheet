@@ -97,6 +97,6 @@ BackgroundList["legendary lineage"] = {
 };
 
 BackgroundFeatureList["good reputation"] = {  
-	description : "People in positions of power and privilege are willing to take a meeting with you and grant you favors. The DM decides the extent and effect of these favors, but they should not involve lavish gifts or great personal risk to the granter.",
+	description : "People in positions of power and privilege are willing to take a meeting with me and grant me favors. The DM decides the extent and effect of these favors, but they should not involve lavish gifts or great personal risk to the granter.",
 	source : ["WBB:15", 10]
 };

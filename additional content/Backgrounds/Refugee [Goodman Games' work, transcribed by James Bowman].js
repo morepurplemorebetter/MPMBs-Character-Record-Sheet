@@ -96,6 +96,6 @@ BackgroundList["refugee"] = {
 };
 
 BackgroundFeatureList["far-flung friends"] = {  
-	description : "In communities that are now home to your kith and kin, you can count on housing, food, free advice, and other assistance so long as it doesn’t threaten the lives and well-being of those lending you aid. Your DM will decide whether or not a particular community has fellow refugees amongst its population.",
+	description : "In communities that are now home to my kith and kin, I can count on housing, food, free advice, and other assistance so long as it doesn’t threaten the lives and well-being of those lending me aid. The DM will decide whether or not a particular community has fellow refugees amongst its population.",
 	source : ["FEF1:G", 14]
 };

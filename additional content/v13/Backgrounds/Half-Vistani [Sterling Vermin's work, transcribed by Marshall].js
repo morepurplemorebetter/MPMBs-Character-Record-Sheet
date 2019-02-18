@@ -134,6 +134,6 @@ AddBackgroundVariant("half-vistani", "zarovan", {
 });
 
 BackgroundFeatureList["wanderlust"] = {
-	description : "By leaving the ranks of the vistani you have lost the ability to walk the mists unharmed and without getting lost but you still feel a powerful compulsion to be on the move. You gain advantage on any rolls made to set or follow a course and traveling is considered light activity for the purposes of resting for you.",
+	description : "By leaving the ranks of the vistani, I have lost the ability to walk the mists unharmed and without getting lost but I still feel a powerful compulsion to be on the move. I gain advantage on any rolls made to set or follow a course and traveling is considered light activity for the purposes of resting for me.",
 	source : ["SV:HV", 1]
 };
