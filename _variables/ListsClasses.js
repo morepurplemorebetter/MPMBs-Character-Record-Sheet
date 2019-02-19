@@ -1622,6 +1622,7 @@ var Base_ClassList = {
 							range : "Self",
 							components : "V,S",
 							compMaterial : "",
+							description : "If I'm not wearing armor, I gain AC 13 + Dex modifier for the duration; spell ends if I don armor",
 							changes : "With the Armor of Shadows invocation I can cast Mage Armor without a material component, but only on myself."
 						}
 					}
@@ -1642,6 +1643,7 @@ var Base_ClassList = {
 							range : "Self",
 							components : "V,S",
 							compMaterial : "",
+							description : "I rise vertically, up to 20 ft; during my move, I can move up/down up to 20 ft",
 							changes : "With the Ascendant Step invocation I can cast Levitate without a material component, but only on myself."
 						}
 					}
@@ -1691,7 +1693,8 @@ var Base_ClassList = {
 							name : 'Book of Ancient Secrets',
 							ability : 6,
 							list : {class : 'any', ritual : true},
-							known : {spells : 'book'}
+							known : {spells : 'book'},
+							refType : "feat"
 						};
 						SetStringifieds('spells'); CurrentUpdates.types.push('spells');
 					},
@@ -1918,6 +1921,7 @@ var Base_ClassList = {
 							range : "Self",
 							components : "V,S",
 							compMaterial : "",
+							description : "My jump distance is tripled for the duration",
 							changes : "With the Otherworldly Leap invocation I can cast Jump without a material component, but only on myself."
 						}
 					}
@@ -2321,9 +2325,9 @@ var Base_ClassSubList = {
 								case "regenerate" :
 									spellObj.description = spellObj.description.replace("1 hp/rnd", "3+SL hp/rnd");
 								default :
-									var supremeTestRegex = /(.*?)(\d+d\d+\+?\d*)(\+\d+d?\d*\/\d?SL)?((\+spellcasting ability mod(ifier)?)? hp.*)/i;
+									var supremeTestRegex = /(.*?)(\d+d\d+\+?\d*)(\+\d+d?\d*\/\d?SL)?((\+spell(casting)? ability mod(ifier)?|(\+|-)\d+ \(.{3}\))? hp.*)/i;
 									if (classes.known.cleric.level > 16 && supremeTestRegex.test(spellObj.description)) return false; // has supreme healer
-									var testRegex = /(.*?)([1-9]\d*d?\d*)((\+\d+d?\d*\/\d?SL)?((\+spellcasting ability mod(ifier)?)? hp.*))/i;
+									var testRegex = /(.*?)([1-9]\d*d?\d*)((\+\d+d?\d*\/\d?SL)?((\+spell(casting)? ability mod(ifier)?|(\+|-)\d+ \(.{3}\))? hp.*))/i;
 									var theMatch = spellObj.description.match(testRegex);
 									if (!theMatch) return false;
 									var perLvl = theMatch[4] ? theMatch[4].replace(/.*(\/\d?SL).*/i, '$1') : "";
@@ -2412,7 +2416,7 @@ var Base_ClassSubList = {
 					spellAdd : [
 						function (spellKey, spellObj, spName) {
 							var startDescr = spellObj.description;
-							var testRegex = /(.*?)(\d+d\d+\+?\d*)(\+\d+d?\d*\/\d?SL)?((\+spellcasting ability mod(ifier)?)? hp.*)/i;
+							var testRegex = /(.*?)(\d+d\d+\+?\d*)(\+\d+d?\d*\/\d?SL)?((\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? hp.*)/i;
 							var theMatch = spellObj.description.match(testRegex);
 							if (!theMatch) return false;
 							var lvl9 = spellObj.level > 8;
@@ -2922,7 +2926,7 @@ var Base_ClassSubList = {
 						],
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
-								var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? acid (dmg|damage))/i;
+								var testRegex = /(\d+d?\d*)((\+\d+d?\d*\/\d?SL)?(\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? acid (dmg|damage))/ig;
 								if ((testRegex).test(spellObj.description)) {
 									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
 									return true;
@@ -2950,7 +2954,7 @@ var Base_ClassSubList = {
 									spellObj.description = spellObj.description.replace("5+5/SL Cold dmg", 5 + What("Cha Mod") + "+5/SL Cold dmg");
 									return true;
 								}
-								var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? cold (dmg|damage))/i;
+								var testRegex = /(\d+d?\d*)((\+\d+d?\d*\/\d?SL)?(\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? cold (dmg|damage))/ig;
 								if ((testRegex).test(spellObj.description)) {
 									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
 									return true;
@@ -2978,7 +2982,7 @@ var Base_ClassSubList = {
 									spellObj.description = spellObj.description.replace("0d8", "0d8+" + What("Cha Mod"));
 									return true;
 								}
-								var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? fire (dmg|damage))/i;
+								var testRegex = /(\d+d?\d*)((\+\d+d?\d*\/\d?SL)?(\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? fire (dmg|damage))/ig;
 								if ((testRegex).test(spellObj.description)) {
 									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
 									return true;
@@ -3002,7 +3006,7 @@ var Base_ClassSubList = {
 						],
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
-								var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? (lightning|lightn\.) (dmg|damage))/i;
+								var testRegex = /(\d+d?\d*)((\+\d+d?\d*\/\d?SL)?(\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? (lightning|lightn\.) (dmg|damage))/ig;
 								if ((testRegex).test(spellObj.description)) {
 									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
 									return true;
@@ -3026,7 +3030,7 @@ var Base_ClassSubList = {
 						],
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
-								var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? poison (dmg|damage))/i;
+								var testRegex = /(\d+d?\d*)((\+\d+d?\d*\/\d?SL)?(\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? poison (dmg|damage))/ig;
 								if ((testRegex).test(spellObj.description)) {
 									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
 									return true;

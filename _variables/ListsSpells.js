@@ -31,6 +31,7 @@ var Base_SpellsList = {
 		duration : "Instantaneous",
 		save : "Dex",
 		description : "1 crea or 2 crea within 5 ft of each other save or 1d6 Acid dmg; +1d6 at CL 5, 11, and 17",
+		descriptionCantripDie : "1 crea or 2 crea within 5 ft of each other save or `CD`d6 Acid dmg",
 		descriptionFull : "You hurl a bubble of acid. Choose one creature you can see within range, or choose two creatures you can see within range that are within 5 feet of each other. A target must succeed on a Dexterity saving throw or take 1d6 acid damage." + "\n   " + "This spell's damage increases by 1d6 when you reach 5th Level (2d6), 11th level (3d6) and 17th level (4d6)."
 	},
 	"aid" : {
@@ -522,6 +523,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "1 rnd",
 		description : "Spell attack for 1d8 Necrotic dmg; can't regain hp; undead dis. atks vs. me; +1d8 at CL 5, 11, and 17",
+		descriptionCantripDie : "Spell attack for `CD`d8 Necrotic dmg; can't regain hp; undead dis. atks vs. me",
 		descriptionFull : "You create a ghostly, skeletal hand in the space of a creature within range. Make a ranged spell attack against the creature to assail it with the chill of the grave. On a hit, the target takes 1d8 necrotic damage, and it can't regain hit points until the start of your next turn. Until then, the hand clings to the target." + "\n   " + "If you hit an undead target, it also has disadvantage on attack rolls against you until the end of your next turn." + "\n   " + "This spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8)."
 	},
 	"circle of death" : {
@@ -1322,6 +1324,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Instantaneous",
 		description : "Spell attack beam 1d10 Force damage; beams can be combined or split; CL5:2, CL11:3, CL17:4 beams",
+		descriptionCantripDie : "Spell attack for `CD` beam(s), each 1d10 Force damage; beams can be combined or split",
 		descriptionFull : "A beam of crackling energy streaks toward a creature within range. Make a ranged spell attack against the target. On a hit, the target takes 1d10 force damage." + "\n   " + "The spell creates more than one beam when you reach higher levels - two beams at 5th level, three beams at 11th level, and four beams at 17th level. you can direct the beams at the same target or at different ones. Make a separate attack roll for each beam."
 	},
 	"enhance ability" : {
@@ -1602,6 +1605,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Instantaneous",
 		description : "Spell attack for 1d10 Fire dmg; unattended flammable objects ignite; +1d10 at CL 5, 11, and 17",
+		descriptionCantripDie : "Spell attack for `CD`d10 Fire dmg; unattended flammable objects ignite",
 		descriptionFull : "You hurl a mote of fire at a creature or object within range. Make a ranged spell attack against the target. On a hit, the target takes 1d10 fire damage. A flammable object hit by this spell ignites if it isn't being worn or carried." + "\n   " + "This spell's damage increases by 1d10 when you reach 5th level (2d10), 11th level (3d10), and 17th level (4d10)."
 	},
 	"fire shield" : {
@@ -3177,6 +3181,7 @@ var Base_SpellsList = {
 		duration : "Instantaneous",
 		save : "Con",
 		description : "1 creature save or 1d12 Poison dmg; +1d12 at CL 5, 11, and 17",
+		descriptionCantripDie : "1 creature save or `CD`d12 Poison dmg",
 		descriptionFull : "You extend your hand toward a creature you can see within range and project a puff of noxious gas from your palm. The creature must succeed on a Constitution saving throw or take 1d12 poison damage." + "\n   " + "This spell's damage increases by 1d12 when you reach 5th level (2d12), 11th level (3d12), and 17 level (4d12)."
 	},
 	"polymorph" : {
@@ -3286,6 +3291,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "10 min (D)",
 		description : "Flame 10 ft bright light; once 30 ft ranged spell attack for 1d8 Fire dmg; +1d8 at CL 5, 11, and 17",
+		descriptionCantripDie : "Flame 10 ft bright light; once 30 ft ranged spell attack for `CD`d8 Fire dmg",
 		descriptionFull : "A flickering flame appears in your hand. The flame remains there for the duration and harms neither you nor your equipment. The flame sheds bright light in a 10-foot radius and dim light for an additional 10 feet. The spell ends if you dismiss it as an action or if you cast it again." + "\n   " + "You can also attack with the flame, although doing so ends the spell. When you cast this spell, or as an action on a later turn, you can hurl the flame at a creature within 30 feet of you. Make a ranged spell attack. On a hit, the target takes 1d8 fire damage." + "\n   " + "This spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8)."
 	},
 	"programmed illusion" : {
@@ -3427,6 +3433,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Instantaneous",
 		description : "Spell attack for 1d8 Cold dmg and -10 ft speed until start of my next turn; +1d8 at CL 5, 11, and 17",
+		descriptionCantripDie : "Spell attack for `CD`d8 Cold dmg and -10 ft speed until start of my next turn",
 		descriptionFull : "A frigid beam of blue-white light streaks toward a creature within range. Make a ranged spell attack against the target. On a hit, it takes 1d8 cold damage, and its speed is reduced by 10 feet until the start of your next turn." + "\n   " + "The spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8)."
 	},
 	"regenerate" : {
@@ -3553,6 +3560,7 @@ var Base_SpellsList = {
 		duration : "Instantaneous",
 		save : "Dex",
 		description : "1 creature save or 1d8 Radiant dmg; no bonus for cover on save; +1d8 at CL 5, 11, and 17",
+		descriptionCantripDie : "1 creature save or `CD`d8 Radiant dmg; no bonus for cover on save",
 		descriptionFull : "Flame-like radiance descends on a creature that you can see within range. The target must succeed on a Dexterity saving throw or take 1d8 radiant damage. The target gains no benefit from cover for this saving throw." + "\n   " + "The spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8)."
 	},
 	"sanctuary" : {
@@ -3735,6 +3743,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Instantaneous",
 		description : "Spell attack, adv. if metal armor, 1d8 Lightning dmg, no rea 1 turn; +1d8 at CL 5, 11, and 17",
+		descriptionCantripDie : "Spell attack, adv. if metal armor, `CD`d8 Lightning dmg, no rea 1 turn",
 		descriptionFull : "Lightning springs from your hand to deliver a shock to a creature you try to touch. Make a melee spell attack against the target. You have advantage on the attack roll if the target is wearing armor made of metal. On a hit, the target takes 1d8 lightning damage, and it can't take reactions until the start of its next turn." + "\n   " + "The spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8)."
 	},
 	"silence" : {
@@ -4297,6 +4306,7 @@ var Base_SpellsList = {
 		duration : "Instantaneous",
 		save : "Wis",
 		description : "1 creature save or 1d4 Psychic dmg and dis. on next attack roll; +1d4 at CL 5, 11, and 17",
+		descriptionCantripDie : "1 creature save or `CD`d4 Psychic dmg and dis. on next attack roll",
 		descriptionFull : "You unleash a string of insults laced with subtle enchantments at a creature you can see within range. If the target can hear you (thought it need not understand you), it must succeed on a Wisdom saving throw or take 1d4 psychic damage and have disadvantage on the next attack roll it makes before the end of its next turn." + "\n   " + "This spell's damage increases by 1d4 when you reach 5th level (2d4), 11th level (3d4) and 17th level (4d4)."
 	},
 	"wall of fire" : {

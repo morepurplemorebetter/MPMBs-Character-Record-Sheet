@@ -188,17 +188,24 @@ function ApplySpell(FldValue, rememberFldName) {
 			var aSpell = { changesObj : {} };
 			for (var key in foundSpell) aSpell[key] = foundSpell[key];
 			var aCast = input[2] && CurrentSpells[input[2]] ? CurrentSpells[input[2]] : "";
+			// If this spell is gained from an item, remove components
 			if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
 				aSpell.components = "";
 				aSpell.compMaterial = "";
+				aSpell.description = aSpell.description.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
+				if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
 				aSpell.changesObj["Magic Item"] = "\n - Spells cast by magic items don't require any components.";
-				var removeRegex = / \(\d+ ?gp( cons\.?)?\)|\+(\d+d)?\d+\/SL\b|\bSL used/i
+			}
+			// If this spell is gained from an item, feat, or race, remove scaling effects
+			if (aSpell.level && aCast && ((/^(item|feat|race)$/i).test(aCast.typeSp) || (aCast.refType && (/^(item|feat|race)$/i).test(aCast.refType)))) {
+				var removeRegex = /\+(\d+d)?\d+\/SL\b|\bSL used/i
 				if (removeRegex.test(aSpell.description + aSpell.descriptionMetric)) {
 					aSpell.description = aSpell.description.replace("SL used", "level " + aSpell.level).replace(removeRegex, '');
 					if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace("SL used", "level " + aSpell.level).replace(removeRegex, '');
-					aSpell.changesObj["Magic Item"] += "\n - They can only be cast at the spell's level, not with higher level spell slots.";
+					aSpell.changesObj["Innate Spellcasting"] = "\n - Spell cast by magic items, from feats, or from racial traits can only be cast at the spell's level, not with higher level spell slots.";
 				}
 			}
+			// Apply spell overrides for this CurrentSpells entry
 			if (aCast && aCast.spellAttrOverride && aCast.spellAttrOverride[theSpl]) {
 				var theOver = aCast.spellAttrOverride[theSpl];
 				for (var key in theOver) {
@@ -210,8 +217,32 @@ function ApplySpell(FldValue, rememberFldName) {
 					aSpell[key] = theOver[key];
 				}
 			}
+			// Update the spell for the caster level of the character (if not manually added or a 'complete' list)
+			if (CurrentCasters.amendSpDescr && aCast && aCast.typeList !== 4) {
+				// apply cantrip die
+				if (aSpell.descriptionCantripDie) {
+					var cDie = cantripDie[Math.min(CurrentFeats.level, cantripDie.length) - 1];
+					var newCantripDieDescr = aSpell.descriptionCantripDie;
+					while ((/`CD(-|\+|\*)?\d*`/).test(newCantripDieDescr)) {
+						if ((/`CD(-|\+)\d+`/).test(newCantripDieDescr)) {
+							var cDie = cDie + Number(newCantripDieDescr.replace(/.*`CD((-|\+)\d+)`.*/, "$1"));
+						} else if ((/`CD\*\d+`/).test(newCantripDieDescr)) {
+							var cDie = cDie * Number(newCantripDieDescr.replace(/.*`CD\*(\d+)`.*/, "$1"));
+						}
+						newCantripDieDescr = newCantripDieDescr.replace(/`CD(-|\+|\*)?\d*`/, cDie);
+					}
+					aSpell.description = newCantripDieDescr.replace(/\b0d\d+/g, "0");
+				}
+				// apply ability score modifier
+				if (aCast.ability && (/spellcasting (ability )?mod(ifier)?/).test(aSpell.description)) {
+					var theAbi = AbilityScores.abbreviations[aCast.ability - 1];
+					var theAbiMod = Number(What(theAbi + " Mod"));
+					if (theAbiMod >= 0) theAbiMod = "+" + theAbiMod;
+					aSpell.description = aSpell.description.replace(/\+? ?spellcasting (ability )?mod(ifier)?/, theAbiMod + " (" + theAbi + ")");
+				}
+			}
 
-			//put in some things into metric if so set
+			// Change some things into metric if set to do so
 			if (What("Unit System") === "metric") {
 				aSpell.description = aSpell.descriptionMetric ? aSpell.descriptionMetric : ConvertToMetric(aSpell.description, 0.5);
 				aSpell.range = ConvertToMetric(aSpell.range, 0.5);
@@ -1916,6 +1947,7 @@ var SpellSheetOrder_Dialog = {
 	bIncL : [],
 	glossary : false,
 	dashEmptyFields : true,
+	amendSpellDescriptions : false,
 
 	initialize : function (dialog) {
 		//set the ExcLuded list
@@ -1928,7 +1960,8 @@ var SpellSheetOrder_Dialog = {
 			"ExcL" : ExcObj,
 			"IncL" : {},
 			"Glos" : this.glossary,
-			"Dash" : this.dashEmptyFields
+			"Dash" : this.dashEmptyFields,
+			"Amnd" : this.amendSpellDescriptions
 		});
 
 		//set the IncLuded list
@@ -1962,6 +1995,7 @@ var SpellSheetOrder_Dialog = {
 			if (tempIncL[i]) this.bIncL.push(tempIncL[i]);
 		}
 		this.dashEmptyFields = oResult["Dash"];
+		this.amendSpellDescriptions = oResult["Amnd"];
 	},
 
 	BTRA : function (dialog) {
@@ -2208,6 +2242,10 @@ var SpellSheetOrder_Dialog = {
 						name: "\u22CE"
 					}]
 				}]
+			}, {
+				type : "check_box",
+				item_id : "Amnd",
+				name : "Apply character level and spellcasting ability to spell description (never for 'full' lists)"
 			}, {
 				type : "check_box",
 				item_id : "Dash",
@@ -3517,6 +3555,9 @@ function AskUserSpellSheet() {
 		if (CurrentCasters.glossary === undefined) CurrentCasters.glossary = false;
 		//now see if anything has been defined for putting a EM dash in empty fields or not
 		if (CurrentCasters.emptyFields === undefined) CurrentCasters.emptyFields = false;
+		//now see if anything has been defined for showing the full or applied version of cantrip/spell descriptions (i.e. never for full lists or manually added spells)
+		if (CurrentCasters.amendSpDescr === undefined) CurrentCasters.amendSpDescr = false;
+		CurrentCasters.charLevel
 
 		//convert the incl and excl CurrentSpells arrays to their named counterparts
 		var exclNames = [];
@@ -3533,6 +3574,7 @@ function AskUserSpellSheet() {
 		SpellSheetOrder_Dialog.bIncL = inclNames;
 		SpellSheetOrder_Dialog.glossary = CurrentCasters.glossary;
 		SpellSheetOrder_Dialog.dashEmptyFields = CurrentCasters.emptyFields ? false : true;
+		SpellSheetOrder_Dialog.amendSpellDescriptions = CurrentCasters.amendSpDescr;
 		if (app.execDialog(SpellSheetOrder_Dialog) !== "ok") {
 			toReturn = "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 		} else {
@@ -3556,6 +3598,7 @@ function AskUserSpellSheet() {
 			CurrentCasters.incl = inclList;
 			CurrentCasters.glossary = SpellSheetOrder_Dialog.glossary;
 			CurrentCasters.emptyFields = !SpellSheetOrder_Dialog.dashEmptyFields;
+			CurrentCasters.amendSpDescr = SpellSheetOrder_Dialog.amendSpellDescriptions;
 		}
 		thermoM(0.5); //progress the progress dialog so that it looks like something is happening (don't close it yet)
 	}
