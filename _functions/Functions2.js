@@ -5348,7 +5348,7 @@ function addEvals(evalObj, NameEntity, Add) {
 		if (!evalObj[atkT]) continue;
 		var atkIsArray = isArray(evalObj[atkT]);
 		// add the descriptive text
-		if (atkIsArray && evalObj[atkT][1]) atkStr += "\n - " + evalObj[atkT][1];
+		if (atkIsArray && evalObj[atkT][1]) atkStr += "\n \u2022 " + evalObj[atkT][1];
 		// set the function
 		if (Add) {
 			if (!CurrentEvals[atkT]) CurrentEvals[atkT] = {};
@@ -5391,7 +5391,7 @@ function addEvals(evalObj, NameEntity, Add) {
 		if (!evalObj[spellT]) continue;
 		var spellIsArray = isArray(evalObj[spellT]);
 		// add the descriptive text
-		if (spellIsArray && evalObj[spellT][1]) spellStr += "\n - " + evalObj[spellT][1];
+		if (spellIsArray && evalObj[spellT][1]) spellStr += "\n \u2022 " + evalObj[spellT][1];
 		// set the function
 		if (Add) {
 			if (!CurrentEvals[spellT]) CurrentEvals[spellT] = {};

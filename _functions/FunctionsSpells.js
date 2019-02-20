@@ -206,7 +206,7 @@ function ApplySpell(FldValue, rememberFldName) {
 				}
 			}
 			// Apply spell overrides for this CurrentSpells entry
-			if (aCast && aCast.spellAttrOverride && aCast.spellAttrOverride[theSpl]) {
+			if (!input[3] && aCast && aCast.spellAttrOverride && aCast.spellAttrOverride[theSpl]) {
 				var theOver = aCast.spellAttrOverride[theSpl];
 				for (var key in theOver) {
 					if (key == "changesObj") {
@@ -238,7 +238,7 @@ function ApplySpell(FldValue, rememberFldName) {
 					var theAbi = AbilityScores.abbreviations[aCast.ability - 1];
 					var theAbiMod = Number(What(theAbi + " Mod"));
 					if (theAbiMod >= 0) theAbiMod = "+" + theAbiMod;
-					aSpell.description = aSpell.description.replace(/\+? ?spellcasting (ability )?mod(ifier)?/, theAbiMod + " (" + theAbi + ")");
+					aSpell.description = aSpell.description.replace(/\+? ?(my )?spellcasting (ability )?mod(ifier)?/, theAbiMod + " (" + theAbi + ")");
 				}
 			}
 
@@ -3304,7 +3304,7 @@ function AskUserSpellSheet() {
 					BonusSpecialActions.oncelr.push(spBonusi.oncelr); //those that are once per long rest for referencing it later
 					BonusSpecialActions.oncesr.push(spBonusi.oncesr); //those that are once per long rest for referencing it later
 					BonusSpecialActions.other.push(spBonusi.firstCol); //those that are once per long rest for referencing it later
-					if (spBonusi.selection && spBonusi.selection[y - 1]) {
+					if (spBonusi.selection && spBonusi.selection[y - 1] && SpellsList[spBonusi.selection[y - 1]]) {
 						dia.selectBo.push(spBonusi.selection[y - 1]);
 						if (SpellsList[spBonusi.selection[y - 1]].level === 0 && (spBonusi.oncelr || spBonusi.oncesr)) {
 							BonusSpecialActions.atwill[y - 1] = true;
@@ -3675,7 +3675,6 @@ function GenerateSpellSheet(GoOn) {
 			fullSpellList = fullSpellList.concat(spCast.selectSp); //add the spells
 			if (spCast.selectSpSB) fullSpellList = fullSpellList.concat(spCast.selectSpSB); //add the spells from the extra spellbook dialog
 		}
-		if (spCast.selectBo) fullSpellList = fullSpellList.concat(spCast.selectBo); //add the bonus spells
 
 		var alwaysPrepared = spCast.special ? spCast.special.prepared : []; //make an array of spells that are considered always prepared, starting with the bonus spells that have that flag
 		var atwillArray = spCast.special ? spCast.special.atwill : [];
@@ -3721,7 +3720,7 @@ function GenerateSpellSheet(GoOn) {
 
 		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : spCast.typeList === 4 || (/race|feat|item/i).test(spCast.typeSp) ? "##kn" : "##"; //add "Me" or "Kn" to the name or not?
 
-		var orderedSpellList = OrderSpells(fullSpellList, "multi", true); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
+		var orderedSpellList = OrderSpells(fullSpellList, "multi", true, spCast.selectBo ? spCast.selectBo : false); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
 
 		//see if we need to stop short of doing all the spells
 		var maxLvl = 9;
@@ -3783,23 +3782,24 @@ function GenerateSpellSheet(GoOn) {
 
 				for (var y = 0; y < spArray.length; y++) {
 					aSpell = spArray[y];
+					var notDupl = y ? aSpell != spArray[y - 1] : true;
 					//check if not at the end of the page and, if so, create a new page
 					if (lineCurrent > lineMax) AddPage();
 					var toCheck = "##";
-					if (atwillArray.indexOf(aSpell) !== -1) {
+					if (notDupl && atwillArray.indexOf(aSpell) !== -1) {
 						toCheck = "##atwill";
-					} else if (oncelrArray.indexOf(aSpell) !== -1) {
+					} else if (notDupl && oncelrArray.indexOf(aSpell) !== -1) {
 						toCheck = "##oncelr";
-					} else if (oncesrArray.indexOf(aSpell) !== -1) {
+					} else if (notDupl && oncesrArray.indexOf(aSpell) !== -1) {
 						toCheck = "##oncesr";
-					} else if (alwaysPrepared.indexOf(aSpell) !== -1 && spCast.typeList !== 3) {
+					} else if (notDupl && alwaysPrepared.indexOf(aSpell) !== -1 && spCast.typeList !== 3) {
 						toCheck = "##markedbox";
-					} else if (otherObject[aSpell]) {
+					} else if (notDupl && otherObject[aSpell]) {
 						toCheck = "##" + otherObject[aSpell];
 					} else if (SpellsList[aSpell] && SpellsList[aSpell].firstCol === undefined && (isPsionics || spCast.typeList === 4 || (spCast.known && spCast.known.prepared && spCast.typeList !== 3))) {
 						toCheck = spCast.typeList === 4 ? (knownSpells.indexOf(aSpell) !== -1 ? "##checkedbox" : "##checkbox") : SpellsList[aSpell].level === 0 ? "##atwill" : "##checkbox";
 					}
-					Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + CurrentCasters.incl[i]);
+					Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + CurrentCasters.incl[i] + (notDupl ? "" : "##stop"));
 					lineCurrent += 1;
 				}
 			}
@@ -4104,17 +4104,22 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 
 //a function that takes an array of spells and orders it by level (and alphabet)
 //outputFormat defines whether to return an Array of Arrays ("multi"), or just one array "single";
-function OrderSpells(inputArray, outputFormat, sepPsionics) {
+function OrderSpells(inputArray, outputFormat, sepPsionics, bonusSp) {
+	if (isArray(bonusSp)) {
+		inputArray = inputArray.concat(bonusSp);
+	} else {
+		bonusSp = [];
+	}
 	var refspObj = {};
 	var orderedSpellList = [[], [], [], [], [], [], [], [], [], []]; //array of 10 arrays, one for each spell level
-	if (sepPsionics) { //add two more arrayw, for the psionics
+	if (sepPsionics) { //add two more arrays, for the psionics
 		orderedSpellList[10] = [];
 		orderedSpellList[11] = [];
 	};
 	//put these spells into their right level-array in orderedSpellList and ignore duplicates
 	for (var S = 0; S < inputArray.length; S++) {
 		var nxtSpell = inputArray[S];
-		if (SpellsList[nxtSpell] && inputArray.indexOf(nxtSpell) === S) {
+		if (SpellsList[nxtSpell] && (inputArray.indexOf(nxtSpell) === S || bonusSp.indexOf(nxtSpell) !== -1)) {
 			var spLvl = SpellsList[nxtSpell].level;
 			var spName = getSpNm(nxtSpell);
 			if (sepPsionics && SpellsList[nxtSpell].psionic) spLvl += 10;
@@ -4133,11 +4138,12 @@ function OrderSpells(inputArray, outputFormat, sepPsionics) {
 
 	var returnArray = [];
 	switch (outputFormat) {
-	 case "multi" :
-		returnArray = orderedSpellList;
-		break;
 	 case "single" :
 		for (var i = 0; i < orderedSpellList.length; i++) returnArray = returnArray.concat(orderedSpellList[i]);
+		break;
+	 default :
+	 case "multi" :
+		returnArray = orderedSpellList;
 		break;
 	};
 
@@ -5785,3 +5791,57 @@ function getSpellcastingAbility(theCast) {
 	}
 	return [spAbility, casterArray];
 };
+
+// A generic function to call from a calcChanges.spellAdd object to add a certain ability score 
+// dmgType has to be already escaped for use in regular expressions
+// ability has to be the three-letter abbreviation of an ability, starting with a capital
+function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple) {
+	var testRegex = RegExp("(.*?)(\\d+d?\\d*)((\\+\\d+d?\\d*\\/(\\d?SL|PP|extra PP))?(\\+spell(casting)? (ability )?mod(ifier)?|(\\+|-)\\d+ \\(.{3}\\))? (" + dmgType + ") (dmg|damage).*)", "ig");
+	var abiMod = What(ability + " Mod");
+	if (Number(abiMod) > 0 && (testRegex).test(spellObj.description)) {
+		var firstIsNumber = Number(spellObj.description.replace(testRegex, "$2"));
+		var secondIsNumber = parseFloat(spellObj.description.replace(testRegex, "$3").replace(/\d+d\d+/g, 'NdN'));
+		if (!isNaN(firstIsNumber)) {
+			spellObj.description = spellObj.description.replace(testRegex, "$1" + (firstIsNumber + abiMod) + "$3");
+		} else if (!isNaN(secondIsNumber)) {
+			var theMatch = spellObj.description.match(testRegex);
+			spellObj.description = spellObj.description.replace(testRegex, theMatch[1] + theMatch[2] + theMatch[3].replace(RegExp("\\+?" + secondIsNumber), secondIsNumber + abiMod));
+		} else {
+			spellObj.description = spellObj.description.replace(testRegex, "$1$2+" + abiMod + "$3");
+		}
+		if (notMultiple) {
+			// some spells will have the wrong damage amended, so change it to the right one
+			switch (spellKey) {
+				case "booming blade" :
+				case "melf's acid arrow" :
+				case "vitriolic sphere" :
+				spellObj.description = spellObj.description.replace(/(.*?\d+d\d+)(.*?\d+d\d+)(\+\d+)(.*)/, "$1$3$2$4");
+					break;
+				case "holy weapon" :
+				spellObj.description = spellObj.description.replace(/(.*?\d+d\d+)(\+\d+)(.*?\d+d\d+)(.*)/, "$1$3$2$4");
+					break;
+			}
+			return true;
+		}
+		// some spells have the same damage type twice, do them as well
+		switch (spellKey) {
+			case "booming blade" :
+			case "toll the dead" :
+				spellObj.description = spellObj.description.replace("d8", "d8+" + abiMod);
+				break;
+			case "investiture of flame" :
+				spellObj.description = spellObj.description.replace("4d8", "4d8+" + abiMod).replace(/Fire dmg/g, "Fire");
+				break;
+			case "holy weapon" :
+				spellObj.description = spellObj.description.replace("4d8", "4d8+" + abiMod).replace(/Radiant dmg/g, "Radiant");
+				break;
+			case "melf's acid arrow" :
+				spellObj.description = spellObj.description.replace("4d4", "4d4+" + abiMod).replace("Acid dmg", "Acid");
+				break;
+			case "vitriolic sphere" :
+				spellObj.description = spellObj.description.replace("10d4", "10d4+" + abiMod).replace(" now and", ",");
+				break;
+		}
+		return true;
+	};
+}

@@ -438,7 +438,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V",
 		duration : "Conc, 1 min",
-		description : "Next melee hit +2d6+1d6/SL Radiant dmg; invisible target becomes visible for spell duration",
+		description : "Next weapon hit +2d6+1d6/SL Radiant dmg; invisible target becomes visible for spell duration",
 		descriptionFull : "The next time you hit a creature with a weapon attack before this spell ends, the weapon gleams with astral radiance as you strike. The attack deals an extra 2d6 radiant damage to the target, which becomes visible if it is invisible, and the target sheds dim light in a 5-foot radius and can't become invisible until the spell ends." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, the extra damage increases by 1d6 for each slot level above 2nd."
 	},
 	"burning hands" : {
@@ -1394,7 +1394,7 @@ var Base_SpellsList = {
 		range : "Self",
 		components : "V,S",
 		duration : "8 h (D)",
-		description : "1/SL willing crea go to Ethereal Plane; move there, but able to perceive 60 ft into the normal plane",
+		description : "Me or 3/SL willing go to Ethereal Plane; move there, but able to perceive 60 ft into the normal plane",
 		descriptionFull : "You step into the border regions of the Ethereal Plane, in the area where it overlaps with your current plane. You remain in the Border Ethereal for the duration or until you use your action to dismiss the spell. During this time, you can move in any direction. If you move up or down, every foot of movement costs an extra foot. You can see and hear the plan you originated from, but everything there looks gray, and you can't see anything more than 60 feet away." + "\n   " + "While on the Ethereal Plane, you can only affect and be affected by other creatures on that plane. Creatures that aren't on the Ethereal Plane can't perceive you and can't interact with you, unless a special ability or magic has given them the ability to do so." + "\n   " + "You ignore all objects and effects that aren't on the Ethereal Plane, allowing you to move through objects you perceive on the plan you originated from." + "\n   " + "When the spell ends, you immediately return to the plane you originated from in the spot you currently occupy. If you occupy the same spot as a solid object or creature when this happens, you are immediately shunted to the nearest unoccupied space that you can occupy and take force damage equal to twice the number of feet you are moved." + "\n   " + "This spell has no effect if you cast it while you are on the Ethereal Plane or a plane that doesn't border it, such as one of the Outer Planes." + AtHigherLevels + "When you cast this spell using a spell slot of 8th level or higher, you can target up to three willing creatures (including you) for each slot level above 7th. The creatures must be within 10 feet of you when you cast the spell."
 	},
 	"evard's black tentacles" : {
@@ -1662,7 +1662,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "Leaf of sumac",
 		duration : "Conc, 10 min",
-		description : "Summon a fiery blade; 1 a to make a melee spell attack for 3d6+1d6/2SL Fire dmg; 10 ft bright light",
+		description : "Summon fiery blade; 1 a to make a melee spell attack for 3d6+1d6/2SL Fire dmg; 10 ft bright light",
 		descriptionFull : "You evoke a fiery blade in your free hand. The blade is similar in size and shape to a scimitar, and it lasts for the duration. If you let go of the blade, it disappears, but you can evoke the blade again as a bonus action." + "\n   " + "You can use your action to make a melee spell attack with the fiery blade. On a hit, the target takes 3d6 fire damage." + "\n   " + "The flaming blade sheds bright light in a 10-foot radius and dim light for an additional 10 feet." + AtHigherLevels + "When you cast this spell using a spell slot of 4th level or higher, the damage increases by 1d6 for every two slot levels above 2nd."
 	},
 	"flame strike" : {
@@ -1974,7 +1974,7 @@ var Base_SpellsList = {
 		components : "V",
 		duration : "8 h",
 		save : "Dex",
-		description : "Place spectre; hostile crea in 10 ft of spectre save or 20 Radiant dmg; vanishes after it deals 60 dmg",
+		description : "Place spectre; hostiles coming in 10 ft of it 20 Radiant dmg; save half; vanishes after it deals 60 dmg",
 		descriptionFull : "A Large spectral guardian appears and hovers for the duration in an unoccupied space of your choice that you can see within range. The guardian occupies that space and is indistinct except for a gleaming sword and shield emblazoned with the symbol of your deity." + "\n   " + "Any creature hostile to you that moves to a space within 10 feet of the guardian for the first time on a turn must succeed on a Dexterity saving throw. The creature takes 20 radiant damage on a failed save, or half as much damage on a successful one. The guardian vanishes when it has dealt a total of 60 damage."
 	},
 	"guards and wards" : {
@@ -2314,7 +2314,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Conc, 1 min",
 		save : "Dex",
-		description : "20-ft rad all 10d8 fire damage; save halves; heavily obscures; move 10 ft/rnd in chosen direction",
+		description : "20-ft rad all 10d8 Fire damage; save halves; heavily obscures; move 10 ft/rnd in chosen direction",
 		descriptionFull : "A swirling cloud of smoke shot through with white-hot embers appears in a 20-foot-radius sphere centered on a point within range. The cloud spreads around corners and is heavily obscured. It lasts for the duration or until a wind of moderate or greater speed (at least 10 miles per hour) disperses it." + "\n   " + "When the cloud appears, each creature in it must make a Dexterity saving throw. A creature takes 10d8 fire damage on a failed save, or half as much damage on a successful one. A creature must also make this saving throw when it enters the spell's area for the first time on a turn or ends its turn there." + "\n   " + "The cloud moves 10 feet directly away from you in a direction that you choose at the start of each of your turns."
 	},
 	"inflict wounds" : {
@@ -2750,7 +2750,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "Powdered rhubarb leaf and an adder's stomach",
 		duration : "Instantaneous",
-		description : "Spell attack for 4d4+1d4/SL and 2d4+1d4/SL acid dmg next turn; on miss half dmg no next turn",
+		description : "Spell attack for 4d4+1d4/SL and 2d4+1d4/SL Acid dmg next turn; on miss half dmg no next turn",
 		descriptionFull : "A shimmering green arrow streaks toward a target within range and bursts in a spray of acid. Make a ranged spell attack against the target. On a hit, the target takes 4d4 acid damage immediately and 2d4 acid damage at the end of its next turn. On a miss, the arrow splashes the target with acid for half as much of the initial damage and no damage at the end of its next turn." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, the damage (both initial and later) increases by 1d4 for each slot level above 2nd."
 	},
 	"mending" : {
@@ -4396,7 +4396,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u0192",
 		compMaterial : "A pair of platinum rings worth at least 50 gp each, which you and target must wear for the duration",
 		duration : "1 h (D)",
-		description : "1 crea +1 AC, +1 saves, resistance all dmg; if it takes dmg I take same dmg; ends if >60 ft away",
+		description : "1 crea +1 AC, +1 saves, resistance all dmg; if takes dmg I take same dmg; ends if >60 ft away (100gp)",
 		descriptionFull : "This spell wards a willing creature you touch and creates a mystic connection between you and the target until the spell ends. While the target is within 60 feet of you, it gains a +1 bonus to AC and saving throws, and it has resistance to all damage. Also, each time it takes damage, you take the same amount of damage." + "\n   " + "The spell ends if you drop to 0 hit points or if you and the target become separated by more than 60 feet. It also ends if the spell is cast again on either of the connected creatures. You can also dismiss the spell as an action."
 	},
 	"water breathing" : {
@@ -4484,8 +4484,8 @@ var Base_SpellsList = {
 		compMaterial : "A tiny fan and a feather of exotic origin",
 		duration : "Conc, 1 min",
 		save : "Str",
-		description : "50\u00D71\u00D715ft (l\u00D7w\u00D7h) wall, any line-shape, all 3d8 Bludgeoning dmg; save halves; blocks arrows",
-		descriptionMetric : "15\u00D70,3\u00D74,5m (l\u00D7w\u00D7h) wall, any line-shape, all 3d8 Bludgeoning dmg; save halves; blocks arrows",
+		description : "50\u00D71\u00D715ft (l\u00D7w\u00D7h) wall, any line-shape, at cast all in 3d8 Bludg. dmg; save halves; blocks arrows",
+		descriptionMetric : "15\u00D70,3\u00D74,5m (l\u00D7w\u00D7h) wall, any line-shape, at cast all in 3d8 Bludg. dmg; save halves; blocks arrows",
 		descriptionFull : "A wall of strong wind rises from the ground at a point you choose within range. You can make the wall up to 50 feet long, 15 feet high, and 1 foot thick. You can shape the wall in any way you choose so long as it makes one continuous path along the ground. The wall lasts for the duration." + "\n   " + "When the wall appears, each creature within its area must make a Strength saving throw. A creature takes 3d8 bludgeoning damage on a failed save, or half as much damage on a successful one." + "\n   " + "The strong wind keeps fog, smoke, and other gases at bay. Small or smaller flying creatures or objects can't pass through the wall. Loose, lightweight materials brought into the wall fly upward. Arrows, bolts, and other ordinary projectiles launched at targets behind the wall are deflected upward and automatically miss. (Boulders hurled by giants or siege engines, and similar projectiles, are unaffected.) Creatures in gaseous form can't pass through it."
 	},
 	"wish" : {

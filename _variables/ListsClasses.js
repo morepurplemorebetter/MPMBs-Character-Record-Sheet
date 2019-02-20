@@ -1806,6 +1806,7 @@ var Base_ClassList = {
 						"false life" : {
 							components : "V,S",
 							compMaterial : "",
+							description : "I gain 1d4+4 temporary hit points for the duration",
 							changes : "With the Fiendish Vigor invocation I can cast False Life without a material component."
 						}
 					}
@@ -2307,7 +2308,7 @@ var Base_ClassSubList = {
 				calcChanges : {
 					spellAdd : [
 						// note that Heroes' Feast is omitted from the below because there is not enough space to amend its short description
-						function (spellKey, spellObj, spName) {							
+						function (spellKey, spellObj, spName) {
 							var startDescr = spellObj.description;
 							switch (spellKey) {
 								case "goodberry" :
@@ -2922,17 +2923,13 @@ var Base_ClassSubList = {
 									output.extraDmg += What('Cha Mod');
 								};
 							},
-							"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage."
+							"Cantrips and spells that deal acid damage get my Charisma modifier added to their damage."
 						],
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
-								var testRegex = /(\d+d?\d*)((\+\d+d?\d*\/\d?SL)?(\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? acid (dmg|damage))/ig;
-								if ((testRegex).test(spellObj.description)) {
-									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
-									return true;
-								};
+								if (!spellObj.psionic) return genericSpellDmgEdit(spellKey, spellObj, "acid", "Cha", true);
 							},
-							"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage."
+							"Cantrips and spells that deal acid damage get my Charisma modifier added to their damage."
 						]
 					}
 				},
@@ -2946,21 +2943,13 @@ var Base_ClassSubList = {
 									output.extraDmg += What('Cha Mod');
 								};
 							},
-							"Cantrips and spell that deal cold damage get my Charisma modifier added to their Damage."
+							"Cantrips and spells that deal cold damage get my Charisma modifier added to their damage."
 						],
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
-								if (spellKey == "armor of agathys") {
-									spellObj.description = spellObj.description.replace("5+5/SL Cold dmg", 5 + What("Cha Mod") + "+5/SL Cold dmg");
-									return true;
-								}
-								var testRegex = /(\d+d?\d*)((\+\d+d?\d*\/\d?SL)?(\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? cold (dmg|damage))/ig;
-								if ((testRegex).test(spellObj.description)) {
-									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
-									return true;
-								};
+								if (!spellObj.psionic) return genericSpellDmgEdit(spellKey, spellObj, "cold", "Cha", true);
 							},
-							"Cantrips and spell that deal cold damage get my Charisma modifier added to their Damage."
+							"Cantrips and spells that deal cold damage get my Charisma modifier added to their damage."
 						]
 					}
 				},
@@ -2974,21 +2963,13 @@ var Base_ClassSubList = {
 									output.extraDmg += What('Cha Mod');
 								};
 							},
-							"Cantrips and spell that deal fire damage get my Charisma modifier added to their Damage."
+							"Cantrips and spells that deal fire damage get my Charisma modifier added to their damage."
 						],
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
-								if (spellKey == "green-flame blade") {
-									spellObj.description = spellObj.description.replace("0d8", "0d8+" + What("Cha Mod"));
-									return true;
-								}
-								var testRegex = /(\d+d?\d*)((\+\d+d?\d*\/\d?SL)?(\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? fire (dmg|damage))/ig;
-								if ((testRegex).test(spellObj.description)) {
-									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
-									return true;
-								};
+								if (!spellObj.psionic) return genericSpellDmgEdit(spellKey, spellObj, "fire", "Cha", true);
 							},
-							"Cantrips and spell that deal fire damage get my Charisma modifier added to their Damage."
+							"Cantrips and spells that deal fire damage get my Charisma modifier added to their damage."
 						]
 					}
 				},
@@ -3002,17 +2983,13 @@ var Base_ClassSubList = {
 									output.extraDmg += What('Cha Mod');
 								};
 							},
-							"Cantrips and spell that deal lightning damage get my Charisma modifier added to their Damage."
+							"Cantrips and spells that deal lightning damage get my Charisma modifier added to their damage."
 						],
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
-								var testRegex = /(\d+d?\d*)((\+\d+d?\d*\/\d?SL)?(\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? (lightning|lightn\.) (dmg|damage))/ig;
-								if ((testRegex).test(spellObj.description)) {
-									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
-									return true;
-								};
+								if (!spellObj.psionic) return genericSpellDmgEdit(spellKey, spellObj, "lightn(\.|ing)?", "Cha", true);
 							},
-							"Cantrips and spell that deal lightning damage get my Charisma modifier added to their Damage."
+							"Cantrips and spells that deal lightning damage get my Charisma modifier added to their damage."
 						]
 					}
 				},
@@ -3026,17 +3003,13 @@ var Base_ClassSubList = {
 									output.extraDmg += What('Cha Mod');
 								};
 							},
-							"Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."
+							"Cantrips and spells that deal poison damage get my Charisma modifier added to their damage."
 						],
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
-								var testRegex = /(\d+d?\d*)((\+\d+d?\d*\/\d?SL)?(\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? poison (dmg|damage))/ig;
-								if ((testRegex).test(spellObj.description)) {
-									spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
-									return true;
-								};
+								if (!spellObj.psionic) return genericSpellDmgEdit(spellKey, spellObj, "poison", "Cha", true);
 							},
-							"Cantrips and spell that deal lightning damage get my Charisma modifier added to their Damage."
+							"Cantrips and spells that deal poison damage get my Charisma modifier added to their damage."
 						]
 					}
 				}
@@ -3124,8 +3097,90 @@ var Base_ClassSubList = {
 				name : "Empowered Evocation",
 				source : [["SRD", 54], ["P", 117]],
 				minlevel : 10,
-				description : "\n   " + "I can add my Int modifier to a single damage roll of any wizard evocation spell I cast"
-// SPELL CHANGES!!!
+				description : "\n   " + "I can add my Int modifier to a single damage roll of any wizard evocation spell I cast",
+				calcChanges : {
+					atkCalc : [
+						function (fields, v, output) {
+							if (v.thisWeapon[4].indexOf("wizard") !== -1) {
+								output.extraDmg += What('Int Mod');
+							};
+						},
+						"I add my Intelligence modifier to a single damage roll of any wizard evocation spell I cast."
+					],
+					spellAdd : [
+						function (spellKey, spellObj, spName) {
+							if (spName != "wizard" || !What("Int Mod") || Number(What("Int Mod")) <= 0) return;
+							var lookForDie;
+							switch (spellKey) {
+								case "fire shield" :
+									spellObj.description = spellObj.description.replace(/ gives| and/ig, ";").replace("the same dmg", "same");
+								case "flame blade" :
+									spellObj.description = spellObj.description.replace("to make a ", ":");
+								case "mordenkainen's sword" :
+									spellObj.description = spellObj.description.replace(" makes melee spell attacks", ", melee spell atk");
+								case "melf's minute meteors" :
+									spellObj.description = spellObj.description.replace("casting/bns a send up to two", "cast/bns send 1-2");
+								case "crusader's mantle" :
+								case "magic missile" :
+								case "scorching ray" :
+									spellObj.description += "; +" + What("Int Mod") + " dmg once";
+									return true;
+								case "wall of light" :
+								case "wrath of nature" :
+									spellObj.description = spellObj.description.replace(/ dmg|; see B/gi, "") + "; 1\xD7 +" + What("Int Mod") + " dmg";
+									return true;
+								case "witch bolt" :
+									spellObj.description = spellObj.description.replace("Spell attack", "Spell atk").replace("Lightning", "Lightn.") + "; 1\xD7 +" + What("Int Mod") + " dmg";
+									return true;
+								case "maelstrom" :
+									spellObj.description = spellObj.description.replace("starting turn in save or", "starting save").replace(" and", ",") + "; 1\xD7 +" + What("Int Mod") + " dmg";
+									return true;
+								case "wall of fire" :
+									spellObj.description = spellObj.description.replace("and", "\u0026").replace("save halves; see B", "save half") + "; 1\xD7 +" + What("Int Mod") + " dmg";
+									return true;
+								case "whirlwind" :
+									spellObj.description = spellObj.description.replace("see book", "see B") + "; 1\xD7 +" + What("Int Mod") + " dmg";
+									return true;
+								case "crown of stars" :
+									spellObj.description = spellObj.description.replace("bonus action", "bns") + "; 1\xD7 +" + What("Int Mod") + " dmg";
+									return true;
+								case "dawn" :
+									spellObj.description = spellObj.description.replace("bns a move it", "bns move") + "; 1\xD7 +" + What("Int Mod") + " dmg";
+									return true;
+								case "maddening darkness" :
+									spellObj.description = spellObj.description.replace("save halves", "save half") + "; 1\xD7+" + What("Int Mod") + " dmg";
+									return true;
+								case "sickening radiance" :
+									spellObj.description = spellObj.description.replace("1 level of exhaustion", "1 lvl exhaust.") + "; 1\xD7+" + What("Int Mod") + " dmg";
+									return true;
+								case "blade barrier" : // doesn't fit...
+									return true;
+								case "chaos bolt-uass" :
+									spellObj.description = spellObj.description.replace(" of target", "");
+								case "chromatic orb" :
+								case "chaos bolt-xgte" :
+									lookForDie = "d8";
+									break;
+								case "melf's acid arrow" :
+								case "vitriolic sphere" :
+									lookForDie = "d4";
+									break;
+								case "holy weapon" :
+									lookForDie = "4d8";
+									break;
+								case "destructive wave" :
+									lookForDie = "5d6";
+									break;
+							}
+							if (lookForDie) {
+								spellObj.description = spellObj.description.replace(lookForDie, lookForDie + "+" + What("Int Mod"));
+								return true;
+							}
+							if (!spellObj.psionic && spellObj.school == "Evoc") return genericSpellDmgEdit(spellKey, spellObj, "\\w+\\.?", "Int", true);
+						},
+						"I add my Intelligence modifier to a single damage roll of any wizard evocation spell I cast."
+					]
+				}
 			},
 			"subclassfeature14" : {
 				name : "Overchannel",
