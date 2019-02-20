@@ -449,7 +449,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			source : ["MM:BH", 5],
 			minlevel : 3,
 			description : desc([
-				"I can cast warlock cantrips/spells that I know, using Charisma as my spellcasting ability",
+				"I can cast warlock cantrips/spells that I know, using Wisdom as my spellcasting ability",
 				"I can use a rite-imbued weapon as a spellcasting focus; I regain spell slots in a short rest"
 			]),
 			additional : ["", "", "2 cantrips \u0026 2 spells known", "2 cantrips \u0026 2 spells known", "2 cantrips \u0026 3 spells known", "2 cantrips \u0026 3 spells known", "2 cantrips \u0026 4 spells known", "2 cantrips \u0026 4 spells known", "2 cantrips \u0026 5 spells known", "3 cantrips \u0026 5 spells known", "3 cantrips \u0026 6 spells known", "3 cantrips \u0026 6 spells known", "3 cantrips \u0026 7 spells known", "3 cantrips \u0026 7 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 9 spells known", "3 cantrips \u0026 9 spells known", "3 cantrips \u0026 10 spells known", "3 cantrips \u0026 11 spells known"]
