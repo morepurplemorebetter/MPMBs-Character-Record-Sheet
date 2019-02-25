@@ -2359,7 +2359,7 @@ var Base_ClassSubList = {
 				calcChanges : {
 					spellAdd : [
 						// note that several healing spells are not present here because they don't restore hp at casting (only later)
-						function (spellKey, spellObj, spName) {							
+						function (spellKey, spellObj, spName) {
 							var startDescr = spellObj.description;
 							switch (spellKey) {
 								case "life transference" :
@@ -3090,8 +3090,34 @@ var Base_ClassSubList = {
 				name : "Potent Cantrip",
 				source : [["SRD", 54], ["P", 117]],
 				minlevel : 6,
-				description : "\n   " + "Any cantrips I cast still deal half damage on a successful save"
-// SPELL CHANGES!!!
+				description : "\n   " + "Any cantrips I cast still deal half damage on a successful save",
+				calcChanges : {
+					atkAdd : [
+						function (fields, v) {
+							if (v.isSpell && v.isDC && v.thisWeapon[3] && SpellsList[v.thisWeapon[3]].save) {
+								fields.Description = fields.Description.replace(/ success - no( damage|thing)/ , "success - half damage");
+							};
+						},
+						"My cantrips still do half damage on a successful saving throw, but none of their other effects."
+					],
+					spellAdd : [
+						function (spellKey, spellObj, spName) {
+							if (spellObj.psionic || spellObj.level || !spellObj.save || !(/\d+d\d+/).test(spellObj.description)) return;
+							var startDescr = spellObj.description;
+							spellObj.description = spellObj.description.replace("at CL 5, 11, and 17", "CL 5, 11, 17").replace(/damage/ig, "dmg").replace(/creatures?/ig, "crea").replace("save or ", "").replace("at casting or entering", "at cast/enter").replace(/(; \+\d+d\d+.*$|$)/, "; save: half dmg only$1");
+							switch (spellKey) {
+								case "lightning lure" :
+									spellObj.description = spellObj.description.replace(/(Lightn|pull)(ing|ed)/gi, "$1");
+									break;
+								case "create bonfire" :
+									spellObj.description = spellObj.description.replace("half dmg only", "half dmg");
+									break;
+							}
+							return startDescr !== spellObj.description;
+						},
+						"My cantrips still do half damage on a successful saving throw, but none of their other effects."
+					]
+				}
 			},
 			"subclassfeature10" : {
 				name : "Empowered Evocation",

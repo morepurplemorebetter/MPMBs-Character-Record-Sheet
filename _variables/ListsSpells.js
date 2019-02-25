@@ -45,7 +45,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A tiny strip of white cloth",
 		duration : "8 h",
-		description : "3 creatures gain 5+5/SL current hp and hp max for the duration",
+		description : "3 creatures gain 5+5/SL current HP and HP max for the duration",
 		descriptionFull : "Your spell bolsters your allies with toughness and resolve. Choose up to three creatures within range. Each target's hit point maximum and current hit points increase by 5 for the duration." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, a target's hit points increase by an additional 5 for each slot level above 2nd."
 	},
 	"alarm" : {
@@ -103,7 +103,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A morsel of food",
 		duration : "24 h",
-		description : "Tiny beast delivers 25 word message up to 25 miles (50 miles if flyer); +48h/SL duration ",
+		description : "Tiny beast delivers 25 word message up to 25 miles (50 miles if flyer); +48h/SL duration",
 		descriptionFull : "By means of this spell, you use an animal to deliver a message. Choose a Tiny beast you can see within range, such as a squirrel, a blue ray, or a bird. You specify a location, which you must have visited, and a recipient who matches a general description, such as a man or woman dressed in the uniform of the town guard or a red-haired dwarf wearing a pointed hat. You also speak a message of up to twenty-five words. The target beast travels for the duration of the spell towards the specified location, covering about 50 miles per 24 hours for a flying messenger or 25 miles for other animals." + "\n   " + "When the messenger arrives, it delivers your message to the creature that you described, replicating the sound of your voice. The messenger speaks only to a creature matching the description you gave. If the messenger doesn't reach its destination before the spell ends, the message is lost, and the beast makes its way back to where you cast this spell." + AtHigherLevels + "If you cast this spell using a spell slot of 3rd level or higher, the duration of the spell increases by 48 hours for each slot level above 2nd."
 	},
 	"animal shapes" : {
@@ -185,7 +185,7 @@ var Base_SpellsList = {
 		compMaterial : "Either a lump of alum soaked in vinegar for the antipathy effect or a drop of honey for the sympathy effect",
 		duration : "10 days",
 		save : "Wis",
-		description : "Object or area up to 200-ft cube attracts or repels specific type of intelligent crea; save",
+		description : "Creature, object, or area up to 200-ft cube attracts or repels specific type of intelligent crea; see book",
 		descriptionFull : "This spell attracts or repels creatures of your choice. You target something within range, either a Huge or smaller object or creature or an area that is no larger than a 200-foot cube. Then specify a kind of intelligent creature, such as red dragons, goblins, or vampires. You invest the target with an aura that either attracts or repels the specified creatures for the duration. Choose antipathy or sympathy as the aura's effect." + "\n   " + toUni("Antipathy") + ": The enchantment causes creatures of the kind you designated to feel an intense urge to leave the area and avoid the target. When such a creature can see the target or comes within 60 feet of it, the creature must succeed on a Wisdom saving throw or become frightened. The creature remains frightened while it can see the target or is within 60 feet of it. While frightened by the target, the creature must use its movement to move to the nearest safe spot from which it can't see the target. If the creature moves more than 60 feet from the target and can't see it, the creature is no longer frightened, but the creature becomes frightened again if it regains sight of the target or moves within 60 feet of it." + "\n   " + toUni("Sympathy") + ": The enchantment causes the specified creatures to feel an intense urge to approach the target while within 60 feet of it or able to see it. When such a creature can see the target or comes within 60 feet of it, the creature must succeed on a Wisdom saving throw or use its movement on each of its turns to enter the area or move within reach of the target. When the creature has done so, it can't willingly move away from the target. If the target damages or otherwise harms an affected creature, the affected creature can make a Wisdom saving throw to end the effect, as described below." + "\n   " + toUni("Ending the Effect") + ": If an affected creature ends its turn while not within 60 feet of the target or able to see it, the creature makes a Wisdom saving throw. ON a successful save, the creature is no longer affected by the target and recognizes the feeling of repugnance or attraction as magical. In addition, a creature affected by the spells is allowed another Wisdom saving throw every 24 hours while the spell persists." + "\n   " + "A creature that successfully saves against this effect is immune to it for 1 minute, after which time it can be affected again."
 	},
 	"arcane eye" : {
@@ -313,7 +313,7 @@ var Base_SpellsList = {
 		range : "30 ft",
 		components : "V,S",
 		duration : "Conc, 1 min",
-		description : "Any crea in range adv. on Wis/Death saves and gains max hp from any healing",
+		description : "Any crea in range adv. on Wis/Death saves and gains max HP from any healing",
 		descriptionFull : "This spell bestows hope and vitality. Choose any number of creatures within range. For the duration, each target has advantage on Wisdom saving throws and death saving throws, and regains the maximum number of hit points possible from any healing."
 	},
 	"bestow curse" : {
@@ -342,7 +342,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "An eggshell and a snakeskin glove",
 		duration : "Conc, 1 min",
-		description : "Large hand attacks, pushes, grapples or shields, see book; AC 20, my max hp; bns a move 60 ft",
+		description : "Large hand attacks, pushes, grapples or shields, see book; AC 20, my max HP; bns a move 60 ft",
 		descriptionFull : "You create a Large hand of shimmering, translucent force in an unoccupied space that you can see within range. The hand lasts for the spell's duration, and it moves at your command, mimicking the movements of your own hand." + "\n   " + "The hand is an object that has AC 20 and hit points equal to your hit point maximum. If it drops to 0 hit points, the spell ends. It has a Strength of 26 (+8) and a Dexterity of 10 (+0). The hand doesn't fill its space." + "\n   " + "When you cast the spell and as a bonus action on your subsequent turns, you can move the hand up to 60 feet and then cause one of the following effects with it." + "\n   " + "Clenched Fist. The hand strikes one creature or object within 5 feet of it. Make a melee spell attack for the hand using your game statistics. On a hit, the target takes 4d8 force damage." + "\n   " + "Forceful Hand. The hand attempts to push a creature within 5 feet of it in a direction you choose. Make a check with the hand's Strength contested by the Strength (Athletics) check of the target. If the target is Medium or smaller, you have advantage on the check. If you succeed, the hand pushes the target up to 5 feet plus a number of feet equal to five times your spellcasting ability modifier. The hand moves with the target to remain within 5 feet of it." + "\n   " + "Grasping Hand. The hand attempts to grapple a Huge or smaller creature within 5 feet of it. You use the hand's Strength score to resolve the grapple. If the target is Medium or smaller, you have advantage on the check. While the hand is grappling the target, you can use a bonus action to have the hand crush it. When you do so, the target takes bludgeoning damage equal to 2d6 + your spellcasting ability modifier." + "\n   " + "Interposing Hand. The hand interposes itself between you and a creature you choose until you give the hand a different command. The hand moves to stay between you and the target, providing you with half cover against the target. The target can't move through the hand's space if its Strength score is less than or equal to the hand's Strength score. If its Strength score is higher than the hand's Strength score, the target can move toward you through the hand's space, but that space is difficult terrain for the target." + AtHigherLevels + "When you cast this spell using a spell slot of 6th level or higher, the damage from the clenched fist option increases by 2d8 and the damage from the grasping hand increases by 2d6 for each slot level above 5th."
 	},
 	"blade barrier" : {
@@ -509,7 +509,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "1 h",
 		save : "Wis",
-		description : "1+1/SL humanoids, each max 30 ft apart, save or charmed; adv. on save if me/allies are fighting it",
+		description : "1+1/SL humanoids, each max 30 ft apart, save or charmed; adv. on save if me/ally is fighting it",
 		descriptionFull : "You attempt to charm a humanoid you can see within range. It must make a Wisdom saving throw, and does so with advantage if you or your companions are fighting it. If it fails the saving throw, it is charmed by you until the spell ends or until you or your companions do anything harmful to it. The charmed creature regards you as a friendly acquaintance. When the spell ends, the creature knows it was charmed by you." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, you can target one additional creature for each slot level above 1st. The creatures must be within 30 feet of each other when you target them."
 	},
 	"chill touch" : {
@@ -522,7 +522,7 @@ var Base_SpellsList = {
 		range : "120 ft",
 		components : "V,S",
 		duration : "1 rnd",
-		description : "Spell attack for 1d8 Necrotic dmg; can't regain hp; undead dis. atks vs. me; +1d8 at CL 5, 11, and 17",
+		description : "Spell attack for 1d8 Necrotic dmg; can't regain HP; undead dis. atks vs. me; +1d8 at CL 5, 11, and 17",
 		descriptionCantripDie : "Spell attack for `CD`d8 Necrotic dmg; can't regain hp; undead dis. atks vs. me",
 		descriptionFull : "You create a ghostly, skeletal hand in the space of a creature within range. Make a ranged spell attack against the creature to assail it with the chill of the grave. On a hit, the target takes 1d8 necrotic damage, and it can't regain hit points until the start of your next turn. Until then, the hand clings to the target." + "\n   " + "If you hit an undead target, it also has disadvantage on attack rolls against you until the end of your next turn." + "\n   " + "This spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8)."
 	},
@@ -594,7 +594,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A pinch of powder or sand that is colored red, yellow, and blue",
 		duration : "1 rnd",
-		description : "6d10+2d10/SL hp of crea blinded, starting with the lowest current hp crea",
+		description : "6d10+2d10/SL HP of crea blinded, starting with the lowest current HP crea",
 		descriptionFull : "A dazzling array of flashing, colored light springs from your hand. Roll 6d10, the total is how many hit points of creatures this spell can effect. Creatures in a 15-foot cone originating from you are affected in ascending order of their current hit points (ignoring unconscious creatures and creatures that can't see)." + "\n   " + "Starting with the creature that has the lowest current hit points, each creature affected by this spell is blinded until the end of your next turn. Subtract each creature's hit points from the total before moving on to the creature with the next lowest hit points. A creature's hit points must be equal to or less than the remaining total for the creature to be affected." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, roll an additional 2d10 for each slot level above 1st."
 	},
 	"command" : {
@@ -946,7 +946,7 @@ var Base_SpellsList = {
 		range : "Touch",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "1 living creature heals 1d8+1d8/SL+spellcasting ability modifier hp",
+		description : "1 living creature heals 1d8+1d8/SL+spellcasting ability modifier HP",
 		descriptionFull : "A creature you touch regains a number of hit points equal to 1d8 + your spellcasting ability modifier. This spell has no effect on undead or constructs." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, the healing increases by 1d8 for each slot level above 1st."
 	},
 	"dancing lights" : {
@@ -1014,7 +1014,7 @@ var Base_SpellsList = {
 		range : "Touch",
 		components : "V,S",
 		duration : "8 h",
-		description : "Once, when crea drops to 0 hp it drops to 1 hp instead; or negates first instantaneous kill effect",
+		description : "Once, when crea drops to 0 HP it drops to 1 HP instead; or negates first instantaneous kill effect",
 		descriptionFull : "You touch a creature and grant it a measure of protection from death. The first time the target would drop to 0 hit points as a result of taking damage, the target instead drops to 1 hit point, and the spell ends. If the spell is still in effect when the target is subjected to an effect that would kill it instantaneously without dealing damage, that effect is instead negated against the target, and the spells ends."
 	},
 	"delayed blast fireball" : {
@@ -1918,7 +1918,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A sprig of mistletoe",
 		duration : "Instantaneous",
-		description : "Create 10 berries; 1 a to eat 1 berry for 1 hp and nourishment for 1 day; berries lose potency after 24h",
+		description : "Create 10 berries; 1 a to eat 1 berry for 1 HP and nourishment for 1 day; berries lose potency after 24h",
 		descriptionFull : "Up to ten berries appear in your hand and are infused with magic for the duration. A creature can use its action to eat one berry. Eating a berry restores 1 hit point, and the berry provides enough nourishment to sustain a creature for one day." + "\n   " + "The berries lose their potency if they have not been consumed within 24 hours of the casting of this spell."
 	},
 	"grease" : {
@@ -1960,7 +1960,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u2020",
 		compMaterial : "Diamond dust worth 100 gp, which the spell consumes",
 		duration : "Instantaneous",
-		description : "Reduce exhaustion or end charm, petrify, curse, stat or max hp reduction (100gp cons.)",
+		description : "Reduce exhaustion or end charm, petrify, curse, stat or max HP reduction (100gp cons.)",
 		descriptionFull : "You imbue a creature you touch with positive energy to undo a debilitating effect. You can reduce the target's exhaustion level by one, or end one of the following effects on the target." + "\n " + "\u2022 One effect that charmed or petrified the target" + "\n " + "\u2022 One curse, including the target's attunement to a cursed magic item" + "\n " + "\u2022 Any reduction to one of the target's ability scores" + "\n " + "\u2022 One effect reducing the target's hit point maximum."
 	},
 	"guardian of faith" : {
@@ -2071,7 +2071,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Instantaneous",
 		save : "Con",
-		description : "1 crea 14d6 Necrotic dmg, reduce max hp by same; not <1 hp; save halves and no max hp reduce",
+		description : "1 crea 14d6 Necrotic dmg, reduce max HP by same; not <1 HP; save halves and no max HP reduce",
 		descriptionFull : "You unleash a virulent disease on a creature that you can see within range. The target must make a Constitution saving throw. On a failed save, it takes 14d6 necrotic damage, or half as much damage on a successful save. The damage can't reduce the target's hit points below 1. If the target fails the saving throw, its hit point maximum is reduced for 1 hour by an amount equal to the necrotic damage it took. Any effect that removes a disease allows a creature's hit point maximum to return to normal before that time passes."
 	},
 	"haste" : {
@@ -2098,7 +2098,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "1 living creature heals 70+10/SL hp and is cured of blindness, deafness, and all diseases",
+		description : "1 living creature heals 70+10/SL HP and is cured of blindness, deafness, and all diseases",
 		descriptionFull : "Choose a creature that you can see within range. A surge of positive energy washes through the creature, causing it to regain 70 hit points. The spell also ends blindness, deafness, and any diseases affecting the target. This spell has no effect on constructs or undead." + AtHigherLevels + "When you cast this spell using a spell slot of 7th level or higher, the amount of healing increases by 10 for each slot level above 6th."
 	},
 	"healing word" : {
@@ -2111,7 +2111,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V",
 		duration : "Instantaneous",
-		description : "1 living creature heals 1d4+1d4/SL+spellcasting ability modifier hp",
+		description : "1 living creature heals 1d4+1d4/SL+spellcasting ability modifier HP",
 		descriptionFull : "A creature of your choice that you can see within range regains hit points equal to 1d4 + your spellcasting ability modifier. This spell has no effect on undead or constructs." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, the healing increases by 1d4 for each slot level above 1st."
 	},
 	"heat metal" : {
@@ -2154,7 +2154,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u2020",
 		compMaterial : "A gem-encrusted bowl worth at least 1,000 gp, which the spell consumes",
 		duration : "Instantaneous",
-		description : "Up to 12 crea; 1h to consume; for 24h: disease/poison immune, +2d10 max hp, see B (1000gp cons.)",
+		description : "Up to 12 crea; 1h to consume; for 24h: disease/poison immune, +2d10 max HP, see B (1000gp cons.)",
 		descriptionFull : "You bring forth a great feast, including magnificent food and drink. The feast takes 1 hour to consume and disappears at the end of that time, and the beneficial effects don't set in until this hour is over. Up to twelve creatures can partake of the feast." + "\n   " + "A creature that partakes of the feast gains several benefits. The creature is cured of all diseases and poison, becomes immune to poison and being frightened, and makes all Wisdom saving throws with advantage. Its hit point maximum also increases by 2d10, and it gains the same number of hit points. These benefits last for 24 hours."
 	},
 	"heroism" : {
@@ -2167,7 +2167,7 @@ var Base_SpellsList = {
 		range : "Touch",
 		components : "V,S",
 		duration : "Conc, 1 min",
-		description : "1+1/SL crea immune to fear, gain spellcasting ability modifier temp. hp start of each turn as spell lasts",
+		description : "1+1/SL crea immune to fear, gain spellcasting ability modifier temp. HP start of each turn as spell lasts",
 		descriptionFull : "A willing creature you touch is imbued with bravery. Until the spell ends, the creature is immune to being frightened and gains temporary hit points equal to your spellcasting ability modifier at the start of each of its turns. When the spell ends, the target loses any remaining temporary hit points from this spell." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, you can target one additional creature for each slot level above 1st."
 	},
 	"hold monster" : {
@@ -2666,7 +2666,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "6 living creatures within 30-ft rad heal 3d8+1d8/SL+spellcasting ability modifier hp",
+		description : "6 living creatures within 30-ft rad heal 3d8+1d8/SL+spellcasting ability modifier HP",
 		descriptionFull : "A wave of healing energy washes out from a point of your choice within range. Choose up to six creatures in a 30-foot-radius sphere centered on that point. Each target regains hit points equal to 3d8 + your spellcasting ability modifier. This spell has no effect on undead or constructs." + AtHigherLevels + "When you cast this spell using a spell slot of 6th level or higher, the healing increases by 1d8 for each slot level above 5th."
 	},
 	"mass heal" : {
@@ -2679,7 +2679,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "Split 700 hp of healing over creatures in range; also cured of blindness, deafness, and all diseases",
+		description : "Split 700 HP of healing over creatures in range; also cured of blindness, deafness, and all diseases",
 		descriptionFull : "A flood of healing energy flows from you into injured creatures around you. You restore up to 700 hit points, divided as you choose among any number of creatures that you can see within range. Creatures healed by this spell are also cured of all diseases and any effect making them blinded or deafened. This spell has no effect on undead or constructs."
 	},
 	"mass healing word" : {
@@ -2692,7 +2692,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V",
 		duration : "Instantaneous",
-		description : "6 living creatures heal 1d4+1d4/SL+spellcasting ability modifier hp",
+		description : "6 living creatures heal 1d4+1d4/SL+spellcasting ability modifier HP",
 		descriptionFull : "As you call out words of restoration, up to six creatures of your choice that you can see within range regain hit points equal to 1d4 + your spellcasting ability modifier. This spell has no effect on undead or constructs." + AtHigherLevels + "When you cast this spell using a spell slot of 4th level or higher, the healing increases by 1d4 for each slot level above 3rd."
 	},
 	"mass suggestion" : {
@@ -3196,7 +3196,7 @@ var Base_SpellsList = {
 		compMaterial : "A caterpillar cocoon",
 		duration : "Conc, 1 h",
 		save : "Wis",
-		description : "1 creature with > 0 hp save or transformed into beast of choice of same CR or lower; see book",
+		description : "1 creature with > 0 HP save or transformed into beast of choice of same CR or lower; see book",
 		descriptionFull : "This spell transforms a creature that you can see within range into a new form. An unwilling creature must make a Wisdom saving throw to avoid the effect. The spell has no effect on a shapechanger or a creature with 0 hit points" + "\n   " + "The transformation lasts for the duration, or until the target drops to 0 hit points or dies. The new form can be any beast whose challenge rating is equal to or less than the target's (or the target's level, if it doesn't have a challenge rating). The target's game statistics, including mental ability scores, are replaced by the statistics of the chosen beast. It retains its alignment and personality." + "\n   " + "The target assumes the hit points of its new form. When it reverts to its normal form, the creature returns to the number of hit points it had before it transformed. If it reverts as a result of dropping to 0 hit points, any excess damage carries over to its normal form. As long as the excess damage doesn't reduce the creature's normal form to 0 hit points, it isn't knocked unconscious." + "\n   " + "The creature is limited in the actions it can perform by the nature of its new form, and it can't speak, cast spells, or take any other action that requires hands or speech." + "\n   " + "The target's gear melds into the new form. The creature can't activate, use, wield, or otherwise benefit from any of its equipment."
 	},
 	"power word kill" : {
@@ -3209,7 +3209,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V",
 		duration : "Instantaneous",
-		description : "1 creature with 100 current hp or less dies",
+		description : "1 creature with 100 current HP or less dies",
 		descriptionFull : "You utter a word of power that can compel one creature you can see within range to die instantly. If the creature you chose has 100 hit points or fewer, it dies. Otherwise, the spell has no effect."
 	},
 	"power word stun" : {
@@ -3223,7 +3223,7 @@ var Base_SpellsList = {
 		components : "V",
 		duration : "Instantaneous",
 		save : "Con",
-		description : "1 creature with 150 current hp or less is stunned; save at end of each turn to end spell",
+		description : "1 creature with 150 current HP or less is stunned; save at end of each turn to end spell",
 		descriptionFull : "You speak a word of power that can overwhelm the mind of one creature you can see within range, leaving it dumbfounded. If the target has 150 hit points or fewer, it is stunned. Otherwise, the spell has no effect." + "\n   " + "The stunned target must make a Constitution saving throw at the end of each of its turns. On a successful save, this stunning effect ends."
 	},
 	"prayer of healing" : {
@@ -3236,7 +3236,7 @@ var Base_SpellsList = {
 		range : "30 ft",
 		components : "V",
 		duration : "Instantaneous",
-		description : "6 living creatures heal 2d8+1d8/SL+spellcasting ability modifier hp",
+		description : "6 living creatures heal 2d8+1d8/SL+spellcasting ability modifier HP",
 		descriptionFull : "Up to six creatures of your choice that you can see within range each regain hit points equal to 2d8 + your spellcasting ability modifier. This spell has no effect on undead or constructs." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, the healing increases by 1d8 for each slot level above 2nd."
 	},
 	"prestidigitation" : {
@@ -3388,7 +3388,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u2020",
 		compMaterial : "A diamond worth at least 500 gp, which the spell consumes",
 		duration : "Instantaneous",
-		description : "Restores a creature's body that has died in the last 10 days to life with 1 hp; see book (500gp cons.)",
+		description : "Restores a creature's body that has died in the last 10 days to life with 1 HP; see book (500gp cons.)",
 		descriptionFull : "You return a dead creature you touch to life, provided that it has been dead no longer than 10 days. If the creature's soul is both willing and at liberty to rejoin the body, the creature returns to life with 1 hit point." + "\n   " + "This spell also neutralizes any poison and cures nonmagical diseases that affected the creature at the time it died. This spell doesn't, however, remove magical diseases, curses, or similar effects, if these aren't first removed prior to casting the spell, they take effect when the creature returns to life. The spell can't return an undead creature to life." + "\n   " + "This spell closes all mortal wounds, but it doesn't restore missing body parts. If the creature is lacking body parts or organs integral for its survival - its head, for instance - the spell automatically fails." + "\n   " + "Coming back from the dead is an ordeal. The target takes a -4 penalty to all attack rolls, saving throws, and ability checks. Every time the target finishes a long rest, the penalty is reduced by 1 until it disappears."
 	},
 	"rary's telepathic bond" : {
@@ -3447,7 +3447,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A prayer wheel and holy water",
 		duration : "1 h",
-		description : "1 crea heals 4d8+15 hp and 1 hp/rnd for rest of duration; restores lost body parts in 2 min",
+		description : "1 crea heals 4d8+15 HP and 1 HP/rnd for rest of duration; restores lost body parts in 2 min",
 		descriptionFull : "You touch a creature and stimulate its natural healing ability. The target regains 4d8 + 15 hit points. For the duration of the spell, the target regains 1 hit point at the start of each of its turns (10 hit points each minute)." + "\n   " + "The target's severed body members (fingers, legs, tails, and so on), if any, are restored after 2 minutes. If you have the severed part and hold it to the stump, the spell instantaneously causes the limb to knit to the stump."
 	},
 	"reincarnate" : {
@@ -3531,7 +3531,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u2020",
 		compMaterial : "Diamonds worth 300 gp, which the spell consumes",
 		duration : "Instantaneous",
-		description : "Restores a creature's body that has died in the last min to life with 1 hp (300gp cons.)",
+		description : "Restores a creature's body that has died in the last min to life with 1 HP (300gp cons.)",
 		descriptionFull : "You touch a creature that has died within the last minute. That creature returns to life with 1 hit point. This spell can't return to life a creature that has died of old age, nor can it restore any missing body parts."
 	},
 	"rope trick" : {
@@ -3799,7 +3799,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A pinch of find sand, rose petals, or a cricket",
 		duration : "1 min",
-		description : "20-ft rad 5d8+2d8/SL hp of conscious creatures fall asleep, starting with the lowest current hp crea",
+		description : "20-ft rad 5d8+2d8/SL HP of conscious creatures fall asleep, starting with the lowest current HP crea",
 		descriptionFull : "This spell sends creatures into a magical slumber. Roll 5d8, the total is how many hit points of creatures this spell can affect. Creatures within 20 feet of a point you choose within range are affected in ascending order of their current hit points (ignoring unconscious creatures)." + "\n   " + "Starting with the creature that has the lowest current hit points, each creature affected by this spell falls unconscious until the spell ends, the sleeper takes damage, or someone uses an action to shake or slap the sleeper awake. Subtract each creature's hit points from the total before moving on to the creature with the next lowest hit points. A creature's hit points must be equal to or less than the remaining total for that creature to be affected." + "\n   " + "Undead and creatures immune to being charmed aren't affected by this spell." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, roll an additional 2d8 for each slot level above 1st."
 	},
 	"sleet storm" : {
@@ -3842,7 +3842,7 @@ var Base_SpellsList = {
 		range : "Touch",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "1 living creature with 0 current hp becomes stable",
+		description : "1 living creature with 0 current HP becomes stable",
 		descriptionFull : "You touch a living creature that has 0 hit points. The creature becomes stable. This spell has no effect on undead or constructs."
 	},
 	"speak with animals" : {
@@ -4222,7 +4222,7 @@ var Base_SpellsList = {
 		compMaterial : "A drop of mercury, a dollop of gum arabic, and a wisp of smoke",
 		duration : "Conc, 1 h",
 		save : "Wis",
-		description : "1 crea/obj > 0 hp save or transformed into another crea/obj with equal CR or lower; see book",
+		description : "1 crea/obj > 0 HP save or transformed into another crea/obj with equal CR or lower; see book",
 		descriptionFull : "Choose one creature or nonmagical object that you can see within range. You transform the creature into a different creature, the creature into a nonmagical object, or the object into a creature (the object must be neither worn nor carried by another creature). The transformation lasts for the duration, or until the target drops to 0 hit points or dies. If you concentrate on this spell for the full duration, the transformation lasts until it is dispelled." + "\n   " + "This spell has no effect on a shapechanger or a creature with 0 hit points. An unwilling creature can make a Wisdom saving throw, and if it succeeds, it isn't affected by this spell." + "\n   " + toUni("Creature into Creature") + ": If you turn a creature into another kind of creature, the new form can be any kind you choose whose challenge rating is equal to or less than the target's (or its level, if the target doesn't have a challenge rating). The target's game statistics, including mental ability scores, are replaced by the statistics of the new form. It retains its alignment and personality." + "\n   " + "The target assumes the hit points of its new form, and when it reverts to its normal form, the creature returns to the number of hit points it had before it transformed. If it reverts as a result of dropping to 0 hit points, any excess damage carries over to its normal form. As long as the excess damage doesn't reduce the creature's normal form to 0 hit points, it isn't knocked unconscious." + "\n   " + "The creature is limited in the actions it can perform by the nature of its new form, and it can't speak, cast spells, or take any other action that requires hands or speech unless its new form is capable of such actions." + "\n   " + "The target's gear melds into the new form. The creature can't activate, use, wield, or otherwise benefit from any of its equipment." + "\n   " + toUni("Object into Creature") + ": You can turn an object into any kind of creature, as long as the creature's size is no larger than the object's size and the creature's challenge rating is 9 or lower. The creature is friendly to you and your companions. It acts on each of your turns. You decide what action it takes and how it moves. The DM has the creature's statistics and resolves all of its actions and movement." + "\n   " + "If the spell becomes permanent, you no longer control the creature. It might remain friendly to you, depending on how you have treated it." + "\n   " + toUni("Creature into Object") + ": If you turn a creature into an object, it transforms along with whatever it is wearing and carrying into that form, as long as the object's size is no larger than the creature's size. The creature's statistics become those of the object, and the creature has no memory of time spent in this form, after the spell ends and it returns to its normal form."
 	},
 	"true resurrection" : {
