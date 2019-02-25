@@ -467,12 +467,12 @@ var Base_MagicItemsList = {
 		attunement : true,
 		description : "While I wear these boots, I can use an action to cast the levitate spell on myself at will.",
 		descriptionFull : "While you wear these boots, you can use an action to cast the Levitate spell on yourself at will.",
-		spellcastingBonus : [{
+		spellcastingBonus : {
 			name : "Self Only",
 			spells : ["levitate"],
 			selection : ["levitate"],
-			atwill : true
-		}]},
+			firstCol : "atwill"
+		},
 		spellChanges : {
 			"levitate" : {
 				range : "Self",

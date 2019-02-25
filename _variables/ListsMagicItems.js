@@ -311,7 +311,7 @@ var Base_MagicItemsList = {
 			name : "Self Only",
 			spells : ["levitate"],
 			selection : ["levitate"],
-			atwill : true
+			firstCol : "atwill"
 		},
 		spellChanges : {
 			"levitate" : {
