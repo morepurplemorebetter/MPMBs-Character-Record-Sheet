@@ -413,7 +413,7 @@ function DirectImport(consoleTrigger) {
 		} else {
 			MPMBOpenFile(this, importFromPath[0], importFromPath[1]);
 		}
-		closeAlert = global.docFrom && (/^(?=.*morepurplemorebetter)(?=.*character)(?=.*sheet).*$/i).test(global.docFrom.info.title) ? false : ["File is not one of MPMB's Character Record Sheets", "The opened document is not recognized as being one of MPMB's Character Record Sheets.\nIt will now be closed and no changes will be made to either documents."];
+		closeAlert = global.docFrom && (/^(?=.*morepurplemorebetter)(?=.*character)(?=.*sheet).*$/i).test(global.docFrom.info.title) && global.docFrom.info.SheetVersion ? false : ["File is not one of MPMB's Character Record Sheets", "The opened document is not recognized as being one of MPMB's Character Record Sheets.\nNote that even though it might look like one of MPMB's Character Record Sheets, no form-fillable fields and back-end code be detected. Possibly the document was flattened (printed to PDF) or opened with Preview for Mac, subsequently destroying its automations. Unfortunately nothing can be imported from such a file.\n\nIt will now be closed and no changes will be made to either documents."];
 	} catch (errorCode) {
 		closeAlert = ["File not found", "Invalid file location or file type \"" + (importFromPath[1] ? tDoc.path.replace(tDoc.documentFileName, "") : "") + importFromPath[0] + "\".\n\nPlease try again and don't forget that the path must include the file extension (.pdf)."];
 	};

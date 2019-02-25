@@ -53,7 +53,7 @@ var Base_ArmourList = {
 		invName : "Hide armor"
 	},
 	"chain shirt" : {
-		regExpSearch : /^(?=.*(chain|mail))(?=.*shirt).*$/i,
+		regExpSearch : /^(?=.*chain)(?=.*shirt).*$/i,
 		name : "Chain shirt",
 		source : [["SRD", 63], ["P", 145]],
 		type : "medium",
@@ -96,7 +96,7 @@ var Base_ArmourList = {
 		weight : 40
 	},
 	"chain mail" : {
-		regExpSearch : /^(?!.*(scale|plate|ring|shirt))(?=.*(chain|mail)).*$/i,
+		regExpSearch : /^(?!.*(scale|plate|ring|shirt))(?=.*chain)(?=.*mail).*$/i,
 		name : "Chain mail",
 		source : [["SRD", 63], ["P", 145]],
 		type : "heavy",

@@ -2907,10 +2907,11 @@ function ParseGear(input) {
 	//see if it is gear
 	for (var key in GearList) { //scan string for all gear
 		var aList = GearList[key];
-		if (!aList.name || aList.name === "-" || testSource(key, aList, "gearExcl")) continue; // || key.indexOf("ammunition") !== -1) continue;
-		var aListRegEx = MakeRegex(aList.name.replace(/\uFEFF|\,[^\,]+$/g, ""));
+		if (!aList.name || aList.name === "-" || testSource(key, aList, "gearExcl")) continue;
+		var searchName = aList.name.replace(/\uFEFF|,[^,]+$/g, "");
+		var aListRegEx = MakeRegex(searchName);
 		if ((aListRegEx).test(tempString)) {
-			var testLen = aList.name.length;
+			var testLen = searchName.length;
 			if (testLen >= foundLen) {
 				result = ["GearList", key];
 				foundLen = testLen;
@@ -2922,9 +2923,10 @@ function ParseGear(input) {
 	for (var key in ToolsList) { //scan string for all tools
 		var aList = ToolsList[key];
 		if (!aList.name || aList.name === "-" || testSource(key, aList, "gearExcl")) continue;
-		var aListRegEx = MakeRegex(aList.name.replace(/\uFEFF|\,[^\,]+$/g, ""));
+		var searchName = aList.name.replace(/\uFEFF|,[^,]+$/g, "");
+		var aListRegEx = MakeRegex(searchName);
 		if ((aListRegEx).test(tempString)) {
-			var testLen = aList.name.length;
+			var testLen = searchName.length;
 			if (testLen >= foundLen) {
 				result = ["ToolsList", key];
 				foundLen = testLen;
