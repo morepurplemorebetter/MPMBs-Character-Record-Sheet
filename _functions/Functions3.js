@@ -106,6 +106,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	var aParent = fObjName;
 	var lvlH = Math.max(lvlA[0], lvlA[1]), lvlL = Math.min(lvlA[0], lvlA[1]);
 	var defaultUnits = What("Unit System") === "imperial";
+	var choiceLimFeaTooltip;
 
 	// the function to run an eval string/function
 	var runEval = function(evalThing, attributeName, ignoreUnits) {
@@ -135,20 +136,22 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	// the function to run all regular level-independent attributes
 	// addIt = true to add things and addIt = false to remove things
 	var useAttr = function(uObj, addIt, skipEval, objNm) {
-		objNm = objNm == undefined ? fObjName : fObjName + objNm; // has to be unique
+		var uniqueObjNm = objNm == undefined ? fObjName : fObjName + objNm; // has to be unique
 		var tipNm = displName + (cnt > 1 ? " (" + cnt + ")" : "");
-		if (displName !== uObj.name) {
+		if (!uObj.name || displName !== uObj.name) {
 			if (type === "feat" || type === "magic item") {
 				if (uObj.name) {
 					tipNm = uObj.name;
 				} else if (objNm && fObj.choices) {
 					for (var j = 0; j < fObj.choices.length; j++) {
 						if (fObj.choices[j].toLowerCase() == objNm) {
-							tipNm += " [" + fObj.choices[j] + "]";
+							tipNm = displName + " [" + fObj.choices[j] + "]";
 							break;
 						}
 					}
 				}
+				if (cntCh > 1) tipNm += " (" + cntCh + ")";
+				if (addIt) choiceLimFeaTooltip = tipNm;
 			} else if (uObj.name) {
 				tipNm = displName + ": " + uObj.name;
 			}
@@ -188,7 +191,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.scoresOverride) processStats(addIt, type, tipNm, uObj.scoresOverride, abiScoresTxt, true);
 
 		// spellcasting
-		if (uObj.spellcastingBonus) processSpBonus(addIt, objNm, uObj.spellcastingBonus, type, aParent);
+		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent);
 		if (CurrentSpells[aParent] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges)) {
 			CurrentUpdates.types.push("spells");
 			if (uObj.spellFirstColTitle) CurrentSpells[aParent].firstCol = addIt ? uObj.spellFirstColTitle : false;
@@ -305,11 +308,14 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	var cOnly = ((AddFea && cNewObj) || (!AddFea && cOldObj)) && (/only/).test(choiceA[2]);
 
 	// Now if there was a choice, and this is a feat or an item, check for duplicates
-	var cnt = 0;
-	if ((choiceA[0] || choiceA[1]) && (type === "feat" || type === "magic item")) {
+	var cnt = 0, cntCh = 0;
+	if (type === "feat" || type === "magic item") {
 		var checkObj = type === "feat" ? CurrentFeats : CurrentMagicItems;
 		for (var i = 0; i < checkObj.known.length; i++) {
-			if (checkObj.known[i] == fObjName) cnt++;
+			if (checkObj.known[i] == fObjName) {
+				cnt++;
+				if ((choiceA[0] && checkObj.choices[i] == choiceA[0]) || (choiceA[1] && checkObj.choices[i] == choiceA[1])) cntCh++;
+			}
 		}
 	}
 
@@ -347,7 +353,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		}
 		// add the limited feature entry if it changed or added for the first time
 		if (AddFea && (Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use)) {
-			var tooltipName = displName + (fObj.tooltip ? fObj.tooltip : Fea.UseName !== fObj.name ? ": " + fObj.name : "");
+			var tooltipName = choiceLimFeaTooltip ? choiceLimFeaTooltip : displName + (fObj.tooltip ? fObj.tooltip : Fea.UseName !== fObj.name ? ": " + fObj.name : "");
 			AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, tooltipName, Fea.UseOld, Fea.UseCalc);
 		}
 	}
@@ -2257,7 +2263,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 		Menus.magicitems = magicMenu;
 		if (MenuSelection == "justMenu") return;
 	}
-	MenuSelection = getMenu("magicitems");
+	MenuSelection = MenuSelection ? MenuSelection : getMenu("magicitems");
 	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "item") return;
 
 	// Start progress bar and stop calculations

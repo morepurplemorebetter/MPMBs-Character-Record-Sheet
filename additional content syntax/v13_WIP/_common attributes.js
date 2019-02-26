@@ -50,7 +50,7 @@
 
 	Sheet:		v13.0.0 (2018-??-??)
 */
-
+"example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 // >>> Actions & Limited Features >>> //
@@ -207,7 +207,7 @@ extraLimitedFeatures : [{
 	recovery : "long rest", // REQUIRED //
 	usagescalc : "event.value = Math.max(1, What('Cha Mod'));", // OPTIONAL //
 	additional : "2d8" // OPTIONAL //
-}]
+}],
 /*	extraLimitedFeatures // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	entries to add to the "Limited Features" section which are not level-dependent
@@ -1437,7 +1437,7 @@ toNotesPage : [{
 eval : "Checkbox('Jack of All Trades', true);",
 eval : function(lvl, chc) {
 	AddString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
-};
+},
 /*	eval // OPTIONAL //
 	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 	USE:	runs a piece of code when the feature is added
@@ -1474,7 +1474,7 @@ eval : function(lvl, chc) {
 removeeval : "Checkbox('Jack of All Trades', false);",
 removeeval : function(v) {
 	RemoveString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
-};
+},
 /*	removeeval // OPTIONAL //
 	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 	USE:	runs a piece of code when the feature is removed
@@ -1512,7 +1512,7 @@ changeeval : "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : 
 changeeval : function(v) {
 	var monkSpd = '+' + (v[1] < 2 ? 0 : v[1] < 6 ? 10 : v[1] < 10 ? 15 : v[1] < 14 ? 20 : v[1] < 18 ? 25 : 30);
 	SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, "Monk: Unarmored Movement");
-};
+},
 /*	changeeval // OPTIONAL //
 	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 	USE:	runs a piece of code every time the character's level changes
@@ -1545,3 +1545,5 @@ changeeval : function(v) {
 	This can be any JavaScript you want to have run whenever the level changes.
 	This attribute is processed last, after all other attributes have been processed.
 */
+
+} // you can ignore this, it is just here to make this file valid JavaScript

@@ -635,7 +635,7 @@ var Base_WeaponsList = {
 		list : "ranged",
 		ability : 2,
 		type : "Martial",
-		damage : ["\u2015", "", 0],
+		damage : ["\u2015", "", "Restrained"],
 		range : "5/15 ft",
 		weight : 3,
 		description : "Thrown, only 1 attack, up to large creature hit is restrained (PHB 148)",

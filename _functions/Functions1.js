@@ -288,53 +288,7 @@ function RemoveTooltips() {
 		AddTooltip(clearSubmits[i], undefined, "");
 	};
 	AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
-	AddTooltip("Background Extra", "First fill out a background in the field to the left.\n\nOnce a background is recognized that offers additional options, those additional options will be displayed here. For example, the \"Origin\" for the \"Outlander\" background.");
-};
-
-function AddAction(actiontype, action, actiontooltip, replaceThis, replaceMatch) {
-	var field = (/bonus/i).test(actiontype) ? "Bonus Action " : (/reaction/i).test(actiontype) ? "Reaction " : "Action ";
-	var numberOfFields = field === "Action " ? FieldNumbers.trueactions : FieldNumbers.actions;
-	var tempString = actiontooltip ? formatMultiList("The \"" + action + "\" " + field.toLowerCase() + "was gained from:", actiontooltip) : "";
-	// first loop through all to see if it isn't already known
-	for (var i = 1; i <= numberOfFields; i++) {
-		var next = tDoc.getField(field + i);
-		if ((replaceThis && next.value == action) || (!replaceThis && next.value.toLowerCase().indexOf(action.toLowerCase()) !== -1) || (!replaceThis && next.submitName == action)) return;
-	}
-	// first loop through all to see if it isn't already known
-	var doReplace = false;
-	if (replaceThis) {
-		for (var i = 1; i <= numberOfFields; i++) {
-			var next = tDoc.getField(field + i);
-			if (next.submitName == replaceThis || next.value == replaceThis || (replaceMatch && next.value.toLowerCase().indexOf(replaceThis.toLowerCase()) !== -1)) {
-				doReplace = i;
-				break;
-			}
-		}
-	}
-	// set the new action to its field
-	for (var i = 1; i <= numberOfFields; i++) {
-		var next = tDoc.getField(field + i);
-		if ((doReplace && doReplace === i) || (!doReplace && next.value === "")) {
-			next.value = action;
-			if (!doReplace) {
-				next.userName = tempString;
-				next.submitName = action;
-			};
-			return;
-		}
-	}
-};
-
-function RemoveAction(actiontype, action) {
-	var field = (/bonus/i).test(actiontype) ? "Bonus Action " : (/reaction/i).test(actiontype) ? "Reaction " : "Action ";
-	var numberOfFields = field === "Action " ? FieldNumbers.trueactions : FieldNumbers.actions;
-	for (var i = 1; i <= numberOfFields; i++) {
-		var next = tDoc.getField(field + i);
-		if ((typeof action == "object" && (action).test(next.value)) || (typeof action == "string" && (next.value.toLowerCase().indexOf(action.toLowerCase()) !== -1) || next.submitName === action)) {
-			ActionDelete(clean(field).toLowerCase(), i);
-			return;
-		};
-	};
+	AddTooltip("Background Extra", 'First fill out a background in the field to the left.\n\nOnce a background is recognized that offers additional options, those additional options will be displayed here. For example, the "Origin" for the "Outlander" background.');
 };
 
 function AddResistance(input, tooltip, replaceThis, replaceMatch) {
@@ -1225,11 +1179,11 @@ function ToggleAdventureLeague(Setting) {
 	//Remove the DMG actions on the 1st page
 	if (!typePF && Setting.actions !== undefined) {
 		if (Setting.actions) {
-			RemoveAction("action", "Overrun / Tumble (or as bonus action)");
-			AddAction("action", "Grapple / Shove (instead of 1 attack)", "", "As 1 attack: Disarm / Grapple / Shove");
+			RemoveAction("action", "Overrun / Tumble (or as bonus action)", "Default action");
+			AddAction("action", "Grapple / Shove (instead of 1 attack)", "Default action", "As 1 attack: Disarm / Grapple / Shove");
 		} else {
-			AddAction("action", "Overrun / Tumble (or as bonus action)");
-			AddAction("action", "As 1 attack: Disarm / Grapple / Shove", "", "Grapple / Shove (instead of 1 attack)");
+			AddAction("action", "Overrun / Tumble (or as bonus action)", "Default action");
+			AddAction("action", "As 1 attack: Disarm / Grapple / Shove", "Default action", "Grapple / Shove (instead of 1 attack)");
 		};
 	};
 

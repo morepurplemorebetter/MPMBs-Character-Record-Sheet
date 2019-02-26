@@ -377,7 +377,7 @@ var Base_MagicItemsList = {
 			"conjure elemental" : {
 				time : "1 a",
 				description : "CR 5 water elemental that obeys my verbal commands; on broken conc. elemental breaks free",
-				changes : "Using the Bowl of Commanding Water Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth a water elemental."
+				changes : "Using the Bowl of Commanding Water Elementals, the spell only takes 1 action instead of 1 minute to cast, but can only bring forth a water elemental."
 			}
 		}
 	},
@@ -439,7 +439,7 @@ var Base_MagicItemsList = {
 			"conjure elemental" : {
 				time : "1 a",
 				description : "CR 5 fire elemental that obeys my verbal commands; on broken conc. elemental breaks free",
-				changes : "Using the Brazier of Commanding Fire Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth a fire elemental."
+				changes : "Using the Brazier of Commanding Fire Elementals, the spell only takes 1 action instead of 1 minute to cast, but can only bring forth a fire elemental."
 			}
 		}
 	},
@@ -536,7 +536,7 @@ var Base_MagicItemsList = {
 			"conjure elemental" : {
 				time : "1 a",
 				description : "CR 5 air elemental that obeys my verbal commands; on broken conc. elemental breaks free",
-				changes : "Using the Censer of Controlling Air Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth an air elemental."
+				changes : "Using the Censer of Controlling Air Elementals, the spell only takes 1 action instead of 1 minute to cast, but can only bring forth an air elemental."
 			}
 		}
 	},
@@ -892,6 +892,97 @@ var Base_MagicItemsList = {
 			modifiers : [3, 3] // add 3 to each to hit and damage because of the magical bonus
 		}
 	},
+	"efreeti bottle" : { // contributed by AelarTheElfRogue
+		name : "Efreeti Bottle",
+		source : [["SRD", 220], ["D", 167]],
+		type : "wondrous item",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "When I use an action to remove the stopper, a cloud of thick smoke flows out of the bottle. At the end of my turn, an efreeti appears in an unoccupied space within 30 feet of me. The first time the bottle is opened, the DM rolls to determine what happens that time and the next times (if any).",
+		descriptionLong : "When I use an action to remove the stopper, a cloud of thick smoke flows out of the bottle. At the end of my turn, an efreeti appears in an unoccupied space within 30 feet of me. The first time the bottle is opened, the DM rolls to determine what happens that time and the next times (if any). 10% chance that the efreeti attacks me for 5 rounds before disappearing. 80% change that the efreeti serves me for 1 hour, following my commands. It then returns to the bottle and I can have it serve me 2 more times, but only 24 hours after it returned to the bottle. 10% chance that the efreeti will grant me 3 wishes.",
+		descriptionFull : "This painted brass bottle weighs 1 pound. When you use an action to remove the stopper, a cloud of thick smoke flows out of the bottle. At the end of your turn, the smoke disappears with a flash of harmless fire, and an efreeti appears in an unoccupied space within 30 feet of you.\n   The first time the bottle is opened, the DM rolls to determine what happens.\n\n" + toUni("d100") + "\t" + toUni("Effect") + "\n01-10\tThe efreeti attacks you. After fighting for 5 rounds, the efreeti disappears, and the bottle loses its magic.\n11-90\tThe efreeti serves you for 1 hour, doing as you command. Then the efreeti returns to the bottle, and a new stopper contains it. The stopper can't be removed for 24 hours. The next two times the bottle is opened, the same effect occurs. If the bottle is opened a fourth time, the efreeti escapes and disappears, and the bottle loses its magic.\n91-00\tThe efreeti can cast the Wish spell three times for you. It disappears when it grants the final wish or after 1 hour, and the bottle loses its magic.",
+		weight : 1,
+		action : [["action", ""]]
+	},
+	"elemental gem": { // finished
+		name : "Elemental Gem",
+		source : [["SRD", 220], ["D", 167]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "This gem contains a mote of elemental energy. When I use an action to break the gem, an elemental is summoned as if I had cast the Conjure Elemental spell, and the gem's magic is lost. The type of gem determines the elemental summoned by the spell.",
+		descriptionFull : "This gem contains a mote of elemental energy. When you use an action to break the gem, an elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost. The type of gem determines the elemental summoned by the spell.",
+		choices : ["Blue Sapphire (air)", "Emerald (water)", "Red Corundum (fire)", "Yellow Diamond (earth)"],
+		allowDuplicates : true,
+		"blue sapphire (air)" : {
+			name : "Elemental Gem [Blue Sapphire]",
+			description : "This gem contains a mote of air elemental energy. Once as an action, I can break this gem to summon an air elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
+			descriptionFull : "This gem contains a mote of elemental energy. When you use an action to break the gem, an air elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
+			spellcastingBonus : {
+				name : "Air Elemental only",
+				spells : ["conjure elemental"],
+				selection : ["conjure elemental"]
+			},
+			spellChanges : {
+				"conjure elemental" : {
+					time : "1 a",
+					description : "CR 5 air elemental that obeys my verbal commands; on broken conc. elemental breaks free",
+					changes : "Using the Blue Sapphire Elemental Gem, the spell only takes 1 action instead of 1 minute to cast, but can only bring forth an air elemental."
+				}
+			}
+		},
+		"emerald (water)" : {
+			name : "Elemental Gem [Emerald]",
+			description : "This gem contains a mote of water elemental energy. Once as an action, I can break this gem to summon a water elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
+			descriptionFull : "This gem contains a mote of elemental energy. When you use an action to break the gem, a water elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
+			spellcastingBonus : {
+				name : "Water Elemental only",
+				spells : ["conjure elemental"],
+				selection : ["conjure elemental"]
+			},
+			spellChanges : {
+				"conjure elemental" : {
+					time : "1 a",
+					description : "CR 5 water elemental that obeys my verbal commands; on broken conc. elemental breaks free",
+					changes : "Using the Emerald Elemental Gem, the spell only takes 1 action instead of 1 minute to cast, but can only bring forth a water elemental."
+				}
+			}
+		},
+		"red corundum (fire)" : {
+			name : "Elemental Gem [Red Corundum]",
+			description : "This gem contains a mote of fire elemental energy. Once as an action, I can break this gem to summon a fire elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
+			descriptionFull : "This gem contains a mote of elemental energy. When you use an action to break the gem, a fire elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
+			spellcastingBonus : {
+				name : "Fire Elemental only",
+				spells : ["conjure elemental"],
+				selection : ["conjure elemental"]
+			},
+			spellChanges : {
+				"conjure elemental" : {
+					time : "1 a",
+					description : "CR 5 fire elemental that obeys my verbal commands; on broken conc. elemental breaks free",
+					changes : "Using the Red Corundum Elemental Gem, the spell only takes 1 action instead of 1 minute to cast, but can only bring forth a fire elemental."
+				}
+			}
+		},
+		"yellow diamond (earth)" : {
+			name : "Elemental Gem [Yellow Diamond]",
+			description : "This gem contains a mote of earth elemental energy. Once as an action, I can break this gem to summon an earth elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
+			descriptionFull : "This gem contains a mote of elemental energy. When you use an action to break the gem, an earth elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
+			spellcastingBonus : {
+				name : "Air Elemental only",
+				spells : ["conjure elemental"],
+				selection : ["conjure elemental"]
+			},
+			spellChanges : {
+				"conjure elemental" : {
+					time : "1 a",
+					description : "CR 5 earth elemental that obeys my verbal commands; on broken conc. elemental breaks free",
+					changes : "Using the Yellow Diamond Elemental Gem, the spell only takes 1 action instead of 1 minute to cast, but can only bring forth an earth elemental."
+				}
+			}
+		}
+	},
 	"flame tongue" : {
 		name : "Flame Tongue",
 		source : [["SRD", 223], ["D", 170]],
@@ -1027,6 +1118,38 @@ var Base_MagicItemsList = {
 		},
 		action : [["bonus action", ""]]
 	},
+	"gloves of missile snaring" : {
+		name : "Gloves of Missile Snaring",
+		source : [["SRD", 224], ["D", 172]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		calculate : 'event.value = "As a reaction when a ranged weapon attack hits me while I\'m wearing these gloves, I can reduce the damage by 1d10 + " + Number(What("Dex Mod")) + " (my Dexterity modifier). This only works if I have a free hand. If I reduce the damage to 0, I can catch the missile if it is small enough for me to hold in that hand.";',
+		description : "",
+		descriptionFull : "These gloves seem to almost meld into your hands when you don them. When a ranged weapon attack hits you while you're wearing them, you can use your reaction to reduce the damage by 1d10 + your Dexterity modifier, provided that you have a free hand. If you reduce the damage to 0, you can catch the missile if it is small enough for you to hold in that hand.",
+		attunement : true,
+		action : [["reaction", ""]]
+	},
+	"gloves of swimming and climbing" : { // contributed by AelarTheElfRogue
+		name : "Gloves of Swimming and Climbing",
+		source : [["SRD", 224], ["D", 172]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While wearing these gloves, climbing and swimming don't cost me extra movement, and I gain a +5 bonus to Strength (Athletics) checks made to climb or swim.",
+		descriptionFull : "While wearing these gloves, climbing and swimming don't cost you extra movement, and you gain a +5 bonus to Strength (Athletics) checks made to climb or swim.",
+		attunement : true
+	},
+	"goggles of night" : { // contributed by AelarTheElfRogue
+		name : "Goggles of Night",
+		source : [["SRD", 224], ["D", 172]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "While wearing these dark lenses, I have darkvision out to a range of 60 feet. If I already have darkvision. wearing the goggles increases its range by 60 feet.",
+		descriptionFull : "While wearing these dark lenses, you have darkvision out to a range of 60 feet. If you already have darkvision. wearing the goggles increases its range by 60 feet.",
+		vision : [["Darkvision", "fixed60"], ["Darkvision", "+60"]]
+	},
 	"headband of intellect" : {
 		name : "Headband of Intellect",
 		source : [["SRD", 225], ["D", 173]],
@@ -1090,6 +1213,159 @@ var Base_MagicItemsList = {
 		"paladin level 17+ (30-ft aura)" : {
 			name : "Holy\u200A\u200A Avenger",
 			description : "I have a +3 bonus to attack and damage rolls made with this magic sword. It does +2d10 radiant damage against fiends and undead. While holding the drawn sword, I have a 30-ft radius aura that grants me and my allies advantage on saving throws against spells and magical effects."
+		}
+	},
+	"immovable rod" : {
+		name : "Immovable Rod",
+		source : [["SRD", 226], ["D", 175]],
+		type : "rod",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "This flat iron rod has a button on one end. I can use an action to press the button, magically fixing the rod in place or making it movable again. Once fixed, it holds up to 8000 lb. More weight causes it to deactivate and fall. A creature can use an action to try and move the rod up to 10 ft with a DC 30 Strength check.",
+		descriptionFull : "This flat iron rod has a button on one end. You can use an action to press the button, which causes the rod to become magically fixed in place. Until you or another creature uses an action to push the button again, the rod doesn't move, even if it is defying gravity. The rod can hold up to 8,000 pounds of weight. More weight causes the rod to deactivate and fall. A creature can use an action to make a DC 30 Strength check, moving the fixed rod up to 10 feet on a success",
+		weight : 2,
+		action : [["action", " (activate/deactivate)"]]
+	},
+	"ioun stone" : {
+		name : "Ioun Stone",
+		source : [["SRD", 227], ["D", 176]],
+		type : "wondrous item",
+		attunement : true,
+		description : "As an action, I can make an ioun stone orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. Different stones grant different benefits.",
+		descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.",
+		allowDuplicates : true,
+		action : [["action", " (orbit/retrieve)"]],
+		choices : ["Absorption", "Agility", "Awareness", "Fortitude", "Greater Absorption", "Insight", "Intellect", "Leadership", "Mastery", "Protection", "Regeneration", "Reserve", "Strength", "Sustenance"],
+		"absorption" : {
+			rarity : "very rare",
+			magicItemTable : "H",
+			description : "As an action, I can make this pale lavender ellipsoid orbit my head at 1d3 ft or retrieve it. While it orbits my head, I can use my reaction to cancel a spell of 4th level or lower targeting only me, if I can see the caster and the stone has enough charges left. It can cancel 20 levels of spells before it loses its magic.",
+			descriptionLong : "As an action, I can make this pale lavender ellipsoid orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I can use my reaction to cancel a spell of 4th level or lower targeting only me, if I can see the caster and the stone has enough charges left. It can cancel 20 levels of spells before it loses its magic.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   While this pale lavender ellipsoid orbits your head, you can use your reaction to cancel a spell of 4th level or lower cast by a creature you can see and targeting only you.\n   Once the stone has canceled 20 levels of spells, it burns out and turns dull gray, losing its magic. If you are targeted by a spell whose level is higher than the number of spell levels the stone has left, the stone can't cancel it.",
+			limfeaname : "Ioun Stone of Absorption",
+			usages : 20,
+			recovery : "Never",
+			action : [["reaction", ""]]
+		},
+		"agility" : {
+			rarity : "very rare",
+			magicItemTable : "H",
+			description : "As an action, I can make this deep red sphere orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Dexterity score increases by 2, to a maximum of 20.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Dexterity score increases by 2, to a maximum of 20, while this deep red sphere orbits your head.",
+			scores : [0, 2, 0, 0, 0, 0]
+		},
+		"awareness" : {
+			rarity : "rare",
+			magicItemTable : "G",
+			description : "As an action, I can make this dark blue rhomboid orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I can't be surprised.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You can't be surprised while this dark blue rhomboid orbits your head."
+		},
+		"fortitude" : {
+			rarity : "very rare",
+			magicItemTable : "H",
+			description : "As an action, I can make this pink rhomboid orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Constitution score increases by 2, to a maximum of 20.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Constitution score increases by 2, to a maximum of 20, while this pink rhomboid orbits your head.",
+			scores : [0, 0, 2, 0, 0, 0]
+		},
+		"greater absorption" : {
+			rarity : "legendary",
+			magicItemTable : "I",
+			description : "As an action, I can make this marbled lavender and green ellipsoid orbit my head at 1d3 ft or retrieve it. While it orbits my head, I can use a reaction to cancel a spell of 8th level or lower targeting only me, if I can see the caster and enough charges are left. It can cancel 50 levels of spells before it loses its magic.",
+			descriptionLong : "As an action, I can make this marbled lavender and green ellipsoid orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I can use my reaction to cancel a spell of 8th level or lower targeting only me, if I can see the caster and the stone has enough charges left. It can cancel 50 levels of spells before it loses its magic.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   While this marbled lavender and green ellipsoid orbits your head, you can use your reaction to cancel a spell of 8th level or lower cast by a creature you can see and targeting only you. Once the stone has canceled 50 levels of spells, it burns out and turns dull gray, losing its magic. If you are targeted by a spell whose level is higher than the number of spell levels the stone has left, the stone can't cancel it.",
+			limfeaname : "Ioun Stone of Greater Absorption",
+			usages : 50,
+			recovery : "Never",
+			action : [["reaction", ""]]
+		},
+		"insight" : {
+			rarity : "very rare",
+			magicItemTable : "H",
+			description : "As an action, I can make this incandescent blue sphere orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Wisdom score increases by 2, to a maximum of 20.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Wisdom score increases by 2, to a maximum of 20, while this incandescent blue sphere orbits your head.",
+			scores : [0, 0, 0, 0, 2, 0]
+		},
+		"intellect" : {
+			rarity : "very rare",
+			magicItemTable : "H",
+			description : "As an action, I can make this marbled scarlet and blue sphere orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Intelligence score increases by 2, to a maximum of 20.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Intelligence score increases by 2, to a maximum of 20, while this marbled scarlet and blue sphere orbits your head.",
+			scores : [0, 0, 0, 2, 0, 0]
+		},
+		"leadership" : {
+			rarity : "very rare",
+			magicItemTable : "H",
+			description : "As an action, I can make this marbled pink and green sphere orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Charisma score increases by 2, to a maximum of 20.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Charisma score increases by 2, to a maximum of 20, while this marbled pink and green sphere orbits your head.",
+			scores : [0, 0, 0, 0, 0, 2]
+		},
+		"mastery" : {
+			rarity : "legendary",
+			magicItemTable : "I",
+			description : "As an action, I can make this pale green prism orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my proficiency bonus increases by 1.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your proficiency bonus increases by 1 while this pale green prism orbits your head.",
+			addMod : [{ type: "", field : "Proficiency Bonus Modifier", mod : 1, text : "My proficiency bonus increases by 1." }]
+		},
+		"protection" : {
+			rarity : "rare",
+			magicItemTable : "G",
+			description : "As an action, I can make this dusty rose prism orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I have a +1 bonus to AC.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You gain a +1 bonus to AC while this dusty rose prism orbits your head.",
+			extraAC : [{name : "Ioun Stone of Protection", mod : 1, magic : true, text : "I gain a +1 bonus to AC while attuned."}]
+		},
+		"regeneration" : {
+			rarity : "legendary",
+			magicItemTable : "I",
+			description : "As an action, I can make this pearly white spindle orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I regain 15 HP at the end of each hour as long as I have at least 1 HP.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You regain 15 hit points at the end of each hour this pearly white spindle orbits your head, provided that you have at least 1 hit point."
+		},
+		"reserve" : {
+			rarity : "rare",
+			magicItemTable : "G",
+			description : "As an action, I can make this vibrant purple prism orbit my head at 1d3 ft or retrieve it. It can store 3 (spell slot) levels worth of spells. By touching it, one can cast a 1-3 level spell into it. While it orbits my head, I can cast any spell stored in it as if casting it myself, but using the original casters spellcasting ability.",
+			descriptionLong : "As an action, I can make this vibrant purple prism orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. It can store 3 (spell slot) levels worth of spells. By touching it, one can cast a 1-3 level spell into it. While it orbits my head, I can cast any spell stored in it as if casting it myself, but using the original casters spellcasting ability.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   This vibrant purple prism stores spells cast into it, holding them until you use them. The stone can store up to 3 levels worth of spells at a time. When found, it contains 1d4-1 levels of stored spells chosen by the DM.\n   Any creature can cast a spell of 1st through 3rd level into the stone by touching it as the spell is cast. The spell has no effect, other than to be stored in the stone. If the stone can't hold the spell, the spell is expended without effect. The level of the slot used to cast the spell determines how much space it uses.\n   While this stone orbits your head, you can cast any spell stored in it. The spell uses the slot level, spell save DC, spell attack bonus, and spellcasting ability of the original caster, but is otherwise treated as if you cast the spell. The spell cast from the stone is no longer stored in it, freeing up space."
+		},
+		"strength" : {
+			rarity : "very rare",
+			magicItemTable : "H",
+			description : "As an action, I can make this pale blue rhomboid orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Strength score increases by 2, to a maximum of 20.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Strength score increases by 2, to a maximum of 20, while this pale blue rhomboid orbits your head.",
+			scores : [2, 0, 0, 0, 0, 0]
+		},
+		"sustenance" : {
+			rarity : "rare",
+			magicItemTable : "G",
+			description : "As an action, I can make this clear spindle orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I don't need to eat or drink.",
+			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You don't need to eat or drink while this clear spindle orbits your head."
+		}
+	},
+	"iron bands of bilarro" : { // with contributions by AelarTheElfRogue
+		name : "Iron Bands of Bilarro",
+		nameAlt : "Iron Bands of Binding",
+		source : [["SRD", 228], ["D", 177]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "Once per dawn, as an action, I can speak the command word and make a ranged attack (Dex + Prof). If hit, the target is restrained until I use a bonus action to speak the command word again. Once per 24 hours, the target can make a DC 20 Strength check as an action to free itself and destroy the bands.",
+		descriptionLong : "Once per dawn, as an action, I can throw this rusty iron sphere and speak its command word. I make a ranged attack roll with an attack bonus equal to my Dexterity modifier plus Proficiency Bonus. On a hit, the target is restrained until I take a bonus action to speak the command word again to release it. Doing so, or missing with the attack, causes the bands to contract and become a sphere once more. The target can make a DC 20 Strength check as an action, freeing itself and destroying the bands on a success. If the check fails, any further attempts made by that creature automatically fail until 24 hours have elapsed.",
+		descriptionFull : "This rusty iron sphere measures 3 inches in diameter and weighs 1 pound. You can use an action to speak the command word and throw the sphere at a Huge or smaller creature you can see within 60 feet of you. As the sphere moves through the air, it opens into a tangle of metal bands.\n   Make a ranged attack roll with an attack bonus equal to your Dexterity modifier plus your proficiency bonus. On a hit, the target is restrained until you take a bonus action to speak the command word again to release it. Doing so, or missing with the attack, causes the bands to contract and become a sphere once more.\n   A creature, including the one restrained, can use an action to make a DC 20 Strength check to break the iron bands. On a success, the item is destroyed, and the restrained creature is freed. If the check fails, any further attempts made by that creature automatically fail until 24 hours have elapsed.\n   Once the bands are used, they can't be used again until the next dawn.",
+		weight : 1,
+		usages : 1,
+		recovery : "dawn",
+		action : [["action", " (throw)"], ["bonus action", " (release)"]],
+		weaponsAdd : ["Iron Bands of Bilarro"],
+		weaponOptions : {
+			regExpSearch : /^(?=.*iron)(?=.*band)(?=.*(bilarro|binding)).*$/i,
+			name : "Iron Bands of Bilarro",
+			source : [["SRD", 228], ["D", 177]],
+			ability : 2,
+			type : "Natural",
+			damage : ["\u2015", "", "Restrained"],
+			range : "60 ft",
+			description : "Restrains Huge or smaller creature; DC 20 Strength check to break out",
+			abilitytodamage : false,
+			weight : 1
 		}
 	},
 	"luck blade" : {
@@ -1178,6 +1454,94 @@ var Base_MagicItemsList = {
 				}, ''
 			]
 		}
+	},
+	"oil of etherealness" : { // with contributions by AelarTheElfRogue
+		name : "Oil of Etherealness",
+		source : [["SRD", 231], ["D", 183]],
+		type : "potion",
+		rarity : "rare",
+		magicItemTable : "C",
+		description : "This cloudy gray oil can be used once to cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected target then gains the effect of the Etherealness spell for 1 hour.",
+		descriptionLong : "This cloudy gray oil can be used once cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of the Etherealness spell for 1 hour. It step into the border regions of the Ethereal Plane, in the area where it overlaps with my current plane, remaining there until it uses an action to dismiss the spell. I can still see the plane I came from, but can move anywhere, up, down, and even through solid objects and creatures.",
+		descriptionFull : "Beads of this cloudy gray oil form on the outside of its container and quickly evaporate. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of the Etherealness spell for 1 hour.",
+		weight : 0.5
+	},
+	"oil of sharpness" : { // contributed by AelarTheElfRogue
+		name : "Oil of Sharpness",
+		source : [["SRD", 232], ["D", 184]],
+		type : "potion",
+		rarity : "very rare",
+		magicItemTable : "D",
+		description : "This clear, gelatinous oil sparkles with tiny, ultrathin silver shards. It can be used once to coat one slashing or piercing weapon or up to 5 pieces of slashing or piercing ammunition. Applying the oil takes 1 minute. For 1 hour, the coated item is magical and has a +3 bonus to attack and damage rolls.",
+		descriptionFull : "This clear, gelatinous oil sparkles with tiny, ultrathin silver shards. The oil can coat one slashing or piercing weapon or up to 5 pieces of slashing or piercing ammunition. Applying the oil takes 1 minute. For 1 hour, the coated item is magical and has a +3 bonus to attack and damage rolls.",
+		weight : 0.5
+	},
+	"oil of slipperiness" : { // with contributions by AelarTheElfRogue
+		name : "Oil of Slipperiness",
+		source : [["SRD", 232], ["D", 184]],
+		type : "potion",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "This sticky black unguent can be used once to cover a Medium or smaller creature and its equipment, granting it the effects of  Freedom of Movement for 8 hours. Applying it takes 10 minutes. Alternatively, it can be poured out as an action, duplicating the effects of the Grease spell in a 10-ft square for 8 hours.",
+		descriptionLong : "This sticky black unguent can be used once to cover a Medium or smaller creature and its equipment, granting it the effects of Freedom of Movement for 8 hours. Applying it takes 10 minutes. The creature's movement is unaffected by difficult terrain, being underwater, and spells and other magical effects can't reduce it's speed or cause it to be paralyzed or restrained. Alternatively, it can be poured out as an action, duplicating the effects of the Grease spell in a 10-ft square for 8 hours. The area is difficult terrain and any in it when it appears, entering it, or ending their turn in it must make a DC 10 Dex save or fall prone.",
+		descriptionFull : "This sticky black unguent is thick and heavy in the container, but it flows quickly when poured. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of a Freedom of Movement spell for 8 hours.\n   Alternatively, the oil can be poured on the ground as an action, where it covers a 10-foot square, duplicating the effect of the Grease spell in that area for 8 hours.",
+		weight : 0.5
+	},
+	"pearl of power" : { // with contributions by AelarTheElfRogue
+		name : "Pearl of Power",
+		source : [["SRD", 232], ["D", 184]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While this pearl is on my person, I can use an action to speak its command word and regain one expended spell slot. If the expended slot was of 4th level or higher, the new slot is 3rd level. Once I have used the pearl, it can't be used again until the next dawn.",
+		descriptionFull : "While this pearl is on your person, you can use an action to speak its command word and regain one expended spell slot. If the expended slot was of 4th level or higher, the new slot is 3rd level. Once you have used the pearl, it can't be used again until the next dawn.",
+		attunement : true,
+		usages : 1,
+		recovery : "dawn",
+		action : [["action", ""]]
+	},
+	"periapt of health" : { // contributed by AelarTheElfRogue
+		name : "Periapt of Health",
+		source : [["SRD", 232], ["D", 184]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "C",
+		description : "I am immune to contracting any disease while I wear this pendant. If I am already infected with a disease, the effects of the disease are suppressed while I wear the pendant.",
+		descriptionFull : "You are immune to contracting any disease while you wear this pendant. If you are already infected with a disease, the effects of the disease are suppressed you while you wear the pendant.",
+		weight : 1,
+		savetxt : { immune : ["disease"] }
+	},
+	"periapt of proof against poison" : { // contributed by AelarTheElfRogue
+		name : "Periapt of Proof Against Poison",
+		source : [["SRD", 232], ["D", 184]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This delicate silver chain has a brilliant-cut black gem pendant. While I wear it, poisons have no effect on me. I am immune to the poisoned condition and have immunity to poison damage.",
+		descriptionFull : "This delicate silver chain has a brilliant-cut black gem pendant. While you wear it, poisons have no effect on you. You are immune to the poisoned condition and have immunity to poison damage.",
+		weight : 1,
+		savetxt : { immune : ["poison"] }
+	},
+	"periapt of wound closure" : { // contributed by AelarTheElfRogue
+		name : "Periapt of Wound Closure",
+		source : [["SRD", 232], ["D", 184]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While I wear this pendant, I stabilize whenever I am dying at the start of my turn. In addition, whenever I roll a Hit Die to regain hit points, I double the number of hit points it restores.",
+		descriptionFull : "While you wear this pendant, you stabilize whenever you are dying at the start of your turn. In addition, whenever you roll a Hit Die to regain hit points, double the number of hit points it restores.",
+		attunement : true,
+		weight : 1
+	},
+	"philter of love" : {
+		name : "Philter of Love",
+		source : [["SRD", 232], ["D", 184]],
+		type : "potion",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "Once as an action, I can drink this rose-hued liquid or administer it to another. The consumer is charmed for 1 hour by the first creature it sees within 10 minutes of drinking it. If that creature is of a species and gender the consumer is normally attracted to, it regards the creature as its true love while it is charmed.",
+		descriptionFull : "The next time you see a creature within 10 minutes after drinking this philter, you become charmed by that creature for 1 hour. If the creature is of a species and gender you are normally attracted to, you regard it as your true love while you are charmed. This potion's rose-hued, effervescent liquid contains one easy-to-miss bubble shaped like a heart.",
+		weight : 0.5
 	},
 	"potion of speed" : {
 		name : "Potion of Speed",
@@ -1401,7 +1765,7 @@ var Base_MagicItemsList = {
 			"conjure elemental" : {
 				time : "1 a",
 				description : "CR 5 earth elemental that obeys my verbal commands; on broken conc. elemental breaks free",
-				changes : "Using the Stone of Controlling Earth Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth an earth elemental."
+				changes : "Using the Stone of Controlling Earth Elementals, the spell only takes 1 action instead of 1 minute to cast, but can only bring forth an earth elemental."
 			}
 		}
 	},

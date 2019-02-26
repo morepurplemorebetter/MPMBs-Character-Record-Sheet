@@ -89,7 +89,7 @@ function resetCompTypes(prefix) {
 	RemoveString(prefix + "Cnote.Left", compString[theType].string);
 	RemoveString(prefix + "Comp.Use.Features", compString[theType].featurestring);
 	for (var i = 0; i < compString[theType].actions.length; i++) {
-		RemoveAction(compString[theType].actions[i][0], compString[theType].actions[i][1]);
+		RemoveAction(compString[theType].actions[i][0], compString[theType].actions[i][1], compString[theType].actionTooltip);
 	}
 
 	if (theType === "mount" || theType === "mechanicalserv") {
@@ -2006,108 +2006,142 @@ function ApplyDCColorScheme(colour, DC) {
 	}
 }
 
-//Make menu for the button on each Action line and parse it to Menus.actions
-function MakeActionMenu() {
+// Make menu for the button on each Action line and parse it to Menus.actions
+function MakeActionMenu_ActionOptions(MenuSelection, FldNm, itemNmbr) {
 	var actionMenu = [];
-	var itemNmbr = parseFloat(event.target.name.slice(-2));
-	var type = event.target.name.match(/bonus action|reaction|action/i)[0].toLowerCase();
+	if (!itemNmbr) itemNmbr = parseFloat(event.target.name.slice(-2));
+	if (!FldNm) FldNm = event.target.name.match(/bonus action|reaction|action/i)[0];
+	var type = FldNm.toLowerCase();
+	FldNm = FldNm + " ";
 	var maxNmbr = type === "action" ? FieldNumbers.trueactions : FieldNumbers.actions;
-	var theField = What(type.capitalize() + " " + itemNmbr);
+	var theField = What(FldNm + itemNmbr);
+	var noUp = itemNmbr === 1;
+	var noDown = itemNmbr === maxNmbr;
 
-	var menuLVL1 = function (item, array) {
-		for (var i = 0; i < array.length; i++) {
-			var enabled = true;
-			if ((array[i] === "Move up" && itemNmbr === 1) || (array[i] === "Move down" && itemNmbr === maxNmbr) || (array[i] === "Insert empty " + type && (!theField || itemNmbr === maxNmbr))) {
-				enabled = false;
+	if (!MenuSelection || MenuSelection === "justMenu") {
+		// a function to add the other items
+		var menuLVL1 = function (array) {
+			for (i = 0; i < array.length; i++) {
+				actionMenu.push({
+					cName : array[i][0],
+					cReturn : "action#" + array[i][1],
+					bEnabled : array[i][2] !== undefined ? array[i][2] : true
+				});
 			}
-			var extraName = "";
-			if (array[i] === "Move down" && itemNmbr === (maxNmbr - 6)) {
-				extraName = " (to overflow page)";
-			} else if (array[i] === "Move up" && itemNmbr === (maxNmbr - 5)) {
-				extraName = " (to first page)";
-			}
-			item.push({
-				cName : array[i] + extraName,
-				cReturn : array[i],
-				bEnabled : enabled
-			});
+		};
+
+		var menuArray = [
+			["Move up" + (itemNmbr === (maxNmbr - 5) ? " (to first page)" : ""), "up", !noUp],
+			["Move down" + (itemNmbr === (maxNmbr - 6) ? " (to overflow page)" : ""), "down", !noDown],
+			["-", "-"],
+			["Insert empty " + type, "insert", noDown || !theField ? false : true],
+			["Delete item", "delete"],
+			["Clear item", "clear"]
+		];
+		if (type === "action" && (!typePF || itemNmbr > (maxNmbr - 6))) {
+			menuArray = menuArray.concat([
+				["-", "-"],
+				["Swap with opposing field", "opposite"]
+			]);
 		}
-	};
-	var menuArray = ["Move up", "Move down", "-", "Insert empty " + type, "Delete " + type, "Clear " + type];
-	if (type === "action" && (!typePF || itemNmbr > (maxNmbr - 6))) menuArray = menuArray.concat(["-", "Move to opposing field"]);
-	menuLVL1(actionMenu, menuArray);
-
-	Menus.actions = actionMenu;
-};
-
-//call the Action menu and do something with the results
-function ActionOptions() {
-	var MenuSelection = getMenu("actions");
-	if (!MenuSelection || MenuSelection[0] == "nothing") return;
+		menuLVL1(menuArray);
+		Menus.actions = actionMenu;
+		if (MenuSelection == "justMenu") return;
+	}
+	var MenuSelection = MenuSelection ? MenuSelection : getMenu("actions");
+	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "action") return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying action menu option...");
 	calcStop();
 
-	var itemNmbr = parseFloat(event.target.name.slice(-2));
-	var type = event.target.name.match(/bonus action|reaction|action/i)[0].toLowerCase();
-	var maxNmbr = type === "action" ? FieldNumbers.trueactions : FieldNumbers.actions;
-	if (itemNmbr <= (maxNmbr - 6)) {
-		var OppNmbr = itemNmbr > ((maxNmbr - 6) / 2) ? -1 * ((maxNmbr - 6) / 2) : ((maxNmbr - 6) / 2);
-	} else if (itemNmbr > (maxNmbr - 6)) {
-		var OppNmbr = itemNmbr > (maxNmbr - 3) ? -3 : 3;
-	};
-	var FldNm = type.capitalize() + " ";
-
-	var Flds = {
-		it : FldNm + itemNmbr,
-		up : itemNmbr !== 1 ? FldNm + (itemNmbr - 1) : false,
-		down : itemNmbr !== maxNmbr ? FldNm + (itemNmbr + 1) : false,
-		opp : type === "action" ? FldNm + (itemNmbr + OppNmbr) : false
-	};
-	var entries = {
-		Value : "What",
-		Tooltip : "Who",
-		Submit : "How"
-	};
-	for (var key in Flds) {
-		var aFld = Flds[key];
-		if (!aFld) continue;
-		for (var e in entries) {
-			Flds[key + e] = tDoc[entries[e]](aFld);
-		};
-	};
-	switch (MenuSelection[0]) {
-		case "move up":
-			thermoTxt = thermoM("Moving the " + type + " up...", false); //change the progress dialog text
-			Value(Flds.it, Flds.upValue, Flds.upTooltip, Flds.upSubmit);
-			Value(Flds.up, Flds.itValue, Flds.itTooltip, Flds.itSubmit);
+	switch (MenuSelection[1]) {
+		case "up" :
+			if (noUp) return;
+		case "down" :
+			if (MenuSelection[1] == "down" && noDown) return;
+		case "opposite":
+			thermoTxt = thermoM("Moving the " + type + " " + MenuSelection[1] + "...", false);
+			// Get the other fields
+			var otherNmbr = MenuSelection[1] == "down" ? itemNmbr + 1 : MenuSelection[1] == "up" ? itemNmbr - 1 :
+				// swap with opposite, first see if on overflow page and which side
+				itemNmbr > maxNmbr - 3 ? itemNmbr - 3 : itemNmbr > maxNmbr - 6 && itemNmbr < maxNmbr - 3 ? itemNmbr + 3 :
+				// swap with opposite on 1st page, see which side
+				itemNmbr > (maxNmbr - 6) / 2 ? itemNmbr - ((maxNmbr - 6) / 2) : itemNmbr - ((maxNmbr + 6) / 2);
+			// Now swap the fields
+			copyField(FldNm + itemNmbr, FldNm + otherNmbr, { noCalc : true }, true);
 			break;
-		case "move down":
-			thermoTxt = thermoM("Moving the " + type + " down...", false); //change the progress dialog text
-			Value(Flds.it, Flds.downValue, Flds.downTooltip, Flds.downSubmit);
-			Value(Flds.down, Flds.itValue, Flds.itTooltip, Flds.itSubmit);
-			break;
-		case "move to opposing field":
-			thermoTxt = thermoM("Moving the " + type + " to opposite field...", false); //change the progress dialog text
-			Value(Flds.it, Flds.oppValue, Flds.oppTooltip, Flds.oppSubmit);
-			Value(Flds.opp, Flds.itValue, Flds.itTooltip, Flds.itSubmit);
-		break;
-		case "insert empty " + type:
-			thermoTxt = thermoM("Inserting empty " + type + "...", false); //change the progress dialog text
+		case "insert" :
 			ActionInsert(type, itemNmbr);
 			break;
-		case "delete " + type:
-			thermoTxt = thermoM("Deleting " + type + "...", false); //change the progress dialog text
+		case "delete" :
 			ActionDelete(type, itemNmbr);
 			break;
-		case "clear " + type:
-			thermoTxt = thermoM("Clearing " + type + "...", false); //change the progress dialog text
-			Value(Flds.it, "", "");
+		case "clear" :
+			Value(FldNm + itemNmbr, "", "", "");
 			break;
 	}
 	thermoM(thermoTxt, true); // Stop progress bar
 }
+
+function AddAction(actiontype, action, actiontooltip, replaceThis, replaceMatch) {
+	var field = (/bonus/i).test(actiontype) ? "Bonus Action " : (/reaction/i).test(actiontype) ? "Reaction " : "Action ";
+	var numberOfFields = field === "Action " ? FieldNumbers.trueactions : FieldNumbers.actions;
+	// first loop through all to see if it isn't already known
+	// also check if there is a match if we are trying to replace something
+	var doReplace = false;
+	for (var i = 1; i <= numberOfFields; i++) {
+		var setVal = How(field + i).split("#!#");
+		if (replaceThis && (setVal[0] == replaceThis || (replaceMatch && What(field + i).toLowerCase().indexOf(replaceThis.toLowerCase()) !== -1))) doReplace = i;
+		if (setVal[0] == action) {
+			if (actiontooltip) { // add the extra source
+				var tooltips = setVal.slice(1);
+				if (tooltips.indexOf(actiontooltip) == -1) {
+					tooltips = tooltips.concat([actiontooltip]);
+					AddTooltip(
+						field + i,
+						formatMultiList('The "' + action + '" ' + field.toLowerCase() + "was gained from:", tooltips),
+						setVal.concat([actiontooltip]).join("#!#")
+					);
+				}
+			}
+			return;
+		}
+	}
+	// set the new action to its field
+	for (var i = 1; i <= numberOfFields; i++) {
+		var actFld = tDoc.getField(field + i);
+		if ((doReplace && doReplace === i) || (!doReplace && actFld.value === "")) {
+			actFld.value = action;
+			actFld.userName = actiontooltip ? formatMultiList('The "' + action + '" ' + field.toLowerCase() + "was gained from:", actiontooltip) : "";
+			actFld.submitName = actiontooltip ? [action, actiontooltip].join("#!#") : action;
+			return;
+		}
+	}
+};
+
+function RemoveAction(actiontype, action, actiontooltip) {
+	var field = (/bonus/i).test(actiontype) ? "Bonus Action " : (/reaction/i).test(actiontype) ? "Reaction " : "Action ";
+	var numberOfFields = field === "Action " ? FieldNumbers.trueactions : FieldNumbers.actions;
+	for (var i = 1; i <= numberOfFields; i++) {
+		var actFldVal = What(field + i);
+		var setVal = How(field + i).split("#!#");
+		if ((typeof action == "object" && (action).test(actFldVal)) || (typeof action == "string" && setVal[0] == action)) {
+			if (setVal.length < 3 || !actiontooltip) {
+				ActionDelete(clean(field).toLowerCase(), i);
+			} else if (actiontooltip) {
+				var tooltips = setVal.slice(1);
+				tooltips.splice(tooltips.indexOf(actiontooltip), 1);
+				AddTooltip(
+					field + i,
+					formatMultiList('The "' + setVal[0] + '" ' + field.toLowerCase() + "was gained from:", tooltips),
+					[setVal[0]].concat(tooltips).join("#!#")
+				);
+			}
+			return;
+		};
+	};
+};
 
 //insert a Action at the position wanted
 function ActionInsert(type, itemNmbr) {
@@ -2115,13 +2149,11 @@ function ActionInsert(type, itemNmbr) {
 	var FldNm = type.capitalize() + " ";
 	var Field = FldNm + itemNmbr;
 
-	// var FieldNames = [type.capitalize() + " "];
-
 	//stop the function if the selected slot is already empty
 	if (What(Field) === "" || itemNmbr === maxNmbr) return;
 
 	//look for the first empty slot below the slot
-	var endslot = "";
+	var endslot = false;
 	for (var i = itemNmbr + 1; i <= maxNmbr; i++) {
 		if (What(FldNm + i) === "") {
 			endslot = i;
@@ -2129,37 +2161,48 @@ function ActionInsert(type, itemNmbr) {
 		};
 	};
 
-	//only continu if an empty slot was found in the fields
-	if (endslot) {
-		//cycle to the slots starting with the empty one and add the values of the one above
-		for (var i = endslot; i > itemNmbr; i--) {
-			Value(FldNm + i, What(FldNm + (i - 1)), Who(FldNm + (i - 1)), How(FldNm + (i - 1)));
-		};
+	//only continue if an empty slot was found in the fields
+	if (!endslot) return;
 
-		//empty the selected slot
-		Value(Field, "", "", "");
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Inserting empty " + type + "...");
+	calcStop();
+
+	//cycle to the slots starting with the empty one and add the values of the one above
+	for (var i = endslot; i > itemNmbr; i--) {
+		copyField(FldNm + (i - 1), FldNm + i, { noCalc : true });
 	};
+
+	//empty the selected slot
+	Value(Field, "", "", "");
+
+	thermoM(thermoTxt, true); // Stop progress bar
 };
 
 //delete a Action at the position wanted and move the rest up
 function ActionDelete(type, itemNmbr) {
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Deleting " + type + "...");
+	calcStop();
+
 	var FldNm = type.capitalize() + " ";
 	// var Field = FldNm + itemNmbr;
 	var maxNmbr = type === "action" ? FieldNumbers.trueactions : FieldNumbers.actions;
-	if (!typePF && type === "action" && itemNmbr < ((FieldNumbers.trueactions - 6) / 2)) {
-		var maxNmbr = (FieldNumbers.trueactions - 6) / 2;
+	if (!typePF && type === "action" && itemNmbr < (maxNmbr- 6) / 2) {
+		var maxNmbr = (maxNmbr - 6) / 2;
 	} else {
 		maxNmbr = itemNmbr > (maxNmbr - 6) || What(FldNm + (maxNmbr - 6)) ? maxNmbr : maxNmbr - 6; //stop at the end of the first page if last one on first page is empty
 	};
-	var EndField = FldNm + maxNmbr;
 
 	//move every line up one space, starting with the line below the selected line
 	for (var i = itemNmbr; i < maxNmbr; i++) {
-		Value(FldNm + i, What(FldNm + (i + 1)), Who(FldNm + (i + 1)), How(FldNm + (i + 1)));
+		copyField(FldNm + (i + 1), FldNm + i, { noCalc : true });
 	};
 
 	//delete the contents of the final line
-	Value(EndField, "", "", "");
+	Value(FldNm + maxNmbr, "", "", "");
+
+	thermoM(thermoTxt, true); // Stop progress bar
 };
 
 //Make menu for the button on each Limited Feature line and parse it to Menus.limfea
@@ -3994,7 +4037,7 @@ function AddAttacksPerAction() {
 		var theString = ["Attack (", " attacks per action)"];
 		var regExStr = /\d+.{0,3}attacks/i;
 		if (Number(classes.attacks) < 2) {
-			RemoveAction("action", regExStr);
+			RemoveAction("action", regExStr, "Extra attack class feature");
 		} else {
 			// first see if it isn't anywhere already
 			var actFld = false;
@@ -4012,7 +4055,7 @@ function AddAttacksPerAction() {
 				Value(actFld, theString[0] + classes.attacks + theString[1]);
 			} else if (actFld) {
 				if (What("Action 1") !== "") ActionInsert("action", 1);
-				Value("Action 1", theString[0] + classes.attacks + theString[1]);
+				AddAction("action", theString[0] + classes.attacks + theString[1], "Extra attack class feature");
 			}
 		}
 	} else {
@@ -6283,11 +6326,11 @@ function processActions(AddRemove, srcNm, itemArr, itemNm) {
 		var theAct = isArray(itemArr[i]) ? itemArr[i] : [itemArr[i], ""];
 		var actNm = theAct[1] && !(/^( |-|,|\(|\[|\{|'|"|\/)/).test(theAct[1]) ? theAct[1] : itemNm + theAct[1];
 		if (AddRemove) {
-			AddAction(theAct[0], actNm, [srcNm], theAct[2] ? theAct[2] : false);
+			AddAction(theAct[0], actNm, srcNm, theAct[2] ? theAct[2] : false);
 		} else if (theAct[2]) {
-			AddAction(theAct[0], theAct[2], [srcNm], actNm, true);
+			AddAction(theAct[0], theAct[2], srcNm, actNm);
 		} else {
-			RemoveAction(theAct[0], actNm);
+			RemoveAction(theAct[0], actNm, srcNm);
 		}
 	};
 };

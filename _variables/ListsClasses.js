@@ -1708,7 +1708,11 @@ var Base_ClassList = {
 							function (spellKey, spellObj, spName) {
 								if (spName == "book of ancient secrets") {
 									spellObj.firstCol = "(R)";
-									if (!(/(\d+ ?h\b|conc|special|see b)/i).test(spellObj.time)) spellObj.time = "10 min";
+									if (!(/.*(\d+ ?h\b|special|see b).*/i).test(spellObj.time)) {
+										var numMinutes = Number(spellObj.time.replace(/(\d+) ?min.*/, "$1"));
+										if (isNaN(numMinutes)) numMinutes = 0;
+										spellObj.time = (numMinutes + 10) + " min";
+									}
 									return true;
 								};
 							},
