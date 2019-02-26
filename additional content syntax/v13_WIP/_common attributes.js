@@ -425,7 +425,7 @@ ammoOptions : [{ /* AmmoList object, see AmmoList syntax */ }],
 	This will result in having the ammunition only available if the feature is present.
 */
 
-armorOptions : [{ /* ArmourList object, see ArmourList syntax */ }],
+armorOptions : [{ /* ArmourList object, see "armor (ArmourList)" syntax file */ }],
 /*	armorOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the ArmourList variable
