@@ -64,6 +64,8 @@
 	If no entries are present, the final list will contain all possible spells.
 */
 
+"example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
+
 spellcastingList : {
 	extraspells : ["fire bolt", "hold person"],
 	/*	extraspells // OPTIONAL //
@@ -146,4 +148,6 @@ spellcastingList : {
 		If set to 'true', only includes spells that are psionic.
 		If set to 'false', only includes spells that are not psionic.
 	*/
-};
+}
+
+} // you can ignore this, it is just here to make this file valid JavaScript
