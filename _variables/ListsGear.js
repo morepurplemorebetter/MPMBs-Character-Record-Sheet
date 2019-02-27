@@ -864,17 +864,13 @@ var Base_AmmoList = {
 		name : "Arrows",
 		source : [["SRD", 69], ["P", 150]],
 		weight : 0.05,
-		icon : "Arrows",
-		checks : [".Top", ".Base"],
-		display : 20
+		icon : "Arrows"
 	},
 	"bolt" : {
 		name : "Bolts",
 		weight : 0.075,
 		source : [["SRD", 69], ["P", 150]],
 		icon : "Arrows",
-		checks : [".Top", ".Base"],
-		display : 20,
 		invName : "Crossbow bolts"
 	},
 	"bullet" : {
@@ -882,8 +878,6 @@ var Base_AmmoList = {
 		weight : 0.075,
 		source : [["SRD", 69], ["P", 150]],
 		icon : "Bullets",
-		checks : [".Bullet"],
-		display : 50,
 		invName : "Sling bullets",
 		alternatives : [/^(?=.*bullet)(?=.*sling).*$/i]
 	},
@@ -891,50 +885,38 @@ var Base_AmmoList = {
 		name : "Daggers",
 		source : [["SRD", 66], ["P", 149]],
 		weight : 1,
-		icon : "Daggers",
-		checks : [".Top"],
-		display : 10
+		icon : "Daggers"
 	},
 	"dart" : {
 		name : "Darts",
 		source : [["SRD", 66], ["P", 149]],
 		weight : 0.25,
-		icon : "Arrows",
-		checks : [".Top", ".Base"],
-		display : 20
+		icon : "Arrows"
 	},
 	"flask" : {
 		name : "Flasks (1 pint)",
 		source : [["SRD", 69], ["P", 150]],
 		weight : 1,
-		icon : "Flasks",
-		checks : [".Top", ".Base"],
-		display : 20
+		icon : "Flasks"
 	},
 	"handaxe" : {
 		name : "Handaxes",
 		source : [["SRD", 66], ["P", 149]],
 		weight : 2,
 		icon : "Axes",
-		checks : [".Top.Axe", ".Base.Axe"],
-		display : 8,
 		alternatives : ["axe"]
 	},
 	"javelin" : {
 		name : "Javelins",
 		source : [["SRD", 66], ["P", 149]],
 		weight : 2,
-		icon : "Spears",
-		checks : [".Base"],
-		display : 10
+		icon : "Spears"
 	},
 	"light hammer" : {
 		name : "Light Hammers",
 		source : [["SRD", 66], ["P", 149]],
 		weight : 2,
 		icon : "Hammers",
-		checks : [".Top.Axe", ".Base.Axe"],
-		display : 8,
 		alternatives : ["hammer"]
 	},
 	"needle" : {
@@ -942,41 +924,31 @@ var Base_AmmoList = {
 		source : [["SRD", 66], ["P", 149]],
 		weight : 0.02,
 		icon : "Bullets",
-		checks : [".Bullet"],
-		display : 50,
 		invName : "Blowgun needles"
 	},
 	"spear" : {
 		name : "Spears",
 		source : [["SRD", 66], ["P", 149]],
 		weight : 3,
-		icon : "Spears",
-		checks : [".Base"],
-		display : 10
+		icon : "Spears"
 	},
 	"trident" : {
 		name : "Tridents",
 		source : [["SRD", 66], ["P", 149]],
 		weight : 4,
-		icon : "Spears",
-		checks : [".Base"],
-		display : 10
+		icon : "Spears"
 	},
 	"vial" : {
 		name : "Vials (4 ounces)",
 		source : [["SRD", 69], ["P", 150]],
 		weight : 0.25,
-		icon : "Vials",
-		checks : [".Top", ".Base"],
-		display : 20
+		icon : "Vials"
 	},
 	"alchemist fire" : {
 		name : "Alchemist's Fire, flasks",
 		source : [["SRD", 66], ["P", 148]],
 		weight : 1,
 		icon : "Flasks",
-		checks : [".Top", ".Base"],
-		display : 20,
 		invName : "Alchemist's fire, flasks of",
 		alternatives : [/^(?=.*alchemist)(?=.*fire).*$/i]
 	},
@@ -985,8 +957,6 @@ var Base_AmmoList = {
 		source : [["SRD", 66], ["P", 148]],
 		weight : 1,
 		icon : "Vials",
-		checks : [".Top", ".Base"],
-		display : 20,
 		invName : "Acid, vials of",
 		alternatives : [/^(?=.*acid)(?=.*vial).*$/i]
 	},
@@ -995,8 +965,6 @@ var Base_AmmoList = {
 		source : [["SRD", 67], ["P", 151]],
 		weight : 1,
 		icon : "Flasks",
-		checks : [".Top", ".Base"],
-		display : 20,
 		invName : "Holy Water, flasks of",
 		alternatives : [/^(?=.*holy)(?=.*water).*$/i]
 	}

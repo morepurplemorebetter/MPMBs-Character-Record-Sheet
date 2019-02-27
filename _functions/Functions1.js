@@ -6622,6 +6622,7 @@ function ResetAmmo(AmmoLeftRight) {
 function ApplyAmmo(inputtxt, Fld) {
 	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 
+	calcStop();
 	var LeftRight = !event.target || !event.target.name || event.target.name.substring(0, 8) === "AmmoLeft" ? "AmmoLeft" : event.target.name.substring(0, 9) === "AmmoRight" ? "AmmoRight" : "Ammo" + Fld;
 	var theAmmo = ParseAmmo(inputtxt);
 	var parseAsWeapon = theAmmo ? false : ParseWeapon(inputtxt);
@@ -6630,13 +6631,16 @@ function ApplyAmmo(inputtxt, Fld) {
 	if (theAmmo) {
 		var aList = AmmoList[theAmmo];
 		Hide(LeftRight);
+		var ammoIcon = AmmoIcons[aList.icon];
+		if (!ammoIcon) ammoIcon = AmmoIcons.Arrows;
 		Show(LeftRight + ".Icon." + aList.icon);
-		for (var i = 0; i < aList.checks.length; i++) {
-			Show(LeftRight + aList.checks[i]);
+		for (var i = 0; i < ammoIcon.checks.length; i++) {
+			Show(LeftRight + ammoIcon.checks[i]);
 		}
 		var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
-		Value(LeftRight + "Display.Weight", RoundTo(aList.weight * massMod, 0.001, true));
-		Value(LeftRight + "Display.MaxAmount", aList.display);
+		var theWeight = aList.weight ? RoundTo(aList.weight * massMod, 0.001, true) : 0;
+		Value(LeftRight + "Display.Weight", theWeight);
+		Value(LeftRight + "Display.MaxAmount", ammoIcon.display);
 	} else {
 		tDoc.resetForm([LeftRight + "Display.Weight"]);
 		if (!inputtxt) {

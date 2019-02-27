@@ -546,6 +546,41 @@ var Lifestyles = {
 	]
 };
 
+var AmmoIcons = {
+	"Arrows" : {
+		checks : [".Top", ".Base"],
+		display : 20
+	},
+	"Axes" : {
+		checks : [".Top.Axe", ".Base.Axe"],
+		display : 8
+	},
+	"Bullets" : {
+		checks : [".Bullet"],
+		display : 50
+	},
+	"Daggers" : {
+		checks : [".Top"],
+		display : 10
+	},
+	"Flasks" : {
+		checks : [".Top", ".Base"],
+		display : 20
+	},
+	"Hammers" : {
+		checks : [".Top.Axe", ".Base.Axe"],
+		display : 8
+	},
+	"Spears" : {
+		checks : [".Base"],
+		display : 10
+	},
+	"Vials" : {
+		checks : [".Top", ".Base"],
+		display : 20
+	}
+}
+
 //The dialog for setting the pages to print
 var SetPrintPages_Dialog = {
 	//variables to be set by the calling function
