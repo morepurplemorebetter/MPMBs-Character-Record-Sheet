@@ -25,7 +25,7 @@ AddBackgroundVariant( // this is the function you will be calling to add the var
 	
 	{ // don't forget this opening bracket, everything from here on are things that will be used in place of the original (parent) background object
 
-		regExpSearch : /\bwhat\b.*\bi\b.*\bwas\b.*\bdoing\b/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has the consecutive words "what", "i", "was", and "doing" in it, disregarding capitalization or words in between). If this looks to complicated, just write: /what i was doing/i
+		regExpSearch : /\bwhat\b.*\bi\b.*\bwas\b.*\bdoing\b/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has the consecutive words "what", "i", "was", and "doing" in it, disregarding capitalization or words in between). If this looks too complicated, just write: /what i was doing/i
 		
 		name : "What I was Doing", //required; the name of the variant
 		

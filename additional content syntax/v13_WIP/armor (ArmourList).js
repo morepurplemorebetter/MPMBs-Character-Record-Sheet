@@ -105,7 +105,7 @@ ArmourList["purple mail"] = {
 	The example above says something appears on both page 7 of the Elemental Evil Player's Companion and
 	on page 115 of the Sword Coast Adventure Guide.
 
-	If a armour is completely homebrew, or you don't want to make a custom source, just put the following:
+	If an armour is completely homebrew, or you don't want to make a custom source, just put the following:
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
@@ -117,7 +117,7 @@ ArmourList["purple mail"] = {
 	This has to be a match for the name given earlier, or the armour will never by recognized.
 	Now it looks for any entry that has both the words "purple" and "mail" (or "armor") in it,
 	disregarding capitalization or word order.
-	If this looks to complicated, or you want to match only a single word, or a fixed order of words, just write it like this:
+	If this looks too complicated, or you want to match only a single word, or a fixed order of words, just write it like this:
 		regExpSearch : /purple mail/i,
 */
 	ac : 12,
@@ -139,18 +139,29 @@ ArmourList["purple mail"] = {
 	Setting this to and empty string ("") is the same as not including this attribute.
 */
 	list : "magic",
-/*	type // OPTIONAL //
+/*	list // OPTIONAL //
 	TYPE:	string
-	USE:	determines the sorting of the armour in the drop-down
+	USE:	determines the sorting of the armour in the drop-down field
 
 	This attribute can have any value you want.
 	Any armour with the same 'list' attribute will be grouped together.
-	There are two pre-defined lists that exist by default in the sheet: "magic" and "firstlist".
+	There are two pre-defined lists that exist by default in the sheet: 
+		"magic"
+		"firstlist"
+
+	If this attribute is not present, the 'type' attribute will determine the sorting instead.
+
+	If you use any other string than the four options given above,
+	the armour will appear at the end of the drop-down options.
 
 	Setting this to and empty string ("") is the same as not including this attribute.
+
+	>> NOTE WHEN USING armorOptions <<
+	The 'list' attribute is ignored for ArmourList objects used in the 'armorOptions' attribute.
+	Instead, all things added using the 'armorOptions' attribute will always be added at the top of the drop-down field.
 */
 	dex : 3,
-/*	ac // OPTIONAL //
+/*	dex // OPTIONAL //
 	TYPE:	number
 	USE:	the maximum Dexterity modifier that can be added to the AC with this armour
 
@@ -190,6 +201,18 @@ ArmourList["purple mail"] = {
 
 	Setting this to false is the same as not including this attribute.
 */
+	isMagicArmor : true,
+/*	isMagicArmor // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether (true) or not (false) this armour is a magical armour
+
+	This attribute only has an effect for extra AC calculations.
+	Add this if you don't want class features and the like to add AC modifiers that shouldn't work for magical armours.
+
+	Armours added by magic items using the 'armorOptions' attribute will always have this attribute added and set to 'true'.
+
+	Setting this to false is the same as not including this attribute.
+*/
 	weight : 24,
 /*	weight // OPTIONAL //
 	TYPE:	number
@@ -213,7 +236,7 @@ ArmourList["purple mail"] = {
 	TYPE:	string
 	USE:	the name used when adding the armour from the Armor/Defense section to the Equipment section
 
-	If you don't include this attribute, the name of the armour will be used when
+	If you don't include this attribute, the 'name' attribute will be used when
 	the armour is added to the equipment section.
 	Make sure that the name you give here is still a match for the 'regExpSearch' or
 	the armour's weight will not be added in the equipment section.

@@ -26,7 +26,7 @@ AmmoList["distantsting"] = { //Object name; Note the use of only lower case! Als
 	
 	weight : 0.05, //Required; the weight in lb
 	
-	icon : "Arrows", //Required; the icon to use for the ammuntion. Depending on the icon you choose, the display and checks have to be assigned correctly. See below for the different options
+	icon : "Arrows", //Required; the icon to use for the ammunition. Depending on the icon you choose, the display and checks have to be assigned correctly. See below for the different options
 	
 	checks : [".Top", ".Base"], //Required; the type of checkboxes to display
 	

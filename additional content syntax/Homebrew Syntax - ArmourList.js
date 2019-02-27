@@ -19,7 +19,7 @@ RequiredSheetVersion(12.999); // Optional; This is the minimum required version 
 
 ArmourList["protectme"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
 	
-	regExpSearch : /^protect(?=.*me).*$/i, //Required; regular expression of what to look for (i.e. now it looks for any entry that has the word "protect" followed by the word "me" in it, disregarding capitalization). If this looks to complicated, just write: /protectme/i
+	regExpSearch : /^protect(?=.*me).*$/i, //Required; regular expression of what to look for (i.e. now it looks for any entry that has the word "protect" followed by the word "me" in it, disregarding capitalization). If this looks too complicated, just write: /protectme/i
 	
 	name : "ProtectMe", //Required;
 	

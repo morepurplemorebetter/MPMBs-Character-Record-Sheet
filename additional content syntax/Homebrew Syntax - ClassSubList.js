@@ -25,7 +25,7 @@ AddSubClass( // this is the function you will be calling to add the variant
 	
 	{ // don't forget this opening bracket
 
-		regExpSearch : /^(?=.*special)(?=.*me).*$/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has both the words "special" and "me" in it, disregarding capitalization). If this looks to complicated, just write: /specialme/i
+		regExpSearch : /^(?=.*special)(?=.*me).*$/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has both the words "special" and "me" in it, disregarding capitalization). If this looks too complicated, just write: /specialme/i
 		
 		subname : "Path of SpecialMe", //required; the name of the subclass
 		

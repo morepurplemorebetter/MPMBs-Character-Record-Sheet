@@ -29,7 +29,7 @@ SpellsList["abi-dalzim's horrid wilting"] = { //Object name; note the use of onl
 	
 	nameAlt : "Horrid Wilting", //Optional; An alternative name that can be used to identify the spell with on the sheet
 	
-	regExpSearch : /^(?=.*horrid)(?=.*wilting).*$/i, //Optional; If the name is too complex or can have to many different variations, use this to define the regular expression of what to look for. If this looks to complicated, do not use it and remove this line!
+	regExpSearch : /^(?=.*horrid)(?=.*wilting).*$/i, //Optional; If the name is too complex or can have to many different variations, use this to define the regular expression of what to look for. If this looks too complicated, do not use it and remove this line!
 	
 	classes : ["bard", "cleric", "druid", "sorcerer", "wizard"], //Optional; Array of all the classes that have this spell on their list. Even with one entry you still need to put the brackets around it []. Note the use of only lower case as these entries are identical to the CLassList object names! If you omit this attribute, the spell will only be selectable through the dependencies, see below. If you want the spell to be available for subclasses and through the SpellcastingBonus object, just add an empty array, i.e. classes : [],
 	

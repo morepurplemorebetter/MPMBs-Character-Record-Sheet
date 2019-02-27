@@ -18,7 +18,7 @@ var iFileName = "Homebrew Syntax - BackgroundList & BackgroundFeatureList.js"; /
 RequiredSheetVersion(12.999); // Optional; This is the minimum required version number of the sheet for the script to work. If the sheet being used to import the script is of an earlier version, the user will be warned
 
 BackgroundList["where i am from"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
-	regExpSearch : /\bwhere\b.*\bi\b.*\bam\b.*\bfrom\b/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has the consecutive words "where", "i", "am", and "from" in it, disregarding capitalization or words in between). If this looks to complicated, just write: /where i am from/i
+	regExpSearch : /\bwhere\b.*\bi\b.*\bam\b.*\bfrom\b/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has the consecutive words "where", "i", "am", and "from" in it, disregarding capitalization or words in between). If this looks too complicated, just write: /where i am from/i
 	
 	name : "Where I am From", //required; the name as used
 	

@@ -90,7 +90,7 @@ ClassList["purplemancer"] = {
 	This has to be a match for the name given earlier, or the class will never by recognized.
 	Now it looks for any entry that has both the words "purple" and "mancer" in it,
 	 disregarding capitalization or word order.
-	If this looks to complicated, or you want to match only a single word, just write:
+	If this looks too complicated, or you want to match only a single word, just write:
 		regExpSearch : /purplemancer/i,
 */
 	source : ["SRD", 30],

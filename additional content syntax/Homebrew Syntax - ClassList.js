@@ -20,7 +20,7 @@ RequiredSheetVersion(12.999); // Optional; This is the minimum required version 
 
 ClassList["myclass"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
 
-	regExpSearch : /^(?=.*my)(?=.*class).*$/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has both the words "my" and "class" in it, disregarding capitalization). If this looks to complicated, just write: /myclass/i
+	regExpSearch : /^(?=.*my)(?=.*class).*$/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has both the words "my" and "class" in it, disregarding capitalization). If this looks too complicated, just write: /myclass/i
 	
 	name : "MyClass", //required; the name to use for the class
 	

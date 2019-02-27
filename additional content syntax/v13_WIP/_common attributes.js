@@ -413,36 +413,36 @@ shieldAdd : ["Magical Buckler", 1, 2],
 	The shield will only be added if the AC bonus is more or equal to that of the current shield.
 */
 
-ammoOptions : [{ /* AmmoList object, see AmmoList syntax */ }],
+ammoOptions : [{ /* AmmoList object, see "ammunition (AmmoList).js" syntax file  */ }],
 /*	ammoOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the AmmoList variable
 
-	The syntax of the objects is not explained here, but in the AmmoList syntax file.
+	The syntax of the objects is not explained here, but in the "ammunition (AmmoList).js" syntax file.
 
 	This way you can have a feature add a type of ammunition to the automation.
 	It will also be added to the options in each ammunition field drop-down.
 	This will result in having the ammunition only available if the feature is present.
 */
 
-armorOptions : [{ /* ArmourList object, see "armor (ArmourList)" syntax file */ }],
+armorOptions : [{ /* ArmourList object, see "armor (ArmourList).js" syntax file */ }],
 /*	armorOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the ArmourList variable
 
-	The syntax of the objects is not explained here, but in the ArmourList syntax file.
+	The syntax of the objects is not explained here, but in the "armor (ArmourList).js" syntax file.
 
 	This way you can have a feature add a type of armour to the automation.
 	It will also be added at the top of options in the armour field drop-down.
 	This will result in having the armour only available if the feature is present.
 */
 
-weaponOptions : [{ /* WeaponsList object, see WeaponsList syntax */ }],
+weaponOptions : [{ /* WeaponsList object, see "weapon (WeaponsList).js" syntax file */ }],
 /*	weaponOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the WeaponsList variable
 
-	The syntax of the objects is not explained here, but in the WeaponsList syntax file.
+	The syntax of the objects is not explained here, but in the "weapon (WeaponsList).js" syntax file.
 
 	This way you can have a feature add a type of weapon/attack to the automation.
 	It will also be added at the top of options in each attack field drop-down.
