@@ -30,20 +30,19 @@
 
 /*	-INFORMATION-
 
-	Subject:	Ammunition
+	Subject:	Adventuring Pack
 
-	Effect:		This is the syntax for adding a new ammunition to the sheet.
+	Effect:		This is the syntax for adding new pack options to the sheet.
 
-	Remarks:	This syntax is also used for objects in the 'ammoOptions' attribute found in '_common attributes.js'.
-				For the 'ammoOptions', you can disregard the object name and AmmoList variable.
-				Note that if you want a class feature, race, racial trait, feat, background, or magic item to add an ammunition,
-				you should be using the 'ammoOptions' attribute.
+	Remarks:	A pack is only selectable through the Add Equipment button.
+				For adding gear or tools, see their respective syntax files
+				"adventuring gear - equipment (GearList).js" and "adventuring gear - tool (ToolsList).js".
 
 	Sheet:		v13.0.0 (2019-??-??)
 
 */
 
-var iFileName = "Homebrew Syntax - AmmoList.js";
+var iFileName = "Homebrew Syntax - PacksList.js";
 /* 	iFileName // OPTIONAL //
 	TYPE:	string
 	USE:	how the file will be named in the sheet if you import it as a file
@@ -67,38 +66,34 @@ RequiredSheetVersion(13);
 	To find this number of a sheet, open its Document Properties in Adobe Acrobat (Ctrl + D) and look in the 'Custom' tab.
 */
 
-AmmoList["purple bullets"] = {
-/* 	AmmoList object name // REQUIRED //
+PacksList["purplepack"] = {
+/* 	PacksList object name // REQUIRED //
 	TYPE:	string
-	USE:	object name of the ammunition as it will be used by the sheet
+	USE:	object name of the adventuring pack as it will be used by the sheet
 
-	By adding a new object to the existing AmmoList object, we create a new ammunition.
-	The object name here is 'purple bullets'. You can use any object name as long as it is not already in use.
+	By adding a new object to the existing PacksList object, we create a new adventuring pack.
+	The object name here is 'purplepack'. You can use any object name as long as it is not already in use.
 	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
-	name : "Purple Bullets",
+	name : "Purple pack (10 gp)",
 /*	name // REQUIRED //
 	TYPE:	string
-	USE:	name of the ammunition as it will be used by the sheet
-
-	This name will also be used to recognize what is selected in the ammo drop-down.
-
-	This name will be capitalized (first letter of every word) before being added to the ammo drop-down.
+	USE:	name of the adventuring pack as it will be displayed in the equipment menu
 */
 	source : ["SRD", 204],
 	source : [["E", 7], ["S", 115]],
 /*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
-	USE:	define where the ammunition is found
+	USE:	define where the adventuring pack is found
 
-	This attribute is used by the sheet to determine if the ammunition should be available depending on the sources included and excluded.
+	This attribute is used by the sheet to determine if the adventuring pack should be available depending on the sources included and excluded.
 
 	This array has two entries, a string followed by a number
 	1. string
 		The first entry has to be the object name of a SourceList object.
 	2. number
-		The second entry is the page number to find the ammunition at.
+		The second entry is the page number to find the adventuring pack at.
 		This can be any number and is ignored if it is a 0.
 
 	See the "source (SourceList).js" file for learning how to add a custom source.
@@ -107,67 +102,44 @@ AmmoList["purple bullets"] = {
 	The example above says something appears on both page 7 of the Elemental Evil Player's Companion and
 	on page 115 of the Sword Coast Adventure Guide.
 
-	If an ammunition is completely homebrew, or you don't want to make a custom source, just put the following:
+	If an adventuring pack is completely homebrew, or you don't want to make a custom source, just put the following:
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
-	icon : "Bullets",
-/*	icon // REQUIRED //
-	TYPE:	string
-	USE:	icon to use for the ammunition
+	items : [
+		["Backpack, with:", "", 5],
+		["Rations, days of", 5, 2],
+		["Tinderbox", "", 1],
+		["Waterskin", "", 5],
+		["Hempen rope, feet of", 50, 0.2]
+	]
+/*	items // REQUIRED //
+	TYPE:	array (variable length) with arrays (3 entries each)
+	USE:	the items to add to the equipment section
 
-	This attribute determines what icons and the amount of checkboxes available.
-	This attribute can be only one of these options (notice the capitalization!):
-		"Arrows"
-		"Axes"
-		"Bullets"
-		"Daggers"
-		"Flasks"
-		"Hammers"
-		"Spears"
-		"Vials"
+	Each entry in this array represents a piece of equipment to put in the equipment section when this pack is added.
+	They will be added in the order presented here, so it is advisable to add any container at the top.
 
-	If this is not one of the options listed above, the "Arrows" icons will be used.
-*/
-	weight : 24,
-/*	weight // OPTIONAL //
-	TYPE:	number
-	USE:	the weight of a single piece of the ammunition in lb
+	Everything after the item ending with ", with:" will get a hyphen prefix.
+	Using the example above, the list would look like:
 
-	If the ammunition doesn't have a listed weight, you can just leave this attribute out.
-	Setting this to 0 is the same as not including this attribute.
-*/
-	isMagicAmmo : true,
-/*	isMagicAmmo // OPTIONAL //
-	TYPE:	boolean
-	USE:	whether (true) or not (false) this ammunition is magical ammunition
+		Gear					#	lbs
+		Backpack, with:				5
+		- Rations, days of		5	2
+		- Tinderbox					1
+		- Waterskin					5
+		- Hempen rope, feet of	50	0.2
 
-	This attribute only has an effect for magic item selection.
-	Add this if you don't want this ammunition to be an option for magical ammunition to add their attributes to.
-
-	Ammunition added by magic items using the 'ammoOptions' attribute will always have this attribute added and set to 'true'.
-
-	Setting this to false is the same as not including this attribute.
-*/
-	invName : "Bullets, Purple",
-/*	invName // OPTIONAL //
-	TYPE:	string
-	USE:	the name used when adding the ammunition from the Ammo section to the Equipment section
-
-	If you don't include this attribute, the 'name' attribute will be used when
-	the ammunition is added to the equipment section.
-	Make sure that the name you give here is still a match for the 'alternatives' or
-	the ammunition's weight will not be added in the equipment section.
-
-	Setting this to and empty string ("") is the same as not including this attribute.
-*/
-	alternatives : ["bullets, purple", "purple bullet", /^(?=.*bullet)(?=.*purple).*$/i],
-/*	alternatives // OPTIONAL //
-	TYPE:	array (variable length)
-	USE:	used to match the text in the ammunition field to see if this ammo is present
-
-	Use this attribute if you want more things to be a match for this ammunition than just its 'name' attribute.
-	Each entry can be either a string or a regular expression.
-	When using strings, make sure it is all lower case, as it will be matched against the lower case value of the Ammo field.
+	Each entry in the array is an array on its own, with three entries:
+	1. string
+		The first entry is the name of the equipment as it will be added to the equipment section.
+	2. number or empty string ("")
+		The second entry is the amount of that piece of equipment.
+		This is really only needed for equipment that normally comes in multiples, like "Rope, feet of".
+		Note that the weight is multiplied by the amount to get the total weight of a line in the equipment section.
+		If the equipment doesn't normally come in multiples, you can just let this attribute be an empty string ("").
+	3. number or empty string ("")
+		The third entry is the weight of that piece of equipment in lb.
+		If the piece of equipment doesn't have a listed weight, you can just let this attribute be an empty string ("").
 */
 }

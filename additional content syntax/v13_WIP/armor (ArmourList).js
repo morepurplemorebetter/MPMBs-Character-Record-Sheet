@@ -7,7 +7,7 @@
 	-KEEP IN MIND-
 	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
 	It is recommended to enter the code in a freshly downloaded sheet or to first reset sheet.
-	Thus you don't run the risk of things being filled out causing conflicts.
+	Thus you don't run the risk of things that have already been filled out causing conflicts.
 
 	-HOW TO READ-
 	Every line comes with a comment immediately after it to show whether it is // Optional // or // Required //,
@@ -39,7 +39,7 @@
 				Note that if you want a class feature, race, racial trait, feat, background, or magic item to add an armor,
 				you should be using the 'armorOptions' attribute.
 
-	Sheet:		v13.0.0 (2018-??-??)
+	Sheet:		v13.0.0 (2019-??-??)
 
 */
 
@@ -206,8 +206,9 @@ ArmourList["purple mail"] = {
 	TYPE:	boolean
 	USE:	whether (true) or not (false) this armour is a magical armour
 
-	This attribute only has an effect for extra AC calculations.
+	This attribute only has an effect for extra AC calculations and magic item selection.
 	Add this if you don't want class features and the like to add AC modifiers that shouldn't work for magical armours.
+	Also add this if you don't want this weapon to be an option for magical weapons to add their attributes to.
 
 	Armours added by magic items using the 'armorOptions' attribute will always have this attribute added and set to 'true'.
 

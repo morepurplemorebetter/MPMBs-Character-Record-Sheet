@@ -7,7 +7,7 @@
 	-KEEP IN MIND-
 	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
 	It is recommended to enter the code in a freshly downloaded sheet or to first reset sheet.
-	Thus you don't run the risk of things being filled out causing conflicts.
+	Thus you don't run the risk of things that have already been filled out causing conflicts.
 
 	-HOW TO READ-
 	Every line comes with a comment immediately after it to show whether it is // Optional // or // Required //,
@@ -41,7 +41,7 @@
 				Note that if you want a class feature, race, racial trait, feat, background, or magic item to add a weapon/attack,
 				you should be using the 'weaponOptions' attribute.
 
-	Sheet:		v13.0.0 (2018-??-??)
+	Sheet:		v13.0.0 (2019-??-??)
 
 */
 
@@ -302,8 +302,9 @@ WeaponsList["sword of purple"] = {
 	TYPE:	boolean
 	USE:	whether (true) or not (false) this weapon is a magical weapon
 
-	This attribute only has an effect for attack calculations.
+	This attribute only has an effect for attack calculations and magic item selection.
 	Add this if you don't want class features and the like to add modifiers or write "Counts as magical" in the description of this attack.
+	Also add this if you don't want this weapon to be an option for magical weapons to add their attributes to.
 	Note that if you set the 'type' attribute to "Cantrip" or "Spell", it will already be treated as a magical attack.
 
 	Weapons added by magic items using the 'weaponOptions' attribute will always have this attribute added and set to 'true'.

@@ -7,7 +7,7 @@
 	-KEEP IN MIND-
 	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
 	It is recommended to enter the code in a freshly downloaded sheet or to first reset sheet.
-	Thus you don't run the risk of things being filled out causing conflicts.
+	Thus you don't run the risk of things that have already been filled out causing conflicts.
 
 	-HOW TO READ-
 	Every line comes with a comment immediately after it to show whether it is // Optional // or // Required //,
@@ -37,7 +37,7 @@
 	Remarks:	The object name of a source is used for almost everything that you can import into the sheet.
 				A tip is to invoke a new source object at the start of an import script to make sure it is available for whatever you are adding.
 
-	Sheet:		v13.0.0 (2018-??-??)
+	Sheet:		v13.0.0 (2019-??-??)
 */
 
 var iFileName = "Homebrew Syntax - SourceList.js";

@@ -30,20 +30,17 @@
 
 /*	-INFORMATION-
 
-	Subject:	Ammunition
+	Subject:	Tool (adventuring gear)
 
-	Effect:		This is the syntax for adding a new ammunition to the sheet.
+	Effect:		This is the syntax for adding new tool options to the sheet.
 
-	Remarks:	This syntax is also used for objects in the 'ammoOptions' attribute found in '_common attributes.js'.
-				For the 'ammoOptions', you can disregard the object name and AmmoList variable.
-				Note that if you want a class feature, race, racial trait, feat, background, or magic item to add an ammunition,
-				you should be using the 'ammoOptions' attribute.
+	Remarks:	For adding regular equipment or packs, see their respective syntax files "adventuring gear - equipment (GearList).js" and "adventuring gear - pack (PacksList).js".
 
 	Sheet:		v13.0.0 (2019-??-??)
 
 */
 
-var iFileName = "Homebrew Syntax - AmmoList.js";
+var iFileName = "Homebrew Syntax - ToolsList.js";
 /* 	iFileName // OPTIONAL //
 	TYPE:	string
 	USE:	how the file will be named in the sheet if you import it as a file
@@ -67,38 +64,80 @@ RequiredSheetVersion(13);
 	To find this number of a sheet, open its Document Properties in Adobe Acrobat (Ctrl + D) and look in the 'Custom' tab.
 */
 
-AmmoList["purple bullets"] = {
-/* 	AmmoList object name // REQUIRED //
+ToolsList["purplemancer's tools"] = {
+/* 	ToolsList object name // REQUIRED //
 	TYPE:	string
-	USE:	object name of the ammunition as it will be used by the sheet
+	USE:	object name of the tool as it will be used by the sheet
 
-	By adding a new object to the existing AmmoList object, we create a new ammunition.
-	The object name here is 'purple bullets'. You can use any object name as long as it is not already in use.
+	By adding a new object to the existing ToolsList object, we create a new tool.
+	The object name here is 'purplemancer's tools'. You can use any object name as long as it is not already in use.
 	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
-	name : "Purple Bullets",
+	infoname : "Purplemancer's tools [500 gp]",
+/*	infoname // REQUIRED //
+	TYPE:	string
+	USE:	name of the tool as it will be displayed in the equipment menu
+*/
+	name : "Purplemancer's tools",
 /*	name // REQUIRED //
 	TYPE:	string
-	USE:	name of the ammunition as it will be used by the sheet
+	USE:	name of the tool as it will be added in the equipment fields
 
-	This name will also be used to recognize what is selected in the ammo drop-down.
+	This name will also be used to recognize what is typed into an equipment field.
+	Once you select a tool from the equipment menu, it is this attribute that will be used to fill the field.
+*/
+	amount : "",
+/*	amount // REQUIRED //
+	TYPE:	number or empty string ("")
+	USE:	number of the tool as it will be added in the equipment fields, "#" column
 
-	This name will be capitalized (first letter of every word) before being added to the ammo drop-down.
+	This is really only needed for equipment that normally comes in multiples, like "Rope, feet of".
+	When a piece of equipment is added using the equipment menu,
+	this amount is set in the "#" column of the equipment section.
+	When a piece of equipment is manually typed into the equipment section, the amount set here is ignored.
+
+	Note that the weight is multiplied by the amount to get the total weight of a line in the equipment section.
+
+	If the equipment doesn't normally come in multiples, you can just let this attribute be an empty string ("").
+*/
+	weight : 12,
+/*	weight // REQUIRED //
+	TYPE:	number or empty string ("")
+	USE:	the weight of the tool in lb
+
+	If the tool doesn't have a listed weight, you can just let this attribute be an empty string ("").
+*/
+	type : "artisan's tools",
+/*	type // OPTIONAL //
+	TYPE:	string
+	USE:	the grouping of this tool
+
+	If this attribute is present, all tool with the exact same 'type' attribute will be grouped together in the equipment menu.
+	They will be listed in a submenu which uses the string entered in this attribute.
+	By default, the following types already exist in the sheet:
+		"artisan's tools"
+		"gaming set"
+		"musical instrument"
+
+	You can use other strings for the type of the tool you are adding,
+	but be aware that doing so will only have any use if you add at least 2 tools with the same 'type' attribute.
+
+	Setting this to an empty string ("") is the same as not including this attribute.
 */
 	source : ["SRD", 204],
 	source : [["E", 7], ["S", 115]],
-/*	source // REQUIRED //
+/*	source // OPTIONAL //
 	TYPE:	array with two entries (or array of these arrays)
-	USE:	define where the ammunition is found
+	USE:	define where the tool is found
 
-	This attribute is used by the sheet to determine if the ammunition should be available depending on the sources included and excluded.
+	This attribute is used by the sheet to determine if the tool should be available depending on the sources included and excluded.
 
 	This array has two entries, a string followed by a number
 	1. string
 		The first entry has to be the object name of a SourceList object.
 	2. number
-		The second entry is the page number to find the ammunition at.
+		The second entry is the page number to find the tool at.
 		This can be any number and is ignored if it is a 0.
 
 	See the "source (SourceList).js" file for learning how to add a custom source.
@@ -107,67 +146,6 @@ AmmoList["purple bullets"] = {
 	The example above says something appears on both page 7 of the Elemental Evil Player's Companion and
 	on page 115 of the Sword Coast Adventure Guide.
 
-	If an ammunition is completely homebrew, or you don't want to make a custom source, just put the following:
-		source : ["HB", 0],
-	"HB" refers to the 'homebrew' source.
-*/
-	icon : "Bullets",
-/*	icon // REQUIRED //
-	TYPE:	string
-	USE:	icon to use for the ammunition
-
-	This attribute determines what icons and the amount of checkboxes available.
-	This attribute can be only one of these options (notice the capitalization!):
-		"Arrows"
-		"Axes"
-		"Bullets"
-		"Daggers"
-		"Flasks"
-		"Hammers"
-		"Spears"
-		"Vials"
-
-	If this is not one of the options listed above, the "Arrows" icons will be used.
-*/
-	weight : 24,
-/*	weight // OPTIONAL //
-	TYPE:	number
-	USE:	the weight of a single piece of the ammunition in lb
-
-	If the ammunition doesn't have a listed weight, you can just leave this attribute out.
-	Setting this to 0 is the same as not including this attribute.
-*/
-	isMagicAmmo : true,
-/*	isMagicAmmo // OPTIONAL //
-	TYPE:	boolean
-	USE:	whether (true) or not (false) this ammunition is magical ammunition
-
-	This attribute only has an effect for magic item selection.
-	Add this if you don't want this ammunition to be an option for magical ammunition to add their attributes to.
-
-	Ammunition added by magic items using the 'ammoOptions' attribute will always have this attribute added and set to 'true'.
-
-	Setting this to false is the same as not including this attribute.
-*/
-	invName : "Bullets, Purple",
-/*	invName // OPTIONAL //
-	TYPE:	string
-	USE:	the name used when adding the ammunition from the Ammo section to the Equipment section
-
-	If you don't include this attribute, the 'name' attribute will be used when
-	the ammunition is added to the equipment section.
-	Make sure that the name you give here is still a match for the 'alternatives' or
-	the ammunition's weight will not be added in the equipment section.
-
-	Setting this to and empty string ("") is the same as not including this attribute.
-*/
-	alternatives : ["bullets, purple", "purple bullet", /^(?=.*bullet)(?=.*purple).*$/i],
-/*	alternatives // OPTIONAL //
-	TYPE:	array (variable length)
-	USE:	used to match the text in the ammunition field to see if this ammo is present
-
-	Use this attribute if you want more things to be a match for this ammunition than just its 'name' attribute.
-	Each entry can be either a string or a regular expression.
-	When using strings, make sure it is all lower case, as it will be matched against the lower case value of the Ammo field.
+	If a tool is completely homebrew, or you don't want to make a custom source, just leave out this attribute.
 */
 }

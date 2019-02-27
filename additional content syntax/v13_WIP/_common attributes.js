@@ -7,7 +7,7 @@
 	-KEEP IN MIND-
 	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialog.
 	It is recommended to enter the code in a freshly downloaded sheet or to first reset sheet.
-	Thus you don't run the risk of things being filled out causing conflicts.
+	Thus you don't run the risk of things that have already been filled out causing conflicts.
 
 	-HOW TO READ-
 	Every line comes with a comment immediately after it to show whether it is // Optional // or // Required //,
@@ -48,7 +48,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v13.0.0 (2018-??-??)
+	Sheet:		v13.0.0 (2019-??-??)
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
