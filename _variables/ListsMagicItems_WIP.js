@@ -64,15 +64,15 @@ var Base_MagicItemsList = {
 		weight : 1,
 		scoresOverride : [0, 0, 19, 0, 0, 0]
 	},
-	"amulet of proof against detection and location" : {
+	"amulet of proof against detection and location" : { // finished
 		name : "Amulet of Proof against Detection and Location",
 		source : [["SRD", 207], ["D", 150]],
 		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		attunement : true,
-		description : "",
+		description : "While wearing this amulet, I am hidden from Divination magic. I can't be targeted by such magic or perceived through magical scrying sensors.",
 		descriptionFull : "While wearing this amulet, you are hidden from Divination magic. You can't be targeted by such magic or perceived through magical scrying sensors.",
+		attunement : true,
 		weight : 1
 	},
 	"amulet of the planes" : {
@@ -86,16 +86,18 @@ var Base_MagicItemsList = {
 		attunement : true,
 		weight : 1
 	},
-	"animated shield" : {
+	"animated shield" : { // contributed by Larry Hoy
 		name : "Animated Shield",
 		source : [["SRD", 208], ["D", 183]],
 		type : "shield",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "As a bonus action, I speak the command word to animate this shield for 1 minute, until I use a bonus action to end this effect (returns to my hand), or until I am incapacitated or die (falls to ground). The shield leaps into the air, hovering in my space to protect me as if I were wielding it, leaving my hands free.",
 		descriptionFull : "While holding this shield, you can speak its command word as a bonus action to cause it to animate. The shield leaps into the air and hovers in your space to protect you as if you were wielding it, leaving your hands free. The shield remains animated for 1 minute, until you use a bonus action to end this effect, or until you are incapacitated or die, at which point the shield falls to the ground or into your hand if you have one free.",
 		attunement : true,
-		weight : 6
+		weight : 6,
+		action : [["bonus action", ""]],
+		shieldAdd : "Animated Shield"
 	},
 	"apparatus of kwalish" : {
 		name : "Apparatus of Kwalish",
@@ -104,7 +106,7 @@ var Base_MagicItemsList = {
 		rarity : "legendary",
 		magicItemTable : "I",
 		description : "",
-		descriptionFull : "This item first appears to be a Large sealed iron barrel weighing 500 pounds. The barrel has a hidden catch, which can be found with a successful DC 20 Intelligence (Investigation) check. Releasing the catch unlocks a hatch at one end of the barrel, allowing two Medium or smaller creatures to crawl inside. Ten levers are set in a row at the far end, each in a neutral position, able to move either up or down. When certain levers are used, the apparatus transforms to resemble a giant lobster.\n   The apparatus of Kwalish is a Large object with the following statistics:\n   Armor Class: 20\n   Hit Points: 200\n   Speed: 30 ft., swim 30 ft. (or 0 ft. for both if the legs and tail aren't extended)\n   Damage Immunities: poison, psychic\n   To be used as a vehicle, the apparatus requires one pilot. While the apparatus's hatch is closed, the compartment is airtight and watertight. The compartment holds enough air for 10 hours of breathing, divided by the number of breathing creatures inside.\n    The apparatus floats on water. It can also go underwater to a depth of 900 feet. Below that, the vehicle takes 2d6 bludgeoning damage per minute from pressure.\n   A creature in the compartment can use an action to move as many as two of the apparatus's levers up or down. After each use, a lever goes back to its neutral position. Each lever, from left to right, functions as shown in the Apparatus of Kwalish Levers table.\n\n" + toUni("Lever") + "\t" + toUni("Up") + "\t" + toUni("Down") + "\n1\tLegs and tail extend, allowing the apparatus to walk and swim.\tLegs and tail retract, reducing the apparatus's speed to 0 and making it unable to benefit from bonuses to speed.\n2\tForward window shutter opens.\tForward window shutter closes.\n3\tSide window shutters open (two per side).\tSide window shutters close (two per side).\n4\tTwo claws extend from the front sides of the apparatus.\tThe claws retract.\n5\tEach extended claw makes the following melee weapon attack: +8 to hit, reach 5 ft., one target. Hit: 7 (2d6) bludgeoning damage.\tEach extended claw makes the following melee weapon attack: +8 to hit, reach 5 ft., one target. Hit: The target is grappled (escape DC 15).\n6\tThe apparatus walks or swims forward.\tThe apparatus walks or swims backward.\n7\tThe apparatus turns 90 degrees left.\tThe apparatus turns 90 degrees right.\n8\tEyelike fixtures emit bright light in a 30-foot radius and dim light for an additional 30 feet.\tThe light turns off.\n9\tThe apparatus sinks as much as 20 feet in liquid.\tThe apparatus rises up to 20 feet in liquid.\n10\tThe rear hatch unseals and opens.\tThe rear hatch closes and seals.",
+		descriptionFull : "This item first appears to be a Large sealed iron barrel weighing 500 pounds. The barrel has a hidden catch, which can be found with a successful DC 20 Intelligence (Investigation) check. Releasing the catch unlocks a hatch at one end of the barrel, allowing two Medium or smaller creatures to crawl inside. Ten levers are set in a row at the far end, each in a neutral position, able to move either up or down. When certain levers are used, the apparatus transforms to resemble a giant lobster.\n   The apparatus of Kwalish is a Large object with the following statistics:\n   Armor Class: 20\n   Hit Points: 200\n   Speed: 30 ft., swim 30 ft. (or 0 ft. for both if the legs and tail aren't extended)\n   Damage Immunities: poison, psychic\n   To be used as a vehicle, the apparatus requires one pilot. While the apparatus's hatch is closed, the compartment is airtight and watertight. The compartment holds enough air for 10 hours of breathing, divided by the number of breathing creatures inside.\n    The apparatus floats on water. It can also go underwater to a depth of 900 feet. Below that, the vehicle takes 2d6 bludgeoning damage per minute from pressure.\n   A creature in the compartment can use an action to move as many as two of the apparatus's levers up or down. After each use, a lever goes back to its neutral position. Each lever, from left to right, functions as shown in the Apparatus of Kwalish Levers table.\n\n" + toUni("Lever\tUp\tDown") + "\n1\tLegs and tail extend, allowing the apparatus to walk and swim.\tLegs and tail retract, reducing the apparatus's speed to 0 and making it unable to benefit from bonuses to speed.\n2\tForward window shutter opens.\tForward window shutter closes.\n3\tSide window shutters open (two per side).\tSide window shutters close (two per side).\n4\tTwo claws extend from the front sides of the apparatus.\tThe claws retract.\n5\tEach extended claw makes the following melee weapon attack: +8 to hit, reach 5 ft., one target. Hit: 7 (2d6) bludgeoning damage.\tEach extended claw makes the following melee weapon attack: +8 to hit, reach 5 ft., one target. Hit: The target is grappled (escape DC 15).\n6\tThe apparatus walks or swims forward.\tThe apparatus walks or swims backward.\n7\tThe apparatus turns 90 degrees left.\tThe apparatus turns 90 degrees right.\n8\tEyelike fixtures emit bright light in a 30-foot radius and dim light for an additional 30 feet.\tThe light turns off.\n9\tThe apparatus sinks as much as 20 feet in liquid.\tThe apparatus rises up to 20 feet in liquid.\n10\tThe rear hatch unseals and opens.\tThe rear hatch closes and seals.",
 		weight : 500
 	},
 	"armor, +1, +2, or +3" : { // finished

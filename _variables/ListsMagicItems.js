@@ -79,6 +79,30 @@ var Base_MagicItemsList = {
 		weight : 1,
 		scoresOverride : [0, 0, 19, 0, 0, 0]
 	},
+	"amulet of proof against detection and location" : {
+		name : "Amulet of Proof against Detection and Location",
+		source : [["SRD", 207], ["D", 150]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		attunement : true,
+		description : "While wearing this amulet, I am hidden from Divination magic. I can't be targeted by such magic or perceived through magical scrying sensors.",
+		descriptionFull : "While wearing this amulet, you are hidden from Divination magic. You can't be targeted by such magic or perceived through magical scrying sensors.",
+		weight : 1
+	},
+	"animated shield" : { // contributed by Larry Hoy
+		name : "Animated Shield",
+		source : [["SRD", 208], ["D", 183]],
+		type : "shield",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "As a bonus action, I speak the command word to animate this shield for 1 minute, until I use a bonus action to end this effect (returns to my hand), or until I am incapacitated or die (falls to ground). The shield leaps into the air, hovering in my space to protect me as if I were wielding it, leaving my hands free.",
+		descriptionFull : "While holding this shield, you can speak its command word as a bonus action to cause it to animate. The shield leaps into the air and hovers in your space to protect you as if you were wielding it, leaving your hands free. The shield remains animated for 1 minute, until you use a bonus action to end this effect, or until you are incapacitated or die, at which point the shield falls to the ground or into your hand if you have one free.",
+		attunement : true,
+		weight : 6,
+		action : [["bonus action", ""]],
+		shieldAdd : "Animated Shield"
+	},
 	"armor, +1, +2, or +3" : {
 		name : "Armor, +1, +2, or +3",
 		source : [["SRD", 208], ["D", 152]],

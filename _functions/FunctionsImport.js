@@ -1649,7 +1649,13 @@ function ImportIcons(pagesLayout, viaSaving) {
 		//now save this document and import this newly made page into the new document, as the last page
 		if (madeFlds) {
 		try {
-			if (!MPMBImportPage(global.docTo, global.docFrom.path, usePage)) throw "Unable to import the user-defined icons-page."; //import the page as the last page
+			// First delete all the document-level scripts from the old sheet, otherwise we import them along
+			var oldDocLvl = ["Functions", "ListsClassesUA", "ListsClassesUAArtificer", "ListsClassesUAMystic", "ListsFeatsUA", "ListsRacesUA", "ListsSpellsUA"];
+			for (var d = 0; d < oldDocLvl.length; d++) {
+				global.docFrom.removeScript(oldDocLvl[d]);
+			}
+			//import the page as the last page
+			if (!MPMBImportPage(global.docTo, global.docFrom.path, usePage)) throw "Unable to import the user-defined icons-page.";
 
 			//now continue with the newly added page
 			var newFields = global.docTo.getField("tempIconImports").getArray();
@@ -2542,20 +2548,30 @@ function AddWarlockPactBoon(boonName, boonObj) {
 function AddFightingStyle(classArr, fsName, fsObj) {
 	var addFSToThis = function(feaObj, feaNm) {
 		var FSfeat = feaObj.features[feaNm];
+		if (!FSfeat || !FSfeat.choices) return;
 		var useName = fsName;
 		var suffix = 1;
 		while (FSfeat.choices.indexOf(useName) !== -1) {
 			suffix += 1;
-			useName += fsName + " [" + suffix + "]";
+			useName = fsName + " [" + suffix + "]";
 		};
-		FSfeat.choices.push(fsName);
-		FSfeat[fsName.toLowerCase()] = fsObj;
+		FSfeat.choices.push(useName);
+		FSfeat[useName.toLowerCase()] = fsObj;
 	};
 	for (var i = 0; i < classArr.length; i++) {
 		var aClass = ClassList[classArr[i]];
-		if (!aClass) continue;
-		addFSToThis(aClass, "fighting style");
-		if (classArr[i] === "fighter" && ClassSubList["fighter-champion"]) addFSToThis(ClassSubList["fighter-champion"], "subclassfeature10");
+		var sClass = ClassSubList[classArr[i]];
+		if (aClass) {
+			addFSToThis(aClass, "fighting style");
+			if (classArr[i] === "fighter" && ClassSubList["fighter-champion"]) addFSToThis(ClassSubList["fighter-champion"], "subclassfeature10");
+		} else if (sClass) {
+			for (var clFea in sClass.features) {
+				var sFea = sClass.features[clFea];
+				if (sFea.choices && (/^(?=.*fighting)(?=.*style).*$/i).test(sFea.name)) {
+					addFSToThis(sClass, clFea);
+				}
+			}
+		}
 	};
 };
 

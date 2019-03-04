@@ -1963,9 +1963,16 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		//see if this class is a spellcaster and what we need to do with that
 		if (Temps.spellcastingFactor) {
 			var casterType = !isNaN(Temps.spellcastingFactor) ? "default" : Temps.spellcastingFactor.replace(/\d/g, "");
-			var casterFactor = (/\d/g).test(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
-			//now only continue if the class level is the factor or higher
-			if (Math.max(casterFactor, 1) <= classes.known[aClass].level) {
+			var casterFactor = !isNaN(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor) : (/\d/g).test(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
+			// now only continue if the class level is the factor or higher
+			var casterAtCurLvl = Math.max(casterFactor, 1) <= classes.known[aClass].level;
+			// or if the class has its own spell slot progression, check against that
+			if (!casterAtCurLvl && Temps.spellcastingTable && Temps.spellcastingTable[classes.known[aClass].level]) {
+				casterAtCurLvl = 0 < Temps.spellcastingTable[classes.known[aClass].level].reduce(function (total, num) {
+					return total + num;
+				});
+			}
+			if (casterAtCurLvl) {
 				// add one to the casterType for seeing if this casterType is multiclassing later on
 				if (multiCaster[casterType]) {
 					multiCaster[casterType] += 1;
