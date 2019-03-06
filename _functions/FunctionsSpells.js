@@ -622,6 +622,8 @@ function CalcSpellScores() {
 	}
 
 	var profBonus = Number(What("Proficiency Bonus"));
+	// fixed DC of 8 means the prof bonus still needs to be added
+	if (fixedDC === 8) fixedDC += profBonus;
 	// the DC
 	theResult.dc = fixedDC ? fixedDC : profBonus + theMod + 8;
 	// the spell attack
@@ -1342,7 +1344,7 @@ var SpellSheetSelect_Dialog = {
 							}, {
 								type : "static_text",
 								item_id : "BoT2",
-								name : "Origin of Entry",
+								name : "Origin / Remarks",
 								height : 22,
 								char_width : 15,
 								alignment : "align_left",
@@ -5781,10 +5783,10 @@ function getSpellcastingAbility(theCast) {
 		}
 		testFixedDC = true;
 	}
-	// if the spellcasting ability is still 0 after testing class/race, set a fixed DC (nothing)
+	// if the spellcasting ability is still 0 after testing class/race, set a fixed DC as if a +0 ability modifier, so just 8 + Prof
 	if (testFixedDC) {
 		if (spAbility == 0) {
-			spObj.fixedDC = 8;
+			spObj.fixedDC = 8; // a fixed DC of 8 will always get the prof bonus added
 		} else {
 			delete spObj.fixedDC;
 		}

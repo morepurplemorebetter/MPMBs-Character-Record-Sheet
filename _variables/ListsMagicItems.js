@@ -220,6 +220,32 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "ammunition"]
 		}
 	},
+	"bag of beans" : { // contributed by Larry Hoy
+		name : "Bag of Beans",
+		source : [["SRD", 209], ["D", 152]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "C",
+		description : "This heavy cloth bag contains 3d4 dry beans. I can dump all on the ground, causing a 10-ft explosion that deals 5d4 fire damage to all in the area, DC 15 Dex save to half, and ignites unattended flammable objects. I can plant and water a bean to get an effect 1 minute later, chosen by the DM, see notes page.",
+		descriptionFull : "Inside this heavy cloth bag are 3d4 dry beans. The bag weighs \xBD pound plus \xBC pound for each bean it contains.\n   If you dump the bag's contents out on the ground, they explode in a 10-foot radius, extending from the beans. Each creature in the area, including you, must make a DC 15 Dexterity saving throw, taking 5d4 fire damage on a failed save, or half as much damage on a successful one. The fire ignites flammable objects in the area that aren't being worn or carried.\n   If you remove a bean from the bag, plant it in dirt or sand, and then water it, the bean produces an effect 1 minute later from the ground where it was planted. The DM can choose an effect from the following table, determine it randomly, or create an effect.\n\n" + toUni("d100\tEffect") + "\n01\t5d4 toadstools sprout. If a creature eats a toadstool, roll any die. On an odd roll, the eater must succeed on a DC 15 Constitution saving throw or take 5d6 poison damage and become poisoned for 1 hour. On an even roll, the eater gains 5d6 temporary hit points for 1 hour.\n02-10\tA geyser erupts and spouts water, beer, berry juice, tea, vinegar, wine, or oil (DM's choice) 30 feet into the air for 1d12 rounds.\n11-20\tA treant sprouts. There's a 50% chance that the treant is chaotic evil and attacks.\n21-30\tAn animate, immobile stone statue in your likeness rises. It makes verbal threats against you. If you leave it and others come near, it describes you as the most heinous of villains and directs the newcomers to find and attack you. If you are on the same plane of existence as the statue, it knows where you are. The statue becomes inanimate after 24 hours.\n31-40\tA campfire with blue flames springs forth and burns for 24 hours (or until it is extinguished).\n41-50\t1d6+6 shriekers sprout.\n51-60\t1d4+8 bright pink toads crawl forth. Whenever a toad is touched, it transforms into a Large or smaller monster of the DM's choice. The monster remains for 1 minute, then disappears in a puff of bright pink smoke.\n61-70\tA hungry bulette burrows up and attacks.\n71-80\tA fruit tree grows. It has 1d10+20 fruit, 1d8 of which act as randomly determined magic potions, while one acts as an ingested poison of the DM's choice. The tree vanishes after 1 hour. Picked fruit remains, retaining any magic for 30 days.\n81-90\tA nest of 1d4+3 eggs springs up. Any creature that eats an egg must make a DC 20 Constitution saving throw. On a successful save, a creature permanently increases its lowest ability score by 1, randomly choosing among equally low scores. On a failed save, the creature takes 10d6 force damage from an internal magical explosion.\n91-99\tA pyramid with a 60-foot-square base bursts upward. Inside is a sarcophagus containing a mummy lord. The pyramid is treated as the mummy lord's lair, and its sarcophagus contains treasure of the DM's choice.\n100\tA giant beanstalk sprouts, growing to a height of the DM's choice. The top leads where the DM chooses, such as to a great view, a cloud giant's castle, or a different plane of existence.",
+		weight : 0.5,
+		toNotesPage : [{
+			name : "Planted bean effects",
+			note : "\nd100\tEFFECT\n01\t5d4 toadstools sprout. If a creature eats a toadstool, roll any die. On\n\tan odd roll, the eater must succeed on a DC 15 Constitution saving\n\tthrow or take 5d6 poison damage and become poisoned for 1 hour.\n\tOn an even roll, the eater gains 5d6 temporary hit points for 1 hour.\n02-10\tA geyser erupts and spouts water, beer, berry juice, tea, vinegar, wine,\n\tor oil (DM's choice) 30 feet into the air for 1d12 rounds.\n11-20\tA treant sprouts. There's a 50% chance that the treant is chaotic evil\n\tand attacks.\n21-30\tAn animate, immobile stone statue in your likeness rises. It makes" + (typePF ? "\n\t" : " ") + "verbal threats" + (!typePF ? "\n\t" : " ") + "against you. If you leave it and others come near, it" + (typePF ? "\n\t" : " ") + "describes you as the most" + (!typePF ? "\n\t" : " ") + "heinous of villains and directs the" + (typePF ? "\n\t" : " ") + "newcomers to find and attack you." + (!typePF ? "\n\t" : " ") + "If you are on the same plane of" + (typePF ? "\n\t" : " ") + "existence as the statue, it knows where you are." + (!typePF ? "\n\t" : " ") + "The statue" + (typePF ? "\n\t" : " ") + "becomes inanimate after 24 hours.\n31-40\tA campfire with blue flames springs forth and burns for 24 hours (or\n\tuntil it is extinguished).\n41-50\t1d6+6 shriekers sprout.\n51-60\t1d4+8 bright pink toads crawl forth. Whenever a toad is touched, it" + (typePF ? "\n\t" : " ") + "transforms" + (!typePF ? "\n\t" : " ") + "into a Large or smaller monster of the DM's choice." + (typePF ? "\n\t" : " ") + "The monster remains for" + (!typePF ? "\n\t" : " ") + "1 minute, then disappears in a puff of bright" + (typePF ? "\n\t" : " ") + "pink smoke.\n61-70\tA hungry bulette burrows up and attacks.\n71-80\tA fruit tree grows. It has 1d10+20 fruit, 1d8 of which act as randomly\n\tdetermined magic potions, while one acts as an ingested poison of\n\tthe DM's choice. The tree vanishes after 1 hour. Picked fruit remains,\n\tretaining any magic for 30 days.\n81-90\tA nest of 1d4+3 eggs springs up. Any creature that eats an egg must\n\tmake a DC 20 Constitution saving throw. On a successful save, a\n\tcreature permanently increases its lowest ability score by 1, randomly\n\tchoosing among equally low scores. On a failed save, the creature\n\ttakes 10d6 force damage from an internal magical explosion.\n91-99\tA pyramid with a 60-foot-square base bursts upward. Inside is a" + (typePF ? "\n\t" : " ") + "sarcophagus" + (!typePF ? "\n\t" : " ") + "containing a mummy lord. The pyramid is treated as" + (typePF ? "\n\t" : " ") + "the mummy lord's lair," + (!typePF ? "\n\t" : " ") + "and its sarcophagus contains treasure" + (typePF ? "\n\t" : " ") + "of the DM's choice.\n100\tA giant beanstalk sprouts, growing to a height of the DM's choice.\n\tThe top leads where the DM chooses, such as to a great view,\n\ta cloud giant's castle, or a different plane of existence."
+		}]
+	},
+	"bag of holding" : {
+		name : "Bag of Holding",
+		source : [["SRD", 210], ["D", 153]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : ["A", "B"],
+		description : "This bag is 2 ft in diameter at the mouth, 4 ft deep, and 15 lb regardless of content. It can hold up to 500 lb, not exceeding a volume of 64 cu ft. Retrieving an item from it requires an action. If it's overloaded, pierced, or torn, it's destroyed with its contents in the Astral plane. If turned inside out, all its contents spill forth.",
+		descriptionLong : "This bag is 2 ft in diameter at the mouth, 4 ft deep, and 15 lb regardless of content. It can hold up to 500 lb, not exceeding a volume of 64 cu ft. Retrieving an item from it requires an action. If it is overloaded, pierced, or torn, it is destroyed, leaving its contents in the Astral plane. If it is turned inside out, all its contents spill forth unharmed. Breathing creatures inside the bag can breath for 10 minutes divided by the number of creatures in it (minimum 1 minute), after which they begin to suffocate. Placing the bag in an other extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
+		descriptionFull : "This bag has an interior space considerably larger than its outside dimensions, roughly 2 feet in diameter at the mouth and 4 feet deep. The bag can hold up to 500 pounds, not exceeding a volume of 64 cubic feet. The bag weighs 15 pounds, regardless of its contents. Retrieving an item from the bag requires an action.\n   If the bag is overloaded, pierced, or torn, it ruptures and is destroyed, and its contents are scattered in the Astral Plane. If the bag is turned inside out, its contents spill forth, unharmed, but the bag must be put right before it can be used again. Breathing creatures inside the bag can survive up to a number of minutes equal to 10 divided by the number of creatures (minimum 1 minute), after which time they begin to suffocate.\n   Placing a bag of holding inside an extradimensional space created by a Heward's handy haversack, portable hole, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10 feet of the gate is sucked through it to a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
+		weight : 15,
+		action : [["action", " (retrieve item)"]]
+	},
 	"belt of giant strength" : {
 		name : "Belt of Giant Strength",
 		source : [["SRD", 211], ["D", 155]],
@@ -329,7 +355,7 @@ var Base_MagicItemsList = {
 		rarity : "rare",
 		magicItemTable : "G",
 		attunement : true,
-		description : "While I wear these boots, I can use an action to cast the levitate spell on myself at will.",
+		description : "While I wear these boots, I can cast Levitate on myself at will.",
 		descriptionFull : "While you wear these boots, you can use an action to cast the Levitate spell on yourself at will.",
 		spellcastingBonus : {
 			name : "Self Only",
@@ -435,12 +461,12 @@ var Base_MagicItemsList = {
 		description : "These bracers give me a +2 bonus to AC, but only if I'm not wearing armor or using a shield.",
 		descriptionFull : "While wearing these bracers, you gain a +2 bonus to AC if you are wearing no armor and using no shield.",
 		attunement : true,
-		extraAC : {
+		extraAC : [{
 			mod : 2,
 			magic : true,
 			text : "I gain a +2 bonus to AC while I'm not wearing armor or using a shield.",
 			stopeval : function (v) { return v.wearingArmor || v.usingShield; }
-		}
+		}]
 	},
 	"brazier of commanding fire elementals" : {
 		name : "Brazier of Commanding Fire Elementals",
@@ -521,22 +547,22 @@ var Base_MagicItemsList = {
 		"3 \xD7 5 ft (fly 80 ft, 200 lb)" : {
 			name : "Carpet of Flying, 3 ft \xD7 5 ft",
 			nameTest : "Carpet of Flying, 1 m \xD7 1,5 m",
-			description : "I can speak the carpet's command word as an action to make the 3 ft × 5 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 80 ft and can carry up to 400 lb. If it carries more than 200 lb its flying speed is reduced to only 40 ft."
+			description : "I can speak the carpet's command word as an action to make the 3 ft \xD7 5 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 80 ft and can carry up to 400 lb. If it carries more than 200 lb its flying speed is reduced to only 40 ft."
 		},
 		"4 \xD7 6 ft (fly 60 ft, 400 lb)" : {
 			name : "Carpet of Flying, 4 ft \xD7 6 ft",
 			nameTest : "Carpet of Flying, 1,2 m \xD7 2 m",
-			description : "I can speak the carpet's command word as an action to make the 4 ft × 6 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 60 ft and can carry up to 800 lb. If it carries more than 400 lb its flying speed is reduced to only 30 ft."
+			description : "I can speak the carpet's command word as an action to make the 4 ft \xD7 6 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 60 ft and can carry up to 800 lb. If it carries more than 400 lb its flying speed is reduced to only 30 ft."
 		},
 		"5 \xD7 7 ft (fly 40 ft, 600 lb)" : {
 			name : "Carpet of Flying, 5 ft \xD7 7 ft",
 			nameTest : "Carpet of Flying, 1,5 m \xD7 2,1 m",
-			description : "I can speak the carpet's command word as an action to make the 5 ft × 7 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 40 ft and can carry up to 1200 lb. If it carries more than 600 lb its flying speed is reduced to only 20 ft."
+			description : "I can speak the carpet's command word as an action to make the 5 ft \xD7 7 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 40 ft and can carry up to 1200 lb. If it carries more than 600 lb its flying speed is reduced to only 20 ft."
 		},
 		"6 \xD7 9 ft (fly 30 ft, 800 lb)" : {
 			name : "Carpet of Flying, 6 ft \xD7 9 ft",
 			nameTest : "Carpet of Flying, 1,8 m \xD7 2,7 m",
-			description : "I can speak the carpet's command word as an action to make the 6 ft × 9 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 30 ft and can carry up to 1600 lb. If it carries more than 800 lb its flying speed is reduced to only 15 ft."
+			description : "I can speak the carpet's command word as an action to make the 6 ft \xD7 9 ft carpet hover and fly. It moves according to my spoken directions if I am within 30 ft of it. It has a flying speed of 30 ft and can carry up to 1600 lb. If it carries more than 800 lb its flying speed is reduced to only 15 ft."
 		}
 	},
 	"censer of controlling air elementals" : {
@@ -587,11 +613,73 @@ var Base_MagicItemsList = {
 		descriptionFull : "While you wear this cloak, it projects an illusion that makes you appear to be standing in a place near your actual location, causing any creature to have disadvantage on attack rolls against you. If you take damage, the property ceases to function until the start of your next turn. This property is suppressed while you are incapacitated, restrained, or otherwise unable to move.",
 		attunement : true
 	},
+	"cloak of elvenkind" : {
+		name : "Cloak of Elvenkind",
+		source : [["SRD", 214], ["D", 158]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While I wear this cloak with its hood up, Wisdom (Perception) checks made to see me have disadvantage, and I have advantage on Dexterity (Stealth) checks made to hide, as the cloak's color shifts to camouflage me. Pulling the hood up or down requires an action.",
+		descriptionFull : "While you wear this cloak with its hood up, Wisdom (Perception) checks made to see you have disadvantage, and you have advantage on Dexterity (Stealth) checks made to hide, as the cloak's color shifts to camouflage you. Pulling the hood up or down requires an action.",
+		attunement : true,
+		action : [["action", " (hood up/down)"]]
+	},
+	"cloak of protection" : {
+		name : "Cloak of Protection",
+		source : [["SRD", 214], ["D", 159]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While I wear this cloak, I gain a +1 bonus to AC and saving throws.",
+		descriptionFull : "You gain a +1 bonus to AC and saving throws while you wear this cloak.",
+		attunement : true,
+		extraAC : [{name : "Cloak of Protection", mod : 1, magic : true, text : "I gain a +1 bonus to AC while attuned."}],
+		addMod : [{ type : "save", field : "all", mod : 1, text : "While I wear the Cloak of Protection, I gain a +1 to all my saving throws." }]
+	},
+	"cloak of the bat" : {
+		name : "Cloak of the Bat",
+		source : [["SRD", 214], ["D", 159]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This cloak grants me adv. on Stealth checks. In dim light or darkness, I can fly with it and, once per dawn, use it to transform myself into a bat as if casting Polymorph. To fly, at 40 ft speed, I have to grip its edges with both my hands. While in the form of the bat, I retain my Intelligence, Wisdom, and Charisma scores.",
+		descriptionFull : "While wearing this cloak, you have advantage on Dexterity (Stealth) checks. In an area of dim light or darkness, you can grip the edges of the cloak with both hands and use it to fly at a speed of 40 feet. If you ever fail to grip the cloak's edges while flying in this way, or if you are no longer in dim light or darkness, you lose this flying speed.\n   While wearing the cloak in an area of dim light or darkness, you can use your action to cast Polymorph on yourself, transforming into a bat. While you are in the form of the bat, you retain your Intelligence, Wisdom, and Charisma scores. The cloak can't be used this way again until the next dawn.",
+		attunement : true,
+		usages : 1,
+		recovery : "dawn",
+		additional : "Polymorph",
+		eval : function() { Checkbox('Ste Adv', true, 'Advantage to Stealth checks was gained from Cloak of the Bat'); },
+		removeeval : function() { Checkbox('Ste Adv', false, ''); },
+		spellcastingBonus : {
+			name : "Only self into bat",
+			spells : ["polymorph"],
+			selection : ["polymorph"],
+			firstCol : "oncelr"
+		},
+		spellChanges : {
+			"polymorph" : {
+				range : "Self",
+				description : "Only cast in dim light or darkness; I transform into a bat, gaining its stats, but I keep my Int, Wis, Cha",
+				changes : "The spell can only turn the wearer into a bat, but the wearer keeps its Intelligence, Wisdom, and Charisma scores."
+			}
+		}
+	},
+	"cloak of the manta ray" : {
+		name : "Cloak of the Manta Ray",
+		source : [["SRD", 214], ["D", 159]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "While wearing this cloak with its hood up, I can breathe underwater, and I have a swimming speed of 60 ft. Pulling the hood up or down requires an action.",
+		descriptionFull : "While wearing this cloak with its hood up, you can breathe underwater, and you have a swimming speed of 60 feet. Pulling the hood up or down requires an action.",
+		action : [["action", " (hood up/down)"]],
+		speed : { swim : { spd : "fixed60", enc : "fixed50" } }
+	},
 	"crystal ball" : {
 		name : "Crystal Ball",
 		source : [["SRD", 214], ["D", 159]],
 		type : "wondrous item",
-		description : "I can cast Scrying (save DC 17) while touching this ball of about 6 inches in diameter.",
+		description : "I can cast Scrying (DC 17) at will while touching this ball of about 6 inches in diameter.",
 		descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.",
 		attunement : true,
 		weight : 3,
@@ -613,7 +701,7 @@ var Base_MagicItemsList = {
 			name : "Crystal Ball of Mind Reading",
 			rarity : "legendary",
 			magicItemTable : "I",
-			description : "I can cast Scrying (DC 17) while touching this crystal ball of 6\" diameter. While scrying, I can cast Detect Thoughts (DC 17) to target creatures I can see within 30 ft of the spell's sensor. I don't need to concentrate on this Detect Thoughts, but it ends when the scrying ends.",
+			description : "I can cast Scrying (DC 17) at will while touching this crystal ball of 6\" diameter. While scrying, I can cast Detect Thoughts (DC 17) to target creatures I can see within 30 ft of the spell's sensor. I don't need to concentrate on this Detect Thoughts, but it ends when the scrying ends.",
 			descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   You can use an action to cast the Detect Thoughts spell (save DC 17) while you are Scrying with the crystal ball, targeting creatures you can see within 30 feet of the spell's sensor. You don't need to concentrate on this Detect Thoughts to maintain it during its duration, but it ends if Scrying ends.",
 			spellcastingBonus : {
 				name : "DC 17",
@@ -658,7 +746,7 @@ var Base_MagicItemsList = {
 			name : "Crystal Ball of True Seeing",
 			rarity : "legendary",
 			magicItemTable : "I",
-			description : "I can cast Scrying (save DC 17) while touching this ball of about 6 inches in diameter. While scrying, I can see out from the spell's sensor with truesight out to 120 ft.",
+			description : "I can cast Scrying (save DC 17) at will while touching this ball of about 6 inches in diameter. While scrying, I can see out from the spell's sensor with truesight out to 120 ft.",
 			descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   While Scrying with the crystal ball, you have truesight with a radius of 120 feet centered on the spell's sensor.",
 			spellChanges : {
 				"scrying" : {
@@ -702,6 +790,17 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
+	"decanter of endless water" : {
+		name : "Decanter of Endless Water",
+		source : [["SRD", 216], ["D", 161]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "C",
+		description : 'As an action, I open the flask \u0026 speak a command word, pouring fresh/salt water out until my next turn starts. "Stream" for 1 gal. "Fountain" for 5 gal. "Geyser" for 30 gal in 30 ft \xD7 1 ft geyser. As a bonus action, I can aim it at a target, which has to make a DC 13 Str save or take 1d4 bludgeoning damage and fall prone.',
+		descriptionLong : 'As an action, I can remove the stopper from this flask and speak one of three command words, pouring fresh or salt water (my choice) out until my next turn starts. "Stream" produces 1 gallon. "Fountain" produces 5 gallons. "Geyser" produces 30 gallons of water that gushes forth in a geyser 30 ft long by 1 ft wide. As a bonus action while holding it, I can aim the geyser at a creature I can see within 30 ft. The target must succeed on a DC 13 Strength save or take 1d4 bludgeoning damage and fall prone. I can instead target an unattended object weighing up to 200 lb, knocking it over or pushing it up to 15 ft away.',
+		descriptionFull : "This stoppered flask sloshes when shaken, as if it contains water. The decanter weighs 2 pounds.\n   You can use an action to remove the stopper and speak one of three command words, whereupon an amount of fresh water or salt water (your choice) pours out of the flask. The water stops pouring out at the start of your next turn. Choose from the following options:\n \u2022 \"Stream\" produces 1 gallon of water.\n \u2022 \"Fountain\" produces 5 gallons of water.\n \u2022 \"Geyser\" produces 30 gallons of water that gushes forth in a geyser 30 feet long and 1 foot wide. As a bonus action while holding the decanter, you can aim the geyser at a creature you can see within 30 feet of you. The target must succeed on a DC 13 Strength saving throw or take 1d4 bludgeoning damage and fall prone. Instead of a creature, you can target an object that isn't being worn or carried and that weighs no more than 200 pounds. The object is either knocked over or pushed up to 15 feet away from you.",
+		weight : 2
+	},
 	"defender" : {
 		name : "Defender",
 		source : [["SRD", 218], ["D", 164]],
@@ -739,6 +838,16 @@ var Base_MagicItemsList = {
 				}, ''
 			]
 		}
+	},
+	"dimensional shackles" : {
+		name : "Dimensional Shackles",
+		source : [["SRD", 219], ["D", 165]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "As an action, I can shackle an incapacitated creature of size Small to Large. They work as mundane manacles and prevent extradimensional movement, but not portal travel. I and others I designate can remove them as an action. The bound target can try every 30 days to break them with a DC 30 Athletics check.",
+		descriptionFull : "You can use an action to place these shackles on an incapacitated creature. The shackles adjust to fit a creature of Small to Large size. In addition to serving as mundane manacles, the shackles prevent a creature bound by them from using any method of extradimensional movement, including teleportation or travel to a different plane of existence. They don't prevent the creature from passing-through an interdimensional portal.\n   You and any creature you designate when you use the shackles can use an action to remove them. Once every 30 days, the bound creature can make a DC 30 Strength (Athletics) check. On a success, the creature breaks free and destroys the shackles.",
+		action : [["action", " (bind/remove)"]]
 	},
 	"dragon scale mail" : {
 		name : "Dragon Scale Mail",
@@ -1007,6 +1116,47 @@ var Base_MagicItemsList = {
 			}
 		}
 	},
+	"eyes of charming" : {
+		name : "Eyes of Charming",
+		source : [["SRD", 220], ["D", 168]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "These crystal lenses fit over the eyes. They have 3 charges. While wearing them, I can expend 1 charge as an action to cast Charm Person (save DC 13) on a humanoid within 30 ft of me, provided that I and the target can see each other. The lenses regain all expended charges daily at dawn.",
+		descriptionFull : "These crystal lenses fit over the eyes. They have 3 charges. While wearing them, you can expend 1 charge as an action to cast the Charm Person spell (save DC 13) on a humanoid within 30 feet of you, provided that you and the target can see each other. The lenses regain all expended charges daily at dawn.",
+		attunement : true,
+		usages : 3,
+		recovery : "dawn",
+		spellcastingBonus : {
+			name : "1 charge",
+			spells : ["charm person"],
+			selection : ["charm person"],
+			firstCol : 1
+		},
+		fixedDC : 13,
+		spellFirstColTitle : "Ch"
+	},
+	"eyes of minute seeing" : { // contributed by Soilentbrad
+		name : "Eyes of Minute Seeing",
+		source : [["SRD", 221], ["D", 168]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "C",
+		description : "These crystal lenses fit over the eyes. While wearing them, I can see much better than normal out to a range of 1 ft. I have advantage on Intelligence (Investigation) checks that rely on sight while searching an area or studying an object within that range.",
+		descriptionFull : "These crystal lenses fit over the eyes. While wearing them, you can see much better than normal out to a range of 1 foot. You have advantage on Intelligence (Investigation) checks that rely on sight while searching an area or studying an object within that range.",
+		vision : [["Adv. on Investigation checks based on sight", 1]]
+	},
+	"eyes of the eagle" : {
+		name : "Eyes of the Eagle",
+		source : [["SRD", 221], ["D", 168]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "These crystal lenses fit over the eyes. While wearing them, I have advantage on Wisdom (Perception) checks that rely on sight. In conditions of clear visibility, I can make out details of even extremely distant creatures and objects as small as 2 ft across.",
+		descriptionFull : "These crystal lenses fit over the eyes. While wearing them, you have advantage on Wisdom (Perception) checks that rely on sight. In conditions of clear visibility, you can make out details of even extremely distant creatures and objects as small as 2 feet across.",
+		attunement : true,
+		vision : [["Adv. on Perception checks that rely on sight", 0]]
+	},
 	"flame tongue" : {
 		name : "Flame Tongue",
 		source : [["SRD", 223], ["D", 170]],
@@ -1038,6 +1188,18 @@ var Base_MagicItemsList = {
 				'If I include the words "Flame Tongue" in a the name of a sword, it will be treated as the magic weapon Flame Tongue. When the command word is spoken, the blade erupts with flames, adding +2d6 fire damage on a hit and shining light.'
 			]
 		}
+	},
+	"folding boat" : {
+		name : "Folding Boat",
+		source : [["SRD", 223], ["D", 170]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "C",
+		description : "As an action, I can speak a command word to have this wooden box become a boat, a ship, or to fold back up. The boat holds 4 Medium creatures and has oars, anchor, mast, and a sail. The ship holds 15 Medium creatures and has a deck, five sets of oars, rowing seats, a steering oar, anchor, deck cabin, mast, and a sail.",
+		descriptionLong : "A wooden box of 12 inch \xD7 6 inch \xD7 6 inch, that can be opened to put items in. As an action, I can speak one of its three command words. The first causes it to unfold into a boat 10 ft \xD7 4 ft \xD7 2 ft, with oars, an anchor, a mast, and a lateen sail, which can hold four Medium creatures comfortably. The second causes it to unfold into a ship 24 ft \xD7 8 ft \xD7 6 ft, with a deck, rowing seats, five sets of oars, a steering oar, an anchor, a deck cabin, and a mast with a square sail, which can hold fifteen Medium creatures comfortably. Three causes it to fold up, leaving large objects placed in the boat/ship outside of the box.",
+		descriptionFull : "This object appears as a wooden box that measures 12 inches long, 6 inches wide, and 6 inches deep. It weighs 4 pounds and floats. It can be opened to store items inside. This item also has three command words, each requiring you to use an action to speak it.\n   One command word causes the box to unfold into a boat 10 feet long, 4 feet wide, and 2 feet deep. The boat has one pair of oars, an anchor, a mast, and a lateen sail. The boat can hold up to four Medium creatures comfortably.\n   The second command word causes the box to unfold into a ship 24 feet long, 8 feet wide; and 6 feet deep. The ship has a deck, rowing seats, five sets of oars, a steering oar, an anchor, a deck cabin, and a mast with a square sail. The ship can hold fifteen Medium creatures comfortably.\n   When the box becomes a vessel, its weight becomes that of a normal vessel its size, and anything that was stored in the box remains in the boat.\n   The third command word causes the folding boat to fold back into a box, provided that no creatures are aboard. Any objects in the vessel that can't fit inside the box remain outside the box as it folds. Any objects in the vessel that can fit inside the box do so.",
+		weight : 4,
+		action : [["action", ""]]
 	},
 	"frost brand" : {
 		name : "Frost Brand",
@@ -1084,6 +1246,34 @@ var Base_MagicItemsList = {
 		descriptionFull : "Your Strength score is 19 while you wear these gauntlets. They have no effect on you if your Strength is already 19 or higher without them.",
 		attunement : true,
 		scoresOverride : [19, 0, 0, 0, 0, 0]
+	},
+	"gem of brightness" : { // contains contributions by Larry Hoy
+		name : "Gem of Brightness",
+		source : [["SRD", 223], ["D", 171]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "This gem has 50 charges. As an action while holding it, I can speak a command word to cause it to: shed 30-ft bright and 30-ft dim light, fire a 60-ft beam of light at 1 creature (1 charge, DC 15 Con save or blinded 1 minute), or flare with blinding light in a 30-ft cone (5 charges, DC 15 Con save or blinded 1 minute).",
+		descriptionLong : "This gem has 50 charges. As an action while holding it, I can speak one of its three command words to cause it to: [1] shed bright light in a 30-ft radius and dim light in an additional 30 ft until another function of the gem is used or I use a bonus action to end it, [2] fire a 60-ft beam of light at 1 creature (1 charge, DC 15 Con save or blinded 1 minute), or [3] flare with blinding light in a 30-ft cone (5 charges, DC 15 Con save or blinded 1 minute). Blinded creatures can repeat the save at the end of each of their turns. When all of the gem's charges are expended, the gem becomes a nonmagical jewel worth 50 gp.",
+		descriptionFull : "This prism has 50 charges. While you are holding it, you can use an action to speak one of three command words to cause one of the following effects:\n \u2022 The first command word causes the gem to shed bright light in a 30-foot radius and dim light for an additional 30 feet. This effect doesn't expend a charge. It lasts until you use a bonus action to repeat the command word or until you use another function of the gem.\n \u2022 The second command word expends 1 charge and causes the gem to fire a brilliant beam of light at one creature you can see within 60 feet of you. The creature must succeed on a DC 15 Constitution saving throw or become blinded for 1 minute. The creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.\n \u2022 The third command word expends 5 charges and causes the gem to flare with blinding light in a 30-foot cone originating from it. Each creature in the cone must make a saving throw as if struck by the beam created with the second command word.\n\nWhen all of the gem's charges are expended, the gem becomes a nonmagical jewel worth 50 gp.",
+		weight : 1,
+		usages : 50,
+		recovery : "Never",
+		action : [["action", ""]]
+	},
+	"gem of seeing" : { // contains contributions by Larry Hoy
+		name : "Gem of Seeing",
+		source : [["SRD", 223], ["D", 172]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This gem has 3 charges. As an action, I can speak its command word and expend 1 charge. For the next 10 minutes, I have truesight out to 120 ft when I peer through the gem. The gem regains 1d3 expended charges daily at dawn.",
+		descriptionFull : "This gem has 3 charges. As an action, you can speak the gem's command word and expend 1 charge. For the next 10 minutes, you have truesight out to 120 feet when you peer through the gem.\n   The gem regains 1d3 expended charges daily at dawn.",
+		attunement : true,
+		weight : 1,
+		usages : 3,
+		recovery : "dawn",
+		additional : "1d3 Recharge"
 	},
 	"giant slayer" : {
 		name : "Giant Slayer",
@@ -1174,6 +1364,23 @@ var Base_MagicItemsList = {
 		descriptionFull : "While wearing these dark lenses, you have darkvision out to a range of 60 feet. If you already have darkvision. wearing the goggles increases its range by 60 feet.",
 		vision : [["Darkvision", "fixed60"], ["Darkvision", "+60"]]
 	},
+	"hat of disguise" : { // contributed by Larry Hoy
+		name : "Hat of Disguise",
+		source : [["SRD", 225], ["D", 173]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "As an action while wearing this hat, I can cast Disguise Self from it at will. The spell ends if the hat is removed.",
+		descriptionFull : "While wearing this hat, you can use an action to cast the Disguise Self spell from it at will. The spell ends if the hat is removed.",
+		attunement : true,
+		spellcastingBonus : [{
+			name : "At will",
+			spells : ["disguise self"],
+			selection : ["disguise self"],
+			firstCol : "atwill"
+	   }],
+	   fixedDC : "class" // https://www.sageadvice.eu/2015/11/27/hat-of-disguise-dc/
+	},
 	"headband of intellect" : {
 		name : "Headband of Intellect",
 		source : [["SRD", 225], ["D", 173]],
@@ -1184,6 +1391,46 @@ var Base_MagicItemsList = {
 		descriptionFull : "Your Intelligence score is 19 while you wear this headband. It has no effect on you if your Intelligence is already 19 or higher without it.",
 		attunement : true,
 		scoresOverride : [0, 0, 0, 19, 0, 0]
+	},
+	"helm of comprehending languages" : { // contributed by Larry Hoy
+		name : "Helm of Comprehending Languages",
+		source : [["SRD", 225], ["D", 173]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "While wearing this helm, I can cast Comprehend Languages at will.",
+		descriptionFull : "While wearing this helm, you can use an action to cast the Comprehend Languages spell from it at will.",
+		spellcastingBonus : [{
+			name : "At will",
+			spells : ["comprehend languages"],
+			selection : ["comprehend languages"],
+			firstCol : "atwill"
+		}]
+	},
+	"helm of telepathy" : {
+		name : "Helm of Telepathy",
+		source : [["SRD", 225], ["D", 174]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While wearing this helm, I can cast Detect Thoughts (DC 13). As a bonus action, I can send a telepathic message to a creature that I'm focussing on with Detect Thoughts, which can reply as a bonus action. Once between each dawn, I can cast Suggestion (DC 13) on a creature I'm focussing on with Detect Thoughts.",
+		descriptionFull : "While wearing this helm, you can use an action to cast the Detect Thoughts spell (save DC 13) from it. As long as you maintain concentration on the spell, you can use a bonus action to send a telepathic message to a creature you are focused on. It can reply\u2014using a bonus action to do so\u2014while your focus on it continues.\n   While focusing on a creature with Detect Thoughts, you can use an action to cast the Suggestion spell (save DC 13) from the helm on that creature. Once used, the suggestion property can't be used again until the next dawn.",
+		attunement : true,
+		limfeaname : "Helm of Telepathy: Suggestion",
+		usages : 1,
+		recovery : "dawn",
+		fixedDC : 13,
+		spellcastingBonus : [{
+			name : "At will",
+			spells : ["detect thoughts"],
+			selection : ["detect thoughts"],
+			firstCol : "atwill"
+		}, {
+			name : "Once per dawn",
+			spells : ["suggestion"],
+			selection : ["suggestion"],
+			firstCol : "oncelr"
+		}]
 	},
 	"holy avenger" : {
 		name : "Holy Avenger",
@@ -1238,6 +1485,31 @@ var Base_MagicItemsList = {
 			name : "Holy\u200A\u200A Avenger",
 			description : "I have a +3 bonus to attack and damage rolls made with this magic sword. It does +2d10 radiant damage against fiends and undead. While holding the drawn sword, I have a 30-ft radius aura that grants me and my allies advantage on saving throws against spells and magical effects."
 		}
+	},
+	"heward's handy haversack" : {
+		name : "Heward's Handy Haversack",
+		nameAlt : "Handy Haversack",
+		source : [["SRD", 224], ["D", 174]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "C",
+		description : "This backpack weighs 5 lb, regardless of its contents. It has two side pouches that hold 20 lb (2 cu ft) each and a central pouch that holds 80 lb (8 cu ft). Retrieving an item from it requires an action. If it's overloaded, pierced, or torn, it and its content are destroyed. If turned inside out, all its contents spill forth.",
+		descriptionLong : "This backpack weighs 5 lb, regardless of its contents. It has two side pouches that hold up to 20 lb (2 cu ft) each and a central pouch that holds up to 80 lb (8 cu ft). Retrieving an item from it requires an action. When I reach in the bag for a specific item, the item is always magically on top. If it's overloaded, pierced, or torn, it and its content are destroyed. If turned inside out, all its contents spill forth. A creature placed inside the bag can survive for 10 minutes before starting to suffocate. Placing the haversack in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
+		descriptionFull : "This backpack has a central pouch and two side pouches, each of which is an extradimensional space. Each side pouch can hold up to 20 pounds of material, not exceeding a volume of 2 cubic feet. The large central pouch can hold up to 8 cubic feet or 80 pounds of material. The backpack always weighs 5 pounds, regardless of its contents.\n   Placing an object in the haversack follows the normal rules for interacting with objects. Retrieving an item from the haversack requires you to use an action. When you reach into the haversack for a specific item, the item is always magically on top.\n   The haversack has a few limitations. If it is overloaded, or if a sharp object pierces it or tears it, the haversack ruptures and is destroyed. If the haversack is destroyed, its contents are lost forever, although an artifact always turns up again somewhere. If the haversack is turned inside out, its contents spill forth, unharmed, and the haversack must be put right before it can be used again. If a breathing creature is placed within the haversack, the creature can survive for up to 10 minutes, after which time it begins to suffocate.\n   Placing the haversack inside an extradimensional space created by a bag of holding, portable hole, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10-feet of the gate is sucked through it and deposited in a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
+		weight : 5,
+		action : [["action", " (retrieve item)"]]
+	},
+	"horn of blasting" : { // contains contributions by Larry Hoy
+		name : "Horn of Blasting",
+		source : [["SRD", 226], ["D", 174]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "As an action, I can speak the horn's command word and blow it, creating a 30-ft cone. All in it take 5d6 thunder damage and are deafened for 1 min. Half damage with a DC 15 Con save and not deafened. Glass/crystal creatures/objects have disadv. and take 10d6 damage. There is a 20% chance each use that it explodes.",
+		descriptionLong: "As an action, I can speak the horn's command word and blow it, emitting a thunderous blast in a 30-foot cone audible 600 feet away. Creatures in the cone must make a DC 15 Con save or take 5d6 thunder damage and be deafened for 1 min; otherwise, they just take half the damage. Creatures and objects made of glass or crystal have disadvantage on the save and take 10d6 thunder damage instead. Each use of its magic has a 20% chance of causing it to explode, dealing 10d6 fire damage to the blower and destroying it.",
+		descriptionFull : "You can use an action to speak the horn's command word and then blow the horn, which emits a thunderous blast in a 30-foot cone that is audible 600 feet away. Each creature in the cone must make a DC 15 Constitution saving throw. On a failed save, a creature takes 5d6 thunder damage and is deafened for 1 minute. On a successful save, a creature takes half as much damage and isn't deafened. Creatures and objects made of glass or crystal have disadvantage on the saving throw and take 10d6 thunder damage instead of 5d6.\n   Each use of the horn's magic has a 20% chance of causing the horn to explode. The explosion deals 10d6 fire damage to the blower and destroys the horn.",
+		weight : 2,
+		action : [["action", ""]]
 	},
 	"immovable rod" : {
 		name : "Immovable Rod",
@@ -1392,6 +1664,17 @@ var Base_MagicItemsList = {
 			weight : 1
 		}
 	},
+	"lantern of revealing" : {
+		name : "Lantern of Revealing",
+		source : [["SRD", 228], ["D", 179]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "This lantern burns for 6 hours on 1 pint of oil. It shines bright light in a 30-ft radius and dim light for an additional 30 ft. Invisible objects and creatures are visible in the lantern's bright light. As an action, I can lower the hood, making it only dim light in a 5-ft radius.",
+		descriptionFull : "While lit, this hooded lantern burns for 6 hours on 1 pint of oil, shedding bright light in a 30-foot radius and dim light for an additional 30 feet. Invisible creatures and objects are visible as long as they are in the lantern's bright light. You can use an action to lower the hood, reducing the light to dim light in a 5-foot radius.",
+		weight : 2,
+		action : [["action", " (hood up/down)"]]
+	},
 	"luck blade" : {
 		name : "Luck Blade",
 		source : [["SRD", 229], ["D", 179]],
@@ -1438,6 +1721,28 @@ var Base_MagicItemsList = {
 				}, ''
 			]
 		}
+	},
+	"medallion of thoughts" : {
+		name : "Medallion of Thoughts",
+		source : [["SRD", 230], ["D", 181]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "The medallion has 3 charges. While wearing it, I can use an action and expend 1 charge to cast Detect Thoughts (save DC 13) from it. The medallion regains 1d3 expended charges daily at dawn.",
+		descriptionFull : "The medallion has 3 charges. While wearing it, you can use an action and expend 1 charge to cast the Detect Thoughts spell (save DC 13) from it. The medallion regains 1d3 expended charges daily at dawn.",
+		attunement : true,
+		weight : 1,
+		usages : 3,
+		recovery : "dawn",
+		additional : "regain 1d3",
+		spellcastingBonus : {
+			name : "1 charge",
+			spells : ["detect thoughts"],
+			selection : ["detect thoughts"],
+			firstCol : 1
+		},
+		fixedDC : 13,
+		spellFirstColTitle : "Ch"
 	},
 	"nine lives stealer" : {
 		name : "Nine Lives Stealer",
@@ -1567,6 +1872,49 @@ var Base_MagicItemsList = {
 		descriptionFull : "The next time you see a creature within 10 minutes after drinking this philter, you become charmed by that creature for 1 hour. If the creature is of a species and gender you are normally attracted to, you regard it as your true love while you are charmed. This potion's rose-hued, effervescent liquid contains one easy-to-miss bubble shaped like a heart.",
 		weight : 0.5
 	},
+	"pipes of haunting" : { // contains contributions by Soilentbrad
+		name : "Pipes of Haunting",
+		source : [["SRD", 232], ["D", 185]],
+		type : "Instrument",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "These pipes have 3 charges. As an action, I can use 1 charge to play them and have each (non-hostile) creature in 30 ft that can hear them make a DC 15 Wis save or be frightened of me for 1 minute. A target can repeat the save at the end of each of their turns. The pipes regain 1d3 expended charges daily at dawn.",
+		descriptionLong : "These pipes have 3 charges. As an action, I can expand 1 charge to create an eerie, spellbinding tune. Each creature within 30 ft of me that can hear the pipes must make a DC 15 Wisdom saving throw or become frightened of me for 1 minute.  If you wish, all creatures in the area that aren't hostile toward me automatically succeed on the saving throw. An affected creature can repeat the save at the end of each of its turns, ending the effect on itself on a success. A creature that succeeds on its saving throw is immune to the effect of these pipes for 24 hours. The pipes regain 1d3 expended charges daily at dawn.",
+		descriptionFull : "You must be proficient with wind instruments to use these pipes. They have 3 charges. You can use an action to play them and expend 1 charge to create an eerie, spellbinding tune. Each creature within 30 feet of you that hears you play must succeed on a DC 15 Wisdom saving throw or become frightened of you for 1 minute. If you wish, all creatures in the area that aren't hostile toward you automatically succeed on the saving throw. A creature that fails the saving throw can repeat it at the end of each of its turns, ending the effect on itself on a success. A creature that succeeds on its saving throw is immune to the effect of these pipes for 24 hours. The pipes regain 1d3 expended charges daily at dawn.",
+		weight : 2,
+		action : [["action", ""]],
+		usages : 3,
+		recovery : "dawn",
+		additional : "regain 1d3",
+		prerequisite : "Requires proficiency with wind instruments",
+		prereqeval : function (v) {
+			for (var i = 0; i < v.toolProfs; i++) {
+				if ((/pipe|flute|horn|trumpet|horn|ocarina|sackbut|shawm|trombone|tuba|bombard|cornett|flageolet|^(?=.*(air|wind))(?=.*instrument).*$/i).test(v.toolProfs[i])) return true;
+			}
+		}
+	},
+	"pipes of the sewers" : { // contains contributions by Soilentbrad
+		name : "Pipes of the Sewers",
+		source : [["SRD", 232], ["D", 185]],
+		type : "Instrument",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "The pipes have 3 charges, regain 1d3 at dawn, and cause rats to be indifferent toward me unless threatened. As an action, I can play them, then use a bonus action to summon rats in 0.5 miles to form 1 swarm per charge spend. While playing, rat swarms in 30 ft make a Wis check vs. my Cha check or obey my commands.",
+		descriptionLong : "The pipes have 3 charges, regain 1d3 at dawn, and cause rats to be indifferent toward me unless threatened. As an action, I can play them, then use a bonus action to summon rats within 0.5 miles to come towards me and form 1 swarm of rats per charge I spend.  When a swarm of rats that isn't under another's control comes within 30 ft of me while I play the pipes, I can make a Charisma check contested by the swarm's Wisdom check. If the swarm fails, it obeys my commands for as long as they can hear the pipes at the start of its turn. If the swarm succeeds or it falls out of the sway, it can't be affected again for 24 hours.",
+		descriptionFull : "You must be proficient with wind instruments to use these pipes. While you are attuned to the pipes, ordinary rats and giant rats are indifferent toward you and will not attack you unless you threaten or harm them.\n   The pipes have 3 charges. If you play the pipes as an action, you can use a bonus action to expend 1 to 3 charges, calling forth one swarm of rats with each expended charge, provided that enough rats are within half a mile of you to be called in this fashion (as determined by the DM). If there aren't enough rats to form a swarm, the charge is wasted. Called swarms move toward the music by the shortest available route but aren't under your control otherwise. The pipes regain 1d3 expended charges daily at dawn.\n   Whenever a swarm of rats that isn't under another creature's control comes within 30 feet of you while you are playing the pipes, you can make a Charisma check contested by the swarm's Wisdom check. If you lose the contest, the swarm behaves as it normally would and can't be swayed by the pipes' music for the next 24 hours. If you win the contest, the swarm is swayed by the pipes' music and becomes friendly to you and your companions for as long as you continue to play the pipes each round as an action. A friendly swarm obeys your commands. If you issue no commands to a friendly swarm, it defends itself but otherwise takes no actions. If a friendly swarm starts its turn and can't hear the pipes' music, your control over that swarm ends, and the swarm behaves as it normally would and can't be swayed by the pipes' music for the next 24 hours.",
+		attunement : true,
+		weight : 2,
+		action : [["action", ""]],
+		usages : 3,
+		recovery : "dawn",
+		additional : "regain 1d3",
+		prerequisite: "Requires proficiency with wind instruments",
+		prereqeval: function (v) {
+			for (var i = 0; i < v.toolProfs; i++) {
+				if ((/pipe|flute|horn|trumpet|horn|ocarina|sackbut|shawm|trombone|tuba|bombard|cornett|flageolet|^(?=.*(air|wind))(?=.*instrument).*$/i).test(v.toolProfs[i])) return true;
+			}
+		}
+	},
 	"potion of speed" : {
 		name : "Potion of Speed",
 		source : [["SRD", 235], ["D", 188]],
@@ -1577,6 +1925,28 @@ var Base_MagicItemsList = {
 		descriptionLong : "Once as an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own. Haste doubles its speed, gives a +2 bonus to AC, gives advantage on Dex saves, and gives an additional action on each turn. That action can be used only to take the Attack (one weapon attack only), Dash, Disengage, Hide, or Use an Object action. When the spell ends, the target can't move or take actions until after its next turn, as a wave of lethargy sweeps over it.",
 		descriptionFull : "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
 		weight : 0.5
+	},
+	"quiver of ehlonna" : {
+		name : "Quiver of Ehlonna",
+		nameAlt : "Efficient Quiver",
+		source : [["SRD", 220], ["D", 189]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "This quiver has three compartments and weighs 2 lb, regardless of its contents. Its shortest compartment can hold 60 arrows, bolts, or similar objects. Its midsize compartment holds up to 18 javelins or similar objects. Its longest compartment holds up to 6 long objects, such as bows, quarterstaffs, or spears.",
+		descriptionFull : "Each of the quiver's three compartments connects to an extradimensional space that allows the quiver to hold numerous items while never weighing more than 2 pounds. The shortest compartment can hold up to sixty arrows, bolts, or similar objects. The midsize compartment holds up to eighteen javelins or similar objects. The longest compartment holds up to six long objects, such as bows, quarterstaffs, or spears.\n   You can draw any item the quiver contains as if doing so from a regular quiver or scabbard.",
+		weight : 2
+	},
+	"ring of free action" : {
+		name : "Ring of Free Action",
+		source : [["SRD", 236], ["D", 191]],
+		type : "ring",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "While I wear this ring, difficult terrain doesn't cost me extra movement. In addition, magic can neither reduce me speed nor cause you to be paralyzed or restrained.",
+		descriptionFull : "While you wear this ring, difficult terrain doesn't cost you extra movement. In addition, magic can neither reduce your speed nor cause you to be paralyzed or restrained.",
+		attunement : true,
+		savetxt : { immune : ["paralyzed", "restrained"] }
 	},
 	"ring of jumping" : {
 		name : "Ring of Jumping",
@@ -1602,6 +1972,31 @@ var Base_MagicItemsList = {
 			}
 		}
 	},
+	"ring of mind shielding" : {
+		name : "Ring of Mind Shielding",
+		source : [["SRD", 236], ["D", 191]],
+		type : "ring",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "This ring makes me immune to magic that allows others to read my thoughts, determine if I'm lying, know my alignment or creature type, and telepathy only works if I allow it. As an action, I can cause it to become invisible as long as I wear it and not die, or visible again. If I die while wearing it, my soul enters it.",
+		descriptionLong : "While wearing this ring, I'm immune to magic that allows others to read my thoughts, know my alignment or creature type, or determine if I'm lying. Also, telepathy only works if I allow it. As an action, I can cause it to become invisible for as long as I wear it and not die, or visible again. If I die while wearing it, my soul enters it unless it already houses a soul. I can remain in the ring or depart for the afterlife. As long as my soul is in the ring, I can telepathically communicate with any creature wearing it. A wearer can't prevent this telepathic communication.",
+		descriptionFull : "While wearing this ring, you are immune to magic that allows other creatures to read your thoughts, determine whether you are lying, know your alignment, or know your creature type. Creatures can telepathically communicate with you only if you allow it.\n   You can use an action to cause the ring to become invisible until you use another action to make it visible, until you remove the ring, or until you die.\n   If you die while wearing the ring, your soul enters it, unless it already houses a soul. You can remain in the ring or depart for the afterlife. As long as your soul is in the ring, you can telepathically communicate with any creature wearing it. A wearer can't prevent this telepathic communication.",
+		attunement : true,
+		action : [["action", "Ring of Mind Shielding: (in)visible"]],
+		savetxt : { immune : ["magic reading my thoughts, truthfullness, alignment, or type"] }
+	},
+	"ring of protection" : {
+		name : "Ring of Protection",
+		source : [["SRD", 237], ["D", 191]],
+		type : "ring",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "while I wear this ring, I gain a +1 bonus to AC and saving throws.",
+		descriptionFull : "You gain a +1 bonus to AC and saving throws while wearing this ring.",
+		attunement : true,
+		extraAC : [{name : "Ring of Protection", mod : 1, magic : true, text : "I gain a +1 bonus to AC while attuned."}],
+		addMod : [{ type : "save", field : "all", mod : 1, text : "While I wear the Ring of Protection, I gain a +1 to all my saving throws." }]
+	},
 	"ring of swimming" : {
 		name : "Ring of Swimming",
 		source : [["SRD", 238], ["D", 193]],
@@ -1610,24 +2005,95 @@ var Base_MagicItemsList = {
 		magicItemTable : "B",
 		description : "I have a swimming speed of 40 feet while wearing this ring.",
 		descriptionFull : "You have a swimming speed of 40 feet while wearing this ring.",
-		speed : { swim : { spd : 40, enc : 30 } }
+		speed : { swim : { spd : "fixed40", enc : "fixed30" } }
 	},
-	"staff of the magi" : { // contributed by Pengsloth
+	"ring of the ram" : {
+		name : "Ring of the Ram",
+		source : [["SRD", 238], ["D", 193]],
+		type : "ring",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This ring has 3 charges, regaining 1d3 charges daily at dawn. As an action, I can use charges to make a ranged attack on a target in 60 ft, with a +7 to hit, doing 2d10 force damage per charge and pushing it 5 ft per charge. If I target an unattended object, I can try to break it with a +5 per charge on the Strength check.",
+		descriptionFull : "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. While wearing the ring, you can use an action to expend 1 to 3 of its charges to attack one creature you can see within 60 feet of you. The ring produces a spectral ram's head and makes its attack roll with a +7 bonus. On a hit, for each charge you spend, the target takes 2d10 force damage and is pushed 5 feet away from you.\n   Alternatively, you can expend 1 to 3 of the ring's charges as an action to try to break an object you can see within 60 feet of you that isn't being worn or carried. The ring makes a Strength check with a +5 bonus for each charge you spend.",
+		attunement : true,
+		weaponsAdd : ["Ring of the Ram"],
+		weaponOptions : {
+			regExpSearch : /^(?=.*ring)(?=.*ram).*$/i,
+			name : "Ring of the Ram",
+			source : [["SRD", 238], ["D", 193]],
+			ability : 0,
+			type : "Magic Item",
+			damage : [2, 10, "force"],
+			range : "60 ft",
+			description : "Damage is per charge used, also pushes 5 ft away per charge used",
+			abilitytodamage : false,
+			modifiers : [7, ""]
+		}
+	},
+	"ring of water walking" : {
+		name : "Ring of Water Walking",
+		source : [["SRD", 238], ["D", 193]],
+		type : "ring",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While wearing this ring, I can stand on and move across any liquid surface as if it were solid ground.",
+		descriptionFull : "While wearing this ring, you can stand on and move across any liquid surface as if it were solid ground."
+	},
+	"robe of useful items" : {
+		name : "Robe of Useful Items",
+		source : [["SRD", 239], ["D", 195]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "As an action while donned, I can detach one patch, causing it to become the thing it represents. The robe becomes ordinary if it runs out of patches. It has two each of: dagger, bullseye lantern (filled and lit), steel mirror, 10-ft pole, 50 ft hempen rope, sack. In addition, it has 4d4 patches that are determined by the DM.",
+		descriptionFull : "This robe has cloth patches of various shapes and colors covering it. While wearing the robe. you can use an action to detach one of the patches, causing it to become the object or creature it represents. Once the last patch is removed, the robe becomes an ordinary garment.\n\nThe robe has two of each of the following patches:\n \u2022 Dagger\n \u2022 Bullseye lantern (filled and lit)\n \u2022 Steel mirror\n \u2022 10-foot pole\n \u2022 Hempen rope (50 feet, coiled)\n \u2022 Sack\n\nIn addition, the robe has 4d4 other patches. The DM chooses the patches or determines them randomly.\n\n" + toUni("d100\tPatch") + "\n01-08\tBag of 100 gp\n09-15\tSilver coffer (1 foot long, 6 inches wide and deep) worth 500 gp\n16-22\tIron door (up to 10 feet wide and 10 feet high, barred on one side of your choice), which you can place in an opening you can reach; it conforms to fit the opening, attaching and hinging itself\n23-30\t10 gems worth 100 gp each\n31-44\tWooden ladder (24 feet long)\n45-51\tA riding horse with saddle bags\n52-59\tPit (a cube 10 feet on a side), which you can place on the ground within 10 feet of you\n60-68\t4 potions of healing\n69-75\tRowboat (12 feet long)\n76-83\tSpell scroll containing one spell of 1st to 3rd level\n84-90\t2 mastiffs\n91-96\tWindow (2 feet by 4 feet, up to 2 feet deep), which you can place on a vertical surface you can reach\n97-00\tPortable ram",
+		weight : 4,
+		action : ["action", ""]
+	},
+	"rope of climbing" : {
+		name : "Rope of Climbing",
+		source : [["SRD", 241], ["D", 197]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "This 60 ft silk rope can hold 3000 lb. As an action while I hold one end of it, I can animate it with its command word. Then, as a bonus action, I can command its other end to: start/stop moving (10 ft per turn), (un)fasten itself, coil itself, or (un)knot itself (50 ft length, adv. to climb it). It has AC 20, 20 HP, heals 1 HP/5 min.",
+		descriptionLong : "This 60-ft length of silk rope can hold up to 3000 lb. As an action while holding one end of the rope, I can speak the command word to animate it. Then, as a bonus action, I can command the other end to move 10 ft to a chosen destination up to its maximum length away, moving 10 ft on each of my turns until it reaches it. I can also use the bonus action to tell it to stop moving, to fasten itself securely, to unfasten itself, to knot or unknot itself, or to coil itself for carrying. While knotted, the rope shortens to 50 ft and grants advantage to climb it. The rope has AC 20 and 20 HP, regaining 1 HP per 5 minutes.",
+		descriptionFull : "This 60-foot length of silk rope weighs 3 pounds and can hold up to 3,000 pounds. If you hold one end of the rope and use an action to speak the command word, the rope animates. As a bonus action, you can command the other end to move toward a destination you choose. That end moves 10 feet on your turn when you first command it and 10 feet on each of your turns until reaching its destination, up to its maximum length away, or until you tell it to stop. You can also tell the rope to fasten itself securely to an object or to unfasten itself, to knot or unknot itself, or to coil itself for carrying.\n   If you tell the rope to knot, large knots appear at 1-foot intervals along the rope. While knotted, the rope shortens to a 50-foot length and grants advantage on checks made to climb it.\n   The rope has AC 20 and 20 hit points. It regains 1 hit point every 5 minutes as long as it has at least 1 hit point. If the rope drops to 0 hit points, it is destroyed.",
+		weight : 3,
+		action : [["action", " (animate)"], ["bonus action", " (move/fasten/knot/coil)"]]
+	},
+	"slippers of spider climbing" : {
+		name : "Slippers of Spider Climbing",
+		source : [["SRD", 242], ["D", 200]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While I wear these light shoes, I can move up, down, and across vertical surfaces and upside down along ceilings, while leaving my hands free. I have a climbing speed equal to my walking speed. However, the slippers don't allow me to move this way on a slippery surface, such as one covered by ice or oil.",
+		descriptionFull : "While you wear these light shoes, you can move up, down, and across vertical surfaces and upside down along ceilings, while leaving your hands free. You have a climbing speed equal to your walking speed. However, the slippers don't allow you to move this way on a slippery surface, such as one covered by ice or oil.",
+		attunement : true,
+		speed : { climb : { spd : "walk", enc : "walk" } }
+	},
+	"staff of the magi" : { // contains contributions by Pengsloth
 		name : "Staff of the Magi",
 		source : [["SRD", 244], ["D", 203]],
 		type : "staff",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "", // NOT YET FINISHED!
+		description : "While holding this staff I have a +2 to spell attacks, adv. on saves vs. spells. It is also a +2 quarterstaff. The staff has 50 charges (regains 4d6+2 at dawn) to cast spells. I can use a reaction to absorb a spell targeting only me., converting its spell level to charges. I can break it as an action, causing a 30-ft explosion.",
+		descriptionLong : "While holding this staff I have a +2 to spell attacks, adv. on saving throws vs. spells, and can be used as a +2 quarterstaff. The staff has 50 charges (4d6+2 at dawn) to cast spells. When the last charge is used, it has a 5% chance to regain 1d12+1 charges. I can use a reaction to absorb a spell targeting only me, converting its spell level to charges. If that brings the staff over 50 charges or I use an action to break it, it explodes. If it explodes, there is a 50% chance I teleport to a random plane, otherwise I take 16\xD7 the charges left in force damage. All within 10 ft take 8\xD7, 20 ft 6\xD7, and 30 ft 4\xD7; DC 17 Dex save halves.",
 		descriptionFull : "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While you hold it, you gain a +2 bonus to spell attack rolls.\n   The staff has 50 charges for the following properties. It regains 4d6+2 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 20, the staff regains 1d12+1 charges.\n   " + toUni("Spell Absorption") + ". While holding the staff, you have advantage on saving throws against spells. In addition, you can use your reaction when another creature casts a spell that targets only you. If you do, the staff absorbs the magic of the spell, canceling its effect and gaining a number of charges equal to the absorbed spell's level. However, if doing so brings the staff's total number of charges above 50, the staff explodes as if you activated its retributive strike (see below).\n   " + toUni("Spells") + ". While holding the staff, you can use an action to expend some of its charges to cast one of the following spells from it, using your spell save DC and spellcasting ability: Conjure Elemental (7 charges), Dispel Magic (3 charges), Fireball (7th-level version, 7 charges), Flaming Sphere (2 charges), Ice Storm (4 charges), Invisibility (2 charges), Knock (2 charges), Lightning Bolt (7th-level version, 7 charges), Passwall (5 charges), Plane Shift (7 charges), Telekinesis (5 charges), Wall of Fire (4 charges), or Web (2 charges).\n   You can also use an action to cast one of the following spells from the staff without using any charges: Arcane Lock, Detect Magic, Enlarge/Reduce, Light, Mage Hand, or Protection from Evil and Good.\n   " + toUni("Retributive Strike") + ". You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.\n   You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.\n\n" + toUni("Distance from Origin\tDamage") + "\n10 ft. away or closer\t8 \xD7 the number of charges in the staff\n11 to 20 ft. away\t\t6 \xD7 the number of charges in the staff\n21 to 30 ft. away\t\t4 \xD7 the number of charges in the staff",
 		attunement : true,
 		weight : 4,
+		prerequisite : "Requires attunement by a sorcerer, warlock, or wizard",
+		prereqeval : function (v) {
+			return classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false;
+		},
 		weaponsAdd : ["Staff of the Magi"],
 		weaponOptions : {
 			baseWeapon : "quarterstaff",
 			regExpSearch : /^(?=.*staff)(?=.*magi).*$/i,
 			name : "Staff of the Magi",
-			source : [["SRD", 245], ["D", 204]],
+			source : [["SRD", 244], ["D", 203]],
 			modifiers : [2, 2]
 		},
 		calcChanges : {
@@ -1713,21 +2179,6 @@ var Base_MagicItemsList = {
 			spells : ["web"],
 			selection : ["web"],
 			firstCol : "2"
-		}, {
-			name : "At Will",
-			spells : ["arcane lock"],
-			selection : ["arcane lock"],
-			firstCol : "atwill"
-		}, {
-			name : "At Will",
-			spells : ["enlarge/reduce"],
-			selection : ["enlarge/reduce"],
-			firstCol : "atwill"
-		}, {
-			name : "At Will",
-			spells : ["protection from evil and good"],
-			selection : ["protection from evil and good"],
-			firstCol : "atwill"
 		}],
 		eval : function () {
 			// get the CurrentSpells object or create it if it didn't exists yet.
@@ -1735,9 +2186,9 @@ var Base_MagicItemsList = {
 			// now set some of the attributes for it, adding the 3 spells that didn't fit as spellcastingBonus
 			spObj.typeSp = "known";
 			spObj.known = { cantrips : 2, spells : 1 };
-			spObj.list = { spells : ["light", "mage hand", "detect magic"] };
+			spObj.list = { spells : ["light", "mage hand", "arcane lock", "detect magic", "enlarge/reduce", "protection from evil and good"] };
 			spObj.selectCa = ["light", "mage hand"];
-			spObj.selectSp = ["detect magic"];
+			spObj.selectSp = ["arcane lock", "detect magic", "enlarge/reduce", "protection from evil and good"];
 			spObj.typeList = 2;
 		},
 		removeeval : function () {
@@ -1751,7 +2202,10 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"light" : { firstCol : "atwill" },
 			"mage hand" : { firstCol : "atwill" },
+			"arcane lock" : { firstCol : "atwill" },
 			"detect magic" : { firstCol : "atwill" },
+			"enlarge/reduce" : { firstCol : "atwill" },
+			"protection from evil and good" : { firstCol : "atwill" },
 			"fireball" : {
 				nameShort : "Fireball (7th level)",
 				description : "20-ft rad all crea 12d6 Fire dmg; save halves; unattended flammable objects ignite",
@@ -1989,6 +2443,40 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
+	"wand of magic detection" : {
+		name : "Wand of Magic Detection",
+		source : [["SRD", 249], ["D", 211]],
+		type : "wand",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "This wand has 3 charges. While holding it, I can expend 1 charge as an action to cast Detect Magic from it. The wand regains 1d3 expended charges daily at dawn.",
+		descriptionFull : "This wand has 3 charges. While holding it, you can expend 1 charge as an action to cast the Detect Magic spell from it. The wand regains 1d3 expended charges daily at dawn.",
+		weight : 1,
+		spellcastingBonus : {
+			name : "1 charge",
+			spells : ["detect magic"],
+			selection : ["detect magic"],
+			firstCol : 1
+		},
+		usages : 3,
+		recovery : "dawn",
+		additional : "regain 1d3",
+		spellFirstColTitle : "Ch"
+	},
+	"wand of secrets" : {
+		name : "Wand of Secrets",
+		source : [["SRD", 249], ["D", 211]],
+		type : "wand",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "The wand has 3 charges. While holding it, I can use an action to expend 1 of its charges, and if a secret door or trap is within 30 feet of me, the wand pulses and points at the one nearest to me. The wand regains 1d3 expended charges daily at dawn.",
+		descriptionFull : "The wand has 3 charges. While holding it. you can use an action to expend 1 of its charges, and if a secret door or trap is within 30 feet of you, the wand pulses and points at the one nearest to you. The wand regains 1d3 expended charges daily at dawn.",
+		weight : 1,
+		usages : 3,
+		recovery : "dawn",
+		additional : "regain 1d3",
+		action : [["action", ""]]
+	},
 	"weapon, +1, +2, or +3" : {
 		name : "Weapon, +1, +2, or +3",
 		source : [["SRD", 250], ["D", 213]],
@@ -2027,5 +2515,30 @@ var Base_MagicItemsList = {
 			description : "I have a +3 bonus to attack and damage rolls made with this magic weapon.",
 			allowDuplicates : true
 		}
+	},
+	"winged boots" : {
+		name : "Winged Boots",
+		source : [["SRD", 250], ["D", 214]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "These boots grant me a flying speed equal to my walking speed. I can use them to fly for up to 4 hours, all at once or incremental, using a minimum of 1 minute each time. If I'm flying when the duration expires, I descend 30 ft per round. They regain 2 hours of flying capability for every 12 hours they aren't in use.",
+		descriptionFull : "While you wear these boots, you have a flying speed equal to your walking speed. You can use the boots to fly for up to 4 hours, all at once or in several shorter flights, each one using a minimum of 1 minute from the duration. If you are flying when the duration expires, you descend at a rate of 30 feet per round until you land.\n   The boots regain 2 hours of flying capability for every 12 hours they aren't in use.",
+		attunement : true,
+		usages : "240 min",
+		recovery : "Special",
+		additional : "regain 2h/12h"
+	},
+	"wings of flying" : {
+		name : "Wings of Flying",
+		source : [["SRD", 250], ["D", 214]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "While wearing this cloak, I can use an action to speak its command word. This turns the cloak into a pair of bat wings or bird wings on my back for 1 hour or until I repeat the command word as an action. The wings give me a flying speed of 60 ft. When they disappear, I can't use them again for 1d12 hours.",
+		descriptionFull : "While wearing this cloak, you can use an action to speak its command word. This turns the cloak into a pair of bat wings or bird wings on your back for 1 hour or until you repeat the command word as an action. The wings give you a flying speed of 60 feet. When they disappear, you can't use them again for 1d12 hours.",
+		attunement : true,
+		usages : 1,
+		recovery : "1d12 h"
 	},
 };

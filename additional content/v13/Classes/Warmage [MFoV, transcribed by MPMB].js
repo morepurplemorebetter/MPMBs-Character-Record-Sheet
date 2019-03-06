@@ -62,20 +62,20 @@ ClassList["warmage"] = {
 	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 	die : 8,
 	saves : ["Con", "Int"],
-	skillstxt : [
-		"Choose two from Animal Handling, Arcana, Athletics, Acrobatics, History, Investigation, Medicine, Perception, and Survival"
-	],
+	skillstxt : {
+		primary : "Choose two from Animal Handling, Arcana, Athletics, Acrobatics, History, Investigation, Medicine, Perception, and Survival"
+	},
 	toolProfs : {
 		primary : [["Artisan's tool", 1], ["Musical instrument", 1]]
 	},
-	armorProfs : [
-		[true, false, false, false],
-		[true, false, false, false]
-	],
-	weaponProfs : [
-		[true, false],
-		[true, false]
-	],
+	armorProfs : {
+		primary : [true, false, false, false],
+		secondary : [true, false, false, false]
+	},
+	weaponProfs : {
+		primary : [true, false],
+		secondary : [true, false]
+	},
 	equipment : "Warmage starting equipment:\n \u2022 Leather armor, a dagger, and any simple weapon;\n \u2022 A light crossbow and 20 bolts -or- a shortbow and 20 arrows\n \u2022 An explorer's pack -or- a scholar's pack -or- one kit you're proficient in.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 	subclasses : ["Warmage House", []],
 	attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],

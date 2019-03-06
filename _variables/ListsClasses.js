@@ -78,15 +78,17 @@ var Base_ClassList = {
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 12,
 		saves : ["Str", "Con"],
-		skillstxt : ["Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival"],
-		armorProfs : [
-			[true, true, false, true],
-			[false, false, false, true]
-		],
-		weaponProfs : [
-			[true, true],
-			[true, true]
-		],
+		skillstxt : {
+			primary : "Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival"
+		},
+		armorProfs : {
+			primary : [true, true, false, true],
+			secondary : [false, false, false, true]
+		},
+		weaponProfs : {
+			primary : [true, true],
+			secondary : [true, true]
+		},
 		equipment : "Barbarian starting equipment:" +
 			"\n \u2022 A greataxe -or- any martial melee weapon;" +
 			"\n \u2022 Two handaxes -or- any simple weapon;" +
@@ -237,18 +239,21 @@ var Base_ClassList = {
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 8,
 		saves : ["Dex", "Cha"],
-		skillstxt : ["Choose any three skills", "Choose any one skill"],
+		skillstxt : {
+			primary : "Choose any three skills",
+			secondary : "Choose any one skill"
+		},
 		toolProfs : {
 			primary : [["Musical instrument", 3]],
 			secondary : [["Musical instrument", 1]]
 		},
-		armorProfs : [
-			[true, false, false, false],
-			[true, false, false, false]
-		],
-		weaponProfs : [
-			[true, false, ["hand crossbow", "longsword", "rapier", "shortsword"]]
-		],
+		armorProfs : {
+			primary : [true, false, false, false],
+			secondary : [true, false, false, false]
+		},
+		weaponProfs : {
+			primary : [true, false, ["hand crossbow", "longsword", "rapier", "shortsword"]]
+		},
 		equipment : "Bard starting equipment:" +
 			"\n \u2022 A rapier -or- a longsword -or- any simple weapon;" +
 			"\n \u2022 A diplomat's pack -or- an entertainer's pack;" +
@@ -366,14 +371,16 @@ var Base_ClassList = {
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 8,
 		saves : ["Wis", "Cha"],
-		skillstxt : ["Choose two from History, Insight, Medicine, Persuasion, and Religion"],
-		armorProfs : [
-			[true, true, false, true],
-			[true, true, false, true]
-		],
-		weaponProfs : [
-			[true, false]
-		],
+		skillstxt : {
+			primary : "Choose two from History, Insight, Medicine, Persuasion, and Religion"
+		},
+		armorProfs : {
+			primary : [true, true, false, true],
+			secondary : [true, true, false, true]
+		},
+		weaponProfs : {
+			primary : [true, false]
+		},
 		equipment : "Cleric starting equipment:" +
 			"\n \u2022 A mace -or- a warhammer (if proficient);" +
 			"\n \u2022 Scale mail -or- leather armor -or- chain mail (if proficient);" +
@@ -455,17 +462,19 @@ var Base_ClassList = {
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 8,
 		saves : ["Wis", "Int"],
-		skillstxt : ["Choose two from Arcana, Animal Handling, Insight, Medicine, Nature, Perception, Religion, and Survival"],
-		toolProfs : {
-			primary : ["Herbalism kit"],
+		skillstxt : {
+			primary : "Choose two from Arcana, Animal Handling, Insight, Medicine, Nature, Perception, Religion, and Survival"
 		},
-		armorProfs : [
-			[true, true, false, true],
-			[true, true, false, true]
-		],
-		weaponProfs : [
-			[false, false, ["club", "dagger", "dart", "javelin", "mace", "quarterstaff", "scimitar", "sickle", "sling", "spear"]]
-		],
+		toolProfs : {
+			primary : ["Herbalism kit"]
+		},
+		armorProfs : {
+			primary : [true, true, false, true],
+			secondary : [true, true, false, true]
+		},
+		weaponProfs : {
+			primary : [false, false, ["club", "dagger", "dart", "javelin", "mace", "quarterstaff", "scimitar", "sickle", "sling", "spear"]]
+		},
 		equipment : "Druid starting equipment:" +
 			"\n \u2022 A wooden shield -or- any simple weapon;" +
 			"\n \u2022 A scimitar -or- any simple melee weapon;" +
@@ -554,15 +563,17 @@ var Base_ClassList = {
 		die : 10,
 		improvements : [0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7],
 		saves : ["Str", "Con"],
-		skillstxt : ["Choose two from Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Perception, and Survival"],
-		armorProfs : [
-			[true, true, true, true],
-			[true, true, false, true]
-		],
-		weaponProfs : [
-			[true, true],
-			[true, true]
-		],
+		skillstxt : {
+			primary : "Choose two from Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Perception, and Survival"
+		},
+		armorProfs : {
+			primary : [true, true, true, true],
+			secondary : [true, true, false, true]
+		},
+		weaponProfs : {
+			primary : [true, true],
+			secondary : [true, true]
+		},
 		equipment : "Fighter starting equipment:" +
 			"\n \u2022 Chain mail -or- leather armor, a longbow, and 20 arrows;" +
 			"\n \u2022 A martial weapon and a shield -or- two martial weapons;" +
@@ -635,14 +646,16 @@ var Base_ClassList = {
 		toolProfs : {
 			primary : [["Artisan's tool or musical instrument", 1]]
 		},
-		skillstxt : ["Choose two from Acrobatics, Athletics, History, Insight, Religion, and Stealth"],
-		armorProfs : [
-			[false, false, false, false]
-		],
-		weaponProfs : [
-			[true, false, ["shortsword"]],
-			[true, false, ["shortsword"]]
-		],
+		skillstxt : {
+			primary : "Choose two from Acrobatics, Athletics, History, Insight, Religion, and Stealth"
+		},
+		armorProfs : {
+			primary : [false, false, false, false]
+		},
+		weaponProfs : {
+			primary : [true, false, ["shortsword"]],
+			secondary : [true, false, ["shortsword"]]
+		},
 		equipment : "Monk starting equipment:" +
 			"\n \u2022 A shortsword -or- any simple weapon;" +
 			"\n \u2022 A dungeoneer's pack -or- an explorer's pack;" +
@@ -885,15 +898,17 @@ var Base_ClassList = {
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 10,
 		saves : ["Wis", "Cha"],
-		skillstxt : ["Choose two from Athletics, Insight, Intimidation, Medicine, Persuasion, and Religion"],
-		armorProfs : [
-			[true, true, true, true],
-			[true, true, false, true]
-		],
-		weaponProfs : [
-			[true, true],
-			[true, true]
-		],
+		skillstxt : {
+			primary : "Choose two from Athletics, Insight, Intimidation, Medicine, Persuasion, and Religion"
+		},
+		armorProfs : {
+			primary : [true, true, true, true],
+			secondary : [true, true, false, true]
+		},
+		weaponProfs : {
+			primary : [true, true],
+			secondary : [true, true]
+		},
 		equipment : "Paladin starting equipment:" +
 			"\n \u2022 A martial weapon and a shield -or- two martial weapons;" +
 			"\n \u2022 Five javelins -or- any simple melee weapon;" +
@@ -1027,18 +1042,18 @@ var Base_ClassList = {
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 10,
 		saves : ["Str", "Dex"],
-		skillstxt : [
-			"Choose three from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival",
-			"Choose one from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, or Survival"
-		],
-		armorProfs : [
-			[true, true, false, true],
-			[true, true, false, true]
-		],
-		weaponProfs : [
-			[true, true],
-			[true, true]
-		],
+		skillstxt : {
+			primary : "Choose three from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival",
+			secondary : "Choose one from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, or Survival"
+		},
+		armorProfs : {
+			primary : [true, true, false, true],
+			secondary : [true, true, false, true]
+		},
+		weaponProfs : {
+			primary : [true, true],
+			secondary : [true, true]
+		},
 		equipment : "Ranger starting equipment:" +
 			"\n \u2022 Scale mail -or- leather armor;" +
 			"\n \u2022 Two shortswords -or- two simple melee weapons;" +
@@ -1272,21 +1287,21 @@ var Base_ClassList = {
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6],
 		die : 8,
 		saves : ["Int", "Dex"],
-		skillstxt : [
-			"Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth",
-			"Choose one from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, or Stealth"
-		],
+		skillstxt :{
+			primary : "Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth",
+			secondary : "Choose one from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, or Stealth"
+		},
 		toolProfs : {
 			primary : [["Thieves' tools", "Dex"]],
 			secondary : [["Thieves' tools", "Dex"]]
 		},
-		armorProfs : [
-			[true, false, false, false],
-			[true, false, false, false]
-		],
-		weaponProfs : [
-			[true, false, ["hand crossbow", "longsword", "rapier", "shortsword"]]
-		],
+		armorProfs : {
+			primary : [true, false, false, false],
+			secondary : [true, false, false, false]
+		},
+		weaponProfs : {
+			primary : [true, false, ["hand crossbow", "longsword", "rapier", "shortsword"]]
+		},
 		equipment : "Rogue starting equipment:" +
 			"\n \u2022 A rapier -or- a shortsword;" +
 			"\n \u2022 A shortbow and a quiver of 20 arrows -or- a shortswords;" +
@@ -1398,7 +1413,7 @@ var Base_ClassList = {
 	},
 
 	"sorcerer" : {
-		regExpSearch : /sorcerer|witch/i,
+		regExpSearch : /sorcerer|witch/i,	
 		name : "Sorcerer",
 		source : [["SRD", 42], ["P", 99]],
 		primaryAbility : "Charisma",
@@ -1407,13 +1422,12 @@ var Base_ClassList = {
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 6,
 		saves : ["Con", "Cha"],
-		skillstxt : ["Choose two from Arcana, Deception, Insight, Intimidation, Persuasion, and Religion"],
-		armorProfs : [
-			[false, false, false, false]
-		],
-		weaponProfs : [
-			[false, false, ["dagger", "dart", "light crossbow", "quarterstaff", "sling"]]
-		],
+		skillstxt : {
+			primary : "Choose two from Arcana, Deception, Insight, Intimidation, Persuasion, and Religion"
+		},
+		weaponProfs : {
+			primary : [false, false, ["dagger", "dart", "light crossbow", "quarterstaff", "sling"]]
+		},
 		equipment : "Sorcerer starting equipment:" +
 			"\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;" +
 			"\n \u2022 A component pouch -or- an arcane focus;" +
@@ -1530,15 +1544,17 @@ var Base_ClassList = {
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 8,
 		saves : ["Wis", "Cha"],
-		skillstxt : ["Choose two from Arcana, Deception, History, Intimidation, Investigation, Nature, and Religion"],
-		armorProfs : [
-			[true, false, false, false],
-			[true, false, false, false]
-		],
-		weaponProfs : [
-			[true, false],
-			[true, false]
-		],
+		skillstxt : {
+			primary : "Choose two from Arcana, Deception, History, Intimidation, Investigation, Nature, and Religion"
+		},
+		armorProfs : {
+			primary : [true, false, false, false],
+			secondary : [true, false, false, false]
+		},
+		weaponProfs : {
+			primary : [true, false],
+			secondary : [true, false]
+		},
 		equipment : "Warlock starting equipment:" +
 			"\n \u2022 A light crossbow and 20 bolts -or- any simple weapon;" +
 			"\n \u2022 A component pouch -or- an arcane focus;" +
@@ -2141,13 +2157,12 @@ var Base_ClassList = {
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		die : 6,
 		saves : ["Int", "Wis"],
-		skillstxt : ["Choose two from Arcana, History, Insight, Investigation, Medicine, and Religion"],
-		armorProfs : [
-			[false, false, false, false]
-		],
-		weaponProfs : [
-			[false, false, ["dagger", "dart", "light crossbow", "quarterstaff", "sling"]]
-		],
+		skillstxt : {
+			primary : "Choose two from Arcana, History, Insight, Investigation, Medicine, and Religion"
+		},
+		weaponProfs : {
+			primary : [false, false, ["dagger", "dart", "light crossbow", "quarterstaff", "sling"]]
+		},
 		equipment : "Wizard starting equipment:" +
 			"\n \u2022 A quarterstaff -or- a dagger;" +
 			"\n \u2022 A component pouch -or- an arcane focus;" +

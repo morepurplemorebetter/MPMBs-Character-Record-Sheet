@@ -109,20 +109,20 @@ ClassList["improved artificer"] = {
 	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 5, 5, 5],
 	die : 8,
 	saves : ["Con", "Int"],
-	skillstxt : [
-		"Choose three from Arcana, Deception, History, Investigation, Medicine, Nature, Religion, and Sleight of Hand",
-		"Choose one from Arcana, Deception, History, Investigation, Medicine, Nature, Religion, and Sleight of Hand"
-	],
+	skillstxt : {
+		primary : "Choose three from Arcana, Deception, History, Investigation, Medicine, Nature, Religion, and Sleight of Hand",
+		secondary : "Choose one from Arcana, Deception, History, Investigation, Medicine, Nature, Religion, and Sleight of Hand"
+	},
 	toolProfs : {
 		primary : [["Tinker's tools"], ["Any tool", 2]],
 		secondary : [["Any tool", 1]]
 	},
-	armorProfs : [
-		[true, true, false, false]
-	],
-	weaponProfs : [
-		[true, false]
-	],
+	armorProfs : {
+		primary : [true, true, false, false]
+	},
+	weaponProfs : {
+		primary : [true, false]
+	},
 	equipment : "Artificer starting equipment:\n \u2022 A handaxe and a light hammer -or- any two simple weapons;\n \u2022 Scale mail -or- studded leather armor;\n \u2022 A light crossbow and 20 bolts;\n \u2022 A dungeoneer's pack;\n \u2022 Tinker's tools.\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 	subclasses : ["", []],
 	attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],

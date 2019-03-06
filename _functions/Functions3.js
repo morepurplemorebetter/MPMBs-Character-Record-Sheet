@@ -379,55 +379,71 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 	// declare some variables
 	var fObj = CurrentClasses[aClass];
-	var n = primaryClass ? 0 : 1;
-	var nTool = primaryClass ? "primary" : "secondary";
+	var n = primaryClass ? 0 : 1; // for backwards compatibility
+	var nAttr = primaryClass ? "primary" : "secondary";
 
 	// a way to see if we should process the attribute or not
-	var checkIfIn = function(nObj, testObj, attrA) {
-		var testN = attrA[0] == 'toolProfs' ? nTool : attrA[0] == "saves" ? 0 : n;
-		if ((!nObj[attrA[0]] || !nObj[attrA[0]][testN]) && (!attrA[1] || !nObj[attrA[1]] || !nObj[attrA[1]][testN])) return false; // the main object doesn't have this attribute
-		if (!testObj) return true; // there is no test object defined
-		// else see if the test object is also has this attribute
-		return (testObj[attrA[0]] && testObj[attrA[0]][testN]) || (attrA[1] && testObj[attrA[1]] && testObj[attrA[1]][testN]);
+	var checkIfIn = function(nObj, testObj, attrA, noN) {
+		attrA[1] = attrA[1] ? attrA[1] : "nonExistentAttributeName";
+		if (!nObj[attrA[0]] && !nObj[attrA[1]]) {
+			// if the first object doesn't have either attribute, just stop
+			return [false];
+		}
+		var useAttr = nObj[attrA[0]] ? attrA[0] : attrA[1];
+		var subAttr = noN ? 0 : isArray(nObj[useAttr]) ? n : nAttr;
+		if (!nObj[useAttr][subAttr]) {
+			// the first object has an attribute, but not the right sub-attribute, so stop
+			return [false];
+		} else if (!testObj) {
+			// there is no object to test against, so continue with the first object
+			return [true, useAttr, subAttr];
+		}
+		var useAttr2 = testObj[attrA[0]] ? attrA[0] : testObj[attrA[1]] ? attrA[1] : false;
+		return !useAttr2 || !testObj[useAttr2][noN ? 0 : isArray(testObj[useAttr2]) ? n : nAttr] ? [false] : [true, useAttr, subAttr];
 	}
 
 	// loop through the attributes and apply them
 	var processAttributes = function (uObj, addIt, tipNmF, ifInObj) {
 		// saves, if primary class
-		if (primaryClass && checkIfIn(uObj, ifInObj, ['saves'])) processSaves(addIt, tipNmF, uObj.saves);
+		if (primaryClass && checkIfIn(uObj, ifInObj, ['saves'], true)[0]) processSaves(addIt, tipNmF, uObj.saves);
 
 		// skills
-		if (checkIfIn(uObj, ifInObj, ['skills', 'skillstxt'])) {
-			var skills = uObj.skills && uObj.skills[n] ? uObj.skills[n] : false;
-			var skillsTxt = uObj.skillstxt && uObj.skillstxt[n] ? uObj.skillstxt[n] : false;
-			// --- backwards compatibility --- //
-			// possibly the class has skillstxt as skills attribute (pre v13)
-			if (skills && !isArray(skills) && SkillsList.abbreviations.indexOf(skills) == -1 && SkillsList.names.indexOf(skills) == -1) {
-				skillsTxt = skills.replace(/^( |\n)*.*: |\;$|\.$/g, '');
-				skills = false;
+		var doSkills = checkIfIn(uObj, ifInObj, ['skills', 'skillstxt']);
+		if (doSkills[0]) {
+			var oSkills = false;
+			var oSkillsTxt = false;
+			if (doSkills[1] === "skillstxt") {
+				// no 'skills' attribute, only 'skillstxt'
+				oSkillsTxt = uObj.skillstxt[doSkills[2]];
+			} else if (doSkills[1] === "skills" && uObj.skillstxt) {
+				// both 'skills' and 'skillstxt' attributes
+				oSkills = uObj.skills[doSkills[2]];
+				oSkillsTxt = isArray(uObj.skillstxt) ? uObj.skillstxt[n] : uObj.skillstxt[nAttr];
+			} else if (doSkills[2] == n && !isArray(uObj.skills[n]) && SkillsList.abbreviations.indexOf(uObj.skills[n]) == -1 && SkillsList.names.indexOf(uObj.skills[n]) == -1) {
+				// --- backwards compatibility --- //
+				// the class has skillstxt as skills attribute (pre v13)
+				oSkillsTxt = uObj.skills[n].replace(/^( |\n)*.*: |\;$|\.$/g, '');
+			} else {
+				// no 'skillstxt' attribute, only 'skills'
+				oSkills = uObj.skills[doSkills[2]];
 			}
-			processSkills(addIt, tipNmF, skills, skillsTxt);
+			processSkills(addIt, tipNmF, oSkills, oSkillsTxt);
 		}
 
-		// weapon proficiencies
-		if (checkIfIn(uObj, ifInObj, ['weaponProfs', 'weapons'])) {
-			// --- backwards compatibility --- //
-			var weaponProf = uObj.weaponProfs && uObj.weaponProfs[n] ? uObj.weaponProfs[n] : uObj.weapons && uObj.weapons[0] ? uObj.weapons[0] : false;
-			if (weaponProf) processWeaponProfs(addIt, tipNmF, weaponProf);
-		}
+		// weapon proficiencies ('weapons' attribute for backwards compatibility)
+		var doWeapons = checkIfIn(uObj, ifInObj, ['weaponProfs', 'weapons']);
+		if (doWeapons[0]) processWeaponProfs(addIt, tipNmF, uObj[doWeapons[1]][doWeapons[2]]);
 
-		// armour proficiencies
-		if (checkIfIn(uObj, ifInObj, ['armorProfs', 'armor'])) {
-			// --- backwards compatibility --- //
-			var armorProf = uObj.armorProfs && uObj.armorProfs[n] ? uObj.armorProfs[n] : uObj.armor && uObj.armor[0] ? uObj.armor[0] : false;
-			if (armorProf) processArmourProfs(addIt, tipNmF, armorProf);
-		}
+		// armour proficiencies ('armor' attribute for backwards compatibility)
+		var doArmour = checkIfIn(uObj, ifInObj, ['armorProfs', 'armor']);
+		if (doArmour[0]) processArmourProfs(addIt, tipNmF, uObj[doArmour[1]][doArmour[2]]);
 
 		// tool proficiencies
-		if (checkIfIn(uObj, ifInObj, ['toolProfs'])) processTools(addIt, tipNmF, uObj.toolProfs[nTool]);
+		var doTools = checkIfIn(uObj, ifInObj, ['toolProfs']);
+		if (doTools[0]) processTools(addIt, tipNmF, uObj.toolProfs[doTools[2]]);
 
 		// spellcasting extra array
-		if (CurrentSpells[aClass] && checkIfIn(uObj, ifInObj, ['spellcastingExtra'])) {
+		if (CurrentSpells[aClass] && checkIfIn(uObj, ifInObj, ['spellcastingExtra'], true)[0]) {
 			CurrentSpells[aClass].extra = !addIt ? "" : uObj.spellcastingExtra;
 			CurrentUpdates.types.push("spells");
 		}
