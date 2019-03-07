@@ -955,6 +955,7 @@ calcChanges : {
 			An explanation of the different attributes of this variable:
 			var v = {
 				WeaponText, // string, both the name and description
+				WeaponTextName, // string, just the name
 				isDC, // boolean, whether or not this attack has a To Hit (false) or a DC (true)
 				isSpell, // boolean, whether (true) or not (false) this attack is a cantrip or spell or has the word 'cantrip' or 'spell' in its name or description
 				isMeleeWeapon, // boolean, whether (true) or not (false) this attack has a range of 'melee' and is not a spell
@@ -1014,6 +1015,7 @@ calcChanges : {
 			An explanation of the different attributes of this variable:
 			var v = {
 				WeaponText, // string, both the name and description
+				WeaponTextName, // string, just the name
 				isDC, // boolean, whether or not this attack has a To Hit (false) or a DC (true)
 				isSpell, // boolean, whether (true) or not (false) this attack is a cantrip or spell or has the word 'cantrip' or 'spell' in its name or description
 				isMeleeWeapon, // boolean, whether (true) or not (false) this attack has a range of 'melee' and is not a spell
