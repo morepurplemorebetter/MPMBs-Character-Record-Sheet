@@ -445,7 +445,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'Cursed';
 					}
 				},
-				'If I include the word "Berserker" in a the name of an axe, it will be treated as the magic weapon Berserker Axe. It has +1 to hit and damage, but also bears a curse.'
+				'If I include the word "Berserker" in the name of an axe, it will be treated as the magic weapon Berserker Axe. It has +1 to hit and damage, but also bears a curse.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -971,7 +971,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'Attacks on its own as a bonus action';
 					}
 				},
-				'If I include the word "Dancing" in a the name of a sword, it will be treated as the magic weapon Dancing Sword. The sword can be made to attack on its own as a bonus action.'
+				'If I include the word "Dancing" in the name of a sword, it will be treated as the magic weapon Dancing Sword. The sword can be made to attack on its own as a bonus action.'
 			]
 		}
 	},
@@ -1031,7 +1031,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + '+3 bonus can be used for AC instead';
 					}
 				},
-				'If I include the word "Defender" in a the name of a sword, it will be treated as the magic weapon Defender. It has +3 to hit and damage, but this bonus can be lowered and added to AC instead. Decide to do so with the first attack on your turn.'
+				'If I include the word "Defender" in the name of a sword, it will be treated as the magic weapon Defender. It has +3 to hit and damage, but this bonus can be lowered and added to AC instead. Decide to do so with the first attack on your turn.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -1197,7 +1197,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + '+3d6 damage vs. dragons';
 					}
 				},
-				'If I include the words "Dragon Slayer" in a the name of a sword, it will be treated as the magic weapon Dragon Slayer. It has +1 to hit and damage and deals +3d6 damage to creatures with the dragon type.'
+				'If I include the words "Dragon Slayer" in the name of a sword, it will be treated as the magic weapon Dragon Slayer. It has +1 to hit and damage and deals +3d6 damage to creatures with the dragon type.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -1529,7 +1529,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'While active, +2d6 fire damage';
 					}
 				},
-				'If I include the words "Flame Tongue" in a the name of a sword, it will be treated as the magic weapon Flame Tongue. When the command word is spoken, the blade erupts with flames, adding +2d6 fire damage on a hit and shining light.'
+				'If I include the words "Flame Tongue" in the name of a sword, it will be treated as the magic weapon Flame Tongue. When the command word is spoken, the blade erupts with flames, adding +2d6 fire damage on a hit and shining light.'
 			]
 		}
 	},
@@ -1576,7 +1576,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + '+1d6 cold damage';
 					}
 				},
-				'If I include the words "Frost Brand" in a the name of a sword, it will be treated as the magic weapon Frost Brand. It does +1d6 cold damage.'
+				'If I include the words "Frost Brand" in the name of a sword, it will be treated as the magic weapon Frost Brand. It does +1d6 cold damage.'
 			]
 		}
 	},
@@ -1645,7 +1645,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + '+2d6 damage vs. giants; Giants DC 15 Str save or prone';
 					}
 				},
-				'If I include the words "Giant Slayer" in a the name of a sword, it will be treated as the magic weapon Giant Slayer. It has +1 to hit and damage and when hitting a creatures with the giant type, it does +2d6 damage and the target has to make a DC 15 Strength save or be knocked prone.'
+				'If I include the words "Giant Slayer" in the name of a sword, it will be treated as the magic weapon Giant Slayer. It has +1 to hit and damage and when hitting a creatures with the giant type, it does +2d6 damage and the target has to make a DC 15 Strength save or be knocked prone.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -1836,7 +1836,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + '+2d10 radiant damage vs. fiends and undead';
 					}
 				},
-				'If I include the words "Holy Avenger" in a the name of a sword, it will be treated as the magic weapon Holy Avenger. It has +3 to hit and damage and does +2d10 radiant damage to fiends and undead.'
+				'If I include the words "Holy Avenger" in the name of a sword, it will be treated as the magic weapon Holy Avenger. It has +3 to hit and damage and does +2d10 radiant damage to fiends and undead.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -2170,7 +2170,7 @@ var Base_MagicItemsList = {
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 					}
 				},
-				'If I include the words "Luck Blade" in a the name of a sword, it will be treated as the magic weapon Luck Blade. It has +1 to hit and damage.'
+				'If I include the words "Luck Blade" in the name of a sword, it will be treated as the magic weapon Luck Blade. It has +1 to hit and damage.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -2392,7 +2392,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'On crit to target <100 HP, DC 15 Con save or die';
 					}
 				},
-				'If I include the words "Nine Lives Stealer" in a the name of a sword, it will be treated as the magic weapon Nine Lives Stealer. It has +2 to hit and damage. Also, as long as it has charges left, when it does a critical hit against a creature with fewer than 100 HP, that creature must make a DC 15 Constitution saving throw or die.'
+				'If I include the words "Nine Lives Stealer" in the name of a sword, it will be treated as the magic weapon Nine Lives Stealer. It has +2 to hit and damage. Also, as long as it has charges left, when it does a critical hit against a creature with fewer than 100 HP, that creature must make a DC 15 Constitution saving throw or die.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -3783,7 +3783,7 @@ var Base_MagicItemsList = {
 			var spObj = CreateCurrentSpellsEntry("items", "staff of the magi");
 			// now set some of the attributes for it, adding the 3 spells that didn't fit as spellcastingBonus
 			spObj.typeSp = "known";
-			spObj.known = { cantrips : 2, spells : 1 };
+			spObj.known = { cantrips : 2, spells : 4 };
 			spObj.list = { spells : ["light", "mage hand", "arcane lock", "detect magic", "enlarge/reduce", "protection from evil and good"] };
 			spObj.selectCa = ["light", "mage hand"];
 			spObj.selectSp = ["arcane lock", "detect magic", "enlarge/reduce", "protection from evil and good"];
@@ -3959,7 +3959,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +10 Necrotic dmg, 10 temp HP';
 					}
 				},
-				'If I include the words "Life Stealing" in a the name of a sword, it will be treated as the magic weapon Sword of Life Stealing. It does +10 necrotic damage when I roll a 20 on the attack roll and then gives me 10 temporary hit points. It doesn\'t work against Constructs or Undead.'
+				'If I include the words "Life Stealing" in the name of a sword, it will be treated as the magic weapon Sword of Life Stealing. It does +10 necrotic damage when I roll a 20 on the attack roll and then gives me 10 temporary hit points. It doesn\'t work against Constructs or Undead.'
 			]
 		}
 	},
@@ -3992,7 +3992,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +14 damage \u0026 5% chance to sever limb; Max damage vs. objects';
 					}
 				},
-				'If I include the words "of Sharpness" in a the name of a sword that deals slashing damage, it will be treated as the magic weapon Sword of Sharpness. It deals maximum damage against objects. On a roll of 20 to hit against creatures, it deals +14 slashing damage and has a 5% chance to lob off one limb.'
+				'If I include the words "of Sharpness" in the name of a sword that deals slashing damage, it will be treated as the magic weapon Sword of Sharpness. It deals maximum damage against objects. On a roll of 20 to hit against creatures, it deals +14 slashing damage and has a 5% chance to lob off one limb.'
 			]
 		}
 	},
@@ -4025,7 +4025,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'Damage can only be healed by resting; Once per turn, wound target';
 					}
 				},
-				'If I include the words "of Wounding" in a the name of a sword, it will be treated as the magic weapon Sword of Wounding. Damage by the sword can only be regained with a short or long rest. Once per turn when I hit with the sword, I can inflict a lingering wound on a target, causing it pain every turn thereafter.'
+				'If I include the words "of Wounding" in the name of a sword, it will be treated as the magic weapon Sword of Wounding. Damage by the sword can only be regained with a short or long rest. Once per turn when I hit with the sword, I can inflict a lingering wound on a target, causing it pain every turn thereafter.'
 			]
 		}
 	},
@@ -4135,7 +4135,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +7 damage';
 					}
 				},
-				'If I include the word "Vicious" in a the name of a weapon, it will be treated as the magic weapon Vicious Weapon. On a roll of 20 to hit, it does +7 damage of the weapons type.'
+				'If I include the word "Vicious" in the name of a weapon, it will be treated as the magic weapon Vicious Weapon. On a roll of 20 to hit, it does +7 damage of the weapons type.'
 			]
 		}
 	},
@@ -4167,7 +4167,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'Ignores slashing resistance; On 20 to hit: cut off head';
 					}
 				},
-				'If I include the word "Vorpal" in a the name of a sword that deals slashing damage, it will be treated as the magic weapon Vorpal Sword. It has +3 to hit and damage and on a roll of 20 on the attack roll, it cuts off a head of the target.'
+				'If I include the word "Vorpal" in the name of a sword that deals slashing damage, it will be treated as the magic weapon Vorpal Sword. It has +3 to hit and damage and on a roll of 20 on the attack roll, it cuts off a head of the target.'
 			],
 			atkCalc : [
 				function (fields, v, output) {

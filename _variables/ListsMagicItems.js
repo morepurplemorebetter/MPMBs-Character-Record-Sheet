@@ -2185,7 +2185,7 @@ var Base_MagicItemsList = {
 			var spObj = CreateCurrentSpellsEntry("items", "staff of the magi");
 			// now set some of the attributes for it, adding the 3 spells that didn't fit as spellcastingBonus
 			spObj.typeSp = "known";
-			spObj.known = { cantrips : 2, spells : 1 };
+			spObj.known = { cantrips : 2, spells : 4 };
 			spObj.list = { spells : ["light", "mage hand", "arcane lock", "detect magic", "enlarge/reduce", "protection from evil and good"] };
 			spObj.selectCa = ["light", "mage hand"];
 			spObj.selectSp = ["arcane lock", "detect magic", "enlarge/reduce", "protection from evil and good"];
