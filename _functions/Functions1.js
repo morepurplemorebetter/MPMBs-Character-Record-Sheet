@@ -4067,9 +4067,9 @@ function ReplaceString(field, inputstring, newline, theoldstring, alreadyRegExp)
 };
 
 // add (change === true) or remove (change === false) a skill proficiency with or without expertise; If expertise === "only", only add/remove the expertise, considering the skill already has proficiency; If expertise === "increment", only add/remove the expertise, considering the skill already has proficiency, otherwise add proficiency
-function AddSkillProf(SkillName, change, expertise, returnSkillName) {
-	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
-	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
+function AddSkillProf(SkillName, change, expertise, returnSkillName, bonus, compPage) {
+	var QI = compPage ? !compPage : !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
+	var prefix = QI ? "" : compPage ? compPage : getTemplPre(event.target.name, "AScomp", true);
 	var tempString = SkillName;
 	if (SkillName.length > 4) {
 		if (SkillsList.abbreviations.indexOf(SkillName.substring(0, 4)) !== -1) {
@@ -4087,15 +4087,18 @@ function AddSkillProf(SkillName, change, expertise, returnSkillName) {
 			Checkbox(tempString + " Exp", change);
 		}
 		if (expertise !== "only") Checkbox(tempString + " Prof", change);
+		if (change && bonus !== undefined && bonus !== false) Value(tempString + " Bonus", bonus);
 	} else if (typePF) {
 		change = change !== undefined ? change : true;
 		if ((/only|increment/i).test(expertise) ? tDoc.getField(prefix + ".Comp.Use.Skills." + tempString + ".Prof").isBoxChecked(0) : expertise) {
 			Checkbox(prefix + ".Comp.Use.Skills." + tempString + ".Exp", change);
 		}
 		if (expertise !== "only") Checkbox(prefix + ".Comp.Use.Skills." + tempString + ".Prof", change);
+		if (change && bonus !== undefined && bonus !== false) Value(prefix + ".BlueText.Comp.Use.Skills." + tempString + ".Bonus", bonus);
 	} else {
 		change = change === false ? "nothing" : expertise && (change || expertise !== "only") ? "expertise" : "proficient";
 		Value(prefix + "Text.Comp.Use.Skills." + tempString + ".Prof", change);
+		if (change && bonus !== undefined && bonus !== false) Value(prefix + ".BlueText.Comp.Use.Skills." + tempString + ".Bonus", bonus);
 	}
 	// return the skill name if concerning a companion page
 	if (returnSkillName) return SkillsList.names[SkillsList.abbreviations.indexOf(tempString)];

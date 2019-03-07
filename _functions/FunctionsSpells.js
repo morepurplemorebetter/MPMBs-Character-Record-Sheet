@@ -214,8 +214,8 @@ function ApplySpell(FldValue, rememberFldName) {
 					aSpell[key] = theOver[key];
 				}
 			}
-			// Update the spell for the caster level of the character (if not manually added or a 'complete' list)
-			if (CurrentCasters.amendSpDescr && aCast && aCast.typeList !== 4) {
+			// Update the spell for the caster level of the character (if not manually added)
+			if (CurrentCasters.amendSpDescr && aCast) {
 				// apply cantrip die
 				if (aSpell.descriptionCantripDie) {
 					var cDie = cantripDie[Math.min(CurrentFeats.level, cantripDie.length) - 1];
@@ -2256,7 +2256,7 @@ var SpellSheetOrder_Dialog = {
 			}, {
 				type : "check_box",
 				item_id : "Amnd",
-				name : "Apply character level and spellcasting ability to spell description (never for 'full' lists)"
+				name : "Apply character level and spellcasting ability to spell description (i.e. set cantrip damage)"
 			}, {
 				type : "check_box",
 				item_id : "Dash",
@@ -3231,11 +3231,7 @@ function AskUserSpellSheet() {
 			if (dia.showSpRadio) { // set the name of the radio buttons and set the selection
 				if (spCast.level) {
 					var SpellLevel = maxSpell;
-					if (aCast === "warlock" && spCast.level >= 11) {
-						SpellLevel = defaultSpellTable[spCast.level].indexOf(0);
-						SpellLevel = Number(SpellLevel === -1 ? 9 : SpellLevel);
-					};
-					setDialogName(SpellSheetSelect_Dialog, "SpR1", "name", spellLevelList[SpellLevel] + (SpellLevel > 1 ? " and lower" : "") + " spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known"));
+					setDialogName(SpellSheetSelect_Dialog, "SpR1", "name", spellLevelList[SpellLevel] + (SpellLevel > 1 ? " and lower" : "") + " spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " (+Extra)");
 					setDialogName(SpellSheetSelect_Dialog, "SpR2", "name", "All spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " regardless of level");
 					setDialogName(SpellSheetSelect_Dialog, "SpR4", "name", "Full class list (spells && cantrips)");
 				} else {
@@ -3731,8 +3727,6 @@ function GenerateSpellSheet(GoOn) {
 
 		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : spCast.typeList === 4 || (/race|feat|item/i).test(spCast.typeSp) ? "##kn" : "##"; //add "Me" or "Kn" to the name or not?
 
-		var orderedSpellList = OrderSpells(fullSpellList, "multi", true, spCast.selectBo ? spCast.selectBo : false); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
-
 		//see if we need to stop short of doing all the spells
 		var maxLvl = 9;
 		if (spCast.level && spCast.typeList !== 2 && spCast.typeList !== 4) {
@@ -3740,12 +3734,14 @@ function GenerateSpellSheet(GoOn) {
 				maxLvl = spCast.maxSpell;
 			} else if (spCast.factor && (tDoc[spCast.factor[1] + "SpellTable"] || spCast.spellsTable)) {
 				var CasterLevel = Math.ceil(spCast.level / Math.max(1, spCast.spellsTable ? 1 : spCast.factor[0]));
-				var theTable = spCast.spellsTable ? spCast.spellsTable : spCast.factor[1] === "warlock" ? defaultSpellTable : tDoc[spCast.factor[1] + "SpellTable"];
+				var theTable = spCast.spellsTable ? spCast.spellsTable : tDoc[spCast.factor[1] + "SpellTable"];
 				var tableLevel = Math.min(theTable.length - 1, CasterLevel);
 				var maxSpell = theTable[tableLevel].trailingIndexOf(0);
 				maxLvl = Number(maxSpell === -1 ? 9 : maxSpell);
 			};
 		};
+
+		var orderedSpellList = OrderSpells(fullSpellList, "multi", true, spCast.selectBo ? spCast.selectBo : false, maxLvl); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
 
 		if (i === isFirst) {
 			SSfront = true;
@@ -3755,69 +3751,66 @@ function GenerateSpellSheet(GoOn) {
 		//now sort each of those new arrays and put them on the sheet
 		var start = true;
 		var isPsionics = "";
-		for (var lvl = 0; lvl <= maxLvl; lvl++) {
+		for (var lvl = 0; lvl <= 9; lvl++) {
 			var spArray = orderedSpellList[lvl];
-			if (spArray && spArray.length > 0) {
-				//add spell dependencies to fill out the array
-				spArray = addSpellDependencies(spArray);
-				//first test if there is enough space left on the current page to add what we need to
-				//assume that we need to add at least 10 of the spells, the total of this level of spells, whichever is less
-				// so 3 (divider + title line) + 4 (header, if applicable) + lowest of [10, arrayLength]
-				var needSpace = 3 + (start ? 4 : 0) + Math.min(10, spArray.length);
-				if (needSpace > (lineMax - lineCurrent + 1)) AddPage();
+			if (!spArray || !spArray.length) continue;
+			//add spell dependencies to fill out the array
+			spArray = addSpellDependencies(spArray);
+			//first test if there is enough space left on the current page to add what we need to
+			//assume that we need to add at least 10 of the spells, the total of this level of spells, whichever is less
+			// so 3 (divider + title line) + 4 (header, if applicable) + lowest of [10, arrayLength]
+			var needSpace = 3 + (start ? 4 : 0) + Math.min(10, spArray.length);
+			if (needSpace > (lineMax - lineCurrent + 1)) AddPage();
 
-				//the first spells to add needs a header in front of it
-				if (start) {
-					if (lineCurrent === 0 && SSfront) {
-						SetSpellSheetElement(prefixCurrent + "spells.remember.0", "header", 0, CurrentCasters.incl[i], false);
-					} else {
-						Value(prefixCurrent + "spells.remember." + lineCurrent, "setheader##" + CurrentCasters.incl[i] + "##" + headerCurrent);
-						lineCurrent += 4;
-					}
-					headerCurrent += 1;
-					start = false;
-				}
-
-				//then add the divider
+			//the first spells to add needs a header in front of it
+			if (start) {
 				if (lineCurrent === 0 && SSfront) {
-					SetSpellSheetElement(prefixCurrent + "spells.remember.0", "divider", 0, lvl, false);
+					SetSpellSheetElement(prefixCurrent + "spells.remember.0", "header", 0, CurrentCasters.incl[i], false);
 				} else {
-					Value(prefixCurrent + "spells.remember." + lineCurrent, "setdivider##" + lvl + "##" + dividerCurrent);
-					lineCurrent += 2;
+					Value(prefixCurrent + "spells.remember." + lineCurrent, "setheader##" + CurrentCasters.incl[i] + "##" + headerCurrent);
+					lineCurrent += 4;
 				}
-				dividerCurrent += 1;
-
-				//then add the title line
-				Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + ((lvl === 0 || lvl === 10) && spCast.typeList === 4 ? "##kn" : MeKn));
-				lineCurrent += 1;
-
-				for (var y = 0; y < spArray.length; y++) {
-					aSpell = spArray[y];
-					var notDupl = y ? aSpell != spArray[y - 1] : true;
-					//check if not at the end of the page and, if so, create a new page
-					if (lineCurrent > lineMax) AddPage();
-					var toCheck = "##";
-					if (notDupl && atwillArray.indexOf(aSpell) !== -1) {
-						toCheck = "##atwill";
-					} else if (notDupl && oncelrArray.indexOf(aSpell) !== -1) {
-						toCheck = "##oncelr";
-					} else if (notDupl && oncesrArray.indexOf(aSpell) !== -1) {
-						toCheck = "##oncesr";
-					} else if (notDupl && alwaysPrepared.indexOf(aSpell) !== -1 && spCast.typeList !== 3) {
-						toCheck = "##markedbox";
-					} else if (notDupl && otherObject[aSpell]) {
-						toCheck = "##" + otherObject[aSpell];
-					} else if (SpellsList[aSpell] && SpellsList[aSpell].firstCol === undefined && (isPsionics || spCast.typeList === 4 || (spCast.known && spCast.known.prepared && spCast.typeList !== 3))) {
-						toCheck = spCast.typeList === 4 ? (knownSpells.indexOf(aSpell) !== -1 ? "##checkedbox" : "##checkbox") : SpellsList[aSpell].level === 0 ? "##atwill" : "##checkbox";
-					}
-					Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + CurrentCasters.incl[i] + (notDupl ? "" : "##stop"));
-					lineCurrent += 1;
-				}
+				headerCurrent += 1;
+				start = false;
 			}
-			//now do the psionic talents/disciplines
-			if (lvl <= 9 && lvl === maxLvl) {
-				lvl = 9;
-				maxLvl = 11;
+
+			//then add the divider
+			if (lineCurrent === 0 && SSfront) {
+				SetSpellSheetElement(prefixCurrent + "spells.remember.0", "divider", 0, lvl, false);
+			} else {
+				Value(prefixCurrent + "spells.remember." + lineCurrent, "setdivider##" + lvl + "##" + dividerCurrent);
+				lineCurrent += 2;
+			}
+			dividerCurrent += 1;
+
+			//then add the title line
+			Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + ((lvl === 0 || lvl === 10) && spCast.typeList === 4 ? "##kn" : MeKn));
+			lineCurrent += 1;
+
+			for (var y = 0; y < spArray.length; y++) {
+				aSpell = spArray[y];
+				var notDupl = y ? aSpell != spArray[y - 1] : true;
+				//check if not at the end of the page and, if so, create a new page
+				if (lineCurrent > lineMax) AddPage();
+				var toCheck = "##";
+				if (notDupl && atwillArray.indexOf(aSpell) !== -1) {
+					toCheck = "##atwill";
+				} else if (notDupl && oncelrArray.indexOf(aSpell) !== -1) {
+					toCheck = "##oncelr";
+				} else if (notDupl && oncesrArray.indexOf(aSpell) !== -1) {
+					toCheck = "##oncesr";
+				} else if (notDupl && alwaysPrepared.indexOf(aSpell) !== -1 && spCast.typeList !== 3) {
+					toCheck = "##markedbox";
+				} else if (notDupl && otherObject[aSpell]) {
+					toCheck = "##" + otherObject[aSpell];
+				} else if (SpellsList[aSpell] && SpellsList[aSpell].firstCol === undefined && (isPsionics || spCast.typeList === 4 || (spCast.known && spCast.known.prepared && spCast.typeList !== 3))) {
+					toCheck = spCast.typeList === 4 ? (knownSpells.indexOf(aSpell) !== -1 ? "##checkedbox" : "##checkbox") : SpellsList[aSpell].level === 0 ? "##atwill" : "##checkbox";
+				}
+				Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + CurrentCasters.incl[i] + (notDupl ? "" : "##stop"));
+				lineCurrent += 1;
+			}
+			// once we reach the highest level (9) now do the psionic talents/disciplines
+			if (lvl === 9) {
 				isPsionics = "psionic";
 				MeKn = spCast.firstCol ? "##" + spCast.firstCol : "##pp";
 			}
@@ -4115,7 +4108,7 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 
 //a function that takes an array of spells and orders it by level (and alphabet)
 //outputFormat defines whether to return an Array of Arrays ("multi"), or just one array "single";
-function OrderSpells(inputArray, outputFormat, sepPsionics, bonusSp) {
+function OrderSpells(inputArray, outputFormat, sepPsionics, bonusSp, maxLvl = 9) {
 	if (isArray(bonusSp)) {
 		inputArray = inputArray.concat(bonusSp);
 	} else {
@@ -4130,8 +4123,10 @@ function OrderSpells(inputArray, outputFormat, sepPsionics, bonusSp) {
 	//put these spells into their right level-array in orderedSpellList and ignore duplicates
 	for (var S = 0; S < inputArray.length; S++) {
 		var nxtSpell = inputArray[S];
-		if (SpellsList[nxtSpell] && (inputArray.indexOf(nxtSpell) === S || bonusSp.indexOf(nxtSpell) !== -1)) {
-			var spLvl = SpellsList[nxtSpell].level;
+		if (!SpellsList[nxtSpell]) continue;
+		var spLvl = SpellsList[nxtSpell].level;
+		if (spLvl > maxLvl && bonusSp.indexOf(nxtSpell) == -1) continue;
+		if (inputArray.indexOf(nxtSpell) === S || (spLvl <= maxLvl  && bonusSp.indexOf(nxtSpell) !== -1)) {
 			var spName = getSpNm(nxtSpell);
 			if (sepPsionics && SpellsList[nxtSpell].psionic) spLvl += 10;
 			refspObj[spName] = nxtSpell;
@@ -5231,45 +5226,44 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	for (var lvl = 0; lvl < orderedSpellList.length; lvl++) {
 		var spArray = orderedSpellList[lvl];
 		var isPsionics = lvl <= 9 ? "" : "psionic";
-		if (spArray.length > 0) {
-			//add spell dependencies to fill out the array
-			spArray = addSpellDependencies(spArray);
-			spArray = spArray.concat(["___", "___", "___"]); //add three empty lines to the end of the level-array
-			var MeKn = isPsionics ? "##pp" : lvl === 0 ? "##Kn" : (isPrep ? "##Me" : "##Kn");
+		if (spArray.length === 0) continue;
+		//add spell dependencies to fill out the array
+		spArray = addSpellDependencies(spArray);
+		spArray = spArray.concat(["___", "___", "___"]); //add three empty lines to the end of the level-array
+		var MeKn = isPsionics ? "##pp" : lvl === 0 ? "##Kn" : (isPrep ? "##Me" : "##Kn");
 
-			//first test if there is enough space left on the current page to add what we need to
-			//assume that we need to add at least 10 of the spells, the total of this level of spells, whichever is less
-			// so 3 (divider + title line) + 4 (header, if applicable) + lowest of [10, arrayLength]
-			var needSpace = 3 + (start ? 4 : 0) + Math.min(10, spArray.length);
-			if (needSpace > (lineMax - lineCurrent + 1)) AddPage();
+		//first test if there is enough space left on the current page to add what we need to
+		//assume that we need to add at least 10 of the spells, the total of this level of spells, whichever is less
+		// so 3 (divider + title line) + 4 (header, if applicable) + lowest of [10, arrayLength]
+		var needSpace = 3 + (start ? 4 : 0) + Math.min(10, spArray.length);
+		if (needSpace > (lineMax - lineCurrent + 1)) AddPage();
 
-			//the first spells to add needs a header in front of it
-			if (start) {
-				SetSpellSheetElement(prefixCurrent + "spells.remember.0", "header", 0, thisClass, !isPrep);
-				start = false;
-			}
+		//the first spells to add needs a header in front of it
+		if (start) {
+			SetSpellSheetElement(prefixCurrent + "spells.remember.0", "header", 0, thisClass, !isPrep);
+			start = false;
+		}
 
-			//then add the divider
-			if (lineCurrent === 0 && SSfront) {
-				SetSpellSheetElement(prefixCurrent + "spells.remember.0", "divider", 0, lvl, false);
-			} else {
-				Value(prefixCurrent + "spells.remember." + lineCurrent, "setdivider##" + lvl + "##" + dividerCurrent);
-				lineCurrent += 2;
-			}
-			dividerCurrent += 1;
+		//then add the divider
+		if (lineCurrent === 0 && SSfront) {
+			SetSpellSheetElement(prefixCurrent + "spells.remember.0", "divider", 0, lvl, false);
+		} else {
+			Value(prefixCurrent + "spells.remember." + lineCurrent, "setdivider##" + lvl + "##" + dividerCurrent);
+			lineCurrent += 2;
+		}
+		dividerCurrent += 1;
 
-			//then add the title line
-			Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + MeKn);
+		//then add the title line
+		Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + MeKn);
+		lineCurrent += 1;
+
+		for (var y = 0; y < spArray.length; y++) {
+			aSpell = spArray[y];
+			//check if not at the end of the page and, if so, create a new page
+			if (lineCurrent > lineMax) AddPage();
+			var toCheck = SpellsList[aSpell] && SpellsList[aSpell].firstCol !== undefined ? "##" : "##checkbox";
+			Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + thisClass);
 			lineCurrent += 1;
-
-			for (var y = 0; y < spArray.length; y++) {
-				aSpell = spArray[y];
-				//check if not at the end of the page and, if so, create a new page
-				if (lineCurrent > lineMax) AddPage();
-				var toCheck = SpellsList[aSpell] && SpellsList[aSpell].firstCol !== undefined ? "##" : "##checkbox";
-				Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + thisClass);
-				lineCurrent += 1;
-			}
 		}
 		thermoM((lvl+2)/(orderedSpellList.length+2));
 	}
