@@ -1,22 +1,19 @@
 // find the spell in the SpellsList
 function ParseSpell(input) {
-	var found = "";
-	if (!input) return found;
+	if (!input) return "";
 
 	input = clean(RemoveZeroWidths(input.replace(/ \(.{1,2}\)/i, "")), false, true).toLowerCase();
-	var foundLen = 0;
-	var foundDat = 0;
+	if (!input || SpellsList[input]) return input;
+
+	var found = "", foundLen = 0, foundDat = 0;
 
 	for (var key in SpellsList) { //scan string for all creatures
 		var kObj = SpellsList[key];
 		if (testSource(key, kObj, "spellsExcl")) continue; // test if the spell or its source isn't excluded
 
-		if (input.toLowerCase() === key) {
-			found = key;
-			break;
-		} else if (kObj.regExpSearch) { // if not exact match, see if a regex matches
-			var thisOne = toTest.test(kObj.regExpSearch) ? Math.max(key.length, kObj.name.length, kObj.nameAlt ? kObj.nameAlt.length : 0): 0;
-		} else {
+		if (kObj.regExpSearch) { // if it has regex, see if a regex matches
+			var thisOne = kObj.regExpSearch.test(input) ? Math.max(key.length, kObj.name.length, kObj.nameAlt ? kObj.nameAlt.length : 0, kObj.nameShort ? kObj.nameShort.length : 0): 0;
+		} else { // create our own regex to test with
 			var toSearch = "\\b(" + clean(kObj.name).replace(/^\W|\W$/g, "").RegEscape();
 			toSearch += kObj.nameShort ? "|" + clean(kObj.nameShort).replace(/^\W|\W$/g, "").RegEscape() : "";
 			toSearch += kObj.nameAlt ? "|" + clean(kObj.nameAlt).replace(/^\W|\W$/g, "").RegEscape() : "";
@@ -287,12 +284,24 @@ function ApplySpell(FldValue, rememberFldName) {
 
 			//make the tooltip for the description field
 			var spTooltip = "";
-			if (foundSpell.descriptionFull && (foundSpell.school || foundSpell.psionic)) {
-				spTooltip += toUni(foundSpell.name) + " \u2014 ";
-				spTooltip += foundSpell.psionic ? (foundSpell.level == 0 ? spellLevelList[foundSpell.level + 10].replace(/s\b/, '') : spellSchoolList[foundSpell.school].capitalize() + spellLevelList[foundSpell.level + 10].replace(/s\b/, '').toLowerCase()) :
-					foundSpell.level == 0 ? spellSchoolList[foundSpell.school].capitalize() + " " + spellLevelList[foundSpell.level].replace(/s\b/, '').toLowerCase() :
-					spellLevelList[foundSpell.level].replace(/s\b/, '').toLowerCase() + " " + spellSchoolList[foundSpell.school];
-				spTooltip += foundSpell.ritual ? " (ritual)" : "";
+			if (foundSpell.descriptionFull) {
+				spTooltip = toUni(foundSpell.name);
+				if (foundSpell.school) {
+					spTooltip += " \u2014 ";
+					var spSchoolNm = spellSchoolList[foundSpell.school] ? spellSchoolList[foundSpell.school] : foundSpell.school;
+					if (foundSpell.psionic) {
+						var spLevelNm = spellLevelList[foundSpell.level + 10].replace(/s\b/, '');
+						spTooltip += foundSpell.level == 0 ?
+							spLevelNm :
+							spSchoolNm.capitalize() + spLevelNm.toLowerCase();
+					} else {
+						var spLevelNm = spellLevelList[foundSpell.level].replace(/s\b/, '').toLowerCase();
+						spTooltip += foundSpell.level == 0 ?
+							spSchoolNm.capitalize() + " " + spLevelNm :
+							spLevelNm + " " + spSchoolNm;
+					}
+					if (foundSpell.ritual) spTooltip += " (ritual)";
+				}
 
 				if (foundSpell.time) spTooltip += "\n  Casting Time:  " + foundSpell.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
 

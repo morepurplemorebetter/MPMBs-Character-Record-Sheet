@@ -2008,11 +2008,11 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	for (var aClass in classes.known) {
 		var cSpells = CurrentSpells[aClass];
 		// don't go on if this is not a spellcaster or its factor is lower than its level (thus, no spell slots at this level)
-		if (!cSpells || !cSpells.factor || cSpells.factor[0] > cSpells.level) continue;
+		if (!cSpells || !cSpells.factor || (!Temps.spellcastingTable && cSpells.factor[0] > cSpells.level)) continue;
 		var casterFactor = cSpells.factor[0];
 		var casterType = cSpells.factor[1];
 		// Now calculate the effective caster level and add it to the casterType
-		if (cSpells.spellcastingTable && multiCaster[casterType] === 1) {
+		if (Temps.spellcastingTable && multiCaster[casterType] === 1) {
 			var casterLvl = Math.min(Temps.spellcastingTable.length - 1, classes.known[aClass].level);
 			// Sum the values in the row at the current caster level and add it to the otherTables
 			classes.spellcastlvl.otherTables = !classes.spellcastlvl.otherTables ? Temps.spellcastingTable[casterLvl] : classes.spellcastlvl.otherTables.map(function (num, idx) {
@@ -2110,12 +2110,12 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 				var spTable = tDoc[casterType + "SpellTable"];
 				if (casterType == "otherTables") {
 					SpellSlotsTotal += classes.spellcastlvl.otherTables[ss];
-					SpellSlotsTotal -= classes.oldspellcastlvl.otherTables[ss];
 				} else if (spTable) {
 					SpellSlotsTotal += spTable[Math.min(spTable.length - 1, classes.spellcastlvl[casterType])][ss];
 					SpellSlotsTotal -= classes.oldspellcastlvl[casterType] ? spTable[Math.min(spTable.length - 1, classes.oldspellcastlvl[casterType])][ss] : 0;
 				}
 			}
+			if (classes.oldspellcastlvl.otherTables) SpellSlotsTotal -= classes.oldspellcastlvl.otherTables[ss];
 			if (SpellSlotsField != SpellSlotsTotal) Value(SpellSlotsName, SpellSlotsTotal);
 		}
 		// Have the prompt check if something changed to warrant generating new spell sheets
@@ -8603,6 +8603,7 @@ function SetHighlighting() {
 var ignoreSetSpellSlotsCheckboxes = false;
 function SetSpellSlotsCheckboxes(SpellLVL, theSlots, onlyDisplay) {
 	if (ignoreSetSpellSlotsCheckboxes) return;
+	calcStop();
 	var tempNr = What("Template.extras.SSfront").split(",").length;
 
 	//now set the fields of the prefix type, or non-prefix type, depending on which one was just set

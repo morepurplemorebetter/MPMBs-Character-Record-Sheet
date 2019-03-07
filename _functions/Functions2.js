@@ -5621,6 +5621,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 
 			var gatherVars = {
 				WeaponText : WeaponText,
+				WeaponTextName : inputText,
 				isDC : isDC,
 				isSpell : isSpell,
 				isMeleeWeapon : isMeleeWeapon,
@@ -5808,6 +5809,7 @@ function CalcAttackDmgHit(fldName) {
 
 			var gatherVars = {
 				WeaponText : WeaponText,
+				WeaponTextName : WeaponText.replace(" " + fields.Description, ""),
 				isDC : isDC,
 				isSpell : isSpell,
 				isMeleeWeapon : isMeleeWeapon,
