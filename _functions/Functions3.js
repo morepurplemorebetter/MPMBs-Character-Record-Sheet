@@ -1,28 +1,30 @@
 // Copy all the attributes of a field to another field (or even swap between the two)
-// excl is an object with optional attributes { userName : true, submitName : true, noCalc : true }
+// excl is an object with optional attributes { userName : true, submitName : true, readonly : true, noCalc : true }
 function copyField(fldFromName, fldToName, excl, swap) {
 	var fldTo = tDoc.getField(fldToName);
 	var fldFrom = tDoc.getField(fldFromName);
 	if (!fldTo || !fldFrom || fldTo.type !== fldFrom.type) return;
 
 	if (!excl) excl = {};
-	var fldType = fldTo.type;
 
 	// a function to do the actual copying
 	var copy = function(fromObj, toObj, justObj) {
-		if (fldType == "checkbox") {
+		if (fromObj.type == "checkbox") {
 			if (justObj) {
 				toObj.isBoxCheckVal = fromObj.isBoxChecked(0);
 				toObj.isBoxChecked = function() { return saveTo.isBoxCheckVal; };
+				toObj.type = "checkbox";
 			} else {
 				toObj.checkThisBox(0, fromObj.isBoxChecked(0));
 			}
 		} else {
 			toObj.value = fromObj.value;
+			if (justObj) toObj.type = "text";
 		}
 		if (!excl.userName) toObj.userName = fromObj.userName;
 		if (!excl.submitName) toObj.submitName = fromObj.submitName;
-		if (fldType == "text" && !excl.noCalc && !justObj) {
+		if (!excl.readonly) toObj.readonly = fromObj.readonly;
+		if (fromObj.type == "text" && !excl.noCalc && !justObj) {
 			toObj.setAction("Calculate", toObj.submitName);
 		}
 	}
@@ -184,6 +186,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.extraAC) processExtraAC(addIt, tipNmF, uObj.extraAC, uObj.name);
 		if (uObj.toNotesPage) processToNotesPage(addIt, uObj.toNotesPage, type, uObj, fObj, [tipNm, displName, fObjName, aParent]);
 		if (uObj.carryingCapacity) SetProf("carryingcapacity", addIt, uObj.carryingCapacity, tipNmF);
+		if (uObj.advantages) processAdvantages(addIt, tipNmF, uObj.advantages);
 
 		// --- backwards compatibility --- //
 		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false;

@@ -297,7 +297,8 @@ var CurrentProfs = { // Also change field defaultValue!
 	vision : {},
 	speed : {},
 	specialarmour : {},
-	carryingcapacity : {}
+	carryingcapacity : {},
+	advantage : {}
 };
 
 var thermoCount = [], thermoDur = {};
@@ -308,6 +309,7 @@ var IsNotImport = true;
 var IsNotFeatMenu = true;
 var IsNotMagicItemMenu = true;
 var IsNotWeaponMenu = true;
+var IsNotConditionSet = true;
 var IsSetDropDowns = false;
 var IsNotUserScript = true;
 var IsCharLvlVal = false;

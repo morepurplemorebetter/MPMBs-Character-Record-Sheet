@@ -4736,38 +4736,11 @@ function UpdateRevisedRangerCompanions(newLvl) {
 	}
 }
 
-/*
-//Give a pop-up dialogue when the amount of Ability Score Improvements after changing level
-function CountASIs() {
-	var newASI = 0;
-	for (var nClass in classes.known) {
-		var clLvl = Math.min(CurrentClasses[nClass].improvements.length, classes.known[nClass].level);
-		newASI += clLvl ? CurrentClasses[nClass].improvements[clLvl - 1] : 0;
-	}
-	var oldASI = 0;
-	for (var oClass in classes.old) {
-		clLvl = Math.min(CurrentClasses[oClass].improvements.length, classes.old[oClass].classlevel);
-		oldASI += clLvl ? CurrentClasses[oClass].improvements[clLvl - 1] : 0;
-	}
-	if (newASI !== oldASI) {
-		var pTxt = "The change in level has granted your character " + toUni(newASI - oldASI) + " additional " + toUni("Ability Score Improvement") + "(s)!\n\nThe current total of Ability Score Improvements is:" + AbilityScores.improvements.classlvl + "\n\nYou can use these in one of two ways:\n    1. Divide 2 points over ability scores (to max 20);\n        (See the Ability Scores dialogue, i.e. \"Scores\" button.)\n    2. Take 1 feat.\n        (See the Feats section on the sheet.)";
-		if (CurrentClasses.rangerua && CurrentClasses.rangerua.fullname === "Ranger (Beast Conclave)") {
-			pTxt += "\n\nDon't forget that the Ranger's Animal Companion also benefits from Ability Score Improvements (but not feats).";
-		}
-		app.alert({
-			cMsg : pTxt,
-			nIcon : 3,
-			cTitle : "Don't forget the Ability Score Improvements!"
-		})
-	}
-}
-*/
-
 //a function to change the sorting of the skills
 function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 	var sWho = Who("Text.SkillsNames");
 	var sList = Who("Acr Prof").replace(/^.*(\n|\r)*/, "");
-	if (IsNotReset && (!input || input == "justMenu")) {
+	if (!input || input == "justMenu") {
 		Menus.skills = [{
 			cName : "Sort skills alphabetically",
 			cReturn : "skills#alphabeta",
@@ -4795,7 +4768,7 @@ function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 		return toUni(aSkill) + mStr + aSkill + (isCom ? mStrC : mStr1) + (isCom ? "" : mStr2) + mStr3;
 	};
 
-	if (!IsNotReset || onlyTooltips) { //on a reset only re-do the bonus modifier tooltips
+	if (onlyTooltips) { // only do the bonus modifier tooltips
 		for (var S = 0; S < (SkillsList.abbreviations.length - 2); S++) {
 			var newSkill = SkillsList.names[S];
 			AddTooltip(SkillsList.abbreviations[S] + " Bonus", getStr(newSkill));
@@ -4813,99 +4786,81 @@ function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 		// Start progress bar and stop calculations
 		var thermoTxt = thermoM("Changing the order of the skills...");
 		calcStop();
+		var skillFlds = [" Prof", " Exp", " Bonus"];
+		if (!typePF) skillFlds = skillFlds.concat([" Adv", " Dis"]);
+		var skillRemObj = {}, useFld;
 
-		//make a list of all the currently selected skills
-		var oSkillProf = [];
-		var oSkillExp = [];
-		var oSkillAdv = [];
-		var oSkillDis = [];
-		var oSkillBon = [];
-		var currentList = sWho === "alphabeta" ? SkillsList.abbreviations : SkillsList.abbreviationsByAS;
-		for (var S = 0; S < (SkillsList.abbreviations.length - 2); S++) {
-			var sNm = currentList[S];
-			var sFld = SkillsList.abbreviations[S];
-			if (tDoc.getField(sFld + " Prof").isBoxChecked(0)) {
-				oSkillProf.push(sNm);
-				Checkbox(sFld + " Prof", false);
-			}
-			if (tDoc.getField(sFld + " Exp").isBoxChecked(0)) {
-				oSkillExp.push(sNm);
-				Checkbox(sFld + " Exp", false);
-			}
-			oSkillBon.push([sNm, What(sFld + " Bonus")]);
-			if (!typePF) {
-				if (tDoc.getField(sFld + " Adv").isBoxChecked(0)) {
-					oSkillAdv.push(sNm);
-					Checkbox(sFld + " Adv", false);
-					Editable(sFld + " Dis");
+		// a function to do the actual copying
+		var copy = function(fromObj, toObj, justObj) {
+			if (fromObj.type == "checkbox") {
+				if (justObj) {
+					toObj.isBoxCheckVal = fromObj.isBoxChecked(0);
+					toObj.type = "checkbox";
+				} else {
+					toObj.checkThisBox(0, fromObj.isBoxCheckVal);
 				}
-				if (tDoc.getField(sFld + " Dis").isBoxChecked(0)) {
-					oSkillDis.push(sNm);
-					Checkbox(sFld + " Dis", false);
-					Editable(sFld + " Adv");
+			} else {
+				toObj.value = fromObj.value;
+			}
+			toObj.userName = fromObj.userName;
+			toObj.submitName = fromObj.submitName;
+			toObj.readonly = fromObj.readonly;
+		}
+
+		// Swap everything between the two types of lists
+		for (var n = 1; n <= 2; n++) {
+			for (var s = 0; s < (SkillsList.abbreviations.length - 2); s++) {
+				var aSkill = SkillsList.abbreviations[s];
+				var linkedSkill = SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(aSkill)];
+				if (n == 1) {
+					skillRemObj[aSkill] = {};
+					useFld = sWho === "alphabeta" ? aSkill : linkedSkill;
+				} else {
+					useFld = sWho === "alphabeta" ? linkedSkill : aSkill;
+				}
+				for (var i = 0; i < skillFlds.length; i++) {
+					if (n == 1) {
+						skillRemObj[aSkill][skillFlds[i]] = {};
+						copy(tDoc.getField(useFld + skillFlds[i]), skillRemObj[aSkill][skillFlds[i]], true);
+					} else {
+						copy(skillRemObj[aSkill][skillFlds[i]], tDoc.getField(useFld + skillFlds[i]));
+					}
 				}
 			}
 		}
 
-		//now use those lists to check the correct boxes in the new order of skills
-		var newList = MenuSelection[1] === "alphabeta" ? SkillsList.abbreviations : SkillsList.abbreviationsByAS;
-		var allArrays = [[oSkillProf, " Prof"], [oSkillExp, " Exp"], [oSkillAdv, " Adv", " Dis"], [oSkillDis, " Dis", " Adv"]];
-		for (var A = 0; A < allArrays.length; A++) {
-			var thisArray = allArrays[A][0];
-			for (var i = 0; i < thisArray.length; i++) {
-				var newFld = SkillsList.abbreviations[newList.indexOf(thisArray[i])];
-				Checkbox(newFld + allArrays[A][1], true);
-				if (A > 1) Uneditable(newFld + allArrays[A][2]);
-			}
-		}
-		for (var B = 0; B < oSkillBon.length; B++) {
-			newFld = SkillsList.abbreviations[newList.indexOf(oSkillBon[B][0])];
-			var newSkill = SkillsList.names[SkillsList.abbreviations.indexOf(oSkillBon[B][0])];
-			Value(newFld + " Bonus", oSkillBon[B][1], getStr(newSkill));
-		}
-
-		//show the stealth disadvantage field, for Printer Friendly, if checked
 		if (typePF) {
+			// If this is a printer friendly sheet, show the stealth disadvantage field, if checked
 			Hide("Stealth Disadv");
 			var showIt = tDoc.getField("AC Stealth Disadvantage").isBoxChecked(0);
 			if (showIt) Show("Stealth Disadv." + MenuSelection[1]);
 
-			//now if this is a printer friendly sheet, also rearrange the skills of the companion page(s)
+			// If this is a printer friendly sheet, also rearrange the skills of the companion page(s)
 			var AScompA = What("Template.extras.AScomp").split(",");
 			for (var AS = 0; AS < AScompA.length; AS++) {
 				var prefix = AScompA[AS];
 				var aField = prefix + "Comp.Use.Skills.";
 				var bField = prefix + "BlueText.Comp.Use.Skills.";
-				//make a list of all the currently selected skills
-				var oSkillProf = [];
-				var oSkillExp = [];
-				var oSkillBon = [];
-				for (var S = 0; S < (SkillsList.abbreviations.length - 2); S++) {
-					var sNm = currentList[S];
-					var sFld = SkillsList.abbreviations[S];
-					if (tDoc.getField(aField + sFld + ".Prof").isBoxChecked(0)) {
-						oSkillProf.push(sNm);
-						Checkbox(aField + sFld + ".Prof", false);
+				skillFlds = [[aField, ".Prof"], [aField, ".Exp"], [bField, ".Bonus"]];
+				for (var n = 1; n <= 2; n++) {
+					for (var s = 0; s < (SkillsList.abbreviations.length - 2); s++) {
+						var aSkill = SkillsList.abbreviations[s];
+						var linkedSkill = SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(aSkill)];
+						if (n == 1) {
+							skillRemObj[aSkill] = {};
+							useFld = sWho === "alphabeta" ? aSkill : linkedSkill;
+						} else {
+							useFld = sWho === "alphabeta" ? linkedSkill : aSkill;
+						}
+						for (var i = 0; i < skillFlds.length; i++) {
+							if (n == 1) {
+								skillRemObj[aSkill][skillFlds[i][1]] = {};
+								copy(tDoc.getField(skillFlds[i][0] + useFld + skillFlds[i][1]), skillRemObj[aSkill][skillFlds[i][1]], true);
+							} else {
+								copy(skillRemObj[aSkill][skillFlds[i][1]], tDoc.getField(skillFlds[i][0] + useFld + skillFlds[i][1]));
+							}
+						}
 					}
-					if (tDoc.getField(aField + sFld + ".Exp").isBoxChecked(0)) {
-						oSkillExp.push(sNm);
-						Checkbox(aField + sFld + ".Exp", false);
-					}
-					oSkillBon.push([sNm, What(bField + sFld + ".Bonus")]);
-				}
-
-				var allArrays = [[oSkillProf, ".Prof"], [oSkillExp, ".Exp"]];
-				for (var A = 0; A < allArrays.length; A++) {
-					var thisArray = allArrays[A][0];
-					for (var i = 0; i < thisArray.length; i++) {
-						var newFld = SkillsList.abbreviations[newList.indexOf(thisArray[i])];
-						Checkbox(aField + newFld + allArrays[A][1], true);
-					}
-				}
-				for (var B = 0; B < oSkillBon.length; B++) {
-					newFld = SkillsList.abbreviations[newList.indexOf(oSkillBon[B][0])];
-					var newSkill = SkillsList.names[SkillsList.abbreviations.indexOf(oSkillBon[B][0])];
-					Value(bField + newFld + ".Bonus", oSkillBon[B][1], getStr(newSkill, true));
 				}
 			}
 		}
@@ -6278,6 +6233,7 @@ function AddToModFld(Fld, Mod, Remove, NameEntity, Explanation) {
 function processMods(AddRemove, NameEntity, items) {
 	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
+	var alphaB = Who("Text.SkillsNames") === "alphabeta";
 	if (!isArray(items)) items = [items];
 	for (var i = 0; i < items.length; i++) {
 		var type = items[i].type.toLowerCase();
@@ -6298,7 +6254,7 @@ function processMods(AddRemove, NameEntity, items) {
 						skill = skill.substr(0,3);
 						if (SkillsList.abbreviations.indexOf(skill) === -1) continue;
 					};
-					var skillOrder = Who("Text.SkillsNames") === "alphabeta" || (!QI && !typePF) ? "abbreviations" : "abbreviationsByAS";
+					var skillOrder = alphaB || (!QI && !typePF) ? "abbreviations" : "abbreviationsByAS";
 					var skillAbbr = SkillsList.abbreviations[SkillsList[skillOrder].indexOf(skill)];
 					Fld = QI ? skillAbbr + " Bonus" : skillAbbr == "Init" ? prefix + "Comp.Use.Combat.Init.Bonus" : prefix + "BlueText.Comp.Use.Skills." + skillAbbr + ".Bonus";
 				};
@@ -6422,6 +6378,16 @@ function processSaves(AddRemove, srcNm, itemArr) {
 	if (!isArray(itemArr)) itemArr = [itemArr];
 	for (var i = 0; i < itemArr.length; i++) {
 		SetProf("save", AddRemove, itemArr[i], srcNm);
+	}
+};
+// a way to pass an array of advantage/disadvantage giving arrays strings to be processed by the SetProf function
+// ["Str", true] to give advantage on Strenght saves
+// ["Init", false]  to give disadvantage on Initiative checks
+function processAdvantages(AddRemove, srcNm, itemArr) {
+	if (!itemArr || !isArray(itemArr)) return;
+	if (itemArr.length == 2 && !isArray(itemArr[0])) itemArr = [itemArr];
+	for (var i = 0; i < itemArr.length; i++) {
+		SetProf("advantage", AddRemove, itemArr[i], srcNm);
 	}
 };
 
@@ -7372,6 +7338,60 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		var ttText = toUni("Carrying Capacity Multiplier") + "\nThe number you type in here will be used to multiply the carrying capacity with. This must be a positive number.\n\nWhen you set this value to zero, all the encumbrance calculations will be halted and the encumbrance fields will be left empty." + formatMultiList("\n\nThe following features have changed this multiplier:", sourcesArray);
 		// Set the new field value
 		Value("Carrying Capacity Multiplier", Math.max(0, RoundTo(curFactor, 0.25)), ttText);
+	};
+	case "advantage" : { // ProfObj array [field, boolean (true = adv; false = disadv)]
+		var fld = ProfObj[0], fldDescr;
+		fld = fld.substr(0,1).toUpperCase() + fld.substr(1).toLowerCase();
+		var fld3 = fld.substr(0,3), fld4 = fld.substr(0,4);
+		var isSkill = false;
+		if (SkillsList.abbreviations.indexOf(fld3) !== -1) {
+			fld = fld3;
+			isSkill = true;
+		} else if (SkillsList.abbreviations.indexOf(fld4) !== -1) {
+			fld = fld4;
+			isSkill = true;
+		} else if (AbilityScores.abbreviations.indexOf(fld3) !== -1) {
+			fld = fld3 + " ST";
+			fldDescr = AbilityScores.names[AbilityScores.abbreviations.indexOf(fld3)] + " saving throws";
+		} else if (fld3 == "Att") {
+			fld = fld3;
+			fldDescr = "attack rolls";
+		}
+		if (isSkill) {
+			fldDescr = SkillsList.names[SkillsList.abbreviations.indexOf(fld)] + " checks";
+		}
+		if (!set[fld]) set[fld] = {};
+		if (AddRemove) { // add
+			set[fld][ProfSrc] = ProfObj[1];
+		} else if (set[fld][ProfSrc] !== undefined) { // remove
+			delete set[fld][ProfSrc];
+		}
+		// what to change the field to
+		var setAdv = 0, setDis = 0, tooltipArr = [];
+		for (var src in set[fld]) {
+			var giveAdv = set[fld][src];
+			tooltipArr.push((!giveAdv ? "Disa" : "a") + "dvantage: " + src);
+			if (giveAdv) {
+				setAdv++;
+			} else {
+				setDis++;
+			}
+		}
+		if (setAdv && setDis) { // both advantage and disadvantage, so set neither
+			setAdv = false;
+			setDis = false;
+		}
+		// apply the fields
+		if (!typePF) {
+			var useFld = isSkill && Who("Text.SkillsNames") != "alphabeta" ? SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(fld)] : fld;
+			var fullTT = !tooltipArr.length ? "" : formatMultiList("(Dis)advantage with " + fldDescr + " gained from:", tooltipArr) + "\n\nRemember that advantage and disadvantage cancel each other out and that there is no bonus in having multiple sources of either.\nOne disadvantage will cancel any number of reasons for advantage.";
+			Checkbox(useFld + " Adv", setAdv, fullTT);
+			Checkbox(useFld + " Dis", setDis, fullTT);
+		} else if (fld == "Perc") {
+			AddTooltip("Passive Perception Bonus", undefined, setAdv ? "Adv" : setDis ? "Dis" : "");
+		}
+		// clean the object
+		if (!AddRemove && !tooltipArr.length) delete set[fld];
 	};
  };
 	SetStringifieds("profs");

@@ -501,7 +501,7 @@ function ResetAll(GoOn, noTempl) {
 	thermoM(6/9); //increment the progress dialog's progress
 	delete CurrentVars.vislayers; LayerVisibilityOptions();
 	ShowCompanionLayer();
-	ConditionSet();
+	ConditionSet(true);
 	RemoveTooltips();
 	ResetMagicItems();
 	ShowAttunedMagicalItems(true);
@@ -522,8 +522,7 @@ function ResetAll(GoOn, noTempl) {
 	ClearIcons("Comp.img.Portrait", true);
 
 	//re-apply the rich text (deleted because of resetting the form fields)
-	MakeSkillsMenu_SkillsOptions(["go", "alphabeta"]);
-	AddTooltip("Text.SkillsNames", "alphabeta");
+	MakeSkillsMenu_SkillsOptions(["skills", "alphabeta"]);
 	SetRichTextFields();
 
 	//Set the initial state of the Ability Save DC number 2
@@ -650,7 +649,11 @@ function show3rdPageNotes() {
 function LayerVisibilityOptions(showMenu, useSelect) {
 	if (typePF || minVer) return; //don't do this function in the Printer-Friendly version
 
-	if (CurrentVars.vislayers == undefined) CurrentVars.vislayers = ["rules", "equipment"];
+	var isReset = false;
+	if (CurrentVars.vislayers == undefined) {
+		isReset = !showMenu;
+		CurrentVars.vislayers = ["rules", "equipment"];
+	}
 	MakeMobileReady(false); // Undo flatten, if needed
 
 	var possibleOptions = ["notes", "rules", "equipment"];
@@ -678,7 +681,7 @@ function LayerVisibilityOptions(showMenu, useSelect) {
 	if (!selection[0] || possibleOptions.indexOf(selection[0]) == -1) selection[0] = CurrentVars.vislayers[0];
 	if (!selection[1] || possibleOptions.indexOf(selection[1]) == -1) selection[1] = CurrentVars.vislayers[1];
 
-	if (selection[0] == CurrentVars.vislayers[0] && selection[1] == CurrentVars.vislayers[1]) return; // nothing changed
+	if (!isReset && selection[0] == CurrentVars.vislayers[0] && selection[1] == CurrentVars.vislayers[1]) return; // nothing changed
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Show the 3rd page " + selection[0] + " and " + selection[1] + " sections...");
@@ -1417,164 +1420,149 @@ function ApplyShield(input) {
 }
 
 //Change advantage or disadvantage of saves, skills, checks, attacks, etc. based on condition
-function ConditionSet() {
-	if (typePF) return; //don't do this function in the Printer-Friendly version
+function ConditionSet(isReset) {
+	if (typePF || (!isReset && !IsNotConditionSet)) return; //don't do this function in the Printer-Friendly version
+
+	var cFlds = {
+		Exh1 : { name : "Extra.Exhaustion Level 1" },
+		Exh2 : { name : "Extra.Exhaustion Level 2" },
+		Exh3 : { name : "Extra.Exhaustion Level 3" },
+		Exh4 : { name : "Extra.Exhaustion Level 4" },
+		Exh5 : { name : "Extra.Exhaustion Level 5" },
+		Exh6 : { name : "Extra.Exhaustion Level 6" },
+		Blinded : { name : "Extra.Condition 1" },
+		Deafened : { name : "Extra.Condition 3" },
+		Frightened : { name : "Extra.Condition 4" },
+		Grappled : { name : "Extra.Condition 5" },
+		Incapacitated : { name : "Extra.Condition 6" },
+		Invisible : { name : "Extra.Condition 7" },
+		Paralyzed : { name : "Extra.Condition 8" },
+		Petrified : { name : "Extra.Condition 9" },
+		Poisoned : { name : "Extra.Condition 10" },
+		Prone : { name : "Extra.Condition 11" },
+		Restrained : { name : "Extra.Condition 12" },
+		Stunned : { name : "Extra.Condition 13" },
+		Unconscious : { name : "Extra.Condition 14" },
+		ArmDis : { name : "AC Stealth Disadvantage" }
+	}
+
+	var thisFld;
+	for (var aFld in cFlds) {
+		cFlds[aFld].checked = tDoc.getField(cFlds[aFld].name).isBoxChecked(0);
+		if (event.target && event.target.name && cFlds[aFld].name == event.target.name) thisFld = aFld;
+		if ((/Exh\d/).test(aFld)) cFlds[aFld].origchecked = thisFld === aFld ? !cFlds[aFld].checked : cFlds[aFld].checked;
+	}
+	if (!thisFld && event.target && (/AC/).test(event.target.name)) thisFld = "ArmDis";
+	var thisChck = thisFld && cFlds[thisFld].checked ? true : false;
+	if (!thisFld && !isReset) return;
+
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying the conditions...");
 	calcStop();
+	IsNotConditionSet = false;
 
-	var Exh1 = tDoc.getField("Extra.Exhaustion Level 1");
-	var Exh2 = tDoc.getField("Extra.Exhaustion Level 2");
-	var Exh3 = tDoc.getField("Extra.Exhaustion Level 3");
-	var Exh4 = tDoc.getField("Extra.Exhaustion Level 4");
-	var Exh5 = tDoc.getField("Extra.Exhaustion Level 5");
-	var Exh6 = tDoc.getField("Extra.Exhaustion Level 6");
-	var Blinded = tDoc.getField("Extra.Condition 1");
-	var Frightened = tDoc.getField("Extra.Condition 4");
-	var Grappled = tDoc.getField("Extra.Condition 5");
-	var Invisible = tDoc.getField("Extra.Condition 7");
-	var Paralyzed = tDoc.getField("Extra.Condition 8");
-	var Petrified = tDoc.getField("Extra.Condition 9");
-	var Poisoned = tDoc.getField("Extra.Condition 10");
-	var Prone = tDoc.getField("Extra.Condition 11");
-	var Restrained = tDoc.getField("Extra.Condition 12");
-	var Stunned = tDoc.getField("Extra.Condition 13");
-	var Unconscious = tDoc.getField("Extra.Condition 14");
-	var ArmDis = tDoc.getField("AC Stealth Disadvantage");
-
-	//check if by (un)checking this field, another field needs to be (un)checked as well
-	var theField = (event.target && event.target.name && !(/ac|reset|import/i).test(event.target.name)) ? event.target.name : "reset";
-	var FieldNmbr = Number(theField.slice(-2));
-	var FieldChecked = theField !== "reset" && event.target.type === "checkbox" ? event.target.isBoxChecked(0) : "reset";
-	var CheckItAlso = FieldChecked === 1;
-
-	//Do something with other fields dependent on the selection
-	if (theField.indexOf("Extra.Exhaustion Level ") !== -1) {
-		//if checking the box, check the lower ones as well
-		if (FieldChecked === 1 && FieldNmbr > 1) {
-			for (var X = 1; X < FieldNmbr; X++) {
-				Checkbox("Extra.Exhaustion Level " + X, true);
-			}
-		} else if (FieldChecked === 0 && FieldNmbr < 6) { //if unchecking the box, uncheck the higher ones as well
-			for (var x = FieldNmbr; x <= 6; x++) {
-				Checkbox("Extra.Exhaustion Level " + x, false);
+	// Do something with other fields dependent on the selection
+	//var stealthLoc = Who("Text.SkillsNames") === "alphabeta" ? "Ste" : "Ath";
+	if (isReset || (/Exh\d/).test(thisFld)) {
+		// If this is an exhaustion level, check the ones below and/or uncheck the ones above
+		if (!isReset) {
+			var exhNmbr = Number(thisFld.slice(-1));
+			var strtNmbr = thisChck ? 1 : exhNmbr;
+			var endNmbr = thisChck ? exhNmbr : 7;
+			for (var X = strtNmbr; X < endNmbr; X++) {
+				Checkbox("Extra.Exhaustion Level " + X, thisChck);
+				cFlds["Exh" + X].checked = thisChck;
 			}
 		}
-	} else if (theField === "Extra.Condition 14") { //If Unconscious
-		Checkbox("Extra.Condition 6", CheckItAlso); //Incapacitated
-		if(CheckItAlso) {Checkbox("Extra.Condition 11", true)}; //Prone, but don't remove condition upon removing unconscious
-	} else if (theField === "Extra.Condition 8") { //If Paralyzed
-		Checkbox("Extra.Condition 6", CheckItAlso); //Incapacitated
-	} else if (theField === "Extra.Condition 9") { //If Petrified
-		Checkbox("Extra.Condition 6", CheckItAlso); //Incapacitated
-		Checkbox("Extra.Condition 8", CheckItAlso); //Paralyzed
-		SetProf("resistance", CheckItAlso, "All", "Being petrified (condition)", "All (petrified)");
-	} else if (theField === "Extra.Condition 13") { //If Stunned
-		Checkbox("Extra.Condition 6", CheckItAlso); //Incapacitated
-	} else if (theField === "Extra.Condition 1") { //If Blinded
-		if (FieldChecked === 1) {
-			AddString("Vision", "Blinded: fail checks involving sight", "; ");
-		} else {
-			RemoveString("Vision", "Blinded: fail checks involving sight");
+		// if the level 2 changes, set the current speed
+		if (isReset || cFlds.Exh2.origchecked != cFlds.Exh2.checked || cFlds.Exh5.origchecked != cFlds.Exh5.checked) {
+			SetProf("speed", cFlds.Exh5.checked ? false : cFlds.Exh2.checked, { allModes : "/2" }, "Exhaustion level 2 (condition)");
 		}
-	} else if (theField === "Extra.Condition 3") { //If Deafened
-		if (FieldChecked === 1) {
-			AddString("Vision", "Deafened: fail checks involving hearing", "; ");
-		} else {
-			RemoveString("Vision", "Deafened: fail checks involving hearing");
+		// if the level 3 changed, set all the saving throws to adv/dis
+		if (isReset || cFlds.Exh3.origchecked != cFlds.Exh3.checked) {
+			for (var B = 0; B < AbilityScores.abbreviations.length; B++) {
+				SetProf("advantage", cFlds.Exh3.checked, [AbilityScores.abbreviations[B], false], "Exhaustion level 2 (condition)");
+			};
+		}
+		// if the level 4 changes, set the current HP max
+		if (!isReset && cFlds.Exh4.origchecked != cFlds.Exh4.checked) {
+			var maxHP = What("HP Max");
+			var halfMaxHP = Math.floor(maxHP / 2);
+			var curMaxHP = What("HP Max Current");
+			if (cFlds.Exh4.checked) {
+				var extraMin = curMaxHP ? maxHP - curMaxHP : 0;
+				Value("HP Max Current", halfMaxHP - extraMin);
+			} else if (curMaxHP == halfMaxHP || !halfMaxHP) {
+				Value("HP Max Current", "");
+			} else {
+				var extraMin = halfMaxHP - curMaxHP;
+				Value("HP Max Current", maxHP - extraMin);
+			}
 		}
 	}
-	thermoM(1/10); //increment the progress dialog's progress
-
-	//keep incapacitated checked if one of the conditions requires it
-	if (Paralyzed.isBoxChecked(0) === 1 || Petrified.isBoxChecked(0) === 1  || Stunned.isBoxChecked(0) === 1 || Unconscious.isBoxChecked(0) === 1) {
-		Checkbox("Extra.Condition 6", true); //Incapacitated
+	if (isReset || (/Unconscious|Paralyzed|Petrified|Stunned/).test(thisFld)) {
+		if (thisFld == "Unconscious" && thisChck) {
+			// if unconscious, also check prone, but don't automatically stand up when no longer unconscious
+			Checkbox(cFlds.Prone.name, true);
+			cFlds.Prone.checked = true;
+		} else if (isReset || thisFld == "Petrified") {
+			SetProf("resistance", thisChck, "All", "Petrified (condition)", "All (petrified)");
+			SetProf("savetxt", thisChck, { immune : ["poison", "disease"] }, "Petrified (condition)");
+		}
+		// Incapacitated and fail str/dex saves if any of these are checked, but only undo if none are
+		var anyChecked = cFlds.Paralyzed.checked || cFlds.Petrified.checked || cFlds.Stunned.checked || cFlds.Unconscious.checked;
+		Checkbox(cFlds.Incapacitated.name, anyChecked);
+		cFlds.Incapacitated.checked = anyChecked;
+		SetProf("savetxt", anyChecked, { text : ["Fail Str/Dex saves"] }, "Conditions (paralyzed, petrified, stunned, or unconscious)");
 	}
-	thermoM(2/10); //increment the progress dialog's progress
-
-	//Add string to saving throw advantages / disadvantages
-	if (Paralyzed.isBoxChecked(0) === 1 || Stunned.isBoxChecked(0) === 1 || Unconscious.isBoxChecked(0) === 1) {
-		AddString("Saving Throw advantages \/ disadvantages", "Fail Str/Dex saves", "; ");
-	} else {
-		RemoveString("Saving Throw advantages \/ disadvantages", "Fail Str/Dex saves");
+	if (isReset || thisFld == "Blinded") {
+		SetProf("vision", thisChck, "Blinded: fail checks involving sight", "Blinded (condition)", 0);
 	}
-	thermoM(3/10); //increment the progress dialog's progress
+	if (isReset || thisFld == "Deafened") {
+		SetProf("vision", thisChck, "Deafened: fail checks involving hearing", "Deafened (condition)", 0);
+	}
+	if (isReset || thisFld == "Restrained") {
+		SetProf("advantage", thisChck, ["Dex", false], "Restrained (condition)");
+	}
+	if (isReset || thisFld == "Invisible") {
+		SetProf("advantage", thisChck, ["Att", true], "Invisible (condition)");
+	}
+	if (!isReset && thisFld == "Incapacitated" && (cFlds.Unconscious.checked || cFlds.Paralyzed.checked || cFlds.Petrified.checked || cFlds.Stunned.checked)) {
+		Checkbox(cFlds.Incapacitated.name, true);
+		cFlds.Incapacitated.checked = true;
+	}
+	if (isReset || thisFld == "ArmDis") {
+		SetProf("advantage", thisChck, ["Ste", false], "Armor");
+	}
+	thermoM(0.25); //increment the progress dialog's progress
 
-	// No longer checking for half or 0 speed because of the changes to how speed is set (and the limited usefuleness of it in the first place)
-
-	//see if checks have disadvantage or not
-	if (Exh1.isBoxChecked(0) === 1 || Frightened.isBoxChecked(0) === 1 || Poisoned.isBoxChecked(0) === 1) {
+	// Ability checks disadvantage
+	if (isReset || (/Exh|Frightened|Poisoned/).test(thisFld)) {
+		var abiDisadv = cFlds.Exh1.checked || cFlds.Frightened.checked || cFlds.Poisoned.checked;
 		for (var S = 0; S < SkillsList.abbreviations.length; S++) {
-			Hide(SkillsList.abbreviations[S] + " Adv");
-			Checkbox(SkillsList.abbreviations[S] + " Dis", true);
-			Uneditable(SkillsList.abbreviations[S] + " Dis");
+			SetProf("advantage", abiDisadv, [SkillsList.abbreviations[S], false], "Exhaustion, Frightened, or Poisoned (conditions)");
 		};
-	} else {
-		for (var S = 0; S < SkillsList.abbreviations.length; S++) {
-			Show(SkillsList.abbreviations[S] + " Adv");
-			Checkbox(SkillsList.abbreviations[S] + " Dis", false);
-			Editable(SkillsList.abbreviations[S] + " Dis");
-		};
-		var StealthLoc = Who("Text.SkillsNames") === "alphabeta" ? "Ste" : "Ath";
-		if (ArmDis.isBoxChecked(0) === 1) {
-			Hide(StealthLoc + " Adv");
-			Checkbox(StealthLoc + " Dis", true);
-			Uneditable(StealthLoc + " Dis");
-		};
-	};
-	thermoM(6/10); //increment the progress dialog's progress
-
-	//see if attacks have advantage, disadvantage or nothing
-	var AttDis = (Exh3.isBoxChecked(0) === 1 || (Blinded.isBoxChecked(0) === 1 && What("Class Features").toLowerCase().indexOf("feral senses") === -1) || Frightened.isBoxChecked(0) === 1 || Poisoned.isBoxChecked(0) === 1 || Prone.isBoxChecked(0) === 1 || Restrained.isBoxChecked(0) === 1);
-	var AttAdv = Invisible.isBoxChecked(0) === 1;
-	if (AttDis && !AttAdv) {
-		Hide("Att Adv");
-		Checkbox("Att Dis", true);
-		Uneditable("Att Dis");
-	} else if (!AttDis && AttAdv) {
-		Hide("Att Dis");
-		Checkbox("Att Adv", true);
-		Uneditable("Att Adv");
-	} else {
-		Show("Att Adv");
-		Show("Att Dis");
-		Checkbox("Att Adv", false);
-		Checkbox("Att Dis", false);
-		Editable("Att Adv");
-		Editable("Att Dis");
-	};
-	thermoM(7/10); //increment the progress dialog's progress
-
-	//See if saves have disadvantage
-	if (Exh3.isBoxChecked(0) === 1) {
-		for (var B = 0; B < AbilityScores.abbreviations.length; B++) {
-			Hide(AbilityScores.abbreviations[B] + " ST Adv");
-			Checkbox(AbilityScores.abbreviations[B] + " ST Dis", true);
-			Uneditable(AbilityScores.abbreviations[B] + " ST Dis");
-		};
-	} else {
-		for (var B = 0; B < AbilityScores.abbreviations.length; B++) {
-			Show(AbilityScores.abbreviations[B] + " ST Adv");
-			Checkbox(AbilityScores.abbreviations[B] + " ST Dis", false);
-			Editable(AbilityScores.abbreviations[B] + " ST Dis");
-		};
-		if (Restrained.isBoxChecked(0) === 1) {
-			Hide("Dex ST Adv");
-			Checkbox("Dex ST Dis", true);
-			Editable("Dex ST Dis");
-		}
 	}
-	thermoM(8/10); //increment the progress dialog's progress
+	thermoM(0.5); //increment the progress dialog's progress
 
-	//halve the Current Max Hit points
-	if (theField.indexOf("Extra.Exhaustion Level ") !== -1) {
-		if (Exh4.isBoxChecked(0) === 1 && What("HP Max Current") === "") {
-			Value("HP Max Current", Math.floor(Number(What("HP Max")) / 2));
-		} else if (Exh4.isBoxChecked(0) === 0 && What("HP Max Current") === Math.floor(Number(What("HP Max")) / 2)) {
-			Value("HP Max Current", "");
+	// Attack disadvantage
+	if (isReset || (/Exh|Blinded|Frightened|Poisoned|Prone|Restrained/).test(thisFld)) {
+		var attDisadv = cFlds.Exh3.checked || cFlds.Frightened.checked || cFlds.Poisoned.checked || cFlds.Prone.checked || cFlds.Restrained.checked || (cFlds.Blinded.checked && What("Class Features").toLowerCase().indexOf("feral senses") === -1);
+		SetProf("advantage", attDisadv, ["Att", false], "Exhaustion, Blinded, Frightened, Poisoned, Prone, or Restrained (conditions)");
+	}
+	thermoM(0.75); //increment the progress dialog's progress
+
+	// Set movement speed
+	if (isReset || (/Exh|Grappled|Paralyzed|Petrified|Restrained|Stunned|Unconscious/).test(thisFld)) {
+		var spdFormat = cFlds.Exh5.checked || cFlds.Grappled.checked || cFlds.Paralyzed.checked || cFlds.Petrified.checked || cFlds.Restrained.checked || cFlds.Stunned.checked || cFlds.Unconscious.checked ? "event.value = '0 " + (What("Unit System") == "imperial" ? "ft" : "m") + "';" :"";
+		var spdFlds = ["Speed", "Speed encumbered"];
+		for (var i = 0; i < spdFlds.length; i++) {
+			tDoc.getField(spdFlds[i]).setAction("Format", spdFormat);
+			Value(spdFlds[i], What(spdFlds[i]));
 		}
 	}
 
+	IsNotConditionSet = true;
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
@@ -4121,42 +4109,43 @@ function ValidateBonus(goEmpty, allowDC) {
 	};
 };
 
-//calculate the skill modifier (field calculation)
+// Calculate the skill modifier (field calculation)
 function CalcSkill() {
 	var isPP = event.target.name === "Passive Perception" ? 10 : 0;
 	var alphaB = Who("Text.SkillsNames") === "alphabeta";
-	var Skill = !isPP ? clean(event.target.name.substring(0, 4)) : (alphaB ? "Perc" : "Perf");
+	var Skill = !isPP ? clean(event.target.name.substring(0, 4)) : alphaB ? "Perc" : "Perf";
 	var skillLookup = alphaB ? SkillsList.abilityScores : SkillsList.abilityScoresByAS;
 	var Ability = skillLookup[SkillsList.abbreviations.indexOf(Skill)];
-	if (Ability === "Too") {
+	if (Ability === "Too" || What(Ability) === "") {
 		event.value = "";
-		return; //don't do the rest of this function
+		return; // Don't do the rest of this function
 	}
-	var Mod = What(Ability + " Mod");
-	var ProfBonus = 0;
-	var theProf = Number(What("Proficiency Bonus"));
-	if (tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1 && (event.target.name.indexOf("Passive") !== -1 || event.target.name.indexOf("Initiative") !== -1)) {
-		theProf = Number(How("Proficiency Bonus"));
+	var theBonus = Number(What(Ability + " Mod"));
+
+	// Proficiency bonus
+	var theProf = tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) && (isPP || (/passive|initiative/i).test(event.target.name)) ? Number(How("Proficiency Bonus")) : Number(What("Proficiency Bonus"));
+	if (tDoc.getField(Skill + " Prof") && tDoc.getField(Skill + " Prof").isBoxChecked(0)) {
+		theBonus += theProf;
+		if (tDoc.getField(Skill + " Exp").isBoxChecked(0)) theBonus += theProf;
+	} else if (tDoc.getField("Jack of All Trades").isBoxChecked(0) || (tDoc.getField("Remarkable Athlete").isBoxChecked(0) && (/^(Str|Dex|Con)$/).test(Ability))) {
+		theBonus += Math.ceil(theProf / 2);
 	}
 
-	if (tDoc.getField(Skill + " Prof") && tDoc.getField(Skill + " Prof").isBoxChecked(0) === 1) {
-		ProfBonus = theProf;
-		if (tDoc.getField(Skill + " Exp").isBoxChecked(0) === 1) {
-			ProfBonus = ProfBonus * 2;
+	// Modifier fields
+	theBonus += EvalBonus(What(Skill + " Bonus"), true);
+	if (!(/initiative/i).test(event.target.name)) {
+		theBonus += EvalBonus(What("All Skills Bonus"), true);
+	} else if (isPP) { // passive perception
+		theBonus += 10 + EvalBonus(What("Passive Perception Bonus"), true);
+		// advantage adds 5, disadvantage subtracts 5
+		if (!typePF) {
+			theBonus += tDoc.getField(Skill + " Adv").isBoxChecked(0) ? 5 : tDoc.getField(Skill + " Dis").isBoxChecked(0) ? -5 : 0;
+		} else {
+			theBonus += How("Passive Perception Bonus") == "Adv" ? 5 : How("Passive Perception Bonus") == "Dis" ? -5 : 0;
 		}
-	} else if (tDoc.getField("Remarkable Athlete").isBoxChecked(0) && (Ability === "Str" || Ability === "Dex" || Ability === "Con")) {
-		ProfBonus = Math.ceil(theProf / 2);
-	} else if (tDoc.getField("Jack of All Trades").isBoxChecked(0)) {
-		ProfBonus = Math.floor(theProf / 2);
 	}
 
-	var ExtraBonus = EvalBonus(What(Skill + " Bonus"), true);
-
-	var AllBonus = (/Initiative/).test(event.target.name) ? 0 : EvalBonus(What("All Skills Bonus"), true);
-
-	var PassBonus = isPP ? EvalBonus(What("Passive Perception Bonus"), true) : 0;
-
-	event.value = Mod === "" ? "" : Number(isPP) + Number(Mod) + Number(ProfBonus) + Number(ExtraBonus) + Number(AllBonus) + Number(PassBonus);
+	event.value = theBonus;
 };
 
 //calculate the saving throw modifier (field calculation)
@@ -4185,7 +4174,7 @@ function CalcSave() {
 	var theResult = Mod === "" ? "" : Number(Mod) + Number(ProfBonus) + Number(ExtraBonus) + Number(AllBonus);
 
 	//change the total to fail if some condition dictates it
-	if (!typePF && QI && (Ability === "Str" || Ability === "Dex") && (tDoc.getField("Extra.Condition 8").isBoxChecked(0) === 1 || tDoc.getField("Extra.Condition 13").isBoxChecked(0) === 1 || tDoc.getField("Extra.Condition 14").isBoxChecked(0) === 1)) {
+	if (!typePF && QI && (Ability === "Str" || Ability === "Dex") && (tDoc.getField("Extra.Condition 8").isBoxChecked(0) === 1 || tDoc.getField("Extra.Condition 9").isBoxChecked(0) === 1 || tDoc.getField("Extra.Condition 13").isBoxChecked(0) === 1 || tDoc.getField("Extra.Condition 14").isBoxChecked(0) === 1)) {
 		theResult = "fail";
 	}
 
