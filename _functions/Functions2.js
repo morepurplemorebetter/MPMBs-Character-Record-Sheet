@@ -739,7 +739,7 @@ function ApplyWildshape() {
 
 	var newCrea = ParseCreature(newForm);
 
-	var oldCrea = ParseCreature(event.target.value.toLowerCase());
+	var oldCrea = ParseCreature(event.target.value);
 	if (newCrea === oldCrea || !newCrea || !What("Character Level") || !What("Int")|| !What("Wis")|| !What("Cha")) { //If this returns true, it means that no (new) race was found; or that the character has not been defined enough yet so the function can be stopped
 		thermoM(thermoTxt, true); // Stop progress bar
 		return; //don't do the rest of the function
@@ -1087,17 +1087,21 @@ function ApplyWildshape() {
 }
 
 //add a wild shape to the top most empty place
-function AddWildshape(input) {
+function AddWildshape(input, inCrea) {
 	var prefixA = What("Template.extras.WSfront").split(",").splice(1);
+	var inputLC = input.toLowerCase();
+	inCrea = inCrea && CreatureList[inCrea] ? inCrea : ParseCreature(inputLC);
+	if (!inCrea) return;
 	for (var n = 1; n <= 2; n++) {
 		for (var p = 0; p < prefixA.length; p++) {
 			var prefix = prefixA[p];
 			for (var i = 1; i <= 4; i++) {
-				next = tDoc.getField(prefix + "Wildshape.Race." + i);
-				if (n === 1 && next.value.toLowerCase().indexOf(input.toLowerCase()) !== -1) {
+				var aShp = What(prefix + "Wildshape.Race." + i).toLowerCase();
+				var aCrea = n === 1 ? ParseCreature(aShp) : "";
+				if (n === 1 && (aShp == inputLC || inCrea == aCrea)) {
 					return; //the value was found to already exist
-				} else if (n === 2 && (next.value === "" || next.value.toLowerCase().indexOf("make a selection") !== -1)) {
-					next.value = input;
+				} else if (n === 2 && (!aShp || aShp.indexOf("make a selection") !== -1)) {
+					Value(prefix + "Wildshape.Race." + i, input);
 					return;
 				}
 			}
@@ -1370,7 +1374,7 @@ function WildshapeOptions() {
 		tDoc.resetForm([prefix + "Wildshape.Race"]);
 		break;
 	 case "add" :
-		AddWildshape(CreatureList[MenuSelection[1]].name);
+		AddWildshape(CreatureList[MenuSelection[1]].name, MenuSelection[1]);
 		break;
 	 case "remove" :
 		RemoveWildshape(MenuSelection[1]);
@@ -7365,6 +7369,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				setDis++;
 			}
 		}
+		tooltipArr.sort();
 		if (setAdv && setDis) { // both advantage and disadvantage, so set neither
 			setAdv = false;
 			setDis = false;
@@ -7372,7 +7377,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		// apply the fields
 		if (!typePF) {
 			var useFld = isSkill && Who("Text.SkillsNames") != "alphabeta" ? SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(fld)] : fld;
-			var fullTT = !tooltipArr.length ? "" : formatMultiList("(Dis)advantage with " + fldDescr + " gained from:", tooltipArr) + "\n\nRemember that advantage and disadvantage cancel each other out and that there is no bonus in having multiple sources of either.\nOne disadvantage will cancel any number of reasons for advantage.";
+			var fullTT = !tooltipArr.length ? "" : formatMultiList("(Dis)advantage with " + fldDescr + " gained from:", tooltipArr) + "\n\nRemember that advantage and disadvantage cancel each other out and that there is no bonus in having multiple sources of either.\nOne disadvantage will cancel any number of reasons for advantage and vice versa.";
 			Checkbox(useFld + " Adv", setAdv, fullTT);
 			Checkbox(useFld + " Dis", setDis, fullTT);
 		} else {

@@ -1588,14 +1588,8 @@ function classesFieldVal() {
 
 // search the string for possible class and subclass
 function ParseClass(input) {
-	var found = false, tempFound = false, foundLen = 0;
-
-	var classFound = "";
-	var classFoundLen = 0;
-	var foundDat = 0;
-	var subFoundLen = 0;
-	var subFound = "";
-	var foundSubDat = 0;
+	var classFound = "", classFoundLen = 0, classFoundDat = 0;
+	var subFound = "", subFoundLen = 0, subFoundDat = 0;
 	input = removeDiacritics(input);
 
 	// Loop through all the classes and see if any of them match and then look for its subclasses
@@ -1606,7 +1600,7 @@ function ParseClass(input) {
 			var kObj = ClassList[key];
 			if (i == 1) { // reset the subs for every class we look through if still looking at classes mainly
 				subFoundLen = 0;
-				foundSubDat = 0;
+				subFoundDat = 0;
 			}
 
 			if ((i == 1 && !(kObj.regExpSearch).test(input)) // see if the class regex matches (round 1 only)
@@ -1618,15 +1612,15 @@ function ParseClass(input) {
 			// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
 			// or if we are not using the search length, just look at the newest source date
 			var tempDate = sourceDate(kObj.source);
-			if (i == 1 && ((!ignoreSearchLength && kObj.name.length < foundLen) || (!ignoreSearchLength && kObj.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat))) continue;
+			if (i == 1 && ((!ignoreSearchLength && kObj.name.length < classFoundLen) || (!ignoreSearchLength && kObj.name.length == classFoundLen && tempDate < classFoundDat) || (ignoreSearchLength && tempDate <= classFoundDat))) continue;
 
 			if (i == 1) { // we have a matching class! (round 1 only)
 				classFound = key;
 				classFoundLen = kObj.name.length;
-				foundDat = tempDate;
+				classFoundDat = tempDate;
 				subFound = "";
 				subFoundLen = 0;
-				foundSubDat = 0;
+				subFoundDat = 0;
 			}
 
 			// see if any of the sublasses match
@@ -1643,15 +1637,15 @@ function ParseClass(input) {
 				// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
 				// or if we are not using the search length, just look at the newest source date
 				var tempSubDate = sourceDate(sObj.source);
-				if ((!ignoreSearchLength && sObj.subname.length < subFoundLen) || (!ignoreSearchLength && sObj.subname.length == subFoundLen && tempSubDate < foundSubDat) || (ignoreSearchLength && tempSubDate <= foundSubDat)) continue;
+				if ((!ignoreSearchLength && sObj.subname.length < subFoundLen) || (!ignoreSearchLength && sObj.subname.length == subFoundLen && tempSubDate < subFoundDat) || (ignoreSearchLength && tempSubDate <= subFoundDat)) continue;
 
 				// we have a match for both the class and the subclass!
 				classFound = key;
 				classFoundLen = kObj.name.length;
-				foundDat = tempDate;
+				classFoundDat = tempDate;
 				subFound = subKey;
 				subFoundLen = sObj.subname.length;
-				foundSubDat = tempSubDate;
+				subFoundDat = tempSubDate;
 			}
 		}
 	}
