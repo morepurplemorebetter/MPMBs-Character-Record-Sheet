@@ -166,10 +166,7 @@ var Base_ClassList = {
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 7,
 				description : "\n   " + "Adv. on Initiative; I can enter rage to act normally on the first turn when surprised",
-				eval : function() {
-					Checkbox('Init Adv', true, 'Advantage to Initiative checks was gained from Barbarian (Feral Instinct)');
-				},
-				removeeval : function() { Checkbox('Init Adv', false, ''); }
+				advantages : [["Initiative", true]]
 			},
 			"brutal critical" : {
 				name : "Brutal Critical",

@@ -494,7 +494,6 @@ function ResetAll(GoOn, noTempl) {
 	ToggleAttacks(false);
 	CurrentVars.manual = {};
 	ToggleBlueText(false);
-	ShowHideStealthDisadv();
 	AdventureLeagueOptions("advleague#all#0");
 	SetSpellSlotsVisibility();
 	ShowHonorSanity();
@@ -1321,7 +1320,6 @@ function ApplyArmor(input) {
 	} else {
 		tDoc.resetForm(ArmorFields);
 	}
-	ShowHideStealthDisadv();
 	ConditionSet();
 	thermoM(thermoTxt, true); // Stop progress bar
 };
@@ -1421,8 +1419,19 @@ function ApplyShield(input) {
 
 //Change advantage or disadvantage of saves, skills, checks, attacks, etc. based on condition
 function ConditionSet(isReset) {
-	if (typePF || (!isReset && !IsNotConditionSet)) return; //don't do this function in the Printer-Friendly version
-
+	if (!isReset && !IsNotConditionSet) return;
+	if (typePF) { // only the stealth disadvantage is part of the printer friendly version
+		// Start progress bar and stop calculations
+		var thermoTxt = thermoM("Armor stealth disadvantage...");
+		calcStop();
+		IsNotConditionSet = false;
+		var thisFld = "ArmDis";
+		var thisChck = tDoc.getField("AC Stealth Disadvantage").isBoxChecked(0) ? true : false;
+		SetProf("advantage", thisChck, ["Ste", false], "Armor");
+		IsNotConditionSet = true;
+		thermoM(thermoTxt, true); // Stop progress bar
+		return;
+	}
 	var cFlds = {
 		Exh1 : { name : "Extra.Exhaustion Level 1" },
 		Exh2 : { name : "Extra.Exhaustion Level 2" },

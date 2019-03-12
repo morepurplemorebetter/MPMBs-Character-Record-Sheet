@@ -4293,17 +4293,6 @@ function ShowCompanionLayer(prefix) {
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
-function ShowHideStealthDisadv() {
-	if (!typePF) return;
-	var showIt = tDoc.getField("AC Stealth Disadvantage").isBoxChecked(0);
-
-	if (showIt) {
-		Show("Stealth Disadv." + Who("Text.SkillsNames"));
-	} else {
-		Hide("Stealth Disadv");
-	}
-}
-
 //(re)set the dropdowns
 function UpdateDropdown(type, weapon) {
 	if (minVer || !IsNotUserScript) return;
@@ -4832,8 +4821,7 @@ function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 		if (typePF) {
 			// If this is a printer friendly sheet, show the stealth disadvantage field, if checked
 			Hide("Stealth Disadv");
-			var showIt = tDoc.getField("AC Stealth Disadvantage").isBoxChecked(0);
-			if (showIt) Show("Stealth Disadv." + MenuSelection[1]);
+			if (How("AC Stealth Disadvantage") == "Dis") Show("Stealth Disadv." + MenuSelection[1]);
 
 			// If this is a printer friendly sheet, also rearrange the skills of the companion page(s)
 			var AScompA = What("Template.extras.AScomp").split(",");
@@ -7387,8 +7375,17 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			var fullTT = !tooltipArr.length ? "" : formatMultiList("(Dis)advantage with " + fldDescr + " gained from:", tooltipArr) + "\n\nRemember that advantage and disadvantage cancel each other out and that there is no bonus in having multiple sources of either.\nOne disadvantage will cancel any number of reasons for advantage.";
 			Checkbox(useFld + " Adv", setAdv, fullTT);
 			Checkbox(useFld + " Dis", setDis, fullTT);
-		} else if (fld == "Perc") {
-			AddTooltip("Passive Perception Bonus", undefined, setAdv ? "Adv" : setDis ? "Dis" : "");
+		} else {
+			if (fld == "Perc") {
+				AddTooltip("Passive Perception Bonus", undefined, setAdv ? "Adv" : setDis ? "Dis" : "");
+			} else if (fld == "Ste") {
+				if (setDis) {
+					Show("Stealth Disadv." + Who("Text.SkillsNames"));
+				} else {
+					Hide("Stealth Disadv");
+				}
+				AddTooltip("AC Stealth Disadvantage", undefined, setAdv ? "Adv" : setDis ? "Dis" : "");
+			}
 		}
 		// clean the object
 		if (!AddRemove && !tooltipArr.length) delete set[fld];

@@ -604,6 +604,37 @@ carryingCapacity : 2,
 	The carrying capacity multiplier will always be rounded to the closest multiple of 0.25.
 */
 
+advantages : [
+	["Initiative", true],
+	["Stealth", false],
+	["Wisdom", true]
+],
+/*	advantages // OPTIONAL //
+	TYPE:	array (variable length) with array (length 2)
+	USE:	set advantage on an ability check, saving throw, or attacks
+
+	This array can have any number of entries, each of which must be an array of its own with 2 entries:
+	1.	The first entry of each enclosed array is a string
+		This tells the sheet where to apply the (dis)advantage: ability check, saving throw, or attack.
+		For skills, use the full name of the skill, or its 4-letter abbreviation (e.g. "Perc" for Perception).
+		For saving throws, use the full name of the ability, or its 3-letter abbreviation.
+		For initiative, use "Initiative", or "Init".
+		For attacks, use "Attack", or "Att".
+	2.	The second entry of each enclosed array is a boolean
+		Set this to 'true' if you want to give advantage.
+		Set this to 'false' if you want to give disadvantage.
+
+	The Colourful sheets have checkboxes on the first page for both advantage and disadvantage for all
+	skills, saving throws, initiative, and attacks.
+	Using this attribute, you can set those checkboxes.
+	The sheet will automatically determine if advantage, disadvantage, or neither should be checked (as they cancel each other out).
+	Other effects from advantage/disadvantage are also taken into consideration,
+	such as 5 being added to Passive Perception when the character has advantage on Perception checks.
+
+	Although the Printer Friendly sheets don't have checkboxes for advantage/disadvantage,
+	this attribute will still be taken into consideration for (dis)advantage on Stealth, and its effect on Passive Perception.
+*/
+
 
 // >>>>>>>>>>>>>>>>>>>>>> //
 // >>> Ability Scores >>> //
