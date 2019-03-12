@@ -77,7 +77,7 @@ ClassList["witch (zarieth)"] = {
 	die : 6,
 	saves : ["Wis", "Cha"],
 	skills : ["\n\n" + toUni("Witch") + ": Choose two from Arcana, Animal Handling, History, Insight, Medicine, Nature, and Religion."],
-	toolProfs : { primay : ["Herbalism kit"] },
+	toolProfs : { primary : ["Herbalism kit"] },
 	armor : [
 		[true, false, false, false]
 	],
