@@ -5800,8 +5800,9 @@ function getSpellcastingAbility(theCast) {
 // A generic function to call from a calcChanges.spellAdd object to add a certain ability score 
 // dmgType has to be already escaped for use in regular expressions
 // ability has to be the three-letter abbreviation of an ability, starting with a capital
-function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple) {
-	var testRegex = RegExp("(.*?)(\\d+d?\\d*)((\\+\\d+d?\\d*\\/(\\d?SL|PP|extra PP))?(\\+spell(casting)? (ability )?mod(ifier)?|(\\+|-)\\d+ \\(.{3}\\))? (" + dmgType + ") (dmg|damage).*)", "ig");
+function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, onlyRolls) {
+	var baseRegex = "(.*?)(\\d+" + (onlyRolls ? "d\\d+" : "d?\\d*") + ")((\\+\\d+d?\\d*\\/(\\d?SL|PP|extra PP))?(\\+spell(casting)? (ability )?mod(ifier)?|(\\+|-)\\d+ \\(.{3}\\))? (";
+	var testRegex = RegExp(baseRegex + dmgType + ") (dmg|damage).*)", "ig");
 	var abiMod = What(ability + " Mod");
 	if (Number(abiMod) > 0 && (testRegex).test(spellObj.description)) {
 		var firstIsNumber = Number(spellObj.description.replace(testRegex, "$2"));

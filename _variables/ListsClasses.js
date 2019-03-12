@@ -2325,23 +2325,29 @@ var Base_ClassSubList = {
 					spellAdd : [
 						// note that Heroes' Feast is omitted from the below because there is not enough space to amend its short description
 						function (spellKey, spellObj, spName) {
+							if (spellObj.psionic) return false;
 							var startDescr = spellObj.description;
 							switch (spellKey) {
+								case "death ward" :
+								case "harm" :
+								case "virtue-uass" :
+									return false;
 								case "goodberry" :
-									spellObj.description = spellObj.description.replace("Create ", "").replace("1 hp", "3+SL hp");
+									spellObj.description = spellObj.description.replace("Create ", "").replace("1 HP", "3+SL HP");
 									break;
 								case "enervation" :
 									spellObj.description = spellObj.description.replace("action to repeat", "1 a to repeat").replace("see book", "see B");
 								case "life transference" :
 								case "vampiric touch" :
-									spellObj.description = spellObj.description.replace(/(heals? (half|twice)( the damage dealt| that)?)( in hp)?/, "$1+2+SL");
+									spellObj.description = spellObj.description.replace(/(heals? (half|twice)( the damage dealt| that)?)( in HP)?/, "$1+2+SL");
 									break;
 								case "mass heal" :
-									spellObj.description = spellObj.description.replace("creatures in range;", "crea in range, each then +11 hp;").replace("cured of", "cures").replace("and all diseases", "diseases");
+									spellObj.description = spellObj.description.replace("creatures in range;", "crea in range, each then +11 HP;").replace("cured of", "cures").replace("and all diseases", "diseases");
 									break;
 								case "regenerate" :
-									spellObj.description = spellObj.description.replace("1 hp/rnd", "3+SL hp/rnd");
+									spellObj.description = spellObj.description.replace("1 HP/rnd", "3+SL HP/rnd");
 								default :
+									if ((/\bHP o(f|r)\b/).test(theSp.description)) return false;
 									var supremeTestRegex = /(.*?)(\d+d\d+\+?\d*)(\+\d+d?\d*\/\d?SL)?((\+spell(casting)? ability mod(ifier)?|(\+|-)\d+ \(.{3}\))? hp.*)/i;
 									if (classes.known.cleric.level > 16 && supremeTestRegex.test(spellObj.description)) return false; // has supreme healer
 									var testRegex = /(.*?)([1-9]\d*d?\d*)((\+\d+d?\d*\/\d?SL)?((\+spell(casting)? ability mod(ifier)?|(\+|-)\d+ \(.{3}\))? hp.*))/i;
@@ -2379,13 +2385,13 @@ var Base_ClassSubList = {
 							var startDescr = spellObj.description;
 							switch (spellKey) {
 								case "life transference" :
-									spellObj.description = spellObj.description.replace("Necrotic", "Necro").replace(", and", ",") + "; I then regain 2+SL hp";
+									spellObj.description = spellObj.description.replace("Necrotic", "Necro").replace(", and", ",") + "; I then regain 2+SL HP";
 									break;
 								case "mass heal" :
-									spellObj.description = "Heal 700 hp, split over crea in range, each then +11 hp; also cures blind, deaf, diseases; I heal +11 hp";
+									spellObj.description = "Heal 700 HP, split over crea in range, each then +11 HP; also cures blind, deaf, diseases; I heal +11 HP";
 									break;
 								case "power word heal" :
-									spellObj.description = spellObj.description.replace(/heals all.*/i, "full hp; not charmed, frightened, paralyzed, stunned; can stand up as rea; if other, I heal 2+SL");
+									spellObj.description = spellObj.description.replace(/heals all.*/i, "full HP; not charmed, frightened, paralyzed, stunned; can stand up as rea; if other, I heal 2+SL");
 									break;
 								case "regenerate" :
 									spellObj.description = spellObj.description.replace(" for rest of duration", "");
@@ -2432,6 +2438,7 @@ var Base_ClassSubList = {
 				calcChanges : {
 					spellAdd : [
 						function (spellKey, spellObj, spName) {
+							if (spellObj.psionic || (/color spray|sleep/).test(spellKey)) return;
 							var startDescr = spellObj.description;
 							var testRegex = /(.*?)(\d+d\d+\+?\d*)(\+\d+d?\d*\/\d?SL)?((\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? hp.*)/i;
 							var theMatch = spellObj.description.match(testRegex);
