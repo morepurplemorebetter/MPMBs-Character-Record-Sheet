@@ -468,11 +468,11 @@ var Base_MagicItemsList = {
 		eval : function () {
 			var cloakIndx = CurrentMagicItems.known.indexOf("cloak of elvenkind");
 			if (cloakIndx !== -1 && tDoc.getField("Extra.Magic Item Attuned " + (1 + cloakIndx)).isBoxChecked(0)) {
-				SetProf("advantage", true, ["Stealth", true], "Cloak and Boots of Elvenkind (items)");
+				SetProf("advantage", true, ["Stealth", true], "Cloak and Boots of Elvenkind (magic items)");
 			}
 		},
 		removeeval : function () {
-			SetProf("advantage", false, ["Stealth", true], "Cloak and Boots of Elvenkind (items)");
+			SetProf("advantage", false, ["Stealth", true], "Cloak and Boots of Elvenkind (magic items)");
 		}
 	},
 	"boots of levitation" : { // contributed by AelarTheElfRogue
@@ -781,11 +781,11 @@ var Base_MagicItemsList = {
 		action : [["action", " (hood up/down)"]],
 		eval : function () {
 			if (CurrentMagicItems.known.indexOf("boots of elvenkind") !== -1) {
-				SetProf("advantage", true, ["Stealth", true], "Cloak and Boots of Elvenkind (items)");
+				SetProf("advantage", true, ["Stealth", true], "Cloak and Boots of Elvenkind (magic items)");
 			}
 		},
 		removeeval : function () {
-			SetProf("advantage", false, ["Stealth", true], "Cloak and Boots of Elvenkind (items)");
+			SetProf("advantage", false, ["Stealth", true], "Cloak and Boots of Elvenkind (magic items)");
 		}
 	},
 	"cloak of protection" : { // finished

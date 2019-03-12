@@ -7358,7 +7358,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		var setAdv = 0, setDis = 0, tooltipArr = [];
 		for (var src in set[fld]) {
 			var giveAdv = set[fld][src];
-			tooltipArr.push((!giveAdv ? "Disa" : "a") + "dvantage: " + src);
+			tooltipArr.push((!giveAdv ? "Disa" : "A") + "dvantage: " + src);
 			if (giveAdv) {
 				setAdv++;
 			} else {
