@@ -4072,24 +4072,33 @@ function AddSkillProf(SkillName, change, expertise, returnSkillName, bonus, comp
 	if (SkillsList.abbreviations.indexOf(tempString) == -1) return; // skill not found, so nothing to do
 	var alphaB = Who("Text.SkillsNames") === "alphabeta";
 	if ((QI || typePF) && !alphaB) tempString = SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(tempString)];
-	if (QI) {
-		change = change !== undefined ? change : true;
-		if ((/only|increment/i).test(expertise) ? tDoc.getField(tempString + " Prof").isBoxChecked(0) : expertise) {
-			Checkbox(tempString + " Exp", change);
+	if (!QI && !typePF) {
+		var skFld = prefix + "Text.Comp.Use.Skills." + tempString + ".Prof";
+		var curProf = What(skFld);
+		if ((/only|increment/i).test(expertise)) {
+			var newval = change && curProf == "proficient" ? "expertise" : !change && curProf == "expertise" ? "proficient" : expertise == "only" ? curProf : change && curProf == "nothing" ? "proficient" : "nothing";
+		} else {
+			var newval = !change ? "nothing" : expertise ? "expertise" : "proficient";
 		}
-		if (expertise !== "only") Checkbox(tempString + " Prof", change);
-		if (change && bonus !== undefined && bonus !== false) Value(tempString + " Bonus", bonus);
-	} else if (typePF) {
-		change = change !== undefined ? change : true;
-		if ((/only|increment/i).test(expertise) ? tDoc.getField(prefix + ".Comp.Use.Skills." + tempString + ".Prof").isBoxChecked(0) : expertise) {
-			Checkbox(prefix + ".Comp.Use.Skills." + tempString + ".Exp", change);
-		}
-		if (expertise !== "only") Checkbox(prefix + ".Comp.Use.Skills." + tempString + ".Prof", change);
-		if (change && bonus !== undefined && bonus !== false) Value(prefix + ".BlueText.Comp.Use.Skills." + tempString + ".Bonus", bonus);
+		Value(skFld, newval);
+		if (bonus !== undefined && bonus !== false) Value(prefix + ".BlueText.Comp.Use.Skills." + tempString + ".Bonus", bonus);
 	} else {
-		change = change === false ? "nothing" : expertise && (change || expertise !== "only") ? "expertise" : "proficient";
-		Value(prefix + "Text.Comp.Use.Skills." + tempString + ".Prof", change);
-		if (change && bonus !== undefined && bonus !== false) Value(prefix + ".BlueText.Comp.Use.Skills." + tempString + ".Bonus", bonus);
+		var profFld = QI ? tempString + " Prof" : prefix + ".Comp.Use.Skills." + tempString + ".Prof";
+		var expFld = QI ? tempString + " Exp" : prefix + ".Comp.Use.Skills." + tempString + ".Exp";
+		var bonusFld = QI ? tempString + " Bonus" : prefix + ".BlueText.Comp.Use.Skills." + tempString + ".Bonus";
+		var curProf = tDoc.getField(profFld).isBoxChecked(0);
+		var curExp = tDoc.getField(expFld).isBoxChecked(0);
+		var exp, prof;
+		if ((/only|increment/i).test(expertise)) {
+			exp = change && curProf ? true : false;
+			prof = expertise == "only" ? curProf : !change && curExp;
+		} else {
+			exp = change && expertise;
+			prof = change;
+		}
+		Checkbox(expFld, exp);
+		Checkbox(profFld, prof);
+		if (bonus !== undefined && bonus !== false) Value(bonusFld, bonus);
 	}
 	// return the skill name if concerning a companion page
 	if (returnSkillName) return SkillsList.names[SkillsList.abbreviations.indexOf(tempString)];

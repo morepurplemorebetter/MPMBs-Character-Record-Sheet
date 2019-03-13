@@ -382,7 +382,15 @@ function ApplyCompRace(newRace) {
 		if (CurrentCompRace[prefix].skills) {
 			var skillsNameArr = [];
 			for (var i = 0; i < CurrentCompRace[prefix].skills.length; i++) {
-				var skillName = AddSkillProf(CurrentCompRace[prefix].skills[i], undefined, undefined, true);
+				var aSk = CurrentCompRace[prefix].skills[i];
+				if (isArray(aSk)) {
+					var doSkill = aSk[0];
+					var doExp = aSk[1];
+				} else {
+					var doSkill = aSk;
+					var doExp = false;
+				}
+				var skillName = AddSkillProf(doSkill, true, doExp, true);
 				if (skillName) skillsNameArr.push(skillName);
 			}
 			skillsTxt = formatLineList("\u25C6 Skill Proficiencies:", skillsNameArr);
@@ -471,8 +479,7 @@ function ApplyCompRace(newRace) {
 		if (CurrentCompRace[prefix].skills) {
 			for (var aSkill in CurrentCompRace[prefix].skills) {
 				var profSkill = CompSkillRefer(aSkill, CurrentCompRace[prefix].skills[aSkill], CurrentCompRace[prefix].scores, CurrentCompRace[prefix].proficiencyBonus);
-				AddSkillProf(profSkill[0], profSkill[1] !== "nothing", profSkill[1] === "expertise"); //set the proficiency
-				Value(prefix + "BlueText.Comp.Use.Skills." + profSkill[0] + ".Bonus", profSkill[2]); //set the bonus
+				AddSkillProf(profSkill[0], profSkill[1] !== "nothing", profSkill[1] === "expertise", false, profSkill[2]); //set the proficiency
 			}
 		}
 

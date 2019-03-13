@@ -297,9 +297,11 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		}
 	} while (tries < 5);
 
-	var Text0 = (isFirstTime ? "As this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the \"Sources\" button (with the book icon), or the \"Source Material\" bookmark, and change it.\n" : "") + "You can include or exclude entire sourcebooks (top section) and exclude just elements of the sourcebooks set to be included (section below).\nNote that you can also add more resources using the \"Add Custom Script\" bookmark.\nIf multiple things with the same name are included, like the Ranger from the PHB and the Ranger from UA:RR, the newest source will be used.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.";
+	var Text00 = "[Can't see the bottom of this dialog? Use ENTER to confirm or ESC to cancel]";
+	if (isFirstTime) Text00 += '\n\nAs this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the "Sources" button (with the book icon), or the "Source Material" bookmark, and change it.';
+	var Text01 = toUni("Important") + ": If something appears in multiple sources under the same name, like the Ranger class appearing in the SRD, PHB, and 'UA:Ranger, Revised', the newer included source will be used.";
 	var Text1 = "With the buttons below, you open another dialogue where you can exclude and include parts of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up at all with the buttons below!";
-	var Text2 = toUni("Warning:") + " If your changes affect any drop-down boxes on the sheet, those will be updated. " + (isFirstTime ? "If a lot of drop-down boxes are affected, this can take several minutes." : "Options that are being removed/added to drop-downs will not affect those already filled out. What is selectable will change, but not what is currently selected or its effects.");
+	var Text2 = toUni("Warning") + ": If your changes affect any drop-down boxes on the sheet, those will be updated. " + (isFirstTime ? "If a lot of drop-down boxes are affected, this can take several minutes." : "Options that are being removed/added to drop-downs will not affect those already filled out. What is selectable will change, but not what is currently selected or its effects.");
 
 	var selectionDialogue = {
 		exclActive : false,
@@ -318,6 +320,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			dialog.visible({
 				"bWhy" : onlySRD
 			});
+			dialog.setForeColorRed("tx01");
 			dialog.setForeColorRed("txt2");
 		},
 		commit : function (dialog) {},
@@ -500,10 +503,17 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 					}]
 				}, {
 					type : "static_text",
-					item_id : "txt0",
+					item_id : "tx00",
+					wrap_name : true,
+					font : "palette",
+					width : 800,
+					name : Text00
+				}, {
+					type : "static_text",
+					item_id : "tx01",
 					wrap_name : true,
 					width : 800,
-					name : Text0
+					name : Text01
 				}, {
 					type : "cluster",
 					name : "The Sourcebooks",
