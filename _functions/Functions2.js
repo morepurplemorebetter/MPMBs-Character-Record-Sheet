@@ -5634,13 +5634,13 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 				break;
 			 case "Description" :
 			 case "Range" :
-				Value(keyFld, What("Unit System") === "imperial" ? fields[weaKey] : ConvertToMetric(fields[weaKey], 0.5));
+				Value(keyFld, What("Unit System") === "imperial" ? fields[weaKey] : ConvertToMetric(fields[weaKey], 0.5), weaKey !== "Description" ? "" : What("Unit System") === "imperial" ? fields.Description_Tooltip : ConvertToMetric(fields.Description_Tooltip, 0.5));
 				break;
 			 case "Ammo" :
 				if (fields[weaKey]) AddAmmo(fields[weaKey]);
 				break;
 			 default :
-				Value(keyFld, fields[weaKey], weaKey !== "Description" ? "" : fields.Description_Tooltip);
+				Value(keyFld, fields[weaKey]);
 			};
 		};
 		if (resetFlds.length) tDoc.resetForm(resetFlds);

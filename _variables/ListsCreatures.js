@@ -23,31 +23,28 @@ var Base_CreatureList = {
 		proficiencyBonus : 3,
 		attacksAction : 2,
 		attacks : [{
-				name : "Slam",
-				ability : 2,
-				damage : [2, 8, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Two slam attacks as an Attack action"
-			}, {
-				name : "Whirlwind (Recharge 4-6)",
-				ability : 1,
-				damage : [3, 8, "bludgeoning"],
-				range : "All in shared area",
-				dc : true,
-				description : "Str save; fail\u2015 flung 20 ft random direction, prone; success\u2015 half damage",
-				tooltip : "Each creature in the elemental's space that fails its saving throw is flung up to 20 feet away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 feet it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone."
-			}
-		],
+			name : "Slam",
+			ability : 2,
+			damage : [2, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Two slam attacks as an Attack action"
+		}, {
+			name : "Whirlwind (Recharge 4-6)",
+			ability : 1,
+			damage : [3, 8, "bludgeoning"],
+			range : "All in shared area",
+			dc : true,
+			description : "Str save; fail\u2015 flung 20 ft random direction, prone; success\u2015 half damage",
+			tooltip : "Each creature in the elemental's space that fails its saving throw is flung up to 20 feet away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 feet it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone."
+		}],
 		traits : [{
-				name : "Air Form",
-				description : "The elemental can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing."
-			}
-		],
+			name : "Air Form",
+			description : "The elemental can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing."
+		}],
 		actions : [{
-				name : "Whirlwind (Recharge 4-6)",
-				description : "See Attack. Each creature in the elemental's space that fails its saving throw is flung up to 20 feet away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 feet it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone."
-			}
-		],
+			name : "Whirlwind (Recharge 4-6)",
+			description : "See Attack. Each creature in the elemental's space that fails its saving throw is flung up to 20 feet away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 feet it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone."
+		}],
 		wildshapeString : "Darkvision 60 ft| Knows Auran| Resistant to: lightning, thunder, and bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious| Air Form: can move through 1 inch wide space without squeezing and can move through and stop in space of hostiles| Whirlwind: see Monster Manual page 124"
 	},
 	"earth elemental" : {
@@ -74,21 +71,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 3,
 		attacksAction : 2,
 		attacks : [{
-				name : "Slam",
-				ability : 1,
-				damage : [2, 8, "bludgeoning"],
-				range : "Melee (10 ft)",
-				description : "Two slam attacks as an Attack action"
-			}
-		],
+			name : "Slam",
+			ability : 1,
+			damage : [2, 8, "bludgeoning"],
+			range : "Melee (10 ft)",
+			description : "Two slam attacks as an Attack action"
+		}],
 		traits : [{
-				name : "Earth Glide",
-				description : "The elemental can burrow through nonmagical, unworked earth and stone. While doing so, the elemental doesn't disturb the material it moves through."
-			}, {
-				name : "Siege Monster",
-				description : "The elemental deals double damage to objects and structures."
-			}
-		],
+			name : "Earth Glide",
+			description : "The elemental can burrow through nonmagical, unworked earth and stone. While doing so, the elemental doesn't disturb the material it moves through."
+		}, {
+			name : "Siege Monster",
+			description : "The elemental deals double damage to objects and structures."
+		}],
 		wildshapeString : "Darkvision 60 ft; Tremorsense 60 ft| Knows Terran| Vulnerable to: thunder| Resistant to: bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, paralyzed, petrified, poisoned, unconscious| Earth Glide: can burrow through nonmagical, unworked earth and stone without disturbing the material| Siege Monster: does double damage to objects and structures"
 	},
 	"fire elemental" : {
@@ -114,24 +109,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 3,
 		attacksAction : 2,
 		attacks : [{
-				name : "Touch",
-				ability : 2,
-				damage : [2, 6, "fire"],
-				range : "Melee (5 ft)",
-				description : "2 per Attack; Ignites flammable; Until action to douse, target 1d10 fire damage at start of its turn"
-			}
-		],
+			name : "Touch",
+			ability : 2,
+			damage : [2, 6, "fire"],
+			range : "Melee (5 ft)",
+			description : "2 per Attack; Ignites flammable; Until action to douse, target 1d10 fire damage at start of its turn"
+		}],
 		traits : [{
-				name : "Fire Form",
-				description : "The elemental can move through a space as narrow as 1 inch wide without squeezing. A creature that touches the elemental or hits it with a melee attack while within 5 ft of it takes 5 (1d10) fire damage. In addition, the elemental can enter a hostile creature's space and stop there. The first time it enters a creature's space on a turn, that creature takes 5 (1d10) fire damage and catches fire; until someone takes an action to douse the fire, the creature takes 5 (1d10) fire damage at the start of each of its turns."
-			}, {
-				name : "Illumination",
-				description : "The elemental sheds bright light in a 30-foot radius and dim light in an additional 30 ft."
-			}, {
-				name : "Water Susceptibility",
-				description : "For every 5 ft the elemental moves in water, or for every gallon of water splashed on it, it takes 1 cold damage."
-			}
-		],
+			name : "Fire Form",
+			description : "The elemental can move through a space as narrow as 1 inch wide without squeezing. A creature that touches the elemental or hits it with a melee attack while within 5 ft of it takes 5 (1d10) fire damage. In addition, the elemental can enter a hostile creature's space and stop there. The first time it enters a creature's space on a turn, that creature takes 5 (1d10) fire damage and catches fire; until someone takes an action to douse the fire, the creature takes 5 (1d10) fire damage at the start of each of its turns."
+		}, {
+			name : "Illumination",
+			description : "The elemental sheds bright light in a 30-foot radius and dim light in an additional 30 ft."
+		}, {
+			name : "Water Susceptibility",
+			description : "For every 5 ft the elemental moves in water, or for every gallon of water splashed on it, it takes 1 cold damage."
+		}],
 		wildshapeString : "Darkvision 60 ft| Knows Ignan| Resistant to: bludg./ piercing/slashing from nonmagical weapons| Immune to: fire/poison/exhaustion/grappled/paralyzed/petrified/ poisoned/prone/restrained/unconscious| Sheds 30-ft bright/dim light| 1 cold dmg per gallon of or 5ft moved through water| Fire Form: pass through 1\" space no squeezing; move through/stop in another's space; do 1d10 fire dmg to melee attackers; MM, p125"
 	},
 	"water elemental" : {
@@ -157,34 +150,32 @@ var Base_CreatureList = {
 		proficiencyBonus : 3,
 		attacksAction : 2,
 		attacks : [{
-				name : "Slam",
-				ability : 1,
-				damage : [2, 8, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Two slam attacks as an Attack action"
-			}, {
-				name : "Whelm (Recharge 4-6)",
-				ability : 1,
-				dc : true,
-				damage : [2, 8, "bludgeoning"],
-				range : "All in shared area",
-				description : "Str save; fail\u2015 dmg/grappled/restrained/can't breathe until grapple ends (escape DC 14); success\u2015 no dmg/pushed out",
-				tooltip : "Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 feet of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding."
-			}
-		],
+			name : "Slam",
+			ability : 1,
+			damage : [2, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Two slam attacks as an Attack action"
+		}, {
+			name : "Whelm (Recharge 4-6)",
+			ability : 1,
+			dc : true,
+			damage : [2, 8, "bludgeoning"],
+			range : "All in shared area",
+			description : "Str save; fail\u2015 dmg/grappled/restrained/can't breathe until grapple ends (escape DC 14); success\u2015 no dmg/pushed out",
+			tooltip : "Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 feet of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding."
+		}],
+		features : [{
+			name : "Freeze",
+			description : "If the elemental takes cold damage, it partially freezes; its speed is reduced by 20 ft until the end of its next turn."
+		}],
 		traits : [{
-				name : "Water Form",
-				description : "The elemental can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing."
-			}, {
-				name : "Freeze",
-				description : "If the elemental takes cold damage, it partially freezes; its speed is reduced by 20 ft until the end of its next turn."
-			}
-		],
+			name : "Water Form",
+			description : "The elemental can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing."
+		}],
 		actions : [{
-				name : "Whelm (Recharge 4-6)",
-				description : "See attack. Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 feet of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding."
-			}
-		],
+			name : "Whelm (Recharge 4-6)",
+			description : "See attack. Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 feet of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding."
+		}],
 		wildshapeString : "Darkvision 60 ft| Knows Aquan| Resistant to: acid, and bludg./piercing/slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious|  Water Form: pass through 1\" space without squeezing; move through and stop in another's space| Freeze: if taken cold damage, speed reduced to 20 ft until end of next turn| Whelm: see Monster Manual page 125"
 	},
 	// Dinosaurs (which are beasts for Druid Wild Shape)
@@ -212,18 +203,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [3, 6, "piercing"],
-				range : "Melee (10 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [3, 6, "piercing"],
+			range : "Melee (10 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Hold Breath",
-				description : "The plesiosaurus can hold its breath for 1 hour."
-			}
-		]
+			name : "Hold Breath",
+			description : "The plesiosaurus can hold its breath for 1 hour."
+		}]
 	},
 	"triceratops" : {
 		name : "Triceratops",
@@ -245,24 +234,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 3,
 		attacksAction : 1,
 		attacks : [{
-				name : "Gore",
-				ability : 1,
-				damage : [4, 8, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
-			}, {
-				name : "Stomp",
-				ability : 1,
-				damage : [3, 10, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Can only be used on prone creatures (also see Trampling Charge trait)"
-			}
-		],
+			name : "Gore",
+			ability : 1,
+			damage : [4, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
+		}, {
+			name : "Stomp",
+			ability : 1,
+			damage : [3, 10, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Can only be used on prone creatures (also see Trampling Charge trait)"
+		}],
 		traits : [{
-				name : "Trampling Charge",
-				description : "If the triceratops moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the triceratops can make one stomp attack against it as a bonus action."
-			}
-		]
+			name : "Trampling Charge",
+			description : "If the triceratops moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the triceratops can make one stomp attack against it as a bonus action."
+		}]
 	},
 	"tyrannosaurus rex" : {
 		name : "Tyrannosaurus Rex",
@@ -287,24 +274,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 3,
 		attacksAction : 2,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [4, 12, "piercing"],
-				range : "Melee (10 ft)",
-				description : "Medium or smaller target is grappled and restrained (escape DC 17); Can't use bite again until grapple ends"
-			}, {
-				name : "Tail",
-				ability : 1,
-				damage : [3, 8, "bludgeoning"],
-				range : "Melee (10 ft)",
-				description : "One bite and one tail attack to different targets as an Attack action"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [4, 12, "piercing"],
+			range : "Melee (10 ft)",
+			description : "Medium or smaller target is grappled and restrained (escape DC 17); Can't use bite again until grapple ends"
+		}, {
+			name : "Tail",
+			ability : 1,
+			damage : [3, 8, "bludgeoning"],
+			range : "Melee (10 ft)",
+			description : "One bite and one tail attack to different targets as an Attack action"
+		}],
 		traits : [{
-				name : "Multiattack",
-				description : "The tyrannosaurus makes two attacks: one with its bite and one with its tail. It can't make both attacks against the same target."
-			}
-		]
+			name : "Multiattack",
+			description : "The tyrannosaurus makes two attacks: one with its bite and one with its tail. It can't make both attacks against the same target."
+		}]
 	},
 	// Exotic mounts and pets
 	"griffon" : {
@@ -331,24 +316,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Beak",
-				ability : 1,
-				damage : [1, 8, "piercing"],
-				range : "Melee (5 ft)",
-				description : "One beak and one claws attack as an Attack action"
-			}, {
-				name : "Claws",
-				ability : 1,
-				damage : [2, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "One claws and one beak attack as an Attack action"
-			}
-		],
+			name : "Beak",
+			ability : 1,
+			damage : [1, 8, "piercing"],
+			range : "Melee (5 ft)",
+			description : "One beak and one claws attack as an Attack action"
+		}, {
+			name : "Claws",
+			ability : 1,
+			damage : [2, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "One claws and one beak attack as an Attack action"
+		}],
 		traits : [{
-				name : "Keen Sight",
-				description : "The griffon has advantage on Wisdom (Perception) checks that rely on sight."
-			}
-		]
+			name : "Keen Sight",
+			description : "The griffon has advantage on Wisdom (Perception) checks that rely on sight."
+		}]
 	},
 	"hippogriff" : {
 		name : "Hippogriff",
@@ -373,24 +356,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Beak",
-				ability : 1,
-				damage : [1, 10, "piercing"],
-				range : "Melee (5 ft)",
-				description : "One beak and one claws attack as an Attack action"
-			}, {
-				name : "Claws",
-				ability : 1,
-				damage : [2, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "One claws and one beak attack as an Attack action"
-			}
-		],
+			name : "Beak",
+			ability : 1,
+			damage : [1, 10, "piercing"],
+			range : "Melee (5 ft)",
+			description : "One beak and one claws attack as an Attack action"
+		}, {
+			name : "Claws",
+			ability : 1,
+			damage : [2, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "One claws and one beak attack as an Attack action"
+		}],
 		traits : [{
-				name : "Keen Sight",
-				description : "The hippogriff has advantage on Wisdom (Perception) checks that rely on sight."
-			}
-		]
+			name : "Keen Sight",
+			description : "The hippogriff has advantage on Wisdom (Perception) checks that rely on sight."
+		}]
 	},
 	"nightmare" : {
 		name : "Nightmare",
@@ -413,26 +394,23 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Hooves",
-				ability : 1,
-				damage : [2, 8, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Target also takes 2d6 fire damage upon a hit"
-			}
-		],
+			name : "Hooves",
+			ability : 1,
+			damage : [2, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Target also takes 2d6 fire damage upon a hit"
+		}],
 		traits : [{
-				name : "Confer Fire Resistance",
-				description : "The nightmare can grant resistance to fire damage to anyone riding it."
-			}, {
-				name : "Illumination",
-				description : "The nightmare sheds bright light in a 10-foot radius and dim light for an additional 10 feet."
-			}
-		],
+			name : "Confer Fire Resistance",
+			description : "The nightmare can grant resistance to fire damage to anyone riding it."
+		}, {
+			name : "Illumination",
+			description : "The nightmare sheds bright light in a 10-foot radius and dim light for an additional 10 feet."
+		}],
 		actions : [{
-				name : "Ethereal Stride",
-				description : "As an action, the nightmare and up to three willing creatures within 5 feet of it magically enter the Ethereal Plane from the Material Plane, or vice versa."
-			}
-		]
+			name : "Ethereal Stride",
+			description : "As an action, the nightmare and up to three willing creatures within 5 feet of it magically enter the Ethereal Plane from the Material Plane, or vice versa."
+		}]
 	},
 	"owlbear" : {
 		name : "Owlbear",
@@ -457,24 +435,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Beak",
-				ability : 1,
-				damage : [1, 10, "piercing"],
-				range : "Melee (5 ft)",
-				description : "One beak and one claws attack as an Attack action"
-			}, {
-				name : "Claws",
-				ability : 1,
-				damage : [2, 8, "slashing"],
-				range : "Melee (5 ft)",
-				description : "One claws and one beak attack as an Attack action"
-			}
-		],
+			name : "Beak",
+			ability : 1,
+			damage : [1, 10, "piercing"],
+			range : "Melee (5 ft)",
+			description : "One beak and one claws attack as an Attack action"
+		}, {
+			name : "Claws",
+			ability : 1,
+			damage : [2, 8, "slashing"],
+			range : "Melee (5 ft)",
+			description : "One claws and one beak attack as an Attack action"
+		}],
 		traits : [{
-				name : "Keen Sight and Smell",
-				description : "The owlbear has advantage on Wisdom (Perception) checks that rely on sight or smell."
-			}
-		]
+			name : "Keen Sight and Smell",
+			description : "The owlbear has advantage on Wisdom (Perception) checks that rely on sight or smell."
+		}]
 	},
 	"pegasus" : {
 		name : "Pegasus",
@@ -500,13 +476,12 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Hooves",
-				ability : 1,
-				damage : [2, 6, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		]
+			name : "Hooves",
+			ability : 1,
+			damage : [2, 6, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : ""
+		}]
 	},
 	// Special familiars (find familiar, pact of the chain, DM's rulings)
 	"homunculus" : { // Contains contributions by SoilentBrad
@@ -531,22 +506,20 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : "DC 10 Con save or poisoned for 1 min; Fail by 5 or more: poisoned and unconscious for 1d10 min",
-				tooltip : "A target of the homunculus' bite attack must succeed on a DC 10 Constitution saving throw or be poisoned for 1 minute. If the saving throw fails by 5 or more, the target is instead poisoned for 5 (1d10) minutes and unconscious while poisoned in this way."
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : "DC 10 Con save or poisoned for 1 min; Fail by 5 or more: poisoned and unconscious for 1d10 min",
+			tooltip : "A target of the homunculus' bite attack must succeed on a DC 10 Constitution saving throw or be poisoned for 1 minute. If the saving throw fails by 5 or more, the target is instead poisoned for 5 (1d10) minutes and unconscious while poisoned in this way."
+		}],
 		features : [{
-				name : "Telepathic Bond",
-				description : "While the homunculus is on the same plane of existence as its master, it can magically convey what it senses to its master, and the two can communicate telepathically."
-			}, {
-				name : "Bite",
-				description : "A target of the homunculus' bite attack must succeed on a DC 10 Constitution saving throw or be poisoned for 1 minute. If the saving throw fails by 5 or more, the target is instead poisoned for 5 (1d10) minutes and unconscious while poisoned in this way."
-			}
-		]
+			name : "Telepathic Bond",
+			description : "While the homunculus is on the same plane of existence as its master, it can magically convey what it senses to its master, and the two can communicate telepathically."
+		}, {
+			name : "Bite",
+			description : "A target of the homunculus' bite attack must succeed on a DC 10 Constitution saving throw or be poisoned for 1 minute. If the saving throw fails by 5 or more, the target is instead poisoned for 5 (1d10) minutes and unconscious while poisoned in this way."
+		}]
 	},
 	"imp" : {
 		name : "Imp",
@@ -578,31 +551,27 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Sting (Bite in Beast Form)",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target also takes 3d6 poison damage, half on a DC 11 Constitution saving throw"
-			}
-		],
+			name : "Sting (Bite in Beast Form)",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target also takes 3d6 poison damage, half on a DC 11 Constitution saving throw"
+		}],
 		traits : [{
-				name : "Shapechanger",
-				description : "The imp can use its action to polymorph into a beast form that resembles a rat (speed 20 ft), a raven (20 ft, fly 60 ft), or a spider (20 ft, climb 20 ft), or back into its true form. Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies."
-			}, {
-				name : "Magic Resistance",
-				description : "The imp has advantage on saving throws against spells and other magical effects."
-			}
-		],
+			name : "Shapechanger",
+			description : "The imp can use its action to polymorph into a beast form that resembles a rat (speed 20 ft), a raven (20 ft, fly 60 ft), or a spider (20 ft, climb 20 ft), or back into its true form. Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies."
+		}, {
+			name : "Magic Resistance",
+			description : "The imp has advantage on saving throws against spells and other magical effects."
+		}],
 		variant : [{
-				name : "Variant: Familiar",
-				description : "The imp can serve another creature as a familiar, forming a telepathic bond with its willing master. While the two are bonded, the master can sense what the imp senses as long as they are within 1 mile of each other. While the imp is within 10 feet of its master, the master shares the imp's Magic Resistance trait. At any time and for any reason, the imp can end its service as a familiar, ending the telepathic bond."
-			}
-		],
+			name : "Variant: Familiar",
+			description : "The imp can serve another creature as a familiar, forming a telepathic bond with its willing master. While the two are bonded, the master can sense what the imp senses as long as they are within 1 mile of each other. While the imp is within 10 feet of its master, the master shares the imp's Magic Resistance trait. At any time and for any reason, the imp can end its service as a familiar, ending the telepathic bond."
+		}],
 		actions : [{
-				name : "Invisibility",
-				description : "As an action, the imp magically turns invisible until it attacks, or until its concentration ends (as if concentrating on a spell). Any equipment the imp wears or carries is invisible with it."
-			}
-		]
+			name : "Invisibility",
+			description : "As an action, the imp magically turns invisible until it attacks, or until its concentration ends (as if concentrating on a spell). Any equipment the imp wears or carries is invisible with it."
+		}]
 	},
 	"pseudodragon" : {
 		name : "Pseudodragon",
@@ -629,36 +598,33 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}, {
-				name : "Sting",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : "DC 11 Con save or poisoned 1 hour; fail by 5 or more: unconscious 1 hour, until damaged or awakened",
-				tooltip : "The target hit must succeed on a DC 11 Constitution saving throw or become poisoned for 1 hour. If the saving throw fails by 5 or more, the target falls unconscious for the same duration, or until it takes damage or another creature uses an action to shake it awake."
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}, {
+			name : "Sting",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : "DC 11 Con save or poisoned 1 hour; fail by 5 or more: unconscious 1 hour, until damaged or awakened",
+			tooltip : "The target hit must succeed on a DC 11 Constitution saving throw or become poisoned for 1 hour. If the saving throw fails by 5 or more, the target falls unconscious for the same duration, or until it takes damage or another creature uses an action to shake it awake."
+		}],
 		traits : [{
-				name : "Keen Senses",
-				description : "The pseudodragon has advantage on Wisdom (Perception) checks that rely on sight, hearing, or smell."
-			}, {
-				name : "Magic Resistance",
-				description : "The pseudodragon has advantage on saving throws against spells and other magical effects."
-			}, {
-				name : "Limited Telepathy",
-				description : "The pseudodragon can magically communicate simple ideas, emotions, and images telepathically with any creature within 100 ft of it that can understand a language."
-			}
-		],
+			name : "Keen Senses",
+			description : "The pseudodragon has advantage on Wisdom (Perception) checks that rely on sight, hearing, or smell."
+		}, {
+			name : "Magic Resistance",
+			description : "The pseudodragon has advantage on saving throws against spells and other magical effects."
+		}, {
+			name : "Limited Telepathy",
+			description : "The pseudodragon can magically communicate simple ideas, emotions, and images telepathically with any creature within 100 ft of it that can understand a language."
+		}],
 		variant : [{
-				name : "Variant: Familiar",
-				description : "The pseudodragon can serve another creature as a familiar, forming a magic, telepathic bond with that willing companion. While the two are bonded, the companion can sense what the pseudodragon senses as long as they are within 1 mile of each other. While the pseudodragon is within 10 feet of its companion, the companion shares the pseudodragon's Magic Resistance trait. At any time and for any reason, the pseudodragon can end its service as a familiar, ending the telepathic bond."
-			}
-		]
+			name : "Variant: Familiar",
+			description : "The pseudodragon can serve another creature as a familiar, forming a magic, telepathic bond with that willing companion. While the two are bonded, the companion can sense what the pseudodragon senses as long as they are within 1 mile of each other. While the pseudodragon is within 10 feet of its companion, the companion shares the pseudodragon's Magic Resistance trait. At any time and for any reason, the pseudodragon can end its service as a familiar, ending the telepathic bond."
+		}]
 	},
 	"quasit" : {
 		name : "Quasit",
@@ -687,40 +653,36 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Claws (Bite in Beast Form)",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target makes DC 10 Con save or takes 2d4 poison damage and poisoned for 1 min (can save each turn)",
-				modifiers : [-1, "", ""]
-			}, {
-				name : "Scare (1/day)",
-				ability : 6,
-				damage : ["Frightened", "", ""],
-				range : "20 ft",
-				description : "Wis save or frightened for 1 min (can save at end of each turn, disadv. if quasit is in sight)",
-				modifiers : ["", "", false],
-				dc : true
-			}
-		],
+			name : "Claws (Bite in Beast Form)",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target makes DC 10 Con save or takes 2d4 poison damage and poisoned for 1 min (can save each turn)",
+			modifiers : [-1, "", ""]
+		}, {
+			name : "Scare (1/day)",
+			ability : 6,
+			damage : ["Frightened", "", ""],
+			range : "20 ft",
+			description : "Wis save or frightened for 1 min (can save at end of each turn, disadv. if quasit is in sight)",
+			modifiers : ["", "", false],
+			dc : true
+		}],
 		traits : [{
-				name : "Shapechanger",
-				description : "The quasit can use its action to polymorph into a beast form that resembles a bat (speed 10 ft, fly 40 ft), a centipede (40 ft, climb 40 ft), or a toad (40 ft, swim 40 ft), or back into its true form . Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed . It reverts to its true form if it dies."
-			}, {
-				name : "Magic Resistance",
-				description : "The quasit has advantage on saving throws against spells and other magical effects."
-			}
-		],
+			name : "Shapechanger",
+			description : "The quasit can use its action to polymorph into a beast form that resembles a bat (speed 10 ft, fly 40 ft), a centipede (40 ft, climb 40 ft), or a toad (40 ft, swim 40 ft), or back into its true form . Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed . It reverts to its true form if it dies."
+		}, {
+			name : "Magic Resistance",
+			description : "The quasit has advantage on saving throws against spells and other magical effects."
+		}],
 		variant : [{
-				name : "Variant: Familiar",
-				description : "The quasit can serve another creature as a familiar, forming a telepathic bond with its willing master. While the two are bonded, the master can sense what the quasit senses as long as they are within 1 mile of each other. While the quasit is within 10 feet of its master, the master shares the quasit's Magic Resistance trait. At any time and for any reason, the quasit can end its service as a familiar, ending the telepathic bond."
-			}
-		],
+			name : "Variant: Familiar",
+			description : "The quasit can serve another creature as a familiar, forming a telepathic bond with its willing master. While the two are bonded, the master can sense what the quasit senses as long as they are within 1 mile of each other. While the quasit is within 10 feet of its master, the master shares the quasit's Magic Resistance trait. At any time and for any reason, the quasit can end its service as a familiar, ending the telepathic bond."
+		}],
 		actions : [{
-				name : "Invisibility",
-				description : "As an action, the quasit magically turns invisible until it attacks, or until its concentration ends (as if concentrating on a spell). Any equipment the quasit wears or carries is invisible with it."
-			}
-		]
+			name : "Invisibility",
+			description : "As an action, the quasit magically turns invisible until it attacks, or until its concentration ends (as if concentrating on a spell). Any equipment the quasit wears or carries is invisible with it."
+		}]
 	},
 	"shield guardian" : {
 		name : "Shield Guardian",
@@ -744,31 +706,27 @@ var Base_CreatureList = {
 		proficiencyBonus : 3,
 		attacksAction : 2,
 		attacks : [{
-				name : "Fist",
-				ability : 1,
-				damage : [2, 6, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Two fist attacks as an Attack action"
-			}
-		],
+			name : "Fist",
+			ability : 1,
+			damage : [2, 6, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Two fist attacks as an Attack action"
+		}],
 		traits : [{
-				name : "Regeneration",
-				description : "The guardian regains 10 HP at the start of its turn if it has at least 1 HP."
-			}, {
-				name : "Spell Storing",
-				description : "A spellcaster who wears the shield guardian's amulet can cause the guardian to store one spell of 4th level or lower. To do so, the wearer must cast the spell on the guardian. The spell has no effect but is stored within the guardian. When commanded to do so by the wearer or when a situation arises that was predefined by the spellcaster, the guardian casts the stored spell with any parameters set by the original caster, requiring no components. When the spell is cast or a new spell is stored, any previously stored spell is lost."
-			}
-		],
+			name : "Regeneration",
+			description : "The guardian regains 10 HP at the start of its turn if it has at least 1 HP."
+		}, {
+			name : "Spell Storing",
+			description : "A spellcaster who wears the shield guardian's amulet can cause the guardian to store one spell of 4th level or lower. To do so, the wearer must cast the spell on the guardian. The spell has no effect but is stored within the guardian. When commanded to do so by the wearer or when a situation arises that was predefined by the spellcaster, the guardian casts the stored spell with any parameters set by the original caster, requiring no components. When the spell is cast or a new spell is stored, any previously stored spell is lost."
+		}],
 		features : [{
-				name : "Bound",
-				description : "The shield guardian is magically bound to an amulet. As long as the guardian and its amulet are on the same plane of existence, the amulet's wearer can telepathically call the guardian to travel to it, and the guardian knows the distance and direction to the amulet. If the guardian is within 60 feet of the amulet's wearer, half of any damage the wearer takes (rounded up) is transferred to the guardian."
-			}
-		],
+			name : "Bound",
+			description : "The shield guardian is magically bound to an amulet. As long as the guardian and its amulet are on the same plane of existence, the amulet's wearer can telepathically call the guardian to travel to it, and the guardian knows the distance and direction to the amulet. If the guardian is within 60 feet of the amulet's wearer, half of any damage the wearer takes (rounded up) is transferred to the guardian."
+		}],
 		actions : [{
-				name : "Shield",
-				description : "As a reaction, when a creature makes an attack against the wearer of the guardian's amulet, the guardian grants a +2 bonus to the wearer's AC if the guardian is within 5 feet of the wearer."
-			}
-		]
+			name : "Shield",
+			description : "As a reaction, when a creature makes an attack against the wearer of the guardian's amulet, the guardian grants a +2 bonus to the wearer's AC if the guardian is within 5 feet of the wearer."
+		}]
 	},
 	"sprite" : {
 		name : "Sprite",
@@ -795,36 +753,34 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Longsword",
-				ability : 2,
-				damage : [1, "", "slashing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : ["Str", "", false]
-			}, {
-				name : "Shortbow",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "40/160 ft",
-				description : "",
-				modifiers : ["", "", false],
-				description : "DC 10 Con save or poisoned 1 min; fail by 5 or more: also unconscious 1 min, until damaged or awakened",
-				tooltip : "The target hit must succeed on a DC 10 Constitution saving throw or become poisoned for 1 minute. If its saving throw result is 5 or lower, the poisoned target falls unconscious for the same duration, or until it takes damage or another creature takes an action to shake it awake."
-			}, {
-				name : "Heart Sight",
-				ability : 6,
-				damage : ["Reveal", "", ""],
-				range : "Touch (5 ft)",
-				description : "Cha save or sprite knows emotional state and alignment (celestial/fiend/undead auto fail the save)",
-				modifiers : ["", "", false],
-				dc : true
-			}
-		],
+			name : "Longsword",
+			ability : 2,
+			damage : [1, "", "slashing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : ["Str", "", false]
+		}, {
+			name : "Shortbow",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "40/160 ft",
+			description : "",
+			modifiers : ["", "", false],
+			description : "DC 10 Con save or poisoned 1 min; fail by 5 or more: also unconscious 1 min, until damaged or awakened",
+			tooltip : "The target hit must succeed on a DC 10 Constitution saving throw or become poisoned for 1 minute. If its saving throw result is 5 or lower, the poisoned target falls unconscious for the same duration, or until it takes damage or another creature takes an action to shake it awake."
+		}, {
+			name : "Heart Sight",
+			ability : 6,
+			damage : ["Reveal", "", ""],
+			range : "Touch (5 ft)",
+			description : "Cha save or sprite knows emotional state and alignment (celestial/fiend/undead auto fail the save)",
+			modifiers : ["", "", false],
+			dc : true
+		}],
 		actions : [{
-				name : "Invisibility",
-				description : "As an action, the sprite magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell). Any equipment the sprite wears or carries is invisible with it."
-			}
-		]
+			name : "Invisibility",
+			description : "As an action, the sprite magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell). Any equipment the sprite wears or carries is invisible with it."
+		}]
 	},
 	// Undead minions
 	"ghast" : {
@@ -850,29 +806,27 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [2, 8, "piercing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : [-2, "", ""]
-			}, {
-				name : "Claws",
-				ability : 1,
-				damage : [2, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "DC 10 Con save or 1 min paralyzed; Save end of each turn (elf/undead immune)",
-				tooltip : "If the target is a creature other than an elf or undead, it must succeed on a DC 10 Constitution saving throw or be paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [2, 8, "piercing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : [-2, "", ""]
+		}, {
+			name : "Claws",
+			ability : 1,
+			damage : [2, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "DC 10 Con save or 1 min paralyzed; Save end of each turn (elf/undead immune)",
+			tooltip : "If the target is a creature other than an elf or undead, it must succeed on a DC 10 Constitution saving throw or be paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+		}],
 		traits : [{
-				name : "Stench",
-				description : "Any creature that starts its turn within 5 ft of the ghast must succeed on a DC 10 Constitution saving throw or be poisoned until the start of its next turn. On a successful saving throw, the creature is immune to the ghast's Stench for 24 hours."
-			}, {
-				name : "Turn Defiance",
-				description : "The ghast and any ghouls within 30 ft of it have advantage on saving throws against effects that turn undead."
-			}
-		]
+			name : "Stench",
+			description : "Any creature that starts its turn within 5 ft of the ghast must succeed on a DC 10 Constitution saving throw or be poisoned until the start of its next turn. On a successful saving throw, the creature is immune to the ghast's Stench for 24 hours."
+		}, {
+			name : "Turn Defiance",
+			description : "The ghast and any ghouls within 30 ft of it have advantage on saving throws against effects that turn undead."
+		}]
 	},
 	"ghoul" : {
 		name : "Ghoul",
@@ -896,21 +850,20 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [2, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : [-2, "", ""]
-			}, {
-				name : "Claws",
-				ability : 1,
-				damage : [2, 4, "slashing"],
-				range : "Melee (5 ft)",
-				description : "DC 10 Con save or 1 min paralyzed; Save end of each turn (elf/undead immune)",
-				tooltip : "If the target is a creature other than an elf or undead, it must succeed on a DC 10 Constitution saving throw or be paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
-			}
-		]
+			name : "Bite",
+			ability : 2,
+			damage : [2, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : [-2, "", ""]
+		}, {
+			name : "Claws",
+			ability : 1,
+			damage : [2, 4, "slashing"],
+			range : "Melee (5 ft)",
+			description : "DC 10 Con save or 1 min paralyzed; Save end of each turn (elf/undead immune)",
+			tooltip : "If the target is a creature other than an elf or undead, it must succeed on a DC 10 Constitution saving throw or be paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+		}]
 	},
 	"mummy" : {
 		name : "Mummy",
@@ -936,34 +889,32 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Rotting Fist",
-				ability : 1,
-				damage : [2, 6, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "+3d6 necrotic damage; DC 12 Constitution save or cursed with Mummy Rot",
-				tooltip : "Multiattack\nAs part of one Attack action, the mummy can use its Dreadful Glare and makes one attack with its rotting fist.\n\nRotting Fist\nIf the target is a creature, it must succeed on a DC 12 Constitution saving throw or be cursed with mummy rot. The cursed target can't regain hit points, and its hit point maximum decreases by 10 (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic."
-			}, {
-				name : "Dreadful Glare",
-				ability : 6,
-				damage : ["Frightened", "", ""],
-				range : "60 ft",
-				description : "Wis save or frightened for 1 round; If failed by 5 or more, paralyzed as well",
-				tooltip : "Multiattack\nAs part of one Attack action, the mummy can use its Dreadful Glare and makes one attack with its rotting fist.\n\nDreadful Glare\nThe mummy targets one creature it can see within 60 ft of it. If the target can see the mummy, it must succeed on a DC 11 Wisdom saving throw against this magic or become frightened until the end of the mummy's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies (but not mummy lords) for the next 24 hours.",
-				modifiers : ["", "", false],
-				dc : true
-			}
-		],
+			name : "Rotting Fist",
+			ability : 1,
+			damage : [2, 6, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "+3d6 necrotic damage; DC 12 Constitution save or cursed with Mummy Rot",
+			tooltip : "Multiattack\nAs part of one Attack action, the mummy can use its Dreadful Glare and makes one attack with its rotting fist.\n\nRotting Fist\nIf the target is a creature, it must succeed on a DC 12 Constitution saving throw or be cursed with mummy rot. The cursed target can't regain hit points, and its hit point maximum decreases by 10 (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic."
+		}, {
+			name : "Dreadful Glare",
+			ability : 6,
+			damage : ["Frightened", "", ""],
+			range : "60 ft",
+			description : "Wis save or frightened for 1 round; If failed by 5 or more, paralyzed as well",
+			tooltip : "Multiattack\nAs part of one Attack action, the mummy can use its Dreadful Glare and makes one attack with its rotting fist.\n\nDreadful Glare\nThe mummy targets one creature it can see within 60 ft of it. If the target can see the mummy, it must succeed on a DC 11 Wisdom saving throw against this magic or become frightened until the end of the mummy's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies (but not mummy lords) for the next 24 hours.",
+			modifiers : ["", "", false],
+			dc : true
+		}],
 		traits : [{
-				name : "Multiattack",
-				description : "With one Attack action, do both Dreadful Glare and a Rotting Fist attack."
-			}, {
-				name : "Mummy Rot",
-				description : "A cursed creature can't regain hit points, and its hit point maximum decreases by 3d6 for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic."
-			}, {
-				name : "Dreadful Glare",
-				description : "If the target can see the mummy, it must succeed on a DC 11 Wisdom saving throw against this magic or become frightened until the end of the mummy's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies (but not mummy lords) for the next 24 hours."
-			}
-		]
+			name : "Multiattack",
+			description : "With one Attack action, do both Dreadful Glare and a Rotting Fist attack."
+		}, {
+			name : "Mummy Rot",
+			description : "A cursed creature can't regain hit points, and its hit point maximum decreases by 3d6 for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic."
+		}, {
+			name : "Dreadful Glare",
+			description : "If the target can see the mummy, it must succeed on a DC 11 Wisdom saving throw against this magic or become frightened until the end of the mummy's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies (but not mummy lords) for the next 24 hours."
+		}]
 	},
 	"shadow" : {
 		name : "Shadow",
@@ -992,28 +943,26 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Strength Drain",
-				ability : 2,
-				damage : [2, 6, "necrotic"],
-				range : "Melee (5 ft)",
-				description : "Reduces Str by 1d4 till target's next short rest; If Str goes to 0, the target dies and forms a new shadow",
-				tooltip : "A target of the shadows' strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later."
-			}
-		],
+			name : "Strength Drain",
+			ability : 2,
+			damage : [2, 6, "necrotic"],
+			range : "Melee (5 ft)",
+			description : "Reduces Str by 1d4 till target's next short rest; If Str goes to 0, the target dies and forms a new shadow",
+			tooltip : "A target of the shadows' strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later."
+		}],
 		traits : [{
-				name : "Amorphous",
-				description : "The shadow can move through a space as narrow as 1 inch wide without squeezing."
-			}, {
-				name : "Shadow Stealth",
-				description : "While in dim light or darkness, the shadow can take the Hide action as a bonus action and adds an extra +2 on Stealth checks."
-			}, {
-				name : "Sunlight Weakness",
-				description : "While in sunlight, the shadow has disadvantage on attack rolls, ability checks, and saving throws."
-			}, {
-				name : "Strength Drain",
-				description : "A target of the shadows' strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later."
-			}
-		],
+			name : "Amorphous",
+			description : "The shadow can move through a space as narrow as 1 inch wide without squeezing."
+		}, {
+			name : "Shadow Stealth",
+			description : "While in dim light or darkness, the shadow can take the Hide action as a bonus action and adds an extra +2 on Stealth checks."
+		}, {
+			name : "Sunlight Weakness",
+			description : "While in sunlight, the shadow has disadvantage on attack rolls, ability checks, and saving throws."
+		}, {
+			name : "Strength Drain",
+			description : "A target of the shadows' strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later."
+		}],
 	},
 	"skeleton" : { // "Skeleton (humanoid)" entry so that just "skeleton" also matches this entry
 		name : "Skeleton (humanoid)",
@@ -1038,19 +987,18 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Shortsword",
-				ability : 2,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Finesse, light"
-			}, {
-				name : "Shortbow",
-				ability : 2,
-				damage : [1, 6, "piercing"],
-				range : "80/320 ft",
-				description : "Ammunition, two-handed"
-			}
-		]
+			name : "Shortsword",
+			ability : 2,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Finesse, light"
+		}, {
+			name : "Shortbow",
+			ability : 2,
+			damage : [1, 6, "piercing"],
+			range : "80/320 ft",
+			description : "Ammunition, two-handed"
+		}]
 	},
 	"warhorse skeleton" : {
 		name : "Warhorse Skeleton",
@@ -1075,13 +1023,12 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Hooves",
-				ability : 1,
-				damage : [2, 6, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		]
+			name : "Hooves",
+			ability : 1,
+			damage : [2, 6, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : ""
+		}]
 	},
 	"specter" : {
 		name : "Specter",
@@ -1106,26 +1053,24 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Life Drain",
-				ability : 2,
-				damage : [3, 6, "necrotic"],
-				range : "Melee (5 ft)",
-				description : "DC 10 Con save or HP max reduced by same as damage taken until a long rest",
-				modifiers : ["", "", false],
-				tooltip : "A target of the specter's life drain must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0."
-			}
-		],
+			name : "Life Drain",
+			ability : 2,
+			damage : [3, 6, "necrotic"],
+			range : "Melee (5 ft)",
+			description : "DC 10 Con save or HP max reduced by same as damage taken until a long rest",
+			modifiers : ["", "", false],
+			tooltip : "A target of the specter's life drain must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0."
+		}],
 		traits : [{
-				name : "Incorporeal Movement",
-				description : "The specter can move through other creatures and objects as if they were difficult terrain. It takes 5 (1d10) force damage if it ends its turn inside an object."
-			}, {
-				name : "Sunlight Sensitivity",
-				description : "While in sunlight, the specter has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight."
-			}, {
-				name : "Life Drain",
-				description : "A target of the specter's life drain must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0."
-			}
-		]
+			name : "Incorporeal Movement",
+			description : "The specter can move through other creatures and objects as if they were difficult terrain. It takes 5 (1d10) force damage if it ends its turn inside an object."
+		}, {
+			name : "Sunlight Sensitivity",
+			description : "While in sunlight, the specter has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight."
+		}, {
+			name : "Life Drain",
+			description : "A target of the specter's life drain must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0."
+		}]
 	},
 	"wight" : {
 		name : "Wight",
@@ -1151,34 +1096,32 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Life Drain",
-				ability : 1,
-				damage : [1, 6, "necrotic"],
-				range : "Melee (5 ft)",
-				description : "DC 13 Con save or HP max reduced by damage amount until long rest",
-				tooltip : "The target must succeed on a DC 13 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the target finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.\nA humanoid slain by this attack rises 24 hours later as a zombie under the wight's control, unless the humanoid is restored to life or its body is destroyed. The wight can have no more than twelve zombies under its control at one time."
-			}, {
-				name : "Longsword",
-				ability : 1,
-				damage : [1, 8, "slashing"],
-				range : "Melee (5 ft)",
-				description : "Versatile (1d10)"
-			}, {
-				name : "Longbow",
-				ability : 2,
-				damage : [1, 8, "piercing"],
-				range : "150/600 ft",
-				description : "Ammunition, heavy, two-handed)"
-			}
-		],
+			name : "Life Drain",
+			ability : 1,
+			damage : [1, 6, "necrotic"],
+			range : "Melee (5 ft)",
+			description : "DC 13 Con save or HP max reduced by damage amount until long rest",
+			tooltip : "The target must succeed on a DC 13 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the target finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.\nA humanoid slain by this attack rises 24 hours later as a zombie under the wight's control, unless the humanoid is restored to life or its body is destroyed. The wight can have no more than twelve zombies under its control at one time."
+		}, {
+			name : "Longsword",
+			ability : 1,
+			damage : [1, 8, "slashing"],
+			range : "Melee (5 ft)",
+			description : "Versatile (1d10)"
+		}, {
+			name : "Longbow",
+			ability : 2,
+			damage : [1, 8, "piercing"],
+			range : "150/600 ft",
+			description : "Ammunition, heavy, two-handed)"
+		}],
 		traits : [{
-				name : "Sunlight Sensitivity",
-				description : "While in sunlight, the wight has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight."
-			}, {
-				name : "Life Drain",
-				description : "A target of the wight's life drain attack must succeed on a DC 13 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the target finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.\n   A humanoid slain by this attack rises 24 hours later as a zombie under the wight's control, unless the humanoid is restored to life or its body is destroyed. The wight can have no more than twelve zombies under its control at one time."
-			}
-		]
+			name : "Sunlight Sensitivity",
+			description : "While in sunlight, the wight has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight."
+		}, {
+			name : "Life Drain",
+			description : "A target of the wight's life drain attack must succeed on a DC 13 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the target finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.\n   A humanoid slain by this attack rises 24 hours later as a zombie under the wight's control, unless the humanoid is restored to life or its body is destroyed. The wight can have no more than twelve zombies under its control at one time."
+		}]
 	},
 	"zombie" : {
 		name : "Zombie",
@@ -1202,18 +1145,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Slam",
-				ability : 1,
-				damage : [1, 6, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Slam",
+			ability : 1,
+			damage : [1, 6, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Undead Fortitude",
-				description : "If damage reduces the zombie to 0 hit points, it must make a Constitution saving throw with a DC of 5 + the damage taken, unless the damage is radiant or from a critical hit. On a success, the zombie drops to 1 hit point instead."
-			}
-		]
+			name : "Undead Fortitude",
+			description : "If damage reduces the zombie to 0 hit points, it must make a Constitution saving throw with a DC of 5 + the damage taken, unless the damage is radiant or from a critical hit. On a success, the zombie drops to 1 hit point instead."
+		}]
 	},
 	"ogre zombie" : {
 		name : "Ogre Zombie",
@@ -1237,18 +1178,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Morningstar",
-				ability : 1,
-				damage : [2, 8, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Morningstar",
+			ability : 1,
+			damage : [2, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Undead Fortitude",
-				description : "If damage reduces the zombie to 0 hit points, it must make a Constitution saving throw with a DC of 5 + the damage taken, unless the damage is radiant or from a critical hit. On a success, the zombie drops to 1 hit point instead."
-			}
-		]
+			name : "Undead Fortitude",
+			description : "If damage reduces the zombie to 0 hit points, it must make a Constitution saving throw with a DC of 5 + the damage taken, unless the damage is radiant or from a critical hit. On a success, the zombie drops to 1 hit point instead."
+		}]
 	},
 	// Fungi
 	"shrieker" : {
@@ -1273,15 +1212,13 @@ var Base_CreatureList = {
 		attacksAction : 0,
 		attacks : [],
 		traits : [{
-				name : "False Appearance",
-				description : "While the shrieker remains motionless, it is indistinguishable from an ordinary fungus."
-			}
-		],
+			name : "False Appearance",
+			description : "While the shrieker remains motionless, it is indistinguishable from an ordinary fungus."
+		}],
 		actions : [{
-				name : "Shriek",
-				description : "As a reaction when bright light or a creature is within 30 feet of the shrieker, it emits a shriek audible within 300 feet of it. The shrieker continues to shriek until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward."
-			}
-		],
+			name : "Shriek",
+			description : "As a reaction when bright light or a creature is within 30 feet of the shrieker, it emits a shriek audible within 300 feet of it. The shrieker continues to shriek until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward."
+		}],
 		wildshapeString : "\u25C6 Senses: blindsight 30 ft (blind beyond this radius).\n\u25C6 Condition Immunities: blinded, deafened, frightened.\n\u25C6 Shriek: As a reaction when bright light or a creature is within 30 ft of the shrieker, emits a shriek audible out to 300 ft. This continues until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward.\n\u25C6 False Appearance: While motionless, the shrieker is indistinguishable from an ordinary fungus."
 	},
 	"violet fungus" : {
@@ -1305,18 +1242,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : "1",
 		attacks : [{
-				name : "Rotting Touch",
-				ability : 3,
-				damage : [1, 8, "necrotic"],
-				range : "Melee (10 ft)",
-				description : "1d4 rotting touch attacks as an Attack action"
-			}
-		],
+			name : "Rotting Touch",
+			ability : 3,
+			damage : [1, 8, "necrotic"],
+			range : "Melee (10 ft)",
+			description : "1d4 rotting touch attacks as an Attack action"
+		}],
 		traits : [{
-				name : "False Appearance",
-				description : "While the violet fungus remains motionless, it is indistinguishable from an ordinary fungus."
-			}
-		]
+			name : "False Appearance",
+			description : "While the violet fungus remains motionless, it is indistinguishable from an ordinary fungus."
+		}]
 	},
 	// Beasts (familiars, Ranger and general animal companions, and Druid Wild Shapes) [Miscellaneous Creatures Section]
 	"ape" : {
@@ -1344,19 +1279,18 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Fist",
-				ability : 1,
-				damage : [1, 6, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Two fist attacks as an Attack action"
-			}, {
-				name : "Rock",
-				ability : 1,
-				damage : [1, 6, "bludgeoning"],
-				range : "25/50 ft",
-				description : "One rock attack as an Attack action"
-			}
-		]
+			name : "Fist",
+			ability : 1,
+			damage : [1, 6, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Two fist attacks as an Attack action"
+		}, {
+			name : "Rock",
+			ability : 1,
+			damage : [1, 6, "bludgeoning"],
+			range : "25/50 ft",
+			description : "One rock attack as an Attack action"
+		}]
 	},
 	"axe beak" : {
 		name : "Axe Beak",
@@ -1378,13 +1312,12 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Beak",
-				ability : 1,
-				damage : [1, 8, "slashing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		]
+			name : "Beak",
+			ability : 1,
+			damage : [1, 8, "slashing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}]
 	},
 	"baboon" : {
 		name : "Baboon",
@@ -1406,18 +1339,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Pack Tactics",
-				description : "The baboon has advantage on an attack roll against a creature if at least one of the baboon's allies is within 5 ft of the creature and the ally isn't incapacitated."
-			}
-		]
+			name : "Pack Tactics",
+			description : "The baboon has advantage on an attack roll against a creature if at least one of the baboon's allies is within 5 ft of the creature and the ally isn't incapacitated."
+		}]
 	},
 	"badger" : {
 		name : "Badger",
@@ -1439,18 +1370,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The badger has advantage on Wisdom (Perception) checks that rely on smell."
-			}
-		]
+			name : "Keen Smell",
+			description : "The badger has advantage on Wisdom (Perception) checks that rely on smell."
+		}]
 	},
 	"bat" : {
 		name : "Bat",
@@ -1473,22 +1402,20 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : ["Str", "", false]
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : ["Str", "", false]
+		}],
 		traits : [{
-				name : "Echolocation",
-				description : "The bat can't use its Blindsight while deafened."
-			}, {
-				name : "Keen Hearing",
-				description : "The bat has advantage on Wisdom (Perception) checks that rely on hearing."
-			}
-		]
+			name : "Echolocation",
+			description : "The bat can't use its Blindsight while deafened."
+		}, {
+			name : "Keen Hearing",
+			description : "The bat has advantage on Wisdom (Perception) checks that rely on hearing."
+		}]
 	},
 	"black bear" : {
 		name : "Black Bear",
@@ -1514,24 +1441,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "One bite and one claw attack as an Attack action"
-			}, {
-				name : "Claw",
-				ability : 1,
-				damage : [2, 4, "slashing"],
-				range : "Melee (5 ft)",
-				description : "One claw and one bite attack as an Attack action"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "One bite and one claw attack as an Attack action"
+		}, {
+			name : "Claw",
+			ability : 1,
+			damage : [2, 4, "slashing"],
+			range : "Melee (5 ft)",
+			description : "One claw and one bite attack as an Attack action"
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The bear has advantage on Wisdom (Perception) checks that rely on smell."
-			}
-		]
+			name : "Keen Smell",
+			description : "The bear has advantage on Wisdom (Perception) checks that rely on smell."
+		}]
 	},
 	"blink dog" : {
 		name : "Blink Dog",
@@ -1557,23 +1482,20 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Keen Hearing and Smell",
-				description : "The dog has advantage on Wisdom (Perception) checks that rely on hearing or smell."
-			}
-		],
+			name : "Keen Hearing and Smell",
+			description : "The dog has advantage on Wisdom (Perception) checks that rely on hearing or smell."
+		}],
 		actions : [{
-				name : "Teleport (Recharge 4-6)",
-				description : "As an action, the dog magically teleports, along with any equipment it is wearing or carrying, up to 40 ft to an unoccupied space it can see. Before or after teleporting, the dog can make one bite attack."
-			}
-		]
+			name : "Teleport (Recharge 4-6)",
+			description : "As an action, the dog magically teleports, along with any equipment it is wearing or carrying, up to 40 ft to an unoccupied space it can see. Before or after teleporting, the dog can make one bite attack."
+		}]
 	},
 	"blood hawk" : {
 		name : "Blood Hawk",
@@ -1598,21 +1520,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Beak",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Beak",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Keen Sight",
-				description : "The hawk has advantage on Wisdom (Perception) checks that rely on sight."
-			}, {
-				name : "Pack Tactics",
-				description : "The hawk has advantage on an attack roll against a creature if at least one of the hawk's allies is within 5 ft of the creature and the ally isn't incapacitated."
-			}
-		]
+			name : "Keen Sight",
+			description : "The hawk has advantage on Wisdom (Perception) checks that rely on sight."
+		}, {
+			name : "Pack Tactics",
+			description : "The hawk has advantage on an attack roll against a creature if at least one of the hawk's allies is within 5 ft of the creature and the ally isn't incapacitated."
+		}]
 	},
 	"boar" : {
 		name : "Boar",
@@ -1635,21 +1555,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Tusk",
-				ability : 1,
-				damage : [1, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Charge trait"
-			}
-		],
+			name : "Tusk",
+			ability : 1,
+			damage : [1, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Charge trait"
+		}],
 		traits : [{
-				name : "Charge",
-				description : "If the boar moves at least 20 ft straight toward a target and then hits it with a tusk attack on the same turn, the target takes an extra 3 (1d6) slashing damage. A targeted creature must succeed on a DC 11 Strength saving throw or be knocked prone."
-			}, {
-				name : "Relentless (Recharges after a Short or Long Rest)",
-				description : "If the boar takes 7 damage or less that would reduce it to 0 HP, it is reduced to 1 HP instead."
-			}
-		]
+			name : "Charge",
+			description : "If the boar moves at least 20 ft straight toward a target and then hits it with a tusk attack on the same turn, the target takes an extra 3 (1d6) slashing damage. A targeted creature must succeed on a DC 11 Strength saving throw or be knocked prone."
+		}, {
+			name : "Relentless (Recharges after a Short or Long Rest)",
+			description : "If the boar takes 7 damage or less that would reduce it to 0 HP, it is reduced to 1 HP instead."
+		}]
 	},
 	"brown bear" : {
 		name : "Brown Bear",
@@ -1674,24 +1592,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 8, "piercing"],
-				range : "Melee (5 ft)",
-				description : "One bite and one claw attack as an Attack action"
-			}, {
-				name : "Claw",
-				ability : 1,
-				damage : [2, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "One claw and one bite attack as an Attack action"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 8, "piercing"],
+			range : "Melee (5 ft)",
+			description : "One bite and one claw attack as an Attack action"
+		}, {
+			name : "Claw",
+			ability : 1,
+			damage : [2, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "One claw and one bite attack as an Attack action"
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The bear has advantage on Wisdom (Perception) checks that rely on smell."
-			}
-		]
+			name : "Keen Smell",
+			description : "The bear has advantage on Wisdom (Perception) checks that rely on smell."
+		}]
 	},
 	"camel" : {
 		name : "Camel",
@@ -1714,14 +1630,13 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 4, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : ["", "", false]
-			}
-		]
+			name : "Bite",
+			ability : 1,
+			damage : [1, 4, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : ["", "", false]
+		}]
 	},
 	"cat" : {
 		name : "Cat",
@@ -1748,19 +1663,17 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Claws",
-				ability : 2,
-				damage : [1, "", "slashing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : ["Str", "", false]
-			}
-		],
+			name : "Claws",
+			ability : 2,
+			damage : [1, "", "slashing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : ["Str", "", false]
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The cat has advantage on Wisdom (Perception) checks that rely on smell."
-			}
-		]
+			name : "Keen Smell",
+			description : "The cat has advantage on Wisdom (Perception) checks that rely on smell."
+		}]
 	},
 	"cave bear" : {
 		name : "Cave Bear",
@@ -1785,24 +1698,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 8, "piercing"],
-				range : "Melee (5 ft)",
-				description : "One bite and one claw attack as an Attack action"
-			}, {
-				name : "Claw",
-				ability : 1,
-				damage : [2, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "One claw and one bite attack as an Attack action"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 8, "piercing"],
+			range : "Melee (5 ft)",
+			description : "One bite and one claw attack as an Attack action"
+		}, {
+			name : "Claw",
+			ability : 1,
+			damage : [2, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "One claw and one bite attack as an Attack action"
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The bear has advantage on Wisdom (Perception) checks that rely on smell."
-			}
-		]
+			name : "Keen Smell",
+			description : "The bear has advantage on Wisdom (Perception) checks that rely on smell."
+		}]
 	},
 	"constrictor snake" : {
 		name : "Constrictor Snake",
@@ -1824,19 +1735,18 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			},{
-				name : "Constrict",
-				ability : 1,
-				damage : [1, 8, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 14); Can't use constrict again until grapple ends"
-			}
-		]
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		},{
+			name : "Constrict",
+			ability : 1,
+			damage : [1, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Target is grappled and restrained (escape DC 14); Can't use constrict again until grapple ends"
+		}]
 	},
 	"crab" : {
 		name : "Crab",
@@ -1862,19 +1772,17 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Claw",
-				ability : 1,
-				damage : [1, "", "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : [2, "", false]
-			}
-		],
+			name : "Claw",
+			ability : 1,
+			damage : [1, "", "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : [2, "", false]
+		}],
 		traits : [{
-				name : "Amphibious",
-				description : "The crab can breathe air and water."
-			}
-		]
+			name : "Amphibious",
+			description : "The crab can breathe air and water."
+		}]
 	},
 	"crocodile" : {
 		name : "Crocodile",
@@ -1899,18 +1807,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 10, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 12); Can't use bite again until grapple ends"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 10, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target is grappled and restrained (escape DC 12); Can't use bite again until grapple ends"
+		}],
 		traits : [{
-				name : "Hold Breath",
-				description : "The crocodile can hold its breath for 15 minutes."
-			}
-		]
+			name : "Hold Breath",
+			description : "The crocodile can hold its breath for 15 minutes."
+		}]
 	},
 	"death dog" : {
 		name : "Death Dog",
@@ -1936,22 +1842,20 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Two bite attacks as an Attack action; Target DC 12 Con save or diseased and poisoned",
-				tooltip : "If the target of the death dog's bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 5 (1d10) on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0."
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Two bite attacks as an Attack action; Target DC 12 Con save or diseased and poisoned",
+			tooltip : "If the target of the death dog's bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 5 (1d10) on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0."
+		}],
 		traits : [{
-				name : "Two-Headed",
-				description : "The death dog has advantage on Wisdom (Perception) checks and on saving throws against being blinded, charmed, deafened, frightened, stunned, or knocked unconscious."
-			}, {
-				name : "Bite attack",
-				description : "If the target of the death dog's bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 5 (1d10) on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0."
-			}
-		]
+			name : "Two-Headed",
+			description : "The death dog has advantage on Wisdom (Perception) checks and on saving throws against being blinded, charmed, deafened, frightened, stunned, or knocked unconscious."
+		}, {
+			name : "Bite attack",
+			description : "If the target of the death dog's bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 5 (1d10) on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0."
+		}]
 	},
 	"deer" : {
 		name : "Deer",
@@ -1973,13 +1877,12 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		]
+			name : "Bite",
+			ability : 1,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}]
 	},
 	"dire wolf" : {
 		name : "Dire Wolf",
@@ -2006,21 +1909,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [2, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target must succeed on a DC 13 Strength saving throw or be knocked prone"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [2, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target must succeed on a DC 13 Strength saving throw or be knocked prone"
+		}],
 		traits : [{
-				name : "Keen Hearing and Smell",
-				description : "The wolf has advantage on Wisdom (Perception) checks that rely on hearing or smell."
-			}, {
-				name : "Pack Tactics",
-				description : "The wolf has advantage on an attack roll against a creature if at least one of the wolf's allies is within 5 ft of the creature and the ally isn't incapacitated."
-			}
-		]
+			name : "Keen Hearing and Smell",
+			description : "The wolf has advantage on Wisdom (Perception) checks that rely on hearing or smell."
+		}, {
+			name : "Pack Tactics",
+			description : "The wolf has advantage on an attack roll against a creature if at least one of the wolf's allies is within 5 ft of the creature and the ally isn't incapacitated."
+		}]
 	},
 	"draft horse" : {
 		name : "Draft Horse",
@@ -2042,13 +1943,12 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Hooves",
-				ability : 1,
-				damage : [2, 4, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		]
+			name : "Hooves",
+			ability : 1,
+			damage : [2, 4, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : ""
+		}]
 	},
 	"eagle" : {
 		name : "Eagle",
@@ -2073,18 +1973,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Talons",
-				ability : 2,
-				damage : [1, 4, "slashing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Talons",
+			ability : 2,
+			damage : [1, 4, "slashing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Keen Sight",
-				description : "The eagle has advantage on Wisdom (Perception) checks that rely on sight."
-			}
-		]
+			name : "Keen Sight",
+			description : "The eagle has advantage on Wisdom (Perception) checks that rely on sight."
+		}]
 	},
 	"elephant" : {
 		name : "Elephant",
@@ -2106,24 +2004,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Gore",
-				ability : 1,
-				damage : [3, 8, "piercing"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
-			}, {
-				name : "Stomp",
-				ability : 1,
-				damage : [3, 10, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Can only be used on prone creatures (also see Trampling Charge trait)"
-			}
-		],
+			name : "Gore",
+			ability : 1,
+			damage : [3, 8, "piercing"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
+		}, {
+			name : "Stomp",
+			ability : 1,
+			damage : [3, 10, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Can only be used on prone creatures (also see Trampling Charge trait)"
+		}],
 		traits : [{
-				name : "Trampling Charge",
-				description : "If the elephant moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 12 Strength saving throw or be knocked prone. If the target is prone, the elephant can make one stomp attack against it as a bonus action."
-			}
-		]
+			name : "Trampling Charge",
+			description : "If the elephant moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 12 Strength saving throw or be knocked prone. If the target is prone, the elephant can make one stomp attack against it as a bonus action."
+		}]
 	},
 	"elk" : {
 		name : "Elk",
@@ -2146,24 +2042,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Ram",
-				ability : 1,
-				damage : [1, 6, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Charge trait"
-			}, {
-				name : "Hooves",
-				ability : 1,
-				damage : [2, 4, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Can only be used on prone creatures"
-			}
-		],
+			name : "Ram",
+			ability : 1,
+			damage : [1, 6, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Charge trait"
+		}, {
+			name : "Hooves",
+			ability : 1,
+			damage : [2, 4, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Can only be used on prone creatures"
+		}],
 		traits : [{
-				name : "Charge",
-				description : "If the elk moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone."
-			}
-		]
+			name : "Charge",
+			description : "If the elk moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone."
+		}]
 	},
 	"flying snake" : {
 		name : "Flying Snake",
@@ -2185,19 +2079,17 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target also takes 3d4 poison damage",
-				modifiers : ["", "", false]
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target also takes 3d4 poison damage",
+			modifiers : ["", "", false]
+		}],
 		traits : [{
-				name : "Flyby",
-				description : "The snake doesn't provoke opportunity attacks when it flies out of an enemy's reach."
-			}
-		]
+			name : "Flyby",
+			description : "The snake doesn't provoke opportunity attacks when it flies out of an enemy's reach."
+		}]
 	},
 	"frog" : {
 		name : "Frog",
@@ -2225,13 +2117,12 @@ var Base_CreatureList = {
 		attacksAction : 1,
 		attacks : [],
 		traits : [{
-				name : "Amphibious",
-				description : "The frog can breathe air and water"
-			}, {
-				name : "Standing Leap",
-				description : "The frog's long jump is up to 10 ft and its high jump is up to 5 ft, with or without a running start."
-			}
-		]
+			name : "Amphibious",
+			description : "The frog can breathe air and water"
+		}, {
+			name : "Standing Leap",
+			description : "The frog's long jump is up to 10 ft and its high jump is up to 5 ft, with or without a running start."
+		}]
 	},
 	"giant ape" : {
 		name : "Giant Ape",
@@ -2257,19 +2148,18 @@ var Base_CreatureList = {
 		proficiencyBonus : 3,
 		attacksAction : 2,
 		attacks : [{
-				name : "Fist",
-				ability : 1,
-				damage : [3, 10, "bludgeoning"],
-				range : "Melee (10 ft)",
-				description : "Two fist attacks as an Attack action"
-			}, {
-				name : "Rock",
-				ability : 1,
-				damage : [7, 6, "bludgeoning"],
-				range : "50/100 ft",
-				description : "One rock attack as an Attack action"
-			}
-		]
+			name : "Fist",
+			ability : 1,
+			damage : [3, 10, "bludgeoning"],
+			range : "Melee (10 ft)",
+			description : "Two fist attacks as an Attack action"
+		}, {
+			name : "Rock",
+			ability : 1,
+			damage : [7, 6, "bludgeoning"],
+			range : "50/100 ft",
+			description : "One rock attack as an Attack action"
+		}]
 	},
 	"giant badger" : {
 		name : "Giant Badger",
@@ -2292,24 +2182,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "One bite and one claws attack as an Attack action"
-			}, {
-				name : "Claws",
-				ability : 1,
-				damage : [2, 4, "slashing"],
-				range : "Melee (5 ft)",
-				description : "One claws and one bite attack as an Attack action"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "One bite and one claws attack as an Attack action"
+		}, {
+			name : "Claws",
+			ability : 1,
+			damage : [2, 4, "slashing"],
+			range : "Melee (5 ft)",
+			description : "One claws and one bite attack as an Attack action"
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The badger has advantage on Wisdom (Perception) checks that rely on smell."
-			}
-		]
+			name : "Keen Smell",
+			description : "The badger has advantage on Wisdom (Perception) checks that rely on smell."
+		}]
 	},
 	"giant bat" : {
 		name : "Giant Bat",
@@ -2331,21 +2219,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Echolocation",
-				description : "The bat can't use its Blindsight while deafened."
-			}, {
-				name : "Keen Hearing",
-				description : "The bat has advantage on Wisdom (Perception) checks that rely on hearing."
-			}
-		]
+			name : "Echolocation",
+			description : "The bat can't use its Blindsight while deafened."
+		}, {
+			name : "Keen Hearing",
+			description : "The bat has advantage on Wisdom (Perception) checks that rely on hearing."
+		}]
 	},
 	"giant boar" : {
 		name : "Giant Boar",
@@ -2367,21 +2253,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Tusk",
-				ability : 1,
-				damage : [2, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Charge trait"
-			}
-		],
+			name : "Tusk",
+			ability : 1,
+			damage : [2, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Charge trait"
+		}],
 		traits : [{
-				name : "Charge",
-				description : "If the boar hits with a tusk attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 2d6 slashing damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone."
-			}, {
-				name : "Relentless (Recharges after a Short or Long Rest)",
-				description : "If the boar takes 10 damage or less that would reduce it to 0 HP, it is reduced to 1 HP instead."
-			}
-		]
+			name : "Charge",
+			description : "If the boar hits with a tusk attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 2d6 slashing damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone."
+		}, {
+			name : "Relentless (Recharges after a Short or Long Rest)",
+			description : "If the boar takes 10 damage or less that would reduce it to 0 HP, it is reduced to 1 HP instead."
+		}]
 	},
 	"giant centipede" : {
 		name : "Giant Centipede",
@@ -2403,18 +2287,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target must succeed on a DC 11 Constitution saving throw or take 3d6 poison damage"
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target must succeed on a DC 11 Constitution saving throw or take 3d6 poison damage"
+		}],
 		traits : [{
-				name : "Bite",
-				description : "If the poison damage from the centipede's bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way."
-			}
-		]
+			name : "Bite",
+			description : "If the poison damage from the centipede's bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way."
+		}]
 	},
 	"giant constrictor snake" : {
 		name : "Giant Constrictor Snake",
@@ -2439,19 +2321,18 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [2, 6, "piercing"],
-				range : "Melee (10 ft)",
-				description : ""
-			},{
-				name : "Constrict",
-				ability : 1,
-				damage : [2, 8, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 16); Can't use constrict again until grapple ends"
-			}
-		]
+			name : "Bite",
+			ability : 1,
+			damage : [2, 6, "piercing"],
+			range : "Melee (10 ft)",
+			description : ""
+		},{
+			name : "Constrict",
+			ability : 1,
+			damage : [2, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Target is grappled and restrained (escape DC 16); Can't use constrict again until grapple ends"
+		}]
 	},
 	"giant crab" : {
 		name : "Giant Crab",
@@ -2476,18 +2357,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Claw",
-				ability : 1,
-				damage : [1, 6, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Target is grappled (escape DC 11); Can't use a claw again until grapple ends"
-			}
-		],
+			name : "Claw",
+			ability : 1,
+			damage : [1, 6, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Target is grappled (escape DC 11); Can't use a claw again until grapple ends"
+		}],
 		traits : [{
-				name : "Amphibious",
-				description : "The crab can breathe air and water."
-			}
-		]
+			name : "Amphibious",
+			description : "The crab can breathe air and water."
+		}]
 	},
 	"giant crocodile" : {
 		name : "Giant Crocodile",
@@ -2512,27 +2391,25 @@ var Base_CreatureList = {
 		proficiencyBonus : 3,
 		attacksAction : 2,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [3, 10, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 16); Can't use bite again until grapple ends"
-			}, {
-				name : "Tail",
-				ability : 1,
-				damage : [2, 8, "bludgeoning"],
-				range : "Melee (10 ft)",
-				description : "Target must succeed on a DC 16 Strength saving throw or be knocked prone"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [3, 10, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target is grappled and restrained (escape DC 16); Can't use bite again until grapple ends"
+		}, {
+			name : "Tail",
+			ability : 1,
+			damage : [2, 8, "bludgeoning"],
+			range : "Melee (10 ft)",
+			description : "Target must succeed on a DC 16 Strength saving throw or be knocked prone"
+		}],
 		traits : [{
-				name : "Hold Breath",
-				description : "The crocodile can hold its breath for 30 minutes."
-			}, {
-				name : "Multiattack",
-				description : "The crocodile makes two attacks: one with its bite and one with its tail (to a target it is not grappling)."
-			}
-		]
+			name : "Hold Breath",
+			description : "The crocodile can hold its breath for 30 minutes."
+		}, {
+			name : "Multiattack",
+			description : "The crocodile makes two attacks: one with its bite and one with its tail (to a target it is not grappling)."
+		}]
 	},
 	"giant eagle" : {
 		name : "Giant Eagle",
@@ -2557,24 +2434,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Beak",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "One beak and one talons attack as an Attack action"
-			}, {
-				name : "Talons",
-				ability : 1,
-				damage : [2, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "One talons and one beak attack as an Attack action"
-			}
-		],
+			name : "Beak",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "One beak and one talons attack as an Attack action"
+		}, {
+			name : "Talons",
+			ability : 1,
+			damage : [2, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "One talons and one beak attack as an Attack action"
+		}],
 		traits : [{
-				name : "Keen Sight",
-				description : "The eagle has advantage on Wisdom (Perception) checks that rely on sight."
-			}
-		]
+			name : "Keen Sight",
+			description : "The eagle has advantage on Wisdom (Perception) checks that rely on sight."
+		}]
 	},
 	"giant elk" : {
 		name : "Giant Elk",
@@ -2599,24 +2474,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Ram",
-				ability : 1,
-				damage : [2, 6, "bludgeoning"],
-				range : "Melee (10 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Charge trait"
-			}, {
-				name : "Hooves",
-				ability : 1,
-				damage : [4, 8, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Can only be used on prone creatures"
-			}
-		],
+			name : "Ram",
+			ability : 1,
+			damage : [2, 6, "bludgeoning"],
+			range : "Melee (10 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Charge trait"
+		}, {
+			name : "Hooves",
+			ability : 1,
+			damage : [4, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Can only be used on prone creatures"
+		}],
 		traits : [{
-				name : "Charge",
-				description : "If the elk moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 14 Strength saving throw or be knocked prone."
-			}
-		]
+			name : "Charge",
+			description : "If the elk moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 14 Strength saving throw or be knocked prone."
+		}]
 	},
 	"giant fire beetle" : {
 		name : "Giant Fire Beetle",
@@ -2638,18 +2511,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Illumination",
-				description : "The beetle sheds bright light in a 10-foot radius and dim light for an additional 10 ft."
-			}
-		]
+			name : "Illumination",
+			description : "The beetle sheds bright light in a 10-foot radius and dim light for an additional 10 ft."
+		}]
 	},
 	"giant frog" : {
 		name : "Giant Frog",
@@ -2675,24 +2546,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target is grappled and restrained (escape DC 11); Can't use bite again until grapple ends"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target is grappled and restrained (escape DC 11); Can't use bite again until grapple ends"
+		}],
 		traits : [{
-				name : "Amphibious",
-				description : "The frog can breathe air and water"
-			}, {
-				name : "Standing Leap",
-				description : "The frog's long jump is up to 20 ft and its high jump is up to 10 ft, with or without a running start."
-			}, {
-				name : "Swallow",
-				description : "The frog makes one bite attack against a Small or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the frog, and it takes 5 (2d4) acid damage at the start of each of the frog's turns. The frog can have only one target swallowed at a time. If the frog dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 ft of movement, exiting prone."
-			}
-		],
+			name : "Amphibious",
+			description : "The frog can breathe air and water"
+		}, {
+			name : "Standing Leap",
+			description : "The frog's long jump is up to 20 ft and its high jump is up to 10 ft, with or without a running start."
+		}, {
+			name : "Swallow",
+			description : "The frog makes one bite attack against a Small or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the frog, and it takes 5 (2d4) acid damage at the start of each of the frog's turns. The frog can have only one target swallowed at a time. If the frog dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 ft of movement, exiting prone."
+		}],
 		wildshapeString : "Darkvision 30 ft| Amphibious: can breathe air and water| Standing Leap: can long jump up to 20 ft and high jump up to 10 ft, with or without a running start| Swallow: if a bite attack hits a Small or smaller target it is grappling, it is swallowed, ending the grapple. Swallowed: blinded, restrained, total cover, takes 2d4 acid damage at the start of each of the frog's turns; can have only 1 swallowed at a time."
 	},
 	"giant goat" : {
@@ -2715,21 +2584,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Ram",
-				ability : 1,
-				damage : [2, 4, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Charge trait"
-			}
-		],
+			name : "Ram",
+			ability : 1,
+			damage : [2, 4, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Charge trait"
+		}],
 		traits : [{
-				name : "Charge",
-				description : "If the goat hits with a ram attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 2d4 bludgeoning damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone."
-			}, {
-				name : "Sure-Footed",
-				description : "The goat has advantage on Strength and Dexterity saving throws made against effects that would knock it prone."
-			}
-		]
+			name : "Charge",
+			description : "If the goat hits with a ram attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 2d4 bludgeoning damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone."
+		}, {
+			name : "Sure-Footed",
+			description : "The goat has advantage on Strength and Dexterity saving throws made against effects that would knock it prone."
+		}]
 	},
 	"giant hyena" : {
 		name : "Giant Hyena",
@@ -2754,18 +2621,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [2, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "After reducing opponent to 0 HP, take bonus action to move and attack (see Rampage trait)"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [2, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "After reducing opponent to 0 HP, take bonus action to move and attack (see Rampage trait)"
+		}],
 		traits : [{
-				name : "Rampage",
-				description : "When the hyena reduces a creature to 0 HP with a melee attack on its turn, the hyena can take a bonus action to move up to half its speed and make a bite attack."
-			}
-		]
+			name : "Rampage",
+			description : "When the hyena reduces a creature to 0 HP with a melee attack on its turn, the hyena can take a bonus action to move up to half its speed and make a bite attack."
+		}]
 	},
 	"giant lizard" : {
 		name : "Giant Lizard",
@@ -2787,21 +2652,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 8, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 8, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Variant: Hold Breath",
-				description : "The lizard can hold its breath for 15 minutes. (A lizard that has this trait also has a swimming speed of 30 feet.)"
-			}, {
-				name : "Variant: Spider Climb",
-				description : "The lizard can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
-			}
-		]
+			name : "Variant: Hold Breath",
+			description : "The lizard can hold its breath for 15 minutes. (A lizard that has this trait also has a swimming speed of 30 feet.)"
+		}, {
+			name : "Variant: Spider Climb",
+			description : "The lizard can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
+		}]
 	},
 	"giant octopus" : {
 		name : "Giant Octopus",
@@ -2827,29 +2690,26 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Tentacles",
-				ability : 1,
-				damage : [2, 6, "bludgeoning"],
-				range : "Melee (15 ft)",
-				description : "Target is grappled and restrained (escape DC 16); Can't use tentacles again until grapple ends"
-			}
-		],
+			name : "Tentacles",
+			ability : 1,
+			damage : [2, 6, "bludgeoning"],
+			range : "Melee (15 ft)",
+			description : "Target is grappled and restrained (escape DC 16); Can't use tentacles again until grapple ends"
+		}],
 		traits : [{
-				name : "Hold Breath",
-				description : "While out of water, the octopus can hold its breath for 1 hour."
-			}, {
-				name : "Underwater Camouflage",
-				description : "The octopus has advantage on Dexterity (Stealth) checks made while underwater."
-			}, {
-				name : "Water Breathing",
-				description : "The octopus can breathe only underwater."
-			}
-		],
+			name : "Hold Breath",
+			description : "While out of water, the octopus can hold its breath for 1 hour."
+		}, {
+			name : "Underwater Camouflage",
+			description : "The octopus has advantage on Dexterity (Stealth) checks made while underwater."
+		}, {
+			name : "Water Breathing",
+			description : "The octopus can breathe only underwater."
+		}],
 		actions : [{
-				name : "Ink Cloud (Recharges after a Short or Long Rest)",
-				description : "As an action, a 20-foot-radius cloud of ink extends all around the octopus if it is underwater. The area is heavily obscured for 1 minute, although a significant current can disperse the ink. After releasing the ink, the octopus can use the Dash action as a bonus action."
-			}
-		],
+			name : "Ink Cloud (Recharges after a Short or Long Rest)",
+			description : "As an action, a 20-foot-radius cloud of ink extends all around the octopus if it is underwater. The area is heavily obscured for 1 minute, although a significant current can disperse the ink. After releasing the ink, the octopus can use the Dash action as a bonus action."
+		}],
 		wildshapeString : "Darkvision 60 ft| Water Breathing: can breathe only underwater| Hold Breath: can hold its breath for 1 hourout of water| Underwater Camouflage: advantage on Dexterity (Stealth) checks made while underwater| Ink Cloud (Recharges after a Short or Long Rest): if underwater, 20-ft radius cloud of ink around octopus, heavily obscures for 1 minute, can be dispersed. After releasing, can use the Dash action as a bonus action"
 	},
 	"giant owl" : {
@@ -2876,21 +2736,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Talons",
-				ability : 1,
-				damage : [2, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Talons",
+			ability : 1,
+			damage : [2, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Flyby",
-				description : "The owl doesn't provoke opportunity attacks when it flies out of an enemy's reach."
-			}, {
-				name : "Keen Hearing and Sight",
-				description : "The owl has advantage on Wisdom (Perception) checks that rely on hearing or sight."
-			}
-		]
+			name : "Flyby",
+			description : "The owl doesn't provoke opportunity attacks when it flies out of an enemy's reach."
+		}, {
+			name : "Keen Hearing and Sight",
+			description : "The owl has advantage on Wisdom (Perception) checks that rely on hearing or sight."
+		}]
 	},
 	"giant poisonous snake" : {
 		name : "Giant Poisonous Snake",
@@ -2915,13 +2773,12 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (10 ft)",
-				description : "Target also takes 3d6 poison damage, half on a DC 11 Constitution saving throw"
-			}
-		]
+			name : "Bite",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (10 ft)",
+			description : "Target also takes 3d6 poison damage, half on a DC 11 Constitution saving throw"
+		}]
 	},
 	"giant rat" : {
 		name : "Giant Rat",
@@ -2943,21 +2800,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The rat has advantage on Wisdom (Perception) checks that rely on smell."
-			}, {
-				name : "Pack Tactics",
-				description : "The rat has advantage on an attack roll against a creature if at least one of the rat's allies is within 5 ft of the creature and the ally isn't incapacitated."
-			}
-		]
+			name : "Keen Smell",
+			description : "The rat has advantage on Wisdom (Perception) checks that rely on smell."
+		}, {
+			name : "Pack Tactics",
+			description : "The rat has advantage on an attack roll against a creature if at least one of the rat's allies is within 5 ft of the creature and the ally isn't incapacitated."
+		}]
 	},
 	"giant rat (diseased)" : {
 		name : "Giant Rat (Diseased)",
@@ -2979,18 +2834,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target must succeed on a DC 10 Constitution saving throw or contract a disease"
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target must succeed on a DC 10 Constitution saving throw or contract a disease"
+		}],
 		traits : [{
-				name : "Disease",
-				description : "A target that contracted the disease by the bite attack of the diseased giant rat has it until the disease is cured. It can't regain HP except by magical means, and the it's HP maximum decreases by 3 (1d6) every 24 hours. If the target's HP maximum drops to 0 as a result of this disease, the target dies."
-			}
-		]
+			name : "Disease",
+			description : "A target that contracted the disease by the bite attack of the diseased giant rat has it until the disease is cured. It can't regain HP except by magical means, and the it's HP maximum decreases by 3 (1d6) every 24 hours. If the target's HP maximum drops to 0 as a result of this disease, the target dies."
+		}]
 	},
 	"giant scorpion" : {
 		name : "Giant Scorpion",
@@ -3012,24 +2865,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 3,
 		attacks : [{
-				name : "Claw",
-				ability : 1,
-				damage : [1, 8, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Target is grappled (escape DC 12); Can't use a claw again until grapple ends"
-			}, {
-				name : "Sting",
-				ability : 1,
-				damage : [1, 10, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target also takes 4d10 poison damage, half on a DC 12 Constitution saving throw"
-			}
-		],
+			name : "Claw",
+			ability : 1,
+			damage : [1, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Target is grappled (escape DC 12); Can't use a claw again until grapple ends"
+		}, {
+			name : "Sting",
+			ability : 1,
+			damage : [1, 10, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target also takes 4d10 poison damage, half on a DC 12 Constitution saving throw"
+		}],
 		traits : [{
-				name : "Multiattack",
-				description : "The scorpion makes three attacks: two with its claws and one with its sting."
-			}
-		]
+			name : "Multiattack",
+			description : "The scorpion makes three attacks: two with its claws and one with its sting."
+		}]
 	},
 	"giant sea horse" : {
 		name : "Giant Sea Horse",
@@ -3051,21 +2902,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Ram",
-				ability : 1,
-				damage : [1, 6, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Charge trait"
-			}
-		],
+			name : "Ram",
+			ability : 1,
+			damage : [1, 6, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Charge trait"
+		}],
 		traits : [{
-				name : "Charge",
-				description : "If the sea horse moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) bludgeoning damage. If the target is a creature, it must succeed on a DC 11 Strength saving throw or be knocked prone."
-			}, {
-				name : "Water Breathing",
-				description : "The sea horse can breathe only underwater."
-			}
-		]
+			name : "Charge",
+			description : "If the sea horse moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) bludgeoning damage. If the target is a creature, it must succeed on a DC 11 Strength saving throw or be knocked prone."
+		}, {
+			name : "Water Breathing",
+			description : "The sea horse can breathe only underwater."
+		}]
 	},
 	"giant shark" : {
 		name : "Giant Shark",
@@ -3090,21 +2939,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 3,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [3, 10, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [3, 10, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Blood Frenzy",
-				description : "The shark has advantage on melee attack rolls against any creature that doesn't have all its HP."
-			}, {
-				name : "Water Breathing",
-				description : "The shark can breathe only underwater."
-			}
-		]
+			name : "Blood Frenzy",
+			description : "The shark has advantage on melee attack rolls against any creature that doesn't have all its HP."
+		}, {
+			name : "Water Breathing",
+			description : "The shark can breathe only underwater."
+		}]
 	},
 	"giant spider" : {
 		name : "Giant Spider",
@@ -3129,40 +2976,37 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, 8, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target also takes 2d8 poison damage, half on a DC 11 Constitution saving throw"
-			}, {
-				name : "Web (Recharge 5-6)",
-				ability : 2,
-				damage : ["Restrained", "", ""],
-				range : "30/60 ft",
-				description : "Target can escape as an action with a DC 12 Strength check, or by destroying the webbing (AC 10; 5 HP)",
-				modifiers : ["", "", false],
-				tooltip : "On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)."
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, 8, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target also takes 2d8 poison damage, half on a DC 11 Constitution saving throw"
+		}, {
+			name : "Web (Recharge 5-6)",
+			ability : 2,
+			damage : ["Restrained", "", ""],
+			range : "30/60 ft",
+			description : "Target can escape as an action with a DC 12 Strength check, or by destroying the webbing (AC 10; 5 HP)",
+			modifiers : ["", "", false],
+			tooltip : "On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)."
+		}],
 		traits : [{
-				name : "Bite",
-				description : "If the poison damage from the spider's bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way."
-			}, {
-				name : "Spider Climb",
-				description : "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
-			}, {
-				name : "Web Sense",
-				description : "While in contact with a web, the spider knows the exact location of any other creature in contact with the same web."
-			}, {
-				name : "Web Walker",
-				description : "The spider ignores movement restrictions caused by webbing."
-			}
-		],
+			name : "Bite",
+			description : "If the poison damage from the spider's bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way."
+		}, {
+			name : "Spider Climb",
+			description : "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
+		}, {
+			name : "Web Sense",
+			description : "While in contact with a web, the spider knows the exact location of any other creature in contact with the same web."
+		}, {
+			name : "Web Walker",
+			description : "The spider ignores movement restrictions caused by webbing."
+		}],
 		actions : [{
-				name : "Web (Recharge 5-6)",
-				description : "See attack. On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)."
-			}
-		],
+			name : "Web (Recharge 5-6)",
+			description : "See attack. On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)."
+		}],
 		wildshapeString : "Blindsight 10 ft; Darkvision 60 ft| If the bite's poison damage reduces the target to 0 HP, the target is stable but poisoned and paralyzed for 1 hour, even after regaining HP| Spider Climb: climb difficult surfaces, including upside down, without an ability check| Web Sense: knows the exact location of any other creature in contact with the same web| Web Walker: ignores movement restrictions from webbing"
 	},
 	"giant toad" : {
@@ -3185,24 +3029,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 10, "piercing"],
-				range : "Melee (5 ft)",
-				description : "+1d10 poison damage; target is grappled and restrained (escape DC 13); Can't use bite again until grapple ends"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 10, "piercing"],
+			range : "Melee (5 ft)",
+			description : "+1d10 poison damage; target is grappled and restrained (escape DC 13); Can't use bite again until grapple ends"
+		}],
 		traits : [{
-				name : "Amphibious",
-				description : "The toad can breathe air and water"
-			}, {
-				name : "Standing Leap",
-				description : "The toad's long jump is up to 20 ft and its high jump is up to 10 ft, with or without a running start."
-			}, {
-				name : "Swallow",
-				description : "The toad makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the toad, and it takes 10 (3d6) acid damage at the start of each of the toad's turns. The toad can have only one target swallowed at a time.\nIf the toad dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 feet of movement, exiting prone."
-			}
-		],
+			name : "Amphibious",
+			description : "The toad can breathe air and water"
+		}, {
+			name : "Standing Leap",
+			description : "The toad's long jump is up to 20 ft and its high jump is up to 10 ft, with or without a running start."
+		}, {
+			name : "Swallow",
+			description : "The toad makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the toad, and it takes 10 (3d6) acid damage at the start of each of the toad's turns. The toad can have only one target swallowed at a time.\nIf the toad dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 feet of movement, exiting prone."
+		}],
 		wildshapeString : "Darkvision 30 ft| Amphibious: can breathe air and water| Standing Leap: can long jump up to 20 ft and high jump up to 10 ft, with or without a running start| Swallow: if a bite attack hits a Medium or smaller target that it is grappling, it is swallowed, ending the grapple. Swallowed: blinded, restrained, total cover, takes 3d6 acid damage at the start of each of the toad's turns; can have only 1 swallowed at a time."
 	},
 	"giant vulture" : {
@@ -3228,29 +3070,27 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Beak",
-				ability : 1,
-				damage : [2, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : "One beak and one talons attack as an Attack action",
-				modifiers : [-1, "", ""]
-			}, {
-				name : "Talons",
-				ability : 1,
-				damage : [2, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "One talons and one beak attack as an Attack action",
-				modifiers : [-1, "", ""]
-			}
-		],
+			name : "Beak",
+			ability : 1,
+			damage : [2, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : "One beak and one talons attack as an Attack action",
+			modifiers : [-1, "", ""]
+		}, {
+			name : "Talons",
+			ability : 1,
+			damage : [2, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "One talons and one beak attack as an Attack action",
+			modifiers : [-1, "", ""]
+		}],
 		traits : [{
-				name : "Keen Sight and Smell",
-				description : "The vulture has advantage on Wisdom (Perception) checks that rely on sight or smell."
-			}, {
-				name : "Pack Tactics",
-				description : "The vulture has advantage on an attack roll against a creature if at least one of the vulture's allies is within 5 ft of the creature and the ally isn't incapacitated."
-			}
-		]
+			name : "Keen Sight and Smell",
+			description : "The vulture has advantage on Wisdom (Perception) checks that rely on sight or smell."
+		}, {
+			name : "Pack Tactics",
+			description : "The vulture has advantage on an attack roll against a creature if at least one of the vulture's allies is within 5 ft of the creature and the ally isn't incapacitated."
+		}]
 	},
 	"giant wasp" : {
 		name : "Giant Wasp",
@@ -3272,18 +3112,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Sting",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target also takes 3d6 poison damage, half on a DC 11 Constitution saving throw"
-			}
-		],
+			name : "Sting",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target also takes 3d6 poison damage, half on a DC 11 Constitution saving throw"
+		}],
 		traits : [{
-				name : "Sting",
-				description : "If the poison damage from the giant wasp's sting attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way."
-			}
-		]
+			name : "Sting",
+			description : "If the poison damage from the giant wasp's sting attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way."
+		}]
 	},
 	"giant weasel" : {
 		name : "Giant Weasel",
@@ -3310,18 +3148,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Keen Hearing and Smell",
-				description : "The weasel has advantage on Wisdom (Perception) checks that rely on hearing or smell."
-			}
-		]
+			name : "Keen Hearing and Smell",
+			description : "The weasel has advantage on Wisdom (Perception) checks that rely on hearing or smell."
+		}]
 	},
 	"giant wolf spider" : {
 		name : "Giant Wolf Spider",
@@ -3347,27 +3183,25 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target also takes 2d6 poison damage, half on a DC 11 Constitution saving throw"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target also takes 2d6 poison damage, half on a DC 11 Constitution saving throw"
+		}],
 		traits : [{
-				name : "Bite",
-				description : "If the poison damage from the spider's bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way."
-			}, {
-				name : "Spider Climb",
-				description : "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
-			}, {
-				name : "Web Sense",
-				description : "While in contact with a web, the spider knows the exact location of any other creature in contact with the same web."
-			}, {
-				name : "Web Walker",
-				description : "The spider ignores movement restrictions caused by webbing."
-			}
-		],
+			name : "Bite",
+			description : "If the poison damage from the spider's bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way."
+		}, {
+			name : "Spider Climb",
+			description : "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
+		}, {
+			name : "Web Sense",
+			description : "While in contact with a web, the spider knows the exact location of any other creature in contact with the same web."
+		}, {
+			name : "Web Walker",
+			description : "The spider ignores movement restrictions caused by webbing."
+		}],
 		wildshapeString : "Blindsight 10 ft; Darkvision 60 ft| If the bite's poison damage reduces the target to 0 HP, the target is stable but poisoned and paralyzed for 1 hour, even after regaining HP| Spider Climb: climb difficult surfaces, including upside down, without an ability check| Web Sense: knows the exact location of any other creature in contact with the same web| Web Walker: ignores movement restrictions from webbing"
 	},
 	"goat" : {
@@ -3390,21 +3224,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Ram",
-				ability : 1,
-				damage : [1, 4, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Charge trait"
-			}
-		],
+			name : "Ram",
+			ability : 1,
+			damage : [1, 4, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Charge trait"
+		}],
 		traits : [{
-				name : "Charge",
-				description : "If the goat hits with a ram attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 1d4 bludgeoning damage. If the target is a creature, it must succeed on a DC 10 Strength saving throw or be knocked prone."
-			}, {
-				name : "Sure-Footed",
-				description : "The goat has advantage on Strength and Dexterity saving throws made against effects that would knock it prone."
-			}
-		]
+			name : "Charge",
+			description : "If the goat hits with a ram attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 1d4 bludgeoning damage. If the target is a creature, it must succeed on a DC 10 Strength saving throw or be knocked prone."
+		}, {
+			name : "Sure-Footed",
+			description : "The goat has advantage on Strength and Dexterity saving throws made against effects that would knock it prone."
+		}]
 	},
 	"hawk" : {
 		name : "Hawk",
@@ -3430,19 +3262,17 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Talons",
-				ability : 2,
-				damage : [1, "", "slashing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : ["", "", false]
-			}
-		],
+			name : "Talons",
+			ability : 2,
+			damage : [1, "", "slashing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : ["", "", false]
+		}],
 		traits : [{
-				name : "Keen Sight",
-				description : "The hawk has advantage on Wisdom (Perception) checks that rely on sight."
-			}
-		]
+			name : "Keen Sight",
+			description : "The hawk has advantage on Wisdom (Perception) checks that rely on sight."
+		}]
 	},
 	"hunter shark" : {
 		name : "Hunter Shark",
@@ -3467,21 +3297,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [2, 8, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [2, 8, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Blood Frenzy",
-				description : "The shark has advantage on melee attack rolls against any creature that doesn't have all its HP."
-			}, {
-				name : "Water Breathing",
-				description : "The shark can breathe only underwater."
-			}
-		]
+			name : "Blood Frenzy",
+			description : "The shark has advantage on melee attack rolls against any creature that doesn't have all its HP."
+		}, {
+			name : "Water Breathing",
+			description : "The shark can breathe only underwater."
+		}]
 	},
 	"hyena" : {
 		name : "Hyena",
@@ -3506,18 +3334,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Pack Tactics",
-				description : "The hyena has advantage on an attack roll against a creature if at least one of the hyena's allies is within 5 ft of the creature and the ally isn't incapacitated."
-			}
-		]
+			name : "Pack Tactics",
+			description : "The hyena has advantage on an attack roll against a creature if at least one of the hyena's allies is within 5 ft of the creature and the ally isn't incapacitated."
+		}]
 	},
 	"jackal" : {
 		name : "Jackal",
@@ -3542,21 +3368,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Keen Hearing and Smell",
-				description : "The jackal has advantage on Wisdom (Perception) checks that rely on hearing or smell."
-			}, {
-				name : "Pack Tactics",
-				description : "The jackal has advantage on an attack roll against a creature if at least one of the jackal's allies is within 5 ft of the creature and the ally isn't incapacitated."
-			}
-		]
+			name : "Keen Hearing and Smell",
+			description : "The jackal has advantage on Wisdom (Perception) checks that rely on hearing or smell."
+		}, {
+			name : "Pack Tactics",
+			description : "The jackal has advantage on an attack roll against a creature if at least one of the jackal's allies is within 5 ft of the creature and the ally isn't incapacitated."
+		}]
 	},
 	"killer whale" : {
 		name : "Killer Whale",
@@ -3581,24 +3405,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [5, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [5, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Echolocation",
-				description : "The whale can't use its Blindsight while deafened."
-			}, {
-				name : "Hold Breath",
-				description : "The whale can hold its breath for 30 minutes."
-			}, {
-				name : "Keen Hearing",
-				description : "The whale has advantage on Wisdom (Perception) checks that rely on hearing."
-			}
-		]
+			name : "Echolocation",
+			description : "The whale can't use its Blindsight while deafened."
+		}, {
+			name : "Hold Breath",
+			description : "The whale can hold its breath for 30 minutes."
+		}, {
+			name : "Keen Hearing",
+			description : "The whale has advantage on Wisdom (Perception) checks that rely on hearing."
+		}]
 	},
 	"lion" : {
 		name : "Lion",
@@ -3624,33 +3446,31 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Claw",
-				ability : 1,
-				damage : [1, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Pounce trait"
-			}, {
-				name : "Bite",
-				ability : 1,
-				damage : [1, 8, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Can be used in combination with claw while pouncing (see Pounce trait)"
-			}
-		],
+			name : "Claw",
+			ability : 1,
+			damage : [1, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Pounce trait"
+		}, {
+			name : "Bite",
+			ability : 1,
+			damage : [1, 8, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Can be used in combination with claw while pouncing (see Pounce trait)"
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The lion has advantage on Wisdom (Perception) checks that rely on smell."
-			}, {
-				name : "Pack Tactics",
-				description : "The lion has advantage on an attack roll against a creature if at least one of the lion's allies is within 5 ft of the creature and the ally isn't incapacitated."
-			}, {
-				name : "Pounce",
-				description : "If the lion moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the lion can make one bite attack against it as a bonus action."
-			}, {
-				name : "Running Leap",
-				description : "With a 10-foot running start, the lion can long jump up to 25 ft."
-			}
-		],
+			name : "Keen Smell",
+			description : "The lion has advantage on Wisdom (Perception) checks that rely on smell."
+		}, {
+			name : "Pack Tactics",
+			description : "The lion has advantage on an attack roll against a creature if at least one of the lion's allies is within 5 ft of the creature and the ally isn't incapacitated."
+		}, {
+			name : "Pounce",
+			description : "If the lion moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the lion can make one bite attack against it as a bonus action."
+		}, {
+			name : "Running Leap",
+			description : "With a 10-foot running start, the lion can long jump up to 25 ft."
+		}],
 		wildshapeString : "Keen Smell: advantage on Wis (Perception) checks that rely on smell| Pack Tactics: advantage on attack rolls if at least one capable ally is within 5 ft of the target| Pounce: if target is hit with a claw attack after the lion moved at least 20 ft straight on the same turn, DC 13 Str save or knocked prone and the lion can make one bite attack against it as a bonus action| Running Leap: long jump up to 25 ft with a 10-foot running start"
 	},
 	"lizard" : {
@@ -3674,14 +3494,13 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : [-2, "", false]
-			}
-		]
+			name : "Bite",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : [-2, "", false]
+		}]
 	},
 	"mammoth" : {
 		name : "Mammoth",
@@ -3703,24 +3522,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 3,
 		attacksAction : 1,
 		attacks : [{
-				name : "Gore",
-				ability : 1,
-				damage : [4, 8, "bludgeoning"],
-				range : "Melee (10 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
-			}, {
-				name : "Stomp",
-				ability : 1,
-				damage : [4, 10, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Can only be used on prone creatures (also see Trampling Charge trait)"
-			}
-		],
+			name : "Gore",
+			ability : 1,
+			damage : [4, 8, "bludgeoning"],
+			range : "Melee (10 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
+		}, {
+			name : "Stomp",
+			ability : 1,
+			damage : [4, 10, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Can only be used on prone creatures (also see Trampling Charge trait)"
+		}],
 		traits : [{
-				name : "Trampling Charge",
-				description : "If the mammoth moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 18 Strength saving throw or be knocked prone. If the target is prone, the mammoth can make one stomp attack against it as a bonus action."
-			}
-		]
+			name : "Trampling Charge",
+			description : "If the mammoth moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 18 Strength saving throw or be knocked prone. If the target is prone, the mammoth can make one stomp attack against it as a bonus action."
+		}]
 	},
 	"mastiff" : {
 		name : "Mastiff",
@@ -3746,18 +3563,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target must succeed on a DC 11 Strength saving throw or be knocked prone"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target must succeed on a DC 11 Strength saving throw or be knocked prone"
+		}],
 		traits : [{
-				name : "Keen Hearing and Smell",
-				description : "The mastiff has advantage on Wisdom (Perception) checks that rely on hearing or smell."
-			}
-		]
+			name : "Keen Hearing and Smell",
+			description : "The mastiff has advantage on Wisdom (Perception) checks that rely on hearing or smell."
+		}]
 	},
 	"mule" : {
 		name : "Mule",
@@ -3780,21 +3595,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Hooves",
-				ability : 1,
-				damage : [1, 4, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Hooves",
+			ability : 1,
+			damage : [1, 4, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Beast of Burden",
-				description : "The mule is considered to be a Large animal for the purpose of determining its carrying capacity."
-			}, {
-				name : "Sure-Footed",
-				description : "The mule has advantage on Strength and Dexterity saving throws made against effects that would knock it prone."
-			}
-		]
+			name : "Beast of Burden",
+			description : "The mule is considered to be a Large animal for the purpose of determining its carrying capacity."
+		}, {
+			name : "Sure-Footed",
+			description : "The mule has advantage on Strength and Dexterity saving throws made against effects that would knock it prone."
+		}]
 	},
 	"octopus" : {
 		name : "Octopus",
@@ -3821,25 +3634,23 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Tentacles",
-				ability : 2,
-				damage : [1, "", "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "Target is grappled (escape DC 10); Can't use tentacles again until grapple ends",
-				modifiers : ["", "", false]
-			}
-		],
+			name : "Tentacles",
+			ability : 2,
+			damage : [1, "", "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Target is grappled (escape DC 10); Can't use tentacles again until grapple ends",
+			modifiers : ["", "", false]
+		}],
 		traits : [{
-				name : "Hold Breath",
-				description : "While out of water, the octopus can hold its breath for 30 minutes."
-			}, {
-				name : "Underwater Camouflage",
-				description : "The octopus has advantage on Dexterity (Stealth) checks made while underwater."
-			}, {
-				name : "Water Breathing",
-				description : "The octopus can breathe only underwater."
-			}
-		],
+			name : "Hold Breath",
+			description : "While out of water, the octopus can hold its breath for 30 minutes."
+		}, {
+			name : "Underwater Camouflage",
+			description : "The octopus has advantage on Dexterity (Stealth) checks made while underwater."
+		}, {
+			name : "Water Breathing",
+			description : "The octopus can breathe only underwater."
+		}],
 		wildshapeString : "Darkvision 30 ft| Water Breathing: can breathe only underwater| Hold Breath: can hold its breath for 30 minutes out of water| Underwater Camouflage: advantage on Dex (Stealth) checks while underwater| Ink Cloud (Recharges after a Short or Long Rest): if underwater, 5-ft radius cloud of ink around octopus, heavily obscures for 1 minute, can be dispersed. After releasing, can use the Dash action as a bonus action"
 	},
 	"owl" : {
@@ -3867,22 +3678,20 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Talons",
-				ability : 2,
-				damage : [1, "", "slashing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : ["", "", false]
-			}
-		],
+			name : "Talons",
+			ability : 2,
+			damage : [1, "", "slashing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : ["", "", false]
+		}],
 		traits : [{
-				name : "Flyby",
-				description : "The owl doesn't provoke opportunity attacks when it flies out of an enemy's reach."
-			}, {
-				name : "Keen Hearing and Sight",
-				description : "The owl has advantage on Wisdom (Perception) checks that rely on hearing or sight."
-			}
-		]
+			name : "Flyby",
+			description : "The owl doesn't provoke opportunity attacks when it flies out of an enemy's reach."
+		}, {
+			name : "Keen Hearing and Sight",
+			description : "The owl has advantage on Wisdom (Perception) checks that rely on hearing or sight."
+		}]
 	},
 	"panther" : {
 		name : "Panther",
@@ -3909,27 +3718,25 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Claw",
-				ability : 1,
-				damage : [1, 4, "slashing"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Pounce trait"
-			}, {
-				name : "Bite",
-				ability : 1,
-				damage : [1, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Can be used in combination with claw while pouncing (see Pounce trait)"
-			}
-		],
+			name : "Claw",
+			ability : 1,
+			damage : [1, 4, "slashing"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Pounce trait"
+		}, {
+			name : "Bite",
+			ability : 1,
+			damage : [1, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Can be used in combination with claw while pouncing (see Pounce trait)"
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The panther has advantage on Wisdom (Perception) checks that rely on smell."
-			}, {
-				name : "Pounce",
-				description : "If the panther moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 12 Strength saving throw or be knocked prone. If the target is prone, the panther can make one bite attack against it as a bonus action."
-			}
-		]
+			name : "Keen Smell",
+			description : "The panther has advantage on Wisdom (Perception) checks that rely on smell."
+		}, {
+			name : "Pounce",
+			description : "If the panther moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 12 Strength saving throw or be knocked prone. If the target is prone, the panther can make one bite attack against it as a bonus action."
+		}]
 	},
 	"poisonous snake" : {
 		name : "Poisonous Snake",
@@ -3952,14 +3759,13 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target also takes 2d4 poison damage, half on a DC 10 Constitution saving throw",
-				modifiers : ["", "", false]
-			}
-		]
+			name : "Bite",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target also takes 2d4 poison damage, half on a DC 10 Constitution saving throw",
+			modifiers : ["", "", false]
+		}]
 	},
 	"polar bear" : {
 		name : "Polar Bear",
@@ -3984,24 +3790,22 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 2,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 8, "piercing"],
-				range : "Melee (5 ft)",
-				description : "One bite and one claw attack as an Attack action"
-			}, {
-				name : "Claw",
-				ability : 1,
-				damage : [2, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "One claw and one bite attack as an Attack action"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 8, "piercing"],
+			range : "Melee (5 ft)",
+			description : "One bite and one claw attack as an Attack action"
+		}, {
+			name : "Claw",
+			ability : 1,
+			damage : [2, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "One claw and one bite attack as an Attack action"
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The bear has advantage on Wisdom (Perception) checks that rely on smell."
-			}
-		]
+			name : "Keen Smell",
+			description : "The bear has advantage on Wisdom (Perception) checks that rely on smell."
+		}]
 	},
 	"pony" : {
 		name : "Pony",
@@ -4024,13 +3828,12 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Hooves",
-				ability : 1,
-				damage : [2, 4, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		]
+			name : "Hooves",
+			ability : 1,
+			damage : [2, 4, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : ""
+		}]
 	},
 	"quipper" : {
 		name : "Quipper",
@@ -4053,22 +3856,20 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : ["", "", false]
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : ["", "", false]
+		}],
 		traits : [{
-				name : "Blood Frenzy",
-				description : "The quipper has advantage on melee attack rolls against any creature that doesn't have all its HP."
-			}, {
-				name : "Water Breathing",
-				description : "The quipper can breathe only underwater."
-			}
-		]
+			name : "Blood Frenzy",
+			description : "The quipper has advantage on melee attack rolls against any creature that doesn't have all its HP."
+		}, {
+			name : "Water Breathing",
+			description : "The quipper can breathe only underwater."
+		}]
 	},
 	"rat" : {
 		name : "Rat",
@@ -4091,19 +3892,17 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : [-2, "", false]
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : [-2, "", false]
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The rat has advantage on Wisdom (Perception) checks that rely on smell."
-			}
-		]
+			name : "Keen Smell",
+			description : "The rat has advantage on Wisdom (Perception) checks that rely on smell."
+		}]
 	},
 	"raven" : {
 		name : "Raven",
@@ -4129,19 +3928,17 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Beak",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : ["", "", false]
-			}
-		],
+			name : "Beak",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : ["", "", false]
+		}],
 		traits : [{
-				name : "Mimicry",
-				description : "The raven can mimic simple sounds it has heard, such as a person whispering, a baby crying, or an animal chittering. A creature that hears the sounds can tell they are imitations with a successful DC 10 Wisdom (Insight) check."
-			}
-		]
+			name : "Mimicry",
+			description : "The raven can mimic simple sounds it has heard, such as a person whispering, a baby crying, or an animal chittering. A creature that hears the sounds can tell they are imitations with a successful DC 10 Wisdom (Insight) check."
+		}]
 	},
 	"reef shark" : {
 		name : "Reef Shark",
@@ -4166,21 +3963,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [1, 8, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [1, 8, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Pack Tactics",
-				description : "The shark has advantage on an attack roll against a creature if at least one of the shark's allies is within 5 ft of the creature and the ally isn't incapacitated."
-			}, {
-				name : "Water Breathing",
-				description : "The shark can breathe only underwater."
-			}
-		]
+			name : "Pack Tactics",
+			description : "The shark has advantage on an attack roll against a creature if at least one of the shark's allies is within 5 ft of the creature and the ally isn't incapacitated."
+		}, {
+			name : "Water Breathing",
+			description : "The shark can breathe only underwater."
+		}]
 	},
 	"rhinoceros" : {
 		name : "Rhinoceros",
@@ -4203,18 +3998,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Gore",
-				ability : 1,
-				damage : [2, 8, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Charge trait"
-			}
-		],
+			name : "Gore",
+			ability : 1,
+			damage : [2, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Charge trait"
+		}],
 		traits : [{
-				name : "Charge",
-				description : "If the rhinoceros moves at least 20 ft straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) bludgeoning damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone."
-			}
-		]
+			name : "Charge",
+			description : "If the rhinoceros moves at least 20 ft straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) bludgeoning damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone."
+		}]
 	},
 	"horse" : { // "Riding Horse" entry, so that both "horse" and "riding horse" match this creature
 		name : "Riding Horse",
@@ -4236,13 +4029,12 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Hooves",
-				ability : 1,
-				damage : [2, 4, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		]
+			name : "Hooves",
+			ability : 1,
+			damage : [2, 4, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : ""
+		}]
 	},
 	"saber-toothed tiger" : {
 		name : "Saber-Toothed Tiger",
@@ -4269,29 +4061,27 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Claw",
-				ability : 1,
-				damage : [2, 6, "slashing"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Pounce trait",
-				modifiers : ["", 1, ""]
-			}, {
-				name : "Bite",
-				ability : 1,
-				damage : [1, 10, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Can be used in combination with claw while pouncing (see Pounce trait)",
-				modifiers : ["", 1, ""]
-			}
-		],
+			name : "Claw",
+			ability : 1,
+			damage : [2, 6, "slashing"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Pounce trait",
+			modifiers : ["", 1, ""]
+		}, {
+			name : "Bite",
+			ability : 1,
+			damage : [1, 10, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Can be used in combination with claw while pouncing (see Pounce trait)",
+			modifiers : ["", 1, ""]
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The tiger has advantage on Wisdom (Perception) checks that rely on smell."
-			}, {
-				name : "Pounce",
-				description : "If the tiger moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the tiger can make one bite attack against it as a bonus action."
-			}
-		]
+			name : "Keen Smell",
+			description : "The tiger has advantage on Wisdom (Perception) checks that rely on smell."
+		}, {
+			name : "Pounce",
+			description : "If the tiger moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the tiger can make one bite attack against it as a bonus action."
+		}]
 	},
 	"scorpion" : {
 		name : "Scorpion",
@@ -4313,13 +4103,12 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Sting",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target also takes 1d8 poison damage, half on a DC 9 Constitution saving throw"
-			}
-		]
+			name : "Sting",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target also takes 1d8 poison damage, half on a DC 9 Constitution saving throw"
+		}]
 	},
 	"sea horse" : {
 		name : "Sea Horse",
@@ -4343,10 +4132,9 @@ var Base_CreatureList = {
 		attacksAction : 1,
 		attacks : [],
 		traits : [{
-				name : "Water Breathing",
-				description : "The sea horse can breathe only underwater."
-			}
-		]
+			name : "Water Breathing",
+			description : "The sea horse can breathe only underwater."
+		}]
 	},
 	"spider" : {
 		name : "Spider",
@@ -4372,25 +4160,23 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target also takes 1d4 poison damage, half on a DC 9 Constitution saving throw",
-				modifiers : ["", "", false]
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target also takes 1d4 poison damage, half on a DC 9 Constitution saving throw",
+			modifiers : ["", "", false]
+		}],
 		traits : [{
-				name : "Spider Climb",
-				description : "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
-			}, {
-				name : "Web Sense",
-				description : "While in contact with a web, the spider knows the exact location of any other creature in contact with the same web."
-			}, {
-				name : "Web Walker",
-				description : "The spider ignores movement restrictions caused by webbing."
-			}
-		],
+			name : "Spider Climb",
+			description : "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
+		}, {
+			name : "Web Sense",
+			description : "While in contact with a web, the spider knows the exact location of any other creature in contact with the same web."
+		}, {
+			name : "Web Walker",
+			description : "The spider ignores movement restrictions caused by webbing."
+		}],
 		wildshapeString : "\u25C6 Senses: Darkvision 30 ft | \u25C6 Spider Climb: The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.\n\u25C6 Web Sense: While in contact with a web, the spider knows the exact location of any other creature in contact with the same web.\n\u25C6 Web Walker: The spider ignores movement restrictions caused by webbing."
 	},
 	"stirge" : {
@@ -4413,18 +4199,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Blood Drain",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : "The stirge attaches itself to the target, see Blood Drain trait"
-			}
-		],
+			name : "Blood Drain",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : "The stirge attaches itself to the target, see Blood Drain trait"
+		}],
 		traits : [{
-				name : "Blood Drain",
-				description : "While attached, the stirge doesn't attack. Instead, at the start of each of the stirge's turns, the target loses 5 (1d4 + 3) HP due to blood loss. The stirge can detach itself by spending 5 feet of its movement. It does so after it drains 10 HP of blood from the target or the target dies. A creature, including the target, can use its action to detach the stirge."
-			}
-		]
+			name : "Blood Drain",
+			description : "While attached, the stirge doesn't attack. Instead, at the start of each of the stirge's turns, the target loses 5 (1d4 + 3) HP due to blood loss. The stirge can detach itself by spending 5 feet of its movement. It does so after it drains 10 HP of blood from the target or the target dies. A creature, including the target, can use its action to detach the stirge."
+		}]
 	},
 	"tiger" : {
 		name : "Tiger",
@@ -4450,27 +4234,25 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Claw",
-				ability : 1,
-				damage : [1, 8, "slashing"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Pounce trait"
-			}, {
-				name : "Bite",
-				ability : 1,
-				damage : [1, 10, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Can be used in combination with claw while pouncing (see Pounce trait)"
-			}
-		],
+			name : "Claw",
+			ability : 1,
+			damage : [1, 8, "slashing"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Pounce trait"
+		}, {
+			name : "Bite",
+			ability : 1,
+			damage : [1, 10, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Can be used in combination with claw while pouncing (see Pounce trait)"
+		}],
 		traits : [{
-				name : "Keen Smell",
-				description : "The tiger has advantage on Wisdom (Perception) checks that rely on smell."
-			}, {
-				name : "Pounce",
-				description : "If the tiger moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the tiger can make one bite attack against it as a bonus action."
-			}
-		]
+			name : "Keen Smell",
+			description : "The tiger has advantage on Wisdom (Perception) checks that rely on smell."
+		}, {
+			name : "Pounce",
+			description : "If the tiger moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the tiger can make one bite attack against it as a bonus action."
+		}]
 	},
 	"vulture" : {
 		name : "Vulture",
@@ -4495,21 +4277,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Beak",
-				ability : 2,
-				damage : [1, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : ""
-			}
-		],
+			name : "Beak",
+			ability : 2,
+			damage : [1, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
 		traits : [{
-				name : "Keen Sight and Smell",
-				description : "The vulture has advantage on Wisdom (Perception) checks that rely on sight or smell."
-			}, {
-				name : "Pack Tactics",
-				description : "The vulture has advantage on an attack roll against a creature if at least one of the vulture's allies is within 5 ft of the creature and the ally isn't incapacitated."
-			}
-		]
+			name : "Keen Sight and Smell",
+			description : "The vulture has advantage on Wisdom (Perception) checks that rely on sight or smell."
+		}, {
+			name : "Pack Tactics",
+			description : "The vulture has advantage on an attack roll against a creature if at least one of the vulture's allies is within 5 ft of the creature and the ally isn't incapacitated."
+		}]
 	},
 	"warhorse" : {
 		name : "Warhorse",
@@ -4532,18 +4312,16 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Hooves",
-				ability : 1,
-				damage : [2, 6, "bludgeoning"],
-				range : "Melee (5 ft)",
-				description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
-			}
-		],
+			name : "Hooves",
+			ability : 1,
+			damage : [2, 6, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "If used after moving 20 ft straight in the same round, see Trampling Charge trait"
+		}],
 		traits : [{
-				name : "Trampling Charge",
-				description : "If the horse moves at least 20 ft straight toward a creature and then hits it with a hooves attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the horse can make another attack with its hooves against it as a bonus action."
-			}
-		]
+			name : "Trampling Charge",
+			description : "If the horse moves at least 20 ft straight toward a creature and then hits it with a hooves attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the horse can make another attack with its hooves against it as a bonus action."
+		}]
 	},
 	"weasel" : {
 		name : "Weasel",
@@ -4570,19 +4348,17 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [1, "", "piercing"],
-				range : "Melee (5 ft)",
-				description : "",
-				modifiers : ["", "", false]
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [1, "", "piercing"],
+			range : "Melee (5 ft)",
+			description : "",
+			modifiers : ["", "", false]
+		}],
 		traits : [{
-				name : "Keen Hearing and Smell",
-				description : "The weasel has advantage on Wisdom (Perception) checks that rely on hearing or smell."
-			}
-		]
+			name : "Keen Hearing and Smell",
+			description : "The weasel has advantage on Wisdom (Perception) checks that rely on hearing or smell."
+		}]
 	},
 	"wolf" : {
 		name : "Wolf",
@@ -4609,21 +4385,19 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 2,
-				damage : [2, 4, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target must succeed on a DC 11 Strength saving throw or be knocked prone"
-			}
-		],
+			name : "Bite",
+			ability : 2,
+			damage : [2, 4, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target must succeed on a DC 11 Strength saving throw or be knocked prone"
+		}],
 		traits : [{
-				name : "Keen Hearing and Smell",
-				description : "The wolf has advantage on Wisdom (Perception) checks that rely on hearing or smell."
-			}, {
-				name : "Pack Tactics",
-				description : "The wolf has advantage on an attack roll against a creature if at least one of the wolf's allies is within 5 ft of the creature and the ally isn't incapacitated."
-			}
-		]
+			name : "Keen Hearing and Smell",
+			description : "The wolf has advantage on Wisdom (Perception) checks that rely on hearing or smell."
+		}, {
+			name : "Pack Tactics",
+			description : "The wolf has advantage on an attack roll against a creature if at least one of the wolf's allies is within 5 ft of the creature and the ally isn't incapacitated."
+		}]
 	},
 	"worg" : {
 		name : "Worg",
@@ -4648,17 +4422,15 @@ var Base_CreatureList = {
 		proficiencyBonus : 2,
 		attacksAction : 1,
 		attacks : [{
-				name : "Bite",
-				ability : 1,
-				damage : [2, 6, "piercing"],
-				range : "Melee (5 ft)",
-				description : "Target must succeed on a DC 13 Strength saving throw or be knocked prone"
-			}
-		],
+			name : "Bite",
+			ability : 1,
+			damage : [2, 6, "piercing"],
+			range : "Melee (5 ft)",
+			description : "Target must succeed on a DC 13 Strength saving throw or be knocked prone"
+		}],
 		traits : [{
-				name : "Keen Hearing and Smell",
-				description : "The worg has advantage on Wisdom (Perception) checks that rely on hearing or smell."
-			}
-		]
+			name : "Keen Hearing and Smell",
+			description : "The worg has advantage on Wisdom (Perception) checks that rely on hearing or smell."
+		}]
 	}
 };

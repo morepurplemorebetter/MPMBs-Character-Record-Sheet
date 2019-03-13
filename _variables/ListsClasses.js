@@ -539,7 +539,7 @@ var Base_ClassList = {
 			calcChanges : {
 				spellAdd : [
 					function (spellKey, spellObj, spName) {
-						if (spName.indexOf("druid") !== -1) {
+						if (spName == "druid") {
 							if (spellObj.compMaterial && !(/M[\u0192\u2020]/i).test(spellObj.components)) spellObj.compMaterial = "";
 							spellObj.components = spellObj.components.replace(/V,?|S,?|M$/ig, '');
 							return true;

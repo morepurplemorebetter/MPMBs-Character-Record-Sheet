@@ -1202,7 +1202,7 @@ calcChanges : {
 	*/
 
 	spellAdd : [
-		function (spellKey, spellObj, spName) {
+		function (spellKey, spellObj, spName, isDuplicate) {
 			var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? poison (dmg|damage))/i;
 			if ((testRegex).test(spellObj.description)) {
 				spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
@@ -1221,7 +1221,7 @@ calcChanges : {
 		This function is called whenever a spell is added to the spell sheet,
 		both when added manually and during spell sheet generation.
 		You can use it to dynamically change something about a spell like its description, range, or school.
-		This function is passed three variables:
+		This function is passed four variables:
 		1)	spellKey, a string of the name of the entry in the SpellsList variable.
 			Thus, you can find the original SpellsList entry with SpellsList[spellKey].
 
@@ -1236,6 +1236,13 @@ calcChanges : {
 			"fighter" for the eldritch knight spell list,
 			or "drow" for the racial spells gained from being a dark elf.
 			This will be an empty string when the spell is added manually.
+
+		4)	isDuplicate, a boolean that is true if the spell is a duplicate
+			This is intended for spells that are added using the 'spellcastingBonus' attribute, but are also present on the spell list otherwise.
+			For duplicate spells like this, the first time the spell is added,
+			it is treated as the one gained from 'spellcastingBonus', and this boolean is set to false.
+			Then, the second time this spell is added, it is treated as the one gained from the regular spell list and this attribute is true.
+
 
 		By changing the attributes of the spellObj, you change what is put in the fields.
 		Changing that object has no affect on the original SpellsList entry.

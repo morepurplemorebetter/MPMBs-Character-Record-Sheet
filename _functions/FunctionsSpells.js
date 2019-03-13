@@ -188,7 +188,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			// If this spell is gained from an item, remove components
 			if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
 				aSpell.components = "";
-				aSpell.compMaterial = "";
+				aSpell.compMaterial = "Spells cast by magic items don't require any components.";
 				aSpell.description = aSpell.description.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
 				if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
 				aSpell.changesObj["Magic Item"] = "\n - Spells cast by magic items don't require any components.";
@@ -217,16 +217,17 @@ function ApplySpell(FldValue, rememberFldName) {
 			// Update the spell for the caster level of the character (if not manually added)
 			if (CurrentCasters.amendSpDescr && aCast) {
 				// apply cantrip die
+				var cDie = cantripDie[Math.min(CurrentFeats.level, cantripDie.length) - 1];
 				if (aSpell.descriptionCantripDie) {
-					var cDie = cantripDie[Math.min(CurrentFeats.level, cantripDie.length) - 1];
 					var newCantripDieDescr = aSpell.descriptionCantripDie;
+					var aDie = cDie;
 					while ((/`CD(-|\+|\*)?\d*`/).test(newCantripDieDescr)) {
 						if ((/`CD(-|\+)\d+`/).test(newCantripDieDescr)) {
-							var cDie = cDie + Number(newCantripDieDescr.replace(/.*`CD((-|\+)\d+)`.*/, "$1"));
+							aDie = cDie + Number(newCantripDieDescr.replace(/.*`CD((-|\+)\d+)`.*/, "$1"));
 						} else if ((/`CD\*\d+`/).test(newCantripDieDescr)) {
-							var cDie = cDie * Number(newCantripDieDescr.replace(/.*`CD\*(\d+)`.*/, "$1"));
+							aDie = cDie * Number(newCantripDieDescr.replace(/.*`CD\*(\d+)`.*/, "$1"));
 						}
-						newCantripDieDescr = newCantripDieDescr.replace(/`CD(-|\+|\*)?\d*`/, cDie);
+						newCantripDieDescr = newCantripDieDescr.replace(/`CD(-|\+|\*)?\d*`/, aDie);
 					}
 					aSpell.description = newCantripDieDescr.replace(/\b0d\d+/g, "0");
 				}
@@ -252,7 +253,7 @@ function ApplySpell(FldValue, rememberFldName) {
 					var didChange = false;
 					var changeHead = "Changes by " + aFunct;
 					try {
-						didChange = theFunct(theSpl, aSpell, aCast ? input[2] : "");
+						didChange = theFunct(theSpl, aSpell, aCast ? input[2] : "", input[3] ? true : false);
 					} catch (error) {
 						var eText = "The custom function for changing spell attributes from '" + aFunct + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 						for (var e in error) eText += e + ": " + error[e] + ";\n ";
@@ -5803,7 +5804,7 @@ function getSpellcastingAbility(theCast) {
 function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, onlyRolls) {
 	var baseRegex = "(.*?)(\\d+" + (onlyRolls ? "d\\d+" : "d?\\d*") + ")((\\+\\d+d?\\d*\\/(\\d?SL|PP|extra PP))?(\\+spell(casting)? (ability )?mod(ifier)?|(\\+|-)\\d+ \\(.{3}\\))? (";
 	var testRegex = RegExp(baseRegex + dmgType + ") (dmg|damage).*)", "ig");
-	var abiMod = What(ability + " Mod");
+	var abiMod = !isNaN(ability) ? ability : What(ability + " Mod");
 	if (Number(abiMod) > 0 && (testRegex).test(spellObj.description)) {
 		var firstIsNumber = Number(spellObj.description.replace(testRegex, "$2"));
 		var secondIsNumber = parseFloat(spellObj.description.replace(testRegex, "$3").replace(/\d+d\d+/g, 'NdN'));
@@ -5821,10 +5822,10 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 				case "booming blade" :
 				case "melf's acid arrow" :
 				case "vitriolic sphere" :
-				spellObj.description = spellObj.description.replace(/(.*?\d+d\d+)(.*?\d+d\d+)(\+\d+)(.*)/, "$1$3$2$4");
+					spellObj.description = spellObj.description.replace(/(.*?\d+d\d+)(.*?\d+d\d+)(\+\d+)(.*)/, "$1$3$2$4");
 					break;
 				case "holy weapon" :
-				spellObj.description = spellObj.description.replace(/(.*?\d+d\d+)(\+\d+)(.*?\d+d\d+)(.*)/, "$1$3$2$4");
+					spellObj.description = spellObj.description.replace(/(.*?\d+d\d+)(\+\d+)(.*?\d+d\d+)(.*)/, "$1$3$2$4");
 					break;
 			}
 			return true;

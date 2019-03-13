@@ -4700,7 +4700,6 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Apply feat menu option...");
-	calcStop();
 
 	switch (MenuSelection[1]) {
 		case "popup" :
@@ -4708,7 +4707,7 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 			break;
 		case "choice" :
 			aFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
-			if (MenuSelection[2] && aFeat && aFeat[MenuSelection[2]]) {
+			if (MenuSelection[2] && aFeat && aFeat[MenuSelection[2]] && CurrentFeats.choices[ArrayNmbr] !== MenuSelection[2]) {
 				var aFeatVar = aFeat[MenuSelection[2]];
 				if (aFeatVar.name) {
 					Value(Fflds[0], aFeatVar.name);
@@ -4726,6 +4725,7 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 			if (noUp) return;
 		case "down" :
 			if (MenuSelection[1] == "down" && noDown) return;
+			calcStop();
 			IsNotFeatMenu = false;
 			thermoTxt = thermoM("Moving the feat " + MenuSelection[1] + "...", false);
 			// Get the other fields

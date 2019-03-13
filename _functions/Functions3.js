@@ -2287,7 +2287,6 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Magic item menu option...");
-	calcStop();
 
 	switch (MenuSelection[1]) {
 		case "popup" :
@@ -2295,7 +2294,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			break;
 		case "choice" :
 			aMI = MagicItemsList[CurrentMagicItems.known[ArrayNmbr]];
-			if (MenuSelection[2] && aMI && aMI[MenuSelection[2]]) {
+			if (MenuSelection[2] && aMI && aMI[MenuSelection[2]] && CurrentMagicItems.choices[ArrayNmbr] != MenuSelection[2]) {
 				var aMIvar = aMI[MenuSelection[2]];
 				if (aMIvar.name) {
 					Value(MIflds[0], aMIvar.name);
@@ -2313,6 +2312,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			if (noUp) return;
 		case "down" :
 			if (MenuSelection[1] == "down" && noDown) return;
+			calcStop();
 			IsNotMagicItemMenu = false;
 			thermoTxt = thermoM("Moving the magic item " + MenuSelection[1] + "...", false);
 			// Get the other fields
@@ -2354,12 +2354,14 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			MagicItemClear(itemNmbr, true);
 			break;
 		case "equipment" :
+			calcStop();
 			thermoTxt = thermoM("Copying the item to equipment section...", false);
 			var itemWeight = What(MIflds[3]);
 			if (isNaN(itemWeight) || itemWeight <= 0) itemWeight = "";
 			AddToInv(MenuSelection[2], MenuSelection[3], What(MIflds[0]), "", itemWeight, "", false, false, false, true);
 			break;
 		case "attunement" :
+			calcStop();
 			thermoTxt = thermoM((visibleAttunement ? "Hiding" : "Showing") + " the attuned checkbox...", false);
 			var currentlyChecked = tDoc.getField(MIflds[4]).isBoxChecked(0);
 			Checkbox(MIflds[4], !visibleAttunement && What(MIflds[0]), undefined, visibleAttunement ? "hide" : "");
