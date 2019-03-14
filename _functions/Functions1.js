@@ -2181,7 +2181,7 @@ function CalcExperienceLevel() {
 	// if the level and experience points match or both are 0, stop this function
 	// also stop this function if the level is higher than the xp table allows (> 20)
 	// also stop this function if the experience points are more than the xp table allows (> 1000000000)
-	if (Level === LVLbyXP || (!Level && !exp) || Level >= ExperiencePointsList.length || LVLbyXP >= (ExperiencePointsList.length - 1)) return;
+	if (Level === LVLbyXP || (!Level && !exp) || Level >= ExperiencePointsList.length || LVLbyXP >= (ExperiencePointsList.length)) return;
 
 	// create the strings for the dialog
 	var LVLtxt = Level >= ExperiencePointsList.length ? "a level higher than 20" : "level " + Level;
@@ -4122,42 +4122,91 @@ function ValidateBonus(goEmpty, allowDC) {
 };
 
 // Calculate the skill modifier (field calculation)
-function CalcSkill() {
-	var isPP = event.target.name === "Passive Perception" ? 10 : 0;
-	var alphaB = Who("Text.SkillsNames") === "alphabeta";
-	var Skill = !isPP ? clean(event.target.name.substring(0, 4)) : alphaB ? "Perc" : "Perf";
-	var skillLookup = alphaB ? SkillsList.abilityScores : SkillsList.abilityScoresByAS;
-	var Ability = skillLookup[SkillsList.abbreviations.indexOf(Skill)];
-	if (Ability === "Too" || What(Ability) === "") {
-		event.value = "";
-		return; // Don't do the rest of this function
+function calcSkill() {
+	event.value = SkillsList.values[event.target.name] === undefined ? '' : SkillsList.values[event.target.name];
+}
+function CalcAllSkills(isCompPage) {
+	if (isCompPage) {
+		var pr = getTemplPre(event.target.name, "AScomp", true);
+		if (!pr) return;
+	} else {
+		var pr = false;
+		var remAth = tDoc.getField("Remarkable Athlete").isBoxChecked(0);
+		var jackOf = tDoc.getField("Jack of All Trades").isBoxChecked(0);
 	}
-	var theBonus = Number(What(Ability + " Mod"));
-
-	// Proficiency bonus
-	var theProf = tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) && (isPP || (/passive|initiative/i).test(event.target.name)) ? Number(How("Proficiency Bonus")) : Number(What("Proficiency Bonus"));
-	if (tDoc.getField(Skill + " Prof") && tDoc.getField(Skill + " Prof").isBoxChecked(0)) {
-		theBonus += theProf;
-		if (tDoc.getField(Skill + " Exp").isBoxChecked(0)) theBonus += theProf;
-	} else if (tDoc.getField("Jack of All Trades").isBoxChecked(0) || (tDoc.getField("Remarkable Athlete").isBoxChecked(0) && (/^(Str|Dex|Con)$/).test(Ability))) {
-		theBonus += Math.ceil(theProf / 2);
+	var abiFlds = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
+	var alphaB = Who("Text.SkillsNames") == "alphabeta";
+	var setVals = SkillsList.values;
+	var mod = {};
+	for (var i = 0; i < abiFlds.length; i++) {
+		var abi = abiFlds[i];
+		mod[abi] = What(!pr ? abi + " Mod" : pr + "Comp.Use.Ability." + abi + ".Mod");
 	}
-
-	// Modifier fields
-	theBonus += EvalBonus(What(Skill + " Bonus"), true);
-	if (!(/initiative/i).test(event.target.name)) {
-		theBonus += EvalBonus(What("All Skills Bonus"), true);
-	} else if (isPP) { // passive perception
-		theBonus += 10 + EvalBonus(What("Passive Perception Bonus"), true);
-		// advantage adds 5, disadvantage subtracts 5
-		if (!typePF) {
-			theBonus += tDoc.getField(Skill + " Adv").isBoxChecked(0) ? 5 : tDoc.getField(Skill + " Dis").isBoxChecked(0) ? -5 : 0;
-		} else {
-			theBonus += How("Passive Perception Bonus") == "Adv" ? 5 : How("Passive Perception Bonus") == "Dis" ? -5 : 0;
+	var profB = Number(!pr ? How("Proficiency Bonus") : What(pr + "Comp.Use.Proficiency Bonus"));
+	var profDie = tDoc.getField(!pr ? "Proficiency Bonus Dice" : pr + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0);
+	var isInit = false;
+	var allBonus = EvalBonus(What(!pr ? "All Skills Bonus" : pr + "BlueText.Comp.Use.Skills.All.Bonus"), !pr ? true : pr);
+	var passPercFld = !pr ? "Passive Perception" : pr + "Comp.Use.Skills.Perc.Pass.Mod";
+	for (var i = 0; i < SkillsList.abbreviations.length; i++) {
+		var sk = SkillsList.abbreviations[i];
+		isInit = sk == "Init";
+		if (sk == "Too" && pr) continue;
+		var skFld = alphaB || (pr && !typePF) ? sk : SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(sk)];
+		var setFld = !pr ? (isInit ? "Initiative bonus" : skFld) : pr + "Comp.Use." + (isInit ? "Combat.Init" : "Skills." + skFld) + ".Mod";
+		var theAbi = SkillsList.abilityScores[i];
+		if (!theAbi || theAbi == "Too" || mod[theAbi] === undefined || mod[theAbi] === "") {
+			setVals[setFld] = "";
+			if (sk == "Perc") setVals[passPercFld] = "";
+			continue;
+		}
+		// ability score modifier
+		setVals[setFld] = mod[theAbi];
+		// proficiency bonus
+		if (isInit) {
+			if (!pr) setVals[setFld] += remAth ? Math.ceil(profB / 2) : jackOf ? Math.floor(profB / 2) : 0;
+		} else if (!profDie && !pr) {
+			if (tDoc.getField(setFld + " Prof").isBoxChecked(0)) {
+				setVals[setFld] += profB;
+				if (tDoc.getField(setFld + " Exp").isBoxChecked(0)) setVals[setFld] += profB;
+			} else if (remAth && (/^(Str|Dex|Con)$/).test(theAbi)) {
+				setVals[setFld] += Math.ceil(profB / 2);
+			} else if (jackOf) {
+				setVals[setFld] += Math.floor(profB / 2);
+			}
+		} else if (!profDie && typePF) {
+			if (tDoc.getField(pr + "Comp.Use.Skills." + skFld + ".Prof").isBoxChecked(0)) {
+				setVals[setFld] += profB;
+				if (tDoc.getField(pr + "Comp.Use.Skills." + skFld + ".Exp").isBoxChecked(0)) setVals[setFld] += profB;
+			}
+		} else if (!profDie) {
+			var profType = What(pr + "Text.Comp.Use.Skills." + skFld + ".Prof");
+			if (profType == "proficient") {
+				setVals[setFld] += profB * 2;
+			} else if (profType == "expertise") {
+				setVals[setFld] += profB;
+			}
+		}
+		// modifier field
+		var modFld = isInit && !pr ? "Init Bonus" : isInit && pr ? pr + "Comp.Use.Combat.Init.Bonus" : !pr ? setFld + " Bonus" : pr + "BlueText.Comp.Use.Skills." + skFld + ".Bonus";
+		setVals[setFld] += EvalBonus(What(modFld), !pr ? true : pr);
+		// all skill bonus
+		if (!isInit) setVals[setFld] += allBonus;
+		// passive perception
+		if (sk == "Perc") {
+			setVals[passPercFld] = setVals[setFld] + 10;
+			setVals[passPercFld] += EvalBonus(What(!pr ? "Passive Perception Bonus" : pr + "BlueText.Comp.Use.Skills.Perc.Pass.Bonus"), !pr ? true : pr);
+			if (!pr) {
+				// advantage/disadvantage on the 1st page
+				if (!typePF) {
+					setVals[passPercFld] += tDoc.getField(setFld + " Adv").isBoxChecked(0) ? 5 : tDoc.getField(setFld + " Dis").isBoxChecked(0) ? -5 : 0;
+				} else {
+					var pasPercSN = How("Passive Perception Bonus");
+					setVals[passPercFld] += pasPercSN == "Adv" ? 5 : pasPercSN == "Dis" ? -5 : 0;
+				}
+			}
 		}
 	}
-
-	event.value = theBonus;
+	calcSkill();
 };
 
 //calculate the saving throw modifier (field calculation)

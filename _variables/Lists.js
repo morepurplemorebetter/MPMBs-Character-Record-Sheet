@@ -470,7 +470,8 @@ var SkillsList = {
 		"Persuasion",
 		"Initiative",
 		"Tool"
-	]
+	],
+	values : {}
 };
 
 var DamageTypes = {

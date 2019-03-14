@@ -220,8 +220,8 @@ function ApplySpell(FldValue, rememberFldName) {
 				var cDie = cantripDie[Math.min(CurrentFeats.level, cantripDie.length) - 1];
 				if (aSpell.descriptionCantripDie) {
 					var newCantripDieDescr = aSpell.descriptionCantripDie;
-					var aDie = cDie;
 					while ((/`CD(-|\+|\*)?\d*`/).test(newCantripDieDescr)) {
+						var aDie = cDie;
 						if ((/`CD(-|\+)\d+`/).test(newCantripDieDescr)) {
 							aDie = cDie + Number(newCantripDieDescr.replace(/.*`CD((-|\+)\d+)`.*/, "$1"));
 						} else if ((/`CD\*\d+`/).test(newCantripDieDescr)) {
@@ -3675,7 +3675,7 @@ function GenerateSpellSheet(GoOn) {
 		var spCast = CurrentSpells[CurrentCasters.incl[i]];
 
 		//get a list of all the spells to put on the Spell Sheet
-		var fullSpellList = [];
+		var fullSpellList = spCast.selectBo ? spCast.selectBo : [];
 		if (spCast.selectCa) fullSpellList = fullSpellList.concat(spCast.selectCa); //add the cantrips
 		if (spCast.typeList === 3 && spCast.selectPrep) { //if it has been selected to only do the prepared spells, only add those
 			fullSpellList = fullSpellList.concat(spCast.selectPrep);
@@ -3742,7 +3742,7 @@ function GenerateSpellSheet(GoOn) {
 			};
 		};
 
-		var orderedSpellList = OrderSpells(fullSpellList, "multi", true, spCast.selectBo ? spCast.selectBo : false, maxLvl); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
+		var orderedSpellList = OrderSpells(fullSpellList, "multi", true, spCast.selectBo ? spCast.selectBo : [], maxLvl); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
 
 		if (i === isFirst) {
 			SSfront = true;
@@ -3752,7 +3752,7 @@ function GenerateSpellSheet(GoOn) {
 		//now sort each of those new arrays and put them on the sheet
 		var start = true;
 		var isPsionics = "";
-		for (var lvl = 0; lvl <= 9; lvl++) {
+		for (var lvl = 0; lvl <= orderedSpellList.length; lvl++) {
 			var spArray = orderedSpellList[lvl];
 			if (!spArray || !spArray.length) continue;
 			//add spell dependencies to fill out the array
@@ -4110,11 +4110,7 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 //a function that takes an array of spells and orders it by level (and alphabet)
 //outputFormat defines whether to return an Array of Arrays ("multi"), or just one array "single";
 function OrderSpells(inputArray, outputFormat, sepPsionics, bonusSp, maxLvl = 9) {
-	if (isArray(bonusSp)) {
-		inputArray = inputArray.concat(bonusSp);
-	} else {
-		bonusSp = [];
-	}
+	if (!isArray(bonusSp)) bonusSp = [];
 	var refspObj = {};
 	var orderedSpellList = [[], [], [], [], [], [], [], [], [], []]; //array of 10 arrays, one for each spell level
 	if (sepPsionics) { //add two more arrays, for the psionics
@@ -4127,7 +4123,7 @@ function OrderSpells(inputArray, outputFormat, sepPsionics, bonusSp, maxLvl = 9)
 		if (!SpellsList[nxtSpell]) continue;
 		var spLvl = SpellsList[nxtSpell].level;
 		if (spLvl > maxLvl && bonusSp.indexOf(nxtSpell) == -1) continue;
-		if (inputArray.indexOf(nxtSpell) === S || (spLvl <= maxLvl  && bonusSp.indexOf(nxtSpell) !== -1)) {
+		if (inputArray.indexOf(nxtSpell) === S || (spLvl <= maxLvl && bonusSp.indexOf(nxtSpell) !== -1)) {
 			var spName = getSpNm(nxtSpell);
 			if (sepPsionics && SpellsList[nxtSpell].psionic) spLvl += 10;
 			refspObj[spName] = nxtSpell;

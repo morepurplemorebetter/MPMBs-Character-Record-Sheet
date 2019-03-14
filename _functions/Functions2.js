@@ -593,47 +593,12 @@ function CompSkillRefer(Skill, SkillBonus, scores, profB) {
 	return theReturn;
 }
 
-//calculate the skill modifier on the companion page (field calculation)
-function CalcSkillComp() {
-	var eName = event.target.name;
-	var Skill = eName.replace(/.+(Skills|Combat)\.(.+?)\..+/, "$2");
-	var alphaB = Who("Text.SkillsNames") === "alphabeta";
-	var skillLookup = alphaB ? SkillsList.abilityScores : SkillsList.abilityScoresByAS;
-	var Ability = skillLookup[SkillsList.abbreviations.indexOf(Skill)];
-	var prefix = eName.substring(0, eName.indexOf("Comp."));
-	var Mod = What(prefix + "Comp.Use.Ability." + Ability + ".Mod");
-	var blueTxt = Skill === "Init" ? "" : "BlueText.";
-
-	var ProfBonus = 0;
-	if (Skill !== "Init" && (eName.indexOf(".Pass") !== -1 || tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 0)) {
-		if (!typePF) {
-			switch(What(eName.replace("Comp.", "Text.Comp.").replace("Mod", "Prof").replace(".Pass", ""))) {
-				case "proficient" :
-					ProfBonus = What(prefix + "Comp.Use.Proficiency Bonus");
-					break;
-				case "expertise" :
-					ProfBonus = parseFloat(What(prefix + "Comp.Use.Proficiency Bonus")) * 2;
-					break;
-			}
-		} else {
-			if (tDoc.getField(eName.replace("Mod", "Prof").replace("Perc.Pass", alphaB ? "Perc" : "Perf")).isBoxChecked(0)) {
-				ProfBonus += What(prefix + "Comp.Use.Proficiency Bonus");
-				if (tDoc.getField(eName.replace("Mod", "Exp").replace("Perc.Pass", alphaB ? "Perc" : "Perf")).isBoxChecked(0)) {
-					ProfBonus += What(prefix + "Comp.Use.Proficiency Bonus");
-				}
-			}
-		}
-	}
-
-	var ExtraBonus = EvalBonus(What(eName.replace("Comp.", blueTxt + "Comp.").replace("Mod", "Bonus").replace("Perc.Pass", alphaB || !typePF ? "Perc" : "Perf")), prefix);
-
-	var AllBonus = Skill === "Init" ? 0 : EvalBonus(What(prefix + "BlueText.Comp.Use.Skills.All.Bonus"), prefix);
-
-	var isPP = eName.indexOf("Pass") !== -1 ? 10 : 0;
-	var PassBonus = !isPP ? 0 : EvalBonus(What(eName.replace("Comp.", "BlueText.Comp.").replace("Mod", "Bonus")), prefix);
-
-	event.value = Mod === "" ? "" : Number(isPP) + Number(PassBonus) + Number(Mod) + Number(ExtraBonus) + Number(ProfBonus) + Number(AllBonus);
-};
+// call this to update the companion page's proficiency bonus field so it displays the die
+function setCompProfDie() {
+	var prefix = event.target.name.substring(0, event.target.name.indexOf("BlueText."));
+	var profFld = prefix + "Comp.Use.Proficiency Bonus";
+	Value(profFld, What(profFld));
+}
 
 //see if the weapon matches one of the companion as a creature
 function parseCompWeapon(input, prefix) {
@@ -3485,12 +3450,12 @@ function SetAdvLogCalcOrder(prefix) {
 	var whatCalcOrder = function (field) {
 		return tDoc.getField(field).calcOrderIndex;
 	}
-	var setCalcOrder = function (field, input) {
+	var resetCalcOrder = function (field, input) {
 		tDoc.getField(field).calcOrderIndex = input;
 	}
 	if (prefix) {
 		var prePrefix = CalcLogsheetPrevious(prefix);
-		setCalcOrder(prefix + "AdvLog.Class and Levels", whatCalcOrder(prePrefix + "AdvLog.Class and Levels") + 1);
+		resetCalcOrder(prefix + "AdvLog.Class and Levels", whatCalcOrder(prePrefix + "AdvLog.Class and Levels") + 1);
 		var theLastCalc = whatCalcOrder(prePrefix + "AdvLog." + FieldNumbers.logs + ".magicItems.total");
 	} else {
 		var theLastCalc = whatCalcOrder("AdvLog.sheetNumber");
@@ -3510,10 +3475,10 @@ function SetAdvLogCalcOrder(prefix) {
 			var toSet = prefix + "AdvLog." + i + theTypesA[A];
 			//add one to the calculation order to put it at
 			theLastCalc += 1;
-			setCalcOrder(toSet + ".start", theLastCalc);
+			resetCalcOrder(toSet + ".start", theLastCalc);
 			//add one to the calculation order to put it at
 			theLastCalc += 1;
-			setCalcOrder(toSet + ".total", theLastCalc);
+			resetCalcOrder(toSet + ".total", theLastCalc);
 		}
 	}
 }

@@ -1959,7 +1959,7 @@ var Base_MagicItemsList = {
 		type : "ring",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "While I wear this ring, difficult terrain doesn't cost me extra movement. In addition, magic can neither reduce me speed nor cause you to be paralyzed or restrained.",
+		description : "While I wear this ring, difficult terrain doesn't cost me extra movement. In addition, magic can neither reduce my speed nor cause me to be paralyzed or restrained.",
 		descriptionFull : "While you wear this ring, difficult terrain doesn't cost you extra movement. In addition, magic can neither reduce your speed nor cause you to be paralyzed or restrained.",
 		attunement : true,
 		savetxt : { immune : ["paralyzed", "restrained"] }

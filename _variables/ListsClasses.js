@@ -2347,17 +2347,21 @@ var Base_ClassSubList = {
 								case "regenerate" :
 									spellObj.description = spellObj.description.replace("1 HP/rnd", "3+SL HP/rnd");
 								default :
-									if ((/\bHP o(f|r)\b/).test(theSp.description)) return false;
+									if ((/\bHP o(f|r)\b/).test(spellObj.description)) return false;
 									var supremeTestRegex = /(.*?)(\d+d\d+\+?\d*)(\+\d+d?\d*\/\d?SL)?((\+spell(casting)? ability mod(ifier)?|(\+|-)\d+ \(.{3}\))? hp.*)/i;
 									if (classes.known.cleric.level > 16 && supremeTestRegex.test(spellObj.description)) return false; // has supreme healer
 									var testRegex = /(.*?)([1-9]\d*d?\d*)((\+\d+d?\d*\/\d?SL)?((\+spell(casting)? ability mod(ifier)?|(\+|-)\d+ \(.{3}\))? hp.*))/i;
 									var theMatch = spellObj.description.match(testRegex);
 									if (!theMatch) return false;
-									var perLvl = theMatch[4] ? theMatch[4].replace(/.*(\/\d?SL).*/i, '$1') : "";
-									theMatch[4] = theMatch[4] ? Number(theMatch[4].replace(/\/\d?SL/i, '')) + 1 : NaN;
-									var repl2 = spellObj.level > 8 ? "$3" : isNaN(theMatch[4]) ? "+SL$3" : "+" + theMatch[4] + perLvl + "$5";
-									var repl1 = isNaN(theMatch[2]) ? "$1$2+2" : isNaN(theMatch[4]) ? "$1" + (Number(theMatch[2]) + 2) : "$1" + (Number(theMatch[2]) + 2 + spellObj.level);
-									spellObj.description = spellObj.description.replace(testRegex, repl1 + repl2);
+									try {
+										var perLvl = theMatch[4] ? theMatch[4].replace(/.*(\/\d?SL).*/i, '$1') : "";
+										theMatch[4] = theMatch[4] ? Number(theMatch[4].replace(/\/\d?SL/i, '')) + 1 : NaN;
+										var repl2 = spellObj.level > 8 ? "$3" : isNaN(theMatch[4]) ? "+SL$3" : "+" + theMatch[4] + perLvl + "$5";
+										var repl1 = isNaN(theMatch[2]) ? "$1$2+2" : isNaN(theMatch[4]) ? "$1" + (Number(theMatch[2]) + 2) : "$1" + (Number(theMatch[2]) + 2 + spellObj.level);
+										spellObj.description = spellObj.description.replace(testRegex, repl1 + repl2);
+									} catch (err) {
+										spellObj.description = startDescr;
+									}
 							}
 							return startDescr !== spellObj.description;
 						},
@@ -2443,12 +2447,16 @@ var Base_ClassSubList = {
 							var testRegex = /(.*?)(\d+d\d+\+?\d*)(\+\d+d?\d*\/\d?SL)?((\+spell(casting)? (ability )?mod(ifier)?|(\+|-)\d+ \(.{3}\))? hp.*)/i;
 							var theMatch = spellObj.description.match(testRegex);
 							if (!theMatch) return false;
-							var lvl9 = spellObj.level > 8;
-							var perLvl = theMatch[3] ? theMatch[3].replace(/.*(\/\d?SL).*/i, '$1') : "";
-							theMatch[2] = Number(theMatch[2].replace(/(\d+).*/, '$1')) * Number(theMatch[2].replace(/\d+d(\d+).*/, '$1')) + ((/\d+d\d+\+(\d+)/).test(theMatch[2]) ? Number(theMatch[2].replace(/\d+d\d+\+(\d+)/, '$1')) : 0) + 2 + (perLvl || lvl9 ? spellObj.level : "+SL");
-							theMatch[3] = theMatch[3] ? Number(theMatch[3].replace(/\+(\d+).*/, '$1')) * ((/\+\d+d(\d+).*/).test(theMatch[3]) ? Number(theMatch[3].replace(/\+\d+d(\d+).*/, '$1')) : 1) + 1 : NaN;
-							var repl = isNaN(theMatch[3]) ? "$1" + theMatch[2] + "$4" : "$1" + theMatch[2] + "+" + theMatch[3] + perLvl + "$4";
-							spellObj.description = spellObj.description.replace(testRegex, repl);
+							try {
+								var lvl9 = spellObj.level > 8;
+								var perLvl = theMatch[3] ? theMatch[3].replace(/.*(\/\d?SL).*/i, '$1') : "";
+								theMatch[2] = Number(theMatch[2].replace(/(\d+).*/, '$1')) * Number(theMatch[2].replace(/\d+d(\d+).*/, '$1')) + ((/\d+d\d+\+(\d+)/).test(theMatch[2]) ? Number(theMatch[2].replace(/\d+d\d+\+(\d+)/, '$1')) : 0) + 2 + (perLvl || lvl9 ? spellObj.level : "+SL");
+								theMatch[3] = theMatch[3] ? Number(theMatch[3].replace(/\+(\d+).*/, '$1')) * ((/\+\d+d(\d+).*/).test(theMatch[3]) ? Number(theMatch[3].replace(/\+\d+d(\d+).*/, '$1')) : 1) + 1 : NaN;
+								var repl = isNaN(theMatch[3]) ? "$1" + theMatch[2] + "$4" : "$1" + theMatch[2] + "+" + theMatch[3] + perLvl + "$4";
+								spellObj.description = spellObj.description.replace(testRegex, repl);
+							} catch (err) {
+								spellObj.description = startDescr;
+							}
 							return startDescr !== spellObj.description;
 						},
 						"When I use a spell that restores hit points, it restores the maximum of the dice rolled and an additional 2 + the level of the spell slot (or spell slot equivalent) used to cast the spell."
