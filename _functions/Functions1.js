@@ -1426,7 +1426,7 @@ function ConditionSet(isReset) {
 		calcStop();
 		IsNotConditionSet = false;
 		var thisFld = "ArmDis";
-		var thisChck = tDoc.getField("AC Stealth Disadvantage").isBoxChecked(0) ? true : false;
+		var thisChck = !isReset && tDoc.getField("AC Stealth Disadvantage").isBoxChecked(0) ? true : false;
 		SetProf("advantage", thisChck, ["Ste", false], "Armor");
 		IsNotConditionSet = true;
 		thermoM(thermoTxt, true); // Stop progress bar
@@ -1457,11 +1457,12 @@ function ConditionSet(isReset) {
 
 	var thisFld = "ArmDis";
 	for (var aFld in cFlds) {
+		if (!tDoc.getField(cFlds[aFld].name)) continue;
 		cFlds[aFld].checked = tDoc.getField(cFlds[aFld].name).isBoxChecked(0);
 		if (event.target && event.target.name && cFlds[aFld].name == event.target.name) thisFld = aFld;
 		if ((/Exh\d/).test(aFld)) cFlds[aFld].origchecked = thisFld === aFld ? !cFlds[aFld].checked : cFlds[aFld].checked;
 	}
-	var thisChck = thisFld && cFlds[thisFld].checked ? true : false;
+	var thisChck = !isReset && thisFld && cFlds[thisFld].checked ? true : false;
 	if (!isReset && (!thisFld || !tDoc.getField(cFlds[aFld].name))) return;
 
 	// Start progress bar and stop calculations
