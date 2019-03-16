@@ -1455,15 +1455,14 @@ function ConditionSet(isReset) {
 		ArmDis : { name : "AC Stealth Disadvantage" }
 	}
 
-	var thisFld;
+	var thisFld = "ArmDis";
 	for (var aFld in cFlds) {
 		cFlds[aFld].checked = tDoc.getField(cFlds[aFld].name).isBoxChecked(0);
 		if (event.target && event.target.name && cFlds[aFld].name == event.target.name) thisFld = aFld;
 		if ((/Exh\d/).test(aFld)) cFlds[aFld].origchecked = thisFld === aFld ? !cFlds[aFld].checked : cFlds[aFld].checked;
 	}
-	if (!thisFld && event.target && (/AC/).test(event.target.name)) thisFld = "ArmDis";
 	var thisChck = thisFld && cFlds[thisFld].checked ? true : false;
-	if (!thisFld && !isReset) return;
+	if (!isReset && (!thisFld || !tDoc.getField(cFlds[aFld].name))) return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying the conditions...");
