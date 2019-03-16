@@ -4122,7 +4122,7 @@ function ValidateBonus(goEmpty, allowDC) {
 };
 
 // Calculate the skill modifier (field calculation)
-function calcSkill() {
+function CalcSkill() {
 	event.value = SkillsList.values[event.target.name] === undefined ? '' : SkillsList.values[event.target.name];
 }
 function CalcAllSkills(isCompPage) {
@@ -4206,7 +4206,7 @@ function CalcAllSkills(isCompPage) {
 			}
 		}
 	}
-	calcSkill();
+	CalcSkill();
 };
 
 //calculate the saving throw modifier (field calculation)
