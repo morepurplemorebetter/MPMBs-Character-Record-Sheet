@@ -187,11 +187,11 @@ function ApplySpell(FldValue, rememberFldName) {
 			var aCast = input[2] && CurrentSpells[input[2]] ? CurrentSpells[input[2]] : "";
 			// If this spell is gained from an item, remove components
 			if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
-				aSpell.components = "";
-				aSpell.compMaterial = "Spells cast by magic items don't require any components.";
+				aSpell.components = "M\u0192";
+				aSpell.compMaterial = "Spells cast by magic items don't require any components other than the magic item itself and those specified.";
 				aSpell.description = aSpell.description.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
 				if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
-				aSpell.changesObj["Magic Item"] = "\n - Spells cast by magic items don't require any components.";
+				aSpell.changesObj["Magic Item"] = "\n - Spells cast by magic items don't require any components except the magic item itself and those specified by it.";
 			}
 			// If this spell is gained from an item, feat, or race, remove scaling effects
 			if (aSpell.level && aCast && ((/^(item|feat|race)$/i).test(aCast.typeSp) || (aCast.refType && (/^(item|feat|race)$/i).test(aCast.refType)))) {
@@ -3161,6 +3161,7 @@ function AskUserSpellSheet() {
 
 		// get the ability score to use for save DCs/spell attacks/prepared
 		spCast.abilityToUse = getSpellcastingAbility(aCast);
+		if ((/feat|item/i).test(spCast.typeSp) && spCast.level !== undefined) spCast.level = What("Character Level"); //set the level if concerning a feat/item
 
 		//put some general things in variables
 		if (spCast.level && spCast.factor && (tDoc[spCast.factor[1] + "SpellTable"] || spCast.spellsTable)) {
@@ -3176,8 +3177,6 @@ function AskUserSpellSheet() {
 			var maxSpell = false;
 		};
 		spCast.maxSpell = maxSpell;
-
-		if ((/feat|item/i).test(spCast.typeSp) && spCast.level !== undefined) spCast.level = What("Character Level"); //set the level if concerning a feat/item
 
 		//see if this is a psionic caster
 		var isPsionics = spCast.factor && (/psionic/i).test(spCast.factor[1]);

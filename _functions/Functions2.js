@@ -6606,8 +6606,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		// now update the fields
 		Checkbox(skillFld + " Prof", isProf);
 		Checkbox(skillFld + " Exp", isExp);
-		break;
-	};
+	}; break;
 	case "weapon" : { // if this is the 'other' weapons do something special. If not, it is Simple/Martial weapons and they can be treated just like armour
 		if (ProfObj == "other") {
 			if (!set.otherWea) set.otherWea = { finalProfs : [], finalString : "", finalNamesNotManual : [], finalProfsNotManual : [] };
@@ -6669,9 +6668,8 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			Value("Proficiency Weapon Other Description", iSet.finalString, otherWeaTooltip);
 			// recalculate the attacks with the proficiency changes
 			CurrentUpdates.types.push("attacksprofs");
-			break;
 		}
-	};
+	}; break;
 	case "armour" : { // if (Extra == true) means to not change the field, only the tooltip
 		var sort = ProfType.replace('ou', 'o');
 		var fld = "Proficiency " + ((/shield/i).test(ProfObj) ? "Shields" : (sort + " " + ProfObj).capitalize());
@@ -6714,8 +6712,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				CurrentUpdates.types.push("attacksprofs");
 			}
 		}
-		break;
-	};
+	}; break;
 	case "save" : {
 		var Abi = AbilityScores.fields[ProfObjLC.substr(0,3)];
 		if (!Abi) return; // stop if the input can't be used
@@ -6738,8 +6735,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		} else {
 			Checkbox(SvFld, false, "");
 		};
-		break;
-	};
+	}; break;
 	case "resistance" : { // Extra is something to replace the actual text, if even one source has no condition for the resistance (e.g. not something like "Bludg. (in Rage)"), then there is no need to add multiple instances of essentially the same resistance
 		var setRem = !set[ProfObjLC] ? undefined : set[ProfObjLC].merge;
 		if (AddRemove) { // add
@@ -6805,8 +6801,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				};
 			};
 		};
-		break;
-	};
+	}; break;
 	case "language" :
 	case "tool" : { // Extra is a number if the entry is a choice to be made by the user duplicates should be ignored (e.g. 'musical instrument'); // Alternatively, for a tool the Extra can be the 3-letter abbreviation if the tool is also to be added in the Skill Proficiencies section with a calculated value;
 		var optNmbr = Extra && !isNaN(Extra) ? Extra : false;
@@ -6887,8 +6882,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				};
 			};
 		};
-		break;
-	};
+	}; break;
 	case "savetxt" : { // text to be put in the "Saving Throw advantages / disadvantages" field
 		var fld = "Saving Throw advantages / disadvantages";
 		//create the set object if it doesn't exist already
@@ -7019,8 +7013,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		//Set the value of the field after cleaning any unfortunate replacement leftovers
 		svFld = svFld.replace(/(,|;) (,|;)/g, "$2").replace(/^(,|;) |(,|;) $/g, "");
 		Value(fld, svFld, svTooltip);
-		break;
-	};
+	}; break;
 	case "vision" : { // Extra is optionally used to add a range, in feet, to the vision entry
 		var fld = "Vision";
 		var range = Extra ? Extra : 0;
@@ -7079,8 +7072,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			if (aVisTxt) visTxt += (visTxt ? "\n \u2022 " : " \u2022 ") + aVisTxt + ".";
 		};
 		AddTooltip(fld, visTxt);
-		break;
-	};
+	}; break;
 	case "speed" : {
 		var fldSpd = "Speed";
 		var fldSpdW = What(fldSpd).replace(/\n|\r/g, "").replace(/,/g, ".");
@@ -7220,8 +7212,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		// set them to the fields
 		Value(fldSpd, spdString, ttips.spd);
 		Value(fldEnc, encString, ttips.enc);
-		break;
-	};
+	}; break;
 	case "specialarmour" : { // Extra is to make the entry unique (the array index)
 		if (!ProfObj.mod) return;
 		var fldNms = {
@@ -7277,7 +7268,8 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		var tooltipStr = formatMultiList("This line of " + (tObj.type == "magic" ? "magic" : "miscellaneous") + " AC bonuses contains:\n(tip: click on the number field in this line for more info)", tooltipArr);
 		AddTooltip(fldNms[tObj.type][1], tooltipStr);
 		if (!AddRemove) delete set[objName]; // now delete the object
-	};
+		break;
+	}
 	case "carryingcapacity" : {
 		ProfObj = parseFloat(ProfObj);
 		if (isNaN(ProfObj)) return; // nothing to do
@@ -7302,7 +7294,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		var ttText = toUni("Carrying Capacity Multiplier") + "\nThe number you type in here will be used to multiply the carrying capacity with. This must be a positive number.\n\nWhen you set this value to zero, all the encumbrance calculations will be halted and the encumbrance fields will be left empty." + formatMultiList("\n\nThe following features have changed this multiplier:", sourcesArray);
 		// Set the new field value
 		Value("Carrying Capacity Multiplier", Math.max(0, RoundTo(curFactor, 0.25)), ttText);
-	};
+	}; break;
 	case "advantage" : { // ProfObj array [field, boolean (true = adv; false = disadv)]
 		var fld = ProfObj[0], fldDescr;
 		fld = fld.substr(0,1).toUpperCase() + fld.substr(1).toLowerCase();
@@ -7366,7 +7358,8 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		}
 		// clean the object
 		if (!AddRemove && !tooltipArr.length) delete set[fld];
-	};
+		
+	}; break;
  };
 	SetStringifieds("profs");
 };
