@@ -4154,45 +4154,48 @@ function CalcAllSkills(isCompPage) {
 		var skFld = alphaB || (pr && !typePF) ? sk : SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(sk)];
 		var setFld = !pr ? (isInit ? "Initiative bonus" : skFld) : pr + "Comp.Use." + (isInit ? "Combat.Init" : "Skills." + skFld) + ".Mod";
 		var theAbi = SkillsList.abilityScores[i];
+		var doPass = sk == "Perc";
 		if (!theAbi || theAbi == "Too" || mod[theAbi] === undefined || mod[theAbi] === "") {
 			setVals[setFld] = "";
-			if (sk == "Perc") setVals[passPercFld] = "";
+			if (doPass) setVals[passPercFld] = "";
 			continue;
 		}
 		// ability score modifier
 		setVals[setFld] = mod[theAbi];
+		var addProf = 0;
 		// proficiency bonus
 		if (isInit) {
 			if (!pr) setVals[setFld] += remAth ? Math.ceil(profB / 2) : jackOf ? Math.floor(profB / 2) : 0;
-		} else if (!profDie && !pr) {
+		} else if ((doPass || !profDie) && !pr) {
 			if (tDoc.getField(setFld + " Prof").isBoxChecked(0)) {
-				setVals[setFld] += profB;
-				if (tDoc.getField(setFld + " Exp").isBoxChecked(0)) setVals[setFld] += profB;
+				addProf = profB;
+				if (tDoc.getField(setFld + " Exp").isBoxChecked(0)) addProf += profB;
 			} else if (remAth && (/^(Str|Dex|Con)$/).test(theAbi)) {
-				setVals[setFld] += Math.ceil(profB / 2);
+				addProf = Math.ceil(profB / 2);
 			} else if (jackOf) {
-				setVals[setFld] += Math.floor(profB / 2);
+				addProf = Math.floor(profB / 2);
 			}
-		} else if (!profDie && typePF) {
+		} else if ((doPass || !profDie) && typePF) {
 			if (tDoc.getField(pr + "Comp.Use.Skills." + skFld + ".Prof").isBoxChecked(0)) {
-				setVals[setFld] += profB;
-				if (tDoc.getField(pr + "Comp.Use.Skills." + skFld + ".Exp").isBoxChecked(0)) setVals[setFld] += profB;
+				addProf = profB;
+				if (tDoc.getField(pr + "Comp.Use.Skills." + skFld + ".Exp").isBoxChecked(0)) addProf += profB;
 			}
-		} else if (!profDie) {
+		} else if (doPass || !profDie) {
 			var profType = What(pr + "Text.Comp.Use.Skills." + skFld + ".Prof");
 			if (profType == "proficient") {
-				setVals[setFld] += profB * 2;
+				addProf = profB * 2;
 			} else if (profType == "expertise") {
-				setVals[setFld] += profB;
+				addProf = profB;
 			}
 		}
+		if (!profDie) setVals[setFld] += addProf;
 		// modifier field
 		var modFld = isInit && !pr ? "Init Bonus" : isInit && pr ? pr + "Comp.Use.Combat.Init.Bonus" : !pr ? setFld + " Bonus" : pr + "BlueText.Comp.Use.Skills." + skFld + ".Bonus";
 		setVals[setFld] += EvalBonus(What(modFld), !pr ? true : pr);
 		// all skill bonus
 		if (!isInit) setVals[setFld] += allBonus;
 		// passive perception
-		if (sk == "Perc") {
+		if (doPass) {
 			setVals[passPercFld] = setVals[setFld] + 10;
 			setVals[passPercFld] += EvalBonus(What(!pr ? "Passive Perception Bonus" : pr + "BlueText.Comp.Use.Skills.Perc.Pass.Bonus"), !pr ? true : pr);
 			if (!pr) {
@@ -4202,6 +4205,10 @@ function CalcAllSkills(isCompPage) {
 				} else {
 					var pasPercSN = How("Passive Perception Bonus");
 					setVals[passPercFld] += pasPercSN == "Adv" ? 5 : pasPercSN == "Dis" ? -5 : 0;
+				}
+				if (profDie) {
+					// add the proficiency bonus if set to using proficiency die
+					setVals[passPercFld] += addProf;
 				}
 			}
 		}
@@ -5976,7 +5983,7 @@ function CalcAbilityDC() {
 	var ExtraBonus = EvalBonus(What("Spell DC " + Nmbr + " Bonus"), true);
 
 	if (SpellAbi !== "" && SpellAbi !== " " && What(SpellAbi) !== "") {
-		event.value = 8 + Number(What("Proficiency Bonus")) + Number(What(SpellAbi)) + Number(ExtraBonus);
+		event.value = 8 + Number(How("Proficiency Bonus")) + Number(What(SpellAbi)) + ExtraBonus;
 	} else {
 		event.value = "";
 	}

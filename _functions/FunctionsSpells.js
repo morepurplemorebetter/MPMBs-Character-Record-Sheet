@@ -632,10 +632,11 @@ function CalcSpellScores() {
 	}
 
 	var profBonus = Number(What("Proficiency Bonus"));
+	var profBonusFixed = Number(How("Proficiency Bonus"));
 	// fixed DC of 8 means the prof bonus still needs to be added
 	if (fixedDC === 8) fixedDC += profBonus;
 	// the DC
-	theResult.dc = fixedDC ? fixedDC : profBonus + theMod + 8;
+	theResult.dc = fixedDC ? fixedDC : profBonusFixed + theMod + 8;
 	// the spell attack
 	theResult.attack = fixedDC ? fixedDC - 8 : profBonus + theMod;
 	// the number of prepared spells
