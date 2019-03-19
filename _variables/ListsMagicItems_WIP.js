@@ -717,15 +717,53 @@ var Base_MagicItemsList = {
 		descriptionFull : "This wooden broom, which weighs 3 pounds, functions like a mundane broom until you stand astride it and speak its command word. It then hovers beneath you and can be ridden in the air. It has a flying speed of 50 feet. It can carry up to 400 pounds, but its flying speed becomes 30 feet while carrying over 200 pounds. The broom stops hovering when you land.\n   You can send the broom to travel alone to a destination within 1 mile of you if you speak the command word, name the location, and are familiar with that place. The broom comes back to you when you speak another command word, provided that the broom is still within 1 mile of you.",
 		weight : 3
 	},
-	"candle of invocation" : {
+	"candle of invocation" : { // finished
 		name : "Candle of Invocation",
 		source : [["SRD", 213], ["D", 157]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
-		descriptionFull : "This slender taper is dedicated to a deity and shares that deity's alignment. The candle's alignment can be detected with the Detect Evil and Good spell. The DM chooses the god and associated alignment or determines the alignment randomly.\n\n" + toUni("d20") + "\t" + toUni("Alignment") + "\n1-2\tChaotic evil\n3-4\tChaotic neutral\n5-7\tChaotic good\n8-9\tNeutral evil\n10-11\tNeutral\n12-13\tNeutral good\n14-15\tLawful evil\n16-17\tLawful neutral\n18-20\tLawful good\n\n\n   The candle's magic is activated when the candle is lit, which requires an action. After burning for 4 hours, the candle is destroyed. You can snuff it out early for use at a later time. Deduct the time it burned in increments of 1 minute from the candle's total burn time.\n   While lit, the candle sheds dim light in a 30-foot radius. Any creature within that light whose alignment matches that of the candle makes attack rolls, saving throws, and ability checks with advantage. In addition, a cleric or druid in the light whose alignment matches the candle's can cast 1st-level spells he or she has prepared without expending spell slots, though the spell's effect is as if cast with a 1st-level slot.\n   Alternatively, when you light the candle for the first time, you can cast the Gate spell with it. Doing so destroys the candle.",
-		attunement : true
+		description : "This slender taper is dedicated to a deity and shares that deity's alignment. Lit, it sheds dim light in a 30-ft radius for up to 4 hours and grants benefits to creatures of matching alignment in the light.",
+		descriptionFull : "This slender taper is dedicated to a deity and shares that deity's alignment. The candle's alignment can be detected with the Detect Evil and Good spell. The DM chooses the god and associated alignment or determines the alignment randomly.\n\n" + toUni("d20\tAlignment\td20\tAlignment") + "\n1-2\tChaotic evil\t10-11\tNeutral\n3-4\tChaotic neutral\t12-13\tNeutral good\n5-7\tChaotic good\t14-15\tLawful evil\n8-9\tNeutral evil\t16-17\tLawful neutral\n\t\t\t18-20\tLawful good\n\nThe candle's magic is activated when the candle is lit, which requires an action. After burning for 4 hours, the candle is destroyed. You can snuff it out early for use at a later time. Deduct the time it burned in increments of 1 minute from the candle's total burn time.\n   While lit, the candle sheds dim light in a 30-foot radius. Any creature within that light whose alignment matches that of the candle makes attack rolls, saving throws, and ability checks with advantage. In addition, a cleric or druid in the light whose alignment matches the candle's can cast 1st-level spells he or she has prepared without expending spell slots, though the spell's effect is as if cast with a 1st-level slot.\n   Alternatively, when you light the candle for the first time, you can cast the Gate spell with it. Doing so destroys the candle.",
+		attunement : true,
+		allowDuplicates : true,
+		usages : "240 min",
+		recovery : "Never",
+		spellcastingBonus : {
+			name : "1\xD7 \u0026\u0026 candle is destroyed",
+			spells : ["gate"],
+			selection : ["gate"],
+			firstCol : "1\xD7"
+		},
+		action : [["action", " (light)"]],
+		choices : ["Chaotic Evil", "Chaotic Neutral", "Chaotic Good", "Neutral Evil", "Neutral", "Neutral Good", "Lawful Evil", "Lawful Neutral", "Lawful Good"],
+		"chaotic evil" : {
+			description : "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are chaotic evil have adv. on attacks, saves, and checks, while CE clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently."
+		},
+		"chaotic neutral" : {
+			description : "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are chaotic neutral have adv. on attacks, saves, and checks, while CN clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently."
+		},
+		"chaotic good" : {
+			description : "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are chaotic good have adv. on attacks, saves, and checks, while CG clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently."
+		},
+		"neutral evil" : {
+			description : "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are neutral evil have adv. on attacks, saves, and checks, while NE clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently."
+		},
+		"neutral" : {
+			description : "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are neutral have adv. on attacks, saves, and checks, while N clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently."
+		},
+		"neutral good" : {
+			description : "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are neutral good have adv. on attacks, saves, and checks, while NG clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently."
+		},
+		"lawful evil" : {
+			description : "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are lawful evil have adv. on attacks, saves, and checks, while LE clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently."
+		},
+		"lawful neutral" : {
+			description : "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are lawful neutral have adv. on attacks, saves, and checks, while LN clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently."
+		},
+		"lawful good" : {
+			description : "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are lawful good have adv. on attacks, saves, and checks, while LG clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently."
+		}
 	},
 	"cape of the mountebank" : { // contributed by Smashman
 		name : "Cape of the Mountebank",
@@ -813,24 +851,48 @@ var Base_MagicItemsList = {
 		usages : 10,
 		recovery : "Never"
 	},
-	"circlet of blasting" : {
+	"circlet of blasting" : { // contains contributions by Larry Hoy
 		name : "Circlet of Blasting",
 		source : [["SRD", 214], ["D", 158]],
 		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		description : "",
-		descriptionFull : "While wearing this circlet, you can use an action to cast the Scorching Ray spell with it. When you make the spell's attacks, you do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn."
+		description : "While wearing this circlet, I can use an action to cast the Scorching Ray spell with it. When I make the spell's attacks, I do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn.",
+		descriptionFull : "While wearing this circlet, you can use an action to cast the Scorching Ray spell with it. When you make the spell's attacks, you do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn.",
+		usages : 1,
+		recovery : "dawn",
+		fixedDC : 13,
+		spellcastingBonus : {
+			name : "Once per dawn",
+			spells : ["scorching ray"],
+			selection : ["scorching ray"],
+			firstCol : "oncelr"
+		}
 	},
-	"cloak of arachnida" : {
+	"cloak of arachnida" : { // finished
 		name : "Cloak of Arachnida",
 		source : [["SRD", 214], ["D", 158]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "This cloak grants me resistance to poison damage, climbing speed equal to my walking speed, even along vertical surfaces and upside down while keeping my hands free, freedom from being caught in webs, the ability to move through webs as if just difficult terrain, and the ability to cast Web once per dawn.",
 		descriptionFull : "This fine garment is made of black silk interwoven with faint silvery threads. While wearing it, you gain the following benefits:\n \u2022 You have resistance to poison damage.\n \u2022 You have a climbing speed equal to your walking speed.\n \u2022 You can move up, down, and across vertical surfaces and upside down along ceilings, while leaving your hands free.\n \u2022 You can't be caught in webs of any sort and can move through webs as if they were difficult terrain.\n \u2022 You can use an action to cast the Web spell (save DC 13). The web created by the spell fills twice its normal area. Once used, this property of the cloak can't be used again until the next dawn.",
-		attunement : true
+		attunement : true,
+		usages : 1,
+		recovery : "dawn",
+		additional : "cast web",
+		fixedDC : 13,
+		spellcastingBonus : {
+			name : "Once per dawn",
+			spells : ["web"],
+			selection : ["web"],
+			firstCol : "oncelr"
+		},
+		spellChanges : {
+			"web": {
+				description : "2\xD7 20-ft cubes, anchored, all save or restrained; dif. ter.; lightly obscures; Str check vs. DC 13 to free"
+			}
+		}
 	},
 	"cloak of displacement" : { // contributed by Smashman
 		name : "Cloak of Displacement",

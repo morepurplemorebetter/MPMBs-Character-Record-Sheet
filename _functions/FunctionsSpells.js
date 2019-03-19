@@ -188,10 +188,10 @@ function ApplySpell(FldValue, rememberFldName) {
 			// If this spell is gained from an item, remove components
 			if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
 				aSpell.components = "M\u0192";
-				aSpell.compMaterial = "Spells cast by magic items don't require any components other than the magic item itself and those specified.";
+				aSpell.compMaterial = "Spells cast by magic items don't require any components other than the magic item itself.";
 				aSpell.description = aSpell.description.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
 				if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
-				aSpell.changesObj["Magic Item"] = "\n - Spells cast by magic items don't require any components except the magic item itself and those specified by it.";
+				aSpell.changesObj["Magic Item"] = "\n - Spells cast by magic items don't require any components except the magic item itself, unless otherwise specified in the magic item's description.";
 			}
 			// If this spell is gained from an item, feat, or race, remove scaling effects
 			if (aSpell.level && aCast && ((/^(item|feat|race)$/i).test(aCast.typeSp) || (aCast.refType && (/^(item|feat|race)$/i).test(aCast.refType)))) {
