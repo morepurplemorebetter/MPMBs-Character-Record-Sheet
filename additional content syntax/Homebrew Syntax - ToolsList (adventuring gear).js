@@ -21,12 +21,12 @@ var iFileName = "Homebrew Syntax - ToolsList (adventuring gear).js"; // Optional
 RequiredSheetVersion(12.999); // Optional; This is the minimum required version number of the sheet for the script to work. If the sheet being used to import the script is of an earlier version, the user will be warned
 
 ToolsList["disguise kit"] = { //Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
-	
+
 	infoname : "Disguise kit [25 gp]", //Required; This is the name as it will appear in the equipment menu
-	
+
 	name : "Disguise kit", //Required; The name as it will be put into the equipment table
-	
+
 	amount : "", //Required; The amount as will be put into the equipment table. You can put "" here if you like
-	
+
 	weight : 3 //Required, has to be a number; The weight as will be put into the equipment table. Note that the total weight is calculated as Amount×Weight. You can put "" here if you like
 };

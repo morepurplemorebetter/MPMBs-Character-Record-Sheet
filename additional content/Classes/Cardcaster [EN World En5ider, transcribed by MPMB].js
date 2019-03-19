@@ -260,7 +260,7 @@ ClassList["cardcaster"] = {
 			recovery : "short rest",
 			choices : ["VI - The Lovers", "VII - The Chariot", "VIII - Justice", "IX - The Hermit"],
 			"vi - the lovers" : {
-				name : "Signature Card: The Lovers",	
+				name : "Signature Card: The Lovers",
 				description : desc([
 					"The Lovers card is always in my hand and doesn't count towards a full hand",
 					"I can play this card twice per short rest without expending a Major Arcana Play",
@@ -268,7 +268,7 @@ ClassList["cardcaster"] = {
 				])
 			},
 			"vii - the chariot" : {
-				name : "Signature Card: The Chariot",	
+				name : "Signature Card: The Chariot",
 				description : desc([
 					"The Chariot card is always in my hand and doesn't count towards a full hand",
 					"I can play this card twice per short rest without expending a Major Arcana Play",
@@ -276,7 +276,7 @@ ClassList["cardcaster"] = {
 				])
 			},
 			"viii - justice" : {
-				name : "Signature Card: Justice",	
+				name : "Signature Card: Justice",
 				description : desc([
 					"The card Justice is always in my hand and doesn't count towards a full hand",
 					"I can play this card twice per short rest without expending a Major Arcana Play",
@@ -284,7 +284,7 @@ ClassList["cardcaster"] = {
 				])
 			},
 			"ix - the hermit" : {
-				name : "Signature Card: The Hermit",	
+				name : "Signature Card: The Hermit",
 				description : desc([
 					"The Hermit card is always in my hand and doesn't count towards a full hand",
 					"I can play this card twice per short rest without expending a Major Arcana Play",

@@ -13,7 +13,7 @@
 				This background is made by James Introcaso
 	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
 	Date:		2017-09-05 (sheet v12.998)
-	
+
 	Please support the creator of this content (James Introcaso) and download their material from DM Guild: https://www.dmsguild.com/browse.php?author=James%20Introcaso
 */
 
@@ -52,7 +52,7 @@ BackgroundList["legendary lineage"] = {
 			"I am attracted to people who don't fawn over me right away.",
 			"I often find reasons to excuse myself from large groups of people who love me for my name.",
 			"I am able to fake smile for anyone, even if I hate that person.",
-			"I always ask for people to give me free stuff because I can."		
+			"I always ask for people to give me free stuff because I can."
 		],
 		ideal : [
 			["Family",
@@ -96,7 +96,7 @@ BackgroundList["legendary lineage"] = {
 		lifestyle : "modest"
 };
 
-BackgroundFeatureList["good reputation"] = {  
+BackgroundFeatureList["good reputation"] = {
 	description : "People in positions of power and privilege are willing to take a meeting with me and grant me favors. The DM decides the extent and effect of these favors, but they should not involve lavish gifts or great personal risk to the granter.",
 	source : ["WBB:15", 10]
 };

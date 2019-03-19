@@ -14,9 +14,9 @@
 				Note that this is not the latest version of this subclass and the author of it no longer actively supports it on DMs Guild
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-01-02 (sheet v12.999)
-	
+
 	Please support the creator of this content (Stray Chow Chow) and download their material from DM Guild: https://www.dmsguild.com/browse.php?author=Stray%20Chow%20Chow
-	
+
 	Note that although the Druid is able to wild shape into blights, those won't appear in the menu. You can use these wild shapes only by typing the name of the creature into the "Make a Selection" drop-down box on the Wild Shape pages.
 	Also, this script doesn't include a way to add the Spore Servant template to wild shapes.
 */

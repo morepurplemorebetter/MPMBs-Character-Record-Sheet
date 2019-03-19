@@ -19,14 +19,14 @@ var iFileName = "Homebrew Syntax - SourceList.js"; // Optional; This is how the 
 RequiredSheetVersion(12.999); // Optional; This is the minimum required version number of the sheet for the script to work. If the sheet being used to import the script is of an earlier version, the user will be warned
 
 SourceList["UA:LDU"] = { //Object name; This is the way the source is called upon, so the way you would enter it as the "Source" in any other of the JavaScript Syntax. Note that this is case sensitive! //Also note that this has to be an unique value. Look at the default sources in the "Complete SourceList.js" file
-	
+
 	name : "Unearthed Arcana: Light, Dark, Underdark!", //Required; The name of the source as written in full. This will be used in the tooltips/mouseover text.
-	
+
 	abbreviation : "UA:LDU", //Required; The abbreviation of the source. This can only be letters and a colon! This will be used to refer to the source in the form fields //Note that this doesn't have to be the same as the way the source is called upon, but it can be for convenience
-	
+
 	group : "Unearthed Arcana", //Optional; Adding this will make the sheet put the source into a group when using the "Sources" function where you can include/exclude sources. // The default options for this are "Unearthed Arcana", "Official Sources", "Official Sources (small)", and "default". // If you enter "default", the source can't be excluded using the "Sources" function
-	
+
 	url : "http://media.wizards.com/2016/dnd/downloads/UA_Cleric.pdf", //Optional; A link to the source if it can be found on the internet. This link is used in the Source Selection Dialogue
-	
+
 	date : "2017/09/27", //Optional; the date of the resource, written as year/month/day
 }

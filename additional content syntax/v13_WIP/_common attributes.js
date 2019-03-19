@@ -391,7 +391,7 @@ shieldAdd : "Wooden Buckler",
 shieldAdd : ["Magical Buckler", 1, 2],
 /*	shieldAdd // OPTIONAL //
 	TYPE:	string or array with three entries
-	USE:	set the shield on the 1st page as well as its bonus to AC and weight 
+	USE:	set the shield on the 1st page as well as its bonus to AC and weight
 
 	This attribute can be one of two type of entries:
 	1)	string
@@ -408,8 +408,8 @@ shieldAdd : ["Magical Buckler", 1, 2],
 			This is used to fill out the AC of the shield, regardless of any magical modifiers.
 		2.3	number
 			This is used to fill the weight of the shield in lb.
-		
-	
+
+
 	The shield will only be added if the AC bonus is more or equal to that of the current shield.
 */
 
@@ -877,7 +877,7 @@ spellChanges : {
 	Each sub-object must have a 'changes' attribute, a string, explaining what was changed.
 	This 'changes' attribute is amended to the full spell description in the tooltip.
 	Use it to make clear how the spell now differs from the original version.
-	
+
 	// NOT ALL SpellsList ATTRIBUTES SUPPORTED //
 	As these attributes are only looked into when the fields on the sheet are filled with the spell's attributes,
 	there is no point in using this to change the 'classes', 'level', or 'source' attribute of a SpellsList entry.
@@ -1102,7 +1102,7 @@ calcChanges : {
 		but not for the 'Ability Save DC' on the 1st page.
 		For the attacks section, this is only run for cantrips/spells that are recognized, not manually added.
 
-		This attribute is not used for 
+		This attribute is not used for
 
 		// 1st array entry //
 		The function should return the number it wishes to add/remove as a number.
@@ -1303,7 +1303,7 @@ extraAC : [{
 /*	extraAC // OPTIONAL //
 	TYPE:	array of objects (variable length) or just a single object
 	USE:	add modifier and description to AC magic/misc fields
-	
+
 	The 'mod' attribute has to be present in each object.
 	All other attributes are optional.
 	See below for an explanation of each attribute.

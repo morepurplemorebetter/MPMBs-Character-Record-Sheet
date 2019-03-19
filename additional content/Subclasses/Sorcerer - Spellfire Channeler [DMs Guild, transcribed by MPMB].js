@@ -12,11 +12,11 @@
 				This is taken from the 'Forgotten Realms Archetypes II: Champions of Mystery' made by Jeremy Forbing & Leo David Pakirdjian (https://www.dmsguild.com/product/211385)
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
-	
+
 	Please support the creators of this content (Jeremy Forbing & Leo David Pakirdjian) and download their material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Jeremy%20Forbing  &  https://www.dmsguild.com/browse.php?x=0&y=0&author=Leo%20David%20Pakirdjian
-	
+
 	Note:		Because this subclass is so verbose, not all features will fit into the Class Features section of the character sheet and the field will overflow!
-	
+
 	Caution:	MorePurpleMoreBetter advises against using this subclass as it breaks game balance (it is clearly overpowered). This code was made on commission for a patron.
 */
 

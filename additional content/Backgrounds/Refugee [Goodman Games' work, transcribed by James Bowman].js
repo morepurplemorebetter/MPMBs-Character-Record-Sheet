@@ -13,7 +13,7 @@
 				This subrace is made by Goodman Games
 	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
 	Date:		2017-02-12 (sheet v12.81)
-	
+
 	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: https://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
 */
 
@@ -58,10 +58,10 @@ BackgroundList["refugee"] = {
 			["Cooperation",
 				"Cooperation: You are only as strong as the weakest amongst you and must stand ready to assist others when they falter. (Good)"
 			],
-			["Stability", 
+			["Stability",
 				"Stability: There is no greater aspiration in life than to possess a home or other place where one is safe and secure. (Lawful)"
 			],
-			["Self-Reliance", 
+			["Self-Reliance",
 				"Self-Reliance: The ability to provide for oneself liberates you from the need to rely on others. (Chaotic)"
 			],
 			["Vigilance",
@@ -70,7 +70,7 @@ BackgroundList["refugee"] = {
 			["Might",
 				"Might: If someone is not strong enough to hold what is theirs, you have every right to take it for your own. (Evil)"
 			],
-			["Faith", 
+			["Faith",
 				"Faith: Trust in the gods to guide you through hardships and they shall eventually put you where they intend for you to be. (Any)"
 			]
 		],
@@ -95,7 +95,7 @@ BackgroundList["refugee"] = {
 		lifestyle : "poor"
 };
 
-BackgroundFeatureList["far-flung friends"] = {  
-	description : "In communities that are now home to my kith and kin, I can count on housing, food, free advice, and other assistance so long as it doesn’t threaten the lives and well-being of those lending me aid. The DM will decide whether or not a particular community has fellow refugees amongst its population.",
+BackgroundFeatureList["far-flung friends"] = {
+	description : "In communities that are now home to my kith and kin, I can count on housing, food, free advice, and other assistance so long as it doesnï¿½t threaten the lives and well-being of those lending me aid. The DM will decide whether or not a particular community has fellow refugees amongst its population.",
 	source : ["FEF1:G", 14]
 };

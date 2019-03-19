@@ -5,16 +5,16 @@
 	-KEEP IN MIND-
 	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
- 
+
 /*  -INFORMATION-
 	Subject:	Class
 	Effect:		This script adds the class called "Alchemist" and its 3 subclasses known as Research Focuses "Arcane Distiller", "Grenadier", and "Metamorph"
 				This is taken from DawnforgedCast (https://dawnforgedcast.myshopify.com/products/5th-edition-alchemist-class)
 	Code by:	/u/PbFarmer
 	Date:		2017-09-22 (sheet v12.998)
- 
+
 	Code Version:	1.0
- 
+
 	Please support the creator of this content (DawnforgedCast) and download their material from their website: http://dawnforgedcast.org/
 */
 

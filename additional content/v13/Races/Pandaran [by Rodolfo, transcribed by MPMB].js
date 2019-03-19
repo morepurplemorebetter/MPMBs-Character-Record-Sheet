@@ -12,7 +12,7 @@
 	Content:	Homebrew by Rodolfo
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-06-04 (sheet v12.999)
-	
+
 	Caution:	MorePurpleMoreBetter advises against using these races as they breaks game balance (they are clearly overpowered). This code was made on commission for a patron.
 */
 

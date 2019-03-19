@@ -13,7 +13,7 @@
 				This subclass is made by Marshall Miller
 	Code by:	Murray (with amendments by MorePurpleMoreBetter)
 	Date:		2017-09-22 (sheet v12.998)
-	
+
 	Please support the creator of this content (Marshall Miller) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Marshall%20Miller
 */
 

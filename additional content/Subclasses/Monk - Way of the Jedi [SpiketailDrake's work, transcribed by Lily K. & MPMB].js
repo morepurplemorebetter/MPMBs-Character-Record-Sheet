@@ -11,7 +11,7 @@
 	Effect:		This script adds a subclass for the Monk, called "Way of the Jedi"
 				This subclass has been made by /u/SpiketailDrake
 				This code uses version 2.2 of the subclass from 2016-03-19, found here: https://redd.it/4b41ro/
-				
+
 	Code by:	Lily K. & MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
 */

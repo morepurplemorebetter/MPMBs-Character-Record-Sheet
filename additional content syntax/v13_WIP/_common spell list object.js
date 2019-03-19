@@ -114,7 +114,7 @@ spellcastingList : {
 	/*	school // OPTIONAL //
 		TYPE:	array (variable length) of spell school names as used in the spellSchoolList object
 		USE:	spells not in one of the schools listed will be excluded from the final list
-		
+
 		See the variable "Base_spellSchoolList" in the file "ListsSpells.js" for all options.
 	*/
 
@@ -122,7 +122,7 @@ spellcastingList : {
 	/*	attackOnly // OPTIONAL //
 		TYPE:	boolean
 		USE:	include/exclude spells based on if they use a spell attack
-		
+
 		If set to 'true', only includes spells with a spell attack.
 		If set to 'false', only includes spells without a spell attack.
 
@@ -135,7 +135,7 @@ spellcastingList : {
 	/*	ritual // OPTIONAL //
 		TYPE:	boolean
 		USE:	include/exclude spells based on if they are ritual spells or not
-		
+
 		If set to 'true', only includes spells that can be cast as rituals.
 		If set to 'false', only includes spells that cannot be cast as rituals.
 	*/
@@ -144,7 +144,7 @@ spellcastingList : {
 	/*	psionic // OPTIONAL //
 		TYPE:	boolean
 		USE:	include/exclude spells based on if they are psionic or not
-		
+
 		If set to 'true', only includes spells that are psionic.
 		If set to 'false', only includes spells that are not psionic.
 	*/

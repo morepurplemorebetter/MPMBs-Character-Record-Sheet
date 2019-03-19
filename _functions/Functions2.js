@@ -5464,7 +5464,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
 		}
 		for (var attr in aWea) theWea[attr] = aWea[attr];
-		
+
 		thermoTxt = thermoM("Applying the weapon's features...", false); //change the progress dialog text
 		var curDescr = What(fldBase + "Description");
 		var curRange = What(fldBase + "Range");
@@ -5576,7 +5576,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			if (fields.Range === theWea.range) fields.Range = curRange;
 		}
 	};
-	
+
 	// apply the values to the fields only if we need to either reset the fields or a weapon was found
 	if (onlyProf) {
 		Checkbox(fldBase + "Proficiency", fields.Proficiency);
@@ -6546,7 +6546,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	var metric = What("Unit System") !== "imperial";
 	if (!set) return;
 	if (!Extra) Extra = false;
-	
+
 	// function for adding all resistances of a single entry
 	var DoResistance = function(keyName, skipA) {
 		var aSet = CurrentProfs.resistance[keyName];
@@ -7358,7 +7358,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		}
 		// clean the object
 		if (!AddRemove && !tooltipArr.length) delete set[fld];
-		
+
 	}; break;
  };
 	SetStringifieds("profs");

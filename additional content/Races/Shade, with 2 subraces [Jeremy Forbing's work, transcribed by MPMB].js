@@ -13,9 +13,9 @@
 				This subclass is made by Jeremy Forbing and is part of his "Forgotten Realms Archetypes: Savagery & Shadow"
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-01-03 (sheet v12.999)
-	
+
 	Please support the creator of this content (Jeremy Forbing) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Jeremy%20Forbing
-	
+
 	Note that the Netherese Cantrip selection is not limited to just the three shools of magic in v12.999 of the sheet. This is something that is fixed in v13 of the sheet.
 */
 

@@ -1337,10 +1337,7 @@ var doThisFunctionNow = function() {
 		var todo = ClassList["improved artificer"].features[inventions[inv]];
 		for (var i = 0; i < todo.extrachoices.length; i++) {
 			var objName = todo.extrachoices[i].toLowerCase();
-			if (!todo[objName]) {
-				console.println(" Error with: " + objName); // DEBUGGING!!!
-				continue;
-			}
+			if (!todo[objName]) continue;
 			var pointsNumber = Number(objName.replace(/.*(\d+) invention point.*/, "$1"));
 			todo[objName].eval = (todo[objName].eval ? todo[objName].eval + " " : "") + "changeInventionPointsLimFea(true, " + pointsNumber + ");";
 			todo[objName].removeeval = (todo[objName].removeeval ? todo[objName].removeeval + " " : "") + "changeInventionPointsLimFea(false, " + pointsNumber + ");";
@@ -1523,7 +1520,6 @@ improvedArtificerClockworkConstructsFunctions = {
 	text : function(constr, AddRemove, fldsNtxts) {
 		var prefix = improvedArtificerClockworkConstructsFunctions.find(constr)[0];
 		if (!prefix) {
-			console.println('kanker!'); // DEBUGGING!!!
 			return; // not found
 		}
 

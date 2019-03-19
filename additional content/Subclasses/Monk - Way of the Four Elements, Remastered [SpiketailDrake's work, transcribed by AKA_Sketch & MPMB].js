@@ -12,15 +12,15 @@
 				This is a homebrewed subclass that tries to fix the PHB subclass "Way of the Four Elements"
 	Code by:	AKA_Sketch & MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
-	
+
 	This is a fan-made homebrew to replace the "Way of the Four Elements" subclass.
-	
+
 	This code is based on version 2.0 (2017-02-18) by /u/IrisBandit, taken from Reddit here: https://redd.it/5w5hlg
 	The latest iteration of version 2.0 (2017-02-24) can be found here: https://drive.google.com/file/d/0B5ttoyMfsaC7dzJ2SVdKNXhxVnM/view
 	Note that this latest iteration is different than what this code is based on
-	
+
 	IrishBandit's work, in turn, is based on the work of /u/SpiketailDrake, which is found here: https://drive.google.com/file/d/0B1pdYIcfHauwNDM2My1XeWFYSDA/view
-	
+
 	-IMPORTANT-
 	You need to first add the PHB code for the Way of the Four Elements before you add the code below, or otherwise it will produce an error
 	By adding this code to your sheet, you will no longer be able to use the PHB version of the "Way of the Four Elements" monk archetype.
@@ -31,7 +31,7 @@ var iFileName = "Monk - Way of the Four Elements, Remastered [SpiketailDrake's w
 RequiredSheetVersion(12.999);
 
 var WotFEremastered = function() {
-	
+
 	if (!ClassSubList["monk-way of the four elements"]) return;
 
 	SourceList["IB:WotFE"] = {
@@ -41,7 +41,7 @@ var WotFEremastered = function() {
 		url : "https://redd.it/5w5hlg", // this has since been updated, so the document linked to in Reddit is not what the code is based on!
 		date : "2017/02/18"
 	};
-	
+
 	ClassSubList["monk-way of the four elements"].source = ["IB:WotFE", 1];
 	ClassSubList["monk-way of the four elements"].spellcastingFactor = "default0";
 	ClassSubList["monk-way of the four elements"].spellcastingKnown = {
@@ -704,6 +704,6 @@ var WotFEremastered = function() {
 				if (n < 6) return "";
 				return (n < 11 ? 1 : n < 17 ? 2 : 3) + " extra disciplines";
 			})
-		}	
+		}
 	};
 }();

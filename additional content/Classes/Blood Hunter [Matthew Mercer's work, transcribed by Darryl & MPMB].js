@@ -21,7 +21,7 @@
 	Date:		2018-06-12 (sheet v12.999)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
-	
+
 	Please take note that multiclassing the "Order of the Profane Soul" subclass with Warlock will result in too many spells/cantrips being asked for in the spell selection dialogues.
 */
 
@@ -945,7 +945,7 @@ UpdateHybridForm = function() {
 		if (lvl >= 11) {
 			theText += "\n\u25C6 " + "Lycan Regeneration (Order of the Lycan 11, MM:OotL 2)" + "\n   " + "If I have less than half my max HP at the start of my turn, I heal myself" + "\n   " + "I regain 1 + Constitution modifier (min 1) HP; This doesn't work if I'm at 0 HP";
 			theText += "\n\u25C6 " + "Beastly Precision (Order of the Lycan 11, MM:OotL 2)" + "\n   " + "I add half my proficiency bonus (rounded down) to my predatory strikes to hit";
-		} 
+		}
 		if (lvl >= 15) theText += "\n\u25C6 " + "Pack Hunter (Order of the Lycan 15, MM:OotL 2)" + "\n   " + "I get adv. on attack rolls vs. a target if at least one of my allies is within 5 ft of it" + "\n   " + "The ally can't be incapacitated for it to grant me advantage";
 		return theText;
 	};

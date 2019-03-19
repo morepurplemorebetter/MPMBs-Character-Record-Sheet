@@ -9,8 +9,8 @@
 /*	-INFORMATION-
 	Subject:	Race
 	Effect:		This script adds a player race, called "Doppelganger"
-				This is taken from the homebrew section on D&D Beyond (https://www.dndbeyond.com/characters/races/622-doppelganger) 
-				This race is made by VillainTheory 
+				This is taken from the homebrew section on D&D Beyond (https://www.dndbeyond.com/characters/races/622-doppelganger)
+				This race is made by VillainTheory
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-11-06 (sheet v13.0.0beta6)
 */

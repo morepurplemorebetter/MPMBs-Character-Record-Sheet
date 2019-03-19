@@ -145,7 +145,7 @@ ArmourList["purple mail"] = {
 
 	This attribute can have any value you want.
 	Any armour with the same 'list' attribute will be grouped together.
-	There are two pre-defined lists that exist by default in the sheet: 
+	There are two pre-defined lists that exist by default in the sheet:
 		"magic"
 		"firstlist"
 

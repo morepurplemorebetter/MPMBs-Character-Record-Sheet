@@ -18,40 +18,40 @@ var iFileName = "Homebrew Syntax - CreatureList.js"; // Optional; This is how th
 RequiredSheetVersion(12.999); // Optional; This is the minimum required version number of the sheet for the script to work. If the sheet being used to import the script is of an earlier version, the user will be warned
 
 CreatureList["big cat"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [] //the name entered here is used to identify the input, so it has to be the same as the "name : " below, but in lower case
-	
+
 	name : "Big Cat", // Required; the name to use for the race
-	
+
 	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js". // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
-	
+
 	size : 2, // Required; the size of the race (Gargantuan = 0, Huge = 1, Large = 2, Medium = 3, Small = 4, Tiny = 5)
-	
+
 	type : "Fiend", // Required; the type of the creature. Always put something here!
-	
+
 	subtype : "devil", // Required; the subtype of the creature. Do not delete this line, but it can be just ""
-	
+
 	companion : "mount", // Optional; whether or not the creature will be added to the menu on the companion page, except the ranger's companion, that is based on other criteria.
 	/* The options are the following within the quotation marks (note the use of only lower case):
 		- "familiar" (Find Familiar spell AND Pact of the Chain warlock feature)
 		- "familiar_not_al" [only available from v13 onwards, same as "familiar" but ignored if the sheet is used for Adventurers League]
 		- "mount" (Find Steed spell)
 		- "steed" (Find Greater Steed spell)
-		- "pact_of_the_chain" (Pact of the Chain warlock feature) 
+		- "pact_of_the_chain" (Pact of the Chain warlock feature)
 		- "companion" (UA: Revised Ranger's Beast Conclave feature)
 	Note that for the creature to be available to the PHB ranger, you don't need to do anything
 	*/
-	
+
 	alignment : "Unaligned", // Required; the alignment. Always put something here!
-	
+
 	ac : 11, // Required; the armour class. Always put something here!
-	
+
 	hp : 19, //  Required; the amount of hit points. Always put something here!
-	
+
 	hd : [3, 10], //[#, die]. Required; Always put something here!
-	
+
 	speed : "45 ft", // Required; the speed of the race in feet (do not forget to put "ft" in the string)
-	
+
 	scores : [14, 20, 14, 6, 10, 6], // [Str, Dex, Con, Int, Wis, Cha] Required;
-	
+
 	saves : ["", "", "", "", "", ""], // [Str, Dex, Con, Int, Wis, Cha]. Required; The total of each Saving Throw (not just the modifier to the ability modifier). Only put something there if it is different than the normal ability score modifier (so when the creature is proficient or has other bonuses).
 
 	skills : { // Optional; any skill proficiencies the creature has. Enter the name of the skill with the total bonus in that skill, not just the proficiency bonus, but inlcude the ability score modifier as well!
@@ -59,23 +59,23 @@ CreatureList["big cat"] = { //Object name; Note the use of only lower case! Also
 	}, // if the creature has no skill proficiencies, you can delete the entire traits entry
 
 	damage_vulnerabilities : "radiant", // Optional; damage vulnerabilitie(s) the creature has. This line can be deleted if you don't have anything to put here
-	
+
 	damage_resistances : "lightning; thunder; bludgeoning, piercing, and slashing from nonmagical weapons", // Optional; damage resistance(s) the creature has. This line can be deleted if you don't have anything to put here
-	
+
 	damage_immunities : "poison", // Optional; damage immunities the creature has. This line can be deleted if you don't have anything to put here
-	
+
 	condition_immunities : "exhaustion", // Optional; conditional immunities the creature has. This line can be deleted if you don't have anything to put here
-	
+
 	senses : "Darkvision 60 ft", // Required; senses granted by the race. This text will be put in the "Senses" section on the sheet. If you don't have anything to put here, DO NOT DELETE THIS LINE, but just put ""
-	
+
 	languages : "", // Required; the language(s) known by the creature, note that they all appear as one string
-	
+
 	challengeRating : "5", // Required; the Challenge Rating of the creature. Always put something here!
-	
+
 	proficiencyBonus : 3, // Required; Proficiency Bonus the creature has. Always put something here!
-	
+
 	attacksAction : 2, // Required; The amount of attacks per Attack action the creature can do. Always put something here!
-	
+
 	attacks : [{ // Required; the attacks used for the companion and wild shape page
 			name : "Slam", // name of the attack
 			ability : 1, // the ability score used to calculate the to hit modifier (and the damage if applicable, see below). [Str=1, Dex=2, Con=3, Int=4, Wis=5, Cha=6]

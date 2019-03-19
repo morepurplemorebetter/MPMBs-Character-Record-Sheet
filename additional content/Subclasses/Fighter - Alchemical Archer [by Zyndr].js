@@ -5,7 +5,7 @@
 	-KEEP IN MIND-
 	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
- 
+
 /*  -INFORMATION-
 	Subject:    Subclass
 	Effect:     This script adds a subclass for the Fighter, called "Alchemical Archer"
@@ -16,7 +16,7 @@
 
 var iFileName = "Fighter - Alchemical Archer [by Zyndr].js";
 RequiredSheetVersion(12.999);
- 
+
 AddSubClass("fighter", "alchemical archer", {
     regExpSearch : /^(?=.*\balchemical\b)(?=.*archer).*$/i,
     subname : "Alchemical Archer",

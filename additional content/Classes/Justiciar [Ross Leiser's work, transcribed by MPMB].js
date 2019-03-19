@@ -17,10 +17,10 @@
 
 	Note that the "Division of Reformation" subclasses is not part of this script, even though it appears in the DMs Guild product mentioned above
 
-	Please support the creator of this content (Ross Leiser) and download his material from the DMs Guild website: 
+	Please support the creator of this content (Ross Leiser) and download his material from the DMs Guild website:
 	https://www.dmsguild.com/browse.php?author=Ross%20Leiser
-	
-	Check out their great subreddit for more Outlandish Adventure Productions: 
+
+	Check out their great subreddit for more Outlandish Adventure Productions:
 	https://www.reddit.com/r/OutlandishAdventure/
 */
 

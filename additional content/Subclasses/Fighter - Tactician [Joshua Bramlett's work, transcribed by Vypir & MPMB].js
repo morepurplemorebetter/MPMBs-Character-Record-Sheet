@@ -13,7 +13,7 @@
 				This subclass is made by Joshua Bramlett
 	Code by:	Bryce C. & MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
-	
+
 	Please support the creator of this content (Joshua Bramlett) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Joshua%20Bramlett
 */
 

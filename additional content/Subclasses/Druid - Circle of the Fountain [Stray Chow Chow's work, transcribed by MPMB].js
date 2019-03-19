@@ -13,7 +13,7 @@
 				This subclass is made by Stray Chow Chow
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-05-23 (sheet v12.999)
-	
+
 	Please support the creator of this content (Stray Chow Chow) and download their material from DM Guild: https://www.dmsguild.com/browse.php?author=Stray%20Chow%20Chow
 */
 

@@ -9,10 +9,10 @@
 /*	-INFORMATION-
 	Subject:	Race
 	Effect:		This script adds a player race and its 3 subraces, called "Soulbound"
-	
-				This class has been made by /u/Greypilgrim333 on the subbreddit /UnearthedArcana 
+
+				This class has been made by /u/Greypilgrim333 on the subbreddit /UnearthedArcana
 				It can be found here: https://redd.it/4wsioc/
-				
+
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-10-25 (sheet v12.998)
 */

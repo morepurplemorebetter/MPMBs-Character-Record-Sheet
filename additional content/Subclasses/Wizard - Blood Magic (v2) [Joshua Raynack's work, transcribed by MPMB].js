@@ -14,7 +14,7 @@
 				This subclass is made by Joshua Raynack
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-04-07 (sheet v12.999)
-	
+
 	Please support the creator of this content (Joshua Raynack) and download his material from DM Guild: https://www.dmsguild.com/browse.php?author=Joshua%20Raynack
 */
 

@@ -458,8 +458,7 @@ function ResetAll(GoOn, noTempl) {
 
 	thermoM(2/9); //increment the progress dialog's progress
 
-	//reset of all the form field values
-	//tDoc.resetForm(["Wildshape.Race", "Race", "Class and Levels", "Background", "Comp.Race"]);
+	// Reset of all the form field values
 	tDoc.resetForm();
 	thermoM(3/9); //increment the progress dialog's progress
 	tDoc.resetForm(); // do this twice so that all variables based on fields are also reset
@@ -500,7 +499,7 @@ function ResetAll(GoOn, noTempl) {
 	// Reset the calculation order
 	ResetTooltips();
 	setCalcOrder();
-	
+
 	thermoM(6/9); //increment the progress dialog's progress
 
 	// Call upon some functions to reset other stuff than field values
@@ -3059,7 +3058,7 @@ function SetGearVariables() {
 			}
 			toolsTypes[aType].push(key);
 		}
-		
+
 	};
 	toolsArray.sort();
 	for (var i = 0; i < toolsArray.length; i++) {
@@ -4658,7 +4657,7 @@ function ApplyFeat(input, FldNmbr) {
 		var tooltipStr = toUni(theFeat.name);
 		if (theFeat.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theFeat.prerequisite;
 		tooltipStr += stringSource(theFeat, "full,page", "\n \u2022 Source: ", ".");
-		if (theFeat.descriptionFull) tooltipStr += isArray(theFeat.descriptionFull) ? desc(theFeat.descriptionFull).replace(/^\n   /i, "\n\n") : "\n\n" + theFeat.descriptionFull;		
+		if (theFeat.descriptionFull) tooltipStr += isArray(theFeat.descriptionFull) ? desc(theFeat.descriptionFull).replace(/^\n   /i, "\n\n") : "\n\n" + theFeat.descriptionFull;
 
 		// Get the description
 		var theDesc = !theFeat.description ? "" : What("Unit System") === "imperial" ? theFeat.description : ConvertToMetric(theFeat.description, 0.5);
@@ -6287,7 +6286,7 @@ function CalcWeightCarried(manualTrigger) {
 		if (typePF) CurrentVars.weight.push("cP2M");
 		SetStringifieds("vars");
 	}
-	
+
 	var coinMod = What("Unit System") === "imperial" ? 50 : 100;
 	var weightTypes = {
 		cArm : "AC Armor Weight",

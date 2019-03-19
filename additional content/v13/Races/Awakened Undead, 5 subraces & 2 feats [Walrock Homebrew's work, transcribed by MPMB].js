@@ -14,9 +14,9 @@
 				This subclass is made by Walrock Homebrew
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-12-11 (sheet v13.0.0beta7)
-	
+
 	Please support the creator of this content (Walrock Homebrew) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Walrock%20Homebrew
-	
+
 	Note that these races have an 'original' race. Instead of making 5 versions of every race, this code only provides one variant of each of the 5 subraces, for a medium race with speed 30 ft. If you would like to have another 'base' race, you will have to either modify the code here, or manually change things on the sheet after selecting the race.
 */
 
@@ -38,7 +38,7 @@ RaceList["ghost-au"] = {
 	source : ["WH:AU", 4],
 	plural : "Ghosts",
 	size : 3,
-	speed : { 
+	speed : {
 		walk : { spd : 30, enc : 20 },
 		fly : { spd : 15, enc : 5 }
 	},

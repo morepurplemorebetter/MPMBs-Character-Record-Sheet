@@ -2139,7 +2139,7 @@ function setMIattunedVisibility(FldNmbr, force) {
 	var MIflds = ReturnMagicItemFieldsArray(FldNmbr);
 	var hideIt = How(MIflds[4]) != "";
 	if (!force && hideIt == isDisplay(MIflds[4])) return; // already the right display
-	
+
 	var isOF = FldNmbr > FieldNumbers.magicitemsD;
 	if (isOF && !isTemplVis("ASoverflow")) return; // overflow, but overflow is not visible
 
@@ -2786,7 +2786,7 @@ CHANGED ATTRIBUTES
 	weaponProfs // Optional; Array; weapon proficiencies to add [previous just 'weapons' or 'weaponprofs' depending on List]
 	armorAdd // Optional; String; name of the armor to put in the armor section (if results in higher AC) [previous 'addarmor']
 	weaponsAdd // Optional; Array; names of the weapons to put in the attack section (if there is space) [previous 'weapons']
-	
+
 
 CHANGES TO IMPLEMENT IN LIST SCRIPTS
 

@@ -9,8 +9,8 @@
 /*	-INFORMATION-
 	Subject:	Race
 	Effect:		This script adds a player race, called "Hedgehog Folk"
-				This is taken from the homebrew section on D&D Beyond (https://www.dndbeyond.com/characters/races/9921-hedgehog-folk) 
-				This race is made by Gerryv753 
+				This is taken from the homebrew section on D&D Beyond (https://www.dndbeyond.com/characters/races/9921-hedgehog-folk)
+				This race is made by Gerryv753
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-11-21 (sheet v13.0.0beta6)
 

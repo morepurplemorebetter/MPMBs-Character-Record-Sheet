@@ -10,7 +10,7 @@
 	Subject:	Race
 	Effect:		This script adds a player race, called "Canim" and its 3 subraces
 				This subrace has been made by /u/Cryyl over on /r/UnearthedArcana on Reddit (https://redd.it/45msi6/)
-				
+
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-06-05 (sheet v12.999)
 */

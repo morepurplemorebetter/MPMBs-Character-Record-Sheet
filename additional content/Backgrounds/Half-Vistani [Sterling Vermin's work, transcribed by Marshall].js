@@ -13,7 +13,7 @@
 				This background is made by /u/coolgamertagbro
 	Code by:	Marshall
 	Date:		2017-11-29 (sheet v12.999)
-	
+
 	Please support the creator of this content (Sterling Vermin Adventuring Co.) and download this and other material from there: https://sterlingvermin.com/
 */
 

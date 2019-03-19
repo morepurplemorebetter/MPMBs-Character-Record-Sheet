@@ -752,9 +752,9 @@ var Base_CreatureList = {
 			}
 		],
 		traits : [{
-				   
-																																																																																																																									 
-	   
+
+
+
 				name : "Regeneration",
 				description : "The guardian regains 10 HP at the start of its turn if it has at least 1 HP."
 			}, {
@@ -1522,14 +1522,14 @@ var Base_CreatureList = {
 				damage : [1, 6, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One bite and one claw attack as an Attack action"
-							 
+
 			}, {
 				name : "Claw",
 				ability : 1,
 				damage : [2, 4, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One claw and one bite attack as an Attack action"
-							 
+
 			}
 		],
 		traits : [{
@@ -1684,14 +1684,14 @@ var Base_CreatureList = {
 				damage : [1, 8, "piercing"],
 				range : "Melee (5 ft)",
 				description : "One bite and one claw attack as an Attack action"
-							 
+
 			}, {
 				name : "Claw",
 				ability : 1,
 				damage : [2, 6, "slashing"],
 				range : "Melee (5 ft)",
 				description : "One claw and one bite attack as an Attack action"
-							 
+
 			}
 		],
 		traits : [{

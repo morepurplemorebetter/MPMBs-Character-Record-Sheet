@@ -5794,7 +5794,7 @@ function getSpellcastingAbility(theCast) {
 	return [spAbility, casterArray];
 };
 
-// A generic function to call from a calcChanges.spellAdd object to add a certain ability score 
+// A generic function to call from a calcChanges.spellAdd object to add a certain ability score
 // dmgType has to be already escaped for use in regular expressions
 // ability has to be the three-letter abbreviation of an ability, starting with a capital
 function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, onlyRolls) {

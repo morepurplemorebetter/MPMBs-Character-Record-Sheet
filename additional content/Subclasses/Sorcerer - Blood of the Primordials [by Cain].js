@@ -5,7 +5,7 @@
 	-KEEP IN MIND-
 	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
- 
+
 /*  -INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a new bloodline for the Sorcerer, called "Blood of the Primordials"

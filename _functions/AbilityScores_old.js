@@ -19,7 +19,7 @@ function AbilityScores_Button() {
 	var Header5 = "Multiclassing Requirements";
 	var MainTxt5 = AbilityScores.improvements.classmulti.replace(/^\n/, "").replace(/^\n/, "");
 	//var Txt5Height = !MainTxt5 ? 0 : 30 + (MainTxt5.match(/\n/g) || []).length * 15;
-	
+
 	//get the ability score arrays from the fields and parse them into the global variable
 	for (var i = 0; i <= AbilityScores.abbreviations.length; i++) {
 		var AbiI = i === AbilityScores.abbreviations.length ? "HoS" : AbilityScores.abbreviations[i];
@@ -31,7 +31,7 @@ function AbilityScores_Button() {
 		AbilityScores.current[AbiI].extra2 = tempArray[4] ? tempArray[4] : "0";
 		AbilityScores.current[AbiI].feat = tempArray[5] ? tempArray[5] : "0";
 	};
-	
+
 	//The dialog for calculating the ability scores
 	var AbilityScores_Dialog = {
 		totalStr : 0,
@@ -89,8 +89,8 @@ function AbilityScores_Button() {
 				"EHoS" : enableHoS,
 				"mHoS" : enableHoS,
 				"tHoS" : enableHoS
-			});			
-			
+			});
+
 			dialog.load({
 				"img1" : allIcons.scores,
 				"oNm0" : "Current Score",
@@ -603,7 +603,7 @@ function AbilityScores_Button() {
 				"tHoS" : ASCalcTotal(elements, "HoS")
 			});
 		},
-		
+
 		//do something when the value of the HoS drop-down box changes
 		aHoS : function (dialog) {
 			var popupHoS = dialog.store()["aHoS"];
@@ -1347,36 +1347,36 @@ function AbilityScores_Button() {
 		var thermTxt = thermoM("Applying ability scores...");
 		calcStop();
 		var remCon = What("Con");
-		
+
 		ShowHonorSanity(AbilityScores_Dialog.fieldHoS);
-		
+
 		//apply the results: make the ability scores display what they are meant to display. Add the various inputs to their various remember fields
 		for (var i = 0; i <= AbilityScores.abbreviations.length; i++) {
 			var AbiI = i === AbilityScores.abbreviations.length ? "HoS" : AbilityScores.abbreviations[i];
-			
+
 			//if the HoS was not activated, don't do anything with those results
 			if (AbiI === "HoS" && !AbilityScores_Dialog.fieldHoS) continue;
-			
+
 			thermoM((i+2)/(AbilityScores.abbreviations.length+2)); // Increment the progress bar
-			
+
 			//set the value to be remembered
 			Value(AbiI + " Remember", AbilityScores_Dialog["array" + AbiI]);
-			
+
 			//set the value of the display field
 			var resultScore = AbilityScores_Dialog["total" + AbiI];
 			resultScore = isNaN(resultScore) || resultScore < 1 ? "" : resultScore;
 			Value(AbiI, resultScore);
 			Value(AbiI + " Mod", Math.round((Number(resultScore) - 10.5) * 0.5));
 		}
-		
+
 		//if Con changed, edit the HPTooltip
 		if (AbilityScores_Dialog["totalCon"] !== remCon) {
 			SetHPTooltip();
 		}
-		
+
 		// Update the weapons to make use of changes in ability scores (Finesse)
 		ReCalcWeapons();
-		
+
 		// End the progress bar
 		thermoM(thermTxt, true);
 	}

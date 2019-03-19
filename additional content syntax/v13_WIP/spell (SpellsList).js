@@ -273,7 +273,7 @@ SpellsList["sindering purple"] = {
 		conc,			concentration, up to
 		min				minute(s)
 		h				hours(s)
-	
+
 	Thus, "Concentration, up to 10 minutes" is abbreviated to "Conc, 10 min".
 */
 	save : "Int",

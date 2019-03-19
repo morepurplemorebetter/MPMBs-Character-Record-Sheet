@@ -14,9 +14,9 @@
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-04-11 (sheet v13.00.00)
 				The code will work in v12.999 but will require closing and opening the sheet before the packs are available
-	
+
 	Please support the creator of this content (Jason Mendell) and download his material from DM Guild: https://www.dmsguild.com/browse.php?author=Jason%20Mendell
-	
+
 	IMPORTANT: adding this script will remove a couple of alternative names for weapons (e.g. longsword will no longer trigger for anything other than just 'longsword')
 	Note that this content is not balanced well for all weapons and the official D&D 5e rules state that you are better off using the weapon stats from the PHB and switching out their names for something else (e.g. the sickle stats fit a kama)
 */

@@ -13,7 +13,7 @@
 				This subclass is made by Cody Faulk
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
-	
+
 	Please support the creator of this content (Cody Faulk) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Cody%20Faulk
 */
 

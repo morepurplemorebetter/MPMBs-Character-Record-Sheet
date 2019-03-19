@@ -50,5 +50,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 &nbsp;
 
-Certain parts of the content are copyright of Wizards of the Coast 
+Certain parts of the content are copyright of Wizards of the Coast
 and are including using the Open Game License version 1.0a.

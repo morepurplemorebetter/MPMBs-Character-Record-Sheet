@@ -629,7 +629,7 @@ var Base_MagicItemsList = {
 			selection : ["conjure elemental"],
 			firstCol : "oncelr"
 		},
-		usages : 1, 
+		usages : 1,
 		recovery : "dawn",
 		spellChanges : {
 			"conjure elemental" : {
@@ -693,7 +693,7 @@ var Base_MagicItemsList = {
 			selection : ["conjure elemental"],
 			firstCol : "oncelr"
 		},
-		usages : 1, 
+		usages : 1,
 		recovery : "dawn",
 		spellChanges : {
 			"conjure elemental" : {
@@ -792,7 +792,7 @@ var Base_MagicItemsList = {
 			selection : ["conjure elemental"],
 			firstCol : "oncelr"
 		},
-		usages : 1, 
+		usages : 1,
 		recovery : "dawn",
 		spellChanges : {
 			"conjure elemental" : {
@@ -2458,7 +2458,7 @@ var Base_MagicItemsList = {
 			selection : ["conjure elemental"],
 			firstCol : "oncelr"
 		},
-		usages : 1, 
+		usages : 1,
 		recovery : "dawn",
 		spellChanges : {
 			"conjure elemental" : {

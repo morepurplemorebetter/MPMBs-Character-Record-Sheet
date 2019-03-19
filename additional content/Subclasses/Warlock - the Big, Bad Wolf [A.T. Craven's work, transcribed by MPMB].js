@@ -14,7 +14,7 @@
 				This subclass is made by A.T. Craven
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
-	
+
 	Please support the creator of this content (A.T. Craven) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=A.%20T.%20Craven
 */
 

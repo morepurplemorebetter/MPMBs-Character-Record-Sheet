@@ -19,30 +19,30 @@ RequiredSheetVersion(12.999); // Optional; This is the minimum required version 
 
 BackgroundList["where i am from"] = { //Object name; Note the use of only lower case! Also note the absence of the word "var" and the use of brackets []
 	regExpSearch : /\bwhere\b.*\bi\b.*\bam\b.*\bfrom\b/i, //required; regular expression of what to look for (i.e. now it looks for any entry that has the consecutive words "where", "i", "am", and "from" in it, disregarding capitalization or words in between). If this looks too complicated, just write: /where i am from/i
-	
+
 	name : "Where I am From", //required; the name as used
-	
+
 	source : ["HB", 0], //required; the source and the page number. "HB" stands for homebrew. See the "Complete SourceList" for an overview of sources that are already defined. Or define a new source using the "Homebrew Syntax - SourceList.js". // This can be an array of arrays to indicate the things appears in multiple sources. For example, if something appears on page 7 of the Elemental Evil Player's Companion and on page 115 of the Sword Coast Adventure Guide, use the following: [["E", 7], ["S", 115]]
-	
+
 	skills : ["Deception", "Stealth"], //optional; skill proficiencies gained from having the background. If the background doesn't give fixed proficiencies, but instead gives a choice, delete this line and use the line below, "skillstxt"
-	
+
 	skillstxt : "Choose two from Deception, Insight, Persuasion, and Stealth", //optional; the text displayed when listing the skill choices the background gives. If the background only gives fixed skill proficiencies (no choices), then delete this line and only use "skills" above
-	
+
 	gold : 15, //required; the amount of gold pieces added to the Equipment section on the second page when selecting "Background's items and gold" from the "Add Equipment" menu.
-	
+
 	equipleft : [ //optional; syntax is: ["description", "amount", "weight"]. Put "" if it is nothing, don't put 0
 		["Scroll of pedigree", "", ""],
 		["Skin of fine zzar or wine", "", 5],
 	], //items as they are added to the left column of the Equipment section on the second page when selecting "Background's items and gold" from the "Add Equipment" menu.
-	
+
 	equipright : [ //optional; samy syntax as "equipleft"
 		["Dark, common clothes with hood", "", 3],
 		["Crowbar", "", 5],
 		["Belt pouch (with coins)", "", 1],
 	],
-	
+
 	feature : "Exceptional Quality", //required; the name of the background feature as it will appear on the sheet. The feature is then retrieved from the BackgroundFeatureList, see below
-	
+
 	trait : [
 		"I always have a plan for what to do when things go wrong.",
 		"I am always calm, no matter the situation. I never raise my voice or let my emotions control me.",
@@ -53,7 +53,7 @@ BackgroundList["where i am from"] = { //Object name; Note the use of only lower 
 		"The best way to get me to do something is to tell me I can't do it.",
 		"I blow up at the slightest insult."
 	], //required; A list of the personality traits that can be chosen using the "Add Features" button on the second page. This list can be any length.
-	
+
 	ideal : [
 		["Honor",
 			"Honor: I don't steal from others in the trade. (Lawful)"
@@ -74,7 +74,7 @@ BackgroundList["where i am from"] = { //Object name; Note the use of only lower 
 			"Redemption: There's a spark of good in everyone. (Good)"
 		],
 	], //required; A list of the  ideals that can be chosen using the "Add Features" button on the second page. This list can be any length. Take note of the two-step build for every ideal, this is essential!
-	
+
 	bond : [
 		"I'm trying to pay off an old debt I owe to a generous benefactor.",
 		"My ill-gotten gains go to support my family.",
@@ -83,7 +83,7 @@ BackgroundList["where i am from"] = { //Object name; Note the use of only lower 
 		"I'm guilty of a terrible crime. I hope I can redeem myself for it.",
 		"Someone I loved died because of a mistake I made. That will never happen again."
 	], //required; A list of the bonds that can be chosen using the "Add Features" button on the second page. This list can be any length.
-	
+
 	flaw : [
 		"When I see something valuable, I can't think about anything but how to steal it.",
 		"When faced with a choice between money and my friends, I usually choose the money.",
@@ -92,7 +92,7 @@ BackgroundList["where i am from"] = { //Object name; Note the use of only lower 
 		"I turn tail and run when things look bad.",
 		"An innocent person is in prison for a crime that I committed. I'm okay with that."
 	],  //required; A list of the bonds that can be chosen using the "Add Features" button on the second page. This list can be any length.
-	
+
 	extra : [
 		"Select a Criminal Specialty",
 		"Blackmailer",
@@ -105,19 +105,19 @@ BackgroundList["where i am from"] = { //Object name; Note the use of only lower 
 		"Smuggler",
 		"Spy"
 	], //optional; the extra options the background gives on the first page of the sheet (in line Background at the top there are two drop-down menus). The first entry in this array is what is used for the mouseover text. If your background offers no extra features, simply delete this entry. Make sure that text you enter here fits into the field, or it won't look as good
-	
+
 /* SYNTAX CHANGE v12.998 >> old syntax for 'tools' and 'languages' are no longer supported!! */
 	toolProfs : [["Musical instrument", 3], ["Thieves' tools", "Dex"]], // optional; this is an array with the tool proficiencies gained. Each entry can be its own array of 2 entries. The first entry is the name of the tool and the second entry is either 1) a number if the tool is yet to be chosen, or 2) the 3-letter ability score abbreviation if the tool is to be listed in the skill section and have a bonus calculated
-	
+
 	languageProfs : [1, "Elvish"], // optional; this is an array of the language proficiencies gained. An entry can either be 1) a string that represents the language learned or 2) a number which is the number of language gained that can be chosen by the player
-	
+
 	variant : ["urban bounty hunter", "pirate"], //optional; the variants this background has, using the exact names of the entry of the variant in the BackgroundSubList. If you don't want to define a variant, you can remove this line
-	
+
 	lifestyle : "comfortable", //optional; sets the lifestyle of the sheet. Options are: "wretched", "squalid", "poor", "modest", "comfortable", "wealthy", or "aristocratic"
 };
 
 BackgroundFeatureList["exceptional quality"] = {  //Note the use of only lower case!
 	description : "My accent, mannerisms, figures of speech all mark me as foreign. Curious glances are directed my way wherever I go. A nuisance, but I also gain the friendly interest of the curious. I can parley this attention into access I might not otherwise have, for me and my companions. Nobles, scholars, merchants, and guilds, might be among the interested.", //required; the description of the feature as it will be put on the sheet. Make sure that this fits into the field or it won't look so pretty.
-	
+
 	source : ["S", 149], //required; the source and the page number of the feature
 };

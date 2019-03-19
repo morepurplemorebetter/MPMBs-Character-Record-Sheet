@@ -13,7 +13,7 @@
 				This subclass is made by Mage Tower Creations: Steven M. Ross
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
-	
+
 	Please support the creator of this content (Mage Tower Creations: Steven M. Ross) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Mage%20Tower%20Creations:%20Steven%20M.%20Ross
 */
 

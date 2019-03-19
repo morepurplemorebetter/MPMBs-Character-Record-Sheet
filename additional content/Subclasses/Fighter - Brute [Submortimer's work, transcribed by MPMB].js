@@ -38,7 +38,7 @@ var theCoD = AddSubClass("fighter", "brute-giantitp", {
 			source : ["S:Brute", 0],
 			minlevel : 3,
 			description : "\n   " + "I can do additional damage with weapons that have the heavy property",
-			additional : levels.map(function (n) { 
+			additional : levels.map(function (n) {
 				return n < 3 ? "" : "+1d" + (n < 10 ? 4 : n < 18 ? 6 : 8) + " damage";
 			}),
 			calcChanges : {

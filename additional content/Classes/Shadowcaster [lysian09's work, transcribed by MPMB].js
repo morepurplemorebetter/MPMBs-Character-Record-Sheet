@@ -10,7 +10,7 @@
 	Subject:    Class
 	Effect:     This script adds the class called "Shadowcaster" with its 4 subclasses ("Nightblade", "Shadowmaster", "Shadowsmith", and "Skiamancer"), and its unique spellcasting system
 
-				This class has been made by /u/lysian09 on the subbreddit /r/DnDHomebrew 
+				This class has been made by /u/lysian09 on the subbreddit /r/DnDHomebrew
 
 				It can be found here: https://redd.it/8jxi09/
 
@@ -679,7 +679,7 @@ shadowmasters_companion_functions = {
 		if (oldLvlText !== newLvlText) ReplaceString(prefix + "Cnote.Left", newLvlText, false, oldLvlText);
 		var creaASI = ASIstring(thisCrea);
 		ReplaceString(prefix + "Cnote.Left", creaASI, false, "whenever I gain an ASI");
-		
+
 		// Update the features
 		var feature6 = "\u25C6 Combat Prowess: As an action, the shadow companion can use one of the following abilities. These can be used a number of times equal to the shadowcaster's Int mod per short rest." +
 		"\n \u2022 Frenzy: make two touch attacks against a single target." +
@@ -692,7 +692,7 @@ shadowmasters_companion_functions = {
 		} else if (oldLvl >= 6 && newLvl < 6) {
 			RemoveString(prefix + "Comp.Use.Traits", feature6, true);
 		}
-		
+
 		// Update the traits
 		var spd = What("Unit System") === "imperial" ? "60 ft" : "20 m";
 		var trait14 = "\u25C6 Dark Wings: As an action, the shadow companion can manifest or dismiss a pair of wings that give it flying speed of " + spd + ".";
@@ -704,7 +704,7 @@ shadowmasters_companion_functions = {
 			RemoveString(prefix + "Comp.Use.Features", trait14, true);
 			RemoveString(prefix + "Comp.Use.Speed", flySpd);
 		}
-		
+
 		// Update the attacks
 		if (oldLvl < 18 && newLvl >= 18) {
 			for (var i = 1; i <= 3; i++) {
