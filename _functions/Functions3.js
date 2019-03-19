@@ -99,6 +99,8 @@ function GetFeatureType(type) {
 		ApplyFeatureAttributes("class", ["warlock","eldritch invocations"], [15,0,true], ["devil's sight","","only"], false); // remove Devil's Sight
 */
 function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) {
+	if (!IsNotReset) return; //stop this function on a reset
+
 	// validate input
 	if (!lvlA) lvlA = [0,1,false];
 	if (!choiceA) choiceA = ["","",false];
@@ -2550,11 +2552,6 @@ function MagicItemClear(itemNmbr, doAutomation) {
 		if (IsNotReset) tDoc.resetForm(MIflds);
 		setMIattunedVisibility(itemNmbr);
 	}
-}
-
-// Reset all the magic items to their default
-function ResetMagicItems() {
-	for (var i = 1; i <= FieldNumbers.magicitems; i++) MagicItemClear(i, false);
 }
 
 // Change the magic item to include a selected weapon, armor, or ammunition

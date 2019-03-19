@@ -227,7 +227,7 @@ function OpeningStatement() {
 	};
 };
 
-function RemoveTooltips() {
+function ResetTooltips() {
 	var TooltipArray = [
 		"Proficiency Armor Light",
 		"Proficiency Armor Medium",
@@ -252,6 +252,7 @@ function RemoveTooltips() {
 		"Spell DC 1 Bonus",
 		"Spell DC 2 Bonus"
 	]
+	var clearCalcs = [];
 	for (var i = 1; i <= FieldNumbers.langstools; i++) {
 		TooltipArray.push("Tool " + i);
 		TooltipArray.push("Language " + i);
@@ -269,6 +270,7 @@ function RemoveTooltips() {
 	}
 	for (i = 1; i <= FieldNumbers.limfea; i++) {
 		TooltipArray.push("Limited Feature " + i);
+		clearCalcs.push("Limited Feature Max Usages " + i);
 	}
 	for (i = 1; i <= 6; i++) {
 		TooltipArray.push("Resistance Damage Type " + i);
@@ -279,6 +281,9 @@ function RemoveTooltips() {
 		clearSubmits.push(fld + ".Damage Bonus");
 		clearSubmits.push(fld + ".Damage Die");
 	}
+	for (i = 1; i <= FieldNumbers.magicitems; i++) {
+		clearSubmits.push("Extra.Magic Item Attuned " + i);
+	}
 
 	//remove the tooltips from every fieldname in the array
 	for (i = 0; i < TooltipArray.length; i++) {
@@ -287,8 +292,15 @@ function RemoveTooltips() {
 	for (i = 0; i < clearSubmits.length; i++) {
 		AddTooltip(clearSubmits[i], undefined, "");
 	};
+	for (i = 0; i < clearCalcs.length; i++) {
+		AddTooltip(clearCalcs[i], undefined, "");
+		tDoc.getField(clearCalcs[i]).setAction("Calculate", "");
+	};
 	AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
 	AddTooltip("Background Extra", 'First fill out a background in the field to the left.\n\nOnce a background is recognized that offers additional options, those additional options will be displayed here. For example, the "Origin" for the "Outlander" background.');
+	SetHPTooltip("reset");
+	setSkillTooltips(true);
+	correctMIattunedVisibility();
 };
 
 function AddResistance(input, tooltip, replaceThis, replaceMatch) {
@@ -441,16 +453,16 @@ function ResetAll(GoOn, noTempl) {
 			DoTemplate(R, "Remove"); //remove all of them
 		};
 	};
-	// Reset the calculation order
-	setCalcOrder();
 
 	setListsUnitSystem("imperial"); //reset the values of some variables to the right unit system
 
 	thermoM(2/9); //increment the progress dialog's progress
 
 	//reset of all the form field values
-	tDoc.resetForm(["Wildshape.Race", "Race", "Class and Levels", "Background", "Comp.Race"]);
+	//tDoc.resetForm(["Wildshape.Race", "Race", "Class and Levels", "Background", "Comp.Race"]);
+	tDoc.resetForm();
 	thermoM(3/9); //increment the progress dialog's progress
+	tDoc.resetForm(); // do this twice so that all variables based on fields are also reset
 	for (var i = 1; i <= FieldNumbers.limfea; i++) {
 		tDoc.getField("Limited Feature Max Usages " + i).setAction("Calculate", "");
 		tDoc.getField("Limited Feature Max Usages " + i).submitName = "";
@@ -459,7 +471,6 @@ function ResetAll(GoOn, noTempl) {
 	tDoc.getField("AC Misc Mod 2 Description").submitName = "";
 	tDoc.getField("Opening Remember").submitName = 1;
 	tDoc.getField("Character Level").submitName = 0;
-	tDoc.resetForm();
 	thermoM(4/9); //increment the progress dialog's progress
 
 	//Reset the color scheme to red
@@ -486,31 +497,33 @@ function ResetAll(GoOn, noTempl) {
 		spellsAfterUserScripts(true);
 	};
 
+	// Reset the calculation order
+	ResetTooltips();
+	setCalcOrder();
+	
+	thermoM(6/9); //increment the progress dialog's progress
+
 	// Call upon some functions to reset other stuff than field values
+	ConditionSet(true);
 	ShowCalcBoxesLines();
 	ToggleWhiteout(false);
 	ChangeFont();
 	ToggleTextSize();
 	ToggleAttacks(false);
-	CurrentVars.manual = {};
 	ToggleBlueText(false);
+	Toggle2ndAbilityDC("hide");
 	AdventureLeagueOptions("advleague#all#0");
 	SetSpellSlotsVisibility();
 	ShowHonorSanity();
-	thermoM(6/9); //increment the progress dialog's progress
 	delete CurrentVars.vislayers; LayerVisibilityOptions();
 	ShowCompanionLayer();
-	ConditionSet(true);
-	RemoveTooltips();
-	ResetMagicItems();
-	ShowAttunedMagicalItems(true);
 	if (locColumns[0] === "true") HideInvLocationColumn("Adventuring Gear ", true);
 	if (locColumns[1] === "true") HideInvLocationColumn("Extra.Gear ", true);
+	ShowAttunedMagicalItems(true); // in equipment section
 	SetHighlighting();
-	SetHPTooltip("reset");
-	setSkillTooltips(true);
 	UpdateALdateFormat();
 	DnDlogo();
+
 	thermoM(7/9); //increment the progress dialog's progress
 
 	//Reset portrait & symbol to original blank
@@ -523,9 +536,6 @@ function ResetAll(GoOn, noTempl) {
 	//re-apply the rich text (deleted because of resetting the form fields)
 	MakeSkillsMenu_SkillsOptions(["skills", "alphabeta"]);
 	SetRichTextFields();
-
-	//Set the initial state of the Ability Save DC number 2
-	Toggle2ndAbilityDC("hide");
 
 	thermoM(8/9); //increment the progress dialog's progress
 
@@ -541,6 +551,7 @@ function ResetAll(GoOn, noTempl) {
 	IsNotReset = true;
 	InitializeEverything(true, true);
 	thermoM(thermoTxt, true); // Stop progress bar
+	tDoc.dirty = true;
 };
 
 // Select the text size to use (0 for auto), or if left empty, select the default text size of 5.74 (7 for Printer Friendly)
