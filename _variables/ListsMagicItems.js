@@ -18,7 +18,7 @@ var Base_MagicItemsList = {
 		type : "armor (medium, or heavy)",
 		rarity : "uncommon",
 		description : "This armor is reinforced with adamantine, one of the hardest substances in existence. While I'm wearing it, any critical hit against me becomes a normal hit.",
-		descriptionFull : "This suit of armor is reinforced with adamantine, one of the hardest substances in existence. While you're wearing it, any critical hit against you becomes a normal hit.",
+		descriptionFull : "This suit of armor is reinforced with adamantine, one of the hardest substances in existence. While you're wearing it, any critical hit against you becomes a normal hit.\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and not all types are listed. See below for the table:\n\n" + toUni("Armor Type\tTable") + "\nChain Mail\t  F\nChain Shirt\t  F\nScale Mail  \t  F\nBreastplate\t  G\nSplint Armor\t  G\nHalf Plate Armor\t  H\nPlate Armor\t  H",
 		allowDuplicates : true,
 		chooseGear : {
 			type : "armor",
@@ -171,7 +171,18 @@ var Base_MagicItemsList = {
 		type : "armor (light, medium, or heavy)",
 		rarity : "varies",
 		description : "I have a bonus to AC while wearing this armor. The bonus is determined by the rarity of the magic item: rare (+1), very rare (+2), or legendary (+3). Select the bonus using the little square button in this magic item line.",
-		descriptionFull : "You have a bonus to AC while wearing this armor. The bonus is determined by its rarity: rare (+1), very rare (+2), or legendary (+3).\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and magic bonus, with not all types of combinations listed. See below for the table per type of armor and bonus:\n\n" + toUni("Table\tBonus\tArmor Types") + "\n  G\t  +1\tChain Mail, Chain Shirt, Leather, Scale Mail\n  H\t  +1\tBreastplate, Splint, Studded Leather\n  H\t  +2\tChain Mail, Chain Shirt, Leather, Scale Mail\n  I\t  +1\tHalf Plate, Plate, Scale Mail\n  I\t  +2\tBreastplate, Half Plate, Plate, Scale Mail, Splint, Studded Leather\n  I\t  +3\tBreastplate, Chain Mail, Chain Shirt, Half Plate\n  I\t  +3\tLeather, Plate, Splint, Studded Leather",
+		descriptionFull : "You have a bonus to AC while wearing this armor. The bonus is determined by its rarity: rare (+1), very rare (+2), or legendary (+3).\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and magic bonus, with not all types of combinations listed. See below for the table per type of armor and bonus:\n\n" + toUni("Table\tBonus\tArmor Types") +
+		"\n  G\t  +1\tChain Mail, Chain Shirt, Leather" +
+		"\n  G\t  +1\tScale Mail, Spiked Armor" +
+		"\n  H\t  +1\tBreastplate, Splint, Studded Leather" +
+		"\n  H\t  +2\tChain Mail, Chain Shirt, Leather" +
+		"\n  H\t  +2\tScale Mail, Spiked Armor" +
+		"\n  I\t  +1\tHalf Plate, Plate, Scale Mail" +
+		"\n  I\t  +2\tBreastplate, Half Plate, Plate, Scale Mail" +
+		"\n  I\t  +2\tSplint, Studded Leather" +
+		"\n  I\t  +3\tBreastplate, Chain Mail, Chain Shirt" +
+		"\n  I\t  +3\tHalf Plate, Leather, Plate" +
+		"\n  I\t  +3\tSpiked Armor, Splint, Studded Leather",
 		allowDuplicates : true,
 		chooseGear : {
 			type : "armor",
@@ -538,7 +549,7 @@ var Base_MagicItemsList = {
 			hp : "extrahp += Number(What('Character Level')); extrastring += '\\n + ' + What('Character Level') + ' from Berserker Axe (magic item)'; "
 		}
 	},
-	"boots of elvenkind" : { // contributed by AelarTheElfRogue
+	"boots of elvenkind" : { // contains contributions by AelarTheElfRogue
 		name : "Boots of Elvenkind",
 		source : [["SRD", 212], ["D", 155]],
 		type : "wondrous item",
@@ -547,9 +558,11 @@ var Base_MagicItemsList = {
 		description : "While I wear these boots, my steps make no sound, regardless of the surface I am moving across. I also have advantage on Dexterity (Stealth) checks that rely on moving silently.",
 		descriptionFull : "While you wear these boots, your steps make no sound, regardless of the surface you are moving across. You also have advantage on Dexterity (Stealth) checks that rely on moving silently.",
 		eval : function () {
-			var cloakIndx = CurrentMagicItems.known.indexOf("cloak of elvenkind");
-			if (cloakIndx !== -1 && tDoc.getField("Extra.Magic Item Attuned " + (1 + cloakIndx)).isBoxChecked(0)) {
-				SetProf("advantage", true, ["Stealth", true], "Cloak and Boots of Elvenkind (magic items)");
+			for (var i = 0; i < CurrentMagicItems.known.length; i++) {
+				if (CurrentMagicItems.known[i].indexOf("cloak of elvenkind") !== -1 && tDoc.getField("Extra.Magic Item Attuned " + (1 + i)).isBoxChecked(0)) {
+					SetProf("advantage", true, ["Stealth", true], "Cloak and Boots of Elvenkind (magic items)");
+					break;
+				}
 			}
 		},
 		removeeval : function () {
@@ -1349,7 +1362,7 @@ var Base_MagicItemsList = {
 		weight : 1,
 		action : [["action", ""]]
 	},
-	"elemental gem": { // finished
+	"elemental gem": {
 		name : "Elemental Gem",
 		source : [["SRD", 220], ["D", 167]],
 		type : "wondrous item",
@@ -1948,7 +1961,7 @@ var Base_MagicItemsList = {
 			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You don't need to eat or drink while this clear spindle orbits your head."
 		}
 	},
-	"iron bands of bilarro" : { // with contributions by AelarTheElfRogue
+	"iron bands of bilarro" : { // contains contributions by AelarTheElfRogue
 		name : "Iron Bands of Bilarro",
 		nameAlt : "Iron Bands of Binding",
 		source : [["SRD", 228], ["D", 177]],
@@ -2056,6 +2069,24 @@ var Base_MagicItemsList = {
 		fixedDC : 13,
 		spellFirstColTitle : "Ch"
 	},
+	"mithral armor" : {
+		name : "Mithral Armor",
+		nameTest : "Mithral",
+		source : [["SRD", 231], ["D", 182]],
+		type : "armor (medium, or heavy)",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "Mithral is a light, flexible metal. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or has a Strength requirement, the mithral version of the armor doesn't. A mithral chain shirt or breastplate can be worn under normal clothes. ",
+		descriptionFull : "Mithral is a light, flexible metal. A mithral chain shirt or breastplate can be worn under normal clothes. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or has a Strength requirement, the mithral version of the armor doesn't.",
+		allowDuplicates : true,
+		chooseGear : {
+			type : "armor",
+			prefixOrSuffix : "suffix",
+			excludeCheck : function (inObjKey, inObj) {
+				return !(/medium|heavy/i).test(inObj.type) || (/hide/i).test(inObj.name);
+			}
+		}
+	},
 	"nine lives stealer" : {
 		name : "Nine Lives Stealer",
 		source : [["SRD", 231], ["D", 183]],
@@ -2096,7 +2127,7 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
-	"oil of etherealness" : { // with contributions by AelarTheElfRogue
+	"oil of etherealness" : { // contains contributions by AelarTheElfRogue
 		name : "Oil of Etherealness",
 		source : [["SRD", 231], ["D", 183]],
 		type : "potion",
@@ -2117,7 +2148,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "This clear, gelatinous oil sparkles with tiny, ultrathin silver shards. The oil can coat one slashing or piercing weapon or up to 5 pieces of slashing or piercing ammunition. Applying the oil takes 1 minute. For 1 hour, the coated item is magical and has a +3 bonus to attack and damage rolls.",
 		weight : 0.5
 	},
-	"oil of slipperiness" : { // with contributions by AelarTheElfRogue
+	"oil of slipperiness" : { // contains contributions by AelarTheElfRogue
 		name : "Oil of Slipperiness",
 		source : [["SRD", 232], ["D", 184]],
 		type : "potion",
@@ -2128,7 +2159,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "This sticky black unguent is thick and heavy in the container, but it flows quickly when poured. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of a Freedom of Movement spell for 8 hours.\n   Alternatively, the oil can be poured on the ground as an action, where it covers a 10-foot square, duplicating the effect of the Grease spell in that area for 8 hours.",
 		weight : 0.5
 	},
-	"pearl of power" : { // with contributions by AelarTheElfRogue
+	"pearl of power" : { // contains contributions by AelarTheElfRogue
 		name : "Pearl of Power",
 		source : [["SRD", 232], ["D", 184]],
 		type : "wondrous item",
@@ -2373,6 +2404,43 @@ var Base_MagicItemsList = {
 		descriptionFull : "This 60-foot length of silk rope weighs 3 pounds and can hold up to 3,000 pounds. If you hold one end of the rope and use an action to speak the command word, the rope animates. As a bonus action, you can command the other end to move toward a destination you choose. That end moves 10 feet on your turn when you first command it and 10 feet on each of your turns until reaching its destination, up to its maximum length away, or until you tell it to stop. You can also tell the rope to fasten itself securely to an object or to unfasten itself, to knot or unknot itself, or to coil itself for carrying.\n   If you tell the rope to knot, large knots appear at 1-foot intervals along the rope. While knotted, the rope shortens to a 50-foot length and grants advantage on checks made to climb it.\n   The rope has AC 20 and 20 hit points. It regains 1 hit point every 5 minutes as long as it has at least 1 hit point. If the rope drops to 0 hit points, it is destroyed.",
 		weight : 3,
 		action : [["action", " (animate)"], ["bonus action", " (move/fasten/knot/coil)"]]
+	},
+	"shield, +1, +2, or +3" : {
+		name : "Shield, +1, +2, or +3",
+		source : [["SRD", 240], ["D", 200]],
+		type : "weapon (any ammunition)",
+		rarity : "varies",
+		description : "While holding this shield, I have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
+		descriptionFull : "While holding this shield, you have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
+		allowDuplicates : true,
+		choices : ["+1 Shield (uncommon)", "+2 Shield (rare)", "+3 Shield (very rare)"],
+		"+1 shield (uncommon)" : {
+			name : "Shield +1",
+			nameTest : "+1 Shield",
+			rarity : "uncommon",
+			magicItemTable : "F",
+			description : "While holding this shield, I have a +1 bonus to AC. This bonus is in addition to the shield's normal bonus to AC.",
+			allowDuplicates : true,
+			shieldAdd : "+1 Shield"
+		},
+		"+2 shield (rare)" : {
+			name : "Shield +2",
+			nameTest : "+2 Shield",
+			rarity : "rare",
+			magicItemTable : "G",
+			description : "While holding this shield, I have a +2 bonus to AC. This bonus is in addition to the shield's normal bonus to AC.",
+			allowDuplicates : true,
+			shieldAdd : "+2 Shield"
+		},
+		"+3 shield (very rare)" : {
+			name : "Shield +3",
+			nameTest : "+3 Shield",
+			rarity : "very rare",
+			magicItemTable : "H",
+			description : "While holding this shield, I have a +3 bonus to AC. This bonus is in addition to the shield's normal bonus to AC.",
+			allowDuplicates : true,
+			shieldAdd : "+3 Shield"
+		}
 	},
 	"slippers of spider climbing" : {
 		name : "Slippers of Spider Climbing",

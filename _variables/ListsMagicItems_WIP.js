@@ -6,7 +6,7 @@ var Base_MagicItemsList = {
 		type : "armor (medium, or heavy)",
 		rarity : "uncommon",
 		description : "This armor is reinforced with adamantine, one of the hardest substances in existence. While I'm wearing it, any critical hit against me becomes a normal hit.",
-		descriptionFull : "This suit of armor is reinforced with adamantine, one of the hardest substances in existence. While you're wearing it, any critical hit against you becomes a normal hit.",
+		descriptionFull : "This suit of armor is reinforced with adamantine, one of the hardest substances in existence. While you're wearing it, any critical hit against you becomes a normal hit.\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and not all types are listed. See below for the table:\n\n" + toUni("Armor Type\tTable") + "\nChain Mail\t  F\nChain Shirt\t  F\nScale Mail  \t  F\nBreastplate\t  G\nSplint Armor\t  G\nHalf Plate Armor\t  H\nPlate Armor\t  H",
 		allowDuplicates : true,
 		chooseGear : {
 			type : "armor",
@@ -156,7 +156,18 @@ var Base_MagicItemsList = {
 		type : "armor (light, medium, or heavy)",
 		rarity : "varies",
 		description : "I have a bonus to AC while wearing this armor. The bonus is determined by the rarity of the magic item: rare (+1), very rare (+2), or legendary (+3). Select the bonus using the little square button in this magic item line.",
-		descriptionFull : "You have a bonus to AC while wearing this armor. The bonus is determined by its rarity: rare (+1), very rare (+2), or legendary (+3).\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and magic bonus, with not all types of combinations listed. See below for the table per type of armor and bonus:\n\n" + toUni("Table\tBonus\tArmor Types") + "\n  G\t  +1\tChain Mail, Chain Shirt, Leather, Scale Mail\n  H\t  +1\tBreastplate, Splint, Studded Leather\n  H\t  +2\tChain Mail, Chain Shirt, Leather, Scale Mail\n  I\t  +1\tHalf Plate, Plate, Scale Mail\n  I\t  +2\tBreastplate, Half Plate, Plate, Scale Mail, Splint, Studded Leather\n  I\t  +3\tBreastplate, Chain Mail, Chain Shirt, Half Plate\n  I\t  +3\tLeather, Plate, Splint, Studded Leather",
+		descriptionFull : "You have a bonus to AC while wearing this armor. The bonus is determined by its rarity: rare (+1), very rare (+2), or legendary (+3).\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and magic bonus, with not all types of combinations listed. See below for the table per type of armor and bonus:\n\n" + toUni("Table\tBonus\tArmor Types") +
+		"\n  G\t  +1\tChain Mail, Chain Shirt, Leather" +
+		"\n  G\t  +1\tScale Mail, Spiked Armor" +
+		"\n  H\t  +1\tBreastplate, Splint, Studded Leather" +
+		"\n  H\t  +2\tChain Mail, Chain Shirt, Leather" +
+		"\n  H\t  +2\tScale Mail, Spiked Armor" +
+		"\n  I\t  +1\tHalf Plate, Plate, Scale Mail" +
+		"\n  I\t  +2\tBreastplate, Half Plate, Plate, Scale Mail" +
+		"\n  I\t  +2\tSplint, Studded Leather" +
+		"\n  I\t  +3\tBreastplate, Chain Mail, Chain Shirt" +
+		"\n  I\t  +3\tHalf Plate, Leather, Plate" +
+		"\n  I\t  +3\tSpiked Armor, Splint, Studded Leather",
 		allowDuplicates : true,
 		chooseGear : {
 			type : "armor",
@@ -1152,6 +1163,7 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "legendary",
 		magicItemTable : "I",
+		notLegalAL : true,
 		description : "",
 		descriptionFull : "Usually found in a box or pouch, this deck contains a number of cards made of ivory or vellum. Most (75 percent) of these decks have only thirteen cards, but the rest have twenty-two.\n   Before you draw a card, you must declare how many cards you intend to draw and then draw them randomly (you can use an altered deck of playing cards to simulate the deck). Any cards drawn in excess of this number have no effect. Otherwise, as soon as you draw a card from the deck, its magic takes effect. You must draw each card no more than 1 hour after the previous draw. If you fail to draw the chosen number, the remaining number of cards fly from the deck on their own and take effect all at once.\n   Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.\n   " + toUni("A Question of Enmity") + ". Two of the cards in a deck of many things can earn a character the enmity of another being. With the Flames card, the enmity is overt. The character should experience the devil's malevolent efforts on multiple occasions. Seeking out the fiend shouldn't be a simple task, and the adventurer should clash with the devil's allies and followers a few times before being able to confront the devil itself.\n   In the case of the Rogue card, the enmity is secret and should come from someone thought to be a friend or an ally. As Dungeon Master, you should wait for a dramatically appropriate moment to reveal this enmity, leaving the adventurer guessing who is likely to become a betrayer.\n\n" + toUni("1d22") + "\t" + toUni("Playing Card") + "\t" + toUni("Card") + "\n1\tAce of diamonds\tVizier*\n2\tKing of diamonds\tSun\n3\tQueen of diamonds\tMoon\n4\tJack of diamonds\tStar\n5\tTwo of diamonds\tComet*\n6\tAce of hearts\tThe Fates*\n7\tKing of hearts\tThrone\n8\tQueen of hearts\tKey\n9\tJack of hearts\tKnight\n10\tTwo of hearts\tGem*\n11\tAce of clubs\tTalons*\n12\tKing of clubs\tThe Void\n13\tQueen of clubs\tFlames\n14\tJack of clubs\tSkull\n15\tTwo of clubs\tIdiot*\n16\tAce of spades\tDonjon*\n17\tKing of spades\tRuin\n18\tQueen of spades\tEuryale\n19\tJack of spades\tRogue\n20\tTwo of spades\tBalance*\n21\tJoker (with TM)\tFool*\n22\tJoker (no TM)\tJester\n\n\n   " + toUni("Vizier") + ". At any time you choose within one year of drawing this card, you can ask a question in meditation and mentally receive a truthful answer to that question. Besides information, the answer helps you solve a puzzling problem or other dilemma. In other words, the knowledge comes with wisdom on how to apply it.\n   " + toUni("Sun") + ". You gain 50,000 XP, and a wondrous item (which the DM determines randomly) appears in your hands.\n   " + toUni("Moon") + ". You are granted the ability to cast the Wish spell 1d3 times.\n   " + toUni("Star") + ". Increase one of your ability scores by 2. The score can exceed 20 but can't exceed 24.\n   " + toUni("Comet") + ". If you single-handedly defeat the next hostile monster or group of monsters you encounter, you gain experience points enough to gain one level. Otherwise, this card has no effect.\n   " + toUni("The Fates*") + ". Reality's fabric unravels and spins anew, allowing you to avoid or erase one event as if it never happened. You can use the card's magic as soon as you draw the card or at any other time before you die.\n   " + toUni("Throne") + ". You gain proficiency in the Persuasion skill, and you double your proficiency bonus on checks made with that skill. In addition, you gain rightful ownership of a small keep somewhere in the world. However, the keep is currently in the hands of monsters, which you must clear out before you can claim the keep as yours.\n   " + toUni("Key") + ". A rare or rarer magic weapon with which you are proficient appears in your hands. The DM chooses the weapon.\n   " + toUni("Knight") + ". You gain the service of a 4th-level fighter who appears in a space you choose within 30 feet of you. The fighter is of the same race as you and serves you loyally until death, believing the fates have drawn him or her to you. You control this character.\n   " + toUni("Gem") + ". Twenty-five pieces of jewelry worth 2,000 gp each or fifty gems worth 1,000 gp each appear at your feet.\n   " + toUni("Talons") + ". Every magic item you wear or carry disintegrates. Artifacts in your possession aren't destroyed but do vanish.\n   " + toUni("The Void") + ". This black card spells disaster. Your soul is drawn from your body and contained in an object in a place of the DM's choice. One or more powerful beings guard the place. While your soul is trapped in this way, your body is incapacitated. A Wish spell can't restore your soul, but the spell reveals the location of the object that holds it. You draw no more cards.\n   " + toUni("Flames") + ". A powerful devil becomes your enemy. The devil seeks your ruin and plagues your life, savoring your suffering before attempting to slay you. This enmity lasts until either you or the devil dies.\n   " + toUni("Skull") + ". You summon an avatar of death-a ghostly humanoid skeleton clad in a tattered black robe and carrying a spectral scythe. It appears in a space of the DM's choice within 10 feet of you and attacks you, warning all others that you must win the battle alone. The avatar fights until you die or it drops to 0 hit points, whereupon it disappears. If anyone tries to help you, the helper summons its own avatar of death. A creature slain by an avatar of death can't be restored to life.\n   " + toUni("Idiot") + ". Permanently reduce your Intelligence by 1d4+1 (to a minimum score of 1). You can draw one additional card beyond your declared draws.\n   " + toUni("Donjon*") + ". You disappear and become entombed in a state of suspended animation in an extradimensional sphere. Everything you were wearing and carrying stays behind in the space you occupied when you disappeared. You remain imprisoned until you are found and removed from the sphere. You can't be located by any divination magic, but a Wish spell can reveal the location of your prison. You draw no more cards.\n   " + toUni("Ruin") + ". All forms of wealth that you carry or own, other than magic items, are lost to you. Portable property vanishes. Businesses, buildings, and land you own are lost in a way that alters reality the least. Any documentation that proves you should own something lost to this card also disappears.\n   " + toUni("Euryale") + ". The card's medusa-like visage curses you. You take a -2 penalty on saving throws while cursed in this way. Only a god or the magic of The Fates card can end this curse.\n   " + toUni("Rogue") + ". A nonplayer character of the DM's choice becomes hostile toward you. The identity of your new enemy isn't known until the NPC or someone else reveals it. Nothing less than a Wish spell or divine intervention can end the NPC's hostility toward you.\n   " + toUni("Balance") + ". Your mind suffers a wrenching alteration, causing your alignment to change. Lawful becomes chaotic, good becomes evil, and vice versa. If you are true neutral or unaligned, this card has no effect on you.\n   " + toUni("Fool") + ". You lose 10,000 XP, discard this card, and draw from the deck again, counting both draws as one of your declared draws. If losing that much XP would cause you to lose a level, you instead lose an amount that leaves you with just enough XP to keep your level.\n   " + toUni("Jester") + ". You gain 10,000 XP, or you can draw two additional cards beyond your declared draws.\n   * Found only in a deck with twenty-two cards"
 	},
@@ -2251,6 +2263,7 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "legendary",
 		magicItemTable : "I",
+		notLegalAL : true,
 		description : "",
 		descriptionFull : "This iron bottle has a brass stopper. You can use an action to speak the flask's command word, targeting a creature that you can see within 60 feet of you. If the target is native to a plane of existence other than the one you're on, the target must succeed on a DC 17 Wisdom saving throw or be trapped in the flask. If the target has been trapped by the flask before, it has advantage on the saving throw. Once trapped, a creature remains in the flask until released. The flask can hold only one creature at a time. A creature trapped in the flask doesn't need to breathe, eat, or drink and doesn't age.\n   You can use an action to remove the flask's stopper and release the creature the flask contains. The creature is friendly to you and your companions for 1 hour and obeys your commands for that duration. If you give no commands or give it a command that is likely to result in its death, it defends itself but otherwise takes no actions. At the end of the duration, the creature acts in accordance with its normal disposition and alignment.\n   An Identify spell reveals that a creature is inside the flask, but the only way to determine the type of creature is to open the flask. A newly discovered bottle might already contain a creature chosen by the DM or determined randomly.\n\n" + toUni("d100") + "\t" + toUni("Contents") + "\n01-50\tEmpty\n51\tArcanaloth\n52\tCambion\n53-54\tDao\n55-57\tDemon (type 1): barlgura, shadow demon, or vrock\n58-60\tDemon (type 2): chasme or hezrou\n61-62\tDemon (type 3): glabrezu or yochlol\n63-64\tDemon (type 4): nalfeshnee\n65\tDemon (type 5): marilith\n66\tDemon (type 6): balor or goristro\n67\tDeva\n68-69\tDevil (greater): horned devil, erinyes, ice devil, or pit fiend\n70-72\tDevil (lesser): imp, spined devil, bearded devil, barbed devil, chain devil, or bone devil\n73-74\tDjinni\n75-76\tEfreeti\n77-78\tElemental (any)\n79\tGithyanki knight\n80\tGithzerai zerth\n81-82\tInvisible stalker\n83-84\tMarid\n85-86\tMezzoloth\n87-88\tNight hag\n89-90\tNycaloth\n91\tPlanetar\n92-93\tSalamander\n94-95\tSlaad (any)\n96\tSolar\n97-98\tSuccubus/Incubus\n99\tUltroloth\n00\tXorn",
 		weight : 1
@@ -2471,6 +2484,24 @@ var Base_MagicItemsList = {
 		description : "",
 		descriptionFull : "When this 4-foot-tall mirror is viewed indirectly, its surface shows faint images of creatures. The mirror weighs 50 pounds, and it has AC 11, 10 hit points, and vulnerability to bludgeoning damage. It shatters and is destroyed when reduced to 0 hit points.\n   If the mirror is hanging on a vertical surface and you are within 5 feet of it, you can use an action to speak its command word and activate it. It remains activated until you use an action to speak the command word again.\n   Any creature other than you that sees its reflection in the activated mirror while within 30 feet of it must succeed on a DC 15 Charisma saving throw or be trapped, along with anything it is wearing or carrying, in one of the mirror's twelve extradimensional cells. This saving throw is made with advantage if the creature knows the mirror's nature, and constructs succeed on the saving throw automatically.\n   An extradimensional cell is an infinite expanse filled with thick fog that reduces visibility to 10 feet. Creatures trapped in the mirror's cells don't age, and they don't need to eat, drink, or sleep. A creature trapped within a cell can escape using magic that permits planar travel. Otherwise, the creature is confined to the cell until freed.\n   If the mirror traps a creature but its twelve extradimensional cells are already occupied, the mirror frees one trapped creature at random to accommodate the new prisoner. A freed creature appears in an unoccupied space within sight of the mirror but facing away from it. If the mirror is shattered, all creatures it contains are freed and appear in unoccupied spaces near it.\n   While within 5 feet of the mirror, you can use an action to speak the name of one creature trapped in it or call out a particular cell by number. The creature named or contained in the named cell appears as an image on the mirror's surface. You and the creature can then communicate normally.\n   In a similar way, you can use an action to speak a second command word and free one creature trapped in the mirror. The freed creature appears, along with its possessions, in the unoccupied space nearest to the mirror and facing away from it.",
 		weight : 50
+	},
+	"mithral armor" : { // finished
+		name : "Mithral Armor",
+		nameTest : "Mithral",
+		source : [["SRD", 231], ["D", 182]],
+		type : "armor (medium, or heavy)",
+		rarity : "uncommon",
+		magicItemTable : "B",
+		description : "Mithral is a light, flexible metal. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or has a Strength requirement, the mithral version of the armor doesn't. A mithral chain shirt or breastplate can be worn under normal clothes. ",
+		descriptionFull : "Mithral is a light, flexible metal. A mithral chain shirt or breastplate can be worn under normal clothes. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or has a Strength requirement, the mithral version of the armor doesn't.",
+		allowDuplicates : true,
+		chooseGear : {
+			type : "armor",
+			prefixOrSuffix : "suffix",
+			excludeCheck : function (inObjKey, inObj) {
+				return !(/medium|heavy/i).test(inObj.type) || (/hide/i).test(inObj.name);
+			}
+		}
 	},
 	"necklace of adaptation" : {
 		name : "Necklace of Adaptation",
@@ -3602,6 +3633,43 @@ var Base_MagicItemsList = {
 		descriptionFull : "You gain a +2 bonus to attack and damage rolls made with this magic weapon. In addition, you can make one attack with it as a bonus action on each of your turns.",
 		attunement : true,
 		weight : 3
+	},
+	"shield, +1, +2, or +3" : { // finished
+		name : "Shield, +1, +2, or +3",
+		source : [["SRD", 240], ["D", 200]],
+		type : "weapon (any ammunition)",
+		rarity : "varies",
+		description : "While holding this shield, I have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
+		descriptionFull : "While holding this shield, you have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
+		allowDuplicates : true,
+		choices : ["+1 Shield (uncommon)", "+2 Shield (rare)", "+3 Shield (very rare)"],
+		"+1 shield (uncommon)" : {
+			name : "Shield +1",
+			nameTest : "+1 Shield",
+			rarity : "uncommon",
+			magicItemTable : "F",
+			description : "While holding this shield, I have a +1 bonus to AC. This bonus is in addition to the shield's normal bonus to AC.",
+			allowDuplicates : true,
+			shieldAdd : "+1 Shield"
+		},
+		"+2 shield (rare)" : {
+			name : "Shield +2",
+			nameTest : "+2 Shield",
+			rarity : "rare",
+			magicItemTable : "G",
+			description : "While holding this shield, I have a +2 bonus to AC. This bonus is in addition to the shield's normal bonus to AC.",
+			allowDuplicates : true,
+			shieldAdd : "+2 Shield"
+		},
+		"+3 shield (very rare)" : {
+			name : "Shield +3",
+			nameTest : "+3 Shield",
+			rarity : "very rare",
+			magicItemTable : "H",
+			description : "While holding this shield, I have a +3 bonus to AC. This bonus is in addition to the shield's normal bonus to AC.",
+			allowDuplicates : true,
+			shieldAdd : "+3 Shield"
+		}
 	},
 	"shield of missile attraction" : {
 		name : "Shield of Missile Attraction",

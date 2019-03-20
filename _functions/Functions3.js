@@ -1999,7 +1999,9 @@ function ApplyMagicItem(input, FldNmbr) {
 		if (theMI.attunement) tooltipStr += tooltipStr ? " (requires attunement)" : "requires attunement";
 		tooltipStr = toUni(theMI.name) + (tooltipStr ? "\n" + tooltipStr[0].toUpperCase() + tooltipStr.substr(1) : "");
 
-		if (theMI.magicItemTable) {
+		if (theMI.notLegalAL) {
+			tooltipStr += "\n \u2022 Illegal in Adventurers League play";
+		} else if (theMI.magicItemTable) {
 			if (isArray(theMI.magicItemTable)) {
 				theMI.magicItemTable.sort();
 				tooltipStr += formatLineList("\n \u2022 Table: ", theMI.magicItemTable);
@@ -2013,6 +2015,10 @@ function ApplyMagicItem(input, FldNmbr) {
 				tooltipStr += " (Tier " + aTC.tier + "+; " + aTC.points + " Treasure Checkpoints)";
 			}
 			tooltipStr += ".";
+		} else if (theMI.storyItemAL) {
+			tooltipStr += "\n \u2022 Story Item (AL: only use in adventure it's found in)";
+		} else {
+			tooltipStr += "\n \u2022 Can't be traded in Adventurers League play";
 		}
 		if (theMI.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theMI.prerequisite;
 		tooltipStr += stringSource(theMI, "full,page", "\n \u2022 Source: ", ".");

@@ -161,6 +161,17 @@ MagicItemsList["staff of purple"] = {
 		"legendary"
 		"artifact"
 */
+	notLegalAL : true,
+/*	notLegalAL // OPTIONAL //
+	TYPE:	boolean
+	USE:	set this to true if it the item is not legal in Adventurers League play
+
+	If this attribute is defined, the 'magicItemTable' and 'storyItemAL' attributes are ignored.
+	Setting this to false is the same as not including this attribute.
+
+	If none of the three attributes 'magicItemTable', 'storyItemAL', or 'notLegalAL' are defined,
+	the magic item will be treated as one that can be used in AL, but can't be traded.
+*/
 	magicItemTable : "H",
 	magicItemTable : ["B", "E"],
 /*	magicItemTable // OPTIONAL //
@@ -172,6 +183,23 @@ MagicItemsList["staff of purple"] = {
 	The string (or each string in the array) contains just a single letter indicating the table.
 	For most items this will be a string,
 	but you can have an array with multiple entries for items that appear on multiple tables.
+
+	This attribute is ignored if the 'notLegalAL' attribute is defined.
+	If this attribute is defined, the 'storyItemAL' attribute is ignored.
+
+	If none of the three attributes 'magicItemTable', 'storyItemAL', or 'notLegalAL' are defined,
+	the magic item will be treated as one that can be used in AL, but can't be traded.
+*/
+	storyItemAL : true,
+/*	storyItemAL // OPTIONAL //
+	TYPE:	boolean
+	USE:	set this to true if it is a 'Story Item' in Adventurers League play
+
+	This attribute is ignored if the 'magicItemTable' or 'storyItemAL' attribute is defined.
+	Setting this to false is the same as not including this attribute.
+
+	If none of the three attributes 'magicItemTable', 'storyItemAL', or 'notLegalAL' are defined,
+	the magic item will be treated as one that can be used in AL, but can't be traded.
 */
 	attunement : true,
 /*	attunement // OPTIONAL //
