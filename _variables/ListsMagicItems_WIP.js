@@ -3,7 +3,7 @@ var Base_MagicItemsList = {
 		name : "Adamantine Armor",
 		nameTest : "Adamantine",
 		source : [["SRD", 207], ["D", 150]],
-		type : "armor (medium, or heavy)",
+		type : "armor (medium or heavy)",
 		rarity : "uncommon",
 		description : "This armor is reinforced with adamantine, one of the hardest substances in existence. While I'm wearing it, any critical hit against me becomes a normal hit.",
 		descriptionFull : "This suit of armor is reinforced with adamantine, one of the hardest substances in existence. While you're wearing it, any critical hit against you becomes a normal hit.\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and not all types are listed. See below for the table:\n\n" + toUni("Armor Type\tTable") + "\nChain Mail\t  F\nChain Shirt\t  F\nScale Mail  \t  F\nBreastplate\t  G\nSplint Armor\t  G\nHalf Plate Armor\t  H\nPlate Armor\t  H",
@@ -20,7 +20,6 @@ var Base_MagicItemsList = {
 		name : "Ammunition, +1, +2, or +3",
 		source : [["SRD", 207], ["D", 150]],
 		type : "weapon (any)",
-		rarity : "varies",
 		description : "I have a bonus to attack and damage rolls made with this piece of magic ammunition. The bonus is determined by the rarity of the magic item: uncommon (+1), rare (+2), or very rare (+3). Once it hits a target, the ammunition is no longer magical. Select the bonus using the little square button in this magic item line.",
 		descriptionFull : "You have a bonus to attack and damage rolls made with this piece of magic ammunition. The bonus is determined by the rarity of the ammunition: uncommon (+1), rare (+2), or very rare (+3). Once it hits a target, the ammunition is no longer magical.",
 		allowDuplicates : true,
@@ -154,7 +153,6 @@ var Base_MagicItemsList = {
 		name : "Armor, +1, +2, or +3",
 		source : [["SRD", 208], ["D", 152]],
 		type : "armor (light, medium, or heavy)",
-		rarity : "varies",
 		description : "I have a bonus to AC while wearing this armor. The bonus is determined by the rarity of the magic item: rare (+1), very rare (+2), or legendary (+3). Select the bonus using the little square button in this magic item line.",
 		descriptionFull : "You have a bonus to AC while wearing this armor. The bonus is determined by its rarity: rare (+1), very rare (+2), or legendary (+3).\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and magic bonus, with not all types of combinations listed. See below for the table per type of armor and bonus:\n\n" + toUni("Table\tBonus\tArmor Types") +
 		"\n  G\t  +1\tChain Mail, Chain Shirt, Leather" +
@@ -452,7 +450,6 @@ var Base_MagicItemsList = {
 		name : "Belt of Giant Strength",
 		source : [["SRD", 211], ["D", 155]],
 		type : "wondrous item",
-		rarity : "varies",
 		description : "Set the type of giant using the button in this line. While wearing this belt, my Strength score changes to a certain number depending on the type of giant the belt is associated with, provided that my Strength is not already that amount or higher.",
 		descriptionFull : "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt's score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The belt of stone giant strength and the belt of frost giant strength look different, but they have the same effect.\n\n" + toUni("Type") + "\t\t" + toUni("Str") + "\t" + toUni("Rarity") + "\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant\t\t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
 		attunement : true,
@@ -2053,6 +2050,7 @@ var Base_MagicItemsList = {
 		source : [["SRD", 226], ["D", 175]],
 		type : "wondrous item",
 		rarity : "rare",
+		magicItemTable : "G",
 		description : "",
 		descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   A brass horn summons 3d4+3 berserkers. To use the brass horn, you must be proficient with all simple weapons.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands.",
 		weight : 2
@@ -2082,6 +2080,7 @@ var Base_MagicItemsList = {
 		source : [["SRD", 226], ["D", 175]],
 		type : "wondrous item",
 		rarity : "rare",
+		magicItemTable : "G",
 		description : "",
 		descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   The silver horn summons 2d4+2 berserkers.\n   The berserkers are friendly to you and your companions and follow your commands.",
 		weight : 2
@@ -2489,7 +2488,7 @@ var Base_MagicItemsList = {
 		name : "Mithral Armor",
 		nameTest : "Mithral",
 		source : [["SRD", 231], ["D", 182]],
-		type : "armor (medium, or heavy)",
+		type : "armor (medium or heavy)",
 		rarity : "uncommon",
 		magicItemTable : "B",
 		description : "Mithral is a light, flexible metal. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or has a Strength requirement, the mithral version of the armor doesn't. A mithral chain shirt or breastplate can be worn under normal clothes. ",
@@ -3638,7 +3637,6 @@ var Base_MagicItemsList = {
 		name : "Shield, +1, +2, or +3",
 		source : [["SRD", 240], ["D", 200]],
 		type : "weapon (any ammunition)",
-		rarity : "varies",
 		description : "While holding this shield, I have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
 		descriptionFull : "While holding this shield, you have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
 		allowDuplicates : true,
@@ -4577,7 +4575,6 @@ var Base_MagicItemsList = {
 		name : "Weapon, +1, +2, or +3",
 		source : [["SRD", 250], ["D", 213]],
 		type : "weapon (any)",
-		rarity : "varies",
 		description : "I have a bonus to attack and damage rolls made with this magic weapon. The bonus is determined by the rarity of the magic item: uncommon (+1), rare (+2), or very rare (+3). Select the bonus using the little square button in this magic item line.",
 		descriptionFull : "You have a bonus to attack and damage rolls made with this magic weapon. The bonus is determined by the weapon's rarity: uncommon (+1), rare (+2), or very rare (+3).",
 		allowDuplicates : true,
@@ -4597,7 +4594,7 @@ var Base_MagicItemsList = {
 		"+2 weapon (rare)" : {
 			name : "Weapon +2",
 			rarity : "rare",
-			magicItemTable : "F",
+			magicItemTable : "G",
 			description : "I have a +2 bonus to attack and damage rolls made with this magic weapon.",
 			allowDuplicates : true
 		},
