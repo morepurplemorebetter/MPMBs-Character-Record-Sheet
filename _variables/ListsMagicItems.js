@@ -2405,7 +2405,7 @@ var Base_MagicItemsList = {
 	"shield, +1, +2, or +3" : {
 		name : "Shield, +1, +2, or +3",
 		source : [["SRD", 240], ["D", 200]],
-		type : "weapon (any ammunition)",
+		type : "armor (shield)",
 		description : "While holding this shield, I have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
 		descriptionFull : "While holding this shield, you have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
 		allowDuplicates : true,
