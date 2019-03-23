@@ -221,7 +221,8 @@ var Base_ClassList = {
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 20,
 				description : "\n   " + "I add +4 to both my Strength and Constitution, and their maximums increase to 24",
-				scores : [4,0,4,0,0,0]
+				scores : [4,0,4,0,0,0],
+				scoresMaximum : [24,0,24,0,0,0]
 			}
 		}
 	},

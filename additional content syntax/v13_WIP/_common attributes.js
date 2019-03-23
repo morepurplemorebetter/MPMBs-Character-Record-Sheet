@@ -684,6 +684,26 @@ scoresOverride : [0, 0, 0, 19, 0, 0],
 	but only if the attribute 'scorestxt' is not present in the same feature.
 */
 
+scoresMaximum : [24, 0, 24, 0, 0, 0],
+/*	scores // OPTIONAL //
+	TYPE:	array of six numbers
+	USE:	change ability score maximum in the Ability Scores dialog
+
+	By default, the ability score increases can never increase an ability score above 20.
+	Using this attribute, you can change that maximum.
+	Note that the maximum has no effect on something set by the 'scoresOverride' attribute.
+
+	This array requires exactly six entries, each being a number.
+	The entries are: [Str, Dex, Con, Int, Wis, Cha].
+	You should put a 0 for an ability score that gets no change in maximum.
+
+	You can enter a lower maximum (1-19), the default of 20 will only be used if no maximum is set by anything.
+	If multiple things change the maximum, the highest of those will be used.
+
+	The array will also be used to generate a textual description of the improvement for the dialog and tooltips,
+	but only if the attribute 'scorestxt' is not present in the same feature.
+*/
+
 
 // >>>>>>>>>>>>>>>>>>>> //
 // >>> Spellcasting >>> //

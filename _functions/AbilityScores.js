@@ -1,17 +1,11 @@
 // a function to set ability scores to the global variable
-function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isOverride) {
+function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpecial) {
 	if (!scoresA) scoresA = [];
 	// initialize some variables
-	var getHighestAttr = function(obj) {
-		var theHighest = 0;
-		for (var a in obj) {
-			if (obj[a] > theHighest) theHighest = obj[a];
-		}
-		return theHighest;
-	}
 	initiateCurrentStats();
+	if (isSpecial && !CurrentStats[isSpecial]) return; // the special type doesn't exist
 	inType = GetFeatureType(inType);
-	var type = isOverride ? "override" : inType;
+	var type = isSpecial ? isSpecial.replace(/s$/, '') : inType;
 	var dialogTxt = dialogTxt ? dialogTxt.replace(/^( |\n)*.*: |;$/g, '') : "";
 	var curStat = false;
 	// Get the column object
@@ -29,18 +23,24 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isOverr
 		if (!scoresA[s]) continue;
 		if (AddRemove && !dialogTxt && s < 7) {
 			var theScoreName = s < 6 ? AbilityScores.names[s] : What("HoSRememberState");
-			var theScore = isOverride ? theScoreName + " is " + scoresA[s]
+			var theScore = type == "override" ? theScoreName + " is " + scoresA[s]
+				: type == "maximum" ? theScoreName + " maximum is " + scoresA[s]
 				: (scoresA[s] > 0 ? "+" : "") + scoresA[s] + " " + theScoreName;
 			imprTxtArr.push(theScore);
 		}
-		if (isOverride) {
+		if (isSpecial) {
 			if (AddRemove) {
-				CurrentStats.overrides[s][NameEntity] = scoresA[s];
+				CurrentStats[isSpecial][s][NameEntity] = scoresA[s];
 			} else {
-				delete CurrentStats.overrides[s][NameEntity];
+				delete CurrentStats[isSpecial][s][NameEntity];
 			}
 			// now set the new highest override
-			curStat.scores[s] = getHighestAttr(CurrentStats.overrides[s]);
+			curStat.scores[s] = 0;
+			for (var a in CurrentStats[isSpecial][s]) {
+				var thisStat = CurrentStats[isSpecial][s][a];
+				if (thisStat > curStat.scores[s]) curStat.scores[s] = thisStat;
+			}
+			if (type == "maximum" && !curStat.scores[s]) curStat.scores[s] = 20;
 		} else {
 			if (AddRemove) {
 				curStat.scores[s] += scoresA[s];
@@ -52,7 +52,11 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isOverr
 	// Set the descriptive text to the CurrentStats global variable
 	if (!dialogTxt) dialogTxt = formatLineList("", imprTxtArr);
 	if (AddRemove) {
-		CurrentStats.txts[inType][NameEntity] = dialogTxt;
+		if (CurrentStats.txts[inType][NameEntity]) {
+			CurrentStats.txts[inType][NameEntity] += "; " + dialogTxt;
+		} else {
+			CurrentStats.txts[inType][NameEntity] = dialogTxt;
+		}
 	} else {
 		delete CurrentStats.txts[inType][NameEntity];
 	}
@@ -92,6 +96,10 @@ function initiateCurrentStats(forceIt) {
 			type : 'override',
 			name : "Magical Override",
 			scores : [0,0,0,0,0,0,0]
+		}, {
+			type : 'maximum',
+			name : "Max Total*",
+			scores : [20,20,20,20,20,20,20]
 		}],
 		"txts" : {
 			"classes" : {},
@@ -99,7 +107,8 @@ function initiateCurrentStats(forceIt) {
 			"feats" : {},
 			"items" : {}
 		},
-		"overrides" : [{},{},{},{},{},{},{}]
+		"overrides" : [{},{},{},{},{},{},{}],
+		"maximums" :  [{},{},{},{},{},{},{}]
 	}
 	SetStringifieds("stats");
 }
@@ -127,9 +136,10 @@ function AbilityScores_Button(onlySetTooltip) {
 	// initialize some variables
 	initiateCurrentStats();
 	var titleTxt = "Ability Scores";
-	var explanatoryTxt = "The standard array is: 15, 14, 13, 12, 10, and 8.";
-	explanatoryTxt += "\nNormal Point Buy is 27 points and you can't have a Score Base over 15.";
-	explanatoryTxt += "\nClass ability score improvements can't take the total over 20.";
+	var explanatoryTxt = "The standard array is: 15, 14, 13, 12, 10, and 8." +
+	"\nNormal Point Buy is 27 points and you can't have a Score Base over 15." +
+	"\nUnless otherwise noted, ability score improvements can't take the total over 20." +
+	"\n*Override columns will ignore the maximum total.";
 	var curHoS = What("HoSRememberState");
 	var asab2 = ["St", "Dx", "Cn", "In", "Ws", "Ch", "HS"];
 	var asab3 = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
@@ -254,6 +264,7 @@ function AbilityScores_Button(onlySetTooltip) {
 	var openStatsDialog = function() {
 		// Create the columns
 		var theColumns = [];
+
 		// start at 1, because base column is already there
 		for (var i = 1; i < CurrentStats.cols.length; i++) {
 			var theStat = CurrentStats.cols[i];
@@ -265,7 +276,7 @@ function AbilityScores_Button(onlySetTooltip) {
 					item_id : aNo + "Nm",
 					font : "dialog",
 					bold : true,
-					char_width : theStat.name.indexOf("Override") == -1 ? 5 : 6,
+					char_width : theStat.name.toLowerCase().indexOf("override") == -1 ? 5 : 6,
 					height : 30,
 					alignment : "align_left",
 					wrap_name : true,
@@ -282,7 +293,11 @@ function AbilityScores_Button(onlySetTooltip) {
 					name : "0"
 				})
 			}
-			theColumns.push(theCol);
+			if (theStat.type == 'maximum') {
+				var theMaxCol = theCol;
+			} else {
+				theColumns.push(theCol);
+			}
 		}
 
 		// Create the dialog variable
@@ -331,17 +346,20 @@ function AbilityScores_Button(onlySetTooltip) {
 					"cReB" : "Remove Column"
 				};
 				// set the values
+				var anyExtraCols = false;
 				for (var i = 0; i < CurrentStats.cols.length; i++) {
+					var thisCol = CurrentStats.cols[i];
+					if (thisCol.type == 'extra') anyExtraCols = true;
 					var aNo = ("0" + i).slice(-2);
 					for (var s = 0; s < 7; s++) {
-						if (CurrentStats.cols[i].scores[s]) toSet[aNo + asab2[s]] = CurrentStats.cols[i].scores[s].toString();
+						if (thisCol.scores[s]) toSet[aNo + asab2[s]] = thisCol.scores[s].toString();
 					}
 				}
 				// load these things into the dialog
 				dialog.load(toSet);
 
 				// disable the 'remove column' button if there are no extra columns
-				if (CurrentStats.cols.length == 7) dialog.enable({ "cReB" : false });
+				if (!anyExtraCols) dialog.enable({ "cReB" : false });
 
 				// now update the totals
 				for (var s = 0; s < 7; s++) {
@@ -428,15 +446,20 @@ function AbilityScores_Button(onlySetTooltip) {
 				var res = dialog.store();
 				var type = fldNm.slice(-2);
 				var total = [0];
+				var theMax = 20;
 				for (var i = 0; i < CurrentStats.cols.length; i++) {
+					var thisCol = CurrentStats.cols[i];
 					var aNo = ("0" + i).slice(-2);
 					var itsVal = Number(res[aNo + type]);
-					if (CurrentStats.cols[i].name.toLowerCase().indexOf("override") !== -1) {
+					if (thisCol.type == "maximum") {
+						theMax = itsVal;
+					} else if (thisCol.name.toLowerCase().indexOf("override") !== -1) {
 						total.push(itsVal);
 					} else {
 						total[0] += itsVal;
 					}
 				}
+				if (theMax && total[0] > theMax) total[0] = theMax;
 				var totalLoad = {};
 				totalLoad["to"+type] = Math.round(Math.max.apply(Math, total)).toString();
 				dialog.load(totalLoad);
@@ -841,7 +864,9 @@ function AbilityScores_Button(onlySetTooltip) {
 								font : "dialog",
 								bold : true
 							}]
-						}, {
+						}]).concat(
+							theMaxCol // the maximum column created above
+						).concat([{
 							type : "view", // ability score names
 							elements : [{
 								type : "static_text",
@@ -906,13 +931,13 @@ function AbilityScores_Button(onlySetTooltip) {
 								item_id : "exTx",
 								font : "dialog",
 								wrap_name : true,
-								width : 400,
+								width : 500,
 								name : explanatoryTxt
 							}]
 						}, {
 							type : "cluster",
 							name : "Add or remove columns",
-							align_children : "align_row",
+							align_children : "align_center",
 							item_id : "coCl",
 							font : "dialog",
 							bold : true,
