@@ -5519,17 +5519,17 @@ function isSpellUsed(spll, returnBoolean) {
 
 	if (SpellsList[spll]) {
 		for (var aClass in CurrentSpells) {
-			var sClass = CurrentSpells[aClass];
+			var spCast = CurrentSpells[aClass];
 			var csAttr = ["selectCa", "selectBo", "selectSp", "selectSpSB", "extra"];
 			for (var i = 0; i < csAttr.length; i++) {
-				if (sClass[csAttr[i]] && sClass[csAttr[i]].indexOf(spll) !== -1) {
+				if (spCast[csAttr[i]] && spCast[csAttr[i]].indexOf(spll) !== -1) {
 					rtrnA.push(aClass);
 					addAllSpClasses(aClass);
 					break;
 				};
 			};
-			if (rtrnA.indexOf(aClass) === -1 && SpellsList[spll].level && (/list/i).test(sClass.typeSp)) {
-				var spObj = eval(sClass.list.toSource());
+			if (rtrnA.indexOf(aClass) === -1 && SpellsList[spll].level && (/list/i).test(spCast.typeSp)) {
+				var spObj = eval(spCast.list.toSource());
 				spObj.level = [1, 9];
 				var theSpList = CreateSpellList(spObj, false, spCast.extra, false, aClass, spCast.typeSp);
 				if (theSpList.indexOf(spll) !== -1) {
