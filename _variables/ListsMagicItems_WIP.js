@@ -198,7 +198,7 @@ var Base_MagicItemsList = {
 		type : "armor (plate)",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "I have resistance to nonmagical damage while I wear this armor. As an action, I can make yourself immune to nonmagical damage for 10 minutes or until I am no longer wearing the armor. Once this special action is used, it can't be used again until the next dawn.",
+		description : "I have resistance to nonmagical damage while I wear this plate armor. As an action, I can make yourself immune to nonmagical damage for 10 minutes or until I am no longer wearing the armor. Once this special action is used, it can't be used again until the next dawn.",
 		descriptionFull : "You have resistance to nonmagical damage while you wear this armor. Additionally, you can use an action to make yourself immune to nonmagical damage for 10 minutes or until you are no longer wearing the armor. Once this special action is used, it can't be used again until the next dawn.",
 		attunement : true,
 		weight : 65,
@@ -289,7 +289,7 @@ var Base_MagicItemsList = {
 		type : "armor (plate)",
 		rarity: "rare",
 		magicItemTable : "G",
-		description: "While wearing this armor, I have resistance to one of the following damage types: bludgeoning, piercing, or slashing; although, unfortunately, I have vulnerability to the other two until I am targeted by a Remove Curse spell.",
+		description: "While wearing this plate armor, I have resistance to one of the following damage types: bludgeoning, piercing, or slashing; although, unfortunately, I have vulnerability to the other two until I am targeted by a Remove Curse spell.",
 		descriptionFull: "While wearing this armor, you have resistance to one of the following damage types: bludgeoning, piercing, or slashing. The DM chooses the type or determines it randomly.\n   " + toUni("Curse") + ". This armor is cursed, a fact that is revealed only when an Identify spell is cast on the armor or you attune to it. Attuning to the armor curses you until you are targeted by the Remove Curse spell or similar magic; removing the armor fails to end the curse. While cursed, you have vulnerability to two of the three damage types associated with the armor (not the one to which it grants resistance).",
 		attunement: true,
 		allowDuplicates : true,
@@ -1067,43 +1067,109 @@ var Base_MagicItemsList = {
 			}
 		}
 	},
-	"cube of force" : {
+	"cube of force" : { // contains contributions by Larry Hoy
 		name : "Cube of Force",
 		source : [["SRD", 215], ["D", 159]],
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
-		descriptionFull : "This cube is about an inch across. Each face has a distinct marking on it that can be pressed. The cube starts with 36 charges, and it regains 1d20 expended charges daily at dawn.\n   You can use an action to press one of the cube's faces, expending a number of charges based on the chosen face, as shown in the Cube of Force Faces table. Each face has a different effect. If the cube has insufficient charges remaining, nothing happens. Otherwise, a barrier of invisible force springs into existence, forming a cube 15 feet on a side. The barrier is centered on you, moves with you, and lasts for 1 minute, until you use an action to press the cube's sixth face, or the cube runs out of charges. You can change the barrier's effect by pressing a different face of the cube and expending the requisite number of charges, resetting the duration. If your movement causes the barrier to come into contact with a solid object that can't pass through the cube, you can't move any closer to that object as long as the barrier remains.\n\n" + toUni("Face") + "\t" + toUni("Charges") + "\t" + toUni("Effect") + "\n1\t1\tGases, wind, and fog can't pass through the barrier.\n2\t2\tNonliving matter can't pass through the barrier. Walls, floors, and ceilings can pass through at your discretion.\n3\t3\tLiving matter can't pass through the barrier.\n4\t4\tSpell effects can't pass through the barrier.\n5\t5\tNothing can pass through the barrier. Walls, floors, and ceilings can pass through at your discretion.\n6\t0\tThe barrier deactivates.\n\n\n   The cube loses charges when the barrier is targeted by certain spells or comes into contact with certain spell or magic item effects, as shown in the table below.\n\n" + toUni("Spell or item") + "\t" + toUni("Charges Lost") + "\nDisintegrate\t1d12\nHorn of blasting\t1d10\nPasswall\t1d6\nPrismatic Spray\t1d20\nWall of Fire\t1d4",
-		attunement : true
+		description : "Each face of this 1-inch cube has a distinct marking on it. As an action, I can press one of these faces, expending a number of charges to create an effect based on the chosen face, if enough charges remain. This creates a 15-ft cube barrier of force on me for 1 min, which moves with me. See Notes page for details.",
+		descriptionFull : "This cube is about an inch across. Each face has a distinct marking on it that can be pressed. The cube starts with 36 charges, and it regains 1d20 expended charges daily at dawn.\n   You can use an action to press one of the cube's faces, expending a number of charges based on the chosen face, as shown in the Cube of Force Faces table. Each face has a different effect. If the cube has insufficient charges remaining, nothing happens. Otherwise, a barrier of invisible force springs into existence, forming a cube 15 feet on a side. The barrier is centered on you, moves with you, and lasts for 1 minute, until you use an action to press the cube's sixth face, or the cube runs out of charges. You can change the barrier's effect by pressing a different face of the cube and expending the requisite number of charges, resetting the duration. If your movement causes the barrier to come into contact with a solid object that can't pass through the cube, you can't move any closer to that object as long as the barrier remains.\n\n" + toUni("Face    Charges\tEffect") + "\n  1\t1\tGases, wind, and fog can't pass through the barrier.\n  2\t2\tNonliving matter can't pass through the barrier.*\n  3\t3\tLiving matter can't pass through the barrier.\n  4\t4\tSpell effects can't pass through the barrier.\n  5\t5\tNothing can pass through the barrier.*\n  6\t0\tThe barrier deactivates.\n\n   * Walls, floors, and ceilings can pass through at your discretion.\n\nThe cube loses charges when the barrier is targeted by certain spells or comes into contact with certain spell or magic item effects, as shown in the table below.\n\n" + toUni("Spell or Item\tCharges Lost") + "\nDisintegrate\t1d12\nHorn of Blasting\t1d10\nPasswall\t\t1d6\nPrismatic Spray\t1d20\nWall of Fire\t1d4",
+		attunement : true,
+		usages : 36,
+		recovery : "dawn",
+		additional : "regains 1d20",
+		action : [["action", ""]],
+		toNotesPage : [{
+			name : "Cube of Force Charge Expenditure Tables",
+			note : [
+				"   Pressing one of the faces of the cube expends charges and has the effect as listed below. The cube starts with 36 charges, and it regains 1d20 expended charges daily at dawn.",
+				"   Once activated, a barrier of invisible force springs into existence, forming a cube 15 feet on a side. The barrier is centered on me, moves with me, and lasts for 1 minute, until I use an action to press the cube's sixth face, the cube runs out of charges, or I press another face to invoke another barrier.",
+				"   If my movement causes the barrier to come into contact with a solid object that can't pass through the cube, I can't move any closer to that object as long as the barrier remains.",
+				"\nFACE\tCHARGES\tEFFECT",
+				"  1\t      1\tGases, wind, and fog can't pass through the barrier.",
+				"  2\t      2\tNonliving matter can't pass through the barrier.",
+				"  3\t      3\tLiving matter can't pass through the barrier.*",
+				"  4\t      4\tSpell effects can't pass through the barrier.",
+				"  5\t      5\tNothing can pass through the barrier.*",
+				"  6\t      0\tThe barrier deactivates.",
+				"\n* Walls, floors, and ceilings can pass through at my discretion.",
+				"\nThe cube loses charges when the barrier is targeted by certain spells or comes into contact with certain spell or magic item effects, as shown in the table below.",
+				"\nSPELL OR ITEM\tCHARGES LOST",
+				"Disintegrate  \t1d12",
+				"Horn of Blasting\t1d10",
+				"Passwall\t\t1d6",
+				"Prismatic Spray\t1d20",
+				"Wall of Fire\t\t1d4"
+			].join("\n")
+		}]
 	},
-	"cubic gate" : {
+	"cubic gate" : { // contains contributions by Larry Hoy
 		name : "Cubic Gate",
 		source : [["SRD", 215], ["D", 160]],
 		type : "wondrous item",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "",
-		descriptionFull : "This cube is 3 inches across and radiates palpable magical energy. The six sides of the cube are each keyed to a different plane of existence, one of which is the Material Plane. The other sides are linked to planes determined by the DM.\n   You can use an action to press one side of the cube to cast the Gate spell with it, opening a portal to the plane keyed to that side. Alternatively, if you use an action to press one side twice, you can cast the Plane Shift spell (save DC 17) with the cube and transport the targets to the plane keyed to that side.\n   The cube has 3 charges. Each use of the cube expends 1 charge. The cube regains 1d3 expended charges daily at dawn."
+		description : "The six sides of this 3-inch cube, which radiates palpable magic energy, are each keyed to a different plane of existence (one is material plane). As an action, I can expend a charge and press a side of the cube once to cast Gate or twice to cast Plane Shift (DC 17). Both spells only link to the plane on the pressed side.",
+		descriptionFull : "This cube is 3 inches across and radiates palpable magical energy. The six sides of the cube are each keyed to a different plane of existence, one of which is the Material Plane. The other sides are linked to planes determined by the DM.\n   You can use an action to press one side of the cube to cast the Gate spell with it, opening a portal to the plane keyed to that side. Alternatively, if you use an action to press one side twice, you can cast the Plane Shift spell (save DC 17) with the cube and transport the targets to the plane keyed to that side.\n   The cube has 3 charges. Each use of the cube expends 1 charge. The cube regains 1d3 expended charges daily at dawn.",
+		usages : 3,
+		recovery : "dawn",
+		additional : "regains 1d3",
+		spellFirstColTitle : "Ch",
+		fixedDC : 17,
+		spellcastingBonus : {
+			name : "1 charge",
+			spells : ["gate", "plane shift"],
+			selection : ["gate", "plane shift"],
+			times : 2,
+			firstCol : 1
+		},
+		spellChanges : {
+			"plane shift" : {
+				description : "Me + 8 willing crea teleport to, or spell attack + save to transport unwilling to plane keyed to the side",
+				changes : "Using the Cubic Gate, the spell only links to the plane on the side of the cube that pressed."
+			},
+			"gate" : {
+				description : "Create a portal to a precise location on the plane keyed to the side; can transport named creature to me",
+				changes : "Using the Cubic Gate, the spell only links to the plane on the side of the cube that pressed."
+			}
+		}
 	},
-	"daern's instant fortress" : {
+	"daern's instant fortress" : { // contains contributions by Larry Hoy
 		name : "Daern's Instant Fortress",
+		nameAlt : "Instant Fortress",
 		source : [["SRD", 226], ["D", 160]],
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
-		descriptionFull : "You can use an action to place this 1-inch metal cube on the ground and speak its command word. The cube rapidly grows into a fortress that remains until you use an action to speak the command word that dismisses it, which works only if the fortress is empty.\n   The fortress is a square tower, 20 feet on a side and 30 feet high, with arrow slits on all sides and a battlement atop it. Its interior is divided into two floors. with a ladder running along one wall to connect them. The ladder ends at a trapdoor leading to the roof. When activated, the tower has a small door on the side facing you. The door opens only at your command, which you can speak as a bonus action. It is immune to the Knock spell and similar magic, such as that of a chime of opening.\n   Each creature in the area where the fortress appears must make a DC 15 Dexterity saving throw, taking 10d10 bludgeoning damage on a failed save, or half as much damage on a successful one. In either case, the creature is pushed to an unoccupied space outside but next to the fortress. Objects in the area that aren't being worn or carried take this damage and are pushed automatically.\n   The tower is made of adamantine, and its magic prevents it from being tipped over. The roof, the door, and the walls each have 100 hit points, immunity to damage from nonmagical weapons excluding siege weapons, and resistance to all other damage. Only a Wish spell can repair the fortress (this use of the spell counts as replicating a spell of 8th level or lower). Each casting of Wish causes the roof, the door, or one wall to regain 50 hit points."
+		description: "As an action, I can place this 1-inch metal cube on the ground and speak its command word, making it grow into a 20-ft by 20-ft by 30-ft high adamantine tower with a door facing me, arrow slits on all sides, battlement atop, two floors, and a ladder along one wall ending at a trapdoor to the roof. See Notes page for details.",
+		descriptionFull : "You can use an action to place this 1-inch metal cube on the ground and speak its command word. The cube rapidly grows into a fortress that remains until you use an action to speak the command word that dismisses it, which works only if the fortress is empty.\n   The fortress is a square tower, 20 feet on a side and 30 feet high, with arrow slits on all sides and a battlement atop it. Its interior is divided into two floors. with a ladder running along one wall to connect them. The ladder ends at a trapdoor leading to the roof. When activated, the tower has a small door on the side facing you. The door opens only at your command, which you can speak as a bonus action. It is immune to the Knock spell and similar magic, such as that of a chime of opening.\n   Each creature in the area where the fortress appears must make a DC 15 Dexterity saving throw, taking 10d10 bludgeoning damage on a failed save, or half as much damage on a successful one. In either case, the creature is pushed to an unoccupied space outside but next to the fortress. Objects in the area that aren't being worn or carried take this damage and are pushed automatically.\n   The tower is made of adamantine, and its magic prevents it from being tipped over. The roof, the door, and the walls each have 100 hit points, immunity to damage from nonmagical weapons excluding siege weapons, and resistance to all other damage. Only a Wish spell can repair the fortress (this use of the spell counts as replicating a spell of 8th level or lower). Each casting of Wish causes the roof, the door, or one wall to regain 50 hit points.",
+		action : [["action", ""]],
+		toNotesPage : [{
+			name : "Fortress Details",
+			note : "\n   As an action I can place this 1-inch metal cube on the ground and speak its command word. The cube rapidly grows into a fortress that remains until I use an action to speak the command word that dismisses it, which works only if the fortress is empty.\n   The fortress is a square tower, 20 feet on a side and 30 feet high, with arrow slits on all sides and a battlement atop it. Its interior is divided into two floors. with a ladder running along one wall to connect them. The ladder ends at a trapdoor leading to the roof.\n   When activated, the tower has a small door on the side facing me. The door opens only at my command, which I can speak as a bonus action. It is immune to the Knock spell and similar magic (e.g., a Chime of Opening).\n   Each creature in the area where the fortress appears must make a DC 15 Dex save or take 10d10 bludgeoning damage (half damage on a success). In either case, the creature is pushed to an unoccupied space outside but next to the fortress. Objects in the area that aren't being worn or carried take this damage and are pushed automatically.\n   The tower is made of adamantine, and its magic prevents it from being tipped over. The roof, the door, and the walls each have 100 hit points, immunity to damage from nonmagical weapons excluding siege weapons, and resistance to all other damage. Only a Wish spell can repair the fortress (this use of the spell counts as replicating a spell of 8th level or lower). Each casting of Wish causes the roof, the door, or one wall to regain 50 hit points."
+		}]
 	},
-	"dagger of venom" : {
+	"dagger of venom" : { // finished
 		name : "Dagger of Venom",
 		source : [["SRD", 215], ["D", 161]],
 		type : "weapon (dagger)",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
+		description : "This magical dagger adds a +1 bonus to attack and damage rolls made with it. As an action once per dawn, I can have the blade coat itself with thick, black poison, lasting 1 min. While it is coated, the first creature hit must make a DC 15 Con save or take 2d10 poison damage and become poisoned for 1 min.",
 		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n   You can use an action to cause thick, black poison to coat the blade. The poison remains for 1 minute or until an attack using this weapon hits a creature. That creature must succeed on a DC 15 Constitution saving throw or take 2d10 poison damage and become poisoned for 1 minute. The dagger can't be used this way again until the next dawn.",
-		weight : 1
+		weight : 1,
+		usages : 1,
+		recovery : "dawn",
+		weaponsAdd : ["Dagger of Venom"],
+		weaponOptions : {
+			baseWeapon : "dagger",
+			regExpSearch : /^(?=.*dagger)(?=.*venom).*$/i,
+			name : "Dagger of Venom",
+			source : [["SRD", 215], ["D", 161]],
+			description : "Finesse, light, thrown; If coated, DC 15 Con save or +2d10 poison damage \u0026 1 min poisoned",
+			modifiers : [1, 1]
+		}
 	},
 	"dancing sword" : { // finished
 		name : "Dancing Sword",
@@ -1150,24 +1216,183 @@ var Base_MagicItemsList = {
 		descriptionFull : "This stoppered flask sloshes when shaken, as if it contains water. The decanter weighs 2 pounds.\n   You can use an action to remove the stopper and speak one of three command words, whereupon an amount of fresh water or salt water (your choice) pours out of the flask. The water stops pouring out at the start of your next turn. Choose from the following options:\n \u2022 \"Stream\" produces 1 gallon of water.\n \u2022 \"Fountain\" produces 5 gallons of water.\n \u2022 \"Geyser\" produces 30 gallons of water that gushes forth in a geyser 30 feet long and 1 foot wide. As a bonus action while holding the decanter, you can aim the geyser at a creature you can see within 30 feet of you. The target must succeed on a DC 13 Strength saving throw or take 1d4 bludgeoning damage and fall prone. Instead of a creature, you can target an object that isn't being worn or carried and that weighs no more than 200 pounds. The object is either knocked over or pushed up to 15 feet away from you.",
 		weight : 2
 	},
-	"deck of illusions" : {
+	"deck of illusions" : { // finished
 		name : "Deck of Illusions",
 		source : [["SRD", 216], ["D", 161]],
 		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		description : "",
-		descriptionFull : "This box contains a set of parchment cards. A full deck has 34 cards. A deck found as treasure is usually missing 1d20-1 cards.\n   The magic of the deck functions only if cards are drawn at random (you can use an altered deck of playing cards to simulate the deck). You can use an action to draw a card at random from the deck and throw it to the ground at a point within 30 feet of you.\n   An illusion of one or more creatures forms over the thrown card and remains until dispelled. An illusory creature appears real, of the appropriate size, and behaves as if it were a real creature, except that it can do no harm. While you are within 120 feet of the illusory creature and can see it, you can use an action to move it magically anywhere within 30 feet of its card. Any physical interaction with the illusory creature reveals it to be an illusion, because objects pass through it. Someone who uses an action to visually inspect the creature identifies it as illusory with a successful DC 15 Intelligence (Investigation) check. The creature then appears translucent.\n   The illusion lasts until its card is moved or the illusion is dispelled. When the illusion ends, the image on its card disappears, and that card can't be used again.\n\n" + toUni("1d33") + "\t" + toUni("Playing Card") + "\t" + toUni("Illusion") + "\n1\tAce of hearts\tRed dragon\n2\tKing of hearts\tKnight and four guards\n3\tQueen of hearts\tSuccubus/Incubus\n4\tJack of hearts\tDruid\n5\tTen of hearts\tCloud giant\n6\tNine of hearts\tEttin\n7\tEight of hearts\tBugbear\n8\tTwo of hearts\tGoblin\n9\tAce of diamonds\tBeholder\n10\tKing of diamonds\tArchmage and mage apprentice\n11\tQueen of diamonds\tNight hag\n12\tJack of diamonds\tAssassin\n13\tTen of diamonds\tFire giant\n14\tNine of diamonds\tOgre mage\n15\tEight of diamonds\tGnoll\n16\tTwo of diamonds\tKobold\n17\tAce of spades\tLich\n18\tKing of spades\tPriest and two acolytes\n19\tQueen of spades\tMedusa\n20\tJack of spades\tVeteran\n21\tTen of spades\tFrost giant\n22\tNine of spades\tTroll\n23\tEight of spades\tHobgoblin\n24\tTwo of spades\tGoblin\n25\tAce of clubs\tIron golem\n26\tKing of clubs\tBandit captain and three bandits\n27\tQueen of clubs\tErinyes\n28\tJack of clubs\tBerserker\n29\tTen of clubs\tHill giant\n30\tNine of clubs\tOgre\n31\tEight of clubs\tOrc\n32\tTwo of clubs\tKobold\n33\tjokers (2)\tYou (the deck's owner)"
+		description : "As an action, I can draw a card at random from this deck and throw it on the ground within 30 ft. An illusion, determined by the type of card, forms over the thrown card and remains until dispelled. While I'm within 120 ft of it, I can use an action to move it within 30 ft of the card. See Notes page for more details.",
+		descriptionFull : [
+			"This box contains a set of parchment cards. A full deck has 34 cards. A deck found as treasure is usually missing 1d20-1 cards.",
+			"   The magic of the deck functions only if cards are drawn at random (you can use an altered deck of playing cards to simulate the deck). You can use an action to draw a card at random from the deck and throw it to the ground at a point within 30 feet of you.",
+			"   An illusion of one or more creatures forms over the thrown card and remains until dispelled. An illusory creature appears real, of the appropriate size, and behaves as if it were a real creature, except that it can do no harm. While you are within 120 feet of the illusory creature and can see it, you can use an action to move it magically anywhere within 30 feet of its card. Any physical interaction with the illusory creature reveals it to be an illusion, because objects pass through it. Someone who uses an action to visually inspect the creature identifies it as illusory with a successful DC 15 Intelligence (Investigation) check. The creature then appears translucent.",
+			"   The illusion lasts until its card is moved or the illusion is dispelled. When the illusion ends, the image on its card disappears, and that card can't be used again.\n",
+			toUni("1d34\tPlaying Card\tIllusion"),
+			"  1\tAce of hearts\tRed dragon",
+			"  2\tKing of hearts\tKnight and four guards",
+			"  3\tQueen of hearts\tSuccubus/Incubus",
+			"  4\tJack of hearts\tDruid",
+			"  5\tTen of hearts\tCloud giant",
+			"  6\tNine of hearts\tEttin",
+			"  7\tEight of hearts\tBugbear",
+			"  8\tTwo of hearts\tGoblin",
+			"  9\tAce of diamonds\tBeholder",
+			"  10\tKing of diamonds\tArchmage and mage apprentice",
+			"  11\tQueen diamonds\tNight hag",
+			"  12\tJack of diamonds\tAssassin",
+			"  13\tTen of diamonds\tFire giant",
+			"  14\tNine of diamonds\tOgre mage",
+			"  15\tEight of diamonds\tGnoll",
+			"  16\tTwo of diamonds\tKobold",
+			"  17\tAce of spades\tLich",
+			"  18\tKing of spades\tPriest and two acolytes",
+			"  19\tQueen of spades\tMedusa",
+			"  20\tJack of spades\tVeteran",
+			"  21\tTen of spades\tFrost giant",
+			"  22\tNine of spades\tTroll",
+			"  23\tEight of spades\tHobgoblin",
+			"  24\tTwo of spades\tGoblin",
+			"  25\tAce of clubs\tIron golem",
+			"  26\tKing of clubs\tBandit captain and three bandits",
+			"  27\tQueen of clubs\tErinyes",
+			"  28\tJack of clubs\tBerserker",
+			"  29\tTen of clubs\tHill giant",
+			"  30\tNine of clubs\tOgre",
+			"  31\tEight of clubs\tOrc",
+			"  32\tTwo of clubs\tKobold",
+			"33-34\tJoker (2)   \tYou (the deck's owner)"
+		].join("\n"),
+		toNotesPage : [{
+			name : "Cards and Their Effects",
+			note : [
+				"This box contains a set of parchment cards. A full deck has 34 cards. A deck found as treasure is usually missing 1d20-1 cards.",
+				"   The magic of the deck functions only if cards are drawn at random. I can use an action to draw a card at random from the deck and throw it to the ground at a point within 30 ft of me.",
+				"   An illusion of one or more creatures forms over the thrown card and remains until dispelled. An illusory creature appears real, of the appropriate size, and behaves as if it were a real creature, except that it can do no harm. While I am within 120 ft of the illusory creature and can see it, I can use an action to move it magically anywhere within 30 ft of its card. Any physical interaction with the illusory creature reveals it to be an illusion, because objects pass through it. Someone who uses an action to visually inspect the creature identifies it as illusory with a successful DC 15 Intelligence (Investigation) check. The creature then appears translucent.",
+				"   The illusion lasts until its card is moved or the illusion is dispelled. When the illusion ends, the image on its card disappears, and that card can't be used again.\n",
+				"1d34\tPLAYING CARD\tILLUSION",
+				"  1\tAce of hearts\tRed dragon",
+				"  2\tKing of hearts\tKnight and four guards",
+				"  3\tQueen of hearts\tSuccubus/Incubus",
+				"  4\tJack of hearts\tDruid",
+				"  5\tTen of hearts\tCloud giant",
+				"  6\tNine of hearts\tEttin",
+				"  7\tEight of hearts\tBugbear",
+				"  8\tTwo of hearts\tGoblin",
+				"  9\tAce of diamonds\tBeholder",
+				"  10\tKing of diamonds\tArchmage and mage apprentice",
+				"  11\tQueen diamonds\tNight hag",
+				"  12\tJack of diamonds\tAssassin",
+				"  13\tTen of diamonds\tFire giant",
+				"  14\tNine of diamonds\tOgre mage",
+				"  15\tEight of diamonds\tGnoll",
+				"  16\tTwo of diamonds\tKobold",
+				"  17\tAce of spades\tLich",
+				"  18\tKing of spades\tPriest and two acolytes",
+				"  19\tQueen of spades\tMedusa",
+				"  20\tJack of spades\tVeteran",
+				"  21\tTen of spades\tFrost giant",
+				"  22\tNine of spades\tTroll",
+				"  23\tEight of spades\tHobgoblin",
+				"  24\tTwo of spades\tGoblin",
+				"  25\tAce of clubs \tIron golem",
+				"  26\tKing of clubs\tBandit captain and three bandits",
+				"  27\tQueen of clubs\tErinyes",
+				"  28\tJack of clubs\tBerserker",
+				"  29\tTen of clubs \tHill giant",
+				"  30\tNine of clubs\tOgre",
+				"  31\tEight of clubs\tOrc",
+				"  32\tTwo of clubs \tKobold",
+				"33-34\tJoker (2)\t\tYou (the deck's owner)"
+			].join("\n")
+		}]
 	},
-	"deck of many things" : {
+	"deck of many things" : { // contains contributions by Larry Hoy
 		name : "Deck of Many Things",
 		source : [["SRD", 216], ["D", 162]],
 		type : "wondrous item",
 		rarity : "legendary",
 		magicItemTable : "I",
 		notLegalAL : true,
-		description : "",
-		descriptionFull : "Usually found in a box or pouch, this deck contains a number of cards made of ivory or vellum. Most (75 percent) of these decks have only thirteen cards, but the rest have twenty-two.\n   Before you draw a card, you must declare how many cards you intend to draw and then draw them randomly (you can use an altered deck of playing cards to simulate the deck). Any cards drawn in excess of this number have no effect. Otherwise, as soon as you draw a card from the deck, its magic takes effect. You must draw each card no more than 1 hour after the previous draw. If you fail to draw the chosen number, the remaining number of cards fly from the deck on their own and take effect all at once.\n   Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.\n   " + toUni("A Question of Enmity") + ". Two of the cards in a deck of many things can earn a character the enmity of another being. With the Flames card, the enmity is overt. The character should experience the devil's malevolent efforts on multiple occasions. Seeking out the fiend shouldn't be a simple task, and the adventurer should clash with the devil's allies and followers a few times before being able to confront the devil itself.\n   In the case of the Rogue card, the enmity is secret and should come from someone thought to be a friend or an ally. As Dungeon Master, you should wait for a dramatically appropriate moment to reveal this enmity, leaving the adventurer guessing who is likely to become a betrayer.\n\n" + toUni("1d22") + "\t" + toUni("Playing Card") + "\t" + toUni("Card") + "\n1\tAce of diamonds\tVizier*\n2\tKing of diamonds\tSun\n3\tQueen of diamonds\tMoon\n4\tJack of diamonds\tStar\n5\tTwo of diamonds\tComet*\n6\tAce of hearts\tThe Fates*\n7\tKing of hearts\tThrone\n8\tQueen of hearts\tKey\n9\tJack of hearts\tKnight\n10\tTwo of hearts\tGem*\n11\tAce of clubs\tTalons*\n12\tKing of clubs\tThe Void\n13\tQueen of clubs\tFlames\n14\tJack of clubs\tSkull\n15\tTwo of clubs\tIdiot*\n16\tAce of spades\tDonjon*\n17\tKing of spades\tRuin\n18\tQueen of spades\tEuryale\n19\tJack of spades\tRogue\n20\tTwo of spades\tBalance*\n21\tJoker (with TM)\tFool*\n22\tJoker (no TM)\tJester\n\n\n   " + toUni("Vizier") + ". At any time you choose within one year of drawing this card, you can ask a question in meditation and mentally receive a truthful answer to that question. Besides information, the answer helps you solve a puzzling problem or other dilemma. In other words, the knowledge comes with wisdom on how to apply it.\n   " + toUni("Sun") + ". You gain 50,000 XP, and a wondrous item (which the DM determines randomly) appears in your hands.\n   " + toUni("Moon") + ". You are granted the ability to cast the Wish spell 1d3 times.\n   " + toUni("Star") + ". Increase one of your ability scores by 2. The score can exceed 20 but can't exceed 24.\n   " + toUni("Comet") + ". If you single-handedly defeat the next hostile monster or group of monsters you encounter, you gain experience points enough to gain one level. Otherwise, this card has no effect.\n   " + toUni("The Fates*") + ". Reality's fabric unravels and spins anew, allowing you to avoid or erase one event as if it never happened. You can use the card's magic as soon as you draw the card or at any other time before you die.\n   " + toUni("Throne") + ". You gain proficiency in the Persuasion skill, and you double your proficiency bonus on checks made with that skill. In addition, you gain rightful ownership of a small keep somewhere in the world. However, the keep is currently in the hands of monsters, which you must clear out before you can claim the keep as yours.\n   " + toUni("Key") + ". A rare or rarer magic weapon with which you are proficient appears in your hands. The DM chooses the weapon.\n   " + toUni("Knight") + ". You gain the service of a 4th-level fighter who appears in a space you choose within 30 feet of you. The fighter is of the same race as you and serves you loyally until death, believing the fates have drawn him or her to you. You control this character.\n   " + toUni("Gem") + ". Twenty-five pieces of jewelry worth 2,000 gp each or fifty gems worth 1,000 gp each appear at your feet.\n   " + toUni("Talons") + ". Every magic item you wear or carry disintegrates. Artifacts in your possession aren't destroyed but do vanish.\n   " + toUni("The Void") + ". This black card spells disaster. Your soul is drawn from your body and contained in an object in a place of the DM's choice. One or more powerful beings guard the place. While your soul is trapped in this way, your body is incapacitated. A Wish spell can't restore your soul, but the spell reveals the location of the object that holds it. You draw no more cards.\n   " + toUni("Flames") + ". A powerful devil becomes your enemy. The devil seeks your ruin and plagues your life, savoring your suffering before attempting to slay you. This enmity lasts until either you or the devil dies.\n   " + toUni("Skull") + ". You summon an avatar of death-a ghostly humanoid skeleton clad in a tattered black robe and carrying a spectral scythe. It appears in a space of the DM's choice within 10 feet of you and attacks you, warning all others that you must win the battle alone. The avatar fights until you die or it drops to 0 hit points, whereupon it disappears. If anyone tries to help you, the helper summons its own avatar of death. A creature slain by an avatar of death can't be restored to life.\n   " + toUni("Idiot") + ". Permanently reduce your Intelligence by 1d4+1 (to a minimum score of 1). You can draw one additional card beyond your declared draws.\n   " + toUni("Donjon*") + ". You disappear and become entombed in a state of suspended animation in an extradimensional sphere. Everything you were wearing and carrying stays behind in the space you occupied when you disappeared. You remain imprisoned until you are found and removed from the sphere. You can't be located by any divination magic, but a Wish spell can reveal the location of your prison. You draw no more cards.\n   " + toUni("Ruin") + ". All forms of wealth that you carry or own, other than magic items, are lost to you. Portable property vanishes. Businesses, buildings, and land you own are lost in a way that alters reality the least. Any documentation that proves you should own something lost to this card also disappears.\n   " + toUni("Euryale") + ". The card's medusa-like visage curses you. You take a -2 penalty on saving throws while cursed in this way. Only a god or the magic of The Fates card can end this curse.\n   " + toUni("Rogue") + ". A nonplayer character of the DM's choice becomes hostile toward you. The identity of your new enemy isn't known until the NPC or someone else reveals it. Nothing less than a Wish spell or divine intervention can end the NPC's hostility toward you.\n   " + toUni("Balance") + ". Your mind suffers a wrenching alteration, causing your alignment to change. Lawful becomes chaotic, good becomes evil, and vice versa. If you are true neutral or unaligned, this card has no effect on you.\n   " + toUni("Fool") + ". You lose 10,000 XP, discard this card, and draw from the deck again, counting both draws as one of your declared draws. If losing that much XP would cause you to lose a level, you instead lose an amount that leaves you with just enough XP to keep your level.\n   " + toUni("Jester") + ". You gain 10,000 XP, or you can draw two additional cards beyond your declared draws.\n   * Found only in a deck with twenty-two cards"
+		description : "Before drawing cards from this deck, I must declare how many I wish to draw and then draw that number randomly. Any cards drawn in excess have no effect. When a card is drawn, its magic takes effect, it fades from existence, and, unless the card is the Fool or the Jester, reappears in the deck. See Notes page.",
+		descriptionFull : "Usually found in a box or pouch, this deck contains a number of cards made of ivory or vellum. Most (75 percent) of these decks have only thirteen cards, but the rest have twenty-two.\n   Before you draw a card, you must declare how many cards you intend to draw and then draw them randomly (you can use an altered deck of playing cards to simulate the deck). Any cards drawn in excess of this number have no effect. Otherwise, as soon as you draw a card from the deck, its magic takes effect. You must draw each card no more than 1 hour after the previous draw. If you fail to draw the chosen number, the remaining number of cards fly from the deck on their own and take effect all at once.\n   Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.\n   " + toUni("A Question of Enmity") + ". Two of the cards in a deck of many things can earn a character the enmity of another being. With the Flames card, the enmity is overt. The character should experience the devil's malevolent efforts on multiple occasions. Seeking out the fiend shouldn't be a simple task, and the adventurer should clash with the devil's allies and followers a few times before being able to confront the devil itself.\n   In the case of the Rogue card, the enmity is secret and should come from someone thought to be a friend or an ally. As Dungeon Master, you should wait for a dramatically appropriate moment to reveal this enmity, leaving the adventurer guessing who is likely to become a betrayer.\n\n" + toUni("1d22\tPlaying Card\tCard") + "\n   1\tAce of diamonds\tVizier*\n   2\tKing of diamonds\tSun\n   3\tQueen diamonds\tMoon\n   4\tJack of diamonds\tStar\n   5\tTwo of diamonds\tComet*\n   6\tAce of hearts\tThe Fates*\n   7\tKing of hearts\tThrone\n   8\tQueen of hearts\tKey\n   9\tJack of hearts\tKnight\n   10\tTwo of hearts\tGem*\n   11\tAce of clubs\tTalons*\n   12\tKing of clubs\tThe Void\n   13\tQueen of clubs\tFlames\n   14\tJack of clubs\tSkull\n   15\tTwo of clubs\tIdiot*\n   16\tAce of spades\tDonjon*\n   17\tKing of spades\tRuin\n   18\tQueen of spades\tEuryale\n   19\tJack of spades\tRogue\n   20\tTwo of spades\tBalance*\n   21\tJoker (with TM)\tFool*\n   22\tJoker (no TM)\tJester\n\n   * Found only in a deck with twenty-two cards\n" + [
+			toUni("Balance") + ". Your mind suffers a wrenching alteration, causing your alignment to change. Lawful becomes chaotic, good becomes evil, and vice versa. If you are true neutral or unaligned, this card has no effect on you.",
+			toUni("Comet") + ". If you single-handedly defeat the next hostile monster or group of monsters you encounter, you gain experience points enough to gain one level. Otherwise, this card has no effect.",
+			toUni("Donjon") + ". You disappear and become entombed in a state of suspended animation in an extradimensional sphere. Everything you were wearing and carrying stays behind in the space you occupied when you disappeared. You remain imprisoned until you are found and removed from the sphere. You can't be located by any divination magic, but a Wish spell can reveal the location of your prison. You draw no more cards.",
+			toUni("Euryale") + ". The card's medusa-like visage curses you. You take a -2 penalty on saving throws while cursed in this way. Only a god or the magic of The Fates card can end this curse.",
+			toUni("The Fates") + ". Reality's fabric unravels and spins anew, allowing you to avoid or erase one event as if it never happened. You can use the card's magic as soon as you draw the card or at any other time before you die.",
+			toUni("Flames") + ". A powerful devil becomes your enemy. The devil seeks your ruin and plagues your life, savoring your suffering before attempting to slay you. This enmity lasts until either you or the devil dies.",
+			toUni("Fool") + ". You lose 10,000 XP, discard this card, and draw from the deck again, counting both draws as one of your declared draws. If losing that much XP would cause you to lose a level, you instead lose an amount that leaves you with just enough XP to keep your level.",
+			toUni("Gem") + ". Twenty-five pieces of jewelry worth 2,000 gp each or fifty gems worth 1,000 gp each appear at your feet.",
+			toUni("Idiot") + ". Permanently reduce your Intelligence by 1d4+1 (to a minimum score of 1). You can draw one additional card beyond your declared draws.",
+			toUni("Jester") + ". You gain 10,000 XP, or you can draw two additional cards beyond your declared draws.",
+			toUni("Key") + ". A rare or rarer magic weapon with which you are proficient appears in your hands. The DM chooses the weapon.",
+			toUni("Knight") + ". You gain the service of a 4th-level fighter who appears in a space you choose within 30 feet of you. The fighter is of the same race as you and serves you loyally until death, believing the fates have drawn him or her to you. You control this character.",
+			toUni("Moon") + ". You are granted the ability to cast the Wish spell 1d3 times.",
+			toUni("Rogue") + ". A nonplayer character of the DM's choice becomes hostile toward you. The identity of your new enemy isn't known until the NPC or someone else reveals it. Nothing less than a Wish spell or divine intervention can end the NPC's hostility toward you.",
+			toUni("Ruin") + ". All forms of wealth that you carry or own, other than magic items, are lost to you. Portable property vanishes. Businesses, buildings, and land you own are lost in a way that alters reality the least. Any documentation that proves you should own something lost to this card also disappears.",
+			toUni("Skull") + ". You summon an avatar of death-a ghostly humanoid skeleton clad in a tattered black robe and carrying a spectral scythe. It appears in a space of the DM's choice within 10 feet of you and attacks you, warning all others that you must win the battle alone. The avatar fights until you die or it drops to 0 hit points, whereupon it disappears. If anyone tries to help you, the helper summons its own avatar of death. A creature slain by an avatar of death can't be restored to life.",
+			toUni("Star") + ". Increase one of your ability scores by 2. The score can exceed 20 but can't exceed 24.",
+			toUni("Sun") + ". You gain 50,000 XP, and a wondrous item (which the DM determines randomly) appears in your hands.",
+			toUni("Talons") + ". Every magic item you wear or carry disintegrates. Artifacts in your possession aren't destroyed but do vanish.",
+			toUni("Throne") + ". You gain proficiency in the Persuasion skill, and you double your proficiency bonus on checks made with that skill. In addition, you gain rightful ownership of a small keep somewhere in the world. However, the keep is currently in the hands of monsters, which you must clear out before you can claim the keep as yours.",
+			toUni("Vizier") + ". At any time you choose within one year of drawing this card, you can ask a question in meditation and mentally receive a truthful answer to that question. Besides information, the answer helps you solve a puzzling problem or other dilemma. In other words, the knowledge comes with wisdom on how to apply it.",
+			toUni("The Void") + ". This black card spells disaster. Your soul is drawn from your body and contained in an object in a place of the DM's choice. One or more powerful beings guard the place. While your soul is trapped in this way, your body is incapacitated. A Wish spell can't restore your soul, but the spell reveals the location of the object that holds it. You draw no more cards."
+		].join("\n  \u2022 "),
+		toNotesPage : [{
+			name : "Cards and Their Effects",
+			note : [
+				"   Usually found in a box or pouch, this deck contains either 13 (75%) or 22 (25%) cards made of ivory or vellum.",
+				"    Before I draw a card, I must declare how many cards I intend to draw and then draw them randomly. Any cards drawn in excess of this number have no effect. Otherwise, as soon as I draw a card from the deck, its magic takes effect. I must draw each card no more than 1 hour after the previous draw. If I fail to draw the chosen number, the remaining number of cards fly from the deck on their own and take effect all at once.",
+				"   Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.",
+				"\n1d22\tPLAYING CARD\tCARD",
+				"   1\tAce of diamonds\tVizier*",
+				"   2\tKing of diamonds\tSun",
+				"   3\tQueen of diamonds\tMoon",
+				"   4\tJack of diamonds\tStar",
+				"   5\tTwo of diamonds\tComet*",
+				"   6\tAce of hearts\tThe Fates*",
+				"   7\tKing of hearts\tThrone",
+				"   8\tQueen of hearts\tKey",
+				"   9\tJack of hearts\tKnight",
+				"   10\tTwo of hearts\tGem*",
+				"   11\tAce of clubs  \tTalons*",
+				"   12\tKing of clubs\tThe Void",
+				"   13\tQueen of clubs\tFlames",
+				"   14\tJack of clubs\tSkull",
+				"   15\tTwo of clubs  \tIdiot*",
+				"   16\tAce of spades\tDonjon*",
+				"   17\tKing of spades\tRuin",
+				"   18\tQueen of spades\tEuryale",
+				"   19\tJack of spades\tRogue",
+				"   20\tTwo of spades\tBalance*",
+				"   21\tJoker (with TM)\tFool*",
+				"   22\tJoker (no TM)\tJester",
+				"* Found only in a deck with twenty-two cards\n",
+				"\u2022 Balance. My mind suffers a wrenching alteration, causing my alignment to change. Lawful to chaotic, good to evil, and vice versa.",
+				"\u2022 Comet. If I single-handedly defeat the next hostile monster/group of monsters I encounter, I gain enough XP to gain one level.",
+				"\u2022 Donjon. I disappear into a state of suspended animation in an extradimensional sphere. Everything I had stays behind. Wish can reveal my location. I draw no more cards.",
+				"\u2022 Euryale. This card's medusa-like visage curses me with a -2 penalty on saving throws. Only a god or the magic of The Fates card can end this curse.",
+				"\u2022 The Fates. Reality's fabric unravels and spins anew, allowing me to avoid or erase one event. I can use the card's magic any one time before I die.",
+				"\u2022 Flames. A powerful devil becomes my enemy until one of us dies. It seeks my ruin and plagues my life, savoring my suffering before attempting to slay me.",
+				"\u2022 Fool. I lose up to 10,000 XP (no level loss), discard this card, and draw again.",
+				"\u2022 Gem. 25 pieces of jewelry (2000 gp each) or 50 gems (1000 gp each) appear at my feet.",
+				"\u2022 Idiot. Permanently reduce my Intelligence by 1d4+1 (min of 1). I can draw one additional card.",
+				"\u2022 Jester. I gain 10,000 XP or I can draw two extra cards.",
+				"\u2022 Key. A rare or rarer magic weapon with which I'm proficient appears in my hands.",
+				"\u2022 Knight. A 4th-level fighter of my race appears within 30 ft, serving me loyally until death, believing the fates have drawn him/her to me (I control this NPC).",
+				"\u2022 Moon. I am granted the ability to cast the Wish spell 1d3 times.",
+				"\u2022 Rogue. An NPC becomes hostile toward me (Wish or divine intervention ends).",
+				"\u2022 Ruin. All forms of wealth that I carry or own, other than magic items, are lost. Businesses, buildings, and land I own are lost in a way that alters reality the least.",
+				"\u2022 Skull. I summon a ghostly skeleton with tattered robes and a spectral scythe within 10 ft. It attacks me, warning all others that I must win the battle alone.",
+				"\u2022 Star. Increase one of my ability scores by 2 (can't exceed 24).",
+				"\u2022 Sun. I gain 50,000 XP and a wondrous item appears in my hands.",
+				"\u2022 Talons. Every magic item I wear or carry disintegrates. Artifacts in my possession aren't destroyed but do vanish.",
+				"\u2022 Throne. I gain expertise in Persuasion and rightful ownership of a small keep somewhere in the world (currently occupied by monsters).",
+				"\u2022 Vizier. Within one year I can ask one question in meditation and receive a truthful answer. This knowledge comes with the wisdom on how to apply it.",
+				"\u2022 The Void. This black card spells disaster. My soul is contained in an object, powerful beings guard it, and my body is incapacitated. Wish can reveal my location. I draw no more cards."
+			].join("\n")
+		}]
 	},
 	"defender" : { // finished
 		name : "Defender",
@@ -1207,17 +1432,39 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
-	"demon armor" : {
+	"demon armor" : { // contains contributions by Larry Hoy
 		name : "Demon Armor",
 		source : [["SRD", 218], ["D", 165]],
 		type : "armor (plate)",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "While wearing this plate armor, I have +1 AC, know Abyssal, and can use its clawed gauntlets to make unarmed strikes that deal 1d8 slashing damage with a +1 bonus to hit and damage. I have disadv. on attacks and on saves vs. demons, their spells and abilities. I can't doff it without Remove Curse or similar magic.",
 		descriptionFull : "While wearing this armor, you gain a +1 bonus to AC, and you can understand and speak Abyssal. In addition, the armor's clawed gauntlets turn unarmed strikes with your hands into magic weapons that deal slashing damage, with a +1 bonus to attack and damage rolls and a damage die of 1d8.\n   " + toUni("Curse") + ". Once you don this cursed armor, you can't doff it unless you are targeted by the Remove Curse spell or similar magic. While wearing the armor, you have disadvantage on attack rolls against demons and on saving throws against their spells and special abilities.",
 		attunement : true,
 		weight : 65,
-		cursed : true
+		cursed : true,
+		languageProfs : ["Abyssal"],
+		savetxt : { text : ["Disadv. on saves vs. demons"] },
+		armorAdd : "Demon Armor",
+		armorOptions : [{
+			regExpSearch : /^(?=.*demon)(?=.*armor).*$/i,
+			name : "Demon Armor",
+			source: [["SRD", 218], ["D", 165]],
+			type : "heavy",
+			ac : 19,
+			stealthdis : true,
+			weight : 65,
+			strReq : 15
+		}],
+		weaponsAdd: ["Demon Armor Claws"],
+		weaponOptions: [{
+			baseWeapon : "unarmed strike",
+			regExpSearch : /^(?=.*demon)(?=.*armor)(?=.*claws).*$/i,
+			name : "Demon Armor Claws",
+			source: [["SRD", 218], ["D", 165]],
+			damage : [1, 8, "slashing"],
+			modifiers : [1, 1]
+		}]
 	},
 	"dimensional shackles" : { // finished
 		name : "Dimensional Shackles",
@@ -1382,33 +1629,48 @@ var Base_MagicItemsList = {
 		description : "Once as an action, I can throw this dust into the air. By doing so, me and all creatures within 10 ft of me become invisible for 2d4 minutes. The duration is the same for all subjects. If a creature affected by the dust attacks or casts a spell, the invisibility ends for that creature.",
 		descriptionFull : "Found in a small packet, this powder resembles very fine sand. There is enough of it for one use. When you use an action to throw the dust into the air, you and each creature and object within 10 feet of you become invisible for 2d4 minutes. The duration is the same for all subjects, and the dust is consumed when its magic takes effect. If a creature affected by the dust attacks or casts a spell, the invisibility ends for that creature."
 	},
-	"dust of dryness" : {
+	"dust of dryness" : { // finished
 		name : "Dust of Dryness",
 		source : [["SRD", 219], ["D", 166]],
 		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "B",
-		description : "",
-		descriptionFull : "This small packet contains 1d6+4 pinches of dust. You can use an action to sprinkle a pinch of it over water. The dust turns a cube of water 15 feet on a side into one marble-sized pellet, which floats or rests near where the dust was sprinkled. The pellet's weight is negligible.\n   Someone can use an action to smash the pellet against a hard surface, causing the pellet to shatter and release the water the dust absorbed. Doing so ends that pellet's magic.\n   An elemental composed mostly of water that is exposed to a pinch of the dust must make a DC 13 Constitution saving throw, taking 10d6 necrotic damage on a failed save, or half as much damage on a successful one."
+		description : "As an action, I can sprinkle a pinch of dust over water, turning a 15-ft cube into a floating, marble-sized pellet. As an action, someone can smash the pellet against a hard surface, destroying it and releasing the absorbed water. A pinch of dust does 10d6 necrotic damage to a water elemental, Con save DC 13 halves.",
+		descriptionFull : "This small packet contains 1d6+4 pinches of dust. You can use an action to sprinkle a pinch of it over water. The dust turns a cube of water 15 feet on a side into one marble-sized pellet, which floats or rests near where the dust was sprinkled. The pellet's weight is negligible.\n   Someone can use an action to smash the pellet against a hard surface, causing the pellet to shatter and release the water the dust absorbed. Doing so ends that pellet's magic.\n   An elemental composed mostly of water that is exposed to a pinch of the dust must make a DC 13 Constitution saving throw, taking 10d6 necrotic damage on a failed save, or half as much damage on a successful one.",
+		usages : 10,
+		recovery : "Never",
+		additional : "1d6+4 pinches"
 	},
-	"dust of sneezing and choking" : {
+	"dust of sneezing and choking" : { // finished
 		name : "Dust of Sneezing and Choking",
 		source : [["SRD", 219], ["D", 166]],
 		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "B",
-		description : "Once as an action, ",
+		description : "Once as an action, I can throw this dust into the air, causing me and all creatures within 30 ft that need to breathe to make a DC 15 Con save or start sneezing uncontrollably and be unable to breathe, thus becoming incapacitated and suffocating. Those affected can repeat their save at the end of each of their turns.",
 		descriptionFull : "Found in a small container, this powder resembles very fine sand. It appears to be dust of disappearance, and an Identify spell reveals it to be such. There is enough of it for one use.\n   When you use an action to throw a handful of the dust into the air, you and each creature that needs to breathe within 30 feet of you must succeed on a DC 15 Constitution saving throw or become unable to breathe while sneezing uncontrollably. A creature affected in this way is incapacitated and suffocating. As long as it is conscious, a creature can repeat the saving throw at the end of each of its turns, ending the effect on it on a success. The Lesser Restoration spell can also end the effect on a creature."
 	},
-	"dwarven plate" : {
+	"dwarven plate" : { // finished
 		name : "Dwarven Plate",
 		source : [["SRD", 220], ["D", 167]],
 		type : "armor (plate)",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "While wearing this plate armor, I gain a +2 bonus to AC. In addition, if an effect moves me against my will along the ground, I can use my reaction to reduce the distance I am moved by up to 10 ft.",
 		descriptionFull : "While wearing this armor, you gain a +2 bonus to AC. In addition, if an effect moves you against your will along the ground, you can use your reaction to reduce the distance you are moved by up to 10 feet.",
-		weight : 65
+		weight : 65,
+		action : [["reaction", ""]],
+		armorAdd : "Dwarven Plate",
+		armorOptions : [{
+			regExpSearch : /^(?=.*dwarven)(?=.*plate).*$/i,
+			name : "Dwarven Plate",
+			source : [["SRD", 220], ["D", 167]],
+			type : "heavy",
+			ac : 20,
+			stealthdis : true,
+			weight : 65,
+			strReq : 15
+		}]
 	},
 	"dwarven thrower" : { // finished
 		name : "Dwarven Thrower",
@@ -1524,25 +1786,35 @@ var Base_MagicItemsList = {
 			}
 		}
 	},
-	"elven chain" : {
+	"elven chain" : { // finished
 		name : "Elven Chain",
 		source : [["SRD", 220], ["D", 168]],
 		type : "armor (chain shirt)",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
+		description : "I gain a +1 bonus to AC while I wear this chain shirt. I am considered proficient with this armor even if I lack proficiency with medium armor.",
 		descriptionFull : "You gain a +1 bonus to AC while you wear this armor. You are considered proficient with this armor even if you lack proficiency with medium armor.",
-		weight : 20
+		weight : 20,
+		armorAdd : "Elven Chain",
+		armorOptions : [{
+			regExpSearch : /^(?=.*elven)(?=.*chain).*$/i,
+			name : "Elven Chain",
+			source : [["SRD", 220], ["D", 168]],
+			type : "medium",
+			ac : 14,
+			weight : 20
+		}]
 	},
-	"eversmoking bottle" : {
+	"eversmoking bottle" : { // finished
 		name : "Eversmoking Bottle",
 		source : [["SRD", 220], ["D", 168]],
 		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		description : "",
+		description : "When I use an action to remove the stopper, a cloud of thick heavily obscuring smoke flows out of the bottle in a 60-ft radius, increasing by 10 ft for each minute the bottle is open, until it reaches 120 ft. Closing it requires me to speak the command word as an action. Once closed, the cloud disperses after 10 min.",
 		descriptionFull : "Smoke leaks from the lead-stoppered mouth of this brass bottle, which weighs 1 pound. When you use an action to remove the stopper, a cloud of thick smoke pours out in a 60-foot radius from the bottle. The cloud's area is heavily obscured. Each minute the bottle remains open and within the cloud, the radius increases by 10 feet until it reaches its maximum radius of 120 feet.\n   The cloud persists as long as the bottle is open. Closing the bottle requires you to speak its command word as an action. Once the bottle is closed, the cloud disperses after 10 minutes. A moderate wind (11 to 20 miles per hour) can also disperse the smoke after 1 minute, and a strong wind (21 or more miles per hour) can do so after 1 round.",
-		weight : 1
+		weight : 1,
+		action : [["action", " (open/close)"]]
 	},
 	"eyes of charming" : { // finished
 		name : "Eyes of Charming",
@@ -1585,86 +1857,146 @@ var Base_MagicItemsList = {
 		attunement : true,
 		vision : [["Adv. on Perception checks that rely on sight", 0]]
 	},
-	"figurine of wondrous power, bronze griffon" : {
-		name : "Figurine of Wondrous Power, Bronze Griffon",
-		source : [["SRD", 222], ["D", 169]],
-		type : "wondrous item",
-		rarity : "rare",
-		magicItemTable : "G",
-		description : "",
-		descriptionFull : "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Bronze Griffon.\n   This bronze statuette is of a griffon rampant. It can become a griffon for up to 6 hours. Once it has been used, it can't be used again until 5 days have passed."
-	},
-	"figurine of wondrous power, ebony fly" : {
-		name : "Figurine of Wondrous Power, Ebony Fly",
-		source : [["SRD", 222], ["D", 169]],
-		type : "wondrous item",
-		rarity : "rare",
-		magicItemTable : "G",
-		description : "",
-		descriptionFull : "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   giant Ebony Fly.\n   This ebony statuette is carved in the likeness of a horsefly. It can become a giant fly for up to 12 hours and can be ridden as a mount. Once it has been used, it can't be used again until 2 days have passed."
-	},
-	"figurine of wondrous power, golden lions" : {
-		name : "Figurine of Wondrous Power, Golden Lions",
-		source : [["SRD", 222], ["D", 169]],
-		type : "wondrous item",
-		rarity : "rare",
-		magicItemTable : "G",
-		description : "",
-		descriptionFull : "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Golden Lions.\n   These gold statuettes of lions are always created in pairs. You can use one figurine or both simultaneously. Each can become a lion for up to 1 hour. Once a lion has been used, it can't be used again until 7 days have passed."
-	},
-	"figurine of wondrous power, ivory goats" : {
-		name : "Figurine of Wondrous Power, Ivory Goats",
-		source : [["SRD", 222], ["D", 169]],
-		type : "wondrous item",
-		rarity : "rare",
-		magicItemTable : "G",
-		description : "",
-		descriptionFull : "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Ivory Goats.\n   These ivory statuettes of goats are always created in sets of three. Each goat looks unique and functions differently from the others. Their properties are as follows:\n \u2022 The goat of traveling can become a Large goat with the same statistics as a riding horse. It has 24 charges, and each hour or portion thereof it spends in beast form costs 1 charge. While it has charges, you can use it as often as you wish. When it runs out of charges, it reverts to a figurine and can't be used again until 7 days have passed, when it regains all its charges.\n \u2022 The goat of travail becomes a giant goat for up to 3 hours. Once it has been used, it can't be used again until 30 days have passed.\n \u2022 The goat of terror becomes a giant goat for up to 3 hours. The goat can't attack, but you can remove its horns and use them as weapons. One horn becomes a +1 lance, and the other becomes a +2 longsword. Removing a horn requires an action, and the weapons disappear and the horns return when the goat reverts to figurine form. In addition, the goat radiates a 30-foot-radius aura of terror while you are riding it. Any creature hostile to you that starts its turn in the aura must succeed on a DC 15 Wisdom saving throw or be frightened of the goat for 1 minute, or until the goat reverts to figurine form. The frightened creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. Once it successfully saves against the effect, a creature is immune to the goat's aura for the next 24 hours. Once the figurine has been used, it can't be used again until 15 days have passed."
-	},
-	"figurine of wondrous power, marble elephant" : {
-		name : "Figurine of Wondrous Power, Marble Elephant",
-		source : [["SRD", 222], ["D", 170]],
-		type : "wondrous item",
-		rarity : "rare",
-		magicItemTable : "G",
-		description : "",
-		descriptionFull : "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Marble Elephant.\n   This marble statuette is about 4 inches high and long. It can become an elephant for up to 24 hours. Once it has been used, it can't be used again until 7 days have passed."
-	},
-	"figurine of wondrous power, obsidian steed" : {
-		name : "Figurine of Wondrous Power, Obsidian Steed",
-		source : [["SRD", 222], ["D", 170]],
-		type : "wondrous item",
-		rarity : "very rare",
-		magicItemTable : "H",
-		description : "",
-		descriptionFull : "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Obsidian Steed.\n   This polished obsidian horse can become a nightmare for up to 24 hours. The nightmare fights only to defend itself. Once it has been used, it can't be used again until 5 days have passed.\n   If you have a good alignment, the figurine has a 10% chance each time you use it to ignore your orders, including a command to revert to figurine form. If you mount the nightmare while it is ignoring your orders, you and the nightmare are instantly transported to a random location on the plane of Hades, where the nightmare reverts to figurine form."
-	},
-	"figurine of wondrous power, onyx dog" : {
-		name : "Figurine of Wondrous Power, Onyx Dog",
-		source : [["SRD", 222], ["D", 170]],
-		type : "wondrous item",
-		rarity : "rare",
-		magicItemTable : "G",
-		description : "",
-		descriptionFull : "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Onyx Dog.\n   This onyx statuette of a dog can become a mastiff for up to 6 hours. The mastiff has an Intelligence of 8 and can speak Common. It also has dark vision out to a range of 60 feet and can see invisible creatures and objects within that range. Once it has been used, it can't be used again until 7 days have passed."
-	},
-	"figurine of wondrous power, serpentine owl" : {
-		name : "Figurine of Wondrous Power, Serpentine Owl",
-		source : [["SRD", 222], ["D", 170]],
-		type : "wondrous item",
-		rarity : "rare",
-		magicItemTable : "G",
-		description : "",
-		descriptionFull : "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Serpentine Owl.\n   This serpentine statuette of an owl can become a giant owl for up to 8 hours. Once it has been used, it can't be used again until 2 days have passed. The owl can telepathically communicate with you at any range if you and it are on the same plane of existence."
-	},
-	"figurine of wondrous power, silver raven" : {
-		name : "Figurine of Wondrous Power, Silver Raven",
-		source : [["SRD", 222], ["D", 170]],
-		type : "wondrous item",
-		rarity : "uncommon",
-		magicItemTable : "F",
-		description : "",
-		descriptionFull : "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.\n   Silver Raven.\n   This silver statuette of a raven can become a raven for up to 12 hours. Once it has been used, it can't be used again until 2 days have passed. While in raven form, the figurine allows you to cast the Animal Messenger spell on it at will."
+	"figurine of wondrous power" : { // contains contributions by Larry Hoy
+		name: "Figurine of Wondrous Power",
+		source: [["SRD", 221], ["D", 169]],
+		type: "wondrous item",
+		description: "As an action, I can speak the command word and throw one or more statuettes to an unoccupied space within 60 ft where it becomes a specific creature for a certain amount of time. It is friendly, understands my languages, and obeys my commands.",
+		descriptionFull: "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.",
+		action : [["action", ""]],
+		choices : ["Bronze Griffon", "Ebony Fly", "Golden Lions", "Ivory Goats", "Marble Elephant", "Obsidian Steed", "Onyx Dog", "Serpentine Owl", "Silver Raven"],
+		"bronze griffon" : {
+			rarity : "rare",
+			magicItemTable : "G",
+			description: "As an action, I can speak the command word and throw this bronze statuette to an unoccupied space within 60 ft, where it becomes a griffon for up to 6 hours, until I use the command word again, or it reaches 0 hp. It is friendly, understands my languages, and obeys my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw this bronze statuette of a griffon rampant to an unoccupied space within 60 ft, where it becomes a griffon for up to 6 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 5 days have passed.",
+			descriptionFull: "This figurine of wondrous power is a bronze statuette of a griffon rampant, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living griffon. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 6 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 5 days have passed.",
+			usages : 1,
+			recovery : "5 days"
+		},
+		"ebony fly" : {
+			rarity: "rare",
+			magicItemTable : "G",
+			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a giant fly for up to 12 hours, until I use the command word again, or it reaches 0 hp. It is friendly, understands my languages, obeys my commands, and can be ridden as a mount.",
+			descriptionLong: "As an action, I can speak the command word and throw this ebony statuette of a horsefly to an unoccupied space within 60 ft, where it becomes a giant fly for up to 12 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, obeys my spoken commands, and can be ridden as a mount. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
+			descriptionFull : "This figurine of wondrous power is an ebony statuette carved in the likeness of a horsefly, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living giant fly and can be ridden as a mount. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 12 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.",
+			usages : 1,
+			recovery : "2 days"
+		},
+		"golden lions" : {
+			rarity : "rare",
+			magicItemTable : "G",
+			description: "As an action, I can speak the command word and throw one or both of these gold statuettes to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use the command word again, or it reaches 0 hp. They are friendly, understands my languages, and obeys my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw one or both of these gold statuette of a lion to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use an action to repeat the command word, or it reaches 0 hp. They are friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
+			descriptionFull : "This figurine of wondrous power is a pair of gold statuette of lions, small enough to fit in a pocket. If you use an action to speak the command word and throw one or both of the figurine to a point on the ground within 60 feet of you, each figurine becomes a living lion. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 1 hour. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
+			usages : 2,
+			recovery : "7 days"
+		},
+		"ivory goats" : {
+			rarity : "rare",
+			magicItemTable : "G",
+			description: "As an action, I can speak the command word and throw one or more of these 3 ivory statuettes to an unoccupied space within 60 ft, where each becomes a creature, until I use the command word again, or it reaches 0 hp. They are friendly, understands my languages, and obeys my commands. See Notes page.",
+			descriptionLong: "As an action, I can speak the command word and throw one or more of these three ivory statuette of a lion to an unoccupied space within 60 ft, where each becomes a creature, until I use an action to repeat the command word, or it reaches 0 hp. They are friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until a certain amount of time has passed. See Notes page for details about each of the statuettes.",
+			descriptionFull: "This figurine of wondrous power is three ivory statuettes of goats, small enough to fit in a pocket. Each goat looks unique and functions differently from the others. If you use an action to speak the command word and throw one or more of the figurines to a point on the ground within 60 feet of you, each figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description." +
+			"\n \u2022 The goat of traveling can become a Large goat with the same statistics as a riding horse. It has 24 charges, and each hour or portion thereof it spends in beast form costs 1 charge. While it has charges, you can use it as often as you wish. When it runs out of charges, it reverts to a figurine and can't be used again until 7 days have passed, when it regains all its charges." +
+			"\n \u2022 The goat of travail becomes a giant goat for up to 3 hours. Once it has been used, it can't be used again until 30 days have passed." +
+			"\n \u2022 The goat of terror becomes a giant goat for up to 3 hours. The goat can't attack, but you can remove its horns and use them as weapons. One horn becomes a +1 lance, and the other becomes a +2 longsword. Removing a horn requires an action, and the weapons disappear and the horns return when the goat reverts to figurine form. In addition, the goat radiates a 30-foot-radius aura of terror while you are riding it. Any creature hostile to you that starts its turn in the aura must succeed on a DC 15 Wisdom saving throw or be frightened of the goat for 1 minute, or until the goat reverts to figurine form. The frightened creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. Once it successfully saves against the effect, a creature is immune to the goat's aura for the next 24 hours. Once the figurine has been used, it can't be used again until 15 days have passed.",
+			extraLimitedFeatures : [{
+				name : "Figurine of Wondrous Power [Ivory Goat of Traveling]",
+				usages : 24,
+				recovery : "7 days"
+			}, {
+				name : "Figurine of Wondrous Power [Ivory Goat of Travail]",
+				usages : 1,
+				recovery : "30 days"
+			}, {
+				name : "Figurine of Wondrous Power [Ivory Goat of Terror]",
+				usages : 1,
+				recovery : "15 days"
+			}],
+			toNotesPage : [{
+				name : "Ivory Goat Details",
+				note : [
+					"The goat of traveling can become a Large goat with the same statistics as a riding horse. It has 24 charges, and each hour or portion thereof it spends in beast form costs 1 charge. While it has charges, you can use it as often as you wish. When it runs out of charges, it reverts to a figurine and can't be used again until 7 days have passed, when it regains all its charges.",
+					"The goat of travail becomes a giant goat for up to 3 hours. Once it has been used, it can't be used again until 30 days have passed.",
+					"The goat of terror becomes a giant goat for up to 3 hours. The goat can't attack, but I can remove its horns and use them as weapons. One horn becomes a +1 lance, and the other becomes a +2 longsword. Removing a horn requires an action, and the weapons disappear and the horns return when the goat reverts to figurine form. In addition, the goat radiates a 30-ft radius aura of terror while I am riding it. Any creature hostile to me that starts its turn in the aura must succeed on a DC 15 Wisdom saving throw or be frightened of the goat for 1 minute, or until the goat reverts to figurine form. The frightened creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. Once it successfully saves against the effect, a creature is immune to the goat's aura for the next 24 hours. Once the figurine has been used, it can't be used again until 15 days have passed."
+				]
+			}],
+			weaponsAdd : ["Lance +1, Ivory Goat Horn", "Longsword +2, Ivory Goat Horn"],
+			weaponOptions : [{
+				baseWeapon : "lance",
+				regExpSearch : /^(?=.*ivory)(?=.*goat)(?=.*lance).*$/i,
+				name : "Lance +1, Ivory Goat Horn",
+				source : [["SRD", 222], ["D", 170]]
+			}, {
+				baseWeapon : "longsword",
+				regExpSearch : /^(?=.*ivory)(?=.*goat)(?=.*longsword).*$/i,
+				name : "Longsword +2, Ivory Goat Horn",
+				source : [["SRD", 222], ["D", 170]]
+			}]
+		},
+		"marble elephant" : {
+			rarity : "rare",
+			magicItemTable : "G",
+			description: "As an action, I can speak the command word and throw this marble statuette to an unoccupied space within 60 ft, where it becomes a elephant for up to 24 hours, until I use the command word again, or it reaches 0 hp. It is friendly, understands my languages, and obeys my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw this marble statuette of about 4 inches high and long to an unoccupied space within 60 ft, where it becomes a elephant for up to 24 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
+			descriptionFull: "This figurine of wondrous power is a marble statuette of about 4 inches high and long, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living elephant. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 24 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
+			usages : 1,
+			recovery : "7 days"
+		},
+		"obsidian steed" : {
+			rarity : "very rare",
+			magicItemTable : "H",
+			description: "As an action, I can speak the command word and throw this obsidian statuette to an unoccupied space within 60 ft, where it becomes a nightmare for up to 24 hours, until it reaches 0 hp, or I use the command word again. It is friendly, understands my languages, and obeys my commands. See Notes page.",
+			descriptionLong: "As an action, I can speak the command word and throw this polished obsidian statuette of an horse to an unoccupied space within 60 ft, where it becomes a nightmare for up to 24 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. It only fights to defend itself. When it reverts back to a figurine, it can't be used again until 5 days have passed. See Notes page for more details.",
+			descriptionFull: "This figurine of wondrous power is a polished obsidian statuette of a horse, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living nightmare. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 24 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 5 days have passed." +
+			"\n   The nightmare fights only to defend itself.\n   If you have a good alignment, the figurine has a 10% chance each time you use it to ignore your orders, including a command to revert to figurine form. If you mount the nightmare while it is ignoring your orders, you and the nightmare are instantly transported to a random location on the plane of Hades, where the nightmare reverts to figurine form.",
+			usages : 1,
+			recovery : "5 days",
+			toNotesPage : [{
+				name : "Obsidian Steed Details",
+				note : "\n   If I have a good alignment, the figurine has a 10% chance each time I use it to ignore my orders, including a command to revert to figurine form. If I mount the nightmare while it is ignoring my orders, we are both instantly transported to a random location on the plane of Hades, where the nightmare reverts to figurine form.",
+			}]
+		},
+		"onyx dog" : {
+			rarity : "rare",
+			magicItemTable : "G",
+			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a mastiff for up to 6 hours, until I use the command word again, or it reaches 0 hp. It has 60 ft darkvision, see invisible out to 60 ft, is friendly, understands me, and obeys my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw this onyx statuette to an unoccupied space within 60 ft, where it becomes a mastiff for up to 6 hours, until I use an action to repeat the command word, or it reaches 0 hp. It has Intelligence 8, speaks common, darkvision out to 60 ft and can see invisible creatures and objects out to that same range. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
+			descriptionFull: "This figurine of wondrous power is an onyx statuette of a dog, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living mastiff. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The mastiff has an Intelligence of 8 and can speak Common. It also has darkvision out to a range of 60 feet and can see invisible creatures and objects within that range. It is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 6 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
+			usages : 1,
+			recovery : "7 days"
+		},
+		"serpentine owl" : {
+			rarity : "rare",
+			magicItemTable : "G",
+			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a giant owl for up to 8 hours, until I use the command word again, or it reaches 0 hp. It is friendly, can convers telepathically with me, understands my languages, and obeys my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw this serpentine statuette to an unoccupied space within 60 ft, where it becomes a giant owl for up to 8 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. As long as it is on the same plane of existence, it can communicate telepathically with me. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
+			descriptionFull: "This figurine of wondrous power is a serpentine statuette of an owl, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living giant owl. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. It can telepathically communicate with you at any range if you and it are on the same plane of existence. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 8 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.",
+			usages : 1,
+			recovery : "2 days"
+		},
+		"silver raven" : {
+			rarity : "uncommon",
+			magicItemTable : "F",
+			description: "As an action, I can speak the command word and throw this silver statuette to an unoccupied space within 60 ft, where it becomes a raven for up to 12 hours, until I use the command word again, or it reaches 0 hp. It is friendly, understands my languages, and obeys my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw this silver statuette to an unoccupied space within 60 ft, where it becomes a raven for up to 12 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. While in raven form, the figurine allows me to cast Animal Messenger on it at will. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
+			descriptionFull: "This figurine of wondrous power is as sliver statuette of a raven, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living raven. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 12 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.\n   While in raven form, the figurine allows you to cast the Animal Messenger spell on it at will.",
+			usages : 1,
+			recovery : "2 days",
+			spellcastingBonus : {
+				name : "At will",
+				spells : ["animal messenger"],
+				selection : ["animal messenger"],
+				firstCol : "atwill"
+			},
+			spellChanges : {
+				"animal messenger" : {
+					description : "The raven delivers a 25 word message up to 50 miles away to chosen location and recipient",
+					changes : "The spell can only affect the figurine."
+				}
+			}
+		}
 	},
 	"flame tongue" : { // finished
 		name : "Flame Tongue",
@@ -1961,15 +2293,25 @@ var Base_MagicItemsList = {
 			firstCol : "oncelr"
 		}]
 	},
-	"helm of teleportation" : {
+	"helm of teleportation" : { // finished
 		name : "Helm of Teleportation",
 		source : [["SRD", 225], ["D", 174]],
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
+		description : "This helm has 3 charges. While wearing it, I can use an action and expend 1 charge to cast Teleport from it. The helm regains 1d3 expended charges daily at dawn.",
 		descriptionFull : "This helm has 3 charges. While wearing it, you can use an action and expend 1 charge to cast the Teleport spell from it. The helm regains 1d3 expended charges daily at dawn.",
-		attunement : true
+		attunement : true,
+		usages : 3,
+		recovery : "dawn",
+		additional : "regains 1d3",
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : {
+			name : "1 charge",
+			spells : ["teleport"],
+			selection : ["teleport"],
+			firstCol : "1"
+		}
 	},
 	"holy avenger" : { // finished
 		name : "Holy Avenger",
@@ -2090,22 +2432,22 @@ var Base_MagicItemsList = {
 		descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   The silver horn summons 2d4+2 berserkers.\n   The berserkers are friendly to you and your companions and follow your commands.",
 		weight : 2
 	},
-	"horseshoes of a zephyr" : {
+	"horseshoes of a zephyr" : { // finished
 		name : "Horseshoes of a Zephyr",
 		source : [["SRD", 226], ["D", 175]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "D",
-		description : "",
+		description : "While all four shoes are affixed to the hooves of a creature, they allow it to move normally while floating 4 inches above the floor. the creature can cross or stand above liquid or unstable surfaces, leaves no tracks, ignores difficult terrain, and doesn't suffer exhaustion from moving at normal speed for 12 hours a day.",
 		descriptionFull : "These iron horseshoes come in a set of four. While all four shoes are affixed to the hooves of a horse or similar creature, they allow the creature to move normally while floating 4 inches above the ground. This effect means the creature can cross or stand above nonsolid or unstable surfaces, such as water or lava. The creature leaves no tracks and ignores difficult terrain. In addition, the creature can move at normal speed for up to 12 hours a day without suffering exhaustion from a forced march."
 	},
-	"horseshoes of speed" : {
+	"horseshoes of speed" : { // finished
 		name : "Horseshoes of Speed",
 		source : [["SRD", 226], ["D", 175]],
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "C",
-		description : "",
+		description : "While all four shoes are affixed to the hooves of a horse or similar creature, they increase the creature's walking speed by 30 ft.",
 		descriptionFull : "These iron horseshoes come in a set of four. While all four shoes are affixed to the hooves of a horse or similar creature, they increase the creature's walking speed by 30 feet."
 	},
 	"immovable rod" : { // finished
@@ -2731,16 +3073,44 @@ var Base_MagicItemsList = {
 			}
 		}
 	},
-	"plate armor of etherealness" : {
+	"plate armor of etherealness" : { // finished
 		name : "Plate Armor of Etherealness",
 		source : [["SRD", 233], ["D", 185]],
 		type : "armor (plate)",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "",
+		description : "As an action while I'm wearing this plate armor, I can speak its command word to cast Etherealness on myself. This effect lasts for 10 minutes or until I remove the armor or use an action to speak the command word again. This property of the armor can't be used again until the next dawn.",
 		descriptionFull : "While you're wearing this armor, you can speak its command word as an action to gain the effect of the Etherealness spell, which lasts for 10 minutes or until you remove the armor or use an action to speak the command word again. This property of the armor can't be used again until the next dawn.",
 		attunement : true,
-		weight : 65
+		weight : 65,
+		usages : 1,
+		recovery : "dawn",
+		action : [["action", " (start/stop)"]],
+		armorAdd : "Plate Armor of Etherealness",
+		armorOptions : {
+			regExpSearch : /^(?=.*plate)(?=.*etherealness).*$/i,
+			name : "Plate Armor of Etherealness",
+			source : [["SRD", 233], ["D", 185]],
+			type : "heavy",
+			ac : 18,
+			stealthdis : true,
+			weight : 65,
+			strReq : 15
+		},
+		spellcastingBonus : {
+			name : "once per dawn",
+			spell : ["etherealness"],
+			selection : ["etherealness"],
+			firstCol : "oncelr"
+		},
+		spellChanges : {
+			"etherealness" : {
+				components : "V,M\u0192",
+				duration : "10 min",
+				description : "I go to Ethereal Plane; move there freely, but able to perceive 60 ft into the normal plane",
+				changes : "Using the Plate Armor of Etherealness, I can cast Etherealness, but only on myself and it lasts only 10 minutes."
+			}
+		}
 	},
 	"portable hole" : {
 		name : "Portable Hole",
@@ -3570,6 +3940,7 @@ var Base_MagicItemsList = {
 		rarity : "legendary",
 		magicItemTable : "I",
 		description : "",
+		descriptionLong : "This is a +3 mace, but can change using its six buttons as a bonus action (Flame Tongue, +3 battleaxe, +3 spear, 50 ft ladder, battering ram with +10 to Strength checks with it, or pointing to the magnetic north and gives knowledge of current depth/height from the ground). 3 functions each once per day: Drain Life; on hit  DC 17 Con save or 4d6 necrotic damage and heal half of that. Paralyze; on hit DC 17 Str save or paralyzed 1 min, save each turn. Terrify; action, all in 30 ft DC 17 Wis save or frightened 1 min, save each turn.",
 		descriptionFull : "This rod has a flanged head, and it functions as a magic mace that grants a +3 bonus to attack and damage roll made with it. The rod has properties associated with six different buttons that are set in a row along the haft. It has three other properties as well, detailed below.\n   " + toUni("Six Buttons") + ". You can press one of the rod's six buttons as a bonus action. A button's effect lasts until you push a different button or until you push the same button again, which causes the rod to revert to its normal form.\n   If you press button 1, the rod becomes a flame tongue as a fiery blade sprouts from the end opposite the rod's flanged head (you choose the type of sword).\n   If you press button 2, the rod's flanged head folds down and two crescent-shaped blades spring out, transforming the rod into a magic battleaxe that grants a +3 bonus to attack and damage rolls made with it.\n   If you press button 3, the rod's flanged head folds down, a spear point springs from the rod's tip, and the rod's handle lengthens into a 6-foot haft, transforming the rod into a magic spear that grants a+3 bonus to attack and damage rolls made with it.\n   If you press button 4, the rod transforms into a climbing pole up to 50 feet long, as you specify. In surfaces as hard as granite, a spike at the bottom and three hooks at the top anchor the pole. Horizontal bars 3 inches long fold out from the sides, 1 foot apart, forming a ladder. The pole can bear up to 4,000 pounds. More weight or lack of solid anchoring causes the rod to revert to its normal form.\n   If you press button 5, the rod transforms into a handheld battering ram and gram its user a +10 bonus to Strength checks made to break through doors, barricades, and other barriers.\n   If you press button 6, the rod assumes or remains in its normal form and indicates magnetic north. (Nothing happens if this function of the rod is used in a location that has no magnetic north.) The rod also gives you knowledge of your approximate depth beneath the ground or your height above it.\n   " + toUni("Drain Life") + ". When you hit a creature with a melee attack using the rod, you can force the target to make a DC 17 Constitution saving throw. On a failure, the target rakes an extra 4d6 necrotic damage, and you regain a number of hit points equal to half that necrotic damage. This property can't be used again until the next dawn.\n   " + toUni("Paralyze") + ". When you hit a creature with a melee attack using the rod, you can force the target to make a DC 17 Strength saving throw. On a failure, the target is paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on a success. This property can't be used again until the next dawn.\n   " + toUni("Terrify") + ". While holding the rod, you can use an action to force each creature you can see within 30 feet of you to make a DC 17 Wisdom saving throw. On a failure, a target is frightened of you for 1 minute. A frightened target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. This property can't be used again until the next dawn.",
 		attunement : true,
 		weight : 2
@@ -4111,15 +4482,20 @@ var Base_MagicItemsList = {
 			}
 		}
 	},
-	"stone of good luck" : {
+	"stone of good luck" : { // finished
 		name : "Stone of Good Luck",
 		source : [["SRD", 246], ["D", 205]],
 		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		description : "",
+		description : "While this polished agate is on my person, I gain a +1 bonus to ability checks and saving throws.",
 		descriptionFull : "While this polished agate is on your person, you gain a +1 bonus to ability checks and saving throws.",
-		attunement : true
+		attunement : true,
+		addMod : [
+			{ type : "save", field : "all", mod : 1, text : "I gain a +1 bonus on all my saving throws." },
+			{ type : "skill", field : "all", mod : 1, text : "I gain a +1 bonus on all my ability checks." },
+			{ type : "skill", field : "Init", mod : 1, text : "I gain a +1 bonus on all my ability checks." }
+		]
 	},
 	"sun blade" : { // finished
 		name : "Sun Blade",

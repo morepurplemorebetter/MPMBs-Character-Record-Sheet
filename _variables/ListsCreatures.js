@@ -2491,6 +2491,27 @@ var Base_CreatureList = {
 			description : "If the elk moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 14 Strength saving throw or be knocked prone."
 		}]
 	},
+	"giant fly" : {
+		name : "Giant Fly",
+		source : [["SRD", 222], ["D", 169]],
+		size : 2,
+		type : "Beast",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 11,
+		hp : 19,
+		hd : [3, 10],
+		speed : "30 ft, fly 60 ft",
+		scores : [14, 13, 13, 2, 10, 3],
+		saves : ["", "", "", "", "", ""],
+		senses : "Darkvision 60 ft",
+		passivePerception : 10,
+		languages : "",
+		challengeRating : "0",
+		proficiencyBonus : 2,
+		attacksAction : 0,
+		attacks : []
+	},
 	"giant fire beetle" : {
 		name : "Giant Fire Beetle",
 		source : [["SRD", 375], ["M", 325]],

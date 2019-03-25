@@ -593,6 +593,15 @@ function CompSkillRefer(Skill, SkillBonus, scores, profB) {
 	return theReturn;
 }
 
+// manual trigger for clicking the skill proficiency/expertise (MouseUp) on the companion page
+function applyCompSkillClick() {
+	var isExp = (/Exp$/).test(event.target.name);
+	var isCheck = event.target.isBoxChecked(0) ? true : false;
+	if (isCheck != isExp) return; // nothing to do
+	var otherFld = event.target.name.replace(/(Exp|Prof)$/, isExp ? "Prof" : "Exp");
+	Checkbox(otherFld, isCheck);
+}
+
 // call this to update the companion page's proficiency bonus field so it displays the die
 function setCompProfDie() {
 	var prefix = event.target.name.substring(0, event.target.name.indexOf("BlueText."));
@@ -6417,7 +6426,7 @@ function setSkillTooltips(noPopUp) {
 
 	if (tooltipTxt == oldTooltipTxt) return; // nothing changed, so stop here
 
-	for (i = 0; i < (SkillsList.abbreviations.length); i++) {
+	for (i = 0; i < SkillsList.abbreviations.length; i++) {
 		var theSkill = SkillsList.abbreviations[i];
 		if (theSkill == "Init") continue;
 		AddTooltip(theSkill + " Prof", tooltipTxt);
@@ -6428,6 +6437,19 @@ function setSkillTooltips(noPopUp) {
 		CurrentUpdates.skillStrOld = oldTooltipTxt.replace(/.+(\r|\n)*/, '');
 	}
 	AddTooltip("SkillsClick", "Click here to change the order of the skills. You can select either alphabetic order or ordered by ability score." + (tooltipTxt ? "\n\n" + tooltipTxt : ""));
+}
+// manual trigger for clicking the skill proficiency/expertise (MouseUp) on the 1st page
+function applySkillClick(theSkill, isExp) {
+	if (SkillsList.abbreviations.indexOf(theSkill) == -1) return;
+	var isCheck = event.target.isBoxChecked(0) ? true : false;
+	if (Who('Text.SkillsNames') !== 'alphabeta') {
+		theSkill = SkillsList.abbreviationsByAS[SkillsList.abbreviations.indexOf(theSkill)];
+	}
+	SetProf("skill", isCheck, theSkill, "manualClick", isExp ? "full" : false);
+	// if disabling manually, but set to enabled by the CurrentProfs variable, do an extra check to make sure it is manually disabled
+	if (!isCheck && event.target.isBoxChecked(0)) {
+		event.target.checkThisBox(0, false);
+	}
 }
 
 // a way to pass an array of weapon proficiency booleans to be processed by the SetProf function
@@ -6563,12 +6585,12 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	};
 
  switch (ProfType) {
-	case "skill" : { // Extra is if the skill should also have expertise ('full'), or only expertise if already proficient from another source, else just proficient ('increment'), or only expertise if already proficient from another source, else nothing ('only')
+	case "skill" : { // Extra is if the skill should also have expertise ('full'), or only expertise if already proficient from another source, else just proficient ('increment'), or only expertise if already proficient from another source ('only'), else nothing
 		if (AddRemove) { // add
 			// set the proficiency, but not if only adding expertise
 			if (!Extra || !(/only/i).test(Extra)) {
 				if (!set[ProfObj]) set[ProfObj] = [];
-				set[ProfObj].push(ProfSrc);
+				if (set[ProfObj].indexOf(ProfSrc) == -1) set[ProfObj].push(ProfSrc);
 			}
 			// add the expertise, if any
 			if (Extra) {
