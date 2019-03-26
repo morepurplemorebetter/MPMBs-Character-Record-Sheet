@@ -70,6 +70,9 @@ function GetFeatureType(type) {
 		case "item":
 			theReturn = "items";
 			break;
+		case "magic":
+			theReturn = "magic";
+			break;
 	};
 	return theReturn;
 }
@@ -192,7 +195,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 
 		// --- backwards compatibility --- //
 		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false;
-		if (uObj.scores || abiScoresTxt) processStats(addIt, type, tipNm, uObj.scores, abiScoresTxt, false);
+		if (uObj.scores || abiScoresTxt) processStats(addIt, type, tipNm, uObj.scores, abiScoresTxt, false, uObj.scoresMaximum);
 		if (uObj.scoresOverride) processStats(addIt, type, tipNm, uObj.scoresOverride, abiScoresTxt, "overrides");
 		if (uObj.scoresMaximum) processStats(addIt, type, tipNm, uObj.scoresMaximum, abiScoresTxt, "maximums");
 
@@ -1106,7 +1109,7 @@ function UpdateSheetDisplay() {
 				if (CurrentUpdates.types.indexOf("statsrace") !== -1) statChanges.push(toUni("Race"));
 				if (CurrentUpdates.types.indexOf("statsclasses") !== -1) statChanges.push(toUni("Class Feature(s)"));
 				if (CurrentUpdates.types.indexOf("statsfeats") !== -1) statChanges.push(toUni("Feat(s)"));
-				if (CurrentUpdates.types.indexOf("statsoverride") !== -1 || CurrentUpdates.types.indexOf("statsitems") !== -1) statChanges.push(toUni("Magic Item(s)"));
+				if (CurrentUpdates.types.indexOf("statsoverride") !== -1 || CurrentUpdates.types.indexOf("statsitems") !== -1 || CurrentUpdates.types.indexOf("statsmagic") !== -1) statChanges.push(toUni("Magic Item(s)"));
 				strStats += formatLineList("\nThe following changed one or more ability score:", statChanges);
 			}
 			if (strStats) {
@@ -2016,10 +2019,15 @@ function ApplyMagicItem(input, FldNmbr) {
 				tooltipStr += " (Tier " + aTC.tier + "+; " + aTC.points + " Treasure Checkpoints)";
 			}
 			tooltipStr += ".";
+		} else if (theMI.rarity && theMI.rarity == "common") {
+			tooltipStr += "\n \u2022 AL: Tier 1+; 2 Treasure Checkpoints";
 		} else if (theMI.storyItemAL) {
 			tooltipStr += "\n \u2022 Story Item (AL: only use in adventure it's found in)";
-		} else {
+		} else if (!theMI.extraTooltip) {
 			tooltipStr += "\n \u2022 Can't be traded in Adventurers League play";
+		}
+		if (!theMI.extraTooltip) {
+			tooltipStr += "\n \u2022 " + theMI.extraTooltip;
 		}
 		if (theMI.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theMI.prerequisite;
 		tooltipStr += stringSource(theMI, "full,page", "\n \u2022 Source: ", ".");

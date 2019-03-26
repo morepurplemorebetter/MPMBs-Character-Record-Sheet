@@ -1,5 +1,5 @@
 // a function to set ability scores to the global variable
-function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpecial) {
+function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpecial, alsoHasMax) {
 	if (!scoresA) scoresA = [];
 	// initialize some variables
 	initiateCurrentStats();
@@ -34,7 +34,7 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpeci
 			} else {
 				delete CurrentStats[isSpecial][s][NameEntity];
 			}
-			// now set the new highest override
+			// now set the new highest override/maximum
 			curStat.scores[s] = 0;
 			for (var a in CurrentStats[isSpecial][s]) {
 				var thisStat = CurrentStats[isSpecial][s][a];
@@ -49,14 +49,18 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpeci
 			}
 		}
 	}
-	// Set the descriptive text to the CurrentStats global variable
-	if (!dialogTxt) dialogTxt = formatLineList("", imprTxtArr);
-	if (AddRemove) {
-		if (CurrentStats.txts[inType][NameEntity]) {
-			CurrentStats.txts[inType][NameEntity] += "; " + dialogTxt;
+	// remember the ability score change for those items that also change the maximum
+	if (alsoHasMax) {
+		if (AddRemove) {
+			CurrentStats.maximumsLinked[NameEntity] = scoresA;
 		} else {
-			CurrentStats.txts[inType][NameEntity] = dialogTxt;
+			delete CurrentStats.maximumsLinked[NameEntity];
 		}
+	}
+	// Set the descriptive text to the CurrentStats global variable
+	var useDialogTxt = dialogTxt ? dialogTxt : formatLineList("", imprTxtArr);
+	if (AddRemove) {
+		CurrentStats.txts[inType][NameEntity] = (!dialogTxt && CurrentStats.txts[inType][NameEntity] ? CurrentStats.txts[inType][NameEntity] + "; " : "") + useDialogTxt;
 	} else {
 		delete CurrentStats.txts[inType][NameEntity];
 	}
@@ -89,8 +93,12 @@ function initiateCurrentStats(forceIt) {
 			name : "Level Bonus",
 			scores : [0,0,0,0,0,0,0]
 		}, {
-			type : 'items',
+			type : 'magic',
 			name : "Magic Bonus",
+			scores : [0,0,0,0,0,0,0]
+		}, {
+			type : 'items',
+			name : "Magic Items*",
 			scores : [0,0,0,0,0,0,0]
 		}, {
 			type : 'override',
@@ -98,17 +106,19 @@ function initiateCurrentStats(forceIt) {
 			scores : [0,0,0,0,0,0,0]
 		}, {
 			type : 'maximum',
-			name : "Max Total*",
+			name : "Max Total**",
 			scores : [20,20,20,20,20,20,20]
 		}],
 		"txts" : {
 			"classes" : {},
 			"race" : {},
 			"feats" : {},
-			"items" : {}
+			"items" : {},
+			"magic" : {}
 		},
 		"overrides" : [{},{},{},{},{},{},{}],
-		"maximums" :  [{},{},{},{},{},{},{}]
+		"maximums" :  [{},{},{},{},{},{},{}],
+		"maximumsLinked" : {}
 	}
 	SetStringifieds("stats");
 }
@@ -136,10 +146,13 @@ function AbilityScores_Button(onlySetTooltip) {
 	// initialize some variables
 	initiateCurrentStats();
 	var titleTxt = "Ability Scores";
-	var explanatoryTxt = "The standard array is: 15, 14, 13, 12, 10, and 8." +
-	"\nNormal Point Buy is 27 points and you can't have a Score Base over 15." +
-	"\nUnless otherwise noted, ability score improvements can't take the total over 20." +
-	"\n*Override columns will ignore the maximum total.";
+	var explanatoryTxt = [
+		"The standard array is: 15, 14, 13, 12, 10, and 8.",
+		"Normal Point Buy is 27 points and you can't have a Score Base over 15.",
+		"Unless otherwise noted, ability score improvements can't take the total over 20, see the Max Total column.",
+		"*Magic Items column is only populated by the automation. Their value is added to the Magical Override if applicable.",
+		"**Override columns (and Magical Override + Magic Items) will ignore the maximum total."
+	].join("\n");
 	var curHoS = What("HoSRememberState");
 	var asab2 = ["St", "Dx", "Cn", "In", "Ws", "Ch", "HS"];
 	var asab3 = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
@@ -174,6 +187,11 @@ function AbilityScores_Button(onlySetTooltip) {
 		items : {
 			title : "Magic Item ability score boosts",
 			loc : "left",
+			txt : ""
+		},
+		magic : {
+			title : "Other magic ability score boosts",
+			loc : "right",
 			txt : ""
 		}
 	};
@@ -276,7 +294,7 @@ function AbilityScores_Button(onlySetTooltip) {
 					item_id : aNo + "Nm",
 					font : "dialog",
 					bold : true,
-					char_width : theStat.name.toLowerCase().indexOf("override") == -1 ? 5 : 6,
+					char_width : theStat.type == 'items' ? 4 : theStat.name.toLowerCase().indexOf("override") == -1 ? 5 : 6,
 					height : 30,
 					alignment : "align_left",
 					wrap_name : true,
@@ -289,8 +307,9 @@ function AbilityScores_Button(onlySetTooltip) {
 					item_id : aNo + asab2[s],
 					char_width : 3,
 					height : 25,
-					SpinEdit : true,
-					name : "0"
+					SpinEdit : theStat.type != 'items',
+					name : "0",
+					readonly : theStat.type == 'items'
 				})
 			}
 			if (theStat.type == 'maximum') {
@@ -312,7 +331,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				};
 				// set the current scores, stat names, and dialog icon
 				var toSet = {
-					"expl" : explanatoryTxt,
+					"exTx" : explanatoryTxt,
 					"img1" : allIcons.scores,
 					"olNm" : "Current Score",
 					"olSt" : ASround(What("Str")),
@@ -442,11 +461,16 @@ function AbilityScores_Button(onlySetTooltip) {
 				if (alsoPB) this.updatePB(dialog, fldNm);
 			},
 
+			// Unfortunately, + bonuses from Magic Items stack with the override from other sources
+			// See here: https://www.sageadvice.eu/2016/09/29/does-the-bonus-strength-from-the-hammer-of-thunderbolts-stack-with-your-giants-strength-belt/
 			updateTotal : function (dialog, fldNm) {
 				var res = dialog.store();
 				var type = fldNm.slice(-2);
-				var total = [0];
+				var indx = asab2.indexOf(type);
+				var theTotal = 0;
 				var theMax = 20;
+				var theOverrides = [0];
+				var fromItems = 0;
 				for (var i = 0; i < CurrentStats.cols.length; i++) {
 					var thisCol = CurrentStats.cols[i];
 					var aNo = ("0" + i).slice(-2);
@@ -454,14 +478,56 @@ function AbilityScores_Button(onlySetTooltip) {
 					if (thisCol.type == "maximum") {
 						theMax = itsVal;
 					} else if (thisCol.name.toLowerCase().indexOf("override") !== -1) {
-						total.push(itsVal);
+						theOverrides.push(itsVal);
 					} else {
-						total[0] += itsVal;
+						theTotal += itsVal;
+						if (thisCol.type == "items") fromItems += itsVal;
 					}
 				}
-				if (theMax && total[0] > theMax) total[0] = theMax;
+				var theOverrides = Math.max.apply(Math, theOverrides);
+				var toSet = 0;
+				if (!fromItems) {
+					// no magic items involved that both add stats and have an override
+					toSet = theOverrides >= theTotal ? theOverrides : Math.min(theMax, theTotal);
+				} else {
+					// see what magic item bonuses we should stack with the overrides
+					var itemRef = fromItems;
+					var refObj = { lists : [] };
+					var otherMaxes = [];
+					var alsoAddTheMax = true;
+					for (var aMax in CurrentStats.maximums[indx]) {
+						var thisMax = CurrentStats.maximums[indx][aMax];
+						if (!CurrentStats.txts.items[aMax]) {
+							otherMaxes.push(thisMax);
+							continue;
+						}
+						var thisMaxAddition = CurrentStats.maximumsLinked[aMax];
+						if (!thisMaxAddition || !thisMaxAddition[indx]) continue;
+						var thisMaxName = ("0" + thisMax).slice(-2) + aMax;
+						refObj.lists.push(thisMaxName);
+						refObj[thisMaxName] = [thisMaxAddition[indx], thisMax];
+						itemRef -= thisMaxAddition[indx];
+						if (alsoAddTheMax && thisMax === theMax) alsoAddTheMax = false;
+					}
+					if (alsoAddTheMax) otherMaxes.push(theMax);
+					theMax = Math.max.apply(Math, otherMaxes);
+					// now create the base as we removed all the magic item bonuses that bring it above 20
+					var baseRef = Math.min(theTotal - fromItems, theMax);
+					var baseWithItems = Math.min(baseRef + itemRef, 20);
+					if (baseWithItems > baseRef) baseRef = baseWithItems;
+					var overRef = Math.min(theOverrides + itemRef, Math.max(theMax, theOverrides));
+					var baseNew = baseRef;
+					// next iterate through all the ones that increase the maximum, starting with the lowest maximum
+					refObj.lists.sort();
+					for (var s = 0; s < refObj.lists.length; s++) {
+						var sAdd = refObj[refObj.lists[s]];
+						baseNew = Math.max(baseRef, Math.min(baseNew + sAdd[0], sAdd[1]));
+						overRef = Math.min(overRef + sAdd[0], Math.max(sAdd[1], theOverrides));
+					}
+					toSet = Math.max(baseNew, overRef);
+				}
 				var totalLoad = {};
-				totalLoad["to"+type] = Math.round(Math.max.apply(Math, total)).toString();
+				totalLoad["to"+type] = Math.round(toSet).toString();
 				dialog.load(totalLoad);
 			},
 
@@ -921,7 +987,7 @@ function AbilityScores_Button(onlySetTooltip) {
 						alignment : "align_fill",
 						elements : [{
 							type : "cluster",
-							name : "Don't forget",
+							name : "Remarks",
 							item_id : "exCl",
 							font : "dialog",
 							bold : true,
@@ -931,7 +997,7 @@ function AbilityScores_Button(onlySetTooltip) {
 								item_id : "exTx",
 								font : "dialog",
 								wrap_name : true,
-								width : 500,
+								width : 625,
 								name : explanatoryTxt
 							}]
 						}, {

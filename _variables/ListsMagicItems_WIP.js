@@ -2213,7 +2213,38 @@ var Base_MagicItemsList = {
 		magicItemTable : "I",
 		description : "",
 		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n   " + toUni("Giant's Bane (Requires Attunement)") + ". You must be wearing a belt of giant strength (any variety) and gauntlets of ogre power to attune to this weapon. The attunement ends if you take off either of those items. While you are attuned to this weapon and holding it, your Strength score increases by 4 and can exceed 20, but not 30. When you roll a 20 on an attack roll made with this weapon against a giant, the giant must succeed on a DC 17 Constitution saving throw or die.\n   The hammer also has 5 charges. While attuned to it, you can expend 1 charge and make a ranged weapon attack with the hammer, hurling it as if it had the thrown property with a normal range of 20 feet and a long range of 60 feet. If the attack hits, the hammer unleashes a thunderclap audible out to 300 feet. The target and every creature within 30 feet of it must succeed on a DC 17 Constitution saving throw or be stunned until the end of your next turn. The hammer regains 1d4+1 expended charges daily at dawn.",
-		weight : 10
+		weight : 10,
+		choices : ["not attuned", "attuned (requires Belt of Giant Strength and Gauntlet of Ogre Power)"],
+		"not attuned" : {
+			description : "",
+			weaponsAdd : ["Hammer of Thunderbolts"],
+			weaponOptions : {
+				baseWeapon : "maul",
+				regExpSearch : /^(?=.*hammer)(?=.*thunderbolts).*$/i,
+				name : "Hammer of Thunderbolts",
+				source : [["SRD", 224], ["D", 173]],
+				modifiers : [1, 1]
+			}
+		},
+		"attuned (requires Belt of Giant Strength and Gauntlets of Ogre Power)" : {
+			name : "Hammer of Thunderbolts [attuned]",
+			description : "",
+			prerequisite : "Must be wearing a Belt of Giant Strength and Gauntlets of Ogre Power to attune",
+			prereqeval : function (v) {
+				return CurrentMagicItems.known.indexOf("belt of giant strength") !== -1 && CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1;
+			},
+			scores : [4, 0, 0, 0, 0, 0],
+			scoresMaximum : [30, 0, 0, 0, 0, 0],
+			weaponsAdd : ["Hammer of Thunderbolts"],
+			weaponOptions : {
+				baseWeapon : "maul",
+				regExpSearch : /^(?=.*hammer)(?=.*thunderbolts).*$/i,
+				name : "Hammer of Thunderbolts",
+				source : [["SRD", 224], ["D", 173]],
+				modifiers : [1, 1]
+			}
+		}
+		// don't have to be attuned to the prereqs https://twitter.com/jeremyecrawford/status/948346891296653315
 	},
 	"hat of disguise" : { // contributed by Larry Hoy
 		name : "Hat of Disguise",
@@ -2733,25 +2764,75 @@ var Base_MagicItemsList = {
 		descriptionFull : "You have advantage on saving throws against spells while you wear this cloak.",
 		attunement : true
 	},
-	"manual of bodily health" : {
+	"manual of bodily health" : { // finished
 		name : "Manual of Bodily Health",
 		source : [["SRD", 229], ["D", 180]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "This book contains health and diet tips, and its words are charged with magic. If I spend 48 hours within 6 days to study its contents and practicing its guidelines, my Constitution score increases by 2, as does my maximum for that score. The manual then loses its magic, but regains it in a century.",
 		descriptionFull : "This book contains health and diet tips, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Constitution score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
-		weight : 5
+		weight : 5,
+		applyStatBonus : function(itemName, statName) {
+			// a function for all the manuals/tomes
+			if (!IsNotReset) return;
+			initiateCurrentStats();
+			var statIndx = AbilityScores.names.indexOf(statName);
+			var alreadyAppliedBefore = CurrentStats.maximumsLinked[itemName];
+			var applyChange = app.alert({
+				nIcon : 2,
+				nType : 2,
+				nTitle : "Apply " + itemName + "?",
+				cMsg : "Do you want to apply the +2 bonus to the " + statName + " score and maximum from the " + itemName + " permanently? This increase will stay even after you remove this magic item, but will not be applied if you select 'No', even if you keep the magic item selected.\n\n" + (alreadyAppliedBefore ? "It seems you have applied this item before. If you click 'No', you will be prompted to remove all ability score increases from " + itemName : "If you want to remove this ability score increase at a later time, just add the item again and you will be prompted to remove the ability score increase then.")
+			});
+			var removeAll = false;
+			if (applyChange == 3) {
+				if (alreadyAppliedBefore) {
+					var removeAll = app.alert({
+						nIcon : 2,
+						nType : 2,
+						nTitle : "Remove all previous uses of " + itemName + "?",
+						cMsg : "Do you want to remove all the previous bonuses to " + statName + " gained from the " + itemName + "?"
+					});
+					if (removeAll == 3) return;
+				} else {
+					return;
+				}
+			}
+			var baseAdd = [0,0,0,0,0,0];
+			baseAdd[statIndx] = 2;
+			if (alreadyAppliedBefore) {
+				baseAdd = [].concat(CurrentStats.maximumsLinked[itemName]);
+				// remove the old version
+				processStats(false, "magic", itemName, baseAdd, false, false, true);
+				if (removeAll) {
+					// also remove the maximum
+					processStats(false, "magic", itemName, baseAdd, false, "maximums");
+					return;
+				}
+				baseAdd[statIndx] += 2;
+			}
+			processStats(true, "magic", itemName, baseAdd, false, false, true);
+			var maxAdd = [0,0,0,0,0,0];
+			maxAdd[statIndx] = 20 + baseAdd[statIndx];
+			processStats(true, "magic", itemName, maxAdd, false, "maximums");
+		},
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Bodily Health", "Constitution");
+		}
 	},
-	"manual of gainful exercise" : {
+	"manual of gainful exercise" : { // finished
 		name : "Manual of Gainful Exercise",
 		source : [["SRD", 229], ["D", 180]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "This book describes fitness exercises, and its words are charged with magic. If I spend 48 hours over a period of 6 days or fewer studying its contents and practicing its guidelines, my Strength score increases by 2, as does my maximum for that score. The manual then loses its magic, but regains it in a century.",
 		descriptionFull : "This book describes fitness exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Strength score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
-		weight : 5
+		weight : 5,
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Gainful Exercise", "Strength");
+		}
 	},
 	"manual of golems, clay" : {
 		name : "Manual of Golems, Clay",
@@ -2789,15 +2870,18 @@ var Base_MagicItemsList = {
 		descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a stone golem, you must spend 90 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 80,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
 		weight : 5
 	},
-	"manual of quickness of action" : {
+	"manual of quickness of action" : { // finished
 		name : "Manual of Quickness of Action",
 		source : [["SRD", 230], ["D", 181]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "This book contains coordination and balance exercises, and its words are charged with magic. If I spend 48 hours within 6 days to study its contents and practicing its guidelines, my Dexterity score increases by 2, as does my maximum for that score. The manual then loses its magic, but regains it in a century.",
 		descriptionFull : "This book contains coordination and balance exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Dexterity score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
-		weight : 5
+		weight : 5,
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Quickness of Action", "Dexterity");
+		}
 	},
 	"medallion of thoughts" : { // finished
 		name : "Medallion of Thoughts",
@@ -3129,7 +3213,8 @@ var Base_MagicItemsList = {
 		magicItemTable : "B",
 		description : "",
 		descriptionFull : "When you drink this potion, you can cast the Animal Friendship spell (save DC 13) for 1 hour at will. Agitating this muddy liquid brings little bits into view: a fish scale, a hummingbird tongue, a cat claw, or a squirrel hair.",
-		weight : 0.5
+		weight : 0.5,
+		extraTooltip : "AL: can always be bought for 100 gp"
 	},
 	"potion of clairvoyance" : {
 		name : "Potion of Clairvoyance",
@@ -3149,7 +3234,8 @@ var Base_MagicItemsList = {
 		magicItemTable : "A",
 		description : "",
 		descriptionFull : "When you drink this potion, you gain a climbing speed equal to your walking speed for 1 hour. During this time, you have advantage on Strength (Athletics) checks you make to climb. The potion is separated into brown, silver, and gray layers resembling bands of stone. Shaking the bottle fails to mix the colors.",
-		weight : 0.5
+		weight : 0.5,
+		extraTooltip : "AL: can always be bought for 75 gp"
 	},
 	"potion of diminution" : {
 		name : "Potion of Diminution",
@@ -3254,17 +3340,19 @@ var Base_MagicItemsList = {
 		magicItemTable : "A",
 		description : "",
 		descriptionFull : "You regain 2d4+2 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
-		weight : 0.5
+		weight : 0.5,
+		extraTooltip : "Can be bought for 50 gp (also in AL)"
 	},
 	"potion of greater healing" : {
 		name : "Potion of Greater Healing",
 		source : [["SRD", 234], ["D", 187]],
 		type : "potion",
 		rarity : "uncommon",
+		magicItemTable : ["A", "B"],
 		description : "",
 		descriptionFull : "You regain 4d4+4 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
 		weight : 0.5,
-		magicItemTable : ["A", "B"]
+		extraTooltip : "AL: can always be bought for 100 gp"
 	},
 	"potion of superior healing" : {
 		name : "Potion of Superior Healing",
@@ -3274,17 +3362,19 @@ var Base_MagicItemsList = {
 		magicItemTable : "C",
 		description : "",
 		descriptionFull : "You regain 8d4+8 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
-		weight : 0.5
+		weight : 0.5,
+		extraTooltip : "AL: can always be bought for 500 gp"
 	},
 	"potion of supreme healing" : {
 		name : "Potion of Supreme Healing",
 		source : [["SRD", 234], ["D", 187]],
 		type : "potion",
 		rarity : "very rare",
+		magicItemTable : ["D", "E"],
 		description : "",
 		descriptionFull : "You regain 10d4+20 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
 		weight : 0.5,
-		magicItemTable : ["D", "E"]
+		extraTooltip : "AL: can always be bought for 5000 gp"
 	},
 	"potion of heroism" : {
 		name : "Potion of Heroism",
@@ -3304,7 +3394,8 @@ var Base_MagicItemsList = {
 		magicItemTable : "D",
 		description : "",
 		descriptionFull : "This potion's container looks empty but feels as though it holds liquid. When you drink it, you become invisible for 1 hour. Anything you wear or carry is invisible with you. The effect ends early if you attack or cast a spell.",
-		weight : 0.5
+		weight : 0.5,
+		extraTooltip : "AL: can always be bought for 5000 gp"
 	},
 	"potion of mind reading" : {
 		name : "Potion of Mind Reading",
@@ -3435,7 +3526,8 @@ var Base_MagicItemsList = {
 		magicItemTable : "B",
 		description : "",
 		descriptionFull : "You can breathe underwater for 1 hour after drinking this potion. Its cloudy green fluid smells of the sea and has a jellyfish-like bubble floating in it.",
-		weight : 0.5
+		weight : 0.5,
+		extraTooltip : "AL: can always be bought for 100 gp"
 	},
 	"quaal's feather token, anchor" : {
 		name : "Quaal's Feather Token, Anchor",
@@ -4084,16 +4176,18 @@ var Base_MagicItemsList = {
 		rarity : "common",
 		magicItemTable : "A",
 		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 11. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 11 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
+		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 11. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 11 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+		extraTooltip : "AL: can always be bought for 75 gp"
 	},
 	"spell scroll (2nd level)" : {
 		name : "Spell Scroll (2nd Level)",
 		source : [["SRD", 242], ["D", 201]],
 		type : "scroll",
 		rarity : "uncommon",
+		magicItemTable : ["A", "B"],
 		description : "",
 		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 12. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 12 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
-		magicItemTable : ["A", "B"]
+		extraTooltip : "AL: can always be bought for 150 gp"
 	},
 	"spell scroll (3rd level)" : {
 		name : "Spell Scroll (3rd Level)",
@@ -4102,7 +4196,8 @@ var Base_MagicItemsList = {
 		rarity : "uncommon",
 		magicItemTable : "B",
 		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 13. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 13 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
+		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 13. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 13 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+		extraTooltip : "AL: can always be bought for 300 gp"
 	},
 	"spell scroll (4th level)" : {
 		name : "Spell Scroll (4th Level)",
@@ -4111,7 +4206,8 @@ var Base_MagicItemsList = {
 		rarity : "rare",
 		magicItemTable : "C",
 		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 14. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 14 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
+		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 14. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 14 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+		extraTooltip : "AL: can always be bought for 500 gp"
 	},
 	"spell scroll (5th level)" : {
 		name : "Spell Scroll (5th Level)",
@@ -4120,7 +4216,8 @@ var Base_MagicItemsList = {
 		rarity : "rare",
 		magicItemTable : "C",
 		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 15. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 15 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
+		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 15. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 15 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+		extraTooltip : "AL: can always be bought for 1000 gp"
 	},
 	"spell scroll (6th level)" : {
 		name : "Spell Scroll (6th Level)",
@@ -4145,9 +4242,9 @@ var Base_MagicItemsList = {
 		source : [["SRD", 242], ["D", 207]],
 		type : "scroll",
 		rarity : "very rare",
+		magicItemTable : ["D", "E"],
 		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 18. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 18 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
-		magicItemTable : ["D", "E"]
+		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 18. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 18 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
 	},
 	"spell scroll (9th level)" : {
 		name : "Spell Scroll (9th Level)",
@@ -4165,7 +4262,8 @@ var Base_MagicItemsList = {
 		rarity : "common",
 		magicItemTable : "A",
 		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5."
+		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.",
+		extraTooltip : "AL: can always be bought for 25 gp"
 	},
 	"spellguard shield" : {
 		name : "Spellguard Shield",
@@ -4660,35 +4758,44 @@ var Base_MagicItemsList = {
 		attunement : true,
 		weight : 1
 	},
-	"tome of clear thought" : {
+	"tome of clear thought" : { // finished
 		name : "Tome of Clear Thought",
 		source : [["SRD", 247], ["D", 208]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "This book contains memory and logic exercises, and its words are charged with magic. If I spend 48 hours within a period of 6 days to study its contents and practicing its guidelines, my Intelligence score increases by 2, as does my maximum for that score. The tome then loses its magic, but regains it in a century.",
 		descriptionFull : "This book contains memory and logic exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Intelligence score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
-		weight : 5
+		weight : 5,
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Clear Thought", "Intelligence");
+		}
 	},
-	"tome of leadership and influence" : {
+	"tome of leadership and influence" : { // finished
 		name : "Tome of Leadership and Influence",
 		source : [["SRD", 247], ["D", 208]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "This book contains guidelines for influencing and charming others and its words are charged with magic. If I spend 48 hours within 6 days studying its contents and practicing its guidelines, my Charisma score increases by 2, as does my maximum for that score. The tome then loses its magic, but regains it in a century.",
 		descriptionFull : "This book contains guidelines for influencing and charming others, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Charisma score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
-		weight : 5
+		weight : 5,
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Leadership and Influence", "Charisma");
+		}
 	},
-	"tome of understanding" : {
+	"tome of understanding" : { // finished
 		name : "Tome of Understanding",
 		source : [["SRD", 247], ["D", 209]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "This book contains intuition and insight exercises, and its words are charged with magic. If I spend 48 hours within a period of 6 days studying its contents and practicing its guidelines, my Wisdom score increases by 2, as does my maximum for that score. The tome then loses its magic, but regains it in a century.",
 		descriptionFull : "This book contains intuition and insight exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Wisdom score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
-		weight : 5
+		weight : 5,
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Understanding", "Wisdom");
+		}
 	},
 	"trident of fish command" : {
 		name : "Trident of Fish Command",

@@ -5837,7 +5837,7 @@ function CalcAttackDmgHit(fldName) {
 	};
 	if (!isNaN(Number(dmgDie))) dmgDie = Number(dmgDie);
 	if (dmgDie && isNaN(dmgDie) && Number(dmgNum) > 0) dmgNum = "+" + dmgNum;
-	var dmgTot = dmgDie === "\u2015" || dmgDie === "-"? dmgDie : dmgDie + (dmgNum === 0 ? "" : dmgNum);
+	var dmgTot = dmgDie === "\u2015" || dmgDie === "-" ? dmgDie : dmgDie + (dmgNum === 0 ? "" : dmgNum);
 	var hitTot = (isDC ? "DC " : (hitNum >= 0 ? "+" : "")) + hitNum;
 
 	Value(fldBase + "Damage", dmgTot == 0 ? "" : dmgTot);

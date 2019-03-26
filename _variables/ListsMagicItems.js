@@ -2627,6 +2627,89 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
+	"manual of bodily health" : {
+		name : "Manual of Bodily Health",
+		source : [["SRD", 229], ["D", 180]],
+		type : "wondrous item",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This book contains health and diet tips, and its words are charged with magic. If I spend 48 hours within 6 days to study its contents and practicing its guidelines, my Constitution score increases by 2, as does my maximum for that score. The manual then loses its magic, but regains it in a century.",
+		descriptionFull : "This book contains health and diet tips, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Constitution score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
+		weight : 5,
+		applyStatBonus : function(itemName, statName) {
+			// a function for all the manuals/tomes
+			if (!IsNotReset) return;
+			initiateCurrentStats();
+			var statIndx = AbilityScores.names.indexOf(statName);
+			var alreadyAppliedBefore = CurrentStats.maximumsLinked[itemName];
+			var applyChange = app.alert({
+				nIcon : 2,
+				nType : 2,
+				nTitle : "Apply " + itemName + "?",
+				cMsg : "Do you want to apply the +2 bonus to the " + statName + " score and maximum from the " + itemName + " permanently? This increase will stay even after you remove this magic item, but will not be applied if you select 'No', even if you keep the magic item selected.\n\n" + (alreadyAppliedBefore ? "It seems you have applied this item before. If you click 'No', you will be prompted to remove all ability score increases from " + itemName : "If you want to remove this ability score increase at a later time, just add the item again and you will be prompted to remove the ability score increase then.")
+			});
+			var removeAll = false;
+			if (applyChange == 3) {
+				if (alreadyAppliedBefore) {
+					var removeAll = app.alert({
+						nIcon : 2,
+						nType : 2,
+						nTitle : "Remove all previous uses of " + itemName + "?",
+						cMsg : "Do you want to remove all the previous bonuses to " + statName + " gained from the " + itemName + "?"
+					});
+					if (removeAll == 3) return;
+				} else {
+					return;
+				}
+			}
+			var baseAdd = [0,0,0,0,0,0];
+			baseAdd[statIndx] = 2;
+			if (alreadyAppliedBefore) {
+				baseAdd = [].concat(CurrentStats.maximumsLinked[itemName]);
+				// remove the old version
+				processStats(false, "magic", itemName, baseAdd, false, false, true);
+				if (removeAll) {
+					// also remove the maximum
+					processStats(false, "magic", itemName, baseAdd, false, "maximums");
+					return;
+				}
+				baseAdd[statIndx] += 2;
+			}
+			processStats(true, "magic", itemName, baseAdd, false, false, true);
+			var maxAdd = [0,0,0,0,0,0];
+			maxAdd[statIndx] = 20 + baseAdd[statIndx];
+			processStats(true, "magic", itemName, maxAdd, false, "maximums");
+		},
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Bodily Health", "Constitution");
+		}
+	},
+	"manual of gainful exercise" : {
+		name : "Manual of Gainful Exercise",
+		source : [["SRD", 229], ["D", 180]],
+		type : "wondrous item",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This book describes fitness exercises, and its words are charged with magic. If I spend 48 hours over a period of 6 days or fewer studying its contents and practicing its guidelines, my Strength score increases by 2, as does my maximum for that score. The manual then loses its magic, but regains it in a century.",
+		descriptionFull : "This book describes fitness exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Strength score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
+		weight : 5,
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Gainful Exercise", "Strength");
+		}
+	},
+	"manual of quickness of action" : {
+		name : "Manual of Quickness of Action",
+		source : [["SRD", 230], ["D", 181]],
+		type : "wondrous item",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This book contains coordination and balance exercises, and its words are charged with magic. If I spend 48 hours within 6 days to study its contents and practicing its guidelines, my Dexterity score increases by 2, as does my maximum for that score. The manual then loses its magic, but regains it in a century.",
+		descriptionFull : "This book contains coordination and balance exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Dexterity score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
+		weight : 5,
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Quickness of Action", "Dexterity");
+		}
+	},
 	"medallion of thoughts" : {
 		name : "Medallion of Thoughts",
 		source : [["SRD", 230], ["D", 181]],
@@ -3390,6 +3473,45 @@ var Base_MagicItemsList = {
 				},
 				'If I include the words "of Wounding" in a the name of a sword, it will be treated as the magic weapon Sword of Wounding. Damage by the sword can only be regained with a short or long rest. Once per turn when I hit with the sword, I can inflict a lingering wound on a target, causing it pain every turn thereafter.'
 			]
+		}
+	},
+	"tome of clear thought" : {
+		name : "Tome of Clear Thought",
+		source : [["SRD", 247], ["D", 208]],
+		type : "wondrous item",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This book contains memory and logic exercises, and its words are charged with magic. If I spend 48 hours within a period of 6 days to study its contents and practicing its guidelines, my Intelligence score increases by 2, as does my maximum for that score. The tome then loses its magic, but regains it in a century.",
+		descriptionFull : "This book contains memory and logic exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Intelligence score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
+		weight : 5,
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Clear Thought", "Intelligence");
+		}
+	},
+	"tome of leadership and influence" : {
+		name : "Tome of Leadership and Influence",
+		source : [["SRD", 247], ["D", 208]],
+		type : "wondrous item",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This book contains guidelines for influencing and charming others and its words are charged with magic. If I spend 48 hours within 6 days studying its contents and practicing its guidelines, my Charisma score increases by 2, as does my maximum for that score. The tome then loses its magic, but regains it in a century.",
+		descriptionFull : "This book contains guidelines for influencing and charming others, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Charisma score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
+		weight : 5,
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Leadership and Influence", "Charisma");
+		}
+	},
+	"tome of understanding" : {
+		name : "Tome of Understanding",
+		source : [["SRD", 247], ["D", 209]],
+		type : "wondrous item",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This book contains intuition and insight exercises, and its words are charged with magic. If I spend 48 hours within a period of 6 days studying its contents and practicing its guidelines, my Wisdom score increases by 2, as does my maximum for that score. The tome then loses its magic, but regains it in a century.",
+		descriptionFull : "This book contains intuition and insight exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Wisdom score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
+		weight : 5,
+		eval : function() {
+			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Understanding", "Wisdom");
 		}
 	},
 	"vicious weapon" : {

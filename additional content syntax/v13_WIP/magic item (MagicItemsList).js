@@ -201,6 +201,14 @@ MagicItemsList["staff of purple"] = {
 	If none of the three attributes 'magicItemTable', 'storyItemAL', or 'notLegalAL' are defined,
 	the magic item will be treated as one that can be used in AL, but can't be traded.
 */
+	extraTooltip : "AL: can always be bought for 75 gp",
+/*	extraTooltip // OPTIONAL //
+	TYPE:	string
+	USE:	text to add to the bullet points in the tooltip for the magic item
+
+	This attribute is intended for adding information about the magic item for use in Adventurers League.
+	For example, a Potion of Climbing can always be bought for 75 gp in AL play and doesn't need to be unlocked.
+*/
 	attunement : true,
 /*	attunement // OPTIONAL //
 	TYPE:	boolean

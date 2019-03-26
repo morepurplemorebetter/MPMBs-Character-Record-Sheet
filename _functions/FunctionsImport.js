@@ -801,7 +801,7 @@ function DirectImport(consoleTrigger) {
 		//set the values of the ability score dialog
 		if (FromVersion < 13) {
 			initiateCurrentStats();
-			var equalAbiCol = [0, 1, 4, 6, 5, 2];
+			var equalAbiCol = [0, 1, 4, 7, 5, 2];
 			for (var a = 0; a < abiScoreFlds.length; a++) {
 				var abiR = global.docFrom.getField(abiScoreFlds[a] + " Remember");
 				if (!abiR) continue;
@@ -826,11 +826,47 @@ function DirectImport(consoleTrigger) {
 		ImportField("Proficiency Bonus Dice", {notTooltip: true}); ImportField("Proficiency Bonus Modifier", {notTooltip: true, notSubmitName: true}); ImportField("Inspiration", {notTooltip: true});
 
 		//set the skills and associated fields
+		var CurrentProfsFrom = global.docFrom.getField("CurrentProfs.Stringified") ? eval(global.docFrom.getField("CurrentProfs.Stringified").value) : false;
+		var isAltSkillOrder = Who('Text.SkillsNames') === 'alphabeta' ? false : true;
 		ImportField("Jack of All Trades", {notTooltip: true}); ImportField("Remarkable Athlete", {notTooltip: true}); ImportField("All Skills Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Passive Perception Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Too Text", {notTooltip: true, notSubmitName: true});
 		for (var i = 0; i < SkillsList.abbreviations.length; i++) {
 			var aSkill = SkillsList.abbreviations[i];
 			ImportField(aSkill + " Bonus", {notTooltip: true, notSubmitName: true}); ImportField(aSkill + " Prof", {notTooltip: true}); ImportField(aSkill + " Exp", {notTooltip: true}); ImportField(aSkill + " Adv", {doReadOnly: true}); ImportField(aSkill + " Dis", {doReadOnly: true});
+			if (!(/^(Init|Too)$/).test(aSkill) && FromVersion < 13 && global.docTo.getField(aSkill + " Prof").isBoxChecked(0)) {
+				// set the "manualClick" entries in the CurrentProfs
+				var useSkill = isAltSkillOrder ? SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(aSkill)] : aSkill;
+				if (!CurrentProfs.skill[useSkill] || !CurrentProfs.skill[useSkill].length) {
+					CurrentProfs.skill[useSkill] = ["manualClick"];
+				}
+				if (global.docTo.getField(aSkill + " Exp").isBoxChecked(0)) {
+					if (!CurrentProfs.skill[useSkill + "_Exp"]) {
+						CurrentProfs.skill[useSkill + "_Exp"] = { manualClick : "full" };
+					} else {
+						for (var aSkillExp in CurrentProfs.skill[useSkill + "_Exp"]) {
+							var theSkillExp = CurrentProfs.skill[useSkill + "_Exp"][aSkillExp];
+							if ((/only|full/).test(theSkillExp)) break;
+						}
+						// only 'increment', so add a manualClick to the non-expertise proficiency
+						CurrentProfs.skill[useSkill].push("manualClick");
+					}
+				}
+			}
 		};
+		// copy the "manualClick" entries from the imported CurrentProfs.skill
+		if (FromVersion >= 13 && CurrentProfsFrom && CurrentProfsFrom.skill) {
+			for (var anEntry in CurrentProfsFrom.skill) {
+				if (anEntry == "descrTxt") continue;
+				if (anEntry.indexOf("_Exp") !== -1) {
+					if (CurrentProfsFrom.skill[anEntry]["manualClick"]) {
+						if (!CurrentProfs.skill[anEntry]) CurrentProfs.skill[anEntry] = {};
+						CurrentProfs.skill[anEntry]["manualClick"] = "full";
+					}
+				} else if (CurrentProfsFrom.skill[anEntry].indexOf("manualClick") !== -1) {
+					if (!CurrentProfs.skill[anEntry]) CurrentProfs.skill[anEntry] = [];
+					if (CurrentProfs.skill[anEntry].indexOf("manualClick") == -1) CurrentProfs.skill[anEntry].push("manualClick");
+				}
+			}
+		}
 
 		//set the description fields
 		ImportField("PC Name"); ImportField("Player Name"); ImportField("Size Category", {notTooltip: true}); ImportField("Height", {notTooltip: true}); ImportField("Weight", {notTooltip: true}); ImportField("Sex"); ImportField("Hair colour", {notTooltip: true}); ImportField("Eyes colour", {notTooltip: true}); ImportField("Skin colour", {notTooltip: true}); ImportField("Age", {notTooltip: true}); ImportField("Alignment", {notTooltip: true}); ImportField("Faith/Deity", {notTooltip: true}); ImportField("Speed", {notTooltip: true}); ImportField("Speed encumbered", {notTooltip: true});
@@ -838,7 +874,6 @@ function DirectImport(consoleTrigger) {
 		//add the content from the saving throw and vision field, but not if importing from an older version
 		if (FromVersion >= 12.998) {
 			//First make sure the "Immune to" and "Adv. on saves vs." match with the import
-			var CurrentProfsFrom = eval(global.docFrom.getField("CurrentProfs.Stringified").value);
 			var importSaveTxt = function(type) {
 				var preTxt = type === "adv_vs" ? "Adv. on saves vs." : type === "immune" ? "Immune to" : false;
 				var fld = "Saving Throw advantages / disadvantages";
