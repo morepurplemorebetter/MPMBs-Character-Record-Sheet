@@ -13,7 +13,8 @@ var Base_MagicItemsList = {
 			prefixOrSuffix : "suffix",
 			excludeCheck : function (inObjKey, inObj) {
 				return !(/medium|heavy/i).test(inObj.type) || (/hide/i).test(inObj.name);
-			}
+			},
+			descriptionChange : ["prefix", "armor"]
 		}
 	},
 	"ammunition, +1, +2, or +3" : { // finished
@@ -94,7 +95,7 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"plane shift" : {
 				description : "DC 15 Int to cast; Me + 8 willing transport to other plane, or spell atk + save to move to random plane",
-				component : "V,M\u0192",
+				components : "V,M\u0192",
 				changes : "The spell can be cast at will, but requires a DC 15 Intelligence check to do so, with negative consequences on a failure."
 			}
 		}
@@ -224,7 +225,7 @@ var Base_MagicItemsList = {
 		type : "armor (light, medium, or heavy)",
 		rarity : "rare",
 		description : "Select the damage type that this armor gives resistance to using the square button in this line. While I'm wearing this armor and attuned to it, I gain resistance to one type of damage.",
-		descriptionFull : "You have resistance to one type of damage while you wear this armor. The DM chooses the type or determines it randomly from the options below:\n\n" + toUni("d10\tType\t\td10\tType") + "\n 1\tAcid\t\t 6\tNecrotic\n 2\tCold\t\t 7\tPoison\n 3\tFire\t\t 8\tPsychic\n 4\tForce\t\t 9\tRadiant\n 5\tLightning\t\t 10\tThunder\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor, and not all types of armor are listed. See below for the table per type of armor or resistance:\n\n" + toUni("Table\tArmor") + "\n G\tChain Mail\n G\tChain Shirt\n G\tLeather\n G\tScale Mail\n H\tBreastplate\n H\tSplint\n H\tStudded Leather\n I\tHalf Plate\n I\tPlate",
+		descriptionFull : "You have resistance to one type of damage while you wear this armor. The DM chooses the type or determines it randomly from the options below:\n\n" + toUni("d10\tType\t\td10\tType") + "\n 1\tAcid\t\t 6\tNecrotic\n 2\tCold\t\t 7\tPoison\n 3\tFire\t\t 8\tPsychic\n 4\tForce\t\t 9\tRadiant\n 5\tLightning   \t 10\tThunder\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor, and not all types of armor are listed. See below for the table per type of armor or resistance:\n\n" + toUni("Table\tArmor") + "\n G\tChain Mail\n G\tChain Shirt\n G\tLeather\n G\tScale Mail\n H\tBreastplate\n H\tSplint\n H\tStudded Leather\n I\tHalf Plate\n I\tPlate",
 		attunement : true,
 		allowDuplicates : true,
 		chooseGear : {
@@ -456,10 +457,10 @@ var Base_MagicItemsList = {
 		source : [["SRD", 211], ["D", 155]],
 		type : "wondrous item",
 		description : "Set the type of giant using the button in this line. While wearing this belt, my Strength score changes to a certain number depending on the type of giant the belt is associated with, provided that my Strength is not already that amount or higher.",
-		descriptionFull : "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt's score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The belt of stone giant strength and the belt of frost giant strength look different, but they have the same effect.\n\n" + toUni("Type") + "\t\t" + toUni("Str") + "\t" + toUni("Rarity") + "\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant\t\t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
+		descriptionFull : "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt's score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The belt of stone giant strength and the belt of frost giant strength look different, but they have the same effect.\n\n" + toUni("Type\t\tStr\tRarity") + "\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant   \t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
 		attunement : true,
 		allowDuplicates : true,
-		choices : ["Hill (Str 21, rare)", "Stone (Str 23, very rare)", "Frost (Str 23, very rare)", "Fire (Str 25, very rare)", "Cloud (Str 27, legendary)", "Storm (Str 29, legendary)"],
+		choices : ["Hill (Str 21, rare)", "Frost (Str 23, very rare)", "Stone (Str 23, very rare)", "Fire (Str 25, very rare)", "Cloud (Str 27, legendary)", "Storm (Str 29, legendary)"],
 		"hill (str 21, rare)" : {
 			name : "Belt of Hill Giant Strength",
 			rarity : "rare",
@@ -467,15 +468,15 @@ var Base_MagicItemsList = {
 			description : "My Strength score is 21 while I'm wearing this belt, provided that my Strength is not already 21 or higher.",
 			scoresOverride : [21, 0, 0, 0, 0, 0]
 		},
-		"stone (str 23, very rare)" : {
-			name : "Belt of Stone Giant Strength",
+		"frost (str 23, very rare)" : {
+			name : "Belt of Frost Giant Strength",
 			rarity : "very rare",
 			magicItemTable : "H",
 			description : "My Strength score is 23 while I'm wearing this belt, provided that my Strength is not already 23 or higher.",
 			scoresOverride : [23, 0, 0, 0, 0, 0]
 		},
-		"frost (str 23, very rare)" : {
-			name : "Belt of Frost Giant Strength",
+		"stone (str 23, very rare)" : {
+			name : "Belt of Stone Giant Strength",
 			rarity : "very rare",
 			magicItemTable : "H",
 			description : "My Strength score is 23 while I'm wearing this belt, provided that my Strength is not already 23 or higher.",
@@ -639,6 +640,7 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"conjure elemental" : {
 				time : "1 a",
+				components : "V,M\u0192",
 				description : "CR 5 water elemental that obeys my verbal commands; on broken conc. elemental breaks free",
 				changes : "Using the Bowl of Commanding Water Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth a water elemental."
 			}
@@ -701,6 +703,7 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"conjure elemental" : {
 				time : "1 a",
+				components : "V,M\u0192",
 				description : "CR 5 fire elemental that obeys my verbal commands; on broken conc. elemental breaks free",
 				changes : "Using the Brazier of Commanding Fire Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth a fire elemental."
 			}
@@ -846,6 +849,7 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"conjure elemental" : {
 				time : "1 a",
+				components : "V,M\u0192",
 				description : "CR 5 air elemental that obeys my verbal commands; on broken conc. elemental breaks free",
 				changes : "Using the Censer of Controlling Air Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth an air elemental."
 			}
@@ -1147,7 +1151,13 @@ var Base_MagicItemsList = {
 		action : [["action", ""]],
 		toNotesPage : [{
 			name : "Fortress Details",
-			note : "\n   As an action I can place this 1-inch metal cube on the ground and speak its command word. The cube rapidly grows into a fortress that remains until I use an action to speak the command word that dismisses it, which works only if the fortress is empty.\n   The fortress is a square tower, 20 feet on a side and 30 feet high, with arrow slits on all sides and a battlement atop it. Its interior is divided into two floors. with a ladder running along one wall to connect them. The ladder ends at a trapdoor leading to the roof.\n   When activated, the tower has a small door on the side facing me. The door opens only at my command, which I can speak as a bonus action. It is immune to the Knock spell and similar magic (e.g., a Chime of Opening).\n   Each creature in the area where the fortress appears must make a DC 15 Dex save or take 10d10 bludgeoning damage (half damage on a success). In either case, the creature is pushed to an unoccupied space outside but next to the fortress. Objects in the area that aren't being worn or carried take this damage and are pushed automatically.\n   The tower is made of adamantine, and its magic prevents it from being tipped over. The roof, the door, and the walls each have 100 hit points, immunity to damage from nonmagical weapons excluding siege weapons, and resistance to all other damage. Only a Wish spell can repair the fortress (this use of the spell counts as replicating a spell of 8th level or lower). Each casting of Wish causes the roof, the door, or one wall to regain 50 hit points."
+			note : [
+				"As an action I can place this 1-inch metal cube on the ground and speak its command word. The cube rapidly grows into a fortress that remains until I use an action to speak the command word that dismisses it, which works only if the fortress is empty.",
+				"The fortress is a square tower, 20 feet on a side and 30 feet high, with arrow slits on all sides and a battlement atop it. Its interior is divided into two floors. with a ladder running along one wall to connect them. The ladder ends at a trapdoor leading to the roof.",
+				"When activated, the tower has a small door on the side facing me. The door opens only at my command, which I can speak as a bonus action. It is immune to the Knock spell and similar magic (e.g., a Chime of Opening).",
+				"Each creature in the area where the fortress appears must make a DC 15 Dex save or take 10d10 bludgeoning damage (half damage on a success). In either case, the creature is pushed to an unoccupied space outside but next to the fortress. Objects in the area that aren't being worn or carried take this damage and are pushed automatically.",
+				"The tower is made of adamantine, and its magic prevents it from being tipped over. The roof, the door, and the walls each have 100 hit points, immunity to damage from nonmagical weapons excluding siege weapons, and resistance to all other damage. Only a Wish spell can repair the fortress (this use of the spell counts as replicating a spell of 8th level or lower). Each casting of Wish causes the roof, the door, or one wall to regain 50 hit points."
+			]
 		}]
 	},
 	"dagger of venom" : { // finished
@@ -1338,37 +1348,35 @@ var Base_MagicItemsList = {
 			toUni("Throne") + ". You gain proficiency in the Persuasion skill, and you double your proficiency bonus on checks made with that skill. In addition, you gain rightful ownership of a small keep somewhere in the world. However, the keep is currently in the hands of monsters, which you must clear out before you can claim the keep as yours.",
 			toUni("Vizier") + ". At any time you choose within one year of drawing this card, you can ask a question in meditation and mentally receive a truthful answer to that question. Besides information, the answer helps you solve a puzzling problem or other dilemma. In other words, the knowledge comes with wisdom on how to apply it.",
 			toUni("The Void") + ". This black card spells disaster. Your soul is drawn from your body and contained in an object in a place of the DM's choice. One or more powerful beings guard the place. While your soul is trapped in this way, your body is incapacitated. A Wish spell can't restore your soul, but the spell reveals the location of the object that holds it. You draw no more cards."
-		].join("\n  \u2022 "),
+		].join("\n \u2022 "),
 		toNotesPage : [{
 			name : "Cards and Their Effects",
 			note : [
-				"   Usually found in a box or pouch, this deck contains either 13 (75%) or 22 (25%) cards made of ivory or vellum.",
-				"    Before I draw a card, I must declare how many cards I intend to draw and then draw them randomly. Any cards drawn in excess of this number have no effect. Otherwise, as soon as I draw a card from the deck, its magic takes effect. I must draw each card no more than 1 hour after the previous draw. If I fail to draw the chosen number, the remaining number of cards fly from the deck on their own and take effect all at once.",
-				"   Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.",
-				"\n1d22\tPLAYING CARD\tCARD",
-				"   1\tAce of diamonds\tVizier*",
-				"   2\tKing of diamonds\tSun",
-				"   3\tQueen of diamonds\tMoon",
-				"   4\tJack of diamonds\tStar",
-				"   5\tTwo of diamonds\tComet*",
-				"   6\tAce of hearts\tThe Fates*",
-				"   7\tKing of hearts\tThrone",
-				"   8\tQueen of hearts\tKey",
-				"   9\tJack of hearts\tKnight",
-				"   10\tTwo of hearts\tGem*",
-				"   11\tAce of clubs  \tTalons*",
-				"   12\tKing of clubs\tThe Void",
-				"   13\tQueen of clubs\tFlames",
-				"   14\tJack of clubs\tSkull",
-				"   15\tTwo of clubs  \tIdiot*",
-				"   16\tAce of spades\tDonjon*",
-				"   17\tKing of spades\tRuin",
-				"   18\tQueen of spades\tEuryale",
-				"   19\tJack of spades\tRogue",
-				"   20\tTwo of spades\tBalance*",
-				"   21\tJoker (with TM)\tFool*",
-				"   22\tJoker (no TM)\tJester",
-				"* Found only in a deck with twenty-two cards\n",
+				"Usually found in a box or pouch, this deck contains either 13 (75%) or 22 (25%) cards made of ivory or vellum.",
+				"Before I draw a card, I must declare how many cards I intend to draw and then draw them randomly. Any cards drawn in excess of this number have no effect. Otherwise, as soon as I draw a card from the deck, its magic takes effect. I must draw each card no more than 1 hour after the previous draw. If I fail to draw the chosen number, the remaining number of cards fly from the deck on their own and take effect all at once.",
+				"Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.\n\n1d22\tPLAYING CARD\tCARD",
+				"1\tAce of diamonds\tVizier*",
+				"2\tKing of diamonds\tSun",
+				"3\tQueen of diamonds\tMoon",
+				"4\tJack of diamonds\tStar",
+				"5\tTwo of diamonds\tComet*",
+				"6\tAce of hearts\tThe Fates*",
+				"7\tKing of hearts\tThrone",
+				"8\tQueen of hearts\tKey",
+				"9\tJack of hearts\tKnight",
+				"10\tTwo of hearts\tGem*",
+				"11\tAce of clubs  \tTalons*",
+				"12\tKing of clubs\tThe Void",
+				"13\tQueen of clubs\tFlames",
+				"14\tJack of clubs\tSkull",
+				"15\tTwo of clubs  \tIdiot*",
+				"16\tAce of spades\tDonjon*",
+				"17\tKing of spades\tRuin",
+				"18\tQueen of spades\tEuryale",
+				"19\tJack of spades\tRogue",
+				"20\tTwo of spades\tBalance*",
+				"21\tJoker (with TM)\tFool*",
+				"22\tJoker (no TM)\tJester\n* Found only in a deck with twenty-two cards\n",
 				"\u2022 Balance. My mind suffers a wrenching alteration, causing my alignment to change. Lawful to chaotic, good to evil, and vice versa.",
 				"\u2022 Comet. If I single-handedly defeat the next hostile monster/group of monsters I encounter, I gain enough XP to gain one level.",
 				"\u2022 Donjon. I disappear into a state of suspended animation in an extradimensional sphere. Everything I had stays behind. Wish can reveal my location. I draw no more cards.",
@@ -1391,7 +1399,7 @@ var Base_MagicItemsList = {
 				"\u2022 Throne. I gain expertise in Persuasion and rightful ownership of a small keep somewhere in the world (currently occupied by monsters).",
 				"\u2022 Vizier. Within one year I can ask one question in meditation and receive a truthful answer. This knowledge comes with the wisdom on how to apply it.",
 				"\u2022 The Void. This black card spells disaster. My soul is contained in an object, powerful beings guard it, and my body is incapacitated. Wish can reveal my location. I draw no more cards."
-			].join("\n")
+			]
 		}]
 	},
 	"defender" : { // finished
@@ -1955,7 +1963,7 @@ var Base_MagicItemsList = {
 			recovery : "5 days",
 			toNotesPage : [{
 				name : "Obsidian Steed Details",
-				note : "\n   If I have a good alignment, the figurine has a 10% chance each time I use it to ignore my orders, including a command to revert to figurine form. If I mount the nightmare while it is ignoring my orders, we are both instantly transported to a random location on the plane of Hades, where the nightmare reverts to figurine form.",
+				note : "\n   If I have a good alignment, the figurine has a 10% chance each time I use it to ignore my orders, including a command to revert to figurine form. If I mount the nightmare while it is ignoring my orders, we are both instantly transported to a random location on the plane of Hades, where the nightmare reverts to figurine form."
 			}]
 		},
 		"onyx dog" : {
@@ -2205,18 +2213,22 @@ var Base_MagicItemsList = {
 		descriptionFull : "While wearing these dark lenses, you have darkvision out to a range of 60 feet. If you already have darkvision. wearing the goggles increases its range by 60 feet.",
 		vision : [["Darkvision", "fixed60"], ["Darkvision", "+60"]]
 	},
-	"hammer of thunderbolts" : {
+	"hammer of thunderbolts" : { // finished
 		name : "Hammer of Thunderbolts",
 		source : [["SRD", 224], ["D", 173]],
 		type : "weapon (maul)",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "",
+		description : "This magical maul adds a +1 bonus to attack and damage rolls made with it. It has additional features when I'm attuned to it, which requires me to wear both a belt of giant strength and gauntlets of ogre power.",
 		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n   " + toUni("Giant's Bane (Requires Attunement)") + ". You must be wearing a belt of giant strength (any variety) and gauntlets of ogre power to attune to this weapon. The attunement ends if you take off either of those items. While you are attuned to this weapon and holding it, your Strength score increases by 4 and can exceed 20, but not 30. When you roll a 20 on an attack roll made with this weapon against a giant, the giant must succeed on a DC 17 Constitution saving throw or die.\n   The hammer also has 5 charges. While attuned to it, you can expend 1 charge and make a ranged weapon attack with the hammer, hurling it as if it had the thrown property with a normal range of 20 feet and a long range of 60 feet. If the attack hits, the hammer unleashes a thunderclap audible out to 300 feet. The target and every creature within 30 feet of it must succeed on a DC 17 Constitution saving throw or be stunned until the end of your next turn. The hammer regains 1d4+1 expended charges daily at dawn.",
 		weight : 10,
+		selfChoosing : function () {
+			// don't have to be attuned to the prereqs https://twitter.com/jeremyecrawford/status/948346891296653315
+			return CurrentMagicItems.known.indexOf("belt of giant strength") !== -1 && CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1 ? "attuned (requires Belt of Giant Strength and Gauntlet of Ogre Power)" : "not attuned";
+		},
 		choices : ["not attuned", "attuned (requires Belt of Giant Strength and Gauntlet of Ogre Power)"],
 		"not attuned" : {
-			description : "",
+			description : "This magical maul adds a +1 bonus to attack and damage rolls made with it. It has additional features when I'm attuned to it, which requires me to wear both a belt of giant strength and gauntlets of ogre power.",
 			weaponsAdd : ["Hammer of Thunderbolts"],
 			weaponOptions : {
 				baseWeapon : "maul",
@@ -2228,11 +2240,16 @@ var Base_MagicItemsList = {
 		},
 		"attuned (requires Belt of Giant Strength and Gauntlets of Ogre Power)" : {
 			name : "Hammer of Thunderbolts [attuned]",
-			description : "",
+			description : "This magical maul has a +1 bonus to hit/damage and gives me +4 Strength (max 30). On a roll of 20 to hit vs. a giant, it dies on a failed DC 17 Con save. I can expend 1 charge to throw it with 20 ft/60 ft range, which, on a hit, causes all within 30 ft to make a DC 17 Con save or be stunned until the end of my next turn.",
+			descriptionLong : "This magical maul adds a +1 bonus to attack and damage rolls made with it. It gives me a +4 bonus to Strength (max 30). On a roll of 20 to hit vs. a giant, the giant dies on a failed DC 17 Con save. The hammer has 5 charges and regains 1d4+1 charges daily at dawn. I can can expend 1 charge and make a ranged weapon attack with the hammer, hurling it as if it had the thrown property with a normal range of 20 ft and a long range of 60 ft. On a hit, it releases an audible thunderclap in a 300 ft radius and all within 30 ft of the target that was hit must make a DC 17 Con save or be stunned until the end of my next turn.",
 			prerequisite : "Must be wearing a Belt of Giant Strength and Gauntlets of Ogre Power to attune",
-			prereqeval : function (v) {
+			prereqeval : function () {
+				// don't have to be attuned to the prereqs https://twitter.com/jeremyecrawford/status/948346891296653315
 				return CurrentMagicItems.known.indexOf("belt of giant strength") !== -1 && CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1;
 			},
+			usages : 5,
+			recovery : "dawn",
+			additional : "regains 1d4+1",
 			scores : [4, 0, 0, 0, 0, 0],
 			scoresMaximum : [30, 0, 0, 0, 0, 0],
 			weaponsAdd : ["Hammer of Thunderbolts"],
@@ -2241,10 +2258,10 @@ var Base_MagicItemsList = {
 				regExpSearch : /^(?=.*hammer)(?=.*thunderbolts).*$/i,
 				name : "Hammer of Thunderbolts",
 				source : [["SRD", 224], ["D", 173]],
+				description : "Heavy, two-handed; On 20 to hit vs. Giant: DC 17 Con save or die; Expend charge to throw",
 				modifiers : [1, 1]
 			}
 		}
-		// don't have to be attuned to the prereqs https://twitter.com/jeremyecrawford/status/948346891296653315
 	},
 	"hat of disguise" : { // contributed by Larry Hoy
 		name : "Hat of Disguise",
@@ -2274,15 +2291,91 @@ var Base_MagicItemsList = {
 		attunement : true,
 		scoresOverride : [0, 0, 0, 19, 0, 0]
 	},
-	"helm of brilliance" : {
+	"helm of brilliance" : { // finished
 		name : "Helm of Brilliance",
 		source : [["SRD", 225], ["D", 173]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "This helm is set with diamonds, rubies, fire opals, and opals. Gems pried from the helm turn to dust. When all the gems are removed or destroyed, the helm loses its magic. I can use an action to cast a spell by having a gem crumble to dust. The helm has special properties for each type of gem, see Notes page.",
 		descriptionFull : "This dazzling helm is set with 1d10 diamonds, 2d10 rubies, 3d10 fire opals, and 4d10 opals. Any gem pried from the helm crumbles to dust. When all the gems are removed or destroyed, the helm loses its magic.\n   You gain the following benefits while wearing it:\n \u2022 You can use an action to cast one of the following spells (save DC 18), using one of the helm's gems of the specified type as a component: Daylight (opal), Fireball (fire opal), Prismatic Spray (diamond), or Wall of Fire (ruby). The gem is destroyed when the spell is cast and disappears from the helm.\n \u2022 As long as it has at least one diamond, the helm emits dim light in a 30-foot radius when at least one undead is within that area. Any undead that starts its turn in that area takes 1d6 radiant damage.\n \u2022 As long as the helm has at least one ruby, you have resistance to fire damage.\n \u2022 As long as the helm has at least one fire opal, you can use an action and speak a command word to cause one weapon you are holding to burst into flames. The flames emit bright light in a 10-foot radius and dim light for an additional 10 feet. The flames are harmless to you and the weapon. When you hit with an attack using the blazing weapon, the target takes an extra 1d6 fire damage. The flames last until you use a bonus action to speak the command word again or until you drop or stow the weapon.\n\nRoll a d20 if you are wearing the helm and take fire damage as a result of failing a saving throw against a spell. On a roll of 1, the helm emits beams of light from its remaining gems. Each creature within 60 feet of the helm other than you must succeed on a DC 17 Dexterity saving throw or be struck by a beam, taking radiant damage equal to the number of gems in the helm. The helm and its gems are then destroyed.",
-		attunement : true
+		attunement : true,
+		dmgres : ["Fire"],
+		action : [["action", " (spell/blazing weapon)"]],
+		extraLimitedFeatures : [{
+			name : "Helm of Brilliance - Diamonds (D)",
+			usages : "1d10",
+			recovery : "Never"
+		}, {
+			name : "Helm of Brilliance - Rubies (R)",
+			usages : "2d10",
+			recovery : "Never"
+		}, {
+			name : "Helm of Brilliance - Fire Opals (F)",
+			usages : "3d10",
+			recovery : "Never"
+		}, {
+			name : "Helm of Brilliance - Opals (O)",
+			usages : "4d10",
+			recovery : "Never"
+		}],
+		fixedDC : 18,
+		spellFirstColTitle : "GE",
+		spellcastingBonus : [{
+			name : "Uses an opal (O)",
+			spells : ["daylight"],
+			selection : ["daylight"],
+			firstCol : "(O)"
+		}, {
+			name : "Uses a fire opal (F)",
+			spells : ["fireball"],
+			selection : ["fireball"],
+			firstCol : "(F)"
+		}, {
+			name : "Uses a diamond (D)",
+			spells : ["prismatic spray"],
+			selection : ["prismatic spray"],
+			firstCol : "(D)"
+		}, {
+			name : "Uses a ruby (R)",
+			spells : ["wall of fire"],
+			selection : ["wall of fire"],
+			firstCol : "(R)"
+		}],
+		spellChanges : {
+			"daylight" : {
+				components : "M\u0192,M\u2020",
+				compMaterial : "Spells cast from magic items don't require any components other than the magic item itself and, when casting Daylight from the Helm of Brilliance, causes one of the opals in the helm to crumble to dust.",
+				changes : "Using the Helm of Brilliance to cast Daylight causes one of the opals in the helm to crumble to dust."
+			},
+			"fireball" : {
+				components : "M\u0192,M\u2020",
+				compMaterial : "Spells cast from magic items don't require any components other than the magic item itself and, when casting Fireball from the Helm of Brilliance, causes one of the fire opals in the helm to crumble to dust.",
+				changes : "Using the Helm of Brilliance to cast Fireball causes one of the fire opals in the helm to crumble to dust."
+			},
+			"prismatic spray" : {
+				components : "M\u0192,M\u2020",
+				compMaterial : "Spells cast from magic items don't require any components other than the magic item itself and, when casting Prismatic Spray from the Helm of Brilliance, causes one of the diamonds in the helm to crumble to dust.",
+				changes : "Using the Helm of Brilliance to cast Prismatic Spray causes one of the diamonds in the helm to crumble to dust."
+			},
+			"wall of fire" : {
+				components : "M\u0192,M\u2020",
+				compMaterial : "Spells cast from magic items don't require any components other than the magic item itself and, when casting Wall of Fire from the Helm of Brilliance, causes one of the rubies in the helm to crumble to dust.",
+				changes : "Using the Helm of Brilliance to cast Wall of Fire causes one of the rubies in the helm to crumble to dust."
+			}
+		},
+		toNotesPage : [{
+			name : "Special Properties",
+			popupName : "Helm of Brilliance's Special Properties",
+			note : [
+				"This dazzling helm is set with 1d10 diamonds, 2d10 rubies, 3d10 fire opals, and 4d10 opals. Any gem pried from the helm crumbles to dust. When all the gems are removed or destroyed, the helm loses its magic.",
+				"As an action, I can cast one of the following spells (save DC 18), using one of the helm's gems of the specified type as a component: Daylight (opal), Fireball (fire opal), Prismatic Spray (diamond), or Wall of Fire (ruby). The gem is destroyed when the spell is cast and disappears from the helm.",
+				"As long as the helm has at least one diamond remaining, it emits dim light in a 30-ft radius when at least one undead is within that area. Any undead that starts its turn in that area takes 1d6 radiant damage.",
+				"As long as the helm has at least one ruby remaining, I have resistance to fire damage.",
+				"As long as the helm has at least one fire opal remaining, I can use an action and speak a command word to cause one weapon I'm holding to burst into flames. The flames emit bright light in a 10-ft radius and dim light for an additional 10 ft. The flames are harmless to me and the weapon. When I hit with an attack using the blazing weapon, the target takes an extra 1d6 fire damage. The flames last until I use a bonus action to speak the command word again or until I drop or stow the weapon.",
+				"If I take fire damage as a result of failing a save against a spell while wearing the helm, I have to roll a d20. On a roll of 1, the helm emits beams of light from its remaining gems. Each creature within 60 ft other than myself must succeed on a DC 17 Dexterity save or be struck by a beam, taking radiant damage equal to the number of gems remaining in the helm. The helm and its gems are then destroyed."
+			]
+		}]
 	},
 	"helm of comprehending languages" : { // contributed by Larry Hoy
 		name : "Helm of Comprehending Languages",
@@ -2423,45 +2516,46 @@ var Base_MagicItemsList = {
 		weight : 2,
 		action : [["action", ""]]
 	},
-	"horn of valhalla, brass" : {
-		name : "Horn of Valhalla, Brass",
+	"horn of valhalla" : { // contains contributions by Larry Hoy
+		name : "Horn of Valhalla",
 		source : [["SRD", 226], ["D", 175]],
 		type : "wondrous item",
-		rarity : "rare",
-		magicItemTable : "G",
-		description : "",
-		descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   A brass horn summons 3d4+3 berserkers. To use the brass horn, you must be proficient with all simple weapons.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands.",
-		weight : 2
-	},
-	"horn of valhalla, bronze" : {
-		name : "Horn of Valhalla, Bronze",
-		source : [["SRD", 226], ["D", 175]],
-		type : "wondrous item",
-		rarity : "very rare",
-		magicItemTable : "H",
-		description : "",
-		descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   A bronze horn summons 4d4+4 berserkers. To use the bronze horn, you must be proficient with medium armor.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands.",
-		weight : 2
-	},
-	"horn of valhalla, iron" : {
-		name : "Horn of Valhalla, Iron",
-		source : [["SRD", 226], ["D", 175]],
-		type : "wondrous item",
-		rarity : "legendary",
-		magicItemTable : "I",
-		description : "",
-		descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   The iron horn summons 5d4+5 berserkers. To use the iron horn, you must be proficient with all martial weapons.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands.",
-		weight : 2
-	},
-	"horn of valhalla, silver" : {
-		name : "Horn of Valhalla, Silver",
-		source : [["SRD", 226], ["D", 175]],
-		type : "wondrous item",
-		rarity : "rare",
-		magicItemTable : "G",
-		description : "",
-		descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   The silver horn summons 2d4+2 berserkers.\n   The berserkers are friendly to you and your companions and follow your commands.",
-		weight : 2
+		description : "As an action once per 7 days, I can blow this horn to summon warrior spirits from Ysgard within 60 ft me. These have the statistics of a berserker and return after 1 hour or when they drop to 0 hp. The number and how they respond depends on the type of material the horn is made of.",
+		descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n Four types of Horn of Valhalla are known to exist, each made of a different metal. The horn's type determines how many berserkers answer it summons, as well as the requirement for its use. The DM chooses the horn's type or determines it randomly.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands.",
+		weight : 2,
+		usages : 1,
+		recovery : "7 days",
+		action : [["action", ""]],
+		allowDuplicates : true,
+		choices : ["Silver (rare; 2d4+2 berserkers)", "Brass (rare; 3d4+3 berserkers; prereq: simple weapons prof.)", "Bronze (very rare; 4d4+4 berserkers; prereq: medium armor prof.)", "Iron (very rare; 5d4+5 berserkers; prereq: martial weapons prof.)"],
+		"silver (rare; 2d4+2 berserkers)" : {
+			name : "Silver Horn of Valhalla",
+			rarity : "rare",
+			magicItemTable : "G",
+			description : "As an action once per 7 days, I can blow this horn to summon 2d4+2 warrior spirits from Ysgard within 60 ft me. These have the statistics of a berserker and return after 1 hour or when they drop to 0 hp. They are friendly to me and my companions and follow my commands.",
+			descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   The silver horn summons 2d4+2 berserkers.\n   The berserkers are friendly to you and your companions and follow your commands."
+		},
+		"brass (rare; 3d4+3 berserkers; prereq: simple weapons prof.)" : {
+			name : "Brass Horn of Valhalla",
+			rarity : "rare",
+			magicItemTable : "G",
+			description : "As an action once per 7 days, I can blow this horn to summon 3d4+3 warrior spirits from Ysgard within 60 ft. These berserkers return after 1 hour or when they drop to 0 hp. If I'm proficient with all simple weapons, they follow my commands and are friendly to me and my companions. Otherwise, they attack me.",
+			descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   A brass horn summons 3d4+3 berserkers. To use the brass horn, you must be proficient with all simple weapons.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands."
+		},
+		"bronze (very rare; 4d4+4 berserkers; prereq: medium armor prof.)" : {
+			name : "Bronze Horn of Valhalla",
+			rarity : "very rare",
+			magicItemTable : "H",
+			description : "As an action once per 7 days, I can blow this horn to summon 4d4+4 warrior spirits from Ysgard within 60 ft. These berserkers return after 1 hour or when they drop to 0 hp. If I'm proficient with medium armor, they follow my commands and are friendly to me and my companions. Otherwise, they attack me.",
+			descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   A bronze horn summons 4d4+4 berserkers. To use the bronze horn, you must be proficient with medium armor.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands."
+		},
+		"iron (very rare; 5d4+5 berserkers; prereq: martial weapons prof.)" : {
+			name : "Iron Horn of Valhalla",
+			rarity : "legendary",
+			magicItemTable : "I",
+			description : "As an action once per 7 days, I can blow this horn to summon 5d4+5 warrior spirits from Ysgard within 60 ft. These berserkers return after 1 hour or when they drop to 0 hp. If I'm proficient with all martial weapons, they follow my commands and are friendly to me and my companions. Otherwise, they attack me.",
+			descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   The iron horn summons 5d4+5 berserkers. To use the iron horn, you must be proficient with all martial weapons.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands."
+		}
 	},
 	"horseshoes of a zephyr" : { // finished
 		name : "Horseshoes of a Zephyr",
@@ -2606,7 +2700,7 @@ var Base_MagicItemsList = {
 			descriptionFull : "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You don't need to eat or drink while this clear spindle orbits your head."
 		}
 	},
-	"iron bands of bilarro" : { // with contributions by AelarTheElfRogue
+	"iron bands of bilarro" : { // contains contributions by AelarTheElfRogue
 		name : "Iron Bands of Bilarro",
 		nameAlt : "Iron Bands of Binding",
 		source : [["SRD", 228], ["D", 177]],
@@ -2634,35 +2728,50 @@ var Base_MagicItemsList = {
 			weight : 1
 		}
 	},
-	"iron flask" : {
+	"iron flask" : { // contains contributions by Larry Hoy
 		name : "Iron Flask",
 		source : [["SRD", 228], ["D", 178]],
 		type : "wondrous item",
 		rarity : "legendary",
 		magicItemTable : "I",
 		notLegalAL : true,
-		description : "",
-		descriptionFull : "This iron bottle has a brass stopper. You can use an action to speak the flask's command word, targeting a creature that you can see within 60 feet of you. If the target is native to a plane of existence other than the one you're on, the target must succeed on a DC 17 Wisdom saving throw or be trapped in the flask. If the target has been trapped by the flask before, it has advantage on the saving throw. Once trapped, a creature remains in the flask until released. The flask can hold only one creature at a time. A creature trapped in the flask doesn't need to breathe, eat, or drink and doesn't age.\n   You can use an action to remove the flask's stopper and release the creature the flask contains. The creature is friendly to you and your companions for 1 hour and obeys your commands for that duration. If you give no commands or give it a command that is likely to result in its death, it defends itself but otherwise takes no actions. At the end of the duration, the creature acts in accordance with its normal disposition and alignment.\n   An Identify spell reveals that a creature is inside the flask, but the only way to determine the type of creature is to open the flask. A newly discovered bottle might already contain a creature chosen by the DM or determined randomly.\n\n" + toUni("d100") + "\t" + toUni("Contents") + "\n01-50\tEmpty\n51\tArcanaloth\n52\tCambion\n53-54\tDao\n55-57\tDemon (type 1): barlgura, shadow demon, or vrock\n58-60\tDemon (type 2): chasme or hezrou\n61-62\tDemon (type 3): glabrezu or yochlol\n63-64\tDemon (type 4): nalfeshnee\n65\tDemon (type 5): marilith\n66\tDemon (type 6): balor or goristro\n67\tDeva\n68-69\tDevil (greater): horned devil, erinyes, ice devil, or pit fiend\n70-72\tDevil (lesser): imp, spined devil, bearded devil, barbed devil, chain devil, or bone devil\n73-74\tDjinni\n75-76\tEfreeti\n77-78\tElemental (any)\n79\tGithyanki knight\n80\tGithzerai zerth\n81-82\tInvisible stalker\n83-84\tMarid\n85-86\tMezzoloth\n87-88\tNight hag\n89-90\tNycaloth\n91\tPlanetar\n92-93\tSalamander\n94-95\tSlaad (any)\n96\tSolar\n97-98\tSuccubus/Incubus\n99\tUltroloth\n00\tXorn",
+		description : "As an action I can speak the flask's command word and target a creature from another plane that I can see within 60 ft. It must make a DC 17 Wis save (adv. if trapped before) or be trapped in the flask. It holds only 1 creature. As an action, I can open it to release the creature, which then obeys my commands for 1 hour.",
+		descriptionLong : "As an action I can speak the flask's command word and target a creature from another plane that I can see within 60 ft. It must make a DC 17 Wisdom saving throw or be trapped inside the flask. It has advantage on this save if it was trapped in the flask before. The flask holds only 1 creature, which remain inside until released and doesn't need to breathe, eat, or drink and doesn't age. As an action, I can remove the flak's brass stopper and release the creature inside, which then obeys my commands for 1 hour as long as those commands aren't likely to cause its death. After this time, it acts normally.",
+		descriptionFull : "This iron bottle has a brass stopper. You can use an action to speak the flask's command word, targeting a creature that you can see within 60 feet of you. If the target is native to a plane of existence other than the one you're on, the target must succeed on a DC 17 Wisdom saving throw or be trapped in the flask. If the target has been trapped by the flask before, it has advantage on the saving throw. Once trapped, a creature remains in the flask until released. The flask can hold only one creature at a time. A creature trapped in the flask doesn't need to breathe, eat, or drink and doesn't age.\n   You can use an action to remove the flask's stopper and release the creature the flask contains. The creature is friendly to you and your companions for 1 hour and obeys your commands for that duration. If you give no commands or give it a command that is likely to result in its death, it defends itself but otherwise takes no actions. At the end of the duration, the creature acts in accordance with its normal disposition and alignment.\n   An Identify spell reveals that a creature is inside the flask, but the only way to determine the type of creature is to open the flask. A newly discovered bottle might already contain a creature chosen by the DM or determined randomly.\n\n" + toUni("d100\tContents") + "\n01-50\tEmpty\n   51\tArcanaloth\n   52\tCambion\n53-54\tDao\n55-57\tDemon (type 1): barlgura, shadow demon, or vrock\n58-60\tDemon (type 2): chasme or hezrou\n61-62\tDemon (type 3): glabrezu or yochlol\n63-64\tDemon (type 4): nalfeshnee\n   65\tDemon (type 5): marilith\n   66\tDemon (type 6): balor or goristro\n   67\tDeva\n68-69\tDevil (greater): horned devil, erinyes, ice devil, or pit fiend\n70-72\tDevil (lesser): imp, spined devil, bearded devil, barbed devil, chain devil, or bone devil\n73-74\tDjinni\n75-76\tEfreeti\n77-78\tElemental (any)\n   79\tGithyanki knight\n   80\tGithzerai zerth\n81-82\tInvisible stalker\n83-84\tMarid\n85-86\tMezzoloth\n87-88\tNight hag\n89-90\tNycaloth\n   91\tPlanetar\n92-93\tSalamander\n94-95\tSlaad (any)\n   96\tSolar\n97-98\tSuccubus/Incubus\n   99\tUltroloth\n   00\tXorn",
 		weight : 1
 	},
-	"javelin of lightning" : {
+	"javelin of lightning" : { // contains contributions by Larry Hoy
 		name : "Javelin of Lightning",
 		source : [["SRD", 228], ["D", 178]],
 		type : "weapon (javelin)",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		description : "",
+		description : "Once per dawn I can speak this javelin's command word and make a ranged weapon attack with it on a target within 120 ft. All between me and the target in a 5-ft wide line take 4d6 lightning damage, DC 13 Dex save halves. If the javelin hits the target, it takes 1d6 piercing and 4d6 lightning damage.",
 		descriptionFull : "This javelin is a magic weapon. When you hurl it and speak its command word, it transforms into a bolt of lightning, forming a line 5 feet wide that extends out from you to a target within 120 feet. Each creature in the line excluding you and the target must make a DC 13 Dexterity saving throw, taking 4d6 lightning damage on a failed save, and half as much damage on a successful one. The lightning bolt turns back into a javelin when it reaches the target. Make a ranged weapon attack against the target. On a hit, the target takes damage from the javelin plus 4d6 lightning damage.\n   The javelin's property can't be used again until the next dawn. In the meantime, the javelin can still be used as a magic weapon.",
-		weight : 2
+		weight : 2,
+		usages : 1,
+		recovery : "dawn",
+		weaponsAdd : ["Javelin of Lightning"],
+		weaponOptions : {
+			baseWeapon : "javelin",
+			regExpSearch : /^(?=.*javelin)(?=.*lightning).*$/i,
+			name : "Javelin of Lightning",
+			source : [["SRD", 228], ["D", 178]],
+			description : "Thrown; Once per dawn special attack, see item description",
+		}
 	},
-	"keoghtom's ointment" : {
+	"keoghtom's ointment" : { // finished
 		name : "Keoghtom's Ointment",
+		nameAlt : "Restorative Ointment",
 		source : [["SRD", 235], ["D", 179]],
 		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "B",
-		description : "",
-		descriptionFull : "This glass jar, 3 inches in diameter, contains 1d4+1 doses of a thick mixture that smells faintly of aloe. The jar and its contents weigh \xBD pound.\n   As an action, one dose of the ointment can be swallowed or applied to the skin. The creature that receives it regains 2d8+2 hit points, ceases to be poisoned, and is cured of any disease."
+		description : "This glass jar, 3 inches in diameter, contains 1d4+1 doses of a thick mixture that smells faintly of aloe. As an action, one dose of the ointment can be swallowed or applied to the skin. The creature that receives it regains 2d8+2 hit points, ceases to be poisoned, and is cured of any disease.",
+		descriptionFull : "This glass jar, 3 inches in diameter, contains 1d4+1 doses of a thick mixture that smells faintly of aloe. The jar and its contents weigh \xBD pound.\n   As an action, one dose of the ointment can be swallowed or applied to the skin. The creature that receives it regains 2d8+2 hit points, ceases to be poisoned, and is cured of any disease.",
+		weight : 0.5,
+		usages : "1d4+1",
+		recovery : "Never"
 	},
 	"lantern of revealing" : { // finished
 		name : "Lantern of Revealing",
@@ -2722,47 +2831,76 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
-	"mace of disruption" : {
+	"mace of disruption" : { // finished
 		name : "Mace of Disruption",
 		source : [["SRD", 229], ["D", 179]],
 		type : "weapon (mace)",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
+		description : "This magic mace sheds bright light in a 20-ft radius and dim light for another 20 ft while held. Fiends and undead hit with it take +2d6 radiant damage and becomes frightened of me until my next turn ends. If the target has less than 26 HP after taking the damage, it must make a DC 15 Wis save or be destroyed.",
 		descriptionFull : "When you hit a fiend or an undead with this magic weapon, that creature takes an extra 2d6 radiant damage. If the target has 25 hit points or fewer after taking this damage, it must succeed on a DC 15 Wisdom saving throw or be destroyed. On a successful save, the creature becomes frightened of you until the end of your next turn.\n   While you hold this weapon, it sheds bright light in a 20-foot radius and dim light for an additional 20 feet.",
 		attunement : true,
-		weight : 4
+		weight : 4,
+		weaponsAdd : ["Mace of Disruption"],
+		weaponOptions : {
+			baseWeapon : "mace",
+			regExpSearch : /^(?=.*mace)(?=.*disruption).*$/i,
+			name : "Mace of Disruption",
+			source : [["SRD", 229], ["D", 179]],
+			description : "Fiend/undead +2d6 radiant damage, frightened until my next turn ends, and if hp<26, DC 15 Wis save or die"
+		}
 	},
-	"mace of smiting" : {
+	"mace of smiting" : { // finished
 		name : "Mace of Smiting",
 		source : [["SRD", 229], ["D", 179]],
 		type : "weapon (mace)",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
+		description : "This magical mace adds a +1 bonus (+3 vs. constructs) to attack and damage rolls made with it. When I roll a 20 on an attack roll, the target takes an extra 7 bludgeoning damage, or an extra 14 bludgeoning damage if it's a construct. If a construct has less than 26 HP after taking this damage, it is destroyed.",
 		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon. The bonus increases to +3 when you use the mace to attack a construct.\n   When you roll a 20 on an attack roll made with this weapon, the target takes an extra 7 bludgeoning damage, or an extra 14 bludgeoning damage if it's a construct. If a construct has 25 hit points or fewer after taking this damage, it is destroyed.",
-		weight : 4
+		weight : 4,
+		weaponsAdd : ["Mace of Smiting"],
+		weaponOptions : {
+			baseWeapon : "mace",
+			regExpSearch : /^(?=.*mace)(?=.*smiting).*$/i,
+			name : "Mace of Smiting",
+			source : [["SRD", 229], ["D", 179]],
+			description : "+2 to hit/damage vs. constructs; On 20 to hit: +7 damage (+14 vs. constructs); Constructs hp<26 destroyed",
+			modifier : [1,1]
+		}
 	},
-	"mace of terror" : {
+	"mace of terror" : { // finished
 		name : "Mace of Terror",
 		source : [["SRD", 229], ["D", 180]],
 		type : "weapon (mace)",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
+		description : "As an action, I can use 1 charge of this mace to have all chosen creatures within 30 ft make a DC 15 Wis save or be frightened of me for 1 min, repeating the save at the end of its turns. While frightened, it takes only the Dash action to move away (or action to free itself), no reactions, and can't move within 30 ft of me.",
+		descriptionLong : "This magic mace has 3 charges, regaining 1d3 at dawn. As an action, I can expend 1 charge to have each creature of my choice within 30 ft make a DC 15 Wis save or become frightened of me for 1 minute. While frightened in this way, a creature must spend its turns trying to move as far away from me as it can, using its action to Dash or to get away, and it can't willingly move within 30 ft of me and can't take reactions. If it has nowhere it can move, the creature can use the Dodge action. At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.",
 		descriptionFull : "This magic weapon has 3 charges. While holding it, you can use an action and expend 1 charge to release a wave of terror. Each creature of your choice in a 30-foot radius extending from you must succeed on a DC 15 Wisdom saving throw or become frightened of you for 1 minute. While it is frightened in this way, a creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action it can use only the Dash action or try to escape from an effect that prevents it from moving. If it has nowhere it can move, the creature can use the Dodge action. At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.\n   The mace regains 1d3 expended charges daily at dawn.",
 		attunement : true,
-		weight : 4
+		weight : 4,
+		usages : 3,
+		recovery : "dawn",
+		additional : "regain 1d3",
+		weaponsAdd : ["Mace of Terror"],
+		weaponOptions : {
+			baseWeapon : "mace",
+			regExpSearch : /^(?=.*mace)(?=.*terror).*$/i,
+			name : "Mace of Terror",
+			source : [["SRD", 229], ["D", 180]]
+		}
 	},
-	"mantle of spell resistance" : {
+	"mantle of spell resistance" : { // finished
 		name : "Mantle of Spell Resistance",
 		source : [["SRD", 229], ["D", 180]],
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
+		description : "I have advantage on saving throws against spells while I wear this cloak.",
 		descriptionFull : "You have advantage on saving throws against spells while you wear this cloak.",
-		attunement : true
+		attunement : true,
+		savetxt : { adv_vs : ["spells"] }
 	},
 	"manual of bodily health" : { // finished
 		name : "Manual of Bodily Health",
@@ -2834,41 +2972,43 @@ var Base_MagicItemsList = {
 			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Gainful Exercise", "Strength");
 		}
 	},
-	"manual of golems, clay" : {
-		name : "Manual of Golems, Clay",
+	"manual of golems" : { // contains contributions by Larry Hoy
+		name : "Manual of Golems",
 		source : [["SRD", 229], ["D", 180]],
 		type : "wondrous item",
 		rarity : "very rare",
-		description : "",
-		descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a clay golem, you must spend 30 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 65,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
-		weight : 5
-	},
-	"manual of golems, flesh" : {
-		name : "Manual of Golems, Flesh",
-		source : [["SRD", 229], ["D", 180]],
-		type : "wondrous item",
-		rarity : "very rare",
-		description : "",
-		descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a flesh golem, you must spend 60 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 50,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
-		weight : 5
-	},
-	"manual of golems, iron" : {
-		name : "Manual of Golems, Iron",
-		source : [["SRD", 229], ["D", 180]],
-		type : "wondrous item",
-		rarity : "very rare",
-		description : "",
-		descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create an iron golem, you must spend 120 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 100,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
-		weight : 5
-	},
-	"manual of golems, stone" : {
-		name : "Manual of Golems, Stone",
-		source : [["SRD", 229], ["D", 180]],
-		type : "wondrous item",
-		rarity : "very rare",
-		description : "",
-		descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a stone golem, you must spend 90 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 80,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
-		weight : 5
+		magicItemTable : "H",
+		description : "This tome can only be used by a spellcaster with two 5th-level spell slots. Others reading it take 6d6 psychic damage.",
+		descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a golem, you must spend a the time shown on the table, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay the specified cost to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
+		weight : 5,
+		allowDuplicates : true,
+		prerequisite : "Requires a spellcaster with at least two 5th-level spell slots",
+		prereqeval : function () { return What('SpellSlots.CheckboxesSet.lvl5') >= 2; },
+		choices : ["Clay", "Flesh", "Iron", "Stone"],
+		"clay" : {
+			name : "Manual of Clay Golems",
+			description : "Only spellcasters with two 5th-level spell slots can use this tome. Creating a clay golem requires 65000 gp of supplies, 30 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
+			descriptionLong : "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a clay golem requires 65000 gp of supplies, 30 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
+			descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a clay golem, you must spend 30 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 65,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands."
+		},
+		"flesh" : {
+			name : "Manual of Flesh Golems",
+			description : "Only spellcasters with two 5th-level spell slots can use this tome. Creating a flesh golem requires 50000 gp of supplies, 60 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
+			descriptionLong : "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a flesh golem requires 50000 gp of supplies, 60 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
+			descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a flesh golem, you must spend 60 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 50,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands."
+		},
+		"iron" : {
+			name : "Manual of Iron Golems",
+			description : "Only spellcasters with two 5th-level spell slots can use this tome. Creating a iron golem requires 100000 gp of supplies, 120 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
+			descriptionLong : "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a iron golem requires 100000 gp of supplies, 120 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
+			descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create an iron golem, you must spend 120 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 100,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands."
+		},
+		"stone" : {
+			name : "Manual of Stone Golems",
+			description : "Only spellcasters with two 5th-level spell slots can use this tome. Creating a stone golem requires 80000 gp of supplies, 90 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
+			descriptionLong : "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a stone golem requires 80000 gp of supplies, 90 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
+			descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a stone golem, you must spend 90 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 80,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands."
+		}
 	},
 	"manual of quickness of action" : { // finished
 		name : "Manual of Quickness of Action",
@@ -2930,43 +3070,97 @@ var Base_MagicItemsList = {
 			prefixOrSuffix : "suffix",
 			excludeCheck : function (inObjKey, inObj) {
 				return !(/medium|heavy/i).test(inObj.type) || (/hide/i).test(inObj.name);
-			}
+			},
+			descriptionChange : ["prefix", "armor"]
 		}
 	},
-	"necklace of adaptation" : {
+	"necklace of adaptation" : { // finished
 		name : "Necklace of Adaptation",
 		source : [["SRD", 231], ["D", 182]],
 		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		description : "",
+		description : "While wearing this necklace, I can breathe normally in any environment, and I have advantage on saving throws made against harmful gases and vapors (such as Cloudkill and Stinking Cloud effects, inhaled poisons, and the breath weapons of some dragons).",
 		descriptionFull : "While wearing this necklace, you can breathe normally in any environment, and you have advantage on saving throws made against harmful gases and vapors (such as Cloudkill and Stinking Cloud effects, inhaled poisons, and the breath weapons of some dragons).",
 		attunement : true,
-		weight : 1
+		weight : 1,
+		savetxt : { adv_vs : ["gases", "vapors"] }
 	},
-	"necklace of fireballs" : {
+	"necklace of fireballs" : { // finished
 		name : "Necklace of Fireballs",
 		source : [["SRD", 231], ["D", 182]],
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "C",
-		description : "",
+		description : "This necklace has 1d6+3 beads hanging from it. As an action, I can detach a bead and throw it up to 60 ft away where it detonates as a 3rd-level Fireball (save DC 15). I can hurl multiple beads as part of the same action, increasing the level of the Fireball by 1 for each bead beyond the first.",
 		descriptionFull : "This necklace has 1d6+3 beads hanging from it. You can use an action to detach a bead and throw it up to 60 feet away. When it reaches the end of its trajectory, the bead detonates as a 3rd-level Fireball spell (save DC 15).\n   You can hurl multiple beads, or even the whole necklace, as one action. When you do so, increase the level of the Fireball by 1 for each bead beyond the first.",
-		weight : 1
+		weight : 1,
+		usages : "1d6+3",
+		recovery : "Never",
+		spellcastingBonus : {
+			name : "Fireball",
+			spells : ["fireball"],
+			selection : ["fireball"]
+		},
+		fixedDC : 15,
+		spellChanges : {
+			"fireball" : {
+				description : "20-ft rad all crea 8d6 (+1d6/extra bead) Fire dmg; save halves; unattended flammable objects ignite",
+				components : "M\u2020",
+				compMaterial : "Using the Necklace of Fireballs to cast Fireball requires removing and destorying one or more of the beads from it.",
+				changes : "Using the Necklace of Fireballs to cast Fireball requires removing and destorying one or more of the beads from it. The damage is that of a Fireball cast a 3rd-level, +1 level per bead thrown as part of the same action beyond the first."
+			}
+		}
 	},
-	"necklace of prayer beads" : {
+	"necklace of prayer beads" : { // finished
 		name : "Necklace of Prayer Beads",
 		source : [["SRD", 231], ["D", 182]],
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
-		descriptionFull : "This necklace has 1d4+2 magic beads made from aquamarine, black pearl, or topaz. It also has many nonmagical beads made from stones such as amber, bloodstone, citrine, coral, jade, pearl, or quartz. If a magic bead is removed from the necklace, that bead loses its magic.\n   Six types of magic beads exist. The DM decides the type of each bead on the necklace or determines it randomly. A necklace can have more than one bead of the same type. To use one, you must be wearing the necklace. Each bead contains a spell that you can cast from it as a bonus action (using your spell save DC if a save is necessary). Once a magic bead's spell is cast, that bead can't be used again until the next dawn.\n\n" + toUni("d20") + "\t" + toUni("Bead of ...") + "\t" + toUni("Spell") + "\n1-6\tBlessing\tBless\n7-12\tCuring\tCure Wounds (2nd level) or Lesser Restoration\n13-16\tFavor\tGreater Restoration\n17-18\tSmiting\tBranding Smite\n19\tSummons\tPlanar Ally\n20\tWind walking\tWind Walk",
+		description : "This necklace has many bead, 1d4+2 are magical and can each be used to cast a spell once per dawn as a bonus action. The DM selects the spells from: Bless, Cure Wounds, Lesser Restoration, Greater Restoration, Branding Smite, Planar Ally, and Wind Walk. Multiple beads of the same type can be on one necklace.",
+		descriptionFull : "This necklace has 1d4+2 magic beads made from aquamarine, black pearl, or topaz. It also has many nonmagical beads made from stones such as amber, bloodstone, citrine, coral, jade, pearl, or quartz. If a magic bead is removed from the necklace, that bead loses its magic.\n   Six types of magic beads exist. The DM decides the type of each bead on the necklace or determines it randomly. A necklace can have more than one bead of the same type. To use one, you must be wearing the necklace. Each bead contains a spell that you can cast from it as a bonus action (using your spell save DC if a save is necessary). Once a magic bead's spell is cast, that bead can't be used again until the next dawn.\n\n" + toUni("d20\tBead of ...\tSpell") + "\n1-6\tBlessing\t\tBless\n7-12\tCuring\t\tCure Wounds (2nd level) or Lesser Restoration\n13-16\tFavor\t\tGreater Restoration\n17-18\tSmiting\t\tBranding Smite\n19\tSummons   \tPlanar Ally\n20\tWind walking\tWind Walk",
 		attunement : true,
-		weight : 1
+		weight : 1,
+		usages : "1d4+2",
+		recovery : "dawn",
+		spellcastingAbility : "class",
+		spellFirstColTitle : "Us",
+		spellcastingBonus : {
+			name : "Bead",
+			spells : ["bless", "cure wounds", "lesser restoration", "greater restoration", "branding smite", "planar ally", "wind walk"],
+			times : 6
+		},
+		spellChanges : {
+			"bless" : {
+				time : "1 bns",
+				changes : "The casting time is only a bonus action."
+			},
+			"cure wounds" : {
+				time : "1 bns",
+				changes : "The casting time is only a bonus action."
+			},
+			"lesser restoration" : {
+				time : "1 bns",
+				changes : "The casting time is only a bonus action."
+			},
+			"greater restoration" : {
+				time : "1 bns",
+				changes : "The casting time is only a bonus action."
+			},
+			"planar ally" : {
+				time : "1 bns",
+				changes : "The casting time is only a bonus action."
+			},
+			"wind walk" : {
+				time : "1 bns",
+				changes : "The casting time is only a bonus action."
+			}
+		}
 	},
 	"nolzur's marvelous pigments" : {
 		name : "Nolzur's Marvelous Pigments",
+		nameAlt : "Marvelous Pigments",
 		source : [["SRD", 230], ["D", 183]],
 		type : "wondrous item",
 		rarity : "very rare",
@@ -3015,16 +3209,25 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
-	oathbow : {
+	"oathbow" : { // finished
 		name : "Oathbow",
 		source : [["SRD", 231], ["D", 183]],
 		type : "weapon (longbow)",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "When I attack with this longbow and say its command phrase, I make the target my sworn enemy if I don't have one already for 7 days or until it dies. Attacks with this bow vs. it get adv, +3d6 damage, ignore cover (not full), and suffer no disadv. from long range. While it lives, I have disadv. when I use other weapons.",
+		descriptionLong : "When I use this weapon to make a ranged attack and say its command phrase \"Swift death to you who have wronged me.\", the target of that attack becomes me sworn enemy until it dies or until dawn seven days later. I can have only one such sworn enemy at a time and when it dies, I can choose a new one after the next dawn. My ranged attack rolls with this weapon against me sworn enemy have advantage, do +3d6 piercing damage, ignore all cover except full, and don't suffer disadvantage due to long range. While my sworn enemy lives, I have disadvantage on attack rolls with all other weapons.",
 		descriptionFull : 'When you nock an arrow on this bow, it whispers in Elvish, "Swift defeat to my enemies." When you use this weapon to make a ranged attack, you can, as a command phrase, say, "Swift death to you who have wronged me." The target of your attack becomes your sworn enemy until it dies or until dawn seven days later. You can have only one such sworn enemy at a time. When your sworn enemy dies, you can choose a new one after the next dawn.\n   When you make a ranged attack roll with this weapon against your sworn enemy, you have advantage on the roll. In addition, your target gains no benefit from cover, other than total cover, and you suffer no disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 piercing damage.\n   While your sworn enemy lives, you have disadvantage on attack rolls with all other weapons.',
 		attunement : true,
-		weight : 2
+		weight : 2,
+		weaponsAdd : ["Oathbow"],
+		weaponOptions : {
+			baseWeapon : "longbow",
+			regExpSearch : /oathbow/i,
+			name : "Oathbow",
+			source : [["SRD", 231], ["D", 183]],
+			description : "Ammunition, heavy, two-handed; Vs. sworn enemy: adv, +3d6 damage, no cover/range penalties",
+		}
 	},
 	"oil of etherealness" : { // with contributions by AelarTheElfRogue
 		name : "Oil of Etherealness",
@@ -3205,307 +3408,267 @@ var Base_MagicItemsList = {
 		description : "",
 		descriptionFull : "This fine black cloth, soft as silk, is folded up to the dimensions of a handkerchief. It unfolds into a circular sheet 6 feet in diameter.\n   You can use an action to unfold a portable hole and place it on or against a solid surface, whereupon the portable hole creates an extradimensional hole 10 feet deep. The cylindrical space within the hole exists on a different plane, so it can't be used to create open passages. Any creature inside an open portable hole can exit the hole by climbing out of it.\n   You can use an action to close a portable hole by taking hold of the edges of the cloth and folding it up. Folding the cloth closes the hole, and any creatures or objects within remain in the extradimensional space. No matter what's in it, the hole weighs next to nothing.\n   If the hole is folded up, a creature within the hole's extradimensional space can use an action to make a DC 10 Strength check. On a successful check, the creature forces its way out and appears within 5 feet of the portable hole or the creature carrying it. A breathing creature within a closed portable hole can survive for up to 10 minutes, after which time it begins to suffocate.\n   Placing a portable hole inside an extradimensional space created by a bag of holding, Heward's handy haversack, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10 feet of the gate is sucked through it and deposited in a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened."
 	},
-	"potion of animal friendship" : {
+	"potion of animal friendship" : { // finished
 		name : "Potion of Animal Friendship",
 		source : [["SRD", 233], ["D", 187]],
 		type : "potion",
 		rarity : "uncommon",
 		magicItemTable : "B",
-		description : "",
+		description : "Once as an action, I can drink this potion or administer it to another to be able to cast the Animal Friendship spell for 1 hour at will, charming beasts with Int < 4 for 1 hour if it fails a DC 13 Wis save. Agitating this muddy liquid brings little bits into view: a fish scale, a hummingbird tongue, a cat claw, or a squirrel hair.",
 		descriptionFull : "When you drink this potion, you can cast the Animal Friendship spell (save DC 13) for 1 hour at will. Agitating this muddy liquid brings little bits into view: a fish scale, a hummingbird tongue, a cat claw, or a squirrel hair.",
 		weight : 0.5,
 		extraTooltip : "AL: can always be bought for 100 gp"
 	},
-	"potion of clairvoyance" : {
+	"potion of clairvoyance" : { // finished
 		name : "Potion of Clairvoyance",
 		source : [["SRD", 233], ["D", 187]],
 		type : "potion",
 		rarity : "rare",
 		magicItemTable : "C",
-		description : "",
+		description : "Once as an action, I can drink this potion or administer it to another to gain the effect of the Clairvoyance spell. This creates an invisible sensor within 1 mile, in a familiar or obvious location, that the consumer can see or hear through. An eyeball bobs in this yellowish liquid but vanishes when the potion is opened.",
 		descriptionFull : "When you drink this potion, you gain the effect of the Clairvoyance spell. An eyeball bobs in this yellowish liquid but vanishes when the potion is opened.",
 		weight : 0.5
 	},
-	"potion of climbing" : {
+	"potion of climbing" : { // finished
 		name : "Potion of Climbing",
 		source : [["SRD", 233], ["D", 187]],
 		type : "potion",
 		rarity : "common",
 		magicItemTable : "A",
-		description : "",
+		description : "Once as an action, I can drink this potion or administer it to another to gain, for 1 hour, a climbing speed equal to the consumer's walking speed and adv. on Str (Athletics) checks to climb. The potion is separated into brown, silver, and gray layers resembling bands of stone. Shaking it fails to mix the colors.",
 		descriptionFull : "When you drink this potion, you gain a climbing speed equal to your walking speed for 1 hour. During this time, you have advantage on Strength (Athletics) checks you make to climb. The potion is separated into brown, silver, and gray layers resembling bands of stone. Shaking the bottle fails to mix the colors.",
 		weight : 0.5,
 		extraTooltip : "AL: can always be bought for 75 gp"
 	},
-	"potion of diminution" : {
+	"potion of diminution" : { // finished
 		name : "Potion of Diminution",
 		source : [["SRD", 233], ["D", 187]],
 		type : "potion",
 		rarity : "rare",
 		magicItemTable : "C",
-		description : "",
+		description : "Once as an action, I can drink this potion or administer it to another to be reduced as per the Enlarge/Reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it.",
+		descriptionLong : "Once as an action, I can drink this potion or administer it to another to be reduced as per the Enlarge/Reduce spell for 1d4 hours (no concentration required). This causes the consumer to decrease one size category as it halves in size in all dimensions and its weight is reduced to one-eight of normal. Its weapon attacks deal -1d4 damage (min 1) and it has disadvantage on Strength checks and saving throws. The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it. Shaking the bottle fails to interrupt this process.",
 		descriptionFull : "When you drink this potion, you gain the \"reduce\" effect of the Enlarge/Reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it. Shaking the bottle fails to interrupt this process.",
 		weight : 0.5
 	},
-	"potion of flying" : {
+	"potion of flying" : { // finished
 		name : "Potion of Flying",
 		source : [["SRD", 234], ["D", 187]],
 		type : "potion",
 		rarity : "very rare",
 		magicItemTable : "D",
-		description : "",
+		description : "Once as an action, I can drink this potion or administer it to another to gain a flying speed equal to the consumer's walking speed for 1 hour and be able to hover. When the potion wears off, the consumer falls. This potion's clear liquid floats at the top of its container and has cloudy white impurities drifting in it.",
 		descriptionFull : "When you drink this potion, you gain a flying speed equal to your walking speed for 1 hour and can hover. If you're in the air when the potion wears off, you fall unless you have some other means of staying aloft. This potion's clear liquid floats at the top of its container and has cloudy white impurities drifting in it.",
 		weight : 0.5
 	},
-	"potion of gaseous form" : {
+	"potion of gaseous form" : { // finished
 		name : "Potion of Gaseous Form",
 		source : [["SRD", 234], ["D", 187]],
 		type : "potion",
 		rarity : "rare",
 		magicItemTable : "C",
-		description : "",
+		description : "Once as an action, I can drink this potion or administer it to another to gain the effect of the Gaseous Form spell for 1 hour (no concentration required), until the consumer drops to 0 HP, or ends the effect as a bonus action. This potion's container seems to hold fog that moves and pours like water.",
+		descriptionLong : "Once as an action, I can drink this potion or administer it to another to gain the effect of the Gaseous Form spell for 1 hour (no concentration required), until the consumer drops to 0 HP, or ends the effect as a bonus action. The consumer, along with everything it's wearing and carrying, transforms into a misty cloud. In this form, it can only move by flying at 10 ft speed, can hover, can't fall, has resistance to nonmagical damage, adv. on Str, Dex, and Con saves, can pass through mere cracks, but can't talk, manipulate items, cast spells, or attack. This container seems to hold fog that moves and pours like water.",
 		descriptionFull : "When you drink this potion, you gain the effect of the Gaseous Form spell for 1 hour (no concentration required) or until you end the effect as a bonus action. This potion's container seems to hold fog that moves and pours like water.",
 		weight : 0.5
 	},
-	"potion of giant strength, cloud" : {
-		name : "Potion of Giant Strength, Cloud",
+	"potion of giant strength" : { // finished
+		name : "Potion of Giant Strength",
 		source : [["SRD", 234], ["D", 187]],
 		type : "potion",
-		rarity : "very rare",
-		description : "",
-		descriptionFull : "When you drink this potion, your Strength score changes to 27 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a cloud giant.",
-		weight : 0.5
+		description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score for 1 hour. The number of this score depends on the type of giant from which a sliver of fingernail is floating in this potions' transparent liquid.",
+		descriptionFull : "When you drink this potion, your Strength score changes for 1 hour. The type of giant determines the score (see the table below). The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a giant of the appropriate type. The potion of frost giant strength and the potion of stone giant strength have the same effect.\n\n" + toUni("Type\t\tStr\tRarity") + "\nHill giant\t\t21\tUncommon\nStone/frost giant\t23\tRare\nFire giant   \t25\tRare\nCloud giant\t27\tVery rare\nStorm giant\t29\tLegendary",
+		weight : 0.5,
+		allowDuplicates : true,
+		choices : ["Hill (Str 21, uncommon)", "Frost (Str 23, rare)", "Stone (Str 23, rare)", "Fire (Str 25, rare)", "Cloud (Str 27, very rare)", "Storm (Str 29, legendary)"],
+		"hill (str 21, uncommon)" : {
+			name : "Potion of Hill Giant Strength",
+			rarity : "uncommon",
+			magicItemTable : "B",
+			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 21 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a hill giant.",
+			descriptionFull : "When you drink this potion, your Strength score changes to 21 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a hill giant."
+		},
+		"frost (str 23, rare)" : {
+			name : "Potion of Frost Giant Strength",
+			rarity : "rare",
+			magicItemTable : "C",
+			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 23 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a frost giant.",
+			descriptionFull : "When you drink this potion, your Strength score changes to 23 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a frost giant."
+		},
+		"stone (str 23, rare)" : {
+			name : "Potion of Stone Giant Strength",
+			rarity : "rare",
+			magicItemTable : "C",
+			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 23 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a stone giant.",
+			descriptionFull : "When you drink this potion, your Strength score changes to 23 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a stone giant."
+		},
+		"fire (str 25, rare)" : {
+			name : "Potion of Fire Giant Strength",
+			rarity : "rare",
+			magicItemTable : "C",
+			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 25 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a fire giant.",
+			descriptionFull : "When you drink this potion, your Strength score changes to 25 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a fire giant."
+		},
+		"cloud (str 27, very rare)" : {
+			name : "Potion of Cloud Giant Strength",
+			rarity : "very rare",
+			magicItemTable : "D",
+			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 27 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a cloud giant.",
+			descriptionFull : "When you drink this potion, your Strength score changes to 27 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a cloud giant."
+		},
+		"storm (str 29, legendary)" : {
+			name : "Potion of Storm Giant Strength",
+			rarity : "legendary",
+			magicItemTable : "E",
+			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 29 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a storm giant.",
+			descriptionFull : "When you drink this potion, your Strength score changes to 29 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a storm giant."
+		}
 	},
-	"potion of giant strength, fire" : {
-		name : "Potion of Giant Strength, Fire",
-		source : [["SRD", 234], ["D", 187]],
-		type : "potion",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "When you drink this potion, your Strength score changes to 25 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a fire giant.",
-		weight : 0.5
-	},
-	"potion of giant strength, frost" : {
-		name : "Potion of Giant Strength, Frost",
-		source : [["SRD", 234], ["D", 187]],
-		type : "potion",
-		rarity : "rare",
-		magicItemTable : "C",
-		description : "",
-		descriptionFull : "When you drink this potion, your Strength score changes to 23 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a frost giant.",
-		weight : 0.5
-	},
-	"potion of giant strength, hill" : {
-		name : "Potion of Giant Strength, Hill",
-		source : [["SRD", 234], ["D", 187]],
-		type : "potion",
-		rarity : "uncommon",
-		description : "",
-		descriptionFull : "When you drink this potion, your Strength score changes to 21 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a hill giant.",
-		weight : 0.5
-	},
-	"potion of giant strength, stone" : {
-		name : "Potion of Giant Strength, Stone",
-		source : [["SRD", 234], ["D", 187]],
-		type : "potion",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "When you drink this potion, your Strength score changes to 23 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a stone giant.",
-		weight : 0.5
-	},
-	"potion of giant strength, storm" : {
-		name : "Potion of Giant Strength, Storm",
-		source : [["SRD", 234], ["D", 187]],
-		type : "potion",
-		rarity : "legendary",
-		description : "",
-		descriptionFull : "When you drink this potion, your Strength score changes to 29 for 1 hour. The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a storm giant.",
-		weight : 0.5
-	},
-	"potion of growth" : {
+	"potion of growth" : { // finished
 		name : "Potion of Growth",
 		source : [["SRD", 234], ["D", 187]],
 		type : "potion",
 		rarity : "uncommon",
 		magicItemTable : "B",
-		description : "",
+		description : "Once as an action, I can drink this potion or administer it to another to be enlarged as per the Enlarge/Reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts.",
+		descriptionLong : "Once as an action, I can drink this potion or administer it to another to be enlarged as per the Enlarge/Reduce spell for 1d4 hours (no concentration required). This causes the consumer to grow one size category as it doubles in size in all dimensions and its weight is multiplied by eight. This growth stops early if the encompassing space is fully filled. Its weapon attacks deal +1d4 damage and it has advantage on Strength checks and saving throws. The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts. Shaking the bottle fails to interrupt this process.",
 		descriptionFull : "When you drink this potion, you gain the \"enlarge\" effect of the Enlarge/Reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts. Shaking the bottle fails to interrupt this process.",
 		weight : 0.5
 	},
-	"potion of healing" : {
+	"potion of healing" : { // finished
 		name : "Potion of Healing",
 		source : [["SRD", 234], ["D", 187]],
 		type : "potion",
-		rarity : "common",
-		magicItemTable : "A",
-		description : "",
-		descriptionFull : "You regain 2d4+2 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
+		description : "Once as an action, I can drink this potion or administer it to another to heal a number of hit points depending on the type of potion. This potion's red liquid glimmers when agitated.",
+		descriptionFull : "You regain hit points when you drink this potion. The number of hit points depends on the potion's rarity, as shown in the Potions of Healing table. Whatever its potency, the potion's red liquid glimmers when agitated.",
 		weight : 0.5,
-		extraTooltip : "Can be bought for 50 gp (also in AL)"
+		choices : ["Healing (2d4+2, common)", "Greater Healing (4d4+4, uncommon)", "Superior Healing (8d4+8, rare)", "Supreme Healing (10d4+20, very rare)"],
+		"healing (2d4+2, common)" : {
+			name : "Potion of Healing  ",
+			rarity : "common",
+			magicItemTable : "A",
+			description : "Once as an action, I can drink this potion or administer it to another to regain 2d4+2 hit points. This potion's red liquid glimmers when agitated.",
+			descriptionFull : "You regain 2d4+2 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
+			extraTooltip : "Can be bought for 50 gp (also in AL)"
+		},
+		"greater healing (4d4+4, uncommon)" : {
+			name : "Potion of Greater Healing",
+			rarity : "uncommon",
+			magicItemTable : ["A", "B"],
+			description : "Once as an action, I can drink this potion or administer it to another to regain 4d4+4 hit points. This potion's red liquid glimmers when agitated.",
+			descriptionFull : "You regain 4d4+4 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
+			extraTooltip : "AL: can always be bought for 100 gp"
+		},
+		"superior healing (8d4+8, rare)" : {
+			name : "Potion of Superior Healing",
+			rarity : "rare",
+			magicItemTable : "C",
+			description : "Once as an action, I can drink this potion or administer it to another to regain 8d4+8 hit points. This potion's red liquid glimmers when agitated.",
+			descriptionFull : "You regain 8d4+8 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
+			extraTooltip : "AL: can always be bought for 500 gp"
+		},
+		"supreme healing (10d4+20, very rare)" : {
+			name : "Potion of Supreme Healing",
+			rarity : "very rare",
+			magicItemTable : ["D", "E"],
+			description : "Once as an action, I can drink this potion or administer it to another to regain 10d4+20 hit points. This potion's red liquid glimmers when agitated.",
+			descriptionFull : "You regain 10d4+20 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
+			extraTooltip : "AL: can always be bought for 5000 gp"
+		}
 	},
-	"potion of greater healing" : {
-		name : "Potion of Greater Healing",
-		source : [["SRD", 234], ["D", 187]],
-		type : "potion",
-		rarity : "uncommon",
-		magicItemTable : ["A", "B"],
-		description : "",
-		descriptionFull : "You regain 4d4+4 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
-		weight : 0.5,
-		extraTooltip : "AL: can always be bought for 100 gp"
-	},
-	"potion of superior healing" : {
-		name : "Potion of Superior Healing",
-		source : [["SRD", 234], ["D", 187]],
-		type : "potion",
-		rarity : "rare",
-		magicItemTable : "C",
-		description : "",
-		descriptionFull : "You regain 8d4+8 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
-		weight : 0.5,
-		extraTooltip : "AL: can always be bought for 500 gp"
-	},
-	"potion of supreme healing" : {
-		name : "Potion of Supreme Healing",
-		source : [["SRD", 234], ["D", 187]],
-		type : "potion",
-		rarity : "very rare",
-		magicItemTable : ["D", "E"],
-		description : "",
-		descriptionFull : "You regain 10d4+20 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
-		weight : 0.5,
-		extraTooltip : "AL: can always be bought for 5000 gp"
-	},
-	"potion of heroism" : {
+	"potion of heroism" : { // finished
 		name : "Potion of Heroism",
 		source : [["SRD", 234], ["D", 188]],
 		type : "potion",
 		rarity : "rare",
 		magicItemTable : "C",
-		description : "",
+		description : "Once as an action, I can drink this potion or administer it to another to gain 10 temporary hit points for 1 hour. For the same duration, the consumer is under the effect of the Bless spell (no concentration required), which adds +1d4 on all attack rolls and saving throws. This blue potion bubbles and steams as if boiling.",
 		descriptionFull : "For 1 hour after drinking it, you gain 10 temporary hit points that last for 1 hour. For the same duration, you are under the effect of the Bless spell (no concentration required). This blue potion bubbles and steams as if boiling.",
 		weight : 0.5
 	},
-	"potion of invisibility" : {
+	"potion of invisibility" : { // finished
 		name : "Potion of Invisibility",
 		source : [["SRD", 234], ["D", 188]],
 		type : "potion",
 		rarity : "very rare",
 		magicItemTable : "D",
-		description : "",
+		description : "Once as an action, I can drink this potion or administer it to another to become invisible for 1 hour. Anything the consumer wears or carries is invisible along with it. The effect ends early the consumer attacks or casts a spell. This potion's container looks empty but feels as though it holds liquid.",
 		descriptionFull : "This potion's container looks empty but feels as though it holds liquid. When you drink it, you become invisible for 1 hour. Anything you wear or carry is invisible with you. The effect ends early if you attack or cast a spell.",
 		weight : 0.5,
 		extraTooltip : "AL: can always be bought for 5000 gp"
 	},
-	"potion of mind reading" : {
+	"potion of mind reading" : { // finished
 		name : "Potion of Mind Reading",
 		source : [["SRD", 234], ["D", 188]],
 		type : "potion",
 		rarity : "rare",
 		magicItemTable : "C",
-		description : "",
+		description : "Once as an action, I can drink this potion or administer it to another to gain the effect of the Detect Thoughts spell (save DC 13) for 1 minute. The potion's dense, purple liquid has an ovoid cloud of pink floating in it.",
 		descriptionFull : "When you drink this potion, you gain the effect of the Detect Thoughts spell (save DC 13). The potion's dense, purple liquid has an ovoid cloud of pink floating in it.",
 		weight : 0.5
 	},
-	"potion of poison" : {
+	"potion of poison" : { // finished
 		name : "Potion of Poison",
 		source : [["SRD", 234], ["D", 188]],
 		type : "potion",
 		rarity : "uncommon",
 		magicItemTable : "B",
-		description : "",
+		description : "The consumer of this potion takes 3d6 poison damage and must make a DC 13 Con save or be poisoned. While poisoned this way, it takes 3d6 poison damage at the start of each of its turns and can repeat the save at the end of each of its turns to lower subsequent damage by 1d6. The poison ends when it reaches 0.",
+		descriptionLong : "This concoction looks, smells, and tastes like a potion of healing or other beneficial potion. However, whomever consumes it takes 3d6 poison damage and must make a DC 13 Con save or be poisoned. While poisoned this way, the consumer takes 3d6 poison damage at the start of each of its turns. At the end of each of the consumer's turns, it can repeat the saving throw. On a successful save, the poison damage on subsequent turns decreases by 1d6. The poison ends when the damage decreases to 0.",
 		descriptionFull : "This concoction looks, smells, and tastes like a potion of healing or other beneficial potion. However, it is actually poison masked by illusion magic. An Identify spell reveals its true nature.\n   If you drink it, you take 3d6 poison damage, and you must succeed on a DC 13 Constitution saving throw or be poisoned. At the start of each of your turns while you are poisoned in this way, you take 3d6 poison damage. At the end of each of your turns, you can repeat the saving throw. On a successful save, the poison damage you take on your subsequent turns decreases by 1d6. The poison ends when the damage decreases to 0.",
 		weight : 0.5
 	},
-	"potion of resistance, acid" : {
-		name : "Potion of Resistance, Acid",
+	"potion of resistance" : { // finished
+		name : "Potion of Resistance",
 		source : [["SRD", 235], ["D", 188]],
 		type : "potion",
 		rarity : "uncommon",
-		description : "",
-		descriptionFull : "",
-		weight : 0.5
-	},
-	"potion of resistance, cold" : {
-		name : "Potion of Resistance, Cold",
-		source : [["SRD", 235], ["D", 188]],
-		type : "potion",
-		rarity : "uncommon",
-		description : "",
-		descriptionFull : "",
-		weight : 0.5
-	},
-	"potion of resistance, fire" : {
-		name : "Potion of Resistance, Fire",
-		source : [["SRD", 235], ["D", 188]],
-		type : "potion",
-		rarity : "uncommon",
-		description : "",
-		descriptionFull : "",
-		weight : 0.5
-	},
-	"potion of resistance, force" : {
-		name : "Potion of Resistance, Force",
-		source : [["SRD", 235], ["D", 188]],
-		type : "potion",
-		rarity : "uncommon",
-		description : "",
-		descriptionFull : "",
-		weight : 0.5
-	},
-	"potion of resistance, lightning" : {
-		name : "Potion of Resistance, Lightning",
-		source : [["SRD", 235], ["D", 188]],
-		type : "potion",
-		rarity : "uncommon",
-		description : "",
-		descriptionFull : "",
-		weight : 0.5
-	},
-	"potion of resistance, necrotic" : {
-		name : "Potion of Resistance, Necrotic",
-		source : [["SRD", 235], ["D", 188]],
-		type : "potion",
-		rarity : "uncommon",
-		description : "",
-		descriptionFull : "",
-		weight : 0.5
-	},
-	"potion of resistance, poison" : {
-		name : "Potion of Resistance, Poison",
-		source : [["SRD", 235], ["D", 188]],
-		type : "potion",
-		rarity : "uncommon",
-		description : "",
-		descriptionFull : "",
-		weight : 0.5
-	},
-	"potion of resistance, psychic" : {
-		name : "Potion of Resistance, Psychic",
-		source : [["SRD", 235], ["D", 188]],
-		type : "potion",
-		rarity : "uncommon",
-		description : "",
-		descriptionFull : "",
-		weight : 0.5
-	},
-	"potion of resistance, radiant" : {
-		name : "Potion of Resistance, Radiant",
-		source : [["SRD", 235], ["D", 188]],
-		type : "potion",
-		rarity : "uncommon",
-		description : "",
-		descriptionFull : "",
-		weight : 0.5
-	},
-	"potion of resistance, thunder" : {
-		name : "Potion of Resistance, Thunder",
-		source : [["SRD", 235], ["D", 188]],
-		type : "potion",
-		rarity : "uncommon",
-		description : "",
-		descriptionFull : "",
-		weight : 0.5
+		magicItemTable : "B",
+		description : "Once as an action, I can drink this potion or administer it to another to gain resistance to one damage type for 1 hour.",
+		descriptionFull : "When you drink this potion, you gain resistance to one type of damage for 1 hour. The DM chooses the type or determines it randomly from the options below.\n\n" + toUni("d10\tType\t\td10\tType") + "\n 1\tAcid\t\t 6\tNecrotic\n 2\tCold\t\t 7\tPoison\n 3\tFire\t\t 8\tPsychic\n 4\tForce\t\t 9\tRadiant\n 5\tLightning   \t 10\tThunder",
+		weight : 0.5,
+		allowDuplicates : true,
+		choices : ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
+		"acid" : {
+			name : "Potion of Acid Resistance",
+			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to acid damage for 1 hour."
+		},
+		"cold" : {
+			name : "Potion of Cold Resistance",
+			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to cold damage for 1 hour."
+		},
+		"fire" : {
+			name : "Potion of Fire Resistance",
+			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to fire damage for 1 hour."
+		},
+		"force" : {
+			name : "Potion of Force Resistance",
+			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to force damage for 1 hour."
+		},
+		"lightning" : {
+			name : "Potion of Lightning Resistance",
+			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to lightning damage for 1 hour."
+		},
+		"necrotic" : {
+			name : "Potion of Necrotic Resistance",
+			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to necrotic damage for 1 hour."
+		},
+		"poison" : {
+			name : "Potion of Poison Resistance",
+			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to poison damage for 1 hour."
+		},
+		"psychic" : {
+			name : "Potion of Psychic Resistance",
+			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to psychic damage for 1 hour."
+		},
+		"radiant" : {
+			name : "Potion of Radiant Resistance",
+			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to radiant damage for 1 hour."
+		},
+		"thunder" : {
+			name : "Potion of Thunder Resistance",
+			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to thunder damage for 1 hour."
+		}
 	},
 	"potion of speed" : { // finished
 		name : "Potion of Speed",
@@ -3518,13 +3681,13 @@ var Base_MagicItemsList = {
 		descriptionFull : "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
 		weight : 0.5
 	},
-	"potion of water breathing" : {
+	"potion of water breathing" : { // finished
 		name : "Potion of Water Breathing",
 		source : [["SRD", 235], ["D", 188]],
 		type : "potion",
 		rarity : "uncommon",
 		magicItemTable : "B",
-		description : "",
+		description : "Once as an action, I can drink this potion or administer it to another to be able to breathe underwater for 1 hour after drinking this potion. Its cloudy green fluid smells of the sea and has a jellyfish-like bubble floating in it.",
 		descriptionFull : "You can breathe underwater for 1 hour after drinking this potion. Its cloudy green fluid smells of the sea and has a jellyfish-like bubble floating in it.",
 		weight : 0.5,
 		extraTooltip : "AL: can always be bought for 100 gp"
@@ -3534,6 +3697,7 @@ var Base_MagicItemsList = {
 		source : [["SRD", 221], ["D", 188]],
 		type : "wondrous item",
 		rarity : "rare",
+		magicItemTable : "C", // all of them
 		description : "",
 		descriptionFull : "This tiny object looks like a feather.\n   " + toUni("Anchor") + ". You can use an action to touch the token to a boat or ship. For the next 24 hours, the vessel can't be moved by any means. Touching the token to the vessel again ends the effect. When the effect ends, the token disappears."
 	},
@@ -3647,23 +3811,27 @@ var Base_MagicItemsList = {
 		descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Water and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Water.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a water elemental. In addition, you can stand on and walk across liquid surfaces as if they were solid ground. You can also speak and understand Aquan.\n   If you help slay a water elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You can breathe underwater and have a swimming speed equal to your walking speed.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Create or Destroy Water} (1 charge), Control Water (3 charges), Ice Storm (2 charges), or Wall of Ice (3 charges).",
 		attunement : true
 	},
-	"ring of evasion" : {
+	"ring of evasion" : { // finished
 		name : "Ring of Evasion",
 		source : [["SRD", 236], ["D", 191]],
 		type : "ring",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
+		description : "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. As a reaction when I fail a Dexterity saving throw while wearing it, I can expend 1 of its charges to succeed on that saving throw instead.",
 		descriptionFull : "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. When you fail a Dexterity saving throw while wearing it, you can use your reaction to expend 1 of its charges to succeed on that saving throw instead.",
-		attunement : true
+		attunement : true,
+		usages : 3,
+		recovery : "dawn",
+		additional : "regains 1d3",
+		action : [["reaction", ""]]
 	},
-	"ring of feather falling" : {
+	"ring of feather falling" : { // finished
 		name : "Ring of Feather Falling",
 		source : [["SRD", 236], ["D", 191]],
 		type : "ring",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
+		description : "When I fall while wearing this ring, I descend 60 ft per round and take no damage from falling.",
 		descriptionFull : "When you fall while wearing this ring, you descend 60 feet per round and take no damage from falling.",
 		attunement : true
 	},
@@ -3678,15 +3846,16 @@ var Base_MagicItemsList = {
 		attunement : true,
 		savetxt : { immune : ["paralyzed", "restrained"] }
 	},
-	"ring of invisibility" : {
+	"ring of invisibility" : { // finished
 		name : "Ring of Invisibility",
 		source : [["SRD", 236], ["D", 191]],
 		type : "ring",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "",
+		description : "While wearing this ring, I can turn invisible as an action. Anything I am wearing or carrying is invisible with me. I remain invisible until the ring is removed, until I attack or cast a spell, or until I use a bonus action to become visible again.",
 		descriptionFull : "While wearing this ring, you can turn invisible as an action. Anything you are wearing or carrying is invisible with you. You remain invisible until the ring is removed, until you attack or cast a spell, or until you use a bonus action to become visible again.",
-		attunement : true
+		attunement : true,
+		action : [["action", " (start)"], ["action", " (stop)"]]
 	},
 	"ring of jumping" : { // finished
 		name : "Ring of Jumping",
@@ -3737,105 +3906,86 @@ var Base_MagicItemsList = {
 		extraAC : [{name : "Ring of Protection", mod : 1, magic : true, text : "I gain a +1 bonus to AC while attuned."}],
 		addMod : [{ type : "save", field : "all", mod : 1, text : "While I wear the Ring of Protection, I gain a +1 to all my saving throws." }]
 	},
-	"ring of regeneration" : {
+	"ring of regeneration" : { // finished
 		name : "Ring of Regeneration",
 		source : [["SRD", 237], ["D", 191]],
 		type : "ring",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "While wearing this ring, I regain 1d6 hit points every 10 minutes, provided that I have at least 1 hit point. If I lose a body part, the ring causes the missing part to regrow and return to full functionality after 1d6+1 days if I have at least 1 hit point the whole time.",
 		descriptionFull : "While wearing this ring, you regain 1d6 hit points every 10 minutes, provided that you have at least 1 hit point. If you lose a body part, the ring causes the missing part to regrow and return to full functionality after 1d6+1 days if you have at least 1 hit point the whole time.",
 		attunement : true
 	},
-	"ring of resistance, acid" : {
-		name : "Ring of Resistance, Acid",
+	"ring of resistance" : { // finished
+		name : "Ring of Resistance",
 		source : [["SRD", 237], ["D", 192]],
 		type : "ring",
 		rarity : "rare",
-		description : "",
-		descriptionFull : "",
-		attunement : true
-	},
-	"ring of resistance, cold" : {
-		name : "Ring of Resistance, Cold",
-		source : [["SRD", 237], ["D", 192]],
-		type : "ring",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "",
-		attunement : true
-	},
-	"ring of resistance, fire" : {
-		name : "Ring of Resistance, Fire",
-		source : [["SRD", 237], ["D", 192]],
-		type : "ring",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "",
-		attunement : true
-	},
-	"ring of resistance, force" : {
-		name : "Ring of Resistance, Force",
-		source : [["SRD", 237], ["D", 192]],
-		type : "ring",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "",
-		attunement : true
-	},
-	"ring of resistance, lightning" : {
-		name : "Ring of Resistance, Lightning",
-		source : [["SRD", 237], ["D", 192]],
-		type : "ring",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "",
-		attunement : true
-	},
-	"ring of resistance, necrotic" : {
-		name : "Ring of Resistance, Necrotic",
-		source : [["SRD", 237], ["D", 192]],
-		type : "ring",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "",
-		attunement : true
-	},
-	"ring of resistance, poison" : {
-		name : "Ring of Resistance, Poison",
-		source : [["SRD", 237], ["D", 192]],
-		type : "ring",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "",
-		attunement : true
-	},
-	"ring of resistance, psychic" : {
-		name : "Ring of Resistance, Psychic",
-		source : [["SRD", 237], ["D", 192]],
-		type : "ring",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "",
-		attunement : true
-	},
-	"ring of resistance, radiant" : {
-		name : "Ring of Resistance, Radiant",
-		source : [["SRD", 237], ["D", 192]],
-		type : "ring",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "",
-		attunement : true
-	},
-	"ring of resistance, thunder" : {
-		name : "Ring of Resistance, Thunder",
-		source : [["SRD", 237], ["D", 192]],
-		type : "ring",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "",
-		attunement : true
+		magicItemTable : "G",
+		description : "I have resistance to one damage type while wearing this ring. The gem in the ring indicates the type of damage.",
+		descriptionFull : "You have resistance to one damage type while wearing this ring. The gem in the ring indicates the type, which the GM chooses or determines randomly.\n\n" + toUni("d10\tDamage Type\tGem") +
+		"\n   1\tAcid\t\tPearl" +
+		"\n   2\tCold\t\tTourmaline" +
+		"\n   3\tFire\t\tGarnet" +
+		"\n   4\tForce\t\tSapphire" +
+		"\n   5\tLightning   \tCitrine" +
+		"\n   6\tNecrotic\t\tJet" +
+		"\n   7\tPoison\t\tAmethyst" +
+		"\n   8\tPsychic\t\tJade" +
+		"\n   9\tRadiant\t\tTopaz" +
+		"\n 10\tThunder\t\tSpinel",
+		attunement : true,
+		choices : ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
+		"acid" : {
+			name : "Ring of Acid Resistance",
+			description : "While I'm wearing this ring set with a pearl and I'm attuned to it, I have resistance to acid damage.",
+			dmgres : ["Acid"]
+		},
+		"cold" : {
+			name : "Ring of Cold Resistance",
+			description : "While I'm wearing this ring set with a tourmaline and I'm attuned to it, I have resistance to cold damage.",
+			dmgres : ["Cold"]
+		},
+		"fire" : {
+			name : "Ring of Fire Resistance",
+			description : "While I'm wearing this ring set with a garnet and I'm attuned to it, I have resistance to fire damage.",
+			dmgres : ["Fire"]
+		},
+		"force" : {
+			name : "Ring of Force Resistance",
+			description : "While I'm wearing this ring set with a sapphire and I'm attuned to it, I have resistance to force damage.",
+			dmgres : ["Force"]
+		},
+		"lightning" : {
+			name : "Ring of Lightning Resistance",
+			description : "While I'm wearing this ring set with a citrine and I'm attuned to it, I have resistance to lightning damage.",
+			dmgres : ["Lightning"]
+		},
+		"necrotic" : {
+			name : "Ring of Necrotic Resistance",
+			description : "While I'm wearing this ring set with jet and I'm attuned to it, I have resistance to necrotic damage.",
+			dmgres : ["Necrotic"]
+		},
+		"poison" : {
+			name : "Ring of Poison Resistance",
+			description : "While I'm wearing this ring set with an amethyst and I'm attuned to it, I have resistance to poison damage.",
+			dmgres : ["Poison"]
+		},
+		"psychic" : {
+			name : "Ring of Psychic Resistance",
+			description : "While I'm wearing this ring set with jade and I'm attuned to it, I have resistance to psychic damage.",
+			dmgres : ["Psychic"]
+		},
+		"radiant" : {
+			name : "Ring of Radiant Resistance",
+			description : "While I'm wearing this ring set with a topaz and I'm attuned to it, I have resistance to radiant damage.",
+			dmgres : ["Radiant"]
+		},
+		"thunder" : {
+			name : "Ring of Thunder Resistance",
+			description : "While I'm wearing this ring set with a spinel and I'm attuned to it, I have resistance to thunder damage.",
+			dmgres : ["Thunder"]
+		}
 	},
 	"ring of shooting stars" : {
 		name : "Ring of Shooting Stars",
@@ -3919,15 +4069,16 @@ var Base_MagicItemsList = {
 		description : "",
 		descriptionFull : "While wearing this ring, you can use an action to expend 1 of its 3 charges to cast the Wish spell from it. The ring becomes nonmagical when you use the last charge."
 	},
-	"ring of warmth" : {
+	"ring of warmth" : { // finished
 		name : "Ring of Warmth",
 		source : [["SRD", 238], ["D", 193]],
 		type : "ring",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		description : "",
+		description : "While wearing this ring, I have resistance to cold damage. In addition, I and everything I wear and carry are unharmed by temperatures as low as -50 \u00B0F.",
 		descriptionFull : "While wearing this ring, you have resistance to cold damage. In addition, you and everything you wear and carry are unharmed by temperatures as low as -50 degrees Fahrenheit.",
-		attunement : true
+		attunement : true,
+		dmgres : ["Cold"]
 	},
 	"ring of water walking" : { // finished
 		name : "Ring of Water Walking",
@@ -4575,6 +4726,7 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"conjure elemental" : {
 				time : "1 a",
+				components : "V,M\u0192",
 				description : "CR 5 earth elemental that obeys my verbal commands; on broken conc. elemental breaks free",
 				changes : "Using the Stone of Controlling Earth Elementals, the spell only takes 1 action instead of 1 minute, but can only bring forth an earth elemental."
 			}
@@ -5134,6 +5286,7 @@ var Base_MagicItemsList = {
 		description : "While wearing this cloak, I can use an action to speak its command word. This turns the cloak into a pair of bat wings or bird wings on my back for 1 hour or until I repeat the command word as an action. The wings give me a flying speed of 60 ft. When they disappear, I can't use them again for 1d12 hours.",
 		descriptionFull : "While wearing this cloak, you can use an action to speak its command word. This turns the cloak into a pair of bat wings or bird wings on your back for 1 hour or until you repeat the command word as an action. The wings give you a flying speed of 60 feet. When they disappear, you can't use them again for 1d12 hours.",
 		attunement : true,
+		action : [["action", " (start/stop)"]],
 		usages : 1,
 		recovery : "1d12 h"
 	},
