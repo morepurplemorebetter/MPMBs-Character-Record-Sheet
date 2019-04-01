@@ -6629,7 +6629,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		Checkbox(skillFld + " Prof", isProf);
 		Checkbox(skillFld + " Exp", isExp);
 	}; break;
-	case "weapon" : { // if this is the 'other' weapons do something special. If not, it is Simple/Martial weapons and they can be treated just like armour
+	case "weapon" : // if this is the 'other' weapons do something special. If not, it is Simple/Martial weapons and they can be treated just like armour
 		if (ProfObj == "other") {
 			if (!set.otherWea) set.otherWea = { finalProfs : [], finalString : "", finalNamesNotManual : [], finalProfsNotManual : [] };
 			var iSet = set.otherWea;
@@ -6690,8 +6690,9 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			Value("Proficiency Weapon Other Description", iSet.finalString, otherWeaTooltip);
 			// recalculate the attacks with the proficiency changes
 			CurrentUpdates.types.push("attacksprofs");
+			break; // only stop if this concerning "other" weapon proficiencies
 		}
-	}; break;
+		// if simple or martial proficiency, do the same as the armour proficiency below
 	case "armour" : { // if (Extra == true) means to not change the field, only the tooltip
 		var sort = ProfType.replace('ou', 'o');
 		var fld = "Proficiency " + ((/shield/i).test(ProfObj) ? "Shields" : (sort + " " + ProfObj).capitalize());
@@ -7290,8 +7291,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		var tooltipStr = formatMultiList("This line of " + (tObj.type == "magic" ? "magic" : "miscellaneous") + " AC bonuses contains:\n(tip: click on the number field in this line for more info)", tooltipArr);
 		AddTooltip(fldNms[tObj.type][1], tooltipStr);
 		if (!AddRemove) delete set[objName]; // now delete the object
-		break;
-	}
+	}; break;
 	case "carryingcapacity" : {
 		ProfObj = parseFloat(ProfObj);
 		if (isNaN(ProfObj)) return; // nothing to do
@@ -7380,7 +7380,6 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		}
 		// clean the object
 		if (!AddRemove && !tooltipArr.length) delete set[fld];
-
 	}; break;
  };
 	SetStringifieds("profs");

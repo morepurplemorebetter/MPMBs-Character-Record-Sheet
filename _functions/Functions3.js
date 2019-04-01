@@ -144,7 +144,12 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	// addIt = true to add things and addIt = false to remove things
 	var useAttr = function(uObj, addIt, skipEval, objNm) {
 		var uniqueObjNm = objNm == undefined ? fObjName : fObjName + objNm; // has to be unique
-		var tipNm = displName + (cnt > 1 ? " (" + cnt + ")" : "");
+		var tipNm = displName;
+		var useSpCasting = objNm && (type === "feat" || type === "magic item") ? objNm : aParent;
+		if (cnt > 1) {
+			tipNm += " (" + cnt + ")";
+			if (cntCh > 1) uniqueObjNm += " (" + cntCh + ")";
+		}
 		if (!uObj.name || displName !== uObj.name) {
 			if (type === "feat" || type === "magic item") {
 				if (uObj.name) {
@@ -200,12 +205,12 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.scoresMaximum) processStats(addIt, type, tipNm, uObj.scoresMaximum, abiScoresTxt, "maximums");
 
 		// spellcasting
-		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent);
-		if (CurrentSpells[aParent] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges)) {
+		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent, objNm);
+		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges)) {
 			CurrentUpdates.types.push("spells");
-			if (uObj.spellFirstColTitle) CurrentSpells[aParent].firstCol = addIt ? uObj.spellFirstColTitle : false;
-			if (uObj.spellcastingExtra) CurrentSpells[aParent].extra = addIt ? uObj.spellcastingExtra : false;
-			if (uObj.spellChanges) processSpChanges(addIt, tipNmF, uObj.spellChanges, aParent);
+			if (uObj.spellFirstColTitle) CurrentSpells[useSpCasting].firstCol = addIt ? uObj.spellFirstColTitle : false;
+			if (uObj.spellcastingExtra) CurrentSpells[useSpCasting].extra = addIt ? uObj.spellcastingExtra : false;
+			if (uObj.spellChanges) processSpChanges(addIt, tipNmF, uObj.spellChanges, useSpCasting);
 		}
 
 		if (addIt) addListOptions(); // add weapon/armour/ammo option(s)
@@ -400,7 +405,7 @@ function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 		}
 		var useAttr = nObj[attrA[0]] ? attrA[0] : attrA[1];
 		var subAttr = noN ? 0 : isArray(nObj[useAttr]) ? n : nAttr;
-		if (!nObj[useAttr][subAttr]) {
+		if (!noN && !nObj[useAttr][subAttr]) {
 			// the first object has an attribute, but not the right sub-attribute, so stop
 			return [false];
 		} else if (!testObj) {
@@ -555,8 +560,9 @@ function classFeaChoiceBackwardsComp() {
 }
 
 // a function to create the CurrentSpells global variable entry
-function CreateCurrentSpellsEntry(type, fObjName) {
+function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
 	type = GetFeatureType(type);
+	var fObjP = false;
 	var setCSobj = function(oName) {
 		if (!CurrentSpells[oName]) {
 			CurrentSpells[oName] = {bonus : {}};
@@ -586,6 +592,11 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 			break;
 		case "feats":
 			var fObj = FeatsList[fObjName];
+			if (aChoice && fObj[aChoice]) {
+				fObj = FeatsList[fObjName][aChoice];
+				fObjP = FeatsList[fObjName];
+				fObjName = aChoice;
+			}
 			var sObj = setCSobj(fObjName);
 			sObj.name = fObj.name + " (feat)";
 			sObj.typeSp = "feat";
@@ -593,6 +604,11 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 			break;
 		case "items":
 			var fObj = MagicItemsList[fObjName];
+			if (aChoice && fObj[aChoice]) {
+				fObj = MagicItemsList[fObjName][aChoice];
+				fObjP = MagicItemsList[fObjName];
+				fObjName = aChoice;
+			}
 			var sObj = setCSobj(fObjName);
 			sObj.name = fObj.name + " (item)";
 			sObj.typeSp = "item";
@@ -601,23 +617,36 @@ function CreateCurrentSpellsEntry(type, fObjName) {
 		default:
 			return false;
 	};
+	if (aChoice && (type == "items" || type == "feats") && !fObj.name && fObjP && fObjP.choices) {
+		for (var j = 0; j < fObjP.choices.length; j++) {
+			if (fObjP.choices[j].toLowerCase() == aChoice) {
+				sObj.name = fObjP.name + " [" + fObjP.choices[j] + "]" + " (item)";
+				break;
+			}
+		}
+	}
 	if (!sObj.ability) sObj.ability = fObj.spellcastingAbility ? fObj.spellcastingAbility : fObj.abilitySave ? fObj.abilitySave : 0;
 	if (!sObj.fixedDC && fObj.fixedDC) sObj.fixedDC = Number(fObj.fixedDC);
+	if (fObjP) {
+		if (!sObj.ability) sObj.ability = fObjP.spellcastingAbility ? fObjP.spellcastingAbility : fObjP.abilitySave ? fObjP.abilitySave : 0;
+		if (!sObj.fixedDC && fObjP.fixedDC) sObj.fixedDC = Number(fObjP.fixedDC);
+	}
 	if (!sObj.abilityToUse) sObj.abilityToUse = getSpellcastingAbility(fObjName);
 	return sObj;
 }
 
 // process a spellcastingBonus feature
-function processSpBonus(AddRemove, srcNm, spBon, type, parentName) {
+function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice) {
 	type = GetFeatureType(type);
-	if (!AddRemove && !CurrentSpells[parentName]) return; // nothing to remove
+	var useSpName = choice && (type === "feats" || type === "items") ? choice : parentName;
+	if (!AddRemove && !CurrentSpells[useSpName]) return; // nothing to remove
 	// create the spellcasting object if it doesn't yet exist
-	var sObj = CurrentSpells[parentName] ? CurrentSpells[parentName] : CreateCurrentSpellsEntry(type, parentName);
+	var sObj = CurrentSpells[useSpName] ? CurrentSpells[useSpName] : CreateCurrentSpellsEntry(type, parentName, choice);
 	// do something with the spellcastingBonus object
 	if (!AddRemove) { // removing the entry
 		delete sObj.bonus[srcNm];
 		// now see if the bonus object is empty and if so, delete the whole entry
-		if (!sObj.factor && !sObj.list && ObjLength(sObj.bonus) == 0) delete CurrentSpells[parentName];
+		if (!sObj.factor && !sObj.list && ObjLength(sObj.bonus) == 0) delete CurrentSpells[useSpName];
 	} else { // adding the entry
 		sObj.bonus[srcNm] = spBon;
 		// see if this wants to change the spellcasting ability
@@ -1873,7 +1902,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		var theMI = {
 			name : aMIvar.name ? aMIvar.name : setFieldValueTo ? setFieldValueTo : input
 		}
-		var MIattr = ["source", "type", "rarity", "attunement", "magicItemTable", "weight", "description", "descriptionLong", "descriptionFull", "calculate", "prerequisite", "prereqeval", "chooseGear"];
+		var MIattr = ["source", "type", "rarity", "attunement", "magicItemTable", "weight", "description", "descriptionLong", "descriptionFull", "calculate", "prerequisite", "prereqeval", "chooseGear", "extraTooltip", "storyItemAL"];
 		for (var a = 0; a < MIattr.length; a++) {
 			var aKey = MIattr[a];
 			if (aMIvar[aKey]) {
@@ -2026,7 +2055,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		} else if (!theMI.extraTooltip) {
 			tooltipStr += "\n \u2022 Can't be traded in Adventurers League play";
 		}
-		if (!theMI.extraTooltip) {
+		if (theMI.extraTooltip) {
 			tooltipStr += "\n \u2022 " + theMI.extraTooltip;
 		}
 		if (theMI.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theMI.prerequisite;

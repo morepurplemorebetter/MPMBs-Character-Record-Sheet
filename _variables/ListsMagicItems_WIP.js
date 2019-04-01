@@ -2866,7 +2866,7 @@ var Base_MagicItemsList = {
 			name : "Mace of Smiting",
 			source : [["SRD", 229], ["D", 179]],
 			description : "+2 to hit/damage vs. constructs; On 20 to hit: +7 damage (+14 vs. constructs); Constructs hp<26 destroyed",
-			modifier : [1,1]
+			modifiers : [1,1]
 		}
 	},
 	"mace of terror" : { // finished
@@ -3045,15 +3045,29 @@ var Base_MagicItemsList = {
 		fixedDC : 13,
 		spellFirstColTitle : "Ch"
 	},
-	"mirror of life trapping" : {
+	"mirror of life trapping" : { // finished
 		name : "Mirror of Life Trapping",
 		source : [["SRD", 230], ["D", 181]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "As an action when I'm within 5 ft of this mirror, I can speak its command word and activate it and it remains activated until I do so again. Creatures other than me who look in the activated mirror must make a DC 15 Charisma save or become trapped in one of its twelve extradimensional cells. See Notes page for info.",
 		descriptionFull : "When this 4-foot-tall mirror is viewed indirectly, its surface shows faint images of creatures. The mirror weighs 50 pounds, and it has AC 11, 10 hit points, and vulnerability to bludgeoning damage. It shatters and is destroyed when reduced to 0 hit points.\n   If the mirror is hanging on a vertical surface and you are within 5 feet of it, you can use an action to speak its command word and activate it. It remains activated until you use an action to speak the command word again.\n   Any creature other than you that sees its reflection in the activated mirror while within 30 feet of it must succeed on a DC 15 Charisma saving throw or be trapped, along with anything it is wearing or carrying, in one of the mirror's twelve extradimensional cells. This saving throw is made with advantage if the creature knows the mirror's nature, and constructs succeed on the saving throw automatically.\n   An extradimensional cell is an infinite expanse filled with thick fog that reduces visibility to 10 feet. Creatures trapped in the mirror's cells don't age, and they don't need to eat, drink, or sleep. A creature trapped within a cell can escape using magic that permits planar travel. Otherwise, the creature is confined to the cell until freed.\n   If the mirror traps a creature but its twelve extradimensional cells are already occupied, the mirror frees one trapped creature at random to accommodate the new prisoner. A freed creature appears in an unoccupied space within sight of the mirror but facing away from it. If the mirror is shattered, all creatures it contains are freed and appear in unoccupied spaces near it.\n   While within 5 feet of the mirror, you can use an action to speak the name of one creature trapped in it or call out a particular cell by number. The creature named or contained in the named cell appears as an image on the mirror's surface. You and the creature can then communicate normally.\n   In a similar way, you can use an action to speak a second command word and free one creature trapped in the mirror. The freed creature appears, along with its possessions, in the unoccupied space nearest to the mirror and facing away from it.",
-		weight : 50
+		weight : 50,
+		action : [["action", ""]],
+		toNotesPage : [{
+			name : "Workings of the Mirror",
+			popupName : "Workings of the Mirror of Life Trapping",
+			note : [
+				"When this 4-ft-tall mirror is viewed indirectly, its surface shows faint images of creatures. The mirror weighs 50 lb, has AC 11, 10 HP, and vulnerability to bludgeoning damage. It shatters and is destroyed when reduced to 0 hit points.",
+				"If the mirror is hanging on a vertical surface and I am within 5 ft of it, I can use an action to speak its command word and activate it. It remains activated until I use an action to speak the command word again.",
+				"Any creature other than me that sees its reflection in the activated mirror while within 30 ft of it must succeed on a DC 15 Charisma saving throw or be trapped, along with anything it is wearing or carrying, in one of the mirror's twelve extradimensional cells. This saving throw is made with advantage if the creature knows the mirror's nature, and constructs succeed on the saving throw automatically.",
+				"An extradimensional cell is an infinite expanse filled with thick fog that reduces visibility to 10 ft. Creatures trapped in the mirror's cells don't age, and they don't need to eat, drink, or sleep. A creature trapped within a cell can escape using magic that permits planar travel. Otherwise, the creature is confined to the cell until freed.",
+				"If the mirror traps a creature but its twelve extradimensional cells are already occupied, the mirror frees one trapped creature at random to accommodate the new prisoner. A freed creature appears in an unoccupied space within sight of the mirror but facing away from it. If the mirror is shattered, all creatures it contains are freed and appear in unoccupied spaces near it.",
+				"While within 5 ft of the mirror, I can use an action to speak the name of one creature trapped in it or call out a particular cell by number. The creature named or contained in the named cell appears as an image on the mirror's surface and I can then communicate normally with it.",
+				"In a similar way, I can use an action to speak a second command word and free one creature trapped in the mirror. The freed creature appears, along with its possessions, in the unoccupied space nearest to the mirror and facing away from it."
+			]
+		}]
 	},
 	"mithral armor" : { // finished
 		name : "Mithral Armor",
@@ -3158,14 +3172,15 @@ var Base_MagicItemsList = {
 			}
 		}
 	},
-	"nolzur's marvelous pigments" : {
+	"nolzur's marvelous pigments" : { // finished
 		name : "Nolzur's Marvelous Pigments",
 		nameAlt : "Marvelous Pigments",
 		source : [["SRD", 230], ["D", 183]],
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "D",
-		description : "",
+		description : "This wooden box contains a brush and 1d4 pots of paint. Each pot contains enough paint to cover 1000 sq ft, which can turn into 10000 cu ft of inanimate objects or terrain features. Those become real upon completion of a painting. It takes 10 min to paint 100 sq ft. Nothing created can have a value over 25 gp.",
+		descriptionLong : "This wooden box contains a brush and 1d4 pots of paint. Each pot contains enough paint to cover 1000 sq ft, which can turn into 10000 cu ft of nonmagical inanimate objects or terrain features. Those become real upon completion of a painting. It takes 10 min to paint 100 sq ft. Nothing created can have a value over 25 gp and objects appearing of greater value look authentic but don't hold up to closer inspection. I can use this to paint, for example, a door on a wall and then walk through it, or a pit on the floor and have my enemies fall into it. I can't use this to form energy that deals damage, like fire or lightning.",
 		descriptionFull : "Typically found in 1d4 pots inside a fine wooden box with a brush (weighing 1 pound in total), these pigments allow you to create three-dimensional objects by painting them in two dimensions. The paint flows from the brush to form the desired object as you concentrate on its image.\n   Each pot of paint is sufficient to cover 1,000 square feet of a surface, which lets you create inanimate objects or terrain features\u2014such as a door, a pit, flowers, trees, cells, rooms, or weapons\u2014that are up to 10,000 cubic feet. It takes 10 minutes to cover 100 square feet.\n   When you complete the painting, the object or terrain feature depicted becomes a real, nonmagical object. Thus, painting a door on a wall creates an actual door that can be opened to whatever is beyond. Painting a pit on a floor creates a real pit, and its depth counts against the total area of objects you create.\n   Nothing created by the pigments can have a value greater than 25 gp. If you paint an object of greater value (such as a diamond or a pile of gold), the object looks authentic, but close inspection reveals it is made from paste, bone, or some other worthless material.\n   If you paint a form of energy such as fire or lightning, the energy appears but dissipates as soon as you complete the painting, doing no harm to anything.",
 		weight : 1
 	},
@@ -3386,7 +3401,7 @@ var Base_MagicItemsList = {
 		},
 		spellcastingBonus : {
 			name : "once per dawn",
-			spell : ["etherealness"],
+			spells : ["etherealness"],
 			selection : ["etherealness"],
 			firstCol : "oncelr"
 		},
@@ -3399,14 +3414,16 @@ var Base_MagicItemsList = {
 			}
 		}
 	},
-	"portable hole" : {
+	"portable hole" : { // finished
 		name : "Portable Hole",
 		source : [["SRD", 233], ["D", 185]],
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "D",
-		description : "",
-		descriptionFull : "This fine black cloth, soft as silk, is folded up to the dimensions of a handkerchief. It unfolds into a circular sheet 6 feet in diameter.\n   You can use an action to unfold a portable hole and place it on or against a solid surface, whereupon the portable hole creates an extradimensional hole 10 feet deep. The cylindrical space within the hole exists on a different plane, so it can't be used to create open passages. Any creature inside an open portable hole can exit the hole by climbing out of it.\n   You can use an action to close a portable hole by taking hold of the edges of the cloth and folding it up. Folding the cloth closes the hole, and any creatures or objects within remain in the extradimensional space. No matter what's in it, the hole weighs next to nothing.\n   If the hole is folded up, a creature within the hole's extradimensional space can use an action to make a DC 10 Strength check. On a successful check, the creature forces its way out and appears within 5 feet of the portable hole or the creature carrying it. A breathing creature within a closed portable hole can survive for up to 10 minutes, after which time it begins to suffocate.\n   Placing a portable hole inside an extradimensional space created by a bag of holding, Heward's handy haversack, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10 feet of the gate is sucked through it and deposited in a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened."
+		description : "As an action, I can unfold this black cloth, 6 ft in diameter, and place it on a solid surface, whereupon it creates a 10-ft deep extradimensional hole. It can be used to create passages. The space is always the same, so I can store things and creatures in there. Removing it and folding it back takes an action.",
+		descriptionLong : "As an action, I can unfold this circular black cloth, 6 ft in diameter, and place it on a solid surface, whereupon it creates a 10-ft deep extradimensional hole. It can be used to create passages. Removing it and folding it back takes an action. The space created is always the same, so I can store things and creatures in there. The hole always weighs next to nothing. Creatures inside the folded up hole can breathe for 10 min and can escape as an action with a DC 10 Strength check, appearing next to me of they do. Placing the hole in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
+		descriptionFull : "This fine black cloth, soft as silk, is folded up to the dimensions of a handkerchief. It unfolds into a circular sheet 6 feet in diameter.\n   You can use an action to unfold a portable hole and place it on or against a solid surface, whereupon the portable hole creates an extradimensional hole 10 feet deep. The cylindrical space within the hole exists on a different plane, so it can't be used to create open passages. Any creature inside an open portable hole can exit the hole by climbing out of it.\n   You can use an action to close a portable hole by taking hold of the edges of the cloth and folding it up. Folding the cloth closes the hole, and any creatures or objects within remain in the extradimensional space. No matter what's in it, the hole weighs next to nothing.\n   If the hole is folded up, a creature within the hole's extradimensional space can use an action to make a DC 10 Strength check. On a successful check, the creature forces its way out and appears within 5 feet of the portable hole or the creature carrying it. A breathing creature within a closed portable hole can survive for up to 10 minutes, after which time it begins to suffocate.\n   Placing a portable hole inside an extradimensional space created by a bag of holding, Heward's handy haversack, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10 feet of the gate is sucked through it and deposited in a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
+		action : [["action", " (place/fold)"]]
 	},
 	"potion of animal friendship" : { // finished
 		name : "Potion of Animal Friendship",
@@ -3542,6 +3559,7 @@ var Base_MagicItemsList = {
 		description : "Once as an action, I can drink this potion or administer it to another to heal a number of hit points depending on the type of potion. This potion's red liquid glimmers when agitated.",
 		descriptionFull : "You regain hit points when you drink this potion. The number of hit points depends on the potion's rarity, as shown in the Potions of Healing table. Whatever its potency, the potion's red liquid glimmers when agitated.",
 		weight : 0.5,
+		allowDuplicates : true,
 		choices : ["Healing (2d4+2, common)", "Greater Healing (4d4+4, uncommon)", "Superior Healing (8d4+8, rare)", "Supreme Healing (10d4+20, very rare)"],
 		"healing (2d4+2, common)" : {
 			name : "Potion of Healing  ",
@@ -3692,54 +3710,49 @@ var Base_MagicItemsList = {
 		weight : 0.5,
 		extraTooltip : "AL: can always be bought for 100 gp"
 	},
-	"quaal's feather token, anchor" : {
-		name : "Quaal's Feather Token, Anchor",
+	"quaal's feather token" : { // finished
+		name : "Quaal's Feather Token",
+		nameAlt : "Feather Token",
 		source : [["SRD", 221], ["D", 188]],
 		type : "wondrous item",
 		rarity : "rare",
-		magicItemTable : "C", // all of them
-		description : "",
-		descriptionFull : "This tiny object looks like a feather.\n   " + toUni("Anchor") + ". You can use an action to touch the token to a boat or ship. For the next 24 hours, the vessel can't be moved by any means. Touching the token to the vessel again ends the effect. When the effect ends, the token disappears."
-	},
-	"quaal's feather token, bird" : {
-		name : "Quaal's Feather Token, Bird",
-		source : [["SRD", 221], ["D", 188]],
-		type : "wondrous item",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "This tiny object looks like a feather.\n   " + toUni("Bird") + ". You can use an action to toss the token 5 feet into the air. The token disappears and an enormous, multicolored bird takes its place. The bird has the statistics of a roc, but it obeys your simple commands and can't attack. It can carry up to 500 pounds while flying at its maximum speed (16 miles an hour for a maximum of 144 miles per day. with a one-hour rest for every 3 hours of flying), or 1,000 pounds at half that speed. The bird disappears after flying its maximum distance for a day or if it drops to 0 hit points. You can dismiss the bird as an action."
-	},
-	"quaal's feather token, fan" : {
-		name : "Quaal's Feather Token, Fan",
-		source : [["SRD", 221], ["D", 188]],
-		type : "wondrous item",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "This tiny object looks like a feather.\n   " + toUni("Fan") + ". If you are on a boat or ship, you can use an action to toss the token up to 10 feet in the air. The token disappears, and a giant flapping fan takes its place. The fan floats and creates a wind strong enough to fill the sails of one ship, increasing its speed by 5 miles per hour for 8 hours. You can dismiss the fan as an action."
-	},
-	"quaal's feather token, swan boat" : {
-		name : "Quaal's Feather Token, Swan Boat",
-		source : [["SRD", 221], ["D", 188]],
-		type : "wondrous item",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "This tiny object looks like a feather.\n   " + toUni("Swan Boat") + ". You can use an action to touch the token to a body of water at least 60 feet in diameter. The token disappears, and a 50-foot-long, 20-foot-wide boat shaped like a swan takes its place. The boat is self-propelled and moves across water at a speed of 6 miles per hour. You can use an action while on the boat to command it to move or to turn up to 90 degrees. The boat can carry up to thirty-two Medium or smaller creatures. A Large creature counts as four Medium creatures, while a Huge creature counts as nine. The boat remains for 24 hours and then disappears. You can dismiss the boat as an action."
-	},
-	"quaal's feather token, tree" : {
-		name : "Quaal's Feather Token, Tree",
-		source : [["SRD", 221], ["D", 188]],
-		type : "wondrous item",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "This tiny object looks like a feather.\n   " + toUni("Tree") + ". You must be outdoors to use this token. You can use an action to touch it to an unoccupied space on the ground. The token disappears, and in its place a nonmagical oak tree springs into existence. The tree is 60 feet tall and has a 5-foot-diameter trunk, and its branches at the top spread out in a 20-foot radius."
-	},
-	"quaal's feather token, whip" : {
-		name : "Quaal's Feather Token, Whip",
-		source : [["SRD", 221], ["D", 188]],
-		type : "wondrous item",
-		rarity : "rare",
-		description : "",
-		descriptionFull : "This tiny object looks like a feather.\n   " + toUni("Whip") + ". You can use an action to throw the token to a point within 10 feet of you. The token disappears, and a floating whip takes its place. You can then use a bonus action to make a melee spell attack against a creature within 10 feet of the whip, with an attack bonus of +9. On a hit, the target takes 1d6+5 force damage.\n   As a bonus action on your turn, you can direct the whip to fly up to 20 feet and repeat the attack against a creature within 10 feet of it. The whip disappears after 1 hour, when you use an action to dismiss it, or when you are incapacitated or die."
+		magicItemTable : "C",
+		descriptionFull : "This tiny object looks like a feather. Different types of feather tokens exist, each with a different single-use effect. The DM chooses the kind of token or determines it randomly.\n\n" + toUni("d100\tToken\td100\tToken") +
+		"\n01-20\tAnchor\t51-65\tSwan boat" +
+		"\n21-35\tBird   \t66-90\tTree" +
+		"\n36-50\tFan   \t91-00\tWhip",
+		allowDuplicates : true,
+		choices : ["Anchor", "Bird", "Fan", "Swan Boat", "Tree", "Whip"],
+		"anchor" : {
+			description : "This tiny object looks like a feather. As an action, I can touch the token to a boat or ship. For the next 24 hours, the vessel can't be moved by any means. Touching the token to the vessel again ends the effect early. When the effect ends, the token disappears.",
+			descriptionFull : "This tiny object looks like a feather. You can use an action to touch the token to a boat or ship. For the next 24 hours, the vessel can't be moved by any means. Touching the token to the vessel again ends the effect. When the effect ends, the token disappears.",
+			action : [["action", ""]]
+		},
+		"bird" : {
+			description : "As an action, I can toss this token into the air and it turns into a roc. It obeys my simple commands, can't attack, can carry 500 lb while flying (16 miles per hour or 144 miles per day, as it rests 1 hour per 3 of flying), or double that at half speed. It disappears after a day, i it drops to 0 HP, or if I use an action to make it.",
+			descriptionFull : "This tiny object looks like a feather. You can use an action to toss the token 5 feet into the air. The token disappears and an enormous, multicolored bird takes its place. The bird has the statistics of a roc, but it obeys your simple commands and can't attack. It can carry up to 500 pounds while flying at its maximum speed (16 miles an hour for a maximum of 144 miles per day. with a one-hour rest for every 3 hours of flying), or 1,000 pounds at half that speed. The bird disappears after flying its maximum distance for a day or if it drops to 0 hit points. You can dismiss the bird as an action.",
+			action : [["action", " (use/dismiss)"]]
+		},
+		"fan" : {
+			description : "As an action when I'm on a boat or ship, I can toss this token up to 10 ft in the air. The token disappears, and a giant flapping fan takes its place. The fan floats and creates a wind strong enough to fill the sails of one ship, increasing its speed by 5 miles per hour for 8 hours. I can dismiss the fan as an action.",
+			descriptionFull : "This tiny object looks like a feather. If you are on a boat or ship, you can use an action to toss the token up to 10 feet in the air. The token disappears, and a giant flapping fan takes its place. The fan floats and creates a wind strong enough to fill the sails of one ship, increasing its speed by 5 miles per hour for 8 hours. You can dismiss the fan as an action.",
+			action : [["action", " (create/dismiss)"]]
+		},
+		"swan boat" : {
+			description : "As an action, I can touch the token to a body of water at least 60-ft in diameter, having it turn into a 50 ft by 20 ft boat shaped like a swan that remains for 24 hours. It moves itself at 6 miles per hour. As an action, I can command it to turn up to 90°. It can hold up to 32 Medium creatures (Large count as 4, Huge as 9).",
+			descriptionFull : "This tiny object looks like a feather. You can use an action to touch the token to a body of water at least 60 feet in diameter. The token disappears, and a 50-foot-long, 20-foot-wide boat shaped like a swan takes its place. The boat is self-propelled and moves across water at a speed of 6 miles per hour. You can use an action while on the boat to command it to move or to turn up to 90 degrees. The boat can carry up to thirty-two Medium or smaller creatures. A Large creature counts as four Medium creatures, while a Huge creature counts as nine. The boat remains for 24 hours and then disappears. You can dismiss the boat as an action.",
+			action : [["action", " (create/dismiss)"]]
+		},
+		"tree" : {
+			description : "This tiny object looks like a feather. As an action, I can touch it to an unoccupied space on the ground. If this is done outdoors, the token disappears, and in its place a nonmagical oak tree springs into existence. The tree is 60 ft tall and has a 5-ft diameter trunk, and its branches at the top spread out in a 20-ft radius.",
+			descriptionFull : "This tiny object looks like a feather. You must be outdoors to use this token. You can use an action to touch it to an unoccupied space on the ground. The token disappears, and in its place a nonmagical oak tree springs into existence. The tree is 60 feet tall and has a 5-foot-diameter trunk, and its branches at the top spread out in a 20-foot radius.",
+			action : [["action", ""]]
+		},
+		"whip" : {
+			description : "As an action, can throw the token 10 ft, where it turns into a floating whip for 1 hour, until I use an action to dismiss it, I die, or I become incapacitated. As a bonus action, I can have it fly 20 ft and make a melee spell attack against a creature within 10 ft of it, with a +9 to hit and dealing 1d6+5 force damage.",
+			descriptionFull : "This tiny object looks like a feather. You can use an action to throw the token to a point within 10 feet of you. The token disappears, and a floating whip takes its place. You can then use a bonus action to make a melee spell attack against a creature within 10 feet of the whip, with an attack bonus of +9. On a hit, the target takes 1d6+5 force damage.\n   As a bonus action on your turn, you can direct the whip to fly up to 20 feet and repeat the attack against a creature within 10 feet of it. The whip disappears after 1 hour, when you use an action to dismiss it, or when you are incapacitated or die.",
+			action : [["action", " (create)"], ["bous action", " (direct)"]]
+		}
 	},
 	"quiver of ehlonna" : { // finished
 		name : "Quiver of Ehlonna",
@@ -3752,64 +3765,270 @@ var Base_MagicItemsList = {
 		descriptionFull : "Each of the quiver's three compartments connects to an extradimensional space that allows the quiver to hold numerous items while never weighing more than 2 pounds. The shortest compartment can hold up to sixty arrows, bolts, or similar objects. The midsize compartment holds up to eighteen javelins or similar objects. The longest compartment holds up to six long objects, such as bows, quarterstaffs, or spears.\n   You can draw any item the quiver contains as if doing so from a regular quiver or scabbard.",
 		weight : 2
 	},
-	"ring of animal influence" : {
+	"ring of animal influence" : { // finished
 		name : "Ring of Animal Influence",
 		source : [["SRD", 235], ["D", 189]],
 		type : "ring",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
-		descriptionFull : "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. While wearing the ring, you can use an action to expend 1 of its charges to cast one of the following spells:\n \u2022 Animal Friendship (save DC 13)\n \u2022 Fear (save DC 13), targeting only beasts that have an Intelligence of 3 or lower\n \u2022 Speak with Animals"
+		description : "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. As an action while wearing the ring, I can expend 1 of its charges to cast a spell (save DC 13): Animal Friendship, Speak with Animals, or Fear. Fear cast from this ring can target only beasts that have an Intelligence of 3 or lower.",
+		descriptionFull : "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. While wearing the ring, you can use an action to expend 1 of its charges to cast one of the following spells:\n \u2022 Animal Friendship (save DC 13)\n \u2022 Fear (save DC 13), targeting only beasts that have an Intelligence of 3 or lower\n \u2022 Speak with Animals",
+		usages : 3,
+		recovery : "dawn",
+		additional : "regains 1d3",
+		fixedDC : 13,
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : [{
+			name : "1 charge",
+			spells : ["animal friendship", "speak with animals", "fear"],
+			selection : ["animal friendship", "speak with animals", "fear"],
+			firstCol : "1",
+			times : 3
+		}],
+		spellChanges : {
+			"fear" : {
+				description : "All beasts Int<4 save or frightened, Dash to get away; extra save at end of turn if not in line of sight",
+				changes : "Only affects beasts that have an Intelligence of 3 or lower."
+			}
+		}
 	},
-	"ring of djinni summoning" : {
+	"ring of djinni summoning" : { // finished
 		name : "Ring of Djinni Summoning",
 		source : [["SRD", 235], ["D", 190]],
 		type : "ring",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "",
+		description : "As an action, I can speak this ring's command word to summon a djini within 120 ft, remaining while I concentrate, up to 1 hour. After that time, I can't summon it for 24 hours. It is friendly to me and my allies, obeys my commands, but takes no actions if not commanded to. The ring loses its magic If the djini dies.",
 		descriptionFull : "While wearing this ring, you can speak its command word as an action to summon a particular djinni from the Elemental Plane of Air. The djinni appears in an unoccupied space you choose within 120 feet of you. It remains as long as you concentrate (as if concentrating on a spell), to a maximum of 1 hour, or until it drops to 0 hit points. It then returns to its home plane.\n   While summoned, the djinni is friendly to you and your companions. It obeys any commands you give it, no matter what language you use. If you fail to command it, the djinni defends itself against attackers but takes no other actions.\n   After the djinni departs, it can't be summoned again for 24 hours, and the ring becomes nonmagical if the djinni dies.",
-		attunement : true
+		attunement : true,
+		usages : 1,
+		recovery : "24 hours"
 	},
-	"ring of elemental command, air" : {
-		name : "Ring of Elemental Command, Air",
+	"ring of elemental command" : { // finished
+		name : "Ring of Elemental Command",
 		source : [["SRD", 235], ["D", 190]],
 		type : "ring",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "",
-		descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Air, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Air.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an air elemental. In addition, when you fall, you descend 60 feet per round and take no damage from falling. You can also speak and understand Auran.\n   If you help slay an air elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to lightning damage.\n \u2022 You have a flying speed equal to your walking speed and can hover.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Chain Lightning (3 charges), Gust of Wind (2 charges), or Wind Wall (1 charge).",
-		attunement : true
-	},
-	"ring of elemental command, earth" : {
-		name : "Ring of Elemental Command, Earth",
-		source : [["SRD", 235], ["D", 190]],
-		type : "ring",
-		rarity : "legendary",
-		magicItemTable : "I",
-		description : "",
-		descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Earth and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Earth.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an earth elemental. In addition, you can move in difficult terrain that is composed of rubble, rocks, or dirt as if it were normal terrain. You can also speak and understand Terran.\n   If you help slay an earth elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to acid damage.\n \u2022 You can move through solid earth or rock as if those areas were difficult terrain. If you end your turn there, you are shunted out to the nearest unoccupied space you last occupied.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Stone Shape (2 charges), Stoneskin (3 charges), or Wall of Stone (3 charges).",
-		attunement : true
-	},
-	"ring of elemental command, fire" : {
-		name : "Ring of Elemental Command, Fire",
-		source : [["SRD", 236], ["D", 190]],
-		type : "ring",
-		rarity : "legendary",
-		magicItemTable : "I",
-		description : "",
-		descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Fire and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Fire.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a fire elemental. In addition, you have resistance to fire damage. You can also speak and understand Ignan.\n   If you help slay a fire elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You are immune to fire damage.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Burning Hands (1 charge), Fireball (2 charges), and Wall of Fire (3 charges).",
-		attunement : true
-	},
-	"ring of elemental command, water" : {
-		name : "Ring of Elemental Command, Water",
-		source : [["SRD", 236], ["D", 190]],
-		type : "ring",
-		rarity : "legendary",
-		magicItemTable : "I",
-		description : "",
-		descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Water and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Water.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a water elemental. In addition, you can stand on and walk across liquid surfaces as if they were solid ground. You can also speak and understand Aquan.\n   If you help slay a water elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You can breathe underwater and have a swimming speed equal to your walking speed.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Create or Destroy Water} (1 charge), Control Water (3 charges), Ice Storm (2 charges), or Wall of Ice (3 charges).",
-		attunement : true
+		description : "Select one of the eight types of this ring, two for each of the elemental planes, with each ring having two option, its initial state and its 'unlocked' state that becomes available once you help slay an elemental of that plane while attuned to the ring.",
+		descriptionFull : "This ring is linked to one of the four Elemental Planes. The GM chooses or randomly determines the linked plane.\n   While wearing this ring, you have advantage on attack rolls against elementals from the linked plane, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the linked plane.\n   The ring has 5 charges. It regains 1d4 + 1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.",
+		attunement : true,
+		allowDuplicates : true,
+		usages : 5,
+		recovery : "dawn",
+		additional : "regains 1d4+1",
+		choices : ["Air", "Air (help kill air elemental while attuned)", "Earth", "Earth (help kill earth elemental while attuned)", "Fire", "Fire (help kill fire elemental while attuned)", "Water", "Water (help kill water elemental while attuned)"],
+		"air" : {
+			name : "Ring of Air Elemental Command",
+			description : "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Air and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster on an air elemental. When I fall, I descend 60 ft per round and take no falling damage. I also know Auran.",
+			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Air, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Air.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an air elemental. In addition, when you fall, you descend 60 feet per round and take no damage from falling. You can also speak and understand Auran.\n   If you help slay an air elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to lightning damage.\n \u2022 You have a flying speed equal to your walking speed and can hover.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Chain Lightning (3 charges), Gust of Wind (2 charges), or Wind Wall (1 charge).",
+			languageProfs : ["Auran"],
+			fixedDC : 17,
+			spellFirstColTitle : "Ch",
+			spellcastingBonus : {
+				name : "1 charge",
+				spells : ["dominate monster"],
+				selection : ["dominate monster"],
+				firstCol : 1
+			},
+			spellChanges : {
+				"dominate monster" : {
+					description : "Air elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
+					changes : "Can only affect an air elemental."
+				}
+			}
+		},
+		"air (help kill air elemental while attuned)" : {
+			name : "Ring of Air Elemental Command [unlocked]",
+			description : "This ring grants adv. on attacks vs. elementals from the Plane of Air while they have disadv. vs. me. I have resistance to lightning damage, flying speed equal to my walking speed. I fall at 60 ft per round and take no falling damage. I know Auran. I can cast spells by using its 5 charges, of which it regains 1d4+1 at dawn.",
+			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Air, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Air.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an air elemental. In addition, when you fall, you descend 60 feet per round and take no damage from falling. You can also speak and understand Auran.\n   If you help slay an air elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to lightning damage.\n \u2022 You have a flying speed equal to your walking speed and can hover.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Chain Lightning (3 charges), Gust of Wind (2 charges), or Wind Wall (1 charge).",
+			languageProfs : ["Auran"],
+			dmgres : ["Lightning"],
+			speed : { fly : { spd : "walk", enc : "walk" } },
+			fixedDC : 17,
+			spellFirstColTitle : "Ch",
+			spellcastingBonus : [{
+				name : "1 charge",
+				spells : ["dominate monster", "wind wall"],
+				selection : ["dominate monster", "wind wall"],
+				firstCol : 1,
+				times : 2
+			}, {
+				name : "2 charges",
+				spells : ["gust of wind"],
+				selection : ["gust of wind"],
+				firstCol : 2
+			}, {
+				name : "3 charges",
+				spells : ["chain lightning"],
+				selection : ["chain lightning"],
+				firstCol : 3
+			}],
+			spellChanges : {
+				"dominate monster" : {
+					description : "Air elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
+					changes : "Can only affect an air elemental."
+				}
+			}
+		},
+		"earth" : {
+			name : "Ring of Earth Elemental Command",
+			description : "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Earth and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster on an earth elemental. I move normally in difficult terrain of rubble, rocks, or dirt. I also know Terran.",
+			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Earth and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Earth.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an earth elemental. In addition, you can move in difficult terrain that is composed of rubble, rocks, or dirt as if it were normal terrain. You can also speak and understand Terran.\n   If you help slay an earth elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to acid damage.\n \u2022 You can move through solid earth or rock as if those areas were difficult terrain. If you end your turn there, you are shunted out to the nearest unoccupied space you last occupied.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Stone Shape (2 charges), Stoneskin (3 charges), or Wall of Stone (3 charges).",
+			languageProfs : ["Terran"],
+			fixedDC : 17,
+			spellFirstColTitle : "Ch",
+			spellcastingBonus : {
+				name : "1 charge",
+				spells : ["dominate monster"],
+				selection : ["dominate monster"],
+				firstCol : 1
+			},
+			spellChanges : {
+				"dominate monster" : {
+					description : "Earth elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
+					changes : "Can only affect an earth elemental."
+				}
+			}
+		},
+		"earth (help kill earth elemental while attuned)" : {
+			name : "Ring of Earth Elemental Command [unlocked]",
+			description : "This ring grants resistance to acid damage and adv. on attacks vs. elementals from the Plane of Earth while they have disadv. vs. me. I know Terran, move normally in difficult terrain of rubble, rocks, or dirt, and can move through solid earth or rock as if it were difficult terrain. I can cast spells by using its 5 charges.",
+			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Earth and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Earth.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an earth elemental. In addition, you can move in difficult terrain that is composed of rubble, rocks, or dirt as if it were normal terrain. You can also speak and understand Terran.\n   If you help slay an earth elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to acid damage.\n \u2022 You can move through solid earth or rock as if those areas were difficult terrain. If you end your turn there, you are shunted out to the nearest unoccupied space you last occupied.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Stone Shape (2 charges), Stoneskin (3 charges), or Wall of Stone (3 charges).",
+			languageProfs : ["Terran"],
+			dmgres : ["Acid"],
+			fixedDC : 17,
+			spellFirstColTitle : "Ch",
+			spellcastingBonus : [{
+				name : "1 charge",
+				spells : ["dominate monster"],
+				selection : ["dominate monster"],
+				firstCol : 1
+			}, {
+				name : "2 charges",
+				spells : ["stone shape"],
+				selection : ["stone shape"],
+				firstCol : 2
+			}, {
+				name : "3 charges",
+				spells : ["stoneskin", "wall of stone"],
+				selection : ["stoneskin", "wall of stone"],
+				firstCol : 3,
+				times : 2
+			}],
+			spellChanges : {
+				"dominate monster" : {
+					description : "Earth elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
+					changes : "Can only affect an earth elemental."
+				}
+			}
+		},
+		"fire" : {
+			name : "Ring of Fire Elemental Command",
+			description : "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Fire and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster (DC 17) on a fire elemental. I have resistance to fire damage and can speak and understand Ignan.",
+			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Fire and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Fire.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a fire elemental. In addition, you have resistance to fire damage. You can also speak and understand Ignan.\n   If you help slay a fire elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You are immune to fire damage.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Burning Hands (1 charge), Fireball (2 charges), and Wall of Fire (3 charges).",
+			languageProfs : ["Ignan"],
+			dmgres : ["Fire"],
+			fixedDC : 17,
+			spellFirstColTitle : "Ch",
+			spellcastingBonus : {
+				name : "1 charge",
+				spells : ["dominate monster"],
+				selection : ["dominate monster"],
+				firstCol : 1
+			},
+			spellChanges : {
+				"dominate monster" : {
+					description : "Fire elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
+					changes : "Can only affect a fire elemental."
+				}
+			}
+		},
+		"fire (help kill fire elemental while attuned)" : {
+			name : "Ring of Fire Elemental Command [unlocked]",
+			description : "This ring has 5 charges, regaining 1d4+1 at dawn. It grants me immunity to fire damage, adv. on attacks vs. elementals from the Plane of Fire and they have disadv. vs. me. I can expend charges to cast spells (DC 17), Burning Hands (1), Dominate Monster (1; fire elemental only), Fireball (2), Wall of Fire (3). I know Ignan.",
+			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Fire and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Fire.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a fire elemental. In addition, you have resistance to fire damage. You can also speak and understand Ignan.\n   If you help slay a fire elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You are immune to fire damage.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Burning Hands (1 charge), Fireball (2 charges), and Wall of Fire (3 charges).",
+			languageProfs : ["Ignan"],
+			savetxt : { immune : ["fire"] },
+			fixedDC : 17,
+			spellFirstColTitle : "Ch",
+			spellcastingBonus : [{
+				name : "1 charge",
+				spells : ["burning hands", "dominate monster"],
+				selection : ["burning hands", "dominate monster"],
+				firstCol : 1,
+				times : 2
+			}, {
+				name : "2 charges",
+				spells : ["fireball"],
+				selection : ["fireball"],
+				firstCol : 2
+			}, {
+				name : "3 charges",
+				spells : ["wall of fire"],
+				selection : ["wall of fire"],
+				firstCol : 3
+			}],
+			spellChanges : {
+				"dominate monster" : {
+					description : "Fire elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
+					changes : "Can only affect a fire elemental."
+				}
+			}
+		},
+		"water" : {
+			name : "Ring of Water Elemental Command",
+			description : "This ring has 5 charges, regaining 1d4+1 at dawn. It grants me adv. on attacks vs. elementals from the Plane of Water and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster on a water elemental. I can stand on and walk across liquid surfaces as if they were solid ground. I know Aquan.",
+			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Water and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Water.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a water elemental. In addition, you can stand on and walk across liquid surfaces as if they were solid ground. You can also speak and understand Aquan.\n   If you help slay a water elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You can breathe underwater and have a swimming speed equal to your walking speed.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Create or Destroy Water (1 charge), Control Water (3 charges), Ice Storm (2 charges), or Wall of Ice (3 charges).",
+			languageProfs : ["Aquan"],
+			fixedDC : 17,
+			spellFirstColTitle : "Ch",
+			spellcastingBonus : {
+				name : "1 charge",
+				spells : ["dominate monster"],
+				selection : ["dominate monster"],
+				firstCol : 1
+			},
+			spellChanges : {
+				"dominate monster" : {
+					description : "Water elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
+					changes : "Can only affect a water elemental."
+				}
+			}
+		},
+		"water (help kill water elemental while attuned)" : {
+			name : "Ring of Water Elemental Command [unlocked]",
+			description : "This ring gives me adv. on attacks vs. elementals from the Plane of Water while they have disadv. vs. me. I know Aquan, can stand and walk on liquid surfaces as if they were solid ground, swim at my walking speed, and breathe underwater.  I can cast spells by using the ring's 5 charges, of which it regains 1d4+1 at dawn.",
+			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Water and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Water.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a water elemental. In addition, you can stand on and walk across liquid surfaces as if they were solid ground. You can also speak and understand Aquan.\n   If you help slay a water elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You can breathe underwater and have a swimming speed equal to your walking speed.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Create or Destroy Water (1 charge), Control Water (3 charges), Ice Storm (2 charges), or Wall of Ice (3 charges).",
+			languageProfs : ["Aquan"],
+			speed : { swim : { spd : "walk", enc : "walk" } },
+			fixedDC : 17,
+			spellFirstColTitle : "Ch",
+			spellcastingBonus : [{
+				name : "1 charge",
+				spells : ["create or destroy water", "dominate monster"],
+				selection : ["create or destroy water", "dominate monster"],
+				firstCol : 1,
+				times : 2
+			}, {
+				name : "2 charges",
+				spells : ["ice storm"],
+				selection : ["ice storm"],
+				firstCol : 2
+			}, {
+				name : "3 charges",
+				spells : ["control water", "wall of ice"],
+				selection : ["control water", "wall of ice"],
+				firstCol : 3,
+				times : 2
+			}],
+			spellChanges : {
+				"dominate monster" : {
+					description : "Water elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
+					changes : "Can only affect a water elemental."
+				}
+			}
+		}
 	},
 	"ring of evasion" : { // finished
 		name : "Ring of Evasion",
@@ -4221,41 +4440,70 @@ var Base_MagicItemsList = {
 		weight : 3,
 		action : [["action", " (animate)"], ["bonus action", " (move/fasten/knot/coil)"]]
 	},
-	"rope of entanglement" : {
+	"rope of entanglement" : { // finished
 		name : "Rope of Entanglement",
 		source : [["SRD", 241], ["D", 197]],
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
+		description : "As an action while I hold one end of this 30 ft rope, I can speak its command word to have a creature I can see within 20 ft make a DC 15 Dex save or be restrained by the rope. I can release it as a bonus action. The creature can, as an action, escape with a DC 15 Dex/Str check. The rope has AC 20, 20 HP, heals 1 HP/5 min.",
 		descriptionFull : "This rope is 30 feet long and weighs 3 pounds. If you hold one end of the rope and use an action to speak its command word, the other end darts forward to entangle a creature you can see within 20 feet of you. The target must succeed on a DC 15 Dexterity saving throw or become restrained.\n   You can release the creature by using a bonus action to speak a second command word. A target restrained by the rope can use an action to make a DC 15 Strength or Dexterity check (target's choice). On a success, the creature is no longer restrained by the rope.\n   The rope has AC 20 and 20 hit points. It regains 1 hit point every 5 minutes as long as it has at least 1 hit point. If the rope drops to 0 hit points, it is destroyed.",
-		weight : 3
+		weight : 3,
+		action : [["action", " (entangle)"], ["bonus action", " (release)"]],
+		weaponsAdd : ["Rope of Entanglement"],
+		weaponOptions : {
+			regExpSearch : /^(?=.*rope)(?=.*entanglement).*$/i,
+			name : "Rope of Entanglement",
+			source : [["SRD", 241], ["D", 197]],
+			ability : 0,
+			type : "Magic Item",
+			damage : ["\u2015", "", "Restrained"],
+			range : "20 ft",
+			description : "Dexterity saving throw or restrained; DC 15 Strength or Dexterity check to escape",
+			abilitytodamage : false,
+			weight : 3,
+			modifiers : ["dc+7", 0]
+		}
 	},
-	"scarab of protection" : {
+	"scarab of protection" : { // finished
 		name : "Scarab of Protection",
 		source : [["SRD", 241], ["D", 199]],
 		type : "wondrous item",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "",
+		description : "This beetle-shaped medallion gives me advantage on saves against spells. If I fail a save against a necromancy spell or an effect from an undead creature, I can use my reaction to expend 1 charge and succeed on the save instead. The scarab has 12 charges and crumbles into powder when the last is used. ",
 		descriptionFull : "If you hold this beetle-shaped medallion in your hand for 1 round, an inscription appears on its surface revealing its magical nature. It provides two benefits while it is on your person:\n \u2022 You have advantage on saving throws against spells.\n \u2022 The scarab has 12 charges. If you fail a saving throw against a necromancy spell or a harmful effect originating from an undead creature, you can use your reaction to expend 1 charge and turn the failed save into a successful one. The scarab crumbles into powder and is destroyed when its last charge is expended.",
-		attunement : true
+		attunement : true,
+		savetxt : { adv_vs : ["spells"] },
+		usages : 12,
+		recovery : "Never",
+		action : [["reaction", ""]]
 	},
-	"scimitar of speed" : {
+	"scimitar of speed" : { // finished
 		name : "Scimitar of Speed",
 		source : [["SRD", 241], ["D", 199]],
 		type : "weapon (scimitar)",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
+		description : "I gain a +2 bonus to attack and damage rolls made with this magic weapon. In addition, I can make one attack with it as a bonus action on each of my turns.",
 		descriptionFull : "You gain a +2 bonus to attack and damage rolls made with this magic weapon. In addition, you can make one attack with it as a bonus action on each of your turns.",
 		attunement : true,
-		weight : 3
+		weight : 3,
+		action : [["bonus action", ""]],
+		weaponsAdd : ["Scimitar of Speed"],
+		weaponOptions : {
+			baseWeapon : "scimitar",
+			regExpSearch : /^(?=.*scimitar)(?=.*speed).*$/i,
+			name : "Scimitar of Speed",
+			source : [["SRD", 241], ["D", 199]],
+			description : "Finesse, light; Extra attack as bonus action",
+			modifiers : [2, 2]	
+		}
 	},
 	"shield, +1, +2, or +3" : { // finished
 		name : "Shield, +1, +2, or +3",
 		source : [["SRD", 240], ["D", 200]],
-		type : "armor (shield)",
+		type : "shield",
 		description : "While holding this shield, I have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
 		descriptionFull : "While holding this shield, you have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
 		allowDuplicates : true,
@@ -4288,17 +4536,19 @@ var Base_MagicItemsList = {
 			shieldAdd : "+3 Shield"
 		}
 	},
-	"shield of missile attraction" : {
+	"shield of missile attraction" : { // finished
 		name : "Shield of Missile Attraction",
 		source : [["SRD", 242], ["D", 200]],
 		type : "shield",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "",
+		description : "While holding this shield, I have resistance to damage from ranged weapon attacks. Once attuned to it, I am cursed until I am the target of Remove Curse or similar magic. Whenever a ranged weapon attack is made against a target within 10 ft of me, the curse causes me to become the target instead.",
 		descriptionFull : "While holding this shield, you have resistance to damage from ranged weapon attacks.\n   " + toUni("Curse") + ". This shield is cursed. Attuning to it curses you until you are targeted by the Remove Curse spell or similar magic. Removing the shield fails to end the curse on you. Whenever a ranged weapon attack is made against a target within 10 feet of you, the curse causes you to become the target instead.",
 		attunement : true,
 		weight : 6,
-		cursed : true
+		shieldAdd : "Shield of Missile Attraction",
+		cursed : true,
+		dmgres : ["Ranged Weapons"]
 	},
 	"slippers of spider climbing" : { // finished
 		name : "Slippers of Spider Climbing",
@@ -4311,121 +4561,195 @@ var Base_MagicItemsList = {
 		attunement : true,
 		speed : { climb : { spd : "walk", enc : "walk" } }
 	},
-	"sovereign glue" : {
+	"sovereign glue" : { // finished
 		name : "Sovereign Glue",
 		source : [["SRD", 242], ["D", 200]],
 		type : "wondrous item",
 		rarity : "legendary",
 		magicItemTable : "E",
-		description : "",
-		descriptionFull : "This viscous, milky-white substance can form a permanent adhesive bond between any two objects. It must be stored in a jar or flask that has been coated inside with oil of slipperiness. When found, a container contains 1d6+1 ounces.\n   One ounce of the glue can cover a 1-foot square surface. The glue takes 1 minute to set. Once it has done so, the bond it creates can be broken only by the application of universal solvent or oil of etherealness, or with a Wish spell."
+		description : "This viscous, milky-white substance is stored in a jar or flask, coated on the inside with oil of slipperiness. One ounce of the glue can cover a 1-ft square surface, taking 1 minute to set. Once it sets, the bond it creates can be broken only by universal solvent, oil of etherealness, or with a Wish spell.",
+		descriptionFull : "This viscous, milky-white substance can form a permanent adhesive bond between any two objects. It must be stored in a jar or flask that has been coated inside with oil of slipperiness. When found, a container contains 1d6+1 ounces.\n   One ounce of the glue can cover a 1-foot square surface. The glue takes 1 minute to set. Once it has done so, the bond it creates can be broken only by the application of universal solvent or oil of etherealness, or with a Wish spell.",
+		usages : "1d6+1",
+		recovery : "Never"
 	},
-	"spell scroll (1st level)" : {
-		name : "Spell Scroll (1st Level)",
+	"spell scroll" : { // finished
+		name : "Spell Scroll",
 		source : [["SRD", 242], ["D", 200]],
 		type : "scroll",
-		rarity : "common",
-		magicItemTable : "A",
-		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 11. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 11 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
-		extraTooltip : "AL: can always be bought for 75 gp"
+		description : "If the spell on this scroll is on my class' spell list(s), I can cast it with its normal casting time, but have the scroll crumble to dust. If the spell is of a higher level than I can cast, I need to make an ability check using my spellcasting ability. The DC for this, the spell save, and its attack modifier depend on its level.",
+		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10 + the spell's level. On a failed check, the spell disappears from the scroll with no other effect.\n   The level of the spell on the scroll determines the spell's saving throw DC and attack bonus, as well as the scroll's rarity, as shown below.\n\n" + toUni("Level\tRarity\t\tDC\tTo hit") + [
+			"\nCantrip\tCommon  \t13\t+5",
+			"1st  \tCommon  \t13\t+5",
+			"2nd  \tUncommon\t13\t+5",
+			"3rd  \tUncommon\t15\t+7",
+			"4th  \tRare\t\t15\t+7",
+			"5th  \tRare\t\t17\t+9",
+			"6th  \tVery rare    \t17\t+9",
+			"7th  \tVery rare    \t18\t+10",
+			"8th  \tVery rare    \t18\t+10",
+			"9th  \tLegendary  \t19\t+11"
+		].join("\n") + "\n\nA wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on an Intelligence (Arcana) check with a DC equal to 10 + the spell's level. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+		allowDuplicates : true,
+		choices : ["Cantrip", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level"],
+		"cantrip" : {
+			rarity : "common",
+			magicItemTable : "A",
+			description : "If the cantrip on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If I can't cast any cantrips, I need to make a DC 10 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The cantrips is cast with DC 13 and a +5 attack modifier.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.",
+			extraTooltip : "AL: can always be bought for 25 gp",
+			fixedDC : 13,
+			spellFirstColTitle : "Us", // used
+			spellcastingBonus : {
+				level : [0,0],
+				psionic : false,
+				times : 16,
+				firstCol : "checkbox"
+			}
+		},
+		"1st-level" : {
+			rarity : "common",
+			magicItemTable : "A",
+			description : "If the 1st-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 11 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 13 and a +5 attack modifier.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 11. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 11 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			extraTooltip : "AL: can always be bought for 75 gp",
+			fixedDC : 13,
+			spellFirstColTitle : "Us", // used
+			spellcastingBonus : {
+				level : [1,1],
+				psionic : false,
+				times : 16,
+				firstCol : "checkbox"
+			}
+		},
+		"2nd-level" : {
+			rarity : "uncommon",
+			magicItemTable : ["A", "B"],
+			description : "If the 2nd-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 12 check with my spellcasting ability to use this scroll or destroy it if I fail. The spell is cast with DC 13 and a +5 attack modifier.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 12. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 12 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			extraTooltip : "AL: can always be bought for 150 gp",
+			fixedDC : 13,
+			spellFirstColTitle : "Us", // used
+			spellcastingBonus : {
+				level : [2,2],
+				psionic : false,
+				times : 16,
+				firstCol : "checkbox"
+			}
+		},
+		"3rd-level" : {
+			rarity : "uncommon",
+			magicItemTable : "B",
+			description : "If the 3rd-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 13 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 15 and a +7 attack modifier.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 13. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 13 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			extraTooltip : "AL: can always be bought for 300 gp",
+			fixedDC : 15,
+			spellFirstColTitle : "Us", // used
+			spellcastingBonus : {
+				level : [3,3],
+				psionic : false,
+				times : 16,
+				firstCol : "checkbox"
+			}
+		},
+		"4th-level" : {
+			rarity : "rare",
+			magicItemTable : "C",
+			description : "If the 4th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 14 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 15 and a +7 attack modifier.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 14. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 14 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			extraTooltip : "AL: can always be bought for 500 gp",
+			fixedDC : 15,
+			spellFirstColTitle : "Us", // used
+			spellcastingBonus : {
+				level : [4,4],
+				psionic : false,
+				times : 16,
+				firstCol : "checkbox"
+			}
+		},
+		"5th-level" : {
+			rarity : "rare",
+			magicItemTable : "C",
+			description : "If the 5th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 15 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 17 and a +9 attack modifier.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 15. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 15 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			extraTooltip : "AL: can always be bought for 1000 gp",
+			fixedDC : 17,
+			spellFirstColTitle : "Us", // used
+			spellcastingBonus : {
+				level : [5,5],
+				psionic : false,
+				times : 16,
+				firstCol : "checkbox"
+			}
+		},
+		"6th-level" : {
+			rarity : "very rare",
+			magicItemTable : "D",
+			description : "If the 6th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 16 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 17 and a +9 attack modifier.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 16. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 16 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			fixedDC : 17,
+			spellFirstColTitle : "Us", // used
+			spellcastingBonus : {
+				level : [6,6],
+				psionic : false,
+				times : 16,
+				firstCol : "checkbox"
+			}
+		},
+		"7th-level" : {
+			rarity : "very rare",
+			magicItemTable : "D",
+			description : "If the 7th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 17 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 18 and a +10 attack modifier.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 17. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 17 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			fixedDC : 18,
+			spellFirstColTitle : "Us", // used
+			spellcastingBonus : {
+				level : [7,7],
+				psionic : false,
+				times : 16,
+				firstCol : "checkbox"
+			}
+		},
+		"8th-level" : {
+			rarity : "very rare",
+			magicItemTable : ["D", "E"],
+			description : "If the 8th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 18 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 18 and a +10 attack modifier.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 18. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 18 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			fixedDC : 18,
+			spellFirstColTitle : "Us", // used
+			spellcastingBonus : {
+				level : [8,8],
+				psionic : false,
+				times : 16,
+				firstCol : "checkbox"
+			}
+		},
+		"9th-level" : {
+			rarity : "legendary",
+			magicItemTable : "E",
+			description : "If the 9th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 19 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 19 and a +11 attack modifier.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 19. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 19 and an attack bonus of +11.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 19 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			fixedDC : 19,
+			spellFirstColTitle : "Us", // used
+			spellcastingBonus : {
+				level : [9,9],
+				psionic : false,
+				times : 16,
+				firstCol : "checkbox"
+			}
+		}
 	},
-	"spell scroll (2nd level)" : {
-		name : "Spell Scroll (2nd Level)",
-		source : [["SRD", 242], ["D", 201]],
-		type : "scroll",
-		rarity : "uncommon",
-		magicItemTable : ["A", "B"],
-		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 12. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 12 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
-		extraTooltip : "AL: can always be bought for 150 gp"
-	},
-	"spell scroll (3rd level)" : {
-		name : "Spell Scroll (3rd Level)",
-		source : [["SRD", 242], ["D", 202]],
-		type : "scroll",
-		rarity : "uncommon",
-		magicItemTable : "B",
-		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 13. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 13 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
-		extraTooltip : "AL: can always be bought for 300 gp"
-	},
-	"spell scroll (4th level)" : {
-		name : "Spell Scroll (4th Level)",
-		source : [["SRD", 242], ["D", 203]],
-		type : "scroll",
-		rarity : "rare",
-		magicItemTable : "C",
-		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 14. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 14 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
-		extraTooltip : "AL: can always be bought for 500 gp"
-	},
-	"spell scroll (5th level)" : {
-		name : "Spell Scroll (5th Level)",
-		source : [["SRD", 242], ["D", 204]],
-		type : "scroll",
-		rarity : "rare",
-		magicItemTable : "C",
-		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 15. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 15 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
-		extraTooltip : "AL: can always be bought for 1000 gp"
-	},
-	"spell scroll (6th level)" : {
-		name : "Spell Scroll (6th Level)",
-		source : [["SRD", 242], ["D", 205]],
-		type : "scroll",
-		rarity : "very rare",
-		magicItemTable : "D",
-		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 16. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 16 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
-	},
-	"spell scroll (7th level)" : {
-		name : "Spell Scroll (7th Level)",
-		source : [["SRD", 242], ["D", 206]],
-		type : "scroll",
-		rarity : "very rare",
-		magicItemTable : "D",
-		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 17. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 17 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
-	},
-	"spell scroll (8th level)" : {
-		name : "Spell Scroll (8th Level)",
-		source : [["SRD", 242], ["D", 207]],
-		type : "scroll",
-		rarity : "very rare",
-		magicItemTable : ["D", "E"],
-		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 18. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 18 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
-	},
-	"spell scroll (9th level)" : {
-		name : "Spell Scroll (9th Level)",
-		source : [["SRD", 242], ["D", 208]],
-		type : "scroll",
-		rarity : "legendary",
-		magicItemTable : "E",
-		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 19. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 19 and an attack bonus of +11.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 19 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed."
-	},
-	"spell scroll (cantrip)" : {
-		name : "Spell Scroll (Cantrip)",
-		source : [["SRD", 242], ["D", 199]],
-		type : "scroll",
-		rarity : "common",
-		magicItemTable : "A",
-		description : "",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.",
-		extraTooltip : "AL: can always be bought for 25 gp"
-	},
-	"spellguard shield" : {
+	"spellguard shield" : { // finished
 		name : "Spellguard Shield",
 		source : [["SRD", 242], ["D", 201]],
 		type : "shield",
 		rarity : "very rare",
 		magicItemTable : "H",
-		description : "",
-		descriptionFull : "While holding this shield, you have advantage on saving throws against spells and other magical effects, and spell attacks have disadvantage against you",
+		description : "While holding this shield, I have advantage on saving throws against spells and other magical effects, and spell attacks have disadvantage against me.",
+		descriptionFull : "While holding this shield, you have advantage on saving throws against spells and other magical effects, and spell attacks have disadvantage against you.",
 		attunement : true,
-		weight : 6
+		weight : 6,
+		shieldAdd : "Spellguard Shield",
+		savetxt : { adv_vs : ["spells", "magical effects"] },
 	},
 	"sphere of annihilation" : {
 		name : "Sphere of Annihilation",
@@ -4949,24 +5273,48 @@ var Base_MagicItemsList = {
 			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Understanding", "Wisdom");
 		}
 	},
-	"trident of fish command" : {
+	"trident of fish command" : { // finished
 		name : "Trident of Fish Command",
 		source : [["SRD", 247], ["D", 209]],
 		type : "weapon (trident)",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		description : "",
+		description : "This magic trident has 3 charges. While I carry it, I can use an action and expend 1 charge to cast Dominate Beast (save DC 15) from it on a beast that has an innate swimming speed. The trident regains 1d3 expended charges daily at dawn.",
 		descriptionFull : "This trident is a magic weapon. It has 3 charges. While you carry it, you can use an action and expend 1 charge to cast Dominate Beast (save DC 15) from it on a beast that has an innate swimming speed. The trident regains 1d3 expended charges daily at dawn.",
 		attunement : true,
-		weight : 4
+		weight : 4,
+		usages : 3,
+		recovery : "dawn",
+		additional : "regains 1d3",
+		weaponsAdd : ["Trident of Fish Command"],
+		weaponOptions : {
+			baseWeapon : "trident",
+			regExpSearch : /^(?=.*trident)(?=.*fish)(?=.*command).*$/i,
+			name : "Trident of Fish Command",
+			source : [["SRD", 247], ["D", 209]]
+		},
+		fixedDC : 15,
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : {
+			name : "1 charge",
+			spells : ["dominate beast"],
+			selection : ["dominate beast"],
+			firstCol : 1
+		},
+		spellChanges : {
+			"dominate beast" : {
+				description : "1 beast with swim speed save or charmed, follows telepathic commands, 1 a for complete control",
+				changes : "Can only affect beasts with innate swim speed."
+			}
+		}
 	},
-	"universal solvent" : {
+	"universal solvent" : { // finished
 		name : "Universal Solvent",
 		source : [["SRD", 248], ["D", 209]],
 		type : "wondrous item",
 		rarity : "legendary",
 		magicItemTable : "E",
-		description : "",
+		description : "This tube holds milky liquid with a strong alcohol smell. Once as an action, I can pour the contents of the tube onto a surface within reach. The liquid instantly dissolves up to 1 square foot of adhesive it touches, including sovereign glue.",
 		descriptionFull : "This tube holds milky liquid with a strong alcohol smell. You can use an action to pour the contents of the tube onto a surface within reach. The liquid instantly dissolves up to 1 square foot of adhesive it touches, including sovereign glue."
 	},
 	"vicious weapon" : { // finished

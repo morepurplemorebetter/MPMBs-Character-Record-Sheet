@@ -184,7 +184,7 @@ var Base_ClassList = {
 								if (v.extraCritM) {
 									v.extraCritM += pExtraCritM;
 									var extraCritRegex = /\d+(d\d+ extra on a crit(ical)?( hit)? in melee)/i;
-									fields.Description = fields.Description.replace(extraCritRegex, extraCritM + '$1');
+									fields.Description = fields.Description.replace(extraCritRegex, v.extraCritM + '$1');
 								} else {
 									v.extraCritM = pExtraCritM;
 									fields.Description += (fields.Description ? '; ' : '') + v.extraCritM + fields.Damage_Die.replace(/.*(d\d+).*/, '$1') + ' extra on a crit in melee';

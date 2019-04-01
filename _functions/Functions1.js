@@ -2293,6 +2293,11 @@ function ParseRace(input) {
 			for (var sub = 0; sub < kObj.variants.length; sub++) { // scan string for all variants of the race
 				var theR = key + "-" + kObj.variants[sub];
 				var rVars = RaceSubList[theR];
+				if (!rVars) {
+					console.println("The racial variant '" + kObj.variants[sub] + "' for the '" + kObj.name + "' race is not found in the RaceSubList. Please contact the author of this race to have this issue corrected. The variant will be ignored for now.");
+					console.show();
+					continue;
+				}
 				var theRname = rVars.name ? rVars.name : kObj.variants[sub];
 
 				// test if the racial variant or its source isn't excluded
