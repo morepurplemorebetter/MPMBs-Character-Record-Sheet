@@ -2181,7 +2181,7 @@ var Base_SpellsList = {
 		compMaterial : "A small, straight piece of iron",
 		duration : "Conc, 1 min",
 		save : "Wis",
-		description : "1+1/SL creatures, within 30 ft of each other, save or paralyzed; extra save at end of each turn",
+		description : "1+1/SL crea (not undead), each max 30 ft apart, save or paralyzed; extra save at end of each turn",
 		descriptionFull : "Choose a creature that you can see within range. The target must succeed on a Wisdom saving throw or be paralyzed for the duration. This spell has no effect on undead. At the end of each of its turns, the target can make another Wisdom saving throw. On a success, the spell ends on the target." + AtHigherLevels + "When you cast this spell using a spell slot of 6th level or higher, you can target on additional creature for each slot level above 5th. The creatures must be within 30 feet of each other when you target them."
 	},
 	"hold person" : {

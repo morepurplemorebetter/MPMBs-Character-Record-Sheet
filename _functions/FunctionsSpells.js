@@ -197,7 +197,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			if (aSpell.level && aCast && ((/^(item|feat|race)$/i).test(aCast.typeSp) || (aCast.refType && (/^(item|feat|race)$/i).test(aCast.refType)))) {
 				var removeRegex = /\+(\d+d)?\d+\/SL\b|\bSL used/i
 				if (removeRegex.test(aSpell.description + aSpell.descriptionMetric)) {
-					aSpell.description = aSpell.description.replace("SL used", "level " + aSpell.level).replace(removeRegex, '');
+					aSpell.description = aSpell.description.replace("SL used", "level " + aSpell.level).replace(removeRegex, '').replace(/, within 30 ft of each other,|, each max 30 ft apart,/i, '');
 					if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace("SL used", "level " + aSpell.level).replace(removeRegex, '');
 					aSpell.changesObj["Innate Spellcasting"] = "\n - Spell cast by magic items, from feats, or from racial traits can only be cast at the spell's level, not with higher level spell slots.";
 				}
@@ -210,7 +210,7 @@ function ApplySpell(FldValue, rememberFldName) {
 						for (var changeO in theOver[key]) {
 							aSpell.changesObj[changeO] = theOver.changesObj[changeO];
 						}
-					} else if ((/^(classes|level|source)$/).test(key)) continue;
+					}
 					aSpell[key] = theOver[key];
 				}
 			}
@@ -285,6 +285,7 @@ function ApplySpell(FldValue, rememberFldName) {
 
 			//make the tooltip for the description field
 			var spTooltip = "";
+			if (aSpell.completeRewrite) foundSpell = aSpell;
 			if (foundSpell.descriptionFull) {
 				spTooltip = toUni(foundSpell.name);
 				if (foundSpell.school) {

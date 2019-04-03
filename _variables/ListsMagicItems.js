@@ -13,7 +13,6 @@ var TreasureCheckpointsTable = {
 var Base_MagicItemsList = {
 	"adamantine armor" : {
 		name : "Adamantine Armor",
-		nameTest : "Adamantine",
 		source : [["SRD", 207], ["D", 150]],
 		type : "armor (medium or heavy)",
 		rarity : "uncommon",
@@ -22,11 +21,12 @@ var Base_MagicItemsList = {
 		allowDuplicates : true,
 		chooseGear : {
 			type : "armor",
-			prefixOrSuffix : "suffix",
+			prefixOrSuffix : "brackets",
+			itemName1stPage : ["suffix", "Adamantine"],
+			descriptionChange : ["prefix", "armor"],
 			excludeCheck : function (inObjKey, inObj) {
 				return !(/medium|heavy/i).test(inObj.type) || (/hide/i).test(inObj.name);
-			},
-			descriptionChange : ["prefix", "armor"]
+			}
 		}
 	},
 	"ammunition, +1, +2, or +3" : {
@@ -2905,7 +2905,7 @@ var Base_MagicItemsList = {
 		weight : 4,
 		usages : 3,
 		recovery : "dawn",
-		additional : "regain 1d3",
+		additional : "regains 1d3",
 		weaponsAdd : ["Mace of Terror"],
 		weaponOptions : {
 			baseWeapon : "mace",
@@ -3058,7 +3058,7 @@ var Base_MagicItemsList = {
 		weight : 1,
 		usages : 3,
 		recovery : "dawn",
-		additional : "regain 1d3",
+		additional : "regains 1d3",
 		spellcastingBonus : {
 			name : "1 charge",
 			spells : ["detect thoughts"],
@@ -3368,7 +3368,7 @@ var Base_MagicItemsList = {
 		action : [["action", ""]],
 		usages : 3,
 		recovery : "dawn",
-		additional : "regain 1d3",
+		additional : "regains 1d3",
 		prerequisite : "Requires proficiency with wind instruments",
 		prereqeval : function (v) {
 			for (var i = 0; i < v.toolProfs; i++) {
@@ -3390,7 +3390,7 @@ var Base_MagicItemsList = {
 		action : [["action", ""]],
 		usages : 3,
 		recovery : "dawn",
-		additional : "regain 1d3",
+		additional : "regains 1d3",
 		prerequisite: "Requires proficiency with wind instruments",
 		prereqeval: function (v) {
 			for (var i = 0; i < v.toolProfs; i++) {
@@ -4229,6 +4229,123 @@ var Base_MagicItemsList = {
 			dmgres : ["Thunder"]
 		}
 	},
+	"ring of shooting stars" : {
+		name : "Ring of Shooting Stars",
+		source : [["SRD", 237], ["D", 192]],
+		type : "ring",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This ring has 6 charges and it regains 1d6 expended charges daily at dawn. While wearing this ring in dim light or darkness, I can cast Dancing Lights and Light at will. As an action, I can expend charges to cast Faerie Fire, Ball Lightning (see 3rd page notes), or Shooting Stars (see 3rd page notes). All spells DC 15.",
+		descriptionFull : "While wearing this ring in dim light or darkness, you can cast Dancing Lights and Light from the ring at will. Casting either spell from the ring requires an action.\n   The ring has 6 charges for the following other properties. The ring regains 1d6 expended charges daily at dawn.\n   " + toUni("Faerie Fire") + ". You can expend 1 charge as an action to cast Faerie Fire from the ring.\n   " + toUni("Ball Lightning") + ". You can expend 2 charges as an action to create one to four 3-foot-diameter spheres of lightning. The more spheres you create, the less powerful each sphere is individually.\n   Each sphere appears in an unoccupied space you can see within 120 feet of you. The spheres last as long as you concentrate (as if concentrating on a spell), up to 1 minute. Each sphere sheds dim light in a 30-foot radius.\n   As a bonus action, you can move each sphere up to 30 feet, but no farther than 120 feet away from you. When a creature other than you comes within 5 feet of a sphere, the sphere discharges lightning at that creature and disappears. That creature must make a DC 15 Dexterity saving throw. On a failed save, the creature takes lightning damage based on the number of spheres you created (4 spheres = 2d4, 3 spheres = 2d6, 2 spheres = 5d4, 1 sphere = 4d12).\n   " + toUni("Shooting Stars") + ". \n   You can expend 1 to 3 charges as an action. For every charge you expend, you launch a glowing mote of light from the ring at a point you can see within 60 feet of you. Each creature within a 15-foot cube originating from that point is showered in sparks and must make a DC 15 Dexterity saving throw. taking 5d4 fire damage on a failed save, or half as much damage on a successful one.",
+		attunement : true,
+		toNotesPage : [{
+			name : "Ball Lightning",
+			popupName : "Ball Lightning function of Ring of Shooting Stars",
+			page3notes : true,
+			additional : "2 charges",
+			note : [
+				"As an action, I can create 1-4 spheres of lightning of 3-ft diameter within 120 ft",
+				"These last while I concentrate, up to 1 min; As a bonus action, I can more them 30 ft",
+				"When a creature (not me) comes within 5 ft of a sphere, it discharges and disappears",
+				"The target must make a DC 15 Dex save or take lightning damage",
+				"A sphere sheds dim light in 30-ft radius, its damage depends on the number created:",
+				" \u2022 1 sphere: 4d12;    \u2022 2 spheres: 5d4;    \u2022 3 spheres: 2d6;    \u2022 4 spheres: 2d4"
+			]
+		}, {
+			name : "Shooting Stars",
+			popupName : "Shooting Stars function of Ring of Shooting Stars",
+			page3notes : true,
+			additional : "1-3 charges",
+			note : [
+				"As an action, I can launch one mote of light per expended charge to a point within 60 ft",
+				"All creatures within a 15-ft cube originating from those points take 5d4 fire damage",
+				"The targets can make a DC 15 Dexterity saving throw to halve the damage"
+			]
+		}],
+		usages : 6,
+		recovery : "dawn",
+		additional : "regains 1d6",
+		fixedDC : 15,
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : [{
+			name : "At will",
+			spells : ["dancing lights", "light"],
+			selection : ["dancing lights", "light"],
+			firstCol : "atwill",
+			times : 2
+		}, {
+			name : "1 charge",
+			spells : ["faerie fire"],
+			selection : ["faerie fire"],
+			firstCol : 1
+		}, {
+			name : "Ball lightning (2 chr)",
+			spells : ["burning hands"],
+			selection : ["burning hands"],
+			firstCol : 2
+		}, {
+			name : "Shooting stars (1-3 chr)",
+			spells : ["magic missile"],
+			selection : ["magic missile"],
+			firstCol : "1+"
+		}],
+		spellChanges : {
+			"burning hands" : { // change into Ball Lightning
+				name : "Ball Lightning",
+				source : [["SRD", 237], ["D", 192]],
+				level : "",
+				school : "Evoc",
+				time : "1 a",
+				range : "120 ft",
+				components : "M\u0192",
+				compMaterial : "Spells cast by magic items don't require any components other than the magic item itself.",
+				duration : "Conc, 1 min",
+				save : "Dex",
+				description : "1-4 spheres; bns a move all 30 ft; 1st crea in 5 ft save or Lightning dmg (1:4d12, 2:5d4, 3:2d6, 4:2d4)",
+				descriptionFull : "You can expend 2 charges from the ring of shooting starts as an action to create one to four 3-foot-diameter spheres of lightning. The more spheres you create, the less powerful each sphere is individually.\n   Each sphere appears in an unoccupied space you can see within 120 feet of you. The spheres last as long as you concentrate (as if concentrating on a spell), up to 1 minute. Each sphere sheds dim light in a 30-foot radius.\n   As a bonus action, you can move each sphere up to 30 feet, but no farther than 120 feet away from you. When a creature other than you comes within 5 feet of a sphere, the sphere discharges lightning at that creature and disappears. That creature must make a DC 15 Dexterity saving throw. On a failed save, the creature takes lightning damage based on the number of spheres you created (4 spheres = 2d4, 3 spheres = 2d6, 2 spheres = 5d4, 1 sphere = 4d12).",
+				completeRewrite : true, // indicates that the changes here even overwrite the tooltip
+				changes : "The listing of 'Burning Hands' has been completely changed to reflect the 'Ball Lightning' ability of the Ring of Shooting Stars. Even the information above is changed."
+			},
+			"magic missile" : { // change into Shooting Stars
+				name : "Shooting Stars",
+				source : [["SRD", 237], ["D", 192]],
+				level : "",
+				school : "Evoc",
+				time : "1 a",
+				range : "60 ft",
+				components : "M\u0192",
+				compMaterial : "Spells cast by magic items don't require any components other than the magic item itself.",
+				duration : "Instantaneous",
+				description : "15-ft cube in range per expended charge; all crea in cubes take 5d4 Fire damage, save halves",
+				descriptionFull : "You can expend 1 to 3 charges from the ring of shooting starts as an action. For every charge you expend, you launch a glowing mote of light from the ring at a point you can see within 60 feet of you. Each creature within a 15-foot cube originating from that point is showered in sparks and must make a DC 15 Dexterity saving throw. taking 5d4 fire damage on a failed save, or half as much damage on a successful one.",
+				completeRewrite : true, // indicates that the changes here even overwrite the tooltip
+				changes : "The listing of 'Magic Missile' has been completely changed to reflect the 'Shooting Stars' ability of the Ring of Shooting Stars. Even the information above is changed."
+			}
+		}
+	},
+	"ring of spell storing" : { // contains contributions by Fourleafclov
+		name : "Ring of Spell Storing",
+		source : [["SRD", 237], ["D", 192]],
+		type : "ring",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This ring can hold up to 5 levels of spell slots. Any creature can cast a spell into the ring using a 1-5th level spell slot, which is then stored if there is space. I can cast stored spells from the ring, freeing up space, using the original caster's attack bonus, save DC, spellcasting ability score, and the initial spell slot level.",
+		descriptionFull : "This ring stores spells cast into it, holding them until the attuned wearer uses them. The ring can store up to 5 levels worth of spells at a time. When found, it contains 1d6-1 levels of stored spells chosen by the DM.\n   Any creature can cast a spell of 1st through 5th level into the ring by touching the ring as the spell is cast. The spell has no effect, other than to be stored in the ring. If the ring can't hold the spell, the spell is expended without effect. The level of the slot used to cast the spell determines how much space it uses.\n   While wearing this ring, you can cast any spell stored in it. The spell uses the slot level, spell save DC, spell attack bonus, and spellcasting ability of the original caster, but is otherwise treated as if you cast the spell. The spell cast from the ring is no longer stored in it, freeing up space.",
+		attunement : true,
+		usages : "5 lvls",
+		recovery : " Cast"
+	},
+	"ring of spell turning" : {
+		name : "Ring of Spell Turning",
+		source : [["SRD", 237], ["D", 193]],
+		type : "ring",
+		rarity : "legendary",
+		magicItemTable : "I",
+		description : "While wearing this ring, I have advantage on saves against any spell that targets only me (not in an area of effect). In addition, if I roll a 20 for the save and the spell is 7th level or lower, the spell has no effect on me and instead targets the caster as if the caster had effectively targeted itself.",
+		descriptionFull : "While wearing this ring, you have advantage on saving throws against any spell that targets only you (not in an area of effect). In addition, if you roll a 20 for the save and the spell is 7th level or lower, the spell has no effect on you and instead targets the caster, using the slot level, spell save DC, attack bonus, and spellcasting ability of the caster.",
+		attunement : true,
+		savetxt : { adv_vs : ["spells targeting only me"] }
+	},
 	"ring of swimming" : {
 		name : "Ring of Swimming",
 		source : [["SRD", 238], ["D", 193]],
@@ -4238,6 +4355,28 @@ var Base_MagicItemsList = {
 		description : "I have a swimming speed of 40 feet while wearing this ring.",
 		descriptionFull : "You have a swimming speed of 40 feet while wearing this ring.",
 		speed : { swim : { spd : "fixed40", enc : "fixed30" } }
+	},
+	"ring of telekinesis" : {
+		name : "Ring of Telekinesis",
+		source : [["SRD", 238], ["D", 193]],
+		type : "ring",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "While wearing this ring, I can cast Telekinesis at will, but I can target only an object up to 1000 lb that isn't being worn or carried. I can move it up to 30 ft in any direction, but not more than 60 ft away from me. I can exert fine control on it, such as manipulating a tool, opening a door, or pouring out its contents.",
+		descriptionFull : "While wearing this ring, you can cast the Telekinesis spell at will, but you can target only objects that aren't being worn or carried.",
+		attunement : true,
+		spellcastingBonus : {
+			name : "At will",
+			spells : ["telekinesis"],
+			selection : ["telekinesis"],
+			firstCol : "atwill"
+		},
+		spellChanges : {
+			"telekinesis" : {
+				description : "Move 1 object up to 1000 lb 30 ft and exert fine control over it; as 1 a following rounds",
+				changes : "The Ring of Telekinesis only allows manupilation of unattended objects."
+			}
+		}
 	},
 	"ring of the ram" : {
 		name : "Ring of the Ram",
@@ -4262,6 +4401,24 @@ var Base_MagicItemsList = {
 			modifiers : [7, ""]
 		}
 	},
+	"ring of three wishes" : {
+		name : "Ring of Three Wishes",
+		source : [["SRD", 238], ["D", 193]],
+		type : "ring",
+		rarity : "legendary",
+		magicItemTable : "I",
+		description : "While wearing this ring, I can use an action to expend 1 of its 3 charges to cast the Wish spell from it. The ring becomes nonmagical when I use the last charge.",
+		descriptionFull : "While wearing this ring, you can use an action to expend 1 of its 3 charges to cast the Wish spell from it. The ring becomes nonmagical when you use the last charge.",
+		usages : 3,
+		recovery : "Never",
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : {
+			name : "1 charge",
+			spells : ["wish"],
+			selection : ["wish"],
+			firstCol : 1
+		}
+	},
 	"ring of warmth" : {
 		name : "Ring of Warmth",
 		source : [["SRD", 238], ["D", 193]],
@@ -4281,6 +4438,124 @@ var Base_MagicItemsList = {
 		magicItemTable : "F",
 		description : "While wearing this ring, I can stand on and move across any liquid surface as if it were solid ground.",
 		descriptionFull : "While wearing this ring, you can stand on and move across any liquid surface as if it were solid ground."
+	},
+	"ring of x-ray vision" : {
+		name : "Ring of X-ray Vision",
+		source : [["SRD", 238], ["D", 193]],
+		type : "ring",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "As an action, I can speak this ring's command word to make me see into and through solid matter as if it is transparent and light passes through for 1 minute within 30 ft (1 ft stone, 1 inch metal, 3 ft wood/dirt, not lead). When I use this again before a long rest, I must make a DC 15 Con save or gain 1 level of exhaustion.",
+		descriptionFull : "While wearing this ring, you can use an action to speak its command word. When you do so, you can see into and through solid matter for 1 minute. This vision has a radius of 30 feet. To you, solid objects within that radius appear transparent and don't prevent light from passing through them. The vision can penetrate 1 foot of stone, 1 inch of common metal, or up to 3 feet of wood or dirt. Thicker substances block the vision, as does a thin sheet of lead.\n   Whenever you use the ring again before taking a long rest, you must succeed on a DC 15 Constitution saving throw or gain one level of exhaustion.",
+		attunement : true,
+		action : [["action", ""]],
+		usages : 1,
+		recovery : "long rest",
+		additional : "more uses: DC 15 Con save"
+	},
+	"robe of eyes" : { // contains contributions by SoilentBrad
+		name : "Robe of Eyes",
+		source : [["SRD", 238], ["D", 193]],
+		type : "wondrous item",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This robe gives me adv. on sight-based Perception checks, the ability to see in all directions, see invisible/ethereal out to 120 ft, darkvision 120 ft. I can't close or avert my eyes. If Light is cast on it or Daylight within 5 ft of it, I'm blinded for 1 min, Con save (DC 11-Light, 15-Daylight) at the end of my each of my turns to end.",
+		descriptionFull : "This robe is adorned with eyelike patterns. While you wear the robe, you gain the following benefits:\n \u2022 The robe lets you see in all directions, and you have advantage on Wisdom (Perception) checks that rely on sight.\n \u2022 You have darkvision out to a range of 120 feet.\n \u2022 You can see invisible creatures and objects, as well as see into the Ethereal Plane, out to a range of 120 feet.\n\nThe eyes on the robe can't be closed or averted. Although you can close or avert your own eyes, you are never considered to be doing so while wearing this robe.\n   A Light spell cast on the robe or a Daylight spell cast within 5 feet of the robe causes you to be blinded for 1 minute. At the end of each of your turns, you can make a Constitution saving throw (DC 11 for Light or DC 15 for Daylight), ending the blindness on a success.",
+		attunement : true,
+		weight : 4,
+		vision: [
+			["Darkvision", "fixed 120"],
+			["See invisible/ethereal", "fixed 120"],
+			["Adv. on Perception checks based on sight", 0]
+		]
+	},
+	"robe of scintillating colors" : { // contains contributions by SoilentBrad
+		name : "Robe of Scintillating Colors",
+		source : [["SRD", 238], ["D", 194]],
+		type : "wondrous item",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This robe has 3 charges, regaining 1d3 at dawn. As an action, I can use 1 charge to shed 30-ft radius bright light, 30 ft dim light until the end of my next turn, causing all that see me to have disadv. on attacks against me. All within 30 ft that can see me at activation make a DC 15 Wis save or stunned until effect ends.",
+		descriptionFull : "This robe has 3 charges, and it regains 1d3 expended charges daily at dawn. While you wear it, you can use an action and expend 1 charge to cause the garment to display a shifting pattern of dazzling hues until the end of your next turn. During this time, the robe sheds bright light in a 30-foot radius and dim light for an additional 30 feet. Creatures that can see you have disadvantage on attack rolls against you. In addition, any creature in the bright light that can see you when the robe's power is activated must succeed on a DC 15 Wisdom saving throw or become stunned until the effect ends.",
+		attunement : true,
+		weight : 4,
+		usages : 3,
+		recovery : "dawn",
+		additional : "regains 1d3",
+		action : [["action", ""]]
+	},
+	"robe of stars" : { // contains contributions by SoilentBrad
+		name : "Robe of Stars",
+		source : [["SRD", 239], ["D", 194]],
+		type : "wondrous item",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This dark robe gives a +1 bonus to saving throws. It has 6 large stars embroidered on it, that I can use to cast Magic Missile at 5th-level. 1d6 used stars reappear at dusk. As an action, I can enter or exit the Astral Plane along with all I'm wearing and carrying. I can return as an action, appearing in the spot I left.",
+		descriptionFull : "This black or dark blue robe is embroidered with small white or silver stars. You gain a +1 bonus to saving throws while you wear it.\n   Six stars, located on the robe's upper front portion, are particularly large. While wearing this robe, you can use an action to pull off one of the stars and use it to cast Magic Missile as a 5th-level spell. Daily at dusk, 1d6 removed stars reappear on the robe.\n   While you wear the robe, you can use an action to enter the Astral Plane along with everything you are wearing and carrying. You remain there until you use an action to return to the plane you were on. You reappear in the last space you occupied, or if that space is occupied, the nearest unoccupied space.",
+		attunement : true,
+		weight : 4,
+		action : [["action", ""]],
+		usages : 6,
+		recovery : "Dusk",
+		additional : "regains 1d6",
+		addMod: [{ type: "save", field: "all", mod: 1, text: "I gain a +1 bonus to saving throws while I wear the Robe of Stars." }],
+		spellFirstColTitle: "Ch",
+		spellcastingBonus: {
+			name: "1 charge",
+			spells: ["magic missile"],
+			selection: ["magic missile"],
+			firstCol: 1
+		},
+		spellChanges : {
+			"magic missile" : {
+				description : "8 darts hit creature(s) I can see for 1d4+1 Force dmg per dart",
+				changes : "Magic Missile cast from the Robe of Stars is always at 5th-level."
+			}
+		}
+	},
+	"robe of the archmagi" : { // contains contributions by SoilentBrad
+		name : "Robe of the Archmagi",
+		source : [["SRD", 239], ["D", 194]],
+		type : "wondrous item",
+		rarity : "legendary",
+		magicItemTable : "I",
+		description : "I can only attune to a robe of the archmagi that matches my alignment: white for good, gray for neutral, black for evil. I gain these benefits while wearing the robe: if unarmored, my AC is 15 + my Dex mod; I have adv on saves against spells and magical effects; my spell save DC and spell attack bonus increase by 2.",
+		descriptionFull : "This elegant garment is made from exquisite cloth of white, gray, or black and adorned with silvery runes. The robe's color corresponds to the alignment for which the item was created. A white robe was made for good, gray for neutral, and black for evil. You can't attune to a robe of the archmagi that doesn't correspond to your alignment.\n   You gain these benefits while wearing the robe:\n \u2022 If you aren't wearing armor, your base Armor Class is 15 + your Dexterity modifier.\n \u2022 You have advantage on saving throws against spell and other magical effects.\n \u2022 Your spell save DC and spell attack bonus each increase by 2.",
+		attunement : true,
+		weight : 4,
+		savetxt : { adv_vs : ["spells", "magical effects"] },
+		calcChanges : {
+			spellCalc : [
+				function (type, spellcasters, ability) {
+					if (type != "prepare") return 2;
+				},
+				"While wearing the Robe of the Archmagi my spell save DC and spell attack bonus each increase by 2."
+			]
+		},
+		addArmor: "Robe of the Archmagi",
+		armorOptions: {
+			regExpSearch: /^(?=.*robe)(?=.*(archmage|archmagi)).*$/i,
+			name : "Robe of the Archmagi",
+			source : [["SRD", 239], ["D", 194]],
+			ac : 15,
+			weight : 4 
+		},
+		choices : ["Good", "Neutral", "Evil"],
+		"good" : {
+			description : "While wearing this elegant robe made from exquisite white cloth adorned with silvery runes, I have advantage on saves against spells and magical effects and add +2 to both my spell save DC and spell attack rolls. Also, if I'm not wearing armor, it makes my base AC 15 + my Dexterity modifier.",
+			prerequisite : "Requires attunement by a good sorcerer, warlock, or wizard",
+			prereqeval : function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && (/good/i).test(What("Alignment")); }
+		},
+		"neutral" : {
+			description : "While wearing this elegant robe made from exquisite gray cloth adorned with silvery runes, I have advantage on saves against spells and magical effects and add +2 to both my spell save DC and spell attack rolls. Also, if I'm not wearing armor, it makes my base AC 15 + my Dexterity modifier.",
+			prerequisite : "Requires attunement by a neutral sorcerer, warlock, or wizard",
+			prereqeval : function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && !(/good|evil/i).test(What("Alignment")); }
+		},
+		"evil" : {
+			description : "While wearing this elegant robe made from exquisite black cloth adorned with silvery runes, I have advantage on saves against spells and magical effects and add +2 to both my spell save DC and spell attack rolls. Also, if I'm not wearing armor, it makes my base AC 15 + my Dexterity modifier.",
+			prerequisite : "Requires attunement by an evil sorcerer, warlock, or wizard",
+			prereqeval : function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && (/evil/i).test(What("Alignment")); }
+		}
 	},
 	"robe of useful items" : {
 		name : "Robe of Useful Items",
@@ -4455,7 +4730,7 @@ var Base_MagicItemsList = {
 			"9th  \tLegendary  \t19\t+11"
 		].join("\n") + "\n\nA wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on an Intelligence (Arcana) check with a DC equal to 10 + the spell's level. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		allowDuplicates : true,
-		choices : ["Cantrip", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level"],
+		choices : ["Cantrip", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level", "mixed levels"],
 		"cantrip" : {
 			rarity : "common",
 			magicItemTable : "A",
@@ -4601,6 +4876,25 @@ var Base_MagicItemsList = {
 				times : 16,
 				firstCol : "checkbox"
 			}
+		},
+		"mixed levels" : {
+			description : "If the spell on this scroll is on my class' spell list, I can cast it, having the scroll crumble to dust afterwards. If the spell's level is higher than I can cast, I need to make a DC 10 + spell level check with my spellcasting ability, destroying it if I fail. The DC will be listed on the spell sheet's first column (spell attack = DC - 8).",
+			spellFirstColTitle : "DC",
+			spellcastingBonus : {
+				level : [0,9],
+				psionic : false,
+				times : 16
+			},
+			calcChanges : {
+				spellAdd : [
+					function (spellKey, spellObj, spName) {
+						if ((/mixed levels/).test(spName)) {
+							spellObj.firstCol = spellObj.level < 3 ? 13 : spellObj.level < 5 ? 15 : spellObj.level < 7 ? 17 : spellObj.level < 9 ? 18 : 19;
+							return true;
+						};
+					}, ""
+				]
+			}
 		}
 	},
 	"spellguard shield" : {
@@ -4614,7 +4908,7 @@ var Base_MagicItemsList = {
 		attunement : true,
 		weight : 6,
 		shieldAdd : "Spellguard Shield",
-		savetxt : { adv_vs : ["spells", "magical effects"] },
+		savetxt : { adv_vs : ["spells", "magical effects"] }
 	},
 	"staff of the magi" : { // contains contributions by Pengsloth
 		name : "Staff of the Magi",
@@ -4649,7 +4943,7 @@ var Base_MagicItemsList = {
 		},
 		usages : 50,
 		recovery : "dawn",
-		additional : "regain 4d6+2",
+		additional : "regains 4d6+2",
 		savetxt : { adv_vs : ["spells"] },
 		action : [
 			["reaction", " (Spell Absorption)"],
@@ -4937,6 +5231,17 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
+	"talisman of the sphere" : {
+		name : "Talisman of the Sphere",
+		source : [["SRD", 247], ["D", 207]],
+		type : "wondrous item",
+		rarity : "legendary",
+		magicItemTable : "I",
+		description : "While I'm holding this talisman, I double my proficiency bonus on the Intelligence (Arcana) check to control a sphere of annihilation. In addition, when I start your turn with control over a sphere of annihilation, I can use an action to levitate it 10 ft plus 10 ft times my Intelligence modifier.",
+		descriptionFull : "When you make an Intelligence (Arcana) check to control a sphere of annihilation while you are holding this talisman, you double your proficiency bonus on the check. In addition, when you start your turn with control over a sphere of annihilation, you can use an action to levitate it 10 feet plus a number of additional feet equal to 10 \xD7 your Intelligence modifier.",
+		attunement : true,
+		weight : 1
+	},
 	"tome of clear thought" : {
 		name : "Tome of Clear Thought",
 		source : [["SRD", 247], ["D", 208]],
@@ -5086,6 +5391,141 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
+	"wand of binding" : {
+		name : "Wand of Binding",
+		source : [["SRD", 248], ["D", 209]],
+		type : "wand",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This wand has 7 charges, regaining 1d6+1 at dawn, which I can use to cast its spells. I can expend 1 charge to gain adv. on a check to escape a grapple or on a save vs. being paralyzed or restrained, the latter requiring me to use my reaction. When the last charge is used there is a 5% chance the wand is destroyed.",
+		descriptionLong : "This wand has 7 charges, regaining 1d6+1 at dawn. I can expend charges to cast (save DC 17) Hold Monster (5 charges) or Hold Person (2 charges). As a reaction, I can expend 1 charge to gain adv. on a save to avoid being paralyzed or restrained. I can also expend 1 charge to gain adv. on a check to escape a grapple. If I expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		descriptionFull : "This wand has 7 charges for the following properties. It regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.\n   " + toUni("Spells") + ". While holding the wand, you can use an action to expend some of its charges to cast one of the following spells (save DC 17): Hold Monster (5 charges) or Hold Person (2 charges).\n   " + toUni("Assisted Escape") + ". While holding the wand, you can use your reaction to expend 1 charge and gain advantage on a saving throw you make to avoid being paralyzed or restrained, or you can expend 1 charge and gain advantage on any check you make to escape a grapple.",
+		attunement : true,
+		weight : 1,
+		prerequisite : "Requires attunement by a spellcaster",
+		prereqeval : function(v) { return v.isSpellcaster; },
+		action : [["reaction", " (adv. on save)"]],
+		usages : 7,
+		recovery : "dawn",
+		additional : "regains 1d6+1",
+		spellFirstColTitle : "Ch",
+		fixedDC : 17,
+		spellcastingBonus : [{
+			name : "2 charges",
+			spells : ["hold person"],
+			selection : ["hold person"],
+			firstCol : 2
+		}, {
+			name : "5 charges",
+			spells : ["hold monster"],
+			selection : ["hold monster"],
+			firstCol : 5
+		}]
+	},
+	"wand of enemy detection" : {
+		name : "Wand of Enemy Detection",
+		source : [["SRD", 248], ["D", 210]],
+		type : "wand",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This wand has 7 charges, regaining 1d6+1 at dawn. As an action, I can expend 1 charge to speak its command word. For 1 minute, I know the direction of the nearest creature hostile to me in 60 ft, regardless of it being ethereal, invisible, disguised, or hidden. When the last charge is used there is a 5% chance it's destroyed.",
+		descriptionFull : "This wand has 7 charges. While holding it, you can use an action and expend 1 charge to speak its command word. For the next minute, you know the direction of the nearest creature hostile to you within 60 feet, but not its distance from you. The wand can sense the presence of hostile creatures that are ethereal, invisible, disguised, or hidden, as well as those in plain sight. The effect ends if you stop holding the wand.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		attunement : true,
+		weight : 1,
+		usages : 7,
+		recovery : "dawn",
+		additional : "regains 1d6+1",
+		action : [["action", ""]]
+	},
+	"wand of fear" : {
+		name : "Wand of Fear",
+		source : [["SRD", 248], ["D", 210]],
+		type : "wand",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This wand has 7 charges, regaining 1d6+1 at dawn, which I can use to cast Command (1 charge), or as an action have all in a 60-ft cone (2 charges) make a DC 15 Wis save or be frightened and move away from me for 1 min (save end of each turn). When using the last charge, 5% chance the wand is destroyed.",
+		descriptionLong : "This wand has 7 charges, regaining 1d6+1 charges at dawn. As an action, I can expend 1 charge to cast Command, but only to use \"flee\" or \"grovel\". I can also use an action to expend 2 charges, causing the wand's tip to emit a 60-ft cone of amber light. All within the cone must make a DC 15 Wis save or be frightened of me for 1 minute. While frightened, a target moves away from me as fast as possible, can only use the Dash action, and is unwilling to move within 30 ft of me, but can repeat thesave at the end of each of its turn. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
+		descriptionFull : "This wand has 7 charges for the following properties. It regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.\n   " + toUni("Command") + ". While holding the wand, you can use an action to expend 1 charge and command another creature to flee or grovel, as with the Command spell (save DC 15).\n   " + toUni("Cone of Fear") + ". While holding the wand, you can use an action to expend 2 charges, 	. Each creature in the cone must succeed on a DC 15 Wisdom saving throw or become frightened of you for 1 minute. While it is frightened in this way, a creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevent it from moving. If it has nowhere it can move, the creature can use the Dodge action. At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.",
+		attunement : true,
+		weight : 1,
+		usages : 7,
+		recovery : "dawn",
+		additional : "regains 1d6+1",
+		spellFirstColTitle : "Ch",
+		fixedDC : 15,
+		spellcastingBonus : {
+			name : "1 charge",
+			spells : ["command"],
+			selection : ["command"],
+			firstCol : 1
+		},
+		spellChanges : {
+			"command" : {
+				description : '1 creature save or has to follow an one-word command on its next turn, either "flee" or "grovel"',
+				changes : 'When casting form the Wand of Fear, I can only use the "flee" or "grovel" command.'
+			}
+		}
+	},
+	"wand of fireballs" : {
+		name : "Wand of Fireballs",
+		source : [["SRD", 248], ["D", 210]],
+		type : "wand",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This wand has 7 charges, regaining 1d6+1 at dawn. As an action, I can expend 1 or more of its charges to cast Fireball (save DC 15) from it as a 3rd level spell. The spell slot level increases by one for each charge expended after the first. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
+		descriptionFull : "This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the Fireball spell (save DC 15) from it. For 1 charge, you cast the 3rd-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		attunement : true,
+		weight : 1,
+		prerequisite : "Requires attunement by a spellcaster",
+		prereqeval : function(v) { return v.isSpellcaster; },
+		usages : 7,
+		recovery : "dawn",
+		additional : "regains 1d6+1",
+		spellFirstColTitle : "Ch",
+		fixedDC : 15,
+		spellcastingBonus : {
+			name : "1+ charges",
+			spells : ["fireball"],
+			selection : ["fireball"],
+			firstCol : "1+"
+		},
+		spellChanges : {
+			"fireball" : {
+				description : "20-ft rad all crea 8d6 Fire dmg (+1d6/extra charge); save halves; unattended flammable objects ignite",
+				changes : "For 1 charge, it is cast as the 3rd-level version of the spell, but I can increase the spell slot level by one for each additional charge expended."
+			}
+		}
+	},
+	"wand of lightning bolts" : {
+		name : "Wand of Lightning Bolts",
+		source : [["SRD", 249], ["D", 211]],
+		type : "wand",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This wand has 7 charges, regaining 1d6+1 at dawn. As an action, I can expend 1 or more of its charges to cast Lightning Bolt (save DC 15) from it as a 3rd level spell. The spell slot level increases by one for each charge expended after the first. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
+		descriptionFull : "This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the Lightning Bolt spell (save DC 15) from it. For 1 charge, you cast the 3rd-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		attunement : true,
+		weight : 1,
+		prerequisite : "Requires attunement by a spellcaster",
+		prereqeval : function(v) { return v.isSpellcaster; },
+		usages : 7,
+		recovery : "dawn",
+		additional : "regains 1d6+1",
+		spellFirstColTitle : "Ch",
+		fixedDC : 15,
+		spellcastingBonus : {
+			name : "1+ charges",
+			spells : ["lightning bolt"],
+			selection : ["lightning bolt"],
+			firstCol : "1+"
+		},
+		spellChanges : {
+			"lightning bolt" : {
+				description : "100-ft long 5-ft wide all 8d6 Lightn. dmg (+1d6/extra charge); save halves; unattended objects ignite",
+				changes : "For 1 charge, it is cast as the 3rd-level version of the spell, but I can increase the spell slot level by one for each additional charge expended."
+			}
+		}
+	},
 	"wand of magic detection" : {
 		name : "Wand of Magic Detection",
 		source : [["SRD", 249], ["D", 211]],
@@ -5103,8 +5543,72 @@ var Base_MagicItemsList = {
 		},
 		usages : 3,
 		recovery : "dawn",
-		additional : "regain 1d3",
+		additional : "regains 1d3",
 		spellFirstColTitle : "Ch"
+	},
+	"wand of magic missiles" : {
+		name : "Wand of Magic Missiles",
+		source : [["SRD", 249], ["D", 211]],
+		type : "wand",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "This wand has 7 charges, regaining 1d6+1 at dawn. As an action, I can expend 1 or more of its charges to cast Magic Missile from it as a 1st level spell. The spell slot level increases by one for each charge expended after the first. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
+		descriptionFull : "This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the Magic Missile spell from it. For 1 charge, you cast the 1st-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		weight : 1,
+		usages : 7,
+		recovery : "dawn",
+		additional : "regains 1d6+1",
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : {
+			name : "1+ charges",
+			spells : ["magic missile"],
+			selection : ["magic missile"],
+			firstCol : "1+"
+		},
+		spellChanges : {
+			"magic missile" : {
+				description : "3+1/extra charge darts hit creature(s) I can see for 1d4+1 Force dmg per dart",
+				changes : "For 1 charge, it is cast as the 1st-level version of the spell, but I can increase the spell slot level by one for each additional charge expended."
+			}
+		}
+	},
+	"wand of paralysis" : {
+		name : "Wand of Paralysis",
+		source : [["SRD", 249], ["D", 211]],
+		type : "wand",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This wand has 7 charges, regaining 1d6+1 at dawn. As an action, I can expend 1 charge to have a creature within 60 ft make a DC 15 Constitution saving throw or be paralyzed for 1 minute. It can repeat this save at the end of each of its turns. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
+		descriptionFull : "This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges to cause a thin blue ray to streak from the tip toward a creature you can see within 60 feet of you. The target must succeed on a DC 15 Constitution saving throw or be paralyzed for 1 minute. At the end of each of the target's turns, it can repeat the saving throw, ending the effect on itself on a success.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		attunement : true,
+		weight : 1,
+		prerequisite : "Requires attunement by a spellcaster",
+		prereqeval : function(v) { return v.isSpellcaster; },
+		action : [["action", ""]]
+	},
+	"wand of polymorph" : {
+		name : "Wand of Polymorph",
+		source : [["SRD", 249], ["D", 211]],
+		type : "wand",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This wand has 7 charges and regains 1d6+1 expended charges daily at dawn. As an action, I can expend 1 of its charges to cast Polymorph (save DC 15) from it. If I expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		descriptionFull : "This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges to cast the Polymorph spell (save DC 15) from it.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		attunement : true,
+		weight : 1,
+		prerequisite : "Requires attunement by a spellcaster",
+		prereqeval : function(v) { return v.isSpellcaster; },
+		usages : 7,
+		recovery : "dawn",
+		additional : "regains 1d6+1",
+		spellFirstColTitle : "Ch",
+		fixedDC : 15,
+		spellcastingBonus : {
+			name : "1 charge",
+			spells : ["polymorph"],
+			selection : ["polymorph"],
+			firstCol : 1
+		}
 	},
 	"wand of secrets" : {
 		name : "Wand of Secrets",
@@ -5117,8 +5621,161 @@ var Base_MagicItemsList = {
 		weight : 1,
 		usages : 3,
 		recovery : "dawn",
-		additional : "regain 1d3",
+		additional : "regains 1d3",
 		action : [["action", ""]]
+	},
+	"wand of the war mage, +1, +2, or +3" : {
+		name : "Wand of the War Mage, +1, +2, or +3",
+		source : [["SRD", 249], ["D", 212]],
+		type : "wand",
+		description : "While I am holding this wand, I gain a bonus to spell attack rolls determined by the wand's rarity: uncommon (+1), rare (+2), or very rare (+3). In addition, I ignore half cover when making a spell attack.",
+		descriptionFull : "While you are holding this wand, you gain a bonus to spell attack rolls determined by the wand's rarity: uncommon (+1), rare (+2), or very rare (+3). In addition, you ignore half cover when making a spell attack.",
+		attunement : true,
+		weight : 1,
+		prerequisite : "Requires attunement by a spellcaster",
+		prereqeval : function(v) { return v.isSpellcaster; },
+		choices : ["+1 Wand (uncommon)", "+2 Wand (rare)", "+3 Wand (very rare)"],
+		"+1 wand (uncommon)" : {
+			name : "Wand of the War Mage +1",
+			rarity : "uncommon",
+			magicItemTable : "F",
+			description : "While I am holding this wand, I gain a +1 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
+			calcChanges : {
+				spellCalc : [
+					function (type, spellcasters, ability) {
+						if (type == "attack") return 1;
+					},
+					"I gain a +1 bonus to spell attack rolls."
+				]
+			}
+		},
+		"+2 wand (rare)" : {
+			name : "Wand of the War Mage +2",
+			rarity : "rare",
+			magicItemTable : "G",
+			description : "While I am holding this wand, I gain a +2 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
+			calcChanges : {
+				spellCalc : [
+					function (type, spellcasters, ability) {
+						if (type == "attack") return 2;
+					},
+					"I gain a +2 bonus to spell attack rolls."
+				]
+			}
+		},
+		"+3 wand (very rare)" : {
+			name : "Wand of the War Mage +3",
+			rarity : "very rare",
+			magicItemTable : "H",
+			description : "While I am holding this wand, I gain a +3 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
+			calcChanges : {
+				spellCalc : [
+					function (type, spellcasters, ability) {
+						if (type == "attack") return 3;
+					},
+					"I gain a +3 bonus to spell attack rolls."
+				]
+			}
+		}
+	},
+	"wand of web" : {
+		name : "Wand of Web",
+		source : [["SRD", 249], ["D", 212]],
+		type : "wand",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "This wand has 7 charges and regains 1d6+1 expended charges daily at dawn. As an action, I can expend 1 of its charges to cast Web (save DC 15) from it. If I expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		descriptionFull : "This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges to cast the Web spell (save DC 15) from it.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		attunement : true,
+		weight : 1,
+		prerequisite : "Requires attunement by a spellcaster",
+		prereqeval : function(v) { return v.isSpellcaster; },
+		usages : 7,
+		recovery : "dawn",
+		additional : "regains 1d6+1",
+		spellFirstColTitle : "Ch",
+		fixedDC : 15,
+		spellcastingBonus : {
+			name : "1 charge",
+			spells : ["web"],
+			selection : ["web"],
+			firstCol : 1
+		}
+	},
+	"wand of wonder" : {
+		name : "Wand of Wonder",
+		source : [["SRD", 249], ["D", 212]],
+		type : "wand",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This wand has 7 charges and regains 1d6+1 expended charges daily at dawn. If I expend its last charge, roll a d20. On a 1, the wand crumbles into dust and is destroyed. As an action while holding it, I can expend 1 charge, choose a target within 120 ft, and roll a 1d100 to see what happens, see the Notes page.",
+		descriptionFull : "This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges and choose a target within 120 feet of you. The target can be a creature, an object, or a point in space. Roll d100 and consult the following table to discover what happens." + desc([
+			"If the effect causes you to cast a spell from the wand, the spell's save DC is 15. If the spell normally has a range expressed in feet, its range becomes 120 feet if it isn't already.",
+			"If an effect covers an area, you must center the spell on and include the target. If an effect has multiple possible subjects, the DM randomly determines which ones are affected.",
+			"The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into dust and is destroyed.\n",
+			toUni("d100 and effects"),
+			toUni("01-05") + ". You cast Slow.",
+			toUni("06-10") + ". You cast Faerie Fire.",
+			toUni("11-15") + ". You are stunned until the start of your next turn, believing something awesome just happened.",
+			toUni("16-20") + ". You cast Gust of Wind.",
+			toUni("21-25") + ". You cast Detect Thoughts on the target you chose. If you didn't target a creature, you instead take 1d6 psychic damage.",
+			toUni("26-30") + ". You cast Stinking Cloud.",
+			toUni("31-33") + ". Heavy rain falls in a 60-foot radius centered on the target. The area becomes lightly obscured. The rain falls until the start of your next turn.",
+			toUni("34-36") + ". An animal appears in the unoccupied space nearest the target. The animal isn't under your control and acts as it normally would. Roll a d100 to determine which animal appears. On a 01-25, a rhinoceros appears; on a 26-50, an elephant appears; and on a 51-100, a rat appears.",
+			toUni("37-46") + ". You cast Lightning Bolt.",
+			toUni("47-49") + ". A cloud of 600 oversized butterflies fills a 30-foot radius centered on the target. The area becomes heavily obscured. The butterflies remain for 10 minutes.",
+			toUni("50-53") + ". You enlarge the target as if you had cast Enlarge/Reduce. If the target can't be affected by that spell or if you didn't target a creature, you become the target.",
+			toUni("54-58") + ". You cast Darkness.",
+			toUni("59-62") + ". Grass grows on the ground in a 60-foot radius centered on the target. If grass is already there, it grows to ten times its normal size and remains overgrown for 1 minute.",
+			toUni("63-65") + ". An object of the DM's choice disappears into the Ethereal Plane. The object must be neither worn nor carried, within 120 feet of the target, and no larger than 10 feet in any dimension.",
+			toUni("66-69") + ". You shrink yourself as if you had cast Enlarge/Reduce on yourself.",
+			toUni("70-79") + ". You cast Fireball.",
+			toUni("80-84") + ". You cast Invisibility.",
+			toUni("85-87") + ". Leaves grow from the target. If you chose a point in space as the target, leaves sprout from the creature nearest to that point. Unless they are picked off, the leaves turn brown and fall off after 24 hours.",
+			toUni("88-90") + ". A stream of 1d4 \xD7 10 gems, each worth 1 gp, shoots from the wand's tip in a line 30 feet long and 5 feet wide. Each gem deals 1 bludgeoning damage, and the total damage of the gems is divided equally among all creatures in the line.",
+			toUni("91-95") + ". A burst of colorful shimmering light extends from you in a 30-foot radius. You and each creature in the area that can see must succeed on a DC 15 Constitution saving throw or become blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
+			toUni("96-97") + ". The target's skin turns bright blue for 1d10 days. If you chose a point in space, the creature nearest to that point is affected.",
+			toUni("98-00") + ". If you targeted a creature, it must make a DC 15 Constitution saving throw. If you didn't target a creature, you become the target and must make the saving throw. If the saving throw fails by 5 or more, the target is instantly petrified. On any other failed save, the target is restrained and begins to turn to stone. While restrained in this way, the target must repeat the saving throw at the end of its next turn, becoming petrified on a failure or ending the effect on a success. The petrification lasts until the target is freed by the Greater Restoration spell or similar magic."
+		]),
+		attunement : true,
+		weight : 1,
+		prerequisite : "Requires attunement by a spellcaster",
+		prereqeval : function(v) { return v.isSpellcaster; },
+		usages : 7,
+		recovery : "dawn",
+		additional : "regains 1d6+1",
+		toNotesPage : [{
+			name : "Table of Effects",
+			popupName : "Wand of Wonder's Table of Effects",
+			note : [
+				"As an action I can expend 1 of the wand's 7 charges and choose a target within 120 ft of me. The target can be a creature, an object, or a point in space. Roll d100 and consult the effect below to discover what happens.",
+				"If the effect causes me to cast a spell from the wand, the spell's save DC is 15. If the spell normally has a range expressed in feet, its range becomes 120 ft if it isn't already.",
+				"If an effect covers an area, I must center the spell on and include the target. If an effect has multiple possible subjects, the DM randomly determines which ones are affected.",
+				"\nd100 RESULT AND EFFECTS",
+				"01-05: I cast Slow.",
+				"06-10: I cast Faerie Fire.",
+				"11-15: I am stunned until the start of my next turn, believing something awesome just happened.",
+				"16-20: I cast Gust of Wind.",
+				"21-25: I cast Detect Thoughts on the target I chose. If I didn't target a creature, I instead take 1d6 psychic damage.",
+				"26-30: I cast Stinking Cloud.",
+				"31-33: Heavy rain falls in a 60-ft radius centered on the target. The area becomes lightly obscured. The rain falls until the start of my next turn.",
+				"34-36: An animal appears in the unoccupied space nearest the target. The animal isn't under my control and acts as it normally would. Roll a d100 to determine which animal appears. On a 01-25, a rhinoceros appears; on a 26-50, an elephant appears; and on a 51-100, a rat appears.",
+				"37-46: I cast Lightning Bolt.",
+				"47-49: A cloud of 600 oversized butterflies fills a 30-ft radius centered on the target. The area becomes heavily obscured. The butterflies remain for 10 minutes.",
+				"50-53: I enlarge the target as if I had cast Enlarge/Reduce. If the target can't be affected by that spell or if I didn't target a creature, I become the target.",
+				"54-58: I cast Darkness.",
+				"59-62: Grass grows on the ground in a 60-ft radius centered on the target. If grass is already there, it grows to ten times its normal size and remains overgrown for 1 minute.",
+				"63-65: An object of the DM's choice disappears into the Ethereal Plane. The object must be neither worn nor carried, within 120 ft of the target, and no larger than 10 ft in any dimension.",
+				"66-69: I shrink myself as if I had cast Enlarge/Reduce on myself.",
+				"70-79: I cast Fireball.",
+				"80-84: I cast Invisibility.",
+				"85-87: Leaves grow from the target. If I chose a point in space as the target, leaves sprout from the creature nearest to that point. Unless they are picked off, the leaves turn brown and fall off after 24 hours.",
+				"88-90: A stream of 1d4 \xD7 10 gems, each worth 1 gp, shoots from the wand's tip in a line 30 ft long and 5 ft wide. Each gem deals 1 bludgeoning damage, and the total damage of the gems is divided equally among all creatures in the line.",
+				"91-95: A burst of colorful shimmering light extends from me in a 30-ft radius. Me and each creature in the area that can see must succeed on a DC 15 Constitution saving throw or become blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
+				"96-97: The target's skin turns bright blue for 1d10 days. If I chose a point in space, the creature nearest to that point is affected.",
+				"98-00: If I targeted a creature, it must make a DC 15 Constitution saving throw. If I didn't target a creature, I become the target and must make the saving throw. If the saving throw fails by 5 or more, the target is instantly petrified. On any other failed save, the target is restrained and begins to turn to stone. While restrained in this way, the target must repeat the saving throw at the end of its next turn, becoming petrified on a failure or ending the effect on a success. The petrification lasts until the target is freed by the Greater Restoration spell or similar magic."
+			]
+		}]
 	},
 	"weapon, +1, +2, or +3" : {
 		name : "Weapon, +1, +2, or +3",
@@ -5158,6 +5815,37 @@ var Base_MagicItemsList = {
 			allowDuplicates : true
 		}
 	},
+	"well of many worlds" : {
+		name : "Well of Many Worlds",
+		source : [["SRD", 250], ["D", 213]],
+		type : "wondrous item",
+		rarity : "legendary",
+		magicItemTable : "I",
+		description : "As an action, I can unfold this black cloth, 6 ft in diameter, and place it on a solid surface, whereupon it creates a two-way portal to another world or plane, a random one each time. I can use an action to grab it from the edges and fold it, closing the portal. Once used in this way, it can't do so again for 1d8 hours.",
+		descriptionFull : "This fine black cloth, soft as silk, is folded up to the dimensions of a handkerchief. It unfolds into a circular sheet 6 feet in diameter.\n   You can use an action to unfold and place the well of many worlds on a solid surface, whereupon it creates a two-way portal to another world or plane of existence. Each time the item opens a portal, the DM decides where it leads. You can use an action to close an open portal by taking hold of the edges of the cloth and folding it up. Once well of many worlds has opened a portal, it can't do so again for 1d8 hours.",
+		action : [["action", " (place/fold)"]],
+		usages : 1,
+		recovery : "1d8 h"
+	},
+	"wind fan" : {
+		name : "Wind Fan",
+		source : [["SRD", 250], ["D", 213]],
+		type : "wondrous item",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "While holding this fan, I can use an action to cast Gust of Wind (save DC 13) from it. Once used, the fan shouldn't be used again until the next dawn. Each time it is used again before then, it has a cumulative 20% chance of not working and tearing into useless, nonmagical tatters.",
+		descriptionFull : "While holding this fan, you can use an action to cast the Gust of Wind spell (save DC 13) from it. Once used, the fan shouldn't be used again until the next dawn. Each time it is used again before then, it has a cumulative 20% chance of not working and tearing into useless, nonmagical tatters.",
+		usages : 1,
+		recovery : "dawn",
+		additional : "more uses +20% to destroy",
+		fixedDC : 13,
+		spellcastingBonus : {
+			name : "Once per dawn",
+			spells : ["gust of wind"],
+			selection : ["gust of wind"],
+			firstCol : "oncelr"
+		}
+	},
 	"winged boots" : {
 		name : "Winged Boots",
 		source : [["SRD", 250], ["D", 214]],
@@ -5169,7 +5857,7 @@ var Base_MagicItemsList = {
 		attunement : true,
 		usages : "240 min",
 		recovery : "Special",
-		additional : "regain 2h/12h"
+		additional : "regains 2h/12h"
 	},
 	"wings of flying" : {
 		name : "Wings of Flying",
