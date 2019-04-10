@@ -8,7 +8,7 @@ var TreasureCheckpointsTable = {
 	G : { tier : 2, points : 20 },
 	H : { tier : 3, points : 20 },
 	I : { tier : 3, points : 24 }
-}
+};
 
 var Base_MagicItemsList = {
 	"adamantine armor" : {
@@ -973,7 +973,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "You gain a +1 bonus to AC and saving throws while you wear this cloak.",
 		attunement : true,
 		extraAC : [{name : "Cloak of Protection", mod : 1, magic : true, text : "I gain a +1 bonus to AC while attuned."}],
-		addMod : [{ type : "save", field : "all", mod : 1, text : "While I wear the Cloak of Protection, I gain a +1 to all my saving throws." }]
+		addMod : [{ type : "save", field : "all", mod : 1, text : "While I wear the Cloak of Protection, I gain a +1 bonus to all my saving throws." }]
 	},
 	"cloak of the bat" : {
 		name : "Cloak of the Bat",
@@ -2834,7 +2834,7 @@ var Base_MagicItemsList = {
 				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
 			}
 		},
-		addMod : [{ type : "save", field : "all", mod : 1, text : "While the Luck Blade is on my person, I gain a +1 to all my saving throws." }],
+		addMod : [{ type : "save", field : "all", mod : 1, text : "While the Luck Blade is on my person, I gain a +1 bonus to all my saving throws." }],
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
@@ -2946,7 +2946,6 @@ var Base_MagicItemsList = {
 				nTitle : "Apply " + itemName + "?",
 				cMsg : "Do you want to apply the +2 bonus to the " + statName + " score and maximum from the " + itemName + " permanently? This increase will stay even after you remove this magic item, but will not be applied if you select 'No', even if you keep the magic item selected.\n\n" + (alreadyAppliedBefore ? "It seems you have applied this item before. If you click 'No', you will be prompted to remove all ability score increases from " + itemName : "If you want to remove this ability score increase at a later time, just add the item again and you will be prompted to remove the ability score increase then.")
 			});
-			var removeAll = false;
 			if (applyChange == 3) {
 				if (alreadyAppliedBefore) {
 					var removeAll = app.alert({
@@ -3264,7 +3263,7 @@ var Base_MagicItemsList = {
 			regExpSearch : /oathbow/i,
 			name : "Oathbow",
 			source : [["SRD", 231], ["D", 183]],
-			description : "Ammunition, heavy, two-handed; Vs. sworn enemy: adv, +3d6 damage, no cover/range penalties",
+			description : "Ammunition, heavy, two-handed; Vs. sworn enemy: adv, +3d6 damage, no cover/range penalties"
 		}
 	},
 	"oil of etherealness" : { // contains contributions by AelarTheElfRogue
@@ -4146,7 +4145,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "You gain a +1 bonus to AC and saving throws while wearing this ring.",
 		attunement : true,
 		extraAC : [{name : "Ring of Protection", mod : 1, magic : true, text : "I gain a +1 bonus to AC while attuned."}],
-		addMod : [{ type : "save", field : "all", mod : 1, text : "While I wear the Ring of Protection, I gain a +1 to all my saving throws." }]
+		addMod : [{ type : "save", field : "all", mod : 1, text : "While I wear the Ring of Protection, I gain a +1 bonus to all my saving throws." }]
 	},
 	"ring of regeneration" : {
 		name : "Ring of Regeneration",
@@ -4498,7 +4497,7 @@ var Base_MagicItemsList = {
 		usages : 6,
 		recovery : "Dusk",
 		additional : "regains 1d6",
-		addMod: [{ type: "save", field: "all", mod: 1, text: "I gain a +1 bonus to saving throws while I wear the Robe of Stars." }],
+		addMod: [{ type: "save", field: "all", mod: 1, text: "While wearing the Robe of Stars, I gain a +1 bonus to all my saving throws." }],
 		spellFirstColTitle: "Ch",
 		spellcastingBonus: {
 			name: "1 charge",
@@ -4538,7 +4537,7 @@ var Base_MagicItemsList = {
 			name : "Robe of the Archmagi",
 			source : [["SRD", 239], ["D", 194]],
 			ac : 15,
-			weight : 4 
+			weight : 4
 		},
 		choices : ["Good", "Neutral", "Evil"],
 		"good" : {
@@ -4567,6 +4566,153 @@ var Base_MagicItemsList = {
 		descriptionFull : "This robe has cloth patches of various shapes and colors covering it. While wearing the robe. you can use an action to detach one of the patches, causing it to become the object or creature it represents. Once the last patch is removed, the robe becomes an ordinary garment.\n\nThe robe has two of each of the following patches:\n \u2022 Dagger\n \u2022 Bullseye lantern (filled and lit)\n \u2022 Steel mirror\n \u2022 10-foot pole\n \u2022 Hempen rope (50 feet, coiled)\n \u2022 Sack\n\nIn addition, the robe has 4d4 other patches. The DM chooses the patches or determines them randomly.\n\n" + toUni("d100\tPatch") + "\n01-08\tBag of 100 gp\n09-15\tSilver coffer (1 foot long, 6 inches wide and deep) worth 500 gp\n16-22\tIron door (up to 10 feet wide and 10 feet high, barred on one side of your choice), which you can place in an opening you can reach; it conforms to fit the opening, attaching and hinging itself\n23-30\t10 gems worth 100 gp each\n31-44\tWooden ladder (24 feet long)\n45-51\tA riding horse with saddle bags\n52-59\tPit (a cube 10 feet on a side), which you can place on the ground within 10 feet of you\n60-68\t4 potions of healing\n69-75\tRowboat (12 feet long)\n76-83\tSpell scroll containing one spell of 1st to 3rd level\n84-90\t2 mastiffs\n91-96\tWindow (2 feet by 4 feet, up to 2 feet deep), which you can place on a vertical surface you can reach\n97-00\tPortable ram",
 		weight : 4,
 		action : ["action", ""]
+	},
+	"rod of absorption" : {
+		name : "Rod of Absorption",
+		source : [["SRD", 239], ["D", 195]],
+		type : "rod",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "As a reaction while holding this rod, I can use it to absorb a spell targeting only me, without an area of effect. It has no effect and its spell slot level is stored in the rod. I can expend these levels as if they are spell slots to power my own spells up to 5th-level. Once the rod has absorbed 50 levels, it can absorb no more.",
+		descriptionLong : "As a reaction while holding this rod, I can use it to absorb a spell targeting only me and without an area of effect. The spell has no effect and its energy is stored in the rod. This energy has the same level as the spell when it was cast. Once the rod has absorbed 50 levels, it can absorb no more. I can expend these levels as if they are spell slots to power my own spells up to 5th-level and only for spell slot levels I have access to otherwise. For example, I can expend 3 levels to cast one of my spells using a 3rd-level spell slot. When the rod can't absorb any more levels and has no energy left, it becomes nonmagical.",
+		descriptionFull : "While holding this rod, you can use your reaction to absorb a spell that is targeting only you and not with an area of effect. The absorbed spell's effect is canceled, and the spell's energy\u2014not the spell itself\u2014is stored in the rod. The energy has the same level as the spell when it was cast. The rod can absorb and store up to 50 levels of energy over the course of its existence. Once the rod absorbs 50 levels of energy, it can't absorb more. If you are targeted by a spell that the rod can't store, the rod has no effect on that spell.\n   When you become attuned to the rod, you know how many levels of energy the rod has absorbed over the course of its existence, and how many levels of spell energy it currently has stored.\n   If you are a spellcaster holding the rod, you can convert energy stored in it into spell slots to cast spells you have prepared or know. You can create spell slots only of a level equal to or lower than your own spell slots, up to a maximum of 5th level. You use the stored levels in place of your slots, but otherwise cast the spell as normal. For example, you can use 3 levels stored in the rod as a 3rd-level spell slot.\n   A newly found rod has 1d10 levels of spell energy stored in it already. A rod that can no longer absorb spell energy and has no energy remaining becomes nonmagical.",
+		attunement : true,
+		weight : 2,
+		action : [["reaction", ""]],
+		extraLimitedFeatures : [{
+			name : "Rod of Absorption [Total Levels Absorbed]",
+			usages : 50,
+			recovery : "Never"
+		}, {
+			name : "Rod of Absorption [Stored Levels]",
+			usages : "1d10",
+			recovery : "Never"
+		}],
+	},
+	"rod of alertness" : { // contains contributions by SoilentBrad
+		name : "Rod of Alertness",
+		source : [["SRD", 240], ["D", 196]],
+		type : "rod",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "While holding this rod, I have adv. on initiative and Perception and can cast certain spells. As an action once per dawn, I can plant it in the ground, making it shed 60-ft radius bright light, dim for another 60 ft for 10 min. In the bright light, my allies and I gain +1 AC, +1 bonus to saves, and can sense invisible hostiles.",
+		descriptionLong : "While holding this rod, I have advantage on my initiative and Wisdom (Perception) checks. As an action, I can use it to cast either Detect Evil and Good, Detect Magic, Detect Poison and Disease, or See Invisibility. As an action once per dawn, I can plant the rod's haft in the ground, making its head shed bright light in a 60-ft radius and dim light for another 60 ft. This lasts 10 minutes or until a creature pulls the rod from the ground as an action. While in the bright light, my allies and I gain +1 bonus to AC and saving throws and can sense the location of any invisible hostile creatures that are also within the bright light.",
+		descriptionFull : "This rod has a flanged head and the following properties.\n   " + toUni("Alertness") + ". While holding the rod, you have advantage on Wisdom (Perception) checks and on rolls for initiative.\n   " + toUni("Spells") + ". While holding the rod, you can use an action to cast one of the following spells from it: Detect Evil and Good, Detect Magic, Detect Poison and Disease, or See Invisibility.\n   " + toUni("Protective Aura") + ". As an action, you can plant the haft end of the rod in the ground, whereupon the rod's head sheds bright light in a 60-foot radius and dim light for an additional 60 feet. While in that bright light, you and any creature that is friendly to you gain a +1 bonus to AC and saving throws and can sense the location of any invisible hostile creature that is also in the bright light.\n   The rod's head stops glowing and the effect ends after 10 minutes, or when a creature uses an action to pull the rod from the ground. This property can't be used again until the next dawn.",
+		attunement : true,
+		weight : 2,
+		usages : 1,
+		recovery : "dawn",
+		limfeaname : "Rod of Alertness (Plant in Ground)",
+		advantages : [["Initiative", true], ["Perception", true]],
+		vision : [["Adv. on Perception checks", 0]],
+		action : [["action", ""]],
+		spellcastingBonus: [{
+			name: "Robe of Alertness",
+			spells: ["detect evil and good", "detect magic", "detect poison and disease", "see invisibility"],
+			selection: ["detect evil and good", "detect magic", "detect poison and disease", "see invisibility"],
+			times: 4
+		}]
+	},
+	"rod of lordly might" : {
+		name : "Rod of Lordly Might",
+		source : [["SRD", 240], ["D", 196]],
+		type : "rod",
+		rarity : "legendary",
+		magicItemTable : "I",
+		description : "This rod functions as a +3 mace. As a bonus action, I can press one of the six buttons on the rod, changing it. The rod can also drain life, paralyze, and terrify, each once per dawn. See the notes page for what the different buttons do and how the functions work that can each be used once per dawn.",
+		descriptionFull : "This rod has a flanged head, and it functions as a magic mace that grants a +3 bonus to attack and damage roll made with it. The rod has properties associated with six different buttons that are set in a row along the haft. It has three other properties as well, detailed below.\n   " + toUni("Six Buttons") + ". You can press one of the rod's six buttons as a bonus action. A button's effect lasts until you push a different button or until you push the same button again, which causes the rod to revert to its normal form.\n   If you press " + toUni("button 1") + ", the rod becomes a flame tongue as a fiery blade sprouts from the end opposite the rod's flanged head (you choose the type of sword).\n   If you press " + toUni("button 2") + ", the rod's flanged head folds down and two crescent-shaped blades spring out, transforming the rod into a magic battleaxe that grants a +3 bonus to attack and damage rolls made with it.\n   If you press " + toUni("button 3") + ", the rod's flanged head folds down, a spear point springs from the rod's tip, and the rod's handle lengthens into a 6-foot haft, transforming the rod into a magic spear that grants a +3 bonus to attack and damage rolls made with it.\n   If you press " + toUni("button 4") + ", the rod transforms into a climbing pole up to 50 feet long, as you specify. In surfaces as hard as granite, a spike at the bottom and three hooks at the top anchor the pole. Horizontal bars 3 inches long fold out from the sides, 1 foot apart, forming a ladder. The pole can bear up to 4,000 pounds. More weight or lack of solid anchoring causes the rod to revert to its normal form.\n   If you press " + toUni("button 5") + ", the rod transforms into a handheld battering ram and gram its user a +10 bonus to Strength checks made to break through doors, barricades, and other barriers.\n   If you press " + toUni("button 6") + ", the rod assumes or remains in its normal form and indicates magnetic north. (Nothing happens if this function of the rod is used in a location that has no magnetic north.) The rod also gives you knowledge of your approximate depth beneath the ground or your height above it.\n   " + toUni("Drain Life") + ". When you hit a creature with a melee attack using the rod, you can force the target to make a DC 17 Constitution saving throw. On a failure, the target rakes an extra 4d6 necrotic damage, and you regain a number of hit points equal to half that necrotic damage. This property can't be used again until the next dawn.\n   " + toUni("Paralyze") + ". When you hit a creature with a melee attack using the rod, you can force the target to make a DC 17 Strength saving throw. On a failure, the target is paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on a success. This property can't be used again until the next dawn.\n   " + toUni("Terrify") + ". While holding the rod, you can use an action to force each creature you can see within 30 feet of you to make a DC 17 Wisdom saving throw. On a failure, a target is frightened of you for 1 minute. A frightened target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. This property can't be used again until the next dawn.",
+		attunement : true,
+		weight : 2,
+		action: [["bonus action", " (press button)"], ["action", " (Terrify)"]],
+		extraLimitedFeatures : [{
+			name : "Rod of Lordly Might (Drain Life)",
+			usages : 1,
+			recovery : "dawn"
+		}, {
+			name : "Rod of Lordly Might (Paralyze)",
+			usages : 1,
+			recovery : "dawn"
+		}, {
+			name : "Rod of Lordly Might (Terrify)",
+			usages : 1,
+			recovery : "dawn"
+		}],
+		weaponOptions : [{
+			baseWeapon : "battleaxe",
+			regExpSearch : /^(?=.*rod)(?=.*lordly)(?=.*might)(?=.*axe).*$/i,
+			name : "Rod of Lordly Might (Axe)",
+			source : [["SRD", 240], ["D", 196]],
+			modifiers : [3,3]
+		}, {
+			baseWeapon : "mace",
+			regExpSearch : /^(?=.*rod)(?=.*lordly)(?=.*might)(?=.*mace).*$/i,
+			name : "Rod of Lordly Might (Mace)",
+			source : [["SRD", 240], ["D", 196]],
+			modifiers : [3,3]
+		}, {
+			baseWeapon : "spear",
+			regExpSearch : /^(?=.*rod)(?=.*lordly)(?=.*might)(?=.*spear).*$/i,
+			name : "Rod of Lordly Might (Spear)",
+			source : [["SRD", 240], ["D", 196]],
+			modifiers : [3,3]
+		}],
+		toNotesPage : [{
+			name : "Buttons and Other Functions",
+			popupName : "Rod of Lordly Might's functions",
+			note : [
+				"The rod of lordly might has a flanged head, and it functions as a magic mace that grants a +3 bonus to attack and damage roll made with it.",
+				"As a bonus action, I can press one of the six different buttons that are set in a row along the haft of the rod. A button's effect lasts until a different button is pushed, or until the same button is pushed again, whereupon it reverts to its normal form.",
+				"\u2022 1st button. A fiery blade sprouts from the end opposite the rod's flanged head. These flames shed bright light in a 40-ft radius and dim light for an additional 40 ft. It now functions as a sword (I can choose which type) that deals an extra 2d6 fire damage to any target it hits. [Write \"lordly might\" in the name of a sword in the attack section to have this damage added to the attack's description, for example \"Rod of Lordly Might (Greatsword)\".]",
+				"\u2022 2nd button. The rod's flanged head folds down and two crescent-shaped blades spring out, transforming the rod into a magic battleaxe that grants a +3 bonus to attack and damage rolls made with it.",
+				"\u2022 3rd button. The rod's flanged head folds down, a spear point springs from the rod's tip, and the rod's handle lengthens into a 6-foot haft, transforming the rod into a magic spear that grants a +3 bonus to attack and damage rolls made with it.",
+				"\u2022 4th button. The rod transforms into a climbing pole up to 50 ft long, as I specify. In surfaces as hard as granite, a spike at the bottom and three hooks at the top anchor the pole. Horizontal bars 3 inch long fold out from the sides, 1 ft apart, forming a ladder. The pole can bear up to 4000 lb. More weight or lack of solid anchoring causes the rod to revert to its normal form.",
+				"\u2022 5th button. The rod transforms into a handheld battering ram and gram its user a +10 bonus to Strength checks made to break through doors, barricades, and other barriers.",
+				"\u2022 6th button. The rod assumes or remains in its normal form and indicates magnetic north. (Nothing happens if this function of the rod is used in a location that has no magnetic north.) The rod also gives me knowledge of my approximate depth beneath the ground or my height above it.",
+				"The rod also has three functions that work independent of the buttons.",
+				"\u2022 Drain Life. When I hit a creature with a melee attack using the rod, I can force the target to make a DC 17 Constitution saving throw. On a failure, the target rakes an extra 4d6 necrotic damage, and I regain a number of hit points equal to half that necrotic damage. This property can't be used again until the next dawn.",
+				"\u2022 Paralyze. When I hit a creature with a melee attack using the rod, I can force the target to make a DC 17 Strength saving throw. On a failure, the target is paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on a success. This property can't be used again until the next dawn.",
+				"\u2022 Terrify. As an action while holding the rod, I can force each creature I can see within 30 ft of me to make a DC 17 Wisdom saving throw. On a failure, a target is frightened of me for 1 minute. A frightened target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. This property can't be used again until the next dawn."
+			]
+		}],
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*lordly)(?=.*might).*$/i).test(v.WeaponText)) {
+						v.theWea.isMagicWeapon = true;
+						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
+						fields.Description += (fields.Description ? '; ' : '') + '+2d6 fire damage';
+					}
+				},
+				'If I include the words "Lordly Might" in a the name of a sword, it will be treated as the magic weapon Flame Tongue. It adds +2d6 fire damage on a hit and shines light.'
+			]
+		}
+	},
+	"rod of rulership" : {
+		name : "Rod of Rulership",
+		source : [["SRD", 240], ["D", 197]],
+		type : "rod",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "As an action once per dawn, I can use this rod to have chosen creatures I can see within 120 ft make a DC 15 Wis save or be charmed by me for 8 hours. While charmed in this way, a target regards me as its trusted leader. It stops being charmed if my allies or I harm it or it is commanded to go against its nature.",
+		descriptionFull : "You can use an action to present the rod and command obedience from each creature of your choice that you can see within 120 feet of you. Each target must succeed on a DC 15 Wisdom saving throw or be charmed by you for 8 hours. While charmed in this way, the creature regards you as its trusted leader. If harmed by you or your companions, or commanded to do something contrary to its nature, a target ceases to be charmed in this way. The rod can't be used again until the next dawn.",
+		attunement : true,
+		weight : 2,
+		action : [["action", ""]],
+		usages : 1,
+		recovery : "dawn"
+	},
+	"rod of security" : {
+		name : "Rod of Security",
+		source : [["SRD", 241], ["D", 197]],
+		type : "rod",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "As an action once per 10 days, I can transport myself and up to 199 willing others I can see to an extraplanar paradise for 200 days divided by the number of creatures or until I end it as an action. Creatures within the paradise don't age, have enough to eat and drink, and regain HP every hour as if having spent 1 HD.",
+		descriptionFull : "While holding this rod, you can use an action to activate it. The rod then instantly transports you and up to 199 other willing creatures you can see to a paradise that exists in an extraplanar space. You choose the form that the paradise takes. It could be a tranquil garden, lovely glade, cheery tavern, immense palace, tropical island, fantastic carnival, or whatever else you can imagine. Regardless of its nature, the paradise contains enough water and food to sustain its visitors. Everything else that can be interacted with inside the extraplanar space can exist only there. For example, a flower picked from a garden in the paradise disappears if it is taken outside the extraplanar space.\n   For each hour spent in the paradise, a visitor regains hit points as if it had spent 1 Hit Die. Also, creatures don't age while in the paradise, although time passes normally. Visitors can remain in the paradise for up to 200 days divided by the number of creatures present (round down).\n   When the time runs out or you use an action to end it, all visitors reappear in the location they occupied when you activated the rod, or an unoccupied space nearest that location. The rod can't be used again until ten days have passed.",
+		weight : 2,
+		usages: 1,
+		recovery: "10 days",
+		action : [["action", ""]]
 	},
 	"rope of climbing" : {
 		name : "Rope of Climbing",
@@ -4637,7 +4783,7 @@ var Base_MagicItemsList = {
 			name : "Scimitar of Speed",
 			source : [["SRD", 241], ["D", 199]],
 			description : "Finesse, light; Extra attack as bonus action",
-			modifiers : [2, 2]	
+			modifiers : [2, 2]
 		}
 	},
 	"shield, +1, +2, or +3" : {
@@ -4891,7 +5037,7 @@ var Base_MagicItemsList = {
 						if ((/mixed levels/).test(spName)) {
 							spellObj.firstCol = spellObj.level < 3 ? 13 : spellObj.level < 5 ? 15 : spellObj.level < 7 ? 17 : spellObj.level < 9 ? 18 : 19;
 							return true;
-						};
+						}
 					}, ""
 				]
 			}
@@ -4910,13 +5056,319 @@ var Base_MagicItemsList = {
 		shieldAdd : "Spellguard Shield",
 		savetxt : { adv_vs : ["spells", "magical effects"] }
 	},
+	"sphere of annihilation" : {
+		name : "Sphere of Annihilation",
+		source : [["SRD", 242], ["D", 201]],
+		type : "wondrous item",
+		rarity : "legendary",
+		magicItemTable : "I",
+		description : "This 1-ft radius black sphere obliterates all matter it comes into contact with, except artifacts. Anything not wholly engulfed by it and destroyed takes 4d10 force damage. I can control it as an action with a DC 25 Arcana check, moving it 5 ft per my Int mod, or 10 ft towards me if I fail. See notes page for more details.",
+		descriptionFull : "This 2-foot-diameter black sphere is a hole in the multiverse, hovering in space and stabilized by a magical field surrounding it.\n   The sphere obliterates all matter it passes through and all matter that passes through it. Artifacts are the exception. Unless an artifact is susceptible to damage from a sphere of annihilation, it passes through the sphere unscathed. Anything else that touches the sphere but isn't wholly engulfed and obliterated by it takes 4d10 force damage.\n   The sphere is stationary until someone controls it. If you are within 60 feet of an uncontrolled sphere, you can use an action to make a DC 25 Intelligence (Arcana) check. On a success, the sphere levitates in one direction of your choice, up to a number of feet equal to 5 \xD7 your Intelligence modifier (minimum 5 feet). On a failure, the sphere moves 10 feet toward you. A creature whose space the sphere enters must succeed on a DC 13 Dexterity saving throw or be touched by it, taking 4d10 force damage.\n   If you attempt to control a sphere that is under another creature's control, you make an Intelligence (Arcana) check contested by the other creature's Intelligence (Arcana) check. The winner of the contest gains control of the sphere and can levitate it as normal.\n   If the sphere comes into contact with a planar portal, such as that created by the Gate spell, or an extradimensional space, such as that within a portable hole, the DM determines randomly what happens, using the following table.\n\n" + toUni("d100\tResult") + "\n01-50\tThe sphere is destroyed.\n51-85\tThe sphere moves through the portal or into the extradimensional space.\n86-00\tA spatial rift sends each creature and object within 180 feet of the sphere, including the sphere, to a random plane of existence.",
+		action : [["action", ""]],
+		toNotesPage : [{
+			name : "Special Properties",
+			popupName : "Sphere of Annihilation's Special Properties",
+			note : [
+				"This 2-ft-diameter black sphere is a hole in the multiverse, hovering in space and stabilized by a magical field surrounding it. It obliterates all matter it passes through and all matter that passes through it. Artifacts are the exception. Unless an artifact is susceptible to damage from a sphere of annihilation, it passes through the sphere unscathed. Anything else that touches the sphere but isn't wholly engulfed and obliterated by it takes 4d10 force damage.",
+				"The sphere is stationary until someone controls it. If I am within 60 ft of an uncontrolled sphere, I can use an action to make a DC 25 Intelligence (Arcana) check. On a success, the sphere levitates in one direction of my choice, up to 5 ft \xD7 my Intelligence modifier (minimum 5 ft). On a failure, the sphere moves 10 ft toward me. A creature whose space the sphere enters must succeed on a DC 13 Dexterity saving throw or be touched by it, taking 4d10 force damage.",
+				"If I attempt to control a sphere that is under another creature's control, I make an Intelligence (Arcana) check contested by the other creature's Intelligence (Arcana) check. The winner of the contest gains control of the sphere and can levitate it as normal.",
+				"If the sphere comes into contact with a planar portal, such as that created by the Gate spell, or an extradimensional space, such as that within a portable hole, the DM determines randomly what happens, by rolling a d100.",
+				" \u2022 01-50 The sphere is destroyed.",
+				" \u2022 51-85 The sphere moves through the portal or into the extradimensional space.",
+				" \u2022 86-00 A spatial rift sends each creature and object within 180 ft of the sphere, including the sphere, to a random plane of existence."
+			]
+		}]
+	},
+	"staff of charming" : {
+		name : "Staff of Charming",
+		source : [["SRD", 243], ["D", 201]],
+		type : "staff",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This staff has 10 charges, regaining 1d8+2 at dawn, 5% chance it loses its magic when its last charge is used. If an enchantment spell is cast only on me, I can use the staff to, once per dawn, turn a failed save into a success and as a reaction if I make the save, I can expend 1 charge to turn the spell back on its caster.",
+		descriptionFull : "While holding this staff, you can use an action to expend 1 of its 10 charges to cast Charm Person, Command, or Comprehend Languages from it using your spell save DC. The staff can also be used as a magic quarterstaff.\n   If you are holding the staff and fail a saving throw against an enchantment spell that targets only you, you can turn your failed save into a successful one. You can't use this property of the staff again until the next dawn. If you succeed on a save against an enchantment spell that targets only you, with or without the staff's intervention, you can use your reaction to expend 1 charge from the staff and turn the spell back on its caster as if you had cast the spell.\n   The staff regains 1d8+2 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff becomes a nonmagical quarterstaff.",
+		attunement : true,
+		weight : 4,
+		prerequisite : "Requires attunement by a bard, cleric, druid, sorcerer, warlock, or wizard",
+		prereqeval : function(v) { return classes.known.bard || classes.known.cleric || classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
+		extraLimitedFeatures : [{
+			name : "Staff of Charming (charges, regains 1d8+2)",
+			usages : 10,
+			recovery : "dawn"
+		}, {
+			name : "Staff of Charming (pass enchantment save)",
+			usages : 1,
+			recovery : "dawn"
+		}, {
+			name : "Figurine of Wondrous Power [Ivory Goat of Terror]",
+			usages : 1,
+			recovery : "15 days"
+		}],
+		usages : 10,
+		recovery : "dawn",
+		additional : "regains 1d8+2",
+		spellcastingAbility : "class",
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : {
+			name : "1 charge",
+			spells : ["charm person", "command", "comprehend languages"],
+			selection : ["charm person", "command", "comprehend languages"],
+			firstCol : 1,
+			times : 3
+		},
+		action : [["reaction", ""]]
+	},
+	"staff of fire" : {
+		name : "Staff of Fire",
+		source : [["SRD", 243], ["D", 201]],
+		type : "staff",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "I have resistance to fire while I'm holding this staff. It has 10 charges, regaining 1d6+4 expended charges at dawn. If I use its last charge, roll a d20. On a 1, it is destroyed. I can use its charges to cast Burning Hands (1 charge), Fireball (3 charges), and Wall of Fire (4 charges), using my spellcasting ability.",
+		descriptionFull : "You have resistance to fire damage while you hold this staff.\n   The staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC: Burning Hands (1 charge), Fireball (3 charges), or Wall of Fire (4 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff blackens, crumbles into cinders, and is destroyed.",
+		attunement : true,
+		weight : 4,
+		prerequisite : "Requires attunement by a druid, sorcerer, warlock, or wizard",
+		prereqeval : function(v) { return classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
+		usages : 10,
+		recovery : "dawn",
+		additional : "regains 1d6+4",
+		dmgres : ["Fire"],
+		spellcastingAbility : "class",
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : [{
+			name : "1 charge",
+			spells : ["burning hands"],
+			selection : ["burning hands"],
+			firstCol : 1
+		}, {
+			name : "3 charges",
+			spells : ["fireball"],
+			selection : ["fireball"],
+			firstCol : 3
+		}, {
+			name : "4 charges",
+			spells : ["wall of fire"],
+			selection : ["wall of fire"],
+			firstCol : 4
+		}]
+	},
+	"staff of frost" : {
+		name : "Staff of Frost",
+		source : [["SRD", 243], ["D", 202]],
+		type : "staff",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "I have resistance to cold while I'm holding this staff. It has 10 charges, regaining 1d6+4 at dawn. If I use its last charge, roll a d20. On a 1, it is destroyed. I can use its charges to cast Cone of Cold (5 charges), Fog Cloud (1 charge), Ice Storm (4 charges), and Wall of Ice (4 charges) using my spellcasting ability.",
+		descriptionFull : "You have resistance to cold damage while you hold this staff.\n   The staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC: Cone of Cold (5 charges), Fog Cloud (1 charge), Ice Storm (4 charges), or Wall of Ice (4 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1. the staff turns to water and is destroyed.",
+		attunement : true,
+		weight : 4,
+		prerequisite : "Requires attunement by a druid, sorcerer, warlock, or wizard",
+		prereqeval : function(v) { return classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
+		usages : 10,
+		recovery : "dawn",
+		additional : "regains 1d6+4",
+		dmgres : ["Cold"],
+		spellcastingAbility : "class",
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : [{
+			name : "1 charge",
+			spells : ["fog cloud"],
+			selection : ["fog cloud"],
+			firstCol : 1
+		}, {
+			name : "4 charges",
+			spells : ["ice storm", "wall of ice"],
+			selection : ["ice storm", "wall of ice"],
+			firstCol : 4,
+			times : 2
+		}, {
+			name : "5 charges",
+			spells : ["cone of cold"],
+			selection : ["cone of cold"],
+			firstCol : 5
+		}]
+	},
+	"staff of healing" : {
+		name : "Staff of Healing",
+		source : [["SRD", 243], ["D", 202]],
+		type : "staff",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This staff has 10 charges, regaining 1d6+4 expended charges at dawn. If I use its last charge, roll a d20. On a 1, it vanishes in a flash of light. I can use its charges to cast Cure Wounds (1 charge per spell level, up to 4th), Lesser Restoration (2 charges), and Mass Cure Wounds (5 charges) using my spellcasting ability.",
+		descriptionFull : "This staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC and spellcasting ability modifier: Cure Wounds (1 charge per spell level, up to 4th), Lesser Restoration (2 charges), or Mass Cure Wounds (5 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1. the staff vanishes in a flash of light, lost forever.",
+		attunement : true,
+		weight : 4,
+		prerequisite : "Requires attunement by a bard, cleric, or druid",
+		prereqeval : function(v) { return classes.known.bard || classes.known.cleric || classes.known.druid ? true : false; },
+		usages : 10,
+		recovery : "dawn",
+		additional : "regains 1d6+4",
+		spellcastingAbility : "class",
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : [{
+			name : "1+ charges",
+			spells : ["cure wounds"],
+			selection : ["cure wounds"],
+			firstCol : "1+"
+		}, {
+			name : "2 charges",
+			spells : ["lesser restoration"],
+			selection : ["lesser restoration"],
+			firstCol : 2
+		}, {
+			name : "5 charges",
+			spells : ["mass cure wounds"],
+			selection : ["mass cure wounds"],
+			firstCol : 5
+		}],
+		spellChanges : {
+			"cure wounds" : {
+				description : "1 living creature heals 1d8+spellcasting ability modifier HP, +1d8 per charge spend after the 1st",
+				changes : "The spell level Cure Wounds is cast at depends on the amount of charges spent, 1 charge per spell slot level."
+			}
+		}
+	},
+	"staff of power" : {
+		name : "Staff of Power",
+		source : [["SRD", 243], ["D", 202]],
+		type : "staff",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "While holding this +2 quarterstaff, I gain a +2 bonus on saves, AC, and spell attacks. The staff has 20 charges, regaining 2d8+4 at dawn. Charges can be used to cast spells, or, on a hit in melee with it, I can expend 1 charge to deal +1d6 force damage. As an action, I can break it, causing a 30-ft radius explosion.",
+		descriptionLong : "While holding this staff, I gain a +2 bonus on saves, AC, and spell attacks. The staff has 20 charges, regaining 2d8+4 at dawn. If I use the last charge, roll a d20. On a 1, it converts to a +2 quarterstaff without other abilities. On a 20, it regains 1d8+2 charges. Charges can be used to cast spells, or, on a hit in melee with it, I can expend 1 charge to deal +1d6 force damage. As an action, I can break it so it explodes. When it explodes, there is a 50% chance I teleport to a random plane, otherwise I take 16\xD7 the charges left in force damage. All within 10 ft take 8\xD7, 20 ft 6\xD7, and 30 ft 4\xD7; DC 17 Dex save halves.",
+		descriptionFull : "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While holding it, you gain a +2 bonus to Armor Class, saving throws, and spell attack rolls.\n   The staff has 20 charges for the following properties. The staff regains 2d8+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff retains its +2 bonus to attack and damage roll but loses all other properties. On a 20, the staff regain 1d8+2 charges.\n   " + toUni("Power Strike") + ". When you hit with a melee attack using the staff, you can expend 1 charge to deal an extra 1d6 force damage to the target.\n   " + toUni("Spells") + ". While holding this staff, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC and spell attack bonus: Cone of Cold (5 charges), Fireball (5th-level version, 5 charges), Globe of Invulnerability (6 charges), Hold Monster (5 charges), Levitate (2 charges). Lightning Bolt (5th-level version, 5 charges), Magic Missile (1 charge), Ray of Enfeeblement (1 charge), or Wall of Force (5 charges).\n   " + toUni("Retributive Strike") + ". You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.\n   You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.\n\n" + toUni("Distance from Origin") + "\t" + toUni("Effect") + "\n10 ft. away or closer\t8 \xD7 the number of charges in the staff\n11 to 20 ft. away\t6 \xD7 the number of charges in the staff\n21 to 30 ft. away\t4 \xD7 the number of charges in the staff",
+		attunement : true,
+		weight : 4,
+		prerequisite : "Requires attunement by a sorcerer, warlock, or wizard",
+		prereqeval : function(v) { return classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
+		usages : 20,
+		recovery : "dawn",
+		additional : "regains 2d8+4",
+		weaponsAdd : ["Staff of Power"],
+		weaponOptions : {
+			baseWeapon : "quarterstaff",
+			regExpSearch : /^(?=.*staff)(?=.*power).*$/i,
+			name : "Staff of Power",
+			source : [["SRD", 243], ["D", 202]],
+			description : "Versatile (1d8); On hit, 1 charge for +1d6 force damage",
+			modifiers : [2, 2]
+		},
+		calcChanges : {
+			spellCalc : [
+				function (type, spellcasters, ability) {
+					if (type == "attack") return 2;
+				},
+				"While holding the Staff of Power, I have a +2 bonus to spell attack rolls."
+			]
+		},
+		addMod : [{ type : "save", field : "all", mod : 2, text : "While holding the Staff of Power, I gain a +2 bonus to all my saving throws." }],
+		extraAC : [{name : "Staff of Power", mod : 2, magic : true, text : "I gain a +2 bonus to AC while attuned."}],
+		action : [["action", " (Retributive Strike)"]],
+		spellcastingAbility : "class",
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : [{
+			name : "5 charges; 5th level",
+			spells : ["fireball", "lightning bolt"],
+			selection : ["fireball", "lightning bolt"],
+			firstCol : 5,
+			times : 2
+		}, {
+			name : "6 charges",
+			spells : ["globe of invulnerability"],
+			selection : ["globe of invulnerability"],
+			firstCol : 6
+		}, {
+			name : "5 charges",
+			spells : ["cone of cold", "hold monster", "wall of force"],
+			selection : ["cone of cold", "hold monster", "wall of force"],
+			firstCol : 5,
+			times : 3
+		}, {
+			name : "2 charges",
+			spells : ["levitate"],
+			selection : ["levitate"],
+			firstCol : 2
+		}, {
+			name : "1 charge",
+			spells : ["magic missile", "ray of enfeeblement"],
+			selection : ["magic missile", "ray of enfeeblement"],
+			firstCol : 1,
+			times : 2
+		}],
+		spellChanges : {
+			"fireball" : {
+				nameShort : "Fireball (5th level)",
+				description : "20-ft rad all crea 10d6 Fire dmg; save halves; unattended flammable objects ignite",
+				changes : "Cast as if using a 5th-level spell slot."
+			},
+			"lightning bolt" : {
+				nameShort : "Lightning Bolt (5th level)",
+				description : "100-ft long 5-ft wide all 10d6 Lightning dmg; save halves; unattended flammable obj ignite",
+				changes : "Cast as if using a 5th-level spell slot."
+			}
+		}
+	},
+	"staff of striking" : {
+		name : "Staff of Striking",
+		source : [["SRD", 244], ["D", 203]],
+		type : "staff",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This staff function as a +3 quarterstaff and has 10 charges, regaining 1d6+4 at dawn. There is a 5% chance that expending the last charge makes it nonmagical. When I hit with a melee attack using it, I can expend up to 3 of its charges. For each charge I expend, the target takes an extra 1d6 force damage.",
+		descriptionFull : "This staff can be wielded as a magic quarterstaff that grants a +3 bonus to attack and damage rolls made with it.\n   The staff has 10 charges. When you hit with a melee attack using it, you can expend up to 3 of its charges. For each charge you expend, the target takes an extra 1d6 force damage. The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff becomes a nonmagical quarterstaff.",
+		attunement : true,
+		weight : 4,
+		usages : 10,
+		recovery : "dawn",
+		additional : "regains 1d6+4",
+		weaponsAdd : ["Staff of Striking"],
+		weaponOptions : {
+			baseWeapon : "quarterstaff",
+			regExpSearch : /^(?=.*staff)(?=.*striking).*$/i,
+			name : "Staff of Striking",
+			source : [["SRD", 244], ["D", 203]],
+			modifiers : [3, 3],
+			description : "Versatile (1d8); On hit, 1-3 charges for +1d6 force damage per charge"
+		}
+	},
+	"staff of swarming insects" : {
+		name : "Staff of Swarming Insects",
+		source : [["SRD", 244], ["D", 203]],
+		type : "staff",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This staff has 10 charges, regaining 1d6+4 at dawn, 5% chance it is destroyed when its last charge is used. As an action, I can expend 1 charge to create a 30-ft radius swarm of flying insects for 10 minutes that moves with me, making the area heavily obscured for anybody but me. A 10+ mph wind disperses it.",
+		descriptionFull : "This staff has 10 charges and regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, a swarm of insects consumes and destroys the staff, then disperses.\n   " + toUni("Spells") + ". While holding the staff, you can use an action to expend some of its charges to cast one of the following spells from it, using your spell save DC: Giant Insect (4 charges) or Insect Plague (5 charges).\n   " + toUni("Insect Cloud") + ". While holding the staff, you can use an action and expend 1 charge to cause a swarm of harmless flying insects to spread out in a 30-foot radius from you. The insects remain for 10 minutes, making the area heavily obscured for creatures other than you. The swarm moves with you, remaining centered on you. A wind of at least 10 miles per hour disperses the swarm and ends the effect.",
+		attunement : true,
+		weight : 4,
+		prerequisite : "Requires attunement by a bard, cleric, druid, sorcerer, warlock, or wizard",
+		prereqeval : function(v) { return classes.known.bard || classes.known.cleric || classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
+		usages : 10,
+		recovery : "dawn",
+		additional : "regains 1d6+4",
+		action : [["action", ""]],
+		spellcastingAbility : "class",
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : [{
+			name : "4 charges",
+			spells : ["giant insect"],
+			selection : ["giant insect"],
+			firstCol : 4
+		}, {
+			name : "5 charges",
+			spells : ["insect plague"],
+			selection : ["insect plague"],
+			firstCol : 5
+		}]
+	},
 	"staff of the magi" : { // contains contributions by Pengsloth
 		name : "Staff of the Magi",
 		source : [["SRD", 244], ["D", 203]],
 		type : "staff",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "While holding this staff I have a +2 to spell attacks, adv. on saves vs. spells. It is also a +2 quarterstaff. The staff has 50 charges (regains 4d6+2 at dawn) to cast spells. I can use a reaction to absorb a spell targeting only me., converting its spell level to charges. I can break it as an action, causing a 30-ft explosion.",
+		description : "While holding this +2 quarterstaff, I have adv. on saves vs. spells and +2 on spell attacks. The staff has 50 charges to cast spells, regaining 4d6+2 at dawn. As a reaction, I can absorb a spell targeting only me, converting its spell level to charges. If this brings it over 50 charges or I break it is as an action, it explodes.",
 		descriptionLong : "While holding this staff I have a +2 to spell attacks, adv. on saving throws vs. spells, and can be used as a +2 quarterstaff. The staff has 50 charges (4d6+2 at dawn) to cast spells. When the last charge is used, it has a 5% chance to regain 1d12+1 charges. I can use a reaction to absorb a spell targeting only me, converting its spell level to charges. If that brings the staff over 50 charges or I use an action to break it, it explodes. If it explodes, there is a 50% chance I teleport to a random plane, otherwise I take 16\xD7 the charges left in force damage. All within 10 ft take 8\xD7, 20 ft 6\xD7, and 30 ft 4\xD7; DC 17 Dex save halves.",
 		descriptionFull : "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While you hold it, you gain a +2 bonus to spell attack rolls.\n   The staff has 50 charges for the following properties. It regains 4d6+2 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 20, the staff regains 1d12+1 charges.\n   " + toUni("Spell Absorption") + ". While holding the staff, you have advantage on saving throws against spells. In addition, you can use your reaction when another creature casts a spell that targets only you. If you do, the staff absorbs the magic of the spell, canceling its effect and gaining a number of charges equal to the absorbed spell's level. However, if doing so brings the staff's total number of charges above 50, the staff explodes as if you activated its retributive strike (see below).\n   " + toUni("Spells") + ". While holding the staff, you can use an action to expend some of its charges to cast one of the following spells from it, using your spell save DC and spellcasting ability: Conjure Elemental (7 charges), Dispel Magic (3 charges), Fireball (7th-level version, 7 charges), Flaming Sphere (2 charges), Ice Storm (4 charges), Invisibility (2 charges), Knock (2 charges), Lightning Bolt (7th-level version, 7 charges), Passwall (5 charges), Plane Shift (7 charges), Telekinesis (5 charges), Wall of Fire (4 charges), or Web (2 charges).\n   You can also use an action to cast one of the following spells from the staff without using any charges: Arcane Lock, Detect Magic, Enlarge/Reduce, Light, Mage Hand, or Protection from Evil and Good.\n   " + toUni("Retributive Strike") + ". You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.\n   You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.\n\n" + toUni("Distance from Origin\tDamage") + "\n10 ft. away or closer\t8 \xD7 the number of charges in the staff\n11 to 20 ft. away\t\t6 \xD7 the number of charges in the staff\n21 to 30 ft. away\t\t4 \xD7 the number of charges in the staff",
 		attunement : true,
@@ -4952,70 +5404,40 @@ var Base_MagicItemsList = {
 		spellcastingAbility : "class",
 		spellFirstColTitle : "Ch",
 		spellcastingBonus : [{
-			name : "7 Charges",
-			spells : ["conjure elemental"],
-			selection : ["conjure elemental"],
-			firstCol : "7"
+			name : "7 charges",
+			spells : ["conjure elemental", "plane shift"],
+			selection : ["conjure elemental", "plane shift"],
+			firstCol : 7,
+			times : 2
 		}, {
-			name : "7 Charges; 7th level",
-			spells : ["fireball"],
-			selection : ["fireball"],
-			firstCol : "7"
+			name : "7 charges; 7th level",
+			spells : ["fireball", "lightning bolt"],
+			selection : ["fireball", "lightning bolt"],
+			firstCol : 7,
+			times : 2
 		}, {
-			name : "7 Charges; 7th level",
-			spells : ["lightning bolt"],
-			selection : ["lightning bolt"],
-			firstCol : "7"
+			name : "5 charges",
+			spells : ["passwall", "telekinesis"],
+			selection : ["passwall", "telekinesis"],
+			firstCol : 5,
+			times : 2
 		}, {
-			name : "7 Charges",
-			spells : ["plane shift"],
-			selection : ["plane shift"],
-			firstCol : "7"
+			name : "4 charges",
+			spells : ["ice storm", "wall of fire"],
+			selection : ["ice storm", "wall of fire"],
+			firstCol : 4,
+			times : 2
 		}, {
-			name : "5 Charges",
-			spells : ["passwall"],
-			selection : ["passwall"],
-			firstCol : "5"
-		}, {
-			name : "5 Charges",
-			spells : ["telekinesis"],
-			selection : ["telekinesis"],
-			firstCol : "5"
-		}, {
-			name : "4 Charges",
-			spells : ["ice storm"],
-			selection : ["ice storm"],
-			firstCol : "4"
-		}, {
-			name : "4 Charges",
-			spells : ["wall of fire"],
-			selection : ["wall of fire"],
-			firstCol : "4"
-		}, {
-			name : "3 Charges",
+			name : "3 charges",
 			spells : ["dispel magic"],
 			selection : ["dispel magic"],
-			firstCol : "3"
+			firstCol : 3
 		}, {
-			name : "2 Charges",
-			spells : ["flaming sphere"],
-			selection : ["flaming sphere"],
-			firstCol : "2"
-		}, {
-			name : "2 Charges",
-			spells : ["invisibility"],
-			selection : ["invisibility"],
-			firstCol : "2"
-		}, {
-			name : "2 Charges",
-			spells : ["knock"],
-			selection : ["knock"],
-			firstCol : "2"
-		}, {
-			name : "2 Charges",
-			spells : ["web"],
-			selection : ["web"],
-			firstCol : "2"
+			name : "2 charges",
+			spells : ["flaming sphere", "invisibility", "knock", "web"],
+			selection : ["flaming sphere", "invisibility", "knock", "web"],
+			firstCol : 2,
+			times : 4
 		}],
 		eval : function () {
 			// get the CurrentSpells object or create it if it didn't exists yet.
@@ -5057,6 +5479,173 @@ var Base_MagicItemsList = {
 				time : "1 a",
 				changes : "Casting time is only 1 action instead of 1 minute."
 			}
+		}
+	},
+	"staff of the python" : {
+		name : "Staff of the Python",
+		source : [["SRD", 245], ["D", 204]],
+		type : "staff",
+		rarity : "uncommon",
+		magicItemTable : "F",
+		description : "As an action, I can speak the command word and throw this staff to have it become a giant constrictor snake within 10 ft with full HP. It has its own initiative. I can command it mentally on my turn if within 60 ft. As a bonus action, I can command it to revert back to a staff. If the snake reaches 0 HP, the staff is destroyed.",
+		descriptionLong : "As an action, I can speak this staff's command word and throw the staff on the ground within 10 ft where it becomes a giant constrictor snake. As a bonus action, I can speak the command word again to have it return to its staff form. The snake acts on its own initiative count. On my turn, I can mentally command the snake if it is within 60 ft of me and I'm not incapacitated, deciding what it does on its next turn or a more general command. If the snake is reduced to 0 HP, it dies, reverts to its staff form, and the staff then shatters and is destroyed. Otherwise, the snake always starts out with full HP.",
+		descriptionFull : "You can use an action to speak this staff's command word and throw the staff on the ground within 10 feet of you. The staff becomes a giant constrictor snake under your control and acts on its own initiative count. By using a bonus action to speak the command word again, you return the staff to its normal form in a space formerly occupied by the snake.\n   On your turn, you can mentally command the snake if it is within 60 feet of you and you aren't incapacitated. You decide what action the snake takes and where it moves during its next turn, or you can issue it a general command, such as to attack your enemies or guard a location.\n   If the snake is reduced to 0 hit points, it dies and reverts to its staff form. The staff then shatters and is destroyed. If the snake reverts to staff form before losing all its hit points, it regains all of them.",
+		attunement : true,
+		weight : 4,
+		prerequisite : "Requires attunement by a cleric, druid, or warlock",
+		prereqeval : function(v) { return classes.known.cleric || classes.known.druid || classes.known.warlock ? true : false; },
+		action : [["action", " (animate)"], ["bonus action", " (end)"]]
+	},
+	"staff of the woodlands" : {
+		name : "Staff of the Woodlands",
+		source : [["SRD", 245], ["D", 204]],
+		type : "staff",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This +2 quarterstaff gives me a +2 bonus on spell attacks. It has 10 charges, regaining 1d6+4 at dawn, 5% chance of losing its magic when its last charge is used. As an action, I can plant it into the ground and expend 1 charge to have it grow into a 60 ft tree, which it remains until I use another action to revert it back",
+		descriptionFull : "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While holding it, you have a +2 bonus to spell attack rolls.\n   The staff has 10 charges for the following properties. It regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff loses its properties and becomes a nonmagical quarterstaff.\n   " + toUni("Spells") + ". You can use an action to expend 1 or more of the staff's charges to cast one of the following spells from it, using your spell save DC: Animal Friendship (1 charge), Awaken (5 charges), Barkskin (2 charges), Locate Animals or Plants (2 charges), Speak with Animals (1 charge), Speak with Plants (3 charges), or Wall of Thorns (6 charges).\n   You can also use an action to cast the Pass Without Trace spell from the staff without using any charges.\n   " + toUni("Tree Form") + ". You can use an action to plant one end of the staff in fertile earth and expend 1 charge to transform the staff into a healthy tree. The tree is 60 feet tall and has a 5-foot-diameter trunk, and its branches at the top spread out in a 20-foot radius. The tree appears ordinary but radiates a faint aura of transmutation magic if targeted by Detect Magic. While touching the tree and using another action to speak its command word, you return the staff to its normal form. Any creature in the tree falls when it reverts to a staff.",
+		attunement : true,
+		weight : 4,
+		prerequisite : "Requires attunement by a druid",
+		prereqeval : function(v) { return classes.known.druid ? true : false; },
+		action : [["action", ""]],
+		usages : 10,
+		recovery : "dawn",
+		additional : "regains 1d6+4",
+		weaponsAdd : ["Staff of the Woodlands"],
+		weaponOptions : {
+			baseWeapon : "quarterstaff",
+			regExpSearch : /^(?=.*staff)(?=.*woodlands).*$/i,
+			name : "Staff of the Woodlands",
+			source : [["SRD", 245], ["D", 204]],
+			modifiers : [2, 2]
+		},
+		calcChanges : {
+			spellCalc : [
+				function (type, spellcasters, ability) {
+					if (type == "attack") return 2;
+				},
+				"While holding the Staff of the Woodlands, I have a +2 bonus to spell attack rolls."
+			]
+		},
+		spellcastingAbility : "class",
+		spellFirstColTitle : "Ch",
+		spellcastingBonus : [{
+			name : "At will",
+			spells : ["pass without trace"],
+			selection : ["pass without trace"],
+			firstCol : "atwill"
+		}, {
+			name : "1 charge",
+			spells : ["animal friendship", "speak with animals"],
+			selection : ["animal friendship", "speak with animals"],
+			firstCol : 1,
+			times : 2
+		}, {
+			name : "2 charges",
+			spells : ["barkskin", "locate animals or plants"],
+			selection : ["barkskin", "locate animals or plants"],
+			firstCol : 2,
+			times : 2
+		}, {
+			name : "3 charges",
+			spells : ["speak with plants"],
+			selection : ["speak with plants"],
+			firstCol : 3
+		}, {
+			name : "5 charges",
+			spells : ["awaken"],
+			selection : ["awaken"],
+			firstCol : 5
+		}, {
+			name : "6 charges",
+			spells : ["wall of thorns"],
+			selection : ["wall of thorns"],
+			firstCol : 6
+		}],
+		spellChanges : {
+			"awaken" : {
+				time : "1 a",
+				changes : "Casting time is only 1 action instead of 8 hours."
+			}
+		}
+	},
+	"staff of thunder and lightning" : {
+		name : "Staff of Thunder and Lightning",
+		source : [["SRD", 245], ["D", 204]],
+		type : "staff",
+		rarity : "very rare",
+		magicItemTable : "H",
+		description : "This +2 quarterstaff has 5 special abilities that each can be used once per dawn. Both 'Lightning' and 'Thunder' can be used when I hit a melee attack with it, while 'Lightning Strike', 'Thunderclap', and 'Thunder and Lightning' require an action to use. See the Notes page for what all of these abilities entail.",
+		descriptionFull : "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. It also has the following additional properties. When one of these properties is used, it can't be used again until the next dawn.\n   " + toUni("Lightning") + ". When you hit with a melee attack using the staff, you can cause the target to take an extra 2d6 lightning damage.\n   " + toUni("Thunder") + ". When you hit with a melee attack using the staff, you can cause the staff to emit a crack of thunder, audible out to 300 feet. The target you hit must succeed on a DC 17 Constitution saving throw or become stunned until the end of your next turn.\n   " + toUni("Lightning Strike") + ". You can use an action to cause a bolt of lightning to leap from the staff's tip in a line that is 5 feet wide and 120 feet long. Each creature in that line must make a DC 17 Dexterity saving throw, taking 9d6 lightning damage on a failed save, or half as much damage on a successful one.\n   " + toUni("Thunderclap") + ". You can use an action to cause the staff to issue a deafening thunderclap, audible out to 600 feet. Each creature within 60 feet of you (not including you) must make a DC 17 Constitution saving throw. On a failed save, a creature takes 2d6 thunder damage and becomes deafened for 1 minute. On a successful save, a creature takes half damage and isn't deafened.\n   " + toUni("Thunder and Lightning") + ". You can use an action to use the Lightning Strike and Thunderclap properties at the same time. Doing so doesn't expend the daily use of those properties, only the use of this one.",
+		attunement : true,
+		weight : 4,
+		action : [["action", "Staff of T\u0026L (Lightning Strike, Thunderclap, both)"]],
+		weaponsAdd : ["Staff of Thunder and Lightning"],
+		weaponOptions : {
+			baseWeapon : "quarterstaff",
+			regExpSearch : /^(?=.*staff)(?=.*thunder)(?=.*lightning).*$/i,
+			name : "Staff of Thunder and Lightning",
+			source : [["SRD", 245], ["D", 204]],
+			description : "Versatile (1d8); Lightning: 1\xD7 per dawn, +2d6 lightning damage; Thunder: 1\xD7 per dawn DC 17 Con save or 1 round stunned",
+			modifiers : [2, 2]
+		},
+		extraLimitedFeatures : [{
+			name : "Staff of T\u0026L [Lightning]",
+			usages : 1,
+			recovery : "dawn"
+		}, {
+			name : "Staff of T\u0026L [Thunder]",
+			usages : 1,
+			recovery : "dawn"
+		}, {
+			name : "Staff of T\u0026L [Lightning Strike]",
+			usages : 1,
+			recovery : "dawn"
+		}, {
+			name : "Staff of T\u0026L [Thunderclap]",
+			usages : 1,
+			recovery : "dawn"
+		}, {
+			name : "Staff of T\u0026L [Thunder and Lightning]",
+			usages : 1,
+			recovery : "dawn"
+		}],
+		toNotesPage : [{
+			name : "Special Properties",
+			popupName : "Staff of Thunder and Lightning's Special Properties",
+			note : [
+				"\n   This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. It also has the following additional properties. When one of these properties is used, it can't be used again until the next dawn.",
+				" \u2022 Thunder. When I hit with a melee attack using the staff, I can cause the target to take an extra 2d6 lightning damage.",
+				" \u2022 Lightning. When I hit with a melee attack using the staff, I can cause the staff to emit a crack of thunder, audible out to 300 ft. The target must succeed on a DC 17 Constitution saving throw or become stunned until the end of my next turn.",
+				" \u2022 Lightning Strike. As an action, I can cause a bolt of lightning to leap from the staff's tip in a line that is 5 ft wide and 120 ft long. Each creature in that line must make a DC 17 Dexterity saving throw, taking 9d6 lightning damage on a failed save, or half as much damage on a successful one.",
+				" \u2022 Thunderclap. As an action, I can cause the staff to issue a deafening thunderclap, audible out to 600 ft. Each creature within 60 ft of me, excluding myself, must make a DC 17 Constitution saving throw or take 2d6 thunder damage and becomes deafened for 1 minute. On a successful save, a creature takes half damage and isn't deafened.",
+				" \u2022 Thunder and Lightning. As an action, I can use the Lightning Strike and Thunderclap properties at the same time. Doing so doesn't expend the daily use of those properties, only the use of this one.",
+			].join("\n")
+		}]
+	},
+	"staff of withering" : {
+		name : "Staff of Withering",
+		source : [["SRD", 246], ["D", 205]],
+		type : "staff",
+		rarity : "rare",
+		magicItemTable : "G",
+		description : "This staff has 3 charges, regaining 1d3 at dawn and functions as a magic quarterstaff. On a hit with it, I can expend 1 charge to deal an extra 2d10 necrotic damage to the target, which must then make a DC 15 Con save or have disadvantage on any ability check or save that uses Strength or Constitution for 1 hour.",
+		descriptionFull : "This staff has 3 charges and regains 1d3 expended charges daily at dawn.\n   The staff can be wielded as a magic quarterstaff. On a hit, it deals damage as a normal quarterstaff, and you can expend 1 charge to deal an extra 2d10 necrotic damage to the target. In addition, the target must succeed on a DC 15 Constitution saving throw or have disadvantage for 1 hour on any ability check or saving throw that uses Strength or Constitution.",
+		attunement : true,
+		weight : 4,
+		prerequisite : "Requires attunement by a cleric, druid, or warlock",
+		prereqeval : function(v) { return classes.known.cleric || classes.known.druid || classes.known.warlock ? true : false; },
+		usages : 3,
+		recovery : "dawn",
+		additional : "regains 1d3",
+		weaponsAdd : ["Staff of Withering"],
+		weaponOptions : {
+			baseWeapon : "quarterstaff",
+			regExpSearch : /^(?=.*staff)(?=.*withering).*$/i,
+			name : "Staff of Withering",
+			source : [["SRD", 244], ["D", 203]],
+			description : "Versatile (1d8); On hit, 1 charge for +2d10 necrotic damage and save, see magic item"
 		}
 	},
 	"stone of controlling earth elementals" : {
@@ -5231,6 +5820,31 @@ var Base_MagicItemsList = {
 			]
 		}
 	},
+	"talisman of pure good" : {
+		name : "Talisman of Pure Good",
+		source : [["SRD", 247], ["D", 207]],
+		type : "wondrous item",
+		rarity : "legendary",
+		magicItemTable : "I",
+		description : "I can use this talisman as a holy symbol and if I'm a good cleric or paladin, it gives a +2 bonus on my spell attacks. As an action, I can use 1 of its 7 charges to have an evil creature within 120 ft make a DC 20 Dex save or be destroyed. Non-good creatures touching it take radiant damage, 8d6 if evil or 6d6 if neutral.",
+		descriptionLong : "If I'm a good cleric or paladin, I can use this talisman as a holy symbol and it grants me a +2 bonus on my spell attack rolls. As an action, I can use 1 of its 7 charges to target one creature on the ground that I can see within 120 ft of me. If it is evil, a flaming fissure opens under it and it must succeed on a DC 20 Dexterity save or fall into the fissure and be destroyed, leaving no remains of it or the fissure. The talisman is destroyed when the last of its charges is used. Non-good creatures touching it take radiant damage, 8d6 if evil or 6d6 if neutral. This damage repeats at the end of each turn carrying the talisman.",
+		descriptionFull : "This talisman is a mighty symbol of goodness. A creature that is neither good nor evil in alignment takes 6d6 radiant damage upon touching the talisman. An evil creature takes 8d6 radiant damage upon touching the talisman. Either sort of creature takes the damage again each time it ends its turn holding or carrying the talisman.\n   If you are a good cleric or paladin, you can use the talisman as a holy symbol, and you gain a +2 bonus to spell attack rolls while you wear or hold it.\n   The talisman has 7 charges. If you are wearing or holding it, you can use an action to expend 1 charge from it and choose one creature you can see on the ground within 120 feet of you. If the target is of evil alignment, a flaming fissure opens under it. The target must succeed on a DC 20 Dexterity saving throw or fall into the fissure and be destroyed, leaving no remains. The fissure then closes, leaving no trace of its existence. When you expend the last charge, the talisman disperses into motes of golden light and is destroyed.",
+		attunement : true,
+		weight : 1,
+		prerequisite : "Requires attunement by a creature of good alignment",
+		prereqeval : function(v) { return (/good/i).test(What("Alignment")); },
+		usages : 7,
+		recovery : "never",
+		action : [["action", ""]],
+		calcChanges : {
+			spellCalc : [
+				function (type, spellcasters, ability) {
+					if (type == "attack" && (classes.known.paladin || classes.known.cleric) && (/good/i).test(What("Alignment"))) return 2;
+				},
+				"If I'm a good cleric or paladin, I gain a +2 bonus on my spell attack rolls while wearing or holding the Talisman of Pure Good."
+			]
+		}
+	},
 	"talisman of the sphere" : {
 		name : "Talisman of the Sphere",
 		source : [["SRD", 247], ["D", 207]],
@@ -5241,6 +5855,31 @@ var Base_MagicItemsList = {
 		descriptionFull : "When you make an Intelligence (Arcana) check to control a sphere of annihilation while you are holding this talisman, you double your proficiency bonus on the check. In addition, when you start your turn with control over a sphere of annihilation, you can use an action to levitate it 10 feet plus a number of additional feet equal to 10 \xD7 your Intelligence modifier.",
 		attunement : true,
 		weight : 1
+	},
+	"talisman of ultimate evil" : {
+		name : "Talisman of Ultimate Evil",
+		source : [["SRD", 247], ["D", 207]],
+		type : "wondrous item",
+		rarity : "legendary",
+		magicItemTable : "I",
+		description : "I can use this talisman as a holy symbol and if I'm an evil cleric or paladin, it gives a +2 bonus on my spell attacks. As an action, I can use 1 of its 6 charges to have a good creature within 120 ft make a DC 20 Dex save or be destroyed. Non-evil creatures touching it take necrotic damage, 8d6 if good or 6d6 if neutral.",
+		descriptionLong : "If I'm an evil cleric or paladin, I can use this talisman as a holy symbol and it grants me a +2 bonus on my spell attack rolls. As an action, I can use 1 of its 6 charges to target one creature on the ground that I can see within 120 ft of me. If it is good, a flaming fissure opens under it and it must succeed on a DC 20 Dexterity save or fall into the fissure and be destroyed, leaving no remains of it or the fissure. The talisman is destroyed when the last of its charges is used. Non-evil creatures touching it take necrotic damage, 8d6 if good or 6d6 if neutral. This damage repeats at the end of each turn carrying the talisman.",
+		descriptionFull : "This item symbolizes unrepentant evil. A creature that is neither good nor evil in alignment takes 6d6 necrotic damage upon touching the talisman. A good creature takes 8d6 necrotic damage upon touching the talisman. Either sort of creature takes the damage again each time it ends its turn holding or carrying the talisman.\n   If you are an evil cleric or paladin, you can use the talisman as a holy symbol, and you gain a +2 bonus to spell attack rolls while you wear or hold it.\n   The talisman has 6 charges. If you are wearing or holding it, you can use an action to expend 1 charge from the talisman and choose one creature you can see on the ground within 120 feet of you. If the target is of good alignment, a flaming fissure opens under it. The target must succeed on a DC 20 Dexterity saving throw or fall into the fissure and be destroyed, leaving no remains. The fissure then closes, leaving no trace of its existence. When you expend the last charge, the talisman dissolves into foul-smelling slime and is destroyed.",
+		attunement : true,
+		weight : 1,
+		prerequisite : "Requires attunement by a creature of evil alignment",
+		prereqeval : function(v) { return (/evil/i).test(What("Alignment")); },
+		usages : 6,
+		recovery : "never",
+		action : [["action", ""]],
+		calcChanges : {
+			spellCalc : [
+				function (type, spellcasters, ability) {
+					if (type == "attack" && (classes.known.paladin || classes.known.cleric) && (/evil/i).test(What("Alignment"))) return 2;
+				},
+				"If I'm an evil cleric or paladin, I gain a +2 bonus on my spell attack rolls while wearing or holding the Talisman of Ultimate Evil."
+			]
+		}
 	},
 	"tome of clear thought" : {
 		name : "Tome of Clear Thought",
@@ -5871,5 +6510,16 @@ var Base_MagicItemsList = {
 		action : [["action", " (start/stop)"]],
 		usages : 1,
 		recovery : "1d12 h"
-	},
+	}
+/*	Excluding artifacts for now as most would require new functionality
+	"orb of dragonkind" : {
+		name : "Orb of Dragonkind",
+		source : [["SRD", 252], ["D", 225]],
+		type : "wondrous item",
+		rarity : "artifact",
+		description : "",
+		descriptionFull : "Ages past, on the world of Krynn, elves and humans waged a terrible war against evil dragons. When the world seemed doomed, the wizards of the Towers of High Sorcery came together and worked their greatest magic, forging five Orbs of Dragonkind (or Dragon Orbs) to help them defeat the dragons. One orb was taken to each of the five towers, and there they were used to speed the war toward a victorious end. The wizards used the orbs to lure dragons to them, then destroyed the dragons with powerful magic.\n   As the Towers of High Sorcery fell in later ages, the orbs were destroyed or faded into legend, and only three are thought to survive. Their magic has been warped and twisted over the centuries, so although their primary purpose of calling dragons still functions, they also allow some measure of control over dragons.\n   Each orb contains the essence of an evil dragon, a presence that resents any attempt to coax magic from it. Those lacking in force of personality might find themselves enslaved to an orb.\n   An orb is an etched crystal globe about 10 inches in diameter. When used, it grows to about 20 inches in diameter, and mist swirls inside it.\n   While attuned to an orb, you can use an action to peer into the orb's depths and speak its command word. You must then make a DC 15 Charisma check. On a successful check, you control the orb for as long as you remain attuned to it. On a failed check, you become charmed by the orb for as long as you remain attuned to it.\n   While you are charmed by the orb, you can't voluntarily end your attunement to it, and the orb casts Suggestion on you at will (save DC 18), urging you to work toward the evil ends it desires. The dragon essence within the orb might want many things: the annihilation of a particular people, freedom from the orb, to spread suffering in the world, to advance the worship of Tiamat, or something else the DM decides.\n   " + toUni("Random Properties") + ". An Orb of Dragon kind has the following random properties:\n \u2022 2 minor beneficial properties\n \u2022 1 minor detrimental property\n \u2022 1 major detrimental property\n\n" + toUni("Spells") + ". The orb has 7 charges and regains 1d4+3 expended charges daily at dawn. If you control the orb, you can use an action and expend 1 or more charges to cast one of the following spells (save DC 18) from it: Cure Wounds (5th-level version, 3 charges), Daylight (1 charge), Death Ward (2 charges), or Scrying (3 charges). You can also use an action to cast the Detect Magic spell from the orb without using any charges.\n   " + toUni("Call Dragons") + ". While you control the orb, you can use an action to cause the artifact to issue a telepathic call that extends in all directions for 40 miles. Evil dragons in range feel compelled to come to the orb as soon as possible by the most direct route. Dragon deities such as Tiamat are unaffected by this call. Dragons drawn to the orb might be hostile toward you for compelling them against their will. Once you have used this property, it can't be used again for 1 hour.\n   " + toUni("Destroying an Orb") + ". An Orb of Dragonkind appears fragile but is impervious to most damage, including the attacks and breath weapons of dragons. A Disintegrate spell or one good hit from a +3 magic weapon is sufficient to destroy an orb, however.",
+		attunement : true
+	}
+*/
 };

@@ -5542,7 +5542,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			// define some variables that we can check against later or with the CurrentEvals
 			var WeaponText = inputText + " " + fields.Description;
 			var isDC = (/dc/i).test(fields.To_Hit_Bonus);
-			var isSpell = thisWeapon[3] || (/cantrip|spell/i).test(theWea.type) || (/\b(cantrip|spell)\b/i).test(WeaponText);
+			var isSpell = (thisWeapon[3] || (/cantrip|spell/i).test(theWea.type) || (/\b(cantrip|spell)\b/i).test(WeaponText)) && WeaponName !== "shillelagh";
 			var isMeleeWeapon = !isSpell && (/melee/i).test(fields.Range);
 			var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 			var isNaturalWeapon = !isSpell && (/natural/i).test(theWea.type);
@@ -5700,8 +5700,8 @@ function CalcAttackDmgHit(fldName) {
 		}
 		if (aWea) for (var attr in aWea) theWea[attr] = aWea[attr];
 
-		var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (/\b(cantrip|spell)\b/i).test(WeaponText);
-		var isMeleeWeapon = (!isSpell || thisWeapon[0] === "shillelagh") && (/melee/i).test(fields.Range);
+		var isSpell = (thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (/\b(cantrip|spell)\b/i).test(WeaponText)) && WeaponName !== "shillelagh";
+		var isMeleeWeapon = !isSpell && (/melee/i).test(fields.Range);
 		var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 		var isNaturalWeapon = !isSpell && theWea && (/natural/i).test(theWea.type);
 

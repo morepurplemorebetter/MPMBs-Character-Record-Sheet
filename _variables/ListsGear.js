@@ -825,7 +825,7 @@ var Base_WeaponsList = {
 		source : [["SRD", 179], ["P", 275]],
 		list : "spell",
 		ability : 5,
-		type : "Cantrip",
+		type : "Simple",
 		damage : [1, 8, "bludgeoning"],
 		range : "Melee",
 		description : "Imbued club or quarterstaff; Counts as a magical weapon (PHB 275)",
