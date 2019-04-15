@@ -5446,7 +5446,7 @@ function MakeClassMenu() {
 		});
 	};
 
-	var ClassMenu = [], toTest;
+	var ClassMenu = [], toTest, toChooseNr;
 
 	for (var aClass in classes.known) {
 		var clLvl = classes.known[aClass].level;
@@ -5465,7 +5465,8 @@ function MakeClassMenu() {
 			if (propFea.extrachoices && !propFea.choicesNotInMenu && propFea.minlevel <= clLvl) {
 				toTest = GetFeatureChoice("classes", aClass, prop, true);
 				propFea.extrachoices.sort();
-				menuLVL3(tempItem, propFea.extraname, propFea.extrachoices, aClass, prop, "extra", propFea, toTest);
+				toChooseNr = propFea.extraTimes ? " (choose " + propFea.extraTimes[Math.min(propFea.extraTimes.length, clLvl) - 1] + ")": "";
+				menuLVL3(tempItem, propFea.extraname + toChooseNr, propFea.extrachoices, aClass, prop, "extra", propFea, toTest);
 			};
 		};
 		if (tempItem.oSubMenu.length > 0) {

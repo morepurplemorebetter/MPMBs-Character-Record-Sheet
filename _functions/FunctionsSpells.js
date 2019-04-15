@@ -3707,7 +3707,7 @@ function GenerateSpellSheet(GoOn) {
 		//now add the general list, if chosen to do the full class list or if this is a 'list' spellcaster that didn't chose to only do the prepared spells
 		if (spCast.typeList === 4 || (spCast.typeSp === "list" && spCast.typeList !== 3)) {
 			var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
-			spCast.list.level = [spCast.typeList === 4 ? 0 : 1, spCast.typeList !== 4 && spListLevel ? spListLevel[1] : 9]; //set the list level to generate
+			spCast.list.level = [spCast.typeList === 4 ? 0 : 1, spCast.factor && spCast.factor[1] == "warlock" ? 9 : spListLevel ? spListLevel[1] : 9]; //set the list level to generate
 
 			//add the full spell list of the class
 			var fullClassSpellList = CreateSpellList(spCast.list, false, false, false, CurrentCasters.incl[i], spCast.typeSp);
@@ -3732,7 +3732,7 @@ function GenerateSpellSheet(GoOn) {
 		//see if we need to stop short of doing all the spells
 		var maxLvl = 9;
 		if (spCast.level && spCast.typeList !== 2 && spCast.typeList !== 4) {
-			if (spCast.maxSpell && CurrentCasters.incl[i] !== "warlock") {
+			if (spCast.maxSpell && (!spCast.factor || spCast.factor[1] != "warlock")) {
 				maxLvl = spCast.maxSpell;
 			} else if (spCast.factor && (tDoc[spCast.factor[1] + "SpellTable"] || spCast.spellsTable)) {
 				var CasterLevel = Math.ceil(spCast.level / Math.max(1, spCast.spellsTable ? 1 : spCast.factor[0]));

@@ -319,7 +319,118 @@ var Base_ClassList = {
 				skillstxt : "Expertise with any two skill proficiencies, and two more at 10th level",
 				additional : levels.map(function (n) {
 					return n < 3 ? "" : "with " + (n < 10 ? 2 : 4) + " skills";
-				})
+				}),
+				extraname : "Expertise",
+				extrachoices : ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival"],
+				extraTimes : levels.map(function (n) { return n < 3 ? 0 : n < 10 ? 2 : 4; }),
+				"acrobatics" : {
+					name : "Acrobatics Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Acrobatics") !== -1; },
+					skills : [["Acrobatics", "only"]]
+				},
+				"animal Handling" : {
+					name : "Animal Handling Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Animal Handling") !== -1; },
+					skills : [["Animal Handling", "only"]]
+				},
+				"arcana" : {
+					name : "Arcana Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Arcana") !== -1; },
+					skills : [["Arcana", "only"]]
+				},
+				"athletics" : {
+					name : "Athletics Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Athletics") !== -1; },
+					skills : [["Athletics", "only"]]
+				},
+				"deception" : {
+					name : "Deception Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Deception") !== -1; },
+					skills : [["Deception", "only"]]
+				},
+				"history" : {
+					name : "History Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("History") !== -1; },
+					skills : [["History", "only"]]
+				},
+				"insight" : {
+					name : "Insight Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Insight") !== -1; },
+					skills : [["Insight", "only"]]
+				},
+				"intimidation" : {
+					name : "Intimidation Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Intimidation") !== -1; },
+					skills : [["Intimidation", "only"]]
+				},
+				"investigation" : {
+					name : "Investigation Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Investigation") !== -1; },
+					skills : [["Investigation", "only"]]
+				},
+				"medicine" : {
+					name : "Medicine Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Medicine") !== -1; },
+					skills : [["Medicine", "only"]]
+				},
+				"nature" : {
+					name : "Nature Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Nature") !== -1; },
+					skills : [["Nature", "only"]]
+				},
+				"perception" : {
+					name : "Perception Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Perception") !== -1; },
+					skills : [["Perception", "only"]]
+				},
+				"performance" : {
+					name : "Performance Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Performance") !== -1; },
+					skills : [["Performance", "only"]]
+				},
+				"persuasion" : {
+					name : "Persuasion Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Persuasion") !== -1; },
+					skills : [["Persuasion", "only"]]
+				},
+				"religion" : {
+					name : "Religion Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Religion") !== -1; },
+					skills : [["Religion", "only"]]
+				},
+				"sleight of Hand" : {
+					name : "Sleight of Hand Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Sleight of Hand") !== -1; },
+					skills : [["Sleight of Hand", "only"]]
+				},
+				"stealth" : {
+					name : "Stealth Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Stealth") !== -1; },
+					skills : [["Stealth", "only"]]
+				},
+				"survival" : {
+					name : "Survival Expertise", description : "",
+					source : [["SRD", 13], ["P", 54]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Survival") !== -1; },
+					skills : [["Survival", "only"]]
+				}
 			},
 			"font of inspiration" : {
 				name : "Font of Inspiration",
@@ -805,7 +916,7 @@ var Base_ClassList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (v.baseWeaponName == "unarmed strike" && !v.thisWeapon[1] && !v.theWea.isMagicWeapon && !(/counts as magical/i).test(fields.Description)) {
+							if (v.baseWeaponName == "unarmed strike" && !v.thisWeapon[1] && !v.theWea.isMagicWeapon && !(/counts as( a)? magical/i).test(fields.Description)) {
 								fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
 							};
 						},
@@ -1070,9 +1181,12 @@ var Base_ClassList = {
 				source : [["SRD", 35], ["P", 91]],
 				minlevel : 1,
 				description : "\n   " + "Use the \"Choose Feature\" button above to add a favored enemy to the third page" + "\n   " + "When selecting a favored enemy, I also learn one of the languages it speaks" + "\n   " + "I have adv. on Wis (Survival) checks to track and Int checks to recall info about them",
-				additional : ["1 favored enemy", "1 favored enemy", "1 favored enemy", "1 favored enemy", "1 favored enemy", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies"],
+				additional :  levels.map(function (n) {
+					return n < 6 ? "1 favored enemy" : (n < 14 ? 2 : 3) + " favored enemies";
+				}),
 				extraname : "Favored Enemy",
 				extrachoices : ["Aberrations", "Beasts", "Celestials", "Constructs", "Dragons", "Elementals", "Fey", "Fiends", "Giants", "Monstrosities", "Oozes", "Plants", "Undead", "Two Races of Humanoids"],
+				extraTimes : levels.map(function (n) { return n < 6 ? 1 : n < 14 ? 2 : 3; }),
 				"aberrations" : {
 					name : "Aberrations",
 					description : "",
@@ -1162,9 +1276,12 @@ var Base_ClassList = {
 				source : [["SRD", 36], ["P", 91]],
 				minlevel : 1,
 				description : "\n   " + "Use the \"Choose Feature\" button above to add a favored terrain to the third page",
-				additional : ["1 favored terrain", "1 favored terrain", "1 favored terrain", "1 favored terrain", "1 favored terrain", "2 favored terrains", "2 favored terrains", "2 favored terrains", "2 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains"],
+				additional :  levels.map(function (n) {
+					return n < 6 ? "1 favored terrain" : (n < 10 ? 2 : 3) + " favored terrains";
+				}),
 				extraname : "Favored Terrain",
 				extrachoices : ["Arctic", "Coast", "Desert", "Forest", "Grassland", "Mountain", "Swamp", "Underdark"],
+				extraTimes : levels.map(function (n) { return n < 6 ? 1 : n < 10 ? 2 : 3; }),
 				"arctic" : {
 					name : "Arctic",
 					source : [["SRD", 36], ["P", 91]],
@@ -1317,7 +1434,135 @@ var Base_ClassList = {
 				skillstxt : "Expertise with any two skill proficiencies and/or thieves' tools, and two more at 6th level",
 				additional : levels.map(function (n) {
 					return "with " + (n < 6 ? 2 : 4) + " skills";
-				})
+				}),
+				extraname : "Expertise",
+				extrachoices : ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival", "Thieves' Tools"],
+				extraTimes : levels.map(function (n) { return n < 6 ? 2 : 4; }),
+				"acrobatics" : {
+					name : "Acrobatics Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Acrobatics") !== -1; },
+					skills : [["Acrobatics", "only"]]
+				},
+				"animal Handling" : {
+					name : "Animal Handling Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Animal Handling") !== -1; },
+					skills : [["Animal Handling", "only"]]
+				},
+				"arcana" : {
+					name : "Arcana Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Arcana") !== -1; },
+					skills : [["Arcana", "only"]]
+				},
+				"athletics" : {
+					name : "Athletics Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Athletics") !== -1; },
+					skills : [["Athletics", "only"]]
+				},
+				"deception" : {
+					name : "Deception Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Deception") !== -1; },
+					skills : [["Deception", "only"]]
+				},
+				"history" : {
+					name : "History Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("History") !== -1; },
+					skills : [["History", "only"]]
+				},
+				"insight" : {
+					name : "Insight Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Insight") !== -1; },
+					skills : [["Insight", "only"]]
+				},
+				"intimidation" : {
+					name : "Intimidation Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Intimidation") !== -1; },
+					skills : [["Intimidation", "only"]]
+				},
+				"investigation" : {
+					name : "Investigation Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Investigation") !== -1; },
+					skills : [["Investigation", "only"]]
+				},
+				"medicine" : {
+					name : "Medicine Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Medicine") !== -1; },
+					skills : [["Medicine", "only"]]
+				},
+				"nature" : {
+					name : "Nature Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Nature") !== -1; },
+					skills : [["Nature", "only"]]
+				},
+				"perception" : {
+					name : "Perception Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Perception") !== -1; },
+					skills : [["Perception", "only"]]
+				},
+				"performance" : {
+					name : "Performance Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Performance") !== -1; },
+					skills : [["Performance", "only"]]
+				},
+				"persuasion" : {
+					name : "Persuasion Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Persuasion") !== -1; },
+					skills : [["Persuasion", "only"]]
+				},
+				"religion" : {
+					name : "Religion Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Religion") !== -1; },
+					skills : [["Religion", "only"]]
+				},
+				"sleight of Hand" : {
+					name : "Sleight of Hand Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Sleight of Hand") !== -1; },
+					skills : [["Sleight of Hand", "only"]]
+				},
+				"stealth" : {
+					name : "Stealth Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Stealth") !== -1; },
+					skills : [["Stealth", "only"]]
+				},
+				"survival" : {
+					name : "Survival Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) { return v.skillProfs.indexOf("Survival") !== -1; },
+					skills : [["Survival", "only"]]
+				},
+				"thieves' tools" : {
+					name : "Thieves' Tools Expertise", description : "",
+					source : [["SRD", 39], ["P", 96]],
+					prereqeval : function(v) {
+						return CurrentProfs.tool["thieves' tools"] || (/thieve.?s.{1,3}tools/i).test(v.toolProfs.toString());
+					},
+					eval : function () {
+						if ((/thieve.?s.*tools/i).test(What('Too Text'))) {
+							Checkbox('Too Exp', true);
+						};
+					},
+					removeeval : function () {
+						if ((/thieve.?s.*tools/i).test(What('Too Text'))) {
+							Checkbox('Too Exp', false);
+						};
+					}
+				}
 			},
 			"sneak attack" : {
 				name : "Sneak Attack",
@@ -1478,9 +1723,14 @@ var Base_ClassList = {
 				source : [["SRD", 44], ["P", 101]],
 				minlevel : 3,
 				description : "\n   " + "Use the \"Choose Feature\" button above to add a Metamagic option to the third page" + "\n   " + "I can use only 1 Metamagic option on a spell unless otherwise written",
-				additional : ["", "", "2 known", "2 known", "2 known", "2 known", "2 known", "2 known", "2 known", "3 known", "3 known", "3 known", "3 known", "3 known", "3 known", "3 known", "4 known", "4 known", "4 known", "4 known"],
+				additional : levels.map(function (n) {
+					return n < 3 ? "" : (n < 10 ? 2 : n < 17 ? 3 : 4) + " known";
+				}),
 				extraname : "Metamagic Option",
 				extrachoices : ["Careful Spell", "Distant Spell", "Empowered Spell", "Extended Spell", "Heightened Spell", "Quickened Spell", "Subtle Spell", "Twinned Spell"],
+				extraTimes : levels.map(function (n) {
+					return n < 3 ? 0 : n < 10 ? 2 : n < 17 ? 3 : 4;
+				}),
 				"careful spell" : {
 					name : "Careful Spell",
 					source : [["SRD", 44], ["P", 102]],
@@ -1595,9 +1845,14 @@ var Base_ClassList = {
 				source : [["SRD", 47], ["P", 107]],
 				minlevel : 2,
 				description : "\n   " + "Use the \"Choose Feature\" button above to add Eldritch Invocations to the third page" + "\n   " + "Whenever I gain a warlock level, I can replace an invocation I know with another",
-				additional : ["", "2 invocations known", "2 invocations known", "2 invocations known", "3 invocations known", "3 invocations known", "4 invocations known", "4 invocations known", "5 invocations known", "5 invocations known", "5 invocations known", "6 invocations known", "6 invocations known", "6 invocations known", "7 invocations known", "7 invocations known", "7 invocations known", "8 invocations known", "8 invocations known", "8 invocations known"],
+				additional : levels.map(function (n) {
+					return n < 2 ? "" : (n < 5 ? 2 : n < 7 ? 3 : n < 9 ? 4 : n < 12 ? 5 : n < 15 ? 6 : n < 18 ? 7 : 8) + " invocations known";
+				}),
 				extraname : "Eldritch Invocation",
 				extrachoices : ["Agonizing Blast (prereq: Eldritch Blast cantrip)", "Armor of Shadows", "Ascendant Step (prereq: level 9 warlock)", "Beast Speech", "Beguiling Influence", "Bewitching Whispers (prereq: level 7 warlock)", "Book of Ancient Secrets (prereq: Pact of the Tome)", "Chains of Carceri (prereq: level 15 warlock, Pact of the Chain)", "Devil's Sight", "Dreadful Word (prereq: level 7 warlock)", "Eldritch Sight", "Eldritch Spear (prereq: Eldritch Blast cantrip)", "Eyes of the Rune Keeper", "Fiendish Vigor", "Gaze of Two Minds", "Lifedrinker (prereq: level 12 warlock, Pact of the Blade)", "Mask of Many Faces", "Master of Myriad Forms (prereq: level 15 warlock)", "Minions of Chaos (prereq: level 9 warlock)", "Mire the Mind (prereq: level 5 warlock)", "Misty Visions", "One with Shadows (prereq: level 5 warlock)", "Otherworldly Leap (prereq: level 9 warlock)", "Repelling Blast (prereq: Eldritch Blast cantrip)", "Sculptor of Flesh (prereq: level 7 warlock)", "Sign of Ill Omen (prereq: level 5 warlock)", "Thief of Five Fates", "Thirsting Blade (prereq: level 5 warlock, Pact of the Blade)", "Visions of Distant Realms (prereq: level 15 warlock)", "Voice of the Chain Master (prereq: Pact of the Chain)", "Whispers of the Grave (prereq: level 9 warlock)", "Witch Sight (prereq: level 15 warlock)"],
+				extraTimes : levels.map(function (n) {
+					return n < 2 ? 0 : n < 5 ? 2 : n < 7 ? 3 : n < 9 ? 4 : n < 12 ? 5 : n < 15 ? 6 : n < 18 ? 7 : 8;
+				}),
 				"agonizing blast (prereq: eldritch blast cantrip)" : {
 					name : "Agonizing Blast",
 					description : "\n   " + "I can add my Charisma modifier to every hit with my Eldritch Blast cantrip",
@@ -2074,7 +2329,7 @@ var Base_ClassList = {
 								if (v.pactWeapon || v.theWea.pactWeapon || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) {
 									v.pactWeapon = true;
 									fields.Proficiency = true;
-									if (!v.theWea.isMagicWeapon && !(/counts as magical/i).test(fields.Description)) fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
+									if (!v.theWea.isMagicWeapon && !(/counts as( a)? magical/i).test(fields.Description)) fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
 								};
 							},
 							"If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."

@@ -829,6 +829,7 @@ var Base_WeaponsList = {
 		damage : [1, 8, "bludgeoning"],
 		range : "Melee",
 		description : "Imbued club or quarterstaff; Counts as a magical weapon (PHB 275)",
+		monkweapon : true,
 		abilitytodamage : true
 	},
 	"shocking grasp" : {
@@ -1350,7 +1351,7 @@ var Base_GearList = {
 		weight : 4,
 		type : "druidic focus"
 	},
-	"yew wand " : {
+	"yew wand" : {
 		infoname : "Yew wand  [10 gp]",
 		name : "Yew wand druidic focus",
 		amount : "",
