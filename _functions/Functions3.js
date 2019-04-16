@@ -2254,6 +2254,183 @@ function SetMagicItemsDropdown(forceTooltips) {
 	}
 }
 
+//make a menu of all the magic items, sorted by different criteria
+function ParseMagicItemMenu() {
+	var iMenus = {
+		alphabetical : {},
+		rarity : {
+			common : [],
+			uncommon : [],
+			rare : [],
+			"very rare" : [],
+			legendary : [],
+			artifact : []
+		},
+		type : {
+			"Armor, shield, AC bonus" : [],
+			Potion : [],
+			Ring : [],
+			Rod : [],
+			Scroll : [],
+			Staff : [],
+			Wand : [],
+			"Wondrous item" : [],
+			Weapon : []
+		},
+		special : {
+			"Ability score increase" : [],
+			"Hit points" : [],
+			Movement : [],
+			"Resistances or immunities" : [],
+			Skills : [],
+			Spells : [],
+			Vision : [],
+		},
+		ref : {}
+	};
+	var sortItem = function(mainItem, subItem) {
+		var iObj = MagicItemsList[mainItem];
+		var sObj = subItem ? iObj[subItem.toLowerCase()] : false;
+		var tObj = sObj ? {} : iObj;
+		if (sObj) {
+			for (var attr in iObj) tObj[attr] = iObj[attr];
+			for (var attr in sObj) tObj[attr] = sObj[attr];
+		}
+		var itemName = !subItem ? iObj.name : sObj.name ? sObj.name : iObj.name + " [" + subItem + "]";
+		//if (tObj.source) itemName += stringSource(tObj, "first,abbr", "\t    (", ")");
+		var firstLetter = itemName[0].toUpperCase();
+		iMenus.ref[itemName] = subItem ? mainItem + "#" + subItem : mainItem;
+		if (!iMenus.alphabetical[firstLetter]) {
+			iMenus.alphabetical[firstLetter] = [];
+		}
+		iMenus.alphabetical[firstLetter].push(itemName);
+		if (tObj.rarity && iMenus.rarity[tObj.rarity.toLowerCase()]) {
+			iMenus.rarity[tObj.rarity.toLowerCase()].push(itemName);
+		}
+		if ((/weapon/i).test(tObj.type) || tObj.weaponsAdd || tObj.weaponOptions || (tObj.chooseGear && (/weapon|ammo/i).test(tObj.chooseGear.type))) {
+			iMenus.type.Weapon.push(itemName);
+		}
+		if ((/armor|shield/i).test(tObj.type) || tObj.armorAdd || tObj.shieldAdd || tObj.armorOptions || tObj.extraAC || (tObj.chooseGear && tObj.chooseGear.type == "armor")) {
+			iMenus.type["Armor, shield, AC bonus"].push(itemName);
+		}
+		var searchType = tObj.type ? tObj.type.toLowerCase() : false;
+		for (var aType in iMenus.type) {
+			if (!searchType) break;
+			if ((/weapon|armor|shield/i).test(aType)) continue;
+			if (searchType.indexOf(aType.toLowerCase()) !== -1) {
+				iMenus.type[aType].push(itemName);
+				break;
+			}
+		}
+		if (tObj.scores || tObj.scorestxt || tObj.scoresOverride) {
+			iMenus.special["Ability score increase"].push(itemName);
+		}
+		if (tObj.calcChanges && tObj.calcChanges.hp) {
+			iMenus.special["Hit points"].push(itemName);
+		}
+		if (tObj.speed || (/(flying|climbing|burrowing|swimming|walking) speed/i).test(tObj.descriptionFull) || (/of (flying|climbing|burrowing|swimming)/i).test(tObj.name)) {
+			iMenus.special.Movement.push(itemName);
+		}
+		if (tObj.dmgres || (tObj.savetxt && tObj.savetxt.immune)) {
+			iMenus.special["Resistances or immunities"].push(itemName);
+		}
+		if (tObj.skills || tObj.skillstxt || tObj.advantage) {
+			iMenus.special.Skills.push(itemName);
+		}
+		if (tObj.spellcastingBonus || tObj.spellChanges || (tObj.calcChanges && tObj.calcChanges.spellList)) {
+			iMenus.special.Spells.push(itemName);
+		}
+		if (tObj.vision) {
+			iMenus.special.Vision.push(itemName);
+		}
+	}
+	for (var item in MagicItemsList) {
+		var anItem = MagicItemsList[item];
+		if (anItem.source && testSource(item, anItem, "magicitemExcl")) continue;
+		var justDoMainItem = true;
+		if (anItem.choices && !anItem.selfChoosing) {
+			for (var c = 0; c < anItem.choices.length; c++) {
+				var aChL = anItem.choices[c].toLowerCase();
+				var aSubItem = anItem[aChL];
+				if (!aSubItem || (aSubItem.source && testSource(aChL, aSubItem, "magicitemExcl"))) continue;
+				for (var attr in aSubItem) {
+					if (!(/^(description.*|name.*|source|notLegalAL|magicItemTable|storyItemAL|extraTooltip|attunement|weight|prereq.*|allowDuplicates|calculate)$/i).test(attr)) {
+						justDoMainItem = false;
+						sortItem(item, anItem.choices[c]);
+						break;
+					}
+				}
+			}
+		}
+		if (justDoMainItem) sortItem(item);
+	}
+	// First add the alphabetical listing of all the magic items
+	var tempMenu = [], alphabetaArr = [];
+	for (var letter in iMenus.alphabetical) alphabetaArr.push(letter);
+	alphabetaArr.sort();
+	for (var i = 0; i < alphabetaArr.length; i++) {
+		var tempMenu2 = iMenus.alphabetical[alphabetaArr[i]];
+		tempMenu2.sort();
+		for (var a = 0; a < tempMenu2.length; a++) {
+			tempMenu2[a] = {
+				cName : tempMenu2[a],
+				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+			}
+		}
+		tempMenu.push({ cName : alphabetaArr[i], oSubMenu : [].concat(tempMenu2) });
+	}
+	AddMagicItemsMenu = [{
+		cName : "Alphabetically",
+		oSubMenu : [].concat(tempMenu)
+	}]
+	// Then a menu per rarity
+	var tempMenu = [];
+	for (var entry in iMenus.rarity) {
+		var tempMenu2 = iMenus.rarity[entry];
+		if (!tempMenu2.length) continue;
+		tempMenu2.sort();
+		for (var a = 0; a < tempMenu2.length; a++) {
+			tempMenu2[a] = {
+				cName : tempMenu2[a],
+				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+			}
+		}
+		tempMenu.push({ cName : entry, oSubMenu : [].concat(tempMenu2) });
+	}
+	AddMagicItemsMenu.push({
+		cName : "By rarity",
+		oSubMenu : [].concat(tempMenu)
+	}, { cName : "-" });
+	// Then a main menu item per type
+	for (var entry in iMenus.type) {
+		var tempMenu2 = iMenus.type[entry];
+		if (!tempMenu2.length) continue;
+		tempMenu2.sort();
+		for (var a = 0; a < tempMenu2.length; a++) {
+			tempMenu2[a] = {
+				cName : tempMenu2[a],
+				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+			}
+		}
+		AddMagicItemsMenu.push({ cName : entry, oSubMenu : [].concat(tempMenu2) });
+	}
+	AddMagicItemsMenu.push({ cName : "-" });
+	// Then a main menu item per bonus
+	for (var entry in iMenus.special) {
+		var tempMenu2 = iMenus.special[entry];
+		if (!tempMenu2.length) continue;
+		tempMenu2.sort();
+		for (var a = 0; a < tempMenu2.length; a++) {
+			tempMenu2[a] = {
+				cName : tempMenu2[a],
+				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+			}
+		}
+		AddMagicItemsMenu.push({ cName : entry, oSubMenu : [].concat(tempMenu2) });
+	}
+	return AddMagicItemsMenu;
+}
+
 //Make menu for the button on each Magic Item line and parse it to Menus.magicitems
 function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 	var magicMenu = [];
@@ -2304,9 +2481,15 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			// an option to read the whole description
 			if (Who(MIflds[2])) menuLVL1([["Show full text of " + aMI.name, "popup"]]);
 			// add a separator if we have any items in the menu so far
-			if (magicMenu.length) magicMenu.push({cName : "-"});
+			if (magicMenu.length) magicMenu.push({ cName : "-" });
 		}
-		// now at the default options
+		// a way to select another magic item
+		if (!AddMagicItemsMenu) ParseMagicItemMenu();
+		magicMenu.push({
+			cName : CurrentMagicItems.known[ArrayNmbr] ? "Change item to" : "Set item",
+			oSubMenu : AddMagicItemsMenu
+		},{ cName : "-" });
+		// now all the default options
 		var magicArray = [
 			["Move up" + upToOtherPage, "up", !noUp],
 			["Move down" + downToOtherPage, "down", !noDown],
@@ -2334,7 +2517,21 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Magic item menu option...");
 
+	var getChoiceName = function(item, choice) {
+		var aMI = MagicItemsList[item];
+		if (!choice || !aMI[choice]) return aMI.name;
+		if (aMI[choice].name) return aMI[choice].name;
+		for (var i = 0; i < aMI.choices.length; i++) {
+			if (aMI.choices[i].toLowerCase() == choice) {
+				return aMI.name + " [" + aMI.choices[i] + "]";
+			}
+		}
+	}
+
 	switch (MenuSelection[1]) {
+		case "set" :
+			Value(MIflds[0], getChoiceName(MenuSelection[2], MenuSelection[3]));
+			break;
 		case "popup" :
 			ShowDialog("Magic item's full description", Who(MIflds[2]));
 			break;
@@ -2342,16 +2539,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			aMI = MagicItemsList[CurrentMagicItems.known[ArrayNmbr]];
 			if (MenuSelection[2] && aMI && aMI[MenuSelection[2]] && CurrentMagicItems.choices[ArrayNmbr] != MenuSelection[2]) {
 				var aMIvar = aMI[MenuSelection[2]];
-				if (aMIvar.name) {
-					Value(MIflds[0], aMIvar.name);
-				} else {
-					for (var i = 0; i < aMI.choices.length; i++) {
-						if (aMI.choices[i].toLowerCase() == MenuSelection[2]) {
-							Value(MIflds[0], aMI.name + " [" + aMI.choices[i] + "]");
-							break;
-						}
-					}
-				}
+				Value(MIflds[0], getChoiceName(CurrentMagicItems.known[ArrayNmbr], MenuSelection[2]));
 			}
 			break;
 		case "up" :

@@ -10,6 +10,8 @@ var TreasureCheckpointsTable = {
 	I : { tier : 3, points : 24 }
 };
 
+var AddMagicItemsMenu;
+
 var Base_MagicItemsList = {
 	"adamantine armor" : {
 		name : "Adamantine Armor",
@@ -922,6 +924,7 @@ var Base_MagicItemsList = {
 		recovery : "dawn",
 		additional : "cast web",
 		fixedDC : 13,
+		speed : { climb : { spd : "walk", enc : "walk" } },
 		spellcastingBonus : {
 			name : "Once per dawn",
 			spells : ["web"],
@@ -3357,7 +3360,7 @@ var Base_MagicItemsList = {
 	"pipes of haunting" : { // contains contributions by Soilentbrad
 		name : "Pipes of Haunting",
 		source : [["SRD", 232], ["D", 185]],
-		type : "Instrument",
+		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "F",
 		description : "These pipes have 3 charges. As an action, I can use 1 charge to play them and have each (non-hostile) creature in 30 ft that can hear them make a DC 15 Wis save or be frightened of me for 1 minute. A target can repeat the save at the end of each of their turns. The pipes regain 1d3 expended charges daily at dawn.",
@@ -3378,7 +3381,7 @@ var Base_MagicItemsList = {
 	"pipes of the sewers" : { // contains contributions by Soilentbrad
 		name : "Pipes of the Sewers",
 		source : [["SRD", 232], ["D", 185]],
-		type : "Instrument",
+		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "F",
 		description : "The pipes have 3 charges, regain 1d3 at dawn, and cause rats to be indifferent toward me unless threatened. As an action, I can play them, then use a bonus action to summon rats in 0.5 miles to form 1 swarm per charge spend. While playing, rat swarms in 30 ft make a Wis check vs. my Cha check or obey my commands.",
@@ -3891,7 +3894,8 @@ var Base_MagicItemsList = {
 					description : "Air elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
 					changes : "Can only affect an air elemental."
 				}
-			}
+			},
+			limfeaname : "Ring of Air Elemental Command"
 		},
 		"earth" : {
 			name : "Ring of Earth Elemental Command",
@@ -3943,7 +3947,8 @@ var Base_MagicItemsList = {
 					description : "Earth elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
 					changes : "Can only affect an earth elemental."
 				}
-			}
+			},
+			limfeaname : "Ring of Earth Elemental Command"
 		},
 		"fire" : {
 			name : "Ring of Fire Elemental Command",
@@ -3996,7 +4001,8 @@ var Base_MagicItemsList = {
 					description : "Fire elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
 					changes : "Can only affect a fire elemental."
 				}
-			}
+			},
+			limfeaname : "Ring of Fire Elemental Command"
 		},
 		"water" : {
 			name : "Ring of Water Elemental Command",
@@ -4049,7 +4055,8 @@ var Base_MagicItemsList = {
 					description : "Water elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
 					changes : "Can only affect a water elemental."
 				}
-			}
+			},
+			limfeaname : "Ring of Water Elemental Command"
 		}
 	},
 	"ring of evasion" : {

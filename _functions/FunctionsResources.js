@@ -744,6 +744,9 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			setSpellVariables(forceDDupdate || oldCS.spellsExcl !== CurrentSources.spellsExcl);
 		};
 		if (forceDDupdate) SetGearVariables();
+		if (forceDDupdate || oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.magicitemExcl !== CurrentSources.magicitemExcl) {
+			ParseMagicItemMenu();
+		}
 		thermoM(thermoTxt, true); // Stop progress bar
 	};
 };
