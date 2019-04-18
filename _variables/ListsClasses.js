@@ -329,7 +329,7 @@ var Base_ClassList = {
 					prereqeval : function(v) { return v.skillProfs.indexOf("Acrobatics") !== -1; },
 					skills : [["Acrobatics", "only"]]
 				},
-				"animal Handling" : {
+				"animal handling" : {
 					name : "Animal Handling Expertise", description : "",
 					source : [["SRD", 13], ["P", 54]],
 					prereqeval : function(v) { return v.skillProfs.indexOf("Animal Handling") !== -1; },
@@ -413,7 +413,7 @@ var Base_ClassList = {
 					prereqeval : function(v) { return v.skillProfs.indexOf("Religion") !== -1; },
 					skills : [["Religion", "only"]]
 				},
-				"sleight of Hand" : {
+				"sleight of hand" : {
 					name : "Sleight of Hand Expertise", description : "",
 					source : [["SRD", 13], ["P", 54]],
 					prereqeval : function(v) { return v.skillProfs.indexOf("Sleight of Hand") !== -1; },
@@ -1444,7 +1444,7 @@ var Base_ClassList = {
 					prereqeval : function(v) { return v.skillProfs.indexOf("Acrobatics") !== -1; },
 					skills : [["Acrobatics", "only"]]
 				},
-				"animal Handling" : {
+				"animal handling" : {
 					name : "Animal Handling Expertise", description : "",
 					source : [["SRD", 39], ["P", 96]],
 					prereqeval : function(v) { return v.skillProfs.indexOf("Animal Handling") !== -1; },
@@ -1528,7 +1528,7 @@ var Base_ClassList = {
 					prereqeval : function(v) { return v.skillProfs.indexOf("Religion") !== -1; },
 					skills : [["Religion", "only"]]
 				},
-				"sleight of Hand" : {
+				"sleight of hand" : {
 					name : "Sleight of Hand Expertise", description : "",
 					source : [["SRD", 39], ["P", 96]],
 					prereqeval : function(v) { return v.skillProfs.indexOf("Sleight of Hand") !== -1; },
