@@ -2250,9 +2250,9 @@ var Base_MagicItemsList = {
 		weight : 10,
 		selfChoosing : function () {
 			// don't have to be attuned to the prereqs https://twitter.com/jeremyecrawford/status/948346891296653315
-			return CurrentMagicItems.known.indexOf("belt of giant strength") !== -1 && CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1 ? "attuned (requires Belt of Giant Strength and Gauntlet of Ogre Power)" : "not attuned";
+			return CurrentMagicItems.known.indexOf("belt of giant strength") !== -1 && CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1 ? "attuned (requires Belt of Giant Strength and Gauntlets of Ogre Power)" : "not attuned";
 		},
-		choices : ["not attuned", "attuned (requires Belt of Giant Strength and Gauntlet of Ogre Power)"],
+		choices : ["not attuned", "attuned (requires Belt of Giant Strength and Gauntlets of Ogre Power)"],
 		"not attuned" : {
 			description : "This magical maul adds a +1 bonus to attack and damage rolls made with it. It has additional features when I'm attuned to it, which requires me to wear both a belt of giant strength and gauntlets of ogre power.",
 			weaponsAdd : ["Hammer of Thunderbolts"],
@@ -2264,7 +2264,7 @@ var Base_MagicItemsList = {
 				modifiers : [1, 1]
 			}
 		},
-		"attuned (requires Belt of Giant Strength and Gauntlets of Ogre Power)" : {
+		"attuned (requires belt of giant strength and gauntlets of ogre power)" : {
 			name : "Hammer of Thunderbolts [attuned]",
 			description : "This magical maul has a +1 bonus to hit/damage and gives me +4 Strength (max 30). On a roll of 20 to hit vs. a giant, it dies on a failed DC 17 Con save. I can expend 1 charge to throw it with 20 ft/60 ft range, which, on a hit, causes all within 30 ft to make a DC 17 Con save or be stunned until the end of my next turn.",
 			descriptionLong : "This magical maul adds a +1 bonus to attack and damage rolls made with it. It gives me a +4 bonus to Strength (max 30). On a roll of 20 to hit vs. a giant, the giant dies on a failed DC 17 Con save. The hammer has 5 charges and regains 1d4+1 charges daily at dawn. I can can expend 1 charge and make a ranged weapon attack with the hammer, hurling it as if it had the thrown property with a normal range of 20 ft and a long range of 60 ft. On a hit, it releases an audible thunderclap in a 300 ft radius and all within 30 ft of the target that was hit must make a DC 17 Con save or be stunned until the end of my next turn.",
