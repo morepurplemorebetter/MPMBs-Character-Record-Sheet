@@ -12,6 +12,20 @@ var TreasureCheckpointsTable = {
 
 var AddMagicItemsMenu;
 
+var sentientItemConflictTxt = [
+	"\u25C6 Sentient Item Conflict (SRD 252, DMG 216)",
+	"A sentient item has a will of its own, shaped by its personality and alignment. If its wielder acts in a manner opposed to the item's alignment or purpose, conflict can arise. When such a conflict occurs, the item makes a Charisma check contested by the wielder's Charisma check. If the item wins the contest, it makes one or more of the following demands:",
+	" \u2022 It insists on being carried or worn at all times.",
+	" \u2022 It demands that its wielder dispose of anything it finds repugnant.",
+	" \u2022 It demands that its wielder pursue its goals to the exclusion of all other goals.",
+	" \u2022 It demands to be given to someone else.",
+	"If its wielder refuses to comply with its wishes, it can do any or all of the following:",
+	" \u2022 Make it impossible for its wielder to attune to it.",
+	" \u2022 Suppress one or more of its activated properties.",
+	" \u2022 Attempt to take control of its wielder.",
+	"Once per dawn, a sentient item attempts to take control of its wielder, which must make a Charisma save, with a DC equal to 12 + the item's Charisma modifier. If failed, the wielder is charmed by the item for 1d12 hours. While charmed, the wielder must try to follow the item's commands. If the wielder takes damage, it can repeat the save, ending the effect on a success."
+].join("\n");
+
 var Base_MagicItemsList = {
 	"adamantine armor" : {
 		name : "Adamantine Armor",
@@ -2783,7 +2797,7 @@ var Base_MagicItemsList = {
 			regExpSearch : /^(?=.*javelin)(?=.*lightning).*$/i,
 			name : "Javelin of Lightning",
 			source : [["SRD", 228], ["D", 178]],
-			description : "Thrown; Once per dawn special attack, see item description",
+			description : "Thrown; Once per dawn special attack, see item description"
 		}
 	},
 	"keoghtom's ointment" : {

@@ -194,10 +194,10 @@ function ApplySpell(FldValue, rememberFldName) {
 				aSpell.changesObj["Magic Item"] = "\n - Spells cast by magic items don't require any components except the magic item itself, unless otherwise specified in the magic item's description.";
 			}
 			// If this spell is gained from an item, feat, or race, remove scaling effects
-			if (aSpell.level && aCast && ((/^(item|feat|race)$/i).test(aCast.typeSp) || (aCast.refType && (/^(item|feat|race)$/i).test(aCast.refType)))) {
-				var removeRegex = /\+(\d+d)?\d+\/SL\b|\bSL used/i
+			if (aCast && ((/^(item|feat|race)$/i).test(aCast.typeSp) || (aCast.refType && (/^(item|feat|race)$/i).test(aCast.refType))) && (aSpell.level || aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
+				var removeRegex = /\+(\d+d)?\d+\/SL\b|\bSL used/ig
 				if (removeRegex.test(aSpell.description + aSpell.descriptionMetric)) {
-					aSpell.description = aSpell.description.replace("SL used", "level " + aSpell.level).replace(removeRegex, '').replace(/, within 30 ft of each other,|, each max 30 ft apart,/i, '');
+					aSpell.description = aSpell.description.replace("SL used", "level " + aSpell.level).replace(removeRegex, '').replace(/, within 30 ft of each other,|, each max 30 ft apart,|; \+\d+d\d+ at CL.*?17/ig, '');
 					if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace("SL used", "level " + aSpell.level).replace(removeRegex, '');
 					aSpell.changesObj["Innate Spellcasting"] = "\n - Spell cast by magic items, from feats, or from racial traits can only be cast at the spell's level, not with higher level spell slots.";
 				}
@@ -531,7 +531,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 				Value(headerArray[2], caster); //set the name of the class
 				if (!spCast.abilityToUse) spCast.abilityToUse = getSpellcastingAbility(caster);
 				PickDropdown(headerArray[3], spCast.abilityToUse[0]); //set the ability score to use
-				AddTooltip(headerArray[3], undefined, spCast.fixedDC ? "fixed" : ""); //set fixed DC to use, if any
+				AddTooltip(headerArray[3], undefined, spCast.fixedDC || spCast.fixedSpAttack ? "fixed" : ""); //set fixed DC to use, if any
 				if (spCast.blueTxt) { //set the remembered bluetext values, if at all present
 					Value(headerArray[7], spCast.blueTxt.prep ? spCast.blueTxt.prep : 0); //set the bluetext for preparing
 					Value(headerArray[8], spCast.blueTxt.atk ? spCast.blueTxt.atk : 0); //set the bluetext for attack
@@ -606,6 +606,7 @@ function CalcSpellScores() {
 	var aClass = What(Fld.replace("DINGDONG", "class")); //find the associated class
 	var cSpells = aClass && CurrentSpells[aClass] ? CurrentSpells[aClass] : false;
 	var fixedDC = cSpells && !isNaN(cSpells.fixedDC) ? Number(cSpells.fixedDC) : false;
+	var fixedSpAttack = cSpells && !isNaN(cSpells.fixedSpAttack) ? Number(cSpells.fixedSpAttack) : false;
 
 	var theResult = {
 		dc : 0,
@@ -637,9 +638,9 @@ function CalcSpellScores() {
 	// fixed DC of 8 means the prof bonus still needs to be added
 	if (fixedDC === 8) fixedDC += profBonus;
 	// the DC
-	theResult.dc = fixedDC ? fixedDC : profBonusFixed + theMod + 8;
+	theResult.dc = fixedDC ? fixedDC : fixedSpAttack ? fixedSpAttack + 8 : profBonusFixed + theMod + 8;
 	// the spell attack
-	theResult.attack = fixedDC ? fixedDC - 8 : profBonus + theMod;
+	theResult.attack = fixedSpAttack ? fixedSpAttack : fixedDC ? fixedDC - 8 : profBonus + theMod;
 	// the number of prepared spells
 	var isPrepareVis = isDisplay(Fld.replace("DINGDONG", "prepare")) == display.visible;
 	if (isPrepareVis) {

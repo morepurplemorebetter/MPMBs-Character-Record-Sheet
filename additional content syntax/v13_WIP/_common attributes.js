@@ -786,8 +786,9 @@ spellcastingBonus : [{
 
 	spellcastingAbility : 4,
 	fixedDC : 17,
-	/*	spellcastingAbility & fixedDC // OPTIONAL //
-		Both these are explained in detail below.
+	fixedSpAttack : 9,
+	/*	spellcastingAbility & fixedDC & fixedSpAttack // OPTIONAL //
+		All of these are explained in detail below.
 
 		You can include either in a spellcastingBonus object to do the exact same thing.
 		Only do this if the spellcastingBonus object is not part of the parent,
@@ -828,10 +829,16 @@ fixedDC : 13,
 
 	This attribute will stop the calculation of the DC and attack on the spell sheet and instead
 	use this value or this value minus 8 for the spell attack.
+	Unless the "fixedSpAttack" is also present, in which case that will be used for spell attacks.
 	This attribute is mostly used by magic items.
 	This attribute has no affect on cantrips/spells in the attack section.
 
 	Setting this to 0 or false is the same as not including this attribute.
+
+	NOTE FOR USE WITH fixedSpAttack
+	If you include either fixedDC or fixedSpAttack,
+	then the other will be calculated using the first.
+	Normally, you only need to include one or the other.
 
 	NOTE FOR CLASS AND RACIAL FEATURES
 	This attribute will do nothing when included in a class or racial feature.
@@ -842,6 +849,35 @@ fixedDC : 13,
 	This attribute will overwrite the spellcasting ability score used for calculating DC/attack (if any).
 	For example, if you include this in a class feature for a wizard subclass and set it to `12`,
 	the wizard will be casting spells using DC 12 regardless of its intelligence modifier.
+*/
+
+fixedSpAttack : 5,
+/*	fixedSpAttack // OPTIONAL //
+	TYPE:	number
+	USE:	set the spell attack and DC to a fixed value, not dependent on ability score
+
+	This attribute will stop the calculation of the DC and attack on the spell sheet and instead
+	use this value or this value plus 8 for the spell save DC.
+	Unless the "fixedDC" is also present, in which case that will be used for spell save DC.
+	This attribute is mostly used by magic items.
+	This attribute has no affect on cantrips/spells in the attack section.
+
+	Setting this to 0 or false is the same as not including this attribute.
+
+	NOTE FOR USE WITH fixedDC
+	If you include either fixedDC or fixedSpAttack,
+	then the other will be calculated using the first.
+	Normally, you only need to include one or the other.
+
+	NOTE FOR CLASS AND RACIAL FEATURES
+	This attribute will do nothing when included in a class or racial feature.
+	The reason for this is that the class/race sets its spellcasting ability in the parent object (for race that uses this same attribute).
+
+	If for some reason the parent class/race object didn't set the spellcasting ability or you need to change it to a fixed attack bonus,
+	you can still set it by including this attribute in one of the spellcastingBonus objects.
+	This attribute will overwrite the spellcasting ability score used for calculating DC/attack (if any).
+	For example, if you include this in a class feature for a wizard subclass and set it to `7`,
+	the wizard will be casting spells using a spell attack of +7 regardless of its intelligence modifier.
 */
 
 spellcastingExtra : ["cure wounds", "guiding bolt", "flaming sphere", "lesser restoration", "daylight", "revivify", "guardian of faith", "wall of fire", "flame strike", "greater restoration"],

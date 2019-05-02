@@ -1575,7 +1575,7 @@ var Base_ClassList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (classes.known.rogue && classes.known.rogue.level && !v.isSpell && (v.isRangedWeapon || (/\bfinesse\b/i).test(fields.Description))) {
+							if (classes.known.rogue && classes.known.rogue.level && !v.isSpell && !v.isDC && (v.isRangedWeapon || (/\bfinesse\b/i).test(fields.Description))) {
 								v.sneakAtk = Math.ceil(classes.known.rogue.level / 2);
 								fields.Description += (fields.Description ? '; ' : '') + 'Sneak attack ' + v.sneakAtk + 'd6';
 							};

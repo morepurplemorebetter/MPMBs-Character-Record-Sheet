@@ -627,9 +627,11 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
 	}
 	if (!sObj.ability) sObj.ability = fObj.spellcastingAbility ? fObj.spellcastingAbility : fObj.abilitySave ? fObj.abilitySave : 0;
 	if (!sObj.fixedDC && fObj.fixedDC) sObj.fixedDC = Number(fObj.fixedDC);
+	if (!sObj.fixedSpAttack && fObj.fixedSpAttack) sObj.fixedSpAttack = Number(fObj.fixedSpAttack);
 	if (fObjP) {
 		if (!sObj.ability) sObj.ability = fObjP.spellcastingAbility ? fObjP.spellcastingAbility : fObjP.abilitySave ? fObjP.abilitySave : 0;
 		if (!sObj.fixedDC && fObjP.fixedDC) sObj.fixedDC = Number(fObjP.fixedDC);
+		if (!sObj.fixedSpAttack && fObjP.fixedSpAttack) sObj.fixedSpAttack = Number(fObjP.fixedSpAttack);
 	}
 	if (!sObj.abilityToUse) sObj.abilityToUse = getSpellcastingAbility(fObjName);
 	return sObj;
@@ -653,15 +655,18 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice) {
 		var spFeatItemLvl = false;
 		var spAbility = !isArray(spBon) ? spBon.spellcastingAbility : false;
 		var spFixedDC = !isArray(spBon) ? spBon.fixedDC : false;
+		var spFixedSpAttack = !isArray(spBon) ? spBon.fixedSpAttack : false;
 		if (isArray(spBon)) {
 			for (var i = 0; i < spBon.length; i++) {
 				if (!spFeatItemLvl && spBon[i].times && isArray(spBon[i].times)) spFeatItemLvl = true;
 				if (spBon[i].spellcastingAbility) spAbility = spBon[i].spellcastingAbility;
 				if (spBon[i].fixedDC) spFixedDC = spBon[i].fixedDC;
+				if (spBon[i].fixedSpAttack) spFixedSpAttack = spBon[i].fixedSpAttack;
 			}
 		}
 		if (spAbility) sObj.ability = spAbility;
 		if (spFixedDC) sObj.fixedDC = spFixedDC;
+		if (spFixedSpAttack) sObj.fixedSpAttack = spFixedSpAttack;
 		// if concerning a feat or item, set the level only if the spellcastingBonus needs it
 		if ((/feat|item/i).test(sObj.typeSp) && spFeatItemLvl) sObj.level = Math.max(Number(What("Character Level")), 1);
 	}
