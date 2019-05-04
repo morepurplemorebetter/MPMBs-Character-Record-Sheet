@@ -12,8 +12,7 @@ var TreasureCheckpointsTable = {
 
 var AddMagicItemsMenu;
 
-var sentientItemConflictTxt = [
-	"\u25C6 Sentient Item Conflict (SRD 252, DMG 216)",
+var sentientItemConflictTxt = "\u25C6 Sentient Item Conflict (SRD 252, DMG 216)" + desc([
 	"A sentient item has a will of its own, shaped by its personality and alignment. If its wielder acts in a manner opposed to the item's alignment or purpose, conflict can arise. When such a conflict occurs, the item makes a Charisma check contested by the wielder's Charisma check. If the item wins the contest, it makes one or more of the following demands:",
 	" \u2022 It insists on being carried or worn at all times.",
 	" \u2022 It demands that its wielder dispose of anything it finds repugnant.",
@@ -24,7 +23,7 @@ var sentientItemConflictTxt = [
 	" \u2022 Suppress one or more of its activated properties.",
 	" \u2022 Attempt to take control of its wielder.",
 	"Once per dawn, a sentient item attempts to take control of its wielder, which must make a Charisma save, with a DC equal to 12 + the item's Charisma modifier. If failed, the wielder is charmed by the item for 1d12 hours. While charmed, the wielder must try to follow the item's commands. If the wielder takes damage, it can repeat the save, ending the effect on a success."
-].join("\n");
+]);
 
 var Base_MagicItemsList = {
 	"adamantine armor" : {
@@ -1113,7 +1112,7 @@ var Base_MagicItemsList = {
 	},
 	"cube of force" : { // contains contributions by Larry Hoy
 		name : "Cube of Force",
-		source : [["SRD", 215], ["D", 159]],
+		source : [["S	RD", 215], ["D", 159]],
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "G",
@@ -1127,25 +1126,25 @@ var Base_MagicItemsList = {
 		toNotesPage : [{
 			name : "Cube of Force Charge Expenditure Tables",
 			note : [
-				"Pressing one of the faces of the cube expends charges and has the effect as listed below. The cube starts with 36 charges, and it regains 1d20 expended charges daily at dawn.",
+				"As an action, I can pressing one of the faces of the cube, expending charges and invoking the effect as listed below. The cube has 36 charges, and it regains 1d20 expended charges daily at dawn.",
 				"Once activated, a barrier of invisible force springs into existence, forming a cube 15 feet on a side. The barrier is centered on me, moves with me, and lasts for 1 minute, until I use an action to press the cube's sixth face, the cube runs out of charges, or I press another face to invoke another barrier.",
 				"If my movement causes the barrier to come into contact with a solid object that can't pass through the cube, I can't move any closer to that object as long as the barrier remains.",
-				"\nFACE\tCHARGES\tEFFECT",
-				"  1\t      1\tGases, wind, and fog can't pass through the barrier.",
-				"  2\t      2\tNonliving matter can't pass through the barrier.",
-				"  3\t      3\tLiving matter can't pass through the barrier.*",
-				"  4\t      4\tSpell effects can't pass through the barrier.",
-				"  5\t      5\tNothing can pass through the barrier.*",
-				"  6\t      0\tThe barrier deactivates.",
-				"\n* Walls, floors, and ceilings can pass through at my discretion.",
-				"\nThe cube loses charges when the barrier is targeted by certain spells or comes into contact with certain spell or magic item effects, as shown in the table below.",
-				"\nSPELL OR ITEM\tCHARGES LOST",
+				"FACE\tCHARGES\tEFFECT",
+				"   1\t      1\tGases, wind, and fog can't pass through the barrier.",
+				"   2\t      2\tNonliving matter can't pass through the barrier.",
+				"   3\t      3\tLiving matter can't pass through the barrier.*",
+				"   4\t      4\tSpell effects can't pass through the barrier.",
+				"   5\t      5\tNothing can pass through the barrier.*",
+				"   6\t      0\tThe barrier deactivates.\n" +
+				"* Walls, floors, and ceilings can pass through at my discretion.\n",
+				"The cube loses charges when the barrier is targeted by certain spells or comes into contact with certain spell or magic item effects, as shown in the table below.",
+				"SPELL OR ITEM\tCHARGES LOST",
 				"Disintegrate  \t1d12",
 				"Horn of Blasting\t1d10",
 				"Passwall\t\t1d6",
 				"Prismatic Spray\t1d20",
-				"Wall of Fire\t\t1d4"
-			].join("\n")
+				"Wall of Fire\t1d4"
+			]
 		}]
 	},
 	"cubic gate" : { // contains contributions by Larry Hoy
@@ -5120,10 +5119,6 @@ var Base_MagicItemsList = {
 			name : "Staff of Charming (pass enchantment save)",
 			usages : 1,
 			recovery : "dawn"
-		}, {
-			name : "Figurine of Wondrous Power [Ivory Goat of Terror]",
-			usages : 1,
-			recovery : "15 days"
 		}],
 		usages : 10,
 		recovery : "dawn",
@@ -5246,7 +5241,7 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"cure wounds" : {
 				description : "1 living creature heals 1d8+spellcasting ability modifier HP, +1d8 per charge spend after the 1st",
-				changes : "The spell level Cure Wounds is cast at depends on the amount of charges spent, 1 charge per spell slot level."
+				changes : "The spell level Cure Wounds is cast at depends on the amount of charges spend, 1 charge per spell slot level."
 			}
 		}
 	},
@@ -5258,7 +5253,7 @@ var Base_MagicItemsList = {
 		magicItemTable : "H",
 		description : "While holding this +2 quarterstaff, I gain a +2 bonus on saves, AC, and spell attacks. The staff has 20 charges, regaining 2d8+4 at dawn. Charges can be used to cast spells, or, on a hit in melee with it, I can expend 1 charge to deal +1d6 force damage. As an action, I can break it, causing a 30-ft radius explosion.",
 		descriptionLong : "While holding this staff, I gain a +2 bonus on saves, AC, and spell attacks. The staff has 20 charges, regaining 2d8+4 at dawn. If I use the last charge, roll a d20. On a 1, it converts to a +2 quarterstaff without other abilities. On a 20, it regains 1d8+2 charges. Charges can be used to cast spells, or, on a hit in melee with it, I can expend 1 charge to deal +1d6 force damage. As an action, I can break it so it explodes. When it explodes, there is a 50% chance I teleport to a random plane, otherwise I take 16\xD7 the charges left in force damage. All within 10 ft take 8\xD7, 20 ft 6\xD7, and 30 ft 4\xD7; DC 17 Dex save halves.",
-		descriptionFull : "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While holding it, you gain a +2 bonus to Armor Class, saving throws, and spell attack rolls.\n   The staff has 20 charges for the following properties. The staff regains 2d8+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff retains its +2 bonus to attack and damage roll but loses all other properties. On a 20, the staff regain 1d8+2 charges.\n   " + toUni("Power Strike") + ". When you hit with a melee attack using the staff, you can expend 1 charge to deal an extra 1d6 force damage to the target.\n   " + toUni("Spells") + ". While holding this staff, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC and spell attack bonus: Cone of Cold (5 charges), Fireball (5th-level version, 5 charges), Globe of Invulnerability (6 charges), Hold Monster (5 charges), Levitate (2 charges). Lightning Bolt (5th-level version, 5 charges), Magic Missile (1 charge), Ray of Enfeeblement (1 charge), or Wall of Force (5 charges).\n   " + toUni("Retributive Strike") + ". You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.\n   You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.\n\n" + toUni("Distance from Origin") + "\t" + toUni("Effect") + "\n10 ft. away or closer\t8 \xD7 the number of charges in the staff\n11 to 20 ft. away\t6 \xD7 the number of charges in the staff\n21 to 30 ft. away\t4 \xD7 the number of charges in the staff",
+		descriptionFull : "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While holding it, you gain a +2 bonus to Armor Class, saving throws, and spell attack rolls.\n   The staff has 20 charges for the following properties. The staff regains 2d8+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff retains its +2 bonus to attack and damage roll but loses all other properties. On a 20, the staff regain 1d8+2 charges.\n   " + toUni("Power Strike") + ". When you hit with a melee attack using the staff, you can expend 1 charge to deal an extra 1d6 force damage to the target.\n   " + toUni("Spells") + ". While holding this staff, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC and spell attack bonus: Cone of Cold (5 charges), Fireball (5th-level version, 5 charges), Globe of Invulnerability (6 charges), Hold Monster (5 charges), Levitate (2 charges). Lightning Bolt (5th-level version, 5 charges), Magic Missile (1 charge), Ray of Enfeeblement (1 charge), or Wall of Force (5 charges).\n   " + toUni("Retributive Strike") + ". You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.\n   You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.\n\n" + toUni("Distance from Origin\tEffect") + "\n10 ft. away or closer\t8 \xD7 the number of charges in the staff\n11 to 20 ft. away\t6 \xD7 the number of charges in the staff\n21 to 30 ft. away\t4 \xD7 the number of charges in the staff",
 		attunement : true,
 		weight : 4,
 		prerequisite : "Requires attunement by a sorcerer, warlock, or wizard",

@@ -6217,9 +6217,9 @@ function processMods(AddRemove, NameEntity, items) {
 			case "initiative" :
 				Fld = QI ? "Init Bonus" : prefix + "Comp.Use.Combat.Init.Bonus";
 			case "skill" :
-				if ((/all/i).test(Fld)) {
+				if ((/^all/i).test(Fld)) {
 					Fld = QI ? "All Skills Bonus" : prefix + "BlueText.Comp.Use.Skills.All.Bonus";
-				} else if ((/pass/i).test(Fld)) {
+				} else if ((/^pass/i).test(Fld)) {
 					Fld = QI ? "Passive Perception Bonus" : prefix + "BlueText.Comp.Use.Skills.Perc.Pass.Bonus";
 				} else {
 					var skill = Fld.substr(0,4).capitalize();

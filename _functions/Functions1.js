@@ -1306,7 +1306,7 @@ function ApplyArmor(input) {
 
 	if (CurrentArmour.known !== undefined && ArmourList[CurrentArmour.known] !== undefined) {
 		var ArmorType = ArmourList[CurrentArmour.known].type ? ArmourList[CurrentArmour.known].type.toLowerCase() : "";
-		var ArmorStealth = (ArmorType === "medium" && What("Medium Armor Max Mod") === 3) || (/mithral/i).test(CurrentArmour.field) ? false : ArmourList[CurrentArmour.known].stealthdis ? ArmourList[CurrentArmour.known].stealthdis : false;
+		var ArmorStealth = (ArmorType === "medium" && What("Medium Armor Max Mod") === 3) || (/mithral|vind rune/i).test(CurrentArmour.field) ? false : ArmourList[CurrentArmour.known].stealthdis ? ArmourList[CurrentArmour.known].stealthdis : false;
 		Checkbox(ArmorFields[3], ArmorStealth);
 		Checkbox(ArmorFields[1], ArmorType === "medium");
 		Checkbox(ArmorFields[2], ArmorType === "heavy");
@@ -5465,7 +5465,7 @@ function MakeClassMenu() {
 			if (propFea.extrachoices && !propFea.choicesNotInMenu && propFea.minlevel <= clLvl) {
 				toTest = GetFeatureChoice("classes", aClass, prop, true);
 				propFea.extrachoices.sort();
-				toChooseNr = propFea.extraTimes ? " (choose " + propFea.extraTimes[Math.min(propFea.extraTimes.length, clLvl) - 1] + ")": "";
+				toChooseNr = " (" + propFea.extrachoices.length + " selected" + (propFea.extraTimes ? " of " + propFea.extraTimes[Math.min(propFea.extraTimes.length, clLvl) - 1] : "") + ")";
 				menuLVL3(tempItem, propFea.extraname + toChooseNr, propFea.extrachoices, aClass, prop, "extra", propFea, toTest);
 			};
 		};

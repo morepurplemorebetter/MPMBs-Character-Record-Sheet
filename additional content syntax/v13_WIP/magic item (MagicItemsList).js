@@ -195,7 +195,7 @@ MagicItemsList["staff of purple"] = {
 	TYPE:	boolean
 	USE:	set this to true if it is a 'Story Item' in Adventurers League play
 
-	This attribute is ignored if the 'magicItemTable' or 'storyItemAL' attribute is defined.
+	This attribute is ignored if the 'magicItemTable' or 'notLegalAL' attribute is defined.
 	Setting this to false is the same as not including this attribute.
 
 	If none of the three attributes 'magicItemTable', 'storyItemAL', or 'notLegalAL' are defined,

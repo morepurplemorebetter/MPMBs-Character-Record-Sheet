@@ -452,7 +452,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Instantaneous",
 		save : "Dex",
-		description : "3d6+1d6/SL Fire dmg; save halves; unattended flammable objects ignite",
+		description : "All in area 3d6+1d6/SL Fire dmg; save halves; unattended flammable objects ignite",
 		descriptionFull : "As you hold your hands with thumbs touching and fingers spread, a thin sheet of flames shoots forth from your outstretched fingertips. Each creature in a 15-foot cone must make a Dexterity saving throw. A creature takes 3d6 fire damage on a failed save, or half as much damage on a successful one." + "\n   " + "The fire ignites any flammable objects in the area that aren't being worn or carried." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d6 for each slot level above 1st."
 	},
 	"call lightning" : {
@@ -1168,7 +1168,7 @@ var Base_SpellsList = {
 		range : "120 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "Dispel any magical effect on crea or object; make DC 10+SL spellcasting ability check if above SL used",
+		description : "Dispel all magical effects on crea or object; make DC 10+SL spellcasting ability check if above SL used",
 		descriptionFull : "Choose one creature, object, or magical effect within range. Any spell of 3rd level or lower on the target ends. For each spell of 4th level or higher on the target, make an ability check using your spellcasting ability. The DC equals 10 + the spell's level. On a successful check, the spell ends." + AtHigherLevels + "When you cast this spell using a spell slot of 4th level or higher, you automatically end the effects of a spell on the target if the spell's level is equal to or less than the level of the spell slot you used."
 	},
 	"divination" : {
@@ -1619,7 +1619,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A bit of phosphorous or a firefly",
 		duration : "10 min (D)",
-		description : "Fiery shield gives either Fire or Cold dmg resist. and deals 2d8 of the same dmg type to melee attackers",
+		description : "Fiery shield gives either Fire or Cold dmg resist. and deals 2d8 of the other dmg type to melee attackers",
 		descriptionFull : "Thin and wispy flames wreathe your body for the duration, shedding bright light in a 10-foot radius and dim light for an additional 10 feet. You can end the spell early by using an action to dismiss it." + "\n   " + "The flames provide you with a warm shield or a chill shield, as you choose. The warm shield grants you resistance to cold damage, and the chill shield grants you resistance to fire damage." + "\n   " + "In addition, whenever a creature within 5 feet of you hits you with a melee attack, the shield erupts with flame. The attacker takes 2d8 fire damage from a warm shield, or 2d8 cold damage from a cold shield."
 	},
 	"fire storm" : {
@@ -4096,7 +4096,7 @@ var Base_SpellsList = {
 		range : "10 ft",
 		components : "V",
 		duration : "Instantaneous",
-		description : "I, 8 willing crea, or an object teleport to a place I know, have seen, or can describe; see book",
+		description : "I + 8 willing crea, or an object teleport to a place I know, have seen, or can describe; see book",
 		descriptionFull : [
 			"This spell instantly transports you and up to eight willing creatures of your choice that you can see within range, or a single object that you can see within range, to a destination you select. If you target an object, it must be able to fit entirely inside a 10-foot cube, and it can't be held or carried by an unwilling creature. The destination you choose must be known to you, and it must be on the same plane of existence as you. Your familiarity with the destination determines whether you arrive there successfully. The DM rolls d100 and consults the table.\n",
 			toUni("Familiarity\tMishap\tSimilar\t  Off\t   On"),

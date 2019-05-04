@@ -439,7 +439,14 @@ function DirectImport(consoleTrigger) {
 		global.docTo.setPrototypes();
 		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
 		if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
-		if (FromVersion < 12.999) { // give a warning about importing from a version that had all materials included automatically
+		if (global.docFrom.info.SheetVersionType && (/beta/i).test(global.docFrom.info.SheetVersionType) && global.docFrom.semVers && global.docTo.semVers != global.docFrom.semVers) { // say that importing from an (other) beta version is not supported
+			app.alert({
+				cTitle : "Unable to import from beta version",
+				cMsg : "You are trying to import from a beta version of MPMB's Character Record Sheet (" + global.docFrom.semVers + "), which is not supported. The version of the sheet you are importing to is " + global.docTo.semVers + ". You can only import from a beta version if both versions are identical.\n\nThe importing process will now be canceled."
+			});
+			closeAlert = true;
+			throw "user stop";
+		} else if (FromVersion < 12.999) { // give a warning about importing from a version that had all materials included automatically
 			var askUserIsSure = {
 				cTitle : "Continue with import?",
 				cMsg : "You are about to import from a sheet with version " + FromVersion + ". Unlike the sheet you are importing to, v" + FromVersion + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material by default.\n\nIf the same resources weren't added to the current sheet as are used in the old sheet, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet! See the \"Add Extra Materials\" bookmark for more information on what is already added and how to add the required resources." + (patreonVersion ? "\n\nIf you got this sheet from MPMB's Patreon, you are probably fine to proceed!" : "") + "\n\nAre you sure you want to continue importing?",
@@ -450,14 +457,6 @@ function DirectImport(consoleTrigger) {
 				closeAlert = true;
 				throw "user stop";
 			};
-		};
-		if (global.docFrom.info.SheetVersionType && (/beta/i).test(global.docFrom.info.SheetVersionType) && global.docFrom.semVers && global.docTo.semVers != global.docFrom.semVers) { // say that importing from an (other) beta version is not supported
-			app.alert({
-				cTitle : "Unable to import from beta version",
-				cMsg : "You are trying to import from a beta version of MPMB's Character Record Sheet (" + global.docFrom.semVers + "), which is not supported. The version of the sheet you are importing to is " + global.docTo.semVers + ". You can only import from a beta version if both versions are identical.\n\nThe importing process will now be canceled."
-			});
-			closeAlert = true;
-			throw "user stop";
 		};
 
 		IsNotImport = "no progress bar";

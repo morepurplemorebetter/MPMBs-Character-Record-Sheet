@@ -405,7 +405,7 @@ shieldAdd : ["Magical Buckler", 1, 2],
 			This string is set in the 'Shield' description field.
 			It can contain a magical modifier (i.e. any number following a + or -).
 		2.2	number
-			This is used to fill out the AC of the shield, regardless of any magical modifiers.
+			This is used to fill out the AC of the shield, without counting any magical modifiers in its name.
 		2.3	number
 			This is used to fill the weight of the shield in lb.
 
