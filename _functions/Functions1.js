@@ -5465,7 +5465,7 @@ function MakeClassMenu() {
 			if (propFea.extrachoices && !propFea.choicesNotInMenu && propFea.minlevel <= clLvl) {
 				toTest = GetFeatureChoice("classes", aClass, prop, true);
 				propFea.extrachoices.sort();
-				toChooseNr = " (" + propFea.extrachoices.length + " selected" + (propFea.extraTimes ? " of " + propFea.extraTimes[Math.min(propFea.extraTimes.length, clLvl) - 1] : "") + ")";
+				toChooseNr = " (" + "selected " + toTest.length + (propFea.extraTimes ? " of " + propFea.extraTimes[Math.min(propFea.extraTimes.length, clLvl) - 1] : "") + ")";
 				menuLVL3(tempItem, propFea.extraname + toChooseNr, propFea.extrachoices, aClass, prop, "extra", propFea, toTest);
 			};
 		};
