@@ -2792,10 +2792,7 @@ function getMenu(menuname) {
 	} catch (err) {
 		var temp = null;
 	}
-	temp = temp === null ? "nothing#toreport" : temp;
-	temp = temp.toLowerCase();
-	temp = temp.split("#");
-	return temp;
+	return temp === null ? ["nothing", "toreport"] : temp.toLowerCase().split("#");
 };
 
 /* ---- INVENTORY FUNCTIONS START ---- */

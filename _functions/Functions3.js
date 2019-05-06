@@ -2291,8 +2291,14 @@ function ParseMagicItemMenu() {
 			Spells : [],
 			Vision : [],
 		},
+		source : { namesArr : [] },
 		ref : {}
 	};
+	var spaceArr = new Array(38).join("\u2002");
+	var amendSrc = function(nameTxt, srcTxt) {
+		if (!srcTxt) return nameTxt;
+		return nameTxt + spaceArr.slice(0, nameTxt.length < 35 ? 38 - nameTxt.length : 4) + srcTxt;
+	}
 	var sortItem = function(mainItem, subItem) {
 		var iObj = MagicItemsList[mainItem];
 		var sObj = subItem ? iObj[subItem.toLowerCase()] : false;
@@ -2301,14 +2307,29 @@ function ParseMagicItemMenu() {
 			for (var attr in iObj) tObj[attr] = iObj[attr];
 			for (var attr in sObj) tObj[attr] = sObj[attr];
 		}
-		var itemName = !subItem ? iObj.name : sObj.name ? sObj.name : iObj.name + " [" + subItem + "]";
-		//if (tObj.source) itemName += stringSource(tObj, "first,abbr", "\t    (", ")");
+		var iSrc = tObj.source ? stringSource(tObj, "first,abbr", "(", ")") : false;  // DEBUGGING!!!
+		var itemName = amendSrc(RemoveZeroWidths(!sObj ? iObj.name : sObj.name ? sObj.name : iObj.name + " [" + subItem + "]"), iSrc);
 		var firstLetter = itemName[0].toUpperCase();
-		iMenus.ref[itemName] = subItem ? mainItem + "#" + subItem : mainItem;
-		if (!iMenus.alphabetical[firstLetter]) {
-			iMenus.alphabetical[firstLetter] = [];
+		// If this is a subitem and it has the exact same name as a previously added subitem, we have to make sure it 
+		if (sObj && sObj.name && iMenus.ref[itemName]) {
+			itemName = amendSrc(RemoveZeroWidths(iObj.name + " [" + subItem + "]"), iSrc);
+			firstLetter = itemName[0].toUpperCase();
 		}
+		iMenus.ref[itemName] = subItem ? mainItem + "#" + subItem : mainItem;
+		if (!iMenus.alphabetical[firstLetter]) iMenus.alphabetical[firstLetter] = [];
 		iMenus.alphabetical[firstLetter].push(itemName);
+		if (tObj.source) {
+			var aSrcs = parseSource(tObj.source);
+			for (var a = 0; a < aSrcs.length; a++) {
+				var aSrc = SourceList[aSrcs[a][0]];
+				var uSrc = aSrc.name + " (" + aSrc.abbreviation + ")";
+				if (!iMenus.source[uSrc]) {
+					iMenus.source[uSrc] = [];
+					iMenus.source.namesArr.push(uSrc);
+				}
+				iMenus.source[uSrc].push(itemName);
+			}
+		}
 		if (tObj.rarity && iMenus.rarity[tObj.rarity.toLowerCase()]) {
 			iMenus.rarity[tObj.rarity.toLowerCase()].push(itemName);
 		}
@@ -2400,10 +2421,30 @@ function ParseMagicItemMenu() {
 				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
 			}
 		}
-		tempMenu.push({ cName : entry, oSubMenu : [].concat(tempMenu2) });
+		tempMenu.push({ cName : entry[0].toUpperCase() + entry.substr(1), oSubMenu : [].concat(tempMenu2) });
 	}
 	AddMagicItemsMenu.push({
 		cName : "By rarity",
+		oSubMenu : [].concat(tempMenu)
+	});
+	// Then a menu per source
+	var tempMenu = [];
+	iMenus.source.namesArr.sort();
+	for (var s = 0; s < iMenus.source.namesArr.length; s++) {
+		var entry = iMenus.source.namesArr[s];
+		var tempMenu2 = iMenus.source[entry];
+		if (!tempMenu2 || !tempMenu2.length || entry == "namesArr") continue;
+		tempMenu2.sort();
+		for (var a = 0; a < tempMenu2.length; a++) {
+			tempMenu2[a] = {
+				cName : tempMenu2[a],
+				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+			}
+		}
+		tempMenu.push({ cName : entry, oSubMenu : [].concat(tempMenu2) });
+	}
+	AddMagicItemsMenu.push({
+		cName : "By source",
 		oSubMenu : [].concat(tempMenu)
 	}, { cName : "-" });
 	// Then a main menu item per type
@@ -2433,8 +2474,7 @@ function ParseMagicItemMenu() {
 		}
 		AddMagicItemsMenu.push({ cName : entry, oSubMenu : [].concat(tempMenu2) });
 	}
-	return AddMagicItemsMenu;
-}
+};
 
 //Make menu for the button on each Magic Item line and parse it to Menus.magicitems
 function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
@@ -2491,7 +2531,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 		// a way to select another magic item
 		if (!AddMagicItemsMenu) ParseMagicItemMenu();
 		magicMenu.push({
-			cName : CurrentMagicItems.known[ArrayNmbr] ? "Change item to" : "Set item",
+			cName : CurrentMagicItems.known[ArrayNmbr] ? "Change item to" : "Apply item",
 			oSubMenu : AddMagicItemsMenu
 		},{ cName : "-" });
 		// now all the default options

@@ -439,7 +439,8 @@ function DirectImport(consoleTrigger) {
 		global.docTo.setPrototypes();
 		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
 		if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
-		if (global.docFrom.info.SheetVersionType && (/beta/i).test(global.docFrom.info.SheetVersionType) && global.docFrom.semVers && global.docTo.semVers != global.docFrom.semVers) { // say that importing from an (other) beta version is not supported
+		var passBetaRestriction = FromVersion == 13 && global.docFrom.info.SheetVersionType && (/beta(14|15)/i).test(global.docFrom.info.SheetVersionType);
+		if (!passBetaRestriction && global.docFrom.info.SheetVersionType && (/beta/i).test(global.docFrom.info.SheetVersionType) && global.docFrom.semVers && global.docTo.semVers != global.docFrom.semVers) { // say that importing from an (other) beta version is not supported
 			app.alert({
 				cTitle : "Unable to import from beta version",
 				cMsg : "You are trying to import from a beta version of MPMB's Character Record Sheet (" + global.docFrom.semVers + "), which is not supported. The version of the sheet you are importing to is " + global.docTo.semVers + ". You can only import from a beta version if both versions are identical.\n\nThe importing process will now be canceled."
@@ -1412,10 +1413,9 @@ function DirectImport(consoleTrigger) {
 		thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
 		thermoM(0.9);
 
-		var aText = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
+		var aText = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]";
 		if (app.viewerType !== "Reader" && importFromPath[2]) { // if icons were imported
-			aText += toUni("IMPORTANT: custom icons");
-			aText += "\nBecause you imported custom icons, the sheet will not work correctly right away. You will have to first save the sheet, close Adobe Acrobat completely, and then open the sheet again. The sheet needs to re-initialize for the import with custom icons to be completed!\n\n";
+			aText += toUni("IMPORTANT: Custom Icons") + "\nBecause you imported custom icons, the sheet will not work correctly right away, but only after saving the sheet and opening again. That is why, AFTER YOU CLOSE THIS DIALOG, YOU WILL BE PROMPTED TO SAVE THIS PDF AND IT WILL AUTOMATICALLY CLOSE AFTER THAT.\n\n";
 		}
 		if (!sameType) {
 			aText += toUni("Sheet Types Differ");
@@ -1429,23 +1429,25 @@ function DirectImport(consoleTrigger) {
 			aText += typeA4 ? "" : ";\n  > Spell Sheet(s): spells near the bottom of the page";
 			aText += ".\n\n"
 		};
-		aText += toUni("Some manual additions might not have transferred over");
-		aText += "\nSome things that you adjusted manually on your old sheet might not have transferred to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.";
-		aText += "\n\n" + toUni("The following things should be considered:");
-		aText += "\n  > The 'Class Features' text is now solely what the automation added;";
-		aText += "\n  > The 'Notes' section on the 3rd page is now solely what the automation added;";
-		aText += "\n  > Attack and Ammunition attributes are now solely what the automation set;";
-		aText += "\n  > Magic and Misc AC bonuses are now solely what the automation set;";
-		aText += "\n  > Feat and Magic Item descriptions are now solely what the automation set;";
-		aText += "\n  > Companion pages have been copied exactly, not using any updates in automation;";
-		aText += "\n  > Wild Shapes have been re-calculated, manual changes have been ignored;";
-		aText += "\n  > Ability Score dialog has been duplicated from the old version, changes by newer automation have been ignored. Read that dialog's text carefully to see if you are missing anything;";
-		aText += sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "\n  > Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "\n  > No spell sheets have been generated.";
+		aText += toUni("Some manual additions might not have transferred over") + "\n\nSome things that you adjusted manually on your old sheet might not have transferred to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.\n"
+		aText += [
+			toUni("The following things should be considered:"),
+			"The 'Class Features' text is now solely what the automation added;",
+			"The 'Notes' section on the 3rd page is now solely what the automation added;",
+			"Attack and Ammunition attributes are now solely what the automation set;",
+			"Magic and Misc AC bonuses are now solely what the automation set;",
+			"Feat and Magic Item descriptions are now solely what the automation set;",
+			"Companion pages have been copied exactly, not using any updates in automation;",
+			"Wild Shapes have been re-calculated, manual changes have been ignored;",
+			"Ability Score dialog has been duplicated from the old version, changes by newer automation have been ignored. Read that dialog's text carefully to see if you are missing anything;",
+			sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "No spell sheets have been generated."
+		].join("\n  > ");
 		if (FromVersion < 12.998) {
-			aText += "\n\n";
-			aText += toUni("Importing from older version, before v12.998");
-			aText += "\n  > Some proficiencies you adjusted manually, like languages and tools, might not have transferred over correctly. This is because the new version of the sheet uses a different way of setting proficiencies that offer a choice.";
-			aText += "\n  > Things manually added/changed in the fields for Saving Throw Advantages/Disadvantages and Senses have not been copied.";
+			aText += [
+				"\n\n" + toUni("Importing from older version, before v12.998"),
+				"Some proficiencies you adjusted manually, like languages and tools, might not have transferred over correctly. This is because the new version of the sheet uses a different way of setting proficiencies that offer a choice.",
+				"Things manually added/changed in the fields for Saving Throw Advantages/Disadvantages and Senses have not been copied."
+			].join("\n  > ");
 		};
 		app.alert({
 			cMsg : aText,
@@ -1462,14 +1464,21 @@ function DirectImport(consoleTrigger) {
 
   };
 
-	//close the document that was opened to import from (if any)
+	// close the document that was opened to import from (if any)
 	if (global.docFrom && global.docFrom.toString() === "[object Doc]") {
 		global.docFrom.dirty = false;
 		global.docFrom.closeDoc(true);
 	};
-	//remove the global objects so that they don't make a clutter
+	// remove the global objects so that they don't make a clutter
 	if (global.docTo) delete global.docTo;
 	if (global.docFrom) delete global.docFrom;
+
+	// if icons were imported ask to save and then close the sheet
+	if (!closeAlert && app.viewerType !== "Reader" && importFromPath[2]) { 
+		app.execMenuItem("SaveAs");
+		app.execMenuItem("Close");
+		tDoc.closeDoc();
+	}
 };
 
 //a function to import a field from the global.docFrom

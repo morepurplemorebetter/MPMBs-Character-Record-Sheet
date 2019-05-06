@@ -989,11 +989,7 @@ function GetZeroWidths(number) {
 
 //remove all the no space characters from the string
 function RemoveZeroWidths(input) {
-	var out = input
-	do {
-		out = out.replace(/\u200C*\u200B*/ig, "")
-	} while ((/\u200C|\u200B/).test(out));
-	return out;
+	return input.replace(/[\u200A\u200C\u200B]+/ig, "");
 }
 
 //create an object of a spell list array to be used in the dialog
