@@ -6403,7 +6403,7 @@ var Base_MagicItemsList = {
 			name : "Table of Effects",
 			popupName : "Wand of Wonder's Table of Effects",
 			note : [
-				"As an action I can expend 1 of the wand's 7 charges and choose a target within 120 ft of me. The target can be a creature, an object, or a point in space. Roll d100 and consult the effect below to discover what happens.",
+				"As an action I can expend 1 of the wand's 7 charges and choose a target within 120 ft of me. The target can be a creature, an object, or a point in space. Roll a d100 and consult the effect below to discover what happens.",
 				"If the effect causes me to cast a spell from the wand, the spell's save DC is 15. If the spell normally has a range expressed in feet, its range becomes 120 ft if it isn't already.",
 				"If an effect covers an area, I must center the spell on and include the target. If an effect has multiple possible subjects, the DM randomly determines which ones are affected.",
 				"\nd100 RESULT AND EFFECTS",
@@ -6430,7 +6430,20 @@ var Base_MagicItemsList = {
 				"96-97: The target's skin turns bright blue for 1d10 days. If I chose a point in space, the creature nearest to that point is affected.",
 				"98-00: If I targeted a creature, it must make a DC 15 Constitution saving throw. If I didn't target a creature, I become the target and must make the saving throw. If the saving throw fails by 5 or more, the target is instantly petrified. On any other failed save, the target is restrained and begins to turn to stone. While restrained in this way, the target must repeat the saving throw at the end of its next turn, becoming petrified on a failure or ending the effect on a success. The petrification lasts until the target is freed by the Greater Restoration spell or similar magic."
 			]
-		}]
+		}],
+		fixedDC : 15,
+		spellcastingBonus : {
+			name : "Random option",
+			spells : ["slow", "fearie fire", "gust of wind", "detect thoughts", "stinking cloud", "lightning bolt", "enlarge/reduce", "darkness", "fireball", "invisibility"],
+			selection : ["slow", "fearie fire", "gust of wind", "detect thoughts", "stinking cloud", "lightning bolt", "enlarge/reduce", "darkness", "fireball", "invisibility"],
+			times : 10
+		},
+		spellChanges : {
+			"darkness" : { range : "120 ft", changes : "All Wand of Wonder spells have a range of 120 ft." },
+			"enlarge/reduce" : { range : "120 ft", changes : "All Wand of Wonder spells have a range of 120 ft." },
+			"fearie fire" : { range : "120 ft", changes : "All Wand of Wonder spells have a range of 120 ft." },
+			"stinking cloud" : { range : "120 ft", changes : "All Wand of Wonder spells have a range of 120 ft." }
+		}
 	},
 	"weapon, +1, +2, or +3" : {
 		name : "Weapon, +1, +2, or +3",
