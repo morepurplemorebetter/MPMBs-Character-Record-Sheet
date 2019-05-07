@@ -3182,7 +3182,11 @@ var Base_ClassSubList = {
 				minlevel : 1,
 				description : "\n   " + "When I am not wearing armor, my AC is 13 + Dexterity modifier" + "\n   " + "My hit point maximum increases by an amount equal to my sorcerer level",
 				calcChanges : {
-					hp : "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += '\\n + ' + classes.known.sorcerer.level + ' from Draconic Resilience (Sorcerer)'; }; "
+					hp : function (totalHD) {
+						if (classes.known.sorcerer) {
+							return [classes.known.sorcerer.level, "Draconic Resilience (sorcerer level)"];
+						}
+					}
 				},
 				armorOptions : {
 					regExpSearch : /^(?=.*(dragon|draconic))(?=.*(hide|skin|scales|resilience)).*$/i,

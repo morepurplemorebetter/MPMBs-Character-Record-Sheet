@@ -1090,6 +1090,7 @@ function DirectImport(consoleTrigger) {
 				global.docFrom.getField("Extra.Magic Item Attuned " + i).isBoxChecked(0),
 				global.docFrom.What("Extra.Magic Item Description " + i),
 				global.docFrom.What("Extra.Magic Item Weight " + i),
+				false,
 				FromVersion < 13 ? undefined : global.docFrom.How("Extra.Magic Item Attuned " + i) == ""
 			);
 		}

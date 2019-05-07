@@ -86,14 +86,8 @@ var Base_RaceList = {
 		weightMetric : " weigh around 70 kg (55 + 5d4 \xD7 4d6 / 10 kg)",
 		scores : [0, 0, 2, 0, 1, 0],
 		trait : "Hill Dwarf (+2 Constitution, +1 Wisdom)\n\nStonecunning: Whenever I make an Intelligence (History) check related to the origin of stonework, I am considered proficient in the History skill and add double my proficiency bonus to the check, instead of my normal proficiency bonus.\n\nDwarven Toughness: My hit point maximum increases by 1 for every level I have.",
-		features : {
-			"dwarven toughness" : {
-				name : "Dwarven Toughness",
-				minlevel : 1,
-				calcChanges : {
-					hp : "extrahp += totalhd; extrastring += '\\n + ' + totalhd + ' from Dwarven Toughness';"
-				}
-			}
+		calcChanges : {
+			hp : function (totalHD) { return [totalHD, "Dwarven Toughness"]; }
 		}
 	},
 	"high elf" : {

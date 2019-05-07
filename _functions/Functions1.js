@@ -2482,23 +2482,36 @@ function ParseWeapon(input, onlyInv) {
 	input = removeDiacritics(input.replace(/off.{0,3}hand/i, ""));
 	var foundLen = 0;
 	var foundDat = 0;
-
 	for (var key in WeaponsList) {
 		var kObj = WeaponsList[key];
+		var bObj = kObj.baseWeapon ? WeaponsList[kObj.baseWeapon] : false;
 		if ((onlyInv && kObj.weight == undefined) // see if only doing equipable items
+			|| (kObj.baseWeapon && !bObj) // see if it has a baseWeapon, but that baseWeapon doesn't exist
 			|| !kObj.regExpSearch || !(kObj.regExpSearch).test(input) // see if the regex matches
 			|| testSource(key, kObj, "weapExcl") // test if the armour or its source isn't excluded
 		) continue;
 
-		// only go on with this entry if:
-		// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
-		// or if we are not using the search length, just look at the newest source date
+		/* Only go with this entry if:
+			(1) we are using the search length (default) and this entry has a longer name
+			or (2) we are using the search length and this entry has an equal length name but has a newer source
+			or (3) if we are not using the search length, just look at the newest source date.
+		However,
+			use its baseWeapon name length if it is more than its name length.
+			or the lenght of the matching regex if it is less. */
+		var tempNmLn = ignoreSearchLength ? 0 : Math.min(input.length, input.match(kObj.regExpSearch)[0].length, kObj.name.length);
+		if (!ignoreSearchLength && bObj) {
+			// has a baseWeapon, so use that as well to determine the length to test with
+			var tempNmLn = Math.max(tempNmLn, Math.min(input.length, (bObj.regExpSearch).test(input) ? input.match(bObj.regExpSearch)[0].length : 100, bObj.name.length));
+		}
 		var tempDate = sourceDate(kObj.source);
-		if ((!ignoreSearchLength && kObj.name.length < foundLen) || (!ignoreSearchLength && kObj.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
+		if ((!ignoreSearchLength && tempNmLn < foundLen)
+			|| (!ignoreSearchLength && tempNmLn == foundLen && tempDate < foundDat)
+			|| (ignoreSearchLength && tempDate <= foundDat)
+		) continue;
 
 		// we have a match, set the values
 		found = key;
-		foundLen = kObj.name.length
+		foundLen = tempNmLn
 		foundDat = tempDate;
 	}
 	return found;

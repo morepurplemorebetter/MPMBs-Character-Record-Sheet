@@ -1110,7 +1110,7 @@ function sourceDate(srcArr) {
 	for (var i = 0; i < srcArr.length; i++) {
 		var src = srcArr[i];
 		if (!SourceList[src] || CurrentSources.globalExcl.indexOf(src) !== -1) continue;
-		var srcDate = SourceList[src].date ? Number(SourceList[src].date.replace(/\D/g, "")) : src === "HB" ? 90001231 : 'stop';
+		var srcDate = src === "SRD" ? 1 : src === "HB" ? 90001231 : SourceList[src].date ? Number(SourceList[src].date.replace(/\D/g, "")) : 'stop';
 		if (!isNaN(srcDate)) dateArr.push(srcDate);
 	};
 	return Math.max.apply(Math, dateArr);

@@ -972,11 +972,10 @@ calcChanges : {
 	The attributes of this object can be "hp", "atkCalc", "atkAdd", and "spellList"
 */
 
-	hp : function () {
+	hp : function (totalHD) {
 		if (classes.known.sorcerer) {
-			extrahp += classes.known.sorcerer.level;
-			extrastring += '\n + ' + classes.known.sorcerer.level + ' from Draconic Resilience (Sorcerer)';
-		};
+			return [classes.known.sorcerer.level, "Draconic Resilience (Sorcerer)"];
+		}
 	},
 	hp : "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += '\\n + ' + classes.known.sorcerer.level + ' from Draconic Resilience (Sorcerer)'; }; ",
 	/*	hp // OPTIONAL //
@@ -985,12 +984,24 @@ calcChanges : {
 
 		Both examples do the exact same thing, just one is a string and the other is a function.
 		Writing a function is better as it is easier to avoid syntax errors.
-		The string option is there for backwards-compatibility.
+		The string option is there for backwards-compatibility and this explanation assumes you are writing a function.
 
-		Both the function and the string will be evaluated using eval() to make it possible to use local variables.
+		The function will not be evaluated but is fed one variable:
+		1) totalHD
+			A number that represents the amount of hit dice the character has (normally equal to the character level).
+			Use this to add HP equal to the current total level.
 
-		Generally you will want to add bonus hit points to the 'extrahp' variable, which is a number.
-		If you want to add text to the tooltip, you will have to add it to the 'extrastring' variable, which is a string.
+		The function needs to return an array with 1, 2, or 3 entries:
+		1) The number of hit points to add [number] // REQUIRED
+			If this is undefined or false, the whole addition will be ignored.
+		2) The descriptive text of where the hit points come from [string] // OPTIONAL
+			If you leave this out, the sheet will automatically generate a description for it.
+		3) Whether (true) or not (false) [boolean] // OPTIONAL
+			It this is set to true, second entry string is added as-is to the HP tooltip.
+			If this is set to false (or not set at all), the tooltip will be automatically generated from the first entry number and the second entry string.
+		
+		Normally, you would not have to add a second or third entry.
+		E.g. just "return [totalHD];" is enough to add 1 HP per level.
 	*/
 
 	atkAdd : [

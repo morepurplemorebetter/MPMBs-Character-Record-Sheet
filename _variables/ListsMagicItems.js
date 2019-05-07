@@ -574,7 +574,7 @@ var Base_MagicItemsList = {
 					}
 				}, ''
 			],
-			hp : "extrahp += Number(What('Character Level')); extrastring += '\\n + ' + What('Character Level') + ' from Berserker Axe (magic item)'; "
+			hp : function (totalHD) { return [totalHD]; }
 		}
 	},
 	"boots of elvenkind" : { // contains contributions by AelarTheElfRogue

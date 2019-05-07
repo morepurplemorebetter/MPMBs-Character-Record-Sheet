@@ -3537,7 +3537,7 @@ function Publish(version, extra) {
 		if (extra) {
 			tDoc.info.SheetVersionType = extra;
 		} else {
-			delete tDoc.info.SheetVersionType;
+			tDoc.info.SheetVersionType = "";
 		}
 	}
 	semVers = nmbrToSemanticVersion(sheetVersion) + (tDoc.info.SheetVersionType ? tDoc.info.SheetVersionType : "");
@@ -3852,8 +3852,13 @@ function SetHPTooltip(resetHP, onlyComp) {
 					if (typeof evalThing == 'string') {
 						eval(evalThing);
 					} else if (typeof evalThing == 'function') {
-						var runFunction = eval(evalThing.toSource());
-						runFunction();
+						var addHP = evalThing(totalhd);
+						if (!isArray(addHP)) addHP = [addHP];
+						if ((addHP[0] || addHP[0] === 0) && !isNaN(addHP[0])) {
+							if (!addHP[1]) addHP[1] = hpEval;
+							extrahp += addHP[0];
+							extrastring += addHP[2] ? addHP[1] : '\n ' + (addHP[0] > -1 ? "+ " : "") + addHP[0] + ' from ' + addHP[1];
+						}
 					}
 				} catch (error) {
 					var eText = "The custom hit point calculation addition '" + hpEval + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
