@@ -4482,7 +4482,7 @@ var Base_SpellsList = {
 		source : [["SRD", 192], ["P", 288]],
 		level : 6,
 		school : "Trans",
-		time : "1 a",
+		time : "1 min",
 		range : "30 ft",
 		components : "V,S,M",
 		compMaterial : "Fire and holy water",
