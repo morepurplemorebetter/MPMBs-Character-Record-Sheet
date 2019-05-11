@@ -6450,7 +6450,13 @@ function applySkillClick(theSkill, isExp) {
 	if (Who('Text.SkillsNames') !== 'alphabeta') {
 		theSkill = SkillsList.abbreviationsByAS[SkillsList.abbreviations.indexOf(theSkill)];
 	}
-	SetProf("skill", isCheck, theSkill, "manualClick", isExp ? "full" : false);
+	var setExp = !isExp ? false : isCheck || (!isCheck && CurrentProfs.skill[theSkill]  && CurrentProfs.skill[theSkill].length > 1) ? "full" : "only";
+	// if the proficiency is checked, but it already exists from another source, stop now
+	// if the expertise is checked but it is already proficient and expertise already exists, stop now
+	var alreadyProf = isCheck && CurrentProfs.skill[theSkill];
+	if ((!isExp && alreadyProf) || (isExp && alreadyProf && CurrentProfs.skill[theSkill + " Prof"])) return;
+	// apply the manual skill proficiency changes
+	SetProf("skill", isCheck, theSkill, "manualClick", setExp);
 	// if disabling manually, but set to enabled by the CurrentProfs variable, do an extra check to make sure it is manually disabled
 	if (!isCheck && event.target.isBoxChecked(0)) {
 		event.target.checkThisBox(0, false);
@@ -6604,7 +6610,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			}
 		} else { // remove
 			// delete the proficiency entry
-			if (set[ProfObj] && set[ProfObj].indexOf(ProfSrc) !== -1) {
+			if ((!Extra || !(/only/i).test(Extra)) && set[ProfObj] && set[ProfObj].indexOf(ProfSrc) !== -1) {
 				set[ProfObj].splice(set[ProfObj].indexOf(ProfSrc), 1);
 				if (set[ProfObj].length == 0) delete set[ProfObj];
 			}
