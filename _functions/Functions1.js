@@ -4207,9 +4207,9 @@ function CalcAllSkills(isCompPage) {
 			}
 		} else if (doPass || !profDie) {
 			var profType = What(pr + "Text.Comp.Use.Skills." + skFld + ".Prof");
-			if (profType == "proficient") {
+			if (profType == "expertise") {
 				addProf = profB * 2;
-			} else if (profType == "expertise") {
+			} else if (profType == "proficient") {
 				addProf = profB;
 			}
 		}
@@ -5270,8 +5270,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 		}
 
 		// set some general variables
-		var tempThing = "", oldClassLvl = {}, newClassLvl = {}, ClassLevelUp = {}; // NODIG???
-		var ClassFeaFld = What("Class Features");
+		var oldClassLvl = {}, newClassLvl = {}, ClassLevelUp = {}; // NODIG???
 
 		// loop through all known classes and updates its features
 		for (var aClass in classes.known) {
@@ -5613,20 +5612,22 @@ function processClassFeatureChoiceDependencies(lvlA, aClass, aFeature, fChoice) 
 }] */
 function processClassFeatureExtraChoiceDependencies(lvlA, aClass, aFeature, fObj) {
 	var lvlH = Math.max(lvlA[0], lvlA[1]), lvlL = Math.min(lvlA[0], lvlA[1]);
-	var lvlOld = lvlA[0], lvlNew = lvlA[1];
 	var theDep = fObj.autoSelectExtrachoices;
 	if (!isArray(theDep)) theDep = [theDep];
+	var saveExtraName = fObj.extraname;
 	for (var i = 0; i < theDep.length; i++) {
 		var aDep = theDep[i];
 		var minLvl = aDep.minlevel ? aDep.minlevel : fObj.minlevel;
 		// stop if nothing found or there was no level change that affected this feature
 		if (!aDep.extrachoice || !fObj[aDep.extrachoice] || !(lvlH >= minLvl && lvlL < minLvl)) continue;
+		fObj.extraname = aDep.extraname ? aDep.extraname : saveExtraName;
 		// set or remove the class feature, depending on its level
 		ClassFeatureOptions(
 			[aClass, aFeature, aDep.extrachoice, 'extra'],
 			lvlA[1] < minLvl ? 'remove' : false
 		);
 	}
+	fObj.extraname = saveExtraName;
 }
 
 // The print feature button
