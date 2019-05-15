@@ -2021,7 +2021,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			});
 		} else {
 			if (classes.spellcastlvl[casterType] == undefined) classes.spellcastlvl[casterType] = 0;
-			classes.spellcastlvl[casterType] += Math[multiCaster[casterType] > 1 ? "floor" : "ceil"](cSpells.level / casterFactor);
+			classes.spellcastlvl[casterType] += Math[multiCaster[casterType] > 1 && !Temps.spellcastingFactorRoundupMulti ? "floor" : "ceil"](cSpells.level / casterFactor);
 		}
 	}
 

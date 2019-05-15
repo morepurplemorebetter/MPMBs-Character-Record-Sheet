@@ -3057,6 +3057,7 @@ NEW ATTRIBUTES
 	extraAC // replaces AddACMisc() in eval
 	extraLimitedFeatures // replaces AddFeature() in eval
 	carryingCapacity // multiply the Carrying Capacity Multiplier with this number
+	spellcastingFactorRoundupMulti // in ClassList or ClassSublist to indicate that in case of multiclassing the spellcasting factor should be rounded up
 
 CHANGED ATTRIBUTES
 	armorProfs // Optional; Array; armor proficiencies to add [previous just 'armor']

@@ -371,7 +371,7 @@ var Base_MagicItemsList = {
 		attunement : true,
 		weight : 6,
 		action : [["reaction", ""]],
-		shieldAdd : "Arrow-Catching Shield (+2 vs. ranged)"
+		shieldAdd : "Arrow-Catching Shield (+\u200A2 vs. ranged)"
 	},
 	"arrow of slaying" : {
 		name : "Arro\u200Aw of Slaying",
