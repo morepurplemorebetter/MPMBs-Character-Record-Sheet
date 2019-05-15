@@ -2007,6 +2007,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	classes.spellcastlvl = {default : 0, warlock : 0};
 	//loop through the classes to find the new spellcasting level totals (can't be done in previous loop, because we need to know the total amount of casters of each type, which is set in previous loop)
 	for (var aClass in classes.known) {
+		var Temps = CurrentClasses[aClass];
 		var cSpells = CurrentSpells[aClass];
 		// don't go on if this is not a spellcaster or its factor is lower than its level (thus, no spell slots at this level)
 		if (!cSpells || !cSpells.factor || (!Temps.spellcastingTable && cSpells.factor[0] > cSpells.level)) continue;
