@@ -337,6 +337,7 @@ var FieldNumbers = {
 var ExperiencePointsList = ["", 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000, 1000000000];
 var levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 var ProficiencyBonusList = [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6];
+var cantripDie = [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4];
 
 var SkillsList = {
 	abbreviations : [
@@ -2148,13 +2149,6 @@ var LinksLatest = {
 	},
 	patreon : "https://www.patreon.com/posts/mpmbs-character-14927098"
 };
-
-var cantripDie = levels.map(function (n) {
-	if (n < 5) return 1;
-	if (n < 11) return 2;
-	if (n < 17) return 3;
-	return 4;
-});
 
 // A backwards compatible way to call the field content of those that are now part of the CurrentVars object
 var BackwardsCompatible = {

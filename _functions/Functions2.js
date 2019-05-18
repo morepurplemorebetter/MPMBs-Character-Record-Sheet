@@ -5567,8 +5567,13 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 				thisWeapon : thisWeapon
 			}
 
-			for (var addEval in CurrentEvals.atkAdd) {
-				var evalThing = CurrentEvals.atkAdd[addEval];
+			var evalsToDo = [[], [], []]; // [0] magic items, [1] feats, [2] others
+			for (var anEval in CurrentEvals.atkAdd) {
+				evalsToDo[anEval.indexOf("(magic item)") != -1 ? 0 : anEval.indexOf("(feat)") != -1 ? 1 : 2].push(anEval);
+			}
+			evalsToDo = evalsToDo[0].concat(evalsToDo[1]).concat(evalsToDo[2]);
+			for (var i = 0; i < evalsToDo.length; i++) {
+				var evalThing = CurrentEvals.atkAdd[evalsToDo[i]];
 				try {
 					if (typeof evalThing == 'string') {
 						eval(evalThing);
@@ -5576,11 +5581,11 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 						evalThing(fields, gatherVars);
 					}
 				} catch (error) {
-					var eText = "The custom ApplyWeapon/atkAdd script '" + addEval + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
+					var eText = "The custom ApplyWeapon/atkAdd script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 					for (var e in error) eText += e + ": " + error[e] + ";\n ";
 					console.println(eText);
 					console.show();
-					delete CurrentEvals.atkAdd[addEval];
+					delete CurrentEvals.atkAdd[evalsToDo[i]];
 				}
 			}
 		};
@@ -5755,8 +5760,13 @@ function CalcAttackDmgHit(fldName) {
 				isOffHand : isOffHand
 			}
 
-			for (var calcEval in CurrentEvals.atkCalc) {
-				var evalThing = CurrentEvals.atkCalc[calcEval];
+			var evalsToDo = [[], [], []]; // [0] magic items, [1] feats, [2] others
+			for (var anEval in CurrentEvals.atkCalc) {
+				evalsToDo[anEval.indexOf("(magic item)") != -1 ? 0 : anEval.indexOf("(feat)") != -1 ? 1 : 2].push(anEval);
+			}
+			evalsToDo = evalsToDo[0].concat(evalsToDo[1]).concat(evalsToDo[2]);
+			for (var i = 0; i < evalsToDo.length; i++) {
+				var evalThing = CurrentEvals.atkCalc[evalsToDo[i]];
 				try {
 					if (typeof evalThing == 'string') {
 						eval(evalThing);
@@ -5764,11 +5774,11 @@ function CalcAttackDmgHit(fldName) {
 						evalThing(fields, gatherVars, output);
 					}
 				} catch (error) {
-					var eText = "The custom CalcAttackDmgHit/atkCalc script '" + calcEval + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
+					var eText = "The custom CalcAttackDmgHit/atkCalc script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 					for (var e in error) eText += e + ": " + error[e] + ";\n ";
 					console.println(eText);
 					console.show();
-					delete CurrentEvals.atkCalc[calcEval];
+					delete CurrentEvals.atkCalc[evalsToDo[i]];
 				}
 			}
 		};
@@ -5779,19 +5789,24 @@ function CalcAttackDmgHit(fldName) {
 				return CurrentSpells[sClass] && CurrentSpells[sClass].ability == abiScoreNo ? sClass : "";
 			});
 
-			for (var spCalc in CurrentEvals.spellCalc) {
-				var evalThing = CurrentEvals.spellCalc[spCalc];
+			var evalsToDo = [[], [], []]; // [0] magic items, [1] feats, [2] others
+			for (var anEval in CurrentEvals.spellCalc) {
+				evalsToDo[anEval.indexOf("(magic item)") != -1 ? 0 : anEval.indexOf("(feat)") != -1 ? 1 : 2].push(anEval);
+			}
+			evalsToDo = evalsToDo[0].concat(evalsToDo[1]).concat(evalsToDo[2]);
+			for (var i = 0; i < evalsToDo.length; i++) {
+				var evalThing = CurrentEvals.spellCalc[evalsToDo[i]];
 				try {
 					if (typeof evalThing == 'function') {
 						var addSpellNo = evalThing(spType, spCasters, abiScoreNo);
 						if (!isNaN(addSpellNo)) output.extraHit += Number(addSpellNo);
 					}
 				} catch (error) {
-					var eText = "The custom spell attack/DC (spellCalc) script '" + spCalc + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
+					var eText = "The custom spell attack/DC (spellCalc) script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 					for (var e in error) eText += e + ": " + error[e] + ";\n ";
 					console.println(eText);
 					console.show();
-					delete CurrentEvals.spellCalc[spCalc];
+					delete CurrentEvals.spellCalc[evalsToDo[i]];
 				}
 			}
 		}
