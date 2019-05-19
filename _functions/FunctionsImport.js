@@ -439,7 +439,7 @@ function DirectImport(consoleTrigger) {
 		global.docTo.setPrototypes();
 		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
 		if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
-		var passBetaRestriction = FromVersion == 13 && global.docFrom.info.SheetVersionType && (/beta(14|15)/i).test(global.docFrom.info.SheetVersionType);
+		var passBetaRestriction = FromVersion == 13 && global.docFrom.info.SheetVersionType && (/beta1(4|5|6)/i).test(global.docFrom.info.SheetVersionType);
 		if (!passBetaRestriction && global.docFrom.info.SheetVersionType && (/beta/i).test(global.docFrom.info.SheetVersionType) && global.docFrom.semVers && global.docTo.semVers != global.docFrom.semVers) { // say that importing from an (other) beta version is not supported
 			app.alert({
 				cTitle : "Unable to import from beta version",
