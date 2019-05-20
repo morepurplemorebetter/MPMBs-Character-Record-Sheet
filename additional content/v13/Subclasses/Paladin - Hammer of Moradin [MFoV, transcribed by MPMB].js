@@ -11,7 +11,7 @@
 	Effect:		This script adds a subclass for the Paladin, called "Oath of the Hammer"
 				This was made by Middle Finger of Vecna (Mage Hand Press) and can be found on their website (http://mfov.magehandpress.com/2016/04/hammer-of-moradin.html)
 	Code by:	MorePurpleMoreBetter
-	Date:		2019-01-30 (sheet v13.0.0beta11)
+	Date:		2019-01-30 (sheet v13.0.0beta16)
 
 	Please support the creators of this content (Middle Finger of Vecna) on their Patreon (https://www.patreon.com/mfov) or through their webstore (https://store.magehandpress.com/collections/all)
 */
@@ -41,7 +41,7 @@ AddSubClass("paladin", "hammer", {
 				"As a bonus action, I can imbue one weapon I'm wielding with magical energy for 1 min",
 				"The weapon is magical and deals +1d8 damage against one creature type chosen by me"
 			]),
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"subclassfeature3.1" : {
 			name : "Channel Divinity: Quake",
@@ -51,7 +51,7 @@ AddSubClass("paladin", "hammer", {
 				"As an action, I smash a maul or warhammer I'm wielding to the ground",
 				"Each creature of my choice within 20 ft must make a Strength save or be knocked prone"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature7" : {
 			name : "Hammer Throw",
@@ -80,7 +80,7 @@ AddSubClass("paladin", "hammer", {
 			description : desc([
 				"As a reaction when I take nonmagical bludg./pierc./slash. damage, I can reduce it by 5"
 			]),
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature18" : {
 			name : "Hammer Strike",
@@ -90,7 +90,7 @@ AddSubClass("paladin", "hammer", {
 				"As an action, I can throw a hammer in a 60-ft line, dealing damage as a normal attack",
 				"I make a single attack roll and compare it to the AC of each target, possibly hitting all"
 			]),
-			action : ['action', '']
+			action : [['action', '']]
 		},
 		"subclassfeature20" : {
 			name : "Avatar of the Stone Father",
@@ -98,12 +98,12 @@ AddSubClass("paladin", "hammer", {
 			minlevel : 20,
 			description : desc([
 				"As an action, I imbue myself with power for 1 minute and gain the following benefits:",
-				" - I have resistance against all damage and I can't be moved against my will",
-				" - My attacks deal an additional 1d8 damage"
+				" \u2022 I have resistance against all damage and I can't be moved against my will",
+				" \u2022 My attacks deal an additional 1d8 damage"
 			]),
 			recovery : "long rest",
 			usages : 1,
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 });
