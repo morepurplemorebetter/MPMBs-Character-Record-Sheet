@@ -214,7 +214,7 @@ var Base_ClassList = {
 				name : "Indomitable Might",
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 18,
-				description : "\n   " + "If a Strength check is lower than my Strength score, use Strength score instead"
+				description : "\n   " + "If a Strength check is lower than my Strength score, I can use my Strength score instead"
 			},
 			"primal champion" : {
 				name : "Primal Champion",
@@ -1716,7 +1716,7 @@ var Base_ClassList = {
 				usages : [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
 				recovery : "long rest",
 				action : ["bonus action", ""],
-				additional : "Sorcery points"
+				additional : "Sorcery Points"
 			},
 			"metamagic" : {
 				name : "Metamagic",
@@ -3309,7 +3309,10 @@ var Base_ClassSubList = {
 				name : "Dragon Wings",
 				source : [["SRD", 45], ["P", 103]],
 				minlevel : 14,
-				description : "\n   " + "As a bonus action, unless armor is in the way, I can sprout dragon wings from my back" + "\n   " + "I gain a fly speed equal to my current speed until I dismiss the wings as a bonus action",
+				description : desc([
+					"As a bonus action, unless armor is in the way, I can sprout dragon wings from my back",
+					"I gain a fly speed equal to my current speed until I dismiss the wings as a bonus action"
+				]),
 				action : ["bonus action", " (start/stop)"],
 				speed : { fly : { spd : "walk", enc : "walk" } }
 			},
