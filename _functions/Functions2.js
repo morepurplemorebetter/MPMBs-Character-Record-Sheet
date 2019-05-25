@@ -7503,7 +7503,7 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods) {
 			};
 		};
 	};
-	if (modifications.length) processModifiers(modifications);
+	if (tValue && modifications.length) processModifiers(modifications);
 	if (tValue && extraMods && !(replaceWalk && noModsIfWalks && tValue === replaceWalk)) {
 		modifications = [];
 		recurProcess(extraMods);

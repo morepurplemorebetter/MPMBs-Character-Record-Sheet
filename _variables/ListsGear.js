@@ -132,7 +132,7 @@ var Base_ArmourList = {
 var Base_WeaponsList = {
 	// Basic weapons
 	"unarmed strike" : {
-		regExpSearch : /\b(fists?|arms?|legs?|foot|feet|claws?|talons?)\b|^(?=.*unarmed)(?=.*strike).*$^(?=.*martial)(?=.*arts).*$|^(?=.*tavern)(?=.*brawler).*$/i,
+		regExpSearch : /\b(fists?|arms?|legs?|foot|feet|claws?|talons?)\b|^(?=.*unarmed)(?=.*strike).*$|^(?=.*martial)(?=.*arts).*$|^(?=.*tavern)(?=.*brawler).*$/i,
 		name : "Unarmed strike",
 		source : [["SRD", 66], ["P", 149]],
 		ability : 1,
