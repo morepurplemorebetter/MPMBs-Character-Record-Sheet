@@ -3973,13 +3973,17 @@ function AddWeapon(weapon, partialReplace) {
 	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var maxItems = QI ? FieldNumbers.attacks : 3;
 
-	var searchWea = clean(weapon.toLowerCase(), " ") //remove leading or trailing spaces
+	var makeWordBoundryRegex = function (inStr) {
+		return RegExp(inStr.RegEscape().replace(/(^\W*)(.*?)(\W*$)/i, "$1\\b$2\\b$3"), "i");
+	}
+	var searchWea = clean(weapon.toLowerCase(), " "); //remove leading or trailing spaces
+	var regexWea = makeWordBoundryRegex(searchWea);
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 1; i <= maxItems; i++) {
 			var next = tDoc.getField(prefix + Q + "Attack." + i + ".Weapon Selection");
-			if (n === 1 && (RegExp("\\b" + searchWea.RegEscape() + "\\b", "i")).test(next.value)) {
+			if (n === 1 && (regexWea).test(next.value)) {
 				return;
-			} else if (n === 2 && (next.value === "" || (partialReplace && (RegExp("\\b" + next.value.RegEscape() + "\\b", "i")).test(searchWea)))) {
+			} else if (n === 2 && (next.value === "" || (partialReplace && (makeWordBoundryRegex(next.value)).test(searchWea)))) {
 				next.value = weapon;
 				return;
 			}
@@ -3994,12 +3998,10 @@ function RemoveWeapon(weapon) {
 	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var maxItems = QI ? FieldNumbers.attacks : 3;
 
-	weapon = clean(weapon.toLowerCase(), " ") //remove leading or trailing spaces
+	var regexWea = RegExp(clean(weapon.toLowerCase(), " ").RegEscape().replace(/(^\W*)(.*?)(\W*$)/i, "$1\\b$2\\b$3"), "i");
 	for (var i = 1; i <= maxItems; i++) {
-		var next = tDoc.getField(prefix + Q + "Attack." + i + ".Weapon Selection");
-		if (next.value.toLowerCase().indexOf(weapon) !== -1) {
+		if ((regexWea).test(What(prefix + Q + "Attack." + i + ".Weapon Selection"))) {
 			WeaponDelete(i);
-			return;
 		}
 	}
 };

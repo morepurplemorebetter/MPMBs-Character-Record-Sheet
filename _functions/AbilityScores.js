@@ -60,6 +60,11 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpeci
 	// Set the descriptive text to the CurrentStats global variable
 	var useDialogTxt = dialogTxt ? dialogTxt : formatLineList("", imprTxtArr);
 	if (AddRemove) {
+		// If the entry already exists and contains the exact text that we are about to add, this whole addition should be skipped
+		if (CurrentStats.txts[inType][NameEntity] && CurrentStats.txts[inType][NameEntity].indexOf(useDialogTxt) !== -1) {
+			CurrentStats = eval(What("CurrentStats.Stringified"));
+			return;
+		}
 		CurrentStats.txts[inType][NameEntity] = (!dialogTxt && CurrentStats.txts[inType][NameEntity] ? CurrentStats.txts[inType][NameEntity] + "; " : "") + useDialogTxt;
 	} else {
 		delete CurrentStats.txts[inType][NameEntity];
@@ -510,12 +515,12 @@ function AbilityScores_Button(onlySetTooltip) {
 						if (alsoAddTheMax && thisMax === theMax) alsoAddTheMax = false;
 					}
 					if (alsoAddTheMax) otherMaxes.push(theMax);
-					theMax = Math.max.apply(Math, otherMaxes);
+					if (otherMaxes.length) theMax = Math.max.apply(Math, otherMaxes);
 					// now create the base as we removed all the magic item bonuses that bring it above 20
 					var baseRef = Math.min(theTotal - fromItems, theMax);
 					var baseWithItems = Math.min(baseRef + itemRef, 20);
 					if (baseWithItems > baseRef) baseRef = baseWithItems;
-					var overRef = Math.min(theOverrides + itemRef, Math.max(theMax, theOverrides));
+					var overRef = Math.min(theOverrides + itemRef, Math.max(alsoAddTheMax ? theMax : 20, theOverrides));
 					var baseNew = baseRef;
 					// next iterate through all the ones that increase the maximum, starting with the lowest maximum
 					refObj.lists.sort();

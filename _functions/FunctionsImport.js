@@ -748,6 +748,25 @@ function DirectImport(consoleTrigger) {
 		//set the level and xp
 		ImportField("Character Level", {notTooltip: true}); ImportField("Total Experience", {notTooltip: true}); ImportField("Add Experience", {notTooltip: true});
 
+		//set the values of the ability score dialog
+		if (FromVersion < 13) {
+			initiateCurrentStats();
+			var equalAbiCol = [0, 1, 4, 7, 5, 2];
+			for (var a = 0; a < abiScoreFlds.length; a++) {
+				var abiR = global.docFrom.getField(abiScoreFlds[a] + " Remember");
+				if (!abiR) continue;
+				var abiScAr = abiR.value.split(",");
+				for (var i = 0; i < abiScAr.length; i++) {
+					var abiSc = Number(abiScAr[i]);
+					if (isNaN(abiSc) || !abiScAr[i] || (i == 0 && abiScAr == 8)) continue;
+					CurrentStats.cols[equalAbiCol[i]].scores[a] = abiSc;
+				}
+			}
+			SetStringifieds("stats");
+		} else if (ImportField("CurrentStats.Stringified")) {
+			CurrentStats = eval(What("CurrentStats.Stringified"));
+		}
+
 		//set the race
 		ImportField("Race", {notTooltip: true, notSubmitName: true});
 		if (ImportField("Race Remember")) ApplyRace(What("Race Remember"));
@@ -797,25 +816,6 @@ function DirectImport(consoleTrigger) {
 			ImportField(abiS + " ST Dis", {doReadOnly: true});
 		};
 		ImportField("All ST Bonus", {notTooltip: true, notSubmitName: true});
-
-		//set the values of the ability score dialog
-		if (FromVersion < 13) {
-			initiateCurrentStats();
-			var equalAbiCol = [0, 1, 4, 7, 5, 2];
-			for (var a = 0; a < abiScoreFlds.length; a++) {
-				var abiR = global.docFrom.getField(abiScoreFlds[a] + " Remember");
-				if (!abiR) continue;
-				var abiScAr = abiR.value.split(",");
-				for (var i = 0; i < abiScAr.length; i++) {
-					var abiSc = Number(abiScAr[i]);
-					if (isNaN(abiSc) || !abiScAr[i] || (i == 0 && abiScAr == 8)) continue;
-					CurrentStats.cols[equalAbiCol[i]].scores[a] = abiSc;
-				}
-			}
-			SetStringifieds("stats");
-		} else if (ImportField("CurrentStats.Stringified")) {
-			CurrentStats = eval(What("CurrentStats.Stringified"));
-		}
 
 		//set the ability save DC
 		ImportField("Spell DC 1 Mod", {notTooltip: true}); ImportField("Spell DC 1 Bonus", {notTooltip: true, notSubmitName: true});
