@@ -9,7 +9,7 @@
 /*	-INFORMATION-
 	Subject:	Class
 	Effect:		This script adds a class, called "Furycrafter" and its 2 subclasses
-				This subrace has been made by /u/Cryyl over on /r/UnearthedArcana on Reddit (https://www.reddit.com/45a74m/)
+				This class has been made by /u/Cryyl over on /r/UnearthedArcana on Reddit (https://www.reddit.com/45a74m/)
 				
 	Code by:	MorePurpleMoreBetter
 	Date:		2019-05-20 (sheet v13.0.0beta16)
