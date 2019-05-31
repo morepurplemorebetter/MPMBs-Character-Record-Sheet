@@ -3864,10 +3864,10 @@ var Base_MagicItemsList = {
 			fixedDC : 17,
 			spellFirstColTitle : "Ch",
 			spellcastingBonus : {
-				name : "1 charge",
+				name : "2 charges",
 				spells : ["dominate monster"],
 				selection : ["dominate monster"],
-				firstCol : 1
+				firstCol : 2
 			},
 			spellChanges : {
 				"dominate monster" : {
@@ -3887,15 +3887,15 @@ var Base_MagicItemsList = {
 			spellFirstColTitle : "Ch",
 			spellcastingBonus : [{
 				name : "1 charge",
-				spells : ["dominate monster", "wind wall"],
-				selection : ["dominate monster", "wind wall"],
-				firstCol : 1,
-				times : 2
+				spells : ["wind wall"],
+				selection : ["wind wall"],
+				firstCol : 1
 			}, {
 				name : "2 charges",
-				spells : ["gust of wind"],
-				selection : ["gust of wind"],
-				firstCol : 2
+				spells : ["dominate monster", "gust of wind"],
+				selection : ["dominate monster", "gust of wind"],
+				firstCol : 2,
+				times : 2
 			}, {
 				name : "3 charges",
 				spells : ["chain lightning"],
@@ -3918,10 +3918,10 @@ var Base_MagicItemsList = {
 			fixedDC : 17,
 			spellFirstColTitle : "Ch",
 			spellcastingBonus : {
-				name : "1 charge",
+				name : "2 charges",
 				spells : ["dominate monster"],
 				selection : ["dominate monster"],
-				firstCol : 1
+				firstCol : 2
 			},
 			spellChanges : {
 				"dominate monster" : {
@@ -3939,15 +3939,11 @@ var Base_MagicItemsList = {
 			fixedDC : 17,
 			spellFirstColTitle : "Ch",
 			spellcastingBonus : [{
-				name : "1 charge",
-				spells : ["dominate monster"],
-				selection : ["dominate monster"],
-				firstCol : 1
-			}, {
 				name : "2 charges",
-				spells : ["stone shape"],
-				selection : ["stone shape"],
-				firstCol : 2
+				spells : ["dominate monster", "stone shape"],
+				selection : ["dominate monster", "stone shape"],
+				firstCol : 2,
+				times : 2
 			}, {
 				name : "3 charges",
 				spells : ["stoneskin", "wall of stone"],
@@ -3972,10 +3968,10 @@ var Base_MagicItemsList = {
 			fixedDC : 17,
 			spellFirstColTitle : "Ch",
 			spellcastingBonus : {
-				name : "1 charge",
+				name : "2 charges",
 				spells : ["dominate monster"],
 				selection : ["dominate monster"],
-				firstCol : 1
+				firstCol : 2
 			},
 			spellChanges : {
 				"dominate monster" : {
@@ -3994,15 +3990,15 @@ var Base_MagicItemsList = {
 			spellFirstColTitle : "Ch",
 			spellcastingBonus : [{
 				name : "1 charge",
-				spells : ["burning hands", "dominate monster"],
-				selection : ["burning hands", "dominate monster"],
-				firstCol : 1,
-				times : 2
+				spells : ["burning hands"],
+				selection : ["burning hands"],
+				firstCol : 1
 			}, {
 				name : "2 charges",
-				spells : ["fireball"],
-				selection : ["fireball"],
-				firstCol : 2
+				spells : ["dominate monster", "fireball"],
+				selection : ["dominate monster", "fireball"],
+				firstCol : 2,
+				times : 2
 			}, {
 				name : "3 charges",
 				spells : ["wall of fire"],
@@ -4025,10 +4021,10 @@ var Base_MagicItemsList = {
 			fixedDC : 17,
 			spellFirstColTitle : "Ch",
 			spellcastingBonus : {
-				name : "1 charge",
+				name : "2 charges",
 				spells : ["dominate monster"],
 				selection : ["dominate monster"],
-				firstCol : 1
+				firstCol : 2
 			},
 			spellChanges : {
 				"dominate monster" : {
@@ -4047,15 +4043,15 @@ var Base_MagicItemsList = {
 			spellFirstColTitle : "Ch",
 			spellcastingBonus : [{
 				name : "1 charge",
-				spells : ["create or destroy water", "dominate monster"],
-				selection : ["create or destroy water", "dominate monster"],
-				firstCol : 1,
-				times : 2
+				spells : ["create or destroy water"],
+				selection : ["create or destroy water"],
+				firstCol : 1
 			}, {
 				name : "2 charges",
-				spells : ["ice storm"],
-				selection : ["ice storm"],
-				firstCol : 2
+				spells : ["dominate monster", "ice storm"],
+				selection : ["dominate monster", "ice storm"],
+				firstCol : 2,
+				times : 2
 			}, {
 				name : "3 charges",
 				spells : ["control water", "wall of ice"],
