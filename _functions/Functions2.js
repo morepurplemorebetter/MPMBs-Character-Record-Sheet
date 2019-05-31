@@ -182,6 +182,19 @@ function ApplyCompRace(newRace) {
 		for (var c = 0; c < clearSubmitNames.length; c++) AddTooltip(clearSubmitNames[c], undefined, "");
 	}
 
+	var doCreatureEval = function(type) {
+		var theEval = CurrentCompRace[prefix][type];
+		if (CurrentCompRace[prefix].typeFound !== "creature" || !theEval || typeof theEval != 'function') return;
+		try {
+			theEval(prefix);
+		} catch (error) {
+			var eText = "The " + type + " from '" + CurrentCompRace[prefix].name + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
+			for (var e in error) eText += e + ": " + error[e] + ";\n ";
+			console.println(eText);
+			console.show();
+		}
+	}
+
 	var compFields = [
 		prefix + "Comp.Use",
 		prefix + "Text.Comp.Use",
@@ -191,6 +204,7 @@ function ApplyCompRace(newRace) {
 	//reset all the fields if the input is nothing
 	if (newRace === "") {
 		thermoTxt = thermoM("Resetting the companion page...", false); //change the progress dialog text
+		doCreatureEval("removeeval");
 		CurrentCompRace[prefix] = {}; //reset the global variable to nothing
 		tDoc.resetForm(compFields); //rest all the fields
 		thermoM(1/3); //increment the progress dialog's progress
@@ -206,6 +220,7 @@ function ApplyCompRace(newRace) {
 		return; //don't do the rest of the function
 	}
 	resetCompTypes(prefix); //remove stuff from the companion type (actions, strings, etc.)
+	doCreatureEval("removeeval"); // execute the removeeval from the previously known creature, if any
 	if (CurrentCompRace[prefix].typeFound === "race") {// do the following if a race was found
 		tDoc.resetForm(compFields); //reset all the fields
 		thermoTxt = thermoM("Adding the companion's player race...", false); //change the progress dialog text
@@ -556,6 +571,9 @@ function ApplyCompRace(newRace) {
 			if (What(prefix + "Comp.Use.Traits")) Value(prefix + "Comp.Use.Traits", ConvertToMetric(What(prefix + "Comp.Use.Traits"), 0.5));
 			if (What(prefix + "Comp.Use.Features")) Value(prefix + "Comp.Use.Features", ConvertToMetric(What(prefix + "Comp.Use.Features"), 0.5));
 		}
+
+		// execute eval
+		doCreatureEval("eval");
 	}
 
 	SetHPTooltip(false, true);

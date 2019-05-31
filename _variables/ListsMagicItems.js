@@ -642,7 +642,7 @@ var Base_MagicItemsList = {
 		attunement : true,
 		description : "While I wear these boots, my walking speed becomes 30 feet, unless my walking speed is higher, and my speed isn't reduced if I am encumbered or wearing heavy armor. In addition, I can jump three times the normal distance, though I can't jump farther than my remaining movement would allow.",
 		descriptionFull : "While you wear these boots, your walking speed becomes 30 feet, unless your walking speed is higher, and your speed isn't reduced if you are encumbered or wearing heavy armor. In addition, you can jump three times the normal distance, though you can't jump farther than your remaining movement would allow.",
-		speed : { walk : { spd : "fixed30", enc : "fixed30" } }
+		speed : { walk : { spd : "fixed 30", enc : "fixed 30" } }
 	},
 	"boots of the winterlands" : {
 		name : "Boots of the Winterlands",
@@ -1027,7 +1027,7 @@ var Base_MagicItemsList = {
 		description : "While wearing this cloak with its hood up, I can breathe underwater, and I have a swimming speed of 60 ft. Pulling the hood up or down requires an action.",
 		descriptionFull : "While wearing this cloak with its hood up, you can breathe underwater, and you have a swimming speed of 60 feet. Pulling the hood up or down requires an action.",
 		action : [["action", " (hood up/down)"]],
-		speed : { swim : { spd : "fixed60", enc : "fixed50" } }
+		speed : { swim : { spd : "fixed 60", enc : "fixed 50" } }
 	},
 	"crystal ball" : {
 		name : "Crystal Ball",
@@ -2250,7 +2250,7 @@ var Base_MagicItemsList = {
 		magicItemTable : "B",
 		description : "While wearing these dark lenses, I have darkvision out to a range of 60 feet. If I already have darkvision. wearing the goggles increases its range by 60 feet.",
 		descriptionFull : "While wearing these dark lenses, you have darkvision out to a range of 60 feet. If you already have darkvision. wearing the goggles increases its range by 60 feet.",
-		vision : [["Darkvision", "fixed60"], ["Darkvision", "+60"]]
+		vision : [["Darkvision", "fixed 60"], ["Darkvision", "+60"]]
 	},
 	"hammer of thunderbolts" : {
 		name : "Hammer of Thunderbolts",
@@ -4373,7 +4373,7 @@ var Base_MagicItemsList = {
 		magicItemTable : "B",
 		description : "I have a swimming speed of 40 feet while wearing this ring.",
 		descriptionFull : "You have a swimming speed of 40 feet while wearing this ring.",
-		speed : { swim : { spd : "fixed40", enc : "fixed30" } }
+		speed : { swim : { spd : "fixed 40", enc : "fixed 30" } }
 	},
 	"ring of telekinesis" : {
 		name : "Ring of Telekinesis",

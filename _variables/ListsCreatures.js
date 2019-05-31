@@ -2913,7 +2913,7 @@ var Base_CreatureList = {
 		ac : 13,
 		hp : 16,
 		hd : [3, 10],
-		speed : "0 ft, swim 40 ft",
+		speed : "swim 40 ft",
 		scores : [12, 15, 11, 2, 12, 5],
 		saves : ["", "", "", "", "", ""],
 		senses : "",

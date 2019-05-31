@@ -820,6 +820,7 @@ var Base_WeaponsList = {
 		dc : true
 	},
 	"shillelagh" : {
+		baseWeapon : "quarterstaff",
 		regExpSearch : /shillelagh/i,
 		name : "Shillelagh",
 		source : [["SRD", 179], ["P", 275]],

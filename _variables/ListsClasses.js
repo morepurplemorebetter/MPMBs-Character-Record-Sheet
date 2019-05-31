@@ -281,7 +281,11 @@ var Base_ClassList = {
 				name : "Bardic Inspiration",
 				source : [["SRD", 12], ["P", 53]],
 				minlevel : 1,
-				description : "\n   " + "As a bonus action, a creature in 60 ft that can hear me gets an inspiration die (max 1)" + "\n   " + "For 10 min, the recipient can add it to one ability check, attack roll, or saving throw" + "\n   " + "This addition can be done after seeing the d20 roll, but before knowing the outcome",
+				description : desc([
+					"As a bonus action, I give a creature in 60 ft that can hear me an inspiration die (max 1)",
+					"For 10 min, the recipient can add it to one ability check, attack roll, or saving throw",
+					"This addition can be done after seeing the d20 roll, but before knowing the outcome"
+				]),
 				additional : ["d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12", "d12", "d12"],
 				usages : "Charisma modifier per ",
 				usagescalc : "event.value = Math.max(1, What('Cha Mod'));",

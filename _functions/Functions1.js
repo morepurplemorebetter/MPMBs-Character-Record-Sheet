@@ -2557,7 +2557,7 @@ function FindWeapons(ArrayNmbr) {
 
 		//if this is a spell or a cantrip, see if we can link it to an object in the CurrentCasters variable
 		var isSpell = !theWea ? ParseSpell(tempString) : theWea.SpellsList ? theWea.SpellsList : SpellsList[tempArray[j][0]] ? tempArray[j][0] : ParseSpell(tempArray[j][0]);
-		if ((!theWea || (/spell|cantrip/i).test(theWea.type)) && isSpell) {
+		if (isSpell && (!theWea || (/spell|cantrip/i).test(theWea.type + theWea.list))) {
 			tempArray[j][3] = isSpell;
 			if (!tempArray[j][0]) tempArray[j][2] = false;
 			tempArray[j][4] = isSpellUsed(isSpell);

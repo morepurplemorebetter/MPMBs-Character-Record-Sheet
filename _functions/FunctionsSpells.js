@@ -2844,13 +2844,14 @@ var SpellsPrepared_Dialog = {
 	offsetSp : 0,
 	fullname : "Paladin (Oath of the Ancients)",
 	ability : 4,
+	fixedPrepMod : false,
 	nmbrPrep : 20,
 
 	//when starting the dialog
 	initialize : function (dialog) {
 		//get the ability modifier and ability name
 		var abiNm = AbilityScores.names[this.ability - 1];
-		var abiMod = What(AbilityScores.abbreviations[this.ability - 1] + " Mod");
+		var abiMod = this.fixedPrepMod ? this.fixedPrepMod : What(AbilityScores.abbreviations[this.ability - 1] + " Mod");
 		//set the amount of spells that can be prepared
 		this.nmbrSp = Number(this.nmbrPrep) + Number(abiMod);
 
@@ -3488,6 +3489,7 @@ function AskUserSpellSheet() {
 				//determine how many spells can be prepared
 				diaPrep.nmbrPrep = PrepLevel;
 				diaPrep.ability = spCast.abilityToUse[0];
+				diaPrep.fixedPrepMod = spCast.fixedPrepMod ? spCast.fixedPrepMod : false;
 
 				//make the array of spells that the preparations can come from
 				if (spCast.selectSp) {

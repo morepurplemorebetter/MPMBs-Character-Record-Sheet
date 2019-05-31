@@ -264,8 +264,8 @@ function SelectClass() {
 					continue;
 				};
 				toLoad.tLVL += !isNaN(cs[0]) ? Number(cs[0]) : 0;
-				if (i > 0 && toLoad.full === this.curSelec[0][1]) toLoad.full += " " + this.curSelec[0][0];
-				toLoad.full += (toLoad.full ? this.delimiter : "") + cs[1];
+				if (i > 0 && toLoad.full === this.curSelec[0][1].replace(/\d/g, '')) toLoad.full += " " + this.curSelec[0][0];
+				toLoad.full += (toLoad.full ? this.delimiter : "") + cs[1].replace(/\d/g, '');
 				if (i > 0) toLoad.full += " " + cs[0];
 			};
 			this.finalText = toLoad.full;
