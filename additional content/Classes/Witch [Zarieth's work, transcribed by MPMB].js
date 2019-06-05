@@ -64,6 +64,8 @@ SourceList["Z:W"] = {
 	if(SpellsList[s] && SpellsList[s].classes && SpellsList[s].classes.indexOf("witch (zarieth)") === -1) SpellsList[s].classes.push("witch (zarieth)");
 });
 
+ClassList.sorcerer.regExpSearch = /sorcerer/i;
+
 ClassList["witch (zarieth)"] = {
 	regExpSearch : /witch/i,
 	name : "Witch",
