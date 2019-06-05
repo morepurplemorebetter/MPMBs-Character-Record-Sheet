@@ -439,7 +439,7 @@ function DirectImport(consoleTrigger) {
 		global.docTo.setPrototypes();
 		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
 		if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
-		var passBetaRestriction = FromVersion == 13 && global.docFrom.info.SheetVersionType && (/beta1(4|5|6|7)/i).test(global.docFrom.info.SheetVersionType);
+		var passBetaRestriction = FromVersion == 13 && global.docFrom.info.SheetVersionType && (/beta1(4|5|6|7|8)/i).test(global.docFrom.info.SheetVersionType);
 		if (!passBetaRestriction && global.docFrom.info.SheetVersionType && (/beta/i).test(global.docFrom.info.SheetVersionType) && global.docFrom.semVers && global.docTo.semVers != global.docFrom.semVers) { // say that importing from an (other) beta version is not supported
 			app.alert({
 				cTitle : "Unable to import from beta version",
@@ -748,7 +748,11 @@ function DirectImport(consoleTrigger) {
 		//set the level and xp
 		ImportField("Character Level", {notTooltip: true}); ImportField("Total Experience", {notTooltip: true}); ImportField("Add Experience", {notTooltip: true});
 
-		//set the values of the ability score dialog
+		//set the race
+		ImportField("Race", {notTooltip: true, notSubmitName: true});
+		if (ImportField("Race Remember")) ApplyRace(What("Race Remember"));
+
+		//set the values of the ability score dialog (after race, so scores manually set for race are not undone)
 		if (FromVersion < 13) {
 			initiateCurrentStats();
 			var equalAbiCol = [0, 1, 4, 7, 5, 2];
@@ -766,10 +770,6 @@ function DirectImport(consoleTrigger) {
 		} else if (ImportField("CurrentStats.Stringified")) {
 			CurrentStats = eval(What("CurrentStats.Stringified"));
 		}
-
-		//set the race
-		ImportField("Race", {notTooltip: true, notSubmitName: true});
-		if (ImportField("Race Remember")) ApplyRace(What("Race Remember"));
 
 		//set the background
 		ImportField("Background", {notTooltip: true, notSubmitName: true}); ImportField("Background Extra", {notTooltip: true});
@@ -803,6 +803,26 @@ function DirectImport(consoleTrigger) {
 				}
 			}
 		};
+
+		// a function to import the magic items
+		var importMagicItems = function () {
+			var nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.magicitems ? global.docFrom.FieldNumbers.magicitems : FieldNumbers.magicitems;
+			for (var i = 1; i <= nmbrFlds; i++) {
+				var fromFld = global.docFrom.getField("Extra.Magic Item " + i);
+				if (!fromFld || !fromFld.value) continue;
+				AddMagicItem(
+					fromFld.value,
+					global.docFrom.getField("Extra.Magic Item Attuned " + i).isBoxChecked(0),
+					global.docFrom.What("Extra.Magic Item Description " + i),
+					global.docFrom.What("Extra.Magic Item Weight " + i),
+					false,
+					FromVersion < 13 ? undefined : global.docFrom.How("Extra.Magic Item Attuned " + i) == ""
+				);
+			}
+		}
+
+		// if from version >= 13, do magic items before setting the rest of the fields
+		if (FromVersion >= 13) importMagicItems();
 
 		//set the ability scores and associated fields
 		var abiScoreFlds = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
@@ -1055,7 +1075,7 @@ function DirectImport(consoleTrigger) {
 
 		//hit points, hit die
 		ImportField("HP Max", {notTooltip: true}); ImportField("HP Max Current", {notTooltip: true}); ImportField("HP Temp", {notTooltip: true}); ImportField("HP Current", {notTooltip: true});
-		ImportField("HD1 Level"); ImportField("HD1 Die"); ImportField("HD2 Level"); ImportField("HD2 Die"); ImportField("HD3 Level"); ImportField("HD3 Die");
+		ImportField("HD1 Level"); ImportField("HD1 Die"); ImportField("HD2 Level"); ImportField("HD2 Die"); ImportField("HD3 Level"); ImportField("HD3 Die"); SetHPTooltip(false, false);
 
 		//do the second page
 		ImportField("Personality Trait"); ImportField("Ideal"); ImportField("Bond"); ImportField("Flaw");
@@ -1078,22 +1098,10 @@ function DirectImport(consoleTrigger) {
 		}
 
 	//the third page
-		ImportField("Extra.Other Holdings");
+		// if from version < 13, do magic items after setting the rest of the fields so their automation is run afterwards
+		if (FromVersion < 13) importMagicItems();
 
-		//magic items
-		nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.magicitems ? global.docFrom.FieldNumbers.magicitems : FieldNumbers.magicitems;
-		for (var i = 1; i <= nmbrFlds; i++) {
-			var fromFld = global.docFrom.getField("Extra.Magic Item " + i);
-			if (!fromFld || !fromFld.value) continue;
-			AddMagicItem(
-				fromFld.value,
-				global.docFrom.getField("Extra.Magic Item Attuned " + i).isBoxChecked(0),
-				global.docFrom.What("Extra.Magic Item Description " + i),
-				global.docFrom.What("Extra.Magic Item Weight " + i),
-				false,
-				FromVersion < 13 ? undefined : global.docFrom.How("Extra.Magic Item Attuned " + i) == ""
-			);
-		}
+		ImportField("Extra.Other Holdings");
 
 		//extra equipment
 		nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.extragear ? global.docFrom.FieldNumbers.extragear : FieldNumbers.extragear;
@@ -1462,7 +1470,6 @@ function DirectImport(consoleTrigger) {
 	IsNotImport = true;
 	ignorePrereqs = false;
 	if (IIerror && isNaN(IIerror)) app.alert(IIerror);
-
   };
 
 	// close the document that was opened to import from (if any)

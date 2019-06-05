@@ -3386,7 +3386,7 @@ var Base_MagicItemsList = {
 		additional : "regains 1d3",
 		prerequisite : "Requires proficiency with wind instruments",
 		prereqeval : function (v) {
-			for (var i = 0; i < v.toolProfs; i++) {
+			for (var i = 0; i < v.toolProfs.length; i++) {
 				if ((/pipe|flute|horn|trumpet|horn|ocarina|sackbut|shawm|trombone|tuba|bombard|cornett|flageolet|^(?=.*(air|wind))(?=.*instrument).*$/i).test(v.toolProfs[i])) return true;
 			}
 		}
@@ -3408,7 +3408,7 @@ var Base_MagicItemsList = {
 		additional : "regains 1d3",
 		prerequisite: "Requires proficiency with wind instruments",
 		prereqeval: function (v) {
-			for (var i = 0; i < v.toolProfs; i++) {
+			for (var i = 0; i < v.toolProfs.length; i++) {
 				if ((/pipe|flute|horn|trumpet|horn|ocarina|sackbut|shawm|trombone|tuba|bombard|cornett|flageolet|^(?=.*(air|wind))(?=.*instrument).*$/i).test(v.toolProfs[i])) return true;
 			}
 		}
@@ -4157,7 +4157,7 @@ var Base_MagicItemsList = {
 		type : "ring",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "while I wear this ring, I gain a +1 bonus to AC and saving throws.",
+		description : "While wearing this ring, I gain a +1 bonus to AC and saving throws.",
 		descriptionFull : "You gain a +1 bonus to AC and saving throws while wearing this ring.",
 		attunement : true,
 		extraAC : [{name : "Ring of Protection", mod : 1, magic : true, text : "I gain a +1 bonus to AC while attuned."}],

@@ -1098,7 +1098,7 @@ function calcCont(noSheetUpdate, viaTimeOut) {
 		UpdateSheetDisplay();
 		thermoStop();
 	} else if (viaTimeOut) {
-		CurrentUpdates = {types : [], extras : {}};
+		CurrentUpdates = {types : []};
 	}
 };
 

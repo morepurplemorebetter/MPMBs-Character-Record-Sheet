@@ -2686,7 +2686,7 @@ function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow, forceAttun
 					if (itemDescr !== undefined) Value(MIflds[4], itemDescr);
 					if (itemWeight !== undefined) Value(MIflds[3], itemWeight);
 					if (attuned !== undefined) Checkbox(MIflds[4], attuned ? true : false);
-				} else if (forceAttunedVisible === undefined && attuned !== undefined && !attuned && MagicItemsList[recognizedItem].attunement) {
+				} else if ((forceAttunedVisible === undefined || forceAttunedVisible) && attuned !== undefined && !attuned && MagicItemsList[recognizedItem].attunement) {
 					// This is an item that requires attunement, but attunement is explicitly set to none, so undo the automation of the magic item
 					Checkbox(MIflds[4], false);
 					ApplyAttunementMI(i);
