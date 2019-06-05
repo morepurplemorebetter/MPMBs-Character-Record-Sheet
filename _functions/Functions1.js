@@ -4314,11 +4314,12 @@ function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, Update
 				} else if ((featureFld.value.toLowerCase().indexOf(additionaltxt.toLowerCase()) !== -1 || UpdateOrReplace === "bonus") && !isNaN(usages)) {
 					featureFld.userName += featureFld.userName.indexOf(tooltip) === -1 ? ", " + tooltip : "";
 					usageFld.value += usages - (!isNaN(UpdateOrReplace) ? UpdateOrReplace : 0);
-				} else { //UpdateOrReplace = "update"
+				} else { //UpdateOrReplace == "update" || isNaN(usages)
 					featureFld.value = identifier + additionaltxt;
 					usageFld.setAction("Calculate", calculation);
 					usageFld.submitName = calculation; //so it can be referenced later
 					usageFld.value = usages;
+					recoveryFld.value = recovery;
 				}
 				i = FieldNumbers.limfea + 1;
 				n = 3;
