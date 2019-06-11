@@ -6701,6 +6701,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				// create the tooltip
 				var lineTooltip = [];
 				for (var i = 0; i < aWea.length; i++) {
+					if (!aWea[i]) continue;
 					// lookup to see if the weapon is a known key
 					var aWeaI = aWea[i].toLowerCase();
 					var theW = WeaponsList[aWeaI];

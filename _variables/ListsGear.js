@@ -1642,10 +1642,10 @@ var Base_GearList = {
 		type : "saddle"
 	},
 	"riding" : {
-		infoname : "Riding [25 gp]",
+		infoname : "Riding [10 gp]",
 		name : "Riding saddle",
 		amount : "",
-		weight : 10,
+		weight : 25,
 		type : "saddle"
 	},
 	"saddlebags" : {
