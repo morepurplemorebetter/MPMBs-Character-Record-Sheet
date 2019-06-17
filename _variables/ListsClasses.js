@@ -2328,6 +2328,13 @@ var Base_ClassList = {
 					]),
 					action : ["action", ""],
 					calcChanges : {
+						atkCalc : [
+							function (fields, v, output) {
+								if (v.theWea.pactWeapon || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) {
+									v.pactWeapon = true;
+								}
+							}, ""
+						],
 						atkAdd : [
 							function (fields, v) {
 								if (v.pactWeapon || v.theWea.pactWeapon || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) {
