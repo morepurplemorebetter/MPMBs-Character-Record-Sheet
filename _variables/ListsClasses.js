@@ -2100,9 +2100,9 @@ var Base_ClassList = {
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
-								if (v.pactWeapon || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) output.extraDmg += What('Cha Mod');
+								if (v.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponText))) output.extraDmg += What('Cha Mod');
 							},
-							"If I include the word 'Pact' in a melee weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."
+							"If I include the word 'Pact' in a melee or magic weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."
 						]
 					},
 					prereqeval : function(v) { return classes.known.warlock.level >= 12 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the blade'; }
@@ -2330,20 +2330,20 @@ var Base_ClassList = {
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
-								if (v.theWea.pactWeapon || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) {
+								if (v.theWea.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponText))) {
 									v.pactWeapon = true;
 								}
 							}, ""
 						],
 						atkAdd : [
 							function (fields, v) {
-								if (v.pactWeapon || v.theWea.pactWeapon || (v.isMeleeWeapon && (/\bpact\b/i).test(v.WeaponText))) {
+								if (v.pactWeapon || v.theWea.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponText))) {
 									v.pactWeapon = true;
 									fields.Proficiency = true;
-									if (!v.theWea.isMagicWeapon && !(/counts as( a)? magical/i).test(fields.Description)) fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
+									if (!v.theWea.isMagicWeapon && !v.thisWeapon[1] && !(/counts as( a)? magical/i).test(fields.Description)) fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
 								};
 							},
-							"If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."
+							"If I include the word 'Pact' in a melee or magic weapon's name, it gets treated as my Pact Weapon."
 						]
 					}
 				},

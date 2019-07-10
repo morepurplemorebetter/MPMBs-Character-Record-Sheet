@@ -1422,7 +1422,7 @@ function DirectImport(consoleTrigger) {
 		thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
 		thermoM(0.9);
 
-		var aText = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]";
+		var aText = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n";
 		if (app.viewerType !== "Reader" && importFromPath[2]) { // if icons were imported
 			aText += toUni("IMPORTANT: Custom Icons") + "\nBecause you imported custom icons, the sheet will not work correctly right away, but only after saving the sheet and opening again. That is why, AFTER YOU CLOSE THIS DIALOG, YOU WILL BE PROMPTED TO SAVE THIS PDF AND IT WILL AUTOMATICALLY CLOSE AFTER THAT.\n\n";
 		}

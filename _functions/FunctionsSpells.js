@@ -906,7 +906,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 			addSp = inputObject.school.indexOf(aSpell.school) !== -1;
 		}
 		if (addSp && inputObject.attackOnly !== undefined) {
-			var isAttackSpell = (/spell attack/i).test(aSpell.description + aSpell.descriptionFull);
+			var isAttackSpell = (/^(booming blade|green-flame blade)$/).test(key) || (/spell attack/i).test(aSpell.description + aSpell.descriptionFull);
 			addSp = isAttackSpell == inputObject.attackOnly;
 		}
 		if (addSp && inputObject.ritual !== undefined) {

@@ -6384,6 +6384,7 @@ function WeightToCalc_Button() {
 				if (oResult[weightOptions[i]]) CurrentVars.weight.push(weightOptions[i]);
 			}
 			this.UseEnc = oResult["rEnc"];
+			SetStringifieds("vars");
 		},
 
 		description : {

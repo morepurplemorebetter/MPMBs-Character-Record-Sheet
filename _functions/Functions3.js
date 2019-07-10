@@ -693,17 +693,17 @@ function processSpChanges(AddRemove, srcNm, spChng, parentName) {
 	} else { // removing
 		for (var aSpell in spChng) {
 			var spObj = spCast.spellAttrOverride[aSpell];
-			if (!spObj || spObj.changesBy.indexOf(srcNm) == -1) continue;
+			if (!spObj || !spObj.changesObj[changeHead]) continue;
 			for (var key in spChng[aSpell]) {
 				if (key == "changes") continue;
 				delete spObj[key];
 			}
 			delete spObj.changesObj[changeHead];
 			// now maybe delete this spellAttrOverride entry if its changesObj is empty
-			if (!ObjLength(spObj.changesObj)) delete spCast.spellAttrOverride;
+			if (!ObjLength(spObj.changesObj)) delete spCast.spellAttrOverride[aSpell];
 		}
 		// now maybe delete the whole spellAttrOverride if it is empty
-		if (!ObjLength(spCast.spellAttrOverride)) delete spCast.spellAttrOverride[aSpell];
+		if (!ObjLength(spCast.spellAttrOverride)) delete spCast.spellAttrOverride;
 	}
 }
 
