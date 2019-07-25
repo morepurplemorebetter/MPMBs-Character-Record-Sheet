@@ -4112,7 +4112,7 @@ var Base_MagicItemsList = {
 		description : "While wearing this ring, I can turn invisible as an action. Anything I am wearing or carrying is invisible with me. I remain invisible until the ring is removed, until I attack or cast a spell, or until I use a bonus action to become visible again.",
 		descriptionFull : "While wearing this ring, you can turn invisible as an action. Anything you are wearing or carrying is invisible with you. You remain invisible until the ring is removed, until you attack or cast a spell, or until you use a bonus action to become visible again.",
 		attunement : true,
-		action : [["action", " (start)"], ["action", " (stop)"]]
+		action : [["action", " (start)"], ["bonus action", " (stop)"]]
 	},
 	"ring of jumping" : {
 		name : "Ring of Jumping",

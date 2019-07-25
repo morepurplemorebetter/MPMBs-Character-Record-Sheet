@@ -1962,7 +1962,7 @@ var Base_ClassList = {
 					]),
 					source : [["SRD", 48], ["P", 110]],
 					eval : function() {
-						CurrentSpells['book of ancient secrets'] = {
+						CurrentSpells['warlock-book of ancient secrets'] = {
 							name : 'Book of Ancient Secrets',
 							ability : 6,
 							list : {class : 'any', ritual : true},
@@ -1973,6 +1973,7 @@ var Base_ClassList = {
 					},
 					removeeval : function() {
 						delete CurrentSpells['book of ancient secrets'];
+						delete CurrentSpells['warlock-book of ancient secrets'];
 						SetStringifieds('spells'); CurrentUpdates.types.push('spells');
 					},
 					prereqeval : function(v) { return classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the tome'; },
