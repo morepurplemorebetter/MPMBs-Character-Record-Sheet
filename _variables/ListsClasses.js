@@ -2943,7 +2943,6 @@ var Base_ClassSubList = {
 		regExpSearch : /^(?=.*(devotion|obedience))(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
 		subname : "Oath of Devotion",
 		source : [["SRD", 32], ["P", 86]],
-		spellcastingExtra : ["protection from evil and good", "sanctuary", "lesser restoration", "zone of truth", "beacon of hope", "dispel magic", "freedom of movement", "guardian of faith", "commune", "flame strike"],
 		features : {
 			"subclassfeature3" : {
 				name : "Channel Divinity: Sacred Weapon",
@@ -2960,7 +2959,8 @@ var Base_ClassSubList = {
 						},
 						"If I include the words 'Sacred Weapon' in the name or description of a weapon, it gets my Charisma modifier added to its To Hit."
 					]
-				}
+				},
+				spellcastingExtra : ["protection from evil and good", "sanctuary", "lesser restoration", "zone of truth", "beacon of hope", "dispel magic", "freedom of movement", "guardian of faith", "commune", "flame strike"]
 			},
 			"subclassfeature3.1" : {
 				name : "Channel Divinity: Turn the Unholy",

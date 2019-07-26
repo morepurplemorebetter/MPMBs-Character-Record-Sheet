@@ -753,6 +753,7 @@ function DirectImport(consoleTrigger) {
 		if (ImportField("Race Remember")) ApplyRace(What("Race Remember"));
 
 		//set the values of the ability score dialog (after race, so scores manually set for race are not undone)
+		var abiScoreFlds = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
 		if (FromVersion < 13) {
 			initiateCurrentStats();
 			var equalAbiCol = [0, 1, 4, 7, 5, 2];
@@ -825,7 +826,6 @@ function DirectImport(consoleTrigger) {
 		if (FromVersion >= 13) importMagicItems();
 
 		//set the ability scores and associated fields
-		var abiScoreFlds = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
 		for (var a = 0; a < abiScoreFlds.length; a++) {
 			var abiS = abiScoreFlds[a];
 			ImportField(abiS);
@@ -1463,8 +1463,8 @@ function DirectImport(consoleTrigger) {
 			nIcon : 3,
 			cTitle : "Some things to consider about the import"
 		});
-		thermoStop(); // Stop progress bar, forcibly
 	};
+	thermoStop(); // Stop progress bar, forcibly
 
 	// signal the end of importing
 	IsNotImport = true;
