@@ -1272,7 +1272,8 @@ var Base_ClassList = {
 				"two races of humanoids" : {
 					name : "Two Races of Humanoids",
 					description : "",
-					source : [["SRD", 35], ["P", 91]]
+					source : [["SRD", 35], ["P", 91]],
+					languageProfs : [1]
 				}
 			},
 			"natural explorer" : {
