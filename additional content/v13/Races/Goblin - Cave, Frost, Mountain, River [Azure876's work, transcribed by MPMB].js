@@ -136,7 +136,7 @@ RaceList["river goblin"] = {
 	size : 4,
 	speed : {
 		walk : { spd : 30, enc : 20 },
-		climb : { spd : 30, enc : 20 }
+		swim : { spd : 30, enc : 20 }
 	},
 	languageProfs : ["Common", "Goblin"],
 	vision : [["Darkvision", 60]],

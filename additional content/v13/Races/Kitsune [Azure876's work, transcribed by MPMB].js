@@ -13,6 +13,8 @@
 				These subraces have been made by Azure876
 	Code by:	MorePurpleMoreBetter
 	Date:		2019-07-29 (sheet v13.0.0beta18)
+
+	Caution:	MorePurpleMoreBetter advises against using this race as it breaks game balance (some of its features are clearly overpowered). This code was made on commission for a patron.
 */
 
 var iFileName = "Kitsune [Azure876's work, transcribed by MPMB].js";
