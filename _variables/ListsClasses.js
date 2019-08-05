@@ -2941,7 +2941,7 @@ var Base_ClassSubList = {
 		}
 	},
 	"paladin-oath of devotion" : {
-		regExpSearch : /^(?=.*(devotion|obedience))(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
+		regExpSearch : /^(?=.*(devotion|obedience))((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
 		subname : "Oath of Devotion",
 		source : [["SRD", 32], ["P", 86]],
 		features : {

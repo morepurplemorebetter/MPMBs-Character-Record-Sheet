@@ -370,7 +370,7 @@ function SetSpell(FldValue, nameFldName) {
 	var input = FldValue ? FldValue : What(event.target.name);
 	var base = nameFldName ? nameFldName : event.target.name;
 	var remFld = base.replace("name", "remember");
-	if (input.toLowerCase() === "" || input.toLowerCase() === "setcaptions" || input.indexOf("##") !== -1) { //if the name field has a ## in it, assume we need to replace everything in the remember field
+	if (input.toLowerCase() === "" || (/setcaptions/).test(input) || input.indexOf("##") !== -1) { //if the name field has a ## in it, assume we need to replace everything in the remember field
 		var toUseValue = input;
 	} else { //otherwise only replace the first entry in the remember field
 		var remFldValue = What(remFld).split("##");
@@ -3753,6 +3753,11 @@ function GenerateSpellSheet(GoOn) {
 		var start = true;
 		var isPsionics = "";
 		for (var lvl = 0; lvl <= orderedSpellList.length; lvl++) {
+			// once we surpass the highest level (9) now do the psionic talents/disciplines
+			if (lvl === 10) {
+				isPsionics = "psionic";
+				MeKn = spCast.firstCol ? "##" + spCast.firstCol : "##pp";
+			}
 			var spArray = orderedSpellList[lvl];
 			if (!spArray || !spArray.length) continue;
 			//add spell dependencies to fill out the array
@@ -3809,11 +3814,6 @@ function GenerateSpellSheet(GoOn) {
 				}
 				Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + CurrentCasters.incl[i] + (notDupl ? "" : "##stop"));
 				lineCurrent += 1;
-			}
-			// once we reach the highest level (9) now do the psionic talents/disciplines
-			if (lvl === 9) {
-				isPsionics = "psionic";
-				MeKn = spCast.firstCol ? "##" + spCast.firstCol : "##pp";
 			}
 		}
 
