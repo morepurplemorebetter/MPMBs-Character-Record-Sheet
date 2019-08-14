@@ -2161,7 +2161,7 @@ function ApplyAttunementMI(FldNmbr) {
 	if (!aMI) return; // no magic item recognized, so do nothing
 	var aMIvar = CurrentMagicItems.choices[ArrayNmbr];
 
-	var theFld = event.target && event.target.name.indexOf("Extra.Magic Item Attuned ") !== -1 ? event.target : tDoc.getField("Extra.Magic Item Attuned " + FldNmbr);
+	var theFld = event.target && event.target.name && event.target.name.indexOf("Extra.Magic Item Attuned ") !== -1 ? event.target : tDoc.getField("Extra.Magic Item Attuned " + FldNmbr);
 	var isChecked = theFld.isBoxChecked(0);
 
 	// Start progress bar and stop calculation
