@@ -233,7 +233,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		// --- backwards compatibility --- //
 		// skills additions
 		var skillsTxt = uObj.skillstxt ? uObj.skillstxt : uObj.skills && type == "feat" && !isArray(uObj.skills) ? uObj.skills : false;
-		if (skillsTxt) skillsTxt = skillsTxt.replace(/^[\r\n]{2,}.+: ?|\;$|\.$/g, '');
+		if (skillsTxt) skillsTxt = skillsTxt.replace(/^[\r\n]{2,}.+: ?|[;.]$/g, '');
 		var skills = uObj.skills && (type != "feat" || (type == "feat" && isArray(uObj.skills))) ? uObj.skills : false;
 		if (skills || skillsTxt) processSkills(addIt, tipNmF, skills, skillsTxt);
 
