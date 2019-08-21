@@ -823,7 +823,9 @@ var Base_ClassList = {
 								if (isNaN(curDie) || curDie < aMonkDie) {
 									fields.Damage_Die = '1d' + aMonkDie;
 								};
-								fields.Mod = v.StrDex;
+								if (fields.Mod == 1 || fields.Mod == 2 || What(AbilityScores.abbreviations[fields.Mod - 1] + " Mod") < What(AbilityScores.abbreviations[v.StrDex - 1] + " Mod")) {
+									fields.Mod = v.StrDex;
+								}
 							};
 						},
 						"I can use either Strength or Dexterity and my Martial Arts damage die in place of the normal damage die for any 'Monk Weapons', which include unarmed strike, shortsword, and any simple melee weapon that is not two-handed or heavy."
