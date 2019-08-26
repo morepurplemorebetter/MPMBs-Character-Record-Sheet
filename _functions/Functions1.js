@@ -4288,7 +4288,7 @@ function CalcMod() {
 // Add a limited feature: add (UpdateOrReplace = "replace"), or only update the text (UpdateOrReplace = "update"), or update both the text and the usages (UpdateOrReplace = number of previous usages), or just add the number of usages (UpdateOrReplace = "bonus")
 function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, UpdateOrReplace, Calc) {
 	tooltip = tooltip ? tooltip : "";
-	var additionaltxt = additionaltxt && What("Unit System") === "metric" ? ConvertToMetric(additionaltxt, 0.5) : additionaltxt;
+	var additionaltxt = additionaltxt.indexOf(identifier) != -1 ? "" : additionaltxt && What("Unit System") === "metric" ? ConvertToMetric(additionaltxt, 0.5) : additionaltxt;
 	UpdateOrReplace = UpdateOrReplace ? UpdateOrReplace : "replace";
 	var calculation = Calc ? Calc : "";
 	var SslotsVisible = !typePF && eval(What("SpellSlotsRemember"))[0];
