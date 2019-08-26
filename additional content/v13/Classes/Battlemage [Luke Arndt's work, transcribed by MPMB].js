@@ -468,9 +468,6 @@ ClassList["battlemage"] = {
 	}
 };
 
-
-// 22 lines for subclasses
-
 AddSubClass("battlemage", "mystic marksman", {
 	regExpSearch : /^(?=.*mystic)(?=.*marksman).*$/i,
 	subname : "Mystic Marksman",
