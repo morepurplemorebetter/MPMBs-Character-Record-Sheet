@@ -7,12 +7,12 @@
 
 /*	-INFORMATION-
 	Subject:	Class
-	Effect:		This script adds a class, called "Battlemage" and 2 of its subclasses (Runic Bulwark and Spell Dancer)
+	Effect:		This script adds a class, called "Battlemage" and its subclasses 4 (Mystic Marksman, Psychic Warrior, Runic Bulwark, and Spell Dancer)
 				This class has been made and published by Luke Arndt on DMs Guild
 				If you intend to use this script, please consider supporting the creator at https://www.dmsguild.com/product/194217/
 				This script uses version 4.0, released 17th of June 2019
 	Code by:	MorePurpleMoreBetter
-	Date:		2019-08-05 (sheet v13.0.0beta18)
+	Date:		2019-08-26 (sheet v13.0.0beta18)
 
 	Caution:	MorePurpleMoreBetter advises against using this class as it breaks game balance (some of its features are clearly overpowered). This code was made on commission for a patron.
 */
@@ -245,6 +245,7 @@ ClassList["battlemage"] = {
 			]),
 			recovery : "short rest",
 			additional : "Energy Dice",
+			limfeaname : "Energy Dice",
 			usages : levels.map(function (n) {
 				return n < 2 ? "" : (n < 5 ? 2 : n < 9 ? 3 : n < 13 ? 4 : n < 17 ? 5 : n < 20 ? 6 : 7) + "d6 per ";
 			}),
@@ -467,6 +468,259 @@ ClassList["battlemage"] = {
 	}
 };
 
+
+// 22 lines for subclasses
+
+AddSubClass("battlemage", "mystic marksman", {
+	regExpSearch : /^(?=.*mystic)(?=.*marksman).*$/i,
+	subname : "Mystic Marksman",
+	source : ["LA:BM", 4],
+	fullname : "Mystic Marksman",
+	features : {
+		"subclassfeature3" : {
+			name : "Arcane Throw",
+			source : ["LA:BM", 4],
+			minlevel : 3,
+			description : desc([
+				"I can throw any small object that fits into my hand (e.g. coins, cards) as a magical dart",
+				"I double the range of all of my thrown weapons and deal 1d8 damage with them"
+			]),
+			weaponsAdd : ["Arcane Throw"],
+			weaponOptions : [{
+				baseWeapon : "dart",
+				regExpSearch : /^(?=.*arcane)(?=.*throw).*$/i,
+				name : "Arcane Throw",
+				source : ["LA:BM", 4],
+				damage : [1, 8, "piercing"],
+				description : "Thrown, finesse; Counts as magical; Objects fitting in one hand",
+				weight : ""
+			}],
+			calcChanges : {
+				atkAdd : [
+					function (fields, v) {
+						if (!v.isDC && !v.isSpell && (/thrown/i).test(fields.Description)) {
+							// double the range
+							if (!v.arcaneThrow && (/\d+ ?(f.{0,2}t|m)/i).test(fields.Range)) {
+								v.arcaneThrow = true;
+								var rangeNmbr = fields.Range.match(/\d+([.,]\d+)?/g);
+								var notNmbrs = fields.Range.split(RegExp(rangeNmbr.join('|')));
+								fields.Range = '';
+								rangeNmbr.forEach(function (dR, idx) {
+									fields.Range += (notNmbrs[idx] ? notNmbrs[idx] : '') + (parseFloat(dR.toString().replace(',', '.') * 2));
+								});
+								if (notNmbrs.length > rangeNmbr.length) {
+									fields.Range += notNmbrs[notNmbrs.length - 1];
+								};
+								if (!v.rangeM) {
+									v.rangeM = 2;
+								} else {
+									v.rangeM *= 2;
+								}
+							}
+							// Increase damage die to 1d8
+							try {
+								var curDie = eval(fields.Damage_Die.replace('d', '*'));
+							} catch (e) {
+								var curDie = 'x';
+							};
+							if (isNaN(curDie) || curDie < 8) {
+								fields.Damage_Die = '1d8';
+							};
+						};
+					},
+					"My thrown weapons do a minimum of 1d8 damage and have their range doubled."
+				]
+			}
+		},
+		"subclassfeature3.1" : {
+			name : "Spell Shot",
+			source : ["LA:BM", 4],
+			minlevel : 3,
+			description : desc([
+				"When I cast a spell that doesn't only target me, I can change its range",
+				"Its new range is equal to that of a ranged or thrown weapon I'm holding",
+				"This can't change the area of effect of a spell, but can place the area further away"
+			])
+		},
+		"subclassfeature6" : {
+			name : "Explosive Strike",
+			source : ["LA:BM", 4],
+			minlevel : 6,
+			additional : "1+ energy dice",
+			description : desc([
+				"When I hit with a ranged weapon attack, I can expend one or more energy dice",
+				"The target and all within 10 ft of it take [energy damage] equal to the energy dice roll"
+			])
+		},
+		"subclassfeature10" : {
+			name : "Ricochet",
+			source : ["LA:BM", 4],
+			minlevel : 10,
+			additional : "1 energy die",
+			description : desc([
+				"When I miss with a ranged attack, I can expend an energy die to redirect the attack",
+				"I make a new attack roll against another target within 40 ft of the original target",
+				"If this new attack hits, it adds the energy die to the damage (+1d6 [energy damage])",
+				"I can also choose to bounce the attack on a hard surface to initiate the ricochet",
+				"This works as above, but I automatically \"miss\" the hard surface instead of rolling"
+			])
+		},
+		"subclassfeature14" : {
+			name : "Puncture",
+			source : ["LA:BM", 4],
+			minlevel : 14,
+			additional : "3+ energy dice; not with attacks from spells",
+			description : desc([
+				"When I do a ranged attack, I can expend 3+ energy dice to turn it into a line of energy",
+				"All in the 60-ft long, 1-ft wide line must make a Dex save or take the attack's damage",
+				"The energy dice are added as lightning damage; The line ignores 1/2 and 3/4 cover"
+			]),
+			weaponsAdd : ["Arcane Puncture"],
+			weaponOptions : [{
+				isArcanePuncture : true,
+				regExpSearch : /^(?=.*arcane)(?=.*puncture).*$/i,
+				name : "Arcane Puncture",
+				source : ["LA:BM", 4],
+				ability : 4,
+				type : "Spell",
+				damage : ["Xd6+wea", "", "[Energy]"],
+				range : "60-ft line",
+				description : "Dex save to avoid; With ranged weapon attack; Damage is weapon damage + energy dice expended (3+)",
+				abilitytodamage : false,
+				dc : true
+			}],
+			calcChanges : {
+				atkAdd : [
+					function (fields, v) {
+						if (CurrentClasses.battlemage && v.theWea.isArcanePuncture) {
+							var nrgType = GetFeatureChoice('class', 'battlemage', 'energy specialization');
+							if (nrgType) fields.Damage_Type = nrgType;
+						};
+					},
+					""
+				]
+			}
+		},
+		"subclassfeature18" : {
+			name : "Master of Destruction",
+			source : ["LA:BM", 4],
+			minlevel : 18,
+			description : "\n   I add my Int mod to each energy die when determining the damage I deal with them"
+		}
+	}
+});
+
+AddSubClass("battlemage", "psychic warrior", {
+	regExpSearch : /^(?=.*psychic)(?=.*warrior).*$/i,
+	subname : "Psychic Warrior",
+	source : ["LA:BM", 5],
+	features : {
+		"subclassfeature3" : {
+			name : "Empathy",
+			source : ["LA:BM", 5],
+			minlevel : 3,
+			description : "\n   I gain proficiency and expertise with the Insight skill",
+			skills : [["Insight", "full"]]
+		},
+		"subclassfeature3.1" : {
+			name : "Psionic Spellcasting",
+			source : ["LA:BM", 5],
+			minlevel : 3,
+			description : "\n   I no longer require somatic or verbal components to cast my wizard spells",
+			calcChanges : {
+				spellAdd : [
+					function (spellKey, spellObj, spName) {
+						if ((/wizard|^battlemage$/i).test(spName)) {
+							if ((/V|S/i).test(spellObj.components)) 
+							spellObj.components = spellObj.components.replace(/V,?|S,?/ig, '');
+							return true;
+						};
+					},
+					"My wizard spells don't require verbal or somatic components."
+				]
+			}
+		},
+		"subclassfeature3.2" : {
+			name : "Telepathy",
+			source : ["LA:BM", 5],
+			minlevel : 3,
+			description : "\n   I can communicate telepathically with anyone I can see in 30 ft if it has Int 5 or higher"
+		},
+		"subclassfeature6" : {
+			name : "Energy Shield",
+			source : ["LA:BM", 5],
+			minlevel : 6,
+			additional : "1+ energy dice",
+			description : desc([
+				"As a reaction when I or another within 30 ft takes damage, I can expend energy dice",
+				"The target gains temp HP equal to the dice rolled, which can be used for the damage",
+				"While its temp HP remains, it has resistance to [energy damage] and adv. on Con saves"
+			]),
+			action : [["reaction", ""]]
+		},
+		"subclassfeature10" : {
+			name : "Telekinetic Hand",
+			source : ["LA:BM", 5],
+			minlevel : 10,
+			description : desc([
+				"The cantrip I learn on this level is Mage Hand if I didn't know it already",
+				"Its spectral hand functions as any of my own hands; I can even use it to feel or attack",
+				"I can wield a weapon with it, using my Int instead of Str, but still my own Dex",
+				"An action to make an Investigation or Insight check vs. my spell DC to see I'm responsible"
+			]),
+			spellcastingBonus : {
+				name : "Telekinetic Hand",
+				spells : ["mage hand"],
+				selection : ["mage hand"]
+			},
+			eval : function () {
+				var curCa = CurrentSpells.battlemage.selectCa;
+				if (curCa && curCa.indexOf("mage hand") == -1) curCa.push("mage hand");
+			},
+			spellChanges : {
+				"mage hand" : {
+					description : "Create spectral hand that acts/feels as my own; carries up to 10 lb; 1 a to control; can't have multiple",
+					changes : "When I cast mage hand, I can make the spectral hand invisible. I receive the same sensory information from it that I would from a real hand attached to my body. I can do anything with the hand that I could do with a normal humanoid hand. When I attack with it, it uses my unarmed strike or a weapon that it is wielding.\n   The hand uses my Intelligence score as its Strength score, and its Dexterity score equals mine. It shares my proficiencies.\n   A creature can discern that I are responsible for the hand's actions by spending its action observing me and succeeding on an Intelligence (Investigation) or Wisdom (Insight) check against my spell save DC."
+				}
+			},
+			calcChanges : {
+				atkAdd : [
+					function (fields, v) {
+						if ((/^(?=.*\bmage\b)(?=.*\bhand\b).*$/i).test(v.WeaponText) && fields.Mod === 1) {
+							fields.Mod = 4;
+						}
+					},
+					'If I include the words "Mage Hand" in a the name of a weapon, it will be treated as a weapon wielded by my Mage Hand and use Intelligence instead of Strength.'
+				]
+			}
+		},
+		"subclassfeature14" : {
+			name : "Focus Crystal",
+			source : ["LA:BM", 5],
+			minlevel : 14,
+			additional : "1 energy die",
+			description : desc([
+				"I can make a 100 gp gem into a psionic crystal, which is a spellcasting focus & spellbook",
+				"If another holds this crystal, we can communicate telepathically and I know its direction",
+				"As an action, I can disconnect from a crystal I can see, returning it into a normal gem"
+			])
+		},
+		"subclassfeature18" : {
+			name : "Mental Fortress",
+			source : ["LA:BM", 5],
+			minlevel : 18,
+			additional : "even while unconscious",
+			description : desc([
+				"I am immune to effects that command, charm, frighten, or read thoughts/emotions",
+				"I know if I'm a target and can make it seem as if I'm affected and choose what it reveals"
+			]),
+			savetxt : {
+				immune : ["charmed", "frightened", "read thoughts", "sense emotions", "being forced to act against my will"]
+			}
+		}
+	}
+});
+
 AddSubClass("battlemage", "runic bulwark", {
 	regExpSearch : /^(?=.*runic)(?=.*bulwark).*$/i,
 	subname : "Runic Bulwark",
@@ -488,12 +742,8 @@ AddSubClass("battlemage", "runic bulwark", {
 			minlevel : 3,
 			description : desc([
 				"When I finish a short rest, I can inscribe arcane runes on two simple or martial weapons",
-				"These are magical and gain an ability; I can have only two, making more clears another",
-				" \u2022 A one-handed melee weapon gains the thrown (30/120) property",
-				" \u2022 A two-handed melee weapon scores a critical hit on a 19 or 20 to hit",
-				" \u2022 Weapon with the ammunition property no longer require ammo as they conjure it",
-				"As an action, I can have it fly 300 ft to me until it reaches me, moving through objects",
-				"As part of that action, I can use it to make a ranged attack on a creature in its path"
+				"These are magical and gain an ability; I can have only two, making more undoes another",
+				"See the third page's \"Notes\" section for what these runic weapons can do"
 			]),
 			action : [["action", "Call Runic Weapon"]],
 			calcChanges : {
@@ -514,7 +764,24 @@ AddSubClass("battlemage", "runic bulwark", {
 					},
 					'If I include the words "Runic Weapon" in a the name of a weapon, it will be treated as a weapon I inscribed with runes. If it is a one-handed melee weapon, it gains the thrown (30/120) property. If it is a two-handed melee weapon, it scores a critical hit on a 19 or 20. If it is a ranged weapon with the ammunition property, it no longer require ammo as it can conjure that.'
 				]
-			}
+			},
+			extraname : "Runic Bulwark 3",
+			"runic weapon" : {
+				name : "Runic Weapon",
+				source : ["LA:BM", 6],
+				description : desc([
+					"A weapon I inscribed with runes gains the following abilities, depending on type:",
+					" \u2022 A one-handed melee weapon gains the thrown (30 ft/120 ft) property",
+					" \u2022 A two-handed melee weapon scores a critical hit on a 19 or 20 to hit",
+					" \u2022 Weapon with the ammunition property no longer require ammo as they conjure it",
+					"And all of them can do the following, regardless of type:",
+					" \u2022 As an action, I can have it fly 300 ft to me until it reaches me, moving through objects",
+					" \u2022 As part of that action, I can use it to make a ranged attack on a creature in its path"
+				])
+			},
+			autoSelectExtrachoices : [{
+				extrachoice : "runic weapon"
+			}]
 		},
 		"subclassfeature5" : {
 			name : "Call Weapon",
@@ -530,6 +797,7 @@ AddSubClass("battlemage", "runic bulwark", {
 			name : "Runic Armor",
 			source : ["LA:BM", 6],
 			minlevel : 6,
+			additional : "1+ energy dice",
 			description : desc([
 				"When I finish a short rest, I can inscribe arcane runes on a single suit of armor",
 				"I can sleep in it as if it were light armor; I can have only 1, making more clears the first",
@@ -561,6 +829,7 @@ AddSubClass("battlemage", "runic bulwark", {
 			name : "Armored Against Misfortune",
 			source : ["LA:BM", 6],
 			minlevel : 14,
+			additional : "1 energy die",
 			description : desc([
 				"While wearing my runic armor, I can expend an energy die and add it to a d20 roll",
 				"I can do this after rolling a check, attack roll, or save, but before knowing the outcome"
@@ -616,6 +885,7 @@ AddSubClass("battlemage", "spell dancer", {
 			name : "Defensive Riposte",
 			source : ["LA:BM", 7],
 			minlevel : 6,
+			additional : "1 energy die",
 			description : desc([
 				"As a reaction when missed in melee, I can expend an energy die and add it to my AC",
 				"I then make an opportunity attack vs. the attacker; AC lasts until my next turn starts"
@@ -640,9 +910,10 @@ AddSubClass("battlemage", "spell dancer", {
 			name : "Reflection",
 			source : ["LA:BM", 7],
 			minlevel : 14,
+			additional : "2 energy dice",
 			description : desc([
 				"As a reaction when I'm the target of a spell attack or save vs. a spell, l can redirect it",
-				"I spend two energy dice and roll both; I add the higher of the two to my AC or save roll",
+				"I expend two energy dice and roll both; I add the higher of the two to my AC or save roll",
 				"If that causes the spell to miss or me to succeed the save, I can choose a new target for it",
 				"Line-area spells stop at my space and I then create the same effect, originating from me",
 				"For other type of spells, I choose another eligible target within range of the spell"
