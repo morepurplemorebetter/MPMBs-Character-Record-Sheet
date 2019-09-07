@@ -1722,8 +1722,9 @@ var Base_ClassList = {
 				]),
 				usages : [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
 				recovery : "long rest",
-				action : ["bonus action", ""],
-				additional : "Sorcery Points"
+				action : ["bonus action", "Font of Magic"],
+				additional : "Sorcery Points",
+				limfeaname : "Sorcery Points"
 			},
 			"metamagic" : {
 				name : "Metamagic",

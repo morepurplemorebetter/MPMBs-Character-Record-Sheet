@@ -3559,9 +3559,16 @@ function Publish(version, extra) {
 		}
 	}
 	semVers = nmbrToSemanticVersion(sheetVersion) + (tDoc.info.SheetVersionType ? tDoc.info.SheetVersionType : "");
-	if (app.viewerType !== "Reader") tDoc.info.Title = MakeDocName();
-	tDoc.getField("SheetInformation").defaultValue = MakeDocName();
-	tDoc.resetForm(["Opening Remember", "CurrentSources.Stringified", "User_Imported_Files.Stringified","SheetInformation"]);
+	var docNm = MakeDocName();
+	var resetFlds = ["Opening Remember", "CurrentSources.Stringified", "User_Imported_Files.Stringified"];
+	var defaultTempl = ["", "AScomp", "ASnotes"];
+	for (var i = 0; i < defaultTempl.length; i++) {
+		var prefix = defaultTempl[i] ? What("Template.extras." + defaultTempl[i]).split(",")[1] : "";
+		tDoc.getField(prefix + "SheetInformation").defaultValue = docNm;
+		resetFlds.push(prefix + "SheetInformation");
+	}
+	if (app.viewerType !== "Reader") tDoc.info.Title = docNm;
+	tDoc.resetForm(resetFlds);
 	tDoc.getField("Opening Remember").submitName = 1;
 	tDoc.getField("SaveIMG.Patreon").submitName = "(new Date(0))";
 	if (!minVer) DontPrint("d20warning");
@@ -3814,63 +3821,75 @@ function UpdateRangerCompanions(newLvl) {
 	if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
 }
 
-//update the tooltip for the Max HP field
+// Give the total HP (average, fixed, max) for the main character (prefix == "") or a companion page
+function calcHPtotals(prefix) {
+	var conFld = prefix ? prefix + "Comp.Use.Ability.Con.Score" : "Con";
+	var HD = {
+		conMod : What(conFld) ? Math.round((Math.floor(What(conFld)) - 10.5) * 0.5) : 0,
+		conCorrection : false,
+		count : 0,
+		dieStr : [],
+		average : 0,
+		fixed : 0,
+		max : 0
+	}
+	// loop through all the HD fields
+	for (var i = 0; i < (prefix ? 1 : 3); i++) {
+		var lvl = Math.max(Math.floor(What(prefix ? prefix + "Comp.Use.HD.Level" : "HD" + (i+1) + " Level")), 1);
+		var hd = Math.floor(What(prefix ? prefix + "Comp.Use.HD.Die" : "HD" + (i+1) + " Die"));
+		if (!hd) continue; // no HD given, so skip it
+		HD.count += lvl;
+		HD.max += (hd + HD.conMod) * lvl;
+		// See if this HP is for the first level and thus always maximized
+		if (!prefix && ((i == 0 && classes.hp == 0) || classes.hp === hd)) {
+			lvl -= 1;
+			var lvl1HP = Math.max(1, hd + HD.conMod);
+			HD.average += lvl1HP;
+			HD.fixed += lvl1HP;
+			HD.dieStr.unshift(hd + " (1st level)");
+		}
+		var avgHD = (hd + 1) / 2;
+		var thisAvg = avgHD * lvl;
+		HD.dieStr.push(lvl + "d" + hd + " (" + thisAvg + ")");
+		if ((avgHD + HD.conMod) < 1) {
+			// The Con Mod is too low to add it normally
+			// A minimum of 1 HP gained per [HD + Con] (PHB 15)
+			HD.conCorrection = true;
+			HD.average += lvl;
+			HD.fixed += lvl;
+			if (hd + HD.conMod < 1) HD.max -= (hd + HD.conMod) * lvl - lvl;
+		} else {
+			var conHP = HD.conMod * lvl;
+			HD.average += thisAvg + conHP;
+			HD.fixed += Math.ceil(avgHD) * lvl + conHP;
+		}
+	}
+	return HD;
+}
+
+// Update the tooltip for the Max HP field and set the Max HP if that is set to be auto-calculated
 function SetHPTooltip(resetHP, onlyComp) {
-	// do the main character HP, if not set to only do the companion page(s)
-	if (onlyComp == undefined || onlyComp === false) {
-		var HDLVL = [
-			Math.floor(What("HD1 Level")),
-			Math.floor(What("HD2 Level")),
-			Math.floor(What("HD3 Level"))
-		];
-		var HD = [
-			Math.floor(What("HD1 Die")),
-			Math.floor(What("HD2 Die")),
-			Math.floor(What("HD3 Die"))
-		];
-		var ConMod = Number(What("Con Mod"));
-		var hdstring = "The total hit points (with averages and max for 1st level)\n = ";
-		var hdaverage = 0;
-		var conhp = 0;
-		var totalhd = 0;
-		var extrastring = "";
-		var hdadvleague = 0;
-		var hdmax = 0;
-		var extrahp = 0;
-
-		for (var j = 0; j < HDLVL.length; j++) {
-			HDLVL[j] = HDLVL[j] < 1 ? 1 : HDLVL[j];
-		};
-
-		for (var i = 0; i < HD.length; i++) {
-			if (HD[i] !== 0) {
-				if ((i === 0 && classes.hp === 0) || classes.hp === HD[i]) {
-					hdcalc = HD[i] + (HDLVL[i] - 1) * ((HD[i] + 1) / 2);
-					hdcalc2 = HD[i] + (HDLVL[i] - 1) * Math.ceil((HD[i] + 1) / 2);
-					hdcalc3 = HDLVL[i] * HD[i];
-				} else {
-					hdcalc = HDLVL[i] * ((HD[i] + 1) / 2);
-					hdcalc2 = HDLVL[i] * Math.ceil((HD[i] + 1) / 2);
-					hdcalc3 = HDLVL[i] * HD[i];
-				}
-				hdstring += HDLVL[i] + "d" + HD[i] + " (" + hdcalc + ")";
-				hdstring += (i === 2 || HD[i + 1] === 0) ? "" : " + ";
-				hdaverage += hdcalc;
-				hdadvleague += hdcalc2;
-				hdmax += hdcalc3;
-				totalhd += HDLVL[i];
-				conhp += HDLVL[i] * ConMod;
-			};
-		};
-
-		if (CurrentEvals.hp) {
+	var tempExtras = What("Template.extras.AScomp").split(",");
+	for (var tE = 0; tE < tempExtras.length; tE++) {
+		// Test if we should do this page or not
+		if ((tE == 0 && onlyComp) || (tE > 0 && onlyComp === false)) continue;
+		// Set some general variables
+		var prefix = tempExtras[tE]; // if !prefix, it is the main character
+		var HPmaxFld = prefix ? prefix + "Comp.Use.HP.Max" : "HP Max";
+		var HDflds = prefix ? [prefix + "Comp.Use.HD.Die"] : ["HD1 Die", "HD2 Die", "HD3 Die"];
+		var extrastring = prefix ? "\n + Special modifiers from other sources" : "";
+		var extrahp = 0, setHP;
+		// Get the calculated HP
+		var HD = calcHPtotals(prefix);
+		// If this is the main char and there are custom HP changes, do them
+		if (!prefix && CurrentEvals.hp) {
 			for (var hpEval in CurrentEvals.hp) {
 				var evalThing = CurrentEvals.hp[hpEval];
 				try {
 					if (typeof evalThing == 'string') {
 						eval(evalThing);
 					} else if (typeof evalThing == 'function') {
-						var addHP = evalThing(totalhd);
+						var addHP = evalThing(HD.count);
 						if (!isArray(addHP)) addHP = [addHP];
 						if ((addHP[0] || addHP[0] === 0) && !isNaN(addHP[0])) {
 							if (!addHP[1]) addHP[1] = hpEval;
@@ -3887,25 +3906,22 @@ function SetHPTooltip(resetHP, onlyComp) {
 				}
 			}
 		}
-
-		hdplaceholder = totalhd === 0 ? "level \u00D7 hit dice (0)" : "";
-		totalhd = totalhd === 0 ? "level" : totalhd;
-		conhp = conhp === 0 ? ConMod : conhp;
-		hdstring += hdplaceholder + "\n + " + totalhd + " \u00D7 " + ConMod + " from Constitution (" + conhp + ")";
-		hdstring += extrastring;
-		hdstring += "\n\n \u2022 " + toUni(hdaverage + conhp + extrahp) + " is the total average HP";
-		hdstring += "\n \u2022 " + toUni(hdadvleague + conhp + extrahp) + " is the total HP when using fixed values";
-		hdstring += "\n \u2022 " + toUni(hdmax + conhp + extrahp) + " is the total maximum HP";
-
-		//now add this tooltip
-		AddTooltip("HP Max", hdstring);
-
-		//now see if the menu setting tells us that we need to change
-		var theSetting = How("HP Max").split(",");
-		theSetting[0] = Number(Math.round(hdaverage + conhp + extrahp));
-		theSetting[1] = Number(hdadvleague + conhp + extrahp);
-		theSetting[2] = Number(hdmax + conhp + extrahp);
-		var setHP = false;
+		// Create the tooltip string
+		var tooltip = "The total hit points (with averages" + (prefix ? ")" : " and max for 1st level)") +
+			"\n = " + (HD.count ? HD.dieStr.join(" + ") : "level \u00D7 hit dice (0)") +
+			"\n + " + (HD.count ? HD.count : "level") + " \u00D7 " + HD.conMod + " from Constitution (" + (HD.count * HD.conMod) + ")" +
+			extrastring + "\n" +
+			"\n \u2022 " + toUni(HD.average + extrahp) + " is the total average HP" +
+			"\n \u2022 " + toUni(HD.fixed + extrahp) + " is the total HP when using fixed values" +
+			"\n \u2022 " + toUni(HD.max + extrahp) + " is the total maximum HP" +
+			(HD.conCorrection ? "\n\nNote that the Constitution modifier can't bring the HP gained from a single HD below 1 before adding other bonuses. Thus, the totals may seem off from the calculation above them. See PHB, page 15." : "");
+		// Now see if the menu setting tells us that we need to change the max HP
+		extrahp = isNaN(extrahp) ? 0 : Number(extrahp);
+		var theSetting = How(HPmaxFld).split(",");
+		theSetting[0] = Math.round(HD.average + extrahp);
+		theSetting[1] = HD.fixed + extrahp;
+		theSetting[2] = HD.max + extrahp;
+		if (resetHP) theCompSetting[3] = "nothing";
 		switch (theSetting[3]) {
 			case "average" :
 				setHP = theSetting[0];
@@ -3916,73 +3932,14 @@ function SetHPTooltip(resetHP, onlyComp) {
 			case "max" :
 				setHP = theSetting[2];
 				break;
+			case "nothing" :
+			default :
+				setHP = What(HPmaxFld);
 		}
-		if (setHP !== false) Value("HP Max", setHP);
-
-		tDoc.getField("HP Max").submitName = theSetting.join();
-
-		Value("HD1 Die", What("HD1 Die"));
-		Value("HD2 Die", What("HD2 Die"));
-		Value("HD3 Die", What("HD3 Die"));
-	}
-
-	// if it was set to only do the main character, stop now
-	if (onlyComp !== undefined && onlyComp === false) return;
-
-	// now do the same for every companion page
-	var tempExtras = What("Template.extras.AScomp").split(",").splice(1);
-	for (var tE = 0; tE < tempExtras.length; tE++) {
-		var prefix = tempExtras[tE];
-		var CompHDLVL = Math.floor(What(prefix + "Comp.Use.HD.Level"));
-		var CompHD = Math.floor(What(prefix + "Comp.Use.HD.Die"));
-		var CompConMod = Number(What(prefix + "Comp.Use.Ability.Con.Mod"));
-		var Compconhp = 0;
-		var CompAverageHD = 0;
-		var CompFixedHD = 0;
-		var CompMaxHD = 0;
-		var Comphdplaceholder = "level \u00D7 hit dice (0)";
-
-		//check if the fields are filled out at all
-		if (CompHDLVL && CompHD) {
-			Compconhp = CompHDLVL * CompConMod;
-			CompAverageHD = CompHDLVL * ((CompHD + 1) / 2);
-			CompFixedHD = CompHDLVL * Math.ceil((CompHD + 1) / 2) + Compconhp;
-			CompMaxHD = CompHDLVL * CompHD + Compconhp;
-			Comphdplaceholder = CompHDLVL + "d" + CompHD + " (" + CompAverageHD + ")";
-		}
-
-		var compHPsting = "The total hit points (with averages)\n = ";
-		compHPsting += Comphdplaceholder;
-		compHPsting += "\n + " + CompHDLVL + " \u00D7 " + CompConMod + " from Constitution (" + Compconhp + ")";
-		compHPsting += "\n + Special modifiers from other sources";
-		compHPsting += "\n\n \u2022 " + (CompAverageHD + Compconhp) + " is the total average HP";
-		compHPsting += "\n \u2022 " + CompFixedHD + " is the total HP when using fixed values";
-		compHPsting += "\n \u2022 " + CompMaxHD + " is the total maximum HP";
-		AddTooltip(prefix + "Comp.Use.HP.Max", compHPsting);
-
-		//now see if the menu setting tells us that we need to change
-		var theCompSetting = How(prefix + "Comp.Use.HP.Max").split(",");
-		theCompSetting[0] = Number(Math.round(CompAverageHD + Compconhp));
-		theCompSetting[1] = Number(CompFixedHD);
-		theCompSetting[2] = Number(CompMaxHD);
-		if (resetHP) theCompSetting[3] = "nothing";
-		var setCompHP = false;
-		switch (theCompSetting[3]) {
-			case "average" :
-				setCompHP = theCompSetting[0];
-				break;
-			case "fixed" :
-				setCompHP = theCompSetting[1];
-				break;
-			case "max" :
-				setCompHP = theCompSetting[2];
-				break;
-		}
-		if (setCompHP !== false) Value(prefix + "Comp.Use.HP.Max", setCompHP);
-
-		tDoc.getField(prefix + "Comp.Use.HP.Max").submitName = theCompSetting.join();
-
-		Value(prefix + "Comp.Use.HD.Die", What(prefix + "Comp.Use.HD.Die"));
+		// Now set the max HP value, tooltip, and a way to remember the settings
+		Value(HPmaxFld, setHP, tooltip, theSetting.join());
+		// Lastly, re-apply the HD field so that changes to their display are visible
+		for (var h = 0; h < HDflds.length; h++) Value(HDflds[h], What(HDflds[h]));
 	}
 };
 

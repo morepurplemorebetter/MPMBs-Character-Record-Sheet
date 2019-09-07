@@ -4752,7 +4752,7 @@ function deleteSpellRow(prefix, lineNmbr) {
 	var offset = 0;
 	for (var SS = thisSheet; SS < SSmoreA.length; SS++) {
 		var startRow = SS === thisSheet ? startRow = lineNmbr : 0;
-		var endRow = SS === 0 ? FieldNumbers.spells[0] : FieldNumbers.spells[1];
+		var endRow = FieldNumbers.spells[SSmoreA[SS].indexOf("SSfront") != -1 ? 0 : 1];
 		var theLine = SSmoreA[SS] + "spells.remember.";
 		for (var L = startRow; L <= endRow; L++) {
 			if (L === endRow && SS === (SSmoreA.length - 1)) {
@@ -4869,7 +4869,7 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 	var rememberRow = [0];
 	for (var SS = thisSheet; SS < SSmoreA.length; SS++) {
 		var startRow = SS === thisSheet ? lineNmbr : 0;
-		var endRow = SS === 0 ? FieldNumbers.spells[0] : FieldNumbers.spells[1];
+		var endRow = FieldNumbers.spells[SSmoreA[SS].indexOf("SSfront") != -1 ? 0 : 1];
 		var theLine = SSmoreA[SS] + "spells.remember.";
 		for (var L = startRow; L <= endRow; L++) {
 			var thisLine = What(theLine + L);
@@ -5681,7 +5681,7 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 		var orderedSpellList = fullSpellList;
 	}
 
-	//for the first entry we need to make the template SSfront appear
+	//for the first entry we need to make the template SSmore appear
 	var prefixCurrent = tDoc.info.SpellsOnly ? "P0.SSmore." : DoTemplate("SSmore", "Add"); //set the current prefix on the Spell Sheet
 
 	thermoTxt = thermoM("Filling out page 1 of the Spell Sheet...", false); //change the progress dialog text

@@ -2849,23 +2849,30 @@ function SetGearWeightOnBlur() {
 // find if the entry is an equipment
 function ParseGear(input) {
 	if (!input) return false;
-	var foundLen = 0;
+	var foundLen = 0, testLen = 0;
 	var result = false;
 	var tempString = removeDiacritics(input.toLowerCase());
+	var tempStrLen = tempString.length;
 
 	//see if it is an armour
 	var findArmor = ParseArmor(tempString, true);
 	if (findArmor) {
-		foundLen = tempString.match(ArmourList[findArmor].regExpSearch)[0].length;
-		if (foundLen === tempString.length) foundLen = findArmor.length;
+		foundLen = Math.min(
+			findArmor.length,
+			tempStrLen,
+			tempString.match(ArmourList[findArmor].regExpSearch)[0].length
+		);
 		result = ["ArmourList", findArmor];
 	};
 
 	//see if it is a weapon
 	var findWeapon = ParseWeapon(tempString, true);
 	if (findWeapon) {
-		var testLen = tempString.match(WeaponsList[findWeapon].regExpSearch)[0].length;
-		if (testLen === tempString.length) testLen = findWeapon.length;
+		testLen = Math.min(
+			findWeapon.length,
+			tempStrLen,
+			tempString.match(WeaponsList[findWeapon].regExpSearch)[0].length
+		);
 		if (testLen > foundLen) {
 			foundLen = testLen;
 			result = ["WeaponsList", findWeapon];
@@ -2875,7 +2882,7 @@ function ParseGear(input) {
 	//see if it is an ammunition weapon
 	var findAmmo = ParseAmmo(tempString, true);
 	if (findAmmo) {
-		var testLen = findAmmo[1];
+		testLen = Math.min(findAmmo[1], tempStrLen);
 		if (testLen > foundLen) {
 			foundLen = testLen;
 			result = ["AmmoList", findAmmo[0]];
