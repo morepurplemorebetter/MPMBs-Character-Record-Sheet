@@ -650,6 +650,7 @@ function CalcSpellScores() {
 		} else if (cSpells) {
 			theResult.prepare += cSpells.level;
 		}
+		theResult.prepare = Math.max(1, theResult.prepare);
 	}
 
 	// add custom calculations

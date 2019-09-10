@@ -5886,7 +5886,7 @@ function SetToManual_Button(noDialog) {
 	//do something with the results of background checkbox
 	if (SetToManual_Dialog.mBac !== BackgroundFld) {
 		if (SetToManual_Dialog.mBac) {
-			CurrentVars.manual.background = What("Background");
+			CurrentVars.manual.background = What("Background") + " ";
 			Hide("Background Menu");
 		} else {
 			FindBackground(CurrentVars.manual.background);
@@ -5900,7 +5900,7 @@ function SetToManual_Button(noDialog) {
 	if (SetToManual_Dialog.mCla !== ClassFld) {
 		if (SetToManual_Dialog.mCla) {
 			var classString = What("Class and Levels");
-			if (classes.parsed.length == 1 && classString.indexOf(classes.totallevel) == -1) classString += classes.totallevel;
+			if (classes.parsed.length < 2 && classString.indexOf(classes.totallevel) == -1) classString += " " + classes.totallevel;
 			CurrentVars.manual.classes = What("Class and Levels");
 			Hide("Class Features Menu");
 		} else {
