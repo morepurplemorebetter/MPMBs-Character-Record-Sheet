@@ -44,17 +44,13 @@ var Base_RaceList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (v.theWea.dbBreathWeapon && CurrentRace.known === 'dragonborn' && CurrentRace.variant) {
-								fields.Damage_Type = CurrentRace.dmgres[0];
-								fields.Description = fields.Description.replace(/(dex|con) save/i, ((/cold|poison/i).test(CurrentRace.dmgres[0]) ? 'Con' : 'Dex') + ' save');
-								fields.Range = (/black|blue|brass|bronze|copper/i).test(CurrentRace.variant) ? '5-ft \u00D7 30-ft line' : '15-ft cone';
-							};
-						}
-					],
-					atkCalc : [
-						function (fields, v, output) {
-							if (v.theWea.dbBreathWeapon && CurrentRace.known === 'dragonborn' && CurrentRace.level > 5) {
-								output.die = output.die.replace('2d6', (CurrentRace.level < 11 ? 3 : CurrentRace.level < 16 ? 4 : 5) + 'd6');
+							if (v.theWea.dbBreathWeapon && CurrentRace.known === 'dragonborn') {
+								fields.Damage_Die = (CurrentRace.level < 6 ? 2 : CurrentRace.level < 11 ? 3 : CurrentRace.level < 16 ? 4 : 5) + 'd6';
+								if (CurrentRace.variant) {
+									fields.Damage_Type = CurrentRace.dmgres[0];
+									fields.Description = fields.Description.replace(/(dex|con) save/i, ((/cold|poison/i).test(CurrentRace.dmgres[0]) ? 'Con' : 'Dex') + ' save');
+									fields.Range = (/black|blue|brass|bronze|copper/i).test(CurrentRace.variant) ? '5-ft \u00D7 30-ft line' : '15-ft cone';
+								}
 							};
 						}
 					]
