@@ -232,7 +232,7 @@ var Base_MagicItemsList = {
 		type : "armor (plate)",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "I have resistance to nonmagical damage while I wear this plate armor. As an action, I can make yourself immune to nonmagical damage for 10 minutes or until I am no longer wearing the armor. Once this special action is used, it can't be used again until the next dawn.",
+		description : "I have resistance to nonmagical damage while I wear this plate armor. As an action, I can make myself immune to nonmagical damage for 10 minutes or until I am no longer wearing the armor. Once this special action is used, it can't be used again until the next dawn.",
 		descriptionFull : "You have resistance to nonmagical damage while you wear this armor. Additionally, you can use an action to make yourself immune to nonmagical damage for 10 minutes or until you are no longer wearing the armor. Once this special action is used, it can't be used again until the next dawn.",
 		attunement : true,
 		weight : 65,
@@ -5863,7 +5863,7 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "While I'm holding this talisman, I double my proficiency bonus on the Intelligence (Arcana) check to control a sphere of annihilation. In addition, when I start your turn with control over a sphere of annihilation, I can use an action to levitate it 10 ft plus 10 ft times my Intelligence modifier.",
+		description : "While I'm holding this talisman, I double my proficiency bonus on the Intelligence (Arcana) check to control a sphere of annihilation. In addition, when I start my turn with control over a sphere of annihilation, I can use an action to levitate it 10 ft plus 10 ft times my Intelligence modifier.",
 		descriptionFull : "When you make an Intelligence (Arcana) check to control a sphere of annihilation while you are holding this talisman, you double your proficiency bonus on the check. In addition, when you start your turn with control over a sphere of annihilation, you can use an action to levitate it 10 feet plus a number of additional feet equal to 10 \xD7 your Intelligence modifier.",
 		attunement : true,
 		weight : 1
