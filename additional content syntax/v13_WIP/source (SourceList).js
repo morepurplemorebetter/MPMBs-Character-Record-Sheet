@@ -144,4 +144,17 @@ SourceList["BoP"] = {
 
 	Please use https if available.
 */
+	defaultExcluded : true,
+/*	defaultExcluded // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether this source should be excluded by default (true) or included by default (false)
+
+	Include this attribute and set it to true if the source should appear in the Excluded list
+	when the script is added for the first time.
+	This is useful for optional rule additions that you wouldn't normally want to use (e.g. playtest rules).
+
+	A source that has the group "Unearthed Arcana" is automatically treated as having this attribute set to `true`.
+
+	Setting this attribute to false is the same as not including this attribute.
+*/
 }
