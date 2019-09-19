@@ -213,8 +213,8 @@ function AbilityScores_Button(onlySetTooltip) {
 		if (primeAbi) primeAbi = primeAbi.replace(/^( |\n)*.*: |;$/g, '');
 		refTxt.push(clHead + primeAbi);
 		// String for ASI from class level
-		var imprLVL = Math.min(classes.known[aClass].level - 1);
-		if (tClass.improvements[imprLVL]) asiTxt.push(clHead + "\u00D7" + tClass.improvements[imprLVL]);
+		var imprLVL = Math.min(classes.known[aClass].level, tClass.improvements.length);
+		if (tClass.improvements[imprLVL - 1]) asiTxt.push(clHead + "\u00D7" + tClass.improvements[imprLVL - 1]);
 	}
 	if (refTxt.length) {
 		refTxt.sort();

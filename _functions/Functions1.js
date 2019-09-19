@@ -2120,7 +2120,9 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 			if (classes.oldspellcastlvl.otherTables) SpellSlotsTotal -= classes.oldspellcastlvl.otherTables[ss];
 			if (SpellSlotsField != SpellSlotsTotal) Value(SpellSlotsName, SpellSlotsTotal);
 		}
-		// Have the prompt check if something changed to warrant generating new spell sheets
+	}
+	// Have the prompt check if something changed to warrant generating new spell sheets
+	if (classes.spellcastlvl.default || classes.spellcastlvl.warlock || classes.spellcastlvl.otherTables || classes.oldspellcastlvl.default || classes.oldspellcastlvl.warlock || classes.oldspellcastlvl.otherTables) {
 		CurrentUpdates.types.push("testclassspellcasting");
 	}
 

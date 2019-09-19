@@ -3889,7 +3889,7 @@ function SetHPTooltip(resetHP, onlyComp) {
 					if (typeof evalThing == 'string') {
 						eval(evalThing);
 					} else if (typeof evalThing == 'function') {
-						var addHP = evalThing(HD.count);
+						var addHP = evalThing(HD.count, HD);
 						if (!isArray(addHP)) addHP = [addHP];
 						if ((addHP[0] || addHP[0] === 0) && !isNaN(addHP[0])) {
 							if (!addHP[1]) addHP[1] = hpEval;
