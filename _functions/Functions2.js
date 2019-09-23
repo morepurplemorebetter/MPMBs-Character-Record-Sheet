@@ -3387,7 +3387,9 @@ function MakeIconMenu_IconOptions() {
 			["4 Curse of Strahd", "cos"],
 			["5 Storm King's Thunder", "skt"],
 			["6 Tales from the Yawning Portal", "totyp"],
-			["7 Tomb of Annihilation", "toa"]
+			["7 Tomb of Annihilation", "toa"],
+			["8 Waterdeep Adventures", "wda"],
+			["9 Descent into Avernus", "dia"]
 		];
 		IconMenu.push({cName : "-", cReturn : "-"}); // add a divider
 		menuLVL2(IconMenu, ["Set Adventure League season icon", "seasonicon"], ALseasons);
