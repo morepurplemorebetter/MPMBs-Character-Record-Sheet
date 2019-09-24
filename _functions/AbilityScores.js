@@ -1033,10 +1033,8 @@ function AbilityScores_Button(onlySetTooltip) {
 
 		// Add the functions to the dialog variables
 		var addFldFunction = function (i, fldID) {
-			AbilityScores_Dialog[fldID] = i == 0 ?
-				function(dialog, fldNm = fldID) { this.updateVals(dialog, fldNm, true); }
-				:
-				function(dialog, fldNm = fldID) { this.updateVals(dialog, fldNm, false); };
+			var a = fldID;
+			AbilityScores_Dialog[a] = function(dialog) { this.updateVals(dialog, a, a.indexOf("00") === 0); };
 		}
 		for (var i = 0; i < CurrentStats.cols.length; i++) {
 			var theStat = CurrentStats.cols[i];

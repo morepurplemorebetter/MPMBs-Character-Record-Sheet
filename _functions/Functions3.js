@@ -1534,8 +1534,8 @@ function UpdateSheetDisplay() {
 	var cancelDia = dialogParts.every(function (part) {
 		// set the functions for the checkboxes
 		var skType = part.skipType;
-		Changes_Dialog[skType] = function (dialog, fldNm = skType) {
-			ChangesDialogSkip[fldNm] = dialog.store()[fldNm] ? true : false;
+		Changes_Dialog[skType] = function (dialog) {
+			ChangesDialogSkip[skType] = dialog.store()[skType] ? true : false;
 		};
 		// see if this part is set to be skipped or not
 		return ChangesDialogSkip[skType] || (skType == "chHP" && autoHP);

@@ -4110,8 +4110,9 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 
 //a function that takes an array of spells and orders it by level (and alphabet)
 //outputFormat defines whether to return an Array of Arrays ("multi"), or just one array "single";
-function OrderSpells(inputArray, outputFormat, sepPsionics, bonusSp, maxLvl = 9) {
+function OrderSpells(inputArray, outputFormat, sepPsionics, bonusSp, maxLvl) {
 	if (!isArray(bonusSp)) bonusSp = [];
+	if (maxLvl === undefined) maxLvl = 9;
 	var refspObj = {};
 	var orderedSpellList = [[], [], [], [], [], [], [], [], [], []]; //array of 10 arrays, one for each spell level
 	if (sepPsionics) { //add two more arrays, for the psionics
