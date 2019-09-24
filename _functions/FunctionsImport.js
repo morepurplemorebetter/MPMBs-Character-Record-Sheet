@@ -1438,7 +1438,7 @@ function DirectImport(consoleTrigger) {
 			aText += typeA4 ? "" : ";\n  > Spell Sheet(s): spells near the bottom of the page";
 			aText += ".\n\n"
 		};
-		aText += toUni("Some manual additions might not have transferred over") + "\n\nSome things that you adjusted manually on your old sheet might not have transferred to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.\n"
+		aText += toUni("Some manual additions might not have transferred over") + "\nSome things that you adjusted manually on your old sheet might not have transferred to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.\n"
 		aText += [
 			toUni("The following things should be considered:"),
 			"The 'Class Features' text is now solely what the automation added;",

@@ -3923,7 +3923,7 @@ function SetHPTooltip(resetHP, onlyComp) {
 		theSetting[0] = Math.round(HD.average + extrahp);
 		theSetting[1] = HD.fixed + extrahp;
 		theSetting[2] = HD.max + extrahp;
-		if (resetHP) theCompSetting[3] = "nothing";
+		if (resetHP) theSetting[3] = "nothing";
 		switch (theSetting[3]) {
 			case "average" :
 				setHP = theSetting[0];
