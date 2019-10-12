@@ -7049,16 +7049,14 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				set[ProfObjLC] = {name : ProfObj, src : [], ranges : {}};
 				var prevNm = "";
 			} else {
-				var prevRng = RoundTo(getHighestTotal(set[ProfObjLC].ranges) * (metric ? 0.3 : 1), 0.5, false, true);
-				var prevNm = set[ProfObjLC].name + (!prevRng ? "" : " " + prevRng + (metric ? " m" : " ft"));
+				var prevNm = set[ProfObjLC].name + getHighestTotal(set[ProfObjLC].ranges);
 			}
 			var theSet = set[ProfObjLC];
 			if (theSet.src.indexOf(ProfSrc) !== -1) return; // the thing already exists so exit
 			theSet.src.push(ProfSrc);
 			theSet.ranges[ProfSrc] = range;
 			// See what the new entry is now
-			var newRng = RoundTo(getHighestTotal(theSet.ranges) * (metric ? 0.3 : 1), 0.5, false, true);
-			var newNm = theSet.name + (!newRng ? "" : " " + newRng + (metric ? " m" : " ft"));
+			var newNm = theSet.name + getHighestTotal(theSet.ranges);
 			// Add or replace someting in the field
 			if (prevNm != newNm) {
 				ReplaceString(fld, newNm, "; ", prevNm);
@@ -7067,16 +7065,13 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			var theSet = set[ProfObjLC];
 			if (theSet.src.indexOf(ProfSrc) !== -1) theSet.src.splice(theSet.src.indexOf(ProfSrc), 1);
 			if (theSet.src.length == 0) { // remove all of this entry
-				var newRng = RoundTo(getHighestTotal(theSet.ranges) * (metric ? 0.3 : 1), 0.5, false, true);
-				var newNm = theSet.name + (!newRng ? "" : " " + newRng + (metric ? " m" : " ft"));
+				var newNm = theSet.name + getHighestTotal(theSet.ranges);
 				RemoveString(fld, newNm);
 				delete set[ProfObjLC];
 			} else {
-				var prevRng = RoundTo(getHighestTotal(theSet.ranges) * (metric ? 0.3 : 1), 0.5, false, true);
-				var prevNm = theSet.name + (!prevRng ? "" : " " + prevRng + (metric ? " m" : " ft"));
+				var prevNm = theSet.name + getHighestTotal(theSet.ranges);
 				if (theSet.ranges[ProfSrc] !== undefined) delete theSet.ranges[ProfSrc];
-				var newRng = RoundTo(getHighestTotal(theSet.ranges) * (metric ? 0.3 : 1), 0.5, false, true);
-				var newNm = theSet.name + (!newRng ? "" : " " + newRng + (metric ? " m" : " ft"));
+				var newNm = theSet.name + getHighestTotal(theSet.ranges);
 				if (prevNm != newNm) {
 					ReplaceString(fld, newNm, "; ", prevNm);
 				};
@@ -7115,14 +7110,14 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		}();
 		// a function to get the correct value of the speed
 		var parseSpeed = function(type, inpObj, fullString, replaceWalk, extra) {
-			var useObj = eval(inpObj.toSource());
-			var goOn = function() {for (var e in useObj) {return true;} return false; }();
-			if (!goOn) return fullString == "both" ? ["", 0] : fullString ? "" : 0;
-			useObj.extra = extra;
-			var total = getHighestTotal(useObj, true, replaceWalk, CurrentProfs.speed.allModes);
-			var typeStr = type === "walk" ? "" : type + " ";
-			var totalStr = !total ? "" : typeStr + RoundTo(total * (metric ? 0.3 : 1), 0.5, false, true) + (metric ? " m" : " ft");
-			return fullString == "both" ? [totalStr, total] : fullString ? totalStr : total;
+			if (ObjLength(inpObj)) {
+				inpObj.extra = extra;
+				var total = getHighestTotal(inpObj, true, replaceWalk, CurrentProfs.speed.allModes, type == "walk" ? "" : type, true);
+				delete inpObj.extra;
+			} else {
+				var total = ["", 0];
+			}
+			return fullString == "both" ? total : fullString ? total[0] : total[1];
 		};
 		// get the totals before we change anything
 		var oldTotals = {
@@ -7412,13 +7407,16 @@ function formatLineList(caption, elements) {
 };
 
 //a way to condense an array of numbers down to the highest and modifiers
-function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods) {
+function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, withCleanValue) {
+	if (!prefix) prefix = "";
 	var values = [0];
 	var modifications = [];
 	var fixedVals = [0];
 	var noModsIfWalks = false;
 	var prsVal = function(val) {
-		if (!val) {
+		if (isNaN(val) && (/unlimited|\u221E/i).test(val)){
+			values.push(9999);
+		} else if (!val) {
 			return;
 		} else if (isNaN(val.substring(0,1)) && !isNaN(val.substring(1))) {
 			modifications.push(val);
@@ -7490,7 +7488,16 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods) {
 	if (fixedVals.length > 1) {
 		tValue = Math.max.apply(Math, fixedVals.concat([tValue]));
 	};
-	return notRound ? tValue : Math.round(tValue);
+	if (!tValue) {
+		return withCleanValue ? ["", 0] : "";
+	} else if (tValue >= 9999) {
+		return prefix + " (unlimited)";
+	} else {
+		if (!notRound) tValue = Math.round(tValue);
+		var metric = What("Unit System") !== "imperial";
+		var returnStr = prefix + " " + RoundTo(tValue * (metric ? 0.3 : 1), 0.5, false, true) + (metric ? " m" : " ft");
+		return withCleanValue ? [returnStr, tValue] : returnStr;
+	}
 };
 
 // open a dialogue with a number of lines of choices and return the choices in an array; if knownOpt === "radio", show radio buttons instead, and return the entry selected

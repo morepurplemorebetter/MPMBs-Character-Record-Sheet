@@ -533,6 +533,8 @@ vision : [
 		2.1 The first string is the name of the thing to add to the "Senses" section on the 1st page.
 		2.2	The second entry is a string consisting of a logical operator ('+', '-', or '*') followed by a number.
 			This will add the modifier in feet to the vision if present from another source.
+			If this is a zero, the text will be added without a range, unless another feature has a range set for this.
+			Alternatively, you can set this to "unlimited" for something that normally has a range, but this feature makes it unlimited.
 	3.	An array with two strings:
 		3.1 The first string is the name of the thing to add to the "Senses" section on the 1st page.
 		3.2	The second entry is a string, the word "fixed" followed by a space and then a number.
