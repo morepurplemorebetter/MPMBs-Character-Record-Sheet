@@ -385,7 +385,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		extraAC : [{
 			mod : 1,
 			text : "I gain a +1 bonus to AC while I'm wearing my warsmith's armor.",
-			stopeval : function (v) { return !CurrentArmor.known || !ArmourList[CurrentArmour.known] || !ArmourList[CurrentArmour.known].isWarsmithArmor; }
+			stopeval : function (v) { return !CurrentArmour.known || !ArmourList[CurrentArmour.known] || !ArmourList[CurrentArmour.known].isWarsmithArmour; }
 		}]
 	}, {
 		listname : "Reinforced Armor, 2nd (prereq: Reinforced Armor)",
@@ -399,7 +399,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		extraAC : [{
 			mod : 1,
 			text : "I gain a +1 bonus to AC while I'm wearing my warsmith's armor.",
-			stopeval : function (v) { return !CurrentArmor.known || !ArmourList[CurrentArmour.known] || !ArmourList[CurrentArmour.known].isWarsmithArmor; }
+			stopeval : function (v) { return !CurrentArmour.known || !ArmourList[CurrentArmour.known] || !ArmourList[CurrentArmour.known].isWarsmithArmour; }
 		}]
 	}, {
 		listname : "Reinforced Armor, 3rd (prereq: Reinforced Armor, 2nd)",
@@ -413,7 +413,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		extraAC : [{
 			mod : 1,
 			text : "I gain a +1 bonus to AC while I'm wearing my warsmith's armor.",
-			stopeval : function (v) { return !CurrentArmor.known || !ArmourList[CurrentArmour.known] || !ArmourList[CurrentArmour.known].isWarsmithArmor; }
+			stopeval : function (v) { return !CurrentArmour.known || !ArmourList[CurrentArmour.known] || !ArmourList[CurrentArmour.known].isWarsmithArmour; }
 		}]
 	}, {
 		name : "Sentient Armor",
@@ -993,7 +993,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 				type : "heavy",
 				ac : 18,
 				weight : 75,
-				isWarsmithArmor : true
+				isWarsmithArmour : true
 			}]
 		},
 		"warsuit (medium)" : {
@@ -1009,7 +1009,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 				type : "medium",
 				ac : 14,
 				weight : 45,
-				isWarsmithArmor : true
+				isWarsmithArmour : true
 			}],
 			eval : function () {
 				if (CurrentRace.size < 4) MagicItemsList["warsmith's armor"]["warsuit (medium)"].carryingCapacity = 2;
@@ -1031,7 +1031,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 				type : "medium",
 				ac : 14,
 				weight : 30,
-				isWarsmithArmor : true
+				isWarsmithArmour : true
 			}]
 		}
 	}
