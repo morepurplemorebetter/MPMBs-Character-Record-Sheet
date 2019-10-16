@@ -1919,8 +1919,8 @@ function WildshapeUpdate(inputArray) {
 		var useString = isNaN(wUses) && (wUses.indexOf("\u221E") !== -1 || wUses.toLowerCase().indexOf("unlimited") !== -1) ? "Unlimited" : wUses + (!isNaN(wUses) ? "\u00D7" : "") + " per " + wRec;
 		var wLimit = inputArray[3].match(/CR.+;/i);
 		wLimit = wLimit ? "max " + wLimit[0].replace(";", "") : "";
-		var wDur = inputArray[3].match(/\d+ hours?/i);
-		wDur = wDur ? wDur[0] : "";
+		var wDur = inputArray[3].match(/(\d+) h(our)?s?/i);
+		wDur = wDur ? wDur[0].replace(/h$/i, "hour" + (Number(wDur[1]) > 1 ? "s" : "")) : "";
 	} else {
 		var useString = What("Wildshapes.Info.Uses");
 		var wLimit = What("Wildshapes.Info.Limitations");

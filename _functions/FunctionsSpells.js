@@ -184,6 +184,8 @@ function ApplySpell(FldValue, rememberFldName) {
 			var foundSpell = SpellsList[theSpl];
 			var aSpell = { changesObj : {} };
 			for (var key in foundSpell) aSpell[key] = foundSpell[key];
+			// set the firstCol attribute so the CurrentEval can change it
+			aSpell.firstCol = input[1] ? input[1] : aSpell.firstCol ? aSpell.firstCol : "";
 			var aCast = input[2] && CurrentSpells[input[2]] ? CurrentSpells[input[2]] : "";
 			// If this spell is gained from an item, remove components
 			if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
@@ -355,7 +357,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "book"), spBook.substr(0,1), spBookFull);
 			Value(base.replace("remember", "page"), spPage, spBookFull);
 
-			if (aSpell.firstCol !== undefined && !input[1]) input[1] = aSpell.firstCol;
+			input[1] = aSpell.firstCol; // use the firstCol, as the CurrentEval could have changed it
 		}
 		setCheck();
 	}

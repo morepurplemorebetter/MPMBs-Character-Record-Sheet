@@ -1298,6 +1298,8 @@ calcChanges : {
 			This has the same attributes as a SpellsList entry, see the syntax file "spells (SpellsList).js".
 			The only exception is that when using the metric system, both the 'description' and 'range' attribute
 			will already have been converted into their metric versions.
+			Also, it will have the `firstCol` attribute set to whatever the automation wants it to be and
+			you can change it here to something else (e.g. change a 'checkbox' to a 'markedbox').
 
 		3)	spName, a string that is the entry in the CurrentSpells object
 			This string will be identical to whatever added the spellcasting feature.

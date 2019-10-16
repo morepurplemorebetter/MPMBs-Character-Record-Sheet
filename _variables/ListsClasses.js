@@ -631,7 +631,13 @@ var Base_ClassList = {
 				description : "\n   " + "As an action, I assume the shape of a beast I have seen before with the following rules:" + "\n    - " + "I gain all its game statistics except Intelligence, Wisdom, or Charisma" + "\n    - " + "I get its skill/saving throw prof. while keeping my own, using whichever is higher" + "\n    - " + "I assume the beast's HP and HD; I get mine back when I revert back" + "\n    - " + "I can't cast spells in beast form, but transforming doesn't break concentration" + "\n    - " + "I retain features from class, race, etc., but I don't retain special senses" + "\n    - " + "I can choose whether equipment falls to the ground, merges, or stays worn" + "\n    - " + "I revert if out of time or unconscious; if KOd by damage, excess damage carries over",
 				usages : [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, "\u221E\u00D7 per "],
 				recovery : "short rest",
-				additional : ["", "CR 1/4, no fly/swim; 1 hour", "CR 1/4, no fly/swim; 1 hour", "CR 1/2, no fly; 2 hours", "CR 1/2, no fly; 2 hours", "CR 1/2, no fly; 3 hours", "CR 1/2, no fly; 3 hours", "CR 1; 4 hours", "CR 1; 4 hours", "CR 1; 5 hours", "CR 1; 5 hours", "CR 1; 6 hours", "CR 1; 6 hours", "CR 1; 7 hours", "CR 1; 7 hours", "CR 1; 8 hours", "CR 1; 8 hours", "CR 1; 9 hours", "CR 1; 9 hours", "CR 1; 10 hours"],
+				additional : levels.map(function (n) {
+					if (n < 2) return "";
+					var cr = n < 4 ? "1/4" : n < 8 ? "1/2" : 1;
+					var hr = Math.floor(n/2);
+					var restr = n < 4 ? ", no fly/swim" : n < 8 ? ", no fly" : "";
+					return "CR " + cr + restr + "; " + hr + (restr.length ? " h" : " hours");
+				}),
 				action : [["action", " (start)"], ["bonus action", " (end)"]]
 			},
 			"timeless body" : {
