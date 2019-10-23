@@ -22,7 +22,7 @@ AddRacialVariant("half-elf", "fey step", {
 	name : "Half-eladrin",
 	source : ["HB", 0],
 	plural : "Half-eladrin",
-	trait : "Half-Eladrin (+2 Charisma and +1 to two other ability scores of my choice)\n\nFey Step: I can cast the Misty Step spell once using this trait. I regain the ability to do so when I finish a short rest.",
+	trait : "Half-Eladrin (+2 Charisma and +1 to two other ability scores of my choice)\n\nFey Step: I can cast Misty Step once using this trait. I regain the ability to do so when I finish a short rest.",
 	features : {
 		"fey step" : {
 			name : "Fey Step",

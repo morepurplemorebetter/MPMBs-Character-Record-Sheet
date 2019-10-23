@@ -44,7 +44,7 @@ RaceList["nature genasi"] = {
 	heightMetric : " range from barely 1,5 to well over 1,8 metres tall (145 + 5d10 cm)",
 	weightMetric : " weigh around 75 lb (50 + 5d10 \xD7 4d4 / 10 kg)",
 	scores : [0, 0, 2, 0, 1, 0],
-	trait : "Nature Genasi (+2 Constitution, +1 Wisdom)\n\nOne of Nature: I know the Druidcraft cantrip. At 3rd level, I can cast the Entangle spell once per long rest. Constitution is my spellcasting ability for these spells.\n\nNature Walk: I can move across difficult terrain made of natural earth or non-magical vegetation without expending extra movement. I am proficient in the Nature skill.",
+	trait : "Nature Genasi (+2 Constitution, +1 Wisdom)\n\nOne of Nature: I know the Druidcraft cantrip. At 3rd level, I can cast Entangle once per long rest. Constitution is my spellcasting ability for these spells.\n\nNature Walk: I can move across difficult terrain made of natural earth or non-magical vegetation without expending extra movement. I am proficient in the Nature skill.",
 	spellcastingAbility : 3,
 	spellcastingBonus : {
 		name : "One of Nature (level 1)",
@@ -89,7 +89,7 @@ RaceList["storm genasi"] = {
 	heightMetric : " range from barely 1,5 to well over 1,8 metres tall (145 + 5d10 cm)",
 	weightMetric : " weigh around 75 lb (50 + 5d10 \xD7 4d4 / 10 kg)",
 	scores : [0, 0, 2, 0, 0, 1],
-	trait : "Storm Genasi (+2 Constitution, +1 Charisma)\n\nRoar of the Storm:\n   I know the Shocking Grasp cantrip.\n   At 3rd level, I can cast the Thunderwave spell once per long rest.\n   At 5th level, I can also cast the Warding Wind spell once per long rest.\n   Constitution is my spellcasting ability for these spells.",
+	trait : "Storm Genasi (+2 Constitution, +1 Charisma)\n\nRoar of the Storm:\n   I know the Shocking Grasp cantrip.\n   At 3rd level, I can cast Thunderwave once per long rest.\n   At 5th level, I can also cast Warding Wind once per long rest.\n   Constitution is my spellcasting ability for these spells.",
 	spellcastingAbility : 6,
 	spellcastingBonus : {
 		name : "Roar of the Storm (level 1)",
