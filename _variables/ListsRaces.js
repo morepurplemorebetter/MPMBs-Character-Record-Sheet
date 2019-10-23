@@ -273,7 +273,7 @@ var Base_RaceList = {
 		heightMetric : " range from 1,5 to over 1,8 metres tall (145 + 5d8 cm)",
 		weightMetric : " weigh around 70 kg (50 + 5d8 \xD7 4d4 / 10 kg)",
 		scores : [0, 0, 0, 1, 0, 2],
-		trait : "Tiefling (+1 Intelligence, +2 Charisma)\n\nInfernal Legacy:\n   I know the Thaumaturgy cantrip.\n   At 3rd level, I can cast the Hellish Rebuke spell once per long rest as a 2nd-level spell.\n   At 5th level, I can also cast the Darkness spell once per long rest.\n   Charisma is my spellcasting ability for these spells.",
+		trait : "Tiefling (+1 Intelligence, +2 Charisma)\n\nInfernal Legacy:\n   I know the Thaumaturgy cantrip.\n   At 3rd level, I can cast Hellish Rebuke once per long rest as a 2nd-level spell.\n   At 5th level, I can also cast Darkness once per long rest.\n   Charisma is my spellcasting ability for these spells.",
 		spellcastingAbility : 6,
 		spellcastingBonus : {
 			name : "Infernal Legacy (level 1)",
