@@ -719,7 +719,7 @@ spellcastingBonus : [{
 	If the parent attribute doesn't otherwise have spellcasting, the 'spellcastingBonus'
 	attribute will add it.
 
-	This object has three functions:
+	This object executes three functions:
 	1. Make a selection of spells to show in the drop-down in the spell selection dialog (same as a 'common spell list object').
 	2. Determine how often and with what name the drop-down of spells is present in the "Bonus Spells" section.
 	3. Determine how the first column of the spell will look on the spell sheet.
@@ -729,6 +729,13 @@ spellcastingBonus : [{
 
 	For the second and third functions, this object has some specific attributes, which are in addition to a 'common spell list object'.
 	For those objects, see their individual explanations below.
+
+	NOTE
+	This adds a spell at the level of the parent feature and the spell will be added regardless of
+	the character otherwise having access to the appropriate spell level.
+
+	For adding subclass spells like the ones a cleric gets from its domain, a warlock gets from its patron, or a paladin gets from its oath,
+	take a look at the `spellcastingExtra` attribute below, as it takes the spell's level into account.
 */
 
 	// example of use of a 'common spell list object' attribute:
@@ -888,6 +895,9 @@ spellcastingExtra : ["disguise self", "rope trick", "fear", "greater invisibilit
 	TYPE:	array (variable length)
 	USE:	adds the spells in the array to the list of spells to choose from
 
+	The spells added here will appear in the spell selection dialog in the column "Subclass Spells".
+	Although only the first 10 will be visible in the dialog, all will be used by the automation.
+
 	Each entry must be a spell object name as used in the SpellsList object.
 
 	How these spells are added to the spell list depends on the type of spellcasting class:
@@ -897,10 +907,18 @@ spellcastingExtra : ["disguise self", "rope trick", "fear", "greater invisibilit
 		The spells are added to the list of spells that the known spells can be selected from
 
 		You can also have the spells be automatically added to the known spells, without counting to the maximum spells known.
-		To do so, make sure the 101th entry in the array reads "AddToKnown", see example above.
+		To do so, make sure the 101st entry in the array reads "AddToKnown", see example above.
 		(e.g. spellcastingExtra[100] = "AddToKnown")
 
+	For spells added to the spells known or always prepared, they will only appear on the generated spell sheet if
+	the character would otherwise have access to spells of that level or the spell dialog is set to include all spell levels.
+
 	This attribute will do nothing if the parent object does not grant spellcasting like a spellcasting class.
+
+	IMPORTANT!
+	Any instance of this attribute will overwrite previous instances in the same parent.
+	E.g. if you use this in a subclass and in a subclass' feature, the latter will overwrite the former,
+	and only the latter will be used.
 */
 
 spellFirstColTitle : "Ki",
