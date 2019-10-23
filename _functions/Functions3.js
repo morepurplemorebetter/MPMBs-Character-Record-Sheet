@@ -1699,7 +1699,7 @@ function doDropDownValCalcWithChoices() {
 
 // Make an array of all magic item fields of that fieldnumber
 function ReturnMagicItemFieldsArray(fldNmbr) {
-	fldsArray = [
+	return [
 		"Extra.Magic Item " + fldNmbr,				// 0
 		"Extra.Magic Item Note " + fldNmbr,			// 1
 		"Extra.Magic Item Description " + fldNmbr,	// 2
@@ -1707,7 +1707,6 @@ function ReturnMagicItemFieldsArray(fldNmbr) {
 		"Extra.Magic Item Attuned " + fldNmbr,		// 4
 		"Image.MagicItemAttuned." + fldNmbr			// 5
 	];
-	return fldsArray;
 }
 
 // Lookup the name of a Magic Item and if it exists in the MagicItemsList

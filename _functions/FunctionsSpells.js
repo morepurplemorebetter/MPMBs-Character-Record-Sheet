@@ -1,3 +1,47 @@
+// Get the template prefix of a spellsheet page
+function ReturnSpellFieldPrefixSuffix(fldNm) {
+	var a = fldNm.match(/(P\d+\.SS(front|more)\.).*?(\.\d+$)/);
+	return [a[1], a[3]];
+};
+// Make an array of all spell fields of that prefix + suffix
+function ReturnSpellFieldsArray(prefix, suffix, fullFldNm) {
+	if (fullFldNm && (!prefix || !suffix)) {
+		var spPreSuf = ReturnSpellFieldPrefixSuffix(fullFldNm);
+		prefix = spPreSuf[0];
+		suffix = spPreSuf[1];
+	};
+	return [
+		prefix + "spells.check" + suffix,		// 0
+		prefix + "spells.name" + suffix,		// 1
+		prefix + "spells.description" + suffix,	// 2
+		prefix + "spells.save" + suffix,		// 3
+		prefix + "spells.school" + suffix,		// 4
+		prefix + "spells.time" + suffix,		// 5
+		prefix + "spells.range" + suffix,		// 6
+		prefix + "spells.components" + suffix,	// 7
+		prefix + "spells.duration" + suffix,	// 8
+		prefix + "spells.book" + suffix,		// 9
+		prefix + "spells.page" + suffix,		//10
+		prefix + "spells.remember" + suffix		//11
+	];
+};
+// Make an array of content for spell fields of that line for manual fillable or headers
+function ReturnSpellFieldsContentArray(underscores, psionic) {
+	return [
+		"",
+		underscores ? Array(21 + (typePF ? 6 : 0)).join("_") : psionic ? "PSIONIC POWER" : "SPELL",
+		underscores ? Array(84 + (typePF ? 25: 0)).join("_") : "DESCRIPTION",
+		underscores ? Array( 4 + (typePF ? 1 : 0)).join("_") : "SAVE",
+		underscores ? Array( 7 + (typePF ? 1 : 0)).join("_") : psionic ? " ORDER" : "SCHOOL",
+		underscores ? Array( 7 + (typePF ? 1 : 0)).join("_") : "TIME",
+		underscores ? Array(10 + (typePF ? 2 : 0)).join("_") : "RANGE",
+		underscores ? Array(7).join("_") : "COMP",
+		underscores ? Array(12 + (typePF ? 3 : 0)).join("_") : "DURATION",
+		underscores ? Array( 2 + (typePF ? 1 : 0)).join("_") : "B",
+		underscores ? Array(4).join("_") : "PG."
+	];
+};
+
 // find the spell in the SpellsList
 function ParseSpell(input) {
 	if (!input) return "";
@@ -42,69 +86,54 @@ function ApplySpell(FldValue, rememberFldName) {
 
 	var input = FldValue !== undefined ? FldValue.split("##") : event.value.split("##");
 	var base = rememberFldName ? rememberFldName : event.target.name;
-	var isPF = typePF;
-	var isPsionics = (/psionic/i).test(input[0]);
-
-	var HeaderList = [
-		["", "check", ""], //0
-		[isPsionics ? "PSIONIC POWER" : "SPELL", "name", Array(21 + (isPF ? 6 : 0)).join("_")], //1
-		["DESCRIPTION", "description", Array(84 + (isPF ? 25 : 0)).join("_")], //2
-		["SAVE", "save", Array(4 + (isPF ? 1 : 0)).join("_")], //3
-		[isPsionics ? " ORDER" : "SCHOOL", "school", Array(7 + (isPF ? 1 : 0)).join("_")], //4
-		["TIME", "time", Array(7 + (isPF ? 1 : 0)).join("_")], //5
-		["RANGE", "range", Array(10 + (isPF ? 2 : 0)).join("_")], //6
-		["COMP", "components", Array(7).join("_")], //7
-		["DURATION", "duration", Array(12 + (isPF ? 3 : 0)).join("_")], //8
-		["B", "book", Array(2 + (isPF ? 1 : 0)).join("_")], //9
-		["PG.", "page", Array(4).join("_")], //10
-	]
+	var spFlds = ReturnSpellFieldsArray(false, false, base);
 
 	//make this a header line if the input is "setcaptions"
 	if ((/setcaptions/i).test(input[0])) {
-		HeaderList[0][0] = input[1] ? input[1].substring(0, (/\(.\)|\d-\d/).test(input[1]) ? 3 : 2).toUpperCase() : "";
-
 		//have a function to create rich text span
-		var createSpan = function(input) {
-			var toCap = input.substring(0, input.indexOf(" ") === 0 ? 2 : 1)
+		var createSpan = function(inTxt) {
+			var toCap = inTxt.substring(0, inTxt.indexOf(" ") === 0 ? 2 : 1)
 			// First build up an array of Span objects
 			var spans = [{
 				text : toCap,
 				textSize : 7
 			}, {
-				text : input.replace(toCap, ""),
+				text : inTxt.replace(toCap, ""),
 				textSize : 5.6
 			}];
 			return spans;
 		}
 
 		//set the headers values
+		var HeaderList = ReturnSpellFieldsContentArray(false, (/psionic/i).test(input[0]));
+		if (input[1]) HeaderList[0] = input[1].substring(0, (/\(.\)|\d-\d/).test(input[1]) ? 3 : 2).toUpperCase();
 		for (var i = 0; i < HeaderList.length; i++) {
-			var theFld = base.replace("remember", HeaderList[i][1]);
+			var theFld = tDoc.getField(spFlds[i]);
 			if (!typePF) {
-				var theHeader = createSpan(HeaderList[i][0]);
-				tDoc.getField(theFld).richText = true;
-				tDoc.getField(theFld).richValue = theHeader;
+				theFld.richText = true;
+				theFld.richValue = createSpan(HeaderList[i]);
 			} else {
-				Value(theFld, HeaderList[i][0]);
-				tDoc.getField(theFld).textFont = "ScalaSans-BoldLF"; //change the font and font size
-				tDoc.getField(theFld).textSize = 5.75;
+				theFld.value = HeaderList[i];
+				//change the font and font size
+				theFld.textFont = "ScalaSans-BoldLF";
+				theFld.textSize = 5.75;
 			}
-			tDoc.getField(theFld).readonly = true;
-			Show(theFld);
+			theFld.readonly = true;
+			theFld.display = display.visible;
 		}
 		return; //and don't do the rest of this function
-	} else if (tDoc.getField(base.replace("remember", "description")).readonly) { //if the field has readonly active, but the value is not "setcaptions", the values must be reset
-		for (var i = 0; i < HeaderList.length; i++) {
-			var theFld = base.replace("remember", HeaderList[i][1]);
-			Value(theFld, "", "");
-			if (tDoc.getField(theFld).richText) {
-				tDoc.getField(theFld).richValue = "";
-				tDoc.getField(theFld).richText = false;
+	} else if (tDoc.getField(spFlds[2]).readonly) { //if the description field has readonly active, but the value is not "setcaptions", all fields must be reset
+		for (var i = 0; i < spFlds.length - 1; i++) {
+			Value(spFlds[i], "", "");
+			var theFld = tDoc.getField(spFlds[i]);
+			if (theFld.richText) {
+				theFld.richValue = "";
+				theFld.richText = false;
 			}
-			if (i !== 0) tDoc.getField(theFld).readonly = false;
+			if (i !== 0) theFld.readonly = false;
 			if (typePF) { //reset the font and font size
-				tDoc.getField(theFld).textFont = tDoc.getField("Template.extras.SSfront").textFont;
-				tDoc.getField(theFld).textSize = 6.25;
+				theFld.textFont = tDoc.getField("Template.extras.SSfront").textFont;
+				theFld.textSize = 6.25;
 			}
 		}
 	}
@@ -112,75 +141,61 @@ function ApplySpell(FldValue, rememberFldName) {
 	// Now test if the fields should be hidden, or revealed
 	if ((/hidethisline|setheader|setdivider|setglossary/i).test(input[0])) {
 		//reset all the field's values and hide them
-		for (var i = 0; i < HeaderList.length; i++) {
-			var theFld = base.replace("remember", HeaderList[i][1]);
-			Value(theFld, i !== 0 ? "" : "hide", "");
-			Hide(theFld);
+		for (var i = 0; i < spFlds.length - 1; i++) {
+			Value(spFlds[i], i !== 0 ? "" : "hide", "");
+			Hide(spFlds[i]);
 		}
-
-		if ((/hidethisline/i).test(input[0])) {
 		//and don't do the rest of this function if we are here to hide this line
-			return;
-		}
-	} else if (tDoc.getField(base.replace("remember", "name")).display === display.hidden) { //if fields were hidden, but the value has been removed, show them again
-		for (var i = 1; i < HeaderList.length; i++) {
-			var theFld = base.replace("remember", HeaderList[i][1]);
-			Show(theFld);
-		}
+		if ((/hidethisline/i).test(input[0])) return;
+	} else if (tDoc.getField(spFlds[1]).display === display.hidden) { //if the name field is hidden, but the value has been removed, show them again
+		for (var i = 1; i < spFlds.length - 1; i++) { Show(spFlds[i]); }
 	}
 
 	//set the icon of the first field
 	var setCheck = function() {
-		var theCheck = base.replace("remember", "check");
 		var okChecks = ["checkbox", "checkedbox", "markedbox", "atwill", "oncelr", "oncesr"];
-		var currentCheck = What(theCheck).toLowerCase();
-		var input1 = input[1] ? input[1].toLowerCase() : false;
+		var currentCheck = What(spFlds[0]).toLowerCase();
+		var input1 = input[1] ? input[1].toLowerCase() : "";
 		if (!input1 || okChecks.indexOf(input1) === -1) {
-			Value(theCheck, input1 ? input1.toUpperCase().substring(0, (/\(.\)|\d-\d/).test(input1) ? 3 : 2) : "");
+			Value(spFlds[0], input1 ? input1.toUpperCase().substring(0, (/\(.\)|\d-\d/).test(input1) ? 3 : 2) : "");
 		} else if (input1 !== currentCheck && okChecks.indexOf(input1) !== -1 && (input1.substring(0, 4) !== currentCheck.substring(0, 4) || okChecks.indexOf(input1) > 1)) {
-			Value(theCheck, input[1].toLowerCase());
+			Value(spFlds[0], input1);
 		}
 	}
 
 	if (input[0] === "") { //reset all the fields
-		if (What(base.replace("remember", HeaderList[1][1])) !== "") {//if going from a spell to nothing, reset all the field's values and tooltips
-			for (var i = 0; i < HeaderList.length; i++) {
-				var theFld = base.replace("remember", HeaderList[i][1]);
-				Value(theFld, "", "");
-			};
-		} else { //if there wasn't any spell name given to start with, only reset the other fields, but apply any checkbox/firstcolumn thing
-			for (var i = 2; i < HeaderList.length; i++) {
-				var theFld = base.replace("remember", HeaderList[i][1]);
-				Value(theFld, "", "");
-			};
-			setCheck();
+		//if going from a spell to nothing, reset all the field's values and tooltips, otherwise
+		// only reset the other fields, but apply any checkbox/firstcolumn thing
+		var resetAll = What(spFlds[1]) !== ""; 
+		for (var i = resetAll ? 0 : 2; i < spFlds.length - 1; i++) {
+			Value(spFlds[i], "", "");
 		};
+		if (!resetAll) setCheck();
 	} else if ((/setheader/i).test(input[0])) {
 		var theClass = input[1] && CurrentSpells[input[1].toLowerCase()] ? input[1].toLowerCase() : "";
 		var theSuffix = input[2] !== undefined && !isNaN(parseFloat(input[2])) ? parseFloat(input[2]) : false;
 		var hidePrepared = input.indexOf("nopreps") !== -1;
 		if (theSuffix !== false ) {
-			SetSpellSheetElement(base, "header", theSuffix, theClass, hidePrepared);
+			SetSpellSheetElement(base, "header", theSuffix, theClass, hidePrepared, input[3]);
 		}
 	} else if ((/setdivider/i).test(input[0])) {
 		var theLevel = input[1] !== undefined && !isNaN(parseFloat(input[1])) ? parseFloat(input[1]) : false;
 		var theSuffix = input[2] !== undefined && !isNaN(parseFloat(input[2])) ? parseFloat(input[2]) : false;
-		if (theClass !== false && theSuffix !== false) {
-			SetSpellSheetElement(base, "divider", theSuffix, theLevel, false);
+		if (theLevel !== false && theSuffix !== false) {
+			SetSpellSheetElement(base, "divider", theSuffix, theLevel, false, input[3]);
 		}
 	} else if ((/setglossary/i).test(input[0])) {
 		SetSpellSheetElement(base, "glossary", "");
 	} else if (input[0].indexOf("_") === 0) { //make all the fields lines
 		//reset all the field's values and tooltips to the lines defined in the array
-		for (var i = 0; i < HeaderList.length; i++) {
-			var theFld = base.replace("remember", HeaderList[i][1]);
-			Value(theFld, HeaderList[i][2], i === 0 ? undefined : "");
+		var UnderscoreList = ReturnSpellFieldsContentArray(true);
+		for (var i = 0; i < UnderscoreList.length; i++) {
+			Value(spFlds[i], UnderscoreList[i], i === 0 ? undefined : "");
 		}
 		setCheck();
 	} else {
 		var theSpl = ParseSpell(input[0]);
-		//now only do something if a spell was found, otherwise assume the spell's details shouldn't be changed
-		if (theSpl !== "") {
+		if (theSpl !== "") { // apply the found spell
 			var foundSpell = SpellsList[theSpl];
 			var aSpell = { changesObj : {} };
 			for (var key in foundSpell) aSpell[key] = foundSpell[key];
@@ -348,7 +363,6 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "duration"), aSpell.duration ? aSpell.duration : emptyCell);
 
 			//set the spell book name and page
-
 			var parseSrc = parseSource(aSpell.source);
 			var spBook = parseSrc ? parseSrc[0][0] : "";
 			if (spBook === "SRD") spBook = "R";
@@ -358,6 +372,10 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "page"), spPage, spBookFull);
 
 			input[1] = aSpell.firstCol; // use the firstCol, as the CurrentEval could have changed it
+		} else { // leave the content, but remove all the tooltips as this isn't the same spell anymore
+			for (var i = 1; i < spFlds.length - 1; i++) {
+				AddTooltip(spFlds[i], "", "");
+			};
 		}
 		setCheck();
 	}
@@ -408,7 +426,7 @@ function SetSpellDividerName(field, level) {
 // header is 4 high, divider is 2 high
 // if type[0] is "header", caster is the name of the CurrentSpells entry
 // if type[0] is "divider", caster is the level of the divider head to set
-function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
+function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, forceTxt) {
 	var prefix = target.substring(0, target.indexOf("spells."));
 	if (!suffix && suffix !== 0 && type !== "glossary") { //if suffix is false, it means we have to find the first that is not visible
 		suffix = findNextHeaderDivider(prefix, type);
@@ -485,6 +503,9 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 	var sRect = isRect(moveArray[0]); // get the location of the first field that has to be moved
 	var dY = tRect[1] - sRect[1]; // see how much the fields have to be moved by comparing upper-left y coordinates
 
+	if (dY === 0 && isDisplay(moveArray[0]) === 0) return; // nothing to move, so nothing to do
+
+	calcStop();
 	//now move each of the fields in the moveArray by dY
 	for (var m = 0; m < moveArray.length; m++) {
 		if (suffix === 0 && prefix.indexOf(".SSfront.") !== -1) { //don't move the top row of the first page, they are already where they should be
@@ -518,6 +539,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 		var divTextFld = dividerArray[!typePF ? 0 : 1]
 		//set the name of the divider
 		SetSpellDividerName(divTextFld, caster);
+		if (forceTxt) Value(divTextFld, forceTxt); // override the text of the divider
 		//set the submitName to remember the line where this divider is at
 		var submitNameFld = divTextFld;
 	} else if (type === "header") {
@@ -526,8 +548,8 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 		if (caster && CurrentSpells[caster]) {
 			var spCast = CurrentSpells[caster];
 			var isPsionics = spCast.factor && (/psionic/i).test(spCast.factor[1]);
-			var casterName = spCast.name.replace(/book of /i, "").replace(/ (\(|\[).+?(\)|\])/g, "");
-			casterName = casterName + (casterName.length >= testLength || (/\b(spells|powers|psionics)\b/i).test(casterName) ? "" : isPsionics ? " Psionics" : " Spells");
+			var casterName = forceTxt ? forceTxt : spCast.name.replace(/book of /i, "").replace(/ (\(|\[).+?(\)|\])/g, "");
+			if (!forceTxt) casterName = casterName + (casterName.length >= testLength || (/\b(spells|powers|psionics)\b/i).test(casterName) ? "" : isPsionics ? " Psionics" : " Spells");
 			if (What(headerArray[2]) !== caster) { //if the header was not already set to the class
 				Value(headerArray[1], casterName); //set the name of the header
 				Value(headerArray[2], caster); //set the name of the class
@@ -560,7 +582,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared) {
 					PickDropdown(headerArray[3], casterObj.abilitySave);
 				}
 			}
-			Value(headerArray[1], casterName);
+			Value(headerArray[1], forceTxt ? forceTxt : casterName);
 		}
 
 		//hide the prepared fields
@@ -1063,7 +1085,7 @@ var SpellSheetSelect_Dialog = {
 			break;
 		}
 		if (this.levelSp) info += "of Spell Level:\t" + toUni(spellLevelList[this.levelSp]) + (this.levelSp > 1 ? " (and lower)" : "") + "\n";
-		if (this.showBo) info += "Extra " + psiSpells + ":\t" + toUni(this.nmbrBo);
+		if (this.showBo) info += "Bonus " + psiSpells + ":\t" + toUni(this.nmbrBo);
 
 		var theBo = this.nmbrBo + this.offsetBo;
 		var theCa = this.nmbrCa + this.offsetCa;
@@ -1078,7 +1100,7 @@ var SpellSheetSelect_Dialog = {
 			"SplK" : ASround(theSp),
 			"txC1" : this.fullname,
 			"txC2" : info,
-			"BonT" : "Extra " + psiSpells,
+			"BonT" : "Bonus " + psiSpells,
 			"CanT" : this.caNm,
 			"AdIT" : "Subclass " + psiSpells,
 			"SplT" : this.typeSp === "book" ? "Spellbook" : this.spNm,
@@ -1340,7 +1362,7 @@ var SpellSheetSelect_Dialog = {
 							elements : [{
 								type : "static_text",
 								item_id : "BonT",
-								name : "Extra Spells",
+								name : "Bonus Spells",
 								height : 22,
 								char_width : 12,
 								alignment : "align_left",
@@ -3234,7 +3256,7 @@ function AskUserSpellSheet() {
 			if (dia.showSpRadio) { // set the name of the radio buttons and set the selection
 				if (spCast.level) {
 					var SpellLevel = maxSpell;
-					setDialogName(SpellSheetSelect_Dialog, "SpR1", "name", spellLevelList[SpellLevel] + (SpellLevel > 1 ? " and lower" : "") + " spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " (+Extra)");
+					setDialogName(SpellSheetSelect_Dialog, "SpR1", "name", spellLevelList[SpellLevel] + (SpellLevel > 1 ? " and lower" : "") + " spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " (+Bonus)");
 					setDialogName(SpellSheetSelect_Dialog, "SpR2", "name", "All spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " regardless of level");
 					setDialogName(SpellSheetSelect_Dialog, "SpR4", "name", "Full class list (spells && cantrips)");
 				} else {
@@ -4754,8 +4776,9 @@ function deleteSpellRow(prefix, lineNmbr) {
 	if (!SSmoreA[0]) SSmoreA.shift();
 	var thisSheet = SSmoreA.indexOf(prefix);
 	var offset = 0;
+	var nextValue = "";
 	for (var SS = thisSheet; SS < SSmoreA.length; SS++) {
-		var startRow = SS === thisSheet ? startRow = lineNmbr : 0;
+		var startRow = SS === thisSheet ? lineNmbr : 0;
 		var endRow = FieldNumbers.spells[SSmoreA[SS].indexOf("SSfront") != -1 ? 0 : 1];
 		var theLine = SSmoreA[SS] + "spells.remember.";
 		for (var L = startRow; L <= endRow; L++) {
@@ -4764,8 +4787,9 @@ function deleteSpellRow(prefix, lineNmbr) {
 				continue;
 			}
 			var nextRow = L !== endRow ? theLine + (L + 1 + offset) : SSmoreA[SS + 1] + "spells.remember." + 0;
-			var nextValue = What(nextRow);
-			if (SS === (SSmoreA.length - 1) || (nextValue && L !== endRow)) {
+			var prevValue = nextValue;
+			nextValue = What(nextRow);
+			if (SS === (SSmoreA.length - 1) || ((prevValue || nextValue) && L !== endRow)) {
 				Value(theLine + L, nextValue);
 			} else if (L === endRow && nextValue.indexOf("setheader") === -1 && nextValue.indexOf("setdivider") === -1) {
 				Value(theLine + L, nextValue);
@@ -4838,7 +4862,7 @@ function deleteSpellRow(prefix, lineNmbr) {
 			}
 		}
 	}
-}
+};
 
 //insert a number of empty rows on the spell list
 function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
@@ -4849,11 +4873,9 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 	//first figure out if toMove is more than a page
 	var toCheck = toMove;
 	var extraPages = 0;
-	if (prefix.indexOf(".SSfront.") !== -1) {
-		if (toCheck > FieldNumbers.spells[0]) {
-			toCheck -= FieldNumbers.spells[0];
-			extraPages += 1;
-		}
+	if (prefix.indexOf(".SSfront.") !== -1 && toCheck > FieldNumbers.spells[0]) {
+		toCheck -= FieldNumbers.spells[0];
+		extraPages += 1;
 	};
 	if (toCheck > FieldNumbers.spells[1]) {
 		var amountPages = Math.floor(toCheck/FieldNumbers.spells[1]);
@@ -4882,7 +4904,6 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 				emptyCount += 1;
 				if (emptyCount === toCheck) {
 					valuesArray.splice(-1 * emptyCount, emptyCount); //remove the last empty items
-
 					resultRow = [SSmoreA[SS], L - emptyCount];
 					L = endRow + 1;
 					SS = SSmoreA.length;
@@ -5014,7 +5035,6 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 
 //hide the class header or spell level divider if their value is made completely empty before an On Blur action
 function HideSpellSheetElement(theTarget) {
-	calcStop();
 	var base = theTarget ? theTarget : event.target.name;
 	var prefix = base.substring(0, base.indexOf("spells"));
 	var SSfrontPrefix = What("Template.extras.SSfront").split(",")[1];
@@ -5065,6 +5085,7 @@ function HideSpellSheetElement(theTarget) {
 		prefix + "spellsgloss.Image"
 	];
 	if ((theTarget || event.value === "") && !(prefix === SSfrontPrefix && suffix === 0)) {
+		calcStop();
 		var lineBase = tDoc.getField(base).submitName;
 		var startLine = parseFloat(lineBase.slice(-2)[0] === "." ? lineBase.slice(-1) : lineBase.slice(-2));
 		var endLine = startLine;
@@ -5094,6 +5115,7 @@ function HideSpellSheetElement(theTarget) {
 		tDoc.getField(base).submitName = "";
 
 	} else if (base === SSfrontPrefix + "spellshead.Text.header.0") {
+		calcStop();
 		//search the entry if it matches any of the CurrentSpells entries
 		var toSearch = What(base).toLowerCase();
 		var toTest = false;

@@ -439,18 +439,22 @@ function DirectImport(consoleTrigger) {
 		global.docTo.setPrototypes();
 		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
 		if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
-		var passBetaRestriction = FromVersion == 13 && global.docFrom.info.SheetVersionType && (/beta1(4|5|6|7|8)/i).test(global.docFrom.info.SheetVersionType);
-		if (!passBetaRestriction && global.docFrom.info.SheetVersionType && (/beta/i).test(global.docFrom.info.SheetVersionType) && global.docFrom.semVers && global.docTo.semVers != global.docFrom.semVers) { // say that importing from an (other) beta version is not supported
+		var ToVersion = parseFloat(global.docTo.info.SheetVersion);
+		if (isNaN(ToVersion)) ToVersion = parseFloat(global.docTo.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
+		var betaNoFrom = global.docFrom.info.SheetVersionType && (/.*(\d+).*/).test(global.docFrom.info.SheetVersionType) && (/beta/i).test(global.docFrom.info.SheetVersionType) ? parseFloat(global.docFrom.info.SheetVersionType.replace(/.*?(\d.*)/, "$1")) : 0;
+		var betaNoTo = global.docTo.info.SheetVersionType && (/.*(\d+).*/).test(global.docTo.info.SheetVersionType) && (/beta/i).test(global.docTo.info.SheetVersionType) ? parseFloat(global.docTo.info.SheetVersionType.replace(/.*?(\d.*)/, "$1")) : 999999;
+		if (FromVersion > ToVersion || (FromVersion == ToVersion && betaNoFrom > betaNoTo) || (FromVersion == 13 && betaNoFrom < 14)) {
+			var versTypeTxt = FromVersion > ToVersion || (FromVersion == ToVersion && betaNoFrom > betaNoTo) ? ["this sheet is", "newer", "than the one you are importing"] : ["the other sheet is an", "unsupported beta", "that can't be imported to any other MPMB's Character Record Sheet"];
 			app.alert({
-				cTitle : "Unable to import from beta version",
-				cMsg : "You are trying to import from a beta version of MPMB's Character Record Sheet (" + global.docFrom.semVers + "), which is not supported. The version of the sheet you are importing to is " + global.docTo.semVers + ". You can only import from a beta version if both versions are identical.\n\nThe importing process will now be canceled."
+				cTitle : "Unable to import from " + versTypeTxt[1] + " version",
+				cMsg : "The MPMB's Character Record Sheet you are trying to import from is version '" + global.docFrom.semVers + "', while the sheet you are trying to import to is version '" + global.docTo.semVers + "'. This operation is not allowed, because " + versTypeTxt.join(" ") + ".\n\nThe importing process will now be cancelled."
 			});
 			closeAlert = true;
 			throw "user stop";
 		} else if (FromVersion < 12.999) { // give a warning about importing from a version that had all materials included automatically
 			var askUserIsSure = {
 				cTitle : "Continue with import?",
-				cMsg : "You are about to import from a sheet with version " + FromVersion + ". Unlike the sheet you are importing to, v" + FromVersion + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material by default.\n\nIf the same resources weren't added to the current sheet as are used in the old sheet, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet! See the \"Add Extra Materials\" bookmark for more information on what is already added and how to add the required resources." + (patreonVersion ? "\n\nIf you got this sheet from MPMB's Patreon, you are probably fine to proceed!" : "") + "\n\nAre you sure you want to continue importing?",
+				cMsg : "You are about to import from a sheet with version v" + FromVersion + ". Unlike the sheet you are importing to, " + global.docTo.semVers + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material by default.\n\nIf the same resources weren't added to the current sheet as are used in the old sheet, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet! See the \"Add Extra Materials\" bookmark for more information on what is already added and how to add the required resources." + (patreonVersion ? "\n\nIf you got this sheet from MPMB's Patreon, you are probably fine to proceed!" : "") + "\n\nAre you sure you want to continue importing?",
 				nIcon : 2, //Status
 				nType : 2 //Yes, No
 			};
