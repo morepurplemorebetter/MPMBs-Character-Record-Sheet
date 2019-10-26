@@ -2448,7 +2448,7 @@ function Bookmark_Goto(BookNm) {
 			cMsg : "The bookmark \"" + BookNm + "\" you have selected is on a page which is currently hidden.\n\You can change your page visibility settings using the \"Layout\" button in the \"JavaScript Window\" or in the bookmarks.\n\nDo you want to make the page \"" + theTemplate[1] + "\" visible now?" + (theTemplate[0] !== "SSfront" ? "" : "\n\nClicking \"Yes\" will start the Spell Sheets Generation process."),
 			nIcon : 2, //question mark
 			cTitle : "Bookmark is currently unavailable",
-			nType : 2, //Yes-No
+			nType : 2 //Yes-No
 		};
 		if (app.alert(theMessage) === 4) {
 			if (theTemplate[0] !== "SSfront") {

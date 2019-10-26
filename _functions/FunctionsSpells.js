@@ -1,28 +1,28 @@
 // Get the template prefix of a spellsheet page
 function ReturnSpellFieldPrefixSuffix(fldNm) {
-	var a = fldNm.match(/(P\d+\.SS(front|more)\.).*?(\.\d+$)/);
+	var a = fldNm.match(/(P\d+\.SS(front|more)\.).*?\.(\d+$)/);
 	return [a[1], a[3]];
 };
 // Make an array of all spell fields of that prefix + suffix
 function ReturnSpellFieldsArray(prefix, suffix, fullFldNm) {
-	if (fullFldNm && (!prefix || !suffix)) {
+	if (fullFldNm && (prefix === undefined || suffix === undefined)) {
 		var spPreSuf = ReturnSpellFieldPrefixSuffix(fullFldNm);
 		prefix = spPreSuf[0];
 		suffix = spPreSuf[1];
 	};
 	return [
-		prefix + "spells.check" + suffix,		// 0
-		prefix + "spells.name" + suffix,		// 1
-		prefix + "spells.description" + suffix,	// 2
-		prefix + "spells.save" + suffix,		// 3
-		prefix + "spells.school" + suffix,		// 4
-		prefix + "spells.time" + suffix,		// 5
-		prefix + "spells.range" + suffix,		// 6
-		prefix + "spells.components" + suffix,	// 7
-		prefix + "spells.duration" + suffix,	// 8
-		prefix + "spells.book" + suffix,		// 9
-		prefix + "spells.page" + suffix,		//10
-		prefix + "spells.remember" + suffix		//11
+		prefix + "spells.check." + suffix,		// 0
+		prefix + "spells.name." + suffix,		// 1
+		prefix + "spells.description." + suffix,	// 2
+		prefix + "spells.save." + suffix,		// 3
+		prefix + "spells.school." + suffix,		// 4
+		prefix + "spells.time." + suffix,		// 5
+		prefix + "spells.range." + suffix,		// 6
+		prefix + "spells.components." + suffix,	// 7
+		prefix + "spells.duration." + suffix,	// 8
+		prefix + "spells.book." + suffix,		// 9
+		prefix + "spells.page." + suffix,		//10
+		prefix + "spells.remember." + suffix		//11
 	];
 };
 // Make an array of content for spell fields of that line for manual fillable or headers
@@ -86,7 +86,7 @@ function ApplySpell(FldValue, rememberFldName) {
 
 	var input = FldValue !== undefined ? FldValue.split("##") : event.value.split("##");
 	var base = rememberFldName ? rememberFldName : event.target.name;
-	var spFlds = ReturnSpellFieldsArray(false, false, base);
+	var spFlds = ReturnSpellFieldsArray(undefined, undefined, base);
 
 	//make this a header line if the input is "setcaptions"
 	if ((/setcaptions/i).test(input[0])) {
@@ -176,7 +176,7 @@ function ApplySpell(FldValue, rememberFldName) {
 		var theSuffix = input[2] !== undefined && !isNaN(parseFloat(input[2])) ? parseFloat(input[2]) : false;
 		var hidePrepared = input.indexOf("nopreps") !== -1;
 		if (theSuffix !== false ) {
-			SetSpellSheetElement(base, "header", theSuffix, theClass, hidePrepared, input[3]);
+			SetSpellSheetElement(base, "header", theSuffix, theClass, hidePrepared, input[3], input[4]);
 		}
 	} else if ((/setdivider/i).test(input[0])) {
 		var theLevel = input[1] !== undefined && !isNaN(parseFloat(input[1])) ? parseFloat(input[1]) : false;
@@ -426,7 +426,7 @@ function SetSpellDividerName(field, level) {
 // header is 4 high, divider is 2 high
 // if type[0] is "header", caster is the name of the CurrentSpells entry
 // if type[0] is "divider", caster is the level of the divider head to set
-function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, forceTxt) {
+function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, forceTxt, forceAbi) {
 	var prefix = target.substring(0, target.indexOf("spells."));
 	if (!suffix && suffix !== 0 && type !== "glossary") { //if suffix is false, it means we have to find the first that is not visible
 		suffix = findNextHeaderDivider(prefix, type);
@@ -583,6 +583,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, forceT
 				}
 			}
 			Value(headerArray[1], forceTxt ? forceTxt : casterName);
+			if (forceAbi && !isNaN(forceAbi)) PickDropdown(headerArray[3], forceAbi);
 		}
 
 		//hide the prepared fields
@@ -4634,7 +4635,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		}
 	 case "setheader" :
 	 case "setglossary" :
-		if ((/setheader|setdivider|setglossary/i).test(MenuSelection[0])) {
+		if ((/set(header|divider|glossary)/i).test(MenuSelection[0])) {
 			tDoc.resetForm([RemLine]);
 			insertSpellRow(prefix, lineNmbr, MenuSelection[0] === "setheader" ? 3 : MenuSelection[0] === "setdivider" ? 1 : 11, true);
 		};
@@ -4642,8 +4643,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		break;
 	 case "clear" :
 		thermoTxt = thermoM("Removing the spell...", false);
-		if (What(RemLine) === "") Value(RemLine, " ");
-		tDoc.resetForm([RemLine]);
+		tDoc.resetForm(ReturnSpellFieldsArray(prefix, lineNmbr).reverse());
 		break;
 	 case "delete" :
 		thermoTxt = thermoM("Deleting the row and moving the rest up...", false);
@@ -4765,99 +4765,107 @@ function AskUserNumber(caption) {
 	return theDialog.theNMBR;
 }
 
-//delete a row on the spell list (and move all the rows below it up one)
+// Delete a row on the spell list (and move all the rows below it up one)
 function deleteSpellRow(prefix, lineNmbr) {
-	//remove the content of the current row
-	tDoc.resetForm([prefix + "spells.remember." + lineNmbr]);
-
-	//make an array of all the rows below this one on the sheet
+	// Function
+	var returnClearance = function(prefix, offsetNmbr) {
+		var fldVal = What(prefix + "spells.remember." + offsetNmbr);
+		if (!(/set(header|divider|glossary)/i).test(fldVal)) {
+			return 0;
+		} else if ((/setglossary/i).test(fldVal)) {
+			return 12;
+		}
+		// See how many lines before the next header/divider or until we have 11 lines
+		var clearance = (/setdivider/i).test(fldVal) ? 2 : 5;
+		var breakAt = (/setdivider/i).test(fldVal) ? 13 : 17;
+		var trailingEmpty = 0;
+		for (var i = clearance; i <= FieldNumbers.spells[1]; i++) {
+			var lineVal = What(prefix + "spells.remember." + i);
+			if ((/set(header|divider|glossary)/i).test(lineVal)) break;
+			clearance++
+			trailingEmpty = lineVal && lineVal.indexOf("___") != 0 ? 0 : trailingEmpty + 1;
+			if (clearance == breakAt) break;
+		}
+		return clearance - trailingEmpty;
+	}
+	// Array of all the spell sheets and where to start
 	var SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
 	if (!SSmoreA[0]) SSmoreA.shift();
 	var thisSheet = SSmoreA.indexOf(prefix);
+	// Go through all the rows, moving them up one
 	var offset = 0;
-	var nextValue = "";
 	for (var SS = thisSheet; SS < SSmoreA.length; SS++) {
 		var startRow = SS === thisSheet ? lineNmbr : 0;
 		var endRow = FieldNumbers.spells[SSmoreA[SS].indexOf("SSfront") != -1 ? 0 : 1];
-		var theLine = SSmoreA[SS] + "spells.remember.";
+		var lookAhead = SSmoreA[SS + 1] ? returnClearance(SSmoreA[SS + 1], offset) : 0;
+		var allEmpty = false;
+		// now if we started too close to the end of the page to bring the lookAhead over, set it to "stop"
+		if (SS === thisSheet && endRow - startRow < lookAhead - 1) lookAhead = "stop";
 		for (var L = startRow; L <= endRow; L++) {
-			if (L === endRow && SS === (SSmoreA.length - 1)) {
-				Value(theLine + L, "");
-				continue;
+			// What is the next row (next page & offset)
+			var nextRow = offset + L < endRow ?
+					[SSmoreA[SS], offset + L + 1] :
+				SSmoreA[SS + 1] && lookAhead !== "stop" ?
+					[SSmoreA[SS + 1], L - endRow - 1 + (allEmpty ? lookAhead + offset - lookAhead : offset)] : false;
+			var thisLineFlds = ReturnSpellFieldsArray(SSmoreA[SS], L).reverse();
+			if (!nextRow) {
+				// We've reached the end, so clear the last lines of the page (there might be multiple because of the offset)
+				for (var i = L; i <= endRow; i++) {
+					tDoc.resetForm(ReturnSpellFieldsArray(SSmoreA[SS], i).reverse());
+				}
+				return;
 			}
-			var nextRow = L !== endRow ? theLine + (L + 1 + offset) : SSmoreA[SS + 1] + "spells.remember." + 0;
-			var prevValue = nextValue;
-			nextValue = What(nextRow);
-			if (SS === (SSmoreA.length - 1) || ((prevValue || nextValue) && L !== endRow)) {
-				Value(theLine + L, nextValue);
-			} else if (L === endRow && nextValue.indexOf("setheader") === -1 && nextValue.indexOf("setdivider") === -1) {
-				Value(theLine + L, nextValue);
-			} else if (L === endRow && (nextValue.indexOf("setheader") !== -1 || nextValue.indexOf("setdivider") !== -1)) {
-				Value(theLine + L, "");
-				SS = SSmoreA.length;
-			} else if ((L + 7) > endRow) {
-				//see what the first row of the next sheet will be
-				var nextSheet = What(SSmoreA[SS + 1] + "spells.remember." + 0);
-				if (nextSheet.indexOf("setheader") === -1 && nextValue.indexOf("setdivider") === -1) {
-					Value(theLine + L, nextValue);
-				} else if (nextSheet.indexOf("setheader") !== -1 && (L + 7) === endRow) {
-					//see if the value of the next 7 rows are empty
-					var isTest = true;
-					for (var t = (L + 1); t <= endRow; t++) {
-						if (What(theLine + t) !== "") isTest = false;
+			// Get the field names and values of the next row
+			var nextLineFlds = ReturnSpellFieldsArray(nextRow[0], nextRow[1]).reverse();
+			var nextLineVals = nextLineFlds.map(What);
+
+			if (!allEmpty && lookAhead && endRow - L - offset == lookAhead - 1) {
+				// This is the row to check if the rest of the page is empty, because then we can bring the multi-line image and the next lines to this page
+				allEmpty = true;
+				for (var i = L + 1; i <= endRow; i++) {
+					var fldVal = What(SSmoreA[SS] + "spells.remember." + i);
+					if (fldVal && fldVal.indexOf("___") != 0) {
+						allEmpty = false;
+						break;
 					}
-					//all the lines are empty, so bring the header and the next 7 lines to this sheet
-					if (isTest) {
-						for (var t = 0; t <= 7; t++) {
-							var theNextValue = What(SSmoreA[SS + 1] + "spells.remember." + t);
-							if (theNextValue.indexOf("setheader") !== -1 || thisLine.indexOf("setdivider") !== -1) {
-								var setType = theNextValue.indexOf("setheader") !== -1 ? "header" : "divider";
-								var theNextValueArray = theNextValue.split("##");
-								//first hide the element on the next page
-								HideSpellSheetElement(SSmoreA[SS + 1] + (setType === "header" ? "spellshead.Text.header." : "spellsdiv.Text.") + theNextValueArray[2]);
-								//now set the array to something that works on this page
-								theNextValueArray[2] = findNextHeaderDivider(SSmoreA[SS], setType);
-								theNextValue = theNextValueArray.join("##");
-							}
-							Value(theLine + L + t, theNextValue);
+				}
+				if (allEmpty) {
+					// The multi-line image (and trailing) of the next page fit, so bring them over
+					offset += lookAhead;
+					L--;
+					// If there is more empty space on this page, use it to its fullest by going back
+					for (var i = L; i >= startRow; i--) {
+						var fldVal = What(SSmoreA[SS] + "spells.remember." + i);
+						if (fldVal && fldVal.indexOf("___") != 0) break;
+						offset += 1;
+						L--;
+					}
+				} else {
+					// The multi-line image of the next won't fit, so continue for the rest of the page, but stop moving anything after that
+					lookAhead = "stop";
+				}
+			} else {
+				// The next sheet doesn't start with a multi-line image (lookAhead = 0), or we are not at a row that it matters.
+				// Copy every field's value from the next row and empty the next row
+				var nextHasImage = (/set(header|divider|glossary)/i).test(nextLineVals[0]);
+				for (var i = 0; i < thisLineFlds.length; i++) {
+					if (i === 0 && nextHasImage) {
+						var splitVal = nextLineVals[i].split("##");
+						var isHeader = (/setheader/i).test(nextLineVals[i]);
+						var setType = isHeader ? "spellshead.Text.header." : (/setdivider/i).test(nextLineVals[i]) ? "spellsdiv.Text." : spellsgloss.Image;
+						var setNo = (/setglossary/i).test(nextLineVals[i]) ? "" : splitVal[2];
+						HideSpellSheetElement(nextRow[0] + setType + setNo);
+						if (setNo !== "" && nextRow[0] !== SSmoreA[SS]) {
+							splitVal[2] = findNextHeaderDivider(SSmoreA[SS], isHeader ? "header" : "divider");
+							nextLineVals[i] = splitVal.join("##");
 						}
-						L === endRow; //skip to end of this sheet
-						offset = 7; //set an offset for the rest of the deletion sequence until another header/divider is copied to a new page
+						L += isHeader ? 3 : 1;
+						Value(thisLineFlds[i], nextLineVals[i]);
+						break;
 					}
-				} else if (nextSheet.indexOf("setdivider") !== -1 && (L + 3) === endRow) {
-					//see if the value of the next 3 rows are empty
-					var isTest = true;
-					for (var t = (L + 1); t <= endRow; t++) {
-						if (What(theLine + t) !== "") isTest = false;
-					}
-					//all the lines are empty, so bring the divider and the next 3 lines to this sheet
-					if (isTest) {
-						for (var t = 0; t <= 3; t++) {
-							var theNextValue = What(SSmoreA[SS + 1] + "spells.remember." + t);
-							if (theNextValue.indexOf("setheader") !== -1 || thisLine.indexOf("setdivider") !== -1) {
-								var setType = theNextValue.indexOf("setheader") !== -1 ? "header" : "divider";
-								var theNextValueArray = theNextValue.split("##");
-								HideSpellSheetElement(SSmoreA[SS + 1] + (setType === "header" ? "spellshead.Text.header." : "spellsdiv.Text.") + theNextValueArray[2]);
-								theNextValueArray[2] = findNextHeaderDivider(SSmoreA[SS], setType);
-								theNextValue = theNextValueArray.join("##");
-							}
-							Value(theLine + L + t, theNextValue);
-						}
-						L === endRow; //skip to end of this sheet
-						offset = 3; //set an offset for the rest of the deletion sequence until another header/divider is copied to a new page
-					}
-				} else if (nextSheet.indexOf("setglossary") !== -1 && (L + 11) === endRow) {
-					//see if the value of the next 11 rows are empty
-					var isTest = true;
-					for (var t = (L + 1); t <= endRow; t++) {
-						if (What(theLine + t) !== "") isTest = false;
-					}
-					//all the lines are empty, so bring the glossary to this sheet, and skip the rest of this sheet (because they are all hidden)
-					if (isTest) {
-						L === endRow; //skip to end of this sheet
-						offset = 11; //set an offset for the rest of the deletion sequence until another header/divider is copied to a new page
-					}
+					Value(nextLineFlds[i], "");
+					Value(thisLineFlds[i], nextLineVals[i]);
 				}
 			}
 		}
@@ -4866,11 +4874,19 @@ function deleteSpellRow(prefix, lineNmbr) {
 
 //insert a number of empty rows on the spell list
 function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
+	// Validate the input
 	lineNmbr = Number(lineNmbr);
 	toMove = Number(toMove);
-	var startLineVal = What(prefix + "spells.remember." + lineNmbr);
-	var nextLineFld = tDoc.getField(prefix + "spells.remember." + (lineNmbr + 1));
-	//first figure out if toMove is more than a page
+	// Function
+	var removeEmpties = function(array) {
+		if (array.length && array[array.length - 1].join("") === "") {
+			array.pop();
+			removeEmpties(array);
+		} else {
+			return;
+		};
+	};
+	// First figure out if toMove is more than a page
 	var toCheck = toMove;
 	var extraPages = 0;
 	if (prefix.indexOf(".SSfront.") !== -1 && toCheck > FieldNumbers.spells[0]) {
@@ -4882,27 +4898,25 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 		toCheck -= amountPages * FieldNumbers.spells[1];
 		extraPages += amountPages;
 	};
-	// if the selected line is empty, the user must want to add the rows below it, so start one line lower
-	if (nextLineFld && !startLineVal) lineNmbr += 1;
-	//make an array of all the remember field values, starting with the one we are at, until we find enough empty rows (same as toMove)
-	var valuesArray = [];
-	var emptyCount = 0;
+	// Array of all the spell sheets and where to start
 	var SSmoreA = What("Template.extras.SSmore").split(",");
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
 	if (!SSmoreA[0]) SSmoreA.shift();
 	var thisSheet = SSmoreA.indexOf(prefix);
+	// Make an array of all the remember field values, starting with the one we are at, until we find enough empty rows (same as toMove)
+	var valuesArray = [];
+	var emptyCount = 0;
 	var resultRow = false;
 	var rememberRow = [0];
 	for (var SS = thisSheet; SS < SSmoreA.length; SS++) {
 		var startRow = SS === thisSheet ? lineNmbr : 0;
 		var endRow = FieldNumbers.spells[SSmoreA[SS].indexOf("SSfront") != -1 ? 0 : 1];
-		var theLine = SSmoreA[SS] + "spells.remember.";
 		for (var L = startRow; L <= endRow; L++) {
-			var thisLine = What(theLine + L);
-			valuesArray.push(thisLine);
-			if (thisLine === "" || thisLine.indexOf("___") === 0) {
+			var thisLineVals = ReturnSpellFieldsArray(SSmoreA[SS], L).reverse().map(What);
+			valuesArray.push(thisLineVals);
+			if (thisLineVals[0] === "" || thisLineVals[0].indexOf("___") === 0) {
 				emptyCount += 1;
-				if (emptyCount === toCheck) {
+				if (emptyCount === toCheck && emptyCount < toMove) {
 					valuesArray.splice(-1 * emptyCount, emptyCount); //remove the last empty items
 					resultRow = [SSmoreA[SS], L - emptyCount];
 					L = endRow + 1;
@@ -4912,7 +4926,7 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 			} else {
 				if (emptyCount > 0 && L < emptyCount) { //if we just passed the end of a page, we can use the empty values to 'catch up' some of the movement we need to do
 					valuesArray.splice(-1 * emptyCount - 1, emptyCount + 1); //remove the last empty items and the current line
-					valuesArray.push(thisLine); //add the current line again
+					valuesArray.push(thisLineVals); //add the current line again
 					toCheck -= emptyCount; //amend the amount of lines we need to check ahead
 					if (toCheck <= 0) { //if this brings the amount of lines to 0 or less, we can stop
 						resultRow = [SSmoreA[SS], L - emptyCount];
@@ -4925,10 +4939,10 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 				};
 				emptyCount = 0;
 			}
-			if (rememberRow[0] === 0 && (/setheader|setdivider|setglossary/i).test(thisLine)) {
+			if (rememberRow[0] === 0 && (/setheader|setdivider|setglossary/i).test(thisLineVals[0])) {
 				//if the amount of lines we need to move down too is not on this page anymore, we need to add some empty lines to move it to the next page
-				var setType = thisLine.indexOf("setheader") !== -1 ? "header" : thisLine.indexOf("setdivider") !== -1 ? "divider" : "glossary";
-				var thisValueArray = thisLine.split("##");
+				var setType = thisLineVals[0].indexOf("setheader") !== -1 ? "header" : thisLineVals[0].indexOf("setdivider") !== -1 ? "divider" : "glossary";
+				var thisValueArray = thisLineVals[0].split("##");
 				var moveExtra = setType === "header" ? 7 : setType === "divider" ? 3 : 11;
 				if ((L + toCheck) <= endRow && (L + toCheck + moveExtra) > endRow) { // the top is less or equal than the endRow, but the bottom of the section is more
 					var theStep = endRow - L - toCheck + 1; // how much empty rows to add
@@ -4937,9 +4951,9 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 					valuesArray.pop();
 					//now add a number of empty fields
 					for (var st = 1; st <= theStep; st++) {
-						valuesArray.push("");
+						valuesArray.push([""]);
 					}
-					valuesArray.push(thisLine); //add the current line again
+					valuesArray.push(thisLineVals); //add the current line again
 				}
 				//remember how to hide the element, so we can do it after skipping a couple of rows (the hidden ones)
 				rememberRow = [
@@ -4959,14 +4973,6 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 	}
 
 	//remove all the empty values at the end of the array
-	var removeEmpties = function(array) {
-		if (array[array.length - 1] === "") {
-			array.pop();
-			removeEmpties(array);
-		} else {
-			return;
-		};
-	};
 	removeEmpties(valuesArray);
 
 	//see how many lines of values we need to add and if we need to add any pages for that
@@ -5020,20 +5026,23 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 				Value(nowPage + "spells.remember." + I, "");
 			} else {
 				var theValue = valuesArray[valuesCountdown];
-				if (theValue.indexOf("setheader") !== -1 || theValue.indexOf("setdivider") !== -1) { //if a value sets a divider or header, always change the suffix to the next one available on this page
-					var setType = theValue.indexOf("setheader") !== -1 ? "header" : "divider";
-					var thisValueArray = theValue.split("##");
+				if (theValue[0].indexOf("setheader") !== -1 || theValue[0].indexOf("setdivider") !== -1) { //if a value sets a divider or header, always change the suffix to the next one available on this page
+					var setType = theValue[0].indexOf("setheader") !== -1 ? "header" : "divider";
+					var thisValueArray = theValue[0].split("##");
 					thisValueArray[2] = findNextHeaderDivider(nowPage, setType);
-					theValue = thisValueArray.join("##");
+					theValue[0] = thisValueArray.join("##");
 				};
-				Value(nowPage + "spells.remember." + I, theValue);
+				var thisLineFlds = ReturnSpellFieldsArray(nowPage, I).reverse();
+				for (var v = 0; v < theValue.length; v++) {
+					Value(thisLineFlds[v], theValue[v]);
+				}
 				valuesCountdown -= 1;
 			};
 		};
 	};
 };
 
-//hide the class header or spell level divider if their value is made completely empty before an On Blur action
+// Hide the class header or spell level divider if their value is made completely empty before an On Blur action
 function HideSpellSheetElement(theTarget) {
 	var base = theTarget ? theTarget : event.target.name;
 	var prefix = base.substring(0, base.indexOf("spells"));
@@ -5086,7 +5095,7 @@ function HideSpellSheetElement(theTarget) {
 	];
 	if ((theTarget || event.value === "") && !(prefix === SSfrontPrefix && suffix === 0)) {
 		calcStop();
-		var lineBase = tDoc.getField(base).submitName;
+		var lineBase = How(base);
 		var startLine = parseFloat(lineBase.slice(-2)[0] === "." ? lineBase.slice(-1) : lineBase.slice(-2));
 		var endLine = startLine;
 
@@ -5149,6 +5158,51 @@ function HideSpellSheetElement(theTarget) {
 				tDoc[HideShow](headerArray[10]);
 			}
 		}
+	}
+	// If the text changed, make sure to also edit the remember field so that the element can be recreated when inserting/deleting rows
+	if (!theTarget && event.value && !(prefix === SSfrontPrefix && suffix === 0)) {
+		var lineBase = How(base);
+		var lineBaseArr = What(lineBase).split("##");
+		lineBaseArr[3] = event.value;
+		Value(lineBase, lineBaseArr.join("##"));
+	}
+}
+
+// When changing the spellcasting ability of a manual header, save it to the remember field so that the element can be recreated when inserting/deleting rows (field blur)
+// If this is a header linked to a CurrentSpells object, change its spellcasting ability and offer to re-generate the sheet
+function SaveSpellcastingAbility() {
+	var base = event.target && event.target.name ? event.target.name : "";
+	var caster = What(base.replace("ability", "class"));
+	var selAbi = event.target.currentValueIndices;
+	if (caster && CurrentSpells[caster] && !CurrentSpells[caster].fixedDC) {
+		var spCast = CurrentSpells[caster];
+		if (selAbi) {
+			spCast.abilityBackup = spCast.ability;
+			spCast.ability = selAbi;
+			spCast.abilityToUse = getSpellcastingAbility(caster);
+		} else if (spCast.abilityBackup) {
+			spCast.ability = spCast.abilityBackup;
+			delete spCast.abilityBackup;
+			spCast.abilityToUse = getSpellcastingAbility(caster);
+			PickDropdown(base, spCast.abilityToUse[0]);
+		}
+		// Warn the user that to update the spellcasting ability requires regenerating the spells sheets
+		var redosheets = app.alert({
+			cMsg : "Please know that you can reset the spellcasting ability to its original by selecting the first (empty) option in the dropdown box." + (CurrentCasters.amendSpDescr ? "\n\nYou will need to regenerate the spell sheets if you want this change in spellcasting ability to be applied to the spells. If you have no spells that incorporate your spellcasting ability, than there is no reason the regenerate the spell sheets.\n\nDo you want to generate new spell sheets now?" : ""),
+			cTitle : "Spellcasting Ability Changed",
+			nIcon : 3,
+			nType : CurrentCasters.amendSpDescr ? 2 : 0 // 0: OK; 2: Yes-No
+		});
+		if (redosheets === 4) GenerateSpellSheet();
+	} else if (!caster || !CurrentSpells[caster]) {
+		var prefix = base.substring(0, base.indexOf("spells"));
+		var SSfrontPrefix = What("Template.extras.SSfront").split(",")[1];
+		var suffix = Number(base.slice(-1));
+		if (prefix == SSfrontPrefix && suffix === 0) return;
+		var lineBase = How(base.replace("ability", "Text.header"));
+		var lineBaseArr = What(lineBase).split("##");
+		lineBaseArr[4] = selAbi ? selAbi : "";
+		Value(lineBase, lineBaseArr.join("##"));
 	}
 }
 

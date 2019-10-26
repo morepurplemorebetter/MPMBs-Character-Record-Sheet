@@ -3170,7 +3170,8 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "This necklace has many bead, 1d4+2 are magical and can each be used to cast a spell once per dawn as a bonus action. The DM selects the spells from: Bless, Cure Wounds, Lesser Restoration, Greater Restoration, Branding Smite, Planar Ally, and Wind Walk. Multiple beads of the same type can be on one necklace.",
+		description : "This necklace has many bead, 1d4+2 are magical and can each be used to cast a spell once per dawn as a bonus action. The DM selects the spells from: Bless, Cure Wounds \u0026 Lesser Restoration, Greater Restoration, Branding Smite, Planar Ally, and Wind Walk. Multiple beads of the same type can be on one necklace.",
+		descriptionLong : "This necklace has many bead, 1d4+2 are magical aquamarine, black pearl, or topaz beads and can each be used to cast a spell once per dawn as a bonus action. The DM selects the bead from: blessing bead (Bless), curing bead (Cure Wounds \u0026 Lesser Restoration), favor bead (Greater Restoration), smiting bead (Branding Smite), summons bead (Planar Ally), and wind walking bead (Wind Walk). Multiple beads of the same type can be on one necklace.",
 		descriptionFull : "This necklace has 1d4+2 magic beads made from aquamarine, black pearl, or topaz. It also has many nonmagical beads made from stones such as amber, bloodstone, citrine, coral, jade, pearl, or quartz. If a magic bead is removed from the necklace, that bead loses its magic.\n   Six types of magic beads exist. The DM decides the type of each bead on the necklace or determines it randomly. A necklace can have more than one bead of the same type. To use one, you must be wearing the necklace. Each bead contains a spell that you can cast from it as a bonus action (using your spell save DC if a save is necessary). Once a magic bead's spell is cast, that bead can't be used again until the next dawn.\n\n" + toUni("d20\tBead of ...\tSpell") + "\n1-6\tBlessing\t\tBless\n7-12\tCuring\t\tCure Wounds (2nd level) or Lesser Restoration\n13-16\tFavor\t\tGreater Restoration\n17-18\tSmiting\t\tBranding Smite\n19\tSummons   \tPlanar Ally\n20\tWind walking\tWind Walk",
 		attunement : true,
 		weight : 1,
@@ -3179,35 +3180,24 @@ var Base_MagicItemsList = {
 		spellcastingAbility : "class",
 		spellFirstColTitle : "Us",
 		spellcastingBonus : {
-			name : "Bead",
+			name : "Bead Spell",
 			spells : ["bless", "cure wounds", "lesser restoration", "greater restoration", "branding smite", "planar ally", "wind walk"],
-			times : 6
+			times : 12
 		},
-		spellChanges : {
-			"bless" : {
-				time : "1 bns",
-				changes : "The casting time is only a bonus action."
-			},
-			"cure wounds" : {
-				time : "1 bns",
-				changes : "The casting time is only a bonus action."
-			},
-			"lesser restoration" : {
-				time : "1 bns",
-				changes : "The casting time is only a bonus action."
-			},
-			"greater restoration" : {
-				time : "1 bns",
-				changes : "The casting time is only a bonus action."
-			},
-			"planar ally" : {
-				time : "1 bns",
-				changes : "The casting time is only a bonus action."
-			},
-			"wind walk" : {
-				time : "1 bns",
-				changes : "The casting time is only a bonus action."
-			}
+		calcChanges : {
+			spellAdd : [
+				function (spellKey, spellObj, spName) {
+					if ((/necklace of prayer beads/i).test(spName) && spellObj.time !== "1 bns") {
+						spellObj.time = "1 bns";
+						if (spellKey == "cure wounds") {
+							spellObj.description = "1 living creature heals 2d8+spellcasting ability modifier HP";
+							return "Using the Necklace of Prayer Beads Cure Wounds is cast as a 2nd-level spell and only takes a bonus action.";
+						} else {
+							return "The casting time is only a bonus action.";
+						}
+					}
+				}
+			]
 		}
 	},
 	"nolzur's marvelous pigments" : {
