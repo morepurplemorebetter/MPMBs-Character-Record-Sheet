@@ -176,7 +176,7 @@ function ApplySpell(FldValue, rememberFldName) {
 		var theSuffix = input[2] !== undefined && !isNaN(parseFloat(input[2])) ? parseFloat(input[2]) : false;
 		var hidePrepared = input.indexOf("nopreps") !== -1;
 		if (theSuffix !== false ) {
-			SetSpellSheetElement(base, "header", theSuffix, theClass, hidePrepared, input[3], input[4]);
+			SetSpellSheetElement(base, "header", theSuffix, theClass, hidePrepared, input[3], input[4], input[5], input[6], input[7]);
 		}
 	} else if ((/setdivider/i).test(input[0])) {
 		var theLevel = input[1] !== undefined && !isNaN(parseFloat(input[1])) ? parseFloat(input[1]) : false;
@@ -426,7 +426,7 @@ function SetSpellDividerName(field, level) {
 // header is 4 high, divider is 2 high
 // if type[0] is "header", caster is the name of the CurrentSpells entry
 // if type[0] is "divider", caster is the level of the divider head to set
-function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, forceTxt, forceAbi) {
+function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, forceTxt, forceAbi, forceBTprepare, forceBTattack, forceBTdc) {
 	var prefix = target.substring(0, target.indexOf("spells."));
 	if (!suffix && suffix !== 0 && type !== "glossary") { //if suffix is false, it means we have to find the first that is not visible
 		suffix = findNextHeaderDivider(prefix, type);
@@ -584,6 +584,9 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, forceT
 			}
 			Value(headerArray[1], forceTxt ? forceTxt : casterName);
 			if (forceAbi && !isNaN(forceAbi)) PickDropdown(headerArray[3], forceAbi);
+			if (forceBTprepare && !isNaN(forceBTprepare)) PickDropdown(headerArray[7], forceBTprepare);
+			if (forceBTattack && !isNaN(forceBTattack)) PickDropdown(headerArray[8], forceBTattack);
+			if (forceBTdc && !isNaN(forceBTdc)) PickDropdown(headerArray[9], forceBTdc);
 		}
 
 		//hide the prepared fields
@@ -726,7 +729,14 @@ function SetSpellBluetext(aClass, type, newValue) {
 
 	// set the associated bluetext variable
 	var cSpells = CurrentSpells[aClass];
-	if (!cSpells.blueTxt) {
+	if (!cSpells) {
+		var remFld = How(event.target.name.replace("BlueText.spellshead." + typeFull, "spellshead.Text.header"));
+		if (!tDoc.getField(remFld)) return;
+		var remFldValue = What(remFld).split("##");
+		remFldValue[type === "prep" ? 5 : type === "atk" ? 6 : 7] = input;
+		Value(remFld, remFldValue.join("##"));
+		return;
+	} else  if (!cSpells.blueTxt) {
 		cSpells.blueTxt = {
 			prep : 0,
 			atk : 0,
