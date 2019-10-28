@@ -712,31 +712,27 @@ function CalcSpellScores() {
 
 //set the blueText field bonus to the global CurrentSpells object for spells to memorize, attack modifier, and DC (field blur)
 function SetSpellBluetext(aClass, type, newValue) {
-	if (tDoc.info.SpellsOnly) return;
-
 	// get what type we are changing
 	type = type ? type : event.target.name.replace(/.*spellshead\.(\w+).*/, "$1");
 	type = type === "dc" ? "dc" : type === "attack" || type === "atk" ? "atk" : "prep";
 	var typeFull = type === "dc" ? "dc" : type === "atk" ? "attack" : "prepare";
 	// find the associated class
 	aClass = aClass ? aClass : What(event.target.name.replace("BlueText.spellshead." + typeFull, "spellshead.class"));
-
-	// if there is no class or no CurrentSpells object for it, stop this function
-	if (!aClass || !CurrentSpells[aClass]) return;
-
 	// get the value we are changing it to
 	newValue = newValue !== undefined ? newValue : event.value;
 
 	// set the associated bluetext variable
 	var cSpells = CurrentSpells[aClass];
 	if (!cSpells) {
+		// Not a recognized class, so save the change to the remember field
+		calcStop();
 		var remFld = How(event.target.name.replace("BlueText.spellshead." + typeFull, "spellshead.Text.header"));
 		if (!tDoc.getField(remFld)) return;
 		var remFldValue = What(remFld).split("##");
-		remFldValue[type === "prep" ? 5 : type === "atk" ? 6 : 7] = input;
+		remFldValue[type === "prep" ? 5 : type === "atk" ? 6 : 7] = newValue;
 		Value(remFld, remFldValue.join("##"));
 		return;
-	} else  if (!cSpells.blueTxt) {
+	} else if (!cSpells.blueTxt) {
 		cSpells.blueTxt = {
 			prep : 0,
 			atk : 0,
@@ -856,7 +852,7 @@ function SetSpellCheckbox() {
 //generate a list of all the spells; if toDisplay = true it means this is meant for the drop-down boxes
 function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objName, objType) {
 	if (typeof inputObject === "string") {
-		if (ClassList[inputObject] && ClassList[inputObject].spellcastingList) {
+		if (inputObject != "warlock" && ClassList[inputObject] && ClassList[inputObject].spellcastingList) {
 			inputObject = ClassList[inputObject].spellcastingList;
 		} else if (ClassSubList[inputObject] && ClassSubList[inputObject].spellcastingList) {
 			inputObject = ClassSubList[inputObject].spellcastingList;
@@ -4832,6 +4828,7 @@ function deleteSpellRow(prefix, lineNmbr) {
 
 			if (!allEmpty && lookAhead && endRow - L - offset == lookAhead - 1) {
 				// This is the row to check if the rest of the page is empty, because then we can bring the multi-line image and the next lines to this page
+				L--; // come back to this line
 				allEmpty = true;
 				for (var i = L + 1; i <= endRow; i++) {
 					var fldVal = What(SSmoreA[SS] + "spells.remember." + i);
@@ -4843,7 +4840,6 @@ function deleteSpellRow(prefix, lineNmbr) {
 				if (allEmpty) {
 					// The multi-line image (and trailing) of the next page fit, so bring them over
 					offset += lookAhead;
-					L--;
 					// If there is more empty space on this page, use it to its fullest by going back
 					for (var i = L; i >= startRow; i--) {
 						var fldVal = What(SSmoreA[SS] + "spells.remember." + i);
@@ -4913,6 +4909,10 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 	SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
 	if (!SSmoreA[0]) SSmoreA.shift();
 	var thisSheet = SSmoreA.indexOf(prefix);
+	// If the next row is an image, start inserting one row below
+	if (lineNmbr < FieldNumbers.spells[prefix.indexOf("SSfront") != -1 ? 0 : 1] && (/setheader|setdivider|setglossary/i).test(What(prefix + "spells.remember." + (lineNmbr + 1)))) {
+		lineNmbr += 1;
+	}
 	// Make an array of all the remember field values, starting with the one we are at, until we find enough empty rows (same as toMove)
 	var valuesArray = [];
 	var emptyCount = 0;
@@ -4926,12 +4926,11 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 			valuesArray.push(thisLineVals);
 			if (thisLineVals[0] === "" || thisLineVals[0].indexOf("___") === 0) {
 				emptyCount += 1;
-				if (emptyCount === toCheck && emptyCount < toMove) {
+				if (emptyCount === toCheck && emptyCount <= toMove) {
 					valuesArray.splice(-1 * emptyCount, emptyCount); //remove the last empty items
 					resultRow = [SSmoreA[SS], L - emptyCount];
-					L = endRow + 1;
 					SS = SSmoreA.length;
-					continue;
+					break;
 				};
 			} else {
 				if (emptyCount > 0 && L < emptyCount) { //if we just passed the end of a page, we can use the empty values to 'catch up' some of the movement we need to do
@@ -4940,9 +4939,8 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 					toCheck -= emptyCount; //amend the amount of lines we need to check ahead
 					if (toCheck <= 0) { //if this brings the amount of lines to 0 or less, we can stop
 						resultRow = [SSmoreA[SS], L - emptyCount];
-						L = endRow + 1;
 						SS = SSmoreA.length;
-						continue;
+						break;
 					}
 				} else if (ignoreEmptyTop && SS === thisSheet && emptyCount === L - startRow) { //if we are adding something that want to use as many of the empty rows at the top as possible
 					toMove -= emptyCount;
@@ -4950,7 +4948,7 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 				emptyCount = 0;
 			}
 			if (rememberRow[0] === 0 && (/setheader|setdivider|setglossary/i).test(thisLineVals[0])) {
-				//if the amount of lines we need to move down too is not on this page anymore, we need to add some empty lines to move it to the next page
+				//if the amount of lines we need to move down to is not on this page anymore, we need to add some empty lines to move it to the next page
 				var setType = thisLineVals[0].indexOf("setheader") !== -1 ? "header" : thisLineVals[0].indexOf("setdivider") !== -1 ? "divider" : "glossary";
 				var thisValueArray = thisLineVals[0].split("##");
 				var moveExtra = setType === "header" ? 7 : setType === "divider" ? 3 : 11;
