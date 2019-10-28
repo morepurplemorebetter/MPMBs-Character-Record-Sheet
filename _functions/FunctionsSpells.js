@@ -4805,30 +4805,33 @@ function deleteSpellRow(prefix, lineNmbr) {
 		var startRow = SS === thisSheet ? lineNmbr : 0;
 		var endRow = FieldNumbers.spells[SSmoreA[SS].indexOf("SSfront") != -1 ? 0 : 1];
 		var lookAhead = SSmoreA[SS + 1] ? returnClearance(SSmoreA[SS + 1], offset) : 0;
-		var allEmpty = false;
+		var allEmpty = false, pageEmptyLines = 0;
 		// now if we started too close to the end of the page to bring the lookAhead over, set it to "stop"
 		if (SS === thisSheet && endRow - startRow < lookAhead - 1) lookAhead = "stop";
 		for (var L = startRow; L <= endRow; L++) {
 			// What is the next row (next page & offset)
 			var nextRow = offset + L < endRow ?
-					[SSmoreA[SS], offset + L + 1] :
-				SSmoreA[SS + 1] && lookAhead !== "stop" ?
-					[SSmoreA[SS + 1], L - endRow - 1 + (allEmpty ? lookAhead + offset - lookAhead : offset)] : false;
+					[SSmoreA[SS], offset + L] :
+				SSmoreA[SS + 1] && lookAhead && lookAhead !== "stop" ?
+					[SSmoreA[SS + 1], L - endRow - 1 + offset] :
+				SSmoreA[SS + 1] ? [SSmoreA[SS + 1], offset] : false;
 			var thisLineFlds = ReturnSpellFieldsArray(SSmoreA[SS], L).reverse();
 			if (!nextRow) {
 				// We've reached the end, so clear the last lines of the page (there might be multiple because of the offset)
 				for (var i = L; i <= endRow; i++) {
 					tDoc.resetForm(ReturnSpellFieldsArray(SSmoreA[SS], i).reverse());
+					pageEmptyLines++;
 				}
+				if (SS == SSmoreA.length - 1) break;
 				return;
 			}
 			// Get the field names and values of the next row
 			var nextLineFlds = ReturnSpellFieldsArray(nextRow[0], nextRow[1]).reverse();
 			var nextLineVals = nextLineFlds.map(What);
+			var thisLineVal = What(thisLineFlds[0]);
 
-			if (!allEmpty && lookAhead && endRow - L - offset == lookAhead - 1) {
+			if (!allEmpty && (!thisLineVal || thisLineVal.indexOf("___") == 0) && lookAhead && endRow - L - offset == lookAhead - 1) {
 				// This is the row to check if the rest of the page is empty, because then we can bring the multi-line image and the next lines to this page
-				L--; // come back to this line
 				allEmpty = true;
 				for (var i = L + 1; i <= endRow; i++) {
 					var fldVal = What(SSmoreA[SS] + "spells.remember." + i);
@@ -4837,6 +4840,7 @@ function deleteSpellRow(prefix, lineNmbr) {
 						break;
 					}
 				}
+				L--; // come back to the current line
 				if (allEmpty) {
 					// The multi-line image (and trailing) of the next page fit, so bring them over
 					offset += lookAhead;
@@ -4844,7 +4848,7 @@ function deleteSpellRow(prefix, lineNmbr) {
 					for (var i = L; i >= startRow; i--) {
 						var fldVal = What(SSmoreA[SS] + "spells.remember." + i);
 						if (fldVal && fldVal.indexOf("___") != 0) break;
-						offset += 1;
+						offset++;
 						L--;
 					}
 				} else {
@@ -4852,29 +4856,30 @@ function deleteSpellRow(prefix, lineNmbr) {
 					lookAhead = "stop";
 				}
 			} else {
-				// The next sheet doesn't start with a multi-line image (lookAhead = 0), or we are not at a row that it matters.
+				// The next sheet doesn't start with a multi-line image (lookAhead = 0), there is not enough space for the lookahead image, or we are not at a row that it matters.
 				// Copy every field's value from the next row and empty the next row
-				var nextHasImage = (/set(header|divider|glossary)/i).test(nextLineVals[0]);
+				var nextHasImage = !(/set(header|divider|glossary)/i).test(nextLineVals[0]) ? false : (/setheader/i).test(nextLineVals[0]) ? "header" : (/setdivider/i).test(nextLineVals[0]) ? "divider" : "glos"
 				for (var i = 0; i < thisLineFlds.length; i++) {
 					if (i === 0 && nextHasImage) {
 						var splitVal = nextLineVals[i].split("##");
-						var isHeader = (/setheader/i).test(nextLineVals[i]);
-						var setType = isHeader ? "spellshead.Text.header." : (/setdivider/i).test(nextLineVals[i]) ? "spellsdiv.Text." : spellsgloss.Image;
-						var setNo = (/setglossary/i).test(nextLineVals[i]) ? "" : splitVal[2];
-						HideSpellSheetElement(nextRow[0] + setType + setNo);
-						if (setNo !== "" && nextRow[0] !== SSmoreA[SS]) {
-							splitVal[2] = findNextHeaderDivider(SSmoreA[SS], isHeader ? "header" : "divider");
+						var setType = nextHasImage == "header" ? "spellshead.Text.header." : nextHasImage == "divider" ? "spellsdiv.Text." : "spellsgloss.Image";
+						HideSpellSheetElement(nextRow[0] + setType + (nextHasImage == "glos" ? "" : splitVal[2]));
+						if (nextHasImage !== "glos" && nextRow[0] !== SSmoreA[SS]) {
+							splitVal[2] = findNextHeaderDivider(SSmoreA[SS], nextHasImage);
 							nextLineVals[i] = splitVal.join("##");
 						}
-						L += isHeader ? 3 : 1;
+						L += nextHasImage == "header" ? 3 : nextHasImage == "divider" ? 1 : 11;
 						Value(thisLineFlds[i], nextLineVals[i]);
 						break;
 					}
 					Value(nextLineFlds[i], "");
 					Value(thisLineFlds[i], nextLineVals[i]);
 				}
+				if (SS == SSmoreA.length - 1 && nextLineVals.join("") === "") pageEmptyLines++;
 			}
 		}
+		// Test if this last page is fully empty and remove it if so
+		if (SS == SSmoreA.length - 1 && pageEmptyLines == endRow + 1) DoTemplate("SSmore", "Remove", undefined, true);
 	}
 };
 
