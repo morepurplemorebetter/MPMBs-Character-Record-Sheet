@@ -998,6 +998,7 @@ function ApplyWildshape() {
 	thermoM(6/10); //increment the progress dialog's progress
 
 	//add attacks
+	var modIpvDC = tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0);
 	var attacksArray = theCrea.wildshapeAttacks ? theCrea.attacks.concat(theCrea.wildshapeAttacks) : theCrea.attacks;
 	for (var a = 0; a < (Math.min(2, attacksArray.length)); a++) {
 		var atk = attacksArray[a];
@@ -1011,11 +1012,14 @@ function ApplyWildshape() {
 
 		//set to hit
 		var tohitProfB = setting[1].indexOf("attacks") !== -1 ? charProfBfix : creaProfBfix;
-		tohitProfB = tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1 ? 0 : tohitProfB;
-		var tohitString = atk.dc ? 8 + tohitProfB + atkMod : tohitProfB + atkMod;
+		tohitProfB = tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) ? 0 : tohitProfB;
+		var tohitString = atk.dc && !modIpvDC ? 8 + tohitProfB + atkMod : tohitProfB + atkMod;
 		if (atkAlt[0]) tohitString += !isNaN(atkAlt[0]) ? atkAlt[0] : AbilityScores.abbreviations.indexOf(atkAlt[0]) !== -1 ? mods[AbilityScores.abbreviations.indexOf(atkAlt[0])] : 0; //add a modifier, if defined
-		if (atk.dc) tohitString = "DC " + tohitString;
-		if (!isNaN(tohitString) && tohitString > 0) tohitString = "+" + tohitString;
+		if (atk.dc && !modIpvDC) {
+			tohitString = "DC " + tohitString;
+		} else if (tohitString >= 0) {
+			tohitString = "+" + tohitString;
+		}
 		Value(atkStr + ".To Hit", tohitString); //set to hit string
 
 		//set damage
@@ -5799,6 +5803,8 @@ function CalcAttackDmgHit(fldName) {
 		if (!DmgHit || (/hit/i).test(DmgHit)) hitNum += inP;
 	};
 
+	// no longer consider it a DC if Players Make All Rolls is enabled
+	if (tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0)) isDC = false;
 	for (var out in output) {
 		switch (out) {
 		 case "modToDmg" :

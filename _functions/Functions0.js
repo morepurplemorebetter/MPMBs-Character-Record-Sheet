@@ -314,6 +314,7 @@ function format2() {
 
 function keystroke1(allowDec, allowNegative) {
 	if (!event.willCommit) {
+		event.change = event.change.replace(/ /g, '');
 		if (allowDec) {
 			var tests = !isNaN(event.change) || ((/,|\./g).test(event.change) && (!(/,|\./g).test(event.value) || (/,|\./g).test(event.value.substring(event.selStart, event.selEnd))));
 		} else {
@@ -410,10 +411,10 @@ function RoundTo(inputNmbr, roundNmbr, emptyAtZero, applyDec) {
 }
 
 function NormDecimal(dec) {
-  var i = 0;
-  var first = ding.match(/,|\./);
-  var result = dec.replace(/,|\./g, function(all, match) { return i++===0 ? first : ''; });
-  return result;
+	var i = 0;
+	var first = ding.match(/,|\./);
+	var result = dec.replace(/,|\./g, function(all, match) { return i++===0 ? first : ''; });
+	return result;
 }
 
 //adding a way to see the number of keys in an object (i.e. length)

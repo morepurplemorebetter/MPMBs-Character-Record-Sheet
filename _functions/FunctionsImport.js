@@ -577,6 +577,7 @@ function DirectImport(consoleTrigger) {
 		//set some remember fields that might impact new page generation
 		if (ImportField("Unit System") && typePF) Value("Display.Weighttxt.LbKg", What("Unit System") === "imperial" ? "LB" : "KG");
 		ImportField("Decimal Separator"); ImportField("DateFormat_Remember");
+		ImportField("BlueText.Players Make All Rolls", {notSubmitName : true, notTooltip : true});
 
 		//set the text options
 		if (FromVersion < 13) {

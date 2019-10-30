@@ -192,8 +192,8 @@ function OpeningStatement() {
 		tDoc.getField("Opening Remember").submitName += 1;
 	};
 	if (What("Opening Remember") === "No") {
-		this.dirty = false;
-		this.pane = "bookmarks"; //open the bookmarks so that on the first opening people can see its existance
+		tDoc.dirty = false;
+		tDoc.pane = "bookmarks"; //open the bookmarks so that on the first opening people can see its existance
 		var sheetTitle = "MorePurpleMoreBetter's " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " (" + tDoc.info.SheetType + ") v" + semVers;
 		var Text = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
 		Text += "Welcome to " + toUni(sheetTitle);
@@ -853,9 +853,9 @@ function ToggleAttacks(Toggle) {
 // Show the bluetext modifier fields (toggle = true) or hide them (toggle = false)
 // If toggle is undefined, toggle their visibility
 function ToggleBlueText(toggle) {
-	if (CurrentVars.bluetxt == undefined) CurrentVars.bluetxt = false;
+	if (CurrentVars.bluetxt === undefined) CurrentVars.bluetxt = isDisplay("Acr Bonus") != display.hidden;
 
-	if (toggle !== undefined && ((toggle && CurrentVars.bluetxt) || (!toggle && !CurrentVars.bluetxt))) return;
+	if (toggle !== undefined && toggle == CurrentVars.bluetxt) return;
 	var nowWhat = !CurrentVars.bluetxt; // Toggle the current state
 
 	// Start progress bar and stop calculations
@@ -996,31 +996,27 @@ function ToggleBlueText(toggle) {
 	//now go through all the spell sheets and show the correct blueText fields
 	SSarray = SSarray.concat(What("Template.extras.SSmore").split(","));
 	if (HiddenNoPrint === "DontPrint") Hide("BlueText.spellshead"); //first hide all the bluetext fields of the spell sheet templates
-	if (SSvisible) {
-		for (var A = 0; A < SSarray.length; A++) {
-			var prefix = SSarray[A];
-			if (prefix === "") continue; //skip the ones where the prefix is nothing
-			for (var i = 0; i < 4; i++) {
-				var SSfieldsArray = [
-					prefix + "spellshead.Text.header." + i, //0
-					prefix + "spellshead.class." + i, //1
-					prefix + "BlueText.spellshead.prepare." + i, //2
-					prefix + "BlueText.spellshead.attack." + i, //3
-					prefix + "BlueText.spellshead.dc." + i,  //4
-					prefix + "spellshead.prepare." + i, //5
-				];
-				if (HiddenNoPrint === "Hide") {
-					Hide(SSfieldsArray[2]);
-					Hide(SSfieldsArray[3]);
-					Hide(SSfieldsArray[4]);
-				} else if (HiddenNoPrint === "DontPrint" && tDoc.getField(SSfieldsArray[0]).display === display.visible) {
-					var aCast = What(SSfieldsArray[1]);
-					if (tDoc.getField(SSfieldsArray[5]).display === display.visible) {
-						DontPrint(SSfieldsArray[2]);
-					}
-					DontPrint(SSfieldsArray[3]);
-					DontPrint(SSfieldsArray[4]);
+	for (var A = 0; A < SSarray.length; A++) {
+		var prefix = SSarray[A];
+		if (prefix == "" && HiddenNoPrint == "Hide") continue; //skip the ones where the prefix is nothing
+		for (var i = 0; i < 4; i++) {
+			var SSfieldsArray = [
+				prefix + "spellshead.Text.header." + i,			//0
+				prefix + "spellshead.prepare." + i,				//1
+				prefix + "BlueText.spellshead.prepare." + i,	//2
+				prefix + "BlueText.spellshead.attack." + i,		//3
+				prefix + "BlueText.spellshead.dc." + i			//4
+			];
+			if (HiddenNoPrint == "Hide") {
+				Hide(SSfieldsArray[2]);
+				Hide(SSfieldsArray[3]);
+				Hide(SSfieldsArray[4]);
+			} else if (HiddenNoPrint == "DontPrint" && tDoc.getField(SSfieldsArray[0]).display === display.visible) {
+				if (tDoc.getField(SSfieldsArray[1]).display === display.visible) {
+					DontPrint(SSfieldsArray[2]);
 				}
+				DontPrint(SSfieldsArray[3]);
+				DontPrint(SSfieldsArray[4]);
 			}
 		}
 	}
@@ -5850,8 +5846,20 @@ function CalcAC() {
 		}
 	}
 
-	event.value = AC;
+	if (tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0)) {
+		AC -= 12;
+		event.value = AC < 0 ? AC : "+" + AC;
+	} else {
+		event.value = AC;
+	}
 };
+
+// Format the AC for when "Players Make All Rolls" is enabled (field format)
+function formatACforPMAR() {
+	if (!tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0) || !event.value || isNaN(event.value)) return;
+	var ACmod = event.value - 12;
+	event.value = ACmod < 0 ? ACmod : "+" + ACmod;
+}
 
 // Make sure the magic/miscellaneous AC fields have a proper description (and don't overflow)
 function formatACdescr() {
@@ -6018,12 +6026,11 @@ function CalcXPnextlvl() {
 function CalcAbilityDC() {
 	var Nmbr = event.target.name.slice(-1);
 	var SpellAbi = What("Spell DC " + Nmbr + " Mod");
-
-	//damage added manually in the bluetext field
-	var ExtraBonus = EvalBonus(What("Spell DC " + Nmbr + " Bonus"), true);
-
 	if (SpellAbi !== "" && SpellAbi !== " " && What(SpellAbi) !== "") {
-		event.value = 8 + Number(How("Proficiency Bonus")) + Number(What(SpellAbi)) + ExtraBonus;
+		var ExtraBonus = EvalBonus(What("Spell DC " + Nmbr + " Bonus"), true);
+		var modIpvDC = tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0);
+		var DCtot = (modIpvDC ? 0 : 8) + Number(How("Proficiency Bonus")) + Number(What(SpellAbi)) + ExtraBonus;
+		event.value = modIpvDC && DCtot >= 0 ? "+" + DCtot : DCtot;
 	} else {
 		event.value = "";
 	}

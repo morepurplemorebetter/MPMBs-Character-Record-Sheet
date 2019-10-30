@@ -3043,6 +3043,28 @@ function gatherPrereqevalVars() {
 	return gObj;
 }
 
+// set the checkbox for "Players Make All Rolls" (also field MouseUp)
+function setPlayersMakeAllRolls(enable) {
+	// See if anything is about to be changed, otherwise just stop
+	var isEvent = event.target && event.target.name == "BlueText.Players Make All Rolls";
+	var changedState = isEvent ? true : tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0) != (enable || enable === undefined ? 1 : 0);
+	if (!changedState) return;
+	// If not called by the MouseUp event, set the checkbox first
+	if (!isEvent) {
+		calcStop();
+		Checkbox("BlueText.Players Make All Rolls", enable);
+	}
+	// If the state of the checkbox changed, we will have to recalculate all wildshapes
+	if (isTemplVis("WSfront")) {
+		calcStop();
+		WildshapeRecalc();
+	}
+	// If the new state is checked, then show a dialog what that entails
+	if (tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0)) {
+		ShowDialog('What does enabling "Players Make All Rolls" do?', Who("BlueText.Players Make All Rolls"));
+	}
+}
+
 /*
 NEW ATTRIBUTES
 	limfeaname // Optional; If defined it is used for populating the limited feature section and the action section instead of `name`

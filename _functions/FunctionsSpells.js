@@ -635,6 +635,7 @@ function CalcSpellScores() {
 	var cSpells = aClass && CurrentSpells[aClass] ? CurrentSpells[aClass] : false;
 	var fixedDC = cSpells && !isNaN(cSpells.fixedDC) ? Number(cSpells.fixedDC) : false;
 	var fixedSpAttack = cSpells && !isNaN(cSpells.fixedSpAttack) ? Number(cSpells.fixedSpAttack) : false;
+	var modIpvDC = tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0);
 
 	var theResult = {
 		dc : 0,
@@ -647,6 +648,17 @@ function CalcSpellScores() {
 			var theR = showTheResult ? theResult[aType] : "";
 			if (showTheResult && (aType !== "prepare" || isPrepareVis)) { // add the modifier field value
 				theR += EvalBonus(What(Fld.replace("spellshead.DINGDONG", "BlueText.spellshead." + aType)), true);
+				switch (aType) {
+					case "dc":
+					if (modIpvDC) {
+						theR -= 8;
+					} else {
+						theR = "DC " + theR;
+						break;
+					}
+					case "attack":
+					if (theR >= 0) theR = "+" + theR;
+				}
 			}
 			if (aType == fldType) {
 				event.value = theR;
