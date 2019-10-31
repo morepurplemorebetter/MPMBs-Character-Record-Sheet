@@ -653,7 +653,7 @@ function CalcSpellScores() {
 					if (modIpvDC) {
 						theR -= 8;
 					} else {
-						theR = "DC " + theR;
+						if (typePF) theR = "DC " + theR;
 						break;
 					}
 					case "attack":
