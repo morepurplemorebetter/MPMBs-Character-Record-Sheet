@@ -4822,8 +4822,8 @@ function deleteSpellRow(prefix, lineNmbr) {
 		if (SS === thisSheet && endRow - startRow < lookAhead - 1) lookAhead = "stop";
 		for (var L = startRow; L <= endRow; L++) {
 			// What is the next row (next page & offset)
-			var nextRow = offset + L < endRow ?
-					[SSmoreA[SS], offset + L] :
+			var nextRow = offset + L + 1 < endRow ?
+					[SSmoreA[SS], offset + L + 1] :
 				SSmoreA[SS + 1] && lookAhead && lookAhead !== "stop" ?
 					[SSmoreA[SS + 1], L - endRow - 1 + offset] :
 				SSmoreA[SS + 1] ? [SSmoreA[SS + 1], offset] : false;
