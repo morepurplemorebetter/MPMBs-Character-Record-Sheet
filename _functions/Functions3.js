@@ -246,8 +246,11 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			type = "class";
 			aParent = fObjName[0];
 			fObjName = fObjName[1];
-			var fObj = forceNonCurrent && ClassList[aParent].features[fObjName] && !choiceA[0] ? ClassList[aParent].features[fObjName] : CurrentClasses[aParent].features[fObjName];
-			var displName = fObjName.indexOf("subclassfeature") !== -1 ? CurrentClasses[aParent].fullname : CurrentClasses[aParent].name;
+			var useClObj = forceNonCurrent && ClassList[forceNonCurrent] && ClassList[forceNonCurrent].features[fObjName] ? ClassList[forceNonCurrent] :
+				forceNonCurrent && ClassSubList[forceNonCurrent] && ClassSubList[forceNonCurrent].features[fObjName] ? ClassSubList[forceNonCurrent] :
+				CurrentClasses[aParent];
+			var fObj = useClObj.features[fObjName];
+			var displName = fObjName.indexOf("subclassfeature") == -1 ? useClObj.name : useClObj.fullname ? useClObj.fullname : forceNonCurrent && useClObj.subname ? useClObj.subname : useClObj.name;
 
 			// --- backwards compatibility --- //
 			// also create some variables that (old) eval scripts tend to use
@@ -261,9 +264,9 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			aParent = fObjName[0];
 			fObjName = fObjName[1];
 			var fObj = aParent == fObjName && !CurrentRace.features[fObjName] ?
-					(forceNonCurrent ? RaceList[aParent] : CurrentRace) :
-				forceNonCurrent && RaceList[aParent].features[fObjName] && !choiceA[0] ?
-					RaceList[aParent].features[fObjName] : CurrentRace.features[fObjName];
+					(forceNonCurrent ? RaceList[forceNonCurrent] : CurrentRace) :
+				forceNonCurrent && RaceList[forceNonCurrent] && RaceList[forceNonCurrent].features[fObjName] ?
+					RaceList[forceNonCurrent].features[fObjName] : CurrentRace.features[fObjName];
 			var displName = CurrentRace.name;
 			break;
 		case "background":
@@ -307,12 +310,17 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	// --- backwards compatibility --- //
 	// First do the eval attribute of the main object, as it might change things for the choice
 	var skipMainEval = false;
- 	if (!choiceA[2] && CheckLVL && AddFea && fObj.eval && (typeof fObj.eval == "string") && (/Fea(Old)?Choice/).test(fObj.eval)) {
+ 	if (fObj.choices && !choiceA[2] && CheckLVL && AddFea && fObj.eval && (typeof fObj.eval == "string") && (/Fea(Old)?Choice/).test(fObj.eval)) {
 		runEval(fObj.eval, "eval");
 		skipMainEval = true;
 		// redo the choice array, as the eval might have changed it
 		if (FeaOldChoice) choiceA[0] = FeaOldChoice;
 		if (FeaChoice) choiceA[1] = FeaChoice;
+	}
+
+	// Select a default choice, if applicable
+	if (fObj.choices && !choiceA[0] && !choiceA[1] && !choiceA[2] && CheckLVL && AddFea && fObj.defaultChoice && fObj[fObj.defaultChoice]) {
+		choiceA[1] = fObj.defaultChoice.toLowerCase();
 	}
 
 	// set the choice objects, if any

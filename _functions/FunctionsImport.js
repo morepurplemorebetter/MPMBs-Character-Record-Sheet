@@ -2572,64 +2572,95 @@ function AddBackgroundVariant(background, variantName, variantObj) {
 	BackgroundSubList[fullBvNm] = variantObj;
 };
 
-// a way to add a warlock invocation without conflicts; invocName is how it will appear in the menu
-function AddWarlockInvocation(invocName, invocObj) {
-	var warInv = ClassList.warlock.features["eldritch invocations"];
-	if (!warInv || (warInv.extrachoices.indexOf(invocName) !== -1 && warInv[invocName.toLowerCase()].source && invocObj.source && warInv[invocName.toLowerCase()].source.toSource() === invocObj.source.toSource())) return; // the exact same thing is being added again, so skip it
-	var useName = invocName;
+// A way to add an (extra)choice to a class feature / racial feature / feat / magic item
+/* Input Valiables Definition
+	pObj    parent object, e.g. ClassList.warlock.features["eldritch invocations"]
+	cType   type of choice, false for `choice`, true for `extrachoice`
+	cName   name of the choice as it will appear in the menu (with capitalisation)
+	cObj    the choice object
+	force   if != false, force creation of the (extra)choices array
+	        if cType == true, use the force string for the extraname
+*/
+function AddFeatureChoice(pObj, cType, cName, cObj, force) {
+	if (!pObj) return; // parent object doesn't exist
+	cType = cType ? "extrachoices" : "choices";
+	if (!pObj[cType]) { // choice array doesn't exist
+		if (!force) return; // no choice array and not forced, so quit now
+		pObj[cType] = [];
+		if (cType == "extrachoices" && typeof force == "string") {
+			pObj.extraname = force;
+		}
+	}
+	// Stop if adding something that already exists, so no reason to continue
+	var cNameLC = cName.toLowerCase();
+	if (pObj[cType].indexOf(cName) != -1 && pObj[cNameLC] && pObj[cNameLC].toSource() == cObj.toSource()) return;
+	// See if something by its name already exists and amend it if sp
+	var useName = cName;
 	var suffix = 1;
-	while (warInv.extrachoices.indexOf(useName) !== -1) {
+	while (pObj[cType].indexOf(useName) !== -1) {
 		suffix += 1;
-		useName = invocName + " [" + suffix + "]";
+		useName = cName + " [" + suffix + "]";
 	};
-	warInv.extrachoices.push(useName);
-	warInv[useName.toLowerCase()] = invocObj;
+	// Add the new (extra)choice
+	pObj[cType].push(useName);
+	pObj[useName.toLowerCase()] = cObj;
+}
+// --- backwards compatibility --- //
+function AddWarlockInvocation(invocName, invocObj) { // Add a warlock invocation
+	AddFeatureChoice(ClassList.warlock.features["eldritch invocations"], true, invocName, invocObj);
 };
-
-// a way to add a warlock pact boon without conflicts; boonName is how it will appear in the menu
-function AddWarlockPactBoon(boonName, boonObj) {
-	var warInv = ClassList.warlock.features["pact boon"];
-	if (!warInv || (warInv.choices.indexOf(boonName) !== -1 && warInv[boonName.toLowerCase()].source && boonObj.source && warInv[boonName.toLowerCase()].source.toSource() === boonObj.source.toSource())) return; // the exact same thing is being added again, so skip it
-	var useName = boonName;
-	var suffix = 1;
-	while (warInv.choices.indexOf(useName) !== -1) {
-		suffix += 1;
-		useName = boonName + " [" + suffix + "]";
-	};
-	warInv.choices.push(useName);
-	warInv[useName.toLowerCase()] = boonObj;
+function AddWarlockPactBoon(boonName, boonObj) { // Add a warlock pact boon
+	AddFeatureChoice(ClassList.warlock.features["pact boon"], false, boonName, boonObj);
 };
 
 // a way to add fighting styles to multiple classes; fsName is how it will appear in the menu
 function AddFightingStyle(classArr, fsName, fsObj) {
-	var addFSToThis = function(feaObj, feaNm) {
-		var FSfeat = feaObj.features[feaNm];
-		if (!FSfeat || !FSfeat.choices) return;
-		var useName = fsName;
-		var suffix = 1;
-		while (FSfeat.choices.indexOf(useName) !== -1) {
-			suffix += 1;
-			useName = fsName + " [" + suffix + "]";
-		};
-		FSfeat.choices.push(useName);
-		FSfeat[useName.toLowerCase()] = fsObj;
-	};
 	for (var i = 0; i < classArr.length; i++) {
 		var aClass = ClassList[classArr[i]];
 		var sClass = ClassSubList[classArr[i]];
 		if (aClass) {
-			addFSToThis(aClass, "fighting style");
-			if (classArr[i] === "fighter" && ClassSubList["fighter-champion"]) addFSToThis(ClassSubList["fighter-champion"], "subclassfeature10");
+			AddFeatureChoice(aClass.features["fighting style"], false, fsName, fsObj);
+			if (classArr[i] === "fighter" && ClassSubList["fighter-champion"]) {
+				AddFeatureChoice(ClassSubList["fighter-champion"].features["subclassfeature10"], false, fsName, fsObj);
+			}
 		} else if (sClass) {
 			for (var clFea in sClass.features) {
 				var sFea = sClass.features[clFea];
 				if (sFea.choices && (/^(?=.*fighting)(?=.*style).*$/i).test(sFea.name)) {
-					addFSToThis(sClass, clFea);
+					AddFeatureChoice(sClass.features[clFea], false, fsName, fsObj);
 				}
 			}
 		}
 	};
 };
+
+// make an existing class feature into a feature with choices, and add the original as a default choice
+function CreateClassFeatureVariant(clName, clFea, varName, varObj) {
+	if (ClassList[clName] && ClassList[clName].features[clFea]) {
+		var aFea = ClassList[clName].features;
+	} else if (ClassSubList[clName] && ClassSubList[clName].features[clFea]) {
+		var aFea = ClassSubList[clName].features;
+	} else {
+		return;
+	}
+	if (aFea.extrachoices || aFea.extraname) return; // this doesn't work if a feature offers extrachoices
+	if (!aFea.choices) {
+		// Create a new 
+		var origFea = eval(aFea[clFea].toSource());
+		var choiceNm = "\x1B[original] " + origFea.name;
+		var choiceNmLC = choiceNm.toLowerCase();
+		aFea[clFea] = {
+			name : origFea.name + " or a Variant",
+			source: origFea.source,
+			minlevel : origFea.minlevel,
+			description : '\n   Select ' + origFea.name + ' or a variant using the "Choose Feature" button above',
+			choices : [choiceNm],
+			defaultChoice : choiceNmLC
+		}
+		aFea[clFea][choiceNmLC] = origFea;
+	}
+	AddFeatureChoice(aFea[clFea], false, varName, varObj);
+}
 
 // side-loading a file and adding it to the field for safe-keeping
 function ImportUserScriptFile(filePath) {

@@ -5383,6 +5383,18 @@ function StringEvals(type) {
 	return txt.join("\n\n");
 }
 
+// test if the main character is proficient with a weapon (return true) or not (return false)
+function isProficientWithWeapon(WeaponName, theWea) {
+	if ((/natural|spell|cantrip|alwaysprof/i).test(theWea.type)) {
+		return true; // No need to check further for natural weapons, spells, and 'alwaysprof'
+	} else if ((theWea.type.toLowerCase() == "simple" && tDoc.getField("Proficiency Weapon Simple").isBoxChecked(0)) || (theWea.type.toLowerCase() == "martial" && tDoc.getField("Proficiency Weapon Martial").isBoxChecked(0))) {
+		return true; // Proficient with the relevant type (simple/martial)
+	} else if (CurrentProfs.weapon.otherWea && RegExp(";(" + CurrentProfs.weapon.otherWea.finalProfs.join("s?|").replace(/ss\?\|/g, "s?|") + ");", "i").test(";" + [WeaponName, theWea.type].concat(theWea.list ? [theWea.list] : []).concat(theWea.baseWeapon ? [theWea.baseWeapon] : []).join(";") + ";")) {
+		return true; // Proficient with the weapon through an 'other weapons' proficiency
+	}
+	return false;
+}
+
 //apply the effect of a weapon with inputText the literal string in the Weapon Selection field and fldName the name of the field (any one of them); If fldName is left blank, use the event.target.name
 function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
@@ -5485,11 +5497,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			theWea.modifiers && theWea.modifiers[1] ? theWea.modifiers[1] : 0;
 
 		//add proficiency checkmark
-		fields.Proficiency = !QI ? true :
-			QI && (/natural|spell|cantrip|alwaysprof/i).test(theWea.type) ? true :
-			(/^(simple|martial)$/i).test(theWea.type) && tDoc.getField("Proficiency Weapon " + theWea.type.capitalize()).isBoxChecked(0) ? true :
-			CurrentProfs.weapon.otherWea && RegExp(";(" + CurrentProfs.weapon.otherWea.finalProfs.join("s?|").replace(/ss\?\|/g, "s?|") + ");", "i").test(";" + [WeaponName, theWea.type].concat(theWea.list ? [theWea.list] : []).concat(theWea.baseWeapon ? [theWea.baseWeapon] : []).join(";") + ";") ? true :
-			false;
+		fields.Proficiency = !QI ? true : isProficientWithWeapon(WeaponName, theWea);
 
 		//add mod
 		var StrDex = What(QI ? "Str" : prefix + "Comp.Use.Ability.Str.Score") < What(QI ? "Dex" : prefix + "Comp.Use.Ability.Dex.Score") ? 2 : 1;

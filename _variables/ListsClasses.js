@@ -270,7 +270,7 @@ var Base_ClassList = {
 				name : "Spellcasting",
 				source : [["SRD", 11], ["P", 52]],
 				minlevel : 1,
-				description : "\n   " + "I can cast bard cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use a musical instrument as a spellcasting focus" + "\n   " + "I can cast my known bard spells as rituals if they have the ritual tag",
+				description : "\n   " + "I can cast bard cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use a musical instrument as a spellcasting focus for my bard spells" + "\n   " + "I can cast my known bard spells as rituals if they have the ritual tag",
 				additional : levels.map(function (n, idx) {
 					var cantr = [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4][idx];
 					var splls = [4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 15, 15, 16, 16, 19, 19, 20, 20, 22, 22][idx];
@@ -514,7 +514,7 @@ var Base_ClassList = {
 				name : "Spellcasting",
 				source : [["SRD", 15], ["P", 58]],
 				minlevel : 1,
-				description : "\n   " + "I can cast prepared cleric cantrips/spells, using Wisdom as my spellcasting ability" + "\n   " + "I can use a holy symbol as a spellcasting focus" + "\n   " + "I can cast my prepared cleric spells as rituals if they have the ritual tag",
+				description : "\n   " + "I can cast prepared cleric cantrips/spells, using Wisdom as my spellcasting ability" + "\n   " + "I can use a holy symbol as a spellcasting focus for my cleric spells" + "\n   " + "I can cast my prepared cleric spells as rituals if they have the ritual tag",
 				additional : levels.map(function (n, idx) {
 					return [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5][idx] + " cantrips known";
 				})
@@ -613,7 +613,7 @@ var Base_ClassList = {
 				name : "Spellcasting",
 				source : [["SRD", 19], ["P", 66]],
 				minlevel : 1,
-				description : "\n   " + "I can cast prepared druid cantrips/spells, using Wisdom as my spellcasting ability" + "\n   " + "I can use a druidic focus as a spellcasting focus" + "\n   " + "I can cast my prepared druid spells as rituals if they have the ritual tag",
+				description : "\n   " + "I can cast prepared druid cantrips/spells, using Wisdom as my spellcasting ability" + "\n   " + "I can use a druidic focus as a spellcasting focus for my druid spells" + "\n   " + "I can cast my prepared druid spells as rituals if they have the ritual tag",
 				additional : levels.map(function (n, idx) {
 					return [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4][idx] + " cantrips known";
 				})
@@ -812,6 +812,7 @@ var Base_ClassList = {
 				action : ["bonus action", " (with Attack action)"],
 				eval : function() {
 					AddString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
+					show3rdPageNotes();
 				},
 				removeeval : function() {
 					RemoveString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
@@ -819,7 +820,7 @@ var Base_ClassList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (classes.known.monk && classes.known.monk.level && (v.theWea.monkweapon || v.baseWeaponName == "unarmed strike" || v.baseWeaponName == "shortsword" || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/\b(heavy|(2|two).?hand(ed)?s?)\b/i).test(v.theWea.description)))) {
+							if (classes.known.monk && classes.known.monk.level && (v.theWea.monkweapon || v.baseWeaponName == "unarmed strike" || v.baseWeaponName == "shortsword" || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/heavy|(2|two).?hand(ed)?s?/i).test(v.theWea.description)))) {
 								var aMonkDie = function (n) { return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10; }(classes.known.monk.level);
 								try {
 									var curDie = eval(fields.Damage_Die.replace('d', '*'));
@@ -845,7 +846,6 @@ var Base_ClassList = {
 				description : "\n   " + "I can spend ki to fuel special actions (see third page)" + "\n   " + "I need to meditate for at least 30 min of a short rest for that short rest to restore ki",
 				usages : ["", 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
 				recovery : "short rest",
-				extraname : "Ki Feature",
 				"flurry of blows" : {
 					name : "Flurry of Blows",
 					source : [["SRD", 27], ["P", 78]],
@@ -870,13 +870,17 @@ var Base_ClassList = {
 					description : " [1 ki point]" + "\n   " + "After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
 				},
 				autoSelectExtrachoices : [{
-					extrachoice : "flurry of blows"
+					extrachoice : "flurry of blows",
+					extraname : "Ki Feature"
 				}, {
-					extrachoice : "patient defense"
+					extrachoice : "patient defense",
+					extraname : "Ki Feature"
 				}, {
-					extrachoice : "step of the wind"
+					extrachoice : "step of the wind",
+					extraname : "Ki Feature"
 				}, {
 					extrachoice : "stunning strike",
+					extraname : "Monk 5",
 					minlevel : 5
 				}]
 			},
@@ -1078,7 +1082,7 @@ var Base_ClassList = {
 				name : "Spellcasting",
 				source : [["SRD", 31], ["P", 84]],
 				minlevel : 2,
-				description : "\n   " + "I can cast prepared paladin spells, using Charisma as my spellcasting ability" + "\n   " + "I can use a holy symbol as a spellcasting focus"
+				description : "\n   " + "I can cast prepared paladin spells, using Charisma as my spellcasting ability" + "\n   " + "I can use a holy symbol as a spellcasting focus for my paladin spells"
 			},
 			"divine smite" : {
 				name : "Divine Smite",
@@ -1089,7 +1093,7 @@ var Base_ClassList = {
 					"This increases by +1d8 for each spell slot level above 1st and +1d8 against undead/fiends"
 				])
 			},
-			"subclassfeature3.0" : {
+			"subclassfeature3.0-channel divinity" : {
 				name : "Channel Divinity",
 				source : [["SRD", 32], ["P", 85]],
 				minlevel : 3,
@@ -1193,7 +1197,7 @@ var Base_ClassList = {
 				source : [["SRD", 35], ["P", 91]],
 				minlevel : 1,
 				description : "\n   " + "Use the \"Choose Feature\" button above to add a favored enemy to the third page" + "\n   " + "When selecting a favored enemy, I also learn one of the languages it speaks" + "\n   " + "I have adv. on Wis (Survival) checks to track and Int checks to recall info about them",
-				additional :  levels.map(function (n) {
+				additional : levels.map(function (n) {
 					return n < 6 ? "1 favored enemy" : (n < 14 ? 2 : 3) + " favored enemies";
 				}),
 				extraname : "Favored Enemy",
@@ -1288,7 +1292,7 @@ var Base_ClassList = {
 				name : "Natural Explorer",
 				source : [["SRD", 36], ["P", 91]],
 				minlevel : 1,
-				description : "\n   " + "Use the \"Choose Feature\" button above to add a favored terrain to the third page",
+				description : '\n   Use the "Choose Feature" button above to add a favored terrain to the third page',
 				additional :  levels.map(function (n) {
 					return n < 6 ? "1 favored terrain" : (n < 10 ? 2 : 3) + " favored terrains";
 				}),
@@ -1298,43 +1302,59 @@ var Base_ClassList = {
 				"arctic" : {
 					name : "Arctic",
 					source : [["SRD", 36], ["P", 91]],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning arctic terrain" + "\n   " + "While traveling for an hour or more in arctic terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+					description : ""
 				},
 				"coast" : {
 					name : "Coast",
 					source : [["SRD", 36], ["P", 91]],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning coast terrain" + "\n   " + "While traveling for an hour or more in coast terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+					description : ""
 				},
 				"desert" : {
 					name : "Desert",
 					source : [["SRD", 36], ["P", 91]],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning desert terrain" + "\n   " + "While traveling for an hour or more in desert terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+					description : ""
 				},
 				"forest" : {
 					name : "Forest",
 					source : [["SRD", 36], ["P", 91]],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning forest terrain" + "\n   " + "While traveling for an hour or more in forest terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+					description : ""
 				},
 				"grassland" : {
 					name : "Grassland",
 					source : [["SRD", 36], ["P", 91]],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning grassland terrain" + "\n   " + "While traveling for an hour or more in grassland terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+					description : ""
 				},
 				"mountain" : {
 					name : "Mountain",
 					source : [["SRD", 36], ["P", 91]],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning mountain terrain" + "\n   " + "While traveling for an hour or more in mountain terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+					description : ""
 				},
 				"swamp" : {
 					name : "Swamp",
 					source : [["SRD", 36], ["P", 91]],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning swamp terrain" + "\n   " + "While traveling for an hour or more in swamp terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
+					description : ""
 				},
 				"underdark" : {
 					name : "Underdark",
 					source : [["SRD", 36], ["P", 91]],
-					description : "\n   " + "I can double my proficiency bonus for Int/Wis checks concerning underdark terrain" + "\n   " + "While traveling for an hour or more in underdark terrain I gain the following benefits:" + "\n    - " + "My allies and I are not slowed by difficult terrain and can't get lost except by magic" + "\n    - " + "I am alert to danger even when doing something else; I forage twice as much food" + "\n    - " + "If alone (or alone with beast companion), I can move stealthily at my normal pace" + "\n    - " + "When tracking, I also learn the exact number, size, and time since passing"
-				}
+					description : ""
+				},
+				"travel benefits" : {
+					name : "Favored Terrain Travel Benefits",
+					source : [["SRD", 36], ["P", 91]],
+					description : desc([
+						"I can double my proficiency bonus for Int/Wis checks concerning my favored terrains",
+						"While traveling for an hour or more in a favored terrain, I gain the following benefits:",
+						" \u2022 My allies and I are not slowed by difficult terrain and can't get lost except by magic",
+						" \u2022 I am alert to danger even when doing something else; I forage twice as much food",
+						" \u2022 If alone (or alone with beast companion), I can move stealthily at my normal pace",
+						" \u2022 When tracking, I also learn the exact number, size, and time since passing"
+					])
+				},
+				autoSelectExtrachoices : [{
+					extrachoice : "travel benefits",
+					extraname : "Ranger 1"
+				}]
 			},
 			"fighting style" : {
 				name : "Fighting Style",
@@ -1702,7 +1722,7 @@ var Base_ClassList = {
 				name : "Spellcasting",
 				source : [["SRD", 43], ["P", 101]],
 				minlevel : 1,
-				description : "\n   " + "I can cast sorcerer cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus ",
+				description : "\n   " + "I can cast sorcerer cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus for my sorcerer spells",
 				additional : levels.map(function (n, idx) {
 					var cantr = [4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6][idx];
 					var splls = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15][idx];
@@ -1839,7 +1859,7 @@ var Base_ClassList = {
 				name : "Pact Magic",
 				source : [["SRD", 46], ["P", 107]],
 				minlevel : 1,
-				description : "\n   " + "I can cast warlock cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus" + "\n   " + "I regain these spell slots on a short rest",
+				description : "\n   " + "I can cast warlock cantrips/spells that I know, using Charisma as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus for my warlock spells" + "\n   " + "I regain these spell slots on a short rest",
 				additional : levels.map(function (n, idx) {
 					var cantr = [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4][idx];
 					var splls = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15][idx];
@@ -2457,7 +2477,7 @@ var Base_ClassList = {
 				name : "Spellcasting",
 				source : [["SRD", 52], ["P", 114]],
 				minlevel : 1,
-				description : "\n   " + "I can cast prepared wizard cantrips/spells, using Intelligence as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus" + "\n   " + "I can cast all wizard spells in my spellbook as rituals if they have the ritual tag",
+				description : "\n   " + "I can cast prepared wizard cantrips/spells, using Intelligence as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus for my wizard spells" + "\n   " + "I can cast all wizard spells in my spellbook as rituals if they have the ritual tag",
 				additional : levels.map(function (n, idx) {
 					return [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5][idx] + " cantrips known";
 				})
