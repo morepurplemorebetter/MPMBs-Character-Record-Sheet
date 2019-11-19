@@ -1189,8 +1189,6 @@ calcChanges : {
 		but not for the 'Ability Save DC' on the 1st page.
 		For the attacks section, this is only run for cantrips/spells that are recognized, not manually added.
 
-		This attribute is not used for
-
 		// 1st array entry //
 		The function should return the number it wishes to add/remove as a number.
 		The function will not be evaluated but is fed three variables:
