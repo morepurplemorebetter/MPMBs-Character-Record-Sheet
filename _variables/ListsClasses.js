@@ -1999,10 +1999,16 @@ var Base_ClassList = {
 							known : {spells : 'book'},
 							refType : "feat"
 						};
+						if (CurrentSpells['book of ancient secrets'] && CurrentSpells['book of ancient secrets'].selectSp) {
+							// v12.999 style is present, so transfer chosen spells over and remove it
+							CurrentSpells['warlock-book of ancient secrets'].offsetBo = CurrentSpells['book of ancient secrets'].offsetBo;
+							CurrentSpells['warlock-book of ancient secrets'].selectBo = CurrentSpells['book of ancient secrets'].selectBo;
+							CurrentSpells['warlock-book of ancient secrets'].selectSp = CurrentSpells['book of ancient secrets'].selectSp;
+							delete CurrentSpells['book of ancient secrets'];
+						}
 						SetStringifieds('spells'); CurrentUpdates.types.push('spells');
 					},
 					removeeval : function() {
-						delete CurrentSpells['book of ancient secrets'];
 						delete CurrentSpells['warlock-book of ancient secrets'];
 						SetStringifieds('spells'); CurrentUpdates.types.push('spells');
 					},
