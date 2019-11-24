@@ -656,19 +656,19 @@ var Base_ClassList = {
 				name : "Archdruid",
 				source : [["SRD", 21], ["P", 67]],
 				minlevel : 20,
-				description : "\n   " + "I can use Wild Shape an unlimited number of times" + "\n   " + "My druid spells don't require verbal, somatic, or free material components"
-			},
-			calcChanges : {
-				spellAdd : [
-					function (spellKey, spellObj, spName) {
-						if (spName == "druid") {
-							if (spellObj.compMaterial && !(/M[\u0192\u2020]/i).test(spellObj.components)) spellObj.compMaterial = "";
-							spellObj.components = spellObj.components.replace(/V,?|S,?|M$/ig, '');
-							return true;
-						};
-					},
-					"My druid spells don't require verbal, somatic, or material components."
-				]
+				description : "\n   " + "I can use Wild Shape an unlimited number of times" + "\n   " + "My druid spells don't require verbal, somatic, or free material components",
+				calcChanges : {
+					spellAdd : [
+						function (spellKey, spellObj, spName) {
+							if (spName == "druid") {
+								if (spellObj.compMaterial && !(/M[\u0192\u2020]/i).test(spellObj.components)) spellObj.compMaterial = "";
+								spellObj.components = spellObj.components.replace(/V,?|S,?|M$/ig, '');
+								return true;
+							};
+						},
+						"My druid spells don't require verbal, somatic, or material components."
+					]
+				}
 			}
 		}
 	},

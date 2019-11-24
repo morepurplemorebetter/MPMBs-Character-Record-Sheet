@@ -5501,7 +5501,7 @@ function MakeClassMenu() {
 				toTestNr = nrFoundInExtraChoices(toTest, propFea.extrachoices);
 				propFea.extrachoices.sort();
 				toChooseNr = propFea.extraTimes ? propFea.extraTimes[Math.min(propFea.extraTimes.length, clLvl) - 1] : 0;
-				if (propFea.name == "Maneuvers" && bonusManeuvers && classes.known[aClass].subclass == "fighter-battle master") {
+				if (prop == "subclassfeature3.maneuvers" && bonusManeuvers && classes.known[aClass].subclass == "fighter-battle master") {
 					toChooseNr += bonusManeuvers;
 					bonusManeuvers = false;
 				}
@@ -5516,11 +5516,11 @@ function MakeClassMenu() {
 
 	// If the battle master subclass is not selected and the martial adept feat is selected, add an option to select the maneuvers
 	if (bonusManeuvers && ClassSubList['fighter-battle master']) {
-		var prop = "subclassfeature3.1";
+		var prop = "subclassfeature3.maneuvers";
 		var propFea = ClassSubList['fighter-battle master'].features[prop];
 		propFea.extrachoices.sort();
 		toTest = GetFeatureChoice("classes", "fighter", prop, true);
-		toChooseStr = " (" + "selected " + toTest.length + " of " + bonusManeuvers + ")";
+		toChooseStr = " (selected " + toTest.length + " of " + bonusManeuvers + ")";
 		menuLVL3(ClassMenu, "Battle Master Maneuvers" + toChooseStr, propFea.extrachoices, "fighter", prop, "extra", propFea, toTest);
 	}
 
@@ -5551,8 +5551,8 @@ function ClassFeatureOptions(Input, AddRemove) {
 	var prop = MenuSelection[1];
 	var choice = MenuSelection[2];
 	var extra = !!MenuSelection[3];
-	var isBattleMasterManeuver = aClass == "fighter" && (!classes.known[aClass] || classes.known[aClass].subclass != "fighter-battle master") && prop == "subclassfeature3.1" && ClassSubList["fighter-battle master"] && ClassSubList["fighter-battle master"].features[prop] && extra;
-	var propFea = CurrentClasses[aClass] ? CurrentClasses[aClass].features[prop] : isBattleMasterManeuver ? ClassSubList["fighter-battle master"].features[prop] : false;
+	var isBattleMasterManeuver = aClass == "fighter" && (!classes.known[aClass] || classes.known[aClass].subclass != "fighter-battle master") && prop == "subclassfeature3.maneuvers" && ClassSubList["fighter-battle master"] && ClassSubList["fighter-battle master"].features[prop] && extra;
+	var propFea = isBattleMasterManeuver ? ClassSubList["fighter-battle master"].features[prop] : CurrentClasses[aClass] ? CurrentClasses[aClass].features[prop] : false;
 	var propFeaCs = propFea ? propFea[choice] : false;
 	if (!propFea || !propFeaCs) return; // no objects to process, so go back
 
