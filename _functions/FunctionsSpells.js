@@ -644,10 +644,13 @@ function CalcSpellScores() {
 	};
 
 	var setResults = function(showTheResult) {
+		if (cSpells) cSpells.calcSpellScores = {};
 		for (var aType in theResult) {
-			var theR = showTheResult ? theResult[aType] : "";
-			if (showTheResult && (aType !== "prepare" || isPrepareVis)) { // add the modifier field value
+			var theR = showTheResult ? theResult[aType] : "", numTot;
+			if (showTheResult && (aType !== "prepare" || isPrepareVis)) {
+				// add the modifier field value
 				theR += EvalBonus(What(Fld.replace("spellshead.DINGDONG", "BlueText.spellshead." + aType)), true);
+				numTot = theR;
 				switch (aType) {
 					case "dc":
 					if (modIpvDC) {
@@ -665,6 +668,7 @@ function CalcSpellScores() {
 			} else {
 				Value(Fld.replace("DINGDONG", aType), theR);
 			}
+			if (cSpells) cSpells.calcSpellScores[aType] = numTot;
 		}
 	}
 
@@ -693,7 +697,7 @@ function CalcSpellScores() {
 		theResult.prepare = Math.max(1, theResult.prepare);
 	}
 
-	// add custom calculations
+	// do custom calculations
 	if (CurrentEvals.spellCalc) {
 		var abiScoreNo = tDoc.getField(modFldName).currentValueIndices;
 		var classArray = cSpells ? [aClass] : [];

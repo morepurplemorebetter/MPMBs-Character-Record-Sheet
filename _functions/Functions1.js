@@ -6060,11 +6060,28 @@ function CalcXPnextlvl() {
 //calculate the Ability Save DC (field calculation)
 function CalcAbilityDC() {
 	var Nmbr = event.target.name.slice(-1);
-	var SpellAbi = What("Spell DC " + Nmbr + " Mod");
-	if (SpellAbi !== "" && SpellAbi !== " " && What(SpellAbi) !== "") {
+	var Indx = tDoc.getField("Spell DC " + Nmbr + " Mod").currentValueIndices;
+	if (Indx) {
 		var ExtraBonus = EvalBonus(What("Spell DC " + Nmbr + " Bonus"), true);
 		var modIpvDC = tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0);
-		var DCtot = (modIpvDC ? 0 : 8) + Number(How("Proficiency Bonus")) + Number(What(SpellAbi)) + ExtraBonus;
+		// Now test if this ability score is not also present on the spell sheet pages and if there are modifiers used that we should apply here as well.
+		var useSSDC = false, foundSSDC = [];
+		var aSaveA = CurrentAbilitySaveDCs["abi" + Indx];
+		if (aSaveA) {
+			for (var i = 0; i < aSaveA.length; i++) {
+				var aSpCast = CurrentSpells[aSaveA[i]];
+				if (!aSpCast) {
+					// One of the entries is not also a spellcaster, so no bonuses to spell save DC should be used at all
+					useSSDC = false;
+					break;
+				}
+				if (aSpCast && aSpCast.calcSpellScores) {
+					useSSDC = true;
+					foundSSDC.push(aSpCast.calcSpellScores.dc);
+				}
+			}
+		}
+		var DCtot = useSSDC ? Math.min.apply(Math, foundSSDC) + ExtraBonus - (modIpvDC ? 8 : 0) : (modIpvDC ? 0 : 8) + Number(How("Proficiency Bonus")) + Number(What(What("Spell DC " + Nmbr + " Mod"))) + ExtraBonus;
 		event.value = modIpvDC && DCtot >= 0 ? "+" + DCtot : DCtot;
 	} else {
 		event.value = "";
@@ -8684,33 +8701,45 @@ function HideInvLocationColumn(type, currentstate) {
 
 //put the ability save DC right, and show both if more than one race/class with ability save DC
 function SetTheAbilitySaveDCs() {
-	var AbilitySaveArray = [];
+	var aSaveA = [];
+	CurrentAbilitySaveDCs = {};
 
 	//check all the classes
 	for (var aClass in classes.known) {
-		var CurrentAbilitySave = CurrentClasses[aClass].abilitySave;
-		if (CurrentAbilitySave && AbilitySaveArray.indexOf(CurrentAbilitySave) === -1) {
-			AbilitySaveArray.push(CurrentAbilitySave);
+		var aSave = CurrentClasses[aClass].abilitySave;
+		if (aSave && aSaveA.indexOf(aSave) === -1) {
+			aSaveA.push(aSave);
+		}
+		if (aSave) {
+			var abiNm = "abi" + aSave;
+			if (!CurrentAbilitySaveDCs[abiNm]) CurrentAbilitySaveDCs[abiNm] = [];
+			CurrentAbilitySaveDCs[abiNm].push(aClass);
 		}
 	}
 
 	//check the race
-	var CurrentAbilitySave = CurrentRace.abilitySave;
-	if (CurrentAbilitySave && AbilitySaveArray.indexOf(CurrentAbilitySave) === -1) {
-		AbilitySaveArray.push(CurrentAbilitySave);
+	var aSave = CurrentRace.abilitySave;
+	if (aSave && aSaveA.indexOf(aSave) === -1) {
+		aSaveA.push(aSave);
+	}
+	if (aSave) {
+		var abiNm = "abi" + aSave;
+		if (!CurrentAbilitySaveDCs[abiNm]) CurrentAbilitySaveDCs[abiNm] = [];
+		CurrentAbilitySaveDCs[abiNm].push(CurrentRace.known);
 	}
 
 	//put the ability save DC right, and show both if more than one class with ability save DC
-	if (AbilitySaveArray[0]) {
-		PickDropdown("Spell DC 1 Mod", AbilitySaveArray[0]);
+	if (aSaveA[0]) {
+		PickDropdown("Spell DC 1 Mod", aSaveA[0]);
 	} else {
 		PickDropdown("Spell DC 1 Mod", 0);
 	}
 
-	if (AbilitySaveArray[1]) {
+	if (aSaveA[1]) {
 		Toggle2ndAbilityDC("show");
-		PickDropdown("Spell DC 2 Mod", AbilitySaveArray[1]);
+		PickDropdown("Spell DC 2 Mod", aSaveA[1]);
 	} else {
+		PickDropdown("Spell DC 2 Mod", 0);
 		Toggle2ndAbilityDC("hide");
 	}
 }

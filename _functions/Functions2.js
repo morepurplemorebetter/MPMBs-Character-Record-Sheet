@@ -7879,8 +7879,6 @@ function setCalcOrder() {
 	cFlds = cFlds.concat(skills);
 	cFlds = cFlds.concat(["Too", "Passive Perception", "Initiative bonus"]);
 	if (!typePF) cFlds.push("Init Dex Mod");
-	// Spell Saves
-	cFlds = cFlds.concat(["Spell save DC 1", "Spell save DC 2"]);
 	// AC
 	cFlds = cFlds.concat(["AC Armor Bonus", "AC Dexterity Modifier", "AC"]);
 	// HD
@@ -7896,13 +7894,15 @@ function setCalcOrder() {
 	cFlds.push("Adventuring Gear Weight Subtotal Left");
 	for (var i = 1; i <= (typePF ? 9 : 6); i++) cFlds.push("Adventuring Gear Location.Subtotal "+i);
 	// equipment 3rd page
-	cFlds.push("Extra.Gear Weight Subtotal Right");
-	cFlds.push("Extra.Gear Weight Subtotal Left");
+	cFlds = cFlds.concat(["Extra.Gear Weight Subtotal Right", "Extra.Gear Weight Subtotal Left"]);
 	for (var i = 1; i <= 6; i++) cFlds.push("Extra.Gear Location.Subtotal "+i);
 	// weight carried
 	cFlds.push("Weight Carried");
 	// unrelated fields
 	cFlds = cFlds.concat(["Next level", "SheetInformation"]);
+	// Magic Items and Feats name fields (for the choices)
+	for (var i = 1; i <= FieldNumbers.feats; i++) cFlds.push("Feat Name " + i);
+	for (var i = 1; i <= FieldNumbers.magicitems; i++) cFlds.push("Extra.Magic Item " + i);
 	// companion page
 	var tpls = What("Template.extras.AScomp").split(",");
 	for (var t = 0; t < tpls.length; t++) {
@@ -7926,7 +7926,7 @@ function setCalcOrder() {
 			cFlds = cFlds.concat([tpl+"Comp.eqp.Gear Weight Subtotal Left", tpl+"Comp.eqp.Gear Weight Subtotal Right"]);
 		}
 		// companion notes
-		cFlds.push(tpl+"Comp.eqp.Notes");
+		cFlds = cFlds.concat([tpl+"Comp.eqp.Notes", tpl+"Comp.eqp.Display.Weighttxt"]);
 		if (!typePF) cFlds.push(tpl+"Comp.img.Notes");
 		// companion attacks
 		for (var i = 1; i <= 3; i++) cFlds.push(tpl+"Comp.Use.Attack."+i+".To Hit");
@@ -7951,8 +7951,10 @@ function setCalcOrder() {
 			cFlds.push(tpl+"AdvLog.PC Name");
 		}
 		if (!typePF && What("Template.extras.SSfront").indexOf(tpl) !== -1) cFlds.push(tpl+"spellshead.Text.prepare.0");
-		for (var i = 0; i <= 3; i++) cFlds = cFlds.concat([tpl+"spellshead.prepare."+i, tpl+"spellshead.dc."+i, tpl+"spellshead.attack."+i]);
+		for (var i = 0; i <= 3; i++) cFlds.push(tpl+"spellshead.prepare."+i);
 	}
+	// Ability Save DCs (have to come after spell save DCs)
+	cFlds = cFlds.concat(["Spell save DC 1", "Spell save DC 2"]);
 	// adventurers log page last
 	var advT = [".xp", ".gold", ".downtime", ".renown", ".magicItems"];
 	var tpls = What("Template.extras.ALlog").split(",");

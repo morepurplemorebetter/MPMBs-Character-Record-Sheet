@@ -251,6 +251,7 @@ var CurrentVars = { manual : {} };
 var UpdateSpellSheets = {};
 var CurrentFeatureChoices = {};
 var CurrentStats = {};
+var CurrentAbilitySaveDCs = {};
 
 var CurrentArmour = {
 	field : "",
