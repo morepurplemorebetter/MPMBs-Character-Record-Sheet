@@ -3774,7 +3774,7 @@ function GenerateSpellSheet(GoOn) {
 			continue;
 		};
 
-		var MeKn = spCast.firstCol ? "##" + spCast.firstCol : spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : spCast.typeList === 4 || (/race|feat|item/i).test(spCast.typeSp) ? "##kn" : "##"; //add "Me" or "Kn" to the name or not?
+		var MeKn = spCast.firstCol !== undefined ? "##" + spCast.firstCol : spCast.known && spCast.known.prepared && spCast.typeList !== 3 ? "##me" : spCast.typeList === 4 || (/race|feat|item/i).test(spCast.typeSp) ? "##kn" : "##"; //add "Me" or "Kn" to the name or not?
 
 		//see if we need to stop short of doing all the spells
 		var maxLvl = 9;
@@ -3804,7 +3804,7 @@ function GenerateSpellSheet(GoOn) {
 			// once we surpass the highest level (9) now do the psionic talents/disciplines
 			if (lvl === 10) {
 				isPsionics = "psionic";
-				MeKn = spCast.firstCol ? "##" + spCast.firstCol : "##pp";
+				MeKn = spCast.firstCol !== undefined ? "##" + spCast.firstCol : "##pp";
 			}
 			var spArray = orderedSpellList[lvl];
 			if (!spArray || !spArray.length) continue;
@@ -3838,7 +3838,7 @@ function GenerateSpellSheet(GoOn) {
 			dividerCurrent += 1;
 
 			//then add the title line
-			Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + ((lvl === 0 || lvl === 10) && spCast.typeList === 4 ? "##kn" : MeKn));
+			Value(prefixCurrent + "spells.remember." + lineCurrent, isPsionics + "setcaptions" + ((lvl === 0 || lvl === 10) && spCast.typeList === 4 && spCast.firstCol === undefined ? "##kn" : MeKn));
 			lineCurrent += 1;
 
 			for (var y = 0; y < spArray.length; y++) {
