@@ -250,10 +250,13 @@ function ApplySpell(FldValue, rememberFldName) {
 				}
 				// apply ability score modifier
 				if (aCast.ability && (/spellcasting (ability )?mod(ifier)?/).test(aSpell.description)) {
-					var theAbi = AbilityScores.abbreviations[aCast.ability - 1];
-					var theAbiMod = Number(What(theAbi + " Mod"));
-					if (theAbiMod >= 0) theAbiMod = "+" + theAbiMod;
-					aSpell.description = aSpell.description.replace(/\+? ?(my )?spellcasting (ability )?mod(ifier)?/, theAbiMod + " (" + theAbi + ")");
+					var castAbi = isNaN(aCast.ability) && aCast.abilityToUse ? aCast.abilityToUse[0] : aCast.ability;
+					var theAbi = AbilityScores.abbreviations[castAbi - 1];
+					if (theAbi) {
+						var theAbiMod = Number(What(theAbi + " Mod"));
+						if (theAbiMod >= 0) theAbiMod = "+" + theAbiMod;
+						aSpell.description = aSpell.description.replace(/\+? ?(my )?spellcasting (ability )?mod(ifier)?/, theAbiMod + " (" + theAbi + ")");
+					}
 				}
 			}
 
@@ -5914,7 +5917,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 		var firstIsNumber = Number(spellObj.description.replace(testRegex, "$2"));
 		var secondIsNumber = parseFloat(spellObj.description.replace(testRegex, "$3").replace(/\d+d\d+/g, 'NdN'));
 		if (!isNaN(firstIsNumber)) {
-			spellObj.description = spellObj.description.replace(testRegex, "$1" + (firstIsNumber + abiMod) + "$3");
+			spellObj.description = spellObj.description.replace(testRegex, "$1") + (firstIsNumber + abiMod) + spellObj.description.replace(testRegex, "$3");
 		} else if (!isNaN(secondIsNumber)) {
 			var theMatch = spellObj.description.match(testRegex);
 			spellObj.description = spellObj.description.replace(testRegex, theMatch[1] + theMatch[2] + theMatch[3].replace(RegExp("\\+?" + secondIsNumber), secondIsNumber + abiMod));
