@@ -5408,7 +5408,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 
 //Make menu for 'choose class feature' button and parse it to Menus.classfeatures
 function MakeClassMenu() {
-	var gatherVars, hasEldritchBlast;
+	var gatherVars, hasEldritchBlast, isFS = false, selFS = GetFightingStyleSelection();
 	var testPrereqs = function(toEval, objNm, feaNm) {
 		if (!gatherVars) {
 			gatherVars = gatherPrereqevalVars();
@@ -5444,6 +5444,7 @@ function MakeClassMenu() {
 	var menuLVL3 = function (menu, name, array, classNm, featureNm, extrareturn, feaObj, curSel) {
 		var temp = [];
 		for (var i = 0; i < array.length; i++) {
+			var extraNm = "";
 			var feaObjNm = array[i].toLowerCase();
 			var feaObjA = feaObj[feaObjNm];
 			if (!feaObjA) { // object doesn't exist, so warn user
@@ -5459,11 +5460,15 @@ function MakeClassMenu() {
 			// now see if we should disable this because of prerequisites
 			var isEnabled = feaObjA.prereqeval && !ignorePrereqs && !isActive ? testPrereqs(feaObjA.prereqeval, feaObjNm, featureNm) : true;
 			if (isEnabled == "skip") continue; // special failsafe for choices that return "skip" on their prepreqeval
+			if (isEnabled && !isActive && isFS && selFS[feaObjNm]) {
+				isEnabled = false;
+				extraNm = selFS[feaObjNm];
+			}
 			var removeStop = !isActive ? "add" : extrareturn ? "remove" : "stop";
 
 			// now make the menu entry
 			temp.push({
-				cName : array[i] + stringSource(feaObjA, "first,abbr", "\t   [", "]"),
+				cName : array[i] + extraNm + stringSource(feaObjA, "first,abbr", "\t   [", "]"),
 				cReturn : classNm + "#" + featureNm + "#" + array[i] + "#" + extrareturn + "#" + removeStop,
 				bMarked : isActive,
 				bEnabled : isEnabled
@@ -5492,6 +5497,7 @@ function MakeClassMenu() {
 		for (var prop in cl.features) {
 			var propFea = cl.features[prop];
 			if (propFea.choices && !propFea.choicesNotInMenu && propFea.minlevel <= clLvl) {
+				isFS = (/fighting style/i).test(prop + propFea.name);
 				toTest = GetFeatureChoice("classes", aClass, prop, false);
 				propFea.choices.sort();
 				menuLVL3(tempItem, propFea.name, propFea.choices, aClass, prop, "", propFea, toTest);

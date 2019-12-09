@@ -523,8 +523,8 @@ function SetFeatureChoice(type, objNm, feaNm, choice, extra) {
 				lookin.extrachoices.splice(lookin.extrachoices.indexOf(extra), 1);
 				if (lookin.extrachoices.length == 0) delete lookin.extrachoices;
 			}
-		} else {
-			if (lookin.choice) delete lookin.choice;
+		} else if (lookin.choice) {
+			delete lookin.choice;
 		}
 		CurrentFeatureChoices = CleanObject(CurrentFeatureChoices); // remove any remaining empty objects
 	} else { // add the choice
@@ -551,6 +551,23 @@ function GetFeatureChoice(type, objNm, feaNm, extra) {
 		if (foundSel) theReturn = foundSel.slice();
 	}
 	return theReturn;
+}
+
+// a function to get all currently selected fighting styles
+function GetFightingStyleSelection() {
+	var fndObj = {};
+	if (CurrentFeatureChoices.classes) {
+		for (var aClass in CurrentFeatureChoices.classes) {
+			var clObj = CurrentFeatureChoices.classes[aClass];
+			var clNm = CurrentClasses[aClass].fullname.indexOf(CurrentClasses[aClass].name) == -1 ? CurrentClasses[aClass].fullname : CurrentClasses[aClass].name;
+			for (var aFea in clObj) {
+				var feaObj = clObj[aFea];
+				var feaNm = CurrentClasses[aClass] && CurrentClasses[aClass].features[aFea] ? CurrentClasses[aClass].features[aFea].name : aFea.capitalize();
+				if (typeof feaObj == "object" && feaObj.choice && (/fighting style/i).test(aFea + feaNm)) fndObj[feaObj.choice] = "\t   (selected: " + clNm + " - " + feaNm + ")";
+			}
+		}
+	}
+	return fndObj;
 }
 
 // a function to get a string of class feature choices just like how they use to be prior to v13 with the "Class Feature Remember" field
