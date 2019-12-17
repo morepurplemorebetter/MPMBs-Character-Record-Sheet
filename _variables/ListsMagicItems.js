@@ -6279,9 +6279,10 @@ var Base_MagicItemsList = {
 		choices : ["+1 Wand (uncommon)", "+2 Wand (rare)", "+3 Wand (very rare)"],
 		"+1 wand (uncommon)" : {
 			name : "Wand of the War Mage +1",
+			nameTest : " of the War Mage +1",
 			rarity : "uncommon",
 			magicItemTable : "F",
-			description : "While I am holding this wand, I gain a +1 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
+			description : "While I am holding this arcane focus, I gain a +1 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
 			calcChanges : {
 				spellCalc : [
 					function (type, spellcasters, ability) {
@@ -6293,9 +6294,10 @@ var Base_MagicItemsList = {
 		},
 		"+2 wand (rare)" : {
 			name : "Wand of the War Mage +2",
+			nameTest : " of the War Mage +2",
 			rarity : "rare",
 			magicItemTable : "G",
-			description : "While I am holding this wand, I gain a +2 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
+			description : "While I am holding this arcane focus, I gain a +2 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
 			calcChanges : {
 				spellCalc : [
 					function (type, spellcasters, ability) {
@@ -6307,9 +6309,10 @@ var Base_MagicItemsList = {
 		},
 		"+3 wand (very rare)" : {
 			name : "Wand of the War Mage +3",
+			nameTest : " of the War Mage +3",
 			rarity : "very rare",
 			magicItemTable : "H",
-			description : "While I am holding this wand, I gain a +3 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
+			description : "While I am holding this arcane focus, I gain a +3 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
 			calcChanges : {
 				spellCalc : [
 					function (type, spellcasters, ability) {

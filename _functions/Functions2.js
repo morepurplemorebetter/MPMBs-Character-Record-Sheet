@@ -6010,12 +6010,12 @@ function EvalDmgDie(input, notComp, isSpecial) {
 	} else if (!isNaN(input)) {
 		return Number(input);
 	};
-	// resolve the C and B for cantrip die, if present
-	if ((/^(?=.*(B|C))(?=.*d\d).*$/).test(input)) { //if this involves a cantrip calculation
+	// resolve the C, B, and Q for cantrip die, if present
+	if ((/^(?=.*(B|C|Q))(?=.*d\d).*$/).test(input)) { //if this involves a cantrip calculation
 		var cLvl = Number(notComp === true ? What("Character Level") : What(notComp + "Comp.Use.HD.Level"));
 		var cDie = cantripDie[Math.min(Math.max(cLvl, 1), cantripDie.length) - 1];
 		input = input.replace(/cha/ig, "kha").replace(/con/ig, "kon");
-		input = input.replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/0.?d\d+/g, 0);
+		input = input.replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/Q/g, cDie + 1).replace(/0.?d\d+/g, 0);
 		input = input.replace(/kha/g, "Cha").replace(/kon/g, "Con");
 	};
 	if (input[0] == "=") { // only if a string staring with "=" does it mean that it wants to be calculate to values
@@ -6046,7 +6046,7 @@ function SetThisFldVal() {
 		var theVal = event.target.value;
 		if (!isNaN(theVal)) theVal = theVal.toString();
 		var theExpl = event.target.submitName.replace(/^\n*/, "");
-		var theDialTxt = (dmgDie ? "If you want the Damage Die to be a calculated value, and not just a string, make sure the first character is a '='.\nRegardless of the first character, a 'C' will be replaced with the Cantrip die, and a 'B' with the Cantrip die minus 1.\n\nIf a calculated value (=), you can use underscores to keep the strings separate. For the calculated parts, y" : "Y") + "ou can use numbers, logical operators (+, -, /, *), ability score abbreviations (Str, Dex, Con, Int, Wis, Cha" + (QI === true ? ", HoS" : "") + "), and 'Prof'." + (QI === true ? "" : "\nIn addition, you can use the values from the character (the 1st page) by adding the letter 'o' before the variable (oStr, oDex, oCon, oInt, oWis, oCha, oHoS, oProf).");
+		var theDialTxt = (dmgDie ? "If you want the Damage Die to be a calculated value, and not just a string, make sure the first character is a '='.\nRegardless of the first character, a 'C' will be replaced with the Cantrip die, a 'B' with the Cantrip die minus 1, and a 'Q' with the Cantrip die plus 1.\n\nIf a calculated value (=), you can use underscores to keep the strings separate. For the calculated parts, y" : "Y") + "ou can use numbers, logical operators (+, -, /, *), ability score abbreviations (Str, Dex, Con, Int, Wis, Cha" + (QI === true ? ", HoS" : "") + "), and 'Prof'." + (QI === true ? "" : "\nIn addition, you can use the values from the character (the 1st page) by adding the letter 'o' before the variable (oStr, oDex, oCon, oInt, oWis, oCha, oHoS, oProf).");
 		var theDialog = {
 			notComp : QI,
 			isDmgDie : dmgDie,

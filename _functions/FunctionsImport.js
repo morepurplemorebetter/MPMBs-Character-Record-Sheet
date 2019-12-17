@@ -2720,11 +2720,15 @@ function ImportScriptFileDialog(retResDia) {
 	var AddScriptFiles_dialog = {
 		initialize: function(dialog) {
 			dialog.load({
-				"img1" : allIcons.import,
-				"scrF" : dialogObj,
-				"head" : defaultTxt
+				img1 : allIcons.import,
+				scrF : dialogObj,
+				head : defaultTxt
 			});
 			dialog.setForeColorRed("txtB");
+			dialog.enable({
+				bRem : false,
+				bSee : false
+			});
 		},
 		commit: function(dialog) {},
 		bFAQ: function(dialog) {
@@ -2746,8 +2750,15 @@ function ImportScriptFileDialog(retResDia) {
 			var allElem = dialog.store()["scrF"];
 			var remElem = GetPositiveElement(allElem);
 			if (remElem) {
-				var remElemNm = "'" + (remElem.length > 50 ? remElem.substr(0,50) + "..." : remElem) + "'";
-				dialog.load({ bRem : "Delete file " + remElemNm});
+				var remElemNm = remElem.length > 50 ? remElem.substr(0,50) + "..." : remElem;
+				dialog.load({
+					bRem : "DELETE " + remElemNm,
+					bSee : "SEE CONTENT of " + remElemNm
+				});
+				dialog.enable({
+					bRem : true,
+					bSee : true
+				});
 			};
 		},
 		bAdd: function(dialog) {
@@ -2756,22 +2767,38 @@ function ImportScriptFileDialog(retResDia) {
 			for (var scriptFile in CurrentScriptFiles) {
 				dialogObj[scriptFile] = -1;
 			};
-			dialog.load({ "scrF" : dialogObj });
+			dialog.load({
+				"scrF" : dialogObj,
+				bRem : "DELETE selected file",
+				bSee : "SEE CONTENT of selected file"
+			});
+			dialog.enable({
+				bRem : false,
+				bSee : false
+			});
 		},
-		bRem: function(dialog) {
+		removeOrSee: function(dialog, deleteIt) {
 			var allElem = dialog.store()["scrF"];
-			var remElem = GetPositiveElement(allElem);
-			if (remElem) {
-				if (CurrentScriptFiles[remElem]) {
-					delete CurrentScriptFiles[remElem];
+			var fndElem = GetPositiveElement(allElem);
+			if (!fndElem) return;
+			if (CurrentScriptFiles[fndElem]) {
+				if (deleteIt) {
+					delete CurrentScriptFiles[fndElem];
 					SetStringifieds("scriptfiles");
 				} else {
-					app.alert("The name '" + remElem + "' in the dialogue was not found in any of the scripts the sheet. It will be removed from the dialogue, but nothing in the sheet will change.");
-				};
-				delete allElem[remElem];
-				dialog.load({ scrF : allElem });
+					ShowDialog("Content of '" + fndElem + "'", CurrentScriptFiles[fndElem]);
+				}
+			} else {
+				app.alert("The name '" + fndElem + "' in the dialogue was not found in any of the scripts the sheet. It will be removed from the dialogue, but nothing in the sheet will change.");
+				deleteIt = true;
 			};
+			if (deleteIt) {
+				delete allElem[fndElem];
+				dialog.load({ scrF : allElem });
+			}
 		},
+		bRem: function(dialog) { this.removeOrSee(dialog, true); },
+		bSee: function(dialog) { this.removeOrSee(dialog, false); },
 		description : {
 			name : "Add JavaScript files that are run on startup",
 			first_tab : "OKbt",
@@ -2806,7 +2833,7 @@ function ImportScriptFileDialog(retResDia) {
 						align_children : "align_row",
 						elements : [{
 							width : 300,
-							height : 110,
+							height : 150,
 							type : "hier_list_box",
 							item_id : "scrF"
 						}, {
@@ -2833,7 +2860,12 @@ function ImportScriptFileDialog(retResDia) {
 							}, {
 								type : "button",
 								item_id : "bRem",
-								name : "Delete selected file",
+								name : "DELETE selected file",
+								width : 380
+							}, {
+								type : "button",
+								item_id : "bSee",
+								name : "SEE CONTENT of selected file",
 								width : 380
 							}, {
 								type : "static_text",

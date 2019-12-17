@@ -1834,7 +1834,7 @@ var Base_SpellsList = {
 		components : "V",
 		duration : "30 days (D)",
 		save : "Wis",
-		description : "1 crea save or charmed; it must obeys commands or 5d10 Psychic dmg; SL7: 1 year, SL9: until disp.",
+		description : "1 crea save or charmed, it must obey commands or 5d10 Psychic dmg; SL7: 1 year, SL9: until disp.",
 		descriptionFull : "You place a magical command on a creature that you can see within range, forcing it to carry out some service or refrain from some action or course of activity as you decide. If the creature can understand you, it must succeed on a Wisdom saving throw or become charmed by you for the duration. While the creature is charmed by you, it takes 5d10 psychic damage each time it acts in a manner directly counter to your instructions, but no more than once each day. A creature that can't understand you is unaffected by the spell." + "\n   " + "You can issue any command you choose, short of an activity that would result in certain death. Should you issue a suicidal command, the spell ends." + "\n   " + "You can end the spell early by using an action to dismiss it. A remove curse, greater restoration, or wish spell also ends it." + AtHigherLevels + "When you cast this spell using a spell slot of 7th or 8th level, the duration is 1 year. When you cast this spell using a spell slot of the spell lasts until it is ended by one of the spells mentioned above."
 	},
 	"gentle repose" : {
@@ -2254,7 +2254,7 @@ var Base_SpellsList = {
 		compMaterial : "A pinch of dust and a few drops of water",
 		duration : "Instantaneous",
 		save : "Dex",
-		description : "20-ft rad 40-ft high all crea 2d8+1d8/SL Bludg. and 4d6 Cold dmg; save halves; 1 rnd difficult ter.",
+		description : "20-ft rad 40-ft high all crea 2d8+1d8/SL Bludg. dmg + 4d6 Cold dmg; save half; 1 rnd difficult ter.",
 		descriptionFull : "A hail of rock-hard ice pounds to the ground in a 20-foot-radius, 40-foot-high cylinder centered on a point within range. Each creature in the cylinder must make a Dexterity saving throw. A creature takes 2d8 bludgeoning damage and 4d6 cold damage on a failed save, or half as much damage on a successful one." + "\n   " + "Hailstones turn the storm's area of effect into difficult terrain until the end of your next turn." + AtHigherLevels + "When you cast this spell using a spell slot of 5th level or higher, the bludgeoning damage increases by 1d8 for each slot level above 4th."
 	},
 	"identify" : {
@@ -2625,7 +2625,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u2020",
 		compMaterial : "A small bit of honeycomb and jade dust worth at least 10 gp, which the spell consumes",
 		duration : "Till dispelled",
-		description : "Implant a 25 word message in an object that is uttered on chosen trigger condition (10g cons.)",
+		description : "Implant a 25 word message in an object that is uttered on chosen trigger condition (10gp cons.)",
 		descriptionFull : "You implant a message within an object in range, a message that is uttered when a trigger condition is met. Choose an object that you can see and that isn't being worn or carried by another creature. Then speak the message, which must be 25 words or less, though it can be delivered over as long as 10 minutes. Finally, determine the circumstance that will trigger the spell to deliver your message." + "\n   " + "When that circumstance occurs, a magical mouth appears on the object and recites the message in your voice and at the same volume you spoke. If the object you chose has a mouth or something that looks like a mouth (for example, the mouth of a statue), the magical mouth appears there so that words appear to come from the object's mouth. When you cast this spell, you can have the spell end after it delivers its message, or it can remain and repeats its message whenever the trigger occurs." + "\n   " + "The triggering circumstance can be as general or as detailed as you like, though it must be based on visual or audible conditions that occur within 30 feet of the object. For example, you could instruct the mouth to speak when any creature moves within 30 feet of the object or when a silver bell rings within 30 feet of it."
 	},
 	"magic weapon" : {
@@ -2749,7 +2749,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "Powdered rhubarb leaf and an adder's stomach",
 		duration : "Instantaneous",
-		description : "Spell attack for 4d4+1d4/SL and 2d4+1d4/SL Acid dmg next turn; on miss half dmg no next turn",
+		description : "Spell attack for 4d4+1d4/SL Acid dmg and 2d4+1d4/SL next turn; on miss half dmg no next turn",
 		descriptionFull : "A shimmering green arrow streaks toward a target within range and bursts in a spray of acid. Make a ranged spell attack against the target. On a hit, the target takes 4d4 acid damage immediately and 2d4 acid damage at the end of its next turn. On a miss, the arrow splashes the target with acid for half as much of the initial damage and no damage at the end of its next turn." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, the damage (both initial and later) increases by 1d4 for each slot level above 2nd."
 	},
 	"mending" : {
@@ -3910,7 +3910,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "Seven sharp thorns or seven small twigs, each sharpened to a point",
 		duration : "Conc, 10 min",
-		description : "20-ft rad difficult terrain; all 2d4 Piercing dmg every 5 ft moved; Wis(Perc) vs. Spell DC to recognize",
+		description : "20-ft rad difficult terrain; all 2d4 Piercing dmg per 5 ft moved; Wis(Perc) vs. Spell DC to recognize",
 		descriptionFull : "The ground in a 20-foot radius centered on a point within range twists and sprouts hard spikes and thorns. The area becomes difficult terrain for the duration. When a creature moves into or within the area, it takes 2d4 piercing damage for every 5 feet it travels." + "\n   " + "The transformation of the ground is camouflaged to look natural. Any creature that can't see the area at the time the spell is cast must make a Wisdom (Perception) check against your spell save DC to recognize the terrain as hazardous before entering it."
 	},
 	"spirit guardians" : {

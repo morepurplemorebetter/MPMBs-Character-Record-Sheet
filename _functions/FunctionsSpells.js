@@ -3616,7 +3616,6 @@ function AskUserSpellSheet() {
 		if (CurrentCasters.emptyFields === undefined) CurrentCasters.emptyFields = false;
 		//now see if anything has been defined for showing the full or applied version of cantrip/spell descriptions (i.e. never for full lists or manually added spells)
 		if (CurrentCasters.amendSpDescr === undefined) CurrentCasters.amendSpDescr = false;
-		CurrentCasters.charLevel
 
 		//convert the incl and excl CurrentSpells arrays to their named counterparts
 		var exclNames = [];
@@ -5908,55 +5907,298 @@ function getSpellcastingAbility(theCast) {
 
 // A generic function to call from a calcChanges.spellAdd object to add a certain ability score
 // dmgType has to be already escaped for use in regular expressions
-// ability has to be the three-letter abbreviation of an ability, starting with a capital
+// ability has to be the three-letter abbreviation of an ability starting with a capital, a number, or dice type (e.g. '1d8'). Anything else will cause the function call to fail (nothing happens)
 function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, onlyRolls) {
+	var isDieType = (/^\d*d\d+$/i).test(ability);
+	var abiMod = isDieType ? ability.replace(/^1d(\d+)$/i, "d$1") : !isNaN(ability) ? ability : Number(What(ability + " Mod"));
+	if ((isNaN(ability) && abiMod < 1) || abiMod === 0) return; // nothing to add
 	var baseRegex = "(.*?)(\\d+" + (onlyRolls ? "d\\d+" : "d?\\d*") + ")((\\+\\d+d?\\d*\\/(\\d?SL|PP|extra PP))?(\\+spell(casting)? (ability )?mod(ifier)?|(\\+|-)\\d+ \\(.{3}\\))? (";
 	var testRegex = RegExp(baseRegex + dmgType + ") (dmg|damage).*)", "ig");
-	var abiMod = !isNaN(ability) ? ability : What(ability + " Mod");
-	if (Number(abiMod) > 0 && (testRegex).test(spellObj.description)) {
-		var firstIsNumber = Number(spellObj.description.replace(testRegex, "$2"));
-		var secondIsNumber = parseFloat(spellObj.description.replace(testRegex, "$3").replace(/\d+d\d+/g, 'NdN'));
-		if (!isNaN(firstIsNumber)) {
-			spellObj.description = spellObj.description.replace(testRegex, "$1") + (firstIsNumber + abiMod) + spellObj.description.replace(testRegex, "$3");
-		} else if (!isNaN(secondIsNumber)) {
-			var theMatch = spellObj.description.match(testRegex);
-			spellObj.description = spellObj.description.replace(testRegex, theMatch[1] + theMatch[2] + theMatch[3].replace(RegExp("\\+?" + secondIsNumber), secondIsNumber + abiMod));
+	if (!(testRegex).test(spellObj.description)) return; // nothing to do
+	// Some spells need some help with spacing
+	switch (spellKey) {
+		case "create homunculus" :
+			return; // you don't want to do yourself more damage do you?
+		case "mordenkainen's faithful hound" :
+		case "storm of vengeance" :
+		case "wall of ice" :
+			spellObj.description = spellObj.description.replace('see book', 'see B');
+			break;
+		case "bones of the earth" :
+			spellObj.description = spellObj.description.replace('see B', 'B');
+			break;
+		case "wrath of nature" :
+			spellObj.description = spellObj.description.replace(' see B', '');
+			break;
+		case "catapult" :
+			spellObj.description = spellObj.description.replace('object', 'obj');
+			break;
+		case "evard's black tentacles" :
+			spellObj.description = spellObj.description.replace('Bludgeoning', 'Bludg.');
+			break;
+		case "blade barrier" :
+		case "wall of fire" :
+		case "tsunami" :
+		case "dust devil" :
+		case "tidal wave" :
+			spellObj.description = spellObj.description.replace('save halves', 'save half');
+			break;
+		case "mental prison" :
+			spellObj.description = spellObj.description.replace('charm effect', 'charm');
+			break;
+		case "mind spike" :
+			spellObj.description = spellObj.description.replace('no other benefits', 'nothing else');
+			break;
+		case "shadow blade" :
+			spellObj.description = spellObj.description.replace(' if target', '');
+			break;
+		case "hex" :
+			spellObj.description = spellObj.description.replace('on chosen', 'chosen');
+			break;
+		case "lightning arrow" :
+			spellObj.description = spellObj.description.replace("Lightn. dmg, save", "Lightn., save");
+			break;
+		case "ice knife" :
+			spellObj.description = spellObj.description.replace("Ranged atk for", "Ranged atk");
+			break;
+		case "storm sphere" :
+			spellObj.description = spellObj.description.replace("all crea cast/end turn", "cast/turn all");
+			break;
+		case "investiture of flame" :
+			spellObj.description = spellObj.description.replace("Fire immune", "Fire im.").replace("all crea", "all");
+			break;
+		case "investiture of ice" :
+			spellObj.description = spellObj.description.replace("Cold immune; Fire resist", "Cold im.; Fire res.").replace("half speed", "half spd");
+			break;
+		case "melf's acid arrow" :
+			spellObj.description = spellObj.description.replace("Spell attack", "Spell atk");
+			break;
+		case "immolation" :
+		case "maelstrom" :
+		case "earth tremor" :
+			spellObj.description = spellObj.description.replace(" and ", " \u0026 ");
+			break;
+		case "sickening radiance" :
+			spellObj.description = spellObj.description.replace("level of exhaustion, and", "lvl exhaust. \u0026");
+			break;
+		case "synaptic static" :
+			spellObj.description = spellObj.description.replace("check", "chk");
+			break;
+		case "wall of light" :
+			spellObj.description = spellObj.description.replace("not blind", "no blind");
+			break;
+		case "zephyr strike-xgte" :
+			spellObj.description = spellObj.description.replace("opportunity", "opport.");
+			break;
+		case "jim's magic missile" :
+			spellObj.description = spellObj.description.replace("each spell atk for", "spell atks");
+			break;
+		case "holy weapon" :
+			spellObj.description = spellObj.description.replace(" crea ", " ");
+			break;
+	}
+	if (notMultiple) {
+		var nRegex = /(1\×D7|once) +(\d+)/i;
+		if (nRegex.test(spellObj.description)) {
+			// Another addition already took place, so merge them
+			var prevBonus = Number(spellObj.description.replace(nRegex, "$2"));
+			spellObj.description = spellObj.description.replace(nRegex, "$1 +" + (prevBonus + abiMod));
 		} else {
-			spellObj.description = spellObj.description.replace(testRegex, "$1$2+" + abiMod + "$3");
-		}
-		if (notMultiple) {
-			// some spells will have the wrong damage amended, so change it to the right one
+			// some spells are hard to gather in an all-incompasing function so we do them like this
 			switch (spellKey) {
-				case "booming blade" :
-				case "melf's acid arrow" :
-				case "vitriolic sphere" :
-					spellObj.description = spellObj.description.replace(/(.*?\d+d\d+)(.*?\d+d\d+)(\+\d+)(.*)/, "$1$3$2$4");
-					break;
-				case "holy weapon" :
-					spellObj.description = spellObj.description.replace(/(.*?\d+d\d+)(\+\d+)(.*?\d+d\d+)(.*)/, "$1$3$2$4");
-					break;
+				case "cloudkill" :
+					spellObj.description = spellObj.description.replace("obscured, difficult terrain", "obsc., dif. ter.; 1\xD7 +" + abiMod + " dmg");
+					return true;
+				case "flame blade" :
+					spellObj.description = spellObj.description.replace('all within', 'all in').replace('to make a melee spell attack', 'make melee spell atk').replace('Fire dmg', "Fire dmg (1\xD7 +" + abiMod + ")");
+					return true;
+				case "heat metal" :
+					spellObj.description = spellObj.description.replace('reheat obj', 'redo').replace('Fire dmg to touch', "Fire dmg to touch (1\xD7 +" + abiMod + ")");
+					return true;
+			// Block to add " (1× +X)" at "HIERZO" (or at the end)
+				case "hunger of hadar" :
+					spellObj.description = spellObj.description.replace(/all /i, '');
+				case "hex" :
+					spellObj.description = spellObj.description.replace(/dis. (on )?chosen ability checks/, 'dis. chosen abi chks');
+				case "blade barrier" :
+					if (spellKey == "blade barrier") spellObj.description = spellObj.description.replace(/(9|30) rad /, '$1\xD7').replace('(w\xD7l)', '(r\xD7w\xD7l)').replace(/Slash(ing|\.)? dmg/, 'Slash. dmgHIERZO').replace('3/4 cover', '\u00BE cover');
+				case "vampiric touch" :
+					spellObj.description = spellObj.description.replace(/Necrotic dmg( from my atks)/, '$1HIERZO');
+				case "melf's minute meteors" :
+					if (spellKey == "melf's minute meteors") spellObj.description = spellObj.description.replace("at casting/bns a send up to two", "at cast/bns a send up to 2");
+				case "ensnaring strike" :
+				case "evard's black tentacles" :
+				case "phantasmal force" :
+					if (spellKey == "evard's black tentacles" || spellKey == "ensnaring strike" || spellKey == "phantasmal force") spellObj.description = spellObj.description.replace('that enter', 'enter').replace('dmg/rnd', 'dmg/rndHIERZO').replace('Str check to escape', 'Str chk escape').replace('Investigation', 'Invest.');
+				case "ensnaring strike" :
+					if (spellKey == "ensnaring strike") spellObj.description = spellObj.description.replace("at end of each round", "each round end");
+				case "call lightning" :
+					if (spellKey == "call lightning") spellObj.description = spellObj.description.replace('under cloud', 'under it').replace(/Lightn(ing|\.)? dmg/, 'Lightn. dmgHIERZO');
+				case "enervation" :
+					if (spellKey == "enervation") spellObj.description = spellObj.description.replace("action to repeat", "1 a repeat").replace("see book", "see B");
+				case "spike growth" :
+					if (spellKey == "spike growth") spellObj.description = spellObj.description.replace("difficult terrain", "dif. ter.");
+				case "shadow of moil" :
+					if (spellKey == "shadow of moil") spellObj.description = spellObj.description.replace("heavy obs", "hvy obs").replace("step darker", "darker");
+				case "geas" :
+					if (spellKey == "geas") spellObj.description = spellObj.description.replace("until", "till").replace("commands", "orders").replace("dmg", "dmgHIERZO");
+				case "guardian of faith" :
+					if (spellKey == "guardian of faith") spellObj.description = spellObj.description.replace("vanishes after it deals", "gone once done").replace("Radiant dmg", "Radiant dmgHIERZO");
+				case "insect plague" :
+					if (spellKey == "insect plague") spellObj.description = spellObj.description.replace("save halves", "save half").replace("difficult", "dif.").replace("dmg", "dmgHIERZO");
+				case "mordenkainen's faithful hound" :
+				case "mordenkainen's sword" :
+					if (spellKey == "mordenkainen's faithful hound" || spellKey == "mordenkainen's sword") spellObj.description = spellObj.description.replace(" for ", " ").replace("dmg", "dmgHIERZO");
+				case "jim's magic missile" :
+					if (spellKey == "jim's magic missile") spellObj.description = spellObj.description.replace("dmg", "dmgHIERZO");
+				case "magic stone" :
+					if (!CurrentCasters.amendSpDescr && spellKey == "magic stone") spellObj.description = spellObj.description.replace("attacks, thrown", "atk, throw");
+				case "sunbeam" :
+					if (spellKey == "sunbeam") spellObj.description = spellObj.description.replace("save halves and", "save half,").replace("difficult", "dif.").replace("dmg", "dmgHIERZO");
+				case "wall of thorns" :
+					if (spellKey == "wall of thorns") spellObj.description = spellObj.description.replace("dmg; save halves", "dmgHIERZO; save half").replace("see book", "see B");
+				case "weird" :
+					if (spellKey == "weird") spellObj.description = spellObj.description.replace("at end of each round", "each round end");
+				case "dust devil" :
+					if (spellKey == "dust devil") spellObj.description = spellObj.description.replace("see book", "see B").replace("dmg and pushed", "dmgHIERZO \u0026 pushed");
+				case "investiture of wind" :
+					if (spellKey == "investiture of wind") spellObj.description = spellObj.description.replace("atks dis. vs. me", "atk dis.");
+				case "maelstrom" :
+					if (spellKey == "maelstrom") spellObj.description = spellObj.description.replace("starting turn in", "start turn").replace("dmg", "dmgHIERZO");
+				case "maximilian's earthen grasp" :
+					if (spellKey == "maximilian's earthen grasp") spellObj.description = spellObj.description.replace("hand moves/atks", "move/atk").replace("dmg", "dmgHIERZO");
+				case "crown of stars" :
+					if (spellKey == "crown of stars") spellObj.description = spellObj.description.replace("bonus action", "bns a");
+				case "maddening darkness" :
+					if (spellKey == "maddening darkness") spellObj.description = spellObj.description.replace("save halves", "save half").replace("starting turn in", "starting turn");
+				case "wall of light" :
+					if (spellKey == "wall of light") spellObj.description = spellObj.description.replace("dmg", "dmgHIERZO");
+				case "witch bolt" :
+					if (spellKey == "witch bolt") spellObj.description = spellObj.description.replace("Spell attack", "Spell atk");
+				case "create bonfire" :
+				case "flame arrows" :
+				case "investiture of flame" :
+				case "investiture of ice" :
+				case "storm sphere" :
+				case "scorching ray" :
+				case "divine favor" :
+				case "eldritch blast" :
+				case "magic missile" :
+				case "phantasmal killer" :
+				case "armor of agathys" :
+				case "cloud of daggers" :
+				case "cordon of arrows" :
+				case "crusader's mantle" :
+				case "whirlwind" :
+				case "dawn" :
+				case "shadow blade" :
+				case "sickening radiance" :
+				case "tenser's transformation" :
+				case "wrath of nature" :
+					spellObj.description = spellObj.description.indexOf("HIERZO") == -1 ? spellObj.description + " (1\xD7 +" + abiMod + ")" : spellObj.description.replace("HIERZO", " (1\xD7 +" + abiMod + ")");
+					return true;
+			// Block to replace "Fire dmg; save halves" with "Fire dmg (1× +X); save half"
+				case "flaming sphere" :
+					spellObj.description = spellObj.description.replace('all within', 'all in');
+				case "wall of fire" :
+					spellObj.description = spellObj.description.replace('see B', 'B');
+				case "incendiary cloud" :
+					spellObj.description = spellObj.description.replace(/Fire (dmg|damage); save hal(f|ves)/i, "Fire dmg (1\xD7 +" + abiMod + "); save half");
+					return true;
 			}
-			return true;
 		}
-		// some spells have the same damage type twice, do them as well
+	}
+	var theMatch = [ // match() doesn't seem to work with this complex regex
+		spellObj.description.replace(testRegex, "$1"),
+		spellObj.description.replace(testRegex, "$2"),
+		spellObj.description.replace(testRegex, "$3")
+	];
+	if (isDieType) {
+		if (!(/^\d+d\d+$/i).test(ability)) ability = "1" + ability;
+		var addDieType = ability.match(/^(\d+)d(\d+)$/i);
+		var dieRegex = RegExp("(.*)(\\d+)(d" + addDieType[2] + ".*)", "i");
+		var firstIsDie = dieRegex.test(theMatch[1]);
+		var secondIsDie = dieRegex.test(theMatch[2]);
+		if (firstIsDie || secondIsDie) {
+			var oldDie = theMatch[firstIsDie ? 1 : 2].match(dieRegex);
+			var newDie = oldDie[1] + (Number(oldDie[2]) + Number(addDieType[1])) + oldDie[3];
+			if (firstIsDie) {
+				spellObj.description = theMatch[0] + newDie + theMatch[2];
+			} else {
+				spellObj.description = theMatch[0] + theMatch[1] + newDie;
+			}
+		} else {
+			spellObj.description += " (" + (notMultiple ? "1\xD7 " : "") + "+" + abiMod + ")"
+		}
+		return true;
+	} else {
+		var firstIsNumber = Number(theMatch[1]);
+		var secondIsNumber = parseFloat(theMatch[2].replace(/\d+d\d+/g, 'NdN'));
+		if (!isNaN(firstIsNumber)) {
+			spellObj.description = theMatch[0] + (firstIsNumber + abiMod) + theMatch[2];
+		} else if (!isNaN(secondIsNumber)) {
+			spellObj.description = theMatch[0] + theMatch[1] + theMatch[2].replace(RegExp("\\+?" + secondIsNumber), secondIsNumber + abiMod);
+		} else {
+			spellObj.description = theMatch[0] + theMatch[1] + "+" + abiMod + theMatch[2];
+		}
+	}
+	if (notMultiple) {
+		// some spells will have the wrong damage amended, so change it to the right one
 		switch (spellKey) {
 			case "booming blade" :
-			case "toll the dead" :
-				spellObj.description = spellObj.description.replace("d8", "d8+" + abiMod);
-				break;
-			case "investiture of flame" :
-				spellObj.description = spellObj.description.replace("4d8", "4d8+" + abiMod).replace(/Fire dmg/g, "Fire");
+			case "vitriolic sphere" :
+				spellObj.description = spellObj.description.replace(/(.*?\d+d\d+)(.*?\d+d\d+)(\+\d+)(.*)/, "$1$3$2$4").replace(" now and", " now,");
 				break;
 			case "holy weapon" :
-				spellObj.description = spellObj.description.replace("4d8", "4d8+" + abiMod).replace(/Radiant dmg/g, "Radiant");
-				break;
-			case "melf's acid arrow" :
-				spellObj.description = spellObj.description.replace("4d4", "4d4+" + abiMod).replace("Acid dmg", "Acid");
-				break;
-			case "vitriolic sphere" :
-				spellObj.description = spellObj.description.replace("10d4", "10d4+" + abiMod).replace(" now and", ",");
+				spellObj.description = spellObj.description.replace(/(.*?\d+d\d+)(\+\d+)(.*?\d+d\d+)(.*)/, "$1$3$2$4");
 				break;
 		}
 		return true;
-	};
+	}
+	// Some spells have the same damage type twice, do them as well.
+	var extraCheck = "";
+	switch (spellKey) {
+		case "booming blade" :
+		case "toll the dead" :
+			extraCheck = "d8";
+			break;
+		case "investiture of flame" :
+			extraCheck = "4d8";
+			break;
+		case "holy weapon" :
+			extraCheck = "2d8";
+			spellObj.description = spellObj.description.replace("end spell", "end");
+			break;
+		case "melf's acid arrow" :
+			extraCheck = "2d4";
+			break;
+		case "vitriolic sphere" :
+			extraCheck = "10d4";
+			spellObj.description = spellObj.description.replace(" now and", ",");
+			break;
+		case "immolation" :
+			extraCheck = "4d6";
+			break;
+		case "mental prison" :
+			extraCheck = "10d10";
+			break;
+		case "lightning arrow" :
+			extraCheck = "2d8";
+			break;
+		case "jim's magic missile" :
+			extraCheck = "5d4";
+			break;
+	}
+	if (extraCheck) {
+		var eRegex = RegExp(extraCheck.toString().RegEscape() + "((-|\\+)\\d+)?", "i");
+		var extraCheckFixed = spellObj.description.match(eRegex);
+		if (extraCheckFixed[1] && !isNaN(parseFloat(extraCheckFixed[1]))) {
+			extraCheckFixed = parseFloat(extraCheckFixed[1]) + abiMod;
+			if (extraCheckFixed >= 0) extraCheckFixed = "+" + extraCheckFixed;
+			spellObj.description = spellObj.description.replace(eRegex, extraCheck + extraCheckFixed);
+		} else {
+			spellObj.description.replace(extraCheck, extraCheck + "+" + abiMod);
+		}
+	}
+	return true;
 }

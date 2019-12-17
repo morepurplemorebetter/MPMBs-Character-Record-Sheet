@@ -709,7 +709,7 @@ function processSpChanges(AddRemove, srcNm, spChng, parentName) {
 		for (var aSpell in spChng) {
 			if (!spCast.spellAttrOverride[aSpell]) spCast.spellAttrOverride[aSpell] = { changesObj : {} };
 			var spObj = spCast.spellAttrOverride[aSpell];
-			if (spChng[aSpell].changes) spObj.changesObj[changeHead] = "\n - " + spChng[aSpell].changes;
+			if (spChng[aSpell].changes) spObj.changesObj[changeHead] = "\n \u2022 " + spChng[aSpell].changes;
 			for (var key in spChng[aSpell]) {
 				if (key == "changes") continue;
 				spObj[key] = spChng[aSpell][key];

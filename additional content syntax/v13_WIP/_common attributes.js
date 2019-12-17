@@ -1154,7 +1154,7 @@ calcChanges : {
 				prof, // number, the proficiency bonus to use or 0 if not proficient
 				die, // string, the damage die to use, identical to the fields.Damage_Die
 				modToDmg, // boolean, whether to add the ability score modifier to damage (true) or not (false)
-				mod, // number, the ability score to use (0 = none, 1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
+				mod, // number, the ability score modifier to use (so the value of the associated ability score set in fields.Mod)
 				magic, // number, the magical bonus to add to both To Hit and Damage (0 if nothing to add)
 				bHit, // string, the value of the modifier field for To Hit, identical to fields.To_Hit_Bonus
 				bDmg, // string, the value of the modifier field for Damage, identical to fields.Damage_Bonus

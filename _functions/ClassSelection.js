@@ -40,22 +40,18 @@ function SelectClass() {
 		ClassSelection_Dialog.classesRef = {};
 		ClassSelection_Dialog.subclasses = {};
 		ClassSelection_Dialog.subclassesRef = {};
-		var clCount = -2;
 		for (var aClass in ClassList) {
 			var CL = ClassList[aClass];
-			if (testSource(aClass, ClassList[aClass], "classExcl") || (aClass === "ranger" && hasUAranger) || (ClassSelection_Dialog.classesRef[CL.name] && ClassSelection_Dialog.classesRef[CL.name].length >= aClass.length)) continue; //only include if the source of the class isn't excluded (and special exception for the ranger/rangerua)
-			ClassSelection_Dialog.classes[CL.name] = clCount;
+			if (testSource(aClass, ClassList[aClass], "classExcl") || aClass != ParseClass(CL.name)[0]) continue; // Only include if the class or its source isn't excluded and parsing its name yields the right reference
+			ClassSelection_Dialog.classes[CL.name] = -1;
 			ClassSelection_Dialog.classesRef[CL.name] = aClass;
 			ClassSelection_Dialog.subclasses[aClass] = {" " : 1};
-			var sClCount = -2;
 			CL.subclasses[1].forEach( function(aSubClass) {
 				var sCL = ClassSubList[aSubClass];
-				if (!sCL || testSource(aSubClass, sCL, "classExcl") || (ClassSelection_Dialog.subclassesRef[aClass+"-"+sCL.subname] && ClassSelection_Dialog.subclassesRef[aClass+"-"+sCL.subname].length >= aSubClass.length)) return;
-				ClassSelection_Dialog.subclasses[aClass][sCL.subname] = sClCount;
+				if (!sCL || testSource(aSubClass, sCL, "classExcl") || aSubClass != ParseClass(sCL.fullname ? sCL.fullname : CL.name + " (" + sCL.subname + ")")[1]) return;
+				ClassSelection_Dialog.subclasses[aClass][sCL.subname] = -1;
 				ClassSelection_Dialog.subclassesRef[aClass+"-"+sCL.subname] = aSubClass;
-				sClCount--;
 			});
-			clCount--;
 		};
 		setDialogName(ClassSelection_Dialog, "rngr", "wrap_name", hasUAranger ? true : false);
 		setDialogName(ClassSelection_Dialog, "rngr", "name", hasUAranger ? dialogTxt.rngr : "");

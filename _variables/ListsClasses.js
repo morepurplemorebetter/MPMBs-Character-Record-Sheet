@@ -3326,7 +3326,7 @@ var Base_ClassSubList = {
 						],
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
-								if (!spellObj.psionic) return genericSpellDmgEdit(spellKey, spellObj, "lightn(\.|ing)?", "Cha", true);
+								if (!spellObj.psionic) return genericSpellDmgEdit(spellKey, spellObj, "lightn\\.?|lightning", "Cha", true);
 							},
 							"Cantrips and spells that deal lightning damage get my Charisma modifier added to their damage."
 						]
