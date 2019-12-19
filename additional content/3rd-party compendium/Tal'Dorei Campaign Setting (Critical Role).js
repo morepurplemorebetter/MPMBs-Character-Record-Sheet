@@ -541,6 +541,6 @@ FeatsList["thrown arms master-tdcs"] = {
 	improvements : "Thrown Arms Master (feat): +1 Strength or Dexterity;",
 	calcChanges : {
 		atkAdd : ["if (theWea && isMeleeWeapon && (/simple|martial/i).test(theWea.type)) { if ((/\\d+\\/\\d+/i).test(fields.Range)) { var r_one = fields.Range.replace(/.*?(\\d+)\\/.*/, '$1'); var r_two =fields.Range.replace(/.*\\d+\\/(\\d+).*/, '$1'); fields.Range = fields.Range.replace(r_one+'/', (Number(r_one) + 20)+'/').replace('/'+r_two, '/'+(Number(r_two) + 40)); } else { fields.Range += (/\\b(2|two).?hand(ed)?s?\\b/i).test(theWea.description) ? ', 15/30 ft' : ', 20/60 ft'; }; }; ",
-		"I can throw all simple and martial melee weapons, even if they don't have the thrown property. They gain 20/60 ft range (or 15/30 ft if two-handed).\n - My thrown weapons have an extra +20/+40 ft range."]
+		"I can throw all simple and martial melee weapons, even if they don't have the thrown property. They gain 20/60 ft range (or 15/30 ft if two-handed).\n \u2022 My thrown weapons have an extra +20/+40 ft range."]
 	}
 };

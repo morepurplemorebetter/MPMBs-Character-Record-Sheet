@@ -62,7 +62,7 @@ var theCoD = AddSubClass("fighter", "brute-giantitp", {
 				"I add my proficiency bonus to thrown large improvised weapons to a range of 20/60 ft"
 			]),
 			calcChanges : {
-				atkAdd : ["if (isMeleeWeapon && (/heavy/i).test(fields.Description) && !(/thrown/i).test(fields.Description)) {fields.Range = 'Melee, 20/60 ft'; fields.Description += (fields.Description ? '; ' : '') + 'Thrown';}; if ((/improvised/i).test(WeaponName) || (theWea && (/improvised weapons/i).test(theWea.type))) {fields.Proficiency = true; };" , "I can throw weapons with the heavy property with a range of 20/60 ft.\n - I add my proficiency bonus to throwing large improvised weapons."]
+				atkAdd : ["if (isMeleeWeapon && (/heavy/i).test(fields.Description) && !(/thrown/i).test(fields.Description)) {fields.Range = 'Melee, 20/60 ft'; fields.Description += (fields.Description ? '; ' : '') + 'Thrown';}; if ((/improvised/i).test(WeaponName) || (theWea && (/improvised weapons/i).test(theWea.type))) {fields.Proficiency = true; };" , "I can throw weapons with the heavy property with a range of 20/60 ft.\n \u2022 I add my proficiency bonus to throwing large improvised weapons."]
 			}
 		},
 		"subclassfeature15" : {
@@ -81,7 +81,7 @@ var theCoD = AddSubClass("fighter", "brute-giantitp", {
 				"The target moves 5 ft for every 5 points of damage the attack does"
 			]),
 			calcChanges : {
-				atkAdd : ["if ((/heavy/i).test(fields.Description)) {fields.Description += (fields.Description ? '; ' : '') + 'Shove 5 ft/5 damage';}; ", "I can throw weapons with the heavy property with a range of 20/60 ft.\n - I add my proficiency bonus to throwing large improvised weapons."]
+				atkAdd : ["if ((/heavy/i).test(fields.Description)) {fields.Description += (fields.Description ? '; ' : '') + 'Shove 5 ft/5 damage';}; ", "I can throw weapons with the heavy property with a range of 20/60 ft.\n \u2022 I add my proficiency bonus to throwing large improvised weapons."]
 			}
 		}
 	}
