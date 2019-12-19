@@ -131,6 +131,7 @@ WeaponsList["sword of purple"] = {
 	if the weapon's proficiency box should be checked for it.
 
 	There are several pre-defined types that exist by default in the sheet:
+		"AlwaysProf"		// none of the other types apply, always proficient
 		"Natural"			// natural weapons (always proficient)
 		"Simple"			// simple weapons
 		"Martial"			// martial weapons
@@ -141,6 +142,7 @@ WeaponsList["sword of purple"] = {
 	Alternatively, you can define a type yourself.
 	If this type matches a word in the 'Other Weapon Proficiencies' field,
 	the character will be considered proficient with the weapon.
+	But if this type doesn't match anything, proficiency will not be applied.
 */
 	ability : 1,
 /*	ability // REQUIRED //

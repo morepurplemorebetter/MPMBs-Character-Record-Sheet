@@ -99,12 +99,13 @@ MagicItemsList["staff of purple"] = {
 	The shortest of the 'name', 'nameAlt', and 'nameTest' attributes will be used for the 'chooseGear' attribute, see below.
 */
 	nameTest : "Purple Staff",
+	nameTest :  /^(?=.*staff)(?=.*magic)(?=.*(green|red|blue|orange|yellow|pink))).*$/i,
 /*	nameTest // OPTIONAL //
-	TYPE:	string
+	TYPE:	string or regular expression
 	USE:	alternative name with which the sheet can recognize the magic item
 
 	This name will also be used to recognize what is typed into the magic item drop-down.
-	The shortest of the 'name', 'nameAlt', and 'nameTest' attributes will be used for the 'chooseGear' attribute, see below.
+	The shortest of the 'name', 'nameAlt', and 'nameTest' attributes will be used for the 'chooseGear' attribute, see below. Note that it will only be used for chooseGear if it is a string.
 */
 	source : ["SRD", 204],
 	source : [["E", 7], ["S", 115]],

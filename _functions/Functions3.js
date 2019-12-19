@@ -635,7 +635,7 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
 				fObjName = aChoice;
 			}
 			var sObj = setCSobj(fObjName);
-			sObj.name = fObj.name + " (item)";
+			sObj.name = MagicItemGetShortestName(fObj) + " (item)";
 			sObj.typeSp = "item";
 			sObj.refType = "item";
 			break;
@@ -1763,9 +1763,12 @@ function ParseMagicItem(input) {
 		} else if (kObj.nameAlt && input.indexOf(kObj.nameAlt.toLowerCase()) !== -1) {
 			isMatch = true;
 			isMatchLen = kObj.nameAlt.length;
-		} else if (kObj.nameTest && input.indexOf(kObj.nameTest.toLowerCase()) !== -1) {
-			isMatch = true;
-			isMatchLen = kObj.nameTest.length;
+		} else if (kObj.nameTest) {
+			var isRx = typeof kObj.nameTest != "string";
+			if ((isRx && kObj.nameTest.test(input)) || (!isRx && input.indexOf(kObj.nameTest.toLowerCase()) !== -1)) {
+				isMatch = true;
+				isMatchLen = !isRx ? kObj.nameTest.length : Math.min(kObj.name.length, input.match(kObj.nameTest)[0].length, kObj.nameAlt ? kObj.nameAlt.length : 1000);
+			}
 		}
 		tempDate = sourceDate(kObj.source);
 		subFoundLen = 0;
@@ -1787,9 +1790,12 @@ function ParseMagicItem(input) {
 					} else if (sObj.nameAlt && input.indexOf(sObj.nameAlt.toLowerCase()) !== -1) {
 						isMatchSub = true;
 						tempNameLen = sObj.nameAlt.length;
-					} else if (sObj.nameTest && input.indexOf(sObj.nameTest.toLowerCase()) !== -1) {
-						isMatchSub = true;
-						tempNameLen = sObj.nameTest.length;
+					} else if (sObj.nameTest) {
+						var isRx = typeof sObj.nameTest != "string";
+						if ((isRx && sObj.nameTest.test(input)) || (!isRx && input.indexOf(sObj.nameTest.toLowerCase()) !== -1)) {
+							isMatchSub = true;
+							tempNameLen = !isRx ? sObj.nameTest.length : Math.min(sObj.name.length, input.match(sObj.nameTest)[0].length, sObj.nameAlt ? sObj.nameAlt.length : 1000);
+						}
 					}
 				} else if (isMatch && input.indexOf(keySub) !== -1) {
 					isMatchSub = true;
@@ -2855,6 +2861,11 @@ function MagicItemClear(itemNmbr, doAutomation) {
 	}
 }
 
+// Get the shortest of a magic item object's names
+function MagicItemGetShortestName(nameObj) {
+	return [nameObj.name].concat(nameObj.nameAlt ? [nameObj.nameAlt] : []).concat(nameObj.nameTest && typeof nameObj.nameTest == "string" ? [nameObj.nameTest] : []).reduce(function(a, b) { return a.length <= b.length ? a : b; });
+}
+
 // Change the magic item to include a selected weapon, armor, or ammunition
 function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correctingDescrLong) {
 	if (!event.target || !event.target.name || event.target.name.indexOf("Extra.Magic Item ") == -1 || !typeObj.type) return;
@@ -2918,7 +2929,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	// use the name of the choice object (if any) or the shortest of the name, nameAlt, and nameTest of the parent object
 	var nameObj = aMIvar && aMIvar.name ? aMIvar : aMI;
 	var curName = nameObj.name;
-	var useName = [nameObj.name].concat(nameObj.nameAlt ? [nameObj.nameAlt] : []).concat(nameObj.nameTest ? [nameObj.nameTest] : []).reduce(function(a, b) { return a.length <= b.length ? a : b; });
+	var useName = MagicItemGetShortestName(nameObj);
 
 	// get the value of the magic item name field
 	var useVal = isApplyFld && AddRemove ? event.value : isApplyFld ? event.target.value : What(MIflds[0]);
