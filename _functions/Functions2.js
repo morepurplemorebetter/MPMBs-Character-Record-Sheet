@@ -33,48 +33,76 @@ function ParseCreature(input) {
 	return found;
 };
 
-//detects race entered and put information to global CurrentCompRace variable
-function FindCompRace(inputcreatxt, aPrefix) {
-	if (aPrefix) {
+// Detects race entered and put information to global CurrentCompRace variable
+function FindCompRace(inputCreaTxt, aPrefix) {
+	if (aPrefix !== undefined) {
 		var prefixA = [aPrefix];
 	} else {
-		var prefixA = What("Template.extras.AScomp").split(",");
+		// During startup, do all pages (aPrefix == undefined)
+		var prefixA = What("Template.extras.AScomp").split(",").splice(1);
 	}
 	for (var p = 0; p < prefixA.length; p++) {
 		var prefix = prefixA[p];
-		var tempString = inputcreatxt === undefined ? tDoc.getField(prefix + "Comp.Race").submitName : inputcreatxt;
-		var oldKnown = CurrentCompRace[prefix] ? CurrentCompRace[prefix].known : undefined;
-		var newCreaFound = ParseCreature(tempString);
-		if (newCreaFound) {
-			CurrentCompRace[prefix] = {};
-			CurrentCompRace[prefix] = CreatureList[newCreaFound];
-			CurrentCompRace[prefix].known = newCreaFound;
-			CurrentCompRace[prefix].typeFound = "creature";
+		if (!tDoc.getField(prefix + "Comp.Race")) continue; // Page doesn't exist
+		var tempString = inputCreaTxt !== undefined ? inputCreaTxt : How(prefix + "Comp.Race");
+		var typeFound = "";
+		var resultFound = ParseCreature(tempString);
+		if (resultFound) {
+			typeFound = "creature";
 		} else {
-			var newRaceFound = ParseRace(tempString);
-			if (newRaceFound[0]) {
-				CurrentCompRace[prefix] = {};
-				CurrentCompRace[prefix].known = newRaceFound[0],
-				CurrentCompRace[prefix].variant = newRaceFound[1],
-				CurrentCompRace[prefix].typeFound = "race";
-
-				// set the properties of the CurrentCompRace[prefix] object
-				for (var prop in RaceList[newRaceFound[0]]) { // the properties of the main race
-					if ((/^(known|variant|level)$/i).test(prop)) continue;
-					CurrentCompRace[prefix][prop] = RaceList[newRaceFound[0]][prop];
-				}
-				if (newRaceFound[1]) { // the properties of the variant (overriding anything from the main)
-					var subrace = newRaceFound[0] + "-" + newRaceFound[1];
-					for (var prop in RaceSubList[subrace]) {
-						if ((/^(known|variants?|level)$/i).test(prop)) continue;
-						CurrentCompRace[prefix][prop] = RaceSubList[subrace][prop];
-					}
-				}
+			var raceFound = ParseRace(tempString);
+			if (raceFound[0]) {
+				resultFound = [raceFound[0], raceFound[1]];
+				typeFound = "race";
 			}
 		}
-		if (inputcreatxt) { //if there was an input, return if it was different from the previously known or not
-			if (CurrentCompRace[prefix] && CurrentCompRace[prefix].known && oldKnown !== CurrentCompRace[prefix].known) tDoc.getField(prefix + "Comp.Race").submitName = inputcreatxt;
-			return !CurrentCompRace[prefix] || oldKnown === CurrentCompRace[prefix].known || !CurrentCompRace[prefix].known;
+		if (inputCreaTxt !== undefined && aPrefix) {
+			// See what was previously know for this entry
+			var oldKnown = CurrentCompRace[prefix] ? CurrentCompRace[prefix].known : "";
+			if (oldKnown && CurrentCompRace[prefix].variant) oldKnown += "," + CurrentCompRace[prefix].variant;
+			var isNew = oldKnown != resultFound.toString();
+			// If this is not at startup, add the inputCreaTxt as the submitname (but don't change it if no new creature/race is found)
+			if (resultFound && isNew) AddTooltip(prefix + "Comp.Race", undefined, inputCreaTxt);
+			// If there was an input creature and prefix, return an object of what was found
+			return {
+				type : typeFound,
+				found : resultFound,
+				new : isNew
+			};
+		} else {
+			// Set the CurrentCompRace variable
+			setCurrentCompRace(prefix, typeFound, resultFound);
+		}
+	}
+}
+
+//set the CurrentCompRace variable
+function setCurrentCompRace(prefix, type, found) {
+	if (!prefix || !tDoc.getField(prefix + "Comp.Race")) return;
+	if (!type || !found) {
+		CurrentCompRace[prefix] = {};
+		return;
+	}
+	var fObj = type == "creature" ? CreatureList[found] : RaceList[found[0]];
+	CurrentCompRace[prefix] = {};
+	CurrentCompRace[prefix].typeFound = type;
+	if (type == "creature") {
+		CurrentCompRace[prefix].known = found;
+	} else {
+		CurrentCompRace[prefix].known = found[0];
+		CurrentCompRace[prefix].variant = found[1];
+	}
+	// set the properties of the CurrentCompRace[prefix] object
+	for (var prop in fObj) {
+		if ((/^(known|variants?|level)$/i).test(prop)) continue;
+		CurrentCompRace[prefix][prop] = fObj[prop];
+	}
+	if (type == "race" && found[1]) {
+		// the properties of the variant (overriding anything from the main)
+		var subrace = found[0] + "-" + found[1];
+		for (var prop in RaceSubList[subrace]) {
+			if ((/^(known|variants?|level)$/i).test(prop)) continue;
+			CurrentCompRace[prefix][prop] = RaceSubList[subrace][prop];
 		}
 	}
 }
@@ -205,22 +233,24 @@ function ApplyCompRace(newRace) {
 	if (newRace === "") {
 		thermoTxt = thermoM("Resetting the companion page...", false); //change the progress dialog text
 		doCreatureEval("removeeval");
-		CurrentCompRace[prefix] = {}; //reset the global variable to nothing
-		tDoc.resetForm(compFields); //rest all the fields
-		thermoM(1/3); //increment the progress dialog's progress
-		resetDescTooltips(); //remove descriptive tooltips
 		resetCompTypes(prefix); //remove strings
+		CurrentCompRace[prefix] = {}; //reset the global variable to nothing
+		thermoM(1/3); //increment the progress dialog's progress
+		tDoc.resetForm(compFields); //rest all the fields
+		resetDescTooltips(); //remove descriptive tooltips
 		thermoM(2/3); //increment the progress dialog's progress
 		tDoc.getField(prefix + "Comp.Race").submitName = "";
 		thermoM(thermoTxt, true); // Stop progress bar
 		return; //don't do the rest of the function
 	}
-	if (FindCompRace(newRace, prefix)) { //fill the global variable. If the return is true, it means that no (new) race was found, so the function can be stopped
+	var fndObj = FindCompRace(newRace, prefix);
+	if (!fndObj.new) { // No (new) race was found, so stop here
 		thermoM(thermoTxt, true); // Stop progress bar
 		return; //don't do the rest of the function
 	}
 	resetCompTypes(prefix); //remove stuff from the companion type (actions, strings, etc.)
 	doCreatureEval("removeeval"); // execute the removeeval from the previously known creature, if any
+	setCurrentCompRace(prefix, fndObj.type, fndObj.found); // fill the global variable with the newly found race
 	if (CurrentCompRace[prefix].typeFound === "race") {// do the following if a race was found
 		tDoc.resetForm(compFields); //reset all the fields
 		thermoTxt = thermoM("Adding the companion's player race...", false); //change the progress dialog text
@@ -2584,6 +2614,17 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 
 				// Do some extra actions, depending on the page(s) removed
 				switch (tempNm) {
+				case "AScomp" : // Remove the CurrentCompRace attributes that no longer refer to an existing page
+					for (var i = 0; i < tempExtras.length; i++) {
+						var theCurRace = CurrentCompRace[tempExtras[i]];
+						if (theCurRace.typeFound == "creature" && theCurRace.removeeval && typeof theCurRace.removeeval == 'function') {
+							try { theCurRace.removeeval(); } catch (error) {};
+						}
+						delete CurrentCompRace[tempExtras[i]];
+						delete CurrentWeapons.compField[tempExtras[i]];
+						delete CurrentWeapons.compKnown[tempExtras[i]];
+					}
+					break;
 				 case "ALlog" :
 					if (newTemplList.length) UpdateLogsheetNumbering(newTemplList[1]); // Update the header texts for the still remaining logsheets
 					break;
@@ -2630,8 +2671,8 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 
 			// Do some extra actions, depending on the page added
 			switch (tempNm) {
-			 case "AScomp" : // Re-find the companion pages races and weapons
-				FindCompRace(undefined, theNewPrefix);
+			 case "AScomp" : // Re-find the companion page's race and weapons
+			 	setCurrentCompRace(theNewPrefix);
 				FindCompWeapons(undefined, theNewPrefix);
 				break;
 			 case "ALlog" : // Update header text and reset calculation order
