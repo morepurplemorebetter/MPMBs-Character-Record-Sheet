@@ -559,7 +559,7 @@ function GetFightingStyleSelection() {
 	if (CurrentFeatureChoices.classes) {
 		for (var aClass in CurrentFeatureChoices.classes) {
 			var clObj = CurrentFeatureChoices.classes[aClass];
-			var clNm = CurrentClasses[aClass].fullname.indexOf(CurrentClasses[aClass].name) == -1 ? CurrentClasses[aClass].fullname : CurrentClasses[aClass].name;
+			var clNm = !CurrentClasses[aClass] ? "Unknown" : CurrentClasses[aClass].fullname.indexOf(CurrentClasses[aClass].name) == -1 ? CurrentClasses[aClass].fullname : CurrentClasses[aClass].name;
 			for (var aFea in clObj) {
 				var feaObj = clObj[aFea];
 				var feaNm = CurrentClasses[aClass] && CurrentClasses[aClass].features[aFea] ? CurrentClasses[aClass].features[aFea].name : aFea.capitalize();
