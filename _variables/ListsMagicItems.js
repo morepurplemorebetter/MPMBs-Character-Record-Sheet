@@ -6268,7 +6268,7 @@ var Base_MagicItemsList = {
 	},
 	"wand of the war mage, +1, +2, or +3" : {
 		name : "Wand of the War Mage, +1, +2, or +3",
-		nameTest : /^(?=.*war mage)(?=.*(arcane focus|rod|wand|staff)).*$/i,
+		nameTest : /^(?=.*(enhanced|war mage))(?=.*(arcane focus|rod|wand|staff)).*$/i,
 		source : [["SRD", 249], ["D", 212]],
 		type : "wand",
 		description : "While I am holding this wand, I gain a bonus to spell attack rolls determined by the wand's rarity: uncommon (+1), rare (+2), or very rare (+3). In addition, I ignore half cover when making a spell attack.",
@@ -6280,7 +6280,7 @@ var Base_MagicItemsList = {
 		choices : ["+1 to spell attacks (uncommon)", "+2 to spell attacks (rare)", "+3 to spell attacks (very rare)"],
 		"+1 to spell attacks (uncommon)" : {
 			name : "Wand of the War Mage +1",
-			nameTest : /^(?=.*war mage)(?=.*(arcane focus|rod|wand|staff))(?=.*\+1)(?!.*\+2)(?!.*\+3).*$/i,
+			nameTest : /^(?=.*(enhanced|war mage))(?=.*(arcane focus|rod|wand|staff))(?=.*\+1)(?!.*\+2)(?!.*\+3).*$/i,
 			rarity : "uncommon",
 			magicItemTable : "F",
 			description : "While I am holding this arcane focus, I gain a +1 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
@@ -6295,7 +6295,7 @@ var Base_MagicItemsList = {
 		},
 		"+2 to spell attacks (rare)" : {
 			name : "Wand of the War Mage +2",
-			nameTest : /^(?=.*war mage)(?=.*(arcane focus|rod|wand|staff))(?!.*\+1)(?=.*\+2)(?!.*\+3).*$/i,
+			nameTest : /^(?=.*(enhanced|war mage))(?=.*(arcane focus|rod|wand|staff))(?!.*\+1)(?=.*\+2)(?!.*\+3).*$/i,
 			rarity : "rare",
 			magicItemTable : "G",
 			description : "While I am holding this arcane focus, I gain a +2 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
@@ -6310,7 +6310,7 @@ var Base_MagicItemsList = {
 		},
 		"+3 to spell attacks (very rare)" : {
 			name : "Wand of the War Mage +3",
-			nameTest : /^(?=.*war mage)(?=.*(arcane focus|rod|wand|staff))(?!.*\+1)(?!.*\+2)(?=.*\+3).*$/i,
+			nameTest : /^(?=.*(enhanced|war mage))(?=.*(arcane focus|rod|wand|staff))(?!.*\+1)(?!.*\+2)(?=.*\+3).*$/i,
 			rarity : "very rare",
 			magicItemTable : "H",
 			description : "While I am holding this arcane focus, I gain a +3 bonus to spell attack rolls and I ignore half cover when making a spell attack.",

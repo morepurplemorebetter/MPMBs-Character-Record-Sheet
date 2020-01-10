@@ -42,14 +42,32 @@ function ReturnSpellFieldsContentArray(underscores, psionic) {
 	];
 };
 
+// find if an array of spellcasting classes fits with the CurrentSpells object
+function DoesSpellFit(aCast, clArr) {
+	if (!aCast || !clArr) return false;
+	if (isArray(aCast)) {
+		var testClasses = aCast;
+	} else if (typeof aCast == "string") {
+		var curSpObj = CurrentSpells[aCast];
+		if (!curSpObj) return false
+		var testClasses = curSpObj.list && curSpObj.list.class ? (isArray(curSpObj.list.class) ? curSpObj.list.class : [curSpObj.list.class]) : [aCast];
+	} else {
+		return false;
+	}
+	for (var i = 0; i < testClasses.length; i++) {
+		if (clArr.indexOf(testClasses[i]) != -1) return true;
+	}
+	return false;
+}
+
 // find the spell in the SpellsList
-function ParseSpell(input) {
+function ParseSpell(input, aCast) {
 	if (!input) return "";
 
 	input = clean(RemoveZeroWidths(input.replace(/ \(.{1,2}\)/i, "")), false, true).toLowerCase();
 	if (!input || SpellsList[input]) return input;
 
-	var found = "", foundLen = 0, foundDat = 0;
+	var found = "", foundLen = 0, foundDat = 0, foundPrefCl = false;
 
 	for (var key in SpellsList) { //scan string for all creatures
 		var kObj = SpellsList[key];
@@ -69,12 +87,14 @@ function ParseSpell(input) {
 
 		// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
 		var tempDate = sourceDate(kObj.source);
-		if (thisOne < foundLen || (thisOne == foundLen && tempDate < foundDat)) continue;
+		var tempPrefCl = aCast && kObj.classes ? DoesSpellFit(aCast, kObj.classes) : false;
+		if (thisOne < foundLen || (thisOne == foundLen && tempDate < foundDat && !(!foundPrefCl && tempPrefCl)) || (foundPrefCl && !tempPrefCl)) continue;
 
 		// we have a match, set the values
 		found = key;
 		foundLen = thisOne;
 		foundDat = tempDate;
+		foundPrefCl = tempPrefCl;
 	}
 	return found;
 };
@@ -194,14 +214,14 @@ function ApplySpell(FldValue, rememberFldName) {
 		}
 		setCheck();
 	} else {
-		var theSpl = ParseSpell(input[0]);
+		var aCast = input[2] && CurrentSpells[input[2]] ? CurrentSpells[input[2]] : "";
+		var theSpl = ParseSpell(input[0], aCast ? input[2] : false);
 		if (theSpl !== "") { // apply the found spell
 			var foundSpell = SpellsList[theSpl];
 			var aSpell = { changesObj : {} };
 			for (var key in foundSpell) aSpell[key] = foundSpell[key];
 			// set the firstCol attribute so the CurrentEval can change it
 			aSpell.firstCol = input[1] ? input[1] : aSpell.firstCol ? aSpell.firstCol : "";
-			var aCast = input[2] && CurrentSpells[input[2]] ? CurrentSpells[input[2]] : "";
 			// If this spell is gained from an item, remove components
 			if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
 				aSpell.components = "M\u0192";
@@ -878,9 +898,8 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 		} else {
 			inputObject = {class : inputObject};
 		};
-	} else {
-		inputObject = eval(inputObject.toSource());
 	}
+	inputObject = eval(inputObject.toSource());
 	if (!inputObject.extraspells) inputObject.extraspells = [];
 	if (extraArray) inputObject.extraspells = inputObject.extraspells.concat(extraArray);
 
@@ -970,7 +989,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 			var SpPs = !aSpell.psionic ? "sp" : "ps";
 			var spName = getSpNm(key);
 			if (refspObj[spName]) { // if another spell with the same name has been added already, see which one the sheet will use
-				var testName = ParseSpell(spName);
+				var testName = ParseSpell(spName, !inputObject.class ? false : isArray(inputObject.class) ? inputObject.class : [inputObject.class]);
 				if (refspObj[spName] == testName) {
 					continue;
 				} else if (testName == key) {
@@ -1088,10 +1107,12 @@ var SpellSheetSelect_Dialog = {
 	levelSp : 1,
 	nameAd : "[always prepared]",
 	prevBtn : false,
+	curCast : "",
 
 	//when starting the dialog
 	initialize : function (dialog) {
 		this.SpBook = false;
+		var thisCast = this.curCast;
 		this.txt = "Please set the " + this.spNm.toLowerCase() + "/" + this.caNm.toLowerCase() + " you want to have on the Spell Sheet.\nNote that some things might not be available in this dialog, because what you are editing has no access to it.\nYou can always use ENTER to confirm or ESC to cancel this dialogue.";
 
 		var psiSpells = this.spNm === "Spells" ? "Spells" : "Psionics";
@@ -1184,7 +1205,7 @@ var SpellSheetSelect_Dialog = {
 		//a function to set the right object to positive
 		var setSpell = function(aObj, aSpell) {
 			for (var a in aObj) {
-				if (aSpell === ParseSpell(a)) {
+				if (aSpell === ParseSpell(a, thisCast)) {
 					aObj[a] *= -1;
 					break;
 				};
@@ -1220,6 +1241,7 @@ var SpellSheetSelect_Dialog = {
 
 	saveIt : function (dialog) {
 		var oResult = dialog.store();
+		var thisCast = this.curCast;
 
 		this.offsetBo = oResult["BonK"] - this.nmbrBo;
 		this.offsetCa = oResult["CanK"] - this.nmbrCa;
@@ -1228,7 +1250,7 @@ var SpellSheetSelect_Dialog = {
 		//a function to return the right one in the list
 		var findSpell = function(aObj) {
 			for (var a in aObj) {
-				if (aObj[a] > 0) return ParseSpell(a);
+				if (aObj[a] > 0) return ParseSpell(a, thisCast);
 			}
 			return ""; //if nothing was found
 		}
@@ -2332,9 +2354,12 @@ var SpellBookSelect_Dialog = {
 	selectSp : [],
 	fullname : "",
 	iteration : "1/1",
+	curCast : "",
 
 	//when starting the dialog
 	initialize : function (dialog) {
+		var thisCast = this.curCast;
+
 		//set the value of various text entries
 		dialog.load({
 			"Hea0" : "Additional Spellbook Spells for " + this.fullname,
@@ -2352,7 +2377,7 @@ var SpellBookSelect_Dialog = {
 		//a function to set the right object to positive
 		var setSpell = function(aObj, aSpell) {
 			for (var a in aObj) {
-				if (aSpell === ParseSpell(a)) {
+				if (aSpell === ParseSpell(a, thisCast)) {
 					aObj[a] *= -1;
 					break;
 				};
@@ -2376,11 +2401,12 @@ var SpellBookSelect_Dialog = {
 
 	saveIt : function (dialog) {
 		var oResult = dialog.store();
+		var thisCast = this.curCast;
 
 		//a function to return the right one in the list
 		var findSpell = function(aObj) {
 			for (var a in aObj) {
-				if (aObj[a] > 0) return ParseSpell(a);
+				if (aObj[a] > 0) return ParseSpell(a, thisCast);
 			}
 			return ""; //if nothing was found
 		}
@@ -2897,6 +2923,7 @@ var SpellsPrepared_Dialog = {
 	ability : 4,
 	fixedPrepMod : false,
 	nmbrPrep : 20,
+	curCast : "",
 
 	//when starting the dialog
 	initialize : function (dialog) {
@@ -2907,6 +2934,7 @@ var SpellsPrepared_Dialog = {
 		this.nmbrSp = Number(this.nmbrPrep) + Number(abiMod);
 
 		var theSp = this.nmbrSp + this.offsetSp;
+		var thisCast = this.curCast;
 
 		//set the value of various text entries
 		dialog.load({
@@ -2930,7 +2958,7 @@ var SpellsPrepared_Dialog = {
 		//a function to set the right object to positive
 		var setSpell = function(aObj, aSpell) {
 			for (var a in aObj) {
-				if (aSpell === ParseSpell(a)) {
+				if (aSpell === ParseSpell(a, thisCast)) {
 					aObj[a] *= -1;
 					break;
 				};
@@ -2953,13 +2981,14 @@ var SpellsPrepared_Dialog = {
 
 	commit : function (dialog) {
 		var oResult = dialog.store();
+		var thisCast = this.curCast;
 
 		this.offsetSp = oResult["SplK"] - this.nmbrSp;
 
 		//a function to return the right one in the list
 		var findSpell = function(aObj) {
 			for (var a in aObj) {
-				if (aObj[a] > 0) return ParseSpell(a);
+				if (aObj[a] > 0) return ParseSpell(a, thisCast);
 			}
 			return ""; //if nothing was found
 		}
@@ -3209,6 +3238,7 @@ function AskUserSpellSheet() {
 		thermoM(1/2); //increment the progress dialog's progress
 
 		dia.prevBtn = theI !== 0;
+		dia.curCast = aCast;
 
 		// get the ability score to use for save DCs/spell attacks/prepared
 		spCast.abilityToUse = getSpellcastingAbility(aCast);
@@ -3474,6 +3504,7 @@ function AskUserSpellSheet() {
 				var diaSB = SpellBookSelect_Dialog;
 				diaSB.listSp = dia.listSp;
 				diaSB.fullname = dia.fullname;
+				diaSB.curCast = dia.curCast;
 				var diaSBi = 0;
 
 				// call the dialogue, and keep on calling more if more spells need to be added to the spellbook
@@ -3536,6 +3567,7 @@ function AskUserSpellSheet() {
 				//make a new object for this
 				var diaPrep = SpellsPrepared_Dialog;
 				diaPrep.fullname = dia.fullname;
+				diaPrep.curCast = dia.curCast;
 
 				//determine how many spells can be prepared
 				diaPrep.nmbrPrep = PrepLevel;

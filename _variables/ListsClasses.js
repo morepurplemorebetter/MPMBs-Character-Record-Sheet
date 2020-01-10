@@ -628,7 +628,16 @@ var Base_ClassList = {
 				name : "Wild Shape",
 				source : [["SRD", 20], ["P", 66]],
 				minlevel : 2,
-				description : "\n   " + "As an action, I assume the shape of a beast I have seen before with the following rules:" + "\n    - " + "I gain all its game statistics except Intelligence, Wisdom, or Charisma" + "\n    - " + "I get its skill/saving throw prof. while keeping my own, using whichever is higher" + "\n    - " + "I assume the beast's HP and HD; I get mine back when I revert back" + "\n    - " + "I can't cast spells in beast form, but transforming doesn't break concentration" + "\n    - " + "I retain features from class, race, etc., but I don't retain special senses" + "\n    - " + "I can choose whether equipment falls to the ground, merges, or stays worn" + "\n    - " + "I revert if out of time or unconscious; if KOd by damage, excess damage carries over",
+				description : desc([
+					"As an action, I assume the shape of a beast I have seen before with the following rules:",
+					" \u2022 I gain all its game statistics except Intelligence, Wisdom, or Charisma",
+					" \u2022 I get its skill/saving throw prof. while keeping my own, using whichever is higher",
+					" \u2022 I assume the beast's HP and HD; I get mine back when I revert back",
+					" \u2022 I can't cast spells in beast form, but transforming doesn't break concentration",
+					" \u2022 I retain features from class, race, etc., but I don't retain special senses",
+					" \u2022 I can choose whether equipment falls to the ground, merges, or stays worn",
+					" \u2022 I revert if out of time or unconscious; if KOd by damage, excess damage carries over"
+				]),
 				usages : [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, "\u221E\u00D7 per "],
 				recovery : "short rest",
 				additional : levels.map(function (n) {
@@ -809,13 +818,13 @@ var Base_ClassList = {
 				additional : levels.map(function (n) {
 					return "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
 				}),
-				action : ["bonus action", " (with Attack action)"],
+				action : ["bonus action", "Unarmed Strike (with Attack action)"],
 				eval : function() {
-					AddString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
+					AddString('Extra.Notes', 'Monk features:\n\u25C6 If I wear armor/shield, I lose Unarmored Defense, Martial Arts, and Unarmored Movement', true);
 					show3rdPageNotes();
 				},
 				removeeval : function() {
-					RemoveString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
+					RemoveString('Extra.Notes', 'Monk features:\n\u25C6 If I wear armor/shield, I lose Unarmored Defense, Martial Arts, and Unarmored Movement', true);
 				},
 				calcChanges : {
 					atkAdd : [
@@ -3127,7 +3136,12 @@ var Base_ClassSubList = {
 				name : "Fast Hands",
 				source : [["SRD", 40], ["P", 97]],
 				minlevel : 3,
-				description : "\n   " + "As a bonus action, I can do one of the following:" + "\n    - " + "Make a Dexterity (Sleight of Hand) check" + "\n    - " + "Use my thieves' tools to disarm a trap or open a lock" + "\n    - " + "Take the Use an Object action",
+				description : desc([
+					"As a bonus action, I can do one of the following:",
+					" \u2022 Make a Dexterity (Sleight of Hand) check",
+					" \u2022 Use my thieves' tools to disarm a trap or open a lock",
+					" \u2022 Take the Use an Object action"
+				]),
 				action : ["bonus action", ""]
 			},
 			"subclassfeature3.1" : {
