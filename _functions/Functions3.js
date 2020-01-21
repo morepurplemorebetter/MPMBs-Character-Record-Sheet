@@ -620,7 +620,7 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
 			if (aChoice && fObj[aChoice]) {
 				fObj = FeatsList[fObjName][aChoice];
 				fObjP = FeatsList[fObjName];
-				fObjName = aChoice;
+				fObjName += "_-_" + aChoice;
 			}
 			var sObj = setCSobj(fObjName);
 			sObj.name = fObj.name + " (feat)";
@@ -632,7 +632,7 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
 			if (aChoice && fObj[aChoice]) {
 				fObj = MagicItemsList[fObjName][aChoice];
 				fObjP = MagicItemsList[fObjName];
-				fObjName = aChoice;
+				fObjName += "_-_" + aChoice;
 			}
 			var sObj = setCSobj(fObjName);
 			sObj.name = MagicItemGetShortestName(fObj) + " (item)";
@@ -665,7 +665,7 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
 // process a spellcastingBonus feature
 function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice) {
 	type = GetFeatureType(type);
-	var useSpName = choice && (type === "feats" || type === "items") ? choice : parentName;
+	var useSpName = choice && (type === "feats" || type === "items") ? parentName + "_-_" + choice : parentName;
 	if (!AddRemove && !CurrentSpells[useSpName]) return; // nothing to remove
 	// create the spellcasting object if it doesn't yet exist
 	var sObj = CurrentSpells[useSpName] ? CurrentSpells[useSpName] : CreateCurrentSpellsEntry(type, parentName, choice);

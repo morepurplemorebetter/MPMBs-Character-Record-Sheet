@@ -14,15 +14,7 @@ function InitializeEverything(noButtons, noVars) {
 	if (!minVer) {
 		SetGearVariables();
 		setListsUnitSystem(false, true);
-		FindClasses();
-		FindRace();
-		FindCompRace();
-		FindWeapons();
-		FindCompWeapons();
-		FindArmor();
-		FindBackground();
-		FindFeats();
-		FindMagicItems();
+		getDynamicFindVariables();
 		UpdateTooSkill();
 		SetRichTextFields();
 		MakeAdventureLeagueMenu();

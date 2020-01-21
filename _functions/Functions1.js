@@ -1812,15 +1812,13 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			break;
 		};
 	};
-	if (!isChange) {
+	if (!isChange && NotAtStartup) {
 		ApplyClassLevel(true);
 		return true;
 	};
 
 	// Check every class in classes old and if they are not in classesTemp, remove their features
 	if (NotAtStartup) { for (var oClass in classes.old) {
-		var tempCl = CurrentClasses[oClass];
-
 		// if this class exists, was the primary class, and is no longer, change things up
 		if (classesTemp[oClass] && classes.primary === oClass && primeClass !== classes.primary) {
 			// first remove its primary class attributes

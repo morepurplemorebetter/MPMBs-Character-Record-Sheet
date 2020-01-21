@@ -3,6 +3,19 @@ var ignorePrereqs = false; // whether or not to consider the prerequisites for c
 var ignoreSearchLength = false; // whether or not to consider the length of the names for regExpSearch objects. If set to true, the sheet uses only the date of the source
 var ignoreDuplicates = false; // whether or not to allow duplicates of feats and magic items
 
+// A function to load all the variables not stored in the sheet, but generated dynamically
+function getDynamicFindVariables() {
+	FindClasses();
+	FindRace();
+	FindCompRace();
+	FindWeapons();
+	FindCompWeapons();
+	FindArmor();
+	FindBackground();
+	FindFeats();
+	FindMagicItems();
+}
+
 // A function to create/reset the basic lists for the sheet to use. Things can subsequently be added to the created lists using custom scripts.
 function InitiateLists() {
 	var lists = [

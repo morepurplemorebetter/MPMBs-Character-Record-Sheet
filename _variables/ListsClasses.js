@@ -683,7 +683,7 @@ var Base_ClassList = {
 	},
 
 	"fighter" : {
-		regExpSearch : /^(?!.*(dark|green|fey|horned|totem|spiritual|exalted|sacred|holy|divine|nature|odin|thor|nature|natural|green))(?=.*(fighter|warrior|militant|warlord|phalanx|gladiator|trooper)).*$/i,
+		regExpSearch : /^(?!.*(dark|green|fey|horned|totem|spiritual|exalted|sacred|holy|divine|nature|odin|thor|nature|natural|green|beast|animal))(?=.*(fighter|warrior|militant|warlord|phalanx|gladiator|trooper)).*$/i,
 		name : "Fighter",
 		source : [["SRD", 24], ["P", 70]],
 		primaryAbility : "Strength or Dexterity",
@@ -2908,7 +2908,7 @@ var Base_ClassSubList = {
 				FSfea.name = "Additional Fighting Style";
 				FSfea.source = [["SRD", 25], ["P", 73]];
 				FSfea.minlevel = 10;
-				FSfea.description = "\n   " + "Choose an Additional Fighting Style using the \"Choose Feature\" button above ";
+				FSfea.description = '\n   Choose an Additional Fighting Style using the "Choose Feature" button above ';
 				return FSfea;
 			}(),
 			"subclassfeature15" : {
@@ -3491,7 +3491,7 @@ var Base_ClassSubList = {
 					],
 					spellAdd : [
 						function (spellKey, spellObj, spName) {
-							if (spName != "wizard" || !What("Int Mod") || Number(What("Int Mod")) <= 0) return;
+							if (spName.indexOf("wizard") == -1 || !What("Int Mod") || Number(What("Int Mod")) <= 0) return;
 							var lookForDie;
 							switch (spellKey) {
 								case "fire shield" :

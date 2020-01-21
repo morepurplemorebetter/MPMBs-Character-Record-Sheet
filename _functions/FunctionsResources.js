@@ -741,6 +741,20 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		calcStop();
 		UpdateDropdown("resources");
 
+		// Change how some things are now recognized by the sheet
+		getDynamicFindVariables();
+
+		// Set the visibility of the Choose Feature and Racial Options button
+		if (MakeClassMenu()) {
+			DontPrint("Class Features Menu");
+		} else {
+			Hide("Class Features Menu");
+		}
+		if (ParseRace(What("Race"))[2].length) {
+			DontPrint("Race Features Menu");
+		} else {
+			Hide("Race Features Menu");
+		}
 		//if something changed for the spells make the spell menu again
 		var oldCS = eval(remCS);
 		if (forceDDupdate || oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.classExcl !== CurrentSources.classExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
@@ -1241,38 +1255,36 @@ function testSource(key, obj, CSatt, concise) {
 	return theRe;
 };
 
-//a function to make the source attribute into a consistent array [[source, page]]
+//a function to make the source attribute into a consistent array [[source, page]] and move excluded sources to the end
 function parseSource(srcObj) {
 	if (!srcObj) return false;
-	var theRe = false;
-	if (!isArray(srcObj)) {
-		if (SourceList[srcObj]) theRe = [[srcObj, 0]];
+	var uObj = false;
+	if (typeof srcObj == "string") {
+		if (SourceList[srcObj]) uObj = [[srcObj, 0]];
 	} else if (srcObj.length === 2 && typeof srcObj[0] == "string" && !isArray(srcObj[1])) {
-		if (SourceList[srcObj[0]]) theRe = [srcObj];
+		if (SourceList[srcObj[0]]) uObj = [srcObj];
 	} else if (srcObj.length === 1 && !isArray(srcObj[0])) {
-		if (SourceList[srcObj[0]]) theRe = [[srcObj[0], 0]];
+		if (SourceList[srcObj[0]]) uObj = [[srcObj[0], 0]];
 	} else {
-		theRe = [];
-		var theSRD = [];
-		var areExcl = [];
-		for (var i = 0; i < srcObj.length; i++) {
-			var toUse = !isArray(srcObj[i]) ? [srcObj[i], 0] : srcObj[i].length > 1 ? srcObj[i] : [srcObj[i][0], 0];
-			if (toUse[0] && SourceList[toUse[0]]) {
-				if (srcObj[i][0] === "SRD") {
-					theSRD.push(toUse);
-				} else {
-					if (CurrentSources.globalExcl.indexOf(toUse[0]) !== -1) areExcl.push(toUse);
-					theRe.push(toUse);
-				};
-			};
-		};
- 		if (theSRD.length > 0 && areExcl.length === theRe.length) {
-			theRe = theSRD;
-		} else if (theSRD.length > 0) {
-			theRe.push(theSRD[0]);
+		uObj = srcObj;
+	}
+	if (!uObj) return false;
+	var theRe = [];
+	var theSRD = [];
+	var areExcl = [];
+	for (var i = 0; i < uObj.length; i++) {
+		var toUse = !isArray(uObj[i]) ? [uObj[i], 0] : uObj[i].length > 1 ? uObj[i] : [uObj[i][0], 0];
+		if (!toUse[0] || !SourceList[toUse[0]]) {
+			continue;
+		} else if (uObj[i][0] === "SRD") {
+			theSRD.push(toUse);
+		} else if (CurrentSources.globalExcl.indexOf(toUse[0]) !== -1) {
+			areExcl.push(toUse);
+		} else {
+			theRe.push(toUse);
 		};
 	};
-	return theRe;
+	return theRe.concat(theSRD).concat(areExcl);
 };
 
 //a function to make a readable string of the source

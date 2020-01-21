@@ -1289,9 +1289,13 @@ function DirectImport(consoleTrigger) {
 			var classesArray = [];
 			for (var aCast in CurrentSpells) {
 				classesArray.push(aCast);
-				if (!global.docFrom.CurrentSpells[aCast]) continue; //doesn't exist in the sheet importing from
+				var aCastFrom = aCast;
+				if (!global.docFrom.CurrentSpells[aCastFrom]) {
+					aCastFrom = aCastFrom.replace(/.*_-_/, '');
+					if (!global.docFrom.CurrentSpells[aCastFrom]) continue; //doesn't exist in the sheet importing from
+				}
 				var spCastTo = CurrentSpells[aCast];
-				var spCastFrom = global.docFrom.CurrentSpells[aCast];
+				var spCastFrom = global.docFrom.CurrentSpells[aCastFrom];
 				if (spCastFrom.selectCa) spCastTo.selectCa = spCastFrom.selectCa;
 				if (spCastFrom.offsetCa) spCastTo.offsetCa = spCastFrom.offsetCa;
 				if (spCastFrom.selectBo) spCastTo.selectBo = spCastFrom.selectBo;
@@ -2973,7 +2977,7 @@ function ImportScriptFileDialog(retResDia) {
 			if (!runScriptsTest) { // the scripts failed, so run them again just to be sure that no rogue elements end up in the variables
 				InitiateLists();
 				RunUserScript(false, false);
-			};
+			}
 			amendPsionicsToSpellsList();
 			if (filesScriptRem !== What("User_Imported_Files.Stringified") || runScriptsTest) {
 				retResDia = "also";

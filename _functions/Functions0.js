@@ -1,3 +1,10 @@
+// stop the execution of any further code and stop calculations if this is a mobile app
+if (!(/^(WIN|MAC|UNIX)$/i).test(app.platform)) {
+	app.calculate = false;
+	this.calculate = false;
+	this.delay = true;
+	if (thisShouldGivesAnError) {};
+}
 // all the very basic functions and text manipulation functions
 var tDoc = this;
 
