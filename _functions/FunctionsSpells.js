@@ -713,8 +713,8 @@ function CalcSpellScores() {
 	if (isPrepareVis) {
 		theResult.prepare = theMod;
 		if (cSpells && cSpells.factor && cSpells.factor[0]) {
-			theResult.prepare += Math.max(Math.floor(cSpells.level / cSpells.factor[0]), 1);
-		} else if (cSpells) {
+			theResult.prepare += Math.floor(cSpells.level / cSpells.factor[0]);
+		} else if (cSpells && cSpells.level) {
 			theResult.prepare += cSpells.level;
 		}
 		theResult.prepare = Math.max(1, theResult.prepare);

@@ -5091,12 +5091,15 @@ function CalcEncumbrance() {
 }
 
 function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice, Fea, ForceFeaOld) {
-	var FeaKey = ForceOld && ClassList[theClass].features[theFeature] ? ClassList[theClass].features[theFeature] : CurrentClasses[theClass].features[theFeature];
-	if (!FeaKey) return "";
+	// First make sure we know where the feature comes from (if it exists in both class and subclass, use subclass, unless ForceOld is true)
+	var aSubClass = classes.known[theClass].subclass;
+	var FeaList = ClassList[theClass].features[theFeature] && (ForceOld || !aSubClass || !ClassSubList[aSubClass].features[theFeature]) ? 'ClassList' : ClassSubList[aSubClass].features[theFeature] ? 'ClassSubList' : false;
+	if (!FeaList) return ["", ""];
 
+	var FeaKey = FeaList == 'ClassList' ? ClassList[theClass].features[theFeature] : ClassSubList[aSubClass].features[theFeature];
 	var old = (ForceOld || ForceFeaOld) && Fea ? "Old" : "";
 	if (old) Fea.source = Fea.sourceOld;
-	var FeaClass = !ForceOld && theFeature.indexOf("subclassfeature") !== -1 && CurrentClasses[theClass].subname ? CurrentClasses[theClass].subname : CurrentClasses[theClass].name;
+	var FeaClass = FeaList == 'ClassSubList' && CurrentClasses[theClass].subname ? CurrentClasses[theClass].subname : CurrentClasses[theClass].name;
 	if (!Fea) Fea = GetLevelFeatures(FeaKey, FeaLvl, SubChoice, "", "");
 
 	if (!Fea.UseName) return ["", ""]; // return empty strings if there is no name
