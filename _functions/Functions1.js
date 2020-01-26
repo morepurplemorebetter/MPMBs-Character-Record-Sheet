@@ -1960,13 +1960,18 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			var casterType = !isNaN(Temps.spellcastingFactor) ? "default" : Temps.spellcastingFactor.replace(/\d/g, "");
 			var casterFactor = !isNaN(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor) : (/\d/g).test(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
 			// now only continue if the class level is the factor or higher
-			var casterAtCurLvl = Math.max(casterFactor, 1) <= classes.known[aClass].level;
-			// or if the class has its own spell slot progression, check against that
-			if (!casterAtCurLvl && Temps.spellcastingTable && Temps.spellcastingTable[classes.known[aClass].level]) {
-				casterAtCurLvl = 0 < Temps.spellcastingTable[classes.known[aClass].level].reduce(function (total, num) {
-					return total + num;
-				});
+			var isCasterAtLvl = function(lvl) {
+				var theRe = Math.max(casterFactor, 1) <= lvl;
+				// or if the class has its own spell slot progression, check against that
+				if (!theRe && Temps.spellcastingTable && Temps.spellcastingTable[lvl]) {
+					theRe = 0 < Temps.spellcastingTable[lvl].reduce(function (total, num) {
+						return total + num;
+					});
+				}
+				return theRe;
 			}
+			var casterAtCurLvl = isCasterAtLvl(classes.known[aClass].level);
+			var casterAtOldLvl = isCasterAtLvl(classes.old[aClass].classlevel);
 			if (casterAtCurLvl) {
 				// add one to the casterType for seeing if this casterType is multiclassing later on
 				if (multiCaster[casterType]) {
@@ -1974,18 +1979,21 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				} else {
 					multiCaster[casterType] = 1;
 				}
-				// create the base object (or update if already exists)
-				CreateCurrentSpellsEntry("class", aClass);
-				// then update this base object so that it is a spellcasting class with options
-				var cSpells = CurrentSpells[aClass];
-				cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass};
-				cSpells.known = Temps.spellcastingKnown ? Temps.spellcastingKnown : "";
-				cSpells.typeSp = !cSpells.known || !cSpells.known.spells || isArray(cSpells.known.spells) || !isNaN(cSpells.known.spells) ? "known" : cSpells.known.spells;
-				cSpells.factor = [casterFactor, casterType];
-				cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
-				if (Temps.spellcastingExtra) cSpells.extra = Temps.spellcastingExtra;
-			} else if (CurrentSpells[aClass]) {
-				// not high enough level to be a spellcaster anymore, so remove the object if it exists
+				// create the base object (or recreate if subclass changed or added)
+				if (!NotAtStartup && (casterAtCurLvl != casterAtOldLvl || classes.known[aClass].subclass !== classes.old[aClass].subclass)) {
+					var cSpells = CreateCurrentSpellsEntry("class", aClass);
+					// then update this base object so that it is a spellcasting class with options
+					if (cSpells) {
+						cSpells.list = Temps.spellcastingList ? Temps.spellcastingList : {class : aClass};
+						cSpells.known = Temps.spellcastingKnown ? Temps.spellcastingKnown : "";
+						cSpells.typeSp = !cSpells.known || !cSpells.known.spells || isArray(cSpells.known.spells) || !isNaN(cSpells.known.spells) ? "known" : cSpells.known.spells;
+						cSpells.factor = [casterFactor, casterType];
+						cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
+						if (Temps.spellcastingExtra) cSpells.extra = Temps.spellcastingExtra;
+					}
+				}
+			} else if (CurrentSpells[aClass] && !ObjLength(CurrentSpells[aClass].bonus)) {
+				// not high enough level to be a spellcaster anymore and no bonus spells, so remove the object if it exists
 				delete CurrentSpells[aClass];
 				CurrentUpdates.types.push("spells");
 			}
