@@ -385,6 +385,18 @@ function ToggleWhiteout(toggle) {
 	var logTemps = What("Template.extras.ALlog").split(",").splice(1);
 	var templateA = compTemps.concat(noteTemps).concat(wildTemps).concat(logTemps);
 
+	// Show/hide the whiteout field on page 3 depending on the state of the layers
+	if (!typePF && !minVer) {
+		if (CurrentVars.vislayers == undefined) CurrentVars.vislayers = ["rules", "equipment"];
+		if (nowWhat) {
+			if (CurrentVars.vislayers[0] === "notes") Show("Extra.Notes Whiteout");
+			if (CurrentVars.vislayers[1] === "equipment") Show("Extra.Other Holdings Whiteout");
+		} else {
+			Hide("Extra.Notes Whiteout");
+			Hide("Extra.Other Holdings Whiteout");
+		}
+	}
+
 	// Show/hide the whiteout fields as per the array
 	for (var i = 0; i < templateA.length; i++) {
 		var whiteFld = templateA[i] + "Whiteout";
@@ -398,9 +410,6 @@ function ToggleWhiteout(toggle) {
 
 	CurrentVars.whiteout = nowWhat;
 	SetStringifieds("vars"); // Save the settings to a field
-
-	// Show/hide the whiteout field on page 3 depending on the state of the layers
-	LayerVisibilityOptions();
 
 	thermoM(thermoTxt, true); // Stop progress bar
 };
@@ -1971,7 +1980,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				return theRe;
 			}
 			var casterAtCurLvl = isCasterAtLvl(classes.known[aClass].level);
-			var casterAtOldLvl = isCasterAtLvl(classes.old[aClass].classlevel);
+			var casterAtOldLvl = classes.old[aClass] ? isCasterAtLvl(classes.old[aClass].classlevel) : 0;
 			if (casterAtCurLvl) {
 				// add one to the casterType for seeing if this casterType is multiclassing later on
 				if (multiCaster[casterType]) {
@@ -2578,7 +2587,7 @@ function ReCalcWeapons(justProfs, force) {
 	justProfs = justProfs && !force && !CurrentEvals.atkAdd;
 	for (var xy = 0; xy < CurrentWeapons.known.length; xy++) {
 		if (CurrentWeapons.field[xy]) {
-			ApplyWeapon(CurrentWeapons.field[xy], "Attack." + (xy + 1) + ".Weapon Selection", true, justProfs);
+			ApplyWeapon(CurrentWeapons.field[xy], "Attack." + (xy + 1) + ".Weapon Selection", true, justProfs, force);
 		};
 	};
 };

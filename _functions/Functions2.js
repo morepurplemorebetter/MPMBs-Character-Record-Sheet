@@ -2495,6 +2495,27 @@ function Bookmark_Goto(BookNm) {
 	};
 };
 
+// a function to delete a page (and deal with the bug https://acrobat.uservoice.com/forums/590923-acrobat-for-windows-and-mac/suggestions/39561631--bug-report-deleting-a-page-while-the-mini-page-p )
+function deletePage(fldNm, onTemplate) {
+	var tempFld = tDoc.getField(fldNm);
+	if (!tempFld) return false;
+	var tempPage = onTemplate ? Math.max.apply(Math, tempFld.page) : tempFld.page;
+	try {
+		tDoc.deletePages(tempPage);
+	} catch (theError) {
+		// Because of bug, the fields could be removed, but the page is still there. Test for this
+		// IMPORTANT, the tempFld object will be dead if all fields by its name were removed, so re-initiate it
+		tempFld = tDoc.getField(fldNm);
+		var fldWasRemoved = !tempFld ? true : isArray(tempFld.page) ? false : onTemplate ? tempFld.page != tempPage : false;
+		if (theError.toString().indexOf("One or more pages are in use and could not be deleted") !== -1 && fldWasRemoved) {
+			tDoc.deletePages(tempPage);
+			return true;
+		}
+		return false;
+	}
+	return true;
+}
+
 // show/hide a template (AddRemove == undefined) or add/remove template with multiple instances (AddRemove == "Add" | "Remove" | "RemoveAll")
 function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 	MakeMobileReady(false); // Undo flatten, if needed
@@ -2522,22 +2543,24 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 
 	//are we dealing with a template that can have multiple instances or not?
 	var multiTemp = TemplatesWithExtras.indexOf(tempNm) !== -1;
+	var theNewPrefix = false;
 
 	if (!multiTemp) { // spawn or hide the template page for templates that can't have multiple instances
 		var isTempVisible = isTemplVis(tempNm);
 		if (isTempVisible) {
 			//find the current page of the template
-			var tempPage = Math.max.apply(Math, tDoc.getField(BookMarkList[tempNm]).page);
+			var tempFld = BookMarkList[tempNm];
+			var tempPage = Math.max.apply(Math, tDoc.getField(tempFld).page) + 1;
 
 			// Start progress bar
-			var thermoTxt = thermoM("Hiding " + TemplateNames[tempNm] + ", from page " + (tempPage + 1) + "...");
+			var thermoTxt = thermoM("Hiding " + TemplateNames[tempNm] + ", from page " + tempPage + "...");
 			thermoM(0.9);
 
-			tDoc.deletePages(tempPage);
-
-			//grey out the appropriate bookmarks
-			amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], false);
-
+			// delete the page, but beware of bug
+			if (deletePage(tempFld, true)) {
+				// grey out the appropriate bookmarks
+				amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], false);
+			}
 			// Stop progress bar
 			thermoM(thermoTxt, true);
 		} else {
@@ -2599,10 +2622,11 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 
 			if (GoOn || app.alert(doGoOn) === 4) {
 				for (var i = tempExtras.length - 1; i >= 0; i--) {
-					var tempPage = tDoc.getField(tempExtras[i] + BookMarkList[tempNm]).page;
+					var tempFld = tempExtras[i] + BookMarkList[tempNm];
 					thermoM((i + 1) / tempExtras.length); // Increment the progress bar
-					tDoc.deletePages(tempPage);
-					//remove the deleted entry from the newTemplList
+					// delete the page, but beware of bug
+					if (deletePage(tempFld, false) == false) continue;
+					// remove the deleted entry from the newTemplList
 					newTemplList.splice(newTemplList.indexOf(tempExtras[i]), 1);
 				};
 
@@ -2643,7 +2667,7 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 			thermoM(0.35);
 			calcStop();
 
-			var theNewPrefix = "P" + tempPage + "." + tempNm + ".";
+			theNewPrefix = "P" + tempPage + "." + tempNm + ".";
 
 			//if this template is already in use, it might already have the exact prefix that we would make. Thus, we will have to add blank pages to increase the number until it is no longer already defined
 			var toDeleteArray = [];
@@ -3408,6 +3432,7 @@ function MakeIconMenu_IconOptions() {
 
 		//second the class
 		var classes = [
+			["Artificer", "artificer"],
 			["Barbarian", "barbarian"],
 			["Bard", "bard"],
 			["Cleric", "cleric"],
@@ -5426,7 +5451,7 @@ function StringEvals(type) {
 
 // test if the main character is proficient with a weapon (return true) or not (return false)
 function isProficientWithWeapon(WeaponName, theWea) {
-	if ((/natural|spell|cantrip|alwaysprof/i).test(theWea.type)) {
+	if (theWea.alwaysProf || (/natural|spell|cantrip|alwaysprof/i).test(theWea.type)) {
 		return true; // No need to check further for natural weapons, spells, and 'alwaysprof'
 	} else if ((theWea.type.toLowerCase() == "simple" && tDoc.getField("Proficiency Weapon Simple").isBoxChecked(0)) || (theWea.type.toLowerCase() == "martial" && tDoc.getField("Proficiency Weapon Martial").isBoxChecked(0))) {
 		return true; // Proficient with the relevant type (simple/martial)
@@ -5437,7 +5462,7 @@ function isProficientWithWeapon(WeaponName, theWea) {
 }
 
 //apply the effect of a weapon with inputText the literal string in the Weapon Selection field and fldName the name of the field (any one of them); If fldName is left blank, use the event.target.name
-function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
+function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	fldName = fldName ? fldName : event.target.name;
 	var QI = fldName.indexOf("Comp.") === -1;
@@ -5620,7 +5645,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf) {
 			}
 		};
 		// if this is a field recalculation and no custom eval changed the description or range, just use the one from the field so that manual changes are preserved
-		if (isReCalc) {
+		if (isReCalc && !forceRedo) {
 			if (fields.Description === theWea.description) fields.Description = curDescr;
 			if (fields.Range === theWea.range) fields.Range = curRange;
 		}

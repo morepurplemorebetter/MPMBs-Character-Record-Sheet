@@ -645,7 +645,7 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
 	if (aChoice && (type == "items" || type == "feats") && !fObj.name && fObjP && fObjP.choices) {
 		for (var j = 0; j < fObjP.choices.length; j++) {
 			if (fObjP.choices[j].toLowerCase() == aChoice) {
-				sObj.name = fObjP.name + " [" + fObjP.choices[j] + "]" + " (item)";
+				sObj.name = fObjP.name + " [" + fObjP.choices[j] + "]" + " (" + sObj.typeSp+ ")";
 				break;
 			}
 		}
@@ -2337,7 +2337,7 @@ function ParseMagicItemMenu() {
 			for (var attr in iObj) tObj[attr] = iObj[attr];
 			for (var attr in sObj) tObj[attr] = sObj[attr];
 		}
-		var iSrc = tObj.source ? stringSource(tObj, "first,abbr", "(", ")") : false;  // DEBUGGING!!!
+		var iSrc = tObj.source ? stringSource(tObj, "first,abbr", "(", ")") : false;
 		var itemName = amendSrc(RemoveZeroWidths(!sObj ? iObj.name : sObj.name ? sObj.name : iObj.name + " [" + subItem + "]"), iSrc);
 		var firstLetter = itemName[0].toUpperCase();
 		// If this is a subitem and it has the exact same name as a previously added subitem, we have to make sure it 

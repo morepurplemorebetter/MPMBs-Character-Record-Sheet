@@ -2619,6 +2619,7 @@ function AddWarlockPactBoon(boonName, boonObj) { // Add a warlock pact boon
 
 // a way to add fighting styles to multiple classes; fsName is how it will appear in the menu
 function AddFightingStyle(classArr, fsName, fsObj) {
+	if (classArr.indexOf("ranger") !== -1 && classArr.indexOf("rangerua") == -1 && ClassList["rangerua"]) classArr.push("rangerua");
 	for (var i = 0; i < classArr.length; i++) {
 		var aClass = ClassList[classArr[i]];
 		var sClass = ClassSubList[classArr[i]];

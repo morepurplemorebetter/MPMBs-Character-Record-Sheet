@@ -313,6 +313,19 @@ WeaponsList["sword of purple"] = {
 
 	Setting this to false is the same as not including this attribute.
 */
+	isAlwaysProf : true,
+/*	isAlwaysProf // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether (true) or not (false) the proficiency bonus should always be added for this weapon
+
+	This attribute only has an effect if the character would otherwise not be proficient with this weapon.
+	Add this for weapons where the normal way of determining proficiency would not produce the correct result.
+	For example, if you set 'type' above to 'Cantrip', setting this to 'true' will have no effect.
+	Another example, if you set 'type' above to 'Simple', setting this to 'true' will add proficiency
+	even if the character is not proficient with simple weapons (or has the weapon listed in 'other weapon proficiencies').
+
+	Setting this to false is the same as not including this attribute.
+*/
 	ammo : "bolt",
 /*	ammo // OPTIONAL //
 	TYPE:	string
