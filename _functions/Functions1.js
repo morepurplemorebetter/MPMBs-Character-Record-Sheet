@@ -492,6 +492,7 @@ function ResetAll(GoOn, noTempl) {
 	CurrentRace = {};
 	CurrentBackground = {};
 	CurrentCompRace = {};
+	CurrentUpdates = {types : []};
 	GetStringifieds(keepImports);
 
 	if (keepImports) { // remove the imports and reset the sources
@@ -7611,7 +7612,7 @@ function MakeColorMenu() {
 		ColorMenu.push({cName : "-"}); //add a divider
 
 		// 'all' option
-		ColorMenu.push(menuLVL2(["All of the above (expect highlighting)", "all"], tempArray));
+		ColorMenu.push(menuLVL2(["All of the above (except highlighting)", "all"], tempArray));
 	}
 
 	Menus.colour = ColorMenu;

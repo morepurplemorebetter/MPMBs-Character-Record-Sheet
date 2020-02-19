@@ -250,7 +250,7 @@ var classes = {
 	oldspellcastlvl : {default : 0, warlock : 0}
 };
 
-var CurrentUpdates = {types : []};
+var CurrentUpdates = {types : []}; // if changed, also change it in ResetAll()
 var CurrentClasses = {};
 var CurrentBackground = {};
 var CurrentRace = {};
