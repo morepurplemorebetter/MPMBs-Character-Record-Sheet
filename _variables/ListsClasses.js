@@ -1129,7 +1129,7 @@ var Base_ClassList = {
 				minlevel : 6,
 				description : "\n   " + "While I'm conscious, allies within range and I can add my Cha mod (min 1) to saves",
 				additional : ["", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				addMod : { type : "save", field : "all", mod : "Cha", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." }
+				addMod : { type : "save", field : "all", mod : "max[Cha|1]", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." }
 			},
 			"aura of courage" : {
 				name : "Aura of Courage",

@@ -6041,29 +6041,35 @@ function EvalBonus(input, notComp, isSpecial) {
 	} else if (!isNaN(input)) {
 		return Number(input);
 	};
+	var toEval = input;
 	var modStr = notComp === true ? ["", " Mod"] : !isSpecial || isSpecial === "test" ? [notComp + "Comp.Use.Ability.", ".Mod"] : [notComp + "Wildshape." + isSpecial + ".Ability.", ".Mod"];
 	var ProfB = notComp === true ? Number(How("Proficiency Bonus")) : !isSpecial || isSpecial === "test" ? What(notComp + "Comp.Use.Proficiency Bonus") : What(notComp + "Wildshape." + isSpecial + ".Proficiency Bonus");
 	var abbrRegex = /(o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof))(o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof))/ig;
 	// remove 'dc' and convert commas to dots for decimal handling
-	input = input.replace(/,/g, ".").replace(/dc/ig, "");
+	toEval = toEval.replace(/,/g, ".").replace(/dc/ig, "");
 	// add a "+" between abbreviations that have no operator. Do this twice, so we also catch uneven groups
-	input = input.replace(abbrRegex, "$1+$3");
-	input = input.replace(abbrRegex, "$1+$3");
+	toEval = toEval.replace(abbrRegex, "$1+$3");
+	toEval = toEval.replace(abbrRegex, "$1+$3");
 	// removing double or trailing operators and replace double minus with a plus
-	input = input.replace(/[+\-/*]+([+/*])/g, "$1").replace(/--/g, "+").replace(/^[+/*]+|[+\-/*]+$/g, "");
+	toEval = toEval.replace(/[+\-/*]+([+/*])/g, "$1").replace(/--/g, "+").replace(/^[+/*]+|[+\-/*]+$/g, "");
 	// change ability score abbreviations with their modifier
 	["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"].forEach(function(AbiS) {
-		input = input.replace(RegExp("o" + AbiS, "ig"), Number(What(AbiS + " Mod")));
-		input = input.replace(RegExp(AbiS, "ig"), Number(What(modStr[0] + AbiS + modStr[1])));
+		toEval = toEval.replace(new RegExp("o" + AbiS, "ig"), Number(What(AbiS + " Mod")));
+		toEval = toEval.replace(new RegExp(AbiS, "ig"), Number(What(modStr[0] + AbiS + modStr[1])));
 	});
+	// Allow min/max input
+	var minMaxRegex = new RegExp("(max|min)\\[([+-]?[0-9]+(?:\\|[+-]?[0-9]+)+)\\]", "ig");
+	while (minMaxMatches = minMaxRegex.exec(toEval)) {
+    toEval = toEval.replace(minMaxMatches[0], "Math." + minMaxMatches[1] + "(" + minMaxMatches[2].split("|") + ")");
+	}
 	// change Prof with the proficiency bonus
-	input = input.replace(/oProf/ig, How("Proficiency Bonus"));
-	input = input.replace(/Prof/ig, ProfB);
+	toEval = toEval.replace(/oProf/ig, How("Proficiency Bonus"));
+	toEval = toEval.replace(/Prof/ig, ProfB);
 	// double negative to positive
-	input = input.replace(/--/g, "+");
+	toEval = toEval.replace(/--/g, "+");
 	try {
-		output = eval(input);
-		return !isNaN(output) ? Math.round(Number(output)) : 0;
+		output = eval(toEval);
+		return !isNaN(output) ? Math.floor(Number(output)) : 0;
 	} catch (err) {
 		return isSpecial === "test" ? undefined : 0;
 	};
@@ -6112,7 +6118,7 @@ function SetThisFldVal() {
 		var theVal = event.target.value;
 		if (!isNaN(theVal)) theVal = theVal.toString();
 		var theExpl = event.target.submitName.replace(/^\n*/, "");
-		var theDialTxt = (dmgDie ? "If you want the Damage Die to be a calculated value, and not just a string, make sure the first character is a '='.\nRegardless of the first character, a 'C' will be replaced with the Cantrip die, a 'B' with the Cantrip die minus 1, and a 'Q' with the Cantrip die plus 1.\n\nIf a calculated value (=), you can use underscores to keep the strings separate. For the calculated parts, y" : "Y") + "ou can use numbers, logical operators (+, -, /, *), ability score abbreviations (Str, Dex, Con, Int, Wis, Cha" + (QI === true ? ", HoS" : "") + "), and 'Prof'." + (QI === true ? "" : "\nIn addition, you can use the values from the character (the 1st page) by adding the letter 'o' before the variable (oStr, oDex, oCon, oInt, oWis, oCha, oHoS, oProf).");
+		var theDialTxt = (dmgDie ? "If you want the Damage Die to be a calculated value, and not just a string, make sure the first character is a '='.\nRegardless of the first character, a 'C' will be replaced with the Cantrip die, a 'B' with the Cantrip die minus 1, and a 'Q' with the Cantrip die plus 1.\n\nIf a calculated value (=), you can use underscores to keep the strings separate. For the calculated parts, y" : "Y") + "ou can use numbers, logical operators (+, -, /, *), ability score abbreviations (Str, Dex, Con, Int, Wis, Cha" + (QI === true ? ", HoS" : "") + "), and 'Prof'." + (QI === true ? "" : "\nIn addition, you can use the values from the character (the 1st page) by adding the letter 'o' before the variable (oStr, oDex, oCon, oInt, oWis, oCha, oHoS, oProf).") + "\nThe maximum or minimum of a list of values can also be determined. For example, 'max[1|2]' would return 2. Ability score abbreviations can be used in the list too.";
 		var theDialog = {
 			notComp : QI,
 			isDmgDie : dmgDie,
