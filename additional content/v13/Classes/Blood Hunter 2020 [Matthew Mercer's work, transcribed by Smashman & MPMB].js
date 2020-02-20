@@ -117,7 +117,7 @@ ClassList["blood hunter"] = {
 				name : "Blood Curse of Bloated Agony",
 				source : ["MM:BH2020", 12],
 				description : desc([
-					"As a bonus action, has disadv. on Str and Dex checks until the end of my next turn",
+					"As a bonus action, target has disadv. on Str and Dex checks until the end of my next turn",
 					"It takes 1d8 necrotic damage if makes more than one attack on its turn",
 					"\u2022 Amplify: The curse lasts 1 minute",
 					"  At the end of each of the target's turns, it can make a Con save to end the curse"
