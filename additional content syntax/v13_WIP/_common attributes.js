@@ -1374,11 +1374,15 @@ addMod : [
 		This can be any combination of numbers, mathematical operators,
 		and three-letter ability score abbreviations for ability score modifiers,
 		or 'Prof' for the proficiency bonus.
+		Additionally, you can use min(1|2) and max(1|2), which work like Math.min(1,2) and Math.max(1,2).
+		Note that the pipe is used instead of a comma.
 
 		For example, to add the proficiency bonus, Constitution modifier, and subtract 2, it would look like this:
 			mod : "Prof+Con-2",
 		Or, another example, to add 1, it would look like this:
 			mod : 1,
+		Or, another example, to add the Charisma modifier with a minimum of 1, it would look like this:
+			mod : "min(Cha|1)",
 	4. text
 		This is an explanation of why the modifier was added and is used in the modifier change dialog.
 

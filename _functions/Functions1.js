@@ -978,7 +978,7 @@ function ToggleBlueText(toggle) {
 	var SSvisible = SSarray.length > 1;
 	var SSpresuffix = [];
 	if (!typePF) {
-		var showSlots = eval(What("SpellSlotsRemember"));
+		var showSlots = eval_ish(What("SpellSlotsRemember"));
 		if (showSlots[0]) SSpresuffix.push(["", ".0"]); //show the ones on the first page
 		if (showSlots[1]) SSpresuffix.push(["", ".1"]); //show the ones on the spell sheet template page
 		if (showSlots[1] && SSvisible) SSpresuffix.push([SSarray[1], ""]); //show the ones on the spell sheet page, if visible
@@ -1680,7 +1680,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	var primeClass = "";
 
 	// Put the old classes.known in classes.old so the differences in level can be queried later
-	var oldClasses = eval(classes.old.toSource());
+	var oldClasses = newObj(classes.old);
 	classes.old = {};
 	classes.oldprimary = classes.primary;
 	classes.oldspellcastlvl = classes.spellcastlvl;
@@ -3135,7 +3135,7 @@ function MakeInventoryMenu() {
 		for (var i = 0; i < array.length; i++) {
 			temp.oSubMenu[i] = {
 				cName : array[i][0],
-				oSubMenu : eval(object.toSource())
+				oSubMenu : newObj(object)
 			};
 			for (var j = 0; j < temp.oSubMenu[i].oSubMenu.length; j++) {
 				var tempObject = temp.oSubMenu[i].oSubMenu[j];
@@ -3307,7 +3307,7 @@ function AddInvWeaponsAmmo() {
 		if (CurrentEvals.atkCalc && (toMatch).test(CurrentEvals.atkCalc)) {
 			isSpecial = CurrentEvals.atkCalc.match(toMatch).some( function (C) {
 				try {
-					return eval(C.replace("WeaponText", "atkNm"));
+					return eval_ish(C.replace("WeaponText", "atkNm"));
 				} catch (err) {};
 			});
 		};
@@ -3415,7 +3415,7 @@ function MakeInventoryLineMenu() {
 	var moveCol2 = numColumns !== 3 ? false : curCol === 3 ? "middle" : "right";
 
 	var amendMenu = function(inputArray) {
-		var array = eval(inputArray.toSource());
+		var array = newObj(inputArray);
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].oSubMenu) {
 				var theSub = array[i].oSubMenu;
@@ -3472,7 +3472,7 @@ function MakeInventoryLineMenu() {
 			//if (type.indexOf("Comp.") !== -1 && prefix === AScompA[i]) continue;
 			var CompNm = What(AScompA[i] + "Comp.Desc.Name");
 			var CompPg = tDoc.getField(AScompA[i] + "Comp.Desc.Name").page + 1;
-			var eqpVis = eval(What(AScompA[i] + "Companion.Layers.Remember"))[1];
+			var eqpVis = eval_ish(What(AScompA[i] + "Companion.Layers.Remember"))[1];
 			temp.oSubMenu.push({
 				cName : (CompNm ? CompNm : "NAME") + "'s Equipment Section " + (eqpVis ? "" : "\[not visible currently\] ") + "(page " + CompPg + ")",
 				cReturn : type + "#" + lineNmbr + "#" + "movepage#" + AScompA[i] + "Comp."
@@ -4310,7 +4310,7 @@ function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, Update
 	var additionaltxt = additionaltxt.indexOf(identifier) != -1 ? "" : additionaltxt && What("Unit System") === "metric" ? ConvertToMetric(additionaltxt, 0.5) : additionaltxt;
 	UpdateOrReplace = UpdateOrReplace ? UpdateOrReplace : "replace";
 	var calculation = Calc ? Calc : "";
-	var SslotsVisible = !typePF && eval(What("SpellSlotsRemember"))[0];
+	var SslotsVisible = !typePF && eval_ish(What("SpellSlotsRemember"))[0];
 	var recovery = (/^(long rest|short rest|dawn)$/).test(recovery) ? recovery : recovery.capitalize();
 	if ((/ ?\bper\b ?/).test(usages)) usages = usages.replace(/ ?\bper\b ?/, "");
 	for (var n = 1; n <= 2; n++) {
@@ -7042,12 +7042,6 @@ function ApplyColorScheme(aColour) {
 	//set the chosen color to a place it can be found again
 	Value("Color.Theme", colour);
 
-	//set the highlighting color if it has been coupled to the headers
-	if (Who("Highlighting") === "headers") {
-		app.runtimeHighlightColor = LightColorList[colour];
-		tDoc.getField("Highlighting").fillColor = LightColorList[colour];
-	}
-
 	if (tDoc.info.AdvLogOnly) {
 		var ALlogA = What("Template.extras.ALlog").split(",");
 		var theIconH = tDoc.getField("SaveIMG.Header.Left." + colour).buttonGetIcon();
@@ -7300,8 +7294,14 @@ function ApplyColorScheme(aColour) {
 
 	thermoM(6/7); //increment the progress dialog's progress
 
-	//see if any of the Ability Save DC's have the color connected to this
-	ApplyDCColorScheme();
+	// Set the highlighting color if it has been coupled to the headers
+	if (Who("Highlighting") === "headers") {
+		app.runtimeHighlightColor = LightColorList[colour];
+		tDoc.getField("Highlighting").fillColor = LightColorList[colour];
+	}
+	// See if any of the Ability Save DC's or the HP Dragons have the color connected to this
+	if (What("Color.DC").indexOf("headers") != -1) ApplyDCColorScheme();
+	if (What("Color.HPDragon") == "headers") ApplyHPDragonColorScheme();
 
 	thermoM(thermoTxt, true); // Stop progress bar
 }
@@ -7321,12 +7321,6 @@ function ApplyDragonColorScheme(aColour) {
 
 	//set the chosen color to a place it can be found again
 	Value("Color.DragonHeads", colour);
-
-	//set the highlighting color if it has been coupled to the dragon heads color
-	if (Who("Highlighting") === "same as dragon heads") {
-		app.runtimeHighlightColor = LightColorList[colour];
-		tDoc.getField("Highlighting").fillColor = LightColorList[colour];
-	}
 
 	//change the dragonheads
 	var theIcon = tDoc.getField("SaveIMG.Dragonhead." + colour).buttonGetIcon();
@@ -7452,8 +7446,14 @@ function ApplyDragonColorScheme(aColour) {
 
 	thermoM(5/6); //increment the progress dialog's progress
 
-	//see if any of the Ability Save DC's have the color connected to this
-	ApplyDCColorScheme();
+	// Set the highlighting color if it has been coupled to the dragon heads color
+	if (Who("Highlighting") === "dragons") {
+		app.runtimeHighlightColor = LightColorList[colour];
+		tDoc.getField("Highlighting").fillColor = LightColorList[colour];
+	}
+	// See if any of the Ability Save DC's or the HP Dragons have the color connected to this
+	if (What("Color.DC").indexOf("dragons") != -1) ApplyDCColorScheme();
+	if (What("Color.HPDragon") == "dragons") ApplyHPDragonColorScheme();
 
 	thermoM(thermoTxt, true); // Stop progress bar
 }
@@ -7461,7 +7461,8 @@ function ApplyDragonColorScheme(aColour) {
 //change the colorscheme that is used for the dragon heads sheet
 function ApplyHPDragonColorScheme(aColour) {
 	if (typePF || (!aColour && What("Color.HPDragon") === tDoc.getField("Color.HPDragon").defaultValue)) return; //don't do this function in the Printer-Friendly version or if resetting with the default colour still active
-	var colour = aColour ? aColour.toLowerCase() : What("Color.HPDragon");
+	var fndColour = aColour ? aColour.toLowerCase() : What("Color.HPDragon");
+	var colour = fndColour == "headers" ? What("Color.Theme") : fndColour == "dragons" ? What("Color.DragonHeads") : fndColour;
 
 	//stop the function if the input color is not recognized
 	if (!ColorList[colour]) return;
@@ -7471,7 +7472,7 @@ function ApplyHPDragonColorScheme(aColour) {
 	calcStop();
 
 	//set the chosen color to a place where it can be found again
-	Value("Color.HPDragon", colour);
+	Value("Color.HPDragon", fndColour);
 
 	//get any extra prefixes
 	var makeTempArray = function (template) {
@@ -7598,7 +7599,7 @@ function MakeColorMenu() {
 
 		//make, if this is not a spell sheet, the Dragon HP and ability save DCs submenu
 		if (!minVer) {
-			ColorMenu.push(menuLVL2(["HP Dragons", "hpdragons"], tempArray));
+			ColorMenu.push(menuLVL2(["HP Dragons", "hpdragons"], tempArrayExt));
 			menuLVL3(DCMenu, ["Ability Save DC 1 (left)", "abilitydc"], tempArrayExt, 1);
 			menuLVL3(DCMenu, ["Ability Save DC 2 (right)", "abilitydc"], tempArrayExt, 2);
 			ColorMenu.push(DCMenu);
@@ -8661,7 +8662,7 @@ function WeaponDelete(itemNmbr) {
 
 //show (true) or hide (false) the subsection of "attuned magical items" in the adventure gear table
 function ShowAttunedMagicalItems(currentstate) {
-	if (currentstate === undefined) currentstate = !eval(What("Adventuring Gear Remember"));
+	if (currentstate === undefined) currentstate = !eval_ish(What("Adventuring Gear Remember"));
 	var ExtraLine = [
 		"Adventuring Gear Row " + FieldNumbers.gearMIrow,
 		"Adventuring Gear Amount " + FieldNumbers.gearMIrow,
@@ -8789,7 +8790,7 @@ function SetHighlighting() {
 		//set the remember highlight colour to the sheet's default
 		tDoc.getField("Highlighting").fillColor = ["RGB", 0.9, 0.9, 1];
 		AddTooltip("Highlighting", "sheet default");
-		Highlighting.rememberState = eval(What("Highlighting"));
+		Highlighting.rememberState = eval_ish(What("Highlighting"));
 		Highlighting.rememberColor = tDoc.getField("Highlighting").fillColor;
 	}
 	app.runtimeHighlight = Highlighting.rememberState;
@@ -8884,7 +8885,7 @@ function SetSpellSlotsVisibility() {
 
 	MakeMobileReady(false); // Undo flatten, if needed
 
-	var toShow = eval(What("SpellSlotsRemember"));
+	var toShow = eval_ish(What("SpellSlotsRemember"));
 
 	//define a function to show (showOrHide = true) or hide (showOrHide = false) all the spellslots; suffix is "" or "2"
 	var doSpellSlots = function(showOrHide, suffix, prefix) {

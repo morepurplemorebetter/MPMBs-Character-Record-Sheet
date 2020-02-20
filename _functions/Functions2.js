@@ -1479,7 +1479,7 @@ function SetWildshapeDropdown(forceTooltips) {
 	var theList = [];
 
 	for (var key in CreatureList) {
-		if ((CreatureList[key].type === "Beast" && eval(CreatureList[key].challengeRating) <= 6) || (/^(air|earth|fire|water) elemental$/i).test(key)) {
+		if ((CreatureList[key].type === "Beast" && eval_ish(CreatureList[key].challengeRating) <= 6) || (/^(air|earth|fire|water) elemental$/i).test(key)) {
 			if (testSource(key, CreatureList[key], "creaExcl") || theList.indexOf(CreatureList[key].name) !== -1) continue;
 			theList.push(CreatureList[key].name);
 		}
@@ -1563,7 +1563,7 @@ function MakeCompMenu() {
 			temp.oSubMenu = [];
 			for (var i = 0; i < array.length; i++) {
 				if (name[1] === "visible") {
-					var toShow = eval(What(prefix + "Companion.Layers.Remember"));
+					var toShow = eval_ish(What(prefix + "Companion.Layers.Remember"));
 					var subMarked = array[i][1] === "comp.img" ? toShow[0] : toShow[1];
 				} else if (name[1] === "change") {
 					var subMarked = What(prefix + "Companion.Remember") === array[i][1];
@@ -1613,9 +1613,9 @@ function MakeCompMenu() {
 	for (var aCrea in CreatureList) {
 		var theCrea = CreatureList[aCrea];
 		if (testSource(aCrea, theCrea, "creaExcl")) continue; // test if the creature or its source isn't excluded
-		if (theCrea.type === "Beast" && theCrea.size >= 3 && eval(theCrea.challengeRating) <= 1/4) {
+		if (theCrea.type === "Beast" && theCrea.size >= 3 && eval_ish(theCrea.challengeRating) <= 1/4) {
 			companions.push([theCrea.name, aCrea]);
-		} else if (theCrea.type === "Beast" && theCrea.size === 2 && eval(theCrea.challengeRating) <= 2) {
+		} else if (theCrea.type === "Beast" && theCrea.size === 2 && eval_ish(theCrea.challengeRating) <= 2) {
 			mechanicalServs.push([theCrea.name, aCrea]);
 		};
 		switch (theCrea.companion) {
@@ -1705,7 +1705,7 @@ function CompOptions() {
 		//remove the prefix, if found, from the array in the remember field
 		DoTemplate("AScomp", "Remove", prefix);
 	} else if (MenuSelection[0] === "visible") {
-		var toShow = eval(What(prefix + "Companion.Layers.Remember"));
+		var toShow = eval_ish(What(prefix + "Companion.Layers.Remember"));
 		if (MenuSelection[1] === "comp.img") {
 			toShow[0] = !toShow[0];
 		} else if (MenuSelection[1] === "comp.eqp") {
@@ -2003,9 +2003,10 @@ function ChangeFont(newFont, oldFont) {
 function ApplyDCColorScheme(colour, DC) {
 	if (typePF || (!colour && What("Color.DC") === tDoc.getField("Color.DC").defaultValue)) return; //don't do this function in the Printer-Friendly version or if resetting with the default colour
 	//stop the function if the input color is not recognized
-	colour = colour && isNaN(colour) ? colour.toLowerCase() : What("Color.DC").split(",")[DC - 1];
-	if (colour && colour !== "same as headers" && colour !== "same as dragon heads" && !ColorList[colour]) {
-		return;
+	if (colour || DC) {
+		colour = colour && isNaN(colour) ? colour.toLowerCase() : DC ? What("Color.DC").split(",")[DC - 1] : "red";
+		colour = colour.replace(/same as | head/ig, '');
+		if (colour && colour !== "headers" && colour !== "dragons" && !ColorList[colour]) return;
 	}
 
 	var colorGo = What("Color.DC").split(",");
@@ -2025,10 +2026,10 @@ function ApplyDCColorScheme(colour, DC) {
 	for (var dc = DCstart; dc <= DCstop; dc++) {
 		var DCcolor = colorGo[dc - 1];
 		switch (DCcolor) {
-			case "same as headers" :
+			case "headers" :
 				DCcolor = What("Color.Theme");
 				break;
-			case "same as dragon heads" :
+			case "dragons" :
 				DCcolor = What("Color.DragonHeads");
 				break;
 		}
@@ -2248,7 +2249,7 @@ function MakeLimFeaMenu() {
 	var itemNmbr = parseFloat(event.target.name.slice(-2));
 	var maxNmbr = FieldNumbers.limfea;
 	var theField = What("Limited Feature " + itemNmbr);
-	var SslotsVisible = !typePF && eval(What("SpellSlotsRemember"))[0];
+	var SslotsVisible = !typePF && eval_ish(What("SpellSlotsRemember"))[0];
 	var frstPend = SslotsVisible ? 5 : 8;
 
 	var menuLVL1 = function (item, array) {
@@ -2291,7 +2292,7 @@ function LimFeaOptions() {
 	];
 	var Fields = [], FieldsValue = [], FieldsTool = [], FieldsCalc = [], FieldsUp = [], FieldsUpValue = [], FieldsUpTool = [], FieldsUpCalc = [], FieldsDown = [], FieldsDownValue = [], FieldsDownTool = [], FieldsDownCalc = [];
 
-	var SslotsVisible = !typePF && eval(What("SpellSlotsRemember"))[0];
+	var SslotsVisible = !typePF && eval_ish(What("SpellSlotsRemember"))[0];
 	var upDownOffset = SslotsVisible && (itemNmbr === 5 || itemNmbr === 9) ? 4 : 1;
 
 	for (var F = 0; F < FieldNames.length; F++) {
@@ -2364,7 +2365,7 @@ function LimFeaOptions() {
 
 //insert a Limited Feature at the position wanted
 function LimFeaInsert(itemNmbr) {
-	var SslotsVisible = !typePF && eval(What("SpellSlotsRemember"))[0];
+	var SslotsVisible = !typePF && eval_ish(What("SpellSlotsRemember"))[0];
 	var maxNmbr = FieldNumbers.limfea;
 	var FieldNames = [
 		"Limited Feature ",
@@ -2419,7 +2420,7 @@ function LimFeaInsert(itemNmbr) {
 
 //delete a Limited Feature at the position wanted and move the rest up
 function LimFeaDelete(itemNmbr) {
-	var SslotsVisible = !typePF && eval(What("SpellSlotsRemember"))[0];
+	var SslotsVisible = !typePF && eval_ish(What("SpellSlotsRemember"))[0];
 	var frstPend = SslotsVisible ? 5 : 8;
 	var maxNmbr = FieldNumbers.limfea;
 	maxNmbr = itemNmbr > frstPend || What("Limited Feature 8") ? maxNmbr : frstPend; //stop at the end of the first page if last one on first page is empty
@@ -3091,7 +3092,7 @@ function MakeNotesMenu_NotesOptions() {
 		menuArray.push(["Add extra 'Notes' page", "add page"]);
 		menuArray.push([(prefix ? "Remove" : "Hide") + " this 'Notes' page", "remove page"]);
 	} else if (toSearch === "Cnote.") {
-		var toShow = eval(What(prefix + "Companion.Layers.Remember"));
+		var toShow = eval_ish(What(prefix + "Companion.Layers.Remember"));
 		menuArray.push(["Show box for Companion's Appearance", "comp.img"]);
 		menuArray.push(["Show Equipment section", "comp.eqp"]);
 	}
@@ -3184,7 +3185,7 @@ function CalcLogsheetValue() {
 		var theGain = What(fNm.replace("total", "gain")).replace(/,/g, ".");
 		event.target.display = theGain === "" ? display.hidden : tDoc.getField(theStart).display;
 		var theStartNmr = Number(What(theStart).replace(/,/g, "."));
-		event.value = theGain === "" ? theStartNmr : theStartNmr + eval(theGain);
+		event.value = theGain === "" ? theStartNmr : theStartNmr + eval_ish(theGain);
 	} else {
 		var FldNmbr = Number(fNm.replace(/.*AdvLog\.(\d+?)\..+/, "$1"));
 		if (prefix === What("Template.extras.ALlog").split(",")[1] && FldNmbr === 1) {
@@ -3587,17 +3588,17 @@ function GetStringifieds(notSources) {
 	var forSpells = What("CurrentSpells.Stringified").split("##########");
 	if (forSpells[0][0] !== "(") forSpells[0] = "(" + forSpells[0] + ")";
 	if (forSpells[1][0] !== "(") forSpells[1] = "(" + forSpells[1] + ")";
-	CurrentSpells = eval(forSpells[0]);
-	CurrentCasters = eval(forSpells[1]);
+	CurrentSpells = eval_ish(forSpells[0]);
+	CurrentCasters = eval_ish(forSpells[1]);
 	if (!notSources) {
-		CurrentSources = eval(What("CurrentSources.Stringified"));
-		CurrentScriptFiles = eval(What("User_Imported_Files.Stringified"));
+		CurrentSources = eval_ish(What("CurrentSources.Stringified"));
+		CurrentScriptFiles = eval_ish(What("User_Imported_Files.Stringified"));
 	};
-	CurrentEvals = eval(What("CurrentEvals.Stringified"));
-	CurrentProfs = eval(What("CurrentProfs.Stringified"));
-	CurrentVars = eval(What("CurrentVars.Stringified"));
-	CurrentFeatureChoices = eval(What("CurrentFeatureChoices.Stringified"));
-	CurrentStats = eval(What("CurrentStats.Stringified"));
+	CurrentEvals = eval_ish(What("CurrentEvals.Stringified"));
+	CurrentProfs = eval_ish(What("CurrentProfs.Stringified"));
+	CurrentVars = eval_ish(What("CurrentVars.Stringified"));
+	CurrentFeatureChoices = eval_ish(What("CurrentFeatureChoices.Stringified"));
+	CurrentStats = eval_ish(What("CurrentStats.Stringified"));
 }
 
 //set all stringified variables into their fields
@@ -4300,7 +4301,7 @@ function ShowCompanionLayer(prefix) {
 
 	prefix = prefix ? prefix : "";
 	var notesFld = prefix + (typePF ? "Cnote.Left" : "Cnote.Right");
-	var toShow = eval(What(prefix + "Companion.Layers.Remember")); //an array with two true/false values, the first is for the image section, second is for the equipment section
+	var toShow = eval_ish(What(prefix + "Companion.Layers.Remember")); //an array with two true/false values, the first is for the image section, second is for the equipment section
 	var changeNotes = typePF ? toShow[1] : toShow[0] || toShow[1];
 
 	if (changeNotes) {
@@ -5276,7 +5277,7 @@ function contactMPMB(medium) {
 function PatreonStatement() {
 	try {
 		var iNow = new Date();
-		var timeDiff = iNow.getTime() - eval(tDoc.getField("SaveIMG.Patreon").submitName).getTime();
+		var timeDiff = iNow.getTime() - eval_ish(tDoc.getField("SaveIMG.Patreon").submitName).getTime();
 		if (Math.floor(timeDiff / (1000 * 3600 * 24)) >= 28) {
 			var oButIcon = this.getField("SaveIMG.Patreon").buttonGetIcon();
 			var oMyIcon = util.iconStreamFromIcon(oButIcon);
@@ -6043,27 +6044,31 @@ function EvalBonus(input, notComp, isSpecial) {
 	};
 	var modStr = notComp === true ? ["", " Mod"] : !isSpecial || isSpecial === "test" ? [notComp + "Comp.Use.Ability.", ".Mod"] : [notComp + "Wildshape." + isSpecial + ".Ability.", ".Mod"];
 	var ProfB = notComp === true ? Number(How("Proficiency Bonus")) : !isSpecial || isSpecial === "test" ? What(notComp + "Comp.Use.Proficiency Bonus") : What(notComp + "Wildshape." + isSpecial + ".Proficiency Bonus");
-	var abbrRegex = /(o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof))(o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof))/ig;
 	// remove 'dc' and convert commas to dots for decimal handling
 	input = input.replace(/,/g, ".").replace(/dc/ig, "");
 	// add a "+" between abbreviations that have no operator. Do this twice, so we also catch uneven groups
-	input = input.replace(abbrRegex, "$1+$3");
-	input = input.replace(abbrRegex, "$1+$3");
+	var abbrRegex = /(o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof))(o?(Str|Dex|Con|Int|Wis|Cha|HoS|Prof))/ig;
+	input = input.replace(abbrRegex, "$1+$3").replace(abbrRegex, "$1+$3");
 	// removing double or trailing operators and replace double minus with a plus
-	input = input.replace(/[+\-/*]+([+/*])/g, "$1").replace(/--/g, "+").replace(/^[+/*]+|[+\-/*]+$/g, "");
+	input = input.replace(/[+-/*]+([+/*])/g, "$1").replace(/--/g, "+").replace(/^[+/*]+|[+-/*]+$/g, "");
 	// change ability score abbreviations with their modifier
 	["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"].forEach(function(AbiS) {
 		input = input.replace(RegExp("o" + AbiS, "ig"), Number(What(AbiS + " Mod")));
 		input = input.replace(RegExp(AbiS, "ig"), Number(What(modStr[0] + AbiS + modStr[1])));
 	});
 	// change Prof with the proficiency bonus
-	input = input.replace(/oProf/ig, How("Proficiency Bonus"));
-	input = input.replace(/Prof/ig, ProfB);
+	input = input.replace(/oProf/ig, How("Proficiency Bonus")).replace(/Prof/ig, ProfB);
+	// allow min/max input
+	var minMaxMatches;
+	var minMaxRegex = /(max|min)(\([+-.0-9]+(?:\|[+-.0-9]+)+\))/i;
+	while (minMaxMatches = minMaxRegex.exec(input)) {
+    	input = input.replace(minMaxMatches[0], "Math." + minMaxMatches[1].toLowerCase() + minMaxMatches[2].split("|"));
+	}
 	// double negative to positive
 	input = input.replace(/--/g, "+");
 	try {
-		output = eval(input);
-		return !isNaN(output) ? Math.round(Number(output)) : 0;
+		output = eval_ish(input);
+		return !isNaN(output) ? Math.floor(Number(output)) : 0;
 	} catch (err) {
 		return isSpecial === "test" ? undefined : 0;
 	};
@@ -6112,7 +6117,16 @@ function SetThisFldVal() {
 		var theVal = event.target.value;
 		if (!isNaN(theVal)) theVal = theVal.toString();
 		var theExpl = event.target.submitName.replace(/^\n*/, "");
-		var theDialTxt = (dmgDie ? "If you want the Damage Die to be a calculated value, and not just a string, make sure the first character is a '='.\nRegardless of the first character, a 'C' will be replaced with the Cantrip die, a 'B' with the Cantrip die minus 1, and a 'Q' with the Cantrip die plus 1.\n\nIf a calculated value (=), you can use underscores to keep the strings separate. For the calculated parts, y" : "Y") + "ou can use numbers, logical operators (+, -, /, *), ability score abbreviations (Str, Dex, Con, Int, Wis, Cha" + (QI === true ? ", HoS" : "") + "), and 'Prof'." + (QI === true ? "" : "\nIn addition, you can use the values from the character (the 1st page) by adding the letter 'o' before the variable (oStr, oDex, oCon, oInt, oWis, oCha, oHoS, oProf).");
+		var theDialTxt = (dmgDie ? "If you want the Damage Die to be a calculated value, and not just a string, make sure the first character is a '='.\nRegardless of the first character, a 'C' will be replaced with the Cantrip die, a 'B' with the Cantrip die minus 1, and a 'Q' with the Cantrip die plus 1.\n\nIf a calculated value (=), you can use underscores to keep the strings separate. For the calculated parts, y" : "Y") + "ou can use numbers, logical operators (+, -, /, *), ability score abbreviations (Str, Dex, Con, Int, Wis, Cha" + (QI === true ? ", HoS" : "") + "), and 'Prof'.";
+		var theDialTxt2 = "You can also determine the maximum or minimum of a group with 'min(1|2)' or 'max(1|2)', using pipe '|' as the separator.";
+		if (QI !== true) theDialTxt2 += "\n\nIn addition, you can use the values from the character (the 1st page) by adding the letter 'o' before the variable (oStr, oDex, oCon, oInt, oWis, oCha, oHoS, oProf).";
+		if (!dmgDie && !theExpl) {
+			theDialTxt2 += "\n\nSome examples with a Strength of 18 (+4):"+
+				"\n INPUT\tRESULT\t\t\t INPUT\t\tRESULT"+
+				"\n   Str\t    4\t\t\t   max(Str|1)\t    4"+
+				"\n   Str-1\t    3\t\t\t   min(Str|1)\t    1"+
+				"\n   Str*2\t    8\t\t\t   min(Str|3)*2+1\t    7";
+		}
 		var theDialog = {
 			notComp : QI,
 			isDmgDie : dmgDie,
@@ -6152,7 +6166,7 @@ function SetThisFldVal() {
 						font : "heading",
 						bold : true,
 						wrap_name : true,
-						char_width : 35,
+						char_width : 40,
 						name : theName ? theName : "Set the field's value"
 					}, {
 						type : "cluster",
@@ -6165,7 +6179,16 @@ function SetThisFldVal() {
 							type : "static_text",
 							alignment : "align_left",
 							item_id : "txt3",
+							font : "palette",
 							name : theDialTxt,
+							char_width : 35,
+							wrap_name : true
+						}, {
+							type : "static_text",
+							alignment : "align_left",
+							item_id : "txt4",
+							font : "palette",
+							name : theDialTxt2,
 							char_width : 35,
 							wrap_name : true
 						}, {

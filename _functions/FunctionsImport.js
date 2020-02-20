@@ -487,8 +487,8 @@ function DirectImport(consoleTrigger) {
 		}
 
 		//copy any custom script and run it
-		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && global.docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
-		var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
+		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && global.docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval_ish(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
+		var filesScriptTo = eval_ish(global.docTo.getField("User_Imported_Files.Stringified").value);
 
 		if (filesScriptFrom) {
 			// add the old to the new, preferring the new if both have the same entries
@@ -570,7 +570,7 @@ function DirectImport(consoleTrigger) {
 		//set the highlighting
 		if (ImportField("Highlighting")) {
 			global.docTo.getField("Highlighting").fillColor = global.docFrom.getField("Highlighting").fillColor;
-			app.runtimeHighlight = eval(What("Highlighting"));
+			app.runtimeHighlight = eval_ish(What("Highlighting"));
 			app.runtimeHighlightColor = global.docTo.getField("Highlighting").fillColor;
 		};
 
@@ -581,7 +581,7 @@ function DirectImport(consoleTrigger) {
 
 		//set the text options
 		if (FromVersion < 13) {
-			if (global.docFrom.getField("WhiteoutRemember")) ToggleWhiteout(eval(global.docFrom.What("WhiteoutRemember")));
+			if (global.docFrom.getField("WhiteoutRemember")) ToggleWhiteout(eval_ish(global.docFrom.What("WhiteoutRemember")));
 			var FontSize_Remember_field = global.docFrom.getField("FontSize Remember") ? global.docFrom.getField("FontSize Remember").value : undefined;
 			if ((bothPF || bothCF || FontSize_Remember_field === 0) && FontSize_Remember_field != undefined) ToggleTextSize(FontSize_Remember_field);
 			LayerVisibilityOptions(false, global.docFrom.getField("Extra.Layers Remember") ? global.docFrom.getField("Extra.Layers Remember").value : undefined);
@@ -613,7 +613,7 @@ function DirectImport(consoleTrigger) {
 				};
 			} else {
 				try {
-					var theAdvL = eval(What("League Remember"));
+					var theAdvL = eval_ish(What("League Remember"));
 					ToggleAdventureLeague({
 						dci : theAdvL.dci,
 						factionrank : theAdvL.factionrank,
@@ -748,7 +748,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("MoreProficiencies");
 
 		//set the feature choices
-		if (ImportField("CurrentFeatureChoices.Stringified")) CurrentFeatureChoices = eval(What("CurrentFeatureChoices.Stringified"));
+		if (ImportField("CurrentFeatureChoices.Stringified")) CurrentFeatureChoices = eval_ish(What("CurrentFeatureChoices.Stringified"));
 
 		//set the level and xp
 		ImportField("Character Level", {notTooltip: true}); ImportField("Total Experience", {notTooltip: true}); ImportField("Add Experience", {notTooltip: true});
@@ -774,7 +774,7 @@ function DirectImport(consoleTrigger) {
 			}
 			SetStringifieds("stats");
 		} else if (ImportField("CurrentStats.Stringified")) {
-			CurrentStats = eval(What("CurrentStats.Stringified"));
+			CurrentStats = eval_ish(What("CurrentStats.Stringified"));
 		}
 
 		//set the background
@@ -851,7 +851,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("Proficiency Bonus Dice", {notTooltip: true}); ImportField("Proficiency Bonus Modifier", {notTooltip: true, notSubmitName: true}); ImportField("Inspiration", {notTooltip: true});
 
 		//set the skills and associated fields
-		var CurrentProfsFrom = global.docFrom.getField("CurrentProfs.Stringified") ? eval(global.docFrom.getField("CurrentProfs.Stringified").value) : false;
+		var CurrentProfsFrom = global.docFrom.getField("CurrentProfs.Stringified") ? eval_ish(global.docFrom.getField("CurrentProfs.Stringified").value) : false;
 		var isAltSkillOrder = Who('Text.SkillsNames') === 'alphabeta' ? false : true;
 		ImportField("Jack of All Trades", {notTooltip: true}); ImportField("Remarkable Athlete", {notTooltip: true}); ImportField("All Skills Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Passive Perception Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Too Text", {notTooltip: true, notSubmitName: true});
 		for (var i = 0; i < SkillsList.abbreviations.length; i++) {
@@ -1305,7 +1305,7 @@ function DirectImport(consoleTrigger) {
 				if (spCastFrom.offsetSp) spCastTo.offsetSp = spCastFrom.offsetSp;
 				if (spCastFrom.selectSpSB) spCastTo.selectSpSB = spCastFrom.selectSpSB;
 				if (spCastFrom.selectPrep) spCastTo.selectPrep = spCastFrom.selectPrep;
-				if (spCastFrom.blueTxt) spCastTo.blueTxt = eval(spCastFrom.blueTxt.toSource());
+				if (spCastFrom.blueTxt) spCastTo.blueTxt = newObj(spCastFrom.blueTxt);
 				if (spCastTo.bonus) {
 					for (var bKey in spCastTo.bonus) {
 						if (!spCastFrom.bonus[bKey]) continue; //doesn't exist in the sheet importing from
@@ -1325,7 +1325,7 @@ function DirectImport(consoleTrigger) {
 				};
 			};
 			if (global.docFrom.CurrentCasters.incl || global.docFrom.CurrentCasters.excl) {
-				CurrentCasters = eval(global.docFrom.CurrentCasters.toSource());
+				CurrentCasters = newObj(global.docFrom.CurrentCasters);
 				for (var aCast in CurrentCasters) {
 					for (var i = 0; i < CurrentCasters.incl.length; i++) {
 						if (classesArray.indexOf(CurrentCasters.incl[i]) === -1) {
@@ -1859,7 +1859,7 @@ function Import(type) {
 		});
 	} else {
 		try {
-			var theAdvL = eval(What("League Remember"));
+			var theAdvL = eval_ish(What("League Remember"));
 			ToggleAdventureLeague({
 				dci : theAdvL.dci,
 				factionrank : theAdvL.factionrank,
@@ -2651,7 +2651,7 @@ function CreateClassFeatureVariant(clName, clFea, varName, varObj) {
 	if (aFea.extrachoices || aFea.extraname) return; // this doesn't work if a feature offers extrachoices
 	if (!aFea.choices) {
 		// Create a new 
-		var origFea = eval(aFea[clFea].toSource());
+		var origFea = newObj(aFea[clFea]);
 		var choiceNm = "\x1B[original] " + origFea.name;
 		var choiceNmLC = choiceNm.toLowerCase();
 		aFea[clFea] = {
@@ -2991,7 +2991,7 @@ function ImportScriptFileDialog(retResDia) {
 		};
 	} else {
 		Value("User_Imported_Files.Stringified", filesScriptRem);
-		CurrentScriptFiles = eval(filesScriptRem);
+		CurrentScriptFiles = eval_ish(filesScriptRem);
 	};
 	if (retResDia) resourceDecisionDialog(false, false, retResDia === "also"); // return to the Dialog for Selecting Resources
 };

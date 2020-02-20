@@ -557,7 +557,7 @@ ClassList["warmage"] = {
 				"My ranged attacks ignore half and three-quarter cover"
 			]),
 			vision : [["+Int mod to sight-based Perception"]],
-			addMod : { type : "skill", field : "Perc", mod : "Int", text : "I can add my Intelligence modifier to all Wisdom (Perception) checks that rely on sight." }
+			addMod : { type : "skill", field : "Perc", mod : "max(Int|0)", text : "I can add my Intelligence modifier to all Wisdom (Perception) checks that rely on sight." }
 		},
 		"master warmage" : {
 			name : "Master Warmage",

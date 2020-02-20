@@ -987,7 +987,7 @@ function UpdateSheetDisplay() {
 
 	if (!ChangesDialogSkip) {
 		var cDialogFld = What("ChangesDialogSkip.Stringified");
-		ChangesDialogSkip = cDialogFld ? eval(cDialogFld) : {
+		ChangesDialogSkip = cDialogFld ? eval_ish(cDialogFld) : {
 			chXP : false, // experience points
 			chAS : false, // ability scores
 			chHP : false, // hit points

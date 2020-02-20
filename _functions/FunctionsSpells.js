@@ -899,7 +899,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 			inputObject = {class : inputObject};
 		};
 	}
-	inputObject = eval(inputObject.toSource());
+	inputObject = newObj(inputObject);
 	if (!inputObject.extraspells) inputObject.extraspells = [];
 	if (extraArray) inputObject.extraspells = inputObject.extraspells.concat(extraArray);
 
@@ -4363,7 +4363,7 @@ function ParseSpellMenu() {
 	]
 	//add a menu with a changed name
 	for (var e = 0; e < menuExtraTypes.length; e++) {
-		var aMenu = eval(menuString);
+		var aMenu = eval_ish(menuString);
 		amendMenu(aMenu, menuExtraTypes[e][0], menuExtraTypes[e][1]);
 		spellsMenuArray.push(aMenu);
 	}
@@ -5677,7 +5677,7 @@ function isSpellUsed(spll, returnBoolean) {
 				};
 			};
 			if (rtrnA.indexOf(aClass) === -1 && SpellsList[spll].level && (/list/i).test(spCast.typeSp)) {
-				var spObj = eval(spCast.list.toSource());
+				var spObj = newObj(spCast.list);
 				spObj.level = [1, 9];
 				var theSpList = CreateSpellList(spObj, false, spCast.extra, false, aClass, spCast.typeSp);
 				if (theSpList.indexOf(spll) !== -1) {

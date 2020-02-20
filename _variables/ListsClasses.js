@@ -832,7 +832,7 @@ var Base_ClassList = {
 							if (classes.known.monk && classes.known.monk.level && (v.theWea.monkweapon || v.baseWeaponName == "unarmed strike" || v.baseWeaponName == "shortsword" || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/heavy|(2|two).?hand(ed)?s?/i).test(v.theWea.description)))) {
 								var aMonkDie = function (n) { return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10; }(classes.known.monk.level);
 								try {
-									var curDie = eval(fields.Damage_Die.replace('d', '*'));
+									var curDie = eval_ish(fields.Damage_Die.replace('d', '*'));
 								} catch (e) {
 									var curDie = 'x';
 								};
@@ -1129,7 +1129,7 @@ var Base_ClassList = {
 				minlevel : 6,
 				description : "\n   " + "While I'm conscious, allies within range and I can add my Cha mod (min 1) to saves",
 				additional : ["", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
-				addMod : { type : "save", field : "all", mod : "Cha", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." }
+				addMod : { type : "save", field : "all", mod : "max(Cha|1)", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." }
 			},
 			"aura of courage" : {
 				name : "Aura of Courage",

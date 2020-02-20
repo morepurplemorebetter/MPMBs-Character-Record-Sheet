@@ -340,11 +340,11 @@ function keystroke2() {
 		toUse = toUse.replace(/(\-)+(\+)+/g, "-").replace(/(\+|\-)+/g, "$1").replace(/(\*|\/|\+|\-)+/g, "$1").replace(/^(\*|\/)/, "");
 		var toTest = toUse.replace(/,/g, ".");
 		try {
-			var tests = !isNaN(eval(toTest));
+			var tests = !isNaN(eval_ish(toTest));
 			event.value = toUse;
 		} catch (err) {
 			try {
-				var tests = !isNaN(eval(toTest.slice(0, -1)));
+				var tests = !isNaN(eval_ish(toTest.slice(0, -1)));
 				event.value = toUse.slice(0, -1);
 			} catch (err) {
 				var tests = false;
@@ -1021,7 +1021,12 @@ function isTemplVis(tempNm, returnPrefix) {
 
 // A way to return a new, fresh object
 function newObj(inObj) {
-	return eval(inObj.toSource());
+	return Function('return ' + inObj.toSource())();
+};
+
+// A way to return an string as an expression
+function eval_ish(inStr) {
+	return Function('return ' + inStr)();
 };
 
 // Returns the template prefix, or true if not the template, or an empty string if rEmpty is true
