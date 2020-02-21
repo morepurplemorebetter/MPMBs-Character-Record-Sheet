@@ -8,13 +8,15 @@
 
 /*	-INFORMATION-
 	Subject:	Class
-	Effect:		This script adds a class called "Blood Hunter" (v2.3) and the four subclasses for it: "Order of the Ghostslayer", "Order of the Profane Soul", "Order of the Mutant", and "Order of the Lycan"
+	Effect:		This script adds a class called "Blood Hunter" (version of 11 Feb 2020)
+				and the four subclasses for it: "Order of the Ghostslayer",
+				"Order of the Profane Soul", "Order of the Mutant", and "Order of the Lycan"
 
 				This is taken from the DMs Guild website (https://www.dmsguild.com/product/301641/)
 				This class and subclasses are made by Matthew Mercer
 
 	Code by:	Smashman & MorePurpleMoreBetter
-	Date:		2020-02-05 (sheet v13)
+	Date:		2020-02-21 (sheet v13.0.0beta26)
 
 	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 
@@ -24,29 +26,30 @@
 var iFileName = "Blood Hunter 2020 [Matthew Mercer's work, transcribed by Smashman & MPMB].js";
 RequiredSheetVersion(13);
 
-SourceList["MM:BH2020"] = {
-	name : "Matthew Mercer: Blood Hunter Class (2020)",
-	abbreviation : "MM:BH2020",
+SourceList["MM:BH"] = {
+	name : "Matthew Mercer: Blood Hunter Class 2020",
+	abbreviation : "MM:BH",
 	group : "Dungeon Master's Guild",
 	url : "https://www.dmsguild.com/product/301641/",
-	date : "2020/01/27"
+	date : "2020/02/11"
 };
 
-var hemocraftDie = function(level) {
-	return "1d" + (level < 5 ? 4 : level < 11 ? 6 : level < 17 ? 8 : 10);
+var BHhemocraftDie = function(n) {
+	return "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
 };
 
 ClassList["blood hunter"] = {
 	regExpSearch : /^(?=.*blood)(?=.*hunter).*$/i,
 	name : "Blood Hunter",
-	source : ["MM:BH2020", 3],
-	primaryAbility : "\n \u2022 Blood Hunter: Strength or Dexterity, and Intelligence;",
-	prereqs : "\n \u2022 Blood Hunter: Strength 13 or Dexterity 13, and Intelligence 13;",
+	source : [["MM:BH", 0]],
+	primaryAbility : "Strength or Dexterity, and Intelligence",
+	prereqs : "Strength 13 or Dexterity 13, and Intelligence 13",
 	die : 10,
 	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 	saves : ["Dex", "Int"],
 	skillstxt : {
-		primary : "Choose three from Acrobatics, Arcana, Athletics, History, Insight, Investigation, Religion and Survival."
+		primary : "Choose three from Acrobatics, Arcana, Athletics, History, Insight, Investigation, Religion, and Survival",
+		secondary : "Choose one from Acrobatics, Arcana, Athletics, History, Insight, Investigation, Religion, or Survival"
 	},
 	toolProfs : {
 		primary : ["Alchemist's supplies"],
@@ -65,112 +68,133 @@ ClassList["blood hunter"] = {
 	attacks : levels.map(function(n){return n < 5 ? 1 : 2}),
 	abilitySave : 4,
 	features : {
+		"hemocraft die" : {
+			name : "Hemocraft Die",
+			source : [["MM:BH", 3]],
+			minlevel : 1,
+			description : "",
+			additional : levels.map(BHhemocraftDie)
+		},
 		"hunter's bane" : {
 			name : "Hunter's Bane",
-			source : ["MM:BH2020", 4],
+			source : [["MM:BH", 3]],
 			minlevel : 1,
-			description : desc([
-				"I have adv. on Wis (Survival) checks to track Fey, Fiends, or Undead",
-				"I also have adv. on Int checks to recall info about them"
-			])
+			description : "\n   I get adv. on Int checks to recall info about, and Survival to track, fey, fiends, or undead"
 		},
 		"blood maledict" : {
 			name : "Blood Maledict",
-			source : ["MM:BH2020", 4],
+			source : [["MM:BH", 3]],
 			minlevel : 1,
 			description : desc([
-				"I can use a Blood Curse on targets with blood; Use the \"Choose Features\" button above",
-				"I can amplify its effect by taking damage equal to a hemocraft die roll",
-				"An amplified curse can also affect targets without blood.",
-				"Whenever I learn a new Blood Curse, I can replace one I know with a new one as well"
+				'I can use a Blood Curse on targets with blood; Use the "Choose Features" button above',
+				"I can amplify it by taking my hemocraft die in damage; Amplified it works on any target",
+				"Whenever I learn a new Blood Curse, I can also replace a curse I know with another"
 			]),
 			additional : levels.map(function (n) {
-				var curses = (n < 6 ? 1 : n < 10 ? 2 : n < 14 ? 3 : n < 18 ? 4 : 5) + " curse" + (n < 6 ? "" : "s");
-				return hemocraftDie(n) + '; ' + curses;
+				return (n < 6 ? 1 : n < 10 ? 2 : n < 14 ? 3 : n < 18 ? 4 : 5) + " curse" + (n < 6 ? "" : "s") + " known";
 			}),
-			usages : levels.map(function (n) { return n < 6 ? 1 : n < 13 ? 2 : n < 17 ? 3 : 4; }),
+			usages : levels.map(function (n) {
+				return n < 6 ? 1 : n < 13 ? 2 : n < 17 ? 3 : 4;
+			}),
 			recovery : "short rest",
 			extraname : "Blood Curse",
-			extrachoices : ["Blood Curse of the Anxious", "Blood Curse of Binding", "Blood Curse of Bloated Agony", "Blood Curse of the Eyeless", "Blood Curse of the Fallen Puppet", "Blood Curse of the Marked", "Blood Curse of the Muddled Mind"],
+			extrachoices : ["Blood Curse of the Anxious", "Blood Curse of Binding", "Blood Curse of Bloated Agony", "Blood Curse of Exposure", "Blood Curse of the Eyeless", "Blood Curse of the Fallen Puppet", "Blood Curse of the Marked", "Blood Curse of the Muddled Mind"],
+			extraTimes : levels.map(function (n) {
+				return n < 6 ? 1 : n < 10 ? 2 : n < 14 ? 3 : n < 18 ? 4 : 5;
+			}),
 			"blood curse of the anxious" : {
 				name : "Blood Curse of the Anxious",
-				source : ["MM:BH2020", 12],
-				description : desc([
-					"As a bonus action, cause all Cha (Intimidation) checks against the target to have adv.",
-					"The effect lasts until the end of my next turn",
-					"\u2022 Amplify: The next Wisdom saving throw the target makes before curse ends has disadv.",
+				source : [["MM:BH", 11]],
+				description : " [Amplify 1\xD7 per long rest]" + desc([
+					"As a bonus action, I can make a creature within 30 ft more susceptible to forceful influence",
+					"Until my next turn ends, all Charisma (Intimidation) checks against it are made with adv.",
+					"\u2022 Amplify (once per long rest): Disadv. on next Wis save the target makes before curse ends"
 				]),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]],
+				extraLimitedFeatures : [{
+					additional : "Amplify Blood Curse of the Anxious",
+					usages : 1,
+					recovery : "long rest"
+				}] 
 			},
 			"blood curse of binding" : {
 				name : "Blood Curse of Binding",
-				source : ["MM:BH2020", 12],
+				source : [["MM:BH", 11]],
 				description : desc([
-					"As a bonus action, I can bind an enemy within 30 ft that is up to one size larger than me",
-					"It makes a Str save or speed set to 0 and cannot use rea. until the end of my next turn",
-					"\u2022 Amplify: I can affect any size of creature and the curse lasts 1 min.",
+					"As a bonus action, I can bind a target I can see within 30 ft up to one size larger than me",
+					"It must make a Str save or have 0 speed and can't use reactions until my next turn ends",
+					"\u2022 Amplify: The curse lasts for 1 minute and can affect creatures of any size",
 					"  At the end of each of the target's turns, it can make another Str save to end the curse"
 				]),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"blood curse of bloated agony" : {
 				name : "Blood Curse of Bloated Agony",
-				source : ["MM:BH2020", 12],
+				source : [["MM:BH", 11]],
 				description : desc([
-					"As a bonus action, target has disadv. on Str and Dex checks until the end of my next turn",
-					"It takes 1d8 necrotic damage if makes more than one attack on its turn",
-					"\u2022 Amplify: The curse lasts 1 minute",
-					"  At the end of each of the target's turns, it can make a Con save to end the curse"
+					"As a bonus action, I can curse a target I can see within 30 ft until the end of my next turn",
+					"It has disadv. on Str \u0026 Dex checks and takes 1d8 necrotic damage if it attacks on its turn",
+					"\u2022 Amplify: Lasts for 1 min; After each of its turns, the target can make Con save to end it"
 				]),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
+			},
+			"blood curse of exposure" : {
+				name : "Blood Curse of Exposure",
+				source : [["MM:BH", 11]],
+				description : desc([
+					"As a reaction when a creature I can see in 30 ft is hit by an attack or spell, I can weaken it",
+					"The creature loses their resistance to the damage type of the triggering attack or spell",
+					"\u2022 Amplify: The target also has immunity to relevant damage types reduced to resistance"
+				]),
+				action : [["reaction", ""]]
 			},
 			"blood curse of the eyeless" : {
 				name : "Blood Curse of the Eyeless",
-				source : ["MM:BH2020", 12],
+				source : [["MM:BH", 11]],
 				description : desc([
-					"As a reaction when a creature in 30 ft makes an attack roll, I can roll a hemocraft die",
+					"As a reaction when a creature I can see in 30 ft makes an attack roll, I can roll a hemocraft die",
 					"Subtract number rolled from attack roll. Creatures immune to blindness are not affected",
 					"\u2022 Amplify: Apply to all attacks until the end of the turn. Roll new hemocraft die each time"
 				]),
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"blood curse of the fallen puppet" : {
 				name : "Blood Curse of the Fallen Puppet",
-				source : ["MM:BH2020", 12],
+				source : [["MM:BH", 12]],
 				description : desc([
-					"As a reaction when a creature drops to 0 hp in 30 ft of me, I can make it attack",
+					"As a reaction when a creature I can see in 30 ft drops to 0 HP, I can make it attack",
 					"The creature makes one attack against a target of my choice within its attack range",
 					"\u2022 Amplify: Can move creature up to half their speed",
 					"   The attack and damage roll gain a bonus equal to my Intelligence modifier (min 1)"
 				]),
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"blood curse of the marked" : {
 				name : "Blood Curse of the Marked",
-				source : ["MM:BH2020", 13],
+				source : [["MM:BH", 12]],
 				description : desc([
 					"As a bonus action, I can mark an enemy within 30 ft of me until the end of my turn",
 					"While marked, when I deal rite damage to the target, I deal an extra hemocraft die",
 					"\u2022 Amplify: The next attack before end of turn against the creature has advantage"
 				]),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"blood curse of the muddled mind" : {
 				name : "Blood Curse of the Muddled Mind",
-				source : ["MM:BH2020", 13],
+				source : [["MM:BH", 12]],
 				description : desc([
 					"As a bonus action, I can curse an enemy within 30 ft that is concentrating on spell",
 					"That creature has disadv. on next concentration save before end of my turn",
 					"\u2022 Amplify: The target has disadv. on all concentration saves before end of my turn"
 				]),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			}
 		},
 		"fighting style" : {
 			name : "Fighting Style",
-			source : ["MM:BH2020", 4],
+			source : [["MM:BH", 3]],
 			minlevel : 2,
-			description : "\n   " + "Choose a Fighting Style using the \"Choose Feature\" button above",
+			description : '\n   Choose a Fighting Style using the "Choose Feature" button above',
 			choices : ["Archery", "Dueling", "Great Weapon Fighting", "Two-Weapon Fighting"],
 			"archery" : FightingStyles.archery,
 			"dueling" : FightingStyles.dueling,
@@ -179,56 +203,62 @@ ClassList["blood hunter"] = {
 		},
 		"crimson rite" : {
 			name : "Crimson Rite",
-			source : ["MM:BH2020", 5],
+			source : [["MM:BH", 4]],
 			minlevel : 2,
 			description : desc([
-				"I can imbue my weapons with Crimson Rites; Use the \"Choose Features\" button above",
-				"As a bonus action, I imbue a weapon, which than adds the rite damage to its damage",
-				"It can hold only one rite, lasting until my next short/long rest or it leaves my hand",
-				"When activated, I take damage equal to one hemocraft die roll"
+				"As a bonus action, I can imbue a weapon with a rite; A weapon can hold only one rite",
+				'When I do so, I take my hemocraft die in damage; Use "Choose Feature" button for rites',
+				"Imbued weapons deal extra damage equal to my hemocraft die of the rite's damage type",
+				"This lasts until I finish my next short or long rest or I'm not holding it as my turn ends"
 			]),
-			additional : levels.map(function (n) { return (n < 6 ? 1 : 2) + " primal rite" + (n < 6 ? "" : "s") + (n < 14 ? "" : " \u0026 1 esoteric rite") + " known"; }),
-			action : ["bonus action", ""],
+			additional : levels.map(function (n) {
+				return (n < 6 ? 1 : 2) + " primal rite" + (n < 6 ? "" : n < 14 ? "s" : "s \u0026 1 esoteric rite") + " known";
+			}),
+			action : [["bonus action", ""]],
 			extraname : "Crimson Rite",
-			extrachoices : ["Flame (Primal Rite)", "Frozen (Primal Rite)", "Storm (Primal Rite)", "Roar (Esoteric Rite)", "Oracle (Esoteric Rite)", "Dead (Esoteric Rite)"],
-			"flame (primal rite)" : {
-				source : ["MM:BH2020", 5],
+			extrachoices : ["\x1BPrimal Rite of the Flame", "\x1BPrimal Rite of the Frozen", "\x1BPrimal Rite of the Storm", "Esoteric Rite of the Roar", "Esoteric Rite of the Oracle", "Esoteric Rite of the Dead"],
+			extraTimes : levels.map(function (n) {
+				return n < 6 ? 1 : n < 14 ? 2 : 3;
+			}),
+			"\x1Bprimal rite of the flame" : {
+				source : ["MM:BH", 5],
 				name : "Rite of the Flame",
-				description : "\n   " + "While this rite is active, my weapon deals extra fire damage equal to one hemocraft die"
+				description : " [fire damage]"
 			},
-			"frozen (primal rite)" : {
-				source : ["MM:BH2020", 5],
+			"\x1Bprimal rite of the frozen" : {
+				source : ["MM:BH", 5],
 				name : "Rite of the Frozen",
-				description : "\n   " + "While this rite is active, my weapon deals extra cold damage equal to one hemocraft die"
+				description : " [cold damage]"
 			},
-			"storm (primal rite)" : {
-				source : ["MM:BH2020", 5],
+			"\x1Bprimal rite of the storm" : {
+				source : ["MM:BH", 5],
 				name : "Rite of the Storm",
-				description : "\n   " + "While this rite is active, my weapon deals extra lightning dmg equal to one hemocraft die"
+				description : " [lightning damage]"
 			},
-			"roar (esoteric rite)" : {
-				source : ["MM:BH2020", 5],
-				name : "Rite of the Roar",
-				description : "\n   " + "While this rite is active, my weapon deals extra thunder damage equal to one hemocraft die",
-				prereqeval : function() { return classes.known['blood hunter'].level >= 14 }
-			},
-			"oracle (esoteric rite)" : {
-				source : ["MM:BH2020", 5],
-				name : "Rite of the Oracle",
-				description : "\n   " + "While this rite is active, my weapon deals extra psychic damage equal to one hemocraft die",
-				prereqeval : function() { return classes.known['blood hunter'].level >= 14 }
-			},
-			"dead (esoteric rite)" : {
-				source : ["MM:BH2020", 5],
+			"esoteric rite of the dead" : {
+				source : ["MM:BH", 5],
 				name : "Rite of the Dead",
-				description : "\n   " + "While this rite is active, my weapon deals extra necrotic damage equal to one hemocraft die",
+				description : " [necrotic damage]",
+				prereqeval : function() { return classes.known['blood hunter'].level >= 14 }
+			},
+			"esoteric rite of the oracle" : {
+				source : ["MM:BH", 5],
+				name : "Rite of the Oracle",
+				description : " [psychic damage]",
+				prereqeval : function() { return classes.known['blood hunter'].level >= 14 }
+			},
+			"esoteric rite of the roar" : {
+				source : ["MM:BH", 5],
+				name : "Rite of the Roar",
+				description : " [thunder damage]",
 				prereqeval : function() { return classes.known['blood hunter'].level >= 14 }
 			},
 			calcChanges : {
 				atkAdd : [
 					function (fields, v) {
 						if (!v.isSpell && (/\brite\b/i).test(v.WeaponText)) {
-							fields.Description += (fields.Description ? '; ' : '') + '+' + hemocraftDie(classes.known['blood hunter'].level) + ' rite damage';
+							var hemoDie = ClassList['blood hunter'].features['hemocraft die'].additional;
+							fields.Description += (fields.Description ? '; ' : '') + '+' + BHhemocraftDie(classes.known['blood hunter'].level) + ' rite damage';
 						}
 					},
 					"If I include the word 'Rite' in a weapon's name, it gets my hemocraft damage die added in its description."
@@ -237,16 +267,16 @@ ClassList["blood hunter"] = {
 		},
 		"subclassfeature3" : {
 			name : "Blood Hunter Order",
-			source : ["MM:BH2020", 5],
+			source : [["MM:BH", 4]],
 			minlevel : 3,
 			description : desc([
-				"Choose a Blood Hunter Order you commit to and put it in the \"Class\" field",
+				'Choose a Blood Hunter Order you commit to and put it in the "Class" field',
 				"Choose either the Order of the Ghostslayer, Lycan, Mutant, or Profane Soul"
 			])
 		},
 		"brand of castigation": {
 			name : "Brand of Castigation",
-			source : ["MM:BH2020", 5],
+			source : [["MM:BH", 4]],
 			minlevel : 6,
 			description : desc([
 				"See notes page for Brand of Castigation features"
@@ -255,48 +285,47 @@ ClassList["blood hunter"] = {
 				UpdateBrandText(v[1], v[0]);
 			},
 			usages : 1,
-			recovery : "short rest",
+			recovery : "short rest"
 		},
 		"grim psychometry" : {
 			name : "Grim Psychometry",
-			source : ["MM:BH2020", 5],
+			source : [["MM:BH", 4]],
 			minlevel : 9,
-			description : desc([
-				"I have adv. on Int (History) checks about an object I am touching or location where I am"
-			])
+			description : "\n   I have adv. on Int (History) checks about an object I'm touching or a location where I am"
 		},
 		"dark augmentation" : {
 			name : "Dark Augmentation",
-			source : ["MM:BH2020", 5],
+			source : [["MM:BH", 4]],
 			minlevel : 10,
-			description : desc([
-				"I have +5 ft speed and add my Int mod on Str, Dex & Con saves (min 1)"
-			]),
+			description : "\n   I have +5 ft speed and add my Int modifier (min 1) to my Str, Dex, and Con saves",
 			speed : { allModes : "+5" },
-			addMod : [
-				{ type : "save", field : "Str", mod : "max(Int|1)", text : "I add my Intelligence modifier (min 1) to my Strength, Dexterity and Constitution saving throws" },
-				{ type : "save", field : "Dex", mod : "max(Int|1)", text : "I add my Intelligence modifier (min 1) to my Strength, Dexterity and Constitution saving throws" },
-				{ type : "save", field : "Con", mod : "max(Int|1)", text : "I add my Intelligence modifier (min 1) to my Strength, Dexterity and Constitution saving throws" }
-			],
+			addMod : [{
+				type : "save", field : "Str", mod : "max(Int|1)",
+				text : "I add my Intelligence modifier (min 1) to my Strength, Dexterity, and Constitution saving throws"
+			}, {
+				type : "save", field : "Dex", mod : "max(Int|1)",
+				text : "I add my Intelligence modifier (min 1) to my Strength, Dexterity, and Constitution saving throws"
+			}, {
+				type : "save", field : "Con", mod : "max(Int|1)",
+				text : "I add my Intelligence modifier (min 1) to my Strength, Dexterity, and Constitution saving throws"
+			}]
 		},
 		"brand of tethering" : {
 			name : "Brand of Tethering",
-			source : ["MM:BH2020", 5],
+			source : [["MM:BH", 4]],
 			minlevel : 13,
-			additional : "See notes page"
+			description : " [see notes page]"
 		},
 		"hardened soul" : {
 			name : "Hardened Soul",
-			source : ["MM:BH2020", 6],
+			source : [["MM:BH", 5]],
 			minlevel : 14,
-			additional : "adv. vs. frightened & charm",
-			savetxt : {
-				adv_vs : ["frightened", "charmed"]
-			}
+			description : " [adv. on saves vs. frightened/charmed]",
+			savetxt : { adv_vs : ["frightened", "charmed"] }
 		},
 		"sanguine mastery" : {
 			name : "Sanguine Mastery",
-			source : ["MM:BH2020", 6],
+			source : [["MM:BH", 5]],
 			minlevel : 20,
 			description : desc([
 				"Once per turn, when a feature requires hemocraft die roll, I may reroll and choose result",
@@ -311,7 +340,7 @@ UpdateBrandText = function(BHlevelNew, BHlevelOld, subclassInfo) {
 
 	var makeBrandText = function(lvl) {
 		var theText = "Blood Hunter - Brand of Castigation features at level " + lvl + ":";
-		theText += "\n\u25C6 " + "Brand of Castigation (Blood Hunter 3, MM:BH2020 5)" + desc([
+		theText += "\n\u25C6 " + "Brand of Castigation (Blood Hunter 3, MM:BH 5)" + desc([
 			"When I damage a creature with my Crimson Rite feature, I can brand it.",
 			"I always know the direction to the creature",
 			"The brand lasts until I dismiss or I apply a brand to another creature.",
@@ -323,7 +352,7 @@ UpdateBrandText = function(BHlevelNew, BHlevelOld, subclassInfo) {
 			theText += subclassInfo.text;
 		}
 		if (lvl >= 13) {
-			theText += "\n\u25C6 " + "Brand of Tethering (Blood Hunter 13, MM:BH2020 5)" + desc([
+			theText += "\n\u25C6 " + "Brand of Tethering (Blood Hunter 13, MM:BH 5)" + desc([
 				"Castigation damage increases. A branded creature cannot use the Dash action",
 				"If a branded creature attempts to teleport or leave current plane:",
 				"\u2022 It takes 4d6 psychic damage and must succeed on a Wis save, or attempt fails"
@@ -344,12 +373,12 @@ UpdateBrandText = function(BHlevelNew, BHlevelOld, subclassInfo) {
 AddSubClass("blood hunter", "ghostslayer", {
 	regExpSearch : /^(?=.*ghost)(?=.*slayer).*$/i,
 	subname : "Order of the Ghostslayer",
-	source : ["MM:BH2020", 6],
+	source : ["MM:BH", 6],
 	fullname : "Ghostslayer",
 	features : {
 		"subclassfeature3" : {
 			name : "Rite of the Dawn",
-			source : ["MM:BH2020", 6],
+			source : ["MM:BH", 6],
 			minlevel : 3,
 			description : desc([
 				"I know the Rite of the Dawn (See notes page)"
@@ -358,7 +387,7 @@ AddSubClass("blood hunter", "ghostslayer", {
 			extrachoices : ["dawn"],
 			choicesNotInMenu : true,
 			"dawn" : {
-				source : ["MM:BH2020", 6],
+				source : ["MM:BH", 6],
 				name : "Rite of the Dawn",
 				description : desc([
 					"While this rite is active, my weapon deals extra radiant damage equal to one hemocraft die",
@@ -371,7 +400,7 @@ AddSubClass("blood hunter", "ghostslayer", {
 		},
 		"subclassfeature3.1" : {
 			name : "Curse Specialist",
-			source : ["MM:BH2020", 6],
+			source : ["MM:BH", 6],
 			minlevel : 3,
 			description : desc([
 				"I gain an additional Blood Maledict use. Curses can target any creature, blood or not",
@@ -384,7 +413,7 @@ AddSubClass("blood hunter", "ghostslayer", {
 		})(),
 		"subclassfeature7" : {
 			name : "Ethereal Step",
-			source : ["MM:BH2020", 6],
+			source : ["MM:BH", 6],
 			minlevel : 7,
 			description : desc([
 				"At the start of my turn, if I am not incapacitated, I can choose to ethereal step",
@@ -401,22 +430,37 @@ AddSubClass("blood hunter", "ghostslayer", {
 		},
 		"subclassfeature11" : {
 			name : "Brand of Sundering",
-			source : ["MM:BH2020", 7],
+			source : ["MM:BH", 7],
 			minlevel : 11,
-			additional : "See notes page",
+			additional : " [see the notes page]",
 			calcChanges : {
 				atkAdd : [
 					function (fields, v) {
 						if (!v.isSpell && (/\brite\b/i).test(v.WeaponText)) {
-							fields.Description += (fields.Description ? '; ' : '') + '+' + hemocraftDie(classes.known['blood hunter'].level) + ' rite damage vs. branded creature';
+							fields.Description += (fields.Description ? '; ' : '') + '+' + BHhemocraftDie(classes.known['blood hunter'].level) + ' rite damage vs. branded creature';
 						}
 					},
 					"If I include the word 'Rite' in a weapon's name, it gets an additional hemocraft die if target is branded."
 				]
-			}
+			},
+			extraname : "Order of the Ghostslayer 15; Blood Curse",
+			"blood curse of the exorcist" : {
+				source : [["MM:BH", 11]],
+				name : "Blood Curse of the Exorcist",
+				description : desc([
+					"As a bonus action, I stop a target I can see in 30 ft being frightened, charmed, or possessed",
+					"\u2022 Amplify: The creature that caused the stopped condition takes 4d6 psychic damage",
+					"  Additionally, it must make Wisdom save or be stunned until the end of my next turn"
+				]),
+				action : [["bonus action", ""]]
+			},
+			autoSelectExtrachoices : [{
+				extrachoice : "blood curse of the exorcist",
+				minlevel : 15
+			}]
 		},
 		"brand of castigation" : (function () {
-			var sunderingText = "\n\u25C6 " + "Brand of Sundering (Order of the Ghostslayer 11, MM:BH2020 7)" + desc([
+			var sunderingText = "\n\u25C6 " + "Brand of Sundering (Order of the Ghostslayer 11, MM:BH 7)" + desc([
 				"When I damage a branded creature with a weapon with an active Crimson Rite:",
 				"\u2022 It takes an extra hemocraft die of damage",
 				"\u2022 It cannot move through objects and creatures"
@@ -427,38 +471,13 @@ AddSubClass("blood hunter", "ghostslayer", {
 			};
 			return sundering;
 		})(),
-		"subclassfeature15" : {
-			name : "Blood Curse of the Exorcist",
-			source : ["MM:BH2020", 7],
-			minlevel: 15,
-			description : desc([
-				"I know the Blood Curse of the Exorcist (See notes page)"
-			]),
-			extraname : "Blood Maledict",
-			extrachoices : ["exorcist"],
-			choicesNotInMenu : true,
-			"exorcist" : {
-				source : ["MM:BH2020", 13],
-				name : "Blood Curse of the Exorcist",
-				description : desc([
-					"As a bonus action, I choose a crea in 30 ft of me that is frightened, charmed or possessed",
-					"The target creature is no longer frightened, charmed or possessed",
-					"\u2022 Amplify: The creature that frightened, charmed or possessed the target:",
-					"   Takes 4d6 psychic damage and make a Wis save or stunned until end of my next turn"
-				])
-			},
-			autoSelectExtrachoices : [{
-				extrachoice : 'exorcist'
-			}],
-			action : ["bonus action", ""]
-		},
 		"subclassfeature18" : {
 			name : "Rite Revival",
-			source : ["MM:BH2020", 7],
+			source : ["MM:BH", 7],
 			minlevel : 18,
 			description : desc([
 				"When I am reduced to 0 hit points, but not killed outright, I can end a Crimson Rite",
-   			"This drops me to 1 hit point instead. If I have multiple rites active I choose which rite"
+   				"This drops me to 1 hit point instead. If I have multiple rites active I choose which rite"
 			])
 		}
 	}
@@ -467,7 +486,7 @@ AddSubClass("blood hunter", "ghostslayer", {
 AddSubClass("blood hunter", "profane soul", {
 	regExpSearch : /^(?=.*profane)(?=.*soul).*$/i,
 	subname : "Order of the Profane Soul",
-	source : ["MM:BH2020", 7],
+	source : ["MM:BH", 7],
 	spellcastingFactor : "warlock3",
 	spellcastingTable : [
 		[0, 0, 0, 0, 0, 0, 0, 0, 0], //lvl 0
@@ -503,7 +522,7 @@ AddSubClass("blood hunter", "profane soul", {
 	features : {
 		"subclassfeature3" : {
 			name : "Otherwordly Patron",
-			source : ["MM:BH2020", 7],
+			source : ["MM:BH", 7],
 			minlevel : 3,
 			description : "\n   " + "Choose an Otherwordly Patron using the \"Choose Feature\" button above",
 			choices : ["the Archfey", "the Fiend", "the Great Old One", "the Undying", "the Celestial", "the Hexblade"],
@@ -554,7 +573,7 @@ AddSubClass("blood hunter", "profane soul", {
 		},
 		"subclassfeature3.1" : {
 			name : "Pact Magic",
-			source : ["MM:BH2020", 7],
+			source : ["MM:BH", 7],
 			minlevel : 3,
 			description : desc([
 				"I can cast warlock cantrips/spells that I know, using Intelligence as my spellcasting ability",
@@ -564,9 +583,9 @@ AddSubClass("blood hunter", "profane soul", {
 		},
 		"subclassfeature3.2" : {
 			name : "Rite Focus",
-			source : ["MM:BH2020", 8],
+			source : ["MM:BH", 8],
 			minlevel : 3,
-			description : "\n   " + "Choose an Otherwordly Patron using the \"Choose Feature\" button above ",
+			description : '\n   Choose an Otherwordly Patron using the "Choose Feature" button above',
 			choices : ["the Archfey", "the Fiend", "the Great Old One", "the Undying", "the Celestial", "the Hexblade"],
 			choicesNotInMenu : true,
 			"the archfey" : {
@@ -593,7 +612,7 @@ AddSubClass("blood hunter", "profane soul", {
 				name : "Rite Focus: the Celestial",
 				description : "\n   " + "As a bonus action, I can expend a Blood Maledict use to heal a creature within 60 ft",
 				additional : levels.map(function (n) {
-					return n < 3 ? "" : hemocraftDie(n) + " + Int mod";
+					return n < 3 ? "" : BHhemocraftDie(n) + " + Int mod";
 				}),
 				action : ["bonus action", ""],
 			},
@@ -611,7 +630,7 @@ AddSubClass("blood hunter", "profane soul", {
 		},
 		"subclassfeature7.1" : {
 			name : "Revealed Arcana",
-			source : ["MM:BH2020", 8],
+			source : ["MM:BH", 8],
 			minlevel : 7,
 			description : "\n   " + "Choose an Otherwordly Patron using the \"Choose Feature\" button above ",
 			usages : 1,
@@ -681,14 +700,14 @@ AddSubClass("blood hunter", "profane soul", {
 		},
 		"subclassfeature11" : {
 			name : "Brand of the Sapping Scar",
-			source : ["MM:BH2020", 8],
+			source : ["MM:BH", 8],
 			minlevel : 11,
 			description : desc([
 				"A creature branded by me has disadvantage on saves against my warlock spells"
 			]),
 		},
 		"brand of castigation" : (function () {
-			var scarText = "\n\u25C6 " + "Brand of the Sapping Scar (Order of the Profane Soul 11, MM:BH2020 8)" + desc([
+			var scarText = "\n\u25C6 " + "Brand of the Sapping Scar (Order of the Profane Soul 11, MM:BH 8)" + desc([
 				"A creature branded by me has disadvantage on saves against my warlock spells"
 			]);
 			var scar = newObj(ClassList["blood hunter"].features["brand of castigation"]);
@@ -699,7 +718,7 @@ AddSubClass("blood hunter", "profane soul", {
 		})(),
 		"subclassfeature15" : {
 			name : "Unsealed Arcana",
-			source : ["MM:BH2020", 8],
+			source : ["MM:BH", 8],
 			minlevel : 15,
 			description : "\n   " + "Choose an Otherwordly Patron using the \"Choose Feature\" button above  ",
 			usages : 1,
@@ -769,7 +788,7 @@ AddSubClass("blood hunter", "profane soul", {
 		},
 		"subclassfeature18" : {
 			name : "Blood Curse of the Souleater",
-			source : ["MM:BH2020", 9],
+			source : ["MM:BH", 9],
 			minlevel : 18,
 			description : desc([
 				"I know the Blood Curse of the Souleater (See notes page)"
@@ -778,10 +797,10 @@ AddSubClass("blood hunter", "profane soul", {
 			extrachoices : ["souleater"],
 			choicesNotInMenu : true,
 			"souleater" : {
-				source : ["MM:BH2020", 13],
+				source : ["MM:BH", 13],
 				name : "Blood Curse of the Souleater",
 				description : desc([
-					"As a reaction, when a non-construct or undead creatureis reduced to 0 HP in 30 ft:",
+					"As a reaction, when a non-construct or undead creature is reduced to 0 HP in 30 ft:",
 					"My weapon attacks have advantage until the end of my next turn",
 					"\u2022 Amplify: I regain an expended warlock spell slot. I can only do this once before a LR"
 				]),
@@ -799,11 +818,11 @@ AddSubClass("blood hunter", "profane soul", {
 AddSubClass("blood hunter", "mutant", {
 	regExpSearch : /mutant/i,
 	subname : "Order of the Mutant",
-	source : ["MM:BH2020", 9],
+	source : ["MM:BH", 9],
 	features : {
 		"subclassfeature3" : {
 			name : "Formulas",
-			source : ["MM:BH2020", 9],
+			source : ["MM:BH", 9],
 			minlevel : 3,
 			description : desc([
 				"Use the \"Choose Features\" button above to add Mutagen Formulae to the third page",
@@ -835,7 +854,7 @@ AddSubClass("blood hunter", "mutant", {
 			],
 			"aether (prereq: level 11 blood hunter)" : {
 				name : "Aether",
-				source : ["MM:BH2020", 9],
+				source : ["MM:BH", 9],
 				description : desc([
 					"I gain 20 ft flying speed for 1 hour",
 					"\u2022 Side effect: I have disadvantage on Strength and Dexterity ability checks for 1 hour"
@@ -844,7 +863,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"alluring" : {
 				name : "Alluring",
-				source : ["MM:BH2020", 9],
+				source : ["MM:BH", 9],
 				description : desc([
 					"I gain advantage on Charisma ability checks",
 					"\u2022 Side effect: I have disadvantage on initiative rolls"
@@ -852,7 +871,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"celerity" : {
 				name : "Celerity",
-				source : ["MM:BH2020", 9],
+				source : ["MM:BH", 9],
 				description : desc([
 					"My Dex score and max increases by 3. It increases by 4 at level 11 and by 5 at level 18",
 					"\u2022 Side effect: I have disadvantage on Wisdom saving throws"
@@ -860,7 +879,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"conversant" : {
 				name : "Conversant",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"I gain advantage on Intelligence ability checks",
 					"\u2022 Side effect: I have disadvantage on Wisdom ability checks"
@@ -868,7 +887,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"cruelty (prereq: level 11 blood hunter)" : {
 				name : "Cruelty",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"As part of an Attack action, I can make a single weapon attack as a bonus action",
 					"\u2022 Side effect: I have disadvantage on Intelligence, Wisdom, and Charisma saving throws"
@@ -878,7 +897,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"deftness" : {
 				name : "Deftness",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"I gain advantage on Dexterity ability checks",
 					"\u2022 Side effect: I have disadvantage on Wisdom ability checks"
@@ -886,7 +905,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"embers" : {
 				name : "Embers",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"I gain resistance to fire damage",
 					"\u2022 Side effect: I have vulnerability to cold damage"
@@ -894,7 +913,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"gelid" : {
 				name : "Gelid",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"I gain resistance to cold damage",
 					"\u2022 Side effect: I have vulnerability to fire damage"
@@ -902,7 +921,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"impermeable" : {
 				name : "Impermeable",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"I gain resistance to piercing damage",
 					"\u2022 Side effect: I gain vulnerability to slashing damage"
@@ -910,7 +929,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"mobile" : {
 				name : "Mobile",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"I gain immunity to the grappled and restrained conditions; At 11th level also paralyzed",
 					"\u2022 Side effect: I have disadvantage on Strength checks"
@@ -918,7 +937,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"nighteye" : {
 				name : "Nighteye",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"I gain darkvision up to 60 ft, or add an extra 60 ft to it if I already have darkvision",
 					"\u2022 Side effect: I gain sunlight sensitivity"
@@ -926,7 +945,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"percipient" : {
 				name : "Percipient",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"I gain advantage on Wisdom ability checks",
 					"\u2022 Side effect: I have disadvantage on Charisma ability checks"
@@ -934,7 +953,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"potency" : {
 				name : "Potency",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"My Str score and max increases by 3. It increases by 4 at level 11 and by 5 at level 18",
 					"\u2022 Side effect: I have disadvantage on Dexterity saving throws"
@@ -942,7 +961,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"precision (prereq: level 11 blood hunter)" : {
 				name : "Precision",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"My weapon attacks score critical hits on attack rolls of 19 and 20",
 					"\u2022 Side effect: I gian disadvantage on Strength saving throws"
@@ -951,7 +970,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"rapidity" : {
 				name : "Rapidity",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"My speed increases by 10 ft (15 ft at 15th level)",
 					"\u2022 Side effect: I have disadvantage on Intelligence ability checks"
@@ -959,7 +978,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"reconstruction (prereq: level 7 blood hunter)" : {
 				name : "Reconstruction",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"For an hour, at the start of my turn, I regain hit points equal to my proficiency bonus",
 					"This only occurs if I have at least 1 hit point and am below half my hit point maximum",
@@ -969,7 +988,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"sagacity" : {
 				name : "Sagacity",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"My Int score and max increases by 3. It increases by 4 at level 11 and by 5 at level 18",
 					"\u2022 Side effect: I have disadvantage on Charisma saving throws"
@@ -977,7 +996,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"shielded" : {
 				name : "Shielded",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"I gain resistance to slashing damage",
 					"\u2022 Side effect: I gain vulnerability to bludgeoning damage"
@@ -985,7 +1004,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"unbreakable" : {
 				name : "Unbreakable",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"I gain resistance to bludgeoning damage",
 					"\u2022 Side effect: I gain vulnerability to piercing damage"
@@ -993,7 +1012,7 @@ AddSubClass("blood hunter", "mutant", {
 			},
 			"vermillion" : {
 				name : "Vermillion",
-				source : ["MM:BH2020", 10],
+				source : ["MM:BH", 10],
 				description : desc([
 					"I gain an additional use of Blood Maledict",
 					"\u2022 Side effect: I have disadvantage on death saving throws"
@@ -1016,11 +1035,11 @@ AddSubClass("blood hunter", "mutant", {
 			action : [
 				["bonus action", " (Consume Mutagen)"],
 				["action", " (End Mutagen)"]
-			],
+			]
 		},
 		"subclassfeature7" : {
 			name : "Strange Metabolism",
-			source : ["MM:BH2020", 9],
+			source : ["MM:BH", 9],
 			minlevel : 7,
 			description : desc([
 				"I gain immunity to poison damage and the poisoned condition",
@@ -1033,12 +1052,27 @@ AddSubClass("blood hunter", "mutant", {
 		},
 		"subclassfeature11" : {
 			name : "Brand of Axiom",
-			source : ["MM:BH2020", 9],
+			source : ["MM:BH", 9],
 			minlevel : 11,
-			additional : "See the notes page"
+			additional : " [see the notes page]",
+			extraname : "Order of the Mutant 15; Blood Curse",
+			"blood curse of corrosion" : {
+				source : [["MM:BH", 11]],
+				name : "Blood Curse of Corrosion",
+				description : desc([
+					"As a bonus action, I can have a creature within 30 ft make a Con save or become poisoned",
+					"At the end of each if its turns, the creature can make another Con save to end the curse",
+					"\u2022 Amplify: The target takes 4d6 necrotic damage, and again each time it fails the Con save"
+				]),
+				action : [["bonus action", ""]]
+			},
+			autoSelectExtrachoices : [{
+				extrachoice : "blood curse of corrosion",
+				minlevel : 15
+			}]
 		},
 		"brand of castigation" : (function () {
-			var axiomText = "\n\u25C6 " + "Brand of Axiom (Order of the Mutant 11, MM:BH2020 9)" + desc([
+			var axiomText = "\n\u25C6 " + "Brand of Axiom (Order of the Mutant 11, MM:BH 9)" + desc([
 				"Disguise or invisibility ends when branded",
 				"Branded target cannot disguise or go invisible while branded",
 				"If target polymorphed or shapedchanged when branded or attempts during:",
@@ -1050,32 +1084,9 @@ AddSubClass("blood hunter", "mutant", {
 			};
 			return axiom;
 		})(),
-		"subclassfeature15" : {
-			name : "Blood Curse of Corrosion",
-			source : ["MM:BH2020", 9],
-			minlevel : 18,
-			description : desc([
-				"I know the Blood Curse of Corrosion (See notes page)"
-			]),
-			extraname : "Blood Maledict",
-			extrachoices : ["corrosion"],
-			choicesNotInMenu : true,
-			"corrosion" : {
-				source : ["MM:BH2020", 13],
-				name : "Blood Curse of Corrosion",
-				description : desc([
-					"As a bonus action, a target in 30 ft must make a Con save or be come poisoned",
-					"At the end of the creature's turns it can make another Con save, ending curse on success",
-					"\u2022 Amplify: The target takes 4d6 necrotic damage; takes the dmg again, each failed save"
-				])
-			},
-			autoSelectExtrachoices : [{
-				extrachoice : 'corrosion'
-			}]
-		},
 		"subclassfeature18" : {
 			name : "Exalted Mutation",
-			source : ["MM:BH2020", 9],
+			source : ["MM:BH", 9],
 			minlevel : 18,
 			description : desc([
 				"As a bonus action, I can end an active mutagen, then activate a mutagen that I know"
@@ -1091,18 +1102,18 @@ AddSubClass("blood hunter", "mutant", {
 AddSubClass("blood hunter", "lycan", {
 	regExpSearch : /^(?=.*lycan)(?=.*blood)(?=.*hunter).*$/i,
 	subname : "Order of the Lycan",
-	source : ["MM:BH2020", 10],
+	source : ["MM:BH", 10],
 	features : {
 		"subclassfeature3" : {
 			name : "Heightened Senses",
-			source : ["MM:BH2020", 11],
+			source : ["MM:BH", 11],
 			minlevel : 3,
-			description : desc(["I gain advantage on Wisdom (Perception) checks that rely on hearing or smell"]),
+			description : "\n   I gain advantage on Wisdom (Perception) checks that rely on hearing or smell",
 			vision : [["Adv. on Perception relying on hearing or smell", 0]]
 		},
 		"subclassfeature3.1" : {
 			name : "Hybrid Transformation",
-			source : ["MM:BH2020", 11],
+			source : ["MM:BH", 11],
 			minlevel : 3,
 			description : desc([
 				"As a bonus action, I can transform into a Hybrid lycanthropy form",
@@ -1118,7 +1129,7 @@ AddSubClass("blood hunter", "lycan", {
 				baseWeapon : "unarmed strike",
 				regExpSearch : /^(?=.*predatory)(?=.*strike).*$/i,
 				name : "Predatory Strike",
-				source : ["MM:BH2020", 11],
+				source : ["MM:BH", 11],
 				description : "Finesse; Only in hybrid form; One attack as bonus action with Predatory Strike attack",
 				damage : [1, 6, "slashing"],
 				isPredatoryStrikes : true
@@ -1140,7 +1151,7 @@ AddSubClass("blood hunter", "lycan", {
 		},
 		"subclassfeature7" : {
 			name : "Stalker's Prowess",
-			source : ["MM:BH2020", 12],
+			source : ["MM:BH", 12],
 			minlevel : 7,
 			description : desc([
 				"My speed increases by 10 ft",
@@ -1173,7 +1184,7 @@ AddSubClass("blood hunter", "lycan", {
 		},
 		"subclassfeature11" : {
 			name : "Advanced Transformation",
-			source : ["MM:BH2020", 12],
+			source : ["MM:BH", 12],
 			minlevel : 11,
 			description : desc([
 				"In my Hybrid form, I gain the Lycan Regeneration feature"
@@ -1198,7 +1209,7 @@ AddSubClass("blood hunter", "lycan", {
 		},
 		"subclassfeature15" : {
 			name : "Brand of the Voracious",
-			source : ["MM:BH2020", 12],
+			source : ["MM:BH", 12],
 			minlevel : 15,
 			description : desc([
 				"I have advantage on Wis saves to maintain control of blood lust in hybrid form",
@@ -1207,7 +1218,7 @@ AddSubClass("blood hunter", "lycan", {
 			savetxt : { text : ["Adv. on Wis saves to control blood lust"] },
 		},
 		"brand of castigation" : (function () {
-			var voraciousText = "\n\u25C6 " + "Brand of the Voracious (Order of the Lycan 15, MM:BH2020 12)" + desc([
+			var voraciousText = "\n\u25C6 " + "Brand of the Voracious (Order of the Lycan 15, MM:BH 12)" + desc([
 				"While in hybrid form, I have adv. on attacks against a creature branded by me"
 			]);
 			var voracious = newObj(ClassList["blood hunter"].features["brand of castigation"]);
@@ -1218,7 +1229,7 @@ AddSubClass("blood hunter", "lycan", {
 		})(),
 		"subclassfeature18" : {
 			name : "Hybrid Transformation Mastery",
-			source : ["MM:BH2020", 12],
+			source : ["MM:BH", 12],
 			minlevel : 18,
 			description : desc([
 				"I know the Blood Curse of the Howl (See notes page)"
@@ -1227,7 +1238,7 @@ AddSubClass("blood hunter", "lycan", {
 			extrachoices : ["howl"],
 			choicesNotInMenu : true,
 			"howl" : {
-				source : ["MM:BH2020", 13],
+				source : ["MM:BH", 13],
 				name : "Blood Curse of the Howl",
 				description : desc([
 					"As an action, I howl. Each creature in 30 ft that can hear me must make a Wis save",
@@ -1258,15 +1269,15 @@ UpdateHybridForm = function(BHlevelNew, BHlevelOld) {
 			"I revert back to my normal form if I fall unconscious, drop to 0 HP, or die",
 			"While I am in this Hybrid form, I gain the following features:"
 		]);
-		theText += "\n\u25C6 " + "Feral Might (Order of the Lycan 3, MM:BH2020 11)" + desc([
+		theText += "\n\u25C6 " + "Feral Might (Order of the Lycan 3, MM:BH 11)" + desc([
 			"I gain +" + ( lvl < 11 ? "1" : lvl < 18 ? "2" : "3") + " on melee damage rolls. I have advantage on Str checks and saves"
 		]);
-		theText += "\n\u25C6 " + "Resilient Hide (Order of the Lycan 3, MM:BH2020 11)" + desc([
+		theText += "\n\u25C6 " + "Resilient Hide (Order of the Lycan 3, MM:BH 11)" + desc([
 			"I have resistance to nonmagical bludgeoning, piercing, and slashing damage",
 			"Attacks that are made by silvered weapons bypass this resistance",
 			"I gain +1 bonus to AC while I am not wearing heavy armor"
 		]);
-		theText += "\n\u25C6 " + "Bloodlust (Order of the Lycan 3, MM:BH2020 11)" + desc([
+		theText += "\n\u25C6 " + "Bloodlust (Order of the Lycan 3, MM:BH 11)" + desc([
 			"I must make a save if I start my turn with less than or equal half my hit points",
 			"The save is a DC " + (8+Math.floor(lvl/3)) + " Wisdom saving throw. " + (lvl < 15 ? "" : "I have advantage on this save"),
 			"I automatically fail if I am under an effect that prevents concentrating (like Rage)",
@@ -1274,19 +1285,19 @@ UpdateHybridForm = function(BHlevelNew, BHlevelOld) {
 			"I may choose not to use my Extra Attack feature on this Attack action.",
 			"After this Attack action, I regain control and can continue my turn"
 		]);
-		theText += "\n\u25C6 " + "Predatory Strikes (Order of the Lycan 3, MM:BH2020 11)" + desc([
+		theText += "\n\u25C6 " + "Predatory Strikes (Order of the Lycan 3, MM:BH 11)" + desc([
 			"My unarmed strikes are more powerful and can be imbued with a Crimson Rite",
 			"These predatory strikes do " + PSdie + " damage and I can use Dex or Str with them",
 			"When I use them during an Attack action, I can make another as a bonus action"
 		]);
 		if (lvl >= 7) {
-			theText += "\n\u25C6 " + "Improved Predatory Strikes (Order of the Lycan 7, MM:BH2020 12)" + desc([
+			theText += "\n\u25C6 " + "Improved Predatory Strikes (Order of the Lycan 7, MM:BH 12)" + desc([
 				"My Predatory Strikes gain +" + ( lvl < 11 ? "1" : lvl < 18 ? "2" : "3") + " on attack rolls.",
 				"If I have an active Crimson Rite, my predatory strikes are considered magical"
 			]);
 		}
 		if (lvl >= 11) {
-			theText += "\n\u25C6 " + "Lycan Regeneration (Order of the Lycan 11, MM:BH2020 12)" + desc([
+			theText += "\n\u25C6 " + "Lycan Regeneration (Order of the Lycan 11, MM:BH 12)" + desc([
 				"If I have less than half my max HP at the start of my turn, I heal myself",
 				"I regain 1 + Constitution modifier (min 1) HP; This doesn't work if I'm at 0 HP"
 			]);
