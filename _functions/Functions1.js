@@ -1680,7 +1680,6 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	var primeClass = "";
 
 	// Put the old classes.known in classes.old so the differences in level can be queried later
-	var oldClasses = newObj(classes.old);
 	classes.old = {};
 	classes.oldprimary = classes.primary;
 	classes.oldspellcastlvl = classes.spellcastlvl;
@@ -1990,7 +1989,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 					multiCaster[casterType] = 1;
 				}
 				// create the base object (or recreate if subclass changed or added)
-				if (!NotAtStartup && (casterAtCurLvl != casterAtOldLvl || classes.known[aClass].subclass !== classes.old[aClass].subclass)) {
+				if (NotAtStartup && (casterAtCurLvl != casterAtOldLvl || classes.known[aClass].subclass !== classes.old[aClass].subclass)) {
 					var cSpells = CreateCurrentSpellsEntry("class", aClass);
 					// then update this base object so that it is a spellcasting class with options
 					if (cSpells) {

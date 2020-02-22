@@ -5452,7 +5452,7 @@ function StringEvals(type) {
 
 // test if the main character is proficient with a weapon (return true) or not (return false)
 function isProficientWithWeapon(WeaponName, theWea) {
-	if (theWea.alwaysProf || (/natural|spell|cantrip|alwaysprof/i).test(theWea.type)) {
+	if (theWea.isAlwaysProf || (/natural|spell|cantrip|alwaysprof/i).test(theWea.type)) {
 		return true; // No need to check further for natural weapons, spells, and 'alwaysprof'
 	} else if ((theWea.type.toLowerCase() == "simple" && tDoc.getField("Proficiency Weapon Simple").isBoxChecked(0)) || (theWea.type.toLowerCase() == "martial" && tDoc.getField("Proficiency Weapon Martial").isBoxChecked(0))) {
 		return true; // Proficient with the relevant type (simple/martial)
