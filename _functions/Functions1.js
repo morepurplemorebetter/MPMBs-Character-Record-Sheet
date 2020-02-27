@@ -5145,7 +5145,7 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice, Fe
 
 	var FeaSource = stringSource(Fea, "first,abbr", ", ");
 	var FeaRef = " (" + FeaClass + " " + FeaKey.minlevel + FeaSource + ")";
-	var FeaUse = Fea["Use" + old] + (Fea["Use" + old] && !isNaN(Fea["Use" + old]) ? "\u00D7 per " : "") + Fea["Recov" + old] + (Fea["AddRecov" + old] ? " or " + Fea["AddRecov" + old] : "");
+	var FeaUse = Fea["Use" + old] + (Fea["Use" + old] && !isNaN(Fea["Use" + old]) ? "\u00D7 per " : "") + Fea["Recov" + old] + (Fea["AltRecov" + old] ? " or " + Fea["AltRecov" + old] : "");
 	var FeaPost = "";
 	if (Fea["Add" + old] && FeaUse) {
 		FeaPost = " [" + Fea["Add" + old] + ", " + FeaUse + "]";
@@ -5173,7 +5173,7 @@ function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld
 	if (old) Fea.source = Fea.sourceOld;
 
 	var FeaRef = " (" + clObj.extraname + stringSource(Fea, "first,abbr", ", ") + ")";
-	var FeaUse = Fea["Use" + old] + (Fea["Use" + old] && !isNaN(Fea["Use" + old]) ? "\u00D7 per " : "") + Fea["Recov" + old] + (Fea["AddRecov" + old] ? " or " + Fea["AddRecov" + old] : "");
+	var FeaUse = Fea["Use" + old] + (Fea["Use" + old] && !isNaN(Fea["Use" + old]) ? "\u00D7 per " : "") + Fea["Recov" + old] + (Fea["AltRecov" + old] ? " or " + Fea["AltRecov" + old] : "");
 	var FeaPost = "";
 	if (Fea["Add" + old] && FeaUse) {
 		FeaPost = " [" + Fea["Add" + old] + ", " + FeaUse + "]";

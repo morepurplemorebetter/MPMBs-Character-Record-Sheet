@@ -4903,7 +4903,7 @@ function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 // returns an object of the different elements to populate the class features or limited features section if olchoice is provided, oldlevel has to be provided as well
 function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceChoice) {
 	var tRe = { changed : false };
- 	var attr = [["Add", "additional"], ["Use", "usages"], ["UseCalc", "usagescalc"], ["Recov", "recovery"], ["UseName", "name"], ["UseName", "limfeaname"], ["Descr", "description"], ["source", "source"], ["AddRecov", "additionalRecovery"]];
+ 	var attr = [["Add", "additional"], ["Use", "usages"], ["UseCalc", "usagescalc"], ["Recov", "recovery"], ["UseName", "name"], ["UseName", "limfeaname"], ["Descr", "description"], ["source", "source"], ["AltRecov", "altResource"]];
 
 	for (var a = 0; a < attr.length; a++) {
 		// add the new choice
@@ -7889,11 +7889,11 @@ function AddToNotes(noteStr, alertTxt, oldNoteStr, alertType, isProcessed, amend
 		var noteFld = DoTemplate("ASnotes", "Add");
 		noteFld += "Notes.Left";
 	} else {
-		var noteFld = false;
+		var noteFld = false, amendFld = false;
 		var noteFlds = ["Notes.Left", "Notes.Right"];
 		var notesPrefix = What("Template.extras.ASnotes").split(",");
 		var noteStrLC = noteStr.toLowerCase();
-		var oldNoteStrLC = oldNoteStr.toLowerCase();
+		var oldNoteStrLC = oldNoteStr ? oldNoteStr.toLowerCase() : false;
 		if (amendToNote) amendToNote = amendToNote.toLowerCase();
 		for (var i = 1; i < notesPrefix.length; i++) {
 			for (var n = 0; n < noteFlds.length; n++) {
@@ -7909,6 +7909,7 @@ function AddToNotes(noteStr, alertTxt, oldNoteStr, alertType, isProcessed, amend
 					break;
 				} else if (amendToNote && inFld.indexOf(amendToNote) !== -1 && !noteFld) {
 					noteFld = aFld;
+					amendFld = aFld;
 				} else if (inFld === "" && !noteFld) {
 					noteFld = aFld;
 				};
@@ -7921,7 +7922,8 @@ function AddToNotes(noteStr, alertTxt, oldNoteStr, alertType, isProcessed, amend
 			return;
 		};
 	};
-	ReplaceString(noteFld, noteStr, false, oldNoteStr ? oldNoteStr : "");
+	if (noteFld === amendFld) noteStr = "\r" + noteStr;
+	ReplaceString(noteFld, noteStr, true, oldNoteStr ? oldNoteStr : "");
 	if (!replaceOldNote && noteStr && alertTxt) {
 		if (!alertType) alertType = "Class Features section";
 		var changeMsg = alertTxt + ' has been added to the Notes page at page number ' + (tDoc.getField(noteFld).page + 1) + ". They wouldn't fit in the " + alertType + " or the third page's Notes section.";

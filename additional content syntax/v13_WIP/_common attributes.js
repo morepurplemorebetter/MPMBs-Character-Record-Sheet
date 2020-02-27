@@ -139,29 +139,34 @@ recovery : ["", "", "long rest", "long rest", "short rest", "short rest", "short
 		"day"
 */
 
-additionalRecovery : "SL 5+",
-additionalRecovery : ["", "", "SL 2+", "SL 2+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+", "SL 1+"],
-/*	additionalRecovery // OPTIONAL //
-	TYPE: string, or array with 20 strings
-	USE:	value to add in the "Recovery" column in the "Limited Features" section if feature had additional recovery methods (eg Spell Slot expenditure)
+altResource : "SS 5+",
+altResource : ["", "", "SS 2+", "SS 2+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+"],
+/*	altResource // OPTIONAL //
+	TYPE:	string, or array with 20 strings
+	USE:	value to add in the "Recovery" column in the "Limited Features" section if feature has additional recovery methods (e.g. spell slots)
 
-	This will only add if 'recovery' is present in the same feature
+	This attribute will do nothing if the 'recovery' attribute is not also present.
 
 	This attribute can have two type of values:
 	1. String
 		For class features, this value is used to write the text in the "Class Features" section.
-		It will be combined with the 'usages' and 'recovery' attribute to create a string of how the class feature works.
+		It will be combined with the 'usages' and 'recovery' attributes to create a string of how the class feature works.
 		For example-
 			usages : 1,
 			recovery : "long rest",
-			additionalRecovery : "SL 5+",
+			altResource : "SS 5+",
 		Will result in-
-			"1× per long rest or SL 5+"
+			"1× per long rest or SS 5+"
 	2. Array
-		An array signals that the additionalRecovery method varies depending on level.
+		An array signals that the altResource method varies depending on level.
 		Each entry is a level, so you will most likely want to add 20 entries.
 		Each entry has to be a string, see option 1. String for how those work.
 		IMPORTANT! Set the value to "" for levels that the feature is not present.
+
+	Common values are:
+		"SS 3+"			// spell slot of 3rd level or higher
+		"3 Ki"			// 3 ki points
+		"5 SP"			// 3 sorcery points
 */
 
 usagescalc : "event.value = Math.max(1, What('Wis Mod'));",
@@ -1587,6 +1592,8 @@ toNotesPage : [{
 	/*	amendTo // OPTIONAL //
 		TYPE:	string
 		USE:	if this string is found on any Notes page, than this note is added to the found note section
+
+		There will be an empty line between this note and the one it is amended to.
 
 		Use this to add a note to a previously added note.
 		Make sure that the string given in this attribute is not too common,

@@ -376,7 +376,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		// add the limited feature entry if it changed or added for the first time
 		if (AddFea && (Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use)) {
 			var tooltipName = choiceLimFeaTooltip ? choiceLimFeaTooltip : displName + (fObj.tooltip ? fObj.tooltip : displName !== fObj.name ? ": " + fObj.name : "");
-			AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, tooltipName, Fea.UseOld, Fea.UseCalc, Fea.AddRecov);
+			AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, tooltipName, Fea.UseOld, Fea.UseCalc, Fea.AltRecov);
 		}
 	}
 
@@ -893,7 +893,7 @@ function processExtraLimitedFeatures(AddRemove, srcNm, objArr) {
 	for (var i = 0; i < objArr.length; i++) {
 		var aObj = objArr[i];
 		if (AddRemove) {
-			AddFeature(aObj.name, aObj.usages ? aObj.usages : 0, aObj.additional ? " (" + aObj.additional + ")" : "", aObj.recovery ? aObj.recovery : "", srcNm, false, aObj.usagescalc, aObj.additionalRecovery);
+			AddFeature(aObj.name, aObj.usages ? aObj.usages : 0, aObj.additional ? " (" + aObj.additional + ")" : "", aObj.recovery ? aObj.recovery : "", srcNm, false, aObj.usagescalc, aObj.altResource);
 		} else {
 			RemoveFeature(aObj.name, aObj.usages ? aObj.usages : 0, "", "", "", "", aObj.usagescalc);
 		}
