@@ -4903,7 +4903,7 @@ function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 // returns an object of the different elements to populate the class features or limited features section if olchoice is provided, oldlevel has to be provided as well
 function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceChoice) {
 	var tRe = { changed : false };
- 	var attr = [["Add", "additional"], ["Use", "usages"], ["UseCalc", "usagescalc"], ["Recov", "recovery"], ["UseName", "name"], ["UseName", "limfeaname"], ["Descr", "description"], ["source", "source"]];
+ 	var attr = [["Add", "additional"], ["Use", "usages"], ["UseCalc", "usagescalc"], ["Recov", "recovery"], ["UseName", "name"], ["UseName", "limfeaname"], ["Descr", "description"], ["source", "source"], ["AddRecov", "additionalRecovery"]];
 
 	for (var a = 0; a < attr.length; a++) {
 		// add the new choice

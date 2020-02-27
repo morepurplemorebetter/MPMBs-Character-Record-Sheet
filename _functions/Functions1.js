@@ -4303,14 +4303,36 @@ function CalcMod() {
 	event.value = theScore ? (Math.round((theScore - 10.5) * 0.5)) : "";
 }
 
+function processRecovery(recovery, additionalRecovery) {
+	var recoveryStr = "";
+	switch (recovery) {
+		case "long rest":
+			recoveryStr += "LR";
+			break;
+		case "short rest":
+			recoveryStr += "SR";
+			break;
+		case "dawn":
+			recoveryStr += "Dawn";
+			break;
+		default:
+			recoveryStr += recovery.trim().capitalize();
+			break;
+	}
+	if (additionalRecovery) {
+		recoveryStr += "/" + additionalRecovery.trim();
+	}
+	return leftpad(recoveryStr,(typePF ? 5 : 4));
+}
+
 // Add a limited feature: add (UpdateOrReplace = "replace"), or only update the text (UpdateOrReplace = "update"), or update both the text and the usages (UpdateOrReplace = number of previous usages), or just add the number of usages (UpdateOrReplace = "bonus")
-function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, UpdateOrReplace, Calc) {
+function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, UpdateOrReplace, Calc, additionalRecovery) {
 	tooltip = tooltip ? tooltip : "";
 	var additionaltxt = additionaltxt.indexOf(identifier) != -1 ? "" : additionaltxt && What("Unit System") === "metric" ? ConvertToMetric(additionaltxt, 0.5) : additionaltxt;
 	UpdateOrReplace = UpdateOrReplace ? UpdateOrReplace : "replace";
 	var calculation = Calc ? Calc : "";
 	var SslotsVisible = !typePF && eval_ish(What("SpellSlotsRemember"))[0];
-	var recovery = (/^(long rest|short rest|dawn)$/).test(recovery) ? recovery : recovery.capitalize();
+	var recovery = (/^(long rest|short rest|dawn)$/).test(recovery) && !additionalRecovery ? recovery : processRecovery(recovery, additionalRecovery);
 	if ((/ ?\bper\b ?/).test(usages)) usages = usages.replace(/ ?\bper\b ?/, "");
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 1; i <= FieldNumbers.limfea; i++) {
@@ -5123,7 +5145,7 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice, Fe
 
 	var FeaSource = stringSource(Fea, "first,abbr", ", ");
 	var FeaRef = " (" + FeaClass + " " + FeaKey.minlevel + FeaSource + ")";
-	var FeaUse = Fea["Use" + old] + (Fea["Use" + old] && !isNaN(Fea["Use" + old]) ? "\u00D7 per " : "") + Fea["Recov" + old];
+	var FeaUse = Fea["Use" + old] + (Fea["Use" + old] && !isNaN(Fea["Use" + old]) ? "\u00D7 per " : "") + Fea["Recov" + old] + (Fea["AddRecov" + old] ? " or " + Fea["AddRecov" + old] : "");
 	var FeaPost = "";
 	if (Fea["Add" + old] && FeaUse) {
 		FeaPost = " [" + Fea["Add" + old] + ", " + FeaUse + "]";
@@ -5151,7 +5173,7 @@ function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld
 	if (old) Fea.source = Fea.sourceOld;
 
 	var FeaRef = " (" + clObj.extraname + stringSource(Fea, "first,abbr", ", ") + ")";
-	var FeaUse = Fea["Use" + old] + (Fea["Use" + old] && !isNaN(Fea["Use" + old]) ? "\u00D7 per " : "") + Fea["Recov" + old];
+	var FeaUse = Fea["Use" + old] + (Fea["Use" + old] && !isNaN(Fea["Use" + old]) ? "\u00D7 per " : "") + Fea["Recov" + old] + (Fea["AddRecov" + old] ? " or " + Fea["AddRecov" + old] : "");
 	var FeaPost = "";
 	if (Fea["Add" + old] && FeaUse) {
 		FeaPost = " [" + Fea["Add" + old] + ", " + FeaUse + "]";

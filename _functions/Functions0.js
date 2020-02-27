@@ -982,7 +982,7 @@ function setDialogName(dialogElem, itemID, attrNm, setAttr) {
 
 //return a random number between 1 and the input 'die'
 function RollD(die) {
-    return Math.floor(Math.random() * die) + 1;
+	return Math.floor(Math.random() * die) + 1;
 };
 
 //set the other checkbox Dis/Adv off when clicking this field (on MouseUp)
@@ -1121,6 +1121,17 @@ function sourceDate(srcArr) {
 	};
 	return Math.max.apply(Math, dateArr);
 };
+
+function leftpad (str, len, ch) {
+	str = String(str);
+	var i = -1;
+	if (!ch && ch !== 0) ch = ' ';
+	len = len - str.length;
+	while (++i < len) {
+		str = ch + str;
+	}
+	return str;
+}
 
 // function to close the sheet without saving because JavaScript ran out of memory
 function outOfMemoryErrorHandling(closeFile) {
