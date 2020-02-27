@@ -4316,13 +4316,13 @@ function processRecovery(recovery, additionalRecovery) {
 			recoveryStr += "Dawn";
 			break;
 		default:
-			recoveryStr += recovery.capitalize();
+			recoveryStr += recovery.trim().capitalize();
 			break;
 	}
 	if (additionalRecovery) {
-		recoveryStr += "/" + additionalRecovery;
+		recoveryStr += "/" + additionalRecovery.trim();
 	}
-	return recoveryStr;
+	return leftpad(recoveryStr,(typePF ? 5 : 4));
 }
 
 // Add a limited feature: add (UpdateOrReplace = "replace"), or only update the text (UpdateOrReplace = "update"), or update both the text and the usages (UpdateOrReplace = number of previous usages), or just add the number of usages (UpdateOrReplace = "bonus")
