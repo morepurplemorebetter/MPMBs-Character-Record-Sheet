@@ -2141,7 +2141,7 @@ function ApplyMagicItem(input, FldNmbr) {
 			// undo the previous
 			selectMagicItemGearType(false, FldNmbr, oldMIvar && aMI[oldMIvar].chooseGear ? aMI[oldMIvar].chooseGear : aMI.chooseGear, oldMIvar);
 		}
-		if ((oldMI !== newMI || oldMIvar !== newMIvar) && theMI.chooseGear) selectMagicItemGearType(true, FldNmbr, theMI.chooseGear);
+		if (theMI.chooseGear) selectMagicItemGearType(true, FldNmbr, theMI.chooseGear);
 	}
 
 	// Set the visibility of the attuned checkbox
@@ -2518,7 +2518,20 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 	var upToOtherPage = itemNmbr === (FieldNumbers.magicitemsD + 1) ? " (to third page)" : "";
 	var downToOtherPage = itemNmbr === FieldNumbers.magicitemsD ? " (to overflow page)" : "";
 	var visibleAttunement = How(MIflds[4]) == "";
-	var aMI;
+	var theMI = CurrentMagicItems.known[ArrayNmbr];
+	var theMIchoice = CurrentMagicItems.choices[ArrayNmbr];
+	var aMI, fullMIname;
+
+	var getChoiceName = function(item, choice) {
+		var aMI = MagicItemsList[item];
+		if (!choice || !aMI[choice]) return aMI.name;
+		if (aMI[choice].name) return aMI[choice].name;
+		for (var i = 0; i < aMI.choices.length; i++) {
+			if (aMI.choices[i].toLowerCase() == choice) {
+				return aMI.name + " [" + aMI.choices[i] + "]";
+			}
+		}
+	}
 
 	if (!MenuSelection || MenuSelection === "justMenu") {
 		// a function to add the other items
@@ -2533,9 +2546,10 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			}
 		};
 		// if this magic item allows for a choice, add that option as the first thing in the menu
-		if (CurrentMagicItems.known[ArrayNmbr]) {
-			aMI = MagicItemsList[CurrentMagicItems.known[ArrayNmbr]];
-			if (MagicItemsList[CurrentMagicItems.known[ArrayNmbr]].choices) {
+		if (theMI) {
+			aMI = MagicItemsList[theMI];
+			fullMIname = getChoiceName(theMI, theMIchoice);
+			if (aMI.choices) {
 				var aMIopts = aMI.choices;
 				var choiceMenu = {
 					cName : "Change type of " + aMI.name,
@@ -2548,20 +2562,24 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 					choiceMenu.oSubMenu.push({
 						cName : aCh + stringSource(aMI[aChL].source ? aMI[aChL] : aMI, "first,abbr", "\t   [", "]"),
 						cReturn : "item#choice#" + aChL,
-						bMarked : CurrentMagicItems.choices[ArrayNmbr] == aChL
+						bMarked : theMI == aChL
 					});
 				}
 				if (choiceMenu.oSubMenu.length > 1) magicMenu.push(choiceMenu);
 			}
+			if (aMI.chooseGear || (theMIchoice && aMI[theMIchoice].chooseGear)) {
+				var gearType = theMIchoice && aMI[theMIchoice].chooseGear ? aMI[theMIchoice].chooseGear.type.capitalize() : aMI.chooseGear.type.capitalize();
+				menuLVL1([["Change " + gearType + " type of " + fullMIname, "geartype"]]);
+			}
 			// an option to read the whole description
-			if (Who(MIflds[2])) menuLVL1([["Show full text of " + aMI.name, "popup"]]);
+			if (Who(MIflds[2])) menuLVL1([["Show full text of " + fullMIname, "popup"]]);
 			// add a separator if we have any items in the menu so far
 			if (magicMenu.length) magicMenu.push({ cName : "-" });
 		}
 		// a way to select another magic item
 		if (!AddMagicItemsMenu) ParseMagicItemMenu();
 		magicMenu.push({
-			cName : CurrentMagicItems.known[ArrayNmbr] ? "Change item to" : "Apply item",
+			cName : theMI ? "Change item to" : "Apply item",
 			oSubMenu : AddMagicItemsMenu
 		},{ cName : "-" });
 		// now all the default options
@@ -2592,29 +2610,21 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Magic item menu option...");
 
-	var getChoiceName = function(item, choice) {
-		var aMI = MagicItemsList[item];
-		if (!choice || !aMI[choice]) return aMI.name;
-		if (aMI[choice].name) return aMI[choice].name;
-		for (var i = 0; i < aMI.choices.length; i++) {
-			if (aMI.choices[i].toLowerCase() == choice) {
-				return aMI.name + " [" + aMI.choices[i] + "]";
-			}
-		}
-	}
-
 	switch (MenuSelection[1]) {
 		case "set" :
 			Value(MIflds[0], getChoiceName(MenuSelection[2], MenuSelection[3]));
+			break;
+		case "geartype" :
+			Value(MIflds[0], getChoiceName(theMI, theMIchoice));
 			break;
 		case "popup" :
 			ShowDialog("Magic item's full description", Who(MIflds[2]));
 			break;
 		case "choice" :
-			aMI = MagicItemsList[CurrentMagicItems.known[ArrayNmbr]];
-			if (MenuSelection[2] && aMI && aMI[MenuSelection[2]] && CurrentMagicItems.choices[ArrayNmbr] != MenuSelection[2]) {
+			aMI = MagicItemsList[theMI];
+			if (MenuSelection[2] && aMI && aMI[MenuSelection[2]] && theMIchoice != MenuSelection[2]) {
 				var aMIvar = aMI[MenuSelection[2]];
-				Value(MIflds[0], getChoiceName(CurrentMagicItems.known[ArrayNmbr], MenuSelection[2]));
+				Value(MIflds[0], getChoiceName(theMI, MenuSelection[2]));
 			}
 			break;
 		case "up" :
@@ -2677,12 +2687,11 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			setMIattunedVisibility(itemNmbr);
 			// Now if attunement was visible and it was unchecked, we have to reapply the magic item's properties
 			if (!CurrentVars.manual.items) {
-				var curMI = CurrentMagicItems.known[itemNmbr - 1];
-				if (curMI && visibleAttunement && !currentlyChecked) {
+				if (theMI && visibleAttunement && !currentlyChecked) {
 					// now apply or remove the magic item's features
 					var Fea = ApplyFeatureAttributes(
 						"item", // type
-						curMI, // fObjName
+						theMI, // fObjName
 						[0, CurrentMagicItems.level, false], // lvlA [old-level, new-level, force-apply]
 						false, // choiceA [old-choice, new-choice, "only"|"change"]
 						false // forceNonCurrent
@@ -2934,7 +2943,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	// get the value of the magic item name field
 	var useVal = isApplyFld && AddRemove ? event.value : isApplyFld ? event.target.value : What(MIflds[0]);
 	// see if the item is not already present in the string
-	var isItem = tDoc[parseFnct](useVal);
+	var isItem = tDoc[parseFnct](useVal, true);
 	// if this is recognized as a weapon, make sure we are not just triggering on the default words (axe, sword, hammer, bow, crossbow)
 	var defaultItems = {
 		"battleaxe" : [/\baxes?\b/i, /battle/i],

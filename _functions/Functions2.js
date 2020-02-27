@@ -5254,6 +5254,8 @@ function contactMPMB(medium) {
 		app.launchURL("http://flapkan.com/mpmb/fanforum", true);
 		break;
 	 case "bug" :
+		app.launchURL("https://discord.gg/MY5wKpV");
+		break; // While website is not operational
 		var sheetType = typePF ? "pf" + ((/redesign/i).test(tDoc.info.SheetType) ? "r" : "") : typeA4 ? "cf-a4" : "cf-lt";
 		var acroType = app.viewerType == "Reader" ? "reader-" : "pro-";
 		var acroVers = app.viewerVersion < 9 ? "other" : acroType + (app.viewerVersion < 10 ? "ix" : app.viewerVersion < 11 ? "x" : app.viewerVersion < 12 ? "xi" : "dc");
@@ -6276,7 +6278,7 @@ function AddToModFld(Fld, Mod, Remove, NameEntity, Explanation) {
 			setFld = aFld + (Mod < 0 ? "" : "+") + Mod;
 		};
 	} else if (Remove) { // remove string
-		setFld = aFld.replace(RegExp("\\+?" + Mod, "i"), "");
+		setFld = aFld.replace(RegExp("\\+?" + Mod.RegEscape(), "i"), "");
 	} else { // add string
 		setFld = (aFld ? aFld : "") + (Mod.substr(0, 1) === "-" ? "" : "+") + Mod
 	};
@@ -7861,7 +7863,7 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 			}
 		} else { // add to its own section on a notes page
 			if (AddRemove) {
-				AddToNotes(noteStr, alertTxt, false, fallback.alertType, true);
+				AddToNotes(noteStr, alertTxt, false, fallback.alertType, true, noteObj.amendTo);
 			} else {
 				AddToNotes("", false, noteStr, false, true);
 			}
@@ -7870,8 +7872,9 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 }
 
 // A way to add a string to a notes page, or generate a notes page if it didn't exist yet
-function AddToNotes(noteStr, alertTxt, oldNoteStr, alertType, isProcessed) {
+function AddToNotes(noteStr, alertTxt, oldNoteStr, alertType, isProcessed, amendToNote) {
 	if (!noteStr && !oldNoteStr) return;
+	
 	var prefix = false;
 	if (!isProcessed) {
 		if (What("Unit System") === "metric") {
@@ -7889,18 +7892,23 @@ function AddToNotes(noteStr, alertTxt, oldNoteStr, alertType, isProcessed) {
 		var noteFld = false;
 		var noteFlds = ["Notes.Left", "Notes.Right"];
 		var notesPrefix = What("Template.extras.ASnotes").split(",");
+		var noteStrLC = noteStr.toLowerCase();
+		var oldNoteStrLC = oldNoteStr.toLowerCase();
+		if (amendToNote) amendToNote = amendToNote.toLowerCase();
 		for (var i = 1; i < notesPrefix.length; i++) {
 			for (var n = 0; n < noteFlds.length; n++) {
 				var aFld = notesPrefix[i] + noteFlds[n];
-				var inFld = What(aFld);
-				if (noteStr && inFld.toLowerCase().indexOf(noteStr.toLowerCase()) !== -1) {
+				var inFld = What(aFld).toLowerCase();
+				if (noteStr && inFld.indexOf(noteStrLC) !== -1) {
 					return;
-				} else if (oldNoteStr && inFld.toLowerCase().indexOf(oldNoteStr.toLowerCase()) !== -1) {
+				} else if (oldNoteStr && inFld.indexOf(oldNoteStrLC) !== -1) {
 					prefix = notesPrefix[i];
 					noteFld = aFld;
 					replaceOldNote = true;
 					i = noteFlds.length;
 					break;
+				} else if (amendToNote && inFld.indexOf(amendToNote) !== -1 && !noteFld) {
+					noteFld = aFld;
 				} else if (inFld === "" && !noteFld) {
 					noteFld = aFld;
 				};

@@ -1509,7 +1509,7 @@ toNotesPage : [{
 		If you are writing this as a string, it is recommended to start with a line break (\r or \n).
 
 		If this attribute is an array, it will be joined using the desc() function, meaning that
-		each entry in the array will be each own line preceded by three spaces.
+		each entry in the array will be on its own line, preceded by three spaces.
 	*/
 	page3notes : true,
 	/*	page3notes // OPTIONAL //
@@ -1557,6 +1557,17 @@ toNotesPage : [{
 
 		This will be added, in square brackets, to the first line of text.
 		In this example the first line would be: "Wild Magic Surge Table (Wild Magic 1, PHB 104) [results 01-50]"
+	*/
+	amendTo : "Wild Magic Surge Table",
+	/*	amendTo // OPTIONAL //
+		TYPE:	string
+		USE:	if this string is found on any Notes page, than this note is added to the found note section
+
+		Use this to add a note to a previously added note.
+		Make sure that the string given in this attribute is not too common,
+		or it will match with the wrong notes section.
+
+		The string will be matched on a case-insensitive basis.
 	*/
 }],
 

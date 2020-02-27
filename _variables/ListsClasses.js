@@ -165,7 +165,7 @@ var Base_ClassList = {
 				name : "Feral Instinct",
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 7,
-				description : "\n   " + "Adv. on Initiative; I can enter rage to act normally on the first turn when surprised",
+				description : "\n   " + "I get adv. on Initiative; I can enter rage to act normally on the first turn when surprised",
 				advantages : [["Initiative", true]]
 			},
 			"brutal critical" : {

@@ -9,7 +9,7 @@ var Base_ArmourList = {
 	},
 	"mage armor" : {
 		regExpSearch : /^(?=.*(mage|magic))(?=.*armou?r).*$/i,
-		name : "Mage armor",
+		name : "Mage Armor",
 		source : [["SRD", 160], ["P", 256]],
 		ac : 13,
 		list : "magic"
@@ -54,20 +54,22 @@ var Base_ArmourList = {
 	},
 	"chain shirt" : {
 		regExpSearch : /^(?=.*chain)(?=.*shirt).*$/i,
-		name : "Chain shirt",
+		name : "Chain Shirt",
 		source : [["SRD", 63], ["P", 145]],
 		type : "medium",
 		ac : 13,
-		weight : 20
+		weight : 20,
+		invName : "Chain shirt"
 	},
 	"scale mail" : {
 		regExpSearch : /^(?=.*scale)(?=.*mail).*$/i,
-		name : "Scale mail",
+		name : "Scale Mail",
 		source : [["SRD", 63], ["P", 145]],
 		type : "medium",
 		ac : 14,
 		stealthdis : true,
-		weight : 45
+		weight : 45,
+		invName : "Scale mail"
 	},
 	"breastplate" : {
 		regExpSearch : /^(?=.*breast)(?=.*plate).*$/i,
@@ -79,31 +81,34 @@ var Base_ArmourList = {
 	},
 	"half plate" : {
 		regExpSearch : /^(?=.*half)(?=.*plate).*$/i,
-		name : "Half plate",
+		name : "Half Plate",
 		source : [["SRD", 63], ["P", 145]],
 		type : "medium",
 		ac : 15,
 		stealthdis : true,
-		weight : 40
+		weight : 40,
+		invName : "Half plate armor"
 	},
 	"ring mail" : {
 		regExpSearch : /^(?=.*ring)(?=.*mail).*$/i,
-		name : "Ring mail",
+		name : "Ring Mail",
 		source : [["SRD", 63], ["P", 145]],
 		type : "heavy",
 		ac : 14,
 		stealthdis : true,
-		weight : 40
+		weight : 40,
+		invName : "Ring mail"
 	},
 	"chain mail" : {
 		regExpSearch : /^(?!.*(scale|plate|ring|shirt))(?=.*chain)(?=.*mail).*$/i,
-		name : "Chain mail",
+		name : "Chain Mail",
 		source : [["SRD", 63], ["P", 145]],
 		type : "heavy",
 		ac : 16,
 		stealthdis : true,
 		weight : 55,
-		strReq : 13
+		strReq : 13,
+		invName : "Chain mail"
 	},
 	"splint" : {
 		regExpSearch : /splint/i,

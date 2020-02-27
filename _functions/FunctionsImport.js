@@ -1491,7 +1491,7 @@ function DirectImport(consoleTrigger) {
 	if (global.docFrom) delete global.docFrom;
 
 	// if icons were imported ask to save and then close the sheet
-	if (!closeAlert && app.viewerType !== "Reader" && importFromPath[2]) { 
+	if (!closeAlert && app.viewerType !== "Reader" && importFromPath[2]) {
 		app.execMenuItem("SaveAs");
 		app.execMenuItem("Close");
 		tDoc.closeDoc();
@@ -2441,6 +2441,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 			};
 			return true;
 		} catch (e) {
+			if ((/out of memory/i).test(e.toSource())) return "outOfMemory";
 			IsNotUserScript = true;
 			app.alert({
 				cMsg : isManual ? "The script you entered is faulty, it returns the following error when run:\n\"" + e + "\"\n\nYour script has not been added to the sheet, please try again after fixing the error.\n\nIf you run your code from the console, it will give you a line number for where the error is. You can open this console from inside the \"Add Custom Script\" dialogue." : "The script '" + scriptName + "' is faulty, it returns the following error when run:\n\"" + e + "\"\n\nThe script has been removed from this pdf.\n\nFor a more specific error, that includes the line number of the error, try running the script from the JavaScript console (with the 'JS Console' button).",
@@ -2460,7 +2461,9 @@ function RunUserScript(atStartup, manualUserScripts) {
 			delete CurrentScriptFiles[iScript];
 			changesInFilesScript = true;
 			scriptsResult = runIScript;
-		};
+		} else if (runIScript == "outOfMemory") {
+			break;
+		}
 	};
 	if (changesInFilesScript) SetStringifieds("scriptfiles");
 
@@ -2471,7 +2474,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 		if (!manualScriptResult) {
 			if (manualUserScripts) return false;
 			tDoc.resetForm(["User Script"]);
-		};
+		}
 	};
 
 	// run the functions that are meant to be saved till the very end of all the scripts
@@ -2491,7 +2494,9 @@ function RunUserScript(atStartup, manualUserScripts) {
 		};
 	};
 	// when run at startup and one of the script fails, update all the dropdowns
-	if (atStartup && (!scriptsResult || !manualScriptResult)) {
+	if (manualScriptResult == "outOfMemory" || runIScript == "outOfMemory") {
+		outOfMemoryErrorHandling(atStartup);
+	} else if (atStartup && (!scriptsResult || !manualScriptResult)) {
 		UpdateDropdown("resources");
 	} else if (!atStartup && manualUserScripts) { // i.e. run to test manual import with RunUserScript(false, Script);
 		return manualScriptResult;
