@@ -1021,7 +1021,7 @@ function isTemplVis(tempNm, returnPrefix) {
 
 // A way to return a new, fresh object
 function newObj(inObj) {
-	return Function('return ' + inObj.toSource())();
+	return eval(inObj.toSource());
 };
 
 // A way to return an string as an expression
@@ -1132,3 +1132,21 @@ function leftpad (str, len, ch) {
 	}
 	return str;
 }
+
+// function to close the sheet without saving because JavaScript ran out of memory
+function outOfMemoryErrorHandling(closeFile) {
+	var cMsg = "The imported custom content JavaScript has returned an \"Out of Memory\" error. This means that your machine does not have enough free RAM to use this PDF without errors. This can be caused by other software using too much RAM, but most of the time is the result of the operating system not being restarted for too long.";
+	cMsg += closeFile || !tDoc.dirty ? "\n\nThe PDF will now automatically close without any content being saved." : "\n\nThe changes you made to the custom content JavaScript have not been saved. You will now be prompted to save the sheet (without the JavaScript changes) and then the sheet will automatically close.";
+	cMsg += "\n\nPLEASE REBOOT YOUR MACHINE AND TRY AGAIN!"
+	app.alert({
+		cMsg : cMsg,
+		nIcon : 1,
+		cTitle : "ERROR: Out of Memory -- Closing PDF",
+		nType : 0
+	});
+	if (closeFile) {
+		tDoc.dirty = false;
+	}
+	app.execMenuItem("Close");
+	tDoc.closeDoc();
+};

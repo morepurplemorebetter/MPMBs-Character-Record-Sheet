@@ -115,7 +115,7 @@ ClassList["blood hunter"] = {
 					additional : "Amplify Blood Curse of the Anxious",
 					usages : 1,
 					recovery : "long rest"
-				}] 
+				}]
 			},
 			"blood curse of binding" : {
 				name : "Blood Curse of Binding",
@@ -142,9 +142,10 @@ ClassList["blood hunter"] = {
 				name : "Blood Curse of Exposure",
 				source : [["MM:BH", 11]],
 				description : desc([
-					"As a reaction when a creature I can see in 30 ft is hit by an attack or spell, I can weaken it",
-					"The creature loses their resistance to the damage type of the triggering attack or spell",
-					"\u2022 Amplify: The target also has immunity to relevant damage types reduced to resistance"
+					"As a reaction when a creature I can see in 30 ft makes an attack roll, I can intervene",
+					"Before I know if it hits or not, I roll a hemocraft die and subtract it from the attack roll",
+					"Creatures immune to blindness are not affected by this",
+					"\u2022 Amplify: apply to all of the target's attacks this turn; Separate hemocraft die roll for each"
 				]),
 				action : [["reaction", ""]]
 			},
@@ -163,9 +164,9 @@ ClassList["blood hunter"] = {
 				source : [["MM:BH", 12]],
 				description : desc([
 					"As a reaction when a creature I can see in 30 ft drops to 0 HP, I can make it attack",
-					"The creature makes one attack against a target of my choice within its attack range",
-					"\u2022 Amplify: Can move creature up to half their speed",
-					"   The attack and damage roll gain a bonus equal to my Intelligence modifier (min 1)"
+					"It makes one weapon attack against a target of my choice within its attack range",
+					"\u2022 Amplify: Before making the attack, I can move the creature up to half its speed",
+					"   Also, the attack and damage roll gain a bonus equal to my Intelligence modifier (min 1)"
 				]),
 				action : [["reaction", ""]]
 			},
@@ -174,8 +175,8 @@ ClassList["blood hunter"] = {
 				source : [["MM:BH", 12]],
 				description : desc([
 					"As a bonus action, I can mark an enemy within 30 ft of me until the end of my turn",
-					"While marked, when I deal rite damage to the target, I deal an extra hemocraft die",
-					"\u2022 Amplify: The next attack before end of turn against the creature has advantage"
+					"When I deal rite damage to the marked target, I deal an additional hemocraft die",
+					"\u2022 Amplify: My next attack against the target before the end of my turn has advantage"
 				]),
 				action : [["bonus action", ""]]
 			},
@@ -183,9 +184,9 @@ ClassList["blood hunter"] = {
 				name : "Blood Curse of the Muddled Mind",
 				source : [["MM:BH", 12]],
 				description : desc([
-					"As a bonus action, I can curse an enemy within 30 ft that is concentrating on spell",
-					"That creature has disadv. on next concentration save before end of my turn",
-					"\u2022 Amplify: The target has disadv. on all concentration saves before end of my turn"
+					"As a bonus action, I can curse a creature I can see in 30 ft that is concentrating on a spell",
+					"That creature has disadv. on its next concentration save before the end of my next turn",
+					"\u2022 The target has disadv. on all concentration saves before the end of my next turn"
 				]),
 				action : [["bonus action", ""]]
 			}
@@ -328,7 +329,7 @@ ClassList["blood hunter"] = {
 			source : [["MM:BH", 5]],
 			minlevel : 20,
 			description : desc([
-				"Once per turn, when a feature requires hemocraft die roll, I may reroll and choose result",
+				"Once per turn when a feature requires a hemocraft die, I can reroll and choose the result",
 				"When I score a critical hit with a rite-imbued weapon, I regain one use of Blood Maledict"
 			])
 		}
@@ -367,7 +368,7 @@ UpdateBrandText = function(BHlevelNew, BHlevelOld, subclassInfo) {
 	//update the hybrid feature on the notes page
 	var BHstringOld = makeBrandText(BHlevelOld);
 	var BHstringNew = makeBrandText(BHlevelNew);
-	AddToNotes(BHstringNew, "Blood Hunter - Brand of Castigation features", BHstringOld, "Class Features section");
+	if (BHstringOld != BHstringNew) AddToNotes(BHstringNew, "Blood Hunter - Brand of Castigation features", BHstringOld, "Class Features section");
 };
 
 AddSubClass("blood hunter", "ghostslayer", {
@@ -403,8 +404,8 @@ AddSubClass("blood hunter", "ghostslayer", {
 			source : ["MM:BH", 6],
 			minlevel : 3,
 			description : desc([
-				"I gain an additional Blood Maledict use. Curses can target any creature, blood or not",
-			]),
+				"I gain an additional Blood Maledict use. Curses can target any creature, blood or not"
+			])
 		},
 		"blood maledict" : (function () {
 			var curseSpecialist = newObj(ClassList["blood hunter"].features["blood maledict"]);
@@ -423,10 +424,8 @@ AddSubClass("blood hunter", "ghostslayer", {
 				"If the feature ends when I am inside an object I am pushed to the nearest empty space",
 				"When this happens, I take force damage equal to 2\u00D7 feet moved"
 			]),
-			usages : levels.map(function (n) {
-				return n < 15 ? 1 : 2;
-			}),
-			recovery : "short rest",
+			usages : levels.map(function (n) { return n < 7 ? 0 : n < 15 ? 1 : 2; }),
+			recovery : "short rest"
 		},
 		"subclassfeature11" : {
 			name : "Brand of Sundering",
@@ -614,7 +613,7 @@ AddSubClass("blood hunter", "profane soul", {
 				additional : levels.map(function (n) {
 					return n < 3 ? "" : BHhemocraftDie(n) + " + Int mod";
 				}),
-				action : ["bonus action", ""],
+				action : [["bonus action", ""]]
 			},
 			"the hexblade" : {
 				name : "Rite Focus: the Hexblade",
@@ -626,7 +625,7 @@ AddSubClass("blood hunter", "profane soul", {
 			source : ["MM:BH202", 8],
 			minlevel : 7,
 			description : "\n   " + "When I cast a cantrip as an action, I can make one weapon attack as a bonus action",
-			action : ["bonus action", " (with cantrip)"]
+			action : [["bonus action", " (with cantrip)"]]
 		},
 		"subclassfeature7.1" : {
 			name : "Revealed Arcana",
@@ -793,30 +792,32 @@ AddSubClass("blood hunter", "profane soul", {
 			description : desc([
 				"I know the Blood Curse of the Souleater (See notes page)"
 			]),
-			extraname : "Blood Maledict",
-			extrachoices : ["souleater"],
-			choicesNotInMenu : true,
-			"souleater" : {
-				source : ["MM:BH", 13],
+			extraname : "Order of the Profane Soul 15; Blood Curse",
+			"blood curse of the souleater" : {
+				source : [["MM:BH", 12]],
 				name : "Blood Curse of the Souleater",
-				description : desc([
-					"As a reaction, when a non-construct or undead creature is reduced to 0 HP in 30 ft:",
-					"My weapon attacks have advantage until the end of my next turn",
-					"\u2022 Amplify: I regain an expended warlock spell slot. I can only do this once before a LR"
+				description : " [Amplify 1\xD7 per long rest]" + desc([
+					"As a reaction when a living creature (not construct/undead) is reduced to 0 HP in 30 ft,",
+					"I can use their soul to gain advantage on my weapon attacks until the end of my next turn",
+					"\u2022 Amplify (once per long rest): I also regain an expended warlock spell slot"
 				]),
-				usages : "1 amplified",
-				recovery : "long rest",
-				action : ["reaction", ""]
+				action : [["reaction", ""]],
+				extraLimitedFeatures : [{
+					additional : "Amplify Blood Curse of the Souleater",
+					usages : 1,
+					recovery : "long rest"
+				}]
 			},
 			autoSelectExtrachoices : [{
-				extrachoice : 'souleater'
+				extrachoice : "blood curse of the souleater",
+				minlevel : 18
 			}]
 		}
 	}
 });
 
 AddSubClass("blood hunter", "mutant", {
-	regExpSearch : /mutant/i,
+	regExpSearch : /^(?=.*blood)(?=.*hunter)(?=.*mutant).*$/i,
 	subname : "Order of the Mutant",
 	source : ["MM:BH", 9],
 	features : {
@@ -1100,7 +1101,7 @@ AddSubClass("blood hunter", "mutant", {
 });
 
 AddSubClass("blood hunter", "lycan", {
-	regExpSearch : /^(?=.*lycan)(?=.*blood)(?=.*hunter).*$/i,
+	regExpSearch : /^(?=.*blood)(?=.*hunter)(?=.*lycan).*$/i,
 	subname : "Order of the Lycan",
 	source : ["MM:BH", 10],
 	features : {
@@ -1116,7 +1117,7 @@ AddSubClass("blood hunter", "lycan", {
 			source : ["MM:BH", 11],
 			minlevel : 3,
 			description : desc([
-				"As a bonus action, I can transform into a Hybrid lycanthropy form",
+				"As a bonus action, I can transform into a hybrid lycanthropy form",
 				"See the \"Notes\" page for the full rules of this Hybrid form at my current level"
 			]),
 			usages : levels.map(function(n) { return n < 3 ? "" : n < 11 ? 1 : n < 18 ? 2 : "\u221E\u00D7 per "; }),
@@ -1194,7 +1195,7 @@ AddSubClass("blood hunter", "lycan", {
 					function(fields, v, output) {
 						if (v.theWea.isPredatoryStrikes && classes.known['blood hunter'] && classes.known['blood hunter'].level && classes.known['blood hunter'].level >= 11) {
 							try {
-								var curDie = eval(fields.Damage_Die.replace('d', '*'));
+								var curDie = eval_ish(fields.Damage_Die.replace('d', '*'));
 							} catch (e) {
 								var curDie = 'x';
 							};
@@ -1234,22 +1235,21 @@ AddSubClass("blood hunter", "lycan", {
 			description : desc([
 				"I know the Blood Curse of the Howl (See notes page)"
 			]),
-			extraname : "Blood Maledict",
-			extrachoices : ["howl"],
-			choicesNotInMenu : true,
-			"howl" : {
-				source : ["MM:BH", 13],
+			extraname : "Order of the Lycan 18; Blood Curse",
+			"blood curse of the howl" : {
+				source : [["MM:BH", 12]],
 				name : "Blood Curse of the Howl",
 				description : desc([
-					"As an action, I howl. Each creature in 30 ft that can hear me must make a Wis save",
-					"If failed, they are frightened of me until the end of my next turn",
-					"If failed by 5 or more, they are stunned while frightened",
-					"I can choose any number of creatures that I can see to be unaffected by this howl",
+					"As an action, creatures of my choice in 30 ft that can hear me howl must make a Wis save",
+					"If failed, they're frightened of me (stunned if failed by 5 or more), until my next turn ends",
+					"If successful, they're immune to this blood curse for the next 24 hours",
 					"\u2022 Amplify: The range of the curse increases to 60 ft"
-				])
+				]),
+				action : [["action", ""]]
 			},
 			autoSelectExtrachoices : [{
-				extrachoice : 'howl'
+				extrachoice : "blood curse of the howl",
+				minlevel : 18
 			}]
 		}
 	}
