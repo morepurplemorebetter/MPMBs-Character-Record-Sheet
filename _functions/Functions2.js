@@ -7245,9 +7245,11 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					continue;
 				};
 				var strParse = oldTotals[sT + type];
-				var typeRE = sT === "walk" ? /^(\d+.?\d*).*/ : RegExp(".*" + sT + " *(\\d+.?\\d*).*", "i");
-				if ((typeRE).test(str)) strParse = Number(str.replace(typeRE, "$1"));
-				if (metric) strParse = RoundTo(strParse / 0.3, 5, false, false);
+				var typeRE = sT === "walk" ? /(\d+.?\d*).*/ : RegExp(".*" + sT + " *(\\d+.?\\d*).*", "i");
+				if ((typeRE).test(str)) {
+					strParse = Number(str.replace(typeRE, "$1"));
+					if (metric) strParse = RoundTo(strParse / 0.3, 5, false, false);
+				}
 				var total = strParse - oldTotals[sT + type];
 				deltaSpds[sT + type] = !total ? 0 : total > 0 ? "+" + total : total.toString();
 			}
@@ -7257,7 +7259,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		if (isArray(ProfObj)) ProfObj = { walk : {spd : parseFloat(ProfObj[0]), enc : parseFloat(ProfObj[1])} };
 		// add or remove the ProfObj from the current object
 		for (var spdType in ProfObj) {
-			if (!CurrentProfs.speed[spdType]) continue
+			if (!CurrentProfs.speed[spdType]) continue;
 			var theInp = ProfObj[spdType];
 			var theSet = CurrentProfs.speed[spdType];
 			if (AddRemove) { // add
@@ -7337,6 +7339,10 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			};
 		};
 		// set them to the fields
+		if (metric) {
+			spdString = ConvertToMetric(spdString, 0.5);
+			encString = ConvertToMetric(encString, 0.5);
+		}
 		Value(fldSpd, spdString, ttips.spd);
 		Value(fldEnc, encString, ttips.enc);
 	}; break;
