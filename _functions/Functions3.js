@@ -901,10 +901,10 @@ function processExtraLimitedFeatures(AddRemove, srcNm, objArr) {
 }
 
 // add/remove a class feature text, replace the first line of it, or insert it after another
-// the string is assumed to start with "\u25C6\uFEFF" (ParseClassFeature | ParseClassFeatureExtra)
+// the string is assumed to start with "\u25C6" (ParseClassFeature | ParseClassFeatureExtra)
 // for possible values of 'act', see the switch statement
 // each ...TxtA is [firstline, completetext]
-function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxtA) {
+function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 	if (!oldTxtA || !oldTxtA[0]) return; // no oldTxt, so we can't do anything
 
 	// make some regex objects
@@ -934,8 +934,8 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxtA) {
 			var changeTxt = fldTxt.replace(oldRx, newTxtA[1]);
 			break;
 		case "insert" : // add the newTxt after the prevTxt
-			if (!prevTxtA || !prevTxtA[0]) return; // no prevTxt, so we can't do anything
-			var prevFrstLnEsc = prevTxtA[0].replace(/^(\r|\n)*/, '').RegEscape();
+			if (!prevTxt) return; // no prevTxt, so we can't do anything
+			var prevFrstLnEsc = prevTxt.replace(/^(\r|\n)*/, '').RegEscape();
 			var prevRx = RegExp("\\r?" + prevFrstLnEsc + "(.|\\r  )*", "i");
 			var prevTxtFound = fldTxt.match(prevRx);
 			var changeTxt = prevTxtFound ? fldTxt.replace(prevTxtFound[0], prevTxtFound[0] + newTxtA[1]) : fldTxt;
@@ -950,7 +950,7 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxtA) {
 		Value(fld, changeTxt);
 	} else if (act !== "insert") {
 		// nothing changed, so just insert the whole feature, using this same function
-		applyClassFeatureText("insert", fldA, oldTxtA, newTxtA, prevTxtA);
+		applyClassFeatureText("insert", fldA, oldTxtA, newTxtA, prevTxt);
 	}
 }
 

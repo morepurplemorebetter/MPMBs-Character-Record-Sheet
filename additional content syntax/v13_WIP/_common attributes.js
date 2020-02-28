@@ -143,7 +143,11 @@ altResource : "SS 5+",
 altResource : ["", "", "SS 2+", "SS 2+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+"],
 /*	altResource // OPTIONAL //
 	TYPE:	string, or array with 20 strings
-	USE:	value to add in the "Recovery" column in the "Limited Features" section if feature has additional recovery methods (e.g. spell slots)
+	USE:	value to add in the "Recovery" column in the "Limited Features" section in addition to the 'recovery' attribute
+
+	This is useful if the feature offers another way to be used,
+	in addition to a number of times per time period (e.g. per short rest).
+	For example, a feature might also be usable by expending spell slots.
 
 	This attribute will do nothing if the 'recovery' attribute is not also present.
 

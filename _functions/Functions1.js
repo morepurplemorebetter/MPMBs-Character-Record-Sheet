@@ -5159,10 +5159,13 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice, Fe
 	var FeaFirstLine = "\u25C6 " + FeaName + FeaRef;
 	var FeaDescr = Fea["Descr" + old];
 	if (isArray(FeaDescr)) FeaDescr = desc(FeaDescr);
+	if (What("Unit System") == "metric") {
+		FeaPost = ConvertToMetric(FeaPost, 0.5);
+		FeaDescr = ConvertToMetric(FeaDescr, 0.5);
+	}
 	var FeaOtherLines = FeaPost + FeaDescr;
-	if (What("Unit System") == "metric") FeaOtherLines = ConvertToMetric(FeaOtherLines, 0.5);
 
-	return [FeaFirstLine + (Fea.extFirst ? FeaPost : ""), "\r" + FeaFirstLine + FeaOtherLines];
+	return [FeaFirstLine + (Fea.extFirst ? FeaPost : ""), "\r" + FeaFirstLine + FeaOtherLines, FeaFirstLine];
 };
 
 function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld) {
@@ -5186,10 +5189,13 @@ function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld
 	var FeaFirstLine = "\u25C6 " + FeaKey.name + FeaRef;
 	var FeaDescr = Fea["Descr" + old];
 	if (isArray(FeaDescr)) FeaDescr = desc(FeaDescr);
+	if (What("Unit System") == "metric") {
+		FeaPost = ConvertToMetric(FeaPost, 0.5);
+		FeaDescr = ConvertToMetric(FeaDescr, 0.5);
+	}
 	var FeaOtherLines = FeaPost + FeaDescr;
-	if (What("Unit System") == "metric") FeaOtherLines = ConvertToMetric(FeaOtherLines, 0.5);
 
-	return [FeaFirstLine + (ForceOld ? "" : FeaPost), "\r" + FeaFirstLine + FeaOtherLines];
+	return [FeaFirstLine + (ForceOld ? "" : FeaPost), "\r" + FeaFirstLine + FeaOtherLines, FeaFirstLine];
 };
 
 //change all the level-variables gained from classes and races
@@ -5358,7 +5364,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			}
 
 			// loop through the features
-			var LastProp = [newHeaderString, ""], feaA = [];
+			var LastProp = newHeaderString, feaA = [];
 			for (var key in cl.features) feaA.push(key);
 			if (oldClassLvl[aClass] > newClassLvl[aClass]) feaA.reverse(); // when removing, loop through them backwards
 			for (var f = 0; f < feaA.length; f++) {
@@ -5396,8 +5402,8 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				// do the text change, if any
 				if (textAction) applyClassFeatureText(textAction, ["Class Features"], FeaOldString, FeaNewString, LastProp);
 
-				// keep track of the last property's text
-				LastProp = propFea.minlevel <= ClassLevelUp[aClass][2] ? FeaNewString : LastProp;
+				// keep track of the last property's header text (don't use FeaNewString, as it might include an additional or recovery)
+				LastProp = propFea.minlevel <= ClassLevelUp[aClass][2] ? FeaNewString[2] : LastProp;
 
 				// see if this is a wild shape feature
 				if (prop.indexOf("wild shape") !== -1 && Fea.changed) WSinUse = [newClassLvl[aClass], Fea.Use, Fea.Recov, Fea.Add];
