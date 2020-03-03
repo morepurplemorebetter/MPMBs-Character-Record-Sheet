@@ -26,8 +26,8 @@ Each file is a complete script. You can add multiple files, but take note that t
 The **[additional content syntax](https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/tree/master/additional%20content%20syntax)** folder contains explanatory files for making the additional content scripts.
 
 ## Community
-There is a community of people who actively make additions to MPMB's D&D 5e Character Tools over at the **[/r/mpmb subreddit](https://www.reddit.com/r/mpmb/)**.
-You can also [join the MPMB Discord sever](https://discord.gg/Qjq9Z5Q) for discussion and questions.
+There is a community of people who actively make additions to MPMB's D&D 5e Character Tools over at the **[/r/mpmb subreddit](https://www.reddit.com/r/mpmb/)**.    
+You can also **[join the MPMB Discord sever](https://discord.gg/Qjq9Z5Q)** for discussion and questions.
 
 &nbsp;
 
