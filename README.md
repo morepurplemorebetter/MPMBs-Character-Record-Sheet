@@ -27,6 +27,7 @@ The **[additional content syntax](https://github.com/morepurplemorebetter/MPMBs-
 
 ## Community
 There is a community of people who actively make additions to MPMB's D&D 5e Character Tools over at the **[/r/mpmb subreddit](https://www.reddit.com/r/mpmb/)**.
+You can also [join the MPMB Discord sever](https://discord.gg/Qjq9Z5Q) for discussion and questions.
 
 &nbsp;
 
