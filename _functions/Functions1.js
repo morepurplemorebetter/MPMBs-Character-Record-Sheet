@@ -5241,13 +5241,20 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					propFea.name = propFea.tooltip.replace(/^ *\(|\)$/g, '');
 				}
 
-				Fea = ApplyFeatureAttributes(
-					"race", // type
-					[CurrentRace.known, prop], // fObjName [aParent, fObjName]
-					[oldRaceLvl, newRaceLvl, false], // lvlA [old-level, new-level, force-apply]
-					false, // choiceA [old-choice, new-choice, "only"|"change"]
-					false // forceNonCurrent
-				);
+				try {
+					Fea = ApplyFeatureAttributes(
+						"race", // type
+						[CurrentRace.known, prop], // fObjName [aParent, fObjName]
+						[oldRaceLvl, newRaceLvl, false], // lvlA [old-level, new-level, force-apply]
+						false, // choiceA [old-choice, new-choice, "only"|"change"]
+						false // forceNonCurrent
+					);
+				} catch (error) {
+					var eText = 'The "' + propFea.name + '" feature from the "' + CurrentRace.name + '" race produced an error! Please contact the author of the feature to correct this issue:\n ' + error + "\n ";
+					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					console.println(eText);
+					console.show();
+				}
 			}
 		}
 		// update the racial level
@@ -5261,19 +5268,27 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 	if ((/feat|all|notclass/i).test(Typeswitch) && oldFeatLvl != newFeatLvl) {
 		for (var f = 0; f < CurrentFeats.known.length; f++) {
 			var aFeat = CurrentFeats.known[f];
+			var aFeatVar = CurrentFeats.choices[f];
 			var theFeat = FeatsList[aFeat];
 			if (!theFeat) continue;
 
 			thermoTxt = thermoM("Updating " + theFeat.name + " features...", false);
 			thermoM((f+1)/CurrentFeats.known.length); //increment the progress dialog's progress
 
-			Fea = ApplyFeatureAttributes(
-				"feat", // type
-				aFeat, // fObjName
-				[oldFeatLvl, newFeatLvl, false], // lvlA [old-level, new-level, force-apply]
-				[CurrentFeats.choices[f], CurrentFeats.choices[f], false], // choiceA [old-choice, new-choice, "only"|"change"]
-				false // forceNonCurrent
-			);
+			try {
+				Fea = ApplyFeatureAttributes(
+					"feat", // type
+					aFeat, // fObjName
+					[oldFeatLvl, newFeatLvl, false], // lvlA [old-level, new-level, force-apply]
+					[aFeatVar, aFeatVar, false], // choiceA [old-choice, new-choice, "only"|"change"]
+					false // forceNonCurrent
+				);
+			} catch (error) {
+				var eText = 'The feat "' + theFeat.name + '" produced an error! Please contact the author of the feature to correct this issue:\n ' + error + "\n ";
+				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				console.println(eText);
+				console.show();
+			}
 		}
 		CurrentFeats.level = newFeatLvl;
 	}
@@ -5284,8 +5299,9 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 	if ((/item|all|notclass/i).test(Typeswitch) && oldItemLvl != newItemLvl) {
 		for (var f = 0; f < CurrentMagicItems.known.length; f++) {
 			var anItem = CurrentMagicItems.known[f];
-			var anItemVar = CurrentMagicItems.known[f];
+			var anItemVar = CurrentMagicItems.choices[f];
 			var theItem = MagicItemsList[anItem];
+			if (!theItem) continue;
 
 			// if the attunement field is visible, but the checkbox is not checked, skip it
 			var attuneFld = tDoc.getField("Extra.Magic Item Attuned " + (f+1));
@@ -5294,13 +5310,20 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			thermoTxt = thermoM("Updating " + theItem.name + " features...", false);
 			thermoM((f+1)/CurrentMagicItems.known.length); //increment the progress dialog's progress
 
-			Fea = ApplyFeatureAttributes(
-				"item", // type
-				anItem, // fObjName
-				[oldItemLvl, newItemLvl, false], // lvlA [old-level, new-level, force-apply]
-				[CurrentMagicItems.choices[f], CurrentMagicItems.choices[f], false], // choiceA [old-choice, new-choice, "only"|"change"]
-				false // forceNonCurrent
-			);
+			try {
+				Fea = ApplyFeatureAttributes(
+					"item", // type
+					anItem, // fObjName
+					[oldItemLvl, newItemLvl, false], // lvlA [old-level, new-level, force-apply]
+					[anItemVar, anItemVar, false], // choiceA [old-choice, new-choice, "only"|"change"]
+					false // forceNonCurrent
+				);
+			} catch (error) {
+				var eText = 'The magic item "' + theItem.name + '" produced an error! Please contact the author of the feature to correct this issue:\n ' + error + "\n ";
+				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				console.println(eText);
+				console.show();
+			}
 		}
 		CurrentMagicItems.level = newItemLvl;
 	}
@@ -5380,30 +5403,37 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				// if this is the first time applying the features after changing subclass, things might need to be forced if the class was previously at a level that a subclass was already warranted
 				var forceProp = isSubClassProp && newSubClass != oldSubClass && propFea.minlevel <= oldClassLvl[aClass] && propFea.minlevel <= newClassLvl[aClass];
 
-				// apply the common attributes of the feature
-				Fea = ApplyFeatureAttributes(
-					"class", // type
-					[aClass, prop], // fObjName [aParent, fObjName]
-					[oldClassLvl[aClass], newClassLvl[aClass], forceProp], // lvlA [old-level, new-level, force-apply]
-					false, // choiceA [old-choice, new-choice, "only"|"change"]
-					false // forceNonCurrent
-				);
+				try {
+					// apply the common attributes of the feature
+					Fea = ApplyFeatureAttributes(
+						"class", // type
+						[aClass, prop], // fObjName [aParent, fObjName]
+						[oldClassLvl[aClass], newClassLvl[aClass], forceProp], // lvlA [old-level, new-level, force-apply]
+						false, // choiceA [old-choice, new-choice, "only"|"change"]
+						false // forceNonCurrent
+					);
 
-				// add/remove/update the feature text on the second page
-				var FeaOldString = ParseClassFeature(aClass, prop, oldClassLvl[aClass], forceProp, Fea.ChoiceOld, forceProp ? false : Fea);
-				Fea.extFirst = true; // signal that we need the full first line for FeaNewString
-				var FeaNewString = ParseClassFeature(aClass, prop, newClassLvl[aClass], false, Fea.Choice, Fea);
-				// see what type of change we have to do
-				var textAction = Fea.CheckLVL && !Fea.AddFea ? "remove" : // level dropped below minlevel
-					Fea.CheckLVL && Fea.AddFea && (!forceProp || (forceProp && !isClassProp)) ? "insert" : // level rose above minlevel and there is nothing to replace
-					forceProp || (Fea.AddFea && Fea.changed && Fea.Descr !== Fea.DescrOld) ? "replace" : // forcing the new version or update the whole text after a description change
-					Fea.AddFea && Fea.changed && Fea.Descr === Fea.DescrOld ? "first" : // update just header after a usages/recovery/additional change
-					false;
-				// do the text change, if any
-				if (textAction) applyClassFeatureText(textAction, ["Class Features"], FeaOldString, FeaNewString, LastProp);
+					// add/remove/update the feature text on the second page
+					var FeaOldString = ParseClassFeature(aClass, prop, oldClassLvl[aClass], forceProp, Fea.ChoiceOld, forceProp ? false : Fea);
+					Fea.extFirst = true; // signal that we need the full first line for FeaNewString
+					var FeaNewString = ParseClassFeature(aClass, prop, newClassLvl[aClass], false, Fea.Choice, Fea);
+					// see what type of change we have to do
+					var textAction = Fea.CheckLVL && !Fea.AddFea ? "remove" : // level dropped below minlevel
+						Fea.CheckLVL && Fea.AddFea && (!forceProp || (forceProp && !isClassProp)) ? "insert" : // level rose above minlevel and there is nothing to replace
+						forceProp || (Fea.AddFea && Fea.changed && Fea.Descr !== Fea.DescrOld) ? "replace" : // forcing the new version or update the whole text after a description change
+						Fea.AddFea && Fea.changed && Fea.Descr === Fea.DescrOld ? "first" : // update just header after a usages/recovery/additional change
+						false;
+					// do the text change, if any
+					if (textAction) applyClassFeatureText(textAction, ["Class Features"], FeaOldString, FeaNewString, LastProp);
 
-				// keep track of the last property's header text (don't use FeaNewString, as it might include an additional or recovery)
-				LastProp = propFea.minlevel <= ClassLevelUp[aClass][2] ? FeaNewString[2] : LastProp;
+					// keep track of the last property's header text (don't use FeaNewString, as it might include an additional or recovery)
+					LastProp = propFea.minlevel <= ClassLevelUp[aClass][2] ? FeaNewString[2] : LastProp;
+				} catch (error) {
+					var eText = 'The "' + propFea.name + '" feature from the "' + cl.fullname + '" class produced an error! Please contact the author of the feature to correct this issue:\n ' + error + "\n ";
+					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					console.println(eText);
+					console.show();
+				}
 
 				// see if this is a wild shape feature
 				if (prop.indexOf("wild shape") !== -1 && Fea.changed) WSinUse = [newClassLvl[aClass], Fea.Use, Fea.Recov, Fea.Add];
