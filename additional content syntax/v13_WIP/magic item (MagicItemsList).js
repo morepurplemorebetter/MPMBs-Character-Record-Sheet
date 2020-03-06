@@ -68,11 +68,11 @@ RequiredSheetVersion(13);
 */
 
 MagicItemsList["staff of purple"] = {
-/* 	MagicItemList object name // REQUIRED //
+/* 	MagicItemsList object name // REQUIRED //
 	TYPE:	string
 	USE:	object name of the magic item as it will be used by the sheet
 
-	By adding a new object to the existing MagicItemList object, we create a new magic item.
+	By adding a new object to the existing MagicItemsList object, we create a new magic item.
 	The object name here is 'staff of purple'. You can use any object name as long as it is not already in use.
 	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
