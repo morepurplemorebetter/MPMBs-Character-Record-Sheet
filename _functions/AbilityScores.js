@@ -62,7 +62,7 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpeci
 	if (AddRemove) {
 		// If the entry already exists and contains the exact text that we are about to add, this whole addition should be skipped
 		if (CurrentStats.txts[inType][NameEntity] && CurrentStats.txts[inType][NameEntity].indexOf(useDialogTxt) !== -1) {
-			CurrentStats = eval_ish(What("CurrentStats.Stringified"));
+			CurrentStats = eval(What("CurrentStats.Stringified"));
 			return;
 		}
 		CurrentStats.txts[inType][NameEntity] = (!dialogTxt && CurrentStats.txts[inType][NameEntity] ? CurrentStats.txts[inType][NameEntity] + "; " : "") + useDialogTxt;
@@ -1057,7 +1057,7 @@ function AbilityScores_Button(onlySetTooltip) {
 	if (theDia == "ok") {
 		SetStringifieds("stats");
 	} else {
-		CurrentStats = eval_ish(What("CurrentStats.Stringified"));
+		CurrentStats = eval(What("CurrentStats.Stringified"));
 	}
 }
 

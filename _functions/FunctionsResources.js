@@ -731,7 +731,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	if (CallDialogue === "ok" || CallDialogue === "scrp" || (CallDialogue === "cancel" && forceDDupdate)) {
 		SetStringifieds("sources");
 	} else {
-		CurrentSources = eval_ish(remCS);
+		CurrentSources = eval(remCS);
 	};
 	if (CallDialogue === "scrp") {
 		ImportScriptOptions(selectionDialogue.scrpMenu);
@@ -756,7 +756,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			Hide("Race Features Menu");
 		}
 		//if something changed for the spells make the spell menu again
-		var oldCS = eval_ish(remCS);
+		var oldCS = eval(remCS);
 		if (forceDDupdate || oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.classExcl !== CurrentSources.classExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
 			setSpellVariables(forceDDupdate || oldCS.spellsExcl !== CurrentSources.spellsExcl);
 		};

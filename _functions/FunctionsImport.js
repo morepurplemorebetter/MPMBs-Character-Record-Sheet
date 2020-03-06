@@ -487,8 +487,8 @@ function DirectImport(consoleTrigger) {
 		}
 
 		//copy any custom script and run it
-		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && global.docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval_ish(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
-		var filesScriptTo = eval_ish(global.docTo.getField("User_Imported_Files.Stringified").value);
+		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && global.docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
+		var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
 
 		if (filesScriptFrom) {
 			// add the old to the new, preferring the new if both have the same entries
@@ -613,7 +613,7 @@ function DirectImport(consoleTrigger) {
 				};
 			} else {
 				try {
-					var theAdvL = eval_ish(What("League Remember"));
+					var theAdvL = eval(What("League Remember"));
 					ToggleAdventureLeague({
 						dci : theAdvL.dci,
 						factionrank : theAdvL.factionrank,
@@ -748,7 +748,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("MoreProficiencies");
 
 		//set the feature choices
-		if (ImportField("CurrentFeatureChoices.Stringified")) CurrentFeatureChoices = eval_ish(What("CurrentFeatureChoices.Stringified"));
+		if (ImportField("CurrentFeatureChoices.Stringified")) CurrentFeatureChoices = eval(What("CurrentFeatureChoices.Stringified"));
 
 		//set the level and xp
 		ImportField("Character Level", {notTooltip: true}); ImportField("Total Experience", {notTooltip: true}); ImportField("Add Experience", {notTooltip: true});
@@ -774,7 +774,7 @@ function DirectImport(consoleTrigger) {
 			}
 			SetStringifieds("stats");
 		} else if (ImportField("CurrentStats.Stringified")) {
-			CurrentStats = eval_ish(What("CurrentStats.Stringified"));
+			CurrentStats = eval(What("CurrentStats.Stringified"));
 		}
 
 		//set the background
@@ -851,7 +851,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("Proficiency Bonus Dice", {notTooltip: true}); ImportField("Proficiency Bonus Modifier", {notTooltip: true, notSubmitName: true}); ImportField("Inspiration", {notTooltip: true});
 
 		//set the skills and associated fields
-		var CurrentProfsFrom = global.docFrom.getField("CurrentProfs.Stringified") ? eval_ish(global.docFrom.getField("CurrentProfs.Stringified").value) : false;
+		var CurrentProfsFrom = global.docFrom.getField("CurrentProfs.Stringified") ? eval(global.docFrom.getField("CurrentProfs.Stringified").value) : false;
 		var isAltSkillOrder = Who('Text.SkillsNames') === 'alphabeta' ? false : true;
 		ImportField("Jack of All Trades", {notTooltip: true}); ImportField("Remarkable Athlete", {notTooltip: true}); ImportField("All Skills Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Passive Perception Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Too Text", {notTooltip: true, notSubmitName: true});
 		for (var i = 0; i < SkillsList.abbreviations.length; i++) {
@@ -1859,7 +1859,7 @@ function Import(type) {
 		});
 	} else {
 		try {
-			var theAdvL = eval_ish(What("League Remember"));
+			var theAdvL = eval(What("League Remember"));
 			ToggleAdventureLeague({
 				dci : theAdvL.dci,
 				factionrank : theAdvL.factionrank,
@@ -2996,7 +2996,7 @@ function ImportScriptFileDialog(retResDia) {
 		};
 	} else {
 		Value("User_Imported_Files.Stringified", filesScriptRem);
-		CurrentScriptFiles = eval_ish(filesScriptRem);
+		CurrentScriptFiles = eval(filesScriptRem);
 	};
 	if (retResDia) resourceDecisionDialog(false, false, retResDia === "also"); // return to the Dialog for Selecting Resources
 };

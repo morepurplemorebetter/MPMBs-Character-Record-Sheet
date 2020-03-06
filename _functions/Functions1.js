@@ -2000,6 +2000,8 @@ function FindClasses(NotAtStartup, isFieldVal) {
 						cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
 						if (Temps.spellcastingExtra) cSpells.extra = Temps.spellcastingExtra;
 					}
+				} else if (CurrentSpells[aClass]) {
+					CurrentSpells[aClass].level = classes.known[aClass].level;
 				}
 			} else if (CurrentSpells[aClass] && !ObjLength(CurrentSpells[aClass].bonus)) {
 				// not high enough level to be a spellcaster anymore and no bonus spells, so remove the object if it exists
@@ -3302,11 +3304,11 @@ function AddInvWeaponsAmmo() {
 	//a way to see if there are any special calculation-driven entries in the attack's name
 	var specialAtkName = function (atkNm) {
 		var isSpecial = false;
-		var toMatch = /\(\/.*?\/i?g?i?\)\.test\(WeaponText\)/g;
+		var toMatch = /\(\/.*?\/[ig]{0,2}\)\.test\(v\.WeaponText(Name)?\)/g;
 		if (CurrentEvals.atkCalc && (toMatch).test(CurrentEvals.atkCalc)) {
 			isSpecial = CurrentEvals.atkCalc.match(toMatch).some( function (C) {
 				try {
-					return eval_ish(C.replace("WeaponText", "atkNm"));
+					return eval_ish(C.replace("v.WeaponText", "atkNm"));
 				} catch (err) {};
 			});
 		};
@@ -5941,6 +5943,8 @@ function CalcAC() {
 		mediumProf : tDoc.getField("Proficiency Armor Medium").isBoxChecked(0),
 		heavyProf : tDoc.getField("Proficiency Armor Heavy").isBoxChecked(0)
 	}
+	// And add a variables for backwards compatibility
+	var ACshield = gatherVars.usingShield;
 	// Now run through those conditions and remove the ones from the total that weren't met
 	for (var entry in CurrentProfs.specialarmour) {
 		var aMod = CurrentProfs.specialarmour[entry];

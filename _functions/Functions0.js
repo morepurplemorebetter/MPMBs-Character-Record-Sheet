@@ -1024,9 +1024,9 @@ function newObj(inObj) {
 	return eval(inObj.toSource());
 };
 
-// A way to return an string as an expression
+// A way to return an string as an expression (use eval() if it contains a function)
 function eval_ish(inStr) {
-	return Function('return ' + inStr)();
+	return (/function|=>/).test(inStr) ? eval(inStr) : Function('return ' + inStr)();
 };
 
 // Returns the template prefix, or true if not the template, or an empty string if rEmpty is true

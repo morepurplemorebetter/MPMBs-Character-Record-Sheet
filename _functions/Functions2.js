@@ -3588,17 +3588,17 @@ function GetStringifieds(notSources) {
 	var forSpells = What("CurrentSpells.Stringified").split("##########");
 	if (forSpells[0][0] !== "(") forSpells[0] = "(" + forSpells[0] + ")";
 	if (forSpells[1][0] !== "(") forSpells[1] = "(" + forSpells[1] + ")";
-	CurrentSpells = eval_ish(forSpells[0]);
-	CurrentCasters = eval_ish(forSpells[1]);
+	CurrentSpells = eval(forSpells[0]);
+	CurrentCasters = eval(forSpells[1]);
 	if (!notSources) {
-		CurrentSources = eval_ish(What("CurrentSources.Stringified"));
-		CurrentScriptFiles = eval_ish(What("User_Imported_Files.Stringified"));
+		CurrentSources = eval(What("CurrentSources.Stringified"));
+		CurrentScriptFiles = eval(What("User_Imported_Files.Stringified"));
 	};
-	CurrentEvals = eval_ish(What("CurrentEvals.Stringified"));
-	CurrentProfs = eval_ish(What("CurrentProfs.Stringified"));
-	CurrentVars = eval_ish(What("CurrentVars.Stringified"));
-	CurrentFeatureChoices = eval_ish(What("CurrentFeatureChoices.Stringified"));
-	CurrentStats = eval_ish(What("CurrentStats.Stringified"));
+	CurrentEvals = eval(What("CurrentEvals.Stringified"));
+	CurrentProfs = eval(What("CurrentProfs.Stringified"));
+	CurrentVars = eval(What("CurrentVars.Stringified"));
+	CurrentFeatureChoices = eval(What("CurrentFeatureChoices.Stringified"));
+	CurrentStats = eval(What("CurrentStats.Stringified"));
 }
 
 //set all stringified variables into their fields
