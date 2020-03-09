@@ -268,14 +268,27 @@ function ApplySpell(FldValue, rememberFldName) {
 					}
 					aSpell.description = newCantripDieDescr.replace(/\b0d\d+/g, "0");
 				}
-				// apply ability score modifier
-				if (aCast.ability && (/spellcasting (ability )?mod(ifier)?/).test(aSpell.description)) {
+				// apply ability score modifier or check
+				if (aCast.ability) {
 					var castAbi = isNaN(aCast.ability) && aCast.abilityToUse ? aCast.abilityToUse[0] : aCast.ability;
 					var theAbi = AbilityScores.abbreviations[castAbi - 1];
 					if (theAbi) {
 						var theAbiMod = Number(What(theAbi + " Mod"));
-						if (theAbiMod >= 0) theAbiMod = "+" + theAbiMod;
-						aSpell.description = aSpell.description.replace(/\+? ?(my )?spellcasting (ability )?mod(ifier)?/, theAbiMod + " (" + theAbi + ")");
+
+						// modifier
+						if (/spellcasting (ability )?mod(ifier)?/.test(aSpell.description)) {
+							aSpell.description = aSpell.description.replace(/\+? ?(my )?spellcasting (ability )?mod(ifier)?/, (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + " (" + theAbi + ")");
+						}
+						// check
+						else if (/spellcasting (ability )?check/.test(aSpell.description)) {
+							var jackOf = tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1;
+							var remAth = (tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1 && ["Str", "Dex", "Con"].indexOf(theAbi) !== -1);
+							var profB = Number(How("Proficiency Bonus"));
+							var additional = remAth ? Math.ceil(profB/2) : jackOf ? Math.floor(profB/2) : 0;
+							var theAbiName = AbilityScores.names[castAbi -1];
+							var checkBonus = theAbiMod + additional;
+							aSpell.description = aSpell.description.replace(/spellcasting (ability )?check/, theAbiName + " check (" + (checkBonus >= 0 ? '+' + checkBonus : checkBonus) + ")");
+						}
 					}
 				}
 			}
