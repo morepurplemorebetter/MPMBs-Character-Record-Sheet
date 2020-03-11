@@ -2000,10 +2000,10 @@ function FindClasses(NotAtStartup, isFieldVal) {
 						cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
 						if (Temps.spellcastingExtra) cSpells.extra = Temps.spellcastingExtra;
 					}
-				} else if (CurrentSpells[aClass]) {
+				} else if (NotAtStartup && CurrentSpells[aClass]) {
 					CurrentSpells[aClass].level = classes.known[aClass].level;
 				}
-			} else if (CurrentSpells[aClass] && !ObjLength(CurrentSpells[aClass].bonus)) {
+			} else if (NotAtStartup && CurrentSpells[aClass] && !ObjLength(CurrentSpells[aClass].bonus)) {
 				// not high enough level to be a spellcaster anymore and no bonus spells, so remove the object if it exists
 				delete CurrentSpells[aClass];
 				CurrentUpdates.types.push("spells");
@@ -8451,7 +8451,7 @@ function MakeWeaponMenu() {
 		attackMenu.push(ColorMenu);
 	}
 
-	if (QI) menuLVL1(attackMenu, ["-", "Show what things are affecting the attack calculations"], CurrentEvals.atkAdd || CurrentEvals.atkCalc ? false : true);
+	if (QI) menuLVL1(attackMenu, ["-", "Show what things are affecting the attack calculations"], ObjLength(CurrentEvals.atkStr) && (CurrentEvals.atkAdd || CurrentEvals.atkCalc) ? false : true);
 
 	//set the complete menu as the global variable
 	Menus.attacks = attackMenu;
