@@ -274,20 +274,16 @@ function ApplySpell(FldValue, rememberFldName) {
 					var theAbi = AbilityScores.abbreviations[castAbi - 1];
 					if (theAbi) {
 						var theAbiMod = Number(What(theAbi + " Mod"));
-
-						// modifier
-						if (/spellcasting (ability )?mod(ifier)?/.test(aSpell.description)) {
-							aSpell.description = aSpell.description.replace(/\+? ?(my )?spellcasting (ability )?mod(ifier)?/, (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + " (" + theAbi + ")");
-						}
-						// check
-						else if (/spellcasting (ability )?check/.test(aSpell.description)) {
-							var jackOf = tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1;
-							var remAth = (tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1 && ["Str", "Dex", "Con"].indexOf(theAbi) !== -1);
-							var profB = Number(How("Proficiency Bonus"));
-							var additional = remAth ? Math.ceil(profB/2) : jackOf ? Math.floor(profB/2) : 0;
+						if (/spellcasting (ability )?mod(ifier)?/i.test(aSpell.description)) { // modifier
+							aSpell.description = aSpell.description.replace(/\+? ?(my )?spellcasting (ability )?mod(ifier)?/i, (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + " (" + theAbi + ")");
+						} else if (/spellcasting (ability )?check/i.test(aSpell.description)) { // check
 							var theAbiName = AbilityScores.names[castAbi -1];
-							var checkBonus = theAbiMod + additional;
-							aSpell.description = aSpell.description.replace(/spellcasting (ability )?check/, theAbiName + " check (" + (checkBonus >= 0 ? '+' + checkBonus : checkBonus) + ")");
+							// Bonus from Jack of All Trades and/or Remarkable Athlete
+							var jackOf = tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1;
+							var remAth = tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1 && ["Str", "Dex", "Con"].indexOf(theAbi) !== -1;
+							var profB = Number(How("Proficiency Bonus"));
+							theAbiMod += remAth ? Math.ceil(profB/2) : jackOf ? Math.floor(profB/2) : 0;
+							aSpell.description = aSpell.description.replace(/spellcasting (ability )?check/i, theAbiName + " check (" + (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + ")");
 						}
 					}
 				}
