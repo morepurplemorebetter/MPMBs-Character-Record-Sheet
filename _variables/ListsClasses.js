@@ -2144,11 +2144,16 @@ var Base_ClassList = {
 					description : "\n   " + "My pact weapon does extra necrotic damage equal to my Charisma modifier",
 					source : [["SRD", 49], ["P", 111]],
 					calcChanges : {
+						atkAdd : [
+							function (fields, v) {
+								if (v.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponText))) fields.Description += (fields.Description ? '; ' : '') + '+Cha mod necrotic damage (included above)';
+							},
+							"If I include the word 'Pact' in a melee or magic weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say in the damage box that this added damage is of the necrotic type, as it can only display a single damage type."
+						],
 						atkCalc : [
 							function (fields, v, output) {
 								if (v.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponText))) output.extraDmg += What('Cha Mod');
-							},
-							"If I include the word 'Pact' in a melee or magic weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say that this added damage is of the necrotic type, as it can only display a single damage type."
+							}, ""
 						]
 					},
 					prereqeval : function(v) { return classes.known.warlock.level >= 12 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the blade'; }

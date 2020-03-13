@@ -729,6 +729,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 
 	var CallDialogue = app.execDialog(selectionDialogue);
 	if (CallDialogue === "ok" || CallDialogue === "scrp" || (CallDialogue === "cancel" && forceDDupdate)) {
+		cleanExclSources();
 		SetStringifieds("sources");
 	} else {
 		CurrentSources = eval(remCS);
@@ -1411,4 +1412,64 @@ function MakeSourceMenu_SourceOptions() {
 	if (SourceList[theSrc].url) {
 		app.launchURL(SourceList[theSrc].url, true);
 	};
+};
+
+// A function to remove excluded objects that no longer exist
+function cleanExclSources() {
+	var getRelObject = function(attrNm) {
+		var reArr = [], entry;
+		switch (attrNm) {
+			case "globalExcl" :
+				for (entry in SourceList) reArr.push(entry);
+				break;
+			case "classExcl" :
+				for (entry in ClassList) reArr.push(entry);
+				for (entry in ClassSubList) reArr.push(entry);
+				break;
+			case "racesExcl" :
+				for (entry in RaceList) reArr.push(entry);
+				break;
+			case "featsExcl" :
+				for (entry in FeatsList) reArr.push(entry);
+				break;
+			case "magicitemExcl" :
+				for (entry in MagicItemsList) reArr.push(entry);
+				break;
+			case "spellsExcl" :
+				for (entry in SpellsList) reArr.push(entry);
+				break;
+			case "backgrExcl" :
+				for (entry in BackgroundList) reArr.push(entry);
+				break;
+			case "backFeaExcl" :
+				for (entry in BackgroundFeatureList) reArr.push(entry);
+				break;
+			case "creaExcl" :
+				for (entry in CreatureList) reArr.push(entry);
+				break;
+			case "weapExcl" :
+				for (entry in WeaponsList) reArr.push(entry);
+				break;
+			case "ammoExcl" :
+				for (entry in AmmoList) reArr.push(entry);
+				break;
+			case "armorExcl" :
+				for (entry in ArmourList) reArr.push(entry);
+				break;
+			default :
+				return false;
+		}
+		return reArr;
+	}
+	for (var anExcl in CurrentSources) {
+		if (anExcl.indexOf("Excl") == -1) continue;
+		var isKnown = getRelObject(anExcl);
+		if (!isKnown) continue;
+		var newExcl = [];
+		for (var i = 0; i < CurrentSources[anExcl].length; i++) {
+			var iEntry = CurrentSources[anExcl][i];
+			if (isKnown.indexOf(iEntry) !== -1) newExcl.push(iEntry);
+		}
+		CurrentSources[anExcl] = newExcl;
+	}
 };

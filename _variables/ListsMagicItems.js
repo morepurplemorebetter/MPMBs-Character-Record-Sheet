@@ -6433,7 +6433,7 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"darkness" : { range : "120 ft", changes : "All Wand of Wonder spells have a range of 120 ft." },
 			"enlarge/reduce" : { range : "120 ft", changes : "All Wand of Wonder spells have a range of 120 ft." },
-			"fearie fire" : { range : "120 ft", changes : "All Wand of Wonder spells have a range of 120 ft." },
+			"faerie fire" : { range : "120 ft", changes : "All Wand of Wonder spells have a range of 120 ft." },
 			"stinking cloud" : { range : "120 ft", changes : "All Wand of Wonder spells have a range of 120 ft." }
 		}
 	},

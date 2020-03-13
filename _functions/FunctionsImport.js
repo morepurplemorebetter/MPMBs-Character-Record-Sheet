@@ -489,40 +489,50 @@ function DirectImport(consoleTrigger) {
 		//copy any custom script and run it
 		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && global.docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
 		var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
+		var newFilesScriptFrom = false;
 
 		if (filesScriptFrom) {
 			// add the old to the new, preferring the new if both have the same entries
-			var filesScriptToNms = [];
-			for (var toScr in filesScriptTo) filesScriptToNms.push(toScr.replace(/\d+\/\d+\/\d+ - /, ""));
+			var filesScriptToNms = [], equalScrNmRx = /\d+\/\d+\/\d+ - |[._\- ]min(ified)?\b/ig;
+			for (var toScr in filesScriptTo) filesScriptToNms.push(toScr.replace(equalScrNmRx, ""));
 			for (var fromScr in filesScriptFrom) {
-				var fromScrNm = fromScr.replace(/\d+\/\d+\/\d+ - /, "");
-				if (filesScriptToNms.indexOf(fromScrNm) == -1) filesScriptTo[fromScr] = filesScriptFrom[fromScr];
+				if (filesScriptToNms.indexOf(fromScr.replace(equalScrNmRx, "")) == -1) {
+					filesScriptTo[fromScr] = filesScriptFrom[fromScr];
+					newFilesScriptFrom = true;
+				}
 			};
-			global.docTo.getField("User_Imported_Files.Stringified").value = filesScriptTo.toSource();
-			GetStringifieds();
+			if (newFilesScriptFrom) {
+				CurrentScriptFiles = filesScriptTo;
+				SetStringifieds("scriptfiles");
+			}
 		}
-		if (ImportField("User Script") || filesScriptFrom) {
+		if (ImportField("User Script") || newFilesScriptFrom) {
 			InitiateLists();
 			RunUserScript(true);
 			amendPsionicsToSpellsList();
 		};
-		//set the excl./incl. sources
+		// Set the excl./incl. sources
 		if (ImportField("CurrentSources.Stringified")) {
-			if (!CurrentSources.globalExcl) CurrentSources.globalExcl = [];
-			//set any UA sources that weren't in the old sheet to excluded, if any UA source was set to be excluded
+			CurrentSources = eval(global.docTo.getField("CurrentSources.Stringified").value);
+			cleanExclSources();
+			// Set any UA sources that weren't in the old sheet to excluded, if any UA source was set to be excluded
+			var excludeUnkownUA = false, newGlobalKnown = [];
 			for (var s = 0; s < CurrentSources.globalExcl.length; s++) {
 				var theSrc = CurrentSources.globalExcl[s];
-				if (!SourceList[theSrc]) {
-					CurrentSources.globalExcl.splice(s, 1);
-				} else if ((/Unearthed Arcana/i).test(SourceList[theSrc].group)) {
-					for (var src in SourceList) {
-						if ((/Unearthed Arcana/i).test(SourceList[src].group) && !global.docFrom.SourceList[src]) {
-							CurrentSources.globalExcl.push(src);
-						};
-					};
+				if (/Unearthed Arcana/i.test(SourceList[theSrc].group)) {
+					excludeUnkownUA = true;
 					break;
 				};
 			};
+			for (var src in SourceList) {
+				newGlobalKnown.push(src);
+				if (excludeUnkownUA && /Unearthed Arcana/i.test(SourceList[src].group) && !global.docFrom.SourceList[src] && CurrentSources.globalKnown.indexOf(src) == -1 && CurrentSources.globalExcl.indexOf(src) == -1) {
+					// Testing against both globalKnown and SourceList to eliminate intermediate beta bugs
+					CurrentSources.globalExcl.push(src);
+				};
+			};
+			// Now set the new list of known sources
+			CurrentSources.globalKnown = newGlobalKnown;
 			//set the DMG weapons to being excluded, if importing from sheet version 12.93 or earlier
 			if (FromVersion < 12.94) {
 				if (!CurrentSources.ammoExcl) CurrentSources.ammoExcl = [];
