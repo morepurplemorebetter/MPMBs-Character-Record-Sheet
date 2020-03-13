@@ -2557,7 +2557,12 @@ function FindWeapons(ArrayNmbr) {
 			[] // if a spell/cantrip, this will be an array of the classes on which spell list this attack is
 		];
 
-		var theWea = WeaponsList[tempArray[j][0]];
+		var aWea = WeaponsList[tempArray[j][0]];
+		var theWea = {};
+		if (aWea && aWea.baseWeapon && WeaponsList[aWea.baseWeapon]) {
+			for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
+		}
+		if (aWea) for (var attr in aWea) theWea[attr] = aWea[attr];
 
 		//add magical bonus, denoted by a "+" or "-"
 		var magicRegex = /(?:^|\s|\(|\[)([\+-]\d+)/;
@@ -2566,11 +2571,11 @@ function FindWeapons(ArrayNmbr) {
 		}
 
 		//add the true/false switch for adding ability score to damage or not
-		tempArray[j][2] = theWea && theWea.abilitytodamage !== undefined ? theWea.abilitytodamage : true;
+		tempArray[j][2] = aWea && theWea.abilitytodamage !== undefined ? theWea.abilitytodamage : true;
 
 		//if this is a spell or a cantrip, see if we can link it to an object in the CurrentCasters variable
-		var isSpell = !theWea ? ParseSpell(tempString) : theWea.SpellsList ? theWea.SpellsList : SpellsList[tempArray[j][0]] ? tempArray[j][0] : ParseSpell(tempArray[j][0]);
-		if (isSpell && (!theWea || (/spell|cantrip/i).test(theWea.type + theWea.list))) {
+		var isSpell = !aWea ? ParseSpell(tempString) : theWea.SpellsList ? theWea.SpellsList : SpellsList[tempArray[j][0]] ? tempArray[j][0] : theWea.baseWeapon && SpellsList[theWea.baseWeapon] ? theWea.baseWeapon : ParseSpell(tempArray[j][0]);
+		if (isSpell && (!aWea || (/spell|cantrip/i).test(theWea.type + theWea.list))) {
 			tempArray[j][3] = isSpell;
 			if (!tempArray[j][0]) tempArray[j][2] = false;
 			tempArray[j][4] = isSpellUsed(isSpell);
