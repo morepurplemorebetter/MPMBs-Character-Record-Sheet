@@ -873,11 +873,6 @@ var Base_ClassList = {
 					description : " [1 ki point]" + "\n   " + "As a bonus action, I can either Dash or Disengage; My jump distance doubles when I do so",
 					action : ["bonus action", ""]
 				},
-				"stunning strike" : {
-					name : "Stunning Strike",
-					source : [["SRD", 27], ["P", 79]],
-					description : " [1 ki point]" + "\n   " + "After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
-				},
 				autoSelectExtrachoices : [{
 					extrachoice : "flurry of blows",
 					extraname : "Ki Feature"
@@ -887,10 +882,6 @@ var Base_ClassList = {
 				}, {
 					extrachoice : "step of the wind",
 					extraname : "Ki Feature"
-				}, {
-					extrachoice : "stunning strike",
-					extraname : "Monk 5",
-					minlevel : 5
 				}]
 			},
 			"unarmored movement" : {
@@ -931,7 +922,17 @@ var Base_ClassList = {
 				minlevel : 4,
 				description : "\n   " + "As a reaction, I can reduce any falling damage I take by five times my monk level",
 				additional : levels.map(function (n) { return n < 4 ? "" : (n*5) + " less falling damage" }),
-				action : ["reaction", ""]
+				action : ["reaction", ""],
+				extraname : "Monk 5",
+				"stunning strike" : {
+					name : "Stunning Strike",
+					source : [["SRD", 27], ["P", 79]],
+					description : " [1 ki point]" + "\n   " + "After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
+				},
+				autoSelectExtrachoices : [{
+					extrachoice : "stunning strike",
+					minlevel : 5
+				}]
 			},
 			"ki-empowered strikes" : {
 				name : "Ki-Empowered Strikes",

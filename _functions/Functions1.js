@@ -5645,13 +5645,22 @@ function ClassFeatureOptions(Input, AddRemove) {
 	var propFeaCs = propFea ? propFea[choice] : false;
 	if (!propFea || !propFeaCs) return; // no objects to process, so go back
 
+	var clLvl = isBattleMasterManeuver ? 3 : classes.known[aClass].level;
+	var clLvlOld = isBattleMasterManeuver ? 3 : !triggerIsMenu && Input && classes.old[aClass] ? classes.old[aClass].classlevel : clLvl;
+	if (propFea.minlevel && Math.max(clLvl, clLvlOld) < propFea.minlevel) {
+		// Trying to process a class feature for which there is no high enough level
+		if (!extra) { // If this is not an 'extrachoice', stop now
+			return;
+		} else { // Set both current and old level to the minimal required level
+			clLvl = propFea.minlevel;
+			clLvlOld = propFea.minlevel;
+		}
+	}
+
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM((!extra ? "Applying " : addIt ? "Adding " : "Removing ") + propFeaCs.name + "...");
 	thermoM(1/5); //increment the progress dialog's progress
 	calcStop();
-
-	var clLvl = isBattleMasterManeuver ? 3 : classes.known[aClass].level;
-	var clLvlOld = isBattleMasterManeuver ? 3 : !triggerIsMenu && Input && classes.old[aClass] ? classes.old[aClass].classlevel : clLvl;
 
 	if (extra) { // an extra choice for the third page
 

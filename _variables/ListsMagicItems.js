@@ -4756,7 +4756,8 @@ var Base_MagicItemsList = {
 			description : "Dexterity saving throw or restrained; DC 15 Strength or Dexterity check to escape",
 			abilitytodamage : false,
 			weight : 3,
-			modifiers : ["dc+7", 0]
+			modifiers : [7, 0],
+			dc : true
 		}
 	},
 	"scarab of protection" : {

@@ -5558,7 +5558,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 
 		//add To Hit Bonus
 		fields.To_Hit_Bonus = isReCalc ? What(fldBaseBT + "To Hit Bonus") :
-			theWea.dc ? "dc" :
+			theWea.dc ? "dc" + (theWea.modifiers && theWea.modifiers[0] ? theWea.modifiers[0].replace(/dc/ig, '') : "") :
 			theWea.modifiers && theWea.modifiers[0] ? theWea.modifiers[0] : 0;
 
 		//add Damage Bonus
