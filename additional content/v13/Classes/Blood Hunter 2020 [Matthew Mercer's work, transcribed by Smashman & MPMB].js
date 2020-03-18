@@ -131,10 +131,9 @@ ClassList["blood hunter"] = {
 				name : "Blood Curse of Exposure",
 				source : [["MM:BH", 11]],
 				description : desc([
-					"As a reaction when a creature I can see in 30 ft makes an attack roll, I can intervene",
-					"Before I know if it hits or not, I roll a hemocraft die and subtract it from the attack roll",
-					"Creatures immune to blindness are not affected by this",
-					"\u2022 Amplify: apply to all of the target's attacks this turn; Separate hemocraft die roll for each"
+					"As a reaction when a target I can see in 30 ft is hit with an attack or spell, I can weaken it",
+					"Until the end of the turn, it loses resistance to the damage types of the initial attack/spell",
+					"\u2022 Amplify: Its immunities to the damage types count as resistance until the end of the turn"
 				]),
 				action : [["reaction", ""]]
 			},
@@ -142,9 +141,10 @@ ClassList["blood hunter"] = {
 				name : "Blood Curse of the Eyeless",
 				source : [["MM:BH", 11]],
 				description : desc([
-					"As a reaction when a creature I can see in 30 ft makes an attack roll, I can roll a hemocraft die",
-					"Subtract number rolled from attack roll. Creatures immune to blindness are not affected",
-					"\u2022 Amplify: Apply to all attacks until the end of the turn. Roll new hemocraft die each time"
+					"As a reaction when a creature I can see in 30 ft makes an attack roll, I can intervene",
+					"Before I know if it hits or not, I roll a hemocraft die and subtract it from the attack roll",
+					"Creatures immune to blindness are not affected by this",
+					"\u2022 Amplify: apply to all of the target's attacks this turn; Separate hemocraft die roll for each"
 				]),
 				action : [["reaction", ""]]
 			},
