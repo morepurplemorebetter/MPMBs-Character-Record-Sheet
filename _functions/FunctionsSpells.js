@@ -3315,7 +3315,7 @@ function AskUserSpellSheet() {
 				// Set the list level to 0 so that school restrictions are ignored, if applicable
 				spCast.list.level = [0, 0, spListLevel && spListLevel[1] ? 1 : 0];
 				// Create an array of all the cantrips, and only cantrips
-				var listCaRef = CreateSpellList(spCast.list, true, false, false, aCast, spCast.typeSp);
+				var listCaRef = CreateSpellList(spCast.list, true, spCast.extra && spCast.extra[100] !== "AddToKnown" ? spCast.extra : false, false, aCast, spCast.typeSp);
 				// Create the cantrip popup object
 				dia.listCa = CreateSpellObject(listCaRef ? listCaRef : []);
 			} else {
