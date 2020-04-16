@@ -3733,7 +3733,9 @@ function GenerateSpellSheet(GoOn) {
 		}
 		return; // do not continue with this function for it is pointless
 	} else if (GoOn === "stop") {
-		return false; // do not continue with this function if one of the dialogs was cancelled
+		// do not continue with this function if one of the dialogs was cancelled, but do recalculate in case a selection changed
+		tDoc.calculateNow();
+		return false;
 	}
 
 	// Start progress bar and stop calculations

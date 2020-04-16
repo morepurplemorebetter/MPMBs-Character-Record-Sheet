@@ -602,7 +602,7 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
 			var aSubClass = classes.known[fObjName].subclass;
 			var sObj = setCSobj(fObjName);
 			sObj.name = fObj.fullname;
-			sObj.shortname = ClassList[aClass].spellcastingFactor ? ClassList[aClass].name : ClassSubList[aSubClass].fullname ? ClassSubList[aSubClass].fullname : ClassSubList[aSubClass].subname;
+			sObj.shortname = ClassList[aClass].spellcastingFactor || !aSubClass ? ClassList[aClass].name : ClassSubList[aSubClass].fullname ? ClassSubList[aSubClass].fullname : ClassSubList[aSubClass].subname;
 			sObj.level = classes.known[fObjName].level;
 			if (sObj.typeSp == undefined) sObj.typeSp = "";
 			sObj.refType = "class";
@@ -844,7 +844,10 @@ function processWeaponOptions(AddRemove, srcNm, itemArr, magical) {
 			CurrentVars.extraWeapons[newName] = itemArr[i];
 			WeaponsList[newName] = itemArr[i];
 		} else {
-			// remove the entries if they exist
+			// remove the entries if they exist and delete any weapons like it
+			for (var j = FieldNumbers.attacks - 1; j >= 0; j--) {
+				if (CurrentWeapons.known[j][0] == newName) WeaponDelete(j);
+			}
 			if (CurrentVars.extraWeapons[newName]) delete CurrentVars.extraWeapons[newName];
 			if (WeaponsList[newName]) delete WeaponsList[newName];
 		}
