@@ -3624,14 +3624,14 @@ function SetStringifieds(type) {
 function Publish(version, extra) {
 	if (app.viewerType !== "Reader") {
 		tDoc.info.SheetVersion = version;
-		sheetVersion = parseFloat(tDoc.info.SheetVersion);
 		if (extra) {
 			tDoc.info.SheetVersionType = extra;
 		} else {
 			tDoc.info.SheetVersionType = "";
 		}
 	}
-	semVers = nmbrToSemanticVersion(sheetVersion) + (tDoc.info.SheetVersionType ? tDoc.info.SheetVersionType : "");
+	semVers = getSemVers(version, extra);
+	sheetVersion = semVersToNmbr(semVers);
 	var docNm = MakeDocName();
 	var resetFlds = ["Opening Remember", "CurrentSources.Stringified", "User_Imported_Files.Stringified"];
 	var defaultTempl = ["", "AScomp", "ASnotes"];

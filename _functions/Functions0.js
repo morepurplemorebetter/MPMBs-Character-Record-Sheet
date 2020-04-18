@@ -1035,40 +1035,56 @@ function getTemplPre(tName, templ, rEmpty) {
 	return tName.indexOf(templ) === -1 ? (rEmpty ? "" : true) : tName.substring(0, tName.indexOf(templ)) + templ;
 };
 
-// Change a number to a 2-spaced semantic versioning scheme (13.011 -> 13.1.10)
+// Create the semantic version of the input
+function getSemVers(version, extra) {
+	if (!isNaN(version) && version < 13) {
+		var reVers = version;
+	} else {
+		var reVers = nmbrToSemanticVersion(semVersToNmbr(version, true));
+	}
+	return !reVers ? 0 : reVers + (extra ? "." + extra : "");
+}
+
+// Change a number to a 3-spaced semantic versioning scheme (13.00101 -> 13.1.10; 13.000000029 -> 13.0.0.beta29)
 function nmbrToSemanticVersion(inNmbr) {
 	inNmbr = parseFloat(inNmbr);
 	if (isNaN(inNmbr)) return 0;
 	var strV = inNmbr.toString().split(".");
 	var versStr = [strV[0]];
+	var specialSuffix = "";
 	if (strV[1]) {
-		for (var i = 0; i < strV[1].length; i++) {
-			var partI2 = strV[1][i] + (strV[1][i+1] ? strV[1][i+1] : 0);
-			versStr.push(Number(partI2));
-			i++
+		var strSub = strV[1].match(/\d{1,3}/g);
+		for (var i = 0; i < strSub.length; i++) {
+			var parNr = Number((strSub[i] + "00").replace(/(\d{3}).*/, "$1"));
+			if (i < 2) {
+				versStr.push(parNr);
+			} else if (tDoc.info.SheetVersionType) {
+				// special suffix (e.g. betaXX)
+				specialSuffix = "." + tDoc.info.SheetVersionType.replace(/\d/g, "") + parNr;
+			}
 		};
 	};
 	var theSemV = versStr.join(".").toString();
 	if (versStr.length < 3) {
 		for (var i = versStr.length; i < 3; i++) theSemV += ".0";
 	};
-	return theSemV;
+	return theSemV + specialSuffix;
 };
 
-// Change a semantic versioning scheme to a number (13.1.10 -> 13.011)
-function semVersToNmbr(inSemV) {
-	if (!isNaN(inSemV)) return Number(inSemV);
+// Change a semantic versioning scheme to a number (13.1.10 -> 13.00101; 13.0.0.beta29 -> 13.000000029)
+function semVersToNmbr(inSemV, force) {
+	if (!force && !isNaN(inSemV)) return Number(inSemV);
 	if (isNaN(parseFloat(inSemV))) {
 		if (!(/\d/).test(inSemV)) return 0;
 		inSemV = inSemV.replace(/.*?(\d.*)/, "$1");
 	};
-	var strV = inSemV.toString().split(".");
+	var strV = inSemV.toString().split(/\.?\D+|\./);
 	var nmbrStr = [strV[0], ""];
 	if (strV[1]) {
 		for (var i = 1; i < strV.length; i++) {
-			var nmbrAdd = parseFloat(strV[i]);
-			if (isNaN(nmbrAdd)) continue;
-			nmbrStr[1] += ("0" + nmbrAdd).slice(-2);
+			if (!strV[i]) strV[i] = 1;
+			if (isNaN(parseFloat(strV[i]))) continue;
+			nmbrStr[1] += ("00" + strV[i]).slice(-3);
 		};
 	};
 	if (strV.length) nmbrStr.push(strV.join(""));

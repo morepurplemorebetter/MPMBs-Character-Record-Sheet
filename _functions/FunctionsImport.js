@@ -413,7 +413,7 @@ function DirectImport(consoleTrigger) {
 		} else {
 			MPMBOpenFile(this, importFromPath[0], importFromPath[1]);
 		}
-		closeAlert = global.docFrom && (/^(?=.*morepurplemorebetter)(?=.*character)(?=.*sheet).*$/i).test(global.docFrom.info.title) && global.docFrom.info.SheetVersion ? false : ["File is not one of MPMB's Character Record Sheets", "The opened document is not recognized as being one of MPMB's Character Record Sheets.\nNote that even though it might look like one of MPMB's Character Record Sheets, no form-fillable fields and back-end code be detected. Possibly the document was flattened (printed to PDF) or opened with Preview for Mac, subsequently destroying its automations. Unfortunately nothing can be imported from such a file.\n\nIt will now be closed and no changes will be made to either documents."];
+		closeAlert = global.docFrom && (/^(?=.*morepurplemorebetter)(?=.*character)(?=.*sheet).*$/i).test(global.docFrom.info.title) && global.docFrom.info.SheetVersion ? false : ["File is not one of MPMB's Character Record Sheets", "The opened document is not recognized as being one of MPMB's Character Record Sheets.\nNote that even though it might look like one of MPMB's Character Record Sheets, no form-fillable fields and back-end code was detected. Possibly the document was flattened (printed to PDF) or opened with Preview for Mac, subsequently destroying its automations. Unfortunately nothing can be imported from such a file.\n\nIt will now be closed and no changes will be made to either documents."];
 	} catch (errorCode) {
 		closeAlert = ["File not found", "Invalid file location or file type \"" + (importFromPath[1] ? tDoc.path.replace(tDoc.documentFileName, "") : "") + importFromPath[0] + "\".\n\nPlease try again and don't forget that the path must include the file extension (.pdf)."];
 	};
@@ -437,24 +437,23 @@ function DirectImport(consoleTrigger) {
 
 		// First we need to reset the prototypes to the current sheet because Acrobat will use the ones from the latest sheet that was opened
 		global.docTo.setPrototypes();
-		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
+		var FromVersionSem = getSemVers(global.docFrom.info.SheetVersion, global.docFrom.info.SheetVersionType);
+		var FromVersion = semVersToNmbr(FromVersionSem);
 		if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
-		var ToVersion = parseFloat(global.docTo.info.SheetVersion);
-		if (isNaN(ToVersion)) ToVersion = parseFloat(global.docTo.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
-		var betaNoFrom = global.docFrom.info.SheetVersionType && (/.*(\d+).*/).test(global.docFrom.info.SheetVersionType) && (/beta/i).test(global.docFrom.info.SheetVersionType) ? parseFloat(global.docFrom.info.SheetVersionType.replace(/.*?(\d.*)/, "$1")) : 0;
-		var betaNoTo = global.docTo.info.SheetVersionType && (/.*(\d+).*/).test(global.docTo.info.SheetVersionType) && (/beta/i).test(global.docTo.info.SheetVersionType) ? parseFloat(global.docTo.info.SheetVersionType.replace(/.*?(\d.*)/, "$1")) : 999999;
-		if (FromVersion > ToVersion || (FromVersion == ToVersion && betaNoFrom > betaNoTo) || (FromVersion == 13 && betaNoFrom < 14)) {
-			var versTypeTxt = FromVersion > ToVersion || (FromVersion == ToVersion && betaNoFrom > betaNoTo) ? ["this sheet is", "newer", "than the one you are importing"] : ["the other sheet is an", "unsupported beta", "that can't be imported to any other MPMB's Character Record Sheet"];
+		var ToVersion = global.docTo.sheetVersion;
+		if (FromVersion > ToVersion || (FromVersion > 13 && FromVersion < 13.000000014)) {
+			// If importing from a newer version or from a v13.0.0.beta1-beta14
+			var versTypeTxt = FromVersion > ToVersion ? ["this sheet is", "newer", "than the one you are importing"] : ["the other sheet is an", "unsupported beta", "that can't be imported to any other MPMB's Character Record Sheet"];
 			app.alert({
 				cTitle : "Unable to import from " + versTypeTxt[1] + " version",
-				cMsg : "The MPMB's Character Record Sheet you are trying to import from is version '" + global.docFrom.semVers + "', while the sheet you are trying to import to is version '" + global.docTo.semVers + "'. This operation is not allowed, because " + versTypeTxt.join(" ") + ".\n\nThe importing process will now be cancelled."
+				cMsg : "The MPMB's Character Record Sheet you are trying to import from is version '" + FromVersionSem + "', while the sheet you are trying to import to is version '" + global.docTo.semVers + "'. This operation is not allowed, because " + versTypeTxt.join(" ") + ".\n\nThe importing process will now be cancelled."
 			});
 			closeAlert = true;
 			throw "user stop";
 		} else if (FromVersion < 12.999) { // give a warning about importing from a version that had all materials included automatically
 			var askUserIsSure = {
 				cTitle : "Continue with import?",
-				cMsg : "You are about to import from a sheet with version v" + FromVersion + ". Unlike the sheet you are importing to, " + global.docTo.semVers + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material by default.\n\nIf the same resources weren't added to the current sheet as are used in the old sheet, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet! See the \"Add Extra Materials\" bookmark for more information on what is already added and how to add the required resources." + (patreonVersion ? "\n\nIf you got this sheet from MPMB's Patreon, you are probably fine to proceed!" : "") + "\n\nAre you sure you want to continue importing?",
+				cMsg : "You are about to import from a sheet with version " + FromVersionSem + ". Unlike the sheet you are importing to (which is v" + global.docTo.semVers + "), v" + FromVersionSem + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material by default.\n\nIf the same resources weren't added to the current sheet as are used in the old sheet, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet! See the \"Add Extra Materials\" bookmark for more information on what is already added and how to add the required resources." + (patreonVersion ? "\n\nIf you got this sheet from MPMB's Patreon, you are probably fine to proceed!" : "") + "\n\nAre you sure you want to continue importing?",
 				nIcon : 2, //Status
 				nType : 2 //Yes, No
 			};
@@ -517,6 +516,8 @@ function DirectImport(consoleTrigger) {
 			cleanExclSources();
 			// Set any UA sources that weren't in the old sheet to excluded, if any UA source was set to be excluded
 			var excludeUnkownUA = false, newGlobalKnown = [];
+			if (!CurrentSources.globalKnown) CurrentSources.globalKnown = [];
+			if (!CurrentSources.globalExcl) CurrentSources.globalExcl = [];
 			for (var s = 0; s < CurrentSources.globalExcl.length; s++) {
 				var theSrc = CurrentSources.globalExcl[s];
 				if (/Unearthed Arcana/i.test(SourceList[theSrc].group)) {
