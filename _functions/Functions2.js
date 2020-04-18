@@ -3794,7 +3794,7 @@ function UpdateRangerCompanions(newLvl) {
 				var hasProfAdded = What(theSaveBT).indexOf("oProf") !== -1;
 				if (!deleteIt && !hasProfAdded && tDoc.getField(theSave).isBoxChecked(0) === 1) {
 					BlueTextArrayAdd.push(theSaveBT);
-				} else if (hasProfAdded) {
+				} else if ((deleteIt || tDoc.getField(theSave).isBoxChecked(0) === 0) && hasProfAdded) {
 					BlueTextArrayRemove.push(theSaveBT);
 				};
 			};
@@ -3807,7 +3807,7 @@ function UpdateRangerCompanions(newLvl) {
 				hasProfAdded = What(theSkillBT).indexOf("oProf") !== -1;
 				if (!deleteIt && !hasProfAdded && isProf) {
 					BlueTextArrayAdd.push(theSkillBT);
-				} else if (hasProfAdded) {
+				} else if ((deleteIt || !isProf) && hasProfAdded) {
 					BlueTextArrayRemove.push(theSkillBT);
 				};
 			};
@@ -3819,14 +3819,14 @@ function UpdateRangerCompanions(newLvl) {
 					hasProfAdded = What(weaHit).indexOf("oProf") !== -1;
 					if (!deleteIt && !hasProfAdded) {
 						BlueTextArrayAdd.push(weaHit);
-					} else if (hasProfAdded) {
+					} else if (deleteIt && hasProfAdded) {
 						BlueTextArrayRemove.push(weaHit);
 					};
 					var weaDmg = prefix + "BlueText.Comp.Use.Attack." + A + ".Damage Bonus";
 					hasProfAdded = What(weaDmg).indexOf("oProf") !== -1;
 					if (!deleteIt && !hasProfAdded) {
 						BlueTextArrayAdd.push(weaDmg);
-					} else if (hasProfAdded) {
+					} else if (deleteIt && hasProfAdded) {
 						BlueTextArrayRemove.push(weaDmg);
 					};
 					var weaDescr = prefix + "Comp.Use.Attack." + A + ".Description";
