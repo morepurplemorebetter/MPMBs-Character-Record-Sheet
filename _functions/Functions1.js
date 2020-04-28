@@ -1677,7 +1677,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	classes.totallevel = 0;
 
 	// Initialize some variables
-	var primeClass = "";
+	var primeClass = "", gatherVars;
 
 	// Put the old classes.known in classes.old so the differences in level can be queried later
 	classes.old = {};
@@ -1731,7 +1731,12 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				tempPrereq = Number(tempPrereq) <= (classes.totallevel - tempLevel);
 			} else {
 				try {
-					tempPrereq = eval(tempPrereq);
+					if (typeof tempPrereq == "string") {
+						tempPrereq = eval(tempPrereq);
+					} else if (typeof tempPrereq == 'function') {
+						if (!gatherVars) gatherVars = gatherPrereqevalVars();
+						tempPrereq(gatherVars);
+					}
 				} catch (err) {
 					tempPrereq = true;
 				}
@@ -2122,6 +2127,8 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 			if (classes.oldspellcastlvl.otherTables) SpellSlotsTotal -= classes.oldspellcastlvl.otherTables[ss];
 			if (SpellSlotsField != SpellSlotsTotal) Value(SpellSlotsName, SpellSlotsTotal);
 		}
+		// Update the spell points limited feature (if enabled)
+		if (What("SpellSlotsRemember") === "[false,false]") SpellPointsLimFea("Add");
 	}
 	// Have the prompt check if something changed to warrant generating new spell sheets
 	if (classes.spellcastlvl.default || classes.spellcastlvl.warlock || classes.spellcastlvl.otherTables || classes.oldspellcastlvl.default || classes.oldspellcastlvl.warlock || classes.oldspellcastlvl.otherTables) {

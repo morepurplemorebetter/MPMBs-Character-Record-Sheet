@@ -860,7 +860,8 @@ function ApplyWildshape() {
 	//set AC
 	var theAC = [theCrea.ac];
 	var theACtt = [""];
-	for (var aClass in CurrentClasses) {
+	for (var aClass in classes.known) {
+		if (!CurrentClasses[aClass]) continue;
 		for (var pop in CurrentClasses[aClass].features) {
 			var fea = CurrentClasses[aClass].features[pop];
 			if ((/armor of peace|unarmored defense|draconic resilience|durability/i).test(fea.name) && (/ AC /).test(fea.description) && fea.minlevel <= classes.known[aClass].level) {
