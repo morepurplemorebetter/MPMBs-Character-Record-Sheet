@@ -2717,6 +2717,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Conc, 10 min",
+		save : "Int",
 		description : "1 crea banished to labyrinthine demiplane; DC 20 Int check each rnd to escape; appears in same spot",
 		descriptionFull : "You banish a creature that you can see within range into a labyrinthine demiplane. The target remains there for the duration or until it escapes the maze." + "\n   " + "The target can use its action to attempt to escape. When it does so, it makes a DC 20 Intelligence check. If it succeeds, it escapes, and the spell ends (a minotaur or goristro demon automatically succeeds)." + "\n   " + "When the spell ends, the target reappears in the space it left or, if that space is occupied, in the nearest unoccupied space."
 	},
