@@ -1032,7 +1032,7 @@ function UpdateSheetDisplay() {
 			Value("ChangesDialogSkip.Stringified", ChangesDialogSkip.toSource());
 		},
 		description : {
-			name : titleTxt,
+			name : "CHANGES ALERT DIALOG",
 			first_tab : "CLOS",
 			elements : [{
 				type : "view",
@@ -1635,7 +1635,7 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 			dialog.load(toLoad);
 		},
 		description : {
-			name : txtA[0],
+			name : "COMPARE DIALOG",
 			elements : [{
 				type : "view",
 				align_children : "align_left",

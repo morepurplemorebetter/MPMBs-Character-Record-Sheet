@@ -139,7 +139,7 @@ function SelectElement_Dialog(theNodes) {
 			this.selection = FindActiveElement(oResult["sele"]);
 		},
 		description : {
-			name : "Pick the node",
+			name : "NODE SELECTION DIALOG",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -480,7 +480,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			if (app.alert(goToWeb) === 4) contactMPMB("additions");
 		},
 		description : {
-			name : "Pick which resources are excluded and included",
+			name : "SOURCE SELECTION DIALOG",
 			first_tab : "appl",
 			elements : [{
 				type : "view",
@@ -1141,7 +1141,7 @@ function resourceSelectionDialog(type) {
 		},
 		bSrc : function (dialog) { MakeSourceMenu_SourceOptions(); },
 		description : {
-			name : "Pick which resources are excluded and included",
+			name : theName.toUpperCase() + " SOURCE SELECTION DIALOG",
 			elements : [{
 				type : "view",
 				align_children : "align_left",

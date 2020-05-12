@@ -1341,7 +1341,7 @@ var SpellSheetSelect_Dialog = {
 	},
 
 	description : {
-		name : "Set Spells",
+		name : "SPELL SELECTION DIALOG",
 		elements : [{
 			type : "view", //view to add ok buttons below everything else
 			align_children : "align_left",
@@ -2251,7 +2251,7 @@ var SpellSheetOrder_Dialog = {
 	},
 
 	description : {
-		name : "Pick which are excluded and included",
+		name : "SPELL LIST GENERATION DIALOG",
 		elements : [{
 			type : "view",
 			align_children : "align_left",
@@ -2442,7 +2442,7 @@ var SpellBookSelect_Dialog = {
 	},
 
 	description : {
-		name : "Set Spells",
+		name : "EXTRA SPELLBOOK SPELLS DIALOG",
 		elements : [{
 			type : "view", //view to add ok buttons below everything else
 			align_children : "align_left",
@@ -3024,7 +3024,7 @@ var SpellsPrepared_Dialog = {
 	},
 
 	description : {
-		name : "Set Prepared Spells",
+		name : "PREPARED SPELLS DIALOG",
 		elements : [{
 			type : "view", //view to add ok buttons below everything else
 			align_children : "align_left",
@@ -4763,7 +4763,7 @@ function AskUserTwoLetters(caption) {
 			this.theTXT = oResult["user"];
 		},
 		description : {
-			name : "Set the first column " + (caption ? "caption" : ""),
+			name : "FIRST COLUMN DIALOG",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -4813,7 +4813,7 @@ function AskUserNumber(caption) {
 			this.theNMBR = oResult["user"];
 		},
 		description : {
-			name : caption ? caption : "Amount of empty rows to insert",
+			name : "SET NUMBER DIALOG",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -5323,12 +5323,13 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 		tDoc.info.Title = MakeDocName();
 		Value("Opening Remember", "No");
 	}
+	var isSubClass = ClassList[thisClass] ? false : true;
+	var thisClassName = ClassList[thisClass] ? ClassList[thisClass].name : ClassSubList[thisClass] ? ClassSubList[thisClass].subname : thisClass.capitalize();
 	// Start progress bar so we know it will be visible if a dialog is made
 	var thermoTxt = thermoM("Generating the " + thisClassName + " Spell Sheets, Acrobat will be unresponsive for a long time...", false);
 	//first ask the user if he really wants to wait for an hour
-	var thisClassName = ClassList[thisClass] ? ClassList[thisClass].name : ClassSubList[thisClass] ? ClassSubList[thisClass].subname : thisClass.capitalize();
 	var doGoOn = {
-		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClassName + " (sub)class.\n\nThis will not include any access to spells granted by a subclass, or spells excluded in the Source Selection dialogue.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nBe aware that this process can take a very long time!\n\nAre you sure you want to continue?",
+		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClassName + (isSubClass ? " sub" : " ") + "class.\n\nThis will not include any spells granted by any currently selected " + (isSubClass ? "" : "subclass, ") + "class feature, nor spells excluded in the Source Selection dialogue.\nIf you want to generate a spell list with all the spells available for your currently selected (sub)class and class features, please use the normal way of generating a spell list and select \"Full class list\" in the bottom right of the Spell Selection dialog.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nBe aware that this process can take a very long time!\n\nAre you sure you want to continue?",
 		nIcon: 2,
 		cTitle: "Continue with generation of complete spell sheet?",
 		nType: 2

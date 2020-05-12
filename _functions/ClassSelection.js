@@ -322,7 +322,7 @@ function SelectClass() {
 		r9CD : function (dialog) { this.classChange(dialog, 9); },
 		r9SD : function (dialog) { this.subChange(dialog, 9); },
 		description : {
-			name : "Select the class(es) for your character",
+			name : "CLASS SELECTION DIALOG",
 			elements : [{
 				type : "view",
 				elements : [{
@@ -1103,7 +1103,7 @@ function AskMulticlassing(lvlAlreadyAdded) {
 		},
 
 		description : {
-			name : "Choose Which Class to Level Up",
+			name : "LEVEL UP CLASS DIALOG",
 			elements : [{
 				type : "view",
 				elements : [{
@@ -1385,7 +1385,7 @@ function PleaseSubclass(aClass, classString) {
 		},
 
 		description : {
-			name : aclass.name + " has no detectable " + aclass.subclasses[0],
+			name : "SUBCLASS SELECTION DIALOG",
 			elements : [{
 				type : "view",
 				elements : [{

@@ -77,7 +77,7 @@ function AddFolderJavaScript(justConsole) {
 			dialog.end("cons");
 		},
 		description : {
-			name : "This function needs your help!",
+			name : "ADD FILE TO ACROBAT INSTALLATION DIALOG",
 			first_tab : "bADD",
 			elements : [{
 				type : "view",
@@ -222,44 +222,53 @@ function AddFolderJavaScript(justConsole) {
 
 //the dialogue for the DirectImport function that ask for the path to a file to import from
 function DirectImport_Dialogue() {
-	var Text0 = "This 'Direct Import' function opens another MPMB's Character Record Sheet and goes through every field and layout setting in it to make this sheet similar to the other. This can take a long time and will not copy everything literally as this sheet will run through its automation to benefit from any updates to its code compared to the other sheet.\n\nIn order to do this, you will need to give the full path to a local file you want to import from.\nYou can use the 'Lookup' button to get the path."
-	var Text01 = "Alternatively, place the sheet you want to import from in the same folder as this sheet, give the file name of the sheet you want to import from (including file extension), and check the box to use a relative path.";
+	var Text0 = "This 'Direct Import' function opens another MPMB's Character Record Sheet and goes through every field and layout setting in it to make this sheet similar to the other. This can take a long time and will not copy everything literally as this sheet will run through its automation to benefit from any updates to its code compared to the other sheet.";
+	var TextExpl = [
+		"To do this, give the full or relative path to a local file you want to import from.",
+		(isWindows ? "You" : "On Windows, you") + " can use the 'Browse' button to get the full path.",
+		"Acrobat crashes if you try this in Mac because of a bug, blame Adobe!",
+		(isWindows ? "Alternatively,\n[1] place" : "[1] Place") + " the sheet you want to import from in the same folder as this sheet,\n[2] give the file name of the sheet you want to import from below (including file extension), and\n[3] make sure the box to use a relative path is checked."
+	];
+	var Text01 = (isWindows ? [TextExpl[0], TextExpl[1], "\n" + TextExpl[3]] : [TextExpl[0], TextExpl[3], "\n" + TextExpl[1], TextExpl[2]]).join("\n");
 	var Text1 = "If you continue with importing, the current sheet will first be reset without notice!";
 	var TextIcons = (app.viewerType === "Reader" ? "Because of limitations in Adobe Acrobat Reader, this function is not available." : "'User-defined icons\' refers to those images that have been set for the symbol, portrait, companion(s) appearance, etc. that have been added from another file.") + "\n\nIcons that have been selected from the sheet built-in options will be imported regardless (faction symbols, Adventure League season icons, class icons).";
 	var DirectImport_dialog = {
 		fileLoc : "",
-		relPath : false,
+		relPath : !isWindows,
 		importIcons : false,
-
 		initialize : function(dialog) {
 			var isReader = app.viewerType === "Reader";
 			dialog.load({
-				"img1": allIcons.import,
-				"fLoc": this.fileLoc,
-				"icCl": "Import user-defined icons as well?" + (isReader ? " (Requires Acrobat Pro or Standard)" : ""),
-				"icNo": true
+				"img1" : allIcons.import,
+				"fLoc" : this.fileLoc,
+				"icCl" : "Import user-defined icons as well?" + (isReader ? " (Requires Acrobat Pro or Standard)" : ""),
+				"icNo" : true,
+				"fRel" : this.relPath
 			});
 			dialog.enable({
-				"icNo": !isReader,
-				"icYe": !isReader
+				"icNo" : !isReader,
+				"icYe" : !isReader,
+				"bFND" : isWindows
 			});
+			dialog.setForeColorRed("txt1");
 		},
 		bFND : function(dialog) {
 			tDoc.getField("SelectFile").browseForFileToSubmit();
 			this.fileLoc = What("SelectFile");
 			dialog.load({
-				"fLoc": this.fileLoc
+				"fLoc" : this.fileLoc,
+				"fRel" : false
 			});
 		},
 		commit : function(dialog) {
 			var oResult = dialog.store();
-			if (this.fileLoc !== oResult["fLoc"]) this.fileLoc = oResult["fLoc"];
+			this.fileLoc = oResult["fLoc"];
 			this.relPath = oResult["fRel"];
 			this.importIcons = oResult["icYe"];
 		},
 		description : {
-			name : "Import stuff directly",
-			first_tab : "bFND",
+			name : "IMPORT FROM PDF DIALOG",
+			first_tab : isWindows ? "bFND" : "fLoc",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -307,28 +316,39 @@ function DirectImport_Dialogue() {
 						font : "heading",
 						bold : true,
 						width : 500,
-						name : "Give the file's full or relative path or use the button to look one up",
+						name : "Full or relative path to a MPMB's Character Record Sheet",
 						elements : [{
-							type : "button",
-							item_id : "bFND",
-							name : "Lookup the Path of a PDF to Import From",
-							font : "dialog",
-							bold : true,
-							alignment : "align_center",
-							next_tab : "fLoc"
-						}, {
-							type : "edit_text",
-							item_id : "fLoc",
-							alignment : "align_fill",
-							font : "dialog",
-							width : 470,
-							next_tab : "fRel"
+							type : "view",
+							align_children : "align_row",
+							elements : [{
+								type : "edit_text",
+								item_id : "fLoc",
+								alignment : "align_fill",
+								font : "dialog",
+								width : 345,
+								next_tab : "bFND"
+							}, {
+								type : "button",
+								item_id : "bFND",
+								name : "Browse" + (isWindows ? "" : " (Windows only)"),
+								font : "dialog",
+								bold : true,
+								alignment : "align_center",
+								next_tab : "fRel"
+							}]
 						}, {
 							type : "check_box",
 							item_id : "fRel",
 							alignment : "align_left",
-							name : "Resolve the path above relative to the current open sheet."
-						}, ]
+							name : "Relative path (resolve above path relative to the current folder, see below)."
+						}, {
+							type : "static_text",
+							item_id : "cLoc",
+							font : "palette",
+							width : 470 + (isWindows ? 0 : 30),
+							wrap_name : true,
+							name : 'Current folder:\n' + tDoc.path.replace(tDoc.documentFileName, '')
+						}]
 					}, {
 						type : "cluster",
 						item_id : "icCl",
@@ -351,7 +371,7 @@ function DirectImport_Dialogue() {
 								name : "Yes. Import the user-defined icons as well (experimental).",
 								group_id : "icon",
 								height : 20
-							}, ]
+							}]
 						}, {
 							type : "static_text",
 							item_id : "icTx",
@@ -360,7 +380,10 @@ function DirectImport_Dialogue() {
 							width : 470,
 							wrap_name : true,
 							name : TextIcons
-						}, ]
+						}, {
+							type : "gap",
+							height : 2
+						}]
 					}, {
 						type : "static_text",
 						item_id : "txt1",
@@ -370,14 +393,14 @@ function DirectImport_Dialogue() {
 						wrap_name : true,
 						width : 500,
 						name : Text1
-					}, ]
+					}]
 				}, {
 					type : "ok_cancel",
 					item_id : "okca",
 					ok_name : "Import (takes extremely long)",
 					next_tab : "bFND"
-				}, ]
-			}, ]
+				}]
+			}]
 		}
 	};
 
@@ -2090,7 +2113,7 @@ function MakeXFDFExport(partial) {
 			},
 
 			description : {
-				name : "Create a .xfdf file from the text below",
+				name : "XFDF FILE CREATION DIALOG",
 				elements : [{
 					type : "view",
 					elements : [{
@@ -2218,7 +2241,7 @@ function AddUserScript(retResDia) {
 				dialog.end("bcon");
 			},
 			description : {
-				name : "Add your custom JavaScript that has to run on startup",
+				name : "MANUAL CUSTOM SCRIPT DIALOG",
 				first_tab : "OKbt",
 				elements : [{
 					type : "view",
@@ -2821,7 +2844,7 @@ function ImportScriptFileDialog(retResDia) {
 		bRem: function(dialog) { this.removeOrSee(dialog, true); },
 		bSee: function(dialog) { this.removeOrSee(dialog, false); },
 		description : {
-			name : "Add JavaScript files that are run on startup",
+			name : "IMPORT CUSTOM SCRIPT DIALOG",
 			first_tab : "OKbt",
 			elements : [{
 				type : "view",

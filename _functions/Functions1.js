@@ -2232,7 +2232,7 @@ function CalcExperienceLevel() {
 			dialog.end("ok");
 		},
 		description : {
-			name : "Level and Experience Points do not match!",
+			name : "EXPERIENCE POINTS DIALOG",
 			elements : [{
 				type : "view",
 				elements : [{
@@ -6563,7 +6563,7 @@ function WeightToCalc_Button() {
 		},
 
 		description : {
-			name : "Choose the things you want to count to Carried Weight",
+			name : "CARRIED WEIGHT DIALOG",
 			elements : [{
 				type : "view",
 				elements : [{

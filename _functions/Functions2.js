@@ -1890,7 +1890,7 @@ function changeCompDialog(prefix) {
 		},
 
 		description : {
-			name : "Choose the type of your familiar/mount",
+			name : "COMPANION TYPE DIALOG",
 			elements : [{
 				type : "view",
 				elements : [{
@@ -5295,7 +5295,7 @@ function PatreonStatement() {
 				},
 				bPat : function (dialog) {contactMPMB("patreon");},
 				description : {
-					name : "Become a patron",
+					name : "SUPPORT ON PATREON DIALOG",
 					elements : [{
 						type : "view",
 						elements : [{
@@ -5968,7 +5968,7 @@ function ShowDialog(hdr, strng) {
 			});
 		},
 		description : {
-			name : hdr,
+			name : "SIMPLE TEXT DIALOG",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -6123,13 +6123,14 @@ function SetThisFldVal() {
 		var theDialTxt = (dmgDie ? "If you want the Damage Die to be a calculated value, and not just a string, make sure the first character is a '='.\nRegardless of the first character, a 'C' will be replaced with the Cantrip die, a 'B' with the Cantrip die minus 1, and a 'Q' with the Cantrip die plus 1.\n\nIf a calculated value (=), you can use underscores to keep the strings separate. For the calculated parts, y" : "Y") + "ou can use numbers, logical operators (+, -, /, *), ability score abbreviations (Str, Dex, Con, Int, Wis, Cha" + (QI === true ? ", HoS" : "") + "), and 'Prof'.";
 		var theDialTxt2 = "You can also determine the maximum or minimum of a group with 'min(1|2)' or 'max(1|2)', using pipe '|' as the separator.";
 		if (QI !== true) theDialTxt2 += "\n\nIn addition, you can use the values from the character (the 1st page) by adding the letter 'o' before the variable (oStr, oDex, oCon, oInt, oWis, oCha, oHoS, oProf).";
-		if (!dmgDie && !theExpl) {
-			theDialTxt2 += "\n\nSome examples with a Strength of 18 (+4):"+
-				"\n INPUT\tRESULT\t\t\t INPUT\t\tRESULT"+
-				"\n   Str\t    4\t\t\t   max(Str|1)\t    4"+
-				"\n   Str-1\t    3\t\t\t   min(Str|1)\t    1"+
-				"\n   Str*2\t    8\t\t\t   min(Str|3)*2+1\t    7";
-		}
+		var theDialTxt3 = "\nSome examples with a Strength of 18 (+4):";
+		var theDialTxt3sub = [
+			["INPUT\nStr\nStr-1\nStr*2", 5, "align_left"],
+			["RESULT\n4\n3\n8", 5, "align_center"],
+			["gap"],
+			["INPUT\nmax(Str|1)\nmin(Str|1)\nmin(Str|3)*2+1", 8, "align_left"],
+			["RESULT\n4\n1\n7", 5, "align_center"]
+		];
 		var theDialog = {
 			notComp : QI,
 			isDmgDie : dmgDie,
@@ -6158,7 +6159,7 @@ function SetThisFldVal() {
 				});
 			},
 			description : {
-				name : "Set the field's value",
+				name : "SET MODIFIER DIALOG",
 				elements : [{
 					type : "view",
 					align_children : "align_left",
@@ -6194,9 +6195,35 @@ function SetThisFldVal() {
 							name : theDialTxt2,
 							char_width : 35,
 							wrap_name : true
+						}].concat(dmgDie || theExpl ? [] : [{
+							type : "static_text",
+							alignment : "align_left",
+							item_id : "txt5",
+							font : "palette",
+							char_width : 35,
+							wrap_name : true,
+							name : theDialTxt3
 						}, {
-							type : "edit_text",
+							type : "view",
 							alignment : "align_center",
+							align_children : "align_row",
+							elements : theDialTxt3sub.map(function (entry, idx) {
+								if (entry[0] === "gap") {
+									return { type : "gap", char_width : 3 };
+								}
+								return {
+									type : "static_text",
+									alignment : entry[2],
+									item_id : "txt" + (6+idx),
+									char_width : entry[1],
+									font : "palette",
+									wrap_name : true,
+									name : entry[0] 
+								};
+							})
+						}]).concat([{
+							type : "edit_text",
+							alignment : "align_left",
 							item_id : "user",
 							char_width : 35,
 							height : 20
@@ -6226,7 +6253,7 @@ function SetThisFldVal() {
 								item_id : "calc",
 								name : "<< Re-Calculate This"
 							}]
-						}]
+						}])
 					}, {
 						type : "static_text",
 						alignment : "align_fill",
@@ -7720,7 +7747,7 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies) {
 			dialog.visible(toShow);
 		},
 		description : {
-			name : diaHeader,
+			name : "ASK USER DIALOG",
 			elements : [{
 				type : "view",
 				align_children : "align_left",

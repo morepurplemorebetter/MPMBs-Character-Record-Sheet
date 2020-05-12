@@ -567,7 +567,7 @@ function AbilityScores_Button(onlySetTooltip) {
 			},
 
 			description : {
-				name : titleTxt,
+				name : "ABILITY SCORES DIALOG",
 				elements : [{
 					type : "view",
 					elements : [{
@@ -1077,7 +1077,7 @@ function ASaddColumn() {
 			this.column = res["user"];
 		},
 		description : {
-			name : diaHead,
+			name : "NEW COLUMN DIALOG",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -1161,7 +1161,7 @@ function ASremoveColumn() {
 			this.column = GetPositiveElement(res);
 		},
 		description : {
-			name : diaHead,
+			name : "REMOVE COLUMN DIALOG",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
