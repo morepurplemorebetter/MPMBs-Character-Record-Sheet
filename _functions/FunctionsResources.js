@@ -112,7 +112,7 @@ function FindActiveElement(obj) {
 	return elem;
 };
 
-//ask the user to make a selection from a heirarchical list element, recursively
+//ask the user to make a selection from a hierarchical list element, recursively
 function SelectElement_Dialog(theNodes) {
 	//first see if there is more than one node in the object
 	var countNodes = [0, false];
@@ -199,13 +199,172 @@ function ObjectToArray(obj, type, testObj) {
 	return theArr;
 };
 
+//source exclusions when loading the sheet for the first time or after import script update
+function resourceExclusionSetting(spellSources, noChanges, oldResults) {
+	if (!noChanges) {
+		// Exclude newly added Unearthed Arcana if none were known or all were excluded before
+		// Also exclude newly added sources that have the defaultExcluded flag
+		var exclAllUA = true;
+		for (var i = 0; i < CurrentSources.globalKnown.length; i++) {
+			var src = CurrentSources.globalKnown[i];
+			var aSrc = SourceList[src];
+			exclAllUA = !aSrc || !aSrc.group || !(/unearthed arcana/i).test(aSrc.group) || CurrentSources.globalExcl.indexOf(src) !== -1;
+			if (!exclAllUA) break;
+		};
+		var newGlobalKnown = [];
+		for (var src in SourceList) {
+			if (tDoc.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
+			newGlobalKnown.push(src);
+			var aSrc = SourceList[src];
+			if (CurrentSources.globalExcl.indexOf(src) === -1 && (
+				(exclAllUA && (/unearthed arcana/i).test(aSrc.group)) || 
+				(SourceList[src].defaultExcluded && CurrentSources.globalKnown.indexOf(src) === -1)
+			)) {
+				CurrentSources.globalExcl.push(src);
+			}
+		}
+		CurrentSources.globalKnown = newGlobalKnown;
+	}
+	// Exclude new objects that have the defaultExcluded flag
+	var resourceOptions = [{
+		exclObj : "classExcl",
+		name : "Class(es)",
+		listObj : "ClassList",
+		subAttribute : "subclasses",
+		subName : "Archetype(s)",
+		subListObj : "ClassSubList",
+		subListObjName : "subname"
+	}, {
+		exclObj : "racesExcl",
+		name : "Player Races",
+		listObj : "RaceList",
+		subAttribute : "variants",
+		subName : "Racial Variants",
+		subListObj : "RaceSubList"
+	}, {
+		exclObj : "backgrExcl",
+		name : "Backgrounds",
+		listObj : "BackgroundList",
+		subAttribute : "variant",
+		subName : "Backgrounds",
+		subListObj : "BackgroundSubList"
+	}, {
+		exclObj : "backFeaExcl",
+		name : "Background Features",
+		listObj : "BackgroundFeatureList"
+	}, {
+		exclObj : "featsExcl",
+		name : "Feats",
+		listObj : "FeatsList",
+		subAttribute : "choices"
+	}, {
+		exclObj : "weapExcl",
+		name : "Weapons/Attacks",
+		listObj : "WeaponsList"
+	}, {
+		exclObj : "armorExcl",
+		name : "Armor",
+		listObj : "ArmourList"
+	}, {
+		exclObj : "ammoExcl",
+		name : "Ammunition",
+		listObj : "AmmoList"
+	}, {
+		exclObj : "magicitemExcl",
+		name : "Magic Items",
+		listObj : "MagicItemsList",
+		subAttribute : "choices"
+	}, {
+		exclObj : "spellsExcl",
+		name : "Spells/Psionics",
+		listObj : "SpellsList"
+	}, {
+		exclObj : "creaExcl",
+		name : "Creatures",
+		listObj : "CreatureList"
+	}];
+	var theExclusions = {}, returnObj = { str : [], new : [], all : [], found : false };
+	var newTxt = toUni("NEW ");
+	var addNewExcl = function(type, typeNm, obj, objID, objNm) {
+		if (!obj.defaultExcluded) return;
+		if (!CurrentSources[type]) CurrentSources[type] = [];
+		if (!CurrentSources[type + "Default"]) CurrentSources[type + "Default"] = [];
+		if (!theExclusions[typeNm]) theExclusions[typeNm] = [];
+		returnObj.found = true;
+		var srcExcl = testSource(objID, obj);
+		var curExcl = CurrentSources[type].indexOf(objID) !== -1;
+		var treatAsNew = oldResults && (oldResults.new.indexOf(type+objID) !== -1 || oldResults.all.indexOf(type+objID) == -1);
+		var exclName = objNm + stringSource(obj, "first", " (", ")");
+		if (CurrentSources[type + "Default"].indexOf(objID) == -1) {
+			CurrentSources[type + "Default"].push(objID);
+			if (!curExcl) {
+				CurrentSources[type].push(objID);
+				curExcl = true;
+				exclName = newTxt + exclName;
+				returnObj.new.push(type+objID);
+			}
+		} else if (treatAsNew) {
+			exclName = newTxt + exclName;
+			returnObj.new.push(type+objID);
+		}
+		if (curExcl && !srcExcl) {
+			theExclusions[typeNm].push(exclName);
+			returnObj.all.push(type+objID);
+		}
+	}
+	for (var i = 0; i < resourceOptions.length; i++) {
+		var opt = resourceOptions[i];
+		var optObj = tDoc[opt.listObj];
+		var optSub = opt.subAttribute;
+		var featOrMI = opt.exclObj == "featsExcl" || opt.exclObj == "magicitemExcl";
+		for (var key in optObj) {
+			var mainObj = optObj[key];
+			var mainObjName = mainObj.name ? mainObj.name : key.capitalize();
+			if (mainObj.defaultExcluded && (!featOrMI || !mainObj[optSub])) {
+				addNewExcl(opt.exclObj, opt.name, mainObj, key, mainObjName);
+			}
+			// dependent entries
+			var subObjs = mainObj[optSub];
+			if (opt.exclObj == "classExcl") subObjs = subObjs[1];
+			if (!optSub || !subObjs) continue; // nothing found, so stop
+			var optSubObj = featOrMI ? mainObj : tDoc[opt.subListObj];
+			for (var c = 0; c < subObjs.length; c++) {
+				var subKey = subObjs[c].toLowerCase();
+				if (opt.exclObj == "racesExcl") subKey = key + "-" + subKey;
+				var subObj = optSubObj[subKey];
+				if (subObj.defaultExcluded) {
+					var subID = subKey;
+					var subName = mainObjName + ": " + (
+						opt.subListObjName && subObj[opt.subListObjName] ? subObj[opt.subListObjName] :
+						subObj.name ? subObj.name :
+						opt.exclObj == "racesExcl" ? subObjs[c].capitalize() + " " + mainObjName :
+						subObjs[c]);
+					if (featOrMI) {
+						subID = key + "-" + subID;
+						subName = subObj.name ? subObj.name : mainObjName + " [" + subObjs[c] + "]";
+					}
+					addNewExcl(opt.exclObj, opt.subName, subObj, subID, subName);
+				}
+			}
+		}
+	}
+	for (var exclusion in theExclusions) {
+		theExclusions[exclusion].sort();
+		var addStr = formatMultiList(exclusion, theExclusions[exclusion]);
+		if (addStr) returnObj.str.push(addStr);
+	}
+	returnObj.str = returnObj.str.join("\n\n");
+	return returnObj;
+}
+
 //a function that sets the global variable of excluded materials
 //inclA must be the same length as inclA_Names, and exclA must be the same length as exclA_Names
 function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	if (!atOpening && app.viewerVersion < 15) FunctionIsNotAvailable();
 	var isFirstTime = atReset ? atReset : CurrentSources.firstTime;
-	if (this.info.SpellsOnly) { //if this is a spell sheet, only use sources that have spells or spellcasting classes associated with them
-		var spellSources = [];
+	var spellSources = [];
+	if (tDoc.info.SpellsOnly) {
+		// If this is a spell sheet, only use sources that have spells or spellcasting classes associated with them
 		for (var u in SpellsList) {
 			var sSource = parseSource(SpellsList[u].source);
 			if (!sSource) continue;
@@ -222,41 +381,16 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		};
 	};
 
-	var exclObj = {}, inclObj = {};
+	// Create the CurrentSources object if this is the first time
 	if (isFirstTime) {
 		CurrentSources = {
 			firstTime : atReset ? "nextOpen" : false,
-			globalExcl : [],
-			ammoExcl : [],
-			weapExcl : [],
-			globalKnown : []
+			globalExcl : [], globalKnown : []
 		};
 	};
-	if (isFirstTime || forceDDupdate) {
-		var uaRegex = /,ua:\w*/ig;
-		var prevUAknown = !isFirstTime && (uaRegex).test(CurrentSources.globalKnown) ? CurrentSources.globalKnown.match(uaRegex).length : 0;
-		var prevUAexcl = isFirstTime || !prevUAknown ? 0 : (uaRegex).test(CurrentSources.globalExcl) ? CurrentSources.globalExcl.match(uaRegex).length : 0;
-		var exclAllUA = isFirstTime || !prevUAknown || prevUAknown === prevUAexcl;
-		var exclDMGfirearms = isFirstTime || CurrentSources.globalKnown.toSource().toLowerCase().indexOf('"D"') === -1;
-		var newGlobalKnown = [];
-		for (var src in SourceList) {
-			if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
-			if (((exclAllUA && SourceList[src].group === "Unearthed Arcana") || (SourceList[src].defaultExcluded && CurrentSources.globalKnown.indexOf(src) === -1)) && CurrentSources.globalExcl.indexOf(src) === -1) {
-				CurrentSources.globalExcl.push(src);
-			}
-			newGlobalKnown.push(src);
-		};
-		CurrentSources.globalKnown = newGlobalKnown;
-		if (!minVer && exclDMGfirearms) { // set all the DMG firearms to be excluded the first time they are added
-			for (var wea in WeaponsList) {
-				if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source.toSource().indexOf('"D"') !== -1) {
-					CurrentSources.weapExcl.push(wea);
-					if (WeaponsList[wea].ammo && AmmoList[WeaponsList[wea].ammo]) CurrentSources.ammoExcl.push(WeaponsList[wea].ammo);
-				};
-			};
-		};
-		SetStringifieds("sources");
-	};
+	// Update default excluded if this is the first time or import scripts were changed
+	var newExcluded = resourceExclusionSetting(spellSources);
+	SetStringifieds("sources");
 	if (atOpening && (atReset || app.viewerVersion < 15)) return;
 	if (atOpening && CurrentSources.firstTime === "nextOpen") {
 		CurrentSources.firstTime = false;
@@ -265,6 +399,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 
 	var remCS = What("CurrentSources.Stringified");
 	var onlySRD = [];
+	var exclObj = {}, inclObj = {};
 	for (var src in SourceList) {
 		if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
 		var srcGroup = !SourceList[src].group ? "other" : SourceList[src].group;
@@ -303,8 +438,10 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	var Text00 = "[Can't see the bottom of this dialog? Use ENTER to confirm or ESC to cancel]";
 	if (isFirstTime) Text00 += '\n\nAs this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the "Sources" button (with the book icon), or the "Source Material" bookmark, and change it.';
 	var Text01 = toUni("Important") + ": If something appears in multiple sources under the same name, like the Ranger class appearing in the SRD, PHB, and 'UA:Ranger, Revised', the newer included source will be used.";
-	var Text1 = "With the buttons below, you open another dialogue where you can exclude and include parts of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up at all with the buttons below!";
+	var Text1 = "With the buttons below, you open another dialogue where you can exclude and include elements of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up at all with the buttons below!";
 	var Text2 = toUni("Warning") + ": If your changes affect any drop-down boxes on the sheet, those will be updated. " + (isFirstTime ? "If a lot of drop-down boxes are affected, this can take several minutes." : "Options that are being removed/added to drop-downs will not affect those already filled out. What is selectable will change, but not what is currently selected or its effects.");
+	var txtDefaultExcluded0 = 'Some imported elements are set to be excluded by default and are listed below. You can include these using the buttons in the "Exclude elements of the sourcebooks included above" section of this dialog.';
+	var txtDefaultExcluded1 = "Note that elements whose sourcebook have been excluded are not part of this list, nor are those that you've already manually included. This list can change when you include/exclude sourcebooks or elements, or import new content.";
 
 	var selectionDialogue = {
 		exclActive : false,
@@ -313,12 +450,15 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		inclObject : inclObj,
 		sourceLink : "",
 		scrpMenu : false,
+		defaultExcl : newExcluded,
+		spellSources : spellSources,
 		initialize : function (dialog) {
 			dialog.load({
 				"img1" : allIcons.sources,
 				"ExcL" : this.exclObject,
 				"IncL" : this.inclObject,
-				"bLin" : "This button links to the web page of the selected sourcebook"
+				"bLin" : "This button links to the web page of the selected sourcebook",
+				"ExTx" : this.defaultExcl.str
 			});
 			dialog.visible({
 				"bWhy" : onlySRD
@@ -348,7 +488,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 				});
 			};
 		},
-		updateCS : function (oResultExcL) {
+		updateCS : function (dialog, oResultExcL) {
 			//put the excluded element into an array
 			var exclArr = ObjectToArray(oResultExcL, "elements");
 			//set the CurrentSources variable
@@ -357,7 +497,13 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 				var srcName = SourceList[src].name.replace(RegExp(SourceList[src].group + " ?:? ?", "i"), "") + " (" + SourceList[src].abbreviation + ")";
 				if (SourceList[src].group === "Unearthed Arcana" && SourceList[src].date) srcName = SourceList[src].date + " " + srcName;
 				if (exclArr.indexOf(srcName) !== -1) CurrentSources.globalExcl.push(src);
+				this.updateDefExcl(dialog);
 			};
+		},
+		updateDefExcl : function (dialog) {
+			if (!this.defaultExcl.found) return;
+			this.defaultExcl = resourceExclusionSetting(this.spellSources, true, this.defaultExcl);
+			dialog.load({ "ExTx" : this.defaultExcl.str });
 		},
 		ExcL : function (dialog) {
 			var exclElems = dialog.store()["ExcL"];
@@ -414,7 +560,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 				this.exclActive = false;
 				this.inclActive = true;
 			}
-			this.updateCS(moveThem[0]);
+			this.updateCS(dialog, moveThem[0]);
 		},
 		BTL1 : function (dialog) {
 			// move selected (one) item from IncL to ExcL
@@ -432,7 +578,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 				this.exclActive = true;
 				this.inclActive = false;
 			}
-			this.updateCS(moveThem[1]);
+			this.updateCS(dialog, moveThem[1]);
 		},
 		BTLA : function (dialog) {
 			// move all items from IncL to ExcL and sort ExcL
@@ -447,19 +593,19 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			dialog.focus("ExcL");
 			this.exclActive = true;
 			this.inclActive = false;
-			this.updateCS(allExcl);
+			this.updateCS(dialog, allExcl);
 		},
-		bCla : function (dialog) {resourceSelectionDialog("class");},
-		bRac : function (dialog) {resourceSelectionDialog("race");},
-		bFea : function (dialog) {resourceSelectionDialog("feat");},
-		bSpe : function (dialog) {resourceSelectionDialog("spell");},
-		bBac : function (dialog) {resourceSelectionDialog("background");},
-		bBaF : function (dialog) {resourceSelectionDialog("background feature");},
-		bCre : function (dialog) {resourceSelectionDialog("creature");},
-		bAtk : function (dialog) {resourceSelectionDialog("weapon");},
-		bArm : function (dialog) {resourceSelectionDialog("armor");},
-		bAmm : function (dialog) {resourceSelectionDialog("ammo");},
-		bMag : function (dialog) {resourceSelectionDialog("magic item");},
+		bCla : function (dialog) {resourceSelectionDialog("class"); this.updateDefExcl(dialog);},
+		bRac : function (dialog) {resourceSelectionDialog("race"); this.updateDefExcl(dialog);},
+		bFea : function (dialog) {resourceSelectionDialog("feat"); this.updateDefExcl(dialog);},
+		bSpe : function (dialog) {resourceSelectionDialog("spell"); this.updateDefExcl(dialog);},
+		bBac : function (dialog) {resourceSelectionDialog("background"); this.updateDefExcl(dialog);},
+		bBaF : function (dialog) {resourceSelectionDialog("background feature"); this.updateDefExcl(dialog);},
+		bCre : function (dialog) {resourceSelectionDialog("creature"); this.updateDefExcl(dialog);},
+		bAtk : function (dialog) {resourceSelectionDialog("weapon"); this.updateDefExcl(dialog);},
+		bArm : function (dialog) {resourceSelectionDialog("armor"); this.updateDefExcl(dialog);},
+		bAmm : function (dialog) {resourceSelectionDialog("ammo"); this.updateDefExcl(dialog);},
+		bMag : function (dialog) {resourceSelectionDialog("magic item"); this.updateDefExcl(dialog);},
 		bLin : function (dialog) {if (this.sourceLink) app.launchURL(this.sourceLink, true)},
 		bSrc : function (dialog) { MakeSourceMenu_SourceOptions(); },
 		bMor : function (dialog) {
@@ -505,205 +651,247 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 						name : "Select which resources the sheet's automation should use"
 					}]
 				}, {
-					type : "static_text",
-					item_id : "tx00",
-					wrap_name : true,
-					font : "palette",
-					width : 800,
-					name : Text00
-				}, {
-					type : "static_text",
-					item_id : "tx01",
-					wrap_name : true,
-					width : 800,
-					name : Text01
-				}, {
-					type : "cluster",
-					name : "The Sourcebooks",
-					font : "heading",
-					bold : true,
+					type : "view",
+					align_children : "align_top",
 					elements : [{
 						type : "view",
-						align_children : "align_distribute",
+						align_children : "align_left",
 						elements : [{
-							type : "view",
+							type : "static_text",
+							item_id : "tx00",
+							wrap_name : true,
+							font : "palette",
+							width : 800,
+							name : Text00
+						}, {
+							type : "static_text",
+							item_id : "tx01",
+							wrap_name : true,
+							width : 800,
+							name : Text01
+						}, {
+							type : "cluster",
+							name : "The Sourcebooks",
+							font : "heading",
+							bold : true,
 							elements : [{
-								type : "static_text",
-								height : 21,
-								alignment : "align_center",
-								item_id : "Etxt",
-								name : "Excluded from the automation",
-								font : "heading"
+								type : "view",
+								align_children : "align_distribute",
+								elements : [{
+									type : "view",
+									elements : [{
+										type : "static_text",
+										height : 21,
+										alignment : "align_center",
+										item_id : "Etxt",
+										name : "Excluded from the automation",
+										font : "heading"
+									}, {
+										width : 325,
+										height : selBoxHeight,
+										type : "hier_list_box",
+										item_id : "ExcL"
+									}]
+								}, {
+									type : "view",
+									alignment : "align_top",
+									elements : [{
+										type : "button",
+										item_id : "bMor",
+										name : "Get more",
+										font : "dialog",
+										bold : true
+									}, {
+										type : "button",
+										item_id : "bWhy",
+										name : "Why only SRD?",
+										font : "dialog",
+										bold : true
+									}, {
+										type : "gap"
+									}, {
+										type : "button",
+										item_id : "BTRA",
+										name : ">>"
+									}, {
+										type : "button",
+										item_id : "BTR1",
+										name : ">"
+									}, {
+										type : "button",
+										item_id : "BTL1",
+										name : "<"
+									}, {
+										type : "button",
+										item_id : "BTLA",
+										name : "<<"
+									}]
+								}, {
+									type : "view",
+									elements : [{
+										type : "static_text",
+										height : 21,
+										alignment : "align_center",
+										item_id : "Itxt",
+										name : "Included in the automation",
+										font : "heading"
+									}, {
+										width : 325,
+										height : selBoxHeight,
+										type : "hier_list_box",
+										item_id : "IncL"
+									}]
+								}]
 							}, {
-								width : 325,
-								height : selBoxHeight,
-								type : "hier_list_box",
-								item_id : "ExcL"
+								type : "view",
+								align_children : "align_distribute",
+								alignment : "align_fill",
+								elements : [{
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bLin",
+									alignment : "align_left",
+									width : 575,
+									name : "This button links to the web page of the selected sourcebook"
+								}, {
+									type : "button",
+									item_id : "bSrc",
+									alignment : "align_right",
+									name : "List Source Abbreviations"
+								}]
 							}]
 						}, {
-							type : "view",
+							type : "cluster",
+							name : "Exclude elements of the sourcebooks included above",
+							font : "heading",
+							bold : true,
+							elements : [{
+								type : "static_text",
+								item_id : "txt1",
+								wrap_name : true,
+								width : 775,
+								name : Text1
+							}, {
+								type : "view",
+								align_children : "align_row",
+								alignment : "align_center",
+								elements : minVer ? [{
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bSpe",
+									name : "Spells/Psionics",
+									alignment : "align_center"
+								}] : [{
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bCla",
+									name : "Classes && Archetypes"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bRac",
+									name : "Player Races"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bBac",
+									name : "Backgrounds"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bBaF",
+									name : "Background Features"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bFea",
+									name : "Feats"
+								}]
+							}, {
+								type : "view",
+								align_children : "align_row",
+								alignment : "align_center",
+								elements : minVer ? [] : [{
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bAtk",
+									name : "Weapons/Attacks"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bArm",
+									name : "Armor"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bAmm",
+									name : "Ammunition"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bMag",
+									name : "Magic Items"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bSpe",
+									name : "Spells/Psionics"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bCre",
+									name : "Creatures"
+								}]
+							}]
+						}]
+					}].concat(!newExcluded.found ? [] : [{
+						type : "view",
+						alignment : "align_fill",
+						align_children : "align_left",
+						elements : [{
+							type : "cluster",
+							name : "Automatically Excluded Elements",
+							font : "heading",
+							bold : true,
 							alignment : "align_top",
 							elements : [{
-								type : "button",
-								item_id : "bMor",
-								name : "Get more",
-								font : "dialog",
-								bold : true
-							}, {
-								type : "button",
-								item_id : "bWhy",
-								name : "Why only SRD?",
-								font : "dialog",
-								bold : true
-							}, {
-								type : "gap"
-							}, {
-								type : "button",
-								item_id : "BTRA",
-								name : ">>"
-							}, {
-								type : "button",
-								item_id : "BTR1",
-								name : ">"
-							}, {
-								type : "button",
-								item_id : "BTL1",
-								name : "<"
-							}, {
-								type : "button",
-								item_id : "BTLA",
-								name : "<<"
-							}]
-						}, {
-							type : "view",
-							elements : [{
 								type : "static_text",
-								height : 21,
-								alignment : "align_center",
-								item_id : "Itxt",
-								name : "Included in the automation",
-								font : "heading"
+								item_id : "ExH0",
+								wrap_name : true,
+								font : "dialog",
+								width : 275,
+								name : txtDefaultExcluded0
 							}, {
-								width : 325,
-								height : selBoxHeight,
-								type : "hier_list_box",
-								item_id : "IncL"
+								type : "static_text",
+								item_id : "ExH1",
+								wrap_name : true,
+								font : "dialog",
+								width : 275,
+								name : txtDefaultExcluded1
+							}, {
+								type : "edit_text",
+								item_id : "ExTx",
+								alignment : "align_fill",
+								readonly : true,
+								multiline: true,
+								height : 400,
+								width : 275
 							}]
 						}]
-					}, {
-						type : "view",
-						align_children : "align_distribute",
-						alignment : "align_fill",
-						elements : [{
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bLin",
-							alignment : "align_left",
-							width : 575,
-							name : "This button links to the web page of the selected sourcebook"
-						}, {
-							type : "button",
-							item_id : "bSrc",
-							alignment : "align_right",
-							name : "List Source Abbreviations"
-						}]
-					}]
-				}, {
-					type : "cluster",
-					name : "Exclude parts of the sourcebooks included above",
-					font : "heading",
-					bold : true,
-					elements : [{
-						type : "static_text",
-						item_id : "txt1",
-						wrap_name : true,
-						width : 775,
-						name : Text1
-					}, {
-						type : "view",
-						align_children : "align_row",
-						alignment : "align_center",
-						elements : minVer ? [{
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bSpe",
-							name : "Spells/Psionics",
-							alignment : "align_center"
-						}] : [{
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bCla",
-							name : "Classes && Archetypes"
-						}, {
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bRac",
-							name : "Player Races"
-						}, {
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bBac",
-							name : "Backgrounds"
-						}, {
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bBaF",
-							name : "Background Features"
-						}, {
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bFea",
-							name : "Feats"
-						}]
-					}, {
-						type : "view",
-						align_children : "align_row",
-						alignment : "align_center",
-						elements : minVer ? [] : [{
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bAtk",
-							name : "Weapons/Attacks"
-						}, {
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bArm",
-							name : "Armor"
-						}, {
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bAmm",
-							name : "Ammunition"
-						}, {
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bMag",
-							name : "Magic Items"
-						}, {
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bSpe",
-							name : "Spells/Psionics"
-						}, {
-							type : "button",
-							font : "dialog",
-							bold : true,
-							item_id : "bCre",
-							name : "Creatures"
-						}]
-					}]
+					}])
 				}, {
 					type : "view", // the bottom row of buttons
 					align_children : "align_distribute",
@@ -889,7 +1077,8 @@ function resourceSelectionDialog(type) {
 					var uSub = parObj[u].choices[z];
 					var uSubL = uSub.toLowerCase();
 					var uSubVar = parObj[u][uSubL];
-					var uSubTest = testSource(uSubL, uSubVar.source ? uSubVar : parObj[u], CSatt, true);
+					var uSubRef = u + "-" + uSubL;
+					var uSubTest = testSource(uSubRef, uSubVar.source ? uSubVar : parObj[u], CSatt, true);
 					if (uSubTest === "source") continue;
 					var uName = amendSource(uSubVar.name ? uSubVar.name : uSub, uSubVar, parObj[u]);
 					if (uSubTest) {
@@ -897,7 +1086,7 @@ function resourceSelectionDialog(type) {
 					} else {
 						inclObj[uGroup][uName] = -1;
 					}
-					refObj[uName] = uSubL;
+					refObj[uName] = uSubRef;
 				}
 			} else {
 				if (uTest) {
@@ -1228,23 +1417,22 @@ function resourceSelectionDialog(type) {
 			var theA = selectionDialogue.exclArr[a];
 			CurrentSources[CSatt].push(refObj[theA]);
 		}
-		//include ammo for weapons now included
 		if (type === "weapon") {
 			for (var key in WeaponsList) {
 				var weaKey = WeaponsList[key];
-				if (testSource(key, weaKey, "weaponExcl")) continue;
+				if (testSource(key, weaKey, "weapExcl")) continue;
 				if (weaKey.ammo && CurrentSources.ammoExcl.indexOf(weaKey.ammo) !== -1) CurrentSources.ammoExcl.splice(CurrentSources.ammoExcl.indexOf(weaKey.ammo), 1);
 			};
 		}
 	};
 };
 
-//a function to test if the input is not being excluded by the resource dialogue
+//a function to test if the input is not being excluded by the resource dialogue (returns true if excluded)
 function testSource(key, obj, CSatt, concise) {
 	if (!obj) return true;
-	if (!obj.source) return false;
+	if (!obj.source && (!CSatt || CSatt == "classExcl")) return false;
 	var theRe = false;
-	var tSrc = parseSource(obj.source);
+	var tSrc = !obj.source && CSatt && CSatt !== "classExcl" ? false : parseSource(obj.source);
 	if (tSrc && tSrc.length > 0) {
 		var srcExcluded = function(srcObj) {
 			return !SourceList[srcObj[0]] || CurrentSources.globalExcl.indexOf(srcObj[0]) !== -1;
@@ -1252,7 +1440,17 @@ function testSource(key, obj, CSatt, concise) {
 		var isExcl = tSrc.every(srcExcluded);
 		theRe = isExcl && concise ? "source" : isExcl;
 	};
-	if (!theRe && CSatt && CurrentSources[CSatt] && CurrentSources[CSatt].indexOf(key) !== -1) theRe = true;
+	if (!theRe && CSatt && CurrentSources[CSatt]) {
+		theRe = CurrentSources[CSatt].indexOf(key) !== -1;
+		if (!theRe && obj.choices && CSatt !== "classExcl") {
+			var exclChoices = 0;
+			for (var i = 0; i < obj.choices.length; i++) {
+				var aCh = obj.choices[i].toLowerCase();
+				if (!obj[aCh] || CurrentSources[CSatt].indexOf(key + "-" + aCh) !== -1) exclChoices++;
+			}
+			if (obj.choices.length == exclChoices) theRe = true;
+		}
+	} 
 	return theRe;
 };
 
@@ -1416,6 +1614,16 @@ function MakeSourceMenu_SourceOptions() {
 
 // A function to remove excluded objects that no longer exist
 function cleanExclSources() {
+	var getSubs = function(pObj, objEntry) {
+		var anObj = pObj[objEntry];
+		if (!anObj.choices) return [];
+		var chArr = [];
+		for (var i = 0; i < anObj.choices.length; i++) {
+			var chI = anObj.choices[i].toLowerCase();
+			if (anObj[chI]) chArr.push(objEntry + "-" + chI);
+		}
+		return chArr;
+	}
 	var getRelObject = function(attrNm) {
 		var reArr = [], entry;
 		switch (attrNm) {
@@ -1428,18 +1636,26 @@ function cleanExclSources() {
 				break;
 			case "racesExcl" :
 				for (entry in RaceList) reArr.push(entry);
+				for (entry in RaceSubList) reArr.push(entry);
 				break;
 			case "featsExcl" :
-				for (entry in FeatsList) reArr.push(entry);
+				for (entry in FeatsList) {
+					reArr.push(entry);
+					reArr = reArr.concat(getSubs(FeatsList, entry));
+				}
 				break;
 			case "magicitemExcl" :
-				for (entry in MagicItemsList) reArr.push(entry);
+				for (entry in MagicItemsList) {
+					reArr.push(entry);
+					reArr = reArr.concat(getSubs(MagicItemsList, entry));
+				}
 				break;
 			case "spellsExcl" :
 				for (entry in SpellsList) reArr.push(entry);
 				break;
 			case "backgrExcl" :
 				for (entry in BackgroundList) reArr.push(entry);
+				for (entry in BackgroundSubList) reArr.push(entry);
 				break;
 			case "backFeaExcl" :
 				for (entry in BackgroundFeatureList) reArr.push(entry);

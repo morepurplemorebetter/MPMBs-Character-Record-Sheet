@@ -7243,10 +7243,16 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		}();
 		// a function to get the correct value of the speed
 		var parseSpeed = function(type, inpObj, fullString, replaceWalk, extra) {
-			if (ObjLength(inpObj)) {
-				inpObj.extra = extra;
+			if (ObjLength(inpObj) || extra) {
+				if (extra < 0) {
+					inpObj.extra = extra;
+				} else if (!isNaN(extra) && extra > 0) {
+					inpObj.extra = "+" + extra;
+					inpObj.extraFixed = "fixed " + extra;
+				}
 				var total = getHighestTotal(inpObj, true, replaceWalk, CurrentProfs.speed.allModes, type == "walk" ? "" : type, true);
-				delete inpObj.extra;
+				if (inpObj.extra !== undefined) delete inpObj.extra;
+				if (inpObj.extraFixed !== undefined) delete inpObj.extraFixed;
 			} else {
 				var total = ["", 0];
 			}
@@ -7279,7 +7285,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					if (metric) strParse = RoundTo(strParse / 0.3, 5, false, false);
 				}
 				var total = strParse - oldTotals[sT + type];
-				deltaSpds[sT + type] = !total ? 0 : total > 0 ? "+" + total : total.toString();
+				deltaSpds[sT + type] = isNaN(total) ? 0 : total;
 			}
 		};
 		splitSpdString("Spd", fldSpdW);
@@ -7337,7 +7343,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		for (var spMod in set.allModes) {
 			var theVal = set.allModes[spMod];
 			if (!theVal) continue;
-			theVal += " ft";
+			if (!isNaN(theVal) || !(/[xX\*\u00d7\/:]/).test(theVal[0])) theVal += " ft";
 			if (metric) theVal = ConvertToMetric(theVal, 0.5);
 			modArray.push(spMod + " [" + theVal + "]");
 		};
@@ -7353,7 +7359,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					if (!theVal) continue;
 					if (theVal === "walk") {
 						theVal = "as walking speed";
-					} else {
+					} else if (!isNaN(theVal) || !(/[xX\*\u00d7\/:]/).test(theVal[0])) {
 						theVal += " ft";
 					};
 					if (metric) theVal = ConvertToMetric(theVal, 0.5);

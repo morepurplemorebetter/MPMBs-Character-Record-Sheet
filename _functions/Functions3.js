@@ -1783,7 +1783,7 @@ function ParseMagicItem(input) {
 			for (var i = 0; i < kObj.choices.length; i++) {
 				var keySub = kObj.choices[i].toLowerCase();
 				var sObj = kObj[keySub];
-				if (!sObj || (sObj.source && testSource(keySub, sObj, "magicitemExcl"))) continue;
+				if (!sObj || testSource(key + "-" + keySub, sObj, "magicitemExcl")) continue;
 				varArr.push(kObj.choices[i]);
 				isMatchSub = false;
 				if (sObj.name) {
@@ -2411,7 +2411,7 @@ function ParseMagicItemMenu() {
 			for (var c = 0; c < anItem.choices.length; c++) {
 				var aChL = anItem.choices[c].toLowerCase();
 				var aSubItem = anItem[aChL];
-				if (!aSubItem || (aSubItem.source && testSource(aChL, aSubItem, "magicitemExcl"))) continue;
+				if (!aSubItem || testSource(item + "-" + aChL, aSubItem, "magicitemExcl")) continue;
 				for (var attr in aSubItem) {
 					if (!(/^(description.*|name.*|source|notLegalAL|magicItemTable|storyItemAL|extraTooltip|attunement|weight|prereq.*|allowDuplicates|calculate)$/i).test(attr)) {
 						justDoMainItem = false;
@@ -2561,7 +2561,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 				for (var i = 0; i < aMIopts.length; i++) {
 					var aCh = aMIopts[i];
 					var aChL = aCh.toLowerCase();
-					if (!aMI[aChL] || (aMI[aChL].source && testSource(aChL, aMI[aChL], "magicitemExcl"))) continue;
+					if (!aMI[aChL] || testSource(theMI + "-" + aChL, aMI[aChL], "magicitemExcl")) continue;
 					choiceMenu.oSubMenu.push({
 						cName : aCh + stringSource(aMI[aChL].source ? aMI[aChL] : aMI, "first,abbr", "\t   [", "]"),
 						cReturn : "item#choice#" + aChL,

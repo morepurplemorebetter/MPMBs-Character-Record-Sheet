@@ -222,19 +222,21 @@ function AddFolderJavaScript(justConsole) {
 
 //the dialogue for the DirectImport function that ask for the path to a file to import from
 function DirectImport_Dialogue() {
+	var buggedVer = !isWindows && app.viewerVersion > 20 && app.viewerVersion < 20.00920065;
+	var isType = app.viewerType === "Exchange-Pro" ? "Pro" : (app.viewerType === "Exchange" ? "Standard" : "Reader");
 	var Text0 = "This 'Direct Import' function opens another MPMB's Character Record Sheet and goes through every field and layout setting in it to make this sheet similar to the other. This can take a long time and will not copy everything literally as this sheet will run through its automation to benefit from any updates to its code compared to the other sheet.";
 	var TextExpl = [
 		"To do this, give the full or relative path to a local file you want to import from.",
-		(isWindows ? "You" : "On Windows, you") + " can use the 'Browse' button to get the full path.",
-		"Acrobat crashes if you try this in Mac because of a bug, blame Adobe!",
-		(isWindows ? "Alternatively,\n[1] place" : "[1] Place") + " the sheet you want to import from in the same folder as this sheet,\n[2] give the file name of the sheet you want to import from below (including file extension), and\n[3] make sure the box to use a relative path is checked."
+		"You can use the 'Browse' button to get the full path.",
+		"Acrobat crashes if you try this in MacOS because of a bug in this version of Adobe Acrobat " + isType + " DC, please update your installation to the latest version.",
+		(buggedVer ? "[1] Place" : "Alternatively,\n[1] place") + " the sheet you want to import from in the same folder as this sheet,\n[2] give the file name of the sheet you want to import from below (including file extension '.pdf'), and\n[3] make sure the box to use a relative path is checked."
 	];
-	var Text01 = (isWindows ? [TextExpl[0], TextExpl[1], "\n" + TextExpl[3]] : [TextExpl[0], TextExpl[3], "\n" + TextExpl[1], TextExpl[2]]).join("\n");
+	var Text01 = (buggedVer ? [TextExpl[0], TextExpl[3], "\n" + TextExpl[1], TextExpl[2]] : [TextExpl[0], TextExpl[1], "\n" + TextExpl[3]]).join("\n");
 	var Text1 = "If you continue with importing, the current sheet will first be reset without notice!";
 	var TextIcons = (app.viewerType === "Reader" ? "Because of limitations in Adobe Acrobat Reader, this function is not available." : "'User-defined icons\' refers to those images that have been set for the symbol, portrait, companion(s) appearance, etc. that have been added from another file.") + "\n\nIcons that have been selected from the sheet built-in options will be imported regardless (faction symbols, Adventure League season icons, class icons).";
 	var DirectImport_dialog = {
 		fileLoc : "",
-		relPath : !isWindows,
+		relPath : buggedVer,
 		importIcons : false,
 		initialize : function(dialog) {
 			var isReader = app.viewerType === "Reader";
@@ -248,7 +250,7 @@ function DirectImport_Dialogue() {
 			dialog.enable({
 				"icNo" : !isReader,
 				"icYe" : !isReader,
-				"bFND" : isWindows
+				"bFND" : !buggedVer
 			});
 			dialog.setForeColorRed("txt1");
 		},
@@ -268,7 +270,7 @@ function DirectImport_Dialogue() {
 		},
 		description : {
 			name : "IMPORT FROM PDF DIALOG",
-			first_tab : isWindows ? "bFND" : "fLoc",
+			first_tab : buggedVer ? "fLoc" : "bFND",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
@@ -330,7 +332,7 @@ function DirectImport_Dialogue() {
 							}, {
 								type : "button",
 								item_id : "bFND",
-								name : "Browse" + (isWindows ? "" : " (Windows only)"),
+								name : "Browse" + (buggedVer ? " (disabled, see above)" : ""),
 								font : "dialog",
 								bold : true,
 								alignment : "align_center",
@@ -345,7 +347,7 @@ function DirectImport_Dialogue() {
 							type : "static_text",
 							item_id : "cLoc",
 							font : "palette",
-							width : 470 + (isWindows ? 0 : 30),
+							width : 470 + (buggedVer ? 30 : 0),
 							wrap_name : true,
 							name : 'Current folder:\n' + tDoc.path.replace(tDoc.documentFileName, '')
 						}]
@@ -2544,7 +2546,7 @@ function RequiredSheetVersion(versNmbr) {
 	var inNumber = semVersToNmbr(versNmbr);
 	if (!inNumber || isNaN(inNumber) || inNumber <= sheetVersion) return;
 	app.alert({
-		cMsg : "The RequiredSheetVersion() function in your script suggests that the script is made for v" + nmbrToSemanticVersion(inNumber) + " of MPMB's Character Record Sheets.\nTake not that you are executing this script in a sheet of v" + semVers + " and might thus not work properly.\nOr perhaps you are using the RequiredSheetVersion() function wrongly.",
+		cMsg : "The RequiredSheetVersion() function in your script suggests that the script is made for a new version, v" + nmbrToSemanticVersion(inNumber) + ", of MPMB's Character Record Sheets.\nBe aware that this sheet is only v" + semVers + " and might thus not work properly.\nOr perhaps you are using the RequiredSheetVersion() function incorrectly.",
 		nIcon : 2,
 		cTitle : "Script was made for newer version!"
 	});
@@ -2561,7 +2563,7 @@ function RunFunctionAtEnd(inFunc) {
 		inFunc();
 	} catch(e) {
 		app.alert({
-			cMsg : "The function entered in 'RunFunctionAtEnd()', that starts with:\n\t\"" + funcstart + "...\"\nproduces the following error, which might be because it was run from the console:\n\n" + e,
+			cMsg : "The function entered in 'RunFunctionAtEnd()', that starts with:\n\t\"" + funcstart + "...\"\nproduces the following error, which might be because it was executed from the console:\n\n" + e,
 			nIcon : 0,
 			cTitle : "Error in RunFunctionAtEnd() from user script(s)"
 		});

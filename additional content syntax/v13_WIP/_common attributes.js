@@ -598,8 +598,8 @@ speed : {
 		1. "walk": If the entry is "walk" the number will be identical to the walking speed.
 		2. "_walk": Using an underscore as the first character means
 				the value is only added if the value would otherwise be non-zero.
-		3. "+30" "-20": If the string starts with a + or - followed by a number.
-				This will add the modifier in feet to the movement mode if present from another source.
+		3. "+30" "-20": If the string starts with a "+", "-", "*", or "/" followed by a number,
+				this will add, subtract, multiply, or divide the movement mode with the given number, if present from another source.
 		4. "fixed 60": If the string starts with "fixed" followed by a space and then a number,
 				it will gain a speed of the number in feet, regardless of modifiers from other features.
 	*/
@@ -619,7 +619,7 @@ speed : {
 		USE:	add a modifier to all movement modes, if present
 
 		The 'allModes' attribute can only consist of a modifier-string.
-		It has to be a logical operator ("+" or "-") followed by a number.
+		It has to be a logical operator ("+", "-", "*", or "/") followed by a number.
 		Every movement mode of the character, both normal and encumbered, will be subjected to the modifier in feet.
 		This will only work on movement modes that are non-zero.
 		It won't give the character a burrow speed if it would otherwise have none, for example.

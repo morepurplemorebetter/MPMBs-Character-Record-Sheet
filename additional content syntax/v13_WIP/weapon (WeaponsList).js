@@ -254,7 +254,6 @@ WeaponsList["sword of purple"] = {
 
 	If this attribute is set to 'true', the To Hit field will display a DC.
 	That DC is calculated by adding 8 to the ability score modifier and the proficiency bonus (if the character is proficient with the weapon).
-	If this attribute is set to 'true', the first entry in the array of the 'modifiers' attribute is ignored.
 
 	Note that the To Hit field will not display what kind of saving throw/check the weapon requires.
 	You will have to add that information in the 'description' attribute.
@@ -269,8 +268,7 @@ WeaponsList["sword of purple"] = {
 	This array has two entries:
 	1. string or number
 		The first entry is what to put in the To Hit modifier field.
-		If this is "dc", the To Hit will be calculated as a DC.
-		If the 'dc' attribute is set to 'true', this first entry will be ignored.
+		If this starts with "dc", the To Hit will be calculated as a DC.
 	2. string or number
 		The second entry is what to put in the Damage modifier field.
 

@@ -4466,7 +4466,7 @@ function ParseFeat(input) {
 			for (var i = 0; i < kObj.choices.length; i++) {
 				var keySub = kObj.choices[i].toLowerCase();
 				var sObj = kObj[keySub];
-				if (!sObj || (sObj.source && testSource(keySub, sObj, "featsExcl"))) continue;
+				if (!sObj || testSource(key + "-" + keySub, sObj, "featsExcl")) continue;
 				varArr.push(kObj.choices[i]);
 				var isMatchSub = false;
 				if (sObj.name) {
@@ -4793,7 +4793,7 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 	var noDown = itemNmbr === FieldNumbers.feats;
 	var upToOtherPage = itemNmbr !== (FieldNumbers.featsD + 1) ? "" : typePF ? " (to third page)" : " (to second page)";
 	var downToOtherPage = itemNmbr === FieldNumbers.featsD ? " (to overflow page)" : "";
-	var aFeat;
+	var aFeat, keyFeat = CurrentFeats.known[ArrayNmbr];
 
 	if (!MenuSelection || MenuSelection === "justMenu") {
 		// a function to add the other items
@@ -4807,9 +4807,9 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 			}
 		};
 		// if this feat allows for a choice, add that option as the first thing in the menu
-		if (CurrentFeats.known[ArrayNmbr]) {
-			aFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
-			if (FeatsList[CurrentFeats.known[ArrayNmbr]].choices) {
+		if (keyFeat) {
+			aFeat = FeatsList[keyFeat];
+			if (aFeat.choices) {
 				var aFeatOpts = aFeat.choices;
 				var choiceMenu = {
 					cName : "Change type of " + aFeat.name,
@@ -4818,7 +4818,7 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 				for (var i = 0; i < aFeatOpts.length; i++) {
 					var aCh = aFeatOpts[i];
 					var aChL = aCh.toLowerCase();
-					if (!aFeat[aChL] || (aFeat[aChL].source && testSource(aChL, aFeat[aChL], "featsExcl"))) continue;
+					if (!aFeat[aChL] || testSource(keyFeat + "-" + aChL, aFeat[aChL], "featsExcl")) continue;
 					choiceMenu.oSubMenu.push({
 						cName : aCh + stringSource(aFeat[aChL].source ? aFeat[aChL] : aFeat, "first,abbr", "\t   [", "]"),
 						cReturn : "feat#choice#" + aChL,
@@ -4854,7 +4854,7 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 			ShowDialog("Feat's full description", Who(Fflds[2]));
 			break;
 		case "choice" :
-			aFeat = FeatsList[CurrentFeats.known[ArrayNmbr]];
+			aFeat = FeatsList[keyFeat];
 			if (MenuSelection[2] && aFeat && aFeat[MenuSelection[2]] && CurrentFeats.choices[ArrayNmbr] !== MenuSelection[2]) {
 				var aFeatVar = aFeat[MenuSelection[2]];
 				if (aFeatVar.name) {
