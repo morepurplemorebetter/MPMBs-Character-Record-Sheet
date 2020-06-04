@@ -152,14 +152,14 @@ function SelectClass() {
 				var cs = this.curSelec[i];
 				if (!cs || cs.length === 0) {
 					this.curSelec[i] = [];
-					toLoad["r" + i + "CD"] = this.classes;
+					toLoad["r" + i + "CD"] = this.getRemainingClassList();
 					continue;
 				};
 				toLoad["r" + i + "LV"] = !isNaN(cs[0]) ? cs[0].toString() : (0).toString();
 				toLoad["r" + i + "TX"] = cs[1];
 
 				var theClass = cs[2] && ClassList[cs[2]] ? ClassList[cs[2]].name : false;
-				toLoad["r" + i + "CD"] = theClass ? SetPositiveElement(this.classes, theClass) : this.classes;
+				toLoad["r" + i + "CD"] = theClass ? SetPositiveElement(this.getRemainingClassList(theClass), theClass) : this.getRemainingClassList();
 				toLoad["r" + i + "CS"] = cs[2] ? this.getSrc(ClassList[cs[2]]) : "";
 
 				var theSubClass = theClass && this.subclasses[cs[2]] && cs[3] && ClassSubList[cs[3]] ? ClassSubList[cs[3]].subname : false;
@@ -202,11 +202,10 @@ function SelectClass() {
 			var toLoad = {};
 			if (oldLvl !== cs[0]) toLoad["r" + e + "LV"] = cs[0].toString();
 
-			toLoad["r" + e + "CD"] = hasCl ? SetPositiveElement(this.classes, ClassList[cs[2]].name) : this.classes;
 			toLoad["r" + e + "SD"] = !hasCl ? {} : SetPositiveElement(this.subclasses[cs[2]], cs[3] ? ClassSubList[cs[3]].subname : false);
-
 			toLoad["r" + e + "CS"] = cs[2] ? this.getSrc(ClassList[cs[2]]) : "";
 			toLoad["r" + e + "SS"] = cs[3] ? this.getSrc(ClassSubList[cs[3]]) : "";
+			toLoad = this.reloadClassDropdowns(toLoad);
 
 			dialog.load(toLoad);
 			this.updateFull(dialog);
@@ -227,6 +226,8 @@ function SelectClass() {
 			toLoad["r" + e + "SD"] = cs[2] ? this.subclasses[cs[2]] : {};
 			toLoad["r" + e + "SS"] = "";
 			toLoad["r" + e + "TX"] = cs[1];
+			toLoad = this.reloadClassDropdowns(toLoad);
+
 			dialog.load(toLoad);
 			this.updateFull(dialog);
 		},
@@ -249,6 +250,32 @@ function SelectClass() {
 			toLoad["r" + e + "SS"] = cs[3] ? this.getSrc(ClassSubList[cs[3]]) : "";
 			dialog.load(toLoad);
 			this.updateFull(dialog);
+		},
+		getRemainingClassList : function(currentClass) {
+			var self = this;
+			var selectedClasses = this.curSelec.map(function(classInfo){return classInfo[2] || '';});
+			var filteredClasses = Object.keys(this.classes)
+				.filter(function(className){
+					return className === currentClass || selectedClasses.indexOf(className.toLowerCase()) === -1;
+				})
+				.reduce(function(obj, key) {
+					obj[key] = self.classes[key];
+					return obj;
+				}, {});
+			return filteredClasses;
+		},
+		reloadClassDropdowns : function (toLoad) {
+			for (var i = 0; i <= 9; i++) {
+				var loopClass = this.curSelec[i];
+				if (!loopClass || loopClass.length === 0) {
+					this.curSelec[i] = [];
+					toLoad["r" + i + "CD"] = this.getRemainingClassList();
+					continue;
+				}
+				var theClass = loopClass[2] && ClassList[loopClass[2]] ? ClassList[loopClass[2]].name : false;
+				toLoad["r" + i + "CD"] = theClass ? SetPositiveElement(this.getRemainingClassList(theClass), theClass) : this.getRemainingClassList();
+			}
+			return toLoad;
 		},
 		updateFull : function (dialog) {
 			var oResult = dialog.store();
