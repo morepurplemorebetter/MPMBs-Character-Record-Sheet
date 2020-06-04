@@ -5196,10 +5196,9 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 
 //a way to contact morepurplemorebetter
 function contactMPMB(medium) {
+	if (!medium) medium = "";
+	if ((/email/i).test(medium)) medium = "discord";
 	switch (medium.toLowerCase()) {
-	 case "email" :
-		app.launchURL(("https://flapkan.com/contact?edit[message]=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0ASheet version: MPMB\'s " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + semVers + " (" + tDoc.info.SheetType + ")" + " %0D%0APDF viewer: " + app.viewerType + ", v" + app.viewerVersion + "; Language: " + app.language + "; OS: " + app.platform).replace(/ /g, "%20"), true);
-		break;
 	 case "twitter" :
 		app.launchURL("https://twitter.com/BetterOfPurple", true);
 		break;
@@ -5207,6 +5206,7 @@ function contactMPMB(medium) {
 		app.launchURL("https://www.reddit.com/u/morepurplemorebetter/", true);
 		break;
 	 case "patreon" :
+	 default :
 		app.launchURL("https://www.patreon.com/morepurplemorebetter", true);
 		break;
 	 case "github" :
@@ -5222,7 +5222,9 @@ function contactMPMB(medium) {
 		app.launchURL("https://flapkan.com/mpmb/syntax", true);
 		break;
 	 case "additions" :
-		app.launchURL("https://flapkan.com/how-to/import-scripts", true);
+		app.launchURL("https://flapkan.com/mpmb/syntax", true);
+		// While the website is not finished
+		// app.launchURL("https://flapkan.com/how-to/import-scripts", true);
 		break;
 	 case "syntaxgit" :
 		app.launchURL("https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/tree/master/additional%20content%20syntax", true);
@@ -5253,6 +5255,12 @@ function contactMPMB(medium) {
 		break;
 	 case "subreddit" :
 		app.launchURL("http://flapkan.com/mpmb/fanforum", true);
+		break;
+	case "discord" :
+		app.launchURL("https://discord.gg/Qjq9Z5Q");
+		break;
+	case "email" :
+		app.launchURL(("https://flapkan.com/contact?edit[message]=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0ASheet version: MPMB\'s " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + semVers + " (" + tDoc.info.SheetType + ")" + " %0D%0APDF viewer: " + app.viewerType + ", v" + app.viewerVersion + "; Language: " + app.language + "; OS: " + app.platform).replace(/ /g, "%20"), true);
 		break;
 	 case "bug" :
 		app.launchURL("https://discord.gg/MY5wKpV");

@@ -144,9 +144,10 @@ var Menus = {
 	"color" : "",
 	"raceoptions" : "",
 	"faq" : [{
-			cName : "Go to the online FAQ (more up to date)",
-			cReturn : "faq#online"
-		}, {
+		// While website is still not finished
+		// 	cName : "Go to the online FAQ (more up to date)",
+		// 	cReturn : "faq#online"
+		// }, {
 			cName : "Open the built-in FAQ.pdf",
 			cReturn : "faq#pdf"
 		}, {
@@ -2158,10 +2159,10 @@ var LinksLatest = {
 		CF : "http://www.dmsguild.com/product/194069"
 	},
 	character : {
-		PF : "https://flapkan.com/printer_friendly_character_sheet",
-		CF : "https://flapkan.com/colourful_character_sheet"
+		PF : "https://www.patreon.com/posts/19406992", // while website is not finished "https://flapkan.com/printer_friendly_character_sheet",
+		CF : "https://www.patreon.com/posts/19406992" // while website is not finished "https://flapkan.com/colourful_character_sheet"
 	},
-	patreon : "https://www.patreon.com/posts/mpmbs-character-14927098"
+	patreon : "https://www.patreon.com/posts/14927098"
 };
 
 // A backwards compatible way to call the field content of those that are now part of the CurrentVars object

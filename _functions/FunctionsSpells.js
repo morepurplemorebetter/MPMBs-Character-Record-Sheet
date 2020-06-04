@@ -4912,7 +4912,6 @@ function deleteSpellRow(prefix, lineNmbr) {
 						break;
 					}
 				}
-				console.println("allEmpty: "+ allEmpty+"; \tL:"+L+" ("+thisLineVal+")"); //DEBUGGING!!!
 				if (allEmpty) {
 					// The multi-line image (and trailing) of the next page fit, so bring them over
 					offset += lookAhead - 1;
@@ -4924,7 +4923,6 @@ function deleteSpellRow(prefix, lineNmbr) {
 						L--;
 					}
 					L--; // come back one line more, to process all of them with the lookAhead and offset taken care off
-					console.println("new L:"+L); //DEBUGGING!!!
 					continue;
 				} else {
 					// The multi-line image of the next won't fit, so continue for the rest of the page, but stop moving anything after that
