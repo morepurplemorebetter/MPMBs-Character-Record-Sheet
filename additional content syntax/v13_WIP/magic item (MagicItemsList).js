@@ -132,6 +132,20 @@ MagicItemsList["staff of purple"] = {
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
+	defaultExcluded : true,
+/*	defaultExcluded // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether this magic item should be excluded by default (true) or included by default (false)
+
+	Include this attribute and set it to true if the magic item should appear in the Excluded list of the
+	Source Selection Dialog when the script is added for the first time.
+	It will have to be manually set to be included before it is used by the sheet's automation.
+	The user will be made aware of this exclusion.
+
+	This is useful for optional magic items that you wouldn't normally want to use (e.g. playtest or campaign-specific).
+
+	Setting this attribute to false is the same as not including this attribute.
+*/
 	type : "wondrous item",
 /*	type // REQUIRED //
 	TYPE:	string
@@ -555,6 +569,9 @@ MagicItemsList["staff of purple"] = {
 			weight : 1,
 		but the choice has no 'weight' defined,
 		the sheet will use the weight of 1 lb for the choice.
+
+		You can use defaultExcluded to exclude specific choice options of the magic item,
+		without excluding the magic item as a whole.
 	*/
 
 	/*

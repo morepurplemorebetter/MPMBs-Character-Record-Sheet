@@ -109,8 +109,22 @@ FeatsList["purple power"] = {
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
+	defaultExcluded : true,
+/*	defaultExcluded // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether this feat should be excluded by default (true) or included by default (false)
+
+	Include this attribute and set it to true if the feat should appear in the Excluded list of the
+	Source Selection Dialog when the script is added for the first time.
+	It will have to be manually set to be included before it is used by the sheet's automation.
+	The user will be made aware of this exclusion.
+
+	This is useful for optional feats that you wouldn't normally want to use (e.g. playtest or campaign-specific).
+
+	Setting this attribute to false is the same as not including this attribute.
+*/
 	prerequisite : "Dexterity 13 or higher",
-/*	weight // OPTIONAL //
+/*	prerequisite // OPTIONAL //
 	TYPE:	string
 	USE:	textual explanation of a prerequisite the feat has
 
@@ -315,6 +329,9 @@ FeatsList["purple power"] = {
 			prerequisite : "Dexterity 13 or higher",
 		but the choice has no 'prerequisite' defined,
 		the sheet will use the prerequisite of "Dexterity 13 or higher" for the choice.
+
+		You can use defaultExcluded to exclude specific choice options of the feat,
+		without excluding the feat as a whole.
 	*/
 
 	/*

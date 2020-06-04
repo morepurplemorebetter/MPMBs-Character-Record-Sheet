@@ -111,6 +111,20 @@ WeaponsList["sword of purple"] = {
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
+	defaultExcluded : true,
+/*	defaultExcluded // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether this weapon/attack should be excluded by default (true) or included by default (false)
+
+	Include this attribute and set it to true if the weapon/attack should appear in the Excluded list of the
+	Source Selection Dialog when the script is added for the first time.
+	It will have to be manually set to be included before it is used by the sheet's automation.
+	The user will be made aware of this exclusion.
+
+	This is useful for optional weapons/attacks that you wouldn't normally want to use (e.g. playtest or campaign-specific).
+
+	Setting this attribute to false is the same as not including this attribute.
+*/
 	regExpSearch : /^(?=.*sword)(?=.*purple).*$/i,
 /*	regExpSearch // REQUIRED //
 	TYPE:	regular expression

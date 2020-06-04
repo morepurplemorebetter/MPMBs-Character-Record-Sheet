@@ -149,8 +149,8 @@ SourceList["BoP"] = {
 	TYPE:	boolean
 	USE:	whether this source should be excluded by default (true) or included by default (false)
 
-	Include this attribute and set it to true if the source should appear in the Excluded list
-	when the script is added for the first time.
+	Include this attribute and set it to true if the source should appear in the Excluded list of the
+	Source Selection Dialog when the script is added for the first time.
 	This is useful for optional rule additions that you wouldn't normally want to use (e.g. playtest rules).
 
 	A source that has the group "Unearthed Arcana" is automatically treated as having this attribute set to `true`.

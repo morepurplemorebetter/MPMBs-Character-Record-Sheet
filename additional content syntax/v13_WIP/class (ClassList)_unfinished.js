@@ -118,6 +118,22 @@ ClassList["purplemancer"] = {
 		source : ["HB", 0],
 	"HB" refers to the'homebrew' source.
 */
+	defaultExcluded : true,
+/*	defaultExcluded // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether this class should be excluded by default (true) or included by default (false)
+
+	Include this attribute and set it to true if the class should appear in the Excluded list of the
+	Source Selection Dialog when the script is added for the first time.
+	It will have to be manually set to be included before it is used by the sheet's automation.
+	The user will be made aware of this exclusion.
+
+	Note that if a class is excluded, none of its subclasses will be accessible either.
+
+	This is useful for optional classes that you wouldn't normally want to use (e.g. playtest or campaign-specific).
+
+	Setting this attribute to false is the same as not including this attribute.
+*/
 	primaryAbility : "Strength or Dexterity",
 /*	primaryAbility // REQUIRED //
 	TYPE:	string
