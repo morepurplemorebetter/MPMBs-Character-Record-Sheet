@@ -519,11 +519,11 @@ function DirectImport(consoleTrigger) {
 			// add the old to the new, preferring the new if both have the same entries
 			var filesScriptToNms = [], equalScrNmRx = /\d+\/\d+\/\d+ - |[._\- ]min(ified)?\b/ig;
 			for (var toScr in filesScriptTo) filesScriptToNms.push(toScr.replace(equalScrNmRx, ""));
+			var hasAllPubUA = filesScriptToNms.indexOf("all_WotC_pub+UA.js") !== -1, rxAllPubUA = /all_WotC_(published|unearthed_arcana)/i
 			for (var fromScr in filesScriptFrom) {
-				if (filesScriptToNms.indexOf(fromScr.replace(equalScrNmRx, "")) == -1) {
-					filesScriptTo[fromScr] = filesScriptFrom[fromScr];
-					newFilesScriptFrom = true;
-				}
+				if (filesScriptToNms.indexOf(fromScr.replace(equalScrNmRx, "")) !== -1 || (hasAllPubUA && rxAllPubUA.test(fromScr))) continue;
+				filesScriptTo[fromScr] = filesScriptFrom[fromScr];
+				newFilesScriptFrom = true;
 			};
 			if (newFilesScriptFrom) {
 				CurrentScriptFiles = filesScriptTo;
@@ -539,41 +539,12 @@ function DirectImport(consoleTrigger) {
 		if (ImportField("CurrentSources.Stringified")) {
 			CurrentSources = eval(global.docTo.getField("CurrentSources.Stringified").value);
 			cleanExclSources();
-			// Set any UA sources that weren't in the old sheet to excluded, if any UA source was set to be excluded
-			var excludeUnkownUA = false, newGlobalKnown = [];
-			if (!CurrentSources.globalKnown) CurrentSources.globalKnown = [];
-			if (!CurrentSources.globalExcl) CurrentSources.globalExcl = [];
-			for (var s = 0; s < CurrentSources.globalExcl.length; s++) {
-				var theSrc = CurrentSources.globalExcl[s];
-				if (/Unearthed Arcana/i.test(SourceList[theSrc].group)) {
-					excludeUnkownUA = true;
-					break;
-				};
-			};
-			for (var src in SourceList) {
-				newGlobalKnown.push(src);
-				if (excludeUnkownUA && /Unearthed Arcana/i.test(SourceList[src].group) && !global.docFrom.SourceList[src] && CurrentSources.globalKnown.indexOf(src) == -1 && CurrentSources.globalExcl.indexOf(src) == -1) {
-					// Testing against both globalKnown and SourceList to eliminate intermediate beta bugs
-					CurrentSources.globalExcl.push(src);
-				};
-			};
-			// Now set the new list of known sources
-			CurrentSources.globalKnown = newGlobalKnown;
-			//set the DMG weapons to being excluded, if importing from sheet version 12.93 or earlier
-			if (FromVersion < 12.94) {
-				if (!CurrentSources.ammoExcl) CurrentSources.ammoExcl = [];
-				for (var amm in AmmoList) {
-					if (AmmoList[amm].source && AmmoList[amm].source.toSource().indexOf('"D"') !== -1) CurrentSources.ammoExcl.push(amm);
-				};
-				if (!CurrentSources.weapExcl) CurrentSources.weapExcl = [];
-				for (var wea in WeaponsList) {
-					if (WeaponsList[wea].list === "firearm" && WeaponsList[wea].source && WeaponsList[wea].source.toSource().indexOf('"D"') !== -1) CurrentSources.weapExcl.push(wea);
-				};
-			}
+			var garbage = resourceExclusionSetting([]);
 			SetStringifieds("sources");
+			UpdateDropdown("resources");
 		};
 		//now update the dropdowns and spell menus with these new settings (without unicode if that was set)
-		ImportField("UseUnicode")
+		ImportField("UseUnicode");
 		setUnicodeUse(What("UseUnicode") != "", true); // also sets the dropdowns
 		setSpellVariables(true);
 

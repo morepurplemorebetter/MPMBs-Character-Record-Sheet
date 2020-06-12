@@ -4031,7 +4031,7 @@ function RemoveWeapon(weapon) {
 	var maxItems = QI ? FieldNumbers.attacks : 3;
 
 	var regexWea = RegExp(clean(weapon.toLowerCase(), " ").RegEscape().replace(/(^\W*)(.*?)(\W*$)/i, "$1\\b$2\\b$3"), "i");
-	for (var i = 1; i <= maxItems; i++) {
+	for (var i = maxItems; i >= 1; i--) {
 		if ((regexWea).test(What(prefix + Q + "Attack." + i + ".Weapon Selection"))) {
 			WeaponDelete(i);
 		}
@@ -8709,11 +8709,13 @@ function WeaponDelete(itemNmbr) {
 
 	//move every line up one space, starting with the selected line
 	IsNotWeaponMenu = false;
+	var theColorField = "BlueText.Attack." + (maxItems - 1) + ".Weight Title"; 
+	var skipAttackColour = QI && typePF && What(theColorField) !== tDoc.getField(theColorField).defaultValue;
 	for (var i = itemNmbr; i < maxItems; i++) {
 		if (!typePF) {
 			//move the images, for every line that contains a weapon
-			var theColorField = prefix + "BlueText." + Q + "Attack." + (i + 1) + ".Weight Title";
-			if (!QI || (i !== (maxItems - 1) && What(theColorField) !== tDoc.getField(theColorField).defaultValue)) {
+			theColorField = prefix + "BlueText." + Q + "Attack." + (i + 1) + ".Weight Title";
+			if (i !== (maxItems - 1) || !skipAttackColour) {
 				var theIcon = tDoc.getField(prefix + "Image." + Q + "Attack." + (i + 1)).buttonGetIcon();
 				tDoc.getField(prefix + "Image." + Q + "Attack." + i).buttonSetIcon(theIcon);
 			}
@@ -8721,6 +8723,7 @@ function WeaponDelete(itemNmbr) {
 
 		//move the values
 		for (var H = 0; H < FieldNames.length; H++) {
+			if (i == (maxItems - 1) && skipAttackColour && (/Weight Title/i).test(FieldNames[H][1])) continue;
 			var fromFld = prefix + FieldNames[H][0] + Q + "Attack." + (i + 1) + FieldNames[H][1];
 			Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(fromFld), !QI && (/description/i).test(FieldNames[H][1]) ? Who(fromFld) : undefined);
 		};

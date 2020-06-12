@@ -1253,6 +1253,73 @@ var Base_CreatureList = {
 			description : "While the violet fungus remains motionless, it is indistinguishable from an ordinary fungus."
 		}]
 	},
+	// Awakened plants (for the Awaken spell)
+	"awakened shrub" : {
+		name : "Awakened Shrub",
+		source : [["SRD", 366], ["M", 317]],
+		size : 4, //Small
+		type : "Plant",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 9,
+		hp : 10,
+		hd : [3, 6],
+		speed : "20 ft",
+		scores : [3, 8, 11, 10, 10, 6],
+		saves : ["", "", "", "", "", ""],
+		damage_vulnerabilities : "fire",
+		damage_resistances : "piercing",
+		senses : "",
+		passivePerception : 10,
+		languages : "one language known by its creator",
+		challengeRating : "0",
+		proficiencyBonus : 2,
+		attacksAction : "1",
+		attacks : [{
+			name : "Rake",
+			ability : 2,
+			damage : [1, 4, "slashing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}],
+		traits : [{
+			name : "False Appearance",
+			description : "While the shrub remains motionless, it is indistinguishable from a normal shrub."
+		}]
+	},
+	"awakened tree" : {
+		name : "Awakened Tree",
+		source : [["SRD", 366], ["M", 317]],
+		size : 1, //Huge
+		type : "Plant",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 13,
+		hp : 59,
+		hd : [7, 12],
+		speed : "20 ft",
+		scores : [19, 6, 15, 10, 10, 7],
+		saves : ["", "", "", "", "", ""],
+		damage_vulnerabilities : "fire",
+		damage_resistances : "bludgeoning, piercing",
+		senses : "",
+		passivePerception : 10,
+		languages : "one language known by its creator",
+		challengeRating : "2",
+		proficiencyBonus : 2,
+		attacksAction : "1",
+		attacks : [{
+			name : "Slam",
+			ability : 1,
+			damage : [3, 6, "bludgeoning"],
+			range : "Melee (10 ft)",
+			description : ""
+		}],
+		traits : [{
+			name : "False Appearance",
+			description : "While the tree remains motionless, it is indistinguishable from a normal tree."
+		}]
+	},
 	// Beasts (familiars, Ranger and general animal companions, and Druid Wild Shapes) [Miscellaneous Creatures Section]
 	"ape" : {
 		name : "Ape",

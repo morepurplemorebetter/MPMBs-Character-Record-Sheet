@@ -846,7 +846,7 @@ function processWeaponOptions(AddRemove, srcNm, itemArr, magical) {
 		} else {
 			// remove the entries if they exist and delete any weapons like it
 			for (var j = FieldNumbers.attacks - 1; j >= 0; j--) {
-				if (CurrentWeapons.known[j][0] == newName) WeaponDelete(j);
+				if (CurrentWeapons.known[j][0] == newName) WeaponDelete(j+1);
 			}
 			if (CurrentVars.extraWeapons[newName]) delete CurrentVars.extraWeapons[newName];
 			if (WeaponsList[newName]) delete WeaponsList[newName];
