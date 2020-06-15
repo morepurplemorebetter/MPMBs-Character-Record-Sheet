@@ -349,7 +349,20 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	Fea.Choice = choiceA[1];
 	Fea.ChoiceOld = choiceA[0];
 
-	// now do all the level-independent attributes, only if this is mandated by the level change
+	// First do the level-dependent limited feature, if any of them changed or we are supposed to add/remove them
+	if ((CheckLVL || Fea.changed) && (Fea.UseOld || Fea.UseCalcOld || Fea.Use || Fea.UseCalc)) {
+		// remove the limited feature entry if it is no longer applicable
+		if (lvlA[0] && (!AddFea || ((Fea.UseOld || Fea.UseCalcOld) && (Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc) || (/unlimited|\u221E/i).test(Fea.Use))))) {
+			RemoveFeature(Fea.UseNameOld ? Fea.UseNameOld : Fea.UseName, lvlA[1] === 0 ? "" : Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
+			Fea.UseOld = 0;
+		}
+		// add the limited feature entry if it changed or added for the first time
+		if (AddFea && (Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use)) {
+			var tooltipName = choiceLimFeaTooltip ? choiceLimFeaTooltip : displName + (fObj.tooltip ? fObj.tooltip : displName !== fObj.name ? ": " + fObj.name : "");
+			AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, tooltipName, Fea.UseOld, Fea.UseCalc, Fea.AltRecov);
+		}
+	}
+	// Then do all the level-independent attributes, only if this is mandated by the level change
 	if (CheckLVL) {
 		// do the main object if not only interested in the choice, but without the eval as we just did that already
 		if (!choiceA[2]) useAttr(fObj, AddFea, skipMainEval);
@@ -364,19 +377,6 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (cNewObj && AddFea) {
 			SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", AddFea ? choiceA[1] : "", cOnly ? choiceA[1] : "");
 			useAttr(cNewObj, true, false, choiceA[1]);
-		}
-	}
-	// next do the level-dependent attributes, if any of them changed or we are supposed to do them
-	if ((CheckLVL || Fea.changed) && (Fea.UseOld || Fea.UseCalcOld || Fea.Use || Fea.UseCalc)) {
-		// remove the limited feature entry if it is no longer applicable
-		if (lvlA[0] && (!AddFea || ((Fea.UseOld || Fea.UseCalcOld) && (Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc) || (/unlimited|\u221E/i).test(Fea.Use))))) {
-			RemoveFeature(Fea.UseNameOld ? Fea.UseNameOld : Fea.UseName, lvlA[1] === 0 ? "" : Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
-			Fea.UseOld = 0;
-		}
-		// add the limited feature entry if it changed or added for the first time
-		if (AddFea && (Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use)) {
-			var tooltipName = choiceLimFeaTooltip ? choiceLimFeaTooltip : displName + (fObj.tooltip ? fObj.tooltip : displName !== fObj.name ? ": " + fObj.name : "");
-			AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, tooltipName, Fea.UseOld, Fea.UseCalc, Fea.AltRecov);
 		}
 	}
 
