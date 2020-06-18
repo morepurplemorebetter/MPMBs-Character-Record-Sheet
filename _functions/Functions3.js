@@ -2983,7 +2983,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			}
 			if (typeObj.excludeCheck && typeObj.excludeCheck(key, kObj)) continue;
 			var capName = kObj.name.capitalize();
-			itemChoices.push(capName);
+			if (itemChoices.indexOf(capName) == -1) itemChoices.push(capName);
 			itemRefs[capName] = key;
 		}
 		if (typeNm != "armor") itemChoices.sort();
