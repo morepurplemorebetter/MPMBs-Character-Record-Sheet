@@ -3955,6 +3955,8 @@ function SetHPTooltip(resetHP, onlyComp) {
 		var extrahp = 0, setHP;
 		// Get the calculated HP
 		var HD = calcHPtotals(prefix);
+		// And for backwards compatibility
+		var totalhd = HD.count;
 		// If this is the main char and there are custom HP changes, do them
 		if (!prefix && CurrentEvals.hp) {
 			for (var hpEval in CurrentEvals.hp) {
