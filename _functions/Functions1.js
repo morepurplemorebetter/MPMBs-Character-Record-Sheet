@@ -5575,7 +5575,12 @@ function MakeClassMenu() {
 
 	var ClassMenu = [], toTest, toTestNr, toChooseNr, toChooseStr;
 	var bonusManeuvers = CurrentFeats.known.indexOf("martial adept") != -1 ? 2 : 0;
-	if (GetFeatureChoice("classes", "fighter", "fighting style", false) == "superior technique") bonusManeuvers += 1;
+	if (
+		(GetFeatureChoice("classes", "fighter", "fighting style", false) === "superior technique") ||
+		(GetFeatureChoice("classes", "fighter", "subclassfeature10", false) === "superior technique") // Champion can select this fighting style in their level 10 feature 'Additional Fighting Style'
+	) {
+		bonusManeuvers += 1;
+	}
 
 	for (var aClass in classes.known) {
 		var clLvl = classes.known[aClass].level;
