@@ -1462,7 +1462,7 @@ var Base_ClassList = {
 		},
 		equipment : "Rogue starting equipment:" +
 			"\n \u2022 A rapier -or- a shortsword;" +
-			"\n \u2022 A shortbow and a quiver of 20 arrows -or- a shortswords;" +
+			"\n \u2022 A shortbow and a quiver of 20 arrows -or- a shortsword;" +
 			"\n \u2022 A burglar's pack -or- dungeoneer's pack -or- an explorer's pack;" +
 			"\n \u2022 Leather armor, two daggers, and thieves' tools." +
 			"\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
