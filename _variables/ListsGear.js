@@ -44,7 +44,7 @@ var Base_ArmourList = {
 		invName : "Studded leather armor"
 	},
 	"hide" : {
-		regExpSearch : /^(?!.*(dragon|draconic))(?=.*(hide|skin)).*$/i,
+		regExpSearch : /^(?!.*(dragon|draconic|molten bronze))(?=.*(hide|skin)).*$/i,
 		name : "Hide",
 		source : [["SRD", 63], ["P", 145]],
 		type : "medium",
