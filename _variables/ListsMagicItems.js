@@ -5101,13 +5101,14 @@ var Base_MagicItemsList = {
 		prerequisite : "Requires attunement by a bard, cleric, druid, sorcerer, warlock, or wizard",
 		prereqeval : function(v) { return classes.known.bard || classes.known.cleric || classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
 		extraLimitedFeatures : [{
-			name : "Staff of Charming (pass enchantment save)",
+			name : "Staff of Charming",
 			usages : 1,
-			recovery : "dawn"
+			recovery : "dawn",
+			additional : "pass enchantment save"
 		}],
 		usages : 10,
 		recovery : "dawn",
-		additional : "regains 1d8+2",
+		additional : "charges, regains 1d8+2",
 		spellcastingAbility : "class",
 		spellFirstColTitle : "Ch",
 		spellcastingBonus : {
