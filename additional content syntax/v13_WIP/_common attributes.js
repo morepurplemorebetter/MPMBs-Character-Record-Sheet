@@ -1090,7 +1090,7 @@ calcChanges : {
 				Proficiency, // boolean, whether to check the proficiency box (true) or not (false)
 				Mod, // number, the ability score to select from the drop-down (0 = none, 1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
 				Range, // string, the text to put in the Range field
-				Damage_Type, // string, the text to put in the Damge Type drop-down
+				Damage_Type, // string, the text to put in the Damage Type drop-down
 				Description, // string, the text to put in the Description field
 				Description_Tooltip, // string, the text to put in the Description field's tooltip
 				To_Hit_Bonus, // string, the text to put in the modifier field for To Hit

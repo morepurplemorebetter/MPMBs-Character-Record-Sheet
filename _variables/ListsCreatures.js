@@ -120,7 +120,7 @@ var Base_CreatureList = {
 			description : "The elemental can move through a space as narrow as 1 inch wide without squeezing. A creature that touches the elemental or hits it with a melee attack while within 5 ft of it takes 5 (1d10) fire damage. In addition, the elemental can enter a hostile creature's space and stop there. The first time it enters a creature's space on a turn, that creature takes 5 (1d10) fire damage and catches fire; until someone takes an action to douse the fire, the creature takes 5 (1d10) fire damage at the start of each of its turns."
 		}, {
 			name : "Illumination",
-			description : "The elemental sheds bright light in a 30-foot radius and dim light in an additional 30 ft."
+			description : "The elemental sheds bright light in a 30-ft radius and dim light in an additional 30 ft."
 		}, {
 			name : "Water Susceptibility",
 			description : "For every 5 ft the elemental moves in water, or for every gallon of water splashed on it, it takes 1 cold damage."
@@ -405,7 +405,7 @@ var Base_CreatureList = {
 			description : "The nightmare can grant resistance to fire damage to anyone riding it."
 		}, {
 			name : "Illumination",
-			description : "The nightmare sheds bright light in a 10-foot radius and dim light for an additional 10 feet."
+			description : "The nightmare sheds bright light in a 10-ft radius and dim light for an additional 10 feet."
 		}],
 		actions : [{
 			name : "Ethereal Stride",
@@ -662,7 +662,7 @@ var Base_CreatureList = {
 		}, {
 			name : "Scare (1/day)",
 			ability : 6,
-			damage : ["Frightened", "", ""],
+			damage : ["Wis save", "", "Frightened"],
 			range : "20 ft",
 			description : "Wis save or frightened for 1 min (can save at end of each turn, disadv. if quasit is in sight)",
 			modifiers : ["", "", false],
@@ -771,7 +771,7 @@ var Base_CreatureList = {
 		}, {
 			name : "Heart Sight",
 			ability : 6,
-			damage : ["Reveal", "", ""],
+			damage : ["Cha save", "", "Reveal"],
 			range : "Touch (5 ft)",
 			description : "Cha save or sprite knows emotional state and alignment (celestial/fiend/undead auto fail the save)",
 			modifiers : ["", "", false],
@@ -898,7 +898,7 @@ var Base_CreatureList = {
 		}, {
 			name : "Dreadful Glare",
 			ability : 6,
-			damage : ["Frightened", "", ""],
+			damage : ["Wis save", "", "Frightened"],
 			range : "60 ft",
 			description : "Wis save or frightened for 1 round; If failed by 5 or more, paralyzed as well",
 			tooltip : "Multiattack\nAs part of one Attack action, the mummy can use its Dreadful Glare and makes one attack with its rotting fist.\n\nDreadful Glare\nThe mummy targets one creature it can see within 60 ft of it. If the target can see the mummy, it must succeed on a DC 11 Wisdom saving throw against this magic or become frightened until the end of the mummy's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies (but not mummy lords) for the next 24 hours.",
@@ -1318,6 +1318,324 @@ var Base_CreatureList = {
 		traits : [{
 			name : "False Appearance",
 			description : "While the tree remains motionless, it is indistinguishable from a normal tree."
+		}]
+	},
+	// Mephits (with help from Undrhil)
+	"dust mephit" : {
+		name : "Mephit, Dust",
+		source : [["SRD", 330], ["M", 215]],
+		size : 5, //Tiny
+		type : "Elemental",
+		subtype : "",
+		alignment : "Neutral Evil",
+		ac : 12,
+		hp : 17,
+		hd : [5, 6],
+		speed : "30 ft,\nfly 30 ft",
+		scores : [5, 14, 10, 9, 11, 10],
+		saves : ["", "", "", "", "", ""],
+		skills : {
+			"perception" : 2,
+			"stealth" : 4
+		},
+		senses : "Darkvision 60 ft",
+		passivePerception : 12,
+		languages : "Auran, Terran",
+		challengeRating : "1/2",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		damage_vulnerabilities : "fire",
+		damage_immunities : "poison",
+		condition_immunities : "poisoned",
+		attacks : [{
+			name : "Claws",
+			ability : 2,
+			damage : [1, 4, "slashing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}, {
+			name : "Blinding Breath (Recharge 6)",
+			ability : 3,
+			damage : ["Dex save", "", "Blinded"],
+			range : "15-ft cone",
+			description : "Hits all in area; Dex save or blinded for 1 min; Affected can repeat save at end of each turn",
+			dc : true,
+			modifiers : ["", "", false],
+			tooltip : "The mephit exhales a 15-ft cone of blinding dust. Each creature in that area must succeed on a DC 10 Dexterity saving throw or be blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+		}],
+		traits : [{
+			name : "Death Burst",
+			description : "When the mephit dies, it explodes in a burst of dust. Each creature within 5 ft of it must then succeed on a DC 10 Constitution saving throw or be blinded for 1 minute. A blinded creature can repeat the saving throw on each of its turns, ending the effect on itself on a success."
+		}, {
+			name : "Innate Spellcasting (1/day)",
+			description : "The mephit can innately cast Sleep, requiring no material components. Its innate spellcasting ability is Charisma."
+		}, {
+			name : "Blinding Breath (Recharge 6)",
+			description : "The mephit exhales a 15-ft cone of blinding dust. Each creature in that area must succeed on a DC 10 Dexterity saving throw or be blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+		}]
+	},
+	"ice mephit" : {
+		name : "Mephit, Ice",
+		source : [["SRD", 331], ["M", 215]],
+		size : 4, //Small
+		type : "Elemental",
+		subtype : "",
+		alignment : "Neutral Evil",
+		ac : 11,
+		hp : 21,
+		hd : [6, 6],
+		speed : "30 ft,\nfly 30 ft",
+		scores : [7, 13, 10, 9, 11, 12],
+		saves : ["", "", "", "", "", ""],
+		skills : {
+			"perception" : 2,
+			"stealth" : 3
+		},
+		senses : "Darkvision 60 ft",
+		passivePerception : 12,
+		languages : "Aquan, Auran",
+		challengeRating : "1/2",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		damage_vulnerabilities : "bludgeoning, fire",
+		damage_immunities : "cold, poison",
+		condition_immunities : "poisoned",
+		attacks : [{
+			name : "Claws",
+			ability : 2,
+			damage : [1, 4, "slashing"],
+			range : "Melee (5 ft)",
+			description : "+1d4 cold damage"
+		}, {
+			name : "Frost Breath (Recharge 6)",
+			ability : 3,
+			damage : [2, 4, "cold"],
+			range : "15-ft cone",
+			description : "Hits all in area; Dex save, success - half damage",
+			dc : true,
+			modifiers : ["", "", false],
+			tooltip : "The mephit exhales a 15-ft cone of cold air. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 5 (2d4) cold damage on a failed save, or half as much damage on a successful one."
+		}],
+		traits : [{
+			name : "Death Burst",
+			description : "When the mephit dies, it explodes in a burst of jagged ice. Each creature within 5 ft of it must then succeed on a DC 10 Dexterity saving throw, taking 4 (1d8) slashing damage on a failed save, or half as much damage on a successful one."
+		}, {
+			name : "Innate Spellcasting (1/day)",
+			description : "The mephit can innately cast Fog Cloud, requiring no material components. Its innate spellcasting ability is Charisma."
+		}, {
+			name : "Frost Breath (Recharge 6)",
+			description : "The mephit exhales a 15-ft cone of cold air. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 5 (2d4) cold damage on a failed save, or half as much damage on a successful one."
+		}],
+		features : [{
+			name : "False Appearance",
+			description : "While the mephit remains motionless, it is indistinguishable from an ordinary shard of ice."
+		}]
+	},
+	"magma mephit" : {
+		name : "Mephit, Magma",
+		source : [["SRD", 331], ["M", 216]],
+		size : 4, //Small
+		type : "Elemental",
+		subtype : "",
+		alignment : "Neutral Evil",
+		ac : 11,
+		hp : 22,
+		hd : [5, 6],
+		speed : "30 ft,\nfly 30 ft",
+		scores : [8, 12, 12, 7, 10, 10],
+		saves : ["", "", "", "", "", ""],
+		skills : {
+			"stealth" : 3
+		},
+		senses : "Darkvision 60 ft",
+		passivePerception : 10,
+		languages : "Ignan, Terran",
+		challengeRating : "1/2",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		damage_vulnerabilities : "cold",
+		damage_immunities : "fire, poison",
+		condition_immunities : "poisoned",
+		attacks : [{
+			name : "Claws",
+			ability : 2,
+			damage : [1, 4, "slashing"],
+			range : "Melee (5 ft)",
+			description : "+1d4 fire damage"
+		}, {
+			name : "Fire Breath (Recharge 6)",
+			ability : 3,
+			damage : [2, 6, "fire"],
+			range : "15-ft cone",
+			description : "Hits all in area; Dex save, success - half damage",
+			dc : true,
+			modifiers : ["", "", false],
+			tooltip : "The mephit exhales a 15-ft cone of fire. Each creature in that area must make a DC 11 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one."
+		}],
+		traits : [{
+			name : "Death Burst",
+			description : "When the mephit dies, it explodes in a burst of lava. Each creature within 5 ft of it must then succeed on a DC 10 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one."
+		}, {
+			name : "Innate Spellcasting (1/day)",
+			description : "The mephit can innately cast Heat Metal (spell save DC 10), requiring no material components. Its innate spellcasting ability is Charisma."
+		}, {
+			name : "Fire Breath (Recharge 6)",
+			description : "The mephit exhales a 15-ft cone of fire. Each creature in that area must make a DC 11 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one."
+		}],
+		features : [{
+			name : "False Appearance",
+			description : "While the mephit remains motionless, it is indistinguishable from an ordinary mound of magma."
+		}]
+	},
+	"mud mephit" : {
+		name : "Mephit, Mud",
+		source : [["SRD", 331], ["M", 216]],
+		size : 5, //Tiny
+		type : "Elemental",
+		subtype : "",
+		alignment : "Neutral Evil",
+		ac : 11,
+		hp : 27,
+		hd : [6, 6],
+		speed : "20 ft,\nfly 20 ft,\nswim 20 ft",
+		scores : [8, 12, 12, 9, 11, 7],
+		saves : ["", "", "", "", "", ""],
+		skills : {
+			"stealth" : 3
+		},
+		senses : "Darkvision 60 ft",
+		passivePerception : 10,
+		languages : "Aquan, Terran",
+		challengeRating : "1/4",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		damage_immunities : "poison",
+		condition_immunities : "poisoned",
+		attacks : [{
+			name : "Fists",
+			ability : 2,
+			damage : [1, 6, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : ""
+		}, {
+			name : "Mud Breath (Recharge 6)",
+			ability : 3,
+			damage : ["Dex save", "", "Restrained"],
+			range : "5 ft",
+			description : "Dex save or restrained for 1 min; Affected target can repeat save at the end of each of its turns",
+			dc : true,
+			modifiers : ["", "", false],
+			tooltip : "The mephit belches viscid mud onto one creature within 5 ft of it. If the target is Medium or smaller, it must succeed on a DC 11 Dexterity saving throw or be restrained for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+		}],
+		traits : [{
+			name : "Death Burst",
+			description : "When the mephit dies, it explodes in a burst of sticky mud. Each Medium or smaller creature within 5 ft of it must succeed on a DC 11 Dexterity saving throw or be restrained until the end of the creature's next turn."
+		}, {
+			name : "False Appearance",
+			description : "While the mephit remains motionless, it is indistinguishable from an ordinary mound of mud."
+		}, {
+			name : "Mud Breath (Recharge 6)",
+			description : "The mephit belches viscid mud onto one creature within 5 ft of it. If the target is Medium or smaller, it must succeed on a DC 11 Dexterity saving throw or be restrained for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+		}]
+	},
+	"smoke mephit" : {
+		name : "Mephit, Smoke",
+		source : [["SRD", 331], ["M", 217]],
+		size : 4, //Small
+		type : "Elemental",
+		subtype : "",
+		alignment : "Neutral Evil",
+		ac : 12,
+		hp : 22,
+		hd : [5, 6],
+		speed : "30 ft,\nfly 30 ft",
+		scores : [6, 14, 12, 10, 10, 11],
+		saves : ["", "", "", "", "", ""],
+		skills : {
+			"perception" : 2,
+			"stealth" : 4
+		},
+		senses : "Darkvision 60 ft",
+		passivePerception : 12,
+		languages : "Auran, Ignan",
+		challengeRating : "1/4",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		damage_immunities : "fire, poison",
+		condition_immunities : "poisoned",
+		attacks : [{
+			name : "Claws",
+			ability : 2,
+			damage : [1, 4, "slashing"],
+			range : "Melee (5 ft)",
+			description : ""
+		}, {
+			name : "Cinder Breath (Recharge 6)",
+			ability : 3,
+			damage : ["Dex Save", "", "Blinded"],
+			range : "15-ft cone",
+			description : "Hits all in area; Dex save or blinded until the end of the next turn",
+			dc : true,
+			modifiers : ["dc-1", "", false],
+			tooltip : "The mephit exhales a 15-ft cone of smoldering ash. Each creature in that area must succeed on a DC 10 Dexterity saving throw or be blinded until the end of the mephit's next turn."
+		}],
+		traits : [{
+			name : "Death Burst",
+			description : "When the mephit dies, it leaves behind a cloud of smoke that fills a 5-ft-radius sphere centered on its space. The sphere is heavily obscured. Wind disperses the cloud, which otherwise lasts for 1 minute."
+		}, {
+			name : "Innate Spellcasting (1/day)",
+			description : "The mephit can innately cast Dancing Lights, requiring no material components. Its innate spellcasting ability is Charisma."
+		}, {
+			name : "Cinder Breath (Recharge 6)",
+			description : "The mephit exhales a 15-ft cone of smoldering ash. Each creature in that area must succeed on a DC 10 Dexterity saving throw or be blinded until the end of the mephit's next turn."
+		}]
+	},
+	"steam mephit" : {
+		name : "Mephit, Steam",
+		source : [["SRD", 331], ["M", 217]],
+		size : 4, //Small
+		type : "Elemental",
+		subtype : "",
+		alignment : "Neutral Evil",
+		ac : 10,
+		hp : 21,
+		hd : [6, 6],
+		speed : "30 ft,\nfly 30 ft",
+		scores : [5, 11, 10, 11, 10, 12],
+		saves : ["", "", "", "", "", ""],
+		senses : "Darkvision 60 ft",
+		passivePerception : 10,
+		languages : "Aquan, Ignan",
+		challengeRating : "1/4",
+		proficiencyBonus : 2,
+		attacksAction : 1,
+		damage_immunities : "fire, poison",
+		condition_immunities : "poisoned",
+		attacks : [{
+			name : "Claws",
+			ability : 2,
+			damage : [1, 4, "slashing"],
+			range : "Melee (5 ft)",
+			description : "+1d4 fire damage"
+		}, {
+			name : "Steam Breath (Recharge 6)",
+			ability : 3,
+			damage : [1, 8, "fire"],
+			range : "15-ft cone",
+			description : "Hits all in area; Dex save, success - half damage",
+			dc : true,
+			modifiers : ["", "", false],
+			tooltip : "The mephit exhales a 15-ft cone of scalding steam. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 4 (1d8) fire damage on a failed save, or half as much damage on a successful one."
+		}],
+		traits : [{
+			name : "Death Burst",
+			description : "When the mephit dies, it explodes in a cloud of steam. Each creature within 5 ft of the mephit must succeed on a DC 10 Dexterity saving throw or take 4 (1d8) fire damage."
+		}, {
+			name : "Innate Spellcasting (1/day)",
+			description : "The mephit can innately cast Blur, requiring no material components. Its innate spellcasting ability is Charisma."
+		}, {
+			name : "Steam Breath (Recharge 6)",
+			description : "The mephit exhales a 15-ft cone of scalding steam. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 4 (1d8) fire damage on a failed save, or half as much damage on a successful one."
 		}]
 	},
 	// Beasts (familiars, Ranger and general animal companions, and Druid Wild Shapes) [Miscellaneous Creatures Section]
@@ -2607,7 +2925,7 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Illumination",
-			description : "The beetle sheds bright light in a 10-foot radius and dim light for an additional 10 ft."
+			description : "The beetle sheds bright light in a 10-ft radius and dim light for an additional 10 ft."
 		}]
 	},
 	"giant frog" : {
@@ -2796,7 +3114,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Ink Cloud (Recharges after a Short or Long Rest)",
-			description : "As an action, a 20-foot-radius cloud of ink extends all around the octopus if it is underwater. The area is heavily obscured for 1 minute, although a significant current can disperse the ink. After releasing the ink, the octopus can use the Dash action as a bonus action."
+			description : "As an action, a 20-ft-radius cloud of ink extends all around the octopus if it is underwater. The area is heavily obscured for 1 minute, although a significant current can disperse the ink. After releasing the ink, the octopus can use the Dash action as a bonus action."
 		}],
 		wildshapeString : "Darkvision 60 ft| Water Breathing: can breathe only underwater| Hold Breath: can hold its breath for 1 hourout of water| Underwater Camouflage: advantage on Dexterity (Stealth) checks made while underwater| Ink Cloud (Recharges after a Short or Long Rest): if underwater, 20-ft radius cloud of ink around octopus, heavily obscures for 1 minute, can be dispersed. After releasing, can use the Dash action as a bonus action"
 	},
@@ -3072,7 +3390,7 @@ var Base_CreatureList = {
 		}, {
 			name : "Web (Recharge 5-6)",
 			ability : 2,
-			damage : ["Restrained", "", ""],
+			damage : ["\u2015", "", "Restrained"],
 			range : "30/60 ft",
 			description : "Target can escape as an action with a DC 12 Strength check, or by destroying the webbing (AC 10; 5 HP)",
 			modifiers : ["", "", false],
@@ -3557,9 +3875,9 @@ var Base_CreatureList = {
 			description : "If the lion moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the lion can make one bite attack against it as a bonus action."
 		}, {
 			name : "Running Leap",
-			description : "With a 10-foot running start, the lion can long jump up to 25 ft."
+			description : "With a 10-ft running start, the lion can long jump up to 25 ft."
 		}],
-		wildshapeString : "Keen Smell: advantage on Wis (Perception) checks that rely on smell| Pack Tactics: advantage on attack rolls if at least one capable ally is within 5 ft of the target| Pounce: if target is hit with a claw attack after the lion moved at least 20 ft straight on the same turn, DC 13 Str save or knocked prone and the lion can make one bite attack against it as a bonus action| Running Leap: long jump up to 25 ft with a 10-foot running start"
+		wildshapeString : "Keen Smell: advantage on Wis (Perception) checks that rely on smell| Pack Tactics: advantage on attack rolls if at least one capable ally is within 5 ft of the target| Pounce: if target is hit with a claw attack after the lion moved at least 20 ft straight on the same turn, DC 13 Str save or knocked prone and the lion can make one bite attack against it as a bonus action| Running Leap: long jump up to 25 ft with a 10-ft running start"
 	},
 	"lizard" : {
 		name : "Lizard",

@@ -29,7 +29,7 @@ var FightingStyles = {
 					for (var i = 1; i <= FieldNumbers.actions; i++) {
 						if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) return;
 					};
-					if (v.isMeleeWeapon && !v.isNaturalWeapon && !(/\b(2|two).?hand(ed)?s?\b/i).test(v.theWea.description)) output.extraDmg += 2;
+					if (v.isMeleeWeapon && !v.isNaturalWeapon && !(/((^|[^+-]\b)2|\btwo).?hand(ed)?s?\b/i).test(fields.Description)) output.extraDmg += 2;
 				},
 				"When I'm wielding a melee weapon in one hand and no weapon in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."
 			]
@@ -41,7 +41,7 @@ var FightingStyles = {
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (v.isMeleeWeapon && (/\b(versatile|(2|two).?hand(ed)?s?)\b/i).test(v.theWea.description)) {
+					if (v.isMeleeWeapon && (/(\bversatile|((^|[^+-]\b)2|\btwo).?hand(ed)?s?)\b/i).test(fields.Description)) {
 						fields.Description += (fields.Description ? '; ' : '') + 'Re-roll 1 or 2 on damage die' + ((/versatile/i).test(fields.Description) ? ' when two-handed' : '');
 					}
 				},
@@ -829,7 +829,7 @@ var Base_ClassList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (classes.known.monk && classes.known.monk.level && (v.theWea.monkweapon || v.baseWeaponName == "unarmed strike" || v.baseWeaponName == "shortsword" || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/heavy|(2|two).?hand(ed)?s?/i).test(v.theWea.description)))) {
+							if (classes.known.monk && classes.known.monk.level && (v.theWea.monkweapon || v.baseWeaponName == "unarmed strike" || v.baseWeaponName == "shortsword" || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/heavy|((^|[^+-]\b)2|\btwo).?hand(ed)?s?/i).test(fields.Description)))) {
 								var aMonkDie = function (n) { return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10; }(classes.known.monk.level);
 								try {
 									var curDie = eval_ish(fields.Damage_Die.replace('d', '*'));

@@ -4751,7 +4751,7 @@ var Base_MagicItemsList = {
 			source : [["SRD", 241], ["D", 197]],
 			ability : 0,
 			type : "Magic Item",
-			damage : ["\u2015", "", "Restrained"],
+			damage : ["Dex save", "", "Restrained"],
 			range : "20 ft",
 			description : "Dexterity saving throw or restrained; DC 15 Strength or Dexterity check to escape",
 			abilitytodamage : false,

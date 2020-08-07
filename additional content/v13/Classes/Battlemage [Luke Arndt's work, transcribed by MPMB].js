@@ -747,14 +747,14 @@ AddSubClass("battlemage", "runic bulwark", {
 				atkAdd : [
 					function (fields, v) {
 						if ((/^(?=.*runic)(?=.*weapon).*$/i).test(v.WeaponText)) {
-							if (v.isMeleeWeapon && (/\b(versatile|(2|two).?hand(ed)?s?)\b/i).test(v.theWea.description)) {
+							if (v.isMeleeWeapon && (/(\bversatile|((^|[^+-]\b)2|\btwo).?hand(ed)?s?)\b/i).test(fields.Description)) {
 								if (v.CritChance) return;
 								v.CritChance = 19;
 								fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20';
-							} else if (v.isMeleeWeapon && !(/thrown/i).test(v.theWea.description) && fields.Range == "Melee") {
+							} else if (v.isMeleeWeapon && !(/thrown/i).test(fields.Description) && fields.Range == "Melee") {
 								fields.Description += (fields.Description ? '; ' : '') + 'Thrown';
 								fields.Range = "Melee, 30/120 ft";
-							} else if (v.isRangedWeapon && (/ammunition/i).test(v.theWea.description)) {
+							} else if (v.isRangedWeapon && (/ammunition/i).test(fields.Description)) {
 								fields.Description += (fields.Description ? '; ' : '') + 'Conjures own ammo';
 							}
 						}
