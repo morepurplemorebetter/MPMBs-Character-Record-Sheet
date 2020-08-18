@@ -34,14 +34,14 @@
 
 	Effect:		This is the syntax for adding a new weapon to the sheet.
 				This is used in the Attack section of the sheet, and
-				can thus include things like attack cantrips and the like.
+				can thus include things like attack cantrips.
 
 	Remarks:	This syntax is also used for objects in the 'weaponOptions' attribute found in '_common attributes.js'.
 				For the 'weaponOptions', you can disregard the object name and WeaponsList variable.
 				Note that if you want a class feature, race, racial trait, feat, background, or magic item to add a weapon/attack,
 				you should be using the 'weaponOptions' attribute.
 
-	Sheet:		v13.0.0 (2019-??-??)
+	Sheet:		v13.0.0 (2020-??-??)
 
 */
 
@@ -169,8 +169,21 @@ WeaponsList["sword of purple"] = {
 	The sheet will automatically determine whether to use Strength or
 	Dexterity based on the character's ability scores.
 
-	Setting this to 0 or false is the same as not including this attribute and
-	will cause the weapon to not have a To Hit and Damage calculated.
+	Even with this attribute, the sheet will automatically use the spellcasting ability if:
+		* The attribute `list` or `type` is set to "Cantrip" or "Spell", or
+		* the object name of the weapon matches an entry in the `SpellsList` object, or
+		* the attribute `SpellsList` is set and matches a `SpellsList` entry.
+	It will look for the highest spellcasting ability score from the character's spellcasting classes,
+	but considering the following:
+		1. If this spell is known by any of the character's classes, it will only consider those classes.
+		2. If this spell is not known by any of the character's classes, it will consider all its spellcasting classes.
+		3. If the character has no spellcasting classes, it will use the attribute given here.
+	You can change this behaviour with the `useSpellcastingAbility` attribute, see below.
+
+	Setting this to 0 will cause the To Hit and Damage to be calculated without any ability score modifier.
+
+	Setting this to false is the same as not including this attribute and
+	will cause the weapon to not have any To Hit or Damage calculated.
 */
 	abilitytodamage : true,
 /*	abilitytodamage // REQUIRED //
@@ -365,6 +378,32 @@ WeaponsList["sword of purple"] = {
 	As a result, it will be able to determine which ability score to use for it automatically from the character's spellcasting classes.
 
 	Setting this to an empty string ("") is the same as not including this attribute.
+*/
+	useSpellcastingAbility : true,
+/*	useSpellcastingAbility // OPTIONAL //
+	TYPE:	boolean
+	USE:	force the use of the spellcasting ability for the weapon
+
+	Without this attribute, the sheet will automatically use the spellcasting ability if:
+		* The attribute `list` or `type` is set to "Cantrip" or "Spell", or
+		* the object name of the weapon matches an entry in the `SpellsList` object, or
+		* the attribute `SpellsList` is set and matches a `SpellsList` entry.
+
+	Which spellcasting ability it selects is explained in the `ability` attribute above for more details.
+
+	TRUE
+	When set to `true`, the sheet will always apply the spellcasting ability,
+	even if the prerequisites are not met.
+
+	FALSE
+	When set to `false`, the sheet will never apply the spellcasting ability,
+	even if the prerequisites are met. It will instead always use the ability set by the `ability` attribute.
+	It will still apply weapon special rules like 'Finesse'.
+
+	UNDEFINED
+	Do not include this attribute if you want the sheet to determine if the spellcasting ability should be used or not.
+
+	Setting this to false is NOT the same as not including this attribute!
 */
 	baseWeapon : "longsword",
 /*	baseWeapon // OPTIONAL //

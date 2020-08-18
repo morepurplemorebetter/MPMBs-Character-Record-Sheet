@@ -5585,7 +5585,8 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 			(/finesse/i).test(theWea.description) ? StrDex : theWea.ability;
 
 		//change mod if this is concerning a spell/cantrip
-		if (thisWeapon[3]) {
+		var forceUseSpellcastingMod = theWea.useSpellcastingAbility === undefined ? false : theWea.useSpellcastingAbility ? "y" : "n";
+		if ((thisWeapon[3] || forceUseSpellcastingMod == "y") && forceUseSpellcastingMod != "n") {
 			if (thisWeapon[4].length) {
 				var abiArr = thisWeapon[4].map( function(sClass) {
 					return CurrentSpells[sClass] && CurrentSpells[sClass].ability && !isNaN(CurrentSpells[sClass].ability) ? CurrentSpells[sClass].ability : 0;

@@ -5975,7 +5975,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 			break;
 	}
 	// Create the matching regex with non-capturing inner groups and doesn't use "g" because match() won't work
-	var tRegex = RegExp(special1stRxGrp + "((?:\\+?\\d+d?\\d*)+)((?:\\+\\d+d?\\d*\\/(?:\\d*SL|PP|extra PP))?(?:\\+spell(?:casting)? (?:ability )?mod(?:ifier)?|(?:\\+|-)\\d+ \\(.{3}\\))? (?:" + dmgType + ") (?:dmg|damage))", "i");
+	var tRegex = RegExp(special1stRxGrp + "((?:\\+?\\d+d?\\d*)+)((?:\\+\\d+d?\\d*\\/(?:\\d*SL|PP|extra PP))?(?:\\+spell(?:casting)? (?:ability )?mod(?:ifier)?|(?:\\+|-)\\d+ \\(.{3}\\))? (?:" + dmgType + ") (?:dmg|damage)(?: per \\w+| each)?)", "i");
 	var tRxMatch = spellObj.description.match(tRegex);
 	// Stop now if no match or a match but not for any dice while onlyRolls == true
 	if (!tRxMatch || (onlyRolls && !(/\d+d\d+/i).test(tRxMatch[2]))) return;
