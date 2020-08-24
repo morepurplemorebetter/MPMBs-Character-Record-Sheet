@@ -4287,8 +4287,8 @@ var Base_MagicItemsList = {
 			firstCol : 1
 		}, {
 			name : "Ball lightning (2 chr)",
-			spells : ["burning hands"],
-			selection : ["burning hands"],
+			spells : ["flaming sphere"],
+			selection : ["flaming sphere"],
 			firstCol : 2
 		}, {
 			name : "Shooting stars (1-3 chr)",
@@ -4297,7 +4297,7 @@ var Base_MagicItemsList = {
 			firstCol : "1+"
 		}],
 		spellChanges : {
-			"burning hands" : { // change into Ball Lightning
+			"flaming sphere" : { // change into Ball Lightning
 				name : "Ball Lightning",
 				source : [["SRD", 237], ["D", 192]],
 				level : "",
@@ -4311,7 +4311,7 @@ var Base_MagicItemsList = {
 				description : "1-4 spheres; bns a move all 30 ft; 1st crea in 5 ft save or Lightning dmg (1:4d12, 2:5d4, 3:2d6, 4:2d4)",
 				descriptionFull : "You can expend 2 charges from the ring of shooting starts as an action to create one to four 3-foot-diameter spheres of lightning. The more spheres you create, the less powerful each sphere is individually.\n   Each sphere appears in an unoccupied space you can see within 120 feet of you. The spheres last as long as you concentrate (as if concentrating on a spell), up to 1 minute. Each sphere sheds dim light in a 30-foot radius.\n   As a bonus action, you can move each sphere up to 30 feet, but no farther than 120 feet away from you. When a creature other than you comes within 5 feet of a sphere, the sphere discharges lightning at that creature and disappears. That creature must make a DC 15 Dexterity saving throw. On a failed save, the creature takes lightning damage based on the number of spheres you created (4 spheres = 2d4, 3 spheres = 2d6, 2 spheres = 5d4, 1 sphere = 4d12).",
 				completeRewrite : true, // indicates that the changes here even overwrite the tooltip
-				changes : "The listing of 'Burning Hands' has been completely changed to reflect the 'Ball Lightning' ability of the Ring of Shooting Stars. Even the information above is changed."
+				changes : "The listing of 'Flaming Sphere' has been completely changed to reflect the 'Ball Lightning' ability of the Ring of Shooting Stars. Even the information above is changed."
 			},
 			"magic missile" : { // change into Shooting Stars
 				name : "Shooting Stars",

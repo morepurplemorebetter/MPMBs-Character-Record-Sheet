@@ -334,35 +334,35 @@ function ApplySpell(FldValue, rememberFldName) {
 
 			//make the tooltip for the description field
 			var spTooltip = "";
-			if (aSpell.completeRewrite) foundSpell = aSpell;
-			if (foundSpell.descriptionFull) {
-				spTooltip = toUni(foundSpell.name);
-				if (foundSpell.school) {
+			var ttSpellObj = aSpell.completeRewrite ? aSpell : foundSpell;
+			if (ttSpellObj.descriptionFull) {
+				spTooltip = toUni(ttSpellObj.name);
+				if (ttSpellObj.school) {
 					spTooltip += " \u2014 ";
-					var spSchoolNm = spellSchoolList[foundSpell.school] ? spellSchoolList[foundSpell.school] : foundSpell.school;
-					if (foundSpell.psionic) {
-						var spLevelNm = spellLevelList[foundSpell.level + 10].replace(/s\b/, '');
-						spTooltip += foundSpell.level == 0 ?
+					var spSchoolNm = spellSchoolList[ttSpellObj.school] ? spellSchoolList[ttSpellObj.school] : ttSpellObj.school;
+					if (ttSpellObj.psionic) {
+						var spLevelNm = spellLevelList[ttSpellObj.level + 10].replace(/s\b/, '');
+						spTooltip += ttSpellObj.level == 0 ?
 							spLevelNm :
 							spSchoolNm.capitalize() + spLevelNm.toLowerCase();
 					} else {
-						var spLevelNm = spellLevelList[foundSpell.level].replace(/s\b/, '').toLowerCase();
-						spTooltip += foundSpell.level == 0 ?
+						var spLevelNm = spellLevelList[ttSpellObj.level] ? spellLevelList[ttSpellObj.level].replace(/s\b/, '').toLowerCase() : "";
+						spTooltip += ttSpellObj.level == 0 ?
 							spSchoolNm.capitalize() + " " + spLevelNm :
 							spLevelNm + " " + spSchoolNm;
 					}
-					if (foundSpell.ritual) spTooltip += " (ritual)";
+					if (ttSpellObj.ritual) spTooltip += " (ritual)";
 				}
 
-				if (foundSpell.time) spTooltip += "\n  Casting Time:  " + foundSpell.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
+				if (ttSpellObj.time) spTooltip += "\n  Casting Time:  " + ttSpellObj.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
 
-				if (foundSpell.range) spTooltip += "\n  Range:  " + foundSpell.range;
+				if (ttSpellObj.range) spTooltip += "\n  Range:  " + ttSpellObj.range;
 
-				if (foundSpell.components) spTooltip += "\n  Components:  " + foundSpell.components + (foundSpell.compMaterial ? " (" + foundSpell.compMaterial.substr(0,1).toLowerCase() + foundSpell.compMaterial.substr(1) + ")" : "");
+				if (ttSpellObj.components) spTooltip += "\n  Components:  " + ttSpellObj.components + (ttSpellObj.compMaterial ? " (" + ttSpellObj.compMaterial.substr(0,1).toLowerCase() + ttSpellObj.compMaterial.substr(1) + ")" : "");
 
-				if (foundSpell.duration) spTooltip += "\n  Duration:  " + foundSpell.duration.replace(/\b(conc), \b/i, '$1entration, up to ').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours').replace(/\(d\)/i, "(dismiss as 1 action)").replace(/(instant)\./i, "$1aneous");
+				if (ttSpellObj.duration) spTooltip += "\n  Duration:  " + ttSpellObj.duration.replace(/\b(conc), \b/i, '$1entration, up to ').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours').replace(/\(d\)/i, "(dismiss as 1 action)").replace(/(instant)\./i, "$1aneous");
 
-				spTooltip += "\n\n" + foundSpell.descriptionFull;
+				spTooltip += "\n\n" + ttSpellObj.descriptionFull;
 				if (ObjLength(aSpell.changesObj)) {
 					var txt = [];
 					for (var str in aSpell.changesObj) txt.push(toUni(str) + aSpell.changesObj[str]);
