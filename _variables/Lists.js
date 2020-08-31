@@ -73,14 +73,17 @@ function spellsAfterUserScripts(reDoAllSpells) {
 	setSpellVariables(reDoAllSpells);
 };
 
-var typePF = (/printer friendly/i).test(tDoc.info.SheetType);
-var typeA4 = (/a4/i).test(tDoc.info.SheetType);
-var typeLR = (/letter/i).test(tDoc.info.SheetType);
-var minVer = tDoc.info.SpellsOnly || tDoc.info.AdvLogOnly;
-var semVers = getSemVers(tDoc.info.SheetVersion, tDoc.info.SheetVersionType);
-var sheetVersion = semVersToNmbr(semVers);
-var isWindows = app.platform === "WIN";
-var patreonVersion = tDoc.getField("SaveIMG.Patreon").submitName === "";
+function setGlobalVars() {
+	tDoc.typePF = (/printer friendly/i).test(tDoc.info.SheetType);
+	tDoc.typeA4 = (/a4/i).test(tDoc.info.SheetType);
+	tDoc.typeLR = (/letter/i).test(tDoc.info.SheetType);
+	tDoc.minVer = tDoc.info.SpellsOnly || tDoc.info.AdvLogOnly;
+	tDoc.semVers = getSemVers(tDoc.info.SheetVersion, tDoc.info.SheetVersionType);
+	tDoc.sheetVersion = semVersToNmbr(semVers);
+	tDoc.isWindows = app.platform === "WIN";
+	tDoc.patreonVersion = tDoc.getField("SaveIMG.Patreon").submitName === "";
+}
+setGlobalVars();
 
 var UnitsList = {
 	metric : {
@@ -291,7 +294,7 @@ var CurrentWeapons = {
 var CurrentFeats = {
 	known : [],
 	choices : [],
-	level : What("Character Level") ? Number(What("Character Level")) : 1
+	level : !minVer && What("Character Level") ? Number(What("Character Level")) : 1
 };
 
 var CurrentMagicItems = {

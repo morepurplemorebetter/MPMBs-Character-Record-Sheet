@@ -4420,7 +4420,7 @@ function UpdateDropdown(type, weapon) {
 	IsSetDropDowns = false;
 };
 
-function ChangeToCompleteAdvLogSheet() {
+function ChangeToCompleteAdvLogSheet(FAQpath) {
 	if (minVer) return;
 	ResetAll();
 	tDoc.resetForm(["User Script", "User_Imported_Files.Stringified"]); // remove all custom scripts
@@ -4471,32 +4471,35 @@ function ChangeToCompleteAdvLogSheet() {
 	var keyCF = "This Adventure Logsheet is an extraction from MPMB's Character Record Sheet [" + tDoc.info.SheetType + "]. This sheet uses elements designed by Javier Aumente, but has been created from the ground up by Joost Wijnen [morepurplemorebetter] (mpmb@flapkan.com).\\n\\nOther credits:\\n- Gretkatillor on ENworld.org for the code in this sheet was inspired by Gretkatillor's brilliant 'Clean Sheet'."
 
 	//move the pages that we want to extract to a new instance, by running code from a console
-	var forConsole = "tDoc.extractPages({nStart: 0, nEnd: 3});\n\n";
-	forConsole += "this.info.AdvLogOnly = true;";
-	forConsole += " var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsClasses', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsPsionics', 'ListsRaces', 'ListsSources', 'ListsSpells']; for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};";
-	forConsole += " this.createTemplate({cName:\"ALlog\", nPage:1 });";
-	forConsole += " this.createTemplate({cName:\"remember\", nPage:2 });";
-	forConsole += " this.createTemplate({cName:\"blank\", nPage:3 });";
-	forConsole += " this.getTemplate(\"ALlog\").hidden = true;";
-	forConsole += " this.getTemplate(\"remember\").hidden = true;";
-	forConsole += " this.getTemplate(\"blank\").hidden = true;";
-	forConsole += " this.info.SheetVersion = \"" + tDoc.info.SheetVersion + "\";";
-	forConsole += " this.info.SheetType = \"" + tDoc.info.SheetType + "\";";
-	forConsole += " this.info.Keywords = \"" + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + "\";";
-	forConsole += " this.info.Subject = \"D&D 5e; Character Sheet; Adventurers League; Adventure Logsheet\";";
-	forConsole += " this.info.ContactEmail = \"mpmb@flapkan.com\";";
-	forConsole += " this.info.Title = MakeDocName();";
-	forConsole += " typePF = (/printer friendly/i).test(this.info.SheetType);";
-	forConsole += " typeA4 = (/a4/i).test(this.info.SheetType);";
-	forConsole += " typeLR = (/letter/i).test(this.info.SheetType);";
-	forConsole += " minVer = this.info.SpellsOnly || this.info.AdvLogOnly;";
-	forConsole += " CreateBkmrksCompleteAdvLogSheet();";
-	forConsole += " this.calculateNow();";
-	forConsole += " this.importDataObject({cName: 'FAQ.pdf', cDIPath: \"/D/Doc/NAS/02 Hobby/Dungeons & Dragons/5th Edition/- Sheets Creation/- MPMB's Character Record Sheet/Frequently Asked Questions/FAQ.pdf\"});";
-	forConsole += " Value(\"Opening Remember\", \"No\");";
-	forConsole += " app.execMenuItem(\"GeneralInfo\");";
+	var forConsole = [
+		"Execute the following:\nFirst:",
+		"tDoc.extractPages({nStart: 0, nEnd: 3});",
+		"\nAnd in the newly created document:",
+		"var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsClasses', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsPsionics', 'ListsRaces', 'ListsSources', 'ListsSpells'];",
+		"for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};",
+		"this.createTemplate({cName:'ALlog', nPage:1 });",
+		"this.createTemplate({cName:'remember', nPage:2 });",
+		"this.createTemplate({cName:'blank', nPage:3 });",
+		"this.getTemplate('ALlog').hidden = true;",
+		"this.getTemplate('remember').hidden = true;",
+		"this.getTemplate('blank').hidden = true;",
+		"this.info.AdvLogOnly = true;",
+		'this.info.SheetVersion = "' + tDoc.info.SheetVersion + '";',
+		'this.info.SheetType = "' + tDoc.info.SheetType + '";',
+		'this.info.Keywords = "' + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + '";',
+		'this.info.Subject = "D&D 5e; Character Sheet; Adventurers League; Adventure Logsheet";',
+		'this.info.ContactEmail = "' + tDoc.info.ContactEmail + '";',
+		"setGlobalVars();",
+		"this.info.Title = MakeDocName();",
+		"CreateBkmrksCompleteAdvLogSheet();",
+		"this.calculateNow();",
+		FAQpath ? 'this.importDataObject({cName: "FAQ.pdf", cDIPath: "' + FAQpath + '"});' : '',
+		'Value("Opening Remember", "No");',
+		'app.execMenuItem("GeneralInfo");'
+	];
+	console.clear();
+	console.println(forConsole.join("\n"));
 	console.show();
-	console.println("Execute the following:\n" + forConsole);
 }
 
 //create the bookmarks of a Adventure Logsheet

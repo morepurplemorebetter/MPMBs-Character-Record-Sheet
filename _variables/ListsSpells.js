@@ -4547,4 +4547,4 @@ var Base_SpellsList = {
 	}
 };
 
-var AllSpellsArray, AllSpellsObject, AddSpellsMenu, AllCasterClasses;
+var AllSpellsArray, AllSpellsObject, AddSpellsMenu, AllCasterClasses, spDias;

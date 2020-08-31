@@ -145,7 +145,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	var useAttr = function(uObj, addIt, skipEval, objNm) {
 		var uniqueObjNm = objNm == undefined ? fObjName : fObjName + objNm; // has to be unique
 		var tipNm = displName;
-		var useSpCasting = objNm && (type === "feat" || type === "magic item") ? objNm : aParent;
+		var useSpCasting = objNm && (type === "feat" || type === "magic item") ? aParent + "_-_" + objNm : aParent;
 		if (cnt > 1) {
 			tipNm += " (" + cnt + ")";
 			if (cntCh > 1) uniqueObjNm += " (" + cntCh + ")";
@@ -700,8 +700,8 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice) {
 }
 
 // process the spellChanges attribute
-function processSpChanges(AddRemove, srcNm, spChng, parentName) {
-	var spCast = CurrentSpells[parentName];
+function processSpChanges(AddRemove, srcNm, spChng, spObjName) {
+	var spCast = CurrentSpells[spObjName];
 	var changeHead = "Changes by " + srcNm;
 	if (!spCast || (!AddRemove && !spCast.spellAttrOverride)) return; // nothing to do
 	if (AddRemove) { // adding
