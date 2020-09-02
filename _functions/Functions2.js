@@ -282,10 +282,11 @@ function ApplyCompRace(newRace) {
 			var theSpeed = isNaN(raceSpeed[0]) ? raceSpeed[0] : raceSpeed[0] + " ft";
 		} else {
 			var theSpeed = raceSpeed.walk && raceSpeed.walk.spd ? raceSpeed.walk.spd + " ft" : "";
+			var spdDelimiter = typePF ? ",\n" : ", ";
 			for (aSpeed in raceSpeed) {
 				var Spd = raceSpeed[aSpeed].spd;
 				if (!Spd || aSpeed === "walk") continue;
-				theSpeed += (aSpeed ? ",\n" : "") + aSpeed + " " + Spd + " ft";
+				theSpeed += (aSpeed ? spdDelimiter : "") + aSpeed + " " + Spd + " ft";
 			};
 		};
 		theSpeed = What("Unit System") === "imperial" ? theSpeed : ConvertToMetric(theSpeed, 0.5);
@@ -501,6 +502,7 @@ function ApplyCompRace(newRace) {
 
 		//add speed
 		var theSpeed = What("Unit System") === "imperial" ? CurrentCompRace[prefix].speed : ConvertToMetric(CurrentCompRace[prefix].speed, 0.5);
+		if (typePF) theSpeed = theSpeed.replace("(,|;) ", "$1\n"); // add line breaks
 		Value(prefix + "Comp.Use.Speed", theSpeed);
 
 		thermoM(2/10); //increment the progress dialog's progress
@@ -798,6 +800,7 @@ function ApplyWildshape() {
 	}
 
 	//get the proficiency bonuses
+	ProfBonus("Proficiency Bonus"); // first make sure it is up to date
 	var creaProfBcalc = theCrea.proficiencyBonus;
 	var charProfBcalc = Number(What("Proficiency Bonus"));
 	var creaProfBfix = theCrea.proficiencyBonus;
@@ -841,6 +844,7 @@ function ApplyWildshape() {
 
 	//set speed
 	var theSpeed = What("Unit System") === "imperial" ? theCrea.speed : ConvertToMetric(theCrea.speed, 0.5);
+	if (typePF) theSpeed = theSpeed.replace("(,|;) ", "$1\n"); // add line breaks
 	Value(prefix + "Wildshape." + Fld + ".Speed", theSpeed);
 
 	//if the character is using proficiency dice instead of a bonus, change the values for calculations to zero and change the Proficiency Bonus field to display a dice
@@ -7654,7 +7658,8 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, with
 	} else {
 		if (!notRound) tValue = Math.round(tValue);
 		var metric = What("Unit System") !== "imperial";
-		var returnStr = prefix + " " + RoundTo(tValue * (metric ? 0.3 : 1), 0.5, false, true) + (metric ? " m" : " ft");
+		if (prefix) prefix += " ";
+		var returnStr = prefix + RoundTo(tValue * (metric ? 0.3 : 1), 0.5, false, true) + (metric ? " m" : " ft");
 		return withCleanValue ? [returnStr, tValue] : returnStr;
 	}
 };

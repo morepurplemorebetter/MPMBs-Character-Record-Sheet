@@ -65,13 +65,13 @@ function ParseSpell(input, aCast, limitArray) {
 	if (!input) return "";
 
 	input = clean(RemoveZeroWidths(input.replace(/ \(.{1,2}\)/i, "")), false, true).toLowerCase();
-	if (!input || SpellsList[input]) return input;
+	if (!input || (!limitArray && SpellsList[input])) return input;
 
 	var found = "", foundLen = 0, foundDat = 0, foundPrefCl = false;
 
 	for (var key in SpellsList) { //scan string for all creatures
 		var kObj = SpellsList[key];
-		if (testSource(key, kObj, "spellsExcl") || (limitArray && !limitArray[key])) continue; // test if the spell or its source isn't excluded or if we are only allowed a limited results and this is not one of the options
+		if (testSource(key, kObj, "spellsExcl") || (limitArray && limitArray.indexOf(key) === -1)) continue; // test if the spell or its source isn't excluded or if we are only allowed a limited results and this is not one of the options
 
 		if (kObj.regExpSearch) { // if it has regex, see if a regex matches
 			var thisOne = kObj.regExpSearch.test(input) ? Math.max(key.length, kObj.name.length, kObj.nameAlt ? kObj.nameAlt.length : 0, kObj.nameShort ? kObj.nameShort.length : 0): 0;
@@ -935,7 +935,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 	//define some arrays
 	var returnArray = [];
 	var spByLvl = {sp0 : [], sp1 : [], sp2 : [], sp3 : [], sp4 : [], sp5 : [], sp6 : [], sp7 : [], sp8 : [], sp9 : [], ps0 : [], ps1: []};
-	var refspObj = {};
+	var refspObj = {}, refDisplObj = {};
 
 	var removeSp = function(inSp) {
 		var rSpell = SpellsList[inSp];
@@ -1010,7 +1010,9 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 			};
 			refspObj[spName] = key;
 			if (toDisplay) {
-				spByLvl[SpPs + aSpell.level].push(spName + (aSpell.ritual ? " (R)" : ""));
+				if (aSpell.ritual) spName += " (R)";
+				refDisplObj[spName] = key;
+				spByLvl[SpPs + aSpell.level].push(spName);
 			} else {
 				if (returnOrdered) {
 					spByLvl[SpPs + aSpell.level].push(spName);
@@ -1052,7 +1054,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 		};
 	};
 
-	return returnRef && (returnOrdered || toDisplay) ? [returnArray, refspObj] : returnArray;
+	return returnRef && (returnOrdered || toDisplay) ? [returnArray, toDisplay ? refDisplObj : refspObj] : returnArray;
 };
 
 //generate a number of zero-width characterSet
@@ -1092,13 +1094,13 @@ function CreateSpellObject(inputArray) {
 
 // Find the spell that was typed in the list of the drop-down and select the right one
 function manualInputToSpellObj(dialog, id) {
-	var iResult = dialog.store()[id];
+	var aResult = dialog.store()[id];
 	var idPrime = id.substr(0, 2);
 	var idIdx = Number(id.substr(2)) - 1;
 	var listObj = this["list" + idPrime];
 	if (idPrime === "Bo") listObj = listObj[idIdx];
 	if (listObj[0][iResult]) return; // already something selected from the dropdown
-	iResult = clean(RemoveZeroWidths(iResult.replace(/ ?\(.+\)/i, "")), false, true).toLowerCase();
+	var iResult = clean(RemoveZeroWidths(aResult.replace(/ ?\(.+\)/i, "")), false, true).toLowerCase();
 	if (!iResult) return; // nothing to set
 	var nListObj = newObj(listObj[0]); // Make sure we're not changing a global object
 	var iOptions = Object.keys(listObj[2]);
@@ -1106,6 +1108,17 @@ function manualInputToSpellObj(dialog, id) {
 	var fndResult;
 	var emptyBox = "\u200B\u2002";
 	var acroDumb = "\n\nThink this pop-up is unnecessary? MPMB agrees with you, but Acrobat requires it, funny stuff...";
+
+	var displaySpName = function(sObj) {
+		var name = getSpNm(false, false, sObj) + (sObj.ritual ? " (R)" : "");
+		if (sObj.level !== undefined && spellLevelList[sObj.level]) {
+			name += " [" + (sObj.psionic ? "psionic " : "") +
+					spellLevelList[sObj.level + (sObj.psionic ? 9 : 0)].toLowerCase().replace(/s\b/, '') +
+					(sObj.level ? " spell" : "") + "]";
+		}
+		return name;
+	}
+
 	if (parseInput || (iResult && iResult.length >= 3)) {
 		// Display a dialog with possible matches, if any
 		var partialMatch = { names : [], refKeys : {} };
@@ -1113,18 +1126,23 @@ function manualInputToSpellObj(dialog, id) {
 			var aSpell = SpellsList[iOptions[i]];
 			var aSpNames = aSpell.name + (aSpell.nameAlt ? "_" + aSpell.nameAlt : "") + (aSpell.nameShort ? "_" + aSpell.nameShort : "");
 			if (aSpNames.toLowerCase().indexOf(iResult) !== -1) {
-				partialMatch.names.push(aSpell.name);
-				partialMatch.refKeys[aSpell.name] = iOptions[i];
+				var aSpellNm = displaySpName(aSpell);
+				partialMatch.names.push(aSpellNm);
+				partialMatch.refKeys[aSpellNm] = iOptions[i];
 			}
 		}
-		if (parseInput && partialMatch.names.indexOf(SpellsList[parseInput].name) === -1) {
-			partialMatch.names.unshift(SpellsList[parseInput].name);
-			partialMatch.refKeys[SpellsList[parseInput].name] = parseInput;
+		partialMatch.names.sort();
+		if (parseInput) {
+			var pSpellNm = displaySpName(SpellsList[parseInput]);
+			if (partialMatch.names.indexOf(pSpellNm) === -1) {
+				partialMatch.names.unshift(pSpellNm);
+				partialMatch.refKeys[pSpellNm] = parseInput;
+			}
 		}
 		if (partialMatch.names.length) {
 			var noSelect = "None (clear the drop-down)";
 			partialMatch.names.push(noSelect);
-			var ask = AskUserOptions("Select the spell", "The text you entered didn't match any spell, but is a partial match for the following spells that the drop-down box allows." + (partialMatch.names.length === 2 ? acroDumb : ""), partialMatch.names, "radio", true);
+			var ask = AskUserOptions("Select the spell", "The text you entered is a (partial) match for the following spells that the drop-down box contains." + (partialMatch.names.length === 2 ? acroDumb : ""), partialMatch.names, "radio", true);
 			if (partialMatch.refKeys[ask]) {
 				var askKey = partialMatch.refKeys[ask];
 				fndResult = listObj[2][askKey];
@@ -1136,7 +1154,7 @@ function manualInputToSpellObj(dialog, id) {
 	if (!fndResult) {
 		fndResult = emptyBox;
 		app.alert({
-			cMsg : "The text you entered doesn't match any (part) of the spells in the drop-down box, or was too short to match. The box will now be cleared.\n\nNote that you can select a spell from any spell list you want in the \"Bonus Spells\" section, except those that have a listed \"Origin/Remarks\". Also, make sure that you included the sources you want to use with the \"Source Material\" bookmark." + acroDumb,
+			cMsg : 'You entered, "' + aResult + "\", but it doesn't match any (part) of the spells in the drop-down box, or was too short (3 characters minimum). The box will now be cleared.\n\nNote that you can select a spell from any spell list you want in the \"Bonus Spells\" section, except those that have a listed \"Origin/Remarks\". Also, make sure that you included the sources you want to use with the \"Source Material\" bookmark." + acroDumb,
 			nIcon : 0,
 			cTitle : "No matching spells",
 			nType : 0
@@ -4980,7 +4998,6 @@ function getSpNm(spellKey, getShort, spObj) {
 		}
 	}
 	return getShort ? [shortName, mainName != shortName ? mainName : ""] : mainName;
-	return theRe;
 };
 
 // A function to return the spellcasting ability

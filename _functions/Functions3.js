@@ -2725,7 +2725,7 @@ function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow, forceAttun
 				Value(MIflds[0], item);
 				var recognizedItem = CurrentMagicItems.known[i - 1];
 				if (!recognizedItem) {
-					if (itemDescr !== undefined) Value(MIflds[4], itemDescr);
+					if (itemDescr !== undefined) Value(MIflds[2], itemDescr);
 					if (itemWeight !== undefined) Value(MIflds[3], itemWeight);
 					if (attuned !== undefined) Checkbox(MIflds[4], attuned ? true : false);
 				} else if ((forceAttunedVisible === undefined || forceAttunedVisible) && attuned !== undefined && !attuned && MagicItemsList[recognizedItem].attunement) {

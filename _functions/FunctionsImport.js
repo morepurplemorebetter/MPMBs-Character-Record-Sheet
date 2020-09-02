@@ -760,6 +760,7 @@ function DirectImport(consoleTrigger) {
 
 		//set the level and xp
 		ImportField("Character Level", {notTooltip: true}); ImportField("Total Experience", {notTooltip: true}); ImportField("Add Experience", {notTooltip: true});
+		ProfBonus("Proficiency Bonus"); //make sure the proficiency bonus is updated
 
 		//set the race
 		ImportField("Race", {notTooltip: true, notSubmitName: true});

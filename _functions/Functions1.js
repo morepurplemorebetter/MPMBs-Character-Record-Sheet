@@ -9193,14 +9193,15 @@ function setColorThemes(reset) {
 }
 
 //calculate the proficiency bonus (field calculation)
-function ProfBonus() {
-	var QI = getTemplPre(event.target.name, "AScomp");
+function ProfBonus(useTarget) {
+	var thisEvent = useTarget && tDoc.getField(useTarget) ? tDoc.getField(useTarget) : event.target;
+	var QI = getTemplPre(thisEvent.name, "AScomp");
 	var lvl = What(QI === true ? "Character Level" : QI + "Comp.Use.HD.Level");
 	var ProfMod = QI === true ? What("Proficiency Bonus Modifier") : 0;
 	var useDice = tDoc.getField(QI === true ? "Proficiency Bonus Dice" : QI + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
 	var ProfB = lvl ? ProficiencyBonusList[Math.min(lvl, ProficiencyBonusList.length) - 1] : 0;
-	event.target.submitName = ProfB + ProfMod;
-	event.value = useDice || !lvl ? "" : event.target.submitName;
+	thisEvent.submitName = ProfB + ProfMod;
+	thisEvent.value = useDice || !lvl ? "" : thisEvent.submitName;
 }
 
 //show the proficiency die (field format)
