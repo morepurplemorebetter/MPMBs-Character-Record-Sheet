@@ -95,7 +95,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"hagr - vind" : {
 				name : "Hagr - Vind",
 				source : ["XLNtEE", 20],
-				description : "\n   " + "While active, I gain 5 ft + my Constitution mod in ft extra movement speed (min 5 ft)",
+				description : "\n   " + "While active, I gain 5 ft \xD7 my Constitution mod extra movement speed (min 5 ft)",
 				usages : 1,
 				recovery : "short rest",
 				action : ["action", ""]
