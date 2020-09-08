@@ -29,7 +29,7 @@ function SelectClass() {
 		if (CurrentVars.manual.classes) return;
 	}
 	if (CurrentSources.firstTime) OpeningStatement();
-	var theChar = What("PC Name") ? What("PC Name") : "Your Character";
+	var theChar = What("PC Name") ? What("PC Name") : "your character";
 	var hasUAranger = false;
 	var ClassFld = What("Class and Levels");
 	var charLvl = IsCharLvlVal !== false ? IsCharLvlVal : Number(What("Character Level"));
@@ -358,7 +358,6 @@ function SelectClass() {
 					elements : [{
 						type : "image",
 						item_id : "img1",
-						alignment : "align_bottom",
 						width : 20,
 						height : 20
 					}, {
@@ -856,7 +855,6 @@ function SelectClass() {
 						elements : [{
 							item_id : "note",
 							type : "static_text",
-							alignment : "align_bottom",
 							font : "dialog",
 							bold : true,
 							name : dialogTxt.note,
@@ -1423,7 +1421,6 @@ function PleaseSubclass(aClass, classString) {
 						elements : [{
 							type : "image",
 							item_id : "img1",
-							alignment : "align_bottom",
 							width : 20,
 							height : 20
 						}, {

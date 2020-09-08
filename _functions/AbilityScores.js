@@ -576,7 +576,6 @@ function AbilityScores_Button(onlySetTooltip) {
 						elements : [{
 							type : "image",
 							item_id : "img1",
-							alignment : "align_bottom",
 							width : 20,
 							height : 20
 						}, {
@@ -1087,7 +1086,6 @@ function ASaddColumn() {
 					elements : [{
 						type : "image",
 						item_id : "img1",
-						alignment : "align_bottom",
 						width : 20,
 						height : 20
 					}, {
@@ -1171,7 +1169,6 @@ function ASremoveColumn() {
 					elements : [{
 						type : "image",
 						item_id : "img1",
-						alignment : "align_bottom",
 						width : 20,
 						height : 20
 					}, {

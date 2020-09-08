@@ -4175,11 +4175,19 @@ function ValidateBonus(goEmpty, allowDC) {
 		["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS", "Prof"].forEach( function(AbiS) {
 			test = test.replace(RegExp("(\\b|\\d)" + AbiS[0] + AbiS[1] + "?" + AbiS[2] + "?" + "(\\b|\\d)", "ig"), "$1" + AbiS + "$2");
 		});
-		event.value = EvalBonus(test, notComp, "test") !== undefined ? test : event.target.value;
+		var calc = EvalBonus(test, notComp, "test");
+		event.value = calc === undefined ? event.target.value : test;
 	} else {
-		event.value = event.value === "" && goEmpty ? "" : Math.round(input);
+		var calc = Math.round(input);
+		event.value = event.value === "" && goEmpty ? "" : calc;
 	};
+	if (calc !== undefined) event.target.valueCalculated = calc;
 };
+
+// Display the EvalBonus for this field, if calculated (field format)
+function DisplayBonus() {
+	if (event.value && event.target.valueCalculated !== undefined) event.value = event.target.valueCalculated;
+}
 
 // Calculate the skill modifier (field calculation)
 function CalcSkill() {
@@ -5940,19 +5948,22 @@ function HideShowEverything(toggle) {
 
 // Calculate the AC (field calculation)
 function CalcAC() {
-	// Check if the armour's AC is filled, otherwise just return nothing
-	var AC = Number(What("AC Armor Bonus"));
-	if (!AC) {
-		event.value = "";
-		return;
+	var acFlds = {
+		armour : "AC Armor Bonus",
+		shield : "AC Shield Bonus",
+		dex : "AC Dexterity Modifier",
+		magic : "AC Magic",
+		misc1 : "AC Misc Mod 1",
+		misc2 : "AC Misc Mod 2"
+	};
+	var acVals = {};
+	// Get the total AC value
+	var AC = 0;
+	for (var fld in acFlds) {
+		var ACval = /magic|misc/.test(fld) ? EvalBonus(What(acFlds[fld]), true) : Number(What(acFlds[fld]));
+		acVals[fld] = [ACval, ACval];
+		AC += ACval;
 	}
-
-	// Add all the other elements
-	AC += Number(What("AC Shield Bonus"));
-	AC += Number(What("AC Dexterity Modifier"));
-	AC += EvalBonus(What("AC Magic"), true);
-	AC += EvalBonus(What("AC Misc Mod 1"), true);
-	AC += EvalBonus(What("AC Misc Mod 2"), true);
 
 	// It is possible that some of the modifiers (magic / misc) should not be added if some conditions aren't met
 	var theArmor = CurrentArmour.known ? ArmourList[CurrentArmour.known] : false;
@@ -5982,7 +5993,11 @@ function CalcAC() {
 				} else if (typeof aMod.stopeval == 'function') {
 					removeMod = aMod.stopeval(gatherVars);
 				}
-				if (removeMod) AC -= EvalBonus(aMod.mod, true);
+				if (removeMod) {
+					var removeVal = EvalBonus(aMod.mod, true);
+					AC -= removeVal;
+					if (acVals[aMod.type]) acVals[aMod.type][1] -= removeVal;
+				}
 			} catch (error) {
 				var eText = "The check if the AC bonus from '" + aMod.name + "' should be added or not produced an error! This check will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
 				for (var e in error) eText += e + ": " + error[e] + ";\n ";
@@ -5992,8 +6007,19 @@ function CalcAC() {
 			}
 		}
 	}
+	// Now update the display value for the magic and misc modifier fields
+	for (var fld in acVals) {
+		if (!(/magic|misc/).test(fld)) continue;
+		var modFld = tDoc.getField(acFlds[fld]);
+		if (modFld.valueCalculated !== acVals[fld][1]) {
+			modFld.valueCalculated = acVals[fld][1];
+			Value(acFlds[fld], What(acFlds[fld]));
+		}
+	}
 
-	if (tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0)) {
+	if (!acVals.armour[0]) {
+		event.value = "";
+	} else if (tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0)) {
 		AC -= 12;
 		event.value = AC < 0 ? AC : "+" + AC;
 	} else {
@@ -6010,9 +6036,9 @@ function formatACforPMAR() {
 
 // Make sure the magic/miscellaneous AC fields have a proper description (and don't overflow)
 function formatACdescr() {
-	var isMagic = event.target.name.indexOf("Magic") !== -1;
-	var testLen = typePF ? 40 : 35;
+	var testLen = typePF ? 41 : 36;
 	if (event.value.length > testLen) {
+		var isMagic = event.target.name.indexOf("Magic") !== -1;
 		event.value = "Various" + (isMagic ? " magic" : "") + " bonuses"
 	}
 }
@@ -6538,7 +6564,7 @@ function CalcWeightCarried(manualTrigger) {
 //call this to choose which weights to add to the "Total Carried", and which weights not to add
 function WeightToCalc_Button() {
 	//The dialog for setting what things are added to the total weight carried on page 2
-	var explTxt = 'Note that you can change the weight of the armor, shield, weapons, and ammunition on the 1st page and the magic items on the 3rd page by using the "Modifier" fields that appear when you press the "Mods" button or the "Modifiers" bookmark.\nFor the ammunition, only the listed "total" is counted as that already includes the unchecked ammo icons.';
+	var explTxt = 'Note that you can change the weight of the armor, shield, weapons, and ammunition on the 1st page and the magic items on the 3rd page by using the "Modifier" fields that appear when you press the "Mods" button (abacus icon) or the "Modifiers" bookmark.\nFor ammunition, only the listed "total" is counted as that already includes the unchecked ammo icons.';
 	var weightOptions = ["cArm", "cShi", "cWea", "cAmL", "cAmR", "cCoi", "cP2L", "cP2R", "cP3L", "cP3R", "cMaI"];
 	if (typePF) weightOptions.push("cP2M");
 	var WeightToCalc_Dialog = {
@@ -6548,7 +6574,8 @@ function WeightToCalc_Button() {
 		initialize : function (dialog) {
 			var toLoad = {
 				"rEnc" : this.UseEnc,
-				"rCar" : !this.UseEnc
+				"rCar" : !this.UseEnc,
+				"img1" : allIcons.weight
 			};
 			for (var i = 0; i < weightOptions.length; i++) {
 				toLoad[weightOptions[i]] = CurrentVars.weight.indexOf(weightOptions[i]) !== -1
@@ -6571,243 +6598,225 @@ function WeightToCalc_Button() {
 			name : "CARRIED WEIGHT DIALOG",
 			elements : [{
 				type : "view",
+				align_children : "align_left",
 				elements : [{
 					type : "view",
+					align_children : "align_row",
 					elements : [{
-						type : "view",
-						align_children : "align_row",
-						elements : [{
-							type : "image",
-							item_id : "img1",
-							alignment : "align_bottom",
-							width : 20,
-							height : 20
-						}, {
-							type : "static_text",
-							item_id : "head",
-							alignment : "align_fill",
-							font : "heading",
-							bold : true,
-							height : 21,
-							name : "What to count towards the Carried Weight on the second page?"
-						}]
-					}, {
-						type : "cluster",
-						align_children : "align_distribute",
-						elements : [{
-							type : "view",
-							align_children : "align_left",
-							elements : [{
-								type : "view",
-								char_height : 2,
-								align_children : "align_row",
-								char_width : 40,
-								elements : [{
-									type : "check_box",
-									item_id : "cArm",
-									name : "Armor",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tArm",
-									name : (typePF ? '"Armor' : '"Defense') + '" section on the 1st page.'
-								} ]
-							}, {
-								type : "view",
-								char_height : 2,
-								align_children : "align_row",
-								char_width : 40,
-								elements : [{
-									type : "check_box",
-									item_id : "cShi",
-									name : "Shield",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tShi",
-									name : (typePF ? '"Armor' : '"Defense') + '" section on the 1st page.'
-								} ]
-							}, {
-								type : "view",
-								align_children : "align_row",
-								char_height : 2,
-								char_width : 40,
-								elements : [{
-									type : "check_box",
-									item_id : "cWea",
-									name : "Weapons",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tWea",
-									name : '"Attacks" section on the 1st page.'
-								} ]
-							}, {
-								type : "view",
-								char_height : 2,
-								align_children : "align_row",
-								char_width : 40,
-								elements : [{
-									type : "check_box",
-									item_id : "cAmL",
-									name : "Ammunition on the left",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tAmL",
-									name : '"Attacks" section on the 1st page.'
-								} ]
-							}, {
-								type : "view",
-								char_height : 2,
-								align_children : "align_row",
-								char_width : 40,
-								elements : [{
-									type : "check_box",
-									item_id : "cAmR",
-									name : "Ammunition on the right",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tAmR",
-									name : '"Attacks" section on the 1st page.'
-								} ]
-							}, {
-								type : "view",
-								char_height : 2,
-								align_children : "align_row",
-								char_width : 40,
-								elements : [{
-									type : "check_box",
-									item_id : "cCoi",
-									name : "Coins",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tCoi",
-									name : '"Equipment" section on the 2nd page (1 lb per 50).'
-								} ]
-							}, {
-								type : "view",
-								char_height : 2,
-								align_children : "align_row",
-								char_width : 40,
-								elements : [{
-									type : "check_box",
-									item_id : "cP2L",
-									name : "Left column equipment",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tP2L",
-									name : '"Equipment" section on the 2nd page.'
-								} ]
-							}].concat(typePF ? [{
-								type : "view",
-								char_height : 2,
-								align_children : "align_row",
-								char_width : 40,
-								elements : [{
-									type : "check_box",
-									item_id : "cP2M",
-									name : "Middle column equipment",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tP2M",
-									name : '"Equipment" section on the 2nd page.'
-								} ]
-							}] : []).concat([{
-								type : "view",
-								char_height : 2,
-								align_children : "align_row",
-								char_width : 40,
-								elements : [{
-									type : "check_box",
-									item_id : "cP2R",
-									name : "Right column equipment",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tP2R",
-									name : '"Equipment" section on the 2nd page.'
-								} ]
-							}, {
-								type : "view",
-								char_height : 2,
-								align_children : "align_row",
-								char_width : 40,
-								elements : [{
-									type : "check_box",
-									item_id : "cP3L",
-									name : "Left column extra equipment",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tP3L",
-									name : '"Extra Equipment" section on the 3rd page.'
-								} ]
-							}, {
-								type : "view",
-								align_children : "align_row",
-								char_width : 40,
-								char_height : 2,
-								elements : [{
-									type : "check_box",
-									item_id : "cP3R",
-									name : "Right column extra equipment",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tP3R",
-									name : '"Extra Equipment" section on the 3rd page.'
-								} ]
-							}, {
-								type : "view",
-								align_children : "align_row",
-								char_width : 40,
-								char_height : 2,
-								elements : [{
-									type : "check_box",
-									item_id : "cMaI",
-									name : "Magic items",
-									char_width : 20
-								}, {
-									type : "static_text",
-									item_id : "tMaI",
-									name : '"Magic Items" section on the 3rd (and overflow) page.'
-								} ]
-							} ])
-						} ]
+						type : "image",
+						item_id : "img1",
+						width : 20,
+						height : 20
 					}, {
 						type : "static_text",
-						item_id : "text",
+						item_id : "head",
 						alignment : "align_fill",
-						font : "dialog",
-						wrap_name : true,
-						name : explTxt,
-						char_width : 45
-					}, {
-						type : "cluster",
-						align_children : "align_left",
-						name : "What weight allowance to show (PHB, page 176)",
-						bold : true,
 						font : "heading",
-						char_width : 44,
+						bold : true,
+						height : 21,
+						name : "Weight Carried Settings"
+					}]
+				}, {
+					type : "static_text",
+					item_id : "text",
+					alignment : "align_fill",
+					font : "dialog",
+					wrap_name : true,
+					char_width : 50,
+					name : explTxt
+				}, {
+					type : "cluster",
+					alignment : "align_fill",
+					align_children : "align_left",
+					font : "heading",
+					bold : true,
+					name : "Include in the Carried Weight on the second page",
+					elements : [{
+						type : "view",
+						char_height : 2,
+						align_children : "align_row",
 						elements : [{
-							type : "radio",
-							item_id : "rEnc",
-							group_id : "encu",
-							name : "Use the variant encumbrance rules"
+							type : "check_box",
+							item_id : "cArm",
+							name : "Armor",
+							char_width : 22
 						}, {
-							type : "radio",
-							item_id : "rCar",
-							group_id : "encu",
-							name : "Use the fixed carrying capacity rules"
+							type : "static_text",
+							item_id : "tArm",
+							name : (typePF ? '"Armor' : '"Defense') + '" section on the 1st page.'
 						} ]
 					}, {
-						type : "gap",
-						height : 8
+						type : "view",
+						char_height : 2,
+						align_children : "align_row",
+						elements : [{
+							type : "check_box",
+							item_id : "cShi",
+							name : "Shield",
+							char_width : 22
+						}, {
+							type : "static_text",
+							item_id : "tShi",
+							name : (typePF ? '"Armor' : '"Defense') + '" section on the 1st page.'
+						} ]
+					}, {
+						type : "view",
+						align_children : "align_row",
+						char_height : 2,
+						elements : [{
+							type : "check_box",
+							item_id : "cWea",
+							name : "Weapons",
+							char_width : 22
+						}, {
+							type : "static_text",
+							item_id : "tWea",
+							name : '"Attacks" section on the 1st page.'
+						} ]
+					}, {
+						type : "view",
+						char_height : 2,
+						align_children : "align_row",
+						elements : [{
+							type : "check_box",
+							item_id : "cAmL",
+							name : "Ammunition on the left",
+							char_width : 22
+						}, {
+							type : "static_text",
+							item_id : "tAmL",
+							name : '"Attacks" section on the 1st page.'
+						} ]
+					}, {
+						type : "view",
+						char_height : 2,
+						align_children : "align_row",
+						elements : [{
+							type : "check_box",
+							item_id : "cAmR",
+							name : "Ammunition on the right",
+							char_width : 22
+						}, {
+							type : "static_text",
+							item_id : "tAmR",
+							name : '"Attacks" section on the 1st page.'
+						} ]
+					}, {
+						type : "view",
+						char_height : 2,
+						align_children : "align_row",
+						elements : [{
+							type : "check_box",
+							item_id : "cCoi",
+							name : "Coins",
+							char_width : 22
+						}, {
+							type : "static_text",
+							item_id : "tCoi",
+							name : '"Equipment" section on the 2nd page (1 lb per 50).'
+						} ]
+					}, {
+						type : "view",
+						char_height : 2,
+						align_children : "align_row",
+						elements : [{
+							type : "check_box",
+							item_id : "cP2L",
+							name : "Left column equipment",
+							char_width : 22
+						}, {
+							type : "static_text",
+							item_id : "tP2L",
+							name : '"Equipment" section on the 2nd page.'
+						} ]
+					}].concat(typePF ? [{
+						type : "view",
+						char_height : 2,
+						align_children : "align_row",
+						elements : [{
+							type : "check_box",
+							item_id : "cP2M",
+							name : "Middle column equipment",
+							char_width : 22
+						}, {
+							type : "static_text",
+							item_id : "tP2M",
+							name : '"Equipment" section on the 2nd page.'
+						} ]
+					}] : []).concat([{
+						type : "view",
+						char_height : 2,
+						align_children : "align_row",
+						elements : [{
+							type : "check_box",
+							item_id : "cP2R",
+							name : "Right column equipment",
+							char_width : 22
+						}, {
+							type : "static_text",
+							item_id : "tP2R",
+							name : '"Equipment" section on the 2nd page.'
+						} ]
+					}, {
+						type : "view",
+						char_height : 2,
+						align_children : "align_row",
+						elements : [{
+							type : "check_box",
+							item_id : "cP3L",
+							name : "Left column extra equipment",
+							char_width : 22
+						}, {
+							type : "static_text",
+							item_id : "tP3L",
+							name : '"Extra Equipment" section on the 3rd page.'
+						} ]
+					}, {
+						type : "view",
+						align_children : "align_row",
+						char_height : 2,
+						elements : [{
+							type : "check_box",
+							item_id : "cP3R",
+							name : "Right column extra equipment",
+							char_width : 22
+						}, {
+							type : "static_text",
+							item_id : "tP3R",
+							name : '"Extra Equipment" section on the 3rd page.'
+						} ]
+					}, {
+						type : "view",
+						align_children : "align_row",
+						char_height : 2,
+						elements : [{
+							type : "check_box",
+							item_id : "cMaI",
+							name : "Magic items",
+							char_width : 22
+						}, {
+							type : "static_text",
+							item_id : "tMaI",
+							name : '"Magic Items" section on the 3rd (and overflow) page.'
+						} ]
+					} ])
+				}, {
+					type : "cluster",
+					alignment : "align_fill",
+					align_children : "align_left",
+					name : "Weight allowance rules to use (PHB, page 176)",
+					bold : true,
+					font : "heading",
+					elements : [{
+						type : "radio",
+						item_id : "rEnc",
+						group_id : "encu",
+						name : "Use the variant encumbrance rules"
+					}, {
+						type : "radio",
+						item_id : "rCar",
+						group_id : "encu",
+						name : "Use the fixed carrying capacity rules"
 					} ]
 				}, {
 					type : "ok_cancel",

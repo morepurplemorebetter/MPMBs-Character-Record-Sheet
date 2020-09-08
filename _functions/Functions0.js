@@ -978,6 +978,7 @@ function setDialogName(dialogElem, itemID, attrNm, setAttr) {
 			if (isSet) return true;
 		};
 	};
+	return false;
 };
 
 //return a random number between 1 and the input 'die'

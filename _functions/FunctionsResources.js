@@ -436,10 +436,9 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	} while (tries < 5);
 
 	var Text00 = "[Can't see the bottom of this dialog? Use ENTER to confirm or ESC to cancel]";
-	if (isFirstTime) Text00 += '\n\nAs this is the first time you are opening the sheet, please select which resources it is allowed to use. It is highly recommended that you set the resources you want to use before inputting anything into the sheet. However, you can open this dialogue at any time using the "Sources" button (with the book icon), or the "Source Material" bookmark, and change it.';
-	var Text01 = toUni("Important") + ": If something appears in multiple sources under the same name, like the Ranger class appearing in the SRD, PHB, and 'UA:Ranger, Revised', the newer included source will be used.";
-	var Text1 = "With the buttons below, you open another dialogue where you can exclude and include elements of the sourcebooks. This way you can make a selection of things that the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety. Note that if you excluded a sourcebook above, its content will not show up at all with the buttons below!";
-	var Text2 = toUni("Warning") + ": If your changes affect any drop-down boxes on the sheet, those will be updated. " + (isFirstTime ? "If a lot of drop-down boxes are affected, this can take several minutes." : "Options that are being removed/added to drop-downs will not affect those already filled out. What is selectable will change, but not what is currently selected or its effects.");
+	var Text01 = 'As you are opening the sheet for the first time, please select which resources to use. It is recommended that you set the resources to use before inputting anything into the sheet. However, you can open this dialog at any time with the "Sources" button (book icon) or "Source Material" bookmark.';
+	var Text02 = toUni("Important") + ": If something appears in multiple sources under the same name, like the Ranger class appearing in the SRD, PHB, and 'UA: Ranger, Revised', the newer included source will be used.";
+	var Text1 = "Use the buttons below to select what the sheet is and isn't allowed to use for each category, without having to exclude a sourcebook in its entirety.\nNote that if you excluded a sourcebook above, its content will not show up at all with the buttons below.";
 	var txtDefaultExcluded0 = 'Some imported elements are set to be excluded by default and are listed below. You can include these using the buttons in the "Exclude elements of the sourcebooks included above" section of this dialog.';
 	var txtDefaultExcluded1 = "Note that elements whose sourcebook have been excluded are not part of this list, nor are those that you've already manually included. This list can change when you include/exclude sourcebooks or elements, or import new content.";
 
@@ -457,16 +456,13 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 				"img1" : allIcons.sources,
 				"ExcL" : this.exclObject,
 				"IncL" : this.inclObject,
-				"bLin" : "This button links to the web page of the selected sourcebook",
 				"ExTx" : this.defaultExcl.str
 			});
 			dialog.visible({
 				"bWhy" : onlySRD
 			});
-			dialog.setForeColorRed("tx01");
-			dialog.setForeColorRed("txt2");
+			dialog.setForeColorRed("tx02");
 		},
-		commit : function (dialog) {},
 		updateLink : function (dialog, ExcInc) {
 			//get the positive element
 			var exclNow = dialog.store()[ExcInc];
@@ -484,7 +480,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			if (theSrc && SourceList[theSrc].url) {
 				this.sourceLink = SourceList[theSrc].url;
 				dialog.load({
-					"bLin" : "Click here to look up the \"" + SourceList[theSrc].name + "\" resource"
+					"bLin" : 'Lookup "' + SourceList[theSrc].name + '" resource'
 				});
 			};
 		},
@@ -637,7 +633,6 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 					elements : [{
 						type : "image",
 						item_id : "img1",
-						alignment : "align_bottom",
 						width : 20,
 						height : 20
 					}, {
@@ -661,14 +656,8 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 							item_id : "tx00",
 							wrap_name : true,
 							font : "palette",
-							width : 800,
-							name : Text00
-						}, {
-							type : "static_text",
-							item_id : "tx01",
-							wrap_name : true,
-							width : 800,
-							name : Text01
+							width : 815,
+							name : Text00 + (isFirstTime ? "\n\n" + Text01 : "")
 						}, {
 							type : "cluster",
 							name : "The Sourcebooks",
@@ -747,13 +736,12 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 								align_children : "align_distribute",
 								alignment : "align_fill",
 								elements : [{
-									type : "button",
+									type : "link_text",
 									font : "dialog",
 									bold : true,
 									item_id : "bLin",
 									alignment : "align_left",
-									width : 575,
-									name : "This button links to the web page of the selected sourcebook"
+									width : 575
 								}, {
 									type : "button",
 									item_id : "bSrc",
@@ -770,31 +758,26 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 								type : "static_text",
 								item_id : "txt1",
 								wrap_name : true,
+								font : "palette",
 								width : 775,
 								name : Text1
-							}, {
+							}].concat(minVer ? [{
+								type : "button",
+								font : "dialog",
+								bold : true,
+								item_id : "bSpe",
+								name : "Spells/Psionics",
+								alignment : "align_center"
+							}] : [{
 								type : "view",
-								align_children : "align_row",
-								alignment : "align_center",
-								elements : minVer ? [{
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bSpe",
-									name : "Spells/Psionics",
-									alignment : "align_center"
-								}] : [{
+								align_children : "align_distribute",
+								alignment : "align_fill",
+								elements : [{
 									type : "button",
 									font : "dialog",
 									bold : true,
 									item_id : "bCla",
-									name : "Classes && Archetypes"
-								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bRac",
-									name : "Player Races"
+									name : "Classes/Archetypes"
 								}, {
 									type : "button",
 									font : "dialog",
@@ -805,37 +788,8 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 									type : "button",
 									font : "dialog",
 									bold : true,
-									item_id : "bBaF",
-									name : "Background Features"
-								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bFea",
-									name : "Feats"
-								}]
-							}, {
-								type : "view",
-								align_children : "align_row",
-								alignment : "align_center",
-								elements : minVer ? [] : [{
-									type : "button",
-									font : "dialog",
-									bold : true,
 									item_id : "bAtk",
 									name : "Weapons/Attacks"
-								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bArm",
-									name : "Armor"
-								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bAmm",
-									name : "Ammunition"
 								}, {
 									type : "button",
 									font : "dialog",
@@ -848,6 +802,41 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 									bold : true,
 									item_id : "bSpe",
 									name : "Spells/Psionics"
+								}]
+							}, {
+								type : "view",
+								align_children : "align_distribute",
+								alignment : "align_fill",
+								elements : [{
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bRac",
+									name : "Player Races"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bBaF",
+									name : "Background Features"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bAmm",
+									name : "Ammunition"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bArm",
+									name : "Armor"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bFea",
+									name : "Feats"
 								}, {
 									type : "button",
 									font : "dialog",
@@ -855,7 +844,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 									item_id : "bCre",
 									name : "Creatures"
 								}]
-							}]
+							}])
 						}]
 					}].concat(!newExcluded.found ? [] : [{
 						type : "view",
@@ -871,14 +860,14 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 								type : "static_text",
 								item_id : "ExH0",
 								wrap_name : true,
-								font : "dialog",
+								font : "palette",
 								width : 275,
 								name : txtDefaultExcluded0
 							}, {
 								type : "static_text",
 								item_id : "ExH1",
 								wrap_name : true,
-								font : "dialog",
+								font : "palette",
 								width : 275,
 								name : txtDefaultExcluded1
 							}, {
@@ -887,23 +876,21 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 								alignment : "align_fill",
 								readonly : true,
 								multiline: true,
-								height : 400,
+								height : isFirstTime ? 398 : 360,
 								width : 275
 							}]
 						}]
 					}])
 				}, {
-					type : "view", // the bottom row of buttons
-					align_children : "align_distribute",
+					type : "view",
 					alignment : "align_fill",
+					align_children : "align_distribute",
 					elements : [{
 						type : "static_text",
-						alignment : "align_left",
-						item_id : "txt2",
-						font : "palette",
+						item_id : "tx02",
 						wrap_name : true,
-						width : 500,
-						name : Text2
+						width : newExcluded.found ? 815 : 510,
+						name : Text02
 					}, {
 						item_id : "appl",
 						type : "ok_cancel",

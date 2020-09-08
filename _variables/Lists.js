@@ -734,7 +734,6 @@ var SetPrintPages_Dialog = {
 					elements : [{
 						type : "image",
 						item_id : "img1",
-						alignment : "align_bottom",
 						width : 20,
 						height : 20
 					}, {
@@ -905,7 +904,6 @@ var SetToManual_Dialog = {
 					elements : [{
 						type : "image",
 						item_id : "img1",
-						alignment : "align_bottom",
 						width : 20,
 						height : 20
 					}, {
@@ -1148,7 +1146,6 @@ var SetUnitDecimals_Dialog = {
 					elements : [{
 						type : "image",
 						item_id : "img1",
-						alignment : "align_bottom",
 						width : 20,
 						height : 20
 					}, {
@@ -1472,7 +1469,6 @@ var SetTextOptions_Dialog = {
 					elements : [{
 						type : "image",
 						item_id : "img1",
-						alignment : "align_bottom",
 						width : 20,
 						height : 20
 					}, {

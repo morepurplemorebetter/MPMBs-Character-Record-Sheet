@@ -282,7 +282,6 @@ function DirectImport_Dialogue() {
 						elements : [{
 							type : "image",
 							item_id : "img1",
-							alignment : "align_bottom",
 							width : 20,
 							height : 20
 						}, {
@@ -2229,7 +2228,6 @@ function AddUserScript(retResDia) {
 							elements : [{
 								type : "image",
 								item_id : "img1",
-								alignment : "align_bottom",
 								height : 20,
 								width : 20
 							}, {
@@ -2832,7 +2830,6 @@ function ImportScriptFileDialog(retResDia) {
 						elements : [{
 							type : "image",
 							item_id : "img1",
-							alignment : "align_bottom",
 							width : 20,
 							height : 20
 						}, {

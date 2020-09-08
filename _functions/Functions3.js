@@ -1043,7 +1043,6 @@ function UpdateSheetDisplay() {
 					elements : [{
 						type : "image",
 						item_id : "img1",
-						alignment : "align_bottom",
 						width : 20,
 						height : 20
 					}, {

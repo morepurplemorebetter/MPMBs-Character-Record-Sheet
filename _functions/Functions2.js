@@ -5294,15 +5294,15 @@ function contactMPMB(medium) {
 };
 
 //open a dialogue for the Patreon
-function PatreonStatement() {
+function PatreonStatement(force) {
 	try {
 		var iNow = new Date();
 		var timeDiff = iNow.getTime() - eval_ish(tDoc.getField("SaveIMG.Patreon").submitName).getTime();
-		if (Math.floor(timeDiff / (1000 * 3600 * 24)) >= 28) {
+		if (force || Math.floor(timeDiff / (1000 * 3600 * 24)) >= 28) {
 			var oButIcon = this.getField("SaveIMG.Patreon").buttonGetIcon();
 			var oMyIcon = util.iconStreamFromIcon(oButIcon);
 
-			var theTxt = "If you like this sheet, please consider becoming a patron at the Patreon for MPMB's Character Record Sheet.\n\nWith your contribution on Patreon:\n   \u2022 I can continue expanding the functionality of this sheet.\n   \u2022 You get to choose which new features get added.\n   \u2022 Your favourite third-party material gets added.\n   \u2022 You get instant access and alerts when new versions are released.";
+			var theTxt = "If you like this sheet, please consider supporting this project over at the Patreon for MPMB's Character Record Sheet.\n\nWith your contribution on Patreon:\n   \u2022 I can continue expanding the functionality of this sheet.\n   \u2022 You get to choose which new features get added.\n   \u2022 Your favourite third-party material gets added.\n   \u2022 You get instant access and alerts when new versions are released.";
 			var theTxt2 = "Don't worry, the sheet will stay available for free on my website.\nHowever, if you feel like contributing more, it will all flow back into expanding the sheets' features and content.\n\nYou can always visit the Patreon webpage using the \"Contact MPMB\" bookmarks.";
 			var PatreonDialog = {
 				initialize : function (dialog) {
@@ -5329,7 +5329,7 @@ function PatreonStatement() {
 								char_width : 40,
 								elements : [{
 									type : "static_text",
-									name : "Become a patron on Patreon",
+									name : "Become a patron",
 									item_id : "head",
 									alignment : "align_top",
 									font : "title",
@@ -5349,7 +5349,7 @@ function PatreonStatement() {
 									font : "heading",
 									bold : true,
 									item_id : "bPat",
-									name : "Go to the Patreon webpage",
+									name : "Go to MPMB's Patreon webpage",
 									alignment : "align_center"
 								}, {
 									type : "static_text",
@@ -5987,32 +5987,24 @@ function ShowDialog(hdr, strng) {
 		},
 		description : {
 			name : "SIMPLE TEXT DIALOG",
+			first_tab : "CLOS",
 			elements : [{
 				type : "view",
 				align_children : "align_left",
 				elements : [{
 					type : "view",
 					elements : [{
-						type : "static_text",
-						item_id : "head",
-						alignment : "align_fill",
-						font : "heading",
-						bold : true,
-						wrap_name : true,
-						width : 550,
-						name : hdr
-					}, {
 						type : "view",
 						align_children : "align_row",
 						elements : [{
 							type : "static_text",
-							item_id : "txt0",
+							item_id : "head",
 							alignment : "align_fill",
-							font : "palette",
+							font : "heading",
+							bold : true,
 							wrap_name : true,
-							height : 20,
-							name : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]",
-							width : 548
+							width : 548,
+							name : hdr
 						}, {
 							type : "edit_text",
 							item_id : "ding",
@@ -6034,7 +6026,22 @@ function ShowDialog(hdr, strng) {
 						height : 5
 					}]
 				}, {
-					type : "ok"
+					type : "view",
+					alignment : "align_fill",
+					align_children : "align_center",
+					elements : [{
+						type : "ok",
+						item_id : "CLOS",
+						alignment : "align_right",
+						ok_name : "Close"
+					}, {
+						type : "ok_cancel",
+						alignment : "align_offscreen",
+						item_id : "CNCL",
+						ok_name : "Close",
+						cancel_name : "Close",
+						height : 0
+					}]
 				}]
 			}]
 		}
@@ -6131,6 +6138,8 @@ function SetThisFldVal() {
 	if (event.target.submitName || event.target.value.length > len || event.modifier || event.shift) {
 		var QI = getTemplPre(event.target.name, "AScomp");
 		var dmgDie = event.target.name.indexOf("Damage Die") !== -1;
+		var isSkill = !dmgDie && QI === true && (RegExp("^(" + SkillsList.abbreviations.join("|") + ") Bonus$")).test(event.target.name);
+		var isAcFld = !isSkill && QI === true && (/^AC/).test(event.target.name);
 		var theName = event.target.userName;
 		if (theName && (/\n/).test(theName)) {
 			theName = theName.match(/.*\n/)[0].replace(/\n/, "");
@@ -6139,8 +6148,10 @@ function SetThisFldVal() {
 		if (!isNaN(theVal)) theVal = theVal.toString();
 		var theExpl = event.target.submitName.replace(/^\n*/, "");
 		var theDialTxt = (dmgDie ? "If you want the Damage Die to be a calculated value, and not just a string, make sure the first character is a '='.\nRegardless of the first character, a 'C' will be replaced with the Cantrip die, a 'B' with the Cantrip die minus 1, and a 'Q' with the Cantrip die plus 1.\n\nIf a calculated value (=), you can use underscores to keep the strings separate. For the calculated parts, y" : "Y") + "ou can use numbers, logical operators (+, -, /, *), ability score abbreviations (Str, Dex, Con, Int, Wis, Cha" + (QI === true ? ", HoS" : "") + "), and 'Prof'.";
+		var theDialTxt1 = "If the above calculates to 'ERROR', the field will not be changed.\nNote that the field won't appear to change until you click/tab out of it."
 		var theDialTxt2 = "You can also determine the maximum or minimum of a group with 'min(1|2)' or 'max(1|2)', using pipe '|' as the separator.";
 		if (QI !== true) theDialTxt2 += "\n\nIn addition, you can use the values from the character (the 1st page) by adding the letter 'o' before the variable (oStr, oDex, oCon, oInt, oWis, oCha, oHoS, oProf).";
+		if (isSkill) theDialTxt2 += "\n\nYou don't need to add bonuses from \"Jack of All Trades\" or \"Remarkable Athelete\" as they are automatically added, if enabled.";
 		var theDialTxt3 = "\nSome examples with a Strength of 18 (+4):";
 		var theDialTxt3sub = [
 			["INPUT\nStr\nStr-1\nStr*2", 5, "align_left"],
@@ -6149,6 +6160,7 @@ function SetThisFldVal() {
 			["INPUT\nmax(Str|1)\nmin(Str|1)\nmin(Str|3)*2+1", 8, "align_left"],
 			["RESULT\n4\n1\n7", 5, "align_center"]
 		];
+		var theDialTxt4 = "The field will display a number only after looking at the conditions above. Thus, the shown value might be different from what you see calculated in this dialog.";
 		var theDialog = {
 			notComp : QI,
 			isDmgDie : dmgDie,
@@ -6164,6 +6176,7 @@ function SetThisFldVal() {
 					toLoad["expl"] = this.theExp;
 				};
 				dialog.load(toLoad);
+				dialog.setForeColorRed("warn");
 			},
 			commit : function (dialog) {
 				var oResult = dialog.store();
@@ -6193,14 +6206,13 @@ function SetThisFldVal() {
 					}, {
 						type : "cluster",
 						alignment : "align_fill",
-						item_id : "txt0",
 						name : "Fill out the value you want to set",
 						font : "dialog",
 						bold : true,
 						elements : [{
 							type : "static_text",
 							alignment : "align_left",
-							item_id : "txt3",
+							item_id : "txt0",
 							font : "palette",
 							name : theDialTxt,
 							char_width : 35,
@@ -6208,7 +6220,7 @@ function SetThisFldVal() {
 						}, {
 							type : "static_text",
 							alignment : "align_left",
-							item_id : "txt4",
+							item_id : "txt2",
 							font : "palette",
 							name : theDialTxt2,
 							char_width : 35,
@@ -6216,7 +6228,7 @@ function SetThisFldVal() {
 						}].concat(dmgDie || theExpl ? [] : [{
 							type : "static_text",
 							alignment : "align_left",
-							item_id : "txt5",
+							item_id : "txt3",
 							font : "palette",
 							char_width : 35,
 							wrap_name : true,
@@ -6252,7 +6264,7 @@ function SetThisFldVal() {
 							elements : [{
 								type : "static_text",
 								alignment : "align_left",
-								item_id : "txt2",
+								item_id : "txtC",
 								name : "This calculates to:",
 								char_width : 1,
 								height : 25
@@ -6277,7 +6289,7 @@ function SetThisFldVal() {
 						alignment : "align_fill",
 						item_id : "txt1",
 						wrap_name : true,
-						name : "If the above calculates to 'ERROR', the field will not be changed.\nNote that the field won't appear to change until you click/tab out of it.",
+						name : theDialTxt1,
 						char_width : 35
 					}].concat(theExpl ? [{
 						type : "cluster",
@@ -6293,7 +6305,14 @@ function SetThisFldVal() {
 							multiline: true,
 							char_width : 35,
 							height : 200
-						}]
+						}].concat(!isAcFld ? [] : {
+							type : "static_text",
+							alignment : "align_fill",
+							item_id : "warn",
+							wrap_name : true,
+							name : theDialTxt4,
+							char_width : 35
+						})
 					}] : []).concat([{
 						type : "ok_cancel"
 					}])
@@ -7268,7 +7287,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					inpObj.extra = "+" + extra;
 					inpObj.extraFixed = "fixed " + extra;
 				}
-				var total = getHighestTotal(inpObj, true, replaceWalk, CurrentProfs.speed.allModes, type == "walk" ? "" : type, true);
+				var total = getHighestTotal(inpObj, true, replaceWalk, CurrentProfs.speed.allModes, type == "walk" ? false : type, true);
 				if (inpObj.extra !== undefined) delete inpObj.extra;
 				if (inpObj.extraFixed !== undefined) delete inpObj.extraFixed;
 			} else {
@@ -7571,7 +7590,6 @@ function formatLineList(caption, elements) {
 
 //a way to condense an array of numbers down to the highest and modifiers
 function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, withCleanValue) {
-	if (!prefix) prefix = "";
 	var values = [0];
 	var modifications = [];
 	var fixedVals = [0];
@@ -7651,14 +7669,14 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, with
 	if (fixedVals.length > 1) {
 		tValue = Math.max.apply(Math, fixedVals.concat([tValue]));
 	};
+	prefix = prefix ? prefix + " " : prefix === false ? "" : " ";
 	if (!tValue) {
 		return withCleanValue ? ["", 0] : "";
 	} else if (tValue >= 9999) {
-		return prefix + " (unlimited)";
+		return prefix + "(unlimited)";
 	} else {
 		if (!notRound) tValue = Math.round(tValue);
 		var metric = What("Unit System") !== "imperial";
-		if (prefix) prefix += " ";
 		var returnStr = prefix + RoundTo(tValue * (metric ? 0.3 : 1), 0.5, false, true) + (metric ? " m" : " ft");
 		return withCleanValue ? [returnStr, tValue] : returnStr;
 	}

@@ -99,6 +99,164 @@ function ParseSpell(input, aCast, limitArray) {
 	return found;
 };
 
+// Create a spell object for a spell + caster combination
+// GetSpellObject(theSpl, input[2], input[1], input[3], false)
+// GetSpellObject(theSpl, theCast, false, true, true)
+function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
+	var foundSpell = SpellsList[theSpl];
+	var aSpell = { changesObj : {} };
+	if (!foundSpell) return aSpell;
+	var aCast = theCast && CurrentSpells[theCast] ? CurrentSpells[theCast] : "";
+	for (var key in foundSpell) aSpell[key] = foundSpell[key];
+	// set the firstCol attribute so the CurrentEval can change it
+	aSpell.firstCol = firstCol ? firstCol : aSpell.firstCol ? aSpell.firstCol : "";
+	// If this spell is gained from an item, remove components
+	if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
+		aSpell.components = "M\u0192";
+		aSpell.compMaterial = "Spells cast by magic items don't require any components other than the magic item itself.";
+		aSpell.description = aSpell.description.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
+		if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
+		aSpell.changesObj["Magic Item"] = "\n \u2022 Spells cast by magic items don't require any components except the magic item itself, unless otherwise specified in the magic item's description.";
+	}
+	// If this spell is gained from an item, feat, or race, remove scaling effects
+	if (aCast && ((/^(item|feat|race)$/i).test(aCast.typeSp) || (aCast.refType && (/^(item|feat|race)$/i).test(aCast.refType))) && (aSpell.level || aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
+		var removeRegex = /\+(\d+d)?\d+\/SL\b|\bSL used/ig
+		if (removeRegex.test(aSpell.description + aSpell.descriptionMetric)) {
+			aSpell.description = aSpell.description.replace("SL used", "level " + aSpell.level).replace(removeRegex, '').replace(/, within 30 ft of each other,|, each max 30 ft apart,|; \+\d+d\d+ at CL.*?17/ig, '');
+			if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace("SL used", "level " + aSpell.level).replace(removeRegex, '');
+			aSpell.changesObj["Innate Spellcasting"] = "\n \u2022 Spell cast by magic items, from feats, or from racial traits can only be cast at the spell's level, not with higher level spell slots.";
+		}
+	}
+	// Apply spell overrides for this CurrentSpells entry
+	if (!noOverrides && aCast && aCast.spellAttrOverride && aCast.spellAttrOverride[theSpl]) {
+		var theOver = aCast.spellAttrOverride[theSpl];
+		for (var key in theOver) {
+			if (key == "changesObj") {
+				for (var changeO in theOver[key]) {
+					aSpell.changesObj[changeO] = theOver.changesObj[changeO];
+				}
+			}
+			aSpell[key] = theOver[key];
+		}
+	}
+	// Update the spell for the caster level of the character (if not manually added)
+	if (CurrentCasters.amendSpDescr && aCast) {
+		// apply cantrip die
+		var cDie = cantripDie[Math.min(CurrentFeats.level, cantripDie.length) - 1];
+		if (aSpell.descriptionCantripDie) {
+			var newCantripDieDescr = aSpell.descriptionCantripDie;
+			while ((/`CD(-|\+|\*)?\d*`/).test(newCantripDieDescr)) {
+				var aDie = cDie;
+				if ((/`CD(-|\+)\d+`/).test(newCantripDieDescr)) {
+					aDie = cDie + Number(newCantripDieDescr.replace(/.*`CD((-|\+)\d+)`.*/, "$1"));
+				} else if ((/`CD\*\d+`/).test(newCantripDieDescr)) {
+					aDie = cDie * Number(newCantripDieDescr.replace(/.*`CD\*(\d+)`.*/, "$1"));
+				}
+				newCantripDieDescr = newCantripDieDescr.replace(/`CD(-|\+|\*)?\d*`/, aDie);
+			}
+			aSpell.description = newCantripDieDescr.replace(/\b0d\d+/g, "0");
+		}
+		// apply ability score modifier or check
+		if (aCast.ability) {
+			var castAbi = isNaN(aCast.ability) && aCast.abilityToUse ? aCast.abilityToUse[0] : aCast.ability;
+			var theAbi = AbilityScores.abbreviations[castAbi - 1];
+			if (theAbi) {
+				var theAbiMod = Number(What(theAbi + " Mod"));
+				if (/spell(casting)? (ability )?mod(ifier)?/i.test(aSpell.description)) { // modifier
+					aSpell.description = aSpell.description.replace(/\+? ?(my )?spell(casting)? (ability )?mod(ifier)?/i, (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + " (" + theAbi + ")");
+				} else if (/spell(casting)? (ability )?check/i.test(aSpell.description)) { // check
+					var theAbiName = AbilityScores.names[castAbi -1];
+					// Bonus from Jack of All Trades and/or Remarkable Athlete
+					var jackOf = tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1;
+					var remAth = tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1 && ["Str", "Dex", "Con"].indexOf(theAbi) !== -1;
+					var profB = Number(How("Proficiency Bonus"));
+					theAbiMod += remAth ? Math.ceil(profB/2) : jackOf ? Math.floor(profB/2) : 0;
+					aSpell.description = aSpell.description.replace(/spell(casting)? (ability )?check/i, theAbiName + " check (" + (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + ")");
+				}
+			}
+		}
+	}
+
+	// Change some things into metric if set to do so
+	if (What("Unit System") === "metric") {
+		aSpell.description = aSpell.descriptionMetric ? aSpell.descriptionMetric : ConvertToMetric(aSpell.description, 0.5);
+		aSpell.range = ConvertToMetric(aSpell.range, 0.5);
+	}
+
+	if (CurrentEvals.spellAdd) {
+		for (var aFunct in CurrentEvals.spellAdd) {
+			var theFunct = CurrentEvals.spellAdd[aFunct];
+			if (typeof theFunct !== 'function') continue;
+			var didChange = false;
+			var changeHead = "Changes by " + aFunct;
+			try {
+				didChange = theFunct(theSpl, aSpell, aCast ? theCast : "", noOverrides ? true : false);
+			} catch (error) {
+				var eText = "The custom function for changing spell attributes from '" + aFunct + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
+				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				console.println(eText);
+				console.show();
+				delete CurrentEvals.spellAdd[aFunct];
+				didChange = false;
+			}
+			if (didChange && CurrentEvals.spellStr && CurrentEvals.spellStr[aFunct]) {
+				if (!aSpell.changesObj[changeHead]) {
+					aSpell.changesObj[changeHead] = CurrentEvals.spellStr[aFunct];
+				} else {
+					aSpell.changesObj[changeHead] += CurrentEvals.spellStr[aFunct];
+				}
+			}
+		}
+	}
+
+	//make the tooltip for the description field
+	var spTooltip = "";
+	var ttSpellObj = aSpell.completeRewrite ? aSpell : foundSpell;
+	if (ttSpellObj.descriptionFull || tipShortDescr) {
+		spTooltip = toUni(ttSpellObj.name);
+		if (ttSpellObj.school) {
+			spTooltip += " \u2014 ";
+			var spSchoolNm = spellSchoolList[ttSpellObj.school] ? spellSchoolList[ttSpellObj.school] : ttSpellObj.school;
+			if (ttSpellObj.psionic) {
+				var spLevelNm = spellLevelList[ttSpellObj.level + 10].replace(/s\b/, '');
+				spTooltip += ttSpellObj.level == 0 ?
+					spLevelNm :
+					spSchoolNm.capitalize() + spLevelNm.toLowerCase();
+			} else {
+				var spLevelNm = spellLevelList[ttSpellObj.level] ? spellLevelList[ttSpellObj.level].replace(/s\b/, '').toLowerCase() : "";
+				spTooltip += ttSpellObj.level == 0 ?
+					spSchoolNm.capitalize() + " " + spLevelNm :
+					spLevelNm + " " + spSchoolNm;
+			}
+			if (ttSpellObj.ritual) spTooltip += " (ritual)";
+		}
+
+		if (ttSpellObj.time) spTooltip += "\n  Casting Time:  " + ttSpellObj.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
+
+		if (ttSpellObj.range) spTooltip += "\n  Range:  " + ttSpellObj.range;
+
+		if (ttSpellObj.components) spTooltip += "\n  Components:  " + ttSpellObj.components + (ttSpellObj.compMaterial ? " (" + ttSpellObj.compMaterial.substr(0,1).toLowerCase() + ttSpellObj.compMaterial.substr(1) + ")" : "");
+
+		if (ttSpellObj.duration) spTooltip += "\n  Duration:  " + ttSpellObj.duration.replace(/\b(conc), \b/i, '$1entration, up to ').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours').replace(/\(d\)/i, "(dismiss as 1 action)").replace(/(instant)\./i, "$1aneous");
+
+		if (ttSpellObj.descriptionFull) spTooltip += "\n\n" + ttSpellObj.descriptionFull;
+
+		if (tipShortDescr) spTooltip += "\n\n__________\n\n" + toUni("Short Description") + '  (how it will appear on the sheet)\n  ' + aSpell.description;
+		
+		if (ObjLength(aSpell.changesObj)) {
+			var txt = [];
+			for (var str in aSpell.changesObj) txt.push(toUni(str) + aSpell.changesObj[str]);
+			spTooltip += "\n\n>>  CHANGES BY FEATURES  <<\nThe above original ";
+			spTooltip += tipShortDescr ? "will be modified when added to the sheet as follows (the short description includes the changes):\n\n" : "has been changed as follows:\n\n";
+			spTooltip += txt.join("\n\n");
+		}
+	};
+	if (spTooltip) aSpell.tooltip = spTooltip;
+	aSpell.tooltipSource = stringSource(aSpell, "full,page,multi");
+
+	return aSpell;
+}
+
 // call this on validation of the hidden spell remember field, to apply something to the spell line
 // "" = reset all the fields; "HideThisLine" = hide all the fields; recognized spell = apply that spell; not recognized spell = don't do anything (assume name change); "setcaptions" or  "setcaptions##Me" = make this a caption line; if followed by "##Me" or "##Kn", change the first line to be either "Me" or "Kn" as the first column, or show or hide the box for checkmark; "___" = put all lines in the fields, making it fillable by hand
 function ApplySpell(FldValue, rememberFldName) {
@@ -186,7 +344,7 @@ function ApplySpell(FldValue, rememberFldName) {
 	if (input[0] === "") { //reset all the fields
 		//if going from a spell to nothing, reset all the field's values and tooltips, otherwise
 		// only reset the other fields, but apply any checkbox/firstcolumn thing
-		var resetAll = What(spFlds[1]) !== ""; 
+		var resetAll = What(spFlds[1]) !== "";
 		for (var i = resetAll ? 0 : 2; i < spFlds.length - 1; i++) {
 			Value(spFlds[i], "", "");
 		};
@@ -217,109 +375,9 @@ function ApplySpell(FldValue, rememberFldName) {
 		var aCast = input[2] && CurrentSpells[input[2]] ? CurrentSpells[input[2]] : "";
 		var theSpl = ParseSpell(input[0], aCast ? input[2] : false);
 		if (theSpl !== "") { // apply the found spell
-			var foundSpell = SpellsList[theSpl];
-			var aSpell = { changesObj : {} };
-			for (var key in foundSpell) aSpell[key] = foundSpell[key];
-			// set the firstCol attribute so the CurrentEval can change it
-			aSpell.firstCol = input[1] ? input[1] : aSpell.firstCol ? aSpell.firstCol : "";
-			// If this spell is gained from an item, remove components
-			if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
-				aSpell.components = "M\u0192";
-				aSpell.compMaterial = "Spells cast by magic items don't require any components other than the magic item itself.";
-				aSpell.description = aSpell.description.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
-				if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
-				aSpell.changesObj["Magic Item"] = "\n \u2022 Spells cast by magic items don't require any components except the magic item itself, unless otherwise specified in the magic item's description.";
-			}
-			// If this spell is gained from an item, feat, or race, remove scaling effects
-			if (aCast && ((/^(item|feat|race)$/i).test(aCast.typeSp) || (aCast.refType && (/^(item|feat|race)$/i).test(aCast.refType))) && (aSpell.level || aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
-				var removeRegex = /\+(\d+d)?\d+\/SL\b|\bSL used/ig
-				if (removeRegex.test(aSpell.description + aSpell.descriptionMetric)) {
-					aSpell.description = aSpell.description.replace("SL used", "level " + aSpell.level).replace(removeRegex, '').replace(/, within 30 ft of each other,|, each max 30 ft apart,|; \+\d+d\d+ at CL.*?17/ig, '');
-					if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace("SL used", "level " + aSpell.level).replace(removeRegex, '');
-					aSpell.changesObj["Innate Spellcasting"] = "\n \u2022 Spell cast by magic items, from feats, or from racial traits can only be cast at the spell's level, not with higher level spell slots.";
-				}
-			}
-			// Apply spell overrides for this CurrentSpells entry
-			if (!input[3] && aCast && aCast.spellAttrOverride && aCast.spellAttrOverride[theSpl]) {
-				var theOver = aCast.spellAttrOverride[theSpl];
-				for (var key in theOver) {
-					if (key == "changesObj") {
-						for (var changeO in theOver[key]) {
-							aSpell.changesObj[changeO] = theOver.changesObj[changeO];
-						}
-					}
-					aSpell[key] = theOver[key];
-				}
-			}
-			// Update the spell for the caster level of the character (if not manually added)
-			if (CurrentCasters.amendSpDescr && aCast) {
-				// apply cantrip die
-				var cDie = cantripDie[Math.min(CurrentFeats.level, cantripDie.length) - 1];
-				if (aSpell.descriptionCantripDie) {
-					var newCantripDieDescr = aSpell.descriptionCantripDie;
-					while ((/`CD(-|\+|\*)?\d*`/).test(newCantripDieDescr)) {
-						var aDie = cDie;
-						if ((/`CD(-|\+)\d+`/).test(newCantripDieDescr)) {
-							aDie = cDie + Number(newCantripDieDescr.replace(/.*`CD((-|\+)\d+)`.*/, "$1"));
-						} else if ((/`CD\*\d+`/).test(newCantripDieDescr)) {
-							aDie = cDie * Number(newCantripDieDescr.replace(/.*`CD\*(\d+)`.*/, "$1"));
-						}
-						newCantripDieDescr = newCantripDieDescr.replace(/`CD(-|\+|\*)?\d*`/, aDie);
-					}
-					aSpell.description = newCantripDieDescr.replace(/\b0d\d+/g, "0");
-				}
-				// apply ability score modifier or check
-				if (aCast.ability) {
-					var castAbi = isNaN(aCast.ability) && aCast.abilityToUse ? aCast.abilityToUse[0] : aCast.ability;
-					var theAbi = AbilityScores.abbreviations[castAbi - 1];
-					if (theAbi) {
-						var theAbiMod = Number(What(theAbi + " Mod"));
-						if (/spell(casting)? (ability )?mod(ifier)?/i.test(aSpell.description)) { // modifier
-							aSpell.description = aSpell.description.replace(/\+? ?(my )?spell(casting)? (ability )?mod(ifier)?/i, (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + " (" + theAbi + ")");
-						} else if (/spell(casting)? (ability )?check/i.test(aSpell.description)) { // check
-							var theAbiName = AbilityScores.names[castAbi -1];
-							// Bonus from Jack of All Trades and/or Remarkable Athlete
-							var jackOf = tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1;
-							var remAth = tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1 && ["Str", "Dex", "Con"].indexOf(theAbi) !== -1;
-							var profB = Number(How("Proficiency Bonus"));
-							theAbiMod += remAth ? Math.ceil(profB/2) : jackOf ? Math.floor(profB/2) : 0;
-							aSpell.description = aSpell.description.replace(/spell(casting)? (ability )?check/i, theAbiName + " check (" + (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + ")");
-						}
-					}
-				}
-			}
 
-			// Change some things into metric if set to do so
-			if (What("Unit System") === "metric") {
-				aSpell.description = aSpell.descriptionMetric ? aSpell.descriptionMetric : ConvertToMetric(aSpell.description, 0.5);
-				aSpell.range = ConvertToMetric(aSpell.range, 0.5);
-			}
-
-			if (CurrentEvals.spellAdd) {
-				for (var aFunct in CurrentEvals.spellAdd) {
-					var theFunct = CurrentEvals.spellAdd[aFunct];
-					if (typeof theFunct !== 'function') continue;
-					var didChange = false;
-					var changeHead = "Changes by " + aFunct;
-					try {
-						didChange = theFunct(theSpl, aSpell, aCast ? input[2] : "", input[3] ? true : false);
-					} catch (error) {
-						var eText = "The custom function for changing spell attributes from '" + aFunct + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
-						for (var e in error) eText += e + ": " + error[e] + ";\n ";
-						console.println(eText);
-						console.show();
-						delete CurrentEvals.spellAdd[aFunct];
-						didChange = false;
-					}
-					if (didChange && CurrentEvals.spellStr && CurrentEvals.spellStr[aFunct]) {
-						if (!aSpell.changesObj[changeHead]) {
-							aSpell.changesObj[changeHead] = CurrentEvals.spellStr[aFunct];
-						} else {
-							aSpell.changesObj[changeHead] += CurrentEvals.spellStr[aFunct];
-						}
-					}
-				}
-			}
+			// Get the spell object with respect to the current caster and custom changes
+			var aSpell = GetSpellObject(theSpl, input[2], input[1], input[3], false);
 
 			// set the spell name (if it wasn't provided as part of this function and not the same as the remember field)
 			// if the name used is a shortened version, set the full name as a tooltip
@@ -333,42 +391,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			}
 
 			//make the tooltip for the description field
-			var spTooltip = "";
-			var ttSpellObj = aSpell.completeRewrite ? aSpell : foundSpell;
-			if (ttSpellObj.descriptionFull) {
-				spTooltip = toUni(ttSpellObj.name);
-				if (ttSpellObj.school) {
-					spTooltip += " \u2014 ";
-					var spSchoolNm = spellSchoolList[ttSpellObj.school] ? spellSchoolList[ttSpellObj.school] : ttSpellObj.school;
-					if (ttSpellObj.psionic) {
-						var spLevelNm = spellLevelList[ttSpellObj.level + 10].replace(/s\b/, '');
-						spTooltip += ttSpellObj.level == 0 ?
-							spLevelNm :
-							spSchoolNm.capitalize() + spLevelNm.toLowerCase();
-					} else {
-						var spLevelNm = spellLevelList[ttSpellObj.level] ? spellLevelList[ttSpellObj.level].replace(/s\b/, '').toLowerCase() : "";
-						spTooltip += ttSpellObj.level == 0 ?
-							spSchoolNm.capitalize() + " " + spLevelNm :
-							spLevelNm + " " + spSchoolNm;
-					}
-					if (ttSpellObj.ritual) spTooltip += " (ritual)";
-				}
-
-				if (ttSpellObj.time) spTooltip += "\n  Casting Time:  " + ttSpellObj.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
-
-				if (ttSpellObj.range) spTooltip += "\n  Range:  " + ttSpellObj.range;
-
-				if (ttSpellObj.components) spTooltip += "\n  Components:  " + ttSpellObj.components + (ttSpellObj.compMaterial ? " (" + ttSpellObj.compMaterial.substr(0,1).toLowerCase() + ttSpellObj.compMaterial.substr(1) + ")" : "");
-
-				if (ttSpellObj.duration) spTooltip += "\n  Duration:  " + ttSpellObj.duration.replace(/\b(conc), \b/i, '$1entration, up to ').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours').replace(/\(d\)/i, "(dismiss as 1 action)").replace(/(instant)\./i, "$1aneous");
-
-				spTooltip += "\n\n" + ttSpellObj.descriptionFull;
-				if (ObjLength(aSpell.changesObj)) {
-					var txt = [];
-					for (var str in aSpell.changesObj) txt.push(toUni(str) + aSpell.changesObj[str]);
-					spTooltip += "\n\n>>  CHANGES BY FEATURES  <<\nThe above original has been changed as follows:\n\n" + txt.join("\n\n");
-				}
-			};
+			var spTooltip = aSpell.tooltip ? aSpell.tooltip : "";
 
 			//set what an empty cell should look like
 			var emptyCell = CurrentCasters.emptyFields ? "" : "\u2014";
@@ -399,9 +422,8 @@ function ApplySpell(FldValue, rememberFldName) {
 			var spBook = parseSrc ? parseSrc[0][0] : "";
 			if (spBook === "SRD") spBook = "R";
 			var spPage = parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
-			var spBookFull = stringSource(aSpell, "full,page,multi");
-			Value(base.replace("remember", "book"), spBook.substr(0,1), spBookFull);
-			Value(base.replace("remember", "page"), spPage, spBookFull);
+			Value(base.replace("remember", "book"), spBook.substr(0,1), aSpell.tooltipSource);
+			Value(base.replace("remember", "page"), spPage, aSpell.tooltipSource);
 
 			input[1] = aSpell.firstCol; // use the firstCol, as the CurrentEval could have changed it
 		} else { // leave the content, but remove all the tooltips as this isn't the same spell anymore
@@ -1099,7 +1121,7 @@ function manualInputToSpellObj(dialog, id) {
 	var idIdx = Number(id.substr(2)) - 1;
 	var listObj = this["list" + idPrime];
 	if (idPrime === "Bo") listObj = listObj[idIdx];
-	if (listObj[0][iResult]) return; // already something selected from the dropdown
+	if (listObj[0][aResult]) return listObj[1][aResult] ? true : false; // already something selected from the dropdown
 	var iResult = clean(RemoveZeroWidths(aResult.replace(/ ?\(.+\)/i, "")), false, true).toLowerCase();
 	if (!iResult) return; // nothing to set
 	var nListObj = newObj(listObj[0]); // Make sure we're not changing a global object
@@ -1164,13 +1186,16 @@ function manualInputToSpellObj(dialog, id) {
 	var toLoad = {};
 	toLoad[id] = nListObj;
 	dialog.load(toLoad);
+	return fndResult && fndResult !== emptyBox;
 };
 
 // Create the various dialogs for selecting spells
-function DefineSpellSheetDialogs(force) {
+function DefineSpellSheetDialogs(force, formHeight) {
 	if (spDias && !force) return; // already defined, so do nothing
 
 	spDias = {};
+
+	formHeight = !isNaN(formHeight) ? formHeight : isWindows ? 16 : 20;
 
 	// Function to set the right object to positive
 	spDias.fnSetSpell = function(inObj, aSpell) {
@@ -1182,8 +1207,7 @@ function DefineSpellSheetDialogs(force) {
 
 	// Function to return the right one in the list
 	spDias.fnFindSpell = function(aStr, refObj) {
-		var fnd = refObj[0][aStr];
-		if (fnd && refObj[1][aStr]) return refObj[1][aStr];
+		if (refObj[0][aStr] !== undefined && refObj[1][aStr]) return refObj[1][aStr];
 		return ""; //if nothing was found
 	}
 
@@ -1415,7 +1439,6 @@ function DefineSpellSheetDialogs(force) {
 					elements : [{
 						type : "image",
 						item_id : "img1",
-						alignment : "align_bottom",
 						width : 20,
 						height : 20
 					}, {
@@ -1511,16 +1534,220 @@ function DefineSpellSheetDialogs(force) {
 	};
 
 	// Dialog for user input on spells
-	// Bo 16, Ca 10, Sp 18
+	// Bo 20, Ca 20, Sp 20
+	spDias.spellSelectParts = {
+		listCasterCluster : {
+			type : "cluster", //spell cluster for casters with typSp ==
+			align_children : "align_left",
+			item_id : "SplT",
+			name : "Spells",
+			font : "heading",
+			bold : true,
+			elements : [{
+				type : "static_text",
+				char_width : 37,
+				wrap_name : true,
+				name : "Because this spellcaster knows all spells on their list, there is no reason to select their spells in this dialog. All spells will be shown on the generated pages and there you can check off which ones are prepared.\n\nAlternatively, you can select \"Prepared spells only\" below. If so, the next dialog will then allow you to select these prepared spells, having only them shown on the generated pages."
+			}]
+		},
+		bonusCluster : {
+			type : "cluster",
+			alignment : "align_center",
+			item_id : "BoCL",
+			elements : [{
+				type : "view",
+				align_children : "align_distribute",
+				margin_height : 5,
+				elements : [{
+					type : "static_text",
+					item_id : "BonT",
+					name : "Bonus Spells",
+					height : 22,
+					char_width : 12,
+					alignment : "align_left",
+					font : "heading",
+					bold : true
+				}, {
+					type : "edit_text",
+					item_id : "BonK",
+					alignment : "align_right",
+					char_width : 3,
+					height : 22,
+					SpinEdit : true
+				}, {
+					type : "static_text",
+					item_id : "BoT2",
+					name : "Origin / Remarks",
+					height : 22,
+					char_width : 15,
+					alignment : "align_left",
+					font : "heading"
+				}]
+			}].concat(Array.apply(null, Array(20)).map(function(n, i) {
+				var nr = ("0" + (i+1)).slice(-2);
+				return {
+					type : "view",
+					align_children : "align_row",
+					char_width : 29,
+					margin_height : -1,
+					elements : [{
+						type : "edit_text",
+						item_id : "Bo" + nr,
+						char_width : 12,
+						height : formHeight,
+						PopupEdit : true,
+						SpinEdit : true,
+						alignment : "align_top"
+					}, {
+						type : "static_text",
+						item_id : "BT" + nr,
+						char_width : 15,
+						height : formHeight
+					}]
+				};
+			})).concat({
+				type : "gap",
+				height : 5
+			})
+		},
+		cantripCluster : {
+			type : "cluster",
+			align_children : "align_left",
+			item_id : "CaCL",
+			elements : [{
+				type : "view",
+				align_children : "align_distribute",
+				margin_height : 5,
+				elements : [{
+					type : "static_text",
+					item_id : "CanT",
+					name : "Cantrips",
+					height : 22,
+					char_width : 12,
+					alignment : "align_left",
+					font : "heading",
+					bold : true
+				}, {
+					type : "edit_text",
+					alignment : "align_right",
+					item_id : "CanK",
+					char_width : 3,
+					height : 22,
+					SpinEdit : true
+				}]
+			}].concat(Array.apply(null, Array(20)).map(function(n, i) {
+				return {
+					type : "view",
+					char_width : 11,
+					margin_height : -1,
+					elements : [{
+						type : "edit_text",
+						item_id : "Ca" + ("0" + (i+1)).slice(-2),
+						char_width : 11,
+						height : formHeight,
+						PopupEdit : true,
+						SpinEdit : true
+					}]
+				};
+			})).concat({
+				type : "gap",
+				height : 5
+			})
+		},
+		spellCluster : {
+			type : "cluster", //spell cluster
+			align_children : "align_left",
+			item_id : "SpCL",
+			elements : [{
+				type : "view", //view with one row
+				align_children : "align_distribute",
+				margin_height : 5,
+				elements : [{
+					type : "static_text",
+					item_id : "SplT",
+					name : "Spells",
+					height : 22,
+					char_width : 14,
+					alignment : "align_left",
+					font : "heading",
+					bold : true
+				}, {
+					type : "edit_text",
+					item_id : "SplK",
+					alignment : "align_right",
+					char_width : 3,
+					height : 22,
+					SpinEdit : true
+				}]
+			}].concat(Array.apply(null, Array(20)).map(function(n, i) {
+				return {
+					type : "view",
+					char_width : 13,
+					margin_height : -1,
+					elements : [{
+						type : "edit_text",
+						item_id : "Sp" + ("0" + (i+1)).slice(-2),
+						char_width : 13,
+						height : formHeight,
+						PopupEdit : true,
+						SpinEdit : true
+					}]
+				};
+			})).concat({
+				type : "gap",
+				height : 5
+			})
+		},
+		extraCluster : {
+			type : "cluster",
+			align_children : "align_left",
+			elements : [{
+				type : "view", //view with one row
+				align_children : "align_left",
+				margin_height : 5,
+				elements : [{
+					type : "static_text",
+					item_id : "AdCL",
+					char_width : 15,
+					height : 22,
+					font : "heading",
+					name : "Subclass Taart",
+					bold : true
+				}, {
+					type : "static_text",
+					item_id : "AdET",
+					char_width : 15,
+					height : formHeight,
+					font : "palette",
+					bold : true
+				}]
+			}].concat(Array.apply(null, Array(19)).map(function(n, i) {
+				return {
+					type : "view",
+					char_width : 13,
+					margin_height : -1,
+					elements : [{
+						type : "static_text",
+						item_id : "Ad" + ("0" + (i+1)).slice(-2),
+						char_width : 15,
+						height : formHeight
+					}]
+				};
+			})).concat({
+				type : "gap",
+				height : 5
+			})
+		}
+	};
 	spDias.spellSelect = {
-
 		search : manualInputToSpellObj,
-		listBo : Array.apply(null, Array(16)).map(function() {return [{}, {}, {}]}), //array of 16 arrays, each with 3 objects
-		namesBo : Array(16), //always 16 long!
-		keysBo : Array(16), //always 16 long!
+		listAl : [{}, {}, {}],
+		listBo : Array.apply(null, Array(20)).map(function() {return [{}, {}, {}]}), //array of 20 arrays, each with 3 objects
+		namesBo : Array(20), //always 20 long!
+		keysBo : Array(20), //always 20 long!
 		listCa : [{}, {}, {}],
 		listSp : [{}, {}, {}],
-		selectBo : Array(16), //always 16 long!
+		selectBo : Array(20), //always 20 long!
 		selectCa : [],
 		selectAd : [],
 		selectSp : [],
@@ -1539,7 +1766,6 @@ function DefineSpellSheetDialogs(force) {
 		showSpRadio : true,
 		spNm : "Spells",
 		caNm : "Cantrips",
-		txt : "",
 		header : "",
 		fullname : "",
 		SpBook : false,
@@ -1547,81 +1773,82 @@ function DefineSpellSheetDialogs(force) {
 		nameAd : "[always prepared]",
 		prevBtn : false,
 		curCast : "",
-	
+
 		//when starting the dialog
 		initialize : function (dialog) {
 			this.SpBook = false;
-			this.txt = "\nSelect or type a spell in a drop-down box and use TAB to go to the next.\nSpell availability depends on what you are currently editing.\nENTER always confirms and ESC always cancels this dialogue.";
-	
 			var psiSpells = this.spNm === "Spells" ? "Spells" : "Psionics";
-	
+
 			//make a string for the information
-			var info = "";
-			if (this.showCa) info += this.caNm + " known:\t" + toUni(this.nmbrCa) + "\n";
-			switch (this.typeSp) {
-			 case "book" :
-				info += this.spNm + " known:\t" + toUni("All in spellbook") + "\n";
-				break;
-			 case "list" :
-				info += this.spNm + " known:\t" + toUni("All on the class' spell list") + "\n";
-				break
-			 case "known" :
-				info += this.spNm + " known:\t" + toUni(this.nmbrSp) + "\n";
-				break;
+			var info = [[], []];
+			if (this.showCa) {
+				info[0].push("\u2022 " + this.caNm + " known:");
+				info[1].push(this.nmbrCa);
 			}
-			if (this.levelSp) info += "of Spell Level:\t" + toUni(spellLevelList[this.levelSp]) + (this.levelSp > 1 ? " (and lower)" : "") + "\n";
-			if (this.showBo) info += "Bonus " + psiSpells + ":\t" + toUni(this.nmbrBo);
-	
+			switch (this.typeSp) {
+				case "book" :
+					info[1].push("All in spellbook");
+				case "list" :
+					if (this.typeSp == "list") info[1].push("All on the class' spell list");
+				case "known" :
+					if (this.typeSp == "known") info[1].push(this.nmbrSp);
+					info[0].push("\u2022 " + this.spNm + " known:");
+			}
+			if (this.levelSp) {
+				info[0].push("   of spell level:");
+				info[1].push(spellLevelList[this.levelSp] + (this.levelSp > 1 ? " (and lower)" : ""));
+			}
+			if (this.showBo) {
+				info[0].push("\u2022 Bonus " + psiSpells.toLowerCase() + ": ");
+				info[1].push(this.nmbrBo);
+			}
+
 			var theBo = this.nmbrBo + this.offsetBo;
 			var theCa = this.nmbrCa + this.offsetCa;
 			var theSp = this.nmbrSp + this.offsetSp;
-	
+
 			//set the value of various text entries
 			var toLoad = {
+				"img1" : allIcons.spells,
 				"Hea0" : "Set " + this.spNm + ": " + this.header.capitalize(),
-				"txt0" : this.txt,
+				"txt0" : "Select or type a spell in a drop-down box and use TAB to go to the next.\nSpell availability depends on what you are currently editing.\nENTER always confirms and ESC always cancels this dialogue.",
 				"BonK" : ASround(theBo),
 				"CanK" : ASround(theCa),
 				"SplK" : ASround(theSp),
 				"txC1" : this.fullname,
-				"txC2" : info,
+				"txC2" : info[0].join("\n"),
+				"txC3" : info[1].join("\n"),
 				"BonT" : "Bonus " + psiSpells,
 				"CanT" : this.caNm,
-				"AdIT" : "Subclass " + psiSpells,
+				"AdCL" : "Subclass " + psiSpells,
 				"SplT" : this.typeSp === "book" ? "Spellbook" : this.spNm,
-				"AdET" : this.nameAd
+				"AdET" : this.nameAd,
+				"ClLo" : psiSpells + " Lookup",
+				"AlLo" : this.listAl[0]
 			};
 			if (this.showSpRadio) toLoad["SpR" + this.selectSpRadio] = true;
-	
+
 			//enable the various entries or disable them and load their values
 			var toEnable = {
-				AdET : false,
-				SpR1 : this.levelSp,
-				SpR3 : this.levelSp && this.typeSp !== "known",
-				bPre : this.prevBtn
+				"bLoS" : false,
+				"bLoA" : false
 			};
-	
-			//set the visibility of the clusters
-			dialog.visible({
-				"BoCL" : this.showBo,
-				"CaCL" : this.showCa,
-				"AdCL" : this.showAd,
-				"SpCL" : this.showSp,
-				"RaCL" : this.showSpRadio,
-				"SplK" : this.showSp && this.typeSp !== "book",
-				SpR1 : this.levelSp,
-				SpR3 : this.levelSp && this.typeSp !== "known",
+			if (this.showAd) toEnable.AdET = false;
+
+			//set the visibility
+			var toShow = {
 				"bPre" : this.prevBtn
-			});
-	
+			};
+			if (this.showSp) toShow.SplK = this.typeSp !== "book";
+
 			//a function to set the right object to positive
-			for (var i = 1; i <= 18; i++) {
+			for (var i = 1; i <= 20; i++) {
 				var Bo = "Bo" + ("0" + i).slice(-2);
 				var BT = "BT" + ("0" + i).slice(-2);
 				var Ca = "Ca" + ("0" + i).slice(-2);
 				var Sp = "Sp" + ("0" + i).slice(-2);
 				var Ad = "Ad" + ("0" + i).slice(-2);
-				if (this.showBo && i <= 16) {
+				if (this.showBo) {
 					toEnable[Bo] = i <= theBo;
 					toLoad[BT] = this.namesBo[i - 1];
 					var aBoSet = this.selectBo[i - 1];
@@ -1630,7 +1857,7 @@ function DefineSpellSheetDialogs(force) {
 				if (this.showAd && this.selectAd[i - 1]) {
 					toLoad[Ad] = this.selectAd[i - 1].capitalize();
 				}
-				if (this.showCa && i <= 10) {
+				if (this.showCa) {
 					toEnable[Ca] = i <= theCa;
 					var aCaSet = this.selectCa[i - 1];
 					toLoad[Ca] = toEnable[Ca] && aCaSet ? spDias.fnSetSpell(this.listCa, aCaSet) : this.listCa[0];
@@ -1642,37 +1869,36 @@ function DefineSpellSheetDialogs(force) {
 				}
 			}
 			dialog.enable(toEnable);
+			dialog.visible(toShow);
 			dialog.load(toLoad);
 		},
-	
+
 		saveIt : function (dialog) {
 			var oResult = dialog.store();
-	
+
 			this.offsetBo = oResult["BonK"] - this.nmbrBo;
 			this.offsetCa = oResult["CanK"] - this.nmbrCa;
 			this.offsetSp = oResult["SplK"] - this.nmbrSp;
-	
+
 			this.selectCa = [];
 			this.selectSp = [];
 			this.selectBo = [];
-			for (var i = 1; i <= 18; i++) {
+			for (var i = 1; i <= 20; i++) {
 				var Bo = "Bo" + ("0" + i).slice(-2);
 				var Ca = "Ca" + ("0" + i).slice(-2);
 				var Sp = "Sp" + ("0" + i).slice(-2);
-	
+
 				var resultSp = i <= oResult["SplK"] ? spDias.fnFindSpell(oResult[Sp], this.listSp) : "";
 				if (resultSp) this.selectSp.push(resultSp);
-				if (i <= 16) this.selectBo.push(i <= oResult["BonK"] ? spDias.fnFindSpell(oResult[Bo], this.listBo[i - 1]) : "");
-				if (i <= 10) {
-					var resultCa = i <= oResult["CanK"] ? spDias.fnFindSpell(oResult[Ca], this.listCa) : "";
-					if (resultCa) this.selectCa.push(resultCa);
-				}
+				this.selectBo.push(i <= oResult["BonK"] ? spDias.fnFindSpell(oResult[Bo], this.listBo[i - 1]) : "");
+				var resultCa = i <= oResult["CanK"] ? spDias.fnFindSpell(oResult[Ca], this.listCa) : "";
+				if (resultCa) this.selectCa.push(resultCa);
 			}
-	
+
 			//set the results of the radio button
 			this.selectSpRadio = oResult["SpR1"] ? 1 : oResult["SpR2"] ? 2 : oResult["SpR3"] ? 3 : 4;
 		},
-	
+
 		BonK : function (dialog) {
 			var elements = dialog.store();
 			var theBo = ASround(elements["BonK"]);
@@ -1680,13 +1906,13 @@ function DefineSpellSheetDialogs(force) {
 				"BonK" : theBo
 			});
 			var allBo = {};
-			for (var B = 1; B <= 16; B++) {
+			for (var B = 1; B <= 20; B++) {
 				allBo["Bo" + ("0" + B).slice(-2)] = B <= theBo;
 				allBo["BT" + ("0" + B).slice(-2)] = B <= theBo;
 			}
 			dialog.enable(allBo);
 		},
-	
+
 		CanK : function (dialog) {
 			var elements = dialog.store();
 			var theCa = ASround(elements["CanK"]);
@@ -1694,12 +1920,12 @@ function DefineSpellSheetDialogs(force) {
 				"CanK" : theCa
 			});
 			var allCa = {};
-			for (var C = 1; C <= 10; C++) {
+			for (var C = 1; C <= 20; C++) {
 				allCa["Ca" + ("0" + C).slice(-2)] = C <= theCa;
 			}
 			dialog.enable(allCa);
 		},
-	
+
 		SplK : function (dialog) {
 			var elements = dialog.store();
 			var theSp = ASround(elements["SplK"]);
@@ -1707,27 +1933,115 @@ function DefineSpellSheetDialogs(force) {
 				"SplK" : theSp
 			});
 			var allSp = {};
-			for (var S = 1; S <= 18; S++) {
+			for (var S = 1; S <= 20; S++) {
 				allSp["Sp" + ("0" + S).slice(-2)] = S <= theSp;
 			}
 			dialog.enable(allSp);
 		},
-	
+
 		ok : function (dialog) {
 			if (this.typeSp === "book") this.SpBook = true;
 			this.saveIt(dialog);
 		},
-	
+
 		other : function (dialog) {
 			this.saveIt(dialog);
 			dialog.end("ok");
 		},
-	
+
 		bPre : function (dialog) {
 			this.saveIt(dialog);
 			dialog.end("prev");
 		},
-	
+
+		AlLo : function (dialog) {
+			var found = this.search(dialog, "AlLo");
+			dialog.enable({
+				"bLoS" : found,
+				"bLoA" : found
+			});
+		},
+
+		bLoA : function (dialog) {
+			var oResult = dialog.store();
+			var fSpell = spDias.fnFindSpell(oResult["AlLo"], this.listAl);
+			if (fSpell) {
+				var success = false;
+				var types = [
+					["Ca", "CanK"],
+					["Sp", "SplK"],
+					["Bo", "BonK"]
+				];
+				for (var t = 0; t < types.length; t++) {
+					var aType = types[t][0];
+					var aNmbr = types[t][1];
+					var refObj = this["list" + aType];
+					// If cantrip or spell column, skip if this spell is not an option
+					if (aType !== "Bo" && !refObj[2][fSpell]) continue;
+					for (var i = 1; i <= 20; i++) {
+						// If bonus, continue if this spell is not an option for this line
+						if (aType === "Bo") {
+							refObj = this.listBo[i - 1];
+							if (!refObj[2][fSpell]) continue;
+						}
+						// Add the spell to this line if there is not already a useable selection
+						var Nm = aType + ("0" + i).slice(-2);
+						if (!refObj[1][oResult[Nm]]) {
+							// Create the new object for the field
+							var useObj = newObj(refObj[0]);
+							useObj[refObj[2][fSpell]] *= -1;
+							var toLoad = {};
+							toLoad[Nm] = useObj;
+							// If this field is not yet active, make sure it is active now. And set the number to their correct value
+							var activeLines = Number(oResult[aNmbr]);
+							if (activeLines < i) {
+								toLoad[aNmbr] = ASround(i);
+								var toEnable = {};
+								toEnable[Nm] = true;
+								dialog.enable(toEnable);
+							}
+							dialog.load(toLoad);
+							success = true;
+							break;
+						}
+					}
+					if (success) break;
+				}
+				if (!success) {
+					// No option to add the spell was found, alert the user
+					app.alert({
+						cMsg : "There is no space left to add this spell to the current dialog. Make sure that the column where it could go has an unused entry (an empty drop-down box).",
+						nIcon : 0,
+						cTitle : "No space left",
+						nType : 0
+					});
+				}
+			}
+		},
+
+		bLoS : function (dialog) {
+			// Show a dialog with the spell's full description
+			var oResult = dialog.store();
+			var fSpell = spDias.fnFindSpell(oResult["AlLo"], this.listAl);
+			if (fSpell) {
+				// Get the object with considering changes by features
+				var aSpell = GetSpellObject(fSpell, this.curCast, false, true, true);
+				var fullDescr = aSpell.tooltip;
+				// Now add the source of the spell in the right location
+				var sourceString = aSpell.tooltipSource;
+				if (sourceString) { 
+					sourceString = "\n\n" + toUni("Source(s) of the Spell") + "\n \u2022 " + sourceString.replace(/\n/g, "\n \u2022 ");
+					if ((/>>  CHANGES BY FEATURES/i).test(fullDescr)) {
+						fullDescr = fullDescr.replace(/\n*(>>  CHANGES BY FEATURES)/i, sourceString + "\n\n__________\n\n$1");
+					} else {
+						fullDescr += sourceString;
+					}
+				}
+				// Show a pop-up dialog
+				ShowDialog("Full spell description", fullDescr);
+			}
+		},
+
 		description : {
 			name : "SPELL SELECTION DIALOG",
 			elements : [{
@@ -1737,17 +2051,26 @@ function DefineSpellSheetDialogs(force) {
 					type : "view", //total view
 					align_children : "align_distribute",
 					elements : [{
-						type : "view", //left view
-						alignment : "align_left",
-						char_width : 39,
+						type : "view", // first column, always visible
 						elements : [{
-							type : "static_text",
-							item_id : "Hea0",
-							alignment : "align_fill",
-							font : "title",
-							bold : true,
-							height : 25,
-							char_width : 39
+							type : "view", // title
+							alignment : "align_left",
+							align_children : "align_row",
+							margin_height : -1,
+							elements : [{
+								type : "image",
+								item_id : "img1",
+								width : 20,
+								height : 20
+							}, {
+								type : "static_text",
+								item_id : "Hea0",
+								alignment : "align_fill",
+								font : "title",
+								bold : true,
+								height : 25,
+								char_width : 36
+							}]
 						}, {
 							type : "static_text",
 							item_id : "txt0",
@@ -1755,250 +2078,81 @@ function DefineSpellSheetDialogs(force) {
 							font : "dialog",
 							char_width : 39,
 							wrap_name : true,
-							name :  "Please set the spells/cantrips you want to have on the Spell Sheet.\nNote that some things might not be available in this dialog, because what you are editing has no access to it.\nYou can always use ENTER to confirm or ESC to cancel this dialogue."
+							name : "Select or type a spell in a drop-down box and use TAB to go to the next.\nSpell availability depends on what you are currently editing.\nENTER always confirms and ESC always cancels this dialogue."
 						}, {
-							 type : "view",
+							type : "cluster",
+							item_id : "txC1",
 							align_children : "align_left",
 							char_width : 39,
-							elements : [{
-								type : "view",
-								align_children : "align_top",
-								char_width : 39,
-								elements : [{
-									type : "static_text",
-									item_id : "txt1",
-									char_width : 10,
-									name : "Currently editing:"
-								}, {
-									type : "static_text",
-									item_id : "txC1",
-									alignment : "align_top",
-									char_width : 28,
-									font : "dialog",
-									bold : true
-								}]
-							}, {
-								type : "view",
-								align_children : "align_top",
-								char_width : 39,
-								elements : [{
-									type : "static_text",
-									item_id : "txt8",
-									char_width : 10,
-									name : "Which grants:"
-								}, {
-									type : "static_text",
-									item_id : "txC2",
-									alignment : "align_top",
-									char_width : 28,
-									wrap_name : true,
-									name :  "Cantrips known:\nSpells known:\nof Spell Level:\nExtra:"
-								}]
-							}]
-						}, {
-							type : "cluster", //bonus spells cluster
-							alignment : "align_center",
-							item_id : "BoCL",
-							char_width : 40,
-							elements : [{
-								type : "view", //view with one row
-								align_children : "align_distribute",
-								char_width : 15,
-								elements : [{
-									type : "static_text",
-									item_id : "BonT",
-									name : "Bonus Spells",
-									height : 22,
-									char_width : 12,
-									alignment : "align_left",
-									font : "heading",
-									bold : true
-								}, {
-									type : "edit_text",
-									item_id : "BonK",
-									alignment : "align_right",
-									char_width : 3,
-									height : 22,
-									SpinEdit : true
-								}, {
-									type : "static_text",
-									item_id : "BoT2",
-									name : "Origin / Remarks",
-									height : 22,
-									char_width : 15,
-									alignment : "align_left",
-									font : "heading"
-								}]
-							}].concat(Array.apply(null, Array(16)).map(function(n, i) {
-								var nr = ("0" + (i+1)).slice(-2);
-								return {
-									type : "view",
-									align_children : "align_row",
-									char_width : 29,
-									elements : [{
-										type : "edit_text",
-										item_id : "Bo" + nr,
-										char_width : 11,
-										height : 15,
-										PopupEdit : true,
-										SpinEdit : true
-									}, {
-										type : "static_text",
-										item_id : "BT" + nr,
-										alignment : "align_left",
-										char_width : 14,
-										height : 15
-									}]
-								};
-							})).concat([{
-								type : "gap",
-								height : 1
-							}])
-						}]
-					}, {
-						type : "view", //middle view (cantrip & added spells)
-						align_children : "align_left",
-						char_width : 15,
-						elements : [{
-							type : "cluster", //cantrip cluster
-							align_children : "align_left",
-							item_id : "CaCL",
-							char_width : 15,
-							elements : [{
-								type : "view", //view one row
-								align_children : "align_distribute",
-								char_width : 15,
-								elements : [{
-									type : "static_text",
-									item_id : "CanT",
-									name : "Cantrips",
-									height : 22,
-									char_width : 12,
-									alignment : "align_left",
-									font : "heading",
-									bold : true
-								}, {
-									type : "edit_text",
-									alignment : "align_right",
-									item_id : "CanK",
-									char_width : 3,
-									height : 22,
-									SpinEdit : true
-								}]
-							}].concat(Array.apply(null, Array(10)).map(function(n, i) {
-								return {
-									type : "edit_text",
-									item_id : "Ca" + ("0" + (i+1)).slice(-2),
-									char_width : 11,
-									height : 15,
-									PopupEdit : true,
-									SpinEdit : true
-								};
-							})).concat([{
-								type : "gap",
-								height : 7
-							}])
-						}, {
-							type : "cluster", // subclass spells cluster
-							align_children : "align_left",
-							item_id : "AdCL",
-							char_width : 15,
-							elements : [{
-								type : "static_text",
-								item_id : "AdIT",
-								name : "Subclass Spells",
-								char_width : 15,
-								height : 20,
-								font : "heading",
-								bold : true
-							}, {
-								type : "static_text",
-								item_id : "AdET",
-								char_width : 18,
-								height : 13,
-								font : "palette",
-								bold : true
-							}].concat(Array.apply(null, Array(10)).map(function(n, i) {
-								return {
-									type : "static_text",
-									item_id : "Ad" + ("0" + (i+1)).slice(-2),
-									char_width : 15,
-									height : i === 9 ? 25 : 15
-								};
-							}))
-						}]
-					}, {
-						type : "view", //right view (spells & radio buttons)
-						elements : [{
-							type : "cluster", //spell cluster
-							align_children : "align_left",
-							item_id : "SpCL",
-							char_width : 16,
-							elements : [{
-								type : "view", //view with one row
-								align_children : "align_distribute",
-								char_width : 15,
-								elements : [{
-									type : "static_text",
-									item_id : "SplT",
-									name : "Spells",
-									height : 22,
-									char_width : 14,
-									alignment : "align_left",
-									font : "heading",
-									bold : true
-								}, {
-									type : "edit_text",
-									item_id : "SplK",
-									alignment : "align_right",
-									char_width : 3,
-									height : 22,
-									SpinEdit : true
-								}]
-							}].concat(Array.apply(null, Array(18)).map(function(n, i) {
-								return {
-									type : "edit_text",
-									item_id : "Sp" + ("0" + (i+1)).slice(-2),
-									char_width : 13,
-									height : 15,
-									PopupEdit : true,
-									SpinEdit : true
-								};
-							})).concat([{
-								type : "gap",
-								height : 7
-							}])
-						}, {
-							type : "cluster", //radio button cluster
-							item_id : "RaCL",
-							name : "What Spells to Show?",
-							align_children : "align_left",
-							char_width : 16,
+							name : "Currently editing",
 							font : "heading",
 							bold : true,
-							margin_width : 5,
 							elements : [{
-								type : "radio",
-								item_id : "SpR1",
-								group_id : "RadB",
-								name : "Spells of levels I can cast"
-							}, {
-								type : "radio",
-								item_id : "SpR2",
-								group_id : "RadB",
-								name : "All spells regardless of level"
-							}, {
-								type : "radio",
-								item_id : "SpR3",
-								group_id : "RadB",
-								name : "Prepared spells only"
-							}, {
-								type : "radio",
-								item_id : "SpR4",
-								group_id : "RadB",
-								name : "Full class list (spells && cantrips)"
+								type : "view",
+								align_children : "align_top",
+								elements : [{
+									type : "static_text",
+									item_id : "txC2",
+									char_width : 10,
+									wrap_name : true,
+									name : "Bonus spells:\nCantrips known:\nSpells known:\n of Spell Level:"
+								}, {
+									type : "static_text",
+									item_id : "txC3",
+									wrap_name : true,
+									char_width : 20,
+									font : "dialog",
+									bold : true,
+									name : "0\n1\n2\n3"
+								}]
 							}]
+						}, {
+							type : "cluster",
+							item_id : "ClLo",
+							align_children : "align_left",
+							char_width : 39,
+							name : "Spell Lookup",
+							font : "heading",
+							bold : true,
+							elements : [{
+								type : "edit_text",
+								item_id : "AlLo",
+								alignment : "align_center",
+								char_width : 13,
+								height : formHeight,
+								PopupEdit : true,
+								SpinEdit : true
+							}, {
+								type : "view",
+								char_width : 35,
+								align_children : "align_distribute",
+								alignment : "align_fill",
+								elements : [{
+									type : "button",
+									item_id : "bLoS",
+									alignment : "align_center",
+									char_width : 12,
+									name : "Show full description"
+								}, {
+									type : "button",
+									item_id : "bLoA",
+									alignment : "align_center",
+									char_width : 12,
+									name : "Add to selection"
+								}]
+							}]
+						}, {
+							type : "view",
+							item_id : "col1",
+							margin_height : 0,
+							elements : []
 						}]
+					}, {
+						type : "view", // the rest of the dialog (dynamically loaded)
+						align_children : "align_distribute",
+						item_id : "colE",
+						margin_height : 0,
+						elements : []
 					}]
 				}, {
 					type : "view",
@@ -2032,16 +2186,16 @@ function DefineSpellSheetDialogs(force) {
 		fullname : "",
 		iteration : "1/1",
 		curCast : "",
-	
+
 		//when starting the dialog
 		initialize : function (dialog) {
-	
+
 			//set the value of various text entries
 			var toLoad = {
 				"Hea0" : "Additional Spellbook Spells for " + this.fullname,
 				"iter" : this.iteration
 			};
-	
+
 			//enable the various entries or disable them and load their values
 			for (var i = 1; i <= 80; i++) {
 				var Sp = "Sp" + ("0" + i).slice(-2);
@@ -2050,7 +2204,7 @@ function DefineSpellSheetDialogs(force) {
 			}
 			dialog.load(toLoad);
 		},
-	
+
 		saveIt : function (dialog) {
 			var oResult = dialog.store();
 			this.selectSp = [];
@@ -2060,21 +2214,21 @@ function DefineSpellSheetDialogs(force) {
 				if (resultSp) this.selectSp.push(resultSp);
 			}
 		},
-	
+
 		ok : function (dialog) {
 			this.saveIt(dialog);
 		},
-	
+
 		other : function (dialog) {
 			this.saveIt(dialog);
 			dialog.end("book");
 		},
-	
+
 		bPre : function (dialog) {
 			this.saveIt(dialog);
 			dialog.end("prev");
 		},
-	
+
 		description : {
 			name : "EXTRA SPELLBOOK SPELLS DIALOG",
 			elements : [{
@@ -2112,12 +2266,17 @@ function DefineSpellSheetDialogs(force) {
 						var start = Number(idx * 20 + 1)
 						for (var i = start; i < (start + 20); i++) {
 							colObj.elements.push({
-								type : "edit_text",
-								item_id : "Sp" + ("0" + (i)).slice(-2),
+								type : "view",
 								char_width : 11,
-								height : 15,
-								PopupEdit : true,
-								SpinEdit : true
+								margin_height : -1,
+								elements : [{
+									type : "edit_text",
+									item_id : "Sp" + ("0" + (i)).slice(-2),
+									char_width : 11,
+									height : formHeight,
+									PopupEdit : true,
+									SpinEdit : true
+								}]
 							});
 						}
 						colObj.elements.push({
@@ -2148,7 +2307,7 @@ function DefineSpellSheetDialogs(force) {
 		}
 	};
 
-	// Dialog for user input for more spells (after the initial 18) for a spellsbook
+	// Dialog for user input for more spells (after the initial 20) for a spellsbook
 	// Sp 30
 	spDias.spellsPrepared = {
 
@@ -2180,7 +2339,7 @@ function DefineSpellSheetDialogs(force) {
 				"txt0" : "The number of spells to prepare is:\t" + toUni(this.nmbrPrep) + "  (level)\t\t" + (abiMod < 0 ? "- " : "+ ") + toUni(Math.abs(abiMod)) + "  (" + abiNm + " modifier)",
 				"SplK" : ASround(theSp)
 			};
-			if (this.showSpRadio) toLoad["SpR" + this.selectSpRadio] = true;
+
 			for (var i = 1; i <= 30; i++) {
 				var Sp = "Sp" + ("0" + i).slice(-2);
 				toEnable[Sp] = i <= theSp;
@@ -2258,12 +2417,17 @@ function DefineSpellSheetDialogs(force) {
 						var start = Number(idx * 10 + 1)
 						for (var i = start; i < (start + 10); i++) {
 							colObj.elements.push({
-								type : "edit_text",
-								item_id : "Sp" + ("0" + (i)).slice(-2),
+								type : "view",
 								char_width : 11,
-								height : 15,
-								PopupEdit : true,
-								SpinEdit : true
+								margin_height : -1,
+								elements : [{
+									type : "edit_text",
+									item_id : "Sp" + ("0" + (i)).slice(-2),
+									char_width : 11,
+									height : formHeight,
+									PopupEdit : true,
+									SpinEdit : true
+								}]
 							});
 						}
 						return colObj;
@@ -2282,9 +2446,9 @@ function DefineSpellSheetDialogs(force) {
 	// Now create the search functions for the dialogs above
 	var makeFunc = {
 		"spellSelect" : {
-			Bo : 16,
-			Ca : 10,
-			Sp : 18
+			Bo : 20,
+			Ca : 20,
+			Sp : 20
 		},
 		"spellBook" : {
 			Sp : 80
@@ -2325,12 +2489,15 @@ function AskUserSpellSheet() {
 	for (var theI = 0; theI < classesArray.length; theI++) {
 		var aCast = classesArray[theI];
 		var spCast = CurrentSpells[aCast];
+		var diaDynCol1 = [];
+		var diaDynCols = [];
 
 		var thermoTxt = thermoM("Generating the " + spCast.name + " dialog..."); //change the progress dialog text
 		thermoM(1/2); //increment the progress dialog's progress
 
 		dia.prevBtn = theI !== 0;
 		dia.curCast = aCast;
+		dia.listAl = AllSpellsObject;
 
 		// get the ability score to use for save DCs/spell attacks/prepared
 		spCast.abilityToUse = getSpellcastingAbility(aCast);
@@ -2375,21 +2542,21 @@ function AskUserSpellSheet() {
 			if (spCast.typeSp === undefined) {
 				spCast.typeSp = !spCast.known.spells || isArray(spCast.known.spells) || !isNaN(spCast.known.spells) ? "known" : spCast.known.spells;
 			}
-			//see what spell section to activate
-
+		  // see what spell section to activate
 			dia.typeSp = spCast.typeSp; //set the type of spells (book, list, known)
-			dia.nmbrSp = spCast.typeSp == "book" ? 18 :
+			dia.nmbrSp = spCast.typeSp == "book" ? 20 :
 				!spCast.known.spells ? 0 :
 				isArray(spCast.known.spells) ? spCast.known.spells[Math.min(spCast.known.spells.length, spCast.level) - 1] :
 				isNaN(spCast.known.spells) ? 0 : Number(spCast.known.spells); //set the amount of spells
-			if (isNaN(dia.nmbrSp)) dia.nmbrSp = 18; //if spells known is not a number, set the dialog to the max of 18
+			if (isNaN(dia.nmbrSp)) dia.nmbrSp = 20; //if spells known is not a number, set the dialog to the max of 20
 			dia.showSp = dia.nmbrSp !== 0; //show the spells section
 			dia.offsetSp = spCast.offsetSp ? spCast.offsetSp : 0; //set the manually added spells
 			dia.selectSp = spCast.selectSp ? spCast.selectSp : []; //set the spells already selected
 
 			//now also do this for the cantrips
-			if (spCast.known.cantrips) {
-				dia.showCa = true; //show the cantrips section
+			dia.showCa = spCast.known.cantrips ? true : false;
+			if (dia.showCa) {
+				diaDynCols.push(spDias.spellSelectParts.cantripCluster);
 				dia.nmbrCa = isArray(spCast.known.cantrips) ? spCast.known.cantrips[Math.min(spCast.known.cantrips.length, spCast.level) - 1] : spCast.known.cantrips; //set the amount of cantrips
 				dia.offsetCa = spCast.offsetCa ? spCast.offsetCa : 0; //set the manually added cantrips
 				dia.selectCa = spCast.selectCa ? spCast.selectCa : []; //set the cantrips already selected
@@ -2401,24 +2568,74 @@ function AskUserSpellSheet() {
 				var listCaRef = CreateSpellList(spCast.list, true, spCast.extra && spCast.extra[100] !== "AddToKnown" ? spCast.extra : false, false, aCast, spCast.typeSp, true);
 				// Create the cantrip popup object
 				dia.listCa = CreateSpellObject(listCaRef);
-			} else {
-				dia.showCa = false; //hide the cantrip section
+			}
+
+			if (dia.showSp)	{
+				diaDynCols.push(spDias.spellSelectParts.spellCluster);
+			} else if (dia.typeSp === "list") {
+				diaDynCol1.push(spDias.spellSelectParts.listCasterCluster);
 			}
 
 			//show the spell radio buttons if concerning a level-dependent spellcaster (classes)
 			dia.showSpRadio = !isPsionics && (/list|book|known/i).test(dia.typeSp);
 
 			if (dia.showSpRadio) { // set the name of the radio buttons and set the selection
+				var diaRadBtns = [];
 				if (spCast.level) {
-					var SpellLevel = maxSpell;
-					setDialogName(spDias.spellSelect, "SpR1", "name", spellLevelList[SpellLevel] + (SpellLevel > 1 ? " and lower" : "") + " spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " (+Bonus)");
-					setDialogName(spDias.spellSelect, "SpR2", "name", "All spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " regardless of level");
-					setDialogName(spDias.spellSelect, "SpR4", "name", "Full class list (spells && cantrips)");
+					diaRadBtns.push({
+						type : "radio",
+						item_id : "SpR1",
+						group_id : "RadB",
+						name : spellLevelList[maxSpell] + (maxSpell > 1 ? " and lower" : "") + " spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " (+Bonus)"
+					});
+					diaRadBtns.push({
+						type : "radio",
+						item_id : "SpR2",
+						group_id : "RadB",
+						name : "All spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " regardless of level"
+					});
+					if (dia.typeSp !== "known") {
+						diaRadBtns.push({
+							type : "radio",
+							item_id : "SpR3",
+							group_id : "RadB",
+							name : "Prepared spells only"
+						});
+					};
+					diaRadBtns.push({
+						type : "radio",
+						item_id : "SpR4",
+						group_id : "RadB",
+						name : "Full class list (spells && cantrips)"
+					});
 				} else {
-					setDialogName(spDias.spellSelect, "SpR2", "name", "All selected spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known"));
-					setDialogName(spDias.spellSelect, "SpR4", "name", "Full list (all spells && cantrips)");
+					diaRadBtns.push({
+						type : "radio",
+						item_id : "SpR2",
+						group_id : "RadB",
+						name : "All selected spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known")
+					});
+					diaRadBtns.push({
+						type : "radio",
+						item_id : "SpR4",
+						group_id : "RadB",
+						name : "Full list (all spells && cantrips)"
+					});
 				};
+
 				dia.selectSpRadio = spCast.typeList ? spCast.typeList : spCast.level ? 1 : 2;
+
+				diaDynCol1.push({
+					type : "cluster", //radio button cluster
+					item_id : "RaCL",
+					name : "What Spells to Show?",
+					align_children : "align_left",
+					alignment : "align_fill",
+					char_width : 39,
+					font : "heading",
+					bold : true,
+					elements : diaRadBtns
+				});
 			};
 
 			//now to create the lists to select spells from, if not a caster that knows all spells on its list
@@ -2447,13 +2664,12 @@ function AskUserSpellSheet() {
 			var GoAhead = false;
 		}
 
-		if (spCast.extra) {
-			dia.showAd = true; //show the subclass spells section
-			dia.selectAd = spCast.extra; //set the array of known subclass spells
+		dia.showAd = spCast.extra ? true : false;
+		if (dia.showAd) {
+			diaDynCols.push(spDias.spellSelectParts.extraCluster);
+			dia.selectAd = spCast.extra;
 			dia.nameAd = dia.typeSp === "list" ? "[always prepared]" : dia.typeSp === "book" ? "[extra options for spellbook]" : spCast.extra[100] === "AddToKnown" ? "[added to spells known]" : "[extra options for spells known]";
-		} else {
-			dia.showAd = false; //hide the subclass spell section
-		};
+		}
 
 		//set the bonus spell things to their basic value
 		dia.nmbrBo = 0;
@@ -2505,17 +2721,22 @@ function AskUserSpellSheet() {
 			}
 		} }
 		//fill the rest of the bonus items that are essential
-		for (var i = dia.nmbrBo; i < 16; i++) {
+		for (var i = dia.nmbrBo; i < 20; i++) {
 			dia.listBo.push(AllSpellsObject);
 			dia.namesBo.push("");
 			if (spCast.extraBo) dia.selectBo[i] = spCast.extraBo[i - dia.nmbrBo];
 		}
+		if (dia.showBo)	diaDynCols.push(spDias.spellSelectParts.bonusCluster);
 
 		if (!GoAhead) continue; //not a single spellcasting attribute was found, so skip over this entry in the CurrentSpells variable
 
-		//now set the ok buttons at the bottom of the dialog
-		setDialogName(dia, "OKbt", "type", dia.typeSp !== "book" ? "ok_cancel" : "ok_cancel_other");
-		setDialogName(dia, "OKbt", "ok_name", dia.typeSp !== "book" ? "Continue to Next Dialogue >>" : "Add More Spells to the Spellbook");
+		// Set the parts of the dialog
+			// First the ok / cancel buttons
+			setDialogName(dia, "OKbt", "type", dia.typeSp !== "book" ? "ok_cancel" : "ok_cancel_other");
+			setDialogName(dia, "OKbt", "ok_name", dia.typeSp !== "book" ? "Continue to Next Dialogue >>" : "Add More Spells to the Spellbook");
+			// Then the dynamic parts
+			setDialogName(spDias.spellSelect, "col1", "elements", diaDynCol1); // add to the 1st column
+			setDialogName(spDias.spellSelect, "colE", "elements", diaDynCols); // the rest of the dialog
 
 		thermoTxt = thermoM("Opening the " + spCast.name + " dialog...", false); //change the progress dialog text
 		thermoM(0.8);
@@ -2572,7 +2793,7 @@ function AskUserSpellSheet() {
 			}};
 			var EvenMoreBo = [];
 			if (spCast.offsetBo > 0) {
-				for (var i = boNmr; i < 16; i++) {
+				for (var i = boNmr; i < 20; i++) {
 					if (dia.selectBo[i]) EvenMoreBo.push(dia.selectBo[i]);
 				};
 			};
@@ -2643,9 +2864,9 @@ function AskUserSpellSheet() {
 				// now add all the spells selected in the spellbook dialogues to a single array, together with the spells selected in the original dialogue, sort them, and add them back into the proper places
 				SBextras = [].concat.apply([], SBextras);
 				var totalSelectSp = OrderSpells(spCast.selectSp.concat(SBextras), "single");
-				spCast.selectSp = totalSelectSp.slice(0, 18); //the first 18 of the array
-				if (totalSelectSp.length > 18) {
-					spCast.selectSpSB = totalSelectSp.slice(18); //the rest of the array
+				spCast.selectSp = totalSelectSp.slice(0, 20); //the first 20 of the array
+				if (totalSelectSp.length > 20) {
+					spCast.selectSpSB = totalSelectSp.slice(20); //the rest of the array
 				} else {
 					delete spCast.selectSpSB;
 				};
@@ -3755,7 +3976,14 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	switch (MenuSelection[0]) {
 	 case "popup" :
 		var sourceString = Who(base.replace("checkbox", "book"));
-		if (sourceString) fullDescr += "\n\n" + toUni("Source(s)") + "\n \u2022 " + sourceString.replace(/\n/g, "\n \u2022 ");
+		if (sourceString) { 
+			sourceString = "\n\n__________\n\n" + toUni("Source(s) of the Spell") + "\n \u2022 " + sourceString.replace(/\n/g, "\n \u2022 ");
+			if ((/>>  CHANGES BY FEATURES/i).test(fullDescr)) {
+				fullDescr = fullDescr.replace(/\n*(>>  CHANGES BY FEATURES)/i, sourceString + "\n\n__________\n\n$1");
+			} else {
+				fullDescr += sourceString;
+			}
+		}
 		ShowDialog("Full spell description", fullDescr);
 		break;
 	 case "move up" :
