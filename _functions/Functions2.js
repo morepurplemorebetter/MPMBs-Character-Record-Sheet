@@ -5297,7 +5297,7 @@ function contactMPMB(medium) {
 function PatreonStatement(force) {
 	try {
 		var iNow = new Date();
-		var timeDiff = iNow.getTime() - eval_ish(tDoc.getField("SaveIMG.Patreon").submitName).getTime();
+		var timeDiff = force ? true : iNow.getTime() - eval_ish(tDoc.getField("SaveIMG.Patreon").submitName).getTime();
 		if (force || Math.floor(timeDiff / (1000 * 3600 * 24)) >= 28) {
 			var oButIcon = this.getField("SaveIMG.Patreon").buttonGetIcon();
 			var oMyIcon = util.iconStreamFromIcon(oButIcon);

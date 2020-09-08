@@ -1547,12 +1547,12 @@ function DefineSpellSheetDialogs(force, formHeight) {
 				type : "static_text",
 				char_width : 37,
 				wrap_name : true,
-				name : "Because this spellcaster knows all spells on their list, there is no reason to select their spells in this dialog. All spells will be shown on the generated pages and there you can check off which ones are prepared.\n\nAlternatively, you can select \"Prepared spells only\" below. If so, the next dialog will then allow you to select these prepared spells, having only them shown on the generated pages."
+				name : "This spellcaster knows all spells on their list. Thus, there is no reason to select spells in this dialog. All spells will be shown on the generated pages and there you can mark which are prepared.\n\nAlternatively, you can select \"Prepared spells only\" below and the next dialog will allow you to select which spells are shown on the generated pages."
 			}]
 		},
 		bonusCluster : {
 			type : "cluster",
-			alignment : "align_center",
+			align_children : "align_left",
 			item_id : "BoCL",
 			elements : [{
 				type : "view",
@@ -1655,11 +1655,11 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			})
 		},
 		spellCluster : {
-			type : "cluster", //spell cluster
+			type : "cluster",
 			align_children : "align_left",
 			item_id : "SpCL",
 			elements : [{
-				type : "view", //view with one row
+				type : "view",
 				align_children : "align_distribute",
 				margin_height : 5,
 				elements : [{
@@ -1700,43 +1700,42 @@ function DefineSpellSheetDialogs(force, formHeight) {
 		},
 		extraCluster : {
 			type : "cluster",
+			alignment : "align_fill",
 			align_children : "align_left",
 			elements : [{
-				type : "view", //view with one row
+				type : "view",
 				align_children : "align_left",
 				margin_height : 5,
 				elements : [{
 					type : "static_text",
 					item_id : "AdCL",
-					char_width : 15,
+					char_width : 17,
 					height : 22,
 					font : "heading",
-					name : "Subclass Taart",
+					name : "Subclass Spells",
 					bold : true
 				}, {
-					type : "static_text",
-					item_id : "AdET",
-					char_width : 15,
-					height : formHeight,
-					font : "palette",
-					bold : true
-				}]
-			}].concat(Array.apply(null, Array(19)).map(function(n, i) {
-				return {
 					type : "view",
-					char_width : 13,
-					margin_height : -1,
+					margin_height : -2,
 					elements : [{
 						type : "static_text",
-						item_id : "Ad" + ("0" + (i+1)).slice(-2),
-						char_width : 15,
-						height : formHeight
+						item_id : "AdET",
+						font : "palette",
+						bold : true,
+						name : "[extra options for spells known]"
 					}]
-				};
-			})).concat({
-				type : "gap",
-				height : 5
-			})
+				}].concat(Array.apply(null, Array(22)).map(function(n, i) {
+					return {
+						type : "view",
+						margin_height : -2,
+						elements : [{
+							type : "static_text",
+							item_id : "Ad" + ("0" + (i+1)).slice(-2),
+							char_width : 17
+						}]
+					};
+				}))
+			}]
 		}
 	};
 	spDias.spellSelect = {
@@ -1842,20 +1841,21 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			if (this.showSp) toShow.SplK = this.typeSp !== "book";
 
 			//a function to set the right object to positive
-			for (var i = 1; i <= 20; i++) {
+			for (var i = 1; i <= 22; i++) {
+				var Ad = "Ad" + ("0" + i).slice(-2);
+				if (this.showAd && this.selectAd[i - 1]) {
+					toLoad[Ad] = this.selectAd[i - 1].capitalize();
+				}
+				if (i > 20) continue;
 				var Bo = "Bo" + ("0" + i).slice(-2);
 				var BT = "BT" + ("0" + i).slice(-2);
 				var Ca = "Ca" + ("0" + i).slice(-2);
 				var Sp = "Sp" + ("0" + i).slice(-2);
-				var Ad = "Ad" + ("0" + i).slice(-2);
 				if (this.showBo) {
 					toEnable[Bo] = i <= theBo;
 					toLoad[BT] = this.namesBo[i - 1];
 					var aBoSet = this.selectBo[i - 1];
 					toLoad[Bo] = toEnable[Bo] && aBoSet ? spDias.fnSetSpell(this.listBo[i - 1], aBoSet) : this.listBo[i - 1][0];
-				}
-				if (this.showAd && this.selectAd[i - 1]) {
-					toLoad[Ad] = this.selectAd[i - 1].capitalize();
 				}
 				if (this.showCa) {
 					toEnable[Ca] = i <= theCa;
@@ -2664,13 +2664,6 @@ function AskUserSpellSheet() {
 			var GoAhead = false;
 		}
 
-		dia.showAd = spCast.extra ? true : false;
-		if (dia.showAd) {
-			diaDynCols.push(spDias.spellSelectParts.extraCluster);
-			dia.selectAd = spCast.extra;
-			dia.nameAd = dia.typeSp === "list" ? "[always prepared]" : dia.typeSp === "book" ? "[extra options for spellbook]" : spCast.extra[100] === "AddToKnown" ? "[added to spells known]" : "[extra options for spells known]";
-		}
-
 		//set the bonus spell things to their basic value
 		dia.nmbrBo = 0;
 		dia.offsetBo = spCast.offsetBo ? spCast.offsetBo : 0; //manually added bonus spells
@@ -2727,6 +2720,13 @@ function AskUserSpellSheet() {
 			if (spCast.extraBo) dia.selectBo[i] = spCast.extraBo[i - dia.nmbrBo];
 		}
 		if (dia.showBo)	diaDynCols.push(spDias.spellSelectParts.bonusCluster);
+
+		dia.showAd = spCast.extra ? true : false;
+		if (dia.showAd) {
+			diaDynCols.push(spDias.spellSelectParts.extraCluster);
+			dia.selectAd = spCast.extra;
+			dia.nameAd = dia.typeSp === "list" ? "[always prepared]" : dia.typeSp === "book" ? "[extra options for spellbook]" : spCast.extra[100] === "AddToKnown" ? "[added to spells known]" : "[extra options for spells known]";
+		}
 
 		if (!GoAhead) continue; //not a single spellcasting attribute was found, so skip over this entry in the CurrentSpells variable
 
