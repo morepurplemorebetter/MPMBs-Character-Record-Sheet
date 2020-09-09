@@ -1901,7 +1901,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 
 		BonK : function (dialog) {
 			var elements = dialog.store();
-			var theBo = ASround(elements["BonK"]);
+			var theBo = ASround( Math.max(0, elements["BonK"]) );
 			dialog.load({
 				"BonK" : theBo
 			});
@@ -1915,7 +1915,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 
 		CanK : function (dialog) {
 			var elements = dialog.store();
-			var theCa = ASround(elements["CanK"]);
+			var theCa = ASround( Math.max(0, elements["CanK"]) );
 			dialog.load({
 				"CanK" : theCa
 			});
@@ -1928,7 +1928,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 
 		SplK : function (dialog) {
 			var elements = dialog.store();
-			var theSp = ASround(elements["SplK"]);
+			var theSp = ASround( Math.max(0, elements["SplK"]) );
 			dialog.load({
 				"SplK" : theSp
 			});
@@ -2363,7 +2363,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 
 		SplK : function (dialog) {
 			var elements = dialog.store();
-			var theSp = ASround(elements["SplK"]);
+			var theSp = ASround( Math.max(0, elements["SplK"]) );
 			dialog.load({
 				"SplK" : theSp
 			});
