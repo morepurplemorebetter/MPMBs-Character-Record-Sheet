@@ -1182,10 +1182,14 @@ function manualInputToSpellObj(dialog, id) {
 			nType : 0
 		});
 	}
+	// Set the found value
 	if (nListObj[fndResult]) nListObj[fndResult] *= -1;
 	var toLoad = {};
 	toLoad[id] = nListObj;
 	dialog.load(toLoad);
+	// Remember at what time we did this for the form evaluation
+	spDias.rememberTime = new Date();
+	// Return true if we actually found something
 	return fndResult && fndResult !== emptyBox;
 };
 
@@ -1193,7 +1197,9 @@ function manualInputToSpellObj(dialog, id) {
 function DefineSpellSheetDialogs(force, formHeight) {
 	if (spDias && !force) return; // already defined, so do nothing
 
-	spDias = {};
+	spDias = {
+		rememberTime : false
+	};
 
 	formHeight = !isNaN(formHeight) ? formHeight : isWindows ? 16 : 20;
 
@@ -1526,7 +1532,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 					name : "Add a Glossary of Abbreviations to the end of the Spell Sheet(s)"
 				}, {
 					type : "ok_cancel",
-					ok_name : "Generate the Spell Sheet (takes long)",
+					ok_name : "Generate the Spell Sheet",
 					cancel_name : "Don't generate a Spell Sheet"
 				}]
 			}]
@@ -1773,7 +1779,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 		prevBtn : false,
 		curCast : "",
 
-		//when starting the dialog
+
 		initialize : function (dialog) {
 			this.SpBook = false;
 			var psiSpells = this.spNm === "Spells" ? "Spells" : "Psionics";
@@ -1810,7 +1816,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			var toLoad = {
 				"img1" : allIcons.spells,
 				"Hea0" : "Set " + this.spNm + ": " + this.header.capitalize(),
-				"txt0" : "Select or type a spell in a drop-down box and use TAB to go to the next.\nSpell availability depends on what you are currently editing.\nENTER always confirms and ESC always cancels this dialogue.",
+				"txt0" : "Select or type a spell in a drop-down box and use TAB to go to the next.\nSpell availability depends on what you are currently editing.\nUse ENTER to confirm and ESC to cancel this dialogue.",
 				"BonK" : ASround(theBo),
 				"CanK" : ASround(theCa),
 				"SplK" : ASround(theSp),
@@ -1897,6 +1903,13 @@ function DefineSpellSheetDialogs(force, formHeight) {
 
 			//set the results of the radio button
 			this.selectSpRadio = oResult["SpR1"] ? 1 : oResult["SpR2"] ? 2 : oResult["SpR3"] ? 3 : 4;
+		},
+
+		// When committing the dialog check if this wasn't a field search ended by pressing ENTER
+		validate : function (dialog) {
+			if (spDias.rememberTime === false) return true;
+			var timeDif = new Date() - spDias.rememberTime;
+			return timeDif > 100; // returning false stops the dialog from closing
 		},
 
 		BonK : function (dialog) {
@@ -2205,6 +2218,13 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			dialog.load(toLoad);
 		},
 
+		// When committing the dialog check if this wasn't a field search ended by pressing ENTER
+		validate : function (dialog) {
+			if (spDias.rememberTime === false) return true;
+			var timeDif = new Date() - spDias.rememberTime;
+			return timeDif > 100; // returning false stops the dialog from closing // returning false stops the dialog from closing
+		},
+
 		saveIt : function (dialog) {
 			var oResult = dialog.store();
 			this.selectSp = [];
@@ -2359,6 +2379,13 @@ function DefineSpellSheetDialogs(force, formHeight) {
 				var resultSp = i <= oResult["SplK"] ? spDias.fnFindSpell(oResult[Sp], this.listSp) : "";
 				if (resultSp) this.selectSp.push(resultSp);
 			}
+		},
+
+		// When committing the dialog check if this wasn't a field search ended by pressing ENTER
+		validate : function (dialog) {
+			if (spDias.rememberTime === false) return true;
+			var timeDif = new Date() - spDias.rememberTime;
+			return timeDif > 100; // returning false stops the dialog from closing // returning false stops the dialog from closing
 		},
 
 		SplK : function (dialog) {
@@ -4638,7 +4665,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	var thermoTxt = thermoM("Generating the " + thisClassName + " Spell Sheets, Acrobat will be unresponsive for a long time...", false);
 	//first ask the user if he really wants to wait for an hour
 	var doGoOn = {
-		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClassName + (isSubClass ? " sub" : " ") + "class.\n\nThis will not include any spells granted by any currently selected " + (isSubClass ? "" : "subclass, ") + "class feature, nor spells excluded in the Source Selection dialogue.\nIf you want to generate a spell list with all the spells available for your currently selected (sub)class and class features, please use the normal way of generating a spell list and select \"Full class list\" in the bottom right of the Spell Selection dialog.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nBe aware that this process can take a very long time!\n\nAre you sure you want to continue?",
+		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClassName + (isSubClass ? " sub" : " ") + "class.\n\nThis will not include any spells granted by any currently selected " + (isSubClass ? "" : "subclass, ") + "class feature, nor spells excluded in the Source Selection dialogue.\nIf you want to generate a spell list with all the spells available for your currently selected (sub)class and class features, please use the normal way of generating a spell list and select \"Full class list\" in the bottom right of the Spell Selection dialog.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nBe aware that this process can take a while.\n\nAre you sure you want to continue?",
 		nIcon: 2,
 		cTitle: "Continue with generation of complete spell sheet?",
 		nType: 2
@@ -5106,7 +5133,7 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 	var thermoTxt = thermoM("Generating Spell Sheets with all spells, Acrobat will be unresponsive for a long time...", false);
 	//first ask the user if he really wants to wait for an hour
 	var doGoOn = {
-		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available " + (alphabetical ? "in alphabetical order" : "grouped by level") + ".\n\nThis will not include any spells excluded in the Source Selection dialogue.\n\nBe aware that this process can take a very long time!\n\nAre you sure you want to continue?",
+		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available " + (alphabetical ? "in alphabetical order" : "grouped by level") + ".\n\nThis will not include any spells excluded in the Source Selection dialogue.\n\nBe aware that this process can take a while.\n\nAre you sure you want to continue?",
 		nIcon: 2,
 		cTitle: "Continue with generation of complete spell sheet?",
 		nType: 2

@@ -398,7 +398,7 @@ function DirectImport_Dialogue() {
 				}, {
 					type : "ok_cancel",
 					item_id : "okca",
-					ok_name : "Import (takes extremely long)",
+					ok_name : "Import (takes a while)",
 					next_tab : "bFND"
 				}]
 			}]

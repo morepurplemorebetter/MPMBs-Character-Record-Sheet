@@ -895,7 +895,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 						item_id : "appl",
 						type : "ok_cancel",
 						alignment : "align_right",
-						ok_name : "Apply (can take a long time)"
+						ok_name : "Apply"
 					}]
 				}]
 			}]

@@ -164,12 +164,12 @@ function MakeButtons() {
 		});
 	} catch (err) {
 		app.addToolButton({
-			cName : "TempButton",
+			cName : "MakeItAppear",
 			cExec : "",
-			cLabel : "Just to make it appear"
+			cLabel : ""
 		});
 		app.removeToolButton({
-			cName : "TempButton"
+			cName : "MakeItAppear"
 		});
 	}
 };
