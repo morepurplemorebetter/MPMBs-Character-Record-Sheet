@@ -2503,6 +2503,13 @@ function DefineSpellSheetDialogs(force, formHeight) {
 	}
 }
 
+function ValidateAndOrderSpellcastingExtra(spellcastingExtra) {
+	var filteredSpellcastingExtra = spellcastingExtra.filter(function (item) {
+		return !!item && item !== 'AddToKnown';
+	});
+	return OrderSpells(filteredSpellcastingExtra, 'single');
+}
+
 //ask the user to set all the spells for all the classes he has
 function AskUserSpellSheet() {
 	DefineSpellSheetDialogs();
@@ -2751,7 +2758,7 @@ function AskUserSpellSheet() {
 		dia.showAd = spCast.extra ? true : false;
 		if (dia.showAd) {
 			diaDynCols.push(spDias.spellSelectParts.extraCluster);
-			dia.selectAd = spCast.extra;
+			dia.selectAd = ValidateAndOrderSpellcastingExtra(spCast.extra);
 			dia.nameAd = dia.typeSp === "list" ? "[always prepared]" : dia.typeSp === "book" ? "[extra options for spellbook]" : spCast.extra[100] === "AddToKnown" ? "[added to spells known]" : "[extra options for spells known]";
 		}
 
