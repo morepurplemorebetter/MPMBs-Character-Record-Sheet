@@ -924,7 +924,6 @@ fixedSpAttack : 5,
 */
 
 spellcastingExtra : ["cure wounds", "guiding bolt", "flaming sphere", "lesser restoration", "daylight", "revivify", "guardian of faith", "wall of fire", "flame strike", "greater restoration"],
-spellcastingExtra : ["disguise self", "rope trick", "fear", "greater invisibility", "seeming"].concat(new Array(95)).concat("AddToKnown"),
 /*	spellcastingExtra // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	adds the spells in the array to the list of spells to choose from
@@ -934,26 +933,68 @@ spellcastingExtra : ["disguise self", "rope trick", "fear", "greater invisibilit
 
 	Each entry must be a spell object name as used in the SpellsList object.
 
-	How these spells are added to the spell list depends on the type of spellcasting class:
-	a) spell list or spellbook (cleric, druid, paladin, wizard)
+	For the explanation below, a reference to "spells" means spells that are 1st-level
+	and higher (i.e. not cantrips).
+
+	How the cantrips/spells are added to the spell list depends on the type of spellcasting class:
+	a) spell list (cleric, druid, paladin)
 		The spells are added to the generated spell sheet and marked as "always prepared".
+		The cantrips are added to the cantrips known on the generated spell sheet,
+		but not counted towards the number of cantrips that can be known.
+
+		If you set the attribute `spellcastingExtraApplyNonconform` (see below) to true,
+		the spells are added to the generated spell sheets, but not marked as "always prepared",
+		and the cantrips are added to the lists of cantrips that the known cantrips can be selected from.
+
 	b) spells known (bard, ranger, sorcerer, warlock)
-		The spells are added to the list of spells that the known spells can be selected from
+		The cantrips/spells are added to the lists of cantrips/spells that the known cantrips/spells can be selected from.
 
-		You can also have the spells be automatically added to the known spells, without counting to the maximum spells known.
-		To do so, make sure the 101st entry in the array reads "AddToKnown", see example above.
-		(e.g. spellcastingExtra[100] = "AddToKnown")
+		If you set the attribute `spellcastingExtraApplyNonconform` (see below) to true,
+		the cantrips/spells are instead added to those known on the generated spell sheet
+		without counting to the maximum cantrips/spells known.
 
-	For spells added to the spells known or always prepared, they will only appear on the generated spell sheet if
-	the character would otherwise have access to spells of that level or the spell dialog is set to include all spell levels.
+	c) spellbook (wizard)
+		The cantrips are added to the list of cantrips that the known cantrips can be selected from.
+		The spells are added to the list of spells that the spellbook can be filled with.
+
+		If you set the attribute `spellcastingExtraApplyNonconform` (see below) to true,
+		the cantrips/spells are instead added to those known/in the spellbook on the generated spell sheet,
+		without counting to the maximum cantrips known or being shown in the spell selection dialog as being part of the spellbook.
+
+	These cantrips/spells otherwise follow the normal rules for availability (unlike `spellcastingBonus`):
+	They will only appear on the generated spell sheet if the character would otherwise have
+	access to spells of that level or the spell dialog is set to include all spell levels.
 
 	This attribute will do nothing if the parent object does not grant spellcasting like a spellcasting class.
 
 	IMPORTANT!
 	Any instance of this attribute will overwrite previous instances in the same parent.
-	E.g. if you use this in a subclass and in a subclass' feature, the latter will overwrite the former,
-	and only the latter will be used.
+	E.g. if you use this in a subclass and in a subclass' feature, the latter will
+	overwrite the former, and only the latter will be used.
 */
+
+spellcastingExtraApplyNonconform : true,
+/*	spellcastingExtraApplyNonconform // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether to use the default (false) or variant (true) way of adding the spells defined by `spellcastingExtra` (see above)
+
+	What this attribute does is described in the description for the `spellcastingExtra` attribute (see above).
+
+	This attribute will do nothing if the parent object does not grant spellcasting like a spellcasting class.
+
+	Setting this attribute to false is the same as not including this attribute
+	(unless you set this attribute to true in lower-level class feature, see IMPORTANT below).
+
+	IMPORTANT!
+	Any instance of this attribute will overwrite previous instances in the same parent.
+	E.g. if you use this in a subclass and in a subclass' feature, the latter will
+	overwrite the former, and only the latter will be used.
+
+	This also means that you don't need to have `spellcastingExtra` and `spellcastingExtraApplyNonconform`
+	defined in the same class feature.
+	And it means that you can change the behaviour of `spellcastingExtra` at a higher level.
+*/
+
 
 spellFirstColTitle : "Ki",
 /*	spellFirstColTitle // OPTIONAL //

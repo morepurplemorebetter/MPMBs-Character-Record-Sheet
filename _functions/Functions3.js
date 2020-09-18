@@ -210,6 +210,9 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			CurrentUpdates.types.push("spells");
 			if (uObj.spellFirstColTitle) CurrentSpells[useSpCasting].firstCol = addIt ? uObj.spellFirstColTitle : false;
 			if (uObj.spellcastingExtra) CurrentSpells[useSpCasting].extra = addIt ? uObj.spellcastingExtra : false;
+			// --- backwards compatibility --- //
+			var doSpXtrSpecial = uObj.spellcastingExtraApplyNonconform !== undefined ? uObj.spellcastingExtraAddToKnown : uObj.spellcastingExtra[100] === "AddToKnown" ? true : undefined;
+			if (doSpXtrSpecial !== undefined) CurrentSpells[useSpCasting].extraSpecial = doSpXtrSpecial;
 			if (uObj.spellChanges) processSpChanges(addIt, tipNmF, uObj.spellChanges, useSpCasting);
 		}
 

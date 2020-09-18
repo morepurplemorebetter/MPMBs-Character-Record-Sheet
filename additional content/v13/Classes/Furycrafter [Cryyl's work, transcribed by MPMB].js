@@ -12,7 +12,7 @@
 				This class has been made by /u/Cryyl over on /r/UnearthedArcana on Reddit (https://www.reddit.com/45a74m/)
 				
 	Code by:	MorePurpleMoreBetter
-	Date:		2019-05-20 (sheet v13.0.0beta16)
+	Date:		2019-05-20 (sheet v13.0.0beta34)
 
 	Note that the original document doesn't give any rules for multiclassing.
 	The multiclassing settings used below are an interpretation by MPMB.
@@ -87,32 +87,38 @@ ClassList["furycrafter"] = {
 			"earth" : {
 				name : "Earth Furycrafter",
 				description : "\n   I use earth fury spells; I must use melee weapons for abilities, which deal force damage",
-				spellcastingExtra : ["mold earth", "earth tremor", "animal friendship", "maximilian's earthen grasp", "pass without trace", "erupting earth", "wall of sand", "stoneskin", "stone shape", "transmute rock", "wall of stone"].concat(new Array(89)).concat("AddToKnown")
+				spellcastingExtra : ["mold earth", "earth tremor", "animal friendship", "maximilian's earthen grasp", "pass without trace", "erupting earth", "wall of sand", "stoneskin", "stone shape", "transmute rock", "wall of stone"],
+				spellcastingExtraApplyNonconform : true
 			},
 			"fire" : {
 				name : "Fire Furycrafter",
 				description : "\n   I use fire fury spells; I can use all weapons for my abilities, which deal fire damage",
-				spellcastingExtra : ["produce flame", "burning hands", "charm person", "suggestion", "scorching ray", "melf's minute meteors", "fireball", "wall of fire", "fire shield", "flame strike", "immolation"].concat(new Array(89)).concat("AddToKnown")
+				spellcastingExtra : ["produce flame", "burning hands", "charm person", "suggestion", "scorching ray", "melf's minute meteors", "fireball", "wall of fire", "fire shield", "flame strike", "immolation"],
+				spellcastingExtraApplyNonconform : true
 			},
 			"metal" : {
 				name : "Metal Furycrafter",
 				description : "\n   I use metal fury spells; I must use melee weapons for abilities, which deal extra damage",
-				spellcastingExtra : ["true strike", "compelled duel", "wrathful smite", "magic weapon", "blur", "protection from energy", "conjure barrage", "staggering smite", "stoneskin", "banishing smite", "destructive wave"].concat(new Array(89)).concat("AddToKnown")
+				spellcastingExtra : ["true strike", "compelled duel", "wrathful smite", "magic weapon", "blur", "protection from energy", "conjure barrage", "staggering smite", "stoneskin", "banishing smite", "destructive wave"],
+				spellcastingExtraApplyNonconform : true
 			},
 			"water" : {
 				name : "Water Furycrafter",
 				description : "\n   I use water fury spells; I can use all weapons for my abilities, which deal cold damage",
-				spellcastingExtra : ["shape water", "cure wounds", "create or destroy water", "snilloc's snowball swarm", "alter self", "tidal wave", "revivify", "control water", "ice storm", "maelstrom", "mass cure wounds"].concat(new Array(89)).concat("AddToKnown")
+				spellcastingExtra : ["shape water", "cure wounds", "create or destroy water", "snilloc's snowball swarm", "alter self", "tidal wave", "revivify", "control water", "ice storm", "maelstrom", "mass cure wounds"],
+				spellcastingExtraApplyNonconform : true
 			},
 			"wind" : {
 				name : "Wind Furycrafter",
 				description : "\n   I use wind fury spells; I can use all weapons for my abilities, which deal thunder damage",
-				spellcastingExtra : ["gust", "catapult", "expeditious retreat", "invisibility", "levitate", "call lightning", "fly", "greater invisibility", "storm sphere", "control winds", "telekinesis"].concat(new Array(89)).concat("AddToKnown")
+				spellcastingExtra : ["gust", "catapult", "expeditious retreat", "invisibility", "levitate", "call lightning", "fly", "greater invisibility", "storm sphere", "control winds", "telekinesis"],
+				spellcastingExtraApplyNonconform : true
 			},
 			"wood" : {
 				name : "Wood Furycrafter",
 				description : "\n   I use wood fury spells; I must use ranged weapons for abilities, dealing piercing damage",
-				spellcastingExtra : ["druidcraft", "entangle", "goodberry", "pass without trace", "spike growth", "plant growth", "speak with plants", "grasping vine", "hallucinatory terrain", "conjure volley", "swift quiver"].concat(new Array(89)).concat("AddToKnown")
+				spellcastingExtra : ["druidcraft", "entangle", "goodberry", "pass without trace", "spike growth", "plant growth", "speak with plants", "grasping vine", "hallucinatory terrain", "conjure volley", "swift quiver"],
+				spellcastingExtraApplyNonconform : true
 			},
 			choiceDependencies : [{
 				feature : "fury-enhanced strike"

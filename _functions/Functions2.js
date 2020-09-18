@@ -5534,7 +5534,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 	//set a variable to refer to the new weapon
 	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
 	var WeaponName = thisWeapon[0];
-	var aWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] ? CurrentCompRace[prefix].attacks[WeaponName] : false;
+	var aWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] && CurrentCompRace[prefix].attacks ? CurrentCompRace[prefix].attacks[WeaponName] : false;
 
 	//if there is a new weapon entered and the old weapon had ammo that is not used by any of the current weapons, remove that ammo from the ammo section.
 	if (QI && oldWea && WeaponsList[oldWea].ammo) {
@@ -5751,7 +5751,7 @@ function CalcAttackDmgHit(fldName) {
 
 	var thisWeapon = QI ? CurrentWeapons.known[ArrayNmbr] : CurrentWeapons.compKnown[prefix][ArrayNmbr];
 	var WeaponName = thisWeapon[0];
-	var aWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] ? CurrentCompRace[prefix].attacks[WeaponName] : false;
+	var aWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] && CurrentCompRace[prefix].attacks ? CurrentCompRace[prefix].attacks[WeaponName] : false;
 	var WeaponText = QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr];
 	var aWeaAbi = aWea && aWea.ability !== undefined ? aWea.ability : aWea && aWea.baseWeapon && WeaponsList[aWea.baseWeapon] && WeaponsList[aWea.baseWeapon].ability !== undefined ? WeaponsList[aWea.baseWeapon].ability : false;
 
