@@ -971,6 +971,11 @@ spellcastingExtra : ["cure wounds", "guiding bolt", "flaming sphere", "lesser re
 	Any instance of this attribute will overwrite previous instances in the same parent.
 	E.g. if you use this in a subclass and in a subclass' feature, the latter will
 	overwrite the former, and only the latter will be used.
+
+	However, when a feature is removed that has the `spellcastingExtra` attribute,
+	the sheet will remove these extra spells, but will not apply the same attribute from a lower-level feature.
+	Thus, it is highly recommended to only use spellcastingExtra once in a ClassSubList entry
+	and to not use it in ClassList features.
 */
 
 spellcastingExtraApplyNonconform : true,
@@ -981,9 +986,10 @@ spellcastingExtraApplyNonconform : true,
 	What this attribute does is described in the description for the `spellcastingExtra` attribute (see above).
 
 	This attribute will do nothing if the parent object does not grant spellcasting like a spellcasting class.
+	This attribute will do nothing if the parent object or a dependent object
+	(e.g. a lower-level class feature) does not have the `spellcastingExtra` attribute.
 
-	Setting this attribute to false is the same as not including this attribute
-	(unless you set this attribute to true in lower-level class feature, see IMPORTANT below).
+	Setting this attribute to false is the same as not including this attribute.
 
 	IMPORTANT!
 	Any instance of this attribute will overwrite previous instances in the same parent.
@@ -993,8 +999,12 @@ spellcastingExtraApplyNonconform : true,
 	This also means that you don't need to have `spellcastingExtra` and `spellcastingExtraApplyNonconform`
 	defined in the same class feature.
 	And it means that you can change the behaviour of `spellcastingExtra` at a higher level.
-*/
 
+	However, when a feature is removed that has the `spellcastingExtraApplyNonconform` attribute,
+	the sheet will remove this setting, but will not apply the same attribute from a lower-level feature.
+	Thus, it is highly recommended to only use spellcastingExtraApplyNonconform once in
+	a ClassSubList entry and to not use it in ClassList features.
+*/
 
 spellFirstColTitle : "Ki",
 /*	spellFirstColTitle // OPTIONAL //
@@ -1009,6 +1019,7 @@ spellFirstColTitle : "Ki",
 
 	This attribute will do nothing if the parent object does not grant spellcasting in one way or another.
 */
+
 spellChanges : {
 	"spare the dying" : {
 		time : "1 bns",

@@ -403,7 +403,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 //		or can be an Array of [oldsubclass, newsubclass]
 function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 	// declare some variables
-	var fObj = CurrentClasses[aClass];
+	var fObj = ClassList[aClass];
 	var n = primaryClass ? 0 : 1; // for backwards compatibility
 	var nAttr = primaryClass ? "primary" : "secondary";
 
@@ -469,7 +469,10 @@ function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 
 		// spellcasting extra array
 		if (CurrentSpells[aClass] && checkIfIn(uObj, ifInObj, ['spellcastingExtra'], true)[0]) {
-			CurrentSpells[aClass].extra = !addIt ? "" : uObj.spellcastingExtra;
+			CurrentSpells[aClass].extra = !addIt ? undefined : uObj.spellcastingExtra;
+			if (checkIfIn(uObj, ifInObj, ['spellcastingExtraApplyNonconform'], true)[0]) {
+				CurrentSpells[aClass].extraSpecial = !addIt ? undefined : uObj.spellcastingExtraApplyNonconform;
+			}
 			CurrentUpdates.types.push("spells");
 		}
 	}
