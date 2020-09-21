@@ -58,7 +58,7 @@ function AddFolderJavaScript(justConsole) {
 	var locWin = "C:\\Program Files (x86)\\Adobe\\Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + "\\" + (isType === "Reader" ? "Reader" : "Acrobat") + "\\Javascripts\\";
 	var locMac = "/Applications/Adobe Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + ".app/Contents/Resources/JavaScripts/";
 
-	var Text0 = justConsole ? "In order to import user-defined icons, you will have to manually add a JavaScript file to your Adobe Acrobat installation. This is necessary, because of Adobe Acrobat's security protocol. You will have to do this only once to get this function working." : "In order to use the 'Direct Import' functionality, you will need to do something to appease Adobe Acrobat's security settings. You have two options:\nOption 1 is that you add a JavaScript file to your installation. After you've done this, you will never see this dialogue again.\nOption 2 is that you run the code from console, but you will have to do this every time if you want to use this function.";
+	var Text0 = justConsole ? "In order to import user-defined icons, you will have to manually add a JavaScript file to your Adobe Acrobat installation. This is necessary, because of Adobe Acrobat's security protocol. You will have to do this only once to get this function working." : "In order to use the 'Direct Import' functionality, you will need to do something to appease Adobe Acrobat's security settings. You have two options:\nOption 1 is that you add a JavaScript file to your installation. After you've done this, you will never see this dialog again.\nOption 2 is that you run the code from console, but you will have to do this every time if you want to use this function.";
 	var Text1 = "Do the following steps:\n   1)  Use the button below to save the file somewhere (don't change the filename).\n   2)  Rename the file so that its extension is \".js\" (can't be done while saving).\n   3)  Move the file to the right location mentioned below (can't be saved there directly).\n   4)  Restart Adobe Acrobat and try the 'Direct Import' function again.";
 	var Text2 = "The directory where you have to put this file depends on your version of Adobe Acrobat and your operating system. The path shown here is an estimated guess for your installation. It is possible that this folder doesn't exist yet, or that it is hidden.\n" + toUni("Note that you can't save the file directly to this location!");
 	var Text3 = "Open the console (a.k.a. \"JavaScript Debugger\") and run the code that is printed there. Running the code is done by selecting the line it is on and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + " (or the numpad Enter).";
@@ -220,7 +220,7 @@ function AddFolderJavaScript(justConsole) {
 	return theDialog === "ok";
 }
 
-//the dialogue for the DirectImport function that ask for the path to a file to import from
+//the dialog for the DirectImport function that ask for the path to a file to import from
 function DirectImport_Dialogue() {
 	var buggedVer = !isWindows && app.viewerVersion > 20 && app.viewerVersion < 20.00920065;
 	var isType = app.viewerType === "Exchange-Pro" ? "Pro" : (app.viewerType === "Exchange" ? "Standard" : "Reader");
@@ -2142,10 +2142,10 @@ function MakeXFDFExport(partial) {
 function AddUserScript(retResDia) {
 	var theUserScripts = What("User Script").match(/(.|\r){1,65500}/g);
 	if (!theUserScripts) theUserScripts = [];
-	var defaultTxt = toUni("The JavaScript") + " you paste into the field below will be run now and whenever the sheet is opened, using eval(). If that script results in an error you will be informed immediately and the script will not be added to the sheet.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet using this dialogue.\n" + toUni("Resetting the sheet is recommended") + " before you enter any custom content into it.";
+	var defaultTxt = toUni("The JavaScript") + " you paste into the field below will be run now and whenever the sheet is opened, using eval(). If that script results in an error you will be informed immediately and the script will not be added to the sheet.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet using this dialog.\n" + toUni("Resetting the sheet is recommended") + " before you enter any custom content into it.";
 	var defaultTxt2 = "Be warned, things you do here can break the sheet! You can ask MorePurpleMoreBetter for help using the contact bookmarks.";
-	var extraTxt = toUni("A character limit of 65642") + " applies to the area below. You can add longer scripts with the \"Open Another Dialogue\" button. When you press \"Add Script to Sheet\", the code of all dialogues will be joined together (with no characters put inbetween!), is subsequently run/tested and added to the sheet as a whole.";
-	var extraTxt2 = "An error will result in all content being lost, so please save it somewhere else before exiting this dialogue!";
+	var extraTxt = toUni("A character limit of 65642") + " applies to the area below. You can add longer scripts with the \"Open Another Dialog\" button. When you press \"Add Script to Sheet\", the code of all dialogs will be joined together (with no characters put inbetween!), is subsequently run/tested and added to the sheet as a whole.";
+	var extraTxt2 = "An error will result in all content being lost, so please save it somewhere else before exiting this dialog!";
 	var getTxt = toUni("Pre-Written Scripts") + " can be found using the \"Get Content\" buttons.\n- MPMB has scripts for 3rd-party materials, including Matt Mercer's Blood Hunter, Gunslinger, and College of the Maestro.\n- The community has created scripts for more content, including links to all those made by MPMB.";
 	var getTxt2 = toUni("Using the proper JavaScript syntax") + ", you can add homebrew classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has information and links to resources about creating your own additions, as does the \"I don't get it?\" button.";
 	var getTxt3 = toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JavaScript Console\" button).";
@@ -2177,7 +2177,7 @@ function AddUserScript(retResDia) {
 				dialog.load({
 					"img1" : allIcons.import,
 					"jscr" : this.script,
-					"head" : "Manually add custom JavaScript that is run on startup (dialogue " + this.iteration + "/" + this.diaMax + ")"
+					"head" : "Manually add custom JavaScript that is run on startup (dialog " + this.iteration + "/" + this.diaMax + ")"
 				});
 				dialog.enable({
 					bPre : this.iteration > 1
@@ -2357,12 +2357,12 @@ function AddUserScript(retResDia) {
 						alignment : "align_fill",
 						elements : [{
 							type : "button",
-							name : "<< Go to Previous Dialogue",
+							name : "<< Go to Previous Dialog",
 							item_id : "bPre",
 							alignment : "align_left"
 						}, {
 							type : "ok_cancel_other",
-							other_name : "Open Another Dialogue",
+							other_name : "Open Another Dialog",
 							ok_name : "Add Script to Sheet",
 							item_id : "OKbt",
 							alignment : "align_right"
@@ -2373,7 +2373,7 @@ function AddUserScript(retResDia) {
 		};
  		if (moreDialogues) {
 			setDialogName(AddUserScript_dialog, "OKbt", "type", "ok_cancel");
-			setDialogName(AddUserScript_dialog, "OKbt", "ok_name", "Go to Next Dialogue >>");
+			setDialogName(AddUserScript_dialog, "OKbt", "ok_name", "Go to Next Dialog >>");
 		};
 		var theDialog = app.execDialog(AddUserScript_dialog);
 		theUserScripts[diaIteration - 1] = AddUserScript_dialog.script;
@@ -2402,7 +2402,7 @@ function AddUserScript(retResDia) {
 		if (RunUserScript(false, theUserScripts)) {
 			Value("User Script", theUserScripts);
 			app.alert({
-				cMsg : "Your script has been successfully added/changed in the sheet!\n\nYou will now be returned to the Source Selection Dialogue so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialogue, all drop-down boxes will be updated so that your changes will be visible on the sheet. This can take some time.",
+				cMsg : "Your script has been successfully added/changed in the sheet!\n\nYou will now be returned to the Source Selection Dialog so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialog, all drop-down boxes will be updated so that your changes will be visible on the sheet. This can take some time.",
 				nIcon : 3,
 				cTitle : "Success!"
 			});
@@ -2451,7 +2451,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 			if ((/out of memory/i).test(e.toSource())) return "outOfMemory";
 			IsNotUserScript = true;
 			app.alert({
-				cMsg : isManual ? "The script you entered is faulty, it returns the following error when run:\n\"" + e + "\"\n\nYour script has not been added to the sheet, please try again after fixing the error.\n\nIf you run your code from the console, it will give you a line number for where the error is. You can open this console from inside the \"Add Custom Script\" dialogue." : "The script '" + scriptName + "' is faulty, it returns the following error when run:\n\"" + e + "\"\n\nThe script has been removed from this pdf.\n\nFor a more specific error, that includes the line number of the error, try running the script from the JavaScript console (with the 'JS Console' button).",
+				cMsg : isManual ? "The script you entered is faulty, it returns the following error when run:\n\"" + e + "\"\n\nYour script has not been added to the sheet, please try again after fixing the error.\n\nIf you run your code from the console, it will give you a line number for where the error is. You can open this console from inside the \"Add Custom Script\" dialog." : "The script '" + scriptName + "' is faulty, it returns the following error when run:\n\"" + e + "\"\n\nThe script has been removed from this pdf.\n\nFor a more specific error, that includes the line number of the error, try running the script from the JavaScript console (with the 'JS Console' button).",
 				nIcon : 0,
 				cTitle : "Error in running user script"
 			});
@@ -2477,7 +2477,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 	// secondly, run the manually added code
 	var manualScript = manualUserScripts ? manualUserScripts : What("User Script");
 	if (manualScript) {
-		var manualScriptResult = runIt(manualScript, "manually entered using using the text dialogue", manualUserScripts);
+		var manualScriptResult = runIt(manualScript, "manually entered using using the text dialog", manualUserScripts);
 		if (!manualScriptResult) {
 			if (manualUserScripts) return false;
 			tDoc.resetForm(["User Script"]);
@@ -2526,7 +2526,7 @@ function RunFunctionAtEnd(inFunc) {
 	if (!inFunc && typeof inFunc !== "function") return;
 	var funcstart = inFunc.toString().replace(/function *\([^)]*\) *{(\r\n)*\t*/i,"").substr(0,50);
 	app.alert({
-		cMsg : "The script you are running from the console contains the function RunFunctionAtEnd(). This function can be exectured from the console, but will be executed immediately after you close this dialogue, and not at the end of all the code you are trying to run from console. When you import this script as a file, or manually paste it into the dialogue for scripts, it will be run at the end of all scripts as intended.\n\nAfter clicking 'OK', the function will be run that starts with the following:\n\t\"" + funcstart + "...\"",
+		cMsg : "The script you are running from the console contains the function RunFunctionAtEnd(). This function can be exectured from the console, but will be executed immediately after you close this dialog, and not at the end of all the code you are trying to run from console. When you import this script as a file, or manually paste it into the dialog for scripts, it will be run at the end of all scripts as intended.\n\nAfter clicking 'OK', the function will be run that starts with the following:\n\t\"" + funcstart + "...\"",
 		nIcon : 1,
 		cTitle : "RunFunctionAtEnd() works different when executed from the console"
 	});
@@ -2681,7 +2681,7 @@ function CreateClassFeatureVariant(clName, clFea, varName, varObj) {
 
 // side-loading a file and adding it to the field for safe-keeping
 function ImportUserScriptFile(filePath) {
-	// open the dialogue to select the file or URL
+	// open the dialog to select the file or URL
 	var iFileStream = filePath ? util.readFileIntoStream(filePath) : util.readFileIntoStream();
 	if (!iFileStream) return false;
 	var iFileCont = util.stringFromStream(iFileStream);
@@ -2723,7 +2723,7 @@ function ImportUserScriptFile(filePath) {
 // Open the dialog for importing whole files with content
 function ImportScriptFileDialog(retResDia) {
 	var defaultTxt = "Import or delete files that add content and/or custom scripts to the sheet.";
-	var defaultTxt2 = "Note that, in modern Operating Systems, you can enter an URL in the 'Open' dialogue directly instead of first downloading a file and then navigating to it.";
+	var defaultTxt2 = "Note that, in modern Operating Systems, you can enter an URL in the 'Open' dialog directly instead of first downloading a file and then navigating to it.";
 	var defaultTxt3 = "Use the \"Get Content\" buttons below to get pre-written files!";
 	var getTxt2 = toUni("Using the proper JavaScript syntax") + ", you can add homebrew classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has information and links to resources about creating your own additions, as does the \"I don't get it?\" button.";
 	var getTxt = toUni("Pre-Written Scripts") + " can be found using the \"Get Content\" buttons.\n- MPMB has scripts for 3rd-party materials, including Matt Mercer's Blood Hunter, Gunslinger, and College of the Maestro.\n- The community has created scripts for more content, including links to all those made by MPMB.";
@@ -2806,7 +2806,7 @@ function ImportScriptFileDialog(retResDia) {
 					ShowDialog("Content of '" + fndElem + "'", CurrentScriptFiles[fndElem]);
 				}
 			} else {
-				app.alert("The name '" + fndElem + "' in the dialogue was not found in any of the scripts the sheet. It will be removed from the dialogue, but nothing in the sheet will change.");
+				app.alert("The name '" + fndElem + "' in the dialog was not found in any of the scripts the sheet. It will be removed from the dialog, but nothing in the sheet will change.");
 				deleteIt = true;
 			};
 			if (deleteIt) {
@@ -2977,7 +2977,7 @@ function ImportScriptFileDialog(retResDia) {
 		if (scriptFilesDialog === "bfaq") {
 			getFAQ(["faq", "pdf"]);
 		} else if (scriptFilesDialog === "bcon") {
-			console.println("\nAny changes you made in the import script files dialogue have not been applied!\nYou can run code here by pasting it in, selecting the appropriate lines and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + ".");
+			console.println("\nAny changes you made in the import script files dialog have not been applied!\nYou can run code here by pasting it in, selecting the appropriate lines and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + ".");
 			console.show();
 		};
 	} while (scriptFilesDialog !== "ok" && scriptFilesDialog !== "bCon" && scriptFilesDialog !== "cancel");
@@ -2994,7 +2994,7 @@ function ImportScriptFileDialog(retResDia) {
 			if (filesScriptRem !== What("User_Imported_Files.Stringified") || runScriptsTest) {
 				retResDia = "also";
 				app.alert({
-					cMsg : (runScriptsTest ? "All" : "Some") + " of the script file(s) have been " + (runScriptsTest ? "successfully " : "") + "changed in the sheet!\n\nYou will now be returned to the Source Selection Dialogue so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialogue, all drop-down boxes will be updated so that your changes will be visible on the sheet. This can take some time.",
+					cMsg : (runScriptsTest ? "All" : "Some") + " of the script file(s) have been " + (runScriptsTest ? "successfully " : "") + "changed in the sheet!\n\nYou will now be returned to the Source Selection Dialog so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialog, all drop-down boxes will be updated so that your changes will be visible on the sheet. This can take some time.",
 					nIcon : 3,
 					cTitle : runScriptsTest ? "Success!" : "Partial success"
 				});

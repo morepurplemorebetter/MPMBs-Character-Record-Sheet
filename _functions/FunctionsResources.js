@@ -1229,7 +1229,7 @@ function resourceSelectionDialog(type) {
 
 	exclObj = CleanObject(exclObj); inclObj = CleanObject(inclObj);
 
-	var Text0 = "Please select which " + theName + " you want to exclude or include from being used by the sheet." + theExtra[0] + "\n\nNote that " + theName + " from sourcebooks that you excluded in the previous dialogue are not shown here at all.";
+	var Text0 = "Please select which " + theName + " you want to exclude or include from being used by the sheet." + theExtra[0] + "\n\nNote that " + theName + " from sourcebooks that you excluded in the previous dialog are not shown here at all.";
 
 	var selectionDialogue = {
 		inclInA : inclInArr,
@@ -1414,7 +1414,7 @@ function resourceSelectionDialog(type) {
 	};
 };
 
-//a function to test if the input is not being excluded by the resource dialogue (returns true if excluded)
+//a function to test if the input is not being excluded by the resource dialog (returns true if excluded)
 function testSource(key, obj, CSatt, concise) {
 	if (!obj) return true;
 	if (!obj.source && (!CSatt || CSatt == "classExcl")) return false;
@@ -1577,7 +1577,7 @@ function MakeSourceMenu_SourceOptions() {
 
 	SourceMenu.push({ cName : "-" });
 	SourceMenu.push({
-		cName : "Open a dialogue with a list of the sources",
+		cName : "Open a dialog with a list of the sources",
 		cReturn : "sourcelist#dialogue"
 	});
 

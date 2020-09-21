@@ -1191,7 +1191,77 @@ function manualInputToSpellObj(dialog, id) {
 	spDias.rememberTime = new Date();
 	// Return true if we actually found something
 	return fndResult && fndResult !== emptyBox;
-};
+}
+
+// Show a dialog with the spell's description
+function showSpellDescriptionDialog(fSpell, aClass, fullDescr, sourceStr) {
+	if ((!fullDescr || !sourceStr) && fSpell) {
+		var aSpell = GetSpellObject(fSpell, aClass, false, true, true);
+		var fullDescr = aSpell.tooltip;
+		var sourceStr = aSpell.tooltipSource;
+	}
+	if (sourceStr) { 
+		sourceStr = "\n\n__________\n\n" + toUni("Source(s) of the Spell") + "\n \u2022 " + sourceStr.replace(/\n/g, "\n \u2022 ");
+		if ((/>>  CHANGES BY FEATURES/i).test(fullDescr)) {
+			fullDescr = fullDescr.replace(/\n*(>>  CHANGES BY FEATURES)/i, sourceStr + "\n\n__________\n\n$1");
+		} else {
+			fullDescr += sourceStr;
+		}
+	}
+	ShowDialog("Full spell description", fullDescr);
+}
+
+// Function to add a found spell to the right location in the same dialog
+function buttonAddSpellToDialog(dialog, diaObj, fSpell, typeArr) {
+	if (!fSpell) return;
+	var oResult = dialog.store();
+	var success = false;
+	for (var t = 0; t < typeArr.length; t++) {
+		var aType = typeArr[t][0];
+		var aNmbr = typeArr[t][1];
+		var aMaxL = typeArr[t][2];
+		var refObj = diaObj["list" + aType];
+		// If cantrip or spell column, skip if this spell is not an option
+		if (aType !== "Bo" && !refObj[2][fSpell]) continue;
+		for (var i = 1; i <= aMaxL; i++) {
+			// If bonus, continue if this spell is not an option for this line
+			if (aType === "Bo") {
+				refObj = diaObj.listBo[i - 1];
+				if (!refObj[2][fSpell]) continue;
+			}
+			// Add the spell to this line if there is not already a useable selection
+			var Nm = aType + ("0" + i).slice(-2);
+			if (!refObj[1][oResult[Nm]]) {
+				// Create the new object for the field
+				var useObj = newObj(refObj[0]);
+				useObj[refObj[2][fSpell]] *= -1;
+				var toLoad = {};
+				toLoad[Nm] = useObj;
+				// If this field is not yet active, make sure it is active now. And set the number to their correct value
+				var activeLines = Number(oResult[aNmbr]);
+				if (activeLines < i) {
+					toLoad[aNmbr] = ASround(i);
+					var toEnable = {};
+					toEnable[Nm] = true;
+					dialog.enable(toEnable);
+				}
+				dialog.load(toLoad);
+				success = true;
+				break;
+			}
+		}
+		if (success) break;
+	}
+	if (!success) {
+		// No option to add the spell was found, alert the user
+		app.alert({
+			cMsg : "There is no space left to add this spell to the current dialog. Make sure that the column where it could go has an unused entry (an empty drop-down box).",
+			nIcon : 0,
+			cTitle : "No space left",
+			nType : 0
+		});
+	}
+}
 
 // Create the various dialogs for selecting spells
 function DefineSpellSheetDialogs(force, formHeight) {
@@ -1816,7 +1886,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			var toLoad = {
 				"img1" : allIcons.spells,
 				"Hea0" : "Set " + this.spNm + ": " + this.header.capitalize(),
-				"txt0" : "Select or type a spell in a drop-down box and use TAB to go to the next.\nSpell availability depends on what you are currently editing.\nUse ENTER to confirm and ESC to cancel this dialogue.",
+				"txt0" : "Select or type a spell in a drop-down box and use TAB to go to the next.\nSpell availability depends on what you are currently editing.\nUse ENTER to confirm and ESC to cancel this dialog.",
 				"BonK" : ASround(theBo),
 				"CanK" : ASround(theCa),
 				"SplK" : ASround(theSp),
@@ -1975,84 +2045,23 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			});
 		},
 
-		bLoA : function (dialog) {
-			var oResult = dialog.store();
-			var fSpell = spDias.fnFindSpell(oResult["AlLo"], this.listAl);
-			if (fSpell) {
-				var success = false;
-				var types = [
-					["Ca", "CanK"],
-					["Sp", "SplK"],
-					["Bo", "BonK"]
-				];
-				for (var t = 0; t < types.length; t++) {
-					var aType = types[t][0];
-					var aNmbr = types[t][1];
-					var refObj = this["list" + aType];
-					// If cantrip or spell column, skip if this spell is not an option
-					if (aType !== "Bo" && !refObj[2][fSpell]) continue;
-					for (var i = 1; i <= 20; i++) {
-						// If bonus, continue if this spell is not an option for this line
-						if (aType === "Bo") {
-							refObj = this.listBo[i - 1];
-							if (!refObj[2][fSpell]) continue;
-						}
-						// Add the spell to this line if there is not already a useable selection
-						var Nm = aType + ("0" + i).slice(-2);
-						if (!refObj[1][oResult[Nm]]) {
-							// Create the new object for the field
-							var useObj = newObj(refObj[0]);
-							useObj[refObj[2][fSpell]] *= -1;
-							var toLoad = {};
-							toLoad[Nm] = useObj;
-							// If this field is not yet active, make sure it is active now. And set the number to their correct value
-							var activeLines = Number(oResult[aNmbr]);
-							if (activeLines < i) {
-								toLoad[aNmbr] = ASround(i);
-								var toEnable = {};
-								toEnable[Nm] = true;
-								dialog.enable(toEnable);
-							}
-							dialog.load(toLoad);
-							success = true;
-							break;
-						}
-					}
-					if (success) break;
-				}
-				if (!success) {
-					// No option to add the spell was found, alert the user
-					app.alert({
-						cMsg : "There is no space left to add this spell to the current dialog. Make sure that the column where it could go has an unused entry (an empty drop-down box).",
-						nIcon : 0,
-						cTitle : "No space left",
-						nType : 0
-					});
-				}
-			}
-		},
-
-		bLoS : function (dialog) {
+		bLoS : function(dialog) {
 			// Show a dialog with the spell's full description
 			var oResult = dialog.store();
 			var fSpell = spDias.fnFindSpell(oResult["AlLo"], this.listAl);
-			if (fSpell) {
-				// Get the object with considering changes by features
-				var aSpell = GetSpellObject(fSpell, this.curCast, false, true, true);
-				var fullDescr = aSpell.tooltip;
-				// Now add the source of the spell in the right location
-				var sourceString = aSpell.tooltipSource;
-				if (sourceString) { 
-					sourceString = "\n\n" + toUni("Source(s) of the Spell") + "\n \u2022 " + sourceString.replace(/\n/g, "\n \u2022 ");
-					if ((/>>  CHANGES BY FEATURES/i).test(fullDescr)) {
-						fullDescr = fullDescr.replace(/\n*(>>  CHANGES BY FEATURES)/i, sourceString + "\n\n__________\n\n$1");
-					} else {
-						fullDescr += sourceString;
-					}
-				}
-				// Show a pop-up dialog
-				ShowDialog("Full spell description", fullDescr);
-			}
+			showSpellDescriptionDialog(fSpell, this.curCast);
+		},
+
+		bLoA : function (dialog) {
+			// Add the spell to the selected spells
+			var types = [
+				["Ca", "CanK"],
+				["Sp", "SplK"],
+				["Bo", "BonK"]
+			];
+			var oResult = dialog.store();
+			var fSpell = spDias.fnFindSpell(oResult["AlLo"], this.listAl);
+			buttonAddSpellToDialog(dialog, this, fSpell, types);
 		},
 
 		description : {
@@ -2091,7 +2100,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 							font : "dialog",
 							char_width : 39,
 							wrap_name : true,
-							name : "Select or type a spell in a drop-down box and use TAB to go to the next.\nSpell availability depends on what you are currently editing.\nENTER always confirms and ESC always cancels this dialogue."
+							name : "Select or type a spell in a drop-down box and use TAB to go to the next.\nSpell availability depends on what you are currently editing.\nENTER always confirms and ESC always cancels this dialog."
 						}, {
 							type : "cluster",
 							item_id : "txC1",
@@ -2173,7 +2182,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 					alignment : "align_fill",
 					elements : [{
 						type : "button",
-						name : "<< Go to Previous Dialogue",
+						name : "<< Go to Previous Dialog",
 						item_id : "bPre",
 						alignment : "align_left"
 					}, {
@@ -2181,7 +2190,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 						item_id : "OKbt",
 						alignment : "align_right",
 						ok_name : "Add More Spells to the Spellbook",
-						other_name : "Continue to Next Dialogue >>",
+						other_name : "Continue to Next Dialog >>",
 						cancel_name : "Cancel and Stop"
 					}]
 				}]
@@ -2204,9 +2213,14 @@ function DefineSpellSheetDialogs(force, formHeight) {
 		initialize : function (dialog) {
 
 			//set the value of various text entries
+			var toEnable = {
+				"bLoS" : false,
+				"bLoA" : false
+			};
 			var toLoad = {
 				"Hea0" : "Additional Spellbook Spells for " + this.fullname,
-				"iter" : this.iteration
+				"iter" : this.iteration,
+				"SpLo" : this.listSp[0]
 			};
 
 			//enable the various entries or disable them and load their values
@@ -2216,6 +2230,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 				toLoad[Sp] = aSpSet ? spDias.fnSetSpell(this.listSp, aSpSet) : this.listSp[0];
 			}
 			dialog.load(toLoad);
+			dialog.enable(toEnable);
 		},
 
 		// When committing the dialog check if this wasn't a field search ended by pressing ENTER
@@ -2249,6 +2264,29 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			dialog.end("prev");
 		},
 
+		SpLo : function (dialog) {
+			var found = this.search(dialog, "SpLo");
+			dialog.enable({
+				"bLoS" : found,
+				"bLoA" : found
+			});
+		},
+
+		bLoS : function(dialog) {
+			// Show a dialog with the spell's full description
+			var oResult = dialog.store();
+			var fSpell = spDias.fnFindSpell(oResult["SpLo"], this.listSp);
+			showSpellDescriptionDialog(fSpell, this.curCast);
+		},
+
+		bLoA : function (dialog) {
+			// Add the spell to the selected spells
+			var types = [ ["Sp", "SplK", 80] ];
+			var oResult = dialog.store();
+			var fSpell = spDias.fnFindSpell(oResult["SpLo"], this.listSp);
+			buttonAddSpellToDialog(dialog, this, fSpell, types);
+		},
+
 		description : {
 			name : "EXTRA SPELLBOOK SPELLS DIALOG",
 			elements : [{
@@ -2276,7 +2314,46 @@ function DefineSpellSheetDialogs(force, formHeight) {
 				}, {
 					type : "view", //total view
 					align_children : "align_distribute",
-					elements : Array.apply(null, Array(4)).map(function(n, idx) {
+					elements : [{
+						type : "view", // first column
+						align_children : "align_left",
+						elements : [{
+							type : "static_text",
+							alignment : "align_fill",
+							item_id : "txt0",
+							wrap_name : true,
+							char_width : 17,
+							name : "The spells you select here are added to those selected in any previous dialogs. The order you select them in doesn't matter, they will be ordered automatically on the generated spell sheets.\n\nYou can open as many of these dialogs as you like to add more spells to the spellbook."
+						}, {
+							type : "cluster", // lookup cluster
+							item_id : "ClLo",
+							align_children : "align_left",
+							name : "Spell Lookup",
+							font : "heading",
+							bold : true,
+							elements : [{
+								type : "edit_text",
+								item_id : "SpLo",
+								alignment : "align_center",
+								char_width : 11,
+								height : formHeight + 2,
+								PopupEdit : true,
+								SpinEdit : true
+							}, {
+								type : "button",
+								item_id : "bLoS",
+								alignment : "align_center",
+								char_width : 15,
+								name : "Show full description"
+							}, {
+								type : "button",
+								item_id : "bLoA",
+								alignment : "align_center",
+								char_width : 15,
+								name : "Add to selection"
+							}]
+						}]
+					}].concat(Array.apply(null, Array(4)).map(function(n, idx) {
 						var colObj = {
 							type : "view",
 							align_children : "align_left",
@@ -2299,26 +2376,24 @@ function DefineSpellSheetDialogs(force, formHeight) {
 								}]
 							});
 						}
-						colObj.elements.push({
-							type : "gap",
-							height : 5
-						});
 						return colObj;
-					})
+					}))
+				}, {
+					type : "gap",
 				}, {
 					type : "view",
 					align_children : "align_row",
 					alignment : "align_fill",
 					elements : [{
 						type : "button",
-						name : "<< Go to Previous Spellbook Dialogue",
+						name : "<< Go to Previous Spellbook Dialog",
 						item_id : "bPre",
 						alignment : "align_left"
 					}, {
 						type : "ok_cancel_other",
 						item_id : "OKbt",
 						alignment : "align_right",
-						ok_name : "Continue to Next Dialogue >>",
+						ok_name : "Continue to Next Dialog >>",
 						other_name : "Add More to the Spellbook",
 						cancel_name : "Cancel and Stop"
 					}]
@@ -2353,11 +2428,18 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			var theSp = this.nmbrSp + this.offsetSp;
 
 			//set the value of various text entries
-			var toEnable = {};
+			var toEnable = {
+				"bLoS" : false,
+				"bLoA" : false
+			};
 			var toLoad = {
 				"Hea0" : "Prepared spells for " + this.fullname,
-				"txt0" : "The number of spells to prepare is:\t" + toUni(this.nmbrPrep) + "  (level)\t\t" + (abiMod < 0 ? "- " : "+ ") + toUni(Math.abs(abiMod)) + "  (" + abiNm + " modifier)",
-				"SplK" : ASround(theSp)
+				"nrLv" : ASround(this.nmbrPrep),
+				"txAb" : abiNm + " modifier",
+				"nrAb" : (abiMod < 0 ? "- " : "+ ") + Math.abs(abiMod),
+				"nrTo" : "= " + this.nmbrSp,
+				"SplK" : ASround(theSp),
+				"SpLo" : this.listSp[0]
 			};
 
 			for (var i = 1; i <= 30; i++) {
@@ -2401,6 +2483,29 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			dialog.enable(allSp);
 		},
 
+		SpLo : function (dialog) {
+			var found = this.search(dialog, "SpLo");
+			dialog.enable({
+				"bLoS" : found,
+				"bLoA" : found
+			});
+		},
+
+		bLoS : function(dialog) {
+			// Show a dialog with the spell's full description
+			var oResult = dialog.store();
+			var fSpell = spDias.fnFindSpell(oResult["SpLo"], this.listSp);
+			showSpellDescriptionDialog(fSpell, this.curCast);
+		},
+
+		bLoA : function (dialog) {
+			// Add the spell to the selected spells
+			var types = [ ["Sp", "SplK", 30] ];
+			var oResult = dialog.store();
+			var fSpell = spDias.fnFindSpell(oResult["SpLo"], this.listSp);
+			buttonAddSpellToDialog(dialog, this, fSpell, types);
+		},
+
 		description : {
 			name : "PREPARED SPELLS DIALOG",
 			elements : [{
@@ -2408,8 +2513,8 @@ function DefineSpellSheetDialogs(force, formHeight) {
 				align_children : "align_left",
 				elements : [{
 					type : "view", //top row view
+					alignment : "align_fill",
 					align_children : "align_distribute",
-					char_width : 54,
 					elements : [{
 						type : "static_text",
 						item_id : "Hea0",
@@ -2427,14 +2532,110 @@ function DefineSpellSheetDialogs(force, formHeight) {
 						SpinEdit : true
 					}]
 				}, {
-					type : "static_text",
-					item_id : "txt0",
-					height : 22,
-					char_width : 54
-				}, {
-					type : "view", //view with three columns of spells
+					type : "view", //view with info column + three columns of spells
 					align_children : "align_distribute",
-					elements : Array.apply(null, Array(3)).map(function(n, idx) {
+					elements : [{
+						type : "view", // info column
+						align_children : "align_left",
+						elements : [{
+							type : "cluster", // number of spells cluster
+							item_id : "ClNr",
+							align_children : "align_left",
+							font : "heading",
+							bold : true,
+							name : "Number of Spells to Prepare",
+							elements : [{
+								type : "view",
+								align_children : "align_distribute",
+								margin_height : -1,
+								elements : [{
+									type : "static_text",
+									item_id : "txLv",
+									char_width : 12,
+									name : "From level"
+								}, {
+									type : "static_text",
+									item_id : "nrLv",
+									alignment : "align_right",
+									char_width : 4,
+									font : "dialog",
+									bold : true,
+									name : "0"
+								}]
+							}, {
+								type : "view",
+								align_children : "align_distribute",
+								margin_height : -1,
+								elements : [{
+									type : "static_text",
+									item_id : "txAb",
+									char_width : 12,
+									name : "Ability modifier"
+								}, {
+									type : "static_text",
+									item_id : "nrAb",
+									alignment : "align_right",
+									char_width : 4,
+									font : "dialog",
+									bold : true,
+									name : "+ 0"
+								}]
+							}, {
+								type : "static_text",
+								alignment : "align_fill",
+								separator: 1,
+								height : 3
+							}, {
+								type : "view",
+								align_children : "align_distribute",
+								margin_height : -1,
+								elements : [{
+									type : "static_text",
+									item_id : "txTo",
+									char_width : 12,
+									font : "dialog",
+									bold : true,
+									name : "Total"
+								}, {
+									type : "static_text",
+									item_id : "nrTo",
+									alignment : "align_right",
+									char_width : 4,
+									font : "dialog",
+									bold : true,
+									name : "= 0"
+								}]
+							}]
+						}, {
+							type : "cluster", // lookup cluster
+							item_id : "ClLo",
+							align_children : "align_left",
+							name : "Spell Lookup",
+							font : "heading",
+							bold : true,
+							elements : [{
+								type : "edit_text",
+								item_id : "SpLo",
+								alignment : "align_center",
+								char_width : 11,
+								height : formHeight + 2,
+								PopupEdit : true,
+								SpinEdit : true
+							}, {
+								type : "button",
+								item_id : "bLoS",
+								alignment : "align_center",
+								char_width : 15,
+								name : "Show full description"
+							}, {
+								type : "button",
+								item_id : "bLoA",
+								alignment : "align_center",
+								char_width : 15,
+								name : "Add to selection"
+							}]
+						}]
+					}].concat(Array.apply(null, Array(3)).map(function(n, idx) {
 						var colObj = {
 							type : "view",
 							align_children : "align_left",
@@ -2458,7 +2659,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 							});
 						}
 						return colObj;
-					})
+					}))
 				}, {
 					type : "gap"
 				}, {
@@ -2624,7 +2825,7 @@ function AskUserSpellSheet() {
 						group_id : "RadB",
 						name : "All spell" + (dia.typeSp === "list" ? "s" : dia.typeSp === "book" ? "book spells" : "s known") + " regardless of level"
 					});
-					if (dia.typeSp !== "known") {
+					if (spCast.known && spCast.known.prepared) {
 						diaRadBtns.push({
 							type : "radio",
 							item_id : "SpR3",
@@ -2765,7 +2966,7 @@ function AskUserSpellSheet() {
 		// Set the parts of the dialog
 			// First the ok / cancel buttons
 			setDialogName(dia, "OKbt", "type", dia.typeSp !== "book" ? "ok_cancel" : "ok_cancel_other");
-			setDialogName(dia, "OKbt", "ok_name", dia.typeSp !== "book" ? "Continue to Next Dialogue >>" : "Add More Spells to the Spellbook");
+			setDialogName(dia, "OKbt", "ok_name", dia.typeSp !== "book" ? "Continue to Next Dialog >>" : "Add More Spells to the Spellbook");
 			// Then the dynamic parts
 			setDialogName(spDias.spellSelect, "col1", "elements", diaDynCol1); // add to the 1st column
 			setDialogName(spDias.spellSelect, "colE", "elements", diaDynCols); // the rest of the dialog
@@ -2859,11 +3060,11 @@ function AskUserSpellSheet() {
 				diaSB.curCast = dia.curCast;
 				var diaSBi = 0;
 
-				// call the dialogue, and keep on calling more if more spells need to be added to the spellbook
+				// call the dialog, and keep on calling more if more spells need to be added to the spellbook
 				do {
 					diaSB.iteration = (diaSBi + 1) + "/" + Math.max(diaSBi + 1, SBextras.length, 1);
 					diaSB.selectSp = SBextras[diaSBi] ? SBextras[diaSBi] : [];
-					setDialogName(diaSB, "bPre", "name", diaSBi == 0 ? "<< Go Back (also Orders Spellbook)" : "<< Go to Previous Spellbook Dialogue");
+					setDialogName(diaSB, "bPre", "name", diaSBi == 0 ? "<< Go Back (also Orders Spellbook)" : "<< Go to Previous Spellbook Dialog");
 					var diaSBResult = app.execDialog(diaSB);
 					// now replace the SBextras entry with the new diaSB.selectSp
 					SBextras[diaSBi] = diaSB.selectSp;
@@ -2881,10 +3082,10 @@ function AskUserSpellSheet() {
 							var contDiaSB = SBextras[diaSBi] && SBextras[diaSBi].length;
 							break;
 						case "prev" :
-							if (diaSBi == 0) { // go back to the class spell dialogue
+							if (diaSBi == 0) { // go back to the class spell dialog
 								theI -= 1;
 								var contDiaSB = false;
-							} else { // go back to the previous spellbook dialogue
+							} else { // go back to the previous spellbook dialog
 								diaSBi -= 1;
 								var contDiaSB = true;
 							};
@@ -2893,7 +3094,7 @@ function AskUserSpellSheet() {
 				}
 				while (contDiaSB);
 
-				// now add all the spells selected in the spellbook dialogues to a single array, together with the spells selected in the original dialogue, sort them, and add them back into the proper places
+				// now add all the spells selected in the spellbook dialogs to a single array, together with the spells selected in the original dialog, sort them, and add them back into the proper places
 				SBextras = [].concat.apply([], SBextras);
 				var totalSelectSp = OrderSpells(spCast.selectSp.concat(SBextras), "single");
 				spCast.selectSp = totalSelectSp.slice(0, 20); //the first 20 of the array
@@ -2903,7 +3104,7 @@ function AskUserSpellSheet() {
 					delete spCast.selectSpSB;
 				};
 
-				// now if the spellbook dialogue was cancelled, do not continue with the rest of the function
+				// now if the spellbook dialog was cancelled, do not continue with the rest of the function
 				if (diaSBResult == "cancel") {
 					SetStringifieds("spells");
 					return "stop"; //don't continue with the rest of the function and let the other function know not to continue either
@@ -4024,16 +4225,8 @@ function MakeSpellLineMenu_SpellLineOptions() {
 
 	switch (MenuSelection[0]) {
 	 case "popup" :
-		var sourceString = Who(base.replace("checkbox", "book"));
-		if (sourceString) { 
-			sourceString = "\n\n__________\n\n" + toUni("Source(s) of the Spell") + "\n \u2022 " + sourceString.replace(/\n/g, "\n \u2022 ");
-			if ((/>>  CHANGES BY FEATURES/i).test(fullDescr)) {
-				fullDescr = fullDescr.replace(/\n*(>>  CHANGES BY FEATURES)/i, sourceString + "\n\n__________\n\n$1");
-			} else {
-				fullDescr += sourceString;
-			}
-		}
-		ShowDialog("Full spell description", fullDescr);
+		var sourceStr = Who(base.replace("checkbox", "book"));
+		showSpellDescriptionDialog(false, false, fullDescr, sourceStr);
 		break;
 	 case "move up" :
 		thermoTxt = thermoM("Moving the spell up one row...", false);
@@ -4687,7 +4880,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 	var thermoTxt = thermoM("Generating the " + thisClassName + " Spell Sheets, Acrobat will be unresponsive for a long time...", false);
 	//first ask the user if he really wants to wait for an hour
 	var doGoOn = {
-		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClassName + (isSubClass ? " sub" : " ") + "class.\n\nThis will not include any spells granted by any currently selected " + (isSubClass ? "" : "subclass, ") + "class feature, nor spells excluded in the Source Selection dialogue.\nIf you want to generate a spell list with all the spells available for your currently selected (sub)class and class features, please use the normal way of generating a spell list and select \"Full class list\" in the bottom right of the Spell Selection dialog.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nBe aware that this process can take a while.\n\nAre you sure you want to continue?",
+		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available to the " + thisClassName + (isSubClass ? " sub" : " ") + "class.\n\nThis will not include any spells granted by any currently selected " + (isSubClass ? "" : "subclass, ") + "class feature, nor spells excluded in the Source Selection dialog.\nIf you want to generate a spell list with all the spells available for your currently selected (sub)class and class features, please use the normal way of generating a spell list and select \"Full class list\" in the bottom right of the Spell Selection dialog.\n\nEvery spell level will have 3 empty lines to fill out yourself.\n\nBe aware that this process can take a while.\n\nAre you sure you want to continue?",
 		nIcon: 2,
 		cTitle: "Continue with generation of complete spell sheet?",
 		nType: 2
@@ -5024,7 +5217,7 @@ function SpellPointsLimFea(AddRemove) {
 	}
 }
 
-// show a dialogue with a warning for using spell points with warlocks
+// show a dialog with a warning for using spell points with warlocks
 function ShowSpellPointInfo() {
 	if (minVer) return; //only do this function for the full versions
 	app.alert({
@@ -5155,7 +5348,7 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 	var thermoTxt = thermoM("Generating Spell Sheets with all spells, Acrobat will be unresponsive for a long time...", false);
 	//first ask the user if he really wants to wait for an hour
 	var doGoOn = {
-		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available " + (alphabetical ? "in alphabetical order" : "grouped by level") + ".\n\nThis will not include any spells excluded in the Source Selection dialogue.\n\nBe aware that this process can take a while.\n\nAre you sure you want to continue?",
+		cMsg: "You are about to remove any Spell Sheets that are currently in this document and replace them with a newly generated sheet containing all spells available " + (alphabetical ? "in alphabetical order" : "grouped by level") + ".\n\nThis will not include any spells excluded in the Source Selection dialog.\n\nBe aware that this process can take a while.\n\nAre you sure you want to continue?",
 		nIcon: 2,
 		cTitle: "Continue with generation of complete spell sheet?",
 		nType: 2

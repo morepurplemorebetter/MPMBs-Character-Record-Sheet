@@ -38,7 +38,7 @@ function MakeButtons() {
 				cName : "SourcesButton",
 				cExec : "resourceDecisionDialog();",
 				oIcon : allIcons.sources,
-				cTooltext : toUni("Select Sources") + "\nOpen a dialogue where you can select which sourcebooks and materials the sheet is allowed to use and which it has to excluded from the automation." + (this.info.SpellsOnly ? "\n\nHere you can select which sources are used for the spells or even exclude certain spells or spell schools. After you have set this, you will have to manually re-generate the spell sheet using the 'Spells' button/bookmark." : "\n\nHere you can make the sheet include all Unearthed Arcana material or even have the sheet exclude certain classes, races, spells, etc. etc.\n\nYou are advised to set the sources before filling out the sheet as it may cause certain fields to be reset."),
+				cTooltext : toUni("Select Sources") + "\nOpen a dialog where you can select which sourcebooks and materials the sheet is allowed to use and which it has to excluded from the automation." + (this.info.SpellsOnly ? "\n\nHere you can select which sources are used for the spells or even exclude certain spells or spell schools. After you have set this, you will have to manually re-generate the spell sheet using the 'Spells' button/bookmark." : "\n\nHere you can make the sheet include all Unearthed Arcana material or even have the sheet exclude certain classes, races, spells, etc. etc.\n\nYou are advised to set the sources before filling out the sheet as it may cause certain fields to be reset."),
 				nPos : 3,
 				cLabel : "Sources"
 			});
@@ -60,7 +60,7 @@ function MakeButtons() {
 				cName : "ClassesButton",
 				cExec : "SelectClass();",
 				oIcon : allIcons.classes,
-				cTooltext : toUni("Set Character Classes") + "\nOpen a pop-up dialogue where you can set the classes, subclasses, and levels the character has.\n\nYou get drop-down boxes for selecting a class and its subclass, and can test what text you enter is being recognized as what class/subclass.",
+				cTooltext : toUni("Set Character Classes") + "\nOpen a pop-up dialog where you can set the classes, subclasses, and levels the character has.\n\nYou get drop-down boxes for selecting a class and its subclass, and can test what text you enter is being recognized as what class/subclass.",
 				nPos : 5,
 				cLabel : "Class"
 			});
@@ -76,7 +76,7 @@ function MakeButtons() {
 				cName : "WeightToCalcButton",
 				cExec : "WeightToCalc_Button();",
 				oIcon : allIcons.weight,
-				cTooltext : toUni("Weight Calculation") + "\nOpen the Total Weight dialogue where you can choose what is and what is not counted towards the Total Weight on the second page.\n\nIn the dialogue you can also select which encumbrance rules to use.",
+				cTooltext : toUni("Weight Calculation") + "\nOpen the Total Weight dialog where you can choose what is and what is not counted towards the Total Weight on the second page.\n\nIn the dialog you can also select which encumbrance rules to use.",
 				nPos : 7,
 				cLabel : "Weight"
 			});
@@ -3960,7 +3960,7 @@ function AddLangTool(typeLT, input, tooltip, uniqueID, replaceThis, replaceMatch
 	if (!overflow) AddString("MoreProficiencies", inputCl + " (" + type + ")", "; ");
 };
 
-// remove a tool or a language (typeLT = "tool" || "language") // choice = the input from the dialogue; uniqueID is for something that offers a choice, so which might have been changed but should still be removed if it matches
+// remove a tool or a language (typeLT = "tool" || "language") // choice = the input from the dialog; uniqueID is for something that offers a choice, so which might have been changed but should still be removed if it matches
 function RemoveLangTool(typeLT, input, uniqueID, choice) {
 	switch (clean(typeLT, false, true).toLowerCase()) {
 		case "language" :

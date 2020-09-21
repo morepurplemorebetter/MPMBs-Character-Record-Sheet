@@ -209,7 +209,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges)) {
 			CurrentUpdates.types.push("spells");
 			if (uObj.spellFirstColTitle) CurrentSpells[useSpCasting].firstCol = addIt ? uObj.spellFirstColTitle : false;
-			if (uObj.spellcastingExtra) CurrentSpells[useSpCasting].extra = addIt ? uObj.spellcastingExtra : false;
+			if (uObj.spellcastingExtra) CurrentSpells[useSpCasting].extra = addIt ? OrderSpells(uObj.spellcastingExtra, 'single') : false;
 			// --- backwards compatibility --- //
 			var doSpXtrSpecial = uObj.spellcastingExtraApplyNonconform !== undefined ? uObj.spellcastingExtraAddToKnown : uObj.spellcastingExtra[100] === "AddToKnown" ? true : undefined;
 			if (doSpXtrSpecial !== undefined) CurrentSpells[useSpCasting].extraSpecial = doSpXtrSpecial;

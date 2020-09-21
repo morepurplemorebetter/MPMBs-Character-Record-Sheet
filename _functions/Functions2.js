@@ -2860,7 +2860,7 @@ function MakePagesMenu() {
 	//1st page: add the menu for the visibility of the 7h ability score
 	var HoSvis = What("HoSRememberState").toLowerCase();
 	menuLVL2(pageone.oSubMenu, ["Ability Scores", "scores"], [
-		["Open the Ability Scores dialogue", "dialog"],
+		["Open the Ability Scores dialog", "dialog"],
 		["-", "-"],
 		["Disable the 7th ability score", "disable"],
 		["Make the 7th ability score 'Honor'", "honor"],
@@ -4800,7 +4800,7 @@ function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 	var mStr1 = " value.\n\n" + toUni("Dynamic Modifiers") + "\nYou can also have the field use ability score modifiers. To do this, use the abbreviations of ability scores (Str, Dex, Con, Int, Wis, Cha, HoS), math operators (+, -, /, *), and numbers.\n   For example: '2+Str' or 'Wis+Int'.\nDon't worry if you are only able to write one or two letters of an ability score's abbreviation, the field will auto-complete (e.g. typing 'S+1' will result in 'Str+1').";
 	var mStrC = mStr1.replace(", HoS", "");
 	var mStr2 = "\n\nNote that any bonus from \"Jack of All Trades\" or \"Remarkable Athelete\" will be added automatically if the appropriate checkbox is checked.";
-	var mStr3 = "\n\n" + toUni("Not Enough Space to Write?") + "\nIf you find that you need more space to type out the modifier you want to use, you can get a bigger input-form by left-clicking in this field while holding either the Ctrl, Shift, or Cmd key.\n   This pop-up dialogue will also show you the origins of modifiers added by the automation, if any.";
+	var mStr3 = "\n\n" + toUni("Not Enough Space to Write?") + "\nIf you find that you need more space to type out the modifier you want to use, you can get a bigger input-form by left-clicking in this field while holding either the Ctrl, Shift, or Cmd key.\n   This pop-up dialog will also show you the origins of modifiers added by the automation, if any.";
 	var getStr = function(aSkill, isCom) {
 		return toUni(aSkill) + mStr + aSkill + (isCom ? mStrC : mStr1) + (isCom ? "" : mStr2) + mStr3;
 	};
@@ -5293,7 +5293,7 @@ function contactMPMB(medium) {
 	};
 };
 
-//open a dialogue for the Patreon
+//open a dialog for the Patreon
 function PatreonStatement(force) {
 	try {
 		var iNow = new Date();
@@ -5953,7 +5953,7 @@ function SetOffHandAction() {
 	tDoc[(areOffHands ? "Add" : "Remove") + "Action"]("bonus action", "Off-hand Attack");
 };
 
-//a way to show a very long piece of text without the dialogue overflowing the screen
+//a way to show a very long piece of text without the dialog overflowing the screen
 function ShowDialog(hdr, strng) {
 	if (strng === "sources") { // ShowDialog("List of Sources, sorted by abbreviation", "sources");
 		strng = "";
@@ -7682,7 +7682,7 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, with
 	}
 };
 
-// open a dialogue with a number of lines of choices and return the choices in an array; if knownOpt === "radio", show radio buttons instead, and return the entry selected
+// open a dialog with a number of lines of choices and return the choices in an array; if knownOpt === "radio", show radio buttons instead, and return the entry selected
 // if notProficiencies is set to true, the optType will serve as the dialog header, and optSrc will serve as the multline explanatory text
 function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies) {
 	if (!IsNotImport) return optSubj;

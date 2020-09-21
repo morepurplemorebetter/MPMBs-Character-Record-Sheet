@@ -13,7 +13,7 @@ function SetPositiveElement(objIn, element) {
 	return obj;
 };
 
-//a dialogue that allows immediate feedback on what a class' name will look like and create a comprehensive, complete string to put in the class field
+//a dialog that allows immediate feedback on what a class' name will look like and create a comprehensive, complete string to put in the class field
 function SelectClass() {
 	if (app.viewerVersion < 15) {
 		FunctionIsNotAvailable();
@@ -119,7 +119,7 @@ function SelectClass() {
 		};
 	};
 	var dialogTxt = {
-		dsc1 : "When you select a class or a subclass in the drop-down boxes in this dialogue, the text field in the same line will update accordingly, and vice versa.\nThe drop-down boxes will only update once you click/tab outside of the text field.",
+		dsc1 : "When you select a class or a subclass in the drop-down boxes in this dialog, the text field in the same line will update accordingly, and vice versa.\nThe drop-down boxes will only update once you click/tab outside of the text field.",
 		dsc2 : "Although the sheet knows of only one way to set the text field from the drop-down boxes, it understands very many different textual inputs. You can test this by typing something in the text field and see what the sheet recognizes it as. For example, if you enter 'War Priest' it will be recognized as a 'Cleric (War Domain)', and when you enter 'Exalted Knight of Obedience' it will be recognized as 'Paladin (Oath of Devotion)'.",
 		lvlu : theChar + "'s level has increased by 1, to a total of 1. Please change the level of one or more classes accordingly, or add a new class.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level).",
 		note : "* This first row has to be used and is considered the class taken at 1st level, i.e. the class that grants all its proficiencies.",
@@ -1019,7 +1019,7 @@ function SelectClass() {
 			var askSure = app.alert({
 				nIcon : 2,
 				cTitle : "Are You Sure? - Remove All Classes & Levels",
-				cMsg : "You are about to remove all levels and classes from your character!\nAre you sure you want to continue?" + (IsCharLvlVal == 0 && !dia ? "" : "\n\nNote that you have to use the first line in the Class Selection dialogue, for that is the class your character took at 1st level. If the first line if left empty or its level is set to zero, the sheet will assume you want to delete all the character's classes and levels.") + "\n\nClick 'No' to go back to the Class Selection dialog.",
+				cMsg : "You are about to remove all levels and classes from your character!\nAre you sure you want to continue?" + (IsCharLvlVal == 0 && !dia ? "" : "\n\nNote that you have to use the first line in the Class Selection dialog, for that is the class your character took at 1st level. If the first line if left empty or its level is set to zero, the sheet will assume you want to delete all the character's classes and levels.") + "\n\nClick 'No' to go back to the Class Selection dialog.",
 				nType : 2
 			});
 			if (askSure !== 4) dia = "Go Again!";
