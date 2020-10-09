@@ -82,6 +82,7 @@ function setGlobalVars() {
 	tDoc.sheetVersion = semVersToNmbr(semVers);
 	tDoc.isWindows = app.platform === "WIN";
 	tDoc.patreonVersion = tDoc.getField("SaveIMG.Patreon").submitName === "";
+	if (minVer) sentientItemConflictTxt = "";
 }
 setGlobalVars();
 
@@ -146,11 +147,11 @@ var Menus = {
 	"magicitems" : "",
 	"color" : "",
 	"raceoptions" : "",
+	"faqextended" : "",
 	"faq" : [{
-		// While website is still not finished
-		// 	cName : "Go to the online FAQ (more up to date)",
-		// 	cReturn : "faq#online"
-		// }, {
+			cName : "Go to the online FAQ (more up to date)",
+			cReturn : "faq#online"
+		}, {
 			cName : "Open the built-in FAQ.pdf",
 			cReturn : "faq#pdf"
 		}, {
@@ -175,7 +176,7 @@ var Menus = {
 			cReturn : "go#script#onlinehelp"
 		}, {
 			cName : "Find more content online...",
-			cReturn : "go#script#subreddit"
+			cReturn : "go#script#content"
 		}],
 	"importexport" : [{
 			cName : "Add homebrew material (custom script)",
@@ -189,7 +190,7 @@ var Menus = {
 			cName : "-"
 		}, {
 			cName : "Import/Export using files (depreciated, no longer support)",
-			oSubMenu: [{
+			oSubMenu : [{
 				cName : "Import .xfdf file",
 				cReturn : "go#import#xfdf"
 			}, {
@@ -211,6 +212,34 @@ var Menus = {
 				}]
 			}]
 		}],
+	"contact" : [{
+		cName : "MPMB's website",
+		cReturn : "contact#website"
+	}, {
+		cName : "MPMB's Patreon",
+		cReturn : "contact#patreon"
+	}, {
+		cName : "-"
+	}, {
+		cName : "Report a bug or request a feature (on Discord)",
+		cReturn : "contact#bug"
+	}, {
+		cName : "-"
+	}, {
+		cName : "Reddit community",
+		cReturn : "contact#reddit"
+	}, {
+		cName : "Discord server",
+		cReturn : "contact#discord"
+	}, {
+		cName : "-"
+	}, {
+		cName : "GitHub",
+		cReturn : "contact#github"
+	}, {
+		cName : "Twitter",
+		cReturn : "contact#twitter"
+	}],
 	"feats" : "",
 	"attacks" : "",
 	"wildshape" : "",
@@ -2170,10 +2199,10 @@ var LinksLatest = {
 		CF : "http://www.dmsguild.com/product/194069"
 	},
 	character : {
-		PF : "https://www.patreon.com/posts/19406992", // while website is not finished "https://flapkan.com/printer_friendly_character_sheet",
+		PF : "https://www.patreon.com/posts/19406992", // while website is not finished "https://flapkan.com/#download",
 		CF : "https://www.patreon.com/posts/19406992" // while website is not finished "https://flapkan.com/colourful_character_sheet"
 	},
-	patreon : "https://www.patreon.com/posts/14927098"
+	patreon : "https://flapkan.com/patrons"
 };
 
 // A backwards compatible way to call the field content of those that are now part of the CurrentVars object

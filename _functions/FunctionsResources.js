@@ -283,6 +283,13 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 		name : "Creatures",
 		listObj : "CreatureList"
 	}];
+	if (tDoc.info.SpellsOnly) {
+		resourceOptions = [{
+			exclObj : "spellsExcl",
+			name : "Spells/Psionics",
+			listObj : "SpellsList"
+		}];
+	}
 	var theExclusions = {}, returnObj = { str : [], new : [], all : [], found : false };
 	var newTxt = toUni("NEW ");
 	var addNewExcl = function(type, typeNm, obj, objID, objNm) {
@@ -615,11 +622,11 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		bWhy : function (dialog) {
 			var goToWeb = {
 				cTitle : "Why does this sheet only include content from the System Reference Document?",
-				cMsg : "This sheet only includes content from the System Reference Document (SRD), because including any other material from Wizards of the Coast (WotC) would be a violation of their copyright. MorePurpleMoreBetter (MPMB) can't provide you with anything more from WotC other than the SRD, which is covered under the Open Gaming License (OGL).\n\nHowever, using the 'Get more' button, you can add content to the sheet that you or somebody else made.\n\nMPMB has some pre-written 3rd-party materials such as the 'Remastered: Way of the Four Elements', DMs Guild creations by Matt Mercer (Blood Hunter, Gunslinger, College of the Maestro), Michael Wolf (Shaman), and more...\nThere is also a subreddit dedicated to sharing people's own creations.\n\nWould you like to go a website where you can find more content?",
+				cMsg : "This sheet only includes content from the System Reference Document (SRD), because including any other material from Wizards of the Coast (WotC) would be a violation of their copyright. MorePurpleMoreBetter (MPMB) can't provide you with anything more from WotC other than the SRD, which is covered under the Open Gaming License (OGL).\n\nHowever, using the 'Get more' button, you can add content to the sheet that you or somebody else made.\n\nMPMB has some pre-written 3rd-party materials such as the 'Remastered: Way of the Four Elements', DMs Guild creations by Matt Mercer (Blood Hunter, Gunslinger, College of the Maestro), Michael Wolf (Shaman), and more...\nThere is also a subreddit dedicated to sharing people's own creations.\n\nWould you like to go a website where you can learn more about how this works and find more content?",
 				nIcon : 2,
 				nType : 2
 			};
-			if (app.alert(goToWeb) === 4) contactMPMB("additions");
+			if (app.alert(goToWeb) === 4) contactMPMB("how to add content");
 		},
 		description : {
 			name : "SOURCE SELECTION DIALOG",

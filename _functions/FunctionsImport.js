@@ -2206,9 +2206,9 @@ function AddUserScript(retResDia) {
 				this.script = results["jscr"];
 				dialog.end("bpre");
 			},
-			bWhy: function(dialog) { contactMPMB("additions"); },
-			bCoC: function(dialog) { contactMPMB("subreddit"); },
-			bCoM: function(dialog) { contactMPMB("additionsGit"); },
+			bWhy: function(dialog) { contactMPMB("how to add content"); },
+			bCoC: function(dialog) { contactMPMB("community content"); },
+			bCoM: function(dialog) { contactMPMB("mpmb content"); },
 			bCon: function(dialog) {
 				var results = dialog.store();
 				this.script = results["jscr"];
@@ -2685,16 +2685,59 @@ function ImportUserScriptFile(filePath) {
 	var iFileStream = filePath ? util.readFileIntoStream(filePath) : util.readFileIntoStream();
 	if (!iFileStream) return false;
 	var iFileCont = util.stringFromStream(iFileStream);
-	if ((/<(!DOCTYPE )html/i).test(iFileCont)) { //import is probably a HTML file
-		app.alert({
-			cTitle : "Please select a JavaScript file",
-			cMsg : "The file you imported is a HTML document (a website). Please make sure that the file you select to import is JavaScript.\n\nYou can create a JavaScript file by copying code, pasting it into your favourite plain-text editor (such as Notepad on Windows), and subsequently saving it. You don't necessarily need the .js file extension for the file to be importable into this character sheet." + (!isWindows ? "" : "\n\nNote that you can input an URL into the 'Open file' dialog, but that URL has to point to a JavaScript file. A good example of an URL that points to a JavaScript file is the URL you are send to when you select the 'Raw' option on GitHub: https://raw.githubusercontent.com/") + "\n\nThe file you selected will not be imported.",
-			nIcon : 1
-		});
-		return false;
+	if ((/<(!DOCTYPE )?html/i).test(iFileCont)) {
+		// Import is probably an HTML file, lets try and get the JavaScript from it in case it's from GitHub or PasteBin
+		var htmlAttr = {
+			github : {
+				"class" : "data",
+				"nodeNm" : "table"
+			},
+			pastebin : {
+				"class" : "textarea",
+				"nodeNm" : "#text"
+			}
+		}
+		var knownHTML = (/github/i).test(iFileCont) ? "github" : (/pastebin/i).test(iFileCont) ? "pastebin" : false;
+		if (knownHTML) {
+			try {
+				var scriptContent = "", fndNode;
+				var aDom = new Dom(iFileCont);
+				var jsElem = aDom.getElementsByClassName(htmlAttr[knownHTML].class);
+				if (jsElem.length !== 1) throw "didn't work as expected";
+				for (var i = 0; jsElem[0].childNodes.length; i++) {
+					if (jsElem[0].childNodes[i].nodeName == htmlAttr[knownHTML].nodeNm) {
+						fndNode = jsElem[0].childNodes[i];
+						scriptContent = decodeXml(fndNode.textContent).replace(/^\s+|\s+$/, '');
+						break;
+					}
+				}
+				if ( !scriptContent || ( /view raw/i.test(scriptContent) && /href=("|').*?raw=true\1/i.test(jsElem[0].innerHTML) ) ) {
+					throw "didn't work as expected";
+				} else if (knownHTML === "github") {
+					scriptContent = scriptContent.replace(/(\n )+/g, '\n');
+				}
+				iFileCont = scriptContent;
+			} catch (error) {
+/* Uncomment for testing
+				var eText = "Error importing HTML from " + knownHTML + ": " + error + "\n ";
+				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				console.println(eText);
+				console.show();
+*/
+				knownHTML = false;
+			}
+		}
+		if (!knownHTML) {
+			app.alert({
+				cTitle : "Please select a JavaScript file",
+				cMsg : "The file you imported is an HTML document (a website). Please make sure that the file you select to import is JavaScript.\n\nYou can create a JavaScript file by copying code, pasting it into your favourite plain-text editor (such as Notepad on Windows), and subsequently saving it. You don't necessarily need the .js file extension for the file to be importable into this character sheet." + (!isWindows ? "" : "\n\nNote that you can input a URL into the 'Open file' dialog, but that URL has to point to a plain code file. A good example of a URL that points to a plain code file is the URL you are send to when you select the 'Raw' option on GitHub: https://raw.githubusercontent.com/") + "\n\nThe file you selected will not be imported.",
+				nIcon : 1
+			});
+			return false;
+		}
 	};
-	var iFileName = (/var iFileName ?= ?"([^"]+)";/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?"([^"]+)";/)[1] : (/var iFileName ?= ?'([^']+)';/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?'([^']+)';/)[1] : false;
-	var useFileName = iFileName ? util.printd("yyyy/mm/dd", new Date()) + " - " + iFileName : util.printd("yyyy/mm/dd HH:mm", new Date()) + " - " + "no iFileName";
+	var iFileName = iFileCont.match(/iFileName ?= ?("|')(.*?[^\\])\1/);
+	var useFileName = iFileName ? util.printd("yyyy/mm/dd", new Date()) + " - " + iFileName[2].replace(/\\/g, "") : util.printd("yyyy/mm/dd HH:mm", new Date()) + " - " + "no iFileName";
 	var iFileNameMatch = false;
 	if (iFileName) {
 		for (var aFileName in CurrentScriptFiles) {
@@ -2723,7 +2766,7 @@ function ImportUserScriptFile(filePath) {
 // Open the dialog for importing whole files with content
 function ImportScriptFileDialog(retResDia) {
 	var defaultTxt = "Import or delete files that add content and/or custom scripts to the sheet.";
-	var defaultTxt2 = "Note that, in modern Operating Systems, you can enter an URL in the 'Open' dialog directly instead of first downloading a file and then navigating to it.";
+	var defaultTxt2 = "In modern operating systems, you can enter a URL in the 'Open' dialog directly instead of first downloading a file and then navigating to it.";
 	var defaultTxt3 = "Use the \"Get Content\" buttons below to get pre-written files!";
 	var getTxt2 = toUni("Using the proper JavaScript syntax") + ", you can add homebrew classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has information and links to resources about creating your own additions, as does the \"I don't get it?\" button.";
 	var getTxt = toUni("Pre-Written Scripts") + " can be found using the \"Get Content\" buttons.\n- MPMB has scripts for 3rd-party materials, including Matt Mercer's Blood Hunter, Gunslinger, and College of the Maestro.\n- The community has created scripts for more content, including links to all those made by MPMB.";
@@ -2755,9 +2798,9 @@ function ImportScriptFileDialog(retResDia) {
 				this.script = results["jscr"];
 			}
 		},
-		bWhy: function(dialog) { contactMPMB("additions"); },
-		bCoC: function(dialog) { contactMPMB("subreddit"); },
-		bCoM: function(dialog) { contactMPMB("additionsGit"); },
+		bWhy: function(dialog) { contactMPMB("how to add content"); },
+		bCoC: function(dialog) { contactMPMB("community content"); },
+		bCoM: function(dialog) { contactMPMB("mpmb content"); },
 		bCon: function(dialog) {
 			var results = dialog.store();
 			this.script = results["jscr"];
@@ -3019,10 +3062,10 @@ function ImportScriptOptions(input) {
 			AddUserScript(MenuSelection[3]);
 			break;
 		case "onlinehelp" :
-			contactMPMB("additions");
+			contactMPMB("how to add content");
 			break;
-		case "subreddit" :
-			contactMPMB("subreddit");
+		case "content" :
+			contactMPMB("community content");
 			break;
 	};
 };

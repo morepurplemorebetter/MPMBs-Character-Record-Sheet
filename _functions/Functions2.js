@@ -1072,10 +1072,6 @@ function ApplyWildshape() {
 	if (theCrea.wildshapeString) {
 		Value(traitsFld, theCrea.wildshapeString)
 	} else {
-/* 		if (theCrea.languages) {
-			var tempString = "\u25C6 Languages: " + theCrea.languages + ".";
-			AddString(traitsFld, tempString, true);
-		} */
 		var sensesToAdd = theCrea.senses.replace(/(\; )?Adv\..+(hearing|sight|smell)/i, ""); //avoid duplicating the information with regards to the keen hearing/sight/smell traits
 		if (sensesToAdd) {
 			AddString(traitsFld, "\u25C6 Senses: " + sensesToAdd, true); //set senses
@@ -3004,8 +3000,7 @@ function PagesOptions() {
 
 //show or hide the DnD logos. Input is the number for the field display setting (0-3)
 function DnDlogo(input) {
-	var defaultDisplay = tDoc.info.SheetType === "Printer Friendly" ? 0 : 3;
-	input = !isNaN(input) ? input : defaultDisplay;
+	input = !isNaN(input) ? input : display.visible;
 	tDoc.getField("Image.DnDLogo").display = input;
 	var prefixArray = What("Template.extras.SSfront").split(",");
 
@@ -3326,10 +3321,10 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 		tDoc.deletePages(1);
 		break;
 	 case "tutorial" :
-		app.launchURL("http://dndadventurersleague.org/tutorial-for-dd-adventure-league-logsheets/", true);
+		app.launchURL("https://dndadventurersleague.org/tutorial-for-dd-adventure-league-logsheets/", true);
 		break;
 	 case "advanced tutorial" :
-		app.launchURL("http://dndadventurersleague.org/advanced-logsheet-tutorial/", true);
+		app.launchURL("https://dndadventurersleague.org/advanced-logsheet-tutorial/", true);
 		break;
 	 case "reset" :
 		thermoTxt = thermoM("Resetting this Adventure Logsheet...");
@@ -3465,7 +3460,8 @@ function MakeIconMenu_IconOptions() {
 			["6 Tales from the Yawning Portal", "totyp"],
 			["7 Tomb of Annihilation", "toa"],
 			["8 Waterdeep Adventures", "wda"],
-			["9 Descent into Avernus", "dia"]
+			["9 Descent into Avernus", "dia"],
+			["10 Rime of the Frostmaiden", "rotf"]
 		];
 		IconMenu.push({cName : "-", cReturn : "-"}); // add a divider
 		menuLVL2(IconMenu, ["Set Adventure League season icon", "seasonicon"], ALseasons);
@@ -3475,7 +3471,7 @@ function MakeIconMenu_IconOptions() {
 	if (restrictedViewer) {
 		var Conversions = [
 			["-", "-"],
-			["Go to an online image-to-pdf converter", "convertor"]
+			["Visit an online image-to-pdf converter", "convertor"]
 		];
 		menuLVL1(IconMenu, Conversions);
 	}
@@ -3625,6 +3621,35 @@ function SetStringifieds(type) {
 	if (type === "scriptfiles") Value("User_Imported_Files.Stringified", CurrentScriptFiles.toSource());
 };
 
+// Recursive function to create bookmarks from a bookmark object
+
+function createBookmarks(parent, bObj) {
+	var i = 0;
+	for (var bkmrkNm in bObj) {
+		var bkmrk = bObj[bkmrkNm];
+		parent.createChild({
+			cName : bkmrk.cName ? bkmrk.cName : bkmrkNm,
+			cExpr : bkmrk.cExpr,
+			nIndex : i
+		});
+		parent.children[i].style = 2;
+		if (bkmrk.color) parent.children[i].color = bkmrk.color;
+		if (bkmrk.children) createBookmarks(parent.children[i], bkmrk.children);
+		i++;
+	}
+}
+
+// Update the bookmark with the current version number
+function updateVersionBkmrk() {
+	var bkmrk = tDoc.bookmarkRoot.children;
+	for (var i = 0; i < bkmrk.length; i++) {
+		if (/latest version/i.test(bkmrk[i].name)) {
+			bkmrk[i].name = "Get Latest Version (current: v" + semVers + ")";
+			return;
+		}
+	}
+}
+
 //set the sheet version
 function Publish(version, extra) {
 	if (app.viewerType !== "Reader") {
@@ -3651,6 +3676,7 @@ function Publish(version, extra) {
 	tDoc.getField("SaveIMG.Patreon").submitName = "(new Date(0))";
 	if (!minVer) DontPrint("d20warning");
 	DnDlogo();
+	updateVersionBkmrk();
 	tDoc.calculateNow();
 };
 
@@ -4426,8 +4452,7 @@ function UpdateDropdown(type, weapon) {
 
 function ChangeToCompleteAdvLogSheet(FAQpath) {
 	if (minVer) return;
-	ResetAll();
-	tDoc.resetForm(["User Script", "User_Imported_Files.Stringified"]); // remove all custom scripts
+	ResetAll(true, true, true); // also removes all custom scripts
 	tDoc.getField("AdvLog.Class and Levels").setAction("Calculate", "CalcAdvLogInfo();");
 	tDoc.getField("AdvLog.Class and Levels").setAction("Validate", "ValidateAdvLogInfo();");
 	tDoc.getField("AdvLog.Class and Levels").readonly = false;
@@ -4479,7 +4504,7 @@ function ChangeToCompleteAdvLogSheet(FAQpath) {
 		"Execute the following:\nFirst:",
 		"tDoc.extractPages({nStart: 0, nEnd: 3});",
 		"\nAnd in the newly created document:",
-		"var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsClasses', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsPsionics', 'ListsRaces', 'ListsSources', 'ListsSpells'];",
+		"var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsClasses', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsMagicItems', 'ListsPsionics', 'ListsRaces', 'ListsSources', 'ListsSpells'];",
 		"for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};",
 		"this.createTemplate({cName:'ALlog', nPage:1 });",
 		"this.createTemplate({cName:'remember', nPage:2 });",
@@ -4504,64 +4529,54 @@ function ChangeToCompleteAdvLogSheet(FAQpath) {
 	console.clear();
 	console.println(forConsole.join("\n"));
 	console.show();
+	tDoc.dirty = false;
 }
 
 //create the bookmarks of a Adventure Logsheet
 function CreateBkmrksCompleteAdvLogSheet() {
-	//make the functions bookmark section
-	tDoc.bookmarkRoot.createChild({cName: "Functions", cExpr: "MakeButtons();", nIndex: 0});
-
-	var NameBm = typePF ? "Set Highlight Color" : "Set Color Theme";
-	tDoc.bookmarkRoot.children[0].createChild({cName: NameBm, cExpr: "MakeColorMenu(); ColoryOptions();", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.5, 0.5, 0.5];
-
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Unit System", cExpr: "SetUnitDecimals_Button();", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB",0.463,0.192,0.467];
-
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Flatten", cExpr: "MakeMobileReady();", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.2823486328125, 0.1921539306640625, 0.478424072265625];
-
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Text Options", cExpr: "MakeTextMenu_TextOptions();", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.8000030517578125, 0.6666717529296875, 0.1137237548828125];
-
-	tDoc.bookmarkRoot.children[0].createChild({cName: "Set Pages Layout", cExpr: "MakeAdvLogMenu_AdvLogOptions(true);", nIndex: 0});
-	tDoc.bookmarkRoot.children[0].children[0].color = ["RGB", 0.9098052978515625, 0.196075439453125, 0.48626708984375];
-
-	//make links bookmark section
-	tDoc.bookmarkRoot.createChild({cName: "Links", cExpr: "", nIndex: 1});
-
-	var aLink = typePF ? "http://www.dmsguild.com/product/186823/" : "http://www.dmsguild.com/product/193053/";
-	tDoc.bookmarkRoot.children[1].createChild({cName: "Get the Full Character Record Sheet", cExpr: "contactMPMB('fullversion');", nIndex: 0});
-
-	var NameLink = tDoc.info.SheetType === "Printer Friendly" ? "Get the Printer Friendly Redesign" : "Get the Latest Version";
-	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB('latestversion');", nIndex: 1});
-
-	NameLink = typePF ? "Get the Colorful Design" : "Get the Printer Friendly Design";
-	tDoc.bookmarkRoot.children[1].createChild({cName: NameLink, cExpr: "contactMPMB('otherdesign');", nIndex: 2});
-
-	//make FAQ bookmark section
-	tDoc.bookmarkRoot.createChild({cName: "FAQ", cExpr: "getFAQ();", nIndex: 2});
-
-	//make the contact bookmark section
-	tDoc.bookmarkRoot.createChild({cName: "Contact MPMB", cExpr: "contactMPMB('patreon');", nIndex: 3});
-	tDoc.bookmarkRoot.children[3].style = 2;
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on DMs Guild", cExpr: "contactMPMB('dmsguild');", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on EN world", cExpr: "contactMPMB('enworld');", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "via Email", cExpr: "contactMPMB('email');", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on GitHub", cExpr: "contactMPMB('github');", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on Reddit", cExpr: "contactMPMB('reddit');", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on Twitter", cExpr: "contactMPMB('twitter');", nIndex: 0});
-	tDoc.bookmarkRoot.children[3].createChild({cName: "on Patreon", cExpr: "contactMPMB('patreon');", nIndex: 0});
-
-	//make all bookmarks bold
-	for (var p = 0; p < tDoc.bookmarkRoot.children.length; p++) {
-		tDoc.bookmarkRoot.children[p].style = 2;
-		if (tDoc.bookmarkRoot.children[p].children) {
-			for (var c = 0; c < tDoc.bookmarkRoot.children[p].children.length; c++) {
-				tDoc.bookmarkRoot.children[p].children[c].style = 2;
+	var bkmrks = {
+		"Functions" : {
+			cExpr : "MakeButtons(); tDoc.bookmarkRoot.children[0].open = !tDoc.bookmarkRoot.children[0].open;",
+			children : {
+				"Set Pages Layout" : {
+					cExpr : "MakeAdvLogMenu_AdvLogOptions(true);",
+					color : ["RGB", 0.9098052978515625, 0.196075439453125, 0.48626708984375]
+				},
+				"Text Options" : {
+					cExpr : "MakeTextMenu_TextOptions();",
+					color : ["RGB", 0.8000030517578125, 0.6666717529296875, 0.1137237548828125]
+				},
+				"Flatten" : {
+					cExpr : "MakeMobileReady();",
+					color : ["RGB", 0.2823486328125, 0.1921539306640625, 0.478424072265625]
+				},
+				"Unit System" : {
+					cExpr : "SetUnitDecimals_Button();",
+					color : ["RGB", 0.463, 0.192, 0.467]
+				},
+				"Set Color Theme" : {
+					cName : typePF ? "Set Highlight Color" : "Set Color Theme",
+					cExpr : "MakeColorMenu(); ColoryOptions();",
+					color : ["RGB", 0.5, 0.5, 0.5]
+				}
 			}
+		},
+		"FAQ" : {
+			cExpr : "getFAQ();"
+		},
+		"Get Latest Version" : {
+			cName : "Get Latest Version (current: v" + semVers + ")",
+			cExpr : "contactMPMB('spell sheets');"
+		},
+		"Get Full Character Sheet" : {
+			cExpr : "contactMPMB('character sheet');"
+		},
+		"Contact MPMB" : {
+			cExpr : "contactMpmbMenu();",
+			color : ["CMYK", 0.76, 1, 0.03, 0.5] // DarkColorList.purple
 		}
-	}
+	};
+	createBookmarks(tDoc.bookmarkRoot, bkmrks);
 }
 
 // update all the level-dependent features for the UA's revised ranger companions on the companion pages
@@ -5205,93 +5220,72 @@ function doAdvLogLine(action, lineNmbr, prefix) {
 
 //a way to contact morepurplemorebetter
 function contactMPMB(medium) {
-	if (!medium) medium = "";
-	if ((/email/i).test(medium)) medium = "discord";
+	if (!medium) medium = "website";
 	switch (medium.toLowerCase()) {
-	 case "twitter" :
-		app.launchURL("https://twitter.com/BetterOfPurple", true);
-		break;
-	 case "reddit" :
-		app.launchURL("https://www.reddit.com/u/morepurplemorebetter/", true);
-		break;
-	 case "patreon" :
-	 default :
-		app.launchURL("https://www.patreon.com/morepurplemorebetter", true);
-		break;
-	 case "github" :
-		app.launchURL("https://github.com/morepurplemorebetter/", true);
-		break;
-	 case "dmsguild" :
-		app.launchURL("https://www.dmsguild.com/browse.php?author=morepurplemorebetter", true);
-		break;
-	 case "enworld" :
-		app.launchURL("http://www.enworld.org/forum/rpgdownloads.php?do=download&downloadid=1180", true);
-		break;
-	 case "syntax" :
-		app.launchURL("https://flapkan.com/mpmb/syntax", true);
-		break;
-	 case "additions" :
-		app.launchURL("https://flapkan.com/mpmb/syntax", true);
-		// While the website is not finished
-		// app.launchURL("https://flapkan.com/how-to/import-scripts", true);
-		break;
-	 case "syntaxgit" :
-		app.launchURL("https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/tree/master/additional%20content%20syntax", true);
-		break;
-	 case "additionsgit" :
-		app.launchURL("https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/tree/master/additional%20content", true);
-		break;
-	 case "latestversion" :
-		app.launchURL(
-			patreonVersion || tDoc.info.SpellsOnly ? LinksLatest.patreon :
-			LinksLatest[minVer ? "advlog" : "character"][typePF ? "PF" : "CF"],
-			true
-		);
-		break;
-	 case "otherdesign" :
-		app.launchURL(
-			patreonVersion || tDoc.info.SpellsOnly ? LinksLatest.patreon :
-			LinksLatest[minVer ? "advlog" : "character"][typePF ? "CF" : "PF"],
-			true
-		);
-		break;
-	 case "fullversion" :
-		app.launchURL(
-			patreonVersion ? LinksLatest.patreon :
-			LinksLatest.character[typePF ? "PF" : "CF"],
-			true
-		);
-		break;
-	 case "subreddit" :
-		app.launchURL("http://flapkan.com/mpmb/fanforum", true);
-		break;
-	case "discord" :
-		app.launchURL("https://discord.gg/Qjq9Z5Q");
-		break;
-	case "email" :
-		app.launchURL(("https://flapkan.com/contact?edit[message]=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0ASheet version: MPMB\'s " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + semVers + " (" + tDoc.info.SheetType + ")" + " %0D%0APDF viewer: " + app.viewerType + ", v" + app.viewerVersion + "; Language: " + app.language + "; OS: " + app.platform).replace(/ /g, "%20"), true);
-		break;
-	 case "bug" :
-		app.launchURL("https://discord.gg/MY5wKpV");
-		break; // While website is not operational
-		var sheetType = typePF ? "pf" + ((/redesign/i).test(tDoc.info.SheetType) ? "r" : "") : typeA4 ? "cf-a4" : "cf-lt";
-		var acroType = app.viewerType == "Reader" ? "reader-" : "pro-";
-		var acroVers = app.viewerVersion < 9 ? "other" : acroType + (app.viewerVersion < 10 ? "ix" : app.viewerVersion < 11 ? "x" : app.viewerVersion < 12 ? "xi" : "dc");
-		var bugURL = [
-			"https://flapkan.com/contact/bug_report", //base URL
-			"?edit[field_sheet_type]=",
-			sheetType, // sheet type (cf-a4, cf-lt, pf, pfr)
-			"&edit[field_version_number]=",
-			sheetVersion, // sheet version, as a decimal
-			"&edit[field_operating_system]=",
-			app.platform.toLowerCase(), // OS (win, mac, unix, ios, android, other)
-			"&edit[field_pdf_viewing_software]=",
-			acroVers, // acrobat version (reader-, pro-) + (ix, x, xi, dc)
-		];
-		app.launchURL(bugURL.join(""), true);
-		break;
+	// MPMB website
+		default :
+		case "website" :
+			app.launchURL("https://flapkan.com/", true);
+			break;
+		case "how to add content" :
+			app.launchURL("https://flapkan.com/how-to/add-more-content", true);
+			break;
+		case "community content" :
+			app.launchURL("https://flapkan.com/mpmb/fanforum", true);
+			break;
+		case "mpmb content" :
+			app.launchURL("https://flapkan.com/mpmb/extracontent", true);
+			break;
+		case "character sheet" :
+		case "latest version" :
+			app.launchURL("https://flapkan.com/" +
+				(patreonVersion ? "patrons#charactersheets" : "mpmb/charsheets"),
+				true
+			);
+			break;
+		case "spell sheets" :
+			app.launchURL("https://flapkan.com/" +
+				(patreonVersion ? "patrons#spellsheets" : "mpmb/spellsheets"),
+				true
+			);
+			break;
+		case "logsheets" :
+			app.launchURL("https://flapkan.com/" +
+				(patreonVersion ? "patrons#logsheets" : "mpmb/logsheets"),
+				true
+			);
+			break;
+	// Report a bug
+		case "bug" :
+			app.launchURL("https://discord.gg/MY5wKpV");
+			break; // While bug reporting through the website is not operational
+			var sheetType = typePF ? "pf" + ((/redesign/i).test(tDoc.info.SheetType) ? "r" : "") : typeA4 ? "cf-a4" : "cf-lt";
+			var acroType = app.viewerType == "Reader" ? "reader-" : "pro-";
+			var acroVers = app.viewerVersion < 9 ? "other" : acroType + (app.viewerVersion < 10 ? "ix" : app.viewerVersion < 11 ? "x" : app.viewerVersion < 12 ? "xi" : "dc");
+	// Other mediums
+		case "discord" :
+			app.launchURL("https://discord.gg/Qjq9Z5Q");
+			break;
+		case "github" :
+			app.launchURL("https://github.com/morepurplemorebetter/", true);
+			break;
+		case "patreon" :
+			app.launchURL("https://www.patreon.com/morepurplemorebetter", true);
+			break;
+		case "reddit" :
+			app.launchURL("https://www.reddit.com/r/mpmb/", true);
+			break;
+		case "twitter" :
+			app.launchURL("https://twitter.com/BetterOfPurple", true);
+			break;
 	};
 };
+
+function contactMpmbMenu(MenuSelection) {
+	var MenuSelection = MenuSelection ? MenuSelection : getMenu("contact");
+	if (!MenuSelection || MenuSelection[0] != "contact") return;
+	contactMPMB(MenuSelection[1]);
+}
 
 //open a dialog for the Patreon
 function PatreonStatement(force) {
@@ -8016,16 +8010,6 @@ function AddToNotes(noteStr, alertTxt, oldNoteStr, alertType, isProcessed, amend
 	}
 };
 
-// check if a newer version is available (Acrobat Pro only)
-function checkForUpdates() {
-	if (!(/exchange/i).test(app.viewerType)) return; // using Reader
-	var serv = Net.SOAP.connect("http://update.flapkan.com/mpmb.wsdl");
-	if (!serv || !serv.version) return;
-	var thisType = typeA4 ? "CF-A4" : typeLR ? "CF-L" : (/redesign/i).test(tDoc.info.SheetType) ? "PF-R" : "PF";
-	var lVers = parseFloat(serv.version(thisType));
-	if (!lVers) return;
-};
-
 // a function to see if the character has proficiency in a skill; This returns an array of two booleans: [proficiency, expertise]
 function hasSkillProf(theSkill) {
 	var skill = theSkill.substr(0,4).capitalize();
@@ -8162,6 +8146,34 @@ function setCalcOrder() {
 		}
 	};
 };
+
+function MakeFaqMenu_FaqOptions(MenuSelection) {
+	if (!MenuSelection || MenuSelection === "justMenu") {
+		var arrMenu = Menus.faq.concat({
+			cName : "-"
+		}, {
+			cName : "Get the latest version",
+			cReturn : "contact#latest version"
+		}, {
+			cName : "-"
+		}, {
+			cName : "Contact MPMB",
+			oSubMenu : Menus.contact
+		})
+		Menus.faqextended = arrMenu;
+		if (MenuSelection == "justMenu") return;
+	}
+	var MenuSelection = MenuSelection ? MenuSelection : getMenu("faqextended");
+	if (!MenuSelection || MenuSelection[0] == "nothing") return;
+	switch (MenuSelection[0]) {
+		case "faq" :
+			getFAQ(MenuSelection);
+			break;
+		case "contact" :
+			contactMpmbMenu(MenuSelection);
+			break;
+	}
+}
 
 // The function called when the FAQ button is pressed
 function getFAQ(input, delay) {

@@ -156,9 +156,9 @@ function MakeButtons() {
 		});
 		app.addToolButton({
 			cName : "FAQButton",
-			cExec : "getFAQ();",
+			cExec : "MakeFaqMenu_FaqOptions();",
 			oIcon : allIcons.faq,
-			cTooltext : toUni("FAQ") + "\nOpen the frequently asked questions pdf.\n\nThere you can find information on how to add custom code to the sheet, like homebrew races\/weapons\/feats\/etc.",
+			cTooltext : toUni("FAQ") + "\nOpen the frequently asked questions website or pdf, find the latest version, or contact MPMB.\n\nThere you can find information on how to add custom code to the sheet, like homebrew races\/weapons\/feats\/etc.",
 			nPos : 16,
 			cLabel : "FAQ"
 		});
@@ -414,7 +414,7 @@ function ToggleWhiteout(toggle) {
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
-function ResetAll(GoOn, noTempl) {
+function ResetAll(GoOn, noTempl, deleteImports) {
 	var oCk = {
 		cMsg : "Also delete all imported scripts, both files and manual input, as well as the source selection",
 		bInitialValue : false,
@@ -428,7 +428,7 @@ function ResetAll(GoOn, noTempl) {
 		oCheckbox : oCk
 	};
 	if (!GoOn && app.alert(ResetDialog) !== 4) return;
-	var keepImports = !oCk.bAfterValue;
+	var keepImports = GoOn && deleteImports ? false : !oCk.bAfterValue;
 	if (keepImports) {
 		var userScriptString = What("User Script");
 	};
@@ -6809,14 +6809,14 @@ function WeightToCalc_Button() {
 					font : "heading",
 					elements : [{
 						type : "radio",
-						item_id : "rEnc",
-						group_id : "encu",
-						name : "Use the variant encumbrance rules"
-					}, {
-						type : "radio",
 						item_id : "rCar",
 						group_id : "encu",
 						name : "Use the fixed carrying capacity rules"
+					}, {
+						type : "radio",
+						item_id : "rEnc",
+						group_id : "encu",
+						name : "Use the variant encumbrance rules"
 					} ]
 				}, {
 					type : "ok_cancel",
