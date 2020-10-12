@@ -2,11 +2,11 @@
 
 This Git contains all document-level JavaScript that is used in the AcroForm PDFs called **MPMB's Character Record Sheet**. Note that you can't create the PDF from just this repository, this is just the JavaScript used at the document-level.
 
-### [MPMB's Character Record Sheets can be found here](https://flapkan.com/mpmb/charsheets)
+### [MPMB's Character Record Sheets can be found here](https://www.flapkan.com/download/#charactersheets)
 
-### [MPMB's Spell Sheets per Class can be found here](https://flapkan.com/mpmb/spellsheets)
+### [MPMB's Spell Sheets per Class can be found here](https://www.flapkan.com/download/#spellsheets)
 
-### [MPMB's Adventure Logsheets can be found here](https://flapkan.com/mpmb/dmsguild)
+### [MPMB's Adventure Logsheets can be found here](https://www.flapkan.com/download/#logsheets)
 
 ### [Please consider supporting this project on Patreon](https://patreon.com/morepurplemorebetter)
 

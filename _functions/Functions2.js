@@ -3622,7 +3622,6 @@ function SetStringifieds(type) {
 };
 
 // Recursive function to create bookmarks from a bookmark object
-
 function createBookmarks(parent, bObj) {
 	var i = 0;
 	for (var bkmrkNm in bObj) {
