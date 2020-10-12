@@ -206,13 +206,22 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 
 		// spellcasting
 		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent, objNm);
-		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges)) {
+		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform)) {
 			CurrentUpdates.types.push("spells");
-			if (uObj.spellFirstColTitle) CurrentSpells[useSpCasting].firstCol = addIt ? uObj.spellFirstColTitle : false;
-			if (uObj.spellcastingExtra) CurrentSpells[useSpCasting].extra = addIt ? OrderSpells(uObj.spellcastingExtra, 'single') : false;
+			var aCast = CurrentSpells[useSpCasting];
+			if (uObj.spellFirstColTitle) aCast.firstCol = addIt ? uObj.spellFirstColTitle : false;
+			if (uObj.spellcastingExtra) aCast.extra = addIt ? OrderSpells(uObj.spellcastingExtra, 'single') : false;
 			// --- backwards compatibility --- //
-			var doSpXtrSpecial = uObj.spellcastingExtraApplyNonconform !== undefined ? uObj.spellcastingExtraAddToKnown : uObj.spellcastingExtra[100] === "AddToKnown" ? true : undefined;
-			if (doSpXtrSpecial !== undefined) CurrentSpells[useSpCasting].extraSpecial = doSpXtrSpecial;
+			var doSpXtrSpecial = uObj.spellcastingExtraApplyNonconform !== undefined ? uObj.spellcastingExtraApplyNonconform : uObj.spellcastingExtra && uObj.spellcastingExtra[100] === "AddToKnown" ? true : undefined;
+			if (doSpXtrSpecial !== undefined) {
+				if (!aCast.extraSpecialRem) aCast.extraSpecialRem = [];
+				if (addIt) {
+					aCast.extraSpecialRem.unshift(doSpXtrSpecial);
+				} else if (aCast.extraSpecialRem.indexOf(doSpXtrSpecial) !== -1) {
+					aCast.extraSpecialRem.splice(aCast.extraSpecialRem.indexOf(doSpXtrSpecial), 1);
+				}
+				aCast.extraSpecial = aCast.extraSpecialRem[0];
+			}
 			if (uObj.spellChanges) processSpChanges(addIt, tipNmF, uObj.spellChanges, useSpCasting);
 		}
 
