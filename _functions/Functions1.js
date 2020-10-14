@@ -2003,7 +2003,10 @@ function FindClasses(NotAtStartup, isFieldVal) {
 						cSpells.typeSp = !cSpells.known || !cSpells.known.spells || isArray(cSpells.known.spells) || !isNaN(cSpells.known.spells) ? "known" : cSpells.known.spells;
 						cSpells.factor = [casterFactor, casterType];
 						cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
-						if (Temps.spellcastingExtra) cSpells.extra = Temps.spellcastingExtra;
+						if (Temps.spellcastingExtra) {
+							cSpells.extra = Temps.spellcastingExtra;
+							cSpells.extraSpecial = Temps.spellcastingExtraApplyNonconform ? Temps.spellcastingExtraApplyNonconform : false;
+						}
 					}
 				} else if (NotAtStartup && CurrentSpells[aClass]) {
 					CurrentSpells[aClass].level = classes.known[aClass].level;
