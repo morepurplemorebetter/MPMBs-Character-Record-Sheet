@@ -2055,9 +2055,9 @@ function DefineSpellSheetDialogs(force, formHeight) {
 		bLoA : function (dialog) {
 			// Add the spell to the selected spells
 			var types = [
-				["Ca", "CanK"],
-				["Sp", "SplK"],
-				["Bo", "BonK"]
+				["Ca", "CanK", 20],
+				["Sp", "SplK", 20],
+				["Bo", "BonK", 20]
 			];
 			var oResult = dialog.store();
 			var fSpell = spDias.fnFindSpell(oResult["AlLo"], this.listAl);

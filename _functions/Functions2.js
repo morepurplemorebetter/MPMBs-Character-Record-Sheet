@@ -5224,32 +5224,32 @@ function contactMPMB(medium) {
 	// MPMB website
 		default :
 		case "website" :
-			app.launchURL("https://flapkan.com/", true);
+			app.launchURL("https://www.flapkan.com/", true);
 			break;
 		case "how to add content" :
-			app.launchURL("https://flapkan.com/how-to/add-more-content", true);
+			app.launchURL("https://www.flapkan.com/how-to/add-more-content", true);
 			break;
 		case "community content" :
-			app.launchURL("https://flapkan.com/mpmb/fanforum", true);
+			app.launchURL("https://www.flapkan.com/mpmb/fanforum", true);
 			break;
 		case "mpmb content" :
-			app.launchURL("https://flapkan.com/mpmb/extracontent", true);
+			app.launchURL("https://www.flapkan.com/mpmb/extracontent", true);
 			break;
 		case "character sheet" :
 		case "latest version" :
-			app.launchURL("https://flapkan.com/" +
+			app.launchURL("https://www.flapkan.com/" +
 				(patreonVersion ? "patrons#charactersheets" : "mpmb/charsheets"),
 				true
 			);
 			break;
 		case "spell sheets" :
-			app.launchURL("https://flapkan.com/" +
+			app.launchURL("https://www.flapkan.com/" +
 				(patreonVersion ? "patrons#spellsheets" : "mpmb/spellsheets"),
 				true
 			);
 			break;
 		case "logsheets" :
-			app.launchURL("https://flapkan.com/" +
+			app.launchURL("https://www.flapkan.com/" +
 				(patreonVersion ? "patrons#logsheets" : "mpmb/logsheets"),
 				true
 			);
