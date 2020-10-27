@@ -996,7 +996,7 @@ var Base_ClassList = {
 				source : [["SRD", 28], ["P", 79]],
 				minlevel : 18,
 				description : "\n   " + "Be invisible and resist non-force damage for 1 min or cast Astral Projection on self",
-				additional : "Invisible: 4 ki point; Astral Projection: 8 ki points",
+				additional : "Invisible: 4 ki points; Astral Projection: 8 ki points",
 				action : ["action", ""],
 				spellcastingBonus : {
 					name : "Empty Body",
