@@ -1677,7 +1677,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	classes.totallevel = 0;
 
 	// Initialize some variables
-	var primeClass = "", gatherVars;
+	var primeClass = "", gatherVars, deletedCurrentSpells = [];
 
 	// Put the old classes.known in classes.old so the differences in level can be queried later
 	classes.old = {};
@@ -1851,9 +1851,12 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		} else if (classesTemp[oClass].subclass !== classes.old[oClass].subclass) {
 			// when only changing the subclass, or adding a new one, remove the base features of the subclass and add those of the new class
 			ApplyClassBaseAttributes([classes.old[oClass].subclass, classesTemp[oClass].subclass], oClass, classes.primary == oClass);
-			// if the class doesn't have spellcasting, but the old subclass did, remove it from the CurrentSpells variable
+			// if the class doesn't have spellcasting, but the old subclass did, remove it from the CurrentSpells variable (if the new subclass has spellcasting, we will create that again below)
 			var oldSubClass = classes.old[oClass].subclass ? ClassSubList[classes.old[oClass].subclass] : false;
-			if (oldSubClass && oldSubClass.spellcastingFactor && !ClassList[oClass].spellcastingFactor) delete CurrentSpells[oClass];
+			if (oldSubClass && oldSubClass.spellcastingFactor && !ClassList[oClass].spellcastingFactor) {
+				deletedCurrentSpells.push(oClass);
+				delete CurrentSpells[oClass];
+			}
 		}
 
 		// update things when removing a whole class or when removing a subclass
@@ -2003,7 +2006,10 @@ function FindClasses(NotAtStartup, isFieldVal) {
 						cSpells.typeSp = !cSpells.known || !cSpells.known.spells || isArray(cSpells.known.spells) || !isNaN(cSpells.known.spells) ? "known" : cSpells.known.spells;
 						cSpells.factor = [casterFactor, casterType];
 						cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
-						if (Temps.spellcastingExtra) cSpells.extra = Temps.spellcastingExtra;
+						if (Temps.spellcastingExtra && deletedCurrentSpells.indexOf(aClass) !== -1) {
+							// Set the extra (and extraSpecial) attributes if we had to recreate this CurrentSpells object
+							processSpellcastingExtra(true, aClass, 0, "", Temps.spellcastingExtra, Temps.spellcastingExtraApplyNonconform);
+						};
 					}
 				} else if (NotAtStartup && CurrentSpells[aClass]) {
 					CurrentSpells[aClass].level = classes.known[aClass].level;

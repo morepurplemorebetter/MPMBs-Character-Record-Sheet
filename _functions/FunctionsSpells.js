@@ -1920,7 +1920,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			for (var i = 1; i <= 22; i++) {
 				var Ad = "Ad" + ("0" + i).slice(-2);
 				if (this.showAd && this.selectAd[i - 1]) {
-					toLoad[Ad] = this.selectAd[i - 1].capitalize();
+					toLoad[Ad] = getSpNm(this.selectAd[i - 1]);
 				}
 				if (i > 20) continue;
 				var Bo = "Bo" + ("0" + i).slice(-2);
@@ -2955,7 +2955,7 @@ function AskUserSpellSheet() {
 		dia.showAd = spCast.extra ? true : false;
 		if (dia.showAd) {
 			diaDynCols.push(spDias.spellSelectParts.extraCluster);
-			dia.selectAd = spCast.extra;
+			dia.selectAd = OrderSpells(spCast.extra, "single");
 			dia.nameAd = dia.typeSp === "list" ? ( spCast.extraSpecial ? "[added to spells known]" : "[always prepared]" ) :
 				dia.typeSp === "book" ? ( spCast.extraSpecial ? "[added to known/spellbook]" : "[extra options for spellbook]" ) :
 				spCast.extraSpecial ? "[added to spells known]" : "[extra options for spells known]";

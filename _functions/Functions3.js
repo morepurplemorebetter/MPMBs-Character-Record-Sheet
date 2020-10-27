@@ -206,21 +206,13 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 
 		// spellcasting
 		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent, objNm);
-		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform)) {
+		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform !== undefined)) {
 			CurrentUpdates.types.push("spells");
 			var aCast = CurrentSpells[useSpCasting];
 			if (uObj.spellFirstColTitle) aCast.firstCol = addIt ? uObj.spellFirstColTitle : false;
-			if (uObj.spellcastingExtra) aCast.extra = addIt ? OrderSpells(uObj.spellcastingExtra, 'single') : false;
-			// --- backwards compatibility --- //
-			var doSpXtrSpecial = uObj.spellcastingExtraApplyNonconform !== undefined ? uObj.spellcastingExtraApplyNonconform : uObj.spellcastingExtra && uObj.spellcastingExtra[100] === "AddToKnown" ? true : undefined;
-			if (doSpXtrSpecial !== undefined) {
-				if (!aCast.extraSpecialRem) aCast.extraSpecialRem = [];
-				if (addIt) {
-					aCast.extraSpecialRem.unshift(doSpXtrSpecial);
-				} else if (aCast.extraSpecialRem.indexOf(doSpXtrSpecial) !== -1) {
-					aCast.extraSpecialRem.splice(aCast.extraSpecialRem.indexOf(doSpXtrSpecial), 1);
-				}
-				aCast.extraSpecial = aCast.extraSpecialRem[0];
+
+			if (uObj.spellcastingExtra || uObj.spellcastingExtraApplyNonconform !== undefined) {
+				processSpellcastingExtra(addIt, useSpCasting, fObj.minlevel, tipNmF, uObj.spellcastingExtra, uObj.spellcastingExtraApplyNonconform);
 			}
 			if (uObj.spellChanges) processSpChanges(addIt, tipNmF, uObj.spellChanges, useSpCasting);
 		}
@@ -412,37 +404,42 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 //		or can be an Array of [oldsubclass, newsubclass]
 function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 	// declare some variables
-	var fObj = ClassList[aClass];
+	var parentCl = ClassList[aClass];
+	var oldSubCl = ClassSubList[AddRemove[0]];
+	var newSubCl = ClassSubList[AddRemove[1]];
 	var n = primaryClass ? 0 : 1; // for backwards compatibility
 	var nAttr = primaryClass ? "primary" : "secondary";
 
 	// a way to see if we should process the attribute or not
-	var checkIfIn = function(nObj, testObj, attrA, noN) {
-		attrA[1] = attrA[1] ? attrA[1] : "nonExistentAttributeName";
+	var checkIfIn = function(nObj, inclObj, attrA, noN, exclObj) {
+		if (!attrA[1]) attrA[1] = "nonExistentAttributeName";
 		if (!nObj[attrA[0]] && !nObj[attrA[1]]) {
 			// if the first object doesn't have either attribute, just stop
 			return [false];
 		}
 		var useAttr = nObj[attrA[0]] ? attrA[0] : attrA[1];
+		var exclAttr = exclObj && exclObj[attrA[0]] ? attrA[0] : attrA[1];
 		var subAttr = noN ? 0 : isArray(nObj[useAttr]) ? n : nAttr;
-		if (!noN && !nObj[useAttr][subAttr]) {
-			// the first object has an attribute, but not the right sub-attribute, so stop
+		if (
+			(!noN && !nObj[useAttr][subAttr]) || // the first object has an attribute, but not the right sub-attribute, so stop
+			( exclObj && exclObj[exclAttr] && ( noN || (!noN && exclObj[exclAttr][subAttr]) ) ) // stop if the attribute (+ right sub-attribute) exists in the excluding object
+		) {
 			return [false];
-		} else if (!testObj) {
+		} else if (!inclObj) {
 			// there is no object to test against, so continue with the first object
 			return [true, useAttr, subAttr];
 		}
-		var useAttr2 = testObj[attrA[0]] ? attrA[0] : testObj[attrA[1]] ? attrA[1] : false;
-		return !useAttr2 || !testObj[useAttr2][noN ? 0 : isArray(testObj[useAttr2]) ? n : nAttr] ? [false] : [true, useAttr, subAttr];
+		var useAttr2 = inclObj[attrA[0]] ? attrA[0] : inclObj[attrA[1]] ? attrA[1] : false;
+		return !useAttr2 || !inclObj[useAttr2][noN ? 0 : isArray(inclObj[useAttr2]) ? n : nAttr] ? [false] : [true, useAttr, subAttr];
 	}
 
 	// loop through the attributes and apply them
-	var processAttributes = function (uObj, addIt, tipNmF, ifInObj) {
+	var processAttributes = function (uObj, addIt, tipNmF, ifInObj, ifNotInObj) {
 		// saves, if primary class
 		if (primaryClass && checkIfIn(uObj, ifInObj, ['saves'], true)[0]) processSaves(addIt, tipNmF, uObj.saves);
 
 		// skills
-		var doSkills = checkIfIn(uObj, ifInObj, ['skills', 'skillstxt']);
+		var doSkills = checkIfIn(uObj, ifInObj, ['skills', 'skillstxt'], false, ifNotInObj);
 		if (doSkills[0]) {
 			var oSkills = false;
 			var oSkillsTxt = false;
@@ -465,57 +462,46 @@ function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 		}
 
 		// weapon proficiencies ('weapons' attribute for backwards compatibility)
-		var doWeapons = checkIfIn(uObj, ifInObj, ['weaponProfs', 'weapons']);
+		var doWeapons = checkIfIn(uObj, ifInObj, ['weaponProfs', 'weapons'], false, ifNotInObj);
 		if (doWeapons[0]) processWeaponProfs(addIt, tipNmF, uObj[doWeapons[1]][doWeapons[2]]);
 
 		// armour proficiencies ('armor' attribute for backwards compatibility)
-		var doArmour = checkIfIn(uObj, ifInObj, ['armorProfs', 'armor']);
+		var doArmour = checkIfIn(uObj, ifInObj, ['armorProfs', 'armor'], false, ifNotInObj);
 		if (doArmour[0]) processArmourProfs(addIt, tipNmF, uObj[doArmour[1]][doArmour[2]]);
 
 		// tool proficiencies
-		var doTools = checkIfIn(uObj, ifInObj, ['toolProfs']);
+		var doTools = checkIfIn(uObj, ifInObj, ['toolProfs'], false, ifNotInObj);
 		if (doTools[0]) processTools(addIt, tipNmF, uObj.toolProfs[doTools[2]]);
 
 		// spellcasting extra array
-		if (CurrentSpells[aClass] && checkIfIn(uObj, ifInObj, ['spellcastingExtra'], true)[0]) {
-			CurrentSpells[aClass].extra = !addIt ? undefined : uObj.spellcastingExtra;
-			if (checkIfIn(uObj, ifInObj, ['spellcastingExtraApplyNonconform'], true)[0]) {
-				CurrentSpells[aClass].extraSpecial = !addIt ? undefined : uObj.spellcastingExtraApplyNonconform;
-			}
-			CurrentUpdates.types.push("spells");
+		if (CurrentSpells[aClass] && checkIfIn(uObj, ifInObj, ['spellcastingExtra'], true, ifNotInObj)[0]) {
+			processSpellcastingExtra(addIt, aClass, 0, "", uObj.spellcastingExtra, uObj.spellcastingExtraApplyNonconform);
 		}
 	}
 
-	if (!isArray(AddRemove)) {
-		// just do the AddRemove for the object
-		processAttributes(fObj, AddRemove, fObj.name, false);
-	} else if (!AddRemove[0] && AddRemove[1]) {
-		// adding a subclass while previously none was there
-		var parentCl = fObj;
-		var newSubCl = ClassSubList[AddRemove[1]];
-		// first remove everything that is in class and also in the subclass
+	if (!isArray(AddRemove)) { // do the class (and subclass) attributes in full
+		var newSubCl = classes.known[aClass].subclass ? ClassSubList[classes.known[aClass].subclass] : false;
+		// do the AddRemove for the class attributes that are not in the subclass
+		processAttributes(parentCl, AddRemove, parentCl.name, false, newSubCl);
+		// do the AddRemove for the whole subclass
+		if (newSubCl) processAttributes(newSubCl, AddRemove, newSubCl.subname);
+	} else if (!AddRemove[0] && AddRemove[1]) { // adding a subclass while previously none was there
+		// first remove everything that is in the base class and also in the subclass
 		processAttributes(parentCl, false, parentCl.name, newSubCl);
 		// then add everything from the subclass
 		processAttributes(newSubCl, true, newSubCl.subname);
-	} else if (AddRemove[0] && !AddRemove[1]) {
-		// removing a subclass, going back to just the class
-		var oldSubCl = ClassSubList[AddRemove[0]];
-		var parentCl = fObj;
+	} else if (AddRemove[0] && !AddRemove[1]) { // removing a subclass, going back to just the class
 		// first remove everything that is in the subclass
 		processAttributes(oldSubCl, false, oldSubCl.subname);
 		// then add everything from the class that is also in the subclass
 		processAttributes(parentCl, true, parentCl.name, oldSubCl);
-	} else if (AddRemove[0] && AddRemove[1]) {
-		// changing subclasses
-		var parentCl = fObj;
-		var oldSubCl = ClassSubList[AddRemove[0]];
-		var newSubCl = ClassSubList[AddRemove[1]];
+	} else if (AddRemove[0] && AddRemove[1]) { // changing subclasses
 		// first remove everything that is in old subclass
 		processAttributes(oldSubCl, false, oldSubCl.subname);
-		// then add everything from the class that is also in old subclass
-		processAttributes(parentCl, true, parentCl.name, oldSubCl);
-		// next remove everything that is in class and also in new subclass
-		processAttributes(parentCl, false, parentCl.name, newSubCl);
+		// then add everything from class that is also in old subclass, but not in new subclass
+		processAttributes(parentCl, true, parentCl.name, oldSubCl, newSubCl);
+		// next remove everything that is in class and also in new subclass, but not in old subclass
+		processAttributes(parentCl, false, parentCl.name, newSubCl, oldSubCl);
 		// lastly add everything from new subclass
 		processAttributes(newSubCl, true, newSubCl.subname);
 	}
@@ -745,6 +731,39 @@ function processSpChanges(AddRemove, srcNm, spChng, spObjName) {
 		// now maybe delete the whole spellAttrOverride if it is empty
 		if (!ObjLength(spCast.spellAttrOverride)) delete spCast.spellAttrOverride;
 	}
+}
+
+// process the spellcastingExtra and spellcastingExtraApplyNonconform attributes
+function processSpellcastingExtra(AddRemove, spObjName, lvl, name, spExtra, spNonconform) {
+	var aCast = CurrentSpells[spObjName];
+	if ( !aCast || (!spExtra && spNonconform === undefined) ) return;
+
+	// --- backwards compatibility --- //
+	var hasNonconform = spNonconform !== undefined ? spNonconform : spExtra && spExtra[100] === "AddToKnown" ? true : undefined;
+
+	var objNm = ("0" + (lvl ? lvl : 0)).substr(-2) + (name ? name.toLowerCase() : "");
+	var arrDo = [
+		[spExtra, "extra"],
+		[hasNonconform, "extraSpecial"]
+	];
+	for (var i = 0; i < arrDo.length; i++) {
+		if (arrDo[i][0] === undefined) continue;
+		var toSet = arrDo[i][0];
+		var useNm = arrDo[i][1];
+		var remNm = arrDo[i][1] + "Rem";
+		if (!aCast[remNm]) aCast[remNm] = {};
+		if (AddRemove) {
+			// Add
+			aCast[remNm][objNm] = toSet;
+		} else if (aCast[remNm][objNm]) {
+			// Remove
+			delete aCast[remNm][objNm];
+		}
+		// get the highest entry (not the latest, but highest level)
+		var keysArrSort = Object.keys(aCast[remNm]).sort().reverse();
+		aCast[useNm] = aCast[remNm][keysArrSort[0]];
+	}
+	CurrentUpdates.types.push("spells");
 }
 
 // set the armour (if more AC than current armour) or remove the armour

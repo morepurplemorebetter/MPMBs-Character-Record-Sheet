@@ -113,6 +113,15 @@ function setPrototypes() {
 		return this.toString().RegEscape();
 	};
 
+	//add stuff otherwise not available in older version of Adobe Acrobat
+	if (!Object.keys) {
+		Object.keys = function(obj) {
+			var arrRe = [];
+			for (var a in obj) arrRe.push(a);
+			return arrRe;
+		}
+	}
+
 	//define a way for numbers and regular expressions to return an indexOf(), match(), replace(), search(), slice(), split(), substring(), substr(), toLowerCase(), or toUpperCase() to avoid errors
 	Number.prototype.indexOf = function (searchValue, fromIndex) {
 		return this.toString().indexOf(searchValue, fromIndex);
