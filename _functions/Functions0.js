@@ -1045,61 +1045,80 @@ function getTemplPre(tName, templ, rEmpty) {
 	return tName.indexOf(templ) === -1 ? (rEmpty ? "" : true) : tName.substring(0, tName.indexOf(templ)) + templ;
 };
 
-// Create the semantic version of the input
-function getSemVers(version, extra) {
-	if (!isNaN(version) && version < 13) {
-		var reVers = version;
-	} else {
-		var reVers = nmbrToSemanticVersion(semVersToNmbr(version, true));
+// Create the semantic version of the input (x.y.z-preRelease+build)
+function getSemVers(version, preRelease, build) {
+	var strV = version.toString().replace(/^\D+/, "").split(/[\.,\-\+;]+/); // remove prefix that is not a number and split by dividers
+	// --- backwards compatibility --- //
+	if (strV[1] && strV[1][0] === "0" && !strV[2]) {
+		strV[2] = strV[1].substr(1);
+		strV[1] = 0;
 	}
-	return !reVers ? 0 : reVers + (extra ? "." + extra : "");
+	// Check the first three values found
+	var arrV = [];
+	for (var i = 0; i < 3; i++) {
+		if (i === 2 && Number(strV[0]) < 13 && !strV[i]) continue;
+		if (!strV[i]) strV[i] = 0;
+		arrV.push(strV[i]);
+	}
+	// Return a semantic versioning (x.y.z-preRelease+build)
+	if (preRelease && !(/\d/).test(preRelease)) preRelease += 1; // Make sure "beta" is written as "beta1"
+	return arrV.join(".") + (preRelease ? "-" + preRelease : "") + (build ? "+" + build : "");
 }
 
-// Change a number to a 3-spaced semantic versioning scheme (13.00101 -> 13.1.10; 13.000000029 -> 13.0.0.beta29)
-function nmbrToSemanticVersion(inNmbr) {
-	inNmbr = parseFloat(inNmbr);
-	if (isNaN(inNmbr)) return 0;
-	var strV = inNmbr.toString().split(".");
-	var versStr = [strV[0]];
-	var specialSuffix = "";
-	if (strV[1]) {
-		var strSub = strV[1].match(/\d{1,3}/g);
-		for (var i = 0; i < strSub.length; i++) {
-			var parNr = Number((strSub[i] + "00").replace(/(\d{3}).*/, "$1"));
-			if (i < 2) {
-				versStr.push(parNr);
-			} else if (tDoc.info.SheetVersionType) {
-				// special suffix (e.g. betaXX)
-				specialSuffix = "." + tDoc.info.SheetVersionType.replace(/\d/g, "") + parNr;
-			}
-		};
-	};
-	var theSemV = versStr.join(".").toString();
-	if (versStr.length < 3) {
-		for (var i = versStr.length; i < 3; i++) theSemV += ".0";
-	};
-	return theSemV + specialSuffix;
-};
+/*
+	Change a semantic versioning scheme (x.y.z-preRelease+build) to a number
+	13.2.10				-> 13002010.9
+	13.3.21-alpha2		-> 13003021.102
+	13.5.8-beta29		-> 13005008.529
+	13.89.16+201028		-> 13089016.900201028
+	13.1.4-beta1+200901	-> 13001004.501200901
 
-// Change a semantic versioning scheme to a number (13.1.10 -> 13.00101; 13.0.0.beta29 -> 13.000000029)
-function semVersToNmbr(inSemV, force) {
-	if (!force && !isNaN(inSemV)) return Number(inSemV);
-	if (isNaN(parseFloat(inSemV))) {
-		if (!(/\d/).test(inSemV)) return 0;
-		inSemV = inSemV.replace(/.*?(\d.*)/, "$1");
+	And for backwards compatibility
+	9.9.6				->  9090006
+	9.9.6b				->  9090006.5
+	11.85				-> 11085000
+	11.9				-> 11090000
+	11.95b				-> 11095000.5
+*/
+function semVersToNmbr(inSemV) {
+	inSemV = inSemV.replace(/^\D+/, "").toString(); // remove prefix and make sure it is a string
+	if (!/\d/.test(inSemV)) return 0; // If there are no numbers in the string return zero
+	// Get the integer part
+	var strV = inSemV.replace(/[\-\+b].*/g, "").split(".");
+	for (var i = 0; i < 3; i++) {
+		if (!strV[i] || isNaN(parseFloat(strV[i]))) {
+			strV[i] = "000";
+			continue;
+		} else if (i === 1 && Number(strV[i]) < 10 && Number(strV[0]) < 13) {
+			// --- backwards compatibility --- //
+			strV[i] *= 10;
+		}
+		strV[i] = ("00" + strV[i]).slice(-3);
 	};
-	var strV = inSemV.toString().split(/\.?\D+|\./);
-	var nmbrStr = [strV[0], ""];
-	if (strV[1]) {
-		for (var i = 1; i < strV.length; i++) {
-			if (!strV[i]) strV[i] = 1;
-			if (isNaN(parseFloat(strV[i]))) continue;
-			nmbrStr[1] += ("00" + strV[i]).slice(-3);
-		};
-	};
-	if (strV.length) nmbrStr.push(strV.join(""));
-	var nmbr = parseFloat(nmbrStr.join("."));
-	return isNaN(nmbr) ? 0 : nmbr;
+	var arrV = [
+		strV.join(""),
+		parseFloat(strV[0]) < 13 ? "000" : "900"
+	];
+	// Get the pre-release part
+	var preRelease = inSemV.match(/-([^\+]+)/);
+	if (preRelease && /\d/.test(preRelease[1])) {
+		var preRelBase = Number(preRelease[1].match(/\d+/)[0]);
+		if (/beta|b\d/i.test(preRelease[1])) {
+			preRelBase += 500;
+		} else if (/alpha|alfa|a\d/i.test(preRelease[1])) {
+			preRelBase += 100;
+		}
+		arrV[1] = ("00" + preRelBase).slice(-3);
+	} else if (/b$/.test(inSemV)) {
+		// --- backwards compatibility --- //
+		arrV[1] = "500";
+	}
+	// Get the build part
+	var build = inSemV.match(/\+(\d+)/);
+	if (build) arrV[1] += build[1];
+	// Create the number
+	var reNmbr = parseFloat(arrV.join("."));
+	return isNaN(reNmbr) ? 0 : reNmbr;
 };
 
 // Stop calculations and drawing of fields in the whole PDF to speed up changes

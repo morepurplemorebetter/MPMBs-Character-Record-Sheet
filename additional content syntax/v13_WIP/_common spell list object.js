@@ -46,7 +46,7 @@
 				Feat main attributes
 				Magic Item main attributes
 
-	Sheet:		v13.0.0 (2019-??-??)
+	Sheet:		v13.0.0 and newer
 */
 
 /*	-IMPORTANT NOTES-

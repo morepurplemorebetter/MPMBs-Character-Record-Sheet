@@ -3650,19 +3650,17 @@ function updateVersionBkmrk() {
 }
 
 //set the sheet version
-function Publish(version, extra) {
+function Publish(version, preRelease, build, forPatreon) {
 	if (app.viewerType !== "Reader") {
 		tDoc.info.SheetVersion = version;
-		if (extra) {
-			tDoc.info.SheetVersionType = extra;
-		} else {
-			tDoc.info.SheetVersionType = "";
-		}
+		tDoc.info.SheetVersionType = preRelease ? preRelease : undefined;
+		tDoc.info.SheetVersionBuild = build ? build : undefined;
 	}
-	semVers = getSemVers(version, extra);
+	semVers = getSemVers(version, preRelease, build);
 	sheetVersion = semVersToNmbr(semVers);
 	var docNm = MakeDocName();
-	var resetFlds = ["Opening Remember", "CurrentSources.Stringified", "User_Imported_Files.Stringified"];
+	var resetFlds = ["Opening Remember"];
+	if (!forPatreon) resetFlds = resetFlds.concat(["CurrentSources.Stringified", "User_Imported_Files.Stringified"]);
 	var defaultTempl = ["", "AScomp", "ASnotes"];
 	for (var i = 0; i < defaultTempl.length; i++) {
 		var prefix = defaultTempl[i] ? What("Template.extras." + defaultTempl[i]).split(",")[1] : "";
@@ -3672,7 +3670,7 @@ function Publish(version, extra) {
 	if (app.viewerType !== "Reader") tDoc.info.Title = docNm;
 	tDoc.resetForm(resetFlds);
 	tDoc.getField("Opening Remember").submitName = 1;
-	tDoc.getField("SaveIMG.Patreon").submitName = "(new Date(0))";
+	tDoc.getField("SaveIMG.Patreon").submitName = forPatreon ? "" : "(new Date(0))";
 	if (!minVer) DontPrint("d20warning");
 	DnDlogo();
 	updateVersionBkmrk();

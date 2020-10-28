@@ -39,7 +39,7 @@
 				Note that if you want a class feature, race, racial trait, feat, background, or magic item to add an ammunition,
 				you should be using the 'ammoOptions' attribute.
 
-	Sheet:		v13.0.0 (2019-??-??)
+	Sheet:		v13.0.6 and newer
 
 */
 
@@ -52,19 +52,28 @@ var iFileName = "Homebrew Syntax - AmmoList.js";
 	Variables invoked inside an import script will not be available after importing.
 	However, if you invoke the variable without the 'var', it will be available after importing.
 
-	This doesn't actually have to be the same as the name of the file.
+	This doesn't have to be the same as the actual name of the file.
+	This doesn't need to have the .js file extension.
 	Only the first occurrence of this variable will be used.
 */
 
-RequiredSheetVersion(13);
+RequiredSheetVersion("13.0.6");
 /*	RequiredSheetVersion // OPTIONAL //
-	TYPE:	function call with a number
-	USE:	the minimum required version number of the sheet for the script to work
+	TYPE:	function call with one variable, a string or number
+	USE:	the minimum version of the sheet required for the import script to work
 
-	If the sheet where you import this script into is of an earlier version, the player will be given a warning.
-	Input a number, not a string (so don't enclose the number in quotation marks)!
-	Although the sheet uses semantic versioning, you have to input a number here.
-	To find this number of a sheet, open its Document Properties in Adobe Acrobat (Ctrl + D) and look in the 'Custom' tab.
+	If this script is imported into a sheet with an earlier version than given here, the player will be given a warning.
+
+	The variable you input can be a the full semantic version of the sheet as a string (e.g. "13.0.6" or "13.1.0-beta1+201209").
+	Alternatively, you can input a number, which the sheet will translate to a semantic version.
+	For example:
+		FUNCTION CALL						REQUIRED MINIMUM VERSION
+		`RequiredSheetVersion(13);`			13.0.0
+		`RequiredSheetVersion(13.1);`		13.1.0
+
+	You can find the full semantic version of the sheet at the bottom of every page,
+	or look at the "Get Latest Version" bookmark, which lists the version number,
+	or go to File >> Properties >> Description, where the version is part of the document title.
 */
 
 AmmoList["purple bullets"] = {

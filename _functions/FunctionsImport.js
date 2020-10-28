@@ -461,12 +461,12 @@ function DirectImport(consoleTrigger) {
 
 		// First we need to reset the prototypes to the current sheet because Acrobat will use the ones from the latest sheet that was opened
 		global.docTo.setPrototypes();
-		var FromVersionSem = getSemVers(global.docFrom.info.SheetVersion, global.docFrom.info.SheetVersionType);
+		var FromVersionSem = getSemVers(global.docFrom.info.SheetVersion, global.docFrom.info.SheetVersionType, global.docFrom.info.SheetVersionBuild);
 		var FromVersion = semVersToNmbr(FromVersionSem);
-		if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
 		var ToVersion = global.docTo.sheetVersion;
-		if (FromVersion > ToVersion || (FromVersion > 13 && FromVersion < 13.000000014)) {
-			// If importing from a newer version or from a v13.0.0.beta1-beta14
+		var fromBefore13 = FromVersion < semVersToNmbr("13.0.0-beta14");
+		if (FromVersion > ToVersion || (FromVersion >= semVersToNmbr("13.0.0-beta1") && fromBefore13)) {
+			// If importing from a newer version or from a v13.0.0-beta1-beta13
 			var versTypeTxt = FromVersion > ToVersion ? ["this sheet is", "newer", "than the one you are importing"] : ["the other sheet is an", "unsupported beta", "that can't be imported to any other MPMB's Character Record Sheet"];
 			app.alert({
 				cTitle : "Unable to import from " + versTypeTxt[1] + " version",
@@ -474,7 +474,7 @@ function DirectImport(consoleTrigger) {
 			});
 			closeAlert = true;
 			throw "user stop";
-		} else if (FromVersion < 12.999) { // give a warning about importing from a version that had all materials included automatically
+		} else if (FromVersion < semVersToNmbr(12.999)) { // give a warning about importing from a version that had all materials included automatically
 			var askUserIsSure = {
 				cTitle : "Continue with import?",
 				cMsg : "You are about to import from a sheet with version " + FromVersionSem + ". Unlike the sheet you are importing to (which is v" + global.docTo.semVers + "), v" + FromVersionSem + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material by default.\n\nIf the same resources weren't added to the current sheet as are used in the old sheet, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet! See the \"Add Extra Materials\" bookmark for more information on what is already added and how to add the required resources." + (patreonVersion ? "\n\nIf you got this sheet from MPMB's Patreon, you are probably fine to proceed!" : "") + "\n\nAre you sure you want to continue importing?",
@@ -503,7 +503,7 @@ function DirectImport(consoleTrigger) {
 		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
 
 		// Make sure to remove the flattened state from the sheet to import from
-		if (FromVersion < 13) {
+		if (fromBefore13) {
 			if (global.docFrom.getField("MakeMobileReady Remember") && global.docFrom.getField("MakeMobileReady Remember").value !== "") global.docFrom.MakeMobileReady(false);
 		} else {
 			global.docFrom.MakeMobileReady(false);
@@ -587,7 +587,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("BlueText.Players Make All Rolls", {notSubmitName : true, notTooltip : true});
 
 		//set the text options
-		if (FromVersion < 13) {
+		if (fromBefore13) {
 			if (global.docFrom.getField("WhiteoutRemember")) ToggleWhiteout(eval_ish(global.docFrom.What("WhiteoutRemember")));
 			var FontSize_Remember_field = global.docFrom.getField("FontSize Remember") ? global.docFrom.getField("FontSize Remember").value : undefined;
 			if ((bothPF || bothCF || FontSize_Remember_field === 0) && FontSize_Remember_field != undefined) ToggleTextSize(FontSize_Remember_field);
@@ -606,7 +606,7 @@ function DirectImport(consoleTrigger) {
 
 		//set the league remember toggle
 		if (ImportField("League Remember")) {
-			if (FromVersion < 12.99) {
+			if (FromVersion < semVersToNmbr(12.99)) {
 				if (What("League Remember") === "On") {
 					ToggleAdventureLeague({
 						dci : true,
@@ -665,7 +665,7 @@ function DirectImport(consoleTrigger) {
 		//set the carrying capacity type
 		ImportField("Weight Carrying Capacity", {doVisiblity: true}, "Weight Carrying Capacity.Field"); ImportField("Weight Heavily Encumbered", {doVisiblity: true});
 		//set the weight remember fields
-		if (FromVersion < 13) {
+		if (fromBefore13) {
 			global.docTo.CurrentVars.weight = [];
 			var weightTypes = {
 				cArm : "Weight Remember Armor",
@@ -695,7 +695,7 @@ function DirectImport(consoleTrigger) {
 
 		//get the page layout of the sheet and copy it
 		var pagesLayout = {};
-		var onlySpawnsFrom = FromVersion >= 12.995;
+		var onlySpawnsFrom = FromVersion >= semVersToNmbr(12.996);
 		if (global.docFrom.BookMarkList) { //if no bookmarklist exists where we are importing from, don't do anything
 			for (var templ in TemplateDep) {
 				if (templ === "PRsheet" && (!fromSheetTypePF || !typePF)) continue;
@@ -767,7 +767,7 @@ function DirectImport(consoleTrigger) {
 
 		//set the values of the ability score dialog (after race, so scores manually set for race are not undone)
 		var abiScoreFlds = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
-		if (FromVersion < 13) {
+		if (fromBefore13) {
 			initiateCurrentStats();
 			var equalAbiCol = [0, 1, 4, 7, 5, 2];
 			for (var a = 0; a < abiScoreFlds.length; a++) {
@@ -789,7 +789,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("Background", {notTooltip: true, notSubmitName: true}); ImportField("Background Extra", {notTooltip: true});
 
 		//set the class and class features
-		if (FromVersion < 13) ImportExtraChoices();
+		if (fromBefore13) ImportExtraChoices();
 		ImportField("Class and Levels", {notTooltip: true});
 
 		//set the feats
@@ -830,13 +830,13 @@ function DirectImport(consoleTrigger) {
 					global.docFrom.What("Extra.Magic Item Description " + i),
 					global.docFrom.What("Extra.Magic Item Weight " + i),
 					false,
-					FromVersion < 13 ? undefined : global.docFrom.How("Extra.Magic Item Attuned " + i) == ""
+					fromBefore13 ? undefined : global.docFrom.How("Extra.Magic Item Attuned " + i) == ""
 				);
 			}
 		}
 
 		// if from version >= 13, do magic items before setting the rest of the fields
-		if (FromVersion >= 13) importMagicItems();
+		if (FromVersion >= semVersToNmbr(13)) importMagicItems();
 
 		//set the ability scores and associated fields
 		for (var a = 0; a < abiScoreFlds.length; a++) {
@@ -865,7 +865,7 @@ function DirectImport(consoleTrigger) {
 		for (var i = 0; i < SkillsList.abbreviations.length; i++) {
 			var aSkill = SkillsList.abbreviations[i];
 			ImportField(aSkill + " Bonus", {notTooltip: true, notSubmitName: true}); ImportField(aSkill + " Prof", {notTooltip: true}); ImportField(aSkill + " Exp", {notTooltip: true}); ImportField(aSkill + " Adv", {doReadOnly: true}); ImportField(aSkill + " Dis", {doReadOnly: true});
-			if (!(/^(Init|Too)$/).test(aSkill) && FromVersion < 13 && global.docTo.getField(aSkill + " Prof").isBoxChecked(0)) {
+			if (!(/^(Init|Too)$/).test(aSkill) && fromBefore13 && global.docTo.getField(aSkill + " Prof").isBoxChecked(0)) {
 				// set the "manualClick" entries in the CurrentProfs
 				var useSkill = isAltSkillOrder ? SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(aSkill)] : aSkill;
 				if (!CurrentProfs.skill[useSkill] || !CurrentProfs.skill[useSkill].length) {
@@ -886,7 +886,7 @@ function DirectImport(consoleTrigger) {
 			}
 		};
 		// copy the "manualClick" entries from the imported CurrentProfs.skill
-		if (FromVersion >= 13 && CurrentProfsFrom && CurrentProfsFrom.skill) {
+		if (FromVersion >= semVersToNmbr(13) && CurrentProfsFrom && CurrentProfsFrom.skill) {
 			for (var anEntry in CurrentProfsFrom.skill) {
 				if (anEntry == "descrTxt") continue;
 				if (anEntry.indexOf("_Exp") !== -1) {
@@ -905,7 +905,7 @@ function DirectImport(consoleTrigger) {
 		ImportField("PC Name"); ImportField("Player Name"); ImportField("Size Category", {notTooltip: true}); ImportField("Height", {notTooltip: true}); ImportField("Weight", {notTooltip: true}); ImportField("Sex"); ImportField("Hair colour", {notTooltip: true}); ImportField("Eyes colour", {notTooltip: true}); ImportField("Skin colour", {notTooltip: true}); ImportField("Age", {notTooltip: true}); ImportField("Alignment", {notTooltip: true}); ImportField("Faith/Deity", {notTooltip: true}); ImportField("Speed", {notTooltip: true}); ImportField("Speed encumbered", {notTooltip: true});
 
 		//add the content from the saving throw and vision field, but not if importing from an older version
-		if (FromVersion >= 12.998) {
+		if (FromVersion >= semVersToNmbr(12.998)) {
 			//First make sure the "Immune to" and "Adv. on saves vs." match with the import
 			var importSaveTxt = function(type) {
 				var preTxt = type === "adv_vs" ? "Adv. on saves vs." : type === "immune" ? "Immune to" : false;
@@ -974,7 +974,7 @@ function DirectImport(consoleTrigger) {
 
 		//set the armour and weapon proficiencies
 		ImportField("Proficiency Armor Other Description", {notTooltip: true});
-		if (FromVersion < 13) {
+		if (fromBefore13) {
 			// manually set proficiency checkboxes
 			var profFldsArray = [
 				"Proficiency Armor Light",
@@ -1038,7 +1038,7 @@ function DirectImport(consoleTrigger) {
 
 		//a function to add the 'new' languages, tools, resistances, actions
 		var addNotDefined = function(typeFlds, iterations) {
-			var fromOldVersion = FromVersion < 12.998;
+			var fromOldVersion = FromVersion < semVersToNmbr(12.998);
 			var functionAdd = function(typeAdd, input, replaceThis) {
 				switch (typeAdd) {
 					case "Language " :
@@ -1112,7 +1112,7 @@ function DirectImport(consoleTrigger) {
 
 	//the third page
 		// if from version < 13, do magic items after setting the rest of the fields so their automation is run afterwards
-		if (FromVersion < 13) importMagicItems();
+		if (fromBefore13) importMagicItems();
 
 		ImportField("Extra.Other Holdings");
 
@@ -1273,12 +1273,12 @@ function DirectImport(consoleTrigger) {
 
 	//do the adventure logsheet pages
 		prefixA = pagesLayout && pagesLayout.ALlogExtras ? [pagesLayout.ALlogExtraNmFrom, pagesLayout.ALlogExtraNmTo] : [[], []];
-		var advLogRegChl = FromVersion < 12.994 ? /^(?!.*\d)|(?=.*(start|total|date)).*$/i : /^(?!.*\d)|(?=.*(start|total)).*$/i;
+		var advLogRegChl = FromVersion < semVersToNmbr(12.994) ? /^(?!.*\d)|(?=.*(start|total|date)).*$/i : /^(?!.*\d)|(?=.*(start|total)).*$/i;
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
 			if (i === 0) doChildren("AdvLog.1", prefixFrom, prefixTo, /^(?!.*start).*$/i); //the starting values
-			if (FromVersion < 12.994) {
+			if (FromVersion < semVersToNmbr(12.994)) {
 				for (var x = 1; x <= FieldNumbers.logs; x++) {
 					var dateFldFr = global.docFrom.getField(prefixFrom + "AdvLog." + x + ".date");
 					var dateFldTo = global.docTo.getField(prefixTo + "AdvLog." + x + ".date");
@@ -1393,7 +1393,7 @@ function DirectImport(consoleTrigger) {
 			};
 		};
 	//Change calculations to manual
-		if (FromVersion < 13) {
+		if (fromBefore13) {
 			SetToManual_Dialog.mAtt = global.docFrom.getField("Manual Attack Remember") ? global.docFrom.What("Manual Attack Remember") !== "No" : false;
 			SetToManual_Dialog.mBac = global.docFrom.getField("Manual Background Remember") ? global.docFrom.What("Manual Background Remember") !== "No" : false;
 			SetToManual_Dialog.mCla = global.docFrom.getField("Manual Class Remember") ? global.docFrom.What("Manual Class Remember") !== "No" : false;
@@ -1468,7 +1468,7 @@ function DirectImport(consoleTrigger) {
 			"Ability Score dialog has been duplicated from the old version, changes by newer automation have been ignored. Read that dialog's text carefully to see if you are missing anything;",
 			sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "No spell sheets have been generated."
 		].join("\n  > ");
-		if (FromVersion < 12.998) {
+		if (FromVersion < semVersToNmbr(12.998)) {
 			aText += [
 				"\n\n" + toUni("Importing from older version, before v12.998"),
 				"Some proficiencies you adjusted manually, like languages and tools, might not have transferred over correctly. This is because the new version of the sheet uses a different way of setting proficiencies that offer a choice.",
@@ -1585,9 +1585,9 @@ function ImportIcons(pagesLayout, viaSaving) {
 	var fromSheetTypePF = global.docFrom.info.SheetType ? (/printer friendly/i).test(global.docFrom.info.SheetType) : false;
 	var bothPF = typePF && fromSheetTypePF;
 	var bothCF = !typePF && !fromSheetTypePF;
-	var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
-	if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
-	if (FromVersion < 3.7) return true; //the form is of a version before there were any icon fields
+	var FromVersionSem = getSemVers(global.docFrom.info.SheetVersion, global.docFrom.info.SheetVersionType, global.docFrom.info.SheetVersionBuild);
+	var FromVersion = semVersToNmbr(FromVersionSem);
+	if (FromVersion < semVersToNmbr(3.7)) return true; //the form is of a version before there were any icon fields
 
 	var IconArray = [
 		["Portrait", "Portrait"],
@@ -1618,8 +1618,8 @@ function ImportIcons(pagesLayout, viaSaving) {
 
 	//see if the icons match one of the prematched ones (only from v10.6 or later)
 	var skipArray = [];
-	if (FromVersion >= 10.6) {
-		if (FromVersion < 11.8) {
+	if (FromVersion >= semVersToNmbr(10.6)) {
+		if (FromVersion < semVersToNmbr(11.8)) {
 			var IconsList = [
 				["SaveIMG.harpers", "SaveIMG.Faction.harpers.symbol"],
 				["SaveIMG.emeraldenclave", "SaveIMG.Faction.emeraldenclave.symbol"],
@@ -2420,26 +2420,27 @@ function AddUserScript(retResDia) {
 function RunUserScript(atStartup, manualUserScripts) {
 	var ScriptsAtEnd = [];
 	var ScriptAtEnd = [];
-	var minSheetVersion = 0;
+	var minSheetVersion = [0, ""];
 	var RunFunctionAtEnd = function(inFunction) {
 		if (inFunction && typeof inFunction === "function") ScriptAtEnd.push(inFunction);
 	};
 	var runIt = function(aScript, scriptName, isManual) {
 		var RequiredSheetVersion = function(inNumber) {
 			if (atStartup) return;
-			inNumber = semVersToNmbr(inNumber);
-			if (!isNaN(inNumber) && inNumber > minSheetVersion) minSheetVersion = inNumber;
+			var minSemVers = /-|\+|beta/i.test(inNumber.toString()) ? inNumber.toString().replace(/^\D+/, "").replace(/([^\-])\.?beta/, "$1-beta") : getSemVers(inNumber);
+			var testNmbr = semVersToNmbr(minSemVers);
+			if (testNmbr > minSheetVersion[0]) minSheetVersion = [testNmbr, minSemVers];
 		};
 		try {
 			IsNotUserScript = false;
 			ScriptAtEnd = [];
-			minSheetVersion = 0;
+			minSheetVersion = [0, ""];
 			eval(aScript);
 			IsNotUserScript = true;
 			if (ScriptAtEnd.length > 0) ScriptsAtEnd = ScriptsAtEnd.concat(ScriptAtEnd);
-			if (minSheetVersion > sheetVersion) {
+			if (sheetVersion < minSheetVersion[0]) {
 				var failedTestMsg = {
-					cMsg : "The script '" + scriptName + "' reports that is was made for a newer version of the sheet (v" + nmbrToSemanticVersion(minSheetVersion) + "), and might thus not be compatible with this version of the sheet (v" + semVers + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
+					cMsg : "The script '" + scriptName + "' reports that is was made for a newer version of the sheet (v" + minSheetVersion[1] + "), and might thus not be compatible with this version of the sheet (v" + semVers + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
 					nIcon : 2,
 					cTitle : "Script was made for newer version!",
 					nType : 2
@@ -2513,14 +2514,16 @@ function RunUserScript(atStartup, manualUserScripts) {
 };
 
 // Define some custom import script functions as document-level functions so custom scripts including these can still be run from console
-function RequiredSheetVersion(versNmbr) {
-	var inNumber = semVersToNmbr(versNmbr);
-	if (!inNumber || isNaN(inNumber) || inNumber <= sheetVersion) return;
-	app.alert({
-		cMsg : "The RequiredSheetVersion() function in your script suggests that the script is made for a new version, v" + nmbrToSemanticVersion(inNumber) + ", of MPMB's Character Record Sheets.\nBe aware that this sheet is only v" + semVers + " and might thus not work properly.\nOr perhaps you are using the RequiredSheetVersion() function incorrectly.",
-		nIcon : 2,
-		cTitle : "Script was made for newer version!"
-	});
+function RequiredSheetVersion(inNumber) {
+	var minSemVers = /-|beta|\+/i.test(inNumber.toString()) ? inNumber.toString().replace(/^\D+/, "").replace(/([^\-])\.?beta/, "$1-beta") : getSemVers(inNumber);
+	var testNmbr = semVersToNmbr(minSemVers);
+	if (sheetVersion < testNmbr) {
+		app.alert({
+			cMsg : "The RequiredSheetVersion() function in your script suggests that the script is made for a newer version, v" + minSemVers + ", of MPMB's Character Record Sheets.\nBe aware that this sheet is only v" + semVers + " and might thus not work properly.\nAlternatively, you might not be using the RequiredSheetVersion() function incorrectly.",
+			nIcon : 2,
+			cTitle : "Script was made for newer version!"
+		});
+	}
 };
 function RunFunctionAtEnd(inFunc) {
 	if (!inFunc && typeof inFunc !== "function") return;

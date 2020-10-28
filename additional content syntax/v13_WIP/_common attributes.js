@@ -48,7 +48,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v13.0.0 (2019-??-??)
+	Sheet:		v13.0.4 and newer
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -971,11 +971,8 @@ spellcastingExtra : ["cure wounds", "guiding bolt", "flaming sphere", "lesser re
 	Any instance of this attribute will overwrite previous instances in the same parent.
 	E.g. if you use this in a subclass and in a subclass' feature, the latter will
 	overwrite the former, and only the latter will be used.
-
-	However, when a feature is removed that has the `spellcastingExtra` attribute,
-	the sheet will remove these extra spells, but will not apply the same attribute from a lower-level feature.
-	Thus, it is highly recommended to only use spellcastingExtra once in a ClassSubList entry
-	and to not use it in ClassList features.
+	Thus, if you want to incrementally add spells,
+	be sure to include previously gained spells in the array of the later feature as well.
 */
 
 spellcastingExtraApplyNonconform : true,
@@ -999,11 +996,6 @@ spellcastingExtraApplyNonconform : true,
 	This also means that you don't need to have `spellcastingExtra` and `spellcastingExtraApplyNonconform`
 	defined in the same class feature.
 	And it means that you can change the behaviour of `spellcastingExtra` at a higher level.
-
-	However, when a feature is removed that has the `spellcastingExtraApplyNonconform` attribute,
-	the sheet will remove this setting, but will not apply the same attribute from a lower-level feature.
-	Thus, it is highly recommended to only use spellcastingExtraApplyNonconform once in
-	a ClassSubList entry and to not use it in ClassList features.
 */
 
 spellFirstColTitle : "Ki",

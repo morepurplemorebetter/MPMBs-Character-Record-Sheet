@@ -78,7 +78,7 @@ function setGlobalVars() {
 	tDoc.typeA4 = (/a4/i).test(tDoc.info.SheetType);
 	tDoc.typeLR = (/letter/i).test(tDoc.info.SheetType);
 	tDoc.minVer = tDoc.info.SpellsOnly || tDoc.info.AdvLogOnly;
-	tDoc.semVers = getSemVers(tDoc.info.SheetVersion, tDoc.info.SheetVersionType);
+	tDoc.semVers = getSemVers(tDoc.info.SheetVersion, tDoc.info.SheetVersionType, tDoc.info.SheetVersionBuild);
 	tDoc.sheetVersion = semVersToNmbr(semVers);
 	tDoc.isWindows = app.platform === "WIN";
 	tDoc.patreonVersion = tDoc.getField("SaveIMG.Patreon").submitName === "";
