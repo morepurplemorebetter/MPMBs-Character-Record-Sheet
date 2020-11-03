@@ -1447,38 +1447,46 @@ function DirectImport(consoleTrigger) {
 			aText += toUni("Sheet Types Differ");
 			aText += "\nYou seem to have imported from another type of sheet (i.e. not \'" + tDoc.info.SheetType + "\'). This will have the unfortunate side-effect that some things might not have been imported, because there aren't an equal amount of entries for all things on all of MPMB's sheet types. For example, there is room for 6 attacks on the 'Colorful-A4' sheet, but for only 5 on the other types.";
 			aText += "\n\n" + toUni("Any of the following sections might be truncated:");
-			aText += typeA4 ? "" : "\n  > 1st page: attacks, actions" + (typePF ? ", languages, tools" : ";");
-			aText += typePF ? "" : "\n  > 2nd page: equipment" + (typeA4 ? "" : ", feats, languages, tools");
-			aText += typeA4 ? "" : ";\n  > Additional sheet: magic items" + (typePF ? ", equipment, feats" : "");
-			aText += !typePF ? "" : ";\n  > Companion sheet(s): equipment;";
-			aText += !typePF ? "" : ";\n  > Adventure Logsheet(s): the last entry of each page is missing";
-			aText += typeA4 ? "" : ";\n  > Spell Sheet(s): spells near the bottom of the page";
-			aText += ".\n\n"
+			aText += typeA4 ? "" : "\n  \u2022 1st page: attacks, actions" + (typePF ? ", languages, tools" : "");
+			aText += typePF ? "" : "\n  \u2022 2nd page: equipment" + (typeA4 ? "" : ", feats, languages, tools");
+			aText += typeA4 ? "" : "\n  \u2022 Additional sheet: magic items" + (typePF ? ", equipment, feats" : "");
+			aText += !typePF ? "" : "\n  \u2022 Companion sheet(s): equipment;";
+			aText += !typePF ? "" : "\n  \u2022 Adventure Logsheet(s): the last entry of each page is missing";
+			aText += typeA4 ? "" : "\n  \u2022 Spell Sheet(s): spells near the bottom of the page";
+			aText += "\n\n";
 		};
 		aText += toUni("Some manual additions might not have transferred over") + "\nSome things that you adjusted manually on your old sheet might not have transferred to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.\n"
 		aText += [
 			toUni("The following things should be considered:"),
-			"The 'Class Features' text is now solely what the automation added;",
-			"The 'Notes' section on the 3rd page is now solely what the automation added;",
-			"Attack and Ammunition attributes are now solely what the automation set;",
-			"Magic and Misc AC bonuses are now solely what the automation set;",
-			"Feat and Magic Item descriptions are now solely what the automation set;",
-			"Companion pages have been copied exactly, not using any updates in automation;",
-			"Wild Shapes have been re-calculated, manual changes have been ignored;",
-			"Ability Score dialog has been duplicated from the old version, changes by newer automation have been ignored. Read that dialog's text carefully to see if you are missing anything;",
-			sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "No spell sheets have been generated."
-		].join("\n  > ");
+			"The 'Class Features' text is now solely what the automation added",
+			"The 'Notes' section on the 3rd page is now solely what the automation added",
+			"Attack and Ammunition attributes are now solely what the automation set",
+			"Magic and Misc AC bonuses are now solely what the automation set",
+			"Feat and Magic Item descriptions are now solely what the automation set",
+			"Companion pages have been copied exactly, not using any updates in automation",
+			"Wild Shapes have been re-calculated, manual changes have been ignored",
+			"Ability Score dialog has been duplicated from the old version, changes by newer automation have been ignored. Read that dialog's text carefully to see if you are missing anything",
+			sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "No spell sheets have been generated"
+		].join("\n  \u2022 ");
+		if (fromBefore13) {
+			aText += [
+				"\n\n" + toUni("Bonuses from magic items"),
+				"Be aware that v13 introduces automation for magic items which has immediately been applied on import.",
+				"If you added bonuses to modifier fields to account for magic items, those bonuses will have been imported, but the magic item automation will have applied those bonuses as well. It could well be that some things now have twice the bonus that they should have! Please check carefully if all the modifier fields still display the right numbers.",
+				"The modifier fields are hidden by default, but you can toggle their visiblity with the Functions >> Modifiers bookmark."
+			].join("\n  \u2022 ");
+		};
 		if (FromVersion < semVersToNmbr(12.998)) {
 			aText += [
 				"\n\n" + toUni("Importing from older version, before v12.998"),
 				"Some proficiencies you adjusted manually, like languages and tools, might not have transferred over correctly. This is because the new version of the sheet uses a different way of setting proficiencies that offer a choice.",
 				"Things manually added/changed in the fields for Saving Throw Advantages/Disadvantages and Senses have not been copied."
-			].join("\n  > ");
+			].join("\n  \u2022 ");
 		};
 		app.alert({
 			cMsg : aText,
 			nIcon : 3,
-			cTitle : "Some things to consider about the import"
+			cTitle : "Things to consider about the import"
 		});
 	};
 	thermoStop(); // Stop progress bar, forcibly

@@ -48,7 +48,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v13.0.4 and newer
+	Sheet:		v13.0.6 and newer
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -1153,9 +1153,10 @@ calcChanges : {
 				WeaponText, // string, both the name and description
 				WeaponTextName, // string, just the name
 				isDC, // boolean, whether or not this attack has a To Hit (false) or a DC (true)
-				isSpell, // boolean, whether (true) or not (false) this attack is a cantrip or spell or has the word 'cantrip' or 'spell' in its name or description
-				isMeleeWeapon, // boolean, whether (true) or not (false) this attack has a range of 'melee' and is not a spell
-				isRangedWeapon, // boolean, whether (true) or not (false) this attack has a range that doesn't include 'melee' and is not a spell
+				isSpell, // boolean, whether (true) or not (false) this attack is a recognized cantrip or spell or has the word 'cantrip' or 'spell' in its name or description. Be aware that something can be both a spell/cantrip and a weapon attack
+				isWeapon, // boolean, whether (true) or not (false) this attack is considered a weapon attack
+				isMeleeWeapon, // boolean, whether (true) or not (false) this attack has a range of 'melee' and is considered a melee weapon attack
+				isRangedWeapon, // boolean, whether (true) or not (false) this attack has a range that doesn't include 'melee' and is considered a ranged weapon attack
 				isNaturalWeapon, // boolean, whether (true) or not (false) this attack has the type 'natural'
 				theWea, // object, the entry as it appears in the WeaponsList object
 				StrDex, // number, either 1 (Str) or 2 (Dex) depending on which of the two ability scores is higher
@@ -1213,9 +1214,10 @@ calcChanges : {
 				WeaponText, // string, both the name and description
 				WeaponTextName, // string, just the name
 				isDC, // boolean, whether or not this attack has a To Hit (false) or a DC (true)
-				isSpell, // boolean, whether (true) or not (false) this attack is a cantrip or spell or has the word 'cantrip' or 'spell' in its name or description
-				isMeleeWeapon, // boolean, whether (true) or not (false) this attack has a range of 'melee' and is not a spell
-				isRangedWeapon, // boolean, whether (true) or not (false) this attack has a range that doesn't include 'melee' and is not a spell
+				isSpell, // boolean, whether (true) or not (false) this attack is a recognized cantrip or spell or has the word 'cantrip' or 'spell' in its name or description
+				isWeapon, // boolean, whether (true) or not (false) this attack is considered a weapon attack. Be aware that something can be both a spell/cantrip and a weapon attack
+				isMeleeWeapon, // boolean, whether (true) or not (false) this attack has a range of 'melee' and is considered a melee weapon attack
+				isRangedWeapon, // boolean, whether (true) or not (false) this attack has a range that doesn't include 'melee' and is considered a ranged weapon attack
 				isNaturalWeapon, // boolean, whether (true) or not (false) this attack has the type 'natural'
 				isOffHand, // boolean, whether (true) or not (false) this attack is both a melee weapon and an off-hand attack
 				theWea, // object, the entry as it appears in the WeaponsList object

@@ -5615,16 +5615,18 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 			// define some variables that we can check against later or with the CurrentEvals
 			var WeaponText = inputText + " " + fields.Description;
 			var isDC = (/dc/i).test(fields.To_Hit_Bonus);
-			var isSpell = (thisWeapon[3] || (/cantrip|spell/i).test(theWea.type) || (/\b(cantrip|spell)\b/i).test(WeaponText)) && WeaponName !== "shillelagh";
-			var isMeleeWeapon = !isSpell && (/melee/i).test(fields.Range);
-			var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
-			var isNaturalWeapon = !isSpell && (/natural/i).test(theWea.type);
+			var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText));
+			var isWeapon = !isSpell || (isSpell && theWea && !(/cantrip|spell/).test(theWea.Type));
+			var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
+			var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
+			var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
 
 			var gatherVars = {
 				WeaponText : WeaponText,
 				WeaponTextName : inputText,
 				isDC : isDC,
 				isSpell : isSpell,
+				isWeapon : isWeapon,
 				isMeleeWeapon : isMeleeWeapon,
 				isRangedWeapon : isRangedWeapon,
 				isNaturalWeapon : isNaturalWeapon,
@@ -5778,10 +5780,11 @@ function CalcAttackDmgHit(fldName) {
 		}
 		if (aWea) for (var attr in aWea) theWea[attr] = aWea[attr];
 
-		var isSpell = (thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (/\b(cantrip|spell)\b/i).test(WeaponText)) && WeaponName !== "shillelagh";
-		var isMeleeWeapon = !isSpell && (/melee/i).test(fields.Range);
-		var isRangedWeapon = !isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
-		var isNaturalWeapon = !isSpell && theWea && (/natural/i).test(theWea.type);
+		var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText));
+		var isWeapon = !isSpell || (isSpell && theWea && !(/cantrip|spell/).test(theWea.Type));
+		var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
+		var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
+		var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
 
 		// see if this is a off-hand attack and the modToDmg shouldn't be use
 		var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText);
@@ -5818,6 +5821,7 @@ function CalcAttackDmgHit(fldName) {
 				WeaponTextName : WeaponText.replace(" " + fields.Description, ""),
 				isDC : isDC,
 				isSpell : isSpell,
+				isWeapon : isWeapon,
 				isMeleeWeapon : isMeleeWeapon,
 				isRangedWeapon : isRangedWeapon,
 				isNaturalWeapon : isNaturalWeapon,

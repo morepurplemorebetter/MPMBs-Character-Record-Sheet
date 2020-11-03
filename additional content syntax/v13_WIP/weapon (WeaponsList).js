@@ -166,6 +166,11 @@ WeaponsList["sword of purple"] = {
 	If this type matches a word in the 'Other Weapon Proficiencies' field,
 	the character will be considered proficient with the weapon.
 	But if this type doesn't match anything, proficiency will not be applied.
+
+	If the attack is a spell/cantrip, but it functions like a weapon attack (for fighting styles for example),
+	then you will want to set this to "Simple" or "Martial", while also
+	setting the `list` or `SpellsList` attributes to that of a spell/cantrip.
+	That way, the attack is seen as both a spell and a weapon by other automation.
 */
 	ability : 1,
 /*	ability // REQUIRED //
