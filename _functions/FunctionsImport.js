@@ -1374,11 +1374,11 @@ function DirectImport(consoleTrigger) {
 						};
 					}
 					//set the spell remember fields
-					for (var a = 0; a < nmbrFlds; a++) {
+					for (var a = 0; a <= nmbrFlds; a++) {
 						ImportField(prefixTo + "spells.remember." + a, {notTooltip: true, notSubmitName: true}, prefixFrom + "spells.remember." + a);
 					}
 					//set the headers and spell dividers
-					for (var a = 0; a < 9; a++) {
+					for (var a = 0; a <= 9; a++) {
 						if (a < 4) {
 							ImportField(prefixTo + "spellshead.Text.header." + a, {notTooltip: true, notSubmitName: true, cleanValue: true}, prefixFrom + "spellshead.Text.header." + a);
 							ImportField(prefixTo + "spellshead.ability." + a, {notTooltip: true, notSubmitName: true, cleanValue: true}, prefixFrom + "spellshead.ability." + a);
